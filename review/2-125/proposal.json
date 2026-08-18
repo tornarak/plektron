@@ -1,0 +1,108 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "397"
+    },
+    "2": {
+      "text": "time family. Another paddle from Indian Point (Fig. 278) represents sea-"
+    },
+    "3": {
+      "text": "game and various hunting-scenes. At the top of the picture (Fig. 278, a) a"
+    },
+    "4": {
+      "text": "group of men are practising shamanism. Two of them are beating the drum,"
+    },
+    "5": {
+      "text": "and two others are performing a ceremonial dance. This evidently signifies"
+    },
+    "6": {
+      "text": "magic influence on the sea-game, to draw it to the shore. Both ends of"
+    },
+    "7": {
+      "text": "the picture are supplied with several semicircular lines, which probably rep-"
+    },
+    "8": {
+      "text": "resent conventionalized bows, though the natives were not able"
+    },
+    "9": {
+      "text": "to tell anything about the matter. The other side of the paddle-"
+    },
+    "10": {
+      "text": "blade (Fig. 278, b) is ornamented with a pattern of straight lines",
+      "note": "Figure sub-part locant is a lowercase italic 'b' on the raster (matches the 'a' locant at line 3, Fig. 278); machine draft misread it as digit '6'. Not a footnote marker (§2.10 exclusion).",
+      "class": "draft"
+    },
+    "11": {
+      "text": "and small semicircles, in the style of the Eskimo."
+    },
+    "12": {
+      "text": "The whole performance of the Kereˊtkun ceremonial in the",
+      "note": "Kere'tkun via lexicon key (Kereˊtkun, attested 1-317, 2-015, 2-042..2-045, 2-091). Raised mark read as stress U+02CA per keying_spec.md §4 (\"Read every raised mark as stress ... by default\").",
+      "class": "draft",
+      "as_typed": "The whole performance of the {Kere'tkun} ceremonial in the"
+    },
+    "13": {
+      "text": "village of Nuˊnlig̣ren lasts three days, and with most families is",
+      "note": "Nu'nligren via lexicon key (Nuˊnlig̣ren, attested 1-051, 1-233, 1-234, 2-028, 2-068). Confirmed dot-below on the g at 4x zoom (contrast against the plain g in 'ceremonial'/'lighted' elsewhere on the page).",
+      "class": "draft",
+      "as_typed": "village of {Nu'nlig.ren} lasts three days, and with most families is"
+    },
+    "14": {
+      "text": "carried out with the following details. On the first day, in the"
+    },
+    "15": {
+      "text": "morning, the outer tent is carefully swept, and a net with appur-"
+    },
+    "16": {
+      "text": "tenances is suspended above. On both sides of the hearth are"
+    },
+    "17": {
+      "text": "spread reindeer-skins, which represent two inner rooms. The place"
+    },
+    "18": {
+      "text": "for Kereˊtkun is either on one of these skins, or inside of the",
+      "as_typed": "for {Kere'tkun} is either on one of these skins, or inside of the"
+    },
+    "19": {
+      "text": "real sleeping-room. A big lamp filled with the choicest oil is"
+    },
+    "20": {
+      "text": "lighted, and placed accordingly in either of the indicated places."
+    },
+    "21": {
+      "text": "Kereˊtkun is supposed to enter, and, taking his place on the lamp,",
+      "note": "Machine draft keyed the stress mark as a slash '/' (Kere/tkun); raster shows the same raised mark as lines 12 and 18. Corrected via the same lexicon key.",
+      "class": "draft",
+      "as_typed": "{Kere'tkun} is supposed to enter, and, taking his place on the lamp,"
+    },
+    "22": {
+      "text": "to wait for the sacrifice. He is represented by a small wooden"
+    },
+    "23": {
+      "text": "image (Fig. 279), which is put on the lamp, and remains there"
+    },
+    "24": {
+      "text": "till the end of the ceremonial. Opposite the lamp, on a small"
+    },
+    "25": {
+      "text": "patch of bare ground scraped clean for the purpose, a small fire, which has"
+    },
+    "26": {
+      "text": "a special name (“piˊntᴇ”), is built. This fire is supposed to be the place where",
+      "resolved": "piˊntᴇ = p, i, U+02CA (stress), n, t, U+1D07 (LATIN SMALL CAPITAL E)",
+      "note": "Native gloss 'piˊntɛ' (\"a small fire\") not found in lexicon (below the 2-page floor; lexicon lookup 'pi'nte'/'pintE' returned no matching key). Final letter read as small-capital E (U+1D07) at 4x, same x-height as surrounding lowercase but capital-E skeleton, per §2.3. Machine draft keyed a plain lowercase 'e' and no stress mark.",
+      "class": "doubt"
+    },
+    "27": {
+      "text": "51—JESUP NORTH PACIFIC EXPED., VOL. X.",
+      "note": "QuireMarksZone signature line. Machine draft keyed leading digit as capital 'I' and an en dash; raster shows arabic '51' and an unspaced em dash (§2.11 signature-line convention, §2.12 apparatus digits).",
+      "class": "draft"
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

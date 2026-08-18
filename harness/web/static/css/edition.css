@@ -626,12 +626,43 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
    the visible affordance. The underline on hover is what says it is live. */
 .run a.plain { color:inherit; text-decoration:none }
 .run a.plain:hover { text-decoration:underline }
-.run .toc-num { color:var(--dim) }
-.run .toc-l0 { margin-top:.5rem; font-weight:600 }
-.run .toc-l1 { margin-top:.4rem }
-.run .toc-l2 { padding-left:4.4rem }
-.run .toc-l3 { padding-left:5.6rem }
-.run .toc-l4 { padding-left:7.0rem }
+/* **The numeral hangs, so the titles line up.** Set inline it pushed each title
+   over by its own width — `I.` and `XXIII.` are four characters apart — so the
+   one column a contents page is made of was ragged down its whole length. Out in
+   a gutter of its own, right-aligned against the text, every title starts at the
+   same place whether it is numbered or not. The `li` is already `position:
+   relative` for the leaf mark, and this is the next gutter in from it. */
+.run .toc li { padding-left:6.9rem }
+.run .toc-num { position:absolute; left:2.9rem; width:3.6rem; text-align:right;
+  color:var(--dim); font-variant-numeric:tabular-nums }
+/* The depths, each a step in from the last. Relative to the title column, not to
+   the numeral's, so nesting reads as nesting and the numerals stay one rule.
+   **Qualified by `li`**, because the rule above it is: `.run .toc li` carries a
+   type selector and outranks a bare `.run .toc-l2`, which flattened all four
+   depths to the base indent — the class named the level and the cascade ignored
+   it. */
+.run .toc li.toc-l2 { padding-left:7.1rem }
+.run .toc li.toc-l3 { padding-left:8.3rem }
+.run .toc li.toc-l4 { padding-left:9.7rem }
+
+/* **Depth reads as scale, and not as the text's own dress.** Borrowing the page's
+   four levels wholesale — the caps, the small caps, the italic — put four
+   typefaces in one narrow column and made a contents page look like a ransom
+   note. What a reader needs here is only to see which rows are the big divisions,
+   and size and weight carry that on their own; the indent is already saying the
+   rest. */
+.run .toc-l0 { margin-top:.8rem; font-weight:600 }
+.run .toc-l1 { margin-top:.9rem; font-size:1.05rem; font-weight:600 }
+.run .toc-l2 { margin-top:.35rem }
+.run .toc-l3 { font-size:.92rem }
+.run .toc-l4 { font-size:.88rem; color:var(--dim); font-style: italic; }
+
+/* The illustration numbers hang the same way, but as an indent rather than a
+   fixed gutter: `Fig. 12.` and `Figs. 214, 215, 216.` are three times apart, so a
+   column wide enough for the longest would strand the 300 that are not. The
+   caption block is flush and wraps flush; a long number pushes its own first line
+   and nothing else. */
+.run .loi-title { padding-left:5.4rem; text-indent:-5.4rem }
 .run .loi-n { color:var(--dim) }
 .run .loi-plate .loi-n { font-variant:small-caps; letter-spacing:.02em }
 .run .authority { align-items:flex-start; padding-top:.5rem }

@@ -1,0 +1,159 @@
+{
+  "contamination": {
+    "blind": true
+  },
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "342"
+    },
+    "2": {
+      "text": "small skins, skulls, claws, and feathers of birds, are also used.¹ These charms",
+      "note": "Footnote marker keyed as the actual superscript sort ¹ (U+00B9), matching the raster; mz text had ASCII '!' — keying_spec.md §2.10.",
+      "class": "print"
+    },
+    "3": {
+      "text": "are supposed, in case of need, to turn into living animals, and to give"
+    },
+    "4": {
+      "text": "required help. In many tales the owner puts on the skin or the feather, and"
+    },
+    "5": {
+      "text": "turns temporarily into the animal or the bird from which"
+    },
+    "6": {
+      "text": "they were taken. In actual life this may be done"
+    },
+    "7": {
+      "text": "symbolically by means of an incantation."
+    },
+    "8": {
+      "text": "Rude human images made of wood (“wooden"
+    },
+    "9": {
+      "text": "spirits”), which represent the “guardians,” are worn on",
+      "note": "Closing quote after 'spirits' keyed curly (U+201D) per keying_spec.md §1/§5.6; mz text had an escaped straight quote.",
+      "class": "print"
+    },
+    "10": {
+      "text": "the necklace, hidden generally in a small leather pouch."
+    },
+    "11": {
+      "text": "They are fastened to the collar or to the back of the"
+    },
+    "12": {
+      "text": "dress of a new-born infant (Fig. 239). Rude"
+    },
+    "13": {
+      "text": "figures cut out of curried leather, and"
+    },
+    "14": {
+      "text": "similar in shape to the wooden crotches, are"
+    },
+    "15": {
+      "text": "fastened to the clothing in various places,"
+    },
+    "16": {
+      "text": "to the scabbard of the knife, to the walls"
+    },
+    "17": {
+      "text": "or ceiling of the sleeping-room, to the clothes-"
+    },
+    "18": {
+      "text": "bag, etc. They are called kiˊpur or kêproˊlhɪn.",
+      "resolved": "kiˊpur = k, i, U+02CA (stress), p, u, r; kêproˊlhɪn = k, ê (e + U+0302), p, r, o, U+02CA (stress), l, h, U+026A (small cap ɪ), n",
+      "note": "Two unglossed Tier-1 forms: raised marks read as stress U+02CA (never apostrophe, per §4/keying_spec closing paragraph); final vowel of kêproˊlhɪn is dotless with top/bottom serifs, read as small-cap ɪ U+026A per the -lhɪn suffix family (§5.1). No lexicon match at the two-page floor for either form (checked: ki'pur, kepro'lhin) — read from raster, flagged as doubt on the ɪ/i call.",
+      "class": "doubt"
+    },
+    "19": {
+      "text": "When adorned with beads, they form a"
+    },
+    "20": {
+      "text": "conspicuous ornament (Fig. 240). Sometimes"
+    },
+    "21": {
+      "text": "an image like this is painted or sewed on"
+    },
+    "22": {
+      "text": "the walls of the sleeping-room, painted on"
+    },
+    "23": {
+      "text": "the boats on both sides, near the bow, or"
+    },
+    "24": {
+      "text": "pricked with a fine needle into a person’s"
+    },
+    "25": {
+      "text": "cheeks, forehead, or arms."
+    },
+    "26": {
+      "text": "In an underground house in Nuˊnlig̣ren I",
+      "note": "Toponym looked up via lexicon lookup: key Nu'nlig.ren -> Nuˊnlig̣ren, attested 1-051, 1-233, 1-234, 2-028. Zoomed 4x and confirmed the dot below g on this page's own setting.",
+      "class": "semantic",
+      "as_typed": "In an underground house in {Nu'nlig.ren} I"
+    },
+    "27": {
+      "text": "saw two human faces roughly scratched on"
+    },
+    "28": {
+      "text": "top of one of the whalebone uprights near"
+    },
+    "29": {
+      "text": "the entrance. The owner of the house called"
+    },
+    "30": {
+      "text": "them also “guardians,” and, while showing"
+    },
+    "31": {
+      "text": "me the house, offered a sacrifice of tallow"
+    },
+    "32": {
+      "text": "and tobacco to them. Faces of similar char-"
+    },
+    "33": {
+      "text": "acter were also found scratched on the top"
+    },
+    "34": {
+      "text": "of the ladder-tree in a Koryak winter house."
+    },
+    "35": {
+      "text": "On the face or hands of a sick person a"
+    },
+    "36": {
+      "text": "figure like Fig. 241 is tattooed to provide"
+    },
+    "37": {
+      "text": "Fig. 240."
+    },
+    "38": {
+      "text": "Fig. 239."
+    },
+    "39": {
+      "text": "the sick one with a new “assistant.” This is",
+      "note": "Closing quote after 'assistant.' keyed curly (U+201D) per keying_spec.md §1/§5.6; mz text had an escaped straight quote.",
+      "class": "print"
+    },
+    "40": {
+      "text": "done especially in nervous diseases. In"
+    },
+    "41": {
+      "text": "other maladies the aching limbs are tattooed."
+    },
+    "42": {
+      "text": "Tattooing is also resorted to by murderers,"
+    },
+    "43": {
+      "text": "who will mark signs of this kind on their shoulders, hoping by this means"
+    },
+    "44": {
+      "text": "¹ Skins of smali birds and animals are also in use as amulets among the American Eskimo. Compare",
+      "note": "Footnote opener keyed with the superscript ¹ (U+00B9), matching the body marker on line 2 (§2.10). 'smali' is the compositor's own error for 'small' (dotted i clearly distinct from the doubled l at 4x) — keyed as printed per §2.14, a letter error rather than a mark.",
+      "class": "print"
+    },
+    "45": {
+      "text": "Boas, Baffin-Land Eskimo, p. 137."
+    }
+  }
+}

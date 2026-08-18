@@ -1,0 +1,267 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-2-097.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-2-097.png; regions_from: zones/chukchi-2-097.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+                <TextBlock ID="mz_2-097_r1" HPOS="440" VPOS="454" WIDTH="1776" HEIGHT="86" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="440 454 2216 454 2216 540 440 540"/>
+                    </Shape>
+                    <TextLine ID="mz_2-097_l1" HPOS="1018" VPOS="470" WIDTH="617" HEIGHT="50" BASELINE="1018 503 1635 503" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1625 470 1028 470 1018 479 1018 503 1018 520 1635 520 1635 503 1635 475 1625 470"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-097_l2" HPOS="2117" VPOS="471" WIDTH="94" HEIGHT="55" BASELINE="2119 511 2211 507" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2175 471 2156 471 2136 471 2117 477 2119 511 2119 526 2209 524 2211 507 2209 475 2193 471 2175 471"/>
+                        </Shape>
+                        <String CONTENT="369"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-097_r2" HPOS="440" VPOS="564" WIDTH="1776" HEIGHT="540" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="440 564 2216 564 2216 1104 440 1104"/>
+                    </Shape>
+                    <TextLine ID="mz_2-097_l3" HPOS="436" VPOS="567" WIDTH="1777" HEIGHT="67" BASELINE="438 612 2213 609" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="710 571 701 571 685 583 520 583 491 577 475 577 456 577 440 577 436 579 438 612 438 624 1128 634 1130 634 1327 622 1846 632 1848 632 1913 622 2017 632 2019 632 2021 632 2052 622 2083 632 2085 632 2087 632 2089 632 2091 632 2105 622 2191 632 2193 632 2195 632 2197 632 2213 620 2213 609 2209 581 2011 581 1976 567 1974 567 1911 567 1909 567 1907 567 1905 567 1886 581 1780 581 1760 567 1758 567 1756 567 1754 567 1752 567 1719 579 1662 567 1660 567 1562 579 1545 567 1543 567 1541 567 1539 567 1494 577 1457 567 1455 567 1453 567 1451 567 1417 577 1325 567 1323 567 1322 567 1296 581 1253 569 1251 569 1249 569 1247 569 1210 581 1171 569 1169 569 1167 569 1165 569 1132 581 1006 569 1004 569 1002 569 977 583 902 583 846 569 844 569 842 569 840 569 822 583 755 583 718 571 710 571"/>
+                        </Shape>
+                        <String CONTENT="the camp, in a line pointing in the “direction” of the dawn. When a new"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-097_l4" HPOS="438" VPOS="628" WIDTH="1775" HEIGHT="65" BASELINE="438 667 2213 671" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="438 667 438 683 1257 683 1355 693 1357 693 2211 683 2213 671 2213 640 2195 630 2193 630 2191 630 1948 630 1946 630 1944 630 1942 630 1927 642 1725 642 1707 630 1705 630 1703 630 1701 630 1700 630 1668 640 1627 630 1625 630 1623 630 1621 630 1592 640 1347 630 1345 630 1224 638 1190 628 1188 628 1186 628 1184 628 1149 638 1120 628 1118 628 1116 628 1065 638 998 628 996 628 944 640 853 640 838 628 836 628 834 628 832 628 830 628 804 638 689 628 687 628 685 628 660 638 546 628 544 628 438 636 438 667"/>
+                        </Shape>
+                        <String CONTENT="residence is to be made, all the antlers except the largest are left behind."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-097_l5" HPOS="440" VPOS="689" WIDTH="1771" HEIGHT="55" BASELINE="442 728 2211 732" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="442 728 440 740 2207 744 2211 732 2209 703 2115 691 2113 691 2032 701 2005 691 2003 691 2001 691 1842 701 1827 691 1825 691 1823 691 1729 691 1727 691 1725 691 1692 701 1645 691 1643 691 1641 691 1639 691 1621 703 1337 703 1243 689 1241 689 1096 699 1041 689 1039 689 1038 689 1004 699 442 691 442 728"/>
+                        </Shape>
+                        <String CONTENT="Those are taken away to be used for monuments to the dead. A set of large"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-097_l6" HPOS="440" VPOS="761" WIDTH="1771" HEIGHT="45" BASELINE="440 791 2211 791" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="440 791 440 806 2211 806 2211 791 2211 761 440 761 440 791"/>
+                        </Shape>
+                        <String CONTENT="antlers is sometimes attached to the end of a long pole made fast in the ground."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-097_l7" HPOS="442" VPOS="806" WIDTH="1769" HEIGHT="59" BASELINE="444 851 2211 847" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="444 851 444 865 2209 865 2211 847 2209 820 2172 806 2170 806 2168 806 2109 820 2019 820 1999 806 1997 806 1995 806 1993 806 1991 806 1964 820 1770 820 1752 806 1750 806 1748 806 1684 806 1682 806 1680 806 1678 806 1660 818 1521 806 1519 806 1517 806 1488 818 1441 806 1439 806 1437 806 1435 806 1433 806 1414 818 1363 810 1361 810 1294 820 1271 808 1269 808 1192 808 1190 808 1188 808 1163 820 1137 808 1135 808 1133 808 1038 822 850 822 830 808 828 808 826 808 644 808 642 808 640 808 638 808 622 820 597 808 595 808 593 808 591 808 556 820 528 808 526 808 524 808 442 810 444 851"/>
+                        </Shape>
+                        <String CONTENT="This is intended as a special offering to the Upper Being or to the zenith."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-097_l8" HPOS="442" VPOS="869" WIDTH="1769" HEIGHT="55" BASELINE="442 908 2211 908" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="442 908 442 922 2207 924 2211 908 2209 881 2138 869 2136 869 2134 869 2101 881 1993 881 1976 869 1974 869 1972 869 1970 869 1968 869 1936 881 1841 881 1825 869 1823 869 1821 869 1819 869 1713 879 1594 869 1592 869 1590 869 1562 879 1517 869 1515 869 1513 869 1480 879 1382 869 1267 869 1265 869 1263 869 1261 869 1247 879 1212 869 1210 869 1208 869 1206 869 1177 879 1139 869 1137 869 1135 869 1085 879 1047 869 1045 869 1043 869 957 879 910 869 908 869 822 879 801 869 799 869 797 869 795 869 761 879 442 873 442 908"/>
+                        </Shape>
+                        <String CONTENT="The antlers of wild reindeer-bucks killed on the hunt, which are larger than"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-097_l9" HPOS="438" VPOS="926" WIDTH="1773" HEIGHT="59" BASELINE="440 971 2211 967" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="440 971 440 985 2209 983 2211 967 2205 930 1995 936 1970 926 1968 926 1966 926 1964 926 1936 936 1878 926 1876 926 1831 936 1809 926 1807 926 1805 926 1745 936 1686 926 1684 926 1682 926 1660 938 1553 938 1521 926 1519 926 1517 926 1515 926 1513 926 1500 936 1474 926 1472 926 1470 926 1468 926 1439 936 1367 926 1365 926 1363 926 1318 940 1143 940 1112 928 1110 928 1108 928 1106 928 1081 938 1034 928 1032 928 965 938 951 928 949 928 947 928 818 928 816 928 763 938 626 928 624 928 560 938 462 928 460 928 458 928 456 928 438 938 440 971"/>
+                        </Shape>
+                        <String CONTENT="those of domesticated animals, are preferred for marking burial-places. All"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-097_l10" HPOS="438" VPOS="987" WIDTH="1773" HEIGHT="58" BASELINE="440 1032 2211 1028" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="440 1032 440 1045 2209 1043 2211 1028 2207 998 2160 987 2158 987 2156 987 2134 996 1831 987 1829 987 1827 987 1825 987 1809 998 1562 998 1527 987 1525 987 1523 987 1521 987 1494 996 1406 987 1404 987 1353 996 1327 987 1325 987 1323 987 1322 987 1294 998 1257 988 1255 988 1253 988 1251 988 1214 998 1177 988 1175 988 1173 988 1171 988 1132 998 1077 988 1075 988 893 998 755 988 754 988 695 998 614 988 613 988 517 998 462 988 460 988 458 988 456 988 438 996 440 1032"/>
+                        </Shape>
+                        <String CONTENT="the antlers of domesticated animals slaughtered on ceremonial days must be"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-097_l11" HPOS="440" VPOS="1045" WIDTH="944" HEIGHT="67" BASELINE="442 1090 1384 1086" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="442 1090 442 1112 1382 1104 1384 1086 1382 1057 1365 1045 1363 1045 1361 1045 1359 1045 1357 1045 1355 1045 1335 1059 1196 1059 1177 1045 1175 1045 1173 1045 1171 1045 1169 1045 1167 1045 1149 1059 1067 1059 1041 1045 1039 1045 1038 1045 897 1059 881 1047 879 1047 877 1047 875 1047 873 1047 844 1061 773 1061 761 1049 761 1047 759 1047 757 1047 755 1047 754 1047 708 1059 685 1047 683 1047 681 1047 679 1047 658 1057 636 1047 634 1047 632 1047 573 1059 560 1047 558 1047 556 1047 554 1047 552 1047 528 1059 513 1047 511 1047 509 1047 507 1047 440 1055 442 1090"/>
+                        </Shape>
+                        <String CONTENT="left behind when the residence is moved."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-097_r3" HPOS="440" VPOS="1104" WIDTH="1776" HEIGHT="79" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="440 1104 2216 1104 2216 1183 440 1183"/>
+                    </Shape>
+                    <TextLine ID="mz_2-097_l12" HPOS="550" VPOS="1106" WIDTH="1661" HEIGHT="63" BASELINE="552 1151 2211 1147" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="552 1151 552 1169 2209 1165 2211 1147 2207 1118 2142 1106 2140 1106 2138 1106 2115 1116 2062 1106 2060 1106 2058 1106 2029 1118 1870 1118 1854 1106 1852 1106 1850 1106 1848 1106 1846 1106 1811 1118 1723 1118 1709 1106 1707 1106 1705 1106 1703 1106 1701 1106 1674 1116 1662 1106 1660 1106 1658 1106 1656 1106 1654 1106 1625 1116 1474 1106 1472 1106 1378 1118 1349 1108 1347 1108 1345 1108 1343 1108 1318 1118 1302 1108 1300 1108 1298 1108 1296 1108 1241 1118 1128 1108 1126 1108 1022 1118 992 1108 991 1108 989 1108 550 1112 552 1151"/>
+                        </Shape>
+                        <String CONTENT="Besides slaughtered reindeer and dogs, the Chukchee offer several other"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-097_r4" HPOS="440" VPOS="2052" WIDTH="1776" HEIGHT="846" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="440 2052 2216 2052 2216 2898 440 2898"/>
+                    </Shape>
+                    <TextLine ID="mz_2-097_l13" HPOS="440" VPOS="2066" WIDTH="1312" HEIGHT="49" BASELINE="440 2099 1752 2099" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="440 2099 440 2115 1752 2115 1752 2099 1750 2066 440 2066 440 2099"/>
+                        </Shape>
+                        <String CONTENT="kinds of sacrifice to the “spirits.” First among these should"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-097_l14" HPOS="438" VPOS="2124" WIDTH="1314" HEIGHT="49" BASELINE="440 2160 1752 2156" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="440 2160 440 2173 1750 2169 1752 2156 1747 2124 438 2126 440 2160"/>
+                        </Shape>
+                        <String CONTENT="be mentioned the “substitute” offerings, which are small"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-097_l15" HPOS="438" VPOS="2175" WIDTH="1314" HEIGHT="61" BASELINE="440 2222 1752 2214" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="440 2222 440 2236 1750 2230 1752 2214 1747 2183 1486 2185 1439 2175 1437 2175 1435 2175 1433 2175 1414 2187 1276 2177 1275 2177 1273 2177 1271 2177 1271 2179 1261 2189 1192 2189 1165 2177 1163 2177 1161 2177 1159 2177 1157 2177 1157 2179 1147 2187 985 2179 983 2179 981 2179 979 2179 969 2189 936 2179 934 2179 932 2179 869 2189 767 2179 765 2179 595 2191 450 2181 448 2181 446 2181 444 2181 444 2183 442 2183 438 2185 440 2222"/>
+                        </Shape>
+                        <String CONTENT="figures shaped like reindeer, and made of tallow, pounded"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-097_l16" HPOS="438" VPOS="2238" WIDTH="1307" HEIGHT="57" BASELINE="440 2279 1745 2277" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="440 2279 440 2295 1743 2295 1745 2277 1743 2250 1705 2238 1703 2238 1701 2238 1627 2248 1137 2238 1135 2238 1133 2238 1132 2238 1120 2250 987 2250 816 2238 814 2238 771 2248 761 2240 761 2238 759 2238 757 2238 677 2238 675 2238 438 2250 440 2279"/>
+                        </Shape>
+                        <String CONTENT="meat, crushed willow-leaves, edible plants and roots (Fig."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-097_l17" HPOS="440" VPOS="2297" WIDTH="1312" HEIGHT="68" BASELINE="442 2342 1752 2334" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="442 2342 442 2355 607 2365 609 2365 611 2365 613 2365 624 2353 918 2353 949 2363 951 2363 953 2363 955 2363 957 2363 973 2353 1022 2363 1024 2363 1026 2363 1028 2363 1041 2353 1204 2361 1206 2361 1259 2351 1271 2361 1273 2361 1275 2361 1276 2361 1750 2348 1752 2334 1748 2301 1374 2297 1372 2297 1318 2306 1263 2297 1261 2297 1212 2306 1180 2297 1179 2297 1177 2297 1130 2306 1098 2297 1096 2297 1094 2297 1092 2297 1090 2297 1075 2308 938 2299 936 2299 934 2299 932 2299 920 2310 607 2310 577 2301 575 2301 573 2301 571 2301 530 2310 487 2301 485 2301 483 2301 481 2301 440 2312 442 2342"/>
+                        </Shape>
+                        <String CONTENT="263, a), or even snow (Fig. 263, b). The fœtuses extracted"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-097_l18" HPOS="438" VPOS="2359" WIDTH="1314" HEIGHT="53" BASELINE="440 2398 1752 2395" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="440 2398 440 2412 1752 2408 1752 2395 1748 2367 450 2359 448 2359 446 2359 444 2359 444 2361 438 2365 440 2398"/>
+                        </Shape>
+                        <String CONTENT="from the slaughtered reindeer-dams are used for the same"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-097_l19" HPOS="438" VPOS="2418" WIDTH="1312" HEIGHT="61" BASELINE="440 2461 1750 2453" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="440 2461 440 2479 1748 2467 1750 2453 1747 2428 1421 2418 1419 2418 1051 2430 840 2422 838 2422 763 2432 507 2424 505 2424 438 2434 440 2461"/>
+                        </Shape>
+                        <String CONTENT="purpose, and a few are sometimes stored away for the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-097_l20" HPOS="438" VPOS="2475" WIDTH="1312" HEIGHT="63" BASELINE="440 2522 1750 2514" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="440 2522 440 2538 1748 2528 1750 2514 1748 2487 1705 2475 1703 2475 1701 2475 1700 2475 1676 2485 1619 2475 1617 2475 1615 2475 1613 2475 1602 2487 1294 2487 1267 2477 1265 2477 1263 2477 1086 2489 1061 2479 1059 2479 1057 2479 936 2489 924 2479 922 2479 920 2479 814 2479 812 2479 438 2492 440 2522"/>
+                        </Shape>
+                        <String CONTENT="greater ceremonials.¹ Kidneys, and sausages made by"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-097_l21" HPOS="440" VPOS="2536" WIDTH="1310" HEIGHT="56" BASELINE="442 2581 1750 2575" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="442 2581 442 2592 1748 2588 1750 2575 1748 2545 1731 2536 1729 2536 1727 2536 1725 2536 1723 2536 1700 2545 1547 2536 1545 2536 1543 2536 1521 2547 1349 2547 1316 2536 1314 2536 1312 2536 1310 2536 1308 2536 1294 2547 1276 2538 1275 2538 1273 2538 1216 2547 904 2539 902 2539 900 2539 873 2549 844 2539 842 2539 840 2539 683 2549 648 2539 646 2539 644 2539 642 2539 607 2549 473 2539 472 2539 470 2539 440 2549 442 2581"/>
+                        </Shape>
+                        <String CONTENT="stuffing the third stomach of a reindeer, are also used."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-097_l22" HPOS="440" VPOS="2596" WIDTH="1308" HEIGHT="59" BASELINE="442 2639 1748 2635" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="442 2639 442 2653 1745 2655 1748 2635 1743 2604 1284 2606 1255 2596 1253 2596 1251 2596 1249 2596 1226 2606 1073 2598 1071 2598 1022 2608 989 2598 987 2598 985 2598 983 2598 981 2598 969 2610 879 2610 840 2598 838 2598 836 2598 834 2598 832 2598 814 2610 636 2610 581 2598 579 2598 505 2608 450 2598 448 2598 446 2598 444 2598 444 2600 442 2600 440 2600 442 2639"/>
+                        </Shape>
+                        <String CONTENT="Sometimes a small wooden image of a sausage (Fig. 264)"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-097_l23" HPOS="438" VPOS="2653" WIDTH="1312" HEIGHT="61" BASELINE="440 2702 1750 2694" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="440 2702 440 2714 1748 2708 1750 2694 1748 2667 1703 2653 1701 2653 1700 2653 1698 2653 1672 2667 1605 2667 1584 2653 1582 2653 1580 2653 1578 2653 1486 2665 1421 2653 1419 2653 1417 2653 1376 2667 1243 2655 1241 2655 1239 2655 1237 2655 1218 2667 816 2657 814 2657 812 2657 765 2671 742 2659 740 2659 738 2659 438 2667 440 2702"/>
+                        </Shape>
+                        <String CONTENT="is considered sufficient for the sacrifice. This makes the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-097_l24" HPOS="438" VPOS="2716" WIDTH="1312" HEIGHT="57" BASELINE="440 2759 1750 2755" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="440 2759 440 2773 1748 2769 1750 2755 1747 2727 1429 2716 1427 2716 1314 2726 1286 2716 1284 2716 1282 2716 1280 2716 1278 2716 1269 2726 1233 2716 1231 2716 1229 2716 1227 2716 1200 2726 924 2718 922 2718 857 2727 793 2718 791 2718 789 2718 767 2727 732 2718 730 2718 728 2718 661 2727 556 2718 554 2718 552 2718 520 2727 491 2718 489 2718 487 2718 485 2718 438 2729 440 2759"/>
+                        </Shape>
+                        <String CONTENT="substitution double. Each is regarded as taking the place"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-097_l25" HPOS="438" VPOS="2774" WIDTH="1312" HEIGHT="67" BASELINE="440 2820 1750 2812" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="440 2820 440 2831 634 2841 636 2841 691 2831 730 2841 732 2841 734 2841 871 2829 934 2839 936 2839 1116 2837 1118 2837 1120 2837 1132 2827 1269 2839 1271 2841 1372 2841 1372 2839 1374 2839 1376 2839 1392 2827 1453 2835 1455 2835 1457 2835 1459 2835 1459 2833 1468 2825 1590 2837 1592 2837 1748 2827 1750 2812 1748 2786 1723 2774 1721 2774 1719 2774 1717 2774 1696 2784 1541 2774 1539 2774 1537 2774 1535 2774 1523 2784 1041 2778 1039 2778 977 2788 963 2778 961 2778 959 2778 957 2778 877 2788 789 2778 787 2778 697 2790 671 2780 669 2780 667 2780 515 2790 479 2780 477 2780 475 2780 473 2780 438 2792 440 2820"/>
+                        </Shape>
+                        <String CONTENT="of a real reindeer: therefore a sausage or a kidney is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-097_l26" HPOS="440" VPOS="2835" WIDTH="1279" HEIGHT="59" BASELINE="442 2878 1719 2874" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="442 2878 442 2894 1717 2890 1719 2874 1715 2847 1649 2835 1647 2835 1645 2835 1611 2845 1363 2835 1361 2835 1359 2835 1357 2835 1341 2847 1063 2847 1028 2837 1026 2837 1024 2837 967 2847 953 2837 951 2837 949 2837 947 2837 945 2837 924 2847 804 2837 802 2837 757 2847 728 2837 726 2837 724 2837 722 2837 691 2847 640 2837 638 2837 552 2847 479 2837 477 2837 475 2837 440 2849 442 2878"/>
+                        </Shape>
+                        <String CONTENT="often stabbed with a knife to represent the slaughtering."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-097_r5" HPOS="440" VPOS="2898" WIDTH="1776" HEIGHT="63" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="440 2898 2216 2898 2216 2961 440 2961"/>
+                    </Shape>
+                    <TextLine ID="mz_2-097_l27" HPOS="544" VPOS="2892" WIDTH="1663" HEIGHT="61" BASELINE="546 2937 2207 2933" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="546 2937 546 2953 2207 2947 2207 2933 2205 2902 2189 2892 2187 2892 2185 2892 2183 2892 2181 2892 2150 2902 2007 2892 2005 2892 1925 2902 1899 2892 1897 2892 1895 2892 1833 2902 1784 2892 1782 2892 1780 2892 1778 2892 1764 2902 1739 2892 1737 2892 1735 2892 1733 2892 1709 2902 1682 2892 1680 2892 1678 2892 1676 2892 1637 2902 1564 2892 1562 2892 1560 2892 1539 2902 1527 2892 1525 2892 1523 2892 1416 2892 1414 2892 1412 2892 1370 2904 875 2894 873 2894 871 2894 850 2906 695 2906 669 2894 667 2894 665 2894 663 2894 620 2904 558 2894 556 2894 554 2894 552 2894 544 2900 546 2937"/>
+                        </Shape>
+                        <String CONTENT="Blood-soup, which is the favorite sacrificial dish, is believed to be much"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-097_r6" HPOS="440" VPOS="2992" WIDTH="1776" HEIGHT="110" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="440 2992 2216 2992 2216 3102 440 3102"/>
+                    </Shape>
+                    <TextLine ID="mz_2-097_l28" HPOS="548" VPOS="2998" WIDTH="1655" HEIGHT="53" BASELINE="550 3031 2203 3021" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="550 3031 550 3051 2201 3043 2203 3021 2197 2998 548 3006 550 3031"/>
+                        </Shape>
+                        <String CONTENT="¹ Substitution of the fœtus, or of small figures of reindeer, for real animals, obtains also among the Koryak"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-097_l29" HPOS="434" VPOS="3045" WIDTH="727" HEIGHT="49" BASELINE="436 3076 1161 3072" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="436 3076 436 3094 1159 3090 1161 3072 1155 3045 434 3047 436 3076"/>
+                        </Shape>
+                        <String CONTENT="(see Vol. VI, Jochelson, The Koryak, p. 96)."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

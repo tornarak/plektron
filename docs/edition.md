@@ -450,6 +450,52 @@ candidate -->` comment in the generated page and a row in `tei context` — beca
 a suggestion a reader disposes of is the point. What is refused is the *silent*
 link.
 
+### The compositor's hyphen is not the word's, and the position says which
+
+`join_broken_words` rejoins a word the printer broke and keeps the hyphen it
+broke across, so `Chuk-` / `chee` arrives as `Chuk-chee` — a spelling the store
+does not have. `match` still finds the entity, through a dehyphenated lookup,
+and for a long time it refused to link one on the ground that **nothing can tell
+that hyphen from the word's own**.
+
+Nothing had looked at *where the hyphen was*. The compositor's is the last thing
+before the measure ran out; the word's own is anywhere else in the line. The
+ALTO had that all along and the generator was throwing it away — asserting an
+ambiguity rather than an evidence problem, which is the failure this project
+names most often and is least good at seeing in itself.
+
+Measured over the 325 generated pages the claim was not merely weak, it was
+empty: **54 candidates, and not one sat anywhere but a line end** — `Rus-sians`,
+`Kam-chatka`, `Chukchee Penin-sula`, `Asiatic Es-kimo`, `Ameri-can Eskimo`.
+Every one was a reader's question with a single mechanical answer, put 54 times.
+Clearing it wrote 31 links by rule and left 4 candidates, which are the forms
+that were ambiguous for their own reasons all along (`Rein-deer people`,
+`Rus-sianized natives`) and now ask about that instead of about the hyphen.
+
+`entities._explained_by_break` is the one definition, because **six call sites
+read this field** and the rule has to hold across all of them or the placer and
+the re-deriver disagree. It is deliberately caller-dependent in one direction
+only: it reads the page as the generator joins a block, printed line breaks
+intact, and a caller that has flattened them gets `False` — the conservative
+answer, and the one every hit got before the test existed. `occurrences` was
+exactly that caller, collapsing the body to a single line before matching, and
+so reported as an open hyphen question the same word the generator had linked.
+Two rules agreeing on a page neither could see is what the single definition is
+for.
+
+**The genuinely undecidable case never reaches it.** A word carrying its own
+hyphen that also broke there — `Sredne-` / `Kolymsk` — comes back from the join
+spelled exactly as the store spells it, so the exact form matches and the
+dehyphenated lookup is never consulted. What stays a question is a hyphen the
+store lacks sitting *mid-line*, where the measure does not account for it: either
+the page really sets it, or the lines are out of reading order and the join never
+saw the break, which is a defect in `gt/zones/`. The comment says both.
+
+This is scoped to entity forms in English prose and does not reach Tier-1 (see
+"A form broken across a printed line has no handle, and so no link"): there the
+hyphens are the notation's own throughout, position separates nothing, and the
+firewall forbids a rule to originate the reading regardless.
+
 ### `auto: once`, and the third state the column needed
 
 The column has three values, not two: `yes` links every occurrence, `no` links

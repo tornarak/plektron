@@ -256,6 +256,37 @@ not a rule anyone could have written: `2-016` and `2-019` each had a plain Engli
 The four that missed contrasted against a word they named but did not render beside
 it. That is a fact about how the crop was framed, not about what the reader knew.
 
+**2026-08-18 reproduced it at scale and then isolated the variable.** Two batches —
+`2-064`..`2-086` (twenty pages) and `2-087`..`2-095` (nine) — dropped the mark nine
+times: five on `2-067` alone, then `g̣eluˊᵋlqᴀʟ̣in` (`2-071`), `tuˊmg̣ɪ` (`2-075`),
+`oraˊwêʟ̣an` (`2-082`, the small-cap `ʟ̣` rather than `g̣`, but the same dot-below
+sort) and `vaˊɪrg̣ɪt` (`2-094`). Eight of the first batch's thirteen edits were this
+one class, and **nothing else recurred at all**.
+
+`2-094` is the useful one, because there the variable was isolated on a single page.
+Its reader zoomed the word alone at 4× and reported the `g` "clearly carries no dot
+below". The coordinator's first crop — same line, also alone, also 4× — could not
+separate the ink under the bowl from the bowl. A second crop naming one extra point,
+`2@85 3@5`, put the `g` of "graphite" from the next line into the same sheet, and the
+contrast was immediate: "graphite" closes clean, `vaˊɪrg̣ɪt` carries a detached blob
+beneath. Same page, same ink, same scale, same recognizer output. The only difference
+was what else was in frame.
+
+So it is now writable as a procedure rather than as an observation about luck: **when
+a line's disposition turns on a dot below, name a second point on a neighbouring line
+carrying a plain English `g`.** It costs one extra point in a call the reader is
+making anyway, `zoom` packs both into one sheet, and it converts an absence — which
+§5.1 says is not observable in isolation — into a comparison. `2-067`'s five and
+`2-088`'s `vaˊɪrg̣ɪn` all read correctly this way, against "guardian", "travelling",
+"genuine" and "Dots".
+
+`2-094` also shows what a reader owes the pass when it cannot see the mark. That one
+did everything right except see it: kept the page's spelling, refused the ratified
+handle, flagged the line `doubt`. So `conflict` caught it without a scan — six rows on
+one fold, the batch's `vaˊɪrgɪt` against five store attestations of `vaˊɪrg̣ɪt`
+(`2-016`, `2-029`, `2-033`, `2-040`, `2-049`). A reader that had harmonized to the
+handle instead would have produced the same text with no row to find it by.
+
 So the check belongs here rather than in the prompt, because **the instrument that
 actually catches this is one no reader can run**: `harness proposal marks` over the
 whole batch pooled. Its `rare` arm names every bare-`g` occurrence and its `conflict`
@@ -442,6 +473,45 @@ its own row; the gap between dispatch and your reading of the result includes
 however long the session sat idle, and reporting that as a stall blames a reader
 for a coffee break.
 
+### What the batch cost, as against what it was made of
+
+`usage` answers *did the prefix hold*. **`agents transcript --cohort cN` is what
+answers *what did it cost*,** because it carries the per-request columns the
+summary folds away: `via` says whether a request was served from cache (`read`,
+free) or had to be written (`write`), **`write` is the paid input**, and **`out` is
+that request's output**. Sum those two columns across a cohort and that is the
+whole bill — there is no third thing.
+
+**Do not derive it from the `usage` totals instead.** `ALL - saved` reads like
+"gross minus what the cache absorbed" and is neither: `saved` is *only* the shared
+prefix the warm siblings read rather than wrote, while every request after the
+first also reads its whole accumulated context from cache and writes just the
+increment. Chapter XIV came out 1.27M input that way against 1,696,312 measured —
+a third low, from two columns whose definitions the arithmetic had not checked.
+The summary is not a coarser version of the transcript; it is answering a
+different question.
+
+On a subscription **cache reads are free** — the API charges 10% for them — and
+**output is weighted 5x input**, so the bill is `write x in_rate + out x
+out_rate`. Chapter XIV, 45 pages over two cohorts: 1,696,312 written against
+457,901 out, which came to well under 1% of a Max 5x month.
+
+**Output was 57% of that cost, against an `opening` share of 70% of the
+context**, and the two numbers answer different questions. Free reads mean prompt
+size barely touches the bill; what the readers *wrote* is the money. So item 5
+above — spend effort on the prompt once `opening` passes two-thirds — is advice
+about context, and it is exactly right for anyone paying API rates, where the
+opening is charged once per reader. On a subscription it is not where the money
+is, and the two cases want opposite economies.
+
+**A per-page figure is a measurement and never a target.** Inside this one chapter
+readers ran from ~76k tokens (sixteen lines, no Tier-1) to ~131k (dense, two
+disputed dots), and a vocabulary or interlinear section will sit outside that
+range altogether. Compare a batch against the previous cohort's row, as the five
+items above say; a page that cost more because it was harder is the pass working.
+Economizing against a remembered number is how a reader stops paying for the crop
+that would have caught the error.
+
 ## What to ask for back
 
 The page's character (kind of page, running title, folio, footnotes, figures), the
@@ -521,5 +591,9 @@ was restating the ref four times over to say things derivable from it.
     to estimate. Every crop also runs well past its line's box, so a folio whose
     box strangles it still comes back whole: read it off the composite or a sheet
     and spend nothing on it.
+
+    Keyed on the pages just before this one, most-keyed first — reference, not a
+    prediction about your page. What it is for is in your standing instructions:
+    {nearby}
 
 <!-- prompt:end -->

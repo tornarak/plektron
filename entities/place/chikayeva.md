@@ -10,6 +10,7 @@
 |---|---|---|---|
 | Chikayeva | | yes | |
 | Chikayevo | | yes | sic. (on the same page) |
+| Chikaˊyeva | ckt | yes | 2-124. the borrowed name given back in Bogoras's notation |
 
 ## gloss
 

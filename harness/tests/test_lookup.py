@@ -522,3 +522,149 @@ def test_a_clean_handled_line_gates_nothing(tmp_path):
         {"lines": {"1": {"text": nfd("Kuluˊči"), "as_typed": "{Kulu'c^i}"}}},
         ensure_ascii=False, indent=2), encoding="utf-8")
     assert not [i for i in check(p, root=REPO) if i["severity"] == "defect"]
+
+
+# ---------------------------------- the neighbourhood a reader is shown up front
+
+def _store(tmp_path: Path, *refs: str) -> Path:
+    """A root holding only the named ground-truth pages.
+
+    Built rather than borrowed, so the window under test is one these tests state
+    rather than one `gt/ocr/` happens to contain today. Deliberately **no `scans/`**:
+    the window is arithmetic on the ref, and a root with no derived tree in it is
+    what pins that — `build` calls this on every dispatch, and a prompt that could
+    not be rendered in a fresh clone would be a dependency nobody asked for.
+    """
+    root = tmp_path / "store"
+    (root / "gt" / "ocr").mkdir(parents=True)
+    (root / "data").mkdir()
+    (root / "data" / "marks_config.json").write_text(
+        (REPO / "data" / "marks_config.json").read_text(encoding="utf-8"),
+        encoding="utf-8")
+    for ref in refs:
+        src = REPO / "gt" / "ocr" / f"chukchi-{ref}.xml"
+        if src.exists():
+            (root / "gt" / "ocr" / src.name).write_text(
+                src.read_text(encoding="utf-8"), encoding="utf-8")
+    return root
+
+
+def test_the_span_is_the_pages_before_and_nothing_after(tmp_path):
+    """A reader is shown what has been adjudicated, which by construction is behind
+    it. Reading forward would offer a page nobody has been through."""
+    from harness.lookup import nearby
+    root = _store(tmp_path, "1-051", "1-052", "1-053")
+    # `most` raised past the cap throughout: these tests are about the window, and a
+    # form absent because it ranked 16th would pass them for the wrong reason.
+    forms = {r["form"] for r in nearby("1-053", root, span=5, most=999)}
+    assert nfd("Nuˊnlig̣ren") in forms
+    # …and 1-051 is the page itself for its own call, so it offers nothing of its own.
+    assert nfd("Nuˊnlig̣ren") not in {
+        r["form"] for r in nearby("1-051", root, span=5, most=999)}
+
+
+def test_the_span_is_a_window_not_the_corpus(tmp_path):
+    """The point is what this stretch of the book has been talking about. A form two
+    pages outside the window is not news about the neighbourhood."""
+    from harness.lookup import nearby
+    root = _store(tmp_path, "1-051", "1-052", "1-053", "1-054")
+    assert nfd("Nuˊnlig̣ren") in {
+        r["form"] for r in nearby("1-054", root, span=3, most=999)}
+    assert nfd("Nuˊnlig̣ren") not in {
+        r["form"] for r in nearby("1-054", root, span=2, most=999)}
+
+
+def test_a_word_the_book_sets_two_ways_is_shown_as_both_and_keyed_as_neither(tmp_path):
+    """`Čeˊwɪn` (1-042) / `Čeˊwin` (1-052) is a ruled disagreement.
+
+    Refusing to *pick* a side is not a reason to conceal that there are two: a reader
+    shown nothing would read its own page as though the word were settled. So the
+    pair is shown, adjacent, and neither row carries a key — the block reports the
+    ambiguity and still cannot be what resolves it.
+    """
+    from harness.lookup import nearby
+    root = _store(tmp_path, "1-042", "1-052", "1-053")
+    rows = nearby("1-053", root, span=20, most=999)
+    pair = [r for r in rows if r["form"] in (nfd("Čeˊwɪn"), nfd("Čeˊwin"))]
+    assert {r["form"] for r in pair} == {nfd("Čeˊwɪn"), nfd("Čeˊwin")}
+    assert all(r["ambiguous"] and r["key"] == "" for r in pair)
+    # Adjacent, because half an ambiguity read as a lone form is the whole hazard.
+    at = [i for i, r in enumerate(rows) if r in pair]
+    assert at == list(range(at[0], at[0] + 2))
+
+
+def test_the_cap_cannot_cut_a_contested_word_in_half(tmp_path):
+    """Capped by bucket, never by row. A truncation that kept one spelling would
+    show a reader a contested form as though it stood alone — which is worse than
+    showing nothing, and is the exact failure showing the pair exists to prevent."""
+    from harness.lookup import nearby
+    root = _store(tmp_path, "1-042", "1-052", "1-053")
+    for most in range(1, 6):
+        buckets = {r["bucket"] for r in nearby("1-053", root, span=20, most=most)}
+        for b in buckets:
+            shown = [r for r in nearby("1-053", root, span=20, most=most)
+                     if r["bucket"] == b]
+            assert len(shown) == 1 or all(r["ambiguous"] for r in shown)
+
+
+def test_every_row_offers_a_handle_that_resolves_to_its_form(tmp_path):
+    """The handle is the whole safety property: a form reached this way carries
+    `as_typed`, so leaning on the corpus is recorded rather than invisible. A row
+    whose key did not resolve would be an invitation to retype by hand."""
+    from harness.lookup import nearby
+    root = _store(tmp_path, "1-051", "1-052", "1-053")
+    rows = [r for r in nearby("1-053", root, span=20) if not r["ambiguous"]]
+    assert rows
+    for r in rows:
+        assert r["key"], r
+        assert resolve(r["key"], root)[0] == r["form"]
+
+
+def test_the_page_block_renders_the_handle_a_reader_would_type():
+    """Rendered into the prompt with its braces intact — `format` does not rescan
+    what it interpolates. A row printed as a bare form would be a string to copy,
+    which is the one way of using the corpus that leaves no record.
+
+    **The ref has to be a page `build` will still accept**, i.e. predicted and not
+    yet keyed: `build` refuses a page already in `gt/ocr/` as a revision, so this
+    fails as the ground-truth pass advances rather than because anything broke.
+    It was `2-096` until chapter XIV was keyed. `harness corpus state --stage
+    ocr-mz` names today's candidates; pick one with keyed pages behind it, or the
+    handle list this asserts on is legitimately empty."""
+    from harness.dispatch import build
+    rows = build("2-142", REPO)["page_block"].splitlines()
+    line = [ln for ln in rows if "->" in ln and ln.strip().startswith("- {")]
+    assert line, rows[-6:]
+
+
+def test_the_list_is_capped_and_ranked_by_what_the_stretch_actually_uses(tmp_path):
+    """A reader pays for every line of its prompt, and an uncapped list would hand it
+    the whole neighbourhood's vocabulary to read past. What survives the cap is what
+    the pages just before it kept saying — the forms it is likeliest to meet."""
+    from harness.lookup import NEARBY_MOST, nearby
+    root = _store(tmp_path, *(f"1-0{n}" for n in range(40, 60)))
+    rows = nearby("1-059", root, span=20)
+
+    # Counted in buckets, not rows: one bucket may hold more than one keyable form
+    # (`Aiˊwan` / `aiˊwan` — case is position, not spelling), and cutting between
+    # them to hit a row budget is the truncation the per-bucket cap exists to avoid.
+    order = list(dict.fromkeys(r["bucket"] for r in rows))
+    assert len(order) <= NEARBY_MOST
+
+    totals = [sum(r["count"] for r in rows if r["bucket"] == b) for b in order]
+    assert totals == sorted(totals, reverse=True)
+    # …and a bucket's rows arrive together rather than interleaved with another's.
+    assert [r["bucket"] for r in rows] == sorted(
+        (r["bucket"] for r in rows), key=order.index)
+
+
+def test_an_unconsultable_lexicon_does_not_refuse_the_dispatch(tmp_path):
+    """`build`'s refusals all say the page is not readable yet and name the command
+    that fixes it. "The lexicon could not be consulted" is not that, so it renders
+    instead of raising — and renders as *unavailable* rather than as an empty list,
+    because a reader shown nothing would read it as a statement about the book."""
+    from harness.dispatch import build
+    from harness.tests.test_dispatch_prompt import make_page
+    root = make_page(tmp_path)                     # no data/marks_config.json in it
+    block = build("3-063", root)["page_block"]
+    assert "unavailable" in block and "infer nothing from its silence" in block

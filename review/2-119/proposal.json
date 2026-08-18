@@ -1,0 +1,164 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "391",
+      "note": "Folio, RunningTitleZone, line 1 (hpos 2074, width 21). gaps reports the adjacent band as exempted reason=covered, covered_by this line: the box (21px wide) strangles the printed number. Full printed folio is 391, read off the composite/sheet at the far right margin of the running-title row.",
+      "class": "layout"
+    },
+    "2": {
+      "text": "a half-destroyed boat-support (see Plate XXXIV, Fig 3). In other cases the",
+      "note": "Roman numeral XXXIV keyed plain ASCII caps per keying_spec §2.12 regardless of setting. Punctuation as printed: no period after \"Fig\", period follows the closing paren \"3).\".",
+      "class": "print"
+    },
+    "3": {
+      "text": "ceremonial was performed near the so-called “bone [pole] stuck in” (aᵋmɪˊnpɪn),¹",
+      "resolved": "aᵋmɪˊnpɪn = a, ᵋ=U+1D4B (laryngeal superscript), m, ɪ=U+026A, ˊ=U+02CA (stress), n, p, ɪ=U+026A, n. Footnote marker ¹=U+00B9, tight against the closing paren+comma per §2.10 body-reference convention.",
+      "note": "Bracketed [pole] is the author's own editorial insertion in the gloss, printed as-is.",
+      "class": "print"
+    },
+    "4": {
+      "text": "which in some villages represents a kind of votive place of which I shall"
+    },
+    "5": {
+      "text": "speak later. Thus, for instance, in the village of Čeˊčin, two or even three",
+      "resolved": "{C^e'c^in} -> Čeˊčin: Č=C+U+030C, čin with U+030C on c, ˊ=U+02CA stress. Handle looked up via lexicon (9 prior attestations, key C^e'c^in).",
+      "note": "lexicon lookup ce'cin/Ce'c^in returned ratified key C^e'c^in -> Čeˊčin (9 occurrences, 6 pages); used the handle.",
+      "class": "print",
+      "as_typed": "speak later. Thus, for instance, in the village of {C^e'c^in}, two or even three"
+    },
+    "6": {
+      "text": "families join in performing the so-called “neighbors’ ceremonial” near the",
+      "note": "Closing quote after \"ceremonial\" is a curly double quote (”), confirmed at 2x; mz draft had a mismatched single ’.",
+      "class": "draft"
+    },
+    "7": {
+      "text": "bone pole of the village."
+    },
+    "8": {
+      "text": "For this they pitch light temporary tents on three sides of the bone"
+    },
+    "9": {
+      "text": "pole. The place for the sacrifice is arranged in the middle, at the foot of"
+    },
+    "10": {
+      "text": "the pole. Here each family deposits the heads of their game, while a couple"
+    },
+    "11": {
+      "text": "of heads are suspended from the pole. I had no opportunity to witness a"
+    },
+    "12": {
+      "text": "ceremonial of this kind; but the native drawing (Fig. 269) will give a fair"
+    },
+    "13": {
+      "text": "idea of the whole arrangement."
+    },
+    "14": {
+      "text": "It represents two tents pitched at the foot of the bone pole for the cere-"
+    },
+    "15": {
+      "text": "monial. As the population of the village of Čeˊčin is evidently descended",
+      "resolved": "{C^e'c^in} -> Čeˊčin, same form as line 5.",
+      "note": "Second occurrence of the same ratified toponym; handle used again.",
+      "class": "print",
+      "as_typed": "monial. As the population of the village of {C^e'c^in} is evidently descended"
+    },
+    "16": {
+      "text": "from the reindeer-breeding camps, heads of"
+    },
+    "17": {
+      "text": "reindeer play a considerable part in the ar-"
+    },
+    "18": {
+      "text": "rangement. Thus, from the top of the pole"
+    },
+    "19": {
+      "text": "are suspended two heads, one of reindeer, the"
+    },
+    "20": {
+      "text": "other of walrus. Most of the heads lying on"
+    },
+    "21": {
+      "text": "the ground are of reindeer; the others are of"
+    },
+    "22": {
+      "text": "walrus and of seal. One person is standing on"
+    },
+    "23": {
+      "text": "the top of his tent, pronouncing incantations;"
+    },
+    "24": {
+      "text": "two others are standing on the ground near"
+    },
+    "25": {
+      "text": "the pole. Each of them holds a sacrificial"
+    },
+    "26": {
+      "text": "vessel, and in addition one holds a drum"
+    },
+    "27": {
+      "text": "with a stick; the other, a drum-stick orna-"
+    },
+    "28": {
+      "text": "mented with red tassels."
+    },
+    "29": {
+      "text": "The last-described ceremonials — such"
+    },
+    "30": {
+      "text": "as that of the spear and of the spear house, the"
+    },
+    "31": {
+      "text": "outdoor and the neighbors’ ceremonials —"
+    },
+    "32": {
+      "text": "are observed also by the reindeer-breeders, at"
+    },
+    "33": {
+      "text": "least in the camps on the Chukchee Penin-"
+    },
+    "34": {
+      "text": "sula and along the Pacific coast more to the"
+    },
+    "35": {
+      "text": "south. But with the reindeer-breeders they"
+    },
+    "36": {
+      "text": "are connected with no particular season, and"
+    },
+    "37": {
+      "text": "may be arranged at any time, as well as all other thanksgiving ceremonials."
+    },
+    "38": {
+      "text": "I was told that in ancient times the “spear ceremonial” was performed",
+      "note": "Closing quote after \"ceremonial\" is curly double ”, confirmed at 2x sheet; mz draft carried an escaped straight quote.",
+      "class": "draft"
+    },
+    "39": {
+      "text": "before starting on a war expedition; but I am not quite sure if this is not",
+      "note": "A tiny ink speck sits between \"on\" and \"a\"; at 4x it is not a mark/character, ruled a print speck.",
+      "class": "artifact"
+    },
+    "40": {
+      "text": "a modern interpretation. The “peltry ceremonial” is in vogue among both",
+      "note": "Closing quote after \"ceremonial\" is curly double ”, confirmed at 2x; mz draft had a single ’.",
+      "class": "draft"
+    },
+    "41": {
+      "text": "branches of Chukchee and also among the Asiatic Eskimo. The details are"
+    },
+    "42": {
+      "text": "as usual. The peltries destined for sale, which accordingly are hung around"
+    },
+    "43": {
+      "text": "¹ This name is given also to the boat-supports, because in most cases they consist of “bones stuck in.”",
+      "note": "Footnote opener marker ¹ present and spaced from text per §2.10 opener convention; closing gloss quotes are curly, confirmed at 4x.",
+      "class": "print"
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

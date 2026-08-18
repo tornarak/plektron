@@ -233,9 +233,10 @@ thin space before `;` and `:` — `purpose ; but`, `substance ;”`, `solstices 
 on `1-073` alone, and the gap is unambiguous at 2× and consistent across every
 occurrence. Key **English spacing**: `purpose; but`, no space.
 
-This is the one place the "reproduce the print" rule for English prose is
-deliberately overridden, so it needs saying plainly rather than being left to each
-pass to rediscover. The reason it is not a loss: a thin space before a semicolon is
+This is one of the two places the "reproduce the print" rule for English prose is
+deliberately overridden — §2.15, the press's diacritics on English loanwords, is
+the other — so it needs saying plainly rather than being left to each pass to
+rediscover. The reason it is not a loss: a thin space before a semicolon is
 a *typesetting* convention with no lexical content, it survives nowhere in the
 book's own meaning, and reproducing it would put a space inside every affected token
 for every downstream consumer — tokenizers, the lexicon check, search — in exchange
@@ -570,6 +571,22 @@ no acute. §3 already lists the spacing acute U+00B4 as a trap for U+02CA; this 
 that trap in the form NFD leaves behind, `a` + U+0301, which the table does not
 name. The store holds `Kuvaˊr`.
 
+`2-104` L5 prints `mêlhɪn` — a disyllable with no stress mark at all, the second
+shape in that list, and it is *found* differently from the first. An acute is
+visible as wrong; an absence is wrong only against §2.1's culminativity, so it is
+reached by asking the question of every Tier-1 word and never by being surprised by
+one. Its reader asked, looked at 4×, and reported the space above the `ê` clean —
+no broken sort, no faint ink, so the omission is the compositor's and not the
+scan's. The store holds `mêˊlhɪn`.
+
+**There the spec stops short of the answer.** Culminativity says a mark is missing;
+nothing in this file says *where* it goes. That came from the adjudicator's
+knowledge of the language, a human act ranked `#ed`, and not from a count — so read
+the licence paragraph below with the distinction in hand. "Keyed as printed"
+governs a form whose *reading* is in question, where another attestation would be
+the witness. A defective form has no reading to preserve, and one attestation is
+not what repairs it.
+
 **The reason the asymmetry exists is that Tier-1 glyphs are not only training
 data.** `proposal marks` computes its corpus percentages from `gt/ocr` and
 `concordance.md` treats it as the attestation set, so keying the slip would enter
@@ -598,6 +615,39 @@ entry, so it reports a licensed mark on a wrong base and says nothing about a ma
 it has never heard of. `corpus normalize` exits 0 on the proposal carrying `Kuvár`.
 A raised or overset mark you cannot place in §2.1 is therefore a `note`, every time,
 whatever the gates say.
+
+### 2.15 Diacritics on English loanwords — strip them (SETTLED, editor ruling)
+
+**A mark on a common English word is not keyed.** `rôle` is keyed `role`, `naïve`
+`naive`, `vice versâ` `vice versa`. `2-124` L7 is the ruling case.
+
+The marks are **Brill's, not Bogoras's**. A multilingual house sets `rôle` with the
+circumflex it would set in French and marks a Latin ablative because its compositors
+set Latin; the mark is a habit of the press carried into English text, where the
+word has no such mark in English. It records nothing about the word and nothing
+about the Chukchee.
+
+Keeping them has a specific cost, and it is the reason for the rule: every one is a
+member of `INVENTORY_CHARS` under NFD, so `rôle` reads as Tier-1 to the
+transcription detector and to `proposal marks`. It is the *same codepoint* the
+notation uses, so nothing downstream can separate the press's French from Bogoras's
+system. Stripping removes a false witness; it loses no true one.
+
+**It does put text that disagrees with the raster into `gt/ocr`, and that is the
+price.** §2.14 refuses to repair a printer's error for exactly this reason — the
+store is line images paired with their text, so a disagreeing character teaches a
+recognizer something false. The difference is what the disagreement is worth: a
+mark the press set out of habit costs one training pair per occurrence (four in the
+store as of this ruling), where leaving it in poisons every Tier-1 measurement that
+reads `INVENTORY_CHARS`, corpus-wide and permanently. §2.9 made the same trade for
+the same reason. Neither is a general licence to normalize.
+
+**Scope is common words, and a proper name keeps its marks.** `Nordenskiöld` stays
+as set. A name's spelling is part of its identity, the entity store keys on it, and
+the strip that clears `rôle` would corrupt a headword. Names therefore stay a known
+false positive of the detector — `CLAUDE.md` already says so of `Nordenskiöld`'s 29
+occurrences — and that is accepted: a few recurring names are a cost the entity
+store absorbs, an open-ended class of loanwords is not.
 
 ## 3. Forbidden lookalikes — unconditional corpus-wide greps
 
@@ -702,8 +752,24 @@ band: a prior backed by one page is a prior backed by one page.
    of Tier-1 `g`** — around 87% as the store stands and never yet a minority at
    any size it has been; run `harness lexicon marks` for today's share rather
    than quoting this sentence. And `-g̣ɪ`/`-g̣ɪn`/`-g̣ɪt` are common **noun-forming suffixes** in
-   every register (`va'ɪrg̣ɪn`, "spirit") — so a word ending plain
-   `-git`/`-gin`/`-gɪn` is presumptively wrong before the raster is even open.
+   every register (`va'ɪrg̣ɪn`, "spirit"), where the dot is not a majority but a
+   constant: **89 occurrences of `g̣ɪn`/`g̣ɪt` across the adjudicated pages
+   against exactly one bare.** That is a closed count and not a prior —
+   `harness ocr grep 'g̣ɪ[nt]' --all --store gt`, against `'gɪ[nt]'` for the
+   other arm, which under NFD matches only the undotted form because the dot
+   sits between the `g` and the `ɪ`. So **do not key a bare word-final
+   `-gɪn`/`-gɪt`.** If you cannot see the dot there, that is a fact about the
+   crop and not about the word: key it dotted and say in `note` that you could
+   not see it, which is what keeps the line visible to the adjudicator — a
+   silent dotted reading and a seen one are indistinguishable, and `conflict`
+   can only find what somebody wrote down.
+
+   **Word-final is the whole of the claim, and the one exception says why.** The
+   single bare instance is `naˊrgɪn-mñêˊɪrg̣ɪn` (`2-118` L25, adjudicated): bare
+   in the compound's *first* element, dotted at the end of the word. `naˊrgɪn-`
+   is a root that happens to end in those letters, not the nominalizer, and the
+   grep above cannot tell the two apart — it counts letters, not morphemes. So
+   inside a compound the count does not speak: read it, and flag it.
    The dotted and undotted sorts are the same letterform, so **absence is not
    observable in isolation**: a "no dot" reading at any magnification is
    answering a question the image cannot answer, and must clear a higher bar
@@ -733,7 +799,16 @@ band: a prior backed by one page is a prior backed by one page.
    bare-keyed it on the page it was writing about. Both `2-033` and `2-035`
    were finally settled by the contrast method (`danger`, `representing`)
    after 4× stares had failed; `1-042`'s was caught by `proposal marks` after
-   four clean mechanical gates.
+   four clean mechanical gates. Then `2-104` (`vaˊɪrgɪn`) and `2-117`
+   (`vaˊɪrgɪn`, `ɪˊê-mñêˊɪrg̣ɪn`) in the chapter-XIV pass, all three overturned
+   by the contrast crop against `slaughtered`, `villages` and `genuine`. Those
+   readers did everything else right — refused the ratified handle, flagged the
+   line — which is why the rule above is now a count and not an exhortation:
+   the disciplined disposition still produced the wrong character. The same
+   adjudication ran the other way once, and that is the more useful half:
+   `2-118` had keyed `naˊrg̣ɪn-` dotted, and the dot came off. A rule stated as
+   "always" would have made that correction unwriteable, which is why the count
+   above is scoped to word-final and says where it stops.
 2. **`ɪ` (U+026A) vs `i` vs `r` — the leading residual class, and the tell is
    that the reader reports checking it.** The base rate runs against plain `i`
    — Tier-1 `ɪ` outnumbers it across the store, and `-ɪn` / `-ɪt` are by a long

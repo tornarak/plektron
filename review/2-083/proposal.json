@@ -1,0 +1,163 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "355"
+    },
+    "2": {
+      "text": "together are called “men of the charm-strings” (taiˊñɪkut oraˊwêʟ̣at). Among",
+      "resolved": "ñ = n+U+0303; ɪ = U+026A small capital I; ˊ = U+02CA stress (x2: taiˊñɪkut, oraˊwêʟ̣at); ê = e+U+0302; ʟ̣ = U+029F small capital L + U+0323 dot below",
+      "note": "Machine text read this as (tai'ñikut ora'wêrat) — plain i for the small-cap ɪ, and plain l for the small-cap ʟ with dot below. Confirmed at 4x: the letter after ê has a flat-top small-capital-L shape (not lowercase l's ascender), matching a corpus-attested form — lexicon lookup returns oraˊwêʟ̣at 'genuine men' on 1-031 and 1-213 (liˊê-oraˊwêʟat / lɪˊê-oraˊwêʟ̣at), each attested on a single page (below the two-page handle floor, so keyed by hand rather than as a {handle}). Strong corroborating evidence for the ʟ̣ reading given the semantic match ('men of the charm-strings' here vs 'genuine men' there).",
+      "class": "print"
+    },
+    "3": {
+      "text": "the Reindeer people of the Kolyma I saw several times small wooden images"
+    },
+    "4": {
+      "text": "of canoes fastened to the charm-strings. This is the more remarkable, as"
+    },
+    "5": {
+      "text": "those people do not build canoes, and rarely buy them from the Russians,"
+    },
+    "6": {
+      "text": "as they have but little opportunity to use them. The canoe-image of the"
+    },
+    "7": {
+      "text": "charm-strings thus adds new proof to the conjecture that the maritime mode"
+    },
+    "8": {
+      "text": "of life predominated in ancient times with the whole Chukchee tribe."
+    },
+    "9": {
+      "text": "ᴇnaˊattê (pl. of ᴇnaˊal) are parts of the funeral clothes, which are taken",
+      "resolved": "ᴇ = U+1D07 small capital E (x2, word-initial); ˊ = U+02CA stress (x2: ᴇnaˊattê, ᴇnaˊal); ê = e+U+0302",
+      "note": "Machine text keyed both as plain capital 'Ena'. At 2x the initial letter sits at x-height matching the lowercase letters that follow, distinct from a full-height ASCII capital elsewhere on the page (contrast 'Among', 'A raven's' L.2/19) — read as small capital ᴇ per §2.3. Final accent on 'attê' is a roof-shaped circumflex, not a grave.",
+      "class": "print"
+    },
+    "10": {
+      "text": "from every grown member of the family shortly before the final ceremony,"
+    },
+    "11": {
+      "text": "and added to the family string of charms. From the men’s clothing are taken"
+    },
+    "12": {
+      "text": "their belts (see Fig. 237, c); from the women’s, narrow strips of the fur trim-"
+    },
+    "13": {
+      "text": "ming of the collars (see Fig. 237, d). These pieces are wrapped or sewed"
+    },
+    "14": {
+      "text": "together in a small parcel, and tied to the string. They also represent the"
+    },
+    "15": {
+      "text": "chief masters of the herd, and are often more or less confounded with the"
+    },
+    "16": {
+      "text": "wooden images. In connection with this, the charms are considered to repre-"
+    },
+    "17": {
+      "text": "sent more or less directly the ancestors of the family. As such they are"
+    },
+    "18": {
+      "text": "called in common conversation “the ancient ones,” or even “the deceased ones.”",
+      "note": "Machine text closed the final quote with a straight \" (U+0022); the book sets curly quotes throughout (§1, §5.6) — keyed ”, no raster call needed.",
+      "class": "print"
+    },
+    "19": {
+      "text": "A raven’s head (veˊlvɪ-leˊut) is used in its natural form (see Fig. 249)",
+      "resolved": "ɪ = U+026A small capital I; ˊ = U+02CA stress (x2: veˊ, leˊ)",
+      "note": "Machine text read the small-cap ɪ as ASCII r (ve'lvr-le'ut), the same CATMuS ASCII-substitution failure mode seen elsewhere on this page (line 2) and in the corpus generally.",
+      "class": "print"
+    },
+    "20": {
+      "text": "or as a wooden image (Fig. 252, a). A"
+    },
+    "21": {
+      "text": "wolf’s head (ᵉiᵋh-leˊut) is used only as a",
+      "resolved": "ᵉ = U+1D49 superscript e (rising-diphthong onglide, licensed only immediately before i, §2.1); ᵋ = U+1D4B superscript open-e (laryngeal/glottalization mark, §2.1); ˊ = U+02CA stress (leˊ)",
+      "note": "Machine text read this whole parenthetical as (cich-le'ut), unrelated to the print. At 4x the raised mark between i and h is a closed loop with a downward tail — read as the laryngeal ᵋ rather than an uncatalogued superscript-g-shaped mark, per the known confusion between the two (a rounded loop with a tail is the laryngeal's usual disguise). No corpus attestation found for this form (lexicon lookup on eish-le'ut returned no match), so nothing outside this single raster crop corroborates the call — flagging for adjudication.",
+      "class": "doubt"
+    },
+    "22": {
+      "text": "wooden image. The real skulls of the fox"
+    },
+    "23": {
+      "text": "(see Figs. 237 b, 249 b), hare, and wol-",
+      "note": "Machine text read both italic sub-letters as digits, '237 5, 249 6'. At 2x both are unmistakably italic lowercase b (matching the italic c/d used for the same purpose on lines 12-13 and 29).",
+      "class": "print"
+    },
+    "24": {
+      "text": "verene, are used, or they are represented"
+    },
+    "25": {
+      "text": "by images. The image of the head of the"
+    },
+    "26": {
+      "text": "polar bear is also employed (Fig. 252, b).",
+      "note": "Machine text read the italic sub-letter as digit '6'; at 2x it is an italic lowercase b, same correction as line 23.",
+      "class": "print"
+    },
+    "27": {
+      "text": "Wooden dogs are found in the shape com-"
+    },
+    "28": {
+      "text": "mon among various other charms of the",
+      "note": "A faint raised tick sits after the line-final 'the' in the machine text and on the raster; at 2x it does not read as a letterform or licensed mark — ruled a speck/artifact and not keyed.",
+      "class": "artifact"
+    },
+    "29": {
+      "text": "Chukchee (see Fig. 249, c)."
+    },
+    "30": {
+      "text": "Among the skulls, those of the white"
+    },
+    "31": {
+      "text": "fox are the most numerous. Rarely are all"
+    },
+    "32": {
+      "text": "of these skulls and images joined on the",
+      "note": "Machine text carries a stray raised mark after 'and' (\"and' images\"); at 2x it is a small isolated tick with no letterform, not a spirant/pause apostrophe (this is English prose) — ruled a speck/artifact and not keyed.",
+      "class": "artifact"
+    },
+    "33": {
+      "text": "same set, and each string usually includes"
+    },
+    "34": {
+      "text": "an assortment of the various forms. Details"
+    },
+    "35": {
+      "text": "in the form of these private charms, as in",
+      "note": "A small raised tick sits after the comma following 'charms' in the machine text and raster; ruled a speck/artifact of the same kind as lines 28 and 32, not keyed.",
+      "class": "artifact"
+    },
+    "36": {
+      "text": "the rites, depend with the Chukchee upon"
+    },
+    "37": {
+      "text": "chance influences, such as dreams, the"
+    },
+    "38": {
+      "text": "meeting of wild animals, or other prophetic"
+    },
+    "39": {
+      "text": "signs, or the command of an old man or a shaman. These variations are in"
+    },
+    "40": {
+      "text": "accord with the vague religious views of the Chukchee, which have not taken"
+    },
+    "41": {
+      "text": "fixed forms, and indicate in general a primitive state of religious culture."
+    },
+    "42": {
+      "text": "From sacrificed reindeer, especially from those which have a strange or"
+    },
+    "43": {
+      "text": "misshapen feature, there is taken for this string of charms a piece of the skin"
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

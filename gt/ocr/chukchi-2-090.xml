@@ -1,0 +1,285 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-2-090.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-2-090.png; regions_from: zones/chukchi-2-090.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+                <TextBlock ID="mz_2-090_r1" HPOS="378" VPOS="470" WIDTH="1776" HEIGHT="94" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="378 470 2154 470 2154 564 378 564"/>
+                    </Shape>
+                    <TextLine ID="mz_2-090_l1" HPOS="963" VPOS="489" WIDTH="611" HEIGHT="51" BASELINE="963 520 1574 520" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1570 491 1562 489 979 489 963 520 963 540 1574 540 1574 520 1574 501 1570 491"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-090_l2" HPOS="389" VPOS="481" WIDTH="100" HEIGHT="63" BASELINE="391 526 489 522" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="432 481 389 497 391 526 391 544 487 536 489 522 487 495 446 481 432 481"/>
+                        </Shape>
+                        <String CONTENT="362"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-090_r2" HPOS="378" VPOS="595" WIDTH="1776" HEIGHT="180" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="378 595 2154 595 2154 775 378 775"/>
+                    </Shape>
+                    <TextLine ID="mz_2-090_l3" HPOS="485" VPOS="589" WIDTH="1667" HEIGHT="55" BASELINE="485 630 2152 630" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2150 630 2136 601 1989 601 1962 589 1960 589 1958 589 1956 589 1921 599 1696 589 1694 589 1637 599 1584 589 1582 589 1580 589 1541 599 1488 589 1486 589 1484 589 1482 589 1466 601 1363 601 1145 589 1143 589 1141 589 1108 599 898 589 897 589 895 589 893 589 877 601 585 601 503 589 501 589 499 589 497 589 485 597 485 630 485 644 2152 644 2152 630 2152 601 2150 601 2150 630"/>
+                        </Shape>
+                        <String CONTENT="CHARMS OF THE MARITIME CHUKCHEE. — On the whole, the charms of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-090_l4" HPOS="379" VPOS="648" WIDTH="1769" HEIGHT="62" BASELINE="381 687 2148 691" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="381 687 379 701 393 710 395 710 397 710 399 710 2146 703 2148 691 2148 661 2113 650 2111 650 2109 650 1531 659 1476 650 1474 650 1472 650 1451 661 1327 661 1243 648 1241 648 1239 648 1206 658 1137 648 1135 648 1067 658 871 648 869 648 787 658 773 648 771 648 769 648 767 648 710 658 622 648 620 648 381 656 381 687"/>
+                        </Shape>
+                        <String CONTENT="the Maritime Chukchee are quite similar to those of the Reindeer people."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-090_l5" HPOS="385" VPOS="708" WIDTH="1765" HEIGHT="57" BASELINE="385 750 2150 750" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="385 750 385 765 2150 765 2150 750 2148 718 2113 708 2111 708 2109 708 2011 718 1958 708 1956 708 1909 718 1829 708 1827 708 1747 718 1700 708 1698 708 1696 708 1668 718 1519 708 1517 708 1435 718 1308 708 1306 708 1304 708 1275 718 1235 708 1233 708 1231 708 1149 718 1130 708 1128 708 1126 708 1124 708 1090 718 981 708 979 708 895 718 385 710 385 750"/>
+                        </Shape>
+                        <String CONTENT="The differences discoverable are largely due to differences in their mode of life."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-090_r3" HPOS="378" VPOS="775" WIDTH="1776" HEIGHT="955" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="378 775 2154 775 2154 1730 378 1730"/>
+                    </Shape>
+                    <TextLine ID="mz_2-090_l6" HPOS="487" VPOS="765" WIDTH="1663" HEIGHT="59" BASELINE="489 808 2150 804" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="489 808 489 824 2148 824 2150 804 2140 775 2099 765 2097 765 2095 765 2074 775 2052 765 2050 765 2048 765 2046 765 2023 777 1907 777 1886 765 1884 765 1882 765 1880 765 1858 775 1839 765 1837 765 1835 765 1833 765 1803 775 1756 765 1754 765 1692 775 1617 765 1615 765 1613 765 1592 775 1531 765 1529 765 1484 775 1455 765 1453 765 1451 765 1449 765 1419 775 1392 765 1390 765 1388 765 1386 765 1351 775 1325 765 1323 765 1322 765 1320 765 1318 765 1302 777 1204 767 1202 767 1200 767 1171 777 1104 767 1102 767 769 777 695 767 693 767 691 767 658 777 646 767 644 767 642 767 509 767 507 767 505 767 503 767 487 775 489 808"/>
+                        </Shape>
+                        <String CONTENT="Family Charms. — In olden times, both the Maritime Chukchee and the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-090_l7" HPOS="381" VPOS="828" WIDTH="1769" HEIGHT="57" BASELINE="381 869 2150 869" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="381 869 381 885 2148 885 2150 869 2146 838 2107 828 2105 828 2103 828 2101 828 2070 840 1936 840 1921 828 1919 828 1917 828 1915 828 1913 828 1880 840 1651 840 1629 828 1627 828 1625 828 1623 828 1598 838 1576 828 1574 828 1572 828 1570 828 1539 838 381 832 381 869"/>
+                        </Shape>
+                        <String CONTENT="Eskimo used the wooden fire-drill; but at present it is never used, even for"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-090_l8" HPOS="379" VPOS="885" WIDTH="1771" HEIGHT="60" BASELINE="381 930 2150 924" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="381 930 381 945 2148 941 2150 924 2144 896 2017 896 1995 885 1993 885 1991 885 1901 894 1876 885 1874 885 1872 885 1870 885 1868 885 1852 896 1694 896 1664 885 1662 885 1660 885 1658 885 1656 885 1643 894 1558 885 1557 885 1555 885 1515 896 1045 887 1043 887 963 896 900 889 898 889 897 889 895 889 879 898 562 889 560 889 379 900 381 930"/>
+                        </Shape>
+                        <String CONTENT="ceremonial purposes. Nevertheless, the Maritime Chukchee guard against an"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-090_l9" HPOS="381" VPOS="947" WIDTH="1769" HEIGHT="57" BASELINE="381 988 2150 988" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="381 988 381 1004 2148 1004 2150 988 2146 955 2132 947 2130 947 2128 947 2126 947 2054 957 1987 947 1985 947 1983 947 1950 959 1823 959 1805 947 1803 947 1801 947 1799 947 1797 947 1766 957 1715 947 1713 947 1604 957 1541 947 1539 947 1537 947 1510 957 1490 947 1488 947 1486 947 1369 959 1184 959 1151 947 1149 947 1147 947 1145 947 1116 957 1055 947 1053 947 1051 947 1018 957 991 947 989 947 987 947 985 947 947 957 881 947 879 947 814 957 746 947 744 947 658 957 381 953 381 988"/>
+                        </Shape>
+                        <String CONTENT="interchange of fire, although the observance of this interdiction is more lax with"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-090_l10" HPOS="379" VPOS="1012" WIDTH="1773" HEIGHT="51" BASELINE="379 1047 2152 1047" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="379 1047 379 1061 2150 1063 2152 1047 2150 1012 379 1016 379 1047"/>
+                        </Shape>
+                        <String CONTENT="them than it is among the Reindeer people, and in recent years it is neglected"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-090_l11" HPOS="379" VPOS="1065" WIDTH="1773" HEIGHT="66" BASELINE="381 1110 2152 1106" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="381 1110 381 1122 808 1122 850 1131 851 1131 853 1131 975 1122 1210 1131 1212 1131 1423 1120 1684 1120 1715 1129 1717 1129 1719 1129 1721 1129 1741 1120 1788 1129 1790 1129 2150 1122 2152 1106 2146 1073 1913 1077 1870 1065 1868 1065 1866 1065 1864 1065 1862 1065 1844 1079 1754 1079 1723 1065 1721 1065 1719 1065 1660 1077 1541 1065 1539 1065 1537 1065 1513 1077 1461 1065 1459 1065 1457 1065 1417 1077 1337 1065 1335 1065 1333 1065 1331 1065 1314 1077 1133 1067 1132 1067 1130 1067 1106 1079 1022 1067 1020 1067 1018 1067 1016 1067 996 1081 863 1081 826 1067 824 1067 822 1067 820 1067 789 1079 769 1067 767 1067 765 1067 613 1067 611 1067 520 1079 397 1069 395 1069 393 1069 391 1069 379 1077 381 1110"/>
+                        </Shape>
+                        <String CONTENT="to a considerable degree. The bringing into the house of utensils or sacred"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-090_l12" HPOS="379" VPOS="1124" WIDTH="1771" HEIGHT="60" BASELINE="381 1169 2150 1165" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="381 1169 381 1184 2148 1184 2150 1165 2144 1133 2087 1124 2085 1124 2083 1124 2064 1133 1831 1124 1829 1124 1827 1124 1825 1124 1809 1135 1688 1135 1576 1124 1574 1124 1572 1124 1570 1124 1555 1133 1529 1124 1527 1124 1525 1124 1466 1133 1439 1124 1437 1124 1435 1124 1378 1133 1325 1124 1323 1124 1322 1124 1296 1133 1271 1124 1269 1124 1267 1124 1265 1124 1263 1124 1247 1137 1151 1137 1135 1126 1133 1126 1132 1126 1130 1126 1051 1135 1026 1126 1024 1126 1022 1126 940 1137 744 1137 722 1126 720 1126 718 1126 716 1126 681 1135 630 1126 628 1126 379 1133 381 1169"/>
+                        </Shape>
+                        <String CONTENT="images belonging to an “alien” house is likewise forbidden, as I had occasion"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-090_l13" HPOS="377" VPOS="1184" WIDTH="1771" HEIGHT="63" BASELINE="379 1229 2148 1223" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="379 1229 379 1243 2144 1247 2148 1223 2144 1196 2083 1184 2081 1184 2030 1194 1839 1184 1837 1184 1739 1194 1674 1184 1672 1184 1670 1184 1668 1184 1652 1194 1429 1186 1427 1186 1425 1186 1388 1196 1357 1186 1355 1186 1353 1186 1302 1196 1275 1186 1273 1186 1271 1186 1198 1196 1159 1186 1157 1186 1155 1186 1153 1186 1124 1196 1069 1186 1067 1186 1008 1196 971 1186 969 1186 967 1186 965 1186 934 1198 642 1188 640 1188 587 1198 520 1188 519 1188 432 1198 399 1188 397 1188 395 1188 393 1188 391 1188 377 1196 379 1229"/>
+                        </Shape>
+                        <String CONTENT="to notice while making the collections for the Museum. Even while travelling"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-090_l14" HPOS="379" VPOS="1243" WIDTH="1769" HEIGHT="59" BASELINE="381 1290 2148 1284" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="381 1290 381 1302 2146 1298 2148 1284 2144 1257 1991 1257 1972 1243 1970 1243 1968 1243 1966 1243 1964 1243 1925 1255 1856 1243 1854 1243 1535 1257 1500 1245 1498 1245 1496 1245 1494 1245 1463 1257 1406 1245 1404 1245 1402 1245 1369 1257 1316 1245 1314 1245 1257 1259 1173 1259 1151 1245 1149 1245 1147 1245 1145 1245 885 1259 848 1247 846 1247 844 1247 842 1247 810 1259 795 1247 793 1247 791 1247 789 1247 787 1247 754 1259 663 1247 661 1247 660 1247 622 1259 593 1247 591 1247 589 1247 519 1259 379 1255 381 1290"/>
+                        </Shape>
+                        <String CONTENT="in a skin boat it is reprehensible to take fire from an “alien” hearth, or to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-090_l15" HPOS="379" VPOS="1312" WIDTH="1771" HEIGHT="49" BASELINE="379 1347 2150 1347" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="379 1347 379 1361 2150 1361 2150 1347 2146 1316 379 1312 379 1347"/>
+                        </Shape>
+                        <String CONTENT="borrow kettles, because of the soot that covers them. So great is the value"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-090_l16" HPOS="379" VPOS="1364" WIDTH="1771" HEIGHT="57" BASELINE="379 1406 2150 1406" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="379 1406 379 1421 2150 1421 2150 1406 2144 1374 2077 1364 2076 1364 2019 1374 1995 1364 1993 1364 1991 1364 1931 1374 1884 1364 1882 1364 1880 1364 1852 1374 1517 1364 1515 1364 1513 1364 1511 1364 1498 1374 1466 1364 1464 1364 1463 1364 1359 1374 1333 1364 1331 1364 1329 1364 1273 1374 1245 1364 1243 1364 1241 1364 1239 1364 1196 1374 1132 1364 1130 1364 1128 1364 1126 1364 1110 1376 951 1376 900 1364 898 1364 814 1374 736 1364 734 1364 732 1364 701 1374 673 1364 671 1364 669 1364 550 1374 487 1364 485 1364 483 1364 454 1374 425 1364 423 1364 421 1364 419 1364 379 1374 379 1406"/>
+                        </Shape>
+                        <String CONTENT="of skins and timber (the materials for house-building) among the Maritime"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-090_l17" HPOS="381" VPOS="1437" WIDTH="1769" HEIGHT="51" BASELINE="381 1466 2150 1466" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="381 1466 381 1488 2148 1480 2150 1466 2146 1437 381 1437 381 1466"/>
+                        </Shape>
+                        <String CONTENT="people, in consequence of their scarcity, that a house the owner of which has"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-090_l18" HPOS="379" VPOS="1486" WIDTH="1771" HEIGHT="55" BASELINE="379 1525 2150 1525" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="379 1507 379 1525 379 1541 2150 1541 2150 1525 2144 1496 2107 1486 2105 1486 2103 1486 2101 1486 2068 1496 2032 1486 2030 1486 2029 1486 1952 1496 1500 1486 1498 1486 1496 1486 1494 1486 1478 1498 1343 1498 1265 1486 1263 1486 1261 1486 1259 1486 1241 1498 1143 1498 1110 1486 1108 1486 1106 1486 1059 1496 957 1486 955 1486 887 1496 818 1486 816 1486 814 1486 812 1486 797 1498 654 1498 526 1486 524 1486 522 1486 495 1496 403 1486 401 1486 399 1486 387 1492 379 1507"/>
+                        </Shape>
+                        <String CONTENT="died, leaving no direct heirs, is not left untouched, as is the case with the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-090_l19" HPOS="383" VPOS="1551" WIDTH="1763" HEIGHT="56" BASELINE="383 1586 2146 1586" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="383 1586 383 1599 2144 1607 2146 1586 2134 1554 383 1551 383 1586"/>
+                        </Shape>
+                        <String CONTENT="Reindeer people. Some distant relatives will surely come, tear down the house,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-090_l20" HPOS="379" VPOS="1603" WIDTH="1769" HEIGHT="59" BASELINE="381 1646 2148 1643" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="381 1646 381 1662 2146 1662 2148 1643 2144 1615 2050 1615 2034 1603 2032 1603 2030 1603 2029 1603 2027 1603 2005 1613 1815 1603 1813 1603 1719 1613 1684 1603 1682 1603 1680 1603 1678 1603 1676 1603 1660 1615 1435 1615 1369 1603 1367 1603 1261 1615 1220 1605 1218 1605 1216 1605 716 1615 658 1605 656 1605 654 1605 622 1615 609 1605 607 1605 605 1605 450 1605 448 1605 379 1617 381 1646"/>
+                        </Shape>
+                        <String CONTENT="and divide the spoils; but they will be careful not to set foot within the house"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-090_l21" HPOS="379" VPOS="1660" WIDTH="662" HEIGHT="69" BASELINE="381 1707 1041 1701" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="381 1707 381 1721 759 1729 761 1729 763 1729 765 1729 765 1727 775 1719 1041 1719 1041 1701 1039 1672 1020 1660 1018 1660 1016 1660 1014 1660 1012 1660 1010 1660 994 1672 955 1660 953 1660 951 1660 875 1672 799 1662 797 1662 795 1662 793 1662 793 1664 781 1676 720 1676 695 1662 693 1662 691 1662 689 1662 667 1674 644 1662 642 1662 640 1662 638 1662 614 1674 587 1664 585 1664 583 1664 581 1664 579 1664 579 1666 569 1676 542 1664 540 1664 538 1664 536 1664 499 1676 483 1664 481 1664 479 1664 423 1664 421 1664 419 1664 379 1676 381 1707"/>
+                        </Shape>
+                        <String CONTENT="while it is being demolished."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-090_r4" HPOS="378" VPOS="1730" WIDTH="1776" HEIGHT="64" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="378 1730 2154 1730 2154 1794 378 1794"/>
+                    </Shape>
+                    <TextLine ID="mz_2-090_l22" HPOS="487" VPOS="1719" WIDTH="1657" HEIGHT="68" BASELINE="489 1762 2144 1772" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="489 1762 487 1776 2140 1787 2144 1772 2144 1737 2126 1727 2125 1727 2123 1727 2121 1727 1997 1737 1903 1727 1901 1727 1899 1727 1876 1737 1803 1725 1801 1725 1729 1735 1384 1723 1382 1723 1380 1723 1349 1733 1298 1723 1296 1723 1141 1731 1126 1721 1124 1721 1122 1721 1034 1721 1032 1721 1030 1721 1028 1721 1014 1731 897 1721 895 1721 893 1721 863 1731 820 1719 818 1719 816 1719 814 1719 793 1729 730 1719 728 1719 726 1719 724 1719 708 1729 691 1719 689 1719 687 1719 685 1719 661 1729 489 1727 489 1762"/>
+                        </Shape>
+                        <String CONTENT="Many of the Maritime Chukchee also have the charm-strings (Fig. 255),"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-090_r5" HPOS="378" VPOS="2546" WIDTH="1776" HEIGHT="423" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="378 2546 2154 2546 2154 2969 378 2969"/>
+                    </Shape>
+                    <TextLine ID="mz_2-090_l23" HPOS="381" VPOS="2545" WIDTH="1769" HEIGHT="61" BASELINE="383 2592 2150 2586" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2144 2563 2132 2553 2099 2545 2097 2545 2095 2545 2072 2555 1982 2545 1980 2545 1903 2555 1878 2545 1876 2545 1874 2545 1815 2555 1731 2545 1729 2545 1649 2555 1619 2545 1617 2545 1615 2545 1555 2557 1521 2547 1519 2547 1517 2547 1515 2547 1486 2557 1390 2547 1388 2547 1386 2547 1353 2559 1081 2559 1047 2547 1045 2547 1043 2547 932 2559 900 2549 898 2549 897 2549 895 2549 861 2561 660 2561 638 2549 636 2549 634 2549 632 2549 597 2559 522 2549 520 2549 381 2555 383 2592 383 2606 2148 2602 2150 2586 2146 2563 2144 2563"/>
+                        </Shape>
+                        <String CONTENT="but they do not attach the importance to them that the reindeer-breeders do."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-090_l24" HPOS="383" VPOS="2606" WIDTH="1767" HEIGHT="59" BASELINE="385 2651 2150 2647" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="385 2651 385 2665 2148 2661 2150 2647 2148 2620 2105 2606 2103 2606 2101 2606 2013 2620 1919 2620 1901 2606 1899 2606 1897 2606 1895 2606 1893 2606 1866 2620 1754 2620 1737 2606 1735 2606 1733 2606 1656 2606 1654 2606 1652 2606 1651 2606 1631 2620 1506 2620 1484 2606 1482 2606 1480 2606 1478 2606 1353 2618 1302 2606 1300 2606 1298 2606 1296 2606 1263 2620 1118 2620 1096 2608 1094 2608 1092 2608 1024 2620 918 2608 916 2608 914 2608 881 2620 840 2608 838 2608 724 2608 722 2608 720 2608 693 2620 526 2608 524 2608 522 2608 489 2620 444 2608 442 2608 440 2608 383 2614 385 2651"/>
+                        </Shape>
+                        <String CONTENT="The images of their charm-strings, on the whole, are similar to those of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-090_l25" HPOS="379" VPOS="2667" WIDTH="1769" HEIGHT="62" BASELINE="381 2710 2148 2706" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="381 2710 381 2726 2144 2729 2148 2706 2144 2677 1265 2667 1263 2667 1261 2667 1241 2677 432 2669 430 2669 379 2679 381 2710"/>
+                        </Shape>
+                        <String CONTENT="reindeer-breeders; but they are intended to help their owners in hunting-pursuits,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-090_l26" HPOS="381" VPOS="2726" WIDTH="1765" HEIGHT="60" BASELINE="383 2773 2146 2765" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="383 2773 383 2784 2142 2786 2146 2765 2144 2737 2119 2726 2117 2726 2115 2726 1893 2735 1819 2726 1817 2726 1701 2737 1654 2727 1652 2727 1651 2727 1623 2737 1596 2727 1594 2727 1592 2727 1539 2737 1202 2729 1200 2729 1198 2729 1196 2729 1180 2739 824 2729 822 2729 742 2741 716 2731 714 2731 712 2731 542 2741 505 2731 503 2731 501 2731 381 2743 383 2773"/>
+                        </Shape>
+                        <String CONTENT="not to protect their herds. These images are usually human figures roughly"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-090_l27" HPOS="383" VPOS="2786" WIDTH="1767" HEIGHT="57" BASELINE="385 2829 2150 2825" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="385 2829 385 2843 2148 2841 2150 2825 2148 2796 2130 2786 2128 2786 2126 2786 2125 2786 2123 2786 2081 2796 2066 2786 2064 2786 2062 2786 2060 2786 2058 2786 2021 2796 1864 2786 1862 2786 1817 2796 1788 2786 1786 2786 1784 2786 1782 2786 1754 2798 1598 2798 1564 2786 1562 2786 1560 2786 1558 2786 1557 2786 1541 2798 1433 2798 1333 2786 1331 2786 1329 2786 1308 2796 1275 2786 1273 2786 1271 2786 1269 2786 1233 2798 936 2788 934 2788 777 2798 740 2788 738 2788 736 2788 734 2788 701 2798 607 2788 605 2788 603 2788 577 2798 444 2790 442 2790 383 2800 385 2829"/>
+                        </Shape>
+                        <String CONTENT="cut out of wood or curried leather, and similar to those previously described."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-090_l28" HPOS="381" VPOS="2845" WIDTH="1769" HEIGHT="67" BASELINE="383 2890 2150 2884" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="383 2890 383 2902 967 2912 969 2912 971 2912 992 2902 2150 2902 2150 2884 2148 2855 2130 2845 2128 2845 2126 2845 2125 2845 1805 2855 1711 2845 1709 2845 1707 2845 1705 2845 1690 2857 1541 2857 1510 2847 1508 2847 1506 2847 1421 2857 1275 2847 1273 2847 1271 2847 1231 2857 1137 2847 1135 2847 1133 2847 1096 2857 1051 2847 1049 2847 938 2859 916 2849 914 2849 912 2849 842 2859 736 2849 734 2849 732 2849 699 2859 640 2849 638 2849 381 2855 383 2890"/>
+                        </Shape>
+                        <String CONTENT="Many of the charm-strings also have figures of dogs attached to them, which"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-090_l29" HPOS="379" VPOS="2906" WIDTH="774" HEIGHT="68" BASELINE="381 2953 1153 2945" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="381 2953 381 2964 491 2974 493 2974 1153 2959 1153 2945 1149 2917 1002 2906 1000 2906 942 2917 804 2908 802 2908 801 2908 799 2908 799 2910 789 2917 726 2910 724 2910 671 2919 571 2910 569 2910 379 2923 381 2953"/>
+                        </Shape>
+                        <String CONTENT="serve likewise for hunting-charms."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-090_r6" HPOS="378" VPOS="2969" WIDTH="1776" HEIGHT="63" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="378 2969 2154 2969 2154 3032 378 3032"/>
+                    </Shape>
+                    <TextLine ID="mz_2-090_l30" HPOS="493" VPOS="2964" WIDTH="1655" HEIGHT="110" BASELINE="495 3009 2148 3006" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="495 3009 495 3074 2146 3060 2148 3006 2144 2976 2056 2964 2054 2964 2052 2964 2025 2974 1938 2964 1936 2964 1935 2964 1901 2974 1856 2964 1854 2964 1762 2974 1680 2964 1678 2964 1676 2964 1647 2976 1498 2976 1482 2964 1480 2964 1478 2964 1476 2964 1310 2976 1247 2966 1245 2966 1243 2966 1220 2976 1204 2966 1202 2966 1200 2966 1198 2966 1102 2976 828 2966 826 2966 824 2966 787 2976 493 2974 495 3009"/>
+                        </Shape>
+                        <String CONTENT="The human figures are called “guardians” or “assistants.”¹ Sometimes"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-090_r7" HPOS="378" VPOS="3055" WIDTH="1776" HEIGHT="63" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="378 3055 2154 3055 2154 3118 378 3118"/>
+                    </Shape>
+                    <TextLine ID="mz_2-090_l31" HPOS="1049" VPOS="3058" WIDTH="439" HEIGHT="57" BASELINE="1051 3084 1488 3090" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1051 3084 1049 3098 1231 3113 1233 3113 1414 3105 1466 3115 1468 3115 1470 3115 1472 3115 1486 3103 1488 3090 1486 3064 1051 3058 1051 3084"/>
+                        </Shape>
+                        <String CONTENT="¹ Compare pp. 341 et seq."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

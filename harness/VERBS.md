@@ -572,13 +572,17 @@ Every page is checked before any is queued, and its block is rendered and thrown
 ```
 
 ### ocr claim
-**Does** takes the next unclaimed ref off `review/_queue.txt` and prints that page's block — the ref, and what the four-store survey found (line and zone counts, and which of the two things a `gaps` band means on this page), from between `<!-- prompt:begin -->` and `<!-- prompt:end -->`.
-**Reads** `review/_queue.txt`, `review/_claims/`, `dispatch.md`, the four stores.
+**Does** takes the next unclaimed ref off `review/_queue.txt` and prints that page's block — the ref, what the four-store survey found (line and zone counts, and which of the two things a `gaps` band means on this page), this page's own crop geometry, and the forms the pages just before it were adjudicated to hold, from between `<!-- prompt:begin -->` and `<!-- prompt:end -->`.
+**Reads** `review/_queue.txt`, `review/_claims/`, `dispatch.md`, the four stores, `gt/ocr/` for the nearby forms.
 **Writes** `review/_claims/PP-NNN`, stamped with the local time. Block to stdout as plain text.
 **Exit** 0 with a block; 1 when the queue is empty or every ref on it is taken.
 **Note** **takes no ref, and that is the point** — the page arrives from a tool result rather than from a prompt that would then differ between siblings. `O_CREAT|O_EXCL` is the whole lock: the kernel decides which of several readers created the marker first, so there is no window between the check and the take. Readers are dispatched simultaneously and cannot see each other, so a lock resting on politeness rests on nothing; eight concurrent claimers over a three-ref queue return three distinct refs.
 
 **A claim is never released.** A reader that dies holding one leaves its page unread and its claim standing, which is the honest state rather than a silent retry — `reconcile` names the ref, and re-queueing it is a decision somebody makes. Exit 1 on an empty queue rather than an empty success: a reader handed silence at exit 0 has been told nothing, and picking a page for itself is exactly what a silence invites.
+
+**The nearby forms are offered as handles, never as text** (`lookup.nearby`). A reader can only look up what it thinks to look up, and this says what the neighbourhood has recently been keyed as so it knows what is worth a `lexicon lookup`. Reaching for a handle writes `as_typed`, so leaning on the corpus is recorded where a pasted string would be indistinguishable from an independent reading.
+
+**A word the book sets more than one way is shown as both spellings with their counts, and keyed as neither.** Refusing to pick a side is not a reason to conceal that there are two — a reader shown nothing reads its own page as though the word were settled. No row of such a bucket carries a key, so the block still cannot resolve an ambiguity, and the cap is per bucket rather than per row because half a contested pair read as a lone form is worse than showing none of it. What the list is *for* is standing text and lives in the agent body, not here — the block carries only the list.
 ```
 --root --json --toon --pager
 ```

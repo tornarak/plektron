@@ -389,6 +389,19 @@ def _decorate(entry: dict, kind: str, root: Path, index: dict,
     if kind == "toc":
         e["anchor"] = apparatus.anchor("toc", e["id"]) if e.get("id") else ""
         e["folio_url"] = _folio_url(e.get("page_start"), index)
+        # **The heading's own anchor, appended to the folio link.** `tei_html`
+        # gives every `<milestone>` the ToC id as its `@id`, so the fragment is
+        # the id and nothing has to be looked up — the row already knows which
+        # folio opens it and which entry it is. A fragment survives the
+        # `/folio/{n}` redirect, the target carrying none of its own.
+        #
+        # Level 0 is skipped because it is skipped everywhere: front matter never
+        # produces a milestone, so there would be no such anchor to land on, and a
+        # link that cannot resolve is worse than a link to the top of the page.
+        # A page that has one but is not collated yet degrades the same way — to
+        # the head of the page, which is where the folio link went anyway.
+        if e["folio_url"] and e.get("id") and (e.get("level") or 0) in MILESTONE_UNITS:
+            e["folio_url"] += f"#{e['id']}"
     elif kind == "loi":
         # **One link per printed number, not per entry.** Two entries name
         # several figures at once ("Figs. 214, 215, 216"), and each numeral is a

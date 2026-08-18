@@ -854,12 +854,15 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
         """
         seen = set()
         for h in pending:
-            key = (h["form"], h["hyphenated"], h.get("straddles", False),
-                   tuple(h["ids"]))
+            # Keyed on the page's spelling itself, not on the flag that used to
+            # stand in for it: a break-hyphenated hit is now ordinary, so two
+            # spellings of one ambiguous form reach the same branch and the flag
+            # no longer tells them apart. The comment quotes what the page sets,
+            # so a reader searching for it has to find it.
+            key = (h["form"], " ".join(h["text"].split()),
+                   h.get("straddles", False), tuple(h["ids"]))
             if key in seen:
                 continue
-            # Keyed on the page's spelling too, so `Chukchee` and `Chuk-chee` in
-            # one block are two questions — they are.
             seen.add(key)
             rep["candidates"] += 1
             # The two reasons a hit is a candidate are different questions, so
@@ -869,12 +872,14 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
             # of context — the book uses it for other things too.
             if h["hyphenated"]:
                 say = (f'{escape(h["ids"][0] if len(h["ids"]) == 1 else " or ".join(h["ids"]))}'
-                       f', spelt with a hyphen the store does not have — the '
-                       f'compositor broke the word across a line and the join '
-                       f'keeps its hyphen, since nothing can tell that hyphen '
-                       f'from the word\'s own. Read the page: if the break is the '
-                       f'printer\'s, link it; if the hyphen is really there, say '
-                       f'so and leave it unlinked')
+                       f', spelt with a hyphen the store does not have, and '
+                       f'**not at a line end** — the compositor\'s measure does '
+                       f'not account for it, which is why this is a question and '
+                       f'a line-broken spelling is not. Either the page really '
+                       f'sets the hyphen, in which case say so and leave it '
+                       f'unlinked, or the lines are out of reading order and the '
+                       f'join never saw the break — which is a defect in '
+                       f'`gt/zones/`, not something to fix here')
             elif h.get("straddles"):
                 say = (f'{escape(h["ids"][0] if len(h["ids"]) == 1 else " or ".join(h["ids"]))}'
                        f', but the form straddles a Tier-1 handle without '
@@ -900,7 +905,10 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
                        f'`auto: no` — it means other things elsewhere in the '
                        f'book. Link it if the page means this one, or delete '
                        f'this comment')
-            shown = " ".join(h["text"].split()) if h["hyphenated"] else h["form"]
+            # Always the page's spelling. It equals the store's form wherever the
+            # two do not differ, so the conditional only ever chose the store's
+            # word for the one case that now reaches other branches too.
+            shown = " ".join(h["text"].split())
             body.append(f'      <!-- entity candidate: {escape(shown)!r} '
                         f'— {say} -->')
         pending.clear()

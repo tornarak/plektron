@@ -198,3 +198,84 @@ def test_no_tier1_span_may_claim_the_rule_applied_rank(tmp_path, ratified):
                            "expected_folio": None, "folio_basis": ""},
                    ratified=ratified)
     assert any("confined to @ref" in e for e in rep.errors)
+
+
+# ---------------------------------------- the compositor's hyphen and the word's
+
+def _idx(root: Path):
+    from harness.entities import alias_index, load
+    return alias_index(load(root))
+
+
+def test_a_break_hyphen_is_read_off_its_position(tmp_path):
+    """`join_broken_words` keeps the hyphen it rejoined across, and for a long time
+    the generator called that undecidable — "nothing can tell that hyphen from the
+    word's own". Nothing had looked at *where* it was. The compositor's hyphen is
+    the last thing before the measure ran out; the word's own is anywhere else."""
+    from harness.entities import match
+    seeded(tmp_path, form="Chukchee")
+    idx = _idx(tmp_path)
+
+    broke, = match("among the Chuk-chee\nof the coast", idx)
+    assert (broke["form"], broke["broken"], broke["hyphenated"]) == (
+        "Chukchee", True, False)
+
+    mid, = match("among the Chuk-chee of the coast", idx)
+    assert (mid["form"], mid["broken"], mid["hyphenated"]) == (
+        "Chukchee", False, True)
+
+
+def test_trailing_punctuation_does_not_move_the_hyphen_off_the_line_end(tmp_path):
+    """The join takes the *token*, so the rejoined word arrives with whatever the
+    next line began with — `chee,` and `chee.` are the ordinary case, and every one
+    of the corpus's 54 instances ended a line this way."""
+    from harness.entities import match
+    seeded(tmp_path, form="Chukchee")
+    idx = _idx(tmp_path)
+    for tail in (",", ".", ".”", ";"):
+        hit, = match(f"among the Chuk-chee{tail}\nThe coast", idx)
+        assert hit["broken"] is True, tail
+
+
+def test_a_form_the_store_hyphenates_never_reaches_the_test(tmp_path):
+    """`Sredne-` / `Kolymsk` is the genuinely undecidable case — a word carrying its
+    own hyphen that also broke there. It never arises: the join puts the word back
+    as the store spells it, so the exact form matches and `dehyphenated` is never
+    consulted."""
+    from harness.entities import match
+    seeded(tmp_path, form="Sredne-Kolymsk")
+    hit, = match("at Sredne-Kolymsk\nand beyond", _idx(tmp_path))
+    assert (hit["hyphenated"], hit["broken"]) == (False, False)
+
+
+def test_a_break_hyphen_no_longer_withholds_the_rule_s_link(tmp_path):
+    """The whole point. A hyphen the position accounts for is not a question, so
+    the link a ratified `auto` alias earns everywhere else is written here too."""
+    from harness.entities import auto_forms, match, rule_links
+    seeded(tmp_path, form="Chukchee")
+    idx = _idx(tmp_path)
+    hits = match("among the Chuk-chee\nof the coast", idx)
+    assert [h["form"] for h in rule_links(hits, auto_forms(idx))] == ["Chukchee"]
+
+
+def test_a_caller_that_flattens_the_page_gets_the_conservative_answer(tmp_path):
+    """The evidence is the caller's to preserve, and losing it must cost a question
+    rather than produce a wrong link. Pinned because `occurrences` did exactly this
+    and agreed with itself about it."""
+    from harness.entities import match
+    seeded(tmp_path, form="Chukchee")
+    hit, = match("among the Chuk-chee of the coast", _idx(tmp_path))
+    assert hit["hyphenated"] is True and hit["auto"] is False
+
+
+def test_occurrences_reads_the_same_page_the_generator_did(tmp_path):
+    """The placer and the re-deriver must not disagree about which hyphens are
+    questions. `occurrences` collapsed the page to one line before matching, so a
+    word the generator linked came back as an unlinked hyphenated candidate."""
+    from harness.entities import load, occurrences
+    seeded(tmp_path, form="Chukchee")
+    p = page(tmp_path, "1-021",
+             '<pb n="1"/><p>among the Chuk-chee\nof the coast</p>')
+    assert p.exists()
+    got = occurrences(["place:markova"], ["1-021"], load(tmp_path), tmp_path)
+    assert [r["hyphenated"] for r in got["place:markova"]["unlinked"]] == [False]

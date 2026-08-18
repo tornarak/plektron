@@ -53,6 +53,7 @@ from pathlib import Path
 from .context import norm_ref
 from .generate import GENDIR
 from .lines import ZOOM
+from .marks import MarksConfigError
 
 DOC = Path(".claude/skills/rebuild-groundtruth/dispatch.md")
 # The page block, rendered by `claim` — everything true of one page in particular.
@@ -204,8 +205,42 @@ def build(ref: str, root: Path = Path("."), note: str | None = None) -> dict:
            if c["zoom"] == ZOOM else
            "so a long word does NOT fit and comes back in pieces. One mark only.")
         for c in s.get("zoom") or [])
+    # Braces in the *substituted* value are safe: `format` does not rescan what it
+    # interpolates, so a handle renders as `{ke'let}` and reaches the reader as the
+    # thing it would actually type.
+    #
+    # **A reference aid may not refuse a dispatch.** Every other refusal in this
+    # function is a statement that the page is not readable yet and names the command
+    # that fixes it; "the lexicon could not be consulted" is neither. So the two ways
+    # of having nothing to show are caught and rendered — and rendered *differently*,
+    # because "the neighbourhood holds no keyable form" and "this could not be
+    # computed" are different claims and only one of them is about the book.
+    from .lookup import nearby as _nearby
+    try:
+        rows = _nearby(r, root)
+        lines, seen = [], set()
+        for w in rows:
+            if w["ambiguous"]:
+                # Both spellings on one line, so the pair reads as one finding: two
+                # rows would look like two words, which is the misreading the whole
+                # decision to show a contested form is meant to prevent.
+                if w["bucket"] in seen:
+                    continue
+                seen.add(w["bucket"])
+                both = [x for x in rows if x["bucket"] == w["bucket"]]
+                lines.append(
+                    "  - " + " / ".join(f"{x['form']} ({x['count']})" for x in both)
+                    + " — set more than one way nearby, so NO handle and nothing"
+                      " here settles it. Key what your page sets.")
+            else:
+                lines.append(f"  - {{{w['key']}}} -> {w['form']}  "
+                             f"({w['count']} on {w['pages']} pp)")
+        near = "\n".join(lines) or \
+            "  - (none: no page in the preceding span holds a native form)"
+    except (MarksConfigError, OSError) as e:
+        near = f"  - (unavailable, so infer nothing from its silence: {e})"
     text = template(root).format(
-        ref=r, lines=s["lines"], zones=s["blocks"], zoom=zoom,
+        ref=r, lines=s["lines"], zones=s["blocks"], zoom=zoom, nearby=near,
         figures=figs, note=f" {note.strip()}" if note else "")
     left = sorted(set(re.findall(r"\{(\w+)\}", template(root))))
     return {**s, "page_block": text, "placeholders": " ".join(left)}

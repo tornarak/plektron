@@ -828,7 +828,8 @@ def _pattern(forms) -> re.Pattern | None:
     tolerance the store cannot see 39 occurrences across the corpus at 13
     entities — a form that is present and invisible, which is the silent miss this
     project is organised against. What it buys is a *question*: `match` marks such
-    a hit `hyphenated`, and no rule may link one.
+    a hit `hyphenated` — unless the position accounts for it, which
+    `_explained_by_break` is the single definition of.
     """
     forms = sorted(forms, key=len, reverse=True)
     if not forms:
@@ -836,6 +837,52 @@ def _pattern(forms) -> re.Pattern | None:
     alts = [r"\s+".join("-?".join(re.escape(c) for c in w) for w in f.split())
             for f in forms]
     return re.compile(_BEFORE + "(?:" + "|".join(alts) + ")" + _AFTER)
+
+
+def _explained_by_break(text: str, start: int, raw: str, form: str) -> bool:
+    """True when every hyphen the page has and the store's form lacks ends a line.
+
+    The compositor's line-break hyphen and the word's own are the same character,
+    and for a long time that was taken to settle the matter. It does not, because
+    they are not in the same *place*: `join_broken_words` rejoins the two halves
+    and the hyphen it kept is, by construction, the last thing before the measure
+    ran out. A hyphen anywhere else in the line is the word's own. The position is
+    the witness, and the ALTO had it all along.
+
+    The case this still refuses is the one that is genuinely undecidable — a word
+    that carries its own hyphen *and* broke there, `Sredne-` / `Kolymsk`. It never
+    reaches here: the join puts the word back together as the store spells it, so
+    `match` finds the exact form and never consults `dehyphenated` at all.
+
+    **The evidence is the caller's to preserve.** This reads `text` as the
+    generator joins a block — printed line breaks intact. A caller that has
+    flattened them hands over no witness and gets `False`, which is the
+    conservative answer and the one every hit got before this test existed.
+    """
+    if not form:
+        return False
+    i = j = 0
+    while i < len(raw):
+        if raw[i].isspace():
+            while i < len(raw) and raw[i].isspace():
+                i += 1
+            while j < len(form) and form[j].isspace():
+                j += 1
+            continue
+        if form[j:j + 1] == "-" and raw[i] != "-":
+            j += 1                       # a hyphen the store has and the page lost
+            continue
+        if raw[i] == "-" and form[j:j + 1] != "-":
+            k = start + i + 1
+            while k < len(text) and not text[k].isspace():
+                k += 1
+            if k < len(text) and text[k] != "\n":
+                return False
+            i += 1
+            continue
+        i += 1
+        j += 1
+    return True
 
 
 def match(text: str, idx: dict[str, list[dict]]) -> list[dict]:
@@ -848,12 +895,21 @@ def match(text: str, idx: dict[str, list[dict]]) -> list[dict]:
     contested one without going back to the index.
 
     **`hyphenated` says the page spells the form with a hyphen the store does
-    not**, which is what a compositor's line-break hyphen looks like after
-    `join_broken_words` rejoins the two halves. Such a hit is never `auto`, no
-    matter how safe the alias: deciding that a hyphen is the printer's and not
-    the word's is a reading, and `Rein-deer` being obvious does not make it
-    mechanical. It arrives as a candidate, the reader settles it, and the
-    generator's comment says which kind of question it is.
+    not have and nothing accounts for** — the extra hyphen sits mid-line, where
+    the compositor's measure does not explain it. Such a hit is never `auto`:
+    deciding that a hyphen is the printer's and not the word's is a reading, and
+    `Rein-deer` being obvious does not make it mechanical. It arrives as a
+    candidate and the reader settles it.
+
+    **`broken` is the same spelling difference with the position accounting for
+    it**, and it is not a question. It was one for as long as this pass held that
+    "nothing can tell that hyphen from the word's own" — measured over the 325
+    generated pages, that put 54 candidates in front of readers (`Rus-sians`,
+    `Kam-chatka`, `Penin-sula`, `Es-kimo`) and **not one of them sat anywhere but
+    a line end**. The claim was not that the evidence was weak; it was that there
+    was none, and there was. `_explained_by_break` holds the rule, once, because
+    six call sites read this field and agreeing with each other is not the same
+    as being right.
 
     Case-sensitive. These are proper nouns in running prose, and a
     case-insensitive match on a short form would fire on ordinary words.
@@ -869,10 +925,11 @@ def match(text: str, idx: dict[str, list[dict]]) -> list[dict]:
     out = []
     for m in pat.finditer(text):
         got = " ".join(m.group(0).split())
-        form, hyphenated = got, False
+        form, hyphenated, broken = got, False, False
         if form not in idx:
             form = dehyphenated.get(got.replace("-", ""), "")
-            hyphenated = True
+            broken = _explained_by_break(text, m.start(), m.group(0), form)
+            hyphenated = not broken
         claims = idx.get(form, [])
         if not claims:
             continue
@@ -882,6 +939,7 @@ def match(text: str, idx: dict[str, list[dict]]) -> list[dict]:
             "auto": (not hyphenated and len(claims) == 1 and claims[0]["auto"]),
             "scope": claims[0]["scope"] if len(claims) == 1 else "",
             "hyphenated": hyphenated,
+            "broken": broken,
             "status": claims[0]["status"] if len(claims) == 1 else "",
         })
     return out
@@ -905,9 +963,11 @@ def rule_links(hits: list[dict], autos: dict[str, str],
     a caller holding the whole body at once can leave it out.
 
     **`seen` is keyed on the store's form, not the page's spelling**, so
-    `Chukchee` and a line-broken `Chuk-chee` are one form for the count. A
-    hyphenated hit is never `auto` in the first place, so it neither takes the
-    one link nor consumes it.
+    `Chukchee` and a line-broken `Chuk-chee` are one form for the count — and
+    since the break no longer withholds the link, a `scope: first` form printed
+    first as `Chuk-chee` spends its one link there, which is where the reader
+    meets the name. A hit whose hyphen the position does *not* explain is never
+    `auto`, so it neither takes the link nor consumes it.
     """
     seen = set() if seen is None else seen
     out = []
@@ -1006,7 +1066,14 @@ def occurrences(ids, refs, store: dict, root: Path = Path(".")) -> dict:
         body = doc.find(f".//{{{TEI_NS}}}body")
         if body is None:
             continue
-        text = " ".join(_unlinked_text(body).split())
+        # **The line breaks are evidence and survive to `match`**, which reads
+        # them to tell a compositor's break hyphen from the word's own. Flattening
+        # the page first is what made this caller answer `hyphenated` where the
+        # generator answered `broken` on the same words — the two rules agreeing
+        # on a page nobody could see was wrong. Only runs *within* a line collapse
+        # here; the windows are flattened at the row, for display.
+        text = "\n".join(" ".join(ln.split())
+                         for ln in _unlinked_text(body).splitlines())
         for h in match(text, wanted):
             before, got, after = window(text, h["start"], h["end"])
             for i in h["ids"]:
@@ -1014,7 +1081,9 @@ def occurrences(ids, refs, store: dict, root: Path = Path(".")) -> dict:
                     out[i]["unlinked"].append({
                         "id": i, "ref": ref, "rank": rank, "form": h["form"],
                         "as_printed": " ".join(h["text"].split()),
-                        "before": before, "match": got, "after": after,
+                        "before": " ".join(before.split()),
+                        "match": " ".join(got.split()),
+                        "after": " ".join(after.split()),
                         "ambiguous": len(h["ids"]) > 1,
                         "hyphenated": h["hyphenated"]})
     return out

@@ -340,6 +340,93 @@ def bare(s: str) -> str:
     return "".join(c for c in s if c.isalnum() and c.isascii()).casefold()
 
 
+NEARBY_SPAN = 12
+NEARBY_MOST = 15
+
+
+def nearby(ref: str, root: Path = Path("."), span: int = NEARBY_SPAN,
+           most: int = NEARBY_MOST, min_pages: int = 1) -> list[dict]:
+    """The forms most often keyed on the pages just before `ref`, with their handles.
+
+    A reader can only look up what it thinks to look up. `2-082` queried the
+    `kaˊmak` compounds on its page, never thought to query the word it got wrong,
+    and keyed a sort two ways from its neighbour — while `2-087`, ten pages after
+    the adjudication that ratified them, reached for `{e'un}` and `{mi'lhi_li_n}`
+    and got them right, because it happened to try. This closes that gap from the
+    other side: what the neighbourhood has recently been keyed as, offered before
+    the reading rather than waited on.
+
+    **It is an error-checking aid, not an input to composition.** The wording is
+    `state.foreign_terms_nearby`'s and the rule is the same one: a form here says
+    what the pages around this one were *adjudicated* to hold, and it emphatically
+    does not license reading this page's ink to match. Tier-1 content is what this
+    page sets.
+
+    Three properties keep it on the right side of that line, and none is incidental:
+
+      * **A word the book sets more than one way is shown as both, with no key.**
+        `resolve` refuses a side of a live ambiguity and so does this, but refusing
+        to *pick* is not a reason to conceal: a reader who cannot see that a word is
+        contested will read its page as though it were settled, and `2-076` prints
+        `g̣ɪˊrg̣ɪr` beside `g̣iˊrg̣itti` on adjacent lines. The pair is the
+        information. `key` is empty on every row of such a bucket, so the block still
+        cannot be what settles one, and the two spellings are kept adjacent because
+        half of an ambiguity is worse than none of it.
+      * **The handle is the offer, so leaning on it is recorded.** A reader that
+        writes `{e'un}` gets `as_typed` on the line and the review UI badges it a
+        corpus match rather than a reading. A form pasted from a prompt with no
+        handle would be indistinguishable from an independent witness, which is the
+        collapse `lookup`'s whole design is arranged against.
+      * **The preceding `span` scan indices of the same part**, and nothing after.
+        Not a corpus-wide frequency table: the point is what this stretch of the
+        book has been talking about, and a global list is `lexicon native`.
+
+    The window is arithmetic on the ref rather than a walk of `all_scans`, so this
+    reads no derived tree and a clone with no `scans/` still renders a prompt. A
+    gap in the range — a plate, a foldout — simply contributes nothing, which is
+    what it holds.
+
+    Nothing about how a form is built, segmented or related to any other form is
+    computed or implied. These are strings the store holds and counts of them.
+    """
+    from .context import norm_ref, parse_ref
+
+    part, num = parse_ref(norm_ref(ref))
+    window = {f"{part}-{n:03d}" for n in range(max(1, num - span), num)}
+    if not window:
+        return []
+
+    idx = index(root)
+    groups = []
+    for bucket, b in idx["buckets"].items():
+        # The refusal is on the fold, as everywhere else: marking distinguishes, so
+        # resting it on key equality would let a reader name one side by spelling it
+        # exactly. See `spellings` and `test_the_precise_key_is_refused_too`.
+        ambiguous = len(spellings(b)) > 1
+        rows = []
+        for key, f in sorted(b["forms"].items()):
+            here = [ln for ln in f["lines"] if ln["ref"] in window]
+            if not here:
+                continue
+            rows.append({"key": "" if ambiguous else key, "form": f["form"],
+                         "count": len(here),
+                         "pages": len({ln["ref"] for ln in here}),
+                         "refs": " ".join(sorted({ln["ref"] for ln in here})),
+                         "bucket": bucket, "ambiguous": ambiguous})
+        if not rows or len({r["refs"] for r in rows}) < 1 or \
+                len(b["refs"]) < min_pages:
+            continue
+        rows.sort(key=lambda r: (-r["count"], r["form"]))
+        groups.append(rows)
+
+    # **Capped by bucket, never by row.** Truncating a list of forms could cut a
+    # contested word in half and show the reader one spelling as though it stood
+    # alone — which is the one thing this must not do.
+    groups.sort(key=lambda g: (-sum(r["count"] for r in g),
+                               -max(r["pages"] for r in g), g[0]["form"]))
+    return [r for g in groups[:most] for r in g]
+
+
 def search(queries: list[str], root: Path = Path("."), min_pages: int = 1,
            context: int = 2) -> dict:
     """Forms matching any query, with what a reader needs to judge them.

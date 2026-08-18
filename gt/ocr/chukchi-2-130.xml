@@ -1,0 +1,230 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-2-130.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-2-130.png; regions_from: zones/chukchi-2-130.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+                <TextBlock ID="mz_2-130_r1" HPOS="362" VPOS="462" WIDTH="1776" HEIGHT="94" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="362 462 2138 462 2138 556 362 556"/>
+                    </Shape>
+                    <TextLine ID="mz_2-130_l1" HPOS="942" VPOS="481" WIDTH="650" HEIGHT="53" BASELINE="944 515 1592 518" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1590 489 1576 483 957 481 944 493 944 515 942 528 1588 534 1592 518 1590 495 1590 489"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-130_l2" HPOS="366" VPOS="495" WIDTH="106" HEIGHT="49" BASELINE="366 522 472 522" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="366 522 366 534 395 544 397 544 399 544 472 532 472 522 472 495 366 495 366 522"/>
+                        </Shape>
+                        <String CONTENT="402"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-130_r2" HPOS="362" VPOS="580" WIDTH="1776" HEIGHT="133" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="362 580 2138 580 2138 713 362 713"/>
+                    </Shape>
+                    <TextLine ID="mz_2-130_l3" HPOS="360" VPOS="581" WIDTH="1776" HEIGHT="61" BASELINE="362 626 2136 622" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2083 585 2074 583 2058 591 2036 583 2025 583 2021 583 2001 591 1891 581 1889 581 1888 581 1860 591 1754 581 1752 581 1750 581 1729 591 1715 581 1713 581 1711 581 1709 581 1707 581 1672 593 1551 593 1533 581 1531 581 1529 581 1527 581 1306 591 1275 581 1273 581 1271 581 1269 581 1243 595 1071 595 1055 583 1053 583 1051 583 1049 583 998 593 961 583 959 583 957 583 955 583 924 593 885 583 883 583 881 583 787 593 748 583 746 583 744 583 654 593 630 583 628 583 626 583 581 593 548 583 546 583 544 583 542 583 509 593 360 591 362 626 362 642 2136 636 2136 622 2132 593 2101 585 2083 585"/>
+                        </Shape>
+                        <String CONTENT="by a simple jerk of the hand, may make the bird soar aloft or descend the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-130_l4" HPOS="356" VPOS="640" WIDTH="1778" HEIGHT="65" BASELINE="358 689 2134 683" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="356 654 358 689 358 705 2132 705 2134 683 2132 652 2111 640 2109 640 2107 640 2105 640 2050 652 1989 640 1987 640 1985 640 1983 640 1962 654 1878 654 1860 640 1858 640 1856 640 1854 640 1852 640 1819 654 1737 654 1717 640 1715 640 1713 640 1711 640 1539 654 1457 644 1455 644 1392 654 1374 642 1372 642 1370 642 1369 642 1367 642 1322 656 1263 656 1243 642 1241 642 1239 642 1237 642 1155 654 1088 642 1030 642 1028 642 1026 642 1024 642 1008 654 949 644 947 644 820 656 763 644 761 644 759 644 720 654 671 644 669 644 667 644 665 644 646 656 554 644 552 644 483 656 358 652 356 654"/>
+                        </Shape>
+                        <String CONTENT="line. Very simple whistles (Fig. 281) made of goose-quill or of wood, with"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-130_r3" HPOS="362" VPOS="1841" WIDTH="1776" HEIGHT="850" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="362 1841 2138 1841 2138 2691 362 2691"/>
+                    </Shape>
+                    <TextLine ID="mz_2-130_l5" HPOS="362" VPOS="1850" WIDTH="1772" HEIGHT="57" BASELINE="364 1883 2134 1887" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="364 1883 362 1899 374 1907 376 1907 377 1907 379 1907 2132 1899 2134 1887 2132 1850 364 1852 364 1883"/>
+                        </Shape>
+                        <String CONTENT="a thin tongue of whalebone, are used to produce from time to time a shrill"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-130_l6" HPOS="366" VPOS="1905" WIDTH="1768" HEIGHT="57" BASELINE="366 1946 2134 1946" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="366 1946 366 1960 2130 1962 2134 1946 2132 1919 2042 1905 2040 1905 2038 1905 2007 1919 1921 1919 1901 1905 1899 1905 1897 1905 1895 1905 1893 1905 1860 1917 1842 1905 1841 1905 1839 1905 1837 1905 1835 1905 1811 1917 1788 1905 1786 1905 1784 1905 1668 1917 1619 1905 1617 1905 1615 1905 1557 1917 1521 1905 1519 1905 1517 1905 1515 1905 1482 1917 1451 1905 1449 1905 1447 1905 1445 1905 1419 1919 1357 1919 1339 1905 1337 1905 1335 1905 1333 1905 1186 1915 1085 1905 1083 1905 1081 1905 1036 1917 981 1905 979 1905 977 1905 947 1917 932 1905 930 1905 928 1905 851 1905 850 1905 759 1917 732 1905 730 1905 728 1905 726 1905 687 1917 669 1905 667 1905 665 1905 595 1905 593 1905 515 1917 481 1905 479 1905 477 1905 366 1917 366 1946"/>
+                        </Shape>
+                        <String CONTENT="sound, which is called the “eider-duck’s voice.” As said before, these"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-130_l7" HPOS="1406" VPOS="1966" WIDTH="724" HEIGHT="64" BASELINE="1408 2005 2130 2009" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1408 2005 1406 2017 1823 2030 1825 2030 2128 2021 2130 2009 2128 1977 2056 1966 1960 1966 1958 1966 1956 1966 1954 1966 1954 1968 1944 1975 1907 1966 1905 1966 1903 1966 1901 1966 1874 1975 1819 1966 1817 1966 1408 1972 1408 2005"/>
+                        </Shape>
+                        <String CONTENT="whistles are used by the Eskimo"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-130_l8" HPOS="1404" VPOS="2024" WIDTH="726" HEIGHT="57" BASELINE="1406 2068 2130 2064" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1406 2068 1406 2081 2128 2081 2130 2064 2126 2038 2072 2024 2070 2024 2068 2024 2025 2036 1993 2024 1991 2024 1989 2024 1987 2024 1985 2024 1985 2026 1974 2038 1936 2038 1905 2024 1903 2024 1901 2024 1899 2024 1897 2024 1876 2038 1799 2038 1774 2024 1772 2024 1770 2024 1768 2024 1766 2024 1752 2036 1741 2026 1739 2026 1737 2026 1735 2026 1600 2038 1539 2026 1537 2026 1535 2026 1510 2038 1480 2026 1478 2026 1476 2026 1404 2040 1406 2068"/>
+                        </Shape>
+                        <String CONTENT="and the Chukchee also in the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-130_l9" HPOS="1410" VPOS="2089" WIDTH="720" HEIGHT="59" BASELINE="1410 2128 2130 2128" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1410 2128 1410 2140 2128 2148 2130 2128 2130 2099 2107 2089 2105 2089 2103 2089 1819 2099 1790 2089 1788 2089 1786 2089 1784 2089 1758 2099 1731 2089 1729 2089 1727 2089 1660 2099 1568 2089 1566 2089 1564 2089 1543 2099 1513 2089 1511 2089 1510 2089 1410 2099 1410 2128"/>
+                        </Shape>
+                        <String CONTENT="usual form of the ceremonial;"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-130_l10" HPOS="1410" VPOS="2156" WIDTH="722" HEIGHT="47" BASELINE="1410 2187 2132 2187" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1410 2187 1410 2203 2132 2203 2132 2187 2132 2158 1410 2156 1410 2187"/>
+                        </Shape>
+                        <String CONTENT="but my informants asserted that"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-130_l11" HPOS="1410" VPOS="2209" WIDTH="722" HEIGHT="62" BASELINE="1410 2248 2132 2248" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1410 2248 1410 2257 1482 2269 1484 2269 1486 2269 1517 2259 1682 2259 1700 2269 1701 2269 1703 2269 1705 2271 1868 2271 1868 2269 1870 2269 1872 2269 1872 2267 1882 2259 2066 2269 2068 2269 2132 2257 2132 2248 2130 2214 1519 2218 1427 2209 1425 2209 1423 2209 1421 2209 1410 2216 1410 2248"/>
+                        </Shape>
+                        <String CONTENT="they were specially connected"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-130_l12" HPOS="1410" VPOS="2263" WIDTH="722" HEIGHT="57" BASELINE="1412 2303 2132 2306" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1412 2303 1410 2316 2128 2320 2132 2306 2132 2277 2111 2265 2109 2265 2107 2265 1852 2275 1827 2265 1825 2265 1823 2265 1821 2265 1801 2275 1774 2263 1772 2263 1770 2263 1768 2263 1766 2263 1750 2273 1696 2263 1694 2263 1412 2271 1412 2303"/>
+                        </Shape>
+                        <String CONTENT="with the eider-duck ceremonial."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-130_l13" HPOS="1414" VPOS="2324" WIDTH="718" HEIGHT="67" BASELINE="1414 2365 2132 2365" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1414 2365 1414 2377 1715 2389 1717 2389 1803 2379 1842 2389 1844 2389 1846 2391 1940 2391 1940 2389 1942 2389 1944 2389 1956 2379 2113 2389 2115 2389 2117 2389 2119 2389 2132 2379 2132 2365 2132 2338 2077 2324 2076 2324 2025 2334 2005 2324 2003 2324 2001 2324 1999 2324 1997 2324 1980 2338 1927 2338 1909 2324 1907 2324 1905 2324 1903 2324 1842 2338 1780 2338 1760 2324 1758 2324 1756 2324 1754 2324 1752 2324 1723 2334 1711 2324 1709 2324 1707 2324 1705 2324 1633 2336 1598 2324 1596 2324 1594 2324 1592 2324 1566 2338 1519 2338 1506 2324 1504 2324 1502 2324 1500 2324 1498 2324 1470 2336 1445 2324 1443 2324 1441 2324 1439 2324 1414 2330 1414 2365"/>
+                        </Shape>
+                        <String CONTENT="I found whistles quite similar"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-130_l14" HPOS="1408" VPOS="2385" WIDTH="720" HEIGHT="64" BASELINE="1410 2428 2128 2424" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1410 2428 1410 2438 1584 2449 1586 2449 1588 2449 1625 2438 1811 2447 1813 2447 1815 2447 1817 2447 1833 2436 1962 2436 1974 2445 1974 2447 1976 2447 1978 2447 1980 2449 2126 2449 2128 2424 2125 2398 1940 2398 1891 2385 1889 2385 1888 2385 1817 2397 1768 2385 1766 2385 1764 2385 1762 2385 1715 2398 1531 2387 1529 2387 1463 2398 1417 2387 1416 2387 1414 2387 1412 2387 1410 2387 1410 2389 1408 2389 1410 2428"/>
+                        </Shape>
+                        <String CONTENT="in shape to Fig. 281 among"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-130_l15" HPOS="360" VPOS="2438" WIDTH="1770" HEIGHT="66" BASELINE="362 2479 2130 2487" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="362 2477 362 2479 360 2491 900 2504 902 2504 2128 2500 2130 2487 2128 2449 1721 2453 1690 2442 1688 2442 1686 2442 1613 2451 1553 2442 1551 2442 1453 2451 1427 2442 1425 2442 1423 2442 1421 2442 1419 2442 1404 2451 1378 2442 1376 2442 1374 2442 1290 2451 1247 2440 1245 2440 1243 2440 1173 2449 1069 2440 1067 2440 1065 2440 1063 2440 1047 2451 930 2451 869 2440 867 2440 865 2440 844 2449 806 2438 804 2438 802 2438 636 2447 599 2438 597 2438 595 2438 593 2438 558 2447 513 2438 511 2438 417 2447 389 2438 387 2438 385 2438 383 2438 381 2438 377 2438 362 2477"/>
+                        </Shape>
+                        <String CONTENT="the collections at Washington, D.C. One of them (Cat. No. 7457) is marked"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-130_l16" HPOS="368" VPOS="2496" WIDTH="1762" HEIGHT="65" BASELINE="370 2536 2130 2545" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="370 2536 368 2551 2126 2561 2130 2545 2128 2516 1897 2504 1895 2504 1821 2514 1780 2502 1778 2502 1776 2502 1625 2512 1551 2502 1549 2502 1547 2502 1511 2512 1470 2502 1468 2502 1466 2502 1464 2502 1437 2512 1298 2512 1276 2500 1275 2500 1273 2500 1271 2500 1239 2510 1224 2500 1222 2500 1220 2500 1218 2500 1157 2510 1094 2500 1092 2500 1010 2508 994 2498 992 2498 991 2498 989 2498 987 2498 959 2508 934 2498 932 2498 930 2498 883 2508 851 2498 850 2498 848 2498 795 2508 773 2498 771 2498 769 2498 767 2498 728 2508 603 2496 601 2496 550 2506 536 2496 534 2496 532 2496 530 2496 528 2496 507 2506 370 2504 370 2536"/>
+                        </Shape>
+                        <String CONTENT="“Fort Anderson, R. MacFarlane,” and belongs to the Central Eskimo. Two other"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-130_l17" HPOS="362" VPOS="2567" WIDTH="1766" HEIGHT="61" BASELINE="364 2598 2128 2608" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="364 2598 362 2612 2125 2628 2128 2608 2126 2577 364 2567 364 2598"/>
+                        </Shape>
+                        <String CONTENT="whistles, probably from the same region, are without any mark. Nelson, however,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-130_l18" HPOS="362" VPOS="2620" WIDTH="1678" HEIGHT="60" BASELINE="364 2657 2040 2667" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="364 2657 362 2673 372 2680 374 2680 376 2680 377 2680 2038 2679 2040 2667 2038 2637 1983 2626 1982 2626 1980 2626 1946 2635 1931 2626 1929 2626 1927 2626 1925 2626 1723 2633 1707 2624 1705 2624 1703 2624 1701 2624 1649 2633 1564 2624 1562 2624 1560 2624 1529 2633 1316 2633 1294 2622 1292 2622 1290 2622 1049 2632 1034 2620 1032 2620 1030 2620 1028 2620 1026 2620 985 2632 840 2632 824 2620 822 2620 820 2620 818 2620 816 2620 789 2630 714 2620 712 2620 364 2626 364 2657"/>
+                        </Shape>
+                        <String CONTENT="does not mention the use of such whistles among the natives of Alaska."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-130_r4" HPOS="362" VPOS="2691" WIDTH="1776" HEIGHT="419" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="362 2691 2138 2691 2138 3110 362 3110"/>
+                    </Shape>
+                    <TextLine ID="mz_2-130_l19" HPOS="468" VPOS="2679" WIDTH="1658" HEIGHT="68" BASELINE="470 2718 2126 2727" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="470 2718 468 2729 517 2741 519 2741 799 2733 851 2743 853 2743 1016 2735 2123 2747 2126 2727 2125 2696 1694 2696 1623 2684 1621 2684 1470 2694 1369 2682 1367 2682 1149 2692 1135 2680 1133 2680 1132 2680 1130 2680 912 2690 893 2680 891 2680 889 2680 812 2688 801 2679 799 2679 797 2679 795 2679 748 2688 732 2679 730 2679 728 2679 726 2679 470 2686 470 2718"/>
+                        </Shape>
+                        <String CONTENT="Ceremonial of Going-Around. — Another ceremonial encountered among"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-130_l20" HPOS="360" VPOS="2737" WIDTH="1766" HEIGHT="65" BASELINE="362 2778 2126 2786" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="362 2778 360 2790 389 2802 391 2802 393 2802 2125 2798 2126 2786 2125 2755 2013 2755 1997 2743 1995 2743 1993 2743 1991 2743 1989 2743 1964 2753 1950 2743 1948 2743 1946 2743 1944 2743 1596 2751 1574 2741 1572 2741 1570 2741 1568 2741 1537 2751 1374 2741 1372 2741 1261 2751 1184 2739 1182 2739 1041 2751 916 2751 900 2739 898 2739 897 2739 895 2739 893 2739 865 2749 824 2739 822 2739 820 2739 742 2747 718 2737 716 2737 714 2737 362 2745 362 2778"/>
+                        </Shape>
+                        <String CONTENT="the Asiatic Eskimo is the so-called “ceremonial of going-around,” which is con-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-130_l21" HPOS="360" VPOS="2798" WIDTH="1766" HEIGHT="69" BASELINE="362 2839 2126 2847" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="362 2839 360 2851 564 2863 566 2863 793 2855 2123 2867 2126 2847 2125 2812 1901 2804 1899 2804 1841 2814 1807 2804 1805 2804 1803 2804 1801 2804 1764 2814 1713 2804 1711 2804 1709 2804 1686 2814 1607 2802 1605 2802 1513 2812 1484 2802 1482 2802 1480 2802 1414 2812 1349 2802 1347 2802 1253 2812 1034 2800 1032 2800 1030 2800 991 2810 963 2800 961 2800 959 2800 957 2800 926 2810 879 2800 877 2800 875 2800 873 2800 859 2810 763 2798 761 2798 362 2806 362 2839"/>
+                        </Shape>
+                        <String CONTENT="sidered as a kind of thanksgiving ceremonial. A native drawing (Fig. 282)"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-130_l22" HPOS="362" VPOS="2859" WIDTH="1766" HEIGHT="62" BASELINE="364 2900 2128 2906" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="364 2900 362 2914 372 2921 374 2921 376 2921 377 2921 2126 2919 2128 2906 2125 2868 2072 2874 2029 2863 2027 2863 2025 2863 2023 2863 1991 2874 1960 2863 1958 2863 1956 2863 1954 2863 1931 2874 1895 2863 1893 2863 1891 2863 1889 2863 1888 2863 1866 2876 1758 2876 1725 2863 1723 2863 1721 2863 1719 2863 1717 2863 1698 2874 1672 2863 1670 2863 1668 2863 1666 2863 1664 2863 1647 2876 1545 2876 1476 2861 1474 2861 1412 2872 1376 2861 1374 2861 1276 2861 1275 2861 1273 2861 1271 2861 1253 2874 1173 2874 1139 2861 1137 2861 1135 2861 1133 2861 1132 2861 1116 2872 1098 2861 1096 2861 1094 2861 1032 2861 1030 2861 961 2872 910 2859 908 2859 906 2859 691 2870 640 2859 638 2859 636 2859 634 2859 632 2859 611 2870 364 2870 364 2900"/>
+                        </Shape>
+                        <String CONTENT="represents the celebration of it in an Eskimo house. A long pole is fixed"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-130_l23" HPOS="362" VPOS="2919" WIDTH="1768" HEIGHT="67" BASELINE="364 2959 2130 2964" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="364 2959 362 2972 374 2980 376 2980 377 2980 379 2980 436 2972 497 2982 499 2982 501 2982 520 2972 642 2982 644 2982 898 2972 1032 2984 1034 2984 1036 2984 1067 2974 1090 2984 1092 2984 1094 2984 1173 2974 1194 2984 1196 2984 1198 2984 1312 2974 1353 2984 1355 2984 1357 2984 1531 2974 1572 2986 1574 2986 1576 2986 2128 2978 2130 2964 2130 2935 2085 2923 2083 2923 2081 2923 2079 2923 2046 2933 1829 2923 1827 2923 1825 2923 1799 2935 1662 2935 1647 2923 1645 2923 1643 2923 1641 2923 1523 2931 1508 2921 1506 2921 1504 2921 1502 2921 1500 2921 1461 2931 1421 2921 1419 2921 1417 2921 1151 2931 1098 2921 1096 2921 1028 2931 920 2919 918 2919 916 2919 887 2929 836 2919 834 2919 726 2929 673 2919 671 2919 548 2929 364 2921 364 2959"/>
+                        </Shape>
+                        <String CONTENT="in the middle of the house, the upper end of which protrudes from the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-130_l24" HPOS="364" VPOS="2978" WIDTH="1764" HEIGHT="63" BASELINE="366 3017 2128 3027" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="366 3017 364 3031 377 3039 379 3039 381 3039 383 3041 2126 3041 2128 3027 2128 2998 2091 2986 2089 2986 2087 2986 1872 2996 1825 2986 1823 2986 1778 2996 1752 2984 1750 2984 1748 2984 1508 2994 1474 2984 1472 2984 1470 2984 1468 2984 1431 2994 1355 2982 1353 2982 1190 2992 1069 2980 1067 2980 1065 2980 1038 2992 797 2992 765 2980 763 2980 761 2980 759 2980 720 2990 687 2978 685 2978 683 2978 632 2988 550 2978 548 2978 366 2986 366 3017"/>
+                        </Shape>
+                        <String CONTENT="vent-hole. On it are two double tassels and a seal-skin float, to the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-130_l25" HPOS="370" VPOS="3041" WIDTH="1745" HEIGHT="62" BASELINE="372 3080 2115 3084" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="372 3080 370 3098 2111 3103 2115 3084 2111 3049 2009 3053 1976 3043 1974 3043 1972 3043 1923 3053 1895 3043 1893 3043 1891 3043 1837 3053 1782 3043 1780 3043 1686 3053 1660 3043 1658 3043 1656 3043 1654 3043 1652 3043 1637 3055 1533 3055 1500 3043 1498 3043 1496 3043 1419 3053 1386 3043 1384 3043 1382 3043 1318 3053 1284 3043 1282 3043 1280 3043 1278 3043 1257 3053 916 3041 914 3041 912 3041 910 3041 895 3053 775 3053 675 3041 673 3041 671 3041 634 3051 597 3041 595 3041 593 3041 528 3051 372 3041 372 3080"/>
+                        </Shape>
+                        <String CONTENT="flippers of which are fastened the pelt of a fox and an iron kettle. A"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

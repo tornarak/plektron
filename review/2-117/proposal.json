@@ -1,0 +1,171 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "389"
+    },
+    "2": {
+      "text": "another, designed for the zenith. This is offered before the entrance of the"
+    },
+    "3": {
+      "text": "house, with some crumbs of food flung upwards."
+    },
+    "4": {
+      "text": "Fall Ceremonial. — The time of the fall ceremonial varies, in different"
+    },
+    "5": {
+      "text": "villages and families, from the end of October to the first days of January."
+    },
+    "6": {
+      "text": "The fittest time, however, is thought to be at the birth of the moon after"
+    },
+    "7": {
+      "text": "the shortest days of the winter, and it is considered the beginning of the"
+    },
+    "8": {
+      "text": "first month.¹ Moreover, in villages like Uñiˊsak or Uweˊlen, the ceremonial",
+      "resolved": "Uñiˊsak = n+U+0303, ˊ=U+02CA; Uweˊlen = ˊ=U+02CA",
+      "note": "footnote marker keyed as superscript U+00B9 per §2.10, matches printed raised '1' after 'month.'",
+      "as_typed": "first month.¹ Moreover, in villages like {Un~i'sak} or {Uwe'len}, the ceremonial",
+      "class": "print"
+    },
+    "9": {
+      "text": "lasts more than a month, and thus the celebrations of the last families come"
+    },
+    "10": {
+      "text": "into the second half of January. Where there is a “front-house family,” it",
+      "note": "quotes keyed curly per §1/§5.6; machine draft showed straight \\\" artifacts",
+      "class": "print"
+    },
+    "11": {
+      "text": "begins the course. In other villages — such, for instance, as Čeˊčin, Aˊčon,",
+      "resolved": "Čeˊčin = C+U+030C, ˊ=U+02CA, c+U+030C; Aˊčon = ˊ=U+02CA, c+U+030C",
+      "note": "a small subscript mark sits below the baseline immediately before capital Č ('Čeˊčin') — not a §2.1-2.4 catalogued codepoint; roughly comma/broken-sort shaped, isolated, not repeated before Aˊčon or Uñiˊsak in the same list. Read as a print artifact (damaged sort or ink speck) per §2.14/§5.9 and not keyed.",
+      "class": "artifact",
+      "as_typed": "begins the course. In other villages — such, for instance, as {C^e'c^in}, {A'c^on},"
+    },
+    "12": {
+      "text": "or Uñiˊsak — without a “front-house family,” there is no particular order for",
+      "note": "quotes curly per §1/§5.6",
+      "as_typed": "or {Un~i'sak} — without a “front-house family,” there is no particular order for",
+      "class": "print"
+    },
+    "13": {
+      "text": "the ceremonials, and it changes from year to year by mere accident."
+    },
+    "14": {
+      "text": "The Chukchee have two different methods of celebrating this ceremonial."
+    },
+    "15": {
+      "text": "The simpler one is called “genuine thanksgiving ceremonial” (ɪˊê-mñêˊɪrgɪn).",
+      "resolved": "ɪ=U+026A (x2), ˊ=U+02CA (x2), ê=e+U+0302 (x2), ñ=n+U+0303, g bare (no dot below)",
+      "note": "gloss word ends -ɪrgɪn with the g keyed bare (no dot below) — at 4x the descender shows no separate mark under it, contrast checked directly against the same page's va'irgin on L19 which is also bare in this raster though the corpus elsewhere ratifies vaˊɪrg̣ɪn with a dot (9 occurrences/7 pages, key va'i_rg.i_n). Flagging both as a doubt rather than silently applying the corpus dot, since a handle must not be used to settle what the raster itself shows. Initial letter of the word read as small-cap ɪ (matching the height of the ɪ's in -ɪrgɪn later in the same word), not a full-height capital I.",
+      "class": "doubt"
+    },
+    "16": {
+      "text": "Even the name shows that this ceremonial is identified with the ordinary"
+    },
+    "17": {
+      "text": "thanksgiving ceremonial which was described previously. The other method"
+    },
+    "18": {
+      "text": "is, properly speaking, a repetition of the ceremony of Kereˊtkun, Karaˊtko-",
+      "resolved": "Kereˊtkun via lexicon key; Karaˊtko = ˊ=U+02CA",
+      "as_typed": "is, properly speaking, a repetition of the ceremony of {Kere'tkun}, Karaˊtko-"
+    },
+    "19": {
+      "text": "vaˊɪrgɪn. The choice of either method varies in different villages, and even",
+      "resolved": "vaˊɪrgɪn = ˊ=U+02CA, ɪ=U+026A (x2); g bare, no dot below",
+      "note": "compound with L18's Karaˊtko-. Corpus ratifies this word as vaˊɪrg̣ɪn (dot below g, key va'i_rg.i_n, 9 occurrences/7 pages) but at 4x this page's g shows no dot beneath the descender — checked twice at different crops. Keyed as printed on this page rather than applying the corpus handle, since the handle would silently override what the raster shows; flagging for adjudication.",
+      "class": "doubt"
+    },
+    "20": {
+      "text": "among individual families. Nevertheless, as far as can be observed, the"
+    },
+    "21": {
+      "text": "“genuine thanksgiving ceremonial” is more in use among those families which",
+      "note": "quotes curly per §1/§5.6",
+      "class": "print"
+    },
+    "22": {
+      "text": "by their lineage or tastes fraternize with the reindeer-breeders; while the"
+    },
+    "23": {
+      "text": "ceremonial of Kereˊtkun predominates among the Maritime people in the",
+      "as_typed": "ceremonial of {Kere'tkun} predominates among the Maritime people in the"
+    },
+    "24": {
+      "text": "proper sense of the word. There are, however, reindeer-breeding families who"
+    },
+    "25": {
+      "text": "descended from a Maritime stock, and who have brought far inland with"
+    },
+    "26": {
+      "text": "them the ceremonial of Kereˊtkun.",
+      "as_typed": "them the ceremonial of {Kere'tkun}."
+    },
+    "27": {
+      "text": "The “genuine thanksgiving ceremonial” is performed with the details al-",
+      "note": "quotes curly per §1/§5.6",
+      "class": "print"
+    },
+    "28": {
+      "text": "ready described. It takes place inside of the outer tent, the entrance and"
+    },
+    "29": {
+      "text": "the vent-hole being carefully closed for the purpose. Heads of the walrus,"
+    },
+    "30": {
+      "text": "seal, and other animals, serve as necessary objects for the ceremony. It is"
+    },
+    "31": {
+      "text": "not obligatory to preserve the heads of all animals killed in the hunt, and"
+    },
+    "32": {
+      "text": "even a few suffice. The sacrifice is performed outside of the tent by the"
+    },
+    "33": {
+      "text": "younger members of the family, who throw blood-soup, meat, and all kinds"
+    },
+    "34": {
+      "text": "of “alien food,” towards all “directions” sacrificed to,² or “towards all winds,”",
+      "note": "footnote marker keyed as superscript U+00B2 per §2.10, matches printed raised '2' after 'to,'; machine draft had misread it as '?' (a known CATMuS substitution, see agent memory catmus-substitutes-ascii-for-marks). Quotes curly per §1/§5.6.",
+      "class": "print"
+    },
+    "35": {
+      "text": "as the Maritime Chukchee say."
+    },
+    "36": {
+      "text": "The people inside of the tent beat the drum; and the women, clad in"
+    },
+    "37": {
+      "text": "their ample overcoats, perform the ceremonial dance. All of them sing their"
+    },
+    "38": {
+      "text": "particular tunes, which have no words, as is the case among the Reindeer"
+    },
+    "39": {
+      "text": "Chukchee. Then the heads are cooked and the feast follows. The evening"
+    },
+    "40": {
+      "text": "and a part of the night are occupied by shamanistic performances inside of"
+    },
+    "41": {
+      "text": "the inner room."
+    },
+    "42": {
+      "text": "¹ Compare p. 51."
+    },
+    "43": {
+      "text": "² See p. 303."
+    },
+    "44": {
+      "text": "50—JESUP NORTH PACIFIC EXPED., VOL. VII."
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

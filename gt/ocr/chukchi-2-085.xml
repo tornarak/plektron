@@ -1,0 +1,383 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-2-085.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-2-085.png; regions_from: zones/chukchi-2-085.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="QuireMarksZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+                <TextBlock ID="mz_2-085_r1" HPOS="401" VPOS="588" WIDTH="1776" HEIGHT="474" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="401 588 2177 588 2177 1062 401 1062"/>
+                    </Shape>
+                    <TextLine ID="mz_2-085_l1" HPOS="397" VPOS="567" WIDTH="1763" HEIGHT="77" BASELINE="399 624 2160 620" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1866 571 1856 571 1805 579 1747 569 1745 569 1690 579 1674 567 1672 567 1670 567 1651 567 1461 567 1459 567 1457 567 1435 577 1378 567 1376 567 1374 567 1372 567 1359 577 1322 567 1320 567 1318 567 1316 567 1275 583 1200 583 1180 569 1179 569 1177 569 1175 569 1100 581 1077 569 1075 569 1016 569 1014 569 1012 569 1010 569 991 583 897 583 875 569 873 569 871 569 869 569 867 569 865 569 846 581 789 569 789 571 769 571 726 583 673 583 661 575 652 575 632 577 613 577 593 579 573 579 571 579 569 581 562 579 554 579 534 581 515 581 495 581 475 583 456 583 436 585 417 585 397 585 399 624 399 644 2158 644 2160 620 2158 581 2126 569 2125 569 2123 569 2121 569 2095 579 2079 569 2077 569 2076 569 2074 569 2072 569 2050 581 1895 581 1876 571 1866 571"/>
+                        </Shape>
+                        <String CONTENT="The head is made of very thin skin, usually the dried skin of a walrus-stomach."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-085_l2" HPOS="397" VPOS="634" WIDTH="1763" HEIGHT="71" BASELINE="399 685 2160 681" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="399 685 399 705 2158 703 2160 681 2156 648 2042 634 1940 634 1938 634 1936 634 1935 634 1917 646 1848 634 1631 634 1629 634 1627 634 1582 646 1557 634 1555 634 1553 634 1359 646 1331 634 1329 634 1327 634 1325 634 1323 634 1306 646 1231 636 1229 636 1227 636 1226 636 1208 650 1149 650 1132 636 1130 636 1128 636 1126 636 1124 636 1085 650 902 650 885 636 883 636 881 636 879 636 812 648 779 636 777 636 718 636 716 636 714 636 712 636 697 648 673 636 671 636 669 636 587 648 397 638 399 685"/>
+                        </Shape>
+                        <String CONTENT="The curried skin of a young fawn is often used by the Reindeer Chukchee"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-085_l3" HPOS="395" VPOS="697" WIDTH="1765" HEIGHT="70" BASELINE="395 744 2160 744" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="395 744 395 767 2160 765 2160 744 2160 705 1705 697 1703 697 1701 697 1678 708 1637 697 1635 697 1633 697 1562 708 1529 697 1527 697 1525 697 1523 697 1521 697 1502 710 1353 710 1320 697 1318 697 1316 697 1314 697 1280 708 1206 697 1204 697 1124 710 926 710 893 699 891 699 889 699 887 699 861 708 838 697 836 697 834 697 832 697 830 697 812 708 799 699 797 699 795 699 793 699 714 708 675 699 673 699 671 699 669 699 646 708 583 697 581 697 517 708 438 697 436 697 434 697 395 708 395 744"/>
+                        </Shape>
+                        <String CONTENT="of the interior, but it is not considered as good. To fasten the skin, it is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-085_l4" HPOS="393" VPOS="761" WIDTH="1767" HEIGHT="67" BASELINE="395 804 2160 800" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="395 804 395 828 2158 824 2160 800 2154 761 393 765 395 804"/>
+                        </Shape>
+                        <String CONTENT="moistened with water or urine, and the edge is then tied with sinew cord in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-085_l5" HPOS="395" VPOS="818" WIDTH="1767" HEIGHT="65" BASELINE="395 861 2162 861" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="395 861 395 881 2160 883 2162 861 2160 818 395 822 395 861"/>
+                        </Shape>
+                        <String CONTENT="a circular groove at the outer surface of the hoop. The ends of this cord"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-085_l6" HPOS="393" VPOS="877" WIDTH="1449" HEIGHT="66" BASELINE="395 924 1842 920" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="395 924 395 943 1841 938 1842 920 1839 889 1484 877 1482 877 1480 877 1478 877 1464 889 1341 889 1308 877 1306 877 1304 877 1229 887 1200 877 1198 877 1196 877 1149 887 1120 877 1118 877 1116 877 1053 889 991 879 989 879 720 889 491 879 489 879 393 891 395 924"/>
+                        </Shape>
+                        <String CONTENT="are fastened to the handle. The drum is very light, some spe-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-085_l7" HPOS="393" VPOS="936" WIDTH="1448" HEIGHT="76" BASELINE="395 985 1841 981" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="395 985 395 1006 1837 1012 1841 981 1835 940 732 945 718 936 716 936 714 936 620 936 618 936 616 936 614 936 603 947 526 947 421 936 419 936 417 936 393 945 395 985"/>
+                        </Shape>
+                        <String CONTENT="cimens weighing not more than half a pound, and others weighing"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-085_l8" HPOS="395" VPOS="1004" WIDTH="885" HEIGHT="71" BASELINE="395 1043 1280 1043" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="395 1043 395 1067 1278 1075 1280 1043 1280 1006 395 1004 395 1043"/>
+                        </Shape>
+                        <String CONTENT="from a pound to a pound and a half."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-085_r2" HPOS="401" VPOS="1062" WIDTH="1776" HEIGHT="836" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="401 1062 2177 1062 2177 1898 401 1898"/>
+                    </Shape>
+                    <TextLine ID="mz_2-085_l9" HPOS="507" VPOS="1053" WIDTH="1339" HEIGHT="69" BASELINE="509 1104 1846 1100" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="509 1104 509 1122 1844 1118 1846 1100 1842 1067 1647 1067 1633 1053 1631 1053 1629 1053 1627 1053 1625 1053 1602 1065 1555 1053 1553 1053 1551 1053 1549 1053 1515 1065 1488 1053 1486 1053 1402 1053 1400 1053 1398 1053 1370 1067 1118 1067 1102 1055 1100 1055 1098 1055 1096 1055 1039 1067 955 1055 953 1055 855 1067 832 1055 830 1055 828 1055 750 1067 665 1055 663 1055 661 1055 616 1067 577 1055 575 1055 573 1055 507 1059 509 1104"/>
+                        </Shape>
+                        <String CONTENT="The drum-stick varies with the use to which the instrument"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-085_l10" HPOS="393" VPOS="1114" WIDTH="1451" HEIGHT="70" BASELINE="395 1165 1844 1159" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="395 1165 395 1184 1844 1184 1844 1159 1841 1128 1774 1128 1758 1114 1756 1114 1754 1114 1752 1114 1750 1114 1748 1114 1731 1126 1705 1114 1703 1114 1701 1114 1700 1114 1698 1114 1678 1128 1617 1128 1602 1114 1600 1114 1598 1114 1425 1114 1423 1114 1359 1128 1343 1116 1341 1116 1339 1116 1337 1116 1335 1116 1294 1128 1153 1116 1151 1116 1149 1116 1147 1116 1132 1129 1036 1129 1010 1116 1008 1116 1006 1116 1004 1116 1002 1116 983 1129 875 1129 826 1118 824 1118 822 1118 754 1129 685 1118 683 1118 681 1118 660 1129 642 1118 640 1118 638 1118 636 1118 634 1118 585 1129 393 1120 395 1165"/>
+                        </Shape>
+                        <String CONTENT="is put. It is either a narrow, light strip of whalebone¹ from"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-085_l11" HPOS="397" VPOS="1178" WIDTH="1440" HEIGHT="73" BASELINE="397 1225 1837 1225" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="397 1225 397 1251 1835 1251 1837 1225 1837 1194 1821 1180 1821 1178 1819 1178 1817 1178 1727 1178 1725 1178 1723 1178 1721 1178 1707 1190 1680 1178 1678 1178 1676 1178 1674 1178 1641 1194 1568 1194 1551 1178 1549 1178 1547 1178 1545 1178 1543 1178 1500 1192 1410 1192 1390 1178 1388 1178 1386 1178 1384 1178 1382 1178 1380 1178 1357 1194 1149 1194 1120 1178 1118 1178 1043 1178 1041 1178 1039 1178 1038 1178 1020 1194 967 1194 930 1178 928 1178 926 1178 924 1178 893 1192 850 1178 848 1178 846 1178 844 1178 842 1178 824 1194 734 1194 716 1178 714 1178 712 1178 644 1178 642 1178 640 1178 595 1192 562 1178 560 1178 558 1178 556 1178 554 1178 536 1194 501 1194 397 1180 397 1225"/>
+                        </Shape>
+                        <String CONTENT="thirty to forty centimetres long, or a piece of wood (Fig."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-085_l12" HPOS="399" VPOS="1243" WIDTH="1443" HEIGHT="88" BASELINE="401 1290 1842 1282" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1835 1243 399 1243 401 1290 401 1314 1165 1314 1214 1331 1216 1331 1218 1331 1842 1327 1842 1282 1839 1251 1835 1243"/>
+                        </Shape>
+                        <String CONTENT="253, b) from sixty to seventy centimetres long, which is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-085_l13" HPOS="395" VPOS="1298" WIDTH="539" HEIGHT="65" BASELINE="397 1345 934 1341" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="397 1345 397 1363 932 1359 934 1341 930 1306 509 1298 507 1298 395 1308 397 1345"/>
+                        </Shape>
+                        <String CONTENT="sometimes adorned with"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-085_l14" HPOS="397" VPOS="1357" WIDTH="535" HEIGHT="68" BASELINE="397 1402 932 1402" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="397 1425 932 1425 932 1402 932 1372 834 1372 820 1359 820 1357 818 1357 816 1357 783 1357 781 1357 779 1357 777 1357 759 1370 691 1357 689 1357 687 1357 685 1357 685 1359 671 1372 626 1372 613 1359 613 1357 611 1357 609 1357 577 1357 575 1357 573 1357 571 1357 571 1359 560 1370 454 1370 399 1357 397 1402 397 1425"/>
+                        </Shape>
+                        <String CONTENT="fur tassels. The former"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-085_l15" HPOS="393" VPOS="1417" WIDTH="541" HEIGHT="75" BASELINE="395 1464 934 1460" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="395 1464 395 1488 877 1492 879 1492 932 1480 934 1460 928 1429 855 1429 838 1417 836 1417 834 1417 832 1417 830 1417 781 1429 767 1417 765 1417 763 1417 761 1417 658 1431 620 1419 618 1419 616 1419 614 1419 571 1431 558 1419 556 1419 554 1419 552 1419 489 1433 448 1433 434 1419 432 1419 430 1419 428 1419 393 1425 395 1464"/>
+                        </Shape>
+                        <String CONTENT="is used in magical per-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-085_l16" HPOS="395" VPOS="1482" WIDTH="537" HEIGHT="74" BASELINE="397 1525 932 1521" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="397 1525 397 1547 613 1556 614 1556 616 1556 671 1541 683 1551 683 1552 685 1552 687 1552 755 1554 757 1554 850 1541 928 1554 932 1521 926 1482 395 1482 397 1525"/>
+                        </Shape>
+                        <String CONTENT="formances, when the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-085_l17" HPOS="397" VPOS="1537" WIDTH="537" HEIGHT="64" BASELINE="397 1582 934 1582" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="397 1582 397 1601 934 1599 934 1582 934 1549 887 1537 885 1537 834 1547 804 1537 802 1537 801 1537 799 1537 773 1547 685 1537 683 1537 397 1545 397 1582"/>
+                        </Shape>
+                        <String CONTENT="drum is beaten inside"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-085_l18" HPOS="397" VPOS="1594" WIDTH="539" HEIGHT="72" BASELINE="397 1645 936 1645" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="397 1645 397 1664 934 1666 936 1645 936 1603 838 1594 836 1594 834 1594 832 1594 832 1596 816 1609 673 1609 646 1594 644 1594 642 1594 640 1594 638 1594 638 1596 624 1609 591 1609 577 1596 577 1594 575 1594 573 1594 534 1594 532 1594 530 1594 507 1607 495 1596 495 1594 493 1594 491 1594 432 1594 430 1594 428 1594 397 1607 397 1645"/>
+                        </Shape>
+                        <String CONTENT="of the sleeping-room; the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-085_l19" HPOS="399" VPOS="1656" WIDTH="533" HEIGHT="73" BASELINE="401 1703 932 1699" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="401 1703 401 1729 930 1721 932 1699 928 1672 793 1672 779 1658 779 1656 777 1656 775 1656 773 1656 771 1656 728 1670 677 1656 675 1656 673 1656 671 1656 642 1668 583 1658 581 1658 579 1658 577 1658 556 1672 399 1660 401 1703"/>
+                        </Shape>
+                        <String CONTENT="latter, chiefly in cere-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-085_l20" HPOS="401" VPOS="1725" WIDTH="535" HEIGHT="64" BASELINE="401 1764 936 1764" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="401 1764 401 1787 934 1789 936 1764 936 1725 401 1725 401 1764"/>
+                        </Shape>
+                        <String CONTENT="monials, when the drum"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-085_l21" HPOS="397" VPOS="1784" WIDTH="539" HEIGHT="56" BASELINE="397 1825 936 1825" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="397 1825 397 1840 936 1838 936 1825 934 1784 397 1787 397 1825"/>
+                        </Shape>
+                        <String CONTENT="is beaten in the outer"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-085_l22" HPOS="401" VPOS="1852" WIDTH="118" HEIGHT="53" BASELINE="401 1885 519 1885" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="401 1885 401 1905 519 1899 519 1885 519 1854 401 1852 401 1885"/>
+                        </Shape>
+                        <String CONTENT="tent."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-085_r3" HPOS="401" VPOS="1898" WIDTH="1776" HEIGHT="902" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="401 1898 2177 1898 2177 2800 401 2800"/>
+                    </Shape>
+                    <TextLine ID="mz_2-085_l23" HPOS="470" VPOS="1880" WIDTH="468" HEIGHT="90" BASELINE="472 1938 938 1934" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="509 1887 503 1887 470 1891 472 1938 472 1962 703 1970 705 1970 936 1958 938 1934 934 1895 867 1895 853 1881 853 1880 851 1880 850 1880 785 1880 783 1880 781 1880 779 1880 779 1881 767 1891 752 1880 750 1880 748 1880 746 1880 744 1880 693 1895 654 1881 652 1881 650 1881 648 1881 607 1897 560 1897 546 1883 546 1881 544 1881 542 1881 540 1881 509 1885 509 1887"/>
+                        </Shape>
+                        <String CONTENT="When the whalebone"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-085_l24" HPOS="399" VPOS="1952" WIDTH="537" HEIGHT="65" BASELINE="399 1997 936 1997" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="399 1997 399 2017 936 2013 936 1997 936 1964 820 1952 818 1952 767 1962 755 1952 754 1952 752 1952 750 1952 701 1962 660 1952 658 1952 656 1952 654 1952 652 1952 652 1954 642 1964 577 1964 536 1952 534 1952 532 1952 530 1952 511 1962 444 1952 442 1952 440 1952 399 1962 399 1997"/>
+                        </Shape>
+                        <String CONTENT="stick is used, the drum"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-085_l25" HPOS="397" VPOS="2009" WIDTH="537" HEIGHT="72" BASELINE="397 2058 934 2058" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="397 2058 397 2081 934 2079 934 2058 934 2021 906 2011 904 2011 902 2011 900 2011 898 2011 885 2021 775 2009 773 2009 771 2009 742 2019 726 2009 724 2009 722 2009 720 2009 718 2009 716 2009 716 2011 705 2021 669 2011 667 2011 665 2011 613 2021 544 2009 542 2009 540 2009 499 2021 397 2013 397 2058"/>
+                        </Shape>
+                        <String CONTENT="is held in the left hand,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-085_l26" HPOS="397" VPOS="2073" WIDTH="539" HEIGHT="75" BASELINE="399 2113 936 2116" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="399 2113 397 2140 458 2146 460 2146 513 2134 524 2144 524 2146 526 2146 528 2146 530 2146 601 2144 603 2144 628 2134 640 2144 640 2146 642 2146 644 2146 646 2146 648 2146 667 2138 765 2148 767 2148 934 2134 936 2116 934 2081 399 2073 399 2113"/>
+                        </Shape>
+                        <String CONTENT="and the drummer so"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-085_l27" HPOS="397" VPOS="2128" WIDTH="539" HEIGHT="79" BASELINE="397 2177 936 2177" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="397 2177 397 2191 466 2203 468 2203 554 2193 611 2205 613 2205 683 2193 726 2205 728 2205 730 2207 781 2207 781 2205 783 2205 785 2205 799 2193 828 2205 830 2205 832 2205 936 2203 936 2177 936 2144 904 2128 902 2128 900 2128 812 2144 746 2130 744 2130 742 2130 689 2144 642 2128 640 2128 638 2128 636 2128 585 2144 497 2128 495 2128 397 2138 397 2177"/>
+                        </Shape>
+                        <String CONTENT="strikes with the stick"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-085_l28" HPOS="399" VPOS="2189" WIDTH="539" HEIGHT="68" BASELINE="399 2238 938 2238" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="399 2238 399 2257 938 2257 938 2238 938 2207 861 2189 859 2189 857 2189 812 2205 759 2189 757 2189 755 2189 607 2205 544 2189 542 2189 540 2189 538 2189 536 2189 536 2191 520 2207 497 2207 413 2189 411 2189 409 2189 407 2189 407 2191 399 2199 399 2238"/>
+                        </Shape>
+                        <String CONTENT="that the middle of it"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-085_l29" HPOS="395" VPOS="2248" WIDTH="541" HEIGHT="72" BASELINE="397 2297 936 2293" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="397 2297 397 2320 934 2316 936 2293 932 2263 816 2250 814 2250 812 2250 781 2261 767 2250 767 2248 765 2248 763 2248 703 2248 701 2248 699 2248 660 2263 620 2250 618 2250 616 2250 614 2250 587 2265 552 2265 536 2252 536 2250 534 2250 532 2250 530 2250 528 2250 485 2261 466 2250 464 2250 462 2250 460 2250 395 2252 397 2297"/>
+                        </Shape>
+                        <String CONTENT="hits the rim of the drum"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-085_l30" HPOS="397" VPOS="2318" WIDTH="541" HEIGHT="67" BASELINE="397 2357 938 2357" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="397 2357 397 2385 938 2377 938 2357 938 2318 397 2318 397 2357"/>
+                        </Shape>
+                        <String CONTENT="or the knuckles of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-085_l31" HPOS="397" VPOS="2373" WIDTH="539" HEIGHT="65" BASELINE="399 2412 936 2416" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="399 2412 397 2428 932 2438 936 2416 934 2379 399 2373 399 2412"/>
+                        </Shape>
+                        <String CONTENT="hand holding the drum."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-085_l32" HPOS="401" VPOS="2428" WIDTH="539" HEIGHT="66" BASELINE="401 2475 940 2475" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="401 2475 401 2494 940 2494 940 2475 940 2442 822 2442 808 2428 806 2428 804 2428 802 2428 746 2440 652 2428 650 2428 648 2428 609 2438 562 2428 560 2428 558 2428 556 2428 556 2430 544 2440 401 2430 401 2475"/>
+                        </Shape>
+                        <String CONTENT="The end of the stick thus"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-085_l33" HPOS="399" VPOS="2489" WIDTH="541" HEIGHT="78" BASELINE="401 2534 940 2538" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="401 2534 399 2549 434 2563 436 2563 438 2563 597 2553 614 2565 616 2565 618 2565 620 2565 667 2557 707 2567 708 2567 710 2567 712 2567 740 2555 789 2567 791 2567 793 2567 938 2553 940 2538 940 2504 928 2492 928 2491 926 2491 924 2491 922 2491 920 2491 877 2502 848 2491 846 2491 844 2491 842 2491 840 2491 822 2506 732 2506 718 2492 718 2491 716 2491 714 2491 669 2489 609 2489 607 2489 605 2489 603 2489 603 2491 589 2502 509 2491 507 2491 505 2491 473 2502 438 2489 436 2489 434 2489 432 2489 401 2500 401 2534"/>
+                        </Shape>
+                        <String CONTENT="vibrates lightly against"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-085_l34" HPOS="397" VPOS="2553" WIDTH="539" HEIGHT="75" BASELINE="399 2592 936 2598" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="399 2592 397 2624 932 2628 936 2598 934 2553 399 2553 399 2592"/>
+                        </Shape>
+                        <String CONTENT="the drum-head. In using"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-085_l35" HPOS="397" VPOS="2606" WIDTH="1765" HEIGHT="82" BASELINE="399 2655 2162 2661" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="399 2655 397 2675 683 2686 685 2688 2160 2688 2162 2661 2162 2622 1721 2622 1684 2610 1682 2610 1680 2610 1578 2620 1558 2608 1557 2608 1555 2608 1553 2608 1116 2618 1043 2608 1041 2608 1039 2608 1010 2618 983 2606 981 2606 979 2606 930 2616 399 2616 399 2655"/>
+                        </Shape>
+                        <String CONTENT="a wooden drum-stick, the drum is held horizontally, with the cover upwards."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-085_l36" HPOS="401" VPOS="2665" WIDTH="1761" HEIGHT="88" BASELINE="403 2712 2162 2724" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="403 2712 401 2731 411 2739 413 2739 415 2739 417 2739 644 2733 697 2743 699 2743 989 2733 1284 2747 1286 2747 1498 2737 1574 2749 1576 2749 1578 2749 1617 2739 1854 2739 1870 2751 1872 2751 1874 2751 1876 2753 2160 2753 2162 2724 2160 2684 1792 2675 1790 2675 1674 2684 1639 2675 1637 2675 1635 2675 1580 2684 1566 2675 1564 2675 1562 2675 1425 2673 1423 2673 1284 2682 1233 2671 1231 2671 1229 2671 1130 2680 936 2671 934 2671 701 2679 681 2667 679 2667 677 2667 675 2667 475 2677 403 2665 403 2712"/>
+                        </Shape>
+                        <String CONTENT="The stick is grasped in the middle; and the hoop is struck from beneath,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-085_l37" HPOS="397" VPOS="2735" WIDTH="829" HEIGHT="65" BASELINE="399 2773 1226 2780" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="399 2773 397 2800 1224 2800 1226 2780 1226 2745 399 2735 399 2773"/>
+                        </Shape>
+                        <String CONTENT="first on one side, then on the other."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-085_r4" HPOS="401" VPOS="2800" WIDTH="1776" HEIGHT="247" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="401 2800 2177 2800 2177 3047 401 3047"/>
+                    </Shape>
+                    <TextLine ID="mz_2-085_l38" HPOS="507" VPOS="2786" WIDTH="1655" HEIGHT="82" BASELINE="509 2833 2162 2841" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="509 2833 507 2851 548 2863 550 2863 552 2863 865 2855 924 2865 926 2865 1333 2857 1363 2867 1365 2867 1367 2868 2160 2868 2162 2841 2160 2804 2109 2792 2107 2792 1750 2802 1719 2792 1717 2792 1715 2792 1337 2800 1216 2788 1214 2788 971 2798 509 2786 509 2833"/>
+                        </Shape>
+                        <String CONTENT="The Reindeer Chukchee keep the cover on the drum only when they"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-085_l39" HPOS="395" VPOS="2855" WIDTH="1769" HEIGHT="74" BASELINE="397 2894 2164 2902" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="397 2894 395 2914 464 2925 466 2925 818 2917 836 2927 838 2927 840 2927 842 2929 2162 2929 2164 2902 2162 2863 397 2855 397 2894"/>
+                        </Shape>
+                        <String CONTENT="stay in the winter house. The drum is then usually placed behind the frame"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-085_l40" HPOS="395" VPOS="2917" WIDTH="1767" HEIGHT="67" BASELINE="397 2951 2162 2961" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="397 2951 395 2974 2158 2984 2162 2961 2160 2921 397 2917 397 2951"/>
+                        </Shape>
+                        <String CONTENT="of the sleeping-room; at other times, on its ceiling, ready for use whenever"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-085_l41" HPOS="397" VPOS="2970" WIDTH="1761" HEIGHT="75" BASELINE="399 3013 2158 3021" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="399 3013 397 3031 2154 3045 2158 3021 2156 2984 399 2970 399 3013"/>
+                        </Shape>
+                        <String CONTENT="wanted. When the family is moving about, the cover is removed, folded,"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-085_r5" HPOS="401" VPOS="3055" WIDTH="1776" HEIGHT="55" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="401 3055 2177 3055 2177 3110 401 3110"/>
+                    </Shape>
+                    <TextLine ID="mz_2-085_l42" HPOS="826" VPOS="3053" WIDTH="868" HEIGHT="78" BASELINE="828 3082 1694 3088" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="828 3082 826 3107 857 3123 859 3123 861 3123 863 3123 891 3109 989 3109 1020 3127 1022 3127 1024 3127 1026 3129 1065 3129 1065 3127 1067 3127 1069 3127 1098 3109 1186 3129 1188 3129 1190 3129 1239 3111 1255 3123 1257 3123 1259 3123 1261 3123 1320 3111 1378 3123 1380 3123 1382 3123 1384 3123 1404 3111 1474 3131 1476 3131 1478 3131 1590 3115 1617 3115 1633 3129 1633 3131 1635 3131 1637 3131 1639 3131 1692 3119 1694 3088 1692 3058 828 3053 828 3082"/>
+                        </Shape>
+                        <String CONTENT="¹ See Vol. VI, Jochelson, The Koryak, Fig. 24, p. 58."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-085_r6" HPOS="401" VPOS="3110" WIDTH="1776" HEIGHT="75" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="401 3110 2177 3110 2177 3185 401 3185"/>
+                    </Shape>
+                    <TextLine ID="mz_2-085_l43" HPOS="395" VPOS="3131" WIDTH="688" HEIGHT="66" BASELINE="395 3158 1083 3158" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1081 3131 395 3131 395 3158 395 3197 1083 3197 1083 3158 1083 3156 1081 3131"/>
+                        </Shape>
+                        <String CONTENT="46—JESUP NORTH PACIFIC EXPED., VOL. VII."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="textblock_7">
+                    
+                    <TextLine ID="mz_2-085_unzoned44" HPOS="967" VPOS="473" WIDTH="623" HEIGHT="71" BASELINE="969 517 1590 513" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1574 477 1555 475 1535 475 1515 475 1496 475 1478 473 1086 473 1085 475 1065 475 1045 475 1026 475 1006 475 987 475 967 477 969 517 969 544 1588 540 1590 513 1584 483 1574 477"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    
+                    <TextLine ID="mz_2-085_unzoned45" HPOS="2058" VPOS="477" WIDTH="94" HEIGHT="69" BASELINE="2060 528 2152 524" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2134 477 2126 477 2068 483 2058 493 2060 528 2060 542 2150 546 2152 524 2146 479 2134 477"/>
+                        </Shape>
+                        <String CONTENT="357"/>
+                    </TextLine>
+
+                </TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>
