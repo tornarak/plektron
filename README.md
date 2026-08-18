@@ -3,13 +3,13 @@
 > καὶ ὥσπερ ὄργανον πρὸ ὀργάνων πᾶς ὑπηρέτης· εἰ γὰρ ἠδύνατο ἕκαστον τῶν
 > ὀργάνων κελευσθὲν ἢ προαισθανόμενον ἀποτελεῖν τὸ αὑτοῦ ἔργον, ὥσπερ τὰ
 > Δαιδάλου φασὶν ἢ τοὺς τοῦ Ἡφαίστου τρίποδας, οὕς φησιν ὁ ποιητὴς αὐτομάτους
-> θεῖον δύεσθαι ἀγῶνα, οὕτως αἱ κερκίδες ἐκέρκιζον αὐταὶ καὶ τὰ πλῆκτρα
-> ἐκιθάριζεν, οὐδὲν ἂν ἔδει οὔτε τοῖς ἀρχιτέκτοσιν ὑπηρετῶν οὔτε τοῖς
+> θεῖον δύεσθαι ἀγῶνα, οὕτως **αἱ κερκίδες ἐκέρκιζον αὐταὶ καὶ τὰ πλῆκτρα
+> ἐκιθάριζεν**, οὐδὲν ἂν ἔδει οὔτε τοῖς ἀρχιτέκτοσιν ὑπηρετῶν οὔτε τοῖς
 > δεσπόταις δούλων.
 >
-> [E]very one that can minister of himself is more valuable than any other instrument; for if every instrument, at command, or from a preconception of its master's will, could accomplish its work (as the story goes of the statues of Daedalus; or what the poet tells us of the tripods of Vulcan, "that they moved of their own accord into the assembly of the gods"), the shuttle would then weave, and the lyre play of itself; nor would the architect want servants, or the master slaves.
+> [E]very one that can minister of himself is more valuable than any other instrument; for if every instrument, at command, or from a preconception of its master's will, could accomplish its work (as the story goes of the statues of Daedalus; or what the poet tells us of the tripods of Vulcan, "that they moved of their own accord into the assembly of the gods"), **the shuttle would then weave, and the [plectrum](https://en.wikipedia.org/wiki/Plectrum) itself strike the [kithara](https://en.wikipedia.org/wiki/Kithara)**; nor would the architect want servants, or the master slaves.
 >
-> — [Aristotle, *Politics* 1253b (transl. William Ellis)](https://www.gutenberg.org/cache/epub/6762/pg6762-images.html#link2HCH0004)
+> — [Aristotle, *Politics* 1253b (trans. William Ellis, adapted)](https://www.gutenberg.org/cache/epub/6762/pg6762-images.html#link2HCH0004)
 
 Annotated digital editions of public-domain ethnographies:
 the text reproduced as printed,
@@ -18,11 +18,14 @@ people, places, rivers, species, institutions -
 identified and cross-referenced, native-language forms indexed,
 and the whole linked outward to modern databases, taxonomies, and gazetteers.
 
-The aim is to produce
+In order to produce
 
 1. Quality editions of the originals that read, spread, and index well on the Web,
 providing inline all necessary context for their comprehension.
-2. Proof-of-concept for an AI-curated ethnographic graph database of similar shape to [D-PLACE](https://d-place.org/).
+2. Proof-of-concept for an LLM-curated ethnographic graph database of similar shape to [D-PLACE](https://d-place.org/).
+
+I suspect (or at least hope) that the end-product will have at least as many AI consumers as the tooling.
+My aim is to dignify the primary sources in a world of increasingly mediated and interpolated knowledge.
 
 Targets: Web, EPUB. Print is a reach.
 
@@ -78,15 +81,15 @@ Parts 1–3 (Brill, 1904/1907/1909),
 ~730 pages.
 [Public domain](https://digitallibrary.amnh.org/items/91a87fd0-5989-4f79-b2ff-a939ef5533aa).
 
-Bogoras first because the text needs no translation layer,
-and because it is a worst case worth solving early:
-dense, idiosyncratic phonetic transcription of seven obscure languages -
-Chukchi, Koryak, Yupik, Chuvan, Lamut (Even), Inupiat, Itelmen -
+Bogoras first, because it needs no translation layer,
+and is otherwise a brutal stress-test of every stage of the pipeline:
+dense, idiosyncratic phonetic transcription of eight languages -
+Chukchi, Koryak, Yupik, Lamut (Even), Itelmen, Chuvan, Yukaghir, Inupiat -
 several extinct or thinly attested in modern databases;
 obsolete binomials;
 toponyms absent from modern maps;
 and a subject region straddling the antimeridian at subpolar latitudes,
-where naive map projections and bounding-boxes conspicuously break.
+where most map projections and bounding-boxes malfunction.
 
 A pipeline that survives Bogoras can survive anything.
 
