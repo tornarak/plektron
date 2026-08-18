@@ -721,61 +721,6 @@ wheels = [
 ]
 
 [[package]]
-name = "machine-press"
-version = "0.1.0"
-source = { editable = "." }
-dependencies = [
-    { name = "chocomufin" },
-    { name = "click" },
-    { name = "cloup" },
-    { name = "fastapi" },
-    { name = "jinja2" },
-    { name = "kraken" },
-    { name = "lxml" },
-    { name = "numpy" },
-    { name = "pillow" },
-    { name = "pymorphy3" },
-    { name = "rich" },
-    { name = "tensorboard" },
-    { name = "toon-format" },
-    { name = "uvicorn" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "httpx2" },
-    { name = "pytest" },
-    { name = "ruff" },
-    { name = "ty" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "chocomufin", specifier = ">=1.0.2" },
-    { name = "click", specifier = ">=8.2" },
-    { name = "cloup", specifier = ">=3.1.0" },
-    { name = "fastapi", specifier = ">=0.120" },
-    { name = "jinja2", specifier = ">=3.1" },
-    { name = "kraken", specifier = ">=7.0.3" },
-    { name = "lxml", specifier = ">=6.1.1" },
-    { name = "numpy", specifier = ">=2.4" },
-    { name = "pillow", specifier = ">=11.0" },
-    { name = "pymorphy3", specifier = ">=2.0" },
-    { name = "rich", specifier = ">=14.0" },
-    { name = "tensorboard", specifier = ">=2.21.0" },
-    { name = "toon-format", specifier = ">=0.9.0b1" },
-    { name = "uvicorn", specifier = ">=0.38" },
-]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "httpx2", specifier = ">=2.9" },
-    { name = "pytest", specifier = ">=9.1.1" },
-    { name = "ruff", specifier = ">=0.16.1" },
-    { name = "ty", specifier = ">=0.0.65" },
-]
-
-[[package]]
 name = "markdown"
 version = "3.10.2"
 source = { registry = "https://pypi.org/simple" }
@@ -1157,6 +1102,61 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/78/9b/560e4be8e26f6fd133a03630a8df0c663b9e8d61b4ade152b72005aec83b/platformdirs-4.11.0.tar.gz", hash = "sha256:0555d18370482847566ffabcaa53ad7c6c1c29f195989ae1ed634a05f76ea1e0", size = 31953, upload-time = "2026-07-21T13:09:36.565Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/7d/68/d8d58938dfb1370b266a1a729e6d77a985be23689a0496498ee17b2cbf90/platformdirs-4.11.0-py3-none-any.whl", hash = "sha256:360ccded2b7fce0af0ff80cc8f5942a1c5d99b0e856033acb030bfc634709e74", size = 23247, upload-time = "2026-07-21T13:09:35.422Z" },
+]
+
+[[package]]
+name = "plektron"
+version = "0.1.0"
+source = { editable = "." }
+dependencies = [
+    { name = "chocomufin" },
+    { name = "click" },
+    { name = "cloup" },
+    { name = "fastapi" },
+    { name = "jinja2" },
+    { name = "kraken" },
+    { name = "lxml" },
+    { name = "numpy" },
+    { name = "pillow" },
+    { name = "pymorphy3" },
+    { name = "rich" },
+    { name = "tensorboard" },
+    { name = "toon-format" },
+    { name = "uvicorn" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "httpx2" },
+    { name = "pytest" },
+    { name = "ruff" },
+    { name = "ty" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "chocomufin", specifier = ">=1.0.2" },
+    { name = "click", specifier = ">=8.2" },
+    { name = "cloup", specifier = ">=3.1.0" },
+    { name = "fastapi", specifier = ">=0.120" },
+    { name = "jinja2", specifier = ">=3.1" },
+    { name = "kraken", specifier = ">=7.0.3" },
+    { name = "lxml", specifier = ">=6.1.1" },
+    { name = "numpy", specifier = ">=2.4" },
+    { name = "pillow", specifier = ">=11.0" },
+    { name = "pymorphy3", specifier = ">=2.0" },
+    { name = "rich", specifier = ">=14.0" },
+    { name = "tensorboard", specifier = ">=2.21.0" },
+    { name = "toon-format", specifier = ">=0.9.0b1" },
+    { name = "uvicorn", specifier = ">=0.38" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "httpx2", specifier = ">=2.9" },
+    { name = "pytest", specifier = ">=9.1.1" },
+    { name = "ruff", specifier = ">=0.16.1" },
+    { name = "ty", specifier = ">=0.0.65" },
 ]
 
 [[package]]

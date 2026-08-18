@@ -644,11 +644,12 @@ def test_project_outside_a_repository_is_the_root_itself(tmp_path):
 
 
 def test_slug_folds_both_separators(tmp_path):
-    """Claude Code slugs `/` and `_` alike, so machine_press becomes
-    machine-press and a slug built from `/` alone would find nothing."""
-    d = tmp_path / "Projects" / "machine_press"
+    """Claude Code slugs `/` and `_` alike, so a directory named with an
+    underscore becomes hyphenated and a slug built from `/` alone would
+    find nothing."""
+    d = tmp_path / "Projects" / "some_project"
     d.mkdir(parents=True)
-    assert _slug(d).endswith("-Projects-machine-press")
+    assert _slug(d).endswith("-Projects-some-project")
     assert "_" not in _slug(d)
 
 

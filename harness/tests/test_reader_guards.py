@@ -260,7 +260,7 @@ def test_gt_a_separator_inside_quotes_does_not_split(cmd=None):
     # matched against carries one. A rule that allows only the spelling nobody
     # uses is a rule that does not exist.
     "ls .claude/agent-memory/groundtruth-reader",
-    "ls /home/x/machine_press/.claude/agent-memory/groundtruth-reader",
+    "ls /home/x/plektron/.claude/agent-memory/groundtruth-reader",
     "ls review/1-031 review/1-031/sheets",
     # A trailing stderr redirect, which is how readers actually type this — 25 of
     # one day's 116 refusals were an `ls` this arm already allowed, refused by the
@@ -285,7 +285,7 @@ def test_gt_ls_is_allowed_over_the_trees_it_may_already_read(cmd):
 @pytest.mark.parametrize("cmd", [
     "cat review/1-031/proposal.json",
     "cat .claude/agent-memory/groundtruth-reader/MEMORY.md",
-    "cat /home/x/machine_press/.claude/agent-memory/groundtruth-reader/MEMORY.md",
+    "cat /home/x/plektron/.claude/agent-memory/groundtruth-reader/MEMORY.md",
     # The reach with no `Read` spelling at all, and the reason this arm exists
     # rather than a better-worded refusal pointing at the tool.
     "cat .claude/agent-memory/groundtruth-reader/*.md",
@@ -335,7 +335,7 @@ def test_gt_edit_is_not_in_the_surface():
 
 @pytest.mark.parametrize("path", [
     "review/1-031/proposal.json",
-    "/home/x/machine_press/review/1-031/proposal.json",
+    "/home/x/plektron/review/1-031/proposal.json",
     ".claude/agent-memory/groundtruth-reader/some-finding.md",
 ])
 def test_gt_writes_land_in_two_places(path):
@@ -389,9 +389,9 @@ def test_gt_the_evidence_stores_are_refused_by_name(path, names):
 
 @pytest.mark.parametrize("path,names", [
     ("keying_spec.md", "TRANSCLUDED"),
-    ("/home/x/machine_press/keying_spec.md", "TRANSCLUDED"),
+    ("/home/x/plektron/keying_spec.md", "TRANSCLUDED"),
     ("harness/VERBS.md", "verbs show"),
-    ("/home/x/machine_press/harness/VERBS.md", "verbs show"),
+    ("/home/x/plektron/harness/VERBS.md", "verbs show"),
 ])
 def test_gt_text_the_reader_already_has_is_refused_with_where_it_is(path, names):
     """Refused for cost, not for secrecy — so the message must say where the

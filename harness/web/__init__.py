@@ -174,7 +174,7 @@ def create_app(root: Path = Path("."), sessions: Sessions | None = None,
     on and an end-user preview with it off.
     """
     app = FastAPI(
-        title="machine-press",
+        title="plektron",
         # No docs endpoints: this is a loopback editorial tool, not an API with
         # consumers, and `/docs` would be one more unrouted-looking path that
         # answers.

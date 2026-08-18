@@ -77,7 +77,7 @@ API = "https://www.wikidata.org/w/api.php"
 
 #: Wikimedia asks every client to identify itself: the project and its purpose,
 #: no personal contact — that is the user's to add if they want to be reachable.
-UA = "machine-press/0.1 (Bogoras, The Chukchee: annotated digital edition)"
+UA = "plektron/0.1 (Bogoras, The Chukchee: annotated digital edition)"
 
 GEO_CLASSES = ("place", "land", "water", "river")
 
