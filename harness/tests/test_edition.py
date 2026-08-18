@@ -1333,7 +1333,7 @@ def test_the_key_is_case_sensitive_where_a_filename_could_not_be(server):
 
 
 def test_the_index_lists_every_language_and_the_unjudged(server):
-    """Every one of the seven codes whether or not it holds anything, on the
+    """Every one of the Tier-1 codes whether or not it holds anything, on the
     class tree's reasoning — and *unassigned* last, which is where nearly
     everything sits until collation reaches it."""
     base, root = server

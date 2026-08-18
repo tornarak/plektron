@@ -803,7 +803,7 @@ def lexicon_index(request: Request):
     double as the collation worklist, where a tree over only the assigned forms
     would show an encouraging empty list.
 
-    Every one of the seven codes appears whether or not it holds anything, for
+    Every one of the Tier-1 codes appears whether or not it holds anything, for
     the reason the class tree shows its empty classes: a vocabulary that lists
     only its populated half quietly misrepresents its own size.
     """

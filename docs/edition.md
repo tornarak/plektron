@@ -1809,7 +1809,7 @@ not tell apart.
 
 ### The index is the collation worklist
 
-`/lexicon` is a tree over the seven Tier-1 codes plus an **unassigned** branch,
+`/lexicon` is a tree over the eight Tier-1 codes plus an **unassigned** branch,
 every code shown whether or not it holds anything — the class tree's reasoning,
 that a vocabulary listing only its populated half misrepresents its own size.
 Today essentially everything sits under *unassigned*, because a form's language

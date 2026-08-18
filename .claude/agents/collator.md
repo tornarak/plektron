@@ -370,6 +370,17 @@ notation the whole project exists to protect. Closed set:
   Eskimo *as distinct from* the Siberian shore. The macrolanguage code, on `ypk`'s
   reasoning and for the same reason: ISO 639-3 separates North Alaskan from
   Northwest Alaska Inupiatun (`esi`, `esk`) and the book separates neither.
+- **`yux`** — Yukaghir. Only when the adjacent English names Yukaghir; the
+  Kolyma chapters are where it falls, since the Yukaghir are the Chukchee's
+  westerly neighbours there. **Unlike `ypk`, `ipk`, `itl` and `eve` above, the
+  code here does *not* absorb a distinction the book declines to make.** `yux` is
+  *Southern* (Kolyma) Yukaghir and `ykg` is Tundra (Northern) Yukaghir; they are
+  two languages, Bogoras writes one English word for both, and the store commits
+  to the Southern one — `people:yukaghir` takes its extent from
+  `langarea:sout2750`. So a form whose surrounding prose places it on the tundra
+  rather than the Kolyma is **a reservation, not a `yux` span**: say so and leave
+  it unmarked. Guessing which Yukaghir would be inferring a glyph system's owner
+  from geography, which is the firewall's failure mode one category over.
 
 There is **no section- or chapter-level signal for any of this**. A comparative
 citation can appear anywhere the author finds it useful: the Koryak gloss for

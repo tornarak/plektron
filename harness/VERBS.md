@@ -1481,7 +1481,7 @@ is one keystroke from an `area:` that resolves as an entity reference.
 **Note** an id with no extent is a **row reading null, not a silence**, and it does not enter the union. `place:cape-prince-of-wales` is named by the book and located by nothing, and it is the east edge of `place:northeast-siberia`'s frame: that edge was estimated by hand, and a tool that dropped the row would have made the estimate look like a measurement. An unknown id says which vocabulary it was looked for in.
 
 ### geo list
-**Does** every shape in the store — id, kind, name, point count, area, source, and the entity that claims it. **Also the absences**: four of this edition's seven Tier-1 codes have no polygon in Asher 2007, and they are rows here rather than silences, because an entity pointing at nothing and an entity nobody has got to yet look identical from outside.
+**Does** every shape in the store — id, kind, name, point count, area, source, and the entity that claims it. **Also the absences**: four speaker areas this edition sought in Asher 2007 have no polygon there — Siberian Yupik, Chuvan, Kerek and Tundra Yukaghir, two of them (`ypk`, `xcv`) Tier-1 codes — and they are rows here rather than silences, because an entity pointing at nothing and an entity nobody has got to yet look identical from outside.
 **Reads** `data/geo/`, `entities/`. **Writes** — **Exit** 0.
 ```
 --root --json --toon --pager

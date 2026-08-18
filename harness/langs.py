@@ -1,7 +1,7 @@
 """The languages the edition can name, in one table.
 
-**This module exists to delete a duplication, not to add a layer.** The seven
-Tier-1 codes were stated twice — as a bare set in `validate.TIER1`, and again as
+**This module exists to delete a duplication, not to add a layer.** The Tier-1
+codes were stated twice — as a bare set in `validate.TIER1`, and again as
 a code-to-name map in `edition_ui.LANG_NAMES` — and the alias column wanted to
 state them a third time alongside the handful of European languages the book
 cites in. Three hand-maintained copies of one closed set is the shape this
@@ -45,13 +45,20 @@ LANGS: dict[str, tuple[str, bool]] = {
     "eve": ("Lamut (Even)", True),
     "ipk": ("Inupiat", True),
     "itl": ("Itelmen (the book's “Kamchadal”)", True),
+    # Southern (Kolyma) Yukaghir, which is the variety `data/geo/` draws for the
+    # people: `people:yukaghir` takes its extent from `langarea:sout2750`, and
+    # Asher 2007 has no Tundra polygon at all (`geo list`'s `yukaghir-tundra`
+    # row). **The code is the Southern one and that is a claim, not a default** —
+    # if a keyed form turns out to be Tundra Yukaghir it belongs under `ykg`, and
+    # nothing here would catch the difference, the two being separate languages
+    # with one English name between them in this book.
+    "yux": ("Southern Yukaghir", True),
     # The neighbouring languages the book names peoples by. Each is witnessed by
     # an entry under `entities/people/` or a shape in `data/geo/`, or both.
     "ale": ("Aleut", False),
     "evn": ("Evenki (the book's “Tungus”)", False),
     "niv": ("Nivkh (the book's “Gilyak”)", False),
     "sah": ("Sakha (Yakut)", False),
-    "yux": ("Yukaghir", False),
     # The languages the book itself is written and cited in.
     # `data/authorities.json` attests ru, en, de and sv; `la` is the binomials.
     "de": ("German", False),
@@ -75,7 +82,7 @@ TIER1 = frozenset(c for c, (_, t) in LANGS.items() if t)
 NAMES = {c: n for c, (n, _) in LANGS.items()}
 
 #: The lexicon index's branches, in the declared order rather than alphabetically
-#: — the seven are a fixed vocabulary a reader learns, not a list to sort.
+#: — they are a fixed vocabulary a reader learns, not a list to sort.
 TIER1_NAMES = {c: n for c, (n, t) in LANGS.items() if t}
 
 
