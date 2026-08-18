@@ -1,6 +1,6 @@
 # people:aleut — Aleut
 
-- status: proposed
+- status: ratified
 - geo: langarea:aleu1260
 
 ## aliases

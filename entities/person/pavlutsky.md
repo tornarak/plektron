@@ -6,7 +6,8 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Pavlutsky | | no | |
+| Pavlutsky | | yes | |
+| Pavlutzky | | yes | 1-035; the -tzky spelling of the same officer |
 
 ## gloss
 

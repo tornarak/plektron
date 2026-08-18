@@ -6,7 +6,8 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Cossacks | | no | |
+| Cossacks | | yes | |
+| Cossack | | yes | singular; 1-035 "a Cossack officer from Gishiginsk" |
 
 ## gloss
 

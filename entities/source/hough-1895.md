@@ -10,6 +10,7 @@
 | Armour | | no | |
 | Hough | | no | |
 | Hough, Armour | | yes | |
+| Hough, Armor | | yes | |
 
 ## gloss
 

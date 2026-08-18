@@ -16,6 +16,7 @@
 |---|---|---|---|
 | Asiatic Eskimo | | yes | |
 | Siberian Eskimo | | yes | |
+| Aiˊwan Eskimo | | yes | |
 
 ## gloss
 

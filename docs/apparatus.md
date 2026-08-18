@@ -686,6 +686,24 @@ closes with an asterism and "For other authorities see references in the text", 
 body citation with no entry here is expected and is *not* a reconciliation failure,
 where a figure outside LoI 1–302 would be a defect.
 
+**And the store may hold a work the list does not print, on that provision alone.**
+`source.count` stays **73** — a fact about folios 3–9 that no later addition may
+edit — and `source.unprinted` names every record keyed from the body instead, so
+`records = count + len(unprinted)` and `read_from` remains true of the 73 and of
+nothing else. Such a record carries `ref: null`, `folio: null`, `printed: []`, and
+its `note` says why it is there; `apparatus.entries_for` and `edition runs` both
+filter on `ref`, so it renders on no leaf and is invisible to the span gate. The
+first is **`jochelson1905`**, *The Koryak* — Jesup Vol. VI, cited 36 times in parts
+2 and 3 and impossible in part 1's list, which went to press the year before the
+work appeared. It exists so that `Vol. VI, Jochelson, The Koryak, p. 117.`
+resolves when those parts are collated, and it asserts nothing about the print.
+Note where the volume sits: **before the name**, so `cited_as.volume` is null and
+the short title is what discriminates this Jochelson from the other four —
+`authorities._fits` reads only what follows the name. Its `url` is also the
+store's first `#ed` located copy: the editor handed the AMNH Digital Library
+link over directly, which is exactly the human act every `#llm` one is waiting
+for. Its `doi` stays null, none having been looked up.
+
 **Pre-1918 Russian orthography is not a misspelling** — `ъ ѣ і ѳ`, the `-аго/-яго`
 genitives. The collation licence to correct European-language spelling does not reach
 it, and neither does it reach the print's own errors, recorded as printed and

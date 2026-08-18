@@ -597,7 +597,7 @@ def load_extra_lexicon(root: Path = Path(".")) -> set[str]:
     return out
 
 
-def lexicon_miss(tok: str, lex: set[str]) -> bool:
+def lexicon_miss(tok: str, lex: set[str], admit_foreign: bool = False) -> bool:
     """Is `tok` a word no English lexicon knows?
 
     Edge punctuation is stripped, then the core is split on internal hyphens
@@ -615,6 +615,37 @@ def lexicon_miss(tok: str, lex: set[str]) -> bool:
     decided — nothing edits the token, and a compound the book really owns
     (`sea-mammals`) was already answered by the component pass. Only a token that
     fails both readings is reported.
+
+    **`admit_foreign=True` is `suggest_lexicon --common`'s and nothing else's.**
+    As a *detector* this stays ASCII-only — see `_unknown_word` — but that floor
+    answers two questions at once and only one is the detector's. "An English
+    dictionary cannot judge this token" is true of `Œstrus` and is a reason to
+    decline; "this is not a word" is false of it, and the second is what the
+    entity worklist asks. The shared floor hid `Salmonidæ`, `Coregonidæ`,
+    `Œstrus`, `Œdemagena` and `chamæmorus` from every worklist this report has
+    produced — five taxa, because a Latin binomial is where this book keeps its
+    ligatures, and `Coregonidæ` is printed once, at 1-188, naming a fish family
+    nobody had read.
+
+    **The axis is not ASCII, and getting that wrong floods the report.** Dropping
+    `isascii` outright took `forms` from 9,367 to 9,860: some five hundred of
+    those are Tier-1 romanizations — `Pehiˊttin`, `Uñiˊin` — which are not
+    English word forms and are what the floor was really keeping out. So what
+    widens is *a word carrying no inventory mark*, `_unmarked_word` below.
+
+    Measured against one corpus with one call, both settings (the only valid
+    comparison — ground truth grows under you otherwise): **+80 forms, +31
+    rows, and no ASCII row moves at all.** Eight are the ligatures — `larvæ`,
+    `vitæ`, `diarrhœa`, `Grønland`, `mediæval`, `spatulæ`, `tædium`,
+    `vertebræ` — and the five taxa that prompted this are absent from the
+    delta only because `entities/` now suppresses them, which is the report
+    working. The other 23 are **Russian**, and wanted: `нерпа`, `ларга`,
+    `лахтакъ` are 1-151's seal glosses, standing beside the `акипка` that
+    `taxon:phoca-ochotensis-macrodens` already carries as an alias, and
+    `Вахня`, `быкъ`, `рыба` are the fish footnotes' Russian on 1-191/1-192.
+    Cyrillic is admitted on purpose: this list feeds the entity and lexicon
+    stores, both of which hold Russian, and the one thing it must not admit is
+    the corpus's own romanizations.
     """
     core = tok.strip(EDGE_PUNCT)
     if not core:
@@ -622,16 +653,52 @@ def lexicon_miss(tok: str, lex: set[str]) -> bool:
     parts = [p for p in re.split(r"[-'\u2019]", core) if p]
     if not parts:
         return False
-    if not any(_unknown_word(p, lex) for p in parts):
+    if not any(_unknown_word(p, lex, admit_foreign) for p in parts):
         return False
     return not (len(parts) > 1 and "".join(parts).lower() in lex)
 
 
-def _unknown_word(p: str, lex: set[str]) -> bool:
-    """One component against the lexicon. Short, non-ASCII and non-alphabetic
-    components are never a miss — this detector tests English and nothing else,
-    which is also why a Tier-1 form in `data/lexicon_extra.txt` is inert."""
-    return len(p) > 3 and p.isascii() and p.isalpha() and p.lower() not in lex
+def _unmarked_word(p: str) -> bool:
+    """A word carrying no Tier-1 mark: `Œstrus`, `Salmonidæ`, `Grønland`, `нерпа`.
+
+    The widened shape floor, and **it is defined by what it refuses, not by a
+    script it admits** — any component carrying an `INVENTORY_CHARS` member
+    under NFD. That is every romanization in the corpus, and it is the whole of
+    the rule: Cyrillic passes, and should, because the stores this list feeds
+    hold Russian. Naming a script instead would have been a second, narrower
+    claim that the refusal already covers, and it would have had to be widened
+    again the first time the book set a Greek word.
+
+    `Nordenskiöld` is refused too, its diaeresis being an inventory glyph. That
+    is a known and accepted false positive of the inventory rule (CLAUDE.md: "an
+    inventory mark fires on ordinary German too"), and inheriting it here is
+    right rather than unfortunate: a token an inventory mark fires on is already
+    the transcription detector's to raise, and this list is for what nothing
+    else can see.
+
+    NFD because the corpus is NFD and a precomposed `ö` would otherwise carry no
+    combining character to find. `normalize` is cheap next to the dictionary
+    lookup this stands in front of.
+    """
+    return not any(c in INVENTORY_CHARS
+                   for c in unicodedata.normalize("NFD", p))
+
+
+def _unknown_word(p: str, lex: set[str], admit_foreign: bool = False) -> bool:
+    """One component against the lexicon. Short and non-alphabetic components
+    are never a miss, and by default non-ASCII ones are not either — as a
+    detector this tests English and nothing else, which is also why a Tier-1
+    form in `data/lexicon_extra.txt` is inert.
+
+    That ASCII half is the only part a caller may widen, and `lexicon_miss`'s
+    docstring says who may and why. Nothing else about the shape moves: still
+    alphabetic, still longer than three characters, still split by the caller on
+    the internal hyphen and apostrophe — so the two floors differ on exactly one
+    axis and a row appearing under one and not the other is attributable to it.
+    """
+    if not (len(p) > 3 and p.isalpha() and p.lower() not in lex):
+        return False
+    return p.isascii() or (admit_foreign and _unmarked_word(p))
 
 
 # U+2019 in the position an English possessive puts it: before a final `s`, or
@@ -1132,13 +1199,24 @@ def suggest_lexicon(root: Path = Path("."), common: int | None = None) -> dict:
             # question this branch asks is about English word forms, and only
             # here is that the question.
             tok = _POSSESSIVE.sub("", m.group().strip(EDGE_PUNCT))
-            # The same shape floor the dictionary arm uses, asked with an empty
-            # lexicon so that only the shape is left: an ASCII alphabetic
-            # component longer than three characters, split on the internal
-            # hyphen and apostrophe exactly as `lexicon_miss` splits. Reusing
-            # the function is what keeps the two arms comparable — the flag
-            # widens what counts as *accounted for*, never what counts as a word.
-            if not lexicon_miss(tok, frozenset()):
+            # The dictionary arm's shape floor, asked with an empty lexicon so
+            # that only the shape is left, and **with its ASCII half dropped**:
+            # an alphabetic component longer than three characters, split on the
+            # internal hyphen and apostrophe exactly as `lexicon_miss` splits.
+            # Reusing the function is what keeps the two arms comparable.
+            #
+            # **The ASCII half is the one thing this arm may not inherit, and
+            # inheriting it was a defect.** In the detector it says "an English
+            # dictionary cannot judge this token", which is a reason to decline;
+            # here it silently said "this is not a word". A ligature is where
+            # that bites, because a Latin binomial is where this book keeps its
+            # ligatures — the shared floor hid `Salmonidæ`, `Coregonidæ`,
+            # `Œstrus`, `Œdemagena` and `chamæmorus` from every worklist this
+            # report has ever produced, and `Coregonidæ` is printed once, at
+            # 1-188, where it names a fish family the store did not hold.
+            # Nothing else about the floor moves, so the two arms still differ
+            # on one axis and a new row can be attributed to it.
+            if not lexicon_miss(tok, frozenset(), admit_foreign=True):
                 continue
             counts[tok] = counts.get(tok, 0) + 1
             folded[tok.lower()] = folded.get(tok.lower(), 0) + 1
@@ -1201,9 +1279,18 @@ def suggest_lexicon(root: Path = Path("."), common: int | None = None) -> dict:
                                 "commonest and less the entity store; `forms` "
                                 "folds case for the cut, `spellings` do not"}],
             "boundary": boundary[-_BOUNDARY:],
-            "tokens": [r for r in rest if lexicon_miss(r["token"], ents)],
+            # `admit_foreign=True` here too, and it is not decoration: this split
+            # asks whether `entities/` already accounts for a row, and under the
+            # default floor every ligature-bearing row answers *no component is
+            # a miss* and lands in `suppressed` — reading as "the store has it"
+            # when the store has never seen it. The floor has to be the same one
+            # the rows were gathered under or the two halves are asking
+            # different questions of the same list.
+            "tokens": [r for r in rest
+                       if lexicon_miss(r["token"], ents, admit_foreign=True)],
             "suppressed": [r for r in rest
-                           if not lexicon_miss(r["token"], ents)],
+                           if not lexicon_miss(r["token"], ents,
+                                               admit_foreign=True)],
             "sentence_heads": [r for r in kept if r["token"] in heads]}
 
 

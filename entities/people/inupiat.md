@@ -3,6 +3,8 @@
 - status: ratified
 - geo: langarea:nort2943
 - geo: langarea:nort2945
+- geo: land:alaska
+- geo: land:diomede-islands
 - link: wikipedia:Iñupiat
 - link: wikidata:Q1417088
 

@@ -1,6 +1,7 @@
 # taxon:erignathus-barbatus — Erignathus barbatus
 
 - status: ratified
+- part-of: taxon:erignathus
 
 ## aliases
 

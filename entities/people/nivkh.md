@@ -6,7 +6,8 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Gilyak | | no | |
+| Gilyak | | yes | |
+| Gilyaks | | yes | plural; 1-128 "the Gilyaks of the Amur" |
 
 ## gloss
 

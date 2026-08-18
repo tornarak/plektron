@@ -22,8 +22,12 @@
     "toc_id": "front.authorities-quoted",
     "read_from": "scans at 300 dpi, directly",
     "count": 73,
+    "unprinted": [
+      "jochelson1905"
+    ],
     "closing_note": "For other authorities see references in the text.",
     "caveats": [
+      "`count` is the PRINTED list and stays 73 whatever this file holds; `unprinted` names every record keyed from the body instead of from folios 3-9, and `records = count + len(unprinted)`. Such a record carries `ref: null`, `folio: null`, `printed: []` and says why in its `note`. It exists so that a citation parts 2 and 3 make can resolve; it is not a claim that the printed list contains the work, and no consumer may read it as one. `read_from` is true of the 73 and of nothing else.",
       "The list is explicitly OPEN. The section closes on folio 9 with an asterism and the line recorded in closing_note, so a citation in the body with no entry here is expected and is not a reconciliation failure. This is unlike data/loi.json, where a figure outside 1-302 is a defect.",
       "`printed` is the record. The parsed fields (author, title, title_en, year, place, container) are a derived convenience and may flatten what the block actually says; when they disagree with `printed`, `printed` wins.",
       "Russian entries are in pre-1918 orthography. The letters ъ ѣ і ѳ and endings -аго/-яго are NOT misspellings and must never be 'corrected'. The collation licence to fix European-language orthography does not reach them.",
@@ -36,7 +40,8 @@
       "Most references in the body are not sigla at all. They are indirect prose — 'Krause reports that…' — where only the name appears, with no volume, no short title, and no footnote. A resolver keyed solely on the footnote form will miss the majority of citations; cited_as.name is the field that reaches them, and it is ambiguous by construction where two works share a name (Hooper, Krause, Adler, Jackson, Kyber, Dall, Argentoff, Mason, Hough, Boas, Bogoras, Murdoch, Jochelson, Maydell, Neimann, Sarytcheff, Wrangell).",
       "Ordering follows the print and is roughly but not strictly chronological (maydell1871 is set among the 1893 entries, murdoch1884 after murdoch1888). Do not sort by year and call it the printed order.",
       "Curly quotation marks and apostrophes reproduce the print, per the corpus rule. The exact form of the closing mark on the Russian quoted title in melikoff1896 is not resolvable at this magnification; see that record's note.",
-      "doi and url are null throughout: no external identifier has been looked up yet. These are the enrichment slots."
+      "doi and url are null throughout: no external identifier has been looked up yet. These are the enrichment slots.",
+      "`provenance` on a doi or url is #llm where a model proposed the match and #ed where a human supplied or opened the link. Every #llm one is unratified by construction; jochelson1905's url is the first #ed, handed over by the editor."
     ]
   },
   "authorities": [
@@ -2642,6 +2647,34 @@
       "url": {
         "url": "https://archive.org/details/amurtribesbert00laufrich",
         "provenance": "#llm"
+      }
+    },
+    {
+      "key": "jochelson1905",
+      "cited_as": [
+        {
+          "name": "Jochelson",
+          "volume": null,
+          "short_title": "The Koryak"
+        }
+      ],
+      "author": "Waldemar Jochelson",
+      "author_printed": null,
+      "title": "The Koryak",
+      "title_en": null,
+      "lang": "en",
+      "year": 1905,
+      "place": null,
+      "container": "Memoirs American Museum of Natural History, Vol. X (Publications of the Jesup North Pacific Expedition, Vol. VI)",
+      "in": null,
+      "ref": null,
+      "folio": null,
+      "printed": [],
+      "note": "NOT PRINTED IN Authorities Quoted, and the only record here that is not. Part 1 went to press in 1904 and the work did not exist yet; parts 2 and 3 cite it heavily, in the form 'Vol. VI, Jochelson, The Koryak, p. 117.' — the 'Vol. VI' being the Jesup series volume, set BEFORE the name, which is why cited_as.volume is null: authorities._fits reads only what follows the name, and the short title is what discriminates this Jochelson from the other four. Added ahead of the part-2 collation pass, on the instruction of the editor. `ref`, `folio` and `printed` are null and empty because there is no printed block to record; the asterism on folio 9 — 'For other authorities see references in the text' — is the print's own provision for exactly this. A sister volume in the same Jesup series as this book; cf. teit1900, laufer1902. The work is in two parts, Religion and Myths (1905) and Material Culture and Social Organization (1908); `year` holds the first, and one record covers both because the book cites the title undifferentiated. Citations run past p. 800, i.e. well into part II — read off unexamined recognizer output for the unkeyed pages, so the range is indicative and not a keyed reading. `url` is the AMNH Digital Library's own scans and is the ONE located copy in this store carrying #ed rather than #llm: the editor supplied it directly, which is the human act the #llm rank is waiting for everywhere else. `doi` stays null — none was looked up, and inventing one is the failure this store's provenance marks exist to prevent.",
+      "doi": null,
+      "url": {
+        "url": "https://digitallibrary.amnh.org/items/adc6d4e0-f978-4e88-80b4-00e1cb98aced",
+        "provenance": "#ed"
       }
     }
   ]

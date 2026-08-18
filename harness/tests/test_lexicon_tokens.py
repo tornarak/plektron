@@ -664,3 +664,56 @@ def test_a_closing_quote_does_not_hide_the_full_stop(tmp_path):
     _gt_page(tmp_path, "1-001", [('he said so.” Ulakhpen went', 400, 1774)])
     row, = [r for r in _common(tmp_path, 0)["tokens"] if r["token"] == "Ulakhpen"]
     assert row["initial"] == 1
+
+
+# --- the two shape floors, held apart -----------------------------------------
+#
+# `lexicon_miss` is both a detector and `--common`'s shape floor, and the ASCII
+# half of it means two different things in the two roles. As a detector it says
+# "an English dictionary cannot judge this token", which is a reason to decline;
+# as a worklist floor it silently said "this is not a word", which is false of
+# `Œstrus`. These tests hold the difference, in both directions.
+
+def test_the_detector_still_declines_a_ligature(tmp_path):
+    """The default is unchanged and must stay so: `lexicon_miss` is one arm of
+    the transcription detector, where a non-ASCII token is the *inventory*
+    branch's business and this branch's silence is deliberate."""
+    assert not lexicon_miss("Œstrus", frozenset())
+    assert not lexicon_miss("Salmonidæ", frozenset())
+
+
+def test_the_worklist_floor_admits_a_ligature(tmp_path):
+    """`Coregonidæ` is printed once, at 1-188, and names a fish family. Under
+    the shared floor it reached no report at all."""
+    assert lexicon_miss("Œstrus", frozenset(), admit_foreign=True)
+    assert lexicon_miss("Coregonidæ", frozenset(), admit_foreign=True)
+    assert lexicon_miss("Grønland", frozenset(), admit_foreign=True)
+
+
+def test_the_worklist_floor_still_refuses_a_romanization(tmp_path):
+    """The floor widens on one axis — no inventory mark — and not on script.
+    Dropping `isascii` outright took `forms` from 9,367 to 9,860, some five
+    hundred of them the corpus's own Tier-1 forms, which are not English words
+    and are what the floor exists to keep out."""
+    for form in ("Pehiˊttin", "Uñiˊin", "Kavraˊlɪn", "mêˊmêl"):
+        assert not lexicon_miss(form, frozenset(), admit_foreign=True), form
+
+
+def test_the_worklist_floor_admits_russian(tmp_path):
+    """Cyrillic passes, and should: this list feeds the entity and lexicon
+    stores and both hold Russian. `нерпа` and `ларга` are 1-151's seal glosses,
+    beside the `акипка` the store already carries as an alias."""
+    assert lexicon_miss("нерпа", frozenset(), admit_foreign=True)
+    assert lexicon_miss("Вахня", frozenset(), admit_foreign=True)
+
+
+def test_a_ligature_row_is_not_reported_as_suppressed(tmp_path):
+    """The `tokens`/`suppressed` split has to ask under the same floor the rows
+    were gathered under. Under the default one every ligature row answers *no
+    component is a miss* and lands in `suppressed`, reading as "the entity store
+    accounts for this" when the store has never seen it."""
+    _extra(tmp_path, "placeholder")
+    _gt_page(tmp_path, "1-001", [("shoals of Salmonidæ resort here", 400, 1774)])
+    got = _common(tmp_path, 0)
+    assert "Salmonidæ" in {r["token"] for r in got["tokens"]}
+    assert "Salmonidæ" not in {r["token"] for r in got["suppressed"]}

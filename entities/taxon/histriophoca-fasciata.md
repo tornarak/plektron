@@ -1,6 +1,7 @@
 # taxon:histriophoca-fasciata — Histriophoca fasciata
 
 - status: ratified
+- part-of: taxon:histriophoca
 
 ## aliases
 

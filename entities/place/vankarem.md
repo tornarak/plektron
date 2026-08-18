@@ -9,6 +9,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Wañkarêˊman | ckt | yes | |
+| Wañqarêˊman | ckt | yes | |
 
 ## gloss
 
