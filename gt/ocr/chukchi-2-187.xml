@@ -1,0 +1,393 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-2-187.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-2-187.png; regions_from: zones/chukchi-2-187.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+                <TextBlock ID="mz_2-187_r1" HPOS="457" VPOS="462" WIDTH="1776" HEIGHT="86" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="457 462 2233 462 2233 548 457 548"/>
+                    </Shape>
+                    <TextLine ID="mz_2-187_l1" HPOS="1032" VPOS="479" WIDTH="609" HEIGHT="49" BASELINE="1034 513 1641 511" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1034 513 1034 528 1639 526 1641 511 1635 479 1032 479 1034 513"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l2" HPOS="2121" VPOS="479" WIDTH="90" HEIGHT="59" BASELINE="2121 517 2211 517" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2121 517 2121 528 2138 538 2140 538 2142 538 2211 526 2211 517 2209 479 2121 481 2121 517"/>
+                        </Shape>
+                        <String CONTENT="457"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-187_r2" HPOS="457" VPOS="572" WIDTH="1776" HEIGHT="360" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="457 572 2233 572 2233 932 457 932"/>
+                    </Shape>
+                    <TextLine ID="mz_2-187_l3" HPOS="456" VPOS="569" WIDTH="1761" HEIGHT="69" BASELINE="458 616 2217 611" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="750 575 736 575 681 583 614 579 613 579 593 581 573 581 554 581 534 583 515 583 495 585 475 585 462 585 456 585 458 616 458 638 2215 626 2217 611 2211 575 1846 579 1819 569 1817 569 1815 569 1813 569 1811 569 1794 581 1578 581 1492 571 1490 571 1396 581 1304 571 1302 571 1202 581 1188 571 1186 571 1184 571 1047 571 1045 571 1043 571 1004 583 763 573 750 575"/>
+                        </Shape>
+                        <String CONTENT="polyandry. What was said before will be sufficient to corroborate Steller and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l4" HPOS="458" VPOS="634" WIDTH="1759" HEIGHT="55" BASELINE="458 673 2217 673" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="458 673 458 687 2215 689 2217 673 2217 646 2164 634 2162 634 2111 644 2064 634 2062 634 2060 634 2023 644 1978 634 1976 634 1929 644 1770 634 1768 634 1707 644 1639 634 1637 634 1635 634 1598 644 1529 634 1527 634 1525 634 1488 644 1472 634 1470 634 1468 634 1466 634 1464 634 1431 646 1271 646 1255 634 1253 634 1251 634 1249 634 1190 646 1081 646 1065 634 1063 634 1061 634 1059 634 1057 634 1026 644 945 634 944 634 867 644 812 634 810 634 754 644 740 634 738 634 736 634 734 634 683 644 658 634 656 634 654 634 652 634 618 644 585 634 583 634 581 634 579 634 546 644 458 640 458 673"/>
+                        </Shape>
+                        <String CONTENT="Krasheninnikoff. Schrenck, on his part, denies the existence of polyandry"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l5" HPOS="458" VPOS="695" WIDTH="1757" HEIGHT="60" BASELINE="458 736 2215 736" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="458 736 458 748 2213 755 2215 736 2215 706 1690 695 1688 695 1686 695 1684 695 1668 706 1578 706 1543 695 1541 695 1539 695 1388 705 1335 695 1333 695 1331 695 1302 705 1229 695 1227 695 1226 695 1224 695 1208 706 1004 706 975 695 973 695 971 695 875 705 861 695 859 695 857 695 736 695 734 695 732 695 699 705 648 695 646 695 644 695 642 695 626 706 458 706 458 736"/>
+                        </Shape>
+                        <String CONTENT="among the Gilyak, and supposes that the several men living with one woman,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l6" HPOS="460" VPOS="753" WIDTH="1753" HEIGHT="65" BASELINE="460 793 2213 793" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="460 793 460 806 1028 806 1043 816 1045 816 1047 816 1049 818 1198 818 1198 816 1200 816 1202 816 1218 806 1537 816 1539 816 1586 806 2040 806 2177 816 2179 816 2181 816 2213 804 2213 793 2211 755 1768 763 1731 753 1729 753 1727 753 1674 763 1621 753 1619 753 1617 753 1576 763 1506 753 1504 753 1402 763 1369 753 1367 753 1365 753 1269 763 1235 753 1233 753 1231 753 1163 763 1135 753 1133 753 1132 753 1016 763 989 753 987 753 985 753 983 753 959 763 885 753 883 753 881 753 848 763 816 753 814 753 812 753 810 753 769 763 707 753 705 753 609 763 577 753 575 753 573 753 571 753 534 763 501 753 499 753 497 753 495 753 460 763 460 793"/>
+                        </Shape>
+                        <String CONTENT="of whom Mamia Rinsô speaks, were in reality the slaves of the family.¹"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l7" HPOS="460" VPOS="814" WIDTH="1759" HEIGHT="55" BASELINE="460 853 2219 853" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="460 853 460 869 2219 869 2219 853 2219 824 2175 814 2173 814 2172 814 2170 814 2136 824 1997 814 1995 814 1935 824 1866 814 1864 814 1809 824 1768 814 1766 814 1764 814 1762 814 1721 824 1535 814 1533 814 1372 824 1357 814 1355 814 1353 814 1200 814 1198 814 1137 824 1051 814 1049 814 944 824 767 814 765 814 763 814 724 824 673 814 671 814 669 814 667 814 652 826 544 826 479 814 477 814 475 814 473 814 460 822 460 853"/>
+                        </Shape>
+                        <String CONTENT="Among the Chukchee a form of marriage much like polyandry exists at the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l8" HPOS="456" VPOS="881" WIDTH="307" HEIGHT="49" BASELINE="458 916 763 910" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="458 916 458 930 761 926 763 910 757 881 456 885 458 916"/>
+                        </Shape>
+                        <String CONTENT="present time."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-187_r3" HPOS="457" VPOS="932" WIDTH="1776" HEIGHT="792" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="457 932 2233 932 2233 1724 457 1724"/>
+                    </Shape>
+                    <TextLine ID="mz_2-187_l9" HPOS="567" VPOS="943" WIDTH="1653" HEIGHT="45" BASELINE="567 973 2220 973" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="567 973 567 988 2220 988 2220 973 2220 943 567 943 567 973"/>
+                        </Shape>
+                        <String CONTENT="Among the Asiatic Eskimo, transformed persons are found even now, as"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l10" HPOS="458" VPOS="990" WIDTH="1759" HEIGHT="67" BASELINE="460 1035 2217 1030" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="460 1035 460 1045 526 1057 528 1057 530 1057 569 1045 875 1055 877 1055 944 1045 1041 1055 1043 1055 1045 1055 1088 1043 1159 1053 1161 1053 1372 1043 1392 1055 1394 1055 1396 1055 1398 1055 1502 1053 1504 1053 1506 1053 1517 1043 1558 1053 1560 1053 1562 1055 1764 1055 1764 1053 1766 1053 1805 1041 1837 1051 1839 1051 1841 1051 1842 1051 1882 1041 1921 1053 1923 1053 1925 1055 2042 1055 2042 1053 2044 1053 2046 1053 2064 1041 2091 1053 2093 1053 2095 1053 2215 1049 2217 1030 2213 1002 2150 990 2148 990 1792 1000 1672 990 1670 990 1539 992 1537 992 1535 992 1519 1002 1280 992 1278 992 1276 992 1237 1002 838 994 836 994 834 994 832 994 816 1006 656 1006 597 994 595 994 593 994 591 994 575 1006 458 1006 460 1035"/>
+                        </Shape>
+                        <String CONTENT="may be seen from what was told² about Čaivuˊurg̣ɪn of Indian Point."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l11" HPOS="462" VPOS="1057" WIDTH="1757" HEIGHT="53" BASELINE="464 1094 2219 1090" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="464 1094 464 1110 2217 1110 2219 1090 2213 1057 462 1057 464 1094"/>
+                        </Shape>
+                        <String CONTENT="Mr. Gondatti asserts in his paper on the Population of the Anadyr District³ (and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l12" HPOS="460" VPOS="1124" WIDTH="1760" HEIGHT="47" BASELINE="460 1153 2220 1153" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="460 1153 460 1171 2220 1171 2220 1153 2220 1124 460 1124 460 1153"/>
+                        </Shape>
+                        <String CONTENT="also in a verbal communication), that at Indian Point the transformed shamans"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l13" HPOS="460" VPOS="1176" WIDTH="1759" HEIGHT="57" BASELINE="462 1210 2219 1216" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="462 1210 460 1223 2215 1233 2219 1216 2217 1184 462 1176 462 1210"/>
+                        </Shape>
+                        <String CONTENT="have a great and baleful influence, which he, on his arrival, tried to counteract,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l14" HPOS="460" VPOS="1231" WIDTH="1762" HEIGHT="57" BASELINE="462 1274 2222 1270" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="462 1274 462 1288 2220 1288 2222 1270 2215 1231 2189 1241 2140 1231 2138 1231 1674 1241 1574 1231 1572 1231 1570 1231 1533 1241 1480 1231 1478 1231 1476 1231 1433 1241 1370 1231 1369 1231 1367 1231 1337 1243 1249 1233 1247 1233 1194 1243 987 1233 985 1233 867 1243 726 1233 724 1233 567 1243 530 1233 528 1233 526 1233 460 1245 462 1274"/>
+                        </Shape>
+                        <String CONTENT="and succeeded in partly overcoming. Mr. Gondatti was the chief official of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l15" HPOS="464" VPOS="1294" WIDTH="1756" HEIGHT="53" BASELINE="464 1333 2220 1333" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="464 1333 464 1347 2220 1347 2220 1333 2220 1304 2177 1294 2175 1294 2173 1294 2079 1304 1496 1294 1494 1294 1367 1304 1298 1294 1296 1294 1157 1304 1104 1294 1102 1294 1100 1294 1073 1304 1041 1294 1039 1294 1038 1294 738 1304 585 1294 583 1294 536 1304 483 1294 481 1294 479 1294 477 1294 464 1302 464 1333"/>
+                        </Shape>
+                        <String CONTENT="the Anadyr country, and the curtailment of the unhealthy influence of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l16" HPOS="462" VPOS="1353" WIDTH="1758" HEIGHT="55" BASELINE="462 1394 2220 1394" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="462 1394 462 1406 2219 1408 2220 1394 2220 1364 2087 1353 2085 1353 2083 1353 2050 1363 1527 1353 1525 1353 1416 1363 1380 1353 1378 1353 1376 1353 1243 1363 1194 1353 1192 1353 1139 1363 1047 1353 1045 1353 979 1363 957 1353 955 1353 834 1353 832 1353 752 1363 683 1353 681 1353 679 1353 677 1353 661 1364 540 1364 487 1353 485 1353 483 1353 462 1363 462 1394"/>
+                        </Shape>
+                        <String CONTENT="shamans lay evidently within the province of his duties (of course, from a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l17" HPOS="464" VPOS="1411" WIDTH="1758" HEIGHT="55" BASELINE="464 1453 2222 1453" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="464 1453 464 1466 2222 1466 2222 1453 2222 1423 2175 1411 2173 1411 2172 1411 2144 1421 2064 1411 2062 1411 1982 1421 1919 1411 1698 1411 1696 1411 1694 1411 1668 1421 1647 1411 1645 1411 1643 1411 1641 1411 1604 1421 1421 1411 1419 1411 1417 1411 1386 1421 1304 1411 1302 1411 1222 1421 1161 1411 1159 1411 1157 1411 1120 1421 1100 1411 1098 1411 1096 1411 1094 1411 1057 1421 1041 1411 1039 1411 1038 1411 1036 1411 989 1421 910 1411 908 1411 906 1411 871 1421 808 1411 806 1411 464 1415 464 1453"/>
+                        </Shape>
+                        <String CONTENT="Russian official point of view). When, however, I visited Indian Point, the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l18" HPOS="464" VPOS="1470" WIDTH="1758" HEIGHT="57" BASELINE="466 1511 2222 1507" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="466 1511 466 1527 2220 1523 2222 1507 2219 1482 2156 1470 2154 1470 2152 1470 2125 1480 2052 1470 2050 1470 2048 1470 2046 1470 2030 1482 1886 1482 1864 1470 1862 1470 1594 1470 1592 1470 1590 1470 1547 1480 1496 1470 1494 1470 1492 1470 1490 1470 1474 1480 707 1472 705 1472 571 1482 520 1472 519 1472 464 1484 466 1511"/>
+                        </Shape>
+                        <String CONTENT="only transformed person I found there was the sickly Čaivuˊurg̣ɪn. Another"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l19" HPOS="472" VPOS="1539" WIDTH="1752" HEIGHT="59" BASELINE="472 1570 2224 1570" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="472 1570 472 1584 708 1596 710 1596 712 1596 740 1586 834 1586 850 1596 851 1596 853 1596 855 1596 1014 1586 1061 1596 1063 1596 1151 1586 1747 1586 1762 1596 1764 1596 1766 1596 1768 1598 1954 1598 1954 1596 1956 1596 1989 1586 2087 1596 2089 1596 2091 1596 2093 1596 2109 1586 2224 1586 2224 1570 2224 1539 472 1539 472 1570"/>
+                        </Shape>
+                        <String CONTENT="“soft man,” of greater age, whom Mr. Gondatti had probably met, died"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l20" HPOS="462" VPOS="1590" WIDTH="1760" HEIGHT="58" BASELINE="464 1635 2222 1631" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="464 1635 464 1648 2220 1648 2222 1631 2220 1603 2193 1590 2191 1590 2189 1590 2187 1590 2136 1601 2009 1590 2007 1590 2005 1590 2003 1590 1983 1603 1886 1603 1860 1590 1858 1590 1856 1590 1797 1601 1760 1590 1758 1590 1756 1590 1582 1601 1564 1590 1562 1590 1560 1590 1508 1590 1506 1590 1504 1590 1502 1590 1482 1603 1396 1603 1347 1590 1345 1590 1343 1590 1341 1590 1294 1601 1231 1592 1229 1592 1227 1592 1226 1592 1210 1603 1135 1592 1079 1592 1077 1592 1075 1592 1073 1592 1055 1605 846 1605 820 1592 818 1592 816 1592 814 1592 781 1603 732 1592 730 1592 728 1592 571 1603 475 1592 473 1592 472 1592 470 1592 462 1596 464 1635"/>
+                        </Shape>
+                        <String CONTENT="from measles in 1900. Other inhabitants did not undertake to follow his"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l21" HPOS="466" VPOS="1652" WIDTH="1420" HEIGHT="63" BASELINE="466 1693 1886 1693" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="466 1693 466 1715 1886 1705 1886 1693 1886 1662 1866 1652 1864 1652 1862 1652 1815 1662 1801 1652 1799 1652 1797 1652 1686 1652 1684 1652 1682 1652 1680 1652 1668 1662 1539 1652 1537 1652 1488 1662 1459 1652 1457 1652 1455 1652 1453 1652 1423 1664 1265 1664 1235 1652 1233 1652 1231 1652 1229 1652 1227 1652 1214 1664 1130 1664 1083 1652 1081 1652 1079 1652 1077 1652 1061 1664 949 1664 838 1652 836 1652 616 1662 581 1652 579 1652 577 1652 466 1662 466 1693"/>
+                        </Shape>
+                        <String CONTENT="practices, remembering, perhaps, the reproofs of Mr. Gondatti."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-187_r4" HPOS="457" VPOS="1724" WIDTH="1776" HEIGHT="480" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="457 1724 2233 1724 2233 2204 457 2204"/>
+                    </Shape>
+                    <TextLine ID="mz_2-187_l22" HPOS="573" VPOS="1711" WIDTH="1653" HEIGHT="55" BASELINE="573 1752 2226 1752" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="573 1752 573 1766 2226 1766 2226 1752 2226 1725 2091 1725 2056 1711 2054 1711 2052 1711 2050 1711 2023 1723 1946 1711 1944 1711 1942 1711 1913 1721 1807 1711 1805 1711 1803 1711 1801 1711 1786 1723 1727 1711 1725 1711 1723 1711 1692 1723 1676 1711 1674 1711 1672 1711 1670 1711 1668 1711 1619 1723 1529 1711 1527 1711 1525 1711 1486 1723 1388 1711 1386 1711 1384 1711 1353 1723 1282 1711 1280 1711 1216 1723 942 1723 918 1711 916 1711 914 1711 912 1711 867 1723 644 1723 613 1711 611 1711 609 1711 607 1711 573 1719 573 1752"/>
+                        </Shape>
+                        <String CONTENT="SHAMANISTIC GARMENTS. — The shamanism of the Chukchee has not"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l23" HPOS="464" VPOS="1772" WIDTH="1762" HEIGHT="55" BASELINE="464 1811 2226 1811" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="464 1811 464 1827 2226 1827 2226 1811 2224 1772 2177 1782 2097 1772 1997 1772 1995 1772 1993 1772 1991 1772 1976 1782 1764 1772 1762 1772 1674 1782 1623 1772 1621 1772 1535 1782 1502 1772 1500 1772 1498 1772 1496 1772 1474 1784 1353 1784 1253 1772 1251 1772 1249 1772 1247 1772 1231 1784 1090 1784 1073 1772 1071 1772 1069 1772 963 1772 961 1772 959 1772 957 1772 944 1782 908 1772 906 1772 904 1772 902 1772 879 1784 654 1784 560 1772 558 1772 464 1782 464 1811"/>
+                        </Shape>
+                        <String CONTENT="reached a stage of development high enough to have drums or clothing of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l24" HPOS="466" VPOS="1831" WIDTH="1758" HEIGHT="64" BASELINE="466 1872 2224 1872" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="466 1872 466 1895 2224 1885 2224 1872 2224 1842 2177 1831 2175 1831 2115 1840 2068 1831 2066 1831 2015 1840 1976 1831 1974 1831 1972 1831 1899 1840 1786 1831 1784 1831 1782 1831 1780 1831 1766 1842 1664 1842 1617 1831 1615 1831 1519 1840 1486 1831 1484 1831 1482 1831 1425 1840 1392 1831 1390 1831 1388 1831 1386 1831 1384 1831 1369 1840 1263 1831 1261 1831 1259 1831 1257 1831 1241 1842 1045 1842 1018 1831 1016 1831 1014 1831 1012 1831 975 1840 891 1831 889 1831 887 1831 885 1831 869 1842 761 1842 675 1831 673 1831 622 1840 569 1831 567 1831 466 1840 466 1872"/>
+                        </Shape>
+                        <String CONTENT="peculiar form, or, indeed, any special belongings characteristic of itself. The"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l25" HPOS="466" VPOS="1891" WIDTH="1758" HEIGHT="55" BASELINE="466 1930 2224 1930" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="466 1930 466 1944 2222 1946 2224 1930 2224 1903 2081 1903 2066 1891 2064 1891 2062 1891 2060 1891 2058 1891 2030 1901 1942 1891 1940 1891 1884 1901 1496 1891 1494 1891 1435 1901 1341 1891 1339 1891 1235 1901 1180 1891 1179 1891 1098 1901 1045 1891 1043 1891 1041 1891 1039 1891 1024 1903 791 1903 740 1891 738 1891 661 1901 485 1891 483 1891 481 1891 479 1891 466 1899 466 1930"/>
+                        </Shape>
+                        <String CONTENT="Chukchee shaman uses the ordinary drum of his family, or perhaps he may"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l26" HPOS="464" VPOS="1950" WIDTH="1760" HEIGHT="57" BASELINE="466 1993 2224 1989" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="466 1993 466 2007 2222 2007 2224 1989 2222 1962 2177 1950 2175 1950 2173 1950 2172 1950 2146 1960 2095 1950 2093 1950 2091 1950 2050 1960 1778 1950 1776 1950 1715 1960 1617 1950 1615 1950 1613 1950 1580 1960 1517 1950 1515 1950 1513 1950 1480 1960 1410 1950 1408 1950 1337 1962 861 1952 859 1952 857 1952 816 1962 765 1952 763 1952 591 1962 530 1952 528 1952 464 1964 466 1993"/>
+                        </Shape>
+                        <String CONTENT="make an extra drum for his own use; but this drum will have exactly the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l27" HPOS="464" VPOS="2013" WIDTH="1760" HEIGHT="55" BASELINE="464 2052 2224 2052" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="464 2052 464 2066 2222 2068 2224 2052 2224 2022 2193 2013 2191 2013 2089 2013 2087 2013 2085 2013 2083 2013 2070 2022 2025 2013 2023 2013 2021 2013 1985 2022 1972 2013 1970 2013 1968 2013 1966 2013 1911 2022 1701 2013 1700 2013 1586 2022 1533 2013 1531 2013 1529 2013 1502 2022 1380 2013 1378 2013 1300 2022 1237 2013 1235 2013 1173 2022 1139 2013 1137 2013 1135 2013 1133 2013 1132 2013 1116 2024 859 2024 826 2013 824 2013 822 2013 714 2022 620 2013 618 2013 616 2013 614 2013 599 2024 464 2024 464 2052"/>
+                        </Shape>
+                        <String CONTENT="same form, and, moreover, it will probably be employed in all the family"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l28" HPOS="464" VPOS="2079" WIDTH="1760" HEIGHT="55" BASELINE="466 2109 2224 2113" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="466 2109 464 2122 477 2132 479 2132 481 2132 483 2132 1329 2124 1343 2134 1345 2134 1347 2134 1349 2134 2222 2124 2224 2113 2222 2083 466 2079 466 2109"/>
+                        </Shape>
+                        <String CONTENT="ceremonials, where additional drums are used for making as much noise as"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l29" HPOS="466" VPOS="2130" WIDTH="197" HEIGHT="61" BASELINE="466 2171 663 2171" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="466 2171 466 2191 663 2187 663 2171 663 2144 567 2130 566 2130 564 2130 562 2130 544 2144 466 2144 466 2171"/>
+                        </Shape>
+                        <String CONTENT="possible."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-187_r5" HPOS="457" VPOS="2204" WIDTH="1776" HEIGHT="530" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="457 2204 2233 2204 2233 2734 457 2734"/>
+                    </Shape>
+                    <TextLine ID="mz_2-187_l30" HPOS="573" VPOS="2191" WIDTH="1653" HEIGHT="55" BASELINE="573 2232 2226 2232" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="573 2232 573 2246 2226 2246 2226 2232 2226 2203 2179 2191 2177 2191 2175 2191 2144 2201 1370 2191 1369 2191 1367 2191 1337 2201 1286 2191 1284 2191 1233 2201 1202 2191 1200 2191 1198 2191 1196 2191 1194 2191 1180 2203 1098 2203 1014 2191 1012 2191 922 2201 873 2191 871 2191 818 2201 765 2191 763 2191 761 2191 759 2191 746 2203 642 2203 595 2191 593 2191 591 2191 573 2199 573 2232"/>
+                        </Shape>
+                        <String CONTENT="As to the shamanistic garb, the Chukchee have nothing similar to the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l31" HPOS="464" VPOS="2252" WIDTH="1760" HEIGHT="62" BASELINE="466 2291 2224 2287" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="466 2291 466 2304 736 2304 801 2314 802 2314 804 2314 838 2304 2222 2304 2224 2287 2220 2252 526 2252 524 2252 464 2261 466 2291"/>
+                        </Shape>
+                        <String CONTENT="well-known type of coat covered with fringes and images, which is in general"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l32" HPOS="464" VPOS="2308" WIDTH="1760" HEIGHT="59" BASELINE="466 2351 2224 2348" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="466 2351 466 2367 2222 2367 2224 2348 2220 2320 2136 2308 2134 2308 2132 2308 2111 2318 2089 2308 2087 2308 2085 2308 2083 2308 2062 2320 1923 2320 1897 2308 1895 2308 1893 2308 1891 2308 1889 2308 1874 2320 1758 2320 1743 2308 1741 2308 1739 2308 1645 2308 1643 2308 1551 2318 1459 2308 1457 2308 1455 2308 1417 2318 1388 2308 1386 2308 1384 2308 1382 2308 1333 2320 855 2310 853 2310 851 2310 824 2320 771 2310 769 2310 767 2310 746 2322 464 2322 466 2351"/>
+                        </Shape>
+                        <String CONTENT="use among the Yakut and Tungus, and which probably was borrowed from"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l33" HPOS="464" VPOS="2381" WIDTH="1760" HEIGHT="45" BASELINE="464 2410 2224 2410" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="464 2410 464 2424 2222 2426 2224 2410 2224 2381 464 2381 464 2410"/>
+                        </Shape>
+                        <String CONTENT="the latter by the Yukaghir, and perhaps also by the Kamchadal, if we may"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l34" HPOS="464" VPOS="2436" WIDTH="1762" HEIGHT="60" BASELINE="466 2473 2226 2467" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="466 2473 466 2496 599 2485 883 2494 885 2494 1141 2483 1357 2492 1359 2492 1361 2492 1382 2483 2224 2483 2226 2467 2222 2447 2013 2447 1985 2436 1956 2447 1927 2436 1813 2447 1774 2436 1684 2447 1639 2436 1607 2449 1566 2438 1545 2449 1527 2438 1492 2449 1451 2438 1419 2449 1392 2438 1361 2449 1339 2438 1243 2438 1226 2449 1188 2438 1153 2449 1067 2438 1032 2449 464 2447 466 2473"/>
+                        </Shape>
+                        <String CONTENT="judge by the representations in Steller’s book.⁴ To understand the reasons"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l35" HPOS="466" VPOS="2491" WIDTH="1760" HEIGHT="54" BASELINE="466 2530 2226 2530" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="466 2530 466 2545 2226 2545 2226 2530 2226 2502 1788 2491 1786 2491 1784 2491 1754 2500 1703 2491 1701 2491 1700 2491 1698 2491 1682 2502 1453 2502 1400 2491 1398 2491 1396 2491 1359 2500 1329 2491 1327 2491 1325 2491 1233 2500 1186 2491 1184 2491 1122 2500 1073 2491 1071 2491 926 2500 893 2491 891 2491 889 2491 787 2500 691 2491 689 2491 634 2500 585 2491 583 2491 536 2500 481 2491 479 2491 477 2491 475 2491 466 2496 466 2530"/>
+                        </Shape>
+                        <String CONTENT="for the absence of a peculiar shaman’s dress among the Chukchee, we must"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l36" HPOS="462" VPOS="2549" WIDTH="1762" HEIGHT="57" BASELINE="464 2592 2224 2586" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="464 2592 464 2606 2222 2600 2224 2586 2220 2557 1633 2549 1631 2549 1629 2549 1596 2559 1259 2551 1257 2551 462 2561 464 2592"/>
+                        </Shape>
+                        <String CONTENT="remember that their shamans perform most of their practices in the inner"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l37" HPOS="466" VPOS="2612" WIDTH="1760" HEIGHT="53" BASELINE="466 2651 2226 2651" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="466 2651 466 2665 2226 2665 2226 2651 2226 2622 2183 2612 2181 2612 2179 2612 2083 2622 1180 2612 1179 2612 1177 2612 1155 2622 1118 2612 1116 2612 1114 2612 1008 2622 965 2612 963 2612 961 2612 959 2612 918 2622 793 2612 791 2612 789 2612 761 2622 705 2612 703 2612 701 2612 699 2612 685 2622 648 2612 646 2612 644 2612 642 2612 618 2624 466 2624 466 2651"/>
+                        </Shape>
+                        <String CONTENT="room of the house, in total darkness, where the outer appearance of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l38" HPOS="466" VPOS="2682" WIDTH="1758" HEIGHT="42" BASELINE="466 2710 2224 2710" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="466 2710 466 2724 2224 2724 2224 2710 2224 2682 466 2682 466 2710"/>
+                        </Shape>
+                        <String CONTENT="shaman is of no consequence. The atmosphere, too, is so close, that the"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-187_r6" HPOS="457" VPOS="2765" WIDTH="1776" HEIGHT="337" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="457 2765 2233 2765 2233 3102 457 3102"/>
+                    </Shape>
+                    <TextLine ID="mz_2-187_l39" HPOS="566" VPOS="2763" WIDTH="1004" HEIGHT="47" BASELINE="567 2788 1570 2794" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="567 2788 566 2804 1566 2810 1570 2794 1568 2769 567 2763 567 2788"/>
+                        </Shape>
+                        <String CONTENT="¹ See Schrenck, Völker des Amur Landes, Zweite Hälfte, p. 650."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l40" HPOS="1790" VPOS="2767" WIDTH="303" HEIGHT="51" BASELINE="1792 2792 2093 2798" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1792 2792 1790 2802 1991 2818 1993 2818 2091 2808 2093 2798 2093 2773 1792 2767 1792 2792"/>
+                        </Shape>
+                        <String CONTENT="² Compare p. 450."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l41" HPOS="567" VPOS="2804" WIDTH="271" HEIGHT="51" BASELINE="569 2829 838 2837" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="569 2829 567 2841 636 2855 638 2855 836 2849 838 2837 836 2812 569 2804 569 2829"/>
+                        </Shape>
+                        <String CONTENT="³ Compare p. 20."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l42" HPOS="569" VPOS="2845" WIDTH="1655" HEIGHT="43" BASELINE="571 2870 2224 2874" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="571 2870 569 2884 2220 2888 2224 2874 2222 2849 571 2845 571 2870"/>
+                        </Shape>
+                        <String CONTENT="⁴ See Steller, p. 284. The shamanistic costume is represented there in three different positions, but Steller"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l43" HPOS="470" VPOS="2888" WIDTH="1752" HEIGHT="45" BASELINE="472 2917 2222 2914" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="472 2917 472 2933 2220 2931 2222 2914 2217 2888 470 2890 472 2917"/>
+                        </Shape>
+                        <String CONTENT="gives no explanations of details. In modern times there are no shamanistic dresses among the Kamchadal, which"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l44" HPOS="468" VPOS="2927" WIDTH="1752" HEIGHT="45" BASELINE="470 2955 2220 2951" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="470 2955 470 2972 2219 2972 2220 2951 2215 2927 468 2929 470 2955"/>
+                        </Shape>
+                        <String CONTENT="fact, however, may be explained by the severe prohibition by the Russian clergy of all practices of such a kind."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l45" HPOS="470" VPOS="2970" WIDTH="1754" HEIGHT="45" BASELINE="470 2994 2224 2994" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="470 2994 470 3009 2222 3015 2224 2994 2224 2970 470 2970 470 2994"/>
+                        </Shape>
+                        <String CONTENT="Nevertheless, among various drawings done for me by natives in Kamchatka there are two representing shamans,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l46" HPOS="468" VPOS="3008" WIDTH="1752" HEIGHT="45" BASELINE="470 3035 2220 3031" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="470 3035 470 3053 2219 3051 2220 3031 2215 3008 468 3009 470 3035"/>
+                        </Shape>
+                        <String CONTENT="male and female, in special dress, which much resembles the figures given by Steller. They were said to be drawn"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-187_l47" HPOS="468" VPOS="3051" WIDTH="750" HEIGHT="43" BASELINE="468 3074 1218 3074" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="468 3074 468 3094 1218 3094 1218 3074 1218 3051 468 3051 468 3074"/>
+                        </Shape>
+                        <String CONTENT="from the memory of what existed in olden times."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

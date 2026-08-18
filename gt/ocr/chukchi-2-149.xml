@@ -1,0 +1,379 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-2-149.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-2-149.png; regions_from: zones/chukchi-2-149.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="QuireMarksZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+                <TextBlock ID="mz_2-149_r1" HPOS="409" VPOS="462" WIDTH="1776" HEIGHT="94" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="409 462 2185 462 2185 556 409 556"/>
+                    </Shape>
+                    <TextLine ID="mz_2-149_l1" HPOS="983" VPOS="481" WIDTH="619" HEIGHT="51" BASELINE="985 517 1602 513" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1590 483 1582 481 983 483 985 517 985 532 1600 528 1602 513 1596 487 1590 483"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l2" HPOS="2079" VPOS="477" WIDTH="93" HEIGHT="51" BASELINE="2081 518 2172 515" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2099 477 2095 477 2079 485 2081 518 2081 528 2170 526 2172 515 2168 485 2101 477 2099 477"/>
+                        </Shape>
+                        <String CONTENT="421"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-149_r2" HPOS="409" VPOS="580" WIDTH="1776" HEIGHT="900" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="409 580 2185 580 2185 1480 409 1480"/>
+                    </Shape>
+                    <TextLine ID="mz_2-149_l3" HPOS="403" VPOS="585" WIDTH="1774" HEIGHT="61" BASELINE="405 620 2177 616" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="405 620 405 636 1167 646 1169 646 1171 646 1200 636 1282 646 1284 646 1370 634 1406 644 1408 644 1410 644 1474 634 1508 644 1510 644 1511 644 1609 634 1668 644 1670 644 1715 634 1737 644 1739 644 1741 644 2175 632 2177 616 2173 591 403 585 405 620"/>
+                        </Shape>
+                        <String CONTENT="because of their mental struggle against the call, that they are sometimes"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l4" HPOS="405" VPOS="654" WIDTH="1770" HEIGHT="52" BASELINE="405 679 2175 679" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="405 679 405 695 928 695 944 705 945 705 947 705 949 705 998 695 1034 705 1036 705 1038 705 1104 695 1130 705 1132 705 1133 706 1310 706 1310 705 1312 705 1314 705 1327 695 1351 705 1353 705 1355 705 1441 695 1468 705 1470 705 1472 705 1541 695 1560 705 1562 705 1564 705 2175 695 2175 679 2175 654 405 654 405 679"/>
+                        </Shape>
+                        <String CONTENT="said to sweat blood on the forehead and the temples. Afterwards every"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l5" HPOS="403" VPOS="699" WIDTH="1772" HEIGHT="64" BASELINE="405 746 2175 738" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="405 746 405 763 2173 752 2175 738 2172 710 2117 699 2115 699 1729 710 1707 701 1705 701 1703 701 1701 701 1700 701 1684 710 1586 701 1584 701 1582 701 1580 701 1564 712 1461 712 1437 701 1435 701 1433 701 1431 701 1429 701 1414 712 1280 712 1231 703 1229 703 1069 712 1010 703 1008 703 1006 703 979 712 848 703 846 703 844 703 810 714 473 705 472 705 403 716 405 746"/>
+                        </Shape>
+                        <String CONTENT="preparation of a shaman for a performance is considered a sort of repetition"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l6" HPOS="407" VPOS="761" WIDTH="1768" HEIGHT="59" BASELINE="407 800 2175 800" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="407 800 407 816 2172 820 2175 800 2173 771 2038 761 2036 761 2034 761 2032 761 2017 773 1889 773 1841 761 1839 761 1750 771 1725 761 1723 761 1721 761 1719 761 1700 771 1678 761 1676 761 1674 761 1672 761 1645 771 1598 761 1596 761 1537 771 1513 761 1511 761 1510 761 1425 771 1402 761 1400 761 1398 761 1396 761 1365 771 1318 761 1316 761 1239 771 1218 761 1216 761 1214 761 1212 761 1184 771 1163 761 1161 761 1159 761 1157 761 1155 761 1139 773 1038 773 1012 761 1010 761 1008 761 1006 761 1004 761 989 773 777 773 595 761 593 761 591 761 558 771 503 761 501 761 499 761 497 761 481 771 446 761 444 761 442 761 440 761 407 771 407 800"/>
+                        </Shape>
+                        <String CONTENT="of the initiative process: hence it is said that the Chukchee shamans during"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l7" HPOS="407" VPOS="834" WIDTH="1768" HEIGHT="53" BASELINE="407 859 2175 859" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="407 859 407 873 850 885 851 885 853 885 895 875 1014 885 1016 887 1139 887 1139 885 1141 885 1143 885 1157 875 1188 885 1190 885 1192 885 1194 885 1231 875 1263 885 1265 885 1267 885 2173 873 2175 859 2173 834 407 834 407 859"/>
+                        </Shape>
+                        <String CONTENT="that time are easily susceptible to hemorrhage and even to bloody sweat."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l8" HPOS="407" VPOS="879" WIDTH="1768" HEIGHT="64" BASELINE="409 922 2175 916" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="409 922 409 936 1525 943 1527 943 1529 943 1553 934 1582 943 1584 943 1586 943 1643 932 1666 941 1668 941 1670 941 1768 932 1794 941 1795 941 1797 941 2173 932 2175 916 2172 891 2111 879 2109 879 2107 879 2076 889 2062 879 2060 879 2058 879 1966 879 1964 879 1962 879 1960 879 1944 891 1605 891 1590 879 1588 879 1586 879 1584 879 1582 879 1558 891 1169 881 1167 881 992 893 407 885 409 922"/>
+                        </Shape>
+                        <String CONTENT="I myself witnessed two cases of bleeding from the nose among Chukchee"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l9" HPOS="407" VPOS="947" WIDTH="1768" HEIGHT="47" BASELINE="407 977 1459 985 2175 975" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="407 977 407 994 2173 994 2175 975 2170 947 407 949 407 977"/>
+                        </Shape>
+                        <String CONTENT="shamans before their performances. As regards the bloody sweat, I knew"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l10" HPOS="409" VPOS="1002" WIDTH="1768" HEIGHT="53" BASELINE="409 1039 2177 1039" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="409 1039 409 1055 2175 1055 2177 1039 2177 1014 2152 1002 2150 1002 2148 1002 2146 1002 2103 1012 1741 1002 1739 1002 1641 1012 1572 1002 1570 1002 1568 1002 1547 1014 1349 1014 1312 1002 1310 1002 1308 1002 1253 1012 1206 1002 1204 1002 1153 1012 1118 1002 1116 1002 1114 1002 1112 1002 1110 1002 1094 1014 965 1014 928 1002 926 1002 924 1002 591 1012 538 1002 536 1002 487 1012 446 1002 444 1002 442 1002 440 1002 409 1012 409 1039"/>
+                        </Shape>
+                        <String CONTENT="of only one case, and even in that I was suspicious that the shaman in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l11" HPOS="407" VPOS="1059" WIDTH="1770" HEIGHT="69" BASELINE="409 1102 2177 1096" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="409 1102 409 1118 442 1128 444 1128 446 1128 448 1128 473 1118 718 1118 783 1128 785 1128 787 1128 789 1128 804 1116 1249 1116 1443 1126 1445 1126 1502 1116 1584 1126 1586 1126 1684 1114 1780 1124 1782 1124 2175 1112 2177 1096 2175 1071 2152 1059 2150 1059 2148 1059 2087 1069 1817 1059 1815 1059 1741 1069 1713 1059 1711 1059 1709 1059 1658 1069 1623 1059 1621 1059 1619 1059 1617 1059 1582 1071 1255 1061 1253 1061 1145 1071 1112 1061 1110 1061 1108 1061 1049 1071 1016 1061 1014 1061 1012 1061 1010 1061 1008 1061 991 1073 519 1063 517 1063 407 1075 409 1102"/>
+                        </Shape>
+                        <String CONTENT="question, having an attack of nose-bleed, had happily thought to smear his"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l12" HPOS="409" VPOS="1122" WIDTH="1768" HEIGHT="56" BASELINE="409 1161 2177 1161" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="409 1161 409 1178 2175 1178 2177 1161 2175 1133 1903 1122 1901 1122 1811 1131 1764 1122 1762 1122 1760 1122 1717 1131 1664 1122 1662 1122 1617 1131 1592 1122 1590 1122 1588 1122 1586 1122 1584 1122 1568 1133 1159 1133 1130 1122 1128 1122 1126 1122 1124 1122 1122 1122 1106 1133 1018 1133 985 1122 983 1122 981 1122 904 1131 826 1122 824 1122 822 1122 791 1131 775 1122 773 1122 771 1122 640 1122 638 1122 583 1131 520 1122 519 1122 409 1131 409 1161"/>
+                        </Shape>
+                        <String CONTENT="temples with blood in order to increase our respect for his shamanistic powers."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l13" HPOS="409" VPOS="1180" WIDTH="1772" HEIGHT="57" BASELINE="411 1222 2181 1218" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="411 1222 411 1237 2179 1233 2181 1218 2177 1192 2117 1180 2115 1180 2113 1180 2079 1190 1901 1180 1899 1180 1803 1190 1776 1180 1774 1180 1772 1180 1770 1180 1768 1180 1752 1192 1647 1192 1617 1180 1615 1180 1613 1180 1553 1190 1496 1180 1494 1180 1492 1180 1490 1180 1474 1192 1292 1192 1231 1182 1229 1182 1227 1182 1200 1192 1006 1182 1004 1182 855 1192 840 1182 838 1182 836 1182 742 1182 740 1182 738 1182 716 1192 654 1182 652 1182 650 1182 626 1192 613 1182 611 1182 609 1182 426 1182 425 1182 423 1182 421 1182 409 1190 411 1222"/>
+                        </Shape>
+                        <String CONTENT="At least, he kept repeating that he was not like the modern shamans, but"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l14" HPOS="411" VPOS="1241" WIDTH="1768" HEIGHT="55" BASELINE="411 1280 2179 1280" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="411 1280 411 1296 2177 1296 2179 1280 2175 1243 1570 1251 1547 1241 1545 1241 1543 1241 1541 1241 1513 1251 1484 1241 1482 1241 1480 1241 1478 1241 1451 1251 1423 1241 1421 1241 1419 1241 1335 1251 1306 1241 1304 1241 1302 1241 1218 1251 1186 1241 1184 1241 1182 1241 1180 1241 1179 1241 1163 1253 1065 1253 985 1241 983 1241 981 1241 945 1251 910 1241 908 1241 906 1241 785 1251 728 1241 726 1241 724 1241 722 1241 707 1253 587 1253 530 1241 528 1241 526 1241 524 1241 509 1251 428 1241 426 1241 425 1241 423 1241 411 1249 411 1280"/>
+                        </Shape>
+                        <String CONTENT="that he was the equal of the ancient “genuine” shamans, who sweated blood"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l15" HPOS="411" VPOS="1302" WIDTH="1772" HEIGHT="55" BASELINE="411 1339 2183 1339" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="411 1339 411 1357 2183 1357 2183 1339 2181 1302 2130 1312 2017 1302 2015 1302 2013 1302 1980 1312 1888 1302 1886 1302 1788 1314 1506 1314 1490 1302 1488 1302 1486 1302 1484 1302 1482 1302 1457 1314 1327 1314 1310 1302 1308 1302 1306 1302 1304 1302 1243 1312 1143 1302 1141 1302 1012 1312 991 1302 989 1302 987 1302 985 1302 957 1312 932 1302 930 1302 928 1302 783 1312 734 1302 732 1302 638 1312 577 1302 575 1302 573 1302 532 1312 411 1308 411 1339"/>
+                        </Shape>
+                        <String CONTENT="from the strain of their inspiration. He was, however, a typical specimen of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l16" HPOS="411" VPOS="1363" WIDTH="1766" HEIGHT="52" BASELINE="411 1402 2177 1402" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="411 1402 411 1415 2177 1415 2177 1402 2175 1363 2058 1372 1985 1363 1983 1363 1933 1372 1893 1363 1891 1363 1889 1363 1619 1372 1506 1363 1504 1363 1400 1372 1357 1363 1355 1363 1353 1363 891 1372 740 1363 738 1363 736 1363 693 1372 483 1363 481 1363 411 1372 411 1402"/>
+                        </Shape>
+                        <String CONTENT="a Chukchee shaman, — a very unsteady, excitable nature; and after all, I"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l17" HPOS="409" VPOS="1421" WIDTH="1386" HEIGHT="59" BASELINE="411 1457 1795 1462" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="411 1457 409 1472 419 1480 421 1480 423 1480 425 1480 1794 1474 1795 1462 1794 1433 1374 1433 1335 1421 1333 1421 1331 1421 411 1425 411 1457"/>
+                        </Shape>
+                        <String CONTENT="am not quite sure that he tricked us with his bloody sweat."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-149_r3" HPOS="409" VPOS="1480" WIDTH="1776" HEIGHT="671" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="409 1480 2185 1480 2185 2151 409 2151"/>
+                    </Shape>
+                    <TextLine ID="mz_2-149_l18" HPOS="520" VPOS="1480" WIDTH="1661" HEIGHT="67" BASELINE="522 1517 2181 1521" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="522 1517 520 1531 618 1533 632 1545 634 1545 636 1545 638 1545 1135 1535 1218 1545 1220 1545 1367 1537 1388 1547 1390 1547 1392 1547 1394 1547 1435 1537 1899 1537 1966 1547 1968 1547 2179 1535 2181 1521 2179 1494 1925 1482 1923 1482 1729 1492 1680 1482 1678 1482 1676 1482 1674 1482 1662 1492 1651 1482 1649 1482 1647 1482 1553 1482 1551 1482 1549 1482 1515 1492 1466 1482 1464 1482 1463 1482 1425 1492 1347 1480 1345 1480 1343 1480 1308 1490 522 1482 522 1517"/>
+                        </Shape>
+                        <String CONTENT="The preparatory period is compared by the Chukchee to a long, severe"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l19" HPOS="409" VPOS="1543" WIDTH="1772" HEIGHT="53" BASELINE="409 1580 2181 1580" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="409 1580 409 1596 2181 1596 2181 1580 2181 1554 1864 1543 1862 1543 1794 1552 409 1547 409 1580"/>
+                        </Shape>
+                        <String CONTENT="illness; and the acquirement of inspiration, to a recovery. There are cases"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l20" HPOS="411" VPOS="1607" WIDTH="1768" HEIGHT="57" BASELINE="413 1637 2179 1641" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="413 1637 411 1652 481 1664 483 1664 2177 1656 2179 1641 2177 1611 413 1607 413 1637"/>
+                        </Shape>
+                        <String CONTENT="of young persons who, having suffered for years from lingering illness (usually"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l21" HPOS="413" VPOS="1668" WIDTH="1766" HEIGHT="53" BASELINE="415 1697 2179 1703" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="415 1697 413 1709 505 1721 507 1721 2177 1719 2179 1703 2177 1674 415 1668 415 1697"/>
+                        </Shape>
+                        <String CONTENT="of a nervous character), at last feel a call to take to shamanistic practice,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l22" HPOS="411" VPOS="1719" WIDTH="1770" HEIGHT="57" BASELINE="413 1762 2181 1756" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="413 1762 413 1776 2179 1770 2181 1756 2177 1731 2095 1719 2093 1719 2091 1719 2064 1729 1831 1719 1829 1719 1827 1719 1792 1729 1762 1719 1760 1719 1758 1719 1756 1719 1735 1729 1705 1719 1703 1719 1701 1719 1586 1731 1470 1721 1468 1721 1466 1721 1464 1721 1449 1733 1306 1733 1255 1721 1253 1721 1251 1721 1212 1731 1155 1721 1153 1721 1151 1721 1149 1721 1133 1733 904 1733 434 1723 432 1723 430 1723 428 1723 411 1731 413 1762"/>
+                        </Shape>
+                        <String CONTENT="and by this means overcome the disease. Of course it is difficult to draw"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l23" HPOS="415" VPOS="1791" WIDTH="1768" HEIGHT="43" BASELINE="415 1819 2183 1819" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="415 1819 415 1834 2181 1834 2183 1819 2181 1791 415 1791 415 1819"/>
+                        </Shape>
+                        <String CONTENT="the line of demarcation, and all these cases finally come under one and the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l24" HPOS="413" VPOS="1840" WIDTH="1770" HEIGHT="65" BASELINE="413 1880 2183 1880" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="413 1880 413 1893 828 1905 830 1905 2183 1893 2183 1880 2183 1850 2148 1840 2146 1840 2052 1840 2050 1840 2048 1840 2046 1840 2032 1850 1987 1840 1985 1840 1983 1840 1950 1850 1895 1840 1893 1840 1766 1850 1703 1840 1701 1840 1700 1840 1698 1840 1682 1850 1651 1840 1649 1840 1647 1840 1645 1840 1609 1850 1586 1840 1584 1840 1582 1840 1527 1850 1496 1840 1494 1840 1492 1840 1490 1840 1457 1850 1425 1840 1423 1840 1421 1840 1372 1850 1304 1840 1302 1840 1300 1840 1259 1850 1179 1840 1177 1840 1175 1840 1139 1852 810 1852 722 1840 720 1840 658 1850 573 1840 571 1840 569 1840 567 1840 552 1852 413 1852 413 1880"/>
+                        </Shape>
+                        <String CONTENT="same class. The preparatory period of inspiration is designated by the Chuk-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l25" HPOS="413" VPOS="1899" WIDTH="1770" HEIGHT="65" BASELINE="415 1936 2183 1940" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="415 1936 413 1950 571 1962 573 1962 1257 1954 1331 1964 1333 1964 2181 1954 2183 1940 2181 1911 1923 1901 1921 1901 1772 1911 1688 1901 1686 1901 1592 1911 1545 1901 1543 1901 1443 1911 1412 1901 1410 1901 1408 1901 1316 1911 1278 1899 1276 1899 1275 1899 1226 1909 1157 1899 1155 1899 1153 1899 1110 1911 867 1911 851 1899 850 1899 848 1899 846 1899 775 1909 573 1899 571 1899 415 1907 415 1936"/>
+                        </Shape>
+                        <String CONTENT="chee by a special term, meaning “he gathers shamanistic power” (the verb"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l26" HPOS="413" VPOS="1966" WIDTH="1768" HEIGHT="49" BASELINE="415 1995 2181 2001" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="415 1995 413 2009 2177 2015 2181 2001 2179 1972 415 1966 415 1995"/>
+                        </Shape>
+                        <String CONTENT="tewitɪˊñɪrkɪn and its derivatives). With weaker shamans and with women, the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l27" HPOS="417" VPOS="2030" WIDTH="1766" HEIGHT="51" BASELINE="417 2060 2183 2060" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="417 2060 417 2081 2183 2075 2183 2060 2183 2030 417 2030 417 2060"/>
+                        </Shape>
+                        <String CONTENT="preparatory period is less painful, and the call to inspiration comes mainly"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l28" HPOS="415" VPOS="2085" WIDTH="248" HEIGHT="47" BASELINE="417 2115 663 2118" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="417 2115 415 2128 660 2132 663 2118 661 2089 417 2085 417 2115"/>
+                        </Shape>
+                        <String CONTENT="in dreams."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-149_r4" HPOS="409" VPOS="2151" WIDTH="1776" HEIGHT="533" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="409 2151 2185 2151 2185 2684 409 2684"/>
+                    </Shape>
+                    <TextLine ID="mz_2-149_l29" HPOS="524" VPOS="2140" WIDTH="1659" HEIGHT="63" BASELINE="526 2175 2183 2181" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="526 2175 524 2187 618 2201 620 2201 781 2191 1081 2201 1083 2201 1202 2193 1224 2203 1226 2203 1227 2203 1292 2193 1331 2203 1333 2203 1335 2203 1394 2193 2179 2199 2183 2181 2181 2152 526 2140 526 2175"/>
+                        </Shape>
+                        <String CONTENT="To people of more mature age the shamanistic call may come during"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l30" HPOS="413" VPOS="2207" WIDTH="1770" HEIGHT="47" BASELINE="415 2236 2183 2240" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="415 2236 413 2250 2179 2254 2183 2240 2181 2210 415 2207 415 2236"/>
+                        </Shape>
+                        <String CONTENT="some great misfortune, dangerous and protracted illness, sudden loss of family"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l31" HPOS="417" VPOS="2261" WIDTH="1768" HEIGHT="53" BASELINE="417 2299 2185 2299" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="417 2299 417 2314 2183 2314 2185 2299 2185 2273 2144 2261 2142 2261 2140 2261 2138 2261 2099 2273 1668 2273 1592 2261 1590 2261 1421 2271 1304 2261 1302 2261 1300 2261 1298 2261 1280 2273 1085 2273 1024 2261 1022 2261 1020 2261 979 2271 863 2261 861 2261 804 2271 771 2261 769 2261 767 2261 765 2261 736 2273 417 2273 417 2299"/>
+                        </Shape>
+                        <String CONTENT="or property, etc. Then the person, having no other resource, turns to the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l32" HPOS="423" VPOS="2318" WIDTH="1760" HEIGHT="61" BASELINE="425 2351 2183 2359" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="425 2351 423 2365 456 2377 458 2377 460 2377 752 2369 871 2379 873 2379 2181 2373 2183 2359 2183 2330 2168 2320 2166 2320 2164 2320 2162 2320 2056 2330 2040 2320 2038 2320 2036 2320 1915 2320 1913 2320 1911 2320 1909 2320 1895 2330 1864 2320 1862 2320 1860 2320 1807 2330 1794 2320 1792 2320 1790 2320 1788 2320 1631 2328 1607 2318 1605 2318 1604 2318 1515 2328 1384 2318 1382 2318 1380 2318 1357 2328 1333 2318 1331 2318 1329 2318 425 2318 425 2351"/>
+                        </Shape>
+                        <String CONTENT="“spirits,” and claims their assistance. It is generally considered that in such"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l33" HPOS="415" VPOS="2385" WIDTH="1768" HEIGHT="57" BASELINE="417 2414 2183 2418" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="417 2414 415 2426 448 2438 450 2438 452 2438 1036 2430 1051 2440 1053 2440 1055 2440 1057 2440 1251 2430 1312 2442 1314 2442 1363 2432 1850 2432 1866 2442 1868 2442 1870 2442 1872 2442 2181 2430 2183 2418 2181 2389 417 2385 417 2414"/>
+                        </Shape>
+                        <String CONTENT="cases a favorable issue is possible only with the aid of the “spirits:” there-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l34" HPOS="417" VPOS="2445" WIDTH="1766" HEIGHT="47" BASELINE="417 2477 2183 2477" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="417 2477 417 2492 2183 2492 2183 2477 2183 2449 417 2445 417 2477"/>
+                        </Shape>
+                        <String CONTENT="fore a man who has withstood some extraordinary trial of his life is con-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l35" HPOS="413" VPOS="2494" WIDTH="1770" HEIGHT="67" BASELINE="415 2536 2183 2539" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="415 2536 413 2547 648 2559 650 2559 1200 2551 1300 2561 1302 2561 2181 2551 2183 2539 2181 2510 2117 2496 2115 2496 2113 2496 2068 2508 1950 2496 1948 2496 1946 2496 1909 2510 1754 2510 1709 2496 1707 2496 1705 2496 1703 2496 1701 2496 1684 2510 1631 2510 1605 2496 1604 2496 1602 2496 1519 2508 1494 2496 1492 2496 1396 2496 1394 2496 1392 2496 1390 2496 1369 2510 1300 2510 1233 2494 1231 2494 1229 2494 1202 2504 1153 2494 1151 2494 1149 2494 1147 2494 1132 2506 1071 2494 1069 2494 1012 2506 975 2494 973 2494 971 2494 869 2508 808 2508 787 2494 785 2494 783 2494 781 2494 779 2494 742 2506 707 2494 705 2494 703 2494 701 2494 673 2508 595 2508 577 2494 575 2494 573 2494 571 2494 415 2504 415 2536"/>
+                        </Shape>
+                        <String CONTENT="sidered as having within himself the possibilities of a shaman, and he often"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l36" HPOS="417" VPOS="2565" WIDTH="1768" HEIGHT="49" BASELINE="417 2596 2185 2596" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="417 2596 417 2614 2183 2614 2185 2596 2183 2569 417 2565 417 2596"/>
+                        </Shape>
+                        <String CONTENT="feels bound to enter into closer relations with the “spirits,” lest he incur their"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l37" HPOS="415" VPOS="2614" WIDTH="1179" HEIGHT="68" BASELINE="417 2653 1594 2659" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="417 2653 415 2665 475 2679 477 2679 752 2669 887 2680 889 2680 1363 2673 1410 2682 1412 2682 1592 2671 1594 2659 1592 2630 1468 2618 1466 2618 1376 2628 1351 2618 1349 2618 1347 2618 1290 2628 1265 2618 1263 2618 1261 2618 1259 2618 1235 2628 1204 2616 1202 2616 1200 2616 1198 2616 1196 2616 1196 2618 1188 2624 1180 2616 1179 2616 1177 2616 1175 2616 1173 2616 1147 2628 981 2628 924 2616 922 2616 822 2626 806 2614 804 2614 802 2614 801 2614 748 2626 548 2626 526 2614 524 2614 522 2614 417 2622 417 2653"/>
+                        </Shape>
+                        <String CONTENT="displeasure at his negligence and lack of gratitude."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-149_r5" HPOS="409" VPOS="2684" WIDTH="1776" HEIGHT="426" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="409 2684 2185 2684 2185 3110 409 3110"/>
+                    </Shape>
+                    <TextLine ID="mz_2-149_l38" HPOS="526" VPOS="2675" WIDTH="1661" HEIGHT="56" BASELINE="528 2716 2187 2720" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="528 2716 526 2727 2183 2731 2187 2720 2185 2690 2076 2690 2054 2677 2052 2677 2050 2677 2048 2677 1983 2688 1833 2677 1831 2677 1829 2677 1803 2688 1774 2677 1772 2677 1770 2677 1709 2688 1674 2677 1672 2677 1670 2677 1531 2688 1504 2677 1502 2677 1500 2677 1410 2688 1361 2675 1359 2675 1357 2675 1304 2684 1275 2675 1273 2675 1271 2675 1269 2675 1241 2688 1098 2688 1063 2675 1061 2675 1059 2675 1057 2675 1022 2686 981 2675 979 2675 977 2675 889 2686 816 2675 814 2675 730 2686 683 2675 681 2675 679 2675 677 2675 646 2686 613 2675 611 2675 609 2675 528 2675 528 2716"/>
+                        </Shape>
+                        <String CONTENT="This is evidenced in the case of Aiñanwaˊt, mentioned above. He was"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l39" HPOS="417" VPOS="2749" WIDTH="1768" HEIGHT="43" BASELINE="417 2776 2185 2776" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="417 2776 417 2790 2181 2792 2185 2776 2183 2749 417 2749 417 2776"/>
+                        </Shape>
+                        <String CONTENT="not careful enough to obey the instructions of the “spirits,” who came to him"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l40" HPOS="417" VPOS="2800" WIDTH="1768" HEIGHT="53" BASELINE="419 2833 2185 2837" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="419 2833 417 2849 2181 2853 2185 2837 2181 2800 419 2802 419 2833"/>
+                        </Shape>
+                        <String CONTENT="with benevolent intentions, and even performed upon him with a supernatural"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l41" HPOS="415" VPOS="2861" WIDTH="1770" HEIGHT="49" BASELINE="417 2894 2185 2898" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="417 2894 415 2906 2181 2910 2185 2898 2181 2861 417 2863 417 2894"/>
+                        </Shape>
+                        <String CONTENT="silver knife of their own an operation which freed him from all diseased"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l42" HPOS="417" VPOS="2915" WIDTH="1768" HEIGHT="65" BASELINE="419 2957 2185 2953" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="419 2957 419 2970 1288 2980 1290 2980 1292 2980 1320 2968 1349 2978 1351 2978 1353 2978 1455 2968 1484 2978 1486 2978 1488 2978 1549 2968 1578 2978 1580 2978 1582 2978 2183 2968 2185 2953 2181 2927 2040 2915 2038 2915 2036 2915 2034 2915 2019 2927 1929 2927 1905 2915 1903 2915 1901 2915 1899 2915 1864 2925 1841 2915 1839 2915 1837 2915 1782 2925 1756 2915 1754 2915 1752 2915 1750 2915 1748 2915 1733 2927 1641 2927 1578 2915 1576 2915 1574 2915 1539 2925 1478 2915 1476 2915 1402 2925 1355 2915 1353 2915 1351 2915 1325 2925 1304 2915 1302 2915 1300 2915 1298 2915 1259 2927 628 2917 626 2917 575 2927 499 2917 497 2917 417 2929 419 2957"/>
+                        </Shape>
+                        <String CONTENT="matter. Hence, though he recovered from his illness, he had no further"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l43" HPOS="417" VPOS="2972" WIDTH="1766" HEIGHT="65" BASELINE="419 3019 2183 3013" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="419 3019 419 3037 2183 3029 2183 3013 2177 2980 2072 2984 2050 2974 2048 2974 2046 2974 1989 2984 1970 2974 1968 2974 1966 2974 1964 2974 1944 2984 1923 2974 1921 2974 1919 2974 1917 2974 1886 2984 1866 2972 1864 2972 1862 2972 1860 2972 1809 2982 1794 2972 1792 2972 1790 2972 1788 2972 1786 2972 1784 2972 1766 2984 1727 2972 1725 2972 1723 2972 1668 2984 1621 2972 1619 2972 1617 2972 1615 2972 1588 2988 1445 2988 1416 2974 1414 2974 1412 2974 1410 2974 1408 2974 1388 2988 1298 2988 1229 2974 1227 2974 1226 2974 1224 2974 1202 2988 1004 2988 940 2976 938 2976 877 2988 861 2976 859 2976 857 2976 804 2976 802 2976 801 2976 773 2988 736 2976 734 2976 732 2976 730 2976 703 2988 517 2976 515 2976 417 2990 419 3019"/>
+                        </Shape>
+                        <String CONTENT="good-fortune in life. He was unable to increase his diminished herd, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-149_l44" HPOS="417" VPOS="3035" WIDTH="1764" HEIGHT="67" BASELINE="419 3074 2181 3078" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2179 3076 2170 3045 2152 3037 2150 3037 2148 3037 2146 3037 2111 3047 2074 3037 2072 3037 2070 3037 1707 3047 1613 3037 1611 3037 1609 3037 1566 3047 1492 3037 1490 3037 1488 3037 1486 3037 1472 3047 1445 3037 1443 3037 1441 3037 1378 3047 1347 3037 1345 3037 1343 3037 1341 3037 1302 3047 1284 3035 1282 3035 1280 3035 1278 3035 1208 3047 1057 3047 1036 3035 1034 3035 1032 3035 949 3045 928 3035 926 3035 924 3035 877 3045 644 3035 642 3035 640 3035 607 3045 475 3035 473 3035 419 3043 419 3074 417 3088 2177 3102 2181 3078 2179 3076 2179 3076"/>
+                        </Shape>
+                        <String CONTENT="after a few years of useless struggle found himself forced to bequeathe it,"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-149_r6" HPOS="409" VPOS="3133" WIDTH="1776" HEIGHT="55" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="409 3133 2185 3133 2185 3188 409 3188"/>
+                    </Shape>
+                    <TextLine ID="mz_2-149_l45" HPOS="417" VPOS="3129" WIDTH="689" HEIGHT="45" BASELINE="419 3160 1106 3154" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="419 3160 419 3174 1106 3172 1106 3154 1100 3129 417 3133 419 3160"/>
+                        </Shape>
+                        <String CONTENT="54—JESUP NORTH PACIFIC EXPED., VOL. VII."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

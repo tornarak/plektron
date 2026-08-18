@@ -1,0 +1,182 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "414"
+    },
+    "2": {
+      "text": "among the Kamchadal and the Yukaghir. Each Koryak family has a drum"
+    },
+    "3": {
+      "text": "of its own,¹ and performance on it to the accompaniment of songs is obliga-",
+      "note": "Footnote marker 1: draft read the superscript as a plain lowercase 'l'. Keyed as superscript U+00B9 per keying_spec.md §2.10 ('a marker is the superscript sort... never the plain ASCII digit').",
+      "class": "draft"
+    },
+    "4": {
+      "text": "tory on days of certain ceremonials. I was told that the same custom existed"
+    },
+    "5": {
+      "text": "among the ancient Kamchadal.² Among the Yukaghir, also, each family has",
+      "note": "Footnote marker 2: draft read the superscript as '?'. Keyed as superscript U+00B2 per §2.10.",
+      "class": "draft"
+    },
+    "6": {
+      "text": "its own drums."
+    },
+    "7": {
+      "text": "While travelling in the country of Omolon and on both Anui rivers, I"
+    },
+    "8": {
+      "text": "found drums half worn-out on every dwelling-site of the former inhabitants,"
+    },
+    "9": {
+      "text": "who were starved out in the first decades of the nineteenth century, because"
+    },
+    "10": {
+      "text": "the wild reindeer almost ceased their yearly wanderings in that country. My"
+    },
+    "11": {
+      "text": "fellow-travellers, who were Russianized natives from the Kolyma country, felt"
+    },
+    "12": {
+      "text": "very uneasy on account of this abundance of drums, and repeatedly insisted"
+    },
+    "13": {
+      "text": "that the people must have been great sorcerers, and that it was no wonder"
+    },
+    "14": {
+      "text": "that God took them away from this world. These drums, however, were"
+    },
+    "15": {
+      "text": "only the old family belongings, which probably were used in a way similar"
+    },
+    "16": {
+      "text": "to that peculiar to the Chukchee."
+    },
+    "17": {
+      "text": "Besides this general resemblance, it is difficult to say whether the sha-"
+    },
+    "18": {
+      "text": "manism of the neighboring tribes had any direct influence on that of the"
+    },
+    "19": {
+      "text": "Chukchee. The latter, indeed, treat “alien” shamans with as much veneration",
+      "note": "Quotes are always curly per keying_spec.md §1/§5.6; draft closed the quote straight ('\"') while the corpus setting is curly throughout.",
+      "class": "draft"
+    },
+    "20": {
+      "text": "as they do their own. In the western part of the territory of the reindeer-"
+    },
+    "21": {
+      "text": "breeders, many people apply to the Tungus shamans for advice, and some of",
+      "note": "Draft read the final word as 'ot'; confirmed 'of' at 4x (clear ascender, no crossbar consistent with 't').",
+      "class": "draft"
+    },
+    "22": {
+      "text": "the Chukchee go so far as to procure for their own use large drums of the"
+    },
+    "23": {
+      "text": "more southern type employed by the Tungus.³",
+      "note": "Footnote marker 3: draft read the superscript as '?'. Keyed as superscript U+00B3 per §2.10.",
+      "class": "draft"
+    },
+    "24": {
+      "text": "The old women of the Keˊrek tribe have the reputation of being very",
+      "note": "Draft dropped the stress mark entirely, splitting 'Ke'rek' into 'Ke rek'. Ratified elsewhere in the corpus (1-039, 2-025, 2-026); handle used.",
+      "class": "draft",
+      "as_typed": "The old women of the {Ke'rek} tribe have the reputation of being very"
+    },
+    "25": {
+      "text": "skilful in working spells, and this skill is mentioned even in tales.⁴ The",
+      "note": "Footnote marker 4: draft kept the digit but not as a superscript. Keyed as superscript U+2074 per §2.10.",
+      "class": "draft"
+    },
+    "26": {
+      "text": "shamans of the American Eskimo of the nearest shore of Alaska also enjoy"
+    },
+    "27": {
+      "text": "the respect of their Asiatic neighbors, both Maritime Chukchee and Asiatic"
+    },
+    "28": {
+      "text": "Eskimo. In one tale a contest between two shamans — one an American,"
+    },
+    "29": {
+      "text": "one an Asiatic — ends with a full victory for the American, although the"
+    },
+    "30": {
+      "text": "shaman from the Asiatic shore resorts even to treachery, and is severely"
+    },
+    "31": {
+      "text": "punished for it.⁵",
+      "note": "Footnote marker 5: draft dropped the superscript reference entirely. Body reference and note opener (line 45) both attest the value; supplied as superscript U+2075 per §2.10 ('the body reference attests the value... both witnesses are on the page').",
+      "class": "draft"
+    },
+    "32": {
+      "text": "The direct influence of “alien” shamanism on the shamanism of the",
+      "note": "Quotes are always curly (§1/§5.6); draft set both straight.",
+      "class": "draft"
+    },
+    "33": {
+      "text": "Chukchee may be traced only in the shamanistic garment, of which I shall"
+    },
+    "34": {
+      "text": "speak in the latter part of this chapter."
+    },
+    "35": {
+      "text": "INDIVIDUAL SHAMANISTIC INSPIRATION. — In modern times the importance of"
+    },
+    "36": {
+      "text": "family shamanism is losing ground among all the tribes named, with the ex-"
+    },
+    "37": {
+      "text": "ception of the Chukchee, and there is a tendency of its being replaced on all"
+    },
+    "38": {
+      "text": "occasions by individual shamanism. Individual shamans among the Chukchee"
+    },
+    "39": {
+      "text": "are called “those with spirits” (eñeˊñɪlɪt, from eˊñeñ,⁶ “shamanistic spirit”).",
+      "resolved": "eñeˊñɪlɪt = e, n+U+0303, e, U+02CA, n+U+0303, U+026A, l, U+026A, t; eˊñeñ = e, U+02CA, n+U+0303, e, n+U+0303",
+      "note": "Draft misread the stress mark before 'ñilit' as 'f' ('efñeñ') and the footnote-6 marker as '°'. Confirmed at 4x that 'ilit' carries dotless stems (ɪ, U+026A), contrasted against the dotted 'i' in 'spirits' two words earlier on the same line — §5.2. Not an exact lexicon match (nearest attested forms eñeˊñɪlɪn on 1-066/2-026 and eñeˊñɪt on 2-026 differ in the final consonant), so keyed by hand rather than by handle. Also fixed both quote pairs to curly per §1/§5.6.",
+      "class": "draft"
+    },
+    "40": {
+      "text": "¹ Vol. VI, Jochelson, The Koryak, p. 54.",
+      "note": "Note opener 1: draft kept a plain ASCII digit. Keyed as superscript U+00B9 per §2.10.",
+      "class": "draft"
+    },
+    "41": {
+      "text": "² Krasheninnikoff (II, p. 80) says that every woman, especially an old one, and every “transformed",
+      "note": "Note opener 2: draft kept a plain ASCII digit. Keyed as superscript U+00B2 per §2.10.",
+      "class": "draft"
+    },
+    "42": {
+      "text": "³ Compare p. 356.",
+      "note": "Note opener 3: draft kept a plain ASCII digit. Keyed as superscript U+00B3 per §2.10.",
+      "class": "draft"
+    },
+    "43": {
+      "text": "man,” is considered a shaman and interpreter of dreams. See also Steller, p. 277."
+    },
+    "44": {
+      "text": "⁴ See Bogoras, Chukchee Materials, p. 210.",
+      "note": "Note opener 4: draft misread the superscript digit as a star/asterisk glyph. Keyed as superscript U+2074 per §2.10.",
+      "class": "draft"
+    },
+    "45": {
+      "text": "⁵ Ibid., p. 221.",
+      "note": "Note opener 5: draft misread the superscript '5' as '3'. Keyed as superscript U+2075 per §2.10, consistent with the body reference on line 31.",
+      "class": "draft"
+    },
+    "46": {
+      "text": "⁶ Compare p. 300.",
+      "note": "Note opener 6: draft kept a plain ASCII digit. Keyed as superscript U+2076 per §2.10.",
+      "class": "draft"
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

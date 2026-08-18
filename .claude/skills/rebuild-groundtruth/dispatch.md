@@ -12,6 +12,16 @@ A server per page put the human's half back to waiting on the tooling between
 pages, which is what fanning the reading out was meant to stop. `restore` stays per
 ref.
 
+**Restore a batch before dispatching the next one, not after.** The temptation is
+to fan out batch N+1 while the human adjudicates batch N, since the reading half
+does not depend on the adjudication — but the *vocabulary* does. A restored page's
+forms become ratified lexicon handles, and a chapter's names recur across its pages
+within a few leaves of each other: `2-168` resolved `G̣almuˊurg̣ɪn` through the
+handle ratified on `2-159` one batch earlier, instead of hand-keying a name with
+no second witness. Dispatch ahead of the restore and every one of those is keyed
+blind, then flagged `doubt`, then adjudicated by hand — the work the handle exists
+to remove. The reading is parallel; the batches are a queue.
+
 **Predict first, in the parent.** A page with nothing in `mz/ocr/` has no line
 indices, so an agent sent at it has nothing to key against and will either stall or
 invent a numbering. `harness ocr predict` also wants the GPU, and five agents racing

@@ -548,6 +548,22 @@ recognizer that a damaged `r` is a different character.
 
 Note the wear on the line, class `artifact`, and key the letter.
 
+**In English prose, an ambiguous `f`/`t` is settled by the sense, not by the
+crop.** English is not Tier-1 — nothing about a glyph identity is at stake, the
+word is one every reader knows, and *skins ot*, *himselt*, *the wolt* have exactly
+one reading each. Take it and note the wear.
+
+**Wear concentrates at the margins**, where the impression fails first: eight
+instances over seven pages of two batches (`2-142` L21, `2-150` L21, `2-154` L16,
+`2-156` L15, `2-166` L3, `2-168` twice, `2-176`) were every one of them the last
+letter of a line. So a line-final letter that reads `t` where the word wants `f` is
+the expected shape of this damage, not a discovery.
+
+**Do not go to 4× for it.** Two readers did, contrasted letterforms, wrote up what
+they saw and were wrong — `2-154` L16 and `2-156` L15, both adjudicated to `of`.
+A worn sort has no mark left to discriminate on, so magnification returns a
+confident description of nothing, which is the failure this file exists to prevent.
+
 The register above carried a fourth entry, `1-100` L53 `eaıly`, described as
 verified against the raster. **It never was.** `gt/ocr/chukchi-1-100.xml` reads
 `early` and contains no dotless i anywhere: the entry wrote up a reading the
@@ -641,6 +657,17 @@ mark the press set out of habit costs one training pair per occurrence (four in 
 store as of this ruling), where leaving it in poisons every Tier-1 measurement that
 reads `INVENTORY_CHARS`, corpus-wide and permanently. §2.9 made the same trade for
 the same reason. Neither is a general licence to normalize.
+
+**Common is the whole of the test, and whether English also sets the word accented
+does not enter it.** `séance` is keyed `seance`. The paragraph above explains *why*
+the press set the mark, and that explanation is not a criterion a reader applies:
+asked whether a word "has no such mark in English", a reader will answer for
+`séance` that it does, and keep it. **Three of the four readers who met it in one
+batch did exactly that**, independently, each citing this section — `2-158` L5,
+`2-160` L19, `2-161` L20 and L27, all four adjudicated to `seance`, with the fourth
+reader having stripped it unprompted. A rule three readers read into its opposite is
+a rule that routes through the wrong question. The question is only whether the word
+is a common one or a name.
 
 **Scope is common words, and a proper name keeps its marks.** `Nordenskiöld` stays
 as set. A name's spelling is part of its identity, the entity store keys on it, and
@@ -824,7 +851,14 @@ band: a prior backed by one page is a prior backed by one page.
      it from a frequency in either direction.** Position splits this in two, and
      only one half is settled. Word-*medially* an ASCII capital is essentially
      never right, by a margin wide enough that `detectors.MEDIAL_CAPS` refuses
-     one outright rather than flagging it. Word-*initially* both are ordinary
+     one outright rather than flagging it — **and a height comparison does not
+     reopen it.** The two sorts differ in nothing but height, so measuring is
+     the one instrument that cannot work here: there is no feature to find,
+     only a size to be talked into. `2-170` compared its medial `A` against a
+     known full capital and a known small cap on its own page, concluded full
+     height, and was adjudicated to `ᴀ` — while `2-171`, which read the same
+     name off its position in the word and measured nothing, had it right.
+     Position decides it. Word-*initially* both are ordinary
      and **the store does not hold enough initials of either kind to support a
      prior**: `proposal marks` says so in its own output, where the word-initial
      bands rest on one ground-truth page for `ɪ`/`I` and on none at all for
@@ -965,4 +999,11 @@ band: a prior backed by one page is a prior backed by one page.
     *Record:* two instances in one batch, different readers — `1-022`'s
     height "measurement" for `Plates V` (false: the `v` is x-height, the
     small caps visibly taller), `1-021`'s "CATMuS read it as an apostrophe"
-    (false: the machine text contains none).
+    (false: the machine text contains none). And `2-170`'s medial `A`, the
+    third: **a height measurement has now been wrong every time it has been
+    made here, including once when it was made well** — against two named
+    controls on its own page. Two sorts that differ only in size give a
+    reader nothing to see and a free hand to decide, so the measurement is
+    not weak evidence, it is the shape a decision takes when it has none.
+    Settle these by position, by what the form is, and by the rule that
+    covers it; report a size only as something you could not settle.

@@ -1,0 +1,138 @@
+{
+  "lines": {
+    "0": {
+      "text": "466"
+    },
+    "1": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "2": {
+      "text": "not “hot” enough might kill the patient on the spot. I have already described"
+    },
+    "3": {
+      "text": "tricks of this kind performed by the female shaman Uˊpuñe, and have also",
+      "resolved": "U'pun~e handle -> U + U+02CA (stress) + p + u + n+U+0303 (n-tilde) + e",
+      "as_typed": "tricks of this kind performed by the female shaman {U'pun~e}, and have also"
+    },
+    "4": {
+      "text": "quoted the story of Aiñanwaˊt about a keˊlᴇ having entered his body, and",
+      "resolved": "Ain~anwa't -> Aiñanwaˊt = A + i + ñ(U+0303) + a + n + w + a + U+02CA + t; ke'le_ -> keˊlᴇ = k + e + U+02CA + l + ᴇ(U+1D07)",
+      "as_typed": "quoted the story of {Ain~anwa't} about a {ke'le_} having entered his body, and"
+    },
+    "5": {
+      "text": "cleaned his interior with a small silver knife."
+    },
+    "6": {
+      "text": "The shaman Scratching-Woman also pretended to treat his patients all"
+    },
+    "7": {
+      "text": "the time in this way. For this purpose he used a special knife, represented"
+    },
+    "8": {
+      "text": "in Fig. 290. This is an ordinary iron knife set into an uncouth block of"
+    },
+    "9": {
+      "text": "wood with two circular notches and a double tassel of curried leather. A bead"
+    },
+    "10": {
+      "text": "of blue glass almost as large as a hen’s egg is also tied to the handle. The"
+    },
+    "11": {
+      "text": "bead looks quite old, and Scratching-Woman asserted that it was received by"
+    },
+    "12": {
+      "text": "his grandfather directly from the keˊlet. The handle of the knife has some",
+      "resolved": "ke'let -> keˊlet = k + e + U+02CA + l + e + t",
+      "as_typed": "his grandfather directly from the {ke'let}. The handle of the knife has some"
+    },
+    "13": {
+      "text": "rusty spots, which were said by the shaman to be produced by the blood of"
+    },
+    "14": {
+      "text": "patients operated upon with the knife. Together with the knife a small flat"
+    },
+    "15": {
+      "text": "piece of ivory (Fig. 291) was used, which was said to be employed, as a"
+    },
+    "16": {
+      "text": "rule, in cutting open the body. The shaman said"
+    },
+    "17": {
+      "text": "it was a present from the Milky may.¹ Three",
+      "note": "Printed “may” where sense wants “Way” (“Milky Way”) -- read plainly at 2x and 4x, m not w. Keyed as printed per keying_spec.md §2.14 (printer's error, key verbatim). Footnote marker keyed U+00B9 (superscript one) per §2.10.",
+      "class": "print"
+    },
+    "18": {
+      "text": "leather images were fastened to the ivory. One"
+    },
+    "19": {
+      "text": "was said to represent a keˊlᴇ from the “direction”",
+      "resolved": "ke'le_ -> keˊlᴇ = k + e + U+02CA + l + ᴇ(U+1D07)",
+      "as_typed": "was said to represent a {ke'le_} from the “direction”"
+    },
+    "20": {
+      "text": "of the darkness, with the arms longer than the"
+    },
+    "21": {
+      "text": "legs. The middle image — with only one arm"
+    },
+    "22": {
+      "text": "and one leg, and the eyes standing one over the"
+    },
+    "23": {
+      "text": "other — represented the keˊlᴇ luˊmetun.² The",
+      "note": "The initial letter of “luˊmetun” is set as an unhooked vertical stroke identical to this face's capital I (same ambiguity as §2.12's roman-numeral/digit-1 case, one letter over). Position (mid-sentence, common noun compounded with ke'lᴇ, not a name) favors lowercase l; keyed lowercase, flagging the shape for adjudication. Footnote marker keyed U+00B2 (superscript two).",
+      "class": "doubt",
+      "resolved": "ke'le_ -> keˊlᴇ = k + e + U+02CA + l + ᴇ(U+1D07); lu'metun -> luˊmetun = l + u + U+02CA + m + e + t + u + n",
+      "as_typed": "other — represented the {ke'le_} luˊmetun.² The"
+    },
+    "24": {
+      "text": "third image represented a crawling “spell,” which"
+    },
+    "25": {
+      "text": "one of the enemies of the shaman sent to attack"
+    },
+    "26": {
+      "text": "him; but he intercepted it on the way and"
+    },
+    "27": {
+      "text": "thoroughly subdued it, so that it began to do his"
+    },
+    "28": {
+      "text": "bidding. With the aid of these instruments,"
+    },
+    "29": {
+      "text": "Scratching-Woman pretended to have cut open"
+    },
+    "30": {
+      "text": "and put to rights internal organs, backs, shoulder-"
+    },
+    "31": {
+      "text": "blades, and several other parts of the bodies of many"
+    },
+    "32": {
+      "text": "patients, although, according to his neighbors, he"
+    },
+    "33": {
+      "text": "was too young to claim so many successful cases of treatment."
+    },
+    "34": {
+      "text": "The supplementary method of magic medicine, after the treatment of"
+    },
+    "35": {
+      "text": "shamans, consists in changing the appearance of the patient in order that the"
+    },
+    "36": {
+      "text": "“spirits” may not recognize him again. I have already spoken of the assump-"
+    },
+    "37": {
+      "text": "¹ Compare p. 459."
+    },
+    "38": {
+      "text": "² See p. 42."
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

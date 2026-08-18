@@ -1,0 +1,177 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "447.",
+      "note": "Apparatus folio, RunningTitleZone. Read off the composite/sheet per §2.10-adjacent apparatus rule (zoom refused on this line by design). Digits '447' followed by a period; the stray specks after it in the raw crop are ink noise, not additional punctuation.",
+      "class": "artifact"
+    },
+    "2": {
+      "text": "herself with a wooden knife. But, on seeing the peltries, nobody would even"
+    },
+    "3": {
+      "text": "look at the tricks of the shaman-woman, and she, in her turn, was expelled.¹",
+      "note": "Machine draft read the footnote-1 body reference as a trailing ']'; confirmed at 4x it is a raised numeral '1', keyed as the superscript sort per keying_spec.md §2.10 ('there is no plain-digit convention for footnote markers anywhere in this corpus').",
+      "class": "draft"
+    },
+    "4": {
+      "text": "Similar practices existed among the Yukaghir. Thus, for instance, in the"
+    },
+    "5": {
+      "text": "village Pyatistennoye I found, together with the wooden painted plank before"
+    },
+    "6": {
+      "text": "mentioned,² drums, shamanistic dress, and other appurtenances of the shamanistic",
+      "note": "Machine draft read the footnote-2 body reference as '?'; confirmed at 2x/4x it is a raised numeral '2', keyed superscript per §2.10.",
+      "class": "draft"
+    },
+    "7": {
+      "text": "practice. Among other things was an old wooden knife covered with dark"
+    },
+    "8": {
+      "text": "spots, which were said by the natives to be the shaman’s blood, which flowed"
+    },
+    "9": {
+      "text": "down when he stabbed himself through the abdomen."
+    },
+    "10": {
+      "text": "Krasheninnikoff describes a Kamchadal shaman, who likewise stabbed"
+    },
+    "11": {
+      "text": "himself with a knife while having the fur shirt on, and then drew from under"
+    },
+    "12": {
+      "text": "its cover handfuls of blood, which he swallowed.³",
+      "note": "Machine draft kept the footnote-3 body reference as a plain ASCII '3'; keyed as the superscript sort per §2.10.",
+      "class": "draft"
+    },
+    "13": {
+      "text": "Sarytcheff tells the same of a Yakut shaman, who not only stabbed"
+    },
+    "14": {
+      "text": "himself through the abdomen, but even ordered his assistant to drive in the"
+    },
+    "15": {
+      "text": "knife with a log up to the handle. After that the shaman came to the"
+    },
+    "16": {
+      "text": "hearth, took three burning coals, and swallowed them with much composure"
+    },
+    "17": {
+      "text": "and without any visible pain.⁴",
+      "note": "Machine draft read the footnote-4 body reference as '?'; confirmed at 2x it is a raised numeral '4', keyed superscript per §2.10.",
+      "class": "draft"
+    },
+    "18": {
+      "text": "To describe any considerable number of tricks carried out by the shamans,"
+    },
+    "19": {
+      "text": "both Chukchee and Eskimo, would require too much space. Uˊpuñe, for",
+      "resolved": "Uˊp = U + U+02CA stress + p; uñe = u, n+U+0303, e",
+      "note": "Raised mark between U and p is a raised tick, not a straight/curly apostrophe; keyed as stress U+02CA postposed to the stressed vowel U, per keying_spec.md §2.1/§5.8 default (raised mark defaults to stress, never apostrophe). ñ confirmed at 4x carries a real tilde. Proper name (Eskimo), attested 3x on this page (also lines 24, 37) with the same reading each time; `lexicon lookup` returned no match/key (below the 2-page floor or absent), keyed by hand.",
+      "class": "doubt"
+    },
+    "20": {
+      "text": "instance, pretended to draw a cord through her body, passing it from one"
+    },
+    "21": {
+      "text": "spot to another. Then suddenly she drew it out, and immediately afterward"
+    },
+    "22": {
+      "text": "pretended to cut in two with it the bodies of several of her children, who"
+    },
+    "23": {
+      "text": "sat in front of her. These and other tricks resemble to a surprising degree"
+    },
+    "24": {
+      "text": "the feats of jugglers all over the world. Before each performance, Uˊpuñe",
+      "resolved": "Uˊp = U + U+02CA stress + p; uñe = u, n+U+0303, e",
+      "note": "Same name as line 19; raised tick keyed as stress U+02CA, tilde on n confirmed at 4x.",
+      "class": "doubt"
+    },
+    "25": {
+      "text": "would even open her hands, in the graceful manner of a professor of magic,"
+    },
+    "26": {
+      "text": "to show us that she had nothing in them."
+    },
+    "27": {
+      "text": "It was said that her deceased husband had been able to wander under-",
+      "note": "Machine draft showed stray raised marks after 'to' and before 'under-'; confirmed at 4x these are scattered ink specks (irregular shape/position, not a consistent stroke), not apostrophes. Dropped.",
+      "class": "artifact"
+    },
+    "28": {
+      "text": "ground with his drum and all, that is, to “sink” in a quite literal manner."
+    },
+    "29": {
+      "text": "During a séance in the dark, he would require two of his neighbors to put",
+      "resolved": "é = e + U+0301 (combining acute) — standard English spelling of the loanword 'séance', kept as printed; not stripped per keying_spec.md §2.15 since séance retains this accent in ordinary English usage, unlike rôle/naïve/vice versâ"
+    },
+    "30": {
+      "text": "their hands upon his head, then he would gradually sink into the earth until"
+    },
+    "31": {
+      "text": "they lost the last touch of his hair. After a while, some one would be heard"
+    },
+    "32": {
+      "text": "rapping at the outer entrance of the house, some twenty feet from the inner"
+    },
+    "33": {
+      "text": "room. When the entrance was opened, the shaman would appear, quite"
+    },
+    "34": {
+      "text": "naked, with the drum in his hand."
+    },
+    "35": {
+      "text": "At first, on hearing this account, I was disposed to ascribe it to the"
+    },
+    "36": {
+      "text": "imagination of my Eskimo friends; but, after having seen the legerdemain"
+    },
+    "37": {
+      "text": "practised by Uˊpuñe and her children, I came to the conclusion that the",
+      "resolved": "Uˊp = U + U+02CA stress + p; uñe = u, n+U+0303, e",
+      "note": "Same name as lines 19/24; raised tick keyed as stress U+02CA, tilde on n confirmed at 4x.",
+      "class": "doubt"
+    },
+    "38": {
+      "text": "words of my Eskimo informants might have been nearer to the truth than I"
+    },
+    "39": {
+      "text": "supposed. Indeed, the house of the shaman could have had an underground"
+    },
+    "40": {
+      "text": "passage similar to the cellars which are sometimes dug under the houses and",
+      "note": "Machine draft showed 'aré' with a dot over the e; confirmed at 4x it is a small isolated ink speck above and right of the e, not an accent stroke -- consistent with the many other stray specks visible elsewhere on this page. Ordinary English 'are', no diacritic.",
+      "class": "artifact"
+    },
+    "41": {
+      "text": "tents, and the shaman might have passed through it to the outside."
+    },
+    "42": {
+      "text": "¹ See Bogoras, Chukchee Materials, p. 257.",
+      "note": "Footnote-1 opener; machine draft kept a plain ASCII '1', keyed as superscript per §2.10.",
+      "class": "draft"
+    },
+    "43": {
+      "text": "⁴ Sarytcheff, Voyage, I, p. 30.",
+      "note": "Footnote-4 opener; machine draft read the raised numeral '4' as ':'. Confirmed at 2x/4x it is a superscript '4', matching the body reference on line 17 and the sequence 1-2-3-4. Keyed as superscript per §2.10.",
+      "class": "draft"
+    },
+    "44": {
+      "text": "³ Krasheninnikoff, II. p. 158.",
+      "note": "Footnote-3 opener; machine draft kept a plain ASCII '3', keyed as superscript per §2.10.",
+      "class": "draft"
+    },
+    "45": {
+      "text": "² Compare pp 326, 327.",
+      "note": "Footnote-2 opener; machine draft kept a plain ASCII '2', keyed as superscript per §2.10.",
+      "class": "draft"
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}
