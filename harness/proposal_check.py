@@ -39,9 +39,9 @@ from pathlib import Path
 from .codepoints import non_ascii
 from .detectors import (
     INVENTORY_CHARS,
-    MEDIAL_CAPS,
     apostrophe_flags,
     footnote_report,
+    medial_cap_positions,
     suffix_mark_flags,
 )
 
@@ -186,7 +186,7 @@ def _notation_codepoints(text: str) -> list[int]:
     nfd = unicodedata.normalize("NFD", text)
     codepoints = [ord(ch) for ch in nfd
                  if ch in NOTATION_CHARS or unicodedata.category(ch) == "Mn"]
-    codepoints += [ord(m.group()) for m in MEDIAL_CAPS.finditer(nfd)]
+    codepoints += [ord(nfd[i]) for i in medial_cap_positions(nfd)]
     return codepoints
 
 

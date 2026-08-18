@@ -113,20 +113,24 @@ def test_disjoint_contrasts_are_unaffected_by_the_subtraction():
 # --- position -----------------------------------------------------------------
 
 def test_the_position_predicate_agrees_with_medial_caps():
-    """`is_medial` generalises `detectors.MEDIAL_CAPS` to the small caps.
+    """`is_medial` generalises `detectors.medial_cap_positions` to the small caps.
 
     Over every ASCII A/E/I/L position in `gt/ocr/` the two never disagree; this
     pins the shape on the cases that matter, so a future edit to either cannot
-    drift them apart unnoticed. A hyphen is not a letter, so an element-initial
-    capital in a compound reads as initial — which MEDIAL_CAPS's own lookbehind
-    class, carrying no hyphen, already decided.
-    """
-    from harness.detectors import MEDIAL_CAPS
+    drift them apart unnoticed — and it is a real pin, not a coincidence, only
+    because both now read the hyphen rule off one definition.
 
-    for tok in ("Iluˊkälin", "ᵉIᵋñɪt-qeˊñu", "Eleˊ-yiˊᵋlhɪn", "ČêˊLo-maˊᵋqɪm"):
+    `Hɪtoˊ-Lap` is the case that made the pin earn its keep: this test used to
+    assert the opposite, that an element-initial capital in a compound reads as
+    initial, and both sides agreed with each other while being wrong together.
+    """
+    from harness.detectors import medial_cap_positions
+
+    for tok in ("Iluˊkälin", "ᵉIᵋñɪt-qeˊñu", "Eleˊ-yiˊᵋlhɪn", "ČêˊLo-maˊᵋqɪm",
+                "Hɪtoˊ-Lap", "Baffin-Land"):
         t = nfd(tok)
         mine = {i for i, ch in enumerate(t) if ch in "AEIL" and is_medial(t, i)}
-        assert mine == {m.start() for m in MEDIAL_CAPS.finditer(t)}, tok
+        assert mine == set(medial_cap_positions(t)), tok
 
 
 def test_an_initial_scoped_contrast_ignores_a_medial_confusable():

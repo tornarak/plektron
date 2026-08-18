@@ -780,9 +780,12 @@ almost never sets), `conflict` (one word spelled two ways against the store), an
 **leave-one-out unconditionally** — after `restore` a page's gt *is* the adjudicated
 descendant of its own proposal, so including it is the two-witnesses-that-are-one
 collapse — and it is drawn from **density-selected** pages, which every report states
-in `prior_note`. `is_medial` generalises `detectors.MEDIAL_CAPS` to the small caps
+in `prior_note`. `is_medial` generalises `detectors.medial_cap_positions` to the small caps
 rather than copying its lookbehind class; the two agree on every live position and a
-test holds them together.
+test holds them together. **Both read the hyphen rule off that one definition** —
+inside a Tier-1 token a hyphen is word-internal, so a compound's element-initial
+capital is medial, while in English (`Baffin-Land`) it is not. They once agreed on
+the opposite and were wrong together, which `Hɪtoˊ-Lap` cost two pages.
 
 **`lookup.py`** — a ratified native form found by a typeable key, and the handle a
 reader writes instead of retyping its glyphs. **Two strings, and conflating them is

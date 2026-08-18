@@ -21,9 +21,15 @@ Merging forces one of two regressions — `normalize` screaming about correct pr
 or `validate` going blind in Tier-1. These tests are the executable form of a rule
 that previously existed only as a comment.
 """
+import unicodedata
+
 from harness.detectors import LOOKALIKES
 from harness.normalize import LOOKALIKE_CHARS, LOOKALIKE_SEQS
 from harness.validate import FORBIDDEN_PROSE, LOOKALIKE_GREPS, LOOKALIKE_SEQ_GREPS
+
+
+def nfd(s):
+    return unicodedata.normalize("NFD", s)
 
 CURLY = "‘’“”"
 # No legitimate use in English prose *or* in the notation, so every table may hold them.
@@ -135,8 +141,52 @@ def test_medial_caps_still_catches_a_capital_after_a_stress_mark():
 
 def test_medial_caps_leaves_ordinary_english_alone():
     """Word-initial A/E/I/L, and a capital after a hyphen or an opening paren:
-    all ordinary English, none of them a small-cap slip."""
+    all ordinary English, none of them a small-cap slip.
+
+    The hyphen case is English-only, and the bare regex is right to stay quiet
+    on it — `medial_cap_positions` is what reaches the Tier-1 compound, gated
+    on the token, and the two tests below hold the halves apart.
+    """
     from harness.detectors import MEDIAL_CAPS as M
     for s in ("English Iron Later Above", "(In fact", "Reindeer-Eater",
               "Qɪˊmɪqäi"):
         assert not M.search(s), f"fires on ordinary text: {s!r}"
+
+
+def test_a_hyphen_inside_a_tier1_token_is_word_internal():
+    """`Hɪtoˊ-Lap` — the miss this rule was written for.
+
+    2-040 l5 and 2-058 l9 both carry it, and it survived a reading pass and an
+    adjudication untouched: `MEDIAL_CAPS`'s two branches want the capital
+    preceded by a letter or a Tier-1 glyph and a hyphen is neither, so the
+    element-initial `L` looked word-initial — the one position where
+    `marks`' prior (7 ASCII `L` against 0 `ʟ`) says a capital is normal.
+    """
+    from harness.detectors import medial_cap_positions
+    assert medial_cap_positions(nfd("Hɪtoˊ-Lap")) == [6]
+    assert medial_cap_positions(nfd("keˊlᴇ-Ap")) == [6]
+    # The corrected form must not fire: ʟ is U+029F, outside [AEIL].
+    assert medial_cap_positions(nfd("Hɪtoˊ-ʟap")) == []
+
+
+def test_the_hyphen_rule_spares_english_compounds():
+    """Measured, not guessed: 14 tokens in restored ground truth set `-[AEIL]`
+    and 13 are English compounds, which the inventory-glyph gate excludes
+    whole. Ungated this rule would be the noise `detectors.py`'s docstring
+    forbids, on real pages — every one of these is printed in the book.
+    """
+    from harness.detectors import medial_cap_positions
+    for s in ("Baffin-Land Eskimo", "Chukchee-Eskimo trade", "Large-Anui River",
+              "Amur-Lande", "Young-Lamut-Reindeer", "room-Eater"):
+        assert medial_cap_positions(nfd(s)) == [], f"fires on English: {s!r}"
+
+
+def test_the_hyphen_rule_keeps_its_one_known_false_positive_visible():
+    """`Êˊnnɪčhɪ-Latuˊᵋwg̣ê` (1-071) is a Tier-1 compound whose second element
+    is itself a proper name, so its capital `L` is correct and no rule
+    separates it from `-Lap`. It is accepted as a false positive rather than
+    excused by a special case; pinning it here is what stops that acceptance
+    from being quietly forgotten.
+    """
+    from harness.detectors import medial_cap_positions
+    assert medial_cap_positions(nfd("Êˊnnɪčhɪ-Latuˊᵋwg̣ê")) != []

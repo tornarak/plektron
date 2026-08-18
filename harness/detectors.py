@@ -211,8 +211,53 @@ def apostrophe_licensing(text: str) -> list[dict]:
 _T1 = "".join(sorted(INVENTORY_CHARS))
 MEDIAL_CAPS = re.compile(
     rf"(?<=[a-z{_T1}])[AEIL]|(?<=[A-Za-z{_T1}])[AEIL](?=[a-z{_T1}])")
+# **Inside a Tier-1 token a hyphen is not a word boundary**, and the branches
+# above cannot say so: both want the capital preceded by a letter or a Tier-1
+# glyph, and a hyphen is neither. `H\u026ato\u02ca-Lap` (2-040 l5, 2-058 l9) therefore
+# kept a full-height medial capital through a reading pass *and* an
+# adjudication \u2014 nothing fired. Worse, the element-initial position routed it
+# to `marks`' `smallcap-l`, whose prior reads 7 ASCII `L` against 0 `\u029f` and so
+# actively endorses the capital. A compound's second element is medial: the
+# hyphen joins morphemes of one lexical item, not two English words.
+#
+# **Gated on the token already carrying an inventory glyph**, exactly as the
+# apostrophe checks in `detect_all` are, because ungated it is the noise this
+# module exists to refuse. Measured over restored ground truth: 14 tokens
+# corpus-wide set `-[AEIL]`, and 13 are English compounds \u2014 `Baffin-Land`,
+# `Chukchee-Eskimo`, `Large-Anui`, `Amur-Lande` \u2014 which the gate excludes
+# whole. The one Tier-1 form among the 14, `\u00ca\u02cann\u026a\u010dh\u026a-Latu\u02ca\u1d4bwg\u0323\u00ea` (1-071), is a
+# false positive and is accepted as one: its second element is itself a proper
+# name, so no rule separates it from `-Lap`.
+#
+# **That acceptance is not free, and the cost is a gate rather than an
+# advisory.** `proposal_check._present_codepoints` counts these positions, so
+# an ASCII capital inside a Tier-1 token that `resolved` does not name is a
+# `resolved/text mismatch` defect \u2014 which is precisely how the real case bites
+# (2-040 l5 and 2-058 l9 both fail it now, where they passed clean at the
+# time), and equally what a reader keying `-Latu\u02ca\u1d4bwg\u0323\u00ea` will have to answer by
+# naming U+004C. One page in the corpus pays that; two got through without it.
+HYPHEN_MEDIAL_CAPS = re.compile(rf"(?<=-)[AEIL](?=[a-z{_T1}])")
 DOT_ABOVE_G = re.compile(r"\u0121|g\u0307")
 TOKEN = re.compile(r"[^\s]+")
+
+
+def medial_cap_positions(text: str) -> list[int]:
+    """Offsets of every word-medial ASCII A/E/I/L in `text`, hyphen rule included.
+
+    **The one definition**, because the rule is asserted in three places that
+    must not drift: `detect_all`'s reader-facing flag, `marks.is_medial`'s
+    position routing, and `proposal_check`'s codepoint accounting.
+    `test_proposal_marks.py` pins the first two together; this is what keeps
+    the pinning honest rather than a coincidence. Tokenizes because the
+    Tier-1 gate on the hyphen branch is a property of the token, not the line.
+    """
+    out: list[int] = []
+    for m in TOKEN.finditer(text):
+        tok, base = m.group(), m.start()
+        out += [base + h.start() for h in MEDIAL_CAPS.finditer(tok)]
+        if any(c in INVENTORY_CHARS for c in tok):
+            out += [base + h.start() for h in HYPHEN_MEDIAL_CAPS.finditer(tok)]
+    return sorted(set(out))
 # keying_spec.md section 5.1: base letter + combining mark pairs known,
 # corpus-wide (`harness lexicon marks`), to have a strong bare-vs-marked
 # skew inside a specific suffix family -- a bare reading there is
@@ -918,7 +963,8 @@ def detect_all(lines: list[str], root: Path = Path("."),
                 hits.append("dot_above_g")
             if _suffix_mark_drop(tok):
                 hits.append("suffix_mark_drop")
-            if MEDIAL_CAPS.search(tok):
+            if MEDIAL_CAPS.search(tok) or (
+                    "inventory_glyph" in hits and HYPHEN_MEDIAL_CAPS.search(tok)):
                 hits.append("word_medial_caps")
             if "'" in tok and "inventory_glyph" in hits:
                 kinds = {h["kind"] for h in apostrophe_licensing(tok)}

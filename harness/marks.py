@@ -207,11 +207,24 @@ def is_medial(token: str, i: int) -> bool:
     than any share could. Word-initially both are ordinary: 63 ASCII caps
     (`Alaˊyon`, `Ilhiˊnin`, `Luˊᵋren`) against 55 small caps
     (`ɪnp-luˊwleñ-yiˊᵋlhɪn`, `ᴇnmɪtaˊhɪn`), and frequency evidence is the only
-    handle there is. A hyphen is not a letter, so an element-initial capital in a
-    compound reads as initial — which is what MEDIAL_CAPS's own lookbehind class,
-    carrying no hyphen, already decided.
+    handle there is.
+
+    **A hyphen inside a Tier-1 token is word-internal**, so an element-initial
+    capital in such a compound is medial. This paragraph used to say the
+    opposite — that a hyphen is not a letter, so the element read as initial —
+    and `Hɪtoˊ-Lap` (2-040, 2-058) is what that cost: nothing flagged it, and
+    the initial reading routed it to `smallcap-l`, whose prior of 7 ASCII `L`
+    against 0 `ʟ` then endorsed the capital. The gate is the token, not the
+    character: in ordinary English a hyphen *does* join two words
+    (`Baffin-Land`), and only the inventory glyph tells the two cases apart.
+    `detectors.HYPHEN_MEDIAL_CAPS` carries the measurement.
     """
-    return i > 0 and (token[i - 1].isalpha() or unicodedata.combining(token[i - 1]) != 0)
+    if i <= 0:
+        return False
+    prev = token[i - 1]
+    if prev.isalpha() or unicodedata.combining(prev) != 0:
+        return True
+    return prev == "-" and any(c in INVENTORY_CHARS for c in token)
 
 
 def _find(token: str, needle: str, position: str) -> list[int]:
