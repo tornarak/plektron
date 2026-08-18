@@ -356,6 +356,8 @@ notation the whole project exists to protect. Closed set:
   distinction because ISO 639-3 offers `ess` and `ynk` would assume precision the
   source does not carry.
 - **`xcv`** — Chuvan. Only when the adjacent English names Chuvan or Chuvantsy.
+  Not on "Russianized natives" alone, which names Chuvan and Yukaghir alike — see
+  `yux` below, where the pair is set out.
 - **`itl`** — Itelmen. Only when the adjacent English names Itelmen or Kamchadal;
   *Kamchadal* is what Bogoras writes and the two are one language under two names,
   so the one code takes both words, as `eve` does for Lamut. Glosses only — the
@@ -370,17 +372,24 @@ notation the whole project exists to protect. Closed set:
   Eskimo *as distinct from* the Siberian shore. The macrolanguage code, on `ypk`'s
   reasoning and for the same reason: ISO 639-3 separates North Alaskan from
   Northwest Alaska Inupiatun (`esi`, `esk`) and the book separates neither.
-- **`yux`** — Yukaghir. Only when the adjacent English names Yukaghir; the
-  Kolyma chapters are where it falls, since the Yukaghir are the Chukchee's
-  westerly neighbours there. **Unlike `ypk`, `ipk`, `itl` and `eve` above, the
-  code here does *not* absorb a distinction the book declines to make.** `yux` is
-  *Southern* (Kolyma) Yukaghir and `ykg` is Tundra (Northern) Yukaghir; they are
-  two languages, Bogoras writes one English word for both, and the store commits
-  to the Southern one — `people:yukaghir` takes its extent from
-  `langarea:sout2750`. So a form whose surrounding prose places it on the tundra
-  rather than the Kolyma is **a reservation, not a `yux` span**: say so and leave
-  it unmarked. Guessing which Yukaghir would be inferring a glyph system's owner
-  from geography, which is the firewall's failure mode one category over.
+- **`yux`** — Yukaghir. Only when the adjacent English names Yukaghir. The code
+  is *Southern* (Kolyma) Yukaghir, and it fits what this book actually carries:
+  its Yukaghir are almost entirely the **"Russianized natives"** of Markovo on
+  the middle Anadyr (`place:markovo`) and the upper Kolyma, not a tundra
+  population, so Tundra (Northern) Yukaghir — `ykg`, a separate language sharing
+  one English word with this one — is not the case you will meet. If a form's
+  prose does place it on the tundra, that is a reservation rather than a `yux`
+  span.
+
+  **The live confusion is with `xcv`, and the store will not settle it for you.**
+  The Chuvans are `part-of: people:yukaghir`, and *both* entities carry the alias
+  **"Russianized natives"** — so that phrase alone names neither. Take the code
+  from what the sentence says: Chuvan or Chuvantzy → `xcv`, Yukaghir → `yux`,
+  and prose that says only "Russianized natives" identifies no language at all.
+  Bogoras himself keeps them distinct where it matters (1-036: "The Russianized
+  natives of the Kolyma consist chiefly of Yukaghir with a strong admixture of
+  Russian blood, and some of the Yakut and the Chuvantzy"), so a form there is
+  `yux` on the strength of that sentence and not of the phrase that opens it.
 
 There is **no section- or chapter-level signal for any of this**. A comparative
 citation can appear anywhere the author finds it useful: the Koryak gloss for
