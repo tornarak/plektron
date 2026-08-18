@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-2-063.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-2-063.png; regions_from: zones/chukchi-2-063.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+                <TextBlock ID="mz_2-063_r1" HPOS="437" VPOS="470" WIDTH="1776" HEIGHT="86" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="437 470 2213 470 2213 556 437 556"/>
+                    </Shape>
+                    <TextLine ID="mz_2-063_l1" HPOS="1006" VPOS="481" WIDTH="617" HEIGHT="53" BASELINE="1008 515 1623 520" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1615 487 1613 485 1022 481 1008 493 1008 515 1006 528 1619 534 1623 520 1621 489 1615 487"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-063_l2" HPOS="2099" VPOS="485" WIDTH="92" HEIGHT="55" BASELINE="2103 530 2191 526" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="2177 485 2168 485 2099 491 2103 530 2103 540 2191 538 2191 526 2185 485 2177 485"/>
+                        </Shape>
+                        <String CONTENT="337"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-063_r2" HPOS="437" VPOS="588" WIDTH="1776" HEIGHT="248" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="437 588 2213 588 2213 836 437 836"/>
+                    </Shape>
+                    <TextLine ID="mz_2-063_l3" HPOS="534" VPOS="583" WIDTH="1665" HEIGHT="61" BASELINE="536 628 2199 622" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="2195 593 2164 583 2162 583 2160 583 1786 593 1680 583 1678 583 1676 583 1639 595 1098 585 1096 585 1034 597 971 587 969 587 742 597 683 587 681 587 679 587 654 597 556 587 554 587 552 587 550 587 534 597 536 628 536 644 2197 638 2199 622 2197 605 2195 593"/>
+                        </Shape>
+                        <String CONTENT="According to another belief, spread much more widely among the Chuk-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-063_l4" HPOS="428" VPOS="644" WIDTH="1767" HEIGHT="61" BASELINE="430 691 2195 683" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="448 652 444 652 428 659 430 691 430 705 2193 701 2195 683 2189 644 1886 654 1833 644 1831 644 1778 654 1756 644 1754 644 1752 644 1750 644 1725 656 1680 646 1678 646 1533 656 1517 646 1515 646 1513 646 1416 646 1414 646 1329 656 1316 646 1314 646 1312 646 1310 646 1198 658 881 648 879 648 785 659 456 650 448 652"/>
+                        </Shape>
+                        <String CONTENT="chee, the deceased become, after death, a kind of keˊlet hostile to man, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-063_l5" HPOS="428" VPOS="703" WIDTH="1771" HEIGHT="60" BASELINE="430 750 2199 742" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="430 750 430 763 2197 759 2199 742 2195 714 2030 703 2029 703 2027 703 2005 712 1978 703 1976 703 1974 703 1848 712 1821 703 1819 703 1817 703 1748 714 1604 705 1602 705 1600 705 1574 716 1423 716 1384 705 1382 705 1380 705 1278 716 1224 706 1222 706 1220 706 1188 716 1143 706 1141 706 1043 716 1006 706 1004 706 1002 706 826 718 795 708 793 708 791 708 789 708 755 718 726 708 724 708 722 708 720 708 687 718 636 708 634 708 428 714 430 750"/>
+                        </Shape>
+                        <String CONTENT="inclined to do harm. The keˊlet in question are of course those of the first"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-063_l6" HPOS="434" VPOS="765" WIDTH="662" HEIGHT="67" BASELINE="434 806 1096 806" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="434 806 434 820 538 832 540 832 542 832 564 822 738 822 748 830 748 832 750 832 752 832 754 832 1096 820 1096 806 1092 765 1065 775 1002 765 1000 765 998 765 975 777 951 765 949 765 947 765 945 765 944 765 944 767 932 779 897 779 863 765 861 765 859 765 857 765 855 765 844 777 761 777 740 765 738 765 736 765 734 765 732 765 712 777 691 765 689 765 687 765 685 765 683 765 683 767 671 777 626 765 624 765 622 765 620 765 618 765 597 779 497 779 464 765 462 765 460 765 458 765 434 777 434 806"/>
+                        </Shape>
+                        <String CONTENT="class, called “genuine keˊlet.”"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-063_r3" HPOS="437" VPOS="836" WIDTH="1776" HEIGHT="243" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="437 836 2213 836 2213 1079 437 1079"/>
+                    </Shape>
+                    <TextLine ID="mz_2-063_l7" HPOS="540" VPOS="820" WIDTH="1659" HEIGHT="74" BASELINE="542 869 2199 859" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="542 869 542 883 869 894 871 894 873 894 898 883 1114 893 1116 893 1433 881 1484 891 1486 891 1488 891 1490 891 1506 881 1762 889 1764 889 1893 877 2032 877 2048 887 2050 887 2052 887 2054 887 2056 887 2087 877 2103 887 2105 887 2107 887 2109 887 2199 873 2199 859 2195 832 2101 820 2099 820 2097 820 2095 820 2081 832 1976 832 1946 820 1944 820 1942 820 1888 830 1872 820 1870 820 1868 820 1866 820 1864 820 1839 834 1680 834 1654 822 1652 822 1651 822 1649 822 1611 832 1582 822 1580 822 1578 822 1517 834 1398 824 1396 824 1394 824 1392 824 1378 836 1290 836 1229 824 1227 824 1226 824 1192 836 983 826 981 826 979 826 945 836 908 826 906 826 904 826 902 826 900 826 887 836 777 828 775 828 773 828 771 828 755 840 597 840 558 828 556 828 554 828 552 828 550 828 540 834 542 869"/>
+                        </Shape>
+                        <String CONTENT="A corpse lying in the open will stand up and give pursuit when a lone"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-063_l8" HPOS="430" VPOS="889" WIDTH="1767" HEIGHT="52" BASELINE="432 928 2197 920" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="432 928 432 941 2195 938 2197 920 2193 893 450 889 448 889 446 889 444 889 430 894 432 928"/>
+                        </Shape>
+                        <String CONTENT="traveller passes by. The deceased is also inclined to come back to his own"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-063_l9" HPOS="432" VPOS="941" WIDTH="1761" HEIGHT="63" BASELINE="434 988 2193 981" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="434 988 434 1004 2191 1002 2193 981 2189 941 2085 941 2083 941 2081 941 2079 941 2064 953 1907 953 1889 941 1888 941 1886 941 1884 941 1707 953 1660 943 1658 943 1656 943 1623 953 1531 943 1529 943 1343 953 1316 943 1314 943 1312 943 1310 943 1280 955 1200 945 1198 945 1196 945 1163 955 1126 945 1124 945 1122 945 824 957 795 947 793 947 791 947 789 947 752 957 683 947 681 947 597 957 432 951 434 988"/>
+                        </Shape>
+                        <String CONTENT="house, and to harm the people thereof. I shall speak of this in more detail"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-063_l10" HPOS="432" VPOS="1008" WIDTH="204" HEIGHT="57" BASELINE="434 1045 636 1049" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="434 1045 432 1065 634 1065 636 1049 634 1020 434 1008 434 1045"/>
+                        </Shape>
+                        <String CONTENT="later on."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

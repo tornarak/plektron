@@ -1,0 +1,114 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "313"
+    },
+    "2": {
+      "text": "in various dialects Ruḷteˊyet, Ruḷteˊyelɪn, Yultaˊyat, or Woḷvaˊkɪ-r-imtiˊlɪn (“Crosswise-bow-carrier”),",
+      "resolved": "ḷ = l+U+0323 (Ruḷte ×2, Woḷvaˊkɪ); ˊ = U+02CA stress (Ruḷteˊyet, Ruḷteˊyelɪn, Yultaˊyat, Woḷvaˊkɪ, imtiˊlɪn); ɪ = U+026A (Ruḷteˊyelɪn, Woḷvaˊkɪ, imtiˊlɪn)"
+    },
+    "3": {
+      "text": "which suggests the same tale. For this last, Mr. Jochelson has Ulveiyinitilaᵋn, with the same",
+      "resolved": "ᵋ = U+1D4B laryngeal, keyed after the 'a' before final 'n' in Ulveiyinitilaᵋn",
+      "note": "Raised mark reads as a small rounded loop-with-a-tail, not a catalogued 'g'. Keyed as laryngeal U+1D4B (nearest catalogued sort, per keying_spec.md §5.9/uncatalogued-second-mark discipline) rather than left uncatalogued, since the shape matches the project's documented laryngeal-misread-as-superscript-g pattern. The word carries no other raised mark. This is a name Jochelson supplied (possibly not Chukchee); flagging for adjudicator confirmation at 4x.",
+      "class": "doubt"
+    },
+    "4": {
+      "text": "meaning. Aldebaran is called Cɪcɪˊlo-xmä (“Copper-arrow-head”). This name, with slight changes,",
+      "resolved": "ɪ = U+026A small-cap (Cɪcɪˊlo, ×2, word-initial C is ASCII capital, medial c is lowercase); ˊ = U+02CA stress; ä = a+U+0308",
+      "note": "proposal check flags Cɪcɪˊlo-xmä as a rare form (this letter sequence is set in only 5.6% of the corpus's occurrences of this character, per keying_spec.md §2.2). Answered: confirmed at 4x — the medial ɪ is a flat-topped small-cap stem, contrasted directly against the rounded breve-i (ĭ) on L8/L9's Kĭluˊ, which is a visibly different shape on the same page.",
+      "class": "print"
+    },
+    "5": {
+      "text": "is repeated in several dialects."
+    },
+    "6": {
+      "text": "Pehiˊttin is called Paˊhɪttɪn. According to Mr. Jochelson, Peˊgeten, meaning “suspended",
+      "resolved": "Pehiˊttin keeps a plain dotted i (×2), confirmed both by raster contrast against the dotless ɪ in Paˊhɪttɪn on the same line and by the ratified lexicon form; ˊ = U+02CA stress throughout; ɪ = U+026A (Paˊhɪttɪn, ×2)",
+      "note": "Same line contrasts a dotted-i form (Pehiˊttin, the other-dialect name) against a dotless-ɪ form (Paˊhɪttɪn, the Chukchee equivalent) — read as printed. `lexicon lookup pehittin` ratifies key Pehi'ttin -> Pehiˊttin (2-033, 2-036, 2-037, 2-134), confirming the dotted-i spelling. Paˊhɪttɪn has no lexicon entry and is keyed by hand from the raster contrast. proposal check also flags Peˊgeten (rare character) as advisory: confirmed at 4x, stress mark sits directly after 'Pe', unambiguous against the plain apostrophe shape used consistently for stress elsewhere on this page — no contrast word needed beyond the page's own consistent stress-mark shape.",
+      "class": "print"
+    },
+    "7": {
+      "text": "breath,” is the name of the morning-star. I was unable to find out the derivation of this word."
+    },
+    "8": {
+      "text": "Orion’s Belt is called Kĭluˊ-ênaˊnvenañ (“scraper of Kĭluˊ”), Klĭuˊ being the name of a mythical",
+      "resolved": "ĭ = i+U+0306 breve, licensed on i per §2.6 (Kĭluˊ ×2, Klĭuˊ — note differing letter order K-ĭ-l-u vs K-l-ĭ-u); ˊ = U+02CA stress; ê = e+U+0302; ñ = n+U+0303; Orion’s keeps the English possessive as curly U+2019 per §1",
+      "note": "This line prints the personage's name two ways: 'Kĭluˊ' (breve as 2nd letter) then, later in the same line, 'Klĭuˊ' (breve as 3rd letter, after l) — keyed as printed, not harmonized. The breve is a rounded arc, visually distinct from the flat-topped small-cap ɪ used elsewhere on this page (e.g. L4 Cɪcɪˊlo-xmä). `lexicon lookup kilu` finds a ratified form 'Kɪluˊ' (small-cap ɪ, no breve) on 2-017, for what appears to be the same figure (“niece of Big-Raven”, matching this page's L9). Flagging the cross-page discrepancy for the adjudicator rather than silently harmonizing to the other page's spelling.",
+      "class": "doubt"
+    },
+    "9": {
+      "text": "personage, niece of Big-Raven.¹ Corona Borealis is called Kĭluˊ-plaˊkɪlhɪn (“boot of Kĭluˊ”). The",
+      "resolved": "ĭ = i+U+0306 breve (Kĭluˊ ×2); ˊ = U+02CA stress; ɪ = U+026A (kɪlhɪn); ¹ = U+00B9 footnote marker",
+      "note": "Footnote 1 body reference, superscript per §2.10; opener is L23.",
+      "class": "print"
+    },
+    "10": {
+      "text": "name Ñawɪsqaˊtɪmkɪn (“group of women”) is applied in different localities to the Pleiades or to",
+      "resolved": "Ñ = N+U+0303 (word-initial capital); ɪ = U+026A (×3); ˊ = U+02CA stress"
+    },
+    "11": {
+      "text": "Cassiopeia. The Milky Way is also called Pebbly River (Čehaiˊ-vaˊyam), or Muddy River (Aru-",
+      "resolved": "Č = c+U+030C; ˊ = U+02CA stress (×2)"
+    },
+    "12": {
+      "text": "veˊyem), or Clay River (Yaᵋ-veˊyem). The Ursa Major, however, is ɪlvaˊ-kyɪ (“wild reindeer-buck;”",
+      "resolved": "ᵋ = U+1D4B laryngeal, keyed after 'a' in Yaᵋ; ˊ = U+02CA stress; ɪ = U+026A (ɪlvaˊ-kyɪ, ×2)",
+      "note": "Same uncatalogued-looking raised mark as L3 ('Ulveiyinitilaᵋn'), here after 'Ya' before the hyphen. Keyed as laryngeal U+1D4B for the same reasons; flagging for adjudicator confirmation.",
+      "class": "doubt"
+    },
+    "13": {
+      "text": "according to Mr. Jochelson, elweˊkyeñ). In most localities the Pleiades are called Käˊtmäč, Keˊrmɪs",
+      "resolved": "ˊ = U+02CA stress (×4); ñ = n+U+0303; ä = a+U+0308 (×2, Käˊtmäč); č = c+U+030C; ɪ = U+026A (Keˊrmɪs)"
+    },
+    "14": {
+      "text": "(“little sieve”); according to Mr. Jochelson, Keˊtmet. In some places they are considered as a",
+      "resolved": "ˊ = U+02CA stress"
+    },
+    "15": {
+      "text": "group of reindeer at which the celestial archer Ruḷteˊyet takes aim. The names of constellations,",
+      "resolved": "ḷ = l+U+0323 (Ruḷteˊyet, consistent with L2); ˊ = U+02CA stress"
+    },
+    "16": {
+      "text": "and stars among the Aiˊwan Eskimo are almost all literal translations from the Chukchee. For",
+      "resolved": "{Ai'wan} expands to Aiˊwan (ratified, lexicon key Ai'wan, attested 1-040 etc.)",
+      "as_typed": "and stars among the {Ai'wan} Eskimo are almost all literal translations from the Chukchee. For"
+    },
+    "17": {
+      "text": "instance, Leˊutti (“Heads”) are called Naˊs˙kut, which means the same; the Pleiades are called",
+      "resolved": "ˊ = U+02CA stress (Leˊutti); s˙ = s+U+02D9, the postposed palatalization mark licensed on s per §2.1's seven-member series",
+      "note": "Raised mark between 's' and 'kut' sits at mid-height, clearly above the baseline (not a hyphen) and below stress height, confirmed at 4x. Keyed as s+U+02D9. mz/ocr's draft read this as a plain hyphen ('Na's-kut'), which the raster contradicts.",
+      "class": "doubt"
+    },
+    "18": {
+      "text": "Aṛnaṛayeˊɪt, which, again, signifies “group of women,” etc.",
+      "resolved": "ṛ = r+U+0323 (×2); ˊ = U+02CA stress; ɪ = U+026A"
+    },
+    "19": {
+      "text": "the village of Kamenskoye and to the country west of it; that is, to the villages of Paren, Itkana, etc., and to"
+    },
+    "20": {
+      "text": "the Reindeer Koryak of the peninsula of Taigonos. Now, the dialects of the eastern Koryak substitute r for y"
+    },
+    "21": {
+      "text": "woḷvaˊkɪ-r-imtiˊlɪn). The dialect of Paren substitutes t for r (Keˊtmet). The dialect of Kamenskoye substitutes",
+      "resolved": "ḷ = l+U+0323 (woḷvaˊkɪ, consistent with L2); ˊ = U+02CA stress (×3); ɪ = U+026A (×2)",
+      "note": "Line opens with a closing parenthesis and no matching open paren anywhere in the preceding line (L20 ends '...substitute r for y' with nothing after it at 4x). Printer's omission; keyed as printed, no open paren invented.",
+      "class": "print"
+    },
+    "22": {
+      "text": "a for e (Čehaiˊ-vaˊyam), etc.",
+      "resolved": "Č = c+U+030C; ˊ = U+02CA stress (×2)"
+    },
+    "23": {
+      "text": "¹ See Vol. VI, p. 116.",
+      "resolved": "¹ = U+00B9 footnote opener, pairs with the body reference on L9"
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

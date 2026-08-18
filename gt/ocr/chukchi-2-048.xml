@@ -1,0 +1,217 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-2-048.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-2-048.png; regions_from: zones/chukchi-2-048.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+                <TextBlock ID="mz_2-048_r1" HPOS="333" VPOS="478" WIDTH="1776" HEIGHT="94" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="333 478 2109 478 2109 572 333 572"/>
+                    </Shape>
+                    <TextLine ID="mz_2-048_l1" HPOS="910" VPOS="495" WIDTH="615" HEIGHT="49" BASELINE="910 528 1525 528" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="910 528 910 544 1525 544 1525 528 1525 495 910 495 910 528"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-048_l2" HPOS="336" VPOS="501" WIDTH="100" HEIGHT="51" BASELINE="340 536 436 530" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="340 536 340 552 436 540 436 530 430 501 336 505 340 536"/>
+                        </Shape>
+                        <String CONTENT="322"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-048_r2" HPOS="333" VPOS="595" WIDTH="1776" HEIGHT="102" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="333 595 2109 595 2109 697 333 697"/>
+                    </Shape>
+                    <TextLine ID="mz_2-048_l3" HPOS="330" VPOS="597" WIDTH="1775" HEIGHT="55" BASELINE="332 630 2105 626" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="332 630 332 652 2103 640 2105 626 2099 597 330 597 332 630"/>
+                        </Shape>
+                        <String CONTENT="[stream wind]”) for the south wind. Names like these last are used also by Russians in both Europe"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-048_l4" HPOS="334" VPOS="648" WIDTH="1317" HEIGHT="43" BASELINE="334 675 1651 675" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="334 675 334 691 1649 691 1651 675 1649 648 334 648 334 675"/>
+                        </Shape>
+                        <String CONTENT="and Asia, and by Russianized natives everywhere in northeastern Siberia."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-048_r3" HPOS="333" VPOS="713" WIDTH="1776" HEIGHT="257" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="333 713 2109 713 2109 970 333 970"/>
+                    </Shape>
+                    <TextLine ID="mz_2-048_l5" HPOS="440" VPOS="716" WIDTH="1667" HEIGHT="61" BASELINE="442 765 2107 759" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="442 765 442 777 2105 773 2107 759 2105 724 2091 716 2089 716 2087 716 2085 716 2083 716 2081 716 2064 730 1966 730 1903 716 1901 716 1899 716 1866 728 1842 716 1841 716 1839 716 1762 728 1745 716 1743 716 1741 716 1739 716 1737 716 1709 726 1682 716 1680 716 1678 716 1676 716 1641 728 1611 716 1609 716 1607 716 1547 732 1378 732 1359 718 1357 718 1355 718 1353 718 1351 718 1310 730 1273 718 1271 718 1269 718 1267 718 1239 730 1180 718 1179 718 1177 718 1145 730 1102 718 1100 718 1098 718 1096 718 1067 730 977 720 975 720 973 720 971 720 951 734 757 734 722 720 720 720 718 720 440 726 442 765"/>
+                        </Shape>
+                        <String CONTENT="The Chukchee assert that, in the Arctic system of winds, qêraˊlhɪn and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-048_l6" HPOS="330" VPOS="783" WIDTH="1773" HEIGHT="61" BASELINE="330 822 2103 822" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="330 822 330 834 2101 844 2103 822 2103 795 1151 783 1149 783 1077 793 1020 783 1018 783 973 793 938 783 936 783 934 783 857 793 824 783 822 783 820 783 818 783 783 793 660 783 658 783 656 783 654 783 638 795 528 795 485 783 483 783 481 783 479 783 448 793 372 783 370 783 368 783 330 793 330 822"/>
+                        </Shape>
+                        <String CONTENT="eñeˊneñe are husband and wife. Although they constantly desire to meet,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-048_l7" HPOS="329" VPOS="840" WIDTH="1772" HEIGHT="62" BASELINE="330 885 2101 881" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="330 885 330 896 2097 902 2101 881 2097 851 1850 840 1848 840 1776 849 1743 840 1741 840 1739 840 1688 849 1635 840 1633 840 1631 840 1594 849 1557 840 1555 840 1553 840 1551 840 1549 840 1535 849 1459 840 1457 840 1398 849 1365 840 1363 840 1361 840 1359 840 1357 840 1341 849 953 842 951 842 949 842 918 851 887 842 885 842 883 842 801 851 765 842 763 842 761 842 436 851 354 842 352 842 350 842 329 851 330 885"/>
+                        </Shape>
+                        <String CONTENT="they are prevented, and obliged to pass each other in the air. Others say,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-048_l8" HPOS="332" VPOS="902" WIDTH="1642" HEIGHT="55" BASELINE="334 943 1974 940" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="334 943 334 957 1972 955 1974 940 1970 912 1198 902 1196 902 1149 912 430 904 428 904 332 914 334 943"/>
+                        </Shape>
+                        <String CONTENT="on the contrary, that, passing each other, they exchange mutual abuse."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-048_r4" HPOS="333" VPOS="970" WIDTH="1776" HEIGHT="127" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="333 970 2109 970 2109 1097 333 1097"/>
+                    </Shape>
+                    <TextLine ID="mz_2-048_l9" HPOS="440" VPOS="959" WIDTH="1667" HEIGHT="63" BASELINE="442 1002 2107 998" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="442 1002 442 1016 2087 1022 2089 1022 2091 1022 2093 1022 2107 1012 2107 998 2103 971 2052 959 2050 959 2048 959 2019 969 1968 959 1966 959 1964 959 1938 969 1901 959 1899 959 1897 959 1895 959 1866 969 1727 959 1725 959 1723 959 1682 969 1643 959 1641 959 1639 959 1586 969 1486 959 1484 959 1396 969 1329 959 1327 959 1271 971 1249 961 1247 961 1245 961 1194 973 1106 973 1092 961 1090 961 1088 961 1086 961 1085 961 1059 971 989 961 987 961 926 973 799 973 781 961 779 961 777 961 775 961 671 971 658 961 656 961 654 961 652 961 440 965 442 1002"/>
+                        </Shape>
+                        <String CONTENT="The cold winds are said to be produced by giants who live on the border"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-048_l10" HPOS="330" VPOS="1022" WIDTH="1775" HEIGHT="57" BASELINE="330 1063 2105 1063" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="330 1063 330 1077 2101 1079 2105 1063 2105 1034 2074 1022 2072 1022 2070 1022 2068 1022 2040 1032 1664 1022 1662 1022 1660 1022 1658 1022 1643 1032 1580 1022 1578 1022 1576 1022 1543 1034 1361 1034 1290 1022 1288 1022 1286 1022 1284 1022 1271 1032 1190 1022 1188 1022 1120 1032 1069 1022 1067 1022 1065 1022 1028 1032 942 1022 940 1022 938 1022 918 1032 891 1022 889 1022 887 1022 773 1032 740 1022 738 1022 736 1022 638 1032 603 1022 601 1022 599 1022 597 1022 567 1034 407 1034 374 1022 372 1022 370 1022 368 1022 330 1032 330 1063"/>
+                        </Shape>
+                        <String CONTENT="of our earth, and spend their time shovelling snow with huge shovels made"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-048_r5" HPOS="333" VPOS="2381" WIDTH="1776" HEIGHT="128" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="333 2381 2109 2381 2109 2509 333 2509"/>
+                    </Shape>
+                    <TextLine ID="mz_2-048_l11" HPOS="332" VPOS="2389" WIDTH="1771" HEIGHT="56" BASELINE="334 2430 2103 2434" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1921 2397 1909 2395 1886 2395 1882 2395 1862 2395 1842 2395 1823 2395 1803 2395 1784 2395 1764 2395 1745 2395 1725 2395 1719 2393 1615 2400 1547 2393 1529 2393 1519 2391 1451 2400 1419 2391 1417 2391 1416 2391 1329 2400 1280 2391 1278 2391 1276 2391 1237 2400 1177 2389 1175 2389 1173 2389 1130 2398 1041 2389 1039 2389 940 2398 924 2389 922 2389 920 2389 918 2389 916 2389 877 2398 804 2389 802 2389 801 2389 769 2398 755 2389 754 2389 752 2389 750 2389 681 2398 658 2389 656 2389 654 2389 334 2397 334 2430 332 2440 2099 2445 2103 2434 2101 2402 1938 2397 1921 2397"/>
+                        </Shape>
+                        <String CONTENT="of the shoulder-blades of whales. Sometimes the winds are said to have an"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-048_l12" HPOS="332" VPOS="2449" WIDTH="1767" HEIGHT="63" BASELINE="334 2489 2099 2494" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="334 2489 332 2502 348 2512 350 2512 352 2512 354 2512 2097 2508 2099 2494 2097 2465 2036 2453 1909 2453 1907 2453 1905 2453 1903 2453 1888 2463 1692 2453 1690 2453 1688 2453 1686 2453 1670 2465 1543 2465 1506 2451 1504 2451 1502 2451 1500 2451 1461 2461 1398 2451 1294 2451 1292 2451 1290 2451 1288 2451 1275 2461 1222 2451 1220 2451 1218 2451 1180 2461 730 2461 697 2449 695 2449 693 2449 691 2449 652 2459 489 2449 487 2449 334 2457 334 2489"/>
+                        </Shape>
+                        <String CONTENT="old mistress, who causes snow-storms by shaking the snow from her dwelling."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-048_r6" HPOS="333" VPOS="2509" WIDTH="1776" HEIGHT="609" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="333 2509 2109 2509 2109 3118 333 3118"/>
+                    </Shape>
+                    <TextLine ID="mz_2-048_l13" HPOS="446" VPOS="2510" WIDTH="1657" HEIGHT="57" BASELINE="446 2553 2103 2553" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="446 2553 446 2567 2103 2567 2103 2553 2103 2522 2079 2510 2077 2510 2076 2510 1964 2522 1940 2510 1938 2510 1936 2510 1864 2520 1839 2510 1837 2510 1835 2510 1833 2510 1831 2510 1813 2522 1747 2510 1745 2510 1743 2510 1713 2522 1690 2510 1688 2510 1686 2510 1684 2510 1641 2524 1576 2524 1557 2510 1555 2510 1553 2510 1551 2510 1549 2510 1498 2522 1392 2522 1376 2510 1374 2510 1372 2510 1370 2510 1369 2510 1337 2522 1269 2510 1267 2510 1151 2522 1126 2510 1124 2510 1122 2510 1051 2522 953 2510 951 2510 949 2510 920 2524 850 2524 832 2510 830 2510 828 2510 826 2510 746 2522 689 2510 687 2510 685 2510 656 2522 595 2510 593 2510 540 2520 446 2514 446 2553"/>
+                        </Shape>
+                        <String CONTENT="Thunder is said to be produced by the passing of the thunder-bird."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-048_l14" HPOS="332" VPOS="2569" WIDTH="1773" HEIGHT="66" BASELINE="334 2608 2105 2612" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="334 2608 332 2622 1374 2635 1376 2635 2103 2626 2105 2612 2105 2581 2089 2571 2087 2571 2085 2571 2083 2571 2081 2571 2042 2581 1989 2571 1987 2571 1676 2581 1639 2571 1637 2571 1635 2571 1633 2571 1605 2581 1578 2571 1576 2571 1574 2571 1523 2581 1463 2571 1461 2571 1398 2581 1359 2571 1357 2571 1355 2571 1353 2571 1331 2581 1300 2571 1298 2571 1296 2571 1222 2581 1157 2569 1155 2569 1153 2569 1120 2579 1018 2569 1016 2569 951 2579 855 2569 853 2569 851 2569 818 2579 722 2569 720 2569 718 2569 695 2579 607 2569 605 2569 334 2577 334 2608"/>
+                        </Shape>
+                        <String CONTENT="Others attribute it to the rattling noise made by girls playing on a spread seal-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-048_l15" HPOS="332" VPOS="2630" WIDTH="1773" HEIGHT="64" BASELINE="334 2669 2105 2673" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="334 2669 332 2684 344 2692 346 2692 348 2692 350 2692 454 2682 548 2692 550 2692 607 2682 646 2692 648 2692 650 2692 652 2692 677 2682 703 2692 705 2692 707 2692 777 2682 877 2692 879 2692 881 2692 916 2682 953 2692 955 2692 957 2692 959 2692 994 2682 1030 2692 1032 2692 1034 2692 1200 2682 1263 2694 1265 2694 1267 2694 1284 2684 1298 2694 1300 2694 1302 2694 1304 2694 1425 2684 1496 2694 1498 2694 1500 2694 1527 2684 1553 2694 1555 2694 1557 2694 1629 2684 1654 2694 1656 2694 1658 2694 1735 2684 1862 2694 1864 2694 2103 2684 2105 2673 2105 2643 2081 2632 2079 2632 2077 2632 2076 2632 2046 2641 1764 2632 1762 2632 1760 2632 1725 2641 1688 2632 1686 2632 1684 2632 1513 2641 1472 2632 1470 2632 1468 2632 1404 2641 1339 2632 1337 2632 1271 2641 1180 2630 1179 2630 1177 2630 1133 2641 1010 2641 994 2630 992 2630 991 2630 989 2630 987 2630 945 2639 861 2630 859 2630 857 2630 824 2639 728 2630 726 2630 724 2630 695 2639 646 2630 644 2630 642 2630 614 2639 569 2630 567 2630 334 2637 334 2669"/>
+                        </Shape>
+                        <String CONTENT="skin. Rain is the urine of one of the girls. In one tale the lightning is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-048_l16" HPOS="334" VPOS="2692" WIDTH="1771" HEIGHT="65" BASELINE="334 2731 2105 2731" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="334 2731 334 2745 1198 2745 1261 2755 1263 2755 1327 2745 1792 2745 1854 2755 1856 2757 1997 2757 1997 2755 1999 2755 2001 2755 2015 2745 2083 2755 2085 2755 2087 2755 2089 2755 2105 2745 2105 2731 2105 2704 2042 2692 2040 2692 2038 2692 2007 2702 1962 2692 1960 2692 1958 2692 1929 2702 1549 2692 1547 2692 1545 2692 1543 2692 1527 2704 1416 2704 1355 2692 1353 2692 1273 2702 1216 2692 1214 2692 1163 2702 1110 2692 1108 2692 938 2702 922 2692 920 2692 918 2692 824 2692 822 2692 820 2692 818 2692 802 2704 566 2704 550 2692 548 2692 546 2692 354 2692 352 2692 350 2692 348 2692 334 2700 334 2731"/>
+                        </Shape>
+                        <String CONTENT="described as a one-sided man who drags his one-sided sister along by her"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-048_l17" HPOS="332" VPOS="2747" WIDTH="1773" HEIGHT="67" BASELINE="334 2788 2105 2792" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="334 2788 332 2802 1645 2814 1647 2814 2103 2804 2105 2792 2105 2761 2083 2749 2081 2749 2079 2749 2077 2749 2076 2749 2046 2763 1985 2763 1966 2749 1964 2749 1962 2749 1960 2749 1817 2759 1790 2749 1788 2749 1786 2749 1784 2749 1782 2749 1764 2761 1666 2749 1664 2749 1662 2749 1633 2763 1494 2763 1463 2749 1461 2749 1459 2749 1378 2761 1296 2749 1294 2749 1227 2761 1210 2747 1208 2747 1206 2747 1204 2747 1202 2747 1173 2761 1086 2761 1061 2747 1059 2747 1057 2747 1055 2747 1018 2759 991 2747 989 2747 987 2747 912 2759 887 2747 885 2747 883 2747 881 2747 842 2757 767 2747 765 2747 693 2759 665 2747 663 2747 661 2747 660 2747 632 2759 607 2747 605 2747 603 2747 601 2747 552 2759 503 2747 501 2747 499 2747 497 2747 495 2747 477 2761 383 2761 356 2747 354 2747 352 2747 350 2747 348 2747 334 2755 334 2788"/>
+                        </Shape>
+                        <String CONTENT="foot. She is intoxicated with fly-agaric. The noise caused by her back as it"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-048_l18" HPOS="334" VPOS="2808" WIDTH="1771" HEIGHT="57" BASELINE="336 2851 2105 2847" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="336 2851 336 2865 2103 2863 2105 2847 2101 2820 1762 2808 1760 2808 1758 2808 1735 2818 1684 2808 1682 2808 1602 2818 1568 2808 1566 2808 1564 2808 1494 2818 1466 2808 1464 2808 1463 2808 1410 2818 1376 2808 1374 2808 1372 2808 1370 2808 1369 2808 1353 2820 1265 2820 1235 2808 1233 2808 1231 2808 1229 2808 1227 2808 1212 2820 1149 2810 1147 2810 1100 2820 1061 2810 1059 2810 1057 2810 1055 2810 1024 2820 971 2810 969 2810 967 2810 965 2810 949 2821 822 2821 755 2810 754 2810 656 2820 605 2810 603 2810 601 2810 575 2820 519 2810 517 2810 515 2810 481 2820 395 2810 393 2810 334 2821 336 2851"/>
+                        </Shape>
+                        <String CONTENT="strikes the floor of heaven is thunder, her urine is rain. Obsidian is said to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-048_l19" HPOS="334" VPOS="2868" WIDTH="1771" HEIGHT="57" BASELINE="336 2914 2105 2910" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="336 2914 336 2925 2103 2923 2105 2910 2101 2882 2013 2882 1991 2868 1989 2868 1987 2868 1985 2868 1983 2868 1940 2880 1923 2868 1921 2868 1919 2868 1917 2868 1852 2882 1733 2882 1711 2868 1709 2868 1707 2868 1705 2868 1703 2868 1678 2880 1621 2868 1619 2868 1617 2868 1584 2880 1515 2868 1513 2868 1511 2868 1474 2880 1370 2868 1369 2868 1316 2880 1298 2868 1296 2868 1294 2868 1235 2868 1233 2868 1231 2868 1229 2868 1212 2882 1180 2870 1179 2870 1177 2870 1067 2882 979 2870 873 2870 871 2870 869 2870 867 2870 848 2882 785 2870 708 2870 707 2870 705 2870 677 2882 558 2872 556 2872 501 2882 468 2870 466 2870 464 2870 462 2870 417 2882 364 2870 362 2870 360 2870 334 2876 336 2914"/>
+                        </Shape>
+                        <String CONTENT="be the stone of the thunder, which falls from the sky in round balls, or"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-048_l20" HPOS="334" VPOS="2925" WIDTH="1773" HEIGHT="67" BASELINE="336 2966 2107 2970" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="334 2980 354 2992 356 2992 358 2992 2105 2984 2107 2970 2105 2941 1803 2929 1801 2929 1799 2929 1776 2939 1721 2929 1719 2929 1615 2939 1588 2929 1586 2929 1584 2929 1582 2929 1562 2939 1511 2929 1510 2929 1508 2929 1506 2929 1490 2941 1341 2941 1265 2929 1263 2929 1261 2929 1220 2939 1155 2927 1153 2927 1151 2927 1124 2937 1067 2927 1065 2927 1063 2927 1030 2937 877 2927 875 2927 812 2937 750 2927 748 2927 691 2937 638 2927 636 2927 505 2937 477 2927 475 2927 473 2927 376 2937 338 2925 336 2966 334 2980"/>
+                        </Shape>
+                        <String CONTENT="even in roughly chipped arrow-heads and lances. Perhaps the idea of stone"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-048_l21" HPOS="334" VPOS="2988" WIDTH="1771" HEIGHT="72" BASELINE="336 3031 2105 3027" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="336 3031 336 3060 434 3047 728 3058 730 3058 732 3058 777 3047 992 3047 1043 3058 1045 3058 1047 3058 1104 3047 2101 3049 2105 3027 2099 2994 1923 2998 1903 2988 1901 2988 1899 2988 1897 2988 1864 2998 1844 2988 1842 2988 1841 2988 1839 2988 1807 2998 1760 2988 1758 2988 1756 2988 1733 2998 1717 2988 1715 2988 1713 2988 1562 2988 1560 2988 1506 2998 1476 2988 1474 2988 1472 2988 1470 2988 1429 2998 1396 2988 1394 2988 1392 2988 1390 2988 1388 2988 1372 3000 1079 3000 1024 2990 1022 2990 975 3000 926 2990 924 2990 844 3000 793 2990 791 2990 730 3000 630 2990 628 2990 626 2990 605 3000 591 2990 589 2990 587 2990 477 2990 475 2990 334 3002 336 3031"/>
+                        </Shape>
+                        <String CONTENT="arrow-heads falling from the sky, so common in the Old World, is borrowed"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-048_l22" HPOS="336" VPOS="3051" WIDTH="1154" HEIGHT="56" BASELINE="336 3092 1490 3092" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="336 3092 336 3107 1490 3107 1490 3092 1490 3062 1386 3051 1384 3051 1306 3060 1280 3051 1278 3051 1276 3051 1275 3051 1243 3060 1212 3051 1210 3051 1208 3051 1206 3051 1179 3060 1149 3051 1147 3051 1145 3051 1143 3051 1104 3060 1043 3051 1041 3051 992 3060 967 3051 965 3051 963 3051 881 3060 830 3051 828 3051 826 3051 824 3051 824 3053 814 3062 652 3062 566 3051 564 3051 515 3060 487 3051 485 3051 483 3051 403 3060 352 3051 350 3051 348 3051 346 3051 336 3056 336 3092"/>
+                        </Shape>
+                        <String CONTENT="from the Tungus or from the Russianized natives."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

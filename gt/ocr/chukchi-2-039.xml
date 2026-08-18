@@ -1,0 +1,224 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-2-039.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-2-039.png; regions_from: zones/chukchi-2-039.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+                <TextBlock ID="mz_2-039_r1" HPOS="431" VPOS="462" WIDTH="1776" HEIGHT="94" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="431 462 2207 462 2207 556 431 556"/>
+                    </Shape>
+                    <TextLine ID="mz_2-039_l1" HPOS="1004" VPOS="475" WIDTH="617" HEIGHT="51" BASELINE="1006 507 1621 511" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1613 481 1604 475 1022 475 1006 503 1006 507 1004 522 1617 526 1621 511 1619 505 1613 481"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-039_l2" HPOS="2101" VPOS="479" WIDTH="82" HEIGHT="61" BASELINE="2105 524 2183 518" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2105 524 2105 536 2181 540 2183 518 2177 479 2101 485 2105 524"/>
+                        </Shape>
+                        <String CONTENT="313"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-039_r2" HPOS="431" VPOS="572" WIDTH="1776" HEIGHT="204" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="431 572 2207 572 2207 776 431 776"/>
+                    </Shape>
+                    <TextLine ID="mz_2-039_l3" HPOS="428" VPOS="571" WIDTH="1767" HEIGHT="59" BASELINE="430 612 2195 607" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1897 577 1878 577 1858 577 1839 577 1819 577 1813 575 1143 571 1133 573 1114 575 1094 577 1075 577 1055 577 1036 577 1016 577 1002 577 996 581 444 573 428 589 430 612 430 628 2191 630 2195 607 2191 579 1897 575 1897 577"/>
+                        </Shape>
+                        <String CONTENT="in various dialects Ruḷteˊyet, Ruḷteˊyelɪn, Yultaˊyat, or Woḷvaˊkɪ-r-imtiˊlɪn (“Crosswise-bow-carrier”),"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-039_l4" HPOS="428" VPOS="630" WIDTH="1769" HEIGHT="43" BASELINE="428 658 2197 658" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="428 658 428 673 2195 673 2197 658 2195 630 428 630 428 658"/>
+                        </Shape>
+                        <String CONTENT="which suggests the same tale. For this last, Mr. Jochelson has Ulveiyinitilaᵋn, with the same"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-039_l5" HPOS="423" VPOS="673" WIDTH="1774" HEIGHT="55" BASELINE="425 703 2197 706" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="425 703 423 720 2193 728 2197 706 2195 677 425 673 425 703"/>
+                        </Shape>
+                        <String CONTENT="meaning. Aldebaran is called Cɪcɪˊlo-xmä (“Copper-arrow-head”). This name, with slight changes,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-039_l6" HPOS="423" VPOS="726" WIDTH="544" HEIGHT="45" BASELINE="423 752 967 752" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="423 752 423 771 967 771 967 752 967 726 423 726 423 752"/>
+                        </Shape>
+                        <String CONTENT="is repeated in several dialects."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-039_r3" HPOS="431" VPOS="2207" WIDTH="1776" HEIGHT="621" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="431 2207 2207 2207 2207 2828 431 2828"/>
+                    </Shape>
+                    <TextLine ID="mz_2-039_l7" HPOS="530" VPOS="2210" WIDTH="1669" HEIGHT="51" BASELINE="532 2248 2199 2240" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2195 2232 2177 2212 2083 2210 2077 2210 2058 2210 2038 2210 2019 2210 1999 2210 1980 2210 1960 2210 1940 2210 1921 2210 1901 2210 1882 2210 1862 2210 1842 2210 1825 2210 1766 2214 1564 2210 1549 2210 1529 2210 1510 2210 1490 2210 1470 2210 1451 2210 1431 2210 1412 2210 1392 2210 1372 2210 1353 2210 1345 2216 1047 2210 1039 2210 1020 2210 1000 2210 981 2210 961 2210 942 2210 922 2210 902 2210 883 2210 877 2210 530 2218 532 2248 532 2261 2199 2254 2199 2240 2197 2234 2195 2232"/>
+                        </Shape>
+                        <String CONTENT="Pehiˊttin is called Paˊhɪttɪn. According to Mr. Jochelson, Peˊgeten, meaning “suspended"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-039_l8" HPOS="432" VPOS="2261" WIDTH="1763" HEIGHT="47" BASELINE="434 2295 2195 2287" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="434 2295 434 2308 2193 2304 2195 2287 2189 2261 432 2263 434 2295"/>
+                        </Shape>
+                        <String CONTENT="breath,” is the name of the morning-star. I was unable to find out the derivation of this word."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-039_l9" HPOS="430" VPOS="2304" WIDTH="1767" HEIGHT="53" BASELINE="432 2342 2197 2332" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="432 2342 432 2357 2195 2350 2197 2332 2193 2304 446 2304 444 2304 442 2304 440 2304 430 2310 432 2342"/>
+                        </Shape>
+                        <String CONTENT="Orion’s Belt is called Kĭluˊ-ênaˊnvenañ (“scraper of Kĭluˊ”), Kĭluˊ being the name of a mythical"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-039_l10" HPOS="430" VPOS="2353" WIDTH="1765" HEIGHT="55" BASELINE="432 2387 2195 2379" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="432 2387 432 2408 2193 2397 2195 2379 2189 2353 430 2359 432 2387"/>
+                        </Shape>
+                        <String CONTENT="personage, niece of Big-Raven.¹ Corona Borealis is called Kĭluˊ-plaˊkɪlhɪn (“boot of Kĭluˊ”). The"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-039_l11" HPOS="428" VPOS="2400" WIDTH="1769" HEIGHT="49" BASELINE="430 2434 2197 2426" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="430 2434 430 2449 2195 2442 2197 2426 2191 2400 428 2406 430 2434"/>
+                        </Shape>
+                        <String CONTENT="name Ñawɪsqaˊtɪmkɪn (“group of women”) is applied in different localities to the Pleiades or to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-039_l12" HPOS="428" VPOS="2438" WIDTH="1769" HEIGHT="58" BASELINE="430 2481 2197 2473" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="430 2481 430 2496 2195 2489 2197 2473 2193 2447 1758 2438 1756 2438 1754 2438 1752 2438 1739 2447 448 2444 446 2444 444 2444 442 2444 428 2449 430 2481"/>
+                        </Shape>
+                        <String CONTENT="Cassiopeia. The Milky Way is also called Pebbly River (Čehaiˊ-vaˊyam), or Muddy River (Aru-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-039_l13" HPOS="432" VPOS="2487" WIDTH="1757" HEIGHT="56" BASELINE="434 2528 2189 2520" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="434 2528 434 2543 2187 2536 2189 2520 2183 2487 432 2498 434 2528"/>
+                        </Shape>
+                        <String CONTENT="veˊyem), or Clay River (Yaᵋ-veˊyem). The Ursa Major, however, is ɪlvaˊ-kyɪ (“wild reindeer-buck;”"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-039_l14" HPOS="430" VPOS="2539" WIDTH="1767" HEIGHT="51" BASELINE="432 2575 2197 2565" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="432 2575 432 2590 2195 2583 2197 2565 2191 2539 430 2547 432 2575"/>
+                        </Shape>
+                        <String CONTENT="according to Mr. Jochelson, elweˊkyeñ). In most localities the Pleiades are called Käˊtmäč, Keˊrmɪs"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-039_l15" HPOS="432" VPOS="2588" WIDTH="1767" HEIGHT="51" BASELINE="434 2620 2199 2614" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="434 2620 434 2639 2197 2630 2199 2614 2193 2588 432 2592 434 2620"/>
+                        </Shape>
+                        <String CONTENT="(“little sieve”); according to Mr. Jochelson, Keˊtmet. In some places they are considered as a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-039_l16" HPOS="430" VPOS="2635" WIDTH="1769" HEIGHT="51" BASELINE="432 2669 2199 2663" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="432 2669 432 2686 2197 2677 2199 2663 2193 2635 430 2639 432 2669"/>
+                        </Shape>
+                        <String CONTENT="group of reindeer at which the celestial archer Ruḷteˊyet takes aim. The names of constellations,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-039_l17" HPOS="432" VPOS="2675" WIDTH="1761" HEIGHT="52" BASELINE="434 2714 2193 2708" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="434 2714 434 2727 2191 2724 2193 2708 2189 2682 1020 2675 1018 2675 1016 2675 983 2684 493 2677 491 2677 432 2686 434 2714"/>
+                        </Shape>
+                        <String CONTENT="and stars among the Aiˊwan Eskimo are almost all literal translations from the Chukchee. For"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-039_l18" HPOS="432" VPOS="2726" WIDTH="1767" HEIGHT="50" BASELINE="434 2759 2199 2753" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="434 2759 434 2776 2197 2771 2199 2753 2193 2726 432 2731 434 2759"/>
+                        </Shape>
+                        <String CONTENT="instance, Leˊutti (“Heads”) are called Naˊs˙kut, which means the same; the Pleiades are called"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-039_l19" HPOS="432" VPOS="2776" WIDTH="1056" HEIGHT="47" BASELINE="434 2810 1488 2804" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="434 2810 434 2823 1486 2820 1488 2804 1482 2776 432 2780 434 2810"/>
+                        </Shape>
+                        <String CONTENT="Aṛnaṛayeˊɪt, which, again, signifies “group of women,” etc."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-039_r4" HPOS="431" VPOS="2875" WIDTH="1776" HEIGHT="251" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="431 2875 2207 2875 2207 3126 431 3126"/>
+                    </Shape>
+                    <TextLine ID="mz_2-039_l20" HPOS="434" VPOS="2888" WIDTH="1767" HEIGHT="51" BASELINE="436 2921 2201 2912" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="436 2921 436 2939 2199 2929 2201 2912 2195 2888 434 2896 436 2921"/>
+                        </Shape>
+                        <String CONTENT="the village of Kamenskoye and to the country west of it; that is, to the villages of Paren, Itkana, etc., and to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-039_l21" HPOS="432" VPOS="2931" WIDTH="1763" HEIGHT="49" BASELINE="434 2964 2195 2955" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2183 2931 432 2939 434 2964 434 2980 2193 2972 2195 2955 2193 2949 2183 2931"/>
+                        </Shape>
+                        <String CONTENT="the Reindeer Koryak of the peninsula of Taigonos. Now, the dialects of the eastern Koryak substitute r for y"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-039_l22" HPOS="434" VPOS="2972" WIDTH="1763" HEIGHT="53" BASELINE="436 3008 2197 2996" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="436 3008 436 3025 2195 3015 2197 2996 2191 2972 434 2982 436 3008"/>
+                        </Shape>
+                        <String CONTENT="woḷvaˊkɪ-r-imtiˊlɪn). The dialect of Paren substitutes t for r (Keˊtmet). The dialect of Kamenskoye substitutes"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-039_l23" HPOS="434" VPOS="3015" WIDTH="447" HEIGHT="49" BASELINE="436 3051 881 3045" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="436 3051 436 3064 879 3060 881 3045 877 3021 581 3015 579 3015 434 3025 436 3051"/>
+                        </Shape>
+                        <String CONTENT="a for e (Čehaiˊ-vaˊyam), etc."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-039_l24" HPOS="544" VPOS="3062" WIDTH="372" HEIGHT="53" BASELINE="546 3088 916 3092" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="546 3088 544 3102 761 3115 763 3115 914 3105 916 3092 914 3066 546 3062 546 3088"/>
+                        </Shape>
+                        <String CONTENT="¹ See Vol. VI, p. 116."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

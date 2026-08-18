@@ -1,0 +1,392 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-2-051.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-2-051.png; regions_from: zones/chukchi-2-051.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="QuireMarksZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_6" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+                <TextBlock ID="mz_2-051_r1" HPOS="385" VPOS="470" WIDTH="1776" HEIGHT="86" TAGREFS="TYPE_5">
+<Shape>
+                        <Polygon POINTS="385 470 2161 470 2161 556 385 556"/>
+                    </Shape>
+                    <TextLine ID="mz_2-051_l1" HPOS="957" VPOS="479" WIDTH="615" HEIGHT="53" BASELINE="959 517 1572 513" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="1564 479 957 481 959 517 959 532 1570 528 1572 513 1566 483 1564 479"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-051_l2" HPOS="2052" VPOS="483" WIDTH="92" HEIGHT="51" BASELINE="2056 522 2144 518" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="2132 487 2113 485 2099 483 2052 485 2056 522 2056 534 2144 534 2144 518 2138 487 2132 487"/>
+                        </Shape>
+                        <String CONTENT="325"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-051_r2" HPOS="385" VPOS="580" WIDTH="1776" HEIGHT="484" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="385 580 2161 580 2161 1064 385 1064"/>
+                    </Shape>
+                    <TextLine ID="mz_2-051_l3" HPOS="377" VPOS="579" WIDTH="1779" HEIGHT="61" BASELINE="379 626 2156 618" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="377 597 379 626 379 640 2154 632 2156 618 2152 589 1711 579 1709 579 1707 579 1686 591 381 591 377 597"/>
+                        </Shape>
+                        <String CONTENT="is a fierce man-eating bear. During tempestuous nights he lies on his back"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-051_l4" HPOS="381" VPOS="640" WIDTH="1773" HEIGHT="59" BASELINE="383 685 2154 679" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="383 685 383 699 2152 695 2154 679 2150 652 2095 640 2093 640 1770 650 1678 640 1676 640 1558 652 1414 642 1412 642 1367 652 1339 642 1337 642 1335 642 1333 642 1296 652 1265 642 1263 642 1261 642 1259 642 1257 642 1241 654 1094 654 1030 642 1028 642 961 654 938 644 936 644 934 644 687 654 671 644 669 644 667 644 560 644 558 644 556 644 554 644 538 656 381 656 383 685"/>
+                        </Shape>
+                        <String CONTENT="on an ice-floe, and swings his paws, beckoning to travellers to come to him."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-051_l5" HPOS="381" VPOS="699" WIDTH="1775" HEIGHT="62" BASELINE="383 746 2156 738" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="383 746 383 761 2154 755 2156 738 2150 705 2017 708 1954 699 1952 699 1888 708 1854 699 1852 699 1850 699 1762 708 1729 699 1727 699 1725 699 1723 699 1721 699 1705 710 1609 701 1607 701 1605 701 1576 710 1547 701 1545 701 1543 701 1541 701 1498 710 1443 701 1441 701 1335 710 1273 701 1271 701 1269 701 1249 710 1081 703 1079 703 1024 712 971 703 969 703 902 712 848 703 846 703 844 703 842 703 822 714 744 705 742 705 740 705 738 705 722 716 554 716 495 705 493 705 491 705 458 714 401 705 399 705 397 705 395 705 381 712 383 746"/>
+                        </Shape>
+                        <String CONTENT="At the same time he calls with a wailing voice, in imitation of a distressed"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-051_l6" HPOS="379" VPOS="759" WIDTH="674" HEIGHT="67" BASELINE="381 806 1053 800" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="381 806 381 814 542 826 544 826 742 814 752 822 752 824 754 824 755 824 757 826 822 826 822 824 824 824 826 824 826 822 838 812 1038 822 1039 822 1041 822 1043 822 1043 820 1053 810 1053 800 1051 773 1022 759 1020 759 1018 759 904 771 867 759 865 759 863 759 861 759 804 773 755 761 754 761 752 761 750 761 748 761 748 763 736 775 681 775 654 761 652 761 650 761 648 761 599 775 397 765 395 765 393 765 391 765 379 773 381 806"/>
+                        </Shape>
+                        <String CONTENT="traveller who has lost his"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-051_l7" HPOS="383" VPOS="824" WIDTH="672" HEIGHT="61" BASELINE="385 865 1055 861" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="385 865 385 873 630 885 632 885 634 885 677 873 695 885 697 885 699 885 701 885 767 871 808 881 810 881 812 881 914 871 926 881 926 883 928 883 930 883 932 885 1028 885 1028 883 1030 883 1055 869 1055 861 1051 836 830 824 828 824 826 824 795 834 554 826 552 826 550 826 548 826 548 828 538 836 434 828 432 828 383 838 385 865"/>
+                        </Shape>
+                        <String CONTENT="way. Any one who hears"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-051_l8" HPOS="381" VPOS="883" WIDTH="674" HEIGHT="64" BASELINE="383 924 1055 920" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="383 924 383 936 646 947 648 947 650 947 652 947 652 945 663 936 873 945 875 945 1053 932 1055 920 1051 894 987 883 985 883 781 893 750 883 748 883 746 883 687 894 397 885 395 885 393 885 391 885 381 891 383 924"/>
+                        </Shape>
+                        <String CONTENT="these calls, and approaches"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-051_l9" HPOS="381" VPOS="940" WIDTH="672" HEIGHT="64" BASELINE="383 987 1053 979" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="383 987 383 996 679 1004 681 1004 683 1004 685 1004 685 1002 695 992 818 992 871 1002 873 1002 875 1002 877 1002 877 1000 879 1000 887 990 912 1000 914 1000 916 1000 1051 988 1053 979 1049 951 914 940 912 940 910 940 879 951 750 941 748 941 746 941 712 953 611 943 609 943 462 955 397 945 395 945 393 945 391 945 381 951 383 987"/>
+                        </Shape>
+                        <String CONTENT="the monster, will be imme-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-051_l10" HPOS="385" VPOS="1002" WIDTH="670" HEIGHT="55" BASELINE="385 1041 1055 1041" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="385 1041 385 1057 1055 1057 1055 1041 1055 1012 1036 1002 1034 1002 1032 1002 526 1012 499 1002 497 1002 495 1002 493 1002 452 1012 407 1002 405 1002 403 1002 385 1010 385 1041"/>
+                        </Shape>
+                        <String CONTENT="diately caught and devoured."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-051_r3" HPOS="385" VPOS="1064" WIDTH="1776" HEIGHT="601" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="385 1064 2161 1064 2161 1665 385 1665"/>
+                    </Shape>
+                    <TextLine ID="mz_2-051_l11" HPOS="491" VPOS="1059" WIDTH="564" HEIGHT="61" BASELINE="493 1104 1055 1098" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="493 1104 493 1120 1053 1114 1055 1098 1051 1071 991 1059 989 1059 987 1059 985 1059 985 1061 975 1071 491 1071 493 1104"/>
+                        </Shape>
+                        <String CONTENT="Black bears are generally"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-051_l12" HPOS="381" VPOS="1122" WIDTH="674" HEIGHT="56" BASELINE="383 1165 1055 1161" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="383 1165 383 1178 1053 1178 1055 1161 1051 1133 742 1133 718 1122 716 1122 714 1122 648 1133 483 1124 481 1124 381 1135 383 1165"/>
+                        </Shape>
+                        <String CONTENT="considered akin to man, or,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-051_l13" HPOS="385" VPOS="1180" WIDTH="672" HEIGHT="57" BASELINE="387 1223 1057 1220" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="387 1223 387 1237 1055 1233 1057 1220 1055 1192 1022 1180 1020 1180 1018 1180 1016 1180 992 1190 985 1182 985 1180 983 1180 981 1180 979 1180 977 1180 949 1190 916 1180 914 1180 912 1180 910 1180 908 1180 895 1192 716 1192 534 1182 532 1182 530 1182 528 1182 528 1184 519 1194 385 1194 387 1223"/>
+                        </Shape>
+                        <String CONTENT="more directly, as men clad in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-051_l14" HPOS="383" VPOS="1237" WIDTH="674" HEIGHT="61" BASELINE="385 1284 1057 1276" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="385 1284 385 1298 1055 1290 1057 1276 1055 1249 1026 1237 1024 1237 1022 1237 1020 1237 1000 1247 867 1239 865 1239 863 1239 861 1239 861 1241 851 1249 736 1239 734 1239 732 1239 730 1239 712 1251 552 1241 550 1241 548 1241 499 1253 393 1243 391 1243 389 1243 387 1243 387 1245 385 1245 383 1245 385 1284"/>
+                        </Shape>
+                        <String CONTENT="bear-skin. A skinned bear is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-051_l15" HPOS="385" VPOS="1298" WIDTH="670" HEIGHT="61" BASELINE="387 1345 1055 1339" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="387 1345 387 1359 1053 1353 1055 1339 1051 1312 889 1312 830 1298 828 1298 826 1298 785 1312 646 1300 644 1300 532 1314 436 1302 434 1302 432 1302 385 1316 387 1345"/>
+                        </Shape>
+                        <String CONTENT="said to closely resemble a man."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-051_l16" HPOS="385" VPOS="1361" WIDTH="670" HEIGHT="60" BASELINE="387 1402 1055 1398" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="387 1402 387 1411 628 1421 630 1421 632 1421 673 1411 714 1421 716 1421 718 1421 855 1419 857 1419 859 1419 859 1417 869 1410 1039 1419 1041 1419 1043 1419 1045 1419 1045 1417 1055 1408 1055 1398 1053 1372 1010 1361 1008 1361 1006 1361 873 1370 863 1363 863 1361 861 1361 859 1361 728 1361 726 1361 724 1361 722 1361 710 1370 701 1363 699 1363 697 1363 695 1363 693 1363 665 1374 473 1374 393 1363 391 1363 389 1363 387 1363 387 1364 385 1364 387 1402"/>
+                        </Shape>
+                        <String CONTENT="Bears are believed to be"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-051_l17" HPOS="383" VPOS="1411" WIDTH="1775" HEIGHT="67" BASELINE="385 1464 2158 1453" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="385 1464 385 1478 2156 1466 2158 1453 2154 1423 1866 1411 1864 1411 1862 1411 1825 1423 1801 1413 1799 1413 1797 1413 1743 1423 1590 1415 1588 1415 1586 1415 1558 1425 1276 1415 1275 1415 1273 1415 1249 1427 1018 1417 1016 1417 1014 1417 1012 1417 996 1427 793 1419 791 1419 699 1429 685 1419 683 1419 681 1419 679 1419 609 1431 409 1421 407 1421 405 1421 383 1431 385 1464"/>
+                        </Shape>
+                        <String CONTENT="shamans, able to divine the intentions of men, even at a considerable distance:"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-051_l18" HPOS="385" VPOS="1476" WIDTH="1773" HEIGHT="61" BASELINE="387 1523 2158 1511" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="387 1523 387 1537 2156 1527 2158 1511 2152 1476 1541 1486 1476 1476 1474 1476 1412 1486 1312 1476 1310 1476 1196 1488 1057 1478 1055 1478 945 1490 914 1480 912 1480 910 1480 720 1490 685 1480 683 1480 681 1480 679 1480 677 1480 663 1492 644 1482 642 1482 640 1482 585 1492 407 1482 405 1482 403 1482 401 1482 385 1490 387 1523"/>
+                        </Shape>
+                        <String CONTENT="therefore it is not safe to talk ill of a bear. He may catch the words and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-051_l19" HPOS="385" VPOS="1531" WIDTH="1773" HEIGHT="67" BASELINE="387 1584 2158 1570" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="387 1584 387 1598 2156 1584 2158 1570 2154 1543 1993 1543 1970 1531 1968 1531 1966 1531 1921 1541 1907 1531 1905 1531 1903 1531 1901 1531 1899 1531 1872 1545 1570 1545 1541 1535 1539 1535 1537 1535 1394 1547 1280 1537 1278 1537 1276 1537 1241 1547 1180 1537 1179 1537 987 1549 916 1539 914 1539 912 1539 885 1551 695 1541 693 1541 691 1541 671 1551 446 1543 444 1543 385 1554 387 1584"/>
+                        </Shape>
+                        <String CONTENT="retaliate for the detraction. Likewise, it is not safe to set traps for bears or"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-051_l20" HPOS="387" VPOS="1599" WIDTH="533" HEIGHT="65" BASELINE="389 1643 920 1639" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="389 1643 389 1654 546 1664 548 1664 550 1664 552 1664 552 1662 562 1654 628 1662 630 1662 632 1662 654 1652 777 1652 902 1662 904 1662 906 1662 908 1662 920 1650 920 1639 916 1611 726 1599 724 1599 722 1599 720 1599 705 1609 677 1599 675 1599 673 1599 671 1599 648 1611 489 1601 487 1601 387 1613 389 1643"/>
+                        </Shape>
+                        <String CONTENT="to plot for their harm."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-051_r4" HPOS="385" VPOS="1665" WIDTH="1776" HEIGHT="421" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="385 1665 2161 1665 2161 2086 385 2086"/>
+                    </Shape>
+                    <TextLine ID="mz_2-051_l21" HPOS="497" VPOS="1652" WIDTH="1661" HEIGHT="61" BASELINE="499 1701 2158 1692" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="499 1701 499 1713 2156 1705 2158 1692 2154 1664 2044 1652 2042 1652 2040 1652 2005 1662 1978 1652 1976 1652 1974 1652 1972 1652 1970 1652 1954 1664 1823 1664 1633 1654 1631 1654 1629 1654 1627 1654 1611 1664 1239 1656 1237 1656 1235 1656 1208 1666 1175 1656 1173 1656 1171 1656 1169 1656 1167 1656 1155 1668 1137 1658 1135 1658 1133 1658 1071 1668 1016 1658 1014 1658 1012 1658 973 1668 863 1658 861 1658 859 1658 820 1670 720 1660 718 1660 497 1666 499 1701"/>
+                        </Shape>
+                        <String CONTENT="These ideas about the black bear, however, do not seem to have"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-051_l22" HPOS="385" VPOS="1711" WIDTH="1773" HEIGHT="75" BASELINE="387 1762 2158 1750" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="387 1762 387 1786 2156 1766 2158 1750 2154 1723 1927 1711 1925 1711 1848 1723 1811 1713 1809 1713 1807 1713 1615 1723 1568 1713 1566 1713 1564 1713 1539 1725 1414 1715 1412 1715 1063 1727 977 1717 975 1717 863 1729 683 1719 681 1719 679 1719 646 1731 616 1721 614 1721 613 1721 542 1731 440 1721 438 1721 385 1733 387 1762"/>
+                        </Shape>
+                        <String CONTENT="originated with the Chukchee, but were probably borrowed from the Lamut"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-051_l23" HPOS="387" VPOS="1776" WIDTH="1769" HEIGHT="60" BASELINE="389 1823 2156 1813" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="389 1823 389 1836 2154 1827 2156 1813 2152 1782 1096 1776 1094 1776 1092 1776 1055 1786 765 1778 763 1778 761 1778 732 1787 460 1780 458 1780 387 1789 389 1823"/>
+                        </Shape>
+                        <String CONTENT="and Yukaghir, with whom the black bear is an object of superstitious veneration."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-051_l24" HPOS="391" VPOS="1831" WIDTH="1765" HEIGHT="64" BASELINE="393 1881 2156 1874" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="393 1881 393 1895 2154 1895 2156 1874 2154 1844 2105 1831 2103 1831 2101 1831 1976 1842 1956 1831 1954 1831 1952 1831 1886 1831 1884 1831 1882 1831 1837 1842 1764 1831 1762 1831 1635 1844 1615 1833 1613 1833 1611 1833 1609 1833 1527 1844 1478 1833 1476 1833 1474 1833 1472 1833 1441 1844 1421 1833 1419 1833 1417 1833 1416 1833 1341 1842 1292 1833 1290 1833 1288 1833 1286 1833 1269 1846 1231 1834 1229 1834 1227 1834 1226 1834 1196 1846 1124 1834 1122 1834 1120 1834 1090 1848 898 1848 861 1834 859 1834 857 1834 855 1834 822 1850 759 1850 740 1836 738 1836 736 1836 734 1836 732 1836 691 1848 575 1836 573 1836 571 1836 540 1848 446 1836 444 1836 391 1844 393 1881"/>
+                        </Shape>
+                        <String CONTENT="Thus, the northern Lamut say that the bear is the elder brother of Torgaˊnřa,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-051_l25" HPOS="385" VPOS="1893" WIDTH="1775" HEIGHT="61" BASELINE="387 1940 2160 1932" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="387 1940 387 1954 2158 1946 2160 1932 2156 1905 1844 1893 1842 1893 1841 1893 1839 1893 1823 1903 1696 1895 1694 1895 1692 1895 1690 1895 1674 1905 1412 1895 1410 1895 1345 1905 1057 1897 1055 1897 912 1907 853 1897 851 1897 850 1897 826 1909 726 1899 724 1899 722 1899 699 1911 464 1911 411 1899 409 1899 407 1899 385 1909 387 1940"/>
+                        </Shape>
+                        <String CONTENT="the ancestor of the Lamut tribe. They consider him to be a shaman and a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-051_l26" HPOS="385" VPOS="1952" WIDTH="1775" HEIGHT="63" BASELINE="387 2003 2160 1991" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="387 2003 387 2015 2160 2005 2160 1991 2156 1964 1899 1952 1897 1952 1790 1964 1731 1954 1729 1954 1541 1966 1276 1956 1275 1956 1273 1956 1229 1968 979 1958 977 1958 914 1970 777 1960 775 1960 773 1960 771 1960 755 1970 683 1960 681 1960 385 1974 387 2003"/>
+                        </Shape>
+                        <String CONTENT="sorcerer, and in hunting him, they perform many ceremonies for the purpose"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-051_l27" HPOS="391" VPOS="2021" WIDTH="543" HEIGHT="68" BASELINE="391 2060 934 2060" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="391 2060 391 2075 460 2075 485 2087 487 2087 489 2089 679 2089 679 2087 681 2087 683 2087 683 2085 695 2075 867 2087 869 2087 934 2073 934 2060 934 2032 705 2021 703 2021 654 2030 614 2021 613 2021 611 2021 609 2021 607 2021 591 2032 462 2032 436 2021 434 2021 432 2021 430 2021 391 2030 391 2060"/>
+                        </Shape>
+                        <String CONTENT="of appeasing his anger."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-051_r5" HPOS="385" VPOS="2086" WIDTH="1776" HEIGHT="298" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="385 2086 2161 2086 2161 2384 385 2384"/>
+                    </Shape>
+                    <TextLine ID="mz_2-051_l28" HPOS="499" VPOS="2069" WIDTH="1659" HEIGHT="65" BASELINE="501 2120 2158 2113" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="501 2120 501 2134 2156 2132 2158 2113 2154 2083 2074 2083 2056 2069 2054 2069 2052 2069 2050 2069 2048 2069 2023 2081 1978 2069 1976 2069 1974 2069 1972 2069 1946 2079 1917 2069 1915 2069 1913 2069 1829 2081 1762 2069 1760 2069 1758 2069 1756 2069 1735 2083 1329 2071 1327 2071 1325 2071 1323 2071 1302 2085 1259 2073 1257 2073 1255 2073 1253 2073 1222 2085 1188 2073 1186 2073 1184 2073 1120 2085 1059 2073 1057 2073 1055 2073 1026 2085 914 2073 912 2073 910 2073 908 2073 908 2075 895 2087 877 2075 875 2075 873 2075 871 2075 869 2075 867 2075 848 2087 806 2075 804 2075 802 2075 801 2075 769 2087 744 2075 742 2075 740 2075 738 2075 714 2087 656 2075 654 2075 573 2087 511 2075 509 2075 507 2075 505 2075 505 2077 499 2081 501 2120"/>
+                        </Shape>
+                        <String CONTENT="The Russianized Yukaghir of the Kolyma, when speaking of the bear,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-051_l29" HPOS="391" VPOS="2128" WIDTH="1769" HEIGHT="75" BASELINE="393 2183 2160 2169" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="393 2183 393 2195 752 2193 810 2203 812 2203 1184 2189 1400 2199 1402 2199 1519 2187 1635 2197 1637 2197 1721 2185 1788 2195 1790 2195 1792 2195 1829 2185 1895 2195 1897 2195 1899 2195 1921 2185 2156 2185 2160 2169 2156 2140 2109 2128 2107 2128 2105 2128 2083 2138 2062 2128 2060 2128 2058 2128 1942 2138 1909 2128 1907 2128 1905 2128 1903 2128 1872 2140 1739 2130 1737 2130 1649 2142 1470 2132 1468 2132 1398 2144 1325 2134 1323 2134 1322 2134 1288 2144 1100 2136 1098 2136 1096 2136 1077 2146 1057 2136 1055 2136 897 2136 895 2136 893 2136 848 2148 687 2138 685 2138 683 2138 636 2150 522 2140 520 2140 391 2152 393 2183"/>
+                        </Shape>
+                        <String CONTENT="use the words “grandfather,” “old man,” or, still shorter, “he.” Fear of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-051_l30" HPOS="391" VPOS="2191" WIDTH="1769" HEIGHT="63" BASELINE="393 2240 2160 2230" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="393 2240 393 2254 2158 2244 2160 2230 2158 2203 2117 2191 2115 2191 2113 2191 2111 2191 2077 2201 1942 2191 1940 2191 1878 2201 1815 2191 1813 2191 1811 2191 1776 2203 1523 2193 1521 2193 1439 2205 1202 2195 1200 2195 1198 2195 1163 2205 1067 2197 1065 2197 1063 2197 1061 2197 1045 2207 879 2197 877 2197 875 2197 836 2207 391 2207 393 2240"/>
+                        </Shape>
+                        <String CONTENT="bear, even among the cossacks and Russian creoles, is excessive. Even the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-051_l31" HPOS="389" VPOS="2250" WIDTH="1769" HEIGHT="64" BASELINE="391 2303 2158 2291" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="391 2303 391 2314 2156 2304 2158 2291 2154 2261 1870 2250 1868 2250 1866 2250 1864 2250 1848 2261 1602 2252 1600 2252 1598 2252 1596 2252 1580 2261 1392 2254 1390 2254 1333 2263 1296 2254 1294 2254 1292 2254 1290 2254 1288 2254 1269 2265 1053 2256 1051 2256 1049 2256 1016 2265 983 2256 981 2256 979 2256 977 2256 945 2269 755 2269 720 2257 718 2257 716 2257 497 2269 438 2259 436 2259 434 2259 389 2271 391 2303"/>
+                        </Shape>
+                        <String CONTENT="tales circulated among the Chukchee, in which the black bear figures, seem"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-051_l32" HPOS="389" VPOS="2318" WIDTH="1166" HEIGHT="55" BASELINE="391 2359 1555 2353" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="391 2359 391 2373 1553 2367 1555 2353 1551 2326 781 2318 779 2318 777 2318 755 2328 403 2320 401 2320 399 2320 397 2320 389 2326 391 2359"/>
+                        </Shape>
+                        <String CONTENT="for the most part borrowed from the same source."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-051_r6" HPOS="385" VPOS="2384" WIDTH="1776" HEIGHT="359" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="385 2384 2161 2384 2161 2743 385 2743"/>
+                    </Shape>
+                    <TextLine ID="mz_2-051_l33" HPOS="499" VPOS="2369" WIDTH="1661" HEIGHT="71" BASELINE="501 2420 2160 2408" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="501 2420 501 2432 1051 2440 1053 2440 1639 2426 2140 2432 2142 2432 2144 2432 2146 2432 2160 2422 2160 2408 2156 2381 1899 2369 1897 2369 1895 2369 1893 2369 1876 2381 1611 2371 1609 2371 1607 2371 1582 2381 1484 2373 1482 2373 1480 2373 1478 2373 1464 2383 1339 2373 1337 2373 1335 2373 1292 2385 1271 2375 1269 2375 1267 2375 1000 2387 932 2377 930 2377 881 2387 808 2377 806 2377 703 2389 499 2385 501 2420"/>
+                        </Shape>
+                        <String CONTENT="The conception of a supernatural animal, derived from the obscure idea"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-051_l34" HPOS="389" VPOS="2426" WIDTH="1769" HEIGHT="68" BASELINE="391 2481 2158 2467" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="391 2481 391 2494 2156 2483 2158 2467 2156 2440 2113 2426 2111 2426 2109 2426 2107 2426 2105 2426 2083 2440 1893 2440 1860 2428 1858 2428 1856 2428 1854 2428 1852 2428 1831 2442 1766 2442 1651 2428 1649 2428 1647 2428 1613 2442 1531 2430 1529 2430 1527 2430 1502 2442 1443 2442 1417 2430 1416 2430 1414 2430 1412 2430 1410 2430 1392 2444 1333 2432 1331 2432 1218 2444 1147 2432 1145 2432 1143 2432 1092 2445 989 2434 987 2434 985 2434 945 2445 897 2434 895 2434 893 2434 891 2434 848 2447 726 2436 724 2436 722 2436 699 2447 667 2436 665 2436 663 2436 661 2436 660 2436 642 2447 622 2438 620 2438 618 2438 544 2449 489 2438 487 2438 485 2438 466 2447 434 2438 432 2438 430 2438 428 2438 389 2449 391 2481"/>
+                        </Shape>
+                        <String CONTENT="of the black bear, like the agdlak of the American Eskimo, does not exist"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-051_l35" HPOS="389" VPOS="2491" WIDTH="1769" HEIGHT="62" BASELINE="391 2539 2158 2530" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="391 2539 391 2553 2156 2545 2158 2530 2154 2502 1813 2491 1811 2491 1711 2502 1615 2492 1613 2492 1402 2504 1075 2496 1073 2496 1071 2496 1069 2496 1053 2506 767 2496 765 2496 389 2510 391 2539"/>
+                        </Shape>
+                        <String CONTENT="among the Chukchee, since they live too near the forest border, while even"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-051_l36" HPOS="389" VPOS="2549" WIDTH="1767" HEIGHT="67" BASELINE="391 2600 2156 2588" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="391 2600 391 2616 1860 2616 1860 2614 1925 2604 2152 2612 2156 2588 2152 2561 1862 2549 1860 2549 1858 2549 1827 2561 1574 2551 1572 2551 1570 2551 1537 2563 1273 2553 1271 2553 1269 2553 1245 2565 1096 2555 1094 2555 1010 2567 389 2567 391 2600"/>
+                        </Shape>
+                        <String CONTENT="in the southern part of the tundra the bear is met with occasionally.¹ Among"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-051_l37" HPOS="389" VPOS="2608" WIDTH="1769" HEIGHT="67" BASELINE="391 2663 2158 2649" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="391 2663 391 2675 2156 2665 2158 2649 2156 2622 2113 2608 2111 2608 2109 2608 2107 2608 2076 2620 1936 2608 1935 2608 1933 2608 1899 2622 1754 2610 1752 2610 1750 2610 1748 2610 1729 2622 1660 2610 1658 2610 1656 2610 1654 2610 1635 2624 1502 2612 1500 2612 1365 2626 1224 2616 1222 2616 1145 2628 1075 2616 1073 2616 1071 2616 1032 2628 738 2618 736 2618 734 2618 732 2618 716 2630 642 2618 640 2618 583 2630 515 2620 513 2620 511 2620 509 2620 493 2632 411 2620 409 2620 407 2620 405 2620 389 2630 391 2663"/>
+                        </Shape>
+                        <String CONTENT="the American Eskimo, on the contrary, several branches live so far to the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-051_l38" HPOS="391" VPOS="2673" WIDTH="1273" HEIGHT="58" BASELINE="393 2720 1664 2712" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="393 2720 393 2731 1662 2726 1664 2712 1660 2684 1410 2673 1408 2673 1406 2673 1404 2673 1392 2684 1202 2684 1175 2675 1173 2675 1171 2675 1169 2675 1167 2675 1151 2686 1059 2686 1030 2675 1028 2675 1026 2675 1024 2675 991 2686 779 2677 777 2677 775 2677 773 2677 773 2679 763 2686 569 2679 567 2679 517 2688 485 2679 483 2679 481 2679 391 2690 393 2720"/>
+                        </Shape>
+                        <String CONTENT="north, that they have no chance to meet a black bear."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-051_r7" HPOS="385" VPOS="2743" WIDTH="1776" HEIGHT="296" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="385 2743 2161 2743 2161 3039 385 3039"/>
+                    </Shape>
+                    <TextLine ID="mz_2-051_l39" HPOS="501" VPOS="2727" WIDTH="1659" HEIGHT="67" BASELINE="503 2780 2160 2769" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="503 2780 503 2794 2158 2782 2160 2769 2156 2739 2005 2727 2003 2727 2001 2727 1999 2727 1983 2737 1858 2729 1856 2729 1854 2729 1852 2729 1839 2739 1662 2729 1660 2729 1560 2741 1331 2731 1329 2731 1227 2745 501 2745 503 2780"/>
+                        </Shape>
+                        <String CONTENT="The Chukchee, on their part, notwithstanding the frequent hunts for the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-051_l40" HPOS="389" VPOS="2790" WIDTH="1771" HEIGHT="69" BASELINE="391 2839 2160 2829" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="391 2839 391 2851 1077 2859 1079 2859 1081 2859 1083 2859 1102 2847 1286 2857 1288 2857 1386 2847 1443 2855 1445 2855 1447 2855 1449 2855 1461 2845 1611 2855 1613 2855 2007 2843 2025 2853 2027 2853 2029 2853 2030 2853 2032 2853 2076 2843 2138 2853 2140 2853 2142 2853 2144 2853 2160 2841 2160 2829 2156 2802 1919 2790 1917 2790 1784 2802 1629 2792 1627 2792 1406 2804 1380 2794 1378 2794 1376 2794 1323 2804 1214 2794 1212 2794 1094 2806 746 2796 744 2796 742 2796 710 2808 648 2798 646 2798 644 2798 611 2808 548 2798 546 2798 389 2806 391 2839"/>
+                        </Shape>
+                        <String CONTENT="bear by the Arctic villagers, are inclined to a mythical conception of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-051_l41" HPOS="391" VPOS="2849" WIDTH="1767" HEIGHT="63" BASELINE="393 2898 2158 2888" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="393 2898 393 2912 2156 2902 2158 2888 2154 2861 1829 2849 1827 2849 1739 2861 1553 2851 1551 2851 1549 2851 1547 2851 1531 2861 1233 2853 1231 2853 1155 2863 1098 2853 1096 2853 1094 2853 1092 2853 1073 2865 863 2855 861 2855 859 2855 826 2865 779 2855 777 2855 775 2855 742 2867 452 2857 450 2857 391 2868 393 2898"/>
+                        </Shape>
+                        <String CONTENT="animal. Thus, the Chukchee idea of the great polar bear Kočaˊtko is more"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-051_l42" HPOS="391" VPOS="2908" WIDTH="1767" HEIGHT="64" BASELINE="393 2961 2158 2949" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="393 2961 393 2972 2156 2970 2158 2949 2154 2919 2089 2908 2087 2908 2085 2908 2056 2917 1966 2908 1964 2908 1860 2919 1839 2910 1837 2910 1835 2910 1660 2919 1576 2910 1574 2910 1572 2910 1570 2910 1551 2921 1390 2912 1388 2912 1310 2921 1276 2912 1275 2912 1273 2912 1271 2912 1269 2912 1251 2923 981 2914 979 2914 906 2925 687 2915 685 2915 626 2927 472 2917 470 2917 391 2929 393 2961"/>
+                        </Shape>
+                        <String CONTENT="or less parallel to the Eskimo conception of the agdlak. I will mention also,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-051_l43" HPOS="393" VPOS="2966" WIDTH="1763" HEIGHT="71" BASELINE="395 3021 2156 3008" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="395 3021 395 3037 1651 3037 1651 3035 1652 3035 1680 3025 1901 3033 1903 3033 1954 3023 2140 3031 2142 3031 2144 3031 2146 3031 2156 3021 2156 3008 2154 2980 2107 2966 2105 2966 2103 2966 2101 2966 2072 2978 2005 2966 2003 2966 1944 2978 1905 2966 1903 2966 1901 2966 1899 2966 1842 2980 1701 2968 1700 2968 1698 2968 1647 2982 1461 2970 1459 2970 1394 2984 1333 2972 1331 2972 1261 2984 1149 2972 1147 2972 1145 2972 1116 2982 1061 2974 1059 2974 1057 2974 1055 2974 1038 2986 924 2974 922 2974 920 2974 893 2988 851 2976 850 2976 726 2976 724 2976 722 2976 720 2976 703 2988 620 2978 618 2978 616 2978 583 2990 509 2982 507 2982 393 2992 395 3021"/>
+                        </Shape>
+                        <String CONTENT="among other beliefs of the Chukchee, the curious one, that a tribe of polar"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-051_r8" HPOS="385" VPOS="3055" WIDTH="1776" HEIGHT="55" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="385 3055 2161 3055 2161 3110 385 3110"/>
+                    </Shape>
+                    <TextLine ID="mz_2-051_l44" HPOS="1128" VPOS="3053" WIDTH="303" HEIGHT="52" BASELINE="1130 3078 1431 3084" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="1130 3078 1128 3092 1229 3105 1231 3105 1429 3098 1431 3084 1431 3058 1130 3053 1130 3078"/>
+                        </Shape>
+                        <String CONTENT="¹ Compare p. 142."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-051_r9" HPOS="385" VPOS="3133" WIDTH="1776" HEIGHT="55" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="385 3133 2161 3133 2161 3188 385 3188"/>
+                    </Shape>
+                    <TextLine ID="mz_2-051_l45" HPOS="393" VPOS="3129" WIDTH="680" HEIGHT="47" BASELINE="395 3156 1073 3152" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="1059 3131 1039 3129 393 3131 395 3156 395 3176 1071 3176 1073 3152 1069 3139 1059 3131"/>
+                        </Shape>
+                        <String CONTENT="42—JESUP NORTH PACIFIC EXPED., VOL. VII."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

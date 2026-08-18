@@ -1,0 +1,180 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "333"
+    },
+    "2": {
+      "text": "begins to ache, and gradually withers.¹ The Chukchee call a man whose",
+      "note": "Footnote marker read as superscript ¹ (U+00B9) at 4x; CATMuS drafted it as an exclamation point.",
+      "class": "print"
+    },
+    "3": {
+      "text": "nose is easily frost-bitten “short of souls” (uviriˊtkɪlin), meaning that some part",
+      "resolved": "uviriˊtkɪlin = u,v,i,r,i,U+02CA,t,k,U+026A,l,i,n",
+      "note": "Confirmed at 4x: the letter between k and l is a bare serif stem with no dot, U+026A, contrasted against the dotted i's elsewhere in the same word. CATMuS read it as r (uviri/tkrlin), the known CATMuS substitution of r for U+026A.",
+      "class": "doubt"
+    },
+    "4": {
+      "text": "of his vital force must have left his body unawares. The “limb-souls” stay"
+    },
+    "5": {
+      "text": "on the spot where they were lost. A shaman, however, can call them to"
+    },
+    "6": {
+      "text": "himself, and they become his “assistant spirits” (yaˊnřa-kaˊlat). The “souls”",
+      "note": "Handle {ya'nr^a-ka'lat} = yaˊnr̎a-kaˊlat, matched via lexicon lookup and read against the raster at 2x (yaˊnřa-kaˊlat, attested elsewhere in the corpus e.g. 2-026).",
+      "class": "semantic",
+      "as_typed": "himself, and they become his “assistant spirits” ({ya'nr^a-ka'lat}). The “souls”"
+    },
+    "7": {
+      "text": "are very small. When passing by, they produce a sound like the humming"
+    },
+    "8": {
+      "text": "of a bee or the droning of a beetle."
+    },
+    "9": {
+      "text": "One or all of the “souls” of the whole person may be stolen by the keˊlet,",
+      "note": "Handle {ke'let} = keˊlet, matched via lexicon lookup (17 pages, 34 occurrences); CATMuS drafted it as two words \"ke let\" with no apostrophe.",
+      "class": "semantic",
+      "as_typed": "One or all of the “souls” of the whole person may be stolen by the {ke'let},"
+    },
+    "10": {
+      "text": "then the man becomes sick, and finally dies. The shaman can find and"
+    },
+    "11": {
+      "text": "restore a missing “soul.” The “soul,” when found by a shaman, often"
+    },
+    "12": {
+      "text": "assumes the shape of a black beetle. When put on the body of the patient,"
+    },
+    "13": {
+      "text": "it will crawl all over his head, trying to find a hole into which to slip."
+    },
+    "14": {
+      "text": "Then the shaman will open the skull, and put the beetle in its proper place."
+    },
+    "15": {
+      "text": "The beetle may enter through the mouth, the armpit, the intestines, the toes"
+    },
+    "16": {
+      "text": "and fingers, etc."
+    },
+    "17": {
+      "text": "If the shaman fails to find the “soul,” he can blow into the person a"
+    },
+    "18": {
+      "text": "part of his own spirit to become a “soul;” or he may give him one of his"
+    },
+    "19": {
+      "text": "“assistant keˊlet” to replace the missing “soul.”²",
+      "note": "Footnote marker 2 confirmed superscript at 4x, tight against the closing quote with no space, matching this page's other footnote reference.",
+      "class": "print",
+      "as_typed": "“assistant {ke'let}” to replace the missing “soul.”²"
+    },
+    "20": {
+      "text": "Keˊlet, when getting possession of a “soul,” often take it to their world",
+      "as_typed": "{Ke'let}, when getting possession of a “soul,” often take it to their world"
+    },
+    "21": {
+      "text": "and pinion its hands, or bind all its limbs separately with strong bands. Then"
+    },
+    "22": {
+      "text": "they put it behind the lamp, in the place where many small things are"
+    },
+    "23": {
+      "text": "usually kept. In the tale of “The Scabby Shaman,” the female keˊlᴇ-bird,",
+      "note": "Handle {ke'le_} = keˊlᴇ (small-cap E), matched via lexicon lookup and confirmed at 2x.",
+      "class": "semantic",
+      "as_typed": "usually kept. In the tale of “The Scabby Shaman,” the female {ke'le_}-bird,"
+    },
+    "24": {
+      "text": "after having brought home the “soul” of Rɪˊntew, secures it with iron bands,",
+      "resolved": "Rɪˊntew = R, U+026A, U+02CA, n,t,e,w",
+      "note": "Proper name. Confirmed at 4x: second letter is a bare stem (U+026A) with a stress mark, not lowercase r — CATMuS drafted it \"Rr'ntew\", the same r-for-U+026A substitution as line 3's uviriˊtkɪlin. Not found in lexicon lookup (below the two-page floor); read from raster.",
+      "class": "doubt"
+    },
+    "25": {
+      "text": "puts it behind the lamp, and feeds it with choicest meat and tallow in order"
+    },
+    "26": {
+      "text": "to fatten it and make it fit to be eaten."
+    },
+    "27": {
+      "text": "In another tale, a keˊlᴇ forces a stolen “soul” to watch his lamp and",
+      "as_typed": "In another tale, a {ke'le_} forces a stolen “soul” to watch his lamp and"
+    },
+    "28": {
+      "text": "trim it; in still another, he uses it as a trimming-stick."
+    },
+    "29": {
+      "text": "“Souls” are liable to injury even from material weapons. I know of a"
+    },
+    "30": {
+      "text": "case where a man struck his wife with a firebrand. The woman died in two",
+      "note": "Line ends bare at 4x, no trailing comma — CATMuS draft had appended one.",
+      "class": "print"
+    },
+    "31": {
+      "text": "days. The relatives, after ripping up and investigating the dead body, said"
+    },
+    "32": {
+      "text": "that none of her vital organs were injured, but that probably the man"
+    },
+    "33": {
+      "text": "wounded her “souls” with the blow. Keˊlet, also, have “souls” of their own,",
+      "as_typed": "wounded her “souls” with the blow. {Ke'let}, also, have “souls” of their own,"
+    },
+    "34": {
+      "text": "which may be lost, or spirited away by shamans."
+    },
+    "35": {
+      "text": "REGIONS OF THE DECEASED. — There are several places where the"
+    },
+    "36": {
+      "text": "deceased abide. They lead a life similar to that on earth. They are often",
+      "note": "Line ends bare at 4x, no trailing comma — CATMuS draft had appended one.",
+      "class": "print"
+    },
+    "37": {
+      "text": "confounded with the Upper People, or with the Lower People of the under-"
+    },
+    "38": {
+      "text": "ground world. They say to an earthly visitor, “We are people that have"
+    },
+    "39": {
+      "text": "¹ The Eskimo of eastern Greenland have similar beliefs. According to them, man has several souls.",
+      "note": "Footnote opener 1, superscript, confirmed at 4x.",
+      "class": "print"
+    },
+    "40": {
+      "text": "The largest dwell in the larynx and in the left side, and are tiny men, about the size of a sparrow. The"
+    },
+    "41": {
+      "text": "other souls dwell in other parts of the body, and are of the size of a finger-joint. If one of them is taken"
+    },
+    "42": {
+      "text": "away, the member to which it belongs sickens (Holm, Meddelelser om Grønland, Part X, p. 112, cited",
+      "note": "Grønland: Danish place name, o-with-stroke (U+00F8) confirmed at 4x, not o-acute.",
+      "class": "print"
+    },
+    "43": {
+      "text": "from Fritjof Nansen, Eskimo Life, p. 227)."
+    },
+    "44": {
+      "text": "² The Eskimo of Greenland have similar beliefs. Compare Fritjof Nansen, Eskimo Life, p. 298.",
+      "note": "Footnote opener 2, superscript, confirmed at 4x.",
+      "class": "print"
+    },
+    "45": {
+      "text": "43—JESUP NORTH PACIFIC EXPED., VOL. VII.",
+      "note": "Signature line: em dash (U+2014) unspaced per §2.11; apparatus zone, read off the composite, not zoomed.",
+      "class": "layout"
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

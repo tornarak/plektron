@@ -1,0 +1,42 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "337"
+    },
+    "2": {
+      "text": "According to another belief, spread much more widely among the Chuk-"
+    },
+    "3": {
+      "text": "chee, the deceased become, after death, a kind of keˊlet hostile to man, and",
+      "as_typed": "chee, the deceased become, after death, a kind of {ke'let} hostile to man, and"
+    },
+    "4": {
+      "text": "inclined to do harm. The keˊlet in question are of course those of the first",
+      "as_typed": "inclined to do harm. The {ke'let} in question are of course those of the first"
+    },
+    "5": {
+      "text": "class, called “genuine keˊlet.”",
+      "note": "Closing quote after the period is curly (U+201D), per keying_spec.md §1/§5.6: 'Quotation marks curly, never straight.' The machine draft shows straight marks, which is an encoding artifact.",
+      "class": "print",
+      "as_typed": "class, called “genuine {ke'let}.”"
+    },
+    "6": {
+      "text": "A corpse lying in the open will stand up and give pursuit when a lone"
+    },
+    "7": {
+      "text": "traveller passes by. The deceased is also inclined to come back to his own"
+    },
+    "8": {
+      "text": "house, and to harm the people thereof. I shall speak of this in more detail"
+    },
+    "9": {
+      "text": "later on."
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}
