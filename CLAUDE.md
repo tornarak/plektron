@@ -226,6 +226,13 @@ paragraph boundaries) → collation (an LLM reviews that page against the scan, 
 by `tei validate`) → `tei/` → `harness edition serve`, the reading view. Stage by
 stage, with the reasoning: `docs/pipeline.md`.
 
+**The reading view renders `mz/tei/` too, under `--drafts`**, so the edition reads
+from ground truth alone and collation is enrichment over a readable text rather than
+the gate in front of one. It has contracted as each rung above took work off it, and
+the corpus is being read end to end *before* it runs; what now stands between the
+store and a usable edition is the encyclopedic work, not this stage.
+`docs/pipeline.md` §4 carries what moved and why.
+
 # Collation
 
 **A model never authors structure a store already holds.** It judges what no rule

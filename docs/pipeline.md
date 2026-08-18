@@ -175,6 +175,36 @@ the stages that are built.
    telling the model not to trust its own input. `docs/decisions.md` carries the
    reversal.
 
+   **And it has contracted, rung by rung, until little is left in it.** Each stage
+   above took something out of collation and gave it to a rule or a gate: the keyed
+   zone labels became the paragraph boundaries (stage 3, built precisely because the
+   pass was re-deriving adjudicated facts); the unambiguous entity links are laid at
+   `#mz` while the page is generated (stage 5); Tier-1 glyph identity is settled in
+   `gt/ocr` before a collator sees anything at all; and the classes that used to fill
+   a collator's worklist — footnote markers keyed as ASCII digits, straight quotes
+   for curly, French spacing — are caught per page by `proposal check` and
+   `corpus normalize` during the reading pass, mechanically and without judgement.
+   What is left is the residue the contract always named: a heading against a table,
+   where a note anchors, whether a form is foreign. Real judgement, and not much of
+   it.
+
+   **So the sequencing has changed: the OCR pass runs over the whole text first, and
+   collation follows it.** That is not a claim that collation is unnecessary, but one
+   about what is worth doing next, and it rests on a property the reading view
+   already has — `harness edition serve --drafts` renders `mz/tei/` beside the
+   committed pages. A generated page is a draft nobody has read and the view says so
+   on its face, but it *reads*, which makes a **beta edition available from ground
+   truth alone**. What then stands between the corpus and something usable is the
+   encyclopedic work — the entity and lexicon stores, the indices, the geography —
+   and not this stage. Collation becomes enrichment over a readable edition rather
+   than the gate in front of one.
+
+   **What that costs is the measurement `docs/open-questions.md` is waiting for.**
+   The generator's agreement with a human pass is still measured on `1-021`/`1-022`
+   alone, and finishing the OCR pass first defers the batch that would turn one page
+   into a rate. A deliberate trade rather than an oversight: the evidence is cheaper
+   to collect against a finished corpus, and the pages are not going anywhere.
+
 5. **Annotation** — partly built, and it turned out not to be a stage after the
    others so much as a store the earlier ones consult. `entities/` holds one
    markdown record per entity; `tei generate` links the unambiguous forms by rule
@@ -183,6 +213,32 @@ the stages that are built.
    collation** rather than a pass over finished TEI, which is what makes it
    affordable: the reader who is already looking at the page decides, once, and
    `entity occurrences` finds every other instance afterwards.
+
+   **That is the per-page route, and it needs a collator. The corpus-wide one does
+   not, and with collation deferred it is the one that runs.**
+   `harness lexicon misses --common` ranks the tokens no English lexicon accounts
+   for across every OCR'd page — a candidate list drawn from ground truth alone, and
+   the reason the entity store and `data/lexicon_extra.txt` suppress `lexicon_miss`
+   and nothing else. `entity new` scaffolds at `proposed`, `entity occurrences`
+   finds the rest of a form once one instance is understood, `entity alias` and
+   `entity locate` fill the record, and `entity check` gates the lot. The store
+   holds **461 entries against zero collated pages** — `0d6fe61` alone added 152 —
+   which is the plainest available statement of the point: the encyclopedia owes
+   this stage nothing.
+
+   **And the store is the unit of work, not the page.** `#mz` links are re-derived
+   from `entities/` on every `tei generate`, so an alias written today reaches every
+   page that has ever been generated, retroactively and without re-reading one of
+   them. That is why the encyclopedic pass is worth running *ahead* of collation
+   rather than behind it: its output compounds over the whole corpus, where a
+   collator's judgement lands on a page. It also sets the failure mode — a careless
+   alias propagates just as widely, which is what `auto: no` and `licensed: false`
+   are for, and why a proposal is inert until a human ratifies it.
+
+   What the collator still owns is the contested case: two entities sharing a form,
+   a link no alias table may license, a form whose language is a judgement. Those
+   wait as candidate comments in `mz/tei/` until the pass runs, and waiting costs
+   nothing, because the comments are rebuilt with the page.
 
    What is not built is the **published indices** — the toponym gazetteer, the
    species list, the D-PLACE linkage — which are derivable from the store plus

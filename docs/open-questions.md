@@ -16,7 +16,7 @@ in for an unread glyph.
   Building it was scoped and deferred rather than attempted, and the reason is
   sequencing: an LoI entry says which *folio* a figure falls on, so checking it
   is a question about where a figure sits in the assembled book, and the book is
-  not assembled — 1 page is collated against 274 drafted. The same holds for
+  not assembled — nothing is collated against 399 drafted. The same holds for
   `data/toc.json`. Both belong with chapter assembly, after collation, when there
   is a running text for a folio to be a position in.
 
@@ -106,8 +106,13 @@ in for an unread glyph.
   nothing there tempts a completion — the rule was written for a page opening
   lowercase mid-sentence, which is what `1-100` does, and `1-100` was collated
   before the rule existed. **A page opening mid-sentence, collated after it, is
-  the evidence still wanted.** 69.8% of text pages qualify, so the next one in
-  scan order will probably do.
+  the evidence still wanted.** **73.2%** of the 399 keyed pages open on a
+  lowercase first word — it was 69.8% at 274 — so the next one in scan order will
+  probably do. Quote the measure with the count: it is first-body-line-lowercase,
+  which is stricter than "the first main zone is `MainZone-Continued`" (76.7%,
+  since a continued paragraph may still open a new sentence) and neither is a
+  verb, so both are recomputed by hand and drift quietly if nobody says which was
+  taken.
 - **A note running across a page seam has no markup.** `<note>` is nested rather
   than a top-level body element, so `seam`'s two-sided-edge machinery does not
   reach it, and the pilot set has no attested instance — so it is deliberately
@@ -129,21 +134,37 @@ in for an unread glyph.
   to mark as foreign. **One page is not a rate**, and the honest open question is
   whether that holds over a batch — the first real batch is the evidence.
 
-  `1-021` has since been collated under the review contract, and is the corpus's
-  one committed page. What it measured is the entity half: six `#mz` links
-  survived review untouched, three ambiguous candidates the collator resolved
-  itself at `#llm`, four candidate comments cleared, and one `entity wanted` that
-  became `event:sibiryakoff-expedition`. Still one page.
-- **The geography view is deferred to a sprint of its own**, deliberately and not
-  by omission. Entity records already carry `geo:` and `within:`, and
-  `entity check` already refuses a dangling parent and a cycle, so the store can be
-  populated correctly before anything reads it that way. What is missing is the
-  design: the shape wanted is a **hierarchy of locations** — russian far east →
-  chukotka → chukchi peninsula → uelen, anadyr basin → markovo, kamchatka → paren —
-  where each location appears in its parent's map and the selected chain is
-  navigable as a tree. There is dumped GeoJSON for watersheds and language regions
-  in `scratch/` to build it from, and no external tiles will ever be used: the
-  server is loopback and the edition is meant to be self-contained.
+  `1-021` was collated under the review contract and was, for a while, the
+  corpus's one committed page. What it measured is the entity half: six `#mz`
+  links survived review untouched, three ambiguous candidates the collator
+  resolved itself at `#llm`, four candidate comments cleared, and one
+  `entity wanted` that became `event:sibiryakoff-expedition`.
+
+  **`tei/` now holds no page at all** — only `corpus-header.xml`, the queue and
+  the claims — so that paragraph is the last copy of its own evidence, and by this
+  project's own rule a register nobody can re-read against the store is not
+  evidence. It is kept as a note of what was once observed and not as a figure
+  anything may be measured against. Whoever restarts collation should treat the
+  first collated page as the first, not the second.
+
+  **The batch that would turn it into a rate now waits on the OCR pass finishing.**
+  The corpus is being read end to end before any of it is collated, for the reason
+  in `docs/pipeline.md` §4: `edition serve --drafts` renders `mz/tei/`, so the text
+  is readable without this stage, and the encyclopedic work is worth more right now
+  than the measurement is. So "one page is not a rate" stands, and stands on
+  purpose — not because nobody got to it.
+- ~~**The geography view is deferred to a sprint of its own.**~~ **Settled — the
+  sprint happened.** The entry wanted a hierarchy of locations navigable as a
+  tree, built from GeoJSON then dumped loose in `scratch/`, with no external
+  tiles. All of it exists: `data/geo/` is the store — **derived but tracked**, the
+  one store that is, because its sources sit outside the repo and a clone cannot
+  rebuild it — carrying 64 shapes across `base/`, `region/`, `watershed/`,
+  `langarea/` and `marine/`, of which 62 are claimed by an entity.
+  `tools/build_geo.py` builds it, `SOURCES.md` records provenance per shape, and
+  `harness geo list` is the census. `entity locate` sets an entry's `geo:`
+  members; the atlas renders them with the `within:` chain as its tree, and it is
+  still loopback and self-contained. `docs/edition.md` owns the view, the
+  `within:`/`geo:`/`part-of:` distinction and what the atlas can and cannot draw.
 - **Nothing enforces that a `#mz` link was *wanted*, only that it derives.** The
   gate re-checks that the store still supports every rule-applied link, which is
   what makes the rank honest about provenance. It cannot check that the sentence
@@ -229,7 +250,9 @@ in for an unread glyph.
   asks for one, so a collator either went looking for them on every page or forgot
   they existed, and the measured answer over the corpus is the second: **zero of
   either emitted**, against 1387 entity candidates and 908 language questions the
-  rules do ask about.
+  rules do ask about. Those two totals were taken over the 274 pages drafted at
+  the time and have not been retaken since; **the ratio is the finding and the
+  totals are not**, so re-measure before quoting them rather than scaling them.
 
   The test that moved them is the one that now scopes the whole contract: **that
   pass carries what needs the page in front of it.** A `<bibl>` boundary is drawn
