@@ -487,10 +487,9 @@ Every element bearing a Tier-1 `xml:lang` carries `@resp`:
 |---|---|---|---|
 | `#ed`  | ratified | a human keyed or confirmed this against the page; an ADOPTED glyph identity | a human, by an explicit act |
 | `#llm` | proposed | a model read this off the page image; a reading, not an identity | this pass |
-| `#htr` | unexamined | recognizer output nobody has looked at | the import that made the draft |
 
 **You emit `resp="#llm"`.** Always, on every Tier-1 element, `<unclear>` included,
-including a span you consider beyond doubt. You never emit `#ed` and never `#htr`.
+including a span you consider beyond doubt. You never emit `#ed`.
 
 Emitting `#ed` is precisely the promotion this firewall exists to prevent, and it is
 the one breach that is mechanically detectable rather than a matter of judgement —

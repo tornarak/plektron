@@ -41,15 +41,14 @@ XML_ID_ATTR = "{http://www.w3.org/XML/1998/namespace}id"
 # which is a different question from whether the image decided — that one is
 # <unclear>. A confident reading is still only proposed; certainty is not authority.
 RESP_RANKS = {
-    "#ed": "ratified — a human keyed or confirmed it against the page",
-    "#gt": "adopted — transcluded whole from adjudicated ground truth",
-    "#llm": "proposed — a model read it off the page image",
-    "#htr": "unexamined — recognizer output nobody has looked at",
-    "#mz": "rule-applied — derived from a store a human keyed, and re-derived here",
+    "#ed": "a human's own act — keyed, confirmed against the page, or promoted",
+    "#gt": "machine-read, human-ratified — transcluded from adjudicated ground truth",
+    "#llm": "a model's work — proposed, awaiting ratification",
+    "#mz": "mechanical — a rule over a store a human keyed, re-derived here",
 }
 PROPOSED = "#llm"
 RATIFIED = "#ed"
-# The fourth rank, and the one that needed an argument rather than a slot.
+# The adopted rank, and the one that needed an argument rather than a slot.
 #
 # A span `harness tei expand` filled did not have its glyphs read by the collation
 # pass at all: they were copied whole out of `gt/ocr/`, where a human adjudicated
@@ -1204,7 +1203,7 @@ def validate(tei_path: Path, ctx: dict | None = None,
 
     # THE check, re-anchored: provenance rank, not agreement with an upstream file.
     # Every Tier-1 element declares who read it, and this pass may only ever claim
-    # the proposed rank. `#ed` is a human's to write; `#htr` belongs to the import.
+    # the proposed rank. `#ed` is a human's to write.
     # Both the missing case and the over-claim are errors, and the missing case is
     # the more dangerous of the two — an unmarked span is indistinguishable from a
     # ratified one to every consumer that does not check, so silence here would

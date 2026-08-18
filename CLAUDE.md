@@ -24,11 +24,11 @@ what Bogoras's system "should" contain, from a neighbouring page, or from any co
 pattern. Book-internal apparatus (the p. 10 key, the List of Illustrations, the printed
 TOC) is *not* subject to this — it is evidence, and it binds.
 
-In the TEI this is `@resp`, on every Tier-1 `xml:lang` and every entity reference,
-naming one of five ranks: `#ed` ratified (a human confirmed it against the page),
-`#llm` proposed (a model read it), `#htr` unexamined (recognizer output), `#gt`
-adopted (transcluded from adjudicated ground truth), `#mz` rule-applied (an entity
-link from a human's alias table). The last two assert nothing on their own —
+In the TEI this is `@resp`, naming one of the four provenance levels README.md
+defines, on every Tier-1 `xml:lang` and every entity reference: `#ed` a human's
+own act, `#llm` a model's work awaiting ratification, `#gt` machine output a
+human ratified against the artifact (transcluded from its store), `#mz`
+mechanical rule output. The last two assert nothing on their own —
 **re-derived from their store on every run**, so they fail rather than go stale,
 which is the whole of what admits a rank no human wrote directly.
 The ranks are declared once, in the corpus teiHeader, never in a page file. The

@@ -635,7 +635,8 @@ which questions are still open.
 
 ## `#mz`, and why it is admissible
 
-The fifth provenance rank, on exactly the terms `#gt` was admitted and nothing
+The mechanical rank's one surface in the TEI, admitted on exactly the terms
+`#gt` was and nothing
 more. It says: a human wrote an alias row and ratified the entry; a rule applied
 it here. No model chose it, so `#llm` is false; no human read this page, so `#ed`
 is false. The responsible act happened one artifact upstream.

@@ -238,7 +238,7 @@ LINE_KEYS = ("index", "line_id", "block_id", "text",
 
 # The store a verb reads when none is named. `ocr/` is the *read view* over every
 # OCR store the project has: today a symlink farm into `gt/ocr/`, and the place a
-# raw-recognizer sibling (`htr/`, the `#htr` rank) links in beside it if one is ever
+# raw-recognizer sibling links in beside it if one is ever
 # produced again. It is the default because a reader almost always wants "whatever
 # this page's OCR currently is", not a named generation of it.
 #

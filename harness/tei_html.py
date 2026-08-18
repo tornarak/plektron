@@ -188,11 +188,10 @@ RANK_NOTE = {
     "#ed": ("ratified", "a human keyed or confirmed this against the page"),
     "#gt": ("adopted", "keyed at the raster in the ground-truth pass"),
     "#llm": ("proposed", "a model read this off the page; awaiting ratification"),
-    "#htr": ("unexamined", "recognizer output nobody has looked at"),
-    "#mz": ("rule-applied", "derived from a store a human keyed — the entity "
-                            "alias table, or the printed table of contents"),
+    "#mz": ("mechanical", "applied by rule from a store a human keyed — the entity "
+                          "alias table, or the printed table of contents"),
 }
-UNSETTLED = ("#llm", "#htr", "#mz")
+UNSETTLED = ("#llm", "#mz")
 
 
 def page_path(ref: str, root: Path = Path(".")) -> Path:

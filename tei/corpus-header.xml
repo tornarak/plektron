@@ -38,42 +38,47 @@
       </editor>
 
       <!--
-        The provenance ranks. Rank answers *who read this*, which is a different
-        question from whether the letterform decided — that one is <unclear>. A
-        confident reading is still only proposed; certainty is not authority.
+        The provenance ranks — the four levels of README.md's "The Principle",
+        as they surface in the TEI. Rank answers how a span was produced and how
+        far a human has been through it, which is a different question from
+        whether the letterform decided — that one is <unclear>. A confident
+        reading is still only proposed; certainty is not authority.
 
-        #htr < #llm < #ed is a strict order over the three ranks describing a
-        reading of *this* document. #gt is not a fourth point on that line: it says
-        the glyphs were not read here at all, but copied whole out of ground truth
-        a human adjudicated at the raster. Its authority over glyph identity is an
-        editor's, which is why it does not sit below #ed; its subject is a
-        different artifact, which is why it is not #ed.
+        #mz is mechanical: a rule with no judgement in it, applied over a store
+        a human keyed, regenerated at will and asserting nothing of its own.
+        The only mechanical output that surfaces in the TEI at all is the entity
+        link a trigger row in entities/ licenses, so #mz appears on @ref on rs
+        and nowhere else — it never carries a glyph, a language or a name's
+        type. #gt is machine-read and human-ratified: transcluded whole out of
+        ground truth a human adjudicated against the artifact. No model chose
+        the characters and no human read this document; the responsible act
+        happened one artifact upstream, and the rank records where. #llm is a
+        model's work awaiting a human, with no authority over glyph identity.
+        #ed is a human's own act on this document: keyed, confirmed against the
+        page, or promoted from #llm.
 
-        #mz is the second of that kind and the last one admitted on those terms.
-        It says a human wrote a trigger row into entities/ declaring what a form
-        means in this book and ratified the entry, and a rule applied it here. It
-        is confined to entity reference — @ref on rs — and may never carry a
-        glyph, a language or a name's type. Like #gt it is re-derived on every
-        validation run against the store as it stands, so weakening the entry
-        fails every link resting on it.
+        #mz and #gt are re-derived on every validation run against the store
+        they came from, so they fail rather than going stale — weakening an
+        entry fails every link resting on it, and correcting ground truth fails
+        every span adopted from it.
 
         These xml:ids are the referents of every @resp in the corpus, and the set
-        is closed: harness/validate.py's RESP_RANKS is the same five, and it
-        rejects a sixth. Rank rises only by a human act, so no pass may promote a
+        is closed: harness/validate.py's RESP_RANKS is the same four, and it
+        rejects a fifth. Rank rises only by a human act, so no pass may promote a
         span it did not itself ratify — the collation pass may emit #llm and
-        nothing else, and #gt and #mz are written only by tooling that asserts
-        nothing on its own: both are re-derived from the store they came from on
-        every validation run, so they fail rather than going stale.
+        nothing else.
 
         #ed carries no personal name yet. Left open deliberately rather than
         filled with a plausible one; it wants the editor's own decision.
       -->
       <respStmt xml:id="ed">
-        <resp>ratified — keyed, or confirmed against the page, by a human editor</resp>
+        <resp>a human's own act — keyed, confirmed against the page, or promoted
+          from a model's proposal, by a human editor</resp>
         <name type="role">human editor</name>
       </respStmt>
       <respStmt xml:id="gt">
-        <resp>adopted — transcluded whole out of adjudicated ground truth, where a
+        <resp>machine-read, human-ratified — transcluded whole out of adjudicated
+          ground truth, where a
           human settled every mark at the raster. No model chose these characters,
           so the reading is not a proposal; but no human read this document either,
           so it is not editorial work on the transcription. The responsible act
@@ -83,16 +88,13 @@
         <name type="role">human editor, at the raster</name>
       </respStmt>
       <respStmt xml:id="llm">
-        <resp>proposed — read off the page image by a language model. Carries no
-          authority over glyph identity; a reading awaiting ratification.</resp>
+        <resp>a model's work — read off the page image by a language model.
+          Carries no authority over glyph identity; a reading awaiting
+          ratification.</resp>
         <name type="role">language model, collation pass</name>
       </respStmt>
-      <respStmt xml:id="htr">
-        <resp>unexamined — handwritten-text-recognition output nobody has looked at</resp>
-        <name type="role">recognizer</name>
-      </respStmt>
       <respStmt xml:id="mz">
-        <resp>rule-applied — an entity reference derived from the trigger table
+        <resp>mechanical — an entity reference derived by rule from the trigger table
           in entities/, where a human declared what the form means in this book
           and ratified the entry. No model chose it and no human read this page;
           the responsible act happened one artifact upstream, and this records
@@ -470,13 +472,14 @@
       <!--
         Software that produced or gates corpus content. The specific model behind
         a #llm span is deliberately not encoded in the rank: the rank is a closed
-        set of three and answers "how far has this been checked", not "which
+        set and answers "how far has this been checked", not "which
         version of what read it". Model identity belongs in revisionDesc.
       -->
       <application ident="kraken" version="7.0.3">
         <label>kraken</label>
         <desc>Layout segmentation and text recognition. Produces ALTO in
-          gt/ and ocr/; all such output is rank #htr until a human reaches it.</desc>
+          gt/ and ocr/; such output carries no rank, and none of it enters the
+          TEI until a human has adjudicated it at the raster.</desc>
       </application>
       <application ident="catmus-print" version="0">
         <label>CATMuS print</label>

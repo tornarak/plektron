@@ -87,17 +87,17 @@ def test_a_missing_header_is_an_error_not_an_absence(tmp_path):
 
 
 def test_a_rank_the_gate_knows_but_the_header_omits(tmp_path):
-    """Pages may emit '#htr' and it would resolve to nothing on assembly."""
+    """Pages may emit '#mz' and it would resolve to nothing on assembly."""
     header(tmp_path, ranks=("ed", "llm"))
     rep = check_corpus_header(tmp_path)
     assert not rep.ok
-    assert any("'#htr' is in RESP_RANKS" in e for e in rep.errors)
+    assert any("'#mz' is in RESP_RANKS" in e for e in rep.errors)
 
 
 def test_a_rank_the_header_declares_but_the_gate_rejects(tmp_path):
     """The worse direction: the corpus advertises a rank that `validate` would
     reject on sight, so the header invites output the gate refuses."""
-    header(tmp_path, ranks=("ed", "llm", "htr", "reviewer"))
+    header(tmp_path, ranks=(*RANK_IDS, "reviewer"))
     rep = check_corpus_header(tmp_path)
     assert not rep.ok
     assert any("RESP_RANKS does not know" in e for e in rep.errors)
@@ -123,7 +123,7 @@ def test_duplicate_ids_make_resp_ambiguous(tmp_path):
     failure rather than reaching the rank comparison. Named separately anyway: two
     ranks answering to one @resp is this gate's own subject, not generic malformed
     XML, and a report saying the latter would send someone looking for a typo."""
-    header(tmp_path, ranks=("ed", "ed", "llm", "htr"))
+    header(tmp_path, ranks=("ed", "ed", "llm", "mz"))
     rep = check_corpus_header(tmp_path)
     assert not rep.ok
     assert any("same xml:id twice" in e for e in rep.errors)
