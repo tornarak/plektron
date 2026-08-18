@@ -27,6 +27,8 @@
   <code>{{ row.id }}</code>{% if row.detail %} — {{ row.detail }}{% endif %}
 {%- elif row.kind == 'point' -%}
   {{ row.lat }}, {{ row.lon }} <span class='dim'>(WGS84)</span>
+  {%- for m in row.maps %} <a class='maplink' href='{{ m.url }}'
+     rel='noreferrer' target='_blank'>{{ m.name }}</a>{% endfor %}
 {%- elif row.kind == 'authority' -%}
   <code>{{ row.id }}</code>
   {%- if row.title %} — {{ row.title }}

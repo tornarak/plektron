@@ -306,6 +306,17 @@ row cannot be answered by writing a number in a file.
   field hold all three. It was two fields, `geo:` for a point and `area:` for a
   shape, with a rule refusing a record that carried both; the rule was right
   about two fields and the answer was one.
+
+  A point member's card row **opens on OpenStreetMap and on Google Maps**
+  (`edition_ui.MAP_SERVICES`, addresses there and coordinates in the store, as
+  `LINK_KINDS` does for `link:`). OSM leads because it is the witness these
+  coordinates were derived against — the place glosses say so — and the link
+  drops a marker rather than centring a view, at z10: these are vanished
+  settlements fixed from a 1900s gazetteer against charts, and opening at street
+  level would dress a ±1 km reading as a doorstep. The point is checkability. A
+  coordinate is the most falsifiable thing in the store — it lands on the right
+  headland or it does not — and until the row was clickable, checking one meant
+  copying twelve digits into another tab, which is to say nobody did.
 - **`frame:` is where the map looks**, which is a different question from where
   the thing is: four degrees, west south east north — longitude first, unlike
   `geo:`, because it is a box, and east may exceed 180 in the atlas's continuous

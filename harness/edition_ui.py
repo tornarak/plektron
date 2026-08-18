@@ -173,6 +173,42 @@ LINK_KINDS = {
     "url": ("{}", "", ""),
 }
 
+#: Where a `geo:` point can be opened on somebody else's map. Same shape and same
+#: argument as `LINK_KINDS`: the record holds the coordinate, this holds the
+#: address, and a service that changes its query format costs one line here.
+#:
+#: **OpenStreetMap leads because it is the witness the store was built against** —
+#: the place records say so in their own glosses ("cross-referenced against
+#: Operational Navigation Charts and OpenStreetMap"), so the link a reader follows
+#: to check a coordinate is the map the editor checked it on. The `mlat`/`mlon`
+#: pair drops a marker at the point rather than merely centring there, which is
+#: the difference between "this spot" and "somewhere in this view".
+#:
+#: **The zoom is deliberately low.** These are coordinates for vanished
+#: settlements and unnamed bays, derived from a 1900s gazetteer against charts;
+#: opening at street level would dress a ±1 km reading as a doorstep. z10 shows
+#: the coast and the river mouth a reader needs to judge it by.
+MAP_SERVICES = (
+    ("OpenStreetMap",
+     "https://www.openstreetmap.org/?mlat={lat:.4f}&mlon={lon:.4f}"
+     "#map=10/{lat:.4f}/{lon:.4f}"),
+    ("Google Maps",
+     "https://www.google.com/maps/search/?api=1&query={lat:.4f},{lon:.4f}"),
+)
+
+
+def map_links(lat: float, lon: float) -> list[dict]:
+    """`MAP_SERVICES` resolved against one coordinate, as `{name, url}` rows.
+
+    Built here rather than in the template so the template keeps doing the one
+    thing it is good at — escaping — and a service added above cannot arrive as
+    markup. The `&` in a query string is escaped by Jinja on the way out, which is
+    correct in an `href` and is why these are handed over as plain strings.
+    """
+    return [{"name": name, "url": url.format(lat=lat, lon=lon)}
+            for name, url in MAP_SERVICES]
+
+
 _STRONG = re.compile(r"\*\*([^*\n]+)\*\*")
 _EM = re.compile(r"\*([^*\n]+)\*")
 _CODE = re.compile(r"`([^`\n]+)`")
@@ -413,6 +449,13 @@ def property_rows(rec: dict, store: dict, root: Path) -> list[dict]:
                 "label": "point",
                 "lat": f"{lat:.4f}",
                 "lon": f"{lon:.4f}",
+                # A coordinate a reader cannot open is a coordinate nobody checks,
+                # and these are the store's most checkable field: a point derived
+                # from a 1900s gazetteer either lands on the right headland or it
+                # does not. The card is where a wrong value gets noticed, which is
+                # the whole argument for `_props.html`, and until now the noticing
+                # meant copying twelve digits into another tab.
+                "maps": map_links(lat, lon),
             }
         )
 

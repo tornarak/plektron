@@ -690,6 +690,36 @@ def test_an_entry_that_can_be_drawn_arrives_with_its_map(server):
     assert "data-ent='place:uelen'" in body   # the pin, for the highlight
 
 
+def test_a_point_can_be_opened_on_a_map_that_is_not_ours(server):
+    """The coordinate is the store's most checkable field and the card is where a
+    wrong one gets noticed — but noticing meant copying twelve digits into another
+    tab, so nobody did. OpenStreetMap leads because it is the witness the place
+    records were built against; the marker is dropped at the point rather than the
+    view merely centred there.
+    """
+    base, root = server
+    entry(root, "place:uelen", extra="- geo: 66.16 -169.8\n")
+    body = get(base + "/entity/place:uelen")
+
+    assert "66.1600, -169.8000" in body, "the value still leads; links follow it"
+    assert ("https://www.openstreetmap.org/?mlat=66.1600&amp;mlon=-169.8000"
+            "#map=10/66.1600/-169.8000") in body
+    assert ("https://www.google.com/maps/search/?api=1&amp;"
+            "query=66.1600,-169.8000") in body
+    assert ">OpenStreetMap</a>" in body and ">Google Maps</a>" in body
+
+
+def test_a_map_link_leaves_the_edition_without_handing_it_the_referrer(server):
+    """These are the only outbound links on a card that a reader follows *while*
+    reading, and the edition is served from a local host whose URL names the page
+    being read. `rel='noreferrer'` is what the `link:` rows already do."""
+    base, root = server
+    entry(root, "place:uelen", extra="- geo: 66.16 -169.8\n")
+    body = get(base + "/entity/place:uelen")
+    for anchor in re.findall(r"<a class='maplink'[^>]*>", body):
+        assert "rel='noreferrer'" in anchor and "target='_blank'" in anchor
+
+
 def test_an_entry_with_nothing_to_draw_opens_no_pane(server):
     """Chuvan, Kerek, Siberian Yupik and Tundra Yukaghir are the live cases. An
     empty pane saying so would be a second statement of what the card's own

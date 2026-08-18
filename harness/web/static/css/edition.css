@@ -450,6 +450,13 @@ table.props .printed { font-style:italic }
    one somebody checked. */
 .resp { font-size:.7rem; color:var(--mark); font-family:ui-monospace,monospace }
 .dim { color:var(--dim) }
+/* Opening a `geo:` point on somebody else's map. Set quiet and after the
+   coordinate, because the number is the record and these are only ways of
+   looking at it — a reader checking whether a point lands on the right headland
+   should read the value first and leave second. */
+a.maplink { font-size:.7rem; margin-left:.4rem; color:var(--dim);
+  text-decoration:none; border-bottom:1px dotted var(--rule) }
+a.maplink:hover { color:var(--accent); border-bottom-color:var(--accent) }
 h4.tier1 { font-style:italic; font-size:1.1rem }
 #empty { color:var(--dim); font-size:.85rem; font-family:system-ui,sans-serif }
 .pill { display:inline-block; font-size:.7rem; padding:0 .35em; border-radius:.25rem;
