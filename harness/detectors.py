@@ -263,6 +263,44 @@ SUFFIX_MARK_DROPS: tuple[tuple[str, str, tuple[str, ...]], ...] = (
 # store, each splitting a real form's count.
 EDGE_PUNCT = "\"()[]{}.,;:!?—\u2013-*\u2020\u2021\u00A7\u00B6“”‘’¹²³⁴⁵⁶⁷⁸⁹"
 
+#: An English possessive, straight or curly. `EDGE_PUNCT` cannot reach it: the
+#: token ends in `s`, so the strip stops before the apostrophe and `Orion’s`
+#: counts as a form distinct from the `Orion` five lines up. A name the book
+#: mostly sets possessively then ranks twice and reads as two candidates — the
+#: same defect the superscripts caused above, one construction over.
+#:
+#: **The curly one is the corpus's** and not a stray: `keying_spec.md` §1 scopes
+#: the ASCII apostrophe policy to Tier-1, and English prose reproduces the print.
+_POSSESSIVE = re.compile(r"['\u2019]s$")
+
+#: What may stand between a full stop and the next word — a closing quote or
+#: bracket. Scanned past, so `…said so.” Nevertheless` reads as a sentence head.
+_CLOSERS = "\"')]}\u00bb”’"
+
+#: What ends a sentence. `:` and `;` are deliberately absent — English does not
+#: capitalize after either, so a capital following one is evidence of a name
+#: rather than of a sentence head.
+_SENTENCE_END = ".!?"
+
+
+def opens_sentence(text: str, at: int) -> bool:
+    """Is the token at offset `at` the first word of its sentence?
+
+    **A line break is not a sentence break**, which is why this walks the joined
+    draft rather than testing an offset against a line. The ALTO holds one
+    printed line per record and a sentence runs across as many as the compositor
+    needed; asking "is this the first token of its line" would call every line's
+    opening word a sentence head, which is most of the page.
+
+    Start of text counts. An abbreviation does not — `Lieut. Smith` reads as a
+    sentence head here, and nothing in the string says otherwise, which is why
+    the caller uses this as one of two conditions and never on its own.
+    """
+    i = at - 1
+    while i >= 0 and (text[i].isspace() or text[i] in _CLOSERS):
+        i -= 1
+    return i < 0 or text[i] in _SENTENCE_END
+
 # A hyphen that is the **last character of a printed line** is the compositor's
 # word break, not a hyphen in the word. The ALTO stores one line per printed
 # line, so `Chuk-` / `chee` reaches the tokenizer as two tokens and both are
@@ -963,6 +1001,42 @@ def suggest_lexicon(root: Path = Path("."), common: int | None = None) -> dict:
       `the` are one word for the purpose of a stoplist; `Frost` and `frost` are
       two different findings, one of which may be a person.
 
+    **Two things the flag has to fold, because dropping the dictionary exposes
+    them.** Both were invisible while the dictionary did the filtering, and both
+    made one name read as two findings or as a hundred.
+
+    - **A possessive is not a form.** `EDGE_PUNCT` cannot reach the apostrophe in
+      `Orion’s` — the token ends in `s`, so the strip stops before it — and a
+      name the book mostly sets possessively then ranks twice. `_POSSESSIVE`
+      folds it, so the count and the `first_seen` are the name's own.
+    - **A capital at a sentence head is the printer's, not the author's.** This
+      was the largest single noise class in the report: `Nevertheless`,
+      `Nowadays`, `Regarding`, `Meanwhile`, `Owing`, `Judging`. Every row now
+      carries `initial`, how many of its occurrences opened a sentence, and a
+      row seen **more than once**, whose occurrences are **all** initial, and
+      whose form the dictionary carries, moves to `sentence_heads`.
+
+    **The conjunction is the whole safety of it.** Each test alone is wrong in
+    the direction that loses a name silently. On position alone, a toponym that
+    happens never to fall mid-sentence disappears. On the dictionary alone, so
+    does `Wolf`, `Frost`, `Bering` — precisely what this flag exists not to do —
+    and `base` is a word list rather than a test for ordinary English anyway:
+    it carries `allen`, `ross`, `parry`, `peters`. And without the repetition
+    floor the other two are not evidence at all: "every occurrence opens a
+    sentence" is a coin that came up heads once, and the first cut without it
+    held back `Birch`, `Goose`, `Ross`, `Peters`, `Rudolf`, `Walruses`,
+    `Ptarmigans` and `Hildebrand`, each seen exactly once.
+
+    The floor costs most of the filter's reach — 152 of 169 were singletons —
+    and is still right, because what survives it is what *ranks*, and because
+    `initial` is on every row: a reader who wants to skim the singletons can,
+    on evidence the report shows them rather than on a rule applied behind
+    their back.
+
+    **And nothing is dropped, only named.** `sentence_heads` is a list beside the
+    others, on `suppressed`'s argument: a filter nobody can see is a filter
+    nobody can correct.
+
     The report gains a `scope` row and the boundary window; `tokens` and
     `suppressed` keep their meaning, with the entity store as the only suppressor.
     """
@@ -973,6 +1047,7 @@ def suggest_lexicon(root: Path = Path("."), common: int | None = None) -> dict:
     counts: dict[str, int] = {}
     folded: dict[str, int] = {}
     where: dict[str, str] = {}
+    initial: dict[str, int] = {}
     for ref in all_refs(root, "gt/ocr"):
         ocr = root / "gt" / "ocr" / f"{stem_for(ref, root)}.xml"
         if not ocr.exists():
@@ -1002,7 +1077,15 @@ def suggest_lexicon(root: Path = Path("."), common: int | None = None) -> dict:
             # The one strip, here, because nothing upstream did it in this
             # branch — `detect_all` is not in the loop and there is no already
             # cut token to re-cut.
-            tok = m.group().strip(EDGE_PUNCT)
+            #
+            # **The possessive fold is this branch's alone and must stay here.**
+            # `detect_all`'s tokenizer is thirty lines up and looks like the
+            # place for it; it is not. U+0027 survives that strip deliberately
+            # because it is the spirant mark, so folding a trailing `'s` there
+            # would delete a Tier-1 character from every flag in the corpus. The
+            # question this branch asks is about English word forms, and only
+            # here is that the question.
+            tok = _POSSESSIVE.sub("", m.group().strip(EDGE_PUNCT))
             # The same shape floor the dictionary arm uses, asked with an empty
             # lexicon so that only the shape is left: an ASCII alphabetic
             # component longer than three characters, split on the internal
@@ -1013,6 +1096,8 @@ def suggest_lexicon(root: Path = Path("."), common: int | None = None) -> dict:
                 continue
             counts[tok] = counts.get(tok, 0) + 1
             folded[tok.lower()] = folded.get(tok.lower(), 0) + 1
+            if opens_sentence(draft, m.start()):
+                initial[tok] = initial.get(tok, 0) + 1
             where.setdefault(tok, ref)
     rows = [{"token": t, "count": c, "first_seen": where[t]}
             for t, c in sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))]
@@ -1028,21 +1113,52 @@ def suggest_lexicon(root: Path = Path("."), common: int | None = None) -> dict:
     # as a full worklist on a corpus too small to have made a stoplist of.
     floor = ranked[min(common, len(ranked)) - 1][1] if ranked and common > 0 else 0
     cut = {w for w, c in ranked if c >= floor} if common > 0 else set()
-    kept = [r for r in rows if r["token"].lower() not in cut]
+    kept = [{**r, "initial": initial.get(r["token"], 0)}
+            for r in rows if r["token"].lower() not in cut]
     boundary = [{"form": w, "count": c} for w, c in ranked if w in cut]
+    # **Both conditions, never either alone.** A form every one of whose
+    # occurrences opens a sentence *and* which the dictionary carries is a
+    # capital the printer put there; `Yakutsk` fails the second test however it
+    # is placed, and `Frost` on any line but a sentence head fails the first.
+    # Dropping on position alone would take every name that happens never to
+    # appear mid-sentence, and on the dictionary alone is what this whole flag
+    # exists not to do.
+    #
+    # **And a third condition, which the first two need: it has to have happened
+    # twice.** "Every occurrence opens a sentence" is not evidence at one
+    # occurrence — it is a coin that came up heads once — and the first cut
+    # without this floor held back `Birch`, `Goose`, `Ross`, `Peters`,
+    # `Rudolf`, `Walruses`, `Ptarmigans` and `Hildebrand`, every one of them a
+    # real candidate seen exactly once. The floor costs most of the filter's
+    # reach: 152 of the 169 it caught were singletons and go back on the list.
+    # That is the right trade, because the ones it still catches are the ones
+    # that rank — `Nevertheless` and `Nowadays` six times each — and because
+    # `initial` is on every row, so a reader who wants to skim the singletons
+    # can, on evidence the report shows them rather than on a rule applied
+    # behind them.
+    #
+    # `base` is a word list and not a test for "ordinary English": it carries
+    # `allen`, `ross`, `parry`, `peters`. That is another reason the drop needs
+    # a signal of its own beside it.
+    heads = {r["token"] for r in kept
+             if r["count"] > 1 and r["initial"] == r["count"]
+             and r["token"].lower() in base}
+    rest = [r for r in kept if r["token"] not in heads]
     # `forms` and `spellings` count two different things and are both here
     # because either alone reads as the other: the cut ranks folded forms, the
     # rows are spellings, and 8,287 forms can keep 8,937 spellings without
     # anything being wrong. Naming one number would make that look like one.
     return {"scope": [{"asked": common, "cut": len(cut), "floor": floor,
-                       "forms": len(ranked), "spellings": len(kept),
+                       "forms": len(ranked), "spellings": len(rest),
+                       "sentence_heads": len(heads),
                        "means": "every token the corpus prints, less the "
                                 "commonest and less the entity store; `forms` "
                                 "folds case for the cut, `spellings` do not"}],
             "boundary": boundary[-_BOUNDARY:],
-            "tokens": [r for r in kept if lexicon_miss(r["token"], ents)],
-            "suppressed": [r for r in kept
-                           if not lexicon_miss(r["token"], ents)]}
+            "tokens": [r for r in rest if lexicon_miss(r["token"], ents)],
+            "suppressed": [r for r in rest
+                           if not lexicon_miss(r["token"], ents)],
+            "sentence_heads": [r for r in kept if r["token"] in heads]}
 
 
 # Marks that visibly attach after a base letter, for `mark_base_frequency`. Not

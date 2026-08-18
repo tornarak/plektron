@@ -63,6 +63,10 @@ def register(cli):
              "the cut lands on a frequency boundary so a tie is never split by "
              "alphabet — and the least frequent words it swallowed are printed "
              "back as `boundary`, which is what says whether N was well chosen. "
+             "Folds an English possessive onto the name it is made from, and "
+             "moves a row whose every occurrence opens a sentence *and* whose "
+             "form the dictionary carries into `sentence_heads` — both "
+             "conditions, since either alone loses a real name silently. "
              "Bare, it means 1000 [off]")
 
     add("native", suggest_native_forms,

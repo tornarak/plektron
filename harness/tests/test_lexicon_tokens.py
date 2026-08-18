@@ -562,3 +562,105 @@ def test_the_default_arm_keeps_its_shape(tmp_path):
     _extra(tmp_path, "placeholder")
     _gt_page(tmp_path, "1-001", [("the Ulakhpen", 400, 1774)])
     assert set(suggest_lexicon(tmp_path)) == {"tokens", "suppressed"}
+
+
+# --- what dropping the dictionary exposed -------------------------------------
+#
+# Both of these were invisible while the dictionary did the filtering, and both
+# turn one name into two findings or into a hundred.
+
+def test_a_possessive_counts_as_the_name_it_is_made_from(tmp_path):
+    """`EDGE_PUNCT` cannot reach the apostrophe — the token ends in `s`, so the
+    strip stops before it — and a name the book mostly sets possessively ranks
+    twice and reads as two candidates."""
+    _extra(tmp_path, "placeholder")
+    _gt_page(tmp_path, "1-001", [
+        ("Ulakhpen went and Ulakhpen’s sledge and Ulakhpen's dog", 400, 1774)])
+    rows = {r["token"]: r["count"] for r in _common(tmp_path, 0)["tokens"]}
+    assert rows == {"Ulakhpen": 3, "sledge": 1, "went": 1}
+
+
+def test_an_apostrophe_inside_a_compound_survives(tmp_path):
+    """`Raven’s-Beak` and `cat’s-cradle` are the corpus's own forms and the
+    apostrophe is not a trailing possessive. Only the ending folds."""
+    _extra(tmp_path, "placeholder")
+    _gt_page(tmp_path, "1-001", [("the Raven’s-Beak constellation", 400, 1774)])
+    assert "Raven’s-Beak" in {r["token"] for r in _common(tmp_path, 0)["tokens"]}
+
+
+def test_the_possessive_fold_does_not_reach_the_spirant_mark(tmp_path):
+    """**The trap this fold is one line away from.** `detect_all`'s tokenizer
+    keeps U+0027 deliberately, because it is the spirant mark and not
+    punctuation; a possessive fold applied there would delete a Tier-1 character
+    from every flag in the corpus. The question here is about English word
+    forms, and only this branch asks it."""
+    from harness.detectors import detect_all
+    got = detect_all(["the form kelet's here"], tmp_path)
+    assert any(t["token"] == "kelet's" for t in got["tokens"])
+
+
+def test_a_capital_the_printer_put_there_is_named_and_not_reported(tmp_path):
+    """Every occurrence opens a sentence, and the dictionary carries the word.
+    Both, so the row moves to `sentence_heads` — where it is still visible,
+    because a filter nobody can see is a filter nobody can correct."""
+    _extra(tmp_path, "placeholder")
+    _gt_page(tmp_path, "1-001", [
+        ("He went. Nevertheless he stayed. Nevertheless she left.", 400, 1774)])
+    got = _common(tmp_path, 0)
+    assert "Nevertheless" not in {r["token"] for r in got["tokens"]}
+    row, = [r for r in got["sentence_heads"] if r["token"] == "Nevertheless"]
+    assert row["count"] == row["initial"] == 2
+
+
+def test_one_occurrence_is_not_evidence_of_anything(tmp_path):
+    """**The floor the other two conditions need.** "Every occurrence opens a
+    sentence" is a coin that came up heads once, and the cut without this held
+    back `Birch`, `Goose`, `Ross`, `Peters`, `Rudolf`, `Walruses`, `Ptarmigans`
+    and `Hildebrand` — every one a real candidate seen exactly once, and the
+    dictionary carries them all, `allen` and `parry` included."""
+    _extra(tmp_path, "placeholder")
+    _gt_page(tmp_path, "1-001", [("The man spoke. Birch stood there.", 400, 1774)])
+    got = _common(tmp_path, 0)
+    row, = [r for r in got["tokens"] if r["token"] == "Birch"]
+    assert row["count"] == row["initial"] == 1
+    assert got["sentence_heads"] == []
+
+
+def test_a_name_that_never_falls_mid_sentence_is_still_reported(tmp_path):
+    """**Why the drop takes two conditions and not one.** On position alone a
+    toponym that happens always to open its sentence would vanish silently,
+    which is the failure this whole report exists to prevent."""
+    _extra(tmp_path, "placeholder")
+    _gt_page(tmp_path, "1-001", [("Ulakhpen is cold. Ulakhpen is far.", 400, 1774)])
+    got = _common(tmp_path, 0)
+    row, = [r for r in got["tokens"] if r["token"] == "Ulakhpen"]
+    assert row["count"] == row["initial"] == 2
+
+
+def test_a_dictionary_word_off_the_sentence_head_is_still_reported(tmp_path):
+    """The other half of the conjunction. `Frost` mid-sentence is a name the
+    dictionary happens to spell, which is exactly what `--common` is for."""
+    _extra(tmp_path, "placeholder")
+    _gt_page(tmp_path, "1-001", [("Frost came. The man Frost spoke.", 400, 1774)])
+    row, = [r for r in _common(tmp_path, 0)["tokens"] if r["token"] == "Frost"]
+    assert row["count"] == 2 and row["initial"] == 1
+
+
+def test_a_line_break_is_not_a_sentence_break(tmp_path):
+    """The ALTO holds one printed line per record and a sentence runs across as
+    many as the compositor needed. Asking "first token of its line" would call
+    every line's opening word a sentence head, which is most of the page."""
+    _extra(tmp_path, "placeholder")
+    _gt_page(tmp_path, "1-001", [("the man saw", 400, 1774),
+                                 ("Ulakhpen there", 400, 1830)])
+    row, = [r for r in _common(tmp_path, 0)["tokens"] if r["token"] == "Ulakhpen"]
+    assert row["initial"] == 0
+
+
+def test_a_closing_quote_does_not_hide_the_full_stop(tmp_path):
+    """`…said so.” Nevertheless` is a sentence head, and a scan that stopped at
+    the quote would not see it."""
+    _extra(tmp_path, "placeholder")
+    _gt_page(tmp_path, "1-001", [('he said so.” Ulakhpen went', 400, 1774)])
+    row, = [r for r in _common(tmp_path, 0)["tokens"] if r["token"] == "Ulakhpen"]
+    assert row["initial"] == 1
