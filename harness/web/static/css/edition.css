@@ -126,10 +126,72 @@ main.cols { display:flex; align-items:flex-start; flex-direction: row-reverse;
 }
 /* --- the text --- */
 #primary p { margin:0 0 .35rem; text-indent:1.4rem }
+/* The page's first paragraph is flush, because most pages open mid-paragraph and
+   an indent there would claim a break the print does not have. */
 #primary p:first-of-type { text-indent:0 }
+/* **Unless it opens with a run-in head**, which is a break by definition — a
+   section starts there, and the book indents the head with the paragraph it
+   leads. Without this the exemption above swallowed it: a run-in head is very
+   often the first thing on its page, so the heading sat flush and the ordinary
+   paragraphs under it were the indented ones. */
+#primary p:has(> .runin:first-child) { text-indent:1.4rem }
 blockquote { margin:.8rem 0 .8rem 1.5rem; color:var(--dim) }
-h2.milestone { font-size:1.05rem; letter-spacing:.06em; text-transform:uppercase;
-  margin:1.6rem 0 .6rem }
+/* --- the four heading levels, as the book sets them ---------------------------
+   The TEI says only which ToC entry opens here and how deep it is; everything
+   below is this stylesheet reading `@unit`. The book's own four:
+
+     chapter (1)     large, numbered, centred — the numeral on its own line
+     section (2)     medium, unnumbered, centred
+     subsection (3)  small caps, bold, run into the head of an indented paragraph
+     subsubsection   semibold italic, title case, run in the same way
+
+   The split between the first two and the last two is not this file's to make: a
+   deep head is run-in *in the print*, so the words are on the page and the
+   milestone renders as a bare anchor beside them (`.milestone.anchor`), while a
+   head the printer set on its own line was a block the ToC join consumed, so its
+   words come from `data/toc.json`. Which happened is in the markup — see
+   `tei_html._leads_a_block` — and this file styles whichever arrived. */
+h2.milestone { font-weight:600; margin:1.6rem 0 .6rem; text-align:center }
+h2.milestone.chapter { font-size:1.35rem; letter-spacing:.08em;
+  text-transform:uppercase; margin:2.6rem 0 1.2rem }
+h2.milestone.chapter .milestone-n { display:block; font-size:.8em;
+  letter-spacing:.16em; font-weight:500; margin-bottom:.3rem }
+h2.milestone.section { font-size:1.05rem; letter-spacing:.06em;
+  text-transform:uppercase; margin:2rem 0 .8rem }
+/* Level 3 and 4 keep the ToC's numeral out of a run-in head, and the book prints
+   none on either — but a milestone left as a block heading by a page that did not
+   run its head in still sets in its own weight rather than the chapter's. */
+h2.milestone.subsection { font-size:1rem; font-variant:small-caps;
+  letter-spacing:.04em }
+h2.milestone.subsubsection { font-size:1rem; font-style:italic; font-weight:500 }
+/* The numeral, run into the title where a level ever sets it that way. Written as
+   `::after` so the punctuation is presentation: the store holds `XI` and `Games`,
+   and `. — ` is how this edition joins them. */
+.milestone-n::after { content:". — " }
+h2.milestone.chapter .milestone-n::after { content:"" }
+/* The anchor is the boundary with the words left on the page: no box, no space,
+   just something for a link to land on. */
+span.milestone.anchor { display:inline; scroll-margin-top:4rem }
+/* --- the run-in head itself ---
+   Styled by being run-in first and by depth second, because the page decides
+   which it is: `chV.1` is a level-2 section and `1-128` prints its head run into
+   the paragraph, so a rule that gave the run-in shape only to levels 3 and 4
+   would leave that one bold and nothing else.
+
+   **`all-small-caps` and not `small-caps`, and it is an approximation.** The book
+   sets these heads with an initial capital and the rest in small capitals; the
+   recognizer cannot tell a small capital from a capital, so `gt/ocr/` holds
+   `SEAL-HUNTING.` and the initial is not recoverable from it — `data/toc.json`
+   has the casing but substituting the store's spelling for the page's is not
+   something a stylesheet may do. `small-caps` would therefore be a no-op here,
+   there being no lowercase for it to act on, and full capitals shout in a way the
+   print does not. All-small-caps loses the initial and keeps the colour of the
+   line, which is the better of the two errors. */
+.runin { font-weight:700; font-variant-caps:all-small-caps; letter-spacing:.03em }
+/* Level 4 is the exception on both counts: the book sets it in italic title case,
+   and the recognizer reads title case, so there is nothing to approximate. */
+.milestone.subsubsection + p .runin { font-style:italic; font-weight:600;
+  font-variant-caps:normal; letter-spacing:0 }
 h3 { font-size:1rem; margin:1.2rem 0 .4rem }
 table { border-collapse:collapse; margin:.8rem 0 }
 td,th { border:1px solid var(--rule); padding:.2rem .5rem; text-align:left }

@@ -577,21 +577,53 @@ which side the block belongs on.
 
 ## Headings — milestone vs. local caption
 
-You do not construct milestone content. Heading-shaped text (isolated line,
-capitalized or small-capped, no terminal punctuation) that matches a `toc_window`
-entry becomes exactly:
+**Most milestones are already on the page when you get it, and they are not yours.**
+The generator joins `data/toc.json` to the folio the page prints: where the ToC opens
+a heading on this folio and a block begins with that heading's own title, it writes
+
+    <milestone unit="{unit}" n="{id}" resp="#mz"/>
+
+Three printed witnesses agree there and no judgement was made, so **leave it**. Your
+job on one is the same as on any `#mz` mark — read the page, and if the block is
+plainly not that heading, delete the milestone and say so in your report. Do not
+restamp it, do not move it to tidy the file, and never write `resp="#mz"` yourself:
+that rank names a derivation `harness tei validate` recomputes on every run, and a
+milestone you placed is not one.
+
+**A run-in head stays as printed, inside `<label>`.** The compositor set `NAMES. — `
+at the front of that paragraph and it is still text on the page; the generator marks
+just the head, and the milestone is a boundary standing beside it. `<label>` there
+says "this is the heading `@n` names, printed run-in" and nothing about how it looks
+— the book sets these in small caps and italics by depth, and that is the
+stylesheet's, off the milestone's `@unit`. Do not add `@rend`, and do not extend the
+label past the head into the prose.
+
+**Where a block held nothing but the heading, it is already gone.** The ToC answered
+`MainZone-Other`'s question outright, so the generator removed the block and left the
+milestone alone: a page file is div-less, `<milestone>` therefore holds an id rather
+than a title, and the words come from `data/toc.json` when the page is read. Do not
+put the heading text back. If the block was not that heading, delete the milestone
+and report it.
+
+What is left for you is a heading the join could not reach: a head the compositor
+broke across a line end, a heading straddling the page boundary, a ToC folio off by
+one, a page printing no folio at all. Those arrive as the comments below. Construct
+one exactly as:
 
     <milestone unit="{unit}" n="{id}"/>
 
 `{id}` copied verbatim from that entry's `id` — never the title, never a number you
 construct. `{unit}` is fixed by the entry's `level`: 1 chapter, 2 section, 3
 subsection, 4 subsubsection. Level 0 is front matter and never produces a milestone.
-Nothing else goes on the element.
+No `@resp`, and nothing else on the element.
 
 **The match is to the text on the page, not to the marks.** `starts_here` and `open`
 are keyed to a predicted folio and are wrong often enough that they may never be the
 reason a milestone is or is not emitted. Heading-shaped text matching an entry
-marked `starts_here: false` is still that milestone.
+marked `starts_here: false` is still that milestone. (The rule's join is not this
+mark: it uses the folio the page *prints*, and even then the folio only chooses which
+title to look for — the heading printed on the page is still the whole of the
+evidence that one is there.)
 
 If heading-shaped text matches nothing in `toc_window`:
 
@@ -613,6 +645,16 @@ If an entry is marked `starts_here: true` and nothing matches it, do not force a
 milestone. Comment instead: `<!-- expected milestone for {id} ({title}) not found
 on this page: check for a missed milestone or a heading straddling the page
 boundary -->`.
+
+**The generator leaves that same comment, and when it does it is a stronger claim
+than yours.** Its version names the folio and reads "data/toc.json opens it at folio
+N, which is the folio this page prints" — the ToC and the running title agree that
+this heading opens here and no block begins with its title, which is a fact about the
+page rather than a mark that may be off. Clear it the way it says: find the head and
+write the milestone where the page opens it, or report that the page does not print
+this heading. `<!-- ToC join did not run -->` is the other one, and it is the input
+finding rather than the book finding — the page printed no arabic folio, so nothing
+said which headings to expect, and any heading here is yours to match by hand.
 
 ## Prose, gloss list, table
 

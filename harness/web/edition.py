@@ -134,9 +134,8 @@ def _figure_state(ref: str, root, doc: dict, size) -> dict:
     """`figs` and `crops` for one page: which pictures hang on which `<figure>`.
 
     **This is the join the renderer refuses to do**, and it is here because here
-    is where both keys are in hand — the TEI's bytes, which `stores.render` is
-    cached on, and the three figure stores, which `stores.fig_layout` is cached
-    on. A `<figure>` in the HTML says only what the page says; the boxes arrive
+    is where both keys are in hand — the page, which `stores.render` is cached on,
+    and the three figure stores, which `stores.fig_layout` is cached on. A `<figure>` in the HTML says only what the page says; the boxes arrive
     beside it and are re-derived whenever their stores move.
 
     `figs` drives the inline picture: the built crops out of `scans/fig-crops/`,
@@ -597,7 +596,7 @@ def page(request: Request, ref: str):
             + ("; a generated draft exists — `edition serve --drafts` shows it."
                if rank == "draft" else "."),
         )
-    doc = stores.render(path)
+    doc = stores.render(path, root)
     refs = _listing(request)
     i = refs.index(ref) if ref in refs else -1
     # `PP-NNN (folio)`, both systems at once, because neither is derivable from
@@ -1172,7 +1171,7 @@ def search(request: Request, q: str = ""):
             path, rank = tei_html.page_source(ref, root)
             if path is None:
                 continue
-            doc = stores.render(path)
+            doc = stores.render(path, root)
             if not doc["ok"]:
                 continue
             # Tags stripped from already-escaped HTML, so what comes out carries

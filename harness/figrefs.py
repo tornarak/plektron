@@ -8,9 +8,9 @@ and says which.
 **Two halves, kept apart on purpose.** `scan` reads a string and reports what the
 *page* prints; `resolve` takes those spans plus the stores and says where each
 one points. Nothing calls the first and then the second in one place, because
-`stores.render` is cached on the TEI's bytes alone: a `ref/key` baked into that
-HTML would go on being served after `gt/fig/` moved the box, with nothing to
-signal it. Same division, and the same reason, as `<figure>` and
+`stores.render`'s key names the page and the ToC, and not `gt/fig/`: a `ref/key`
+baked into that HTML would go on being served after the box moved, with nothing
+to signal it. Same division, and the same reason, as `<figure>` and
 `web/edition._figure_state`.
 
 **The scan is written into the page; the resolution never is.** `tei generate`

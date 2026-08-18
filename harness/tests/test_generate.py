@@ -1117,3 +1117,350 @@ def test_a_locant_run_is_bounded_by_the_reference_that_produced_it():
     assert len(spans) == 1
     a, b = spans[0]
     assert f'(Fig. {ref}, a, a narwhal) and a note¹'[a:b] == ", a, a"
+
+
+# --- the ToC join: which heading the printed folio says opens here -------------
+#
+# **Three printed witnesses and no judgement.** `data/toc.json` prints which folio
+# each heading opens on, the running title prints which folio this page is, and the
+# page prints the heading's own title at the front of a block. Where all three
+# agree the generator writes the milestone; where the first two agree and the third
+# does not, it writes a question. Nothing here reads a raster, and nothing looks for
+# a heading the ToC does not put on this folio — which is what keeps the rule from
+# being a search, and is why the three titles the book prints twice (`Names`, `Anui
+# Fair`, `Taboos`) raise no ambiguity at all.
+
+
+def toc(tmp_path: Path, entries: list[dict]) -> None:
+    """`data/toc.json` in the store's own bare-list shape (`load_toc`'s note)."""
+    d = tmp_path / "data"
+    d.mkdir(exist_ok=True)
+    (d / "toc.json").write_text(json.dumps(entries), encoding="utf-8")
+
+
+def _entry(id, title, page_start, level=2, number=None) -> dict:
+    return {"id": id, "title": title, "page_start": page_start,
+            "level": level, "number": number, "chapter": None}
+
+
+def _joined(tmp_path, entries, lines, folio="11", label="MainZone-P"):
+    """One page: a running title carrying `folio`, then one block of `lines`.
+
+    The running title is two lines because the store's is — `gt/ocr/` for `1-022`
+    holds `'2'` and `'2 BOGORAS, THE CHUKCHEE.'` separately — and because
+    `bands_for` lays bands down contiguously, so the body's y0 has to follow from
+    how many lines precede it rather than being picked.
+    """
+    toc(tmp_path, entries)
+    head = [("RunningTitleZone",
+             lines_at([folio, f"{folio} BOGORAS, THE CHUKCHEE."]))] if folio else []
+    y0 = 200 + LINE_H * sum(len(ls) for _, ls in head)
+    return page(tmp_path, "1-031", head + [(label, lines_at(lines, y0))])
+
+
+def test_the_printed_folio_says_which_heading_to_look_for(tmp_path):
+    """The join, whole. The ToC opens `chI.1` at folio 11, the page prints folio 11,
+    and a block opens with that entry's title set off by the compositor's dash — so
+    the milestone is the rule's, stamped `#mz`, and no reader was asked to copy an
+    id out of a window."""
+    doc, rep = _joined(tmp_path, [_entry("chI.1", "Names", 11)],
+                       ["NAMES. — The name of the Chukchee is derived from"])
+    assert rep["milestones"] == 1 and rep["milestones_missing"] == 0
+    assert '<milestone unit="section" n="chI.1" resp="#mz"/>' in doc
+    # The printed head stays on the page, marked as the head and no further: the
+    # compositor set it and the milestone is a boundary beside it, not a
+    # replacement for it. `<label>` says which words are the heading; how a level
+    # sets is the stylesheet's, so nothing here carries a `@rend`.
+    assert "<label>NAMES.</label> — The name" in doc
+    assert "rend=" not in doc
+
+
+def test_a_title_the_book_prints_twice_is_not_ambiguous_once_the_folio_scopes_it(tmp_path):
+    """`Names` is two entries in this book, and matching against the whole ToC has
+    nothing mechanical to choose between them. The folio is the scope, so the other
+    one is never a candidate — the ambiguity is not resolved, it does not arise."""
+    doc, rep = _joined(tmp_path,
+                       [_entry("chI.1", "Names", 11), _entry("chXX.1", "Names", 400)],
+                       ["NAMES. — The name of the Chukchee is derived from"])
+    assert rep["milestones"] == 1
+    assert 'n="chI.1"' in doc and "chXX.1" not in doc
+
+
+def test_a_head_must_be_set_off_by_the_printers_mark(tmp_path):
+    """What licenses the match is that the compositor set the string apart — as a
+    run-in head (`TITLE. — `) or a head on its own line. Without that test the entry
+    `Names` swallows the front of any sentence that happens to begin with the word,
+    which `1-359` really does print."""
+    doc, rep = _joined(tmp_path, [_entry("chI.1", "Names", 11)],
+                       ["Names of native villages and other localities are"])
+    assert rep["milestones"] == 0 and rep["milestones_missing"] == 1
+    # The refusal comment quotes the element a reader should write, so the thing
+    # to assert absent is the *rank*: no rule claimed this one.
+    assert 'resp="#mz"' not in doc
+
+
+def test_a_heading_mentioned_mid_paragraph_is_not_a_heading(tmp_path):
+    """Anchored at the front of the block. A title named in running prose is a
+    mention, and a rule that matched it would put a chapter boundary inside a
+    sentence."""
+    _, rep = _joined(tmp_path, [_entry("chI.1", "Names", 11)],
+                     ["The chapter that follows is NAMES. — and it discusses"])
+    assert rep["milestones"] == 0 and rep["milestones_missing"] == 1
+
+
+def test_the_match_is_word_sequence_equality_and_not_containment(tmp_path):
+    """`toc_search`'s set containment is right where it lives — it checks a heading
+    a model says it read, and a page carrying extra furniture is ordinary. Here the
+    rule *finds* the heading with no witness but itself, so a title that is merely a
+    subset of what the page prints is not a match."""
+    _, rep = _joined(tmp_path, [_entry("chI.1", "Names", 11)],
+                     ["NAMES AND HABITAT. — The name of the Chukchee is"])
+    assert rep["milestones"] == 0 and rep["milestones_missing"] == 1
+
+
+def test_the_entrys_printed_number_may_lead_its_title(tmp_path):
+    """`I. — NAMES AND HABITAT.` opens `chI`, whose title is `Names and Habitat` and
+    whose number is `I`. The numeral is the entry's own, read off the same store, so
+    admitting it is not loosening the match."""
+    doc, rep = _joined(tmp_path,
+                       [_entry("chI", "Names and Habitat", 11, level=1, number="I")],
+                       ["I. — NAMES AND HABITAT."], label="MainZone-Other")
+    assert rep["milestones"] == 1
+    assert '<milestone unit="chapter" n="chI" resp="#mz"/>' in doc
+
+
+def test_a_chapter_and_its_first_section_are_two_heads_in_one_block(tmp_path):
+    """`1-096` opens chapter IV and its first section in one band — `IV. —
+    REINDEER-BREEDING.` alone on a line, then `GROUPS OF REINDEER-BREEDERS. — The
+    domestication …`. A single match per block would have to drop one of them, so
+    each match consumes its head and the walk resumes after it, which keeps the
+    second anchored at the front of what is left rather than found loose in the
+    middle of the prose.
+
+    Note what sets the *first* head off: a line break and nothing else. A bare
+    period is deliberately not a mark — it would let any entry match a sentence
+    that opens with its title — so the two heads have to arrive on the two lines
+    the compositor set them on, which is why `milestones` keeps the break."""
+    doc, rep = _joined(
+        tmp_path,
+        [_entry("chIV", "Reindeer-Breeding", 11, level=1, number="IV"),
+         _entry("chIV.1", "Groups of Reindeer-Breeders", 11)],
+        ["IV. — REINDEER-BREEDING.",
+         "GROUPS OF REINDEER-BREEDERS. — The domestication of the reindeer"])
+    assert rep["milestones"] == 2 and rep["milestones_missing"] == 0
+    assert doc.index('n="chIV"') < doc.index('n="chIV.1"')
+
+
+def test_front_matter_never_becomes_a_milestone(tmp_path):
+    """Level 0 has no unit in the map and produces nothing — and produces no
+    question either. A front-matter entry is not a heading the rule failed to find;
+    it is not the kind of thing this join is about."""
+    _, rep = _joined(tmp_path, [_entry("front.introductory", "Introductory", 11, level=0)],
+                     ["INTRODUCTORY. — This volume deals with"])
+    assert rep["milestones"] == 0 and rep["milestones_missing"] == 0
+
+
+def test_an_expected_heading_not_printed_is_a_named_question(tmp_path):
+    """The refusal, and the whole point of the join running in both directions. The
+    ToC says this heading opens on this folio and no block begins with its title, so
+    something is true of this page that a reader has to settle — a head broken
+    across a line end, a zone merged into the prose, a heading straddling the page
+    boundary, or a ToC folio off by one. The comment names the id, the title and the
+    element to write, because a question a reader cannot act on is not a question."""
+    doc, rep = _joined(tmp_path,
+                       [_entry("chVIII", "Food", 11, level=1, number="VIII")],
+                       ["of the moment by young men or boys, and the"])
+    assert rep["milestones_missing"] == 1
+    assert "expected milestone for chVIII (Food) not found on this page" in doc
+    assert '<milestone unit="chapter" n="chVIII"/>' in doc      # what to write
+    assert 'resp="#mz"' not in doc                              # not what a rule wrote
+
+
+def test_no_printed_folio_means_the_join_did_not_run(tmp_path):
+    """Two different findings, and reporting the second as the first is the
+    fluent-nonsense failure in miniature. "The ToC opens nothing here" is a claim
+    about the book; "nothing said which headings open here" is a claim about this
+    page's inputs. With no folio the rule has no scope and says so."""
+    doc, rep = _joined(tmp_path, [_entry("chI.1", "Names", 11)],
+                       ["NAMES. — The name of the Chukchee is derived from"],
+                       folio=None)
+    assert rep["milestones"] == 0 and rep["milestones_missing"] == 0
+    assert "ToC join did not run" in doc
+
+
+def test_the_join_takes_the_printed_folio_and_never_a_prediction(tmp_path):
+    """`expected_folio` is propagated through the seam ledger and inherits every
+    error upstream of it; `collator.md` forbids leaning on the `starts_here` mark
+    for exactly that reason. This joins on the folio the page itself prints, so a
+    recognizer's `2S` for `28` — which `_FOLIO_RE` refuses rather than repairs —
+    leaves the join unrun instead of joining on a repair."""
+    doc, rep = _joined(tmp_path, [_entry("chI.1", "Names", 28)],
+                       ["NAMES. — The name of the Chukchee is derived from"],
+                       folio="2S")
+    assert rep["milestones"] == 0 and rep["milestones_missing"] == 0
+    assert "ToC join did not run" in doc
+
+
+def test_a_ruled_milestone_is_re_derived_by_the_gate(tmp_path):
+    """`#mz`'s whole licence: the claim is recomputed from its store on every run
+    rather than trusted because it is written down. Move the page's `<pb n>` and the
+    milestone resting on it fails, where an attribute written once would go stale in
+    silence."""
+    from harness.validate import validate
+    toc(tmp_path, [_entry("chI.1", "Names", 11)])
+    doc, _ = _joined(tmp_path, [_entry("chI.1", "Names", 11)],
+                     ["NAMES. — The name of the Chukchee is derived from"])
+    ctx = {"page_ref": "1-031", "root": str(tmp_path), "figures_on_page": [],
+           "ocr_lines": [], "toc_window": []}
+    out = tmp_path / "tei" / "chukchi-1-031.xml"
+    out.parent.mkdir(parents=True, exist_ok=True)
+
+    out.write_text(doc, encoding="utf-8")
+    assert not [e for e in validate(out, ctx).errors if "milestone" in e]
+
+    out.write_text(doc.replace('<pb n="11"/>', '<pb n="12"/>'), encoding="utf-8")
+    errs = [e for e in validate(out, ctx).errors if "does not re-derive" in e]
+    assert len(errs) == 1 and "chI.1" in errs[0]
+
+
+def test_a_human_placed_milestone_may_not_borrow_the_rules_rank(tmp_path):
+    """The other direction of the same rule. A reader who places a milestone the
+    join would not make must drop the `@resp`: `#mz` names a derivation, and a rank
+    nobody could re-derive is exactly the unmarked span the firewall exists to
+    refuse."""
+    from harness.validate import validate
+    toc(tmp_path, [_entry("chI.1", "Names", 11), _entry("chI.2", "Habitat", 90)])
+    doc, _ = _joined(tmp_path, [_entry("chI.1", "Names", 11), _entry("chI.2", "Habitat", 90)],
+                     ["NAMES. — The name of the Chukchee is derived from"])
+    out = tmp_path / "tei" / "chukchi-1-031.xml"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    ctx = {"page_ref": "1-031", "root": str(tmp_path), "figures_on_page": [],
+           "ocr_lines": [], "toc_window": []}
+
+    hand = '<milestone unit="section" n="chI.2"/>'
+    out.write_text(doc.replace('<pb n="11"/>', f'<pb n="11"/>{hand}'), encoding="utf-8")
+    assert not [e for e in validate(out, ctx).errors if "re-derive" in e]
+
+    borrowed = '<milestone unit="section" n="chI.2" resp="#mz"/>'
+    out.write_text(doc.replace('<pb n="11"/>', f'<pb n="11"/>{borrowed}'), encoding="utf-8")
+    assert [e for e in validate(out, ctx).errors if "does not re-derive" in e]
+
+
+def test_a_block_that_is_only_a_heading_stops_being_a_question(tmp_path):
+    """`MainZone-Other` is the catch-all — heading, table, verse, caption — and its
+    `rank: null` is the store declining to tell them apart, which is why the
+    generator normally declines too. It does not have to here: the ToC opens this
+    heading on the folio the page prints, the block prints its title and *nothing
+    else*, and "which of the four is it" has a printed answer. So the comment goes,
+    the block goes, and 14 reader decisions over the corpus go with them.
+
+    The text is not carried over beside the milestone. A page file is div-less, so
+    `<milestone>` is TEI's heading here and it holds an id rather than words —
+    displaying them is the renderer's job, off the ToC the id names. Copying the
+    title into the page would put a string two stores hold in one artifact."""
+    doc, rep = _joined(tmp_path,
+                       [_entry("chXI", "Games", 11, level=1, number="XI")],
+                       ["XI. — GAMES."], label="MainZone-Other")
+    assert rep["milestones"] == 1 and rep["unresolved"] == 0
+    assert '<milestone unit="chapter" n="chXI" resp="#mz"/>' in doc
+    assert "unresolved zone" not in doc
+    assert "GAMES" not in doc
+
+
+def test_a_block_with_more_than_its_heading_is_still_a_question(tmp_path):
+    """The other side of it, and the reason the remainder is measured rather than
+    assumed. A head at the front of a block says what the block *opens with*; it
+    says nothing about the table or the verse under it, which is exactly the
+    judgement `MainZone-Other` exists to hand over."""
+    doc, rep = _joined(tmp_path, [_entry("chXI", "Games", 11, level=1, number="XI")],
+                       ["XI. — GAMES.", "Ball. Rope. Buckle. Top."],
+                       label="MainZone-Other")
+    assert rep["milestones"] == 1 and rep["unresolved"] == 1
+    assert "unresolved zone" in doc and "Ball. Rope." in doc
+
+
+def test_the_reading_view_titles_a_milestone_from_the_toc(tmp_path):
+    """A `<milestone n="chXI"/>` carries no words, so the reader's heading comes
+    from `data/toc.json` — and the id is the fallback rather than the label,
+    because `chXI` on the page is visibly not a heading. A milestone whose entry has
+    gone missing should fail that way round; a plausible heading built out of a slug
+    is the failure this project is arranged against."""
+    from harness import tei_html
+    p = tmp_path / "tei" / "chukchi-1-031.xml"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text('<TEI xmlns="http://www.tei-c.org/ns/1.0"><text><body>'
+                 '<pb n="11"/><milestone unit="chapter" n="chXI"/>'
+                 '</body></text></TEI>', encoding="utf-8")
+    plain = tei_html.render(p)["html"]
+    assert '<h2 class="milestone chapter" id="chXI">chXI</h2>' in plain
+
+    got = tei_html.render(p, {"chXI": {"number": "XI", "title": "Games"}})["html"]
+    assert ('<h2 class="milestone chapter" id="chXI">'
+            '<span class="milestone-n">XI</span>'
+            '<span class="milestone-t">Games</span></h2>') in got
+
+
+def test_the_render_cache_names_the_toc_among_its_inputs(tmp_path):
+    """`stores.render` is memoised, and a title is now one of the things it bakes
+    in. An input that is not in the key is how a corrected heading goes on being
+    served with nothing to signal it — the standing rule this module states about
+    the figure geometry, applied to the store that just became an input."""
+    from harness.web import stores
+    toc(tmp_path, [_entry("chXI", "Games", 11, level=1, number="XI")])
+    p = tmp_path / "tei" / "chukchi-1-031.xml"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text('<TEI xmlns="http://www.tei-c.org/ns/1.0"><text><body>'
+                 '<pb n="11"/><milestone unit="chapter" n="chXI"/>'
+                 '</body></text></TEI>', encoding="utf-8")
+    assert ">Games</span></h2>" in stores.render(p, tmp_path)["html"]
+
+    toc(tmp_path, [_entry("chXI", "Games and Sports", 11, level=1, number="XI")])
+    assert ">Games and Sports</span></h2>" in stores.render(p, tmp_path)["html"]
+
+
+def test_a_section_head_gets_no_number_because_the_book_prints_none(tmp_path):
+    """23 of the ToC's 316 entries carry a printed `number` and they are exactly the
+    chapters. Composing one for a section — `VI.2` for the second subsection of
+    chapter VI — would put a numeral this book never sets in the one place a reader
+    would cite, so the renderer numbers what the store numbers and nothing else."""
+    from harness import tei_html
+    p = tmp_path / "tei" / "chukchi-1-031.xml"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text('<TEI xmlns="http://www.tei-c.org/ns/1.0"><text><body><pb n="11"/>'
+                 '<milestone unit="section" n="chVI.1"/></body></text></TEI>',
+                 encoding="utf-8")
+    got = tei_html.render(p, {"chVI.1": {"number": "", "title": "Hunting"}})["html"]
+    assert 'class="milestone section"' in got and "milestone-n" not in got
+    assert '<span class="milestone-t">Hunting</span>' in got
+
+
+def test_a_run_in_head_leaves_the_milestone_an_anchor(tmp_path):
+    """The book sets its deeper heads run into the paragraph they open, so those
+    words are already on the page and the milestone must not set them a second time
+    out of the ToC. What decides is the markup and not the level: a `<label>` at the
+    front of the next block is the generator saying it found the head there."""
+    from harness import tei_html
+    p = tmp_path / "tei" / "chukchi-1-151.xml"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text('<TEI xmlns="http://www.tei-c.org/ns/1.0"><text><body><pb n="115"/>'
+                 '<milestone unit="subsection" n="chVI.2"/>'
+                 '<p><label>SEAL-HUNTING.</label> — The Maritime Chukchee</p>'
+                 '</body></text></TEI>', encoding="utf-8")
+    got = tei_html.render(p, {"chVI.2": {"number": "", "title": "Seal-Hunting"}})["html"]
+    assert '<span class="milestone anchor subsection" id="chVI.2"></span>' in got
+    assert '<span class="runin">SEAL-HUNTING.</span>' in got
+    assert "Seal-Hunting" not in got          # the ToC's casing is not set here
+
+
+def test_a_label_in_a_list_is_still_a_list_term(tmp_path):
+    """`<label>` is TEI's for both a gloss list's term and a run-in head, and the
+    parent is what tells them apart. A rule keyed on the element alone would have
+    turned every gloss entry on the corpus into a heading."""
+    from harness import tei_html
+    p = tmp_path / "tei" / "chukchi-1-031.xml"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text('<TEI xmlns="http://www.tei-c.org/ns/1.0"><text><body><pb n="11"/>'
+                 '<list type="gloss"><label>qora-ñɪ</label><item>reindeer</item>'
+                 '</list></body></text></TEI>', encoding="utf-8")
+    got = tei_html.render(p)["html"]
+    assert '<li class="label">' in got and 'class="runin"' not in got

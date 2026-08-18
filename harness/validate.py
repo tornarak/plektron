@@ -26,7 +26,7 @@ from .detectors import unlicensed_marks
 from .entities import ENTITY_CLASSES, alias_index, auto_forms, load, split_id
 from .generate import NOTE_MARKERS
 from .langs import TIER1
-from .state import load_toc
+from .state import load_toc, toc_starts
 
 TEI_NS = "http://www.tei-c.org/ns/1.0"
 XML_LANG = "{http://www.w3.org/XML/1998/namespace}lang"
@@ -45,7 +45,7 @@ RESP_RANKS = {
     "#gt": "adopted — transcluded whole from adjudicated ground truth",
     "#llm": "proposed — a model read it off the page image",
     "#htr": "unexamined — recognizer output nobody has looked at",
-    "#mz": "rule-applied — an entity link derived from the entity store",
+    "#mz": "rule-applied — derived from a store a human keyed, and re-derived here",
 }
 PROPOSED = "#llm"
 RATIFIED = "#ed"
@@ -84,10 +84,15 @@ ADOPTED = "#gt"
 # attribute written once and never rechecked would go stale in silence, which is
 # the failure this whole arrangement exists to make impossible.
 #
-# It is confined to `<rs>` and to `@ref`. A rule may say *what a string refers
-# to*; it may never say what kind of name the page marked, what language a form
-# is in, or what its glyphs are — see the `<name @type>` comment below, and the
-# Tier-1 branch that refuses `#mz` outright.
+# **What it may say is bounded by what a store can be asked.** A rule may say
+# what a string refers to (`<rs @ref>`), what a printed cross-reference scans as
+# (`<ref>`), and which ToC heading the book opens on the folio this page prints
+# (`<milestone>`); it may never say what kind of name the page marked, what
+# language a form is in, or what its glyphs are — see the `<name @type>` comment
+# below, and the Tier-1 branch that refuses `#mz` outright. The third was
+# admitted on the same terms as the first two and against the same test: the ToC
+# is book-internal apparatus, which CLAUDE.md's firewall exempts because it *is*
+# evidence, and the join is re-derived on every run from the printed folio.
 RULED = "#mz"
 # Why a <supplied> stands where it does. Closed, and extended only here — a required
 # attribute with a free value guarantees a string rather than a distinction.
@@ -1036,16 +1041,45 @@ def validate(tei_path: Path, ctx: dict | None = None,
     # outside the supplied window is only a warning: the window is keyed to a
     # predicted folio, so a milestone outside it may mean the prediction is
     # wrong rather than the milestone. Marks inform; they do not decide.
+    #
+    # **A `#mz` milestone is re-derived here, on the page's own printed folio.**
+    # `resp="#mz"` on one says a rule joined `data/toc.json` to this page, and
+    # `#mz`'s whole licence is that the claim is recomputed from its store every
+    # run rather than trusted because it is written down. What is re-derived is
+    # the durable half — the ToC opens this id at the folio this page prints —
+    # and not the generator's text match, deliberately: review is expected to
+    # restructure the block the head sits in, and a check that failed when a
+    # collator did its job would be a check nobody could satisfy honestly.
     window_ids, all_toc_ids = set(), set()
+    starts_here: set[str] = set()
     if ctx:
         window_ids = {e["id"] for e in ctx.get("toc_window", [])}
-        all_toc_ids = {e["id"] for e in load_toc(Path(ctx.get("root", "."))) if e.get("id")}
+        toc = load_toc(Path(ctx.get("root", ".")))
+        all_toc_ids = {e["id"] for e in toc if e.get("id")}
+        pb = root.find(f".//{q('pb')}")
+        printed = pb.get("n") if pb is not None else None
+        starts_here = {e["id"] for e in
+                       toc_starts(toc, int(printed) if (printed or "").isdigit()
+                                  else None)}
     for ms in root.iter(q("milestone")):
-        extra = set(ms.keys()) - {"unit", "n"}
+        extra = set(ms.keys()) - {"unit", "n", "resp"}
         if extra:
             r.errors.append(f"<milestone> carries extra attributes {extra}")
+        if ms.get("resp") is not None and ms.get("resp") != RULED:
+            r.errors.append(
+                f"<milestone resp='{ms.get('resp')}'>: a milestone is either a "
+                f"rule's join against data/toc.json ({RULED}) or a reading with "
+                "no @resp at all — no other rank has anything to assert about a "
+                "structural boundary")
         if ms.get("unit") not in {"chapter", "section", "subsection", "subsubsection"}:
             r.errors.append(f"<milestone unit='{ms.get('unit')}'> not in the level map")
+        if ctx and ms.get("resp") == RULED and ms.get("n") not in starts_here:
+            r.errors.append(
+                f"<milestone n='{ms.get('n')}' resp='{RULED}'> does not re-derive: "
+                "data/toc.json does not open it at the folio this page prints. "
+                f"Either it belongs on another page, or the <pb n> moved under it, "
+                f"or a human placed it — in which case drop the @resp, since {RULED} "
+                "claims a join no rule would make")
         if all_toc_ids and ms.get("n") not in all_toc_ids:
             r.errors.append(f"<milestone n='{ms.get('n')}'> matches no ToC id")
         # Only meaningful when the window is keyed to a folio at all; with no

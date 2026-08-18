@@ -645,6 +645,31 @@ A collator that later unwraps the `<foreign>` — deciding it was never a foreig
 span — **leaves the `<rs>` standing**. That a word names Anadyr does not depend on
 what language it is in.
 
+### The third thing it carries: a heading
+
+`<milestone resp="#mz">` says the book opens a ToC heading here, and it was
+admitted on the same terms and against the same test. The store is
+`data/toc.json`, which is **book-internal apparatus** — the firewall exempts that
+outright, because it is evidence rather than a model's reading — and the join is
+the ToC's printed `page_start` against the folio the *page* prints, never the
+seam ledger's predicted one. It re-derives on every run from those two printed
+facts, so a milestone that ends up on a page whose `<pb n>` says otherwise fails
+rather than going stale, and a human who places one the rule would not make drops
+the `@resp` rather than borrowing it.
+
+**The heading has no words in the page file, and that is deliberate.** A page file
+is div-less — a chapter spans a hundred of them and a `<div>` cannot be opened on
+one and closed on another — so `<milestone>` is TEI's answer here and it holds an
+id. The title lives in the ToC, once, and the reading view resolves it, which is
+why `stores.render`'s cache names `data/toc.json` among its inputs alongside the
+page. Where the compositor ran the head into its paragraph instead of setting it
+on its own line, the words *are* on the page, the generator marks that much as
+`<label>`, and the milestone renders as a bare anchor beside it. Which of the two
+happened is in the markup rather than inferred from the level; the level governs
+only how each sets, which is `edition.css`'s and not the page's. The four are the
+book's own: a numbered centred chapter, an unnumbered centred section, and two
+run-in depths in small caps and italics.
+
 ## Who writes what
 
 | act | who | how |

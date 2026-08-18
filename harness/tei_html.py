@@ -54,6 +54,27 @@ def _lang_attr(lang: str) -> str:
     return f' lang="{escape(lang)}"' if lang else ""
 
 
+def _leads_a_block(el) -> bool:
+    """Does the block after this milestone open with the printed head?
+
+    **Evidence, not level.** The obvious rule is "levels 3 and 4 are run-in", which
+    is how this book sets them — but it would be the ToC deciding what the page
+    did, and a chapter head the compositor ran into its first paragraph would then
+    be set twice. What actually decides is whether the head is *there*: a `<label>`
+    at the front of the next block is the generator saying it found one, and its
+    absence is the generator saying the block held nothing but the heading. Depth
+    still governs how each level sets; it does not govern whether the words exist.
+    """
+    nxt = el.getnext()
+    if nxt is None:
+        return False
+    first = next(iter(nxt), None)
+    if etree.QName(nxt).localname == "quote" and first is not None:
+        first = next(iter(first), None)      # <quote><p><label>
+    return (first is not None and etree.QName(first).localname == "label"
+            and not (nxt.text or "").strip())
+
+
 def _is_tier1(el) -> bool:
     """Does this span hold a form the lexicon keys?
 
@@ -104,7 +125,8 @@ RANK_NOTE = {
     "#gt": ("adopted", "keyed at the raster in the ground-truth pass"),
     "#llm": ("proposed", "a model read this off the page; awaiting ratification"),
     "#htr": ("unexamined", "recognizer output nobody has looked at"),
-    "#mz": ("rule-applied", "linked from the entity store's alias table"),
+    "#mz": ("rule-applied", "derived from a store a human keyed — the entity "
+                            "alias table, or the printed table of contents"),
 }
 UNSETTLED = ("#llm", "#htr", "#mz")
 
@@ -242,9 +264,16 @@ class Renderer:
     page knows which cards it may be asked for without re-parsing itself.
     """
 
-    def __init__(self, ref: str, tabindex_offset: int = 2):
+    def __init__(self, ref: str, tabindex_offset: int = 2,
+                 titles: dict[str, dict] | None = None):
         self.ref = ref
         self.tabindex = tabindex_offset
+        #: `{toc id: {number, title}}`, what a `<milestone n>` is displayed as.
+        #: Passed in rather than read here so the caller's cache can name
+        #: `data/toc.json` among its inputs — a title that changed under a memoised
+        #: render would otherwise serve a stale heading with nothing to signal it,
+        #: which is `stores.render`'s standing rule about the figure geometry.
+        self.titles = titles or {}
         self.notes: list[dict] = []
         #: Note numbers already referenced on this page, so the first
         #: reference to each can carry the id the foot links back to.
@@ -314,7 +343,7 @@ class Renderer:
         **The handle says what the page marked and nothing more** — the kind, the
         number, and the plate that scopes it, read straight off the attributes
         `figrefs.mark` wrote. Which picture that is depends on `gt/fig/`, which
-        `stores.render`'s cache does not key on, so resolving here would go on
+        `stores.render`'s cache does not name, so resolving here would go on
         serving a link to a box somebody has since moved. Same division as
         `<figure>`: the renderer emits the handle and `web/edition._figref_state`
         joins it, where both keys are in hand.
@@ -572,10 +601,11 @@ class Renderer:
         for reached the reader as nothing at all, behind a `[fig. N]` chip.
 
         **No coordinates are emitted here, and that is a cache argument as much
-        as a store one.** `stores.render` is `cache.by_file`, keyed on the TEI
-        file's bytes alone; geometry baked into this HTML would leave a corrected
-        `gt/fig/` box serving the old placement out of a cache with nothing to
-        signal it. So the page carries only what the TEI says, the route joins
+        as a store one.** `stores.render`'s key names every store this HTML is
+        built from — the page, and `data/toc.json` for a milestone's title — and
+        `gt/fig/` is deliberately not among them; geometry baked into this HTML
+        would leave a corrected box serving the old placement out of a cache with
+        nothing to signal it. So the page carries only what the TEI says, the route joins
         the pictures in against a key that includes `gt/fig/`, and the two facts
         stay keyed to the stores they came from.
 
@@ -613,10 +643,49 @@ class Renderer:
 
     def el_milestone(self, el) -> str:
         # A milestone is a boundary, not a container — TEI's answer to a heading
-        # in a text with no divisions keyed. Rendered as one, since that is what
-        # the page prints.
-        label = el.get("n") or el.get("unit") or ""
-        return f'<h2 class="milestone">{escape(label)}</h2>'
+        # in a text with no divisions keyed. It carries no text by design: the
+        # words are in `data/toc.json` under the id `@n` names, and putting them
+        # on the page is this module's job rather than the page file's. A page
+        # that repeated the title would be a second copy of it, free to drift.
+        #
+        # The id is the fallback and not the label. `chVII.13` on a reading page
+        # is visibly not a heading, which is the right way for a milestone whose
+        # entry has gone missing to fail — a plausible-looking heading built from
+        # a slug would not be.
+        # **The number is the book's own and the rest is not invented.** 23 of the
+        # ToC's 316 entries carry a printed `number` and they are exactly the
+        # chapters; the 290 sections and subsections print none. Composing one for
+        # them — `VI.2` for the second subsection of chapter VI — would be a
+        # numeral this book never sets, arriving in the one place a reader would
+        # cite. So a chapter is numbered and a section is not, which is what the
+        # page does.
+        #
+        # Number and title are separate spans, and the punctuation between them is
+        # the stylesheet's. The print sets `XI. — GAMES.`; whether the reading view
+        # reproduces that or sets the numeral apart is typography, and typography
+        # made of `::after` can change without touching what the page asserts.
+        n = el.get("n") or ""
+        unit = el.get("unit") or ""
+        if _leads_a_block(el):
+            # **The page already prints this one, so nothing is printed here.**
+            # The book sets its deeper heads run-in — `SEAL-HUNTING. — The
+            # Maritime Chukchee support themselves …` — and the generator marks
+            # that head as `<label>` where it stands. Emitting a block heading too
+            # would set the same heading twice, once from the page and once from
+            # the ToC. So this is an anchor: the boundary is still in the document
+            # and still linkable, and the words stay the ones the compositor set.
+            return f'<span class="milestone anchor {escape(unit)}" id="{escape(n)}"></span>'
+        label = self.titles.get(n) or {}
+        if not label:
+            # The id, unstyled, when the ToC has no such entry. Visibly not a
+            # heading — which is how a milestone whose entry went missing should
+            # fail, a plausible one built out of a slug being the failure this
+            # project is arranged against.
+            return f'<h2 class="milestone {escape(unit)}" id="{escape(n)}">{escape(n)}</h2>'
+        num = (f'<span class="milestone-n">{escape(label["number"])}</span>'
+               if label.get("number") else "")
+        return (f'<h2 class="milestone {escape(unit)}" id="{escape(n)}">{num}'
+                f'<span class="milestone-t">{escape(label["title"])}</span></h2>')
 
     def el_list(self, el) -> str:
         kind = el.get("type") or ""
@@ -635,7 +704,19 @@ class Renderer:
         return f"<li{val}>{self.inline(el)}</li>"
 
     def el_label(self, el) -> str:
-        return f'<li class="label">{self.inline(el)}</li>'
+        """A gloss list's term, or a heading the compositor ran into its paragraph.
+
+        Two things share the element because TEI's `<label>` is both, and the
+        parent tells them apart: in a `<list>` it is the term half of an entry and
+        renders as one, and in running prose it is the run-in head the ToC join
+        marked, which sets as the milestone beside it says. Branching on the
+        parent rather than adding a `@type` keeps the page free of a distinction
+        the tree already makes.
+        """
+        parent = el.getparent()
+        if parent is not None and etree.QName(parent).localname == "list":
+            return f'<li class="label">{self.inline(el)}</li>'
+        return f'<span class="runin">{self.inline(el)}</span>'
 
     def el_table(self, el) -> str:
         """A table, and **its `<head>` as the caption**.
@@ -730,7 +811,7 @@ class Renderer:
         return "\n".join(x for x in out if x)
 
 
-def render(path: Path) -> dict:
+def render(path: Path, titles: dict[str, dict] | None = None) -> dict:
     """One committed page → `{html, notes, refs, figures, folio, ok}`.
 
     A page that will not parse returns `ok: False` and says why, rather than
@@ -765,7 +846,7 @@ def render(path: Path) -> dict:
             "folio": None,
         }
     ref = path.stem.replace("chukchi-", "")
-    r = Renderer(ref)
+    r = Renderer(ref, titles=titles)
     html = r.blocks(body)
     pb = body.find(f".//{{{TEI_NS}}}pb")
     return {

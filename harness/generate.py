@@ -81,13 +81,14 @@ from .context import (
 from .detectors import join_broken_words
 from .entities import alias_index, auto_forms, load
 from .lines import page_lines
+from .state import MILESTONE_UNITS, heads_on, load_toc, printed_head, toc_starts
 from .zones import read_zones
 
 #: Bumped when the emitted shape changes in a way that makes an older file a
 #: different artifact rather than an older copy of the same one. It rides in the
 #: stamp, so `tei diff` can say "this baseline predates the current rules" instead
 #: of reporting the difference as something review did.
-VERSION = 4
+VERSION = 5
 
 GENDIR = "mz/tei"
 
@@ -752,8 +753,16 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
     # which is where the print puts them too.
     once: set[str] = set()
 
-    def rendered(rows: list[tuple[int, str]], indent: str = "") -> str:
-        """One block of lines, marked up whole. Records its candidates in `pending`."""
+    def rendered(rows: list[tuple[int, str]], indent: str = "",
+                 heads: list | None = None) -> str:
+        """One block of lines, marked up whole. Records its candidates in `pending`.
+
+        `heads` are the `<label>` spans the ToC join found at the front of this
+        block. They go in with the rest rather than being wrapped around the
+        finished string, so `_emit`'s containment rule holds: an entity link or a
+        Tier-1 handle inside a run-in head renders inside the label instead of
+        overlapping it and losing to first-one-wins.
+        """
         if not rows:
             return ""
         texts = [t for _, t in rows]
@@ -766,7 +775,8 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
         spans, links, cands = _entity_spans(full, spans, ents, autos,
                                             sigla, store, once)
         pending.extend(cands)
-        return _emit(full, spans + links + _figref_spans(full, cited), indent)
+        return _emit(full, (heads or []) + spans + links
+                     + _figref_spans(full, cited), indent)
 
     body: list[str] = []
     # Every key present from the start, `figures` and `notes_anchored` included:
@@ -777,7 +787,8 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
            "paragraphs": 0, "quotes": 0, "notes": 0, "unresolved": 0,
            "handles": 0, "links": 0, "figrefs": 0, "candidates": 0,
            "outside_zones": 0, "unknown_labels": "",
-           "figures": 0, "notes_anchored": 0, "noterefs": 0}
+           "figures": 0, "notes_anchored": 0, "noterefs": 0,
+           "milestones": 0, "milestones_missing": 0}
 
     def flush_candidates() -> None:
         """One comment per distinct unlinked alias, after the block it sits in.
@@ -852,6 +863,77 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
                     'prints none -->')
     else:
         body.append(f'      <pb n="{escape(str(folio))}"/>')
+
+    # **The ToC is book-internal apparatus, so it binds** (CLAUDE.md, Firewall),
+    # and the printed folio joins it to this page: the ToC prints which folio each
+    # heading opens on, the running title prints which folio this is, and where a
+    # block then opens with that heading's own title, three printed witnesses
+    # agree and no judgement was made. Nothing here reads the raster and nothing
+    # infers — a heading the ToC does not put on this folio is not looked for, and
+    # a folio the page does not print stops the join outright.
+    #
+    # **The folio scopes the question, and that is the whole reason this is a rule
+    # and not a search.** Matching a heading against the *whole* ToC leaves three
+    # titles the book prints twice (`Names`, `Anui Fair`, `Taboos`) with nothing
+    # mechanical to choose between them; scoped to the folio, each has exactly one
+    # candidate and the ambiguity does not arise. Over the generated corpus the
+    # scoped join confirms 124 of the 126 entries the ToC opens on a generated
+    # page, with no ambiguous case at all.
+    #
+    # It is *not* the `starts_here` mark that `collator.md` forbids leaning on.
+    # That mark is keyed to a **predicted** folio and may never be the reason a
+    # milestone is or is not emitted; this is the folio the page itself prints,
+    # and it is still not the evidence a heading exists — the heading printed on
+    # the page is, every time. The folio only says which title to look for.
+    #
+    # `folio` is the string the running title printed, and `page_start` is an
+    # integer, so the join needs the cast. A folio that will not cast is not a
+    # folio — the roman front matter is deliberately outside the arabic index
+    # (`data/toc.json`'s own caveat), and `_FOLIO_RE` refusing a recognizer's `2S`
+    # for `28` must go on refusing here rather than joining on a repair.
+    printed = int(folio) if (folio or "").isdigit() else None
+    expected = toc_starts(load_toc(root), printed)
+    missing = {e["id"]: e for e in expected}
+
+    def milestones(rows: list[tuple[int, str]]) -> tuple[list[str], str, list]:
+        """The milestones this block's printed heads open, and it consumes them.
+
+        Returns the milestone lines, what the block has left after its heads, and
+        a `<label>` span per head for `rendered` to mark it in place. Empty
+        remainder means the block is a heading and nothing else, which is the one
+        case where `MainZone-Other`'s catch-all resolves without a reader.
+
+        **Lines are joined with the line break kept**, because the break is one of
+        the marks a head can be set off by — `1-096` sets `IV. — REINDEER-BREEDING.`
+        alone on its line above the section head that follows it, and a space there
+        runs the two together. Not passed through `join_broken_words`, which wants
+        line records rather than texts: the cost is a head the compositor broke
+        across a line end, which fails to match and becomes the refusal comment
+        below. That is the direction to err in — the alternative is a rule that
+        repairs a word and then reads a heading out of its own repair.
+        """
+        text = "\n".join(t for _, t in rows)
+        out, marks = [], []
+        hits, rest = heads_on(text, [missing[i] for i in list(missing)])
+        for e, _head, start, stop in hits:
+            # **The printed head, marked where it stands.** `<label>` says only
+            # "this is the heading `@n` names, printed run-in" — the structural
+            # fact the join already established, at the boundary `printed_head`
+            # already found. No `@rend`: the book sets these in small caps and
+            # italics and this has not read the page, so naming a typeface here
+            # would be asserting the print off the ToC's level. How each level
+            # sets is the stylesheet's, keyed on the milestone beside it.
+            marks.append((start, stop, "<label>", "</label>"))
+            del missing[e["id"]]
+            rep["milestones"] += 1
+            # Emitted without a comment beside it, like every other `#mz` mark on
+            # the page. A comment is what a rule leaves where it could not decide,
+            # and this one decided — on three printed witnesses, re-derived by
+            # `validate` on every run. Asking a reader to confirm 124 of them
+            # would spend the review budget the refusals below are for.
+            out.append(f'      <milestone unit="{MILESTONE_UNITS[e["level"]]}" '
+                       f'n="{escape(e["id"])}" resp="#mz"/>')
+        return out, rest, marks
 
     # **No `opens:` is written here, deliberately.** It records what a reader saw on
     # the raster; a value derived from the zone label would be the same witness
@@ -967,12 +1049,18 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
         if not para:
             return
         rep["paragraphs"] += 1
+        # The remainder is ignored here: a prose band with a run-in head has prose
+        # left after it by definition, and it is still a `<p>`.
+        marks, _rest, heads = milestones(para)
+        body.extend(marks)
         # Where this paragraph starts, so a figure it ran past can be spliced in
         # above it. Taken before the `<p>` is appended and before
         # `flush_candidates`, whose comments belong *after* the prose they are
-        # about and must not be pushed below the figure.
+        # about and must not be pushed below the figure. Taken *after* the
+        # milestones, so a figure lands under the heading it opens rather than
+        # above it.
         top = len(body)
-        body.append(f'      <p>{rendered(para)}</p>')
+        body.append(f'      <p>{rendered(para, heads=heads)}</p>')
         flush_candidates()
         para.clear()
         # **Against the paragraph's own bottom, not against the band that
@@ -1027,12 +1115,38 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
             continue
         close_paragraph()
         if label == OTHER_ZONE:
+            marks, rest, heads = milestones(rows)
+            if marks and not rest.strip():
+                # **The catch-all's question, answered by the ToC rather than by a
+                # reader.** `MainZone-Other` holds a heading, a table, verse or a
+                # caption and its `rank: null` says the store declines to tell them
+                # apart — so the generator normally declines too. Here it does not
+                # have to: the ToC opens these headings on the folio this page
+                # prints, this block prints their titles and nothing else, and
+                # "which of the four is it" has a printed answer. 14 blocks over
+                # the corpus, each of which used to be a reader's decision about a
+                # question three stores had already settled.
+                #
+                # **The block goes, and the milestone is the whole of what is
+                # left.** A page file is div-less, so TEI has no heading element to
+                # put mid-body and `<milestone>` is its answer for a heading in a
+                # text with no divisions keyed: the boundary is marked, the title
+                # lives in the ToC the `@n` points at, and putting the words on the
+                # page is the renderer's job. Carrying the text here as well would
+                # be a second copy of a string `data/toc.json` already holds, in
+                # the one artifact that must not hold facts twice — and the
+                # printed line is not lost either way, `gt/ocr/` being where the
+                # page's own words live.
+                body.extend(marks)
+                continue
             rep["unresolved"] += 1
             body.append('      <!-- unresolved zone (MainZone-Other): a heading, a '
                         'table, verse, or a caption — the store does not '
-                        'distinguish them. Give it its real shape, and if it is a '
-                        'heading check toc_window for a milestone -->')
-            body.append(f'      <p>{rendered(rows)}</p>')
+                        'distinguish them. Give it its real shape; a milestone '
+                        'above it means the ToC recognized a head at its front, '
+                        'and not that the whole block is one -->')
+            body.extend(marks)
+            body.append(f'      <p>{rendered(rows, heads=heads)}</p>')
         else:
             unknown.add(label)
             body.append(f'      <!-- unknown zone label {label!r}: the generator '
@@ -1042,6 +1156,45 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
 
     close_paragraph()
     emit_figures(None)          # anything below the last band of prose
+
+    # **What the join expected and did not find**, one comment each, at the foot
+    # where a reader meets them after the page rather than inside it. Every one is
+    # a real question about this page: the ToC prints this heading as opening on
+    # this folio and no block here begins with its title, so either the head is
+    # set in a way the rule cannot see (broken across a line end, or its zone
+    # merged into the prose), or it straddles the page boundary, or the ToC's
+    # folio is off by one — and only the page decides which.
+    for e in missing.values():
+        rep["milestones_missing"] += 1
+        # **Where the head is, when it is on the page but not in a block.** Two of
+        # the three refusals over the corpus are this: `1-096` reads `IV. —
+        # REINDEER-BREEDING.` into `gt/ocr/` on a line no band covers, so it
+        # reaches neither a paragraph nor this join. That is a finding about
+        # `gt/zones/` and is answered by editing it, so the comment says so rather
+        # than leaving a reader to discover that the text they can see on the page
+        # is not in any block — and the rule still does not link it, because a
+        # line in no zone has no place in the body for the milestone to stand.
+        stray = any(printed_head(t, e) for _, t in buckets[-1])
+        why = ("its line is on this page but inside no keyed zone, so it reached "
+               "no block — `harness zones edit` is the fix, and this comment goes "
+               "away on the next generate"
+               if stray else
+               "no block here begins with that title")
+        body.append(
+            f'      <!-- expected milestone for {escape(e["id"])} '
+            f'({escape(e["title"])}) not found on this page: data/toc.json opens '
+            f'it at folio {printed}, which is the folio this page prints, and '
+            f'{why}. Write <milestone unit="{MILESTONE_UNITS[e["level"]]}" '
+            f'n="{escape(e["id"])}"/> where the page opens it, or say in your '
+            f'report that the page does not print this heading -->')
+    if printed is None:
+        # Not the same finding as "the ToC has no such entry", and reporting it as
+        # one would be the fluent-nonsense failure in miniature: nothing said which
+        # headings open here, because nothing knew what folio this is.
+        body.append('      <!-- ToC join did not run: this page prints no arabic '
+                    'folio, so nothing said which headings open on it. If a '
+                    'heading is printed here, match it yourself against '
+                    'toc_window -->')
 
     if notes:
         # **Split at the printed marker, and the marker is marked where it
@@ -1271,4 +1424,5 @@ def skipped(ref: str, why: str = "") -> dict:
             "handles": 0, "links": 0, "figrefs": 0, "candidates": 0,
             "outside_zones": 0, "unknown_labels": "",
             "figures": 0, "notes_anchored": 0, "noterefs": 0,
+            "milestones": 0, "milestones_missing": 0,
             "written": False, "why": why}

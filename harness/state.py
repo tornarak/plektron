@@ -481,6 +481,141 @@ def toc_search(toc: list[dict], query: str, folio: int | None = None,
     return out
 
 
+#: What each ToC level is called in `<milestone unit>`. Level 0 is front matter
+#: and is absent on purpose: it produces no milestone, so a lookup that misses is
+#: the refusal rather than a hole to fill in.
+MILESTONE_UNITS = {1: "chapter", 2: "section", 3: "subsection", 4: "subsubsection"}
+
+#: Where a printed head stops and the prose begins. The book sets a run-in head as
+#: `TITLE. — ` and a head standing alone on its line as `TITLE.`; both are the
+#: compositor's mark, which is why matching may lean on them. The period is
+#: optional and the dash may be either length, because the recognizer reads both.
+#:
+#: **The line end is one of the marks, so the caller must not have thrown it away.**
+#: `1-096` prints `IV. — REINDEER-BREEDING.` on its own line and `GROUPS OF
+#: REINDEER-BREEDERS. — The domestication …` on the next: the chapter head is set
+#: off by the break and by nothing else, and joining the lines with a space before
+#: looking leaves it running straight into the section head that follows.
+#:
+#: The punctuation run before the mark is a run, not a single character, because
+#: the book quotes a title it is naming: `1-213` prints `“GENUINE HOUSE.” — `, the
+#: period inside the quote, and `data/toc.json` carries the quotation marks in the
+#: title too. Loosening it costs nothing — the teeth of this test are the dash, the
+#: line end or the end of the block, and never what precedes them.
+#:
+#: The punctuation is a group because it belongs to the head, not to the gap: the
+#: book sets `SEAL-HUNTING. — `, and a head marked without its period would be a
+#: heading this edition punctuates differently from the page it reproduces. The
+#: dash is the other side of it and is the separator, so it stays out.
+_SET_OFF = re.compile(r"([.,;:”’\"')\]]*)[^\S\n]*(?:[—–][ \t\n]+|\n|$)")
+
+#: `_WORD_RE` asked of text that has not been lowercased, so offsets into the page's
+#: own string stay usable and the head can be quoted back as the page prints it.
+_WORD_I = re.compile(_WORD_RE.pattern, re.IGNORECASE)
+
+
+def toc_starts(toc: list[dict], folio: int | None) -> list[dict]:
+    """The ToC entries whose printed `page_start` is this folio, shallowest first.
+
+    **`folio` must be a printed folio read off the page**, not `expected_folio`:
+    the prediction is propagated through the seam ledger and inherits every error
+    upstream of it, and a heading link resting on a prediction is a link that
+    asserts more than anything printed says. An unknown folio returns nothing,
+    which is a refusal and not an empty page.
+
+    Shallowest first because a chapter's own head precedes its first section's on
+    the page that carries both, and `printed_head` consumes them in order.
+    """
+    if folio is None:
+        return []
+    return sorted((e for e in toc
+                   if e.get("page_start") == folio
+                   and (e.get("level") or 0) in MILESTONE_UNITS),
+                  key=lambda e: (e.get("level") or 0, e.get("id") or ""))
+
+
+def printed_head(text: str, entry: dict) -> tuple[str, int] | None:
+    """The head `text` prints for `entry` at its very front, and where it ends.
+
+    Returns `(head, end)` — the printed head, and the offset past the mark that
+    sets it off, so a caller can look for the next head in what follows. `None`
+    when this block does not open with this entry's title.
+
+    **Anchored at the front, and set off by the printer's own mark.** Both halves
+    matter. Unanchored, a title would match its own mention in running prose;
+    unmarked, the entry `The Sun` would swallow the head of any sentence that
+    begins "The Sun goes down every evening". What licenses the match is that the
+    compositor set this string apart, and the test is exactly that.
+
+    The entry's own printed `number` may lead the title (`I. — NAMES AND
+    HABITAT.` opens `chI`, whose number is `I`), so both readings are tried; the
+    numberless one second, since a page that prints the numeral is making the
+    stronger claim.
+
+    Matching is word-sequence equality — stricter than `toc_search`'s set
+    containment, which is right here and wrong there. That function checks a
+    heading a model says it read, where a page carrying extra furniture is
+    ordinary; this one *finds* the heading with no witness but itself, so a title
+    that is merely a subset of what the page prints is not a match.
+    """
+    want = _WORD_RE.findall(unicodedata.normalize("NFD", entry.get("title") or "").lower())
+    if not want:
+        return None
+    num = _WORD_RE.findall(unicodedata.normalize("NFD", entry.get("number") or "").lower())
+    # NFD before offsets are taken, and sliced in NFD: the corpus is NFD
+    # throughout (keying spec section 1), so this is identity on real input and
+    # correctness on a caller that hands over something else.
+    nfd = unicodedata.normalize("NFD", text)
+    words = [(m.group().lower(), m.end()) for m in _WORD_I.finditer(nfd)]
+    for lead in ([num + want] if num else []) + [want]:
+        if [w for w, _ in words[:len(lead)]] != lead:
+            continue
+        at = words[len(lead) - 1][1]
+        mark = _SET_OFF.match(nfd, at)
+        if mark is None:
+            continue
+        return nfd[:at + len(mark.group(1))], mark.end()
+    return None
+
+
+def heads_on(text: str,
+             entries: list[dict]) -> tuple[list[tuple[dict, str, int, int]], str]:
+    """Walk the heads one block prints, front to back, against `entries`.
+
+    Returns the matches and **what is left of the block after them**. The
+    remainder is the caller's answer to a different question: a block with nothing
+    left is a heading and only a heading, which is the one case where the ToC can
+    resolve `MainZone-Other`'s catch-all outright instead of leaving it to a
+    reader.
+
+    A page that opens a chapter opens its first section in the same breath —
+    `1-096` prints `IV. — REINDEER-BREEDING. GROUPS OF REINDEER-BREEDERS. — The
+    domestication …`, two heads and one paragraph — so a single match per block
+    would have to drop one of them. Each match consumes its head and the walk
+    resumes after it, which keeps every match anchored: the second head is at the
+    front of what is left, never found loose in the middle of the prose.
+
+    An entry matches at most once, and `entries` is consumed as it goes. Each
+    match is `(entry, head, start, stop)` — the offsets being into `text`, so a
+    caller can mark the printed head where it stands rather than searching for it
+    again and finding the second occurrence.
+    """
+    out, rest, left = [], unicodedata.normalize("NFD", text), list(entries)
+    base = 0
+    while True:
+        for e in left:
+            hit = printed_head(rest, e)
+            if hit is not None:
+                break
+        else:
+            return out, rest
+        head, end = hit
+        out.append((e, head, base, base + len(head)))
+        left.remove(e)
+        rest = rest[end:]
+        base += end
+
+
 # `load_boundaries` lived here and read a `boundaries.json` that never existed,
 # because the geometry pass that was to write it was never built. Every ledger row
 # therefore read `boundary=unknown` — a column that looked like a pending

@@ -18,7 +18,8 @@ from pathlib import Path
 
 from .. import alphabet, apparatus, entities, figures, geo, lexicon, lookup, tei_html
 from ..context import norm_ref
-from .cache import MAXSIZE, by_file, stamp
+from ..state import load_toc
+from .cache import MAXSIZE, digest, stamp
 
 
 def _entity_files(root: Path) -> list[Path]:
@@ -368,7 +369,56 @@ def attestations(root: Path) -> dict:
 #: route, off `fig_layout` below, whose key names the three stores that can
 #: change the answer. Putting a box in the rendered HTML would let a corrected
 #: `gt/fig/` serve stale placement out of this cache with nothing to signal it.
-render = by_file(tei_html.render)
+@lru_cache(maxsize=MAXSIZE)
+def _render(path: str, _page: bytes, _toc: bytes, root: str) -> dict:
+    return tei_html.render(Path(path), toc_titles(Path(root)))
+
+
+def render(path: Path, root: Path = Path(".")) -> dict:
+    """One page's HTML, memoised on the page **and the ToC**.
+
+    **Two files in the key, because two files decide these bytes.** A
+    `<milestone>` carries an id and no words — TEI's answer to a heading in a
+    div-less text, with the words left to whoever displays it — so the renderer
+    reads the title out of `data/toc.json`. That makes the ToC an input to the
+    HTML, and an input that is not in the key is exactly how a corrected heading
+    goes on being served with nothing to signal it.
+
+    **This is not a licence to fold in the figure geometry**, which is still
+    joined at the route and deliberately absent from what `tei_html` returns. The
+    difference is not that the key may hold only one file; it is that the geometry
+    join is per-figure over three stores and produces *placement*, where a page
+    that placed a picture from a stale cache would look right and be wrong.
+    """
+    key = stamp([Path(root) / "data" / "toc.json"])
+    try:
+        return _render(str(path), digest(Path(path).read_bytes()), key, str(root))
+    except OSError:
+        # A missing file is not cached at all — absence is the ordinary state of a
+        # derived tree here, and caching it would outlive the build that fixes it.
+        # `cache.by_file`'s rule, kept because this is no longer using it.
+        return tei_html.render(Path(path), toc_titles(Path(root)))
+
+
+render.cache_clear = _render.cache_clear               # type: ignore[attr-defined]
+render.cache_info = _render.cache_info                 # type: ignore[attr-defined]
+
+
+@lru_cache(maxsize=MAXSIZE)
+def _toc_titles(root: str, _key: bytes) -> dict[str, dict]:
+    return {e["id"]: {"number": e.get("number") or "", "title": e.get("title") or ""}
+            for e in load_toc(Path(root)) if e.get("id")}
+
+
+def toc_titles(root: Path) -> dict[str, dict]:
+    """`{toc id: {number, title}}` — what a `<milestone n>` is displayed as.
+
+    The number is carried because the book prints one on every chapter head and
+    on nothing else, and a heading that dropped it would be citing a chapter the
+    reader cannot find. It is never composed: 23 of the store's entries have one
+    and the other 293 print none.
+    """
+    return _toc_titles(str(root), stamp([Path(root) / "data" / "toc.json"]))
 
 
 @lru_cache(maxsize=MAXSIZE)
