@@ -114,7 +114,7 @@ none of the book's, which is precisely what the alias rule is for.
     person → anthroponym    people → ethnonym     place → toponym
     land   → toponym        water  → hydronym     river → hydronym
     animal → zoonym         being  → mythonym     event → event
-    taxon, institution, source → (none)
+    sky, taxon, institution, source → (none)
 
 The vocabulary is its own rather than `NAME_TYPES` verbatim, because a class is
 written into every `@ref` in the corpus and wants to be `person:`, not
@@ -166,6 +166,20 @@ scoped to what a reader of a page can see and record; it excludes `taxon`
 outright and has no member for an institution or a work. Those are exactly
 the entities an alias table finds reliably, and linking them says "this string
 refers to that entity", not "the page marked a proper noun".
+
+### `sky:` — stars, constellations, the Milky Way
+
+Bogoras names some fourteen, each with a Chukchee name beside the classical one,
+and narrates several as persons. `being:` would be the obvious home if the class
+did not then assert `mythonym` on every `<name @ref>` pointing at it — which is
+wrong wherever the page means the star, and "Orion" in a sentence about when to
+expect the frost is an asterism and nothing else. Only the sentence says which,
+so the class says *where the thing is* and declines to say what a page meant by
+it. That is what `<rs>` is for, and what the classes with no name-type have in
+common.
+
+Not a `GEO_CLASS`. A `within:` chain is about the earth and the atlas draws
+nothing here.
 
 ### There is no `language:`, and retiring it is the largest single saving
 

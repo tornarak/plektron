@@ -185,9 +185,16 @@ td,th { border:1px solid var(--rule); padding:.2rem .5rem; text-align:left }
  * instead, and by the fact that a flag is a bordered box and a link is an
  * underline.
  *
+ * `sky:` sits with `--abstract` because that family is *what the map does not
+ * draw*, which is the one thing a star, an event, a work and a spirit have in
+ * common. It is the least bad of five: the terrestrial and water hues would put
+ * Orion on the same footing as a cape.
+ *
  * `harness/entities.py`'s ENTITY_CLASSES is the authority and this is a copy of
  * it, so `test_edition.py` walks that dict and fails on any class with no rule
- * here, or with more than one.
+ * here, or with more than one — and, since a retired class leaves a selector
+ * that is dead rather than wrong, on any rule here naming a class the store no
+ * longer has. `language:` was one for as long as it took to notice.
  *
  * **The default is on `:root` and the selectors carry no element**, which is
  * what makes the family rules actually win. They used to be `a[data-ref^=…]` —
@@ -207,10 +214,10 @@ td,th { border:1px solid var(--rule); padding:.2rem .5rem; text-align:left }
 [data-ref^="place:"],  [data-ref^="land:"]         { --link:var(--pin) }
 [data-ref^="water:"],  [data-ref^="river:"]        { --link:var(--water) }
 [data-ref^="animal:"], [data-ref^="taxon:"]        { --link:var(--flora) }
-[data-ref^="person:"], [data-ref^="people:"],
-[data-ref^="language:"]                            { --link:var(--accent) }
+[data-ref^="person:"], [data-ref^="people:"]       { --link:var(--accent) }
 [data-ref^="event:"],  [data-ref^="source:"],
-[data-ref^="institution:"], [data-ref^="being:"]   { --link:var(--abstract) }
+[data-ref^="institution:"], [data-ref^="being:"],
+[data-ref^="sky:"]                                 { --link:var(--abstract) }
 .ent { color:var(--link); text-decoration:none;
   border-bottom:1px solid color-mix(in srgb,var(--link) 40%,transparent) }
 .ent:hover { border-bottom-color:var(--link);

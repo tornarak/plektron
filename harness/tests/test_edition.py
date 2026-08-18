@@ -554,6 +554,18 @@ def test_every_entity_class_has_exactly_one_link_colour():
         assert css.count(f'[data-ref^="{cls}:"]') == 1, cls
 
 
+def test_no_link_colour_names_a_class_the_store_no_longer_has():
+    """The other direction, and the quieter one. A class dropped from the store
+    leaves a selector here that is **dead rather than wrong** — it matches
+    nothing, breaks nothing, and shows in no rendering — so the test above,
+    which walks the store, cannot see it. `language:` sat in the accent family
+    for as long as it took someone to read the file."""
+    import re
+    css = CSS.read_text(encoding="utf-8")
+    named = set(re.findall(r'\[data-ref\^="([a-z]+):"\]', css))
+    assert named <= set(ENTITY_CLASSES), named - set(ENTITY_CLASSES)
+
+
 def test_every_link_colour_is_defined_in_both_themes():
     """The drift far likelier than a missing class: a token added to `:root` and
     not to the dark block inherits the light value, and a colour code that holds

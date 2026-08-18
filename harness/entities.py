@@ -95,6 +95,18 @@ ENTDIR = "entities"
 #: an alias table can find reliably, and linking them says "this string refers to
 #: that entity", not "the page marked a proper noun here".
 #:
+#: **`sky:` is stars, constellations and the Milky Way**, and it has no
+#: name-type on purpose. Bogoras names some fourteen of them, each with a
+#: Chukchee name beside the classical one, and narrates several as persons — the
+#: Sun is a man, and `being:` would be the obvious home if the class did not
+#: then assert `mythonym` on every `<name @ref>` pointing at it. It would be
+#: wrong wherever the page means the star: "Orion" in a sentence about when to
+#: expect the frost is an asterism and nothing else, and only the sentence says
+#: which. So the class says where the thing is and declines to say what a page
+#: meant by it, which is what `<rs>` is for and what the four None classes have
+#: in common. Not a `GEO_CLASS`: a `within:` chain is about the earth, and the
+#: atlas draws nothing here.
+#:
 #: **There is no `language:`.** There was, and it earned nothing: nine of its ten
 #: entries claimed the very polygon their `people:` counterpart already claimed,
 #: nine of ten glosses were unwritten, and nothing in the code path that matters
@@ -133,6 +145,7 @@ ENTITY_CLASSES = {
     "animal": "zoonym",
     "being": "mythonym",
     "event": "event",
+    "sky": None,
     "taxon": None,
     "institution": None,
     "source": None,
