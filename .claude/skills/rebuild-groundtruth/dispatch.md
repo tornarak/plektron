@@ -230,6 +230,41 @@ zero-attested and used that to license reading every raised mark as stress; the
 premise held (599 U+02CA against 0 U+0027 in `gt/ocr/`) but it was a claim doing
 real work in a reading, and unchecked it is a doctrine applied on faith.
 
+### An *answered* g-dot advisory is not a resolved one
+
+**When a report says it answered a §5.1 advisory by confirming a bare `g`, open that
+line.** It is the one disposition with a documented history of confident wrong
+answers, it costs a crop or two per batch, and `2-003`..`2-022` produced eleven of
+them across four readers: `2-007` (six, in `g̣êtɪˊnvɪlênat`, `g̣equliˊlinet`,
+`g̣eˊmg̣e-kuliˊlɪn`, `g̣aˊmg̣a-êtɪˊnvɪlɪn`), `2-009`, `2-010` (two) and `2-018` (two).
+Every one was dotted on the raster.
+
+**Do not read this as a gap in the instruction, and do not answer it by writing
+more of one.** §5.1 already prescribes the contrast, requires the contrast word in
+the `note`, says absence is not observable in isolation, and warns in as many words
+that *"Confirmed at 4× is what both wrong readings said."* All four readers had that
+text in their prompt. `2-009`'s was additionally flagged by `proposal check`'s `rare`
+arm, quoted the 93.9% prior back in its note, and keyed bare anyway; `2-018`'s cited
+the dotted attestations on `2-031`/`2-033` and invoked the firewall to decline
+"harmonizing" toward them — a rule about provenance used to override the reader's own
+eyes. The instruction, the prior and the automated flag all fired correctly. Length
+is not what is failing, and §5.1 is already the longest entry in the spec.
+
+What separates the two readers who got it right is visible in their reports and is
+not a rule anyone could have written: `2-016` and `2-019` each had a plain English
+`g` — "beings", "people", "having" — **inside the same crop** as the Tier-1 form.
+The four that missed contrasted against a word they named but did not render beside
+it. That is a fact about how the crop was framed, not about what the reader knew.
+
+So the check belongs here rather than in the prompt, because **the instrument that
+actually catches this is one no reader can run**: `harness proposal marks` over the
+whole batch pooled. Its `rare` arm names every bare-`g` occurrence and its `conflict`
+arm finds the same word spelled both ways against the store — both without opening a
+scan. A reader sees one page and cannot pool anything. Run `marks` *before* reading
+any report, and treat its rows as the worklist for the raster checks above; run it
+after, as this batch did, and you will have found by hand what it would have handed
+you.
+
 ## What the reading costs, and the ladder that follows from it
 
 The reading half is dominated by images, and an image's cost is a fact about

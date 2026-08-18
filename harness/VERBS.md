@@ -902,7 +902,10 @@ The band is the **per-page** spread over ground-truth pages clearing `--min-type
 **Note** **`LINE` is a trailing bare number, and the plural refs stay.** This was a `--line` flag on the argument that a variadic positional cannot tell an index from another ref — which is not true here: a ref is `PP-NNN`, a bare number is refused as one corpus-wide with its own message, and the two token shapes are therefore disjoint. The flag cost more than it bought, because `set` and `replace` take their `LINE` positionally and a reader reaches for all three in the same breath; one of them did, guessed the positional, and lost two turns to a usage error. Omitting `LINE` names every line, which is the more useful default besides — asking what a proposal actually contains rather than confirming one line at a time.
 ```
 --all        every review/ page with a proposal
---field {text,resolved,note}  which field [text]
+--field {text,resolved,note,class}  which field [text]. `class` takes the
+                              closed note vocabulary — doubt, semantic, print,
+                              draft, layout, artifact — and a value outside it
+                              is exit 2 at the write
 --path FILE                   proposal file, one ref only [review/PP-NNN/proposal.json]
 --root --json --toon --pager
 ```
@@ -918,7 +921,10 @@ The band is the **per-page** spread over ground-truth pages clearing `--min-type
 **Note** **the bulk form is a budget fix, not a convenience.** A reader issues a command and reads its result as two separate turns, so a single-line write costs two of `maxTurns: 80`. `1-101` — a two-column numbered list of native names, nearly every line wanting Tier-1 keying — spent 23 `set`, 3 `replace` and 14 `Edit` calls over 21 distinct lines, hit the cap exactly, and was cut off mid-correction. One line was touched twice, so it was not thrash: forty corrections arriving one per turn on a page needing forty corrections. The class of page this fails on is the vocabulary list, which is the densest Tier-1 material in the book. It reports `changed` and `unchanged` per line, because re-sending a whole page most of which was already right is the ordinary use and a bulk write that says only "ok" cannot be checked.
 **Note** **`--values` exists beside stdin because the reader cannot reach stdin.** Its guard refuses any unquoted operator, so `<` and `|` are both unavailable inside a reading pass. Same pairing as `--value` and stdin on the singular form, at a different scale.
 ```
---field {text,resolved,note}  which field [text]
+--field {text,resolved,note,class}  which field [text]. `class` takes the
+                              closed note vocabulary — doubt, semantic, print,
+                              draft, layout, artifact — and a value outside it
+                              is exit 2 at the write
 --value TEXT                  the replacement; omit to read stdin [stdin]
 --values TEXT                 a {"line": "text"} object, used instead of LINE [stdin]
 --path FILE                   proposal file [review/PP-NNN/proposal.json]
@@ -933,7 +939,10 @@ The band is the **per-page** spread over ground-truth pages clearing `--min-type
 ```
 --old TEXT   text to find [required]
 --new TEXT   text to substitute [required]
---field {text,resolved,note}  which field [text]
+--field {text,resolved,note,class}  which field [text]. `class` takes the
+                              closed note vocabulary — doubt, semantic, print,
+                              draft, layout, artifact — and a value outside it
+                              is exit 2 at the write
 --which SPEC all | first | last | an occurrence number (3) | an inclusive range (2:4), 1-based [all]
 --path FILE  proposal file [review/PP-NNN/proposal.json]
 --root --json --toon --pager
@@ -1204,9 +1213,11 @@ entry.
 **Does** finds a ratified native form by a typeable key and shows the lines it was printed on, so a form's sense is readable without opening the page — `Kuluˊči` alone is a string, "south of Kuluˊči Bay" is a place. The key is what a reader writes in braces for `proposal set` to expand. Match is a substring of the key, the fold, the form, or the key's bare reduction, so `kulu` reaches it.
 **Reads** `gt/ocr/`, `data/marks_config.json`. **Writes** — **Exit** 0.
 ```
-QUERY...       any substring; several are an OR
---min-pages N  withhold the key from a word attested on fewer pages than this
-               [2]
+QUERY...       any substring; several are an OR, and one call is one index
+               build — a page's whole unglossed vocabulary belongs in it
+--min-pages N  withhold the key from a word attested on fewer pages than this.
+               Counted per fold, so it can never hide a conflict [1] — a hapax
+               still gets a key
 --context N    lines of surrounding text per matched form [2]
 --root --json --toon --pager
 ```

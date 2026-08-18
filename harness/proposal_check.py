@@ -320,6 +320,22 @@ def _expanded(value: str, field: str, root: Path | None) -> tuple[str, str | Non
     return out, value
 
 
+def _validated(field: str, value: str) -> str:
+    """`value`, or a refusal naming what the field accepts.
+
+    `class` is the one field with a closed vocabulary, so it is the one field where
+    a typo is checkable rather than a matter of reading. It is checked here, at the
+    write, rather than left to `check` afterwards: an unknown class reads as a
+    missing class to everything downstream, and a note whose class silently means
+    nothing is exactly the unmarked span the pass exists to prevent.
+    """
+    if field == "class" and value not in NOTE_CLASSES:
+        raise ValueError(
+            f"{value!r} is not a note class — expected one of "
+            f"{', '.join(NOTE_CLASSES)}")
+    return value
+
+
 def set_field(path: Path, line: str, field: str, value: str,
               root: Path | None = None) -> dict:
     """Set one line's field, NFD-normalizing on write.
@@ -334,7 +350,7 @@ def set_field(path: Path, line: str, field: str, value: str,
     _src = path.read_text(encoding="utf-8")
     data = json.loads(_src)
     rec = data.setdefault("lines", {}).setdefault(line, {})
-    text, typed = _expanded(value, field, root)
+    text, typed = _expanded(_validated(field, value), field, root)
     rec[field] = unicodedata.normalize("NFD", text)
     _set_as_typed(rec, field, typed)
     _write_json(path, data, _src)
@@ -391,7 +407,7 @@ def set_fields(path: Path, values: dict, field: str,
     resolved = {}
     for line, value in values.items():
         try:
-            resolved[str(line)] = _expanded(value, field, root)
+            resolved[str(line)] = _expanded(_validated(field, value), field, root)
         except ValueError as e:
             raise ValueError(f"line {line}: {e}") from e
     for line in sorted(values, key=lambda k: (len(k), k)):

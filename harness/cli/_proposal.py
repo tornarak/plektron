@@ -42,7 +42,10 @@ from ._common import (
 
 PATH_HELP = "proposal file (default review/PP-NNN/proposal.json)"
 FIELD_HELP = ("which field of the line to act on (default text). Applies to "
-              "codepoints, set and replace alike")
+              "codepoints, set and replace alike. `class` is the note's class and "
+              "takes a closed vocabulary — doubt, semantic, print, draft, layout, "
+              "artifact — refused at the write rather than reported afterwards, "
+              "since an unknown class reads downstream as no class at all")
 
 
 def _which(v: str) -> str:
@@ -125,7 +128,7 @@ def register(cli):
                        "Omit it for every line on the page."),
                 all_="every review/ page with a proposal")
     opt(p, "--field", default="text",
-        type=click.Choice(("text", "resolved", "note")), help=FIELD_HELP)
+        type=click.Choice(("text", "resolved", "note", "class")), help=FIELD_HELP)
 
     p = _target(action(g, "set", run_set, section="Editing one field",
                        help="set one line's field, or many lines' in one write. "
@@ -138,7 +141,7 @@ def register(cli):
                        "afford two turns per line."))
     arg(p, "line", metavar="[LINE]", required=False, default=None)
     opt(p, "--field", default="text",
-        type=click.Choice(("text", "resolved", "note")), help=FIELD_HELP)
+        type=click.Choice(("text", "resolved", "note", "class")), help=FIELD_HELP)
     opt(p, "--value", default=None, help="the replacement text; omit to read stdin")
     opt(p, "--values", default=None,
         help='the bulk form: a {"line": "text"} object setting many lines in one '
@@ -156,7 +159,7 @@ def register(cli):
     opt(p, "--old", required=True, help="text to find")
     opt(p, "--new", required=True, help="text to substitute")
     opt(p, "--field", default="text",
-        type=click.Choice(("text", "resolved", "note")), help=FIELD_HELP)
+        type=click.Choice(("text", "resolved", "note", "class")), help=FIELD_HELP)
     opt(p, "--which", default="all", callback=lambda c, prm, v: _which(v),
         help="which occurrence(s) of --old to replace — \"all\" "
              "(default), \"first\", \"last\", an occurrence number "

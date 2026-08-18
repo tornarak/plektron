@@ -23,7 +23,15 @@ from pathlib import Path
 import pytest
 
 from harness.detectors import INVENTORY_CHARS, native_corpus
-from harness.lookup import expand, index, resolve, search
+from harness.lookup import (
+    _case_rank,
+    _raise_case,
+    bare,
+    expand,
+    index,
+    resolve,
+    search,
+)
 from harness.marks import HANDLE_MARKERS, handle_key
 from harness.proposal_check import check, fix, set_field, set_fields
 
@@ -134,6 +142,108 @@ def test_the_precise_key_is_refused_too():
         assert "more than one way" in why
 
 
+class TestCaseLadder:
+    """A handle may be written lowercase, capitalized or uppercase, and an
+    attestation in one case enables that case and every case above it.
+
+    The book sets one word three ways by position — `keˊlet` in the body, `Keˊlet`
+    opening a sentence, `KEˊLET` as a run-in heading — and all three are now in
+    `gt/ocr/`. See `harness/lookup.py`'s `_resolve_cased`.
+    """
+
+    def test_a_lowercase_attestation_enables_all_three(self):
+        for handle, want in (("{ke'let}", "keˊlet"),
+                             ("{Ke'let}", "Keˊlet"),
+                             ("{KE'LET}", "KEˊLET")):
+            out, refusals = expand(handle, REPO)
+            assert refusals == [] and out == nfd(want)
+
+    def test_the_ladder_never_descends(self):
+        """`Kuluˊči` is capitalized in the corpus because it is a place. A handle
+        that lowered it would edit a ratified identity by a keystroke; the refusal
+        names the ratified key so a reader who meant it can key it by hand."""
+        out, refusals = expand("{kulu'c^i}", REPO)
+        assert out == "{kulu'c^i}"
+        assert "never lower it" in refusals[0]
+
+    def test_a_capitalized_attestation_still_climbs(self):
+        out, refusals = expand("{KULU'C^I}", REPO)
+        assert refusals == [] and out == nfd("KULUˊČI")
+
+    def test_raising_case_never_mints_a_glyph(self):
+        """`str.upper()` is not safe over this inventory — `ɪ` U+026A maps to `Ɪ`
+        U+0197, which the keying spec does not contain. Nothing here can know what
+        the compositor set for a small-cap inside an all-caps heading, so the
+        uppercase of such a form is refused rather than approximated."""
+        got, why = _raise_case(nfd("vaˊɪrg̣ɪn"), 2)
+        assert got is None and "not an ASCII letter" in why
+        # ...while the capital, which touches only the ASCII `v`, is fine.
+        assert _raise_case(nfd("vaˊɪrg̣ɪn"), 1)[0] == nfd("Vaˊɪrg̣ɪn")
+
+    def test_a_combining_mark_survives_its_base_being_raised(self):
+        assert _raise_case(nfd("g̣enɪˊmlinet"), 1)[0] == nfd("G̣enɪˊmlinet")
+
+    def test_the_rank_reader_ignores_caseless_letters(self):
+        """`ˊ` U+02CA is a modifier letter and passes `isalpha`, so an `isalpha`
+        filter would decide `keˊlet` is not lowercase at all."""
+        assert [_case_rank(nfd(s)) for s in ("keˊlet", "Keˊlet", "KEˊLET")] == [0, 1, 2]
+
+    def test_the_lookup_offers_the_keys_the_expander_accepts(self):
+        """`resolve` and `search` computed ambiguity separately and drifted the
+        moment the corpus held three cases of one word: `lexicon lookup` called all
+        three `ambiguous` and offered no key, for a word `expand` resolved happily.
+        A reader trusts the lookup, so that gap is a form keyed by hand for nothing.
+        """
+        rows = [r for r in search(["Ke'let"], REPO)["matches"]
+                if r["form"].casefold() == nfd("keˊlet").casefold()]
+        assert len(rows) == 3
+        assert not any(r["ambiguous"] for r in rows)
+        for r in rows:
+            assert r["key"], f"{r['form']!r} offered no key"
+            assert expand(f"{{{r['key']}}}", REPO) == (r["form"], [])
+
+    def test_case_variants_are_one_spelling_but_marks_still_conflict(self):
+        """The ambiguity refusal exists for the book disagreeing about *marks*.
+        Folding case must not blunt it: `Čeˊwɪn`/`Čeˊwin` differ by `ɪ` and stay
+        refused, which `test_the_precise_key_is_refused_too` also asserts from the
+        other side."""
+        assert resolve("ke'let", REPO)[0] == nfd("keˊlet")
+        assert resolve(handle_key(nfd("Čeˊwɪn")), REPO)[0] is None
+
+
+class TestQueryReduction:
+    """A reader may type the form as the book prints it or as the key spells it.
+
+    The reduction used to run on the haystack only, which is not a fuzzy match but
+    a match against a spelling the caller has to guess: `Telqäˊp` has the key
+    `Telqa:'p`, and `telqa'p` — what a reader actually typed — found nothing.
+    """
+
+    @pytest.mark.parametrize("query", ["telqa'p", "telqap", "Telqäˊp", "Telqa:'p",
+                                       "TELQAP", "telqä'p"])
+    def test_every_spelling_of_one_form_reaches_it(self, query):
+        forms = [r["form"] for r in search([query], REPO)["matches"]]
+        assert nfd("Telqäˊp") in forms, f"{query!r} did not reach it"
+
+    def test_the_query_is_decomposed_before_reduction(self):
+        """A terminal hands over NFC, where `ä` is one non-ASCII character the ASCII
+        test discards whole — reducing `Telqäˊp` to `telqp`. The corpus is NFD."""
+        assert bare(unicodedata.normalize("NFC", "Telqäˊp")) == "telqap"
+        assert bare(nfd("Telqäˊp")) == "telqap"
+
+    def test_the_reduction_drops_modifier_letters_not_only_marks(self):
+        """`ˊ` U+02CA and `ɪ` U+026A pass `isalnum()`, so an `isalnum`-only filter
+        would leave the stress mark in and never meet the key's bare form."""
+        assert bare(nfd("vaˊɪrg̣ɪn")) == "vargn"
+        assert bare("va'i_rg.i_n") == "vairgin"
+
+    def test_a_reduced_query_cannot_match_across_unrelated_forms(self):
+        """The reduction is a substring test like every other arm, so it must not
+        become a wildcard: an empty reduction matches nothing rather than all."""
+        assert bare("'''") == ""
+        assert search(["'''"], REPO)["matches"] == []
+
+
 def test_a_form_the_corpus_barely_attests_gets_no_handle():
     got, why = resolve("Kulu'c^i", REPO, min_pages=99)
     assert got is None and "below the floor" in why
@@ -221,14 +331,16 @@ def test_fix_refuses_the_whole_page_on_a_bad_handle(tmp_path):
 def test_fix_refuses_a_handle_the_floor_declined(tmp_path):
     """**The brace must not be a way around `--min-pages`.**
 
-    `lexicon lookup` answers a one-page form with an empty `key` and a `why` saying
-    so, but nothing stops a reader typing the handle it would have had. If `fix`
-    resolved that, the floor would hold only for readers who read the `why` column
-    — and a form witnessed by a single neighbouring page would enter the store
-    wearing `as_typed`, which asserts the corpus supplied it.
+    The floor now defaults to 1, so a hapax resolves (editor ruling — see
+    `lookup.py`'s module docstring): most of this vocabulary is rare, and withholding
+    a key only sends a reader to retype the form by hand. What must still hold is
+    that the *brace is not a bypass* — whatever floor is in force applies to a handle
+    exactly as it applies to the lookup, or the floor holds only for readers who read
+    the `why` column, and a form the corpus barely attests enters the store wearing
+    `as_typed`, which asserts the corpus supplied it.
 
-    That is the firewall's own case: one page is a neighbour, not a convention, and
-    a provenance record is worth exactly what it excludes.
+    So this pins both halves: the hapax resolves at the default, and the same handle
+    is refused the moment the caller raises the floor above what the corpus attests.
     """
     # A store holding the form on exactly one page — the shape the floor exists for,
     # built rather than borrowed so it cannot drift as `gt/ocr/` grows.
@@ -241,14 +353,25 @@ def test_fix_refuses_a_handle_the_floor_declined(tmp_path):
     src = next((REPO / "gt" / "ocr").glob("chukchi-1-051.xml"))
     (root / "gt" / "ocr" / src.name).write_text(src.read_text(encoding="utf-8"),
                                                 encoding="utf-8")
-    assert resolve("Nu'nlig.ren", root)[0] is None       # the premise, not assumed
+    # The premise, not assumed: one page, and at the default that is now enough.
+    assert resolve("Nu'nlig.ren", root)[0] == nfd("Nuˊnlig̣ren")
+    assert resolve("Nu'nlig.ren", root, min_pages=2)[0] is None
 
     p = _proposal(root, "The village of {Nu'nlig.ren} stands there.")
-    with pytest.raises(ValueError, match="below the floor"):
-        fix(p, root)
+    fix(p, root)
     rec = json.loads(p.read_text(encoding="utf-8"))["lines"]["1"]
-    assert rec["text"] == "The village of {Nu'nlig.ren} stands there."
-    assert "as_typed" not in rec
+    assert rec["text"] == f"The village of {nfd('Nuˊnlig̣ren')} stands there."
+    assert rec["as_typed"] == "The village of {Nu'nlig.ren} stands there."
+
+    # …and the brace is still not a bypass. `fix` takes no floor of its own, so the
+    # one in force is `expand`'s: raise it and the same handle is refused, left in
+    # place, and nothing is written. Tested here rather than through `fix` because
+    # this is the layer that holds the knob — a floor `fix` could not reach would be
+    # a floor the handle path never had.
+    out, refusals = expand("The village of {Nu'nlig.ren} stands there.",
+                           root, min_pages=2)
+    assert out == "The village of {Nu'nlig.ren} stands there."
+    assert refusals and "below the floor" in refusals[0]
 
 
 def test_nothing_half_expands(tmp_path):

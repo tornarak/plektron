@@ -62,11 +62,20 @@ evidence, it is what both readings that were wrong said.
 - [ ] Every `keying_spec.md` citation in a note quotes its sentence — §5.11
 - [ ] No note claims what another witness said unless it was consulted — §5.12
 - [ ] Notes written in codepoints, not glyphs — §5.12
+- [ ] **No note asserts a linguistic fact the page does not print** — what language
+      a form is, that one is a cognate/variant/plural of another, what it means.
+      Quote a gloss the book itself sets; never supply one. That two forms differ is
+      an observation; why is a claim, and this pass has no instrument for it
 - [ ] Every `note` carries a `class`: doubt / semantic / print / draft / layout /
       artifact — `print` is the compositor's error, `draft` the recognizer's
 - [ ] Every `{handle}` names a form you *read* and would have retyped — never one
       the raster left in doubt, which is a flag and not a lookup
 - [ ] …and the converse: no Tier-1 form retyped by hand that `lexicon lookup`
       offered a key for. A key you saw and did not use is adjudicator time spent
+- [ ] …and its precondition: every native term or proper name the page uses
+      **without introducing it** was actually searched. An unglossed god, spirit
+      class, people or place is one the book introduced elsewhere, so the corpus
+      has likely adjudicated it — a form you never searched for is one you chose
+      to key the expensive way
 - [ ] `contamination` block present; `blind: true` unless something nameable
 - [ ] Every line index present, `text` non-empty on all of them

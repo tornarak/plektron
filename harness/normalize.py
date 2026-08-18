@@ -118,6 +118,27 @@ _SPACING_ANY = re.compile(r"\S {2,}\S|[ \t][;:,]|[ \t][¹²³⁴⁵⁶⁷⁸⁹]
 _MARKER_TIGHT = re.compile(r"(?<=[^\s\"])[ \t]+([¹²³⁴⁵⁶⁷⁸⁹])")
 _MARKER_OPENER = re.compile(r"(?<=\")([¹²³⁴⁵⁶⁷⁸⁹])(?=\S)")
 
+# **The body rule does not run on a line that opens a note.** Reading position off
+# the quote settles the *first* marker on a line and says nothing about a second, and
+# short notes are set run-in: `2-018` L33 prints `¹ Regarding … see Chapter XVII.` and
+# then, after a wide gap, `² See p. 42.` — two openers, one line. The second has text
+# before it, so `_MARKER_TIGHT` claimed it as a body reference and `--commit` would
+# have written `XVII.² See p. 42.`, gluing note 2's opener onto note 1's text. It was
+# caught in the 2-003..2-022 batch only because the adjudicator had *already* spaced
+# that marker by hand: the gate was proposing to revert a human correction.
+#
+# `. ` + marker + ` ` + text is structurally identical in `XVII. ² See` and in a
+# genuinely spaced body reference like `mouth. ¹ The next`, so no local pattern tells
+# them apart. What does is the line: a body line never opens with a marker. So the
+# discriminator stays "read it off the quote" — it just reads the *line's* first
+# marker rather than each marker's own left-hand neighbour, and where that says
+# "note", the body rule has no business on the line at all.
+#
+# This narrows the licence rather than adding a competing rule. What it gives up is
+# tightening a body reference inside a footnote's own text, which the store does not
+# attest — against a corruption that is attested once in twenty pages.
+_OPENER_LINE = re.compile(r"\"[¹²³⁴⁵⁶⁷⁸⁹]")
+
 # A proposal's or decision's `note` and `resolved` are editorial commentary *about*
 # the page, not print-reproduction content, so §2.9 does not reach them: an
 # adjudicator's sentence is not a line of Bogoras and there is no printed spacing
@@ -156,7 +177,8 @@ def _fix_spacing(text: str, commentary: bool = False) -> str:
             continue
         line = _MULTI_SPACE.sub(" ", line)
         line = _SPACE_BEFORE_PUNCT.sub(r"\1", line)
-        line = _MARKER_TIGHT.sub(r"\1", line)
+        if not _OPENER_LINE.search(line):
+            line = _MARKER_TIGHT.sub(r"\1", line)
         line = _MARKER_OPENER.sub(r"\1 ", line)
         out.append(line)
     return "\n".join(out)
@@ -177,10 +199,12 @@ def _spacing_hits(text: str, commentary: bool = False) -> list[dict]:
     for lineno, line in enumerate(text.splitlines(), start=1):
         if _skip_line(line, commentary):
             continue
-        for pat, label in ((_MULTI_SPACE, "2+ spaces (§2.9 sentence spacing)"),
-                           (_SPACE_BEFORE_PUNCT, "space before ;/:/, (§2.9)"),
-                           (_MARKER_TIGHT, "space before a footnote marker (§2.10)"),
-                           (_MARKER_OPENER, "no space after a note opener (§2.10)")):
+        pats = [(_MULTI_SPACE, "2+ spaces (§2.9 sentence spacing)"),
+                (_SPACE_BEFORE_PUNCT, "space before ;/:/, (§2.9)"),
+                (_MARKER_OPENER, "no space after a note opener (§2.10)")]
+        if not _OPENER_LINE.search(line):
+            pats.insert(2, (_MARKER_TIGHT, "space before a footnote marker (§2.10)"))
+        for pat, label in pats:
             for m in pat.finditer(line):
                 hits.append({"issue": label, "line": lineno,
                             "token": _token_at(line, m.start())})

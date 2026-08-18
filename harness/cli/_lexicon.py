@@ -112,12 +112,23 @@ def register(cli):
                "data/marks_exempt.json does not restore it: that ruling says the "
                "ambiguity is real. The key is what a reader writes in braces for "
                "`proposal set` to expand. Reports; never gates"
-               "\n\nQUERY: any substring; several are an OR")
-    arg(p, "queries", nargs=-1, required=True, metavar="QUERY")
-    opt(p, "--min-pages", type=int, default=2,
-        help="withhold the key from a word attested on fewer pages than this — "
-             "one page is a neighbour, not a convention. Counted per fold over "
-             "all its spellings, so the floor can never hide a conflict [2]")
+               "\n\nQUERY: any substring; several are an OR, and a page's whole "
+               "unglossed vocabulary belongs in one call — `lexicon lookup kelet "
+               "vairgin kulu` is one index build answering three questions, where "
+               "three calls are three builds")
+    # **The metavar carries the arity, because `-h`'s usage line is where a caller
+    # reads it.** This was `QUERY`, and the prose two lines up saying "several are
+    # an OR" did not survive the contradiction: readers on the 2-003..2-022 and
+    # 2-023.. batches looked up forms one command at a time, paying a fresh index
+    # build each, which is the plural convention this repo already applies to refs
+    # losing to a singular noun in the usage line.
+    arg(p, "queries", nargs=-1, required=True, metavar="QUERY [QUERY ...]")
+    opt(p, "--min-pages", type=int, default=1,
+        help="withhold the key from a word attested on fewer pages than this. "
+             "Counted per fold over all its spellings, so the floor can never hide "
+             "a conflict. Defaults to 1 — a hapax the corpus adjudicated once still "
+             "gets a key, because most of this vocabulary is rare and withholding "
+             "one only sends a reader to retype the form by hand [1]")
     opt(p, "--context", type=int, default=2,
         help="lines of surrounding text per matched form, which is what makes a "
              "form's sense readable without opening the page [2]")

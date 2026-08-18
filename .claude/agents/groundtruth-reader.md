@@ -303,7 +303,7 @@ telling where; `--out` is for a one-off outside the pass, and is not yours.
   it was the shape of the page arriving one line per turn. Collect the corrections
   as you read and write them together. The reply names which lines changed and
   which were already right, so re-sending a line you were unsure about is free.
-- **`uv run harness lexicon lookup QUERY` finds a form a human has already
+- **`uv run harness lexicon lookup QUERY [QUERY ...]` finds a form a human has already
   adjudicated**, with the pages and the lines it was printed on — `kulu` gives you
   `Kuluˊči`, 15 times over 12 pages, and "south of Kuluˊči Bay", which is what makes
   the word a place rather than a string. It prints a **key** beside each form:
@@ -320,6 +320,62 @@ telling where; `--out` is for a one-off outside the pass, and is not yours.
   hand over as a key is one they can see was ratified elsewhere and pass over. The
   reading half of this pass runs fifteen at a time and the adjudicating half runs
   one at a time, so a minute you save there is worth many of yours.
+
+  **A handle carries its own case, and may raise the corpus's.** Write `{ke'let}`,
+  `{Ke'let}` or `{KE'LET}` and you get `keˊlet`, `Keˊlet` or `KEˊLET` — the book sets
+  one word all three ways by position (body, head of a sentence, run-in heading), so
+  a sentence-initial form no longer costs you the handle. **An attestation enables
+  its own case and every case above it**, never below: a form the corpus holds only
+  capitalized, like the place-name `Kuluˊči`, refuses `{kulu'c^i}` rather than
+  quietly lowering a ratified identity. If the page really sets it lower, key it by
+  hand and say so in a note. And a case that cannot be raised without changing a
+  glyph is refused too — the uppercase of `vaˊɪrg̣ɪn` would have to decide what the
+  compositor set for small-cap `ɪ` in an all-caps line, which nothing here knows.
+
+  **A handle can be one morpheme of a longer form.** `liˊi-{ke'let}` keys the part
+  the corpus has ratified and leaves you to read only the part it has not — found by
+  a reader on `2-021`, not designed in. Most of the recurring vocabulary here is
+  compounded (`aᵋtw-eˊrmečɪn`, `notaˊs˙qa-vaˊɪrg̣ɪt`, `Taˊn˙ñɪn-wêˊthaw`), so the
+  form you are keying is often a known stem plus something new, and a whole-token
+  match is the wrong test. **It does not always work** — vowel harmony and the
+  compounding itself can change the stem's vowels, and a handle whose expansion is
+  not what the page prints is worse than no handle. So check the expansion against
+  the raster after `proposal fix` runs, exactly as you would a form you typed.
+
+  **A place name is almost always already keyed.** Part 1 pages `1-048`–`1-053` are
+  the book's own list of villages and camps, all ground truth, and they give each
+  place its Eskimo equivalent and its position — so `Čeˊčin` comes back with "on the
+  west shore of the bay of the same name". Look up every toponym; the gazetteer is
+  the densest ratified vocabulary in the corpus and the cheapest to reach.
+
+  **When to look one up: whenever the page uses a native term or a proper name
+  without introducing it.** A form the author drops in unglossed — a god, a spirit
+  class, a people, a place — is one the book has already introduced somewhere else,
+  which means the corpus has probably adjudicated it. `keˊlᴇ`, `keˊlet`,
+  `vaˊɪrg̣ɪn`, `vaˊɪrg̣ɪt`, `Pičvuˊčin`, `Kereˊtkun`, `Eˊtɪn` and their kin recur on
+  page after page of this chapter. **Look before you key, not after** — the lookup
+  costs a few hundred tokens and settles the marks you would otherwise be squinting
+  at, and it is the cheapest instrument in the ladder. A miss is information too: a
+  form genuinely below the two-page floor is one to read with more care, not less.
+  Do not let a lookup *replace* the raster — read the form, then use the key — but a
+  form you never searched for is one you chose to key the expensive way.
+
+  **Type the query however you like.** Query and key are reduced to bare ASCII
+  before matching, so `Telqäˊp` as the book prints it, `telqap`, `telqa'p` and the
+  key `Telqa:'p` all reach the same form. A search that misses is evidence the
+  corpus lacks the word, not that you spelled the query wrong.
+
+  **`lexicon lookup` takes as many queries as you have** — `lexicon lookup kelet
+  vairgin kulu ce'cin` is one call. Collect the page's unglossed vocabulary off the
+  composite and look the whole list up at once, before you start keying: each call
+  rebuilds the index over the corpus, so ten forms asked one at a time is ten builds
+  for one page's worth of answers, and the reading half runs many readers at once.
+
+  **What you must not do is chain them with shell operators.** `lexicon lookup X
+  2>&1; echo ---; uv run …` is refused for the `;` and the `|`, not for the lookup,
+  and the refusal costs a whole round trip. That is what a plural query is *for*: one
+  command, no operators. Measured on the 2-003..2-022 batch, refusals were almost
+  entirely this, every one retried bare and succeeded.
 
   **A lookup that returns a form but no key has answered you**: the floor is two
   pages, so a word attested on one page yields a form you may read *and no handle
@@ -527,7 +583,9 @@ why.
   matches none of them and returns a clean zero indistinguishable from "the book
   does not print this". `ocr grep` assembles the line first, which is why it
   exists. `lexicon lookup` is the other search — over ratified native forms, by a
-  typeable key, folded across the axes a reading gets wrong.
+  typeable key, folded across the axes a reading gets wrong. **Both take as many
+  terms as you have in one call**, and both rebuild their index per invocation, so
+  the page's whole vocabulary in one command is the shape to reach for.
 - **Never take the CATMuS machine text in `mz/ocr/` as a witness to what any
   character is, anywhere an inventory glyph could stand.** It reads 0% of the
   transcription inventory, and **its errors arrive as ASCII** — it substitutes
@@ -712,12 +770,21 @@ evidence, it is what both readings that were wrong said.
 - [ ] Every `keying_spec.md` citation in a note quotes its sentence — §5.11
 - [ ] No note claims what another witness said unless it was consulted — §5.12
 - [ ] Notes written in codepoints, not glyphs — §5.12
+- [ ] **No note asserts a linguistic fact the page does not print** — what language
+      a form is, that one is a cognate/variant/plural of another, what it means.
+      Quote a gloss the book itself sets; never supply one. That two forms differ is
+      an observation; why is a claim, and this pass has no instrument for it
 - [ ] Every `note` carries a `class`: doubt / semantic / print / draft / layout /
       artifact — `print` is the compositor's error, `draft` the recognizer's
 - [ ] Every `{handle}` names a form you *read* and would have retyped — never one
       the raster left in doubt, which is a flag and not a lookup
 - [ ] …and the converse: no Tier-1 form retyped by hand that `lexicon lookup`
       offered a key for. A key you saw and did not use is adjudicator time spent
+- [ ] …and its precondition: every native term or proper name the page uses
+      **without introducing it** was actually searched. An unglossed god, spirit
+      class, people or place is one the book introduced elsewhere, so the corpus
+      has likely adjudicated it — a form you never searched for is one you chose
+      to key the expensive way
 - [ ] `contamination` block present; `blind: true` unless something nameable
 - [ ] Every line index present, `text` non-empty on all of them
 <!-- /transclude -->

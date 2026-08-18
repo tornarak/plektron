@@ -30,6 +30,21 @@ per-form floor at the default deletes the corpus's only genuine ambiguity from t
 lookup instead of refusing it. A floor may withhold a handle from a form the corpus
 barely attests; it may never hide a conflict.
 
+**It defaults to 1 — hapaxes get a key** (editor ruling). Most of this vocabulary is
+rare: `reˊkkeñ` is set three times on `2-022` and nowhere else, `Ceˊčin` once, and a
+floor of 2 withheld a key from both, so a reader retyped by hand exactly the forms
+where a slip is least likely to be caught. Counting *occurrences* instead was
+considered and refused: three occurrences on one page are one adjudication event, so
+it would have loosened the floor without buying the independence the floor was for.
+Allowing hapaxes outright is the same loosening, honestly labelled.
+
+What makes it safe is that thinness stays **visible** rather than being laundered:
+every form here was adjudicated by a human at the raster, `search` prints the count
+and the pages beside each key, and `_expanded` writes `as_typed` so the review UI
+badges a handled form as a corpus match. The adjudicator sees that the reader leaned
+on the corpus and on how much of it. **The ambiguity refusal is untouched** — that
+is the guard that matters, and it never had anything to do with the floor.
+
 **`gt/ocr/` only.** The lookup's entire authority is that a human adjudicated these
 marks at the raster. A list built from `mz/` would be garbled forms offered to be
 copied verbatim — the failure this exists to prevent, inverted.
@@ -37,6 +52,7 @@ copied verbatim — the failure this exists to prevent, inverted.
 from __future__ import annotations
 
 import re
+import unicodedata
 from pathlib import Path
 
 from .detectors import native_corpus_context
@@ -95,7 +111,25 @@ def index(root: Path = Path(".")) -> dict:
     return {"buckets": buckets, "by_key": by_key, "unkeyable": unkeyable}
 
 
-def resolve(key: str, root: Path = Path("."), min_pages: int = 2,
+def spellings(bucket: dict) -> set[str]:
+    """A bucket's distinct spellings, **case aside** — what "the book sets this word
+    more than one way" counts, and the one definition `resolve` and `search` share.
+
+    Case is position, not spelling: `keˊlet` in the body, `Keˊlet` opening a
+    sentence and `KEˊLET` as a run-in heading are one word set three ways, and the
+    case ladder in `_resolve_cased` lets a handle name any of them. What the
+    ambiguity refusal is for is the book disagreeing about *marks* — `vaˊɪrgɪt`
+    beside `vaˊɪrg̣ɪt`, `Čeˊwɪn` beside `Čeˊwin` — which no tool may settle.
+
+    The two callers computed this separately and drifted the moment the corpus first
+    held three cases of one word: `resolve` was taught the difference and `search`
+    was not, so `lexicon lookup Ke'let` reported all three variants `ambiguous` and
+    offered no key at all, for a word `expand` would happily have resolved.
+    """
+    return {f["form"].casefold() for f in bucket["forms"].values()}
+
+
+def resolve(key: str, root: Path = Path("."), min_pages: int = 1,
             idx: dict | None = None) -> tuple[str | None, str]:
     """A key to its ratified form, or `(None, why)`.
 
@@ -108,7 +142,13 @@ def resolve(key: str, root: Path = Path("."), min_pages: int = 2,
     if bucket is None:
         return None, f"no ratified form has the key {key!r}"
     b = idx["buckets"][bucket]
-    if len(b["forms"]) > 1:
+    # **Case variants are one spelling, and the key picks among them** — see
+    # `spellings`. Restoring `2-017` and `2-018` put `keˊlet`, `Keˊlet` and `KEˊLET`
+    # in `gt/ocr/` at once, and counting forms rather than spellings stopped every
+    # `{ke'let}` handle in the chapter resolving: the refusal firing hardest on the
+    # word that needs it most. The message still lists every form, since a reader
+    # meeting a real conflict needs to see the marks that differ.
+    if len(spellings(b)) > 1:
         spelt = ", ".join(sorted(f["form"] for f in b["forms"].values()))
         return None, (f"{key!r} names one of {len(b['forms'])} spellings the corpus "
                       f"holds for this word ({spelt}) — the book sets it more than "
@@ -118,10 +158,124 @@ def resolve(key: str, root: Path = Path("."), min_pages: int = 2,
         return None, (f"{key!r} is attested on {len(b['refs'])} page(s), below the "
                       f"floor of {min_pages} — one page is a neighbour, not a "
                       "convention. Read the raster")
+    # One word, possibly several cases of it: an exact key names its own case.
+    # `by_key` is built from these keys, so the fallback is only ever reached by a
+    # caller holding a bucket this index did not build.
+    if key in b["forms"]:
+        return b["forms"][key]["form"], ""
     return next(iter(b["forms"].values()))["form"], ""
 
 
-def expand(text: str, root: Path = Path("."), min_pages: int = 2,
+# The three cases a form is set in, in the order a handle may climb: `keˊlet`
+# lowercase in the body, `Keˊlet` capitalized at the head of a sentence, `KEˊLET` in
+# caps as a run-in heading. All three occur, often on facing pages, and all three are
+# the same word — which is why they share a bucket and why `resolve` no longer counts
+# them as competing spellings.
+_CASES = ("lowercase", "capitalized", "uppercase")
+
+
+def _cased(s: str) -> list[str]:
+    """The characters of `s` that *have* a case. `ˊ` U+02CA is a modifier letter and
+    passes `isalpha`, so an `isalpha` filter would decide `keˊlet` is not lowercase."""
+    return [c for c in s if c.islower() or c.isupper()]
+
+
+def _case_rank(s: str) -> int | None:
+    """Which of `_CASES` `s` is set in, or None for a shape the ladder cannot name
+    (`McX`, a form with no cased character at all)."""
+    cs = _cased(s)
+    if not cs:
+        return None
+    if all(c.islower() for c in cs):
+        return 0
+    if cs[0].isupper() and all(c.islower() for c in cs[1:]):
+        return 1
+    if all(c.isupper() for c in cs):
+        return 2
+    return None
+
+
+def _raise_case(form: str, rank: int) -> tuple[str | None, str]:
+    """`form` re-cased to `rank`, or `(None, why)`.
+
+    **Only ASCII letters are raised, and a form containing anything else refuses
+    rather than approximating.** `str.upper()` is not safe over this inventory: `ɪ`
+    U+026A maps to `Ɪ` U+0197, a letter the keying spec does not contain at all; `ǰ`
+    becomes two characters; `ᴇ` and `ᴀ` map to themselves and would silently ignore
+    the request, handing back a form that is not what the handle asked for. Since
+    nothing here can know what the compositor set for a small-cap `ɪ` inside an
+    all-caps heading, the honest answer is to refuse and let a reader look.
+
+    Characters with no case are passed through untouched, so a combining mark keeps
+    its base: `g̣enɪˊmlinet` capitalizes to `G̣enɪˊmlinet` with its dot below intact.
+    """
+    if rank == 0:
+        return form, ""
+    out, raised = [], False
+    for c in form:
+        if not (c.islower() or c.isupper()):
+            out.append(c)
+            continue
+        if rank == 1 and raised:
+            out.append(c)
+            continue
+        if not ("a" <= c <= "z" or "A" <= c <= "Z"):
+            return None, (f"{c!r} is not an ASCII letter, and raising its case would "
+                          "change the glyph rather than the case")
+        out.append(c.upper())
+        raised = True
+    return "".join(out), ""
+
+
+def _resolve_cased(key: str, root: Path, min_pages: int,
+                   idx: dict) -> tuple[str | None, str]:
+    """`resolve`, over the case ladder: an attestation enables its own case and every
+    case above it.
+
+    A form attested lowercase can be written `{ke'let}`, `{Ke'let}` or `{KE'LET}`; one
+    attested only capitalized enables the last two; one attested only in caps enables
+    only itself. **The ladder climbs and never descends** — the corpus capitalizes a
+    proper name for a reason, and a handle that quietly lowered `Kuluˊči` would edit a
+    ratified identity by a keystroke nobody reviewed. Descending is refused with the
+    ratified key named, so a reader who meant it can key the form by hand and say why.
+
+    Without this a reader either retypes the whole form — losing what the handle is
+    for — or hands the adjudicator a line to re-case: `2-018` L21 was the latter, and
+    the only purely mechanical miss in that batch's correction profile.
+
+    An exact attestation is always preferred to a derived one, so a form the corpus
+    holds in the requested case is returned as the corpus holds it, untransformed.
+    """
+    form, why = resolve(key, root, min_pages, idx)
+    if form is not None:
+        return form, ""
+    want = _case_rank(key)
+    if want is None:
+        return None, why
+    # The bucket is reachable by any case of the key, since all three share one.
+    low = key.lower()
+    for variant in (low, low[:1].upper() + low[1:], key.upper()):
+        if variant in idx["by_key"]:
+            src_form, src_why = resolve(variant, root, min_pages, idx)
+            if src_form is None:
+                return None, src_why          # ambiguous or too thin: say so, once
+            have = _case_rank(variant)
+            if have is None or have > want:
+                return None, (
+                    f"{key!r} asks for the {_CASES[want]} of a form the corpus "
+                    f"attests {_CASES[have] if have is not None else 'otherwise'} "
+                    f"({src_form!r}) — a handle may raise a form's case but never "
+                    "lower it. If the page really sets it lower, key it by hand and "
+                    "say so in a note")
+            out, bad = _raise_case(src_form, want)
+            if out is None:
+                return None, (f"{key!r} asks for the {_CASES[want]} of {src_form!r}, "
+                              f"and {bad}. Key the form by hand")
+            return out, ""
+    return None, why
+
+
+def expand(text: str, root: Path = Path("."), min_pages: int = 1,
            idx: dict | None = None) -> tuple[str, list[str]]:
     """Substitute every handle in a line, or refuse the whole line.
 
@@ -141,7 +295,7 @@ def expand(text: str, root: Path = Path("."), min_pages: int = 2,
     refusals: list[str] = []
 
     def sub(m: re.Match) -> str:
-        form, why = resolve(m.group(1), root, min_pages, idx)
+        form, why = _resolve_cased(m.group(1), root, min_pages, idx)
         if form is None:
             refusals.append(why)
             return m.group(0)
@@ -159,24 +313,54 @@ def expand(text: str, root: Path = Path("."), min_pages: int = 2,
     return out, refusals
 
 
-def search(queries: list[str], root: Path = Path("."), min_pages: int = 2,
+def bare(s: str) -> str:
+    """`s` reduced to bare ASCII alphanumerics, casefolded.
+
+    **Applied to the query as well as to the haystack**, which is the whole point:
+    a reduction on one side only is not a fuzzy match, it is a match against a
+    spelling the caller has to guess. `Telqäˊp` has the key `Telqa:'p`, and a reader
+    looking for it typed `telqa'p` — reasonable, and it found nothing, because the
+    apostrophe it kept is one the key spells elsewhere and the `ä` it dropped is one
+    the key spells `a:`. Reduced on both sides, `telqa'p`, `telqap`, `Telqäˊp` and
+    `Telqa:'p` all land on `telqap` and all reach the form.
+
+    ASCII-only is what makes the reduction agree across the two alphabets. A
+    combining mark is not alphanumeric and falls out on its own, but `ˊ` U+02CA and
+    `ɪ` U+026A are modifier letters and letters — `isalnum()` keeps both — so a
+    reduction without the ASCII test would leave the stress mark in `telqaˊp` and
+    never meet the key's `telqap`.
+
+    **NFD first, and the form is named** (`keying_spec.md` §1). The corpus is NFD, so
+    its `ä` is already `a` + U+0308 and reduces to `a`; a query typed at a terminal
+    arrives NFC, where `ä` is one non-ASCII character that the ASCII test throws away
+    whole — `Telqäˊp` reduced to `telqp` and matched nothing. Decomposing first is
+    what lets a reader type the form exactly as the book prints it.
+    """
+    s = unicodedata.normalize("NFD", s)
+    return "".join(c for c in s if c.isalnum() and c.isascii()).casefold()
+
+
+def search(queries: list[str], root: Path = Path("."), min_pages: int = 1,
            context: int = 2) -> dict:
     """Forms matching any query, with what a reader needs to judge them.
 
     Matched against the key, the bucket, the form and the key's bare-ASCII
     reduction, so `kulu`, `kuluci` and `Kulu'c^i` all reach `Kuluˊči`. Substring,
     not prefix: the interesting query is often a stem in the middle of a compound.
+    The query is reduced the same way the key is, so a reader may type the form as
+    the book prints it or as the key spells it — see `bare`.
     """
     idx = index(root)
-    qs = [q.casefold() for q in queries]
+    qs = [(q.casefold(), bare(q)) for q in queries]
     rows, seen = [], set()
     for bucket, b in sorted(idx["buckets"].items()):
-        ambiguous = len(b["forms"]) > 1
+        ambiguous = len(spellings(b)) > 1
         pages = len(b["refs"])
         for key, f in sorted(b["forms"].items()):
-            bare = "".join(c for c in key if c.isalnum()).casefold()
-            hay = (key.casefold(), bucket.casefold(), f["form"].casefold(), bare)
-            if not any(q in h for q in qs for h in hay):
+            reduced = bare(key)
+            hay = (key.casefold(), bucket.casefold(), f["form"].casefold(), reduced)
+            if not (any(q in h for q, _ in qs for h in hay)
+                    or any(qb and qb in reduced for _, qb in qs)):
                 continue
             usable = not ambiguous and pages >= min_pages
             seen.add(bucket)

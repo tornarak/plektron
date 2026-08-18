@@ -125,10 +125,28 @@ class TestMarkerSpacing:
         assert _spacing_hits(self.RIGHT) == []
         assert _fix_spacing(self.RIGHT) == self.RIGHT
 
+    # `2-018` L33, verbatim: two short notes set run-in on one physical line.
+    TWO_OPENERS = ('   "text": "¹ Regarding deceased people who come back as '
+                   '“spirits,” see Chapter XVII. ² See p. 42."')
+
+    def test_a_second_opener_on_one_line_is_not_tightened(self):
+        """The body rule reads position off the quote, which settles the *first*
+        marker on a line and says nothing about a second. Tightening `XVII. ²`
+        would glue note 2's opener onto note 1's text — and in the batch that
+        found this, the adjudicator had already spaced that marker by hand, so
+        the gate was proposing to revert a human correction."""
+        assert _spacing_hits(self.TWO_OPENERS) == []
+        assert _fix_spacing(self.TWO_OPENERS) == self.TWO_OPENERS
+
+    def test_a_body_line_is_still_tightened(self):
+        """The narrowing is scoped to lines that open a note. A body line never
+        opens with a marker, so nothing about the common case moves."""
+        assert [h["line"] for h in _spacing_hits(self.ALTO)] == [1, 2]
+
     def test_the_writer_agrees_with_the_reporter(self):
         """Same pairing `_spacing_hits`/`_fix_spacing` owe each other elsewhere: a
         silent rewrite of ground truth is the worse half of any bug here."""
-        for text in (self.ALTO, self.OPENER):
+        for text in (self.ALTO, self.OPENER, self.TWO_OPENERS, self.RIGHT):
             assert (_fix_spacing(text) != text) == bool(_spacing_hits(text))
 
     def test_the_fast_probe_does_not_reject_a_marker_hit(self):
