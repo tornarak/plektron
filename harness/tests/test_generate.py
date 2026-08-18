@@ -1518,6 +1518,63 @@ def test_a_run_in_head_leaves_the_milestone_an_anchor(tmp_path):
     assert "Seal-Hunting" not in got          # the ToC's casing is not set here
 
 
+def test_a_figure_between_the_milestone_and_the_head_does_not_set_it_twice(tmp_path):
+    """`1-242` set KETTLE twice, and the rule was right — it was being asked of
+    the wrong element.
+
+    A figure is a float: Fig. 103 is placed where it fitted on the leaf, which is
+    between the section boundary and the paragraph the section opens with. Reading
+    only `getnext()` found the figure, concluded the page printed no head, and
+    emitted an `<h2>` off the ToC on top of the compositor's own run-in label.
+    """
+    from harness import tei_html
+    p = tmp_path / "tei" / "chukchi-1-242.xml"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text('<TEI xmlns="http://www.tei-c.org/ns/1.0"><text><body><pb n="186"/>'
+                 '<milestone unit="subsection" n="chVII.16"/>'
+                 '<figure n="103"><figDesc>Fig. 103, a, Clay Lamp</figDesc></figure>'
+                 '<p><label>KETTLE.</label> — The old women still have</p>'
+                 '</body></text></TEI>', encoding="utf-8")
+    got = tei_html.render(p, {"chVII.16": {"number": "", "title": "Kettle"}})["html"]
+    assert '<span class="milestone anchor subsection" id="chVII.16"></span>' in got
+    assert got.count("KETTLE") == 1, "the compositor's head, set once"
+    assert "Kettle" not in got, "and not a second one out of the ToC"
+
+
+def test_a_comment_between_the_milestone_and_the_head_is_stepped_over_too(tmp_path):
+    """The generator writes several comments per page, entity candidates among
+    them, and one can land right after a milestone. A comment has a callable
+    `tag`, so it is not an element and asking its name would raise."""
+    from harness import tei_html
+    p = tmp_path / "tei" / "chukchi-1-242.xml"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text('<TEI xmlns="http://www.tei-c.org/ns/1.0"><text><body><pb n="186"/>'
+                 '<milestone unit="subsection" n="chVII.16"/>'
+                 '<!-- entity candidate: mentioned above -->'
+                 '<p><label>KETTLE.</label> — The old women still have</p>'
+                 '</body></text></TEI>', encoding="utf-8")
+    got = tei_html.render(p, {"chVII.16": {"number": "", "title": "Kettle"}})["html"]
+    assert '<span class="milestone anchor subsection" id="chVII.16"></span>' in got
+    assert got.count("KETTLE") == 1
+
+
+def test_a_section_whose_page_prints_no_head_still_gets_one_after_a_figure(tmp_path):
+    """The converse, and the reason this steps over floats rather than searching
+    for a `<label>` anywhere below: a page that genuinely prints no run-in head
+    must still take its heading from the ToC, figure or no figure. Without this
+    the fix would trade one silent omission for another."""
+    from harness import tei_html
+    p = tmp_path / "tei" / "chukchi-1-242.xml"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text('<TEI xmlns="http://www.tei-c.org/ns/1.0"><text><body><pb n="186"/>'
+                 '<milestone unit="subsection" n="chVII.16"/>'
+                 '<figure n="103"><figDesc>Fig. 103, a, Clay Lamp</figDesc></figure>'
+                 '<p>The old women still have a vivid recollection</p>'
+                 '</body></text></TEI>', encoding="utf-8")
+    got = tei_html.render(p, {"chVII.16": {"number": "", "title": "Kettle"}})["html"]
+    assert '<span class="milestone-t">Kettle</span>' in got
+
+
 def test_a_label_in_a_list_is_still_a_list_term(tmp_path):
     """`<label>` is TEI's for both a gloss list's term and a run-in head, and the
     parent is what tells them apart. A rule keyed on the element alone would have

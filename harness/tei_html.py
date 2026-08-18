@@ -55,6 +55,31 @@ def _lang_attr(lang: str) -> str:
     return f' lang="{escape(lang)}"' if lang else ""
 
 
+#: Elements that may sit between a milestone and the block whose head it names,
+#: without being that block. A figure is a **float**: the compositor set it where
+#: it fitted on the leaf, which is routinely between a section boundary and the
+#: paragraph that section opens with. `<pb/>` is the same case at a leaf edge.
+_FLOATS = ("figure", "pb")
+
+
+def _block_after(el):
+    """The first sibling after `el` that could carry the printed head.
+
+    Floats are stepped over rather than treated as the answer. Reading
+    `getnext()` alone made an intervening figure mean "the page printed no head",
+    which is a statement about typesetting read off an accident of placement.
+    """
+    for nxt in el.itersiblings():
+        # Comments and processing instructions have a callable `tag`; the
+        # generator writes several per page, including right after a milestone.
+        if not isinstance(nxt.tag, str):
+            continue
+        if etree.QName(nxt).localname in _FLOATS:
+            continue
+        return nxt
+    return None
+
+
 def _leads_a_block(el) -> bool:
     """Does the block after this milestone open with the printed head?
 
@@ -65,8 +90,16 @@ def _leads_a_block(el) -> bool:
     at the front of the next block is the generator saying it found one, and its
     absence is the generator saying the block held nothing but the heading. Depth
     still governs how each level sets; it does not govern whether the words exist.
+
+    **"Next" means the next block, not the next sibling** (`_block_after`), and
+    `1-242` is why. There the milestone is followed by Fig. 103 and only then by
+    `<p><label>KETTLE.</label> — The old women still have a vivid recollection …`,
+    so the figure was read as the answer, the page was judged to print no head,
+    and KETTLE was set twice — once as an `<h2>` off the ToC and once as the
+    compositor's own run-in label. The evidence rule was right; it was being asked
+    of the wrong element.
     """
-    nxt = el.getnext()
+    nxt = _block_after(el)
     if nxt is None:
         return False
     first = next(iter(nxt), None)
