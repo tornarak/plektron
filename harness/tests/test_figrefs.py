@@ -208,8 +208,13 @@ BY_NUMBER = {"177": [{"ref": "1-313", "key": "001", "keys": ["001"]}],
              "140": [{"ref": "1-276", "key": "005", "keys": ["005", "006"]}],
              "1": [{"ref": "1-287", "key": "003", "keys": ["003"]},
                    {"ref": "1-049", "key": "002", "keys": ["002"]}]}
-BOXES = {"1-287": [{"n": "1", "key": "003", "zone_ids": ["fig_1-287_003"]},
-                   {"n": "2", "key": "001", "zone_ids": ["fig_1-287_001"]}],
+BOXES = {"1-287": [{"n": "1", "key": "003", "caption": "Fig. 1. Ke´lE.",
+                    "zone_ids": ["fig_1-287_003"]},
+                   {"n": "2", "key": "001", "caption": "Fig. 2. Ke´lE.",
+                    "zone_ids": ["fig_1-287_001"]}],
+         "1-276": [{"n": "140", "key": "005",
+                    "caption": "Fig. 140. Drum-Sticks: a, b.",
+                    "zone_ids": ["fig_1-276_005", "fig_1-276_006"]}],
          "1-123": [{"n": None, "key": "001",
                     "zone_ids": ["fig_1-123_001", "fig_1-123_002"]}]}
 
@@ -263,6 +268,28 @@ def test_a_plate_figure_with_no_numbered_caption_refuses():
     is the guess `in_printed_order` already declines to make."""
     out = _resolve(number="2", plate="V")
     assert out["pairs"] == [] and "0 figures numbered 2" in out["why"]
+
+
+def test_a_reference_carries_the_caption_under_the_picture():
+    """A card headed `Fig. 140` names a number; the caption names the thing. It
+    comes off the same leaf the picture does, matched on the store's own key."""
+    assert _resolve(number="140")["caption"] == "Fig. 140. Drum-Sticks: a, b."
+    assert _resolve(number="1", plate="XXI")["caption"] == "Fig. 1. Ke´lE."
+
+
+def test_a_whole_plate_takes_no_caption_from_its_leaf():
+    """Plate XXI is two pictures under two captions and neither is the plate's.
+    Only the printed list sets that one, so this leaves it to the caller rather
+    than handing back whichever caption came first."""
+    assert _resolve(kind="plate", number="XXI")["caption"] == ""
+
+
+def test_a_caption_is_absent_rather_than_a_neighbours():
+    """`1-313` is in `by_number` and not in the box fixture, which is the shape a
+    hand-keyed `data/figure_numbers.json` entry has: it names a zone no folded
+    record keys. The picture still resolves and the caption is simply empty."""
+    out = _resolve(number="177")
+    assert out["pairs"] == ["1-313/001"] and out["caption"] == ""
 
 
 def test_an_unresolved_reference_always_says_which_store_declined():

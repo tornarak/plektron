@@ -394,11 +394,20 @@ def foreign_citation(before: str, names: set[str]) -> str:
 
 def resolve(span: dict, by_number: dict, by_plate: dict,
             figures_on: callable) -> dict:
-    """Where one scanned reference points: `{pairs, why}`.
+    """Where one scanned reference points: `{pairs, why, caption}`.
 
     `pairs` is a list of `ref/key`, the same handle a stack card is built from
     and the same one the List of Illustrations hands to `openFigure`. Empty
     means nothing linked, and `why` says which store declined.
+
+    **`caption` is the printed caption under the picture**, which is the line
+    that tells a reader what they are looking at — a card headed `Fig. 87` and
+    nothing else names a number, not a thing. It comes from the same store the
+    picture does, and it is the caption of the *one* figure that matched: a whole
+    plate has several pictures and so several captions, none of them the plate's,
+    so a plate resolves with `caption: ""` and its caller supplies the printed
+    list's own, which is where a plate's caption is set. Decoration in every
+    case — a card is built from `pairs` alone and a missing caption costs a line.
 
     Three cases, and the middle one is the reason this function is worth having:
 
@@ -425,24 +434,29 @@ def resolve(span: dict, by_number: dict, by_plate: dict,
     if span["kind"] == "plate":
         hit = by_plate.get(span["number"])
         if not hit:
-            return {"pairs": [], "why": "no plate of that number is located"}
-        return {"pairs": [f"{hit['ref']}/{k}" for k in hit["keys"]], "why": ""}
+            return {"pairs": [], "why": "no plate of that number is located",
+                    "caption": ""}
+        return {"pairs": [f"{hit['ref']}/{k}" for k in hit["keys"]], "why": "",
+                "caption": ""}
 
     if span["plate"]:
         hit = by_plate.get(span["plate"])
         if not hit:
-            return {"pairs": [], "why": f"Plate {span['plate']} is not located"}
-        found = [f for f in figures_on(hit["ref"])
+            return {"pairs": [], "why": f"Plate {span['plate']} is not located",
+                    "caption": ""}
+        found = [f for f in figures_on(hit["ref"]) or ()
                  if str(f.get("n")) == span["number"]]
         if len(found) != 1:
             return {"pairs": [],
                     "why": f"{len(found)} figures numbered {span['number']} on "
-                           f"Plate {span['plate']}"}
+                           f"Plate {span['plate']}",
+                    "caption": ""}
         # One figure, but a figure is not one box: the parts of a lettered
         # figure hang under its single caption, and a reference to it names all
         # of them, as the plate case above does for the leaf.
         return {"pairs": [f"{hit['ref']}/{zone_suffix(z)}"
-                          for z in found[0]["zone_ids"]], "why": ""}
+                          for z in found[0]["zone_ids"]], "why": "",
+                "caption": found[0].get("caption") or ""}
 
     on_plates = {h["ref"] for h in by_plate.values()}
     hits = [h for h in by_number.get(span["number"]) or []
@@ -450,10 +464,18 @@ def resolve(span: dict, by_number: dict, by_plate: dict,
     if len(hits) != 1:
         return {"pairs": [],
                 "why": f"{len(hits)} text figures print the number "
-                       f"{span['number']}"}
+                       f"{span['number']}",
+                "caption": ""}
     # Every box, not the first: `1-276`'s Fig. 140 is two, lettered a and b under
     # its one caption. `figures.crop_keys` is the rule and the plate cases above
     # go through it too.
+    # The caption is read back off the leaf rather than carried in `by_number`,
+    # which indexes numbers to zones and holds no text. Matched on `key`, the
+    # store's own foreign key: a figure `data/figure_numbers.json` numbered by
+    # hand may name a zone no folded record keys, and an absent caption is the
+    # right answer there rather than the neighbouring figure's.
+    caption = next((f.get("caption") or "" for f in figures_on(hits[0]["ref"]) or ()
+                    if f.get("key") == hits[0]["key"]), "")
     return {"pairs": [f"{hits[0]['ref']}/{k}"
                       for k in hits[0].get("keys") or [hits[0]["key"]]],
-            "why": ""}
+            "why": "", "caption": caption}

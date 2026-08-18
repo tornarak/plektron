@@ -403,6 +403,73 @@ def test_a_plate_set_in_two_boxes_links_both(tmp_path: Path):
     assert hit["keys"] == ["001", "002"]
 
 
+def _loi(root: Path, figures: list, plates: list) -> None:
+    _write(root, "data/loi.json", json.dumps({
+        "source": {"refs": ["1-014"]}, "figures": figures, "plates": plates}))
+    _write(root, "data/runs.json", json.dumps({"runs": [{
+        "id": "illustrations", "kind": "loi", "title": "List of Illustrations",
+        "refs": ["1-014"], "source": "data/loi.json"}]}))
+
+
+def test_a_plate_referred_to_in_prose_carries_the_printed_lists_caption(
+        tmp_path: Path):
+    """**The card was headed `Plate I` and said nothing else.** A plate is
+    several pictures under several captions and none of them is the plate's, so
+    the leaf cannot answer this — the printed list is where a plate's caption is
+    set, and it is the same string the list's own links hand to the card. So
+    clicking `Plate I` in a sentence and clicking it in the List of Illustrations
+    now open the one card, which is what `openFigure`'s id already implied."""
+    from harness.web.edition import _figref_state
+    _fig(tmp_path, "1-049", "Fig. 1. Village Uñiˊsak.")
+    _loi(tmp_path, [], [{"kind": "plate", "number": "I",
+                         "caption": "Village Uñiˊsak", "opposite_folio": 29,
+                         "ref": "1-014", "segments": ["Village Uñiˊsak"]}])
+    got = _figref_state(
+        {"figrefs": [{"kind": "plate", "number": "I", "plate": "",
+                      "before": ""}]}, tmp_path)
+    assert got[0]["pairs"] == ["1-049/001"]
+    assert got[0]["label"] == "Plate I"
+    assert got[0]["caption"] == "Village Uñiˊsak"
+
+
+def test_a_figure_referred_to_in_prose_carries_the_caption_under_it(
+        tmp_path: Path):
+    """A text figure's caption is the one the printer set under the picture, not
+    the abbreviation the list carries — the leaf is the store that has it."""
+    from harness.web.edition import _figref_state
+    _fig(tmp_path, "1-086", "Fig. 1. Bundle of Leaf-Tobacco.")
+    _loi(tmp_path, [{"kind": "figure", "numbers": [1],
+                     "caption": "Bundle of Leaf-Tobacco", "folio": 60,
+                     "ref": "1-014"}], [])
+    got = _figref_state(
+        {"figrefs": [{"kind": "figure", "number": "1", "plate": "",
+                      "before": ""}]}, tmp_path)
+    assert got[0]["pairs"] == ["1-086/001"]
+    assert got[0]["caption"] == "Fig. 1. Bundle of Leaf-Tobacco."
+
+
+def test_another_authors_plate_carries_no_caption_either(tmp_path: Path):
+    """It is not this book's picture, so there is nothing of this book's to say
+    about it — the refusal keeps every field empty and only `why` speaks."""
+    from harness.web.edition import _figref_state
+    _fig(tmp_path, "1-049", "Fig. 1. Village Uñiˊsak.")
+    _loi(tmp_path, [], [{"kind": "plate", "number": "I",
+                         "caption": "Village Uñiˊsak", "opposite_folio": 29,
+                         "ref": "1-014", "segments": ["Village Uñiˊsak"]}])
+    _write(tmp_path, "data/authorities.json", json.dumps({
+        "authorities": [{"key": "sauer", "cited_as": [{"name": "Sauer"}]}]}))
+    _write(tmp_path, "data/runs.json", json.dumps({"runs": [
+        {"id": "illustrations", "kind": "loi", "title": "List of Illustrations",
+         "refs": ["1-014"], "source": "data/loi.json"},
+        {"id": "authorities", "kind": "authorities", "title": "Authorities",
+         "refs": ["1-018"], "source": "data/authorities.json"}]}))
+    got = _figref_state(
+        {"figrefs": [{"kind": "plate", "number": "I", "plate": "",
+                      "before": "Sauer, "}]}, tmp_path)
+    assert got[0]["pairs"] == [] and got[0]["caption"] == ""
+    assert "Sauer" in got[0]["why"]
+
+
 def test_a_folio_link_is_omitted_where_nothing_witnesses_it(book: Path):
     """A dead link to the refusal page would teach a reader to stop following
     them, so the number is printed plain instead."""

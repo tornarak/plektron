@@ -181,7 +181,8 @@ def _figref_state(doc: dict, root) -> list[dict]:
     One row per handle, positional to `doc["figrefs"]`, carrying what the client
     needs to open a stack card: `pairs` (`ref/key`, the id a card is built from),
     `url` (a real crop, so the anchor works without JS and middle-clicks), the
-    label the card is titled with, and `why` where nothing resolved.
+    label the card is titled with, the `caption` it reads under, and `why` where
+    nothing resolved.
 
     **An unresolved reference is left as text, and says so on hover.** 58 of the
     corpus's 659 refuse — a plate whose figure `gt/fig/` has not boxed, a bare
@@ -201,13 +202,24 @@ def _figref_state(doc: dict, root) -> list[dict]:
     if not handles:
         return []
     names = stores.authority_names(root)
-    by_plate = stores.by_plate(root, stores.loi_run(root))
+    loi = stores.loi_run(root)
+    by_plate = stores.by_plate(root, loi)
     by_number = stores.by_number(root)
+    # **A plate's caption is the printed list's, and a figure's is the one under
+    # the picture.** `resolve` reads the second off `gt/fig/` and leaves the first
+    # empty on purpose: a plate is several pictures under several captions and
+    # none of them is the plate's own, which only the List of Illustrations sets.
+    # So the same caption reaches the card whichever end a reader clicked from —
+    # the list, or the sentence that sent them to it — and a card pinned from one
+    # is the card pinned from the other, `openFigure`'s id being the pictures.
+    plate_captions = {str(e.get("number")): e.get("caption") or ""
+                      for e in stores.run_store(root, loi)["entries"]
+                      if e.get("kind") == "plate"} if loi else {}
     out = []
     for h in handles:
         who = figrefs.foreign_citation(h.get("before") or "", names)
         if who:
-            out.append({"pairs": [], "url": "", "label": "",
+            out.append({"pairs": [], "url": "", "label": "", "caption": "",
                         "why": f"{who}'s plate, not this book's"})
             continue
         r = figrefs.resolve(h, by_number, by_plate,
@@ -215,11 +227,14 @@ def _figref_state(doc: dict, root) -> list[dict]:
         label = (f"Plate {h['number']}" if h["kind"] == "plate" else
                  f"Plate {h['plate']}, Fig. {h['number']}" if h["plate"] else
                  f"Fig. {h['number']}")
+        caption = r["caption"] or (plate_captions.get(h["number"], "")
+                                   if h["kind"] == "plate" else "")
         first = r["pairs"][0].split("/") if r["pairs"] else None
         out.append({
             "pairs": r["pairs"],
             "url": f"{BASE}/fig/{first[0]}/{first[1]}.png" if first else "",
             "label": label,
+            "caption": caption,
             "why": r["why"],
         })
     return out

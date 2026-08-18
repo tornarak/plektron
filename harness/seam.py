@@ -221,8 +221,10 @@ def tail(ref: str, root: Path = Path(".")) -> dict | None:
 
 #: What each `opens:` value implies about the gap, and what each `zone-opens:` value
 #: does. `no witness` maps to nothing: a page opening on a heading has no measure to
-#: judge, which is a third answer rather than a missing one.
-_OPENS_MEANS = {"indented": "fresh", "flush to the measure": "continued"}
+#: judge, which is a third answer rather than a missing one. Public because
+#: `tei_html.page_opens` reads the same comment for the other purpose — how to set
+#: the leaf's first paragraph — and two copies of this vocabulary could drift.
+OPENS_MEANS = {"indented": "fresh", "flush to the measure": "continued"}
 
 
 def _witnesses(page: Path) -> str:
@@ -254,7 +256,7 @@ def _witnesses(page: Path) -> str:
             zones = t[len("zone-opens:"):].split("(")[0].strip()
     if not reader or not zones:
         return ""
-    implied = _OPENS_MEANS.get(reader)
+    implied = OPENS_MEANS.get(reader)
     if implied is None:
         return f"opens:{reader} / zone-opens:{zones} — not comparable"
     if implied == zones:

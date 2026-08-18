@@ -125,16 +125,24 @@ main.cols { display:flex; align-items:flex-start; flex-direction: row-reverse;
   #bar .bar-right input { width:100% }
 }
 /* --- the text --- */
-#primary p { margin:0 0 .35rem; text-indent:1.4rem }
-/* The page's first paragraph is flush, because most pages open mid-paragraph and
-   an indent there would claim a break the print does not have. */
-#primary p:first-of-type { text-indent:0 }
+#primary p { margin:0 0 .35rem; text-align: justify; text-indent:1.4rem }
+/* The paragraph that opens the leaf is the only one whose indent is not the
+   default, and the class on it is what the page's own witnesses said — `@part`
+   from an adjudicated seam, else the collator's `opens:`, else the keyed zone
+   label (`tei_html.page_opens`). Flush where the paragraph carries over, and
+   flush where nothing witnessed it: 305 of the 399 drafts say `zone-opens:
+   continued`, so an unwitnessed indent would claim a break the print mostly does
+   not have. (That measure is the first main zone's label, which
+   `docs/open-questions.md` holds apart from the stricter one it quotes a rate
+   for.) This was `p:first-of-type`, which asserted flush of *every* page — the
+   92 that do open a paragraph were set as continuations of the page before. */
+#primary p.opens-continued, #primary p.opens-unwitnessed { text-indent:0 }
 /* **Unless it opens with a run-in head**, which is a break by definition — a
    section starts there, and the book indents the head with the paragraph it
    leads. Without this the exemption above swallowed it: a run-in head is very
    often the first thing on its page, so the heading sat flush and the ordinary
    paragraphs under it were the indented ones. */
-#primary p:has(> .runin:first-child) { text-indent:1.4rem }
+#primary p:has(> .runin:first-child), .milestone + p { text-indent:1.4rem }
 blockquote { margin:.8rem 0 .8rem 1.5rem; color:var(--dim) }
 /* --- the four heading levels, as the book sets them ---------------------------
    The TEI says only which ToC entry opens here and how deep it is; everything

@@ -781,5 +781,10 @@ for (const [i, r] of (STATE.figrefs || []).entries()) {
   el.href = r.url;
   el.dataset.fig = r.pairs.join(',');
   el.dataset.label = r.label;
+  /* The caption, which the List of Illustrations' own links carry and these did
+     not — so a card opened from the prose was headed `Plate XIV` and said
+     nothing else, naming a number rather than a thing. Same attribute and same
+     handler as the list's, so both routes build the one card. */
+  el.dataset.caption = r.caption || '';
   el.title = r.label + (r.pairs.length > 1 ? ` — ${r.pairs.length} pictures` : '');
 }

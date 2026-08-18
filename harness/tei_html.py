@@ -34,6 +34,7 @@ from lxml import etree
 
 from . import figrefs
 from .context import norm_ref
+from .seam import OPENS_MEANS
 from .validate import TIER1
 
 #: The languages a lexicon key may name. `validate.TIER1` and nothing else — the
@@ -96,6 +97,69 @@ def _is_tier1(el) -> bool:
     if lang is not None:
         return lang in LEXICON_LANGS
     return el.get("index") is not None
+
+
+#: Blocks that are not the prose flow, and so do not decide how the page opens. A
+#: figure at the head of a leaf sits above a paragraph that may still be carrying
+#: over from the page before; the `<pb>` is the page itself.
+_NOT_FLOW = {"pb", "figure"}
+
+
+def first_flow(body):
+    """The first element of `<body>` that is part of the prose flow, or None.
+
+    A heading counts and a figure does not, which is the distinction the question
+    "does this page open a paragraph" turns on: a head *is* a break, and a plate
+    at the top of a leaf says nothing about the paragraph running underneath it.
+    """
+    for el in body:
+        if isinstance(el.tag, str) and etree.QName(el).localname not in _NOT_FLOW:
+            return el
+    return None
+
+
+def page_opens(body) -> str:
+    """`fresh`, `continued` or `unwitnessed` — does a paragraph *begin* on this page?
+
+    **The store says, and until this the rendering guessed.** Three witnesses can
+    answer, and they are ranked by how much human judgement is behind them:
+
+    1. `@part`/`@prev` on the page's first flow element, which `tei seam` wrote
+       after a human adjudicated the gap. `F`/`M`/`@prev` means the element began
+       earlier; `I` means it begins here. **Absence is not `I`** — `seam._apply`
+       drops the attribute for a closed gap exactly as an unwritten seam leaves it
+       absent, so the two are indistinguishable here and absence falls through to
+       the witness that can tell them apart rather than asserting a break.
+    2. `<!-- opens: … -->`, the collator's measurement of the first line's indent
+       off the raster.
+    3. `<!-- zone-opens: … -->`, off the keyed zone label — `MainZone-Continued`
+       or not. Human-rank too: a segmentation act, months earlier.
+
+    Where they disagree the adjudicated one wins, and `tei seam` is what reports
+    the disagreement; deciding it is not a renderer's business. Where none of them
+    speaks, `unwitnessed` — which the stylesheet sets flush, because 305 of the 399
+    drafts say `continued` and an indent claims a break the print may not have.
+    """
+    if (el := first_flow(body)) is not None:
+        if el.get("prev") or (el.get("part") or "") in ("F", "M"):
+            return "continued"
+        if el.get("part") == "I":
+            return "fresh"
+    seen = {}
+    for c in body.iter(etree.Comment):
+        t = " ".join((c.text or "").split())
+        for key, mark in (("zone-opens:", "zones"), ("opens:", "reader")):
+            if t.startswith(key) and mark not in seen:
+                seen[mark] = t[len(key):].split("(")[0].strip()
+                break
+    # `seam.OPENS_MEANS`, not a second copy of it: `no witness` — a leaf opening
+    # on a heading — is absent from it there and falls through here for the same
+    # reason, being a third answer rather than a missing one.
+    if (v := OPENS_MEANS.get(seen.get("reader", ""))) is not None:
+        return v
+    if (v := seen.get("zones")) in ("fresh", "continued"):
+        return v
+    return "unwitnessed"
 
 
 def strip_tags(html: str) -> str:
@@ -298,6 +362,12 @@ class Renderer:
         #: Reindeer-Harness` is the figure's own name, not a pointer at it, and
         #: linking a picture to itself is noise on every illustrated page.
         self.in_figdesc = False
+        #: How the page opens, and the element that opens it — set by `render`
+        #: from the page's own witnesses. `page_first` is identity-compared, so a
+        #: paragraph nested in a `<quote>` can never be mistaken for the one that
+        #: opens the leaf.
+        self.opens = "unwitnessed"
+        self.page_first = None
         #: The block's plain text so far, which is what `figrefs` looks back
         #: through for the authority that owns a cited plate. Kept here rather
         #: than passed down because the name and the reference are often in
@@ -649,6 +719,13 @@ class Renderer:
     # -- block elements ----------------------------------------------------
 
     def el_p(self, el) -> str:
+        # **The one paragraph on the page whose indent is not the default.** It
+        # carries what `page_opens` read out of the store, and the stylesheet
+        # decides what an indent looks like — so a page that opens a paragraph is
+        # set as the compositor set it, and one that carries over stays flush.
+        # Any other paragraph is a break by construction and needs no mark.
+        if el is self.page_first:
+            return (f'<p class="opens-{self.opens}">{self.inline(el)}</p>')
         return f"<p>{self.inline(el)}</p>"
 
     def el_quote(self, el) -> str:
@@ -863,6 +940,8 @@ def render(path: Path, titles: dict[str, dict] | None = None) -> dict:
         }
     ref = path.stem.replace("chukchi-", "")
     r = Renderer(ref, titles=titles)
+    r.opens = page_opens(body)
+    r.page_first = first_flow(body)
     html = r.blocks(body)
     pb = body.find(f".//{{{TEI_NS}}}pb")
     return {

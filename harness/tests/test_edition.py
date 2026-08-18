@@ -57,7 +57,72 @@ def render(root: Path, body: str) -> dict:
 
 def test_prose_becomes_prose(tmp_path):
     got = render(tmp_path, "<p>They went to Markova.</p>")
-    assert got["ok"] and "<p>They went to Markova.</p>" in got["html"]
+    # The leaf's opening paragraph carries how it opens; this fixture witnesses
+    # nothing, which is its own answer and not a missing one.
+    assert got["ok"]
+    assert '<p class="opens-unwitnessed">They went to Markova.</p>' in got["html"]
+
+
+def test_the_keyed_zone_says_whether_the_leaf_opens_a_paragraph(tmp_path):
+    """`MainZone-Continued` or not, months earlier, is a witness the rendering
+    used to throw away — every page was set as though it carried over."""
+    fresh = render(tmp_path, "<!-- zone-opens: fresh (from the zone label) -->"
+                             "<p>The first slaughtering is performed</p>")
+    assert '<p class="opens-fresh">' in fresh["html"]
+    cont = render(tmp_path, "<!-- zone-opens: continued (from the zone label) -->"
+                            "<p>of the herd, and the women</p>")
+    assert '<p class="opens-continued">' in cont["html"]
+
+
+def test_the_readers_indent_outranks_the_zone_label(tmp_path):
+    """Two independent witnesses, and `opens:` is the one measured off the ink."""
+    got = render(tmp_path, "<!-- opens: indented -->"
+                           "<!-- zone-opens: continued (from the zone label) -->"
+                           "<p>Then the younger people</p>")
+    assert '<p class="opens-fresh">' in got["html"]
+
+
+def test_an_adjudicated_seam_outranks_both(tmp_path):
+    """`@part` is what a human decided at the gap, so it is what the page is set
+    from — and `tei seam`, not the renderer, is what reports a disagreement."""
+    got = render(tmp_path, "<!-- opens: indented -->"
+                           '<p part="F">of the herd, and the women</p>')
+    assert '<p class="opens-continued">' in got["html"]
+
+
+def test_no_seam_written_yet_is_not_a_claim_that_one_opens(tmp_path):
+    """The absence of `@part` is an unwritten seam, not `part="I"`."""
+    got = render(tmp_path, "<!-- zone-opens: continued (from the zone label) -->"
+                           "<p>of the herd, and the women</p>")
+    assert '<p class="opens-continued">' in got["html"]
+
+
+def test_a_plate_at_the_head_of_the_leaf_decides_nothing(tmp_path):
+    """A figure is not the prose flow: the paragraph under it may still be the
+    one that began on the page before."""
+    got = render(tmp_path, "<!-- zone-opens: continued (from the zone label) -->"
+                           '<figure n="87"><figDesc>Reindeer-Harness</figDesc>'
+                           "</figure><p>of the herd, and the women</p>")
+    assert '<p class="opens-continued">' in got["html"]
+
+
+def test_a_leaf_opening_on_a_heading_marks_no_paragraph(tmp_path):
+    """A head *is* the break, so the paragraph under it indents by the default and
+    needs no witness — which is why `opens: no witness` is a third answer."""
+    got = render(tmp_path, '<milestone unit="section" n="chVII.13"/>'
+                           "<p>The Chukchee reckon the year</p>")
+    assert "<p>The Chukchee reckon the year</p>" in got["html"]
+    assert "opens-" not in got["html"]
+
+
+def test_only_the_leafs_own_first_paragraph_is_marked(tmp_path):
+    """Identity, not position — a paragraph inside a quotation is not the one the
+    page opens with, however deeply the two nest."""
+    got = render(tmp_path, "<!-- zone-opens: fresh (from the zone label) -->"
+                           "<p>calling,</p><quote><p>Ho hok hok hok!</p></quote>"
+                           "<p>which is quite like the usual call</p>")
+    assert '<p class="opens-fresh">calling,</p>' in got["html"]
+    assert got["html"].count("opens-") == 1
 
 
 def test_the_folio_is_reported(tmp_path):
