@@ -58,7 +58,7 @@ ref off the queue atomically. Identity of the first turn is what caches, so a re
 written into a prompt costs every sibling the whole shared context.
 
 `queue` refuses a page that is already collated, **has no `gt/ocr/` or no
-`gt/zones/`**, is marked exempt, or
+`gt/zones/`**, is ruled a leaf rather than a text page, or
 is named twice — and refuses a batch whose agent file is missing, since the agent
 body *is* the contract. It does **not** refuse a page whose predecessor is
 uncollated: that is the change that makes a batch possible at all.

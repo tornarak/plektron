@@ -48,17 +48,19 @@ the file *is* the record, and every reader takes an existing file as "this page
 has figures", so `gt/fig/` never holds an empty ALTO. `assemble` synthesizes the
 empty region sets into `train/` and nowhere else.
 
-> **A negative is a keyed, non-exempt page whose ink verdict is `clean`, with no
+> **A negative is a keyed *text* page whose ink verdict is `clean`, with no
 > `gt/fig/` file.** The ink check is the witness: every band of ink accounted for
 > by text zones alone, so there is nothing left for a figure to be.
 
 Both qualifiers are load-bearing, and both have live instances here:
 
-- **Exempt pages are never negatives.** The ink check never ran over them, and
+- **A ruled leaf is never a negative.** The ink check never ran over one, and
   they are plates — exactly where figures live. 44 of the 252 positives are
-  exempt pages. Counting the rest as empty would teach the model that plates are
-  blank. (Exemption disqualifies a page from being a *negative* only; an exempt
-  plate carrying figures is an ordinary positive and trains.)
+  ruled leaves. Counting the rest as empty would teach the model that plates are
+  blank. (The ruling disqualifies a page from being a *negative* only; a plate
+  carrying figures is an ordinary positive and trains.) Asked through
+  `zones.is_exempt`, so the whole leaf vocabulary is covered rather than one
+  value — a `map` or a `cover` is no more a witness of emptiness than a plate is.
 - **An excused band makes the page unknown, not clean.** A band ruled "not type"
   in `gt/zones/_ink_exempt.json` makes the check read clean while hiding exactly
   the ink a figure would be. Those pages read `ruled` rather than `clean` and are

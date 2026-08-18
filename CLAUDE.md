@@ -90,11 +90,13 @@ only where a transcribed page recorded one, and propagates via the seam ledger
 Layout, all at the repo root:
 
     scans/  the 832 rasters, 300 dpi, bitonal but for the 236 with a photograph. Derived; not in git. The farms over it (w-figs/, w-ocr/, w-figs-blotted/,
-            fig-crops/) are derived too and point into it: a clone gets dangling links.
+            fig-crops/, and one per leaf kind) are derived too and point into it: a clone gets dangling links.
     gt/     what a human has been through: ocr/, fig/ (bounding boxes for the
-            pictures and their captions; no lines), zones/ (the segmentation),
-            lines/ (corrections), fig-img/ and page-img/ (touch-ups, a crop and
-            a whole leaf). Tracked — and page-img/ holds work no script rebuilds.
+            pictures and their captions; no lines), zones/ (the segmentation, and
+            the split that says a leaf is a plate/blank/cover/map/apparatus rather
+            than a text page at all), lines/ (corrections), fig-img/ and page-img/
+            (touch-ups, a crop and a whole leaf). Tracked — and page-img/ holds
+            work no script rebuilds.
     mz/     not-yet-human: zones/, ocr/ and fig/ as the models emitted them,
             tei/ as the rules built it, and page-img/ as a leaf is *served*: two
             layers built from the tracked master. Derived; ignored. No view over

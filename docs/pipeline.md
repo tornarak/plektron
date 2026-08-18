@@ -36,8 +36,8 @@ the stages that are built.
    values plus white, so the tree converts to mode `1` losslessly and **every one
    of the 829 trainable pages has the same colour depth**. The old rule — keep the
    source mode, or depth correlates with "has a figure" — was managing exactly the
-   confound this removes. The 3 RGB pages have no master, are `exempt`, and reach
-   no trainer. 18 MB for the tree, against 726 MB of rasters before the rebuild.
+   confound this removes. The 3 RGB pages have no master, carry a leaf kind, and
+   reach no trainer. 18 MB for the tree, against 726 MB of rasters before the rebuild.
 
    The human boxes stay authoritative: 21 keyed pictures are line work the scanner
    left in the master and have no rect, and every caption is type and has none.

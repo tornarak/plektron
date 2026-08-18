@@ -334,7 +334,7 @@ them apart is the entire point of `tei diff`.
 
 ### tei queue REF [REF ...]
 **Does** validates a batch, writes it to the collation claim queue, and prints the **one prompt every collator of the batch gets** — the block between `<!-- claim:begin -->` and `<!-- claim:end -->` in `.claude/skills/transcribe-page/dispatch.md`. That prompt names no page: each agent takes its own ref with `tei claim`.
-**Reads** `dispatch.md`, `.claude/agents/collator.md`, `ocr/`, `gt/ocr/`, `tei/`, `gt/zones/_exempt.lst`.
+**Reads** `dispatch.md`, `.claude/agents/collator.md`, `ocr/`, `gt/ocr/`, `tei/`, `gt/zones/` split lists.
 **Writes** `tei/_queue.txt`, and clears `tei/_claims/`. Prompt to stdout as plain text, everything operational to stderr.
 **Exit** 0 with a prompt; 1 when any page in the batch is not a candidate, and the message names the remedy.
 **Note** four refusals, every page checked before any is queued: a ref named twice; **`tei/chukchi-PP-NNN.xml` already present**, which would overwrite committed work and feed the pass's own "re-read your output once" the *previous* run's file; nothing at `ocr/chukchi-PP-NNN.xml`, naming `ocr predict`; and a page marked exempt. A missing `collator.md` is refused too — the agent body *is* the system prompt, so dispatching without one sends agents at pages with no rules.
@@ -557,14 +557,14 @@ PATTERN          a Python regular expression, normalized to NFD before it compil
 
 ### ocr queue REF [REF ...]
 **Does** validates a batch of pages, writes it to the claim queue, and prints the **one prompt every reader of the batch gets** — the block between `<!-- claim:begin -->` and `<!-- claim:end -->` in `.claude/skills/rebuild-groundtruth/dispatch.md`. That prompt names no page and carries no substitution: each reader takes its own ref with `ocr claim`.
-**Reads** `dispatch.md`, `gt/zones/` (and `_exempt.lst`), `gt/fig/`, `gt/ocr/`, `mz/ocr/`.
+**Reads** `dispatch.md`, `gt/zones/` (and its split lists), `gt/fig/`, `gt/ocr/`, `mz/ocr/`.
 **Writes** `review/_queue.txt`, and clears `review/_claims/`. Prompt to stdout as plain text, everything operational to stderr, so a pipe carries the prompt and nothing else.
 **Exit** 0 with a prompt; 1 when any page in the batch is not a dispatch candidate, and the message names the remedy.
 **Note** **send it unedited and identical to every reader.** Identity of the first turn is what caches: three readers dispatched with `moll-043`/`044`/`045` in their prompts all opened COLD at the same total — the totals matching because three refs of the same byte length cost the same — while a batch of byte-identical prompts shared. A ref in the prompt costs every sibling the whole shared context, however few characters it is, which is why the ref arrives from a tool call instead. **Stagger the first launch about ten seconds** so it writes the context the rest read; `agents usage` reports what that bought as `missed`.
 
 **Never assemble either text by hand.** It was done twice in one session and the second time five clauses reached the agent that existed nowhere in `dispatch.md`, so the doc described a prompt nobody sent and the run measured something unwritten. Same fault as writing a glyph into a note instead of citing its codepoint.
 
-Every page is checked before any is queued, and its block is rendered and thrown away — a page whose survey raises fails here, where the fix is still a command. Five refusals, four of them `dispatch.md`'s survey made mechanical rather than eyeballed: a ref named twice (one page, two readers, who overwrite each other); no `gt/zones/` entry (not a keyed text page); marked in `_exempt.lst` (a human ruled it not a text page); **`gt/ocr/` already present** — the sharp one, since a reader sent at a keyed page reads the human text through every ALTO verb and its proposal stops being an independent witness, and a named range contains such a page sooner or later (`2-031`–`2-035` contained `2-034`); nothing in `mz/ocr/`, naming `ocr predict`.
+Every page is checked before any is queued, and its block is rendered and thrown away — a page whose survey raises fails here, where the fix is still a command. Five refusals, four of them `dispatch.md`'s survey made mechanical rather than eyeballed: a ref named twice (one page, two readers, who overwrite each other); no `gt/zones/` entry (not a keyed text page); ruled a leaf kind (a human ruled it not a text page, and said which); **`gt/ocr/` already present** — the sharp one, since a reader sent at a keyed page reads the human text through every ALTO verb and its proposal stops being an independent witness, and a named range contains such a page sooner or later (`2-031`–`2-035` contained `2-034`); nothing in `mz/ocr/`, naming `ocr predict`.
 ```
 --note TEXT  a sentence appended to the branch paragraph of every page block in
              this batch; per-page notes want separate queue calls
@@ -1018,7 +1018,7 @@ opinion of which pages are held out.
 ```
 --all            every page with a blotted raster
 --force          re-run over pages that already have a prediction [off]
---itinerary LST  predict over a work-list [every page with a blot, minus exempt]
+--itinerary LST  predict over a work-list [every page with a blot, minus the ruled leaves]
 --model PATH     the segmentation model [models/bogoras-seg/zones-seg.safetensors]
 --decode {raw,dp} the segmental DP over the page plus the paragraph split, or blob vectorisation [dp]
 --device DEV     torch device [auto]
@@ -1530,9 +1530,11 @@ place.
 ```
 
 ### edition runs
-**Does** the page-runs the reading view serves as one document instead of a leaf at a time — the printed Contents, List of Illustrations and Authorities Quoted — plus one row per leaf and per editor's leaf, and everything wrong with the declarations. Six scans of List of Illustrations are one printed list, and serving them as six pages is serving the binding rather than the book. Reports the folio count too: every folio link a run renders goes through the index, and that number says how much of the book the locator can reach at all.
-**Reads** `data/runs.json` and each run's `source`, `gt/zones/_exempt.lst`, `tei/`, `gt/ocr/`, `gt/page-img/`, `scans/`. **Writes** — **Exit** 0 clean / 1 on a declaration that cannot be true.
-**Note** the fatal set: a run over a page the pipeline still owns (`not-exempt`), a ref that is no scan, a span that is discontiguous or that two runs both claim, a `kind` with no renderer, a span its own store contradicts, two pages claiming one folio **at the same rank**, and an editor's leaf that is for a non-exempt page or is a different shape from the scan (>0.5% aspect). A folio two witnesses of *different* rank disagree on is a **warning**: rank resolves it, and the disagreement is usually a misread running title worth seeing rather than a fault.
+**Does** the page-runs the reading view serves as one document instead of a leaf at a time — the printed Contents, List of Illustrations and Authorities Quoted — plus a census of what every leaf outside the transcription tracks was ruled, one row per leaf and per editor's leaf, and everything wrong with the declarations. Six scans of List of Illustrations are one printed list, and serving them as six pages is serving the binding rather than the book. Reports the folio count too: every folio link a run renders goes through the index, and that number says how much of the book the locator can reach at all.
+**Reads** `data/runs.json` and each run's `source`, `gt/zones/` split lists, `tei/`, `gt/ocr/`, `gt/page-img/`, `scans/`. **Writes** — **Exit** 0 clean / 1 on a declaration that cannot be true.
+**Note** the fatal set: a run over a leaf not ruled `apparatus` (`not-apparatus`), a leaf ruled `apparatus` that no run names (`apparatus-not-in-run`), a ref that is no scan, a span that is discontiguous or that two runs both claim, a `kind` with no renderer, a span its own store contradicts, two pages claiming one folio **at the same rank**, and an editor's leaf that is for a page still in the tracks or is a different shape from the scan (>0.5% aspect). A folio two witnesses of *different* rank disagree on is a **warning**: rank resolves it, and the disagreement is usually a misread running title worth seeing rather than a fault.
+**Note** **`apparatus` is checked in both directions, and only one of them used to be.** A run's leaves must be ruled `apparatus` rather than merely be out of the transcription tracks: a plate in a run would render as a list of entries it does not have, and the looser test could not say so, a plate having left the tracks exactly as the Contents did. The other direction is new — the kind promises the leaf's content is held parsed somewhere and the run is what names which store, so a leaf ruled `apparatus` with no run has a promise and no reading behind it, and falls back to a bare scan.
+**Note** `leaf_kinds` is the census — one row per `zones.LEAF_KINDS` member and how many leaves carry it. **Measurement, never a gate**, and it is the frame the rest of the report is read in: a run is a span of `apparatus` leaves, so how many of each kind exist is what says whether the runs cover what they should.
 **Note** `plates_located` is a **measurement and does not gate**: a plate carries no number on its own leaf, so `figures.by_plate` derives it by matching the printed list's abbreviated caption against the keyed under-figure one. What would be wrong is a plate resolving to two leaves, and that resolves to none by construction — the reading view then prints it plain.
 **Note** **three statements of one span, checked rather than merged** — `runs.json`'s `refs`, the store's own `source.refs`, and the set of per-entry `ref` fields inside it. All three were already in the tree; the check is that they agree. A store with no per-entry `ref` is reported unrenderable, because `entries_for` has no fallback: a leaf shows what the store says was printed on it, and attributing a whole list to one leaf would be inventing that.
 ```
@@ -1835,9 +1837,18 @@ CKPT          the .safetensors ketos wrote
 ## views
 
 The derived trees git does not carry: the read views over the paired stores
-(`ocr/`, `zones/`), the scan farms (`scans/w-figs/`, `scans/w-ocr/`), and the
-segmenter's blotted rasters (`scans/w-figs-blotted/`). A fresh clone has none of
+(`ocr/`, `zones/`), the scan farms (`scans/w-figs/`, `scans/w-ocr/`), the
+segmenter's blotted rasters (`scans/w-figs-blotted/`), and one farm per leaf kind
+(`scans/plate/`, `scans/blank/`, `scans/cover/`, `scans/map/`,
+`scans/apparatus/`) holding the leaves ruled that kind. A fresh clone has none of
 them.
+
+The leaf farms are **registered from `zones.LEAF_KINDS` rather than listed**, so a
+kind added to the vocabulary gets its farm by construction — an unregistered one
+would read as a stray directory rather than a rebuildable tree. Their membership
+is the split list, never the directory's contents, which is what lets a leaf
+re-ruled `plate` → `blank` report `stale` on the farm it left instead of sitting
+in both.
 
 `ocr link` and `zones link` are the same act said from inside those groups, and
 call the same functions. Two spellings, one implementation.

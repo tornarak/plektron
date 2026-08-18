@@ -53,8 +53,8 @@ in for an unread glyph.
   collator.** Rotation is a reading — whether a sideways figure or a
   bottom-to-top plate caption should be turned upright is a judgement about what
   the page means, and this pipeline hands judgements to the collation pass. But
-  `dispatch.py` refuses an exempt page for both tracks, and every plate is
-  exempt, so the one person entitled to make that call never sees the page. The
+  `dispatch.py` refuses a ruled leaf for both tracks, and every plate is ruled
+  `plate`, so the one person entitled to make that call never sees the page. The
   gap is not that the evidence is missing: `figures.paired`'s removed
   `misordered` check found that `1-227` numbers 2, 4, 1, 3 upright and 1, 2, 3, 4
   once the sheet is turned, so the corpus already contains evidence of rotation

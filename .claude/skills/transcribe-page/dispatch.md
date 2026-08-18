@@ -31,7 +31,7 @@ its own ref with `tei claim`, atomically.
     uv run harness agents usage              what the fan-out paid
 
 `queue` refuses a page that is already collated, **has no `gt/ocr/` or no
-`gt/zones/`**, is marked exempt, or is named twice — and **not** one whose
+`gt/zones/`**, is ruled a leaf rather than a text page, or is named twice — and **not** one whose
 predecessor is uncollated, which is the whole reason a batch can be dispatched at
 all. It also **generates any missing baseline** on its way past: generation is
 deterministic and wants no GPU, so a separate step would only be a step to forget,

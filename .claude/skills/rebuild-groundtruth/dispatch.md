@@ -28,8 +28,9 @@ because `stage` is the *furthest* rung reached: a page already in `gt/ocr/` repo
 `ocr-gt` and drops out of the filter on its own. That is the `gt/ocr/` hazard below
 handled mechanically rather than by reading a range and hoping. Ask for more context
 than the batch needs and take the first N of what comes back: the gaps are where
-the plates are, and they are not few — `1-081`–`1-084` are four consecutive `exempt`
-pages sitting in the middle of an otherwise unbroken run. Widening the window is
+the plates are, and they are not few — `1-081`–`1-084` are four consecutive ruled
+leaves (two plates and their blank versos) sitting in the middle of an otherwise
+unbroken run. Widening the window is
 free; a `queue` refusal after the fact is not.
 
 - **`gt/zones/`** — is it a text page at all, and does it have the zones `predict`

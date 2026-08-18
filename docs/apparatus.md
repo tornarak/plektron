@@ -249,16 +249,18 @@ nowhere. Absence of the file *is* the record, and every reader takes an existing
 file as "this page has figures", so an empty ALTO would assert the opposite of
 what it means. Negatives are therefore derived, and they need a witness:
 
-> **A negative is a keyed, non-exempt page whose ink verdict is `clean`, with no
+> **A negative is a keyed *text* page whose ink verdict is `clean`, with no
 > `gt/fig/` file.** The ink check is the witness — every band of ink accounted for
 > by text zones alone, leaving nothing for a figure to be.
 
-Two clauses are load-bearing and both have live instances. **Exempt pages are
+Two clauses are load-bearing and both have live instances. **Ruled leaves are
 excluded** because the ink check never ran over them and because they are plates,
-exactly where figures live: 44 of the 252 positives are exempt pages, and counting
-the rest as empty would teach the model that plates are blank. (Exemption
-disqualifies a page from being a *negative* only; an exempt plate carrying figures
-is an ordinary positive and trains.) And a page whose ink was **excused** reads
+exactly where figures live: 44 of the 252 positives are ruled leaves, and counting
+the rest as empty would teach the model that plates are blank. (The ruling
+disqualifies a page from being a *negative* only; a plate carrying figures
+is an ordinary positive and trains.) The test is `zones.is_exempt`, so the whole
+leaf vocabulary counts — a `map` or a `cover` witnesses emptiness no better than
+a plate does. And a page whose ink was **excused** reads
 `ruled`, not `clean`, and is *unknown* rather than negative — an exemption makes
 the check read clean while hiding exactly the ink a figure would be. The three
 live cases are `1-033`, `1-035` and `1-036`, all "scanner artifact".
@@ -388,7 +390,9 @@ failure exactly, where a file's role lived only in the name of the directory
 holding it. `gt/` is what a human has been through; that is what the directory
 means and it means it here too. Named `fig-img/` rather than `figs/` because the
 latter sits one character from the `gt/fig/` geometry store, the same near-miss
-`_exempt.lst`/`_exempt.json` was renamed to avoid.
+`_exempt.lst`/`_exempt.json` was renamed to avoid. That pair is gone now — the
+split lists are named for the kinds (`_plate.lst`, `_blank.lst`, …) and the order
+rulings are `_rule_exempt.json` — but the lesson outlived both names.
 
 **A whole leaf gets the same treatment, one level up.** `gt/page-img/chukchi-PP-NNN.{svg,png,jpg}`,
 **tracked**, resolved by `edition_ui.leaf_source` with the rank travelling as

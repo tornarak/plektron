@@ -32,8 +32,12 @@ permuted class map**, and copies the split beside the weights. Preview first;
 
 ## Where things stand
 
-**The store is complete** — 832 pages keyed, 716 of them text pages carrying 4593
-zones, 116 ruled exempt. Splits **578 train / 138 eval**. Class distribution is in
+**The store is complete** — 832 pages keyed, 717 of them text pages carrying 4598
+zones, and 115 ruled leaves rather than text at all (44 `plate`, 42 `blank`,
+21 `apparatus`, 7 `cover`, 1 `map`). Splits **580 train / 137 eval**. Every one of
+those numbers is `zones check --all`'s summary, which now counts the kinds beside
+the `exempt` total; read it there rather than from this paragraph, which has gone
+stale twice. Class distribution is in
 `zones check --all`'s `labels` summary; read it there rather than from any table,
 which goes stale. (`--all` is the corpus form of every sweeping verb now — the
 bare invocation that used to sweep is a usage error, so that a 832-page walk is
@@ -66,9 +70,9 @@ class set is exactly the six the installed model carries, so `assemble` reports
   split and cannot be handed whatever was last laid out.
 - **`zones score` refuses when there is no split at all** (exit 2) rather than
   falling back to the live `gt/zones/` lists, which move as pages are keyed.
-- **An exempt page is never scored.** A plate has no correct segmentation, so every
-  region drawn on one is spurious and nothing can offset it. Seven plates keyed
-  exempt mid-session once took a split's precision from 79% to 53%, which reads as
+- **A ruled leaf is never scored.** A plate has no correct segmentation, so every
+  region drawn on one is spurious and nothing can offset it. Seven plates ruled
+  mid-session once took a split's precision from 79% to 53%, which reads as
   the model degrading when what changed was the denominator.
 - **`train/bogoras-seg/` is scratch.** Nothing reads it after training. Clobber
   freely. `models/bogoras-seg/` is the tracked half and holds the artifacts.
@@ -382,7 +386,7 @@ working perfectly.
 - **Do not add `--resize` when `assemble` says none is needed.** That is what took
   the permutation lottery off the table for run 3, and the store's class set now
   matches the installed model's exactly, so it should stay unneeded.
-- **Do not train on plates.** `assemble` already excludes pages marked `exempt`; a
-  plate is neither an example of the layout nor a fair test of it.
+- **Do not train on plates.** `assemble` already excludes every page carrying a
+  leaf kind; a plate is neither an example of the layout nor a fair test of it.
 - **Do not read a bare `score` as a statement about the installed model.** Pass
   `--model`, or read `split_from` and know what you are looking at.

@@ -900,32 +900,54 @@ adjudication story this does not have.
 
 ### Pages that will never be prose
 
-115 pages are on `gt/zones/_exempt.lst` — a human ruled them not text pages —
-and `dispatch.py` refuses them for both the ground-truth and the collation
-tracks. **No amount of transcription will ever produce a `tei/` page for one**,
-so leaving them to the "not collated" 404 would drop every plate, foldout and
-piece of front matter out of the book silently. They are shown as what they are,
-threaded into the same scan-ordered listing as the prose so prev/next crosses
-them; a reader walking the book would otherwise fall off it at every plate.
+115 pages carry a **leaf kind** in `gt/zones/` — a human ruled them not text
+pages, and said what each one is — and `dispatch.py` refuses them for both the
+ground-truth and the collation tracks. **No amount of transcription will ever
+produce a `tei/` page for one**, so leaving them to the "not collated" 404 would
+drop every plate, foldout and piece of front matter out of the book silently.
+They are shown as what they are, threaded into the same scan-ordered listing as
+the prose so prev/next crosses them; a reader walking the book would otherwise
+fall off it at every plate.
 
-**One rule decides the shape: figures if the figure store has boxes on the page,
-the whole leaf if it has none.** That is the entire classification and it is
-meant to be. Sorting these into plates, maps, half-titles and blanks would mean
-deciding what a page *is* from evidence no store carries — on this book the
-plate/text-figure split is recoverable only from prose in a `readings.md`
-`@note`, and on the next book it may not be recoverable at all. Whether somebody
-drew figure boxes here is a fact, and it is the only one needed.
+**The kind decides the shape**, and the vocabulary is `zones.LEAF_KINDS`:
 
-A page with no boxes therefore shows its scan rather than nothing, which is also
-the honest rendering of a blank leaf: the reader sees the leaf and can see that
-it is blank. Nothing asserts that it is — 113 of the 115 exempt pages hold zero
-zones, and a full-page map nobody boxed is indistinguishable from an empty sheet
-at that level. The page says only what the store says, "not a text page", and
-names neither plate nor blank.
+| kind | leaves | what the reader gets |
+|---|---|---|
+| `plate` | 44 | its figures, in the order the book numbers them |
+| `blank` | 42 | the leaf at thumbnail size, labelled blank |
+| `cover` | 7 | the whole leaf — a title or wrapper page |
+| `map` | 1 | the whole leaf, through the Mixed Raster pair |
+| `apparatus` | 21 | nothing: the leaf redirects into its run |
+
+**One rule used to decide it — figures if the figure store had boxes, the whole
+leaf if not — and that rule read a different store to answer this question.**
+Whether somebody drew figure boxes is a fact, but it is a fact about `gt/fig/`,
+and under it a blank verso and the volume's folding tribal-distribution map were
+the same page: 113 of the 115 hold zero zones, so a full-page map nobody boxed
+was indistinguishable from an empty sheet. `1-361` reached the reader as a bare
+raster captioned "a human ruled scan 1-361 out of the transcription tracks", and
+the index listed it as `1-361` with no tag.
+
+The objection that rule answered was to *inference* — deciding what a page is
+from evidence no store carries, which on this book would mean reading the
+plate/text-figure split out of prose in a `readings.md` `@note`. That objection
+stands and the kinds do not violate it. A kind is **declared**, not derived: it
+is written by a human in `zones edit` at the moment they are looking at the
+raster, which is the only authority entitled to make the call. Nothing proposes
+one, nothing infers one from figure boxes or from a neighbouring leaf, and a page
+in no kind list is not a leaf at all — it renders as it always did.
+
+What the page says is exactly what the store holds and no more. A `blank` is
+still *served* — the ruling is a claim, and a reader who wants to check it
+against the paper can — but at thumbnail size, because a blank verso at plate
+size is a screenful of empty paper between two pictures somebody was paging
+through. `plate` covers the 35 numbered Plates I–XXXV and 9 full-page text-figure
+sheets together; that finer split is recoverable from the List of Illustrations
+if it is ever wanted, and is not asserted here.
 
 **Figures run in the order the book numbers them, not down the sheet.** A
 rotated plate numbers as the *turned* page reads: `1-049` runs 3, 1, 2 down the
-paper and `1-227` runs 2, 4, 1, 3, and 20 of the exempt pages present their
+paper and `1-227` runs 2, 4, 1, 3, and 20 of the ruled leaves present their
 figures in an order the book does not use. `figures.in_printed_order` sorts by
 the printed number and only when every figure on the page has one — `1-215` has
 a caption reading "Fig 2." without the point, which does not parse as a number,
@@ -954,11 +976,21 @@ server's call to make — `_attestations` sweeps `collated`, never `readable`.
 
 ### Runs: a span of leaves served as one document
 
-Three of those exempt spans are not plates at all. They are the book's own
-apparatus — the printed Contents, the List of Illustrations and Authorities
-Quoted — and the repository already holds every one of them parsed, with the
-folio each entry names and the scan it was printed on. A reader who opened
-`1-014` got a photograph of a list this project could have rendered.
+Twenty-one of those leaves are ruled **`apparatus`**, and that kind is the one
+that names a second store. They are the book's own lists — the printed Contents,
+the List of Illustrations, Authorities Quoted and the Alphabet key — and the
+repository already holds every one of them parsed, with the folio each entry
+names and the scan it was printed on. A reader who opened `1-014` got a
+photograph of a list this project could have rendered.
+
+**So the two declarations check each other, in both directions.** A run's leaves
+must be ruled `apparatus` and not merely be out of the tracks (`not-apparatus`):
+a plate in a run would render as a list of entries it does not have, and the
+looser test could not say so, a plate being out of the tracks exactly as the
+Contents is. And a leaf ruled `apparatus` that no run names is an error too
+(`apparatus-not-in-run`) — the kind promises the content is held parsed
+somewhere, the run is what says which store, and without one the promise has no
+reading behind it and the page falls back to a bare scan.
 
 Six scans of List of Illustrations are **one printed list**, so the unit the view
 serves is the **run**: an ordered contiguous span of scans presented as one
@@ -1201,8 +1233,12 @@ Two boundaries, and both are the point. It is **reading view only**:
 `zones.scan_for` is what the segmenters, the ink checks and `fig crops` resolve
 through, and it never consults this, because a sharpened or upscaled leaf is
 manufactured evidence and must not reach anything that measures ink. And it is
-**exempt only** — a file for a page the pipeline still owns is ignored and
-reported, rather than being honoured quietly the day somebody adds a branch.
+**ruled-leaf only** — a file for a page the pipeline still owns is ignored and
+reported, rather than being honoured quietly the day somebody adds a branch. Any
+kind qualifies, not `map` alone: what licenses a hand-worked leaf is that the
+page left the transcription tracks, not which sort of leaf it turned out to be,
+and narrowing it to today's single user would refuse a touched-up plate for no
+reason the doctrine gives.
 `/edition/page/{ref}.png` keeps serving the real scan; the made artefact has its
 own route and the page says which it is showing.
 

@@ -46,7 +46,7 @@ photograph of a whole leaf at 150 ppi; rendering the page at 300 doubled them fo
 nothing, turning 796 KB of source into 26.5 MB of PNG and visibly costing the
 foldout. They are 1391×1933, 1391×1933 and 1833×1994 now — **the only three pages
 whose two spaces differ by a scale rather than a translation**, which is safe only
-because all three are fully exempt and carry no coordinate at all. `harness/migrate.py`
+because all three carry a leaf kind and so no coordinate at all. `harness/migrate.py`
 checks that rather than assuming it, and refuses a masterless page that holds one.
 
 `tools/greyscale_scans.py` is spent: poppler's RGB output is no longer what `scans/`
@@ -147,7 +147,8 @@ Three things this settled, each of which had been true and unnoticed:
 - **`.gitkeep` was considered and is wrong**, which is worth recording because it is
   the obvious fix. A tracked placeholder makes a directory *exist and be empty*,
   converting a loud absence into a silent one — the worse of the two states, and
-  exactly what `exempt` exists to prevent in `gt/zones/`.
+  exactly what the leaf kinds exist to prevent in `gt/zones/`, where a page with
+  no zones and no kind is refused rather than saved as an empty record.
 
 **An absent derived tree refuses; an absent store does not.** This is the fresh-clone
 rule and the line matters. `Path.glob()` on a missing directory returns empty

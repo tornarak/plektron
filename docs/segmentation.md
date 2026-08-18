@@ -96,16 +96,30 @@ text, for a single missing region, and 38 lines of correct output is how a real
 signal gets buried. It costs a raster read, so a single page always runs it and the
 corpus sweep needs `--ink`.
 
-**Three splits, not two.** `_train.lst`, `_eval.lst` and `_exempt.lst`, marked in the
-editor and defaulting to train. `exempt` is the plates, maps, foldouts and blanks —
-pages a human has ruled *not a text page*, which is a different statement from
-"keyed and holds nothing" and a very different one from "not reached yet". They are
-kept out of training and eval alike: a plate is neither an example of the layout nor
-a fair test of it, and one in eval would report a model wrong about a page that has
-no right answer. On a contradiction the most exclusionary list wins. An exempt page
-is also not judged by the layout warnings, which describe a text page and would be
-permanent known-false noise on a plate — but its mechanical errors still stand, or
-the mark would hide a mistake rather than describe a plate.
+**Two text-page splits, and then what the leaf is.** `_train.lst` and `_eval.lst`
+hold the pages that are prose, marked in the editor and defaulting to train.
+Everything else is a **leaf kind** — `plate`, `blank`, `cover`, `map`,
+`apparatus`, one list each — a human's ruling that this is *not a text page*,
+which is a different statement from "keyed and holds nothing" and a very
+different one from "not reached yet". A ruled leaf is kept out of training and
+eval alike: a plate is neither an example of the layout nor a fair test of it,
+and one in eval would report a model wrong about a page that has no right answer.
+On a contradiction the most exclusionary list wins; the kinds share a rank
+between themselves, because a leaf is not more blank than it is a plate, and
+`validate_corpus` reports a leaf in two rather than picking. A ruled leaf is also
+not judged by the layout warnings, which describe a text page and would be
+permanent known-false noise on a plate — but its mechanical errors still stand,
+or the mark would hide a mistake rather than describe a plate.
+
+**This was one value, `exempt`, and the split is why it stopped being one.** It
+began as training bookkeeping and then became the only way to save a leaf with no
+zones, at which point a flag was carrying a judgement. Five different things
+accumulated behind it, and the edition ended up sorting them with discriminators
+borrowed from other stores — figure boxes for a plate, `data/runs.json` for the
+apparatus, `gt/page-img/` for a hand-worked leaf — under which a blank verso and
+the volume's folding map were the same page. Nothing infers a kind: a model may
+not propose one, and no rule derives one from figure boxes or from a neighbour.
+`docs/edition.md` has what the reader gets from it.
 
 **The training selection is `gt/seg/`'s 122 pages plus the first two chapters.** The
 old attempt's page set was chosen for heterogeneity and that choice is still good
