@@ -525,8 +525,10 @@ def page_context(ref: str, root: Path, cfg: dict, nudge: int = 0,
               "anchor_left": "nudge column left 4 px",
               "anchor_right": "nudge column right 4 px",
               "anchor_reset": "reset to measured anchor",
-              "cycle_column": "cycle column", "toggle_split": "train / eval / exempt",
-              "toggle_chain": "chain mode", "exempt": "exempt the order warning",
+              "cycle_column": "cycle column", "toggle_split": "train / eval",
+              "leaf_kind": "say what this leaf is (not a text page)",
+              "toggle_chain": "chain mode",
+              "rule_exempt": "exempt the order warning",
               "ink_exempt": "rule ink under cursor not type",
               "page_list": "the whole list and its statuses",
               "save": "save", "done": "save and stop server",
@@ -579,6 +581,13 @@ def page_context(ref: str, root: Path, cfg: dict, nudge: int = 0,
             "stores": stores, "itinerary_name": itinerary_name,
             "actions": [{"label": pretty.get(k, k), "key": v}
                         for k, v in acts.items()],
+            # **The vocabulary travels; the client does not hold a copy.** The
+            # split cycle was a literal array in `zones.js`, which meant the set of
+            # values lived in two places and only one of them was validated. A kind
+            # added to `zones.LEAF_KINDS` and not to that array would be unreachable
+            # from the editor and would look like the key not working.
+            "text_splits": list(zn.TEXT_SPLITS),
+            "leaf_kinds": [{"kind": k, "key": k[0]} for k in zn.LEAF_KINDS],
             "base": base}
 
 
@@ -684,7 +693,7 @@ def list_context(root: Path, cfg: dict, itinerary: list[str] | None = None,
         labels = [z["label"] for z in zn.read_zones(ref, root)]
         # An unkeyed page and one ruled not-a-text-page are settled without asking:
         # neither can have ink left over, so neither is ever queued for a check.
-        if state in ("todo", "proposed") or r["split"] == "exempt":
+        if state in ("todo", "proposed") or r["split"] in zn.LEAF_KINDS:
             ink = {"state": "skip"}
         else:
             ink = zn.cached_ink(ref, root) or {"state": "unknown"}

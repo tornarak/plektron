@@ -301,15 +301,30 @@ def exempt(root: Path = Path(".")) -> list[str]:
     produce a `tei/` page for one, and leaving them out of the edition would drop
     every plate, foldout and piece of front matter out of the book silently.
 
-    The ruling itself is the zone track's, in `gt/zones/_exempt.lst`, and this
-    does not second-guess it or subdivide it. A page here shows its figures if
-    the figure store has any and its whole scan if not, which needs no
-    classification of *what kind* of not-a-text-page it is — and so cannot get
-    that classification wrong on the next book.
+    **The ruling is the zone track's and so is the kind** — `zones.LEAF_KINDS`,
+    written by a human in `zones edit` at the raster. This reports membership;
+    `leaf_kind` reports which. Nothing here derives the kind, and that boundary is
+    the point: the edition used to sort these pages with four discriminators
+    borrowed from other stores — figure boxes for a plate, `data/runs.json` for
+    the apparatus, `gt/page-img/` for a hand-worked leaf — under which a blank
+    verso and the volume's folding map were the same page.
     """
-    from .zones import load_splits
+    from .zones import LEAF_KINDS, load_splits
     return _sorted_refs(r for r, split in load_splits(root).items()
-                        if split == "exempt")
+                        if split in LEAF_KINDS)
+
+
+def leaf_kind(ref: str, root: Path = Path(".")) -> str:
+    """What a human ruled this leaf, or `""` for a page still in the tracks.
+
+    A separate reader from `exempt` because the two are asked at different moments
+    — the listing wants the set, a page wants its own kind — and because a caller
+    holding `""` must not be able to mistake it for a kind. There is no
+    `unclassified`: an unmarked page is not a leaf at all.
+    """
+    from .zones import LEAF_KINDS, load_splits
+    marked = load_splits(root).get(norm_ref(ref), "")
+    return marked if marked in LEAF_KINDS else ""
 
 
 def crop_style(

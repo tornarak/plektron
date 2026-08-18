@@ -37,12 +37,15 @@
 
 {# Marked on the page and not only in the listing, for `page.html`'s draft-note
    reason: a URL typed straight in skips whatever would otherwise carry the
-   warning. What it says is exactly what the store says and no more — a human
-   ruled this not a text page. It does not say plate, or map, or blank. #}
-<p class='draft-note'><span class='draft-tag'>not a text page</span> —
-a human ruled scan {{ ref }} out of the transcription tracks, so there is no
-prose here to read. {% if plates %}Its {{ plates | length }} figure(s) are
-below.{% else %}The whole leaf is shown.{% endif %}</p>
+   warning. What it says is exactly what the store says and no more — the kind a
+   human ruled, and the sentence `LEAF_NOTES` gives that kind. A leaf whose kind
+   this build does not know still says "not a text page", which is what every one
+   of these pages said before the kinds existed. #}
+<p class='draft-note'><span class='draft-tag'>{{ kind or 'not a text page' }}</span>
+— {% if kind_note %}{{ kind_note }}{% else %}a human ruled scan {{ ref }} out of
+the transcription tracks, so there is no prose here to read.{% endif %}
+{% if plates %}Its {{ plates | length }} figure(s) are below.{% elif kind !=
+'blank' %}The whole leaf is shown.{% endif %}</p>
 
 {% if plates %}
 <article class='plates'>
@@ -63,11 +66,12 @@ below.{% else %}The whole leaf is shown.{% endif %}</p>
 {% endfor %}
 </article>
 {% else %}
-{# No figure boxes, so the leaf itself is the answer. This is also the honest
-   rendering of a blank: the reader sees the leaf and can see it is blank, where
-   a page saying "blank" would be asserting something no store witnesses — 113
-   of the 115 exempt pages hold zero zones, and a full-page map nobody drew boxes
-   on is indistinguishable from an empty one at that level. #}
+{# No figure boxes, so the leaf itself is the answer — the map, the title leaf,
+   the plate whose boxes nobody has drawn yet. The kind decides how much room it
+   gets, not whether it is shown: a leaf a human ruled `blank` is still served,
+   because the ruling is a claim worth being able to check against the paper. What
+   changes is that a blank no longer takes the full measure as though there were
+   something on it to read. #}
 {# An editor's own version of the leaf wins here and only here. It is a made
    artefact, not evidence — `gt/fig-img/`'s rule one level up — so it is labelled
    as one and the raw scan keeps its own address beside it. Nothing in the
@@ -95,7 +99,12 @@ target='_blank' rel='noopener'>The raw scan</a> is unchanged.</p>
   <img src='{{ base }}/leaf/{{ ref }}/lines' alt='leaf {{ ref }}'>
 </article>
 {% else %}
-<article class='whole-scan'>
+{# `blank-leaf` is a width, and nothing else — same element, same address, same
+   lightbox. A blank verso at the full measure is a screenful of paper that says
+   nothing, and it sat between two plates a reader was paging through. Small
+   enough to recognise as an empty leaf at a glance, large enough to see that it
+   really is empty. #}
+<article class='whole-scan{{ " blank-leaf" if kind == "blank" else "" }}'>
   <img src='{{ base }}/{{ "leaf" if editor_leaf else "page" }}/{{ ref }}{{
     "" if editor_leaf else ".png" }}' alt='scan {{ ref }}'>
 </article>

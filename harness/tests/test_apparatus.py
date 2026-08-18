@@ -41,8 +41,15 @@ def _store(root: Path, name: str, doc) -> None:
     root.joinpath("data", name).write_text(json.dumps(doc), encoding="utf-8")
 
 
-def _exempt(root: Path, *refs: str) -> None:
-    p = root / "gt" / "zones" / "_exempt.lst"
+def _exempt(root: Path, *refs: str, kind: str = "apparatus") -> None:
+    """Rule these leaves out of the transcription tracks.
+
+    `apparatus` by default because a run's leaves must be ruled exactly that — the
+    printed Contents, List of Illustrations, Authorities and Alphabet, whose content
+    this repository holds parsed. `kind=` is for the tests that need a leaf which is
+    out of the tracks but is *not* eligible to be in a run.
+    """
+    p = root / "gt" / "zones" / f"_{kind}.lst"
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text("".join(f"chukchi-{r}.xml\n" for r in refs), encoding="utf-8")
 
@@ -291,10 +298,33 @@ def test_a_clean_book_gates_clean(book: Path):
     assert A.check(book)["errors"] == []
 
 
-def test_a_run_over_a_non_exempt_page_fails(book: Path):
-    _exempt(book, "1-014", "1-023", "1-024")          # 1-015 no longer exempt
-    errs = [e for e in A.check(book)["errors"] if e["rule"] == "not-exempt"]
+def test_a_run_over_a_page_the_pipeline_still_owns_fails(book: Path):
+    _exempt(book, "1-014", "1-023", "1-024")          # 1-015 no longer ruled
+    errs = [e for e in A.check(book)["errors"] if e["rule"] == "not-apparatus"]
     assert [e["detail"] for e in errs] == ["1-015"]
+
+
+def test_a_run_over_a_leaf_ruled_something_else_fails(book: Path):
+    """Not merely exempt — **`apparatus`**. A run renders a store this repository
+    holds parsed, so a plate in one would render as a list of entries it does not
+    have. The looser test could not say so: a plate is out of the transcription
+    tracks exactly as the Contents is, and under it this declaration passed."""
+    _exempt(book, "1-014", "1-023", "1-024")
+    _exempt(book, "1-015", kind="plate")
+    errs = [e for e in A.check(book)["errors"] if e["rule"] == "not-apparatus"]
+    assert [e["detail"] for e in errs] == ["1-015"]
+    assert "ruled `plate`" in errs[0]["why"]
+
+
+def test_a_leaf_ruled_apparatus_that_no_run_names_fails(book: Path):
+    """The other direction, which nothing used to check. `apparatus` promises the
+    leaf's content is held parsed somewhere; the run is what names *which* store.
+    Without one the edition can say nothing about the page and serves a bare scan
+    — a promise with no reading behind it."""
+    _exempt(book, "1-014", "1-023", "1-024", "1-099")
+    errs = [e for e in A.check(book)["errors"]
+            if e["rule"] == "apparatus-not-in-run"]
+    assert [e["detail"] for e in errs] == ["1-099"]
 
 
 def test_an_unknown_kind_fails(tmp_path: Path):

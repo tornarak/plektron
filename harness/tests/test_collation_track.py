@@ -79,7 +79,7 @@ def make_page(root: Path, ref="1-075", *, gt=True, zones=True, tei=False,
     d.mkdir(parents=True, exist_ok=True)
     if tei:
         (d / f"chukchi-{ref}.xml").write_text("<TEI/>", encoding="utf-8")
-    lst = root / "gt/zones/_exempt.lst"
+    lst = root / "gt/zones/_plate.lst"
     lst.parent.mkdir(parents=True, exist_ok=True)
     lst.write_text(f"chukchi-{ref}.xml\n" if exempt else "", encoding="utf-8")
     doc = root / COLLATE_DOC
@@ -149,9 +149,9 @@ def test_an_uncollated_predecessor_is_not_a_refusal(tmp_path):
     assert queue_refs(["1-075"], tmp_path, track=COLLATION)["queued"] == ["1-075"]
 
 
-def test_an_exempt_page_is_refused(tmp_path):
+def test_a_leaf_ruled_not_a_text_page_is_refused(tmp_path):
     make_page(tmp_path, exempt=True)
-    with pytest.raises(Unready, match="exempt"):
+    with pytest.raises(Unready, match="not a text page"):
         queue_refs(["1-075"], tmp_path, track=COLLATION)
 
 

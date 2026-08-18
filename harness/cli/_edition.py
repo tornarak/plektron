@@ -46,10 +46,12 @@ def register(cli):
     p = action(g, "runs", run_runs, pageable=False,
                help="the page-runs the reading view serves as one document "
                "instead of a leaf at a time — the printed Contents, List of "
-               "Illustrations and Authorities Quoted — and everything wrong "
-               "with their declarations. Reads and writes nothing; exit 1 on a "
-               "declaration that cannot be true, which is a run over a page the "
-               "pipeline still owns, a span its own store contradicts, a kind "
+               "Illustrations and Authorities Quoted — plus a census of what "
+               "every leaf outside the transcription tracks was ruled, and "
+               "everything wrong with the declarations. Reads and writes "
+               "nothing; exit 1 on a declaration that cannot be true, which is a "
+               "run over a leaf not ruled `apparatus`, a leaf ruled `apparatus` "
+               "that no run names, a span its own store contradicts, a kind "
                "with no renderer, two pages claiming one folio at one rank, or "
                "an editor's leaf that is a different leaf. A folio two witnesses "
                "of *different* rank disagree on is reported, not fatal: rank "
@@ -62,6 +64,10 @@ def run_runs(a) -> int:
 
     rep = apparatus.check(a.root)
     out(a, rep["runs"], name="runs")
+    # The census first, because it is the frame the rest is read in: a run is a
+    # span of `apparatus` leaves, and how many leaves of each kind exist is what
+    # says whether the runs cover what they should. Measurement, never a gate.
+    out(a, rep["leaf_kinds"], name="leaf_kinds", heading=True)
     if rep["leaves"]:
         out(a, rep["leaves"], name="leaves", heading=True)
     if rep["editor_leaves"]:
@@ -73,7 +79,9 @@ def run_runs(a) -> int:
     # The folio count is the one number that says how much of the book the
     # locator can reach at all, and it belongs with the runs rather than in a
     # separate verb: every folio link a run renders goes through it.
-    print(f"{len(rep['runs'])} run(s), {rep['folios']} folio(s) witnessed, "
+    leaves = sum(r["leaves"] for r in rep["leaf_kinds"])
+    print(f"{len(rep['runs'])} run(s), {leaves} leaf/leaves ruled, "
+          f"{rep['folios']} folio(s) witnessed, "
           f"{len(rep['errors'])} error(s), {len(rep['warnings'])} warning(s)")
     return 1 if rep["errors"] else 0
 

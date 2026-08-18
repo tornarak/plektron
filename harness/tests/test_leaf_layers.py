@@ -25,8 +25,11 @@ from pathlib import Path
 from harness import edition_ui as ui
 
 
-def _exempt_lst(root: Path, *refs: str) -> None:
-    p = root / "gt" / "zones" / "_exempt.lst"
+def _exempt_lst(root: Path, *refs: str, kind: str = "map") -> None:
+    """Rule these leaves. `map` by default — every fixture here is `1-361`, the
+    folding tribal-distribution map, which is the one leaf with a hand-made
+    master and the whole reason the Mixed Raster pair exists."""
+    p = root / "gt" / "zones" / f"_{kind}.lst"
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text("".join(f"chukchi-{r}.xml\n" for r in refs), encoding="utf-8")
 

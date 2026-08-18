@@ -54,10 +54,16 @@ from .paths import decisions_path, proposal_path
 STAGES = ("scanned", "zoned-mz", "zoned-gt", "ocr-mz",
           "proposed", "decided", "ocr-gt", "generated", "collated")
 
-# What `zones` reports when a human ruled the page is not a text page at all.
-# It satisfies the `zoned-gt` rung: that rung asks whether a human has been
-# through the page, and "this is a plate" is a judgement, not the absence of one.
-EXEMPT = "exempt"
+# What `zones` reports when a human ruled the page is not a text page at all: the
+# **kind they ruled** — `plate`, `blank`, `cover`, `map`, `apparatus` — and not a
+# flat `exempt`. It satisfies the `zoned-gt` rung either way: that rung asks whether
+# a human has been through the page, and "this is a plate" is a judgement, not the
+# absence of one.
+#
+# Naming the kind here is most of what `--refs` is for. A worklist that said
+# `exempt` 115 times could only be crossed off by opening each page; one that says
+# `blank` and `map` is a list somebody can act on, which is the whole complaint the
+# split vocabulary answers.
 
 
 def page_state(ref: str, root: Path = Path("."),
@@ -66,15 +72,15 @@ def page_state(ref: str, root: Path = Path("."),
     from .zones import MZDIR as ZONES_MZ
     from .zones import ZONEDIR as ZONES_GT
     from .zones import alto_for as zone_alto
-    from .zones import load_splits, scan_for
+    from .zones import is_exempt, load_splits, scan_for
 
     ref = norm_ref(ref)
     if splits is None:
         splits = load_splits(root)
 
     scan = scan_for(ref, root).exists()
-    exempt = splits.get(ref) == EXEMPT
-    zones = (EXEMPT if exempt else
+    exempt = is_exempt(ref, root, splits)
+    zones = (splits[ref] if exempt else
              "gt" if zone_alto(ref, root, ZONES_GT).exists() else
              "mz" if zone_alto(ref, root, ZONES_MZ).exists() else "")
     stem = f"chukchi-{ref}.xml"
@@ -109,7 +115,10 @@ def page_state(ref: str, root: Path = Path("."),
         # A summary rung that fires on the ordinary case is the same defect as a
         # detector that fires on ordinary English.
         "zoned-mz": exempt or zone_alto(ref, root, ZONES_MZ).exists(),
-        "zoned-gt": zones in ("gt", EXEMPT),
+        # `exempt` and not `zones == "gt"`, because `zones` now carries the kind:
+        # asking the boolean keeps this rung independent of the vocabulary, where
+        # a membership test against the kind list would have to grow with it.
+        "zoned-gt": zones == "gt" or exempt,
         "ocr-mz": ocr_mz,
         "proposed": row["proposal"],
         "decided": row["decision"],

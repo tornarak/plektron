@@ -110,17 +110,19 @@ def test_only_rungs_below_the_one_reached_count_as_skipped(tmp_path):
 
 # ----------------------------------------------------------- exempt, and zones
 
-def test_an_exempt_page_has_been_through_the_zoning(tmp_path):
-    """`exempt` is a human ruling that this is not a text page, which satisfies
+def test_a_ruled_leaf_has_been_through_the_zoning(tmp_path):
+    """A leaf kind is a human ruling that this is not a text page, which satisfies
     the rung — the rung asks whether a human has been through it, and "this is a
     plate" is a judgement rather than the absence of one. It is also why the
-    column carries `exempt` rather than falling back to `mz` or to blank."""
+    column carries **the kind** rather than falling back to `mz` or to blank: a
+    worklist that said `exempt` 115 times could only be crossed off by opening
+    every page."""
     scanned(tmp_path, "1-001")
     (tmp_path / "gt" / "zones").mkdir(parents=True)
-    (tmp_path / "gt" / "zones" / "_exempt.lst").write_text(
+    (tmp_path / "gt" / "zones" / "_cover.lst").write_text(
         "chukchi-1-001.png\n", encoding="utf-8")
     row = page_state("1-001", tmp_path)
-    assert row["zones"] == "exempt"
+    assert row["zones"] == "cover"
     assert row["stage"] == "zoned-gt"
     # And `zoned-mz` is not a rung it skipped: `zones predict` is not how a plate
     # gets ruled a plate. Counting it put 83 plates in the report and hid the one

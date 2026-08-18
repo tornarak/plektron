@@ -504,7 +504,11 @@ function bar() {
   document.getElementById('col').textContent =
     w.length > 1 ? `col ${S.col + 1}/${w.length}` : '1 col';
   const sp = document.getElementById('split');
-  sp.textContent = S.split === 'exempt' ? 'exempt — not a text page' : S.split;
+  // The kind reads as itself and says what it means. `train`/`eval` are bookkeeping
+  // about a text page and need no gloss; a leaf kind is a ruling and gets one, so
+  // the pill never shows a bare word a reader has to remember the weight of.
+  const leaf = (CFG.leaf_kinds || []).some(x => x.kind === S.split);
+  sp.textContent = leaf ? `${S.split} — not a text page` : S.split;
   sp.className = 'pill' + (S.split === 'train' ? '' :
                            S.split === 'eval' ? ' on' : ' off');
   const ch = document.getElementById('chain');
@@ -1058,9 +1062,9 @@ async function save() {
   // Caught here rather than as a 500 from the server, because the remedy is a
   // choice between three different statements and the page is where they are made.
   // Reachable in one obvious way: key a page, then delete every zone on it.
-  if (!S.zones.length && S.split !== 'exempt') {
-    say('no zones: press ' + (CFG.actions.toggle_split || 't') + ' for exempt if '
-        + 'this is a plate, or ' + (CFG.actions.delete_page || 'X')
+  if (!S.zones.length && !(CFG.leaf_kinds || []).some(x => x.kind === S.split)) {
+    say('no zones: press ' + (CFG.actions.leaf_kind || 'K')
+        + ' to say what this leaf is, or ' + (CFG.actions.delete_page || 'X')
         + ' to un-key the page', 'bad');
     return;
   }
@@ -1168,6 +1172,20 @@ async function navStore(name) {
 window.addEventListener('keydown', async e => {
   if (e.metaKey || e.ctrlKey || e.altKey) return;
   const k = e.key;
+  // **The kind picker eats the next key, ahead of everything.** It is armed by
+  // `leaf_kind` and its letters collide with the zone type keys on purpose — `p`
+  // is both `plate` here and a paragraph band there — so it has to be answered
+  // before the type map is consulted, exactly as the armed caption corner wins
+  // over a resize handle on the figure track. Escape leaves the ruling alone.
+  if (S.pendingKind) {
+    S.pendingKind = false;
+    if (k === 'Escape') { say('leaf unchanged'); e.preventDefault(); return; }
+    const hit = (CFG.leaf_kinds || []).find(x => x.key === k.toLowerCase());
+    if (!hit) { say(`${k} names no leaf kind`, 'bad'); e.preventDefault(); return; }
+    S.split = hit.kind; S.dirty = true; S.issues = [];
+    say(`ruled ${hit.kind} — not a text page`, 'ok');
+    render(); e.preventDefault(); return;
+  }
   // A type key retypes the **selected** zone, and only otherwise sets what the
   // next one will be. Selecting is an explicit act — a click on an idle canvas —
   // so this cannot surprise anyone who has not just performed it, and misreading
@@ -1300,12 +1318,29 @@ window.addEventListener('keydown', async e => {
     case 'cycle_column':
       S.col = (S.col + 1) % windows(S.side).length; break;
     case 'toggle_split': {
-      // train -> eval -> exempt -> train. `exempt` is the plates, maps, foldouts
-      // and blanks: not text pages at all, so in neither the training nor the
-      // eval set, and not judged by layout rules written for a text page.
-      const order = ['train', 'eval', 'exempt'];
-      S.split = order[(order.indexOf(S.split) + 1) % order.length];
+      // train <-> eval, and nothing else. This used to walk on to `exempt`, back
+      // when that was one value; the kinds are a different question and get their
+      // own key. Two states here because this is the every-page act and a cycle
+      // you have to press four times to get through is not a toggle.
+      //
+      // A leaf comes back into the tracks through this key too: cycling from a
+      // kind lands on `train`, which is the only way to say "I was wrong, it is
+      // prose after all".
+      const order = CFG.text_splits;
+      const i = order.indexOf(S.split);
+      S.split = order[(i + 1) % order.length];
       S.dirty = true; S.issues = [];
+      break; }
+    case 'leaf_kind': {
+      // **A picker, not a cycle.** Ruling what a leaf is happens once per leaf and
+      // there are five answers; stepping through them would make the common case
+      // (already ruled, just looking) cost four keystrokes to get back where it
+      // started. The vocabulary comes from the server — see `zones_ui.state`.
+      const kinds = CFG.leaf_kinds;
+      say('what is this leaf? ' +
+          kinds.map(k => `${k.key} ${k.kind}`).join('  ') +
+          '  ·  Esc to cancel');
+      S.pendingKind = true;
       break; }
     case 'toggle_chain': S.chain = !S.chain; break;
     case 'segment_page': {
@@ -1372,7 +1407,11 @@ window.addEventListener('keydown', async e => {
       await navStore(order[(i + step) % order.length]);
       return;
     }
-    case 'exempt': {
+    // Renamed from `exempt`. That word named two unrelated things in one keymap —
+    // this, which silences one *order rule* on one page, and the page's split,
+    // which said the leaf was not text at all. The split half is now a leaf kind,
+    // so the collision is worth closing rather than leaving one word doing both.
+    case 'rule_exempt': {
       if (S.figTrack) {
         const g = figWarnings().find(w => !w.exempted);
         if (g) {

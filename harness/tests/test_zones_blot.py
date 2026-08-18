@@ -194,7 +194,7 @@ def test_assembly_leaves_exempt_pages_out_of_both_lists(tmp_path):
     letting one into eval would report a model wrong about a page with no right
     answer. Counted rather than silently dropped."""
     keyed(tmp_path, "1-048", "train")
-    keyed(tmp_path, "1-049", "exempt")
+    keyed(tmp_path, "1-049", "plate")
     zn.blot_all(tmp_path)
     rep = zn.assemble(tmp_path)
     assert (rep["train"], rep["eval"], rep["exempt_skipped"]) == (1, 0, 1)
@@ -284,7 +284,7 @@ def test_assembly_reports_the_classes_the_model_will_carry(tmp_path):
     """What the output layer gets resized to. Reading it off the report beats
     reading it out of the checkpoint afterwards."""
     keyed(tmp_path, "1-048")
-    keyed(tmp_path, "1-049", "exempt")
+    keyed(tmp_path, "1-049", "plate")
     zn.blot_all(tmp_path)
     rep = zn.assemble(tmp_path)
     assert rep["classes"] == "MainZone-P"

@@ -123,7 +123,7 @@ def test_saving_an_empty_page_is_a_record(tmp_path):
     """A plate's correct segmentation is zero zones, and that has to be sayable."""
     make_scan(tmp_path, "1-001")
     assert zn.has_zones("1-001", tmp_path) is False
-    zn.save_zones("1-001", [], tmp_path, split="exempt")
+    zn.save_zones("1-001", [], tmp_path, split="plate")
     assert zn.has_zones("1-001", tmp_path) is True
     assert zn.read_zones("1-001", tmp_path) == []
 
@@ -218,35 +218,72 @@ def test_a_ref_in_both_lists_resolves_to_eval(tmp_path):
     assert zn.load_splits(tmp_path) == {"1-048": "eval"}
 
 
-def test_exempt_wins_over_every_other_list(tmp_path):
+def test_a_leaf_kind_wins_over_every_other_list(tmp_path):
     """Most exclusionary wins. Every one of these lists exists to keep pages out
     of something, so a contradiction resolves to the exclusion — never to
     training on a plate."""
     zn.zone_dir(tmp_path).mkdir(parents=True)
-    for lst in (zn.TRAIN_LST, zn.EVAL_LST, zn.EXEMPT_LST):
+    for lst in (zn.TRAIN_LST, zn.EVAL_LST, "_plate.lst"):
         (zn.zone_dir(tmp_path) / lst).write_text("chukchi-1-049.xml\n")
-    assert zn.load_splits(tmp_path) == {"1-049": "exempt"}
+    assert zn.load_splits(tmp_path) == {"1-049": "plate"}
 
 
-def test_a_page_can_be_marked_not_a_text_page(tmp_path):
-    """Plates, maps, foldouts and blanks: looked at, ruled out. A different
-    statement from 'keyed and holds nothing', and a very different one from
-    'not reached yet'."""
+def test_is_exempt_answers_for_a_page_nobody_has_marked(tmp_path):
+    """Three states, and the predicate must not collapse the third into the first.
+
+    Unmarked is *not reached yet*; `train`/`eval` are text pages; a leaf kind is a
+    ruling. `is_exempt` answers False for the first two and True only for the
+    third — so an unkeyed page can never be mistaken for one a human ruled out,
+    which is the distinction the three lists exist to keep.
+    """
+    zn.zone_dir(tmp_path).mkdir(parents=True)
+    assert zn.is_exempt("1-048", tmp_path) is False      # nobody has looked
+    (zn.zone_dir(tmp_path) / zn.TRAIN_LST).write_text("chukchi-1-048.xml\n")
+    assert zn.is_exempt("1-048", tmp_path) is False
+    zn.set_split("1-048", "blank", tmp_path)
+    assert zn.is_exempt("1-048", tmp_path) is True
+    # The splits a caller already holds are the same answer, not a cheaper one.
+    assert zn.is_exempt("1-048", tmp_path,
+                        splits=zn.load_splits(tmp_path)) is True
+
+
+@pytest.mark.parametrize("kind", zn.LEAF_KINDS)
+def test_a_page_can_be_ruled_any_leaf_kind(tmp_path, kind):
+    """Looked at, ruled out, and *said what it is*. A different statement from
+    'keyed and holds nothing', and a very different one from 'not reached yet'.
+
+    Over the whole vocabulary rather than one member, because the list a kind
+    lands in is derived from its name — so a kind whose file the store could not
+    write would be silently unreachable rather than raising."""
     make_scan(tmp_path, "1-049")
-    zn.save_zones("1-049", [], tmp_path, split="exempt")
-    assert zn.load_splits(tmp_path) == {"1-049": "exempt"}
+    zn.save_zones("1-049", [], tmp_path, split=kind)
+    assert zn.load_splits(tmp_path) == {"1-049": kind}
+    assert zn.is_exempt("1-049", tmp_path) is True
     assert zn.has_zones("1-049", tmp_path) is True
-    assert (zn.zone_dir(tmp_path) / zn.EXEMPT_LST).read_text() == "chukchi-1-049.xml\n"
+    assert (zn.zone_dir(tmp_path) / f"_{kind}.lst").read_text() \
+        == "chukchi-1-049.xml\n"
     assert (zn.zone_dir(tmp_path) / zn.TRAIN_LST).read_text() == ""
 
 
-def test_marking_exempt_removes_it_from_training(tmp_path):
+def test_ruling_a_leaf_removes_it_from_training(tmp_path):
     make_scan(tmp_path)
     zn.save_zones("1-048", sample(), tmp_path)
     assert zn.load_splits(tmp_path) == {"1-048": "train"}
-    zn.set_split("1-048", "exempt", tmp_path)
+    zn.set_split("1-048", "plate", tmp_path)
     assert (zn.zone_dir(tmp_path) / zn.TRAIN_LST).read_text() == ""
-    assert zn.load_splits(tmp_path) == {"1-048": "exempt"}
+    assert zn.load_splits(tmp_path) == {"1-048": "plate"}
+
+
+def test_re_ruling_a_leaf_leaves_no_member_behind(tmp_path):
+    """`set_split` sweeps every list, not the pair it is moving between — so a
+    leaf re-ruled from `plate` to `blank` is in exactly one. Two kinds share a
+    rank, so a leaf left in both would resolve by `SPLITS` order rather than by
+    the human's last act, and would keep resolving that way silently."""
+    make_scan(tmp_path, "1-049")
+    zn.save_zones("1-049", [], tmp_path, split="plate")
+    zn.set_split("1-049", "blank", tmp_path)
+    assert (zn.zone_dir(tmp_path) / "_plate.lst").read_text() == ""
+    assert zn.load_splits(tmp_path) == {"1-049": "blank"}
 
 
 def test_bad_split_name_refused(tmp_path):
@@ -286,5 +323,5 @@ def test_save_can_set_split_and_exempt_together(tmp_path):
 def test_zone_refs_lists_keyed_pages_in_page_order(tmp_path):
     for ref in ("3-005", "1-048", "1-151"):
         make_scan(tmp_path, ref, (2481, 3508) if ref.startswith("3") else (2824, 3897))
-        zn.save_zones(ref, [], tmp_path, split="exempt")
+        zn.save_zones(ref, [], tmp_path, split="plate")
     assert zn.zone_refs(tmp_path) == ["1-048", "1-151", "3-005"]

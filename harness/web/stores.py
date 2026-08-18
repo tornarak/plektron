@@ -86,14 +86,41 @@ def readable(root: Path) -> list[str]:
     return _readable(str(root), stamp(_readable_files(root)))
 
 
+def _split_files(root: Path) -> list[Path]:
+    """Every list a leaf ruling can be written in.
+
+    All of them, derived from the vocabulary rather than named: a cache keyed on a
+    subset would serve a stale answer for exactly the kind somebody had just added,
+    and the staleness would look like the editor's save not having worked.
+    """
+    from ..zones import LEAF_KINDS, zone_dir
+    return [zone_dir(Path(root)) / f"_{k}.lst" for k in LEAF_KINDS]
+
+
 @lru_cache(maxsize=MAXSIZE)
 def _exempt(root: str, _key: bytes) -> list[str]:
     return tei_html.exempt(Path(root))
 
 
 def exempt(root: Path) -> list[str]:
-    """The not-a-text-page rulings, keyed on the split list that holds them."""
-    return _exempt(str(root), stamp([Path(root) / "gt/zones/_exempt.lst"]))
+    """The not-a-text-page rulings, keyed on the split lists that hold them."""
+    return _exempt(str(root), stamp(_split_files(root)))
+
+
+@lru_cache(maxsize=MAXSIZE)
+def _leaf_kinds(root: str, _key: bytes) -> dict[str, str]:
+    from ..zones import LEAF_KINDS, load_splits
+    return {r: s for r, s in load_splits(Path(root)).items() if s in LEAF_KINDS}
+
+
+def leaf_kinds(root: Path) -> dict[str, str]:
+    """`{ref: kind}` for every leaf a human ruled out of the tracks.
+
+    The map rather than `exempt`'s list, because the listing needs to say *which*
+    for each row and a second lookup per ref would re-read the lists 115 times.
+    Same cache key: one set of files decides both answers.
+    """
+    return _leaf_kinds(str(root), stamp(_split_files(root)))
 
 
 def _runs_files(root: Path) -> list[Path]:

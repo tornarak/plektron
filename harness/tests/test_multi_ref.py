@@ -295,10 +295,10 @@ def test_a_named_exempt_page_still_predicts(tmp_path):
     from harness import zones as Z
 
     (tmp_path / "gt" / "zones").mkdir(parents=True)
-    (tmp_path / "gt" / "zones" / "_exempt.lst").write_text(
+    (tmp_path / "gt" / "zones" / "_plate.lst").write_text(
         "gt/zones/chukchi-1-048.xml\n", encoding="utf-8")
     splits = Z.load_splits(tmp_path)
-    assert splits.get("1-048") == "exempt"
+    assert splits.get("1-048") == "plate"
 
     # The sweep's default holds the ruling; a named ref overrides it. Both go
     # through one function, which is the point — a client deciding for itself

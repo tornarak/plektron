@@ -33,6 +33,7 @@ from harness.dispatch import (
     build,
     claim,
     claim_one,
+    collate_survey,
     queue_refs,
     reconcile,
     survey,
@@ -56,7 +57,7 @@ def make_page(root: Path, ref="3-063", *, zones=True, mz=True, gt=False,
         d.mkdir(parents=True, exist_ok=True)
         if on:
             (d / f"chukchi-{ref}.xml").write_text(alto, encoding="utf-8")
-    lst = root / "gt/zones/_exempt.lst"
+    lst = root / "gt/zones/_plate.lst"
     lst.write_text(f"chukchi-{ref}.xml\n" if exempt else "", encoding="utf-8")
     doc = root / DOC
     doc.parent.mkdir(parents=True, exist_ok=True)
@@ -167,6 +168,40 @@ def test_a_page_that_is_not_a_candidate_is_refused_with_its_remedy(
     """
     with pytest.raises(Unready, match=expected):
         build("3-063", make_page(tmp_path, **kw))
+
+
+def test_both_surveys_ask_the_split_rather_than_the_list(tmp_path):
+    """The exempt refusal must not be defeated by renaming the list it reads.
+
+    Both surveys used to test for the page's filename *inside* `_exempt.lst`, and
+    that form **fails open**: the day the list is renamed or its shape changes,
+    the membership test returns `False`, the refusal below stops refusing, and the
+    pass dispatches agents at plates with nothing raising. Asked of the split
+    through `zones.is_exempt`, a list this function does not know about is a
+    `KeyError` at load rather than a silent negative.
+
+    So the mark is made through the store's own API and never by writing a file
+    this test names. That is the whole assertion: whatever file `set_split` lands
+    the ruling in, both surveys follow it.
+
+    **The rename is what makes it discriminate**, and it has happened: the ruling
+    now lands in `_blank.lst`, so the old containment check against `_exempt.lst`
+    would find nothing here and both refusals would silently stop refusing. Ruled
+    `blank` rather than `plate` on purpose — `plate` is what the fixture's own
+    `exempt=True` writes, and a test that agreed with the fixture's choice of file
+    could still be passing for the wrong reason.
+    """
+    from harness.zones import set_split
+    root = make_page(tmp_path, exempt=False)
+    assert survey("3-063", root)["exempt"] is False
+    assert collate_survey("3-063", root)["exempt"] is False
+
+    set_split("3-063", "blank", root)
+    assert not (root / "gt/zones/_exempt.lst").exists()
+    assert survey("3-063", root)["exempt"] is True
+    assert collate_survey("3-063", root)["exempt"] is True
+    with pytest.raises(Unready, match="not a text page"):
+        build("3-063", root)
 
 
 def test_survey_reports_all_four_stores(tmp_path):

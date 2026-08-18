@@ -363,7 +363,7 @@ def check(root: Path = Path(".")) -> dict:
     declaration that cannot be true: a run over a page the pipeline still owns, a
     span that contradicts its own store, a kind with no renderer.
     """
-    from .zones import load_splits
+    from .zones import LEAF_KINDS, load_splits
 
     root = Path(root)
     declared = runs(root)
@@ -377,7 +377,11 @@ def check(root: Path = Path(".")) -> dict:
         scans = set(all_scans(root))
     except Exception:
         scans = set()          # a clone with no `scans/`; ref existence unchecked
-    exempt = {r for r, s in load_splits(root).items() if s == "exempt"}
+    splits = load_splits(root)
+    exempt = {r for r, s in splits.items() if s in LEAF_KINDS}
+    # The leaves whose content this repository holds parsed. A run is a span of
+    # these and of nothing else.
+    apparatus_leaves = {r for r, s in splits.items() if s == "apparatus"}
 
     claimed: dict[str, str] = {}
     for run in declared:
@@ -391,12 +395,17 @@ def check(root: Path = Path(".")) -> dict:
         for r in refs:
             if scans and r not in scans:
                 errors.append({"run": rid, "rule": "no-such-scan", "detail": r})
-            if r not in exempt:
+            # **`apparatus`, not merely exempt.** A run renders a store this
+            # repository holds parsed, so its leaves are the ones a human ruled
+            # *apparatus* — the printed Contents, List of Illustrations,
+            # Authorities, Alphabet. A plate in a run would render as a list of
+            # entries it does not have; the looser test could not say so.
+            if r not in apparatus_leaves:
                 errors.append({
-                    "run": rid, "rule": "not-exempt", "detail": r,
-                    "why": "a run may only cover pages a human ruled out of the "
-                           "transcription tracks; this one is still the "
-                           "pipeline's"})
+                    "run": rid, "rule": "not-apparatus", "detail": r,
+                    "why": f"a run's leaves must be ruled `apparatus`; {r} is "
+                           + (f"ruled `{splits[r]}`" if r in splits
+                              else "still the pipeline's")})
             if r in claimed and claimed[r] != rid:
                 errors.append({"run": rid, "rule": "overlapping-runs",
                                "detail": f"{r} is also in {claimed[r]}"})
@@ -464,11 +473,31 @@ def check(root: Path = Path(".")) -> dict:
                 "detail": f"folio {f}: "
                           + ", ".join(f"{w['ref']} ({w['witness']})" for w in ws)})
 
+    # **The other direction, which nothing checked.** `apparatus` says this leaf's
+    # content lives parsed in a store rather than in the TEI — and the run is what
+    # names *which* store. A leaf ruled `apparatus` that no run covers is therefore
+    # a page the edition can say nothing about and will render as a bare scan: the
+    # ruling promises a reading nobody supplied. The run half of this pair has been
+    # checked since runs existed; only the half where the store is silent was
+    # missing, which is the half that fails quietly.
+    for r in sorted(apparatus_leaves - claimed.keys(), key=parse_ref):
+        errors.append({
+            "run": "", "rule": "apparatus-not-in-run", "detail": r,
+            "why": "ruled `apparatus`, so its content is supposed to be held "
+                   "parsed, but no run in data/runs.json names it and nothing "
+                   "says which store that would be"})
+
+    # Every kind counted, whether or not it is one this report has anything else
+    # to say about — a census beside the errors, so the vocabulary's shape is
+    # visible without a second command. Measurement, never a gate.
+    census = {k: sum(1 for s in splits.values() if s == k) for k in LEAF_KINDS}
+
     editor, leaf_errs = _check_leaves(root, exempt)
     for r in leaf_rows:
         r["editor"] = (editor.get(r["ref"]) or {}).get("file", "")
     return {"runs": rows, "leaves": leaf_rows,
             "editor_leaves": [{"ref": k, **v} for k, v in sorted(editor.items())],
+            "leaf_kinds": [{"kind": k, "leaves": n} for k, n in census.items()],
             "errors": errors + leaf_errs, "warnings": warnings,
             "folios": len(idx)}
 
@@ -511,7 +540,9 @@ def _check_leaves(root: Path, exempt: set[str]) -> tuple[dict, list]:
                 "run": "", "rule": "leaf-not-exempt", "detail": p.name,
                 "why": "`leaf_source` serves an editor's leaf only for a page a "
                        "human ruled out of the transcription tracks, so this "
-                       "file is ignored rather than quietly honoured"})
+                       "file is ignored rather than quietly honoured. Any leaf "
+                       "kind qualifies — what licenses a hand-worked leaf is "
+                       "that the page left the tracks, not which sort it is"})
         row.update(_leaf_shape(p, scan_for(ref, Path(root))))
         if row["aspect"] and abs(float(row["aspect"]) - 1.0) > ASPECT_TOL:
             errors.append({

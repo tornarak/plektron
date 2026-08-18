@@ -170,7 +170,7 @@ def test_an_exempt_page_is_never_a_negative(tmp_path):
     """Exempt means "not a text page" — a plate — and plates are where figures
     live. The ink check never ran over it, so it witnesses nothing."""
     write_scan(tmp_path, "1-021", size=(2824, 3897))
-    zn.save_zones("1-021", [], tmp_path, split="exempt")
+    zn.save_zones("1-021", [], tmp_path, split="plate")
     assert F.negative_refs(tmp_path)["negative"] == []
 
 

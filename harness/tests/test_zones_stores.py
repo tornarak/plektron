@@ -191,13 +191,13 @@ def test_a_split_marked_once_is_read_by_both_stores(tmp_path):
     ruling about the page, true whoever's zones are being measured against it."""
     write_page(tmp_path, "1-048", zn.ZONEDIR)
     write_page(tmp_path, "1-048", zn.MZDIR)
-    zn.set_split("1-048", "exempt", tmp_path)
+    zn.set_split("1-048", "plate", tmp_path)
     make_scan(tmp_path, "1-048")
     cfg = zc.load_config(REPO)
     for store in (zn.ZONEDIR, zn.MZDIR):
         assert (
             zn.validate_page("1-048", tmp_path, cfg, ink=False, store=store)["split"]
-            == "exempt"
+            == "plate"
         )
 
 
@@ -304,7 +304,7 @@ def test_predict_all_skips_exempt_pages(tmp_path):
     """A plate has no right answer, so a prediction there manufactures zones for a
     page a human has already ruled out. Counted, never silently dropped."""
     (tmp_path / zn.BLOTDIR).mkdir(parents=True)
-    zn.set_split("1-048", "exempt", tmp_path)
+    zn.set_split("1-048", "plate", tmp_path)
 
     called = []
 
@@ -541,7 +541,7 @@ def test_an_exempt_page_is_refused_even_under_force(tmp_path):
     make_scan(tmp_path, "1-001")
     zn.blot_dir(tmp_path).mkdir(parents=True, exist_ok=True)
     (zn.blot_dir(tmp_path) / "chukchi-1-001.png").write_bytes(b"")
-    zn.save_zones("1-001", [], tmp_path, split="exempt")
+    zn.save_zones("1-001", [], tmp_path, split="plate")
     assert zn.predict_skip("1-001", tmp_path) == "ruled not a text page"
     assert zn.predict_skip("1-001", tmp_path, force=True) == "ruled not a text page"
     assert zn.predict_skip("1-001", tmp_path, single=True) == ""
@@ -653,7 +653,7 @@ def test_an_exempt_page_is_not_scored(tmp_path):
         zn.MZDIR,
         [("MainZone-P", 100 * i, 100 * i + 80) for i in range(1, 9)],
     )
-    zn.set_split("1-083", "exempt", tmp_path)
+    zn.set_split("1-083", "plate", tmp_path)
     frozen_split(tmp_path, ["1-048"], [])
     rep = zn.score(tmp_path, CFG)
     assert rep["exempt_skipped"] == "1-083"
@@ -1190,10 +1190,10 @@ def test_remark_eval_never_touches_a_human_marked_page(tmp_path):
             split="train",
         )
     zn.set_split("1-001", "eval", tmp_path)
-    zn.set_split("1-002", "exempt", tmp_path)
+    zn.set_split("1-002", "plate", tmp_path)
     zn.remark_eval(tmp_path, 1.0, commit=True)
     s = zn.load_splits(tmp_path)
-    assert s["1-001"] == "eval" and s["1-002"] == "exempt"
+    assert s["1-001"] == "eval" and s["1-002"] == "plate"
     # Everything that *was* train moved; nothing else did.
     assert s["1-003"] == "eval" and s["1-004"] == "eval"
 

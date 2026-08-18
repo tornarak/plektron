@@ -40,9 +40,9 @@ def write_page(root: Path, ref: str, store: str, *, y0=600, y1=900,
 def mark(root: Path, ref: str, split: str) -> None:
     d = root / zn.ZONEDIR
     d.mkdir(parents=True, exist_ok=True)
-    lst = {"train": zn.TRAIN_LST, "eval": zn.EVAL_LST,
-           "exempt": zn.EXEMPT_LST}[split]
-    with (d / lst).open("a", encoding="utf-8") as fh:
+    # Derived, as `zones._lst_path` derives it — a table here would have to be
+    # kept in step with `SPLITS` by hand, which is the drift the module dropped.
+    with (d / f"_{split}.lst").open("a", encoding="utf-8") as fh:
         fh.write(f"chukchi-{ref}.png\n")
 
 
@@ -100,22 +100,28 @@ def test_no_prediction_is_the_strongest_and_must_be_reachable(tmp_path):
 # ------------------------------------------------- the kind that would bury it
 
 def test_a_plate_is_off_the_scale_not_at_the_end_of_it(tmp_path):
-    """An exempt page has no correct segmentation — `score` excludes them for
-    that reason — so it has nothing to have departed *from*. Left to fall
+    """A leaf ruled not a text page has no correct segmentation — `score` excludes
+    them for that reason — so it has nothing to have departed *from*. Left to fall
     through, its empty file against an absent prediction reads as `no
     prediction`, the table's strongest claim: 83 plates, and `1-359` invisible
     among them. Kept as a row rather than dropped, because a silent exclusion is
-    how a shrinking denominator reads as a result."""
+    how a shrinking denominator reads as a result.
+
+    **One kind for all five**, and the row still carries the ruling in `split`.
+    This table is about departure from a prediction, and a plate, a blank and a
+    map have equally nothing to depart from; five ways of saying "off the scale"
+    would be noise in a report that is not about what the leaf is."""
     (tmp_path / zn.ZONEDIR).mkdir(parents=True)
     (tmp_path / zn.ZONEDIR / "chukchi-1-001.xml").write_text(
         ALTO.format(label="MainZone-P", y0=0, y1=0, h=0)
             .replace("<TextBlock", "<!--").replace("</TextBlock>", "-->"),
         encoding="utf-8")
-    mark(tmp_path, "1-001", "exempt")
+    mark(tmp_path, "1-001", "plate")
     write_page(tmp_path, "1-359", zn.ZONEDIR)
 
     rows = {r["ref"]: r for r in zn.departures(["1-001", "1-359"], tmp_path)}
-    assert rows["1-001"]["kind"] == "exempt"
+    assert rows["1-001"]["kind"] == "not a text page"
+    assert rows["1-001"]["split"] == "plate", "the ruling still travels with the row"
     assert rows["1-001"]["independent"] is False
     assert rows["1-359"]["kind"] == "no prediction"
 

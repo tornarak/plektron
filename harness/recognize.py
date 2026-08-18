@@ -481,7 +481,7 @@ def predict_skip(ref: str, root: Path = Path("."), force: bool = False,
       applies. This is the one skip that is a missing *input* rather than a
       judgement, so it names the command that produces it.
     """
-    if not single and Z.load_splits(root).get(ref) == "exempt":
+    if not single and Z.is_exempt(ref, root):
         return "ruled not a text page"
     if not force and has_text(ref, root, MZDIR):
         return "already recognized"

@@ -336,6 +336,12 @@ article { display:flow-root }
 .plates .plate { margin:0 0 2.5rem; cursor:default }
 .whole-scan img, .plates img { max-width:100%; height:auto; display:block;
   margin:0 auto; border:1px solid var(--rule); cursor:zoom-in }
+/* A leaf a human ruled blank. Still served — the ruling is a claim, and a reader
+   who wants to check it against the paper can, at a click, through the same
+   lightbox as any other image. What it is not given is the full measure: a blank
+   verso rendered at plate size is a screenful of empty paper between two pictures
+   somebody was paging through, which reads as the page having failed to load. */
+.whole-scan.blank-leaf img { max-width:16rem }
 /* A leaf delivered as a Mixed Raster pair: the colour layer sized normally and
    the linework laid exactly over it. The linework is the master's full size and
    the colour a third of it, so the browser upscales the colour — which is the
@@ -694,7 +700,7 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
    printed block is the record and the parsed fields are a reading of it. */
 .run .printed { margin:0 }
 .run .parsed { margin:.1rem 0 0; font-size:.8rem; color:var(--dim) }
-.run-tag { font-family:system-ui,sans-serif; font-size:.7rem;
+.run-tag, .leaf-tag { font-family:system-ui,sans-serif; font-size:.7rem;
   text-transform:uppercase; letter-spacing:.04em; color:var(--dim) }
 .tier1-note { font-family:system-ui,sans-serif; font-size:.7rem;
   color:var(--dim); border-bottom:1px dotted currentColor; cursor:help }

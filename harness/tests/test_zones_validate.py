@@ -248,11 +248,11 @@ def test_a_page_never_keyed_reports_nothing_and_says_so(tmp_path):
     assert r["errors"] == [] and r["warnings"] == []
 
 
-def test_an_exempt_empty_page_is_keyed_and_clean(tmp_path):
+def test_a_ruled_empty_leaf_is_keyed_and_clean(tmp_path):
     """A plate has no text column; zero zones is its correct segmentation, and the
-    `exempt` mark is what makes that a statement rather than an absence."""
+    leaf kind is what makes that a statement rather than an absence."""
     make_scan(tmp_path)
-    zn.save_zones("1-048", [], tmp_path, split="exempt")
+    zn.save_zones("1-048", [], tmp_path, split="plate")
     r = zn.validate_page("1-048", tmp_path, cfg_for())
     assert r["keyed"] is True and r["errors"] == [] and r["warnings"] == []
 
@@ -276,17 +276,26 @@ def test_clearing_a_kept_page_is_refused_too(tmp_path):
     assert len(zn.read_zones("1-048", tmp_path)) == 3
 
 
-def test_marking_it_exempt_is_how_an_empty_page_is_saved(tmp_path):
+def test_saying_what_the_leaf_is_is_how_an_empty_page_is_saved(tmp_path):
     make_scan(tmp_path)
-    zn.save_zones("1-048", [], tmp_path, split="exempt")
-    assert zn.load_splits(tmp_path) == {"1-048": "exempt"}
+    zn.save_zones("1-048", [], tmp_path, split="blank")
+    assert zn.load_splits(tmp_path) == {"1-048": "blank"}
+
+
+def test_the_refusal_names_the_kinds_it_would_accept(tmp_path):
+    """The remedy has to be actionable from the message. "Mark it exempt" named a
+    value; the kinds are a choice, and a refusal that does not list them sends the
+    reader to the source to find out what it will take."""
+    make_scan(tmp_path)
+    with pytest.raises(ValueError, match="plate, blank, cover, map, apparatus"):
+        zn.save_zones("1-048", [], tmp_path)
 
 
 def test_an_empty_page_already_in_the_store_is_an_error(tmp_path):
     """The refusal only guards new writes; a page can predate it or arrive by
     hand, and that page is invisible to every other check."""
     make_scan(tmp_path)
-    zn.save_zones("1-048", [], tmp_path, split="exempt")
+    zn.save_zones("1-048", [], tmp_path, split="plate")
     zn.set_split("1-048", "train", tmp_path)
     r = zn.validate_page("1-048", tmp_path, cfg_for(), ink=False)
     assert "empty-page" in rules(r["errors"])
@@ -433,21 +442,21 @@ def test_an_exempt_page_is_not_judged_by_text_page_rules(tmp_path):
         "1-048",
         [zone("MarginTextZone-Notes", 600, 900), zone("RunningTitleZone", 1000, 1090)],
         tmp_path,
-        split="exempt",
+        split="plate",
     )
     r = zn.validate_page("1-048", tmp_path, cfg_for(), ink=True)
-    assert r["split"] == "exempt"
+    assert r["split"] == "plate"
     assert r["warnings"] == [] and r["uncovered"] == []
 
 
-def test_an_exempt_page_still_reports_mechanical_errors(tmp_path):
+def test_a_ruled_leaf_still_reports_mechanical_errors(tmp_path):
     """Otherwise the mark would hide a mistake rather than describe a plate."""
     make_scan(tmp_path)
     zn.save_zones(
         "1-048",
         [zone("MainZone-P", 600, 900, x0=100, x1=1200)],
         tmp_path,
-        split="exempt",
+        split="plate",
     )
     r = zn.validate_page("1-048", tmp_path, cfg_for(), ink=False)
     assert rules(r["errors"]) == ["column-width"]
@@ -694,11 +703,11 @@ def test_an_unkeyed_page_is_skipped_rather_than_called_clean(tmp_path):
 
 
 def test_a_page_ruled_not_a_text_page_is_skipped(tmp_path):
-    """`exempt` says a human ruled this a plate. Uncovered ink on a plate is the
-    plate."""
+    """A leaf kind says a human ruled this a plate. Uncovered ink on a plate is
+    the plate."""
     make_scan(tmp_path)
     zn.save_zones("1-048", [zone("MainZone-Other", 560, 1500)], tmp_path)
-    zn.set_split("1-048", "exempt", tmp_path)
+    zn.set_split("1-048", "plate", tmp_path)
     assert verdict(tmp_path)["state"] == "skip"
 
 

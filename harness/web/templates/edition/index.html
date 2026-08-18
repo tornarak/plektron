@@ -15,8 +15,13 @@ zone and OCR stores; nobody has read it against the page.</p>
 {# A run stands in the list as its first leaf, so it needs its title said — the
    Contents would otherwise sit among the plates as a bare scan number, and the
    span it covers would be invisible. #}
+{# A leaf says what it is, for the run tag's reason one step further down: the
+   other 94 stood here as bare scan numbers, so the map, 44 plates and 42 blanks
+   were indistinguishable from each other and from a page nobody had collated.
+   A run wins where a leaf is both, since the title is the more specific fact. #}
 <ul>{% for r in refs %}<li><a href='{{ base }}/page/{{ r }}'>{{ r }}</a>{%
  if r in run_titles %} <span class='run-tag'>{{ run_titles[r] }}</span>{%
+ elif r in leaf_kinds %} <span class='leaf-tag'>{{ leaf_kinds[r] }}</span>{%
  endif %}{%
  if drafts and r not in signed %} <span class='draft-tag'>draft</span>{% endif %}</li>{% endfor %}</ul>
 {% else %}

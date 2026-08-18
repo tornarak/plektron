@@ -434,7 +434,7 @@ def negative_refs(root: Path = Path(".")) -> dict[str, list[str]]:
     splits = zn.load_splits(root)
     negative, unknown = [], []
     for ref in zn.zone_refs(root):
-        if splits.get(ref) == "exempt" or alto_for(ref, root).exists():
+        if zn.is_exempt(ref, root, splits) or alto_for(ref, root).exists():
             continue
         # `cached_ink` returns None for a stale or absent verdict rather than the
         # stale record — the distinction this store needs, already drawn there.

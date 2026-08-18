@@ -141,7 +141,7 @@ def test_a_page_off_the_list_still_opens_but_has_no_neighbours(tmp_path):
 def test_progress_counts_the_keyed_pages_on_the_list(tmp_path):
     for r in ("1-005", "1-019", "1-020"):
         make_scan(tmp_path, r)
-    zn.save_zones("1-019", [], tmp_path, split="exempt")
+    zn.save_zones("1-019", [], tmp_path, split="plate")
     st = ui.page_state("1-005", tmp_path, cfg(), itinerary=["1-005", "1-019", "1-020"])
     assert st["done"] == 1 and st["total"] == 3
 
@@ -160,7 +160,7 @@ def test_a_scoped_sweep_reports_unkeyed_pages_as_rows(tmp_path):
     finished pages would call a half-done selection complete."""
     for r in ("1-005", "1-019", "1-020"):
         make_scan(tmp_path, r)
-    zn.save_zones("1-019", [], tmp_path, split="exempt")
+    zn.save_zones("1-019", [], tmp_path, split="plate")
     summary, rows = zn.validate_corpus(
         tmp_path, cfg(), refs=["1-005", "1-019", "1-020"]
     )
@@ -179,7 +179,7 @@ def test_the_list_shows_every_page_on_the_itinerary(tmp_path):
     question — the ref with the error, the ones still to do."""
     for r in ("1-005", "1-019", "1-020"):
         make_scan(tmp_path, r)
-    zn.save_zones("1-019", [], tmp_path, split="exempt")
+    zn.save_zones("1-019", [], tmp_path, split="plate")
     h = render_list_html(tmp_path, cfg(), ["1-005", "1-019", "1-020"], "work")
     for r in ("1-005", "1-019", "1-020"):
         assert f"/?ref={r}" in h
@@ -189,7 +189,7 @@ def test_the_list_shows_every_page_on_the_itinerary(tmp_path):
 def test_the_list_states_each_page(tmp_path):
     for r in ("1-005", "1-019"):
         make_scan(tmp_path, r)
-    zn.save_zones("1-019", [], tmp_path, split="exempt")
+    zn.save_zones("1-019", [], tmp_path, split="plate")
     h = render_list_html(tmp_path, cfg(), ["1-005", "1-019"], "work")
     # One now, not two: the `.s-todo` style rule moved to `worklist.css`, so the
     # only occurrence left in the page is 1-005's own row.
@@ -210,7 +210,7 @@ def test_the_list_marks_the_page_you_came_from(tmp_path):
 
 def test_the_list_falls_back_to_the_store_with_no_itinerary(tmp_path):
     make_scan(tmp_path, "1-019")
-    zn.save_zones("1-019", [], tmp_path, split="exempt")
+    zn.save_zones("1-019", [], tmp_path, split="plate")
     h = render_list_html(tmp_path, cfg())
     assert "1 pages" in h and "/?ref=1-019" in h
 
@@ -272,7 +272,7 @@ def test_the_ink_filter_is_offered(tmp_path):
 def test_an_unscoped_sweep_still_reports_only_keyed_pages(tmp_path):
     for r in ("1-005", "1-019"):
         make_scan(tmp_path, r)
-    zn.save_zones("1-019", [], tmp_path, split="exempt")
+    zn.save_zones("1-019", [], tmp_path, split="plate")
     summary, rows = zn.validate_corpus(tmp_path, cfg())
     assert [r["ref"] for r in rows] == ["1-019"]
     assert summary["todo"] == 0

@@ -329,7 +329,7 @@ def test_save_carries_split_and_exemptions_through(tmp_path):
 def test_saving_no_zones_writes_the_empty_record_when_exempt(tmp_path):
     """A plate saves as zero zones — but only once a human has marked it one."""
     scans(tmp_path, "1-001")
-    ui.save_payload({"ref": "1-001", "zones": [], "split": "exempt"}, tmp_path, cfg())
+    ui.save_payload({"ref": "1-001", "zones": [], "split": "plate"}, tmp_path, cfg())
     assert zn.has_zones("1-001", tmp_path) and zn.read_zones("1-001", tmp_path) == []
 
 

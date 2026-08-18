@@ -5,11 +5,16 @@ tracks, so no amount of transcription will ever produce a `tei/` page for one.
 Left out of the edition they would take every plate, foldout and piece of front
 matter with them, silently — 115 pages of this book.
 
-The rule for showing one is deliberately thin: **figures if the figure store has
-boxes here, the whole scan if it has none.** Sorting these into plates, maps,
-half-titles and blanks would mean deciding what a page *is* from evidence no
-store carries, and getting that wrong on the next book is the failure this
-pipeline is supposed to be past.
+**The kind is read, never inferred** — `zones.LEAF_KINDS`, written by a human in
+`zones edit` at the raster. The rule used to be thin because nothing witnessed
+anything finer: figures if the figure store had boxes here, the whole scan if it
+had none. That is a fact about a *different store*, and under it a blank verso
+and the volume's folding map were the same page — which is what the change fixed
+and what several tests here now assert the other way round.
+
+What has not changed is the boundary. Nothing derives a kind from figure boxes,
+from a neighbouring leaf, or from what the page looks like; a leaf in no kind
+list is not a leaf at all and renders as it always did.
 """
 from __future__ import annotations
 
@@ -19,8 +24,10 @@ ALTO_NS = "http://www.loc.gov/standards/alto/ns-v4#"
 TEI_NS = "http://www.tei-c.org/ns/1.0"
 
 
-def _exempt_lst(root: Path, *refs: str) -> None:
-    p = root / "gt" / "zones" / "_exempt.lst"
+def _exempt_lst(root: Path, *refs: str, kind: str = "plate") -> None:
+    """Rule these leaves, all as one kind. `plate` by default: it is the kind that
+    shows its figure crops, which is what most of these fixtures are about."""
+    p = root / "gt" / "zones" / f"_{kind}.lst"
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text("".join(f"chukchi-{r}.xml\n" for r in refs), encoding="utf-8")
 
@@ -101,11 +108,11 @@ def test_an_exempt_page_with_figures_shows_them(tmp_path):
     assert "whole-scan" not in r.text
 
 
-def test_an_exempt_page_without_figures_shows_the_whole_leaf(tmp_path):
-    """Including a blank one. The reader sees the leaf and can see it is blank;
-    a page that *said* "blank" would assert what no store witnesses — 113 of the
-    115 exempt pages hold zero zones, and a map nobody boxed looks identical."""
-    _exempt_lst(tmp_path, "1-050")
+def test_a_leaf_with_no_figures_shows_the_whole_leaf(tmp_path):
+    """A plate whose boxes nobody has drawn yet, a cover, the map. The kind
+    chooses the framing; `gt/fig/` still decides whether there are crops, so a
+    kind is never allowed to manufacture content the stores do not hold."""
+    _exempt_lst(tmp_path, "1-050", kind="cover")
     _readings(tmp_path, {})
     _raster(tmp_path, "1-050")
 
@@ -113,25 +120,63 @@ def test_an_exempt_page_without_figures_shows_the_whole_leaf(tmp_path):
     assert r.status_code == 200
     assert "whole-scan" in r.text
     assert "/edition/page/1-050.png" in r.text
-    assert "/edition/fig/" not in r.text
 
 
-def test_it_says_the_page_was_ruled_out_and_claims_nothing_more(tmp_path):
+def test_a_blank_is_still_served_but_not_at_plate_size(tmp_path):
+    """**The ruling is a claim, so the paper stays reachable.** A page that showed
+    nothing would be asking the reader to take "blank" on trust, and this store's
+    whole discipline is that a claim keeps its evidence beside it — the leaf is
+    served, through the same lightbox as any other image.
+
+    What it does not get is the full measure. This is the case the old design
+    could not express at all: with the shape decided by whether `gt/fig/` had
+    boxes, a blank verso and the volume's folding map were one branch, and the
+    blank took plate width in the middle of a run of pictures somebody was paging
+    through."""
+    _exempt_lst(tmp_path, "1-050", kind="blank")
+    _readings(tmp_path, {})
+    _raster(tmp_path, "1-050")
+
+    text = _app(tmp_path).get("/edition/page/1-050").text
+    assert "whole-scan blank-leaf" in text
+    assert "/edition/page/1-050.png" in text, "the paper is still reachable"
+    assert "/edition/fig/" not in text
+
+
+def test_the_page_says_the_kind_the_store_holds_and_no_other(tmp_path):
     """The mark is on the page, not only in the listing — a URL typed straight in
-    skips the listing. What it says is what the store says: not a text page. Not
-    plate, not map, not blank."""
-    _exempt_lst(tmp_path, "1-001")
+    skips the listing. What it says is exactly what the store says.
+
+    This used to assert the opposite: that the page named *no* kind, because none
+    was witnessed anywhere. The words are licensed now, and the property that
+    replaces it is that they are licensed **one at a time** — a leaf ruled `cover`
+    must not also be described as a plate or a map, which is what a template
+    branching on the wrong variable would produce.
+    """
+    _exempt_lst(tmp_path, "1-001", kind="cover")
     _readings(tmp_path, {})
     _raster(tmp_path, "1-001")
 
     import re
     text = _app(tmp_path).get("/edition/page/1-001").text
-    assert "not a text page" in text
     # The prose only. Scoped rather than searched whole, because `target='_blank'`
     # on the link to the scan is markup and matched the naive version of this.
     prose = " ".join(re.findall(r">([^<>]+)<", text)).lower()
-    for claim in ("plate", "blank", "half-title", "foldout", "map"):
-        assert claim not in prose, f"the store does not witness {claim!r}"
+    assert "cover" in prose and "title or wrapper leaf" in prose
+    for other in ("plate", "blank", "foldout", "map"):
+        assert other not in prose, f"the store does not witness {other!r} here"
+
+
+def test_a_leaf_the_store_says_nothing_about_falls_back(tmp_path):
+    """A page in no kind list is not a leaf at all, and must render as it always
+    did rather than as an empty branch. This is the state a page is in between
+    being marked in the editor and the kind being saved, and on any corpus whose
+    vocabulary predates this one."""
+    _readings(tmp_path, {})
+    _raster(tmp_path, "1-001")
+    # No `_exempt_lst` call: the page is in no list, so `page()` never reaches
+    # `_exempt_page` at all and the ordinary not-collated path answers.
+    assert _app(tmp_path).get("/edition/page/1-001").status_code == 404
 
 
 # -- the reading order --------------------------------------------------------

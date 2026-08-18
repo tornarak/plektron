@@ -91,7 +91,13 @@ def index(request: Request):
         "edition/index.html",
         _ctx(request, refs=refs, signed=signed, drafts=_drafts(request), here=here,
              run_titles={ui.norm_ref((r.get("refs") or [""])[0]): r.get("title", "")
-                         for r in stores.runs(root) if r.get("refs")}),
+                         for r in stores.runs(root) if r.get("refs")},
+             # **The listing says what a leaf is.** A run already announced itself
+             # by title; the other 94 stood in this list as bare scan numbers, so
+             # the map, the plates and 42 blanks were indistinguishable from each
+             # other and from a page nobody had collated. One word each, off the
+             # ruling — nothing here derives a kind.
+             leaf_kinds=stores.leaf_kinds(root)),
     )
 
 
@@ -240,22 +246,41 @@ def _figref_state(doc: dict, root) -> list[dict]:
     return out
 
 
+#: What each leaf kind tells the reader they are looking at. One sentence, and it
+#: says only what the ruling says — the store holds "a human ruled this a blank",
+#: never a measurement of the paper, so the wording is about the ruling and not
+#: about the leaf. A kind with no entry falls back to the bare "not a text page",
+#: which is what every one of these pages said before there were kinds.
+LEAF_NOTES = {
+    "plate": "a plate — a leaf given over to pictures, printed outside the "
+             "text's own pagination.",
+    "blank": "a blank leaf. Usually the back of a plate; the book prints "
+             "nothing here.",
+    "cover": "a title or wrapper leaf — the volume's own front matter, not "
+             "part of the text.",
+    "map": "a map, printed as a folding leaf.",
+    "apparatus": "one of the book's own lists. Its content is held parsed and "
+                 "is served as a run rather than as this scan.",
+}
+
+
 def _exempt_page(request: Request, ref: str, root):
     """A page a human ruled not a text page, shown as what it actually is.
 
-    Two shapes and one rule to pick between them: **if the figure store has boxes
-    on this page, show those pictures in succession; if it has none, show the
-    whole scan.** That is the entire classification, and deliberately so. Sorting
-    these pages into plates, foldouts, maps, half-titles and blanks would mean
-    deciding what a page *is* from evidence no store carries — on this book the
-    plate/text-figure split is recoverable only from prose in a `@note`, and on
-    the next book it may not be recoverable at all. Whether a human drew figure
-    boxes here is a fact, and it is the only one this needs.
+    **The kind is read, never inferred** — `zones.LEAF_KINDS`, written by a human
+    in `zones edit` at the raster. This picked between two shapes on whether the
+    figure store had boxes here, which was the only fact available and is a fact
+    about a *different store*: under it a blank verso and the volume's folding map
+    were one case, because neither had boxes, and the page could say no more than
+    "a human ruled scan 1-361 out of the transcription tracks".
 
-    A page with no boxes therefore shows the scan rather than nothing, which is
-    also the honest answer for a blank leaf: the reader sees the leaf and can see
-    that it is blank. Nothing here asserts that it is.
+    What the kind may decide is presentation. It does not decide the *pictures*:
+    `gt/fig/` still says which crops exist and `in_printed_order` still sorts them,
+    so a plate with no boxes drawn yet shows its leaf rather than an empty frame.
+    The kind chooses how the leaf is framed and what the page tells the reader it
+    is looking at; it never manufactures content the stores do not hold.
     """
+    kind = tei_html.leaf_kind(ref, root)
     figs = [f for f in stores.fig_layout(ref, root)["figures"]
             if f["box"] is not None]
     plates = [{
@@ -276,6 +301,8 @@ def _exempt_page(request: Request, ref: str, root):
         _ctx(
             request,
             ref=ref,
+            kind=kind,
+            kind_note=LEAF_NOTES.get(kind, ""),
             plates=plates,
             here=here,
             editor_leaf=ui.leaf_source(ref, root)[1] == "ed",

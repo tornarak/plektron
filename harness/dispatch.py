@@ -116,20 +116,36 @@ def template(root: Path = Path("."), markers: tuple[str, str] = (BEGIN, END),
                      for ln in body.strip("\n").splitlines()).strip("\n")
 
 
+def _kind(ref: str, root: Path) -> str:
+    """What the leaf was ruled, for a refusal that names it.
+
+    The refusal used to say "marked exempt", which told a reader the page was out
+    of the tracks and nothing about why — so the remedy ("substitute another page")
+    read the same for a plate, a blank verso and a leaf ruled by mistake. Naming
+    the kind costs one read of the lists at the moment a dispatch is already being
+    refused, which is not a hot path.
+    """
+    from .zones import load_splits
+    return load_splits(root).get(norm_ref(ref), "not a text page")
+
+
 def survey(ref: str, root: Path = Path(".")) -> dict:
     """What the four stores hold for this page — the check `dispatch.md` describes."""
     from .lines import alto_for_lines, page_lines, zoom_capacity
+    from .zones import is_exempt
     ref = norm_ref(ref)
-    exempt = root / "gt/zones/_exempt.lst"
     out = {
         "ref": ref,
         "zones": (root / "gt/zones" / f"chukchi-{ref}.xml").exists(),
         # A human ruled this "not a text page" — a plate, map, foldout or blank.
         # Distinct from "keyed and holds nothing", which is the distinction the
         # zone store exists to keep, and the reason a dispatch can trust it.
-        "exempt": (exempt.exists()
-                   and f"chukchi-{ref}.xml" in exempt.read_text(
-                       encoding="utf-8").split()),
+        #
+        # **Through `is_exempt`, never by reading the list.** This tested for the
+        # page's filename inside `_exempt.lst` and so failed *open*: rename the
+        # file and the refusal below silently stops refusing, which sends readers
+        # at plates with nothing raising. See `zones.is_exempt`.
+        "exempt": is_exempt(ref, root),
         "figures": (root / "gt/fig" / f"chukchi-{ref}.xml").exists(),
         "gt": (root / "gt/ocr" / f"chukchi-{ref}.xml").exists(),
         "mz": (root / "mz/ocr" / f"chukchi-{ref}.xml").exists(),
@@ -174,10 +190,10 @@ def build(ref: str, root: Path = Path("."), note: str | None = None) -> dict:
             "is nothing for `ocr predict` to have segmented. No zones, no dispatch.")
     if s["exempt"]:
         raise Unready(
-            f"{r}: marked exempt in gt/zones/_exempt.lst — a human ruled it not a "
-            "text page (a plate, map, foldout or blank). There is nothing to read, "
-            "and the ruling is a statement rather than an absence, so this is a "
-            "refusal and not a warning.")
+            f"{r}: ruled `{_kind(r, root)}` in gt/zones/ — a human looked at this "
+            "leaf and recorded that it is not a text page. There is nothing to "
+            "read, and the ruling is a statement rather than an absence, so this "
+            "is a refusal and not a warning.")
     if s["gt"]:
         raise Unready(
             f"{r}: gt/ocr/chukchi-{r}.xml already exists, so this is a *revision*, "
@@ -272,13 +288,14 @@ def collate_survey(ref: str, root: Path = Path(".")) -> dict:
     a whole batch before any of it is dispatched, and reading files to decide whether
     to dispatch is how a queue call comes to cost what a page does.
     """
+    from .zones import is_exempt
     ref = norm_ref(ref)
-    exempt = root / "gt/zones/_exempt.lst"
     stem = f"chukchi-{ref}"
     return {
         "ref": ref,
-        "exempt": (exempt.exists()
-                   and f"{stem}.xml" in exempt.read_text(encoding="utf-8").split()),
+        # `survey`'s rule, and for its reason: asked of the split, never of the
+        # list's contents, so a renamed list cannot turn the refusal below off.
+        "exempt": is_exempt(ref, root),
         # **`gt/` by name, never the view.** This used to read `ocr/` and take
         # either store, on the reasoning that a machine draft is workable and
         # ground truth merely better. That was true while collation could run ahead
@@ -301,8 +318,8 @@ def collate_build(ref: str, root: Path = Path("."), note: str | None = None) -> 
     r = s["ref"]
     if s["exempt"]:
         raise Unready(
-            f"{r}: marked exempt in gt/zones/_exempt.lst — a human ruled it not a "
-            "text page (a plate, map, foldout or blank). There is no prose to "
+            f"{r}: ruled `{_kind(r, root)}` in gt/zones/ — a human looked at this "
+            "leaf and recorded that it is not a text page. There is no prose to "
             "collate, and the ruling is a statement rather than an absence.")
     if s["tei"]:
         raise Unready(

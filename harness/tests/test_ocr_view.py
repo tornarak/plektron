@@ -105,11 +105,11 @@ def test_an_existing_page_is_kept_unless_forced(store, monkeypatch):
     assert R.predict_skip("1-060", store, force=True) != "already recognized"
 
 
-def test_an_exempt_page_is_refused_but_a_named_ref_is_not(store, monkeypatch):
-    """`exempt` means a human ruled it not a text page. `single` — naming the ref
-    on the command line — is the override, and it is a separate flag from `force`
-    because the two excuse different things."""
-    monkeypatch.setattr(R.Z, "load_splits", lambda root: {"1-060": "exempt"})
+def test_a_ruled_leaf_is_refused_but_a_named_ref_is_not(store, monkeypatch):
+    """A leaf kind means a human ruled it not a text page. `single` — naming the
+    ref on the command line — is the override, and it is a separate flag from
+    `force` because the two excuse different things."""
+    monkeypatch.setattr(R.Z, "load_splits", lambda root: {"1-060": "plate"})
     assert R.predict_skip("1-060", store) == "ruled not a text page"
     assert R.predict_skip("1-060", store, single=True) != "ruled not a text page"
 

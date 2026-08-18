@@ -90,14 +90,17 @@ def leaf_source(ref: str, root: Path) -> tuple[Path | None, str]:
     upscaled or sharpened leaf is manufactured evidence and must not reach
     anything that measures ink.
 
-    It is *exempt only*. A file for a page the pipeline still owns is ignored
-    here and reported by `edition runs`, rather than being honoured quietly the
-    day somebody adds a branch.
+    It is *exempt only* — any leaf kind, not `map` alone. A file for a page the
+    pipeline still owns is ignored here and reported by `edition runs`, rather
+    than being honoured quietly the day somebody adds a branch. Narrowing it to
+    the kind that happens to use it today (`1-361`, the folding map) would refuse
+    a hand-worked plate for no reason the doctrine gives: what licenses an
+    editor's leaf is that the page is out of the tracks, not which sort it is.
     """
-    from .zones import load_splits
+    from .zones import is_exempt
 
     ref = norm_ref(ref)
-    if load_splits(root).get(ref) != "exempt":
+    if not is_exempt(ref, root):
         return None, "scan"
     for ext in LEAF_EXTS:
         p = root / PAGE_IMG / f"chukchi-{ref}{ext}"

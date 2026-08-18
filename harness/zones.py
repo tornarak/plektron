@@ -38,8 +38,11 @@ Three files sit beside the pages, all tracked:
 
     gt/zones/_train.lst        the training split, one filename per line
     gt/zones/_eval.lst         the held-out split; one filename per line
-    gt/zones/_exempt.lst       plates, maps and blanks — not text pages at all,
-                               and so in neither of the two above
+    gt/zones/_plate.lst        }  what a leaf is where it is not a text page,
+    gt/zones/_blank.lst        }  one list per kind (`LEAF_KINDS`). A page in one
+    gt/zones/_cover.lst        }  of these is in neither of the two above, and
+    gt/zones/_map.lst          }  `is_exempt` is the question every caller asks
+    gt/zones/_apparatus.lst    }  rather than naming a list
     gt/zones/_rule_exempt.json {ref: [rule-id, ...]} — order rules ruled on
     gt/zones/_ink_exempt.json  {ref: [{y0,y1,note}]} — bands of ink ruled not type,
                                each with the reason it was ruled so
@@ -106,15 +109,44 @@ SCHEMA_LOCATION = (f"{ALTO_NS} "
 
 TRAIN_LST = "_train.lst"
 EVAL_LST = "_eval.lst"
-EXEMPT_LST = "_exempt.lst"
 
-# Three splits, not two. `exempt` is the plates, maps, foldouts and blanks — pages
-# a human has looked at and ruled *not a text page*, which is a different statement
-# from "keyed and holds nothing" and a very different one from "not reached yet".
-# They are excluded from training and from eval alike: a plate has no text column,
-# so it is neither an example of the layout nor a fair test of it, and letting one
-# into eval would report a model as wrong about a page that has no right answer.
-SPLITS = ("train", "eval", "exempt")
+#: **What a leaf is, where it is not a text page.** A human has looked at it and
+#: ruled it out of the transcription tracks — which is a different statement from
+#: "keyed and holds nothing" and a very different one from "not reached yet".
+#:
+#: This was one value, `exempt`, and it was a *training* flag: kept out of train
+#: and eval alike, because a plate has no text column and is therefore neither an
+#: example of the layout nor a fair test of it. It stayed one value while five
+#: different things accumulated behind it. By the time the ruling reached a reader,
+#: the edition was sorting these pages with four discriminators borrowed from other
+#: stores — figure boxes for a plate, `data/runs.json` for the apparatus,
+#: `gt/page-img/` for a hand-worked leaf — and the one kind with no other store,
+#: a **blank**, was indistinguishable from the one whose store was merely
+#: unpopulated: the volume's folding map rendered exactly like an empty verso.
+#:
+#: So the kind *is* the split. Nothing infers it — a model may not propose one and
+#: no rule derives one from figure boxes or from a neighbouring page. It is written
+#: by a human in `zones edit`, at the moment they are looking at the raster and have
+#: already decided, which is the only moment the judgement is cheap and the only
+#: authority that may make it.
+#:
+#: Closed, and an unknown value is a refusal rather than a page that quietly trains.
+LEAF_KINDS = ("plate", "blank", "cover", "map", "apparatus")
+
+#: The splits a *text* page can be in — the training bookkeeping, which is the whole
+#: of what this axis ever meant before the kinds were separated out of it.
+TEXT_SPLITS = ("train", "eval")
+
+#: Two text-page splits and the leaf kinds, in one namespace because they answer one
+#: question — *what is this leaf, and what is it therefore in or out of?* A page is
+#: `train` or `eval` when it is prose, and one of `LEAF_KINDS` when it is not.
+SPLITS = (*TEXT_SPLITS, *LEAF_KINDS)
+
+# The editor offers each kind under its own initial. Asserted rather than assumed:
+# two kinds sharing a letter would make one of them unreachable from the keyboard,
+# and the symptom is a key that silently does the wrong thing.
+assert len({k[0] for k in LEAF_KINDS}) == len(LEAF_KINDS), \
+    "leaf kinds must have distinct initials; the editor keys off them"
 
 # Deliberately not `_exempt.json`. That name sat one character from `_exempt.lst`
 # while meaning something else entirely — which order rules a human has accepted on
@@ -489,8 +521,17 @@ def page_windows(ref: str, root: Path = Path("."),
 # ---------------------------------------------------------------- split marking
 
 def _lst_path(root: Path, split: str) -> Path:
-    return zone_dir(root) / {"train": TRAIN_LST, "eval": EVAL_LST,
-                             "exempt": EXEMPT_LST}[split]
+    """The list a split's members are named in. Derived, not mapped.
+
+    Three values were mapped by hand here. Seven would be a table to keep in step
+    with `SPLITS`, and the failure of one going missing is silent — `load_splits`
+    iterates `SPLITS`, so an unlisted kind reads as "nobody is in it" rather than
+    raising. Deriving the name means a kind added to the vocabulary has its list
+    by construction.
+    """
+    if split not in SPLITS:
+        raise KeyError(f"{split!r} is not one of {', '.join(SPLITS)}")
+    return zone_dir(root) / f"_{split}.lst"
 
 
 def _read_lst(p: Path) -> list[str]:
@@ -501,16 +542,22 @@ def _read_lst(p: Path) -> list[str]:
 
 
 def load_splits(root: Path = Path(".")) -> dict[str, str]:
-    """`{ref: "train"|"eval"|"exempt"}` over the three lists.
+    """`{ref: split}` over the lists — a text-page split, or what the leaf is.
 
-    A ref in more than one file resolves to the **most exclusionary** of them —
-    `exempt` over `eval` over `train`. Every one of these lists exists to keep
+    A ref in more than one file resolves to the **most exclusionary** of them: any
+    leaf kind over `eval` over `train`. Every one of these lists exists to keep
     pages out of something, so the safe reading of a contradiction is the one that
     honours the exclusion rather than the one that trains on a plate.
     `validate_corpus` reports the duplicate separately rather than leaving the
     resolution silent.
+
+    **The leaf kinds do not rank against each other**, and a page in two of them is
+    a contradiction no ordering can honestly resolve — a leaf is not more blank than
+    it is a plate. They share one rank, so the winner is whichever `SPLITS` names
+    first; `validate_corpus` is what reports it, and this does not pretend to
+    adjudicate.
     """
-    rank = {"train": 0, "eval": 1, "exempt": 2}
+    rank = {"train": 0, "eval": 1, **dict.fromkeys(LEAF_KINDS, 2)}
     out: dict[str, str] = {}
     for split in SPLITS:
         for name in _read_lst(_lst_path(root, split)):
@@ -523,12 +570,36 @@ def load_splits(root: Path = Path(".")) -> dict[str, str]:
     return out
 
 
-def set_split(ref: str, split: str, root: Path = Path(".")) -> dict:
-    """Put this page in exactly one of the two lists.
+def is_exempt(ref: str, root: Path = Path("."),
+              splits: dict[str, str] | None = None) -> bool:
+    """Has a human ruled this leaf out of the transcription tracks?
 
-    Removes from both before adding, so a page toggled back and forth cannot end up
-    in each — the state that makes an eval set meaningless while both files still
-    look plausible.
+    **The one predicate, so that no caller spells the test itself.** Roughly thirty
+    sites across nine modules used to compare the split against the string
+    `"exempt"`, and two of them — `dispatch.survey` and `dispatch.collate_survey` —
+    did not read the split at all but tested for a filename inside `_exempt.lst`.
+    That second form **fails open**: the day the list is renamed or its shape
+    changes, the test returns `False` and the pass starts dispatching agents at
+    plates, silently and with no error to notice. A refusal that quietly stops
+    refusing is the failure mode this project is organised against, so the
+    question gets one implementation and every caller asks it.
+
+    `splits` is for a caller that has already loaded them and is asking about a
+    corpus of pages; it is the same answer, not a cheaper approximation.
+    """
+    marked = (splits if splits is not None else load_splits(root)).get(
+        norm_ref(ref))
+    return marked in LEAF_KINDS
+
+
+def set_split(ref: str, split: str, root: Path = Path(".")) -> dict:
+    """Put this page in exactly one of the lists.
+
+    Removes from **every** list before adding, so a page toggled back and forth
+    cannot end up in two — the state that makes an eval set meaningless while both
+    files still look plausible. It sweeps all of `SPLITS` rather than the pair it
+    is moving between, which is what keeps that true as the vocabulary grows: a
+    page re-ruled from `plate` to `blank` leaves no member behind.
     """
     if split not in SPLITS:
         raise ValueError(f"split must be one of {', '.join(SPLITS)}, not {split!r}")
@@ -623,7 +694,13 @@ DEPARTURE_KINDS = (
     # human zoning with nothing predicted, which is the same burial `corpus
     # state`'s `zoned-mz` rung had to be fixed for. Kept as a row and not dropped:
     # a silent exclusion is how a shrinking denominator reads as a result.
-    ("exempt", "exempt"),
+    #
+    # **One row, not one per leaf kind.** This table measures departure from a
+    # prediction, and a plate, a blank and a map have equally nothing to depart
+    # from — splitting the row would be five ways of saying "off the scale" in a
+    # report that is not about what the leaf is. The kind is in `gt/zones/`; the
+    # question here is only whether the page is on the scale at all.
+    ("not a text page", "not_a_text_page"),
 )
 
 
@@ -657,17 +734,21 @@ def departures(refs: list[str], root: Path = Path("."),
     for ref in refs:
         ref = norm_ref(ref)
         split = splits.get(ref, "")
-        kind, shift = ("exempt", 10**9) if split == "exempt" \
+        kind, shift = ("not a text page", 10**9) if split in LEAF_KINDS \
             else page_departure(ref, root)
         out.append({
             "ref": ref,
+            # The kind the human ruled, where they ruled one — so the row still
+            # says *which* sort of leaf it is even though `kind` above collapses
+            # them all to one point off the scale.
             "split": split,
             "kind": kind,
             "shift_px": shift if kind in ("identical", "geometry only") else None,
-            # `exempt` is off the scale, so it is not independent evidence either
-            # — the sentinel shift would otherwise carry it past the threshold and
-            # count 83 plates as the strongest witnesses in the set.
-            "independent": (kind not in ("identical", "exempt")
+            # A leaf nobody could segment is off the scale, so it is not
+            # independent evidence either — the sentinel shift would otherwise
+            # carry it past the threshold and count 83 plates as the strongest
+            # witnesses in the set.
+            "independent": (kind not in ("identical", "not a text page")
                             and shift > nudge_px),
         })
     return out
@@ -1142,29 +1223,30 @@ def save_zones(ref: str, zones: list[dict], root: Path = Path("."),
     `zones` carry resolved coordinates — the caller has already turned a side and a
     column index into an x-pair. Nothing below knows what a side is.
 
-    **An empty page is refused unless it is marked `exempt`**, and this is the same
-    distinction the three splits exist to draw. A text page with no zones and a page
-    nobody has reached are byte-identical in this store — `zone_refs` finds both,
-    the sweep counts both as keyed, the list draws both as done — so an empty save
-    does not record a judgement, it erases the difference between having made one
-    and not. `exempt` is how a human says "I looked at this and it is not a text
-    page"; that is a statement, and it saves. "Nothing here" is not.
+    **An empty page is refused unless it is marked with a leaf kind**, and this is
+    the same distinction the splits exist to draw. A text page with no zones and a
+    page nobody has reached are byte-identical in this store — `zone_refs` finds
+    both, the sweep counts both as keyed, the list draws both as done — so an empty
+    save does not record a judgement, it erases the difference between having made
+    one and not. A leaf kind is how a human says "I looked at this, and it is a
+    plate"; that is a statement, and it saves. "Nothing here" is not.
 
     Mechanical, like every other refusal here: it needs no reading of the page, and
     no layout rule can be configured to allow it.
     """
     ref = norm_ref(ref)
     effective = split or load_splits(root).get(ref) or DEFAULT_SPLIT
-    if not zones and effective != "exempt":
+    if not zones and effective not in LEAF_KINDS:
         raise ValueError(
             f"{ref} has no zones and is marked {effective!r} — an empty text page "
             "is indistinguishable from one nobody has reached, so it would be "
             "counted as keyed while recording nothing. Three ways out, and they say "
-            "different things: mark it exempt if it is a plate, map, foldout or "
-            "blank; key it if it is a text page; or **delete it** — `harness zones "
-            f"delete {ref} --commit`, or `X` in the editor — if it should not be "
-            "in the store at all. That third one is reachable from here: a page "
-            "keyed and then emptied has no other way to be withdrawn.")
+            "different things: **say what the leaf is** if it is not a text page "
+            f"({', '.join(LEAF_KINDS)}); key it if it is a text page; or **delete "
+            f"it** — `harness zones delete {ref} --commit`, or `X` in the editor — "
+            "if it should not be in the store at all. That third one is reachable "
+            "from here: a page keyed and then emptied has no other way to be "
+            "withdrawn.")
     stamp = stamp or time.strftime("%Y-%m-%dT%H:%M:%S%z")
     size = raster_size(ref, root)
     tree = build_alto(ref, zones, size)
@@ -1485,17 +1567,17 @@ def validate_page(ref: str, root: Path = Path("."), cfg: dict | None = None,
     # it predates the refusal, or arrived by hand — and it is the one defect that
     # makes a page *look finished*. Everything downstream counts it as keyed.
     if has_zones(ref, root, store) and not zones \
-            and splits.get(ref) != "exempt":
+            and not is_exempt(ref, root, splits):
         err("empty-page",
-            "keyed with no zones and not marked exempt — indistinguishable from a "
-            "page nobody has reached, while counting as done. Mark it exempt if it "
-            "is a plate, map, foldout or blank; key it if it is a text page; or "
-            "delete it (`--delete --commit`) if it does not belong in the store."
+            "keyed with no zones and marked a text page — indistinguishable from a "
+            "page nobody has reached, while counting as done. Say what the leaf is "
+            f"({', '.join(LEAF_KINDS)}) if it is not a text page; key it if it is; "
+            "or delete it (`--delete --commit`) if it does not belong in the store."
             # The remedy is the human store's. A file here with nothing in it means
-            # the model found nothing on a page a human has not ruled blank, which
-            # is a finding about the model and has no "mark it exempt" answer.
+            # the model found nothing on a page a human has not ruled a leaf, which
+            # is a finding about the model and has no "say what it is" answer.
             if store == ZONEDIR else
-            "the model returned no region for a page not ruled exempt")
+            "the model returned no region for a page still ruled a text page")
 
     measure = int(zc.part_spec(cfg, ref)["measure"])
     over = zc.override_windows(cfg, ref)
@@ -1556,13 +1638,13 @@ def validate_page(ref: str, root: Path = Path("."), cfg: dict | None = None,
             err("no-raster", f"no scan for {ref}; geometry cannot be checked")
 
     split = splits.get(ref)
-    # A page marked `exempt` is a plate, a map, a foldout or a blank — a human has
-    # ruled it not a text page. The layout warnings all describe how a *text* page
+    # A page marked with a leaf kind is a plate, a map, a cover or a blank — a human
+    # has ruled it not a text page. The layout warnings all describe how a *text* page
     # is normally arranged, so on this one they describe nothing and would be
     # permanent known-false noise, which is what buries real signal. The mechanical
     # errors above still stand: whatever zones the page does carry must still be
     # the right shape, or the mark is hiding a mistake rather than a plate.
-    if split == "exempt":
+    if split in LEAF_KINDS:
         return {"ref": ref, "keyed": has_zones(ref, root, store), "zones": len(zones),
                 "split": split, "ink_checked": False,
                 "errors": errors, "warnings": [], "uncovered": []}
@@ -1702,7 +1784,15 @@ def validate_corpus(root: Path = Path("."), cfg: dict | None = None,
                "todo": sum(1 for r in rows if not r["split"]),
                "train": sum(1 for r in rows if r["split"] == "train"),
                "eval": sum(1 for r in rows if r["split"] == "eval"),
-               "exempt": sum(1 for r in rows if r["split"] == "exempt"),
+               # **`exempt` is kept as the total, and each kind counted beside
+               # it.** The total is what the training reader wants — how many
+               # pages are out of both lists — and dropping it would silently
+               # change the meaning of a number that has been read for a year.
+               # The per-kind counts are the new fact and are added, not
+               # substituted; a reader comparing runs across this change sees
+               # `exempt` unmoved.
+               "exempt": sum(1 for r in rows if r["split"] in LEAF_KINDS),
+               **{k: sum(1 for r in rows if r["split"] == k) for k in LEAF_KINDS},
                "zones": sum(r["zones"] for r in rows),
                "errors": n_err, "warnings": n_warn,
                "ink_checked": ink,
@@ -2252,8 +2342,7 @@ def predict_skip(ref: str, root: Path = Path("."), force: bool = False,
     leave nothing able to tell you the store had ever held two models' output. Skip
     by default and the sha stays true to the file it is on.
     """
-    if not single and (splits if splits is not None
-                       else load_splits(root)).get(ref) == "exempt":
+    if not single and is_exempt(ref, root, splits):
         return "ruled not a text page"
     if not force and has_zones(ref, root, MZDIR):
         return "already predicted"
@@ -2944,7 +3033,7 @@ def paragraph_audit(root: Path = Path("."), cfg: dict | None = None,
     # fold below stays single-threaded and in ref order. The page costs a raster
     # decode, which is the whole reason for the pool.
     def _one(ref: str) -> dict | None:
-        if splits.get(ref) == "exempt":
+        if is_exempt(ref, root, splits):
             return None
         zones = read_zones(ref, root, store=store)
         if not zones:
@@ -3262,7 +3351,7 @@ def score(root: Path = Path("."), cfg: dict | None = None,
     # page it can be asked about, which is the point of measuring before installing.
     candidates = gt_refs if model_path is not None else (gt_refs & mz_refs)
     skipped_exempt = sorted(r for r in candidates
-                            if splits_now.get(r) == "exempt")
+                            if is_exempt(r, root, splits_now))
     both = sorted(candidates - set(skipped_exempt), key=parse_ref)
 
     cfg = cfg or zc.load_config(root)
@@ -3790,7 +3879,7 @@ def assemble(root: Path = Path("."), scratch: bool = False) -> dict:
         # A plate is neither an example of the layout nor a fair test of it, so it
         # goes into neither list. Counted, not silently dropped — a set that
         # shrank without saying so would look like pages that were never keyed.
-        if split == "exempt":
+        if split in LEAF_KINDS:
             exempted += 1
             continue
         alto = alto_for(ref, root)
@@ -3837,7 +3926,7 @@ def assemble(root: Path = Path("."), scratch: bool = False) -> dict:
 
     classes = sorted({merges.get(z["label"], z["label"])
                       for ref in zone_refs(root)
-                      if splits.get(ref, DEFAULT_SPLIT) != "exempt"
+                      if splits.get(ref, DEFAULT_SPLIT) not in LEAF_KINDS
                       for z in read_zones(ref, root)})
     _dev, _wrk = _runtime_flags()
     if scratch:

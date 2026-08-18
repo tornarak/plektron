@@ -58,8 +58,11 @@ def _write(root: Path, rel: str, text: str) -> Path:
     return p
 
 
-def _exempt(root: Path, *refs: str) -> None:
-    _write(root, "gt/zones/_exempt.lst",
+def _exempt(root: Path, *refs: str, kind: str = "apparatus") -> None:
+    """Rule these leaves. `apparatus` by default because a run's leaves must be
+    ruled exactly that — these fixtures are about runs, and any other kind is now
+    a gate failure rather than a passing declaration."""
+    _write(root, f"gt/zones/_{kind}.lst",
            "".join(f"chukchi-{r}.xml\n" for r in refs))
 
 
