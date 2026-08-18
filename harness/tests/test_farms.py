@@ -364,3 +364,53 @@ def test_check_gates_only_over_the_farms_it_was_asked_about(tmp_path):
     rows = {r["farm"]: r for r in F.survey(tmp_path)}
     assert rows["ocr"]["state"] == "ok"
     assert rows["w-figs"]["state"] == "absent"      # would gate, if asked about
+
+
+# ------------------------------------------------------- the leaf-kind farms
+
+def test_every_leaf_kind_has_a_farm_and_no_farm_outlives_a_kind():
+    """`farms._LEAF_KINDS` copies the vocabulary down from `zones`, and a copy is
+    a thing that drifts. The failure is quiet in both directions: a kind with no
+    farm makes `views check` report its directory as an unregistered stray, and a
+    farm with no kind builds an empty directory forever."""
+    from harness.zones import LEAF_KINDS
+    assert F._LEAF_KINDS == LEAF_KINDS
+    for kind in LEAF_KINDS:
+        assert F.BY_NAME[kind].path == f"{F.SCANS}/{kind}"
+        assert F.BY_NAME[kind].kind == "select"
+
+
+def test_a_leaf_farm_holds_the_leaves_ruled_that_kind(tmp_path):
+    """Membership is the split list, not what is in the directory — which is what
+    makes this checkable at all rather than a record of whatever somebody dragged
+    where."""
+    from harness import zones as zn
+    for ref in ("1-049", "1-050"):
+        write_scan(tmp_path, ref, (2824, 3897))
+    zn.save_zones("1-049", [], tmp_path, split="plate")
+    zn.save_zones("1-050", [], tmp_path, split="blank")
+
+    F.build("plate", tmp_path)
+    F.build("blank", tmp_path)
+    rows = {r["farm"]: r for r in F.survey(tmp_path)}
+    assert (rows["plate"]["state"], rows["plate"]["entries"]) == ("ok", 1)
+    assert (rows["blank"]["state"], rows["blank"]["entries"]) == ("ok", 1)
+    assert (tmp_path / "scans" / "plate" / "chukchi-1-049.png").exists()
+
+
+def test_re_ruling_a_leaf_moves_it_rather_than_leaving_it_in_both(tmp_path):
+    """The state that would otherwise be silent: a leaf re-ruled `plate` -> `blank`
+    still linked from `scans/plate/`, where the directory says one thing and the
+    store another. `rebuild` removes what the criterion no longer wants, so the
+    stale farm reports `stale` before the rebuild and is empty after it."""
+    from harness import zones as zn
+    write_scan(tmp_path, "1-049", (2824, 3897))
+    zn.save_zones("1-049", [], tmp_path, split="plate")
+    F.build("plate", tmp_path)
+
+    zn.set_split("1-049", "blank", tmp_path)
+    assert {r["farm"]: r["state"] for r in F.survey(tmp_path)}["plate"] == "stale"
+    F.build("plate", tmp_path)
+    F.build("blank", tmp_path)
+    assert not (tmp_path / "scans" / "plate" / "chukchi-1-049.png").exists()
+    assert (tmp_path / "scans" / "blank" / "chukchi-1-049.png").exists()

@@ -52,6 +52,12 @@ W_OCR = "scans/w-ocr"
 FIG_CROPS = "scans/fig-crops"
 TRAIN_WORK = "train/bogoras-seg"
 
+# Imported by value, not by module, because `zones` imports this one: the leaf
+# vocabulary lives there (it is a fact about the store) and the farms derived from
+# it live here, so the name is copied down rather than the dependency reversed.
+# `test_farms.py` holds the two in step.
+_LEAF_KINDS = ("plate", "blank", "cover", "map", "apparatus")
+
 
 @dataclass(frozen=True)
 class Farm:
@@ -135,6 +141,24 @@ FARMS = (
          "none"),
     Farm("train", TRAIN_WORK, "scratch", (),
          "harness zones assemble", "none"),
+    # One per leaf kind: `scans/plate/`, `scans/blank/`, and so on, each a farm of
+    # links into `scans/` for the leaves ruled that kind. `select`, because
+    # membership is a criterion over one tree — and the criterion is a *store*
+    # fact, `gt/zones/`'s split, so it is exactly checkable rather than a guess
+    # about what somebody meant by sorting a directory.
+    #
+    # **Derived from `LEAF_KINDS`, never listed.** A kind added to the vocabulary
+    # gets its farm here by construction; a hand-written tuple would leave the
+    # new one unregistered, and `views check` would report the directory as a
+    # stray rather than rebuild it.
+    #
+    # These began as a hand sort — somebody looked at 94 leaves and put each one
+    # in a directory — which is the act the split lists now record. The farm is
+    # the sort rebuilt *from* that record, so it survives a `scans/` rebuild
+    # instead of being the only copy.
+    *(Farm(k, f"{SCANS}/{k}", "select", (SCANS,),
+           f"harness views build {k}", "membership")
+      for k in _LEAF_KINDS),
 )
 
 BY_NAME = {f.name: f for f in FARMS}
@@ -357,6 +381,14 @@ def build(name: str, root: Path = Path(".")) -> dict:
         rep = crop_all(root=root)
         return {"farm": name, "dir": rep["dir"], "linked": rep["written"],
                 "removed": 0, "skipped": ""}
+    if name in _LEAF_KINDS:
+        # `rebuild` does the whole job: it links what the criterion wants and
+        # removes what it no longer does, which is what makes a re-ruled leaf move
+        # between farms rather than appearing in both.
+        rep = rebuild(root / SCANS / name, _wanted_for(name, root) or {},
+                      "chukchi-*.png")
+        return {"farm": name, **{k: rep[k] for k in ("dir", "linked", "removed")},
+                "skipped": ""}
     rep = build_w_figs(root) if name == "w-figs" else build_w_ocr(root)
     return {**rep, "skipped": ""}
 
@@ -403,6 +435,14 @@ def _wanted_for(name: str, root: Path) -> dict[str, Path] | None:
         from .figures import crops_wanted
         return {name_: root / SCANS / f"chukchi-{ref}.png"
                 for name_, ref in crops_wanted(root).items()}
+    if name in _LEAF_KINDS:
+        # The leaves ruled this kind, each linking to its own raster. Computed
+        # from the split lists and not from what is in the directory, so a leaf
+        # re-ruled from `plate` to `blank` reports `stale` on both farms rather
+        # than sitting in the wrong one indefinitely.
+        from .zones import load_splits
+        return {f"chukchi-{r}.png": root / SCANS / f"chukchi-{r}.png"
+                for r, split in load_splits(root).items() if split == name}
     return None
 
 
