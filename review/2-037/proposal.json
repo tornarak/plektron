@@ -1,0 +1,108 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "311"
+    },
+    "2": {
+      "text": "the Pleiades, the Milky Way, “Heads,” etc. The large star in the upper"
+    },
+    "3": {
+      "text": "left-hand corner is Venus."
+    },
+    "4": {
+      "text": "On another sketch (Fig. 219) three worlds are represented by three"
+    },
+    "5": {
+      "text": "concentric circles. Our world is the innermost. The Polar Star again stands"
+    },
+    "6": {
+      "text": "in the centre. On the left hand are the Sun and the Moon. The latter is"
+    },
+    "7": {
+      "text": "represented as a man holding a lasso, with two human captives standing"
+    },
+    "8": {
+      "text": "beside him. Between the Sun and the Moon are the stars of Pehiˊttin.¹",
+      "resolved": "Pehiˊttin = Pehi + U+02CA (stress) + ttin; ¹ = U+00B9 superscript footnote marker, tight against the period",
+      "note": "Lexicon key {Pehi'ttin} confirms Pehiˊttin (harness lexicon lookup pehi, 10 occurrences over 2-033/2-036/2-134); zoomed 4x to confirm the raised mark is stress (comma-shaped) and the trailing mark is superscript 1, not a bracket.",
+      "class": "print"
+    },
+    "9": {
+      "text": "Beneath the Moon is located the black mountain of Darkness. At the"
+    },
+    "10": {
+      "text": "bottom stands a house made of earth belonging to the keˊlet. Two keˊlet",
+      "note": "Lexicon key {ke'let} -> keˊlet, ratified over 22 occurrences across 11 pages (harness lexicon lookup ke'let).",
+      "class": "semantic",
+      "as_typed": "bottom stands a house made of earth belonging to the {ke'let}. Two {ke'let}"
+    },
+    "11": {
+      "text": "walk on all-fours. A large worm² wriggles above the house, its tail armed",
+      "resolved": "² = U+00B2 superscript footnote marker, keyed tight against the preceding word per §2.10",
+      "note": "Machine text keyed the footnote marker as a bare '?'; keyed the actual superscript digit 2, tight against 'worm' per §2.10.",
+      "class": "print"
+    },
+    "12": {
+      "text": "with a long sting. The Left-hand Dawn has a low wooden house with two"
+    },
+    "13": {
+      "text": "“murderers,”³ one tied on each side. The Genuine Dawn has a house",
+      "resolved": "³ = U+00B3 superscript footnote marker, tight against the closing curly quote",
+      "note": "Machine text keyed the footnote marker as a bare ASCII '3'; keyed the actual superscript digit 3, tight against the closing curly quote per §2.10.",
+      "class": "print"
+    },
+    "14": {
+      "text": "raised on a platform, which is supported by a single pole. Four dogs are"
+    },
+    "15": {
+      "text": "tied on the sides of the house. In the region of the Right-hand Dawn, at"
+    },
+    "16": {
+      "text": "the left side of the sketch, lives Dawn-Top-Woman (Tñeˊs˙qᴀ-ñe)⁴ in a small",
+      "resolved": "Tñeˊs˙qᴀ-ñe = T + n+U+0303(ñ) + e + U+02CA(stress) + s + U+02D9(palatalization) + q + U+1D00(small-cap A) + hyphen + n+U+0303(ñ) + e; ⁴ = U+2074 superscript footnote marker",
+      "note": "Zoomed 4x on 'qA': the A is capital-shaped but shorter than the line's ascenders (T, W), consistent with small-cap ᴀ (§2.3). No lexicon match (below the 2-page floor); read directly off the raster.",
+      "class": "doubt"
+    },
+    "17": {
+      "text": "house, which is also supported on a single pole. Under her feet is Venus."
+    },
+    "18": {
+      "text": "The next sketch (Fig. 220a) shows the Moon with the lasso in his"
+    },
+    "19": {
+      "text": "hand. The captive girl stands by his side. He is displeased with two"
+    },
+    "20": {
+      "text": "shamans because of the many evil charms they have created, with his aid,"
+    },
+    "21": {
+      "text": "to destroy other people. He paralyzes them by binding their heads and"
+    },
+    "22": {
+      "text": "hands with invisible strings, and pulling them upward (Fig. 220, b, c). The",
+      "note": "Machine text read the italic letter as digit 6; zoomed 4x and confirmed it is italic lowercase b (matches sibling letter c immediately after).",
+      "class": "print"
+    },
+    "23": {
+      "text": "Moon’s wife is represented with her face half blackened with soot (Fig. 220, d)."
+    },
+    "24": {
+      "text": "⁴ See p. 303."
+    },
+    "25": {
+      "text": "¹ See p. 307."
+    },
+    "26": {
+      "text": "³ See p. 292."
+    },
+    "27": {
+      "text": "² See p. 13."
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

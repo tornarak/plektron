@@ -1,0 +1,388 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-2-034.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-2-034.png; regions_from: zones/chukchi-2-034.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+                <TextBlock ID="mz_2-034_r1" HPOS="364" VPOS="457" WIDTH="1776" HEIGHT="90" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="364 457 2140 457 2140 547 364 547"/>
+                    </Shape>
+                    <TextLine ID="mz_2-034_l1" HPOS="940" VPOS="473" WIDTH="615" HEIGHT="53" BASELINE="942 509 1555 505" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1547 487 1529 473 951 475 940 489 942 509 942 526 1553 522 1555 505 1549 491 1547 487"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-034_l2" HPOS="368" VPOS="471" WIDTH="96" HEIGHT="61" BASELINE="368 511 464 511" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="446 475 426 473 407 473 405 471 379 477 368 491 368 511 368 532 464 522 464 511 464 479 448 475 446 475"/>
+                        </Shape>
+                        <String CONTENT="308"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-034_r2" HPOS="364" VPOS="572" WIDTH="1776" HEIGHT="126" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="364 572 2140 572 2140 698 364 698"/>
+                    </Shape>
+                    <TextLine ID="mz_2-034_l3" HPOS="362" VPOS="575" WIDTH="1772" HEIGHT="65" BASELINE="362 616 2134 616" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2105 577 2093 577 2046 585 1966 575 1964 575 1962 575 1929 585 1893 575 1891 575 1889 575 1805 585 1752 575 1750 575 1748 575 1717 585 1607 575 1605 575 1604 575 1572 585 1545 575 1543 575 1541 575 1539 575 1496 587 1376 587 1355 575 1353 575 1351 575 1349 575 1320 585 1235 575 1233 575 1165 585 362 579 362 616 362 630 781 630 838 640 840 640 908 630 947 640 949 640 951 640 1047 630 1090 640 1092 640 1094 640 2134 628 2134 616 2134 585 2115 577 2105 577"/>
+                        </Shape>
+                        <String CONTENT="Rulteˊnnin. Two large stars extending downward from the belt form his"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-034_l4" HPOS="364" VPOS="636" WIDTH="376" HEIGHT="57" BASELINE="364 677 740 677" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="364 677 364 693 740 693 740 677 740 648 701 636 699 636 697 636 585 648 473 636 472 636 364 648 364 677"/>
+                        </Shape>
+                        <String CONTENT="membrum virile."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-034_r3" HPOS="364" VPOS="698" WIDTH="1776" HEIGHT="539" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="364 698 2140 698 2140 1237 364 1237"/>
+                    </Shape>
+                    <TextLine ID="mz_2-034_l5" HPOS="466" VPOS="693" WIDTH="1668" HEIGHT="66" BASELINE="468 734 2134 738" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="468 734 466 748 477 757 479 757 481 757 483 757 567 748 605 757 607 757 609 757 611 757 646 748 683 757 685 757 687 757 1114 748 1130 757 1132 757 1133 757 1316 759 1318 759 2132 750 2134 738 2134 706 2107 695 2105 695 2103 695 2048 706 1948 706 1931 695 1929 695 1927 695 1925 695 1923 695 1895 705 1627 695 1625 695 1560 705 1523 695 1521 695 1519 695 1517 695 1496 706 1327 706 1302 693 1300 693 1298 693 1237 703 1169 693 1167 693 1165 693 1124 703 1055 693 1053 693 1051 693 1022 703 1002 693 1000 693 998 693 996 693 994 693 981 703 951 693 949 693 947 693 468 699 468 734"/>
+                        </Shape>
+                        <String CONTENT="Leo is called Vêˊtča-ñeˊut (“standing-woman”). This name is usually"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-034_l6" HPOS="360" VPOS="755" WIDTH="1776" HEIGHT="63" BASELINE="362 799 2136 795" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="362 799 362 818 2134 810 2136 795 2132 767 1856 755 1854 755 1805 765 1772 755 1770 755 1768 755 1666 765 1629 755 1627 755 1625 755 1623 755 1600 765 1529 755 1527 755 1318 765 1278 755 1276 755 1275 755 1179 767 1116 757 1114 757 1112 757 1079 767 838 757 836 757 571 767 538 757 536 757 534 757 487 767 395 757 393 757 391 757 360 767 362 799"/>
+                        </Shape>
+                        <String CONTENT="given to women taking part in certain ceremonial dances.¹ The woman"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-034_l7" HPOS="362" VPOS="816" WIDTH="1772" HEIGHT="55" BASELINE="362 857 2134 857" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="362 857 362 869 2132 871 2134 857 2134 828 2050 816 2048 816 2046 816 2007 826 1962 816 1960 816 1907 828 1737 828 1707 816 1705 816 1703 816 1701 816 1668 826 1631 816 1629 816 1627 816 1625 816 1590 828 1419 828 1402 816 1400 816 1398 816 1396 816 1394 816 1361 826 1300 816 1298 816 1296 816 1265 826 1243 816 1241 816 1239 816 1182 826 1106 816 1104 816 1034 826 992 816 991 816 989 816 987 816 949 826 928 816 926 816 924 816 846 826 793 816 791 816 789 816 755 826 661 816 660 816 362 820 362 857"/>
+                        </Shape>
+                        <String CONTENT="is considered to be Orion’s wife, and she sleeps on the bare ground. In a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-034_l8" HPOS="364" VPOS="877" WIDTH="1772" HEIGHT="55" BASELINE="364 916 2136 916" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="364 916 364 932 2136 930 2136 916 2136 887 2113 877 2111 877 2109 877 2015 887 1993 877 1991 877 1989 877 1927 887 1715 877 1713 877 1711 877 1676 887 1641 877 1639 877 1637 877 1635 877 1633 877 1617 887 1568 877 1566 877 1482 887 1429 877 1427 877 1425 877 1423 877 1410 887 1349 877 1347 877 1284 887 1251 877 1249 877 1247 877 1245 877 1226 887 1179 877 1177 877 1175 877 1141 887 1090 877 1088 877 1086 877 1085 877 1069 889 924 889 838 877 836 877 834 877 801 887 767 877 765 877 763 877 761 877 759 877 746 887 693 877 691 877 632 887 575 877 573 877 571 877 544 887 507 877 505 877 503 877 364 887 364 916"/>
+                        </Shape>
+                        <String CONTENT="quarrel she struck Orion on the back with her tailoring-board, causing his"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-034_l9" HPOS="360" VPOS="934" WIDTH="1776" HEIGHT="58" BASELINE="362 979 2136 973" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="362 979 362 990 2132 992 2136 973 2132 945 2077 934 2076 934 2074 934 2048 943 1997 934 1995 934 1993 934 1968 943 1940 934 1938 934 1936 934 1935 934 1909 945 1713 945 1696 934 1694 934 1692 934 1690 934 1590 943 1547 934 1545 934 1543 934 1541 934 1513 945 1400 936 1398 936 1396 936 1370 945 1302 936 1300 936 1298 936 1269 945 1202 936 1200 936 1198 936 1161 945 1086 936 1085 936 1010 945 871 938 869 938 867 938 846 947 360 943 362 979"/>
+                        </Shape>
+                        <String CONTENT="back to become crooked. After that he drove his wife out, and she lay"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-034_l10" HPOS="362" VPOS="994" WIDTH="1774" HEIGHT="65" BASELINE="364 1034 2136 1037" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="364 1034 362 1047 376 1057 377 1057 379 1057 381 1057 1190 1049 1249 1059 1251 1059 2134 1049 2136 1037 2136 1008 2095 996 2093 996 2091 996 2019 1006 1701 996 1700 996 1698 996 1666 1006 1635 996 1633 996 1631 996 1541 1006 1508 996 1506 996 1504 996 1502 996 1474 1006 1447 996 1445 996 1443 996 1392 1006 1337 996 1335 996 1276 1006 1235 994 1233 994 1231 994 1229 994 1200 1004 1143 994 1141 994 1047 1004 994 994 992 994 877 1004 812 994 810 994 808 994 777 1004 728 994 726 994 724 994 697 1004 614 994 613 994 611 994 579 1006 423 1006 401 994 399 994 397 994 395 994 364 1002 364 1034"/>
+                        </Shape>
+                        <String CONTENT="down to sleep in the middle of the sky. Leo is formed of seven stars. The"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-034_l11" HPOS="362" VPOS="1055" WIDTH="1774" HEIGHT="67" BASELINE="364 1098 2136 1092" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="364 1098 364 1112 701 1112 769 1122 771 1122 1235 1110 1298 1120 1300 1120 1302 1120 1331 1110 1543 1120 1545 1120 1678 1108 2115 1118 2117 1118 2119 1118 2121 1118 2136 1106 2136 1092 2132 1067 2072 1055 2070 1055 2068 1055 2040 1065 1846 1055 1844 1055 1842 1055 1803 1065 1768 1055 1766 1055 1764 1055 1676 1065 1598 1055 1596 1055 1541 1067 1038 1057 1036 1057 1034 1057 1032 1057 1018 1067 957 1057 955 1057 953 1057 951 1057 938 1069 900 1059 898 1059 897 1059 464 1069 397 1059 395 1059 393 1059 362 1069 364 1098"/>
+                        </Shape>
+                        <String CONTENT="star ε of Leo represents the head of the woman; η, her neck; Regulus, her"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-034_l12" HPOS="362" VPOS="1118" WIDTH="1776" HEIGHT="53" BASELINE="362 1157 2138 1157" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="362 1157 362 1171 2138 1171 2138 1157 2138 1129 2011 1129 1995 1118 1993 1118 1991 1118 1989 1118 1878 1129 1707 1129 1686 1118 1684 1118 1682 1118 1680 1118 1645 1128 1584 1118 1582 1118 1580 1118 1547 1128 362 1122 362 1157"/>
+                        </Shape>
+                        <String CONTENT="knee. A small star between ε and η represents the sleeve on which rests"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-034_l13" HPOS="362" VPOS="1173" WIDTH="1473" HEIGHT="68" BASELINE="364 1214 1835 1220" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="364 1214 362 1227 374 1235 376 1235 377 1235 379 1235 748 1227 855 1239 857 1239 1316 1229 1807 1241 1809 1241 1811 1241 1833 1229 1835 1220 1835 1190 1795 1176 1794 1176 1792 1176 1692 1186 1613 1176 1611 1176 1609 1176 1607 1176 1594 1188 1545 1176 1543 1176 1541 1176 1421 1188 1259 1186 1247 1175 1245 1175 1243 1175 1182 1175 1180 1175 1179 1175 1177 1175 1161 1188 902 1188 877 1175 875 1175 873 1175 810 1184 793 1173 791 1173 789 1173 787 1173 785 1173 754 1184 691 1173 689 1173 495 1184 470 1173 468 1173 466 1173 464 1173 419 1184 391 1173 389 1173 387 1173 385 1173 364 1182 364 1214"/>
+                        </Shape>
+                        <String CONTENT="the head of the sleeping woman. Other stars outline her body."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-034_r4" HPOS="364" VPOS="1237" WIDTH="1776" HEIGHT="301" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="364 1237 2140 1237 2140 1538 364 1538"/>
+                    </Shape>
+                    <TextLine ID="mz_2-034_l14" HPOS="446" VPOS="1235" WIDTH="1692" HEIGHT="65" BASELINE="446 1276 2138 1276" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="446 1276 446 1288 1208 1300 1210 1300 2138 1290 2138 1276 2138 1249 2064 1235 2062 1235 1997 1249 1942 1249 1925 1235 1923 1235 1921 1235 1919 1235 1848 1249 1733 1249 1715 1235 1713 1235 1711 1235 1709 1235 1707 1235 1666 1247 1508 1247 1492 1235 1490 1235 1488 1235 1486 1235 1484 1235 1447 1247 1363 1235 1361 1235 1359 1235 1331 1245 1263 1235 1261 1235 1259 1235 1233 1247 1126 1235 1124 1235 1065 1247 1047 1235 1045 1235 1043 1235 1041 1235 920 1249 769 1249 726 1235 724 1235 589 1235 587 1235 585 1235 583 1235 566 1247 446 1241 446 1276"/>
+                        </Shape>
+                        <String CONTENT="The Pleiades are called Ñaus˙qaǰoˊmkɪn (“group of women”). They"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-034_l15" HPOS="362" VPOS="1296" WIDTH="1774" HEIGHT="61" BASELINE="364 1335 2136 1339" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="364 1335 362 1347 376 1357 377 1357 379 1357 381 1357 2134 1349 2136 1339 2136 1308 2121 1298 2119 1298 2117 1298 2115 1298 1860 1308 1821 1298 1819 1298 1817 1298 1750 1308 1692 1298 1690 1298 1639 1308 1541 1298 1539 1298 1257 1306 1224 1296 1222 1296 1220 1296 1218 1296 1182 1306 1137 1296 1135 1296 1133 1296 1092 1306 1028 1296 1026 1296 916 1308 540 1308 515 1296 513 1296 511 1296 364 1304 364 1335"/>
+                        </Shape>
+                        <String CONTENT="are six young women waiting for husbands. Orion, after his quarrel with"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-034_l16" HPOS="362" VPOS="1353" WIDTH="1772" HEIGHT="66" BASELINE="364 1392 2134 1398" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="364 1392 362 1408 374 1415 376 1415 377 1415 379 1415 442 1406 495 1415 497 1415 826 1406 861 1415 863 1415 865 1415 912 1406 967 1417 969 1417 1541 1408 1627 1419 1629 1419 1676 1410 1729 1419 1731 1419 2132 1408 2134 1398 2132 1370 2074 1357 2072 1357 2009 1368 1954 1357 1952 1357 1782 1366 1748 1357 1747 1357 1745 1357 1743 1357 1700 1368 1584 1357 1582 1357 1580 1357 1545 1368 1478 1355 1476 1355 1474 1355 1441 1366 1320 1355 1318 1355 1316 1355 1280 1366 1261 1355 1259 1355 1257 1355 1255 1355 1253 1355 1210 1366 844 1357 842 1357 840 1357 808 1364 791 1353 789 1353 787 1353 669 1353 667 1353 665 1353 640 1366 571 1366 552 1353 550 1353 548 1353 546 1353 477 1364 413 1353 411 1353 364 1359 364 1392"/>
+                        </Shape>
+                        <String CONTENT="his wife, offered to marry one of them; but they rejected his offer,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-034_l17" HPOS="364" VPOS="1415" WIDTH="1774" HEIGHT="55" BASELINE="364 1457 2138 1457" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="364 1457 364 1470 2136 1470 2138 1457 2136 1427 2066 1415 2064 1415 2062 1415 2038 1425 1985 1415 1983 1415 1982 1415 1954 1425 1698 1415 1696 1415 1694 1415 1692 1415 1674 1427 1566 1427 1539 1415 1537 1415 1535 1415 1474 1425 1445 1415 1443 1415 1441 1415 1439 1415 1408 1425 1341 1415 1339 1415 1337 1415 1335 1415 1320 1427 1218 1427 1167 1415 1165 1415 1073 1425 992 1415 991 1415 900 1425 828 1415 826 1415 701 1425 638 1415 636 1415 585 1425 464 1415 462 1415 364 1425 364 1457"/>
+                        </Shape>
+                        <String CONTENT="considering his membrum virile to be too big for them. The incensed suitor"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-034_l18" HPOS="364" VPOS="1474" WIDTH="1772" HEIGHT="65" BASELINE="366 1513 2136 1517" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="366 1513 364 1525 434 1537 436 1537 1149 1529 1265 1539 1267 1539 2134 1529 2136 1517 2136 1486 2121 1476 2119 1476 2117 1476 2115 1476 1954 1486 1686 1476 1684 1476 1682 1476 1649 1488 1417 1488 1388 1476 1386 1476 1384 1476 1255 1486 1194 1474 1192 1474 1190 1474 1159 1484 951 1474 949 1474 853 1486 754 1486 738 1474 736 1474 734 1474 732 1474 730 1474 699 1484 677 1474 675 1474 673 1474 614 1484 489 1474 487 1474 366 1482 366 1513"/>
+                        </Shape>
+                        <String CONTENT="caught up his bow and began to shoot at the women, who turned and fled."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-034_r5" HPOS="364" VPOS="1538" WIDTH="1776" HEIGHT="535" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="364 1538 2140 1538 2140 2073 364 2073"/>
+                    </Shape>
+                    <TextLine ID="mz_2-034_l19" HPOS="448" VPOS="1537" WIDTH="1690" HEIGHT="55" BASELINE="448 1576 2138 1576" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="448 1576 448 1592 2138 1592 2138 1576 2138 1547 2111 1537 2109 1537 2107 1537 2036 1549 1925 1549 1903 1537 1901 1537 1899 1537 1247 1547 1216 1537 1214 1537 1212 1537 1210 1537 1173 1547 1120 1537 1118 1537 1028 1547 1014 1537 1012 1537 1010 1537 879 1537 877 1537 754 1547 720 1537 718 1537 716 1537 714 1537 681 1547 468 1537 466 1537 464 1537 462 1537 448 1545 448 1576"/>
+                        </Shape>
+                        <String CONTENT="Aldebaran is considered to be the copper-tipped arrow of Orion, and is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-034_l20" HPOS="364" VPOS="1596" WIDTH="1774" HEIGHT="54" BASELINE="364 1637 2138 1637" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="364 1637 364 1650 2136 1650 2138 1637 2138 1607 2109 1596 2107 1596 2105 1596 2103 1596 2081 1605 2060 1596 2058 1596 2056 1596 2054 1596 2019 1605 2003 1596 2001 1596 1999 1596 1997 1596 1995 1596 1970 1605 1666 1596 1664 1596 1662 1596 1623 1605 1596 1596 1594 1596 1592 1596 1370 1605 1306 1596 1304 1596 1249 1605 1208 1596 1206 1596 1204 1596 1202 1596 1169 1607 936 1607 881 1596 879 1596 877 1596 838 1605 736 1596 734 1596 630 1605 614 1596 613 1596 611 1596 417 1596 415 1596 364 1605 364 1637"/>
+                        </Shape>
+                        <String CONTENT="called Čêˊʟo-maˊᵋqɪm (“copper arrow”). The rear end of its wooden shaft is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-034_l21" HPOS="364" VPOS="1652" WIDTH="1776" HEIGHT="59" BASELINE="366 1693 2140 1699" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="366 1693 364 1705 2136 1711 2140 1699 2140 1670 2058 1656 2056 1656 2054 1656 2023 1666 2003 1656 2001 1656 1999 1656 1750 1666 1686 1656 1684 1656 1584 1666 1508 1654 1506 1654 959 1664 944 1652 942 1652 940 1652 938 1652 869 1662 850 1652 848 1652 846 1652 701 1662 609 1652 607 1652 605 1652 603 1652 587 1664 366 1664 366 1693"/>
+                        </Shape>
+                        <String CONTENT="represented by the double star not far from Aldebaran. The arrow fell short"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-034_l22" HPOS="364" VPOS="1713" WIDTH="1774" HEIGHT="67" BASELINE="366 1750 2138 1756" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="366 1750 364 1764 381 1776 383 1776 385 1776 387 1776 389 1776 426 1766 456 1776 458 1776 460 1776 526 1766 585 1776 587 1778 691 1778 691 1776 693 1776 695 1776 710 1766 881 1776 883 1776 885 1776 910 1766 1083 1778 1085 1778 1153 1768 1429 1778 1431 1778 1433 1778 1463 1768 1547 1780 1549 1780 1551 1780 1572 1770 2136 1770 2138 1756 2138 1729 2113 1717 2111 1717 2109 1717 2107 1717 2076 1727 2017 1717 2015 1717 1837 1727 1745 1717 1743 1717 1741 1717 1709 1727 1623 1717 1621 1717 1555 1727 1484 1715 1482 1715 1480 1715 1447 1727 1210 1727 1188 1715 1186 1715 1184 1715 1182 1715 1157 1725 1130 1715 1128 1715 1126 1715 1124 1715 1092 1725 996 1715 994 1715 660 1723 638 1713 636 1713 634 1713 632 1713 605 1723 579 1713 577 1713 575 1713 573 1713 536 1723 479 1713 477 1713 366 1721 366 1750"/>
+                        </Shape>
+                        <String CONTENT="of the fleeing women, and stuck in a mossy bog. The bow of Orion is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-034_l23" HPOS="366" VPOS="1776" WIDTH="1772" HEIGHT="55" BASELINE="366 1817 2138 1817" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="366 1817 366 1829 2136 1831 2138 1817 2138 1787 1866 1776 1864 1776 1762 1786 1729 1776 1727 1776 1725 1776 1723 1776 1703 1786 1656 1776 1654 1776 1652 1776 1651 1776 1635 1787 1496 1787 1396 1776 1394 1776 1292 1786 1241 1776 1239 1776 1237 1776 1204 1786 1171 1776 1169 1776 1167 1776 1165 1776 1163 1776 1147 1787 1043 1787 1010 1776 1008 1776 1006 1776 953 1786 881 1776 879 1776 712 1786 605 1776 603 1776 366 1786 366 1817"/>
+                        </Shape>
+                        <String CONTENT="represented by a number of stars in front of the constellation, which form a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-034_l24" HPOS="370" VPOS="1834" WIDTH="1770" HEIGHT="65" BASELINE="370 1876 2140 1876" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="370 1876 370 1887 395 1899 397 1899 399 1899 505 1889 975 1899 977 1899 1034 1889 1455 1899 1457 1899 1564 1889 1662 1899 1664 1899 2140 1889 2140 1876 2140 1846 2091 1834 2089 1834 2087 1834 2085 1834 2058 1846 1972 1834 1970 1834 1968 1834 1936 1848 1780 1848 1741 1834 1739 1834 1737 1834 1660 1846 1641 1834 1639 1834 1637 1834 1635 1834 1580 1846 1468 1834 1390 1834 1388 1834 1386 1834 1384 1834 1367 1846 1310 1834 1308 1834 1239 1846 1122 1834 1120 1834 1118 1834 1086 1848 987 1848 961 1834 959 1834 957 1834 779 1846 693 1834 691 1834 620 1844 370 1842 370 1876"/>
+                        </Shape>
+                        <String CONTENT="figure somewhat resembling a bow. The Kolyma Chukchee say that the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-034_l25" HPOS="377" VPOS="1895" WIDTH="1759" HEIGHT="61" BASELINE="379 1932 2136 1938" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="379 1932 377 1946 391 1956 393 1956 395 1956 397 1956 2134 1952 2136 1938 2134 1907 379 1895 379 1932"/>
+                        </Shape>
+                        <String CONTENT="“group of women” stand quiet, and protect themselves with nets, which"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-034_l26" HPOS="368" VPOS="1956" WIDTH="1768" HEIGHT="57" BASELINE="368 1997 2136 1997" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="368 1997 368 2009 2132 2013 2136 1997 2136 1968 2105 1956 2103 1956 2101 1956 2099 1956 2072 1966 2027 1956 2025 1956 1946 1966 1917 1956 1915 1956 1913 1956 1860 1966 1461 1956 1459 1956 1457 1956 1455 1956 1439 1968 1273 1968 1222 1956 1220 1956 1139 1966 1102 1956 1100 1956 1098 1956 1045 1966 969 1956 967 1956 802 1966 661 1956 660 1956 368 1966 368 1997"/>
+                        </Shape>
+                        <String CONTENT="are represented by a number of small stars. The “copper arrow” sticks in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-034_l27" HPOS="368" VPOS="2013" WIDTH="192" HEIGHT="55" BASELINE="370 2050 560 2054" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="370 2050 368 2064 556 2068 560 2054 560 2026 534 2015 532 2015 530 2015 528 2015 495 2024 407 2013 405 2013 403 2013 370 2021 370 2050"/>
+                        </Shape>
+                        <String CONTENT="the net."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-034_r6" HPOS="364" VPOS="2073" WIDTH="1776" HEIGHT="176" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="364 2073 2140 2073 2140 2249 364 2249"/>
+                    </Shape>
+                    <TextLine ID="mz_2-034_l28" HPOS="479" VPOS="2069" WIDTH="1655" HEIGHT="65" BASELINE="481 2113 2134 2120" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="481 2113 479 2122 556 2134 558 2134 2132 2132 2134 2120 2134 2089 2093 2075 2091 2075 2038 2075 2036 2075 2034 2075 2032 2075 2019 2087 1991 2075 1989 2075 1987 2075 1985 2075 1946 2087 1835 2075 1833 2075 1831 2075 1829 2075 1813 2089 1723 2089 1635 2073 1633 2073 1439 2085 1410 2073 1408 2073 1406 2073 1404 2073 1359 2085 1308 2071 1306 2071 1304 2071 1302 2071 1300 2071 1286 2083 1273 2071 1271 2071 1269 2071 1267 2071 1143 2083 1102 2071 1100 2071 1098 2071 1096 2071 1067 2085 989 2085 963 2071 961 2071 959 2071 957 2071 930 2081 895 2069 893 2069 891 2069 826 2081 481 2073 481 2113"/>
+                        </Shape>
+                        <String CONTENT="The three constellations described by the Chukchee are shown in Fig."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-034_l29" HPOS="370" VPOS="2136" WIDTH="1770" HEIGHT="65" BASELINE="370 2177 2140 2177" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="370 2177 370 2189 444 2201 446 2201 448 2201 475 2191 893 2201 895 2201 944 2191 1300 2191 1329 2201 1331 2201 1333 2201 1484 2191 1635 2201 1637 2201 1700 2191 1831 2191 1852 2201 1854 2201 1856 2201 2140 2191 2140 2177 2140 2146 2111 2136 2109 2136 2107 2136 2019 2146 1564 2136 1562 2136 1494 2146 1463 2136 1461 2136 1459 2136 1245 2146 1177 2136 1175 2136 1173 2136 1151 2146 1100 2136 1098 2136 1096 2136 1055 2146 991 2136 989 2136 898 2146 773 2136 771 2136 720 2146 681 2136 679 2136 677 2136 675 2136 648 2146 530 2136 528 2136 526 2136 524 2136 509 2148 370 2148 370 2177"/>
+                        </Shape>
+                        <String CONTENT="214. Orion is standing with shoulders squared and legs wide apart, and is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-034_l30" HPOS="368" VPOS="2189" WIDTH="787" HEIGHT="65" BASELINE="370 2228 1155 2236" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="370 2228 368 2246 376 2252 377 2252 379 2252 381 2252 562 2244 571 2252 571 2254 573 2254 575 2254 577 2254 1153 2248 1155 2236 1153 2207 1061 2195 1059 2195 979 2205 961 2193 959 2193 957 2193 955 2193 908 2205 812 2205 801 2193 799 2193 797 2193 795 2193 687 2201 677 2193 677 2191 675 2191 673 2191 671 2191 669 2191 646 2201 616 2191 614 2191 613 2191 517 2199 497 2189 495 2189 493 2189 370 2197 370 2228"/>
+                        </Shape>
+                        <String CONTENT="bending his bow for another shot."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-034_r7" HPOS="364" VPOS="2249" WIDTH="1776" HEIGHT="425" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="364 2249 2140 2249 2140 2674 364 2674"/>
+                    </Shape>
+                    <TextLine ID="mz_2-034_l31" HPOS="481" VPOS="2250" WIDTH="1659" HEIGHT="68" BASELINE="483 2291 2140 2297" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="483 2291 481 2303 1139 2316 1141 2316 1521 2308 1602 2318 1604 2318 2138 2308 2140 2297 2138 2259 2068 2254 2066 2254 2064 2254 2027 2265 1997 2254 1995 2254 1993 2254 1991 2254 1970 2265 1954 2254 1952 2254 1950 2254 1876 2254 1874 2254 1819 2265 1795 2254 1794 2254 1792 2254 1790 2254 1766 2265 1719 2254 1717 2254 1715 2254 1658 2265 1572 2252 1570 2252 1455 2263 1423 2252 1421 2252 1419 2252 1417 2252 1416 2252 1398 2265 1267 2265 1194 2252 1192 2252 1133 2263 1108 2252 1106 2252 1104 2252 1102 2252 1079 2263 1063 2252 1061 2252 1059 2252 1057 2252 989 2261 973 2250 971 2250 969 2250 910 2250 908 2250 906 2250 857 2261 795 2250 793 2250 791 2250 789 2250 771 2263 556 2263 538 2250 536 2250 534 2250 532 2250 483 2250 483 2291"/>
+                        </Shape>
+                        <String CONTENT="The star α (Capella) of the Wagoner is a reindeer-buck which is tied"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-034_l32" HPOS="368" VPOS="2310" WIDTH="1772" HEIGHT="67" BASELINE="370 2350 2140 2355" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="370 2350 368 2363 1053 2377 1055 2377 2138 2369 2140 2355 2138 2326 1964 2326 1948 2314 1946 2314 1944 2314 1844 2314 1842 2314 1841 2314 1839 2314 1823 2326 1707 2326 1686 2314 1684 2314 1682 2314 1680 2314 1654 2324 1633 2314 1631 2314 1629 2314 1627 2314 1600 2324 1416 2324 1394 2312 1392 2312 1390 2312 1294 2322 1253 2312 1251 2312 1249 2312 1247 2312 1222 2322 1171 2312 1169 2312 1167 2312 1137 2322 1090 2312 1088 2312 1086 2312 1045 2322 887 2322 871 2310 869 2310 867 2310 865 2310 863 2310 824 2320 744 2310 742 2310 658 2320 587 2310 585 2310 583 2310 552 2320 520 2310 519 2310 517 2310 370 2314 370 2350"/>
+                        </Shape>
+                        <String CONTENT="behind the sledge of a man (ε) who is driving two reindeer. All four stars"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-034_l33" HPOS="368" VPOS="2371" WIDTH="1772" HEIGHT="59" BASELINE="370 2410 2140 2416" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="370 2410 368 2424 2136 2430 2140 2416 2140 2387 2115 2375 2113 2375 2111 2375 2109 2375 2077 2385 1938 2375 1936 2375 1623 2385 1592 2375 1590 2375 1588 2375 1586 2375 1566 2385 1553 2373 1551 2373 1549 2373 1547 2373 1545 2373 1502 2383 1457 2373 1455 2373 1453 2373 1431 2383 1265 2373 1263 2373 1171 2383 1143 2373 1141 2373 1139 2373 1137 2373 1108 2383 1036 2373 1034 2373 989 2383 955 2371 953 2371 951 2371 370 2379 370 2410"/>
+                        </Shape>
+                        <String CONTENT="are called čŭmña-nleteˊtɪlɪn (“buck-carriers”). β of the same constellation is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-034_l34" HPOS="370" VPOS="2432" WIDTH="1770" HEIGHT="57" BASELINE="372 2471 2140 2477" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="372 2471 370 2483 2136 2489 2140 2477 2140 2445 2123 2436 2121 2436 2119 2436 2117 2436 2115 2436 2081 2445 2027 2436 2025 2436 2023 2436 2021 2436 2005 2447 1733 2447 1680 2436 1678 2436 1588 2445 1543 2434 1541 2434 1539 2434 1470 2444 1335 2434 1333 2434 1227 2444 1200 2434 1198 2434 1196 2434 1081 2444 1028 2434 1026 2434 965 2444 949 2432 947 2432 945 2432 944 2432 863 2442 691 2432 689 2432 687 2432 652 2442 579 2432 577 2432 372 2440 372 2471"/>
+                        </Shape>
+                        <String CONTENT="supposed to be a scarf lost by another reindeer-driver, who now comes back"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-034_l35" HPOS="370" VPOS="2489" WIDTH="1768" HEIGHT="68" BASELINE="372 2528 2138 2536" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="372 2528 370 2545 379 2553 381 2553 383 2553 385 2553 1194 2547 1265 2557 1267 2557 2136 2549 2138 2536 2138 2504 2121 2494 2119 2494 2117 2494 2115 2494 1846 2504 1825 2494 1823 2494 1821 2494 1819 2494 1790 2504 1766 2494 1764 2494 1762 2494 1715 2504 1700 2492 1698 2492 1696 2492 1694 2492 1692 2492 1670 2504 1484 2504 1459 2492 1457 2492 1455 2492 1453 2492 1451 2492 1433 2504 1300 2504 1233 2491 1231 2491 1229 2491 1202 2500 1000 2491 998 2491 996 2491 975 2500 953 2491 951 2491 949 2491 879 2500 855 2491 853 2491 851 2491 850 2491 822 2500 755 2489 754 2489 695 2498 644 2489 642 2489 372 2496 372 2528"/>
+                        </Shape>
+                        <String CONTENT="for it. This driver has behind his sledge another extra buck (star θ), which"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-034_l36" HPOS="370" VPOS="2551" WIDTH="1768" HEIGHT="65" BASELINE="372 2590 2138 2598" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="372 2590 370 2602 397 2614 399 2614 401 2614 644 2606 826 2616 828 2616 2136 2610 2138 2598 2138 2569 2097 2557 2095 2557 2093 2557 2032 2567 1819 2557 1817 2557 1727 2567 1698 2555 1696 2555 1694 2555 1369 2565 1304 2555 1302 2555 1300 2555 1257 2565 1106 2565 1090 2553 1088 2553 1086 2553 1085 2553 1083 2553 1045 2563 989 2553 987 2553 985 2553 955 2563 918 2553 916 2553 914 2553 912 2553 883 2563 779 2551 667 2551 665 2551 663 2551 661 2551 646 2561 372 2555 372 2590"/>
+                        </Shape>
+                        <String CONTENT="is walking sidewise. A fox is approaching the scarf from the other side."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-034_l37" HPOS="374" VPOS="2612" WIDTH="1175" HEIGHT="61" BASELINE="376 2649 1549 2657" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="376 2649 374 2663 397 2673 399 2673 401 2673 1547 2669 1549 2657 1547 2628 1380 2616 1378 2616 1255 2624 1245 2616 1245 2614 1243 2614 1241 2614 1239 2614 971 2624 953 2612 951 2612 949 2612 947 2612 945 2612 922 2622 859 2612 857 2612 755 2622 376 2614 376 2649"/>
+                        </Shape>
+                        <String CONTENT="The whole constellation is represented in Fig. 215."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-034_r8" HPOS="364" VPOS="2674" WIDTH="1776" HEIGHT="232" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="364 2674 2140 2674 2140 2906 364 2906"/>
+                    </Shape>
+                    <TextLine ID="mz_2-034_l38" HPOS="479" VPOS="2675" WIDTH="1661" HEIGHT="62" BASELINE="481 2710 2140 2716" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="481 2710 479 2724 1063 2737 1065 2737 2138 2729 2140 2716 2138 2686 481 2675 481 2710"/>
+                        </Shape>
+                        <String CONTENT="Ursa Major does not play a conspicuous part among the other constel-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-034_l39" HPOS="368" VPOS="2735" WIDTH="1772" HEIGHT="61" BASELINE="370 2771 2140 2776" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="370 2739 370 2771 368 2782 603 2794 605 2794 957 2786 989 2796 991 2796 992 2796 2138 2790 2140 2776 2138 2739 370 2735 370 2739"/>
+                        </Shape>
+                        <String CONTENT="lations. Six of its stars are supposed to be men shooting with slings, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-034_l40" HPOS="370" VPOS="2790" WIDTH="1768" HEIGHT="67" BASELINE="372 2831 2138 2839" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="372 2831 370 2841 407 2853 409 2853 411 2853 646 2845 818 2857 820 2857 906 2847 1022 2857 1024 2857 2136 2855 2138 2839 2136 2808 1972 2796 1970 2796 1788 2806 1721 2796 1719 2796 1717 2796 1696 2806 1631 2794 1629 2794 1159 2802 1106 2792 1104 2792 898 2802 857 2792 855 2792 853 2792 851 2792 826 2802 806 2790 804 2790 802 2790 801 2790 742 2802 634 2802 618 2790 616 2790 614 2790 613 2790 372 2798 372 2831"/>
+                        </Shape>
+                        <String CONTENT="are called accordingly “sling-throwers” (wɪyotkɪñaˊulɪt). The seventh star,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-034_l41" HPOS="372" VPOS="2857" WIDTH="1766" HEIGHT="64" BASELINE="374 2886 2138 2898" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="374 2886 372 2902 387 2912 389 2912 391 2912 393 2912 599 2904 740 2915 742 2915 822 2906 877 2915 879 2915 1202 2908 1257 2919 1259 2919 1367 2910 1619 2921 1621 2921 1674 2912 1774 2912 1790 2921 1792 2921 1794 2921 1795 2921 2136 2912 2138 2898 2136 2868 374 2857 374 2886"/>
+                        </Shape>
+                        <String CONTENT="which is double, is supposed to be a gray fox gnawing at a pair of antlers."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-034_r9" HPOS="364" VPOS="2906" WIDTH="1776" HEIGHT="128" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="364 2906 2140 2906 2140 3034 364 3034"/>
+                    </Shape>
+                    <TextLine ID="mz_2-034_l42" HPOS="475" VPOS="2921" WIDTH="1667" HEIGHT="57" BASELINE="477 2951 2142 2957" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="477 2951 475 2962 661 2974 663 2974 1008 2966 1073 2976 1075 2976 1539 2968 1592 2978 1594 2978 2140 2968 2142 2957 2142 2927 477 2921 477 2951"/>
+                        </Shape>
+                        <String CONTENT="Castor and Pollux are two elks running away from two hunters who are"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-034_l43" HPOS="372" VPOS="2980" WIDTH="1764" HEIGHT="55" BASELINE="374 3008 2136 3015" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="374 3008 372 3023 493 3035 495 3035 2134 3033 2136 3015 2134 2988 374 2980 374 3008"/>
+                        </Shape>
+                        <String CONTENT="driving two reindeer-teams represented by the stars γ, κ, and λ, μ of the"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-034_r10" HPOS="364" VPOS="3053" WIDTH="1776" HEIGHT="46" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="364 3053 2140 3053 2140 3099 364 3099"/>
+                    </Shape>
+                    <TextLine ID="mz_2-034_l44" HPOS="1098" VPOS="3055" WIDTH="319" HEIGHT="45" BASELINE="1098 3080 1417 3080" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1098 3080 1098 3100 1417 3100 1417 3080 1417 3055 1098 3055 1098 3080"/>
+                        </Shape>
+                        <String CONTENT="¹ See Chapter XIV."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

@@ -1,0 +1,398 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-2-003.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-2-003.png; regions_from: zones/chukchi-2-003.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Other"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="QuireMarksZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+                <TextBlock ID="mz_2-003_r1" HPOS="370" VPOS="736" WIDTH="1776" HEIGHT="94" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="370 736 2146 736 2146 830 370 830"/>
+                    </Shape>
+                    <TextLine ID="mz_2-003_l1" HPOS="891" VPOS="740" WIDTH="718" HEIGHT="64" BASELINE="893 791 1609 787" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1582 742 1580 742 1523 752 1429 742 1427 742 1425 742 1406 752 1392 740 1390 740 1388 740 1380 740 1361 740 1341 740 1322 740 1302 740 1282 740 1263 740 1257 740 1255 740 1253 740 1206 752 1196 744 1196 742 1194 742 1192 742 1110 742 1108 742 1106 742 1104 742 1104 744 1092 753 906 744 891 777 893 791 893 804 1607 804 1609 787 1607 753 1584 742 1582 742"/>
+                        </Shape>
+                        <String CONTENT="XII. — RELIGIOUS IDEAS."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-003_r2" HPOS="370" VPOS="858" WIDTH="1776" HEIGHT="192" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="370 858 2146 858 2146 1050 370 1050"/>
+                    </Shape>
+                    <TextLine ID="mz_2-003_l2" HPOS="477" VPOS="863" WIDTH="1661" HEIGHT="63" BASELINE="479 910 2138 902" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2123 875 2103 875 2083 873 2064 873 2044 873 2025 871 2005 871 1993 871 1985 871 1966 869 1950 869 1946 873 1656 873 1629 863 1627 863 1625 863 1623 863 1621 863 1605 873 1582 863 1580 863 1578 863 1576 863 1551 873 1500 863 1498 863 1447 873 1421 863 1419 863 1417 863 1416 863 1414 863 1398 873 1369 863 1367 863 1365 863 1294 875 1259 865 1257 865 1255 865 1253 865 1224 875 1139 865 1137 865 1135 865 1110 875 1088 865 1086 865 1085 865 1036 875 1022 865 1020 865 1018 865 1016 865 891 877 844 867 842 867 785 877 708 867 707 867 477 873 479 910 479 926 2136 926 2138 902 2134 875 2123 875"/>
+                        </Shape>
+                        <String CONTENT="The religious ideas of both branches of the Chukchee are so much alike,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-003_l3" HPOS="370" VPOS="922" WIDTH="1772" HEIGHT="63" BASELINE="372 971 2142 963" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="372 971 372 985 2140 977 2142 963 2138 934 1735 922 1733 922 1731 922 1694 934 1296 924 1294 924 1292 924 1290 924 1275 934 924 926 922 926 865 936 830 926 828 926 826 926 824 926 822 926 806 938 746 928 744 928 742 928 714 938 513 928 511 928 509 928 468 938 395 928 393 928 391 928 370 938 372 971"/>
+                        </Shape>
+                        <String CONTENT="that they can be described together.¹ Minor differences will be pointed out"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-003_l4" HPOS="372" VPOS="985" WIDTH="619" HEIGHT="58" BASELINE="374 1032 991 1028" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="374 1032 374 1043 989 1039 991 1028 987 998 906 985 904 985 902 985 900 985 881 998 818 998 775 985 773 985 771 985 769 985 767 985 767 987 755 996 667 987 665 987 663 987 628 998 611 987 609 987 607 987 605 987 489 998 462 987 460 987 458 987 456 987 417 998 383 987 381 987 379 987 377 987 376 987 376 988 374 988 372 988 374 1032"/>
+                        </Shape>
+                        <String CONTENT="in the following discussion."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-003_r3" HPOS="370" VPOS="1050" WIDTH="1776" HEIGHT="298" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="370 1050 2146 1050 2146 1348 370 1348"/>
+                    </Shape>
+                    <TextLine ID="mz_2-003_l5" HPOS="479" VPOS="1041" WIDTH="1663" HEIGHT="61" BASELINE="481 1088 2142 1082" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="481 1088 481 1102 2140 1096 2142 1082 2138 1053 1790 1041 1788 1041 1700 1051 1664 1041 1662 1041 1660 1041 1658 1041 1656 1041 1643 1051 1562 1043 1560 1043 1558 1043 1557 1043 1543 1053 1529 1043 1527 1043 1525 1043 1523 1043 1521 1043 1498 1053 1474 1043 1472 1043 1470 1043 1312 1053 1278 1043 1276 1043 1275 1043 1165 1053 1104 1043 1102 1043 1024 1055 1000 1045 998 1045 996 1045 910 1055 816 1045 814 1045 812 1045 783 1055 697 1045 695 1045 479 1053 481 1088"/>
+                        </Shape>
+                        <String CONTENT="In studying the religious ideas of the Chukchee I gradually formed a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-003_l6" HPOS="368" VPOS="1102" WIDTH="1776" HEIGHT="65" BASELINE="370 1151 2144 1141" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="370 1151 370 1167 2142 1157 2144 1141 2140 1114 2081 1102 2079 1102 1784 1114 1357 1106 1355 1106 1353 1106 1329 1116 1130 1106 1128 1106 1024 1118 724 1108 722 1108 720 1108 697 1120 393 1110 391 1110 389 1110 368 1120 370 1151"/>
+                        </Shape>
+                        <String CONTENT="simple theory about the first development of the religious concepts of primitive"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-003_l7" HPOS="370" VPOS="1169" WIDTH="1774" HEIGHT="56" BASELINE="372 1212 2144 1202" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="372 1212 372 1225 2142 1216 2144 1202 2140 1173 726 1169 724 1169 370 1180 372 1212"/>
+                        </Shape>
+                        <String CONTENT="man in general. I give it here, in the beginning of this chapter, in order to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-003_l8" HPOS="372" VPOS="1225" WIDTH="1772" HEIGHT="57" BASELINE="374 1270 2144 1263" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="374 1270 374 1282 2142 1276 2144 1263 2140 1233 1261 1225 1259 1225 1257 1225 1224 1235 442 1229 440 1229 372 1239 374 1270"/>
+                        </Shape>
+                        <String CONTENT="make what follows easier to understand. Its value for me is the help it was"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-003_l9" HPOS="372" VPOS="1292" WIDTH="1230" HEIGHT="51" BASELINE="374 1331 1602 1323" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="374 1331 374 1343 1600 1339 1602 1323 1598 1296 389 1292 387 1292 385 1292 383 1292 372 1298 374 1331"/>
+                        </Shape>
+                        <String CONTENT="to me in arranging the material in a systematic way."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-003_r4" HPOS="370" VPOS="1348" WIDTH="1776" HEIGHT="422" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="370 1348 2146 1348 2146 1770 370 1770"/>
+                    </Shape>
+                    <TextLine ID="mz_2-003_l10" HPOS="479" VPOS="1339" WIDTH="1667" HEIGHT="67" BASELINE="481 1390 2146 1380" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="481 1390 481 1406 2144 1396 2146 1380 2142 1353 2087 1339 2085 1339 2083 1339 2081 1339 2064 1353 1925 1353 1889 1339 1888 1339 1886 1339 1807 1353 1715 1341 1713 1341 1711 1341 1684 1353 1453 1343 1451 1343 1449 1343 1414 1355 1388 1343 1386 1343 1384 1343 1382 1343 1380 1343 1363 1355 1347 1343 1345 1343 1343 1343 1273 1343 1271 1343 1200 1355 1149 1343 1147 1343 1145 1343 1067 1359 994 1359 973 1345 971 1345 969 1345 967 1345 808 1361 683 1361 636 1347 634 1347 632 1347 479 1355 481 1390"/>
+                        </Shape>
+                        <String CONTENT="Primitive man, conscious of life, which is the source of his actions, attrib-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-003_l11" HPOS="374" VPOS="1402" WIDTH="1774" HEIGHT="60" BASELINE="376 1449 2148 1441" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="376 1449 376 1462 2146 1455 2148 1441 2144 1413 2068 1402 2066 1402 2064 1402 2062 1402 2044 1413 1891 1413 1858 1402 1856 1402 1854 1402 1743 1411 1707 1402 1705 1402 1703 1402 1701 1402 1652 1413 1572 1404 1570 1404 1365 1413 1316 1404 1314 1404 1245 1415 834 1406 832 1406 830 1406 791 1417 520 1408 519 1408 517 1408 515 1408 499 1419 374 1419 376 1449"/>
+                        </Shape>
+                        <String CONTENT="utes similar life and inherent virtue to all surrounding objects of nature that"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-003_l12" HPOS="372" VPOS="1460" WIDTH="1774" HEIGHT="65" BASELINE="374 1511 2146 1502" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="374 1511 374 1525 2144 1515 2146 1502 2144 1472 2121 1460 2119 1460 2117 1460 2115 1460 2085 1470 2011 1460 2009 1460 2007 1460 1985 1472 1848 1472 1817 1460 1815 1460 1813 1460 1811 1460 1786 1472 1682 1462 1680 1462 1476 1472 1439 1462 1437 1462 1435 1462 1433 1462 1402 1474 1118 1464 1116 1464 1114 1464 1077 1476 1043 1466 1041 1466 1039 1466 1038 1466 1006 1476 947 1466 945 1466 372 1474 374 1511"/>
+                        </Shape>
+                        <String CONTENT="have attracted his attention by their activity, by some striking feature of their"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-003_l13" HPOS="374" VPOS="1527" WIDTH="1774" HEIGHT="57" BASELINE="376 1570 2148 1560" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="376 1570 376 1584 2146 1576 2148 1560 2144 1533 1085 1527 1083 1527 1081 1527 1047 1537 440 1531 438 1531 374 1541 376 1570"/>
+                        </Shape>
+                        <String CONTENT="outward appearance, or, indeed, by any other circumstance. This attribution"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-003_l14" HPOS="374" VPOS="1582" WIDTH="1774" HEIGHT="68" BASELINE="376 1629 2148 1621" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="376 1629 376 1641 667 1650 669 1650 879 1639 1075 1648 1077 1648 1180 1639 1259 1646 1261 1646 1263 1646 1284 1637 1674 1646 1676 1646 1807 1635 1935 1645 1936 1645 2146 1637 2148 1621 2142 1586 1799 1592 1711 1582 1709 1582 1584 1594 1478 1584 1476 1584 1416 1594 1382 1584 1380 1584 1378 1584 1376 1584 1357 1594 1310 1584 1308 1584 1306 1584 1304 1584 1290 1594 1224 1586 1222 1586 1220 1586 1218 1586 1202 1598 1094 1598 1063 1586 1061 1586 1059 1586 1057 1586 1055 1586 1041 1596 1004 1586 1002 1586 1000 1586 871 1596 818 1586 816 1586 814 1586 812 1586 791 1598 417 1588 415 1588 413 1588 374 1599 376 1629"/>
+                        </Shape>
+                        <String CONTENT="of life similar to his own² forms the basis of his religious concepts; and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-003_l15" HPOS="374" VPOS="1646" WIDTH="1772" HEIGHT="71" BASELINE="376 1692 2146 1680" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="376 1692 376 1717 426 1707 667 1715 669 1715 671 1715 710 1705 2144 1705 2146 1680 2142 1650 965 1646 963 1646 961 1646 940 1656 683 1648 681 1648 374 1660 376 1692"/>
+                        </Shape>
+                        <String CONTENT="primitive mythology develops from it by gradual ramification and working-up"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-003_l16" HPOS="379" VPOS="1705" WIDTH="235" HEIGHT="67" BASELINE="381 1750 614 1746" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="381 1750 381 1762 495 1772 497 1772 614 1760 614 1746 611 1719 550 1705 548 1705 546 1705 524 1715 472 1707 470 1707 468 1707 466 1707 448 1719 423 1707 421 1707 419 1707 417 1707 379 1721 381 1750"/>
+                        </Shape>
+                        <String CONTENT="of details."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-003_r5" HPOS="370" VPOS="1770" WIDTH="1776" HEIGHT="179" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="370 1770 2146 1770 2146 1949 370 1949"/>
+                    </Shape>
+                    <TextLine ID="mz_2-003_l17" HPOS="485" VPOS="1766" WIDTH="1665" HEIGHT="57" BASELINE="487 1807 2150 1799" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="487 1807 487 1823 2148 1815 2150 1799 2146 1770 501 1766 499 1766 497 1766 495 1766 485 1772 487 1807"/>
+                        </Shape>
+                        <String CONTENT="STAGES OF DEVELOPMENT OF PRIMITIVE RELIGIOUS CONCEPTS. — The primary"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-003_l18" HPOS="376" VPOS="1821" WIDTH="1774" HEIGHT="62" BASELINE="377 1870 2150 1862" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="377 1870 377 1883 2148 1876 2150 1862 2146 1833 1772 1821 1770 1821 1658 1833 1361 1823 1359 1823 1357 1823 1355 1823 1339 1833 920 1825 918 1825 818 1836 787 1827 785 1827 783 1827 524 1836 489 1827 487 1827 485 1827 436 1836 403 1827 401 1827 399 1827 397 1827 376 1836 377 1870"/>
+                        </Shape>
+                        <String CONTENT="development of the attribution of life here described presents five stages, more"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-003_l19" HPOS="379" VPOS="1883" WIDTH="944" HEIGHT="57" BASELINE="381 1928 1323 1923" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="381 1928 381 1940 1322 1934 1323 1923 1320 1897 1071 1883 1069 1883 1067 1883 1065 1883 1065 1885 1053 1897 994 1897 785 1885 783 1885 675 1899 656 1887 654 1887 652 1887 573 1887 571 1887 569 1887 536 1899 456 1887 454 1887 452 1887 450 1887 450 1889 438 1901 379 1901 381 1928"/>
+                        </Shape>
+                        <String CONTENT="or less distinct, which are as follows: —"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-003_r6" HPOS="370" VPOS="1949" WIDTH="1776" HEIGHT="187" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="370 1949 2146 1949 2146 2136 370 2136"/>
+                    </Shape>
+                    <TextLine ID="mz_2-003_l20" HPOS="489" VPOS="1938" WIDTH="1665" HEIGHT="65" BASELINE="491 1989 2154 1979" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="491 1989 491 2003 2152 1993 2154 1979 2150 1950 1968 1938 1966 1938 1813 1950 1790 1940 1788 1940 1786 1940 1700 1950 1670 1940 1668 1940 1666 1940 1664 1940 1645 1950 1545 1940 1543 1940 1486 1952 1457 1942 1455 1942 1453 1942 1451 1942 1423 1952 1390 1942 1388 1942 1386 1942 1339 1954 1227 1954 1212 1942 1210 1942 1208 1942 1206 1942 1204 1942 1153 1954 1067 1944 1065 1944 1063 1944 1030 1954 900 1944 898 1944 822 1956 489 1952 491 1989"/>
+                        </Shape>
+                        <String CONTENT="The first stage relates only to that qualitative similarity of man and objects"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-003_l21" HPOS="377" VPOS="2003" WIDTH="1779" HEIGHT="61" BASELINE="379 2048 2156 2040" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="379 2048 379 2064 2154 2056 2156 2040 2152 2011 1300 2003 1298 2003 1229 2013 859 2005 857 2005 855 2005 818 2015 421 2007 419 2007 417 2007 377 2017 379 2048"/>
+                        </Shape>
+                        <String CONTENT="which consists in the belief that life is their common property. The form of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-003_l22" HPOS="379" VPOS="2062" WIDTH="1775" HEIGHT="60" BASELINE="381 2109 2154 2101" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="381 2109 381 2122 2152 2115 2154 2101 2150 2073 1817 2062 1815 2062 1813 2062 1782 2071 1678 2064 1676 2064 1674 2064 1672 2064 1656 2073 1380 2064 1378 2064 1376 2064 1335 2073 1302 2064 1300 2064 1298 2064 1296 2064 1245 2075 961 2066 959 2066 957 2066 932 2075 683 2068 681 2068 679 2068 658 2077 628 2068 626 2068 624 2068 481 2077 415 2068 413 2068 411 2068 379 2079 381 2109"/>
+                        </Shape>
+                        <String CONTENT="objects and the degree of their supposed adaptation to the actions of life are"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-003_r7" HPOS="370" VPOS="2162" WIDTH="1776" HEIGHT="929" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="370 2162 2146 2162 2146 3091 370 3091"/>
+                    </Shape>
+                    <TextLine ID="mz_2-003_l23" HPOS="487" VPOS="2163" WIDTH="1667" HEIGHT="47" BASELINE="489 2195 2154 2187" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="489 2195 489 2210 2152 2203 2154 2187 2148 2163 487 2169 489 2195"/>
+                        </Shape>
+                        <String CONTENT="¹ The material presented in this chapter was collected principally from shamans, and aged people versed"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-003_l24" HPOS="381" VPOS="2205" WIDTH="1771" HEIGHT="49" BASELINE="383 2238 2152 2228" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="383 2238 383 2254 2150 2244 2152 2228 2146 2205 381 2212 383 2238"/>
+                        </Shape>
+                        <String CONTENT="in “old tidings” (teleˊnkin pɪˊñɪltê), as the Chukchee call everything relating to their mythology or history."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-003_l25" HPOS="383" VPOS="2248" WIDTH="1773" HEIGHT="47" BASELINE="385 2279 2156 2273" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="385 2279 385 2295 2154 2293 2156 2273 2150 2248 383 2252 385 2279"/>
+                        </Shape>
+                        <String CONTENT="These data were supplemented from their folk-tales, to which, in many cases, no specific references can be given,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-003_l26" HPOS="383" VPOS="2287" WIDTH="1771" HEIGHT="51" BASELINE="385 2324 2154 2312" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="385 2324 385 2338 2152 2330 2154 2312 2148 2287 383 2297 385 2324"/>
+                        </Shape>
+                        <String CONTENT="since the larger part of them are not yet published. The tales, however, were used only so far as they yielded"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-003_l27" HPOS="383" VPOS="2330" WIDTH="1773" HEIGHT="51" BASELINE="385 2365 2156 2353" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="385 2365 385 2381 2154 2369 2156 2353 2150 2330 383 2340 385 2365"/>
+                        </Shape>
+                        <String CONTENT="new details regarding the characters and mythical beings known to the Chukchee. Stories like those about the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-003_l28" HPOS="383" VPOS="2369" WIDTH="1771" HEIGHT="53" BASELINE="385 2406 2154 2395" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="385 2406 385 2422 2152 2416 2154 2395 2148 2369 383 2381 385 2406"/>
+                        </Shape>
+                        <String CONTENT="creation of the world and the part that the raven and other birds and animals played in it will be treated"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-003_l29" HPOS="383" VPOS="2422" WIDTH="179" HEIGHT="43" BASELINE="385 2451 562 2445" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="385 2451 385 2465 560 2461 562 2445 556 2422 383 2426 385 2451"/>
+                        </Shape>
+                        <String CONTENT="separately."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-003_l30" HPOS="489" VPOS="2457" WIDTH="1669" HEIGHT="47" BASELINE="491 2491 2158 2483" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="491 2491 491 2504 2156 2496 2158 2483 2152 2457 489 2463 491 2491"/>
+                        </Shape>
+                        <String CONTENT="The Chukchee conception of various supernatural beings treated of in this chapter is illustrated by a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-003_l31" HPOS="385" VPOS="2500" WIDTH="1771" HEIGHT="47" BASELINE="387 2532 2156 2524" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="387 2532 387 2547 2154 2539 2156 2524 2150 2500 385 2506 387 2532"/>
+                        </Shape>
+                        <String CONTENT="number of pencil-sketches which I requested several natives in various parts of the country to make for me."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-003_l32" HPOS="385" VPOS="2541" WIDTH="1771" HEIGHT="49" BASELINE="387 2577 2156 2567" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="387 2577 387 2590 2154 2581 2156 2567 2150 2541 385 2549 387 2577"/>
+                        </Shape>
+                        <String CONTENT="It seemed to me that graphic representation of things previously described merely in words would add new"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-003_l33" HPOS="385" VPOS="2585" WIDTH="1771" HEIGHT="47" BASELINE="387 2618 2156 2608" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="387 2618 387 2632 2154 2624 2156 2608 2150 2585 385 2592 387 2618"/>
+                        </Shape>
+                        <String CONTENT="details which otherwise would be out of the reach of the investigator. Care was taken, in comparing details"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-003_l34" HPOS="385" VPOS="2626" WIDTH="1771" HEIGHT="53" BASELINE="387 2661 2156 2649" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="387 2661 387 2679 2154 2671 2156 2649 2150 2626 385 2635 387 2661"/>
+                        </Shape>
+                        <String CONTENT="given by different men, to eliminate those differing from the general character of the description. Nevertheless,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-003_l35" HPOS="387" VPOS="2665" WIDTH="1773" HEIGHT="51" BASELINE="389 2702 2160 2694" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="389 2702 389 2716 2158 2708 2160 2694 2154 2665 387 2675 389 2702"/>
+                        </Shape>
+                        <String CONTENT="the sketches remain individual, and they are of scientific value only so far as they help to an understanding of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-003_l36" HPOS="387" VPOS="2712" WIDTH="1771" HEIGHT="47" BASELINE="389 2743 2158 2735" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="389 2743 389 2759 2156 2757 2158 2735 2152 2712 387 2718 389 2743"/>
+                        </Shape>
+                        <String CONTENT="the forms which present themselves to the mind of the Chukchee. I shall speak of them again when referring"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-003_l37" HPOS="385" VPOS="2753" WIDTH="1563" HEIGHT="49" BASELINE="387 2786 1948 2776" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="387 2786 387 2802 1946 2796 1948 2776 1942 2753 385 2761 387 2786"/>
+                        </Shape>
+                        <String CONTENT="to Chukchee art; but I take up a few of them here to illustrate the religious ideas of the people."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-003_l38" HPOS="495" VPOS="2794" WIDTH="1663" HEIGHT="49" BASELINE="497 2827 2158 2820" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="497 2827 497 2843 2156 2843 2158 2820 2152 2794 495 2800 497 2827"/>
+                        </Shape>
+                        <String CONTENT="² I avoid using the term “animism,” because it presupposes the conception of the human soul, which,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-003_l39" HPOS="387" VPOS="2835" WIDTH="1769" HEIGHT="51" BASELINE="389 2872 2156 2861" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="389 2872 389 2886 2154 2882 2156 2861 2150 2835 387 2845 389 2872"/>
+                        </Shape>
+                        <String CONTENT="in my opinion, belongs to a later stage. E. B. Tylor says that animism includes two great dogmas, forming"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-003_l40" HPOS="387" VPOS="2880" WIDTH="1771" HEIGHT="53" BASELINE="389 2912 2158 2904" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="389 2912 389 2933 2156 2919 2158 2904 2152 2880 387 2886 389 2912"/>
+                        </Shape>
+                        <String CONTENT="parts of one consistent doctrine; first, concerning souls of individual creatures capable of continued existence"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-003_l41" HPOS="387" VPOS="2917" WIDTH="1771" HEIGHT="51" BASELINE="389 2953 2158 2943" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="389 2953 389 2968 2156 2962 2158 2943 2152 2917 387 2927 389 2953"/>
+                        </Shape>
+                        <String CONTENT="after the death or destruction of the body; second, concerning other spirits, upward to the rank of powerful"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-003_l42" HPOS="387" VPOS="2957" WIDTH="1771" HEIGHT="52" BASELINE="389 2994 2158 2986" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="389 2994 389 3009 2156 3004 2158 2986 2152 2957 387 2968 389 2994"/>
+                        </Shape>
+                        <String CONTENT="deities (Primitive Culture, p. 426). According to my theory, these two dogmas belong to the last stage of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-003_l43" HPOS="387" VPOS="3004" WIDTH="1771" HEIGHT="52" BASELINE="389 3039 2158 3027" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="389 3039 389 3056 2156 3047 2158 3027 2152 3004 387 3013 389 3039"/>
+                        </Shape>
+                        <String CONTENT="development. On the whole, my plan must be considered as an attempt to outline the way in which primitive"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-003_l44" HPOS="387" VPOS="3053" WIDTH="752" HEIGHT="45" BASELINE="389 3080 1139 3076" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="389 3080 389 3098 1137 3094 1139 3076 1133 3053 387 3055 389 3080"/>
+                        </Shape>
+                        <String CONTENT="man (Chukchee) reached the stage of animism."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-003_r8" HPOS="370" VPOS="3091" WIDTH="1776" HEIGHT="62" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="370 3091 2146 3091 2146 3153 370 3153"/>
+                    </Shape>
+                    <TextLine ID="mz_2-003_l45" HPOS="1218" VPOS="3096" WIDTH="113" HEIGHT="54" BASELINE="1220 3139 1331 3135" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1220 3139 1220 3150 1331 3150 1331 3135 1325 3096 1218 3098 1220 3139"/>
+                        </Shape>
+                        <String CONTENT="[277]"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-003_r9" HPOS="370" VPOS="3161" WIDTH="1776" HEIGHT="49" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="370 3161 2146 3161 2146 3210 370 3210"/>
+                    </Shape>
+                    <TextLine ID="mz_2-003_l46" HPOS="389" VPOS="3147" WIDTH="690" HEIGHT="50" BASELINE="391 3182 1079 3178" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="391 3182 391 3197 1079 3194 1079 3178 1073 3147 389 3154 391 3182"/>
+                        </Shape>
+                        <String CONTENT="36—JESUP NORTH PACIFIC EXPED., VOL. VII."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

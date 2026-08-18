@@ -1,0 +1,167 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "308"
+    },
+    "2": {
+      "text": "Rulteˊnnin. Two large stars extending downward from the belt form his",
+      "resolved": "Rulteˊnnin = R,u,l,t,e,stress U+02CA,n,n,i,n",
+      "note": "raised comma after e read as stress U+02CA per keying_spec §4 (apostrophe never confirmed corpus-wide).",
+      "class": "print"
+    },
+    "3": {
+      "text": "membrum virile."
+    },
+    "4": {
+      "text": "Leo is called Vêˊtča-ñeˊut (“standing-woman”). This name is usually",
+      "resolved": "Vêˊtča-ñeˊut = V,e+U+0302,stress U+02CA,t,c+U+030C,a,-,n+U+0303,e,stress U+02CA,u,t",
+      "note": "two stress marks, one after ê and one after e in ñe'ut, both raised comma shape, confirmed at 2x.",
+      "class": "print"
+    },
+    "5": {
+      "text": "given to women taking part in certain ceremonial dances.¹ The woman",
+      "note": "footnote marker is the printed superscript 1 (U+00B9), tight against the period per §2.10; the machine draft showed a bare '!' but the raster is unambiguous.",
+      "class": "print"
+    },
+    "6": {
+      "text": "is considered to be Orion’s wife, and she sleeps on the bare ground. In a"
+    },
+    "7": {
+      "text": "quarrel she struck Orion on the back with her tailoring-board, causing his"
+    },
+    "8": {
+      "text": "back to become crooked. After that he drove his wife out, and she lay"
+    },
+    "9": {
+      "text": "down to sleep in the middle of the sky. Leo is formed of seven stars. The"
+    },
+    "10": {
+      "text": "star ε of Leo represents the head of the woman; η, her neck; Regulus, her",
+      "note": "ε and η are Greek Bayer star letters (apparatus, not Tier-1 notation), keyed plain.",
+      "class": "print"
+    },
+    "11": {
+      "text": "knee. A small star between ε and η represents the sleeve on which rests"
+    },
+    "12": {
+      "text": "the head of the sleeping woman. Other stars outline her body."
+    },
+    "13": {
+      "text": "The Pleiades are called Ñaus˙qaǰoˊmkɪn (“group of women”). They",
+      "resolved": "Ñaus˙qaǰoˊmkɪn = N+U+0303,a,u,s,U+02D9,q,a,j+U+030C,o,stress U+02CA,m,k,U+026A,n",
+      "note": "dot after 's' sits mid-height, keyed as the palatalization mark U+02D9 per §2.1/§2.6 (s is a licensed base); the raised caron over j gives ǰ (English 'joy') per §2.2; middle-dot U+00B7 is the listed lookalike trap for this mark (§3).",
+      "class": "print"
+    },
+    "14": {
+      "text": "are six young women waiting for husbands. Orion, after his quarrel with"
+    },
+    "15": {
+      "text": "his wife, offered to marry one of them; but they rejected his offer,"
+    },
+    "16": {
+      "text": "considering his membrum virile to be too big for them. The incensed suitor"
+    },
+    "17": {
+      "text": "caught up his bow and began to shoot at the women, who turned and fled."
+    },
+    "18": {
+      "text": "Aldebaran is considered to be the copper-tipped arrow of Orion, and is"
+    },
+    "19": {
+      "text": "called ČêˊLo-maˊᵋqim (“copper arrow”). The rear end of its wooden shaft is",
+      "resolved": "ČêˊLo-maˊᵋqim = C+U+030C,e+U+0302,stress U+02CA,L (U+004C),o,-,m,a,stress U+02CA,laryngeal U+1D4B,q,i,m",
+      "note": "the compound mark after ma' is stress U+02CA then laryngeal U+1D4B stacked on the same vowel, per the two-superscript-marks pattern (stress first, then the open-curl laryngeal) — not an uncatalogued 's'-shaped glyph. The medial capital L in 'Lo' is a genuine full cap, matching the height of the word-initial Č, confirmed at 4x and corroborated by the machine draft which also read a capital L; flagging as an unresolved medial-capital doubt for adjudication rather than silently lowering it.",
+      "class": "doubt"
+    },
+    "20": {
+      "text": "represented by the double star not far from Aldebaran. The arrow fell short"
+    },
+    "21": {
+      "text": "of the fleeing women, and stuck in a mossy bog. The bow of Orion is"
+    },
+    "22": {
+      "text": "represented by a number of stars in front of the constellation, which form a"
+    },
+    "23": {
+      "text": "figure somewhat resembling a bow. The Kolyma Chukchee say that the"
+    },
+    "24": {
+      "text": "“group of women” stand quiet, and protect themselves with nets, which"
+    },
+    "25": {
+      "text": "are represented by a number of small stars. The “copper arrow” sticks in",
+      "note": "the machine draft's odd trailing glyph after 'arrow' is not on the page; the raster shows an ordinary closing curly quote.",
+      "class": "print"
+    },
+    "26": {
+      "text": "the net."
+    },
+    "27": {
+      "text": "The three constellations described by the Chukchee are shown in Fig."
+    },
+    "28": {
+      "text": "214. Orion is standing with shoulders squared and legs wide apart, and is"
+    },
+    "29": {
+      "text": "bending his bow for another shot."
+    },
+    "30": {
+      "text": "The star α (Capella) of the Wagoner is a reindeer-buck which is tied"
+    },
+    "31": {
+      "text": "behind the sledge of a man (ε) who is driving two reindeer. All four stars"
+    },
+    "32": {
+      "text": "are called čŭmña-nleteˊtɪlɪn (“buck-carriers”). β of the same constellation is",
+      "resolved": "čŭmña-nleteˊtɪlɪn = c+U+030C,u+U+0306,m,n+U+0303,a,-,n,l,e,t,e,stress U+02CA,t,U+026A,l,U+026A,n",
+      "note": "breve over u (ŭ) confirmed at 2x per §2.2/§2.6; both i-forms in the suffix are dotless ɪ, contrasted against dotted 'i' in neighbouring English words on the same sheet.",
+      "class": "print"
+    },
+    "33": {
+      "text": "supposed to be a scarf lost by another reindeer-driver, who now comes back"
+    },
+    "34": {
+      "text": "for it. This driver has behind his sledge another extra buck (star θ), which"
+    },
+    "35": {
+      "text": "is walking sidewise. A fox is approaching the scarf from the other side."
+    },
+    "36": {
+      "text": "The whole constellation is represented in Fig. 215."
+    },
+    "37": {
+      "text": "Ursa Major does not play a conspicuous part among the other constel-"
+    },
+    "38": {
+      "text": "lations. Six of its stars are supposed to be men shooting with slings, and"
+    },
+    "39": {
+      "text": "are called accordingly “sling-throwers” (wɪyotkɪñaˊulɪt). The seventh star,",
+      "resolved": "wɪyotkɪñaˊulɪt = w,U+026A,y,o,t,k,U+026A,n+U+0303,a,stress U+02CA,u,l,U+026A,t",
+      "note": "all four i-shapes in this word are dotless ɪ at 4x, contrasted against the dotted 'i' in 'cordingly' two words earlier on the same line.",
+      "class": "print"
+    },
+    "40": {
+      "text": "which is double, is supposed to be a gray fox gnawing at a pair of antlers."
+    },
+    "41": {
+      "text": "Castor and Pollux are two elks running away from two hunters who are"
+    },
+    "42": {
+      "text": "driving two reindeer-teams represented by the stars γ, κ, and λ, μ of the",
+      "note": "γ, κ, λ, μ are Greek Bayer star letters (apparatus, not Tier-1), set in a cursive style on the page; keyed as plain Greek lowercase.",
+      "class": "print"
+    },
+    "43": {
+      "text": "¹ See Chapter XIV.",
+      "note": "footnote opener, marker U+00B9 spaced from text per §2.10.",
+      "class": "print"
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

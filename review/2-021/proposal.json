@@ -1,0 +1,176 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE.",
+      "note": "Running title, RunningTitleZone.",
+      "class": "layout"
+    },
+    "1": {
+      "text": "295",
+      "note": "Folio, RunningTitleZone, read off composite.",
+      "class": "layout"
+    },
+    "2": {
+      "text": "After catching a soul, they chop it to pieces, cook it in a kettle, and"
+    },
+    "3": {
+      "text": "feed their children with it.¹ A shaman said to me, —",
+      "resolved": "¹ = U+00B9 SUPERSCRIPT ONE (footnote marker, tight against preceding period, matches opener ¹ on line 42)"
+    },
+    "4": {
+      "text": "“We are surrounded by enemies. ‘Spirits’ always walk about invisibly with gaping mouths."
+    },
+    "5": {
+      "text": "We are always cringing, and distributing gifts on all sides, asking protection of one, giving ransom"
+    },
+    "6": {
+      "text": "to another, and unable to obtain anything whatsoever gratuitously.”"
+    },
+    "7": {
+      "text": "Aiñanwaˊt,² in his curious description of the “bad years of small-pox” on",
+      "resolved": "Aiñanwaˊt: ñ = n+U+0303, ˊ = U+02CA stress (raised mark read as stress per keying_spec §4, confirmed by lexicon lookup which already attests Aiñanwaˊt on 1-068/1-074); ² = U+00B2 superscript two, tight against comma",
+      "note": "Lexicon key {Ain~anwa't} used (lookup: Ain~anwa't -> Aiñanwaˊt, attested 1-068, 1-074, 2 pages, key offered).",
+      "class": "semantic",
+      "as_typed": "{Ain~anwa't},² in his curious description of the “bad years of small-pox” on"
+    },
+    "8": {
+      "text": "the western tundra of the Kolyma, says as follows: —"
+    },
+    "9": {
+      "text": "“Then I had a dream. A cloud came from above, like darkness. It approached slowly, like"
+    },
+    "10": {
+      "text": "a thick fog. I saw it approaching, and all grew dark around me. It was a black crowd, a gathering"
+    },
+    "11": {
+      "text": "of men clad in black. In the bright mid-day they darkened the sun completely. I asked those"
+    },
+    "12": {
+      "text": "nearest, ‘What are you coming for?’ They answered, ‘We came to devour you!’ — ‘Oh,’ I said,"
+    },
+    "13": {
+      "text": "‘let me help you at first.’ I picked up from the ground a piece of wood, and suddenly I saw"
+    },
+    "14": {
+      "text": "myself soaring upwards. Then I began moving to and fro, and struck with the stick upon the top"
+    },
+    "15": {
+      "text": "of all tents of my camp. I struck down all the tents, but these were in reality the souls of my"
+    },
+    "16": {
+      "text": "wife and children whom I struck down. Thus I killed all of mine with my own hand. And from"
+    },
+    "17": {
+      "text": "the time of that dream the disease could seize all of my family.”³",
+      "resolved": "³ = U+00B3 superscript three, footnote marker, spaced after closing quote as printed"
+    },
+    "18": {
+      "text": "“Spirits” like the inner organs of the human body, — the heart, the"
+    },
+    "19": {
+      "text": "kidneys, and especially the liver. “Keˊlᴇ is fond of liver” (Keˊlᴇ pontaˊɪrɪnkên),",
+      "resolved": "Keˊlᴇ: ˊ = U+02CA stress, ᴇ = U+1D07 small capital E (§2.3); pontaˊɪrɪnkên: ˊ = U+02CA stress, ɪ (x2) = U+026A IPA small capital I, ê = e+U+0302",
+      "note": "Keˊlᴇ matches lexicon lookup 'keˊlᴇ' (attested 1 page, 2-031, below floor of 2 -- no handle offered, keyed by hand per that rule; this page is now a second attestation). pontaˊɪrɪnkên not found in lexicon under any query tried (irinken, pontairinken); read directly off raster at 4x, confirmed ɪ (no dot, serifed stem) vs r (shoulder) contrast within the same word.",
+      "class": "doubt"
+    },
+    "20": {
+      "text": "says a proverb. The following tale is given as the reason for their peculiar"
+    },
+    "21": {
+      "text": "longing for human liver: —"
+    },
+    "22": {
+      "text": "“Once upon a time an old woman keˊlᴇ lived with her little son near a village of men. She",
+      "resolved": "keˊlᴇ: ˊ = U+02CA stress, ᴇ = U+1D07 small capital E",
+      "note": "Same form as line 19/26, lowercase (not sentence-initial here despite being the subject after 'woman').",
+      "class": "semantic"
+    },
+    "23": {
+      "text": "had nothing to eat, and every time the villagers happened to kill a seal or a walrus, she asked for"
+    },
+    "24": {
+      "text": "its liver, and she and her child lived on that. At last the villagers got weary of the tribute."
+    },
+    "25": {
+      "text": "They enticed her son to accompany them for a drive across the ice, and killed him. Then,"
+    },
+    "26": {
+      "text": "bringing back his liver, they gave it to the keˊlᴇ-woman. She did not recognize it, and, taking it",
+      "resolved": "keˊlᴇ: ˊ = U+02CA stress, ᴇ = U+1D07 small capital E"
+    },
+    "27": {
+      "text": "home, roasted a portion over her lamp. The remaining portion she laid down near by. Suddenly"
+    },
+    "28": {
+      "text": "it turned into live lice, which crawled away in all directions. After that, the keˊlet, in revenge,",
+      "note": "Lexicon key {ke'let} used (lookup: ke'let -> keˊlet, plain lowercase e -- distinct from singular keˊlᴇ's small-cap ᴇ; confirmed by zoom that plural form's 'e' is ordinary lowercase, not small-cap).",
+      "class": "semantic",
+      "as_typed": "it turned into live lice, which crawled away in all directions. After that, the {ke'let}, in revenge,"
+    },
+    "29": {
+      "text": "began to seek for human liver.”"
+    },
+    "30": {
+      "text": "The same taste for liver is ascribed by the Koryak to their kaˊla.⁴",
+      "resolved": "kaˊla: ˊ = U+02CA stress (raised mark read as stress, default per keying_spec §4); ⁴ = U+2074 superscript four",
+      "note": "'ka'la' is glossed as a Koryak term (not Chukchee) -- keying_spec §5 notes Tier-1 frequency priors are Chukchee's and don't apply to other-language forms; no lexicon entry found for kala. Read with extra care per that rule; raised mark is a plain angled stress tick matching the ke'lᴇ/Aiñanwaˊt marks on this page, not an apostrophe curl.",
+      "class": "semantic"
+    },
+    "31": {
+      "text": "The keˊlet are not exempt from the attacks of shamans, who can deal",
+      "as_typed": "The {ke'let} are not exempt from the attacks of shamans, who can deal"
+    },
+    "32": {
+      "text": "with them in the same way as they deal with men. The keˊlet, on their",
+      "as_typed": "with them in the same way as they deal with men. The {ke'let}, on their"
+    },
+    "33": {
+      "text": "part, call shamans keˊlet. If a “spirit” drives with a reindeer-team and a",
+      "as_typed": "part, call shamans {ke'let}. If a “spirit” drives with a reindeer-team and a"
+    },
+    "34": {
+      "text": "shaman steps on the rear part of the runners of his sledge, the team will"
+    },
+    "35": {
+      "text": "immediately stop, because the reindeer are aware of the presence of the"
+    },
+    "36": {
+      "text": "shaman. The “spirits,” unable to understand what has happened, will seek"
+    },
+    "37": {
+      "text": "for some natural cause. The same thing happens to men whose sledges may"
+    },
+    "38": {
+      "text": "be stopped by “spirits.” I collected numerous stories about “spirits” attacking"
+    },
+    "39": {
+      "text": "human villages, and about shamans retaliating in exactly the same way."
+    },
+    "40": {
+      "text": "The keˊlet are subject to sudden changes of size. Several shamans have",
+      "as_typed": "The {ke'let} are subject to sudden changes of size. Several shamans have"
+    },
+    "41": {
+      "text": "said to me, —"
+    },
+    "42": {
+      "text": "¹ Taken from a Tale. It is intended to publish these Tales in Vol. VIII.",
+      "resolved": "¹ = U+00B9 superscript one, footnote opener, spaced"
+    },
+    "43": {
+      "text": "² See p. 46.",
+      "resolved": "² = U+00B2 superscript two, footnote opener, spaced"
+    },
+    "44": {
+      "text": "³ Bogoras, Chukchee Materials, p. 37.",
+      "resolved": "³ = U+00B3 superscript three, footnote opener, spaced"
+    },
+    "45": {
+      "text": "⁴ See Vol. VI, Jochelson, The Koryak, p. 295.",
+      "resolved": "⁴ = U+2074 superscript four, footnote opener, spaced"
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

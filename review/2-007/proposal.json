@@ -1,0 +1,158 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "281"
+    },
+    "2": {
+      "text": "say that they are g̣êtɪˊnvɪlênat (“having a master”); but more often they call",
+      "resolved": "ê = e + U+0302; tɪ and vɪ = t/v + ɪ U+026A (small-cap I, dotless — contrasts with the dotted i in \"having\" on the same crop); ˊ = U+02CA stress, postposed after tɪ; g̣ = g + U+0323 dot below (initial g of the Tier-1 form)",
+      "note": "Tier-1 gloss. CATMuS read this as \"gêtr'nvilênat\" (r for ɪ, per keying_spec CATMuS caution); confirmed ɪ at 4× against the dotted i in \"having\" two words later. COORDINATOR CORRECTION: the reader keyed this g bare, reporting no dot at 4×. Re-checked at 4× (review/2-007/zoom/zoom4-2p4-36_3p5-37.png): the dot below IS present. Keyed g̣ (g + U+0323).",
+      "class": "doubt"
+    },
+    "3": {
+      "text": "them g̣equliˊlinet (“having a voice”), implying that they are endowed with life,",
+      "resolved": "ˊ = U+02CA stress, postposed after li; both i's in gequli and linet carry a visible dot at 4×, so plain i throughout, not ɪ; g̣ = g + U+0323 dot below (initial g of the Tier-1 form)",
+      "note": "CATMuS dropped the stress mark entirely (\"gequli linet\"). Contrasted the i's here against the dotless ɪ two lines below (L29 \"lɪn\") — this word keeps plain dotted i. COORDINATOR CORRECTION: the reader keyed this g bare, reporting no dot at 4×. Re-checked at 4× (same crop as L2): the dot below IS present. Keyed g̣ (g + U+0323).",
+      "class": "doubt"
+    },
+    "4": {
+      "text": "which, however, is not separable from them. Objects “having a voice” will"
+    },
+    "5": {
+      "text": "keep some, at least, of their material qualities and features. For instance, a"
+    },
+    "6": {
+      "text": "stone endowed with a voice would simply roll down and crush a man against"
+    },
+    "7": {
+      "text": "whom it had a grudge, or it would induce another man to pick it up in order"
+    },
+    "8": {
+      "text": "to become his amulet."
+    },
+    "9": {
+      "text": "In the cosmogonical statements of the Chukchee shamans (so-called"
+    },
+    "10": {
+      "text": "eñeˊñɪlɪnä loˊᵋo, “things seen by a shaman”), we find that the life which they",
+      "resolved": "ñ = n + U+0303 (eñe, ñɪlɪnä); ˊ = U+02CA stress after eñe and after lo; ɪ = U+026A dotless (ñɪlɪnä, both occurrences); ä = a + U+0308; ᵋ = U+1D4B laryngeal superscript following the stress on lo — not immediately before i, so per §4/§2.1 it cannot be the rising-diphthong onglide, which is licensed only pre-i",
+      "note": "The raised loop after lo' is the laryngeal mark (U+1D4B), settled by its environment: ᵉ (U+1D49) is unconditionally wrong wherever it is not immediately followed by i, and here it is followed by o.",
+      "class": "doubt"
+    },
+    "11": {
+      "text": "believe to be diffused throughout nature is described in its relation to the"
+    },
+    "12": {
+      "text": "shamanistic spirits in the following manner: —"
+    },
+    "13": {
+      "text": "“On the steep bank of a river there exists life. A voice is there, and speaks aloud. I saw"
+    },
+    "14": {
+      "text": "the ‘master’ of the voice and spoke with him. He subjected himself to me and sacrificed to me."
+    },
+    "15": {
+      "text": "He came yesterday and answered my questions. The small gray bird with the blue breast sings"
+    },
+    "16": {
+      "text": "shaman-songs in the hollow of the bough, calls her spirits, and practises shamanism. The wood-"
+    },
+    "17": {
+      "text": "pecker strikes his drum in the tree with his drumming nose. Under the axe the tree trembles and"
+    },
+    "18": {
+      "text": "wails as a drum under the bâton. All these come at my call.",
+      "resolved": "â = a + U+0302 (bâton, French loanword, not Tier-1 notation)"
+    },
+    "19": {
+      "text": "“All that exists lives. The lamp walks around. The walls of the house have voices of their"
+    },
+    "20": {
+      "text": "own. Even the chamber-vessel has a separate land and house. The skins sleeping in the bags talk"
+    },
+    "21": {
+      "text": "at night. The antlers lying on the tombs arise at night and walk in procession around the mounds,"
+    },
+    "22": {
+      "text": "while the deceased get up and visit the living.”¹"
+    },
+    "23": {
+      "text": "In another statement of a similar kind a small bird is practising in the"
+    },
+    "24": {
+      "text": "hollow of the bough on a drum of grass. His sacrifice is small beetles or"
+    },
+    "25": {
+      "text": "worms, the best of his food. The thievish raven, alighting on the top of the"
+    },
+    "26": {
+      "text": "tree, listens to the bird’s songs, and takes possession of them by drawing"
+    },
+    "27": {
+      "text": "them in with his breath."
+    },
+    "28": {
+      "text": "In still another statement of this character, everything has its own voice"
+    },
+    "29": {
+      "text": "(g̣eˊmg̣e-kuliˊlɪn) or its own master (g̣aˊmg̣a-êtɪˊnvɪlɪn). Skins ready for sale",
+      "resolved": "ê = e + U+0302; ˊ = U+02CA stress (postposed after ge, kuli, ga, tɪ); lɪn and nvɪlɪn: ɪ = U+026A dotless, contrasting on the same crop with the dotted i of kuli immediately to its left; g̣ = g + U+0323 dot below (×4: ge-, mge-, ga-, mga-)",
+      "note": "mz keyed the stress marks as curly right single quotes and the second ɪ-suffix as \"vilin\" (CATMuS r-for-ɪ elsewhere on the page). Confirmed ɪ vs dotted i at 4×: kuli (dotted i) vs lɪn (dotless ɪ) on the same word. COORDINATOR CORRECTION: the reader keyed all four g's bare, reporting no dot at 4×. Re-checked at 4× (review/2-007/zoom/zoom4-29p0-32.png and zoom4-29p18-51_29p49-81.png): all four carry the dot below. Keyed g̣ (g + U+0323) in each.",
+      "class": "doubt"
+    },
+    "30": {
+      "text": "have a “master” of their own. In the night-time they turn into reindeer and"
+    },
+    "31": {
+      "text": "walk to and fro. The trees in the forest talk to one another. Even the"
+    },
+    "32": {
+      "text": "shadows on the wall constitute definite tribes and have their own country,"
+    },
+    "33": {
+      "text": "where they live in huts and subsist by hunting. The rainbow and sun-rays"
+    },
+    "34": {
+      "text": "have “masters,” who live above on the highest part of the rainbow and at"
+    },
+    "35": {
+      "text": "the place where the sun’s rays emanate, and descend to earth along these"
+    },
+    "36": {
+      "text": "paths of light."
+    },
+    "37": {
+      "text": "In one Chukchee story the evil spirit (keˊlᴇ) puts his chamber-vessel near",
+      "resolved": "ˊ = U+02CA stress after ke; ᴇ = U+1D07 small-cap E (§2.3 base)",
+      "note": "mz keyed the small-cap as ASCII \"E\" (ke'lE). Small-cap ᴇ confirmed at 4×, matching the ᴀ ᴇ ɪ ʟ series.",
+      "class": "doubt"
+    },
+    "38": {
+      "text": "the body of a captive boy who pretends to be dead. The evil spirit defecates"
+    },
+    "39": {
+      "text": "into the vessel, and bids it keep watch over the body. After a while the"
+    },
+    "40": {
+      "text": "boy moves, and the chamber-vessel immediately gives alarm by its cries."
+    },
+    "41": {
+      "text": "The spirit, who was asleep, awakes and comes to inspect the prisoner; but"
+    },
+    "42": {
+      "text": "the boy is again quite motionless. The spirit, angered, reproves the vessel,"
+    },
+    "43": {
+      "text": "and urinates into it. The next time the vessel gives an alarm, its cries, coming"
+    },
+    "44": {
+      "text": "¹ Bogoras, Chukchee Materials, p. 385."
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

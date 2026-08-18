@@ -1,0 +1,389 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-2-018.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-2-018.png; regions_from: zones/chukchi-2-018.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+                <TextBlock ID="mz_2-018_r1" HPOS="313" VPOS="470" WIDTH="1776" HEIGHT="94" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="313 470 2089 470 2089 564 313 564"/>
+                    </Shape>
+                    <TextLine ID="mz_2-018_l1" HPOS="893" VPOS="485" WIDTH="605" HEIGHT="51" BASELINE="893 517 1498 517" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1480 485 908 485 893 513 893 517 893 536 1498 536 1498 517 1498 497 1480 485"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l2" HPOS="321" VPOS="495" WIDTH="98" HEIGHT="51" BASELINE="321 524 419 524" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="321 524 321 534 350 546 352 546 354 546 419 534 419 524 419 495 321 495 321 524"/>
+                        </Shape>
+                        <String CONTENT="292"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-018_r2" HPOS="313" VPOS="588" WIDTH="1776" HEIGHT="1135" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="313 588 2089 588 2089 1723 313 1723"/>
+                    </Shape>
+                    <TextLine ID="mz_2-018_l3" HPOS="313" VPOS="583" WIDTH="1770" HEIGHT="59" BASELINE="315 626 2083 622" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2056 593 2036 593 2017 593 1997 591 1989 595 1844 595 1833 587 1821 587 1809 587 1794 593 1723 585 1703 583 1701 583 1672 593 1621 583 1619 583 1549 593 1447 583 1445 583 1443 583 1410 593 313 593 315 626 315 642 2081 642 2083 622 2079 595 2068 593 2056 593"/>
+                        </Shape>
+                        <String CONTENT="less distinct, though often merging into one another. The first class consists"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l4" HPOS="317" VPOS="646" WIDTH="1768" HEIGHT="66" BASELINE="317 687 2085 687" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="317 687 317 701 501 701 519 710 520 710 522 710 524 710 644 701 1226 710 1227 710 1288 701 1384 710 1386 712 1488 712 1488 710 1490 710 1492 710 1510 701 1698 701 1713 710 1715 710 1717 710 1719 710 2083 701 2085 687 2081 652 1946 658 1915 646 1913 646 1911 646 1909 646 1872 658 1837 646 1835 646 1833 646 1831 646 1805 658 1774 646 1772 646 1770 646 1672 658 1537 646 1535 646 1459 658 1423 646 1421 646 1419 646 1417 646 1390 658 1306 646 1304 646 1302 646 1265 658 1237 646 1235 646 1233 646 1120 656 1090 646 1088 646 1086 646 1085 646 1053 658 953 646 951 646 949 646 902 658 853 646 851 646 850 646 757 658 710 646 708 646 707 646 638 658 558 646 556 646 499 658 454 646 452 646 450 646 393 658 362 646 360 646 358 646 356 646 317 658 317 687"/>
+                        </Shape>
+                        <String CONTENT="of evil spirits who walk about invisibly, bringing disease and death, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l5" HPOS="315" VPOS="705" WIDTH="1772" HEIGHT="64" BASELINE="317 750 2087 744" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="317 750 317 769 1494 769 1494 767 1496 767 1515 757 1613 767 1615 769 1719 769 1719 767 1721 767 1723 767 1739 757 2009 767 2011 767 2013 767 2015 767 2029 757 2066 767 2068 767 2070 767 2072 767 2074 767 2087 755 2087 744 2079 705 2040 714 1893 705 1891 705 1790 714 1756 705 1754 705 1752 705 1750 705 1748 705 1733 716 1521 716 1500 705 1498 705 1496 705 1494 705 1445 716 983 706 981 706 904 718 877 708 875 708 873 708 497 718 411 708 409 708 315 720 317 750"/>
+                        </Shape>
+                        <String CONTENT="preying on human souls and bodies. The second category is made up of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l6" HPOS="315" VPOS="763" WIDTH="1770" HEIGHT="57" BASELINE="317 806 2085 802" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="317 806 317 820 2083 818 2085 802 2081 775 1968 763 1966 763 1964 763 1931 773 1856 763 1854 763 1852 763 1827 775 1649 775 1633 763 1631 763 1629 763 1627 763 1580 775 1398 775 1370 763 1369 763 1367 763 1198 775 1092 765 1090 765 1045 775 1018 765 1016 765 1014 765 1012 765 969 775 912 765 910 765 859 775 806 765 804 765 315 771 317 806"/>
+                        </Shape>
+                        <String CONTENT="blood-thirsty cannibals who lived, or still live, somewhere on the distant"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l7" HPOS="313" VPOS="822" WIDTH="1770" HEIGHT="69" BASELINE="315 869 2083 863" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="315 869 315 881 734 891 736 891 783 881 842 891 844 891 906 879 965 889 967 889 1611 877 1864 887 1866 887 1868 887 1888 877 1989 887 1991 887 1993 887 1995 887 2009 877 2056 887 2058 887 2060 887 2083 875 2083 863 2081 836 2032 822 2030 822 2029 822 2027 822 2025 822 2005 834 1927 822 1925 822 1923 822 1899 834 1788 822 1786 822 1784 822 1739 834 1658 822 1656 822 1586 834 1515 822 1513 822 1511 822 1474 836 1190 824 1188 824 1186 824 1155 836 1102 824 1100 824 1098 824 1067 836 987 824 985 824 900 838 859 826 857 826 795 826 793 826 791 826 789 826 771 838 642 826 640 826 638 826 607 838 569 826 567 826 566 826 460 838 342 826 340 826 338 826 313 838 315 869"/>
+                        </Shape>
+                        <String CONTENT="shores, and always fight against the Chukchee warriors. The third class in-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l8" HPOS="315" VPOS="883" WIDTH="1766" HEIGHT="58" BASELINE="317 928 2081 924" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="317 928 317 940 2077 941 2081 924 2079 896 2048 883 2046 883 2044 883 2042 883 2040 883 2019 896 1950 896 1933 883 1931 883 1929 883 1927 883 1925 883 1899 894 1748 883 1747 883 1745 883 1743 883 1725 896 1529 896 1480 883 1478 883 1476 883 1474 883 1433 894 1335 883 1333 883 1331 883 1292 894 1249 883 1247 883 1245 883 1243 883 1194 896 1139 885 1137 885 1135 885 1100 896 599 885 597 885 595 885 560 896 503 885 501 885 499 885 456 896 346 885 344 885 342 885 315 896 317 928"/>
+                        </Shape>
+                        <String CONTENT="cludes the “spirits” that come at the call of the shamans, and help them in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l9" HPOS="315" VPOS="945" WIDTH="1768" HEIGHT="63" BASELINE="315 987 2083 987" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="315 987 315 998 329 1008 330 1008 332 1008 334 1008 426 998 519 1008 520 1008 599 998 922 1008 924 1008 1139 998 2079 1000 2083 987 2081 957 2017 945 2015 945 2013 945 1972 955 1666 945 1664 945 1662 945 1660 945 1647 955 1615 945 1613 945 1611 945 1506 955 1470 945 1468 945 1466 945 1417 955 1339 945 1337 945 1335 945 1294 955 1210 945 1208 945 1206 945 1165 955 1130 945 1128 945 1126 945 1077 955 1041 945 1039 945 1038 945 918 955 812 945 810 945 720 955 687 945 685 945 683 945 591 955 558 945 556 945 554 945 426 955 393 945 391 945 389 945 387 945 385 945 372 955 342 945 340 945 338 945 336 945 315 955 315 987"/>
+                        </Shape>
+                        <String CONTENT="their magic and medical practices.¹ The first class of “spirits” are often"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l10" HPOS="313" VPOS="1002" WIDTH="1768" HEIGHT="67" BASELINE="315 1049 2081 1045" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="315 1049 315 1059 1112 1069 1114 1069 1200 1057 1490 1057 1506 1067 1508 1067 1510 1067 1511 1069 1756 1069 1756 1067 1758 1067 1760 1067 1774 1057 1811 1067 1813 1067 1815 1067 1866 1057 1893 1067 1895 1067 1897 1069 2079 1069 2081 1045 2077 1014 1958 1002 1956 1002 1954 1002 1952 1002 1936 1014 1748 1014 1727 1002 1725 1002 1723 1002 1615 1012 1568 1002 1566 1002 1564 1002 1562 1002 1547 1012 1523 1002 1521 1002 1519 1002 1517 1002 1515 1002 1502 1012 1468 1002 1466 1002 1464 1002 1386 1012 1353 1002 1351 1002 1349 1002 1278 1012 1239 1002 1237 1002 1235 1002 1233 1002 1192 1014 1088 1004 1086 1004 654 1014 632 1004 630 1004 491 1004 489 1004 487 1004 464 1014 372 1004 370 1004 313 1016 315 1049"/>
+                        </Shape>
+                        <String CONTENT="called “genuine spirits” (liˊi-keˊlet), or “murderers” (teiˊn˙ñɪčɪt), or “meddling"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l11" HPOS="315" VPOS="1063" WIDTH="1764" HEIGHT="61" BASELINE="317 1108 2079 1104" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="317 1108 317 1124 2077 1124 2079 1104 2076 1075 1976 1063 1974 1063 1972 1063 1950 1075 1792 1075 1770 1063 1768 1063 1766 1063 1764 1063 1737 1073 1686 1063 1684 1063 1623 1073 1596 1063 1594 1063 1592 1063 1590 1063 1588 1063 1572 1075 1369 1075 1337 1063 1335 1063 1333 1063 1331 1063 1290 1073 1233 1063 1231 1063 1110 1075 940 1065 938 1065 936 1065 906 1075 883 1065 881 1065 879 1065 818 1075 789 1065 787 1065 785 1065 716 1075 673 1065 671 1065 669 1065 315 1073 317 1108"/>
+                        </Shape>
+                        <String CONTENT="beings” (pag̣čêˊm-vaˊɪrg̣ɪt) because they interfere so much with human affairs."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l12" HPOS="319" VPOS="1126" WIDTH="1766" HEIGHT="54" BASELINE="319 1165 2085 1165" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="319 1165 319 1180 2085 1180 2085 1165 2085 1137 1968 1137 1950 1126 1948 1126 1946 1126 1944 1126 1897 1137 1645 1137 1623 1126 1621 1126 1619 1126 1466 1135 1447 1126 1445 1126 1443 1126 1441 1126 1402 1135 1374 1126 1372 1126 1210 1126 1208 1126 1206 1126 1204 1126 1190 1135 1139 1126 1137 1126 1135 1126 1102 1135 992 1126 898 1126 897 1126 895 1126 893 1126 877 1135 777 1126 775 1126 773 1126 736 1135 691 1126 689 1126 687 1126 658 1135 319 1131 319 1165"/>
+                        </Shape>
+                        <String CONTENT="The last name is given chiefly to the “spirits” of mysterious nervous diseases"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l13" HPOS="323" VPOS="1192" WIDTH="1760" HEIGHT="57" BASELINE="325 1222 2083 1225" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="325 1222 323 1233 358 1247 360 1247 362 1249 495 1249 495 1247 497 1247 499 1247 513 1237 550 1247 552 1247 554 1247 556 1247 577 1237 630 1247 632 1249 789 1249 789 1247 791 1247 793 1247 808 1237 957 1247 959 1247 961 1247 1002 1237 1130 1247 1132 1247 1133 1247 1175 1237 1204 1247 1206 1247 1208 1247 2081 1239 2083 1225 2081 1196 325 1192 325 1222"/>
+                        </Shape>
+                        <String CONTENT="“subject to shunning.”² They usually come from the confines of the territory"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l14" HPOS="317" VPOS="1245" WIDTH="1768" HEIGHT="55" BASELINE="317 1286 2085 1286" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="317 1286 317 1300 2083 1300 2085 1286 2083 1257 2005 1245 2003 1245 2001 1245 1974 1255 1649 1245 1647 1245 1645 1245 1623 1255 1588 1245 1586 1245 1584 1245 1537 1255 1488 1245 1486 1245 1484 1245 1482 1245 1466 1257 1292 1257 1259 1245 1257 1245 1255 1245 1198 1255 1141 1245 1139 1245 1073 1255 1012 1245 1010 1245 916 1255 820 1245 818 1245 816 1245 797 1255 740 1245 738 1245 736 1245 695 1255 644 1245 642 1245 640 1245 597 1255 448 1245 446 1245 317 1255 317 1286"/>
+                        </Shape>
+                        <String CONTENT="occupied by the Chukchee tribe. For instance, the “spirits” of contagious"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l15" HPOS="313" VPOS="1306" WIDTH="1774" HEIGHT="64" BASELINE="315 1347 2087 1343" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="315 1347 315 1359 1198 1370 1200 1370 1202 1370 1231 1359 1917 1368 1919 1368 2017 1359 2070 1366 2072 1366 2074 1366 2076 1366 2087 1357 2087 1343 2083 1306 1200 1306 1198 1306 1196 1306 1175 1316 332 1308 330 1308 329 1308 327 1308 313 1314 315 1347"/>
+                        </Shape>
+                        <String CONTENT="diseases (such as small-pox or grippe) usually come from the sunset, out of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l16" HPOS="315" VPOS="1363" WIDTH="1768" HEIGHT="66" BASELINE="317 1408 2083 1404" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="317 1408 317 1419 859 1429 861 1429 863 1429 865 1429 881 1419 2081 1419 2083 1404 2081 1374 2052 1363 2050 1363 2048 1363 1995 1372 1909 1363 1907 1363 1844 1372 1829 1363 1827 1363 1825 1363 1823 1363 1737 1372 1711 1363 1709 1363 1707 1363 1613 1372 1510 1363 1508 1363 1506 1363 1472 1372 1370 1363 1369 1363 1367 1363 1345 1372 1331 1363 1329 1363 1327 1363 1202 1363 1200 1363 1198 1363 1196 1363 1180 1374 1102 1364 1100 1364 1098 1364 1059 1374 985 1364 983 1364 981 1364 979 1364 963 1376 830 1376 793 1364 791 1364 789 1364 787 1364 763 1374 640 1364 638 1364 636 1364 634 1364 618 1374 434 1364 432 1364 430 1364 389 1374 338 1364 336 1364 334 1364 332 1364 315 1372 317 1408"/>
+                        </Shape>
+                        <String CONTENT="the “country belonging to the Sun Chief” (Tirk-eˊrmin nuˊtenut). By this"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l17" HPOS="317" VPOS="1425" WIDTH="1764" HEIGHT="61" BASELINE="317 1466 2081 1466" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="317 1466 317 1478 2079 1486 2081 1466 2081 1435 2040 1425 2038 1425 1874 1425 1872 1425 1870 1425 1846 1435 1756 1425 1754 1425 1688 1435 1607 1425 1605 1425 1549 1437 1369 1437 1353 1425 1351 1425 1349 1425 1347 1425 1278 1437 1024 1437 1002 1425 1000 1425 998 1425 996 1425 963 1435 877 1425 734 1425 732 1425 730 1425 728 1425 714 1435 654 1425 652 1425 650 1425 614 1435 317 1431 317 1466"/>
+                        </Shape>
+                        <String CONTENT="latter name the Chukchee, in common with many other tribes of Siberia,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l18" HPOS="313" VPOS="1484" WIDTH="1772" HEIGHT="65" BASELINE="315 1527 2085 1523" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="315 1527 315 1539 434 1549 436 1549 853 1539 961 1549 963 1549 1586 1537 1754 1547 1756 1547 1758 1547 1784 1537 1797 1547 1799 1547 1801 1547 1803 1549 1895 1549 1895 1547 1897 1547 1931 1537 1966 1547 1968 1547 1970 1547 1972 1547 1999 1537 2066 1547 2068 1547 2070 1547 2072 1547 2085 1535 2085 1523 2081 1496 2034 1484 2032 1484 2030 1484 2003 1494 1124 1486 1122 1486 1120 1486 1118 1486 1102 1496 336 1486 334 1486 332 1486 330 1486 313 1494 315 1527"/>
+                        </Shape>
+                        <String CONTENT="designate the Russian Emperor. Contagious diseases actually come to the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l19" HPOS="315" VPOS="1543" WIDTH="1768" HEIGHT="56" BASELINE="317 1586 2083 1582" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="317 1586 317 1599 2081 1596 2083 1582 2079 1554 2015 1543 2013 1543 2011 1543 1987 1552 1952 1543 1950 1543 1948 1543 1946 1543 1923 1552 1797 1543 1795 1543 1794 1543 1792 1543 1776 1554 1686 1554 1658 1543 1656 1543 1654 1543 1652 1543 1613 1552 1558 1543 1557 1543 1555 1543 1553 1543 1539 1552 1445 1543 1443 1543 1369 1552 1312 1543 1310 1543 1186 1554 332 1545 330 1545 329 1545 327 1545 315 1552 317 1586"/>
+                        </Shape>
+                        <String CONTENT="Chukchee from the west. I was repeatedly asked by the natives whether"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l20" HPOS="315" VPOS="1601" WIDTH="1768" HEIGHT="65" BASELINE="317 1646 2083 1643" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="317 1646 317 1660 2079 1666 2083 1643 2079 1613 1848 1601 1846 1601 1844 1601 1842 1601 1827 1613 1737 1613 1680 1601 1678 1601 1676 1601 1674 1601 1660 1611 1582 1601 1580 1601 1517 1611 1470 1601 1468 1601 1417 1611 1388 1601 1386 1601 1384 1601 1333 1611 1294 1601 1292 1601 1290 1601 1288 1601 1247 1611 1220 1601 1218 1601 1216 1601 1214 1601 1177 1613 824 1603 822 1603 820 1603 795 1615 550 1615 517 1603 515 1603 513 1603 511 1603 473 1613 415 1603 413 1603 411 1603 409 1603 395 1613 350 1603 348 1603 346 1603 315 1615 317 1646"/>
+                        </Shape>
+                        <String CONTENT="all Russia was occupied by keˊlet, and why the Sun Chief is unable to get"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l21" HPOS="317" VPOS="1662" WIDTH="299" HEIGHT="57" BASELINE="317 1705 616 1705" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="317 1705 317 1719 616 1719 616 1705 614 1664 520 1674 501 1662 499 1662 497 1662 495 1662 493 1662 472 1674 448 1662 446 1662 444 1662 442 1662 395 1674 352 1662 350 1662 348 1662 346 1662 317 1674 317 1705"/>
+                        </Shape>
+                        <String CONTENT="rid of them.³"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-018_r3" HPOS="313" VPOS="1723" WIDTH="1776" HEIGHT="373" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="313 1723 2089 1723 2089 2096 313 2096"/>
+                    </Shape>
+                    <TextLine ID="mz_2-018_l22" HPOS="425" VPOS="1725" WIDTH="1658" HEIGHT="55" BASELINE="425 1764 2083 1764" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="425 1764 425 1780 2083 1780 2083 1764 2083 1737 1991 1725 1989 1725 1936 1737 1846 1737 1833 1725 1831 1725 1829 1725 1827 1725 1770 1735 1709 1725 1707 1725 1560 1735 1490 1725 1488 1725 1400 1735 1300 1725 1298 1725 1296 1725 1257 1737 1090 1737 1059 1725 1057 1725 1055 1725 1053 1725 1051 1725 1038 1735 1018 1725 1016 1725 1014 1725 916 1735 425 1729 425 1764"/>
+                        </Shape>
+                        <String CONTENT="Keˊlet are also supposed to come from under ground, and sometimes"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l23" HPOS="315" VPOS="1786" WIDTH="1766" HEIGHT="56" BASELINE="315 1825 2081 1825" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="315 1825 315 1836 2079 1842 2081 1825 2081 1797 2015 1786 2013 1786 1942 1795 1651 1786 1649 1786 1602 1795 1539 1786 1537 1786 1159 1795 1053 1786 1051 1786 1049 1786 1024 1795 942 1786 940 1786 938 1786 895 1795 801 1786 799 1786 720 1795 614 1786 613 1786 556 1795 464 1786 462 1786 460 1786 458 1786 442 1797 315 1797 315 1825"/>
+                        </Shape>
+                        <String CONTENT="even from above, where they have a separate world of their own. They"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l24" HPOS="313" VPOS="1846" WIDTH="1768" HEIGHT="55" BASELINE="315 1887 2081 1881" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="315 1887 315 1901 2079 1895 2081 1881 2077 1854 959 1846 957 1846 313 1858 315 1887"/>
+                        </Shape>
+                        <String CONTENT="never come from the sea, because, according to a proverb of the Reindeer"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l25" HPOS="315" VPOS="1901" WIDTH="1766" HEIGHT="67" BASELINE="317 1944 2081 1940" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="317 1944 317 1958 773 1968 775 1968 777 1968 779 1968 795 1958 2079 1958 2081 1940 2074 1903 2038 1913 1764 1901 1762 1901 1694 1913 1674 1901 1672 1901 1670 1901 1668 1901 1666 1901 1637 1913 1621 1901 1619 1901 1617 1901 1547 1901 1545 1901 1543 1901 1508 1913 1474 1901 1472 1901 1470 1901 1365 1913 1314 1901 1312 1901 1310 1901 1308 1901 1306 1901 1288 1913 1179 1903 1177 1903 1175 1903 1173 1903 1153 1917 904 1917 859 1903 857 1903 855 1903 777 1915 593 1903 591 1903 536 1915 334 1903 332 1903 330 1903 329 1903 315 1913 317 1944"/>
+                        </Shape>
+                        <String CONTENT="Chukchee, “nothing evil can come from the sea.” This is additional proof"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l26" HPOS="317" VPOS="1975" WIDTH="1764" HEIGHT="46" BASELINE="317 2005 2081 2005" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="317 2005 317 2021 2081 2021 2081 2005 2081 1975 317 1975 317 2005"/>
+                        </Shape>
+                        <String CONTENT="of the opinion expressed before, that the maritime element in former times"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l27" HPOS="313" VPOS="2021" WIDTH="732" HEIGHT="64" BASELINE="315 2068 1045 2062" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="315 2068 315 2085 1043 2075 1045 2062 1041 2032 959 2021 957 2021 955 2021 953 2021 953 2022 944 2032 883 2032 859 2021 857 2021 855 2021 853 2021 851 2021 836 2030 812 2021 810 2021 808 2021 806 2021 804 2021 804 2022 795 2032 773 2022 771 2022 769 2022 522 2034 501 2024 499 2024 497 2024 374 2034 344 2024 342 2024 340 2024 338 2024 313 2034 315 2068"/>
+                        </Shape>
+                        <String CONTENT="preponderated in Chukchee life."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-018_r4" HPOS="313" VPOS="2096" WIDTH="1776" HEIGHT="356" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="313 2096 2089 2096 2089 2452 313 2452"/>
+                    </Shape>
+                    <TextLine ID="mz_2-018_l28" HPOS="428" VPOS="2079" WIDTH="1649" HEIGHT="59" BASELINE="430 2122 2077 2126" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="430 2122 428 2134 2074 2138 2077 2126 2077 2093 2034 2081 2032 2081 2030 2081 2029 2081 2001 2091 1897 2081 1895 2081 1893 2081 1862 2093 1754 2093 1733 2081 1731 2081 1729 2081 1727 2081 1698 2091 1649 2081 1647 2081 1645 2081 1625 2091 1557 2081 1555 2081 1553 2081 1519 2091 1466 2081 1464 2081 1463 2081 1425 2091 1410 2081 1408 2081 1406 2081 1404 2081 1402 2081 1378 2091 1353 2081 1351 2081 1349 2081 1347 2081 1322 2091 1275 2081 1273 2081 1190 2089 1177 2079 1175 2079 1173 2079 1171 2079 1169 2079 1149 2089 1128 2079 1126 2079 1124 2079 1122 2079 1098 2089 1077 2079 1075 2079 1073 2079 1020 2089 961 2079 959 2079 957 2079 932 2089 918 2079 916 2079 914 2079 912 2079 910 2079 875 2089 795 2079 793 2079 791 2079 771 2089 744 2079 742 2079 740 2079 738 2079 705 2089 644 2079 642 2079 640 2079 616 2089 430 2083 430 2122"/>
+                        </Shape>
+                        <String CONTENT="Within the limits of the Chukchee land, keˊlet live in desert places far"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l29" HPOS="313" VPOS="2144" WIDTH="1770" HEIGHT="55" BASELINE="315 2187 2083 2183" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="315 2187 315 2199 2081 2197 2083 2183 2079 2156 1788 2144 1786 2144 1739 2154 1707 2144 1705 2144 1703 2144 1604 2154 1566 2144 1564 2144 1562 2144 1470 2154 1433 2144 1431 2144 1429 2144 1427 2144 1425 2144 1410 2156 1296 2156 1212 2144 1210 2144 1208 2144 1206 2144 1188 2156 607 2146 605 2146 603 2146 571 2156 473 2146 472 2146 470 2146 468 2146 452 2158 313 2158 315 2187"/>
+                        </Shape>
+                        <String CONTENT="away from human villages. There they attack and catch the lonesome"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l30" HPOS="313" VPOS="2203" WIDTH="1770" HEIGHT="64" BASELINE="313 2248 2083 2244" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="313 2248 313 2257 1190 2267 1192 2267 1194 2267 1196 2267 1212 2257 2066 2265 2068 2265 2070 2265 2072 2265 2083 2256 2083 2244 2079 2214 1991 2203 1989 2203 1987 2203 1960 2212 1729 2203 1727 2203 1639 2212 1547 2203 1545 2203 1543 2203 1541 2203 1525 2212 1398 2203 1396 2203 1226 2212 1200 2203 1198 2203 1196 2203 1124 2214 1065 2205 1063 2205 511 2214 430 2205 428 2205 321 2214 313 2248"/>
+                        </Shape>
+                        <String CONTENT="traveller, or cling to him invisibly, and are carried to human dwellings, where"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l31" HPOS="315" VPOS="2259" WIDTH="1764" HEIGHT="69" BASELINE="317 2306 2079 2303" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="317 2306 317 2318 1053 2328 1055 2328 1057 2328 1079 2318 1711 2326 1713 2326 1715 2326 1743 2316 1780 2326 1782 2326 1784 2326 1786 2326 1805 2316 1819 2326 1821 2326 1823 2326 1825 2328 2077 2328 2079 2303 2077 2271 2056 2259 2054 2259 2052 2259 2050 2259 2048 2259 2046 2259 2025 2273 1864 2273 1844 2259 1842 2259 1841 2259 1839 2259 1837 2259 1811 2271 1795 2259 1794 2259 1792 2259 1790 2259 1788 2259 1754 2273 1666 2273 1641 2259 1639 2259 1637 2259 1635 2259 1594 2271 1578 2259 1576 2259 1574 2259 1572 2259 1570 2259 1545 2271 1517 2259 1515 2259 1441 2259 1439 2259 1437 2259 1435 2259 1419 2271 1390 2259 1388 2259 1386 2259 1384 2259 1357 2271 1329 2259 1327 2259 1263 2259 1261 2259 1259 2259 1257 2259 1239 2271 1128 2261 1126 2261 1124 2261 1122 2261 1104 2273 957 2261 955 2261 895 2273 861 2261 859 2261 857 2261 799 2273 699 2261 697 2261 695 2261 660 2273 644 2261 642 2261 640 2261 566 2261 564 2261 562 2261 560 2261 542 2275 395 2275 344 2261 342 2261 340 2261 338 2261 315 2273 317 2306"/>
+                        </Shape>
+                        <String CONTENT="they can find victims in plenty. They hide in little hollows of the ground,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l32" HPOS="315" VPOS="2320" WIDTH="1764" HEIGHT="61" BASELINE="317 2365 2079 2359" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="317 2365 317 2379 2076 2381 2079 2359 2076 2332 2011 2320 2009 2320 2007 2320 2005 2320 1989 2332 1854 2332 1837 2320 1835 2320 1833 2320 1831 2320 1729 2330 1700 2320 1698 2320 1696 2320 1611 2330 1584 2320 1582 2320 1580 2320 1578 2320 1551 2330 1504 2320 1502 2320 1500 2320 1472 2332 1423 2322 1421 2322 1419 2322 1390 2332 1186 2322 1184 2322 1182 2322 1145 2332 1094 2322 1092 2322 987 2332 947 2322 945 2322 944 2322 877 2334 824 2324 822 2324 820 2324 787 2334 683 2324 681 2324 315 2332 317 2365"/>
+                        </Shape>
+                        <String CONTENT="in crevices of the rock, or in cracks along the river-banks, where they waylay"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l33" HPOS="315" VPOS="2383" WIDTH="1766" HEIGHT="57" BASELINE="317 2426 2081 2422" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="317 2426 317 2440 2079 2436 2081 2422 2079 2395 2036 2383 2034 2383 2032 2383 1982 2393 1537 2383 1535 2383 1463 2393 1367 2383 1365 2383 1363 2383 1361 2383 1347 2393 1333 2383 1331 2383 1329 2383 1237 2383 1235 2383 1151 2395 1092 2385 1090 2385 910 2395 734 2385 732 2385 730 2385 707 2395 622 2385 620 2385 393 2395 340 2385 338 2385 336 2385 315 2395 317 2426"/>
+                        </Shape>
+                        <String CONTENT="the unsuspecting traveller who tries to drink from a hole in the ice, or who"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-018_r5" HPOS="313" VPOS="2507" WIDTH="1776" HEIGHT="619" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="313 2507 2089 2507 2089 3126 313 3126"/>
+                    </Shape>
+                    <TextLine ID="mz_2-018_l34" HPOS="425" VPOS="2520" WIDTH="1631" HEIGHT="37" BASELINE="425 2545 2056 2545" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="425 2545 425 2557 2054 2557 2056 2545 2054 2520 425 2520 425 2545"/>
+                        </Shape>
+                        <String CONTENT="¹ Regarding deceased people who come back as “spirits,” see Chapter XVII. ² See p. 42."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l35" HPOS="426" VPOS="2559" WIDTH="1655" HEIGHT="45" BASELINE="428 2586 2081 2588" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="428 2586 426 2596 2077 2604 2081 2588 2079 2561 428 2559 428 2586"/>
+                        </Shape>
+                        <String CONTENT="³ The ideas of the Chukchee about the country of the Sun Chief present many peculiarities. Among"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l36" HPOS="315" VPOS="2600" WIDTH="1764" HEIGHT="45" BASELINE="317 2630 2079 2626" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="317 2630 317 2645 2077 2643 2079 2626 2074 2600 315 2602 317 2630"/>
+                        </Shape>
+                        <String CONTENT="others I will mention the belief, current among the Reindeer and the Maritime people, as to the use to which"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l37" HPOS="317" VPOS="2639" WIDTH="1766" HEIGHT="47" BASELINE="319 2673 2083 2669" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="319 2673 319 2686 2081 2682 2083 2669 2077 2639 317 2645 319 2673"/>
+                        </Shape>
+                        <String CONTENT="are put the tributes in peltry coming to the Sun Chief from arctic Siberia. In the country of the Sun Chief"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l38" HPOS="321" VPOS="2686" WIDTH="1760" HEIGHT="43" BASELINE="321 2712 2081 2712" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="321 2712 321 2729 2081 2729 2081 2712 2079 2686 321 2686 321 2712"/>
+                        </Shape>
+                        <String CONTENT="there is supposed to exist a great hole, from which boiling water continually flows, forming a whirlpool, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l39" HPOS="317" VPOS="2724" WIDTH="1766" HEIGHT="47" BASELINE="319 2757 2083 2751" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="319 2757 319 2771 2081 2767 2083 2751 2077 2724 317 2731 319 2757"/>
+                        </Shape>
+                        <String CONTENT="threatening to submerge the whole world. The “spirit” of the whirlpool has to be propitiated with sacrifice of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l40" HPOS="319" VPOS="2771" WIDTH="1762" HEIGHT="47" BASELINE="321 2800 2081 2794" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="321 2800 321 2818 2079 2810 2081 2794 2076 2771 319 2774 321 2800"/>
+                        </Shape>
+                        <String CONTENT="peltries thrown into the water. The best combination is white and red foxes in equal numbers. When the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l41" HPOS="317" VPOS="2812" WIDTH="1762" HEIGHT="45" BASELINE="319 2841 2079 2835" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="319 2841 319 2857 2077 2853 2079 2835 2074 2812 317 2816 319 2841"/>
+                        </Shape>
+                        <String CONTENT="latter are deficient, the whirlpool turns angrily, refusing to accept the sacrifice. Therefore, when peltries are"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l42" HPOS="319" VPOS="2857" WIDTH="1762" HEIGHT="41" BASELINE="319 2882 2081 2882" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="319 2882 319 2898 2081 2898 2081 2882 2081 2857 319 2857 319 2882"/>
+                        </Shape>
+                        <String CONTENT="scarce, the Sun Chief has to give, for those lacking, an equal number of cossack children. Besides this, every"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l43" HPOS="317" VPOS="2898" WIDTH="1108" HEIGHT="43" BASELINE="319 2923 1425 2921" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="319 2923 319 2941 1423 2941 1425 2921 1419 2898 317 2898 319 2923"/>
+                        </Shape>
+                        <String CONTENT="tenth year he must throw in either two black foxes or his eldest son."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l44" HPOS="425" VPOS="2937" WIDTH="1658" HEIGHT="43" BASELINE="426 2966 2083 2961" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="426 2966 426 2980 2083 2974 2083 2961 2077 2937 425 2941 426 2966"/>
+                        </Shape>
+                        <String CONTENT="This is the only explanation that the mind of the Chukchee was able to work out in accounting for the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l45" HPOS="317" VPOS="2980" WIDTH="1762" HEIGHT="43" BASELINE="319 3008 2079 3004" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="319 3008 319 3023 2077 3021 2079 3004 2074 2980 317 2982 319 3008"/>
+                        </Shape>
+                        <String CONTENT="exceeding greed of the Russians in acquiring the smaller peltries, which, from the Arctic point of view, are"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l46" HPOS="317" VPOS="3021" WIDTH="1762" HEIGHT="47" BASELINE="319 3053 2079 3045" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="319 3053 319 3068 2079 3064 2079 3045 2074 3021 317 3027 319 3053"/>
+                        </Shape>
+                        <String CONTENT="much inferior to the common fawn-skins. The legend probably originated in certain Russian folk-stories heard"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-018_l47" HPOS="317" VPOS="3066" WIDTH="656" HEIGHT="47" BASELINE="319 3094 973 3090" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="319 3094 319 3113 971 3109 973 3090 967 3066 317 3068 319 3094"/>
+                        </Shape>
+                        <String CONTENT="from the cossacks or Russianized natives."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

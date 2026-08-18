@@ -1,0 +1,238 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-2-038.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-2-038.png; regions_from: zones/chukchi-2-038.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+                <TextBlock ID="mz_2-038_r1" HPOS="371" VPOS="454" WIDTH="1776" HEIGHT="94" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="371 454 2147 454 2147 548 371 548"/>
+                    </Shape>
+                    <TextLine ID="mz_2-038_l1" HPOS="944" VPOS="475" WIDTH="618" HEIGHT="51" BASELINE="944 509 1562 509" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="944 503 944 509 944 526 1562 526 1562 509 1562 475 959 475 944 503"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-038_l2" HPOS="377" VPOS="481" WIDTH="91" HEIGHT="53" BASELINE="379 515 468 511" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="456 485 440 481 377 483 379 515 379 534 466 524 468 511 462 485 456 485"/>
+                        </Shape>
+                        <String CONTENT="312"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-038_r2" HPOS="371" VPOS="572" WIDTH="1776" HEIGHT="202" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="371 572 2147 572 2147 774 371 774"/>
+                    </Shape>
+                    <TextLine ID="mz_2-038_l3" HPOS="470" VPOS="567" WIDTH="1670" HEIGHT="59" BASELINE="472 611 2140 603" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2134 579 2125 573 1938 569 1938 569 1936 567 1874 567 1860 567 1841 567 1821 567 1801 567 1788 567 1717 575 1306 567 1304 567 1302 567 1300 567 1288 579 470 579 472 611 472 626 2138 618 2140 603 2136 579 2134 579"/>
+                        </Shape>
+                        <String CONTENT="In Koryak, keˊlet of all kinds are called kaˊla, kaˊḷa, kaˊḷak, kaˊmak, also ñiˊnvit, ñênvêˊ-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-038_l4" HPOS="368" VPOS="616" WIDTH="1772" HEIGHT="57" BASELINE="370 658 2140 650" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="370 658 370 671 2113 673 2115 673 2117 673 2140 661 2140 650 2136 624 1263 616 1261 616 1259 616 1257 616 1241 626 381 620 379 620 377 620 376 620 368 624 370 658"/>
+                        </Shape>
+                        <String CONTENT="tɪčñɪn. The word kaˊmak is used also in Chukchee for the “spirit of disease,” and in the Russo-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-038_l5" HPOS="368" VPOS="669" WIDTH="1770" HEIGHT="51" BASELINE="370 705 2138 697" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="370 705 370 720 2136 714 2138 697 2132 669 368 675 370 705"/>
+                        </Shape>
+                        <String CONTENT="Chukchee jargon for “death” or “dying.” With the Yukaghir, as noted before, a being similar to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-038_l6" HPOS="368" VPOS="710" WIDTH="1034" HEIGHT="55" BASELINE="370 750 1402 742" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="368 734 370 750 370 765 1402 759 1402 742 1396 710 374 722 368 734"/>
+                        </Shape>
+                        <String CONTENT="the second class of keˊlet is called a “legendary old man.”¹"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-038_r3" HPOS="371" VPOS="2193" WIDTH="1776" HEIGHT="239" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="371 2193 2147 2193 2147 2432 371 2432"/>
+                    </Shape>
+                    <TextLine ID="mz_2-038_l7" HPOS="479" VPOS="2195" WIDTH="1665" HEIGHT="49" BASELINE="479 2224 2144 2224" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2125 2199 2105 2199 2085 2199 2066 2199 2046 2199 2027 2199 2007 2199 1987 2199 1968 2199 1948 2199 1929 2197 1909 2197 1889 2197 1870 2197 1850 2197 1831 2197 1811 2197 1792 2197 1772 2197 1752 2197 1733 2197 1727 2195 479 2195 479 2224 479 2244 2142 2244 2144 2224 2142 2199 2125 2199"/>
+                        </Shape>
+                        <String CONTENT="The Asiatic Eskimo call the keˊlᴇ toṛnɪṛak (pl. toṛnɪṛat), which is apparently derived from the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-038_l8" HPOS="376" VPOS="2244" WIDTH="1766" HEIGHT="45" BASELINE="377 2273 2142 2269" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="376 2254 377 2273 377 2289 2140 2285 2142 2269 2136 2244 389 2246 376 2254"/>
+                        </Shape>
+                        <String CONTENT="same root as toṛnak of the American Eskimo. The second class of keˊlet are called by the Asiatic"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-038_l9" HPOS="376" VPOS="2289" WIDTH="1762" HEIGHT="49" BASELINE="377 2318 2138 2314" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="377 2318 377 2336 2134 2338 2138 2314 2132 2289 376 2291 377 2318"/>
+                        </Shape>
+                        <String CONTENT="Eskimo miraˊxpak, evidently an augmentative. The miraˊxpahit live somewhere on the seashore,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-038_l10" HPOS="374" VPOS="2336" WIDTH="1768" HEIGHT="45" BASELINE="376 2365 2142 2361" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="376 2365 376 2381 2140 2377 2142 2361 2136 2336 374 2338 376 2365"/>
+                        </Shape>
+                        <String CONTENT="although it is hard to find their places of habitation. Their footprints, however, are often visible"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-038_l11" HPOS="377" VPOS="2385" WIDTH="1765" HEIGHT="43" BASELINE="377 2410 2142 2410" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="377 2410 377 2428 2142 2428 2142 2410 2142 2385 377 2385 377 2410"/>
+                        </Shape>
+                        <String CONTENT="on the snow, and are enormously large; but the miraˊxpahit step no farther than an ordinary man."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-038_r4" HPOS="371" VPOS="2432" WIDTH="1776" HEIGHT="325" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="371 2432 2147 2432 2147 2757 371 2757"/>
+                    </Shape>
+                    <TextLine ID="mz_2-038_l12" HPOS="477" VPOS="2420" WIDTH="1665" HEIGHT="55" BASELINE="479 2459 2142 2455" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="479 2459 479 2475 2140 2471 2142 2455 2138 2430 1380 2420 1378 2420 477 2430 479 2459"/>
+                        </Shape>
+                        <String CONTENT="The name reˊkkeñ is borrowed by the Eskimo from the Chukchee, and becomes raˊkka in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-038_l13" HPOS="377" VPOS="2475" WIDTH="1765" HEIGHT="45" BASELINE="379 2506 2142 2502" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="379 2506 379 2520 2140 2518 2142 2502 2136 2475 377 2477 379 2506"/>
+                        </Shape>
+                        <String CONTENT="the second form of the stem.² With proper phonetical change, vaˊɪrg̣ɪn of the Chukchee becomes"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-038_l14" HPOS="379" VPOS="2524" WIDTH="1763" HEIGHT="47" BASELINE="379 2551 2142 2551" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="379 2551 379 2567 2140 2571 2142 2551 2142 2524 379 2524 379 2551"/>
+                        </Shape>
+                        <String CONTENT="vahɪˊyñɪn in the northwestern dialect of the Koryak. In Eskimo it is called kɪyaˊṛnaṛak, signifying"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-038_l15" HPOS="376" VPOS="2567" WIDTH="1764" HEIGHT="47" BASELINE="377 2600 2140 2594" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="377 2600 377 2614 2138 2610 2140 2594 2134 2567 376 2571 377 2600"/>
+                        </Shape>
+                        <String CONTENT="also “being,” and derived from the verb kɪyaṛ-na-kuˊña (“I exist”, “I am”). Tñaˊɪrg̣ɪn (“Morning-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-038_l16" HPOS="377" VPOS="2604" WIDTH="1765" HEIGHT="59" BASELINE="379 2647 2142 2639" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="379 2647 379 2663 2140 2655 2142 2639 2138 2614 1839 2604 1837 2604 1696 2614 1261 2606 1259 2606 1257 2606 1255 2606 1239 2616 840 2608 838 2608 836 2608 806 2620 377 2620 379 2647"/>
+                        </Shape>
+                        <String CONTENT="Dawn”) of the Chukchee becomes Tñahɪˊtñɪn in Koryak. Pičvuˊčin is known to the Koryak under"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-038_l17" HPOS="376" VPOS="2655" WIDTH="1768" HEIGHT="55" BASELINE="377 2692 2144 2686" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="377 2692 377 2710 2142 2704 2144 2686 2138 2655 376 2665 377 2692"/>
+                        </Shape>
+                        <String CONTENT="the same name, and to the Kamchadal under the name of Pilaˊxčuč. Steller and Krasheninnikoff"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-038_l18" HPOS="376" VPOS="2702" WIDTH="327" HEIGHT="51" BASELINE="377 2739 703 2735" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="377 2739 377 2753 703 2749 703 2735 697 2702 376 2710 377 2739"/>
+                        </Shape>
+                        <String CONTENT="call him Bilukai.³"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-038_r5" HPOS="371" VPOS="2757" WIDTH="1776" HEIGHT="94" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="371 2757 2147 2757 2147 2851 371 2851"/>
+                    </Shape>
+                    <TextLine ID="mz_2-038_l19" HPOS="477" VPOS="2743" WIDTH="1671" HEIGHT="59" BASELINE="479 2786 2148 2778" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="479 2786 479 2802 2146 2794 2148 2778 2144 2753 1731 2743 1729 2743 1727 2743 1725 2743 1707 2753 1325 2745 1323 2745 1322 2745 1320 2745 1306 2757 477 2757 479 2786"/>
+                        </Shape>
+                        <String CONTENT="In Koryak several of the stars have names similar to those in Chukchee. The Polar Star is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-038_l20" HPOS="377" VPOS="2794" WIDTH="1767" HEIGHT="55" BASELINE="379 2831 2144 2825" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="379 2831 379 2849 2142 2843 2144 2825 2140 2798 425 2794 423 2794 377 2804 379 2831"/>
+                        </Shape>
+                        <String CONTENT="called “nailed star” (aᵋlkaˊp-añaˊi; according to Mr. Jochelson,⁴ aᵋčkaˊp-añaˊi). Rulteˊnnin is called"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-038_r6" HPOS="371" VPOS="2890" WIDTH="1776" HEIGHT="220" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="371 2890 2147 2890 2147 3110 371 3110"/>
+                    </Shape>
+                    <TextLine ID="mz_2-038_l21" HPOS="495" VPOS="2890" WIDTH="1557" HEIGHT="53" BASELINE="495 2917 2052 2917" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="495 2917 495 2927 528 2941 530 2941 532 2943 695 2943 695 2941 697 2941 699 2941 722 2927 910 2927 955 2941 957 2941 959 2941 1053 2931 1075 2941 1077 2941 1079 2941 1302 2939 1304 2939 1306 2939 1322 2927 1533 2927 1549 2939 1551 2939 1553 2939 1555 2939 2052 2933 2052 2917 2052 2894 495 2890 495 2917"/>
+                        </Shape>
+                        <String CONTENT="¹ See p. 299. ² See p. 19, Footnote 2. ³ See Krasheninnikoff, II, p. 105."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-038_l22" HPOS="485" VPOS="2933" WIDTH="1659" HEIGHT="43" BASELINE="487 2961 2144 2957" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="487 2961 487 2976 2142 2976 2144 2957 2138 2933 485 2935 487 2961"/>
+                        </Shape>
+                        <String CONTENT="⁴ See Vol. VI, The Koryak, p. 123. The difference in the transcription of Koryak names by Mr."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-038_l23" HPOS="376" VPOS="2976" WIDTH="1770" HEIGHT="47" BASELINE="377 3006 2146 3000" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="377 3006 377 3023 2144 3015 2146 3000 2140 2976 376 2980 377 3006"/>
+                        </Shape>
+                        <String CONTENT="Jochelson and myself corresponds to the difference between the dialects of the localities where the notes were"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-038_l24" HPOS="377" VPOS="3013" WIDTH="1771" HEIGHT="57" BASELINE="379 3047 2148 3043" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="379 3047 379 3070 2146 3058 2148 3043 2142 3013 377 3021 379 3047"/>
+                        </Shape>
+                        <String CONTENT="taken respectively. My notes come mainly from the village of Kamenskoye and the country lying southeast of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-038_l25" HPOS="379" VPOS="3062" WIDTH="1765" HEIGHT="45" BASELINE="379 3088 2144 3088" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="379 3088 379 3107 2144 3107 2144 3088 2144 3062 379 3062 379 3088"/>
+                        </Shape>
+                        <String CONTENT="it; that is, from the Pacific coast and northern Kamchatka. The notes of Mr. Jochelson belong, likewise, to"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

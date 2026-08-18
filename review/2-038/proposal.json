@@ -1,0 +1,115 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "312"
+    },
+    "2": {
+      "text": "In Koryak, keˊlet of all kinds are called kaˊla, kaˊḷa, kaˊḷak, kaˊmak, also ñiˊnvit, ñênvêˊ-",
+      "resolved": "kaˊla = k+a+U+02CA+l+a; kaˊḷa = k+a+U+02CA+l+U+0323+a; kaˊḷak = same +k; kaˊmak = k+a+U+02CA+m+a+k; ñiˊnvit = n+U+0303+i+U+02CA+n+v+i+t; ñênvêˊ- = n+U+0303+e+U+0302+n+v+e+U+0302+U+02CA+hyphen (line-end join, left as printed)",
+      "note": "Two of the three ka'la variants carry the velar-l mark (ḷ, l+U+0323, §2.2); the first ka'la is plain l — contrasted directly against the second and third on the same line at 4x. class: doubt is not needed, this one is settled by direct contrast.",
+      "class": "print",
+      "as_typed": "In Koryak, {ke'let} of all kinds are called kaˊla, kaˊḷa, kaˊḷak, kaˊmak, also ñiˊnvit, ñênvêˊ-"
+    },
+    "3": {
+      "text": "tɪčñɪn. The word kaˊmak is used also in Chukchee for the “spirit of disease,” and in the Russo-",
+      "resolved": "tɪčñɪn continues ñênvêˊ-tɪčñɪn split across the line break (line 2 end carries the stress U+02CA on ê / line 3 start); ɪ = U+026A throughout, č = c+U+030C, ñ = n+U+0303",
+      "note": "Word ñênvêˊ-tɪčñɪn is split by the printed line break with a connector hyphen at line 2's end; kept as printed on each line rather than merged, per keying_spec.md §2.1 (\"residual line-end joins go to LLM triage in context\").",
+      "class": "layout"
+    },
+    "4": {
+      "text": "Chukchee jargon for “death” or “dying.” With the Yukaghir, as noted before, a being similar to"
+    },
+    "5": {
+      "text": "the second class of keˊlet is called a “legendary old man.”¹",
+      "note": "A small isolated ink speck sits between \"a\" and the opening curly quote (mid-height, not baseline) — ruled a print/dust artifact, not a character, and not keyed. Footnote marker ¹ keyed as the superscript sort, tight against the closing quote, matching the opener on line 20.",
+      "class": "artifact",
+      "as_typed": "the second class of {ke'let} is called a “legendary old man.”¹"
+    },
+    "6": {
+      "text": "The Asiatic Eskimo call the keˊlᴇ toṛnɪrak (pl. toṛnɪrat), which is apparently derived from the",
+      "resolved": "keˊlᴇ = k+e+U+02CA+l+U+1D07 (small-cap ᴇ, §2.3); toṛnɪrak/toṛnɪrat = t+o+U+0323 on r (ṛ = r+U+0323) + n+ɪ(U+026A)+r+a+k/t",
+      "note": "keˊlᴇ (with small-cap ᴇ, no -let) is a distinct, shorter Eskimo cognate from keˊlet used elsewhere on the page — kept as printed, not normalized to keˊlet. toṛnɪrak/toṛnɪrat are explicitly glossed as Asiatic-Eskimo forms, so the Chukchee/Koryak stress-culminativity prior (§5.5) does not apply to their lack of a stress mark.",
+      "class": "semantic"
+    },
+    "7": {
+      "text": "same root as tornak of the American Eskimo. The second class of keˊlet are called by the Asiatic",
+      "as_typed": "same root as tornak of the American Eskimo. The second class of {ke'let} are called by the Asiatic"
+    },
+    "8": {
+      "text": "Eskimo miraˊxpak, evidently an augmentative. The miraˊxpahit live somewhere on the seashore,",
+      "resolved": "miraˊxpak/miraˊxpahit = m+i+r+a+U+02CA+x+p+a+k/hit; plain r throughout, no velar-r mark, contrasted against the same-page toṛnɪrak/kɪyaˊṛnaṛak which do carry it"
+    },
+    "9": {
+      "text": "although it is hard to find their places of habitation. Their footprints, however, are often visible"
+    },
+    "10": {
+      "text": "on the snow, and are enormously large; but the miraˊxpahit step no farther than an ordinary man.",
+      "resolved": "miraˊxpahit = m+i+r+a+U+02CA+x+p+a+h+i+t"
+    },
+    "11": {
+      "text": "The name reˊkkeñ is borrowed by the Eskimo from the Chukchee, and becomes raˊkka in",
+      "resolved": "reˊkkeñ = r+e+U+02CA+k+k+e+n+U+0303; raˊkka = r+a+U+02CA+k+k+a"
+    },
+    "12": {
+      "text": "the second form of the stem.² With proper phonetical change, vaˊɪrg̣ɪn of the Chukchee becomes",
+      "note": "va'ɪrgɪn carries the velar-g dot (g̣, g+U+0323) — checked at 4x twice, since the first crop's framing initially looked bare; a re-centred crop shows the dot clearly below-right of the g loop, matching the corpus-ratified vaˊɪrg̣ɪn (lexicon key va'i_rg.i_n). Footnote marker ² keyed superscript, tight against the period.",
+      "as_typed": "the second form of the stem.² With proper phonetical change, {va'i_rg.i_n} of the Chukchee becomes",
+      "class": "print"
+    },
+    "13": {
+      "text": "vahɪˊyñɪn in the northwestern dialect of the Koryak. In Eskimo it is called kɪyaˊṛnaṛak, signifying",
+      "resolved": "vahɪˊyñɪn = v+a+h+ɪ(U+026A)+U+02CA+y+n+U+0303+ɪ(U+026A)+n; kɪyaˊṛnaṛak = k+ɪ(U+026A)+y+a+U+02CA+ṛ(r+U+0323)+n+a+ṛ(r+U+0323)+a+k — both r's carry the velar-r dot, confirmed at 4x"
+    },
+    "14": {
+      "text": "also “being,” and derived from the verb kɪyaṛ-na-kuˊña (“I exist”, “I am”). Tñaˊɪrg̣ɪn (“Morning-",
+      "resolved": "kɪyaṛ-na-kuˊña: kɪyaṛ has the velar-r dot (matches line 13's root), stress falls on kuˊña; Tñaˊɪrg̣ɪn = T+n+U+0303+a+U+02CA+ɪ(U+026A)+r+g+U+0323+ɪ(U+026A)+n — velar-g dot confirmed at 4x",
+      "note": "Tñaˊɪrg̣ɪn is split across this line and line 15 by the printed hyphen (\"Morning-\" / \"Dawn\"), kept as printed on each line.",
+      "class": "layout"
+    },
+    "15": {
+      "text": "Dawn”) of the Chukchee becomes Tñahɪˊtñɪn in Koryak. Pičvuˊčin is known to the Koryak under",
+      "resolved": "Tñahɪˊtñɪn = T+n+U+0303+a+h+ɪ(U+026A)+U+02CA+t+n+U+0303+ɪ(U+026A)+n; Pičvuˊčin: č = c+U+030C"
+    },
+    "16": {
+      "text": "the same name, and to the Kamchadal under the name of Pilaˊxčuč. Steller and Krasheninnikoff",
+      "resolved": "Pilaˊxčuč = P+i+l+a+U+02CA+x+c+U+030C(č)+u+c+U+030C(č)"
+    },
+    "17": {
+      "text": "call him Bilukai.³"
+    },
+    "18": {
+      "text": "In Koryak several of the stars have names similar to those in Chukchee. The Polar Star is"
+    },
+    "19": {
+      "text": "called “nailed star” (aᵋlkaˊp-añaˊi; according to Mr. Jochelson,⁴ aᵋčkaˊp-añaˊi). Rulteˊnnin is called",
+      "resolved": "aᵋlkaˊp-añaˊi / aᵋčkaˊp-añaˊi: raised mark after word-initial a is U+1D4B (laryngeal ᵋ); añaˊi = a+n+U+0303+a+U+02CA+i; č = c+U+030C; Rulteˊnnin = R+u+l+t+e+U+02CA+n+n+i+n",
+      "note": "The raised mark before lka'/čka' resembles a small closed loop with a curling tail — checked at 4x on both occurrences. No catalogued codepoint is a superscript g; keyed as the laryngeal ᵋ (U+1D4B) per the standing disposition for this exact shape (see agent memory \"the-two-superscript-marks\"), flagged here for adjudicator confirmation. class: doubt.",
+      "class": "doubt"
+    },
+    "20": {
+      "text": "¹ See p. 299. ² See p. 19, Footnote 2. ³ See Krasheninnikoff, II, p. 105.",
+      "note": "Three footnote openers on one line, each a superscript digit followed by a space then text, matching the body references on lines 5, 12 and 17.",
+      "class": "print"
+    },
+    "21": {
+      "text": "⁴ See Vol. VI, The Koryak, p. 123. The difference in the transcription of Koryak names by Mr.",
+      "note": "Footnote opener 4 keyed as superscript, matching the body reference on line 19.",
+      "class": "print"
+    },
+    "22": {
+      "text": "Jochelson and myself corresponds to the difference between the dialects of the localities where the notes were"
+    },
+    "23": {
+      "text": "taken respectively. My notes come mainly from the village of Kamenskoye and the country lying southeast of"
+    },
+    "24": {
+      "text": "it; that is, from the Pacific coast and northern Kamchatka. The notes of Mr. Jochelson belong, likewise, to"
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

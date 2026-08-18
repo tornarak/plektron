@@ -1,0 +1,168 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "284"
+    },
+    "2": {
+      "text": "its former size, and the bear turns into a lemming. Some of these details, it"
+    },
+    "3": {
+      "text": "will be observed, are the same in regard to the owner of game (Pičvuˊčin).¹",
+      "resolved": "č = c+U+030C (×2, Pičvuˊčin); ˊ = U+02CA stress, postposed after u; ¹ = U+00B9 superscript footnote digit, tight against the period",
+      "note": "Tier-1 form Pičvuˊčin: mz/ocr machine draft read this as 'Pièvu/cin).!' — the raised stress mark came through as '/', and the superscript footnote 1 as '!' (both known CATMuS substitution failure modes, see memory catmus-substitutes-ascii-for-marks). Confirmed at 2x zoom against raster: both č are caron-c, vowel after Pi is plain i (not è/e-grave as machine draft had), raised mark between u and č is stress U+02CA (default per keying_spec.md §4/§5.8), footnote marker is superscript ¹.",
+      "class": "print"
+    },
+    "4": {
+      "text": "A shaman who visits the land of mice finds that their ways of life are"
+    },
+    "5": {
+      "text": "quite human. He is requested to help a woman who is suffering from a"
+    },
+    "6": {
+      "text": "severe cold and sharp pain in her throat. When looking at her, he notices"
+    },
+    "7": {
+      "text": "on her neck a thin noose of grass, such as Chukchee children make to catch"
+    },
+    "8": {
+      "text": "mice. He destroys the noose, and the Mouse-Woman recovers. In return"
+    },
+    "9": {
+      "text": "for his services, the Mouse-People give him the choicest fawn-skins. On his"
+    },
+    "10": {
+      "text": "return to our world, however, these prove to be dry leaves and pieces of bark."
+    },
+    "11": {
+      "text": "In most cases, animals, while personating human beings, retain some of"
+    },
+    "12": {
+      "text": "their former qualities, which identify them as beings of a special class acting"
+    },
+    "13": {
+      "text": "in a human way, but different from mankind. For instance, a whale, when"
+    },
+    "14": {
+      "text": "carrying away a young woman, continues to be a whale, and even makes her"
+    },
+    "15": {
+      "text": "pick out the barnacles from his skin; polar bears have diving-matches, and"
+    },
+    "16": {
+      "text": "catch seals with their paws; Fox-Woman keeps her strong smell, and Goose-"
+    },
+    "17": {
+      "text": "Woman, her aversion to animal food, which may soil her clean white dress."
+    },
+    "18": {
+      "text": "Amulets of animal origin — for instance, a dried skin, a head or a skull,"
+    },
+    "19": {
+      "text": "a claw or a feather — are also considered susceptible of like sudden trans-"
+    },
+    "20": {
+      "text": "formation, in which they acquire the qualities of living animals of a corre-"
+    },
+    "21": {
+      "text": "sponding species, and perform certain tasks. Afterward they return to their"
+    },
+    "22": {
+      "text": "former shape. In one tale, a dried skin of an ermine transforms itself into a"
+    },
+    "23": {
+      "text": "living ermine, which, in turn, transforms itself into a large polar bear. In"
+    },
+    "24": {
+      "text": "this shape the amulet is sent by its “owner” across the sea to harm an enemy.",
+      "note": "Machine draft had a straight closing quote (\\\") after owner; print sets curly throughout (keying_spec.md §1/§5.6, always curly, never zoomed to confirm).",
+      "class": "print"
+    },
+    "25": {
+      "text": "When unable to do this, it comes back, and is blamed by its “owner.”²",
+      "resolved": "² = U+00B2 superscript footnote digit, tight against the closing curly quote",
+      "note": "Machine draft omitted the footnote-2 marker entirely and had a straight closing quote; confirmed at 2x zoom that the print sets curly ”owner.” followed immediately by superscript ².",
+      "class": "print"
+    },
+    "26": {
+      "text": "The next stage (the fourth), as said before, supposes a complete distinction"
+    },
+    "27": {
+      "text": "between the two forms of the object; and the idea of the transfigured form"
+    },
+    "28": {
+      "text": "is replaced by the conception of a certain anthropomorphous “genius,” who"
+    },
+    "29": {
+      "text": "co-exists with the object, and lives within its material shape, but may at will"
+    },
+    "30": {
+      "text": "leave it, and appear separately. In studying this stage we must, however,"
+    },
+    "31": {
+      "text": "distinguish between the smaller material objects (such as stones, trees, etc.) and"
+    },
+    "32": {
+      "text": "the larger unities, as forests, lakes, rivers, mountains, and other localities."
+    },
+    "33": {
+      "text": "In the development of the religious ideas of the Chukchee, the conception"
+    },
+    "34": {
+      "text": "of smaller material objects belonged to the more primitive stages (first or"
+    },
+    "35": {
+      "text": "second), and separable “genii” were not attached to them: at least, the develop-",
+      "note": "Machine draft had a straight closing quote after genii; print sets curly (§5.6).",
+      "class": "print"
+    },
+    "36": {
+      "text": "ment in this direction is not very clear. Thus, as mentioned before, smaller"
+    },
+    "37": {
+      "text": "material objects are sometimes called g̣êtɪˊnvɪlên (“having a master”); but, as",
+      "resolved": "ê = e+U+0302 (×2); ɪ = U+026A small-cap I (×2, g̣êtɪˊnvɪlên); ˊ = U+02CA stress, postposed after the first ɪ; g̣ = g + U+0323 dot below",
+      "note": "Tier-1 form g̣êtɪˊnvɪlên: machine draft read 'gêtr'nvilèn' — substituted r for the first small-cap ɪ (a known CATMuS confusion, §5.2) and plain i for the second, and è for the second ê. Confirmed at 2x zoom: both marked letters are small-cap ɪ (serifed stem, no dot, contrasted against ordinary round-bowl r as in 'her' elsewhere on the page), both accented vowels are ê (circumflex), and the raised mark after the first ɪ is stress U+02CA. COORDINATOR CORRECTION: the reader keyed the initial g bare without checking for a dot below. Re-checked at 4x (review/2-010/zoom/zoom4-37p21-53_41p20-52.png): the dot below is present; 'having' in the same crop is a plain g for contrast. Keyed g̣ (g + U+0323).",
+      "class": "print"
+    },
+    "38": {
+      "text": "will be shown, the Chukchee conception of a “master” coincides with the",
+      "note": "Machine draft had a straight closing quote after master; print sets curly (§5.6).",
+      "class": "print"
+    },
+    "39": {
+      "text": "Eskimo “its man” (inua), and represents the “genius.” In reference to smaller",
+      "note": "Machine draft had straight quotes around 'its man'; print sets curly throughout (§5.6). 'inua' is an Eskimo gloss printed in plain ASCII, no marks.",
+      "class": "print"
+    },
+    "40": {
+      "text": "objects, this idea remained undeveloped, and the objects were more frequently"
+    },
+    "41": {
+      "text": "called simply g̣equliˊlin (“having a voice”), which corresponds to a more primitive",
+      "resolved": "ˊ = U+02CA stress, postposed after g̣equli, before lin; g̣ = g + U+0323 dot below",
+      "note": "Tier-1 form g̣equliˊlin: machine draft read 'gequli lin' with a plain space where the print sets a raised stress mark. Confirmed at 2x zoom: ordinary lowercase dotted i's throughout (no small-cap ɪ here), single stress mark between gequli and lin. COORDINATOR CORRECTION: the reader keyed the initial g bare without checking for a dot below. Re-checked at 4x (same crop as L37): the dot below is present; 'having' in the same crop is a plain g for contrast. Keyed g̣ (g + U+0323).",
+      "class": "print"
+    },
+    "42": {
+      "text": "conception."
+    },
+    "43": {
+      "text": "² Bogoras, Chukchee Materials, p. 219.",
+      "resolved": "² = U+00B2 superscript footnote-opener digit",
+      "note": "Machine draft keyed a plain ASCII '2'; print sets the superscript opener per keying_spec.md §2.10 (marker at reference and opener alike).",
+      "class": "print"
+    },
+    "44": {
+      "text": "¹ Compare p. 286.",
+      "resolved": "¹ = U+00B9 superscript footnote-opener digit",
+      "note": "Machine draft keyed a plain ASCII '1'; print sets the superscript opener per keying_spec.md §2.10.",
+      "class": "print"
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

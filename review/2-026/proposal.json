@@ -1,0 +1,164 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "300"
+    },
+    "2": {
+      "text": "across the sea to the land of the Keˊrek. He was so heavy that he left the",
+      "resolved": "Keˊrek = K, e, r, U+02CA (stress) postposed after e, e, k",
+      "note": "Raised mark read as stress U+02CA per §4/§5.8 default (apostrophe never confirmed corpus-wide). Attested elsewhere only as Keˊrek on 1-039 (below the 2-page lexicon floor, no handle available), keyed by hand.",
+      "class": "doubt"
+    },
+    "3": {
+      "text": "footprints of his steps everywhere, and even the impression of his private",
+      "note": "An isolated dot sits between 'even' and 'the', above baseline/period height. Read as page bleed-through or an ink speck, not a printed character; not keyed.",
+      "class": "artifact"
+    },
+    "4": {
+      "text": "parts. One night he"
+    },
+    "5": {
+      "text": "went to sleep in an"
+    },
+    "6": {
+      "text": "open place. Three"
+    },
+    "7": {
+      "text": "men saw him, and"
+    },
+    "8": {
+      "text": "succeeded in tying"
+    },
+    "9": {
+      "text": "him with ropes to"
+    },
+    "10": {
+      "text": "stakes driven into"
+    },
+    "11": {
+      "text": "the ground. After"
+    },
+    "12": {
+      "text": "that they killed him"
+    },
+    "13": {
+      "text": "with their spears."
+    },
+    "14": {
+      "text": "His bleached bones"
+    },
+    "15": {
+      "text": "may be seen even"
+    },
+    "16": {
+      "text": "now on the Peˊqul-",
+      "resolved": "Peˊqul = P, e, U+02CA (stress), q, u, l"
+    },
+    "17": {
+      "text": "ñeiˊ Mountains.",
+      "resolved": "ñeiˊ = n+U+0303 (ñ), e, i, U+02CA (stress)"
+    },
+    "18": {
+      "text": "The third cate-"
+    },
+    "19": {
+      "text": "gory of keˊlet consists",
+      "resolved": "keˊlet = k, e, U+02CA (stress), l, e, t — via lexicon handle {ke'let}, ratified form attested 22× over 11 pages",
+      "as_typed": "gory of {ke'let} consists"
+    },
+    "20": {
+      "text": "of the “spirits” that"
+    },
+    "21": {
+      "text": "come at the call of"
+    },
+    "22": {
+      "text": "the shamans. They"
+    },
+    "23": {
+      "text": "are often called “sep-"
+    },
+    "24": {
+      "text": "arate spirits” (yaˊnřa-kaˊlat) or “separate vioces” (yaˊnřa-koˊlêt), because their",
+      "resolved": "yaˊnřa-kaˊlat = y, a, U+02CA, n, ř (r+U+030C), a, -, k, a, U+02CA, l, a, t; yaˊnřa-koˊlêt = y, a, U+02CA, n, ř, a, -, k, o, U+02CA, l, ê (e+U+0302), t",
+      "note": "Printed 'vioces' where sense and the parallel construction ('separate spirits'/'separate voices') require 'voices' — a compositor's transposition, keyed as printed per §2.14.",
+      "class": "print"
+    },
+    "25": {
+      "text": "voices seem to come from different directions. The shamans produce these"
+    },
+    "26": {
+      "text": "voices by ventriloquism. Another name for these “spirits” is eñeˊñɪt, from",
+      "resolved": "eñeˊñɪt = e, n+U+0303 (ñ), e, U+02CA (stress), n+U+0303 (ñ), U+026A (ɪ), t",
+      "note": "The final vowel is a bare-stem dotless letterform (matching the ɪ read in eñeˊñɪlɪn two lines below, same root) topped with what reads at 4× as a circumflex-like raised mark, distinct from the tilde on ñ. No catalogued sort combines ɪ (or any vowel besides e) with a circumflex — §2.2 licenses only ê (e+U+0302). Keyed the catalogued base letter ɪ and left the extra mark unkeyed per §5.9/§2.14 (uncatalogued codepoint not keyed, letter as printed, mark flagged).",
+      "class": "doubt"
+    },
+    "27": {
+      "text": "which the shaman is called eñeˊñɪlɪn (“having eˊñeñ”). The word “eˊñeñ” is",
+      "resolved": "eñeˊñɪlɪn = e, n+U+0303 (ñ), e, U+02CA (stress), n+U+0303 (ñ), U+026A (ɪ), l, U+026A (ɪ), n; eˊñeñ (both occurrences) = e, U+02CA (stress), n+U+0303 (ñ), e, n+U+0303 (ñ)",
+      "note": "The two i-shaped vowels are dotless, serif-topped stems — keyed ɪ (U+026A), matching the corpus's adjudicated spelling of this same root, eñeˊñɪlɪn, on 1-066 (proposal check advisory).",
+      "class": "semantic"
+    },
+    "28": {
+      "text": "applied also to all kinds of medicines, including the pills and powders of the"
+    },
+    "29": {
+      "text": "civilized world. The Christian God is called Eˊñeñ, and so also are the",
+      "resolved": "Eˊñeñ = E, U+02CA (stress), n+U+0303 (ñ), e, n+U+0303 (ñ)"
+    },
+    "30": {
+      "text": "crucifix, images of saints, etc."
+    },
+    "31": {
+      "text": "The shamanistic “spirits” are for the most part material objects of various"
+    },
+    "32": {
+      "text": "kinds, — animals, such as wolves, reindeer, walrus, whales; birds; plants;"
+    },
+    "33": {
+      "text": "icebergs; household utensils, such as pots, hammers, needles, and needle-cases."
+    },
+    "34": {
+      "text": "The chamber-vessel and urine are also shamans’ “spirits.” I was told of an"
+    },
+    "35": {
+      "text": "old man who met a fox defecating in the open (see Fig. 212, d). The fox"
+    },
+    "36": {
+      "text": "ran away, and the old man took its excrement for his own “spirit.” Another"
+    },
+    "37": {
+      "text": "old man, when practising shamanism, called his own penis as a “spirit.”"
+    },
+    "38": {
+      "text": "Sometimes household objects, etc., are described as calling, without invitation,"
+    },
+    "39": {
+      "text": "on the shaman during a manifestation. They put on mysterious airs, and"
+    },
+    "40": {
+      "text": "assume fine-sounding names. The needle, for instance, appears as a man,"
+    },
+    "41": {
+      "text": "and calls itself “the long one” (iwčuˊwgi). The work-bag is called by other",
+      "resolved": "iwčuˊwgi = i, w, č (c+U+030C), u, U+02CA (stress), w, g, i",
+      "note": "Checked the g in -wgi at 4× against §5.1's dotted-g prior: a plain single-story loop, no dot below. Keyed bare as printed.",
+      "class": "doubt"
+    },
+    "42": {
+      "text": "“spirits” “[home] sitting bag” (wakɵˊtva-taˊ-iočgɪn). The antler ladle appears",
+      "resolved": "wakɵˊtva-taˊ-iočgɪn = w, a, k, ɵ (U+0275), U+02CA (stress), t, v, a, -, t, a, U+02CA (stress), -, i, o, č (c+U+030C), g, ɪ (U+026A), n",
+      "note": "'[home]' is printed with literal square brackets in the source (an editorial gloss within the running gloss), not an insertion of mine. Also checked the g in the -gɪn ending at 4× against §5.1's dotted-g/-g̣ɪn-suffix prior: a plain loop, no dot below — keyed bare as printed, despite the corpus-wide skew toward g̣ɪn.",
+      "class": "print"
+    },
+    "43": {
+      "text": "as a ribald old man, and boasts that all women love him. The excrement"
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}
