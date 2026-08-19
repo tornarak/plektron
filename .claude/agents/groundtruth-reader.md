@@ -1740,11 +1740,17 @@ band: a prior backed by one page is a prior backed by one page.
    repetitive error.* Bogoras's cross-references are lettered — `(No. 8, g)`,
    `(No. 1, a, b)` — and the draft reads the **italic `b` as `6`** almost every
    time: five pages of one ten-page batch (`2-203` L40, `2-205` L15, `2-206` L2,
-   `2-207` L26, `2-208`), alongside `2-207`'s x-height `1` read as roman `I`
-   in the same construction. Every reader caught it and every one spent a crop
+   `2-207` L26, `2-208`). Every reader caught it and every one spent a crop
    doing so. **You do not need one.** A figure standing inside a series that
    runs `a, b, c` is a letter, and the enumeration settles it on the page; go
    to the raster only when the series itself is what you cannot make out.
+
+   `b` is much the commonest, and the rest of the italic sorts in these
+   references are mangled too — `(i)`, `(j)`, `(l)` came back as `(¿)`, `(7)`,
+   `(7)` on one page, and an x-height `1` as roman `I` on another. So the rule
+   is about the draft and not about any one letter: **inside a lettered
+   cross-reference the machine text is not a witness to which sort was set.**
+   Read the series.
 5. **Every multisyllabic Chukchi/Koryak/Yupik word carries exactly one stress
    mark (culminative, ≤1 per word, §2.1) — a multisyllabic Tier-1 word with
    no stress mark anywhere in it is not a plausible reading, it is a red
