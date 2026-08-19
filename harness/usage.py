@@ -26,6 +26,7 @@ Nothing here gates. It is measurement, and measurement never gates.
 from __future__ import annotations
 
 import json
+import math
 import re
 from datetime import UTC, datetime, timedelta, timezone
 from hashlib import sha1
@@ -53,6 +54,53 @@ TTL = TTLS["5m"]  # the fallback when a scope wrote nothing and so named no tier
 # system prompt — fewer tokens for more characters, so the two equations return
 # a negative characters-per-token and the confound is larger than the signal.
 # A divisor picked to paper over that would be a number with no witness.
+
+#: Credits per token, as published at https://she-llac.com/claude-limits:
+#: `credits = ceil(input x input_rate + output x output_rate)`, and on a
+#: subscription **cache reads charge nothing while cache writes charge the
+#: ordinary input rate**. That asymmetry is the whole reason this file's
+#: `read`/`write` split is worth having: a batch's `read` column is free and its
+#: `write` column is not, so a token total that adds them answers no question
+#: anybody is asking.
+#:
+#: The published rates are all fifteenths, so the denominator is named once and
+#: the table holds the numerators — a rate change is then a row to edit rather
+#: than six decimals to re-derive, and no figure here is a rounded copy of one.
+CREDIT_DENOM = 15
+FAMILY_RATES: dict[str, tuple[int, int]] = {
+    "haiku": (2, 10),
+    "sonnet": (6, 30),
+    "opus": (10, 50),
+}
+
+#: What a plan buys, same source. `usd` is the list price **per month**; a run's
+#: money figure comes from its share of the *weekly* allowance, so the monthly
+#: price is converted at 12/52 rather than 1/4 — the two differ by 8%, which is
+#: larger than most of what this table is used to compare.
+PLANS: dict[str, tuple[int, int, int]] = {
+    #        5-hour,     weekly,     usd/month
+    "pro":   (550_000, 5_000_000, 20),
+    "max5":  (3_300_000, 41_666_700, 100),
+    "max20": (11_000_000, 83_333_300, 200),
+}
+
+
+def rates(model: str) -> tuple[float, float] | None:
+    """`(input, output)` credits per token for `model`, or None if unrecognised.
+
+    **None rather than a default**, and the caller must carry the None through to
+    the report. Every rate here differs from its neighbours by more than a factor
+    of two, so guessing one is not a small error — and a batch run on a model this
+    table has never heard of is exactly the case where a plausible number is worst,
+    because nothing downstream would ever re-open it. The model string is whatever
+    the transcript recorded with `claude-` stripped, so matching is on the family
+    substring: `sonnet-5`, `haiku-4-5-20251001` and any successor name carrying its
+    family still resolve, and a genuinely new family reports itself as unpriced.
+    """
+    for family, (rin, rout) in FAMILY_RATES.items():
+        if family in model:
+            return rin / CREDIT_DENOM, rout / CREDIT_DENOM
+    return None
 
 
 def project(root: Path) -> Path:
@@ -403,6 +451,15 @@ def _agent(path: Path) -> dict | None:
         # Zero for the cold one, which had to write them for the others.
         "saved": first["read"] if first["read"] and not first["write"] else 0,
         "out": sum(r["out"] for r in reqs),
+        # **What the agent was actually charged input for.** `in` is the part of
+        # a request that was neither cached nor served from cache — small, a
+        # couple of tokens on most requests here — and `write` is the cache
+        # creation, billed at the same input rate. They are summed because the
+        # rate does not distinguish them; `read` is excluded because on a
+        # subscription it is free, which is the one thing about this billing
+        # worth encoding.
+        "billed_in": sum(r["in"] + r["write"] for r in reqs),
+        "read": sum(r["read"] for r in reqs),
         # The decomposed requests, kept so a cohort's breakdown is the
         # concatenation of its members' rather than a second walk over the same
         # files with a second chance to disagree with the first.
@@ -873,6 +930,131 @@ def cohorts(agents: list[dict]) -> list[dict]:
             "missed": missed,
             "note": "" if len(members) > 1 else "singleton — nothing to share",
         })
+    return rows
+
+
+def cost(agents: list[dict], plan: str | None = None) -> list[dict]:
+    """What each cohort was charged, in credits, plus an `ALL` row over the scope.
+
+    **Credits and not tokens, because the two rank batches differently.** Output
+    costs five times input at every tier, so a fan-out that reads a great deal and
+    writes little is cheap in credits and expensive in tokens, and the token total
+    that includes cache reads is cheapest of all to misread — reads are free on a
+    subscription and routinely run thirty to a hundred times the billed volume.
+    Three chapters of this project were first reported off a token column that
+    summed reads, and the per-page figure was wrong by more than an order of
+    magnitude in the flattering direction.
+
+    `per_agent` is the column a dispatcher acts on, because an agent here is a
+    page: it makes two batches of different sizes comparable, and it is what
+    changes when the contract or the spec changes. The `ALL` row's `per_agent` is
+    over every agent in scope, so a scope holding two unrelated fan-outs reports a
+    mean across both — the cohort rows are what to read when that matters.
+
+    **An unpriced model does not get a number.** `rates` returns None for a family
+    this file has never been told about, and that cohort reports `credits` as None
+    with the model named in `note`, rather than being silently costed at a
+    neighbour's rate or dropped from the table. The `ALL` row then says how many
+    agents it could not price, so a total is never quietly partial.
+
+    With `plan`, three more columns: share of that plan's five-hour and weekly
+    allowance, and the money that share is worth at list price. All three are
+    arithmetic on `PLANS`, which carries its source; none is measured here.
+    """
+    if not agents:
+        return []
+    ids = cohort_ids(agents)
+    keyed: dict[tuple[str, str, int], list[dict]] = {}
+    for a in agents:
+        keyed.setdefault(_cohort_key(a), []).append(a)
+    allow = PLANS.get(plan or "")
+    rows, unpriced = [], 0
+
+    def row(name: str, model: str, members: list[dict]) -> dict:
+        nonlocal unpriced
+        billed_in = sum(a["billed_in"] for a in members)
+        out_ = sum(a["out"] for a in members)
+        read = sum(a["read"] for a in members)
+        r = rates(model) if model else None
+        # Ceiling once over the whole scope, as the published formula does it per
+        # request — this is an imputation from aggregates either way, and rounding
+        # each cohort up before summing would drift the total by a credit a row.
+        credits = math.ceil(billed_in * r[0] + out_ * r[1]) if r else None
+        if r is None:
+            unpriced += len(members)
+        d = {
+            "cohort": name,
+            "model": model or "mixed",
+            "agents": len(members),
+            "billed_in": billed_in,
+            "out": out_,
+            "free_read": read,
+            # How much of the context was served free. The headline number of the
+            # whole caching argument, and it belongs beside the bill rather than
+            # in a saving column two sections up, because it is the ratio that
+            # says whether the prefix discipline is still working.
+            "read_ratio": (round(read / (billed_in + out_), 1)
+                           if billed_in + out_ else 0),
+            "credits": credits,
+            "per_agent": round(credits / len(members)) if credits else None,
+            # Output is the expensive half at every tier; this says by how much
+            # for this batch, which is what a prompt change has to move.
+            "out_pct": (round(out_ * r[1] / credits * 100, 1)
+                        if credits else None),
+        }
+        if allow:
+            five, week, usd_month = allow
+            d["pct_5h"] = round(credits / five * 100, 2) if credits else None
+            d["pct_week"] = round(credits / week * 100, 2) if credits else None
+            # Monthly list price at 12/52, not a quarter: a week is not a month
+            # over four, and the 8% gap is wider than most differences this
+            # table gets read for.
+            d["usd"] = (round(credits / week * usd_month * 12 / 52, 2)
+                        if credits else None)
+        d["note"] = "" if r else f"no published rate for {model!r} — not costed"
+        return d
+
+    for key, members in sorted(keyed.items(),
+                               key=lambda kv: max(a["last"] for a in kv[1])):
+        rows.append(row(ids[key], key[1], members))
+    # **Summed from the cohort rows, never re-costed over the pooled agents.**
+    # A scope can hold two models, and one rate cannot be applied to both — the
+    # earlier version passed a blank model for that case and reported a total of
+    # None, which is a table saying nothing about a batch that was fully priced
+    # in every row above it. Summing also keeps `unpriced` counted once.
+    priced = [r for r in rows if r["credits"] is not None]
+    credits = sum(r["credits"] for r in priced) or None
+    billed_in = sum(r["billed_in"] for r in rows)
+    out_ = sum(r["out"] for r in rows)
+    read = sum(r["free_read"] for r in rows)
+    models = sorted({r["model"] for r in rows})
+    total = {
+        "cohort": "ALL",
+        "model": models[0] if len(models) == 1 else "mixed",
+        "agents": len(agents),
+        "billed_in": billed_in,
+        "out": out_,
+        "free_read": read,
+        "read_ratio": (round(read / (billed_in + out_), 1)
+                       if billed_in + out_ else 0),
+        "credits": credits,
+        # Over the agents this total actually covers, so a partly-priced scope
+        # does not divide its credits by a headcount it could not cost.
+        "per_agent": (round(credits / sum(r["agents"] for r in priced))
+                      if credits else None),
+        "out_pct": (round(sum(r["out"] * (rates(r["model"]) or (0, 0))[1]
+                              for r in priced) / credits * 100, 1)
+                    if credits else None),
+    }
+    if allow:
+        five, week, usd_month = allow
+        total["pct_5h"] = round(credits / five * 100, 2) if credits else None
+        total["pct_week"] = round(credits / week * 100, 2) if credits else None
+        total["usd"] = (round(credits / week * usd_month * 12 / 52, 2)
+                        if credits else None)
+    total["note"] = (f"{unpriced} of {len(agents)} agents on an unpriced model — "
+                     "this total covers the rest") if unpriced else ""
+    rows.append(total)
     return rows
 
 

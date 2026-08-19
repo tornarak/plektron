@@ -8,6 +8,7 @@ to a shared number.
 from __future__ import annotations
 
 import json
+import math
 import os
 from datetime import UTC, datetime, timedelta
 
@@ -24,6 +25,7 @@ from harness.usage import (
     cohort_classes,
     cohort_ids,
     cohorts,
+    cost,
     find_transcripts,
     in_cohort,
     preamble,
@@ -53,11 +55,12 @@ def _transcript(tmp_path, name: str, reqs) -> None:
 
 def _made(model="sonnet-5", opening=35798, opened="warm", last="2026-08-04T12:00:00Z",
           ttl="5m", session="s1", pre=None, ctx=None, atype="moll-reader",
-          ctxs=None, walk=None):
+          ctxs=None, walk=None, billed_in=0, out=0, read=0):
     return {"model": model, "opening": opening, "opened": opened, "last": last,
             "type": atype, "ctxs": ctxs if ctxs is not None else [opening],
             "ttl": ttl, "session": session, "pre": pre or [],
-            "walk": walk or [], "ctx": opening if ctx is None else ctx}
+            "walk": walk or [], "ctx": opening if ctx is None else ctx,
+            "billed_in": billed_in, "out": out, "read": read}
 
 
 def _walked(klass: str, result: int, reply: int = 0) -> dict:
@@ -329,6 +332,81 @@ def test_a_cohort_breakdown_pools_its_members_walks():
     assert table[("c1", "raster")]["tokens"] == 6000
     assert table[("c1", "raster")]["calls"] == 2
     assert table[("c1", "refused")]["tokens"] == 138
+
+
+def test_credits_follow_the_published_formula():
+    """`ceil(input x rate_in + output x rate_out)`, Sonnet at 6/15 and 30/15.
+
+    Spelled out from the numerators rather than from 0.4/2.0, so the assertion
+    fails if the denominator moves and the table is left behind."""
+    agents = [_made(billed_in=1000, out=100)]
+    row = cost(agents)[0]
+    assert row["credits"] == math.ceil(1000 * 6 / 15 + 100 * 30 / 15)
+    assert row["credits"] == 600
+
+
+def test_the_bill_excludes_cache_reads():
+    """The one thing about subscription billing worth encoding: reads are free.
+    Two agents identical but for a mountain of reads must cost the same."""
+    plain = cost([_made(billed_in=1000, out=100, read=0)])[0]
+    heavy = cost([_made(billed_in=1000, out=100, read=99_000_000)])[0]
+    assert plain["credits"] == heavy["credits"]
+    assert heavy["free_read"] == 99_000_000
+    assert heavy["read_ratio"] > plain["read_ratio"]
+
+
+def test_an_unpriced_model_is_not_costed_at_a_neighbours_rate():
+    """The rates differ by more than 2x between tiers, so a guess is not a small
+    error — and nothing downstream would ever re-open it."""
+    row = cost([_made(model="quasar-9", billed_in=1000, out=100)])[0]
+    assert row["credits"] is None
+    assert row["per_agent"] is None
+    assert "no published rate" in row["note"]
+
+
+def test_a_successor_carrying_its_family_is_still_priced():
+    """The other half of the same rule, and the reason matching is on the family
+    substring: a model this table has not been updated for but which is plainly
+    a Sonnet costs like one, rather than falling into the unpriced bucket and
+    quietly dropping a whole batch out of the total."""
+    row = cost([_made(model="sonnet-6-ultra-turbo", billed_in=1000, out=100)])[0]
+    assert row["credits"] == 600
+    assert row["note"] == ""
+
+
+def test_a_partly_priced_scope_says_what_its_total_leaves_out():
+    """A total over a scope it could only half cost is the fabricated measurement
+    this module exists to catch — so the `ALL` row names the shortfall."""
+    agents = [_made(opening=100, billed_in=1000, out=100),
+              _made(opening=200, model="quasar-9", billed_in=5000, out=500)]
+    total = cost(agents)[-1]
+    assert total["cohort"] == "ALL"
+    assert total["credits"] == 600           # the priced cohort alone
+    assert total["per_agent"] == 600         # divided by 1 agent, not by 2
+    assert "1 of 2 agents on an unpriced model" in total["note"]
+
+
+def test_a_mixed_model_scope_still_totals():
+    """Summed from the cohort rows rather than re-costed over the pooled agents:
+    one rate cannot be applied to two models, and the earlier version answered
+    that by reporting null for a scope every row of which was priced."""
+    agents = [_made(opening=100, model="sonnet-5", billed_in=1000, out=100),
+              _made(opening=200, model="haiku-4-5-20251001", billed_in=1000, out=100)]
+    total = cost(agents)[-1]
+    assert total["model"] == "mixed"
+    assert total["credits"] == 600 + math.ceil(1000 * 2 / 15 + 100 * 10 / 15)
+    assert total["note"] == ""
+
+
+def test_plan_columns_are_absent_until_a_plan_is_named():
+    """Money is arithmetic on a published table, not a measurement, so it does
+    not appear beside the credits unless it was asked for."""
+    bare = cost([_made(billed_in=1000, out=100)])[0]
+    assert "usd" not in bare and "pct_week" not in bare
+    priced = cost([_made(billed_in=1000, out=100)], "max20")[0]
+    assert priced["pct_week"] == round(600 / 83_333_300 * 100, 2)
+    # A week is a month at 12/52, not a quarter — the two differ by 8%.
+    assert priced["usd"] == round(600 / 83_333_300 * 200 * 12 / 52, 2)
 
 
 def test_two_batches_do_not_pool_into_one_breakdown():

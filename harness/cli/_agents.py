@@ -16,12 +16,16 @@ from their sources.
 """
 from __future__ import annotations
 
+import click
+
 from ..dispatch import sync_all
 from ..usage import (
+    PLANS,
     batch,
     classes,
     cohort_classes,
     cohorts,
+    cost,
     elsewhere,
     find_transcripts,
     in_cohort,
@@ -70,6 +74,10 @@ def register(cli):
     opt(p, "--tasks", type=str, default=None,
         help="the task-transcript directory [the newest session for --root's "
              "project that has any]")
+    opt(p, "--plan", type=click.Choice(sorted(PLANS)), default=None,
+        help="impute money as well as credits, against this subscription's "
+             "published allowance — adds pct_5h, pct_week and usd to the cost "
+             "section [credits only]")
 
     p = action(g, "sync", run_sync,
                help="refill the groundtruth-reader's transcluded blocks from "
@@ -167,5 +175,6 @@ def run_usage(a) -> int:
     out(a, preamble(agents), name="preamble", heading=True)
     out(a, cohorts(agents), name="cohorts", heading=True)
     out(a, cohort_classes(agents), name="classes", heading=True)
+    out(a, cost(agents, a.plan), name="cost", heading=True)
     out(a, warmth(agents), name="warmth", heading=True)
     return 0
