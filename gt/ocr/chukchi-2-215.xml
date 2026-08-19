@@ -1,0 +1,377 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-2-215.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-2-215.png; regions_from: zones/chukchi-2-215.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="QuireMarksZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_6" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+                <TextBlock ID="mz_2-215_r1" HPOS="422" VPOS="454" WIDTH="1776" HEIGHT="86" TAGREFS="TYPE_5">
+<Shape>
+                        <Polygon POINTS="422 454 2198 454 2198 540 422 540"/>
+                    </Shape>
+                    <TextLine ID="mz_2-215_l1" HPOS="2095" VPOS="458" WIDTH="90" HEIGHT="60" BASELINE="2099 503 2185 499" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="2175 471 2156 466 2136 462 2121 458 2095 468 2099 503 2099 518 2183 518 2185 499 2181 471 2175 471"/>
+                        </Shape>
+                        <String CONTENT="485"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-215_l2" HPOS="1002" VPOS="470" WIDTH="609" HEIGHT="48" BASELINE="1004 501 1611 505" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="1004 485 1004 501 1002 515 1607 518 1611 505 1609 471 1018 470 1004 485"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-215_r2" HPOS="422" VPOS="564" WIDTH="1776" HEIGHT="235" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="422 564 2198 564 2198 799 422 799"/>
+                    </Shape>
+                    <TextLine ID="mz_2-215_l3" HPOS="425" VPOS="562" WIDTH="1770" HEIGHT="62" BASELINE="426 605 2195 601" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="542 567 522 567 505 567 425 575 426 605 426 618 2175 624 2177 624 2179 624 2181 624 2195 614 2195 601 2193 573 2150 562 2148 562 2146 562 1888 571 1860 562 1858 562 1856 562 1811 571 1782 562 1780 562 1778 562 1711 571 1647 562 1645 562 1576 571 1545 562 1543 562 1541 562 1449 571 1421 562 1419 562 1417 562 1296 573 1276 564 1275 564 1273 564 1271 564 1241 573 1212 564 1210 564 1208 564 1206 564 1179 573 1024 564 1022 564 802 573 787 564 785 564 783 564 685 564 683 564 634 573 560 565 542 567"/>
+                        </Shape>
+                        <String CONTENT="questions aloud or mentally, and then raises the object in the air. If the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-215_l4" HPOS="423" VPOS="624" WIDTH="1770" HEIGHT="57" BASELINE="425 665 2193 659" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="425 665 425 681 2191 677 2193 659 2187 624 423 636 425 665"/>
+                        </Shape>
+                        <String CONTENT="answers are favorable, the object will begin to swing; if unfavorable, it will"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-215_l5" HPOS="423" VPOS="689" WIDTH="1768" HEIGHT="63" BASELINE="425 726 2191 718" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="425 726 425 742 853 752 855 752 857 752 859 752 875 740 969 750 971 750 973 750 996 740 1149 740 1304 750 1306 750 1463 748 1464 748 1466 748 1480 738 1537 748 1539 748 1852 746 1854 746 1856 746 1872 736 2173 746 2175 746 2177 746 2179 746 2191 736 2191 718 2187 693 442 689 440 689 438 689 436 689 423 695 425 726"/>
+                        </Shape>
+                        <String CONTENT="remain motionless, and, even when pushed, will persistently return to its"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-215_l6" HPOS="425" VPOS="742" WIDTH="1275" HEIGHT="72" BASELINE="426 781 1700 789" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="426 781 425 795 483 808 485 808 914 800 1083 800 1092 810 1092 812 1094 812 1096 812 1098 812 1365 802 1492 814 1494 814 1496 814 1498 814 1513 804 1572 814 1574 814 1641 804 1676 814 1678 814 1680 814 1682 814 1684 814 1698 802 1700 789 1700 757 1688 748 1686 748 1684 748 1682 748 1494 757 1284 746 1282 746 1063 755 1038 744 1036 744 1034 744 1032 744 998 753 877 744 875 744 873 744 871 744 871 746 861 755 763 755 738 742 736 742 734 742 673 752 595 742 593 742 591 742 569 752 530 742 528 742 526 742 524 742 522 742 509 752 493 742 491 742 489 742 487 742 426 750 426 781"/>
+                        </Shape>
+                        <String CONTENT="original position and remain quiet (Plate XXXIII, Fig. 4)."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-215_r3" HPOS="422" VPOS="799" WIDTH="1776" HEIGHT="1267" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="422 799 2198 799 2198 2066 422 2066"/>
+                    </Shape>
+                    <TextLine ID="mz_2-215_l7" HPOS="536" VPOS="808" WIDTH="423" HEIGHT="49" BASELINE="536 844 959 844" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="536 844 536 857 959 857 959 844 957 808 536 808 536 844"/>
+                        </Shape>
+                        <String CONTENT="When the body of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-215_l8" HPOS="425" VPOS="865" WIDTH="530" HEIGHT="53" BASELINE="425 904 955 904" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="425 904 425 918 955 918 955 904 955 875 922 865 920 865 918 865 575 875 479 865 477 865 425 875 425 904"/>
+                        </Shape>
+                        <String CONTENT="a living man is used in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-215_l9" HPOS="423" VPOS="920" WIDTH="534" HEIGHT="57" BASELINE="425 963 957 959" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="425 963 425 977 955 973 957 959 955 934 924 920 922 920 920 920 918 920 916 920 900 932 885 920 883 920 881 920 879 920 810 932 791 920 789 920 787 920 785 920 783 920 752 932 695 920 693 920 691 920 689 920 689 922 687 922 677 934 446 922 444 922 442 922 440 922 423 932 425 963"/>
+                        </Shape>
+                        <String CONTENT="divination, his head is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-215_l10" HPOS="423" VPOS="983" WIDTH="534" HEIGHT="52" BASELINE="425 1026 957 1022" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="425 1026 425 1035 955 1032 957 1022 953 994 828 983 826 983 765 992 740 983 738 983 736 983 734 983 732 983 732 985 722 994 628 994 550 985 548 985 460 994 432 985 430 985 428 985 426 985 425 985 425 987 423 987 425 1026"/>
+                        </Shape>
+                        <String CONTENT="bound around with a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-215_l11" HPOS="425" VPOS="1041" WIDTH="536" HEIGHT="57" BASELINE="426 1084 961 1081" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="426 1084 426 1098 959 1094 961 1081 955 1045 746 1051 718 1041 716 1041 714 1041 630 1053 607 1043 605 1043 603 1043 526 1053 487 1043 485 1043 483 1043 425 1055 426 1084"/>
+                        </Shape>
+                        <String CONTENT="string, the other end of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-215_l12" HPOS="425" VPOS="1100" WIDTH="530" HEIGHT="57" BASELINE="426 1143 955 1139" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="426 1143 426 1157 953 1153 955 1139 951 1114 873 1100 871 1100 869 1100 867 1100 848 1114 728 1114 703 1100 701 1100 699 1100 697 1100 695 1100 695 1102 693 1102 685 1112 667 1102 665 1102 663 1102 661 1102 660 1102 611 1114 583 1102 581 1102 579 1102 577 1102 556 1114 546 1104 546 1102 544 1102 542 1102 468 1102 466 1102 464 1102 425 1116 426 1143"/>
+                        </Shape>
+                        <String CONTENT="which is tied to a stick."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-215_l13" HPOS="426" VPOS="1163" WIDTH="531" HEIGHT="62" BASELINE="428 1204 957 1198" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="428 1204 428 1214 526 1225 528 1225 607 1212 644 1225 646 1225 648 1225 863 1210 877 1222 877 1223 879 1223 881 1223 883 1225 942 1225 942 1223 944 1223 945 1223 945 1222 957 1210 957 1198 953 1175 763 1175 742 1163 740 1163 738 1163 601 1176 487 1165 485 1165 426 1171 428 1204"/>
+                        </Shape>
+                        <String CONTENT="Then questions are"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-215_l14" HPOS="423" VPOS="1222" WIDTH="536" HEIGHT="60" BASELINE="425 1265 959 1261" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="425 1265 425 1274 942 1282 944 1282 945 1282 947 1282 959 1272 959 1261 955 1233 822 1222 820 1222 736 1231 708 1222 707 1222 705 1222 703 1222 701 1222 685 1233 671 1223 669 1223 667 1223 665 1223 569 1233 560 1225 560 1223 558 1223 556 1223 472 1223 470 1223 468 1223 423 1235 425 1265"/>
+                        </Shape>
+                        <String CONTENT="asked and the stick is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-215_l15" HPOS="421" VPOS="1280" WIDTH="536" HEIGHT="61" BASELINE="423 1323 957 1317" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="423 1323 423 1335 940 1341 942 1341 944 1341 945 1341 957 1329 957 1317 951 1290 728 1292 707 1280 705 1280 703 1280 701 1280 699 1280 671 1292 661 1282 661 1280 660 1280 658 1280 616 1280 614 1280 613 1280 611 1280 591 1296 556 1296 544 1284 544 1282 542 1282 540 1282 538 1282 536 1282 513 1294 487 1282 485 1282 483 1282 421 1292 423 1323"/>
+                        </Shape>
+                        <String CONTENT="lifted. If the answers"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-215_l16" HPOS="421" VPOS="1341" WIDTH="536" HEIGHT="57" BASELINE="423 1382 957 1378" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="423 1382 423 1398 955 1394 957 1378 953 1351 844 1341 842 1341 797 1351 769 1341 767 1341 765 1341 716 1351 689 1341 687 1341 685 1341 421 1355 423 1382"/>
+                        </Shape>
+                        <String CONTENT="are favorable, the head"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-215_l17" HPOS="425" VPOS="1400" WIDTH="534" HEIGHT="64" BASELINE="425 1441 959 1441" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="425 1441 425 1453 438 1462 440 1462 442 1462 444 1462 519 1453 695 1462 697 1462 699 1462 728 1453 755 1464 757 1464 759 1464 846 1453 940 1462 942 1462 944 1462 945 1462 959 1453 959 1441 959 1413 740 1400 738 1400 736 1400 734 1400 734 1402 722 1413 634 1413 613 1400 611 1400 609 1400 607 1400 605 1400 581 1411 556 1400 554 1400 552 1400 550 1400 519 1411 473 1400 472 1400 470 1400 468 1400 425 1411 425 1441"/>
+                        </Shape>
+                        <String CONTENT="will feel so light that"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-215_l18" HPOS="425" VPOS="1458" WIDTH="530" HEIGHT="69" BASELINE="426 1504 955 1498" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="426 1504 426 1513 507 1513 519 1523 520 1523 522 1523 524 1523 616 1511 642 1525 644 1525 646 1527 699 1527 699 1525 846 1523 848 1523 850 1523 850 1521 863 1509 938 1521 940 1521 942 1521 944 1521 944 1519 955 1505 955 1498 953 1472 906 1458 904 1458 902 1458 900 1458 898 1458 879 1470 826 1458 824 1458 724 1474 601 1474 591 1464 591 1462 589 1462 587 1462 585 1462 425 1468 426 1504"/>
+                        </Shape>
+                        <String CONTENT="it will apparently be"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-215_l19" HPOS="421" VPOS="1515" WIDTH="532" HEIGHT="67" BASELINE="423 1562 953 1556" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="423 1562 423 1574 744 1582 746 1582 748 1582 750 1582 750 1580 759 1572 844 1580 846 1580 848 1580 869 1570 938 1580 940 1580 942 1580 944 1580 944 1578 953 1568 953 1556 947 1527 916 1527 902 1515 900 1515 898 1515 897 1515 844 1527 810 1515 808 1515 806 1515 804 1515 769 1529 742 1517 740 1517 738 1517 681 1529 601 1517 599 1517 597 1517 569 1531 538 1519 536 1519 534 1519 532 1519 530 1519 513 1531 483 1519 481 1519 479 1519 421 1529 423 1562"/>
+                        </Shape>
+                        <String CONTENT="lifted of itself. In the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-215_l20" HPOS="423" VPOS="1596" WIDTH="530" HEIGHT="41" BASELINE="423 1621 953 1621" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="423 1621 423 1637 953 1637 953 1621 953 1596 423 1596 423 1621"/>
+                        </Shape>
+                        <String CONTENT="contrary case, the sooth-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-215_l21" HPOS="419" VPOS="1641" WIDTH="534" HEIGHT="62" BASELINE="421 1682 953 1678" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="421 1682 421 1692 491 1703 493 1703 495 1703 544 1692 658 1701 660 1701 661 1701 687 1690 707 1699 708 1699 710 1699 795 1690 814 1701 816 1701 818 1701 820 1703 938 1703 938 1701 940 1701 942 1701 942 1699 953 1688 953 1678 949 1650 875 1641 873 1641 871 1641 869 1641 851 1652 732 1652 707 1641 705 1641 703 1641 701 1641 699 1641 679 1652 620 1643 618 1643 419 1652 421 1682"/>
+                        </Shape>
+                        <String CONTENT="sayer will be unable"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-215_l22" HPOS="423" VPOS="1695" WIDTH="1764" HEIGHT="61" BASELINE="425 1744 2187 1731" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="2166 1697 2146 1697 2126 1697 2107 1697 2087 1695 2068 1695 2048 1695 2029 1695 2019 1695 1678 1705 1494 1695 1492 1695 1416 1707 1188 1697 1186 1697 1184 1697 1182 1697 1167 1709 1020 1699 1018 1699 889 1711 673 1701 671 1701 669 1701 667 1701 650 1713 503 1703 501 1703 423 1715 425 1744 425 1756 2185 1746 2187 1731 2185 1703 2172 1697 2166 1697"/>
+                        </Shape>
+                        <String CONTENT="to lift it from the ground. In this latter method the person whose head is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-215_l23" HPOS="421" VPOS="1754" WIDTH="1766" HEIGHT="61" BASELINE="423 1803 2187 1793" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="423 1803 423 1815 2185 1805 2187 1793 2183 1764 1935 1754 1933 1754 1829 1764 1558 1756 1557 1756 1476 1766 1137 1758 1135 1758 1133 1758 1132 1758 1118 1770 421 1770 423 1803"/>
+                        </Shape>
+                        <String CONTENT="being lifted may ask his questions mentally, so that nobody can hear them."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-215_l24" HPOS="423" VPOS="1811" WIDTH="1756" HEIGHT="67" BASELINE="425 1862 2179 1848" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="425 1862 425 1878 2177 1864 2179 1848 2173 1811 423 1827 425 1862"/>
+                        </Shape>
+                        <String CONTENT="This method of divination is identical with that used by the American Eskimo.¹"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-215_l25" HPOS="423" VPOS="1870" WIDTH="1764" HEIGHT="66" BASELINE="425 1925 2187 1911" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="425 1925 425 1936 2187 1925 2187 1911 2183 1881 1940 1870 1938 1870 1936 1870 1935 1870 1919 1881 1807 1872 1805 1872 1711 1881 1686 1872 1684 1872 1682 1872 1680 1872 1678 1872 1662 1883 1476 1874 1474 1874 1472 1874 1427 1885 1212 1876 1210 1876 1208 1876 1175 1887 1077 1878 1075 1878 920 1889 871 1880 869 1880 802 1889 773 1880 771 1880 769 1880 669 1891 423 1889 425 1925"/>
+                        </Shape>
+                        <String CONTENT="The same method is resorted to with bodies of the dead to obtain information"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-215_l26" HPOS="417" VPOS="1932" WIDTH="1768" HEIGHT="65" BASELINE="419 1983 2185 1972" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="419 1983 419 1997 1889 1997 1889 1995 1936 1985 2181 1993 2185 1972 2181 1942 2070 1932 2068 1932 1927 1942 1891 1932 1889 1932 1888 1932 1886 1932 1858 1944 1837 1934 1835 1934 1833 1934 1747 1944 1631 1934 1629 1934 1627 1934 1590 1946 1374 1936 1372 1936 1034 1948 1008 1938 1006 1938 1004 1938 887 1950 767 1940 765 1940 697 1952 609 1942 607 1942 605 1942 603 1942 587 1954 417 1954 419 1983"/>
+                        </Shape>
+                        <String CONTENT="as to the various details of the funeral, or the future of the remaining"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-215_l27" HPOS="417" VPOS="1999" WIDTH="542" HEIGHT="63" BASELINE="419 2044 959 2038" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="419 2044 419 2054 775 2062 777 2062 779 2062 781 2062 781 2060 783 2060 789 2052 945 2060 947 2060 949 2060 951 2060 951 2058 959 2050 959 2038 955 2011 812 1999 810 1999 808 1999 757 2011 675 2001 673 2001 671 2001 646 2011 528 2003 526 2003 417 2015 419 2044"/>
+                        </Shape>
+                        <String CONTENT="members of the family."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-215_r4" HPOS="422" VPOS="2066" WIDTH="1776" HEIGHT="419" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="422 2066 2198 2066 2198 2485 422 2485"/>
+                    </Shape>
+                    <TextLine ID="mz_2-215_l28" HPOS="526" VPOS="2050" WIDTH="1659" HEIGHT="66" BASELINE="528 2103 2185 2091" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="528 2103 528 2116 2183 2113 2185 2091 2183 2062 2162 2050 2160 2050 2158 2050 2156 2050 2128 2060 2025 2050 2023 2050 1972 2060 1944 2050 1942 2050 1940 2050 1938 2050 1903 2062 1801 2052 1799 2052 1707 2062 1674 2052 1672 2052 1670 2052 1668 2052 1627 2064 1470 2054 1468 2054 1466 2054 1435 2064 1402 2054 1400 2054 1398 2054 1339 2066 1327 2056 1325 2056 1323 2056 1322 2056 1235 2066 1220 2056 1218 2056 1216 2056 1102 2056 1100 2056 1098 2056 1075 2068 881 2058 879 2058 877 2058 846 2068 820 2058 818 2058 816 2058 814 2058 781 2069 550 2060 548 2060 546 2060 544 2060 526 2068 528 2103"/>
+                        </Shape>
+                        <String CONTENT="Another method is that of tying the dead body, dressed for the funeral,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-215_l29" HPOS="415" VPOS="2113" WIDTH="1770" HEIGHT="70" BASELINE="417 2162 2185 2152" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="417 2162 417 2173 658 2183 660 2183 769 2171 785 2181 787 2181 789 2181 791 2181 793 2181 816 2171 1106 2181 1108 2181 1110 2181 1112 2181 1128 2169 1218 2179 1220 2179 1284 2169 1474 2179 1476 2179 1627 2167 1652 2177 1654 2177 1656 2177 2183 2167 2185 2152 2181 2122 1901 2113 1899 2113 1897 2113 1895 2113 1880 2124 1639 2124 1605 2115 1604 2115 1602 2115 1549 2124 1508 2115 1506 2115 1504 2115 1502 2115 1472 2126 1161 2116 1159 2116 1157 2116 1118 2128 1083 2118 1081 2118 1079 2118 963 2128 848 2118 846 2118 844 2118 842 2118 826 2128 642 2120 640 2120 571 2130 519 2120 517 2120 415 2130 417 2162"/>
+                        </Shape>
+                        <String CONTENT="to the rails of a sledge. The sledge is then placed across two long smooth"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-215_l30" HPOS="415" VPOS="2169" WIDTH="1770" HEIGHT="75" BASELINE="417 2224 2185 2209" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="417 2224 417 2244 2183 2224 2185 2209 2183 2181 2148 2169 2146 2169 2144 2169 1723 2183 1568 2173 1566 2173 1502 2185 1476 2175 1474 2175 1472 2175 1355 2185 1320 2175 1318 2175 1316 2175 1314 2175 1267 2187 1104 2177 1102 2177 1100 2177 1075 2189 920 2179 918 2179 916 2179 914 2179 898 2189 728 2181 726 2181 724 2181 722 2181 707 2191 569 2183 567 2183 566 2183 536 2193 473 2183 472 2183 415 2195 417 2224"/>
+                        </Shape>
+                        <String CONTENT="poles lying side by side on the ground, so that the runners can easily slide"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-215_l31" HPOS="417" VPOS="2232" WIDTH="1768" HEIGHT="63" BASELINE="419 2281 2185 2269" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="419 2281 419 2295 2183 2285 2185 2269 2181 2244 2121 2232 2119 2232 2021 2242 1964 2232 1962 2232 1960 2232 1958 2232 1944 2242 1899 2232 1897 2232 1895 2232 1872 2244 1723 2234 1721 2234 1572 2246 1466 2236 1464 2236 1343 2246 1257 2238 1255 2238 1253 2238 1251 2238 1237 2248 1206 2238 1204 2238 1202 2238 1200 2238 1167 2248 985 2240 983 2240 981 2240 947 2250 712 2240 710 2240 708 2240 661 2252 517 2242 515 2242 417 2254 419 2281"/>
+                        </Shape>
+                        <String CONTENT="on them. Then the soothsayer asks his questions, and tries to pull the sledge"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-215_l32" HPOS="415" VPOS="2293" WIDTH="1772" HEIGHT="62" BASELINE="417 2340 2187 2330" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="417 2340 417 2355 2095 2355 2095 2353 2187 2342 2187 2330 2181 2293 767 2308 446 2301 444 2301 442 2301 415 2308 417 2340"/>
+                        </Shape>
+                        <String CONTENT="along. If the answers are favorable, the sledge will run ahead smoothly: if"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-215_l33" HPOS="415" VPOS="2350" WIDTH="1770" HEIGHT="66" BASELINE="417 2402 2185 2389" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="417 2402 417 2416 2183 2402 2185 2389 2183 2361 2158 2350 2156 2350 2154 2350 2152 2350 2132 2359 2040 2350 2038 2350 2036 2350 2009 2359 1936 2350 1935 2350 1933 2350 1931 2350 1915 2361 1886 2351 1884 2351 1882 2351 1880 2351 1856 2361 1717 2351 1715 2351 1713 2351 1674 2363 1584 2353 1582 2353 1421 2365 1372 2355 1370 2355 1369 2355 1341 2365 1312 2355 1310 2355 1308 2355 1306 2355 1304 2355 1290 2365 1273 2357 1271 2357 1269 2357 1143 2367 942 2357 940 2357 846 2369 481 2361 479 2361 415 2373 417 2402"/>
+                        </Shape>
+                        <String CONTENT="unfavorable, some hitch will prevent it from moving. The principle is evi-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-215_l34" HPOS="415" VPOS="2416" WIDTH="897" HEIGHT="57" BASELINE="417 2459 1312 2455" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="417 2459 417 2473 1310 2471 1312 2455 1308 2430 1241 2416 1239 2416 1086 2428 1075 2418 1075 2416 1073 2416 1071 2416 1020 2416 1018 2416 1016 2416 965 2428 895 2416 893 2416 891 2416 857 2432 630 2432 618 2420 618 2418 616 2418 614 2418 613 2418 611 2418 579 2430 534 2418 532 2418 530 2418 473 2428 442 2418 440 2418 438 2418 436 2418 434 2418 415 2428 417 2459"/>
+                        </Shape>
+                        <String CONTENT="dently the same as that of head-lifting."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-215_r5" HPOS="422" VPOS="2485" WIDTH="1776" HEIGHT="492" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="422 2485 2198 2485 2198 2977 422 2977"/>
+                    </Shape>
+                    <TextLine ID="mz_2-215_l35" HPOS="524" VPOS="2471" WIDTH="1661" HEIGHT="63" BASELINE="526 2520 2185 2508" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="526 2520 526 2534 2183 2522 2185 2508 2181 2483 1909 2471 1907 2471 1846 2483 1784 2473 1782 2473 1780 2473 1743 2483 1529 2475 1527 2475 1525 2475 1523 2475 1510 2485 1412 2475 1410 2475 1408 2475 1384 2487 1157 2487 1098 2477 1096 2477 1094 2477 1092 2477 1073 2489 869 2479 867 2479 865 2479 832 2489 693 2481 691 2481 599 2491 546 2481 544 2481 542 2481 540 2481 524 2489 526 2520"/>
+                        </Shape>
+                        <String CONTENT="At variance with this, the answers given before as favorable — spon-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-215_l36" HPOS="415" VPOS="2536" WIDTH="1770" HEIGHT="60" BASELINE="417 2583 2185 2571" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="417 2583 417 2596 2183 2585 2185 2571 2181 2541 1300 2536 1298 2536 1296 2536 1255 2545 1008 2538 1006 2538 1004 2538 1002 2538 991 2547 732 2539 730 2539 728 2539 707 2549 667 2541 665 2541 415 2551 417 2583"/>
+                        </Shape>
+                        <String CONTENT="taneous swinging of the object suspended, easy and smooth motion of human"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-215_l37" HPOS="409" VPOS="2600" WIDTH="1774" HEIGHT="63" BASELINE="411 2641 2183 2630" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="411 2641 411 2653 677 2663 679 2663 810 2653 916 2661 918 2661 2183 2645 2183 2630 2177 2600 409 2608 411 2641"/>
+                        </Shape>
+                        <String CONTENT="bodies suspended or of sledges resting on rollers — are sometimes taken only"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-215_l38" HPOS="413" VPOS="2657" WIDTH="1772" HEIGHT="57" BASELINE="415 2702 2185 2690" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="415 2702 415 2714 2183 2704 2185 2690 2181 2663 1306 2657 1304 2657 1302 2657 1265 2667 1016 2659 1014 2659 1012 2659 983 2669 515 2663 513 2663 413 2673 415 2702"/>
+                        </Shape>
+                        <String CONTENT="as affirmative, no matter whether favorable or not to the questioner; and those"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-215_l39" HPOS="415" VPOS="2718" WIDTH="1764" HEIGHT="64" BASELINE="417 2763 2179 2749" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="417 2763 417 2782 2177 2765 2179 2749 2175 2722 1171 2718 1169 2718 1167 2718 1139 2727 448 2724 446 2724 444 2724 415 2733 417 2763"/>
+                        </Shape>
+                        <String CONTENT="given as unfavorable are, on the other hand, taken only as negative. To"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-215_l40" HPOS="415" VPOS="2780" WIDTH="1768" HEIGHT="55" BASELINE="417 2820 2183 2808" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="417 2820 417 2835 2168 2835 2168 2833 2170 2833 2172 2833 2183 2823 2183 2808 2179 2782 710 2780 708 2780 707 2780 673 2790 497 2782 495 2782 415 2792 417 2820"/>
+                        </Shape>
+                        <String CONTENT="avoid misunderstandings, however, the questions are, for the most part, put"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-215_l41" HPOS="413" VPOS="2831" WIDTH="1766" HEIGHT="65" BASELINE="415 2882 2179 2867" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="415 2882 415 2896 2177 2888 2179 2867 2173 2831 413 2849 415 2882"/>
+                        </Shape>
+                        <String CONTENT="in such a way that the affirmative would coincide with the favorable, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-215_l42" HPOS="415" VPOS="2904" WIDTH="248" HEIGHT="53" BASELINE="417 2943 663 2937" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="417 2943 417 2957 661 2957 663 2937 660 2910 456 2904 454 2904 452 2904 415 2914 417 2943"/>
+                        </Shape>
+                        <String CONTENT="vice versa."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-215_r6" HPOS="422" VPOS="3018" WIDTH="1776" HEIGHT="76" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="422 3018 2198 3018 2198 3094 422 3094"/>
+                    </Shape>
+                    <TextLine ID="mz_2-215_l43" HPOS="955" VPOS="3037" WIDTH="699" HEIGHT="45" BASELINE="955 3062 1654 3062" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="955 3062 955 3082 1654 3082 1654 3062 1654 3037 955 3037 955 3062"/>
+                        </Shape>
+                        <String CONTENT="¹ Compare Boas, Baffin-Land Eskimo, p. 363."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-215_r7" HPOS="422" VPOS="3102" WIDTH="1776" HEIGHT="63" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="422 3102 2198 3102 2198 3165 422 3165"/>
+                    </Shape>
+                    <TextLine ID="mz_2-215_l44" HPOS="409" VPOS="3102" WIDTH="674" HEIGHT="48" BASELINE="411 3133 1083 3129" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="411 3133 411 3150 1081 3147 1083 3129 1077 3102 409 3103 411 3133"/>
+                        </Shape>
+                        <String CONTENT="62—JESUP NORTH PACIFIC EXPED., VOL. VII."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

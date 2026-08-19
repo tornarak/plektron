@@ -1,0 +1,373 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-2-201.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-2-201.png; regions_from: zones/chukchi-2-201.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+                <TextBlock ID="mz_2-201_r1" HPOS="415" VPOS="478" WIDTH="1776" HEIGHT="86" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="415 478 2191 478 2191 564 415 564"/>
+                    </Shape>
+                    <TextLine ID="mz_2-201_l1" HPOS="998" VPOS="495" WIDTH="606" HEIGHT="49" BASELINE="998 524 1604 524" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1586 495 1012 495 998 501 998 524 998 544 1604 544 1604 524 1600 513 1586 495"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-201_l2" HPOS="2089" VPOS="493" WIDTH="84" HEIGHT="49" BASELINE="2091 530 2173 526" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2168 501 2148 497 2136 493 2089 499 2089 501 2091 530 2091 542 2172 542 2173 526 2168 501 2168 501"/>
+                        </Shape>
+                        <String CONTENT="471"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-201_r2" HPOS="415" VPOS="588" WIDTH="1776" HEIGHT="297" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="415 588 2191 588 2191 885 415 885"/>
+                    </Shape>
+                    <TextLine ID="mz_2-201_l3" HPOS="417" VPOS="587" WIDTH="1770" HEIGHT="61" BASELINE="419 626 2187 630" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="419 626 417 636 436 648 438 648 440 648 2185 640 2187 630 2187 601 2146 589 2144 589 2142 589 2060 599 1735 589 1733 589 1635 599 1576 589 1574 589 1484 599 1423 589 1421 589 1355 599 1304 587 1302 587 1300 587 1298 587 1255 597 1065 587 1063 587 1061 587 1022 597 928 587 926 587 924 587 885 597 779 587 777 587 724 597 673 587 671 587 419 595 419 626"/>
+                        </Shape>
+                        <String CONTENT="eating with others, from the same dish, will try by an incantation to make"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-201_l4" HPOS="419" VPOS="650" WIDTH="1768" HEIGHT="53" BASELINE="419 689 2187 689" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="419 689 419 703 2185 703 2187 689 2185 661 2107 650 2105 650 2007 659 1588 650 1586 650 1584 650 1582 650 1566 661 1408 661 1347 650 1345 650 1343 650 1316 659 1237 650 1235 650 1233 650 1190 659 1069 650 1067 650 1018 659 918 650 916 650 869 659 855 650 853 650 851 650 759 650 757 650 699 659 609 650 607 650 495 659 442 650 440 650 438 650 419 659 419 689"/>
+                        </Shape>
+                        <String CONTENT="the motions of his rivals slower than his own. Women apply incantations"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-201_l5" HPOS="417" VPOS="708" WIDTH="1768" HEIGHT="55" BASELINE="419 750 2185 746" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="419 750 419 763 2183 761 2185 746 2181 718 1314 708 1312 708 1310 708 1308 708 1294 718 436 710 434 710 432 710 430 710 417 716 419 750"/>
+                        </Shape>
+                        <String CONTENT="to their sinew-thread in order to make it stronger. A man who has forgotten"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-201_l6" HPOS="417" VPOS="765" WIDTH="1764" HEIGHT="65" BASELINE="419 808 2181 804" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="419 808 419 824 2177 830 2181 804 2177 777 2117 765 2115 765 1958 775 1864 765 1862 765 1860 765 1858 765 1844 775 1819 765 1817 765 1815 765 1813 765 1790 775 1768 765 1766 765 1764 765 1762 765 1739 775 1713 765 1711 765 1709 765 1707 765 1688 775 1600 765 1598 765 1513 775 1480 765 1478 765 1476 765 1474 765 1472 765 1455 777 1347 777 1314 765 1312 765 1310 765 1308 765 1306 765 1290 777 1231 767 1229 767 1180 777 853 767 851 767 791 777 777 767 775 767 773 767 636 767 634 767 632 767 605 777 569 767 567 767 566 767 417 779 419 808"/>
+                        </Shape>
+                        <String CONTENT="a magic formula will resort to another incantation which is helpful in recalling"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-201_l7" HPOS="419" VPOS="828" WIDTH="953" HEIGHT="63" BASELINE="419 867 1372 867" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="419 867 419 879 840 891 842 891 898 881 1212 891 1214 891 1372 881 1372 867 1372 840 953 828 951 828 949 828 947 828 947 830 938 840 846 840 779 828 777 828 775 828 750 838 724 828 722 828 720 828 718 828 716 828 716 830 707 838 673 828 671 828 669 828 667 828 630 840 419 840 419 867"/>
+                        </Shape>
+                        <String CONTENT="to one’s mind things which are forgotten."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-201_r3" HPOS="415" VPOS="885" WIDTH="1776" HEIGHT="370" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="415 885 2191 885 2191 1255 415 1255"/>
+                    </Shape>
+                    <TextLine ID="mz_2-201_l8" HPOS="526" VPOS="887" WIDTH="1659" HEIGHT="54" BASELINE="528 930 2185 926" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="528 930 528 941 2183 938 2185 926 2181 898 1572 887 1570 887 1568 887 1543 896 824 889 822 889 820 889 781 898 697 889 695 889 583 898 546 889 544 889 542 889 540 889 538 889 526 896 528 930"/>
+                        </Shape>
+                        <String CONTENT="A number of incantations relate to matters of love. Those referring to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-201_l9" HPOS="417" VPOS="945" WIDTH="1766" HEIGHT="63" BASELINE="419 985 2183 988" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="419 985 417 998 430 1008 432 1008 434 1008 436 1008 2181 1000 2183 988 2181 959 2087 947 2085 947 1997 957 1823 947 1821 947 1819 947 1780 959 1511 959 1490 947 1488 947 1486 947 1273 955 1239 945 1237 945 1235 945 1120 955 1024 945 1022 945 900 955 853 945 851 945 850 945 820 955 804 945 802 945 801 945 799 945 752 955 671 945 669 945 667 945 640 955 595 945 593 945 591 945 566 955 419 951 419 985"/>
+                        </Shape>
+                        <String CONTENT="birth, death, and funeral-rites, will be treated in a separate chapter. A large"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-201_l10" HPOS="415" VPOS="1010" WIDTH="1768" HEIGHT="57" BASELINE="417 1049 2183 1045" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="417 1049 417 1067 2181 1061 2183 1045 2179 1018 575 1010 573 1010 415 1020 417 1049"/>
+                        </Shape>
+                        <String CONTENT="proportion of incantations refer to the cure of diseases. As may be seen"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-201_l11" HPOS="417" VPOS="1067" WIDTH="1768" HEIGHT="55" BASELINE="419 1110 2185 1106" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="419 1110 419 1120 2181 1122 2185 1106 2181 1079 1991 1079 1960 1067 1958 1067 1956 1067 1954 1067 1952 1067 1936 1077 1907 1067 1905 1067 1903 1067 1901 1067 1862 1077 1829 1067 1827 1067 1825 1067 1747 1077 1707 1067 1705 1067 1703 1067 1633 1077 1555 1067 1553 1067 1551 1067 1523 1077 1464 1067 1463 1067 1292 1079 1149 1069 1147 1069 1026 1079 983 1069 981 1069 979 1069 932 1079 865 1069 863 1069 642 1079 571 1069 569 1069 567 1069 526 1079 430 1069 428 1069 426 1069 425 1069 417 1075 419 1110"/>
+                        </Shape>
+                        <String CONTENT="from this enumeration, incantations are usually benevolent in their purport"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-201_l12" HPOS="419" VPOS="1139" WIDTH="1760" HEIGHT="49" BASELINE="419 1169 2179 1169" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="419 1169 419 1180 2177 1188 2179 1169 2179 1139 419 1139 419 1169"/>
+                        </Shape>
+                        <String CONTENT="toward man. In this they are at variance with another series of magic acts,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-201_l13" HPOS="419" VPOS="1188" WIDTH="950" HEIGHT="53" BASELINE="419 1227 1369 1227" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="419 1227 419 1241 1369 1241 1369 1227 1369 1200 985 1200 934 1188 932 1188 930 1188 928 1188 928 1190 920 1198 897 1188 895 1188 893 1188 891 1188 889 1188 889 1190 879 1200 722 1200 599 1188 597 1188 554 1198 544 1190 544 1188 542 1188 540 1188 462 1188 460 1188 458 1188 419 1198 419 1227"/>
+                        </Shape>
+                        <String CONTENT="which always portend harm to some one."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-201_r4" HPOS="415" VPOS="1255" WIDTH="1776" HEIGHT="422" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="415 1255 2191 1255 2191 1677 415 1677"/>
+                    </Shape>
+                    <TextLine ID="mz_2-201_l14" HPOS="530" VPOS="1251" WIDTH="1653" HEIGHT="51" BASELINE="530 1286 2183 1286" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="530 1286 530 1302 2183 1302 2183 1286 2183 1251 530 1251 530 1286"/>
+                        </Shape>
+                        <String CONTENT="These latter are called in Chukchee uiˊwel. Most of them are supposed"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-201_l15" HPOS="415" VPOS="1314" WIDTH="1764" HEIGHT="54" BASELINE="417 1345 2179 1351" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="417 1345 415 1357 2175 1368 2179 1351 2177 1317 417 1314 417 1345"/>
+                        </Shape>
+                        <String CONTENT="to have a capricious material shape created for them by the person performing"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-201_l16" HPOS="415" VPOS="1364" WIDTH="1764" HEIGHT="59" BASELINE="417 1410 2179 1404" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="417 1410 417 1423 2177 1423 2179 1404 2175 1376 2040 1364 2038 1364 2036 1364 2034 1364 2017 1376 1905 1376 1872 1364 1870 1364 1868 1364 1821 1374 1788 1364 1786 1364 1784 1364 1782 1364 1780 1364 1764 1376 1320 1376 1304 1366 1302 1366 1300 1366 1206 1366 1204 1366 1128 1376 1075 1366 1073 1366 1071 1366 1069 1366 1053 1376 519 1368 517 1368 515 1368 493 1378 436 1368 434 1368 432 1368 430 1368 415 1376 417 1410"/>
+                        </Shape>
+                        <String CONTENT="the incantation. They may be animals, monsters, or even inanimate objects."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-201_l17" HPOS="417" VPOS="1425" WIDTH="1762" HEIGHT="57" BASELINE="419 1466 2179 1462" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="419 1466 419 1480 2175 1482 2179 1462 2177 1437 2132 1425 2130 1425 2128 1425 2076 1435 1997 1425 1995 1425 1993 1425 1966 1435 1889 1425 1888 1425 1886 1425 1852 1437 1664 1437 1649 1425 1647 1425 1645 1425 1643 1425 1596 1435 1463 1425 1461 1425 1459 1425 1457 1425 1441 1437 1296 1437 1229 1427 1227 1427 1226 1427 1192 1437 417 1433 419 1466"/>
+                        </Shape>
+                        <String CONTENT="In this shape they are sent to the person “doomed to anger,” to lure him"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-201_l18" HPOS="415" VPOS="1496" WIDTH="1766" HEIGHT="47" BASELINE="417 1529 2181 1525" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="417 1529 417 1543 2179 1543 2181 1525 2177 1498 415 1496 417 1529"/>
+                        </Shape>
+                        <String CONTENT="in some way to danger and destruction. After that they come back, and are"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-201_l19" HPOS="415" VPOS="1545" WIDTH="1757" HEIGHT="58" BASELINE="415 1588 2172 1584" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="415 1588 415 1603 2170 1603 2172 1584 2164 1545 2142 1554 2126 1545 2125 1545 2123 1545 2121 1545 2119 1545 2076 1554 1823 1545 1821 1545 1768 1554 1737 1545 1735 1545 1733 1545 1731 1545 1729 1545 1713 1556 1555 1556 1504 1545 1502 1545 1500 1545 1498 1545 1482 1556 1286 1556 1220 1547 1218 1547 902 1556 887 1547 885 1547 883 1547 689 1547 687 1547 685 1547 656 1556 438 1547 436 1547 434 1547 425 1551 415 1588"/>
+                        </Shape>
+                        <String CONTENT="themselves destroyed, or simply disintegrate on the spot. I call them “spells,”"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-201_l20" HPOS="415" VPOS="1609" WIDTH="1004" HEIGHT="51" BASELINE="417 1646 1419 1643" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="417 1646 417 1660 1417 1658 1419 1643 1416 1617 423 1609 421 1609 419 1609 417 1609 417 1611 415 1611 417 1646"/>
+                        </Shape>
+                        <String CONTENT="in the absence of any more adequate word."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-201_r5" HPOS="415" VPOS="1677" WIDTH="1776" HEIGHT="538" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="415 1677 2191 1677 2191 2215 415 2215"/>
+                    </Shape>
+                    <TextLine ID="mz_2-201_l21" HPOS="522" VPOS="1664" WIDTH="1659" HEIGHT="63" BASELINE="524 1703 2181 1707" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="524 1703 522 1715 542 1727 544 1727 546 1727 2179 1719 2181 1707 2181 1678 2138 1666 2136 1666 2134 1666 2132 1666 2099 1676 2087 1666 2085 1666 2083 1666 1997 1666 1995 1666 1993 1666 1991 1666 1976 1676 1874 1666 1872 1666 1733 1676 1696 1666 1694 1666 1692 1666 1690 1666 1688 1666 1670 1678 1566 1678 1531 1666 1529 1666 1527 1666 1437 1676 1331 1664 1329 1664 1327 1664 1298 1674 1159 1664 1157 1664 1075 1674 1026 1664 1024 1664 965 1674 918 1664 916 1664 855 1674 779 1664 777 1664 524 1672 524 1703"/>
+                        </Shape>
+                        <String CONTENT="Conformably with this difference between incantations and “spells,” the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-201_l22" HPOS="417" VPOS="1731" WIDTH="1764" HEIGHT="56" BASELINE="419 1762 2181 1766" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="419 1762 417 1772 446 1786 448 1786 450 1786 532 1776 573 1786 575 1786 577 1787 724 1787 724 1786 726 1786 728 1786 742 1776 773 1786 775 1786 777 1786 779 1786 820 1776 853 1786 855 1786 857 1786 924 1776 1243 1786 1245 1786 1247 1786 1284 1776 1298 1786 1300 1786 1302 1786 1304 1786 1429 1778 1496 1787 1498 1787 2179 1778 2181 1766 2179 1731 419 1731 419 1762"/>
+                        </Shape>
+                        <String CONTENT="“Old Women of the Time of the First Creation,” mentioned in several"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-201_l23" HPOS="415" VPOS="1784" WIDTH="1764" HEIGHT="56" BASELINE="417 1827 2179 1823" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="417 1827 417 1840 2177 1836 2179 1823 2177 1795 2146 1784 2144 1784 2142 1784 2140 1784 2121 1793 2101 1784 2099 1784 2097 1784 2095 1784 2072 1793 1817 1784 1815 1784 1813 1784 1780 1793 1754 1784 1752 1784 1750 1784 1748 1784 1719 1793 1688 1784 1686 1784 1684 1784 1682 1784 1647 1793 1611 1784 1609 1784 1607 1784 1480 1793 1400 1784 1398 1784 1294 1795 1229 1786 1227 1786 1145 1795 1092 1786 1090 1786 863 1795 769 1786 767 1786 765 1786 763 1786 748 1797 587 1797 548 1786 546 1786 544 1786 542 1786 520 1795 428 1786 426 1786 425 1786 423 1786 415 1789 417 1827"/>
+                        </Shape>
+                        <String CONTENT="formulas, are there called also “Women of Incantation,” signifying that their"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-201_l24" HPOS="415" VPOS="1846" WIDTH="1762" HEIGHT="63" BASELINE="415 1887 2177 1887" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="415 1887 415 1909 2177 1899 2177 1887 2177 1856 2158 1846 2156 1846 2154 1846 1502 1856 1437 1846 1435 1846 1433 1846 1431 1846 1416 1858 1325 1858 1251 1846 1249 1846 1149 1856 1096 1846 1094 1846 1092 1846 1090 1846 1075 1858 926 1858 883 1846 881 1846 879 1846 826 1856 775 1846 773 1846 771 1846 748 1856 718 1846 716 1846 714 1846 712 1846 710 1846 695 1858 550 1858 499 1846 497 1846 423 1856 415 1887"/>
+                        </Shape>
+                        <String CONTENT="performance is beneficent to the applicant. The small old woman of Keˊrek"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-201_l25" HPOS="415" VPOS="1905" WIDTH="1762" HEIGHT="57" BASELINE="415 1946 2177 1946" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="415 1946 415 1962 2177 1962 2177 1946 2177 1917 1774 1905 1772 1905 1770 1905 1729 1915 1680 1905 1678 1905 1633 1915 1609 1905 1607 1905 1605 1905 1604 1905 1602 1905 1586 1917 1496 1917 1425 1905 1423 1905 1421 1905 1382 1915 1314 1905 1312 1905 1310 1905 1290 1915 1245 1905 1243 1905 1194 1915 1114 1905 1112 1905 1055 1915 1022 1905 1020 1905 1018 1905 949 1915 902 1905 900 1905 898 1905 855 1915 779 1905 777 1905 716 1915 683 1905 681 1905 679 1905 534 1915 511 1905 509 1905 507 1905 425 1915 415 1946"/>
+                        </Shape>
+                        <String CONTENT="stock, mentioned in the tale of the Scabby Shaman,¹ who did much harm to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-201_l26" HPOS="415" VPOS="1964" WIDTH="1757" HEIGHT="64" BASELINE="415 2005 2172 2001" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="415 2005 415 2019 828 2019 922 2028 924 2028 1002 2019 1141 2028 1143 2028 1145 2028 1147 2028 1163 2019 1527 2026 1529 2026 1531 2026 1533 2026 1549 2017 1750 2017 1766 2026 1768 2026 1770 2026 1772 2028 1915 2028 1915 2026 1917 2026 1942 2017 1982 2026 1983 2026 1985 2026 1987 2026 1989 2026 2003 2017 2021 2026 2023 2026 2025 2028 2150 2028 2150 2026 2152 2026 2154 2026 2172 2015 2172 2001 2164 1964 2136 1974 2123 1964 2121 1964 2119 1964 2117 1964 2115 1964 2076 1974 2044 1964 2042 1964 2040 1964 1952 1974 1261 1966 1259 1966 1257 1966 1255 1966 1239 1975 681 1966 679 1966 618 1975 522 1966 520 1966 519 1966 489 1975 434 1966 432 1966 430 1966 428 1966 426 1966 415 2005"/>
+                        </Shape>
+                        <String CONTENT="the hero of the tale, is called, on the contrary, an “Old Woman of Spells.”"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-201_l27" HPOS="415" VPOS="2028" WIDTH="1764" HEIGHT="53" BASELINE="417 2066 2179 2062" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="417 2066 417 2081 2177 2077 2179 2062 2173 2028 415 2030 417 2066"/>
+                        </Shape>
+                        <String CONTENT="There are, however, several branches of incantations which are also harmful"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-201_l28" HPOS="413" VPOS="2085" WIDTH="1764" HEIGHT="65" BASELINE="413 2126 2177 2126" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="413 2126 413 2140 603 2140 618 2150 620 2150 622 2150 624 2150 818 2140 1296 2140 1320 2150 1322 2150 1323 2150 1417 2140 1927 2150 1929 2150 1931 2150 1970 2140 2097 2150 2099 2150 2177 2138 2177 2126 2177 2097 2087 2085 2085 2085 2083 2085 2056 2095 1976 2085 1974 2085 1925 2095 1874 2085 1872 2085 1805 2095 1770 2085 1768 2085 1766 2085 1709 2095 1696 2085 1694 2085 1692 2085 1690 2085 1688 2085 1651 2095 1625 2085 1623 2085 1621 2085 1527 2095 1453 2085 1451 2085 1363 2095 1335 2085 1333 2085 1331 2085 1273 2095 1259 2085 1257 2085 1255 2085 1253 2085 1151 2097 942 2097 916 2085 914 2085 912 2085 848 2095 413 2093 413 2126"/>
+                        </Shape>
+                        <String CONTENT="in their purpose. These are called “Spell Incantation” (oiwaˊčirg̣-êˊwg̣an) or"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-201_l29" HPOS="417" VPOS="2142" WIDTH="1604" HEIGHT="68" BASELINE="419 2181 2021 2187" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="419 2181 417 2195 434 2207 436 2207 438 2207 440 2209 564 2209 564 2207 566 2207 567 2207 579 2197 599 2207 601 2207 603 2207 857 2197 873 2207 875 2207 877 2207 879 2207 1100 2199 1124 2209 1126 2209 1128 2209 1670 2201 1688 2210 1690 2210 1692 2210 1694 2210 2019 2199 2021 2187 2019 2158 1846 2146 1844 2146 1670 2156 1574 2146 1572 2146 1570 2146 1545 2156 1513 2146 1511 2146 1510 2146 1508 2146 1486 2156 1406 2144 1304 2144 1302 2144 1300 2144 1298 2144 1284 2154 1222 2144 1220 2144 1218 2144 1190 2154 1106 2144 1104 2144 1102 2144 1059 2154 930 2142 928 2142 869 2152 853 2142 851 2142 850 2142 848 2142 846 2142 810 2152 783 2142 781 2142 779 2142 777 2142 750 2152 419 2146 419 2181"/>
+                        </Shape>
+                        <String CONTENT="“Anger Incantation” (aˊnñêna-êˊwg̣an). Of these I shall speak later on."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-201_r6" HPOS="415" VPOS="2215" WIDTH="1776" HEIGHT="302" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="415 2215 2191 2215 2191 2517 415 2517"/>
+                    </Shape>
+                    <TextLine ID="mz_2-201_l30" HPOS="517" VPOS="2205" WIDTH="1664" HEIGHT="62" BASELINE="519 2248 2181 2242" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="519 2248 519 2259 1621 2267 1623 2267 1748 2257 2162 2265 2164 2265 2166 2265 2168 2265 2181 2256 2181 2242 2175 2207 1226 2214 1122 2205 1120 2205 1118 2205 1116 2205 1102 2214 1012 2207 1010 2207 887 2216 848 2207 846 2207 844 2207 842 2207 818 2216 710 2207 708 2207 646 2216 530 2207 528 2207 526 2207 524 2207 517 2212 519 2248"/>
+                        </Shape>
+                        <String CONTENT="Some of the incantations have a very short formula, consisting often of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-201_l31" HPOS="411" VPOS="2263" WIDTH="1766" HEIGHT="67" BASELINE="411 2308 2177 2303" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="411 2308 411 2330 1043 2318 2160 2324 2162 2324 2164 2324 2166 2324 2177 2314 2177 2303 2173 2275 1762 2263 1760 2263 1758 2263 1756 2263 1741 2275 1651 2275 1617 2263 1615 2263 1613 2263 1611 2263 1574 2275 1337 2265 1335 2265 1333 2265 1331 2265 1316 2275 898 2267 897 2267 822 2277 783 2267 781 2267 779 2267 667 2277 585 2267 583 2267 499 2277 434 2267 432 2267 430 2267 415 2275 411 2308"/>
+                        </Shape>
+                        <String CONTENT="but a few words. Others are more elaborate, and are directed to various"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-201_l32" HPOS="413" VPOS="2326" WIDTH="1760" HEIGHT="55" BASELINE="413 2365 2173 2365" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="413 2365 413 2381 2173 2381 2173 2365 2173 2338 2027 2326 2025 2326 1968 2336 1911 2326 1909 2326 1815 2336 1611 2326 1609 2326 1607 2326 1605 2326 1590 2338 1284 2338 1128 2326 1126 2326 955 2336 893 2326 891 2326 889 2326 853 2336 816 2326 814 2326 812 2326 755 2336 605 2326 603 2326 413 2336 413 2365"/>
+                        </Shape>
+                        <String CONTENT="stars and “Beings,” with an application to every one for some spirit assistance."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-201_l33" HPOS="411" VPOS="2381" WIDTH="1764" HEIGHT="61" BASELINE="413 2428 2175 2420" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="413 2428 413 2442 2173 2434 2175 2420 2172 2393 2066 2393 2050 2381 2048 2381 2046 2381 2044 2381 2042 2381 2017 2391 1888 2381 1886 2381 1884 2381 1862 2393 1719 2393 1684 2383 1682 2383 1680 2383 1678 2383 1656 2393 1547 2383 1545 2383 1464 2393 1249 2385 1247 2385 1245 2385 1243 2385 1229 2395 1179 2385 1177 2385 1175 2385 1145 2395 1096 2385 1094 2385 848 2397 411 2391 413 2428"/>
+                        </Shape>
+                        <String CONTENT="Many of them are contrived in the form of a dialogue between the performer"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-201_l34" HPOS="411" VPOS="2445" WIDTH="1050" HEIGHT="63" BASELINE="411 2485 1461 2485" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="411 2485 411 2498 597 2498 607 2506 607 2508 609 2508 611 2508 613 2508 771 2498 1006 2498 1028 2508 1030 2508 1032 2508 1461 2500 1461 2485 1461 2455 1425 2445 1423 2445 1421 2445 1308 2455 1275 2445 1273 2445 1271 2445 1269 2445 1243 2455 1092 2445 1090 2445 1088 2445 1063 2457 924 2457 897 2445 895 2445 893 2445 891 2445 889 2445 871 2457 567 2457 540 2445 538 2445 536 2445 534 2445 511 2455 485 2445 483 2445 481 2445 421 2453 411 2485"/>
+                        </Shape>
+                        <String CONTENT="and the powers to whom application is made."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-201_r7" HPOS="415" VPOS="2517" WIDTH="1776" HEIGHT="475" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="415 2517 2191 2517 2191 2992 415 2992"/>
+                    </Shape>
+                    <TextLine ID="mz_2-201_l35" HPOS="519" VPOS="2512" WIDTH="1656" HEIGHT="53" BASELINE="519 2545 2175 2545" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="519 2545 519 2559 2173 2565 2175 2545 2175 2516 519 2512 519 2545"/>
+                        </Shape>
+                        <String CONTENT="Incantations may be inherited from parents, who, dying or growing old,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-201_l36" HPOS="407" VPOS="2561" WIDTH="1765" HEIGHT="59" BASELINE="409 2606 2172 2600" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="409 2606 409 2620 2170 2616 2172 2600 2168 2571 2125 2561 2123 2561 2121 2561 2119 2561 2103 2573 1852 2573 1786 2561 1784 2561 1782 2561 1780 2561 1764 2573 1641 2573 1609 2561 1607 2561 1605 2561 1535 2573 1135 2563 1133 2563 1067 2573 991 2563 989 2563 987 2563 957 2575 705 2565 703 2565 587 2575 524 2565 522 2565 407 2575 409 2606"/>
+                        </Shape>
+                        <String CONTENT="transfer to their heirs their spiritual as well as their material property. Or"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-201_l37" HPOS="411" VPOS="2637" WIDTH="1764" HEIGHT="42" BASELINE="411 2665 2175 2665" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="411 2665 411 2679 2175 2679 2175 2665 2175 2637 419 2637 411 2665"/>
+                        </Shape>
+                        <String CONTENT="they may be received in dreams from various vaˊɪrg̣ɪt or keˊlet, or may even"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-201_l38" HPOS="411" VPOS="2684" WIDTH="1762" HEIGHT="61" BASELINE="411 2726 2173 2722" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="411 2726 411 2739 2170 2745 2173 2722 2170 2696 1982 2684 1980 2684 1978 2684 1938 2694 1899 2684 1897 2684 1895 2684 1893 2684 1862 2696 1627 2696 1590 2684 1588 2684 1586 2684 1427 2694 1294 2684 1292 2684 1290 2684 1288 2684 1273 2696 499 2686 497 2686 495 2686 473 2696 436 2686 434 2686 432 2686 430 2686 421 2690 411 2726"/>
+                        </Shape>
+                        <String CONTENT="be bought from competent persons. These are, of course, mostly shamans;"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-201_l39" HPOS="411" VPOS="2743" WIDTH="1761" HEIGHT="59" BASELINE="411 2786 2172 2780" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="411 2786 411 2798 2168 2802 2172 2780 2168 2755 1752 2755 1696 2743 1694 2743 1692 2743 1658 2753 1607 2743 1605 2743 1604 2743 1570 2755 1075 2745 1073 2745 1071 2745 1069 2745 1053 2755 534 2747 532 2747 530 2747 499 2757 479 2747 477 2747 475 2747 419 2757 411 2786"/>
+                        </Shape>
+                        <String CONTENT="but, besides the shamans, there are also those who know a great many"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-201_l40" HPOS="409" VPOS="2806" WIDTH="1763" HEIGHT="59" BASELINE="409 2845 2172 2845" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="409 2845 409 2857 2170 2865 2172 2845 2172 2818 2097 2806 1974 2806 1972 2806 1970 2806 1968 2806 1954 2816 1889 2806 1888 2806 1833 2816 1817 2806 1815 2806 1813 2806 1811 2806 1729 2816 1619 2806 1617 2806 1615 2806 1578 2816 1539 2806 1537 2806 1535 2806 1441 2816 1263 2806 1261 2806 1259 2806 1226 2816 1110 2806 1108 2806 1106 2806 1073 2816 409 2810 409 2845"/>
+                        </Shape>
+                        <String CONTENT="incantations, and, moreover, know how to apply them, and who, therefore,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-201_l41" HPOS="407" VPOS="2863" WIDTH="1766" HEIGHT="56" BASELINE="409 2906 2173 2902" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="409 2906 409 2919 2172 2919 2173 2902 2172 2872 2154 2863 2152 2863 2150 2863 2148 2863 2146 2863 2121 2872 2093 2863 2091 2863 2089 2863 2087 2863 2048 2872 1933 2863 1931 2863 1846 2872 1817 2863 1815 2863 1813 2863 1811 2863 1784 2874 1557 2874 1519 2863 1517 2863 1515 2863 1412 2872 1376 2863 1374 2863 1372 2863 1265 2874 1208 2865 1206 2865 1153 2874 1100 2865 1098 2865 814 2874 744 2865 742 2865 740 2865 738 2865 720 2876 609 2876 538 2865 536 2865 407 2876 409 2906"/>
+                        </Shape>
+                        <String CONTENT="are able to give advice and assistance in various cases of trouble. Such"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-201_l42" HPOS="407" VPOS="2921" WIDTH="1763" HEIGHT="88" BASELINE="409 2966 2170 2962" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="409 2966 409 3009 526 3008 528 3008 591 2972 665 2986 667 2986 669 2986 695 2972 728 2986 730 2986 732 2986 842 2984 844 2984 846 2984 861 2972 885 2986 887 2986 889 2988 944 2988 944 2986 945 2986 983 2972 1002 2986 1004 2986 1006 2986 1008 2986 1112 2984 1165 3000 1167 3000 1169 3000 1171 3000 1173 3000 1212 2974 1227 2986 1229 2986 1231 2986 1233 2988 1286 2988 1286 2986 1288 2986 1335 2970 1382 2994 1384 2994 1386 2994 1498 2980 1700 2990 1701 2990 1703 2990 1705 2990 1733 2970 1762 2986 1764 2986 1766 2986 1870 2984 1917 2998 1919 2998 1921 2998 1923 2998 1958 2984 1980 2998 1982 2998 1983 2998 1985 2998 1987 2998 2015 2986 2058 2998 2060 2998 2062 2998 2119 2986 2134 2996 2136 2996 2138 2996 2140 2996 2142 2996 2170 2982 2170 2962 2168 2933 2142 2921 2140 2921 2138 2921 1911 2931 1884 2921 1882 2921 1880 2921 1833 2931 1750 2921 1748 2921 1690 2931 1576 2921 1574 2921 1523 2931 1510 2921 1508 2921 1506 2921 1382 2921 1380 2921 1378 2921 1351 2931 1318 2921 1316 2921 1314 2921 1312 2921 1278 2933 761 2923 759 2923 757 2923 720 2935 407 2935 409 2966"/>
+                        </Shape>
+                        <String CONTENT="persons are called the “knowing ones” (hiuleˊt-reˊmkɪn, “knowing people”)."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-201_r8" HPOS="415" VPOS="3047" WIDTH="1776" HEIGHT="79" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="415 3047 2191 3047 2191 3126 415 3126"/>
+                    </Shape>
+                    <TextLine ID="mz_2-201_l43" HPOS="992" VPOS="3064" WIDTH="596" HEIGHT="45" BASELINE="994 3090 1588 3094" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="994 3084 994 3090 992 3105 1584 3109 1588 3094 1586 3068 996 3064 994 3084"/>
+                        </Shape>
+                        <String CONTENT="¹ Bogoras, Chukchee Materials, p. 210."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

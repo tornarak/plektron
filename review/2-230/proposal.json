@@ -1,0 +1,163 @@
+{
+  "lines": {
+    "0": {
+      "text": "500"
+    },
+    "1": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "2": {
+      "text": "Every wind is blowing upon it; every wave is washing over it. I am safe.”",
+      "note": "Line-final mark: raster shows a curly closing double quote (U+201D); mz/ocr machine text read it as a bare '?'. Per keying_spec.md §1/§5.6, quotes are always curly and the print governs.",
+      "class": "draft"
+    },
+    "3": {
+      "text": "It is good also to swallow a small stone. Then, when the keˊlᴇ comes, he",
+      "as_typed": "It is good also to swallow a small stone. Then, when the {ke'le_} comes, he"
+    },
+    "4": {
+      "text": "cannot find the man among the pebbles on the shore."
+    },
+    "5": {
+      "text": "Told by Aiñanwaˊt, a Reindeer Chukchee man, in the Kolyma Country, 1895.",
+      "as_typed": "Told by {Ain~anwa't}, a Reindeer Chukchee man, in the Kolyma Country, 1895."
+    },
+    "6": {
+      "text": "(e) If I am afraid of keˊlet, when travelling alone in the night-time, I",
+      "as_typed": "(e) If I am afraid of {ke'let}, when travelling alone in the night-time, I"
+    },
+    "7": {
+      "text": "take the throat of a reˊkken¹ for my road. He has a long neck. Travelling",
+      "resolved": "reˊkken = r, e, U+02CA, k, k, e, n (no tilde on final n)",
+      "note": "Corpus attests this word elsewhere as reˊkkeñ (n+U+0303, lexicon key re'kken~), but the raster on this page (zoomed 2x/4x) plainly shows a bare, unmarked final n — no tilde. Keyed as printed per keying_spec.md §1 (keying reproduces print).",
+      "class": "print"
+    },
+    "8": {
+      "text": "inside of it, the other keˊlet would not be able to find me.",
+      "as_typed": "inside of it, the other {ke'let} would not be able to find me."
+    },
+    "9": {
+      "text": "Told by Qoˊtêrg̣ɪn (man) in the village of Mɪˊs˙qᴀn, 1900.",
+      "resolved": "Qoˊtêrg̣ɪn = Q, o, U+02CA, t, e+U+0302 (ê), r, g+U+0323 (g̣), U+026A (ɩ dotless small-cap i), n",
+      "note": "Zoomed to 4x on the name's second syllable: confirmed a combining dot below (U+0323) on the g and a dotless final vowel keyed as U+026A, matching the common -g-dot-below-I suffix pattern per keying_spec.md §5.1. No lexicon handle found for this name (below the two-page floor).",
+      "as_typed": "Told by Qoˊtêrg̣ɪn (man) in the village of {Mi_'s.qa_n}, 1900.",
+      "class": "doubt"
+    },
+    "10": {
+      "text": "6. INCANTATION USED TO PROTECT THE HERD FROM THE HOOF-DISEASE."
+    },
+    "11": {
+      "text": "I ask from the Master of the Pebbly River a big iron box. I put into it"
+    },
+    "12": {
+      "text": "my herd, and then turn the key. How can he (that is, the keˊlᴇ) enter there?",
+      "as_typed": "my herd, and then turn the key. How can he (that is, the {ke'le_}) enter there?"
+    },
+    "13": {
+      "text": "7. INCANTATION AGAINST ATTACK by WOLVES, TO BE USED BY A HERDSMAN.",
+      "note": "Zoomed to 4x: the first 'by' (right after ATTACK) is set in true lowercase (ascender on b, descender on y), distinct from the small-cap/full-cap setting of the rest of the heading; the second 'BY' (before 'A HERDSMAN') is set full height like its neighbors. Keyed as printed — not a typo, a compositor's mixed setting.",
+      "class": "print"
+    },
+    "14": {
+      "text": "To protect my herd from wolves, I surround it with a long line suspended"
+    },
+    "15": {
+      "text": "in the air. Upon this line I hang a number of clothes, which swing in all"
+    },
+    "16": {
+      "text": "directions, and frighten the wolves. Thus they cannot approach the herd."
+    },
+    "17": {
+      "text": "Nos. 6 & 7 told by Scratching-Woman at Mariinsky Post, 1900."
+    },
+    "18": {
+      "text": "8. INCANTATIONS OF MAGIC MEDICINE."
+    },
+    "19": {
+      "text": "(a) I went out into the open air. At some distance from the house"
+    },
+    "20": {
+      "text": "there are hummocks, — two hummocks covered with grass. One of them"
+    },
+    "21": {
+      "text": "is the nearer, although it is no great distance away. I suppose that I have"
+    },
+    "22": {
+      "text": "travelled as far as the region beyond the skies. Coming quite close to the"
+    },
+    "23": {
+      "text": "nearer hummock, I cry out, “Halloo!” I say it to myself, but it is as if the",
+      "note": "Trailing quote after 'Halloo!' keyed curly (U+201D) per §1/§5.6; mz text had a straight quote.",
+      "class": "draft"
+    },
+    "24": {
+      "text": "hummock called to me. Then I answer, “No, it is I!” — “How wonderful!",
+      "note": "Straight quote in mz text normalized to curly per §1/§5.6.",
+      "class": "draft"
+    },
+    "25": {
+      "text": "Where from?” — “No, I come from the people below!” — “How wonderful!",
+      "note": "Zoomed: confirmed a question mark before the closing quote after 'Where from', and curly quotes throughout (straight quotes in mz text normalized per §1/§5.6).",
+      "class": "draft"
+    },
+    "26": {
+      "text": "For what have you come? You have come from a very long distance.” It",
+      "note": "Trailing quote normalized to curly per §1/§5.6.",
+      "class": "draft"
+    },
+    "27": {
+      "text": "is a little old woman who talks to me, — a Woman of the First Creation,",
+      "note": "A small ink speck sits right after the em dash, before 'a Woman' (mz text read it as a stray period). Zoomed to 4x: it is not a letter or word, so per keying_spec.md §2.14 it is a blot and keyed as nothing.",
+      "class": "artifact"
+    },
+    "28": {
+      "text": "Kuˊčä-ñeˊut by name, who is sitting in the inner room of her house. The",
+      "resolved": "Kuˊcä-ñeˊut = K, u, U+02CA, c+U+030C (č), a+U+0308 (ä), -, n+U+0303 (ñ), e, U+02CA, u, t",
+      "note": "No lexicon handle found (below the two-page floor). Distinct from the other name on this page, Raˊuca-ñaˊut, which has plain a rather than ä.",
+      "class": "semantic"
+    },
+    "29": {
+      "text": "other hummock is her neighbor, the chief inhabitant of the place. She is a"
+    },
+    "30": {
+      "text": "woman of many incantations: her name is Raˊuča-ñaˊut.² “Well, let us hear",
+      "resolved": "Raˊuca-ñaˊut = R, a, U+02CA, u, c+U+030C (č), a, -, n+U+0303 (ñ), a, U+02CA, u, t",
+      "note": "No lexicon handle found (below the two-page floor).",
+      "class": "semantic"
+    },
+    "31": {
+      "text": "what the other woman will say, — Raˊuča-ñaˊut, the possessor of the incan-",
+      "resolved": "Raˊuča-ñaˊut = R, a, U+02CA, u, c+U+030C (č), a, -, n+U+0303 (ñ), a, U+02CA, u, t"
+    },
+    "32": {
+      "text": "tations. Go to her!” I start as if about to go farther on to the chief house.",
+      "note": "Trailing quote normalized to curly per §1/§5.6.",
+      "class": "draft"
+    },
+    "33": {
+      "text": "Again a conversation, as the first time. “Halloo!” — “Who is there?” —",
+      "note": "Zoomed: confirmed a question mark before the closing quote after 'Who is there'.",
+      "class": "draft"
+    },
+    "34": {
+      "text": "“No, it is I!” — “How wonderful! Where from?” — “I belong to the people",
+      "note": "Zoomed to 4x: the opening mark mz text rendered as a guillemet '«' is an ordinary curly opening double quote in the raster, same as every other quote on the page — keyed per §1/§5.6 rather than as an angled quote.",
+      "class": "draft"
+    },
+    "35": {
+      "text": "¹ Compare p. 296, 324."
+    },
+    "36": {
+      "text": "² Ñeˊut (ñaˊut) means “woman.” It is an obsolete word, used only in composition with the names. The",
+      "resolved": "Ñeˊut = N+U+0303 (Ñ), e, U+02CA, u, t; ñaˊut = n+U+0303 (ñ), a, U+02CA, u, t",
+      "note": "Zoomed to 4x: confirmed tilde on both the capital N of Ñe'ut and the lowercase n of ña'ut (mz text had dropped both tildes).",
+      "class": "draft"
+    },
+    "37": {
+      "text": "meaning of the first half of each name was unknown to the speaker."
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

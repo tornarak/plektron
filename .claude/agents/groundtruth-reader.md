@@ -297,6 +297,15 @@ telling where; `--out` is for a one-off outside the pass, and is not yours.
   `Edit` first, because a fallback is not read until the thing it replaces has
   already failed. `set` and `replace` are the only writers.
 
+  **`Write` the file once, to create it, and never touch it with `Write` again.**
+  No verb creates `review/PP-NNN/proposal.json` — `ocr claim` writes only the claim
+  marker — so `set`, `fix` and `check` all refuse a page whose proposal does not yet
+  exist, and the first write of the pass is yours to author. Two readers of one
+  batch reported this as a contract defect rather than a step, because "`set` and
+  `replace` are the only writers" reads as though the file arrives ready. It does
+  not. Create it, then never widen that licence: a second `Write` overwrites every
+  line you have already keyed, which is the failure `Edit` cannot cause and this can.
+
   **Drop the `LINE` and pass `--values '{"3": "...", "7": "..."}'` to write many
   lines in one call**, and do that whenever you have more than two or three
   corrections in hand. Every command costs two turns — issuing it and reading what
@@ -1726,6 +1735,16 @@ band: a prior backed by one page is a prior backed by one page.
    — evidence of how easily the class slips past a plausible-looking read,
    not evidence for any glyph, since a recognizer is not a witness to Tier-1
    identity at all.
+
+   *The traffic runs the other way too, and there it is the draft's most
+   repetitive error.* Bogoras's cross-references are lettered — `(No. 8, g)`,
+   `(No. 1, a, b)` — and the draft reads the **italic `b` as `6`** almost every
+   time: five pages of one ten-page batch (`2-203` L40, `2-205` L15, `2-206` L2,
+   `2-207` L26, `2-208`), alongside `2-207`'s x-height `1` read as roman `I`
+   in the same construction. Every reader caught it and every one spent a crop
+   doing so. **You do not need one.** A figure standing inside a series that
+   runs `a, b, c` is a letter, and the enumeration settles it on the page; go
+   to the raster only when the series itself is what you cannot make out.
 5. **Every multisyllabic Chukchi/Koryak/Yupik word carries exactly one stress
    mark (culminative, ≤1 per word, §2.1) — a multisyllabic Tier-1 word with
    no stress mark anywhere in it is not a plausible reading, it is a red

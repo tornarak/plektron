@@ -1,0 +1,136 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "507"
+    },
+    "2": {
+      "text": "scratch at the skin, and make it full of holes. Be your anger as great as"
+    },
+    "3": {
+      "text": "is mine! Destroy him speedily, before the coming of the fall!” Indeed, in"
+    },
+    "4": {
+      "text": "a few days he is dead.¹",
+      "note": "footnote reference marker: mz draft read this as a closing bracket ']'; printed superscript ¹ per U+00B9, pairs with the opener on line 37.",
+      "class": "draft"
+    },
+    "5": {
+      "text": "Told by a Reindeer Chukchee of the Kolyma Country."
+    },
+    "6": {
+      "text": "11. LOVE-INCANTATIONS."
+    },
+    "7": {
+      "text": "(a) If I want to have any woman, I follow her all the time. When she"
+    },
+    "8": {
+      "text": "urinates, I see her urine falling down, and then I say, “This is not urine"
+    },
+    "9": {
+      "text": "that falls down; this is your heart and liver and kidneys, that fall down"
+    },
+    "10": {
+      "text": "together.” I go to the Morning-Dawn, and I ask him to give me boots with"
+    },
+    "11": {
+      "text": "iron ice-creepers. With these boots I trample on that woman’s heart and"
+    },
+    "12": {
+      "text": "intestines, and hurt them with the iron ice-creepers. Then she will have a"
+    },
+    "13": {
+      "text": "liking for me, and her heart will be hurt with it."
+    },
+    "14": {
+      "text": "Told by Hɪyewteˊhɪn at Mariinsky Post, 1900.",
+      "resolved": "Hɪyewteˊhɪn: ɪ = U+026A (twice, in 'Hɪ-' and '-hɪn', both dotless bare stems, contrasted against dotted 'i' in 'liking'/'Post' on neighbouring lines); ˊ = U+02CA stress mark after 'Hiyewte'. mz draft read this as plain ASCII 'Hiyewte hin' with a space for the raised mark.",
+      "class": "draft",
+      "note": "Tier-1 personal name; mz draft read plain ASCII 'Hiyewte hin' with a space for the raised mark. See resolved field for codepoint breakdown."
+    },
+    "15": {
+      "text": "(b) If I want to have this woman, I take out her heart and liver, then"
+    },
+    "16": {
+      "text": "I go towards the Evening “direction,” and hang her organs on both sides of"
+    },
+    "17": {
+      "text": "the Evening. Then I say, “Here is the heart and the liver of that woman."
+    },
+    "18": {
+      "text": "Make them entangled in a seal-net! Let her be without her intestines! let"
+    },
+    "19": {
+      "text": "her pine away with desire for me! — This man is not your husband. This"
+    },
+    "20": {
+      "text": "is a seal’s carcass drifted to the seashore, rotting upon the pebbles. Every"
+    },
+    "21": {
+      "text": "wind blows upon it, and its bones are bared. And you are not a woman;"
+    },
+    "22": {
+      "text": "you are a young reindeer-doe. The smell of the carrion comes to you, and"
+    },
+    "23": {
+      "text": "you flee away, and come into my possession.”"
+    },
+    "24": {
+      "text": "Told by Keˊᵋulin (man) in the village of Čeˊčin, 1900.",
+      "resolved": "Keˊᵋulin: ˊ = U+02CA stress after 'Ke'; ᵋ = U+1D4B laryngeal, immediately after the stress mark, before 'ulin' — same Ke'-initial name attested as Keˊᵋulin on 2-229 ('Told by Keˊᵋulin (man) in the village of Mɪˊs˙qᴀn, 1900.'), same formulaic line, only one ground-truth page so below the two-page handle floor, keyed by hand rather than as a lexicon handle. Village name handle {C^e'c^in} -> Čeˊčin (č = c+U+030C) is ratified on 12 other pages via lexicon lookup.",
+      "class": "draft",
+      "as_typed": "Told by Keˊᵋulin (man) in the village of {C^e'c^in}, 1900.",
+      "note": "Tier-1 personal name plus toponym; mz draft read 'Keffulin' and 'Cefćin'. See resolved field for codepoint breakdown and the lexicon handle used for the village name."
+    },
+    "25": {
+      "text": "12. INCANTATION USED BY A JEALOUS WOMAN AGAINST HER RIVAL."
+    },
+    "26": {
+      "text": "“Then you are this woman! You have so much of my husband’s love"
+    },
+    "27": {
+      "text": "that he begins to lose all liking for me. But you are not a human being!"
+    },
+    "28": {
+      "text": "I make you into carrion lying on the pebbly shore, — old carrion inflated",
+      "note": "mz draft read 'Iying' (capital I) for printed 'lying' — confirmed at 2x, ordinary lowercase l.",
+      "class": "draft"
+    },
+    "29": {
+      "text": "with rottenness. I make my husband into a big bear. The bear comes from"
+    },
+    "30": {
+      "text": "a distant land. He is very hungry; he has been starving for a long time."
+    },
+    "31": {
+      "text": "He sees the carrion; seeing it, he eats of it. After a while he vomits it"
+    },
+    "32": {
+      "text": "out. I make you into the stuff vomited. My husband sees you, and says,"
+    },
+    "33": {
+      "text": "‘I do not want it!’ My husband takes to despising you.”",
+      "note": "nested quotation: printed as single curly quotes (U+2018/U+2019) around the husband's exclamation, inside the outer double-quoted speech opened on line 26 and closed here; mz draft had both as straight double quotes.",
+      "class": "draft"
+    },
+    "34": {
+      "text": "At the same time I make this body of mine into a young beaver that"
+    },
+    "35": {
+      "text": "has just shed his hair. I make smooth every hair of mine. My husband"
+    },
+    "36": {
+      "text": "will leave his former liking, and turn again to me, because she is repugnant"
+    },
+    "37": {
+      "text": "¹ See Bogoras, Chukchee Materials, p. 142.",
+      "note": "footnote opener marker: mz draft read plain ASCII '1'; printed superscript ¹, pairs with the reference on line 4.",
+      "class": "draft"
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

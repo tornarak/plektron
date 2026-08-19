@@ -628,13 +628,13 @@ def test_the_page_block_renders_the_handle_a_reader_would_type():
     **The ref has to be a page `build` will still accept**, i.e. predicted and not
     yet keyed: `build` refuses a page already in `gt/ocr/` as a revision, so this
     fails as the ground-truth pass advances rather than because anything broke.
-    It was `2-096` until chapter XIV was keyed, and `2-142` until chapter XV was.
-    `harness corpus state --stage ocr-mz` names today's candidates; pick one with
-    keyed pages behind it, or the handle list this asserts on is legitimately
-    empty — which is why the successor is chosen *after* the chapter lands, not
-    while it is being keyed."""
+    It was `2-096` until chapter XIV was keyed, `2-142` until chapter XV was, and
+    `2-199` until chapter XVI was. `harness corpus state --stage ocr-mz` names
+    today's candidates; pick one with keyed pages behind it, or the handle list
+    this asserts on is legitimately empty — which is why the successor is chosen
+    *after* the chapter lands, not while it is being keyed."""
     from harness.dispatch import build
-    rows = build("2-199", REPO)["page_block"].splitlines()
+    rows = build("2-239", REPO)["page_block"].splitlines()
     line = [ln for ln in rows if "->" in ln and ln.strip().startswith("- {")]
     assert line, rows[-6:]
 
