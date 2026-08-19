@@ -68,10 +68,89 @@ either as metadata within a file, or implicitly by its containing directory.
 
 There are four provenance levels:
 
-- `#mz`: Produced mechanically by a "dumb" algorithm (regex, lookup table, OCR, CNN). Untracked. Regenerated *ad libitum*. Not expected to be stable; usually expected to be idempotent.
-- `#gt`: Produced by a machine (a "dumb" `#mz` algorithm or heavily-restricted LLM subagent) as a reproduction of the "ground truth" of an artifact, such as the text, figures, or paragraph boundaries of a page. Reviewed and ratified by a human with access to the artifact, through their CLI, coding agent, and/or `harness` web interfaces. Tracked. All changes gated by explicit overwrite flags. Expected to be stable, and to converge on a "right answer" with successive review passes.
+- `#mz`: Produced mechanically by a "dumb" algorithm (regex, lookup table, OCR, CNN). Untracked. Regenerated *ad libitum*. Not expected to be stable; softly expected to be idempotent.
+- `#gt`: Produced by a machine (a "dumb" `#mz` algorithm or heavily-restricted LLM subagent) as a reproduction of the "ground truth" of an artifact, such as the text, figures, or paragraph boundaries of a page. Reviewed and ratified by a human comparing it to the original, through their CLI, coding agent, and/or `harness` [web interfaces](#web-interfaces). Tracked. All changes gated by explicit overwrite flags. Expected to be stable, and to converge on a "right answer" with successive review passes.
 - `#llm`: Produced by an LLM explicitly instructed by a human to furnish the relevant information.
 - `#ed`: Produced (or individually promoted from `#llm`) by a human editor.
+
+## The Pipeline
+
+1. Create project. Insert source document[s] into `pdfs/`
+2. Extract images from PDF[s] into `scans/`. It is important that scans are the original resolution. Tooling for this is currently limited but your agent should be able to analyze and extract the pages with typical command-line tools. DJVU, PS, PDF-with-nontrivial-text-layer TBD.
+3. Ask your agent to parse important metadata pages from the front matter, such as the table of contents, list of figures, bibliography, notes, et al.; these are often specific to the document so the format is quite permissive.
+4. Configure your project's zone types and start annotating the pages in `harness zones edit`. The editor is designed to be fast and frictionless to use; please modify it if it becomes a burden! After ~100 representative pages are labelled you'll have enough data to [train a small neural network](.claude/skills/train-zones/SKILL.md) to classify the remainder. The resulting `#mz` drafts can be approved at a glance, with the push of a button. Figures are annotated and [recognized](.claude/skills/train-figures/SKILL.md) by an identical track.
+5. Generate `#mz` OCR, patch segmenter lacunae with `harness ocr edit`, then [deploy swarms](.claude/skills/rebuild-groundtruth/SKILL.md) of [groundtruth-reader](.claude/agents/groundtruth-reader.md) agents to refine it into adjudicated `#gt`. Difficult lines will be flagged for manual review. As the swarms progress through the document they will build up an internal lexicon and base of domain-knowledge that allow them to make fewer and fewer mistakes as the pass progresses. This is the most stressful, tedious, token- and attention-demanding stage of the pipeline, but if done up to a high standard gets you ~80% of the edition for free.
+6. Generate `#mz` TEI draft. You will probably want document-specific code to exploit the full structure of your meticulously-worked OCR from the last step (e.g. setting footnotes and figures, auto-linking sources or intra-document citations).
+7. Populate the encyclopedia. Read the drafts in `harness edition serve`, taking note of the most frequent references to things that require context or explanation, like obscure places or peoples or recondite historical events. Ask your agent to produce entities from the most disproportionately common content-words in the text as produced by `harness lexicon misses [--common N]`. We're not writing XML schemas here - outside of basic top-level coherence checks (unique names, non-circular parent-child relations) the encyclopedia is quite liberal in what it can represent. Perhaps its most important function is its table of aliases that are auto-linked in the text.
+8. Collate the TEI. This is another document-dependent pass. Collation is usually about the ambiguities & idiosyncrasies of formatting that can only be reconciled by an agent with actual comprehension of the content.
+9. TBD
+
+### Stages
+
+As given by `harness corpus state`. The stages are a **ladder** — each rung's input is
+the one below it — so a page's `stage` is the furthest rung it has reached, and
+`skipped` names any rung below that it never passed through.
+
+| state       | meaning                                                                         |
+|-------------|---------------------------------------------------------------------------------|
+| `absent`    | lacuna in the page list                                                         |
+| `scanned`   | page has been extracted from the source document into its own image             |
+| `zoned-mz`  | scan zoned by NN                                                                |
+| `zoned-gt`  | human has been through the zones, or ruled the leaf not a text page at all      |
+| `ocr-mz`    | lines detected and recognized within those zones                                |
+| `proposed`  | agent has read the page off the raster into a line-keyed reading proposal       |
+| `decided`   | human has adjudicated that proposal, line by line                               |
+| `ocr-gt`    | adjudicated text has been written back over the source geometry as ground truth |
+| `generated` | rules built a first-draft TEI page out of that ground truth                     |
+| `collated`  | agent reviewed the draft against the scan and the page was signed off           |
+
+#### Stage Transitions
+
+| `harness` verb                                                        | from        | to          |
+|-----------------------------------------------------------------------|-------------|-------------|
+| `zones predict`                                                       | `scanned`   | `zoned-mz`  |
+| `zones edit`                                                          | `scanned`   | `zoned-gt`  |
+| `zones edit`                                                          | `zoned-mz`  | `zoned-gt`  |
+| `ocr predict`                                                         | `zoned-gt`  | `ocr-mz`    |
+| [`/rebuild-groundtruth`](.claude/skills/rebuild-groundtruth/SKILL.md) | `ocr-mz`    | `proposed`  |
+| `ocr review --serve`                                                  | `proposed`  | `decided`   |
+| `ocr restore --commit`                                                | `decided`   | `ocr-gt`    |
+| `tei generate`                                                        | `ocr-gt`    | `generated` |
+| [`/transcribe-page`](.claude/skills/transcribe-page/SKILL.md)         | `generated` | `collated`  |
+
+Two rungs are worked by agent swarms rather than by a single verb; the skills that
+dispatch them are linked above. `harness ocr edit` advances nothing — it patches
+segmenter lacunae *within* `ocr-mz`, and the recovered lines are adjudicated and
+written by the same two verbs as every other line.
+
+### Web Interfaces
+
+All interfaces are keyboard-driven
+with heavily configurable bindings & behaviors -
+ask your agent about the relevant config files.
+
+| `harness` verb       | stages                              | what it is                                 | port |
+|----------------------|-------------------------------------|--------------------------------------------|------|
+| `zones edit`         | `scanned`, `zoned-mz` -> `zoned-gt` | segmentation editor                        | 8732 |
+| `ocr edit`           | within `ocr-mz`                     | ink correction: adopt or rule missed bands | 8733 |
+| `ocr review --serve` | `proposed` -> `decided`             | adjudicate a reading proposal              | 8731 |
+| `edition serve`      | reads `generated`, `collated`       | the reading view, drafts included          | 8734 |
+
+They share one server, one door apiece; `--port` moves a door.
+
+## Documentation
+
+[`CLAUDE.md`](CLAUDE.md) is the authoritative, agent-facing statement of the project's
+invariants and the router to every other document — each fact has exactly one
+home, and a test holds the routing table to that. Start there.
+
+## Status
+
+A working proof of concept, in motion. The raster, segmentation, recognition
+and ground-truth stages are built and in daily use; the corpus is being read
+end to end; TEI collation and the encyclopedic stores (entities, lexicon) are
+the active front. Counts are deliberately absent from prose everywhere in this
+repo — `harness corpus state` answers, and stays current.
 
 ## The First Title
 
@@ -99,33 +178,7 @@ The rest of Jesup (or at the very least
 [Swanton](https://digitallibrary.amnh.org/items/e9f6bc84-6d1e-4129-a30c-f2112d8c0b54))
 should follow in short order.
 
-## The Pipeline
-
-1. Create project. Insert source document[s] into `pdfs/`
-2. Extract images from PDF[s] into `scans/`. It is important that scans are the original resolution. Tooling for this is currently limited but your agent should be able to analyze and extract the pages with typical command-line tools. DJVU, PS, PDF-with-nontrivial-text-layer TBD.
-3. Ask your agent to parse important metadata pages from the front matter, such as the table of contents, list of figures, bibliography, notes, et al.; these are often specific to the document so the format is quite permissive.
-4. Configure your project's zone types and start annotating the pages in `harness zones edit`. The editor is designed to be fast and frictionless to use; please modify it if it becomes a burden! After ~100 representative pages are labelled you'll have enough data to [train a small neural network](.claude/skills/train-zones/SKILL.md) to classify the remainder. The resulting `#mz` drafts can be approved at a glance, with the push of a button. Figures are annotated and [recognized](.claude/skills/train-figures/SKILL.md) by an identical track.
-5. Generate `#mz` OCR, patch segmenter lacunae with `harness ocr edit`, then [deploy swarms](.claude/skills/rebuild-groundtruth/SKILL.md) of [groundtruth-reader](.claude/agents/groundtruth-reader.md) agents to refine it into adjudicated `#gt`. Difficult lines will be flagged for manual review. As the swarms progress through the document they will build up an internal lexicon and base of domain-knowledge that allow them to make fewer and fewer mistakes as the pass progresses. This is the most stressful, tedious, token- and attention-demanding stage of the pipeline, but if done up to a high standard gets you ~80% of the edition for free.
-6. Generate `#mz` TEI draft. You will probably want document-specific code to exploit the full structure of your meticulously-worked OCR from the last step (ex. setting footnotes and figures, auto-linking to sources or intra-document citations).
-7. Populate the encyclopedia. Read the drafts in `harness edition serve`, taking note of the most frequent references to things that require context or explanation, such as obscure places or peoples or recondite historical events. Ask your agent to produce entities from the most disproportionately common content-words in the text as produced by `harness lexicon misses [--common N]`. We're not writing XML schemas here - outside of basic top-level coherence checks (unique names, non-circular parent-child relations) the encyclopedia is quite liberal in what it can represent. Perhaps its most important function is its table of aliases that are auto-linked in the text.
-8. Collate the TEI. This is another document-dependent pass. Collation is usually about the ambiguities & idiosyncrasies of formatting that can only be reconciled by an agent with actual comprehension of the content.
-9. TBD
-
-## Documentation
-
-[`CLAUDE.md`](CLAUDE.md) is the authoritative, agent-facing statement of the project's
-invariants and the router to every other document — each fact has exactly one
-home, and a test holds the routing table to that. Start there.
-
-## Status
-
-A working proof of concept, in motion. The raster, segmentation, recognition
-and ground-truth stages are built and in daily use; the corpus is being read
-end to end; TEI collation and the encyclopedic stores (entities, lexicon) are
-the active front. Counts are deliberately absent from prose everywhere in this
-repo — `harness corpus state` answers, and stays current.
-
-## Rights
+### Rights
 
 The source text is in the public domain. The scans derive from the AMNH's own
 digitization of the Memoirs.
