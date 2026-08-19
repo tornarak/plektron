@@ -69,7 +69,7 @@ either as metadata within a file, or implicitly by its containing directory.
 There are four provenance levels:
 
 - `#mz`: Produced mechanically by a "dumb" algorithm (regex, lookup table, OCR, CNN). Untracked. Regenerated *ad libitum*. Not expected to be stable; softly expected to be idempotent.
-- `#gt`: Produced by a machine (a "dumb" `#mz` algorithm or heavily-restricted LLM subagent) as a reproduction of the "ground truth" of an artifact, such as the text, figures, or paragraph boundaries of a page. Reviewed and ratified by a human comparing it to the original, through their CLI, coding agent, and/or `harness` [web interfaces](#web-interfaces). Tracked. All changes gated by explicit overwrite flags. Expected to be stable, and to converge on a "right answer" with successive review passes.
+- `#gt`: Produced by a machine (a "dumb" `#mz` algorithm or heavily-restricted LLM subagent) as a reproduction of the "ground truth" of an artifact, such as the text, figures, or paragraph boundaries of a page. Reviewed and ratified by a human comparing it to the original through a CLI, coding agent, and/or `harness` [web interface](#web-interfaces). Tracked. All changes gated by explicit overwrite flags. Expected to be stable, and to converge on a "right answer" with successive review passes.
 - `#llm`: Produced by an LLM explicitly instructed by a human to furnish the relevant information.
 - `#ed`: Produced (or individually promoted from `#llm`) by a human editor.
 
@@ -82,7 +82,7 @@ There are four provenance levels:
 5. Generate `#mz` OCR, patch segmenter lacunae with `harness ocr edit`, then [deploy swarms](.claude/skills/rebuild-groundtruth/SKILL.md) of [groundtruth-reader](.claude/agents/groundtruth-reader.md) agents to refine it into adjudicated `#gt`. Difficult lines will be flagged for manual review. As the swarms progress through the document they will build up an internal lexicon and base of domain-knowledge that allow them to make fewer and fewer mistakes as the pass progresses. This is the most stressful, tedious, token- and attention-demanding stage of the pipeline, but if done up to a high standard gets you ~80% of the edition for free.
 6. Generate `#mz` TEI draft. You will probably want document-specific code to exploit the full structure of your meticulously-worked OCR from the last step (e.g. setting footnotes and figures, auto-linking sources or intra-document citations).
 7. Populate the encyclopedia. Read the drafts in `harness edition serve`, taking note of the most frequent references to things that require context or explanation, like obscure places or peoples or recondite historical events. Ask your agent to produce entities from the most disproportionately common content-words in the text as produced by `harness lexicon misses [--common N]`. We're not writing XML schemas here - outside of basic top-level coherence checks (unique names, non-circular parent-child relations) the encyclopedia is quite liberal in what it can represent. Perhaps its most important function is its table of aliases that are auto-linked in the text.
-8. Collate the TEI. This is another document-dependent pass. Collation is usually about the ambiguities & idiosyncrasies of formatting that can only be reconciled by an agent with actual comprehension of the content.
+8. Collate the TEI. This is another document-dependent pass. Collation usually concerns ambiguities & idiosyncrasies of formatting that can only be reconciled by an agent with actual comprehension of the content. This is the brittlest pass and the hardest to retrospectively correct, so you shouldn't give it much leeway.
 9. TBD
 
 ### Stages
@@ -93,8 +93,8 @@ the one below it — so a page's `stage` is the furthest rung it has reached, an
 
 | state       | meaning                                                                         |
 |-------------|---------------------------------------------------------------------------------|
-| `absent`    | lacuna in the page list                                                         |
-| `scanned`   | page has been extracted from the source document into its own image             |
+| `absent`    | lacuna in page list                                                             |
+| `scanned`   | page extracted from source document into its own image                          |
 | `zoned-mz`  | scan zoned by NN                                                                |
 | `zoned-gt`  | human has been through the zones, or ruled the leaf not a text page at all      |
 | `ocr-mz`    | lines detected and recognized within those zones                                |
