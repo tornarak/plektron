@@ -1,0 +1,376 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-3-012.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-3-012.png; regions_from: zones/chukchi-3-012.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+                <TextBlock ID="mz_3-012_r1" HPOS="345" VPOS="457" WIDTH="1782" HEIGHT="90" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="345 457 2127 457 2127 547 345 547"/>
+                    </Shape>
+                    <TextLine ID="mz_3-012_l1" HPOS="921" VPOS="470" WIDTH="616" HEIGHT="53" BASELINE="923 505 1537 509" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1527 484 1514 472 939 470 923 480 923 505 921 519 1533 523 1537 509 1533 492 1527 484"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-012_l2" HPOS="350" VPOS="468" WIDTH="98" HEIGHT="59" BASELINE="352 517 448 513" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="352 517 352 527 448 523 448 513 446 478 418 468 416 468 415 468 350 480 352 517"/>
+                        </Shape>
+                        <String CONTENT="546"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-012_r2" HPOS="345" VPOS="572" WIDTH="1782" HEIGHT="542" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="345 572 2127 572 2127 1114 345 1114"/>
+                    </Shape>
+                    <TextLine ID="mz_3-012_l3" HPOS="342" VPOS="574" WIDTH="1776" HEIGHT="58" BASELINE="344 617 2118 613" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2096 583 2077 583 2057 581 2038 581 2019 581 2011 580 2003 583 1551 574 1549 574 1453 583 1299 574 1297 574 1219 585 1177 576 1175 576 1173 576 1171 576 1138 585 1101 576 1099 576 1097 576 1095 576 1062 585 974 576 972 576 970 576 968 576 952 587 814 587 758 576 756 576 674 585 567 576 565 576 481 585 407 576 405 576 342 587 344 617 344 632 2116 632 2118 613 2114 585 2100 583 2096 583"/>
+                        </Shape>
+                        <String CONTENT="walks as long as he can; then he is carried for a while. After that, a short"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-012_l4" HPOS="342" VPOS="636" WIDTH="1774" HEIGHT="62" BASELINE="342 677 2116 677" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="342 677 342 689 2114 698 2116 677 2116 648 2038 636 2036 636 1362 646 1247 636 1245 636 1173 646 1132 636 1130 636 1128 636 1019 646 956 636 954 636 865 646 761 636 760 636 652 646 572 636 570 636 500 646 471 636 469 636 467 636 465 636 463 636 448 648 342 648 342 677"/>
+                        </Shape>
+                        <String CONTENT="rest is taken, and he walks again. Even among the Maritime Chukchee,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-012_l5" HPOS="344" VPOS="693" WIDTH="1774" HEIGHT="58" BASELINE="346 737 2118 732" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="346 737 346 751 2116 745 2118 732 2114 704 1907 704 1874 693 1872 693 1870 693 1868 693 1867 693 1851 704 1596 704 1549 693 1547 693 1545 693 1522 704 1161 695 1159 695 1050 704 964 695 962 695 828 706 385 696 383 696 381 696 344 708 346 737"/>
+                        </Shape>
+                        <String CONTENT="where the old men enjoy less consideration, those that cannot walk are car-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-012_l6" HPOS="342" VPOS="755" WIDTH="1776" HEIGHT="56" BASELINE="342 796 2118 796" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="342 796 342 811 2118 811 2118 796 2118 767 2011 755 2009 755 2007 755 1970 765 1904 755 1902 755 1900 755 1857 765 1812 755 1810 755 1808 755 1781 765 1640 755 1638 755 1514 765 1440 755 1438 755 1436 755 1434 755 1418 767 1327 767 1233 755 1231 755 1023 765 1003 755 1001 755 886 755 884 755 826 765 722 755 721 755 719 755 680 765 648 755 646 755 645 755 598 765 551 755 549 755 452 765 374 755 372 755 370 755 342 765 342 796"/>
+                        </Shape>
+                        <String CONTENT="ried on the shoulders of their young relatives. Thus, at Mariinsky Post I saw"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-012_l7" HPOS="340" VPOS="809" WIDTH="1776" HEIGHT="63" BASELINE="342 858 2116 850" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="342 858 342 872 2114 870 2116 850 2112 821 1900 821 1878 809 1876 809 1874 809 1872 809 1837 819 1802 809 1800 809 1798 809 1796 809 1757 819 1736 809 1734 809 1732 809 1670 821 1656 811 1654 811 1652 811 1650 811 1648 811 1623 821 1520 811 1518 811 1516 811 1481 821 1455 811 1453 811 1451 811 1449 811 1410 821 1379 811 1377 811 1375 811 1282 821 1235 811 1233 811 1140 823 1116 813 1114 813 1112 813 915 823 841 813 839 813 744 825 711 815 709 815 707 815 606 825 452 815 450 815 340 827 342 858"/>
+                        </Shape>
+                        <String CONTENT="an old man with crutches, a certain Yɪrˊmᴇ, who had his feet badly frozen in an"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-012_l8" HPOS="342" VPOS="872" WIDTH="1776" HEIGHT="58" BASELINE="344 915 2118 911" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="344 915 344 930 2116 930 2118 911 2114 886 1919 886 1855 872 1853 872 1851 872 1849 872 1829 886 1683 886 1652 872 1650 872 1648 872 1646 872 1613 886 1510 886 1461 872 1459 872 1457 872 1455 872 1426 884 1409 872 1407 872 1405 872 1329 872 1327 872 1325 872 1323 872 1303 884 1042 874 1040 874 976 886 873 874 871 874 802 886 746 874 744 874 742 874 707 886 572 874 570 874 569 874 531 886 420 874 418 874 342 887 344 915"/>
+                        </Shape>
+                        <String CONTENT="accident during the winter seal-hunting. This happened some fifteen years"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-012_l9" HPOS="342" VPOS="930" WIDTH="1776" HEIGHT="61" BASELINE="344 977 2118 971" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="344 977 344 991 2116 991 2118 971 2114 944 1968 930 1966 930 1964 930 1962 930 1943 944 1763 944 1738 930 1736 930 1734 930 1732 930 1730 930 1713 944 1557 944 1529 930 1527 930 1525 930 1523 930 1496 946 1255 946 1190 932 1188 932 1101 944 1065 932 1064 932 1062 932 974 944 937 932 935 932 933 932 931 932 884 946 837 934 836 934 834 934 832 934 789 946 629 934 627 934 625 934 623 934 606 946 494 934 493 934 491 934 489 934 471 948 342 948 344 977"/>
+                        </Shape>
+                        <String CONTENT="ago. Now Yɪrˊmᴇ is old, and unable to move about much, even with the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-012_l10" HPOS="340" VPOS="993" WIDTH="1778" HEIGHT="58" BASELINE="342 1038 2118 1034" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="342 1038 342 1051 2116 1051 2118 1034 2114 1004 2065 993 2063 993 2061 993 2036 1002 1872 993 1870 993 1868 993 1867 993 1853 1002 1824 993 1822 993 1820 993 1818 993 1816 993 1800 1004 1594 1004 1531 993 1529 993 1527 993 1525 993 1510 1002 1479 993 1477 993 1475 993 1325 1002 1274 993 1272 993 1202 1004 1124 995 1122 995 1120 995 1087 1004 1040 995 1038 995 898 1004 760 995 758 995 701 1004 600 995 598 995 520 1004 477 995 475 995 473 995 471 995 438 1004 378 995 376 995 374 995 340 1004 342 1038"/>
+                        </Shape>
+                        <String CONTENT="aid of crutches. Whenever he has to be moved, his own son-in-law carries"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-012_l11" HPOS="342" VPOS="1049" WIDTH="499" HEIGHT="66" BASELINE="344 1096 841 1090" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="344 1096 344 1108 637 1115 639 1115 841 1104 841 1090 837 1063 717 1049 715 1049 713 1049 672 1063 656 1051 654 1051 652 1051 650 1051 594 1063 535 1051 533 1051 531 1051 530 1051 530 1053 518 1063 350 1053 348 1053 346 1053 344 1053 344 1055 342 1055 344 1096"/>
+                        </Shape>
+                        <String CONTENT="him on his shoulders."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-012_r3" HPOS="345" VPOS="1114" WIDTH="1782" HEIGHT="782" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="345 1114 2127 1114 2127 1896 345 1896"/>
+                    </Shape>
+                    <TextLine ID="mz_3-012_l12" HPOS="455" VPOS="1114" WIDTH="1663" HEIGHT="56" BASELINE="455 1154 2118 1154" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="455 1154 455 1168 2116 1170 2118 1154 2118 1125 2059 1114 2057 1114 2056 1114 2024 1123 1962 1114 1960 1114 1904 1125 1761 1125 1748 1114 1746 1114 1744 1114 1742 1114 1740 1114 1713 1123 1697 1114 1695 1114 1693 1114 1601 1114 1599 1114 1598 1114 1596 1114 1582 1123 1508 1114 1506 1114 1444 1123 1424 1114 1422 1114 1420 1114 1356 1123 1315 1114 1313 1114 1311 1114 1309 1114 1272 1123 1028 1114 1027 1114 1025 1114 989 1123 455 1119 455 1154"/>
+                        </Shape>
+                        <String CONTENT="I mentioned just now that among the Maritime Chukchee consideration"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-012_l13" HPOS="340" VPOS="1172" WIDTH="1782" HEIGHT="57" BASELINE="342 1217 2122 1213" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="342 1217 342 1227 2118 1229 2122 1213 2114 1172 2073 1184 2026 1172 2024 1172 2022 1172 1962 1184 1915 1172 1913 1172 1911 1172 1759 1184 1730 1172 1728 1172 1726 1172 1724 1172 1683 1184 1635 1172 1633 1172 1631 1172 1562 1182 1475 1172 1473 1172 1407 1184 1356 1172 1354 1172 1352 1172 1350 1172 1348 1172 1329 1186 1194 1186 991 1174 989 1174 713 1186 676 1174 674 1174 672 1174 670 1174 668 1174 650 1188 537 1188 469 1174 467 1174 465 1174 418 1186 358 1174 356 1174 354 1174 352 1174 340 1182 342 1217"/>
+                        </Shape>
+                        <String CONTENT="for old men is not so marked as among the reindeer-breeders. The life of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-012_l14" HPOS="342" VPOS="1230" WIDTH="1774" HEIGHT="63" BASELINE="344 1277 2116 1271" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="344 1277 344 1289 2112 1293 2116 1271 2112 1242 2065 1230 2063 1230 2061 1230 2059 1230 2046 1240 2032 1230 2030 1230 2028 1230 2026 1230 2024 1230 2001 1240 1876 1230 1874 1230 1800 1240 1775 1230 1773 1230 1771 1230 1769 1230 1767 1230 1752 1242 1635 1242 1564 1230 1562 1230 1561 1230 1522 1242 1508 1232 1506 1232 1504 1232 1502 1232 1229 1242 1196 1232 1194 1232 1192 1232 1190 1232 1188 1232 1173 1242 1114 1232 1112 1232 1052 1242 935 1232 933 1232 931 1232 890 1244 869 1234 867 1234 865 1234 863 1234 832 1244 800 1234 798 1234 797 1234 646 1244 533 1234 531 1234 420 1244 366 1234 364 1234 362 1234 360 1234 342 1242 344 1277"/>
+                        </Shape>
+                        <String CONTENT="the maritime people is harder. Each morsel of food has to be obtained by"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-012_l15" HPOS="344" VPOS="1291" WIDTH="1774" HEIGHT="64" BASELINE="346 1338 2118 1332" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="346 1338 346 1355 2116 1349 2118 1332 2114 1303 1948 1303 1933 1291 1931 1291 1929 1291 1927 1291 1672 1301 1615 1291 1613 1291 1514 1303 1019 1293 1017 1293 956 1303 793 1295 791 1295 789 1295 787 1295 771 1305 588 1295 586 1295 475 1305 459 1295 457 1295 455 1295 454 1295 344 1306 346 1338"/>
+                        </Shape>
+                        <String CONTENT="great exertion, by danger and hardship: therefore an old man, unable to get"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-012_l16" HPOS="342" VPOS="1351" WIDTH="1776" HEIGHT="57" BASELINE="344 1396 2118 1392" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="344 1396 344 1408 2116 1406 2118 1392 2114 1365 2032 1365 2013 1351 2011 1351 2009 1351 2007 1351 2005 1351 2003 1351 1981 1365 1913 1365 1894 1351 1892 1351 1890 1351 1888 1351 1826 1363 1752 1351 1750 1351 1748 1351 1711 1363 1578 1363 1561 1351 1559 1351 1557 1351 1555 1351 1498 1363 1309 1363 1292 1351 1290 1351 1288 1351 1286 1351 1225 1365 1003 1353 1001 1353 999 1353 968 1363 954 1353 952 1353 951 1353 949 1353 871 1363 834 1353 832 1353 830 1353 342 1359 344 1396"/>
+                        </Shape>
+                        <String CONTENT="his store of food himself, becomes a charge on other people. There is no"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-012_l17" HPOS="344" VPOS="1414" WIDTH="1772" HEIGHT="58" BASELINE="346 1455 2116 1451" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="346 1455 346 1468 2112 1472 2116 1451 2110 1414 344 1418 346 1455"/>
+                        </Shape>
+                        <String CONTENT="herd or other property worthy of much attention. The experience of an old"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-012_l18" HPOS="346" VPOS="1474" WIDTH="1774" HEIGHT="55" BASELINE="346 1513 2120 1513" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="346 1513 346 1529 2120 1529 2120 1513 2116 1474 2073 1484 1962 1474 1960 1474 1958 1474 1925 1484 1884 1474 1882 1474 1880 1474 1783 1484 1619 1474 1617 1474 1615 1474 1582 1484 1469 1474 1467 1474 1344 1484 1286 1474 1284 1474 1282 1474 1243 1484 1182 1474 1180 1474 1128 1484 1095 1474 1093 1474 1091 1474 988 1484 931 1474 929 1474 927 1474 888 1484 773 1474 771 1474 769 1474 767 1474 750 1484 346 1478 346 1513"/>
+                        </Shape>
+                        <String CONTENT="hunter does not count for much when he remains at home, and in times of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-012_l19" HPOS="342" VPOS="1533" WIDTH="1778" HEIGHT="62" BASELINE="344 1575 2120 1572" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="344 1575 344 1595 2118 1587 2120 1572 2116 1544 2024 1544 2009 1533 2007 1533 2005 1533 2003 1533 2001 1533 1964 1542 1640 1533 1638 1533 1637 1533 1594 1542 1537 1533 1535 1533 1533 1533 1500 1542 1319 1533 1317 1533 1315 1533 1278 1542 1241 1533 1239 1533 1237 1533 1153 1544 395 1534 393 1534 391 1534 342 1546 344 1575"/>
+                        </Shape>
+                        <String CONTENT="privation he is one too many to feed; therefore the old men whom I met"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-012_l20" HPOS="342" VPOS="1589" WIDTH="1776" HEIGHT="60" BASELINE="344 1636 2118 1630" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="344 1636 344 1649 2116 1648 2118 1630 2114 1601 1773 1601 1744 1589 1742 1589 1740 1589 1738 1589 1736 1589 1720 1599 1112 1591 1110 1591 1108 1591 1087 1601 1050 1591 1048 1591 1046 1591 1044 1591 1007 1601 956 1591 954 1591 824 1593 822 1593 820 1593 804 1603 531 1593 530 1593 528 1593 526 1593 508 1605 342 1605 344 1636"/>
+                        </Shape>
+                        <String CONTENT="among the Maritime Chukchee looked dull and sad, nor were they as numerous"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-012_l21" HPOS="342" VPOS="1649" WIDTH="1776" HEIGHT="59" BASELINE="344 1694 2118 1690" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="344 1694 344 1708 2116 1708 2118 1690 2114 1663 2059 1649 2057 1649 1970 1661 1913 1649 1911 1649 1909 1649 1861 1661 1841 1649 1839 1649 1837 1649 1835 1649 1833 1649 1831 1649 1810 1663 1672 1663 1623 1649 1621 1649 1619 1649 1504 1661 1463 1649 1461 1649 1459 1649 1457 1649 1455 1649 1438 1663 1321 1663 1231 1649 1229 1649 1227 1649 1202 1663 1099 1651 956 1651 954 1651 952 1651 915 1663 717 1651 715 1651 713 1651 685 1663 629 1651 627 1651 625 1651 623 1651 604 1665 342 1665 344 1694"/>
+                        </Shape>
+                        <String CONTENT="as among the Reindeer Chukchee. This was due perhaps to the hardships"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-012_l22" HPOS="344" VPOS="1714" WIDTH="1770" HEIGHT="60" BASELINE="344 1755 2114 1755" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="344 1755 344 1766 2110 1774 2114 1755 2112 1725 1974 1714 1972 1714 1970 1714 1941 1724 1656 1714 1654 1714 1553 1724 1479 1714 1477 1714 1391 1724 1301 1714 1299 1714 1297 1714 1295 1714 1280 1724 1120 1714 1118 1714 1116 1714 1093 1724 1028 1714 1027 1714 947 1724 863 1714 861 1714 859 1714 834 1724 779 1714 777 1714 722 1724 650 1714 648 1714 646 1714 619 1724 512 1714 510 1714 422 1724 387 1714 385 1714 383 1714 381 1714 344 1724 344 1755"/>
+                        </Shape>
+                        <String CONTENT="of maritime life, the less active hunters being often unable to meet danger,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-012_l23" HPOS="346" VPOS="1770" WIDTH="1770" HEIGHT="59" BASELINE="346 1815 2116 1815" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="346 1815 346 1827 2112 1829 2116 1815 2116 1782 2093 1770 2091 1770 2089 1770 2087 1770 2059 1780 1716 1770 1714 1770 1713 1770 1689 1780 1654 1770 1652 1770 1650 1770 1578 1780 1547 1770 1545 1770 1543 1770 1434 1780 1377 1770 1375 1770 1373 1770 1350 1780 1323 1770 1321 1770 1319 1770 1227 1780 1130 1770 1128 1770 1077 1780 1015 1770 1013 1770 1011 1770 1009 1770 993 1782 906 1782 849 1770 847 1770 845 1770 822 1780 797 1770 795 1770 793 1770 791 1770 771 1780 746 1770 744 1770 742 1770 670 1780 637 1770 635 1770 633 1770 631 1770 609 1780 578 1770 576 1770 574 1770 504 1780 477 1770 475 1770 473 1770 471 1770 448 1780 424 1770 422 1770 420 1770 346 1780 346 1815"/>
+                        </Shape>
+                        <String CONTENT="and thus losing their lives. The killing of old people, of which I shall speak"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-012_l24" HPOS="346" VPOS="1835" WIDTH="1406" HEIGHT="52" BASELINE="346 1872 1752 1872" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="346 1872 346 1887 1752 1887 1752 1872 1750 1835 346 1837 346 1872"/>
+                        </Shape>
+                        <String CONTENT="later on, probably originated among the Maritime Chukchee.¹"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-012_r4" HPOS="345" VPOS="1896" WIDTH="1782" HEIGHT="476" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="345 1896 2127 1896 2127 2372 345 2372"/>
+                    </Shape>
+                    <TextLine ID="mz_3-012_l25" HPOS="452" VPOS="1893" WIDTH="1664" HEIGHT="62" BASELINE="454 1930 2116 1934" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="454 1930 452 1942 1243 1953 1245 1953 1286 1946 1371 1955 1373 1955 2114 1946 2116 1934 2114 1905 1954 1893 1952 1893 1950 1893 1915 1903 1884 1893 1882 1893 1880 1893 1789 1903 454 1895 454 1930"/>
+                        </Shape>
+                        <String CONTENT="It seems that a similar difference, though less apparent, exists between"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-012_l26" HPOS="346" VPOS="1950" WIDTH="1772" HEIGHT="58" BASELINE="346 1992 2118 1992" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="346 1992 346 2004 2116 2008 2118 1992 2118 1961 2069 1950 2067 1950 2065 1950 2063 1950 2040 1961 2024 1950 2022 1950 2020 1950 2019 1950 2017 1950 1980 1961 1892 1950 1890 1950 1831 1963 1732 1963 1711 1950 1709 1950 1707 1950 1705 1950 1703 1950 1677 1963 1607 1963 1586 1950 1584 1950 1582 1950 1580 1950 1578 1950 1551 1959 1525 1950 1523 1950 1522 1950 1520 1950 1494 1961 1457 1950 1455 1950 1453 1950 1451 1950 1418 1961 1352 1950 1350 1950 1288 1961 1270 1950 1268 1950 1266 1950 1264 1950 1186 1959 1124 1950 1122 1950 1064 1961 986 1950 984 1950 982 1950 980 1950 964 1961 900 1950 898 1950 896 1950 863 1961 814 1950 812 1950 810 1950 808 1950 781 1961 750 1950 748 1950 746 1950 607 1961 584 1950 582 1950 457 1950 455 1950 454 1950 416 1961 374 1950 372 1950 370 1950 368 1950 346 1959 346 1992"/>
+                        </Shape>
+                        <String CONTENT="the Reindeer and the Maritime Koryak. Mr. Jochelson, in speaking of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-012_l27" HPOS="346" VPOS="2012" WIDTH="1770" HEIGHT="55" BASELINE="346 2053 2116 2053" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="346 2053 346 2067 2114 2067 2116 2053 2114 2024 1841 2012 1839 2012 1837 2012 1835 2012 1820 2024 1607 2024 1561 2012 1559 2012 1557 2012 1518 2022 1473 2012 1471 2012 1469 2012 1447 2024 1303 2024 1270 2012 1268 2012 1266 2012 1204 2022 1140 2012 1138 2012 1136 2012 1101 2022 1048 2012 1046 2012 1044 2012 1003 2022 947 2012 945 2012 943 2012 913 2022 874 2012 873 2012 871 2012 758 2022 693 2012 691 2012 689 2012 662 2022 627 2012 625 2012 623 2012 621 2012 598 2024 346 2024 346 2053"/>
+                        </Shape>
+                        <String CONTENT="treatment of old people by the Koryak, remarks that among the Reindeer"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-012_l28" HPOS="346" VPOS="2072" WIDTH="1774" HEIGHT="55" BASELINE="346 2113 2120 2113" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="346 2113 346 2125 2118 2127 2120 2113 2116 2072 2073 2082 2019 2072 2017 2072 1948 2082 1923 2072 1921 2072 1919 2072 1917 2072 1884 2082 1808 2072 1806 2072 1761 2082 1742 2072 1740 2072 1738 2072 1736 2072 1703 2082 1640 2072 1537 2072 1535 2072 1533 2072 1531 2072 1518 2082 1442 2072 1440 2072 1438 2072 1405 2084 1208 2084 1192 2072 1190 2072 1188 2072 937 2072 935 2072 933 2072 908 2082 804 2072 802 2072 800 2072 763 2082 346 2078 346 2113"/>
+                        </Shape>
+                        <String CONTENT="Koryak the new form of household economy has developed the principle of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-012_l29" HPOS="342" VPOS="2135" WIDTH="1776" HEIGHT="66" BASELINE="344 2176 2118 2170" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="344 2176 344 2201 539 2185 569 2199 570 2199 572 2199 574 2199 615 2185 635 2199 637 2199 639 2199 641 2199 643 2199 674 2189 736 2199 738 2199 740 2199 742 2199 763 2185 1023 2197 1025 2197 1110 2183 1243 2183 1258 2193 1260 2193 1262 2193 1264 2193 1319 2183 1352 2193 1354 2193 1356 2193 1438 2183 1465 2193 1467 2193 1469 2193 1773 2191 1775 2191 1777 2191 1790 2182 1820 2193 1822 2193 1824 2193 1874 2183 1939 2195 1941 2195 2116 2187 2118 2170 2114 2137 510 2135 508 2135 342 2144 344 2176"/>
+                        </Shape>
+                        <String CONTENT="personal property more sharply.² In an oral communication he mentioned"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-012_l30" HPOS="346" VPOS="2191" WIDTH="1770" HEIGHT="59" BASELINE="346 2232 2116 2232" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="346 2232 346 2246 2112 2250 2116 2232 2114 2203 2067 2191 2065 2191 2063 2191 2036 2201 1995 2191 1993 2191 1991 2191 1989 2191 1950 2203 1711 2203 1664 2191 1662 2191 1660 2191 1658 2191 1642 2203 1539 2203 1481 2191 1479 2191 1428 2201 1377 2191 1375 2191 1373 2191 1342 2201 1311 2191 1309 2191 1307 2191 1239 2201 1175 2191 1173 2191 1106 2201 1085 2191 1083 2191 956 2191 954 2191 952 2191 927 2201 876 2191 874 2191 873 2191 851 2203 670 2203 594 2191 592 2191 502 2201 465 2191 463 2191 461 2191 459 2191 440 2201 370 2191 368 2191 366 2191 346 2201 346 2232"/>
+                        </Shape>
+                        <String CONTENT="that in reality among the Reindeer Koryak the old men have more authority"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-012_l31" HPOS="344" VPOS="2248" WIDTH="1772" HEIGHT="58" BASELINE="346 2293 2116 2289" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="346 2293 346 2306 2114 2302 2116 2289 2112 2261 2019 2248 2017 2248 2015 2248 2013 2248 1995 2259 1970 2248 1968 2248 1966 2248 1964 2248 1919 2259 1894 2248 1892 2248 1890 2248 1822 2259 1767 2248 1765 2248 1763 2248 1761 2248 1744 2261 1584 2261 1564 2248 1562 2248 1561 2248 1500 2248 1498 2248 1496 2248 1471 2259 1442 2248 1440 2248 1438 2248 1436 2248 1409 2259 1208 2250 1206 2250 1204 2250 1163 2261 1134 2250 1132 2250 1130 2250 1060 2261 995 2250 993 2250 933 2261 900 2250 898 2250 896 2250 832 2259 761 2250 760 2250 758 2250 734 2261 676 2250 674 2250 672 2250 670 2250 652 2263 452 2263 368 2250 366 2250 364 2250 362 2250 344 2259 346 2293"/>
+                        </Shape>
+                        <String CONTENT="than among the Maritime Koryak, because of their ownership of reindeer-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-012_l32" HPOS="346" VPOS="2310" WIDTH="838" HEIGHT="57" BASELINE="346 2351 1184 2351" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="346 2351 346 2367 1184 2367 1184 2351 1184 2320 1145 2310 1143 2310 1141 2310 1140 2310 1116 2320 1054 2310 1052 2310 1050 2310 1025 2320 997 2310 995 2310 993 2310 991 2310 960 2320 949 2310 947 2310 945 2310 943 2310 941 2310 910 2320 863 2310 861 2310 859 2310 836 2320 779 2310 777 2310 775 2310 738 2322 633 2322 623 2312 623 2310 621 2310 619 2310 617 2310 346 2316 346 2351"/>
+                        </Shape>
+                        <String CONTENT="herds, which remains in their hands."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-012_r5" HPOS="345" VPOS="2372" WIDTH="1782" HEIGHT="418" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="345 2372 2127 2372 2127 2790 345 2790"/>
+                    </Shape>
+                    <TextLine ID="mz_3-012_l33" HPOS="452" VPOS="2369" WIDTH="1664" HEIGHT="64" BASELINE="454 2408 2116 2411" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="454 2408 452 2423 463 2431 465 2431 467 2431 469 2431 1186 2423 1290 2433 1292 2433 2114 2423 2116 2411 2114 2382 2040 2371 1909 2371 1907 2371 1905 2371 1904 2371 1892 2380 1853 2371 1851 2371 1849 2371 1769 2380 1718 2371 1716 2371 1621 2380 1568 2371 1566 2371 1564 2371 1539 2380 1523 2371 1522 2371 1520 2371 1518 2371 1467 2380 1350 2371 1348 2371 1299 2380 1258 2369 1256 2369 1255 2369 1180 2378 1165 2369 1163 2369 1161 2369 1159 2369 1112 2378 454 2373 454 2408"/>
+                        </Shape>
+                        <String CONTENT="In recent times, property of value obtained in trade with American"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-012_l34" HPOS="344" VPOS="2431" WIDTH="1772" HEIGHT="55" BASELINE="344 2472 2116 2472" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="344 2472 344 2484 2114 2486 2116 2472 2116 2443 2015 2431 2013 2431 2011 2431 1978 2441 1403 2431 1401 2431 1346 2441 1264 2431 1262 2431 1260 2431 1258 2431 1245 2441 1177 2431 1175 2431 1173 2431 1151 2441 1097 2431 1095 2431 1093 2431 1071 2443 769 2443 732 2431 730 2431 728 2431 518 2441 385 2431 383 2431 381 2431 344 2441 344 2472"/>
+                        </Shape>
+                        <String CONTENT="whalers appeared even among the Maritime Chukchee. Almost every large"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-012_l35" HPOS="344" VPOS="2489" WIDTH="1774" HEIGHT="57" BASELINE="346 2532 2118 2528" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="346 2532 346 2546 2116 2542 2118 2528 2114 2501 1985 2489 1983 2489 1981 2489 1980 2489 1966 2499 1943 2489 1941 2489 1939 2489 1937 2489 1935 2489 1919 2501 1648 2501 1561 2489 1559 2489 1492 2499 1440 2489 1438 2489 1436 2489 1395 2499 1311 2489 1309 2489 1307 2489 1272 2499 1237 2489 1235 2489 1233 2489 1177 2501 1058 2491 1056 2491 999 2501 765 2491 763 2491 609 2501 526 2491 524 2491 522 2491 498 2501 376 2491 374 2491 372 2491 344 2501 346 2532"/>
+                        </Shape>
+                        <String CONTENT="village has several traders, who go inland to the reindeer camps and barter"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-012_l36" HPOS="344" VPOS="2550" WIDTH="1772" HEIGHT="56" BASELINE="346 2591 2116 2587" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="346 2591 346 2602 2112 2606 2116 2587 2112 2562 2007 2550 2005 2550 2003 2550 2001 2550 1985 2562 1800 2562 1750 2550 1748 2550 1746 2550 1722 2560 1693 2550 1691 2550 1689 2550 1599 2560 1508 2550 1506 2550 1504 2550 1502 2550 1486 2562 1325 2562 1237 2550 1235 2550 1145 2562 1118 2552 1116 2552 1114 2552 1032 2562 800 2552 798 2552 797 2552 795 2552 779 2563 633 2563 586 2552 584 2552 473 2562 381 2552 379 2552 378 2552 344 2563 346 2591"/>
+                        </Shape>
+                        <String CONTENT="white men’s ware for skins and reindeer-meat. Some of them even have"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-012_l37" HPOS="342" VPOS="2612" WIDTH="1774" HEIGHT="55" BASELINE="344 2651 2116 2647" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="344 2651 344 2667 2114 2667 2116 2647 2112 2620 379 2612 378 2612 376 2612 342 2622 344 2651"/>
+                        </Shape>
+                        <String CONTENT="storehouses of their own; others are poorer, and sometimes their capital is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-012_l38" HPOS="342" VPOS="2667" WIDTH="1772" HEIGHT="58" BASELINE="344 2712 2114 2706" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="344 2712 344 2725 2112 2723 2114 2706 2110 2678 1781 2667 1779 2667 1777 2667 1775 2667 1759 2678 1543 2678 1527 2667 1525 2667 1523 2667 1522 2667 1520 2667 1486 2678 1418 2669 1416 2669 1414 2669 1383 2678 1027 2669 1025 2669 1023 2669 999 2680 828 2680 432 2671 430 2671 342 2682 344 2712"/>
+                        </Shape>
+                        <String CONTENT="small indeed. The owners of this property, though ever so old, continue to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-012_l39" HPOS="344" VPOS="2729" WIDTH="1741" HEIGHT="57" BASELINE="344 2768 2085 2768" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="344 2753 344 2768 344 2784 2083 2786 2085 2768 2085 2741 1939 2741 1917 2729 1915 2729 1913 2729 1911 2729 1884 2739 1767 2729 1765 2729 1763 2729 1742 2739 1722 2729 1720 2729 1718 2729 1640 2739 1522 2729 1520 2729 1518 2729 1486 2741 1354 2741 1340 2729 1338 2729 1336 2729 1334 2729 1332 2729 1305 2741 1167 2741 1145 2729 1143 2729 1141 2729 1140 2729 1108 2739 1079 2729 1077 2729 1075 2729 1011 2739 980 2729 978 2729 976 2729 974 2729 945 2739 886 2729 884 2729 824 2739 728 2729 726 2729 643 2739 623 2729 621 2729 619 2729 565 2739 352 2735 344 2753"/>
+                        </Shape>
+                        <String CONTENT="hold it, and their position in life does not become lower with increasing age."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-012_r6" HPOS="345" VPOS="2790" WIDTH="1782" HEIGHT="66" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="345 2790 2127 2790 2127 2856 345 2856"/>
+                    </Shape>
+                    <TextLine ID="mz_3-012_l40" HPOS="452" VPOS="2788" WIDTH="1664" HEIGHT="56" BASELINE="454 2830 2116 2827" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="454 2830 454 2844 2114 2842 2116 2827 2112 2799 2063 2788 2061 2788 2059 2788 2036 2797 2020 2788 2019 2788 2017 2788 2015 2788 1944 2797 1915 2788 1913 2788 1911 2788 1909 2788 1886 2797 1847 2788 1845 2788 1843 2788 1841 2788 1814 2797 1790 2788 1789 2788 1787 2788 1785 2788 1753 2797 1687 2788 1685 2788 1683 2788 1648 2797 1381 2788 1379 2788 1282 2799 1262 2790 1260 2790 1258 2790 1196 2799 1085 2790 1083 2790 1015 2799 452 2795 454 2830"/>
+                        </Shape>
+                        <String CONTENT="POSITION OF WOMEN. — The position of women, on the whole, is inferior"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-012_r7" HPOS="345" VPOS="2918" WIDTH="1782" HEIGHT="187" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="345 2918 2127 2918 2127 3105 345 3105"/>
+                    </Shape>
+                    <TextLine ID="mz_3-012_l41" HPOS="452" VPOS="2920" WIDTH="1666" HEIGHT="47" BASELINE="454 2945 2118 2949" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="454 2945 452 2959 2114 2967 2118 2949 2118 2920 454 2920 454 2945"/>
+                        </Shape>
+                        <String CONTENT="¹ I know of fewer cases of such killing among the Maritime Chukchee, as compared to those among"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-012_l42" HPOS="344" VPOS="2965" WIDTH="1772" HEIGHT="64" BASELINE="346 2992 2116 2988" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="346 2992 346 3029 498 3027 500 3027 569 3006 798 3006 884 3023 886 3023 970 3006 1095 3021 1097 3021 1099 3021 1126 3012 1206 3021 1208 3021 1210 3021 1212 3021 1233 3004 1297 3004 1356 3020 1358 3020 1360 3020 1362 3020 1424 3004 1465 3020 1467 3020 1469 3020 1471 3020 1473 3020 1494 3006 1611 3006 1658 3020 1660 3020 1662 3020 1822 3006 2112 3008 2116 2988 2110 2965 344 2967 346 2992"/>
+                        </Shape>
+                        <String CONTENT="the Reindeer branch of the tribe; but this is probably due only to my shorter acquaintance with the Maritime"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-012_l43" HPOS="346" VPOS="3010" WIDTH="131" HEIGHT="45" BASELINE="346 3035 477 3035" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="346 3035 346 3055 477 3055 477 3035 477 3010 346 3010 346 3035"/>
+                        </Shape>
+                        <String CONTENT="people."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-012_l44" HPOS="455" VPOS="3045" WIDTH="1053" HEIGHT="56" BASELINE="457 3072 1508 3080" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="457 3072 455 3086 494 3097 496 3097 498 3097 880 3092 993 3101 995 3101 1506 3094 1508 3080 1506 3053 457 3045 457 3072"/>
+                        </Shape>
+                        <String CONTENT="² Compare Jochelson, The Koryak, Vol. VI of this series, p. 759."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

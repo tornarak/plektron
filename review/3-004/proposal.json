@@ -1,0 +1,442 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE.",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "1": {
+      "text": "538",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "2": {
+      "text": "same paternal line of descent use the same marks, which descend from",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "3": {
+      "text": "generation to generation. In the same sense, people of the same paternal",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "4": {
+      "text": "descent, the “old male companions,” are also called “those of the same fire”",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "5": {
+      "text": "(ᴇnnaˊn-yɪˊnlaᵋt), because they have community of fire. Paternal relationship",
+      "resolved": "ᴇ=U+1D07 small cap E; ˊ=U+02CA stress (x2); ɪ=U+026A; ᵋ=U+1D4B laryngeal (prints as a small script-g/loop-with-tail shape at this scale)",
+      "note": "The raised mark before final t reads as a script-g silhouette at 2x/4x, not any catalogued g-shape sort — keyed as laryngeal U+1D4B per keying_spec.md §2.1 (\"confirmed at corpus scale; citable\") and per the same misreading class already on record (agent memory: the-two-superscript-marks). Same mark shape recurs identically on this page in Aᵋttu'uLɵᵋn, Ya'aLaᵋn, wu'thɪtčeᵋn (L11,12,33,57) — treated as one consistent sort throughout.",
+      "class": "doubt",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "6": {
+      "text": "is considered to be much stronger than maternal relationship. There is a",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "7": {
+      "text": "Chukchee saying which has it that even a distant relative on the father’s side",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "8": {
+      "text": "is much nearer to the heart than a maternal cousin. The terms of relation-",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "9": {
+      "text": "ship are as follows: —",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "10": {
+      "text": "CONSANGUINITY.",
+      "note": "Printed in small capitals; keyed as plain ASCII capitals per keying_spec.md §2.13 — no small-cap sort exists for English text.",
+      "class": "print",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "11": {
+      "text": "Aᵋttuˊuʟɵᵋn (“fore-goer”) Forefather.",
+      "resolved": "A + ᵋ(U+1D4B) + ttu + ˊ(U+02CA) + u + ʟ(U+029F small cap L) + ɵ(U+0275) + ᵋ(U+1D4B) + n",
+      "note": "Dot-leader run between headword and gloss dropped per instructions. The two raised marks read as a script-g silhouette; keyed as laryngeal ᵋ (U+1D4B), see L5 note. The barred-circle vowel is ɵ (U+0275, \"between o and u, long\") per keying_spec.md §2.1/§2.2 — clean match, no doubt on that one.",
+      "class": "doubt",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "12": {
+      "text": "Yaˊaʟaᵋn (“behind-goer”). Descendant.",
+      "resolved": "Y + a + ˊ(U+02CA) + a + ʟ(U+029F) + a + ᵋ(U+1D4B) + n",
+      "note": "Same recurring script-g-shaped mark as L5/L11, keyed as laryngeal ᵋ. Dot-leader dropped.",
+      "class": "doubt",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "13": {
+      "text": "Miˊrg̣ɪn¹ Grandfather and great-uncle.",
+      "resolved": "M + i + ˊ(U+02CA) + r + g+U+0323 + ɪ(U+026A) + n + ¹(U+00B9)",
+      "note": "Dot below g confirmed at 4x. Footnote reference marker keyed as superscript ¹ (tight, no space) per §2.10.",
+      "class": "print",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "14": {
+      "text": "Ñew-miˊrg̣ɪn (ñe, ñew, “woman”) Grandmother and great-aunt.",
+      "resolved": "Ñ/ñ = n+U+0303 (x3); ˊ=U+02CA; g+U+0323 dot below g; ɪ=U+026A",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "15": {
+      "text": "Endiˊw Uncle,² paternal and maternal.",
+      "resolved": "E ordinary ASCII capital (full ascender height, not small-cap ᴇ) + ndi + ˊ(U+02CA) + w; ² = U+00B2",
+      "note": "Word-initial E confirmed at 4x as a full-height ASCII capital, distinctly taller than the small-cap ᴇ used in ELI'hin/ELa' (L20/L22) on the same page.",
+      "class": "print",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "16": {
+      "text": "Eččaiˊ",
+      "resolved": "E ordinary ASCII capital (as L15) + čč (both c+U+030C) + ai + ˊ(U+02CA)",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "17": {
+      "text": "A",
+      "note": "This line's box (hpos~1321,vpos~1439,w41,h37) contains only a capital \"A\" plus two dot-leader dots — it duplicates/overlaps the initial letter of \"Aunt,³ paternal and maternal.\" which is fully keyed in the adjacent box (index 18). Reported per instructions: nothing repaired, box keyed as its own ink shows it (bare \"A\", dot-leader dropped). Likely a segmentation artifact worth a human's look in `ocr edit`.",
+      "class": "layout",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "18": {
+      "text": "Aunt,³ paternal and maternal.",
+      "resolved": "³ = U+00B3",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "19": {
+      "text": "Father.",
+      "note": "",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "20": {
+      "text": "ᴇʟɪˊhɪn (address: aˊtê, “papa”).",
+      "resolved": "ᴇ(U+1D07)+ʟ(U+029F)+ɪ(U+026A) small caps + ˊ(U+02CA) + h + ɪ(U+026A) + n; aˊtê = a+ˊ(U+02CA)+t+ê(e+U+0302)",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "21": {
+      "text": "Mother.",
+      "note": "",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "22": {
+      "text": "ᴇʟaˊ (address: äˊmmê, “mamma”)⁴",
+      "resolved": "ᴇ=U+1D07; ʟ=U+029F; ˊ=U+02CA (x2); ä=a+U+0308; ê=e+U+0302; ⁴=U+2074",
+      "note": "Trailing mark after the closing paren is the footnote-4 reference, superscript, tight (mz's OCR read it as a bare \"!\" — CATMuS substitutes ASCII for marks it cannot read, per the catmus-substitutes-ascii-for-marks memory).",
+      "class": "draft",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "23": {
+      "text": "ᴇʟɪˊhɪt (“fathers”)",
+      "resolved": "ᴇ=U+1D07; ʟ=U+029F; ɪ=U+026A (x2); ˊ=U+02CA",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "24": {
+      "text": "Parents.",
+      "note": "",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "25": {
+      "text": "Brother.",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "26": {
+      "text": "Yiˊčemit-tuˊmg̣ɪn⁵ (“fellow-brother”)",
+      "resolved": "ˊ=U+02CA (x2); č=c+U+030C; g+U+0323 dot below g confirmed at 4x; ɪ=U+026A; ⁵=U+2075",
+      "note": "",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "27": {
+      "text": "ɪneˊelɪn",
+      "resolved": "ɪ(U+026A, bare-stem no dot, confirmed at 4x)+n+e+ˊ(U+02CA)+elɪn (final ɪ also bare-stem, confirmed at 4x)",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "28": {
+      "text": "Elder brother.",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "29": {
+      "text": "Younger brother.⁶",
+      "resolved": "⁶=U+2076",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "30": {
+      "text": "ᴇʟeˊñi",
+      "resolved": "ᴇ=U+1D07; ʟ=U+029F; ˊ=U+02CA; ñ=n+U+0303",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "31": {
+      "text": "Čaˊkɪhêt Sister (said by male).",
+      "resolved": "Č=c+U+030C; a+ˊ(U+02CA); k+ɪ(U+026A)+h+ê(e+U+0302)+t",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "32": {
+      "text": "ɪˊnpɪčɪ-čaˊkɪhêt Elder sister (said by male).",
+      "resolved": "ɪ=U+026A (x4); ˊ=U+02CA (x2); č=c+U+030C (x2); ê=e+U+0302",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "33": {
+      "text": "Wuˊthɪtčä-čaˊkɪhêt or wuˊthɪtčeᵋn Middle sister (said by male).",
+      "resolved": "ˊ=U+02CA (x4); ɪ=U+026A (x2); č=c+U+030C (x3); ä=a+U+0308; ê=e+U+0302; ᵋ=U+1D4B laryngeal (script-g shape)",
+      "note": "Same recurring mark as L5/11/12; keyed as laryngeal ᵋ. ä confirmed as diaeresis (two dots), not breve.",
+      "class": "doubt",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "34": {
+      "text": "Ñêˊnča-čaˊkɪhêt (“younger sister”)",
+      "resolved": "Ñ=n+U+0303; ê=e+U+0302 (x2); ˊ=U+02CA (x2); č=c+U+030C (x2); ɪ=U+026A",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "35": {
+      "text": "Younger sister (said by male).",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "36": {
+      "text": "Čaˊkêt-tɵˊmg̣ɪn (“sister-mate”) Sister (said by female).",
+      "resolved": "Č=C+U+030C; ˊ=U+02CA (x2); ê=e+U+0302; ɵ=U+0275; g+U+0323 dot below g; ɪ=U+026A",
+      "note": "",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "37": {
+      "text": "ɪˊnpɪčɪ-čaˊkêt-tɵˊmg̣ɪn (“elder sister-mate”) Elder sister (said by female).",
+      "resolved": "ɪ=U+026A (x4); ˊ=U+02CA (x3); č=c+U+030C (x2); ê=e+U+0302; ɵ=U+0275; g+U+0323 dot below g",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "38": {
+      "text": "¹ One can also say ᴇʟɪˊw-miˊrg̣ɪn (“paternal grandfather”) and ᴇʟaˊ-mêˊrg̣ɪn (“maternal grandfather”),",
+      "resolved": "¹=U+00B9; ᴇ=U+1D07 (x2); ʟ=U+029F (x2); ɪ=U+026A; ˊ=U+02CA (x4); g+U+0323 dot below g (x2, confirmed at 4x); ê=e+U+0302",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "39": {
+      "text": "though generally the first part of the word is omitted. Children use also the terms apaiˊñɪn (“grandfather”) and",
+      "resolved": "apaiˊñɪn: a+p+a+i+ˊ(U+02CA)+ñ(n+U+0303)+ɪ(U+026A)+n",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "40": {
+      "text": "epeˊqäi (“grandmother”), which are, the former an augmentative, and the latter a diminutive, form from eˊpi",
+      "resolved": "epeˊqäi: e+p+e+ˊ(U+02CA)+q+ä(a+U+0308)+i; eˊpi: e+ˊ(U+02CA)+p+i",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "41": {
+      "text": "(“father”). The latter word, however, is rarely used, and belongs rather to the Koryak language. Another",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "42": {
+      "text": "diminutive, epeˊpil (literally, “little father”), is attributed to the Christian priest, and with this meaning it has",
+      "resolved": "epeˊpil: e+p+e+ˊ(U+02CA)+p+i+l",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "43": {
+      "text": "been adopted by the Chukchee.",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "44": {
+      "text": "² These may be distinguished as ᴇʟɪˊhɪndiw (“paternal uncle”) and ᴇʟaˊndêw (“maternal uncle”).",
+      "resolved": "²=U+00B2; ᴇ=U+1D07 (x2); ʟ=U+029F (x2); ɪ=U+026A (x2); ˊ=U+02CA (x2); ê=e+U+0302",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "45": {
+      "text": "³ Uncles and aunts once removed are designated by the same terms.",
+      "resolved": "³=U+00B3",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "46": {
+      "text": "⁴ Äˊmmê probably means the mother’s breast; aˊtê and äˊmmê are used mostly by young children.",
+      "resolved": "⁴=U+2074; Ä=A+U+0308 (capital, sentence-initial); ˊ=U+02CA; mmê=m+m+e+U+0302",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "47": {
+      "text": "ɪnpɪnaˊčhɪn and ɪnpɪñeˊ, which, according to Nordquist, were mentioned by several authors as terms for “father”",
+      "resolved": "ɪnpɪnaˊčhɪn: ɪ(U+026A)+n+p+ɪ(U+026A)+n+a+ˊ(U+02CA)+č(c+U+030C)+h+ɪ(U+026A)+n; ɪnpɪñeˊ: ñ=n+U+0303, final ˊ=U+02CA",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "48": {
+      "text": "and “mother” respectively, in reality have the meaning “old man” and “old woman.” Both are derived from",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "49": {
+      "text": "ɪnp, the root of the adjective nɪˊnpɪqên (“he is old”).",
+      "resolved": "ɪnp: ɪ=U+026A; nɪˊnpɪqên: n+ɪ(U+026A)+ˊ(U+02CA)+n+p+ɪ(U+026A)+q+ê(e+U+0302)+n",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "50": {
+      "text": "⁵ In all derivations, only the first stem is used. Tuˊmg̣ɪtum (pl. tuˊmg̣ɪt, stem tuˊmg̣ɪ) means “companion,”",
+      "resolved": "⁵=U+2075; Tuˊmg̣ɪtum/tuˊmg̣ɪt/tuˊmg̣ɪ: T/t+u+ˊ(U+02CA)+m+g+U+0323+ɪ(U+026A)(+tum/t)",
+      "note": "",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "51": {
+      "text": "“mate,” also “kinsman.” A husband, speaking of his wife, calls her gŭmniˊn tuˊmg̣ɪtum (my mate”). Getuˊmg̣ɪlin",
+      "resolved": "ŭ=u+U+0306 breve (confirmed, not diaeresis); ˊ=U+02CA (x3); g+U+0323 dot below g (x2, confirmed at 4x); ɪ=U+026A (x2)",
+      "note": "The mark over u in gŭmni'n is a breve (single curved stroke), confirmed at 4x — not a diaeresis. u+breve (ŭ) is licensed per keying_spec.md §2.2/§2.6.",
+      "class": "print",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "52": {
+      "text": "means “one with companions,” “one with kinsmen,” “one with influence.” It is used as a compound in several",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "53": {
+      "text": "terms referring to degrees of relationship, in various combinations, sometimes only between males, at other times",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "54": {
+      "text": "only between females, and even also between males and females.",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "55": {
+      "text": "⁶ The terms for “elder brother” and “younger brother” are relative; i. e., all brothers older than myself",
+      "resolved": "⁶=U+2076",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "56": {
+      "text": "are my ɪneˊelɪt, and all brothers younger than myself are my ᴇʟeˊnyut (pl.). More detailed terms are used as",
+      "resolved": "ɪ=U+026A (x2, confirmed dotless at 4x); ˊ=U+02CA (x2); ᴇ=U+1D07; ʟ=U+029F",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "57": {
+      "text": "follows: ênaˊn-ɪnaˊalɪn, “the oldest brother;” ênaˊn-ᴇʟaˊñê, “the youngest brother;” wuˊthɪtčeᵋn, “the middle",
+      "resolved": "ê=e+U+0302 (x3); ˊ=U+02CA (x5); ɪ=U+026A (x2); ᴇ=U+1D07; ʟ=U+029F; ñ=n+U+0303; č=c+U+030C; ᵋ=U+1D4B laryngeal (script-g shape)",
+      "note": "Same recurring script-g-shaped mark as earlier occurrences of this same word (L33), keyed as laryngeal ᵋ for consistency.",
+      "class": "doubt",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "58": {
+      "text": "(brother).” ɪneˊelɪn (“elder brother”) and ᴇʟeˊñi (“younger brother”) are used both by males and females; but",
+      "resolved": "ɪ=U+026A (x2, confirmed dotless at 4x); ˊ=U+02CA (x2); ᴇ=U+1D07; ʟ=U+029F; ñ=n+U+0303",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "59": {
+      "text": "the former term is pronounced by women ɪnɪˊnelɪn, according to the rules of female pronunciation, in which",
+      "resolved": "ɪ=U+026A (x2, confirmed dotless at 4x); ˊ=U+02CA",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "60": {
+      "text": "contractions are avoided. The elder sister is also called ɪneˊelɪn or ɪnɪˊnelɪn (by males and females). ᴇʟeˊñi is",
+      "resolved": "ɪ=U+026A (x4, confirmed dotless at 4x); ˊ=U+02CA (x3); ᴇ=U+1D07; ʟ=U+029F; ñ=n+U+0303",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "61": {
+      "text": "used for the younger brother only.",
+      "contamination": {
+        "blind": true
+      }
+    }
+  }
+}

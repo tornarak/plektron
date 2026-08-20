@@ -1,0 +1,223 @@
+{
+  "contamination": {"blind": true},
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "539"
+    },
+    "2": {
+      "text": "Wuˊthɪtčä-čaˊkêt-tɵˊmg̣ɪn (“middle sister-mate”) Middle sister (said by female).",
+      "resolved": "ˊ=U+02CA stress (x3); ɪ=U+026A; č=c+U+030C (x2); ä=a+U+0308; ê=e+U+0302; ɵ=U+0275; g̣=g+U+0323; “”=U+201C/U+201D",
+      "note": "Established this page's habit here: vowel between t and 'mgɪn is barred-o ɵ (U+0275, key gloss \"between o and u, long\"), and the g in -mgɪn carries dot-below (U+0323), confirmed at 4x. Applied consistently to every -tɵ'mg̣ɪn occurrence on the page rather than re-zooming each one.",
+      "class": "doubt"
+    },
+    "3": {
+      "text": "Ñêˊnča-čaˊkêt-tɵˊmg̣ɪn (“younger sister-mate”). Younger sister (said by female).",
+      "resolved": "Ñ=N+U+0303; ê=e+U+0302 (x2); ˊ=U+02CA (x3); č=c+U+030C (x2); ɵ=U+0275; g̣=g+U+0323; ɪ=U+026A; “”=U+201C/U+201D"
+    },
+    "4": {
+      "text": "Yêᵋˊlhɪ-tɵˊmg̣ɪn (“cousin-mate”), more rarely",
+      "resolved": "ê=e+U+0302; ᵋ=U+1D4B laryngeal; ˊ=U+02CA (x2); ɪ=U+026A; ɵ=U+0275; g̣=g+U+0323; “”=U+201C/U+201D",
+      "note": "The small raised loop after ê is read as laryngeal ᵋ (U+1D4B), not an uncatalogued superscript g — matches the shape and behaviour recorded in the reader's own memory note for this class (a stacked open-e outline that looks like a rounded loop with a tail at small scale). Recurs on L5, L6, L16.",
+      "class": "doubt"
+    },
+    "5": {
+      "text": "Yêᵋˊlo Male cousin, paternal and maternal.",
+      "resolved": "ê=e+U+0302; ᵋ=U+1D4B; ˊ=U+02CA"
+    },
+    "6": {
+      "text": "Ñaw-yêᵋˊlhɪ-tɵˊmg̣ɪn (in respect to male cousins)¹ Female cousin, paternal and maternal.",
+      "resolved": "Ñ=N+U+0303; ê=e+U+0302; ᵋ=U+1D4B; ˊ=U+02CA (x2); ɪ=U+026A; ɵ=U+0275; g̣=g+U+0323; ¹=U+00B9 footnote marker"
+    },
+    "7": {
+      "text": "Eˊkɪk Son.",
+      "resolved": "ˊ=U+02CA; ɪ=U+026A"
+    },
+    "8": {
+      "text": "Ñeˊekɪk Daughter.",
+      "resolved": "Ñ=N+U+0303; ˊ=U+02CA; ɪ=U+026A"
+    },
+    "9": {
+      "text": "ᴇʟuˊê (pl. ᴇʟuˊwg̣ot) Grandson and nephew.",
+      "resolved": "ᴇ=U+1D07 small-cap (x2); ʟ=U+029F small-cap (x2); ˊ=U+02CA (x2); ê=e+U+0302; g̣=g+U+0323",
+      "note": "ᴇ/ʟ read as small-caps (distinct phonemes per §2.3/§2.5: obscure vowel ᴇ, lateral ʟ), not English capitalization — the word is Tier-1 vocabulary and there is no reading in which mid-word ASCII caps make sense here. Height in the 4x crop is consistent with this page's small-cap sort across every ᴇʟ- occurrence (L9-12, L20, L22, L25, L48).",
+      "class": "doubt"
+    },
+    "10": {
+      "text": "Ñauʟuˊê Grand-daughter and niece.",
+      "resolved": "Ñ=N+U+0303; ʟ=U+029F; ˊ=U+02CA; ê=e+U+0302"
+    },
+    "11": {
+      "text": "ᴇʟoˊo-tɵˊmg̣ɪn² Parents’ cousin’s son.",
+      "resolved": "ᴇ=U+1D07; ʟ=U+029F; ˊ=U+02CA (x2); ɵ=U+0275; g̣=g+U+0323; ɪ=U+026A; ²=U+00B2 footnote marker; ’=U+2019 (x2)"
+    },
+    "12": {
+      "text": "Ñauʟoˊo-tɵˊmg̣ɪn³ Parents’ cousin’s daughter.",
+      "resolved": "Ñ=N+U+0303; ʟ=U+029F; ˊ=U+02CA (x2); ɵ=U+0275; g̣=g+U+0323; ɪ=U+026A; ³=U+00B3 footnote marker; ’=U+2019 (x2)"
+    },
+    "13": {
+      "text": "Of all these terms, a collective may be formed by means of the word"
+    },
+    "14": {
+      "text": "-ret, -rat, which signifies “collection,” “set,” and is used only in combination",
+      "resolved": "“”=U+201C/U+201D"
+    },
+    "15": {
+      "text": "with others. Thus, yɪčemreˊt, “company of brothers;” čakêˊttɪrat, “company",
+      "resolved": "ɪ=U+026A (x2); č=c+U+030C (x2); ˊ=U+02CA (x2); ê=e+U+0302; “”=U+201C/U+201D"
+    },
+    "16": {
+      "text": "of sisters” (in regard to the male relatives); yêᵋˊlhɪrat, “company of male",
+      "resolved": "“”=U+201C/U+201D; ê=e+U+0302; ᵋ=U+1D4B; ˊ=U+02CA; ɪ=U+026A"
+    },
+    "17": {
+      "text": "cousins;” kret, “company of boys” (k shortened for kmiˊñɪn, “boy,” “child”).",
+      "resolved": "“”=U+201C/U+201D; ˊ=U+02CA; ñ=n+U+0303; ɪ=U+026A",
+      "note": "mz draft read the italic cross-reference letter as 'E' — raster shows lowercase italic k, matching \"k shortened for kmi'ñɪn\".",
+      "class": "draft"
+    },
+    "18": {
+      "text": "The fourth degree of relationship is designated by means of the stem"
+    },
+    "19": {
+      "text": "yɪˊlhɪ, which signifies “link,” “junction.” Thus, yɪˊlhɪ-miˊrg̣ɪn, “great-grandfather;”",
+      "resolved": "ɪ=U+026A (x4); ˊ=U+02CA (x3); “”=U+201C/U+201D; g̣=g+U+0323"
+    },
+    "20": {
+      "text": "yɪlh-ᴇʟuˊê, “great-grandson;” yɪlhɪʟoˊo-tɵˊmg̣ɪn, “male cousin twice removed,” etc.",
+      "resolved": "ɪ=U+026A (x3); ᴇ=U+1D07; ʟ=U+029F (x2); ˊ=U+02CA (x3); ê=e+U+0302; ɵ=U+0275; g̣=g+U+0323; “”=U+201C/U+201D"
+    },
+    "21": {
+      "text": "The more remote degrees of relationship are designated as čɪmčeˊkin,",
+      "resolved": "č=c+U+030C (x2); ɪ=U+026A; ˊ=U+02CA"
+    },
+    "22": {
+      "text": "“the near one;” or čičeˊtkin, čičeˊʟeñ, “kinsman.” The compass of the second",
+      "resolved": "“”=U+201C/U+201D; č=c+U+030C (x4); ˊ=U+02CA (x2); ʟ=U+029F; ñ=n+U+0303"
+    },
+    "23": {
+      "text": "term is larger than that of the first."
+    },
+    "24": {
+      "text": "All degrees of step-relations are designated with the suffix -lqäl, meaning",
+      "resolved": "ä=a+U+0308"
+    },
+    "25": {
+      "text": "“intended for.”⁴ Thus ᴇʟɪˊhɪlqäl, “step-father;” ᴇʟaˊlqäl, step-mother,” also,",
+      "resolved": "“”=U+201C/U+201D; ⁴=U+2074 footnote marker; ᴇ=U+1D07 (x2); ʟ=U+029F (x2); ɪ=U+026A (x2); ˊ=U+02CA (x2); ä=a+U+0308",
+      "note": "Printed exactly as read: \"step-father;\" closes with a curly close-quote, then ᴇʟa'lqäl, step-mother,\" carries only a closing quote with no matching open quote before \"step-mother\" — an asymmetric/unpaired quote in the print itself, not a keying choice. Kept as printed per §2.14 (printer's setting, not repaired).",
+      "class": "print"
+    },
+    "26": {
+      "text": "in polygamous families, “another wife of my father;” eˊkkelqäl, “step-son;”",
+      "resolved": "“”=U+201C/U+201D; ˊ=U+02CA; ä=a+U+0308"
+    },
+    "27": {
+      "text": "ñeeˊkkelqäl, “step-daughter;” yiˊčemit-tuˊmgälqäl, “step-brother;” čakêˊttɪlqäl,",
+      "resolved": "ñ=n+U+0303; ˊ=U+02CA (x3); “”=U+201C/U+201D; č=c+U+030C (x2); ä=a+U+0308; ê=e+U+0302; ɪ=U+026A",
+      "note": "Advisory: rare form yiˊčemit-tuˊmgälqäl (keying_spec §5.1). Checked at 4x (review/3-005/zoom/zoom4-25p5-38_25p36-68.png neighbourhood and the lines-24-30 sheet): plain dotted i (not ɪ) in yiˊčemit, bare ä with no missing mark found.",
+      "class": "doubt"
+    },
+    "28": {
+      "text": "“step-sister” (in repect to the brother), etc. Even ñew-miˊrg̣ɪlqäl, “step-grand-",
+      "note": "\"repect\" for \"respect\" is the book's own printing error, keyed verbatim per §2.14 (printer's errors are keyed as printed).",
+      "class": "print",
+      "resolved": "“”=U+201C/U+201D; ñ=n+U+0303; ˊ=U+02CA; g̣=g+U+0323; ɪ=U+026A; ä=a+U+0308"
+    },
+    "29": {
+      "text": "mother,” is often used in polygamous families."
+    },
+    "30": {
+      "text": "Affinity is designated as follows: —",
+      "resolved": "—=U+2014 em dash"
+    },
+    "31": {
+      "text": "AFFINITY.",
+      "note": "Run-in-heading-style small-caps setting keyed as plain ASCII capitals per §2.13.",
+      "class": "print"
+    },
+    "32": {
+      "text": "Mataˊlɪn⁵ Father-in-law.",
+      "resolved": "ˊ=U+02CA; ɪ=U+026A; ⁵=U+2075 footnote marker"
+    },
+    "33": {
+      "text": "Ñaw-mataˊlɪn Mother-in-law.",
+      "resolved": "Ñ=N+U+0303; ˊ=U+02CA; ɪ=U+026A"
+    },
+    "34": {
+      "text": "ɪntuˊulpᴇr Son-in-law.",
+      "resolved": "ɪ=U+026A word-initial; ˊ=U+02CA; ᴇ=U+1D07 small-cap",
+      "note": "A raised, dotted, italic-shaped small \"i\" sits above the final r of ulpEr in the raster (confirmed at 4x, review/3-005/zoom/zoom4-34p18-69.png) and is not part of the keyed text. It is not a footnote digit — the page's footnote markers are all superscript digits 1-6, fully accounted for elsewhere (opened at L42-47), and a letter shape is outside §2.10's marker inventory. It does not match any mark in §2.1-2.4. Left unkeyed per the uncatalogued-mark rule (§5.9/§2.14); flagging for adjudication rather than guessing at what it represents.",
+      "class": "doubt"
+    },
+    "35": {
+      "text": "ɪnteˊ Daughter-in-law.",
+      "resolved": "ɪ=U+026A; ˊ=U+02CA"
+    },
+    "36": {
+      "text": "Aačêˊw-mataˊlɪn⁶ Brother-in-law.",
+      "resolved": "č=c+U+030C; ê=e+U+0302; ˊ=U+02CA (x2); ɪ=U+026A; ⁶=U+2076 footnote marker"
+    },
+    "38": {
+      "text": "Ñaučhän-mataˊlɪn⁶",
+      "resolved": "Ñ=N+U+0303; č=c+U+030C; ä=a+U+0308; ˊ=U+02CA; ɪ=U+026A; ⁶=U+2076"
+    },
+    "37": {
+      "text": "Sister-in-law.",
+      "note": "This is the English gloss for L38's Ñaučhän-mata'lɪn⁶; the two share one printed row and were segmented as separate ALTO lines (L38 native term, L37 gloss) — kept as their own lines per the store, not merged.",
+      "class": "layout"
+    },
+    "39": {
+      "text": "Takaˊlhɪn Husband of wife’s sister.",
+      "resolved": "ˊ=U+02CA; ɪ=U+026A; ’=U+2019"
+    },
+    "40": {
+      "text": "Umiˊrit Son-in-law’s or daughter-in-law’s father.",
+      "resolved": "ˊ=U+02CA; ’=U+2019 (x2)"
+    },
+    "41": {
+      "text": "Ñeumiˊrit (“woman umiˊrit”) Son-in-law’s or daughter-in-law’s mother.",
+      "resolved": "Ñ=N+U+0303; ˊ=U+02CA (x2); “”=U+201C/U+201D; ’=U+2019 (x2)"
+    },
+    "42": {
+      "text": "¹ Women use the term ñawˊgêl, which is the female pronunciation of ñaw-yêᵋˊlhɪ.",
+      "resolved": "¹=U+00B9 footnote marker; ñ=n+U+0303 (x2); ˊ=U+02CA (x2); ê=e+U+0302 (x2); ᵋ=U+1D4B; ɪ=U+026A",
+      "note": "Advisory: rare form ñawˊgêl (keying_spec §5.1). Read directly off the raster (review/3-005/sheets/lines-42-48.png and zoom4-47p20-55_48p0-38.png context): stress tick clearly after w, before g, ê with circumflex — no dropped mark found, no g-dot expected here (this is not the -gɪn/-gin suffix, it is a bare root gêl).",
+      "class": "doubt"
+    },
+    "43": {
+      "text": "² Female pronunciation, ᴇʟuˊwg̣o-tɵˊmg̣ɪn. ᴇʟOO and ᴇʟuˊe are related.",
+      "resolved": "²=U+00B2; ᴇ=U+1D07 (x3); ʟ=U+029F (x3); ˊ=U+02CA (x3); g̣=g+U+0323 (x2); ɵ=U+0275; ɪ=U+026A",
+      "note": "\"ELOO\" is read literally off the raster (review/3-005/zoom/zoom4-43p0-49_43p27-76_44p0-35.png, row 43.1): two adjacent round letters at cap height, no apostrophe between them, where every other occurrence of this root on the page is ᴇʟo'o (stress, single o twice: L11, L12, L20). Possibly a compositor's contraction/cross-reference shorthand rather than the full form; flagging for adjudication rather than silently normalizing to ᴇʟo'o.",
+      "class": "doubt"
+    },
+    "44": {
+      "text": "³ Female pronunciation, ñauʟuˊwg̣o-tɵˊmg̣ɪn. Women among themselves use simply the term ñawˊgêl.",
+      "resolved": "³=U+00B3; ñ=n+U+0303 (x2); ʟ=U+029F; ˊ=U+02CA (x3); g̣=g+U+0323 (x2); ɵ=U+0275; ɪ=U+026A; ê=e+U+0302",
+      "note": "Same rare form ñawˊgêl as L42 (keying_spec §5.1 advisory); read the same way off the raster, no dropped mark found.",
+      "class": "doubt"
+    },
+    "45": {
+      "text": "⁴ For instance, uwäˊᵋqučilqäl (“intended for husband”), “bridegroom;” ñeˊwänlɪqäl (“intended for wife”), “bride.”",
+      "resolved": "⁴=U+2074; ä=a+U+0308 (x2); č=c+U+030C; ˊ=U+02CA (x2); ᵋ=U+1D4B; ñ=n+U+0303; ɪ=U+026A; “”=U+201C/U+201D",
+      "note": "Stress precedes laryngeal here (uwäˊᵋ) where L4/L5/L6/L16/L42 print laryngeal before stress (êᵋˊ) — kept in the order printed rather than normalized to match, per the two-superscript-marks memory note.",
+      "class": "doubt"
+    },
+    "46": {
+      "text": "⁵ From the verb mataˊrkɪn (“thou takest,” “thou takest to wife”).",
+      "resolved": "⁵=U+2075; ˊ=U+02CA; ɪ=U+026A; “”=U+201C/U+201D"
+    },
+    "47": {
+      "text": "⁶ Aaˊčêk means “young man;” ñeˊus˙qät means “woman.” These terms are used by both wedded parties.",
+      "resolved": "⁶=U+2076; ˊ=U+02CA (x2); č=c+U+030C; ê=e+U+0302; “”=U+201C/U+201D; ñ=n+U+0303; ˙=U+02D9 palatalization; ä=a+U+0308",
+      "note": "Middle dot between s and q read as the palatalization mark U+02D9 (licensed on the seven-member series n x d t s č ǰ, and s is in that series), confirmed at 4x — not U+00B7 middle dot, which would be a lookalike per §3.",
+      "class": "doubt"
+    },
+    "48": {
+      "text": "Sometimes they say also ᴇndêw-mataˊlɪn (“wife’s uncle”) and ᴇččaiˊñaw-mataˊlɪn (“wife’s aunt”).",
+      "resolved": "ᴇ=U+1D07 (x2); ê=e+U+0302; ˊ=U+02CA (x3); ɪ=U+026A (x2); “”=U+201C/U+201D; ’=U+2019 (x2); č=c+U+030C (x2); ñ=n+U+0303"
+    }
+  }
+}

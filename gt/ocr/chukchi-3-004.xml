@@ -1,0 +1,490 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-3-004.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-3-004.png; regions_from: zones/chukchi-3-004.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-Other"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+                <TextBlock ID="mz_3-004_r1" HPOS="367" VPOS="468" WIDTH="1782" HEIGHT="90" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="367 468 2149 468 2149 558 367 558"/>
+                    </Shape>
+                    <TextLine ID="mz_3-004_l1" HPOS="960" VPOS="486" WIDTH="618" HEIGHT="51" BASELINE="962 521 1578 517" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="962 521 962 537 1576 533 1578 517 1572 486 960 488 962 521"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l2" HPOS="387" VPOS="478" WIDTH="94" HEIGHT="63" BASELINE="389 531 481 525" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="387 509 389 531 389 541 479 537 481 525 477 484 455 478 454 478 452 478 395 490 387 509"/>
+                        </Shape>
+                        <String CONTENT="538"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-004_r2" HPOS="367" VPOS="583" WIDTH="1782" HEIGHT="501" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="367 583 2149 583 2149 1084 367 1084"/>
+                    </Shape>
+                    <TextLine ID="mz_3-004_l3" HPOS="379" VPOS="587" WIDTH="1774" HEIGHT="57" BASELINE="381 630 2153 626" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="381 630 381 642 2149 644 2153 626 2149 599 1716 587 1714 587 1638 597 1584 587 1582 587 1580 587 1578 587 1562 599 1327 599 1266 587 1264 587 1262 587 1260 587 1245 599 594 589 592 589 379 601 381 630"/>
+                        </Shape>
+                        <String CONTENT="same paternal line of descent use the same marks, which descend from"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l4" HPOS="383" VPOS="652" WIDTH="1772" HEIGHT="60" BASELINE="383 689 2155 689" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="383 689 383 712 2155 702 2155 689 2153 652 383 659 383 689"/>
+                        </Shape>
+                        <String CONTENT="generation to generation. In the same sense, people of the same paternal"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l5" HPOS="379" VPOS="706" WIDTH="1768" HEIGHT="57" BASELINE="381 749 2147 743" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="381 749 381 763 2145 757 2147 743 2143 706 1559 706 1557 706 1555 706 1553 706 1537 716 1097 708 1095 708 958 718 397 710 395 710 393 710 391 710 379 716 381 749"/>
+                        </Shape>
+                        <String CONTENT="descent, the “old male companions,” are also called “those of the same fire”"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l6" HPOS="378" VPOS="765" WIDTH="1773" HEIGHT="62" BASELINE="379 811 2151 804" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="379 811 379 825 2147 827 2151 804 2147 774 1709 765 1707 765 1705 765 1677 774 1405 767 1403 767 378 778 379 811"/>
+                        </Shape>
+                        <String CONTENT="(ᴇnnaˊn-yɪˊnlaᵋt), because they have community of fire. Paternal relationship"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l7" HPOS="379" VPOS="833" WIDTH="1772" HEIGHT="51" BASELINE="381 868 2151 864" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="381 868 381 884 2149 884 2151 864 2147 837 379 833 381 868"/>
+                        </Shape>
+                        <String CONTENT="is considered to be much stronger than maternal relationship. There is a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l8" HPOS="378" VPOS="884" WIDTH="1775" HEIGHT="68" BASELINE="379 928 2153 923" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="379 928 379 942 763 952 765 952 2153 940 2153 923 2151 895 2120 884 2118 884 2116 884 2069 893 1943 884 1941 884 1939 884 1919 893 1898 884 1896 884 1894 884 1839 893 1816 884 1814 884 1812 884 1810 884 1789 895 1674 895 1638 884 1637 884 1635 884 1633 884 1613 893 1584 884 1582 884 1580 884 1578 884 1576 884 1557 895 1391 886 1389 886 1387 886 1385 886 1370 897 1179 897 1104 886 1103 886 1101 886 1065 895 1034 886 1032 886 1030 886 917 897 898 887 896 887 894 887 598 897 391 887 389 887 387 887 385 887 378 891 379 928"/>
+                        </Shape>
+                        <String CONTENT="Chukchee saying which has it that even a distant relative on the father’s side"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l9" HPOS="376" VPOS="954" WIDTH="1775" HEIGHT="56" BASELINE="378 989 2151 983" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="378 989 378 1002 1555 1010 1557 1010 1559 1010 1596 1000 2126 1008 2128 1008 2130 1008 2151 997 2151 983 2147 956 376 954 378 989"/>
+                        </Shape>
+                        <String CONTENT="is much nearer to the heart than a maternal cousin. The terms of relation-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l10" HPOS="378" VPOS="1008" WIDTH="543" HEIGHT="63" BASELINE="378 1045 921 1045" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="378 1045 378 1061 919 1071 921 1045 921 1020 668 1008 666 1008 664 1008 662 1008 662 1010 652 1020 471 1020 403 1008 401 1008 399 1008 378 1018 378 1045"/>
+                        </Shape>
+                        <String CONTENT="ship are as follows: —"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-004_r3" HPOS="367" VPOS="1108" WIDTH="1782" HEIGHT="953" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="367 1108 2149 1108 2149 2061 367 2061"/>
+                    </Shape>
+                    <TextLine ID="mz_3-004_l11" HPOS="1114" VPOS="1117" WIDTH="304" HEIGHT="47" BASELINE="1114 1147 1418 1147" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1114 1147 1114 1164 1418 1164 1418 1147 1418 1117 1114 1117 1114 1147"/>
+                        </Shape>
+                        <String CONTENT="CONSANGUINITY."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l12" HPOS="539" VPOS="1193" WIDTH="1051" HEIGHT="51" BASELINE="541 1232 1590 1229" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1553 1199 1533 1197 1514 1197 1494 1195 1475 1195 1467 1193 1060 1205 574 1195 559 1197 545 1197 539 1203 541 1232 541 1244 1588 1240 1590 1229 1586 1205 1553 1199 1553 1199"/>
+                        </Shape>
+                        <String CONTENT="Aᵋttuˊuʟɵᵋn (“fore-goer”) Forefather."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l13" HPOS="539" VPOS="1250" WIDTH="1070" HEIGHT="53" BASELINE="541 1279 1609 1275" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="541 1279 541 1291 703 1291 713 1299 713 1301 715 1301 717 1301 719 1303 991 1303 991 1301 993 1301 995 1301 995 1299 1007 1289 1038 1301 1040 1301 1042 1301 1044 1301 1075 1287 1124 1287 1136 1297 1136 1299 1138 1299 1140 1299 1141 1299 1143 1299 1145 1299 1157 1287 1188 1299 1190 1299 1192 1299 1194 1299 1196 1299 1208 1287 1239 1299 1241 1299 1243 1299 1245 1299 1247 1299 1258 1287 1290 1299 1292 1299 1294 1299 1295 1299 1297 1299 1309 1287 1338 1299 1340 1299 1342 1299 1344 1299 1346 1299 1362 1287 1389 1299 1391 1299 1393 1299 1607 1291 1609 1275 1605 1252 539 1250 541 1279"/>
+                        </Shape>
+                        <String CONTENT="Yaˊaʟaᵋn (“behind-goer”). Descendant."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l14" HPOS="537" VPOS="1297" WIDTH="1361" HEIGHT="50" BASELINE="537 1326 1898 1326" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="537 1326 537 1338 543 1343 543 1345 545 1345 547 1345 549 1347 670 1347 670 1345 672 1345 674 1345 685 1336 732 1345 734 1345 736 1345 738 1345 750 1336 779 1345 781 1345 783 1345 785 1345 787 1345 802 1336 830 1345 832 1345 834 1345 836 1345 837 1345 849 1336 878 1345 880 1345 882 1345 884 1345 886 1345 902 1336 931 1345 933 1345 935 1345 937 1345 939 1345 954 1336 982 1345 984 1345 986 1345 988 1345 989 1345 1003 1336 1034 1345 1036 1345 1038 1345 1040 1345 1042 1345 1056 1336 1083 1345 1085 1345 1087 1345 1089 1345 1091 1345 1104 1336 1138 1345 1140 1345 1141 1345 1143 1345 1145 1345 1155 1336 1188 1345 1190 1345 1192 1345 1194 1345 1196 1345 1206 1336 1237 1345 1239 1345 1241 1345 1243 1345 1245 1345 1256 1336 1288 1345 1290 1345 1292 1345 1294 1345 1295 1345 1309 1336 1336 1345 1338 1345 1340 1345 1342 1345 1344 1345 1360 1336 1397 1345 1399 1345 1401 1345 1898 1340 1898 1326 1898 1303 537 1297 537 1326"/>
+                        </Shape>
+                        <String CONTENT="Miˊrg̣ɪn¹ Grandfather and great-uncle."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l15" HPOS="572" VPOS="1342" WIDTH="1326" HEIGHT="50" BASELINE="574 1369 1898 1373" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="574 1369 572 1382 580 1390 580 1392 582 1392 584 1392 586 1392 1896 1384 1898 1373 1896 1345 574 1342 574 1369"/>
+                        </Shape>
+                        <String CONTENT="Ñew-miˊrg̣ɪn (ñe, ñew, “woman”) Grandmother and great-aunt."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l16" HPOS="535" VPOS="1390" WIDTH="1400" HEIGHT="49" BASELINE="537 1419 1935 1416" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="537 1419 537 1429 668 1429 680 1439 682 1439 683 1439 685 1439 687 1439 689 1439 705 1429 871 1429 882 1439 884 1439 886 1439 888 1439 890 1439 892 1439 906 1429 933 1439 935 1439 937 1439 939 1439 941 1439 956 1429 986 1439 988 1439 989 1439 991 1439 993 1439 1007 1429 1036 1439 1038 1439 1040 1439 1042 1439 1044 1439 1058 1429 1087 1439 1089 1439 1091 1439 1093 1439 1095 1439 1110 1429 1241 1437 1243 1437 1245 1437 1247 1437 1256 1427 1288 1437 1290 1437 1292 1437 1294 1437 1295 1437 1309 1427 1338 1437 1340 1437 1342 1437 1344 1437 1346 1437 1360 1427 1397 1437 1399 1437 1401 1437 1935 1433 1935 1416 1929 1390 535 1394 537 1419"/>
+                        </Shape>
+                        <String CONTENT="ᴇndiˊw Uncle,² paternal and maternal."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l17" HPOS="537" VPOS="1437" WIDTH="774" HEIGHT="45" BASELINE="539 1462 1311 1466" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="539 1462 537 1474 633 1480 635 1480 637 1480 666 1470 691 1480 693 1480 695 1480 697 1480 699 1480 699 1478 709 1470 769 1470 791 1480 793 1480 795 1480 797 1480 820 1470 841 1480 843 1480 845 1480 847 1480 871 1470 890 1480 892 1480 894 1480 896 1480 917 1470 925 1480 927 1480 927 1482 929 1482 931 1482 933 1482 935 1482 958 1472 1046 1482 1048 1482 1050 1482 1073 1472 1093 1482 1095 1482 1097 1482 1099 1482 1126 1472 1141 1482 1143 1482 1145 1482 1147 1482 1149 1482 1175 1472 1196 1482 1198 1482 1200 1482 1202 1482 1225 1472 1245 1482 1247 1482 1249 1482 1251 1482 1278 1472 1292 1482 1294 1482 1295 1482 1297 1482 1299 1482 1301 1482 1301 1480 1309 1470 1311 1466 1309 1441 539 1437 539 1462"/>
+                        </Shape>
+                        <String CONTENT="ᴇččaiˊ"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l18" HPOS="1321" VPOS="1439" WIDTH="41" HEIGHT="37" BASELINE="1325 1466 1362 1464" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1325 1466 1325 1474 1358 1476 1362 1464 1356 1439 1321 1439 1325 1466"/>
+                        </Shape>
+                        <String CONTENT="A"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l19" HPOS="1371" VPOS="1437" WIDTH="552" HEIGHT="45" BASELINE="1371 1464 1923 1464" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1371 1464 1371 1482 1923 1482 1923 1464 1923 1437 1371 1437 1371 1464"/>
+                        </Shape>
+                        <String CONTENT="Aunt,³ paternal and maternal."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l20" HPOS="1325" VPOS="1474" WIDTH="191" HEIGHT="55" BASELINE="1327 1513 1516 1511" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1327 1513 1327 1523 1512 1529 1516 1511 1512 1486 1391 1474 1389 1474 1325 1486 1327 1513"/>
+                        </Shape>
+                        <String CONTENT="Father."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l21" HPOS="537" VPOS="1476" WIDTH="778" HEIGHT="58" BASELINE="537 1513 1315 1513" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="537 1513 537 1525 670 1525 680 1533 680 1534 682 1534 683 1534 685 1534 1315 1523 1315 1513 1315 1488 687 1476 685 1476 683 1476 662 1486 600 1476 598 1476 537 1486 537 1513"/>
+                        </Shape>
+                        <String CONTENT="ᴇʟɪˊhɪn (address: aˊtê, “papa”)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l22" HPOS="1323" VPOS="1521" WIDTH="208" HEIGHT="52" BASELINE="1325 1560 1531 1556" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1325 1560 1325 1570 1527 1573 1531 1556 1527 1533 1426 1521 1424 1521 1323 1534 1325 1560"/>
+                        </Shape>
+                        <String CONTENT="Mother."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l23" HPOS="535" VPOS="1533" WIDTH="780" HEIGHT="39" BASELINE="535 1560 1315 1560" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="535 1560 535 1572 1315 1572 1315 1560 1315 1533 535 1533 535 1560"/>
+                        </Shape>
+                        <String CONTENT="ᴇʟaˊ (address: äˊmmê, “mamma”)⁴"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l24" HPOS="574" VPOS="1577" WIDTH="636" HEIGHT="49" BASELINE="576 1603 1210 1605" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="576 1603 574 1620 576 1622 578 1622 578 1624 580 1624 582 1624 584 1626 892 1626 892 1624 894 1624 896 1624 896 1622 906 1612 931 1622 933 1622 935 1622 937 1622 972 1612 984 1624 986 1624 988 1624 989 1624 991 1624 1023 1612 1032 1622 1032 1624 1034 1624 1036 1624 1038 1624 1040 1624 1071 1612 1085 1624 1087 1624 1089 1624 1091 1624 1093 1624 1124 1612 1136 1624 1138 1624 1140 1624 1141 1624 1143 1624 1175 1612 1186 1624 1188 1624 1190 1624 1192 1624 1194 1624 1196 1624 1208 1612 1210 1605 1208 1579 576 1577 576 1603"/>
+                        </Shape>
+                        <String CONTENT="ᴇʟɪˊhɪt (“fathers”)"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l25" HPOS="1219" VPOS="1579" WIDTH="316" HEIGHT="47" BASELINE="1221 1607 1535 1603" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1221 1607 1221 1614 1294 1624 1295 1624 1297 1624 1325 1614 1336 1624 1336 1626 1338 1626 1340 1626 1342 1626 1344 1626 1375 1612 1387 1624 1389 1624 1391 1624 1393 1624 1533 1618 1535 1603 1529 1579 1219 1581 1221 1607"/>
+                        </Shape>
+                        <String CONTENT="Parents."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l26" HPOS="1370" VPOS="1614" WIDTH="167" HEIGHT="53" BASELINE="1371 1651 1537 1649" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1371 1651 1371 1665 1533 1667 1537 1649 1533 1624 1391 1614 1389 1614 1387 1614 1370 1622 1371 1651"/>
+                        </Shape>
+                        <String CONTENT="Brother."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l27" HPOS="539" VPOS="1614" WIDTH="827" HEIGHT="61" BASELINE="539 1651 1366 1651" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="539 1651 539 1663 771 1675 773 1675 837 1665 873 1675 874 1675 876 1675 1331 1665 1340 1673 1340 1675 1342 1675 1344 1675 1346 1675 1348 1675 1350 1675 1366 1665 1366 1651 1366 1626 1182 1626 1173 1616 1173 1614 1171 1614 1169 1614 1167 1614 1110 1624 1099 1614 1097 1614 1095 1614 1093 1614 539 1618 539 1651"/>
+                        </Shape>
+                        <String CONTENT="Yiˊčemit-tuˊmg̣ɪn⁵ (“fellow-brother”)"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l28" HPOS="533" VPOS="1671" WIDTH="833" HEIGHT="47" BASELINE="535 1696 1366 1700" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="535 1696 533 1706 687 1716 689 1716 691 1716 715 1704 736 1716 738 1716 740 1716 742 1716 765 1704 783 1716 785 1716 787 1716 789 1716 791 1716 818 1704 834 1716 836 1716 837 1716 839 1716 841 1716 867 1704 884 1716 886 1716 888 1716 890 1716 892 1716 915 1704 925 1714 925 1716 927 1716 929 1716 931 1716 933 1716 966 1706 991 1718 993 1718 995 1718 997 1718 1019 1706 1038 1718 1040 1718 1042 1718 1044 1718 1046 1718 1069 1706 1091 1718 1093 1718 1095 1718 1097 1718 1120 1706 1140 1718 1141 1718 1143 1718 1145 1718 1147 1718 1173 1706 1188 1718 1190 1718 1192 1718 1194 1718 1196 1718 1221 1706 1239 1718 1241 1718 1243 1718 1245 1718 1247 1718 1274 1706 1288 1718 1290 1718 1292 1718 1294 1718 1295 1718 1323 1706 1340 1718 1342 1718 1344 1718 1346 1718 1348 1718 1350 1718 1364 1704 1366 1700 1364 1675 535 1671 535 1696"/>
+                        </Shape>
+                        <String CONTENT="ɪneˊelin"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l29" HPOS="1371" VPOS="1671" WIDTH="273" HEIGHT="43" BASELINE="1371 1698 1644 1698" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1371 1698 1371 1714 1644 1714 1644 1698 1644 1671 1371 1671 1371 1698"/>
+                        </Shape>
+                        <String CONTENT="Elder brother."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l30" HPOS="1375" VPOS="1712" WIDTH="336" HEIGHT="47" BASELINE="1377 1745 1711 1741" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1703 1712 1375 1718 1377 1745 1377 1759 1709 1755 1711 1741 1705 1712 1703 1712"/>
+                        </Shape>
+                        <String CONTENT="Younger brother.⁶"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l31" HPOS="535" VPOS="1722" WIDTH="825" HEIGHT="33" BASELINE="535 1745 1360 1745" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="535 1745 535 1755 1360 1753 1360 1745 1360 1722 535 1722 535 1745"/>
+                        </Shape>
+                        <String CONTENT="ᴇʟeˊñi"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l32" HPOS="531" VPOS="1764" WIDTH="1240" HEIGHT="49" BASELINE="531 1790 1771 1790" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="531 1790 531 1801 543 1811 545 1811 547 1811 549 1813 682 1813 682 1811 683 1811 685 1811 685 1809 697 1800 726 1809 728 1809 730 1809 732 1809 752 1800 779 1809 781 1809 783 1809 867 1800 880 1811 882 1811 884 1811 886 1811 888 1811 890 1811 902 1800 931 1811 933 1811 935 1811 937 1811 939 1811 954 1800 982 1811 984 1811 986 1811 988 1811 989 1811 1005 1800 1032 1811 1034 1811 1036 1811 1038 1811 1040 1811 1056 1800 1083 1811 1085 1811 1087 1811 1089 1811 1091 1811 1106 1800 1134 1811 1136 1811 1138 1811 1140 1811 1141 1811 1159 1800 1184 1811 1186 1811 1188 1811 1190 1811 1192 1811 1208 1800 1235 1811 1237 1811 1239 1811 1241 1811 1243 1811 1258 1800 1288 1811 1290 1811 1292 1811 1294 1811 1295 1811 1309 1800 1336 1811 1338 1811 1340 1811 1342 1811 1344 1811 1360 1800 1393 1811 1395 1811 1397 1811 1771 1803 1771 1790 1771 1766 531 1764 531 1790"/>
+                        </Shape>
+                        <String CONTENT="Čaˊkɪhêt Sister (said by male)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l33" HPOS="569" VPOS="1800" WIDTH="1307" HEIGHT="58" BASELINE="570 1835 1876 1839" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="570 1835 569 1846 582 1856 584 1856 586 1856 588 1858 832 1858 832 1856 834 1856 836 1856 847 1844 880 1856 882 1856 884 1856 886 1856 888 1856 906 1844 929 1856 931 1856 933 1856 935 1856 937 1856 956 1844 982 1856 984 1856 986 1856 988 1856 989 1856 1003 1844 1032 1856 1034 1856 1036 1856 1038 1856 1040 1856 1058 1844 1118 1844 1130 1854 1130 1856 1132 1856 1134 1856 1136 1856 1138 1856 1140 1856 1155 1844 1184 1856 1186 1856 1188 1856 1190 1856 1223 1844 1288 1858 1290 1858 1292 1858 1294 1858 1311 1846 1371 1846 1385 1858 1387 1858 1389 1858 1391 1858 1485 1848 1525 1858 1527 1858 1529 1858 1695 1848 1734 1858 1736 1858 1738 1858 1740 1858 1742 1858 1753 1848 1761 1856 1763 1856 1765 1856 1857 1858 1859 1858 1861 1858 1863 1858 1874 1846 1876 1839 1876 1813 1855 1801 1853 1801 1851 1801 1757 1811 1720 1801 1718 1801 1607 1801 1605 1801 1603 1801 1601 1801 1590 1811 1527 1801 1525 1801 1523 1801 1492 1811 1446 1801 1444 1801 1373 1811 841 1811 820 1800 818 1800 816 1800 570 1807 570 1835"/>
+                        </Shape>
+                        <String CONTENT="ɪˊnpɪčɪ-čaˊkɪhêt Elder sister (said by male)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l34" HPOS="578" VPOS="1844" WIDTH="1318" HEIGHT="63" BASELINE="580 1881 1896 1883" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="580 1881 578 1891 621 1903 623 1903 625 1903 900 1895 912 1905 913 1905 915 1905 917 1905 919 1905 952 1895 1003 1905 1005 1907 1151 1907 1151 1905 1153 1905 1155 1905 1155 1903 1165 1895 1237 1905 1239 1905 1241 1905 1243 1905 1256 1895 1892 1899 1896 1883 1894 1856 683 1856 580 1844 580 1881"/>
+                        </Shape>
+                        <String CONTENT="Wuˊthɪtčä-čaˊkɪhêt or wuˊthɪtčeᵋn Middle sister (said by male)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l35" HPOS="570" VPOS="1899" WIDTH="788" HEIGHT="54" BASELINE="572 1926 1358 1932" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="572 1926 570 1940 596 1950 598 1950 995 1952 997 1952 999 1952 1040 1942 1145 1953 1147 1953 1149 1953 1177 1944 1356 1944 1358 1932 1356 1905 572 1899 572 1926"/>
+                        </Shape>
+                        <String CONTENT="Ñêˊnča-čaˊkɪhêt (“younger sister”)"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l36" HPOS="1373" VPOS="1901" WIDTH="554" HEIGHT="52" BASELINE="1375 1930 1927 1932" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1375 1930 1373 1942 1477 1953 1479 1953 1925 1944 1927 1932 1925 1903 1375 1901 1375 1930"/>
+                        </Shape>
+                        <String CONTENT="Younger sister (said by male)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l37" HPOS="565" VPOS="1940" WIDTH="1229" HEIGHT="54" BASELINE="567 1977 1794 1975" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="567 1977 567 1989 1790 1994 1794 1975 1790 1950 576 1940 574 1940 572 1940 570 1940 570 1942 565 1946 567 1977"/>
+                        </Shape>
+                        <String CONTENT="Čaˊkêt-tɵˊmg̣ɪn (“sister-mate”) Sister (said by female)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l38" HPOS="569" VPOS="1996" WIDTH="1335" HEIGHT="43" BASELINE="569 2022 1904 2022" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="569 2022 569 2039 1904 2039 1904 2022 1904 1996 569 1996 569 2022"/>
+                        </Shape>
+                        <String CONTENT="ɪˊnpɪčɪ-čaˊkêt-tɵˊmg̣ɪn (“elder sister-mate”) Elder sister (said by female)."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-004_r4" HPOS="367" VPOS="2086" WIDTH="1782" HEIGHT="1044" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="367 2086 2149 2086 2149 3130 367 3130"/>
+                    </Shape>
+                    <TextLine ID="mz_3-004_l39" HPOS="475" VPOS="2088" WIDTH="1666" HEIGHT="53" BASELINE="477 2113 2141 2117" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="477 2113 475 2129 2137 2141 2141 2117 2139 2092 477 2088 477 2113"/>
+                        </Shape>
+                        <String CONTENT="¹ One can also say ᴇʟɪˊw-miˊrg̣ɪn (“paternal grandfather”) and ᴇʟaˊ-mêˊrg̣ɪn (“maternal grandfather”),"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l40" HPOS="368" VPOS="2135" WIDTH="1775" HEIGHT="43" BASELINE="368 2160 2143 2160" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="368 2160 368 2178 2143 2178 2143 2160 2141 2135 368 2135 368 2160"/>
+                        </Shape>
+                        <String CONTENT="though generally the first part of the word is omitted. Children use also the terms apaiˊñɪn (“grandfather”) and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l41" HPOS="368" VPOS="2178" WIDTH="1773" HEIGHT="42" BASELINE="368 2203 2141 2203" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="368 2203 368 2220 2141 2220 2141 2203 2141 2178 368 2178 368 2203"/>
+                        </Shape>
+                        <String CONTENT="epeˊqäi (“grandmother”), which are, the former an augmentative, and the latter a diminutive, form from eˊpᴇ"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l42" HPOS="368" VPOS="2217" WIDTH="1773" HEIGHT="44" BASELINE="370 2246 2141 2240" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="370 2246 370 2261 2139 2259 2141 2240 2135 2217 368 2220 370 2246"/>
+                        </Shape>
+                        <String CONTENT="(“father”). The latter word, however, is rarely used, and belongs rather to the Koryak language. Another"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l43" HPOS="368" VPOS="2259" WIDTH="1773" HEIGHT="45" BASELINE="370 2287 2141 2283" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="370 2287 370 2304 2139 2302 2141 2283 2135 2259 368 2261 370 2287"/>
+                        </Shape>
+                        <String CONTENT="diminutive, epeˊpil (literally, “little father”), is attributed to the Christian priest, and with this meaning it has"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l44" HPOS="366" VPOS="2302" WIDTH="512" HEIGHT="43" BASELINE="368 2332 878 2326" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="368 2332 368 2345 878 2345 878 2326 873 2302 366 2306 368 2332"/>
+                        </Shape>
+                        <String CONTENT="been adopted by the Chukchee."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l45" HPOS="477" VPOS="2339" WIDTH="1538" HEIGHT="49" BASELINE="479 2365 2015 2373" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="479 2365 477 2380 2011 2388 2015 2373 2013 2347 479 2339 479 2365"/>
+                        </Shape>
+                        <String CONTENT="² These may be distinguished as ᴇʟɪˊhɪndiw (“paternal uncle”) and ᴇʟaˊndêw (“maternal uncle”)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l46" HPOS="477" VPOS="2384" WIDTH="1093" HEIGHT="43" BASELINE="479 2410 1570 2413" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="479 2410 477 2423 1566 2427 1570 2413 1568 2388 479 2384 479 2410"/>
+                        </Shape>
+                        <String CONTENT="³ Uncles and aunts once removed are designated by the same terms."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l47" HPOS="479" VPOS="2425" WIDTH="1660" HEIGHT="45" BASELINE="481 2450 2139 2456" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="481 2450 479 2464 2135 2470 2139 2456 2137 2431 481 2425 481 2450"/>
+                        </Shape>
+                        <String CONTENT="⁴ Äˊmmê probably means the mother’s breast; aˊtê and äˊmmê are used mostly by young children."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l48" HPOS="366" VPOS="2466" WIDTH="1771" HEIGHT="49" BASELINE="368 2499 2137 2495" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="368 2499 368 2515 2135 2511 2137 2495 2132 2466 366 2474 368 2499"/>
+                        </Shape>
+                        <String CONTENT="ɪnpɪnaˊčhɪn and ɪnpɪñeˊ, which, according to Nordquist, were mentioned by several authors as terms for “father”"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l49" HPOS="366" VPOS="2513" WIDTH="1775" HEIGHT="45" BASELINE="368 2542 2141 2538" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="368 2542 368 2558 2139 2558 2141 2538 2135 2513 366 2515 368 2542"/>
+                        </Shape>
+                        <String CONTENT="and “mother” respectively, in reality have the meaning “old man” and “old woman.” Both are derived from"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l50" HPOS="366" VPOS="2554" WIDTH="861" HEIGHT="48" BASELINE="368 2579 1227 2585" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="368 2579 366 2595 372 2601 372 2602 374 2602 376 2602 378 2602 1225 2601 1227 2585 1225 2560 368 2554 368 2579"/>
+                        </Shape>
+                        <String CONTENT="ɪnp, the root of the adjective nɪˊnpɪqên (“he is old”)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l51" HPOS="477" VPOS="2591" WIDTH="1658" HEIGHT="49" BASELINE="479 2622 2135 2620" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="479 2622 479 2640 2134 2638 2135 2620 2130 2591 477 2597 479 2622"/>
+                        </Shape>
+                        <String CONTENT="⁵ In all derivations, only the first stem is used. Tuˊmg̣ɪtum (pl. tuˊmg̣ɪt, stem tuˊmg̣ɪ) means “companion,”"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l52" HPOS="368" VPOS="2638" WIDTH="1775" HEIGHT="42" BASELINE="370 2663 2143 2667" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="370 2663 368 2677 2139 2680 2143 2667 2141 2641 370 2638 370 2663"/>
+                        </Shape>
+                        <String CONTENT="“mate,” also “kinsman.” A husband, speaking of his wife, calls her g̣ŭmniˊn tuˊmg̣ɪtum (my mate”). G̣etuˊmg̣ɪlin"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l53" HPOS="368" VPOS="2682" WIDTH="1777" HEIGHT="43" BASELINE="368 2710 2145 2710" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="368 2710 368 2721 2141 2725 2145 2710 2141 2682 368 2682 368 2710"/>
+                        </Shape>
+                        <String CONTENT="means “one with companions,” “one with kinsmen,” “one with influence.” It is used as a compound in several"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l54" HPOS="368" VPOS="2727" WIDTH="1777" HEIGHT="41" BASELINE="368 2753 2145 2753" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="368 2753 368 2768 2143 2768 2145 2753 2143 2727 368 2727 368 2753"/>
+                        </Shape>
+                        <String CONTENT="terms referring to degrees of relationship, in various combinations, sometimes only between males, at other times"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l55" HPOS="368" VPOS="2770" WIDTH="1041" HEIGHT="39" BASELINE="368 2793 1409 2793" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="368 2793 368 2809 1409 2809 1409 2793 1409 2770 368 2770 368 2793"/>
+                        </Shape>
+                        <String CONTENT="only between females, and even also between males and females."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l56" HPOS="477" VPOS="2803" WIDTH="1672" HEIGHT="47" BASELINE="479 2829 2149 2834" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="479 2829 477 2844 2145 2850 2149 2834 2147 2805 479 2803 479 2829"/>
+                        </Shape>
+                        <String CONTENT="⁶ The terms for “elder brother” and “younger brother” are relative; i. e., all brothers older than myself"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l57" HPOS="366" VPOS="2848" WIDTH="1781" HEIGHT="45" BASELINE="368 2873 2147 2877" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="368 2873 366 2889 2143 2893 2147 2877 2145 2852 368 2848 368 2873"/>
+                        </Shape>
+                        <String CONTENT="are my ɪneˊelit, and all brothers younger than myself are my ᴇʟeˊnyut (pl.). More detailed terms are used as"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l58" HPOS="366" VPOS="2891" WIDTH="1777" HEIGHT="43" BASELINE="368 2916 2143 2920" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="368 2916 366 2932 2139 2934 2143 2920 2141 2895 368 2891 368 2916"/>
+                        </Shape>
+                        <String CONTENT="follows: ênaˊn-ɪnaˊalɪn, “the oldest brother;” ênaˊn-ᴇʟaˊñê, “the youngest brother;” wuˊthɪtčeᵋn, “the middle"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l59" HPOS="368" VPOS="2938" WIDTH="1779" HEIGHT="41" BASELINE="368 2963 2147 2963" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="368 2963 368 2979 2147 2977 2147 2963 2147 2938 368 2938 368 2963"/>
+                        </Shape>
+                        <String CONTENT="(brother).” ɪneˊelin (“elder brother”) and ᴇʟeˊñi (“younger brother”) are used both by males and females; but"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l60" HPOS="366" VPOS="2973" WIDTH="1779" HEIGHT="45" BASELINE="368 3000 2145 3004" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="368 3000 366 3014 2141 3018 2145 3004 2143 2979 368 2973 368 3000"/>
+                        </Shape>
+                        <String CONTENT="the former term is pronounced by women ɪniˊnelin, according to the rules of female pronunciation, in which"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l61" HPOS="366" VPOS="3020" WIDTH="1777" HEIGHT="52" BASELINE="368 3049 2143 3045" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="368 3049 368 3072 2141 3066 2143 3045 2137 3020 366 3021 368 3049"/>
+                        </Shape>
+                        <String CONTENT="contractions are avoided. The elder sister is also called ɪneˊelin or ɪniˊnelin (by males and females). ᴇʟeˊñi is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-004_l62" HPOS="368" VPOS="3064" WIDTH="565" HEIGHT="43" BASELINE="368 3088 933 3088" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="368 3088 368 3107 933 3107 933 3088 933 3064 368 3064 368 3088"/>
+                        </Shape>
+                        <String CONTENT="used for the younger brother only."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

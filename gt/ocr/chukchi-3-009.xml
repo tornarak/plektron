@@ -1,0 +1,382 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-3-009.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-3-009.png; regions_from: zones/chukchi-3-009.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+                <TextBlock ID="mz_3-009_r1" HPOS="410" VPOS="453" WIDTH="1782" HEIGHT="94" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="410 453 2192 453 2192 547 410 547"/>
+                    </Shape>
+                    <TextLine ID="mz_3-009_l1" HPOS="978" VPOS="470" WIDTH="618" HEIGHT="53" BASELINE="980 507 1596 504" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1582 476 1566 470 986 472 978 478 980 507 980 523 1594 519 1596 504 1594 500 1582 476"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l2" HPOS="2073" VPOS="472" WIDTH="98" HEIGHT="57" BASELINE="2075 517 2171 513" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2151 478 2132 476 2112 472 2085 478 2073 498 2075 517 2075 529 2171 527 2171 513 2167 480 2151 478"/>
+                        </Shape>
+                        <String CONTENT="543"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-009_r2" HPOS="410" VPOS="570" WIDTH="1782" HEIGHT="187" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="410 570 2192 570 2192 757 410 757"/>
+                    </Shape>
+                    <TextLine ID="mz_3-009_l3" HPOS="401" VPOS="570" WIDTH="1770" HEIGHT="64" BASELINE="403 617 2171 611" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="403 617 403 630 2167 634 2171 611 2167 581 1944 570 1943 570 1855 580 1820 570 1818 570 1816 570 1769 580 1742 570 1740 570 1738 570 1666 580 1633 570 1631 570 1629 570 1627 570 1576 581 1210 572 1208 572 1081 581 991 572 989 572 927 583 894 574 892 574 890 574 672 583 420 574 418 574 416 574 415 574 401 581 403 617"/>
+                        </Shape>
+                        <String CONTENT="their leisure time with athletic exercise, wrestling, running, fencing with spears,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l4" HPOS="405" VPOS="646" WIDTH="1767" HEIGHT="43" BASELINE="405 673 2172 673" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="405 673 405 687 2171 689 2172 673 2172 646 405 646 405 673"/>
+                        </Shape>
+                        <String CONTENT="etc. They were more ready for war, which was more frequent than it is now."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l5" HPOS="403" VPOS="691" WIDTH="1495" HEIGHT="64" BASELINE="405 732 1898 735" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="405 732 403 745 411 753 411 755 413 755 415 755 416 755 1896 747 1898 735 1896 706 1839 693 1837 693 1734 704 1658 693 1656 693 1601 704 1578 693 1576 693 1574 693 1520 704 1434 693 1432 693 1370 704 1327 693 1325 693 1323 693 1231 704 1106 704 1093 691 1091 691 1089 691 1087 691 999 704 814 704 787 691 785 691 783 691 781 691 742 702 701 691 699 691 697 691 695 691 670 702 615 691 613 691 611 691 584 702 405 696 405 732"/>
+                        </Shape>
+                        <String CONTENT="In war the family-group acted as a unit against all other parties."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-009_r3" HPOS="410" VPOS="757" WIDTH="1782" HEIGHT="906" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="410 757 2192 757 2192 1663 410 1663"/>
+                    </Shape>
+                    <TextLine ID="mz_3-009_l6" HPOS="506" VPOS="751" WIDTH="1666" HEIGHT="64" BASELINE="508 796 2172 792" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="508 796 508 809 2169 815 2172 792 2169 763 2056 751 2054 751 2052 751 2050 751 2036 763 1925 763 1900 751 1898 751 1896 751 1794 761 1769 751 1767 751 1765 751 1763 751 1761 751 1748 763 1629 763 1599 751 1598 751 1596 751 1594 751 1561 763 506 763 508 796"/>
+                        </Shape>
+                        <String CONTENT="The Russian officials of the Kolyma country, when endeavoring to bring"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l7" HPOS="403" VPOS="809" WIDTH="1769" HEIGHT="61" BASELINE="405 854 2172 848" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="405 854 405 870 2171 868 2172 848 2171 821 2128 809 2126 809 2124 809 2122 809 2096 821 1771 821 1724 809 1722 809 1677 819 1646 809 1644 809 1642 809 1580 821 1541 811 1539 811 1537 811 1535 811 1504 821 1471 811 1469 811 1467 811 1465 811 1438 823 1221 823 1184 811 1182 811 1180 811 1179 811 1157 821 1103 811 1101 811 1027 821 995 811 993 811 991 811 989 811 952 823 923 813 921 813 919 813 715 823 510 813 508 813 506 813 479 823 422 813 420 813 418 813 416 813 403 821 405 854"/>
+                        </Shape>
+                        <String CONTENT="the Chukchee under Russian allegiance, treated them in the same way as the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l8" HPOS="411" VPOS="874" WIDTH="1763" HEIGHT="54" BASELINE="411 913 2174 913" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="411 913 411 928 2174 928 2174 913 2174 876 411 874 411 913"/>
+                        </Shape>
+                        <String CONTENT="Yakut and the Tungus of eastern Siberia. These tribes had strictly organized"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l9" HPOS="403" VPOS="928" WIDTH="1771" HEIGHT="63" BASELINE="405 975 2174 967" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="405 975 405 991 2172 985 2174 967 2171 940 1972 928 1970 928 1915 938 1888 928 1886 928 1884 928 1882 928 1880 928 1865 940 1771 940 1734 928 1732 928 1730 928 1728 928 1697 940 1307 930 1305 930 1247 942 966 932 964 932 910 942 873 932 871 932 869 932 867 932 824 944 549 934 547 934 545 934 524 944 428 934 426 934 424 934 403 944 405 975"/>
+                        </Shape>
+                        <String CONTENT="clans (родъ, pl. роды), which could not intermingle as readily as the Chukchee"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l10" HPOS="405" VPOS="989" WIDTH="1769" HEIGHT="60" BASELINE="407 1036 2174 1028" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="407 1036 407 1049 2172 1047 2174 1028 2169 993 1804 999 1779 989 1777 989 1775 989 1773 989 1753 999 1668 991 1666 991 1586 1000 1531 991 1529 991 1430 1000 1379 991 1377 991 1315 1000 1292 991 1290 991 1288 991 1167 1002 1079 993 1077 993 1075 993 1056 1002 1019 993 1017 993 1015 993 923 1002 873 993 871 993 869 993 867 993 851 1002 734 995 732 995 730 995 728 995 713 1004 463 995 461 995 405 1006 407 1036"/>
+                        </Shape>
+                        <String CONTENT="vaˊrat. The Cossacks and their chiefs, when subjugating these tribes, taxed"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l11" HPOS="403" VPOS="1051" WIDTH="1773" HEIGHT="57" BASELINE="405 1094 2176 1090" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="405 1094 405 1108 2174 1104 2176 1090 2172 1063 2089 1051 2087 1051 2024 1061 1919 1051 1917 1051 1915 1051 1913 1051 1898 1063 1790 1063 1761 1051 1759 1051 1757 1051 1755 1051 1753 1051 1738 1063 1642 1063 1592 1051 1590 1051 1518 1061 1504 1051 1502 1051 1500 1051 1391 1051 1389 1051 1387 1051 1362 1061 1060 1053 1058 1053 1005 1063 933 1053 931 1053 869 1063 826 1053 824 1053 822 1053 623 1063 555 1053 553 1053 551 1053 518 1063 483 1053 481 1053 479 1053 403 1065 405 1094"/>
+                        </Shape>
+                        <String CONTENT="each clan separately. Therefore Russian officials, when trying to levy tribute"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l12" HPOS="403" VPOS="1110" WIDTH="1771" HEIGHT="62" BASELINE="405 1152 2174 1149" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="405 1152 405 1168 2171 1172 2174 1149 2172 1119 2157 1110 2155 1110 2153 1110 2151 1110 2069 1119 2028 1110 2026 1110 2024 1110 1970 1119 1256 1112 1255 1112 1253 1112 1219 1121 611 1112 609 1112 607 1112 569 1121 518 1112 516 1112 403 1123 405 1152"/>
+                        </Shape>
+                        <String CONTENT="on the Chukchee, invented clans and even clan-chiefs.¹ Baron von Maydell,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l13" HPOS="405" VPOS="1168" WIDTH="1771" HEIGHT="61" BASELINE="407 1215 2176 1209" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="407 1215 407 1229 2174 1227 2176 1209 2171 1172 1753 1180 1734 1168 1732 1168 1730 1168 1672 1168 1670 1168 1668 1168 1638 1180 1572 1170 1570 1170 1568 1170 1522 1182 1496 1170 1494 1170 1492 1170 1490 1170 1488 1170 1473 1182 1416 1170 1414 1170 1412 1170 1410 1170 1391 1184 1309 1184 1284 1170 1282 1170 1204 1170 1202 1170 1200 1170 1175 1182 1077 1170 1075 1170 1073 1170 1038 1182 1005 1170 1003 1170 1001 1170 880 1184 863 1172 861 1172 859 1172 775 1172 773 1172 719 1184 668 1172 666 1172 664 1172 662 1172 660 1172 643 1186 504 1186 448 1172 446 1172 444 1172 405 1186 407 1215"/>
+                        </Shape>
+                        <String CONTENT="who was the chief official of the Kolyma district in 1868-70, even invented"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l14" HPOS="405" VPOS="1227" WIDTH="1773" HEIGHT="60" BASELINE="407 1275 2178 1269" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="407 1275 407 1287 2176 1283 2178 1269 2176 1240 2147 1227 2145 1227 2143 1227 2141 1227 2139 1227 2120 1238 1937 1227 1935 1227 1880 1238 1843 1227 1841 1227 1839 1227 1779 1238 1759 1227 1757 1227 1755 1227 1753 1227 1752 1227 1730 1238 1711 1227 1709 1227 1707 1227 1705 1227 1703 1227 1677 1238 1631 1227 1629 1227 1627 1227 1625 1227 1572 1240 1553 1229 1551 1229 1549 1229 1547 1229 1545 1229 1522 1240 1498 1229 1496 1229 1494 1229 1391 1240 1373 1229 1371 1229 1370 1229 1368 1229 1366 1229 1340 1238 1266 1229 1264 1229 1262 1229 1260 1229 1241 1242 1179 1242 1161 1229 1159 1229 1157 1229 1067 1229 1065 1229 1064 1229 1021 1240 1001 1229 999 1229 997 1229 995 1229 919 1242 824 1230 822 1230 820 1230 797 1242 771 1230 769 1230 767 1230 682 1242 648 1230 646 1230 645 1230 643 1230 617 1244 405 1244 407 1275"/>
+                        </Shape>
+                        <String CONTENT="a new rank and title, “The Highest Chief of all the Chukchee.” This sounds"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l15" HPOS="405" VPOS="1291" WIDTH="1771" HEIGHT="62" BASELINE="407 1334 2176 1330" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="407 1334 407 1349 2172 1353 2176 1330 2172 1301 2022 1291 2020 1291 2019 1291 2017 1291 2001 1303 1810 1303 1783 1291 1781 1291 1779 1291 1777 1291 1755 1301 1658 1291 1656 1291 1545 1301 1492 1291 1490 1291 1488 1291 1451 1301 1155 1293 1153 1293 1151 1293 1128 1303 1077 1293 1075 1293 1073 1293 1040 1303 1007 1293 1005 1293 1003 1293 1001 1293 972 1303 884 1293 882 1293 880 1293 857 1303 822 1293 820 1293 818 1293 719 1303 683 1293 682 1293 680 1293 494 1303 436 1293 434 1293 432 1293 405 1303 407 1334"/>
+                        </Shape>
+                        <String CONTENT="almost royal; and, indeed, the Russians sometimes called the person having"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l16" HPOS="405" VPOS="1345" WIDTH="1766" HEIGHT="69" BASELINE="407 1394 2171 1388" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="407 1394 407 1406 1050 1414 1052 1414 1054 1414 1056 1414 1071 1404 1256 1404 1432 1414 1434 1414 1436 1414 1457 1404 1527 1414 1529 1414 1531 1414 1557 1404 1578 1414 1580 1414 1582 1414 1734 1412 1736 1412 1738 1412 1753 1402 2143 1412 2145 1412 2147 1412 2171 1400 2171 1388 2163 1347 2139 1357 2054 1347 2052 1347 1964 1357 1948 1347 1946 1347 1944 1347 1943 1347 1941 1347 1915 1357 1896 1347 1894 1347 1892 1347 1890 1347 1867 1357 1820 1345 1818 1345 1816 1345 1814 1345 1765 1357 1740 1345 1738 1345 1736 1345 1734 1345 1689 1357 1672 1345 1670 1345 1668 1345 1666 1345 1611 1357 1584 1345 1582 1345 1580 1345 1578 1345 1545 1359 1488 1347 1486 1347 1485 1347 1461 1359 1442 1347 1440 1347 1438 1347 1436 1347 1434 1347 1432 1347 1414 1361 1338 1361 1268 1347 1266 1347 1264 1347 1241 1359 1218 1347 1216 1347 1214 1347 1212 1347 1186 1359 1169 1347 1167 1347 1165 1347 1106 1347 1104 1347 1103 1347 1101 1347 1083 1359 1056 1347 1054 1347 1052 1347 1050 1347 1025 1359 929 1349 927 1349 925 1349 923 1349 906 1361 672 1349 670 1349 668 1349 627 1361 600 1349 598 1349 596 1349 594 1349 567 1363 493 1363 434 1349 432 1349 430 1349 405 1361 407 1394"/>
+                        </Shape>
+                        <String CONTENT="this rank “Chukchee King,” “Black King of the Tundra,” “Chukchee Czar.”"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l17" HPOS="407" VPOS="1408" WIDTH="1767" HEIGHT="72" BASELINE="409 1455 2174 1447" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="409 1455 409 1468 504 1468 522 1480 524 1480 526 1480 528 1480 584 1468 701 1468 719 1480 721 1480 722 1480 724 1480 828 1468 1046 1478 1048 1478 1050 1478 1079 1466 1332 1476 1334 1476 1336 1476 1375 1464 1586 1476 1588 1476 1818 1462 2171 1470 2174 1447 2172 1419 2147 1408 2145 1408 2143 1408 2141 1408 2116 1418 1847 1408 1845 1408 1843 1408 1804 1418 1748 1408 1746 1408 1744 1408 1742 1408 1726 1419 1401 1410 1399 1410 1397 1410 1366 1419 1313 1410 1311 1410 1223 1421 1175 1412 1173 1412 991 1421 952 1412 951 1412 949 1412 947 1412 921 1421 849 1412 847 1412 845 1412 843 1412 828 1423 787 1414 785 1414 783 1414 590 1423 574 1414 572 1414 570 1414 426 1414 424 1414 422 1414 420 1414 407 1421 409 1455"/>
+                        </Shape>
+                        <String CONTENT="All this was quite imaginary. The family that was given this title was simply"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l18" HPOS="409" VPOS="1472" WIDTH="1762" HEIGHT="59" BASELINE="409 1513 2171 1513" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="409 1513 409 1527 2169 1531 2171 1513 2167 1472 2130 1482 1925 1472 1923 1472 1847 1482 1800 1472 1798 1472 1796 1472 1794 1472 1779 1484 1506 1484 1414 1472 1412 1472 1410 1472 1409 1472 1393 1484 1258 1484 1198 1472 1196 1472 1126 1482 1007 1472 1005 1472 933 1482 884 1472 882 1472 880 1472 847 1482 781 1472 779 1472 722 1482 635 1472 633 1472 563 1482 498 1472 496 1472 409 1482 409 1513"/>
+                        </Shape>
+                        <String CONTENT="a rich reindeer-breeding family with some influence among its neighbors. I"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l19" HPOS="405" VPOS="1527" WIDTH="1769" HEIGHT="64" BASELINE="407 1575 2174 1568" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="407 1575 407 1591 2172 1591 2174 1568 2172 1540 2141 1527 2139 1527 2137 1527 2135 1527 2134 1527 2114 1540 1960 1540 1935 1527 1933 1527 1931 1527 1929 1527 1904 1538 1845 1527 1843 1527 1783 1538 1763 1527 1761 1527 1759 1527 1757 1527 1755 1527 1728 1542 1652 1542 1633 1529 1631 1529 1629 1529 1627 1529 1625 1529 1582 1540 1566 1529 1564 1529 1562 1529 1561 1529 1559 1529 1535 1540 1498 1529 1496 1529 1494 1529 1373 1540 1329 1529 1327 1529 1325 1529 1323 1529 1280 1542 1151 1542 1136 1531 1134 1531 1132 1531 1130 1531 1128 1531 1097 1542 978 1531 976 1531 974 1531 941 1542 900 1531 898 1531 896 1531 832 1542 800 1533 798 1533 797 1533 795 1533 793 1533 775 1544 742 1533 740 1533 738 1533 672 1544 635 1533 633 1533 631 1533 549 1544 526 1533 524 1533 522 1533 405 1538 407 1575"/>
+                        </Shape>
+                        <String CONTENT="lived with this family for a few months, and shall speak of it later on in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l20" HPOS="411" VPOS="1593" WIDTH="341" HEIGHT="62" BASELINE="413 1636 752 1630" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="413 1636 413 1655 728 1655 728 1653 730 1653 752 1642 752 1630 746 1593 411 1605 413 1636"/>
+                        </Shape>
+                        <String CONTENT="greater detail.²"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-009_r4" HPOS="410" VPOS="1663" WIDTH="1782" HEIGHT="895" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="410 1663 2192 1663 2192 2558 410 2558"/>
+                    </Shape>
+                    <TextLine ID="mz_3-009_l21" HPOS="520" VPOS="1651" WIDTH="1658" HEIGHT="57" BASELINE="520 1692 2178 1692" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="520 1692 520 1708 2178 1708 2178 1692 2178 1663 2095 1651 2093 1651 1935 1661 1870 1651 1687 1651 1685 1651 1683 1651 1681 1651 1670 1661 1619 1651 1617 1651 1615 1651 1576 1663 1375 1663 1358 1651 1356 1651 1354 1651 1352 1651 1301 1661 1266 1651 1264 1651 1262 1651 1260 1651 1219 1661 1165 1651 1163 1651 1161 1651 1130 1661 1060 1651 1058 1651 1056 1651 1030 1661 1017 1651 1015 1651 1013 1651 1011 1651 962 1661 913 1651 912 1651 520 1655 520 1692"/>
+                        </Shape>
+                        <String CONTENT="The clans introduced by the Russians were also invented, and had no"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l22" HPOS="407" VPOS="1708" WIDTH="1773" HEIGHT="60" BASELINE="409 1755 2180 1749" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="409 1755 409 1768 2178 1764 2180 1749 2172 1708 2134 1722 2040 1722 2019 1708 2017 1708 2015 1708 2013 1708 2011 1708 1968 1722 1902 1722 1882 1708 1880 1708 1878 1708 1876 1708 1874 1708 1843 1718 1816 1708 1814 1708 1812 1708 1750 1720 1670 1708 1668 1708 1666 1708 1664 1708 1646 1720 1539 1710 1537 1710 1535 1710 1494 1722 1436 1710 1434 1710 1344 1722 1262 1710 1260 1710 1258 1710 1227 1720 1177 1710 1175 1710 1173 1710 1147 1724 1044 1724 1011 1710 1009 1710 1007 1710 1005 1710 1003 1710 986 1722 908 1712 906 1712 904 1712 884 1722 837 1712 836 1712 834 1712 808 1724 740 1712 738 1712 678 1724 635 1712 633 1712 631 1712 629 1712 627 1712 607 1724 516 1712 514 1712 407 1725 409 1755"/>
+                        </Shape>
+                        <String CONTENT="standing in the aboriginal organization of the tribe. The whole territory of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l23" HPOS="409" VPOS="1770" WIDTH="1769" HEIGHT="57" BASELINE="411 1813 2178 1809" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="411 1813 411 1827 2176 1825 2178 1809 2176 1782 2135 1770 2134 1770 2132 1770 2130 1770 2100 1780 2065 1770 2063 1770 2061 1770 1759 1780 1668 1770 1666 1770 1615 1780 1586 1770 1584 1770 1582 1770 1506 1780 1473 1770 1471 1770 1469 1770 1286 1782 1182 1772 1180 1772 1179 1772 1141 1782 878 1772 876 1772 874 1772 873 1772 857 1784 734 1784 526 1772 524 1772 522 1772 489 1782 428 1772 426 1772 424 1772 422 1772 409 1780 411 1813"/>
+                        </Shape>
+                        <String CONTENT="the Chukchee was divided into five parts; and each of these parts, with the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l24" HPOS="411" VPOS="1829" WIDTH="1765" HEIGHT="68" BASELINE="413 1874 2176 1868" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="413 1874 413 1897 1132 1885 1568 1893 1570 1893 1631 1883 2172 1891 2176 1868 2172 1840 1691 1829 1689 1829 1629 1839 1596 1829 1594 1829 1592 1829 1590 1829 1543 1840 1044 1831 1042 1831 1040 1831 995 1842 592 1833 590 1833 588 1833 563 1842 518 1833 516 1833 411 1844 413 1874"/>
+                        </Shape>
+                        <String CONTENT="people living in it, was called a “clan.” Some rich reindeer-breeder among"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l25" HPOS="409" VPOS="1889" WIDTH="1769" HEIGHT="59" BASELINE="411 1934 2178 1930" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="411 1934 411 1948 2176 1948 2178 1930 2176 1899 2161 1889 2159 1889 2157 1889 2155 1889 2108 1899 1498 1889 1496 1889 1494 1889 1473 1901 1276 1901 1255 1891 1253 1891 1251 1891 1202 1901 1062 1891 1060 1891 962 1901 931 1891 929 1891 927 1891 849 1901 773 1891 771 1891 769 1891 730 1901 572 1891 570 1891 569 1891 531 1901 432 1891 430 1891 428 1891 426 1891 409 1899 411 1934"/>
+                        </Shape>
+                        <String CONTENT="those friendly disposed to the Russians was called “chief,” and that was all."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l26" HPOS="415" VPOS="1950" WIDTH="1765" HEIGHT="56" BASELINE="415 1991 2180 1991" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="415 1991 415 2006 2178 2006 2180 1991 2180 1961 2155 1950 2153 1950 2151 1950 2020 1959 1939 1950 1937 1950 1935 1950 1904 1959 1849 1950 1847 1950 1796 1959 1757 1950 1755 1950 1753 1950 1752 1950 1726 1959 1713 1950 1711 1950 1709 1950 1707 1950 1705 1950 1662 1961 1537 1961 1516 1950 1514 1950 1512 1950 1385 1961 1295 1961 1280 1950 1278 1950 1276 1950 1274 1950 1272 1950 1245 1959 1153 1950 1151 1950 1149 1950 1122 1959 1099 1950 1097 1950 1095 1950 1093 1950 1065 1961 972 1961 956 1950 954 1950 952 1950 951 1950 949 1950 923 1959 851 1950 849 1950 769 1959 689 1950 687 1950 685 1950 660 1959 645 1950 643 1950 641 1950 639 1950 637 1950 613 1959 592 1950 590 1950 588 1950 531 1959 415 1955 415 1991"/>
+                        </Shape>
+                        <String CONTENT="The Chukchee living beyond the sphere of influence of the Russian officials"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l27" HPOS="409" VPOS="2008" WIDTH="1767" HEIGHT="64" BASELINE="411 2049 2176 2053" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="411 2049 409 2061 2172 2072 2176 2053 2176 2022 2139 2010 2137 2010 1954 2010 1952 2010 1950 2010 1948 2010 1935 2020 1874 2010 1734 2010 1732 2010 1730 2010 1728 2010 1714 2020 1664 2010 1662 2010 1660 2010 1629 2020 1537 2010 1535 2010 1485 2020 1370 2010 1368 2010 1223 2018 1208 2008 1206 2008 1204 2008 1202 2008 1151 2018 1099 2008 1097 2008 1011 2020 845 2020 824 2008 822 2008 820 2008 818 2008 797 2020 687 2020 672 2008 670 2008 668 2008 666 2008 664 2008 643 2018 411 2016 411 2049"/>
+                        </Shape>
+                        <String CONTENT="in the tundra to the west of the Chaun River and on the Chukchee Peninsula,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l28" HPOS="407" VPOS="2068" WIDTH="1773" HEIGHT="61" BASELINE="409 2113 2180 2109" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="409 2113 409 2129 2178 2129 2180 2109 2176 2080 2093 2068 2091 2068 2089 2068 2048 2078 2009 2068 2007 2068 2005 2068 2003 2068 1972 2078 1769 2068 1767 2068 1765 2068 1763 2068 1748 2080 1644 2080 1629 2068 1627 2068 1625 2068 1471 2068 1469 2068 1467 2068 1465 2068 1447 2080 1292 2080 459 2070 457 2070 455 2070 407 2082 409 2113"/>
+                        </Shape>
+                        <String CONTENT="reindeer-breeders and maritime hunters, were called “the maritime clan.” Even"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l29" HPOS="409" VPOS="2131" WIDTH="1771" HEIGHT="54" BASELINE="411 2174 2180 2170" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="411 2174 411 2183 2176 2185 2180 2170 2178 2143 2137 2131 2135 2131 2134 2131 2132 2131 2100 2141 2069 2131 2067 2131 2065 2131 2063 2131 2024 2141 1944 2131 1943 2131 1941 2131 1939 2131 1923 2143 1759 2143 1722 2131 1720 2131 1718 2131 1668 2141 1613 2131 1611 2131 1609 2131 1588 2141 1537 2131 1535 2131 1479 2141 1387 2131 1385 2131 1383 2131 1346 2141 1295 2131 1294 2131 1214 2143 530 2133 528 2133 526 2133 489 2143 428 2133 426 2133 424 2133 422 2133 409 2141 411 2174"/>
+                        </Shape>
+                        <String CONTENT="the tribute was nominal, — 247 rubles from all the clans, — though the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l30" HPOS="411" VPOS="2189" WIDTH="1769" HEIGHT="57" BASELINE="411 2230 2180 2230" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="411 2230 411 2246 2178 2246 2180 2230 2180 2201 2137 2189 2135 2189 2134 2189 2132 2189 2100 2199 2052 2189 2050 2189 1950 2199 1580 2189 1578 2189 1576 2189 1574 2189 1559 2201 1397 2201 1327 2189 1325 2189 1276 2199 1249 2189 1247 2189 1245 2189 1243 2189 1241 2189 1225 2201 1114 2201 1087 2189 1085 2189 1083 2189 1081 2189 1060 2199 1030 2189 1028 2189 1027 2189 1025 2189 1023 2189 1005 2201 826 2201 798 2189 797 2189 795 2189 744 2199 707 2189 705 2189 703 2189 701 2189 699 2189 683 2201 586 2201 559 2189 557 2189 555 2189 553 2189 551 2189 535 2199 512 2189 510 2189 508 2189 506 2189 485 2199 430 2189 428 2189 426 2189 424 2189 411 2197 411 2230"/>
+                        </Shape>
+                        <String CONTENT="Chukchee tribe has several thousand adult men. This tribute is paid in the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l31" HPOS="409" VPOS="2250" WIDTH="1769" HEIGHT="60" BASELINE="411 2293 2178 2289" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="411 2293 411 2306 2174 2310 2178 2289 2174 2259 1294 2250 1292 2250 1290 2250 1260 2259 422 2252 420 2252 418 2252 416 2252 409 2258 411 2293"/>
+                        </Shape>
+                        <String CONTENT="following way. In the parts of the territory nearest to the Russian settlements,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l32" HPOS="413" VPOS="2322" WIDTH="1767" HEIGHT="45" BASELINE="413 2351 2180 2351" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="413 2351 413 2367 2180 2367 2180 2351 2180 2322 413 2322 413 2351"/>
+                        </Shape>
+                        <String CONTENT="at least every other family pays a tribute of one ruble. It is understood that"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l33" HPOS="411" VPOS="2373" WIDTH="1769" HEIGHT="52" BASELINE="413 2410 2180 2406" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="413 2410 413 2425 2178 2423 2180 2406 2176 2380 428 2373 426 2373 424 2373 422 2373 411 2378 413 2410"/>
+                        </Shape>
+                        <String CONTENT="this sum represents the tribute of one man, as among the Tungus and the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l34" HPOS="416" VPOS="2429" WIDTH="1762" HEIGHT="64" BASELINE="416 2472 2178 2472" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="416 2472 416 2484 2176 2493 2178 2472 2178 2441 2124 2429 2122 2429 2059 2439 2046 2429 2044 2429 2042 2429 2040 2429 2038 2429 2009 2439 1907 2429 1905 2429 1814 2439 1744 2429 1742 2429 1740 2429 1711 2439 1629 2429 1627 2429 1564 2439 1510 2429 1508 2429 1442 2439 416 2431 416 2472"/>
+                        </Shape>
+                        <String CONTENT="Yakut;³ but, as I have said, it is not true. The tribute is paid by a family;"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l35" HPOS="411" VPOS="2489" WIDTH="1769" HEIGHT="59" BASELINE="411 2530 2180 2530" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="411 2530 411 2548 2178 2548 2180 2530 2178 2501 1987 2489 1985 2489 1983 2489 1948 2499 1919 2489 1917 2489 1915 2489 1816 2499 1761 2489 1759 2489 1757 2489 1720 2499 1664 2489 1662 2489 1459 2499 1424 2489 1422 2489 1420 2489 1321 2499 1256 2489 1255 2489 1149 2499 1091 2489 1089 2489 1087 2489 1065 2501 913 2501 855 2489 853 2489 851 2489 814 2499 783 2489 781 2489 779 2489 777 2489 748 2499 699 2489 697 2489 695 2489 693 2489 680 2499 635 2489 633 2489 518 2499 485 2489 483 2489 481 2489 411 2499 411 2530"/>
+                        </Shape>
+                        <String CONTENT="and not all the families pay, either. Those that are unfriendly to the Russians"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-009_r5" HPOS="410" VPOS="2613" WIDTH="1782" HEIGHT="491" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="410 2613 2192 2613 2192 3104 410 3104"/>
+                    </Shape>
+                    <TextLine ID="mz_3-009_l36" HPOS="518" VPOS="2622" WIDTH="1662" HEIGHT="43" BASELINE="520 2647 2180 2651" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="520 2647 518 2661 2176 2665 2180 2651 2178 2626 520 2622 520 2647"/>
+                        </Shape>
+                        <String CONTENT="¹ Sarytcheff knew the political organization of the tribe. He wrote, “The Chukchee have no chiefs or"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l37" HPOS="411" VPOS="2665" WIDTH="1765" HEIGHT="43" BASELINE="413 2690 2176 2694" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="413 2690 411 2704 2172 2708 2176 2694 2174 2669 413 2665 413 2690"/>
+                        </Shape>
+                        <String CONTENT="authorities. Each community has a man who is richer than the others, or who has a larger family; but he"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l38" HPOS="409" VPOS="2708" WIDTH="1769" HEIGHT="45" BASELINE="411 2737 2178 2731" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="411 2737 411 2753 2176 2747 2178 2731 2172 2708 409 2712 411 2737"/>
+                        </Shape>
+                        <String CONTENT="also is little obeyed and has no right to punish anybody” (Sarytcheff, Journey in the Northeastern Part of Sibe-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l39" HPOS="413" VPOS="2753" WIDTH="259" HEIGHT="42" BASELINE="413 2778 672 2778" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="413 2778 413 2795 672 2795 672 2778 672 2753 413 2753 413 2778"/>
+                        </Shape>
+                        <String CONTENT="ria, II, p. 107)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l40" HPOS="524" VPOS="2792" WIDTH="350" HEIGHT="40" BASELINE="524 2817 874 2817" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="524 2817 524 2832 874 2832 874 2817 874 2792 524 2792 524 2817"/>
+                        </Shape>
+                        <String CONTENT="² See Chapter XXIII."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l41" HPOS="524" VPOS="2830" WIDTH="1656" HEIGHT="47" BASELINE="526 2856 2180 2862" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="526 2856 524 2871 2176 2877 2180 2862 2178 2836 526 2830 526 2856"/>
+                        </Shape>
+                        <String CONTENT="³ Maydell also tried to introduce among the Reindeer Chukchee a tribute of half a ruble from a boy under"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l42" HPOS="413" VPOS="2879" WIDTH="1765" HEIGHT="41" BASELINE="413 2905 2178 2905" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="413 2905 413 2920 2176 2920 2178 2905 2176 2879 413 2879 413 2905"/>
+                        </Shape>
+                        <String CONTENT="sixteen years, but this attempt was not successful. So the tribute which at first was settled as 316 rubles was"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l43" HPOS="411" VPOS="2918" WIDTH="1765" HEIGHT="45" BASELINE="413 2947 2176 2944" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="413 2947 413 2963 2174 2963 2176 2944 2171 2918 411 2920 413 2947"/>
+                        </Shape>
+                        <String CONTENT="lowered to 247 rubles. At the same time Maydell tried to take a census of the Reindeer Chukchee. The"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l44" HPOS="413" VPOS="2961" WIDTH="1761" HEIGHT="43" BASELINE="415 2990 2174 2984" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="415 2990 415 3004 2172 3000 2174 2984 2169 2961 413 2965 415 2990"/>
+                        </Shape>
+                        <String CONTENT="figures of his census are 476 men and 369 women; total 845. He is quite well aware, however, of the defi-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l45" HPOS="411" VPOS="3004" WIDTH="1767" HEIGHT="53" BASELINE="413 3033 2178 3029" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="413 3033 413 3057 2176 3049 2178 3029 2172 3004 411 3006 413 3033"/>
+                        </Shape>
+                        <String CONTENT="ciencies of this census. He does not even give these figures in his book. I borrowed them from the documents"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-009_l46" HPOS="413" VPOS="3043" WIDTH="444" HEIGHT="47" BASELINE="415 3070 857 3074" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="847 3045 415 3043 415 3070 413 3086 853 3090 857 3074 855 3070 847 3045"/>
+                        </Shape>
+                        <String CONTENT="of the Archives of Kolyma."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>
