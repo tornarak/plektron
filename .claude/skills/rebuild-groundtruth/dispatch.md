@@ -307,6 +307,33 @@ any report, and treat its rows as the worklist for the raster checks above; run 
 after, as this batch did, and you will have found by hand what it would have handed
 you.
 
+### The page that no arm can see
+
+`3-024`'s reader keyed the name `Ta’lo` eight times with U+2019, reporting it
+"confirmed at 4× and not a stress mark". `3-023` and `3-025` — the same tale, the
+same batch — keyed `Taˊlo` with U+02CA twenty-seven times between them. Line 9 sets
+`don’t` and `Ta’lo` in one line, and at 4× they are plainly different sorts: the
+apostrophe a comma-shape whose tail curls down-left, the stress mark a straight
+stroke slanting up-right.
+
+What makes it worth its own entry is the *reporting*. U+2019 is not a Tier-1 glyph,
+so the mis-keying left the page carrying no Tier-1 tokens at all, and `proposal
+marks` returned it as `tokens: 0, types: 0` — silent on `rare`, `conflict` and
+`ratio` alike, indistinguishable from a page of plain English. "Check `pages`
+first" above was written against exactly this and had never fired; this is the
+first batch where it had something to find, and it was found instead by comparing
+three pages of one tale against each other. **A wrong glyph from outside the
+inventory removes the page from every distributional check**, so the row is the
+finding: a page whose zones promise native forms and whose row says `types: 0` is a
+page to open, and for a recurring name the cheapest instrument is the other pages
+that carry it.
+
+The adjudication half has its own lesson here. `3-024` came back unedited and
+unnoted while every other flagged correction in the batch was taken — which is what
+a click-through looks like and not what a ruling looks like. It was reopened rather
+than restored, and the other twenty-one were written first, so the question held one
+page instead of the batch.
+
 ## What the reading costs, and the ladder that follows from it
 
 The reading half is dominated by images, and an image's cost is a fact about

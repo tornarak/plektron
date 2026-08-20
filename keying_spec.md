@@ -579,7 +579,8 @@ three entries above were re-read out of the store, not recalled.
 **The one exception is a form that is contextually Tier-1 — a gloss, a native
 proper name, a word in a numbered vocabulary — carrying something the keying spec
 does not contain at all.** A diacritic outside the §2.1 mark set. A plainly
-polysyllabic form with no stress mark anywhere. A base the inventory has no sort
+polysyllabic form with no stress mark anywhere. A word-final `-gɪn`/`-gɪt` with no
+dot below. A base the inventory has no sort
 for. This is narrower than "looks wrong": the notation is a closed set, so a form
 inside it that merely surprises you is evidence, and a form carrying a mark the set
 does not have is a compositor's slip with no reading to preserve.
@@ -596,6 +597,20 @@ reached by asking the question of every Tier-1 word and never by being surprised
 one. Its reader asked, looked at 4×, and reported the space above the `ê` clean —
 no broken sort, no faint ink, so the omission is the compositor's and not the
 scan's. The store holds `mêˊlhɪn`.
+
+`3-006` L19 prints `yaraˊ-tɵˊmgɪt` — a word-final `-gɪt` with no dot below, the same
+shape again: an absence, reached by asking the question rather than by being
+surprised. What closes it is §5.1's count, 89 word-final `-g̣ɪn`/`-g̣ɪt` against one
+bare and that one compound-initial — so in *this* position a bare `g` is a slip, and
+in any other it is a reading to preserve. Its reader keyed the dot on the prior
+without seeing it and said so in `note`, which is what kept the line visible. What
+licenses the dot is the count, and not the crop that went looking for it: §5.13 bars
+reading a glyph off its neighbours, and absence is not observable in isolation, so
+"the dot is not there" is never the thing that carries this — it only says the
+compositor is the likelier author of the gap than the scan.
+The store holds `yaraˊ-tɵˊmg̣ɪt`, and the print does not — the first case here where
+the emendation *adds* a mark the raster demonstrably lacks rather than replacing one
+it carries.
 
 **There the spec stops short of the answer.** Culminativity says a mark is missing;
 nothing in this file says *where* it goes. That came from the adjudicator's
@@ -793,12 +808,17 @@ band: a prior backed by one page is a prior backed by one page.
    silent dotted reading and a seen one are indistinguishable, and `conflict`
    can only find what somebody wrote down.
 
-   **Word-final is the whole of the claim, and the one exception says why.** The
+   **Word-final is the whole of the count, and not of the rule.** The
    single bare instance is `naˊrgɪn-mñêˊɪrg̣ɪn` (`2-118` L25, adjudicated): bare
    in the compound's *first* element, dotted at the end of the word. `naˊrgɪn-`
    is a root that happens to end in those letters, not the nominalizer, and the
    grep above cannot tell the two apart — it counts letters, not morphemes. So
-   inside a compound the count does not speak: read it, and flag it.
+   inside a compound the count does not speak: read it, and flag it — **which is
+   not the same as keying it bare.** A position the count cannot close is not a
+   position where the dot is unlikely; the share in the first sentence is
+   corpus-wide. Eleven dropped dots across two part-3 batches were every one
+   word-initial, medial or root-internal, by readers who had this count and read
+   its scope as licence.
    The dotted and undotted sorts are the same letterform, so **absence is not
    observable in isolation**: a "no dot" reading at any magnification is
    answering a question the image cannot answer, and must clear a higher bar
@@ -845,11 +865,20 @@ band: a prior backed by one page is a prior backed by one page.
    direction the method has ever been right in. Those
    readers did everything else right — refused the ratified handle, flagged the
    line — which is why the rule above is now a count and not an exhortation:
-   the disciplined disposition still produced the wrong character. The same
+   the disciplined disposition still produced the wrong character. Eleven more
+   followed across the two part-3 batches (`3-004` ×2, `3-005` ×3, `3-011`,
+   `3-017` ×3, `3-018`, `3-023`), **none of them word-final** and none caught by
+   a crop: ten were named by `proposal marks` before a scan was opened, and the
+   eleventh fell inside the same crop as one that was. `3-005`'s reader argued
+   the dot away from morphology — "not the `-gɪn` suffix, it is a bare root
+   `gêl`" — a glyph inferred from what the system ought to contain, which the
+   ink refused twice on one page. The same
    adjudication ran the other way once, and that is the more useful half:
    `2-118` had keyed `naˊrg̣ɪn-` dotted, and the dot came off. A rule stated as
    "always" would have made that correction unwriteable, which is why the count
-   above is scoped to word-final and says where it stops.
+   above is scoped to word-final and says where it stops. Word-final is also the
+   only position where the count licenses the dot being *supplied* against the
+   print, which is §2.14's exception and not this item's: `3-006` L19.
 2. **`ɪ` (U+026A) vs `i` vs `r` — the leading residual class, and the tell is
    that the reader reports checking it.** The base rate runs against plain `i`
    — Tier-1 `ɪ` outnumbers it across the store, and `-ɪn` / `-ɪt` are by a long
