@@ -44,9 +44,22 @@ kb.addEventListener('click',()=>setKbd(!kbdOn));
 // don't need the grid on screen to use it. alt-p flips whatever is currently
 // showing, so it always does something visible, and the override sticks
 // until alt-p is pressed again — toggling kbd mode itself doesn't clear it.
+//
+// It also survives navigation, remembered per browser like the type controls
+// below: Done loads the next page as a fresh document, and a batch is a dozen
+// of them, so an override that reset on every load had to be re-pressed once
+// per page — which is the same "asked for it once" the shortcut exists to
+// honour. Stored as three values because the state is tri, not bi: absent
+// means "follow kbdOn", and that is not the same fact as an explicit false.
 let palOverride=null;
+try{const s=localStorage.getItem('review.pal');
+    if(s==='1') palOverride=true; else if(s==='0') palOverride=false;}catch(e){}
 const syncPal=()=>document.body.classList.toggle(
   'palopen', palOverride===null?kbdOn:palOverride);
+// Nothing else calls this before the first keypress, and the class is JS's
+// alone — the server renders no `palopen` — so a restored override needs
+// applying here or it would be remembered and never shown.
+syncPal();
 document.addEventListener('focusin',e=>{
   // The panel occupying 16rem when kbd mode is on can cover the very field
   // just focused, if it was near the bottom of the page. scrollIntoView
@@ -61,7 +74,9 @@ addEventListener('keydown',e=>{
   if(e.altKey&&!e.ctrlKey&&!e.metaKey&&e.key==='p'){
     e.preventDefault();
     const shown=palOverride===null?kbdOn:palOverride;
-    palOverride=!shown;syncPal();
+    palOverride=!shown;
+    try{localStorage.setItem('review.pal',palOverride?'1':'0')}catch(e){}
+    syncPal();
   }
 });
 addEventListener('keydown',e=>{
