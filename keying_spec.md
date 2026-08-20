@@ -563,6 +563,8 @@ the expected shape of this damage, not a discovery.
 they saw and were wrong — `2-154` L16 and `2-156` L15, both adjudicated to `of`.
 A worn sort has no mark left to discriminate on, so magnification returns a
 confident description of nothing, which is the failure this file exists to prevent.
+The contrast half of what those two readers did is §5.13's class, and is now
+barred outright.
 
 The register above carried a fourth entry, `1-100` L53 `eaıly`, described as
 verified against the raster. **It never was.** `gt/ocr/chukchi-1-100.xml` reads
@@ -803,10 +805,20 @@ band: a prior backed by one page is a prior backed by one page.
    than a "dot" reading, because the base rate runs the other way. "Confirmed
    at 4×" is what both wrong readings said.
 
-   *Instrument.* Don't inspect a `g` — **contrast** it against a plain English
-   `g` on the same line where one exists, and name the contrast word in `note`
-   (a technique, not a requirement: many lines offer none; then read, flag,
-   move on — and the same goes for every absence-shaped call here, §5.2, §5.3).
+   **2× does not resolve this dot, and a bare reading made at 2× is worth
+   nothing.** On `2-245` a reader read every `g` on the page as bare off the 2×
+   sheets, re-zoomed at the ceiling, and found the dot below on every single
+   one; `2-246`, the same batch, keyed four `-tirgɪn` bare against five ratified
+   dotted attestations. So **no bare `g` may be keyed off a 2× crop** — go to 4×
+   or key it dotted and say in `note` that you could not see it. The dot is
+   ~2 source px clear of a descender loop the scan already renders ragged, which
+   is why it is the first thing this magnification loses and the last thing a
+   reader notices losing.
+
+   *Instrument.* **Resolution, then the prior — not comparison.** Go to 4×,
+   look at the sub-baseline area of that one `g`, and if the dot is not there
+   key it dotted anyway and say in `note` that you could not see it. Do not
+   set it beside another `g`: §5.13 is why.
    The systematic net needs no raster: `harness proposal marks` — its `rare`
    arm names every occurrence of a form the corpus almost never sets, its
    `conflict` arm finds one word spelled two ways against ground truth; pass a
@@ -824,11 +836,13 @@ band: a prior backed by one page is a prior backed by one page.
    `2-033` ×4, `2-035`, and `1-042` at adjudication — five restatements
    survived, including a reader that quoted the prior and the trap word, then
    bare-keyed it on the page it was writing about. Both `2-033` and `2-035`
-   were finally settled by the contrast method (`danger`, `representing`)
-   after 4× stares had failed; `1-042`'s was caught by `proposal marks` after
-   four clean mechanical gates. Then `2-104` (`vaˊɪrgɪn`) and `2-117`
-   (`vaˊɪrgɪn`, `ɪˊê-mñêˊɪrg̣ɪn`) in the chapter-XIV pass, all three overturned
-   by the contrast crop against `slaughtered`, `villages` and `genuine`. Those
+   were corrected to dotted after 4× stares had failed; `1-042`'s was caught by
+   `proposal marks` after four clean mechanical gates. Then `2-104`
+   (`vaˊɪrgɪn`) and `2-117` (`vaˊɪrgɪn`, `ɪˊê-mñêˊɪrg̣ɪn`) in the chapter-XIV
+   pass, all three overturned the same way. Each of those corrections was
+   credited at the time to a contrast crop; §5.13 says why that credit was
+   unearned — every one of them moved toward the prior, which is the only
+   direction the method has ever been right in. Those
    readers did everything else right — refused the ratified handle, flagged the
    line — which is why the rule above is now a count and not an exhortation:
    the disciplined disposition still produced the wrong character. The same
@@ -872,12 +886,12 @@ band: a prior backed by one page is a prior backed by one page.
      what any character is wherever an inventory glyph could stand", not
      "…to any non-ASCII glyph".
 
-   *Instrument.* Contrast, as §5.1: `r` carries a shoulder, `ɪ` is a bare stem
-   with serifs top and bottom, `i` is x-height and dotted, and English prose
-   on the same line supplies a real `r` or `i` to hold the letter against.
-   The 2:1 prior and the suffix table are the no-raster net. A confident
-   negative settles nothing: absence claims about a small feature are not
-   settled by having looked once.
+   *Instrument.* Read the letter itself and name what it has: `r` carries a
+   shoulder, `ɪ` is a bare stem with serifs top and bottom, `i` is x-height and
+   dotted. These are **descriptions, not a comparison** — do not hold the
+   letter against another one on the line, per §5.13. The 2:1 prior and the
+   suffix table are the no-raster net. A confident negative settles nothing:
+   absence claims about a small feature are not settled by having looked once.
 
    *Record.* `1-101`'s `Iᵋplɪˊlɪ` ×2 (word-initial, corrected to `ɪᵋplɪˊlɪ`);
    `2-033`'s `Attɪˊg̣ɪtkɪ` keyed as `Attrˊgɪtkɪ` off the machine text; four
@@ -891,8 +905,9 @@ band: a prior backed by one page is a prior backed by one page.
    here is *against* the mark, and the reason to look anyway is that the
    diaeresis is small, easy to read past on a contact sheet, and has been
    missed more than once on one page. A minority sort is still a sort.
-   *Instrument:* the same absence-shaped discipline as §5.1 — contrast where
-   the line offers one, and the distributional arms of `proposal marks`.
+   *Instrument:* the same absence-shaped discipline as §5.1 — 4× on the vowel
+   itself, never a comparison (§5.13), and the distributional arms of
+   `proposal marks`.
    *Record:* missed more than once on the same page, off sheets rather than
    zooms.
 4. **Old-style figures: the numeral `1` is x-height and dotless — easy to
@@ -1023,3 +1038,29 @@ band: a prior backed by one page is a prior backed by one page.
     not weak evidence, it is the shape a decision takes when it has none.
     Settle these by position, by what the form is, and by the rule that
     covers it; report a size only as something you could not settle.
+
+13. **A glyph is read from its own ink. Never set two glyphs side by side and
+    ask which differs.** A comparison does not deliver a difference you can
+    see; it delivers one you will supply, in good faith, and write down in a
+    `note` that nothing downstream can distinguish from an observation. §5.12
+    is this failure with a ruler; this is it with a pair. It has no licensed
+    form — not against an English letter, not against a ratified sort, not
+    against the same word elsewhere on the page.
+    *Instrument:* the moves when the ink will not answer are **4×, then the
+    prior, then `note` saying it is unresolved**. A comparison is not the
+    escape hatch from an unreadable crop: the reader who has just said it
+    cannot read a mark is the last one who should be handed a difference to
+    find, and that is the exact moment the method gets reached for.
+    *Record:* §5.1 credited contrast with four overturns — `2-033`, `2-035`,
+    `2-104`, `2-117` — and **every one of them moved toward dotted, which is
+    what the 89:1 prior already said**. The method supplied no information in
+    any of the four; it supplied a direction the base rate had already given,
+    and was credited for the agreement. Then `2-246` ran it the other way — a
+    reader held `-tirgɪn` against `Tɪluˊwg̣ê` on its own line, reported a clean
+    contrast, and keyed four occurrences bare against five ratified dotted
+    attestations. A method that is right when it agrees with the prior and
+    wrong when it does not is the prior wearing a witness's coat. The
+    instruction was not the reader's invention: §5.1 prescribed it and `ocr
+    zoom`'s ceiling message offered "a named contrast on the same line" as a
+    next move; both were cut. Compare the twice-refused proposal to give
+    readers an `ñ`/`n` contrast axis, on the same ground.

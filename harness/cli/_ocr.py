@@ -1016,8 +1016,10 @@ def run_zoom(a) -> int:
             "a diacritic whose shape is the whole question. There is no source "
             "detail above it, so a second call at the same scale on the same ink "
             "returns the same picture and answers nothing new. If this crop did "
-            "not settle it, the next move is a different question, a named "
-            "contrast on the same line, or `note` saying it is unresolved.",
+            "not settle it, the next move is a different question, or `note` "
+            "saying it is unresolved. Not a comparison: a glyph is read from its "
+            "own ink, and a reader who has just said it cannot read this one is "
+            "the last one who should go looking for a difference.",
             err=True)
     return 0
 
