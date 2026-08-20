@@ -1,0 +1,175 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-3-034.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-3-034.png; regions_from: zones/chukchi-3-034.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+                <TextBlock ID="mz_3-034_r1" HPOS="346" VPOS="461" WIDTH="1782" HEIGHT="94" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="346 461 2128 461 2128 555 346 555"/>
+                    </Shape>
+                    <TextLine ID="mz_3-034_l1" HPOS="923" VPOS="476" WIDTH="614" HEIGHT="53" BASELINE="923 509 1537 509" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1527 486 1516 476 927 476 923 478 923 509 923 529 1537 529 1537 509 1533 496 1527 486"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-034_l2" HPOS="360" VPOS="480" WIDTH="84" HEIGHT="59" BASELINE="360 515 444 515" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="438 486 418 482 409 480 360 480 360 515 360 539 444 527 444 515 444 486 438 486"/>
+                        </Shape>
+                        <String CONTENT="568"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-034_r2" HPOS="346" VPOS="578" WIDTH="1782" HEIGHT="236" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="346 578 2128 578 2128 814 346 814"/>
+                    </Shape>
+                    <TextLine ID="mz_3-034_l3" HPOS="344" VPOS="574" WIDTH="1772" HEIGHT="58" BASELINE="346 620 2116 617" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2104 585 1978 574 1976 574 1892 585 1824 574 1822 574 1820 574 1785 585 1738 574 1736 574 1734 574 1732 574 1707 585 1652 574 1650 574 1648 574 1619 585 1564 574 1562 574 1498 585 1416 574 1414 574 1412 574 1410 574 1393 587 1112 587 1083 576 1081 576 1079 576 989 587 956 576 954 576 952 576 951 576 949 576 929 589 804 589 748 576 586 576 584 576 582 576 580 576 561 589 483 589 376 576 374 576 372 576 344 587 346 620 346 632 2114 630 2116 617 2112 599 2104 585"/>
+                        </Shape>
+                        <String CONTENT="victim, a blind but not decrepit man, was sitting by the head-stone,”¹ etc."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-034_l4" HPOS="346" VPOS="640" WIDTH="1770" HEIGHT="55" BASELINE="346 679 2116 679" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="346 679 346 695 2114 695 2116 679 2114 648 346 640 346 679"/>
+                        </Shape>
+                        <String CONTENT="Further on Dall mentions that the natives were much disturbed at the approach"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-034_l5" HPOS="340" VPOS="696" WIDTH="1776" HEIGHT="59" BASELINE="342 741 2116 737" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="342 741 342 755 2114 753 2116 737 2114 708 2091 696 2089 696 2087 696 2085 696 2052 706 1905 696 1904 696 1753 706 1067 698 1065 698 1064 698 1062 698 1046 708 993 698 991 698 989 698 954 708 839 698 837 698 740 708 520 698 518 698 516 698 485 708 378 698 376 698 374 698 340 708 342 741"/>
+                        </Shape>
+                        <String CONTENT="of the Americans, and, fearing interference, refused to go on until the vessels"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-034_l6" HPOS="344" VPOS="755" WIDTH="199" HEIGHT="60" BASELINE="344 800 543 800" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="344 800 344 815 543 815 543 800 543 765 516 755 514 755 512 755 510 755 489 765 473 755 471 755 469 755 467 755 465 755 446 765 430 755 428 755 426 755 424 755 344 761 344 800"/>
+                        </Shape>
+                        <String CONTENT="had left."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-034_r3" HPOS="346" VPOS="814" WIDTH="1782" HEIGHT="310" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="346 814 2128 814 2128 1124 346 1124"/>
+                    </Shape>
+                    <TextLine ID="mz_3-034_l7" HPOS="450" VPOS="811" WIDTH="1664" HEIGHT="61" BASELINE="452 860 2114 854" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="452 860 452 872 2112 866 2114 854 2112 825 2071 811 2069 811 2067 811 2065 811 2063 811 2044 825 1787 825 1742 811 1740 811 1738 811 1736 811 1705 823 1670 811 1668 811 1666 811 1664 811 1635 823 1541 813 1539 813 1537 813 1535 813 1518 827 1442 827 1424 813 1422 813 1420 813 1418 813 1416 813 1387 825 1368 813 1366 813 1364 813 1362 813 1360 813 1319 827 1256 827 1231 813 1229 813 1227 813 1103 825 1079 813 1077 813 1075 813 1073 813 1042 825 997 815 892 815 890 815 888 815 886 815 871 827 800 815 798 815 797 815 765 827 738 815 736 815 643 815 641 815 639 815 609 827 450 823 452 860"/>
+                        </Shape>
+                        <String CONTENT="I am afraid that Dall’s description of these facts is due to some mis-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-034_l8" HPOS="339" VPOS="876" WIDTH="1777" HEIGHT="66" BASELINE="340 921 2116 917" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2112 889 2112 887 2065 876 2063 876 2061 876 2038 886 1609 876 1607 876 1506 886 1432 876 1430 876 1428 876 1405 886 1344 878 1342 878 1225 887 1106 878 1104 878 1103 878 1073 887 722 878 721 878 654 887 411 878 409 878 339 889 340 921 340 930 617 942 619 942 668 932 2112 932 2116 917 2114 913 2112 889"/>
+                        </Shape>
+                        <String CONTENT="understanding. The Chukchee have no stupefying substance.² It is quite"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-034_l9" HPOS="342" VPOS="936" WIDTH="1770" HEIGHT="57" BASELINE="342 979 2112 979" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2104 948 1872 936 1870 936 1868 936 1831 948 1752 936 1750 936 1648 948 1611 936 1609 936 1607 936 1605 936 1580 950 1516 950 1483 936 1481 936 1479 936 1477 936 1475 936 1459 948 1278 948 1256 936 1255 936 1253 936 1184 936 1182 936 1116 948 1040 936 1038 936 1036 936 1034 936 1017 950 935 950 910 936 908 936 810 936 808 936 724 948 695 936 693 936 691 936 689 936 687 936 672 948 514 948 496 936 494 936 493 936 491 936 489 936 446 946 366 936 364 936 362 936 360 936 342 946 342 979 342 993 2110 993 2112 979 2110 973 2104 948"/>
+                        </Shape>
+                        <String CONTENT="difficult to catch and bring a live reindeer to such a place of sacrifice, espe-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-034_l10" HPOS="340" VPOS="995" WIDTH="1774" HEIGHT="60" BASELINE="342 1039 2114 1034" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="342 1039 342 1055 2112 1055 2114 1034 2110 1006 1946 1006 1917 995 1915 995 1913 995 1911 995 1909 995 1894 1006 1753 1006 1714 995 1713 995 1711 995 1605 1004 1541 995 1539 995 1537 995 1535 995 1516 1006 1180 997 1179 997 1177 997 1147 1006 1093 997 1091 997 1089 997 1087 997 1071 1008 968 1008 935 997 933 997 931 997 929 997 898 1008 366 999 364 999 362 999 340 1008 342 1039"/>
+                        </Shape>
+                        <String CONTENT="cially in the summer. As to the killing of the old people over the stone"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-034_l11" HPOS="344" VPOS="1059" WIDTH="1148" HEIGHT="55" BASELINE="344 1100 1492 1100" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="344 1100 344 1112 1490 1114 1492 1100 1492 1069 1465 1059 1463 1059 1461 1059 1459 1059 1430 1069 1030 1059 1028 1059 1027 1059 1025 1059 1025 1061 1015 1071 847 1071 789 1059 787 1059 633 1069 594 1059 592 1059 590 1059 588 1059 586 1059 586 1061 576 1071 516 1071 485 1059 483 1059 481 1059 479 1059 454 1069 428 1059 426 1059 424 1059 344 1069 344 1100"/>
+                        </Shape>
+                        <String CONTENT="oval, I at least could get no information about it."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-034_r4" HPOS="346" VPOS="1163" WIDTH="1782" HEIGHT="292" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="346 1163 2128 1163 2128 1455 346 1455"/>
+                    </Shape>
+                    <TextLine ID="mz_3-034_l12" HPOS="457" VPOS="1174" WIDTH="281" HEIGHT="55" BASELINE="459 1205 738 1207" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="459 1205 457 1217 545 1229 547 1229 736 1219 738 1207 736 1180 459 1174 459 1205"/>
+                        </Shape>
+                        <String CONTENT="¹ Dall, I, p. 382."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-034_l13" HPOS="455" VPOS="1219" WIDTH="1659" HEIGHT="45" BASELINE="457 1248 2114 1244" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="457 1248 457 1264 2112 1262 2114 1244 2110 1221 455 1219 457 1248"/>
+                        </Shape>
+                        <String CONTENT="² Mr. Dall supposes, further on, that the stupefying agent may have been prepared from the wild nux"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-034_l14" HPOS="339" VPOS="1264" WIDTH="1773" HEIGHT="42" BASELINE="340 1293 2112 1289" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="340 1293 340 1306 2110 1306 2112 1289 2106 1264 339 1266 340 1293"/>
+                        </Shape>
+                        <String CONTENT="vomica, which grows to the westward. No such thing is known in these regions. The Chukchee and other"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-034_l15" HPOS="342" VPOS="1306" WIDTH="1770" HEIGHT="43" BASELINE="342 1332 2112 1332" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="342 1332 342 1349 2110 1349 2112 1332 2110 1306 342 1306 342 1332"/>
+                        </Shape>
+                        <String CONTENT="inhabitants, indeed, buy from the Russian merchants ready-made pills, prepared from a species of Strychnus"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-034_l16" HPOS="340" VPOS="1343" WIDTH="1770" HEIGHT="51" BASELINE="342 1377 2110 1373" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="342 1377 342 1394 2110 1394 2110 1373 2104 1343 340 1349 342 1377"/>
+                        </Shape>
+                        <String CONTENT="(in Russian чилибуха) and brought from Yakutsk; but these pills are used only for baiting-purposes, wrapped"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-034_l17" HPOS="342" VPOS="1388" WIDTH="665" HEIGHT="47" BASELINE="344 1419 1007 1414" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="344 1419 344 1435 1005 1435 1007 1414 1001 1388 342 1392 344 1419"/>
+                        </Shape>
+                        <String CONTENT="in meat or fat, against foxes, wolves, etc."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

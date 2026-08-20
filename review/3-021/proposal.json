@@ -1,0 +1,210 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "555"
+    },
+    "2": {
+      "text": "expect such marked deference on the part of the younger people as is custo-"
+    },
+    "3": {
+      "text": "mary among the reindeer-breeders."
+    },
+    "4": {
+      "text": "Quarrels between father and sons occur every now and then. In this"
+    },
+    "5": {
+      "text": "case the family ties may be broken by, either party. Thus, on the Dry Anui"
+    },
+    "6": {
+      "text": "River, one of my acquaintances, Kelhɪˊm by name, expelled from his camp",
+      "resolved": "Kelhɪˊm: ɪ = U+026A LATIN SMALL CAPITAL I; ˊ = U+02CA MODIFIER LETTER ACUTE ACCENT (stress, not apostrophe)",
+      "note": "Raised mark after ɪ read as stress U+02CA per §4/keying_spec (raised mark defaults to stress, never apostrophe). Letter before it is a dotless serif stem (ɪ, U+026A), not dotted i, confirmed at 4x — same reading recurs at line 17.",
+      "class": "print",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "7": {
+      "text": "his son Kɪʟeˊp, a young man of twenty, accusing him of laziness, bad temper,",
+      "resolved": "Kɪʟeˊp: K = ASCII capital K; ɪ = U+026A LATIN SMALL CAPITAL I; ʟ = U+029F LATIN LETTER SMALL CAPITAL L; e = ASCII lowercase e (checked at 4x against the round lowercase e in \"young\" on the same line — same shape and height, not small-cap ᴇ); ˊ = U+02CA stress",
+      "note": "Small-caps K? No — K is full capital height (no small-cap K in inventory, §2.3); ɪ and ʟ are reduced to small-cap height; the vowel after ʟ is checked at 4x and matches the ordinary round lowercase e elsewhere on the line, not ᴇ.",
+      "class": "print",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "8": {
+      "text": "and neglect of his duties as a herdsman. The young man, according to the"
+    },
+    "9": {
+      "text": "words of his father, wanted to attend friendly gatherings, to play cards, and"
+    },
+    "10": {
+      "text": "to make merry. The father declared that he himself was entitled to these"
+    },
+    "11": {
+      "text": "privileges, insisting that it was the duty of young men to take care of the"
+    },
+    "12": {
+      "text": "reindeer-herd. Kɪʟeˊp left his father’s camp, and wandered around, trying to",
+      "resolved": "Kɪʟeˊp: ɪ = U+026A; ʟ = U+029F; ˊ = U+02CA stress (same form as line 7)",
+      "class": "print",
+      "contamination": {
+        "blind": true
+      },
+      "note": "Kɪʟeˊp — same name as line 7, letterforms confirmed there (ɪ, ʟ small-caps, lowercase e, stress)."
+    },
+    "13": {
+      "text": "find a place in some family as an adopted son-in-law; but the work required"
+    },
+    "14": {
+      "text": "in such positions seemed to be much harder than that required in his father’s"
+    },
+    "15": {
+      "text": "house, and at last he returned home. His father was short of herdsmen, and"
+    },
+    "16": {
+      "text": "the young man was re-admitted without much difficulty. After a few weeks,"
+    },
+    "17": {
+      "text": "however, misunderstandings began anew. We visited the camp of Kelhɪˊm",
+      "resolved": "Kelhɪˊm: ɪ = U+026A; ˊ = U+02CA stress",
+      "class": "print",
+      "contamination": {
+        "blind": true
+      },
+      "note": "Kelhɪˊm — same name as line 6, letterforms confirmed there."
+    },
+    "18": {
+      "text": "about that time. One night the young man came home from the herd, ripped"
+    },
+    "19": {
+      "text": "up one of our leather bags, and stole half of its contents, chiefly hard-tack"
+    },
+    "20": {
+      "text": "and sugar. The next morning, when my companion discovered the theft and"
+    },
+    "21": {
+      "text": "commented upon the bad manners of the camp, the young man very quietly"
+    },
+    "22": {
+      "text": "observed, “Don’t talk so much. I have taken your sugar and bread.” —",
+      "note": "Closing double quote is curly per §1/§5.6; mz draft had a straight quote before the em dash.",
+      "class": "draft",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "23": {
+      "text": "“Why did you do so?” I questioned him. “Because I wanted to eat it,” was",
+      "note": "Opening quote printed as a guillemet-shaped mark in mz draft (recognizer artifact); the book sets curly “…” throughout (§1/§5.6), never « ». Closing quote likewise curly.",
+      "class": "draft",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "24": {
+      "text": "the unhesitating answer. The father felt ashamed, and offered us two reindeer-"
+    },
+    "25": {
+      "text": "tongues and a bundle of skins of reindeer-leg as a “redemption price” (kɪˊtkau,",
+      "resolved": "kɪˊtkau: ɪ = U+026A LATIN SMALL CAPITAL I (straight serif stem, no shoulder — contrasted at 4x against the r in \"price\" two words earlier, which has a curved arm); ˊ = U+02CA stress. Closing quote curly per §1/§5.6.",
+      "note": "mz draft read this as \"kr'tkau\" (r for ɪ, apostrophe for stress) — the CATMuS ɪ→r substitution named in this pass's standing instructions.",
+      "class": "draft",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "26": {
+      "text": "literally, “hard return”). This proves that the father’s complaints against his",
+      "note": "Closing quote curly per §1/§5.6.",
+      "class": "draft",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "27": {
+      "text": "son were not without reason."
+    },
+    "28": {
+      "text": "In another camp of the same locality the following happened a few years"
+    },
+    "29": {
+      "text": "ago. A man, Čeiˊpu by name, expelled his eldest son, Nuwaˊt, who was a",
+      "resolved": "Čeiˊpu: Č = c + U+030C; ˊ = U+02CA stress. Nuwaˊt: ˊ = U+02CA stress after bare a — checked at 4x, no diaeresis, plain a confirmed (not ä).",
+      "class": "print",
+      "contamination": {
+        "blind": true
+      },
+      "note": "Čeiˊpu and Nuwaˊt confirmed at 4x; Nuwaˊt's a checked against diaeresis and found bare."
+    },
+    "30": {
+      "text": "very unsatisfactory herdsman, and made his younger son the principal heir"
+    },
+    "31": {
+      "text": "(eˊun-miˊlhɪlɪn¹). The disowned youth wandered from camp to camp, and at",
+      "resolved": "Handle expands to eˊun-miˊlhɪlɪn (ratified, lexicon lookup, attested 2-087 L26). Footnote marker: superscript ¹ U+00B9, not the ASCII '!' the mz draft substituted for it.",
+      "note": "Ratified via `lexicon lookup` (key e'un-mi'lhi_li_n, attested 2-087 L26, \"the one with the principal fire-tool\"); raster reading at 4x confirms the same letterforms (dotted i in -mi-, dotless ɪ x2 in -lhɪlɪn-).",
+      "class": "print",
+      "contamination": {
+        "blind": true
+      },
+      "as_typed": "({e'un-mi'lhi_li_n}¹). The disowned youth wandered from camp to camp, and at"
+    },
+    "32": {
+      "text": "last came to a rich reindeer-breeder, Yoˊnlɪ. He married Yoˊnlɪ’s daughter,",
+      "resolved": "Yoˊnlɪ: ˊ = U+02CA stress; ɪ = U+026A LATIN SMALL CAPITAL I (dotless serif stem, confirmed at 4x, both occurrences)",
+      "class": "print",
+      "contamination": {
+        "blind": true
+      },
+      "note": "Yoˊnlɪ, both occurrences (name and possessive), confirmed at 4x — dotless ɪ, not dotted i."
+    },
+    "33": {
+      "text": "and lived at his house as an adopted son-in-law. The following spring, when"
+    },
+    "34": {
+      "text": "moving to the summer pastures, the father-in-law, who was much displeased"
+    },
+    "35": {
+      "text": "with his work, wanted to drive him away. The young wife was with child,"
+    },
+    "36": {
+      "text": "but among the Chukchee this forms no obstacle to the rupture of a marriage."
+    },
+    "37": {
+      "text": "The quarrel happened while they were travelling. The young man said nothing;"
+    },
+    "38": {
+      "text": "but after a while he sat down on his wife’s sledge, embraced her from behind,"
+    },
+    "39": {
+      "text": "drew his knife, and cut open her abdomen. Then he jumped from the sledge"
+    },
+    "40": {
+      "text": "and cut his own throat."
+    },
+    "41": {
+      "text": "In both these cases the young men disowned by their families were, as"
+    },
+    "42": {
+      "text": "the Chukchee say, “bad.” If the fault lies with the father, a youth who is",
+      "note": "Both quotes curly per §1/§5.6; mz draft had straight quotes.",
+      "class": "draft",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "43": {
+      "text": "¹ See p. 351.",
+      "note": "Footnote opener: superscript ¹ U+00B9, space, text — matches the reference marker on line 31 and §2.10's spaced-opener convention.",
+      "class": "print",
+      "contamination": {
+        "blind": true
+      }
+    }
+  }
+}

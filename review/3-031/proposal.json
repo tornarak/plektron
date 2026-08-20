@@ -1,0 +1,197 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "565"
+    },
+    "2": {
+      "text": "them, they must keep silent. Here it should be remembered that some cases"
+    },
+    "3": {
+      "text": "of voluntary death originate in wrath.¹",
+      "note": "Footnote marker keyed as superscript ¹ U+00B9; machine text had ASCII 'l'. Confirmed at 4x.",
+      "class": "draft"
+    },
+    "4": {
+      "text": "I will add here two descriptions of voluntary death noted down from"
+    },
+    "5": {
+      "text": "information given by the natives. The first one happened in the year 1894,"
+    },
+    "6": {
+      "text": "on the western Kolyma tundra. The second happened on the same tundra"
+    },
+    "7": {
+      "text": "a year later. Both were related to me by Aiñanwaˊt.",
+      "note": "Native personal name, ratified handle from lexicon lookup (Ain~anwa't -> Aiñanwaˊt, attested 1-068, 1-074 etc.). Machine text had a slash where the print carries a raised stress mark.",
+      "class": "print",
+      "as_typed": "a year later. Both were related to me by {Ain~anwa't}."
+    },
+    "8": {
+      "text": "“One ᴇʟɪˊhɪkɪ had taken a great quantity of goods on credit from a merchant of Yakutsk.",
+      "note": "Name printed word-initial in small-cap style (ᴇ/ʟ licensed Tier-1 small-caps, ɪ licensed small-cap obscure vowel, §2.3). h and k keyed as plain ASCII since no small-cap sort is licensed for them despite matching the visual small-cap height (analogous to §2.12's ruling for roman numerals). Base spelling matches the corpus's one existing attestation of this name, lowercase 'eliˊhɪkɪ' at 1-134 -- but there the stressed first vowel is plain 'i' where here, in uniform small-cap styling, it reads visually identical to the unstressed ɪ's, so I cannot distinguish stressed-plain-i from small-cap-ɪ on this print. Keyed to match the one attested spelling; flagging the ambiguity for adjudication. Opening quote corrected from a guillemet '«' in the machine draft to the curly “ the book sets throughout (§1, §5.6).",
+      "class": "doubt",
+      "resolved": "ᴇ = U+1D07, ʟ = U+029F, ɪ = U+026A, ˊ = U+02CA stress, ɪ = U+026A (x2)"
+    },
+    "9": {
+      "text": "Several years passed, and the debt was not fully covered. One spring he left his home and went"
+    },
+    "10": {
+      "text": "to Sredne-Kolymsk from a distant place in the tundra. At the same time all the people passed"
+    },
+    "11": {
+      "text": "over to the other shore of the Omolon River. His brother was Rultuˊwg̣i. They drank brandy",
+      "note": "Raised mark after 'Rultu' keyed as stress U+02CA (never apostrophe, §4/§5.8); dot below g confirmed at 4x.",
+      "class": "print",
+      "resolved": "ˊ = U+02CA stress; g̣ = g + U+0323 dot below"
+    },
+    "12": {
+      "text": "there in the tent of Uˊnkuul, a Tungus. A hernia, which was an object of constant care with him,",
+      "note": "Raised mark after 'U' keyed as stress U+02CA.",
+      "class": "print",
+      "resolved": "ˊ = U+02CA stress"
+    },
+    "13": {
+      "text": "was frost-bitten, and therefore refused to go in. Thus ill-luck visited him. He suffered great pain"
+    },
+    "14": {
+      "text": "and sorrow because he could not put his bowels in place. Therefore he began to speak, requesting"
+    },
+    "15": {
+      "text": "his companion in marriage to give him death. Uˊnkuul was his companion in marriage. The",
+      "resolved": "ˊ = U+02CA stress"
+    },
+    "16": {
+      "text": "neighboring camp was that of his younger brother. ᴇʟɪˊhɪkɪ went to the town with them, without a tent",
+      "note": "Same name as line 8; machine draft doubled the l ('Ell'hiki'). Same doubt about the first vowel's case noted on line 8 applies here too.",
+      "class": "doubt",
+      "resolved": "ᴇ = U+1D07, ʟ = U+029F, ɪ = U+026A, ˊ = U+02CA stress, ɪ = U+026A (x2)"
+    },
+    "17": {
+      "text": "of his own. His wife had very small children, (and could not go with them.) Then he was"
+    },
+    "18": {
+      "text": "afflicted in the manner aforesaid; and, since his father died a voluntary death, he wanted to imitate"
+    },
+    "19": {
+      "text": "his father."
+    },
+    "20": {
+      "text": "“Oh! why have I not begun with the father first? He was breaking wind badly, and could",
+      "note": "Opening quote corrected from guillemet '«' in machine draft to curly “.",
+      "class": "draft"
+    },
+    "21": {
+      "text": "not defecate normally. In his anus was formed a white stone, a soft one, round in form and polished."
+    },
+    "22": {
+      "text": "They found it in his rectum after his death. That one asked to be killed. The elder son was"
+    },
+    "23": {
+      "text": "assisting him. He seemed sighing his last, but unexpectedly tore out the knife and came to life"
+    },
+    "24": {
+      "text": "again. Since he could not be killed by stabbing, he said, ‘Tighten it on me!’ So they strangled",
+      "note": "Nested speech in single curly quotes, confirmed at 4x; machine draft rendered the opener as a double curly quote and dropped the closer.",
+      "class": "draft"
+    },
+    "25": {
+      "text": "him with a rope. When he was dead, they carried him away into the tundra, and, putting his body"
+    },
+    "26": {
+      "text": "on the ground, investigated his rectum. There they found the white stone. Still when alive, he"
+    },
+    "27": {
+      "text": "defecated stone or sand, and who knows what not!"
+    },
+    "28": {
+      "text": "“His son after him came to be in the same position. Therefore, being at the tent of his marriage-",
+      "note": "Opening quote corrected to curly “; machine draft had a straight quote.",
+      "class": "draft"
+    },
+    "29": {
+      "text": "companion, he asked to be killed. They listened to him, and wanted to obey him. In obedience"
+    },
+    "30": {
+      "text": "to him, they put him on a grated sled and took him to his brother’s tent. There they executed his"
+    },
+    "31": {
+      "text": "desire. The younger brother was assisting him, but he could not do it in a proper way. His hand"
+    },
+    "32": {
+      "text": "trembled. He himself said, ‘There, turn the knife a little more aside;’ but his assistant could not",
+      "note": "Nested speech in single curly quotes, confirmed at 4x.",
+      "class": "draft"
+    },
+    "33": {
+      "text": "do it. Then he used that very word of his father,² ‘Tighten it on me!’ Indeed, they strangled him",
+      "note": "Footnote marker keyed as superscript ² U+00B2 after the comma; machine draft rendered it as a colon. Confirmed at 4x.",
+      "class": "draft"
+    },
+    "34": {
+      "text": "with a rope and killed him. That was the end.”",
+      "note": "Closing quote corrected to curly ”; machine draft had a straight quote.",
+      "class": "draft"
+    },
+    "35": {
+      "text": "Another story refers to a desire for voluntary death once expressed and"
+    },
+    "36": {
+      "text": "then revoked. The story is as follows: —"
+    },
+    "37": {
+      "text": "“My neighbor in the camp, Little-Spoon by name, also asked to be killed. With many words",
+      "note": "Opening quote corrected from guillemet '«' to curly “; this quoted passage continues past the end of this page (no closing quote on this leaf).",
+      "class": "layout"
+    },
+    "38": {
+      "text": "he persuaded his house-mates. Before that, he had quarrelled with his wife. They had very bad"
+    },
+    "39": {
+      "text": "sons. His sons and their mother quarrelled with their father. For that reason he was angered.",
+      "note": "Machine draft had a comma before 'For'; the print sets a period. Confirmed at 4x.",
+      "class": "draft"
+    },
+    "40": {
+      "text": "Therefore he asked to be killed. They had only driving-reindeer, almost no other reindeer. The"
+    },
+    "41": {
+      "text": "other sons slaughtered a woman’s driving-reindeer led by the halter (i. e., very well broken), because"
+    },
+    "42": {
+      "text": "he had many more sons. But the oldest son quarrelled with him. Therefore it was necessary to"
+    },
+    "43": {
+      "text": "kill a reindeer-buck for his last meal. We thought he was really asking to be killed. We made"
+    },
+    "44": {
+      "text": "haste and prepared everything necessary. We replaced the broken and mended parts of the sledges"
+    },
+    "45": {
+      "text": "¹ According to Jochelson (The Koryak, p. 760), the custom of killing old people, until recently, existed",
+      "note": "Note opener keyed as superscript ¹, matching body reference on line 3.",
+      "class": "draft"
+    },
+    "46": {
+      "text": "among the Koryak. Franz Boas says of the Central Eskimo, that among them it is considered lawful for a man"
+    },
+    "47": {
+      "text": "to kill his aged parents (Boas, Central Eskimo, p. 615)."
+    },
+    "48": {
+      "text": "² Compare p. 563.",
+      "note": "Note opener keyed as superscript ², matching body reference on line 33.",
+      "class": "draft"
+    },
+    "49": {
+      "text": "71—JESUP NORTH PACIFIC EXPED., VOL. VII.",
+      "note": "Signature line, QuireMarksZone; machine draft used an en dash, print sets em dash per §2.11.",
+      "class": "draft"
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

@@ -1,0 +1,436 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-3-032.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-3-032.png; regions_from: zones/chukchi-3-032.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Other"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+                <TextBlock ID="mz_3-032_r1" HPOS="333" VPOS="432" WIDTH="1782" HEIGHT="90" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="333 432 2115 432 2115 522 333 522"/>
+                    </Shape>
+                    <TextLine ID="mz_3-032_l1" HPOS="921" VPOS="457" WIDTH="616" HEIGHT="50" BASELINE="923 488 1537 492" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1527 463 1518 457 939 457 925 478 923 488 921 504 1533 507 1537 492 1535 470 1527 463"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l2" HPOS="348" VPOS="449" WIDTH="102" HEIGHT="62" BASELINE="350 494 450 490" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="446 466 436 457 399 449 397 449 395 449 348 463 350 494 350 511 450 504 450 490 446 472 446 466"/>
+                        </Shape>
+                        <String CONTENT="566"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-032_r2" HPOS="333" VPOS="547" WIDTH="1782" HEIGHT="2452" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="333 547 2115 547 2115 2999 333 2999"/>
+                    </Shape>
+                    <TextLine ID="mz_3-032_l3" HPOS="342" VPOS="564" WIDTH="1774" HEIGHT="49" BASELINE="342 593 2116 593" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2096 568 2077 566 2057 566 2038 566 2019 564 1999 564 342 564 342 593 342 605 2114 613 2116 593 2116 568 2096 568"/>
+                        </Shape>
+                        <String CONTENT="with new ones, for our people consider a repaired sledge not fit for use in death. If something"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l4" HPOS="340" VPOS="607" WIDTH="1692" HEIGHT="49" BASELINE="342 640 2032 634" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="342 640 342 656 2030 650 2032 634 2026 607 340 609 342 640"/>
+                        </Shape>
+                        <String CONTENT="broken and repaired breaks again on the trail of the dead, what would he (the dead one) do?"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l5" HPOS="446" VPOS="654" WIDTH="1670" HEIGHT="44" BASELINE="448 679 2116 683" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="448 679 446 695 2112 698 2116 683 2114 657 448 654 448 679"/>
+                        </Shape>
+                        <String CONTENT="“The dog people live halfway; and when the one who died reaches them, the dead come to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l6" HPOS="340" VPOS="702" WIDTH="1776" HEIGHT="45" BASELINE="342 732 2116 728" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="342 732 342 747 2114 745 2116 728 2110 702 340 704 342 732"/>
+                        </Shape>
+                        <String CONTENT="meet him. They know that he is coming, and say, ‘He will lose his way.’ They are aware of his"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l7" HPOS="340" VPOS="745" WIDTH="1776" HEIGHT="49" BASELINE="342 778 2116 774" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="342 778 342 794 2114 792 2116 774 2110 745 340 745 342 778"/>
+                        </Shape>
+                        <String CONTENT="helplessness, because there are many paths, all leading to the relatives among the dead. For that"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l8" HPOS="339" VPOS="794" WIDTH="1775" HEIGHT="45" BASELINE="340 821 2114 825" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="340 821 339 835 2110 839 2114 825 2112 798 340 794 340 821"/>
+                        </Shape>
+                        <String CONTENT="reason the reindeer and the clothes of other people must not be used. The dead people going to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l9" HPOS="342" VPOS="845" WIDTH="1772" HEIGHT="42" BASELINE="342 872 2114 872" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="342 872 342 887 2114 887 2114 872 2114 845 342 845 342 872"/>
+                        </Shape>
+                        <String CONTENT="and fro in their own country move windward, and catch the smell, saying, ‘These clothes have an"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l10" HPOS="342" VPOS="891" WIDTH="1774" HEIGHT="41" BASELINE="342 917 2116 917" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="342 917 342 932 2116 932 2116 917 2116 891 342 891 342 917"/>
+                        </Shape>
+                        <String CONTENT="odor of our home.’ Then they take them away. Therefore nothing belonging to other men must"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l11" HPOS="339" VPOS="934" WIDTH="1773" HEIGHT="49" BASELINE="340 965 2112 962" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="340 965 340 979 2108 983 2112 962 2108 936 339 934 340 965"/>
+                        </Shape>
+                        <String CONTENT="be used. Poor men will use only suits of clothes of their own. New clothes, taken from others,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l12" HPOS="340" VPOS="985" WIDTH="1770" HEIGHT="43" BASELINE="340 1012 2110 1012" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="340 1012 340 1024 2106 1028 2110 1012 2108 985 340 985 340 1012"/>
+                        </Shape>
+                        <String CONTENT="or received as a gift, are put aside. Things very bad, but one’s own, are put into use. I must say"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l13" HPOS="339" VPOS="1020" WIDTH="1627" HEIGHT="53" BASELINE="340 1057 1966 1053" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="340 1057 340 1073 1964 1069 1966 1053 1960 1020 339 1030 340 1057"/>
+                        </Shape>
+                        <String CONTENT="the truth, the dead people are very bad people. They would not say, ‘Leave him alone!’¹"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l14" HPOS="444" VPOS="1073" WIDTH="1670" HEIGHT="52" BASELINE="446 1100 2114 1104" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="446 1100 444 1114 510 1125 512 1125 2112 1117 2114 1104 2112 1076 446 1073 446 1100"/>
+                        </Shape>
+                        <String CONTENT="“Meanwhile, whence do the living people know all about it? To be sure, many of our people"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l15" HPOS="337" VPOS="1119" WIDTH="1773" HEIGHT="49" BASELINE="339 1152 2110 1149" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="339 1152 339 1166 2106 1168 2110 1149 2104 1119 337 1121 339 1152"/>
+                        </Shape>
+                        <String CONTENT="come back from the trail of the dead. Probably they have made known the customs of the country"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l16" HPOS="337" VPOS="1168" WIDTH="1775" HEIGHT="47" BASELINE="339 1199 2112 1195" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="339 1199 339 1215 2110 1215 2112 1195 2106 1168 337 1170 339 1199"/>
+                        </Shape>
+                        <String CONTENT="of the dead. Many dead ones are turned back by the power of incantations. Even I, when I was"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l17" HPOS="337" VPOS="1215" WIDTH="1773" HEIGHT="49" BASELINE="339 1246 2110 1242" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="339 1246 339 1264 2108 1264 2110 1242 2104 1215 337 1217 339 1246"/>
+                        </Shape>
+                        <String CONTENT="rich, received several such incantations from hungry old women, gratifying their stomach with food."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l18" HPOS="339" VPOS="1260" WIDTH="1496" HEIGHT="45" BASELINE="340 1287 1835 1291" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="340 1287 339 1301 1831 1305 1835 1291 1833 1264 340 1260 340 1287"/>
+                        </Shape>
+                        <String CONTENT="But I am sorry to say that at present I have lost those incantations, being so poor."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l19" HPOS="444" VPOS="1305" WIDTH="1668" HEIGHT="52" BASELINE="446 1332 2112 1338" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="446 1332 444 1345 469 1357 471 1357 473 1357 2110 1351 2112 1338 2110 1310 446 1305 446 1332"/>
+                        </Shape>
+                        <String CONTENT="“A man going along the trail of the dead may be turned back by a dog. The shaman bites"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l20" HPOS="337" VPOS="1357" WIDTH="1775" HEIGHT="43" BASELINE="337 1384 2112 1384" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="337 1384 337 1400 2112 1400 2112 1384 2112 1357 337 1357 337 1384"/>
+                        </Shape>
+                        <String CONTENT="the left ear of the dog, and says to it, ‘Go and bring back thy master. We will feed thee with the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l21" HPOS="335" VPOS="1402" WIDTH="1775" HEIGHT="45" BASELINE="337 1431 2110 1427" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="337 1431 337 1447 2108 1445 2110 1427 2106 1402 335 1402 337 1431"/>
+                        </Shape>
+                        <String CONTENT="best food.’ (He may also be brought back with an incantation.) One with a slight disease may be"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l22" HPOS="335" VPOS="1447" WIDTH="1773" HEIGHT="45" BASELINE="337 1474 2108 1478" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="337 1474 335 1488 2104 1492 2108 1478 2106 1451 337 1447 337 1474"/>
+                        </Shape>
+                        <String CONTENT="turned back where the trail is barred by a dog, which, springing at his face, makes him come back."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l23" HPOS="337" VPOS="1494" WIDTH="1771" HEIGHT="46" BASELINE="337 1523 2108 1523" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="337 1523 337 1538 2106 1540 2108 1523 2106 1494 337 1496 337 1523"/>
+                        </Shape>
+                        <String CONTENT="One with a serious disease would not yield. When a man coming back from the dead has turned"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l24" HPOS="335" VPOS="1538" WIDTH="1773" HEIGHT="53" BASELINE="337 1570 2108 1573" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="337 1570 335 1581 2104 1591 2108 1573 2106 1544 337 1538 337 1570"/>
+                        </Shape>
+                        <String CONTENT="back, the dog is killed. The Reindeer people keep dogs because they are very strong in bringing"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l25" HPOS="335" VPOS="1583" WIDTH="1771" HEIGHT="55" BASELINE="337 1612 2106 1620" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="337 1612 335 1628 2102 1638 2106 1620 2104 1593 337 1583 337 1612"/>
+                        </Shape>
+                        <String CONTENT="back those dying ones. Is there any other use for them? We have to feed them. I cannot deny,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l26" HPOS="333" VPOS="1632" WIDTH="1773" HEIGHT="53" BASELINE="335 1661 2106 1667" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="335 1661 333 1677 2102 1685 2106 1667 2104 1640 335 1632 335 1661"/>
+                        </Shape>
+                        <String CONTENT="however, that the dog is good for many other uses. In hunting big game, he has a loud voice,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l27" HPOS="333" VPOS="1681" WIDTH="1783" HEIGHT="43" BASELINE="335 1708 2116 1712" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="335 1708 333 1720 2112 1724 2116 1712 2114 1685 335 1681 335 1708"/>
+                        </Shape>
+                        <String CONTENT="that is a useful protection against a bear met unexpectedly in the dark. You know it yourself. —"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l28" HPOS="335" VPOS="1731" WIDTH="1775" HEIGHT="41" BASELINE="335 1757 2110 1757" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="335 1757 335 1772 2110 1772 2110 1757 2110 1731 335 1731 335 1757"/>
+                        </Shape>
+                        <String CONTENT="everybody has a dog, many of the people have dogs. When we travelled with you, nobody was"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l29" HPOS="335" VPOS="1776" WIDTH="1773" HEIGHT="43" BASELINE="335 1803 2108 1803" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="335 1803 335 1817 2106 1819 2108 1803 2108 1776 335 1776 335 1803"/>
+                        </Shape>
+                        <String CONTENT="without a dog. In connection with this, when a man goes along the trail of the dead, it is useless"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l30" HPOS="333" VPOS="1813" WIDTH="1775" HEIGHT="51" BASELINE="335 1852 2108 1848" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="335 1852 335 1864 2108 1862 2108 1848 2104 1823 1237 1813 1235 1813 1175 1823 405 1815 403 1815 333 1825 335 1852"/>
+                        </Shape>
+                        <String CONTENT="to take a reindeer for an incantation. The reindeer is full of fear. It runs from afar and exerts"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l31" HPOS="333" VPOS="1870" WIDTH="1748" HEIGHT="43" BASELINE="333 1897 2081 1897" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="333 1897 333 1913 2081 1913 2081 1897 2081 1870 333 1870 333 1897"/>
+                        </Shape>
+                        <String CONTENT="no influence; it is only visible to eyes. To be sure, it appears (on the trail), but only from afar."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l32" HPOS="436" VPOS="1913" WIDTH="1670" HEIGHT="46" BASELINE="438 1940 2106 1944" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="438 1940 436 1953 2102 1959 2106 1944 2104 1916 438 1913 438 1940"/>
+                        </Shape>
+                        <String CONTENT="“And when a man is quite dead and has ceased breathing, those who are living do not weep"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l33" HPOS="331" VPOS="1959" WIDTH="1775" HEIGHT="45" BASELINE="333 1987 2106 1991" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="333 1987 331 2002 2102 2004 2106 1991 2104 1963 333 1959 333 1987"/>
+                        </Shape>
+                        <String CONTENT="for him, — those looking (upon the world) members of his family. They do not weep shortly after"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l34" HPOS="333" VPOS="2006" WIDTH="1773" HEIGHT="47" BASELINE="333 2037 2106 2037" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="333 2037 333 2051 2104 2053 2106 2037 2106 2010 333 2006 333 2037"/>
+                        </Shape>
+                        <String CONTENT="he is dead. Weeping is sinful. The one who has a slight disease is rejected by the dead. They"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l35" HPOS="331" VPOS="2053" WIDTH="1773" HEIGHT="49" BASELINE="333 2086 2104 2080" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="333 2086 333 2102 2102 2102 2104 2080 2098 2053 331 2057 333 2086"/>
+                        </Shape>
+                        <String CONTENT="say, ‘Why did you come? Go away, go home.’ Then he goes away, returns home. It appears in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l36" HPOS="333" VPOS="2104" WIDTH="1773" HEIGHT="42" BASELINE="333 2129 2106 2129" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="333 2129 333 2146 2106 2146 2106 2129 2106 2104 333 2104 333 2129"/>
+                        </Shape>
+                        <String CONTENT="various ways. One may breathe, but he will lose his wits. In this case he probably has an hallu-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l37" HPOS="327" VPOS="2139" WIDTH="988" HEIGHT="52" BASELINE="329 2178 1315 2174" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="329 2178 329 2191 1313 2187 1315 2174 1309 2139 327 2148 329 2178"/>
+                        </Shape>
+                        <String CONTENT="cination. He says, ‘I have come back from the dead.’"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l38" HPOS="432" VPOS="2191" WIDTH="1672" HEIGHT="47" BASELINE="434 2219 2104 2222" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="434 2219 432 2234 2100 2238 2104 2222 2102 2195 434 2191 434 2219"/>
+                        </Shape>
+                        <String CONTENT="“Some people eat fly-agaric. Those from the Anadyr bring fly-agaric. Before eating, they say"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l39" HPOS="329" VPOS="2244" WIDTH="1775" HEIGHT="47" BASELINE="329 2271 2104 2271" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="329 2271 329 2285 2102 2291 2104 2271 2104 2244 329 2244 329 2271"/>
+                        </Shape>
+                        <String CONTENT="to it, ‘Take me to the dead;’ and, indeed, they are taken there. He sinks down, falls into a swoon,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l40" HPOS="327" VPOS="2287" WIDTH="1777" HEIGHT="47" BASELINE="329 2318 2104 2312" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="329 2318 329 2334 2102 2332 2104 2312 2098 2287 327 2291 329 2318"/>
+                        </Shape>
+                        <String CONTENT="and then he is taken away, — not his body, but only his soul. And some one who has a hidden"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l41" HPOS="329" VPOS="2337" WIDTH="1777" HEIGHT="41" BASELINE="329 2363 2106 2363" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="329 2363 329 2378 2104 2378 2106 2363 2104 2337 329 2337 329 2363"/>
+                        </Shape>
+                        <String CONTENT="disease may stay there forever. Therefore what has been said about the taking-away of clothes"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l42" HPOS="331" VPOS="2378" WIDTH="1771" HEIGHT="49" BASELINE="333 2410 2102 2406" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="333 2410 333 2427 2100 2427 2102 2406 2096 2378 331 2380 333 2410"/>
+                        </Shape>
+                        <String CONTENT="must have become known through those who eat fly-agaric. Indeed, from three sources it may"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l43" HPOS="331" VPOS="2427" WIDTH="1775" HEIGHT="45" BASELINE="331 2456 2106 2456" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="331 2456 331 2472 2106 2472 2106 2456 2106 2427 331 2427 331 2456"/>
+                        </Shape>
+                        <String CONTENT="become known, — from those who are turned back by dogs, from those sent back by the Merciful"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l44" HPOS="331" VPOS="2468" WIDTH="1775" HEIGHT="53" BASELINE="333 2503 2106 2499" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="333 2503 333 2521 2104 2517 2106 2499 2102 2472 331 2468 333 2503"/>
+                        </Shape>
+                        <String CONTENT="Being because the dead have rejected them (these first two bring tidings), and from those who eat"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l45" HPOS="329" VPOS="2525" WIDTH="187" HEIGHT="42" BASELINE="329 2552 516 2552" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="329 2552 329 2567 516 2567 516 2552 516 2525 329 2525 329 2552"/>
+                        </Shape>
+                        <String CONTENT="fly-agaric."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l46" HPOS="434" VPOS="2563" WIDTH="1674" HEIGHT="57" BASELINE="436 2591 2108 2595" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="436 2591 434 2606 572 2618 574 2618 1249 2610 1315 2620 1317 2620 2106 2610 2108 2595 2108 2567 436 2563 436 2591"/>
+                        </Shape>
+                        <String CONTENT="“Little-Spoon, however, unexpectedly stopped his preparations, although before it seemed that"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l47" HPOS="327" VPOS="2614" WIDTH="1777" HEIGHT="45" BASELINE="329 2643 2104 2640" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="329 2643 329 2659 2102 2655 2104 2640 2098 2614 327 2614 329 2643"/>
+                        </Shape>
+                        <String CONTENT="he had made up his mind. We had made all the necessary preparations, and were gathering our"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l48" HPOS="327" VPOS="2661" WIDTH="1779" HEIGHT="45" BASELINE="329 2690 2106 2686" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="329 2690 329 2706 2104 2702 2106 2686 2100 2661 327 2663 329 2690"/>
+                        </Shape>
+                        <String CONTENT="sledges and the other things required; but we were disappointed, for evening came, and we were"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l49" HPOS="329" VPOS="2710" WIDTH="1775" HEIGHT="44" BASELINE="329 2735 2104 2735" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="329 2735 329 2751 2102 2754 2104 2735 2104 2710 329 2710 329 2735"/>
+                        </Shape>
+                        <String CONTENT="still waiting in vain. Finally we could not wait any longer, and stopped our preparations. Evening"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l50" HPOS="329" VPOS="2753" WIDTH="1777" HEIGHT="44" BASELINE="329 2782 2106 2782" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="329 2782 329 2795 2102 2797 2106 2782 2102 2753 329 2754 329 2782"/>
+                        </Shape>
+                        <String CONTENT="came, night came. We were speechless. He had only gorged himself. He had eaten the best and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l51" HPOS="327" VPOS="2799" WIDTH="1775" HEIGHT="51" BASELINE="329 2829 2102 2825" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="329 2829 329 2844 2098 2850 2102 2825 2096 2799 327 2801 329 2829"/>
+                        </Shape>
+                        <String CONTENT="sweetest morsels. I questioned his sons, and said to them, ‘Well, what is he doing?’ They replied,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l52" HPOS="331" VPOS="2842" WIDTH="1773" HEIGHT="55" BASELINE="333 2871 2104 2875" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="333 2871 331 2885 358 2897 360 2897 362 2897 2102 2889 2104 2875 2100 2842 333 2842 333 2871"/>
+                        </Shape>
+                        <String CONTENT="‘We will begin after he has eaten.’ Then they said, ‘He has gone to sleep.’ The sledge remained"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l53" HPOS="329" VPOS="2893" WIDTH="1775" HEIGHT="47" BASELINE="331 2924 2104 2920" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="331 2924 331 2940 2102 2936 2104 2920 2100 2895 329 2893 331 2924"/>
+                        </Shape>
+                        <String CONTENT="behind the tent all night, as though in readiness for one really dead. The following morning, when"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-032_l54" HPOS="331" VPOS="2940" WIDTH="1773" HEIGHT="52" BASELINE="331 2971 2104 2971" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="331 2971 331 2984 2102 2992 2104 2971 2104 2944 331 2940 331 2971"/>
+                        </Shape>
+                        <String CONTENT="he awoke, he would not come out of the sleeping-room. He remained there all the time. Among"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-032_r3" HPOS="333" VPOS="3029" WIDTH="1782" HEIGHT="74" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="333 3029 2115 3029 2115 3103 333 3103"/>
+                    </Shape>
+                    <TextLine ID="mz_3-032_l55" HPOS="1062" VPOS="3035" WIDTH="313" HEIGHT="57" BASELINE="1064 3060 1375 3066" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1064 3060 1062 3076 1169 3092 1171 3092 1373 3082 1375 3066 1375 3041 1064 3035 1064 3060"/>
+                        </Shape>
+                        <String CONTENT="¹ Compare p. 335."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>
