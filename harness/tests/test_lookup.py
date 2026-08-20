@@ -549,6 +549,35 @@ def _store(tmp_path: Path, *refs: str) -> Path:
     return root
 
 
+def _dispatchable(root: Path, ref: str) -> None:
+    """The two files `build` refuses without: zones to prove it is a text page,
+    and an `mz/ocr/` draft to give a reader line indices.
+
+    Fabricated rather than copied, because `mz/` is derived and gitignored — a
+    borrowed draft would make this test pass only on a working tree that had run
+    `ocr predict`. Contents are irrelevant here: nothing under test reads them,
+    only `survey` asking whether they exist. `dispatch.md` is copied rather than
+    faked: it is the prompt's only source, and a stub would test the renderer
+    against text no reader ever gets.
+    """
+    doc = root / ".claude" / "skills" / "rebuild-groundtruth" / "dispatch.md"
+    doc.parent.mkdir(parents=True, exist_ok=True)
+    doc.write_text(
+        (REPO / ".claude" / "skills" / "rebuild-groundtruth" / "dispatch.md")
+        .read_text(encoding="utf-8"), encoding="utf-8")
+    ns = "http://www.loc.gov/standards/alto/ns-v4#"
+    body = ('<TextLine ID="l1" HPOS="100" VPOS="200" WIDTH="1700" HEIGHT="50" '
+            'BASELINE="100 245 1800 245"><Shape><Polygon POINTS="100 200 1800 250"/>'
+            '</Shape><String CONTENT="x" HPOS="100" VPOS="200" WIDTH="1700" '
+            'HEIGHT="50"/></TextLine>')
+    for store, block in (("gt/zones", "Paragraph"), ("mz/ocr", "r1")):
+        p = root / store / f"chukchi-{ref}.xml"
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_text(f'<alto xmlns="{ns}"><Layout><Page><PrintSpace>'
+                     f'<TextBlock ID="{block}">{body}</TextBlock>'
+                     "</PrintSpace></Page></Layout></alto>", encoding="utf-8")
+
+
 def test_the_span_is_the_pages_before_and_nothing_after(tmp_path):
     """A reader is shown what has been adjudicated, which by construction is behind
     it. Reading forward would offer a page nobody has been through."""
@@ -620,21 +649,31 @@ def test_every_row_offers_a_handle_that_resolves_to_its_form(tmp_path):
         assert resolve(r["key"], root)[0] == r["form"]
 
 
-def test_the_page_block_renders_the_handle_a_reader_would_type():
+def test_the_page_block_renders_the_handle_a_reader_would_type(tmp_path):
     """Rendered into the prompt with its braces intact — `format` does not rescan
     what it interpolates. A row printed as a bare form would be a string to copy,
     which is the one way of using the corpus that leaves no record.
 
-    **The ref has to be a page `build` will still accept**, i.e. predicted and not
-    yet keyed: `build` refuses a page already in `gt/ocr/` as a revision, so this
-    fails as the ground-truth pass advances rather than because anything broke.
-    It was `2-096` until chapter XIV was keyed, `2-142` until chapter XV was, and
-    `2-199` until chapter XVI was. `harness corpus state --stage ocr-mz` names
-    today's candidates; pick one with keyed pages behind it, or the handle list
-    this asserts on is legitimately empty — which is why the successor is chosen
-    *after* the chapter lands, not while it is being keyed."""
+    **Built on a store of its own, and this is the fourth attempt at that.** The
+    test used to name a live ref — `2-096`, then `2-142`, then `2-199`, then
+    `2-239` — each chosen because it was predicted and not yet keyed, and each
+    dying the moment its chapter landed, because `build` refuses a page already
+    in `gt/ocr/` as a revision. Four retargets is a pattern, not four accidents.
+
+    What finally killed the approach is that the supply ran out. `nearby` reads
+    **the preceding 12 scan indices of the same part**, so a donor ref needs keyed
+    pages within twelve of it; once part 2 was read end to end, every part-2 ref
+    was a revision, part 1 is not predicted, and part 3's one keyed page
+    (`3-063`) holds no Tier-1 form at all. There was no ref left in the corpus
+    that could satisfy this, and the failure said nothing about the code.
+
+    So the window is stated here instead. What is under test is the rendering —
+    a handle reaching the reader as the thing it would actually type — and that
+    needs *a* store, not *this* store."""
     from harness.dispatch import build
-    rows = build("2-239", REPO)["page_block"].splitlines()
+    root = _store(tmp_path, "2-244", "2-245", "2-246", "2-247", "2-248")
+    _dispatchable(root, "2-249")
+    rows = build("2-249", root)["page_block"].splitlines()
     line = [ln for ln in rows if "->" in ln and ln.strip().startswith("- {")]
     assert line, rows[-6:]
 

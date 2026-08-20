@@ -125,3 +125,34 @@ def test_normalize_distinguishes_nothing_to_do_from_work_it_would_do(tmp_path,
                  "--json"]) == 0
     v = json.loads(capsys.readouterr().out)["verdict"]
     assert v["exit"] == 0 and "clean" in v["means"]
+
+
+def test_normalize_refuses_a_named_path_that_is_not_there(tmp_path, capsys):
+    """A clean verdict over a file nobody read is the one result this gate must
+    never give.
+
+    The scoped walk starts from the corpus globs and *intersects* with what was
+    named, so a mistyped path contributes nothing and lands as `files: 0` under
+    a verdict reading "clean" — indistinguishable from having passed. That
+    matters because `/rebuild-groundtruth` normalizes `decision.json` before
+    restoring: the step exists to catch drift the adjudicator typed in, and it
+    would report success on a path with a digit wrong in the ref.
+
+    A **ref** keeps tolerating absence, and must: it fans out to five candidate
+    files and no page holds all of them.
+    """
+    from harness.cli import main
+
+    (tmp_path / "review" / "2-999").mkdir(parents=True)
+    (tmp_path / "review" / "2-999" / "decision.json").write_text(
+        '{"ref": "2-999", "lines": {}}', encoding="utf-8")
+
+    assert main(["--root", str(tmp_path), "corpus", "normalize",
+                 "review/2-998/decision.json", "--json"]) == 2
+    assert main(["--root", str(tmp_path), "corpus", "normalize",
+                 "review/2-999/decision.json", "--json"]) == 0
+    capsys.readouterr()
+    # The page's `proposal.json`, `gt/fig/` and `tei/` members are all absent.
+    assert main(["--root", str(tmp_path), "corpus", "normalize",
+                 "2-999", "--json"]) == 0
+    assert json.loads(capsys.readouterr().out)["normalize"]["files"] == 1

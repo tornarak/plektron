@@ -132,7 +132,21 @@ def _targets(a) -> list[Path] | None:
             parse_ref(t)
         except ValueError:
             p = Path(t)
-            paths.append(p if p.is_absolute() else a.root / p)
+            p = p if p.is_absolute() else a.root / p
+            # A ref fans out to five candidates below and most pages hold only
+            # some of them, so absence has to be tolerated there. A path typed
+            # out is the opposite act: it names one file, and if it is not there
+            # the honest answer is a usage error, not `files: 0` under a verdict
+            # reading "clean". The scoped walk starts from the corpus globs and
+            # intersects, so a missing or out-of-scope path contributes nothing
+            # and nothing downstream can tell that from having passed.
+            if not p.exists():
+                raise ValueError(
+                    f"{t}: no such file or directory. A named path is checked "
+                    "for existence because the alternative is a clean verdict "
+                    "over nothing — pass a PP-NNN ref if you mean 'whichever of "
+                    "this page's files exist'.") from None
+            paths.append(p)
             continue
         ref = norm_ref(t)
         paths += [a.root / "gt" / d / f"chukchi-{ref}.xml"
