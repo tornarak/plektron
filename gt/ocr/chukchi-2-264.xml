@@ -1,0 +1,373 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-2-264.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-2-264.png; regions_from: zones/chukchi-2-264.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+                <TextBlock ID="mz_2-264_r1" HPOS="382" VPOS="454" WIDTH="1776" HEIGHT="94" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="382 454 2158 454 2158 548 382 548"/>
+                    </Shape>
+                    <TextLine ID="mz_2-264_l1" HPOS="965" VPOS="473" WIDTH="605" HEIGHT="51" BASELINE="967 509 1570 505" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1555 473 965 475 965 477 967 509 967 524 1568 520 1570 505 1564 481 1555 473"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-264_l2" HPOS="381" VPOS="471" WIDTH="94" HEIGHT="51" BASELINE="385 515 475 509" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="468 471 381 475 385 515 385 522 473 518 475 509 470 473 468 471"/>
+                        </Shape>
+                        <String CONTENT="532"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-264_r2" HPOS="382" VPOS="572" WIDTH="1776" HEIGHT="470" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="382 572 2158 572 2158 1042 382 1042"/>
+                    </Shape>
+                    <TextLine ID="mz_2-264_l3" HPOS="377" VPOS="565" WIDTH="1765" HEIGHT="61" BASELINE="379 611 2142 607" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2121 577 2101 577 2081 577 2062 575 2042 575 2023 575 2003 575 1983 573 1964 573 1944 573 1925 573 1905 571 1895 571 1886 575 1876 571 1866 571 1846 571 1827 569 1821 569 1766 575 1748 567 1748 567 1731 567 1696 575 1668 565 1666 565 1664 565 1580 575 1553 565 1551 565 1549 565 1547 565 1545 565 1531 575 1474 565 1472 565 1414 575 1386 565 1384 565 1382 565 1380 565 1355 575 1261 565 1259 565 1257 565 1214 577 869 567 867 567 812 577 740 567 738 567 673 577 587 567 585 567 583 567 550 577 479 567 477 567 475 567 450 577 393 567 391 567 389 567 387 567 377 573 379 611 379 624 2138 626 2142 607 2138 577 2121 577"/>
+                        </Shape>
+                        <String CONTENT="for five days, after which the piece of skin is added to the household charms."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-264_l4" HPOS="381" VPOS="626" WIDTH="1765" HEIGHT="57" BASELINE="383 671 2146 667" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="383 671 383 683 2144 679 2146 667 2142 640 1989 640 1968 626 1966 626 1964 626 1962 626 1960 626 1935 638 1889 626 1888 626 1886 626 1884 626 1858 638 1833 626 1831 626 1829 626 1827 626 1780 638 1676 626 1674 626 1672 626 1635 638 1586 626 1584 626 1582 626 1580 626 1551 638 1370 626 1369 626 1259 640 1241 628 1239 628 1237 628 1235 628 1233 628 1198 642 1043 642 1024 628 1022 628 1020 628 1018 628 912 640 812 628 736 628 734 628 732 628 705 640 618 628 616 628 507 640 442 628 440 628 381 634 383 671"/>
+                        </Shape>
+                        <String CONTENT="The number of days which must elapse between the first and the last per-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-264_l5" HPOS="379" VPOS="689" WIDTH="1767" HEIGHT="55" BASELINE="379 730 2146 730" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="379 730 379 744 2146 744 2146 730 2146 699 2115 689 2113 689 2111 689 2109 689 2070 699 1686 689 1684 689 1633 699 1557 689 1555 689 1492 699 1423 689 1421 689 1419 689 1396 701 1226 701 1118 689 1116 689 1114 689 1081 699 1043 689 1041 689 1039 689 1038 689 1000 699 963 689 961 689 959 689 957 689 955 689 940 701 732 701 681 689 679 689 677 689 638 699 611 689 609 689 607 689 605 689 603 689 587 701 485 701 397 689 395 689 393 689 391 689 379 697 379 730"/>
+                        </Shape>
+                        <String CONTENT="formance is the same as in the birth ceremonial. After five days, the people"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-264_l6" HPOS="377" VPOS="748" WIDTH="1763" HEIGHT="56" BASELINE="379 791 2140 787" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="379 791 379 802 2136 804 2140 787 2136 757 1259 748 1257 748 1132 757 411 750 409 750 407 750 377 759 379 791"/>
+                        </Shape>
+                        <String CONTENT="visit the corpse again to see if wild beasts have at last mutilated the body."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-264_l7" HPOS="377" VPOS="806" WIDTH="1765" HEIGHT="65" BASELINE="379 846 2142 851" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="379 846 377 857 393 867 395 867 397 867 399 867 965 859 987 869 989 869 991 871 2140 871 2142 851 2140 822 2068 810 2066 810 1325 818 1308 808 1306 808 1304 808 1302 808 1071 818 1004 808 1002 808 1000 808 969 818 932 806 930 806 928 806 869 816 775 806 773 806 771 806 738 818 536 818 520 806 519 806 517 806 515 806 379 814 379 846"/>
+                        </Shape>
+                        <String CONTENT="On the return from this visit, the whole camp arranges the feast of antlers,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-264_l8" HPOS="376" VPOS="869" WIDTH="1766" HEIGHT="55" BASELINE="377 910 2142 906" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="377 910 377 922 2138 924 2142 906 2138 881 2074 869 2072 869 2070 869 2036 879 1645 869 1643 869 1582 879 1515 869 1513 869 1511 869 1510 869 1494 881 1310 881 1267 869 1265 869 1263 869 1261 869 1237 881 534 871 532 871 530 871 528 871 513 881 397 873 395 873 393 873 376 881 377 910"/>
+                        </Shape>
+                        <String CONTENT="even though it may be quite out of season. If antlers are scarce, they"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-264_l9" HPOS="376" VPOS="926" WIDTH="1766" HEIGHT="64" BASELINE="377 971 2142 965" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="377 971 377 990 2140 985 2142 965 2140 938 2115 926 2113 926 2111 926 2109 926 2089 936 2013 926 2011 926 2009 926 2007 926 1991 938 1848 938 1815 926 1813 926 1811 926 1809 926 1774 936 1747 926 1745 926 1743 926 1690 936 1637 926 1635 926 1633 926 1602 936 1570 926 1568 926 1566 926 1564 926 1529 938 1488 928 1486 928 1484 928 1482 928 1449 938 1402 928 1400 928 1398 928 1365 938 918 930 916 930 914 930 912 930 898 940 865 930 863 930 861 930 728 940 558 930 556 930 554 930 528 940 446 930 444 930 376 941 377 971"/>
+                        </Shape>
+                        <String CONTENT="gather together all the loose ones that can be found, though the use of such"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-264_l10" HPOS="376" VPOS="985" WIDTH="1261" HEIGHT="58" BASELINE="377 1032 1637 1026" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="377 1032 377 1043 1635 1039 1637 1026 1633 996 1335 985 1333 985 1331 985 1329 985 1312 994 1059 987 1057 987 1055 987 1032 998 857 998 797 987 795 987 793 987 752 998 560 988 558 988 489 998 450 988 448 988 446 988 376 1000 377 1032"/>
+                        </Shape>
+                        <String CONTENT="antlers for the antler ceremonial is generally forbidden."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-264_r3" HPOS="382" VPOS="1042" WIDTH="1776" HEIGHT="258" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="382 1042 2158 1042 2158 1300 382 1300"/>
+                    </Shape>
+                    <TextLine ID="mz_2-264_l11" HPOS="483" VPOS="1049" WIDTH="1661" HEIGHT="53" BASELINE="483 1088 2144 1088" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="483 1088 483 1102 2144 1102 2144 1088 2144 1061 1562 1049 1560 1049 1558 1049 1529 1059 1476 1049 1474 1049 1423 1059 1355 1049 1353 1049 1351 1049 1314 1059 1278 1049 1276 1049 1275 1049 1120 1059 1061 1049 1059 1049 975 1059 920 1049 918 1049 916 1049 885 1059 851 1049 850 1049 848 1049 846 1049 844 1049 830 1059 781 1049 779 1049 720 1059 681 1049 679 1049 677 1049 560 1059 501 1049 499 1049 497 1049 495 1049 483 1057 483 1088"/>
+                        </Shape>
+                        <String CONTENT="On coming back from the second visit, the family move their tent to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-264_l12" HPOS="372" VPOS="1106" WIDTH="1770" HEIGHT="57" BASELINE="374 1149 2142 1145" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="374 1149 374 1163 2140 1161 2142 1145 2138 1116 1882 1106 1880 1106 1805 1116 1758 1106 1756 1106 1754 1106 1752 1106 1737 1118 1631 1118 1558 1106 1557 1106 1482 1116 1447 1106 1445 1106 1443 1106 1441 1106 1412 1116 1376 1106 1374 1106 1372 1106 1370 1106 1369 1106 1353 1116 1188 1108 1186 1108 1184 1108 1157 1118 1118 1108 1116 1108 1114 1108 1039 1118 989 1108 987 1108 985 1108 955 1118 926 1108 924 1108 922 1108 920 1108 893 1118 861 1108 859 1108 857 1108 855 1108 828 1118 750 1108 748 1108 646 1118 607 1108 605 1108 603 1108 550 1118 475 1108 473 1108 372 1118 374 1149"/>
+                        </Shape>
+                        <String CONTENT="another place, though it be only five or six feet distant. Especially is this"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-264_l13" HPOS="374" VPOS="1171" WIDTH="1766" HEIGHT="54" BASELINE="376 1210 2140 1206" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="376 1210 376 1225 2138 1225 2140 1206 2136 1178 395 1171 393 1171 391 1171 374 1178 376 1210"/>
+                        </Shape>
+                        <String CONTENT="the case if the dead one was carried out, as sometimes happens, through the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-264_l14" HPOS="376" VPOS="1237" WIDTH="616" HEIGHT="53" BASELINE="377 1265 992 1269" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="377 1265 376 1280 385 1288 387 1288 389 1288 391 1288 519 1280 685 1290 687 1290 991 1280 992 1269 991 1241 377 1237 377 1265"/>
+                        </Shape>
+                        <String CONTENT="usual entrance of the tent."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-264_r4" HPOS="382" VPOS="1300" WIDTH="1776" HEIGHT="359" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="382 1300 2158 1300 2158 1659 382 1659"/>
+                    </Shape>
+                    <TextLine ID="mz_2-264_l15" HPOS="481" VPOS="1282" WIDTH="1661" HEIGHT="63" BASELINE="483 1331 2142 1323" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="483 1331 483 1345 2140 1345 2142 1323 2138 1292 1968 1282 1966 1282 1964 1282 1962 1282 1944 1296 1839 1296 1809 1282 1807 1282 1805 1282 1803 1282 1778 1296 1531 1296 1498 1284 1496 1284 1494 1284 1492 1284 1490 1284 1472 1296 1323 1296 1290 1286 1288 1286 1286 1286 1227 1298 1167 1286 1165 1286 1163 1286 1122 1298 1010 1286 1008 1286 1006 1286 975 1298 959 1286 957 1286 955 1286 898 1286 897 1286 895 1286 844 1300 775 1288 773 1288 771 1288 736 1300 660 1288 495 1288 493 1288 491 1288 489 1288 481 1294 483 1331"/>
+                        </Shape>
+                        <String CONTENT="Still later the chief of the funeral procession must perform additional"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-264_l16" HPOS="374" VPOS="1357" WIDTH="1766" HEIGHT="47" BASELINE="376 1390 2140 1386" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="376 1390 376 1404 2138 1402 2140 1386 2136 1357 374 1357 376 1390"/>
+                        </Shape>
+                        <String CONTENT="incantations in order to protect himself from being pursued by the deceased."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-264_l17" HPOS="377" VPOS="1406" WIDTH="1763" HEIGHT="64" BASELINE="379 1451 2140 1447" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="379 1451 379 1460 517 1470 519 1470 583 1460 1043 1460 1137 1470 1139 1470 1141 1470 1143 1470 1157 1460 1222 1468 1224 1468 1226 1468 1261 1458 1651 1458 1700 1468 1701 1470 1805 1470 1805 1468 1807 1468 1809 1468 1823 1458 1893 1468 1895 1468 1897 1468 1921 1458 1935 1468 1936 1468 1938 1468 1940 1470 2138 1470 2140 1447 2136 1419 2076 1406 2074 1406 2072 1406 2029 1417 2005 1406 2003 1406 1946 1406 1944 1406 1942 1406 1940 1406 1925 1417 1862 1406 1860 1406 1858 1406 1827 1417 1741 1406 1739 1406 1737 1406 1709 1415 1672 1406 1670 1406 1668 1406 1666 1406 1664 1406 1649 1417 1558 1406 1557 1406 1555 1406 1521 1419 1365 1419 1304 1406 1302 1406 1300 1406 1255 1419 1192 1408 1190 1408 1188 1408 1155 1419 1110 1408 1108 1408 1106 1408 1043 1419 1026 1408 1024 1408 1022 1408 1020 1408 1018 1408 971 1419 879 1408 703 1408 701 1408 699 1408 697 1408 677 1419 377 1413 379 1451"/>
+                        </Shape>
+                        <String CONTENT="To give an illustration of this, he will some time during the following"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-264_l18" HPOS="372" VPOS="1466" WIDTH="1770" HEIGHT="59" BASELINE="374 1511 2142 1507" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="374 1511 374 1525 2140 1525 2142 1507 2138 1478 1519 1466 1517 1466 1515 1466 1513 1466 1498 1478 1408 1478 1374 1466 1372 1466 1370 1466 1249 1478 1198 1468 1196 1468 1194 1468 1161 1478 945 1468 944 1468 942 1468 904 1478 891 1468 889 1468 887 1468 740 1468 738 1468 736 1468 697 1478 656 1468 654 1468 652 1468 372 1480 374 1511"/>
+                        </Shape>
+                        <String CONTENT="summer wade through the water in a pool, proclaiming aloud, “I am not a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-264_l19" HPOS="377" VPOS="1527" WIDTH="1763" HEIGHT="61" BASELINE="377 1570 2140 1570" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="377 1570 377 1582 2138 1588 2140 1570 2140 1539 2101 1527 2099 1527 2097 1527 2040 1539 1991 1527 1989 1527 1987 1527 1985 1527 1958 1541 1891 1541 1874 1527 1872 1527 1870 1527 1868 1527 1688 1537 1660 1527 1658 1527 1656 1527 1654 1527 1609 1539 1502 1527 1500 1527 1498 1527 1466 1539 1451 1527 1449 1527 1447 1527 1394 1527 1392 1527 1390 1527 1388 1527 1369 1539 1333 1527 1331 1527 1329 1527 1327 1527 1325 1527 1306 1539 1224 1527 1222 1527 1220 1527 1218 1527 1196 1541 1038 1541 1004 1527 1002 1527 1000 1527 998 1527 996 1527 981 1539 938 1527 936 1527 934 1527 859 1539 779 1527 777 1527 775 1527 740 1541 571 1541 538 1527 536 1527 534 1527 532 1527 530 1527 511 1541 377 1541 377 1570"/>
+                        </Shape>
+                        <String CONTENT="man: I am a white gull, I am an eider-duck.” If he should fail to do this,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-264_l20" HPOS="372" VPOS="1588" WIDTH="1126" HEIGHT="57" BASELINE="374 1629 1498 1625" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="374 1629 374 1645 1496 1645 1498 1625 1494 1598 934 1588 932 1588 930 1588 891 1598 444 1590 442 1590 372 1599 374 1629"/>
+                        </Shape>
+                        <String CONTENT="a dangerous illness would be sure to attack him."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-264_r5" HPOS="382" VPOS="1659" WIDTH="1776" HEIGHT="600" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="382 1659 2158 1659 2158 2259 382 2259"/>
+                    </Shape>
+                    <TextLine ID="mz_2-264_l21" HPOS="481" VPOS="1646" WIDTH="1661" HEIGHT="61" BASELINE="483 1690 2142 1686" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="483 1690 483 1699 2115 1707 2117 1707 2119 1707 2142 1695 2142 1686 2138 1658 1942 1646 1940 1646 1888 1656 1856 1646 1854 1646 1852 1646 1850 1646 1825 1658 1576 1658 1539 1646 1537 1646 1535 1646 1474 1656 1412 1646 1410 1646 1408 1646 1369 1656 1318 1646 1316 1646 1314 1646 1312 1646 1300 1658 1286 1648 1284 1648 1282 1648 1280 1648 1229 1658 761 1648 759 1648 665 1658 628 1648 626 1648 624 1648 622 1648 601 1658 495 1648 493 1648 491 1648 489 1648 481 1654 483 1690"/>
+                        </Shape>
+                        <String CONTENT="Such is a typical performance of the funeral ceremony of a Reindeer"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-264_l22" HPOS="374" VPOS="1709" WIDTH="1766" HEIGHT="53" BASELINE="374 1748 2140 1748" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="374 1748 374 1760 2138 1762 2140 1748 2140 1717 2125 1709 2123 1709 2121 1709 2119 1709 2117 1709 2083 1719 1980 1709 1978 1709 1897 1719 1882 1709 1880 1709 1878 1709 1876 1709 1439 1719 1382 1709 1380 1709 1378 1709 1343 1719 1306 1709 1304 1709 1302 1709 1300 1709 1298 1709 1282 1721 1114 1721 1006 1709 1004 1709 1002 1709 977 1721 740 1721 675 1709 673 1709 591 1719 470 1709 468 1709 466 1709 464 1709 448 1719 391 1709 389 1709 387 1709 385 1709 374 1717 374 1748"/>
+                        </Shape>
+                        <String CONTENT="Chukchee, with exposure of the corpse in the open country, and with much"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-264_l23" HPOS="372" VPOS="1770" WIDTH="1768" HEIGHT="63" BASELINE="374 1809 2140 1803" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="374 1809 374 1823 644 1833 646 1833 648 1833 650 1833 665 1823 2138 1823 2140 1803 2136 1776 397 1770 395 1770 393 1770 372 1778 374 1809"/>
+                        </Shape>
+                        <String CONTENT="slaughtering for sacrifice. For the poorer people, of course, all the details"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-264_l24" HPOS="370" VPOS="1825" WIDTH="1770" HEIGHT="58" BASELINE="372 1872 2140 1864" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="372 1872 372 1883 2138 1881 2140 1864 2136 1827 1682 1825 1680 1825 1627 1834 1605 1825 1604 1825 1602 1825 1551 1834 1529 1825 1527 1825 1525 1825 1523 1825 1521 1825 1506 1836 1396 1836 1367 1825 1365 1825 1363 1825 1361 1825 1318 1834 1269 1825 1267 1825 1265 1825 1263 1825 1249 1834 1224 1827 1222 1827 1220 1827 1137 1836 1022 1827 1020 1827 1018 1827 987 1836 900 1827 898 1827 897 1827 857 1836 820 1827 818 1827 816 1827 370 1838 372 1872"/>
+                        </Shape>
+                        <String CONTENT="are much simplified. The bodies of the deceased who “go away afoot” will"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-264_l25" HPOS="372" VPOS="1887" WIDTH="1768" HEIGHT="57" BASELINE="374 1928 2140 1923" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="374 1928 374 1944 2138 1944 2140 1923 2136 1887 971 1887 969 1887 914 1897 477 1889 475 1889 372 1899 374 1928"/>
+                        </Shape>
+                        <String CONTENT="not be covered with meat. After the cutting of the clothes, two pieces will"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-264_l26" HPOS="372" VPOS="1946" WIDTH="1768" HEIGHT="57" BASELINE="374 1989 2140 1983" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="374 1989 374 2003 2138 2003 2140 1983 2138 1958 2095 1946 2093 1946 2091 1946 2089 1946 2062 1956 1758 1946 1756 1946 1692 1956 1639 1946 1637 1946 1635 1946 1633 1946 1617 1956 1586 1946 1584 1946 1582 1946 1580 1946 1543 1960 1441 1960 1425 1948 1423 1948 1421 1948 1419 1948 1417 1948 1384 1958 1339 1948 1337 1948 1335 1948 1296 1958 1227 1948 1226 1948 959 1960 848 1950 755 1950 754 1950 752 1950 750 1950 736 1960 697 1950 695 1950 693 1950 691 1950 648 1962 558 1962 542 1950 540 1950 538 1950 536 1950 372 1956 374 1989"/>
+                        </Shape>
+                        <String CONTENT="be left on the body, — one covering the face, and the other covering the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-264_l27" HPOS="372" VPOS="2003" WIDTH="1768" HEIGHT="66" BASELINE="374 2052 2140 2044" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="374 2052 374 2069 2138 2062 2140 2044 2134 2011 1948 2015 1925 2003 1923 2003 1921 2003 1919 2003 1891 2017 1631 2017 1586 2005 1584 2005 1582 2005 1580 2005 1543 2019 1322 2019 1171 2007 1169 2007 1167 2007 1133 2019 1088 2007 1086 2007 1085 2007 1000 2019 961 2007 959 2007 957 2007 893 2019 818 2007 816 2007 730 2021 630 2009 628 2009 567 2021 548 2009 546 2009 544 2009 456 2009 454 2009 372 2022 374 2052"/>
+                        </Shape>
+                        <String CONTENT="genitalia. The bodies of small children are sometimes cut to pieces and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-264_l28" HPOS="374" VPOS="2068" WIDTH="1766" HEIGHT="52" BASELINE="374 2107 2140 2107" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="374 2107 374 2118 2138 2120 2140 2107 2140 2073 1991 2068 1989 2068 1987 2068 1964 2077 1913 2068 1911 2068 1909 2068 1907 2068 1891 2079 1801 2079 1709 2068 1707 2068 1705 2068 1703 2068 1688 2079 1580 2079 1549 2068 1547 2068 1545 2068 1543 2068 1510 2077 1451 2068 1449 2068 1447 2068 1425 2077 1394 2068 1392 2068 1390 2068 1388 2068 1361 2079 1124 2079 1038 2068 1036 2068 953 2077 885 2068 883 2068 881 2068 848 2077 779 2068 777 2068 775 2068 750 2077 703 2068 701 2068 646 2077 611 2068 609 2068 607 2068 605 2068 603 2068 589 2077 558 2068 556 2068 554 2068 374 2077 374 2107"/>
+                        </Shape>
+                        <String CONTENT="scattered in all directions. The purpose of this is to show to the World"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-264_l29" HPOS="370" VPOS="2124" WIDTH="1768" HEIGHT="61" BASELINE="372 2171 2138 2165" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="372 2171 372 2185 2136 2181 2138 2165 2136 2136 2107 2124 2105 2124 2103 2124 1933 2134 1882 2124 1880 2124 1878 2124 1852 2134 1825 2124 1823 2124 1821 2124 1819 2124 1817 2124 1801 2136 1588 2136 1560 2124 1558 2124 1557 2124 1555 2124 1517 2136 1028 2126 1026 2126 955 2138 389 2128 387 2128 385 2128 383 2128 370 2136 372 2171"/>
+                        </Shape>
+                        <String CONTENT="(Ñaˊrg̣ɪnên¹) the extreme grief of the parents, and to reproach him for his"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-264_l30" HPOS="370" VPOS="2185" WIDTH="611" HEIGHT="57" BASELINE="372 2226 981 2222" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="372 2226 372 2242 979 2238 981 2222 979 2195 963 2185 961 2185 959 2185 957 2185 738 2195 707 2185 705 2185 703 2185 701 2185 669 2197 493 2187 491 2187 370 2199 372 2226"/>
+                        </Shape>
+                        <String CONTENT="severity towards the child."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-264_r6" HPOS="382" VPOS="2259" WIDTH="1776" HEIGHT="479" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="382 2259 2158 2259 2158 2738 382 2738"/>
+                    </Shape>
+                    <TextLine ID="mz_2-264_l31" HPOS="479" VPOS="2244" WIDTH="1661" HEIGHT="68" BASELINE="481 2289 2140 2283" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="481 2289 481 2312 573 2301 679 2310 681 2310 683 2310 685 2310 703 2301 1433 2308 1435 2308 1437 2308 1439 2308 1455 2299 2138 2299 2140 2283 2136 2256 1925 2256 1901 2244 1899 2244 1897 2244 1895 2244 1860 2254 1827 2244 1825 2244 1823 2244 1770 2254 1739 2244 1737 2244 1735 2244 1672 2254 1633 2244 1631 2244 1629 2244 1627 2244 1588 2254 1106 2246 1104 2246 1057 2256 1036 2246 1034 2246 1032 2246 924 2248 922 2248 920 2248 908 2257 857 2248 855 2248 661 2257 646 2248 644 2248 642 2248 497 2248 495 2248 493 2248 491 2248 479 2256 481 2289"/>
+                        </Shape>
+                        <String CONTENT="Burning. — The details of the ceremony of burning the dead are more"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-264_l32" HPOS="368" VPOS="2304" WIDTH="1770" HEIGHT="59" BASELINE="370 2350 2138 2344" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="370 2350 370 2363 2136 2363 2138 2344 2134 2316 1643 2304 1641 2304 1639 2304 1604 2314 1492 2306 1490 2306 1488 2306 1486 2306 1472 2316 1421 2306 1419 2306 1194 2316 1063 2306 1061 2306 953 2318 587 2308 585 2308 583 2308 542 2318 456 2308 454 2308 368 2320 370 2350"/>
+                        </Shape>
+                        <String CONTENT="or less similar to those previously described. The reindeer slaughtered on"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-264_l33" HPOS="372" VPOS="2377" WIDTH="1766" HEIGHT="45" BASELINE="372 2406 2138 2406" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="372 2406 372 2422 2138 2422 2138 2406 2138 2377 372 2377 372 2406"/>
+                        </Shape>
+                        <String CONTENT="the day of the funeral are left unskinned on the spot, with the legs broken"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-264_l34" HPOS="370" VPOS="2424" WIDTH="1768" HEIGHT="59" BASELINE="372 2469 2138 2465" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="372 2469 372 2483 2136 2483 2138 2465 2134 2438 2083 2438 2066 2424 2064 2424 2062 2424 2060 2424 2058 2424 2007 2438 1817 2438 1770 2424 1768 2424 1766 2424 1764 2424 1721 2436 1674 2424 1672 2424 1670 2424 1668 2424 1666 2424 1649 2438 1537 2438 1408 2424 1406 2424 1404 2424 1363 2436 1308 2424 1306 2424 1304 2424 1302 2424 1284 2436 1104 2426 1102 2426 1100 2426 1098 2426 1083 2438 1047 2426 1045 2426 1043 2426 987 2438 951 2426 949 2426 947 2426 869 2436 789 2426 787 2426 785 2426 740 2438 658 2426 656 2426 564 2438 507 2426 505 2426 503 2426 479 2438 444 2426 442 2426 440 2426 370 2440 372 2469"/>
+                        </Shape>
+                        <String CONTENT="and the antlers chopped off. Neither the clothes nor the thongs are taken"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-264_l35" HPOS="370" VPOS="2483" WIDTH="1766" HEIGHT="58" BASELINE="372 2528 2136 2522" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="372 2528 372 2541 2134 2539 2136 2522 2134 2492 2117 2483 2115 2483 2113 2483 2111 2483 2058 2492 2001 2483 1999 2483 1997 2483 1995 2483 1980 2494 1833 2494 1805 2483 1803 2483 1801 2483 1701 2492 1674 2483 1672 2483 1670 2483 1668 2483 1631 2492 1604 2483 1602 2483 1600 2483 1508 2494 992 2485 991 2485 912 2496 883 2487 881 2487 879 2487 440 2496 385 2487 383 2487 381 2487 379 2487 370 2492 372 2528"/>
+                        </Shape>
+                        <String CONTENT="from the body, which is laid on the pyre upon its back, and covered with"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-264_l36" HPOS="370" VPOS="2543" WIDTH="1770" HEIGHT="61" BASELINE="372 2590 2140 2583" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="372 2590 372 2604 2138 2598 2140 2583 2136 2555 2019 2543 2017 2543 1954 2553 1933 2543 1931 2543 1929 2543 1927 2543 1889 2553 1850 2543 1848 2543 1846 2543 1790 2553 1758 2543 1756 2543 1754 2543 1696 2555 1656 2545 1654 2545 1652 2545 1651 2545 1617 2557 1494 2557 1472 2545 1470 2545 1468 2545 1251 2559 994 2559 963 2547 961 2547 959 2547 902 2557 840 2547 838 2547 836 2547 810 2559 789 2549 787 2549 785 2549 370 2553 372 2590"/>
+                        </Shape>
+                        <String CONTENT="logs. The entrails, for the most part, are not inspected, and only the throat"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-264_l37" HPOS="370" VPOS="2604" WIDTH="1770" HEIGHT="69" BASELINE="372 2649 2140 2641" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="372 2649 372 2663 677 2663 720 2673 722 2673 724 2673 814 2661 1179 2661 1200 2671 1202 2671 1204 2671 1206 2671 1257 2659 1488 2669 1490 2669 1535 2659 1555 2669 1557 2669 1558 2669 1629 2659 1651 2669 1652 2669 1654 2669 2138 2659 2140 2641 2132 2604 2093 2614 1831 2604 1829 2604 1827 2604 1825 2604 1809 2616 1672 2616 1613 2606 1611 2606 1531 2616 1392 2606 1390 2606 1337 2616 1280 2606 1278 2606 1276 2606 1251 2618 1202 2608 1200 2608 1100 2620 922 2620 906 2608 904 2608 902 2608 900 2608 836 2618 370 2616 372 2649"/>
+                        </Shape>
+                        <String CONTENT="is cut. The parts not consumed by the fire are left among the embers of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-264_l38" HPOS="372" VPOS="2669" WIDTH="219" HEIGHT="64" BASELINE="374 2708 591 2704" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="374 2708 374 2724 458 2724 475 2733 477 2733 479 2733 481 2733 589 2720 591 2704 585 2679 426 2679 389 2669 387 2669 385 2669 383 2669 381 2669 372 2675 374 2708"/>
+                        </Shape>
+                        <String CONTENT="the pyre."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-264_r7" HPOS="382" VPOS="2738" WIDTH="1776" HEIGHT="239" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="382 2738 2158 2738 2158 2977 382 2977"/>
+                    </Shape>
+                    <TextLine ID="mz_2-264_l39" HPOS="485" VPOS="2724" WIDTH="1651" HEIGHT="66" BASELINE="485 2767 2136 2767" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="485 2767 485 2778 503 2788 505 2788 507 2788 583 2778 614 2788 616 2788 618 2788 689 2778 742 2788 744 2788 746 2788 779 2778 816 2788 818 2788 820 2790 996 2790 996 2788 998 2788 1000 2788 1014 2778 1349 2788 1351 2788 1353 2788 1392 2778 1457 2788 1459 2788 1588 2778 1619 2788 1621 2788 1623 2788 1625 2788 1656 2778 1954 2788 1956 2788 2136 2778 2136 2767 2136 2735 2087 2724 2085 2724 2083 2724 1982 2735 1931 2724 1929 2724 1927 2724 1850 2737 1776 2737 1760 2724 1758 2724 1756 2724 1754 2724 1676 2737 1562 2737 1527 2724 1525 2724 1523 2724 1449 2737 1388 2737 1372 2724 1370 2724 1369 2724 1367 2724 1290 2735 1265 2724 1263 2724 1261 2724 1173 2733 1108 2724 1106 2724 1104 2724 1102 2724 1088 2735 1055 2724 1053 2724 1051 2724 1049 2724 1022 2737 875 2737 838 2724 836 2724 834 2724 832 2724 804 2735 738 2724 736 2724 734 2724 703 2735 636 2724 634 2724 632 2724 601 2735 536 2724 534 2724 485 2729 485 2767"/>
+                        </Shape>
+                        <String CONTENT="The fire for the pyre is kindled with matches or with a strike-a-light."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-264_l40" HPOS="374" VPOS="2784" WIDTH="1762" HEIGHT="65" BASELINE="376 2827 2136 2823" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="376 2827 376 2839 1006 2849 1008 2849 1010 2849 1012 2849 1028 2839 1237 2847 1239 2847 1241 2847 1243 2847 1259 2837 1553 2837 1901 2847 1903 2847 1905 2847 1927 2837 1972 2847 1974 2847 1976 2847 2001 2837 2015 2847 2017 2847 2019 2847 2021 2849 2134 2849 2136 2823 2132 2796 2072 2784 2070 2784 2005 2796 1639 2796 1621 2784 1619 2784 1617 2784 1615 2784 1555 2794 1496 2784 1494 2784 1323 2794 1271 2784 1269 2784 1267 2784 1265 2784 1249 2798 1018 2798 994 2786 992 2786 889 2786 887 2786 885 2786 883 2786 869 2796 816 2786 814 2786 707 2796 677 2786 675 2786 673 2786 374 2792 376 2827"/>
+                        </Shape>
+                        <String CONTENT="The fire-drill of the family must not be used for this purpose, as so doing"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-264_l41" HPOS="376" VPOS="2845" WIDTH="1762" HEIGHT="55" BASELINE="377 2886 2138 2882" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="377 2886 377 2900 2136 2896 2138 2882 2134 2855 1337 2845 1335 2845 1216 2855 462 2847 460 2847 376 2857 377 2886"/>
+                        </Shape>
+                        <String CONTENT="would contaminate the hearth. In the absence of matches or of a strike-a-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-264_l42" HPOS="374" VPOS="2904" WIDTH="1762" HEIGHT="127" BASELINE="376 2947 2136 2943" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="376 2947 376 3031 1253 3023 1255 3023 1257 3023 1351 2966 1376 2978 1378 2978 1380 2978 1382 2978 1408 2966 2134 2966 2136 2943 2134 2915 2091 2904 2089 2904 2087 2904 2085 2904 2058 2915 1968 2915 1952 2904 1950 2904 1948 2904 1946 2904 1872 2914 1823 2904 1821 2904 1819 2904 1792 2915 1662 2915 1647 2904 1645 2904 1643 2904 1641 2904 1531 2914 1496 2904 1494 2904 1492 2904 1212 2915 1188 2906 1186 2906 1184 2906 1137 2915 1081 2906 1079 2906 987 2915 936 2906 934 2906 846 2915 783 2906 781 2906 374 2910 376 2947"/>
+                        </Shape>
+                        <String CONTENT="light, a special fire drill and board are prepared, which must be left on the"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-264_r8" HPOS="382" VPOS="3032" WIDTH="1776" HEIGHT="70" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="382 3032 2158 3032 2158 3102 382 3102"/>
+                    </Shape>
+                    <TextLine ID="mz_2-264_l43" HPOS="1104" VPOS="3043" WIDTH="302" HEIGHT="55" BASELINE="1106 3068 1406 3072" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1400 3062 1386 3045 1108 3043 1106 3062 1106 3068 1104 3084 1286 3098 1288 3098 1404 3088 1406 3072 1406 3068 1400 3062"/>
+                        </Shape>
+                        <String CONTENT="¹ Compare. p. 314."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>
