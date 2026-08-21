@@ -701,6 +701,12 @@ def convert(root: Path = Path("."), dry_run: bool = False,
                   so neither can agree with the normalizer by construction the way a
                   re-derived digest would.
 
+    A file whose suffix carries a structure check and which **does not parse to
+    begin with** is refused, not written: the check is what separates a rewrite
+    from a corruption, and there is no way to run it on a file that never
+    parsed. The refusal is reported, so an unparseable store file surfaces here
+    rather than being quietly rewritten with nothing watching.
+
     Also collapses §2.9 spacing drift (`_fix_spacing`) in the same pass — mechanical
     and print-invariant same as NFD, so it shares NFD's safety checks rather than
     getting a separate command.
@@ -729,6 +735,19 @@ def convert(root: Path = Path("."), dry_run: bool = False,
             shape_before, shape_kind = _json_shape(p), "JSON"
         else:
             shape_before, shape_kind = None, None
+        # **A file that does not parse is refused, not written.** The structure
+        # check below is the only witness that a rewrite was a rewrite and not a
+        # corruption — the read-back proves the bytes landed, never that they
+        # still mean what they meant — and a file that never parsed cannot
+        # supply one. It used to be written anyway, with the gate skipped,
+        # because the gate was guarded on `shape_before is None`, which is also
+        # what an ordinary `data/*.json` answers. `_parses` is the narrow
+        # question; see there.
+        if shape_kind is not None and not _parses(p, shape_kind):
+            failed.append({"path": str(p.relative_to(root)),
+                           "note": f"REFUSED: {shape_kind} does not parse, so no "
+                                   "shape check can witness the rewrite"})
+            continue
         if dry_run:
             changed.append({"path": str(p.relative_to(root)),
                             "delta": len(after) - len(before)})
@@ -750,6 +769,31 @@ def convert(root: Path = Path("."), dry_run: bool = False,
         changed.append({"path": str(p.relative_to(root)),
                         "delta": len(after) - len(before)})
     return {"changed": changed, "failed": failed, "dry_run": dry_run}
+
+
+def _parses(p: Path, kind: str) -> bool:
+    """Does this file parse at all — deliberately narrower than `_*_shape`.
+
+    **The two questions are not the same, and reading one for the other is what
+    put a hole in the structure gate.** `_xml_shape` answers `None` only for an
+    unparseable file, so there the two coincide; `_json_shape` also answers
+    `None` for a file that parses perfectly and simply holds no `lines` key,
+    which is every `data/*.json` but a decision. Gating a refusal on `None`
+    therefore refused most of `data/` on an XML-shaped intuition.
+
+    So the refusal asks this instead. It is one extra parse, on the files being
+    converted only, which already parse twice.
+    """
+    from lxml import etree
+    try:
+        if kind == "XML":
+            etree.parse(str(p))
+        else:
+            json.loads(p.read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, etree.XMLSyntaxError,
+            json.JSONDecodeError):
+        return False
+    return True
 
 
 def _json_shape(p: Path) -> tuple | None:
