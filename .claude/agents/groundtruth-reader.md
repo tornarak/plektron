@@ -1064,9 +1064,20 @@ talks itself into reading them.
 ### 2.9 Spacing before punctuation — English, not French (SETTLED, editor ruling)
 
 **The book sets French spacing and the corpus does not reproduce it.** Brill puts a
-thin space before `;` and `:` — `purpose ; but`, `substance ;”`, `solstices ; but`
-on `1-073` alone, and the gap is unambiguous at 2× and consistent across every
-occurrence. Key **English spacing**: `purpose; but`, no space.
+thin space before `;` `:` `,` `!` and `?` — `purpose ; but`, `substance ;”`,
+`solstices ; but` on `1-073` alone, and `daughter !”` / `eh !”` one line apart on
+`3-041`; the gap is unambiguous at 2× and consistent across every occurrence. Key
+**English spacing**: `purpose; but`, no space.
+
+`!` and `?` were added late, and how they were missing is the part worth keeping:
+nothing gates this rule, so a reader that strips the space and a reader that keeps it
+both pass `check`. The store held 1535 `!`/`?` tokens without a single preceding
+space, which looked like the press closing up and was in fact every reader closing up
+unbidden — a unanimity that was evidence about the readers, not about the ink. It
+broke only when one reader read the list as exhaustive and preserved `eh !` on
+`3-041` L35 while silently closing `daughter !` on L34, inconsistent with itself one
+line away. **A rule whose enumeration is a list is read as closed**, so the list has
+to be the whole of it.
 
 This is one of the two places the "reproduce the print" rule for English prose is
 deliberately overridden — §2.15, the press's diacritics on English loanwords, is
