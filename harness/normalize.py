@@ -769,6 +769,17 @@ def _json_shape(p: Path) -> tuple | None:
     the write had already succeeded by the time this ran, so the false abort
     only misreported success as failure, but on a mechanical gate a status that
     can be wrong at all defeats the point of having it.
+
+    **§2.9 spacing is the second kind and was the same bug twice.** Folding runs
+    of whitespace is blind to a run becoming shorter, not to a space being
+    *removed* — and removing one before `;:,!?`, or restoring one after a
+    footnote opener, is exactly what `_fix_spacing` is licensed to do in this
+    pass. `purpose ; but` -> `purpose; but` moved the shape and aborted a write
+    that had succeeded. So the fold now applies `_fix_spacing` too: the check
+    asks whether anything happened *other than* what this pass may do, which is
+    the only question it was ever meant to answer. Reported by two readers on
+    two chapters (`3-097`, `3-133`), both of whom went and confirmed the file
+    was written — the cost of a gate that cries wolf is paid in their turns.
     """
     try:
         data = json.loads(p.read_text(encoding="utf-8"))
@@ -777,7 +788,9 @@ def _json_shape(p: Path) -> tuple | None:
     lines = data.get("lines") if isinstance(data, dict) else None
     if not isinstance(lines, dict):
         return None
-    folded = {k: unicodedata.normalize("NFD", re.sub(r"\s+", " ", v.get("text", ""))).strip()
+    folded = {k: _fix_spacing(
+                  unicodedata.normalize("NFD", re.sub(r"\s+", " ", v.get("text", ""))),
+                  commentary=True).strip()
               for k, v in lines.items()}
     return (frozenset(lines.keys()), folded)
 

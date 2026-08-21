@@ -5,11 +5,17 @@ them unattended while every lookalike stays report-only. NFKC is the trap: it ha
 compatibility decompositions for two inventory glyphs and destroys them, so any
 `normalize()` call in this codebase must name its form.
 """
+import json
 import unicodedata
 
 import pytest
 
-from harness.normalize import _fix_spacing, _lookalikes, _spacing_hits
+from harness.normalize import (
+    _fix_spacing,
+    _json_shape,
+    _lookalikes,
+    _spacing_hits,
+)
 
 
 class TestSpacing:
@@ -220,3 +226,46 @@ class TestLookalikeCensus:
         (hit,) = _lookalikes("x´y")
         assert "U+02CA" in hit["trap"]
         assert hit["token"] == "x´y"  # located to a token, not just a line
+
+
+class TestTheShapeCheckToleratesItsOwnPass:
+    """`_json_shape` must be blind to exactly the drift this pass is licensed to make.
+
+    It runs *after* the write, so a false mismatch cannot corrupt anything — it can
+    only report a success as `ABORTED`, which is worse than useless on a mechanical
+    gate and is paid for in the reader turns spent confirming the file really was
+    written. Two readers did that, on two chapters (`3-097`, `3-133`).
+
+    The docstring records the same bug once already, for NFD: a precomposed character
+    legitimately becomes several codepoints and a literal fold called that a change.
+    §2.9 spacing is the second kind. Folding runs of whitespace is blind to a run
+    getting shorter, not to a space being removed outright — and removing one before
+    `;:,!?`, or restoring one after a footnote opener, is what `_fix_spacing` is for.
+    """
+
+    def _shape(self, tmp_path, text: str):
+        p = tmp_path / "proposal.json"
+        p.write_text(json.dumps({"lines": {"1": {"text": text}}}), encoding="utf-8")
+        return _json_shape(p)
+
+    @pytest.mark.parametrize("given", [
+        "purpose ; but", "eh !”", "daughter !”", "solstices ; but", "who ?”",
+    ])
+    def test_a_collapsed_space_does_not_move_the_shape(self, tmp_path, given):
+        after = _fix_spacing(unicodedata.normalize("NFD", given), commentary=True)
+        assert after != given, "fixture must actually exercise the collapse"
+        assert self._shape(tmp_path, given) == self._shape(tmp_path, after)
+
+    def test_a_real_content_change_still_moves_it(self, tmp_path):
+        """The tolerance must not become blindness: a substituted word, and a
+        substituted codepoint, both still have to register."""
+        assert self._shape(tmp_path, "one two") != self._shape(tmp_path, "one three")
+        assert self._shape(tmp_path, "gɪn") != self._shape(tmp_path, "g̣ɪn")
+
+    def test_a_lost_line_still_moves_it(self, tmp_path):
+        one = tmp_path / "one.json"
+        two = tmp_path / "two.json"
+        one.write_text(json.dumps({"lines": {"1": {"text": "a"}, "2": {"text": "b"}}}),
+                       encoding="utf-8")
+        two.write_text(json.dumps({"lines": {"1": {"text": "a"}}}), encoding="utf-8")
+        assert _json_shape(one) != _json_shape(two)
