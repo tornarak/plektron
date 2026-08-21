@@ -328,9 +328,15 @@ telling where; `--out` is for a one-off outside the pass, and is not yours.
     ASCII, so spell the query however you like: a miss means the corpus lacks the
     word. Toponyms are almost always keyed — `1-048`–`1-053` are the book's own
     gazetteer.
-  - **Use a key wherever the lookup gives one.** The saving is the adjudicator's:
-    a hand-retyped form must be re-read for a dropped U+0323, a keyed one was
-    ratified elsewhere. A key can be one morpheme of a compound
+  - **If the lookup gives a key, type the key.** Not the form it expands to, not
+    your own spelling of the same word, not the key quoted in a `note` beside a
+    hand-typed reading — the key, in braces, in `text`. Citing a key you did not
+    use is the failure this bullet exists to stop: `3-088` called three ratified
+    forms "used directly" and typed none of them, `3-094` wrote `Cf. lexicon key
+    taka'lhi_n` in a note and retyped the word, and `3-103` reported no key for a
+    toponym six pages carry, so it could not say what the corpus held even though
+    its own reading of the page may well be right. The saving is the adjudicator's: a hand-retyped form must be re-read for a dropped
+    U+0323, a keyed one was ratified elsewhere. A key can be one morpheme of a compound
     (`liˊi-{ke'let}`); check the expansion against the raster after `fix`, since
     compounding can change a stem's vowels. A handle carries its own case and may
     raise the corpus's (`{Ke'let}` → `Keˊlet`), never lower it, and is refused
@@ -1055,9 +1061,10 @@ wear concentrates at line ends. *Attested:* `2-154` L16 `of`.
 
 **The one exception is a contextually Tier-1 form — a gloss, a native proper
 name, a vocabulary entry — carrying what the notation does not contain at all.**
-Exactly two shapes:
+Exactly three shapes:
 
 - a mark outside the §2.1 set (an acute over a vowel, `a` + U+0301);
+- a §2.1 mark on a base §2.6 does not license (`e` + U+0306);
 - a plainly polysyllabic form with no stress mark anywhere (§5.5).
 
 The notation is a closed set, so a form inside it that merely surprises is
@@ -1068,8 +1075,11 @@ slip would enter it into the evidence. **A reader keys what is set and puts the
 provision it falls outside in `note`; the correction is the adjudicator's**, a
 human act ranked `#ed`, licensed by occurrences already in `gt/ocr` and nothing
 else. Nothing catches the first shape mechanically — `unlicensed_marks` inspects
-only marks that have a licence entry — so the reader's flag is the detector.
-*Attested:* `1-099` L13 `Kuvár` → `Kuvaˊr`.
+only marks that have a licence entry — so the reader's flag is the detector. The
+second shape is the one it does catch, for that same reason: the mark carries a
+licence and the base is not on it, so `corpus normalize` reports the line before
+any reader's flag has to.
+*Attested:* `1-099` L13 `Kuvár` → `Kuvaˊr`; `3-095` L16 `eˊrmĕčɪn` → `eˊrmečɪn`.
 
 ### 2.15 Diacritics on English loanwords — strip them (SETTLED, editor ruling)
 

@@ -268,9 +268,10 @@ wear concentrates at line ends. *Attested:* `2-154` L16 `of`.
 
 **The one exception is a contextually Tier-1 form — a gloss, a native proper
 name, a vocabulary entry — carrying what the notation does not contain at all.**
-Exactly two shapes:
+Exactly three shapes:
 
 - a mark outside the §2.1 set (an acute over a vowel, `a` + U+0301);
+- a §2.1 mark on a base §2.6 does not license (`e` + U+0306);
 - a plainly polysyllabic form with no stress mark anywhere (§5.5).
 
 The notation is a closed set, so a form inside it that merely surprises is
@@ -281,8 +282,11 @@ slip would enter it into the evidence. **A reader keys what is set and puts the
 provision it falls outside in `note`; the correction is the adjudicator's**, a
 human act ranked `#ed`, licensed by occurrences already in `gt/ocr` and nothing
 else. Nothing catches the first shape mechanically — `unlicensed_marks` inspects
-only marks that have a licence entry — so the reader's flag is the detector.
-*Attested:* `1-099` L13 `Kuvár` → `Kuvaˊr`.
+only marks that have a licence entry — so the reader's flag is the detector. The
+second shape is the one it does catch, for that same reason: the mark carries a
+licence and the base is not on it, so `corpus normalize` reports the line before
+any reader's flag has to.
+*Attested:* `1-099` L13 `Kuvár` → `Kuvaˊr`; `3-095` L16 `eˊrmĕčɪn` → `eˊrmečɪn`.
 
 ### 2.15 Diacritics on English loanwords — strip them (SETTLED, editor ruling)
 
