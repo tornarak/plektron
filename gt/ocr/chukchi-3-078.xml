@@ -1,0 +1,337 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-3-078.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-3-078.png; regions_from: zones/chukchi-3-078.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Other"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="QuireMarksZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+                <TextBlock ID="mz_3-078_r1" HPOS="382" VPOS="742" WIDTH="1782" HEIGHT="93" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="382 742 2164 742 2164 835 382 835"/>
+                    </Shape>
+                    <TextLine ID="mz_3-078_l1" HPOS="859" VPOS="751" WIDTH="797" HEIGHT="72" BASELINE="859 800 1656 800" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="859 800 859 813 869 821 871 821 873 821 874 823 960 823 960 821 962 821 964 821 964 819 974 811 1069 811 1083 821 1085 821 1087 821 1089 821 1656 809 1656 800 1656 765 1631 751 1629 751 1576 751 1574 751 1572 751 1570 751 1557 761 1545 751 1543 751 1541 751 1539 751 1537 751 1535 751 1535 753 1523 763 1504 751 1502 751 1500 751 1498 751 1496 751 1477 761 1403 751 1401 751 1399 751 1397 751 1397 753 1383 765 1360 753 1358 753 1270 753 1268 753 1266 753 1233 765 1221 755 1221 753 1219 753 1218 753 1216 753 1143 761 1132 751 1130 751 1128 751 1126 751 1124 751 1067 765 873 753 871 753 869 753 867 753 867 755 859 763 859 800"/>
+                        </Shape>
+                        <String CONTENT="XX. — CAMP AND VILLAGE."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-078_r2" HPOS="382" VPOS="874" WIDTH="1782" HEIGHT="1804" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="382 874 2164 874 2164 2678 382 2678"/>
+                    </Shape>
+                    <TextLine ID="mz_3-078_l2" HPOS="485" VPOS="866" WIDTH="1654" HEIGHT="60" BASELINE="487 913 2139 905" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2102 872 2083 872 2069 870 2061 876 2052 870 2044 870 2024 870 2020 868 2003 876 1964 866 1946 866 1937 866 1921 878 1720 880 1570 880 1553 866 1551 866 1549 866 1547 866 1483 880 1229 880 1200 868 1198 868 1196 868 1194 868 1151 880 962 868 960 868 818 882 485 874 487 913 487 926 2137 919 2139 905 2137 878 2116 872 2102 872"/>
+                        </Shape>
+                        <String CONTENT="THE CAMP OF THE REINDEER CHUKCHEE. — The camp among the Rein-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-078_l3" HPOS="376" VPOS="926" WIDTH="1765" HEIGHT="59" BASELINE="378 971 2141 967" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="378 971 378 985 2139 983 2141 967 2139 938 2116 926 2114 926 2112 926 2110 926 2081 936 1615 926 1613 926 1539 936 1477 926 1475 926 1473 926 1449 936 1389 926 1387 926 1338 936 1311 926 1309 926 1307 926 1243 938 984 928 982 928 906 938 878 928 876 928 874 928 873 928 849 938 824 928 822 928 820 928 691 938 643 928 641 928 639 928 637 928 625 938 611 928 609 928 607 928 516 928 514 928 436 938 401 928 399 928 397 928 395 928 393 928 376 938 378 971"/>
+                        </Shape>
+                        <String CONTENT="deer Chukchee, and the village among the Maritime Chukchee, form the unit"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-078_l4" HPOS="374" VPOS="987" WIDTH="1765" HEIGHT="58" BASELINE="376 1032 2139 1028" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="376 1032 376 1045 2137 1041 2139 1028 2137 999 2102 987 2100 987 2098 987 2096 987 2075 997 2054 987 2052 987 2050 987 1997 997 1896 987 1894 987 1892 987 1890 987 1874 999 1787 999 1761 987 1759 987 1757 987 1755 987 1753 987 1736 999 1609 999 1576 987 1574 987 1572 987 1481 997 1428 987 1426 987 1366 997 1319 987 1317 987 1253 999 1161 989 1159 989 1157 989 1130 999 1065 989 1064 989 890 999 865 989 863 989 861 989 859 989 830 999 719 989 717 989 715 989 678 999 664 989 662 989 660 989 528 989 526 989 452 999 418 989 416 989 415 989 413 989 374 1000 376 1032"/>
+                        </Shape>
+                        <String CONTENT="of social life. Though unstable, these exist without interruption. The Chuk-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-078_l5" HPOS="376" VPOS="1051" WIDTH="1765" HEIGHT="55" BASELINE="376 1090 2141 1090" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="376 1090 376 1106 2139 1106 2141 1090 2141 1063 2100 1051 2098 1051 2096 1051 2095 1051 2057 1061 2044 1051 2042 1051 2040 1051 2038 1051 1958 1061 1882 1051 1880 1051 1251 1061 1138 1051 1136 1051 1134 1051 1132 1051 1118 1061 1079 1051 1077 1051 1075 1051 1073 1051 1071 1051 1058 1061 1019 1051 1017 1051 1015 1051 1013 1051 970 1061 919 1051 917 1051 699 1061 664 1051 662 1051 660 1051 658 1051 656 1051 641 1063 459 1063 407 1051 405 1051 403 1051 376 1061 376 1090"/>
+                        </Shape>
+                        <String CONTENT="chee camp is very small. It includes usually two or three families, and the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-078_l6" HPOS="378" VPOS="1110" WIDTH="1763" HEIGHT="54" BASELINE="378 1151 2141 1151" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="378 1151 378 1162 2139 1164 2141 1151 2141 1121 2112 1110 2110 1110 2108 1110 2106 1110 2071 1121 1911 1110 1909 1110 1907 1110 1870 1121 1785 1110 1783 1110 1666 1121 1525 1110 1523 1110 1522 1110 1520 1110 1502 1123 1453 1123 1332 1110 1331 1110 1329 1110 1327 1110 1307 1123 1120 1123 1087 1110 1085 1110 1083 1110 1081 1110 1079 1110 1060 1123 986 1123 949 1110 947 1110 773 1110 771 1110 709 1121 635 1110 633 1110 510 1121 493 1110 491 1110 489 1110 487 1110 485 1110 450 1119 420 1110 418 1110 416 1110 415 1110 378 1121 378 1151"/>
+                        </Shape>
+                        <String CONTENT="whole number of inhabitants is ten or fifteen. Camps of four, five, or six"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-078_l7" HPOS="376" VPOS="1168" WIDTH="1765" HEIGHT="59" BASELINE="378 1211 2141 1205" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="378 1211 378 1227 2139 1223 2141 1205 2137 1180 2015 1168 2013 1168 1964 1178 1937 1168 1935 1168 1933 1168 1931 1168 1929 1168 1913 1180 1822 1180 1767 1168 1765 1168 1763 1168 1761 1168 1746 1180 1656 1180 1594 1168 1592 1168 1590 1168 1549 1182 1356 1182 1323 1170 1321 1170 1319 1170 1212 1180 1151 1170 1149 1170 1147 1170 1108 1180 1067 1170 1065 1170 1064 1170 1003 1180 968 1170 966 1170 964 1170 874 1182 732 1172 730 1172 728 1172 693 1182 609 1172 607 1172 376 1180 378 1211"/>
+                        </Shape>
+                        <String CONTENT="families form but a slight minority; and a camp with ten houses is almost"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-078_l8" HPOS="374" VPOS="1229" WIDTH="1765" HEIGHT="56" BASELINE="376 1271 2139 1267" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="376 1271 376 1285 2137 1285 2139 1267 2137 1240 2112 1229 2110 1229 2108 1229 2106 1229 2073 1240 1642 1240 1611 1229 1609 1229 1607 1229 1605 1229 1570 1238 1504 1229 1502 1229 1255 1240 1227 1230 1225 1230 1223 1230 1149 1242 1030 1242 1015 1230 1013 1230 1011 1230 1009 1230 1007 1230 976 1240 954 1230 952 1230 951 1230 900 1240 828 1230 826 1230 824 1230 785 1240 713 1230 711 1230 635 1240 588 1230 586 1230 374 1236 376 1271"/>
+                        </Shape>
+                        <String CONTENT="impossible unless formed for special reasons, like the temporary camps in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-078_l9" HPOS="374" VPOS="1289" WIDTH="1767" HEIGHT="54" BASELINE="376 1332 2141 1328" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="376 1332 376 1343 2139 1342 2141 1328 2139 1301 2102 1289 2100 1289 2098 1289 2096 1289 2059 1301 1972 1301 1956 1289 1954 1289 1952 1289 1950 1289 1896 1299 1218 1291 1216 1291 1214 1291 1194 1301 1093 1291 1091 1291 685 1301 570 1291 569 1291 567 1291 541 1301 455 1291 454 1291 374 1303 376 1332"/>
+                        </Shape>
+                        <String CONTENT="trading-places. As stated before, the number of tents corresponds to the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-078_l10" HPOS="376" VPOS="1347" WIDTH="1763" HEIGHT="59" BASELINE="378 1390 2139 1384" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="378 1390 378 1406 2137 1402 2139 1384 2135 1359 1878 1359 1835 1347 1833 1347 1831 1347 1829 1347 1828 1347 1812 1359 1660 1359 1576 1347 1574 1347 1572 1347 1545 1359 1095 1349 1093 1349 1091 1349 1069 1359 1036 1349 1034 1349 1032 1349 960 1361 471 1351 469 1351 376 1363 378 1390"/>
+                        </Shape>
+                        <String CONTENT="number of families, since each family has a house of its own. In most cases"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-078_l11" HPOS="374" VPOS="1408" WIDTH="1763" HEIGHT="62" BASELINE="376 1451 2137 1447" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="376 1451 376 1464 2134 1470 2137 1447 2134 1419 2075 1408 2073 1408 1867 1418 1837 1408 1835 1408 1833 1408 1831 1408 1798 1418 1714 1408 1713 1408 1711 1408 1685 1419 1512 1419 1475 1408 1473 1408 1471 1408 1469 1408 1447 1418 1391 1408 1389 1408 1387 1408 1385 1408 1370 1419 1253 1419 1206 1410 1093 1410 1091 1410 1089 1410 1069 1419 1040 1410 1038 1410 1036 1410 1034 1410 1005 1419 945 1410 943 1410 898 1419 863 1410 861 1410 859 1410 798 1419 724 1410 722 1410 452 1419 397 1410 395 1410 393 1410 391 1410 374 1418 376 1451"/>
+                        </Shape>
+                        <String CONTENT="the camp consists of related families, — for instance, of brothers, cousins,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-078_l12" HPOS="374" VPOS="1466" WIDTH="1767" HEIGHT="68" BASELINE="376 1513 2141 1507" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="376 1513 376 1525 469 1534 471 1534 473 1534 475 1534 491 1523 1214 1523 1432 1533 1434 1533 1436 1533 1438 1533 1453 1523 2139 1523 2141 1507 2139 1478 2110 1466 2108 1466 2106 1466 2104 1466 2069 1478 1691 1478 1638 1466 1637 1466 1635 1466 1596 1476 1555 1466 1553 1466 1551 1466 1549 1466 1518 1478 1481 1468 1479 1468 1477 1468 1475 1468 1446 1478 1416 1468 1414 1468 1412 1468 1280 1478 1223 1468 1221 1468 1153 1478 1005 1468 1003 1468 1001 1468 999 1468 984 1478 629 1470 627 1470 625 1470 598 1480 528 1470 526 1470 374 1482 376 1513"/>
+                        </Shape>
+                        <String CONTENT="etc., with their wives and children. Especially is this the case among people"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-078_l13" HPOS="376" VPOS="1529" WIDTH="1765" HEIGHT="54" BASELINE="378 1570 2141 1566" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="378 1570 378 1583 2139 1581 2141 1566 2137 1538 1284 1529 1282 1529 1280 1529 1255 1538 416 1531 415 1531 413 1531 376 1540 378 1570"/>
+                        </Shape>
+                        <String CONTENT="of moderate circumstances, where the herds are not so large as to make it"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-078_l14" HPOS="376" VPOS="1587" WIDTH="1765" HEIGHT="57" BASELINE="378 1630 2141 1624" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="378 1630 378 1644 2139 1642 2141 1624 2137 1597 1553 1587 1551 1587 1479 1597 1157 1589 1155 1589 376 1601 378 1630"/>
+                        </Shape>
+                        <String CONTENT="necessary to keep them apart. When the herd left after the death of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-078_l15" HPOS="374" VPOS="1646" WIDTH="1767" HEIGHT="60" BASELINE="376 1692 2141 1686" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="376 1692 376 1706 2139 1704 2141 1686 2139 1657 2096 1646 2095 1646 2093 1646 2046 1657 1732 1657 1705 1646 1703 1646 1701 1646 1617 1655 1590 1646 1588 1646 1586 1646 1584 1646 1549 1657 1533 1648 1531 1648 1529 1648 1527 1648 1525 1648 1486 1657 1430 1648 1428 1648 1264 1657 1214 1648 1212 1648 1210 1648 1208 1648 1192 1657 1124 1648 1122 1648 1011 1657 964 1648 962 1648 960 1648 958 1648 937 1659 391 1649 389 1649 387 1649 385 1649 374 1657 376 1692"/>
+                        </Shape>
+                        <String CONTENT="father contains no more than a few hundred heads, there is every reason why"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-078_l16" HPOS="376" VPOS="1706" WIDTH="1763" HEIGHT="62" BASELINE="378 1751 2139 1747" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="378 1751 378 1763 2135 1768 2139 1747 2135 1718 2063 1706 2061 1706 2059 1706 2032 1716 1890 1706 1888 1706 1787 1716 1689 1706 1687 1706 1685 1706 1646 1716 1615 1706 1613 1706 1611 1706 1609 1706 1570 1716 1500 1706 1498 1706 1496 1706 1494 1706 1479 1718 1344 1718 1297 1706 1295 1706 1235 1718 633 1708 631 1708 629 1708 627 1708 611 1720 454 1720 401 1708 399 1708 397 1708 376 1718 378 1751"/>
+                        </Shape>
+                        <String CONTENT="the sons should not divide it into small parts, but should keep it together,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-078_l17" HPOS="378" VPOS="1780" WIDTH="1763" HEIGHT="49" BASELINE="378 1809 2141 1809" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="378 1809 378 1823 2139 1829 2141 1809 2141 1780 378 1780 378 1809"/>
+                        </Shape>
+                        <String CONTENT="as before. Among the poorer people, who count their reindeer only by scores,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-078_l18" HPOS="376" VPOS="1827" WIDTH="1765" HEIGHT="56" BASELINE="378 1872 2141 1864" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="378 1872 378 1883 2139 1879 2141 1864 2137 1837 1701 1827 1699 1827 1697 1827 1672 1837 1280 1829 1278 1829 1276 1829 1243 1839 393 1833 391 1833 389 1833 387 1833 376 1839 378 1872"/>
+                        </Shape>
+                        <String CONTENT="the sons are inclined to separate, and to seek a new fortune, each on his"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-078_l19" HPOS="378" VPOS="1889" WIDTH="1765" HEIGHT="55" BASELINE="379 1930 2143 1924" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="379 1930 379 1944 2141 1938 2143 1924 2139 1897 974 1889 972 1889 970 1889 937 1899 658 1891 656 1891 378 1901 379 1930"/>
+                        </Shape>
+                        <String CONTENT="own account. On the other hand, such small reindeer-owners often join for"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-078_l20" HPOS="378" VPOS="1946" WIDTH="1765" HEIGHT="56" BASELINE="379 1989 2143 1983" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="379 1989 379 2002 2141 1998 2143 1983 2139 1957 2020 1946 2019 1946 1958 1955 1931 1946 1929 1946 1927 1946 1870 1955 1837 1946 1835 1946 1833 1946 1687 1955 1658 1946 1656 1946 1654 1946 1601 1955 1555 1946 1553 1946 1551 1946 1527 1957 1103 1948 1101 1948 1099 1948 1062 1957 986 1948 984 1948 847 1959 467 1950 465 1950 378 1961 379 1989"/>
+                        </Shape>
+                        <String CONTENT="a while with others of similar circumstances, even though not related. “Poor"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-078_l21" HPOS="378" VPOS="2006" WIDTH="1765" HEIGHT="66" BASELINE="379 2051 2143 2045" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="379 2051 379 2072 2141 2061 2143 2045 2139 2016 1555 2006 1553 2006 1551 2006 1516 2016 1015 2008 1013 2008 962 2018 483 2010 481 2010 378 2020 379 2051"/>
+                        </Shape>
+                        <String CONTENT="people are careless of ties of relationship,” say the Chukchee. Five, and even"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-078_l22" HPOS="378" VPOS="2065" WIDTH="1767" HEIGHT="66" BASELINE="379 2111 2145 2104" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="379 2111 379 2127 1701 2131 1703 2131 2143 2119 2145 2104 2141 2076 2071 2065 2069 2065 2067 2065 2042 2074 2019 2065 2017 2065 2015 2065 2013 2065 1987 2074 1886 2065 1884 2065 1882 2065 1845 2074 1818 2065 1816 2065 1814 2065 1812 2065 1773 2074 1703 2065 1701 2065 1699 2065 1697 2065 1683 2076 1646 2067 1644 2067 1642 2067 1397 2076 1344 2067 1342 2067 1231 2078 1118 2068 1116 2068 1114 2068 1112 2068 1097 2080 972 2080 929 2068 927 2068 925 2068 816 2080 407 2070 405 2070 403 2070 378 2080 379 2111"/>
+                        </Shape>
+                        <String CONTENT="eight, of such poor people, may keep together for a while, join the few reindeer"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-078_l23" HPOS="378" VPOS="2127" WIDTH="1769" HEIGHT="56" BASELINE="379 2170 2147 2166" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="379 2170 379 2183 2145 2180 2147 2166 2145 2139 2108 2127 2106 2127 2104 2127 2046 2137 1859 2127 1857 2127 1855 2127 1833 2139 1711 2139 1677 2127 1676 2127 1674 2127 1535 2137 1475 2127 1473 2127 1471 2127 1469 2127 1453 2139 1348 2139 1270 2127 1268 2127 1266 2127 1241 2139 1218 2129 1216 2129 1118 2129 1116 2129 1114 2129 1112 2129 1097 2139 804 2129 802 2129 726 2139 685 2129 683 2129 682 2129 680 2129 678 2129 662 2141 485 2141 401 2129 399 2129 397 2129 395 2129 378 2137 379 2170"/>
+                        </Shape>
+                        <String CONTENT="they possess in order to form a herd of decent size, spend a couple of months"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-078_l24" HPOS="381" VPOS="2193" WIDTH="1762" HEIGHT="51" BASELINE="381 2228 2143 2228" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="381 2228 381 2244 2143 2244 2143 2228 2143 2199 381 2193 381 2228"/>
+                        </Shape>
+                        <String CONTENT="in the common camp, and then disperse just as easily as they had joined."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-078_l25" HPOS="381" VPOS="2248" WIDTH="1764" HEIGHT="54" BASELINE="381 2287 2145 2287" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="381 2287 381 2300 2143 2302 2145 2287 2145 2259 2024 2248 2022 2248 1627 2258 1580 2248 1578 2248 1516 2258 1426 2248 1424 2248 1362 2258 1327 2248 1325 2248 1323 2248 1321 2248 1319 2248 1305 2258 1241 2248 1239 2248 1237 2248 1235 2248 1219 2259 1106 2259 1056 2248 1054 2248 995 2258 958 2248 956 2248 954 2248 836 2258 802 2248 800 2248 798 2248 797 2248 758 2258 709 2248 707 2248 705 2248 703 2248 689 2258 613 2248 611 2248 547 2258 494 2248 493 2248 491 2248 452 2258 399 2248 397 2248 395 2248 393 2248 381 2256 381 2287"/>
+                        </Shape>
+                        <String CONTENT="On the other hand, people who are rich in reindeer have a constant tendency"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-078_l26" HPOS="378" VPOS="2306" WIDTH="1769" HEIGHT="57" BASELINE="379 2347 2147 2343" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="379 2347 379 2363 2145 2359 2147 2343 2145 2318 2104 2306 2102 2306 2100 2306 2098 2306 2063 2316 1826 2306 1824 2306 1822 2306 1820 2306 1804 2318 1231 2318 701 2308 699 2308 697 2308 695 2308 682 2318 621 2308 619 2308 617 2308 588 2318 572 2308 570 2308 569 2308 465 2308 463 2308 378 2320 379 2347"/>
+                        </Shape>
+                        <String CONTENT="to divide the herd and to form two or more separate camps. Moreover, the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-078_l27" HPOS="378" VPOS="2367" WIDTH="1767" HEIGHT="56" BASELINE="379 2410 2145 2402" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="379 2410 379 2423 2143 2417 2145 2402 2141 2374 1274 2367 1272 2367 1270 2367 1268 2367 1253 2376 461 2371 459 2371 378 2380 379 2410"/>
+                        </Shape>
+                        <String CONTENT="wealthy reindeer-owners are often unable to keep their reindeer well under"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-078_l28" HPOS="378" VPOS="2423" WIDTH="1767" HEIGHT="61" BASELINE="379 2470 2145 2462" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="379 2470 379 2484 2143 2480 2145 2462 2141 2435 2057 2423 2056 2423 1872 2433 1804 2423 1802 2423 1800 2423 1757 2433 1713 2423 1711 2423 1709 2423 1683 2435 1662 2425 1660 2425 1658 2425 1486 2435 1403 2425 1401 2425 1313 2435 1299 2425 1297 2425 1295 2425 1294 2425 1292 2425 1258 2437 1231 2427 1229 2427 1227 2427 1225 2427 1192 2437 1048 2427 1046 2427 1044 2427 1042 2427 1027 2439 915 2439 824 2427 822 2427 746 2439 397 2429 395 2429 393 2429 391 2429 378 2437 379 2470"/>
+                        </Shape>
+                        <String CONTENT="the supervision of their own family alone, and have need of assistants. These"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-078_l29" HPOS="379" VPOS="2489" WIDTH="1768" HEIGHT="55" BASELINE="381 2528 2147 2523" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="381 2528 381 2544 2145 2540 2147 2523 2143 2495 446 2489 444 2489 379 2499 381 2528"/>
+                        </Shape>
+                        <String CONTENT="assistants may be either some distant relatives or poor strangers; so that the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-078_l30" HPOS="379" VPOS="2546" WIDTH="1772" HEIGHT="56" BASELINE="381 2589 2151 2583" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="381 2589 381 2602 2149 2597 2151 2583 2147 2556 1605 2546 1603 2546 1557 2556 1036 2548 1034 2548 952 2558 561 2550 559 2550 379 2560 381 2589"/>
+                        </Shape>
+                        <String CONTENT="camp of a rich man may be formed of a family of owners and of one or"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-078_l31" HPOS="379" VPOS="2606" WIDTH="1172" HEIGHT="57" BASELINE="381 2649 1551 2645" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="381 2649 381 2663 1549 2661 1551 2645 1547 2618 1334 2618 1311 2606 1309 2606 1307 2606 1305 2606 1303 2606 1288 2618 1147 2618 1110 2606 1108 2606 1106 2606 1104 2606 1103 2606 1103 2608 1093 2618 1021 2618 984 2606 982 2606 980 2606 978 2606 976 2606 958 2618 496 2608 494 2608 493 2608 491 2608 491 2610 481 2620 379 2620 381 2649"/>
+                        </Shape>
+                        <String CONTENT="two families of assistants dependent on the master."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-078_r3" HPOS="382" VPOS="2678" WIDTH="1782" HEIGHT="299" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="382 2678 2164 2678 2164 2977 382 2977"/>
+                    </Shape>
+                    <TextLine ID="mz_3-078_l32" HPOS="494" VPOS="2663" WIDTH="1655" HEIGHT="58" BASELINE="496 2708 2149 2704" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="496 2708 496 2721 2147 2721 2149 2704 2147 2677 2104 2663 2102 2663 2100 2663 2098 2663 2069 2675 2026 2663 2024 2663 2022 2663 1950 2675 1900 2663 1898 2663 1896 2663 1894 2663 1855 2675 1829 2663 1828 2663 1826 2663 1824 2663 1787 2677 1615 2677 1512 2663 1510 2663 1508 2663 1481 2677 1311 2677 1245 2665 1243 2665 1180 2678 1011 2678 972 2665 970 2665 968 2665 966 2665 929 2677 910 2665 908 2665 906 2665 830 2665 828 2665 769 2677 623 2665 621 2665 619 2665 590 2677 510 2665 508 2665 506 2665 504 2665 494 2673 496 2708"/>
+                        </Shape>
+                        <String CONTENT="The Master of the Camp. — The master of the camp, who lives in the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-078_l33" HPOS="381" VPOS="2721" WIDTH="1758" HEIGHT="63" BASELINE="383 2768 2139 2760" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="383 2768 383 2784 2137 2776 2139 2760 2132 2721 2096 2731 1865 2721 1863 2721 1794 2731 1767 2721 1765 2721 1763 2721 1761 2721 1740 2731 1716 2721 1714 2721 1713 2721 1711 2721 1709 2721 1693 2735 1463 2735 1436 2723 1434 2723 1432 2723 1430 2723 1428 2723 1412 2735 1258 2735 1231 2725 1229 2725 1227 2725 890 2735 822 2725 820 2725 818 2725 767 2737 413 2727 411 2727 409 2727 381 2737 383 2768"/>
+                        </Shape>
+                        <String CONTENT="chief house, is called aunraˊlɪn, which means here “one of the chief house;”¹"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-078_l34" HPOS="381" VPOS="2784" WIDTH="1764" HEIGHT="58" BASELINE="383 2830 2145 2825" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="383 2830 383 2842 2145 2838 2145 2825 2143 2795 2118 2784 2116 2784 2114 2784 2112 2784 2073 2793 1744 2784 1742 2784 1740 2784 1738 2784 1722 2795 1619 2795 1572 2784 1570 2784 1568 2784 1566 2784 1553 2795 1500 2786 1498 2786 1496 2786 1455 2795 1329 2786 1327 2786 1325 2786 1294 2795 1266 2786 1264 2786 1262 2786 1182 2795 1140 2786 1138 2786 1136 2786 1134 2786 1132 2786 1116 2797 952 2797 524 2788 522 2788 475 2797 413 2788 411 2788 409 2788 381 2797 383 2830"/>
+                        </Shape>
+                        <String CONTENT="also eˊrmečɪn (“the strongest one”) and aᵋttooraˊlɪn (“one of the front house”)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-078_l35" HPOS="387" VPOS="2844" WIDTH="1758" HEIGHT="62" BASELINE="389 2887 2145 2883" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="389 2887 389 2903 2141 2906 2145 2883 2141 2856 2024 2844 2022 2844 1962 2854 1855 2844 1853 2844 1851 2844 1814 2854 1781 2844 1779 2844 1777 2844 1699 2854 1586 2844 1584 2844 1426 2854 1327 2844 1325 2844 1262 2858 1040 2858 1025 2846 1023 2846 1021 2846 1019 2846 1017 2846 995 2856 982 2846 980 2846 978 2846 976 2846 925 2856 861 2846 859 2846 765 2856 387 2852 389 2887"/>
+                        </Shape>
+                        <String CONTENT="The inhabitants of the other tents are called nɪm-tuˊmg̣ɪt (pl. of nɪm-tuˊmg̣ɪn,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-078_l36" HPOS="397" VPOS="2910" WIDTH="1750" HEIGHT="53" BASELINE="397 2945 2147 2945" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="397 2945 397 2963 2147 2963 2147 2945 2147 2916 397 2910 397 2945"/>
+                        </Shape>
+                        <String CONTENT="“camp-companion,” “camp-neighbor”); also yaarraˊlɪn (“that of the rear house”)."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-078_r4" HPOS="382" VPOS="2977" WIDTH="1782" HEIGHT="57" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="382 2977 2164 2977 2164 3034 382 3034"/>
+                    </Shape>
+                    <TextLine ID="mz_3-078_l37" HPOS="494" VPOS="2963" WIDTH="1651" HEIGHT="82" BASELINE="496 3008 2145 3004" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="496 3008 496 3045 656 3043 658 3043 660 3043 680 3029 783 3029 783 3027 785 3027 787 3027 798 3018 818 3027 820 3027 822 3027 869 3018 906 3029 908 3029 910 3029 956 3020 972 3029 974 3029 976 3029 978 3031 1071 3031 1071 3029 1073 3029 1075 3029 1087 3020 1101 3029 1103 3029 1104 3029 1106 3031 1219 3031 1219 3029 1221 3029 1223 3029 1237 3020 1274 3029 1276 3029 1278 3029 1280 3029 1319 3016 1342 3027 1344 3027 1346 3027 1399 3016 1416 3027 1418 3027 1420 3027 1422 3029 1475 3029 1475 3027 1477 3027 1479 3027 1494 3016 1551 3027 1553 3029 1607 3029 1607 3027 1609 3027 1611 3027 1627 3016 1664 3027 1666 3027 1668 3027 1670 3027 1672 3027 1689 3016 1759 3029 1761 3029 1763 3029 1765 3029 1783 3016 1798 3029 1800 3029 1802 3029 1941 3035 1943 3035 1944 3035 1980 3016 1995 3027 1997 3027 1999 3027 2001 3027 2087 3020 2141 3031 2145 3004 2143 2975 2112 2963 2110 2963 2108 2963 2106 2963 2083 2973 2019 2963 2017 2963 2015 2963 1991 2973 1966 2963 1964 2963 1962 2963 1960 2963 1929 2973 1849 2963 1847 2963 1845 2963 1816 2973 1730 2963 1728 2963 1726 2963 1697 2973 1685 2963 1683 2963 1681 2963 1679 2963 1677 2963 1637 2975 1549 2975 1533 2963 1531 2963 1529 2963 1527 2963 1525 2963 1498 2973 1321 2965 1319 2965 1317 2965 1315 2965 1303 2975 1264 2965 1262 2965 1260 2965 1258 2965 1233 2977 1134 2977 1118 2965 1116 2965 1114 2965 1112 2965 1110 2965 1085 2975 997 2965 995 2965 993 2965 964 2975 912 2965 910 2965 818 2975 738 2965 736 2965 494 2971 496 3008"/>
+                        </Shape>
+                        <String CONTENT="The position of the front house is “on the front of the others;” that is,"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-078_r5" HPOS="382" VPOS="3057" WIDTH="1782" HEIGHT="70" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="382 3057 2164 3057 2164 3127 382 3127"/>
+                    </Shape>
+                    <TextLine ID="mz_3-078_l38" HPOS="859" VPOS="3057" WIDTH="807" HEIGHT="56" BASELINE="861 3082 1666 3086" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="861 3082 859 3097 1038 3111 1040 3113 1192 3113 1192 3111 1194 3111 1196 3111 1196 3109 1206 3101 1465 3101 1475 3111 1475 3113 1477 3113 1479 3113 1481 3113 1664 3105 1666 3086 1664 3060 861 3057 861 3082"/>
+                        </Shape>
+                        <String CONTENT="¹ Aunraˊlɪn generally means “master” (cf. p. 285)."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-078_r6" HPOS="382" VPOS="3127" WIDTH="1782" HEIGHT="47" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="382 3127 2164 3127 2164 3174 382 3174"/>
+                    </Shape>
+                    <TextLine ID="mz_3-078_l39" HPOS="1214" VPOS="3105" WIDTH="111" HEIGHT="63" BASELINE="1216 3138 1325 3142" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1216 3138 1214 3164 1216 3166 1218 3166 1218 3168 1219 3168 1221 3168 1223 3168 1323 3162 1325 3142 1325 3109 1216 3105 1216 3138"/>
+                        </Shape>
+                        <String CONTENT="[612]"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

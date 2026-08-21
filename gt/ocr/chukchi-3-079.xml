@@ -1,0 +1,383 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-3-079.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-3-079.png; regions_from: zones/chukchi-3-079.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="QuireMarksZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_6" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+                <TextBlock ID="mz_3-079_r1" HPOS="480" VPOS="461" WIDTH="1782" HEIGHT="94" TAGREFS="TYPE_5">
+<Shape>
+                        <Polygon POINTS="480 461 2262 461 2262 555 480 555"/>
+                    </Shape>
+                    <TextLine ID="mz_3-079_l1" HPOS="1056" VPOS="478" WIDTH="612" HEIGHT="49" BASELINE="1056 509 1668 509" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="1660 480 1650 478 1056 478 1056 509 1056 527 1668 527 1668 509 1668 492 1660 480"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l2" HPOS="2141" VPOS="470" WIDTH="96" HEIGHT="65" BASELINE="2143 511 2237 515" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="2202 476 2182 472 2172 470 2157 474 2143 492 2143 511 2141 523 2163 535 2165 535 2167 535 2235 533 2237 515 2237 484 2204 476 2202 476"/>
+                        </Shape>
+                        <String CONTENT="613"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-079_r2" HPOS="480" VPOS="578" WIDTH="1782" HEIGHT="1255" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="480 578 2262 578 2262 1833 480 1833"/>
+                    </Shape>
+                    <TextLine ID="mz_3-079_l3" HPOS="473" VPOS="581" WIDTH="1770" HEIGHT="53" BASELINE="473 619 2243 619" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="473 619 473 632 2239 634 2243 619 2239 581 473 585 473 619"/>
+                        </Shape>
+                        <String CONTENT="first on the right side of the line of houses, which, as stated before, are turned"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l4" HPOS="473" VPOS="638" WIDTH="1770" HEIGHT="55" BASELINE="473 677 2243 677" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="473 677 473 691 2239 693 2243 677 2243 650 2213 638 2211 638 2210 638 2208 638 2174 648 2118 638 2116 638 2054 648 1872 638 1870 638 1775 648 1742 638 1740 638 1738 638 1611 648 1580 638 1578 638 1576 638 1504 648 1430 638 1428 638 1381 648 1327 638 1325 638 1323 638 1286 648 1251 638 1249 638 1247 638 1245 638 1202 648 1114 638 1112 638 1110 638 1108 638 1093 650 1005 650 972 638 970 638 968 638 917 648 878 638 876 638 874 638 732 648 676 638 674 638 672 638 646 648 613 638 611 638 609 638 473 648 473 677"/>
+                        </Shape>
+                        <String CONTENT="toward the morning-dawn “direction.”¹ Often it stands really somewhat in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l5" HPOS="471" VPOS="695" WIDTH="1772" HEIGHT="58" BASELINE="473 739 2243 735" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="473 739 473 751 2239 753 2243 735 2237 698 1829 706 1773 695 1771 695 1769 695 1730 706 1699 695 1697 695 1695 695 1693 695 1650 706 1592 695 1590 695 1588 695 1549 706 1533 695 1531 695 1529 695 1473 695 1471 695 1469 695 1432 706 1387 695 1385 695 1383 695 1381 695 1352 708 1321 696 1319 696 1317 696 1225 708 1136 696 1134 696 1079 708 995 696 993 696 929 708 836 696 834 696 765 708 650 696 648 696 646 696 596 708 489 696 487 696 485 696 483 696 471 704 473 739"/>
+                        </Shape>
+                        <String CONTENT="front of the others. The right and the left side, in this case, are pointed"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l6" HPOS="475" VPOS="769" WIDTH="1768" HEIGHT="44" BASELINE="475 796 2243 796" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="475 796 475 813 2243 813 2243 796 2243 769 475 769 475 796"/>
+                        </Shape>
+                        <String CONTENT="out, according to the Chukchee fashion, with face turned toward the sacrifi-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l7" HPOS="473" VPOS="815" WIDTH="1770" HEIGHT="57" BASELINE="473 858 2243 858" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="473 858 473 872 2241 872 2243 858 2243 827 2211 815 2210 815 2208 815 2206 815 2178 827 2085 827 2069 815 2067 815 2065 815 2063 815 2061 815 2036 825 1935 815 1933 815 1878 825 1851 815 1849 815 1847 815 1845 815 1843 815 1828 825 1800 815 1798 815 1796 815 1687 825 1660 815 1658 815 1656 815 1582 825 1557 815 1555 815 1553 815 1479 825 1410 815 1409 815 1344 825 1331 815 1329 815 1327 815 1180 815 1179 815 1177 815 1145 825 1077 815 1075 815 939 825 910 815 908 815 906 815 904 815 880 825 775 815 773 815 771 815 750 825 724 815 722 815 721 815 646 825 613 815 611 815 609 815 543 825 506 815 504 815 502 815 500 815 473 825 473 858"/>
+                        </Shape>
+                        <String CONTENT="cing-place behind the tent² (poiaˊačên). Thus the place of the front house in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l8" HPOS="473" VPOS="876" WIDTH="1772" HEIGHT="56" BASELINE="475 917 2245 913" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="475 917 475 932 2243 930 2245 913 2241 887 2124 876 2122 876 2120 876 2081 887 1642 887 1613 876 1611 876 1609 876 1607 876 1605 876 1590 887 1473 887 1387 876 1385 876 1383 876 1354 887 775 878 773 878 771 878 769 878 754 887 713 878 711 878 709 878 557 887 491 878 489 878 487 878 485 878 473 886 475 917"/>
+                        </Shape>
+                        <String CONTENT="the camp is farthest to the northeast. The rear houses are put up southeast"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l9" HPOS="475" VPOS="936" WIDTH="1770" HEIGHT="55" BASELINE="475 975 2245 975" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="475 975 475 991 2243 991 2245 975 2243 948 2188 936 2186 936 2184 936 2151 946 2104 936 2102 936 2100 936 2073 946 1970 936 1968 936 1907 946 1868 936 1867 936 1865 936 1863 936 1835 946 1631 936 1629 936 1627 936 1599 946 1566 936 1564 936 1562 936 1561 936 1533 946 1502 936 1500 936 1498 936 1401 946 1323 936 1321 936 1319 936 1284 948 1089 948 1073 936 1071 936 1069 936 978 936 976 936 974 936 972 936 956 948 822 948 771 936 769 936 705 946 650 936 648 936 646 936 617 946 516 936 514 936 512 936 475 946 475 975"/>
+                        </Shape>
+                        <String CONTENT="of the front house. All houses stand in a single line. It should not be for-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l10" HPOS="475" VPOS="1008" WIDTH="1770" HEIGHT="49" BASELINE="475 1038 2245 1038" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="475 1038 475 1057 2243 1051 2245 1038 2243 1008 475 1008 475 1038"/>
+                        </Shape>
+                        <String CONTENT="gotten, however, that the camp-line may be turned also to the east or to the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l11" HPOS="473" VPOS="1057" WIDTH="1770" HEIGHT="57" BASELINE="475 1098 2243 1094" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="475 1098 475 1114 2241 1114 2243 1094 2237 1057 2178 1067 1892 1057 1890 1057 1888 1057 1886 1057 1870 1069 1726 1069 1672 1057 1670 1057 1523 1067 1465 1057 1463 1057 1461 1057 1459 1057 1444 1069 1315 1069 814 1059 812 1059 744 1069 672 1059 670 1059 623 1069 561 1059 559 1059 473 1071 475 1098"/>
+                        </Shape>
+                        <String CONTENT="north; also, when the ground is uneven, the camp-line may be broken, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l12" HPOS="473" VPOS="1115" WIDTH="1770" HEIGHT="59" BASELINE="475 1156 2243 1152" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="475 1156 475 1174 2241 1174 2243 1152 2241 1127 2200 1115 2198 1115 2196 1115 2110 1127 1835 1127 1808 1115 1806 1115 1804 1115 1802 1115 1800 1115 1783 1127 1637 1127 1574 1115 1572 1115 1570 1115 1529 1125 1486 1115 1485 1115 1483 1115 1403 1125 1364 1115 1362 1115 1360 1115 1358 1115 1332 1127 1251 1117 1249 1117 1180 1127 839 1117 837 1117 722 1127 493 1117 491 1117 489 1117 487 1117 473 1125 475 1156"/>
+                        </Shape>
+                        <String CONTENT="the houses erected out of the strict order. In this case, the entrances of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l13" HPOS="471" VPOS="1186" WIDTH="1774" HEIGHT="46" BASELINE="473 1217 2245 1213" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="473 1217 473 1232 2243 1230 2245 1213 2239 1186 471 1188 473 1217"/>
+                        </Shape>
+                        <String CONTENT="rear houses are more and more turned toward the south, and the last house"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l14" HPOS="473" VPOS="1234" WIDTH="1774" HEIGHT="59" BASELINE="475 1277 2247 1271" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="475 1277 475 1293 2245 1289 2247 1271 2243 1246 1981 1246 1944 1234 1943 1234 1941 1234 1939 1234 1937 1234 1921 1246 1783 1246 1755 1234 1753 1234 1752 1234 1685 1244 1658 1234 1656 1234 1654 1234 1652 1234 1619 1246 1570 1236 1568 1236 1483 1246 1403 1236 1401 1236 1399 1236 1368 1246 1025 1238 1023 1238 972 1248 600 1238 598 1238 473 1250 475 1277"/>
+                        </Shape>
+                        <String CONTENT="may face a direction quite opposite to that of the front house. In most cases"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l15" HPOS="473" VPOS="1295" WIDTH="1774" HEIGHT="58" BASELINE="475 1336 2247 1332" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="475 1336 475 1353 2245 1353 2247 1332 2241 1299 1890 1305 1849 1295 1847 1295 1845 1295 1843 1295 1822 1305 1796 1295 1794 1295 1792 1295 1790 1295 1789 1295 1773 1306 1660 1306 1629 1295 1627 1295 1625 1295 1523 1305 1490 1295 1488 1295 1486 1295 1485 1295 1459 1306 1204 1306 1175 1297 1173 1297 1171 1297 1169 1297 1134 1306 1062 1297 1060 1297 1058 1297 1056 1297 1038 1308 910 1308 820 1297 818 1297 816 1297 789 1306 578 1297 576 1297 574 1297 553 1306 493 1297 491 1297 489 1297 487 1297 473 1305 475 1336"/>
+                        </Shape>
+                        <String CONTENT="the Chukchee take care that the entrance of one house shall not be directed"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l16" HPOS="475" VPOS="1357" WIDTH="1772" HEIGHT="55" BASELINE="475 1396 2247 1396" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="475 1396 475 1412 2247 1412 2247 1396 2247 1367 2206 1357 2204 1357 2202 1357 2200 1357 2165 1367 2081 1357 2079 1357 1966 1367 1596 1357 1594 1357 1592 1357 1590 1357 1574 1369 1381 1369 1327 1357 1325 1357 1169 1367 1114 1357 1112 1357 1110 1357 1089 1367 1054 1357 1052 1357 1050 1357 984 1367 839 1357 837 1357 754 1367 699 1357 697 1357 695 1357 656 1367 615 1357 613 1357 611 1357 475 1367 475 1396"/>
+                        </Shape>
+                        <String CONTENT="towards the poiaˊačên of the preceding one. Otherwise, in sacrificing, the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l17" HPOS="477" VPOS="1414" WIDTH="1770" HEIGHT="64" BASELINE="479 1453 2247 1457" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="479 1453 477 1464 1438 1478 1440 1478 2245 1468 2247 1457 2247 1425 2231 1416 2229 1416 2227 1416 2225 1416 2223 1416 2188 1425 2071 1416 2069 1416 1974 1425 1902 1416 1900 1416 1808 1427 1541 1427 1520 1416 1518 1416 1516 1416 1514 1416 1486 1425 1426 1416 1424 1416 1173 1423 1157 1414 1155 1414 1153 1414 1151 1414 1149 1414 1122 1423 1069 1414 1067 1414 1065 1414 1034 1423 1013 1414 1011 1414 1009 1414 1007 1414 964 1423 912 1414 910 1414 908 1414 874 1423 802 1414 800 1414 798 1414 771 1423 722 1414 721 1414 719 1414 689 1423 674 1414 672 1414 670 1414 668 1414 479 1421 479 1453"/>
+                        </Shape>
+                        <String CONTENT="odor of the hearth of the house standing in a wrong position might reach"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l18" HPOS="477" VPOS="1472" WIDTH="1768" HEIGHT="59" BASELINE="479 1515 2245 1511" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="479 1515 479 1531 2243 1527 2245 1511 2239 1474 2077 1484 2052 1472 2050 1472 2048 1472 2046 1472 2019 1484 1993 1472 1991 1472 1989 1472 1876 1484 1843 1472 1841 1472 1839 1472 1837 1472 1802 1484 1761 1472 1759 1472 1757 1472 1755 1472 1722 1484 1668 1472 1666 1472 1609 1484 1582 1472 1580 1472 1578 1472 1576 1472 1537 1486 1397 1486 1350 1474 1348 1474 1280 1486 1235 1474 1233 1474 1231 1474 1229 1474 1194 1488 1067 1488 1019 1474 1017 1474 1015 1474 1013 1474 1011 1474 991 1486 960 1474 958 1474 956 1474 894 1486 855 1474 853 1474 851 1474 849 1474 808 1484 795 1474 793 1474 791 1474 670 1474 668 1474 559 1486 496 1474 494 1474 493 1474 491 1474 477 1484 479 1515"/>
+                        </Shape>
+                        <String CONTENT="the sacrificial fire of the preceding house, and taint its fire and fire-tools.³"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l19" HPOS="479" VPOS="1546" WIDTH="1771" HEIGHT="45" BASELINE="479 1575 2250 1575" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="479 1575 479 1591 2250 1591 2250 1575 2250 1548 479 1546 479 1575"/>
+                        </Shape>
+                        <String CONTENT="On the contrary, two houses having a common fire may stand “quite straight"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l20" HPOS="479" VPOS="1593" WIDTH="1771" HEIGHT="68" BASELINE="481 1636 2250 1632" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="481 1636 481 1651 1274 1661 1276 1661 1278 1661 1280 1661 1295 1651 1917 1659 1919 1659 2022 1649 2120 1659 2122 1659 2248 1648 2250 1632 2243 1593 2215 1605 2061 1605 2038 1593 2036 1593 2034 1593 1985 1603 1964 1593 1962 1593 1960 1593 1911 1603 1874 1593 1872 1593 1870 1593 1868 1593 1867 1593 1851 1605 1752 1605 1724 1593 1722 1593 1720 1593 1718 1593 1716 1593 1701 1605 1607 1605 1580 1593 1578 1593 1576 1593 1492 1603 1465 1593 1463 1593 1461 1593 1407 1603 1368 1593 1366 1593 1364 1593 1362 1593 1325 1605 1266 1595 1264 1595 1198 1605 1138 1595 1136 1595 968 1605 699 1595 697 1595 629 1605 567 1595 565 1595 479 1607 481 1636"/>
+                        </Shape>
+                        <String CONTENT="to the poiaˊačên” (kɪt-poiaˊačê-g̣g̣êt). The front house is usually the largest of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l21" HPOS="479" VPOS="1651" WIDTH="1771" HEIGHT="69" BASELINE="481 1692 2250 1696" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="481 1692 479 1706 1461 1720 1463 1720 2248 1710 2250 1696 2248 1667 2188 1653 2186 1653 2184 1653 2147 1665 2075 1653 2073 1653 2071 1653 2034 1667 1921 1667 1902 1653 1900 1653 1898 1653 1896 1653 1781 1663 1759 1653 1757 1653 1755 1653 1753 1653 1722 1665 1697 1653 1695 1653 1693 1653 1691 1653 1658 1665 1623 1653 1621 1653 1619 1653 1510 1665 1481 1653 1479 1653 1477 1653 1418 1665 1401 1653 1399 1653 1397 1653 1395 1653 1393 1653 1356 1663 1268 1651 1266 1651 1188 1663 1132 1651 1130 1651 1128 1651 1106 1661 1017 1651 1015 1651 941 1663 917 1651 915 1651 913 1651 912 1651 884 1663 859 1651 857 1651 855 1651 853 1651 851 1651 834 1665 775 1665 744 1651 742 1651 740 1651 678 1663 609 1651 607 1651 606 1651 559 1663 518 1651 516 1651 514 1651 512 1651 481 1661 481 1692"/>
+                        </Shape>
+                        <String CONTENT="all. Therefore it is called čŭmñaˊ-pêraˊlɪn (i. e., “buck-similar”), meaning that"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l22" HPOS="479" VPOS="1722" WIDTH="1769" HEIGHT="50" BASELINE="479 1755 2248 1755" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="479 1755 479 1772 2247 1772 2248 1755 2247 1727 479 1722 479 1755"/>
+                        </Shape>
+                        <String CONTENT="it appears among the other houses like a big reindeer-buck among the other"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l23" HPOS="479" VPOS="1774" WIDTH="206" HEIGHT="57" BASELINE="479 1815 685 1815" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="479 1815 479 1831 685 1831 685 1815 685 1786 533 1774 531 1774 479 1784 479 1815"/>
+                        </Shape>
+                        <String CONTENT="reindeer."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-079_r3" HPOS="480" VPOS="1833" WIDTH="1782" HEIGHT="1154" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="480 1833 2262 1833 2262 2987 480 2987"/>
+                    </Shape>
+                    <TextLine ID="mz_3-079_l24" HPOS="584" VPOS="1833" WIDTH="1666" HEIGHT="64" BASELINE="586 1872 2250 1876" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="586 1872 584 1883 664 1895 666 1895 1414 1887 1438 1897 1440 1897 1442 1897 2248 1887 2250 1876 2248 1846 2176 1835 2174 1835 2130 1844 2093 1835 2091 1835 2089 1835 2022 1844 1966 1835 1964 1835 1853 1844 1773 1835 1771 1835 1693 1846 1461 1846 1444 1835 1442 1835 1440 1835 1438 1835 1397 1842 1366 1833 1364 1833 1362 1833 1360 1833 1329 1842 1315 1833 1313 1833 1311 1833 1309 1833 1307 1833 1264 1844 1173 1844 1157 1833 1155 1833 1153 1833 1151 1833 1106 1842 1071 1833 1069 1833 1067 1833 1065 1833 1038 1842 984 1833 982 1833 980 1833 954 1842 931 1833 929 1833 927 1833 925 1833 882 1842 586 1839 586 1872"/>
+                        </Shape>
+                        <String CONTENT="The owner of the herd, or of the larger part of it, occupies this place"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l25" HPOS="481" VPOS="1895" WIDTH="1769" HEIGHT="55" BASELINE="481 1934 2250 1934" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="481 1934 481 1948 2247 1950 2250 1934 2250 1907 2210 1895 2208 1895 2206 1895 2204 1895 2169 1905 1902 1895 1900 1895 1835 1905 1728 1895 1726 1895 1724 1895 1693 1907 1566 1907 1549 1895 1547 1895 1545 1895 1543 1895 1486 1905 1303 1895 1301 1895 1249 1905 1216 1895 1214 1895 1212 1895 1210 1895 1182 1905 1132 1895 1130 1895 1128 1895 1093 1905 1071 1895 1069 1895 1067 1895 1065 1895 1023 1905 929 1895 927 1895 865 1905 795 1895 793 1895 722 1905 481 1899 481 1934"/>
+                        </Shape>
+                        <String CONTENT="by right. The eldest of the brothers, or his son, has preference over the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l26" HPOS="479" VPOS="1953" WIDTH="1769" HEIGHT="65" BASELINE="481 1992 2248 1996" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="481 1992 479 2004 707 2016 709 2016 1358 2008 1385 2018 1387 2018 1389 2018 2247 2008 2248 1996 2247 1967 2194 1955 2192 1955 2095 1965 2069 1955 2067 1955 2065 1955 1525 1965 1475 1955 1473 1955 1471 1955 1469 1955 1453 1967 1366 1967 1284 1953 1282 1953 1280 1953 1251 1965 1005 1965 968 1953 966 1953 964 1953 912 1963 736 1953 734 1953 481 1961 481 1992"/>
+                        </Shape>
+                        <String CONTENT="others. Thus, sometimes a young boy may have preference over all his uncles."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l27" HPOS="479" VPOS="2014" WIDTH="1771" HEIGHT="56" BASELINE="481 2055 2250 2051" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="481 2055 481 2070 2248 2070 2250 2051 2247 2026 2122 2026 2106 2014 2104 2014 2102 2014 2100 2014 2098 2014 2069 2024 1974 2014 1972 2014 1884 2024 1812 2014 1810 2014 1648 2024 1555 2014 1553 2014 1551 2014 1531 2024 1440 2014 1438 2014 1436 2014 1405 2024 1373 2014 1371 2014 1370 2014 1368 2014 1342 2026 1272 2016 1270 2016 1268 2016 1225 2026 479 2020 481 2055"/>
+                        </Shape>
+                        <String CONTENT="In the camps of the poor people, of which I have spoken before, the one"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l28" HPOS="479" VPOS="2082" WIDTH="1771" HEIGHT="47" BASELINE="481 2111 2250 2115" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="481 2111 479 2125 2247 2129 2250 2115 2248 2086 481 2082 481 2111"/>
+                        </Shape>
+                        <String CONTENT="who is richer or stronger than the others will have the front place. In tem-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l29" HPOS="481" VPOS="2137" WIDTH="1771" HEIGHT="60" BASELINE="481 2176 2252 2176" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="481 2176 481 2197 2252 2187 2252 2176 2250 2137 2116 2146 2050 2137 2048 2137 2046 2137 2007 2146 1459 2137 1457 2137 1393 2146 1319 2137 1317 2137 1272 2146 1231 2137 1229 2137 1227 2137 1225 2137 1223 2137 1208 2148 1108 2148 1009 2137 1007 2137 1005 2137 984 2146 919 2137 917 2137 915 2137 913 2137 898 2148 481 2148 481 2176"/>
+                        </Shape>
+                        <String CONTENT="porary camps, — for instance, in those formed in trading-places by casual"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l30" HPOS="479" VPOS="2193" WIDTH="1773" HEIGHT="57" BASELINE="481 2234 2252 2230" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="481 2234 481 2250 2250 2250 2252 2230 2250 2205 2208 2193 2206 2193 2204 2193 2147 2203 1824 2193 1822 2193 1820 2193 1818 2193 1802 2205 1592 2205 1512 2193 1510 2193 1508 2193 1475 2203 1426 2193 1424 2193 1356 2205 859 2195 857 2195 855 2195 828 2205 763 2195 761 2195 760 2195 758 2195 742 2205 502 2197 500 2197 498 2197 479 2205 481 2234"/>
+                        </Shape>
+                        <String CONTENT="comers, — the front place belongs to the first comer. All the others take"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l31" HPOS="481" VPOS="2256" WIDTH="1771" HEIGHT="60" BASELINE="481 2295 2252 2295" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="481 2295 481 2316 2252 2306 2252 2295 2252 2267 1824 2256 1822 2256 1820 2256 1818 2256 1802 2267 1555 2267 1469 2256 1467 2256 1465 2256 1426 2265 1331 2256 1329 2256 1262 2265 1223 2256 1221 2256 1219 2256 1218 2256 1192 2265 1130 2256 1128 2256 1040 2265 982 2256 980 2256 978 2256 941 2265 908 2256 906 2256 904 2256 902 2256 867 2265 771 2256 769 2256 625 2265 510 2256 508 2256 506 2256 481 2265 481 2295"/>
+                        </Shape>
+                        <String CONTENT="places according to the order in which they come; so that the last comer"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l32" HPOS="479" VPOS="2314" WIDTH="1773" HEIGHT="57" BASELINE="479 2355 2252 2355" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="479 2355 479 2371 2252 2371 2252 2355 2252 2324 2211 2314 2210 2314 2208 2314 2206 2314 2171 2324 2093 2314 1958 2314 1956 2314 1954 2314 1952 2314 1937 2324 1426 2314 1424 2314 1422 2314 1395 2326 1161 2326 1075 2314 1073 2314 1071 2314 1069 2314 1054 2326 962 2326 919 2314 917 2314 915 2314 913 2314 912 2314 894 2326 760 2326 703 2314 701 2314 699 2314 668 2324 607 2314 606 2314 479 2324 479 2355"/>
+                        </Shape>
+                        <String CONTENT="occupies the rear place. The occupant of the front house is considered as the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l33" HPOS="483" VPOS="2373" WIDTH="1769" HEIGHT="64" BASELINE="483 2411 2252 2411" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="483 2411 483 2425 880 2437 882 2437 937 2427 1409 2437 1410 2437 1488 2427 1516 2437 1518 2437 1520 2437 1522 2437 1557 2427 1584 2437 1586 2437 1588 2437 2250 2425 2252 2411 2250 2384 2040 2373 2038 2373 2036 2373 1997 2382 1968 2373 1966 2373 1964 2373 1829 2382 1796 2373 1794 2373 1792 2373 1724 2382 1689 2373 1687 2373 1685 2373 1572 2382 1543 2373 1541 2373 1539 2373 1399 2382 1352 2373 1350 2373 1284 2382 1256 2373 1255 2373 1253 2373 1173 2382 1138 2373 1136 2373 1134 2373 1048 2382 984 2373 982 2373 980 2373 978 2373 962 2384 767 2384 713 2373 711 2373 709 2373 689 2382 654 2373 652 2373 650 2373 648 2373 613 2382 508 2373 506 2373 504 2373 483 2382 483 2411"/>
+                        </Shape>
+                        <String CONTENT="chief of the camp. He orders the change of camping-place and of pasture-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l34" HPOS="483" VPOS="2433" WIDTH="1769" HEIGHT="64" BASELINE="483 2474 2252 2474" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="483 2474 483 2493 2019 2487 2153 2497 2155 2497 2250 2486 2252 2474 2252 2445 2211 2433 2210 2433 2208 2433 2206 2433 2172 2443 1937 2433 1935 2433 1824 2443 1792 2433 1790 2433 1789 2433 1787 2433 1759 2443 1713 2433 1711 2433 1656 2443 1625 2433 1623 2433 1621 2433 1543 2443 1508 2433 1506 2433 1504 2433 1502 2433 1473 2443 1397 2433 1395 2433 1340 2443 1309 2433 1307 2433 1305 2433 1216 2443 1182 2433 1180 2433 1179 2433 1130 2443 1081 2433 1079 2433 1077 2433 1075 2433 1060 2445 949 2445 880 2433 878 2433 876 2433 874 2433 861 2443 824 2433 822 2433 820 2433 818 2433 789 2443 758 2433 756 2433 754 2433 662 2443 625 2433 623 2433 621 2433 483 2443 483 2474"/>
+                        </Shape>
+                        <String CONTENT="ground, and designates the days for bringing the herd to the camp, for"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l35" HPOS="479" VPOS="2491" WIDTH="1773" HEIGHT="59" BASELINE="481 2534 2252 2530" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="481 2534 481 2550 2250 2546 2252 2530 2248 2503 2071 2503 2056 2491 2054 2491 2052 2491 2050 2491 2048 2491 2017 2501 1970 2491 1968 2491 1966 2491 1931 2501 1777 2491 1775 2491 1685 2501 1654 2491 1652 2491 1650 2491 1561 2501 1494 2491 1492 2491 1356 2503 1233 2493 1231 2493 1229 2493 1194 2503 814 2493 812 2493 761 2503 504 2493 502 2493 500 2493 479 2503 481 2534"/>
+                        </Shape>
+                        <String CONTENT="slaughtering reindeer, for arranging ceremonials and sacrifices. In the every-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l36" HPOS="483" VPOS="2552" WIDTH="1771" HEIGHT="56" BASELINE="483 2591 2254 2591" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="483 2591 483 2608 2254 2608 2254 2591 2243 2554 2239 2552 2237 2552 2235 2552 2233 2552 2231 2552 2192 2562 2147 2552 2145 2552 2143 2552 2106 2562 2069 2552 2067 2552 2065 2552 2063 2552 2036 2562 1999 2552 1997 2552 1995 2552 1993 2552 1964 2562 1933 2552 1931 2552 1929 2552 1810 2562 1724 2552 1722 2552 1720 2552 1718 2552 1703 2563 1483 2563 1426 2552 1424 2552 1422 2552 1420 2552 1405 2563 1303 2563 1278 2552 1276 2552 1274 2552 1182 2562 1153 2552 1151 2552 1149 2552 1040 2562 1013 2552 1011 2552 1009 2552 1007 2552 980 2562 947 2552 945 2552 943 2552 816 2562 715 2552 713 2552 660 2562 592 2552 590 2552 541 2562 504 2552 502 2552 500 2552 498 2552 496 2552 483 2560 483 2591"/>
+                        </Shape>
+                        <String CONTENT="day life of the people he assigns the working-men to duties with the herd and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l37" HPOS="479" VPOS="2610" WIDTH="1775" HEIGHT="57" BASELINE="481 2649 2254 2653" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="2243 2614 2237 2612 2235 2612 2233 2612 2231 2612 2112 2622 2005 2612 2003 2612 1902 2622 1839 2612 1837 2612 1835 2612 1798 2622 1752 2612 1750 2612 1670 2622 1414 2612 1412 2612 1410 2612 1385 2622 1329 2610 1327 2610 1325 2610 1297 2622 1136 2622 1120 2610 1118 2610 1116 2610 1114 2610 1112 2610 1087 2620 1021 2610 1019 2610 1017 2610 988 2620 966 2610 964 2610 962 2610 906 2620 847 2610 845 2610 843 2610 812 2620 481 2616 481 2649 479 2663 2250 2667 2254 2653 2254 2649 2243 2614"/>
+                        </Shape>
+                        <String CONTENT="in the camp. It will thus be seen that his power within the precincts of this"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l38" HPOS="483" VPOS="2673" WIDTH="1767" HEIGHT="58" BASELINE="483 2714 2250 2714" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="483 2714 483 2725 2248 2731 2250 2714 2250 2684 1837 2673 1835 2673 1833 2673 1792 2682 1757 2673 1755 2673 1753 2673 1672 2682 1613 2673 1611 2673 1557 2682 1527 2673 1525 2673 1523 2673 1522 2673 1500 2684 1309 2684 1286 2673 1284 2673 1282 2673 1280 2673 1278 2673 1262 2684 1145 2684 1114 2673 1112 2673 1110 2673 1050 2682 995 2673 993 2673 933 2682 912 2673 910 2673 908 2673 826 2682 767 2673 765 2673 717 2682 683 2673 682 2673 680 2673 627 2682 572 2673 570 2673 483 2682 483 2714"/>
+                        </Shape>
+                        <String CONTENT="small unit of two or three houses is very real. Since the Chukchee are very"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l39" HPOS="483" VPOS="2739" WIDTH="1767" HEIGHT="58" BASELINE="483 2774 2250 2774" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="483 2774 483 2788 2248 2797 2250 2774 2250 2743 483 2739 483 2774"/>
+                        </Shape>
+                        <String CONTENT="impatient under other men’s authority, quarrels frequently happen even among"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l40" HPOS="485" VPOS="2795" WIDTH="1767" HEIGHT="53" BASELINE="485 2830 2252 2830" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="485 2830 485 2848 2252 2848 2252 2830 2252 2803 485 2795 485 2830"/>
+                        </Shape>
+                        <String CONTENT="brothers. Then separation ensues, though the size of the herd would make"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l41" HPOS="483" VPOS="2852" WIDTH="1771" HEIGHT="56" BASELINE="483 2893 2254 2893" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="483 2893 483 2908 2254 2908 2254 2893 2243 2856 2237 2852 2235 2852 2233 2852 2231 2852 2229 2852 2198 2864 1909 2864 1892 2852 1890 2852 1888 2852 1886 2852 1808 2862 1794 2852 1792 2852 1790 2852 1789 2852 1787 2852 1755 2862 1705 2852 1703 2852 1621 2862 1594 2852 1592 2852 1590 2852 1588 2852 1561 2864 1409 2864 1393 2852 1391 2852 1389 2852 1387 2852 1385 2852 1360 2862 1280 2852 1278 2852 1192 2862 1087 2852 1085 2852 1038 2862 859 2852 857 2852 855 2852 820 2862 736 2852 734 2852 483 2856 483 2893"/>
+                        </Shape>
+                        <String CONTENT="it preferable to keep together. When the camp includes families not connected"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l42" HPOS="483" VPOS="2910" WIDTH="1769" HEIGHT="88" BASELINE="485 2953 2252 2949" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="485 2953 485 2998 606 2996 607 2996 609 2996 666 2961 697 2971 699 2971 701 2971 748 2961 763 2971 765 2971 767 2971 964 2973 984 2986 986 2986 988 2986 989 2986 991 2986 1042 2967 1136 2967 1167 2986 1169 2986 1171 2986 1173 2986 1175 2986 1198 2977 1317 2977 1319 2977 1321 2977 1323 2977 1340 2965 1358 2977 1360 2977 1362 2977 1467 2981 1469 2981 1471 2981 1473 2981 1496 2965 1562 2975 1564 2975 1566 2975 1568 2975 1584 2963 1642 2986 1644 2986 1646 2986 1648 2986 1709 2971 1810 2975 1812 2975 1814 2975 1816 2975 1831 2963 1847 2975 1849 2975 1851 2975 1853 2975 1855 2975 1894 2965 1909 2975 1911 2975 1913 2975 1915 2975 1985 2965 1999 2975 2001 2975 2003 2975 2005 2975 2250 2969 2252 2949 2250 2922 2227 2910 2225 2910 2223 2910 2221 2910 2194 2920 2157 2910 2155 2910 2153 2910 2151 2910 2122 2920 2095 2910 2093 2910 2091 2910 2089 2910 2059 2920 2011 2910 2009 2910 2007 2910 1981 2920 1935 2910 1933 2910 1931 2910 1905 2920 1892 2910 1890 2910 1888 2910 1886 2910 1884 2910 1847 2920 1763 2910 1761 2910 1356 2922 1307 2912 1305 2912 1231 2922 1130 2912 1128 2912 1071 2922 988 2912 986 2912 763 2922 748 2912 746 2912 744 2912 742 2912 685 2922 483 2916 485 2953"/>
+                        </Shape>
+                        <String CONTENT="by ties of relationship, and quarrels occur, the separation of the herds leads"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-079_r4" HPOS="480" VPOS="3034" WIDTH="1782" HEIGHT="78" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="480 3034 2262 3034 2262 3112 480 3112"/>
+                    </Shape>
+                    <TextLine ID="mz_3-079_l43" HPOS="590" VPOS="3049" WIDTH="333" HEIGHT="52" BASELINE="592 3074 923 3080" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="592 3074 590 3084 701 3101 703 3101 921 3090 923 3080 923 3055 592 3049 592 3074"/>
+                        </Shape>
+                        <String CONTENT="¹ Compare p. 386."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l44" HPOS="1740" VPOS="3051" WIDTH="316" HEIGHT="54" BASELINE="1742 3076 2056 3082" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="1742 3076 1740 3090 1950 3105 1952 3105 2054 3096 2056 3082 2054 3057 1742 3051 1742 3076"/>
+                        </Shape>
+                        <String CONTENT="³ Compare p. 348."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-079_l45" HPOS="1161" VPOS="3053" WIDTH="325" HEIGHT="52" BASELINE="1163 3080 1486 3082" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="1163 3080 1161 3092 1270 3105 1272 3105 1485 3094 1486 3082 1485 3055 1163 3053 1163 3080"/>
+                        </Shape>
+                        <String CONTENT="² Compare p. 372."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-079_r5" HPOS="480" VPOS="3119" WIDTH="1782" HEIGHT="71" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="480 3119 2262 3119 2262 3190 480 3190"/>
+                    </Shape>
+                    <TextLine ID="mz_3-079_l46" HPOS="481" VPOS="3127" WIDTH="690" HEIGHT="45" BASELINE="483 3156 1171 3152" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="483 3156 483 3172 1169 3170 1171 3152 1165 3127 481 3129 483 3156"/>
+                        </Shape>
+                        <String CONTENT="77—JESUP NORTH PACIFIC EXPED., VOL. VII."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>
