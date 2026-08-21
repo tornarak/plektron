@@ -1282,10 +1282,23 @@ def _restored_refs(root: Path = Path(".")) -> list[str]:
         p = root / "gt" / "ocr" / f"{stem_for(ref, root)}.xml"
         if not p.exists():
             continue
+        # **A file that will not parse is not a page nobody keyed.** This was
+        # `except Exception: continue`, which dropped an unparseable ALTO out of
+        # the keyed list with no note — leaving it indistinguishable from an
+        # empty export shell, in the one function whose job is telling those
+        # apart. That is the shape of the loss this docstring cites: a file's
+        # real state made invisible by a classification with no bucket for it.
+        #
+        # `ValueError` rather than letting lxml's `XMLSyntaxError` through:
+        # that subclasses `SyntaxError`, which `cli.main` does not net, so it
+        # would reach a user as a traceback naming lxml instead of the page.
         try:
             tree = etree.parse(str(p))
-        except Exception:
-            continue
+        except (etree.XMLSyntaxError, OSError) as e:
+            raise ValueError(
+                f"{ref}: gt/ocr/ will not parse ({e}). Ground truth that cannot "
+                f"be read is not the same as a page nobody has keyed, and every "
+                f"frequency table below this counts on the difference") from e
         if any((s.get("CONTENT") or "").strip()
                for s in tree.getroot().iter("{*}String")):
             out.append(ref)

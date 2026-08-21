@@ -2445,13 +2445,25 @@ def _figure_rects(ref: str, root: Path = Path(".")) -> list[tuple[int, int, int,
     spans the figure's width, so its leftmost ink is the figure's left edge and it
     reads as a 400 px indent. That is where the 523 false positives came from, not
     from the wrapped text.
+
+    **`[]` here means "no figures on this page" and must not also mean "the
+    figure store would not parse".** This was wrapped in `except Exception:
+    return []`, which reinstated exactly the condition the paragraph above
+    describes — silently, on any page whose `gt/fig/` file was unparseable or
+    held a legacy record shape, since a `KeyError` from the comprehension was
+    caught alongside `XMLSyntaxError`. The three callers see a list either way
+    and cannot tell the two apart; the 523 false positives came back with no
+    error signal at all.
+
+    Nothing is caught now, and nothing needs to be: `figures.read_blocks`
+    already returns `[]` for a **missing** file — which is how that store
+    records "no figures", and is the ordinary case on 580 of 832 pages — and
+    every key read below is set unconditionally on every record it yields. So
+    the only thing the guard could ever have caught was a real fault.
     """
     from .figures import zones as fig_zones
-    try:
-        return [(z["hpos"], z["hpos"] + z["width"],
-                 z["vpos"], z["vpos"] + z["height"]) for z in fig_zones(ref, root)]
-    except Exception:
-        return []
+    return [(z["hpos"], z["hpos"] + z["width"],
+             z["vpos"], z["vpos"] + z["height"]) for z in fig_zones(ref, root)]
 
 
 def _ink_lines(ink, y0: int, y1: int, x0: int, x1: int,
