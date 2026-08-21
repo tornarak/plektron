@@ -79,9 +79,8 @@ fifth of its context.
 Work the checklist per page and report against it by section, naming the items you
 could not tick and why. Its **Settled** section is what the spec has already
 decided: apply and cite those, never spend an image confirming one. Its
-**Evidence** section is the opposite — those cannot be settled by looking harder,
-so each wants a contrast word named in `note`, or an explicit "no contrast on this
-line".
+**Evidence** section is the opposite — those are read off the glyph's own ink,
+and where the ink will not answer the line is flagged (R2), never compared.
 
 Then check your memory directory for what earlier readers found. The bar for
 adding to it is high: a memory is only for what the *next* reader needs **before
@@ -317,116 +316,38 @@ telling where; `--out` is for a one-off outside the pass, and is not yours.
   as you read and write them together. The reply names which lines changed and
   which were already right, so re-sending a line you were unsure about is free.
 - **`uv run harness lexicon lookup QUERY [QUERY ...]` finds a form a human has already
-  adjudicated**, with the pages and the lines it was printed on — `kulu` gives you
-  `Kuluˊči`, 15 times over 12 pages, and "south of Kuluˊči Bay", which is what makes
-  the word a place rather than a string. It prints a **key** beside each form:
-  `Kulu'c^i`. Write that key in braces in your reading — `The bay of {Kulu'c^i}` —
-  and the ratified glyphs are substituted for you. **However you author the line:**
-  a handle typed straight into `proposal.json` with `Write` expands when you run
-  `proposal fix`, which you run on every page anyway, and one sent through
-  `proposal set` expands on write. There is no path that leaves a brace in the
-  store, and none you have to choose in advance.
+  adjudicated**, with the pages and lines it was printed on, and prints a **key**
+  beside each form: `Kulu'c^i`. Write the key in braces in your reading — `The bay
+  of {Kulu'c^i}` — and the ratified glyphs are substituted, by `proposal fix` for a
+  `Write` and on write for `proposal set`; no path leaves a brace in the store.
 
-  **Use one wherever the lookup gives you a key.** Not as a shortcut for you —
-  the saving is the adjudicator's. Every form you retype by hand is a form a human
-  must re-read against the raster to confirm you did not drop a U+0323; a form you
-  hand over as a key is one they can see was ratified elsewhere and pass over. The
-  reading half of this pass runs fifteen at a time and the adjudicating half runs
-  one at a time, so a minute you save there is worth many of yours.
-
-  **A handle carries its own case, and may raise the corpus's.** Write `{ke'let}`,
-  `{Ke'let}` or `{KE'LET}` and you get `keˊlet`, `Keˊlet` or `KEˊLET` — the book sets
-  one word all three ways by position (body, head of a sentence, run-in heading), so
-  a sentence-initial form no longer costs you the handle. **An attestation enables
-  its own case and every case above it**, never below: a form the corpus holds only
-  capitalized, like the place-name `Kuluˊči`, refuses `{kulu'c^i}` rather than
-  quietly lowering a ratified identity. If the page really sets it lower, key it by
-  hand and say so in a note. And a case that cannot be raised without changing a
-  glyph is refused too — the uppercase of `vaˊɪrg̣ɪn` would have to decide what the
-  compositor set for small-cap `ɪ` in an all-caps line, which nothing here knows.
-
-  **A handle can be one morpheme of a longer form.** `liˊi-{ke'let}` keys the part
-  the corpus has ratified and leaves you to read only the part it has not — found by
-  a reader on `2-021`, not designed in. Most of the recurring vocabulary here is
-  compounded (`aᵋtw-eˊrmečɪn`, `notaˊs˙qa-vaˊɪrg̣ɪt`, `Taˊn˙ñɪn-wêˊthaw`), so the
-  form you are keying is often a known stem plus something new, and a whole-token
-  match is the wrong test. **It does not always work** — vowel harmony and the
-  compounding itself can change the stem's vowels, and a handle whose expansion is
-  not what the page prints is worse than no handle. So check the expansion against
-  the raster after `proposal fix` runs, exactly as you would a form you typed.
-
-  **A place name is almost always already keyed.** Part 1 pages `1-048`–`1-053` are
-  the book's own list of villages and camps, all ground truth, and they give each
-  place its Eskimo equivalent and its position — so `Čeˊčin` comes back with "on the
-  west shore of the bay of the same name". Look up every toponym; the gazetteer is
-  the densest ratified vocabulary in the corpus and the cheapest to reach.
-
-  **When to look one up: whenever the page uses a native term or a proper name
-  without introducing it.** A form the author drops in unglossed — a god, a spirit
-  class, a people, a place — is one the book has already introduced somewhere else,
-  which means the corpus has probably adjudicated it. `keˊlᴇ`, `keˊlet`,
-  `vaˊɪrg̣ɪn`, `vaˊɪrg̣ɪt`, `Pičvuˊčin`, `Kereˊtkun`, `Eˊtɪn` and their kin recur on
-  page after page of this chapter. **Look before you key, not after** — the lookup
-  costs a few hundred tokens and settles the marks you would otherwise be squinting
-  at, and it is the cheapest instrument in the ladder. A miss is information too: a
-  form genuinely below the two-page floor is one to read with more care, not less.
-  Do not let a lookup *replace* the raster — read the form, then use the key — but a
-  form you never searched for is one you chose to key the expensive way.
-
-  **Type the query however you like.** Query and key are reduced to bare ASCII
-  before matching, so `Telqäˊp` as the book prints it, `telqap`, `telqa'p` and the
-  key `Telqa:'p` all reach the same form. A search that misses is evidence the
-  corpus lacks the word, not that you spelled the query wrong.
-
-  **`lexicon lookup` takes as many queries as you have** — `lexicon lookup kelet
-  vairgin kulu ce'cin` is one call. Collect the page's unglossed vocabulary off the
-  composite and look the whole list up at once, before you start keying: each call
-  rebuilds the index over the corpus, so ten forms asked one at a time is ten builds
-  for one page's worth of answers, and the reading half runs many readers at once.
-
-  **What you must not do is chain them with shell operators.** `lexicon lookup X
-  2>&1; echo ---; uv run …` is refused for the `;` and the `|`, not for the lookup,
-  and the refusal costs a whole round trip. That is what a plural query is *for*: one
-  command, no operators. Measured on the 2-003..2-022 batch, refusals were almost
-  entirely this, every one retried bare and succeeded.
-
-  **A lookup that returns a form but no key has answered you**: the floor is two
-  pages, so a word attested on one page yields a form you may read *and no handle
-  to use*. That is the tool declining, not you missing something — key it by hand,
-  say in `note` that you saw it attested, and move on.
-
-  **A handle is a claim that the corpus supplied these characters, not a reading.**
-  It is recorded as such, in `as_typed`, and the review UI shows the adjudicator the
-  claim beside what it resolved to. That record is the entire reason you are allowed
-  the corpus at all: the firewall's rule is that a comparison whose witnesses may be
-  one witness must say so, and a form you copy without saying so has quietly turned
-  two witnesses into one.
-
-  **So it is never how a doubt gets settled.** If the raster will not decide a mark,
-  a handle does not decide it either — it only hides that nothing did. Key what you
-  see, flag it, and let the adjudicator rule; a doubt that survives one 4× look *is*
-  the finding. Use a handle for a form you have read and would otherwise retype
-  character by character, which is where a dropped U+0323 comes from.
-
-  **Your page block ends with what the pages just before yours were keyed as**, with
-  handles. It is there so you know what is worth looking up: a word on your page
-  resembling one on that list is a `lexicon lookup` worth making, and you can only
-  look up what you think to look up. It is reference, not a prediction — it says
-  what the neighbourhood was *adjudicated* to hold, never what your ink says, and
-  where the two disagree you key yours and say so in `note`.
-
-  **A word the list shows set more than one way is a warning, not a menu.** It is
-  printed as both spellings and carries no handle, because nothing may pick a side —
-  and that includes you. If your page plainly sets one of them, key what you see and
-  say in `note` that the corpus holds both. If your page is unclear, it stays
-  unclear: a contested form is the last place a neighbouring page may be read as
-  evidence, and the pair is shown so you cannot mistake the word for a settled one.
-
-  The key is deliberately not pretty — `Kavraˊlɪt` is `Kavra'li_t`, not `kavralit` —
-  because a plain-ASCII key would teach you an `i` that is not there, and `ɪ`/`i` is
-  this pass's largest correction family. Don't type a key from memory: look it up.
-  Where the book spells a word two ways the lookup gives **no key at all** and says
-  so; that is not a gap to work around, it is the answer. Read the raster.
+  - **Look up every native term and proper name the page uses without introducing
+    it** — a god, a spirit class, a people, a place — before you key. Collect them
+    off the composite and send them **in one call**; each call rebuilds the index,
+    and shell operators (`;`, `|`) are refused. Query and key are matched on bare
+    ASCII, so spell the query however you like: a miss means the corpus lacks the
+    word. Toponyms are almost always keyed — `1-048`–`1-053` are the book's own
+    gazetteer.
+  - **Use a key wherever the lookup gives one.** The saving is the adjudicator's:
+    a hand-retyped form must be re-read for a dropped U+0323, a keyed one was
+    ratified elsewhere. A key can be one morpheme of a compound
+    (`liˊi-{ke'let}`); check the expansion against the raster after `fix`, since
+    compounding can change a stem's vowels. A handle carries its own case and may
+    raise the corpus's (`{Ke'let}` → `Keˊlet`), never lower it, and is refused
+    where raising would change a glyph.
+  - **A form returned with no key is the tool declining** — attested below the
+    two-page floor, or spelled two ways by the book, in which case nothing may
+    pick a side and neither may you. Key what you see, by hand, and say in `note`
+    what the corpus holds.
+  - **A handle is a claim that the corpus supplied these characters** — recorded
+    in `as_typed`, shown to the adjudicator beside what it resolved to — and so it
+    is never how a doubt is settled: use one for a form you have read and would
+    otherwise retype, never for a mark the raster left open (R2).
+  - **Your page block ends with what the pages before yours were keyed as**, with
+    handles: reference for what is worth looking up, never a prediction of your
+    ink. Where they disagree, key yours and say so in `note`. Don't type a key
+    from memory — `Kavraˊlɪt` is `Kavra'li_t`, and a guessed key teaches an `i`
+    that is not there.
 - **`uv run harness proposal replace PP-NNN LINE --old X --new Y [--field FIELD]
   [--which all|first|last|N|N:M]`** swaps occurrences inside one field. Reach for
   this over `set` once a line is written and only a character or two is wrong (an
@@ -461,10 +382,6 @@ telling where; `--out` is for a one-off outside the pass, and is not yours.
   the `1-021`/`1-022` batch marked `false` and spent a paragraph each justifying it
   on those grounds, which dilutes the field until a genuinely contaminated reading
   is indistinguishable from a clean one.
-- **Footnote markers are the actual Unicode superscript digit** — `¹` U+00B9, `²`
-  U+00B2, `³` U+00B3, `⁴`–`⁹` U+2074–U+2079 — never the plain ASCII digit. `2-244`
-  line 1 got this wrong: `funeral.1` proposed, `funeral.¹` adjudicated. A plain
-  digit reads as correct (it is the right number) so nothing mechanical catches it.
 - **`uv run harness corpus normalize --commit review/PP-NNN/proposal.json` before
   you finish, always — never skip it and never substitute a manual fix.** Not only
   NFD and §2.9 spacing: it exists because your own output is probabilistic, and the
@@ -582,15 +499,94 @@ further outside the box than an above-mark. It was 4 px when `1-074` lost two do
 to it. Anything two-deck — a stacked catalogue fraction — still clips; those are
 keyed `(??/????)` anyway, per §2.8.
 
-## The rules — each stated once, none negotiable
+## Reading discipline — R1–R10, run per Tier-1 line
 
-What the spec below already states as a numbered class is not restated here:
-§5.1/§5.2 own the absence-shaped calls and the contrast instrument, §5.11/§5.12
-own what a `note` may claim, §2.12 owns roman numerals and folio slots (plain
-ASCII, never worth a zoom). Run them as the per-line pass the spec says they
-are. What follows is what only this document says.
+The spec below owns the inventory (§2), the forbidden codepoints (§3) and the
+priors (§5). This section owns how a line is read against them. Each item is the
+rule, then the instrument, then one attestation; cite them as `R-n`.
 
-**Not yours to run:** `ocr review --serve`, `ocr restore`, `views build`, any
+- **R1 — Settled rules are cited, never confirmed at the raster.** Quotes are
+  always curly (§1); footnote markers are superscript sorts (§2.10); the dash is
+  U+2014 (§2.11); roman numerals and folio slots are ASCII (§2.12); the small-cap
+  inventory is `ᴀ ᴇ ɪ ʟ` and nothing else (§2.3); the breve sits only on `u`/`i`
+  (§2.6); wear is not a letter (§2.14). A straight quote in machine text is an
+  encoding artifact with nothing on the paper to adjudicate. *Instrument:* the
+  checklist's Settled block. *Attested:* two whole zoom selections spent
+  confirming a quote was curly.
+- **R2 — An absence-shaped call is read from the glyph's own ink, then the
+  prior, then flagged.** The dot below `g`, the diaeresis on `a`, `ɪ` against
+  `i` against `r`: each is one letterform with or without a small feature, so
+  absence is not observable at 2× and a "not there" reading must clear a higher
+  bar than a "there" reading. *Instrument:* 4× on that one glyph, naming what it
+  has — `r` a shoulder, `ɪ` a bare stem serifed top and bottom, `i` x-height
+  and dotted, `g` a dot ~2 px below the descender. **Never set it beside another
+  glyph** — not an English letter, not a ratified sort, not the same word
+  elsewhere on the page: a comparison delivers a difference you supply and
+  write down as an observation. If the ink will not answer, key the §5 prior
+  and `note` it unresolved, class `doubt`. *Attested:* `2-246` held `-tirgɪn`
+  against `Tɪluˊwg̣ê` on its own line, reported a clean contrast, and keyed four
+  occurrences bare against five ratified dotted.
+- **R3 — Capital vs small-cap is decided by position, never by height.** Two
+  sorts that differ only in size give a reader nothing to see and a free hand
+  to decide. *Instrument:* §5.4 — word-medial is never an ASCII capital;
+  word-initial is read, with no prior either way, and reported as a size only
+  as something you could not settle. *Attested:* `2-170` measured a medial `A`
+  against two named controls, concluded full height, and was adjudicated to `ᴀ`.
+- **R4 — Every raised mark is stress, U+02CA (§2.1), and every polysyllable
+  has exactly one (§5.5).** *Instrument:* ask of every Tier-1 word where its
+  stress mark is; then, after writing `resolved`, **re-read `text` character by
+  character against it** — reasoning about a mark and typing it are two acts,
+  and `proposal check`'s `resolved/text mismatch` repeating down a page is
+  systematic, never formatting noise. *Attested:* `3-004` reasoned "→ U+02CA"
+  in every `resolved` and kept the literal `'` in `text` on 33 of 71 lines.
+- **R5 — Never key a codepoint the inventory does not catalogue.** Shape
+  quality at magnification cannot separate a sort from a smudge, and the
+  codepoint being uncatalogued is what decides it. *Instrument:* key the
+  catalogued letter whose letterform it is, put the would-be codepoint in
+  `note` as uncatalogued, class `doubt`, and let a human rule. A lowercase `o`
+  beside a small cap reads as small-cap height from kerning; there is no
+  small-cap `o`. *Attested:* `1-048` `reindeér-breeding`, ruled smudge.
+- **R6 — The machine draft is not a witness to any character an inventory
+  glyph could stand in for.** CATMuS reads 0% of the inventory and its errors
+  arrive as ASCII: `'` `’` `/` for `ˊ`, and `i` `I` **`r`** for `ɪ`. Inside a
+  lettered cross-reference it is not a witness to which sort was set either:
+  italic `b` comes back as `6`, `(i)` `(j)` `(l)` as `(¿)` `(7)` `(7)`, a
+  locant's raised numeral as `’)` or `°)`. *Instrument:* read the series — a
+  figure inside a run that goes `a, b, c` is a letter, and the enumeration
+  settles it without a crop; a digit interrupting a letter series is the
+  draft's error until the page says otherwise. *Attested:* `2-033`
+  `Attɪˊg̣ɪtkɪ` keyed `Attrˊgɪtkɪ` off the machine text.
+- **R7 — A `note` states what you saw, and nothing a witness you did not
+  consult would have said.** *Instrument:* before the proposal is final,
+  re-read every `note` against its own `text` — a note describing a decision
+  the text does not exhibit is a defect whichever is right; a note citing a
+  spec section **quotes the sentence**; a claim about the machine text or a
+  measurement is made only after `ocr lines --store mz` or a zoom; notes are
+  written **in codepoints, not glyphs** (`U+0323 COMBINING DOT BELOW`), because
+  `corpus normalize` runs over `note` too; and no note asserts a linguistic
+  fact the page does not print — what language a form is, that it is a cognate
+  or a plural, what it means. *Attested:* `2-031` keyed its openers correctly
+  as `¹ ² ³` and attached notes claiming ASCII digits had been keyed.
+- **R8 — The priors are Chukchee's.** Where the text glosses a form as
+  Koryak, Chuvan, Eskimo or any other language, no §5 prior applies:
+  transcribe what is printed, with extra care, and say in `note` which
+  language the book names. A Chukchee-looking suffix on such a form invites a
+  correction toward a distribution it was never drawn from.
+- **R9 — A line ends where the type ends.** The commonest fabrication this
+  pass produces is a line-final comma absent from the draft and the page.
+  *Instrument:* before writing a line whose last character is punctuation the
+  draft lacks, look at `@100`; a wrapped line usually ends on a bare word.
+  *Attested:* `1-103` L4.
+- **R10 — Read only your own page.** Not another page's `proposal.json`,
+  `decision.json` or `gt/ocr/` file: a convention derived from a neighbouring
+  page is what the firewall forbids, and the settled answers are in the spec.
+  If you find yourself hunting the corpus for a precedent, the rule is missing
+  from the spec — say so in your report. `lexicon lookup` is the one licensed
+  reach into the corpus, and it records itself as a claim (`as_typed`).
+
+## The rest of the rules — each stated once
+
+**Not yours to run:** `ocr review`, `ocr restore`, `views build`, any
 `--all` form of anything, git commits — and `ocr clean`, the one prohibition
 that sounds like good manners: the images you opened are the only record of
 what you actually looked at, and deleting them makes your account of the pass
@@ -615,28 +611,9 @@ why.
   typeable key, folded across the axes a reading gets wrong. **Both take as many
   terms as you have in one call**, and both rebuild their index per invocation, so
   the page's whole vocabulary in one command is the shape to reach for.
-- **Never take the CATMuS machine text in `mz/ocr/` as a witness to what any
-  character is, anywhere an inventory glyph could stand.** It reads 0% of the
-  transcription inventory, and **its errors arrive as ASCII** — it substitutes
-  `'` `’` `/` for `ˊ`, and `i` `I` **`r`** for `ɪ` — so "it is only wrong about
-  non-ASCII" is false, and is how its `r` got keyed into a Chukchee name. It is
-  evidence about line geometry and English prose, nothing else.
-- **Where `keying_spec.md` states a closed rule, apply it and cite it — do not go
-  to the raster to confirm what the spec has already settled, and never key
-  against it.** The standing example: quotes are always curly (§1, §5.6), so a
-  straight one in machine text is an encoding artifact with nothing on the paper
-  to adjudicate — a reader has spent two whole zoom selections confirming exactly
-  that. The raster is for what the spec does not decide. Do not normalize a
-  Tier-1 form toward a plausible shape, harmonize it against a neighbouring page,
-  or propose a sort the inventory has never attested.
 - **A page believed to be all English is a prior, not a licence.** If a Tier-1 form
   turns up anyway it gets the full treatment. A page believed English is exactly
   where an unmarked inventory glyph passes unread.
-- **Read only your own page.** Do not open another page's `proposal.json`,
-  `decision.json` or `gt/ocr/` file for evidence — a convention derived from a
-  neighbouring page is what the firewall forbids, and the settled answers are all in
-  `keying_spec.md`. If you find yourself hunting the corpus for a precedent, the
-  rule is missing from the spec: say so in your report.
 - **Join a crop through `ocr lines`' `index` column, never through a *position*
   in `catmus_draft`** — empty lines are dropped from the draft, so its positions
   are not ALTO indices, and `index` is the identity everything downstream uses.
@@ -678,28 +655,9 @@ why.
   finding: key what you can see, say so, and the seam ledger settles it later.
 - **Prefer "unclear, flagged in `note`" over a confident guess.** A doubt that
   survives one 4× look IS the answer. **`text` is mandatory, and that is not licence
-  to invent a codepoint**: if the identity is open, key the catalogued sort whose
-  letterform it is and put the unlicensed environment in `note`. Never reach outside
-  `keying_spec.md`'s inventory for a shape that looks nearer — the lookalike table
-  (§2.7) lists characters that are *always wrong*, and "closest visual match" is
-  exactly the reasoning that lands on one.
-- **Do not add punctuation at the end of a line.** This is the commonest fabrication
-  this pass produces, by a distance: nine line-final commas across two batches
-  (`1-079`, `1-092`, `1-099`, then `1-103` L4, `1-104` L33, `1-107` L3, `1-109` L35,
-  `1-110` L3 and L24), every one of them absent from `mz/ocr` as well as from the
-  page. **Why they appear is not settled** — they sit at the very end of the value,
-  next to the closing quote, which looks like a serialization slip, but they turn up
-  just as often on a record with no following field to bleed from. What is settled
-  is the shape: always terminal, never mid-line, never in the draft. So it is not
-  caught by looking harder — it is caught by knowing the shape
-  exists. **A line ends where the type ends.** If you are about to write a line
-  whose last character is punctuation the machine draft does not have, go and look
-  at that spot: `@100` is the idiom and needs no estimate. A wrapped line usually
-  ends on a bare word, and that is not a defect to smooth over.
-- **Wear is not a letter.** A sort worn, broken or printed thin is keyed as the
-  letter the compositor set, never the lookalike the residue resembles — an abraded
-  `r` is `r`, not `ı`. Note the wear, class `artifact`. §2.14 carries the ruling and
-  the register entry it replaced.
+  to invent a codepoint** (R5): never reach outside `keying_spec.md`'s inventory for
+  a shape that looks nearer — §3 lists characters that are *always wrong*, and
+  "closest visual match" is exactly the reasoning that lands on one.
 
 ## What to report back
 
@@ -737,10 +695,10 @@ that has demonstrably not worked.
 <!-- transclude: .claude/skills/rebuild-groundtruth/checklist.md -->
 # Reading checklist
 
-Work this per page. `keying_spec.md` §5 is why each item is here; this is what you
-tick. Items in **Settled** are closed rules — apply and cite, never zoom to confirm.
-Items in **Evidence** need a named contrast word in `note`; "confirmed at 4×" is not
-evidence, it is what both readings that were wrong said.
+Work this per page; this is what you tick, and the reasoning is R1–R10 in your
+contract and the spec it cites. Items in **Settled** are closed rules — apply and
+cite, never zoom to confirm. Items in **Evidence** are read off the glyph's own
+ink; "confirmed at 4×" and "contrasted against" are not evidence.
 
 ## Before reading
 
@@ -756,8 +714,8 @@ evidence, it is what both readings that were wrong said.
 
 ## Settled — apply and cite, do not go to the raster
 
-- [ ] Quotation marks curly `“…”`, never straight — §1, §5.6
-- [ ] Every raised mark keyed stress U+02CA, never apostrophe U+0027 — §5.8
+- [ ] Quotation marks curly `“…”`, never straight — §1, R1
+- [ ] Every raised mark keyed stress U+02CA, never U+0027 — §2.1, R4
 - [ ] Footnote markers are superscript sorts `¹²³⁴⁵⁶⁷⁸⁹`, never ASCII digits — §2.10
 - [ ] A note opener printing no marker, where the body reference is marked: the
       marker **supplied** and noted as supplied, not flagged as absent — §2.10
@@ -767,53 +725,49 @@ evidence, it is what both readings that were wrong said.
       `QuireMarksZone` (bracketed, at the foot), never both — keyed with no interior
       space, box width checked for clipping, CATMuS's version corrected where it
       differs, and never sourced from the scan index or a neighbour
-- [ ] No small-cap `o` keyed (bases are `ᴀ ᴇ ɪ ʟ` only) — §2.3, §5.10
+- [ ] No small-cap keyed but `ᴀ ᴇ ɪ ʟ` — §2.3, R5
 - [ ] Dot-leader runs dropped, not reproduced
 - [ ] Breve keyed only on `u`/`i`, never on the obscure-vowel series — §2.6
-- [ ] No uncatalogued codepoint keyed; letter keyed as printed, mark flagged — §5.0, §5.9
+- [ ] No uncatalogued codepoint keyed; letter keyed as printed, mark flagged — R5
+- [ ] Word-final `-gɪn`/`-gɪt` keyed dotted, without a note — §5.1
 
-## Evidence — absence-shaped, no tool settles these
+## Evidence — read from the glyph's own ink, never a comparison
 
-- [ ] Every Tier-1 `g` ruled dotted or bare, with a contrast word named in `note`
-      or "no contrast on this line" — prior is 93.9% dotted — §5.1
-- [ ] No word left ending bare `-git`/`-gin`/`-gɪn` without a stated reason — §5.1
-- [ ] Every word-initial capital-shaped letter ruled ASCII or small-cap
-      (63:55 — nothing mechanical settles it) — §5.2
-- [ ] Every bare `a` considered for `ä` (14.0% of Tier-1 `a`) — §5.3
-- [ ] Every `ɪ`/`i`/`r` call made against a real `r` on the line — §5.2
+- [ ] Every other Tier-1 `g` ruled from its own ink at 4× or keyed dotted on the
+      prior and flagged — §5.1, R2
+- [ ] Every bare `a` considered for `ä` — §5.3, R2
+- [ ] Every `ɪ`/`i`/`r` read by what the letter has, not against another — R2
+- [ ] Every word-initial capital-shape ruled by position, never by height — §5.4, R3
 - [ ] Every multisyllabic Tier-1 word carries exactly one stress mark; any that
-      does not is flagged, not accepted — §2.1, §5.5
-- [ ] Old-style figures checked: `1` is x-height and dotless, `0` small and round — §5.4
+      does not is flagged, not accepted — §5.5, R4
+- [ ] Lettered cross-references read as the series, not as the draft — R6
+- [ ] A form the book glosses as another language keyed without the priors and
+      noted — R8
 
 ## Mechanical — run these, read the output
 
 - [ ] `proposal fix PP-NNN`, then re-run: zero output
 - [ ] `proposal check PP-NNN`: verdict row reads **exit 0** — a defect is yours to fix, never to explain
-- [ ] every `advisory` row read and answered in `note`, with the contrast named
-- [ ] `resolved/text mismatch` repeating down the page treated as systematic — §5.5
+- [ ] every `advisory` row read and answered in `note`
+- [ ] `resolved/text mismatch` repeating down the page treated as systematic — R4
 - [ ] `corpus normalize --commit review/PP-NNN/proposal.json`, then again without: verdict exit 0
 
 ## Before finalizing
 
-- [ ] Every `note` re-read against its own `text` — §5.11
-- [ ] Every `keying_spec.md` citation in a note quotes its sentence — §5.11
-- [ ] No note claims what another witness said unless it was consulted — §5.12
-- [ ] Notes written in codepoints, not glyphs — §5.12
-- [ ] **No note asserts a linguistic fact the page does not print** — what language
-      a form is, that one is a cognate/variant/plural of another, what it means.
-      Quote a gloss the book itself sets; never supply one. That two forms differ is
-      an observation; why is a claim, and this pass has no instrument for it
+- [ ] Every `note` re-read against its own `text` — R7
+- [ ] Every `keying_spec.md` citation in a note quotes its sentence — R7
+- [ ] No note claims what another witness said unless it was consulted — R7
+- [ ] Notes written in codepoints, not glyphs — R7
+- [ ] No note asserts a linguistic fact the page does not print — R7
+- [ ] No line ends in punctuation the draft and the page lack — R9
 - [ ] Every `note` carries a `class`: doubt / semantic / print / draft / layout /
       artifact — `print` is the compositor's error, `draft` the recognizer's
 - [ ] Every `{handle}` names a form you *read* and would have retyped — never one
       the raster left in doubt, which is a flag and not a lookup
 - [ ] …and the converse: no Tier-1 form retyped by hand that `lexicon lookup`
-      offered a key for. A key you saw and did not use is adjudicator time spent
+      offered a key for
 - [ ] …and its precondition: every native term or proper name the page uses
-      **without introducing it** was actually searched. An unglossed god, spirit
-      class, people or place is one the book introduced elsewhere, so the corpus
-      has likely adjudicated it — a form you never searched for is one you chose
-      to key the expensive way
+      **without introducing it** was searched, in one call
 - [ ] `contamination` block present; `blind: true` unless something nameable
 - [ ] Every line index present, `text` non-empty on all of them
 <!-- /transclude -->
@@ -822,10 +776,8 @@ evidence, it is what both readings that were wrong said.
 
 # keying_spec.md
 
-The character inventory, and the reading discipline in §5. **Run §5 as a per-line
-pass over every Tier-1 line, zoomed or not** — its own closing note names the
-lesson: a class named once and ranked "check hardest" has still been missed again
-on a later page, because naming it is not the same as checking every line for it.
+The character inventory (§2), the forbidden codepoints (§3) and the priors (§5).
+Run R1–R10 above as a per-line pass over every Tier-1 line against it.
 
 The copy below is maintained mechanically from `keying_spec.md` at the repo root,
 which is the single source and also binds the collation pass and the human keying
@@ -835,83 +787,65 @@ one did.
 <!-- transclude: keying_spec.md -->
 # Keying spec — Bogoras notation → Unicode
 
-**Authority.** The printed key (Part 1, p. 10 — book-internal apparatus,
-firewall-clean, binds) as corrected by the editor's corpus-scale collation
-from hand-corrected OCR. `CLAUDE.md` outranks this file on project invariants;
-`.claude/skills/transcribe-page/SKILL.md` governs the collation pass. This file is normative for
-the character inventory, and binds both passes and the human keying track.
+**Authority.** The printed key (Part 1, p. 10, scan `1-030` — book-internal
+apparatus, firewall-clean, binds) as corrected by the editor's corpus-scale
+collation. `CLAUDE.md` outranks this file on project invariants. This file is
+normative for the character inventory and binds the ground-truth pass, the
+collation pass and the human keying track. How a page is *read* — the image
+ladder, the instruments, what a `note` may claim — is the reader's contract,
+`.claude/agents/groundtruth-reader.md`, which cites this file and never restates it.
 
 ---
 
 ## 1. Doctrine
 
-- **Firewall.** No non-English glyph identification originates from a model's
-  reading of a scan or from inference about what the system "should" contain.
-  Shape decides only at keying, by a human. The p. 10 key is evidence and
-  binds.
-- **NFD, corpus-wide.** One conversion point; verified at export:
-  `python3 -c "import unicodedata,sys; print(unicodedata.is_normalized('NFD', open(sys.argv[1]).read()))"`
-- **ASCII policy, scoped to Tier-1.** Inside
-  `ckt`/`kpy`/`ypk`/`xcv`/`eve`/`ipk`/`itl`/`yux`, U+0027 and U+002D are the only
-  apostrophe and hyphen, and the lookalike greps (§3) run there.
-  Rationale: ASCII is what every keyboard emits, hence drift-proof; a
-  modifier-letter codepoint invites conflation with a true apostrophe at every
-  entry point — and inside a Tier-1 span the apostrophe is phonetically
-  load-bearing, since U+0027 *is* the spirant and pause mark rather than a
-  lookalike for one. English prose reproduces the print, **curly quotes
-  included**: the book sets them, nothing there is load-bearing, and forbidding
-  them would reject correct text. `validate.py`'s `FORBIDDEN_PROSE` and its
-  scoped greps are the enforcement.
-- **Keying reproduces print**, the book's own errors included. The collation pass
-  may modernize glossed Russian (harness rev 2); ground truth does not —
-  pre-reform Cyrillic sorts are keyed as printed. See §2.7 for the closed list and
-  what each is confusable with, and §2.14 for the typo rule and its one exception.
-  **Species names go the same way**: `Oncorhynchus horbusha`, `niarka` — key the
-  epithet as set, never the modern binomial it corresponds to. Mapping obsolete
-  names onto current ones is a post-collation pass with its own record. These two
-  attest in Bogoras and Jochelson and nowhere else, so "correcting" one to the
-  expected Russian yields a form with no attestation anywhere — inference about
-  what the name *should* be, which is the firewall's subject in another costume.
-- **Two-tier settlement.** SETTLED rows carry the editor's stamp or the key's
-  authority and are law, stated flat. PROPOSED rows are the best available
-  disposition, awaiting the stamp; they enter force via changelog, not by
-  ceasing to be questioned.
+- **Firewall.** A model reads a scan and proposes; the proposal carries its
+  rank (`#llm`) and only a human act raises it (`#ed`, `#gt`) — the four ranks
+  are `README.md`'s and `@resp` names one on every Tier-1 span. What no reading
+  may do is infer a glyph from what the system "should" contain, from a
+  neighbouring page, or from a corpus-wide pattern: a glyph is read from its own
+  ink, and where the ink will not answer the line is flagged, not filled. The p.
+  10 key is evidence and binds.
+- **NFD, corpus-wide.** `harness corpus normalize` is the gate.
+- **ASCII policy, scoped to Tier-1.** Inside `ckt`/`kpy`/`ypk`/`xcv`/`eve`/`ipk`/
+  `itl`/`yux`, U+002D is the only hyphen and the §3 lookalike greps run. English
+  prose reproduces the print, **curly quotes included** — the book sets them and
+  a straight quote is never on the paper. `validate.FORBIDDEN_PROSE` and the
+  scoped greps enforce it.
+- **Keying reproduces print**, the book's own errors included (§2.14), with
+  exactly two overrides: spacing (§2.9) and the press's diacritics on English
+  loanwords (§2.15). Pre-reform Russian is keyed as printed (§2.7). A species
+  epithet is keyed as set, never the modern binomial.
+  *Attested:* `Oncorhynchus horbusha`, `niarka`.
+- **Two-tier settlement.** SETTLED rows are law, stated flat. PROPOSED rows are
+  the best available disposition awaiting the editor's stamp; they enter force
+  via changelog, not by ceasing to be questioned.
 
 ## 2. Inventory
 
 ### 2.1 Marks (SETTLED)
 
-| Mark | Codepoint | License / notes |
+| Mark | Codepoint | Licence |
 |---|---|---|
-| word stress, postposed to the stressed vowel | **U+02CA** ˊ | ≤1 per word (validation). Absent from the p. 10 key; corpus-attested only — the one inventory member the calibration page will not corroborate. |
-| laryngeal superscript | **U+1D4B** ᵋ | Glottalization of the stressed vowel. Confirmed at corpus scale; citable. |
-| rising-diphthong onglide | **U+1D49** ᵉ | Key: "a diphthong with an accent on *i*." Licensed only immediately before `i`; the key's any-V + i/u doctrine predicts siblings, but the license extends on attestation, never on symmetry. |
-| velar g, dot below | **g + U+0323** g̣ | Pairs proportionally with q (q : k :: g̣ : g). |
-| long rounded mid vowel | **U+0275** ɵ | Key: "between *o* and *u*, long." |
-| spirant mark | **U+0027** ' | After b p d t g k only. **Zero confirmed instances corpus-wide as of 11/20 pilot pages restored** — every candidate examined so far has turned out to be stress (U+02CA) on closer reading. Documented in the p. 10 key, licensed, and not to be ruled out by fiat — but it has never once been the right call in practice. Do not propose it. |
-| pause mark | **U+0027** ' | V_V only; key specimen *yiñe'a*. **Zero confirmed instances corpus-wide** — same status as spirant, above: real per the key, unattested in restored text, and every V_V-position candidate found so far was stress. Do not propose it. |
-| palatalization mark, postposed | **U+02D9** ˙ | After the full seven-member series n x d t s č ǰ. |
-| connector hyphen | **U+002D** - | Forms essentially never break across lines; residual line-end joins go to LLM triage in context, human-confirmed — a join question, not a glyph identity. |
-| length marks | **U+0304** ◌̄ , **U+0306** ◌̆ | Combining, NFD; both productive. Breve doubles as the ŭ sort's mark — one shape, two functions; interpretation is downstream, not a keying problem. |
-| increased articulation stress | **U+0021** ! | Rare. Collides with prose exclamation; environment (word-internal / form-adjacent) disambiguates — keyer discretion, comment on doubt. |
+| word stress, postposed to the stressed vowel | **U+02CA** ˊ | ≤1 per word (culminative, §5.5). Absent from the p. 10 key; corpus-attested |
+| laryngeal superscript | **U+1D4B** ᵋ | glottalization of the stressed vowel |
+| rising-diphthong onglide | **U+1D49** ᵉ | only immediately before `i`; extends on attestation, never on symmetry |
+| velar g, dot below | **g + U+0323** g̣ | q : k :: g̣ : g |
+| long rounded mid vowel | **U+0275** ɵ | key: "between *o* and *u*, long" |
+| palatalization mark, postposed | **U+02D9** ˙ | after n x d t s č ǰ |
+| connector hyphen | **U+002D** - | forms essentially never break across lines; a line-end join is a human's call |
+| length marks | **U+0304** ◌̄ , **U+0306** ◌̆ | combining, NFD; bases per §2.6 |
+| increased articulation stress | **U+0021** ! | rare; word-internal or form-adjacent |
 
-**Shared-codepoint design.** Spirant and pause both key U+0027: their licensing
-environments are disjoint (post-consonantal-by-list vs. intervocalic), so
-function is mechanically recoverable from position, and shape contrast between
-the printed sorts is deliberately not preserved. U+0027 in any other
-environment inside a form is unconditionally an error.
+**A raised comma-shaped mark inside a Tier-1 span is stress, U+02CA.** U+0027
+has no use in Tier-1 text (§3).
 
-**ᵉ and ᵋ are mutually confusable and both licensed** — unlike the lookalike
-pairs, where one member is always an error. Environments are disjoint (ᵉ only
-pre-`i`; ᵋ never), so: U+1D49 not immediately followed by `i` is
-unconditionally an error; U+1D4B immediately before `i` is a review-flag —
-that position is where a keyer's ᵉ/ᵋ misclick would hide. Shape decides only
-at keying, and the sorts differ exactly where bitonal scans fail (bowl
-closure, crossbar): a named F11 client.
+**ᵉ and ᵋ are mutually confusable and both licensed**; their environments are
+disjoint (ᵉ only pre-`i`, ᵋ never). U+1D49 not immediately followed by `i` is
+an error; U+1D4B immediately before `i` is a review flag.
 
 **§2.2 and §2.3 are also held machine-readably in `data/alphabet.json`**, which
-this file owns and `harness edition runs` checks against it. Editing either table
-fails that gate until the store follows.
+this file owns and `harness edition runs` checks against it.
 
 ### 2.2 Letters — marked sorts (SETTLED)
 
@@ -934,9 +868,8 @@ fails that gate until the store follows.
 ### 2.3 Letters — small-cap sorts (base codepoints PROPOSED)
 
 The key glosses ᴀ ᴇ ɪ jointly as "obscure vowels (short)"; ʟ merely shares the
-shape family. Glyph identities are settled; the **base codepoints below await
-the editor's stamp**, because the small caps are where lookalike drift
-genuinely threatens:
+shape family. Glyph identities are settled; the base codepoints await the
+editor's stamp, because the small caps are where lookalike drift threatens:
 
 | Glyph | Codepoint | Drift hazard |
 |---|---|---|
@@ -946,999 +879,277 @@ genuinely threatens:
 | ʟ | U+029F | same hazard |
 | ʟ̣ | U+029F + U+0323 | inherits the ʟ question |
 
+**These four are the whole small-cap inventory, and only inside Tier-1 forms.**
+There is no small-cap `o`, `v`, `x` or any other letter; roman numerals (§2.12)
+and run-in headings (§2.13) are ASCII.
+
 ### 2.4 Letters — unmarked ASCII with non-obvious values
 
 `c` = English *sh*; `j` = French *jour*; `x` = *Bach*; plain `s`; `h` (a
-licensed sort in native words — editor, corpus scale). All invisible to any
-glyph-pattern detector by construction (`CLAUDE.md`, "Transcription Detection").
+licensed sort in native words). All invisible to any glyph-pattern detector by
+construction.
 
-### 2.5 Series structure (key doctrine, stated outright)
+### 2.5 Series structure (key doctrine)
 
 Four laterals **l ḷ ʟ ʟ̣**; three rhotics **r ř ṛ**; proportional velar pair
 **q : k :: g̣ : g**; seven-member palatalization series **n x d t s č ǰ + ˙**;
-six-member spirant series **b p d t g k + '** (fourth member's print damaged —
-F10); diphthongs compose productively from any vowel + i/u, the ᵉi row adding
-the rising case — prominence on the closing element, opening element cast
-superscript.
+diphthongs compose productively from any vowel + i/u, the ᵉi row adding the
+rising case — prominence on the closing element, opening element cast superscript.
 
-### 2.6 Mark–base licensing (editor-supplied)
+### 2.6 Mark–base licensing (SETTLED, editor-supplied)
 
-Which bases a mark may sit on. Recorded because these decide cases the raster
-cannot: `i` loses its dot under any above-diacritic, so printed **ĭ** is a dotless
-i with a breve — the same letterform a small-cap **ɪ** carrying a breve would
-present. No magnification separates them; only the constraint does.
+`i` loses its dot under any above-diacritic, so printed **ĭ** is the same
+letterform a small-cap **ɪ** with a breve would present. No magnification
+separates them; only the licence does.
 
 | Mark | Licensed on | Never on |
 |---|---|---|
-| breve **U+0306** | `u` (ŭ, §2.2); `i` (ĭ — editor-confirmed on `1-074`, "Am-g̣roˊkĭ", and on `1-067` L15, "Ñĭroˊn") | **everything else.** The obscure-vowel series **ᴀ ᴇ ɪ ä** for the reason below; `j` because the marked sort is **ǰ**, j+U+030C (§2.2), and a breve there is a misread caron |
+| breve **U+0306** | `u` (ŭ); `i` (ĭ) | everything else — the obscure-vowel series **ᴀ ᴇ ɪ ä** already encodes length (§2.3), and `j` because the marked sort is **ǰ**, j+U+030C |
 
-**The list is closed, and enforced as such.** `detectors.MARK_LICENSE` holds the
-allow-list, `harness corpus normalize` exits 1 on a violation, `harness tei validate`
-raises it as an ERROR, and `harness ocr restore` refuses to write. Not a worklist item:
-an unlicensed mark is a sequence the notation does not contain, so unlike a lookalike
-there is no reading for a human to weigh, and nothing is pre-empted by refusing it.
-No tool rewrites one, though — choosing the intended glyph is adopting a glyph
-identity, which is the editor's act.
-
-`j` is why this is code and not just a table. `1-073` sets ǰ three times, in `Neǰ-`,
-`Ñeˊrg̣eǰ-` and `Quˊuleǰ-`; a reading pass took the mark for a breve on the grounds
-that it looked rounder than the č on the same page, and review corrected two of the
-three and missed the third. One page, one form, three occurrences, and the
-inconsistency survived a human pass because nothing compared them to each other.
-
-The exclusion is not arbitrary, and the reason is book-internal: the p. 10 key
-glosses ᴀ ᴇ ɪ jointly as "obscure vowels (**short**)" (§2.3) and ä as their long
-counterpart (§2.2). The series already encodes length, so a length mark on any
-member would be either redundant or contradictory. In the editor's phrasing,
-**none of the schwas are shortened**.
-
-Consequence for keying and for triage: a breve above a dotless i-form is **ĭ**,
-never ɪ̆, and `ɪ` + U+0306 anywhere in the corpus is an error rather than a
-reading. Note this is a *licensing* rule about the notation, not a rule for
-interpreting the text — nothing here may be extended by analogy. The breve is
-"productive" as a length mark (§2.1), so further bases may be licensed, but only
-on attestation the editor has stamped, never on symmetry.
+**The list is closed and enforced as such.** `detectors.MARK_LICENSE` holds it;
+`harness corpus normalize` exits 1, `tei validate` raises an ERROR and `ocr
+restore` refuses to write on a violation. No tool rewrites one — choosing the
+intended glyph is the editor's act. So a breve above a dotless i-form is **ĭ**,
+never ɪ̆; further bases are licensed only on attestation the editor has stamped.
+*Attested:* `1-074` `Am-g̣roˊkĭ`; `1-073` `Neǰ-` ×3 (caron, not breve).
 
 ### 2.7 Pre-reform Russian sorts (SETTLED)
 
-The book is 1904–1909, so its Russian is pre-1918 orthography throughout. Four
-letters were abolished by the reform and one position of a surviving letter
-changed; all five are keyed **as printed** in ground truth. The closed list, so
-that nothing is dropped by not having been looked for:
+The book is 1904–1909, its Russian pre-1918 orthography throughout. Four letters
+the reform abolished and one position it changed are keyed **as printed**:
 
-| Printed | Codepoints (lc / UC) | Name | Reform sent it to | Watch for |
+| Printed | Codepoints (lc / UC) | Name | Reform sent it to | Confusable with |
 |---|---|---|---|---|
-| **і** | U+0456 / U+0406 | decimal i | и U+0438 | **Latin `i` U+0069.** Identical letterform in a serif face — this is the one real trap, and no magnification resolves it. Position decides: pre-reform і appears before another vowel or before й (сіянie, Россія), so і inside a Cyrillic word is U+0456, never Latin. |
-| **ѣ** | U+0463 / U+0462 | yat | е U+0435 | ь U+044C and ъ U+044A — same ascender-plus-bowl skeleton, ѣ adding the crossbar. Common, so expect it: хлѣбъ, бѣлый, дѣло, сѣверъ. |
-| **ѳ** | U+0473 / U+0472 | fita | ф U+0444 | Latin `o`/`0` and Greek θ. Greek loans only, so rare here: ариѳметика, Ѳеодоръ. The hazard is reflex, not eyesight — reading it and keying the modern ф. |
-| **ѵ** | U+0475 / U+0474 | izhitsa | и U+0438 | **Latin `v` U+0076**, and Cyrillic у. Nearly extinct by 1900 and confined to church-Greek words (мѵро, сѵнодъ), so any ѵ-shape wants a second look before it is keyed as one. |
-| **ъ** *word-final* | U+044A / U+042A | hard sign | dropped in this position only | ь U+044C. Distinguished by the ascender alone. |
+| **і** | U+0456 / U+0406 | decimal i | и U+0438 | **Latin `i` U+0069** — identical letterform. Inside a Cyrillic word it is U+0456, never Latin |
+| **ѣ** | U+0463 / U+0462 | yat | е U+0435 | ь U+044C, ъ U+044A — ѣ adds the crossbar. Common: хлѣбъ, бѣлый |
+| **ѳ** | U+0473 / U+0472 | fita | ф U+0444 | Latin `o`/`0`, Greek θ. Greek loans only |
+| **ѵ** | U+0475 / U+0474 | izhitsa | и U+0438 | **Latin `v` U+0076**, Cyrillic у. Church-Greek words only; rare |
+| **ъ** *word-final* | U+044A / U+042A | hard sign | dropped in this position only | ь U+044C — the ascender alone |
 
-Two consequences the table exists to prevent.
+The hard sign is live modern Russian as a separator; only its *word-final*
+occurrence after a consonant is the pre-reform marker, which is why its row says
+"word-final" and a grep for the bare character is not a detector. Nothing
+mechanical catches a Latin `i` or `v` inside a Cyrillic word: Russian is Tier-2
+and outside the §3 greps. Pre-reform spellings (**-аго/-яго**, **-ыя/-ія**) are
+orthography, not sorts, and raise no keying question.
+*Attested:* `1-151` `лахтакъ`.
 
-**The hard sign is not an abolished character** and must not be treated as one.
-U+044A is live modern Russian as a separator (объектъ → объект); only its
-*word-final* occurrence after a consonant is the pre-reform marker. So a grep for
-the bare character is not a pre-reform detector — the position is the signal, which
-is why this row reads "word-final" and the others do not. `1-151` prints **лахтакъ**
-(glossed "ground-seal" / "thong-seal"), keyed with the ъ.
+### 2.8 Museum catalogue numbers (SETTLED)
 
-**Three of the five are cross-script lookalikes**, і and ѵ against Latin `i` and
-`v` and ѳ against `o`. §3's table traps Latin-for-notation confusions inside Tier-1
-spans; this is the same hazard one script over, and it is *not* covered there, since
-Russian is Tier-2 and outside those greps. Nothing mechanical catches a Latin `i`
-sitting in a Cyrillic word today.
-
-Orthographic, not glyphic, and therefore outside this table but worth knowing when
-reading: pre-reform adjectival genitives in **-аго / -яго** (русскаго), and
-**-ыя / -ія** where modern Russian has -ые / -ие. These are spellings rather than
-sorts, so they raise no keying question — they only stop a correct reading from
-looking like a misreading.
-
-### 2.8 Museum catalogue numbers — deferred, not discarded (SETTLED)
-
-Figure captions carry AMNH accession numbers set as stacked fractions
-(`70/7867`, `70/7749`). **The keying and collation passes never read them. They
-are keyed as the fixed literal `(??/????)`**, whatever the printed digits.
-
-This is a statement about *which pass* does the work, not about the numbers being
-unimportant. The AMNH catalogue is a live external resource, and an annotation
-pass may well resolve figures against accession records — in which case the right
-way to obtain the number is to query the catalogue, where it is authoritative and
-checkable, rather than to transcribe digits off a raster and hope. Transcribing
-here would produce an unverified string that *looks* resolved and so never gets
-looked up.
-
-The raster argues for deferral on its own. The denominator sits below the line's
-segmentation box in small type, so a line crop clips it: `1-151` line 37 reads
-`1887`/`1749` off the crop against `7867`/`7749` off the full page. Two readings
-of the same digits, from the same page, differing in the first digit — and the
-first reading would have been unfalsifiable within the corpus.
-
-So `(??/????)` is not a gap in the reading; it *is* the reading, and it is the
-marker that makes the deferred work findable later. The token is already in the
-notation keyboard (`?`) and universal in `data/readings.md`. It was, until this
-revision, in no normative document — practice without a rule, which is how a pass
-talks itself into reading them.
+Figure captions carry AMNH accession numbers set as stacked fractions. **Neither
+pass reads them: key the fixed literal `(??/????)`**, whatever the digits. The
+catalogue is a live external resource an annotation pass can query, where the
+number is checkable; a digit transcribed off a raster looks resolved and never
+gets looked up. *Attested:* `1-151` L37 — the denominator clips below the line box.
 
 ### 2.9 Spacing before punctuation — English, not French (SETTLED, editor ruling)
 
-**The book sets French spacing and the corpus does not reproduce it.** Brill puts a
-thin space before `;` `:` `,` `!` and `?` — `purpose ; but`, `substance ;”`,
-`solstices ; but` on `1-073` alone, and `daughter !”` / `eh !”` one line apart on
-`3-041`; the gap is unambiguous at 2× and consistent across every occurrence. Key
-**English spacing**: `purpose; but`, no space.
+The book sets a thin space before `;` `:` `,` `!` `?` and a double space after a
+sentence-ending period. **Key English spacing**: no space before any of those
+five, one space after a period. Interword spacing is otherwise **as printed** —
+a space present is keyed and one absent is not (`i. e.,` keeps its space).
 
-`!` and `?` were added late, and how they were missing is the part worth keeping:
-nothing gates this rule, so a reader that strips the space and a reader that keeps it
-both pass `check`. The store held 1535 `!`/`?` tokens without a single preceding
-space, which looked like the press closing up and was in fact every reader closing up
-unbidden — a unanimity that was evidence about the readers, not about the ink. It
-broke only when one reader read the list as exhaustive and preserved `eh !` on
-`3-041` L35 while silently closing `daughter !` on L34, inconsistent with itself one
-line away. **A rule whose enumeration is a list is read as closed**, so the list has
-to be the whole of it.
-
-This is one of the two places the "reproduce the print" rule for English prose is
-deliberately overridden — §2.15, the press's diacritics on English loanwords, is
-the other — so it needs saying plainly rather than being left to each pass to
-rediscover. The reason it is not a loss: a thin space before a semicolon is
-a *typesetting* convention with no lexical content, it survives nowhere in the
-book's own meaning, and reproducing it would put a space inside every affected token
-for every downstream consumer — tokenizers, the lexicon check, search — in exchange
-for information a reader can recover from the facsimile at any time. Curly quotes
-are reproduced because conflating `’` with a true apostrophe destroys a distinction
-the notation uses; a thin space destroys nothing.
-
-It is also not a licence to normalize spacing generally. Word spacing in justified
-setting varies wildly on these pages and is likewise not reproduced, but **an
-interword space that is present is keyed and one that is absent is not** — `i. e.,`
-keeps its space because the print has one, and nothing here permits closing it up
-to `i.e.,`.
-
-**Sentence spacing is the same case as the semicolon, not the general one.** The
-book sets a double space after a sentence-ending period (period-space-space), a
-typesetting convention exactly as lexically empty as the thin space before
-`;`/`:`/`,` — it survives nowhere in the book's meaning, and unlike interword
-justification gaps it is not variable page-to-page evidence of anything, just a
-fixed compositor habit. Key single-space, same reasoning as the semicolon rule.
-French spacing before a comma is the same case again wherever it turns up. All of
-this is mechanical and print-invariant, so none of it is left to per-page
-judgement: `harness corpus normalize` collapses a run of 2+ spaces between two non-space
-characters to one and strips any space immediately before `;`/`:`/`,`,
-corpus-wide, and `--check` exits 1 on drift — the same enforcement tier as NFD, not
-the lookalike worklist, because there is no reading to adjudicate.
+Gate: `harness corpus normalize` strips a space before any of the five and
+collapses a run of spaces, corpus-wide; this list and the one in
+`harness/normalize.py` are the same list, neither free to narrow without the
+other. *Attested:* `1-073` `purpose ; but` → `purpose; but`.
 
 ### 2.10 Footnote markers — the superscript sort, never the ASCII digit (SETTLED)
 
-The book anchors footnotes with a raised digit, printed twice: once at the
-reference in the body, once opening the note at the foot. **Key the actual
-Unicode superscript** — `¹` U+00B9, `²` U+00B2, `³` U+00B3, `⁴`–`⁹`
-U+2074–U+2079 — never the plain ASCII digit.
+A footnote marker is printed twice, at the body reference and opening the note.
+**Key the Unicode superscript** — `¹` U+00B9, `²` U+00B2, `³` U+00B3, `⁴`–`⁹`
+U+2074–U+2079 — at both. A marker keyed `1` is the right number and reads as
+correct in every view; counting is the only mechanical witness.
 
-This is the nastiest shape of error the project has, and it is worth saying why
-rather than just stating the rule. A marker keyed `1` instead of `¹` is the
-*right number*. It reads as correct in every view, and no check in §3, no
-lexicon lookup and no mark licence can see it: the character is ASCII, it is not
-a lookalike for anything, and it sits in a legitimate position. Nothing flags it.
+Gate: `detectors.footnote_report`, reported by `harness corpus normalize` and
+`harness proposal check`, **report-only** (a note straddling a page seam breaks
+the pairing with nothing miskeyed). Numbering restarts on every page, so:
 
-**Counting is the only mechanical witness**, and two invariants hold with no
-reading required, because numbering restarts on every page (confirmed across all
-20 restored pages — each begins again at 1):
+1. the marker values present form a continuous run 1..N;
+2. each value occurs at least twice;
+3. a line opening with a bare digit and a space is flagged **once a superscript
+   has appeared earlier on the page** — digit + period (a list item) is not matched.
 
-1. the marker values present form a **continuous run 1..N**, no gaps;
-2. each value occurs **at least twice** (reference + opener).
-
-`detectors.footnote_report` implements both, `harness corpus normalize` reports them
-corpus-wide, and `harness proposal check` reports them per proposal. **Report-only
-in both**, at the `lookalikes` tier rather than the blocking one: a note whose
-reference and text straddle a page seam breaks the pairing with nothing miskeyed,
-so a hit is a page to look at. A proposal that fails either invariant carries a
-page-level `footnotes` explanation instead.
-
-A third check catches the **half-open pairing** — one marker keyed as a
-superscript, another on the same page as a plain digit. A line opening with a
-bare digit then a space is flagged, **but only once a superscript has already
-appeared earlier in reading order**. The superscript is what establishes the
-page's own convention; against it a bare digit is an inconsistency rather than a
-guess.
-
-Stated once and scoped precisely: **there is no plain-digit convention for
-footnote markers anywhere in this corpus, and no page is a precedent for one.** A
-marker is the superscript sort, at the reference and at the opener alike, and **a
-detector firing on your output is the rule working, never a convention you have
-joined.** (A reader once cited this section's own worked example of the defect —
-`2-034`, since repaired — as a sanctioned precedent; the story is
-`docs/decisions.md`, "The reading-discipline record".)
-
-That is a rule about **markers**, and it must not be read as a rule about digits.
-A plain ASCII digit is entirely ordinary wherever it is not a footnote marker —
-a quantity in running prose (`1-053`'s "…Nordquist, / 2 houses)."), a numbered
-list item (`2. Čačanloˊrg̣ɪn` — digit + **period**, which the check deliberately
-does not match), a folio, a cross-reference, a catalogue number. **A line
-beginning with a plain digit is not by itself anything**, which is exactly why
-the third check waits for a superscript to appear first: without that condition
-it would fire forever on `1-053`'s wrapped "…Nordquist, / 2 houses)." — a page
-printing no footnote 2 at all — and a permanent known-false hit is precisely the
-noise that buries real signal.
+A plain digit anywhere else is ordinary: a quantity, a list item, a folio, a
+catalogue number. A page keying *every* marker as ASCII passes clean — that is
+what a freshly recognized page looks like — and closing that gap needs a witness
+this check does not have.
 
 **A figure sub-part locant is not a marker** — `(Fig. 17, f¹)`, a raised numeral
-picking out one labelled detail of a plate. Key it as printed; it anchors no
-note, so it is printed once, and the counting excludes it rather than reading it
-as an unpaired marker.
+picking out one labelled detail. Key it as printed. On a keyed line the
+exclusion is a **lone letter** carrying the superscript with a close-paren
+following (`detectors.FIGURE_LOCANT`); in the TEI it is whatever
+`figrefs.LOCANTS` consumes after a marked figure reference, so a comma list is
+no harder than a single letter.
 
-**The exclusion is bounded twice, because it is asked twice and the two askers
-see different things.**
+**Spacing**: a body reference sets **tight** against what precedes it (`mouth.¹`,
+`Steller,¹`); a note opener sets **marker, space, text** (`¹ See`). `harness
+corpus normalize` reports both and `--convert` writes them.
 
-*On a keyed line* — `harness corpus normalize`, `detectors.FIGURE_LOCANT`, and
-the reader keying the page — the bound is textual and narrow, taken from what
-`gt/ocr/` attests: a **lone letter** carries the superscript and a close-paren
-follows. Both halves are load-bearing, since the same store holds real markers on
-a multi-letter word before a paren (`Ciˊṛluk⁶)`) and spaced off the word
-(`Nelson ¹)`), and either half alone would swallow one of them. It is
-deliberately not keyed on `Fig.` appearing in the line either: `155, a¹),` is a
-citation wrapped across a line break, and the reader keying that line can see the
-locant and not the word that governs it.
-
-**That bound catches the last locant of a run and misses every earlier one**, and
-the spec did not use to admit it. `1-285` prints `(Fig. 155, d², e¹)` and
-`(Fig. 155, a², c²)`: only `e¹` and `c²` are followed by the paren, so `d²` and
-`a²` fall outside the rule. On a keyed line that is tolerable — the check is
-report-only, and an advisory hit costs a reader a glance.
-
-*In the TEI* it was not. The generator counted those as references to note 2 and
-reported all three of the page's notes as ambiguous, anchoring none. There the
-bound is **structural**: a figure reference is marked, so a locant run is
-whatever `figrefs.LOCANTS` consumes after it — the same pattern that decided
-where the reference ended. A comma-separated list is then no harder than a single
-letter, and `tei validate` re-derives it. One fact, two bounds, and each is as
-tight as its evidence allows.
-
-The locant is still *reported* on the keying side, at the advisory tier: an
-exclusion that says nothing is indistinguishable from a check that never ran.
-
-**Spacing, and it runs opposite ways at the two ends.** A body reference sets
-**tight** against whatever precedes it — `mouth.¹`, `tales¹`, `Steller,¹`,
-`“alien food.”²` — and a note opener sets **marker, space, text**: `¹ See, for
-instance`. Measured over `gt/ocr/`: 225 tight against 13 spaced in the body, 208
-spaced against 1 tight in openers. Both leans are the print's.
-
-Mechanical, so it is not a reader's judgement: `harness corpus normalize` reports
-both and `--convert` writes them, the same standing as §2.9. Key it right anyway —
-a rule the tool repairs silently is one nobody learns.
-
-**The draft is not a witness to a locant.** Over the fifty-page run of 2026-08-07
-the recognizer garbled them in three directions: an italic letter read as a digit
-(`b` → `6`, sixteen times across eleven pages, four of them on `1-258` alone), and
-a raised numeral read as punctuation (`a¹` as `a’)` and as `a°)`, both on `1-241`).
-Two of those directions produce something that still parses as a locant, so nothing
-downstream can flag them. Read a locant off the raster. A digit interrupting a
-letter series — `(Fig. 118, a, 6)` — is the draft's error until the page says
-otherwise.
-
-**Position on the page is not used by the checks, and must not be** — the scan
-is not consistent enough for the *detectors* to carry geometric judgement, and
-a half-footnote page would defeat any fixed cut. That is a constraint on the
-tooling, not on a reader: someone looking at the whole page may of course use
-where the ink sits — the opener block is still below the body wherever the
-boundary falls, and a raised digit mid-sentence is a reference.
-
-**An opener carrying no marker has been abraded, so supply it.** Where the note
-at the foot begins straight into its text and the body reference is present and
-marked, the mark has been lost — the printer did not set the note unanchored.
-Key the marker and say in `note` that it was supplied rather than read. This is
-not an invention and does not need to be flagged as one: the body reference
-attests the value, the opener attests the position, and both witnesses are on
-the page. Where the body reference is missing *too*, nothing attests a value and
-the page is reported rather than repaired. Attested `1-279` and `1-280`, both
-adjudicated 2026-08-07, both zoomed to 4× by their readers before the gap was
-believed.
-
-The licence is the apparatus's alone. §2.14 is unchanged for letters: wear is
-still not a letter, and no glyph is reconstructed from what a word ought to
-contain.
-
-**Known limit.** A page keying *every* marker as ASCII has no superscript to
-establish a convention, so it has no gaps, no singletons and no flagged opener,
-and passes clean. That was `1-073` and `1-151` before repair, and it is what a
-freshly recognized page looks like, since CATMuS emits plain digits. Catching
-that case needs a witness this check does not have; do not close it by dropping
-the prior-superscript condition.
-
-**Found by the check, in restored ground truth**: `1-048` (6 markers, one of them
-absent altogether), `1-053`, `1-073` (3), `1-151`, `2-034`. Four of those five
-were invisible to the counting invariants alone.
+**An opener printing no marker, where the body reference is marked, has been
+abraded: supply it**, and say in `note` that it was supplied. Both witnesses are
+on the page. Where the body reference is missing too, report the page; nothing
+attests a value. The licence is the apparatus's alone — §2.14 is unchanged for
+letters. *Attested:* `1-279`.
 
 ### 2.11 The dash — em, U+2014, and only that (SETTLED, measured)
 
-The book sets **one dash: `—` U+2014**. Measured over `gt/ocr/`: **36
-occurrences across 18 pages, zero U+2013 en dashes, and zero double-hyphen `--`
-sequences.** There is no second dash to choose between, so this is a lookup and
-not a judgement.
+The book sets one dash, `—` U+2014 — no en dash, no `--`. Never `-` U+002D for
+a dash: inside Tier-1 the hyphen is load-bearing (§2.1). Spacing reproduces the
+print; three settings occur:
 
-It is written down because it was not, and the cost showed up immediately. A
-reader keying `2-035`'s signature line had no rule to reach for and went hunting
-through the ground-truth store for precedent, settling it against
-`gt/ocr/chukchi-3-119.xml` and `chukchi-3-135.xml`. The reading it arrived at was
-correct and the two files do attest it — but **a reader who must derive a
-convention from other pages is doing corpus archaeology in the middle of a
-single-page pass**, and the next one may sample two pages that disagree, or one
-that was wrong. A settled sort belongs in this file, where it costs one look.
-
-Do not key `-` U+002D or `--` for a dash: inside Tier-1 the hyphen is
-load-bearing (§2.1) and a dash spelled as one is unrecoverable.
-
-**Spacing reproduces the print** and is not normalized, the same position §2.9
-takes. Three forms occur, and all three are as-set:
-
-- **Run-in section heading** — `LANGUAGE. — The Chukchee language is rich…`,
-  `VI. — HUNTING AND FISHING; WAR.` Spaced both sides. This is how the book marks
-  a heading that shares its line with the text, so the dash is structural and a
-  collation pass reads a heading off it.
-- **List introduction** — `The villages on the Arctic coast are as follows: —`,
-  trailing at the line end. Spaced left, nothing right.
-- **Quire mark / signature line** — `82—JESUP NORTH PACIFIC EXPED., VOL. VII.`
-  **Unspaced**, unlike the other two. Attested on `3-119` and `3-135`; the number
-  is the signature, not a folio, and `harness tei context` reads that zone for
-  the printed folio, so a mis-keyed dash there is not merely cosmetic.
+| setting | form | example |
+|---|---|---|
+| run-in heading | spaced both sides | `LANGUAGE. — The Chukchee language` (§2.13) |
+| list introduction | spaced left, line-final | `are as follows: —` |
+| quire mark / signature line | unspaced | `82—JESUP NORTH PACIFIC EXPED., VOL. VII.` — the number is the signature, read by `tei context` |
 
 ### 2.12 Roman numerals and folio slots — plain ASCII, always (SETTLED, editor ruling)
 
-**Every roman numeral in the book is keyed in plain ASCII capitals**, whatever
-the setting. `Plates V, VII, XIV`, `VOL. VII.`, `Fig. 2`, a folio, a signature
-number — all ASCII. The book sets roman numerals as typographic small capitals
-routinely, and that is an English-register display convention with no bearing on
-the notation. §2.3's small-cap sorts are licensed **only for `ᴀ ᴇ ɪ ʟ` inside
-Tier-1 forms**, and there is no small-cap `V` or `X` in the inventory at all, so
-the question of whether a given numeral "looks small-cap-ish" cannot change what
-is keyed. Do not measure letter heights to settle it; there is nothing to settle.
+**Every roman numeral is keyed in plain ASCII capitals**, however set: `Plates V,
+VII, XIV`, `VOL. VII.`. The book's small-capital setting is an English-register
+display convention, and §2.3 licenses no small-cap `V` or `X`. Two folio slots:
 
-**The two folio-bearing slots are equally mechanical**, and readers keep treating
-them as puzzles:
+- a **bracketed folio at the foot of a chapter opening** — `[1]`, `[115]` —
+  plain ASCII digits in brackets (`QuireMarksZone`; `context.APPARATUS_ZONES`
+  drops it from the collation draft);
+- the **signature line's leading number** — `82—JESUP …` — plain ASCII digits.
 
-- **A bracketed folio at the foot of a chapter opening** — `[1]`, `[115]` — is
-  the book's regular form and appears throughout. Key it as **plain ASCII digits
-  in brackets**. The segmenter classes it `QuireMarksZone`, `tei context` reads
-  that zone for the printed folio, and `context.APPARATUS_ZONES` drops it from
-  the collation draft, so it is apparatus rather than text.
-- **The signature line's leading number** — `82—JESUP NORTH PACIFIC EXPED., VOL.
-  VII.` — likewise, plain ASCII digits. It is practically identical on every page
-  that carries one and is dropped from everything downstream.
-
-**One case is genuinely ambiguous and it is page 1**, where the arabic `1` is set
-as a bare serifed stem indistinguishable from a roman `I`. It is a digit, on the
-same rule as everything above.
-
-**The ambiguity is not confined to the folio, and no zoom resolves it: `1` and
-`I` are homographs in this face.** The arabic `1` is an x-height serifed stem
-with no flag — `Fig. 188` on `1-328` prints one four words from the `ɪ`s of
-`xxɪx`, and at 4× they are the same shape. A reader who reaches for a
-magnifier here will come back with a confident reading and no evidence, so
-**settle it by the numbering scheme instead, which is fixed:**
-
-- **Plates** take an **uppercase roman** number, their subdivisions **arabic** —
-  `Plate XXVI, Fig. 1`.
-- **Figures** take an **arabic** number, their subdivisions a **lowercase
-  letter**, and a point of interest on one of those an **arabic** numeral —
-  `Fig. 148, a, b`; `Fig. 17, f¹`.
-
-So a numeral after `Fig.` is arabic at every level of this book, and a roman
-`Fig. I` is a misreading rather than a variant setting.
-
-**A plate cited out of another book carries that book's scheme, and no rule
-here reaches across the citation.** `1-143`'s `Nelson, Plate LXXVI, Fig. 1`
-was settled by opening Nelson and finding that he subdivides arabic too — a
-human act, and the only kind available. Key this book's scheme for this book's
-plates; for a citation, flag it and let a human decide.
-
-Attested by its own failure: `1-143`, `1-157`, `1-169`, `1-324` and `1-328` all
-carried roman `Fig. I` into adjudication, three of them into restored ground
-truth, before this was written down. All five repaired 2026-08-07.
+**`1` and `I` are homographs in this face** and no zoom separates them, so the
+numbering scheme decides: **plates** take an uppercase roman number, their
+subdivisions arabic (`Plate XXVI, Fig. 1`); **figures** take an arabic number,
+subdivisions a lowercase letter, a point of interest an arabic numeral (`Fig.
+148, a, b`; `Fig. 17, f¹`). A numeral after `Fig.` is arabic at every level. A
+plate cited out of another book carries that book's scheme: flag it for a human.
+*Attested:* `1-328` `Fig. 188`, four words from the `ɪ`s of `xxɪx`.
 
 ### 2.13 Run-in section headings — key the setting (SETTLED, editor ruling)
-
-The book sets a run-in heading (§2.11's `HEADING. — text`) two ways, and the
-difference is structural rather than decorative:
 
 | printed as | level | key it as |
 |---|---|---|
 | small capitals — `Aɴᴄɪᴇɴᴛ Hᴀʙɪᴛᴀᴛ. —` | second | **plain ASCII capitals**, `ANCIENT HABITAT.` |
 | italic title case — `System of Winds. —` | third | **title case as printed**, `System of Winds.` |
 
-Neither is a Tier-1 question. §2.3's small-cap sorts are `ᴀ ᴇ ɪ ʟ` inside Tier-1
-forms only; there is no small-cap sort for the other letters, so nothing here ever
-licenses a small-cap codepoint in English text — the same ruling §2.12 makes for
-roman numerals, reached the same way.
-
-**The error runs one way, and it is a shape error.** Four second-level headings
-were keyed in title case — `1-043`, `1-062` twice, `1-073` — because a small-cap
-setting has a full-height initial and reads as an ordinary capitalized word until
-the rest of the letters are compared against it. No heading has ever been keyed
-the other way. So the check is the same contrast discipline §5.2 asks for: hold
-the second letter against the first on the line you are already keying. One look,
-no zoom.
-
-**The printed ToC is not a witness to a heading's existence.** `System of Winds`
-is set on `2-046` at folio 320 and appears nowhere in the printed contents (p. vii,
-scan `1-009`), which runs `Other “Beings”` 314 straight to `Monsters` 323. The
-omission is the book's. It is carried in `data/toc.json` as `chXII.11a` with an
-`editorial` field recording that, so that an entry added on an editor's ruling is
-never indistinguishable from one the book printed. A heading absent from the ToC
-is therefore not suspect and is never to be retitled, demoted or dropped to make
-it match one: key what is set, and say in your report that you found no entry.
+A small-cap setting has a full-height initial and reads as a capitalized word
+until the second letter is held against the first, on the line being keyed.
+**The printed ToC is not a witness to a heading's existence**: a heading absent
+from it is keyed as set and never retitled or demoted; `data/toc.json` records
+the book's omissions under `editorial`. *Attested:* `2-046` `System of Winds`,
+absent from the contents at `1-009`.
 
 ### 2.14 The printer's errors — key them, with one exception (SETTLED, editor ruling)
 
-**A printer's error is keyed as printed, and `gt/ocr` never repairs the book.**
-**It is a letter or a word — never a mark of punctuation**, which is a blot and is
-keyed as nothing, class `artifact`.
-Three stand in `gt/ocr` today, each re-read out of the store: `1-087` L17
-`spririts`, `1-090` L38 `Government, to wishing breed reindeer`, `1-094` L5
-`fawns-kins`. Note the setting on the line and go on. The collation pass corrects
-it visibly, where the print survives beside the correction; a silent repair here
-would leave neither.
+**A printer's error is keyed as printed; `gt/ocr` never repairs the book.** It is
+a letter or a word, never a mark of punctuation — a stray mark is a blot, keyed
+as nothing, class `artifact`. The store is line images paired with their text,
+so a repaired character teaches a recognizer something false; the collation pass
+corrects visibly, with the print beside the correction.
+*Attested:* `1-087` L17 `spririts`.
 
-The reason is what the store *is*. `gt/ocr` is line images paired with their text,
-so every character that disagrees with the raster teaches a recognizer something
-false — and a near-miss like `spririts` is exactly the shape a model will learn.
+**Wear is not a letter.** A sort that printed thin, broke or abraded is keyed as
+the letter the compositor set, never the lookalike the residue resembles — an
+`r` worn to a stem is `r`, not `ı`. Substituting the lookalike mints a glyph
+identity out of damage. Note the wear, class `artifact`. In English prose an
+ambiguous `f`/`t` is settled by the sense — `the wolt` has one reading — and
+wear concentrates at line ends. *Attested:* `2-154` L16 `of`.
 
-**Wear is not a letter (SETTLED, editor ruling).** A sort that printed thin, broke,
-or abraded is keyed as **the letter the compositor set**, never as whatever the
-surviving shape resembles. An `r` worn to a bare stem is an `r`, not `ı`. This is
-not an exception to keying what is printed — it is what keying what is printed
-*means*, because the compositor set a
-letter and the wear happened to the impression of it. Substituting the lookalike
-mints a glyph identity out of damage, which is the firewall's whole subject, and in
-`gt/ocr` it does the exact harm the paragraph above describes: it teaches a
-recognizer that a damaged `r` is a different character.
+**The one exception is a contextually Tier-1 form — a gloss, a native proper
+name, a vocabulary entry — carrying what the notation does not contain at all.**
+Exactly two shapes:
 
-Note the wear on the line, class `artifact`, and key the letter.
+- a mark outside the §2.1 set (an acute over a vowel, `a` + U+0301);
+- a plainly polysyllabic form with no stress mark anywhere (§5.5).
 
-**In English prose, an ambiguous `f`/`t` is settled by the sense, not by the
-crop.** English is not Tier-1 — nothing about a glyph identity is at stake, the
-word is one every reader knows, and *skins ot*, *himselt*, *the wolt* have exactly
-one reading each. Take it and note the wear.
-
-**Wear concentrates at the margins**, where the impression fails first: eight
-instances over seven pages of two batches (`2-142` L21, `2-150` L21, `2-154` L16,
-`2-156` L15, `2-166` L3, `2-168` twice, `2-176`) were every one of them the last
-letter of a line. So a line-final letter that reads `t` where the word wants `f` is
-the expected shape of this damage, not a discovery.
-
-**Do not go to 4× for it.** Two readers did, contrasted letterforms, wrote up what
-they saw and were wrong — `2-154` L16 and `2-156` L15, both adjudicated to `of`.
-A worn sort has no mark left to discriminate on, so magnification returns a
-confident description of nothing, which is the failure this file exists to prevent.
-The contrast half of what those two readers did is §5.13's class, and is now
-barred outright.
-
-The register above carried a fourth entry, `1-100` L53 `eaıly`, described as
-verified against the raster. **It never was.** `gt/ocr/chukchi-1-100.xml` reads
-`early` and contains no dotless i anywhere: the entry wrote up a reading the
-adjudicator had already corrected, as though it had been ratified. It then did
-what a false register entry does — `1-107` L36 was keyed `aıe` on its authority,
-and the same correction had to be made a second time.
-
-So a register here is checkable against `gt/ocr` or it is not evidence, and the
-three entries above were re-read out of the store, not recalled.
-
-**The one exception is a form that is contextually Tier-1 — a gloss, a native
-proper name, a word in a numbered vocabulary — carrying something the keying spec
-does not contain at all.** A diacritic outside the §2.1 mark set. A plainly
-polysyllabic form with no stress mark anywhere. A word-final `-gɪn`/`-gɪt` with no
-dot below. A base the inventory has no sort
-for. This is narrower than "looks wrong": the notation is a closed set, so a form
-inside it that merely surprises you is evidence, and a form carrying a mark the set
-does not have is a compositor's slip with no reading to preserve.
-
-`1-099` L13 prints `Kuvár` — an acute over the vowel, in a personal name. §2.1 has
-no acute. §3 already lists the spacing acute U+00B4 as a trap for U+02CA; this is
-that trap in the form NFD leaves behind, `a` + U+0301, which the table does not
-name. The store holds `Kuvaˊr`.
-
-`2-104` L5 prints `mêlhɪn` — a disyllable with no stress mark at all, the second
-shape in that list, and it is *found* differently from the first. An acute is
-visible as wrong; an absence is wrong only against §2.1's culminativity, so it is
-reached by asking the question of every Tier-1 word and never by being surprised by
-one. Its reader asked, looked at 4×, and reported the space above the `ê` clean —
-no broken sort, no faint ink, so the omission is the compositor's and not the
-scan's. The store holds `mêˊlhɪn`.
-
-`3-006` L19 prints `yaraˊ-tɵˊmgɪt` — a word-final `-gɪt` with no dot below, the same
-shape again: an absence, reached by asking the question rather than by being
-surprised. What closes it is §5.1's count, 89 word-final `-g̣ɪn`/`-g̣ɪt` against one
-bare and that one compound-initial — so in *this* position a bare `g` is a slip, and
-in any other it is a reading to preserve. Its reader keyed the dot on the prior
-without seeing it and said so in `note`, which is what kept the line visible. What
-licenses the dot is the count, and not the crop that went looking for it: §5.13 bars
-reading a glyph off its neighbours, and absence is not observable in isolation, so
-"the dot is not there" is never the thing that carries this — it only says the
-compositor is the likelier author of the gap than the scan.
-The store holds `yaraˊ-tɵˊmg̣ɪt`, and the print does not — the first case here where
-the emendation *adds* a mark the raster demonstrably lacks rather than replacing one
-it carries.
-
-**There the spec stops short of the answer.** Culminativity says a mark is missing;
-nothing in this file says *where* it goes. That came from the adjudicator's
-knowledge of the language, a human act ranked `#ed`, and not from a count — so read
-the licence paragraph below with the distinction in hand. "Keyed as printed"
-governs a form whose *reading* is in question, where another attestation would be
-the witness. A defective form has no reading to preserve, and one attestation is
-not what repairs it.
-
-**The reason the asymmetry exists is that Tier-1 glyphs are not only training
-data.** `proposal marks` computes its corpus percentages from `gt/ocr` and
-`concordance.md` treats it as the attestation set, so keying the slip would enter
-"acute over a vowel" into the evidence as a real occurrence and every later reader
-would be measured against a distribution containing it. An English typo enters no
-such table and costs one wrong training pair.
-
-**If you are reading a page, this is a `note`, not a correction.** You can see that
-the mark is outside the set — that is a fact about the spec in front of you. You
-cannot see what the form should be instead: `gt/ocr` is closed to you by the guard,
-which refuses it saying that deriving a convention from a neighbouring page is what
-the firewall forbids. So key what is set, and say in the line's `note` which
-provision it falls outside and what you think it stands for. That is a complete
-piece of work, and it is what `1-099`'s reader did.
-
-**The correction is the adjudicator's**, made at the review server where the other
-occurrences can actually be counted, and licensed by occurrences already in
-`gt/ocr` and nothing else — not by expectation of what the notation should contain,
-not by a neighbouring page's unratified reading, not by a single other attestation.
-A form the corpus holds once is keyed as printed.
-
-**Nothing catches this mechanically, and the reader's flag is the whole detector.**
-`a` + U+0301 appears in no table — not `INVENTORY_CHARS`, not `LOOKALIKES`, not
-`MARK_LICENSE` — and `unlicensed_marks` inspects only marks that *have* a licence
-entry, so it reports a licensed mark on a wrong base and says nothing about a mark
-it has never heard of. `corpus normalize` exits 0 on the proposal carrying `Kuvár`.
-A raised or overset mark you cannot place in §2.1 is therefore a `note`, every time,
-whatever the gates say.
+The notation is a closed set, so a form inside it that merely surprises is
+evidence, and a form outside it is a compositor's slip with no reading to
+preserve. Tier-1 glyphs are not only training data: `proposal marks` and
+`concordance.md` measure every later reader against the store, so keying the
+slip would enter it into the evidence. **A reader keys what is set and puts the
+provision it falls outside in `note`; the correction is the adjudicator's**, a
+human act ranked `#ed`, licensed by occurrences already in `gt/ocr` and nothing
+else. Nothing catches the first shape mechanically — `unlicensed_marks` inspects
+only marks that have a licence entry — so the reader's flag is the detector.
+*Attested:* `1-099` L13 `Kuvár` → `Kuvaˊr`.
 
 ### 2.15 Diacritics on English loanwords — strip them (SETTLED, editor ruling)
 
-**A mark on a common English word is not keyed.** `rôle` is keyed `role`, `naïve`
-`naive`, `vice versâ` `vice versa`. `2-124` L7 is the ruling case.
+**A mark on a common English word is not keyed**: `rôle` → `role`, `naïve` →
+`naive`, `vice versâ` → `vice versa`, `séance` → `seance`. Every such mark is a
+member of `INVENTORY_CHARS` under NFD, so kept it reads as Tier-1 to every
+detector and measurement, corpus-wide; stripped it costs one training pair.
 
-The marks are **Brill's, not Bogoras's**. A multilingual house sets `rôle` with the
-circumflex it would set in French and marks a Latin ablative because its compositors
-set Latin; the mark is a habit of the press carried into English text, where the
-word has no such mark in English. It records nothing about the word and nothing
-about the Chukchee.
+**The test is only whether the word is common or a name.** Whether English also
+sets the word accented does not enter it. A proper name keeps its marks
+(`Nordenskiöld`): the entity store keys on the spelling. Gate: none.
+*Attested:* `2-124` L7 `rôle`; `2-158` L5 `séance`.
 
-Keeping them has a specific cost, and it is the reason for the rule: every one is a
-member of `INVENTORY_CHARS` under NFD, so `rôle` reads as Tier-1 to the
-transcription detector and to `proposal marks`. It is the *same codepoint* the
-notation uses, so nothing downstream can separate the press's French from Bogoras's
-system. Stripping removes a false witness; it loses no true one.
+## 3. Forbidden lookalikes
 
-**It does put text that disagrees with the raster into `gt/ocr`, and that is the
-price.** §2.14 refuses to repair a printer's error for exactly this reason — the
-store is line images paired with their text, so a disagreeing character teaches a
-recognizer something false. The difference is what the disagreement is worth: a
-mark the press set out of habit costs one training pair per occurrence (four in the
-store as of this ruling), where leaving it in poisons every Tier-1 measurement that
-reads `INVENTORY_CHARS`, corpus-wide and permanently. §2.9 made the same trade for
-the same reason. Neither is a general licence to normalize.
+Codepoints that are always an error in the scope named. The four marked
+*corpus-wide* are `validate.FORBIDDEN_PROSE`; the rest are greps inside Tier-1
+spans, where the licensed sort is the one in the right-hand column.
 
-**Common is the whole of the test, and whether English also sets the word accented
-does not enter it.** `séance` is keyed `seance`. The paragraph above explains *why*
-the press set the mark, and that explanation is not a criterion a reader applies:
-asked whether a word "has no such mark in English", a reader will answer for
-`séance` that it does, and keep it. **Three of the four readers who met it in one
-batch did exactly that**, independently, each citing this section — `2-158` L5,
-`2-160` L19, `2-161` L20 and L27, all four adjudicated to `seance`, with the fourth
-reader having stripped it unprompted. A rule three readers read into its opposite is
-a rule that routes through the wrong question. The question is only whether the word
-is a common one or a name.
-
-**Scope is common words, and a proper name keeps its marks.** `Nordenskiöld` stays
-as set. A name's spelling is part of its identity, the entity store keys on it, and
-the strip that clears `rôle` would corrupt a headword. Names therefore stay a known
-false positive of the detector — `CLAUDE.md` already says so of `Nordenskiöld`'s 29
-occurrences — and that is accepted: a few recurring names are a cost the entity
-store absorbs, an open-ended class of loanwords is not.
-
-## 3. Forbidden lookalikes — unconditional corpus-wide greps
-
-| Codepoint(s) | Trap for |
-|---|---|
-| U+00B4 ´ | U+02CA |
-| U+2019 ' , U+2018 ' , U+02BC ʼ, U+02BB ʻ | U+0027 (U+2018 esp.: turned-comma spirant shape, F10) |
-| U+00B7 · (middle dot) | U+02D9 |
-| U+0121 ġ, g + U+0307 | g + U+0323 |
-| U+02E2 ˢ | U+1D4B, U+1D49 |
-| U+2091 ₑ | U+1D49 |
-| U+04E9 ө (Cyrillic) | U+0275 |
-| U+2010 ‐ | U+002D |
+| Codepoint(s) | Scope | Trap for |
+|---|---|---|
+| U+00B4 ´ | corpus-wide | U+02CA |
+| U+02BC ʼ, U+02BB ʻ | corpus-wide | U+02CA |
+| U+2010 ‐ | corpus-wide | U+002D |
+| U+0027 ' , U+2019 ’ , U+2018 ‘ | Tier-1 | U+02CA (§2.1) |
+| U+00B7 · (middle dot) | Tier-1 | U+02D9 |
+| U+0121 ġ, g + U+0307 | Tier-1 | g + U+0323 |
+| U+02E2 ˢ | Tier-1 | U+1D4B, U+1D49 |
+| U+2091 ₑ | Tier-1 | U+1D49 |
+| U+04E9 ө (Cyrillic) | Tier-1 | U+0275 |
 
 Any `ġ` surviving in working documents is the dot-above transmission stand-in
-for g̣: **annotate in working docs, correct in normative ones**, changelog
-either way.
+for g̣: annotate in working docs, correct in normative ones.
 
-## 4. Validation scripts (all print-compliance, never inference)
+## 4. Validation (print-compliance, never inference)
 
 1. Stress culminativity: ≤1 U+02CA per word.
-2. U+0027 licensing: post-{b p d t g k} or V_V only; any other in-form
-   position is unconditionally an error.
-3. U+1D49 not immediately before `i`: unconditional error.
-4. U+1D4B immediately before `i`: review-flag.
-5. The §3 lookalike greps, corpus-wide, unscoped.
-6. NFD conformance at export.
-7. Per-language frequency table of the seven lateral/rhotic sorts, once
-   keying runs — the mechanical F4 resolution.
+2. U+1D49 not immediately before `i`: error.
+3. U+1D4B immediately before `i`: review flag.
+4. The §3 greps, each in its scope.
+5. §2.6 mark licences: error.
+6. NFD conformance.
+7. Per-language frequency table of the seven lateral/rhotic sorts — the
+   mechanical F4 resolution.
 
-**Two-scope dashboards.** Collation-stage TEI reproduces Tier-1 draft text
-verbatim (harness rev 2) and will trip scripts 2 and 5 inside those spans *by
-design*. GT: zero tolerance. Collation output: that noise **is the to-key
-worklist**, not a defect.
+Ground truth: zero tolerance. Collation output reproduces Tier-1 draft text
+verbatim, so its hits inside those spans are the to-key worklist, not a defect.
 
-**U+0027 (spirant or pause) is not a live candidate in practice.** Both are licensed
-by the printed key, both are named in §2.1, and neither has ever once been the correct
-reading anywhere in the restored corpus — every raised mark examined in a licensing
-environment that superficially fits spirant or pause has turned out, on adjudication,
-to be stress. Do not propose U+0027 in a Tier-1 span. Read every raised mark as stress
-(U+02CA) by default, full stop, including in V_V position, including immediately after
-b/p/d/t/g/k. This is not a 99%-vs-1% weighing exercise to perform per instance — it is
-the working assumption, and a proposal should default to it without restating the
-V_V-or-post-consonant environment check as if it were live evidence for apostrophe.
-The check for the environment still matters for *validation* (script 2, below) — an
-`U+0027` that turns up unlicensed is still a real error to catch — but that is a
-different question from what a *model* should ever propose from a raster reading.
-If an apostrophe is ever genuinely confirmed by a human against the raster, that
-page is the corpus's first attested instance and the note should say so explicitly,
-because it would be a surprising, citable finding — not a routine call.
+## 5. Priors (measured; cite the verb, never a number)
 
-## 5. Reading discipline — recurring misreading classes
+The store is overwhelmingly Chukchee and mid-rebuild, so every share here moves
+and none is written down: the claim is a direction plus the verb that recomputes
+it. **Where the text glosses a form as another language — Koryak, Chuvan,
+Eskimo — no prior applies**: key what is printed and say so in `note`. How a
+prior is applied at the raster is the reader's contract (R-items); this section
+says only what the count says.
 
-Shared by both passes: collation keys Tier-1 spans character-by-character off
-the raster exactly as the ground-truth rebuild does (transcriber harness rev
-2), so a misreading class caught in one is worth guarding against in the other.
-Every item is a record of an error that actually happened, most more than once,
-and each has one fixed shape — **the rule, the instrument, the record** —
-because the batch history shows that restating a class more loudly changes
-nothing: readers have quoted an item verbatim, named its trap word, and
-committed the error on the same page. What works is running the item's
-*instrument*, so that is what each item leads with after the rule. The full
-case files behind every record line are `docs/decisions.md`, "The
-reading-discipline record".
-
-**Run this list as a per-line pass over every Tier-1 span, zoomed or not** —
-never as background awareness. `harness ocr corrections` is the standing way to
-ask which classes are still live, with two cautions: unscoped it reports
-classes later rules made impossible (use `--since` a date after the rule you
-care about), and it undercounts by construction, since a repair made with
-`proposal set`/`replace` before adjudication leaves no diff. As of 2026-08-02,
-scoped past 2026-07-31, the only class recurring across pages is §5.2's `i`→`ɪ`.
-
-**Every frequency below is Chukchee's.** The numbers are pooled over a store
-that is overwhelmingly Chukchee, so where the text explicitly glosses a form as
-another language — Koryak, Chuvan, Eskimo — **the priors do not apply. Transcribe
-what is printed, with extra care, and say in `note` that the form is glossed as
-that language.** Such forms are rare, which is the hazard: a Chukchee-looking
-suffix on one invites a correction toward a distribution it was never drawn
-from.
-
-**And every one of them moves.** The store is mid-rebuild — pages leave it to be
-re-read and come back — so any absolute count written here is a snapshot that has
-already drifted, and one was quietly wrong for a while by being labelled a
-word-initial split when it was a total. So the shape of a claim in this section is
-the *direction* of a lean plus the verb that recomputes it: `harness lexicon
-marks` for bare-vs-marked per base letter, `lexicon suffixes` and `lexicon
-digraphs` for affixes, `harness proposal marks` for a page against the store.
-**Cite the verb, not a remembered number**, and read `band_n` before believing a
-band: a prior backed by one page is a prior backed by one page.
-
-0. **Where a reading and this file disagree, the spec wins and the
-   disagreement is flagged for a human — never resolved by further zooming.**
-   Magnification cannot settle a question that isn't optical, and a detailed,
-   self-consistent note citing its own close reading is exactly what a
-   confident guess looks like. Citing the firewall to justify a novel sort
-   inverts it — the firewall forbids *adopting* a glyph on a model's
-   authority; it does not forbid the printed key or an editor ruling from
-   binding.
-1. **Dropped dot below `g`: a bare Tier-1 `g`/`G` is the exception that needs a
-   reason, never the resting state.** `g̣` (g + U+0323) is **the large majority
-   of Tier-1 `g`** — around 87% as the store stands and never yet a minority at
-   any size it has been; run `harness lexicon marks` for today's share rather
-   than quoting this sentence. And `-g̣ɪ`/`-g̣ɪn`/`-g̣ɪt` are common **noun-forming suffixes** in
-   every register (`va'ɪrg̣ɪn`, "spirit"), where the dot is not a majority but a
-   constant: **89 occurrences of `g̣ɪn`/`g̣ɪt` across the adjudicated pages
-   against exactly one bare.** That is a closed count and not a prior —
-   `harness ocr grep 'g̣ɪ[nt]' --all --store gt`, against `'gɪ[nt]'` for the
-   other arm, which under NFD matches only the undotted form because the dot
-   sits between the `g` and the `ɪ`. So **do not key a bare word-final
-   `-gɪn`/`-gɪt`.** If you cannot see the dot there, that is a fact about the
-   crop and not about the word: key it dotted and say in `note` that you could
-   not see it, which is what keeps the line visible to the adjudicator — a
-   silent dotted reading and a seen one are indistinguishable, and `conflict`
-   can only find what somebody wrote down.
-
-   **Word-final is the whole of the count, and not of the rule.** The
-   single bare instance is `naˊrgɪn-mñêˊɪrg̣ɪn` (`2-118` L25, adjudicated): bare
-   in the compound's *first* element, dotted at the end of the word. `naˊrgɪn-`
-   is a root that happens to end in those letters, not the nominalizer, and the
-   grep above cannot tell the two apart — it counts letters, not morphemes. So
-   inside a compound the count does not speak: read it, and flag it — **which is
-   not the same as keying it bare.** A position the count cannot close is not a
-   position where the dot is unlikely; the share in the first sentence is
-   corpus-wide. Eleven dropped dots across two part-3 batches were every one
-   word-initial, medial or root-internal, by readers who had this count and read
-   its scope as licence.
-   The dotted and undotted sorts are the same letterform, so **absence is not
-   observable in isolation**: a "no dot" reading at any magnification is
-   answering a question the image cannot answer, and must clear a higher bar
-   than a "dot" reading, because the base rate runs the other way. "Confirmed
-   at 4×" is what both wrong readings said.
-
-   **2× does not resolve this dot, and a bare reading made at 2× is worth
-   nothing.** On `2-245` a reader read every `g` on the page as bare off the 2×
-   sheets, re-zoomed at the ceiling, and found the dot below on every single
-   one; `2-246`, the same batch, keyed four `-tirgɪn` bare against five ratified
-   dotted attestations. So **no bare `g` may be keyed off a 2× crop** — go to 4×
-   or key it dotted and say in `note` that you could not see it. The dot is
-   ~2 source px clear of a descender loop the scan already renders ragged, which
-   is why it is the first thing this magnification loses and the last thing a
-   reader notices losing.
-
-   *Instrument.* **Resolution, then the prior — not comparison.** Go to 4×,
-   look at the sub-baseline area of that one `g`, and if the dot is not there
-   key it dotted anyway and say in `note` that you could not see it. Do not
-   set it beside another `g`: §5.13 is why.
-   The systematic net needs no raster: `harness proposal marks` — its `rare`
-   arm names every occurrence of a form the corpus almost never sets, its
-   `conflict` arm finds one word spelled two ways against ground truth; pass a
-   whole batch's refs at once, since one page is rarely a sample worth a
-   verdict and the pooled `ALL` row separates one reader's slip from a
-   systemic lean. `detectors.SUFFIX_MARK_DROPS` (a data table — new measured
-   skews are rows to add) flags any bare-`g` token ending `-gɪ`/`-gɪn`/`-gɪt`,
-   runs unconditionally inside `proposal check`, report-only. The
-   `-hɪn`/`-lɪn`/`-lhɪn` family is comparably common and takes the same
-   "assume it, don't bare-key it" discipline; `harness lexicon suffixes` /
-   `lexicon digraphs` measure such claims rather than asserting them.
-
-   *Record.* The most-corrected class in the project's history: `1-074` ×2,
-   `3-004` (nearly every headword — the page's largest error class), `3-005`,
-   `2-033` ×4, `2-035`, and `1-042` at adjudication — five restatements
-   survived, including a reader that quoted the prior and the trap word, then
-   bare-keyed it on the page it was writing about. Both `2-033` and `2-035`
-   were corrected to dotted after 4× stares had failed; `1-042`'s was caught by
-   `proposal marks` after four clean mechanical gates. Then `2-104`
-   (`vaˊɪrgɪn`) and `2-117` (`vaˊɪrgɪn`, `ɪˊê-mñêˊɪrg̣ɪn`) in the chapter-XIV
-   pass, all three overturned the same way. Each of those corrections was
-   credited at the time to a contrast crop; §5.13 says why that credit was
-   unearned — every one of them moved toward the prior, which is the only
-   direction the method has ever been right in. Those
-   readers did everything else right — refused the ratified handle, flagged the
-   line — which is why the rule above is now a count and not an exhortation:
-   the disciplined disposition still produced the wrong character. Eleven more
-   followed across the two part-3 batches (`3-004` ×2, `3-005` ×3, `3-011`,
-   `3-017` ×3, `3-018`, `3-023`), **none of them word-final** and none caught by
-   a crop: ten were named by `proposal marks` before a scan was opened, and the
-   eleventh fell inside the same crop as one that was. `3-005`'s reader argued
-   the dot away from morphology — "not the `-gɪn` suffix, it is a bare root
-   `gêl`" — a glyph inferred from what the system ought to contain, which the
-   ink refused twice on one page. The same
-   adjudication ran the other way once, and that is the more useful half:
-   `2-118` had keyed `naˊrg̣ɪn-` dotted, and the dot came off. A rule stated as
-   "always" would have made that correction unwriteable, which is why the count
-   above is scoped to word-final and says where it stops. Word-final is also the
-   only position where the count licenses the dot being *supplied* against the
-   print, which is §2.14's exception and not this item's: `3-006` L19.
-2. **`ɪ` (U+026A) vs `i` vs `r` — the leading residual class, and the tell is
-   that the reader reports checking it.** The base rate runs against plain `i`
-   — Tier-1 `ɪ` outnumbers it across the store, and `-ɪn` / `-ɪt` are by a long
-   shot the commonest suffixes in Bogoras's forms, `-ɪn` topping the suffix
-   table outright, while plain `-in` is attested but rare and chiefly in proper
-   nouns and words of foreign origin. So a suffixal dotted `i` is the reading
-   that needs a reason, and a page keying mostly `i` wants a second look before
-   anyone opens a scan. Three sub-cases, none caught by shape alone:
-   - **`ɪ` vs `ĭ`** is a §2.6 licensing fact, not a shape call: the breve is
-     licensed on `i` and never on the obscure-vowel series, so a dotless vowel
-     carrying a genuine breve is `ĭ`, full stop — a rule lookup, not a look.
-   - **Word-initial capital-shape vs small-cap `ɪ` — read it, and do not argue
-     it from a frequency in either direction.** Position splits this in two, and
-     only one half is settled. Word-*medially* an ASCII capital is essentially
-     never right, by a margin wide enough that `detectors.MEDIAL_CAPS` refuses
-     one outright rather than flagging it — **and a height comparison does not
-     reopen it.** The two sorts differ in nothing but height, so measuring is
-     the one instrument that cannot work here: there is no feature to find,
-     only a size to be talked into. `2-170` compared its medial `A` against a
-     known full capital and a known small cap on its own page, concluded full
-     height, and was adjudicated to `ᴀ` — while `2-171`, which read the same
-     name off its position in the word and measured nothing, had it right.
-     Position decides it. Word-*initially* both are ordinary
-     and **the store does not hold enough initials of either kind to support a
-     prior**: `proposal marks` says so in its own output, where the word-initial
-     bands rest on one ground-truth page for `ɪ`/`I` and on none at all for
-     `ᴇ`/`E` — which is what the `?` in its `outside` column means. A page-level
-     lean on this contrast is therefore not evidence, and reporting one as if it
-     were has already sent two batches chasing a word-initial `E` that was
-     correct as keyed.
-   - **`ɪ` keyed as `r`, arriving from the recognizer.** CATMuS substitutes
-     `i`, `I` and **`r`** for `ɪ`, and `r` is the one that gets through — its
-     error *is* ASCII, which is why the rule reads "CATMuS is not a witness to
-     what any character is wherever an inventory glyph could stand", not
-     "…to any non-ASCII glyph".
-
-   *Instrument.* Read the letter itself and name what it has: `r` carries a
-   shoulder, `ɪ` is a bare stem with serifs top and bottom, `i` is x-height and
-   dotted. These are **descriptions, not a comparison** — do not hold the
-   letter against another one on the line, per §5.13. The 2:1 prior and the
-   suffix table are the no-raster net. A confident negative settles nothing:
-   absence claims about a small feature are not settled by having looked once.
-
-   *Record.* `1-101`'s `Iᵋplɪˊlɪ` ×2 (word-initial, corrected to `ɪᵋplɪˊlɪ`);
-   `2-033`'s `Attɪˊg̣ɪtkɪ` keyed as `Attrˊgɪtkɪ` off the machine text; four
-   residuals over two 2026-08 batches caught only by the human (`2-047` ×2,
-   `2-031`, `2-035`) — **every one on a line whose reader had explicitly
-   narrated the check**, one writing "checked closely against the ɪ elsewhere
-   on the page" and being wrong.
-3. **`ä` (a + U+0308) vs. plain `a`: any bare `a` in a Tier-1 form is a
-   candidate for `ä`, not a default reading.** `ä` runs under a tenth of Tier-1
-   `a` (`harness lexicon marks` for today's share) — so unlike §5.1 the prior
-   here is *against* the mark, and the reason to look anyway is that the
-   diaeresis is small, easy to read past on a contact sheet, and has been
-   missed more than once on one page. A minority sort is still a sort.
-   *Instrument:* the same absence-shaped discipline as §5.1 — 4× on the vowel
-   itself, never a comparison (§5.13), and the distributional arms of
-   `proposal marks`.
-   *Record:* missed more than once on the same page, off sheets rather than
-   zooms.
-4. **Old-style figures: the numeral `1` is x-height and dotless — easy to
-   take for `ɪ` — and `0` is small and round.** CATMuS reads `20th` as `zoth`
-   — evidence of how easily the class slips past a plausible-looking read,
-   not evidence for any glyph, since a recognizer is not a witness to Tier-1
-   identity at all.
-
-   *The traffic runs the other way too, and there it is the draft's most
-   repetitive error.* Bogoras's cross-references are lettered — `(No. 8, g)`,
-   `(No. 1, a, b)` — and the draft reads the **italic `b` as `6`** almost every
-   time: five pages of one ten-page batch (`2-203` L40, `2-205` L15, `2-206` L2,
-   `2-207` L26, `2-208`). Every reader caught it and every one spent a crop
-   doing so. **You do not need one.** A figure standing inside a series that
-   runs `a, b, c` is a letter, and the enumeration settles it on the page; go
-   to the raster only when the series itself is what you cannot make out.
-
-   `b` is much the commonest, and the rest of the italic sorts in these
-   references are mangled too — `(i)`, `(j)`, `(l)` came back as `(¿)`, `(7)`,
-   `(7)` on one page, and an x-height `1` as roman `I` on another. So the rule
-   is about the draft and not about any one letter: **inside a lettered
-   cross-reference the machine text is not a witness to which sort was set.**
-   Read the series.
-5. **Every multisyllabic Chukchi/Koryak/Yupik word carries exactly one stress
-   mark (culminative, ≤1 per word, §2.1) — a multisyllabic Tier-1 word with
-   no stress mark anywhere in it is not a plausible reading, it is a red
-   flag.** Not "usually", every one: before accepting such a word, ask
-   explicitly where its stress mark is. If the only raised mark in it is
-   keyed `'`, that is `ˊ` misread (§4 — apostrophe has never once been the
-   right call).
-   *Instrument:* run the "where is its stress mark" question as a real
-   per-word gate, and — after writing `resolved` — **re-read `text` character
-   by character against what `resolved` just concluded**: reasoning about a
-   mark and typing it are two different acts, and nothing enforces that the
-   second followed the first. A `resolved/text mismatch` repeating down the
-   page is the tool reporting something systematic, never
-   narrative-formatting noise.
-   *Record:* wrong at whole-page scale once, and at single-word scale on two
-   hand-keyed pages; `3-004` added the worse mode — every `resolved` field
-   reasoned "→ stress U+02CA" correctly and `text` kept the literal `'` on 33
-   of 71 lines, with `proposal check` reporting the exact signature
-   (`in resolved not text: U+02CA`) line after line and the reader dismissing
-   it.
-6. **Straight quotes for English glosses.** The book sets curly `“…”`
-   throughout, never straight `"..."` (§1) — so **never, ever zoom to confirm
-   whether a quote is straight or curly: it is always curly**, a straight one
-   in machine text is an encoding artifact, and there is nothing on the paper
-   to adjudicate. Slipped through in bulk more than once, including in
-   hand-keyed pages assumed authoritative for years.
-   *Instrument:* `harness corpus normalize` flags a straight quote as a
-   worklist lookalike; it does not auto-fix, since pairing an open quote to
-   its close can require reading across lines.
-7. **Medial ASCII capital where a small-cap was meant** — plain `A`/`E`/`I`/`L`
-   mid-word instead of `ᴀ`/`ᴇ`/`ɪ`/`ʟ` (§2.3). `detectors.MEDIAL_CAPS` flags
-   it inside `proposal check` and never auto-corrects, even when it looks like
-   the one clean swap on the line: *which* small-cap an ASCII capital was
-   meant to be is a reading judgement, so it only ever surfaces as a flag for
-   a human.
-8. **Any raised mark defaults to stress (U+02CA), never apostrophe (U+0027)**
-   — §4's closing paragraph is the rule in full; don't reason about the
-   licensing environment as if it were live evidence for apostrophe, and
-   don't re-litigate it per page.
-   *Record:* `3-005` flagged half a dozen marks as open "human calls" between
-   stress and apostrophe; all were stress.
-9. **Never key a codepoint the inventory doesn't catalogue: if the candidate
-   isn't in §2.1–2.4, the reading is wrong far more often than the inventory
-   is incomplete** (item 0). *Shape quality at magnification cannot by itself
-   separate a sort from a smudge* — the argument has now been good and wrong
-   (`1-048`) and bad and wrong (`1-060`), with the same ruling both times: a
-   conveniently diacritic-shaped smudge.
-   *Instrument:* the disposition is fixed whichever way the shape argument
-   points — **key the letter as printed, put the unlicensed mark in `note`
-   naming its would-be codepoint as uncatalogued, and let a human rule** —
-   because the codepoint being uncatalogued is what decides it, not the ink.
-   Reading against `mz/ocr/` helps here: `1-060` surfaced itself as a
-   recognizer/reader disagreement instead of depending on anyone remembering
-   to look.
-   *Record:* `3-005` proposed U+025B in two ordinary English words (plain `e`
-   printed); `1-048` `reindeér-breeding` (a type-weight tapered wedge, ruled
-   smudge); `1-060` `“Chief”` (ruled smudge, with the control ˊ of
-   `tɪkêˊ-vaˊg̣lɪñɪn` on the same page).
-10. **No small-caps "o" exists in this notation** — §2.3 licenses small-cap
-    bases only for ᴀ ᴇ ɪ ʟ. A lowercase `o` beside a small-cap ᴇ or ʟ can read
-    as small-cap height at 4× purely from kerning; that is a rendering
-    artifact, not a second sort.
-    *Record:* `3-005` proposed the distinction inside one word (`ᴇʟO'o`);
-    plain lowercase `o` throughout.
-
-11. **A note that describes a keying decision the text does not show** — the
-    inverse of §5.5's failure, and worse, because the text is *right* and the
-    note argues the adjudicator into breaking it.
-    *Instrument:* two cheap rules. **Before the proposal is final, re-read
-    every `note` against its own `text`** — a note describing a decision the
-    text does not exhibit is a defect whichever one is right, because they
-    cannot both be. And **a note citing a section of this file must quote the
-    sentence it relies on** — quotation is the check that "I read it" is not.
-    *Record:* `2-031` keyed its footnote openers correctly as `¹ ² ³` and
-    attached notes claiming ASCII digits had been keyed "per the precedent
-    recorded for 2-034" — text repaired mid-pass, note never re-read. The
-    first diagnosis blamed the reader and was wrong: §2.10 then printed the
-    defect as a worked example, and a record of an error read as a statement
-    of a convention. **When a reader misapplies a rule, read the rule before
-    concluding it was ignored.**
-
-12. **A note may state what you saw; it may not state what another witness
-    said unless that witness was actually consulted.** The other half of
-    §5.11 and harder to catch: the reading is correct, the check passes, and
-    the note supplies a *checkable* corroboration that turns out to be false
-    — which is exactly the thing that stops the next reader looking, and it
-    will be believed, since the text beside it is right.
-    *Instrument:* the witnesses are one command away — `harness ocr lines REF
-    --store mz` for what the machine actually read, a zoom for a measurement
-    — so consult before quoting, or don't quote. And **write notes in
-    codepoints, not glyphs** (`U+0323 COMBINING DOT BELOW`, not the
-    character; describe a spacing rather than exhibiting one): reproducing a
-    glyph in prose is probabilistic the same way keying it is, and `corpus
-    normalize` runs over `note` like any other field — intentionally, not as
-    a trap to route around — so an exhibited example can be silently
-    rewritten into its own counterexample.
-    *Record:* two instances in one batch, different readers — `1-022`'s
-    height "measurement" for `Plates V` (false: the `v` is x-height, the
-    small caps visibly taller), `1-021`'s "CATMuS read it as an apostrophe"
-    (false: the machine text contains none). And `2-170`'s medial `A`, the
-    third: **a height measurement has now been wrong every time it has been
-    made here, including once when it was made well** — against two named
-    controls on its own page. Two sorts that differ only in size give a
-    reader nothing to see and a free hand to decide, so the measurement is
-    not weak evidence, it is the shape a decision takes when it has none.
-    Settle these by position, by what the form is, and by the rule that
-    covers it; report a size only as something you could not settle.
-
-13. **A glyph is read from its own ink. Never set two glyphs side by side and
-    ask which differs.** A comparison does not deliver a difference you can
-    see; it delivers one you will supply, in good faith, and write down in a
-    `note` that nothing downstream can distinguish from an observation. §5.12
-    is this failure with a ruler; this is it with a pair. It has no licensed
-    form — not against an English letter, not against a ratified sort, not
-    against the same word elsewhere on the page.
-    *Instrument:* the moves when the ink will not answer are **4×, then the
-    prior, then `note` saying it is unresolved**. A comparison is not the
-    escape hatch from an unreadable crop: the reader who has just said it
-    cannot read a mark is the last one who should be handed a difference to
-    find, and that is the exact moment the method gets reached for.
-    *Record:* §5.1 credited contrast with four overturns — `2-033`, `2-035`,
-    `2-104`, `2-117` — and **every one of them moved toward dotted, which is
-    what the 89:1 prior already said**. The method supplied no information in
-    any of the four; it supplied a direction the base rate had already given,
-    and was credited for the agreement. Then `2-246` ran it the other way — a
-    reader held `-tirgɪn` against `Tɪluˊwg̣ê` on its own line, reported a clean
-    contrast, and keyed four occurrences bare against five ratified dotted
-    attestations. A method that is right when it agrees with the prior and
-    wrong when it does not is the prior wearing a witness's coat. The
-    instruction was not the reader's invention: §5.1 prescribed it and `ocr
-    zoom`'s ceiling message offered "a named contrast on the same line" as a
-    next move; both were cut. Compare the twice-refused proposal to give
-    readers an `ñ`/`n` contrast axis, on the same ground.
+1. **Dot below `g`.** **Word-final `-gɪn`/`-gɪt` — the last letters of the
+   word — is dotted, a closed count with no bare instance**: key `-g̣ɪn`/`-g̣ɪt`
+   whether or not the dot is visible, and do not note that you could not see
+   it. In every other position the dot is a large majority and not a constant:
+   a bare `g` there is a reading to make, never a default. `detectors.SUFFIX_MARK_DROPS`
+   flags a bare token ending `-gɪ`/`-gɪn`/`-gɪt` in `proposal check`, report-only.
+   Recompute: `harness ocr grep 'g̣ɪ[nt]' --all --store gt` against `'gɪ[nt]'`
+   (under NFD the second matches only the undotted form); `harness lexicon marks`
+   for the overall share. *Attested:* `3-006` L19 `yaraˊ-tɵˊmg̣ɪt`.
+2. **`ɪ` over `i`.** Tier-1 `ɪ` outnumbers plain `i`, and `-ɪn`/`-ɪt` are the
+   commonest suffixes; plain `-in` is rare and chiefly in proper nouns and loans.
+   A suffixal dotted `i` is the reading that needs a reason. Recompute:
+   `harness lexicon suffixes`.
+3. **`ä` is a minority of Tier-1 `a`**, so the prior runs against the mark; a
+   bare `a` is still a candidate, because the diaeresis is small. Recompute:
+   `harness lexicon marks`.
+4. **Capital vs small-cap is decided by position, not height.** Word-medially
+   an ASCII capital is never right — `detectors.MEDIAL_CAPS` refuses it. Word-
+   initially both are ordinary and **the store supports no prior in either
+   direction**; `harness proposal marks` says so in its `outside` column.
+5. **Stress is culminative.** Every polysyllabic Tier-1 word carries exactly one
+   U+02CA (§2.1); one with none is not a plausible reading but a flag (§2.14).
+   Gate: `proposal check` reports a `resolved`/`text` mismatch.
 <!-- /transclude -->
 
 ---
