@@ -1447,6 +1447,12 @@ def diff(ref: str, root: Path = Path(".")) -> dict:
     baseline it never saw, and every count is noise. `drifted` says so; without it
     a regeneration would read as work somebody did.
 
+    **`drifted` has three values, and `null` is one of them.** True and False are
+    both claims about a comparison that happened; `null` is where none could —
+    no live stamp, or none on the collated page — and `why` names which. It was
+    False in those cases, which is the *reassuring* answer to a question nothing
+    had answered, on the row a human reads to decide a page is finished.
+
     `gen_comments` is the row that answers "is this page finished". Each generator
     comment names a judgement the rules could not make — an unresolved zone, an
     unanchored note, an unplaced figure — so a reviewed page that still carries one
@@ -1457,7 +1463,7 @@ def diff(ref: str, root: Path = Path(".")) -> dict:
     ref = norm_ref(ref)
     gen, rev = gen_path(ref, root), root / "tei" / f"chukchi-{ref}.xml"
     row = {"ref": ref, "baseline": gen.exists(), "reviewed": rev.exists(),
-           "drifted": False, "text_same": False, "p": "", "note": "",
+           "drifted": None, "text_same": False, "p": "", "note": "",
            "foreign": "", "name": "", "milestone": "", "gen_comments": 0,
            "lang_less": 0, "why": ""}
     if not gen.exists():
@@ -1472,11 +1478,31 @@ def diff(ref: str, root: Path = Path(".")) -> dict:
     # ground truth carries a new digest, so comparing the file against itself would
     # always agree. What matters is whether the copy the reviewer took still
     # matches what the rules produce from today's stores.
+    # **`drifted` is null where the comparison could not be made**, never False.
+    # It was False in both of these, which is the *reassuring* answer to a
+    # question nothing had answered — and this row is what a human reads to
+    # decide a page is finished. The whole reason `drifted` exists is that
+    # "without it a regeneration would read as work somebody did"; a False it
+    # could not justify is the same failure by a shorter route.
+    #
+    #   no live stamp     the inputs are gone, so there is nothing to compare
+    #                     the reviewer's copy against.
+    #   no stamp on rev   the collated page carries none — stripped, or written
+    #                     before the generator stamped. Nothing says whether it
+    #                     came from today's baseline.
     try:
         live = _stamp(ref, root)
     except FileNotFoundError:
         live = ""
-    row["drifted"] = bool(live) and t["stamp"] not in ("", live)
+    if not live:
+        row["drifted"], row["why"] = None, (
+            "cannot tell — no live baseline stamp; `harness tei generate` reads "
+            "gt/ocr/ and gt/zones/, and one of them is gone")
+    elif not t["stamp"]:
+        row["drifted"], row["why"] = None, (
+            "cannot tell — the collated page carries no generation stamp")
+    else:
+        row["drifted"] = t["stamp"] != live
     row["text_same"] = _body_text(gen) == _body_text(rev)
     for k in ("p", "note", "foreign", "name", "milestone"):
         row[k] = f"{g[k]}" if g[k] == t[k] else f"{g[k]}->{t[k]}"
@@ -1485,6 +1511,8 @@ def diff(ref: str, root: Path = Path(".")) -> dict:
     if row["drifted"]:
         row["why"] = ("baseline regenerated since review — the counts compare "
                       "against a file this page was not reviewed from")
+    elif row["why"]:
+        pass                      # a "cannot tell" above outranks a count below
     elif t["gen_comments"]:
         row["why"] = f"{t['gen_comments']} generator comment(s) still unanswered"
     return row

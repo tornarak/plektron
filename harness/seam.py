@@ -241,12 +241,23 @@ def _witnesses(page: Path) -> str:
     no standing to decide it. Silence when either is absent, and silence for `no
     witness`, because a comparison with one witness is the thing this project keeps
     finding in new costumes.
+
+    **That silence is for an absent comment, not an unreadable page.** A page
+    that will not parse returned `""` too, so "the two witnesses agree, or one is
+    missing" and "this check could not run at all" arrived as the same answer —
+    the check's inability to run encoded as its passing result, which is the
+    shape the paragraph above exists to refuse. A missing file is still silence:
+    the seam runs over pages that may not be collated yet.
     """
     from lxml import etree
+    if not page.exists():
+        return ""
     try:
         root_el = etree.parse(str(page)).getroot()
-    except Exception:
-        return ""
+    except (etree.XMLSyntaxError, OSError) as e:
+        raise ValueError(
+            f"{page.name} will not parse ({e}), so its seam witnesses cannot be "
+            f"read — which is not the same as its having none") from e
     reader = zones = ""
     for c in root_el.iter(etree.Comment):
         t = (c.text or "").strip()

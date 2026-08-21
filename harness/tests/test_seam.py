@@ -600,3 +600,27 @@ def test_one_witness_alone_is_reported_as_nothing(tmp_path):
         '<pb n="1"/><!-- opens: indented --><p>x</p></body></text></TEI>',
         encoding="utf-8")
     assert _witnesses(p) == ""
+
+
+def test_a_page_that_will_not_parse_is_not_a_page_with_no_witness(tmp_path):
+    """The silence above is for an absent comment, not an unreadable file.
+
+    Both returned `""`, so "one witness, nothing to compare" and "this check
+    could not run at all" arrived as the same answer — the check's inability to
+    run encoded as its passing result, which is the collapse the silence exists
+    to refuse, wearing the costume of the refusal itself.
+    """
+    import pytest
+
+    from harness.seam import _witnesses
+    p = tmp_path / "tei" / "chukchi-1-078.xml"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text("<TEI><text><body><pb", encoding="utf-8")
+    with pytest.raises(ValueError, match="1-078"):
+        _witnesses(p)
+
+
+def test_a_page_that_is_not_there_is_still_silence(tmp_path):
+    """Absence stays silence: the seam runs over pages not yet collated."""
+    from harness.seam import _witnesses
+    assert _witnesses(tmp_path / "tei" / "chukchi-1-079.xml") == ""

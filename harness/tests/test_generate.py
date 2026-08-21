@@ -18,6 +18,7 @@ a generator that leaves a marked hole produces a worklist.
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 import pytest
@@ -604,6 +605,36 @@ def test_diff_says_when_the_baseline_moved_under_the_review(tmp_path):
     alto(tmp_path, "1-021", [("MainZone-P", lines_at(["Body corrected."]))])
     row = gen.diff("1-021", tmp_path)
     assert row["drifted"] is True and "regenerated since review" in row["why"]
+
+
+def test_diff_says_it_cannot_tell_rather_than_saying_no(tmp_path):
+    """`drifted` has three values and `null` is one of them.
+
+    It was `False` whenever the comparison could not be made — no live stamp, or
+    no stamp on the collated page — which is the *reassuring* answer to a
+    question nothing had answered, on the row a human reads to decide a page is
+    finished. `drifted` exists precisely so a regeneration cannot read as work
+    somebody did; a False it could not justify is that failure by a shorter
+    route.
+    """
+    blocks = [("MainZone-P", lines_at(["Body."]))]
+    stores(tmp_path, "1-021", blocks)
+    gen.generate("1-021", tmp_path)
+    doc = gen.gen_path("1-021", tmp_path).read_text()
+
+    # The collated page carries no generation stamp — stripped, or written
+    # before the generator stamped. Nothing says which baseline it came from.
+    _reviewed(tmp_path, "1-021", re.sub(r"<!--\s*generated:[^>]*-->", "", doc))
+    row = gen.diff("1-021", tmp_path)
+    assert row["drifted"] is None, "a comparison that did not happen is not a No"
+    assert "cannot tell" in row["why"]
+
+    # And the live stamp gone: the inputs the baseline is derived from.
+    _reviewed(tmp_path, "1-021", doc)
+    (tmp_path / "gt" / "ocr" / "chukchi-1-021.xml").unlink()
+    row = gen.diff("1-021", tmp_path)
+    assert row["drifted"] is None
+    assert "cannot tell" in row["why"]
 
 
 def test_diff_shows_the_shape_of_what_review_did(tmp_path):
