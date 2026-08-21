@@ -1,0 +1,359 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-3-139.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-3-139.png; regions_from: zones/chukchi-3-139.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+                <TextBlock ID="mz_3-139_r1" HPOS="365" VPOS="446" WIDTH="1782" HEIGHT="93" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="365 446 2147 446 2147 539 365 539"/>
+                    </Shape>
+                    <TextLine ID="mz_3-139_l1" HPOS="933" VPOS="465" WIDTH="620" HEIGHT="50" BASELINE="933 500 1553 496" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1535 466 1527 465 947 465 933 492 933 500 933 515 1551 511 1553 496 1549 488 1535 466"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l2" HPOS="2032" VPOS="465" WIDTH="88" HEIGHT="64" BASELINE="2034 502 2120 505" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2112 472 2093 470 2073 466 2069 465 2034 465 2034 502 2032 513 2075 529 2077 529 2079 529 2118 523 2120 505 2120 474 2112 472"/>
+                        </Shape>
+                        <String CONTENT="673"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-139_r2" HPOS="365" VPOS="562" WIDTH="1782" HEIGHT="538" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="365 562 2147 562 2147 1100 365 1100"/>
+                    </Shape>
+                    <TextLine ID="mz_3-139_l3" HPOS="356" VPOS="564" WIDTH="1770" HEIGHT="56" BASELINE="358 609 2126 605" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="356 583 358 609 358 619 2122 620 2126 605 2122 578 2050 564 2048 564 2046 564 2013 576 1966 564 1964 564 1962 564 1960 564 1929 576 1904 564 1902 564 1900 564 1898 564 1855 578 1744 578 1722 564 1720 564 1718 564 1716 564 1714 564 1681 576 1613 564 1611 564 1609 564 1570 578 1371 578 1352 564 1350 564 1348 564 1346 564 1206 576 1134 566 1132 566 1130 566 1128 566 1110 578 1019 566 1017 566 1015 566 980 578 949 566 947 566 945 566 869 578 732 566 730 566 728 566 689 578 364 574 356 583"/>
+                        </Shape>
+                        <String CONTENT="Knives were drawn and they threatened to cut the sinews of the legs"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l4" HPOS="358" VPOS="622" WIDTH="1772" HEIGHT="59" BASELINE="360 667 2130 661" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="360 667 360 681 2128 677 2130 661 2120 632 2056 622 2054 622 2052 622 2030 632 2009 622 2007 622 2005 622 2003 622 1976 632 1851 622 1849 622 1769 632 1734 622 1732 622 1730 622 1621 632 1537 622 1535 622 1533 622 1531 622 1510 634 1019 624 1017 624 945 636 912 626 910 626 908 626 906 626 874 636 578 626 576 626 516 636 457 626 455 626 454 626 434 636 397 626 395 626 393 626 391 626 358 638 360 667"/>
+                        </Shape>
+                        <String CONTENT="of the offender, that he might not be able to kick again. Nevertheless"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l5" HPOS="360" VPOS="687" WIDTH="1772" HEIGHT="54" BASELINE="360 726 2132 726" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="360 726 360 741 2132 741 2132 726 2130 687 2081 696 1985 687 1983 687 1927 696 1412 687 1410 687 1362 696 1274 687 1272 687 1270 687 1237 696 1169 687 1167 687 1165 687 1141 696 1114 687 1112 687 1110 687 1030 696 912 687 910 687 908 687 906 687 890 698 578 698 506 687 504 687 415 696 385 687 383 687 381 687 379 687 360 696 360 726"/>
+                        </Shape>
+                        <String CONTENT="they did not come to blows. A few days afterwards, when the passions of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l6" HPOS="356" VPOS="749" WIDTH="1774" HEIGHT="55" BASELINE="358 788 2130 780" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="358 788 358 804 2128 800 2130 780 2118 749 356 751 358 788"/>
+                        </Shape>
+                        <String CONTENT="both parties had cooled down, the young man who was threatened declared"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l7" HPOS="358" VPOS="804" WIDTH="1770" HEIGHT="56" BASELINE="360 847 2128 841" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="360 847 360 860 2126 854 2128 841 2124 813 1539 804 1537 804 1535 804 1510 813 376 808 374 808 372 808 370 808 358 813 360 847"/>
+                        </Shape>
+                        <String CONTENT="that he was in the right when he wrenched the piece of wood from his as-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l8" HPOS="358" VPOS="864" WIDTH="1772" HEIGHT="57" BASELINE="360 907 2130 903" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="360 907 360 921 2128 919 2130 903 2120 874 2087 864 2085 864 2083 864 2081 864 2050 874 1880 864 1878 864 1876 864 1874 864 1857 876 1648 876 1598 864 1596 864 1520 874 1490 864 1488 864 1486 864 1325 874 1249 864 1247 864 1245 864 1219 876 1167 866 1165 866 1163 866 1128 876 1071 866 1069 866 898 876 865 866 863 866 600 866 598 866 512 876 411 866 409 866 407 866 358 878 360 907"/>
+                        </Shape>
+                        <String CONTENT="sailant and kicked him; and he therefore wanted to have reparation for the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l9" HPOS="358" VPOS="923" WIDTH="1770" HEIGHT="58" BASELINE="360 967 2128 963" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="360 967 360 981 2126 981 2128 963 2124 936 1974 923 1972 923 1970 923 1968 923 1950 936 1824 936 1789 923 1787 923 1785 923 1732 934 1677 923 1676 923 1674 923 1652 934 1436 934 1385 923 1383 923 1381 923 1379 923 1356 934 1299 923 1297 923 1295 923 1294 923 1278 934 1245 923 1243 923 1241 923 1239 923 1182 938 991 938 931 924 929 924 927 924 894 936 863 924 861 924 859 924 857 924 818 936 693 924 691 924 629 936 440 924 438 924 358 938 360 967"/>
+                        </Shape>
+                        <String CONTENT="unsheathing of iron in his camp. Finally he was actually given as kɪˊtkau"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l10" HPOS="358" VPOS="983" WIDTH="1770" HEIGHT="58" BASELINE="360 1030 2128 1024" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="360 1030 360 1041 2126 1039 2128 1024 2126 995 2085 983 2083 983 2081 983 1718 993 1697 983 1695 983 1551 983 1549 983 1547 983 1522 995 1276 985 1274 985 1272 985 1270 985 1255 997 1052 997 984 985 982 985 927 997 372 987 370 987 368 987 366 987 358 993 360 1030"/>
+                        </Shape>
+                        <String CONTENT="(“hard return,” i. e., reparation, see p. 669) a set of reindeer leg-skins. The"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l11" HPOS="362" VPOS="1045" WIDTH="1567" HEIGHT="55" BASELINE="362 1084 1929 1084" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="362 1084 362 1100 1927 1100 1929 1084 1927 1057 1855 1045 1853 1045 1060 1055 1042 1045 1040 1045 1038 1045 933 1045 931 1045 929 1045 910 1055 876 1045 874 1045 873 1045 871 1045 869 1045 855 1057 750 1057 701 1045 699 1045 623 1055 543 1045 541 1045 463 1055 422 1045 420 1045 418 1045 362 1055 362 1084"/>
+                        </Shape>
+                        <String CONTENT="value of the gift was insignificant, and it had chiefly a moral effect."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-139_r3" HPOS="365" VPOS="1100" WIDTH="1782" HEIGHT="1988" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="365 1100 2147 1100 2147 3088 365 3088"/>
+                    </Shape>
+                    <TextLine ID="mz_3-139_l12" HPOS="467" VPOS="1102" WIDTH="1661" HEIGHT="62" BASELINE="469 1147 2128 1143" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="469 1147 469 1160 2124 1164 2128 1143 2126 1112 2112 1102 2110 1102 2108 1102 2106 1102 2104 1102 2067 1112 2044 1102 2042 1102 2040 1102 1691 1112 1662 1102 1660 1102 1658 1102 1656 1102 1619 1112 1553 1102 1551 1102 1549 1102 1510 1112 1447 1102 1446 1102 1444 1102 1424 1112 1403 1102 1401 1102 1399 1102 1348 1112 1325 1102 1323 1102 1321 1102 1319 1102 1294 1114 1243 1104 1241 1104 1239 1104 1210 1114 1108 1104 1106 1104 1104 1104 1071 1114 1048 1104 1046 1104 1044 1104 1042 1104 1040 1104 1027 1115 923 1115 882 1104 880 1104 878 1104 876 1104 874 1104 861 1115 736 1115 689 1104 687 1104 635 1114 592 1104 590 1104 588 1104 535 1114 481 1104 479 1104 477 1104 475 1104 467 1110 469 1147"/>
+                        </Shape>
+                        <String CONTENT="Shortly after my first arrival at the Anui fair, I had a visit from Eiˊheli,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l13" HPOS="360" VPOS="1160" WIDTH="1768" HEIGHT="63" BASELINE="362 1209 2128 1201" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="362 1209 362 1223 2126 1221 2128 1201 2124 1174 2040 1160 2038 1160 2036 1160 2034 1160 2013 1174 1915 1174 1886 1160 1884 1160 1882 1160 1880 1160 1878 1160 1859 1172 1674 1162 1672 1162 1670 1162 1637 1172 1611 1162 1609 1162 1607 1162 1605 1162 1603 1162 1586 1176 1537 1176 1520 1162 1518 1162 1516 1162 1514 1162 1379 1174 1332 1162 1331 1162 1329 1162 1327 1162 1307 1172 1286 1162 1284 1162 1282 1162 1280 1162 1278 1162 1264 1172 1204 1164 1202 1164 1200 1164 1198 1164 1180 1176 1118 1164 1116 1164 1114 1164 1083 1176 1050 1164 1048 1164 1046 1164 989 1176 972 1164 970 1164 968 1164 882 1164 880 1164 878 1164 876 1164 859 1176 748 1166 746 1166 744 1166 717 1178 682 1166 680 1166 678 1166 578 1178 561 1166 559 1166 557 1166 378 1166 376 1166 374 1166 372 1166 360 1174 362 1209"/>
+                        </Shape>
+                        <String CONTENT="Qituˊwg̣i, and other chiefs of the Chukchee. They bade me welcome in a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l14" HPOS="358" VPOS="1223" WIDTH="1772" HEIGHT="60" BASELINE="360 1267 2130 1262" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="360 1267 360 1283 2128 1283 2130 1262 2120 1230 1537 1223 1535 1223 1475 1232 974 1225 972 1225 358 1236 360 1267"/>
+                        </Shape>
+                        <String CONTENT="manner rather ceremonial, but they were really wishing for a drink of brandy"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l15" HPOS="356" VPOS="1283" WIDTH="1776" HEIGHT="57" BASELINE="358 1326 2132 1322" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="358 1326 358 1340 2130 1338 2132 1322 2128 1295 2046 1283 2044 1283 1978 1293 1939 1283 1937 1283 1935 1283 1730 1293 1687 1283 1685 1283 1683 1283 1681 1283 1660 1293 1605 1283 1603 1283 1432 1293 1377 1283 1375 1283 1373 1283 1340 1293 1249 1283 1247 1283 1245 1283 1216 1295 666 1285 664 1285 609 1295 530 1285 528 1285 356 1297 358 1326"/>
+                        </Shape>
+                        <String CONTENT="as a token of welcome on my part, which they accordingly received. There"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l16" HPOS="358" VPOS="1343" WIDTH="1770" HEIGHT="61" BASELINE="360 1386 2128 1382" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="360 1386 360 1398 2124 1404 2128 1382 2124 1355 1718 1343 1716 1343 1668 1353 1633 1343 1631 1343 1629 1343 1627 1343 1592 1355 1407 1355 1370 1343 1368 1343 1366 1343 1239 1355 781 1345 779 1345 730 1355 683 1345 682 1345 680 1345 678 1345 662 1357 574 1357 498 1345 496 1345 494 1345 493 1345 477 1357 358 1357 360 1386"/>
+                        </Shape>
+                        <String CONTENT="were five or six of them. Then more people came and asked for the same,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l17" HPOS="360" VPOS="1404" WIDTH="1772" HEIGHT="54" BASELINE="360 1443 2132 1443" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="360 1443 360 1457 2130 1458 2132 1443 2130 1406 1617 1414 1514 1404 1512 1404 1510 1404 1479 1414 1430 1404 1428 1404 1426 1404 1405 1414 1373 1404 1371 1404 1370 1404 1280 1414 1227 1404 1225 1404 1153 1414 1114 1404 1112 1404 1110 1404 1108 1404 1087 1416 962 1416 931 1404 929 1404 927 1404 925 1404 896 1414 869 1404 867 1404 865 1404 699 1414 668 1404 666 1404 664 1404 590 1414 559 1404 557 1404 555 1404 465 1414 434 1404 432 1404 430 1404 360 1414 360 1443"/>
+                        </Shape>
+                        <String CONTENT="and at last I stopped the supply. One of the later comers, who had had"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l18" HPOS="358" VPOS="1460" WIDTH="1772" HEIGHT="61" BASELINE="360 1505 2130 1499" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="360 1505 360 1521 2128 1515 2130 1499 2120 1470 2063 1460 2061 1460 2059 1460 2057 1460 2042 1472 1839 1472 1808 1460 1806 1460 1804 1460 1802 1460 1765 1470 1738 1460 1736 1460 1734 1460 1650 1470 1611 1460 1609 1460 1607 1460 1527 1472 1410 1462 1409 1462 1364 1472 1338 1462 1336 1462 1334 1462 1332 1462 1331 1462 1315 1472 1290 1462 1288 1462 1286 1462 1221 1472 1188 1462 1186 1462 1184 1462 1182 1462 1180 1462 1165 1474 1058 1474 1023 1462 1021 1462 1019 1462 1017 1462 989 1472 949 1462 947 1462 945 1462 943 1462 941 1462 919 1474 570 1464 569 1464 502 1474 434 1464 432 1464 358 1476 360 1505"/>
+                        </Shape>
+                        <String CONTENT="nothing, insisted also on having a sip of the liquor. Soon he became so im-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l19" HPOS="358" VPOS="1523" WIDTH="1776" HEIGHT="64" BASELINE="360 1568 2134 1562" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="360 1568 360 1587 2132 1577 2134 1562 2130 1534 1976 1523 1974 1523 1972 1523 1970 1523 1954 1534 1763 1534 1726 1523 1724 1523 1722 1523 1720 1523 1718 1523 1703 1533 1221 1525 1219 1525 1175 1534 1138 1525 1136 1525 1134 1525 1005 1534 952 1525 951 1525 871 1536 446 1527 444 1527 358 1538 360 1568"/>
+                        </Shape>
+                        <String CONTENT="portunate, that I lost patience and asked him to leave me in peace. He sat"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l20" HPOS="358" VPOS="1581" WIDTH="1772" HEIGHT="61" BASELINE="360 1626 2130 1618" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="360 1626 360 1642 2128 1642 2130 1618 2118 1585 1765 1591 1685 1581 1683 1581 1681 1581 1646 1593 1570 1583 1568 1583 1440 1593 1407 1583 1405 1583 1403 1583 1354 1593 1295 1583 1294 1583 1292 1583 1290 1583 1274 1593 1179 1585 1177 1585 1175 1585 1173 1585 1157 1597 1036 1597 952 1585 951 1585 754 1597 738 1587 736 1587 734 1587 732 1587 561 1597 514 1587 512 1587 510 1587 485 1597 376 1587 374 1587 372 1587 370 1587 358 1595 360 1626"/>
+                        </Shape>
+                        <String CONTENT="down in his place, grumbling to himself. A couple of hours afterwards I"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l21" HPOS="360" VPOS="1644" WIDTH="1774" HEIGHT="66" BASELINE="362 1685 2134 1681" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="362 1685 362 1710 454 1698 631 1708 633 1708 849 1698 908 1708 910 1708 978 1698 1847 1706 1849 1706 1909 1696 1960 1706 1962 1706 2134 1694 2134 1681 2124 1653 1946 1644 1944 1644 1884 1653 1847 1644 1845 1644 1843 1644 1841 1644 1839 1644 1822 1655 1718 1655 1662 1644 1660 1644 1658 1644 1631 1653 1568 1644 1566 1644 1483 1653 1397 1644 1395 1644 1393 1644 1350 1653 1036 1646 1034 1646 1032 1646 1007 1657 841 1657 785 1646 783 1646 781 1646 740 1655 697 1646 695 1646 693 1646 691 1646 670 1655 578 1646 576 1646 360 1657 362 1685"/>
+                        </Shape>
+                        <String CONTENT="was standing in the gate of the fortress, talking with the people who were"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l22" HPOS="360" VPOS="1702" WIDTH="1770" HEIGHT="64" BASELINE="362 1747 2130 1741" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="362 1747 362 1766 2128 1759 2130 1741 2118 1702 2089 1712 2024 1702 2022 1702 2020 1702 1991 1712 1954 1702 1952 1702 1950 1702 1948 1702 1917 1712 1876 1702 1874 1702 1872 1702 1781 1712 1516 1704 1514 1704 1512 1704 1510 1704 1494 1714 1334 1704 1332 1704 1286 1714 1249 1704 1247 1704 1245 1704 1081 1714 1013 1704 1011 1704 947 1716 927 1706 925 1706 923 1706 867 1716 697 1706 695 1706 535 1716 455 1706 454 1706 360 1718 362 1747"/>
+                        </Shape>
+                        <String CONTENT="passing to and fro, and making occasional notes in a little note-book that I"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l23" HPOS="360" VPOS="1770" WIDTH="1770" HEIGHT="51" BASELINE="362 1805 2130 1801" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="362 1805 362 1821 2128 1821 2130 1801 2120 1770 360 1770 362 1805"/>
+                        </Shape>
+                        <String CONTENT="held in my hands. Suddenly my recent guest came up from behind and struck"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l24" HPOS="360" VPOS="1823" WIDTH="1770" HEIGHT="56" BASELINE="362 1866 2130 1862" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="362 1866 362 1879 2128 1877 2130 1862 2120 1831 1880 1823 1878 1823 1792 1833 1713 1823 1711 1823 1709 1823 1687 1833 1650 1823 1648 1823 1646 1823 1644 1823 1625 1833 1570 1823 1568 1823 1356 1833 1276 1823 1274 1823 1272 1823 1239 1835 941 1825 939 1825 937 1825 935 1825 919 1837 734 1837 668 1825 666 1825 664 1825 639 1835 625 1825 623 1825 621 1825 493 1825 491 1825 360 1837 362 1866"/>
+                        </Shape>
+                        <String CONTENT="me with his fist on my right wrist, so that my note-book fell to the ground."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l25" HPOS="372" VPOS="1883" WIDTH="1758" HEIGHT="55" BASELINE="372 1920 2130 1920" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="372 1920 372 1938 2130 1938 2130 1920 2128 1893 2089 1883 2087 1883 2085 1883 2083 1883 2050 1893 2024 1883 2022 1883 2020 1883 1954 1893 1845 1883 1843 1883 1841 1883 1806 1893 1783 1883 1781 1883 1779 1883 1713 1893 1662 1883 1660 1883 1658 1883 1623 1893 1586 1883 1584 1883 1475 1883 1473 1883 1471 1883 1469 1883 1453 1895 1329 1895 1313 1883 1311 1883 1309 1883 1307 1883 1305 1883 1274 1893 372 1887 372 1920"/>
+                        </Shape>
+                        <String CONTENT="“You so and so!” cried he, “you come here and hobnob with the people for"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l26" HPOS="360" VPOS="1952" WIDTH="1768" HEIGHT="48" BASELINE="362 1987 2128 1979" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="362 1987 362 2000 2126 1998 2128 1979 2124 1952 360 1952 362 1987"/>
+                        </Shape>
+                        <String CONTENT="hours and scribble notes on a paper, but one cannot get a draught of brandy"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l27" HPOS="360" VPOS="2000" WIDTH="1770" HEIGHT="59" BASELINE="362 2045 2130 2039" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="362 2045 362 2059 2128 2053 2130 2039 2120 2008 1935 2000 1933 2000 1886 2010 1863 2000 1861 2000 1859 2000 1792 2010 1759 2000 1757 2000 1755 2000 1660 2010 1568 2000 1566 2000 1564 2000 1533 2012 1486 2002 1485 2002 1483 2002 1440 2012 1126 2002 1124 2002 1056 2012 976 2002 974 2002 972 2002 945 2014 912 2004 910 2004 908 2004 855 2014 771 2004 769 2004 360 2012 362 2045"/>
+                        </Shape>
+                        <String CONTENT="in your blessed house.” After that he retreated a little, stripped off his fur"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l28" HPOS="358" VPOS="2061" WIDTH="1772" HEIGHT="58" BASELINE="360 2104 2130 2098" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="360 2104 360 2119 2128 2113 2130 2098 2120 2068 2098 2061 2096 2061 2095 2061 2093 2061 2061 2072 1904 2072 1880 2061 1878 2061 1876 2061 1874 2061 1872 2061 1857 2072 1656 2072 1609 2061 1607 2061 1535 2072 1522 2063 1520 2063 1518 2063 1516 2063 1050 2072 1015 2063 1013 2063 1011 2063 1009 2063 989 2072 958 2063 956 2063 954 2063 869 2074 387 2065 385 2065 383 2065 358 2074 360 2104"/>
+                        </Shape>
+                        <String CONTENT="shirt, and was quite naked down to his waist. Then he requested me to do"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l29" HPOS="358" VPOS="2123" WIDTH="1770" HEIGHT="66" BASELINE="360 2168 2128 2158" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="360 2168 360 2180 586 2189 588 2189 590 2189 592 2189 607 2178 715 2178 2124 2178 2128 2158 2124 2131 1420 2123 1418 2123 1342 2133 1087 2125 1085 2125 1083 2125 1056 2135 376 2129 374 2129 372 2129 370 2129 358 2135 360 2168"/>
+                        </Shape>
+                        <String CONTENT="the same, and to have a wrestling-match with him. “I am standing on my"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l30" HPOS="362" VPOS="2183" WIDTH="1766" HEIGHT="67" BASELINE="362 2224 2128 2224" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="362 2224 362 2238 381 2248 383 2248 385 2250 648 2250 648 2248 650 2248 652 2248 670 2238 894 2248 896 2248 898 2248 929 2238 1165 2248 1167 2248 1169 2248 1212 2238 1366 2248 1368 2248 1529 2238 2124 2244 2128 2224 2128 2195 2085 2183 2083 2183 2081 2183 2001 2193 1818 2183 1816 2183 1814 2183 1781 2193 1744 2183 1742 2183 1740 2183 1344 2193 1243 2183 1241 2183 1239 2183 1237 2183 1221 2195 1106 2195 1028 2183 1027 2183 1025 2183 1023 2183 1007 2195 894 2195 728 2183 726 2183 680 2193 619 2183 617 2183 615 2183 580 2195 362 2195 362 2224"/>
+                        </Shape>
+                        <String CONTENT="own ground,” added he, “and I may challenge you to a test.” He was right,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l31" HPOS="358" VPOS="2240" WIDTH="1772" HEIGHT="58" BASELINE="360 2285 2130 2279" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="360 2285 360 2298 2128 2293 2130 2279 2120 2250 1925 2240 1923 2240 1921 2240 1919 2240 1904 2252 1582 2252 1553 2240 1551 2240 1549 2240 1547 2240 1545 2240 1529 2252 1479 2242 1477 2242 1260 2252 1202 2242 1200 2242 1198 2242 1173 2252 1122 2242 1120 2242 1118 2242 1081 2252 1044 2242 1042 2242 1040 2242 1038 2242 1017 2254 358 2254 360 2285"/>
+                        </Shape>
+                        <String CONTENT="in so far as even officially only the interior of the fortress was considered to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l32" HPOS="358" VPOS="2298" WIDTH="1770" HEIGHT="65" BASELINE="360 2347 2128 2339" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="360 2347 360 2361 2124 2363 2128 2339 2124 2310 2030 2298 2028 2298 2026 2298 2003 2308 1987 2298 1985 2298 1983 2298 1981 2298 1898 2308 1870 2298 1868 2298 1867 2298 1865 2298 1833 2308 1789 2298 1787 2298 1785 2298 1783 2298 1769 2308 1738 2298 1736 2298 1734 2298 1732 2298 1681 2310 1379 2300 1377 2300 1223 2314 1104 2314 1089 2302 1087 2302 1085 2302 1083 2302 1081 2302 1056 2312 1030 2302 1028 2302 1027 2302 978 2312 954 2302 952 2302 951 2302 781 2314 744 2304 742 2304 740 2304 648 2314 572 2304 570 2304 358 2310 360 2347"/>
+                        </Shape>
+                        <String CONTENT="be Russian territory, and all the space outside of it was admitted to belong"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l33" HPOS="360" VPOS="2361" WIDTH="1772" HEIGHT="56" BASELINE="362 2406 2132 2400" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="362 2406 362 2417 2130 2413 2132 2400 2130 2373 2087 2361 2085 2361 2083 2361 1991 2373 1886 2373 1870 2361 1868 2361 1867 2361 1865 2361 1814 2371 1373 2363 1371 2363 1370 2363 1368 2363 1354 2373 1294 2363 1292 2363 1290 2363 1262 2373 1239 2363 1237 2363 1235 2363 1180 2373 820 2365 818 2365 816 2365 814 2365 797 2374 455 2365 454 2365 360 2376 362 2406"/>
+                        </Shape>
+                        <String CONTENT="to the Chukchee. Every evening all the Chukchee were turned out of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l34" HPOS="360" VPOS="2421" WIDTH="1768" HEIGHT="61" BASELINE="362 2464 2128 2460" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="362 2464 362 2480 2124 2482 2128 2460 2124 2429 2034 2421 2032 2421 1954 2431 1902 2421 1900 2421 1833 2431 1783 2421 1781 2421 1779 2421 1777 2421 1761 2433 1475 2433 1325 2421 1323 2421 1321 2421 1290 2431 1245 2421 1243 2421 1241 2421 1216 2433 933 2423 931 2423 929 2423 904 2433 871 2423 869 2423 867 2423 865 2423 863 2423 847 2435 724 2435 668 2423 666 2423 664 2423 662 2423 648 2433 617 2423 615 2423 613 2423 413 2433 376 2423 374 2423 372 2423 370 2423 368 2423 360 2429 362 2464"/>
+                        </Shape>
+                        <String CONTENT="fortress and the gate locked, so that the difference was more than theoretical."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l35" HPOS="360" VPOS="2480" WIDTH="1768" HEIGHT="60" BASELINE="362 2526 2128 2519" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="362 2526 362 2540 2126 2536 2128 2519 2126 2489 2110 2480 2108 2480 2106 2480 2104 2480 2032 2489 1603 2482 1601 2482 1599 2482 1598 2482 1582 2491 1342 2482 1340 2482 1239 2493 802 2484 800 2484 695 2495 588 2486 586 2486 418 2495 381 2486 379 2486 378 2486 376 2486 374 2486 360 2493 362 2526"/>
+                        </Shape>
+                        <String CONTENT="A young boy of about ten years kept tugging at the clothes of this man with"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l36" HPOS="358" VPOS="2538" WIDTH="1772" HEIGHT="70" BASELINE="360 2587 2130 2579" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="360 2587 360 2599 682 2608 683 2608 685 2608 713 2599 769 2608 771 2608 861 2597 929 2606 931 2606 1247 2595 2126 2595 2130 2579 2120 2548 2100 2538 2098 2538 2096 2538 2095 2538 2044 2550 1841 2538 1839 2538 1837 2538 1835 2538 1818 2550 1650 2540 1648 2540 1646 2540 1603 2552 1576 2540 1574 2540 1572 2540 1570 2540 1527 2552 1438 2540 1436 2540 1381 2552 1332 2540 1331 2540 1329 2540 1327 2540 1325 2540 1307 2552 1157 2542 1155 2542 1153 2542 1128 2554 1095 2542 1093 2542 1091 2542 1089 2542 1052 2556 818 2556 779 2544 777 2544 775 2544 709 2556 643 2544 641 2544 520 2556 502 2544 500 2544 498 2544 393 2544 391 2544 389 2544 358 2556 360 2587"/>
+                        </Shape>
+                        <String CONTENT="all his might, trying to persuade him to be off to the house. This was his"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l37" HPOS="358" VPOS="2601" WIDTH="1776" HEIGHT="58" BASELINE="360 2645 2134 2638" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="360 2645 360 2659 2132 2653 2134 2638 2128 2601 689 2614 502 2606 500 2606 358 2616 360 2645"/>
+                        </Shape>
+                        <String CONTENT="son. But the father was firm in his intention. My adversary was a man of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l38" HPOS="360" VPOS="2657" WIDTH="1772" HEIGHT="62" BASELINE="362 2706 2132 2698" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="362 2706 362 2719 2130 2714 2132 2698 2128 2671 2057 2657 2056 2657 2054 2657 2052 2657 2034 2671 1952 2671 1909 2657 1907 2657 1905 2657 1851 2669 1818 2657 1816 2657 1814 2657 1812 2657 1775 2669 1742 2657 1740 2657 1738 2657 1736 2657 1734 2657 1716 2669 1691 2657 1689 2657 1687 2657 1685 2657 1654 2671 1453 2659 1451 2659 1449 2659 1447 2659 1428 2673 1219 2673 1196 2661 1194 2661 1192 2661 1190 2661 1159 2673 1034 2661 1032 2661 1030 2661 988 2673 925 2661 923 2661 781 2675 524 2663 522 2663 457 2675 378 2663 376 2663 374 2663 372 2663 360 2671 362 2706"/>
+                        </Shape>
+                        <String CONTENT="fifty, of Maritime extraction, Rɪˊnto by name. He was of slender frame, but"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l39" HPOS="360" VPOS="2719" WIDTH="1768" HEIGHT="61" BASELINE="362 2766 2128 2756" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="362 2766 362 2780 2126 2780 2128 2756 2124 2729 1884 2719 1882 2719 1767 2731 360 2731 362 2766"/>
+                        </Shape>
+                        <String CONTENT="his temper was undaunted. As a result of this, he had two ugly scars in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l40" HPOS="360" VPOS="2782" WIDTH="1772" HEIGHT="60" BASELINE="362 2823 2132 2819" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="362 2823 362 2834 2087 2842 2089 2842 2091 2842 2132 2830 2132 2819 2128 2782 1329 2782 1327 2782 1229 2792 383 2784 381 2784 379 2784 360 2792 362 2823"/>
+                        </Shape>
+                        <String CONTENT="the region of his abdomen. I felt no desire, however, for the unexpected"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l41" HPOS="360" VPOS="2838" WIDTH="1768" HEIGHT="63" BASELINE="362 2885 2128 2877" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="362 2885 362 2899 2124 2901 2128 2877 2124 2850 2057 2838 2056 2838 2054 2838 2032 2850 1896 2850 1853 2838 1851 2838 1849 2838 1757 2848 1724 2838 1722 2838 1720 2838 1718 2838 1681 2850 1621 2840 1619 2840 1309 2850 1245 2840 1243 2840 1163 2852 865 2842 863 2842 861 2842 834 2852 804 2842 802 2842 800 2842 798 2842 765 2854 473 2844 471 2844 360 2856 362 2885"/>
+                        </Shape>
+                        <String CONTENT="wrestling-match. At the same time I. did not like the idea of openly retreating"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l42" HPOS="360" VPOS="2899" WIDTH="1768" HEIGHT="60" BASELINE="362 2944 2128 2936" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="362 2944 362 2959 2126 2957 2128 2936 2124 2910 1841 2899 1839 2899 1601 2912 1430 2912 1414 2901 1412 2901 1410 2901 1409 2901 1280 2910 1247 2901 1245 2901 1243 2901 1241 2901 1210 2912 1085 2903 1083 2903 1081 2903 1050 2912 1028 2903 1027 2903 900 2903 898 2903 896 2903 894 2903 878 2912 360 2910 362 2944"/>
+                        </Shape>
+                        <String CONTENT="before my adversary, though he stood on his own territory, and I stood on"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l43" HPOS="362" VPOS="2957" WIDTH="1766" HEIGHT="61" BASELINE="364 3004 2128 2996" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="364 3004 364 3018 2126 3016 2128 2996 2124 2969 2024 2957 2022 2957 1884 2967 1851 2957 1849 2957 1847 2957 1845 2957 1804 2967 1771 2957 1769 2957 1767 2957 1765 2957 1746 2967 1709 2957 1707 2957 1705 2957 1703 2957 1670 2969 1561 2959 1559 2959 1486 2969 1459 2959 1457 2959 1455 2959 1453 2959 1451 2959 1436 2971 1284 2971 1247 2959 1245 2959 1243 2959 1241 2959 1216 2971 1194 2961 1192 2961 1190 2961 1138 2971 1101 2961 1099 2961 1097 2961 1095 2961 1069 2971 1056 2961 1054 2961 1052 2961 1050 2961 915 2971 672 2963 670 2963 668 2963 666 2963 650 2973 409 2963 407 2963 405 2963 362 2975 364 3004"/>
+                        </Shape>
+                        <String CONTENT="mine. The difficulty resolved itself, however, by the arrival of one of my"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-139_l44" HPOS="358" VPOS="3018" WIDTH="1770" HEIGHT="62" BASELINE="360 3064 2128 3057" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="360 3064 360 3080 2128 3076 2128 3057 2122 3020 1309 3029 1282 3018 1280 3018 1278 3018 1276 3018 1239 3031 1204 3020 1202 3020 1200 3020 1145 3031 949 3020 947 3020 945 3020 915 3031 869 3020 867 3020 865 3020 746 3031 670 3021 668 3021 666 3021 664 3021 645 3033 376 3021 374 3021 372 3021 370 3021 358 3027 360 3064"/>
+                        </Shape>
+                        <String CONTENT="friends, a political exile like myself, who was a man of powerful build and"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

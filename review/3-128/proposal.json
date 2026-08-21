@@ -1,0 +1,171 @@
+{
+  "lines": {
+    "0": {
+      "text": "XXII. — LAW."
+    },
+    "1": {
+      "text": "COUNCIL OF THE FAMILY-GROUP. — I was told that in olden times, when"
+    },
+    "2": {
+      "text": "some awkward case in law (akauˊka-vaˊɪrg̣ɪn, “inconvenient substances,” the",
+      "resolved": "ˊ = U+02CA stress (×2, one per hyphenated element, §5.5); ɪ = U+026A small-cap i (dotless letterform); g̣ = g+U+0323 dot below, word-final -gɪn per §5.1",
+      "note": "Second element is the ratified lexicon form {va'i_rg.i_n} = vaˊɪrg̣ɪn; first element akauˊka not found in lexicon lookup, keyed by hand from the raster.",
+      "class": "semantic",
+      "as_typed": "some awkward case in law (akauˊka-{va'i_rg.i_n}, “inconvenient substances,” the"
+    },
+    "3": {
+      "text": "usual Chukchee expression for trouble, trespass, crime¹) happened within the",
+      "resolved": "¹ = U+00B9 superscript one, footnote 1 body reference",
+      "note": "mz draft showed ASCII '!' for the marker (a known CATMuS substitution, cf. memory catmus-substitutes-ascii-for-marks); the raster shows a visible gap before the marker, but corpus normalize collapses it per the tight-spacing rule (§2.10).",
+      "class": "draft"
+    },
+    "4": {
+      "text": "limits of a family-group, the old men and the young men would hold a council."
+    },
+    "5": {
+      "text": "The old men would sit down and talk about the case. The young men would"
+    },
+    "6": {
+      "text": "stand behind and listen. Likewise, when any trouble arose between two dif-"
+    },
+    "7": {
+      "text": "ferent family-groups, men from both sides would assemble. The old men of"
+    },
+    "8": {
+      "text": "each side would elect one or two speakers, who had to speak in turn, one"
+    },
+    "9": {
+      "text": "side after the other. The old men spoke “for the softness” (am-yêrkêˊtɪ), and",
+      "resolved": "ê = e+U+0302 circumflex (×2); ˊ = U+02CA stress; ɪ = U+026A small-cap i (dotless letterform)",
+      "note": "Not found in lexicon lookup; keyed by hand from the raster.",
+      "class": "semantic"
+    },
+    "10": {
+      "text": "the younger men had to obey their decision. If, however, an agreement could",
+      "note": "mz draft read 'vounger' for 'younger' (v/y misread).",
+      "class": "draft"
+    },
+    "11": {
+      "text": "not be reached, or the parties particularly interested in the case refused to"
+    },
+    "12": {
+      "text": "listen to reason, the old men would say, “Let them [have a little] play”",
+      "note": "Printed with square brackets around 'have a little' (editorial interpolation in the translation); mz draft used parentheses.",
+      "class": "draft"
+    },
+    "13": {
+      "text": "(nuučveˊerkɪnet).² Then the interested parties, armed with spears, would have",
+      "resolved": "č = c+U+030C caron; ˊ = U+02CA stress; ɪ = U+026A small-cap i (dotless letterform); ² = U+00B2 superscript two, footnote 2 body reference",
+      "note": "Not found in lexicon lookup; keyed by hand. mz draft read '.a' for the superscript-2 marker.",
+      "class": "semantic"
+    },
+    "14": {
+      "text": "an encounter. Of course, even such a duel would have been better than the"
+    },
+    "15": {
+      "text": "unorganized bloodshed of vendetta; but I am unable to say how far the above"
+    },
+    "16": {
+      "text": "description of the council corresponded to actual life; at least, in the modern"
+    },
+    "17": {
+      "text": "life of the Chukchee tribe, I do not know of anything similar to such councils"
+    },
+    "18": {
+      "text": "and their deliberations."
+    },
+    "19": {
+      "text": "I mentioned previously that the Chukchee are eloquent in their own way;"
+    },
+    "20": {
+      "text": "so that, when anything happens, at the next gathering of the people — for"
+    },
+    "21": {
+      "text": "instance, during some ceremonial or on the occasion of a reindeer-race — it"
+    },
+    "22": {
+      "text": "is much talked about; and in this discussion, as is the custom, only the older"
+    },
+    "23": {
+      "text": "and more esteemed people take an important part. From this to a regular"
+    },
+    "24": {
+      "text": "council, however, is a long way. I mentioned in the chapter on marriage a"
+    },
+    "25": {
+      "text": "similar assertion by D. J. Melikoff,³ concerning the “council of elders.” This",
+      "resolved": "³ = U+00B3 superscript three, footnote 3 body reference",
+      "note": "mz draft showed 'Melikoff,8' — superscript 3 misread as digit 8.",
+      "class": "draft"
+    },
+    "26": {
+      "text": "assertion even pretended to refer to modern times. I expressed then also"
+    },
+    "27": {
+      "text": "my opinion that in modern times, so far as I know, no such councils are held"
+    },
+    "28": {
+      "text": "among the Chukchee. The law is regulated by personal action, and no public"
+    },
+    "29": {
+      "text": "institutions have anything to do with the judgment or punishment of the crime."
+    },
+    "30": {
+      "text": "MURDER AND BLOOD-REVENGE WITHIN THE FAMILY-GROUP. — The principal"
+    },
+    "31": {
+      "text": "¹ The Chukchee have no other general term covering the concept “crime.” Two roots, taiñ and qäs˙m,",
+      "resolved": "¹ = U+00B9 superscript one, footnote 1 opener; ñ = n+U+0303 tilde; ä = a+U+0308 diaeresis; ˙ = U+02D9 palatalization mark, after s (§2.1)",
+      "note": "Neither 'taiñ' nor 'qäs˙m' matched in lexicon lookup; keyed by hand. The dot between 'qäs' and 'm' is mid-height (U+02D9), read from its own ink, not a hyphen.",
+      "class": "semantic"
+    },
+    "32": {
+      "text": "several derivations of which are used in reference to crime, express only a trespass against religious prescriptions,"
+    },
+    "33": {
+      "text": "mostly of ceremonial character, and the “bad luck” which is the result thereof. Thus the adjective nɪtaˊɪnqên",
+      "resolved": "ɪ = U+026A small-cap i (dotless, ×2); ˊ = U+02CA stress; ê = e+U+0302 circumflex",
+      "note": "Not found in lexicon lookup; keyed by hand.",
+      "class": "semantic"
+    },
+    "34": {
+      "text": "means “bringing bad luck.” The opposite of it is nɪkɪˊntaqên (“bringing good luck,” “favorable”). The noun",
+      "resolved": "ɪ = U+026A small-cap i (dotless, ×2); ˊ = U+02CA stress; ê = e+U+0302 circumflex",
+      "note": "Not found in lexicon lookup; keyed by hand. mz draft read 'nikr'ntagén' — ɪ misread as r, q misread as g, ê misread as é.",
+      "class": "draft"
+    },
+    "35": {
+      "text": "taiˊñɪkut (pl.) with the meaning of “misfortune-protectors,” is used as a designation for charm-strings (cf. p. 353).",
+      "as_typed": "{tai'n~i_kut} (pl.) with the meaning of “misfortune-protectors,” is used as a designation for charm-strings (cf. p. 353)."
+    },
+    "36": {
+      "text": "The noun qas˙muˊurg̣ɪn means “bad luck” coming from the influence of keˊlet, etc.",
+      "resolved": "˙ = U+02D9 palatalization mark, after s; ˊ = U+02CA stress; ɪ = U+026A small-cap i (dotless letterform); g̣ = g+U+0323 dot below, word-final -gɪn per §5.1",
+      "note": "Not found in lexicon lookup as a whole form; keyed by hand. Same root as L31's 'qäsˊm' but printed here without the diaeresis on 'a' — kept as printed, per §2.14. mz draft dropped the final 'n' of 'urgin' entirely.",
+      "class": "print",
+      "as_typed": "The noun qas˙muˊurg̣ɪn means “bad luck” coming from the influence of {ke'let}, etc."
+    },
+    "37": {
+      "text": "² F. Boas mentions that among the Central Eskimo there exists a kind of temporary chief, who may give",
+      "resolved": "² = U+00B2 superscript two, footnote 2 opener"
+    },
+    "38": {
+      "text": "orders, but that there is not the slightest obligation to obey his orders (Central Eskimo, p. 581). In the same"
+    },
+    "39": {
+      "text": "way among the Chukchee the advice of the old men was not binding upon the interested parties."
+    },
+    "40": {
+      "text": "³ See p. 574.",
+      "resolved": "³ = U+00B3 superscript three, footnote 3 opener"
+    },
+    "41": {
+      "text": "[662]",
+      "note": "Folio in QuireMarksZone, bracketed plain ASCII digits per §2.12. mz draft read '16621' — the divider rule above the footnote block and/or noise misread as extra digits.",
+      "class": "layout"
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

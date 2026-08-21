@@ -1,0 +1,364 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-3-144.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-3-144.png; regions_from: zones/chukchi-3-144.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+                <TextBlock ID="mz_3-144_r1" HPOS="565" VPOS="461" WIDTH="1782" HEIGHT="101" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="565 461 2347 461 2347 562 565 562"/>
+                    </Shape>
+                    <TextLine ID="mz_3-144_l1" HPOS="1140" VPOS="484" WIDTH="615" HEIGHT="51" BASELINE="1141 515 1755 519" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1434 484 1414 484 1395 484 1375 484 1356 484 1336 484 1317 484 1297 484 1278 484 1258 484 1239 484 1219 484 1200 484 1180 484 1161 484 1141 484 1141 515 1140 531 1752 535 1755 519 1753 486 1447 484 1434 484"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l2" HPOS="567" VPOS="476" WIDTH="99" HEIGHT="68" BASELINE="567 521 666 521" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="567 521 567 531 598 544 600 544 602 544 666 531 666 521 666 488 592 476 590 476 588 476 567 486 567 521"/>
+                        </Shape>
+                        <String CONTENT="678"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-144_r2" HPOS="565" VPOS="586" WIDTH="1782" HEIGHT="1976" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="565 586 2347 586 2347 2562 565 2562"/>
+                    </Shape>
+                    <TextLine ID="mz_3-144_l3" HPOS="563" VPOS="583" WIDTH="1773" HEIGHT="65" BASELINE="563 626 2336 626" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2317 599 2297 597 2278 597 2258 595 2239 595 2235 593 2229 595 2219 593 2200 593 2180 591 2161 591 2141 589 2132 589 2108 593 2091 587 2083 587 2063 585 2007 595 1962 583 1960 583 1958 583 1956 583 1954 583 1935 595 1909 583 1907 583 1905 583 1904 583 1902 583 1882 597 1707 597 1689 583 1687 583 1685 583 1594 583 1592 583 1590 583 1555 595 1527 583 1525 583 1523 583 1461 595 1430 583 1428 583 1426 583 1424 583 1393 595 1346 583 1344 583 1342 583 1340 583 1338 583 1319 595 1276 583 1274 583 1272 583 1270 583 1231 595 1155 583 1153 583 1151 583 1149 583 1132 597 1052 597 1019 583 1017 583 1015 583 1013 583 962 595 857 583 855 583 853 583 851 583 836 595 709 595 639 583 637 583 563 595 563 626 563 640 2334 648 2336 626 2334 599 2317 599"/>
+                        </Shape>
+                        <String CONTENT="assistant, and then leave him the herd. A childless man, feeling that his end"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l4" HPOS="563" VPOS="648" WIDTH="1773" HEIGHT="52" BASELINE="563 687 2336 687" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="563 687 563 700 2336 700 2336 687 2336 659 2264 648 2262 648 2211 657 2172 648 2171 648 1956 648 1954 648 1952 648 1950 648 1935 657 1652 648 1650 648 1588 657 1486 648 1485 648 1483 648 1442 657 1426 648 1424 648 1422 648 1420 648 1342 657 563 652 563 687"/>
+                        </Shape>
+                        <String CONTENT="is approaching, sometimes even calls in a kinsman or a friend, who lives"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l5" HPOS="563" VPOS="704" WIDTH="1775" HEIGHT="63" BASELINE="565 747 2338 743" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="565 747 565 761 2334 767 2338 743 2334 714 2172 704 2171 704 2081 714 2054 704 2052 704 2050 704 1954 714 1927 704 1925 704 1923 704 1921 704 1919 704 1904 716 1802 716 1753 704 1752 704 1681 714 1611 704 1609 704 1541 714 1463 704 1461 704 1459 704 1457 704 1442 716 783 706 781 706 689 716 592 706 590 706 588 706 563 716 565 747"/>
+                        </Shape>
+                        <String CONTENT="alone, and hands over his property to him. More frequently such a childless"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l6" HPOS="563" VPOS="765" WIDTH="1773" HEIGHT="56" BASELINE="565 806 2336 802" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="565 806 565 821 2334 819 2336 802 2332 774 1475 765 1473 765 1471 765 1446 774 719 767 717 767 563 776 565 806"/>
+                        </Shape>
+                        <String CONTENT="man will adopt some boy or girl, also from one of his kin, have him or her"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l7" HPOS="563" VPOS="835" WIDTH="1773" HEIGHT="49" BASELINE="563 864 2336 864" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="563 864 563 880 2334 884 2336 864 2336 835 563 835 563 864"/>
+                        </Shape>
+                        <String CONTENT="married, and then he makes him the principal heir of the house and the herd."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l8" HPOS="561" VPOS="891" WIDTH="1773" HEIGHT="53" BASELINE="563 926 2334 923" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="563 926 563 944 2332 944 2334 923 2330 893 561 891 563 926"/>
+                        </Shape>
+                        <String CONTENT="It sometimes happens that a rich reindeer-breeder leaves his herd without any"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l9" HPOS="561" VPOS="952" WIDTH="1777" HEIGHT="52" BASELINE="563 981 2338 985" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="563 981 561 995 2334 1004 2338 985 2336 956 563 952 563 981"/>
+                        </Shape>
+                        <String CONTENT="definite heir. This may occur, for instance, because of some disease which"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l10" HPOS="563" VPOS="1008" WIDTH="1771" HEIGHT="55" BASELINE="563 1045 2334 1045" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="563 1045 563 1057 2332 1063 2334 1045 2334 1018 563 1008 563 1045"/>
+                        </Shape>
+                        <String CONTENT="has taken away the only son and heir. The old father, from mere sorrow,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l11" HPOS="563" VPOS="1073" WIDTH="1771" HEIGHT="54" BASELINE="563 1106 2334 1106" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="563 1106 563 1117 2332 1127 2334 1106 2334 1084 1861 1073 1769 1084 1736 1073 1707 1084 1670 1073 1652 1084 1494 1084 1465 1073 1444 1084 1338 1073 1299 1084 1249 1073 1161 1084 1122 1073 1046 1084 995 1073 970 1084 818 1084 695 1073 678 1084 563 1084 563 1106"/>
+                        </Shape>
+                        <String CONTENT="may follow soon after, since the Chukchee are “soft to die.”¹ In such cases,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l12" HPOS="561" VPOS="1129" WIDTH="1773" HEIGHT="61" BASELINE="563 1160 2334 1164" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="563 1160 561 1176 980 1188 982 1188 1412 1180 1549 1190 1551 1190 2332 1180 2334 1164 2330 1129 563 1131 563 1160"/>
+                        </Shape>
+                        <String CONTENT="the kinsmen come; and by counting the degrees of kinship decide who is the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l13" HPOS="563" VPOS="1197" WIDTH="1771" HEIGHT="43" BASELINE="563 1225 2334 1225" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="563 1225 563 1240 2334 1240 2334 1225 2334 1197 563 1197 563 1225"/>
+                        </Shape>
+                        <String CONTENT="nearest to the deceased. There exist, however, no settled rules about this"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l14" HPOS="559" VPOS="1244" WIDTH="1775" HEIGHT="57" BASELINE="561 1287 2334 1281" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="561 1287 561 1301 2332 1299 2334 1281 2330 1244 1713 1244 1711 1244 1709 1244 1674 1254 1644 1244 1642 1244 1640 1244 1588 1254 1559 1244 1557 1244 1555 1244 1467 1254 1416 1244 1414 1244 1358 1254 1305 1244 1303 1244 1214 1254 1177 1244 1175 1244 1173 1244 1056 1256 1034 1246 1032 1246 1030 1246 719 1256 645 1246 643 1246 559 1256 561 1287"/>
+                        </Shape>
+                        <String CONTENT="matter. I was told that in earlier times the family-group, would gather and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l15" HPOS="559" VPOS="1303" WIDTH="1773" HEIGHT="58" BASELINE="561 1345 2332 1340" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="561 1345 561 1361 2330 1359 2332 1340 2328 1314 2141 1303 2139 1303 2137 1303 2135 1303 2118 1314 1816 1314 1790 1303 1789 1303 1787 1303 1722 1314 1594 1305 1592 1305 1590 1305 1557 1314 1525 1305 1523 1305 1522 1305 1444 1314 1407 1305 1405 1305 1403 1305 1253 1314 1151 1305 1149 1305 1147 1305 1108 1316 824 1306 822 1306 750 1316 713 1306 711 1306 709 1306 707 1306 705 1306 689 1316 584 1308 582 1308 580 1308 559 1316 561 1345"/>
+                        </Shape>
+                        <String CONTENT="come to a decision, but of late no such gatherings are known to me. Kinsmen"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l16" HPOS="561" VPOS="1365" WIDTH="1771" HEIGHT="56" BASELINE="561 1404 2332 1404" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="561 1404 561 1421 2332 1421 2332 1404 2332 1375 2110 1365 2108 1365 2106 1365 2104 1365 2089 1377 1929 1377 1882 1365 1880 1365 1878 1365 1857 1375 1828 1365 1826 1365 1824 1365 1822 1365 1820 1365 1802 1377 1681 1377 1623 1365 1621 1365 1527 1375 1475 1365 1473 1365 1471 1365 1469 1365 1455 1375 1371 1365 1370 1365 1368 1365 1342 1375 1292 1365 1290 1365 1288 1365 1255 1375 1143 1365 1141 1365 1140 1365 1138 1365 1122 1377 906 1377 867 1365 865 1365 863 1365 861 1365 859 1365 841 1377 701 1377 602 1365 600 1365 598 1365 561 1375 561 1404"/>
+                        </Shape>
+                        <String CONTENT="of the same degree may divide the inheritance into equal shares, or the poorer"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l17" HPOS="559" VPOS="1421" WIDTH="1775" HEIGHT="59" BASELINE="561 1466 2334 1460" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="561 1466 561 1480 2334 1474 2334 1460 2330 1433 1814 1421 1812 1421 1810 1421 1787 1431 1763 1421 1761 1421 1759 1421 1757 1421 1720 1433 1683 1423 1681 1423 1679 1423 1677 1423 1652 1433 1352 1423 1350 1423 1348 1423 1346 1423 1331 1435 1237 1435 1184 1423 1182 1423 1180 1423 1147 1435 717 1425 715 1425 559 1437 561 1466"/>
+                        </Shape>
+                        <String CONTENT="man will receive a larger share. On the other hand, I know of cases where"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l18" HPOS="559" VPOS="1482" WIDTH="1773" HEIGHT="58" BASELINE="561 1527 2332 1521" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="561 1527 561 1540 2330 1534 2332 1521 2330 1492 2315 1482 2313 1482 2311 1482 2309 1482 2307 1482 2278 1492 2159 1482 2157 1482 2069 1492 2046 1482 2044 1482 2042 1482 2040 1482 2015 1492 1985 1482 1983 1482 1981 1482 1878 1492 1843 1482 1841 1482 1839 1482 1837 1482 1835 1482 1820 1492 1790 1482 1789 1482 1787 1482 1785 1482 1736 1494 1609 1484 1607 1484 1531 1494 1504 1484 1502 1484 1500 1484 1455 1494 1409 1484 1407 1484 1405 1484 1403 1484 1387 1496 1190 1496 1153 1484 1151 1484 1149 1484 1147 1484 1099 1496 578 1486 576 1486 574 1486 572 1486 559 1494 561 1527"/>
+                        </Shape>
+                        <String CONTENT="those of the kinsmen who were at hand took the whole, and the other rel-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l19" HPOS="559" VPOS="1546" WIDTH="1769" HEIGHT="61" BASELINE="561 1585 2328 1581" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="561 1585 561 1601 2325 1607 2328 1581 2325 1554 602 1546 600 1546 598 1546 559 1556 561 1585"/>
+                        </Shape>
+                        <String CONTENT="atives, though nearer to the deceased, could get nothing. Thus, for instance,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l20" HPOS="561" VPOS="1601" WIDTH="1769" HEIGHT="60" BASELINE="563 1646 2330 1640" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="563 1646 563 1661 2328 1661 2330 1640 2326 1614 2250 1614 2231 1601 2229 1601 2227 1601 2225 1601 2223 1601 2196 1614 2057 1614 2032 1601 2030 1601 2028 1601 2026 1601 2001 1614 1929 1614 1896 1601 1894 1601 1892 1601 1890 1601 1841 1612 1816 1601 1814 1601 1812 1601 1738 1614 1718 1603 1716 1603 1714 1603 1713 1603 1711 1603 1679 1616 1459 1616 1338 1603 1336 1603 1334 1603 1303 1614 1151 1603 1149 1603 1064 1605 1062 1605 1060 1605 1044 1616 1007 1605 1005 1605 1003 1605 1001 1605 964 1618 760 1618 715 1605 713 1605 711 1605 709 1605 685 1616 666 1605 664 1605 662 1605 598 1605 596 1605 594 1605 561 1616 563 1646"/>
+                        </Shape>
+                        <String CONTENT="while I was on the Wolverene River, a quarrel took place about such an"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l21" HPOS="559" VPOS="1665" WIDTH="1773" HEIGHT="55" BASELINE="561 1706 2332 1700" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="561 1706 561 1720 2330 1716 2332 1700 2326 1665 559 1669 561 1706"/>
+                        </Shape>
+                        <String CONTENT="inheritance. An old Chukchee of Maritime extraction, who had a good-sized"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l22" HPOS="559" VPOS="1722" WIDTH="1773" HEIGHT="56" BASELINE="561 1764 2332 1761" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="561 1764 561 1778 2330 1776 2332 1761 2330 1733 2305 1722 2303 1722 2301 1722 2229 1731 2108 1722 2106 1722 2104 1722 2077 1731 1960 1722 1958 1722 1956 1722 1954 1722 1939 1731 1892 1722 1890 1722 1888 1722 1861 1731 1759 1722 1757 1722 1658 1731 1543 1722 1541 1722 1379 1735 1272 1735 1256 1724 1255 1724 1253 1724 1251 1724 1249 1724 1208 1733 1171 1724 1169 1724 1167 1724 1165 1724 1140 1733 1112 1724 1110 1724 1108 1724 1034 1733 929 1724 927 1724 559 1729 561 1764"/>
+                        </Shape>
+                        <String CONTENT="herd, died heirless. His herd was taken by a third cousin (parent’s cousin’s"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l23" HPOS="561" VPOS="1784" WIDTH="1769" HEIGHT="55" BASELINE="561 1823 2330 1823" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="561 1823 561 1839 2328 1839 2330 1823 2328 1796 2233 1784 2231 1784 2229 1784 2192 1794 2151 1784 2149 1784 2147 1784 2145 1784 2110 1796 1902 1796 1868 1784 1867 1784 1865 1784 1713 1794 1650 1784 1648 1784 1646 1784 1623 1794 1594 1784 1592 1784 1590 1784 1412 1794 1327 1784 1325 1784 1247 1794 1196 1784 1194 1784 1192 1784 1163 1794 1011 1784 1009 1784 810 1794 760 1784 758 1784 699 1794 685 1784 683 1784 682 1784 590 1784 588 1784 586 1784 561 1794 561 1823"/>
+                        </Shape>
+                        <String CONTENT="child), who came with him from their parental village, and now was the front-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l24" HPOS="563" VPOS="1844" WIDTH="1767" HEIGHT="55" BASELINE="563 1883 2330 1883" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="563 1883 563 1899 2330 1899 2330 1883 2330 1856 2137 1844 2135 1844 2134 1844 2095 1854 2034 1844 2032 1844 1956 1854 1919 1844 1917 1844 1915 1844 1839 1856 1693 1856 1668 1844 1666 1844 1664 1844 1662 1844 1629 1854 1603 1844 1601 1844 1599 1844 1502 1854 563 1848 563 1883"/>
+                        </Shape>
+                        <String CONTENT="house master of the neighboring camp. Nobody protested, and a few years"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l25" HPOS="559" VPOS="1899" WIDTH="1771" HEIGHT="66" BASELINE="561 1946 2330 1938" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="561 1946 561 1965 2328 1957 2330 1938 2325 1903 2116 1909 2087 1899 2085 1899 2083 1899 2081 1899 2040 1909 1976 1899 1974 1899 1927 1909 1900 1899 1898 1899 1896 1899 1894 1899 1892 1899 1874 1911 1767 1901 1765 1901 1763 1901 1761 1901 1746 1913 1631 1913 1601 1901 1599 1901 1598 1901 1399 1913 1319 1903 1317 1903 1249 1913 1141 1903 1140 1903 1138 1903 1136 1903 1122 1913 1085 1903 1083 1903 1081 1903 1079 1903 1077 1903 1062 1913 923 1905 921 1905 919 1905 886 1915 691 1905 689 1905 559 1916 561 1946"/>
+                        </Shape>
+                        <String CONTENT="passed away without incident. The man who received the inheritance died"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l26" HPOS="559" VPOS="1961" WIDTH="1771" HEIGHT="61" BASELINE="561 2006 2330 1998" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="561 2006 561 2022 2328 2016 2330 1998 2326 1971 1446 1961 1444 1961 1442 1961 1414 1973 1128 1963 1126 1963 658 1975 588 1965 586 1965 584 1965 559 1975 561 2006"/>
+                        </Shape>
+                        <String CONTENT="also, and the herd passed to his son, Akɪmlɵˊkê. Then two young men came"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l27" HPOS="557" VPOS="2022" WIDTH="1773" HEIGHT="56" BASELINE="559 2067 2330 2061" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="559 2067 559 2078 2330 2072 2330 2061 2326 2031 1935 2022 1933 2022 1872 2031 1837 2022 1835 2022 1833 2022 1831 2022 1808 2031 1457 2024 1455 2024 1453 2024 1422 2033 1264 2024 1262 2024 1196 2033 1147 2024 1145 2024 1143 2024 1103 2035 572 2026 570 2026 569 2026 567 2026 557 2029 559 2067"/>
+                        </Shape>
+                        <String CONTENT="from the Arctic shore, who said that they were sons of a first-cousin of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l28" HPOS="559" VPOS="2082" WIDTH="1769" HEIGHT="59" BASELINE="561 2125 2328 2121" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="561 2125 561 2141 2326 2141 2328 2121 2325 2094 2260 2082 2258 2082 2188 2092 1933 2082 1931 2082 1867 2092 1812 2082 1810 2082 1808 2082 1806 2082 1790 2094 1545 2094 1518 2082 1516 2082 1514 2082 1426 2094 1373 2084 1371 2084 1297 2094 888 2084 886 2084 783 2094 767 2084 765 2084 763 2084 578 2084 576 2084 574 2084 572 2084 559 2092 561 2125"/>
+                        </Shape>
+                        <String CONTENT="deceased: so they had a better right to the property than Akɪmlɵˊkê. They"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l29" HPOS="557" VPOS="2143" WIDTH="1771" HEIGHT="62" BASELINE="559 2185 2328 2180" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="559 2185 559 2201 2325 2205 2328 2180 2325 2152 1750 2143 1748 2143 1746 2143 1724 2152 1196 2144 1194 2144 557 2156 559 2185"/>
+                        </Shape>
+                        <String CONTENT="requested restitution. Akɪmlɵˊkê was a “strong man” (eˊrmečɪn), always ready"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l30" HPOS="557" VPOS="2201" WIDTH="1771" HEIGHT="58" BASELINE="559 2246 2328 2240" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="557 2219 559 2246 559 2259 2326 2254 2328 2240 2325 2213 2169 2201 2167 2201 2165 2201 2163 2201 2149 2211 2122 2201 2120 2201 2118 2201 2116 2201 2091 2213 1839 2213 1773 2201 1771 2201 1769 2201 1734 2213 1385 2203 1383 2203 1331 2213 1290 2203 1288 2203 1286 2203 1284 2203 1262 2215 559 2215 557 2219"/>
+                        </Shape>
+                        <String CONTENT="for strife: so he refused to comply with the request. The younger of the two"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l31" HPOS="559" VPOS="2269" WIDTH="1769" HEIGHT="51" BASELINE="561 2304 2328 2298" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="561 2304 561 2320 2326 2314 2328 2298 2325 2271 559 2269 561 2304"/>
+                        </Shape>
+                        <String CONTENT="brothers, however, whose name was Uˊmkɪ (“polar bear”), was a large fellow"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l32" HPOS="559" VPOS="2324" WIDTH="1769" HEIGHT="54" BASELINE="561 2363 2328 2357" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="561 2363 561 2378 2326 2374 2328 2357 2325 2330 600 2324 598 2324 596 2324 559 2334 561 2363"/>
+                        </Shape>
+                        <String CONTENT="of considerable strength and temper. He declared that he would rather die"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l33" HPOS="557" VPOS="2378" WIDTH="1771" HEIGHT="63" BASELINE="559 2425 2328 2417" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="559 2425 559 2441 2326 2433 2328 2417 2325 2388 2178 2378 2176 2378 2174 2378 2172 2378 2157 2390 2040 2390 2005 2378 2003 2378 2001 2378 1999 2378 1997 2378 1981 2390 1732 2390 1707 2380 1705 2380 1703 2380 1594 2390 1562 2380 1561 2380 1559 2380 1557 2380 1555 2380 1539 2390 1251 2382 1249 2382 1204 2392 1190 2382 1188 2382 1186 2382 1027 2382 1025 2382 945 2394 758 2384 756 2384 666 2394 578 2384 576 2384 574 2384 557 2392 559 2425"/>
+                        </Shape>
+                        <String CONTENT="than go back empty-handed. While I was there, they met at a large reindeer-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l34" HPOS="559" VPOS="2445" WIDTH="1767" HEIGHT="54" BASELINE="561 2484 2326 2480" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="561 2484 561 2499 2325 2497 2326 2480 2323 2452 802 2445 800 2445 559 2454 561 2484"/>
+                        </Shape>
+                        <String CONTENT="course, and nearly came to blows, but were prevented by the others present."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l35" HPOS="559" VPOS="2501" WIDTH="1345" HEIGHT="62" BASELINE="561 2538 1904 2542" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="561 2515 561 2538 559 2556 569 2563 570 2563 572 2563 574 2563 1902 2556 1904 2542 1902 2515 1802 2503 1670 2503 1668 2503 1666 2503 1664 2503 1652 2513 1294 2503 1292 2503 1233 2513 1177 2501 1175 2501 1173 2501 1141 2511 1064 2501 1062 2501 1019 2511 1007 2501 1005 2501 1003 2501 1001 2501 999 2501 972 2511 565 2507 561 2515"/>
+                        </Shape>
+                        <String CONTENT="I left the country before the matter came to a final issue."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-144_r3" HPOS="565" VPOS="2562" WIDTH="1782" HEIGHT="479" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="565 2562 2347 2562 2347 3041 565 3041"/>
+                    </Shape>
+                    <TextLine ID="mz_3-144_l36" HPOS="670" VPOS="2560" WIDTH="1660" HEIGHT="66" BASELINE="672 2602 2330 2599" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="672 2602 672 2614 933 2614 951 2626 952 2626 954 2626 956 2626 1179 2614 1229 2626 1231 2626 1233 2626 1235 2626 1280 2614 1317 2624 1319 2624 1321 2624 1323 2624 1358 2614 1395 2624 1397 2624 1399 2624 1401 2624 1428 2614 1664 2624 1666 2624 1668 2624 1670 2624 1685 2612 1746 2622 1748 2622 1822 2612 1927 2624 1929 2624 1931 2624 1933 2624 1948 2612 1981 2622 1983 2622 1985 2622 2050 2612 2116 2624 2118 2624 2120 2624 2122 2624 2137 2612 2167 2622 2169 2622 2171 2624 2317 2624 2317 2622 2319 2622 2321 2622 2330 2612 2330 2599 2328 2571 2307 2560 2305 2560 2303 2560 2301 2560 2248 2569 2172 2560 2171 2560 2169 2560 2167 2560 2151 2571 2087 2560 2085 2560 2083 2560 2052 2571 1989 2560 1987 2560 1985 2560 1958 2573 1790 2573 1753 2560 1752 2560 1750 2560 1748 2560 1701 2571 1570 2560 1568 2560 1512 2571 1479 2562 1477 2562 1475 2562 1473 2562 1471 2562 1453 2575 1354 2575 1329 2562 1327 2562 1325 2562 1323 2562 1297 2573 1255 2562 1253 2562 1251 2562 1249 2562 1219 2571 1190 2562 1188 2562 1186 2562 1184 2562 1182 2562 1167 2573 1151 2562 1149 2562 1147 2562 1145 2562 1048 2571 1009 2562 1007 2562 1005 2562 1003 2562 956 2573 882 2562 880 2562 878 2562 841 2573 670 2567 672 2602"/>
+                        </Shape>
+                        <String CONTENT="When the principal heir is a daughter, who stays in the father’s"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l37" HPOS="557" VPOS="2628" WIDTH="1771" HEIGHT="50" BASELINE="559 2665 2328 2659" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2319 2628 557 2628 559 2665 559 2678 2326 2675 2328 2659 2326 2647 2319 2628"/>
+                        </Shape>
+                        <String CONTENT="house, even after she is married, her rights to the inheritance are the same"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l38" HPOS="559" VPOS="2680" WIDTH="1767" HEIGHT="61" BASELINE="561 2723 2326 2717" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="561 2723 561 2737 2323 2741 2326 2717 2323 2690 1738 2680 1736 2680 1734 2680 1691 2690 1184 2682 1182 2682 1180 2682 1143 2692 648 2684 646 2684 559 2694 561 2723"/>
+                        </Shape>
+                        <String CONTENT="as those of a male heir. A daughter who is married elsewhere receives only"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l39" HPOS="557" VPOS="2739" WIDTH="1771" HEIGHT="64" BASELINE="559 2782 2328 2778" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="559 2782 559 2793 1440 2803 1442 2803 1500 2793 2118 2801 2120 2801 2328 2790 2328 2778 2323 2745 1939 2749 1857 2739 1855 2739 1734 2749 1687 2739 1685 2739 1619 2749 1592 2739 1590 2739 1588 2739 1586 2739 1584 2739 1568 2751 1325 2751 1299 2741 1297 2741 1295 2741 1294 2741 1292 2741 1276 2753 1182 2753 1159 2741 1157 2741 1155 2741 1153 2741 1128 2751 1073 2741 1071 2741 1069 2741 1027 2751 931 2741 929 2741 826 2751 789 2741 787 2741 785 2741 783 2741 781 2741 765 2751 711 2741 709 2741 637 2751 580 2741 578 2741 576 2741 557 2749 559 2782"/>
+                        </Shape>
+                        <String CONTENT="the animals marked with her private ear-mark. Some of these remain in her"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l40" HPOS="559" VPOS="2799" WIDTH="1767" HEIGHT="61" BASELINE="561 2844 2326 2840" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="561 2844 561 2856 2323 2860 2326 2840 2323 2811 1740 2799 1738 2799 1679 2809 1648 2799 1646 2799 1644 2799 1596 2809 1543 2799 1541 2799 1420 2811 1393 2801 1391 2801 1389 2801 1342 2811 1069 2801 1067 2801 1065 2801 1042 2813 880 2813 865 2801 863 2801 861 2801 758 2801 756 2801 754 2801 728 2811 715 2801 713 2801 711 2801 572 2801 570 2801 569 2801 567 2801 559 2805 561 2844"/>
+                        </Shape>
+                        <String CONTENT="father’s herd, even after her marriage. On the division of the inheritance,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l41" HPOS="559" VPOS="2860" WIDTH="1769" HEIGHT="62" BASELINE="561 2903 2328 2899" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="561 2903 561 2916 2325 2922 2328 2899 2325 2871 1672 2860 1670 2860 1609 2869 1572 2860 1570 2860 1568 2860 1566 2860 1537 2869 1477 2860 1475 2860 1405 2871 683 2862 682 2862 680 2862 678 2862 664 2871 582 2862 580 2862 578 2862 576 2862 559 2869 561 2903"/>
+                        </Shape>
+                        <String CONTENT="they fall to her possession, anyway. A female relation of more remote degree"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l42" HPOS="559" VPOS="2926" WIDTH="1767" HEIGHT="57" BASELINE="561 2963 2326 2957" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="561 2963 561 2975 1734 2983 1736 2983 1738 2983 1759 2973 2326 2973 2326 2957 2323 2928 559 2926 561 2963"/>
+                        </Shape>
+                        <String CONTENT="has no part in the inheritance of a childless man, and cannot contend with"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-144_l43" HPOS="559" VPOS="2977" WIDTH="1764" HEIGHT="62" BASELINE="561 3023 2323 3016" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="561 3023 561 3039 2323 3033 2323 3016 2319 2986 2151 2977 2149 2977 2147 2977 2145 2977 2130 2988 1958 2988 1929 2977 1927 2977 1925 2977 1923 2977 1921 2977 1905 2986 1822 2979 1820 2979 1771 2988 1744 2979 1742 2979 1740 2979 1689 2988 1664 2979 1662 2979 1660 2979 1658 2979 1656 2979 1640 2990 1401 2990 1373 2981 1371 2981 1370 2981 1305 2990 1245 2981 1243 2981 1182 2990 1027 2981 1025 2981 1023 2981 993 2992 972 2983 970 2983 968 2983 966 2983 933 2992 732 2983 730 2983 676 2992 629 2983 627 2983 559 2992 561 3023"/>
+                        </Shape>
+                        <String CONTENT="male relatives. A childless widow has no part in the inheritance, and has to"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-144_r4" HPOS="565" VPOS="3065" WIDTH="1782" HEIGHT="54" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="565 3065 2347 3065 2347 3119 565 3119"/>
+                    </Shape>
+                    <TextLine ID="mz_3-144_l44" HPOS="1299" VPOS="3066" WIDTH="289" HEIGHT="49" BASELINE="1299 3090 1588 3090" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1299 3090 1299 3103 1401 3115 1403 3115 1588 3103 1588 3090 1588 3066 1299 3066 1299 3090"/>
+                        </Shape>
+                        <String CONTENT="¹ Compare p. 41."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

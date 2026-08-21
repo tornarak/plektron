@@ -1,0 +1,173 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "669"
+    },
+    "2": {
+      "text": "exists an eternal feud and desire for blood-revenge. When a man has killed"
+    },
+    "3": {
+      "text": "a fox, another fox wants to avenge its death: so it rushes to a trap, and is"
+    },
+    "4": {
+      "text": "killed in its turn. The fiercer this enmity on the part of the animals, the"
+    },
+    "5": {
+      "text": "better will be the hunting. For this reason also, in angling, the angler sends"
+    },
+    "6": {
+      "text": "a derisive challenge to the fishes in order to make them come. Thus, in"
+    },
+    "7": {
+      "text": "angling for grayling through holes in the ice, when the fishes are seen in the"
+    },
+    "8": {
+      "text": "water, but do not want to bite at the hook, the angler uses an incantation"
+    },
+    "9": {
+      "text": "as follows: —"
+    },
+    "10": {
+      "text": "“Vai, vai, vai, ᴇʟaˊnaw-mêˊrga qamêˊ-loᵋ-tɪˊnpɪk gagtɪnɪmčaˊw-ê-hɪt;”",
+      "resolved": "ᴇ = U+1D07 LATIN SMALL CAPITAL LETTER E, ʟ = U+029F LATIN SMALL CAPITAL LETTER L (word-initial, ᴇʟaˊnaw); ˊ = U+02CA stress on naw, mêˊrga, qamêˊ, tɪˊnpɪk, gagtɪnɪmčaˊw; ê = e+U+0302 circumflex (mêˊrga, -ê-hɪt); ᵋ = U+1D4B laryngeal (loᵋ); ɪ = U+026A (tɪˊnpɪk ×2, gagtɪnɪmčaˊw, hɪt); č = c+U+030C (mča)",
+      "note": "ᴇʟ read as small caps, not full ASCII capitals: on this same line 'Vai' gives a full-cap-height control (V), and the WEREGILD heading (line 30) gives a small-cap-height control (EREGILD) — ᴇ and ʟ here match the small-cap control, not the full-cap one. No dot below either 'g' in gagtɪnɪmčaˊw at 4×.",
+      "class": "doubt"
+    },
+    "11": {
+      "text": "“There, there, there, (from) mother, woman- in eating face-kicking having received a lesson-art"
+    },
+    "12": {
+      "text": "grandparent"
+    },
+    "13": {
+      "text": "thou;”"
+    },
+    "14": {
+      "text": "that is, “Well, well, from your mother’s mother, who kicked you in the face,"
+    },
+    "15": {
+      "text": "during a meal you have received a lesson of prudence.” Another incantation"
+    },
+    "16": {
+      "text": "used is: —"
+    },
+    "17": {
+      "text": "“Yo, yo, tan˙ñinaˊqut eˊmi?”",
+      "resolved": "˙ = U+02D9 palatalization after n (tan˙ñina); ñ = n+U+0303 tilde (ñina); ˊ = U+02CA stress (ñinaˊqut, eˊmi)",
+      "note": "distinct root from taˊn˙ñɪt (lines 18-20); not the same word.",
+      "class": "doubt"
+    },
+    "18": {
+      "text": "“Oh, oh! taˊn˙ñɪt big where (are they)?”",
+      "as_typed": "“Oh, oh! {ta'n.n~i_t} big where (are they)?”"
+    },
+    "19": {
+      "text": "that is, “Oh, oh! Where are those big taˊn˙ñɪt?” The fishes are equivalent",
+      "as_typed": "that is, “Oh, oh! Where are those big {ta'n.n~i_t}?” The fishes are equivalent"
+    },
+    "20": {
+      "text": "to the taˊn˙ñɪt, the ancient enemies of the Chukchee tribe.",
+      "as_typed": "to the {ta'n.n~i_t}, the ancient enemies of the Chukchee tribe."
+    },
+    "21": {
+      "text": "When the fish has bitten and been caught, the angler uses still another"
+    },
+    "22": {
+      "text": "incantation: —"
+    },
+    "23": {
+      "text": "“Gɪk, gɪk, gɪk, kɪrña-takaˊlhɪn qäiñeˊwkun;”",
+      "resolved": "ɪ = U+026A throughout (Gɪk ×3, kɪrña, lhɪn); ñ = n+U+0303 (kɪrña, qäiñe); ˊ = U+02CA stress on takaˊlhɪn, qäiñeˊwkun; ä = a+U+0308 (qäiñe)",
+      "note": "lexicon key ki_rn~a'-taka'lhi_n (3-003) ratifies kɪrñaˊ-takaˊlhɪn with a stress mark on both elements; this page's print shows only one stress, after 'taka', none on 'kɪrña' — checked at 4x (23@35), no mark present before the hyphen. Keyed as printed rather than importing the second mark. Bare g in 'gɪk' (x3) also checked at 4x: no dot below visible, keyed as printed. A bold filled dot follows the closing quote and semicolon ('qäiñeˊwkun;” •'); it appears nowhere else on the page after a formula and reads as an ink blot rather than print - not keyed.",
+      "class": "doubt"
+    },
+    "24": {
+      "text": "“Oh, oh, oh! old male mate"
+    },
+    "25": {
+      "text": "call him;”"
+    },
+    "26": {
+      "text": "that is, “Oh, oh, oh! call your elder companion.”"
+    },
+    "27": {
+      "text": "This last incantation is the most effective of all. He who neglects to"
+    },
+    "28": {
+      "text": "pronounce this short formula after every successful catch, in a short time will"
+    },
+    "29": {
+      "text": "lose all his “fishing-luck.”"
+    },
+    "30": {
+      "text": "WEREGILD. — Weregild may be accepted either for murder, or, much"
+    },
+    "31": {
+      "text": "more frequently, for any lesser crime perpetrated on person or property. The"
+    },
+    "32": {
+      "text": "Chukchee language has several expressions for weregild. One of these is"
+    },
+    "33": {
+      "text": "qäl-vil (literally, “misfortune-value”). This term is applied to weregild for",
+      "resolved": "ä = a+U+0308 (qäl)",
+      "note": "no lexicon key; below the two-page floor (only occurrence found).",
+      "class": "doubt"
+    },
+    "34": {
+      "text": "more serious crimes; i. e., for murder and for great robberies."
+    },
+    "35": {
+      "text": "Puˊurɪn (literally, “exchange”) is applied to cases of minor robberies and",
+      "resolved": "ˊ = U+02CA stress (Puˊurɪn); ɪ = U+026A (urɪn)",
+      "note": "no lexicon key; below the two-page floor.",
+      "class": "doubt"
+    },
+    "36": {
+      "text": "of corporal damages not followed by death. The same stem, however, is also"
+    },
+    "37": {
+      "text": "used for all kinds of retributions, even for blood-revenge. Puurɪˊtkulɪn (“the",
+      "resolved": "ˊ = U+02CA stress (Puurɪˊtkulɪn); ɪ = U+026A (Puurɪˊ, tkulɪn)",
+      "note": "no lexicon key; below the two-page floor.",
+      "class": "doubt"
+    },
+    "38": {
+      "text": "exchanger”) is employed in the same sense as the term liˊñɪlɪn (“the avenger”),",
+      "resolved": "ˊ = U+02CA stress (liˊñɪlɪn); ñ = n+U+0303; ɪ = U+026A (×2, ñɪlɪn)",
+      "note": "lexicon key Li'n~i_li_n (3-007) is ratified only capitalized (Liˊñɪlɪn); this page prints it lowercase, mid-sentence, so the handle is not used (it may raise the corpus's case, never lower it) - keyed by hand as read.",
+      "class": "doubt"
+    },
+    "39": {
+      "text": "mentioned before. Kɪˊtkau (literally, “hard return”) is also used for all kinds",
+      "as_typed": "mentioned before. {Ki_'tkau} (literally, “hard return”) is also used for all kinds"
+    },
+    "40": {
+      "text": "of retaliation in blood, and also for weregild. Ñɪˊrkɪčvai (“shame-pay”) is used",
+      "resolved": "Ñ = N+U+0303; ˊ = U+02CA stress (Ñɪˊrkɪčvai); ɪ = U+026A (×2); č = c+U+030C",
+      "note": "no lexicon key; below the two-page floor.",
+      "class": "doubt"
+    },
+    "41": {
+      "text": "where some personal insult has been inflicted, chiefly in cases of rape on"
+    },
+    "42": {
+      "text": "women, also in those of retribution for blood, and sometimes even for bad"
+    },
+    "43": {
+      "text": "words. Weregild may be accepted for murder when the offender is either"
+    },
+    "44": {
+      "text": "rich or has many strong kinsmen who are likely to defend him, or under"
+    },
+    "45": {
+      "text": "84—JESUP NORTH PACIFIC EXPED., VOL. VII."
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

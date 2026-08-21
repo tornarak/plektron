@@ -1,0 +1,168 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "664",
+      "note": "Folio, RunningTitleZone. The '0' beside it in the numbered composite is the composite's own line-index label, not printed ink.",
+      "class": "layout"
+    },
+    "2": {
+      "text": "Cape Erri. His deed was of such a character that it could not pass without"
+    },
+    "3": {
+      "text": "punishment; so that the murderers could allege for themselves that the killing"
+    },
+    "4": {
+      "text": "of Yaˊyaq by his own people would destroy all grounds for blood-revenge,",
+      "resolved": "Yaˊyaq: ˊ = U+02CA stress after Ya",
+      "note": "lexicon lookup for Ya'yaq returned no key; hand-keyed from the raster.",
+      "class": "doubt"
+    },
+    "5": {
+      "text": "and prevent further trouble. In still another case that I know of a man"
+    },
+    "6": {
+      "text": "named Qaˊvrêtto was killed by his cousin in a quarrel. After the deed, the",
+      "resolved": "Qaˊvrêtto: ˊ = U+02CA stress after Qa; ê = e + U+0302 circumflex",
+      "note": "lexicon lookup for Qa'vretto returned no key; hand-keyed from the raster (circumflex on e confirmed at contact-sheet resolution).",
+      "class": "doubt"
+    },
+    "7": {
+      "text": "murderer married the wife of his victim, and joined the two herds together."
+    },
+    "8": {
+      "text": "The victim left a small son, who had to live in the camp of the murderer."
+    },
+    "9": {
+      "text": "Nobody protested against the deed. The Chukchee who told me the details"
+    },
+    "10": {
+      "text": "of the affair said, “What is to be done? This is their own business” (Qailoˊ-",
+      "resolved": "Qailoˊ: ˊ = U+02CA stress after Qailo; word continues next line as -qɪm",
+      "note": "Word wraps across the line break with a printed hyphen; the whole form Qailoˊqɪm matches lexicon key Qailo'qi_m (attested 3-011, 'Qailoˊqɪm, miˊñkri, ɪnpɪnaˊčhɪn'). Kept as two line-local fragments rather than the {handle}, since the handle cannot span two line boxes.",
+      "class": "semantic"
+    },
+    "11": {
+      "text": "qɪm miˊñkri. Eˊrrɪg-liˊi; literally, “Of course how, their knowledge”).",
+      "resolved": "qɪm: ɪ = U+026A small cap (second half of Qailoˊqɪm, wrapped from line 10); miˊñkri: ˊ = U+02CA stress, ñ = n + U+0303 tilde (matches lexicon key mi'n~kri, attested 3-011); Eˊrrɪg-liˊi: ˊ = U+02CA stress (×2, one per hyphenated element per §5.5), ɪ = U+026A small cap in rrɪg, plain dotted i in liˊi",
+      "note": "E'rrig-li'i has no lexicon key; hand-keyed. At 4x the 'i' in rrɪg is the dotless small-cap ɪ (flat serifs, matches ɪ elsewhere on the page), while both i's in liˊi are ordinary dotted lowercase i. Checked the g in rrɪg at 4x per proposal check's rare-form advisory (keying_spec §5.1): no dot below is visible in the ink, and this is not the word-final -gɪn/-gɪt environment the closed count covers, so kept bare g.",
+      "class": "doubt"
+    },
+    "12": {
+      "text": "I will also mention a couple of cases of a somewhat different character,"
+    },
+    "13": {
+      "text": "although they happened within the family."
+    },
+    "14": {
+      "text": "A mother killed her boy with a blow of a heavy stick. The boy was"
+    },
+    "15": {
+      "text": "about seven years old. The father was, as the Chukchee says, “a soft one”"
+    },
+    "16": {
+      "text": "(yɪˊrkum-vaˊlɪn), and nothing further happened. In two cases men killed their",
+      "resolved": "yɪˊrkum-vaˊlɪn: ɪ = U+026A small cap (×2), ˊ = U+02CA stress (×2, one per hyphenated element per §5.5)",
+      "note": "lexicon lookup for yi'rkum-va'lin returned no key; hand-keyed. 'cases' carries a small stray mark under the c at 4x magnification; not a cedilla (uncatalogued for this common English word) — read as ink noise, not a letter, per §2.14.",
+      "class": "doubt"
+    },
+    "17": {
+      "text": "wives, — one with a fire-brand, and the other with a kick of the foot in her"
+    },
+    "18": {
+      "text": "abdomen. Moreover, the second woman was with child. Both murders remained"
+    },
+    "19": {
+      "text": "without consequences. In a third case, however, a rich reindeer-breeder on"
+    },
+    "20": {
+      "text": "the western Kolyma tundra, Qituˊwgi, who happened to murder his wife, had",
+      "resolved": "Qituˊwgi: ˊ = U+02CA stress after Qitu",
+      "note": "lexicon lookup for Qitu'wgi returned no key; hand-keyed from the raster. Checked the g in wgi at 4x per proposal check's rare-form advisory (keying_spec §5.1): no dot below is visible in the ink, and this is not the word-final -gɪn/-gɪt environment the closed count covers, so kept bare g.",
+      "class": "doubt"
+    },
+    "21": {
+      "text": "to pay a heavy fine to the brother of the one killed. He gave nine reindeer,"
+    },
+    "22": {
+      "text": "among them two driving-teams and a number of the best fawn-skins. I was"
+    },
+    "23": {
+      "text": "told, however, that even this fine was moderate, the killed one being a woman"
+    },
+    "24": {
+      "text": "and not very young."
+    },
+    "25": {
+      "text": "Still another case, also previously mentioned,¹ where, on the contrary, a",
+      "note": "Footnote body reference; superscript marker ¹ (U+00B9), matching the opener at line 42, per §2.10.",
+      "class": "print"
+    },
+    "26": {
+      "text": "wife killed her husband with the concurrence of her daughters, remained"
+    },
+    "27": {
+      "text": "without consequences for the lack of avengers; that is to say, the victim had"
+    },
+    "28": {
+      "text": "no kinsmen in the neighborhood."
+    },
+    "29": {
+      "text": "MURDER AND BLOOD-REVENGE OUTSIDE OF THE FAMILY. — A murder com-",
+      "note": "Run-in second-level heading, printed in small capitals; keyed as plain ASCII capitals per §2.13.",
+      "class": "print"
+    },
+    "30": {
+      "text": "mitted outside of the family-group rarely remains unavenged. “It is a bitter"
+    },
+    "31": {
+      "text": "shame to leave blood unpaid for,” say the Chukchee. “Even the remote"
+    },
+    "32": {
+      "text": "kinsmen have to take it to heart. A friend, too, must avenge his friend,"
+    },
+    "33": {
+      "text": "and, much more, his group-marriage companion.”"
+    },
+    "34": {
+      "text": "I have already mentioned that the union of those who have to take part"
+    },
+    "35": {
+      "text": "in blood-revenge is designated by a special term, čiˊn-yɪrɪn, “heart-company”",
+      "resolved": "čiˊn-yɪrɪn: č = c + U+030C caron, ˊ = U+02CA stress, ɪ = U+026A small cap (×2)",
+      "note": "Matches lexicon key ci'n-yi_ri_n (attested 3-007, count 2); used the {handle} form.",
+      "class": "semantic"
+    },
+    "36": {
+      "text": "(from the root čiñ, identical with liñ). These are, first of all, kinsmen in the",
+      "resolved": "čiñ: č = c + U+030C caron, ñ = n + U+0303 tilde; liñ: ñ = n + U+0303 tilde",
+      "note": "Bare monosyllabic roots, no stress mark on either per §5.5 (culminative stress applies to polysyllabic forms). No lexicon key found for either bare root (only the compound liˊñliñ and the capitalized sentence-initial Čin, both different pages/forms); hand-keyed from the raster.",
+      "class": "doubt"
+    },
+    "37": {
+      "text": "father’s line (“those from the old-buck side”). It is said that kinsmen in the"
+    },
+    "38": {
+      "text": "mother’s line (“those from the matrix side”) have to appear as avengers only"
+    },
+    "39": {
+      "text": "when there is nobody to undertake it in the father’s line. The son-in-law,"
+    },
+    "40": {
+      "text": "who lives in the house of his wife as an adopted son, is considered as a"
+    },
+    "41": {
+      "text": "member of his wife’s father’s family, and takes an active part in the blood-"
+    },
+    "42": {
+      "text": "¹ Compare p. 551.",
+      "note": "Footnote opener, MarginTextZone-Notes. Printed digit is not visibly raised, but keyed as superscript ¹ per §2.10's settled rule (opener keyed the same as the body reference regardless of visible size).",
+      "class": "print"
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

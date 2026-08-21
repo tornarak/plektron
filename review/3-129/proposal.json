@@ -1,0 +1,176 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "663"
+    },
+    "2": {
+      "text": "crime is of course murder, and the punishment thereof blood-revenge. In"
+    },
+    "3": {
+      "text": "the beginning of my acquaintance with the Chukchee tribe I was astonished"
+    },
+    "4": {
+      "text": "to find that all murders are divided into two categories, those committed"
+    },
+    "5": {
+      "text": "within the family-group, and those committed outside of it. Only those of the"
+    },
+    "6": {
+      "text": "second category are liable to blood-revenge. Those in the first category"
+    },
+    "7": {
+      "text": "were exempt from it, or indeed from any punishment at all. In explanation"
+    },
+    "8": {
+      "text": "of such a state of things, the Chukchee would even quote something like a"
+    },
+    "9": {
+      "text": "formula of customary law: “as one of their own he was treated” (činiˊtu liˊgnin),",
+      "resolved": "č = c+U+030C; ˊ = U+02CA (×2 in činiˊtu, liˊgnin)",
+      "note": "Advisory: 'liˊgnin' is a rare g-shape but not the closed word-final -gɪn/-gɪt class (keying_spec.md §5.1); ends in -gnin, not -gɪn. Raster at 4× shows a plain g, no dot, in činiˊtu liˊgnin. Answered, kept bare.",
+      "class": "doubt"
+    },
+    "10": {
+      "text": "“as a kinsman he was treated” (čičeˊtu liˊgnin). This is meant to express",
+      "resolved": "č = c+U+030C (×2); ˊ = U+02CA (×2)",
+      "note": "Advisory: 'liˊgnin' as on line 9 — plain g confirmed at raster, not the dotted word-final -gɪn/-gɪt class. Answered, kept bare.",
+      "class": "doubt"
+    },
+    "11": {
+      "text": "that each family-group knows their own circumstances best, and is able to"
+    },
+    "12": {
+      "text": "decide about them. The Chukchee would add, “Is he destined to live on?"
+    },
+    "13": {
+      "text": "All the same, he would be killed by a stranger” (Yäqqäiˊ yeˊg telelqäl? Tŭmg-",
+      "resolved": "ä = a+U+0308 (×2 in Yäqqäiˊ); ˊ = U+02CA (×2, on Yäqqäiˊ and yeˊg); ŭ = u+U+0306 in Tŭmg-",
+      "note": "Advisory: 'yeˊg' and 'Tŭmg' are rare bare-g forms but neither is the closed word-final -gɪn/-gɪt class (keying_spec.md §5.1) — yeˊg ends the word in g with no suffix, Tŭmg- is a hyphenated compound-initial element, not word-final. Raster confirms plain g in both, no dot. Answered, kept bare.",
+      "class": "doubt"
+    },
+    "14": {
+      "text": "aˊlvalag ečveˊčä nɪˊnmɪnên). This implies that only “bad men” are murdered",
+      "resolved": "ˊ = U+02CA (×3: aˊlvalag, ečveˊčä, nɪˊnmɪnên); č = c+U+030C (×2); ä = a+U+0308; ê = e+U+0302; ɪ = U+026A (×4)",
+      "note": "Advisory: 'aˊlvalag' ends -alag, not the closed word-final -gɪn/-gɪt class (keying_spec.md §5.1). Raster confirms plain g. Answered, kept bare.",
+      "class": "doubt"
+    },
+    "15": {
+      "text": "within the limits of the family-group. In reality, I know this to be true in"
+    },
+    "16": {
+      "text": "some cases. For instance, in the country of the Oloi River, a couple of years"
+    },
+    "17": {
+      "text": "before my visit there, a Chukchee by the name of Leivɪteˊhɪn was killed by",
+      "resolved": "ɪ = U+026A (×2, dotless small-cap-shaped i in Leiv[ɪ]te and h[ɪ]n, confirmed at 4× against dotted i in surrounding English text); ˊ = U+02CA"
+    },
+    "18": {
+      "text": "his own kinsmen. He was a man of spiteful temper. He ill-used his house-"
+    },
+    "19": {
+      "text": "mates, and was even cruel to his own driving-reindeer. The Reindeer Chuk-"
+    },
+    "20": {
+      "text": "chee consider the driving-reindeer as first among things “dear to the heart”"
+    },
+    "21": {
+      "text": "(liˊñliñkin). The terms for blood-revenge (liˊñɪlɪn, “blood-revenger;” liñɪleˊerkɪn,",
+      "resolved": "handle {li'n~lin~kin} -> liˊñliñkin (ratified, 2-190); liˊñɪlɪn: ñ = n+U+0303, ɪ = U+026A (×2), ˊ = U+02CA; liñɪleˊerkɪn: ñ = n+U+0303, ɪ = U+026A (×2), ˊ = U+02CA",
+      "note": "lexicon lookup for liˊñɪlɪn found only the capitalized key Li'n~i_li_n (Liˊñɪlɪn, 3-007, sentence-initial); this page prints it lowercase mid-parenthetical, so the handle was not used (would wrongly raise case) and the form was hand-keyed instead. liñɪleˊerkɪn returned no lexicon match at all.",
+      "class": "semantic",
+      "as_typed": "({li'n~lin~kin}). The terms for blood-revenge (liˊñɪlɪn, “blood-revenger;” liñɪleˊerkɪn,"
+    },
+    "22": {
+      "text": "“to seek blood-revenge”) are derived from the same root (liñ). This root",
+      "resolved": "ñ = n+U+0303 in (liñ)"
+    },
+    "23": {
+      "text": "belongs to the noun liˊñliñ (“heart”).",
+      "resolved": "handle {li'n~lin~} -> liˊñliñ (ratified, 3-007)",
+      "as_typed": "belongs to the noun {li'n~lin~} (“heart”)."
+    },
+    "24": {
+      "text": "One day, Leivɪteˊhɪn, while on some journey, happened to kill one of his",
+      "resolved": "ɪ = U+026A (×2); ˊ = U+02CA"
+    },
+    "25": {
+      "text": "reindeer by a misdirected blow. After that his kinsmen resolved to take his"
+    },
+    "26": {
+      "text": "life. They said, “Otherwise he will be killed by somebody else, and we shall"
+    },
+    "27": {
+      "text": "have a feud on our hands.” So his own brother came to his camp, and at"
+    },
+    "28": {
+      "text": "a favorable moment stabbed him in the back with a knife. This act was"
+    },
+    "29": {
+      "text": "approved by the common consent of all neighbors, because he was a “bad"
+    },
+    "30": {
+      "text": "one, a source of torment to the others” (eᵋˊtqi tawêmɪn˙ñɪˊɪrg̣ɪn), as they",
+      "resolved": "ᵋ = U+1D4B laryngeal (immediately after e, before stress); ˊ = U+02CA (×2, after ᵋ on e, and on ñɪˊɪrg̣ɪn); ê = e+U+0302; ɪ = U+026A (×4); ˙ = U+02D9 palatalization (after n); ñ = n+U+0303; g̣ = g+U+0323 (word-final -gɪn is always dotted per keying_spec.md §5.1, closed count)",
+      "note": "The raised mark before the apostrophe on \"e\" is a small open loop, not a plain stress tick — read as U+1D4B (laryngeal) followed by U+02CA (stress), per the two-superscript-marks pattern (stress+laryngeal stacked on one vowel). Confirmed at 4×; flagging for adjudicator attention since this compound mark is easily misread as a single uncatalogued glyph.",
+      "class": "doubt"
+    },
+    "31": {
+      "text": "expressed it.¹ In another case I mentioned,² a father was killed by his son",
+      "resolved": "¹ = U+00B9, ² = U+00B2, footnote reference markers",
+      "note": "Machine draft substituted ASCII \"!\" and \"?\" for the superscript footnote markers ¹ and ² (keying_spec.md §2.10); corrected to the superscript sorts, tight against the preceding punctuation as printed.",
+      "class": "draft"
+    },
+    "32": {
+      "text": "and nephew, with the knowledge of his wife, also for his extreme cruelty."
+    },
+    "33": {
+      "text": "Outside of such cases, however, I know of several others where the victims"
+    },
+    "34": {
+      "text": "were not “bad ones” at all, and the murderers were acting for their own"
+    },
+    "35": {
+      "text": "material interest, Such was the case of fratricide mentioned above. In still",
+      "note": "Machine draft read a period after \"interest\"; the raster shows a comma at 4×, and there is no trailing punctuation after \"In still\" at the line's end (the draft's trailing comma there was not on the page).",
+      "class": "draft"
+    },
+    "36": {
+      "text": "another case, a man of the Chukchee country, Yaˊyaq by name, was murdered",
+      "resolved": "ˊ = U+02CA"
+    },
+    "37": {
+      "text": "by his nephews in the early nineties of the last century. He was a rich"
+    },
+    "38": {
+      "text": "reindeer-breeder, and the young men simply wanted to get possession of his"
+    },
+    "39": {
+      "text": "large herd. On the other hand, Yaˊyaq, a few months before his death, had",
+      "resolved": "ˊ = U+02CA"
+    },
+    "40": {
+      "text": "himself committed a barbarous murder on a family of Maritime people at"
+    },
+    "41": {
+      "text": "¹ The common consent of the neighbors for the killing of a bad man is of very great importance also",
+      "resolved": "¹ = U+00B9",
+      "note": "Machine draft gave ASCII \"1\"; corrected to superscript footnote opener per §2.10.",
+      "class": "draft"
+    },
+    "42": {
+      "text": "among the Eskimo (compare Boas, Central Eskimo, p. 582)."
+    },
+    "43": {
+      "text": "² Compare p. 45.",
+      "resolved": "² = U+00B2",
+      "note": "Machine draft gave ASCII \"2\"; corrected to superscript footnote opener per §2.10.",
+      "class": "draft"
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}
