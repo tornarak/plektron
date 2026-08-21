@@ -613,10 +613,18 @@ def predict(refs: list[str], root: Path = Path("."),
     `--force` to overwrite, because an `mz/` file's `ProcessingStep` is the store's
     only witness to which model wrote it, and quietly replacing one loses that.
     """
-    from .zones import _model_sha256, load_segmenter
+    from .zones import load_segmenter
 
     model_path = model_path or DEFAULT_MODEL
-    net, sha, dev = None, "", device
+    # `load_segmenter` takes `(model_path, root)` and returns `(net, sha256)`.
+    # Handing it the device put that string in the `root` slot — so the model
+    # resolved under `auto/` and the sha came back as the device, which reached
+    # `blla.segment` and the ProcessingStep below. `zones.predict_dp` resolves
+    # `auto` for the same reason; nothing here ever did.
+    if device == "auto":
+        import torch
+        device = "cuda:0" if torch.cuda.is_available() else "cpu"
+    net, sha = None, ""
     out = []
     for ref in refs:
         ref = norm_ref(ref)
@@ -629,10 +637,8 @@ def predict(refs: list[str], root: Path = Path("."),
             out.append({"ref": ref, "wrote": False, "note": "exists; --force"})
             continue
         if net is None:
-            net, dev = load_segmenter(model_path, device)
-            sha = _model_sha256(root / model_path if not Path(model_path)
-                                .is_absolute() else Path(model_path))
-        out.append(_predict_one(ref, root, net, dev, model_path, sha, dest))
+            net, sha = load_segmenter(model_path, root)
+        out.append(_predict_one(ref, root, net, device, model_path, sha, dest))
     return out
 
 
