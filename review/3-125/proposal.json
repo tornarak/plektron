@@ -1,0 +1,192 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "659"
+    },
+    "2": {
+      "text": "place. Then they saw the other man passing by with a caravan of sledges. The pack-sledges were"
+    },
+    "3": {
+      "text": "following one behind another in a long file. The old man took his bow and five arrows and killed"
+    },
+    "4": {
+      "text": "five reindeer one after another, so that five sledges were left without driving-animals. The people"
+    },
+    "5": {
+      "text": "of the offender had to attach their own driving-reindeer to the sledges, and to walk slowly afoot."
+    },
+    "6": {
+      "text": "So the old man had his revenge for the burnt arrow.”",
+      "note": "mz draft had the closing quote doubled (\\\"\\\"); the raster shows a single curly U+201D.",
+      "class": "draft"
+    },
+    "7": {
+      "text": "As to the Maritime Chukchee, I mentioned a feud between the villages"
+    },
+    "8": {
+      "text": "Luᵋˊren and Yaˊnřa-ñai, which lasted through more than ten generations, and",
+      "resolved": "Lue^'ren = L,u,U+1D4B ᵋ,U+02CA ˊ,r,e,n (laryngeal printed before stress, both riding u); Ya'nr^a-n~ai = Y,a,U+02CA ˊ,n,r+U+030C ř,a,-,n+U+0303 ñ,a,i",
+      "note": "Village names, both matched by lexicon lookup (keys Lue^'ren, Ya'nr^a-n~ai). On Luᵋˊren the laryngeal (open-loop '8' shape) precedes the stress tick in print order, the reverse of 1-043's stress-first example; keyed as printed per the two-superscript-marks note.",
+      "class": "semantic",
+      "as_typed": "{Lue^'ren} and {Ya'nr^a-n~ai}, which lasted through more than ten generations, and"
+    },
+    "9": {
+      "text": "has not been smoothed over even at the present time.¹",
+      "resolved": "footnote marker = U+00B9 ¹",
+      "note": "mz draft keyed the marker as a bare ']'; the raster shows a superscript 1, paired with the note opener on line 42.",
+      "class": "draft"
+    },
+    "10": {
+      "text": "SLAVES. — The term for a male slave was puˊrel, and for a female slave",
+      "resolved": "puˊrel = p,u,U+02CA ˊ,r,e,l",
+      "note": "'Slaves.' is set in small capitals (run-in heading, §2.13) — keyed as plain ASCII capitals. No lexicon key for puˊrel; hand-keyed from the raster.",
+      "class": "semantic"
+    },
+    "11": {
+      "text": "ñaˊučhɪn. The latter is simply a variation of the word ñeˊus˙qät (“woman”).",
+      "resolved": "ñaˊučhɪn = n+U+0303 ñ,a,U+02CA ˊ,u,c+U+030C č,h,U+026A ɪ,n",
+      "note": "No lexicon key for ñaˊučhɪn; hand-keyed. n~e'us.qa:t matched by lexicon lookup, lowercase key used to match this mid-sentence occurrence.",
+      "class": "semantic",
+      "as_typed": "ñaˊučhɪn. The latter is simply a variation of the word {n~e'us.qa:t} (“woman”)."
+    },
+    "12": {
+      "text": "Other synonymes of the word puˊrel are äᵋmuˊlɪn, vɪˊyolɪn, g̣ŭpɪˊlɪn. Properly",
+      "resolved": "puˊrel = p,u,U+02CA ˊ,r,e,l; äᵋmuˊlɪn = a+U+0308 ä,U+1D4B ᵋ,m,u,U+02CA ˊ,l,U+026A ɪ,n; g̣ŭpɪˊlɪn = g+U+0323 g̣,u+U+0306 ŭ,p,U+026A ɪ,U+02CA ˊ,l,U+026A ɪ,n",
+      "note": "No lexicon key for puˊrel or äᵋmuˊlɪn; hand-keyed from the raster. g̣ŭpɪˊlɪn carries a dot below the g (velar g̣, §2.1), confirmed at 4x and matching 3-086's ground-truth spelling of the same word; vi_'yoli_n matched by lexicon lookup.",
+      "class": "semantic",
+      "as_typed": "Other synonymes of the word puˊrel are äᵋmuˊlɪn, {vi_'yoli_n}, g̣ŭpɪˊlɪn. Properly"
+    },
+    "13": {
+      "text": "speaking, puˊrel was a captive of another tribe, or perhaps a man of the same",
+      "resolved": "puˊrel = p,u,U+02CA ˊ,r,e,l"
+    },
+    "14": {
+      "text": "tribe who was enslaved, in lieu of blood-revenge. I shall treat of this later"
+    },
+    "15": {
+      "text": "on. Äᵋmuˊlɪn signifies also “weak one,” “weakling,” and is used as an invec-",
+      "resolved": "Äᵋmuˊlɪn = A+U+0308 Ä,U+1D4B ᵋ,m,u,U+02CA ˊ,l,U+026A ɪ,n"
+    },
+    "16": {
+      "text": "tive, especially with the superlative prefix čiq (čiq-äᵋmuˊlɪn, “a very weak one”).",
+      "resolved": "čiq = c+U+030C č,i,q; äᵋmuˊlɪn = a+U+0308 ä,U+1D4B ᵋ,m,u,U+02CA ˊ,l,U+026A ɪ,n"
+    },
+    "17": {
+      "text": "Vɪˊyolɪn signifies “assistant,” and is used even for some of the benevolent",
+      "resolved": "Vɪˊyolɪn = V,U+026A ɪ,U+02CA ˊ,y,o,l,U+026A ɪ,n",
+      "note": "Sentence-initial capital of vi_'yoli_n (lexicon key is lowercase); raised the handle's case to match the raster, resolved cleanly by fix.",
+      "class": "semantic",
+      "as_typed": "{Vi_'yoli_n} signifies “assistant,” and is used even for some of the benevolent"
+    },
+    "18": {
+      "text": "spirits. G̣ŭpɪˊlɪn signifies “a working-man,” and is applied to all workers,",
+      "resolved": "G̣ŭpɪˊlɪn = G+U+0323 G̣,u+U+0306 ŭ,p,U+026A ɪ,U+02CA ˊ,l,U+026A ɪ,n",
+      "note": "No lexicon key for G̣ŭpɪˊlɪn; hand-keyed from the raster. Dot below the g (velar g̣, §2.1) confirmed at 4x, matching 3-086's ground truth for the same word.",
+      "class": "semantic"
+    },
+    "19": {
+      "text": "male or female, even those belonging to one’s own family. Nevertheless all"
+    },
+    "20": {
+      "text": "these terms are used in a contemptuous sense, and may be used as invectives."
+    },
+    "21": {
+      "text": "They are applied also to the real slaves almost without discrimination."
+    },
+    "22": {
+      "text": "In modern life slaves hardly exist. The remembrance of them, however,"
+    },
+    "23": {
+      "text": "is fresh. For instance, two of my acquaintaces — one Araˊro, a very rich",
+      "resolved": "Araˊro = A,r,a,U+02CA ˊ,r,o",
+      "as_typed": "is fresh. For instance, two of my acquaintaces — one {Ara'ro}, a very rich"
+    },
+    "24": {
+      "text": "reindeer-breeder of the western tundra; and the other, Aiñanwaˊt — still",
+      "resolved": "Aiñanwaˊt = A,i,n+U+0303 ñ,a,n,w,a,U+02CA ˊ,t",
+      "as_typed": "reindeer-breeder of the western tundra; and the other, {Ain~anwa't} — still"
+    },
+    "25": {
+      "text": "declared themselves to be descendants of captive slaves of Taˊn˙ñɪn origin;",
+      "resolved": "Taˊn˙ñɪn = T,a,U+02CA ˊ,n,U+02D9 ˙,n+U+0303 ñ,U+026A ɪ,n",
+      "note": "No lexicon key for Taˊn˙ñɪn; hand-keyed from the raster (checked at 4×), consistent across lines 25/28/31/32.",
+      "class": "semantic"
+    },
+    "26": {
+      "text": "and even their neighbors sometimes taunted them with the fact, and called"
+    },
+    "27": {
+      "text": "them poraˊlčɪñɪn (“piece of a slave”). The line of descent was removed several",
+      "resolved": "poraˊlčɪñɪn = p,o,r,a,U+02CA ˊ,l,c+U+030C č,U+026A ɪ,n+U+0303 ñ,U+026A ɪ,n",
+      "note": "No lexicon key for poraˊlčɪñɪn; hand-keyed from the raster (checked at 4×).",
+      "class": "semantic"
+    },
+    "28": {
+      "text": "generations. Still Aiñanwaˊt asserted that he himself was a Taˊn˙ñɪn, though",
+      "resolved": "Taˊn˙ñɪn = T,a,U+02CA ˊ,n,U+02D9 ˙,n+U+0303 ñ,U+026A ɪ,n",
+      "as_typed": "generations. Still {Ain~anwa't} asserted that he himself was a Taˊn˙ñɪn, though"
+    },
+    "29": {
+      "text": "of course even his great-grandfather spoke only Chukchee and lived among"
+    },
+    "30": {
+      "text": "that tribe. Even the special incantations which Aiñanwaˊt possessed, as does",
+      "as_typed": "that tribe. Even the special incantations which {Ain~anwa't} possessed, as does"
+    },
+    "31": {
+      "text": "almost every Chukchee reindeer-breeder, mentioned his Taˊn˙ñɪn and Aˊtal-",
+      "resolved": "Taˊn˙ñɪn = T,a,U+02CA ˊ,n,U+02D9 ˙,n+U+0303 ñ,U+026A ɪ,n; Aˊtal- = A,U+02CA ˊ,t,a,l,-"
+    },
+    "32": {
+      "text": "Taˊn˙ñɪn (Chuvantzy) origin.",
+      "resolved": "Taˊn˙ñɪn = T,a,U+02CA ˊ,n,U+02D9 ˙,n+U+0303 ñ,U+026A ɪ,n",
+      "note": "Compound Aˊtal-Taˊn˙ñɪn split across the line 31/32 break; 'Chuvantzy' is the printed Russian ethnonym, keyed as set, no marks.",
+      "class": "semantic"
+    },
+    "33": {
+      "text": "The tales often make mention of slaves, male and female, taken as"
+    },
+    "34": {
+      "text": "prisoners of war. The tale of “Eleˊndi and His Sons” gives a detailed des-",
+      "resolved": "Eleˊndi = E,l,e,U+02CA ˊ,n,d,i",
+      "as_typed": "prisoners of war. The tale of “{Ele'ndi} and His Sons” gives a detailed des-"
+    },
+    "35": {
+      "text": "cription of an enslaved prisoner of Aiˊwan origin. The hero vanquishes him",
+      "resolved": "Aiˊwan = A,i,U+02CA ˊ,w,a,n",
+      "as_typed": "cription of an enslaved prisoner of {Ai'wan} origin. The hero vanquishes him"
+    },
+    "36": {
+      "text": "in single fight. Then, in order to weaken his future powers of resistance and"
+    },
+    "37": {
+      "text": "to break his spirit, he beats him with a heavy club all over the muscles and"
+    },
+    "38": {
+      "text": "fleshy parts of the body. After that he ties him firmly to a pole, and carries"
+    },
+    "39": {
+      "text": "him away like a log. The slave is suffering, and cries, “I am thirsty!” One"
+    },
+    "40": {
+      "text": "time they give him water; another time they do not care to do so. When",
+      "note": "mz draft appended a comma after 'When'; the raster line ends bare, sentence continues 'brought' on line 41.",
+      "class": "draft"
+    },
+    "41": {
+      "text": "brought to the house of the victors, he is made a reindeer-herdsman; and"
+    },
+    "42": {
+      "text": "¹ Compare p. 50.",
+      "resolved": "footnote opener = U+00B9 ¹",
+      "note": "Apparatus note in MarginTextZone-Notes; opener paired with the body reference on line 9.",
+      "class": "layout"
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

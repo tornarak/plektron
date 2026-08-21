@@ -1,0 +1,159 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "651",
+      "note": "Folio in RunningTitleZone; box (width 74) clips it to two digits, mz draft read \"65\". Full number \"651\" is legible on the composite/sheet, unspaced ASCII digits per keying_spec.md §2.12.",
+      "class": "draft"
+    },
+    "2": {
+      "text": "lone islands not far from the shore. Access was shut off by a stone wall or"
+    },
+    "3": {
+      "text": "by wooden palisades. The Reindeer Koryak also prepared fortified places"
+    },
+    "4": {
+      "text": "at points similar to those mentioned. The herd was gathered together and"
+    },
+    "5": {
+      "text": "pent up in a corral made of sledges, or it was driven away to far-off pastures."
+    },
+    "6": {
+      "text": "The people remained in a chosen place behind the bulwark, ready to hold"
+    },
+    "7": {
+      "text": "out.¹ Some of the Kamchadal villages were also surrounded by bulwarks of",
+      "note": "Body footnote reference keyed as superscript U+00B9, tight against the period, per keying_spec.md §2.10 (\"a body reference sets tight against what precedes it\"). mz draft rendered it as a bare \"!\".",
+      "class": "draft"
+    },
+    "8": {
+      "text": "stones or earth. On ancient village sites in northwestern Kamchatka I have"
+    },
+    "9": {
+      "text": "still found the remnants of such bulwarks. They were in the form of a large"
+    },
+    "10": {
+      "text": "quadrangle, with an entrance from the sea-side. Chukchee stories referring"
+    },
+    "11": {
+      "text": "to the wars with the Cossacks also mention such fortified strongholds, built by"
+    },
+    "12": {
+      "text": "the Chukchee. One story mentions that the Reindeer Chukchee fled from the"
+    },
+    "13": {
+      "text": "Cossacks to a very remote place, and took up their position under a cliff."
+    },
+    "14": {
+      "text": "The Cossacks came and climbed the cliffs; then, pushing down heavy stones,"
+    },
+    "15": {
+      "text": "they broke up the fort and exterminated the people. Some other people"
+    },
+    "16": {
+      "text": "made a fort in the land Neˊten, near Cape Peˊek. They built it under an",
+      "note": "Toponyms confirmed against harness lexicon lookup: key Ne'ten resolves to Neˊten; key Pe'ek resolves to Peˊek.",
+      "class": "semantic",
+      "as_typed": "made a fort in the land {Ne'ten}, near Cape {Pe'ek}. They built it under an"
+    },
+    "17": {
+      "text": "overhanging cliff, so that it was impossible to roll stones down upon it. In"
+    },
+    "18": {
+      "text": "this fort they defended themselves with success against the Cossacks."
+    },
+    "19": {
+      "text": "Cossack Wars. — The Cossacks, as related before, are also called Taˊn˙ñɪt.",
+      "note": "Ethnonym confirmed against harness lexicon lookup, key Ta'n.n~i_t -> Taˊn˙ñɪt (dot U+02D9 between n and ñ visible at 2x).",
+      "class": "semantic",
+      "as_typed": "Cossack Wars. — The Cossacks, as related before, are also called {Ta'n.n~i_t}."
+    },
+    "20": {
+      "text": "The adjective mêˊlhɪ (“fire-tool”)² is added but rarely. Among the Anadyr",
+      "note": "mêˊlhɪ: m, ê=e+U+0302, U+02CA (stress, postposed to ê), l, h, ɪ=U+026A (dotless, confirmed at 4x against dotted i in \"adjective\" on the same line). No lexicon key found for the bare adjective form (compounds only); keyed from the raster. Footnote marker ² (U+00B2) tight after the closing paren, per §2.10.",
+      "class": "doubt",
+      "resolved": "mêˊlhɪ = m, ê(e+U+0302), U+02CA(stress, postposed to ê), l, h, ɪ(U+026A, dotless)"
+    },
+    "21": {
+      "text": "people the name qaˊčak (“cossack”) is also used. Qačauˊmêl (“cossack-like”)",
+      "note": "qaˊčak: q,a,U+02CA(stress),c+U+030C(č),a,k. Qačauˊmêl: capital Q, a, c+U+030C(č), a, u, U+02CA(stress) postposed to u, m, e+U+0302(ê), l. mz draft misread the initial capital as \"O\" and dropped both carons; corrected against the raster at 4x. No lexicon key found for either form (below the two-page floor); keyed from the raster.",
+      "class": "draft",
+      "resolved": "qaˊčak = q, a, U+02CA(stress), č(c+U+030C), a, k. Qačauˊmêl = Q, a, č(c+U+030C), a, u, U+02CA(stress), m, ê(e+U+0302), l"
+    },
+    "22": {
+      "text": "means also “badly, cruelly.”"
+    },
+    "23": {
+      "text": "One tale mentions the first impression of the coming of the Cossacks: —"
+    },
+    "24": {
+      "text": "“When they first, came, our people were very much afraid of them, because they were of",
+      "note": "The comma after \"first\" is printed on the page (confirmed at 2x) — a printer's error, keyed as set per keying_spec.md §2.14.",
+      "class": "print"
+    },
+    "25": {
+      "text": "quite unknown appearance. Their whiskers stood out like those of the walrus. Their spear-"
+    },
+    "26": {
+      "text": "heads were a cubit long, and so broad that they obscured the sun. Their eyes were of iron, round"
+    },
+    "27": {
+      "text": "and black. All their clothing was of iron. They dug the ground with the butt-ends of their spears,"
+    },
+    "28": {
+      "text": "like angry reindeer-bucks, inviting our warriors to single combat.”"
+    },
+    "29": {
+      "text": "According to the Chukchee tales, the Russians treated the natives most"
+    },
+    "30": {
+      "text": "cruelly, they exterminated the people, and murdered all prisoners; with their"
+    },
+    "31": {
+      "text": "axes they cleft the men in twain, striking them between the legs; and they"
+    },
+    "32": {
+      "text": "tore the women in two like dried fish. They would put a prisoner in a sitting"
+    },
+    "33": {
+      "text": "position. Then they would put a rope around his neck, and the other end"
+    },
+    "34": {
+      "text": "of this rope they would tie to his membrum virile. After that they would"
+    },
+    "35": {
+      "text": "poke him in the face with a bar of red-hot iron. The man would bound up,"
+    },
+    "36": {
+      "text": "and his membrum virile would be torn away.",
+      "note": "mz draft read \"memórum\", the recognizer's error; the raster (confirmed at 2x) reads \"membrum\", matching line 34's \"membrum virile\".",
+      "class": "draft"
+    },
+    "37": {
+      "text": "The Chukchee fled from the Cossacks in all directions. Then they came"
+    },
+    "38": {
+      "text": "to a stand. Resistance was organized, which led to a successful repulsion of"
+    },
+    "39": {
+      "text": "the invaders."
+    },
+    "40": {
+      "text": "Some of the tales describe the Russians with a manifest intention of"
+    },
+    "41": {
+      "text": "derision."
+    },
+    "42": {
+      "text": "² Compare p. 18."
+    },
+    "43": {
+      "text": "¹ See Jochelson, The Koryak, Vol. VI of this series, p. 795."
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

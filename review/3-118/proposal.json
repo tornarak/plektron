@@ -1,0 +1,188 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "652"
+    },
+    "2": {
+      "text": "“There was a small girl Yɪˊnkɪ-ñeˊut by name. Some people had gathered in a tent to per-",
+      "resolved": "Yɪˊnkɪ-ñeˊut = Y + ɪ(U+026A) + ˊ(U+02CA) + n + k + ɪ(U+026A) + hyphen + ñ(n+U+0303) + e + ˊ(U+02CA) + u + t",
+      "note": "Girl's name, hyphenated compound; each element carries its own stress mark per §5.5. lexicon lookup found no ratified key for this form. The two dotless letters read as small-cap ɪ (U+026A) at 4x: x-height, serifed top and bottom, no dot — confirmed on the glyph's own ink, not by comparison.",
+      "class": "doubt"
+    },
+    "3": {
+      "text": "form a thanksgiving ceremonial. They darkened the vent-hole, and began to sing. Still they were"
+    },
+    "4": {
+      "text": "not men, but dogs. Some sang, ‘Koo, koo, koo!’ Others howled, ‘Koon, koon, koon!’¹ Then",
+      "note": "Footnote 1 marker confirmed superscript at 4x (glyph, not machine-guessed).",
+      "class": "print"
+    },
+    "5": {
+      "text": "the house mistress said to the girl, ‘Look there! Who are those singers? Why have they closed the",
+      "note": "Machine draft dropped the opening single quote before 'Look'; supplied from the print.",
+      "class": "draft"
+    },
+    "6": {
+      "text": "entrance and darkened the vent-hole?’ The girl found a crevice, and peeped through it. They",
+      "note": "Machine draft dropped the closing single quote after 'vent-hole?'; supplied from the print, pairing with the opener on line 5.",
+      "class": "draft"
+    },
+    "7": {
+      "text": "were all dogs. The Chukchee people came hastily and gave them blows. The dogs fled to the"
+    },
+    "8": {
+      "text": "west and became Russian people. Some of them, however, remained dogs, and were used by the"
+    },
+    "9": {
+      "text": "others for driving. Those that were beaten got angry at the blows and began a war. O dear!"
+    },
+    "10": {
+      "text": "we did not know. Our people chastized the dogs, and they became a people.”²",
+      "note": "Closing double quote and footnote 2 marker (superscript, confirmed at 4x) end the quoted tale.",
+      "class": "print"
+    },
+    "11": {
+      "text": "A story like this, of course, could be found only among the reindeer-"
+    },
+    "12": {
+      "text": "breeders, in opposition to the Russian dog-drivers."
+    },
+    "13": {
+      "text": "Almost all tales mention the name of Yäkuˊnnin, the chief of the Cossacks.",
+      "note": "lexicon lookup key Ya:ku'nnin -> Yäkuˊnnin (ä=a+U+0308, ˊ=U+02CA), attested 3-025/3-026.",
+      "class": "semantic",
+      "as_typed": "Almost all tales mention the name of {Ya:ku'nnin}, the chief of the Cossacks."
+    },
+    "14": {
+      "text": "This name is given to Major Pavlutsky.³ Its origin could not be ascertained.",
+      "note": "Footnote 3 marker superscript, confirmed at 4x.",
+      "class": "print"
+    },
+    "15": {
+      "text": "It is allied to the Russian name Яковъ, pronounced Yakov (“James”); but the",
+      "resolved": "Яковъ = Cyrillic Я(U+042F) к(U+043A) о(U+043E) в(U+0432) ъ(U+044A, word-final hard sign, pre-reform per §2.7)",
+      "note": "Machine draft garbled the Cyrillic as 'HrobT'; read off the raster at 4x. Set in small caps in print (full-height Я, x-height ковъ) — keyed with ordinary capitalization per the display-convention treatment used for English small-cap headings (§2.13); the pre-reform word-final ъ is kept per §2.7.",
+      "class": "draft"
+    },
+    "16": {
+      "text": "first name of Pavlutsky was Theodore, not James. Yäkuˊnnin is described as",
+      "as_typed": "first name of Pavlutsky was Theodore, not James. {Ya:ku'nnin} is described as"
+    },
+    "17": {
+      "text": "strong and tall, clad in glistening iron, shining white like a large white gull"
+    },
+    "18": {
+      "text": "(Larus argentatus). He stands before a crowd of Chukchee in full armor,"
+    },
+    "19": {
+      "text": "springs up as high as the highest tree, and brandishes his spear. He has a"
+    },
+    "20": {
+      "text": "step-son, or an adopted son, from the reindeer-breeding people, either Koryak"
+    },
+    "21": {
+      "text": "or Chukchee, — a good warrior, who aids Yäkuˊnnin in many ways. The",
+      "note": "Machine draft had 'Chukchee.' (period); print reads 'Chukchee,' (comma) before the em dash.",
+      "class": "draft",
+      "as_typed": "or Chukchee, — a good warrior, who aids {Ya:ku'nnin} in many ways. The"
+    },
+    "22": {
+      "text": "defeat of Yäkuˊnnin is preceded by the misadventure of his assistant. In some",
+      "note": "Line ends bare ('some'); the draft's trailing comma is not on the page, confirmed at 4x (R9).",
+      "class": "draft",
+      "as_typed": "defeat of {Ya:ku'nnin} is preceded by the misadventure of his assistant. In some"
+    },
+    "23": {
+      "text": "versions the adopted son of Yäkuˊnnin, who is called Young Yäkuˊnnin, is",
+      "as_typed": "versions the adopted son of {Ya:ku'nnin}, who is called Young {Ya:ku'nnin}, is"
+    },
+    "24": {
+      "text": "taken prisoner and killed. In other versions, when taken a prisoner, he con-"
+    },
+    "25": {
+      "text": "sents to commit treason, and brings Chukchee scouts to the Russian camp."
+    },
+    "26": {
+      "text": "In still other stories he gives information which makes it possible for the Chuk-"
+    },
+    "27": {
+      "text": "chee to lay hold of the provisions of the Russians. Some of the details"
+    },
+    "28": {
+      "text": "correspond in a certain degree to the real facts. Pavlutsky and his Cossacks,"
+    },
+    "29": {
+      "text": "as well as many other Cossack expeditions, had an auxiliary detachment of"
+    },
+    "30": {
+      "text": "Tungus, Chuvantzy, and even Koryak, driving reindeer and conveying food."
+    },
+    "31": {
+      "text": "They took part in the campaign half against their wills, and afterwards broke"
+    },
+    "32": {
+      "text": "out in open mutiny, or simply left the Cossacks at an opportune moment."
+    },
+    "33": {
+      "text": "In the detachment of Pavlutsky there was even some quarreling among the"
+    },
+    "34": {
+      "text": "Cossacks of local birth and the infantry that he brought along from Yakutsk."
+    },
+    "35": {
+      "text": "¹ These sounds are represented as long, wailing, monotonous. They are intended to characterize the",
+      "note": "Note opener superscript 1, pairs with the body reference on line 4.",
+      "class": "print"
+    },
+    "36": {
+      "text": "manner of singing of the white people. The Chukchee manner of singing is different, and consists of short,"
+    },
+    "37": {
+      "text": "rolling, trembling, ever-changing sounds of guttural character. The Chukchee often say that the white people"
+    },
+    "38": {
+      "text": "sing as dogs howl."
+    },
+    "39": {
+      "text": "² Greenland tradition also mentions erkigdlit, fabulous and hostile inlanders with faces like those of dogs.",
+      "note": "Note opener superscript 2, pairs with the body reference on line 10. 'erkigdlit' is glossed as Greenland (Eskimo), not Chukchee, so no Tier-1 priors apply (R8).",
+      "class": "semantic"
+    },
+    "40": {
+      "text": "Dall, Murdoch, and others translate this name as “children of a louse’s egg” (Murdoch, Point Barrow Eskimo,",
+      "note": "Machine draft dropped the closing curly double quote after 'egg'; supplied from the print.",
+      "class": "draft"
+    },
+    "41": {
+      "text": "p. 51). The Reindeer Chukchee call the Maritime dog-breeders, in a somewhat similar way, “born from dog-"
+    },
+    "42": {
+      "text": "excrement.”",
+      "note": "Closing curly double quote, pairs with the opener on line 41.",
+      "class": "draft"
+    },
+    "43": {
+      "text": "³ Argentoff mentions the name Pavluchka as used in Chukchee traditions. I could not find this mentioned,",
+      "note": "Note opener superscript 3, pairs with the body reference on line 14.",
+      "class": "print"
+    },
+    "44": {
+      "text": "in the papers of Argentoff, but have met with it in an article in a Russian review, that related to one of my"
+    },
+    "45": {
+      "text": "own papers. The article mentions that the paper by Argentoff in question here is very rare, and has appeared"
+    },
+    "46": {
+      "text": "in Siberia. I have not come across the name Pavluchka in Chukchee stories and traditions. The Chukchee,"
+    },
+    "47": {
+      "text": "upon the whole, are inclined to substitute for alien names new compositions of their own."
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

@@ -1,0 +1,368 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-3-121.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-3-121.png; regions_from: zones/chukchi-3-121.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+                <TextBlock ID="mz_3-121_r1" HPOS="408" VPOS="453" WIDTH="1782" HEIGHT="94" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="408 453 2190 453 2190 547 408 547"/>
+                    </Shape>
+                    <TextLine ID="mz_3-121_l1" HPOS="982" VPOS="468" WIDTH="616" HEIGHT="51" BASELINE="984 502 1598 505" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1588 468 1290 468 1276 468 1256 468 1237 468 1218 468 1198 468 1179 468 1159 468 1140 468 1120 468 1101 468 1081 468 1062 468 1042 468 1023 468 1003 468 984 468 984 502 982 515 1594 519 1598 505 1596 480 1588 468"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l2" HPOS="2077" VPOS="468" WIDTH="90" HEIGHT="65" BASELINE="2079 507 2167 513" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2159 472 2155 470 2087 468 2081 472 2079 507 2077 519 2112 533 2114 533 2116 533 2165 525 2167 513 2167 472 2159 472"/>
+                        </Shape>
+                        <String CONTENT="655"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-121_r2" HPOS="408" VPOS="570" WIDTH="1782" HEIGHT="538" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="408 570 2190 570 2190 1108 408 1108"/>
+                    </Shape>
+                    <TextLine ID="mz_3-121_l3" HPOS="403" VPOS="568" WIDTH="1768" HEIGHT="60" BASELINE="405 615 2171 607" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="405 615 405 628 2169 620 2171 607 2165 568 403 580 405 615"/>
+                        </Shape>
+                        <String CONTENT="St. Lawrence Island and to those of America, call themselves “Reindeer tribe”"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l4" HPOS="405" VPOS="626" WIDTH="1769" HEIGHT="63" BASELINE="407 673 2174 667" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="407 673 407 689 2172 687 2174 667 2171 640 2120 640 2102 626 2100 626 2098 626 2096 626 2095 626 2069 638 2026 626 2024 626 2022 626 1962 638 1943 626 1941 626 1939 626 1937 626 1874 638 1794 626 1792 626 1703 638 1679 626 1677 626 1676 626 1580 642 1294 642 1225 628 1223 628 1221 628 1188 640 1114 628 1112 628 1110 628 1077 640 1013 628 1011 628 1009 628 1007 628 991 642 935 630 933 630 867 642 841 630 839 630 837 630 685 642 666 630 664 630 662 630 660 630 582 640 418 630 416 630 415 630 413 630 405 636 407 673"/>
+                        </Shape>
+                        <String CONTENT="(Čawčuwaˊt), meaning by this that they are nearer to the reindeer-herds than"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l5" HPOS="413" VPOS="696" WIDTH="1761" HEIGHT="55" BASELINE="415 726 2174 732" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="415 726 413 739 444 751 446 751 448 751 2172 745 2174 732 2172 702 415 696 415 726"/>
+                        </Shape>
+                        <String CONTENT="“those of the other shore” (Roˊčhɪlɪt), and the name Aiˊwanat, given to them"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l6" HPOS="405" VPOS="747" WIDTH="1771" HEIGHT="62" BASELINE="407 794 2176 788" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="407 794 407 809 2174 809 2176 788 2174 761 2128 747 2126 747 2124 747 2050 759 1991 747 1989 747 1987 747 1962 761 1839 761 1812 747 1810 747 1808 747 1806 747 1779 761 1584 761 1553 749 1551 749 1549 749 1471 761 1424 749 1422 749 1420 749 1418 749 1391 761 1362 749 1360 749 1358 749 1356 749 1317 761 1179 749 1177 749 1175 749 1140 761 1050 749 1048 749 896 761 853 751 851 751 849 751 740 763 722 751 721 751 719 751 717 751 405 757 407 794"/>
+                        </Shape>
+                        <String CONTENT="by the inland reindeer-breeders, they apply in their turn to the people of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l7" HPOS="405" VPOS="809" WIDTH="1771" HEIGHT="57" BASELINE="407 850 2176 847" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="407 850 407 866 2174 864 2176 847 2172 819 1297 809 1295 809 1294 809 1292 809 1278 819 454 811 452 811 405 821 407 850"/>
+                        </Shape>
+                        <String CONTENT="other shore.¹ They give as a reason for this, that in their traffic with “those"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l8" HPOS="405" VPOS="868" WIDTH="1769" HEIGHT="64" BASELINE="407 913 2174 907" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="407 913 407 928 2171 932 2174 907 2171 880 1989 880 1964 868 1962 868 1960 868 1958 868 1937 878 1913 868 1911 868 1909 868 1907 868 1884 878 1861 868 1859 868 1857 868 1800 878 1753 868 1752 868 1677 878 1648 868 1646 868 1644 868 1537 880 1516 870 1514 870 1512 870 1465 880 1451 870 1449 870 1447 870 1446 870 1321 880 1278 870 1276 870 1274 870 1177 880 1120 870 1118 870 1116 870 1089 880 1019 870 1017 870 1015 870 988 882 910 872 724 872 722 872 721 872 693 882 613 872 611 872 553 882 446 872 444 872 442 872 405 884 407 913"/>
+                        </Shape>
+                        <String CONTENT="of the other shore,” they offer the products of reindeer-breeding (reindeer-meat,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l9" HPOS="405" VPOS="928" WIDTH="1773" HEIGHT="67" BASELINE="407 973 2178 967" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="407 973 407 985 798 995 800 995 1118 983 1297 993 1299 993 2176 981 2178 967 2174 940 2114 928 2112 928 2110 928 2083 938 1718 928 1716 928 1668 938 1598 928 1596 928 1594 928 1592 928 1574 940 1502 930 1500 930 1354 940 1321 930 1319 930 1317 930 1315 930 1313 930 1299 940 1264 930 1262 930 1260 930 1258 930 1219 940 1179 930 1177 930 1175 930 1114 940 997 930 995 930 993 930 966 942 915 932 913 932 641 942 545 932 543 932 541 932 518 942 418 932 416 932 415 932 413 932 405 938 407 973"/>
+                        </Shape>
+                        <String CONTENT="fawn-skins, ready-made clothes of reindeer-skin), while “those of the other"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l10" HPOS="407" VPOS="989" WIDTH="1767" HEIGHT="60" BASELINE="409 1034 2174 1030" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="409 1034 409 1049 2172 1049 2174 1030 2172 1000 2149 989 2147 989 2145 989 2143 989 2122 999 2085 989 2083 989 1983 989 1981 989 1980 989 1978 989 1962 1000 1865 1000 1849 989 1847 989 1845 989 1843 989 1841 989 1814 999 1726 989 1724 989 1619 999 1576 989 1574 989 1572 989 1570 989 1545 999 1488 989 1486 989 1485 989 1446 999 1216 991 1214 991 1212 991 1210 991 1196 1000 1179 991 1177 991 1175 991 802 1000 744 991 742 991 670 1000 654 991 652 991 650 991 530 991 528 991 526 991 487 1000 436 991 434 991 432 991 407 1000 409 1034"/>
+                        </Shape>
+                        <String CONTENT="shore” bring the products of Maritime pursuits (seal-skins, thong, blubber)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l11" HPOS="413" VPOS="1051" WIDTH="1489" HEIGHT="57" BASELINE="413 1092 1902 1092" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="413 1092 413 1108 1900 1108 1902 1092 1902 1061 1888 1051 1886 1051 1884 1051 1882 1051 1880 1051 1847 1063 1596 1063 1582 1051 1580 1051 1578 1051 1576 1051 1574 1051 1547 1063 1453 1063 1438 1051 1436 1051 1434 1051 1432 1051 1430 1051 1403 1063 1179 1063 1165 1051 1163 1051 1161 1051 1159 1051 1157 1051 1126 1061 1112 1051 1110 1051 1108 1051 1106 1051 1030 1061 413 1055 413 1092"/>
+                        </Shape>
+                        <String CONTENT="Though this is quite true, still the contrast is much exaggerated."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-121_r3" HPOS="408" VPOS="1108" WIDTH="1782" HEIGHT="853" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="408 1108 2190 1108 2190 1961 408 1961"/>
+                    </Shape>
+                    <TextLine ID="mz_3-121_l12" HPOS="514" VPOS="1110" WIDTH="1664" HEIGHT="56" BASELINE="516 1152 2178 1149" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="516 1152 516 1166 2176 1164 2178 1149 2176 1121 2153 1110 2151 1110 2149 1110 2147 1110 2110 1121 1812 1121 1785 1110 1783 1110 1781 1110 1677 1119 1599 1110 1598 1110 1500 1119 1486 1110 1485 1110 1483 1110 1389 1110 1387 1110 1385 1110 1342 1121 1292 1112 1290 1112 1239 1121 1223 1112 1221 1112 1219 1112 1218 1112 1216 1112 1177 1121 954 1112 952 1112 951 1112 931 1121 915 1112 913 1112 912 1112 910 1112 795 1121 680 1112 678 1112 617 1121 531 1112 530 1112 528 1112 526 1112 514 1119 516 1152"/>
+                        </Shape>
+                        <String CONTENT="One of the most frequent episodes of this tradition refers to a struggle"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l13" HPOS="409" VPOS="1168" WIDTH="1771" HEIGHT="59" BASELINE="411 1215 2180 1209" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="411 1215 411 1227 2178 1225 2180 1209 2178 1180 2135 1168 2134 1168 2132 1168 2130 1168 2102 1178 2015 1168 2013 1168 2011 1168 1983 1180 1761 1180 1744 1168 1742 1168 1740 1168 1738 1168 1588 1180 1492 1170 1490 1170 1424 1180 1334 1170 1332 1170 1274 1180 1260 1170 1258 1170 1256 1170 1255 1170 1186 1180 1130 1170 1128 1170 1048 1180 409 1178 411 1215"/>
+                        </Shape>
+                        <String CONTENT="between a Čaˊwču warrior and a Maritime Aiˊwan. In the summer-time the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l14" HPOS="411" VPOS="1242" WIDTH="1769" HEIGHT="45" BASELINE="411 1271 2180 1271" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="411 1271 411 1287 2178 1287 2180 1271 2178 1242 411 1242 411 1271"/>
+                        </Shape>
+                        <String CONTENT="reindeer-breeder goes to the seashore, and finds there the Aiˊwan carving a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l15" HPOS="409" VPOS="1289" WIDTH="1771" HEIGHT="58" BASELINE="411 1334 2180 1328" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="411 1334 411 1347 2178 1343 2180 1328 2176 1301 1709 1289 1707 1289 1660 1299 1601 1289 1599 1289 1598 1289 1596 1289 1584 1299 1081 1291 1079 1291 954 1303 446 1293 444 1293 442 1293 409 1305 411 1334"/>
+                        </Shape>
+                        <String CONTENT="whale and hauling to the shore a quantity of walrus killed on a sea-hunt."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l16" HPOS="413" VPOS="1347" WIDTH="1769" HEIGHT="59" BASELINE="415 1392 2182 1388" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="415 1392 415 1406 2180 1402 2182 1388 2178 1359 2030 1359 2013 1347 2011 1347 2009 1347 2007 1347 1935 1359 1872 1347 1870 1347 1868 1347 1841 1359 1785 1347 1783 1347 1724 1359 1666 1347 1664 1347 1603 1361 1342 1361 1307 1347 1305 1347 1303 1347 1301 1347 1266 1361 1208 1349 1206 1349 1204 1349 1171 1361 1099 1349 1097 1349 1030 1359 993 1349 991 1349 989 1349 988 1349 986 1349 970 1361 941 1349 939 1349 937 1349 935 1349 902 1361 853 1349 851 1349 849 1349 797 1359 742 1349 740 1349 674 1359 654 1349 652 1349 650 1349 537 1361 471 1349 469 1349 413 1355 415 1392"/>
+                        </Shape>
+                        <String CONTENT="The reindeer-breeder is longing for the sea-meat. He visits the Aiˊwan, or"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l17" HPOS="409" VPOS="1408" WIDTH="1773" HEIGHT="56" BASELINE="411 1451 2182 1447" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="411 1451 411 1464 2180 1462 2182 1447 2178 1419 1769 1408 1767 1408 1722 1418 1691 1408 1689 1408 1687 1408 1637 1418 1609 1408 1607 1408 1605 1408 1553 1418 1525 1408 1523 1408 1522 1408 1420 1418 1368 1408 1366 1408 1364 1408 1331 1418 1297 1408 1295 1408 1294 1408 1292 1408 1290 1408 1276 1419 1239 1410 1237 1410 1235 1410 730 1419 646 1410 645 1410 643 1410 641 1410 625 1421 537 1421 504 1410 502 1410 500 1410 409 1421 411 1451"/>
+                        </Shape>
+                        <String CONTENT="sends to him some member of his family, and asks for blubber. In some"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l18" HPOS="411" VPOS="1468" WIDTH="1771" HEIGHT="61" BASELINE="413 1511 2182 1507" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="413 1511 413 1529 2180 1529 2182 1507 2180 1480 2155 1468 2153 1468 2151 1468 2061 1480 1853 1480 1824 1468 1822 1468 1820 1468 1818 1468 1816 1468 1800 1480 1523 1480 1508 1468 1506 1468 1504 1468 1373 1468 1371 1468 1370 1468 1342 1478 1297 1468 1295 1468 1294 1468 1292 1468 1274 1480 1260 1470 1258 1470 1256 1470 1255 1470 1198 1480 1120 1470 1118 1470 949 1480 913 1470 912 1470 910 1470 908 1470 906 1470 890 1482 693 1482 633 1470 631 1470 629 1470 594 1480 504 1470 502 1470 411 1482 413 1511"/>
+                        </Shape>
+                        <String CONTENT="versions the request is granted, and the Reindeer-man goes home peacefully"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l19" HPOS="413" VPOS="1527" WIDTH="1765" HEIGHT="62" BASELINE="415 1573 2178 1570" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="415 1573 415 1585 2174 1589 2178 1570 2174 1538 1867 1527 1865 1527 1804 1538 1775 1527 1773 1527 1771 1527 1703 1538 1656 1527 1654 1527 1652 1527 1650 1527 1607 1538 1578 1527 1576 1527 1574 1527 1572 1527 1570 1527 1551 1540 1399 1540 1366 1527 1364 1527 1362 1527 1360 1527 1336 1538 1297 1527 1295 1527 1294 1527 1292 1527 1258 1540 1173 1529 1171 1529 1062 1540 951 1529 949 1529 947 1529 912 1540 894 1529 892 1529 890 1529 814 1529 812 1529 810 1529 765 1540 652 1529 650 1529 648 1529 604 1540 555 1529 553 1529 551 1529 549 1529 516 1540 455 1529 454 1529 452 1529 413 1542 415 1573"/>
+                        </Shape>
+                        <String CONTENT="with the object of his desire. Thus, for instance, in the tale of “The Happy"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l20" HPOS="413" VPOS="1587" WIDTH="1769" HEIGHT="61" BASELINE="415 1632 2182 1626" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="415 1632 415 1648 2180 1646 2182 1626 2178 1599 1843 1587 1841 1587 1839 1587 1837 1587 1822 1599 413 1599 415 1632"/>
+                        </Shape>
+                        <String CONTENT="Suitor,” the hero visits the Aiˊwan, and sees a walrus-carcass lying whole on"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l21" HPOS="411" VPOS="1648" WIDTH="1773" HEIGHT="58" BASELINE="413 1692 2184 1686" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="413 1692 413 1706 2182 1706 2184 1686 2182 1659 2141 1648 2139 1648 2137 1648 2135 1648 2106 1657 1904 1648 1902 1648 1900 1648 1898 1648 1882 1659 1627 1659 1596 1648 1594 1648 1592 1648 1590 1648 1547 1659 1510 1649 1508 1649 1506 1649 1447 1659 1216 1649 1214 1649 1212 1649 1210 1649 1194 1661 1050 1661 1003 1649 1001 1649 999 1649 974 1661 744 1651 742 1651 740 1651 699 1661 660 1651 658 1651 656 1651 493 1661 434 1651 432 1651 430 1651 428 1651 411 1659 413 1692"/>
+                        </Shape>
+                        <String CONTENT="the ground. He says, “I come for blubber!” They answer, “Here is the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l22" HPOS="413" VPOS="1710" WIDTH="1773" HEIGHT="54" BASELINE="415 1751 2186 1747" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="415 1751 415 1764 2184 1764 2186 1747 2182 1720 1344 1710 1342 1710 1295 1720 752 1712 750 1712 413 1722 415 1751"/>
+                        </Shape>
+                        <String CONTENT="carcass: we will carve it, and cut a piece for you.” He says, “Better not"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l23" HPOS="413" VPOS="1764" WIDTH="1771" HEIGHT="63" BASELINE="415 1811 2184 1805" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="415 1811 415 1827 2182 1827 2184 1805 2178 1766 1921 1776 1863 1764 1861 1764 1752 1776 1720 1764 1718 1764 1716 1764 1714 1764 1681 1776 1623 1764 1621 1764 1619 1764 1590 1778 1555 1766 1553 1766 1551 1766 1549 1766 1523 1780 1399 1780 1379 1766 1377 1766 1375 1766 1373 1766 1278 1776 1243 1766 1241 1766 1239 1766 1237 1766 1200 1778 1163 1766 1161 1766 1159 1766 1052 1778 1019 1766 1017 1766 1015 1766 1013 1766 980 1780 795 1768 793 1768 701 1778 662 1768 660 1768 658 1768 600 1780 567 1768 565 1768 563 1768 561 1768 559 1768 541 1782 413 1782 415 1811"/>
+                        </Shape>
+                        <String CONTENT="carve it. It is just a good carrying-load for my shoulder.” — “Oh, no! Will"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l24" HPOS="415" VPOS="1827" WIDTH="1771" HEIGHT="66" BASELINE="416 1872 2186 1868" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="416 1872 416 1893 510 1883 878 1893 880 1893 931 1883 1206 1893 1208 1893 1354 1881 1479 1891 1481 1891 1629 1881 1685 1891 1687 1891 1689 1891 1691 1891 1705 1881 1742 1891 1744 1891 1746 1891 2184 1883 2186 1868 2184 1840 2155 1827 2153 1827 2151 1827 2093 1839 2057 1827 2056 1827 2054 1827 1980 1839 1909 1827 1907 1827 1905 1827 1904 1827 1888 1839 1697 1839 1660 1827 1658 1827 1656 1827 1654 1827 1652 1827 1635 1840 1520 1840 1477 1827 1475 1827 1473 1827 1471 1827 1426 1839 1409 1827 1407 1827 1405 1827 1331 1827 1329 1827 1249 1840 1200 1829 1198 1829 1130 1829 1128 1829 1126 1829 1124 1829 1106 1840 945 1829 943 1829 941 1829 939 1829 919 1842 717 1842 645 1829 643 1829 590 1840 535 1829 533 1829 531 1829 530 1829 510 1842 415 1842 416 1872"/>
+                        </Shape>
+                        <String CONTENT="you be able to carry it?” — “Oh, yes! if only you do not grudge it.” He"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l25" HPOS="413" VPOS="1889" WIDTH="1264" HEIGHT="55" BASELINE="415 1930 1677 1926" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="415 1930 415 1944 1676 1940 1677 1926 1672 1889 602 1899 570 1889 569 1889 567 1889 565 1889 547 1899 537 1889 535 1889 533 1889 422 1889 420 1889 418 1889 416 1889 416 1891 415 1891 413 1891 415 1930"/>
+                        </Shape>
+                        <String CONTENT="lifted the carcass on his shoulder and carried it home.²"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-121_r4" HPOS="408" VPOS="1961" WIDTH="1782" HEIGHT="956" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="408 1961 2190 1961 2190 2917 408 2917"/>
+                    </Shape>
+                    <TextLine ID="mz_3-121_l26" HPOS="526" VPOS="1950" WIDTH="1662" HEIGHT="54" BASELINE="526 1989 2188 1989" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="526 1989 526 2004 2188 2004 2188 1989 2188 1959 2167 1950 2165 1950 2081 1950 2079 1950 2077 1950 2075 1950 2061 1961 1837 1961 1804 1950 1802 1950 1800 1950 1798 1950 1763 1959 1666 1950 1664 1950 1598 1959 1494 1950 1492 1950 1420 1959 1354 1950 1352 1950 1350 1950 1315 1959 526 1953 526 1989"/>
+                        </Shape>
+                        <String CONTENT="Much more frequently, however, the Aiˊwan refuses the request. This"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l27" HPOS="411" VPOS="2008" WIDTH="1777" HEIGHT="57" BASELINE="413 2047 2188 2051" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="413 2047 411 2061 2184 2065 2188 2051 2188 2022 2151 2010 2149 2010 2147 2010 2145 2010 2102 2020 1752 2010 1750 2010 1638 2020 1547 2010 1545 2010 1479 2020 1412 2010 1410 2010 1409 2010 1407 2010 1391 2020 1260 2008 1258 2008 1212 2020 991 2020 954 2008 952 2008 951 2008 949 2008 915 2020 627 2020 611 2008 609 2008 607 2008 606 2008 413 2016 413 2047"/>
+                        </Shape>
+                        <String CONTENT="refusal is contrary to the customs of arctic life, which require liberality on the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l28" HPOS="413" VPOS="2067" WIDTH="1775" HEIGHT="64" BASELINE="415 2113 2188 2106" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="415 2113 415 2131 2186 2123 2188 2106 2186 2078 2143 2067 2141 2067 2139 2067 2137 2067 2110 2078 1958 2078 1931 2067 1929 2067 1927 2067 1742 2078 1635 2068 1633 2068 1570 2078 1545 2068 1543 2068 1541 2068 1539 2068 1518 2078 1428 2068 1426 2068 1282 2080 857 2070 855 2070 656 2082 563 2072 561 2072 559 2072 524 2082 504 2072 502 2072 500 2072 413 2084 415 2113"/>
+                        </Shape>
+                        <String CONTENT="part of a successful hunter, and, in case a whale has been captured, grant the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l29" HPOS="415" VPOS="2129" WIDTH="1773" HEIGHT="58" BASELINE="416 2172 2188 2168" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="416 2172 416 2187 2186 2187 2188 2168 2182 2129 1574 2139 1473 2129 1471 2129 1393 2139 1354 2129 1352 2129 1350 2129 1266 2141 1208 2131 1206 2131 1204 2131 1167 2141 931 2131 929 2131 871 2141 837 2131 836 2131 834 2131 832 2131 830 2131 814 2143 594 2143 561 2131 559 2131 557 2131 555 2131 535 2141 440 2131 438 2131 436 2131 415 2141 416 2172"/>
+                        </Shape>
+                        <String CONTENT="right to everyone to take part in the carving of the meat. So after the refusal"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l30" HPOS="415" VPOS="2187" WIDTH="1775" HEIGHT="59" BASELINE="416 2230 2190 2226" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="416 2230 416 2246 2188 2242 2190 2226 2188 2199 2165 2187 2163 2187 2161 2187 1687 2197 1654 2187 1652 2187 1650 2187 1648 2187 1611 2197 1545 2187 1543 2187 1490 2197 1471 2187 1469 2187 1338 2187 1336 2187 1241 2199 1210 2189 1208 2189 1206 2189 685 2199 590 2189 588 2189 415 2201 416 2230"/>
+                        </Shape>
+                        <String CONTENT="a wrestling-match ensues, in which the Reindeer-breeder vanquishes and kills"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l31" HPOS="415" VPOS="2246" WIDTH="1775" HEIGHT="58" BASELINE="416 2291 2190 2285" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="416 2291 416 2302 2186 2304 2190 2285 2188 2258 2145 2246 2143 2246 2141 2246 2139 2246 2112 2256 1905 2246 1904 2246 1839 2256 1785 2246 1783 2246 1685 2256 1656 2246 1654 2246 1652 2246 1650 2246 1627 2256 1601 2246 1599 2246 1598 2246 1596 2246 1568 2258 1315 2248 1313 2248 1311 2248 1290 2259 1103 2259 1065 2248 1064 2248 1062 2248 982 2259 913 2250 912 2250 910 2250 876 2259 750 2250 748 2250 683 2259 537 2250 535 2250 533 2250 494 2259 438 2250 436 2250 434 2250 432 2250 415 2258 416 2291"/>
+                        </Shape>
+                        <String CONTENT="the Aiˊwan. Then he carries away the object of the strife. Thus, in the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l32" HPOS="418" VPOS="2306" WIDTH="1772" HEIGHT="59" BASELINE="418 2349 2190 2349" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="418 2349 418 2363 2188 2365 2190 2349 2188 2310 1631 2316 1601 2306 1599 2306 1598 2306 1527 2316 1494 2306 1492 2306 1490 2306 1488 2306 1453 2316 1440 2306 1438 2306 1436 2306 1344 2306 1342 2306 1264 2316 1229 2306 1227 2306 1225 2306 1223 2306 1204 2316 1103 2306 1101 2306 1099 2306 1069 2316 1046 2306 1044 2306 1042 2306 972 2316 949 2306 947 2306 945 2306 855 2316 830 2306 828 2306 826 2306 824 2306 802 2316 779 2306 777 2306 775 2306 773 2306 771 2306 756 2318 606 2318 582 2306 580 2306 578 2306 576 2306 539 2316 444 2306 442 2306 440 2306 418 2316 418 2349"/>
+                        </Shape>
+                        <String CONTENT="third chapter of the tale of “Eleˊndi and His Sons,” two sons of Eleˊndi send"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l33" HPOS="416" VPOS="2365" WIDTH="1774" HEIGHT="64" BASELINE="418 2406 2190 2410" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="418 2406 416 2421 428 2429 430 2429 432 2429 434 2429 2188 2421 2190 2410 2190 2380 2149 2367 2147 2367 2145 2367 2073 2378 2007 2367 2005 2367 1933 2378 1915 2367 1913 2367 1911 2367 1837 2367 1835 2367 1833 2367 1804 2380 1648 2380 1598 2367 1596 2367 1594 2367 1592 2367 1555 2378 1527 2367 1525 2367 1523 2367 1522 2367 1520 2367 1500 2380 1344 2380 1305 2365 1303 2365 1227 2365 1225 2365 1223 2365 1221 2365 1204 2376 1058 2365 1056 2365 986 2378 750 2378 732 2365 730 2365 728 2365 726 2365 724 2365 701 2376 683 2365 682 2365 680 2365 678 2365 676 2365 652 2376 623 2365 621 2365 619 2365 563 2376 502 2365 500 2365 418 2374 418 2406"/>
+                        </Shape>
+                        <String CONTENT="their old father to an Aiˊwan neighbor to ask for some whale-skin. The"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l34" HPOS="416" VPOS="2425" WIDTH="1772" HEIGHT="62" BASELINE="418 2470 2188 2466" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="418 2470 418 2487 2186 2487 2188 2466 2184 2437 2112 2425 2110 2425 2108 2425 2083 2435 1999 2425 1997 2425 1995 2425 1972 2435 1948 2425 1946 2425 1944 2425 1943 2425 1917 2435 1820 2425 1818 2425 1765 2435 1701 2425 1699 2425 1611 2435 1280 2427 1278 2427 1276 2427 1274 2427 1260 2437 1184 2427 1182 2427 814 2437 742 2427 740 2427 738 2427 736 2427 722 2437 689 2427 687 2427 685 2427 683 2427 650 2437 615 2427 613 2427 611 2427 547 2437 440 2427 438 2427 436 2427 434 2427 416 2435 418 2470"/>
+                        </Shape>
+                        <String CONTENT="Aiˊwan, in derision, fills with blubber the upper part of the old man’s breeches."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l35" HPOS="422" VPOS="2491" WIDTH="1766" HEIGHT="65" BASELINE="422 2528 2188 2528" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="422 2528 422 2542 537 2554 539 2556 678 2556 678 2554 680 2554 682 2554 697 2544 810 2554 812 2554 894 2544 958 2554 960 2554 1048 2544 1416 2554 1418 2554 2065 2544 2081 2554 2083 2554 2085 2554 2087 2556 2186 2556 2188 2528 2186 2499 422 2491 422 2528"/>
+                        </Shape>
+                        <String CONTENT="The young men get angry and run to the place. A whale’s carcass is lying"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l36" HPOS="418" VPOS="2548" WIDTH="1772" HEIGHT="56" BASELINE="418 2587 2190 2587" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="418 2587 418 2602 2188 2604 2190 2587 2190 2558 2153 2548 2151 2548 2149 2548 2077 2558 1829 2548 1828 2548 1750 2558 1716 2548 1714 2548 1713 2548 1545 2558 1506 2548 1504 2548 1502 2548 1405 2558 1368 2548 1366 2548 1364 2548 1362 2548 1340 2560 1221 2560 1159 2548 1157 2548 1062 2558 1030 2548 1028 2548 1027 2548 1025 2548 997 2558 892 2548 890 2548 837 2558 775 2548 773 2548 709 2558 680 2548 678 2548 676 2548 674 2548 631 2558 582 2548 580 2548 578 2548 576 2548 563 2558 512 2548 510 2548 418 2558 418 2587"/>
+                        </Shape>
+                        <String CONTENT="on the beach. The Aiˊwan’s working-people are busy carving whale-meat. The"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l37" HPOS="416" VPOS="2608" WIDTH="1776" HEIGHT="57" BASELINE="418 2649 2192 2645" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="418 2649 418 2665 2192 2661 2192 2645 2188 2618 1303 2608 1301 2608 1299 2608 1256 2618 436 2610 434 2610 432 2610 430 2610 416 2616 418 2649"/>
+                        </Shape>
+                        <String CONTENT="two young men jump to the whale, and, raising their spears, drive away all the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l38" HPOS="418" VPOS="2663" WIDTH="1772" HEIGHT="70" BASELINE="420 2712 2190 2704" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="420 2712 420 2733 2188 2725 2190 2704 2186 2677 2077 2677 2057 2663 2056 2663 2054 2663 2052 2663 2050 2663 2048 2663 2030 2677 1937 2677 1909 2663 1907 2663 1905 2663 1904 2663 1902 2663 1882 2677 1783 2677 1750 2663 1748 2663 1746 2663 1683 2677 1580 2665 1578 2665 1576 2665 1539 2677 1510 2665 1508 2665 1506 2665 1504 2665 1475 2677 1432 2665 1430 2665 1428 2665 1426 2665 1424 2665 1405 2678 1338 2678 1307 2665 1305 2665 1303 2665 1301 2665 1251 2678 1132 2667 1130 2667 1128 2667 1126 2667 1106 2680 1023 2680 974 2667 972 2667 970 2667 968 2667 925 2678 763 2669 761 2669 760 2669 722 2680 635 2669 633 2669 574 2680 528 2669 526 2669 524 2669 418 2682 420 2712"/>
+                        </Shape>
+                        <String CONTENT="people. The Aiˊwan calls to them, “Stop that! First kill me, then take my"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l39" HPOS="418" VPOS="2725" WIDTH="1774" HEIGHT="70" BASELINE="420 2768 2192 2764" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="420 2768 420 2782 742 2782 810 2793 812 2795 939 2795 939 2793 941 2793 943 2793 962 2782 1294 2790 1295 2790 1297 2790 1299 2790 1311 2780 1331 2788 1332 2788 1334 2788 1596 2780 1638 2792 1640 2792 1642 2793 1707 2793 1707 2792 1709 2792 1711 2792 1728 2780 1761 2792 1763 2792 1765 2792 2190 2782 2192 2764 2182 2735 2124 2725 2122 2725 2065 2735 1742 2725 1740 2725 1738 2725 1736 2725 1720 2737 1580 2737 1518 2725 1516 2725 1446 2735 1416 2725 1414 2725 1412 2725 1301 2737 1282 2727 1280 2727 1278 2727 1225 2737 1054 2727 1052 2727 1050 2727 1048 2727 1030 2739 843 2739 760 2727 758 2727 756 2727 726 2737 645 2727 643 2727 641 2727 615 2737 602 2727 600 2727 598 2727 459 2727 457 2727 455 2727 418 2739 420 2768"/>
+                        </Shape>
+                        <String CONTENT="whale!” But they pay no heed to his words. He says, “Bring the requisites"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l40" HPOS="418" VPOS="2786" WIDTH="1774" HEIGHT="64" BASELINE="420 2829 2192 2825" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="420 2829 420 2842 2176 2850 2178 2850 2180 2850 2182 2850 2192 2840 2192 2825 2182 2795 1954 2786 1952 2786 1950 2786 1948 2786 1933 2797 1750 2797 1720 2786 1718 2786 1716 2786 1714 2786 1685 2795 1654 2786 1652 2786 1650 2786 1555 2795 1506 2786 1504 2786 1416 2795 1385 2786 1383 2786 1381 2786 1379 2786 1356 2795 1327 2786 1325 2786 1323 2786 1321 2786 1319 2786 1299 2797 1276 2788 1274 2788 1272 2788 1177 2797 1134 2788 1132 2788 1130 2788 736 2797 678 2788 676 2788 496 2797 432 2788 430 2788 428 2788 426 2788 418 2793 420 2829"/>
+                        </Shape>
+                        <String CONTENT="for a wrestling-match.” A walrus-hide is brought, and also some thigh-bones"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l41" HPOS="420" VPOS="2846" WIDTH="1770" HEIGHT="66" BASELINE="422 2885 2190 2889" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="422 2885 420 2901 434 2910 436 2910 438 2910 440 2910 442 2910 481 2901 545 2910 547 2912 650 2912 650 2910 652 2910 654 2910 668 2901 726 2910 728 2910 798 2901 826 2910 828 2910 830 2910 1373 2903 1389 2912 1391 2912 1393 2912 1395 2912 1461 2903 1475 2912 1477 2912 1479 2912 1481 2912 2188 2901 2190 2889 2190 2860 2153 2848 2151 2848 2149 2848 2081 2858 1777 2848 1775 2848 1773 2848 1734 2858 1685 2848 1683 2848 1681 2848 1656 2858 1629 2848 1627 2848 1625 2848 1449 2858 1399 2848 1397 2848 1319 2858 1188 2846 1186 2846 1103 2856 1048 2846 1046 2846 1044 2846 1011 2856 966 2846 964 2846 912 2858 785 2858 767 2846 765 2846 763 2846 761 2846 703 2856 580 2846 578 2846 422 2854 422 2885"/>
+                        </Shape>
+                        <String CONTENT="of walrus. He spreads the hide upon the ground, breaks the bones into"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-121_r5" HPOS="408" VPOS="2956" WIDTH="1782" HEIGHT="148" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="408 2956 2190 2956 2190 3104 408 3104"/>
+                    </Shape>
+                    <TextLine ID="mz_3-121_l42" HPOS="531" VPOS="2963" WIDTH="1659" HEIGHT="45" BASELINE="531 2986 2190 2986" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="531 2986 531 3006 2188 3008 2190 2986 2190 2963 531 2963 531 2986"/>
+                        </Shape>
+                        <String CONTENT="¹ The Chukchee name for St. Lawrence Island, Eiwhueˊn, is probably connected with the name Aiˊwan"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l43" HPOS="418" VPOS="3004" WIDTH="191" HEIGHT="43" BASELINE="420 3033 609 3029" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="420 3033 420 3047 609 3047 609 3029 604 3004 418 3006 420 3033"/>
+                        </Shape>
+                        <String CONTENT="(cf. p. 27)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-121_l44" HPOS="533" VPOS="3041" WIDTH="624" HEIGHT="51" BASELINE="535 3066 1157 3074" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="535 3066 533 3084 1153 3092 1157 3074 1155 3049 535 3041 535 3066"/>
+                        </Shape>
+                        <String CONTENT="² Bogoras, Chukchee Materials, p. 253."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>
