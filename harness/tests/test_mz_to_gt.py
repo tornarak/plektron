@@ -16,7 +16,9 @@ satisfied by `mz/ocr/` where it is not by the view.
 
 That last one closes a gap docs/open-questions.md records as open: "`harness ocr review`'s bare
 span diff has no second witness left ... If a second witness is ever wanted again,
-it links into `ocr/` from its own store." That is exactly what `mz/ocr/` is.
+it links into `ocr/` from its own store." That is exactly what `mz/ocr/` is. (That
+bare diff is `harness ocr diff` since 2026-08-21; the quotation keeps the spelling
+the entry was written with.)
 """
 from __future__ import annotations
 

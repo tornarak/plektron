@@ -19,6 +19,13 @@ a.scan:hover{text-decoration:underline}
 .hn{flex:0 0 15ch;font-size:12px}
 button.hnb{font:12px var(--f);color:#888;background:none;width:100%;border:1px dashed #c4c4c4;border-radius:3px;padding:.15rem .3rem;cursor:pointer}
 button.hnb:hover{color:#333;border-color:#888}
+/* The quick verdicts wear the note button's own dress, stacked directly under
+   it: they are the same control reached a shorter way, and a differently-styled
+   pair beside it would read as a different kind of thing. `.qn` carries the
+   behaviour, `.hnb` the appearance — the plain note button's handler excludes
+   `.qn` explicitly, since both share the class. */
+.qns{display:flex;gap:.25rem;margin-top:.25rem}
+.qns button.hnb{flex:1 1 0;border-style:solid;border-color:#d8d8d8}
 textarea.hnt{font:12px/1.4 var(--f);background:#fffdf0;border-color:#ded4a4;padding:.15rem .3rem}
 textarea.hnt:focus{outline-color:#b59b2e;border-color:#b59b2e}
 .sum{color:#555;font-size:.85rem;margin-bottom:1.4rem}
@@ -86,4 +93,4 @@ body.kbdon textarea:focus{outline-color:#1a7f37;border-color:#1a7f37;background:
 body.palopen #pgroups{display:flex}
 body{padding-bottom:2.6rem}
 body.palopen{padding-bottom:16rem}
-@media(prefers-color-scheme:dark){body{background:#161616;color:#e6e6e6}.ln{border-color:#2f2f2f}.cp{color:#8ec7ff}.ref{color:#8f8f8f}.note{color:#d9b26a}button.tb{background:#1e1e1e;color:#ccc;border-color:#444}.t1{border-color:#d1a02a;background:linear-gradient(90deg,#2a2211,transparent 45%)}.badge{background:#d1a02a;color:#161616}.t1glyphs{color:#e8c874}.jump a{color:#e0b552;border-color:#8a6a1e}.jump.edit a{color:#4fd47a;border-color:#1a7f37}.editflag{color:#4fd47a}textarea.justsaved{outline-color:#4fd47a}button.hnb{color:#8a8a8a;border-color:#3d3d3d}button.hnb:hover{color:#e6e6e6;border-color:#7a7a7a}textarea.hnt{background:#221e12;border-color:#5c4f22;color:#f0e6c8}textarea.hnt:focus{outline-color:#d1a02a;border-color:#d1a02a}.floor{color:#e88d8d}textarea{background:#111;color:#eee;border-color:#444}#st{color:#bbb;border-color:#444}#pal{background:#1b1b1b;border-color:#444}#pctl{border-color:#3a3a3a}#pctl button{border-color:#555;background:#242424;color:#eee}.pk{background:#242424;border-color:#484848;color:#eee}.pk.mk{background:#1b2436}#kb{color:#aaa;border-color:#555}body.kbdon textarea:focus{background:#0f1a12}.crop{filter:invert(1) hue-rotate(180deg)}}
+@media(prefers-color-scheme:dark){body{background:#161616;color:#e6e6e6}.ln{border-color:#2f2f2f}.cp{color:#8ec7ff}.ref{color:#8f8f8f}.note{color:#d9b26a}button.tb{background:#1e1e1e;color:#ccc;border-color:#444}.t1{border-color:#d1a02a;background:linear-gradient(90deg,#2a2211,transparent 45%)}.badge{background:#d1a02a;color:#161616}.t1glyphs{color:#e8c874}.jump a{color:#e0b552;border-color:#8a6a1e}.jump.edit a{color:#4fd47a;border-color:#1a7f37}.editflag{color:#4fd47a}textarea.justsaved{outline-color:#4fd47a}button.hnb{color:#8a8a8a;border-color:#3d3d3d}button.hnb:hover{color:#e6e6e6;border-color:#7a7a7a}.qns button.hnb{border-color:#3d3d3d}textarea.hnt{background:#221e12;border-color:#5c4f22;color:#f0e6c8}textarea.hnt:focus{outline-color:#d1a02a;border-color:#d1a02a}.floor{color:#e88d8d}textarea{background:#111;color:#eee;border-color:#444}#st{color:#bbb;border-color:#444}#pal{background:#1b1b1b;border-color:#444}#pctl{border-color:#3a3a3a}#pctl button{border-color:#555;background:#242424;color:#eee}.pk{background:#242424;border-color:#484848;color:#eee}.pk.mk{background:#1b2436}#kb{color:#aaa;border-color:#555}body.kbdon textarea:focus{background:#0f1a12}.crop{filter:invert(1) hue-rotate(180deg)}}

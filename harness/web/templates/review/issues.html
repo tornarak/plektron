@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% block title %}review — {{ count }} flagged lines{% endblock %}
+
+{% block styles %}
+<style>:root{--f:{{ font | safe }};--fs:{{ font_size }}px;--bl:{{ box_lines }}}</style>
+<link rel="stylesheet" href="{{ static }}/css/review.css">
+{# The distributed page's own rules. Everything else it borrows from the single-ref
+   sheet, because a reviewer moving between the two should not have to re-learn
+   what a crop or an entry box looks like. #}
+<style>
+.iss{border-top:2px solid #999;margin:2.2em 0 0;padding-top:1.1em}
+.iss:first-of-type{border-top:none}
+.isshead{font:600 13px/1.5 system-ui,sans-serif;margin-bottom:.5em}
+.isshead .r{background:#222;color:#fff;padding:1px 6px;border-radius:3px}
+.isshead .why{color:#a33;margin-left:.6em}
+.ctx{font-family:var(--f);font-size:calc(var(--fs) * .8);color:#777;
+     padding:.15em .4em;border-left:3px solid #ddd;white-space:pre-wrap}
+.ctx .n{font:11px/1 system-ui,sans-serif;color:#aaa;margin-right:.7em}
+.ctx.none{font-style:italic;color:#bbb}
+{# The quick verdicts are the shared `.qns`/`.hnb` control from review.css — the
+   issue list does not restyle them, so the two pages offer one control with one
+   appearance rather than two that merely agree today. #}
+.rule{margin-top:.5em;max-width:26ch}
+.rule textarea.hnt{width:100%;margin-top:.35em}
+{# Unruled is marked, not washed. A tint over the whole block competed with the
+   crop — the one thing on the page that has to read as ink on paper — and a
+   background is the wrong instrument anyway: what the reviewer scans for is
+   "which of these still wants me", which an edge answers without touching the
+   field it is about. #}
+.iss.unruled{box-shadow:inset 3px 0 0 #c9a227;padding-left:.9em}
+.iss.unruled .isshead .r{background:#8a6d10}
+</style>
+{% endblock %}
+
+{% block body %}
+<h1>{{ count }} flagged line{{ '' if count == 1 else 's' }} across
+{{ refs | length }} page{{ '' if refs | length == 1 else 's' }}
+<span class=qlab>{{ refs | join(' · ') }}</span></h1>
+
+<div class=sum>
+<b>Every flagged line needs a ruling; most will not need their text touched.</b>
+The reading is pre-filled — change it only where the flag turns out to be right.
+What is required is the note, and <i>that's fine</i> is a finding, not a
+non-answer.<br>
+<b>This page holds fields belonging to different files.</b> That is the one thing
+the single-page review exists to prevent, so this one saves <b>whole or not at
+all</b> and checks every box against the text the server sent for it — a form
+refilled by the browser after a crash fails that check instead of writing. It
+<b>patches</b> adjudicated pages and cannot create an adjudication: a ref with no
+decision is refused, because the unlisted lines would be written as though
+somebody had read them.<br>
+Context lines above and below each field are read-only and are there for what a
+crop alone cannot settle — whether a wrap took a hyphen, whether a quote opened
+on the line before.
+</div>
+
+{% if missing %}
+<div class=floor><b>Not in the store:</b> {{ missing | join(', ') }} — listed, but
+that page's ALTO has no such line. Nothing on this page will write to them.</div>
+{% endif %}
+
+<div class=type><b>Type:</b>
+<button class=tb data-var=fs data-by='-1'>A−</button>
+<button class=tb data-var=fs data-by='1'>A+</button>
+<span class=tv id=tvfs></span>
+<button class=tb data-var=bl data-by='-1'>box −</button>
+<button class=tb data-var=bl data-by='1'>box +</button>
+<span class=tv id=tvbl></span>
+<button class=tb id=treset>reset</button></div>
+
+{% for b in blocks %}
+<div class=iss id="i{{ loop.index }}">
+<div class=isshead><span class=r>{{ b.ref }}</span> line {{ b.idx }}
+<span class=why>⚑ {{ b.issue }}</span></div>
+
+{% if b.before %}<div class=ctx><span class=n>{{ b.before.idx }}</span>{{ b.before.text }}</div>
+{% else %}<div class='ctx none'>— first line in reading order —</div>{% endif %}
+
+<img class=crop src="{{ b.crop }}" width="{{ b.w }}" height="{{ b.h }}"
+     loading=lazy alt="scan of {{ b.ref }} line {{ b.idx }}">
+{# `data-prior` is the guard, and it is deliberately *not* the field's value: a
+   browser restoring textareas by position moves `value` and leaves this, which is
+   what makes the mismatch detectable at all. #}
+<textarea data-ref="{{ b.ref }}" data-line="{{ b.idx }}" rows=1 spellcheck=false
+  autocomplete=off data-text="{{ b.text }}" data-prior="{{ b.prior }}"></textarea>
+
+<div class=meta><div class=metaL>
+{% if b.marks %}<div class=cp>{{ b.marks }}</div>{% endif %}
+{% if b.note %}<div class=note>reader: {{ b.note }}</div>{% endif %}
+</div>
+{# The ruling, and it is required. Most flagged lines will not need their text
+   touched — "looked, it is fine" is the commonest outcome — so the field that
+   must be filled is this one, and the two buttons are the two verdicts that
+   recur often enough to be worth a click instead of a sentence. #}
+<div class=rule>
+<div class=qns><button type=button class="hnb qn" data-note="fine">fine</button>
+<button type=button class="hnb qn" data-note="speck">speck</button></div>
+<textarea class=hnt data-ruling="{{ b.field }}" rows=1 spellcheck=false
+  autocomplete=off placeholder="ruling (required)"
+  data-text="{{ b.hnote }}"></textarea>
+</div></div>
+
+{% if b.after %}<div class=ctx><span class=n>{{ b.after.idx }}</span>{{ b.after.text }}</div>
+{% else %}<div class='ctx none'>— last line in reading order —</div>{% endif %}
+</div>
+{% endfor %}
+
+<div id=pal><div id=pgroups>
+{% for grp in palette %}
+<div class=pgrp><div class=plabel>{{ grp.label }}</div><div class=pkeys>
+{% for k in grp.glyphs %}
+<button class="pk{{ ' mk' if k.combining }}" data-ins="{{ k.glyph }}" title="{{ k.tip }}">
+<b>{{ k.shown }}</b><span>{{ k.key or '&nbsp;' | safe }}</span></button>
+{% endfor %}
+</div></div>
+{% endfor %}
+</div>
+<div id=pctl><div class=pctlrow>
+<span><span id=kb>kbd off</span><span id=st></span></span>
+<span><button id=sv title="save every ruling, or none">Save all {{ count }}</button></span></div>
+<div class=tags>alt-p shows/hides the keyboard panel (overrides kbd on/off) ·
+ctrl-space toggles kbd · off = plain typing</div>
+</div></div>
+{% endblock %}
+
+{% block scripts %}
+<script>const GL={{ kbd_glyphs | tojson }},MK={{ kbd_marks | tojson }},
+REF_BASE={{ base | tojson }};</script>
+<script src="{{ static }}/js/review-kbd.js"></script>
+<script src="{{ static }}/js/review-issues.js"></script>
+{% endblock %}

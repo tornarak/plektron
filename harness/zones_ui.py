@@ -1,6 +1,6 @@
 """The segmentation editor: one local page, two clicks a zone.
 
-`review.py --serve` is the template — stdlib `ThreadingHTTPServer` on loopback, the
+`review.py`, served, is the template — stdlib `ThreadingHTTPServer` on loopback, the
 page built as a Python string, no static files, a Done button that stops the server
 so nobody manages the process by hand. What differs is why it exists. The review
 queue replaced a text editor; this replaces eScriptorium, whose import/export loop
@@ -14,7 +14,7 @@ makes the bottom of one zone the top of the next, which is what a vertical
 partition *is* — so an ordinary page of prose costs one type key and one click per
 zone, and the ten-second page is arithmetic rather than aspiration.
 
-**The session is the server, not the page.** `review --serve` binds one ref because
+**The session is the server, not the page.** `ocr review` binds one ref because
 a review is one page's worth of work; keying segmentation is a sweep, so the arrow
 keys walk `all_scans` and the ref in the URL is only where the sweep started.
 

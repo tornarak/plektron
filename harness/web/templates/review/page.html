@@ -105,6 +105,11 @@ line {{ ln.idx }} · {{ ln.line_id }}
    renders open, since a note nobody can see is not a record. #}
 <div class=hn>
 <button type=button class=hnb data-line="{{ ln.idx }}"{% if ln.hnote %} hidden{% endif %}>+ note</button>
+{# The two verdicts that recur. Always visible, unlike `+ note`: their whole point
+   is being reachable in one click, and a line that already carries a note is
+   exactly where overwriting it with one is most useful. #}
+<div class=qns><button type=button class="hnb qn" data-note="fine">fine</button>
+<button type=button class="hnb qn" data-note="speck">speck</button></div>
 <textarea class=hnt data-note="{{ ln.idx }}" rows=1 spellcheck=false
   autocomplete=off data-text="{{ ln.hnote }}"{% if not ln.hnote %} hidden{% endif %}></textarea></div>
 </div></div>
@@ -144,5 +149,6 @@ ctrl-space toggles kbd · off = plain typing · alt-j / alt-k walk tier-1 lines<
 <script>const GL={{ kbd_glyphs | tojson }},MK={{ kbd_marks | tojson }},
 REF={{ ref | tojson }},REF_BASE={{ base | tojson }};</script>
 {% if inline %}<script>{{ inline.js | safe }}</script>
-{% else %}<script src="{{ static }}/js/review.js"></script>{% endif %}
+{% else %}<script src="{{ static }}/js/review-kbd.js"></script>
+<script src="{{ static }}/js/review.js"></script>{% endif %}
 {% endblock %}

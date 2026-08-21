@@ -113,7 +113,7 @@ the one below it — so a page's `stage` is the furthest rung it has reached, an
 | `zones edit`                                                          | `zoned-mz`  | `zoned-gt`  |
 | `ocr predict`                                                         | `zoned-gt`  | `ocr-mz`    |
 | [`/rebuild-groundtruth`](.claude/skills/rebuild-groundtruth/SKILL.md) | `ocr-mz`    | `proposed`  |
-| `ocr review --serve`                                                  | `proposed`  | `decided`   |
+| `ocr review`                                                  | `proposed`  | `decided`   |
 | `ocr restore --commit`                                                | `decided`   | `ocr-gt`    |
 | `tei generate`                                                        | `ocr-gt`    | `generated` |
 | [`/transcribe-page`](.claude/skills/transcribe-page/SKILL.md)         | `generated` | `collated`  |
@@ -133,7 +133,7 @@ ask your agent about the relevant config files.
 |----------------------|-------------------------------------|--------------------------------------------|------|
 | `zones edit`         | `scanned`, `zoned-mz` -> `zoned-gt` | segmentation editor                        | 8732 |
 | `ocr edit`           | within `ocr-mz`                     | ink correction: adopt or rule missed bands | 8733 |
-| `ocr review --serve` | `proposed` -> `decided`             | adjudicate a reading proposal              | 8731 |
+| `ocr review` | `proposed` -> `decided`             | adjudicate a reading proposal              | 8731 |
 | `edition serve`      | reads `generated`, `collated`       | the reading view, drafts included          | 8734 |
 
 They share one server, one door apiece; `--port` moves a door.

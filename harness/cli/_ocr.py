@@ -77,6 +77,7 @@ from ..review import (
     group_spans,
     page_context,
     page_spans,
+    parse_issues,
     restore,
     summary,
 )
@@ -417,29 +418,52 @@ def register(cli):
     # group has since caught up with: standing a server up per page made the
     # reviewer wait on the tooling between pages, which got worse the moment the
     # reading half started fanning out to an agent per page.
+    # **`diff` was `review` without `--serve`, and the two had no business sharing
+    # an action.** One returned a TOON table, one stood up a live editor, one wrote
+    # an HTML file — three different kinds of thing, told apart by flags, which is
+    # a shape nothing else in this CLI has. The group/action rule says the action
+    # names what it does to the thing: measuring a proposal against a witness and
+    # adjudicating one are not the same verb. Split 2026-08-21.
+    p = _store(add("diff", pageable=True,
+               help="a span-level diff of each proposal against a second witness, "
+                    "grouped by substitution class"), default="mz")
+    refs_arg(p, all_="every page holding a proposal and no decision — the "
+                     "pending-adjudication queue")
+    opt(p, "--spans", is_flag=True,
+                    help="every span individually, not grouped by class")
+
+    # `--serve` is gone with the split: an editor that serves is what this action
+    # *is*, and a flag asking for it was only ever distinguishing it from the diff
+    # that has now left. `zones edit` and `lines edit` never had one.
     p = _store(add("review", pageable=False,
-               constraints=(exclusive("serve", "html", "spans"),),
-               help="adjudicate reading proposals in the browser "
-              "(--serve), one or more pages in one session; bare, a span-level "
-              "diff of each proposal against a second witness, grouped by "
-              "substitution class"), default="mz")
+               constraints=(exclusive("issues", "html"),),
+               help="adjudicate reading proposals in the browser, one or more "
+                    "pages in one session — serves on 127.0.0.1 and accepts "
+                    "saves into review/PP-NNN/decision.json"), default="mz")
     refs_arg(p, all_="every page holding a proposal and no decision — the "
                      "pending-adjudication queue",
-             extra=": --serve walks them in the order named, one page on screen "
-                   "at a time")
-    opt(p, "--serve", is_flag=True,
-                    help="serve the review page on 127.0.0.1 and accept saves "
-                         "into review/PP-NNN/decision.json")
+             extra=": walked in the order named, one page on screen at a time")
     opt(p, "--html", is_flag=True,
-                    help="write the browser review page to "
-                         "review/PP-NNN/review.html instead of emitting a table. "
-                         "No destination knob: the page embeds its crops as data "
-                         "URIs, so where it sits is nobody's business but the "
-                         "pass's, and --serve is the usual route")
-    opt(p, "--spans", is_flag=True,
-                    help="with the bare span diff: every span individually, not "
-                         "grouped by class")
-    opt(p, "--port", type=int, default=8731, help="port for --serve")
+                    help="write the review page to review/PP-NNN/review.html "
+                         "instead of serving it. No destination knob: the page "
+                         "embeds its crops as data URIs, so where it sits is "
+                         "nobody's business but the pass's, and serving is the "
+                         "usual route")
+    # **The refs come from the list, so the positional would be a second answer to
+    # the same question** — hence exclusive rather than additive. `-` is stdin,
+    # because the list is usually something a coordinator has just computed and
+    # piping it beats writing a file to read it back.
+    opt(p, "--issues", default=None, metavar="PATH",
+                    help="serve one document of individually flagged lines instead "
+                         "of a page at a time: `PP-NNN:LINE issue text` per line, "
+                         "read from PATH or from stdin for `-`. Each field gets a "
+                         "context line either side, and every one needs a ruling — "
+                         "the reading is pre-filled and most will not need it "
+                         "changed. It **patches** adjudicated pages: a ref with no "
+                         "decision is refused, since the unlisted lines would be "
+                         "written as though somebody had read them. Saves whole or "
+                         "not at all")
+    opt(p, "--port", type=int, default=8731, help="this editor's door onto the shared server")
     # **Type, for the two rendered modes.** A review is an hour of comparing a crop
     # against an entry box, so the face those are set in is an ergonomic
     # parameter and not decoration: the book is a Brill, and matching the entry to
@@ -717,7 +741,11 @@ def _review_html(ctx: dict) -> str:
     return templates.get_template("review/page.html").render(
         **ctx, base="", static="", request=None, inline={
             "css": (STATIC / "css" / "review.css").read_text(encoding="utf-8"),
-            "js": (STATIC / "js" / "review.js").read_text(encoding="utf-8"),
+            # Both halves, in load order. The split is a served-page concern —
+            # a standalone file has one script block, and the shared layer has
+            # to be inside it or the page loads with no keyboard at all.
+            "js": "\n".join((STATIC / "js" / n).read_text(encoding="utf-8")
+                            for n in ("review-kbd.js", "review.js")),
         })
 
 
@@ -1156,8 +1184,42 @@ def run_review(a) -> int:
     from ..web import Sessions
     from ..web import serve as web
 
-    refs = page_refs(a) or _pending_review(a.root)
-    if a.serve:
+    items = None
+    if getattr(a, "issues", None):
+        # `page_refs` already refused refs alongside `--issues` — it is the fourth
+        # way of naming a work-list and is held apart from the other three there,
+        # so there is nothing to re-check here.
+        # `--html` is refused by the exclusive() constraint at registration; there
+        # is no standalone rendering of a worklist, since its whole value is the
+        # save that writes back to several files at once.
+        src = (sys.stdin.read() if a.issues == "-"
+               else Path(a.issues).read_text(encoding="utf-8"))
+        try:
+            items = parse_issues(src)
+        except ValueError as e:
+            print(f"ERROR: {e}", file=sys.stderr)
+            return 2
+        # **Every ref must already be adjudicated, and it is said here rather than
+        # discovered at the save.** A reviewer who has filled in fourteen fields
+        # should not be told at that point that one of the pages was never a legal
+        # target; the invocation is where a fact about the invocation belongs.
+        bad = [r for r in dict.fromkeys(i["ref"] for i in items)
+               if not decisions_path(r, a.root).exists()]
+        if bad:
+            print("ERROR: no decision.json for " + ", ".join(bad)
+                  + " — an issue list patches an adjudicated page and cannot make "
+                    "one. Saving would write the proposal's text for every line "
+                    "nobody listed, which reads downstream as a human having "
+                    "accepted them. Adjudicate first: "
+                    f"`harness ocr review {bad[0]}`.", file=sys.stderr)
+            return 2
+        refs = list(dict.fromkeys(i["ref"] for i in items))
+    else:
+        refs = page_refs(a) or _pending_review(a.root)
+    # Serving is what this action is, so it is the fall-through and `--html` is
+    # the departure from it — the reverse of the arrangement it had while a bare
+    # invocation still meant the span diff that is now `ocr diff`.
+    if not a.html:
         for r in refs:
             _page_link(a, r)
         # Every ref's geometry is resolved before the socket is bound, for the
@@ -1180,14 +1242,39 @@ def run_review(a) -> int:
                   file=sys.stderr)
             return 2
         session = {"queue": queue, "alto_dir": _alto_dir(a), "font": a.font,
-                   "font_size": a.font_size, "box_lines": a.box_lines}
+                   "font_size": a.font_size, "box_lines": a.box_lines,
+                   "issues": items or []}
+        # The issue list is a different document, so it is a different landing
+        # place. `/` stays the page-at-a-time queue for every other session.
+        # `url_for` already ends in a slash, so the suffix is joined rather than
+        # concatenated — `/review//issues` routes, and looks like a defect.
+        def _home(url: str) -> str:
+            return f"{url.rstrip('/')}/issues" if items else url
+
         joined = web.handoff("review", session, port=a.port)
         if joined:
             import webbrowser
 
-            print(f"review {' '.join(queue)} -> {joined}   "
+            what = (f"{len(items)} flagged lines across {len(queue)} pages"
+                    if items else " ".join(queue))
+            print(f"review {what} -> {_home(joined)}   "
                   "(joined the running server)")
-            webbrowser.open(joined)
+            webbrowser.open(_home(joined))
+            return 0
+        if items:
+            banner = [f"review {len(items)} flagged lines across "
+                      f"{len(queue)} pages -> "
+                      f"{web.url_for('review', path='/issues', port=a.port)}   "
+                      "(Save all, then ctrl-c)"]
+            banner += [f"  {i['ref']}:{i['index']}  {i['issue']}" for i in items]
+            # `open_at`, not the editor's registered `home`: this session's
+            # document is the worklist, and opening the page-at-a-time queue
+            # instead lands the reviewer on the one view that does not contain
+            # what they asked for.
+            web.serve("review", a.root,
+                      Sessions(root=a.root, by_editor={"review": session}),
+                      banner=banner, open_at="/issues",
+                      ports={"review": a.port} if a.port else None)
             return 0
         banner = [f"review {' '.join(queue)} -> "
                   f"{web.url_for('review', port=a.port)}   "
@@ -1218,8 +1305,12 @@ def run_review(a) -> int:
                                           box_lines=a.box_lines)),
                 encoding="utf-8")
             print(f"{dest}: review page for {r}")
-        return 0
-    # The bare span diff measures a proposal against a *second witness*. If the
+    return 0
+
+
+def run_diff(a) -> int:
+    refs = page_refs(a) or _pending_review(a.root)
+    # The span diff measures a proposal against a *second witness*. If the
     # store it is pointed at resolves to the ground truth the proposal itself
     # produced, the diff compares a file with its own source and reports a clean
     # 40/40 — the shape of verification without the substance, which is exactly
@@ -1237,7 +1328,7 @@ def run_review(a) -> int:
                   "a proposal diff against it would compare that reading with "
                   "itself and report no differences. The span diff needs an "
                   f"independent witness — `--store mz` is one, or use `harness "
-                  f"ocr review {r} --serve` to adjudicate.", file=sys.stderr)
+                  f"ocr review {r}` to adjudicate.", file=sys.stderr)
             return 1
     # Two key sets, two tables — and pooled across refs rather than printed as N
     # `# ref`-separated pairs, which is what this did while it was the only

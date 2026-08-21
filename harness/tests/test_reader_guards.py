@@ -111,7 +111,13 @@ def test_gt_the_whole_loop_runs_unprompted(cmd):
     "uv run harness ocr reconcile 1-031",         # auditing a run it is a subject of
     "uv run harness ocr dispatch 1-031",          # retired, and stays refused
     "uv run harness ocr clean 1-031",             # destroys the record of the pass
-    "uv run harness ocr review --serve",          # a human's tool
+    "uv run harness ocr review 1-031",            # a human's tool
+    # Split out of `review` 2026-08-21, and it must not have arrived allowed: the
+    # allowlist names verbs, so a new one is refused by default — but this one is
+    # worth pinning, since it renders `mz/ocr/` as a diff against the reader's own
+    # proposal, and the machine text is precisely what this pass forbids a reader
+    # to treat as a witness.
+    "uv run harness ocr diff 1-031 --store mz",
     "uv run harness views build",
     "git commit -am wip",
     "python3 -c 'print(1)'",

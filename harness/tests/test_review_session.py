@@ -87,14 +87,15 @@ class Session:
     really are about a socket are `test_web_shell.py`'s.
     """
 
-    def __init__(self, refs, root):
+    def __init__(self, refs, root, issues=None):
         from starlette.testclient import TestClient
 
         from harness.web import Sessions, create_app
 
         self.refs, self.root = list(dict.fromkeys(refs)), root
         self.base = "/review"
-        session = {"queue": self.refs, "alto_dir": "mz/ocr"}
+        session = {"queue": self.refs, "alto_dir": "mz/ocr",
+                   "issues": list(issues or [])}
         self.app = create_app(root, Sessions(root=root,
                                              by_editor={"review": session}),
                               editor="review")
@@ -420,7 +421,7 @@ def test_a_store_that_cannot_answer_refuses_before_the_socket_is_bound(two, caps
     predict` existed has ground truth and no prediction. That used to bind the
     port, print the URL and three reassuring `decisions -> …` lines, and then
     fail on navigation — the traceback reaching only the server's stderr, which
-    under `--serve` is always a background log. `serve` resolves every ref's
+    when served is always a background log. `serve` resolves every ref's
     geometry first, the same rule `page_refs` applies to ref parsing.
     """
     from harness.cli import main
@@ -430,7 +431,9 @@ def test_a_store_that_cannot_answer_refuses_before_the_socket_is_bound(two, caps
     # server binds every registered editor's port, so "before the socket is
     # bound" means before `serve` is reached at all. Exit 2 is the usage-error
     # code the conventions already give an invocation that named the wrong thing.
-    assert main(["ocr", "review", "2-046", "2-047", "--serve",
+    # No `--serve`: it left with `ocr diff`, and serving is now what a bare
+    # invocation of this action does.
+    assert main(["ocr", "review", "2-046", "2-047",
                  "--root", str(two)]) == 2
     msg = capsys.readouterr().err
     assert "2-047" in msg and "2-046" not in msg, "names the pages that are missing"
@@ -555,3 +558,146 @@ def test_a_first_save_of_nothing_is_not_refused(two):
         s.get("/p/2-047")
         s.post("/save", {"ref": "2-047", "lines": {}})
         assert decisions_path("2-047", two).exists()
+
+
+# --- the issue list: the one page that merges refs ---------------------------
+#
+# Everything below is about the price of that. The single-ref page is kept apart
+# from other pages by construction; this one is not, so its separation has to be
+# enforced and therefore tested. The failure being designed against is still this
+# file's oldest — a field belonging to a page other than the one the reviewer
+# thinks they are keying — reached here by a browser refilling textareas *by
+# position*, which naming the ref in the payload cannot catch.
+
+def _adjudicate(root: Path, ref: str, n: int = 2) -> None:
+    """A decision for every line, which is what an issue list patches."""
+    d = decisions_path(ref, root)
+    d.parent.mkdir(parents=True, exist_ok=True)
+    d.write_text(json.dumps({
+        "ref": ref, "saved_at": "2026-01-01T00:00:00+0000",
+        "lines": {str(i): {"text": f"human {ref} {i}", "edited": False}
+                  for i in range(n)},
+    }), encoding="utf-8")
+
+
+@pytest.fixture
+def flagged(tmp_path):
+    for r in ("2-046", "2-047"):
+        _page(tmp_path, r)
+        _adjudicate(tmp_path, r)
+    return tmp_path
+
+
+ISSUES = [{"ref": "2-046", "index": 1, "issue": "bare g"},
+          {"ref": "2-047", "index": 1, "issue": "small-cap E"}]
+
+
+def _edits(root, issues=ISSUES, **over):
+    out = []
+    for i in issues:
+        saved = json.loads(decisions_path(i["ref"], root).read_text())["lines"]
+        out.append({"ref": i["ref"], "index": i["index"],
+                    "text": saved[str(i["index"])]["text"],
+                    "prior": saved[str(i["index"])]["text"],
+                    "note": "fine", **over})
+    return out
+
+
+def test_the_list_parses_and_refuses_what_it_cannot_act_on():
+    from harness.review import parse_issues
+
+    assert parse_issues("# a heading\n\n2-046:1  bare g\n") == [
+        {"ref": "2-046", "index": 1, "issue": "bare g"}]
+    # A line number with nothing said about it is a line number, and the reviewer
+    # already had those.
+    with pytest.raises(ValueError, match="issue text"):
+        parse_issues("2-046:1")
+    # Two entries for one field would render two boxes writing to one place.
+    with pytest.raises(ValueError, match="listed twice"):
+        parse_issues("2-046:1 a\n2-046:1 b")
+
+
+def test_every_flagged_line_shows_its_issue_and_a_neighbour_either_side(flagged):
+    with Session(["2-046", "2-047"], flagged, issues=ISSUES) as s:
+        html = s.get("/issues")
+    assert "bare g" in html and "small-cap E" in html
+    # Both refs on one document — the whole point, and the reason for the guards.
+    assert "2-046" in html and "2-047" in html
+    # The context lines are the neighbours in reading order, and read-only: no
+    # second entry box can be mistaken for the one being ruled on.
+    assert "class=ctx" in html
+    assert html.count("data-ruling") == 2
+
+
+def test_a_save_short_of_the_list_writes_nothing(flagged):
+    with Session(["2-046", "2-047"], flagged, issues=ISSUES) as s:
+        before = decisions_path("2-046", flagged).read_text()
+        with pytest.raises(HTTPError) as e:
+            s.post("/issues/save", {"edits": _edits(flagged)[:1]})
+        assert "whole or not at all" in e.value.body
+        assert decisions_path("2-046", flagged).read_text() == before
+
+
+def test_a_flagged_line_with_no_ruling_is_refused(flagged):
+    with Session(["2-046", "2-047"], flagged, issues=ISSUES) as s:
+        with pytest.raises(HTTPError) as e:
+            s.post("/issues/save", {"edits": _edits(flagged, note="")})
+        assert "no ruling on 2-046:1, 2-047:1" in e.value.body
+        # "fine" is named in the refusal, because a reviewer told only that a
+        # ruling is missing will reach for a text edit they do not owe.
+        assert "'fine'" in e.value.body
+
+
+def test_a_stale_prior_is_refused_naming_both_texts(flagged):
+    """The guard the ref-naming one cannot supply.
+
+    A browser that restores textareas by position moves `value` and leaves the
+    server-rendered attributes, so the mismatch is between the box and its own
+    prior — which is the only place the incident was ever visible.
+    """
+    with Session(["2-046", "2-047"], flagged, issues=ISSUES) as s:
+        edits = _edits(flagged)
+        edits[0]["prior"] = "what another page held"
+        with pytest.raises(HTTPError) as e:
+            s.post("/issues/save", {"edits": edits})
+        body = e.value.body
+        assert "changed under this page" in body
+        assert "what another page held" in body
+        assert "Nothing was written" in body
+
+
+def test_a_ref_with_no_decision_is_refused_rather_than_adjudicated(tmp_path):
+    """Merging edits over a proposal would write every *unlisted* line as though
+    a human had read it — `docs/decisions.md`'s "an empty list meant delete
+    everything" in a new costume."""
+    _page(tmp_path, "2-046")
+    _adjudicate(tmp_path, "2-046")
+    _page(tmp_path, "2-047")          # proposal only, never adjudicated
+    issues = [{"ref": "2-047", "index": 1, "issue": "bare g"}]
+    with Session(["2-047"], tmp_path, issues=issues) as s:
+        with pytest.raises(HTTPError) as e:
+            s.post("/issues/save", {"edits": _edits(tmp_path, [
+                {"ref": "2-046", "index": 1, "issue": "x"}])})
+        # Refused before it gets as far as the store, because the payload does
+        # not match the list either.
+        assert e.value.code == 400
+    assert not decisions_path("2-047", tmp_path).exists()
+
+
+def test_a_whole_save_patches_only_the_listed_lines(flagged):
+    with Session(["2-046", "2-047"], flagged, issues=ISSUES) as s:
+        edits = _edits(flagged)
+        edits[0]["text"] = "human 2-046 1 CORRECTED"
+        edits[0]["note"] = "dot below the g, at 4x"
+        out = s.post("/issues/save", {"edits": edits})
+    assert len(out["saved"]) == 2
+    got = json.loads(decisions_path("2-046", flagged).read_text())["lines"]
+    assert got["1"]["text"] == "human 2-046 1 CORRECTED"
+    assert got["1"]["note"] == "dot below the g, at 4x"
+    # The unlisted line is still there and untouched: `restore` refuses on any
+    # missing line, so a patch that dropped them would break the page.
+    assert got["0"]["text"] == "human 2-046 0"
+    # And the ruling on the other page landed in the other page's file.
+    other = json.loads(decisions_path("2-047", flagged).read_text())["lines"]
+    assert other["1"]["note"] == "fine"
+    assert other["1"]["text"] == "human 2-047 1"

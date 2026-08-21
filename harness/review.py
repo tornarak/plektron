@@ -625,7 +625,7 @@ def restore(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
     dec = load_decisions(ref, root)
     if not dec:
         raise ValueError(f"no decisions for {ref}: adjudicate it first "
-                         f"(harness ocr review {ref} --serve)")
+                         f"(harness ocr review {ref})")
 
     src = alto_for_lines(ref, alto_dir, root)
     tree = etree.parse(str(src))
@@ -656,7 +656,7 @@ def restore(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
             f"{ref}: {len(bad)} unlicensed mark(s) in the adjudicated text; "
             "refusing to write. These are sequences the notation does not contain "
             "(keying spec 2.6), not readings to weigh, so re-key them in "
-            f"harness ocr review {ref} --serve:\n  " + "\n  ".join(bad))
+            f"harness ocr review {ref}:\n  " + "\n  ".join(bad))
 
     target = root / "gt" / "ocr" / f"chukchi-{ref}.xml"
     # Same real file, reached under two names, is `revision`; anything else is a
@@ -886,6 +886,36 @@ def font_stack(font: str | None = None) -> str:
     return ", ".join([quoted, *rest])
 
 
+def _palette() -> list[dict]:
+    """The insertion palette, shared by every page that offers one.
+
+    Factored when the issue list became a second such page: the two pages differ
+    in what they show *about* a line, and not at all in what a keyboard can put
+    into one, so a second copy would have been a second inventory to keep true.
+    """
+    binding = {g: k for k, g in KBD_GLYPHS.items()}
+    binding.update({m: k for k, m in KBD_MARKS.items()})
+    palette = []
+    for label, glyphs in PALETTE:
+        keys = []
+        for g in glyphs:
+            combining = len(g) == 1 and unicodedata.category(g) == "Mn"
+            keys.append({
+                "glyph": g, "key": binding.get(g, ""),
+                "combining": combining,
+                "shown": ("◌" + g) if combining else g,
+                "tip": codepoints(g) + (" — attaches to the character before "
+                                        "the caret" if combining else ""),
+            })
+        # `glyphs`, not `keys`: Jinja resolves `grp.keys` to the dict *method*
+        # before it looks for the key, so the palette group would silently
+        # iterate a bound method. Same trap as `row.items` in the entity card —
+        # named around rather than worked around, because the next person adding
+        # a group would hit it too.
+        palette.append({"label": label, "glyphs": keys})
+    return palette
+
+
 def page_context(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
                  root: Path = Path("."), crops: Path | None = None,
                  queue: list[dict] | None = None,
@@ -1014,26 +1044,7 @@ def page_context(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
             "hnote": (saved.get(idx) or {}).get("note", ""),
         })
 
-    binding = {g: k for k, g in KBD_GLYPHS.items()}
-    binding.update({m: k for k, m in KBD_MARKS.items()})
-    palette = []
-    for label, glyphs in PALETTE:
-        keys = []
-        for g in glyphs:
-            combining = len(g) == 1 and unicodedata.category(g) == "Mn"
-            keys.append({
-                "glyph": g, "key": binding.get(g, ""),
-                "combining": combining,
-                "shown": ("◌" + g) if combining else g,
-                "tip": codepoints(g) + (" — attaches to the character before "
-                                        "the caret" if combining else ""),
-            })
-        # `glyphs`, not `keys`: Jinja resolves `grp.keys` to the dict
-        # *method* before it looks for the key, so the palette group would
-        # silently iterate a bound method. Same trap as `row.items` in the
-        # entity card — named around rather than worked around, because the
-        # next person adding a group would hit it too.
-        palette.append({"label": label, "glyphs": keys})
+    palette = _palette()
 
     # Is there another page waiting after this one? Only pages *other* than this
     # one count: re-opening a page already marked done and pressing Done again
@@ -1069,3 +1080,219 @@ def summary(spans: list[dict], n_lines: int) -> dict:
         "lookalikes_in_proposal": sum(
             1 for s in spans if "lookalike_in_proposal" in s["classes"]),
     }
+
+
+# ---------------------------------------------------------------------------
+# Issue lists: a worklist of individual lines, across pages, on one document.
+#
+# **This is the one place the "one page at a time" rule is deliberately broken,
+# and the guards below are the price.** `page_context` says why the rule exists:
+# a field belonging to a page other than the one the reviewer thinks they are
+# keying is this pass's oldest and worst failure, and the incident behind it was
+# Firefox restoring textarea values *by position* after a crash. Naming the ref
+# in the payload — the `Save.ref` guard — does not catch that, because a
+# positional refill lands in fields whose server-rendered labels never moved.
+#
+# So a distributed page carries two guards a single-ref page does not need:
+#
+#   * **all-or-nothing, and the unit is the ruling.** Every listed line must
+#     arrive carrying a note. The text is pre-filled and most lines will not need
+#     it changed — "that's fine" is the commonest outcome of looking — so a page
+#     that demanded a text edit per field would be asking for the wrong thing.
+#     What a flagged line owes is a verdict, and a flag with no verdict is the
+#     open question this mode exists to close.
+#   * **prior-text.** Each field carries the text the server sent for it, and a
+#     save whose prior no longer matches the store is refused. A positional
+#     refill changes the priors, which is exactly the signal the incident had no
+#     way to produce.
+#
+# And it patches only: a ref with no `decision.json` is refused, because merging
+# a few edited lines over a proposal would ratify every *unlisted* line as
+# accepted-unread. That is `docs/decisions.md`'s "an empty list meant delete
+# everything" in a new costume — the payload says a little and the write would
+# mean a lot.
+# ---------------------------------------------------------------------------
+
+ISSUE = re.compile(r"^(?P<ref>\d+-\d+)\s*:\s*(?P<index>\d+)\s+(?P<issue>\S.*)$")
+
+
+def parse_issues(text: str) -> list[dict]:
+    """`PP-NNN:LINE  what is wrong with it`, one per line.
+
+    Blank lines and `#` comments are skipped, so a list can be pasted with the
+    heading a person wrote it under. The issue text is **required**: a worklist
+    entry that does not say what to look at is a line number, and the reviewer
+    already had those.
+
+    Refused on a duplicate `ref:line`, because two entries for one field would
+    render two boxes writing to the same place, and the second would silently win.
+    """
+    items: list[dict] = []
+    seen: set[tuple[str, int]] = set()
+    for n, raw in enumerate(text.splitlines(), start=1):
+        s = raw.strip()
+        if not s or s.startswith("#"):
+            continue
+        m = ISSUE.match(s)
+        if not m:
+            raise ValueError(
+                f"line {n}: {raw.strip()!r} is not `PP-NNN:LINE issue text` — "
+                f"a ref, a colon, the line index, then what to look at")
+        ref, idx = norm_ref(m["ref"]), int(m["index"])
+        if (ref, idx) in seen:
+            raise ValueError(f"line {n}: {ref}:{idx} is listed twice — "
+                             f"one entry per line, or the second overwrites the first")
+        seen.add((ref, idx))
+        items.append({"ref": ref, "index": idx, "issue": m["issue"].strip()})
+    if not items:
+        raise ValueError("no issues in the list — expected `PP-NNN:LINE issue text`")
+    return items
+
+
+def _text_now(idx: int, prop: dict, saved: dict) -> str:
+    """What the store holds for a line: the adjudicated text where there is one,
+    the proposal otherwise. The same precedence the single-ref page uses, and the
+    value the prior-text guard is taken against."""
+    if idx in saved:
+        return _nfd(saved[idx]["text"])
+    return _nfd(prop[idx]["text"]) if idx in prop else ""
+
+
+def issues_context(items: list[dict], alto_dir: str = DEFAULT_ALTO_DIR,
+                   root: Path = Path("."), crop_base: str = "crops",
+                   font: str | None = None, font_size: int | None = None,
+                   box_lines: int | None = None) -> dict:
+    """One document: every listed line, each with a context line either side.
+
+    The context lines are read-only and are there for the questions a crop cannot
+    answer alone — whether a wrap took a hyphen, whether a quote opened on the
+    line above. They are **neighbours in reading order**, not in index order:
+    `write_line_crops` gives the segmenter's order, and on most restored pages
+    that puts a running head mid-sequence.
+
+    A listed line the store has no record of is rendered as a refusal rather than
+    an empty box, and it is reported before the socket is bound — see the CLI.
+    """
+    from PIL import Image
+
+    from .lines import write_line_crops
+
+    blocks, missing = [], []
+    cache: dict[str, tuple] = {}
+    for it in items:
+        ref = it["ref"]
+        if ref not in cache:
+            recs = {r["index"]: r
+                    for r in write_line_crops(ref, crops_dir(ref, root),
+                                              alto_dir, root)}
+            order = sorted(recs, key=lambda i: recs[i]["y_rank"])
+            cache[ref] = (recs, order, load_proposal(ref, root),
+                          load_decisions(ref, root))
+        recs, order, prop, saved = cache[ref]
+        idx = it["index"]
+        if idx not in recs:
+            missing.append(f"{ref}:{idx}")
+            continue
+        at = order.index(idx)
+        rec = recs[idx]
+        path = Path(rec["crop"])
+        w, ht = Image.open(path).size
+        scale = min(1.0, 1040 / w)
+        text = _text_now(idx, prop, saved)
+        blocks.append({
+            "ref": ref, "idx": idx, "issue": it["issue"],
+            "field": f"{ref}:{idx}",
+            "before": ({"idx": order[at - 1],
+                        "text": _text_now(order[at - 1], prop, saved)}
+                       if at > 0 else None),
+            "after": ({"idx": order[at + 1],
+                       "text": _text_now(order[at + 1], prop, saved)}
+                      if at + 1 < len(order) else None),
+            "text": text,
+            # The value the save is checked against. Rendered into the field so a
+            # refill that moves text between boxes moves the *text* and not this.
+            "prior": text,
+            "crop": f"{crop_base}/{ref}/{path.name}",
+            "w": round(w * scale), "h": round(ht * scale),
+            "note": (prop.get(idx) or {}).get("note", ""),
+            "hnote": (saved.get(idx) or {}).get("note", ""),
+            "marks": codepoints("".join(
+                dict.fromkeys(c for c in text if ord(c) > 127))),
+        })
+    return {"blocks": blocks, "missing": missing, "palette": _palette(),
+            "kbd_glyphs": KBD_GLYPHS, "kbd_marks": KBD_MARKS,
+            "refs": list(dict.fromkeys(b["ref"] for b in blocks)),
+            "count": len(blocks),
+            "font": font or DEFAULT_FONT,
+            "font_size": font_size or DEFAULT_FONT_SIZE,
+            "box_lines": box_lines or DEFAULT_BOX_LINES}
+
+
+def patch_decisions(edits: list[dict], root: Path = Path("."),
+                    stamp: str | None = None) -> list[dict]:
+    """Overlay edited lines onto existing adjudications, one write per ref.
+
+    `edits` is `[{"ref", "index", "text", "prior", "note"}, …]` and must be
+    **complete** against the list the page was built from; the caller checks that,
+    because only the caller knows what was listed. Everything here is the store's
+    half:
+
+    * a ref with no `decision.json` is refused — this patches adjudications, it
+      does not make them;
+    * a line whose `prior` no longer matches the store is refused, naming both, so
+      a stale tab or a positionally-refilled form fails loudly instead of writing;
+    * the write goes through `save_decisions` with the ref's **whole** line set, so
+      `restore`'s "refuses on any missing line" stays true and `edited` is still
+      computed against the proposal rather than against what the page believed.
+
+    Nothing is written until every ref has passed, so a bad entry on the second
+    page cannot leave the first already patched.
+    """
+    by_ref: dict[str, list[dict]] = {}
+    for e in edits:
+        by_ref.setdefault(norm_ref(e["ref"]), []).append(e)
+
+    planned = []
+    for ref, group in by_ref.items():
+        saved = load_decisions(ref, root)
+        if not saved:
+            raise ValueError(
+                f"{ref} has no decision.json — an issue list patches an "
+                f"adjudicated page and cannot make one. Saving here would write "
+                f"the proposal's text for every line nobody listed, which reads "
+                f"downstream as a human having accepted them. Adjudicate the page "
+                f"first: `harness ocr review {ref}`.")
+        prop = load_proposal(ref, root)
+        lines = {str(i): {"text": _nfd(v["text"]),
+                          **({"note": v["note"]} if v.get("note") else {})}
+                 for i, v in saved.items()}
+        for e in group:
+            idx = int(e["index"])
+            if idx not in saved:
+                raise ValueError(
+                    f"{ref}:{idx} is not in that page's decision — "
+                    f"it holds {len(saved)} line(s)")
+            have, prior = _nfd(saved[idx]["text"]), _nfd(e.get("prior", ""))
+            if have != prior:
+                raise ValueError(
+                    f"{ref}:{idx} changed under this page since it was built. "
+                    f"The store holds {have!r}; the form was filled against "
+                    f"{prior!r}. Nothing was written — reload the issue list and "
+                    f"redo this line, rather than overwriting a save you have "
+                    f"not seen.")
+            note = _nfd(e.get("note", "")).strip()
+            if not note:
+                raise ValueError(
+                    f"{ref}:{idx} arrived with no note. A flagged line owes a "
+                    f"ruling — including 'looked, it is fine', which is a finding "
+                    f"and not a non-answer. Nothing was written.")
+            # The adjudicator's note **replaces** rather than appends: this page
+            # exists to answer a specific flag, and a note that accreted every
+            # pass's remark would stop being the answer to the current one.
+            lines[str(idx)] = {"text": _nfd(e.get("text", "")), "note": note}
+        planned.append((ref, lines, prop))
+
+    out = []
+    for ref, lines, _prop in planned:
+        out.append(save_decisions(ref, lines, root, stamp=stamp))
+    return out

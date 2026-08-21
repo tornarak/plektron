@@ -1,4 +1,4 @@
-"""Routes for the adjudication queue, `harness ocr review --serve`.
+"""Routes for the adjudication queue, `harness ocr review`.
 
 The judgement stays in `harness/review.py`: what a span is, what a decision
 means, and the guard that a save names the page it belongs to. What moved here
@@ -94,7 +94,7 @@ def index(request: Request):
     state = _state(request)
     if not state:
         raise HTTPException(404, "no review session — start one with "
-                                 "`harness ocr review PP-NNN --serve`")
+                                 "`harness ocr review PP-NNN`")
     cur = next((q["ref"] for q in state if not q["done"]), state[0]["ref"])
     return _render(request, cur)
 
@@ -102,6 +102,30 @@ def index(request: Request):
 @router.get("/p/{ref}")
 def page(request: Request, ref: str):
     return _render(request, _in_queue(request, ref))
+
+
+def _issues(request: Request) -> list[dict]:
+    return list(_session(request).get("issues") or [])
+
+
+@router.get("/issues")
+def issues(request: Request):
+    """The distributed page: every listed line, across pages, in one document.
+
+    Guarded rather than forbidden — `review.issues_context`'s header says which
+    guards and what they are for.
+    """
+    items = _issues(request)
+    if not items:
+        raise HTTPException(404, "no issue list in this session — start one with "
+                                 "`harness ocr review --issues -`")
+    s = _session(request)
+    ctx = rv.issues_context(items, s.get("alto_dir") or "", _root(request),
+                            crop_base=f"{BASE}/crop",
+                            font=s.get("font"), font_size=s.get("font_size"),
+                            box_lines=s.get("box_lines"))
+    return templates.TemplateResponse(request, "review/issues.html",
+                                      {**ctx, "base": BASE, "static": "/static"})
 
 
 @router.get("/scan/{ref}")
@@ -165,6 +189,66 @@ def save(request: Request, body: Save):
     print(f"saved {res['path']}: {res['edited']}/{res['lines']} edited "
           f"(lines {edited}){changed}")
     return res
+
+
+class Edit(BaseModel):
+    ref: str
+    index: int
+    text: str
+    #: The text the server sent for this field. See `review.patch_decisions`.
+    prior: str = ""
+    #: The ruling. Required on every listed line — that is what the flag asked for.
+    note: str = ""
+
+
+class PatchBody(BaseModel):
+    edits: list[Edit] = Field(default_factory=list)
+
+
+@router.post("/issues/save")
+@fetched
+def issues_save(request: Request, body: PatchBody):
+    """All-or-nothing, then the store's own guards.
+
+    Completeness is checked *here* because only the session knows what was
+    listed; a payload short of the list is a half-filled form, and on a page whose
+    fields belong to different files that is the one thing worth refusing outright.
+    """
+    listed = {(i["ref"], i["index"]) for i in _issues(request)}
+    if not listed:
+        raise HTTPException(404, "no issue list in this session")
+    got = {(norm_ref(e.ref), e.index) for e in body.edits}
+    if got != listed:
+        short = sorted(f"{r}:{i}" for r, i in listed - got)
+        extra = sorted(f"{r}:{i}" for r, i in got - listed)
+        raise HTTPException(400, "an issue list saves whole or not at all — "
+                                 + (f"missing {', '.join(short)}. " if short else "")
+                                 + (f"not listed: {', '.join(extra)}. " if extra else "")
+                                 + "Nothing was written.")
+    unruled = sorted(f"{norm_ref(e.ref)}:{e.index}"
+                     for e in body.edits if not e.note.strip())
+    if unruled:
+        raise HTTPException(400, f"no ruling on {', '.join(unruled)} — every "
+                                 f"flagged line needs one, including 'fine'. "
+                                 f"Nothing was written.")
+    empty = sorted(f"{norm_ref(e.ref)}:{e.index}"
+                   for e in body.edits if not e.text.strip())
+    if empty:
+        raise HTTPException(400, f"the reading is empty on {', '.join(empty)} — "
+                                 f"a line's text is its content, and blanking it "
+                                 f"is not something this page is for. Nothing was "
+                                 f"written.")
+    try:
+        res = rv.patch_decisions([e.model_dump() for e in body.edits],
+                                 _root(request),
+                                 stamp=time.strftime("%Y-%m-%dT%H:%M:%S%z"))
+    except ValueError as e:
+        raise HTTPException(409, str(e)) from None
+    for r in res:
+        changed = ",".join(map(str, r["changed_lines"])) or "none"
+        print(f"patched {r['path']}: {r['edited']}/{r['lines']} edited "
+              f"(changed this save: {changed})")
+    return {"saved": res}
 
 
 @router.post("/done")

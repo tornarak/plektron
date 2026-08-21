@@ -55,7 +55,7 @@ blots, `mz/` predictions, the `zones/` view, `review.html`, the assemble scratch
 — because there the write *is* the action and the same command rebuilds it.
 `proposal.json` is a working file of a live pass, kept with a `.prev` and a
 journal, and its editors write directly. The two interactive editors (`zones
-edit`, `ocr review --serve`) save without `--commit` too: the save click in the
+edit`, `ocr review`) save without `--commit` too: the save click in the
 browser is the human act the flag exists to demand, and a flag typed before the
 page was ever seen would attest nothing.
 
@@ -400,7 +400,7 @@ them apart is the entire point of `tei diff`.
 **Note** `--json` swaps the rendered report for the structured verdict.
 
 **The four browser tools share one server.** `edition serve`, `zones edit`,
-`ocr edit` and `ocr review --serve` are one FastAPI app in one process listening
+`ocr edit` and `ocr review` are one FastAPI app in one process listening
 on four ports — 8731 review, 8732 zones, 8733 lines, 8734 edition — so `--port`
 names *this editor's door onto it* rather than a server of its own. **Each door
 admits one editor**: a request for another editor's prefix is refused with a 404
@@ -522,7 +522,7 @@ PATTERN          a Python regular expression, normalized to NFD before it compil
 ### ocr edit [REF ...]
 **Does** the line-correction editor in the browser — the human end of `gaps`, and `zones edit`'s sibling one stage down. Adopt a band as a line, rule it not type, or rule it already keyed by a line whose box strangled it; the verdicts in one sitting, because deciding between them is one act.
 **Reads** the `--store` store, or the view, `scans/`, `gt/zones/` and `gt/lines/` with both `_ink_exempt.json` layers, `gt/fig/`, `data/zones_config.json`.
-**Writes** `gt/lines/` and `gt/lines/_ink_exempt.json` on save. **No `--commit`** — the save click is the human act, the same contract `zones edit` and `ocr review --serve` have.
+**Writes** `gt/lines/` and `gt/lines/_ink_exempt.json` on save. **No `--commit`** — the save click is the human act, the same contract `zones edit` and `ocr review` have.
 **Exit** 2 if nothing supplies a start page.
 **Note** **it draws and never keys.** A recovered line's text is adjudicated in `ocr review` like any other line's and written by `restore`; duplicating that machinery here would be a second place a reading could be originated, and this store exists on the argument that its writer cannot originate one.
 **Note** **a box in no zone is refused, and the refusal names `zones edit`.** Ink no region covers is a defect in the *zoning*, not a line this editor can adopt — recording a line inside no region would leave the region missing. It is also what keeps the two ink checks disjoint. A page with no zoning at all is refused outright: line correction comes after zoning, which is a stage-order invariant rather than a statement about this corpus.
@@ -700,12 +700,26 @@ Each sheet is named for the lines it holds and the settings that drew them — `
 --root --json --toon --pager
 ```
 
+### ocr diff [REF ...]
+**Does** a span-level diff of each proposal against a second witness, grouped by substitution class.
+**Reads** the `--store` store, or the view, `review/PP-NNN/proposal.json`.
+**Writes** nothing.
+**Exit** 1 if any ref's source resolves to the ground truth that proposal produced — a comparison whose two witnesses are one file refuses rather than reporting a clean 40/40. Checked over every ref before the first table prints, so the refusal cannot arrive after pages of reassuring output.
+**Note** **split out of `ocr review` 2026-08-21**, which had been returning a TOON table, a live editor and a written HTML file from one action with flags to tell them apart — a shape nothing else in this CLI has, and against the rule that the action names what it does to the thing. Measuring a proposal against a witness and adjudicating one are not the same verb. Two key sets, two tables, **pooled across refs** rather than printed as N `# ref`-separated pairs: a pooled table parses as one document and the separated form parsed as nothing. `--store mz` is the independent witness once a page has ground truth, which is why that is the default.
+```
+--spans   every span individually, not grouped by class
+--all     every page with a proposal and no decision
+--store {gt,mz}  which store to read [mz — the diff needs an independent
+                 witness, and the view is not one once the page has ground truth]
+--root --json --toon --pager
+```
+
 ### ocr review [REF ...]
-**Does** adjudicate reading proposals in the browser (`--serve`); bare, a span-level diff of each against a second witness.
+**Does** adjudicate reading proposals in the browser.
 **Reads** the `--store` store, or the view, `review/PP-NNN/proposal.json`, `scans/`.
-**Writes** `review/PP-NNN/decision.json` under `--serve`; `review/PP-NNN/review.html` under `--html`. Bare mode writes nothing.
-**Exit** 1 if any ref's bare diff source resolves to the ground truth that proposal produced — a comparison whose two witnesses are one file refuses rather than reporting a clean 40/40. Checked over every ref before the first table prints, so the refusal cannot arrive after pages of reassuring output.
-**Note** the **first action to take more than one ref**, for a reason the rest of the CLI has since caught up with: its cost is a human's attention rather than a process's. `--all` is the pending-adjudication queue — every page holding a proposal and no decision. The bare span diff pools across refs into two tables rather than printing a `# REF`-separated pair per ref, which is what it did while it stood alone: a pooled table parses as one document, and the separated form parsed as nothing. `--serve` runs one server over the whole batch, one page on screen at a time, reached by navigation — never several pages merged into one document, since a field belonging to a page other than the one you think you are keying is this pass's oldest failure. **Adjudicated-ness is read off the disk** (`decision.json` exists), never held in the process, so a reload, a second tab or a restart cannot contradict it; a re-run therefore resumes the batch rather than restarting it, and a page that already carried decisions shows done and stays reachable from the strip. `Done` advances to the next unadjudicated page and stops the server only on the last one. A single ref renders and behaves exactly as before — no strip, no navigation.
+**Writes** `review/PP-NNN/decision.json`; `review/PP-NNN/review.html` under `--html`.
+**Exit** 0.
+**Note** the **first action to take more than one ref**, for a reason the rest of the CLI has since caught up with: its cost is a human's attention rather than a process's. `--all` is the pending-adjudication queue — every page holding a proposal and no decision. One server runs over the whole batch, one page on screen at a time, reached by navigation — never several pages merged into one document, since a field belonging to a page other than the one you think you are keying is this pass's oldest failure. (`--issues` is the single, guarded exception; see below.) **Adjudicated-ness is read off the disk** (`decision.json` exists), never held in the process, so a reload, a second tab or a restart cannot contradict it; a re-run therefore resumes the batch rather than restarting it, and a page that already carried decisions shows done and stays reachable from the strip. `Done` advances to the next unadjudicated page and stops the server only on the last one. A single ref renders and behaves exactly as before — no strip, no navigation.
 
 Each line carries a **`+ note` button** and, once asked for, a note field: the adjudicator's own record, saved into `decision.json` as `note` beside `text`. **Opt-in in both places** — a field on all 45 lines would be 45 empty boxes competing with the 45 that matter, and an empty `note` written on every line would make "which lines were remarked on" unfindable, the key existing being the only way anyone asks. Distinct from `proposal.json`'s `note`, which is the reader's account of its own work; these live in different files so a human ruling is never mistaken for a model's. A note is not an edit, so a page saved with only notes reports `0/N edited` and `restore` is a no-op on it.
 
@@ -713,13 +727,16 @@ Each line carries a **`+ note` button** and, once asked for, a note field: the a
 
 **The three flags decide where a page starts; the page itself carries live steppers.** Size and box height move without a reload and persist per browser, because the right size for a face is something you find by looking at it beside a crop rather than by predicting it at a command line — and Brill runs small for its em, which is why a face change alone was not enough. `reset` returns to the values the server was started with, not to a constant, so it never quietly undoes a flag. `--box-lines` is a floor: the box still autogrows past it.
 
+**`--issues` is the one mode that merges pages into one document, and it is a patch tool.** It takes a worklist — `PP-NNN:LINE issue text` per line, from a path or from stdin for `-`, `#` comments skipped — and serves every listed line on one page, each with its issue, its crop, and a read-only context line either side in reading order. It is the fourth way of naming a work-list and is refused alongside refs, `--all` or `--itinerary`. Three things hold it to the invariant it crosses. **It saves whole or not at all**: a payload short of the list is refused, so a half-filled form cannot leave some lines patched and the rest silently as they were. **Every listed line needs a ruling** — a note, not a text edit; the reading arrives pre-filled and most flagged lines will not need it changed, so what a flag actually owes is a verdict, and *that's fine* is a finding rather than a non-answer (two quick buttons fill the commonest two, and the text stays editable afterwards). **Each field carries the prior text the server sent it**, and a save whose prior no longer matches the store is refused naming both — which is what catches the incident the one-page-at-a-time rule exists for, a browser restoring textareas *by position* after a crash, where naming the ref in the payload does not, since a positional refill lands in fields whose server-rendered labels never moved. It **patches only**: a ref with no `decision.json` is refused at the command line rather than at the save, because merging a few edited lines over a proposal would write every *unlisted* line as though a human had read it. The write still goes through the ordinary decision path with the ref's whole line set, so `restore`'s "refuses on any missing line" stays true and `edited` is still computed against the proposal.
+
 The header links to the **full page scan**, new tab — the crops say what a line sets and cannot say what is around it, which is what settling a speck or a dropped line needs. Served from `/scan/<ref>`, scoped to the session's refs like `/p/`; `--html` writes a relative path to `scans/` instead, since a browser will not follow `file://` from an http origin.
 ```
---serve   serve on 127.0.0.1, accept saves  }
---html    write review.html per ref         } mutually exclusive
---spans   bare diff: every span, ungrouped  }
+--html    write review.html per ref instead of serving  } mutually exclusive
+--issues PATH  serve one document of flagged lines      }
+               (`PP-NNN:LINE issue`, `-` for stdin) instead of a page at a time;
+               patches only, each line needs a ruling, saves whole or not at all
 --all     every page with a proposal and no decision
---port N  this editor's door onto the shared server, for --serve [8731]
+--port N  this editor's door onto the shared server [8731]
 --font NAME     entry-box family, prepended to the fallbacks [Brill]
 --font-size PX  entry text size [24]
 --box-lines N   lines a box holds before it grows — a floor, not a cap [1]

@@ -120,7 +120,7 @@ def register(cli):
                    "the only page reachable")
     opt(p, "--itinerary", metavar="LST", default=None, help=ITIN_HELP)
     opt(p, "--port", type=int, default=8732,
-                   help="port (default 8732; `ocr review --serve` holds 8731, so "
+                   help="port (default 8732; `ocr review` holds 8731, so "
                         "both can run at once)")
 
     p = action(g, "predict", run_predict, section="The segmenter", help="run the trained segmenter and write raw ALTO into "

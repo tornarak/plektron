@@ -63,7 +63,7 @@ is why none of it is in the agent body.
 2. **Start the review server yourself** and hand over a URL — don't ask for a
    command to be run. It serves on loopback and blocks, so run it in the background:
 
-       uv run harness ocr review 2-046 2-047 --serve      (run_in_background: true)
+       uv run harness ocr review 2-046 2-047      (run_in_background: true)
 
    Then give them `http://127.0.0.1:8731/` and report what the readers flagged.
    **Several pages go in one server**, which is the normal shape after a fan-out.

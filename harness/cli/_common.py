@@ -483,12 +483,13 @@ def page_refs(a) -> list[str]:
     refs = [refs] if isinstance(refs, str) else list(refs or [])
     given = [name for name, v in (("refs", refs),
                                   ("--all", getattr(a, "all", False)),
-                                  ("--itinerary", getattr(a, "itinerary", None)))
+                                  ("--itinerary", getattr(a, "itinerary", None)),
+                                  ("--issues", getattr(a, "issues", None)))
              if v]
     if len(given) > 1:
         raise ValueError(
-            f"{' and '.join(given)}: refs, --all and --itinerary are three ways "
-            "of naming a work-list, and exactly one may be used")
+            f"{' and '.join(given)}: refs, --all, --itinerary and --issues are "
+            "four ways of naming a work-list, and exactly one may be used")
     if not given and hasattr(a, "all"):
         raise ValueError("nothing named: give one or more PP-NNN refs, or --all "
                          "for the whole corpus")

@@ -479,7 +479,7 @@ def pager(a):
     multi-ref run shows its first report immediately rather than after the last.
 
     **Two actions refuse it, and declare that rather than being special-cased
-    here.** `zones edit` and `ocr review --serve` block on `serve_forever` after
+    here.** `zones edit` and `ocr review` block on `serve_forever` after
     printing a URL the human is meant to open; paged, that URL would sit unread
     inside a pager the human is not looking at, on a command that never returns to
     release it. They refuse `--pager` outright rather than honouring it, since the

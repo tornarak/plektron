@@ -33,7 +33,7 @@ the project's rules, `CLAUDE.md` governs; for the character inventory,
 | `mz/page-img/` | what a leaf is *delivered* as — an anti-aliased linework PNG over a colour JPEG at a third scale, Mixed Raster Content. Derived and gitignored, `mz/tei/`'s disposition; `edition_ui.leaf_layers` returns both or neither | `tools/build_leaf_layers.py` |
 | `data/geo/` | the compiled shape store the atlas draws: watersheds, language areas, coastline, `+ index.json SOURCES.md`. **Derived but tracked** — its sources are outside the repository, so a clone cannot rebuild it | `tools/build_geo.py --commit` |
 | `data/pdf_images.json` | the source PDFs' own embedded-image geometry: each page's master, the photographs on it, and the shift from the legacy render space. **Derived but tracked**, `data/geo/`'s split and for its reason. The one witness to a figure's place that no person and no model produced | `tools/extract_scans.py --commit` |
-| `review/<ref>/` | `proposal.json` + `decision.json` authored; crops/sheets/zoom/html derived | `ocr review --serve`, `ocr crops`, `ocr zoom` |
+| `review/<ref>/` | `proposal.json` + `decision.json` authored; crops/sheets/zoom/html derived | `ocr review`, `ocr crops`, `ocr zoom` |
 | `scans/w-figs-blotted/` | training rasters: figures painted **white**. Derived, ignored; the 580 figure-less pages are symlinks | `zones blot`, `views build w-figs-blotted` |
 | `scans/w-figs/` | the raster of every page carrying a `gt/fig/` ALTO — a selection, not a view. Derived, ignored | `views build w-figs` |
 | `scans/w-ocr/` | raster beside ALTO for every page a human has been through. Membership is `gt/ocr/`; the ALTO link points at the `ocr/` **view**, so promoting a page needs no rebuild. Derived, ignored | `views build w-ocr` |
@@ -105,9 +105,11 @@ convention's own anti-pattern ("argument validation is the parser's, not an
 if-chain's") with better manners. `exclusive(...)` and `require_exactly_one(...)`
 put it back at the declaration. Three are declared: `--json`/`--toon` on **every**
 action, `tei seam --continues`/`--fresh` (argparse's one *required* exclusive
-group), and `ocr review --serve`/`--html`/`--spans`. That last one is the reason
-to be glad of the gate — the plain-click conversion had silently dropped it, and
-`--html --spans` together went from exit 2 to running.
+group), and `ocr review --issues`/`--html`. That last one is the reason
+to be glad of the gate — the plain-click conversion had silently dropped the
+group it replaced, and `--html --spans` together went from exit 2 to running.
+The group is narrower now than it was: `--serve` and `--spans` both left with
+`ocr diff`, the action `review` used to double as.
 
 Two mechanical notes. Click's own paired-flag form (`--continues` with `--fresh` as its off switch) was tried
 first and rejected: it makes giving *both* legal, last one wins, on a verb that
