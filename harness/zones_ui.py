@@ -608,11 +608,6 @@ def ink_state(ref: str, root: Path, cfg: dict, recheck: bool = False) -> dict:
     return zn.record_ink(ref, zn.validate_page(ref, root, cfg, ink=True), root)
 
 
-def _esc(s: str) -> str:
-    return (str(s).replace("&", "&amp;").replace("<", "&lt;")
-            .replace(">", "&gt;").replace('"', "&quot;"))
-
-
 def _ink_cell(ink: dict) -> str:
     """The verdict in one cell. `?` is not a failure — it is a page whose zones
     changed since anything last read its raster, which is exactly what the check
@@ -706,10 +701,6 @@ def list_context(root: Path, cfg: dict, itinerary: list[str] | None = None,
                 if zn.has_zones(ref, root, zn.MZDIR) else None)
         rows.append((ref, state, r["split"] or "", r["zones"], n_mz,
                      detail, labels, ink))
-
-    n_ink = sum(1 for r in rows if r[7]["state"] == "ink")
-    n_unknown = sum(1 for r in rows if r[7]["state"] == "unknown")
-    n_mz_rows = sum(1 for r in rows if r[4] is not None)
 
     n_ink = sum(1 for r in rows if r[7]["state"] == "ink")
     n_unknown = sum(1 for r in rows if r[7]["state"] == "unknown")

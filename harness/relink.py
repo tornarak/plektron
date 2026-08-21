@@ -264,7 +264,11 @@ def refresh_drafts(root, store: dict, ids, write: bool = True) -> list[str]:
     from .generate import Unready, generate
     from .tei_html import collated, readable
 
-    drafts = [r for r in readable(root) if r not in set(collated(root))]
+    # `set(collated(root))` was inside the comprehension, so `tei/` was globbed
+    # once per element of `readable(root)` — a browser click reaches this
+    # through `_ratify`.
+    done = set(collated(root))
+    drafts = [r for r in readable(root) if r not in done]
     got = occurrences(ids, drafts, store, root)
     stale = sorted({r["ref"] for i in ids for r in got[i]["unlinked"]})
     if write:

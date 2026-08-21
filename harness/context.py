@@ -697,15 +697,22 @@ def _with_keys(rows: list[dict], root: Path) -> list[dict]:
     the whole ground-truth corpus and is not cached. A tree with no lexicon
     config is a tree where no key exists, so every cell is empty and nothing
     raises: `tier1_terms` still answers its own question.
+
+    **That last sentence is the whole licence, and the guard used to be wider
+    than it.** `except Exception` also swallowed a corpus that would not read —
+    so "there is no config here" and "the index failed to build" reached a
+    collating model as the same empty column, and the model has no way to ask.
+    Narrowed to the config error the sentence is about; anything else is a fault
+    about the corpus and travels.
     """
     if not rows:
         return rows
     from .lookup import index, resolve
-    from .marks import handle_key
+    from .marks import MarksConfigError, handle_key
 
     try:
         idx = index(root)
-    except Exception:                                         # noqa: BLE001
+    except MarksConfigError:
         return [{**r, "key": ""} for r in rows]
     out = []
     for r in rows:

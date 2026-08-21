@@ -57,10 +57,15 @@ def _attestations(root: Path) -> dict[str, int]:
     is not thereby absent from the book — only from what has been keyed.
     """
     from . import lookup
+    from .marks import MarksConfigError
 
+    # `{}` is a real answer — a clone with nothing keyed yet — and it used to be
+    # the answer to a corpus that would not read as well, which surfaces in the
+    # chart as confident zeros against every sort. Narrowed to the config
+    # absence, which is the case worth absorbing; a broken corpus travels.
     try:
         idx = lookup.index(Path(root))
-    except Exception:
+    except MarksConfigError:
         return {}
     forms = {d["form"] for v in idx.get("buckets", {}).values()
              for d in v.get("forms", {}).values()}

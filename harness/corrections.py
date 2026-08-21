@@ -49,10 +49,10 @@ from lxml import etree
 
 from .atomic import tmp_for, write_atomic
 from .context import norm_ref, parse_ref
+from .ns import ALTO_NS
 
 INK_EXEMPT_JSON = "_ink_exempt.json"
 
-ALTO_NS = "http://www.loc.gov/standards/alto/ns-v4#"
 
 # Provenance travelling with the data, as `zones.ID_PREFIX` does. A line whose id
 # starts with this was drawn by a human in `ocr edit` over ink the segmenter left

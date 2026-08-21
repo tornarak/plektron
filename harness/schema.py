@@ -52,7 +52,7 @@ from pathlib import Path
 
 from lxml import etree
 
-TEI_NS = "http://www.tei-c.org/ns/1.0"
+from .ns import TEI_NS
 
 # TEI P5 Version 4.12.0, revision 113e933e2, 2026-07-28, from
 # https://www.tei-c.org/Vault/P5/4.12.0/ — committed rather than fetched, so the

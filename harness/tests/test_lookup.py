@@ -38,6 +38,52 @@ from harness.proposal_check import check, fix, set_field, set_fields
 REPO = Path(__file__).resolve().parent.parent.parent
 
 
+@pytest.fixture(scope="session", autouse=True)
+def _memoised_corpus_index():
+    """Build the real corpus index once for this module instead of 77 times.
+
+    `lookup.index` walks every keyed page — `detectors._restored_refs` parses all
+    664 to find them, then `native_corpus_context` parses them again — and it is
+    not cached, which `context.py:696` states outright. Every `resolve`, `search`
+    and `expand` call below rebuilt it: measured at **147.9 s** for this file
+    alone, 2.4 s on the cheapest test and 9.7 s on the dearest.
+
+    **Only the real corpus is memoised.** A tmp root is cheap and, more to the
+    point, a test that builds one and queries it twice must see its own store —
+    so anything that is not `REPO` goes straight through. The real corpus does
+    not change during a run, so one build is one answer.
+
+    This is the test half of the finding. The production half — the same walk,
+    per page, on every corpus-wide TEI pass — wants `idx=` threaded through the
+    per-page callers and is deliberately not done here: `README.md` holds that a
+    cache is a property of a server and the CLI reads a store once and exits.
+    """
+    import harness.lookup as L
+    real = L.index
+    memo: dict = {}
+
+    def index_(root=Path("."), *a, **k):
+        # Only the bare whole-corpus call is memoised. `TestLeaveOneOut` passes
+        # `exclude=`, and an index built for one exclusion is a different answer
+        # — returning the cached full one made two of those tests pass a set
+        # that still contained the ref they had just excluded.
+        if a or k or Path(root).resolve() != REPO:
+            return real(root, *a, **k)
+        if "v" not in memo:
+            memo["v"] = real(root, *a, **k)
+        return memo["v"]
+
+    L.index = index_
+    # This module imported `index` by name, so the bare `index(REPO)` calls in
+    # the tests below would otherwise reach past the patch to the original.
+    globals()["index"] = index_
+    try:
+        yield
+    finally:
+        L.index = real
+        globals()["index"] = real
+
+
 def nfd(s: str) -> str:
     """**Every literal in this file goes through here**, and the first run of these
     tests is why: an editor composed `č` to U+010D while the store holds `c`+U+030C,

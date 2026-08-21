@@ -81,6 +81,7 @@ from .context import (
 from .detectors import join_broken_words
 from .entities import alias_index, auto_forms, load
 from .lines import page_lines
+from .ns import TEI_NS
 from .state import MILESTONE_UNITS, heads_on, load_toc, printed_head, toc_starts
 from .zones import read_zones
 
@@ -1403,7 +1404,6 @@ GEN_MARKS = ("generated:", "zone-opens:", "unresolved zone",
 #: column.
 SURVIVING = ("generated:", "zone-opens:")
 
-TEI_NS = "http://www.tei-c.org/ns/1.0"
 
 
 def _body_text(path: Path) -> str:

@@ -46,9 +46,7 @@ from pathlib import Path
 from lxml import etree
 
 from .context import norm_ref
-
-TEI_NS = "http://www.tei-c.org/ns/1.0"
-XML_ID = "{http://www.w3.org/XML/1998/namespace}id"
+from .ns import TEI_NS, XML_ID
 
 # The kind set is exactly what something can point *at*. `name` earns its place the
 # same way the others did, by acquiring a referrer: a glossed proper noun —

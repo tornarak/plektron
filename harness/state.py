@@ -48,7 +48,7 @@ from pathlib import Path
 
 from lxml import etree
 
-TEI_NS = "http://www.tei-c.org/ns/1.0"
+from .ns import TEI_NS
 
 # Folios either side of the target included in the window. Wide enough that a
 # folio off by one or two still lands inside its true neighbourhood.

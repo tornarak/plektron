@@ -34,6 +34,7 @@ from lxml import etree
 
 from . import figrefs
 from .context import norm_ref
+from .ns import TEI_NS, XML_ID, XML_LANG
 from .seam import OPENS_MEANS
 from .validate import TIER1
 
@@ -204,15 +205,12 @@ def strip_tags(html: str) -> str:
     return " ".join(_TAGS.sub("", html).split())
 
 
-TEI_NS = "http://www.tei-c.org/ns/1.0"
 
 #: Where the reading view is mounted. The four browser tools share one server,
 #: so a bare `/entity/…` here would resolve against whichever of them owned the
 #: root — the links in the page body would leave the edition. Kept beside
 #: `edition_ui.BASE`, which has to agree with it.
 BASE = "/edition"
-XML_LANG = "{http://www.w3.org/XML/1998/namespace}lang"
-XML_ID = "{http://www.w3.org/XML/1998/namespace}id"
 
 #: What each rank means to a reader, and how visible it should be. The three that
 #: mean "a human settled this" are quiet; the two that do not are marked, because

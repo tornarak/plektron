@@ -72,7 +72,9 @@ if TYPE_CHECKING:
 from .atomic import tmp_for, write_atomic
 from .context import norm_ref, parse_ref
 from .figures import read_blocks
+from .ns import ALTO_NS
 from .parallel import pmap
+from .paths import scan_for  # re-exported; this module's callers name it here
 
 ZONEDIR = "gt/zones"
 # Aliased from `farms.py`, which is the one declaration of every derived path. The
@@ -103,7 +105,6 @@ VIEWDIR = farms.ZONES_VIEW
 # directory holding it, cost this project 18 pages of transcription.
 ID_PREFIX = "mz_"
 
-ALTO_NS = "http://www.loc.gov/standards/alto/ns-v4#"
 XSI_NS = "http://www.w3.org/2001/XMLSchema-instance"
 SCHEMA_LOCATION = (f"{ALTO_NS} "
                    "http://www.loc.gov/standards/alto/v4/alto-4-2.xsd")
@@ -195,8 +196,6 @@ def alto_for(ref: str, root: Path = Path("."), store: str = ZONEDIR) -> Path:
     return zone_dir(root, store) / f"chukchi-{norm_ref(ref)}.xml"
 
 
-def scan_for(ref: str, root: Path = Path(".")) -> Path:
-    return root / SCANS / f"chukchi-{norm_ref(ref)}.png"
 
 
 def raster_size(ref: str, root: Path = Path(".")) -> tuple[int, int]:
@@ -797,6 +796,14 @@ def set_splits(mapping: dict[str, str], root: Path = Path(".")) -> dict:
     `set_split` rewrites all three files per call, so a corpus-wide reassignment
     through it is quadratic and — worse — leaves the lists in a valid-looking
     intermediate state after every page. Pages not named keep whatever they had.
+
+    **No caller today, and kept deliberately.** A review pass flagged it as dead
+    surface, which by reference count it is; what that count cannot see is that
+    it is `record_ink_many`'s twin for these files, and the argument for that one
+    is in `README.md`. Deleting it does not remove the quadratic rewrite, it
+    removes the thing that already solved it — so the next corpus-wide
+    reassignment gets written as the loop this exists to avoid, and the batched
+    form has to be rediscovered along with the reason.
     """
     for split in mapping.values():
         if split not in SPLITS:

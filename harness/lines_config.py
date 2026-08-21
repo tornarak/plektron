@@ -137,10 +137,6 @@ def load_config(root: Path = Path(".")) -> dict:
     return cfg
 
 
-def layers_by_name(cfg: dict) -> dict[str, dict]:
-    return {lay["name"]: lay for lay in cfg["layers"]}
-
-
 def layer_css(cfg: dict) -> str:
     """The overlay's stylesheet, generated from the config.
 

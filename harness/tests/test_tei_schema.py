@@ -158,7 +158,12 @@ def test_the_compiled_schema_is_cached_per_root(tmp_path):
     it once. Asserted by identity rather than by timing."""
     from harness import schema
     root = _tiny_root(tmp_path)
-    schema._cache.clear()
+    # **Scoped to this root.** `_cache.clear()` evicted the compiled *real*
+    # `data/tei_all.rng` along with the fixture's, and that grammar costs 18.6 s
+    # to compile against 0.0001 s cached — so the next test touching it paid the
+    # compile again. Measured at 37 s of one run, in the test asserting the cache
+    # works, whose own docstring is the sentence above.
+    schema._cache.pop((root / schema.SCHEMA).resolve(), None)
     first = schema.load(root)
     assert schema.load(root) is first
 

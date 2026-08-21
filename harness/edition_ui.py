@@ -50,6 +50,10 @@ from .entities import (
     tree_parent,
 )
 
+# `scan_for` is re-exported: this module's callers name it here, and the
+# definition moved to `paths` because there were two byte-identical copies.
+from .paths import scan_for
+
 PORT = 8734
 REF_OK = re.compile(r"^\d+-\d+$")
 
@@ -61,8 +65,6 @@ REF_OK = re.compile(r"^\d+-\d+$")
 BASE = "/edition"
 
 
-def scan_for(ref: str, root: Path) -> Path:
-    return root / "scans" / f"chukchi-{norm_ref(ref)}.png"
 
 
 #: Where an editor's own version of a whole leaf lives, and the extensions it may

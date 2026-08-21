@@ -2419,9 +2419,13 @@ def reconcile(root: Path = Path(".")) -> dict:
         have = {r["zone_suffix"] for r in known.values() if r["ref"] == ref}
         missing += [f"{ref}|{z}" for z in sorted(ids - have)]
         orphan += [f"{ref}|{z}" for z in sorted(have - ids)]
+    # Hoisted: `set(fig_refs(root))` re-globbed `gt/fig/` once per reading. The
+    # correct form was already fifteen lines below as `keyed_refs`, which is now
+    # this one.
     seen_refs = {r["ref"] for r in known.values()}
+    keyed_refs = set(fig_refs(root))
     orphan += [k for k, r in sorted(known.items())
-               if r["ref"] not in set(fig_refs(root))]
+               if r["ref"] not in keyed_refs]
 
     # The third store, and the only one of the three no person and no model wrote:
     # the source PDFs' own image placements. `unaccounted` is the gate — a
@@ -2434,7 +2438,6 @@ def reconcile(root: Path = Path(".")) -> dict:
     manifest = pdf_images(root)
     unaccounted, unkeyed, loose = [], [], []
     rects_total = 0
-    keyed_refs = set(fig_refs(root))
     for ref, entry in sorted(manifest.items()):
         n = len(entry.get("images") or [])
         if not n:

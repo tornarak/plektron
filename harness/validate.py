@@ -26,10 +26,9 @@ from .detectors import unlicensed_marks
 from .entities import ENTITY_CLASSES, alias_index, auto_forms, load, split_id
 from .generate import NOTE_MARKERS
 from .langs import TIER1
+from .ns import TEI_NS, XML_ID, XML_LANG
 from .state import load_toc, toc_starts
 
-TEI_NS = "http://www.tei-c.org/ns/1.0"
-XML_LANG = "{http://www.w3.org/XML/1998/namespace}lang"
 XML_ID_ATTR = "{http://www.w3.org/XML/1998/namespace}id"
 # TIER1 — the closed set the firewall covers — is `langs.TIER1`, re-exported here
 # because this module is where every caller has always looked for it.
@@ -370,7 +369,6 @@ def check_corpus_header(root: Path, schema: bool = False) -> Report:
             f"{CORPUS_HEADER} root is <{etree.QName(root_el).localname}>, not "
             "<teiHeader> — it is a fragment spliced in by assembly, like a page file")
 
-    XML_ID = "{http://www.w3.org/XML/1998/namespace}id"
     declared = [s.get(XML_ID) for s in root_el.iter(q("respStmt"))]
     if any(d is None for d in declared):
         r.errors.append(

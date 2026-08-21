@@ -40,6 +40,20 @@ lived only in the directory holding it. Note that nothing here writes into `gt/`
 from pathlib import Path
 
 from .context import norm_ref, parse_ref
+from .farms import SCANS
+
+
+def scan_for(ref: str, root: Path = Path(".")) -> Path:
+    """The 300 dpi master for one page.
+
+    Here rather than in `zones.py` and again in `edition_ui.py`, which is where
+    it was — byte-identical bodies, except that `edition_ui`'s spelled the
+    directory as the literal `"scans"` while `zones`' used the constant, so the
+    two would have parted company the day the farm moved. `farms.SCANS` is the
+    one name for it and `farms` imports nothing from this package, so this
+    cannot become a cycle.
+    """
+    return root / SCANS / f"chukchi-{norm_ref(ref)}.png"
 
 # Everything under `review/<ref>/` that any verb may recreate from the ALTO and the
 # rasters. The gitignore rules mirror this; so does `clean` below. `harness/tests/test_layout.py`

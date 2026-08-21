@@ -50,10 +50,8 @@ from pathlib import Path
 from lxml import etree
 
 from .context import norm_ref, tier1_terms
+from .ns import XML_LANG
 from .validate import ADOPTED, TIER1
-
-TEI_NS = "http://www.tei-c.org/ns/1.0"
-XML_LANG = "{http://www.w3.org/XML/1998/namespace}lang"
 
 
 def expand_page(ref: str, root: Path = Path("."), commit: bool = False) -> dict:

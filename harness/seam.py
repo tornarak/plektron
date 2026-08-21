@@ -35,8 +35,7 @@ from lxml import etree
 
 from .atomic import write_atomic
 from .context import parse_ref, stem_for
-
-TEI_NS = "http://www.tei-c.org/ns/1.0"
+from .ns import TEI_NS
 
 
 def tei_path(ref: str, root: Path = Path(".")) -> Path:

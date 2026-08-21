@@ -386,12 +386,6 @@ def geo_refs(rec: dict) -> list[str]:
     return _f(rec)
 
 
-def spell_geo(rec: dict) -> list[str]:
-    """`geo:`'s members as authored. **`entities.spell_geo`**, re-exported."""
-    from .entities import spell_geo as _f
-    return _f(rec)
-
-
 def relatives(ent_id: str, store: dict) -> list[str]:
     """Every ancestor and descendant. **`entities.relatives`**, re-exported."""
     from .entities import relatives as _relatives
