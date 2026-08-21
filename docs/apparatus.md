@@ -486,11 +486,15 @@ figure link needs `figures.by_number`, a corpus-wide fold of `figure_boxes`;
 printed number resolves to one zone and gates nothing.
 
 **GraphicZone↔FigDesc pairing is not in the data.** Pair by geometry and record
-the result; never re-derive it per consumer. **17 of the 252 pages are not 1:1,
+the result; never re-derive it per consumer. **18 of the 252 pages are not 1:1,
 and every one of them is zone-heavy** — max on a page is 4 zones / 4 captions:
 
-    1-123 1-141 1-189 1-207 1-208 1-237 1-254 1-276 1-323 1-334
+    1-123 1-141 1-189 1-191 1-207 1-208 1-237 1-254 1-276 1-323 1-334
     2-085 2-100 2-122 2-198 2-205 3-006 3-007
+
+(`1-191` — 3 zones, 2 captions — was missing from this list while the sentence
+said seventeen. The list is the authoritative record by the rule stated above,
+so a consumer trusting it treated a zone-heavy page as balanced.)
 
 Zone-heavy is structural and permanent: one caption covers several images, either
 lettered (`1-276` fig. 138 *a, b, c*; `2-085` fig. 253 *a, b*) or numbered
@@ -638,7 +642,7 @@ reason — reachable without parsing TEI, and the annotation pass is its consume
 
 `harness find authority` is the reader. It searches `cited_as`, then `author`, then the
 titles, then the printed blocks, reports which of those caught each hit, and
-**returns all of them** — 51 sigla over 34 names means a single answer would be
+**returns all of them** — 52 sigla over 34 names means a single answer would be
 manufactured, and no hit at all is a legitimate outcome on an open list. It
 resolves nothing; a human reads the candidates.
 
@@ -703,7 +707,7 @@ work appeared. It exists so that `Vol. VI, Jochelson, The Koryak, p. 117.`
 resolves when those parts are collated, and it asserts nothing about the print.
 Note where the volume sits: **before the name**, so `cited_as.volume` is null and
 the short title is what discriminates this Jochelson from the other four —
-`authorities._fits` reads only what follows the name. Its `url` is also the
+`citations._fits` reads only what follows the name. Its `url` is also the
 store's first `#ed` located copy: the editor handed the AMNH Digital Library
 link over directly, which is exactly the human act every `#llm` one is waiting
 for. Its `doi` stays null, none having been looked up.
@@ -720,8 +724,8 @@ because a model proposed every match — the same rank the corpus uses for a mod
 reading of a scan, and for the same reason: a plausible-but-wrong DOI is fluent
 nonsense with no error signal. Ratifying one means a human opening the link.
 
-Coverage, from a sweep of Crossref and the Internet Archive over all 73: **13 DOIs
-and 31 scans, 37 records touched**, 36 with nothing located. Nine of the 13 DOIs are
+Coverage, from a sweep of Crossref and the Internet Archive over all 74: **13 DOIs
+and 32 scans, 38 records touched**, 36 with nothing located. Nine of the 13 DOIs are
 BHL title DOIs (`10.5962/bhl.title.*`); the rest are AnthroSource (`murdoch1888`,
 `bogoras1902`), USGS (`dall1877`) and Brill (`adler1901`).
 

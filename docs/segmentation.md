@@ -6,7 +6,7 @@ The train→score→install loop and its judgement live in
 raster costs, kraken traps, `--jobs`) load on demand from
 `.claude/rules/zones.md` when the relevant modules are open.
 
-**The first attempt is `gt/seg/` and it is not being extended.** 122 pages under the
+**The first attempt was `gt/seg/`, and the store has since been deleted.** 122 pages under the
 full SegmOnto vocabulary, free polygons drawn around ink — and the faults recorded
 throughout these docs are its faults: whole printed lines dropped, captions found
 where none exist, line polygons excluding their own text. The regions were only ever
@@ -68,8 +68,8 @@ Store is `gt/zones/`, ALTO in the eScriptorium dialect so it goes straight into
 `ketos segtrain` and back into the GUI if ever wanted — the import/export loop being
 the friction this replaces. It is **a separate store from `gt/seg/`, permanently**:
 the label sets and the geometry regimes differ and nothing in an ALTO says which
-scheme produced it, which is the same missing internal witness that cost 18 pages of
-transcription. Blocks carry an `mz_` id prefix for the same reason.
+scheme produced it, so a file's role would live only in the directory holding it.
+Blocks carry an `mz_` id prefix for the same reason.
 
 **Every domain-knowledge assumption is a warning, and configurable.** `title-first`,
 `rank-monotone` (running title → body → footnotes → signature line) and
@@ -121,10 +121,11 @@ the volume's folding map were the same page. Nothing infers a kind: a model may
 not propose one, and no rule derives one from figure boxes or from a neighbour.
 `docs/edition.md` has what the reader gets from it.
 
-**The training selection is `gt/seg/`'s 122 pages plus the first two chapters.** The
+**The training selection was `gt/seg/`'s 122 pages plus the first two chapters.** The
 old attempt's page set was chosen for heterogeneity and that choice is still good
-even though its labels are not, so `harness zones edit --itinerary gt/seg` walks
-it. **That itinerary is now walked** — see below; together with the two chapters it
+even though its labels are not, so it was walked with
+`harness zones edit --itinerary gt/seg` while that store existed — the command no
+longer resolves, the store having been deleted. Together with the two chapters it
 is the sample the first training run was meant to have. An itinerary is a
 **work-list, not a filter**: a page not on it still opens and
 still saves, it simply has no neighbours, and a scoped sweep reports the unkeyed

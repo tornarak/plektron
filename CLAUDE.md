@@ -37,8 +37,8 @@ higher claim and on a missing `@resp` equally, because an unmarked span is
 indistinguishable from a ratified one to anything that does not check.
 
 **A comparison whose witnesses may be one witness must say so.** The hazard
-recurs wherever a check's two inputs can turn out to be the same file, and has
-been found in four places (`docs/decisions.md`, "What the firewall is not").
+recurs wherever a check's two inputs can turn out to be the same file, and keeps
+being found in new places; `docs/decisions.md` records the instances.
 
 **LLM remit.** Models read, triage, propose, restructure. A glyph they read is a
 proposal until ratified; no index entry is minted unreviewed.
@@ -96,7 +96,9 @@ Layout, all at the repo root:
             the split that says a leaf is a plate/blank/cover/map/apparatus rather
             than a text page at all), lines/ (corrections), fig-img/ and page-img/
             (touch-ups, a crop and a whole leaf). Tracked — and page-img/ holds
-            work no script rebuilds.
+            work no script rebuilds. **The views are only views, and nothing
+            writes through a view**; the caller invariants are
+            `harness/README.md`'s.
     mz/     not-yet-human: zones/, ocr/ and fig/ as the models emitted them,
             tei/ as the rules built it, and page-img/ as a leaf is *served*: two
             layers built from the tracked master. Derived; ignored. No view over
@@ -112,7 +114,7 @@ Layout, all at the repo root:
             what every `@ref` holds. Tracked; `entity check` gates it.
     lexicon/  one file per Tier-1 form an editor has written a note about; the
             identity is the form, and the rest of its card is derived. Tracked;
-            `lexicon check` gates it.
+            `lexicon check` gates it. Declared and still empty — no notes yet.
     data/   readings.md  loi.json  toc.json  authorities.json  lexicon_extra.txt
             figure_numbers.json  zones_config.json  lines_config.json
             tei_all.rng (the schema).
@@ -124,8 +126,8 @@ Layout, all at the repo root:
     review/ one directory per page: proposal.json (a reading, not truth) and
             decision.json (adjudicated) are tracked; the images are derived and
             ignored. See harness/paths.py.
-    models/ the recognizers and segmenters, this project's zones-seg and
-            fig-seg included.
+    models/ the recognizers and segmenters, this project's zones-seg included.
+            fig-seg is declared but not yet trained.
     pdfs/   symlinks to the three AMNH source PDFs, outside the repo.
     train/  training working dirs, pure scratch. Ignored; artifacts go to models/.
     harness/  tools/  docs/  concordance.md  keying_spec.md — the tests live in
@@ -135,15 +137,6 @@ Counts deliberately absent — they go stale in a file nothing regenerates.
 **`harness corpus state` answers**, across every store at once as no store's own
 verb can; `--stage`/`--refs`/`--limit` make it a worklist, and a page is ready to
 collate when it puts one at `ocr-gt`.
-
-## The ground-truth loss
-
-An archive extraction once replaced 17 of 20 hand-keyed pages with export
-shells, because a file's role lived only in its directory name. The whole
-lesson, and the rule the store layout still obeys: **`gt/` is what a human has
-been through, the views are only views, and nothing writes through a view.**
-The full story is `docs/decisions.md`; the line invariants it produced are
-`harness/README.md`'s caller invariants.
 
 ## Page segmentation, second attempt
 
@@ -160,8 +153,8 @@ modules are open.
 root — all paths resolve relative to the cwd unless `--root` says otherwise.
 
 **Two tiers: a group, then an action** — `tei`, `ocr`, `proposal`, `zones`, `fig`,
-`views`, `lexicon`, `entity`, `edition`, `find`, `corpus`, `agents`. The group names
-what the command touches; the action names what it does to it.
+`views`, `lexicon`, `entity`, `geo`, `edition`, `find`, `corpus`, `agents`,
+`verbs`. The group names what the command touches; the action names what it does.
 
 **`harness/VERBS.md` is the reference** — one entry per action: what it does,
 what it reads, what it writes, what its exit code means, and every flag with
@@ -211,6 +204,8 @@ every byte of this file on every page.
 | `docs/rasters.md` | the source rasters, the derived trees and the `tools/` scripts |
 | `docs/decisions.md` | what was settled the hard way, intact — the reasoning behind the rules |
 | `docs/open-questions.md` | what is deliberately unresolved |
+| `README.md` | the four provenance levels, and the edition for a reader |
+| `.claude/skills/read-moll-page/` | the Moll & Inenlikej 1957 pass, whole. Not a Bogoras corpus track; nothing it produces enters `gt/` or `tei/` |
 
 Two passes: the ground-truth loop (raster → ALTO, `gt/ocr/`) and collation
 (generated TEI → `tei/`). Both dispatch one agent per page off a queue, contract in

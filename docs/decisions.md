@@ -12,8 +12,9 @@ this project's life: it is *not* "reproduce the draft verbatim". That version en
 the canonicity of whatever `ocr/` happened to hold, and so was **unsatisfiable** over
 real recognizer output (CATMuS emits 0% of the inventory, so every correct TEI failed)
 and a **tautology** over a model's own reading, comparing a file against its own source
-and rendering the result as a verified PASS. Removed from `validate.py`,
-`validate.py` and the collation skill; the comment at the old check's site records why.
+and rendering the result as a verified PASS. Removed from `validate.py` and from
+the collation skill; the comment at the old check's site (`validate.py`, above
+`RESP_RANKS`) records why, and `context.py` still carries what fed it.
 
 ## The ground-truth loss
 

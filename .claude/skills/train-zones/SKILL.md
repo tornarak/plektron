@@ -43,11 +43,20 @@ which goes stale. (`--all` is the corpus form of every sweeping verb now — the
 bare invocation that used to sweep is a usage error, so that a 832-page walk is
 never something you did by leaving an argument off.)
 
-The installed model is run 3: trained on 211 pages, held out on 60, and its
-manifest records **95.2% recall / 80.1% precision on eval** at `>=30px` with the
-raw decode. The same weights score **94.7 / 90.8** under the segmental DP decode
-plus the paragraph split — different decoder, not a different model. Always
-say which decode a number came from; the three differ by more than any retrain has.
+The installed model trained on **578** pages and held out **138**. Its manifest
+(`models/bogoras-seg/zones-seg.json`) records, on eval:
+
+    as emitted    97.8% recall / 79.2% precision
+    >=30px        97.8% recall / 91.2% precision
+
+and on the pages it trained on, 99.6 / 92.3 and 99.6 / 97.2 respectively — read
+back as the editor's own judgement, not as a score.
+
+Always say which decode a number came from; the two differ by more than any
+retrain has. **And read them from the manifest, not from here** — this paragraph
+described a superseded run for long enough that a retrain judged against it would
+have looked like an improvement while being worse than what was already
+installed. `harness/tests/test_model_manifest.py` holds the two together now.
 
 **`MainZone-Quote` is withdrawn and the store holds none.** It sat at 25 instances
 across two successive keying passes while everything else doubled, was folded for

@@ -72,7 +72,27 @@ REPO = Path(__file__).resolve().parent.parent.parent
 # rewording a neighbouring clause is not measuring what it means to measure. It
 # still gates accretion — 800 bytes is a paragraph, not a section — but it no
 # longer taxes correctness.
-CLAUDE_MD_MAX_BYTES = 16_000
+#
+# **Raised a fifth time, 16_000 → 16_800**, and the reason is that the fourth
+# raise's headroom was gone: the file stood at 15,999 against a 16,000 cap, so
+# the next correct fact cost a reword — the exact condition the paragraph above
+# says this gate should not create. It was found that way, by a review pass that
+# could not add the two CLI groups the router had been missing since `geo` and
+# `verbs` were added.
+#
+# Same kind as the four above rather than the kind this gate exists to stop. Two
+# routing rows: root `README.md`, which `CLAUDE.md` already cites by name for the
+# four provenance levels while the table did not list it, and the Moll pass,
+# which is a whole third track with its own agent, skill, scratch store and
+# declared dependency and had no route from here at all — an agent meeting
+# `scratch/chukchi/` would find nothing in the router that admits it exists.
+#
+# Deleting the ground-truth-loss retelling paid for about half of it. That
+# section was five sentences here and the story is told in full in
+# `docs/decisions.md`, which the table already routes to and which owns settled
+# history; what stays is the rule the store layout obeys, folded into the `gt/`
+# line where it binds.
+CLAUDE_MD_MAX_BYTES = 16_800
 
 CITE_RE = re.compile(r"CLAUDE\.md, [\"'“]([^\"'”)]{4,80})")
 

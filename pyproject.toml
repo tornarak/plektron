@@ -50,10 +50,12 @@ dependencies = [
     # and pinning them here would be asserting a compatibility we do not test.
     "fastapi>=0.120",
     "uvicorn>=0.38",
-    # Declared for the reason `numpy` and `pillow` are, one paragraph up: it was
-    # already here transitively, and the harness now imports it directly, so a
-    # release that dropped it would break this package with an ImportError
-    # naming neither it nor the reason.
+    # **Not** for `numpy` and `pillow`'s reason — the harness does not import it
+    # directly; the only use is `fastapi.templating.Jinja2Templates`. Declared
+    # anyway because the *templates* are ours: `harness/web/templates/` is a tree
+    # this package ships and whose syntax it is written against, so the version
+    # that renders them is our compatibility question and not fastapi's. That is
+    # the line `starlette`, `pydantic` and `anyio` fall on the other side of.
     "jinja2>=3.1",
 ]
 
@@ -95,7 +97,7 @@ dev = [
 # **The rule set is pinned explicitly and never inherited.** Ruff's default
 # selection is documented as `E4,E7,E9,F` and is not: 0.16.1 additionally turns
 # on flake8-bandit, flake8-implicit-str-concat and much of RUF, so a bare
-# `ruff check` here reports 161 findings. A gate whose meaning changes when a dev
+# `ruff check` here reports ~160 findings. A gate whose meaning changes when a dev
 # dependency is upgraded is a gate nobody can act on, so `select` is a closed
 # list and everything absent from it is absent on purpose.
 [tool.ruff]
@@ -105,16 +107,19 @@ target-version = "py314"
 [tool.ruff.lint]
 select = ["E4", "E7", "E9", "F", "B", "UP", "C4", "I"]
 ignore = [
-    # `add = lambda name, **kw: act.add_parser(name, parents=[common], **kw)` is
-    # the registration idiom in all seven `cli/` modules and is named as such in
-    # `harness/README.md`. A `def` per module says the same thing in four lines.
+    # `add = lambda …` is a local registration shorthand in `cli/_lexicon.py`,
+    # `cli/_ocr.py` and `state.py`; a `def` would say the same in four lines.
+    # (This read "the registration idiom in all seven `cli/` modules and is named
+    # as such in `harness/README.md`" — describing argparse's `act.add_parser`,
+    # which the click migration removed, in seven modules that are now fourteen,
+    # citing a passage that does not exist.)
     "E731",
 ]
 
 # What is deliberately NOT selected, and why. Each was measured against the tree
 # before being dropped — none is off because it was noisy in the abstract.
 #
-# RUF001/002/003 (ambiguous-unicode-character, 152 hits) — the sharpest case, and
+# RUF001/002/003 (ambiguous-unicode-character, ~1,500 hits) — the sharpest case, and
 #   it would be actively harmful. They flag characters that resemble ASCII, which
 #   in this corpus is a description of the subject matter: `ˊ` U+02CA, `ɪ` U+026A,
 #   `ᵋ` U+1D4B are inventory glyphs, not confusables. The project already has a
@@ -125,11 +130,11 @@ ignore = [
 #   firing on the glyphs themselves would bury the real one.
 # E501 (line-too-long) — `line-length` is set to 100 rather than 88 because the
 #   prose in this package's docstrings is the documentation, wrapped to ~85. At 88
-#   it reports 67 lines; at 100, three. Those three are fixed.
-# ISC (implicit-str-concat, 17) — every hit is a CSS rule or a prose message
+#   it reports ~160 lines; at 100, ~27.
+# ISC (implicit-str-concat, ~27) — every hit is a CSS rule or a prose message
 #   deliberately wrapped across lines. ISC004 is a good missing-comma detector in
-#   general; here it is 17 false positives and nothing else.
-# BLE001 (blind-except, 14) — the broad catches are deliberate fallbacks around
+#   general; here it is false positives and nothing else.
+# BLE001 (blind-except, ~18) — the broad catches are deliberate fallbacks around
 #   model loading and third-party IO, each with a message saying what it fell back
 #   to.
 # S (flake8-bandit) — `try/except/pass` around ref parsing is the idiom for "this
@@ -144,8 +149,13 @@ ignore = [
 #
 # `uv run ty check harness/` — **run by hand, and deliberately not a gate.**
 #
-# 71 diagnostics, down from 91 after one pass through them. What that pass found
-# is recorded here because the residue looks like neglect and is not.
+# **284 diagnostics**, at the pinned `ty`, up from the 71 a pass once brought it
+# to. The tool has not moved; the code has. Roughly half the `not-subscriptable`
+# hits are in `harness/tests/`, and the rest is still the shape named below —
+# untyped `dict` records — which has simply grown while the fix stayed deferred.
+# Counts here are approximate on purpose: nothing gates them, and a figure
+# maintained to the digit is one that goes stale silently. What that pass found
+# is recorded because the residue looks like neglect and is not.
 #
 # **Fixed**: numpy and pillow were imported directly at 20+ sites and declared
 # nowhere (see `dependencies` above); `@prev` on the first scan of a part reported

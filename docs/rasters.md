@@ -35,7 +35,8 @@ each side**, so that part was segmented and OCR'd below source resolution from t
 beginning. Those 35 px are verified blank on all 202 pages; nothing was lost.
 
 **The rasters are bitonal where the page holds no photograph** — 593 of 832 — and
-8-bit `L` where it does, 236 of them. Photographs are pasted back **nearest at
+8-bit `L` where it does, 236 of them. The remaining three are the RGB foldouts
+this file describes below; 593 + 236 + 3 is the whole store. Photographs are pasted back **nearest at
 their integral 2×**, so every native JPEG sample survives as an exact block and a
 crop from the composite shows the same pixels as the embedded original.
 **484 MB → 180 MB** over the page files.

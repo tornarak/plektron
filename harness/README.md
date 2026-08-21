@@ -21,7 +21,7 @@ the project's rules, `CLAUDE.md` governs; for the character inventory,
 | `gt/ocr/` | human ground truth — the pages a reader has been through and an adjudicator has signed | `ocr restore --commit` |
 | `gt/lines/` | the **corrections overlay**: boxes a human drew over ink the segmenter left unboxed, per page, in raster coordinates, `+ _ink_exempt.json`. Folded into every page's lines by `lines.page_lines`, so a correction is reachable on the pages that have no ground truth at all | `ocr edit` (geometry), `ocr restore --commit` (text) |
 | `mz/ocr/` | what the models emitted: lines from `blla`, text from CATMuS, structured by the zones. Derived, ignored | `ocr predict` |
-| `gt/fig/` | 252 figure ALTOs, geometry only, **no `TextLine` at all** | by hand, via eScriptorium |
+| `gt/fig/` | 252 figure ALTOs, geometry only, **no `TextLine` at all** | `zones edit`'s figure track (`zones_ui._save_figs` → `figures.save_figs`) |
 | `gt/zones/` | the **current** segmentation: seven types, fixed-width bands, `+ _train.lst _eval.lst`, one list per leaf kind (`_plate.lst _blank.lst _cover.lst _map.lst _apparatus.lst` — `zones.LEAF_KINDS`, asked through `is_exempt`), `_rule_exempt.json _ink_exempt.json _para_exempt.json` | `zones edit` |
 | `mz/zones/` | what the trained segmenter emitted: raw kraken ALTO, free polygons, kraken's ids. Derived, ignored | `zones predict` |
 | `zones/` | the **read view** over both zone stores — symlinks, the human file always winning. Derived, ignored | `zones link` |
@@ -44,9 +44,8 @@ the project's rules, `CLAUDE.md` governs; for the character inventory,
 **`gt/seg/` and `gt/zones/` are two schemes, not one store in two states.** The label
 sets differ and so does the geometry regime — free polygons drawn around ink against
 fixed-width bands of a configured column — and *nothing in an ALTO says which scheme
-produced it*. That is the same absence of an internal witness that lost 18 pages of
-transcription when a file's role lived only in the directory holding it, so the role
-lives in the directory again and the two do not alias. Blocks written by `zones`
+produced it*. **A file's role must not live only in the directory holding it** —
+so the role lives in the directory again and the two do not alias. Blocks written by `zones`
 also carry an `mz_` id prefix, so a file identifies itself even out of context.
 
 **Reads may resolve through `ocr/`; writes may not.** `ocr/*.xml` are symlinks, so
@@ -76,7 +75,8 @@ predicted polygon fails the fixed-measure width check by construction.
 ## Modules
 
 **`cli/`** — the two-tier command tree, **click**, one module per group: `_tei _ocr
-_proposal _zones _lexicon _find _corpus _views`, each exposing `register(cli)` and
+_proposal _zones _fig _lexicon _entity _geo _edition _find _corpus _views _agents
+_verbs`, each exposing `register(cli)` and
 one `run_*` handler per action, which returns the exit code. `__init__.py` holds
 `main`, `build_parser` (separate so the surface test can walk the tree without
 running anything), and the rename trap. `_common.py` holds the declaration
@@ -250,10 +250,9 @@ lxml per page is under the dispatch cost) and the trap that cProfile's per-call
 overhead overstates call-heavy code by 6×.
 
 **`ocr predict` is the exception and uses processes, not this.** Its cost is not a
-decode: a page is ~17 s, of which `blla.segment` is ~15 and recognition ~1.5, and
-the segmenter's time is scipy/shapely baseline vectorization on one core with the
-GPU at ~4.5%. That workload is only ~55% GIL-free, so threads plateau at 1.8×
-where four processes give 2.8×. See `recognize.predict_workers`.
+decode but baseline vectorization on one core, which is only partly GIL-free — so
+threads plateau where processes do not. The measurements are `recognize.py`'s
+entry below, once.
 
 **`context.py`** — the `PP-NNN` contract (`parse_ref`, `norm_ref`, `stem_for`) and
 `build_context`, the per-page input the collation pass consumes. Everything in it is
@@ -360,7 +359,8 @@ fluent nonsense, which is why a character with no row makes the whole form
 key and no IPA value, and turning a gloss into a symbol is a judgement.
 
 **`speech.py`** — that IPA to a WAV, by shelling out to `espeak-ng`. Lifted from the
-Moll reader's `tts.py`, so its rejected-library reasoning is not re-argued here; what
+Moll reader's `tts.py` (in gitignored `scratch/`, so absent from a fresh clone),
+so its rejected-library reasoning is not re-argued here; what
 is new is that **every row of the phoneme table carries the readback espeak actually
 gave it**, measured in a frame, and the test compares the table against the installed
 binary. That is what caught a bare `r` becoming the English approximant before any
@@ -487,8 +487,8 @@ deliberately the same shape, since the argument for the layout is that a file's
 role must not live only in the directory holding it.
 
 Three caller invariants. **It cannot name `gt/ocr/`** — there is no `store`, `out`
-or `alto_dir` parameter, the property `save_zones` has and for the reason this
-project lost 18 pages. **`tags` on a `Region` is `{key: [{"type": label}]}`, never
+or `alto_dir` parameter, the property `save_zones` has and for its reason: a write
+landing in a store nobody meant to touch. **`tags` on a `Region` is `{key: [{"type": label}]}`, never
 `{key: label}`** — `serialize` builds its typology with `for t in v if 'type' in t`,
 so a bare string iterates characters, matches none, and writes `TAGREFS=""` against
 a lone `OtherTag LABEL="default"`: geometry, ids and reading order all correct, and
@@ -538,8 +538,8 @@ fit, which is `predict_skip`'s `single` rule applied to a different resource.
 
 **`review.py`** — the largest, and it does five things: span diffing, decision
 persistence (temp-then-rename, a `.prev`, and an append-only `.jsonl` journal),
-`restore`, `corrections`, and a ~450-line embedded browser app in
-`render_queue_html`. `corrections` lives here rather than in `proposal_check`
+`restore`, `corrections`, and the review page's own state (`page_context`; the
+markup is `harness/web/templates/review/`). `corrections` lives here rather than in `proposal_check`
 because it reads *both* `proposal.json` and `decision.json`, and only this module
 owns both — it is the pass's own error profile, which `restore` had been computing
 per page and discarding.
@@ -1033,8 +1033,9 @@ columns and neither has to say so. Four properties bind callers:
   assigns those per export (`BT55`/`BT56` in one, `BT68`/`BT69` in the next), so
   hardcoding them fails silently rather than loudly: it once left a migration that
   "quietly became a no-op that reported success"
-  (`git log -- tools/strip_graphiczone_lines.py`). `figures.read_blocks` is the
-  only place that resolves a label.
+  (`git log -- tools/strip_graphiczone_lines.py`). `figures._labels` /
+  `_block_label` are the only implementation; `read_blocks` is their main caller
+  and `lines.py` imports them directly.
 - **An empty zone file is a claim, not an absence.** A plate has no text column, so
   zero zones is its correct segmentation; a page nobody opened is also zero zones.
   Only the file's existence separates them (`zones.has_zones`), which is why the
@@ -1090,45 +1091,24 @@ this", and it is one file to scan.
 
 ## Lint and types
 
-`ruff` gates; `ty` does not. Both are dev dependencies and both are configured in
-`pyproject.toml`, where the reasoning lives beside the settings.
+`ruff` gates; `ty` does not. Both are dev dependencies, and **the reasoning lives
+beside the settings in `pyproject.toml`** — including every measured count, which
+is why they are not repeated here. This section used to restate that argument in
+full, and the two copies drifted identically: both said 161 ruff findings, 152
+RUF001 hits and 71 `ty` diagnostics long after the real figures were 160, ~1,500
+and 284. A fact stated twice is a defect, and this was the worked example.
 
-Ruff's **rule set is pinned, never inherited** — its default selection is documented
-as `E4,E7,E9,F` and is not; 0.16.1 also turns on flake8-bandit, implicit-str-concat
-and much of RUF, reporting 161 findings here against the pinned set's zero — most of
-them things this codebase does on purpose. A gate whose
-meaning changes when a dev dependency is upgraded is one nobody can act on, the same
-argument that makes `zones score` demand `--model` rather than read whichever `.lst`
-files are lying around.
+Two things worth having at this end, because they are about the code rather than
+the configuration. `ruff` earned its place on the first run: `B905` found
+`restore`'s post-write verification comparing source against written page with a
+bare `zip`, so a write that **dropped a line** would have been checked over the
+common prefix and reported clean — the repo's cardinal failure inside the
+function meant to catch it. And what `ty` found that is not a type error at all:
+**`numpy` and `pillow` were imported directly at twenty-odd sites and declared as
+dependencies nowhere**, reaching the harness only through kraken, so a kraken
+release dropping either would have broken this package with an ImportError naming
+neither it nor the reason.
 
-What it earned on the first run, which is the case for keeping it: `B905` found
-`restore`'s post-write verification comparing source against written page with a bare
-`zip`, so a write that **dropped a line** would have been checked over the common
-prefix and reported clean — the repo's cardinal failure inside the function meant to
-catch it. And `F821` caught two undefined names introduced while fixing other ruff
-findings in the same sitting.
-
-`RUF001`–`003` are off by name and `test_lint.py` asserts they stay off. They flag
-characters resembling ASCII, which here describes the inventory: `ˊ` U+02CA, `ɪ`
-U+026A, `ᵋ` U+1D4B. 152 hits, all on glyphs the project exists to transcribe. The
-scoped detector in `normalize.py`/`validate.py` is the real one, and burying it under
-an unscoped duplicate is the noise-over-signal failure CLAUDE.md opens with.
-
-`ty check harness/` reports 71 diagnostics, down from 91 after one pass. The best
-thing it found is not a type error at all: **`numpy` and `pillow` were imported
-directly at twenty-odd sites and declared as dependencies nowhere**, reaching the
-harness only through kraken — so a kraken release that dropped either would have
-broken it with an ImportError naming neither this project nor the reason. It also
-found `@prev` on the first scan of a part reporting `must name None`, a parameter
-rebound to a type its annotation forbade, and the legacy `Image.LANCZOS` aliases.
-
-What remains is mostly not about this code: `lxml` ships no stubs (22), and the
-rest is `dict[str, str | int]` records whose values ty cannot narrow (`-r["n"]`
-where `n` is always an int) plus tests subscripting an `X | None` return. Fixing
-those means TypedDicts through the record-passing layer — a design change, not a
-lint fix. `lxml-stubs` was tried and removed: it trades 22 low-information warnings
-for ~30 `_Element | None` complaints, every sampled one already guarded in a way ty
-cannot see.
-
-So it stays a hand tool. Gating would mean permanent known-false failures or a
-suppression list long enough to hide a real finding. Revisit at `ty` 1.0.
+`ty` stays a hand tool. What remains is dominated by untyped `dict` records, whose
+fix is TypedDicts through the record-passing layer — a design change, not a lint
+fix — and the count has grown while that stayed deferred. Revisit at `ty` 1.0.

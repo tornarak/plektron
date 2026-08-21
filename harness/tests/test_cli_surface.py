@@ -465,3 +465,50 @@ def test_every_flag_that_parses_also_renders_in_help():
                 assert p.name in shown, (
                     f"{gname} {aname}: {p.opts} parses but renders in no "
                     "--help section")
+
+
+# --- the prose enumerations, which no gate reached ---------------------------
+
+REPO = Path(__file__).resolve().parent.parent.parent
+
+
+def _groups() -> set[str]:
+    return set(build_parser().commands)
+
+
+def test_claude_md_names_every_group():
+    """**`CLAUDE.md` is the router, and its group list was two short.**
+
+    It listed twelve where the tree has fourteen — `geo` and `verbs` were added
+    and the sentence was not. This file holds `VERBS.md` against the tree in both
+    directions and has done since the reorganization, but nothing held the
+    *prose* enumerations, and they are what a reader meets first. Every subagent
+    pays for `CLAUDE.md` on every page.
+
+    Read out of the tree rather than from a list here, so this cannot drift into
+    being a third copy of the same fact.
+    """
+    text = (REPO / "CLAUDE.md").read_text(encoding="utf-8")
+    line = next(ln for ln in text.splitlines()
+                if ln.startswith("**Two tiers: a group, then an action**"))
+    # The sentence wraps; take the backticked names from it and the next two.
+    idx = text.splitlines().index(line)
+    named = set(re.findall(r"`([a-z]+)`",
+                           "\n".join(text.splitlines()[idx:idx + 3])))
+    missing = _groups() - named
+    assert not missing, f"CLAUDE.md's group list omits {sorted(missing)}"
+
+
+def test_the_readme_names_every_cli_module():
+    """The same fact stated twice and stale in both copies: `harness/README.md`
+    enumerated eight `cli/` modules where there are fourteen."""
+    text = (REPO / "harness" / "README.md").read_text(encoding="utf-8")
+    idx = next(i for i, ln in enumerate(text.splitlines())
+               if ln.startswith("**`cli/`** —"))
+    named = set(re.findall(r"_([a-z]+)",
+                           "\n".join(text.splitlines()[idx:idx + 4])))
+    # `_common` is shared machinery, not a group; `__init__` matches the glob.
+    on_disk = {p.stem.lstrip("_") for p in (REPO / "harness" / "cli").glob("_*.py")
+               if p.stem not in ("_common", "__init__")}
+    missing = on_disk - named
+    assert not missing, f"harness/README.md's cli/ list omits {sorted(missing)}"
