@@ -335,6 +335,58 @@ def test_a_claim_is_never_released(tmp_path):
     assert (tmp_path / "review/_claims/3-063").exists()
 
 
+def test_a_claim_that_could_not_be_handed_out_is_released(tmp_path):
+    """The other side of the rule above, and not a contradiction of it.
+
+    That one is about `claim_one`, the take: an agent *received* a page and then
+    died, so the claim standing is a true statement. This is about `claim`,
+    which takes the page and only then builds the block — so a `build` that
+    refuses leaves a ref locked that nobody was ever handed. `reconcile` would
+    report it "CLAIMED, no proposal", meaning "somebody took it and did not come
+    back", which is false: nobody took it.
+
+    Reachable when the store changes between `queue` and `claim`, which
+    `queue_refs`' own pre-check cannot cover — a batch sits in the queue while
+    somebody keeps working.
+    """
+    import dataclasses
+
+    from harness.dispatch import READING
+
+    _queued(tmp_path, "3-063")
+
+    def refuses(ref, root, note=None):
+        raise Unready(f"{ref}: the inputs moved")
+
+    track = dataclasses.replace(READING, build=refuses)
+    with pytest.raises(Unready):
+        claim(tmp_path, track)
+
+    assert not (tmp_path / "review/_claims/3-063").exists(), \
+        "the ref was locked to a batch that never got it"
+    # And it is offered again, rather than skipped for the rest of the batch.
+    assert claim_one(tmp_path) == ("3-063", "")
+
+
+def test_an_interrupted_claim_leaves_no_lock(tmp_path):
+    """`BaseException`, not `Exception`: Ctrl-C between the take and the build
+    is the same stale lock by a different route."""
+    import dataclasses
+
+    from harness.dispatch import READING
+
+    _queued(tmp_path, "3-063")
+
+    def interrupted(ref, root, note=None):
+        raise KeyboardInterrupt
+
+    track = dataclasses.replace(READING, build=interrupted)
+    with pytest.raises(KeyboardInterrupt):
+        claim(tmp_path, track)
+
+    assert not (tmp_path / "review/_claims/3-063").exists()
+
+
 def test_reconcile_tells_the_two_kinds_of_miss_apart(tmp_path):
     """"No proposal" has two causes at scale and they want different answers:
     nobody took the page, or somebody took it and did not come back."""

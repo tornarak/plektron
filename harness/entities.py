@@ -266,8 +266,18 @@ _BEFORE = f"(?<![{_MARKS}])"
 _AFTER = f"(?!(?![{_SUP}])[{_MARKS}])"
 
 
-class Malformed(Exception):
-    """A file the parser will not guess at. The message names the file and the line."""
+class Malformed(ValueError):
+    """A file the parser will not guess at. The message names the file and the line.
+
+    **`ValueError` so `cli.main` catches it.** That handler nets
+    `(ValueError, FileNotFoundError, KeyError, OSError)` and no project class, so
+    a plain `Exception` here reached the user as a traceback from every consumer
+    of this store but `entity check` — `load` parses every record and does not
+    catch, and `validate`, `generate`, `context`, `detectors` and the reading
+    view all call it. One malformed file gave a clean `ERROR:` line from one verb
+    and a stack trace from five. `zones_config.ConfigError` and
+    `marks.MarksConfigError` already sit inside that net for the same reason.
+    """
 
 
 def ent_dir(root: Path = Path(".")) -> Path:

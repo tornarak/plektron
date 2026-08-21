@@ -36,8 +36,14 @@ REQUIRED_VIEW = (
     "min_draw_w", "min_draw_h", "ruling_pad_px")
 
 
-class ConfigError(Exception):
-    """A malformed config, raised at load rather than met halfway through."""
+class ConfigError(ValueError):
+    """A malformed config, raised at load rather than met halfway through.
+
+    **`ValueError`, which `zones_config.ConfigError` already was.** Two classes
+    of one name with two different bases meant whether a malformed editor config
+    was caught or surfaced as a traceback depended on which editor's config it
+    was — the sort of difference nobody discovers until the day it matters.
+    """
 
 
 def config_path(root: Path = Path(".")) -> Path:

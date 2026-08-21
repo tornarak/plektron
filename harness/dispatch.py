@@ -85,8 +85,13 @@ FIGURES_ABSENT = (
     "discount as a photograph.")
 
 
-class Unready(Exception):
-    """The page is not a dispatch candidate, and the message says what to do."""
+class Unready(ValueError):
+    """The page is not a dispatch candidate, and the message says what to do.
+
+    `ValueError` for `entities.Malformed`'s reason — `cli.main` nets four
+    concrete types and no project class. This one escaped `agents sync`, which
+    has no handler at all, and both `claim` verbs.
+    """
 
 
 def template(root: Path = Path("."), markers: tuple[str, str] = (BEGIN, END),
@@ -643,13 +648,30 @@ def claim_one(root: Path = Path("."),
 
 
 def claim(root: Path = Path("."), track: Track = READING) -> dict | None:
-    """`claim_one`, then the page block for whatever it took. None if the queue is out."""
+    """`claim_one`, then the page block for whatever it took. None if the queue is out.
+
+    **The claim is released if the block cannot be built.** The marker is on disk
+    before `build` runs — that ordering is what makes the take atomic — so a
+    `build` that refuses left the ref locked *and* undeliverable: no agent got
+    the page and no later `claim` would offer it again, which reads from the
+    outside as a batch that came back one page short with nothing to say why.
+
+    `queue_refs` pre-checks what `build` refuses, so reaching this needs the
+    store to change between queueing and claiming. That is a live sequence, not
+    a theoretical one: a batch sits in the queue while somebody keeps working.
+
+    `BaseException`, so a Ctrl-C between the two leaves no stale lock either.
+    """
     taken = claim_one(root, track)
     if taken is None:
         return None
     ref, note = taken
-    block = track.build(ref, root, note or None)
-    return {**block, **(track.on_claim(ref, root) if track.on_claim else {})}
+    try:
+        block = track.build(ref, root, note or None)
+        return {**block, **(track.on_claim(ref, root) if track.on_claim else {})}
+    except BaseException:
+        (claims_dir(root, track) / ref).unlink(missing_ok=True)
+        raise
 
 
 def reconcile(refs: list[str], root: Path = Path("."),

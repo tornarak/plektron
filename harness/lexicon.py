@@ -63,8 +63,13 @@ _SECTION = re.compile(r"^##\s+(.+?)\s*$", re.M)
 NOTE = "editor's note"
 
 
-class Malformed(Exception):
-    """A file the parser will not guess at. The message names the file and why."""
+class Malformed(ValueError):
+    """A file the parser will not guess at. The message names the file and why.
+
+    `ValueError` for `entities.Malformed`'s reason: `cli.main`'s net is four
+    concrete types and no project class, so a plain `Exception` is a traceback
+    wherever a local handler does not happen to exist.
+    """
 
 
 def lex_dir(root: Path = Path(".")) -> Path:

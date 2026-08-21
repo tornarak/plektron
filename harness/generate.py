@@ -401,8 +401,15 @@ def _stamp(ref: str, root: Path) -> str:
     return f"generated: harness tei generate v{VERSION} inputs={h.hexdigest()[:16]}"
 
 
-class Unready(Exception):
-    """A page the generator will not guess at. Carries the verb that fixes it."""
+class Unready(ValueError):
+    """A page the generator will not guess at. Carries the verb that fixes it.
+
+    `ValueError` for `entities.Malformed`'s reason. Note this is **not**
+    `dispatch.Unready` — two classes of one name, so a caller who imports the
+    wrong one and wraps the other catches nothing. Both are in the net now,
+    which makes the collision cosmetic rather than load-bearing; it is still a
+    trap worth knowing about.
+    """
 
 
 def _require(ref: str, root: Path) -> None:
