@@ -69,6 +69,7 @@ from pathlib import Path
 
 from . import farms as F
 from . import zones as Z
+from .atomic import tmp_for
 from .context import norm_ref, parse_ref
 
 # The machine store, its human counterpart, and the view over both. `lines.py`
@@ -453,7 +454,7 @@ def predict(ref: str, root: Path = Path("."), seg_net=None, seg_sha: str = "",
     out = mz_dir(root)
     out.mkdir(parents=True, exist_ok=True)
     dest = alto_for(ref, root, MZDIR)
-    tmp = dest.with_suffix(".xml.tmp")
+    tmp = tmp_for(dest)
     tmp.write_text(xml, encoding="utf-8")
     tmp.replace(dest)
 

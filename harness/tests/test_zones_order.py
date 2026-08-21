@@ -4,8 +4,12 @@
 injected config, so a violation shows the instant a type is chosen, and once on the
 server when the save lands. Two implementations of one rule set is how they drift,
 so the browser's copy is a transcription of this function and these tests are what
-hold the pair together: any rule added here has to be added there, and the
-round-trip test at the end is what fails if the shapes stop matching.
+hold the pair together: any rule added here has to be added there, and the two
+transcription tests at the end read `zones.js` and fail if the rule sets diverge.
+
+They read it because for a long time nothing did, while this docstring and the
+comment in `zones.js` both said something did. The claim named a "round-trip test
+at the end" that was a record-shape assertion in Python, touching no JS at all.
 
 Every rule is a *warning*. The book breaks its own layout conventions — a page that
 is all footnotes, a chapter opening with no running title — and a tool that refused
@@ -152,3 +156,61 @@ def test_warning_records_have_one_fixed_key_set():
     got = order_warnings(CFG, page)
     assert len(got) >= 3
     assert {frozenset(w) for w in got} == {frozenset({"rule", "detail", "exempted"})}
+
+
+# --- the transcription, actually held -----------------------------------------
+
+def _js() -> str:
+    from pathlib import Path
+    p = Path(__file__).parent.parent / "web" / "static" / "js" / "zones.js"
+    return p.read_text(encoding="utf-8")
+
+
+def _py_rule_ids() -> set[str]:
+    """The ids `order_warnings` gates on, read out of its own source."""
+    import inspect
+    import re
+    return set(re.findall(r'if "([a-z-]+)" in enabled', inspect.getsource(order_warnings)))
+
+
+def _js_rule_ids() -> set[str]:
+    import re
+    body = _js().split("function orderWarnings()", 1)[1]
+    return set(re.findall(r"on\.has\('([a-z-]+)'\)", body))
+
+
+def test_the_browser_transcription_covers_the_same_rules():
+    """**The gate `zones.js` says exists.**
+
+    Its comment reads "transcribed from `zones_config.order_warnings`. Held to
+    that function by `harness/tests/test_zones_order.py`" — and until now this
+    file contained no reference to `zones.js` at all, in either direction. This
+    module's own docstring made the same claim about a "round-trip test at the
+    end", which was a record-shape assertion in Python. A gate that is *claimed*
+    and absent is worse than one that is merely missing: it stops anyone looking.
+
+    What this proves and what it does not. It holds the **rule set** — a rule
+    added on one side and not the other is what the comment warns about, and it
+    is caught in both directions. It does not prove the two produce the same
+    `detail` string, which would need the JS run; the shapes below are as close
+    as reading gets.
+    """
+    assert _py_rule_ids(), "the source scrape found nothing — this gate is stale"
+    assert _js_rule_ids() == _py_rule_ids()
+
+
+def test_the_browser_transcription_builds_the_same_record():
+    """Same three keys, for `test_warning_records_have_one_fixed_key_set`'s
+    reason: the banner is rendered from whichever copy produced it."""
+    body = _js().split("function orderWarnings()", 1)[1]
+    warn = body.split("const warn =", 1)[1].split(";", 1)[0]
+    for key in ("rule", "detail", "exempted"):
+        assert key in warn, f"the browser's warning record has no {key}"
+
+
+def test_the_js_actually_contains_what_this_gate_reads():
+    """Guard on the guard: a rename of `orderWarnings` or of `on.has` would make
+    both assertions above vacuous over an empty set rather than failing."""
+    js = _js()
+    assert "function orderWarnings()" in js
+    assert "transcribed from" in js

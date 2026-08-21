@@ -33,6 +33,7 @@ from pathlib import Path
 
 from lxml import etree
 
+from .atomic import write_atomic
 from .context import parse_ref, stem_for
 
 TEI_NS = "http://www.tei-c.org/ns/1.0"
@@ -117,9 +118,17 @@ def _load(path: Path):
 
 
 def _save(tree, path: Path) -> None:
+    """Through a temp and a rename, like every other page-scale writer here.
+
+    This was the one exception — a bare `write_text` over a **committed** TEI
+    page, under `--commit`. `review.py`, `corrections.py`, `zones.py` and
+    `recognize.py` all write their pages temp-then-rename; an interruption here
+    left a truncated page in `tei/`, which is gitignored while the generator is
+    being rewritten, so git is not the backstop it is for `gt/`.
+    """
     text = etree.tostring(tree, encoding="unicode", xml_declaration=False)
     head = '<?xml version="1.0" encoding="UTF-8"?>\n'
-    path.write_text(head + text.rstrip("\n") + "\n", encoding="utf-8")
+    write_atomic(path, head + text.rstrip("\n") + "\n")
 
 
 # Soft cap on the serialized tail. Elision drops whole leading children, so the

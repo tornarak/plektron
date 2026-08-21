@@ -47,6 +47,7 @@ from pathlib import Path
 
 from lxml import etree
 
+from .atomic import tmp_for, write_atomic
 from .context import norm_ref, parse_ref
 
 INK_EXEMPT_JSON = "_ink_exempt.json"
@@ -217,7 +218,7 @@ def save_lines(ref: str, boxes: list[dict], root: Path = Path("."),
     p.parent.mkdir(parents=True, exist_ok=True)
     if p.exists():
         p.with_suffix(".xml.prev").write_bytes(p.read_bytes())
-    tmp = p.with_suffix(".xml.tmp")
+    tmp = tmp_for(p)
     tree.write(str(tmp), xml_declaration=True, encoding="UTF-8",
                standalone=None, pretty_print=True)
     tmp.replace(p)
@@ -296,13 +297,22 @@ def clean_regions(ref: str, regions: list[dict] | None) -> list[dict]:
 
 def write_exemptions(store: Path, data: dict[str, list[dict]],
                      about: str) -> Path:
-    """One layer's file, refs in page order, carrying what it is for."""
+    """One layer's file, refs in page order, carrying what it is for.
+
+    **Through `atomic.write_atomic`**, because this file holds *every* page's
+    rulings and both callers read the whole thing, change one key and write it
+    all back. A `POST /zones/save` and a CLI sweep are an ordinary pair here, and
+    a torn write leaves the file unparseable for all 832 pages at once — where
+    each ruling carries a required reason a human typed. `_ink_exempt.json` has
+    no `.prev` and no journal, so there is nothing to recover it from.
+
+    The rename does not make the read-modify-write safe; the last writer still
+    wins. It makes the file always whole, which is the half that is cheap.
+    """
     p = Path(store) / INK_EXEMPT_JSON
-    p.parent.mkdir(parents=True, exist_ok=True)
     doc: dict = {"_about": about}
     doc.update({k: data[k] for k in sorted(data, key=parse_ref)})
-    p.write_text(json.dumps(doc, ensure_ascii=False, indent=1) + "\n",
-                 encoding="utf-8")
+    write_atomic(p, json.dumps(doc, ensure_ascii=False, indent=1) + "\n")
     return p
 
 

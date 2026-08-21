@@ -69,6 +69,7 @@ from . import zones_config as zc
 
 if TYPE_CHECKING:
     from kraken.lib.vgsl import TorchVGSLModel
+from .atomic import tmp_for, write_atomic
 from .context import norm_ref, parse_ref
 from .figures import read_blocks
 from .parallel import pmap
@@ -613,7 +614,7 @@ def set_split(ref: str, split: str, root: Path = Path(".")) -> dict:
             entries.append(name)
         entries = sorted(set(entries),
                          key=lambda e: parse_ref(Path(e).stem.replace("chukchi-", "")))
-        p.write_text("".join(e + "\n" for e in entries), encoding="utf-8")
+        write_atomic(p, "".join(e + "\n" for e in entries))
     return {"ref": ref, "split": split}
 
 
@@ -807,8 +808,8 @@ def set_splits(mapping: dict[str, str], root: Path = Path(".")) -> dict:
     for split in SPLITS:
         refs = sorted((r for r, s in current.items() if s == split), key=parse_ref)
         counts[split] = len(refs)
-        _lst_path(root, split).write_text(
-            "".join(f"chukchi-{r}.xml\n" for r in refs), encoding="utf-8")
+        write_atomic(_lst_path(root, split),
+                     "".join(f"chukchi-{r}.xml\n" for r in refs))
     return counts
 
 
@@ -910,8 +911,7 @@ def set_exempt(ref: str, rules: list[str], root: Path = Path(".")) -> dict:
                       "listed rule still reports — it is flagged `exempted`, never "
                       "hidden. Keyed PP-NNN.")}
     doc.update({k: data[k] for k in sorted(data, key=parse_ref)})
-    p.write_text(json.dumps(doc, ensure_ascii=False, indent=1) + "\n",
-                 encoding="utf-8")
+    write_atomic(p, json.dumps(doc, ensure_ascii=False, indent=1) + "\n")
     return {"ref": ref, "exempt": data.get(ref, [])}
 
 
@@ -1014,7 +1014,7 @@ def _write_ink_cache(data: dict[str, dict], root: Path) -> None:
                       "unknown, not stale-but-usable. Delete this file freely — "
                       "keying refills it.")}
     doc.update({k: data[k] for k in sorted(data, key=parse_ref)})
-    tmp = p.with_suffix(f".json.{os.getpid()}.tmp")
+    tmp = tmp_for(p)
     tmp.write_text(json.dumps(doc, ensure_ascii=False, indent=1) + "\n",
                    encoding="utf-8")
     tmp.replace(p)
@@ -1255,7 +1255,7 @@ def save_zones(ref: str, zones: list[dict], root: Path = Path("."),
     p.parent.mkdir(parents=True, exist_ok=True)
     if p.exists():
         p.with_suffix(".xml.prev").write_bytes(p.read_bytes())
-    tmp = p.with_suffix(".xml.tmp")
+    tmp = tmp_for(p)
     tree.write(str(tmp), xml_declaration=True, encoding="UTF-8",
                standalone=None, pretty_print=True)
     tmp.replace(p)
@@ -1326,7 +1326,7 @@ def delete_zones(ref: str, root: Path = Path("."), commit: bool = False,
     for which in SPLITS:
         q = _lst_path(root, which)
         entries = [e for e in _read_lst(q) if e != f"chukchi-{ref}.xml"]
-        q.write_text("".join(e + "\n" for e in entries), encoding="utf-8")
+        write_atomic(q, "".join(e + "\n" for e in entries))
     if rules:
         set_exempt(ref, [], root)
     if ink_ex:
@@ -2217,7 +2217,7 @@ def predict_dp(ref: str, root: Path = Path("."), net=None, sha: str = "",
     out = mz_dir(root)
     out.mkdir(parents=True, exist_ok=True)
     dest = alto_for(ref, root, MZDIR)
-    tmp = dest.with_suffix(".xml.tmp")
+    tmp = tmp_for(dest)
     tree.write(str(tmp), xml_declaration=True, encoding="UTF-8", pretty_print=True)
     tmp.replace(dest)
     return {"ref": ref, "path": str(dest), "zones": len(zones),
@@ -2309,7 +2309,7 @@ def predict(ref: str, root: Path = Path("."), net=None, sha: str = "",
     out = mz_dir(root)
     out.mkdir(parents=True, exist_ok=True)
     dest = alto_for(ref, root, MZDIR)
-    tmp = dest.with_suffix(".xml.tmp")
+    tmp = tmp_for(dest)
     tmp.write_text(xml, encoding="utf-8")
     tmp.replace(dest)
     regions = {k: len(v) for k, v in (seg.regions or {}).items() if v}

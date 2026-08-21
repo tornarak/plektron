@@ -270,9 +270,11 @@ function figWarnings() {
 }
 
 // ---- the order rules, transcribed from zones_config.order_warnings.
-// Held to that function by harness/tests/test_zones_order.py; a rule added there has to
-// be added here, and the shapes are the same so the banner reads identically
-// whether it came from the browser or from the save.
+// Held to that function by harness/tests/test_zones_order.py, which reads this
+// file and compares the rule sets both ways; a rule added there has to be added
+// here, and the shapes are the same so the banner reads identically whether it
+// came from the browser or from the save. (That gate was named here before it
+// existed — the test file contained no reference to this one. It does now.)
 function orderWarnings() {
   const on = new Set((CFG.order_rules || []).map(r => r.id));
   const rank = l => (T[l] ? T[l].rank : null);

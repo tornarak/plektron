@@ -6,6 +6,12 @@ dist/
 wheels/
 *.egg-info
 
+# Tool caches. Here rather than only in a personal global ignore file, which is
+# where they were being caught — so they were untracked-and-invisible on this
+# machine and untracked-and-noisy on any fresh clone.
+.pytest_cache/
+.ruff_cache/
+
 # sooper seekrit
 scratch/
 

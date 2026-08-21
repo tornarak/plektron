@@ -179,6 +179,48 @@ def test_a_correction_reaches_the_state_as_its_own_layer(root):
     assert [line["y0"] for line in st["lines"]] == [900]
 
 
+def test_a_correction_carries_its_own_geometry_whatever_the_store_order(root):
+    """The overlay joins fragments to boxes **by id**, not by position.
+
+    It was `zip(corrected, sorted(stored, key=(y0, x0)), strict=False)` — two
+    independently-derived orderings — so any divergence stapled one correction's
+    id, geometry and text onto another's box, and a length mismatch truncated in
+    silence. The box's `text` is the only thing that confirms the right line was
+    clicked, so a crossed join corrupts exactly the field the overlay exists for.
+
+    Order is varied at the source rather than guessed at: reading order and
+    `(y0, x0)` happen to agree for most fixtures, which is why a positional join
+    survived. Reversing what the store hands back is the cheapest way to make
+    them disagree, and the result must not move.
+    """
+    _zones(root)
+    _save(root, [{"x0": 300, "y0": 620, "x1": 420, "y1": 660},
+                 {"x0": 500, "y0": 640, "x1": 620, "y1": 680}])
+
+    forward = page_state("1-048", root, "gt/ocr")["corr"]
+    assert len(forward) == 2
+
+    real = corr.load_lines
+    try:
+        corr.load_lines = lambda ref, r: list(reversed(real(ref, r)))
+        reversed_ = page_state("1-048", root, "gt/ocr")["corr"]
+    finally:
+        corr.load_lines = real
+
+    by_id = {c["id"]: (c["y0"], c["x0"], c["text"]) for c in forward}
+    assert by_id == {c["id"]: (c["y0"], c["x0"], c["text"]) for c in reversed_}, \
+        "a fragment's geometry followed its position rather than its id"
+
+
+def test_the_overlay_box_does_not_leak_its_join_key(root):
+    """`line_id` is carried only to join on and is popped; the client's box
+    shape is what it was."""
+    _zones(root)
+    _save(root, [IN_ZONE])
+    st = page_state("1-048", root, "gt/ocr")
+    assert all("line_id" not in b for b in st["corr"] + st["lines"])
+
+
 def test_the_page_says_when_it_has_no_zoning(root):
     html = client(root).get("/lines/?ref=1-048").text
     assert "no zoning" in html

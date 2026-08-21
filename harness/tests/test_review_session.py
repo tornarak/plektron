@@ -404,6 +404,33 @@ def test_notes_are_not_posted_as_line_readings(two):
     assert "for(const t of document.querySelectorAll('textarea'))\n" not in js
 
 
+def test_the_edit_jump_markup_is_the_same_on_both_sides():
+    """`review._edit_jump_inner` and `review.js`'s `rebuildEditJump` emit one
+    fragment: the server renders it, the client rebuilds it after each save so
+    the list stays current without a reload.
+
+    The Python docstring says "keep the two in sync if this format changes" and
+    nothing held them — the second ungated transcription this pass found, after
+    `zones.js`'s order rules, which *claimed* a gate that did not exist. A
+    divergence here is silent by construction: both sides look right in
+    isolation and the list simply stops matching itself across a save.
+
+    Held on the two literal parts, which is what "the same markup" means here —
+    the label and the anchor shape. The empty case is a third literal and is the
+    one most likely to be reworded on one side alone.
+    """
+    js = Path("harness/web/static/js/review.js").read_text(encoding="utf-8")
+    from harness.review import _edit_jump_inner
+
+    assert _edit_jump_inner([]) == "<b>Edited lines:</b> none yet"
+    assert "'<b>Edited lines:</b> none yet'" in js
+
+    rendered = _edit_jump_inner([3])
+    assert rendered == "<b>Edited lines:</b> <a href='#l3'>3</a>"
+    assert "'<b>Edited lines:</b> '" in js
+    assert "<a href='#l${i}'>${i}</a>" in js
+
+
 def test_a_repeated_ref_is_queued_once(two):
     """`review 2-046 2-046` is a typo, and a strip that showed it twice would make
     its own "n/2 adjudicated" count a lie."""

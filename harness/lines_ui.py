@@ -80,16 +80,33 @@ def page_state(ref: str, root: Path = Path("."),
                    "x1": round((r["hpos"] + r["width"]) * sx),
                    "y1": round((r["vpos"] + r["height"]) * sy),
                    "index": r["index"], "zone": r["zone"],
-                   "text": r.get("text") or ""}
+                   "text": r.get("text") or "",
+                   # Carried only to join on below, then popped: the client's
+                   # box shape is unchanged.
+                   "line_id": r.get("line_id")}
             (corrected if r["src"] == "corr" else lines).append(box)
 
     # The fragment is the authority on a correction's geometry — `page_lines`
     # scales into the ALTO's space and back would lose a pixel either way.
+    #
+    # **Joined on the id, not on position.** This was a `zip(..., strict=False)`
+    # of two independently-ordered sequences — `corrected` in `page_lines` order,
+    # the fragments re-sorted by `(y0, x0)` — so a divergence stapled one
+    # correction's id and geometry onto another's box, and a length mismatch
+    # truncated in silence. The box's `text` is the only thing that confirms the
+    # right line was clicked, which is exactly what a crossed join corrupts.
+    # `review.py:692` refuses positional joins here for the same reason and
+    # names it "the one failure this repo has already paid for twice"; there is
+    # a real key, since `_fold_corrections` carries the fragment's own `id`
+    # through as `line_id`.
     stored = {c["id"]: c for c in corr.load_lines(ref, root)}
-    for box, rec in zip(corrected, sorted(stored.values(),
-                                          key=lambda r: (r["y0"], r["x0"])),
-                        strict=False):
+    for box in corrected:
+        rec = stored.get(box.pop("line_id", None))
+        if rec is None:
+            continue
         box.update({k: rec[k] for k in ("id", "x0", "y0", "x1", "y1", "text")})
+    for box in lines:
+        box.pop("line_id", None)
 
     zones = zn.read_zones(ref, root)
     bands = line_gaps(ref, alto_dir, root) if alto.exists() else []

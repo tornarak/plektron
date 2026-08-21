@@ -32,6 +32,7 @@ from pathlib import Path
 
 from lxml import etree
 
+from .atomic import tmp_for, write_atomic
 from .context import figure_number, norm_ref, parse_ref
 
 GRAPHIC = "GraphicZone"
@@ -308,7 +309,7 @@ def set_split(ref: str, split: str, root: Path = Path("."),
         entries = sorted(set(entries),
                          key=lambda e: parse_ref(
                              Path(e).stem.replace("chukchi-", "")))
-        p.write_text("".join(e + "\n" for e in entries), encoding="utf-8")
+        write_atomic(p, "".join(e + "\n" for e in entries))
     return {"ref": ref, "split": split}
 
 
@@ -384,8 +385,8 @@ def set_rule_exempt(ref: str, rules, root: Path = Path("."),
     p.parent.mkdir(parents=True, exist_ok=True)
     doc = {"_about": RULE_EXEMPT_ABOUT}
     doc.update({k: data[k] for k in sorted(data, key=parse_ref)})
-    p.write_text(json.dumps(doc, indent=2, sort_keys=False,
-                            ensure_ascii=False) + "\n", encoding="utf-8")
+    write_atomic(p, json.dumps(doc, indent=2, sort_keys=False,
+                               ensure_ascii=False) + "\n")
     return {"ref": ref, "rules": data.get(ref, {})}
 
 
@@ -670,7 +671,7 @@ def _predict_one(ref, root, net, dev, model_path, sha, dest) -> dict:
     _et.SubElement(steps, "{http://www.loc.gov/standards/alto/ns-v4#}"
                           "processingStepDescription").text = (
         f"{model_path} sha256:{sha[:16]} device:{dev}")
-    tmp = dest.with_suffix(".xml.tmp")
+    tmp = tmp_for(dest)
     tree.write(str(tmp), xml_declaration=True, encoding="UTF-8",
                standalone=None, pretty_print=True)
     tmp.replace(dest)
@@ -741,7 +742,7 @@ def propose_from_pdf(refs: list[str], root: Path = Path("."),
         # segmentation from a segmenter's guess without opening either.
         etree.SubElement(steps, f"{{{ALTO_NS}}}processingStepDescription").text = (
             f"{PDF_IMAGES} embedded-image placement")
-        tmp = dest.with_suffix(".xml.tmp")
+        tmp = tmp_for(dest)
         tree.write(str(tmp), xml_declaration=True, encoding="UTF-8",
                    standalone=None, pretty_print=True)
         tmp.replace(dest)
@@ -1250,7 +1251,7 @@ def migrate_store(root: Path = Path("."), commit: bool = False) -> dict:
         tree = build_alto(p["ref"], p["blocks"], p["size"], id_prefix="fig_")
         tree.write(str(alto_for(p["ref"], root)), xml_declaration=True,
                    encoding="UTF-8", standalone=None, pretty_print=True)
-    (root / READINGS).write_text(new_text, encoding="utf-8")
+    write_atomic(root / READINGS, new_text)
     out["committed"] = True
     return out
 
@@ -1447,7 +1448,7 @@ def save_figs(ref: str, blocks: list[dict], root: Path = Path("."),
     p.parent.mkdir(parents=True, exist_ok=True)
     if p.exists():
         p.with_suffix(".xml.prev").write_bytes(p.read_bytes())
-    tmp = p.with_suffix(".xml.tmp")
+    tmp = tmp_for(p)
     tree.write(str(tmp), xml_declaration=True, encoding="UTF-8",
                standalone=None, pretty_print=True)
     tmp.replace(p)
@@ -1512,7 +1513,7 @@ def delete_figs(ref: str, root: Path = Path("."), commit: bool = False,
         lst = _lst_path(root, which)
         entries = [e for e in _read_lst(lst) if e != f"chukchi-{ref}.xml"]
         if lst.exists():
-            lst.write_text("".join(e + "\n" for e in entries), encoding="utf-8")
+            write_atomic(lst, "".join(e + "\n" for e in entries))
     if rules:
         set_rule_exempt(ref, [], root)
     with (fig_dir(root) / JOURNAL).open("a", encoding="utf-8") as fh:

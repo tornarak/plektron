@@ -49,6 +49,7 @@ from lxml import etree
 # Aliased: this module already exposes a `corrections` verb (proposal->decision
 # character diffs), which is a different subject entirely.
 from . import corrections as _corr
+from .atomic import tmp_for
 from .context import norm_ref
 from .detectors import DOT_ABOVE_G, INVENTORY_CHARS, LOOKALIKES, unlicensed_marks
 from .lines import DEFAULT_ALTO_DIR, alto_for_lines, page_lines, raster_path
@@ -387,7 +388,7 @@ def save_decisions(ref: str, lines: dict, root: Path = Path("."),
     p.parent.mkdir(parents=True, exist_ok=True)
     if p.exists():
         p.with_suffix(".json.prev").write_bytes(p.read_bytes())
-    tmp = p.with_suffix(".json.tmp")
+    tmp = tmp_for(p)
     tmp.write_text(json.dumps(doc, ensure_ascii=False, indent=1), encoding="utf-8")
     tmp.replace(p)
 
@@ -701,7 +702,7 @@ def restore(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
     # gates the final `tmp.replace(target)` below, so dry-run and real-write share
     # one code path rather than a preview implementation drifting from the real one.
     target.parent.mkdir(parents=True, exist_ok=True)
-    tmp = target.with_suffix(".xml.tmp")
+    tmp = tmp_for(target)
     tree.write(str(tmp), xml_declaration=True, encoding="UTF-8", standalone=None)
 
     # Verify against the source rather than trusting the write: geometry identical,
@@ -827,7 +828,14 @@ def _esc(s: str) -> str:
 def _edit_jump_inner(idxs: list[int]) -> str:
     """The 'Edited lines' jump-list body, for the initial server render. `save()`'s
     JS rebuilds the same markup client-side after each save, so the list stays
-    current without a reload — keep the two in sync if this format changes."""
+    current without a reload.
+
+    Held to `review.js`'s `rebuildEditJump` by
+    `test_review_session.test_the_edit_jump_markup_is_the_same_on_both_sides`.
+    This used to say "keep the two in sync if this format changes" and rest on
+    somebody doing so; a divergence is silent by construction, since both sides
+    look right alone and the list only stops matching itself across a save.
+    """
     if not idxs:
         return "<b>Edited lines:</b> none yet"
     return "<b>Edited lines:</b> " + " ".join(f"<a href='#l{i}'>{i}</a>" for i in idxs)
