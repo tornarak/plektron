@@ -237,6 +237,24 @@ class TestQueryReduction:
         assert bare(nfd("vaˊɪrg̣ɪn")) == "vargn"
         assert bare("va'i_rg.i_n") == "vairgin"
 
+    @pytest.mark.parametrize("query", ["Taˊn˙ñɪn", "Ta'n.n~i_n", "tannin", "Tanñin"])
+    def test_a_printed_form_carrying_a_small_cap_reaches_its_key(self, query):
+        """The regression `bare` alone cannot fix, and the reason `_terms` exists.
+
+        `ɪ` is one non-ASCII character, so the reduction drops it whole while the
+        key spells it `i_` and keeps an ASCII `i`. The two sides part on the
+        corpus's commonest glyph, and the miss reads as a word the corpus lacks:
+        `3-125` hand-keyed `Taˊn˙ñɪn` against ten occurrences on six pages.
+        """
+        forms = [r["form"] for r in search([query], REPO)["matches"]]
+        assert nfd("Taˊn˙ñɪn") in forms, f"{query!r} did not reach it"
+
+    def test_the_reduction_alone_would_still_miss_it(self):
+        """Named so the fix is not mistaken for a change in `bare`, which is
+        unchanged and still parts on a small cap — see the test above this pair."""
+        assert bare(nfd("Taˊn˙ñɪn")) != bare("Ta'n.n~i_n")
+        assert handle_key(nfd("Taˊn˙ñɪn")) == "Ta'n.n~i_n"
+
     def test_a_reduced_query_cannot_match_across_unrelated_forms(self):
         """The reduction is a substring test like every other arm, so it must not
         become a wildcard: an empty reduction matches nothing rather than all."""
@@ -709,3 +727,38 @@ def test_an_unconsultable_lexicon_does_not_refuse_the_dispatch(tmp_path):
     root = make_page(tmp_path)                     # no data/marks_config.json in it
     block = build("3-063", root)["page_block"]
     assert "unavailable" in block and "infer nothing from its silence" in block
+
+
+class TestCompoundFallback:
+    """A hyphenated query the corpus holds only as its elements.
+
+    The index holds tokens, so a compound the book sets once and the corpus never
+    ratified as a unit returns nothing while every element of it is ratified. The
+    empty result is indistinguishable from a word the corpus lacks, and the reader
+    contract used to say exactly that. `3-125`'s note names `Aˊtal-Taˊn˙ñɪn`.
+    """
+
+    def test_the_whole_misses_and_the_elements_answer(self):
+        res = search([nfd("Aˊtal-Taˊn˙ñɪn")], REPO)
+        assert res["matches"], "the elements should have answered"
+        assert nfd("Taˊn˙ñɪn") in [r["form"] for r in res["matches"]]
+
+    def test_the_widening_is_named_rather_than_silent(self):
+        """A reader that gets elements back asked about a compound. If nothing
+        says so, it reads the rows as answers to the question it typed."""
+        res = search([nfd("Aˊtal-Taˊn˙ñɪn")], REPO)
+        assert res["split"], "a widened search must say it widened"
+        assert nfd("Taˊn˙ñɪn") in res["split"]
+
+    def test_a_compound_the_corpus_holds_whole_is_not_split(self):
+        """The fallback fires only on a miss: where the corpus has the compound,
+        the compound is the answer, and splitting would bury it under every
+        match for each element."""
+        res = search(["Ta'n.n~i_n-we^'thaw"], REPO)
+        assert res["matches"]
+        assert res["split"] == ""
+
+    def test_a_one_character_element_is_not_a_query(self):
+        """Splitting `a-b` must not turn into a wildcard sweep of the corpus."""
+        parts = nfd("a-Taˊn˙ñɪn").split("-")
+        assert [p for p in parts if len(bare(p)) >= 2] == parts[1:]

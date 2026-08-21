@@ -427,28 +427,48 @@ def nearby(ref: str, root: Path = Path("."), span: int = NEARBY_SPAN,
     return [r for g in groups[:most] for r in g]
 
 
-def search(queries: list[str], root: Path = Path("."), min_pages: int = 1,
-           context: int = 2) -> dict:
-    """Forms matching any query, with what a reader needs to judge them.
+def _terms(queries: list[str]) -> list[tuple[str, str]]:
+    """Each query as `(casefolded, bare)`, plus its key form where it has one.
 
-    Matched against the key, the bucket, the form and the key's bare-ASCII
-    reduction, so `kulu`, `kuluci` and `Kulu'c^i` all reach `Kuluˊči`. Substring,
-    not prefix: the interesting query is often a stem in the middle of a compound.
-    The query is reduced the same way the key is, so a reader may type the form as
-    the book prints it or as the key spells it — see `bare`.
+    **`bare` alone does not reduce the two sides alike, and the gap is the corpus's
+    commonest glyph.** A small cap is one non-ASCII character, so `bare` drops it
+    whole — `Taˊn˙ñɪn` reduces to `tannn` — while the key spells the same letter
+    `i_`, whose ASCII `i` survives, giving `tannin`. The printed form therefore
+    matched nothing, and the miss read exactly like a word the corpus lacks. The
+    same holds for `ᴇ ᴀ ʟ ɵ` and for `ᵋ`/`ᵉ`, whose key is `e^`.
+
+    `handle_key` is the conversion and already exists; it is applied here so a
+    reader may type what the book prints. It raises on a glyph with no marker
+    rather than dropping it, and that is left to fall through to the raw query:
+    an uncatalogued character is a finding for `keying_spec.md` §2.16, not a
+    reason for the search to fail.
     """
-    idx = index(root)
-    qs = [(q.casefold(), bare(q)) for q in queries]
-    rows, seen = [], set()
+    out = []
+    for q in queries:
+        forms = [q]
+        if not q.isascii():
+            try:
+                forms.append(handle_key(q))
+            except ValueError:
+                pass
+        out += [(f.casefold(), bare(f)) for f in forms]
+    return out
+
+
+def _scan(idx: dict, terms: list[tuple[str, str]], rows: list, seen: set,
+          min_pages: int) -> bool:
+    """Append every form any term reaches. True if this pass found anything."""
+    found = False
     for bucket, b in sorted(idx["buckets"].items()):
         ambiguous = len(spellings(b)) > 1
         pages = len(b["refs"])
         for key, f in sorted(b["forms"].items()):
             reduced = bare(key)
             hay = (key.casefold(), bucket.casefold(), f["form"].casefold(), reduced)
-            if not (any(q in h for q, _ in qs for h in hay)
-                    or any(qb and qb in reduced for _, qb in qs)):
+            if not (any(q in h for q, _ in terms for h in hay)
+                    or any(qb and qb in reduced for _, qb in terms)):
                 continue
+            found = True
             usable = not ambiguous and pages >= min_pages
             seen.add(bucket)
             rows.append({
@@ -463,11 +483,49 @@ def search(queries: list[str], root: Path = Path("."), min_pages: int = 1,
                         else f"attested on {pages} page(s), below the floor "
                              f"of {min_pages}"),
             })
+    return found
+
+
+def search(queries: list[str], root: Path = Path("."), min_pages: int = 1,
+           context: int = 2) -> dict:
+    """Forms matching any query, with what a reader needs to judge them.
+
+    Matched against the key, the bucket, the form and the key's bare-ASCII
+    reduction, so `kulu`, `kuluci` and `Kulu'c^i` all reach `Kuluˊči`. Substring,
+    not prefix: the interesting query is often a stem in the middle of a compound.
+    A non-ASCII query is also matched as its key (`_terms`), so a reader may type
+    the form as the book prints it — `bare` alone does not reduce the two sides
+    alike, and small caps are where it parts.
+
+    **Two silent wrong negatives are what this exists to stop**, both of which cost
+    real readings: the printed form matching nothing, and a hyphenated compound the
+    corpus holds only as its elements. `split` names the elements when the whole
+    missed and the answer came from them, so a widened search says it widened.
+    """
+    idx = index(root)
+    rows, seen = [], set()
+    terms = _terms(queries)
+    split = []
+    # **The elements of a compound, but only once the whole has missed.** The corpus
+    # indexes tokens, so a hyphenated form it holds only as its parts returns nothing
+    # while every part is ratified — `Aˊtal-Taˊn˙ñɪn` misses and `Taˊn˙ñɪn` does not,
+    # which is how `3-125` hand-keyed a form attested ten times on six pages. Kept as
+    # a fallback rather than folded into the first pass: querying a compound should
+    # answer about the compound where the corpus has one, and widening unconditionally
+    # would bury that row under every match for each element.
+    if not _scan(idx, terms, rows, seen, min_pages):
+        split = [p for q in queries for p in q.split("-")
+                 if len(bare(p)) >= 2 and p != q]
+        if split:
+            _scan(idx, _terms(split), rows, seen, min_pages)
     lines = [ln for bucket in sorted(seen)
              for f in idx["buckets"][bucket]["forms"].values()
              for ln in f["lines"][:context]]
     return {
         "queries": " ".join(queries),
+        # Empty unless the whole query missed and its elements answered. A reader
+        # that sees this got a different question answered than the one it asked.
+        "split": " ".join(split),
         "min_pages": min_pages,
         "forms_indexed": sum(len(b["forms"]) for b in idx["buckets"].values()),
         # **Stated on every run, because an empty result is not a corpus-wide

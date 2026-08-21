@@ -300,6 +300,44 @@ sets the word accented does not enter it. A proper name keeps its marks
 (`Nordenskiöld`): the entity store keys on the spelling. Gate: none.
 *Attested:* `2-124` L7 `rôle`; `2-158` L5 `séance`.
 
+### 2.16 The lexicon key — how a ratified form is addressed (SETTLED, derived)
+
+**A key is not a spelling and must never be read back as one.** `lexicon lookup`
+prints one beside every ratified form; `{key}` in a reading is replaced by the
+corpus's own characters. ASCII passes through unchanged — `'` and `-` included,
+and case is significant — while every other character leaves a visible marker, so
+that a key cannot be mistaken for the glyphs it names. `marks.HANDLE_MARKERS` is
+the table, and this is it:
+
+| marker | the glyph it marks |
+|---|---|
+| `'` | `ˊ` U+02CA stress |
+| `.` | `˙` U+02D9 palatalization **and** `◌̣` U+0323 dot below |
+| `^` | `◌̌` U+030C caron **and** `◌̂` U+0302 circumflex |
+| `~` | `◌̃` U+0303 tilde |
+| `:` | `◌̈` U+0308 diaeresis |
+| `)` | `◌̆` U+0306 breve |
+| `=` | `◌̄` U+0304 macron |
+| `_` | the letter before it is the small cap: `i_` ɪ, `e_` ᴇ, `a_` ᴀ, `l_` ʟ, `o_` ɵ |
+| `e^` | `ᵋ` U+1D4B **and** `ᵉ` U+1D49, whole |
+
+    Kuluˊči             kulu'c^i
+    Kavraˊlɪt           kavra'li_t
+    Notaˊs˙qa-vaˊɪrg̣ɪn  nota's.qa-va'i_rg.i_n
+
+**Three markers are many-to-one**, marked above: a key names a form, never a
+reading, which is the same reason §2.6's licences and not the key decide what a
+mark may sit on.
+
+**Query in the key alphabet, not in the printed glyphs.** `Taˊn˙ñɪn` typed as
+Unicode returns nothing while `Tannin` and `Ta'n.n~i_n` both reach it, and the
+empty result reads exactly like a word the corpus lacks. **A miss is a fact about
+the query, never about the corpus** — and the two that have cost this pass real
+readings are the printed form, and a hyphenated compound the corpus holds only as
+its elements (`Aˊtal-Taˊn˙ñɪn` misses; `Tannin` does not). Query each element.
+*Attested:* `3-125` L25, `Taˊn˙ñɪn` hand-keyed against ten ratified occurrences on
+six pages, one miss generalized across four lines.
+
 ## 3. Forbidden lookalikes
 
 Codepoints that are always an error in the scope named. The four marked
