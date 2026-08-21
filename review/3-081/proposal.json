@@ -1,0 +1,203 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "615"
+    },
+    "2": {
+      "text": "dependent on the master. The beginning of the relations between master"
+    },
+    "3": {
+      "text": "and assistant is well described in the tale of Aiˊg̣ɪnto.¹",
+      "resolved": "Aiˊg̣ɪnto = A,i, U+02CA COMBINING STRESS (postposed), g+U+0323 COMBINING DOT BELOW, U+026A LATIN SMALL CAPITAL I, n,t,o; footnote opener 1 = U+00B9 SUPERSCRIPT ONE",
+      "note": "Machine text (mz) had 'Ai'ginto.!' -- trailing ! is the recognizer's ASCII substitute for the superscript footnote digit; keyed superscript 1 per §2.10. Dot below g confirmed at 4x; ground truth on 3-029 spells this same name Aiˊg̣ɪnto, matching.",
+      "class": "draft",
+      "as_typed": "and assistant is well described in the tale of {Ai'g.i_nto}.¹"
+    },
+    "4": {
+      "text": "“Then they continued their journey with dogs. At last they were without food. All their"
+    },
+    "5": {
+      "text": "dogs had perished. They went afoot, drawing their sledges behind them. Almost all their strength"
+    },
+    "6": {
+      "text": "was spent. At last they met a large reindeer-herd. One small boy herdsman was with the herd."
+    },
+    "7": {
+      "text": "‘Oh, oh, guests! And who are you?’ — ‘We are people of Aiˊg̣ɪnto.’ — ‘Aha! at last we have",
+      "resolved": "Aiˊg̣ɪnto = A,i,U+02CA,g+U+0323,U+026A,n,t,o",
+      "note": "Quote nesting: outer narrative in double quotes (opened L4), this line's speech is single-quoted per print.",
+      "class": "print",
+      "as_typed": "‘Oh, oh, guests! And who are you?’ — ‘We are people of {Ai'g.i_nto}.’ — ‘Aha! at last we have"
+    },
+    "8": {
+      "text": "found some companions on this earth. Come to our tent.’ — ‘But who is the oldest of all there?’ —"
+    },
+    "9": {
+      "text": "‘The father, of course.’ — ‘But maybe he will say “I do not want them.” Let us rather stay here",
+      "note": "mz text read 'iather' for 'rather' (recognizer misread); confirmed 'rather' at 2x against the printed r-shape.",
+      "class": "draft"
+    },
+    "10": {
+      "text": "in this place.’ — ‘Then I shall go and ask the father.’"
+    },
+    "11": {
+      "text": "“The old man lives in his tent with his wife and family. ‘There,’ says the son, ‘some guests"
+    },
+    "12": {
+      "text": "have come, quite unknown before.’ — ‘Where are they? Let them come in.’ — ‘They have"
+    },
+    "13": {
+      "text": "remained with the herd, saying, “Maybe thy father will say, ‘I do not want them.’”’ — ‘Oh, you",
+      "note": "Triple-nested closing punctuation confirmed at 2x: single quote closes the inner reported command, double quote closes the father's reported speech, single quote closes the outer 'They have remained...' clause.",
+      "class": "print"
+    },
+    "14": {
+      "text": "are the cause of the delay,’ says the old man. ‘Our companions-to-be are waiting in the open."
+    },
+    "15": {
+      "text": "Go back, and be quick!’ The boy sped back like an arrow shot from a bow. ‘The father chides"
+    },
+    "16": {
+      "text": "me for your error, and says, “Why have you not brought them all at once?”’ — ‘Eh, eh! then",
+      "note": "Confirmed at 2x: double-quote close then single-quote close in sequence ('once?\"'), matching the same triple-nesting pattern as L13.",
+      "class": "print"
+    },
+    "17": {
+      "text": "let us go there.’ They came to the tent. Aiˊg̣ɪnto refused to enter, and told the children to stay",
+      "resolved": "Aiˊg̣ɪnto = A,i,U+02CA,g+U+0323,U+026A,n,t,o",
+      "as_typed": "let us go there.’ They came to the tent. {Ai'g.i_nto} refused to enter, and told the children to stay"
+    },
+    "18": {
+      "text": "outside. ‘Maybe the old woman will look at us awry.’ Only the young herdsman has entered."
+    },
+    "19": {
+      "text": "‘Where are the guests?’ — They refuse to enter, saying, ‘Maybe the old woman will look at us"
+    },
+    "20": {
+      "text": "awry.’ — ‘Oh, oh! You old one, now you are the cause of the delay. Go out and make them"
+    },
+    "21": {
+      "text": "enter.’ The old woman went out. ‘Ah, ah! a woman guest has come. Quick, enter the sleeping-"
+    },
+    "22": {
+      "text": "room!’ She took the snow-beater and dusted their clothes, shaking off the snow. ‘Go in.’ — ‘Let"
+    },
+    "23": {
+      "text": "the father enter first,’ says the master from within. Aiˊg̣ɪnto entered. ‘You came?’ — ‘Yes, I",
+      "resolved": "Aiˊg̣ɪnto = A,i,U+02CA,g+U+0323,U+026A,n,t,o",
+      "as_typed": "the father enter first,’ says the master from within. {Ai'g.i_nto} entered. ‘You came?’ — ‘Yes, I"
+    },
+    "24": {
+      "text": "came!’² He showed him to the place of honor, opposite himself, by the other side of the lamp.",
+      "resolved": "footnote marker ² = U+00B2 SUPERSCRIPT TWO",
+      "note": "Superscript footnote marker confirmed at 4x, immediately after the closing single quote.",
+      "class": "print"
+    },
+    "25": {
+      "text": "‘Then let the sons of the guest enter.’ The boys entered. He made them sit down by his own",
+      "note": "Confirmed at 2x this is a single-quote opening (continuing the master's speech level), not a new double-quoted paragraph.",
+      "class": "print"
+    },
+    "26": {
+      "text": "side. ‘These shall be my own dear sons.’ — ‘And what shall I do (without sons),’ said Aiˊg̣ɪnto.",
+      "resolved": "Aiˊg̣ɪnto = A,i,U+02CA,g+U+0323,U+026A,n,t,o",
+      "as_typed": "side. ‘These shall be my own dear sons.’ — ‘And what shall I do (without sons),’ said {Ai'g.i_nto}."
+    },
+    "27": {
+      "text": "‘Wait a little! Let my own son enter here.’ The boy entered. ‘This shall be thy son, since he"
+    },
+    "28": {
+      "text": "brought thee here.’ — ‘All right,’ said Aiˊg̣ɪnto. ‘Mine are two sons, and thine only one. Let us",
+      "resolved": "Aiˊg̣ɪnto = A,i,U+02CA,g+U+0323,U+026A,n,t,o",
+      "as_typed": "brought thee here.’ — ‘All right,’ said {Ai'g.i_nto}. ‘Mine are two sons, and thine only one. Let us"
+    },
+    "29": {
+      "text": "exchange, if food from thee is included in the bargain.’"
+    },
+    "30": {
+      "text": "“Thus they began to live. All three boys were taking care of the herd. The old men staid"
+    },
+    "31": {
+      "text": "at home.”"
+    },
+    "32": {
+      "text": "This description shows well how strong may be the desire of the master"
+    },
+    "33": {
+      "text": "to have a new neighbor and assistant for the care of the herd. Of course,"
+    },
+    "34": {
+      "text": "it gives the ideal conditions of such relations. It will be noted that the rich"
+    },
+    "35": {
+      "text": "reindeer-owner and the poor new-comer meet in this tale on a quite equal"
+    },
+    "36": {
+      "text": "footing, and then they live rather as two brothers than as master and dependent."
+    },
+    "37": {
+      "text": "Another tale concerning Eleˊndi and his sons describes the same relationship",
+      "resolved": "Eleˊndi = E,l,e,U+02CA COMBINING STRESS (postposed),n,d,i",
+      "as_typed": "Another tale concerning {Ele'ndi} and his sons describes the same relationship"
+    },
+    "38": {
+      "text": "entered into between the master and his slave who was taken as a prisoner"
+    },
+    "39": {
+      "text": "of war."
+    },
+    "40": {
+      "text": "The tale describes how Eleˊndi sent his prisoner to the herd, and ordered",
+      "resolved": "Eleˊndi = E,l,e,U+02CA,n,d,i",
+      "note": "A raised wedge-shaped ink mark sits between 'n' and 't' in the ordinary English word 'sent' (confirmed at 4x) -- not a diacritic, no Tier-1 form here. Read as a printer's blot/artifact per §2.14 ('wear is not a letter') and keyed as plain 'sent'.",
+      "class": "artifact",
+      "as_typed": "The tale describes how {Ele'ndi} sent his prisoner to the herd, and ordered"
+    },
+    "41": {
+      "text": "¹ Bogoras, Chukchee Materials, p. 263.",
+      "resolved": "footnote opener ¹ = U+00B9 SUPERSCRIPT ONE"
+    },
+    "42": {
+      "text": "² “Yeˊtti?” (“You came?”) “Tiyeˊttyäᵋq!” (“I came!”) are the usual greetings of the Chukchee, which are",
+      "resolved": "footnote opener 2 = U+00B2 SUPERSCRIPT TWO; Yeˊtti = Y,e,U+02CA,t,t,i; Tiyeˊttyäᵋq = T,i,y,e,U+02CA,t,t,y,a+U+0308 (ä),U+1D4B MODIFIER LETTER SMALL REVERSED OPEN E (laryngeal),q",
+      "note": "Mark after ä in Tiyeˊttyaq confirmed at 2x as the open-loop laryngeal shape (U+1D4B), distinct from the stress tick, per the-two-superscript-marks memory.",
+      "class": "print"
+    },
+    "43": {
+      "text": "exchanged when a man enters the sleeping-room. Good manners require these short formulas to be pronounced."
+    },
+    "44": {
+      "text": "When the new-comer is still outside, and the master, sitting in the sleeping-room, hears him coming, the first"
+    },
+    "45": {
+      "text": "words exchanged usually run as follows: —"
+    },
+    "46": {
+      "text": "“Mei” — “Wui!” — “Meˊñin?” — “Êloˊ, gŭm!”",
+      "resolved": "Meˊñin = M,e,U+02CA,n+U+0303 (ñ),i,n; Êloˊ = e+U+0302 (ê, capitalized as printed), l,o,U+02CA; gŭm = g,u+U+0306 (breve),m",
+      "note": "gŭm: mark over u confirmed at 4x as a single curved breve stroke (U+0306), not a diaeresis; licensed on u per §2.6. Rare-form advisory answered: no dropped mark found beyond the breve already keyed.",
+      "class": "print"
+    },
+    "47": {
+      "text": "“Halloo!” — “Ho!” — “Who (are you)?” — “No, (it is) I.”"
+    },
+    "48": {
+      "text": "Then follows the invitation to enter and exchange short greeting formulas. In the intercourse with the Russians,"
+    },
+    "49": {
+      "text": "another greeting is used, — toroˊma, — which is only the Russian greeting здорово (“Your health”), changed",
+      "resolved": "toroˊma = t,o,r,o,U+02CA,m,a",
+      "note": "Cyrillic здорово confirmed at 2x, plain modern spelling (no pre-reform sorts present, §2.7 not applicable).",
+      "class": "print"
+    },
+    "50": {
+      "text": "according to the necessities of Chukchee phonetics."
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

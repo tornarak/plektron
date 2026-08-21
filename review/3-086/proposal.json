@@ -1,0 +1,177 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "620",
+      "note": "Folio read directly off the numbered composite/RunningTitleZone line, box not strangled; no zoom needed per standing rule.",
+      "class": "layout"
+    },
+    "2": {
+      "text": "Chukchee say. If the opposite had been the case, perhaps a weak master"
+    },
+    "3": {
+      "text": "would not have dared to chastise a strong and active assistant."
+    },
+    "4": {
+      "text": "The Chukchee language has no special term for assistants. They are"
+    },
+    "5": {
+      "text": "called by the common word nɪm-tuˊmg̣ɪt (“camp-companions,” “camp-neighbors”),¹",
+      "as_typed": "called by the common word {ni_m-tu'mg.i_t} (“camp-companions,” “camp-neighbors”),¹",
+      "resolved": "nɪm = n+ɪ(U+026A)+m; -tuˊ- = t+u+U+02CA (stress); -mg̣ɪt = m+g+U+0323(dot below)+ɪ(U+026A)+t; ¹=U+00B9 SUPERSCRIPT ONE",
+      "note": "Word-final -gɪt keyed dotted (g̣) per keying_spec.md §5.1: \"Word-final -gɪn/-gɪt … is dotted, a closed count with no bare instance\"; matched via lexicon lookup to ratified key ni_m-tu'mg.i_t (1-111, 2-114). Footnote marker ¹ confirmed superscript at 2x zoom, tight against the closing paren per §2.10.",
+      "class": "draft"
+    },
+    "6": {
+      "text": "referring to all the inhabitants of the camp besides the chief. Another word"
+    },
+    "7": {
+      "text": "used for the same purpose is gŭpɪˊlɪn, which means simply “working one,”",
+      "resolved": "gŭ = g+u+U+0306(breve, licensed on u per §2.6); pɪˊ = p+ɪ(U+026A)+U+02CA(stress); lɪn = l+ɪ(U+026A)+n",
+      "note": "Advisory (rare form, 1 occurrence, 3.3% of 425): re-read at 4x against its own ink rather than any comparison — g breve p ɪ stress l ɪ n, no dropped mark found. Initial g's descender shows only the ordinary double-story loop, no separate dot-below distinguishable from the loop itself; word is not word-final -gɪn/-gɪt so §5.1's forced dot does not apply, so keyed plain g. No lexicon key found for gŭpɪˊlɪn.",
+      "class": "doubt"
+    },
+    "8": {
+      "text": "and is applied to all men active around the herd and house, including the"
+    },
+    "9": {
+      "text": "members of their own family. A third word in usage is čawčuwaˊ-aᵋmɵˊlɪn.",
+      "resolved": "čawčuwaˊ = č(c+U+030C)+a+w+č(c+U+030C)+u+w+a+U+02CA(stress); aᵋ = a+U+1D4B(laryngeal); mɵˊ = m+U+0275(ɵ, barred o)+U+02CA(stress); lɪn = l+ɪ(U+026A)+n",
+      "note": "Laryngeal U+1D4B confirmed at 4x by its open-loop-plus-tail shape (per memory the-two-superscript-marks); ɵ (U+0275) confirmed at 4x — horizontal bar through the o, distinct from plain o. The stray raised tick above the 'a' in the English word 'usage' earlier in the line is a printer's blot, not a diacritic (English common word; keyed plain per §2.15/R5). No lexicon key found for čawčuwaˊ-aᵋmɵˊlɪn.",
+      "class": "artifact"
+    },
+    "10": {
+      "text": "The first part of the word means, as indicated before, “Reindeer Chukchee,”"
+    },
+    "11": {
+      "text": "also “rich in reindeer;” the second part means “weak, dependent, subordinate,”"
+    },
+    "12": {
+      "text": "and implies a tinge of blame. The word äᵋmuˊlɪn by itself, when applied to",
+      "resolved": "äᵋ = a+U+0308(diaeresis)+U+1D4B(laryngeal); muˊ = m+u+U+02CA(stress); lɪn = l+ɪ(U+026A)+n",
+      "note": "Same laryngeal mark as L9, confirmed by shape (open loop+tail) at 4x. No lexicon key found for äᵋmuˊlɪn.",
+      "class": "doubt"
+    },
+    "13": {
+      "text": "a man, is taken almost as an abuse. With another preceding word, čiq,",
+      "resolved": "čiq = č(c+U+030C)+i+q"
+    },
+    "14": {
+      "text": "which means “utmost,” čiq-äᵋmuˊlɪn signifies “very weak,” “good for nothing,”",
+      "resolved": "čiq = č(c+U+030C)+i+q; äᵋmuˊlɪn = a+U+0308(diaeresis)+U+1D4B(laryngeal)+m+u+U+02CA(stress)+l+ɪ(U+026A)+n",
+      "note": "Same word as line 12 with čiq- prefix, no lexicon key found.",
+      "class": "doubt"
+    },
+    "15": {
+      "text": "and implies an insult, leading to a serious quarrel. Äᵋmuˊlɪn, however, is used",
+      "resolved": "Äᵋmuˊlɪn = A+U+0308(diaeresis)+U+1D4B(laryngeal)+m+u+U+02CA(stress)+l+ɪ(U+026A)+n, capitalized sentence-initial",
+      "note": "Same word as line 12/14, capitalized because sentence-initial; no lexicon key found.",
+      "class": "doubt"
+    },
+    "16": {
+      "text": "also as a proper name, which is sometimes met with among the Chukchee."
+    },
+    "17": {
+      "text": "Probably this term was applied in olden times to slaves and prisoners of war,"
+    },
+    "18": {
+      "text": "of which I shall speak later on."
+    },
+    "19": {
+      "text": "The words vɪˊyolɪn, vinreˊtelɪn, vinreˊt-tuˊmg̣ɪn, all signify “assistant” in",
+      "as_typed": "The words {vi_'yoli_n}, vinreˊtelɪn, {vinre't-tu'mg.i_n}, all signify “assistant” in",
+      "resolved": "vɪˊ = v+ɪ(U+026A)+U+02CA(stress); yolɪn = y+o+l+ɪ(U+026A)+n; vinreˊtelɪn = v,i,n,r,e+U+02CA(stress),t,e,l,ɪ(U+026A),n; vinreˊt-tuˊmg̣ɪn = v,i,n,r,e+U+02CA(stress),t,-,t,u+U+02CA(stress),m,g+U+0323(dot below),ɪ(U+026A),n — two stress marks, as printed",
+      "note": "vɪˊyolɪn and vinreˊt-tuˊmg̣ɪn matched to ratified lexicon keys (vi_'yoli_n: 2-045/2-046/2-067; vinre't-tu'mg.i_n: 2-067), both confirming the reading including the second word's two stress marks on its two hyphenated roots — printed as such at 4x (clearly two separate raised ticks, not one). vinreˊtelɪn carries no lexicon key; keyed by hand with single stress after 'vinre'. Flagged class doubt only for the double-stress form since it appears to depart from the culminative-stress rule (keying_spec.md §5.5, 'every polysyllabic Tier-1 word carries exactly one U+02CA') on its face, though the compound/hyphenated structure and the ratified lexicon match both support keying it as printed.",
+      "class": "doubt"
+    },
+    "20": {
+      "text": "the proper sense of that word; but they are applied rather to a man who"
+    },
+    "21": {
+      "text": "gives some special help. Therefore these terms are used also for the so-called"
+    },
+    "22": {
+      "text": "assistants of supernatural character.²",
+      "resolved": "²=U+00B2 SUPERSCRIPT TWO",
+      "note": "Footnote body reference, superscript per §2.10, tight against 'character.'",
+      "class": "print"
+    },
+    "23": {
+      "text": "Material Conditions. — The material conditions of life of assistants in"
+    },
+    "24": {
+      "text": "the camp of a master vary according to the quality of their work and the"
+    },
+    "25": {
+      "text": "size of the herd in the care of which they help. If the assistant has some"
+    },
+    "26": {
+      "text": "reindeer of his own, they are joined to the herd of the camp, and stay there"
+    },
+    "27": {
+      "text": "until the separation. In most cases, however, the assistants receive from the"
+    },
+    "28": {
+      "text": "herd of the master at least the daily food for their families. Their tents are"
+    },
+    "29": {
+      "text": "pitched in the camp among the “rear houses,” and at most slaughterings all"
+    },
+    "30": {
+      "text": "the houses of the camp receive one slaughtered reindeer each. Of course, the"
+    },
+    "31": {
+      "text": "front house receives one of the best, perhaps some large buck or a fat barren"
+    },
+    "32": {
+      "text": "doe; while the last of the rear houses may receive only a lean fawn hardly one"
+    },
+    "33": {
+      "text": "year old. This depends also on the position of the assistant in the camp. If the"
+    },
+    "34": {
+      "text": "master is contented with the work of the assistant, he would not presume to feed"
+    },
+    "35": {
+      "text": "his family with poor meat. In case the number of slaughtered animals does not"
+    },
+    "36": {
+      "text": "correspond to the number of houses, each house receives its part of the meat."
+    },
+    "37": {
+      "text": "The question of clothing and of material for the tent-covering is decided by"
+    },
+    "38": {
+      "text": "these slaughterings, because the women of each house take the skins of their"
+    },
+    "39": {
+      "text": "respective animals, and may use them at will for any wants of their family."
+    },
+    "40": {
+      "text": "Tea, sugar, tobacco, iron, and other articles bought from traders, are"
+    },
+    "41": {
+      "text": "acquired by the assistants, as well as by the masters, quite independently; for"
+    },
+    "42": {
+      "text": "instance, in exchange for peltries obtained in hunting-pursuits. Among the"
+    },
+    "43": {
+      "text": "¹ See p. 612.",
+      "resolved": "¹=U+00B9 SUPERSCRIPT ONE (opener)",
+      "note": "Note opener; printed digit sits at roughly the same size as the following word rather than clearly raised, but keyed as superscript per keying_spec.md §2.10's settled rule (marker keyed the same at reference and opener regardless of apparent size).",
+      "class": "print"
+    },
+    "44": {
+      "text": "² Compare p. 319.",
+      "resolved": "²=U+00B2 SUPERSCRIPT TWO (opener)",
+      "note": "Note opener; same observation as line 43 — keyed superscript per §2.10 regardless of apparent size.",
+      "class": "print"
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

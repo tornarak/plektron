@@ -1,0 +1,171 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "613"
+    },
+    "2": {
+      "text": "first on the right side of the line of houses, which, as stated before, are turned"
+    },
+    "3": {
+      "text": "toward the morning-dawn “direction.”¹ Often it stands really somewhat in",
+      "note": "Body footnote reference 1: CATMuS gave a straight-quote/ASCII-1 mix (direction.\"1); printed form is curly close quote then superscript ¹, per keying_spec.md §2.10 (\"Key the Unicode superscript ... at both\") and §1 (curly quotes).",
+      "class": "draft"
+    },
+    "4": {
+      "text": "front of the others. The right and the left side, in this case, are pointed"
+    },
+    "5": {
+      "text": "out, according to the Chukchee fashion, with face turned toward the sacrifi-"
+    },
+    "6": {
+      "text": "cing-place behind the tent² (poiaˊačên). Thus the place of the front house in",
+      "resolved": "tent² = superscript footnote 2 (U+00B2), CATMuS gave a bare '?'; poiaˊačên = p,o,i,a, U+02CA stress, a, c+U+030C, e+U+0302, n",
+      "note": "Tier-1 term poia'acen (\"sacrifice-place behind the tent\"), confirmed at 4x: plain dotted i (not small-cap U+026A), stress mark after poia, c+caron, e+circumflex. CATMuS draft had 'poia/acen' (slash for stress, per known ASCII-substitution pattern) and the footnote marker as '?'.",
+      "class": "draft"
+    },
+    "7": {
+      "text": "the camp is farthest to the northeast. The rear houses are put up southeast"
+    },
+    "8": {
+      "text": "of the front house. All houses stand in a single line. It should not be for-"
+    },
+    "9": {
+      "text": "gotten, however, that the camp-line may be turned also to the east or to the"
+    },
+    "10": {
+      "text": "north; also, when the ground is uneven, the camp-line may be broken, and"
+    },
+    "11": {
+      "text": "the houses erected out of the strict order. In this case, the entrances of the"
+    },
+    "12": {
+      "text": "rear houses are more and more turned toward the south, and the last house"
+    },
+    "13": {
+      "text": "may face a direction quite opposite to that of the front house. In most cases,",
+      "note": "Line-final comma verified against the raster at @100 (zoom): the print does carry a comma after 'cases' before the line break; the CATMuS draft this page's check compares against lacks it.",
+      "class": "print"
+    },
+    "14": {
+      "text": "the Chukchee take care that the entrance of one house shall not be directed"
+    },
+    "15": {
+      "text": "towards the poiaˊačên of the preceding one. Otherwise, in sacrificing, the",
+      "resolved": "poiaˊačên = p,o,i,a, U+02CA stress, a, c+U+030C, e+U+0302, n",
+      "note": "Same Tier-1 term as L6/L19 (poiaˊačên), confirmed against that reading; CATMuS draft used a curly apostrophe (’) for the stress mark.",
+      "class": "draft"
+    },
+    "16": {
+      "text": "odor of the hearth of the house standing in a wrong position might reach"
+    },
+    "17": {
+      "text": "the sacrificial fire of the preceding house, and taint its fire and fire-tools.³",
+      "note": "Footnote reference 3, superscript ³ (U+00B3) per keying_spec.md §2.10; CATMuS draft had plain ASCII '3'.",
+      "class": "draft"
+    },
+    "18": {
+      "text": "On the contrary, two houses having a common fire may stand “quite straight"
+    },
+    "19": {
+      "text": "to the poiaˊačên” (kɪt-poiaˊačê-ggêt). The front house is usually the largest of",
+      "resolved": "poia'acen = as L6/L15; kit = k, U+026A small-cap i (IPA block, serifed stem, no dot -- confirmed 4x against plain-i controls in 'poia'), t; poia'ace-gget = poia, U+02CA, a, c+U+030C, e+U+0302, hyphen, g, g, e+U+0302, t",
+      "note": "Tier-1 compound kit-poia'ace-gget, confirmed 4x. CATMuS draft rendered the small-cap U+026A as ASCII 'i' (kit-) and the stress mark as a curly apostrophe.",
+      "class": "draft"
+    },
+    "20": {
+      "text": "all. Therefore it is called čŭmñaˊ-pêraˊlɪn (i. e., “buck-similar”), meaning that",
+      "resolved": "cumna'-pera'lin = c+U+030C, u+U+0306, m, n+U+0303, a, U+02CA stress, hyphen, p, e+U+0302, r, a, U+02CA stress, l, U+026A small-cap i, n",
+      "note": "Tier-1 word cumna'-pera'lin (\"buck-similar\"), confirmed 4x: breve on u, tilde on n, circumflex on e (not acute -- CATMuS draft misread it as e-acute), and small-cap U+026A in the final syllable, same shape as the one on L19.",
+      "class": "draft"
+    },
+    "21": {
+      "text": "it appears among the other houses like a big reindeer-buck among the other"
+    },
+    "22": {
+      "text": "reindeer."
+    },
+    "23": {
+      "text": "The owner of the herd, or of the larger part of it, occupies this place"
+    },
+    "24": {
+      "text": "by right. The eldest of the brothers, or his son, has preference over the"
+    },
+    "25": {
+      "text": "others. Thus, sometimes a young boy may have preference over all his uncles."
+    },
+    "26": {
+      "text": "In the camps of the poor people, of which I have spoken before, the one"
+    },
+    "27": {
+      "text": "who is richer or stronger than the others will have the front place. In tem-"
+    },
+    "28": {
+      "text": "porary camps, — for instance, in those formed in trading-places by casual"
+    },
+    "29": {
+      "text": "comers, — the front place belongs to the first comer. All the others take"
+    },
+    "30": {
+      "text": "places according to the order in which they come; so that the last comer"
+    },
+    "31": {
+      "text": "occupies the rear place. The occupant of the front house is considered as the"
+    },
+    "32": {
+      "text": "chief of the camp. He orders the change of camping-place and of pasture-"
+    },
+    "33": {
+      "text": "ground, and designates the days for bringing the herd to the camp, for"
+    },
+    "34": {
+      "text": "slaughtering reindeer, for arranging ceremonials and sacrifices. In the every-"
+    },
+    "35": {
+      "text": "day life of the people he assigns the working-men to duties with the herd and"
+    },
+    "36": {
+      "text": "in the camp. It will thus be seen that his power within the precincts of this"
+    },
+    "37": {
+      "text": "small unit of two or three houses is very real. Since the Chukchee are very"
+    },
+    "38": {
+      "text": "impatient under other men’s authority, quarrels frequently happen even among"
+    },
+    "39": {
+      "text": "brothers. Then separation ensues, though the size of the herd would make"
+    },
+    "40": {
+      "text": "it preferable to keep together. When the camp includes families not connected"
+    },
+    "41": {
+      "text": "by ties of relationship, and quarrels occur, the separation of the herds leads"
+    },
+    "42": {
+      "text": "¹ Compare p. 386.",
+      "note": "Footnote opener 1, keyed superscript ¹ per keying_spec.md §2.10; CATMuS draft had plain ASCII '1'.",
+      "class": "draft"
+    },
+    "43": {
+      "text": "³ Compare p. 348.",
+      "note": "Footnote opener 3, keyed superscript ³ per keying_spec.md §2.10; CATMuS draft had plain ASCII '3'.",
+      "class": "draft"
+    },
+    "44": {
+      "text": "² Compare p. 372.",
+      "note": "Footnote opener 2, keyed superscript ² per keying_spec.md §2.10; CATMuS draft had plain ASCII '2'.",
+      "class": "draft"
+    },
+    "45": {
+      "text": "77—JESUP NORTH PACIFIC EXPED., VOL. VII.",
+      "note": "Signature line, unspaced em dash per keying_spec.md §2.11; CATMuS draft had a plain ASCII hyphen.",
+      "class": "draft"
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}
