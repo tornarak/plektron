@@ -254,12 +254,17 @@ def _keyed_by_hand(rec: dict, text: str) -> str:
 def _handle_issues(idx: str, rec: dict, text: str, root: Path) -> list[dict]:
     """The provenance record and the reading must agree, or neither is evidence.
 
-    Two defects and deliberately no third. There is **no arm noticing a hand-typed
-    form the lookup could have supplied**: it would fire on ordinary correct reading
-    on nearly every Tier-1 line of every page — a detector firing on ordinary work
+    Two defects here, and still **no arm noticing every hand-typed form the lookup
+    could have supplied**: that one would fire on ordinary correct reading on
+    nearly every Tier-1 line of every page — a detector firing on ordinary work
     buries the real hits, which is the failure `CLAUDE.md` names — and its only
     actionable reading would be "you should have used a handle here", which is
     pressure to stop looking at the raster.
+
+    `_named_key_issues` is the narrow arm that survives both objections, because
+    it fires only where the proposal named the key itself. Measured over the
+    twenty-seven pages of chapter XX: eight hits on five pages, every one a form
+    whose note quoted the key beside a hand-typed reading.
     """
     from .lookup import HANDLE, expand
 
@@ -286,6 +291,133 @@ def _handle_issues(idx: str, rec: dict, text: str, root: Path) -> list[dict]:
                          detail="no page keys a brace; this is a handle that was "
                                 "never expanded, or a character belonging in a "
                                 "note rather than in the text"))
+    return out
+
+
+#: A token in a `note` shaped like a lexicon key — bare ASCII carrying at least
+#: one of the key alphabet's marks, so ordinary English prose in a note does not
+#: match and `Cf. lexicon key taka'lhi_n` does.
+_NOTE_KEY = re.compile(r"[A-Za-z][A-Za-z0-9'\-_^.~:)=]*['_^.~:][A-Za-z0-9'\-_^.~:)=]*")
+
+#: The key alphabet's *distinctive* marks — small-cap `_`, dot-below `.`,
+#: circumflex `^`, tilde `~`, diaeresis `:`. The apostrophe is deliberately not
+#: among them: it is the one key character English prose also uses, so `don't` and
+#: `reader's` would make every note look like it named a key.
+_KEY_MARK = re.compile(r"[A-Za-z][A-Za-z0-9'\-)=]*(?:[_^~:]|\.[A-Za-z])")
+
+#: On a word boundary, because a substring test on `key` matches `keyed` — which
+#: readers write constantly ("keyed from the raster", "not keyed") — and would
+#: have left this gate open on nearly every note that has one.
+_KEY_WORD = re.compile(r"\b(?:keys?|lexicon|lookup)\b", re.I)
+
+
+def could_name_key(note: str) -> bool:
+    """Whether a `note` could be naming a lexicon key, cheaply.
+
+    The precondition on building the index, which walks the whole corpus and is
+    the expensive part of `proposal check`. Three words readers actually use, a
+    brace, or a token carrying one of the key alphabet's distinctive marks — the
+    last is what catches a key written with no word announcing it.
+
+    **`lookup` is in the list because leaving it out was a hole**: a note reading
+    "lookup gave `taka'lhi_n`" names a key and says neither "key" nor "lexicon",
+    and the arm never saw it. A word list assembled from the phrasings that
+    happened to appear in one chapter is a sample, not a rule, which is why the
+    mark test backs it up rather than the words standing alone.
+    """
+    note = note or ""
+    return ("{" in note or bool(_KEY_WORD.search(note))
+            or bool(_KEY_MARK.search(note)))
+
+
+def _lexicon_loader(root: Path):
+    """A zero-argument callable that builds the lexicon index once, on first call.
+
+    `index` walks the whole corpus, so a page whose notes never name a resolvable
+    key must not pay for it — and most pages don't. Handing `check`'s line loop a
+    loader rather than an index moves the cost to the first line that actually has
+    a token to resolve, and shares one walk across the rest of the page.
+    """
+    cache: dict = {}
+
+    def load() -> dict:
+        if "idx" not in cache:
+            from .lookup import index
+
+            cache["idx"] = index(root)
+        return cache["idx"]
+
+    return load
+
+
+def _named_key_issues(idx: str, rec: dict, text: str, root: Path,
+                      lex: dict | None = None) -> list[dict]:
+    """A `note` naming a key the line then types by hand.
+
+    The narrow arm `_handle_issues` declines to write in general. It fires only
+    where **the proposal itself names the key**, so it cannot fire on ordinary
+    correct reading, and its actionable reading is never "you should have used a
+    handle here" — which would be pressure to stop looking at the raster — but
+    "you cited corroboration you did not take". `3-088` wrote `Matches lexicon key
+    {Ai'g.i_nto} -> Aiˊg̣ɪnto` into three notes and typed all three by hand;
+    `3-094` wrote `Cf. lexicon key taka'lhi_n` beside a hand-typed `takaˊlhɪn`.
+    A brace in a note is the sharpest form of the tell: braces do nothing there,
+    so one is a handle the reader wrote down and then declined to use.
+
+    **A key the line disagrees with is not this, and must never be reported as
+    it.** Where a reader reads its own page against the corpus and keys what it
+    sees — `3-085`'s `Eiñeˊwg̣i` against a ratified `Eiñewg̣i`, `3-092`'s capital
+    `Tatk-Omruˊwg̣ê`, `3-103`'s `Mɪˊs˙qän` against `Mɪˊs˙qᴀn` — the resolved form
+    is *absent* from `text` and nothing fires. That is why the test is whether the
+    expansion appears in the line, and not whether a key was mentioned: the
+    mention is the reader doing exactly what the contract asks of a form the book
+    spells two ways.
+    """
+    from .lookup import HANDLE, expand
+
+    note = rec.get("note", "") or ""
+    if not note:
+        return []
+    if not could_name_key(note):
+        return []
+    used = set(HANDLE.findall(rec.get("as_typed", "") or ""))
+    named = [t for t in list(HANDLE.findall(note)) + _NOTE_KEY.findall(note)
+             if t not in used]
+    if not named:
+        return []
+    # Built here and not before: `index` walks the corpus, and a page reaches this
+    # line only if some note both trips the trigger and holds a token to resolve.
+    # `check` hands down a loader rather than an index so the walk happens once per
+    # page at most, and not at all on the pages that never get this far.
+    lex = lex() if callable(lex) else lex
+    out, seen = [], set()
+    for cand in named:
+        # A key may legitimately end in `.` — a form ending in g̣ keys as `...g.` —
+        # so the token as written is tried first and a trailing stop stripped only
+        # when that fails. Without the fallback a key closing a sentence (`Cf.
+        # lexicon key taka'lhi_n.`) never resolves, which is how most are written.
+        hit = None
+        for tok in ((cand, cand[:-1]) if cand.endswith(".") else (cand,)):
+            if tok in used or tok in seen:
+                continue
+            seen.add(tok)
+            form, refusals = expand("{" + tok + "}", root, idx=lex)
+            if not refusals and form in text:
+                hit = (tok, form)
+                break
+        if hit is None:
+            continue
+        tok, form = hit
+        out.append(issue(
+            idx, f"note names the key {tok!r}, the line types it by hand",
+            token=form,
+            detail="the corpus supplies these characters and the reading agrees "
+                   "with them, so the handle was available and was not used — a "
+                   "hand-retyped form must be re-read for a dropped mark, a keyed "
+                   "one was ratified elsewhere. Where the page disagrees with the "
+                   "corpus, key what you see: this fires only because the line "
+                   "already holds exactly what the key expands to",
+            severity=ADVISORY))
     return out
 
 
@@ -600,6 +732,9 @@ def check(path: Path, ref: str | None = None, root: Path = Path(".")) -> list[di
         out += _orphan_line_issues(data, ref, root)
         out += _added_terminal_punctuation(data, ref, root)
         out += page_issues(path, ref, root)
+    # Built once for the page and only when some note could name a key at all —
+    # `index` walks the whole corpus, and most pages carry no such note.
+    lex = _lexicon_loader(root)
     for idx, rec in sorted(data.get("lines", {}).items(), key=lambda kv: int(kv[0])):
         text = rec.get("text", "")
         resolved = rec.get("resolved", "")
@@ -620,6 +755,7 @@ def check(path: Path, ref: str | None = None, root: Path = Path(".")) -> list[di
                              + "/".join(NOTE_CLASSES) + " is it?)",
                              severity=ADVISORY))
         out += _handle_issues(idx, rec, text, root)
+        out += _named_key_issues(idx, rec, text, root, lex)
         for hit in apostrophe_flags(text):
             out.append(issue(idx, apostrophe_issues[hit["kind"]],
                              token=hit["token"],
