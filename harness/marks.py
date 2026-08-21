@@ -56,6 +56,7 @@ from __future__ import annotations
 
 import json
 import unicodedata
+from collections.abc import Collection
 from pathlib import Path
 
 from .context import norm_ref
@@ -733,7 +734,9 @@ def gt_conflicts(root: Path = Path(".")) -> dict:
             "stale_exemptions": _stale_exemptions(rows, exemptions, read)}
 
 
-def page_issues(path: Path, ref: str, root: Path = Path(".")) -> list[dict]:
+def page_issues(path: Path, ref: str, root: Path = Path("."),
+                cohort: Collection[str] | None = None,
+                corpus: list[tuple[str, str]] | None = None) -> list[dict]:
     """The two deterministic arms over one file, as `proposal_check` issue records.
 
     Only `rare` and `conflict`, and only these because they are the arms that need
@@ -750,6 +753,19 @@ def page_issues(path: Path, ref: str, root: Path = Path(".")) -> list[dict]:
     Returns nothing rather than raising when the config is absent — a reader
     running `proposal check` on a clone that has no `data/marks_config.json`
     should get the checks that do not need it, not a traceback.
+
+    **`cohort` is the leave-one-out set and the batch is its unit.** Excluding
+    only `ref` was right while a batch's pages reached the corpus one at a time
+    and wrong the moment they did not: after `restore` every sibling is in
+    `gt/ocr/`, so a form two readers of one pass introduced independently — they
+    are forbidden to see each other — comes back as this page's prior. `Yaˊyaq`
+    on `3-129` and `3-130` is the attested case. Defaults to `{ref}`, which is
+    the old behaviour and correct for a single page.
+
+    **`corpus` lets a caller walk `gt/ocr/` once for a whole run.** The walk is
+    2.4s at 645 pages and the result does not depend on `ref` — only the
+    filtering does — so a per-page walk cost an 18-page `proposal check` about a
+    minute of repeating itself.
     """
     try:
         cfg = load_config(root)
@@ -757,9 +773,10 @@ def page_issues(path: Path, ref: str, root: Path = Path(".")) -> list[dict]:
         return []
     ref = norm_ref(ref)
     batch = {ref: page_tokens(path)}
+    drop = frozenset(cohort) if cohort else {ref}
     prior: dict[str, list[str]] = {}
-    for r, tok in native_corpus(root):
-        if r != ref:          # leave-one-out, as everywhere here
+    for r, tok in (native_corpus(root) if corpus is None else corpus):
+        if r not in drop:     # leave-one-out, as everywhere here
             prior.setdefault(r, []).append(_nfd(tok))
     prior_tokens = [t for toks in prior.values() for t in toks]
 

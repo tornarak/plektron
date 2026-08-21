@@ -20,28 +20,59 @@ corpus differ, the expansion is not in `text` and nothing fires.
 """
 from __future__ import annotations
 
+import unicodedata
 from pathlib import Path
 
 import pytest
 
-from harness.proposal_check import _KEY_MARK, _NOTE_KEY, ADVISORY, _named_key_issues, could_name_key
+from harness.proposal_check import (
+    _KEY_MARK,
+    _NOTE_KEY,
+    ADVISORY,
+    _named_key_issues,
+    could_name_key,
+)
 
-#: A stub index in `lookup.index`'s shape, holding one keyed form. Passed as `lex`
-#: so no test here needs a corpus on disk.
+
+def nfd(s: str) -> str:
+    """**Every literal in this file goes through here.** The corpus is NFD
+    (`keying_spec.md` §1) and an editor composes `ê` to one codepoint, so a
+    literal asserted in NFC is asserted about a string the project never holds —
+    and `form in text` is exactly the comparison that fails silently on it."""
+    return unicodedata.normalize("NFD", s)
+
+
+def _bucket(key: str, form: str, refs: list[str]) -> dict:
+    """One bucket in `lookup.index`'s full shape.
+
+    Complete rather than minimal, and that is load-bearing: `expand` reads only
+    `form`, so a thin stub passed every test here until the `search` fallback
+    started running on the refusal path and died on `count`. A fixture that
+    happens to satisfy the code path under test is not a fixture for the module.
+    """
+    entry = {"form": nfd(form), "count": len(refs) * 2,
+             "refs": refs, "lines": []}
+    return {"forms": {key: entry}, "refs": refs}
+
+
+#: Two keyed forms, passed as `lex` so no test here needs a corpus on disk.
+#: `Čêpaˊt` is `3-142`'s, reachable by the query `Cepa't` but not as a key.
 LEX = {
-    "by_key": {"taka'lhi_n": "b1"},
-    "buckets": {"b1": {"forms": {"taka'lhi_n": {"form": "takaˊlhɪn"}},
-                       "refs": ["3-003", "3-006", "3-007"]}},
+    "by_key": {"taka'lhi_n": "b1", "C^e^pa't": "b2"},
+    "buckets": {"b1": _bucket("taka'lhi_n", "takaˊlhɪn",
+                              ["3-003", "3-006", "3-007"]),
+                "b2": _bucket("C^e^pa't", "Čêpaˊt", ["3-106", "3-107"])},
     "unkeyable": {},
 }
 
-HIT = "note names the key"
+HIT = "note names"
 
 
 def _issues(text: str, note: str, as_typed: str = "") -> list[dict]:
-    rec = {"text": text, "note": note}
+    text = nfd(text)
+    rec = {"text": text, "note": nfd(note)}
     if as_typed:
-        rec["as_typed"] = as_typed
+        rec["as_typed"] = nfd(as_typed)
     return _named_key_issues("2", rec, text, Path("."), LEX)
 
 
@@ -181,3 +212,88 @@ class TestTheIndexIsLazy:
                                 "the noun takaˊlhɪn", Path("."), loader)
         assert len(out) == 1
         assert calls == [1]
+
+
+class TestANoteMayNameTheQueryNotTheKey:
+    """`3-142`: "lexicon lookup 'Cepa't' returned no key" beside five hand-typed
+    `Čêpaˊt` — a query that does return the key, `C^e^pa't`.
+
+    `expand` needs the key itself, so the first pass is blind to a note that
+    quotes what the reader typed at the tool rather than what the tool printed
+    back. `search` reduces both sides and lands on it. Only a single usable row
+    counts: two rows mean the corpus offers a choice, and picking one would make
+    this arm the thing that settles a spelling.
+    """
+
+    def _issues(self, text, note):
+        text = nfd(text)
+        return _named_key_issues("5", {"text": text, "note": nfd(note)}, text,
+                                 Path("."), LEX)
+
+    def test_the_query_spelling_still_finds_it(self):
+        out = self._issues(
+            "Čêpaˊt lost a few animals",
+            "lexicon lookup 'Cepa't' returned no key.")
+        assert len(out) == 1
+
+    def test_it_names_what_the_note_wrote_and_the_key_both(self):
+        """Reporting only the key would have this arm misquote the proposal — the
+        very failure it exists to report."""
+        out = self._issues(
+            "Čêpaˊt lost a few animals",
+            "lexicon lookup 'Cepa't' returned no key.")
+        assert "C^e^pa't" in out[0]["issue"]
+        assert "Cepa" in out[0]["issue"]
+        assert "reaches the key" in out[0]["issue"]
+
+    def test_a_query_whose_form_the_line_lacks_is_silent(self):
+        """The disagreement case survives the widening: the reader read its own
+        page, and the ratified form is not what the line holds."""
+        assert self._issues("Cepat lost a few animals",
+                            "lexicon lookup 'Cepa't' returned no key.") == []
+
+
+class TestTheCorpusIsWalkedOncePerRun:
+    """`expand` and `index` build the corpus index when not given one, and the
+    walk is 2.4s at 645 pages. Three callers used to trigger it per *line* or per
+    *page*; all three now take an index from the caller above them.
+
+    The worst was `_handle_issues`, which calls `expand` for every line carrying
+    `as_typed` — so the verb was slowest on the pages using handles properly, the
+    thing the contract asks for. `3-143`'s nine handles cost 26 seconds.
+
+    These assert the plumbing rather than a duration: a timing test would be
+    flaky, and what actually regresses is someone dropping the `idx=` argument.
+    """
+
+    def _count_builds(self, monkeypatch) -> list:
+        """Every real call to `lookup.index`, however reached."""
+        import harness.lookup as lookup
+
+        builds: list[int] = []
+
+        def counted(root, exclude=None):
+            builds.append(1)
+            return LEX
+
+        monkeypatch.setattr(lookup, "index", counted)
+        return builds
+
+    def test_five_lines_carrying_handles_walk_once(self, monkeypatch):
+        """The regression that mattered. Drop the `idx=` from `_handle_issues`'
+        `expand` call and this counts five walks instead of one."""
+        from harness.proposal_check import _handle_issues, _lexicon_loader
+
+        builds = self._count_builds(monkeypatch)
+        loader = _lexicon_loader(Path("."), ())
+        for _ in range(5):
+            _handle_issues("2", {"as_typed": "the noun {taka'lhi_n}"},
+                           nfd("the noun takaˊlhɪn"), Path("."), loader)
+        assert builds == [1], f"walked {len(builds)} times for five lines"
+
+    def test_a_loader_nobody_uses_never_walks(self, monkeypatch):
+        from harness.proposal_check import _lexicon_loader
+
+        builds = self._count_builds(monkeypatch)
+        _lexicon_loader(Path("."), ())
+        assert builds == []

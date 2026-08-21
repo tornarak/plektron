@@ -735,20 +735,37 @@ class TestCompoundFallback:
     The index holds tokens, so a compound the book sets once and the corpus never
     ratified as a unit returns nothing while every element of it is ratified. The
     empty result is indistinguishable from a word the corpus lacks, and the reader
-    contract used to say exactly that. `3-125`'s note names `Aˊtal-Taˊn˙ñɪn`.
+    contract used to say exactly that. `3-125`'s note named `Aˊtal-Taˊn˙ñɪn`, and
+    it was the first fixture here.
+
+    **It cannot stay one, and that is the lesson.** Restoring `3-125` put the
+    compound *into* `gt/ocr/` — line 31 ends `Aˊtal-` and the dehyphenation joins
+    it to the next line's first token — so the query the test says must miss now
+    hits, and both assertions inverted on a corpus this very pass had grown. A
+    fixture the pass can ratify is self-invalidating. The first element here is
+    therefore nonsense no page will ever print, and only the ratified element is
+    real: what is under test is the fallback, not the corpus's contents.
     """
 
+    #: Never a token in this book, so the whole can only ever miss.
+    ABSENT = "zzqx"
+
     def test_the_whole_misses_and_the_elements_answer(self):
-        res = search([nfd("Aˊtal-Taˊn˙ñɪn")], REPO)
+        res = search([nfd(f"{self.ABSENT}-Taˊn˙ñɪn")], REPO)
         assert res["matches"], "the elements should have answered"
         assert nfd("Taˊn˙ñɪn") in [r["form"] for r in res["matches"]]
 
     def test_the_widening_is_named_rather_than_silent(self):
         """A reader that gets elements back asked about a compound. If nothing
         says so, it reads the rows as answers to the question it typed."""
-        res = search([nfd("Aˊtal-Taˊn˙ñɪn")], REPO)
+        res = search([nfd(f"{self.ABSENT}-Taˊn˙ñɪn")], REPO)
         assert res["split"], "a widened search must say it widened"
         assert nfd("Taˊn˙ñɪn") in res["split"]
+
+    def test_the_absent_element_really_is_absent(self):
+        """Guards the guard: if `ABSENT` ever became a corpus token the two tests
+        above would pass for the wrong reason, having stopped testing a miss."""
+        assert search([self.ABSENT], REPO)["matches"] == []
 
     def test_a_compound_the_corpus_holds_whole_is_not_split(self):
         """The fallback fires only on a miss: where the corpus has the compound,
@@ -762,3 +779,51 @@ class TestCompoundFallback:
         """Splitting `a-b` must not turn into a wildcard sweep of the corpus."""
         parts = nfd("a-Taˊn˙ñɪn").split("-")
         assert [p for p in parts if len(bare(p)) >= 2] == parts[1:]
+
+
+class TestLeaveOneOut:
+    """`index(exclude=…)` — the prior must not contain what it is judging.
+
+    After `restore` a page's ground truth *is* the adjudicated descendant of its
+    own proposal, so an index holding the page under test can hand it a key it
+    alone created. Run over a batch that had just been restored, `proposal check`
+    told `3-131` to use `Va'li_rg.i_n` (one occurrence, on `3-131`) and `3-137` to
+    use `li'nlin~qin` (one occurrence, on `3-137`) — readings the adjudicator had
+    just accepted, quoted back as corrections. Fifth instance of the
+    two-witnesses-that-are-one hazard `CLAUDE.md` names.
+
+    **Refs, plural, because the batch is the unit.** Two siblings introducing one
+    form were read by agents forbidden to see each other; their agreeing is one
+    witness, and after `restore` both sit in `gt/ocr/` looking like two.
+
+    Both tests derive their fixture from the index rather than naming a form, so
+    neither can invert when a later page attests something — which is exactly how
+    `TestCompoundFallback`'s first fixture died.
+    """
+
+    def _a_form(self, idx: dict) -> tuple[str, set[str]]:
+        """Some keyed form and the refs it is attested on."""
+        for b in idx["buckets"].values():
+            for key, f in b["forms"].items():
+                return key, set(f["refs"])
+        raise AssertionError("the corpus index is empty")
+
+    def test_excluding_every_page_a_form_is_on_removes_it(self):
+        idx = index(REPO)
+        key, refs = self._a_form(idx)
+        assert key in index(REPO, exclude=refs)["by_key"] is False or True
+        assert key not in index(REPO, exclude=refs)["by_key"]
+
+    def test_a_string_is_taken_as_one_ref_not_a_set_of_characters(self):
+        """`exclude="3-131"` must drop that ref, not every ref sharing a
+        character with it — the trap in accepting either a string or a set."""
+        idx = index(REPO)
+        key, refs = self._a_form(idx)
+        one = sorted(refs)[0]
+        got = index(REPO, exclude=one)
+        assert got["buckets"], "excluding one ref must not empty the corpus"
+        assert one not in {r for b in got["buckets"].values() for r in b["refs"]}
+
+    def test_excluding_nothing_is_the_whole_corpus(self):
+        assert index(REPO, exclude=None)["by_key"] == index(REPO)["by_key"]
+        assert index(REPO, exclude=[])["by_key"] == index(REPO)["by_key"]

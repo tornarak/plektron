@@ -19,9 +19,11 @@ from pathlib import Path
 
 import click
 
+from ..detectors import native_corpus
 from ..marks import marks as marks_report
 from ..paths import proposal_path
 from ..proposal_check import DEFECT, _parse_which, line_codepoints, replace_in_field
+from ..proposal_check import _lexicon_loader as lexicon_loader
 from ..proposal_check import check as check_proposal
 from ..proposal_check import fix as fix_proposal
 from ..proposal_check import set_field as set_proposal_field
@@ -215,7 +217,24 @@ def _proposals(a) -> list[str]:
 
 
 def run_check(a) -> int:
-    pairs = [(r, check_proposal(_path(a, r), r, a.root)) for r in _proposals(a)]
+    # Every ref in the run is excluded from every page's prior. A batch's pages
+    # were read by agents forbidden to see each other, so two of them agreeing is
+    # one witness, not two — and after `restore` both sit in `gt/ocr/` looking
+    # like corroboration. See `proposal_check._named_key_issues`.
+    refs = list(_proposals(a))
+    cohort = frozenset(refs)
+    # Built once for the run, not once per page: the cohort is the same for every
+    # ref, so the index each page would build is the same index. Lazy, so a run
+    # whose notes never name a key still pays nothing.
+    lex = lexicon_loader(a.root, cohort)
+    # Same reasoning for `marks.page_issues`' prior: one walk of `gt/ocr/` for the
+    # run rather than one per page. The walk does not depend on the ref — only the
+    # leave-one-out filtering does — and it is 2.4s at 645 pages.
+    corpus = native_corpus(a.root) if len(refs) > 1 else None
+    # The second index: full, for the handle-resolves check. See `check`.
+    lex_all = lexicon_loader(a.root, ())
+    pairs = [(r, check_proposal(_path(a, r), r, a.root, cohort, lex, corpus,
+                                lex_all)) for r in refs]
     # Exit is the worst across refs: one dirty page fails the batch, which is the
     # contract a gate has to have or a batch would launder a failure.
     out_per_ref(a, pairs)

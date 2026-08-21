@@ -34,6 +34,7 @@ from __future__ import annotations
 import json
 import re
 import unicodedata
+from collections.abc import Collection
 from pathlib import Path
 
 from .codepoints import non_ascii
@@ -251,8 +252,15 @@ def _keyed_by_hand(rec: dict, text: str) -> str:
     return HANDLE.sub("", typed) if typed else text
 
 
-def _handle_issues(idx: str, rec: dict, text: str, root: Path) -> list[dict]:
+def _handle_issues(idx: str, rec: dict, text: str, root: Path,
+                   lex=None) -> list[dict]:
     """The provenance record and the reading must agree, or neither is evidence.
+
+    **`lex` is why `proposal check` used to take minutes.** `expand` builds the
+    corpus index when it is not given one, and this arm calls it once per line
+    carrying `as_typed` — so a page that used handles well paid a 2.4s walk for
+    each of them, and `3-143`'s nine handles cost 26 seconds on one page. The
+    verb was slowest on exactly the pages doing the right thing.
 
     Two defects here, and still **no arm noticing every hand-typed form the lookup
     could have supplied**: that one would fire on ordinary correct reading on
@@ -276,7 +284,7 @@ def _handle_issues(idx: str, rec: dict, text: str, root: Path) -> list[dict]:
                                 "of this line; with no handle in it, it records "
                                 "nothing and badges the line for no reason"))
     elif typed:
-        want, refusals = expand(typed, root)
+        want, refusals = expand(typed, root, idx=lex() if callable(lex) else lex)
         if refusals:
             out.append(issue(idx, "as_typed no longer resolves",
                              detail="; ".join(refusals)))
@@ -330,7 +338,7 @@ def could_name_key(note: str) -> bool:
             or bool(_KEY_MARK.search(note)))
 
 
-def _lexicon_loader(root: Path):
+def _lexicon_loader(root: Path, exclude: Collection[str]):
     """A zero-argument callable that builds the lexicon index once, on first call.
 
     `index` walks the whole corpus, so a page whose notes never name a resolvable
@@ -344,10 +352,35 @@ def _lexicon_loader(root: Path):
         if "idx" not in cache:
             from .lookup import index
 
-            cache["idx"] = index(root)
+            cache["idx"] = index(root, exclude=exclude)
         return cache["idx"]
 
     return load
+
+
+def _one_key_for(token: str, root: Path, text: str,
+                 lex: dict | None = None) -> tuple[str, str] | None:
+    """`(key, form)` where `token` reaches exactly one usable key the line holds.
+
+    For a note that names the **query** rather than the key. `search` reduces both
+    sides, so `Cepa't` reaches `C^e^pa't` where `expand` — which needs the key
+    itself — refuses. Returns `None` on anything but a single usable row: several
+    rows mean the corpus offers a choice, and picking one would make this arm the
+    thing that settles a spelling.
+    """
+    from .lookup import bare, search
+
+    # `search` is a substring test over a bare reduction, so a short token is a
+    # wildcard: `_NOTE_KEY` finds `n.` inside `takaˊlhɪn.`, whose reduction `n`
+    # sits in `takalhin` and "resolves". The exact-key path cannot do this — a key
+    # is matched whole — so the floor belongs here and nowhere else.
+    if len(bare(token)) < 4:
+        return None
+    rows = [r for r in search([token], root, idx=lex)["matches"]
+            if r["key"] and r["form"] in text]
+    if len(rows) != 1:
+        return None
+    return rows[0]["key"], rows[0]["form"]
 
 
 def _named_key_issues(idx: str, rec: dict, text: str, root: Path,
@@ -372,11 +405,32 @@ def _named_key_issues(idx: str, rec: dict, text: str, root: Path,
     expansion appears in the line, and not whether a key was mentioned: the
     mention is the reader doing exactly what the contract asks of a form the book
     spells two ways.
+
+    **A note may name the query rather than the key, and that is the same
+    finding.** `3-142` wrote "lexicon lookup `Cepa't` returned no key" beside five
+    hand-typed `Čêpaˊt` — a query that does return the key, `C^e^pa't`. Resolved
+    as a key the token refuses, so the first pass is blind to it; put through
+    `search`, which is fuzzy on both sides by design, it lands on one usable row
+    whose form the line already holds. Only an unambiguous single hit counts: two
+    rows mean the corpus itself offers a choice, and naming one would be this arm
+    picking a side, which is the thing it exists not to do.
+
+    **The index must be leave-one-out, and without one this arm does not run.**
+    After `restore` a page's own reading is in `gt/ocr/`, so an index containing
+    it hands the page a key it alone created: run over the batch that had just
+    been restored, this reported `3-131` for not using `Va'li_rg.i_n` — one
+    occurrence, on `3-131` — and `3-137` for `li'nlin~qin`, one occurrence, on
+    `3-137`. Both readings the adjudicator had accepted, quoted back as
+    corrections. That is the two-witnesses-that-are-one failure `CLAUDE.md` names,
+    in a fifth place after the verbatim firewall, `review`'s span diff, `zones
+    score`'s `unseen` row and `marks`' prior. `check` therefore passes a loader
+    only when it has a ref to exclude, and `lex is None` means the caller could
+    not exclude anything — the same reason the corpus arms are skipped there.
     """
     from .lookup import HANDLE, expand
 
     note = rec.get("note", "") or ""
-    if not note:
+    if lex is None or not note:
         return []
     if not could_name_key(note):
         return []
@@ -396,20 +450,37 @@ def _named_key_issues(idx: str, rec: dict, text: str, root: Path,
         # so the token as written is tried first and a trailing stop stripped only
         # when that fails. Without the fallback a key closing a sentence (`Cf.
         # lexicon key taka'lhi_n.`) never resolves, which is how most are written.
+        variants = (cand, cand[:-1]) if cand.endswith(".") else (cand,)
+        if any(v in used or v in seen for v in variants):
+            seen.update(variants)
+            continue
+        seen.update(variants)
+        # **Every variant as a key before any of them as a query.** Both passes
+        # reach the same form, but only the first names the key the reader should
+        # have typed: run them interleaved and `taka'lhi_n.` resolves through
+        # `search` and gets reported as reaching `taka'lhi_n`, which is true and
+        # useless — the stripped variant *is* the key and says so directly.
         hit = None
-        for tok in ((cand, cand[:-1]) if cand.endswith(".") else (cand,)):
-            if tok in used or tok in seen:
-                continue
-            seen.add(tok)
+        for tok in variants:
             form, refusals = expand("{" + tok + "}", root, idx=lex)
             if not refusals and form in text:
-                hit = (tok, form)
+                hit = (tok, tok, form)
                 break
         if hit is None:
+            for tok in variants:
+                if found := _one_key_for(tok, root, text, lex):
+                    hit = (tok, *found)
+                    break
+        if hit is None:
             continue
-        tok, form = hit
+        # Named as written *and* as the key when they differ: the note said
+        # `Cepa't`, the key is `C^e^pa't`, and reporting only the latter would
+        # have this arm misquote the proposal — the very thing it is reporting.
+        wrote, key, form = hit
+        named = (f"the key {key!r}" if wrote == key
+                 else f"{wrote!r}, which reaches the key {key!r},")
         out.append(issue(
-            idx, f"note names the key {tok!r}, the line types it by hand",
+            idx, f"note names {named} and the line types it by hand",
             token=form,
             detail="the corpus supplies these characters and the reading agrees "
                    "with them, so the handle was available and was not used — a "
@@ -682,7 +753,9 @@ def line_codepoints(path: Path, line: str | None = None,
             for r in non_ascii(rec.get(field, ""))]
 
 
-def check(path: Path, ref: str | None = None, root: Path = Path(".")) -> list[dict]:
+def check(path: Path, ref: str | None = None, root: Path = Path("."),
+          cohort: Collection[str] | None = None, lex=None,
+          corpus: list[tuple[str, str]] | None = None, lex_all=None) -> list[dict]:
     """Per-line mismatches between what `text` contains and what `resolved` claims,
     plus apostrophe hits independent of `resolved` entirely.
 
@@ -731,10 +804,27 @@ def check(path: Path, ref: str | None = None, root: Path = Path(".")) -> list[di
 
         out += _orphan_line_issues(data, ref, root)
         out += _added_terminal_punctuation(data, ref, root)
-        out += page_issues(path, ref, root)
+        out += page_issues(path, ref, root, cohort, corpus)
     # Built once for the page and only when some note could name a key at all —
     # `index` walks the whole corpus, and most pages carry no such note.
-    lex = _lexicon_loader(root)
+    # Leave-one-out or nothing, and the batch is the unit: see
+    # `_named_key_issues`. `cohort` is every ref in this run, so a form two
+    # siblings introduced cannot come back as either one's prior.
+    #
+    # A caller checking several refs should build the loader once and pass it:
+    # the cohort is constant across a run, so every page would otherwise walk the
+    # corpus for an index identical to its siblings'. One walk is 2.4s at 645
+    # pages. `run_check` does this; the default keeps a single-page call working.
+    if lex is None and ref is not None:
+        lex = _lexicon_loader(root, cohort or {ref})
+    # **Two indexes, and they are not interchangeable.** `_named_key_issues` asks
+    # what an *independent* witness would have offered, so its index excludes the
+    # cohort. `_handle_issues` asks whether a handle the reader used still
+    # resolves — a provenance check, not a prior — and answering that against a
+    # leave-one-out index would report a legitimate handle as broken whenever its
+    # key happens to come from a sibling. So this one sees everything.
+    if lex_all is None:
+        lex_all = _lexicon_loader(root, ())
     for idx, rec in sorted(data.get("lines", {}).items(), key=lambda kv: int(kv[0])):
         text = rec.get("text", "")
         resolved = rec.get("resolved", "")
@@ -754,7 +844,7 @@ def check(path: Path, ref: str | None = None, root: Path = Path(".")) -> list[di
             out.append(issue(idx, "note with no class (which of "
                              + "/".join(NOTE_CLASSES) + " is it?)",
                              severity=ADVISORY))
-        out += _handle_issues(idx, rec, text, root)
+        out += _handle_issues(idx, rec, text, root, lex_all)
         out += _named_key_issues(idx, rec, text, root, lex)
         for hit in apostrophe_flags(text):
             out.append(issue(idx, apostrophe_issues[hit["kind"]],

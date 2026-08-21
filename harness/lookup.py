@@ -53,6 +53,7 @@ from __future__ import annotations
 
 import re
 import unicodedata
+from collections.abc import Collection
 from pathlib import Path
 
 from .detectors import native_corpus_context
@@ -65,8 +66,23 @@ from .marks import fold, handle_key, load_config
 HANDLE = re.compile(r"\{([A-Za-z0-9'\-_^.~:)=]+)\}")
 
 
-def index(root: Path = Path(".")) -> dict:
+def index(root: Path = Path("."),
+          exclude: str | Collection[str] | None = None) -> dict:
     """Every attested form, bucketed, keyed, and carrying the lines it occurs on.
+
+    `exclude` drops those refs' own rows — leave-one-out, for a caller checking a
+    page against the corpus. After `restore` a page's ground truth *is* the
+    adjudicated descendant of its own proposal, so an index containing the page
+    under test lets it be told to use a handle for a key it alone created. Same
+    failure `marks.py` names and excludes for, unconditionally.
+
+    **It takes refs, plural, and the whole batch is the unit.** A form two
+    siblings introduce is not corroborated by their agreeing: they were read in
+    one pass by readers forbidden to see each other, and after `restore` both
+    sit in `gt/ocr/` looking like independent attestation. `Yaˊyaq` arrived that
+    way on `3-129` and `3-130`, so excluding only the page under test still left
+    its own batch standing as its prior. `marks`' wording was plural — "minus the
+    refs under test" — before this was.
 
     Returns `{"buckets": {bucket: {...}}, "by_key": {key: bucket}, "unkeyable":
     {form: {...}}}`. `unkeyable` is named and never silently dropped: a token whose
@@ -82,10 +98,14 @@ def index(root: Path = Path(".")) -> dict:
     inventory detector, and every one of those words was invisible to the
     lexicon while this was a list of bare occurrences.
     """
+    drop = ({exclude} if isinstance(exclude, str)
+            else frozenset(exclude or ()))
     contrasts = load_config(root)["contrasts"]
     buckets: dict[str, dict] = {}
     unkeyable: dict[str, dict] = {}
     for r in native_corpus_context(root):
+        if r["ref"] in drop:
+            continue
         tok = r["token"]
         try:
             key = handle_key(tok)
@@ -487,7 +507,7 @@ def _scan(idx: dict, terms: list[tuple[str, str]], rows: list, seen: set,
 
 
 def search(queries: list[str], root: Path = Path("."), min_pages: int = 1,
-           context: int = 2) -> dict:
+           context: int = 2, idx: dict | None = None) -> dict:
     """Forms matching any query, with what a reader needs to judge them.
 
     Matched against the key, the bucket, the form and the key's bare-ASCII
@@ -501,8 +521,12 @@ def search(queries: list[str], root: Path = Path("."), min_pages: int = 1,
     real readings: the printed form matching nothing, and a hyphenated compound the
     corpus holds only as its elements. `split` names the elements when the whole
     missed and the answer came from them, so a widened search says it widened.
+
+    `idx` lets a caller that already walked the corpus hand its index over —
+    `proposal_check` resolves several candidates per page and would otherwise pay
+    for a walk apiece. Same contract as `expand`'s.
     """
-    idx = index(root)
+    idx = idx if idx is not None else index(root)
     rows, seen = [], set()
     terms = _terms(queries)
     split = []
