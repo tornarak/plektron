@@ -1,0 +1,371 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-3-061.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-3-061.png; regions_from: zones/chukchi-3-061.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+                <TextBlock ID="mz_3-061_r1" HPOS="433" VPOS="453" WIDTH="1782" HEIGHT="94" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="433 453 2215 453 2215 547 433 547"/>
+                    </Shape>
+                    <TextLine ID="mz_3-061_l1" HPOS="1005" VPOS="470" WIDTH="616" HEIGHT="49" BASELINE="1007 502 1621 505" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1611 474 1603 470 1025 470 1007 502 1005 515 1617 519 1621 505 1619 492 1611 474"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-061_l2" HPOS="2096" VPOS="476" WIDTH="92" HEIGHT="53" BASELINE="2096 515 2188 515" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2174 478 2159 476 2096 476 2096 515 2096 529 2188 529 2188 515 2186 478 2174 478"/>
+                        </Shape>
+                        <String CONTENT="595"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-061_r2" HPOS="433" VPOS="570" WIDTH="1782" HEIGHT="359" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="433 570 2215 570 2215 929 433 929"/>
+                    </Shape>
+                    <TextLine ID="mz_3-061_l3" HPOS="426" VPOS="566" WIDTH="1768" HEIGHT="64" BASELINE="428 617 2194 607" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="524 578 504 578 485 580 465 581 446 583 426 583 426 583 428 617 428 630 2192 626 2194 607 2188 570 1974 576 1948 566 1946 566 1944 566 1884 576 1849 566 1847 566 1845 566 1843 566 1841 566 1826 578 1771 568 1769 568 1674 578 1646 568 1644 568 1642 568 1561 578 1531 568 1529 568 1527 568 1525 568 1523 568 1508 580 1368 580 1276 570 1274 570 1272 570 1247 580 1161 570 1159 570 1157 570 1130 581 826 572 824 572 765 583 535 576 524 578"/>
+                        </Shape>
+                        <String CONTENT="the Chukchee and the Yakut. The Yakut, no less than the Russians, would"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-061_l4" HPOS="428" VPOS="630" WIDTH="1766" HEIGHT="59" BASELINE="430 675 2194 669" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="430 675 430 689 2192 683 2194 669 2190 642 1615 630 1613 630 1611 630 1609 630 1596 642 1555 632 1553 632 1551 632 1549 632 1516 642 1442 632 1440 632 1438 632 1407 642 1327 632 1138 632 1136 632 1134 632 1132 632 1116 642 935 634 933 634 931 634 898 644 528 634 526 634 428 646 430 675"/>
+                        </Shape>
+                        <String CONTENT="consider such a marriage as humiliating; but the Yakut are much stronger"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-061_l5" HPOS="428" VPOS="689" WIDTH="1766" HEIGHT="60" BASELINE="430 735 2194 728" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="430 735 430 749 2192 745 2194 728 2192 698 2174 689 2172 689 2171 689 2169 689 2167 689 2141 698 1909 689 1907 689 1785 698 1755 689 1753 689 1752 689 1750 689 1748 689 1734 700 1683 691 1681 691 1679 691 1654 700 1407 691 1405 691 1290 702 974 693 972 693 867 704 452 695 450 695 448 695 446 695 428 702 430 735"/>
+                        </Shape>
+                        <String CONTENT="than the Russians psychically and economically, nor do they suffer so much"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-061_l6" HPOS="426" VPOS="749" WIDTH="1770" HEIGHT="68" BASELINE="428 796 2196 788" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="428 796 428 808 682 817 683 817 910 806 2194 806 2196 788 2192 761 2087 749 2085 749 2011 759 1983 749 1981 749 1980 749 1978 749 1956 761 1787 761 1755 749 1753 749 1752 749 1750 749 1699 761 1403 751 1401 751 1307 763 937 753 935 753 933 753 906 763 873 753 871 753 869 753 867 753 828 765 440 755 438 755 436 755 434 755 426 759 428 796"/>
+                        </Shape>
+                        <String CONTENT="from hunger as the Russian creoles or the Tungus. Moreover, they have"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-061_l7" HPOS="430" VPOS="808" WIDTH="1766" HEIGHT="62" BASELINE="432 854 2196 848" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="432 854 432 870 2194 864 2196 848 2192 819 1792 808 1790 808 1789 808 1787 808 1771 817 1746 808 1744 808 1742 808 1601 819 1574 809 1572 809 1570 809 1488 821 1334 821 1317 809 1315 809 1313 809 1311 809 1258 819 1179 809 1177 809 1075 819 1046 809 1044 809 1042 809 1040 809 1009 821 925 811 923 811 921 811 892 823 763 823 748 811 746 811 744 811 742 811 430 817 432 854"/>
+                        </Shape>
+                        <String CONTENT="horses of their own, horned cattle, and even reindeer, and Chukchee reindeer"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-061_l8" HPOS="430" VPOS="874" WIDTH="692" HEIGHT="52" BASELINE="432 913 1122 909" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="432 913 432 926 1120 923 1122 909 1118 884 828 874 826 874 430 886 432 913"/>
+                        </Shape>
+                        <String CONTENT="are not so attractive to them."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-061_r3" HPOS="433" VPOS="929" WIDTH="1782" HEIGHT="427" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="433 929 2215 929 2215 1356 433 1356"/>
+                    </Shape>
+                    <TextLine ID="mz_3-061_l9" HPOS="541" VPOS="924" WIDTH="1657" HEIGHT="73" BASELINE="543 973 2198 965" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="543 973 543 985 857 997 859 997 861 997 882 987 1603 993 1605 993 1742 983 1757 993 1759 993 1761 993 1763 993 1829 981 1974 991 1976 993 2116 993 2116 991 2118 991 2139 981 2161 991 2163 991 2165 991 2167 991 2198 977 2198 965 2190 926 2163 938 2098 938 2077 924 2075 924 2073 924 2071 924 2069 924 2067 924 2050 938 1980 938 1954 924 1952 924 1950 924 1948 924 1946 924 1931 936 1798 936 1773 926 1771 926 1769 926 1767 926 1765 926 1748 938 1732 926 1730 926 1728 926 1726 926 1724 926 1691 940 1393 940 1342 928 1340 928 1338 928 1336 928 1319 940 1103 928 1101 928 1099 928 1097 928 1079 942 989 942 958 928 956 928 954 928 841 942 822 930 820 930 818 930 816 930 769 940 678 930 676 930 674 930 637 942 619 930 617 930 615 930 557 930 555 930 553 930 551 930 541 938 543 973"/>
+                        </Shape>
+                        <String CONTENT="The Marriage-Rite. — The most important part of the marriage-rite of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-061_l10" HPOS="432" VPOS="987" WIDTH="1764" HEIGHT="60" BASELINE="434 1034 2196 1026" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="434 1034 434 1047 2194 1043 2196 1026 2192 999 2145 987 2143 987 2141 987 2120 997 2046 987 2044 987 2042 987 2040 987 2024 999 1829 999 1802 987 1800 987 1798 987 1738 999 1685 989 1683 989 1586 999 1537 989 1535 989 1446 999 1256 991 1255 991 1253 991 1231 1000 874 991 873 991 756 1002 452 993 450 993 448 993 446 993 432 1000 434 1034"/>
+                        </Shape>
+                        <String CONTENT="the Reindeer Chukchee is the anointment of the bride and groom with the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-061_l11" HPOS="434" VPOS="1049" WIDTH="1760" HEIGHT="63" BASELINE="434 1090 2194 1090" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="434 1090 434 1104 2190 1112 2194 1090 2192 1061 1995 1061 1980 1049 1978 1049 1976 1049 1974 1049 1888 1061 1779 1061 1763 1049 1761 1049 1759 1049 1757 1049 1755 1049 1728 1059 1687 1049 1685 1049 1683 1049 1681 1049 1652 1061 1535 1061 1520 1049 1518 1049 1516 1049 1514 1049 1451 1061 1270 1061 1255 1049 1253 1049 1251 1049 1249 1049 1157 1059 1108 1049 1106 1049 1104 1049 1071 1059 1034 1049 1032 1049 1030 1049 1028 1049 991 1059 943 1049 941 1049 434 1055 434 1090"/>
+                        </Shape>
+                        <String CONTENT="blood of the sacrificial animal. This occurs either at the house of the groom,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-061_l12" HPOS="432" VPOS="1108" WIDTH="1764" HEIGHT="58" BASELINE="434 1154 2196 1149" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="434 1154 434 1166 2194 1164 2196 1149 2194 1119 2151 1108 2149 1108 2147 1108 2145 1108 2120 1117 2100 1108 2098 1108 2096 1108 1935 1117 1909 1108 1907 1108 1905 1108 1904 1108 1876 1117 1829 1108 1828 1108 1826 1108 1824 1108 1808 1119 1668 1119 1635 1108 1633 1108 1631 1108 1539 1119 1461 1110 1459 1110 1457 1110 1416 1119 1331 1110 1329 1110 1327 1110 1292 1121 1106 1121 1021 1110 1019 1110 1017 1110 988 1121 707 1112 705 1112 703 1112 674 1121 615 1112 613 1112 611 1112 609 1112 594 1121 537 1112 535 1112 432 1123 434 1154"/>
+                        </Shape>
+                        <String CONTENT="or, if the latter is to become an adopted son-in-law, at the house of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-061_l13" HPOS="432" VPOS="1166" WIDTH="1764" HEIGHT="63" BASELINE="434 1215 2196 1207" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="434 1215 434 1229 2194 1221 2196 1207 2192 1178 1847 1166 1845 1166 1742 1180 1477 1180 1444 1168 1442 1168 1440 1168 1366 1178 1329 1168 1327 1168 1325 1168 1323 1168 1321 1168 1301 1180 1266 1170 1264 1170 1262 1170 1260 1170 1231 1180 1186 1170 1184 1170 855 1182 432 1178 434 1215"/>
+                        </Shape>
+                        <String CONTENT="bride. The ceremony is relatively simple: the groom goes to his father-in-law"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-061_l14" HPOS="432" VPOS="1227" WIDTH="1766" HEIGHT="58" BASELINE="434 1271 2198 1267" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="434 1271 434 1285 2196 1283 2198 1267 2194 1240 2116 1227 2114 1227 2056 1238 1985 1227 1983 1227 1904 1238 1847 1227 1845 1227 1843 1227 1841 1227 1826 1238 1808 1227 1806 1227 1804 1227 1802 1227 1800 1227 1775 1238 1693 1227 1691 1227 1689 1227 1687 1227 1668 1240 1557 1240 1481 1227 1479 1227 1381 1238 1325 1227 1323 1227 1321 1227 1319 1227 1299 1240 962 1229 960 1229 861 1240 836 1229 834 1229 748 1229 746 1229 744 1229 721 1240 660 1229 658 1229 656 1229 629 1240 611 1229 609 1229 607 1229 606 1229 604 1229 576 1238 528 1229 526 1229 524 1229 522 1229 504 1242 432 1242 434 1271"/>
+                        </Shape>
+                        <String CONTENT="to fetch his bride, and brings her to his settlement. The bride, who drives"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-061_l15" HPOS="432" VPOS="1289" WIDTH="1546" HEIGHT="58" BASELINE="434 1334 1978 1328" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="434 1334 434 1345 1974 1347 1978 1328 1974 1299 1506 1289 1504 1289 1453 1299 952 1291 951 1291 949 1291 923 1301 432 1301 434 1334"/>
+                        </Shape>
+                        <String CONTENT="her own reindeer, is at times accompanied by her nearest relatives."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-061_r4" HPOS="433" VPOS="1356" WIDTH="1782" HEIGHT="1017" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="433 1356 2215 1356 2215 2373 433 2373"/>
+                    </Shape>
+                    <TextLine ID="mz_3-061_l16" HPOS="539" VPOS="1359" WIDTH="1659" HEIGHT="45" BASELINE="541 1390 2198 1386" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="541 1390 541 1404 2196 1400 2198 1386 2194 1359 539 1359 541 1390"/>
+                        </Shape>
+                        <String CONTENT="The party arrives at the settlement of the groom, where the reindeer"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-061_l17" HPOS="432" VPOS="1408" WIDTH="1766" HEIGHT="56" BASELINE="434 1453 2198 1447" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="434 1453 434 1464 2196 1462 2198 1447 2194 1419 1884 1408 1882 1408 1828 1418 1769 1408 1767 1408 1699 1418 1644 1408 1642 1408 1640 1408 1638 1408 1621 1418 1255 1410 1253 1410 1251 1410 1225 1419 1180 1410 1179 1410 1126 1419 1071 1410 1069 1410 828 1421 812 1412 810 1412 808 1412 592 1412 590 1412 432 1423 434 1453"/>
+                        </Shape>
+                        <String CONTENT="are unharnessed. The small pole-sledge on which the poles of the tent are"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-061_l18" HPOS="430" VPOS="1466" WIDTH="1768" HEIGHT="63" BASELINE="432 1513 2198 1505" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="432 1513 432 1527 2194 1529 2198 1505 2194 1476 1980 1466 1978 1466 1976 1466 1954 1476 1674 1468 1672 1468 1543 1478 1471 1468 1469 1468 1467 1468 1432 1478 1243 1470 1241 1470 1239 1470 1237 1470 1221 1482 1120 1482 1036 1470 1034 1470 1032 1470 1005 1480 890 1470 888 1470 430 1482 432 1513"/>
+                        </Shape>
+                        <String CONTENT="carried is put behind the tent, on the spot where sacrifices are usually made;"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-061_l19" HPOS="434" VPOS="1527" WIDTH="1766" HEIGHT="58" BASELINE="436 1573 2200 1568" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="436 1573 436 1585 2198 1583 2200 1568 2196 1538 2044 1527 2042 1527 1997 1536 1972 1527 1970 1527 1968 1527 1966 1527 1927 1536 1902 1527 1900 1527 1898 1527 1812 1536 1781 1527 1779 1527 1777 1527 1590 1538 1120 1529 1118 1529 1116 1529 1095 1538 797 1531 795 1531 748 1540 701 1531 699 1531 697 1531 654 1540 600 1531 598 1531 596 1531 555 1540 477 1531 475 1531 473 1531 434 1542 436 1573"/>
+                        </Shape>
+                        <String CONTENT="while the travelling-sledges of the bride and groom stand on both sides at"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-061_l20" HPOS="434" VPOS="1587" WIDTH="1764" HEIGHT="59" BASELINE="436 1632 2198 1628" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="436 1632 436 1646 2196 1646 2198 1628 2194 1601 2019 1587 2017 1587 2015 1587 2013 1587 1991 1601 1904 1601 1857 1587 1855 1587 1853 1587 1785 1599 1750 1587 1748 1587 1746 1587 1744 1587 1742 1587 1726 1599 1711 1587 1709 1587 1707 1587 1590 1587 1588 1587 1586 1587 1559 1599 1529 1587 1527 1587 1525 1587 1523 1587 1494 1599 1362 1587 1360 1587 1358 1587 1313 1601 1286 1589 1284 1589 1282 1589 1056 1601 1005 1589 1003 1589 1001 1589 945 1601 832 1589 830 1589 765 1601 604 1589 602 1589 600 1589 598 1589 578 1603 434 1603 436 1632"/>
+                        </Shape>
+                        <String CONTENT="some distance. Then the sacrificial reindeer is killed for the anointment."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-061_l21" HPOS="432" VPOS="1648" WIDTH="1766" HEIGHT="58" BASELINE="434 1692 2198 1688" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="434 1692 434 1706 2196 1706 2198 1688 2196 1659 2165 1648 2163 1648 2161 1648 2096 1657 1925 1648 1923 1648 1921 1648 1919 1648 1904 1659 1769 1659 1732 1648 1730 1648 1728 1648 1726 1648 1693 1657 1642 1648 1640 1648 1638 1648 1637 1648 1621 1659 1533 1659 1494 1648 1492 1648 1490 1648 1313 1659 1227 1649 1225 1649 1161 1659 1138 1649 1136 1649 1134 1649 966 1659 923 1649 921 1649 919 1649 917 1649 882 1659 816 1649 814 1649 812 1649 781 1659 676 1649 674 1649 570 1659 452 1649 450 1649 448 1649 446 1649 432 1657 434 1692"/>
+                        </Shape>
+                        <String CONTENT="Other sacrifices, bloody and bloodless, are made to the dawn and the zenith."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-061_l22" HPOS="434" VPOS="1706" WIDTH="1764" HEIGHT="58" BASELINE="436 1753 2198 1747" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="436 1753 436 1764 2196 1763 2198 1747 2194 1718 2098 1706 2096 1706 2095 1706 2093 1706 2077 1718 1948 1718 1921 1706 1919 1706 1917 1706 1828 1716 1763 1706 1761 1706 1658 1716 1611 1706 1609 1706 1541 1718 1463 1708 1461 1708 1362 1718 1331 1708 1329 1708 1327 1708 1272 1718 1231 1708 1229 1708 1227 1708 1225 1708 1204 1720 434 1720 436 1753"/>
+                        </Shape>
+                        <String CONTENT="Fire-drills and charm-strings are placed on the sledges. Then the couple is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-061_l23" HPOS="434" VPOS="1766" WIDTH="1766" HEIGHT="59" BASELINE="436 1811 2200 1805" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="436 1811 436 1825 2198 1821 2200 1805 2198 1778 2172 1766 2171 1766 2169 1766 2118 1776 1753 1766 1752 1766 1601 1778 1036 1768 1034 1768 1032 1768 1007 1780 986 1770 984 1770 859 1770 857 1770 855 1770 834 1780 779 1770 777 1770 775 1770 754 1780 740 1770 738 1770 736 1770 518 1770 516 1770 434 1782 436 1811"/>
+                        </Shape>
+                        <String CONTENT="anointed with the blood of the reindeer, one or two members of the groom’s"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-061_l24" HPOS="432" VPOS="1825" WIDTH="1764" HEIGHT="62" BASELINE="434 1872 2196 1864" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="434 1872 434 1885 2192 1887 2196 1864 2192 1837 1779 1825 1777 1825 1775 1825 1750 1837 1564 1827 1562 1827 1561 1827 1559 1827 1543 1837 1015 1829 1013 1829 921 1839 874 1829 873 1829 871 1829 834 1840 783 1831 781 1831 582 1840 567 1831 565 1831 563 1831 446 1831 444 1831 442 1831 440 1831 432 1835 434 1872"/>
+                        </Shape>
+                        <String CONTENT="family generally also undergoing the ceremony, in order that the bride may"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-061_l25" HPOS="432" VPOS="1885" WIDTH="1766" HEIGHT="59" BASELINE="434 1932 2198 1926" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="434 1932 434 1944 2196 1942 2198 1926 2196 1899 2153 1885 2151 1885 2149 1885 2147 1885 2120 1899 2038 1899 2019 1885 2017 1885 2015 1885 2013 1885 2011 1885 1981 1897 1950 1885 1948 1885 1946 1885 1944 1885 1915 1895 1888 1885 1886 1885 1884 1885 1882 1885 1880 1885 1859 1899 1777 1899 1716 1885 1714 1885 1638 1897 1611 1885 1609 1885 1607 1885 1605 1885 1561 1897 1535 1887 1533 1887 1531 1887 1529 1887 1527 1887 1512 1899 1471 1887 1469 1887 1467 1887 1465 1887 1434 1899 1403 1887 1401 1887 1399 1887 1397 1887 1356 1901 1140 1901 1081 1887 1079 1887 1077 1887 1075 1887 1058 1899 976 1889 974 1889 855 1901 551 1889 549 1889 547 1889 545 1889 530 1901 506 1891 504 1891 502 1891 432 1903 434 1932"/>
+                        </Shape>
+                        <String CONTENT="not feel lonesome. Then the groom and the bride paint on their faces the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-061_l26" HPOS="434" VPOS="1946" WIDTH="1764" HEIGHT="58" BASELINE="436 1991 2198 1985" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="436 1991 436 2004 2196 1998 2198 1985 2194 1957 1915 1946 1913 1946 1808 1955 1757 1946 1755 1946 1753 1946 1732 1957 1582 1957 1099 1948 1097 1948 1095 1948 1093 1948 1077 1959 970 1959 448 1950 446 1950 444 1950 442 1950 434 1955 436 1991"/>
+                        </Shape>
+                        <String CONTENT="family mark of the groom. Thus the woman renounces the sacrificial anoint-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-061_l27" HPOS="432" VPOS="2006" WIDTH="1768" HEIGHT="59" BASELINE="434 2049 2200 2045" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="434 2049 434 2065 2198 2061 2200 2045 2196 2018 2135 2006 2134 2006 2132 2006 2100 2016 1650 2006 1648 2006 1551 2016 1449 2006 1447 2006 1370 2016 1336 2006 1334 2006 1332 2006 1331 2006 1299 2018 1247 2008 1245 2008 873 2018 740 2008 738 2008 736 2008 715 2018 606 2008 604 2008 432 2020 434 2049"/>
+                        </Shape>
+                        <String CONTENT="ment of her family, as well as her hearth and kin, and binds herself to another"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-061_l28" HPOS="432" VPOS="2067" WIDTH="1766" HEIGHT="62" BASELINE="434 2109 2198 2106" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="434 2109 434 2123 2194 2129 2198 2106 2194 2076 1578 2067 1576 2067 432 2076 434 2109"/>
+                        </Shape>
+                        <String CONTENT="hearth and another kin. Further, the woman anoints the sledges with blood,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-061_l29" HPOS="436" VPOS="2127" WIDTH="1764" HEIGHT="55" BASELINE="436 2168 2200 2168" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="436 2168 436 2180 2198 2182 2200 2168 2200 2137 2157 2127 2155 2127 2153 2127 2096 2137 1738 2127 1736 2127 1676 2137 1617 2127 1615 2127 1562 2137 1502 2127 1500 2127 1498 2127 1496 2127 1483 2137 1453 2127 1451 2127 1449 2127 1381 2137 1332 2127 1331 2127 1329 2127 1294 2137 1243 2127 1241 2127 1239 2127 1237 2127 1221 2137 1190 2127 1188 2127 1186 2127 1064 2137 999 2127 997 2127 941 2137 902 2127 900 2127 898 2127 896 2127 876 2137 851 2127 849 2127 847 2127 791 2137 763 2127 761 2127 760 2127 758 2127 726 2137 658 2127 656 2127 654 2127 621 2137 570 2127 569 2127 567 2127 537 2137 514 2127 512 2127 510 2127 436 2137 436 2168"/>
+                        </Shape>
+                        <String CONTENT="and “feeds” the holy objects of the household with reindeer-marrow. She"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-061_l30" HPOS="432" VPOS="2183" WIDTH="1772" HEIGHT="59" BASELINE="434 2228 2204 2224" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="434 2228 434 2242 2202 2238 2204 2224 2196 2183 2155 2195 2108 2183 2106 2183 2104 2183 2102 2183 2077 2195 2044 2183 2042 2183 2040 2183 2038 2183 2011 2197 1898 2197 1872 2183 1870 2183 1868 2183 1800 2195 1775 2183 1773 2183 1771 2183 1769 2183 1732 2195 1707 2183 1705 2183 1703 2183 1648 2193 1635 2183 1633 2183 1631 2183 1522 2183 1520 2183 1407 2195 1346 2183 1344 2183 1342 2183 1313 2197 1264 2185 1262 2185 1260 2185 1258 2185 1229 2197 1089 2185 1087 2185 1085 2185 1083 2185 1064 2199 974 2199 943 2185 941 2185 939 2185 882 2197 834 2185 832 2185 830 2185 828 2185 793 2197 740 2185 738 2185 683 2197 613 2185 611 2185 609 2185 607 2185 590 2199 432 2199 434 2228"/>
+                        </Shape>
+                        <String CONTENT="approaches the hearth, sprinkles it with sacrificial blood, takes a pinch of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-061_l31" HPOS="434" VPOS="2246" WIDTH="1764" HEIGHT="62" BASELINE="436 2291 2198 2287" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="436 2291 436 2302 2194 2308 2198 2287 2194 2258 2124 2246 2122 2246 2120 2246 2081 2256 1605 2246 1603 2246 1547 2256 1496 2246 1494 2246 1492 2246 1453 2256 1340 2246 1338 2246 1336 2246 1311 2258 802 2248 800 2248 798 2248 797 2248 781 2258 726 2248 724 2248 722 2248 685 2258 648 2248 646 2248 645 2248 563 2258 487 2248 485 2248 483 2248 434 2259 436 2291"/>
+                        </Shape>
+                        <String CONTENT="ashes and rubs it between her palms. Then she addresses the hearth, saying,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-061_l32" HPOS="446" VPOS="2302" WIDTH="828" HEIGHT="69" BASELINE="448 2341 1274 2345" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="448 2341 446 2355 471 2369 473 2369 475 2371 654 2371 654 2369 656 2369 658 2369 674 2357 699 2369 701 2369 703 2369 943 2359 993 2359 1005 2369 1005 2371 1007 2371 1009 2371 1011 2371 1110 2359 1270 2365 1274 2345 1272 2314 1186 2304 1184 2304 1106 2316 1015 2304 1013 2304 1011 2304 968 2316 929 2304 927 2304 925 2304 873 2314 865 2304 863 2304 863 2302 861 2302 859 2302 857 2302 793 2316 627 2316 615 2304 615 2302 613 2302 611 2302 609 2302 607 2302 582 2316 524 2316 512 2304 512 2302 510 2302 508 2302 506 2302 448 2310 448 2341"/>
+                        </Shape>
+                        <String CONTENT="“Nɪmeˊleu qatvaˊrkɪn!” (“Be well!”)"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-061_r5" HPOS="433" VPOS="2373" WIDTH="1782" HEIGHT="124" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="433 2373 2215 2373 2215 2497 433 2497"/>
+                    </Shape>
+                    <TextLine ID="mz_3-061_l33" HPOS="541" VPOS="2365" WIDTH="1661" HEIGHT="56" BASELINE="543 2408 2202 2404" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="543 2408 543 2421 2200 2417 2202 2404 2200 2376 2157 2365 2155 2365 2153 2365 2151 2365 2122 2374 2019 2365 2017 2365 1909 2374 1880 2365 1878 2365 1876 2365 1660 2374 1607 2365 1605 2365 1504 2374 1409 2365 1407 2365 1327 2378 1196 2378 1175 2367 1173 2367 1171 2367 1169 2367 1136 2376 1052 2367 1050 2367 995 2376 808 2367 806 2367 804 2367 765 2376 703 2367 701 2367 541 2374 543 2408"/>
+                        </Shape>
+                        <String CONTENT="In a few days, sometimes in two or three weeks, a second marriage-rite"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-061_l34" HPOS="434" VPOS="2423" WIDTH="1312" HEIGHT="63" BASELINE="436 2470 1746 2462" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="436 2470 436 2486 1744 2486 1746 2462 1744 2433 1728 2423 1726 2423 1724 2423 1722 2423 1535 2433 1463 2423 1461 2423 1459 2423 1412 2435 1151 2425 1149 2425 1147 2425 1124 2435 1093 2425 1091 2425 1089 2425 1087 2425 1085 2425 1064 2437 763 2427 761 2427 760 2427 709 2439 454 2429 452 2429 450 2429 448 2429 434 2437 436 2470"/>
+                        </Shape>
+                        <String CONTENT="takes place (alarantoˊurg̣ɪn, “a journey out of loneliness”)."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-061_r6" HPOS="433" VPOS="2497" WIDTH="1782" HEIGHT="599" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="433 2497 2215 2497 2215 3096 433 3096"/>
+                    </Shape>
+                    <TextLine ID="mz_3-061_l35" HPOS="545" VPOS="2493" WIDTH="1659" HEIGHT="47" BASELINE="545 2526 2204 2526" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="545 2526 545 2540 2204 2540 2204 2526 2204 2497 545 2493 545 2526"/>
+                        </Shape>
+                        <String CONTENT="The married couple, accompanied by a few relatives, start out to visit"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-061_l36" HPOS="436" VPOS="2546" WIDTH="1764" HEIGHT="62" BASELINE="436 2587 2200 2587" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="436 2587 436 2599 2198 2608 2200 2587 2200 2558 1379 2546 1377 2546 1375 2546 1336 2556 1249 2546 1247 2546 1169 2556 1050 2546 1048 2546 1046 2546 1017 2556 1003 2546 1001 2546 999 2546 876 2546 874 2546 820 2556 791 2546 789 2546 787 2546 785 2546 761 2556 734 2546 732 2546 730 2546 728 2546 703 2558 491 2558 467 2546 465 2546 463 2546 461 2546 436 2556 436 2587"/>
+                        </Shape>
+                        <String CONTENT="the camp of the bride’s father. “We think,” remarked a Chukchee to me,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-061_l37" HPOS="444" VPOS="2606" WIDTH="1758" HEIGHT="57" BASELINE="446 2645 2202 2641" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="446 2645 446 2663 2200 2663 2202 2641 2198 2614 457 2606 455 2606 454 2606 452 2606 444 2612 446 2645"/>
+                        </Shape>
+                        <String CONTENT="“that she may get homesick for her old hearth; let her visit it, and see it"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-061_l38" HPOS="436" VPOS="2661" WIDTH="1766" HEIGHT="70" BASELINE="438 2710 2202 2702" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="438 2710 438 2721 500 2731 502 2731 580 2721 2200 2721 2202 2702 2200 2675 2174 2661 2172 2661 2171 2661 2169 2661 2167 2661 2145 2675 1993 2675 1966 2661 1964 2661 1962 2661 1960 2661 1958 2661 1937 2675 1738 2675 1711 2663 1709 2663 1707 2663 1555 2675 1510 2663 1508 2663 1506 2663 1504 2663 1502 2663 1483 2677 1428 2677 1401 2663 1399 2663 1397 2663 1317 2677 1272 2665 1270 2665 1188 2665 1186 2665 1184 2665 1182 2665 1165 2677 1130 2665 1128 2665 1126 2665 1124 2665 1093 2677 1064 2665 1062 2665 1060 2665 951 2677 797 2667 795 2667 793 2667 750 2678 697 2667 695 2667 623 2678 604 2667 602 2667 600 2667 524 2667 522 2667 436 2680 438 2710"/>
+                        </Shape>
+                        <String CONTENT="again.” The reindeer which the bride used on her first journey to the groom’s"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-061_l39" HPOS="438" VPOS="2723" WIDTH="1768" HEIGHT="59" BASELINE="440 2766 2206 2760" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="440 2766 440 2782 2204 2780 2206 2760 2198 2723 2163 2733 1738 2723 1736 2723 1734 2723 1695 2733 1635 2723 1633 2723 1572 2735 1531 2725 1529 2725 1527 2725 1459 2735 1272 2725 1270 2725 1062 2735 1030 2725 1028 2725 1027 2725 1025 2725 976 2737 880 2727 878 2727 830 2737 438 2735 440 2766"/>
+                        </Shape>
+                        <String CONTENT="house are not used on this second journey. The bride drives the reindeer of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-061_l40" HPOS="438" VPOS="2782" WIDTH="1768" HEIGHT="60" BASELINE="440 2830 2206 2823" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="440 2830 440 2842 2204 2838 2206 2823 2202 2793 1849 2793 1820 2782 1818 2782 1816 2782 1814 2782 1812 2782 1798 2792 1769 2782 1767 2782 1765 2782 1763 2782 1761 2782 1740 2793 1393 2784 1391 2784 1303 2795 931 2786 929 2786 927 2786 878 2797 865 2788 863 2788 861 2788 859 2788 779 2797 730 2788 728 2788 676 2797 645 2788 643 2788 641 2788 438 2795 440 2830"/>
+                        </Shape>
+                        <String CONTENT="her husband, and takes with her a number of driving-reindeer as a present"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-061_l41" HPOS="438" VPOS="2840" WIDTH="1768" HEIGHT="63" BASELINE="440 2891 2206 2883" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="440 2891 440 2903 2204 2899 2206 2883 2204 2852 2174 2840 2172 2840 2171 2840 2169 2840 2167 2840 2151 2850 2028 2840 2026 2840 1962 2850 1941 2840 1939 2840 1937 2840 1935 2840 1909 2850 1884 2840 1882 2840 1880 2840 1806 2850 1781 2840 1779 2840 1777 2840 1775 2840 1773 2840 1759 2852 1740 2842 1738 2842 1736 2842 1734 2842 1713 2852 1687 2842 1685 2842 1683 2842 1490 2852 1457 2842 1455 2842 1453 2842 1373 2852 1336 2842 1334 2842 1332 2842 1266 2854 1237 2844 1235 2844 1233 2844 931 2854 880 2844 878 2844 818 2856 516 2846 514 2846 438 2858 440 2891"/>
+                        </Shape>
+                        <String CONTENT="to her parents. This gift is called riˊnkur; but the Chukchee insist that it is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-061_l42" HPOS="440" VPOS="2905" WIDTH="1766" HEIGHT="58" BASELINE="442 2947 2206 2944" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="442 2947 442 2963 2204 2959 2206 2944 2202 2916 2124 2905 2122 2905 1820 2914 1720 2905 1718 2905 1716 2905 1714 2905 1699 2916 1609 2916 1553 2905 1551 2905 1549 2905 1525 2914 1449 2905 1447 2905 1446 2905 1418 2914 1356 2905 1354 2905 1352 2905 1309 2916 1272 2906 1270 2906 1268 2906 1266 2906 1239 2916 1225 2906 1223 2906 1221 2906 1130 2906 1128 2906 1126 2906 1124 2906 1108 2918 871 2918 754 2906 752 2906 440 2918 442 2947"/>
+                        </Shape>
+                        <String CONTENT="a present, and not a ransom, for it is paid after the conclusion of the marriage"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-061_l43" HPOS="438" VPOS="2963" WIDTH="1768" HEIGHT="58" BASELINE="440 3010 2206 3002" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="440 3010 440 3021 2204 3020 2206 3002 2204 2975 2161 2963 2159 2963 2157 2963 2057 2973 2005 2963 2003 2963 1958 2973 1935 2963 1933 2963 1931 2963 1929 2963 1892 2973 1746 2965 1744 2965 1742 2965 1740 2965 1728 2975 1714 2965 1713 2965 1711 2965 1709 2965 1473 2975 1416 2965 1414 2965 1317 2977 931 2967 929 2967 841 2979 719 2969 717 2969 715 2969 713 2969 697 2981 438 2981 440 3010"/>
+                        </Shape>
+                        <String CONTENT="ceremony. The number of reindeer to be presented is not fixed. If the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-061_l44" HPOS="438" VPOS="3027" WIDTH="1768" HEIGHT="65" BASELINE="440 3068 2206 3060" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="440 3068 440 3092 2206 3080 2206 3060 2202 3033 989 3027 988 3027 438 3039 440 3068"/>
+                        </Shape>
+                        <String CONTENT="groom’s family is poor, he gives only one team, that is, two reindeer; but it"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>
