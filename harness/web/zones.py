@@ -184,6 +184,7 @@ def delete(request: Request, body: Delete):
 
 
 @router.post("/done")
+@fetched
 def done(request: Request):
     server = request.app.state.server
     if server is not None:

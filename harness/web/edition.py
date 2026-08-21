@@ -31,6 +31,7 @@ from .. import figures as F
 from ..entities import ENTITY_CLASSES, alias_index, split_id
 from ..state import MILESTONE_UNITS, load_toc
 from . import Editor, register, stores, templates
+from .errors import fetched
 from .files import send_file
 
 BASE = "/edition"
@@ -1315,11 +1316,18 @@ class NewEntity(BaseModel):
 
 
 @router.post("/ratify")
+@fetched
 def ratify(request: Request, body: Ratify):
+    """`fetched`, like every other editor's writes. `_ratify` *returns*
+    `{"error": …}` for a domain refusal, which worked unmarked; what did not is
+    anything that **raises** inside it — a `relink` failure, an `OSError`, a
+    `Malformed` from the reload — which came back as an HTML traceback that
+    `ratify.js` then tried to parse."""
     return ui._ratify(body.id, _root(request))
 
 
 @router.post("/entity/new")
+@fetched
 def new_entity(request: Request, body: NewEntity):
     return ui._new(body.model_dump(), _root(request))
 

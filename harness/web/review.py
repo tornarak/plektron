@@ -252,6 +252,7 @@ def issues_save(request: Request, body: PatchBody):
 
 
 @router.post("/done")
+@fetched
 def done(request: Request, body: Done):
     """The page has finished with *one* ref. Whether that ends the session
     depends on what is left, and the answer comes from the disk rather than from

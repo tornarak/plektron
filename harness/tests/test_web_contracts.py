@@ -206,12 +206,29 @@ def test_the_write_endpoints_can_answer_in_json():
     status and `zones.js` parsed it on the error path, so both turned the message
     into a JSON parse error.
 
-    The clients `fetch` these; none of them is navigated to."""
-    from harness.web import errors, lines, review, zones
-    for name, fn in (("zones/save", zones.save), ("zones/predict", zones.predict),
-                     ("zones/delete", zones.delete), ("lines/save", lines.save),
-                     ("review/save", review.save)):
-        assert getattr(fn, "__web_fetched__", False), f"{name} is not @fetched"
+    The clients `fetch` these; none of them is navigated to.
+
+    **Derived from the routers, not listed.** The list version named five
+    endpoints across three editors, and the edition editor — added last — had
+    neither of its writes marked and appeared in neither the fix nor this gate.
+    A hand-list cannot catch the editor nobody remembered, which is the only way
+    this defect has ever occurred. Three `/done` routes were unmarked too, all
+    three `fetch`ed by their clients.
+
+    Scoped to the **editors'** routers. `shell`'s `/session/{editor}` and `/stop`
+    are the process's, not an editor's, and `/session` is posted by the CLI's
+    handoff rather than by a page.
+    """
+    from harness.web import EDITORS, errors, load_editors
+    load_editors()
+    unmarked = []
+    for ed in EDITORS.values():
+        for route in ed.router.routes:
+            if "POST" not in (getattr(route, "methods", None) or set()):
+                continue
+            if not getattr(route.endpoint, "__web_fetched__", False):
+                unmarked.append(f"{ed.name}{route.path}")
+    assert unmarked == [], f"POST endpoints not marked @fetched: {unmarked}"
     # The mark is read off the resolved endpoint, so it has to survive the
     # decorator order the routes are written in.
     assert errors.fetched is not None

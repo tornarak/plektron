@@ -201,6 +201,7 @@ def save(request: Request, body: Save):
 
 
 @router.post("/done")
+@fetched
 def done(request: Request):
     server = request.app.state.server
     if server is not None:

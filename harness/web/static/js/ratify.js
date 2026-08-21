@@ -12,6 +12,16 @@ document.addEventListener('click', async ev => {
   const r = await fetch(B + '/ratify', {method: 'POST',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({id: b.dataset.id})});
+  // Status first, `lines.js:316`'s form and for its reason. `_ratify` *returns*
+  // `{"error": …}` for a refusal, which this read fine; anything that raises
+  // inside it answers with a page, and parsing that threw a parse error over
+  // the top of the real one — so the button did nothing and said nothing.
+  if (!r.ok) {
+    let why = r.statusText;
+    try { why = (await r.json()).error || why; } catch (e) { /* not JSON */ }
+    alert(why);
+    return;
+  }
   const j = await r.json();
   if (j.error) { alert(j.error); return; }
   /* **Say what it did before reloading.** Ratifying is also what applies the
