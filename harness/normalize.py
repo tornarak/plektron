@@ -19,7 +19,7 @@ Five rules, all mechanical:
   marks        every combining mark sits on a base its licence covers (§2.6).
   lookalikes   no scoped file carries a lookalike with no legitimate English use.
   spacing      no run of 2+ spaces survives between non-space characters, and no
-               space sits immediately before `;`, `:`, or `,` (§2.9).
+               space sits immediately before `;`, `:`, `,`, `!`, or `?` (§2.9).
   footnotes    a page's footnote markers form a continuous run from 1, each occurs
                at least twice (body reference + note opener), and no line opens
                with a bare ASCII digit where a superscript was meant.
@@ -72,12 +72,27 @@ from pathlib import Path
 
 from .detectors import apostrophe_flags, footnote_report, unlicensed_marks
 
-# §2.9: sentence-ending double space and thin space before ;/:/, are typesetting
+# §2.9: sentence-ending double space and thin space before ;/:/,/!/? are typesetting
 # artifacts with no lexical content — mechanical, print-invariant, corpus-wide.
 # The lookbehind/lookahead require a non-space neighbor on each side, so a line's
 # leading indentation (preceded by a newline) never matches.
+#
+# `!` and `?` joined the class late, and the gap is why they had to: the rule was
+# gated for `;:,` and unenforced for the other two, so drift there was invisible to
+# `check` and `normalize` alike. 1535 `!`/`?` tokens sat closed-up in `gt/ocr/` — not
+# because the press closed them but because every reader did, unbidden and unrecorded,
+# until one on `3-041` read §2.9's list as exhaustive and preserved `eh !` on L35 while
+# closing `daughter !` on L34, inconsistent with itself one line away. The enumeration
+# here and the one in the spec are the same list, and neither may narrow without the
+# other.
+#
+# A **run** of `!`/`?` is excluded, and that is not fussiness: `data/readings.md` writes
+# an unknown figure number as `(??/???? ??/????)`, where the space before each `??` is
+# notation and not typesetting. Widening the class without the lookahead made
+# `--commit` willing to rewrite that file's placeholders — a gate corrupting a store it
+# was only meant to measure. `;:,` need no such guard because no notation repeats them.
 _MULTI_SPACE = re.compile(r"(?<=\S) {2,}(?=\S)")
-_SPACE_BEFORE_PUNCT = re.compile(r"[ \t]+([;:,])")
+_SPACE_BEFORE_PUNCT = re.compile(r"[ \t]+([;:,]|[!?](?![!?]))")
 
 # A necessary condition for either pattern above, in one pass and **without
 # lookaround** — the same characters, matched rather than asserted.
@@ -90,7 +105,7 @@ _SPACE_BEFORE_PUNCT = re.compile(r"[ \t]+([;:,])")
 # substring precheck is a thousand times cheaper still but filters *nothing* — `"  "`
 # is in every indented JSON file in the corpus, which is exactly why the real pattern
 # demands a non-space on each side.
-_SPACING_ANY = re.compile(r"\S {2,}\S|[ \t][;:,]|[ \t][¹²³⁴⁵⁶⁷⁸⁹]|\"[¹²³⁴⁵⁶⁷⁸⁹]\S")
+_SPACING_ANY = re.compile(r"\S {2,}\S|[ \t][;:,!?]|[ \t][¹²³⁴⁵⁶⁷⁸⁹]|\"[¹²³⁴⁵⁶⁷⁸⁹]\S")
 
 # §2.10 marker spacing, and it is **two rules with opposite signs**, which is why
 # neither is `_SPACE_BEFORE_PUNCT` with a wider class.
@@ -200,7 +215,7 @@ def _spacing_hits(text: str, commentary: bool = False) -> list[dict]:
         if _skip_line(line, commentary):
             continue
         pats = [(_MULTI_SPACE, "2+ spaces (§2.9 sentence spacing)"),
-                (_SPACE_BEFORE_PUNCT, "space before ;/:/, (§2.9)"),
+                (_SPACE_BEFORE_PUNCT, "space before ;/:/,/!/? (§2.9)"),
                 (_MARKER_OPENER, "no space after a note opener (§2.10)")]
         if not _OPENER_LINE.search(line):
             pats.insert(2, (_MARKER_TIGHT, "space before a footnote marker (§2.10)"))
@@ -279,8 +294,8 @@ def _is_entity(p: Path) -> bool:
 # "X is what gets typed when Y was meant".
 LOOKALIKE_CHARS = {
     "´": "U+00B4 traps U+02CA",
-    "ʼ": "U+02BC traps U+0027",
-    "ʻ": "U+02BB traps U+0027",
+    "ʼ": "U+02BC traps U+02CA",
+    "ʻ": "U+02BB traps U+02CA",
     "·": "U+00B7 traps U+02D9",
     "ˢ": "U+02E2 traps U+1D4B/U+1D49",
     "ₑ": "U+2091 traps U+1D49",
@@ -459,10 +474,8 @@ def _quote_hits(p: Path, root: Path) -> list[dict]:
 _APOSTROPHE_TRAPS = {
     "english": "U+0027 traps curly ’ — English prose sets curly apostrophes "
               "too (§1), same rule as the quote pair",
-    "unlicensed": "U+0027 unlicensed here (§2.1: not post-b/p/d/t/g/k, not "
-                 "V_V) — almost certainly a mistyped stress mark U+02CA",
-    "ambiguous": "U+0027 in V_V position (§4: shape alone decides stress vs. "
-                "pause) — a human call on the raster, not a defect by itself",
+    "unlicensed": "U+0027 inside a Tier-1 form (§2.1: no licensed position) "
+                 "— a mistyped stress mark U+02CA",
 }
 
 
@@ -470,13 +483,11 @@ def _apostrophe_hits(p: Path, root: Path) -> list[dict]:
     """Every straight U+0027 in *authored content*, same content-scoping as
     `_quote_hits` (JSON `text` fields, `ocr`/`gt/ocr` `CONTENT` attributes,
     non-`@note` `readings.md` lines) but the per-occurrence judgement is
-    `detectors.apostrophe_flags` rather than a blind substring match, since
-    unlike U+0022 this codepoint has one real, licensed reading (spirant/
-    pause, §2.1) and a blind flag-everything rule would report correct
-    Tier-1 text as broken. What survives that exemption is still everything
-    that has actually turned out wrong so far — a corpus-wide check found
-    zero legitimate apostrophes of either kind (Tier-1 or English) anywhere
-    in restored ground truth; see `detectors.apostrophe_flags`.
+    `detectors.apostrophe_flags`, which names the kind: an English token
+    wants the curly ’ the book sets, a Tier-1 token has no licensed position
+    for the codepoint at all (§2.1), so both are defects. A corpus-wide check
+    found zero legitimate straight apostrophes anywhere in restored ground
+    truth.
     """
     rel = str(p.relative_to(root))
     hits = []

@@ -13,7 +13,7 @@ from harness.normalize import _fix_spacing, _lookalikes, _spacing_hits
 
 
 class TestSpacing:
-    """§2.9 — the book sets French spacing (thin space before `;` and `:`); the
+    """§2.9 — the book sets French spacing (thin space before `;` `:` `,` `!` `?`); the
     edition keys English spacing. Editor's ruling, so it is auto-fixable."""
 
     @pytest.mark.parametrize("given,expected", [
@@ -23,9 +23,23 @@ class TestSpacing:
         ("two  spaces", "two spaces"),
         ("many     spaces", "many spaces"),
         ("a ;  b", "a; b"),
+        ("Eh, eh !” answered", "Eh, eh!” answered"),
+        ("my daughter !” said", "my daughter!” said"),
+        ("Why not ? he asked", "Why not? he asked"),
     ])
     def test_collapses(self, given, expected):
         assert _fix_spacing(given) == expected
+
+    @pytest.mark.parametrize("given", [
+        "Fig. 102, a (??/???? ??/????), Clay Lamp",
+        "unknown plate (?? ??)",
+    ])
+    def test_a_run_of_marks_is_notation_not_typesetting(self, given):
+        """`data/readings.md` writes an unknown figure number as `??/????`, and the
+        space before it is notation. Widening the class to `!`/`?` without this guard
+        made `--commit` willing to rewrite that store's placeholders."""
+        assert _fix_spacing(given) == given
+        assert _spacing_hits(given) == []
 
     @pytest.mark.parametrize("given", [
         "already correct; fine",
