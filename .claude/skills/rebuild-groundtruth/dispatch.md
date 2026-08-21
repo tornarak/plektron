@@ -251,47 +251,23 @@ them across four readers: `2-007` (six, in `g̣êtɪˊnvɪlênat`, `g̣equliˊli
 Every one was dotted on the raster.
 
 **Do not read this as a gap in the instruction, and do not answer it by writing
-more of one.** §5.1 already prescribes the contrast, requires the contrast word in
-the `note`, says absence is not observable in isolation, and warns in as many words
-that *"Confirmed at 4× is what both wrong readings said."* All four readers had that
-text in their prompt. `2-009`'s was additionally flagged by `proposal check`'s `rare`
+more of one.** R2 already owns how an absence-shaped call is read — the glyph's own
+ink, then the prior, then `doubt` — and §5.1 gives the prior it falls back to. All
+four readers had that text in their prompt. `2-009`'s was additionally flagged by `proposal check`'s `rare`
 arm, quoted the 93.9% prior back in its note, and keyed bare anyway; `2-018`'s cited
 the dotted attestations on `2-031`/`2-033` and invoked the firewall to decline
 "harmonizing" toward them — a rule about provenance used to override the reader's own
 eyes. The instruction, the prior and the automated flag all fired correctly. Length
 is not what is failing, and §5.1 is already the longest entry in the spec.
 
-What separates the two readers who got it right is visible in their reports and is
-not a rule anyone could have written: `2-016` and `2-019` each had a plain English
-`g` — "beings", "people", "having" — **inside the same crop** as the Tier-1 form.
-The four that missed contrasted against a word they named but did not render beside
-it. That is a fact about how the crop was framed, not about what the reader knew.
+**2026-08-18 reproduced it at scale.** Two batches — `2-064`..`2-086` (twenty pages)
+and `2-087`..`2-095` (nine) — dropped the mark nine times: five on `2-067` alone,
+then `g̣eluˊᵋlqᴀʟ̣in` (`2-071`), `tuˊmg̣ɪ` (`2-075`), `oraˊwêʟ̣an` (`2-082`, the
+small-cap `ʟ̣` rather than `g̣`, but the same dot-below sort) and `vaˊɪrg̣ɪt`
+(`2-094`). Eight of the first batch's thirteen edits were this one class, and
+**nothing else recurred at all**.
 
-**2026-08-18 reproduced it at scale and then isolated the variable.** Two batches —
-`2-064`..`2-086` (twenty pages) and `2-087`..`2-095` (nine) — dropped the mark nine
-times: five on `2-067` alone, then `g̣eluˊᵋlqᴀʟ̣in` (`2-071`), `tuˊmg̣ɪ` (`2-075`),
-`oraˊwêʟ̣an` (`2-082`, the small-cap `ʟ̣` rather than `g̣`, but the same dot-below
-sort) and `vaˊɪrg̣ɪt` (`2-094`). Eight of the first batch's thirteen edits were this
-one class, and **nothing else recurred at all**.
-
-`2-094` is the useful one, because there the variable was isolated on a single page.
-Its reader zoomed the word alone at 4× and reported the `g` "clearly carries no dot
-below". The coordinator's first crop — same line, also alone, also 4× — could not
-separate the ink under the bowl from the bowl. A second crop naming one extra point,
-`2@85 3@5`, put the `g` of "graphite" from the next line into the same sheet, and the
-contrast was immediate: "graphite" closes clean, `vaˊɪrg̣ɪt` carries a detached blob
-beneath. Same page, same ink, same scale, same recognizer output. The only difference
-was what else was in frame.
-
-So it is now writable as a procedure rather than as an observation about luck: **when
-a line's disposition turns on a dot below, name a second point on a neighbouring line
-carrying a plain English `g`.** It costs one extra point in a call the reader is
-making anyway, `zoom` packs both into one sheet, and it converts an absence — which
-§5.1 says is not observable in isolation — into a comparison. `2-067`'s five and
-`2-088`'s `vaˊɪrg̣ɪn` all read correctly this way, against "guardian", "travelling",
-"genuine" and "Dots".
-
-`2-094` also shows what a reader owes the pass when it cannot see the mark. That one
+`2-094` shows what a reader owes the pass when it cannot see the mark. That one
 did everything right except see it: kept the page's spelling, refused the ratified
 handle, flagged the line `doubt`. So `conflict` caught it without a scan — six rows on
 one fold, the batch's `vaˊɪrgɪt` against five store attestations of `vaˊɪrg̣ɪt`
