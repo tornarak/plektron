@@ -12,8 +12,8 @@ prose reproduces the print, curly quotes and all (keying_spec §1, ASCII policy
 scoped to Tier-1), so a corpus-wide gate that trapped them would fire on thousands
 of legitimate characters — and a detector firing on ordinary English buries the
 real hits, which is the failure mode the whole triage design is built to avoid.
-Inside a Tier-1 span the same characters *are* traps, because there U+0027 is the
-spirant and pause mark and a curly quote is what gets typed instead.
+Inside a Tier-1 span the same characters *are* traps, because there a raised
+comma-shaped mark is stress U+02CA and a curly quote is what gets typed instead.
 
 So the tables must not be merged, and this was very nearly done: an audit reported
 the difference as drift and a consolidation was one step from being carried out.
@@ -45,7 +45,7 @@ def test_normalize_excludes_curly_quotes():
 
 
 def test_validate_traps_the_turned_and_raised_comma_in_tier1():
-    """Inside Tier-1, U+2018/U+2019 trap U+0027 — the spirant and pause mark."""
+    """Inside Tier-1, U+2018/U+2019 trap stress U+02CA (keying_spec §3)."""
     for ch in "‘’":
         assert ch in LOOKALIKE_GREPS
 

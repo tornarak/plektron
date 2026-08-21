@@ -136,9 +136,9 @@ def test_a_sort_with_no_row_comes_back_partial_and_named(form, char):
 
 
 def test_the_undecidable_apostrophe_is_refused_rather_than_read():
-    """U+0027 is both the spirant and the pause mark, disjoint by environment,
-    and `keying_spec.md` says outright not to propose either. So it is not
-    resolved in one direction for the sake of a complete-looking answer."""
+    """U+0027 has no licensed position inside a Tier-1 form (`keying_spec.md`
+    §2.1): a form still carrying one is a keying error awaiting repair, not a
+    sound, so it is not resolved for the sake of a complete-looking answer."""
     r = ipa.impute("ka'ta")
     assert not r.complete
     assert "'" in r.unresolved

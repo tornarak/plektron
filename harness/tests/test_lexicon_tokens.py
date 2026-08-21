@@ -14,9 +14,9 @@ The negative cases are the load-bearing half, and they are what a fix here can
 break silently:
 
 - a word-**internal** hyphen is Americanist notation and is never joined away;
-- **U+0027 is not punctuation** in this corpus. It is the spirant and pause mark,
-  an inventory character, and stripping it off a token's edge would delete a
-  Tier-1 segment from every published form;
+- **U+0027 is not stripped** in this corpus. Inside a form it is a mistyped
+  stress mark (keying_spec §2.1) — the error the apostrophe check exists to
+  catch — and stripping it off a token's edge would hide it from every report;
 - reading order is not enough to join along. On a two-column page the banded
   order interleaves the columns, so the line after a broken word is the *other
   column's*, and joining to it glues two unrelated words together.
@@ -161,7 +161,7 @@ def test_curly_quotes_are_edge_punctuation():
 
 
 def test_the_straight_apostrophe_is_never_stripped():
-    """U+0027 is the spirant and pause mark, not punctuation (keying_spec §1)."""
+    """U+0027 inside a form is a keying error that must stay visible (§2.1)."""
     assert "'" not in EDGE_PUNCT
     assert "va'ɪrg̣ɪn'".strip(EDGE_PUNCT) == "va'ɪrg̣ɪn'"
     assert "“'ɪrkɪn”".strip(EDGE_PUNCT) == "'ɪrkɪn"
@@ -196,7 +196,7 @@ def test_a_compound_unknown_both_ways_is_reported():
 
 def test_native_forms_are_joined_dequoted_and_keep_their_line(tmp_path):
     """`native_corpus_lines` end to end: the form is whole, the quote is gone,
-    the spirant survives, and the token still cites the line it began on."""
+    a straight apostrophe survives, and the token still cites the line it began on."""
     _gt_page(tmp_path, "1-001", [
         (nfd("he said “reˊkkeñ-"), 400, 1774),
         (nfd("spirits” and va'ɪrg̣ɪn"), 400, 1774),
@@ -588,11 +588,11 @@ def test_an_apostrophe_inside_a_compound_survives(tmp_path):
     assert "Raven’s-Beak" in {r["token"] for r in _common(tmp_path, 0)["tokens"]}
 
 
-def test_the_possessive_fold_does_not_reach_the_spirant_mark(tmp_path):
+def test_the_possessive_fold_does_not_reach_a_tier1_apostrophe(tmp_path):
     """**The trap this fold is one line away from.** `detect_all`'s tokenizer
-    keeps U+0027 deliberately, because it is the spirant mark and not
-    punctuation; a possessive fold applied there would delete a Tier-1 character
-    from every flag in the corpus. The question here is about English word
+    keeps U+0027 deliberately so the apostrophe check can see it inside a form
+    (§2.1: a keying error there); a possessive fold applied there would hide
+    it from every flag in the corpus. The question here is about English word
     forms, and only this branch asks it."""
     from harness.detectors import detect_all
     got = detect_all(["the form kelet's here"], tmp_path)

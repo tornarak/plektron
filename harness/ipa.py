@@ -68,10 +68,11 @@ precedes the stressed *syllable*, so placing it needs syllabification --
 maximal onset or anything else is a guess, and one wrong guess per word is a
 high price for a mark the reader can already see in the form itself.
 
-**The spirant and pause marks are not resolved.** U+0027 is both, disjoint by
-environment (`keying_spec.md` §2.1), and both have zero confirmed instances
-corpus-wide; the spec says outright not to propose one. So a form containing
-one comes back `complete=False` rather than asserting either -- the same
+**A straight apostrophe is not resolved.** U+0027 has no licensed position
+inside a Tier-1 form (`keying_spec.md` §2.1, §3): the p. 10 key's spirant and
+pause marks have never been seen in the corpus, and a raised comma-shaped mark
+is stress. A form still carrying one is therefore a keying error awaiting
+repair, not a sound, and comes back `complete=False` -- the same
 discipline the Moll reader applies to its own undecided `с`.
 
 **Four sorts have no row**: `š` (~ German *z* [sic]), `ë` (like *a* in *make*),
@@ -118,8 +119,9 @@ IPA_LONG = "ː"
 ASPIRATE = "h"
 IPA_ASPIRATED = "ʰ"
 
-#: Spirant and pause both key here, and neither is resolvable. Kept out of the
-#: table so it lands in `unresolved` and marks the form partial.
+#: No licensed reading inside a Tier-1 form (§2.1) — a keying error, not a
+#: sound. Kept out of the table so it lands in `unresolved` and marks the form
+#: partial rather than being silently dropped or mapped.
 UNDECIDED = {"'"}
 
 # Ordered by length at load, longest match wins. Sequences are NFD, which is

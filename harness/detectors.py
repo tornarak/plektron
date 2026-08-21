@@ -249,11 +249,11 @@ SUFFIX_MARK_DROPS: tuple[tuple[str, str, tuple[str, ...]], ...] = (
 # "don't"), so they survive to the split below instead of being deleted.
 #
 # **U+0027 is deliberately absent, and the absence is the rule rather than an
-# oversight.** In this corpus the straight apostrophe is not punctuation at all:
-# it is the spirant and pause mark, an `INVENTORY_CHARS` member and a phonetic
-# segment in its own right (keying_spec.md §1, §2.1). Stripping it off a
-# token's edge deletes a Tier-1 character from the form these reports publish,
-# silently and in every arm at once. Nothing is lost on the English side by
+# oversight.** Inside a Tier-1 form the straight apostrophe is a mistyped stress
+# mark (keying_spec.md §2.1, §3) — the one error `apostrophe_flags` exists to
+# catch — and it survives in `INVENTORY_CHARS` so that it is seen. Stripping it
+# off a token's edge would hide that error from every report at once, and would
+# misreport a form whose last character is the slip. Nothing is lost on the English side by
 # keeping it: `lexicon_miss` splits its core on `'` regardless, so `dogs'` and
 # `'tis` reduce to the components they always did.
 #
@@ -972,9 +972,9 @@ def detect_all(lines: list[str], root: Path = Path("."),
             # `tier1_terms`, which strips. That inequality is what kept the page
             # context handing a collation pass the same evidence twice.
             #
-            # U+0027 survives this deliberately (see `EDGE_PUNCT`): it is the
-            # spirant mark, not punctuation, so stripping it would delete a
-            # Tier-1 character from every report at once.
+            # U+0027 survives this deliberately (see `EDGE_PUNCT`): inside a
+            # form it is the mistyped-stress error the apostrophe check looks
+            # for, and stripping it would hide it from every report at once.
             tok = m.group().strip(EDGE_PUNCT)
             if not tok:
                 continue
@@ -1152,8 +1152,8 @@ def suggest_lexicon(root: Path = Path("."), common: int | None = None) -> dict:
             # **The possessive fold is this branch's alone and must stay here.**
             # `detect_all`'s tokenizer is thirty lines up and looks like the
             # place for it; it is not. U+0027 survives that strip deliberately
-            # because it is the spirant mark, so folding a trailing `'s` there
-            # would delete a Tier-1 character from every flag in the corpus. The
+            # so the apostrophe check can see it inside a form, and folding a
+            # trailing `'s` there would hide that error from every flag. The
             # question this branch asks is about English word forms, and only
             # here is that the question.
             tok = _POSSESSIVE.sub("", m.group().strip(EDGE_PUNCT))
@@ -1446,15 +1446,15 @@ def mark_base_frequency(root: Path = Path(".")) -> list[dict]:
 # rides on a base letter), Lm/Sk are the standalone modifier marks that don't
 # combine under NFD (U+02CA stress, U+1D4B laryngeal, U+02D9 palatalization,
 # U+1D49 onglide). Small-cap letters (ᴀ ᴇ ɪ ʟ) and ɵ are category Ll — real
-# base letters, not marks — and survive; so does U+0027 (spirant/pause),
-# a real phonetic segment rather than a diacritic on one.
+# base letters, not marks — and survive; so does U+0027, kept visible because
+# inside a form it is a keying error (§2.1) and must not be folded away.
 _MARK_CATEGORIES = {"Mn", "Lm", "Sk"}
 # `_EDGE_QUOTES` stood here — a second edge strip over `suggest_native_forms`'
 # output, covering the curly quotes `EDGE_PUNCT` did not. It is gone because the
 # tokenizer now cuts those edges itself, so this was patching a form that had
 # already been published quoted in `lexicon native`. It also stripped U+0027,
-# which is a Tier-1 segment and not punctuation: a form ending in the spirant
-# lost it from every suffix and digraph counted here.
+# which inside a form is a keying error that must stay visible: a form ending
+# in one lost it from every suffix and digraph counted here.
 
 
 def _strip_marks(tok: str) -> str:

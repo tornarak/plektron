@@ -596,8 +596,8 @@ def tier1_terms(ref: str, root: Path = Path(".")) -> list[dict]:
     **What counts as Tier-1 here is `NON_ENGLISH_HITS`** — an inventory glyph or
     a straight apostrophe — and not `INVENTORY_CHARS` alone, which omits U+0027
     despite a comment in `detectors` saying otherwise. That matters because
-    U+0027 is the spirant and pause mark, is load-bearing, and is one keystroke
-    from the U+2019 in `LOOKALIKES`.
+    a straight apostrophe inside a form is a mistyped stress mark (§2.1), so it
+    marks a Tier-1 token as surely as an inventory glyph does.
 
     **The list is a floor and cannot be otherwise.** An unmarked ASCII inventory
     member (`c` for English *sh*, plain `s`, `j`, `x`) is undetectable, so a form

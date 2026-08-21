@@ -207,9 +207,9 @@ def group_spans(spans: list[dict]) -> list[dict]:
     return out
 
 
-# The notation keyboard, as a toggled mode. Off by default, so U+0027 — which is
-# itself the spirant and pause mark (keying spec 2.1), not merely a lookalike for
-# U+02CA — stays typeable. That is why this is a mode and not a remap.
+# The notation keyboard, as a toggled mode. Off by default, so the English
+# apostrophe and quotes stay typeable in prose. That is why this is a mode and
+# not a remap.
 #
 # The first block is the editor's existing bindings, reproduced key for key so
 # muscle memory survives. Note `r`/`R` is deliberately asymmetric (ṛ vs ř) and is
@@ -246,10 +246,12 @@ KBD_GLYPHS = {k: unicodedata.normalize("NFD", v) for k, v in KBD_GLYPHS.items()}
 # pile of characters. Bindings are a shortcut for the frequent ones; the button is
 # the guarantee that nothing is unreachable.
 #
-# The ASCII row earns its place despite being typeable: U+0027 is the spirant *and*
-# pause mark, U+002D the connector hyphen, U+0021 increased articulation (2.1). They
-# look like ordinary punctuation and are not, and clicking them works even with the
-# mode on, which is otherwise the one way to reach U+0027 without toggling.
+# The ASCII row earns its place despite being typeable: U+002D is the connector
+# hyphen and U+0021 increased articulation (2.1). They look like ordinary
+# punctuation and are not, and clicking them works even with the mode on. U+0027
+# is deliberately absent: it has no use inside a Tier-1 span (2.1, §3) — the p.
+# 10 key's spirant and pause marks have never been seen in the corpus — so a
+# raised comma-shaped mark is the stress key, U+02CA, in the modifiers row.
 PALETTE = [
     ("small caps (2.3)", ["ᴀ", "ᴇ", "ɪ", "ʟ", "ʟ̣"]),
     ("modifiers (2.1)", ["ˊ", "ᵋ", "ᵉ", "˙"]),
@@ -261,7 +263,7 @@ PALETTE = [
     # corpus; Š Ř J̌ are here because a base plus a mark key produces them anyway, not
     # because anything has licensed them.
     ("capitals (composed, not spec rows)", ["Ñ", "Č", "Š", "Ř", "J̌", "G̣"]),
-    ("ascii, special function", ["'", "-", "!"]),
+    ("ascii, special function", ["-", "!"]),
     ("catalogue placeholder", ["(??/????)"]),
     # Not Tier-1 notation — English prose reproduces the print, curly quotes
     # included (keying spec section 1). Straight U+0022 has no legitimate
@@ -274,8 +276,8 @@ PALETTE = [
     # U+2019 belongs in this row for the identical reason, not in the ASCII
     # row above: it is the *English* possessive/elision apostrophe the book
     # sets ("cliff's end," "don't"), and inside a Tier-1 span it is instead
-    # the lookalike trap for the spirant/pause U+0027 (validate.py's
-    # LOOKALIKE_GREPS, "U+2019 traps U+0027") — never something to type there.
+    # a lookalike trap for stress U+02CA (validate.py's LOOKALIKE_GREPS,
+    # "U+2019 traps U+02CA") — never something to type there.
     # A corpus-wide check turned up several already-restored English glosses
     # ("cliff's end," "man's name," "Kihiˊni' Island") carrying a straight
     # U+0027 where the print sets curly ’, the same slip 1-048/2-030 made

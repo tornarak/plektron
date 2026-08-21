@@ -9,12 +9,12 @@ in for an unread glyph.
 
 - **One curly apostrophe sits inside a Tier-1 span, and nothing exempts it.** The
   book quotes an Iñupiaq form from another author, in that author's notation, and
-  the form carries an ordinary U+2019. `ipk` is a Tier-1 code, so the span falls
-  under §3's Tier-1 greps, which since 2026-08-21 name U+2019 as a trap for
-  stress. The reading is right and the gate is right; what is missing is a way to
-  say "this form is in a cited system, not Bogoras's" that the grep can see — a
-  notation attribute on the span, or an allow-list keyed by ref and line. Waits
-  on the ref being recorded here and on a decision about the mechanism.
+  the form carries an ordinary U+2019: `3-070` L37, `kin-ĭ-g’un`. `ipk` is a
+  Tier-1 code, so the span falls under §3's Tier-1 greps, which since 2026-08-21
+  name U+2019 as a trap for stress. The reading is right and the gate is right;
+  what is missing is a way to say "this form is in a cited system, not Bogoras's"
+  that the grep can see — a notation attribute on the span, or an allow-list keyed
+  by ref and line. Waits on a decision about the mechanism.
 - **The List of Illustrations has no reader, and the cross-check waits on chapter
   assembly.** `docs/apparatus.md` describes a per-entry reconciliation — every LoI
   text-figure located on a page, no caption numbering outside the LoI, all 35
