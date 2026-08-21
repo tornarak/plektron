@@ -319,7 +319,7 @@ for g̣: annotate in working docs, correct in normative ones.
 
 ## 4. Validation (print-compliance, never inference)
 
-1. Stress culminativity: ≤1 U+02CA per word.
+1. Stress culminativity: ≤1 U+02CA per root (§5.5). Unimplemented.
 2. U+1D49 not immediately before `i`: error.
 3. U+1D4B immediately before `i`: review flag.
 4. The §3 greps, each in its scope.
@@ -360,6 +360,11 @@ says only what the count says.
    an ASCII capital is never right — `detectors.MEDIAL_CAPS` refuses it. Word-
    initially both are ordinary and **the store supports no prior in either
    direction**; `harness proposal marks` says so in its `outside` column.
-5. **Stress is culminative.** Every polysyllabic Tier-1 word carries exactly one
-   U+02CA (§2.1); one with none is not a plausible reading but a flag (§2.14).
-   Gate: `proposal check` reports a `resolved`/`text` mismatch.
+5. **Stress is culminative per root.** Every polysyllabic Tier-1 root carries
+   exactly one U+02CA (§2.1); one with none is not a plausible reading but a flag
+   (§2.14). **A hyphen bounds a root here**, so a hyphenated compound carries one
+   mark per element — `vinreˊt-tuˊmg̣ɪn` (`2-067`, `3-086`), `tŭmñeˊ-leiˊwulɪt`
+   (`3-091`). It bounds nothing for §2.3's medial capitals, where a compound's
+   second element is medial (`detectors.MEDIAL_CAPS`); the two scopes differ and
+   neither follows from the other. Nothing counts the marks — this one is the
+   reader's to apply, and no gate implements it.
