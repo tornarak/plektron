@@ -1,0 +1,174 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "571",
+      "note": "Folio, RunningTitleZone.",
+      "class": "layout"
+    },
+    "2": {
+      "text": "of the adult men are unmarried. One reason for this is the heavy burden of"
+    },
+    "3": {
+      "text": "the tribute for “dead souls,” which weighs heavily on these weak, half-starving"
+    },
+    "4": {
+      "text": "people. Besides this, however, they seem to feel a dull aversion to marrying"
+    },
+    "5": {
+      "text": "and having a family. “It is more convenient thus,” was the answer of every"
+    },
+    "6": {
+      "text": "one of them to all my questions: “the more children, the more care.”"
+    },
+    "7": {
+      "text": "Marriages among the Reindeer Chukchee, as will be shown further on,"
+    },
+    "8": {
+      "text": "are concluded at every age, from very tender infancy up to the full-grown"
+    },
+    "9": {
+      "text": "adult. Their ideal of a bride includes, in the first place, physical strength"
+    },
+    "10": {
+      "text": "and ability to work. Even in their descriptions of womanly beauty, strength"
+    },
+    "11": {
+      "text": "of body is mentioned before everything else, and all other characteristics are"
+    },
+    "12": {
+      "text": "so combined as to make still more impressive the idea of greath strength.¹",
+      "note": "Printer's error “greath” for “great,” keyed as printed per §2.14. Footnote marker confirmed superscript ¹ at 4×.",
+      "class": "print"
+    },
+    "13": {
+      "text": "Chastity of Women. — Chastity is not considered as in any way an"
+    },
+    "14": {
+      "text": "essential quality of an ideal bride. Indeed, the Chukchee language has no"
+    },
+    "15": {
+      "text": "word to express this idea, not even a special word for “girl.” It has only"
+    },
+    "16": {
+      "text": "the word ñeˊus˙qät (“woman”); in combination, also -ñew, -ñaw, -ñe, -ña.",
+      "resolved": "handle {n~e'us.qa:t} -> ñe(n+U+0303) + U+02CA us + U+02D9 qät = ñeˊus˙qät, per lexicon lookup (attested 3-013, 3-005); suffix fragments -ñew/-ñaw/-ñe/-ña use the same ñ (n+U+0303)",
+      "note": "Machine draft misread this as “ne us gat”; keyed via ratified lexicon handle.",
+      "as_typed": "the word {n~e'us.qa:t} (“woman”); in combination, also -ñew, -ñaw, -ñe, -ña.",
+      "class": "draft"
+    },
+    "17": {
+      "text": "Yaˊnřa-ñaw (“separate woman”) is used for any woman who, for the time being,",
+      "resolved": "Ya + U+02CA + n + ř(r+U+030C) + a-ñ(n+U+0303)aw; confirmed caron and tilde at 4×",
+      "note": "Machine draft read ř as plain r; confirmed caron at 4× zoom, matches §2.2 ř (dental, slight trill).",
+      "class": "draft"
+    },
+    "18": {
+      "text": "has no husband, whether she be a girl, a widow, or a divorced woman. For"
+    },
+    "19": {
+      "text": "“chastity” only a paraphrase may be used; such as, yep ayaaˊkᴇlên (“not yet",
+      "resolved": "yep ayaa + U+02CA + k + ᴇ(small-cap E, U+1D07) + l + ê(e+U+0302) + n",
+      "note": "The vowel after k is printed with a breve above a small-cap ᴇ. §2.6 licenses breve only on u/i and explicitly never on the obscure-vowel series (ᴀ ᴇ ɪ ä). Keyed the catalogued base ᴇ without the breve; the breve itself is an uncatalogued mark in this environment. Confirmed at 4× (ceiling) — no further zoom will resolve it.",
+      "class": "doubt"
+    },
+    "20": {
+      "text": "put in use”). This may be due in part to the extreme sensuality which is"
+    },
+    "21": {
+      "text": "characteristic of the Chukchee, both male and female. “Best thing (in the"
+    },
+    "22": {
+      "text": "world)” (ɪnaˊn-tam-vaˊɪrg̣ɪn), every one would tell me with great persuasion",
+      "resolved": "ɪ (small-cap I, U+026A) + na + U+02CA + n-tam- + handle {va'i_rg.i_n} -> va + U+02CA + ɪ + rg + U+0323 + ɪn = vaˊɪrg̣ɪn",
+      "note": "va'irgin resolved via lexicon lookup (attested vernacular compound, e.g. 2-040, 1-063); g-dot confirmed at 4×. First element ɪna'n-tam- not attested in lexicon (below 2-page floor), keyed off the raster.",
+      "as_typed": "world)” (ɪnaˊn-tam-{va'i_rg.i_n}), every one would tell me with great persuasion",
+      "class": "doubt"
+    },
+    "23": {
+      "text": "concerning sexual life. The people enjoy ribald tales and lewd gestures."
+    },
+    "24": {
+      "text": "Many of the nick-names are very obscene.¹",
+      "note": "Footnote marker confirmed superscript ¹ at 4×; machine draft read it as “]”.",
+      "class": "draft"
+    },
+    "25": {
+      "text": "In a tale about Aˊñqalo’s wife, when the young bride is brought to the",
+      "note": "Machine draft read the name as “A’ñgalo”; the letter after ñ is q, not g — confirmed at 4×.",
+      "resolved": "Aˊ(a+U+02CA)ñ(n+U+0303)qalo's — stress after A, tilde on ñ, confirmed at 4×",
+      "class": "draft"
+    },
+    "26": {
+      "text": "camp in a covered sledge, the neighbors say, “Let us have a look at this"
+    },
+    "27": {
+      "text": "young woman, Añqalo’s wife’s daughter.” — “No, it is impossible,” says the",
+      "note": "This second mention of the name prints no stress mark at all (contrast line 25’s Aˊñqalo), confirmed at 4× — a multisyllabic Tier-1 name with no stress mark anywhere is the §2.14/§5.5 defective-form case. Keyed as printed; the mark is not supplied here since that correction is the adjudicator's, made against occurrences already in gt/ocr.",
+      "class": "doubt",
+      "resolved": "Añ(n+U+0303)qalo's — tilde on ñ only, no stress mark anywhere in this occurrence, confirmed at 4×"
+    },
+    "28": {
+      "text": "bridegroom. “If you look at her, you will die!” They come to the place."
+    },
+    "29": {
+      "text": "People gather from all sides, — old women with staffs, elderly people, the"
+    },
+    "30": {
+      "text": "middle-aged, young men. The old people say, “Let us have, though, but"
+    },
+    "31": {
+      "text": "one look!” — “Nay, if you look at her, you will die.” — “No, no! Are we"
+    },
+    "32": {
+      "text": "children? Are we foolish people? Make her appear. Let us have a look"
+    },
+    "33": {
+      "text": "at the female beauty.” — “As you like.” He told his wife to show from the"
+    },
+    "34": {
+      "text": "covered sledge only one of her hands. When they saw that hand, the old"
+    },
+    "35": {
+      "text": "people and the others, then, from the mere lustful trembling of their loins,"
+    },
+    "36": {
+      "text": "they all died instantly.² This episode is repeated in many other tales. Some",
+      "note": "Footnote marker confirmed superscript ² at 4×; machine draft read it as “?”.",
+      "class": "draft"
+    },
+    "37": {
+      "text": "of the old men complained to me that this extreme sensuality has developed"
+    },
+    "38": {
+      "text": "through the influence of modern times. “The people are spoiled,” said these"
+    },
+    "39": {
+      "text": "men. “Our young men have ceased to think about war and strife, and their"
+    },
+    "40": {
+      "text": "whole attention is directed to the bosom of a woman’s dress. They cease to"
+    },
+    "41": {
+      "text": "gather together. They avoid each other like wild reindeer; but they catch"
+    },
+    "42": {
+      "text": "the odor of the female as quickly as reindeer-bucks.” I do not give much"
+    },
+    "43": {
+      "text": "² Bogoras, Chukchee Materials, p. 244.",
+      "note": "Footnote 2 opener; leading digit confirmed superscript at 4×.",
+      "class": "layout"
+    },
+    "44": {
+      "text": "¹ Compare p. 37.",
+      "note": "Footnote 1 opener; leading digit confirmed superscript at 4×.",
+      "class": "layout"
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

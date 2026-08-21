@@ -1,0 +1,289 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE.",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "1": {
+      "text": "570",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "2": {
+      "text": "the soiled moss and hair on its diaper,¹ the membrum virile of the infant",
+      "note": "Footnote marker after \"diaper,\" is the superscript sort U+00B9, not the ASCII digit the draft carried.",
+      "class": "draft",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "3": {
+      "text": "would swell abnormally at the end, and the swelling would often remain",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "4": {
+      "text": "throughout life and make all sexual functions impossible. This kind of ab-",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "5": {
+      "text": "normality is expressed in the Chukchee language by a special verb, totaiñoˊrkɪn",
+      "resolved": "totaiñoˊrkɪn = t,o,t,a,i,n+U+0303,o,U+02CA,r,k,U+026A,n",
+      "note": "Raised mark before rk read as stress U+02CA per default; final syllable's i is dotless small-cap ɪ (U+026A), confirmed at 4x.",
+      "class": "doubt",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "6": {
+      "text": "(“thou acquirest the swelling on the membrum virile”). A man with such an",
+      "note": "Closing quote is curly ” per keying_spec §1/§5.6; draft carried a straight escaped quote.",
+      "class": "draft",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "7": {
+      "text": "abnormality, of course, is incapable of sexual life, and therefore cannot have",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "8": {
+      "text": "a wife and a home of his own. I have not met personally any man with",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "9": {
+      "text": "such a deformity; but, when travelling on the Dry Anui River, I was told",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "10": {
+      "text": "that in the year previous a man so afflicted had died from influenza. He",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "11": {
+      "text": "was quite old, and lived as a herdsman in a camp of a rich reindeer-breeder.",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "12": {
+      "text": "He slept in the house of his master, having neither wife nor home of his own.",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "13": {
+      "text": "Sometimes, when feeling dull, he would take a drum and begin to drum and",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "14": {
+      "text": "sing, “Oh, oh, oh! From the hands of my mother I got a swelling on",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "15": {
+      "text": "my penis.”",
+      "note": "Closing quote is curly ”; draft carried a straight escaped quote.",
+      "class": "draft",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "16": {
+      "text": "A family of women having no man may live in a camp, depending for",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "17": {
+      "text": "their subsistence on the herd of the master. Some old women even live singly",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "18": {
+      "text": "in the camp, having a little house and a few pack-sledges of their own; but",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "19": {
+      "text": "such existence is hard to bear, and is avoided by younger women, who, if",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "20": {
+      "text": "left alone in the world, leave their own house, and seek that of another.",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "21": {
+      "text": "Thus, in an autobiographical narrative by a Chukchee, Tɪnpuˊurg̣ɪn, published",
+      "resolved": "Tɪnpuˊurg̣ɪn = T,U+026A,n,p,u,U+02CA,u,r,g+U+0323,U+026A,n",
+      "note": "Both i's are dotless small-cap ɪ (U+026A); raised mark before urgin is stress U+02CA; g carries a dot below (g+U+0323), confirmed at 4x.",
+      "class": "doubt",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "22": {
+      "text": "in my “Chukchee Materials” (p. 60), he tells of a similar circumstance in the",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "23": {
+      "text": "case of his elder sister, as follows: —",
+      "note": "Draft had a space before the colon (French spacing); stripped per §2.9.",
+      "class": "draft",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "24": {
+      "text": "“Then [after their father had died] Aiˊhɪnto [the master of the camp] said to my sister, ‘You",
+      "resolved": "Aiˊhɪnto = A,i,U+02CA,h,U+026A,n,t,o",
+      "note": "Draft misread the two square brackets as J and l ('Jafter', 'campl'); restored as [ ]. Outer quote is a nested speech: opens “ here, ends ” on line 29; inner single quote ‘You...’ spans lines 24-25. Name Aiˊhɪnto: stress U+02CA after Ai, dotless ɪ in hinto, confirmed at 4x.",
+      "class": "doubt",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "25": {
+      "text": "must throw away your tent.’ ... She said, ‘Why not? I have neither father nor husband. Then",
+      "note": "Draft omitted both single quotes around this nested speech; restored curly ’ and ‘ per raster.",
+      "class": "draft",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "26": {
+      "text": "for whom must I put up the tent, shake and dust the skins? Is it for you?’ Then she left in the",
+      "note": "Draft omitted the closing single quote after \"you?\"; restored curly ’.",
+      "class": "draft",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "27": {
+      "text": "open everything that she had, — fire-drills, sledges, and charm-strings. These last she cut up, thus",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "28": {
+      "text": "wholly renouncing them for the future. Also the tent, of her father’s make, the covered sledge, the",
+      "note": "Possessive apostrophe is curly ’ per §1.",
+      "class": "draft",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "29": {
+      "text": "tent-poles, all pack-sledges, — everything was cut and destroyed.”",
+      "note": "Closing quote is curly ”, closing the outer quotation opened on line 24.",
+      "class": "draft",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "30": {
+      "text": "Thus marriage is the normal state of Reindeer Chukchee life, and is even",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "31": {
+      "text": "the basis of all economical conditions. In this respect the Reindeer Chukchee",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "32": {
+      "text": "differ from all their neighbors. Among the Maritime portion of the tribe",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "33": {
+      "text": "marriage is not so indispensable to life, and the unmarried state is somewhat",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "34": {
+      "text": "more common. Among the Tungus, unmarried men are also more frequently",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "35": {
+      "text": "met, because marriages there are strictly exogamic, and a bride may be taken",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "36": {
+      "text": "only from another clan than that of the bridegroom. Moreover, a considerable",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "37": {
+      "text": "price has to be paid for her.",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "38": {
+      "text": "In most striking contrast to the Reindeer Chukchee in this respect are",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "39": {
+      "text": "all the clans of the Russianized Yukaghir living on the Lower Kolyma River.",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "40": {
+      "text": "These clans are more or less rapidly dying out, some being nearly extinct.",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "41": {
+      "text": "Others still include a few dozen people each. Among these, about one third",
+      "contamination": {
+        "blind": true
+      }
+    },
+    "42": {
+      "text": "¹ Compare p. 252.",
+      "note": "Superscript opener U+00B9 matches the body marker on line 2; the small mark after the period at the far right is print noise/blot, not a character.",
+      "class": "artifact",
+      "contamination": {
+        "blind": true
+      }
+    }
+  }
+}
