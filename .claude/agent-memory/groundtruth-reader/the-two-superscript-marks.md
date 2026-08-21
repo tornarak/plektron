@@ -13,7 +13,7 @@ laryngeal alone on a bare `a`.
 **The laryngeal is the mark most often misread as something uncatalogued.** On
 `1-038` L37 it read as a superscript `g` — a shape not in the inventory anywhere —
 because at a small scale its stacked open-e outline is just a rounded loop with a
-tail, and "superscript g" sounds plausible next to a velar. §5.9 settles the
+tail, and "superscript g" sounds plausible next to a velar. R5 settles the
 question before the raster does: an uncatalogued codepoint is far likelier a
 misreading than the inventory being incomplete.
 

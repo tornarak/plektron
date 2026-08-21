@@ -12,7 +12,7 @@ visible raised mark didn't cleanly fit the inventory:
    the flatter tilde on `Uñiˊsak` elsewhere on the same page. No caron-`n` is
    catalogued (keying_spec.md §2.2 licenses only `ñ`, n+U+0303). Keyed as `ñ`
    anyway (closest catalogued sort) and flagged the shape discrepancy in `note`,
-   per §5.9's rule that an uncatalogued codepoint is far more likely a
+   per R5's rule that an uncatalogued codepoint is far more likely a
    misreading than the inventory being incomplete.
 
 2. Line 47, `Kihiˊni Island` (first mention only): a second, crisp raised mark

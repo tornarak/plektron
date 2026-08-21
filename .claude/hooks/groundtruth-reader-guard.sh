@@ -96,7 +96,7 @@ case "$TOOL" in
       # a hazard — a redundant purchase, which is why the refusal explains where
       # the content already is rather than telling it to do without.
       *keying_spec.md)
-        echo "Blocked: keying_spec.md is TRANSCLUDED WHOLE into your system prompt — scroll up, it is already in your context under 'The keying spec'. Reading it buys nothing and pays for ~15k tokens of it twice. Cite the section you need by number; if a rule you expect is genuinely missing from what you were given, that is a finding for your report, not a file to go looking for." >&2
+        echo "Blocked: keying_spec.md is TRANSCLUDED WHOLE into your system prompt — scroll up, it is already in your context under 'The keying spec'. Reading it buys nothing and pays for ~5k tokens of it twice. Cite the section you need by number; if a rule you expect is genuinely missing from what you were given, that is a finding for your report, not a file to go looking for." >&2
         exit 2 ;;
       */harness/VERBS.md|harness/VERBS.md)
         echo "Blocked: ask the verb, don't read the reference — 'uv run harness verbs show ocr zoom' prints that one entry, and bare 'verbs show' lists every action name. Reading the whole file cost one page 33,251 tokens, a fifth of its context, for two lookups it could have made in a few hundred." >&2

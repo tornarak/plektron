@@ -5,7 +5,7 @@ not. One agent per page, each stopping at a normalized `proposal.json`; the huma
 then reviews the pages one at a time. `2-045`/`2-046`/`2-047` were run this way,
 three Sonnet readers at once.
 
-**Hand the whole batch to one server**: `harness ocr review 2-046 2-047 --serve`.
+**Hand the whole batch to one server**: `harness ocr review 2-046 2-047`.
 One page on screen at a time, Done advancing to the next and stopping the server
 only on the last, so the background task exiting still means the batch is finished.
 A server per page put the human's half back to waiting on the tooling between
@@ -158,7 +158,7 @@ such; and none of the standing text is written per reader, because all of it is
 ahead of the first varying byte.
 
 **The spec is transcluded, not read.** `keying_spec.md` cannot move here — it binds
-the collation pass and the human keying track too — but a `Read` of it costs ~15k
+the collation pass and the human keying track too — but a `Read` of it costs ~5k
 tokens per reader per page, behind the varying turn, where nothing can share it. So
 the agent file carries a copy between markers, `harness ocr queue` re-syncs it from
 the source before every batch, and `test_transclusion.py` fails if the committed
@@ -182,7 +182,7 @@ assertion inside it could never catch the case it exists for.
   infer, an agent reaches for the default view, and the view is the wrong witness.
 - **Name the deliverable and where it stops.** "Your deliverable is
   `review/PP-NNN/proposal.json`, normalized and clean. STOP THERE." Then bar the
-  rest by name: no `--serve`, no `restore`, no `gt/ocr/` write, no `views build`, no
+  rest by name: no `ocr review`, no `restore`, no `gt/ocr/` write, no `views build`, no
   `--all` form of anything, no git commit. A prohibition that names the verb is
   checkable; "don't overstep" is not. `--all` is worth naming as a class now that
   every corpus-wide form is spelled that way: one flag stands between a per-page
@@ -205,7 +205,7 @@ assertion inside it could never catch the case it exists for.
 - **A settled rule is not a doubt.** Say plainly: where `keying_spec.md` states a
   closed rule, apply it and cite it; the raster is for what the spec does not
   decide. `3-063`'s reader zoomed twice to adjudicate straight-vs-curly quotes
-  when §1 and §5.6 say the book sets curly throughout and never straight — the
+  when §1 and R1 say the book sets curly throughout and never straight — the
   escaped straight quotes in the machine text were an encoding artifact the spec
   alone disposes of. That is the cheapest saving available at this rung, and it
   cuts the same way spanning does: both stop the reader paying pixels for a

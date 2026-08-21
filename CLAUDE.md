@@ -40,8 +40,8 @@ indistinguishable from a ratified one to anything that does not check.
 recurs wherever a check's two inputs can turn out to be the same file, and has
 been found in four places (`docs/decisions.md`, "What the firewall is not").
 
-**LLM remit.** Models triage, propose, and restructure. They never originate a glyph
-identity and never mint an index entry unreviewed.
+**LLM remit.** Models read, triage, propose, restructure. A glyph they read is a
+proposal until ratified; no index entry is minted unreviewed.
 
 # Environment
 

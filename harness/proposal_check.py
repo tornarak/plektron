@@ -587,12 +587,8 @@ def check(path: Path, ref: str | None = None, root: Path = Path(".")) -> list[di
         "english": "straight apostrophe on an English token (§1: the book "
                    "sets curly ’ in English prose too — same rule as the "
                    "quote pair; not Tier-1, so no licensing exception applies)",
-        "unlicensed": "apostrophe unlicensed (§2.1: not post-b/p/d/t/g/k, not "
-                      "V_V — almost certainly a mistyped stress mark)",
-        "ambiguous": "apostrophe in V_V position (§4: licensed in principle, "
-                     "but zero confirmed instances corpus-wide — almost "
-                     "certainly a mistyped stress mark, not auto-fixable "
-                     "since the swap needs a human's confirmation)",
+        "unlicensed": "apostrophe inside a Tier-1 form (§2.1: no licensed "
+                      "position — a mistyped stress mark U+02CA)",
     }
     data = json.loads(path.read_text(encoding="utf-8"))
     out = []

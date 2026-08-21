@@ -419,7 +419,7 @@ def sync_transcludes(root: Path = Path("."), agent: Path = AGENT,
     **The reader's whole contract has to be in its system prompt, and
     `keying_spec.md` has to stay one file.** Those pull opposite ways. The spec
     binds the collation pass and the human keying track as well, so it cannot
-    move into an agent definition; but a `Read` of it costs ~15k tokens per
+    move into an agent definition; but a `Read` of it costs ~5k tokens per
     reader per page, behind the turn that varies, where nothing can share it.
 
     So it is copied in, and the copy is mechanical: this rewrites each marked

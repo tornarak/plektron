@@ -17,7 +17,7 @@ that even a common ASCII-substitution failure mode isn't limited to Tier-1
 **Why this matters:** nothing about the page's genre (a "Neighboring Tribes"
 historical section, not a lexicon) predicted this. The standing rule ("a page
 believed to be all English is a prior, not a licence") is not hypothetical —
-apply the same full Tier-1 checklist (§4/§5.8 raised-mark-defaults-to-stress,
+apply the same full Tier-1 checklist (§2.1/R4 raised-mark-is-stress,
 one-stress-per-multisyllabic-word) to any name that looks like it could be a
 transliterated native form, wherever it turns up in otherwise plain narrative.
 

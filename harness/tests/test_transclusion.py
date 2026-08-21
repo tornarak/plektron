@@ -2,7 +2,7 @@
 
 `keying_spec.md` and the reading checklist are copied into
 `.claude/agents/groundtruth-reader.md` between markers, because a subagent's system
-prompt is the only block its siblings can share and a `Read` of the spec costs ~15k
+prompt is the only block its siblings can share and a `Read` of the spec costs ~5k
 tokens per reader, per page, behind the turn that varies. But the spec cannot simply
 *move* there: it binds the collation pass and the human keying track too.
 

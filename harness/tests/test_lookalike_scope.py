@@ -107,7 +107,7 @@ def test_medial_caps_does_not_fire_on_all_caps_english():
     """The regression this test exists for, and it was live corpus-wide.
 
     `MEDIAL_CAPS` looks for an ASCII A/E/I/L where a small-cap ᴀ/ᴇ/ɪ/ʟ was meant
-    (keying_spec §5.7). It had widened to `(?<!^)(?<!\\s)[AEIL]` — any such
+    (keying_spec §5.4). It had widened to `(?<!^)(?<!\\s)[AEIL]` — any such
     capital not at a token start — which catches the `ˊLo` case by dropping the
     neighbour requirement entirely, and thereby fires on every all-caps English
     word in the book. `BOGORAS, THE CHUKCHEE.` is the running title of ~694

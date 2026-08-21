@@ -7,6 +7,14 @@ in for an unread glyph.
 
 ## Open
 
+- **One curly apostrophe sits inside a Tier-1 span, and nothing exempts it.** The
+  book quotes an Iñupiaq form from another author, in that author's notation, and
+  the form carries an ordinary U+2019. `ipk` is a Tier-1 code, so the span falls
+  under §3's Tier-1 greps, which since 2026-08-21 name U+2019 as a trap for
+  stress. The reading is right and the gate is right; what is missing is a way to
+  say "this form is in a cited system, not Bogoras's" that the grep can see — a
+  notation attribute on the span, or an allow-list keyed by ref and line. Waits
+  on the ref being recorded here and on a decision about the mechanism.
 - **The List of Illustrations has no reader, and the cross-check waits on chapter
   assembly.** `docs/apparatus.md` describes a per-entry reconciliation — every LoI
   text-figure located on a page, no caption numbering outside the LoI, all 35
@@ -224,7 +232,7 @@ in for an unread glyph.
   was the recognizer store, it was deleted, and the diff refused rather than
   compare a proposal against the ground truth it produced. This entry used to say
   "if a second witness is ever wanted again, it links into `ocr/` from its own
-  store" — which is exactly what `ocr predict` built. `harness ocr review REF
+  store" — which is exactly what `ocr predict` built. `harness ocr diff REF
   --spans --store mz` is an independent witness by inode, where the bare view
   stops being one the moment the page has ground truth and the view points at it.
   Name the store, not the view: the refusal catches the collapse, but only after

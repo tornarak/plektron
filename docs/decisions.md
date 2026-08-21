@@ -266,10 +266,13 @@ citation in it unresolvable. `@source` in the header points at the catalogue rec
 `@resp` only ever at a model's reading of a raster — the rank machinery is about
 reading pages and says nothing about a catalogue's authority.
 
-## The reading-discipline record (keying_spec.md §5's case files)
+## The reading-discipline record (the reader contract's R-items, formerly keying_spec.md §5)
 
-Moved here 2026-08-05, when §5 was compressed to rule → instrument → record per
-class. The reason for the move is itself a finding: the 1-039…1-044 reader batch
+The `§5.n` numbers below are the spec's old reading-discipline classes. On
+2026-08-21 that section left the spec for the reader contract, as R1–R10, and §5
+became the priors; the map is §5.1 → §5.1/R2, §5.2 → §5.2/R2, §5.5 → R4,
+§5.9 → R5, §5.11/§5.12 → R7. Moved here 2026-08-05, when §5 was compressed to
+rule → instrument → record per class. The reason for the move is itself a finding: the 1-039…1-044 reader batch
 showed that a class restated at length in the system prompt is not thereby
 checked — one reader quoted §5.1's 93.9% prior *and* named `vaˊɪrg̣ɪn/vaˊɪrg̣ɪt`
 as the documented trap in its own note, then bare-keyed the suffix twice on the
@@ -298,6 +301,40 @@ method — both `2-033` and `2-035` corrections came from holding the doubtful
 instance, `1-042`'s `Nɪg̣čɪˊen`, was caught at adjudication in 2026-08 by
 `proposal marks`' distributional arm (g-dot at 0.0% across 3 types against the
 corpus prior) after four clean mechanical gates had passed the page.
+
+**The corrections themselves, 2026-08 onward.** Moved out of `keying_spec.md`
+2026-08-21, when §5.1 had accreted sixty lines of case history for a rule with
+two clauses. The rule is a count; these are what the count was built from.
+
+*Record.* The most-corrected class in the project's history: `1-074` ×2,
+`3-004` (nearly every headword — the page's largest error class), `3-005`,
+`2-033` ×4, `2-035`, and `1-042` at adjudication — five restatements
+survived, including a reader that quoted the prior and the trap word, then
+bare-keyed it on the page it was writing about. Both `2-033` and `2-035`
+were corrected to dotted after 4× stares had failed; `1-042`'s was caught by
+`proposal marks` after four clean mechanical gates. Then `2-104`
+(`vaˊɪrgɪn`) and `2-117` (`vaˊɪrgɪn`, `ɪˊê-mñêˊɪrg̣ɪn`) in the chapter-XIV
+pass, all three overturned the same way. Each of those corrections was
+credited at the time to a contrast crop; §5.13 says why that credit was
+unearned — every one of them moved toward the prior, which is the only
+direction the method has ever been right in. Those
+readers did everything else right — refused the ratified handle, flagged the
+line — which is why the rule above is now a count and not an exhortation:
+the disciplined disposition still produced the wrong character. Fifteen more
+followed across five part-3 batches (`3-004` ×2, `3-005` ×3, `3-011`,
+`3-017` ×3, `3-018`, `3-023`, `3-042`, `3-050`, `3-062`, `3-076`), **none of them
+word-final** and none caught by a crop: fourteen were named by `proposal marks`
+before a scan was opened, and the fifteenth fell inside the same crop as one that
+was. `3-042`'s reader wrote in its own note that *both* `g` in the gloss carried
+the dot and then keyed only the second — the class survives even a reader that
+has already seen it. `3-005`'s reader argued
+the dot away from morphology — "not the `-gɪn` suffix, it is a bare root
+`gêl`" — a glyph inferred from what the system ought to contain, which the
+ink refused twice on one page. The same
+adjudication ran the other way once, and that is the more useful half:
+`2-118` had keyed `naˊrg̣ɪn-` dotted, and the dot came off. A rule stated as
+"always" would have made that correction unwriteable, which is why §5.1's count
+is scoped to word-final and says where it stops.
 
 The suffix-frequency snapshot that §5.1 used to carry (recompute with `harness
 lexicon suffixes` / `lexicon digraphs` before citing — 11/20 pilot pages
@@ -408,6 +445,43 @@ for 2-034" — the §5.11 story above. The spec's statement is now scoped flat:
 no plain-digit convention for footnote markers exists anywhere in the corpus,
 no page is a precedent for one, and a detector firing on your output is the
 rule working, never a convention you have joined.
+
+**The spec was consolidated on 2026-08-21, and why.** It had grown to 1063
+lines, half of them case history, with the same rule patched in two or three
+places at different scopes as exceptions were met — and the transcriber error
+rate rose as it grew. The specific mechanism, in the editor's words: a narrated
+one-off exception teaches the model that exceptions exist, and it starts finding
+them. The spec had said word-final `-gɪn` was never bare; a bare one turned up
+*compound-medially* (`2-118` L25, `naˊrgɪn-mñêˊɪrg̣ɪn` — a root that happens to
+end in those letters, dotted at the true word end); it was written up as an
+exception in two places, and readers read the patch as licence and began
+undotting blatant word-final `-gɪn` across two part-3 batches. The rule's
+*scope* was what needed correcting — "word-final" means the last letters of
+the word — and the spec now says that and nothing about the case. The general
+rule the rewrite follows: an exception is either a scope correction to the
+rule or it is not spec material; one `Attested:` line per rule, and the
+narratives live here. The reading-discipline items left the spec altogether
+(a reader's instruments are not character inventory) and became R1–R10 in the
+contract, which was deduplicated in the same pass: the reader's system prompt
+went from ~124 KB to ~72 KB.
+
+**Spirant and pause left the inventory in the same pass.** The p. 10 key (scan
+`1-030`) prints them as two distinct sorts — the spirant row `b‘ p‘ d‘ “ g‘ k‘`
+with a raised *turned* comma, the pause row `yiñe’a` with a raised comma — and
+the spec had encoded both as U+0027 on the ASCII-policy argument that their
+environments are disjoint. Neither has ever been seen in the corpus: every
+raised comma-shaped mark examined in either environment was stress on
+adjudication, and `3-004` alone mistyped stress as `'` on 33 lines while the
+detector passed a `'` after b/p/d/t/g/k in silence as "licensed spirant". The
+one legitimate apostrophe in the whole book is an ordinary curly one in an
+Iñupiaq form quoted from another author in that author's notation. So the spec
+no longer assigns the two marks a codepoint or a row; U+0027 joined §3's
+forbidden list inside Tier-1 spans with stress as what it traps, and
+`detectors.apostrophe_licensing` now reports every straight apostrophe in a
+Tier-1 token as unlicensed. The key's rows remain the record of what Bogoras
+*declared*; the corpus is the record of what he set. The ᵉi row of the same key
+prints its onglide with a mark that resembles the spirant's turned comma more
+than a superscript *e* — noted, not acted on; U+1D49 is settled.
 
 ## Collation moved behind ground truth, and the generator that made it possible
 

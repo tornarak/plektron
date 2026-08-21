@@ -610,8 +610,8 @@ because two figures share a caption. Classify a page as text-figure or plate
 
 Native forms in the LoI (`Uñiˊsak`, `Nuˊnligren`, `Kereˊtkun`, `Valkaˊʟᴇn`) are
 flagged `tier1` and are **proposals for keying, not adopted glyph identities** —
-the firewall's subject is a model's reading of a scan, and the LoI is only
-reachable by reading one. The same applies to the Tier-1 forms in
+the firewall's subject is rank, a proposal rises only by a human act, and the
+LoI is only reachable by reading a scan. The same applies to the Tier-1 forms in
 `data/readings.md`, which are flagged in their `@note`. One is worth knowing about:
 `1-049`'s Plate I caption prints `Nuˊnlig̣ren` with a **dotted g** where the LoI
 sets `Nuˊnligren` plain. Recorded as printed, not adjudicated.

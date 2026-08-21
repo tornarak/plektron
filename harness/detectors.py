@@ -125,59 +125,24 @@ def unlicensed_marks(text: str) -> list[dict]:
     return out
 
 
-# keying_spec.md §2.1 + §4 script 2: U+0027 is licensed only post-{b p d t g k}
-# (spirant) or strictly V_V (pause); any other position is "unconditionally an
-# error". §4's one exception is V_V itself, where *both* readings are licensed
-# and only printed shape decides — not this function's call, so that position
-# is reported separately and never as an error.
-#
-# Built because a corpus-wide check turned up not one confirmed legitimate
-# apostrophe anywhere in restored ground truth — every literal U+0027 found
-# was an English possessive on a gloss word — while `3-004` alone put the
-# same mistyped-for-stress error on 30+ lines. §5.5 already says "if the only
-# raised mark in the word is currently keyed as `'`, that apostrophe is far
-# more likely `ˊ` misread"; this is that rule made mechanical rather than
-# re-derived by eye on every page.
-_SPIRANT_BASES = set("bpdtgk")
-# Bare base letters only — NFD strips the diacritic off ä/ë/ê/ŭ down to a
-# plain vowel before this runs, and ɵ/ᴀ/ᴇ/ɪ are already atomic. ʟ is a
-# lateral consonant despite the small-cap-vowel-series look-alike shape and
-# is deliberately not here.
-_VOWELS = set("aeiouɵᴀᴇɪ")
+# keying_spec.md §2.1 and §3: U+0027 has no use inside a Tier-1 span — the p. 10
+# key's spirant and pause marks have never been seen in the corpus, and a raised
+# comma-shaped mark there is stress U+02CA. So every straight apostrophe in a
+# Tier-1 token is an error, whatever sits beside it. An earlier version passed
+# one silently after b/p/d/t/g/k (the key's spirant environment) and
+# downgraded V_V to advisory; both were licences for a mark nobody has ever
+# read, and `3-004` alone put the mistyped-for-stress error on 30+ lines.
 
 
 def apostrophe_licensing(text: str) -> list[dict]:
-    """Every U+0027 in `text`, checked against its licensed environment.
+    """Every U+0027 in `text`, each reported as 'unlicensed' with its context.
 
-    NFD-normalized first, and marks are skipped when looking for the base
-    letter immediately before the apostrophe — 'ê'' is e + circumflex +
-    apostrophe, and the circumflex is not what licenses or fails to license
-    the mark that follows it.
-
-    Two kinds, deliberately not folded into one: 'unlicensed' is the
-    mechanical case §4 calls unconditional — neither environment licenses it,
-    so it is reported as wrong, not merely worth a look. 'ambiguous' is the
-    V_V position, where the spec itself says shape alone decides; flagged for
-    a human to look at the raster, never assumed wrong.
+    One kind only, kept as a dict for the callers that key on it: there is no
+    position inside a Tier-1 span where the codepoint is licensed (§2.1).
     """
     nfd = unicodedata.normalize("NFD", text)
-    out = []
-    for i, ch in enumerate(nfd):
-        if ch != "'":
-            continue
-        j = i - 1
-        while j >= 0 and unicodedata.category(nfd[j]) == "Mn":
-            j -= 1
-        prev = nfd[j] if j >= 0 else ""
-        nxt = nfd[i + 1] if i + 1 < len(nfd) else ""
-        context = nfd[max(0, i - 10):i + 10]
-        if prev.lower() in _SPIRANT_BASES:
-            continue
-        if prev.lower() in _VOWELS and nxt.lower() in _VOWELS:
-            out.append({"kind": "ambiguous", "context": context})
-            continue
-        out.append({"kind": "unlicensed", "context": context})
-    return out
+    return [{"kind": "unlicensed", "context": nfd[max(0, i - 10):i + 10]}
+            for i, ch in enumerate(nfd) if ch == "'"]
 # There is deliberately no SMART_QUOTES detector. Curly quotes are what the book
 # prints, and under the Tier-1-scoped ASCII policy (keying spec section 1) English
 # prose reproduces them, so a flag here fires on correct text: the noise this
@@ -186,7 +151,7 @@ def apostrophe_licensing(text: str) -> list[dict]:
 # known. The draft plaintext carries no markup, so it lives in
 # validate.LOOKALIKE_GREPS against the TEI instead.
 # Word-*medial*: an ASCII capital A/E/I/L inside a token, where a small-cap
-# ᴀ/ᴇ/ɪ/ʟ was meant (keying spec §5.7). The first character of a token is
+# ᴀ/ᴇ/ɪ/ʟ was meant (keying spec §5.4). The first character of a token is
 # excluded, or every capitalised English word beginning A/E/I/L ("English",
 # "Iron", "Later") fires — noise, and, because a hit used to suppress the
 # lexicon check, a mask over real signal.
@@ -761,14 +726,11 @@ def apostrophe_flags(text: str) -> list[dict]:
     which the scoped version could see, since none of those tokens carried
     any other mark).
 
-    Two kinds now: 'english' — no other `INVENTORY_CHARS` member in the
-    token, so nothing marks it Tier-1, and the print-reproduction rule for
-    English applies; flagged regardless of position, since there is no
-    licensed-spirant exception when the token isn't established Tier-1 in
-    the first place. Otherwise, `apostrophe_licensing`'s own kinds
-    ('unlicensed' / 'ambiguous') apply, exactly as before, since a token
-    that *does* carry another inventory glyph is a genuine positional
-    question under §2.1, not a print-convention one.
+    Two kinds: 'english' — no other `INVENTORY_CHARS` member in the token,
+    so nothing marks it Tier-1, and the print-reproduction rule for English
+    applies. Otherwise 'unlicensed', from `apostrophe_licensing`: inside a
+    Tier-1 token the codepoint has no licensed position at all (§2.1), so the
+    mark is a mistyped stress U+02CA.
     """
     out = []
     for m in TOKEN.finditer(text):
@@ -1034,11 +996,7 @@ def detect_all(lines: list[str], root: Path = Path("."),
                     "inventory_glyph" in hits and HYPHEN_MEDIAL_CAPS.search(tok)):
                 hits.append("word_medial_caps")
             if "'" in tok and "inventory_glyph" in hits:
-                kinds = {h["kind"] for h in apostrophe_licensing(tok)}
-                if "unlicensed" in kinds:
-                    hits.append("apostrophe_unlicensed")
-                if "ambiguous" in kinds:
-                    hits.append("apostrophe_ambiguous")
+                hits.append("apostrophe_unlicensed")
             for h in hits:
                 flags.append({"type": h, "index": idx, "token": tok})
             # Union semantics, as the module docstring says: only a detector
