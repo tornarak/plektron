@@ -27,11 +27,13 @@
           <Shape>
             <Polygon POINTS="1355 755 1449 755 1449 1749 1355 1749"/>
           </Shape>
+          <TextLine ID="fig_1-345_003_l1" HPOS="1355" VPOS="755" WIDTH="94" HEIGHT="994"><String CONTENT="Fig. 2. Maritime Chukchee travelling on Snowshoes."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="2585" VPOS="981" WIDTH="94" HEIGHT="552" ID="fig_1-345_004" TAGREFS="BT2">
           <Shape>
             <Polygon POINTS="2585 981 2679 981 2679 1533 2585 1533"/>
           </Shape>
+          <TextLine ID="fig_1-345_004_l1" HPOS="2585" VPOS="981" WIDTH="94" HEIGHT="552"><String CONTENT="Fig. 4. Tattooing. Eskimo."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="249" VPOS="1998" WIDTH="1110" HEIGHT="1360" ID="fig_1-345_005" TAGREFS="BT1">
           <Shape>
@@ -47,11 +49,13 @@
           <Shape>
             <Polygon POINTS="1347 2392 1449 2392 1449 2986 1347 2986"/>
           </Shape>
+          <TextLine ID="fig_1-345_007_l1" HPOS="1347" VPOS="2392" WIDTH="102" HEIGHT="594"><String CONTENT="Fig. 1. Foot-Race in Uñiˊsak."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="2585" VPOS="2408" WIDTH="94" HEIGHT="552" ID="fig_1-345_008" TAGREFS="BT2">
           <Shape>
             <Polygon POINTS="2585 2408 2679 2408 2679 2960 2585 2960"/>
           </Shape>
+          <TextLine ID="fig_1-345_008_l1" HPOS="2585" VPOS="2408" WIDTH="94" HEIGHT="552"><String CONTENT="Fig. 3. Shaving. Eskimo."/></TextLine>
         </TextBlock>
       </PrintSpace>
     </Page>

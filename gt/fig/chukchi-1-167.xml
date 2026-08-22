@@ -27,11 +27,13 @@
           <Shape>
             <Polygon POINTS="2499 761 2621 761 2621 1705 2499 1705"/>
           </Shape>
+          <TextLine ID="fig_1-167_003_l1" HPOS="2499" VPOS="761" WIDTH="122" HEIGHT="944"><String CONTENT="Fig. 4. Constructing a Boat in the Village Uñiˊsak."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="1373" VPOS="887" WIDTH="106" HEIGHT="698" ID="fig_1-167_004" TAGREFS="BT2">
           <Shape>
             <Polygon POINTS="1373 887 1479 887 1479 1585 1373 1585"/>
           </Shape>
+          <TextLine ID="fig_1-167_004_l1" HPOS="1373" VPOS="887" WIDTH="106" HEIGHT="698"><String CONTENT="Fig. 2. Skin Boat leaving the Shore."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="341" VPOS="2029" WIDTH="1014" HEIGHT="1343" ID="fig_1-167_005" TAGREFS="BT1">
           <Shape>
@@ -47,11 +49,13 @@
           <Shape>
             <Polygon POINTS="1359 2318 1459 2318 1459 3124 1359 3124"/>
           </Shape>
+          <TextLine ID="fig_1-167_007_l1" HPOS="1359" VPOS="2318" WIDTH="100" HEIGHT="806"><String CONTENT="Fig. 1. Skin Boat towing a White Whale."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="2495" VPOS="2456" WIDTH="104" HEIGHT="570" ID="fig_1-167_008" TAGREFS="BT2">
           <Shape>
             <Polygon POINTS="2495 2456 2599 2456 2599 3026 2495 3026"/>
           </Shape>
+          <TextLine ID="fig_1-167_008_l1" HPOS="2495" VPOS="2456" WIDTH="104" HEIGHT="570"><String CONTENT="Fig. 3. Skin Boat sailing."/></TextLine>
         </TextBlock>
       </PrintSpace>
     </Page>

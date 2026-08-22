@@ -78,6 +78,52 @@ def register(cli):
     opt(p, "--jobs", type=int, default=None, metavar="N",
         help="worker threads; 1 runs serially and builds no pool [cores, capped]")
 
+    p = action(g, "witness", run_witness, section="The store",
+               help="compare the fresh caption reading against data/readings.md, "
+               "block for block — the whole point of reading them twice. "
+               "Measurement and never a gate: two ratified readings disagreeing "
+               "is a finding, and which one is right is a human's ruling against "
+               "the scan, not this verb's. The header says whether the reading "
+               "was blind, because a comparison whose two inputs may be one "
+               "input has to say so — a run whose reader had the old file open "
+               "prints the same table and means nothing")
+    opt(p, "--verdict", type=click.Choice(("differ", "lines_differ", "all")),
+        default="differ",
+        help="which rows to list. 'differ' (default) is the class the exercise "
+             "exists to surface; 'lines_differ' is where only the printed-line "
+             "division moved, which is a fact about the box and not the type")
+
+    p = action(g, "restore", run_restore, section="The store",
+               help="write the adjudicated captions into gt/fig/ as "
+               "String/@CONTENT — one String per printed line, inside one "
+               "TextLine carrying the block's own bbox. **This is the "
+               "migration**: the store is populated by restoring rulings, not by "
+               "transcribing data/readings.md, which is what lets the text carry "
+               "#gt. Refuses a block with neither a ruling nor a reading, a "
+               "target that already holds text without --force, and any "
+               "unlicensed mark")
+    _refs(p, "every page the figure store holds")
+    opt(p, "--force", is_flag=True,
+        help="overwrite captions already in the store. Once this has run every "
+             "FigDesc holds one, so a second pass is a deliberate act")
+    opt(p, "--commit", is_flag=True,
+        help="actually write. Without it the report comes back the same and "
+             "nothing on disk changes")
+
+    p = action(g, "review", run_review, section="The store",
+               help="adjudicate the captions the two readings disagree on, in "
+               "the browser — every one in a single document, each with its own "
+               "strip and what data/readings.md reads beside the box. This is "
+               "`ocr review --issues` with a different block builder and a "
+               "different store: same page, same palette, same keyboard, same "
+               "all-or-nothing and prior-text guards, because adjudicating "
+               "flagged fields from many pages at once is the same act whatever "
+               "the fields are")
+    opt(p, "--verdict", type=click.Choice(("differ", "lines_differ", "all")),
+        default="differ", help="which disagreements to carry [differ]")
+    opt(p, "--port", type=int, default=None, metavar="N",
+        help="serve on this port instead of the editor's registered one")
+
     p = action(g, "zoom", run_zoom, section="The store",
                help="magnify one caption block, sliced into strips that fill the "
                "client. **For a Tier-1 glyph you cannot resolve off the contact "
@@ -290,6 +336,65 @@ def run_crops(a) -> int:
     # of mostly zeroes buries the totals, which are the answer to "did the sweep
     # run"; naming a page means the page is the question.
     out(a, {**rep, "rows": rows} if page_refs(a) else rep)
+    return 0
+
+
+def run_restore(a) -> int:
+    from .. import captions as C
+    rep = C.restore(a.root, refs=page_refs(a) or None,
+                    force=a.force, commit=a.commit)
+    out(a, rep)
+    return 0
+
+
+def run_review(a) -> int:
+    from .. import captions as C
+    from ..web import Sessions
+    from ..web import serve as web
+
+    # **Resolved before the socket is bound**, `ocr review`'s rule: a refusal
+    # arriving after a browser has opened on an empty page is worse than no check.
+    rep = C.witness(a.root)
+    rows = [r for r in rep["rows"]
+            if a.verdict == "all" or r["verdict"] == a.verdict]
+    if not rows:
+        print(f"nothing to adjudicate: {rep['agree']} of {rep['compared']} "
+              f"captions agree and none is {a.verdict}")
+        return 0
+
+    session = {"verdict": a.verdict}
+    banner = [
+        f"adjudicate {len(rows)} caption(s) the two readings disagree on -> "
+        f"{web.url_for('review', path='/captions', port=a.port)}   "
+        "(Save all, then ctrl-c)",
+        f"  blind read: {rep['blind']}   agree {rep['agree']}/{rep['compared']}",
+    ]
+    joined = web.handoff("review", session, port=a.port)
+    if joined:
+        import webbrowser
+
+        url = f"{joined.rstrip('/')}/captions"
+        print(f"{banner[0].split(' -> ')[0]} -> {url}   (joined the running server)")
+        webbrowser.open(url)
+        return 0
+    web.serve("review", a.root,
+              Sessions(root=a.root, by_editor={"review": session}),
+              banner=banner, open_at="/captions",
+              ports={"review": a.port} if a.port else None)
+    return 0
+
+
+def run_witness(a) -> int:
+    from .. import captions as C
+    rep = C.witness(a.root)
+    rows = rep.pop("rows")
+    if a.verdict != "all":
+        rows = [r for r in rows if r["verdict"] == a.verdict]
+    out(a, {**rep, "rows": rows})
+    # **Exit 0 whatever it finds.** Measurement never gates (VERBS.md,
+    # Conventions), and there is nothing here a caller could fix to make it pass:
+    # a disagreement is answered by a human ruling in `fig review`, not by editing
+    # either store toward the other.
     return 0
 
 

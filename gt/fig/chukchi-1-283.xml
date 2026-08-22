@@ -27,11 +27,13 @@
           <Shape>
             <Polygon POINTS="349 2734 819 2734 819 2862 349 2862"/>
           </Shape>
+          <TextLine ID="fig_1-283_003_l1" HPOS="349" VPOS="2734" WIDTH="470" HEIGHT="128"><String CONTENT="Fig. 152 (??/???? b). Sinew"/><String CONTENT="of Reindeer-Back. Length,"/><String CONTENT="57 cm."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="1715" VPOS="2800" WIDTH="412" HEIGHT="136" ID="fig_1-283_004" TAGREFS="BT2">
           <Shape>
             <Polygon POINTS="1715 2800 2127 2800 2127 2936 1715 2936"/>
           </Shape>
+          <TextLine ID="fig_1-283_004_l1" HPOS="1715" VPOS="2800" WIDTH="412" HEIGHT="136"><String CONTENT="Fig. 153 (??/???? f)."/><String CONTENT="Pounded Sinew. Length,"/><String CONTENT="34 cm."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="675" VPOS="2988" WIDTH="1146" HEIGHT="64" ID="fig_1-283_005" TAGREFS="BT1">
           <Shape>
@@ -42,6 +44,7 @@
           <Shape>
             <Polygon POINTS="729 3058 1763 3058 1763 3124 729 3124"/>
           </Shape>
+          <TextLine ID="fig_1-283_006_l1" HPOS="729" VPOS="3058" WIDTH="1034" HEIGHT="66"><String CONTENT="Fig. 154 (??/???? b). Method of threading Needle. ½ nat. size."/></TextLine>
         </TextBlock>
       </PrintSpace>
     </Page>

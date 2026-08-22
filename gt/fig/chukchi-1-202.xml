@@ -27,11 +27,13 @@
           <Shape>
             <Polygon POINTS="2297 1009 2379 1009 2379 2404 2297 2404"/>
           </Shape>
+          <TextLine ID="fig_1-202_003_l1" HPOS="2297" VPOS="1009" WIDTH="82" HEIGHT="1395"><String CONTENT="Fig. 82 (??/????). Lance. a, Sheep-horn Point-Protector. Total length of lance, 2.5 m."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="603" VPOS="2004" WIDTH="788" HEIGHT="138" ID="fig_1-202_004" TAGREFS="BT2">
           <Shape>
             <Polygon POINTS="603 2004 1391 2004 1391 2142 603 2142"/>
           </Shape>
+          <TextLine ID="fig_1-202_004_l1" HPOS="603" VPOS="2004" WIDTH="788" HEIGHT="138"><String CONTENT="Fig. 81, a (??/???? a), Portion of an Iron Lance,"/><String CONTENT="showing Decoration; b (??/???? f), Portion of an"/><String CONTENT="Iron Arrow-head, showing Decoration."/></TextLine>
         </TextBlock>
       </PrintSpace>
     </Page>

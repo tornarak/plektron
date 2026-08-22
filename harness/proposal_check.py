@@ -836,7 +836,7 @@ def check(path: Path, ref: str | None = None, root: Path = Path("."),
     # key happens to come from a sibling. So this one sees everything.
     if lex_all is None:
         lex_all = _lexicon_loader(root, ())
-    for idx, rec in sorted(data.get("lines", {}).items(), key=_key_order):
+    for idx, rec in sorted(data.get("lines", {}).items(), key=key_order):
         text = rec.get("text", "")
         resolved = rec.get("resolved", "")
         nclass, note = rec.get("class", ""), rec.get("note", "")
@@ -1061,12 +1061,15 @@ def caption_keyed(data: dict) -> bool:
                 and all("|" in k for k in lines))
 
 
-def _key_order(kv):
+def key_order(kv):
     """Sort proposal keys, whichever space they are in.
 
     Line indices sort numerically; caption keys sort by ref then zone suffix, both
-    zero-padded in the store, so lexical order is reading order. Without this the
-    per-line loop's `int(kv[0])` raises on the first caption key it meets.
+    zero-padded in the store, so lexical order is reading order. Without this a
+    plain `int(kv[0])` raises on the first caption key it meets — which it did, in
+    three places here and three more in `normalize.py`, because the line pass's key
+    space was the only one when they were written. Public and shared for that
+    reason: a fourth copy is a fourth chance to forget.
     """
     return (0, int(kv[0]), "") if kv[0].isdigit() else (1, 0, kv[0])
 
@@ -1132,7 +1135,7 @@ def _footnote_issues(data: dict) -> list[dict]:
     detectors (`ISSUE_FIELDS`) and cannot carry a field of its own.
     """
     texts = [rec.get("text", "") for _, rec in
-             sorted(data.get("lines", {}).items(), key=_key_order)]
+             sorted(data.get("lines", {}).items(), key=key_order)]
     rep = footnote_report(texts)
     problems = []
     if rep["gaps"]:

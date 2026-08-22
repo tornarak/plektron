@@ -27,11 +27,13 @@
           <Shape>
             <Polygon POINTS="2435 715 2527 715 2527 1845 2435 1845"/>
           </Shape>
+          <TextLine ID="fig_1-161_003_l1" HPOS="2435" VPOS="715" WIDTH="92" HEIGHT="1130"><String CONTENT="Fig. 4. Chukchee Men dragging a White Whale to the Shore."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="1315" VPOS="909" WIDTH="64" HEIGHT="738" ID="fig_1-161_004" TAGREFS="BT2">
           <Shape>
             <Polygon POINTS="1315 909 1379 909 1379 1647 1315 1647"/>
           </Shape>
+          <TextLine ID="fig_1-161_004_l1" HPOS="1315" VPOS="909" WIDTH="64" HEIGHT="738"><String CONTENT="Fig. 2. Chukchee Man dragging a Seal."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="277" VPOS="1993" WIDTH="1012" HEIGHT="1288" ID="fig_1-161_005" TAGREFS="BT1">
           <Shape>
@@ -47,11 +49,13 @@
           <Shape>
             <Polygon POINTS="2441 2220 2511 2220 2511 3094 2441 3094"/>
           </Shape>
+          <TextLine ID="fig_1-161_007_l1" HPOS="2441" VPOS="2220" WIDTH="70" HEIGHT="874"><String CONTENT="Fig. 3. Chukchee Man carrying a Walrus-Head."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="1299" VPOS="2418" WIDTH="62" HEIGHT="518" ID="fig_1-161_008" TAGREFS="BT2">
           <Shape>
             <Polygon POINTS="1299 2418 1361 2418 1361 2936 1299 2936"/>
           </Shape>
+          <TextLine ID="fig_1-161_008_l1" HPOS="1299" VPOS="2418" WIDTH="62" HEIGHT="518"><String CONTENT="Fig. 1. Carving a Walrus."/></TextLine>
         </TextBlock>
       </PrintSpace>
     </Page>

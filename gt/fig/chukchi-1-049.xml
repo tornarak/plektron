@@ -27,11 +27,13 @@
           <Shape>
             <Polygon POINTS="2431 915 2513 915 2513 1551 2431 1551"/>
           </Shape>
+          <TextLine ID="fig_1-049_003_l1" HPOS="2431" VPOS="915" WIDTH="82" HEIGHT="636"><String CONTENT="Fig. 3. Street in Village Uñiˊsak."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="1275" VPOS="1775" WIDTH="86" HEIGHT="457" ID="fig_1-049_004" TAGREFS="BT2">
           <Shape>
             <Polygon POINTS="1275 1775 1361 1775 1361 2232 1275 2232"/>
           </Shape>
+          <TextLine ID="fig_1-049_004_l1" HPOS="1275" VPOS="1775" WIDTH="86" HEIGHT="457"><String CONTENT="Fig. 1. Village Uñiˊsak."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="1449" VPOS="2028" WIDTH="986" HEIGHT="1380" ID="fig_1-049_005" TAGREFS="BT1">
           <Shape>
@@ -42,6 +44,7 @@
           <Shape>
             <Polygon POINTS="2431 2496 2523 2496 2523 3002 2431 3002"/>
           </Shape>
+          <TextLine ID="fig_1-049_006_l1" HPOS="2431" VPOS="2496" WIDTH="92" HEIGHT="506"><String CONTENT="Fig. 2. Village Nuˊnlig̣ren."/></TextLine>
         </TextBlock>
       </PrintSpace>
     </Page>

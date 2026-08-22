@@ -27,11 +27,13 @@
           <Shape>
             <Polygon POINTS="1196 830 1280 830 1280 1446 1196 1446"/>
           </Shape>
+          <TextLine ID="fig_2-255_003_l1" HPOS="1196" VPOS="830" WIDTH="84" HEIGHT="616"><String CONTENT="Fig. 2. Disposal of the Dead."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="2332" VPOS="868" WIDTH="84" HEIGHT="492" ID="fig_2-255_004" TAGREFS="BT2">
           <Shape>
             <Polygon POINTS="2332 868 2416 868 2416 1360 2332 1360"/>
           </Shape>
+          <TextLine ID="fig_2-255_004_l1" HPOS="2332" VPOS="868" WIDTH="84" HEIGHT="492"><String CONTENT="Fig. 4. Pile of Antlers."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="1332" VPOS="1931" WIDTH="1022" HEIGHT="1326" ID="fig_2-255_005" TAGREFS="BT1">
           <Shape>
@@ -47,11 +49,13 @@
           <Shape>
             <Polygon POINTS="2340 2279 2432 2279 2432 2957 2340 2957"/>
           </Shape>
+          <TextLine ID="fig_2-255_007_l1" HPOS="2340" VPOS="2279" WIDTH="92" HEIGHT="678"><String CONTENT="Fig. 3. Remains of Boat-Supports."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="1188" VPOS="2357" WIDTH="100" HEIGHT="608" ID="fig_2-255_008" TAGREFS="BT2">
           <Shape>
             <Polygon POINTS="1188 2357 1288 2357 1288 2965 1188 2965"/>
           </Shape>
+          <TextLine ID="fig_2-255_008_l1" HPOS="1188" VPOS="2357" WIDTH="100" HEIGHT="608"><String CONTENT="Fig. 1. Disposal of the Dead."/></TextLine>
         </TextBlock>
       </PrintSpace>
     </Page>

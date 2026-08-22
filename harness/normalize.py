@@ -71,6 +71,7 @@ import unicodedata
 from pathlib import Path
 
 from .detectors import apostrophe_flags, footnote_report, unlicensed_marks
+from .proposal_check import key_order
 
 # §2.9: sentence-ending double space and thin space before ;/:/,/!/? are typesetting
 # artifacts with no lexical content — mechanical, print-invariant, corpus-wide.
@@ -259,12 +260,22 @@ SCOPE_GLOBS = ("gt/ocr/*.xml", "gt/fig/*.xml", "tei/*.xml",
                # sweep alongside the rest of the corpus. `save_decisions` normalizes
                # on write, so this is a regression check, not a live worklist.
                "review/*/decision.json",
-               # The caption pass's adjudication, on exactly the same footing: an
-               # editorial act, and what `fig restore` writes into `gt/fig/`. One
-               # file rather than one per page because a caption is keyed
-               # `<ref>|<suffix>` and most pages hold one — see `captions.py`. Its
-               # proposal is not swept here: `proposal fix` is the reading's own NFD
-               # pass, as it is for the line pass.
+               # The caption pass's pair, keyed `<ref>|<suffix>` rather than by line
+               # index — one file each rather than one per page, because a caption
+               # is short and most pages hold one (see `captions.py`).
+               #
+               # **Both, and the proposal is not optional here the way a line
+               # proposal is.** That one reaches `gt/ocr/` only through a decision,
+               # and `save_decisions` folds on the way; this one is *compared byte
+               # for byte against `data/readings.md`* by `fig witness`, which is the
+               # whole reason it exists, and a comparison between two normal forms
+               # of the same glyph is the exact drift this module was written for —
+               # `readings.md` itself once held 17 precomposed `ê` against 13
+               # decomposed. It was left out first on the reasoning that `proposal
+               # fix` folds the file. It does not: `fix` swaps one mark against
+               # `resolved` and touches nothing else, so the reading sat outside
+               # every NFD gate there is until a reader hit it and said so.
+               "review/captions/proposal.json",
                "review/captions/decision.json")
 
 # `proposal.json` is a model's pre-adjudication reading, checked on demand
@@ -445,7 +456,7 @@ def _quote_hits(p: Path, root: Path) -> list[dict]:
             data = json.loads(p.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError):
             return hits
-        for idx, rec in sorted(data.get("lines", {}).items(), key=lambda kv: int(kv[0])):
+        for idx, rec in sorted(data.get("lines", {}).items(), key=key_order):
             val = rec.get("text", "")
             start = 0
             while (pos := val.find('"', start)) != -1:
@@ -503,7 +514,7 @@ def _apostrophe_hits(p: Path, root: Path) -> list[dict]:
             data = json.loads(p.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError):
             return hits
-        for idx, rec in sorted(data.get("lines", {}).items(), key=lambda kv: int(kv[0])):
+        for idx, rec in sorted(data.get("lines", {}).items(), key=key_order):
             val = rec.get("text", "")
             for h in apostrophe_flags(val):
                 hits.append({"path": rel, "trap": _APOSTROPHE_TRAPS[h["kind"]],
@@ -558,7 +569,7 @@ def _footnote_hits(p: Path, root: Path) -> list[dict]:
         except (OSError, json.JSONDecodeError):
             return []
         texts = [rec.get("text", "") for _, rec in
-                 sorted(data.get("lines", {}).items(), key=lambda kv: int(kv[0]))]
+                 sorted(data.get("lines", {}).items(), key=key_order)]
     elif p.suffix == ".xml" and p.parent.name == "ocr":
         from lxml import etree
         try:

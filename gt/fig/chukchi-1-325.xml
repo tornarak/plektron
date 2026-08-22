@@ -27,11 +27,13 @@
           <Shape>
             <Polygon POINTS="1411 1803 2513 1803 2513 1879 1411 1879"/>
           </Shape>
+          <TextLine ID="fig_1-325_003_l1" HPOS="1411" VPOS="1803" WIDTH="1102" HEIGHT="76"><String CONTENT="Fig. 2. Chukchee Herdsman with Lasso around his Shoulders."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="325" VPOS="1811" WIDTH="864" HEIGHT="68" ID="fig_1-325_004" TAGREFS="BT2">
           <Shape>
             <Polygon POINTS="325 1811 1189 1811 1189 1879 325 1879"/>
           </Shape>
+          <TextLine ID="fig_1-325_004_l1" HPOS="325" VPOS="1811" WIDTH="864" HEIGHT="68"><String CONTENT="Fig. 1. Chukchee Man in an Attitude of Ease."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="1486" VPOS="1959" WIDTH="1035" HEIGHT="1387" ID="fig_1-325_005" TAGREFS="BT1">
           <Shape>
@@ -47,11 +49,13 @@
           <Shape>
             <Polygon POINTS="341 3344 1231 3344 1231 3420 341 3420"/>
           </Shape>
+          <TextLine ID="fig_1-325_007_l1" HPOS="341" VPOS="3344" WIDTH="890" HEIGHT="76"><String CONTENT="Fig. 3. Chukchee Woman in a Typical Attitude."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="1711" VPOS="3344" WIDTH="604" HEIGHT="76" ID="fig_1-325_008" TAGREFS="BT2">
           <Shape>
             <Polygon POINTS="1711 3344 2315 3344 2315 3420 1711 3420"/>
           </Shape>
+          <TextLine ID="fig_1-325_008_l1" HPOS="1711" VPOS="3344" WIDTH="604" HEIGHT="76"><String CONTENT="Fig. 4. Chukchee Girls dancing."/></TextLine>
         </TextBlock>
       </PrintSpace>
     </Page>

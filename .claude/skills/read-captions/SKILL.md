@@ -98,16 +98,33 @@ produces a table that looks exactly like a clean one.
      Only ~34 captions need it, and they are the ones worth the care.
    - `note` is free text; `class` is one of `doubt`, `semantic`, `print`,
      `draft`, `layout`, `artifact`.
+   - **Write it indented — one field per physical line** (`json.dumps(…,
+     indent=1)`'s shape, which is what every other store here uses). Not
+     cosmetic: `corpus normalize` exempts the `note` and `resolved` fields from
+     the §2.9/§2.10 spacing rules *by matching the shape of their line*, and it is
+     allowed to do that only because these files put one field per line. Compact
+     JSON puts a note on the same line as its reading, so a note that quotes a
+     footnote marker or a doubled space is read as corpus drift — and `--convert`
+     would rewrite your prose to match a rule about print.
+   - **Do not indent a caption's continuation lines.** Where a printed line sits
+     is the compositor's business; `save_decisions` strips it anyway, but the
+     store should not need the fold.
 
-4. **Gate it.** `captions` is the target's name, exactly as `1-151` names a page's:
+4. **Gate it.** Two verbs, and they do different things — `captions` is the
+   target's name, exactly as `1-151` names a page's:
 
-       uv run harness proposal fix   captions
+       uv run harness corpus normalize review/captions/proposal.json --convert
        uv run harness proposal check captions
 
-   `fix` folds to NFD and applies the one unambiguous `resolved`-vs-`text`
-   correction. `check` verifies every key names a real `GraphicZone-FigDesc` in
-   `gt/fig/`, cross-checks `resolved` against `text`, and runs the apostrophe and
-   mark rules. Exit 1 means defects you must fix; advisories alone do not gate.
+   **`corpus normalize` is what folds to NFD**, and `--convert` writes the fold.
+   `proposal fix` does **not** fold the file: it applies one narrow correction —
+   a single mark `resolved` names that `text` lacks, swapped for the single mark
+   `text` has that `resolved` does not — and touches nothing else. Run it when
+   `check` reports that mismatch, not as a normalisation pass.
+
+   `check` verifies every key names a real `GraphicZone-FigDesc` in `gt/fig/`,
+   cross-checks `resolved` against `text`, and runs the apostrophe and mark
+   rules. Exit 1 means defects you must fix; advisories alone do not gate.
 
    `harness proposal codepoints captions` names every non-ASCII character you
    wrote, per key — a useful last look over the Tier-1 ones.

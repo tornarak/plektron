@@ -22,6 +22,7 @@
           <Shape>
             <Polygon POINTS="1347 1805 1787 1805 1787 1889 1347 1889"/>
           </Shape>
+          <TextLine ID="fig_1-105_002_l1" HPOS="1347" VPOS="1805" WIDTH="440" HEIGHT="84"><String CONTENT="Fig. 1. Reindeer-Herd."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="575" VPOS="1973" WIDTH="1954" HEIGHT="1342" ID="fig_1-105_003" TAGREFS="BT1">
           <Shape>
@@ -32,6 +33,7 @@
           <Shape>
             <Polygon POINTS="1341 3312 1827 3312 1827 3406 1341 3406"/>
           </Shape>
+          <TextLine ID="fig_1-105_004_l1" HPOS="1341" VPOS="3312" WIDTH="486" HEIGHT="94"><String CONTENT="Fig. 2. Chukchee Corral."/></TextLine>
         </TextBlock>
       </PrintSpace>
     </Page>

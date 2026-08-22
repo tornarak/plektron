@@ -13,6 +13,9 @@
 .isshead{font:600 13px/1.5 system-ui,sans-serif;margin-bottom:.5em}
 .isshead .r{background:#222;color:#fff;padding:1px 6px;border-radius:3px}
 .isshead .why{color:#a33;margin-left:.6em}
+{# Regular weight against the head's 600: it is the reader's prose, not a label,
+   and a whole sentence bolded reads as a warning rather than as an account. #}
+.isshead .rnote{font-weight:400;color:#555;margin:.35em 0 0;max-width:78ch}
 .ctx{font-family:var(--f);font-size:calc(var(--fs) * .8);color:#777;
      padding:.15em .4em;border-left:3px solid #ddd;white-space:pre-wrap}
 .ctx .n{font:11px/1 system-ui,sans-serif;color:#aaa;margin-right:.7em}
@@ -70,8 +73,18 @@ that page's ALTO has no such line. Nothing on this page will write to them.</div
 
 {% for b in blocks %}
 <div class=iss id="i{{ loop.index }}">
+{# The reader's account sits in the head, beside the flag, because it is what the
+   adjudicator reads *before* looking at the crop — it says which question the
+   crop is being consulted about. It used to sit under the entry box beside the
+   codepoint list, where it was read after the ruling had already been formed, if
+   at all. The class is a badge rather than a word: `review.css` has coloured the
+   closed set since the line pass gained note classes, and a colour is read at a
+   glance where `[doubt]` is read as prose. #}
 <div class=isshead><span class=r>{{ b.ref }}</span> line {{ b.idx }}
-<span class=why>⚑ {{ b.issue }}</span></div>
+<span class=why>⚑ {{ b.issue }}</span>
+{% if b.note or b.nclass %}<div class=rnote>
+{%- if b.nclass %}<span class="nb nb-{{ b.nclass }}">{{ b.nclass | upper }}</span>{% endif %}
+{{- b.note }}</div>{% endif %}</div>
 
 {% if b.before %}<div class=ctx><span class=n>{{ b.before.idx }}</span>{{ b.before.text }}</div>
 {% else %}<div class='ctx none'>— first line in reading order —</div>{% endif %}
@@ -86,7 +99,6 @@ that page's ALTO has no such line. Nothing on this page will write to them.</div
 
 <div class=meta><div class=metaL>
 {% if b.marks %}<div class=cp>{{ b.marks }}</div>{% endif %}
-{% if b.note %}<div class=note>reader: {{ b.note }}</div>{% endif %}
 </div>
 {# The ruling, and it is required. Most flagged lines will not need their text
    touched — "looked, it is fine" is the commonest outcome — so the field that

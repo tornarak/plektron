@@ -27,11 +27,13 @@
           <Shape>
             <Polygon POINTS="365 2930 901 2930 901 3032 365 3032"/>
           </Shape>
+          <TextLine ID="fig_1-281_003_l1" HPOS="365" VPOS="2930" WIDTH="536" HEIGHT="102"><String CONTENT="Fig. 148, a, b (??/????). Fur"/><String CONTENT="Tassels. Length, 48 cm., 53 cm."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="1827" VPOS="2978" WIDTH="306" HEIGHT="128" ID="fig_1-281_004" TAGREFS="BT2">
           <Shape>
             <Polygon POINTS="1827 2978 2133 2978 2133 3106 1827 3106"/>
           </Shape>
+          <TextLine ID="fig_1-281_004_l1" HPOS="1827" VPOS="2978" WIDTH="306" HEIGHT="128"><String CONTENT="Fig. 149 (??/????)."/><String CONTENT="Tassel with Beads."/><String CONTENT="Length, 28.5 cm."/></TextLine>
         </TextBlock>
       </PrintSpace>
     </Page>

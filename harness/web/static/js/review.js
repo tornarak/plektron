@@ -103,7 +103,6 @@ for(const t of document.querySelectorAll('textarea')){
   const want=t.dataset.text;
   if(t.value!==want) t.value=want;
   grow(t);
-  t.addEventListener('focus',()=>{last=t});
   // An empty note is stored as nothing, so an empty *field* is a control asserting
   // a state the file does not have. Emptied and left, it folds back to the button
   // and the line reads exactly as it would after a reload.
@@ -129,7 +128,7 @@ for(const b of document.querySelectorAll('button.hnb:not(.qn)')){
   b.addEventListener('click',()=>{
     const t=document.querySelector(`textarea[data-note='${b.dataset.line}']`);
     if(!t) return;
-    t.hidden=false; b.hidden=true; grow(t); t.focus(); last=t;});
+    t.hidden=false; b.hidden=true; grow(t); t.focus();});
 }
 sv.addEventListener('click',save);
 dn.addEventListener('click',done);
@@ -142,7 +141,7 @@ function goT1(d){
   t1i=(t1i+d+T1.length*2)%T1.length;
   const el=T1[t1i];
   el.scrollIntoView({block:'center',behavior:'smooth'});
-  const t=el.querySelector('textarea[data-line]'); if(t){t.focus();last=t}
+  const t=el.querySelector('textarea[data-line]'); if(t) t.focus();
 }
 document.getElementById('t1n').addEventListener('click',()=>goT1(1));
 document.getElementById('t1p').addEventListener('click',()=>goT1(-1));

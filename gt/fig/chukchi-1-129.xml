@@ -27,11 +27,13 @@
           <Shape>
             <Polygon POINTS="1299 879 1385 879 1385 1511 1299 1511"/>
           </Shape>
+          <TextLine ID="fig_1-129_003_l1" HPOS="1299" VPOS="879" WIDTH="86" HEIGHT="632"><String CONTENT="Fig. 2. Lamut catching Reindeer."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="2381" VPOS="931" WIDTH="78" HEIGHT="484" ID="fig_1-129_004" TAGREFS="BT2">
           <Shape>
             <Polygon POINTS="2381 931 2459 931 2459 1415 2381 1415"/>
           </Shape>
+          <TextLine ID="fig_1-129_004_l1" HPOS="2381" VPOS="931" WIDTH="78" HEIGHT="484"><String CONTENT="Fig. 4. Dog-Teams resting."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="390" VPOS="1989" WIDTH="908" HEIGHT="1365" ID="fig_1-129_005" TAGREFS="BT1">
           <Shape>
@@ -47,11 +49,13 @@
           <Shape>
             <Polygon POINTS="2391 2158 2493 2158 2493 3206 2391 3206"/>
           </Shape>
+          <TextLine ID="fig_1-129_007_l1" HPOS="2391" VPOS="2158" WIDTH="102" HEIGHT="1048"><String CONTENT="Fig. 3. Feeding Dogs with Dried Fish at Mariinsky Post."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="1301" VPOS="2364" WIDTH="84" HEIGHT="622" ID="fig_1-129_008" TAGREFS="BT2">
           <Shape>
             <Polygon POINTS="1301 2364 1385 2364 1385 2986 1301 2986"/>
           </Shape>
+          <TextLine ID="fig_1-129_008_l1" HPOS="1301" VPOS="2364" WIDTH="84" HEIGHT="622"><String CONTENT="Fig. 1. Ceremonial Slaughtering."/></TextLine>
         </TextBlock>
       </PrintSpace>
     </Page>

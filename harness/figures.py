@@ -1376,7 +1376,7 @@ def validate_fig_page(ref: str, root: Path = Path("."), cfg: dict | None = None,
 
 def save_figs(ref: str, blocks: list[dict], root: Path = Path("."),
               split: str | None = None, rules: list[str] | None = None,
-              stamp: str | None = None) -> dict:
+              stamp: str | None = None, drop_text: bool = False) -> dict:
     """Write one page's figure and caption boxes, atomically, and record the save.
 
     `blocks` are `{label, x0, y0, x1, y1}` and **optionally `id`**. The durability
@@ -1446,8 +1446,44 @@ def save_figs(ref: str, blocks: list[dict], root: Path = Path("."),
             b["id"] = f"fig_{ref}_{nxt:03d}"
             nxt += 1
 
+    # **The caption text is read off the old file and carried across the rebuild.**
+    # `build_alto` mints a whole ALTO from geometry, which is right for boxes and
+    # fatal for text: once `fig restore` has run, every FigDesc carries a caption a
+    # human ratified, and a geometry save from the browser editor would delete all
+    # of them — writing a well-formed file, breaking no check at save time, and
+    # looking exactly like an ordinary save. That is the quietest destructive path
+    # in this store, so it is closed here rather than gated downstream.
+    #
+    # Carried **by block id**, never by position: the id is the key the text is
+    # filed under, and `save_figs` preserves ids for precisely this class of reason.
+    # A block whose id is gone from this save is a block the caller withdrew, so its
+    # text goes with it — that is `delete_figs`' outcome arriving one verb over.
+    held = {}
+    if p.exists():
+        old = etree.parse(str(p))
+        old_labels = _labels(old)
+        held = {blk.get("ID"): lines
+                for blk in old.iter("{*}TextBlock")
+                if _block_label(blk, old_labels) == FIGDESC
+                and (lines := block_text(blk))}
+    keeping = {b.get("id") for b in blocks}
+    dropped = sorted(k for k in held if k not in keeping)
+    if dropped and not drop_text:
+        raise ValueError(
+            f"{ref}: this save drops {len(dropped)} block(s) that hold ratified "
+            f"caption text ({', '.join(dropped[:4])}). Withdrawing a picture is "
+            f"`fig delete`; withdrawing a caption whose text a human ruled on is "
+            f"not something a geometry save should do silently. Pass "
+            f"`drop_text=True` if that is really meant.")
+
     stamp = stamp or time.strftime("%Y-%m-%dT%H:%M:%S%z")
     tree = build_alto(ref, blocks, raster_size(ref, root), id_prefix="fig_")
+    if held:
+        labels = _labels(tree)
+        for blk in tree.iter("{*}TextBlock"):
+            lines = held.get(blk.get("ID"))
+            if lines and _block_label(blk, labels) == FIGDESC:
+                _add_text_line(blk, lines)
 
     p.parent.mkdir(parents=True, exist_ok=True)
     if p.exists():
@@ -2991,6 +3027,136 @@ def write_caption_zoom(key: str, out_dir: Path, root: Path = Path("."),
                                    name_for=sheet_namer(f"{ref}-zoom{zoom}"))
     return [{"sheet": str(out_dir / e["sheet"]), "key": key, "zoom": zoom,
              "strips": " ".join(e["items"])} for e in index]
+
+
+def _add_text_line(blk, lines: list[str]):
+    """One `TextLine` on a FigDesc block, carrying the block's own bbox verbatim.
+
+    The bbox is copied rather than re-derived, so a store whose coordinates are
+    floats keeps floats and the `TextLine` can never claim a region the block does
+    not. The `String`s take no geometry: 27,595 of 27,595 in `gt/ocr/` carry none,
+    so that is the corpus's practice rather than a liberty taken here.
+
+    Shared by `save_caption_text` and `save_figs` — the writer and the rebuild —
+    because two spellings of this shape is how the rebuild would come to emit a
+    `TextLine` the reader does not recognise.
+    """
+    from .zones import ALTO_NS
+
+    tl = etree.SubElement(blk, f"{{{ALTO_NS}}}TextLine", {
+        "ID": f"{blk.get('ID')}_l1",
+        "HPOS": blk.get("HPOS"), "VPOS": blk.get("VPOS"),
+        "WIDTH": blk.get("WIDTH"), "HEIGHT": blk.get("HEIGHT")})
+    for line in lines:
+        etree.SubElement(tl, f"{{{ALTO_NS}}}String", {"CONTENT": line})
+    return tl
+
+
+def block_text(blk) -> list[str]:
+    """The printed lines a FigDesc `TextBlock` carries, or `[]`.
+
+    One `String` per printed line inside one `TextLine`. Reading it back is a
+    list, never a joined string, for the reason the store keeps the division at
+    all: **31 of the 196 multi-line captions carry a hyphen at the break and they
+    are not the same kind of hyphen.** `Leaf-Tobacco`, `Netting-Shuttles`,
+    `Ice-Scoop` are compounds the book hyphenates and a join must keep tight;
+    `Walrus-Hunt-ing` and `attach-ing` are wrap artifacts and a join must drop the
+    hyphen. Nothing mechanical separates them, so the break is the evidence that
+    the question exists, and a reader that flattens it has thrown that away.
+    """
+    return [s.get("CONTENT") or ""
+            for tl in blk.iter("{*}TextLine")
+            for s in tl.findall("{*}String")]
+
+
+def save_caption_text(ref: str, root: Path = Path("."), texts: dict | None = None,
+                      stamp: str | None = None) -> dict:
+    """Write caption text into one page's `gt/fig/` ALTO, keeping the geometry.
+
+    **Parses the tree and edits it; never rebuilds it.** `save_figs` goes through
+    `zones.build_alto`, which mints a whole file from `{label, box, id}` — right
+    for geometry and fatal here, because a rebuild is exactly how the ids that key
+    this text would move. Nothing structural is touched: the `TextLine` is
+    inserted under the block it belongs to, after the `Shape`, and every
+    coordinate in the file is the one that was already there.
+
+    `texts` maps a zone suffix to its list of printed lines. A block the caller
+    does not name is left exactly as it is, so this is an overlay rather than a
+    replacement — a page can be restored twice without the second run needing to
+    re-supply the first's.
+
+    The `TextLine` takes the **block's own bbox** and the `String`s take no
+    geometry at all. That is not a liberty: 27,595 of 27,595 `String` elements in
+    `gt/ocr/` carry no `HPOS`, so a geometry-less `String` is this corpus's
+    universal practice. What is new is *several* of them under one `TextLine` —
+    the maximum anywhere else is one — and it is new because a caption's printed
+    lines are a property of its box rather than of separate boxes: the segmenter
+    that would have given each its own baseline is the one that dropped whole
+    lines, which is why they were stripped in the first place.
+
+    Durability is the store's own: copy to `.prev`, write `.tmp`, `replace()`, and
+    append to `gt/fig/_journal.jsonl`. A write here that no journal records would
+    be the one write nothing can reconstruct.
+    """
+
+    ref = norm_ref(ref)
+    texts = texts or {}
+    p = alto_for(ref, root)
+    if not p.exists():
+        raise ValueError(f"{ref} has no figure ALTO — absence of the file is how "
+                         f"this store says 'no figures here', and a caption "
+                         f"cannot be written into a page that has none")
+    tree = etree.parse(str(p))
+    labels = _labels(tree)
+
+    wrote, skipped = [], []
+    for blk in tree.iter("{*}TextBlock"):
+        if _block_label(blk, labels) != FIGDESC:
+            continue
+        suffix = zone_suffix(blk.get("ID"))
+        lines = texts.get(suffix)
+        if lines is None:
+            skipped.append(suffix)
+            continue
+        for old in blk.findall("{*}TextLine"):
+            blk.remove(old)
+        tl = _add_text_line(blk, lines)
+        # Indented as the block's existing children are, so the first geometry save
+        # after this does not reformat all 250 files as diff noise on top of
+        # whatever box it actually moved. Both values are read off the file rather
+        # than assumed: `blk.text` is the whitespace that indents `Shape`, and the
+        # last child's tail is the whitespace that closes the block. The new
+        # `TextLine` takes the first and inherits the second.
+        prev = blk.find("{*}Shape")
+        if prev is not None and blk.text and not blk.text.strip():
+            tl.tail, prev.tail = prev.tail, blk.text
+        wrote.append(suffix)
+
+    missing = sorted(set(texts) - set(wrote))
+    if missing:
+        raise ValueError(
+            f"{ref}: {', '.join(missing)} name no GraphicZone-FigDesc on this "
+            f"page. A block id's last field is the key this text is filed under, "
+            f"and writing text for a block that is not there would put a reading "
+            f"in a file with nothing to attach it to.")
+
+    stamp = stamp or time.strftime("%Y-%m-%dT%H:%M:%S%z")
+    p.with_suffix(".xml.prev").write_bytes(p.read_bytes())
+    tmp = tmp_for(p)
+    # `lxml` ends the document at `</alto>` with no newline; `save_figs`' writer
+    # ends with one, because `pretty_print` adds it. Two conventions in one store
+    # means whichever verb touched a page last shows up as a whitespace diff on
+    # the next one, so this settles on the one that already covers most of the
+    # store and is the ordinary shape of a text file.
+    tree.write(str(tmp), encoding="UTF-8", xml_declaration=True)
+    with tmp.open("ab") as fh:
+        fh.write(b"\n")
+    tmp.replace(p)
+    with (fig_dir(root) / JOURNAL).open("a", encoding="utf-8") as fh:
+        fh.write(json.dumps({"saved_at": stamp, "ref": ref, "captions": wrote,
+                             "untouched": skipped}, ensure_ascii=False) + "\n")
+    return {"ref": ref, "written": len(wrote), "untouched": len(skipped),
+            "blocks": wrote}
 
 
 def caption_manifest(root: Path = Path(".")) -> dict:

@@ -22,6 +22,7 @@
           <Shape>
             <Polygon POINTS="1205 1817 1695 1817 1695 1887 1205 1887"/>
           </Shape>
+          <TextLine ID="fig_1-083_002_l1" HPOS="1205" VPOS="1817" WIDTH="490" HEIGHT="70"><String CONTENT="Fig. 1. Tumanskaya Fair."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="473" VPOS="2028" WIDTH="1941" HEIGHT="1470" ID="fig_1-083_003" TAGREFS="BT1">
           <Shape>
@@ -32,6 +33,7 @@
           <Shape>
             <Polygon POINTS="1245 3494 1667 3494 1667 3572 1245 3572"/>
           </Shape>
+          <TextLine ID="fig_1-083_004_l1" HPOS="1245" VPOS="3494" WIDTH="422" HEIGHT="78"><String CONTENT="Fig. 2. Yeropol Fair."/></TextLine>
         </TextBlock>
       </PrintSpace>
     </Page>

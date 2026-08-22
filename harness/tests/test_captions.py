@@ -391,6 +391,139 @@ def test_zoom_takes_no_pad_where_the_sheet_takes_one(tmp_path):
     assert len(rows) == 1
 
 
+# --------------------------------------------------------- the fold, and restore
+
+
+def test_a_lines_own_indentation_is_folded_away_on_write(tmp_path):
+    """Where a printed line sits is the compositor's business, not the text's.
+
+    It reaches the store through a textarea — the adjudicator types a continuation
+    line and indents it to match the page, which is the natural thing to do. It
+    also trips §2.9's multi-space rule, which scans raw source and cannot tell an
+    indent *inside a string value* from sentence spacing.
+    """
+    _propose(tmp_path, {KEY: "a"})
+    C.save_decisions({KEY: "Fig. 213. Compass.\n  “sun has gone out”).\n\ttab too"},
+                     tmp_path)
+    assert C.load_decisions(tmp_path)[KEY]["text"] == (
+        "Fig. 213. Compass.\n“sun has gone out”).\ntab too")
+
+
+def test_the_fold_does_not_touch_the_break_itself(tmp_path):
+    """Only the space around a line. The break is load-bearing: 31 of the 196
+    multi-line captions carry a hyphen at one, and a wrap hyphen and a compound
+    hyphen are not mechanically separable without it."""
+    _propose(tmp_path, {KEY: "a"})
+    C.save_decisions({KEY: "Bundle of Leaf-\nTobacco."}, tmp_path)
+    assert C.load_decisions(tmp_path)[KEY]["text"] == "Bundle of Leaf-\nTobacco."
+
+
+def test_restore_writes_one_string_per_printed_line(tmp_path):
+    """The block's own bbox on the TextLine, no geometry on the Strings.
+
+    Geometry-less `String` is the corpus's universal practice — 27,595 of 27,595
+    in `gt/ocr/` carry no HPOS. Several under one TextLine is the new part, and it
+    is new because a caption's printed lines are a property of its one box.
+    """
+    from lxml import etree
+
+    from harness.figures import alto_for, block_text
+
+    _fig_alto(tmp_path, "1-086", [("fig_1-086_002", "GraphicZone-FigDesc",
+                                   845, 2660, 580, 90)])
+    _propose(tmp_path, {"1-086|002": "Bundle of Leaf-\nTobacco."})
+    C.restore(tmp_path, commit=True)
+
+    blk = etree.parse(str(alto_for("1-086", tmp_path))).find(".//{*}TextBlock")
+    assert block_text(blk) == ["Bundle of Leaf-", "Tobacco."]
+    tl = blk.find("{*}TextLine")
+    # The block's own bbox, copied verbatim rather than re-derived — so a store
+    # whose coordinates are floats keeps floats, and the TextLine can never claim
+    # a region the block does not.
+    assert [tl.get(k) for k in ("HPOS", "VPOS", "WIDTH", "HEIGHT")] == \
+           [blk.get(k) for k in ("HPOS", "VPOS", "WIDTH", "HEIGHT")]
+    assert all(s.get("HPOS") is None for s in tl.findall("{*}String"))
+
+
+def test_restore_refuses_a_block_with_neither_ruling_nor_reading(tmp_path):
+    """A partial restore leaves holes nothing can see: `fig check` finds an absent
+    block, never an absent caption nobody expected."""
+    _fig_alto(tmp_path, "1-086", [
+        ("fig_1-086_002", "GraphicZone-FigDesc", 845, 2660, 580, 90),
+        ("fig_1-086_004", "GraphicZone-FigDesc", 845, 2800, 580, 90)])
+    _propose(tmp_path, {"1-086|002": "only one of the two"})
+    with pytest.raises(ValueError, match="neither a ruling nor a reading"):
+        C.restore(tmp_path, commit=True)
+
+
+def test_restore_will_not_overwrite_text_without_force(tmp_path):
+    """Once this has run every FigDesc holds a caption, so a second pass is a
+    deliberate act and `force` is how a caller says they meant it."""
+    _fig_alto(tmp_path, "1-086", [("fig_1-086_002", "GraphicZone-FigDesc",
+                                   845, 2660, 580, 90)])
+    _propose(tmp_path, {"1-086|002": "first"})
+    C.restore(tmp_path, commit=True)
+    _propose(tmp_path, {"1-086|002": "second"})
+
+    assert C.restore(tmp_path, commit=True)["skipped_holding_text"] == 1
+    from lxml import etree
+
+    from harness.figures import alto_for, block_text
+    blk = etree.parse(str(alto_for("1-086", tmp_path))).find(".//{*}TextBlock")
+    assert block_text(blk) == ["first"]
+    C.restore(tmp_path, force=True, commit=True)
+    blk = etree.parse(str(alto_for("1-086", tmp_path))).find(".//{*}TextBlock")
+    assert block_text(blk) == ["second"]
+
+
+def test_a_geometry_save_carries_ratified_caption_text_across(tmp_path):
+    """**The quietest destructive path in this store, and it is closed here.**
+
+    `save_figs` mints a whole ALTO from geometry, so after the migration an
+    ordinary box edit in the browser would delete every ratified caption on the
+    page — well-formed file, no check failing at save time, indistinguishable from
+    a normal save.
+    """
+    from lxml import etree
+
+    from harness.figures import alto_for, block_text, save_figs, zones
+
+    _fig_alto(tmp_path, "1-086", [("fig_1-086_002", "GraphicZone-FigDesc",
+                                   845, 2660, 580, 90)])
+    _raster(tmp_path, "1-086")
+    _propose(tmp_path, {"1-086|002": "Bundle of Leaf-\nTobacco."})
+    C.restore(tmp_path, commit=True)
+
+    blocks = [{"label": b["label"], "id": b["id"], "x0": b["hpos"],
+               "y0": b["vpos"], "x1": b["hpos"] + b["width"],
+               "y1": b["vpos"] + b["height"] + 25} for b in zones("1-086", tmp_path)]
+    save_figs("1-086", blocks, tmp_path)
+
+    blk = etree.parse(str(alto_for("1-086", tmp_path))).find(".//{*}TextBlock")
+    assert block_text(blk) == ["Bundle of Leaf-", "Tobacco."]
+    assert blk.get("HEIGHT") == "115"          # the geometry edit did land
+
+
+def test_a_geometry_save_refuses_to_drop_a_block_holding_ratified_text(tmp_path):
+    """Withdrawing a picture is `fig delete`. Withdrawing a caption a human ruled
+    on is not something a geometry save does silently."""
+    from harness.figures import save_figs, zones
+
+    _fig_alto(tmp_path, "1-086", [
+        ("fig_1-086_001", "GraphicZone", 845, 2000, 580, 600),
+        ("fig_1-086_002", "GraphicZone-FigDesc", 845, 2660, 580, 90)])
+    _raster(tmp_path, "1-086")
+    _propose(tmp_path, {"1-086|002": "a ruling stands behind this"})
+    C.restore(tmp_path, commit=True)
+
+    keep = [{"label": b["label"], "id": b["id"], "x0": b["hpos"], "y0": b["vpos"],
+             "x1": b["hpos"] + b["width"], "y1": b["vpos"] + b["height"]}
+            for b in zones("1-086", tmp_path) if b["label"] == "GraphicZone"]
+    with pytest.raises(ValueError, match="ratified caption text"):
+        save_figs("1-086", keep, tmp_path)
+    save_figs("1-086", keep, tmp_path, drop_text=True)   # said explicitly, allowed
+
+
 def test_check_swaps_the_orphan_rule_rather_than_firing_the_line_one(tmp_path):
     """The whole point of the branch: a caption key resolves against `gt/fig/`.
 

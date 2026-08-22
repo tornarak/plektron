@@ -32,11 +32,13 @@
           <Shape>
             <Polygon POINTS="519 1665 1629 1665 1629 1717 519 1717"/>
           </Shape>
+          <TextLine ID="fig_1-191_003_l1" HPOS="519" VPOS="1665" WIDTH="1110" HEIGHT="52"><String CONTENT="Fig. 63 (??/????), a, Bag-Net (length, 240 cm.); b, Diagram of Bag-Net."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="1785" VPOS="2852" WIDTH="350" HEIGHT="152" ID="fig_1-191_004" TAGREFS="BT2">
           <Shape>
             <Polygon POINTS="1785 2852 2135 2852 2135 3004 1785 3004"/>
           </Shape>
+          <TextLine ID="fig_1-191_004_l1" HPOS="1785" VPOS="2852" WIDTH="350" HEIGHT="152"><String CONTENT="Fig. 64 (??/????). Ice-"/><String CONTENT="Scoop. Length, 57 cm."/><String CONTENT="Eskimo."/></TextLine>
         </TextBlock>
       </PrintSpace>
     </Page>

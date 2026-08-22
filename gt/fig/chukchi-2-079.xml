@@ -27,11 +27,13 @@
           <Shape>
             <Polygon POINTS="1192 620 1278 620 1278 1338 1192 1338"/>
           </Shape>
+          <TextLine ID="fig_2-079_003_l1" HPOS="1192" VPOS="620" WIDTH="86" HEIGHT="718"><String CONTENT="Fig. 2. Ceremonial Fall Slaughtering."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="2282" VPOS="678" WIDTH="72" HEIGHT="576" ID="fig_2-079_004" TAGREFS="BT2">
           <Shape>
             <Polygon POINTS="2282 678 2354 678 2354 1254 2282 1254"/>
           </Shape>
+          <TextLine ID="fig_2-079_004_l1" HPOS="2282" VPOS="678" WIDTH="72" HEIGHT="576"><String CONTENT="Fig. 4. Ceremonial of Heads."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="276" VPOS="1789" WIDTH="898" HEIGHT="1346" ID="fig_2-079_005" TAGREFS="BT1">
           <Shape>
@@ -47,11 +49,13 @@
           <Shape>
             <Polygon POINTS="1194 2115 1282 2115 1282 2809 1194 2809"/>
           </Shape>
+          <TextLine ID="fig_2-079_007_l1" HPOS="1194" VPOS="2115" WIDTH="88" HEIGHT="694"><String CONTENT="Fig. 1. Fire-Board used as Guardian."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="2288" VPOS="2115" WIDTH="62" HEIGHT="706" ID="fig_2-079_008" TAGREFS="BT2">
           <Shape>
             <Polygon POINTS="2288 2115 2350 2115 2350 2821 2288 2821"/>
           </Shape>
+          <TextLine ID="fig_2-079_008_l1" HPOS="2288" VPOS="2115" WIDTH="62" HEIGHT="706"><String CONTENT="Fig. 3. Ceremonial Fall Slaughtering."/></TextLine>
         </TextBlock>
       </PrintSpace>
     </Page>

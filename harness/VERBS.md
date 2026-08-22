@@ -1776,6 +1776,51 @@ PP-NNN...     which pages; several may be given
 --root --json --toon --pager
 ```
 
+### fig witness
+**Does** compares the fresh caption reading against `data/readings.md`, block for block on the `<ref>|<zone-suffix>` key both stores use, and classifies every one: `agree` (NFD-identical), `lines_differ` (same words, different printed-line division), `differ` (a character differs), and orphans either way.
+**Reads** `review/captions/` — the adjudication where there is one, `review/captions/proposal.json` otherwise — plus `data/readings.md`.
+**Writes** nothing.
+**Exit** always 0. **Measurement never gates**, and here there is also nothing a caller could fix to make it pass: a disagreement is answered by a human ruling in `fig review`, never by editing either store toward the other — a store edited toward the thing being compared to it stops being a witness.
+**Note** **`blind` is the report's load-bearing field and prints first.** "A comparison whose witnesses may be one witness must say so" (CLAUDE.md), and `docs/decisions.md` records the instance: `gt/ocr/` and `data/readings.md` corroborated three commas the machine had invented, because the caption text descended from the same recognizer pass, and only a fresh raster read separated them. A run whose reader had the old file open prints exactly this table and means nothing, so whether the reading declared itself blind travels with the numbers. Three-valued — true, false, and *unstated*, which is not the same claim as false.
+**Note** **two ratified readings disagreeing is a finding, not an error.** `readings.md` is a human reading and so is the fresh one; which is right is settled against the scan, one caption at a time.
+**Note** `lines_differ` is separated from `differ` because it is not a disagreement about the book: a caption's box decides where it wraps, so a moved line division is a fact about the segmentation.
+```
+--verdict differ|lines_differ|all   which rows to list [differ]
+--root --json --toon --pager
+```
+
+### fig restore [PP-NNN ...]
+**Does** writes the adjudicated caption text into `gt/fig/` — one `<String>` per printed line, inside one `<TextLine>` carrying the FigDesc block's own bbox. **This is the migration.**
+**Reads** `review/captions/` (the ruling where there is one, the reading otherwise) and `gt/fig/`.
+**Writes** `gt/fig/*.xml`, each with a `.prev` beside it and a line in `_journal.jsonl`, with `--commit`.
+**Exit** 0, or raises on the refusals below. The report is the same with or without `--commit`, so a dry run answers "what would this change".
+**Note** **the store is populated by restoring rulings, never by transcribing `data/readings.md`** — which is the whole point of having read the captions twice. What lands is what a human ratified against the scan, so the text can carry `#gt`: machine-shaped output a human confirmed, transcluded from its store and re-derived on every run. A caption in a markdown file could not claim that rank.
+**Note** **the geometry is parsed and edited, never rebuilt.** `save_figs` goes through `zones.build_alto`, which mints a whole file from `{label, box, id}` — right for boxes and fatal here, since a rebuild is how the ids this text is keyed by would move. Every coordinate in the file afterwards is the one that was already there.
+**Note** **one `String` per printed line, and the break is load-bearing.** 31 of the 196 multi-line captions carry a hyphen at the break and they are not the same hyphen: `Leaf-Tobacco`, `Netting-Shuttles`, `Ice-Scoop` are compounds a join must keep tight, while `Walrus-Hunt-ing` and `attach-ing` are wrap artifacts whose hyphen a join must drop. Nothing mechanical separates them, so the division is the evidence that the question exists. A line's own *indentation* is not: that is the compositor's, and `save_decisions` folds it away.
+**Note** **geometry-less `String` is this corpus's universal practice** — 27,595 of 27,595 in `gt/ocr/` carry no `HPOS`. Several under one `TextLine` is the new part, and it is new because a caption's printed lines are a property of its one box: the segmenter that would have given each its own baseline is the one that dropped whole lines, which is why they were stripped in the first place.
+**Note** **four refusals, `ocr restore`'s.** A block with neither a ruling nor a reading stops the page — a partial restore leaves holes `fig check` cannot see, since it can find an absent block but never an absent caption nobody expected. A target already holding text needs `--force`. An unlicensed mark (`detectors.MARK_LICENSE`, §2.6) refuses, catching what a human pass can miss rather than what it never saw. And `--commit` gates the write.
+```
+PP-NNN...     which pages; several may be given
+--all         every page the figure store holds
+--force       overwrite captions already in the store
+--commit      actually write
+--root --json --toon --pager
+```
+
+### fig review
+**Does** serves every caption the two readings disagree on as one document — each with its own strip, `data/readings.md`'s reading beside the box, and the fresh reading in it — and saves the rulings into `review/captions/`.
+**Reads** `review/captions/`, `gt/fig/`, `scans/`, `data/readings.md`.
+**Writes** the adjudication into `review/captions/` — `decision.json`, one `.prev` and an append-only journal — on save.
+**Exit** 0. A run with nothing to adjudicate says so and serves nothing rather than opening a browser on an empty page — resolved **before the socket is bound**, `ocr review`'s rule.
+**Note** **this is `ocr review --issues` with a different block builder and a different store, and that is the whole design.** The issues page is already "every flagged field across many pages, in one guarded document", which is exactly what adjudicating caption disagreements is. A caption's key is a ref and a **zero-padded integer**, so it lands in the `(ref, index)` key space the template, `review-issues.js` and the save protocol already speak — no second template, no second palette, no second keyboard, no second save protocol. `review.review_context`'s block shape is reproduced key for key by `captions.review_context`, and `test_captions.py` holds the two together.
+**Note** **the box opens on the reading that has *not* been ratified.** `data/readings.md` is the store today, so putting the fresh reading in the field makes letting it stand an act rather than an omission — and the old reading sits beside it read-only, where the line pass puts the previous line. A caption has no previous line; it has a second witness.
+**Note** **every field needs a ruling, including "fine".** The page saves whole or not at all and refuses a blank note, `ocr review --issues`' guards and for their reason: on a document whose fields belong to different keys, a half-filled form is the one thing worth refusing outright. The prior-text check is carried from the first commit rather than after the first incident, every document here being cross-page by construction.
+```
+--verdict differ|lines_differ|all   which disagreements to carry [differ]
+--port N      serve on this port instead of the editor's registered one
+--root
+```
+
 ### fig zoom KEY
 **Does** magnifies one caption block and slices it into overlapping strips sized so `zoom`× fills the client exactly, packed onto as few sheets as fit.
 **Reads** `gt/fig/` and `scans/`.

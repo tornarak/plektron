@@ -15,7 +15,7 @@ from __future__ import annotations
 import time
 from pathlib import Path
 
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, HTTPException, Request, Response
 from pydantic import BaseModel, Field
 
 from .. import review as rv
@@ -214,6 +214,14 @@ def issues_save(request: Request, body: PatchBody):
     listed; a payload short of the list is a half-filled form, and on a page whose
     fields belong to different files that is the one thing worth refusing outright.
     """
+    # **The caption page posts here too, and that is the honest fix rather than a
+    # second endpoint.** `review-issues.js` is a cached static asset that hardcodes
+    # this path; both documents it serves are "every flagged field across many
+    # pages, saved whole or not at all", and only the store underneath differs. So
+    # the route dispatches on what the session is reviewing instead of the page
+    # shipping a second copy of the same script to reach a second URL.
+    if not _issues(request) and _session(request).get("verdict"):
+        return _captions_save(request, body)
     listed = {(i["ref"], i["index"]) for i in _issues(request)}
     if not listed:
         raise HTTPException(404, "no issue list in this session")
@@ -280,6 +288,102 @@ def done(request: Request, body: Done):
     if server is not None:
         server.should_exit = True
     return {"next": None}
+
+
+#: The caption pass rides this editor rather than getting one of its own, and the
+#: reason is that its document is the *same* document. `/issues` is already "every
+#: flagged field across many pages, in one page, guarded" — which is exactly what
+#: adjudicating caption disagreements is, and a caption's key is a ref and a
+#: zero-padded integer, so it lands in the key space the template, the JS and the
+#: save protocol already speak. What differs is the block builder and the store, so
+#: those are what these three routes supply and nothing else is rebuilt.
+@router.get("/captions")
+def captions_page(request: Request):
+    from .. import captions as C
+
+    s = _session(request)
+    ctx = C.review_context(_root(request), verdict=s.get("verdict") or "differ",
+                           crop_base=f"{BASE}/capcrop",
+                           font=s.get("font"), font_size=s.get("font_size"),
+                           box_lines=s.get("box_lines"))
+    if not ctx["blocks"]:
+        raise HTTPException(404, "nothing to adjudicate — `harness fig witness` "
+                                 "reports no caption the two readings disagree on")
+    return templates.TemplateResponse(request, "review/issues.html",
+                                      {**ctx, "base": BASE, "static": "/static"})
+
+
+@router.get("/capcrop/{key}.png")
+def capcrop(request: Request, key: str):
+    """One caption's strip, cut on demand.
+
+    Not written to disk first, unlike the line pass's crops: there are at most a
+    few dozen disagreements in a session and the cut is milliseconds, so a derived
+    tree here would be a directory to invalidate for no gain.
+    """
+    import io
+
+    from ..figures import caption_strips
+
+    ref, _, _suffix = key.partition("|")
+    for k, strip, _ in caption_strips(ref, _root(request), pad=0.15):
+        if k != key:
+            continue
+        strip = strip.resize((strip.width * 2, strip.height * 2))
+        buf = io.BytesIO()
+        strip.save(buf, format="PNG")
+        return Response(buf.getvalue(), media_type="image/png")
+    raise HTTPException(404, f"{key} names no caption block")
+
+
+def _captions_save(request: Request, body: PatchBody):
+    """The issue page's contract, against the caption store.
+
+    Completeness is checked against what the page was *built* from rather than a
+    session list, because this document's membership is computed — it is every
+    caption the two readings disagree on — and recomputing it is what makes the
+    check honest when a ruling has since removed a row from it.
+    """
+    from .. import captions as C
+
+    root = _root(request)
+    s = _session(request)
+    listed = {b["field"] for b in
+              C.review_context(root, verdict=s.get("verdict") or "differ")["blocks"]}
+    got = {f"{norm_ref(e.ref)}:{e.index}" for e in body.edits}
+    if got != listed:
+        short = sorted(listed - got)
+        extra = sorted(got - listed)
+        raise HTTPException(400, "a caption list saves whole or not at all — "
+                                 + (f"missing {', '.join(short)}. " if short else "")
+                                 + (f"not listed: {', '.join(extra)}. " if extra else "")
+                                 + "Nothing was written.")
+    unruled = sorted(f"{norm_ref(e.ref)}:{e.index}"
+                     for e in body.edits if not e.note.strip())
+    if unruled:
+        raise HTTPException(400, f"no ruling on {', '.join(unruled)} — every "
+                                 f"caption here is one where two readings "
+                                 f"disagree, so letting one stand is a decision "
+                                 f"and needs saying. Nothing was written.")
+    empty = sorted(f"{norm_ref(e.ref)}:{e.index}"
+                   for e in body.edits if not e.text.strip())
+    if empty:
+        raise HTTPException(400, f"the reading is empty on {', '.join(empty)}. "
+                                 f"Nothing was written.")
+    saved = C.load_decisions(root)
+    merged = {k: dict(v) for k, v in saved.items()}
+    for e in body.edits:
+        key = C.key_for(e.ref, e.index)
+        rec = merged.setdefault(key, {})
+        rec["text"], rec["note"] = e.text, e.note
+    try:
+        res = C.save_decisions(merged, root,
+                               stamp=time.strftime("%Y-%m-%dT%H:%M:%S%z"))
+    except ValueError as e:
+        raise HTTPException(409, str(e)) from None
+    print(f"saved {res['path']}: {res['edited']}/{res['blocks']} edited "
+          f"(changed this save: {','.join(res['changed_blocks']) or 'none'})")
+    return {"saved": [res]}
 
 
 register(Editor(name="review", port=8731, home="/", router=router))

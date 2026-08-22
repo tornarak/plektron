@@ -27,11 +27,13 @@
           <Shape>
             <Polygon POINTS="2273 1037 2411 1037 2411 2542 2273 2542"/>
           </Shape>
+          <TextLine ID="fig_1-260_003_l1" HPOS="2273" VPOS="1037" WIDTH="138" HEIGHT="1505"><String CONTENT="Fig. 123 (??/????). Mortar and Pestle for grinding Snuff-Tobacco. Length of pestle, 116 cm.;"/><String CONTENT="height of mortar, 6 cm."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="797" VPOS="1379" WIDTH="892" HEIGHT="102" ID="fig_1-260_004" TAGREFS="BT2">
           <Shape>
             <Polygon POINTS="797 1379 1689 1379 1689 1481 797 1481"/>
           </Shape>
+          <TextLine ID="fig_1-260_004_l1" HPOS="797" VPOS="1379" WIDTH="892" HEIGHT="102"><String CONTENT="Fig. 121, a (??/????), b (??/????). Pipes with Ivory Bowls."/><String CONTENT="Length, 18 cm., 20 cm."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="735" VPOS="1539" WIDTH="996" HEIGHT="288" ID="fig_1-260_005" TAGREFS="BT1">
           <Shape>
@@ -42,6 +44,7 @@
           <Shape>
             <Polygon POINTS="791 1849 1735 1849 1735 1954 791 1954"/>
           </Shape>
+          <TextLine ID="fig_1-260_006_l1" HPOS="791" VPOS="1849" WIDTH="944" HEIGHT="105"><String CONTENT="Fig. 122 (??/????). Ivory Pipe. Length, 23 cm. Eskimo,"/><String CONTENT="St. Lawrence Island."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="977" VPOS="1996" WIDTH="474" HEIGHT="646" ID="fig_1-260_007" TAGREFS="BT1">
           <Shape>
@@ -52,6 +55,7 @@
           <Shape>
             <Polygon POINTS="931 2666 1509 2666 1509 2796 931 2796"/>
           </Shape>
+          <TextLine ID="fig_1-260_008_l1" HPOS="931" VPOS="2666" WIDTH="578" HEIGHT="130"><String CONTENT="Fig. 124 (??/????). Birch-bark"/><String CONTENT="Snuff-Box, Markova make. Height,"/><String CONTENT="7 cm."/></TextLine>
         </TextBlock>
       </PrintSpace>
     </Page>

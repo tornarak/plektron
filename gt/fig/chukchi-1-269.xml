@@ -22,6 +22,7 @@
           <Shape>
             <Polygon POINTS="925 1903 1683 1903 1683 1980 925 1980"/>
           </Shape>
+          <TextLine ID="fig_1-269_002_l1" HPOS="925" VPOS="1903" WIDTH="758" HEIGHT="77"><String CONTENT="Fig. 1. Chukchee Woman digging Roots."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="465" VPOS="2068" WIDTH="837" HEIGHT="1068" ID="fig_1-269_003" TAGREFS="BT1">
           <Shape>
@@ -37,11 +38,13 @@
           <Shape>
             <Polygon POINTS="475 3156 1279 3156 1279 3238 475 3238"/>
           </Shape>
+          <TextLine ID="fig_1-269_005_l1" HPOS="475" VPOS="3156" WIDTH="804" HEIGHT="82"><String CONTENT="Fig. 2. Chukchee Woman scraping a Skin."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="1381" VPOS="3156" WIDTH="830" HEIGHT="142" ID="fig_1-269_006" TAGREFS="BT2">
           <Shape>
             <Polygon POINTS="1381 3156 2211 3156 2211 3298 1381 3298"/>
           </Shape>
+          <TextLine ID="fig_1-269_006_l1" HPOS="1381" VPOS="3156" WIDTH="830" HEIGHT="142"><String CONTENT="Fig. 3. Chukchee Man getting Fire with a"/><String CONTENT="Wooden Fire-Drill."/></TextLine>
         </TextBlock>
       </PrintSpace>
     </Page>

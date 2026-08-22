@@ -27,11 +27,13 @@
           <Shape>
             <Polygon POINTS="455 1821 1205 1821 1205 1913 455 1913"/>
           </Shape>
+          <TextLine ID="fig_1-331_003_l1" HPOS="455" VPOS="1821" WIDTH="750" HEIGHT="92"><String CONTENT="Fig. 1. Reindeer Chukchee Young Man."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="1779" VPOS="1821" WIDTH="406" HEIGHT="84" ID="fig_1-331_004" TAGREFS="BT2">
           <Shape>
             <Polygon POINTS="1779 1821 2185 1821 2185 1905 1779 1905"/>
           </Shape>
+          <TextLine ID="fig_1-331_004_l1" HPOS="1779" VPOS="1821" WIDTH="406" HEIGHT="84"><String CONTENT="Fig. 2. Eskimo Girl."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="1451" VPOS="1952" WIDTH="1088" HEIGHT="1300" ID="fig_1-331_005" TAGREFS="BT1">
           <Shape>
@@ -47,11 +49,13 @@
           <Shape>
             <Polygon POINTS="507 3258 1179 3258 1179 3350 507 3350"/>
           </Shape>
+          <TextLine ID="fig_1-331_007_l1" HPOS="507" VPOS="3258" WIDTH="672" HEIGHT="92"><String CONTENT="Fig. 3. Maritime Chukchee Woman."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="1693" VPOS="3266" WIDTH="604" HEIGHT="84" ID="fig_1-331_008" TAGREFS="BT2">
           <Shape>
             <Polygon POINTS="1693 3266 2297 3266 2297 3350 1693 3350"/>
           </Shape>
+          <TextLine ID="fig_1-331_008_l1" HPOS="1693" VPOS="3266" WIDTH="604" HEIGHT="84"><String CONTENT="Fig. 4. Reindeer Chukchee Man."/></TextLine>
         </TextBlock>
       </PrintSpace>
     </Page>

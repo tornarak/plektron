@@ -27,11 +27,13 @@
           <Shape>
             <Polygon POINTS="1329 831 1427 831 1427 1567 1329 1567"/>
           </Shape>
+          <TextLine ID="fig_1-273_003_l1" HPOS="1329" VPOS="831" WIDTH="98" HEIGHT="736"><String CONTENT="Fig. 2. Chukchee Man working in Iron."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="2493" VPOS="927" WIDTH="70" HEIGHT="562" ID="fig_1-273_004" TAGREFS="BT2">
           <Shape>
             <Polygon POINTS="2493 927 2563 927 2563 1489 2493 1489"/>
           </Shape>
+          <TextLine ID="fig_1-273_004_l1" HPOS="2493" VPOS="927" WIDTH="70" HEIGHT="562"><String CONTENT="Fig. 4. Chukchee Children."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="1461" VPOS="2006" WIDTH="1020" HEIGHT="1400" ID="fig_1-273_005" TAGREFS="BT1">
           <Shape>
@@ -47,11 +49,13 @@
           <Shape>
             <Polygon POINTS="1351 2270 1443 2270 1443 3182 1351 3182"/>
           </Shape>
+          <TextLine ID="fig_1-273_007_l1" HPOS="1351" VPOS="2270" WIDTH="92" HEIGHT="912"><String CONTENT="Fig. 1. Chukchee Woman making a Clay Lamp."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="2487" VPOS="2280" WIDTH="92" HEIGHT="902" ID="fig_1-273_008" TAGREFS="BT2">
           <Shape>
             <Polygon POINTS="2487 2280 2579 2280 2579 3182 2487 3182"/>
           </Shape>
+          <TextLine ID="fig_1-273_008_l1" HPOS="2487" VPOS="2280" WIDTH="92" HEIGHT="902"><String CONTENT="Fig. 3. Chukchee Woman lousing her Husband."/></TextLine>
         </TextBlock>
       </PrintSpace>
     </Page>

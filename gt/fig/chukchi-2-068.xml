@@ -27,6 +27,7 @@
           <Shape>
             <Polygon POINTS="380 1534 874 1534 874 1660 380 1660"/>
           </Shape>
+          <TextLine ID="fig_2-068_003_l1" HPOS="380" VPOS="1534" WIDTH="494" HEIGHT="126"><String CONTENT="Fig. 238 (??/????). Amulet"/><String CONTENT="representing a Human Being."/><String CONTENT="Length, 19 cm."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="496" VPOS="1680" WIDTH="294" HEIGHT="959" ID="fig_2-068_004" TAGREFS="BT1">
           <Shape>
@@ -37,11 +38,13 @@
           <Shape>
             <Polygon POINTS="382 2738 1145 2738 1145 2815 382 2815"/>
           </Shape>
+          <TextLine ID="fig_2-068_005_l1" HPOS="382" VPOS="2738" WIDTH="763" HEIGHT="77"><String CONTENT="Fig. 239 (??/???? a). Wooden Figure re-"/><String CONTENT="presenting a “Guardian.” Length, 6 cm."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="383" VPOS="2803" WIDTH="767" HEIGHT="96" ID="fig_2-068_006" TAGREFS="BT2">
           <Shape>
             <Polygon POINTS="383 2803 1150 2803 1150 2899 383 2899"/>
           </Shape>
+          <TextLine ID="fig_2-068_006_l1" HPOS="383" VPOS="2803" WIDTH="767" HEIGHT="96"><String CONTENT="Fig. 240 (??/????). Leather Ornament re-"/><String CONTENT="presenting a “Guardian.” Length, 25 cm."/></TextLine>
         </TextBlock>
       </PrintSpace>
     </Page>

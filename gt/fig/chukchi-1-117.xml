@@ -27,6 +27,7 @@
           <Shape>
             <Polygon POINTS="1011 1481 1739 1481 1739 1577 1011 1577"/>
           </Shape>
+          <TextLine ID="fig_1-117_003_l1" HPOS="1011" VPOS="1481" WIDTH="728" HEIGHT="96"><String CONTENT="Fig. 14, a-c (??/????). Ivory Spikes."/><String CONTENT="a, Length, 13 cm.; b, c, height, 1.75 cm., 5 cm."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="1425" VPOS="1647" WIDTH="309" HEIGHT="629" ID="fig_1-117_004" TAGREFS="BT1">
           <Shape>
@@ -37,11 +38,13 @@
           <Shape>
             <Polygon POINTS="1413 2280 1751 2280 1751 2490 1413 2490"/>
           </Shape>
+          <TextLine ID="fig_1-117_005_l1" HPOS="1413" VPOS="2280" WIDTH="338" HEIGHT="210"><String CONTENT="Fig. 15 (??/????)."/><String CONTENT="Implement to prevent"/><String CONTENT="Reindeer from jostling"/><String CONTENT="Each Other. Length,"/><String CONTENT="12.5 cm."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="1789" VPOS="2758" WIDTH="320" HEIGHT="204" ID="fig_1-117_006" TAGREFS="BT2">
           <Shape>
             <Polygon POINTS="1789 2758 2109 2758 2109 2962 1789 2962"/>
           </Shape>
+          <TextLine ID="fig_1-117_006_l1" HPOS="1789" VPOS="2758" WIDTH="320" HEIGHT="204"><String CONTENT="Fig. 16, a (??/????),"/><String CONTENT="b (??/????), c (??/????),"/><String CONTENT="d (??/????). Whips."/><String CONTENT="Total lengths, a,"/><String CONTENT="122 cm.; d, 171 cm."/></TextLine>
         </TextBlock>
       </PrintSpace>
     </Page>

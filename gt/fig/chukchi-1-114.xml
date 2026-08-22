@@ -27,6 +27,7 @@
           <Shape>
             <Polygon POINTS="743 1381 1519 1381 1519 1445 743 1445"/>
           </Shape>
+          <TextLine ID="fig_1-114_003_l1" HPOS="743" VPOS="1381" WIDTH="776" HEIGHT="64"><String CONTENT="Fig. 7 (??/????). Urine-Vessel. Height, 11 cm."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="691" VPOS="1530" WIDTH="1394" HEIGHT="1610" ID="fig_1-114_004" TAGREFS="BT1">
           <Shape>
@@ -37,11 +38,13 @@
           <Shape>
             <Polygon POINTS="2159 1711 2437 1711 2437 1845 2159 1845"/>
           </Shape>
+          <TextLine ID="fig_1-114_005_l1" HPOS="2159" VPOS="1711" WIDTH="278" HEIGHT="134"><String CONTENT="Fig. 8 (??/???? a)."/><String CONTENT="Taming-Club."/><String CONTENT="Length, 82 cm."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="957" VPOS="3142" WIDTH="850" HEIGHT="78" ID="fig_1-114_006" TAGREFS="BT2">
           <Shape>
             <Polygon POINTS="957 3142 1807 3142 1807 3220 957 3220"/>
           </Shape>
+          <TextLine ID="fig_1-114_006_l1" HPOS="957" VPOS="3142" WIDTH="850" HEIGHT="78"><String CONTENT="Fig. 9. Reindeer-Harness. (From a photograph.)"/></TextLine>
         </TextBlock>
       </PrintSpace>
     </Page>

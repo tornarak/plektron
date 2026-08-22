@@ -1225,6 +1225,11 @@ def issues_context(items: list[dict], root: Path = Path("."),
             "crop": f"{crop_base}/{ref}/{path.name}",
             "w": round(w * scale), "h": round(ht * scale),
             "note": (prop.get(idx) or {}).get("note", ""),
+            # The badge the single-page view has shown since notes gained classes.
+            # Absent here until the caption pass needed the same head, which is
+            # the ordinary way a shared template's two callers drift: the field
+            # existed in the store and only one renderer asked for it.
+            "nclass": (prop.get(idx) or {}).get("class", ""),
             "hnote": (saved.get(idx) or {}).get("note", ""),
             "marks": codepoints("".join(
                 dict.fromkeys(c for c in text if ord(c) > 127))),

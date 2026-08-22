@@ -27,11 +27,13 @@
           <Shape>
             <Polygon POINTS="1265 809 1357 809 1357 1655 1265 1655"/>
           </Shape>
+          <TextLine ID="fig_1-235_003_l1" HPOS="1265" VPOS="809" WIDTH="92" HEIGHT="846"><String CONTENT="Fig. 2. Chukchee Hut at Mariinsky Post."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="2501" VPOS="853" WIDTH="104" HEIGHT="690" ID="fig_1-235_004" TAGREFS="BT2">
           <Shape>
             <Polygon POINTS="2501 853 2605 853 2605 1543 2501 1543"/>
           </Shape>
+          <TextLine ID="fig_1-235_004_l1" HPOS="2501" VPOS="853" WIDTH="104" HEIGHT="690"><String CONTENT="Fig. 4. Summer Shelter of Eskimo."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="1413" VPOS="2010" WIDTH="1083" HEIGHT="1380" ID="fig_1-235_005" TAGREFS="BT1">
           <Shape>
@@ -47,11 +49,13 @@
           <Shape>
             <Polygon POINTS="1269 2146 1359 2146 1359 3286 1269 3286"/>
           </Shape>
+          <TextLine ID="fig_1-235_007_l1" HPOS="1269" VPOS="2146" WIDTH="90" HEIGHT="1140"><String CONTENT="Fig. 1. Ruins of a “Jaw-bone House” in the Village Uñiˊsak."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="2511" VPOS="2264" WIDTH="94" HEIGHT="886" ID="fig_1-235_008" TAGREFS="BT2">
           <Shape>
             <Polygon POINTS="2511 2264 2605 2264 2605 3150 2511 3150"/>
           </Shape>
+          <TextLine ID="fig_1-235_008_l1" HPOS="2511" VPOS="2264" WIDTH="94" HEIGHT="886"><String CONTENT="Fig. 3. Summer Shelter of Maritime Chukchee."/></TextLine>
         </TextBlock>
       </PrintSpace>
     </Page>

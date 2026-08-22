@@ -60,14 +60,24 @@ const syncPal=()=>document.body.classList.toggle(
 // applying here or it would be remembered and never shown.
 syncPal();
 document.addEventListener('focusin',e=>{
+  if(e.target.tagName!=='TEXTAREA') return;
+  // **`last` is tracked here because it is this file's variable.** It used to be
+  // assigned only in review.js, the per-page editor's script — so on any page
+  // that loads review-kbd.js *without* it, `last` stayed null and both consumers
+  // below died silently: the keydown handler returns early on `!last`, and a
+  // palette click inserts into nothing. That is every keystroke and every button
+  // of the virtual keyboard, on a page where the panel still renders and still
+  // says `kbd ON`, which is the worst way for it to fail. The issues page has
+  // loaded review-issues.js since it existed and was affected the whole time; the
+  // caption page inherited it on day one. Owning it here means a third page
+  // cannot reintroduce it by shipping a different companion script.
+  last=e.target;
   // The panel occupying 16rem when kbd mode is on can cover the very field
   // just focused, if it was near the bottom of the page. scrollIntoView
   // (nearest, not goT1's center) nudges just enough to clear it without
   // recentering on an ordinary tab/click. Scroll-only now — it no longer
   // toggles the panel itself, since that depends only on kbdOn/palOverride.
-  if(e.target.tagName==='TEXTAREA'&&kbdOn){
-    e.target.scrollIntoView({block:'nearest',behavior:'smooth'});
-  }
+  if(kbdOn) e.target.scrollIntoView({block:'nearest',behavior:'smooth'});
 });
 addEventListener('keydown',e=>{
   if(e.altKey&&!e.ctrlKey&&!e.metaKey&&e.key==='p'){

@@ -27,11 +27,13 @@
           <Shape>
             <Polygon POINTS="1227 709 1311 709 1311 1747 1227 1747"/>
           </Shape>
+          <TextLine ID="fig_1-227_003_l1" HPOS="1227" VPOS="709" WIDTH="84" HEIGHT="1038"><String CONTENT="Fig. 3. Chukchee Winter House in the Village Valkaˊʟ̣ᴇn."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="2479" VPOS="829" WIDTH="110" HEIGHT="754" ID="fig_1-227_004" TAGREFS="BT2">
           <Shape>
             <Polygon POINTS="2479 829 2589 829 2589 1583 2479 1583"/>
           </Shape>
+          <TextLine ID="fig_1-227_004_l1" HPOS="2479" VPOS="829" WIDTH="110" HEIGHT="754"><String CONTENT="Fig. 4. Inside of House shown in Fig. 2."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="1452" VPOS="2018" WIDTH="1046" HEIGHT="1356" ID="fig_1-227_005" TAGREFS="BT1">
           <Shape>
@@ -47,11 +49,13 @@
           <Shape>
             <Polygon POINTS="2493 2076 2599 2076 2599 3384 2493 3384"/>
           </Shape>
+          <TextLine ID="fig_1-227_007_l1" HPOS="2493" VPOS="2076" WIDTH="106" HEIGHT="1308"><String CONTENT="Fig. 3. Chukchee Winter House at Mariinsky Post in Course of Construction."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="1231" VPOS="2142" WIDTH="96" HEIGHT="1228" ID="fig_1-227_008" TAGREFS="BT2">
           <Shape>
             <Polygon POINTS="1231 2142 1327 2142 1327 3370 1231 3370"/>
           </Shape>
+          <TextLine ID="fig_1-227_008_l1" HPOS="1231" VPOS="2142" WIDTH="96" HEIGHT="1228"><String CONTENT="Fig. 1. Constructing a Chukchee Winter House at Mariinsky Post."/></TextLine>
         </TextBlock>
       </PrintSpace>
     </Page>

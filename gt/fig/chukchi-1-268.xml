@@ -22,6 +22,7 @@
           <Shape>
             <Polygon POINTS="869 1829 1613 1829 1613 1891 869 1891"/>
           </Shape>
+          <TextLine ID="fig_1-268_002_l1" HPOS="869" VPOS="1829" WIDTH="744" HEIGHT="62"><String CONTENT="Fig. 129 (??/????). Pump-drill. Length, 62 cm."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="619" VPOS="2068" WIDTH="112" HEIGHT="924" ID="fig_1-268_003" TAGREFS="BT1">
           <Shape>
@@ -37,11 +38,13 @@
           <Shape>
             <Polygon POINTS="739 2130 867 2130 867 2914 739 2914"/>
           </Shape>
+          <TextLine ID="fig_1-268_005_l1" HPOS="739" VPOS="2130" WIDTH="128" HEIGHT="784"><String CONTENT="Fig. 130 (??/????). Small Drill. Length, 19 cm."/><String CONTENT="Eskimo, Indian Point."/></TextLine>
         </TextBlock>
         <TextBlock HPOS="1733" VPOS="2768" WIDTH="610" HEIGHT="104" ID="fig_1-268_006" TAGREFS="BT2">
           <Shape>
             <Polygon POINTS="1733 2768 2343 2768 2343 2872 1733 2872"/>
           </Shape>
+          <TextLine ID="fig_1-268_006_l1" HPOS="1733" VPOS="2768" WIDTH="610" HEIGHT="104"><String CONTENT="Fig. 131 (??/????). Iron Saw. Length"/><String CONTENT="of blade, 9.5 cm."/></TextLine>
         </TextBlock>
       </PrintSpace>
     </Page>
