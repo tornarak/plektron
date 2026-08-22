@@ -960,16 +960,24 @@ def load_ink_cache(root: Path = Path(".")) -> dict[str, dict]:
     return {k: v for k, v in data.items() if not k.startswith("_")}
 
 
-def cached_ink(ref: str, root: Path = Path(".")) -> dict | None:
+def cached_ink(ref: str, root: Path = Path("."),
+               cache: dict | None = None) -> dict | None:
     """This page's stored verdict, or None if it was never asked or has gone stale.
 
     None rather than the stale record, and that is the whole discipline of the
     thing: a verdict about a page as it was two saves ago, rendered in the same
     column as a live one, is exactly the fluent nonsense this project is organised
     against. Unknown is a state the list can draw; wrong is not.
+
+    `cache` is a `load_ink_cache` a caller already holds. Without it this parses
+    the whole cache file to read one entry, which the zones list did once per row
+    over 832 rows. **The staleness check is unaffected and deliberately so**: the
+    stamp is compared per ref against the files' live mtimes either way, so a
+    hoisted cache still yields `None` for a page saved since it was read. What is
+    hoisted is the read, never the verdict.
     """
     ref = norm_ref(ref)
-    hit = load_ink_cache(root).get(ref)
+    hit = (load_ink_cache(root) if cache is None else cache).get(ref)
     if hit and hit.get("stamp") == ink_stamp(ref, root):
         return hit
     return None

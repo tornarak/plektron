@@ -663,10 +663,18 @@ def list_context(root: Path, cfg: dict, itinerary: list[str] | None = None,
     else:
         refs = sorted(set(zn.zone_refs(root)) | set(zn.zone_refs(root, zn.MZDIR)),
                       key=parse_ref)
+    # **Both read once for the list, not once per row.** `validate_page` builds
+    # `load_splits` when not handed one — seven `.lst` files re-read and every
+    # name re-parsed through `norm_ref` — and `cached_ink` parses the whole cache
+    # file to look up one entry. Over 832 rows that was 9.9s and 2.0s of a 5s
+    # response, and 700k `norm_ref` calls. Neither changes per ref inside one
+    # render, and the ink staleness check still runs per ref against live mtimes.
+    splits = zn.load_splits(root)
+    ink_cache = zn.load_ink_cache(root)
     rows = []
     n_keyed = n_err = n_warn = 0
     for ref in refs:
-        r = zn.validate_page(ref, root, cfg, ink=False)
+        r = zn.validate_page(ref, root, cfg, ink=False, splits=splits)
         keyed = r["keyed"]
         n_keyed += bool(keyed)
         n_err += len(r["errors"])
@@ -691,7 +699,7 @@ def list_context(root: Path, cfg: dict, itinerary: list[str] | None = None,
         if state in ("todo", "proposed") or r["split"] in zn.LEAF_KINDS:
             ink = {"state": "skip"}
         else:
-            ink = zn.cached_ink(ref, root) or {"state": "unknown"}
+            ink = zn.cached_ink(ref, root, ink_cache) or {"state": "unknown"}
         # Both stores, per page, as counts. The `proposed` state only ever names a
         # page with *no* ground truth, so until this column existed a prediction
         # sitting beside keyed work was invisible in the list — and "is there
