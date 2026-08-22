@@ -70,7 +70,19 @@ from pathlib import Path
 from . import farms as F
 from . import zones as Z
 from .atomic import tmp_for
+from .parallel import capture_stderr as _capture_stderr
+from .parallel import gpu_workers, worker_output
 from .refs import norm_ref, parse_ref
+
+# `capture_stderr`, `worker_output` and the worker-sizing rule were this module's
+# own until `zones` needed them and could not import it — the graph runs
+# `recognize` -> `zones` -> `context`, so they moved to `parallel`, underneath
+# both. They are imported under the names this file already used, which is what
+# keeps `_worker_init` finding them as module globals and keeps the monkeypatch
+# seams in `test_worker_stderr.py` pointing at what it actually calls.
+# `VRAM_PER_WORKER` is deliberately *not* re-imported: only the sizing rule read
+# it, that rule moved, and a constant kept here for old times' sake is a second
+# place to look for one number.
 
 # The machine store, its human counterpart, and the view over both. `lines.py`
 # spells the view `DEFAULT_STORE = "ocr"`; these are the two real stores it
@@ -111,14 +123,6 @@ DEFAULT_REC_MODEL = "models/catmus-print-fondue-large.mlmodel"
 # `python -` and anything else that execs a script from stdin).
 REC_BATCH = 16
 REC_LINE_WORKERS = 0
-
-# What one recognition process costs on the card, measured: ~1.4 GB, nearly all of
-# it CUDA/cuDNN context rather than weights (the recognizer's parameters are 22 MiB
-# and the segmenters touch the GPU only during their forward pass). Rounded up, and
-# used to divide *free* VRAM at run time rather than to assert a worker count —
-# the number that fits is a property of the card, and any constant written here
-# would be wrong on the next machine.
-VRAM_PER_WORKER = 1.6 * 1024 ** 3
 
 # Every id this pass mints. Provenance travelling with the data, as everywhere
 # else here: a block or line merged out of context still says what made it.
@@ -580,31 +584,10 @@ _WORKER: dict = {}
 # the store fills normally, which is how a 689-page sweep loses the only signal
 # it has. On the serial path the same warning is raised in-process, rich catches
 # it, and it prints tidily above the bar — so this is scoped to the pool.
-POLYGON_WARNING = "Enforcing use of the new polygon extractor"
-
-
-def _capture_stderr(log_dir) -> None:
-    """Point this process's fd 2 at a file of its own, and never at the terminal.
-
-    **A worker must not be able to write where the parent is drawing**, and the
-    filter above cannot promise that — it names one warning, and the next library
-    that clears its throat during a 689-page sweep would break the display again
-    with nobody able to say why. This closes the channel rather than the message:
-    whatever the child emits, present or future, Python-level or from inside a C
-    extension, lands in a file instead of between two frames of a progress bar.
-
-    `dup2` and not `sys.stderr =`, for that last reason: rebinding the Python
-    object leaves fd 2 pointing at the terminal, and scipy, shapely and torch all
-    have C in them.
-
-    Nothing is silenced. The parent reads these files when the pool closes and
-    reports what they hold; an empty one is removed.
-    """
-    import os
-    fd = os.open(Path(log_dir) / f"worker-{os.getpid()}.log",
-                 os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o644)
-    os.dup2(fd, 2)
-    os.close(fd)
+# Defined in `zones`, beside `load_segmenter`, since both pooled sweeps filter it
+# and that module may not import this one. Re-exported under the name this file
+# and `test_worker_stderr.py` have always used.
+POLYGON_WARNING = Z.POLYGON_WARNING
 
 
 def _worker_init(root: Path, seg_model, rec_model, device: str,
@@ -679,60 +662,15 @@ def _predict_pool(todo, n, root, seg_model, rec_model, device,
     return results, worker_output(log_dir)
 
 
-def worker_output(log_dir: Path) -> dict:
-    """What the workers wrote to their captured stderr, and where it is.
-
-    Read after the pool closes rather than streamed: the whole point is that this
-    text must not reach the terminal while the bar is live, and a sweep that ends
-    is the moment it can be read safely.
-
-    **Empty files are removed and an empty run reports nothing**, which is what
-    makes a non-empty one worth looking at. The directory survives only if it has
-    something in it, so the path in the report always names a file that exists.
-    """
-    files = sorted(log_dir.glob("worker-*.log")) if log_dir.exists() else []
-    kept, lines = [], 0
-    for f in files:
-        text = f.read_text(encoding="utf-8", errors="replace")
-        if text.strip():
-            kept.append(f)
-            lines += len(text.strip().splitlines())
-        else:
-            f.unlink()
-    if not kept:
-        if log_dir.exists():
-            log_dir.rmdir()
-        return {"stderr_lines": 0, "stderr_log": ""}
-    return {"stderr_lines": lines, "stderr_log": str(log_dir)}
-
-
 def predict_workers(jobs: int | None, n_pages: int) -> int:
-    """How many processes a sweep will use.
+    """How many processes this sweep will use — `parallel.gpu_workers`, named.
 
-    **Capped by VRAM, not only by cores**, and the cap is derived rather than
-    written down: a worker holds ~1.4 GB of CUDA context and weights, so the
-    number that fits is a property of the card in the machine and a constant here
-    would be wrong on the next one. Card memory is read at run time and the
-    per-worker figure is the measured one.
-
-    A `jobs` a human typed wins outright, including one that will not fit — the
-    same rule `predict_skip`'s `single` follows. Naming it is the request.
+    Kept as a name here because `harness/README.md` and `VERBS.md` both cite it,
+    and a doc should not have to move for a refactor. The rule and the VRAM cap
+    are `parallel`'s, since `zones score` sizes its pool the same way and cannot
+    import this module.
     """
-    import os
-
-    if jobs is not None:
-        if jobs < 1:
-            raise ValueError(f"--jobs must be at least 1, got {jobs}")
-        return min(jobs, n_pages)
-    n = max(1, min(os.process_cpu_count() or 1, 4))
-    try:
-        import torch
-        if torch.cuda.is_available():
-            free, _total = torch.cuda.mem_get_info()
-            n = max(1, min(n, int(free / VRAM_PER_WORKER)))
-    except Exception:
-        pass
-    return min(n, n_pages)
+    return gpu_workers(jobs, n_pages)
 
 
 # ------------------------------------------------------------------ the view

@@ -213,7 +213,8 @@ scans/w-figs-blotted/
 # split is the whole safety property: a rebuild rewrites everything here and
 # nothing there, and `figures.crop_source` resolves the human file first.
 scans/fig-crops/
-# Training scratch: `--assemble`'s symlink farm, its two .lst files, and whatever
+# Training scratch, one directory per track and each in two halves: `data/` is
+# `--assemble`'s symlink farm and its two .lst files, `model/` is whatever
 # checkpoints a run writes. **Pure scratch, and that is a property worth keeping** —
 # the split a model trained on travels in that model's own manifest under
 # `models/bogoras-seg/`, so nothing here is read once training ends and `--assemble`
@@ -221,11 +222,11 @@ scans/fig-crops/
 # run, which meant preparing the next run destroyed the ability to interpret the
 # model you already had.
 #
-# `bogoras-rec/` and `log/` live here for the same reason and used to be ignored by
-# name at the repo root. Only a *trained* model is worth keeping and those live in
-# `models/`; a run's mid-training checkpoints — `checkpoint_abort.ckpt` among them —
-# have no consumer at all now that recognition fine-tuning is off the plan
-# (CLAUDE.md, "Recognition").
+# `bogoras-rec/` and `log/` used to sit here too, ignored by name at the repo root
+# before this line covered the tree; both were empty and are gone. Only a *trained*
+# model is worth keeping and those live in `models/`; a run's mid-training
+# checkpoints — `checkpoint_abort.ckpt` among them — have no consumer at all now
+# that recognition fine-tuning is off the plan (CLAUDE.md, "Recognition").
 train/
 # What the models emitted, one raw ALTO per page: `harness zones predict` writes the
 # first, `harness ocr predict` the second. Derived in the strong sense — regenerable

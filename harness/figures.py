@@ -464,6 +464,10 @@ def set_rule_exempt(ref: str, rules, root: Path = Path("."),
 # why the two are separate models rather than one with four classes: they read
 # different rasters.
 WORKDIR = "train/bogoras-fig"
+# `zones`' split of the track, verbatim: `data/` is the laid-out training set and its
+# two `.lst` files, `model/` holds a run's checkpoints, and the base holds neither.
+DATADIR = f"{WORKDIR}/data"
+RUNDIR = f"{WORKDIR}/model"
 MODELDIR = "models/bogoras-fig"
 MODEL_NAME = "fig-seg"
 DEFAULT_MODEL = f"{MODELDIR}/{MODEL_NAME}.safetensors"
@@ -573,7 +577,7 @@ def remark_eval(root: Path = Path("."), fraction: float = 0.20,
 
 
 def assemble(root: Path = Path("."), scratch: bool = False) -> dict:
-    """Lay out `train/bogoras-fig/` for `ketos segtrain`, and report the command.
+    """Lay out `train/bogoras-fig/data/` for `ketos segtrain`, and report the command.
 
     ketos resolves a page's image through the ALTO's own
     `sourceImageInformation/fileName`, relative to the XML, so each page's file and
@@ -593,11 +597,14 @@ def assemble(root: Path = Path("."), scratch: bool = False) -> dict:
     """
     from .zones import SEGTRAIN_CMD, _runtime_flags, build_alto, raster_size
 
-    work = root / WORKDIR
+    work = root / DATADIR
     for p in sorted(work.glob("*")) if work.exists() else []:
         if p.is_file() or p.is_symlink():
             p.unlink()
     work.mkdir(parents=True, exist_ok=True)
+    # See `zones.assemble`: kraken makes the output directory it is given, not its
+    # parents, and the reported command has to run as printed.
+    (root / RUNDIR).mkdir(parents=True, exist_ok=True)
 
     splits = load_splits(root, FIGDIR)
     lists: dict[str, list[str]] = {"train": [], "eval": []}
@@ -626,7 +633,7 @@ def assemble(root: Path = Path("."), scratch: bool = False) -> dict:
         # Relative and unresolved. Resolving follows the symlink back to `gt/fig/`
         # and silently trains on the store instead of the work dir — the lesson
         # `zones.assemble` records, and it applies verbatim.
-        lists[split].append(f"{WORKDIR}/{name}.xml")
+        lists[split].append(f"{DATADIR}/{name}.xml")
 
     for split, names in lists.items():
         (work / f"{split}.lst").write_text(
@@ -656,8 +663,8 @@ def assemble(root: Path = Path("."), scratch: bool = False) -> dict:
         "base": base,
         "missing_raster": missing,
         "command": SEGTRAIN_CMD.format(
-            device=device, workers=workers, load=load, work=WORKDIR,
-            out=f"{WORKDIR}/run-{_fig_next_run(root)}"),
+            device=device, workers=workers, load=load, work=DATADIR,
+            out=f"{RUNDIR}/run-{_fig_next_run(root)}"),
     }
     notes = [n for n in (base_note,
                          "pages with no raster were left out of both lists"
@@ -669,7 +676,7 @@ def assemble(root: Path = Path("."), scratch: bool = False) -> dict:
 
 def predict(refs: list[str], root: Path = Path("."),
             model_path: str | Path | None = None, device: str = "auto",
-            force: bool = False) -> list[dict]:
+            force: bool = False, tick=None) -> list[dict]:
     """Run the figure segmenter over pages and write raw ALTO into `mz/fig/`.
 
     Input is the **raw scan**, matching what the model was trained on and unlike
@@ -690,9 +697,14 @@ def predict(refs: list[str], root: Path = Path("."),
     if device == "auto":
         import torch
         device = "cuda:0" if torch.cuda.is_available() else "cpu"
+    from .parallel import ptrack
+
     net, sha = None, ""
     out = []
-    for ref in refs:
+    # Every ref counts, the skips included: `--all` is 832 pages at ~15 s each and
+    # the total a reader needs is the one they asked for, not the one left after
+    # the run has quietly discounted itself.
+    for ref in ptrack(refs, tick):
         ref = norm_ref(ref)
         dest = alto_for(ref, root, MZFIGDIR)
         scan = root / "scans" / f"chukchi-{ref}.png"
@@ -1078,12 +1090,12 @@ def install_model(checkpoint: str | Path, root: Path = Path("."),
     if not src.exists():
         raise FileNotFoundError(f"no checkpoint at {checkpoint}")
 
-    work = root / WORKDIR
+    work = root / DATADIR
     lists = {s: work / f"{s}.lst" for s in FIG_SPLITS}
     missing = [s for s, p in lists.items() if not p.exists()]
     if missing:
         raise FileNotFoundError(
-            f"{WORKDIR}/{missing[0]}.lst is gone, so the split this run consumed "
+            f"{DATADIR}/{missing[0]}.lst is gone, so the split this run consumed "
             "cannot be frozen beside the model — re-run `harness fig assemble` "
             "before installing, or the scores would belong to a split nobody kept")
 
@@ -1139,7 +1151,7 @@ def _swap_check(sc: dict) -> bool:
 
 def _fig_next_run(root: Path) -> int:
     n = 1
-    while (root / WORKDIR / f"run-{n}").exists():
+    while (root / RUNDIR / f"run-{n}").exists():
         n += 1
     return n
 
@@ -2780,7 +2792,7 @@ def write_crops(ref: str, out_dir: Path, root: Path = Path("."),
 
 def crop_all(refs: list[str] | None = None, root: Path = Path("."),
              out_dir: Path | None = None, scans: str = "scans",
-             force: bool = False, jobs: int | None = None) -> dict:
+             force: bool = False, jobs: int | None = None, tick=None) -> dict:
     """Crop the named pages, or every page the figure store holds.
 
     Threaded on `parallel.pmap` for `zones blot`'s reason: the PNG decode is the
@@ -2807,7 +2819,7 @@ def crop_all(refs: list[str] | None = None, root: Path = Path("."),
             "note": "",
         }
 
-    rows = list(pmap(one, todo, jobs=jobs))
+    rows = list(pmap(one, todo, jobs, tick))
     return {
         "dir": str(dest.relative_to(root)) if dest.is_relative_to(root) else str(dest),
         "pages": len(rows),

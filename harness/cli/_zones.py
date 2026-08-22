@@ -158,8 +158,9 @@ def register(cli):
     opt(p, "--decode", type=click.Choice(("raw", "dp")), default="dp",
                    help=DECODE_HELP)
     opt(p, "--device", default="auto", help=DEVICE_HELP)
+    add_jobs(p, processes=True)
 
-    p = action(g, "assemble", run_assemble, section="The segmenter", help="build train/bogoras-seg/ from the train/eval marks: "
+    p = action(g, "assemble", run_assemble, section="The segmenter", help="build train/bogoras-seg/data/ from the train/eval marks: "
             "each page's zone ALTO beside its blotted raster, ready for ketos "
             "segtrain. Reports the invocation; runs nothing. Pure scratch — the "
             "split a model trained on travels in that model's own manifest, so "
@@ -186,6 +187,7 @@ def register(cli):
     opt(p, "--commit", is_flag=True,
                    help="copy the checkpoint and its split into "
                         "models/bogoras-seg/; preview otherwise")
+    add_jobs(p, processes=True)
 
     p = action(g, "remap", run_remap, section="The segmenter", help="put the learned names back on the model's output "
             "channels, when `score` shows the disagreement is a consistent "
@@ -381,7 +383,13 @@ def run_predict(a) -> int:
 
 def run_score(a) -> int:
     zmod, _ = _mod()
-    rep = zmod.score(a.root, model_path=a.model, decode=a.decode, device=a.device)
+    # `"scoring"`, not `"segmenting"`: `predict` owns that word above, and with a
+    # `--model` these two do the same work for opposite reasons. The bar closes
+    # before anything is printed — a table written into a live transient bar is
+    # what strands the frame.
+    with progress("scoring") as tick:
+        rep = zmod.score(a.root, model_path=a.model, decode=a.decode,
+                         device=a.device, tick=tick, jobs=a.jobs)
     conf = rep.pop("confusion")
     scored = rep.pop("scored_refs")
     out(a, rep)
@@ -415,9 +423,13 @@ def run_assemble(a) -> int:
 
 def run_install(a) -> int:
     zmod, load_config = _mod()
-    out(a, zmod.install_model(a.checkpoint, a.root, name=a.name,
-                              cfg=load_config(a.root), commit=a.commit,
-                              device=a.device))
+    # Split out of the `out(...)` call it used to sit inside, so the bar is closed
+    # before the report is printed.
+    with progress("scoring") as tick:
+        rep = zmod.install_model(a.checkpoint, a.root, name=a.name,
+                                 cfg=load_config(a.root), commit=a.commit,
+                                 device=a.device, tick=tick, jobs=a.jobs)
+    out(a, rep)
     return 0
 
 

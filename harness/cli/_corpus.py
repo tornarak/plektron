@@ -19,6 +19,7 @@ import click
 from ..mets import ALTO_STORES, write_mets
 from ..normalize import convert, scan
 from ..pipeline import STAGES
+from ..render import progress
 from ._common import (
     action,
     add_all,
@@ -233,12 +234,14 @@ def run_state(a) -> int:
 def run_normalize(a) -> int:
     paths = _targets(a)
     if a.commit:
-        rep = convert(a.root, paths=paths)
+        with progress("converting") as tick:
+            rep = convert(a.root, paths=paths, tick=tick)
         out(a, rep)
         n = len(rep["changed"])
         return verdict(a, 0, f"wrote {n} file(s)" if n else "nothing to write")
 
-    rep = scan(a.root, paths=paths)
+    with progress("scanning") as tick:
+        rep = scan(a.root, paths=paths, tick=tick)
     # The census, then what a --commit would actually rewrite. Two tables,
     # because they are two witnesses and not one: `scan` classifies characters,
     # `convert` applies the transform and reports the files it changes, and they
@@ -246,7 +249,10 @@ def run_normalize(a) -> int:
     # as redundant — would leave the preview agreeing with itself, which is the
     # comparison-with-one-witness fault this project keeps meeting.
     out(a, rep)
-    would = convert(a.root, dry_run=True, paths=paths)
+    # A second bar, deliberately, for the same reason there are two tables: one bar
+    # spanning both passes would present two witnesses as one.
+    with progress("checking what would change") as tick:
+        would = convert(a.root, dry_run=True, paths=paths, tick=tick)
     out(a, {"would_write": len(would["changed"]),
             "files": " ".join(c["path"] for c in would["changed"]) or None},
         "would_convert")

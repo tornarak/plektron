@@ -51,6 +51,11 @@ W_FIGS = "scans/w-figs"
 W_OCR = "scans/w-ocr"
 FIG_CROPS = "scans/fig-crops"
 TRAIN_WORK = "train/bogoras-seg"
+# The half of the track that is a farm. The base holds two directories and no pages,
+# so registering *it* made `views check` count zero entries for a training set that
+# was fully laid out — a number that reads as "nothing prepared". `model/` is not a
+# farm at all: its contents are a run's output, not links into a store.
+TRAIN_DATA = f"{TRAIN_WORK}/data"
 
 # Imported by value, not by module, because `zones` imports this one: the leaf
 # vocabulary lives there (it is a fact about the store) and the farms derived from
@@ -139,7 +144,7 @@ FARMS = (
     Farm("scans", SCANS, "source", (),
          "uv run --script tools/extract_scans.py --commit --rasters DIR",
          "none"),
-    Farm("train", TRAIN_WORK, "scratch", (),
+    Farm("train", TRAIN_DATA, "scratch", (),
          "harness zones assemble", "none"),
     # One per leaf kind: `scans/plate/`, `scans/blank/`, and so on, each a farm of
     # links into `scans/` for the leaves ruled that kind. `select`, because
@@ -344,8 +349,15 @@ def build_w_ocr(root: Path = Path(".")) -> dict:
             "removed": a["removed"] + b["removed"]}
 
 
-def build(name: str, root: Path = Path(".")) -> dict:
+def build(name: str, root: Path = Path("."), jobs: int | None = None,
+          tick=None) -> dict:
     """Rebuild one farm by name. Builders are imported lazily; see the module head.
+
+    `jobs` and `tick` reach only the two raster builders — the link farms are
+    symlink churn at ~0.1 ms a page, which `parallel` already rules is not worth a
+    pool or a bar. Both used to be dropped here: `blot_all` and `crop_all` accept
+    them and draw a bar when reached through `zones blot` or `fig crops`, and were
+    silent when reached through this verb, which is the more expensive route.
 
     A farm whose `reads` are not all present is **skipped with a row**, never
     attempted and never silently dropped. The blot builder opens pixels out of
@@ -373,12 +385,12 @@ def build(name: str, root: Path = Path(".")) -> dict:
                 "removed": rep["removed"], "skipped": ""}
     if name == "w-figs-blotted":
         from .zones import blot_all
-        rep = blot_all(root)
+        rep = blot_all(root, jobs, tick)
         return {"farm": name, "dir": rep["dir"], "linked": rep["total"],
                 "removed": 0, "skipped": ""}
     if name == "fig-crops":
         from .figures import crop_all
-        rep = crop_all(root=root)
+        rep = crop_all(root=root, jobs=jobs, tick=tick)
         return {"farm": name, "dir": rep["dir"], "linked": rep["written"],
                 "removed": 0, "skipped": ""}
     if name in _LEAF_KINDS:

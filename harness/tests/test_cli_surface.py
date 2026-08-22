@@ -512,3 +512,61 @@ def test_the_readme_names_every_cli_module():
                if p.stem not in ("_common", "__init__")}
     missing = on_disk - named
     assert not missing, f"harness/README.md's cli/ list omits {sorted(missing)}"
+
+
+def test_the_progress_paragraph_names_every_instrumented_action():
+    """**Which verbs draw a bar, held against the tree in both directions.**
+
+    `VERBS.md`'s "Long sweeps draw a progress bar on stderr" paragraph is the only
+    place a reader learns whether silence means "fast" or "hung", and nothing
+    gated it. It was accurate and *incomplete*: it named nine verbs while the three
+    longest-running in the tree — `zones score`, `zones install`, `fig predict`,
+    each a multi-hour corpus sweep — reported nothing at all, which is what sent
+    somebody to `ps` to find out whether a run was alive.
+
+    Both directions, because the two failures are different and both real: a verb
+    instrumented and left out of the paragraph is a cost nobody is warned about,
+    and a verb named there whose bar was dropped in a refactor is a promise the
+    tree no longer keeps.
+
+    The check is `progress(` in the action's **handler** source, which is where the
+    idiom puts it — `parallel` never learns what a terminal is, so the `with` block
+    is always at the CLI layer. `cmd.callback` is no use: every action shares one
+    wrapper from `_common.action`, so reading its source says the same thing forty
+    times. `_handler` is the function somebody wrote.
+    """
+    import inspect
+
+    from harness.cli._common import _actions
+
+    text = VERBS_MD.read_text(encoding="utf-8")
+    start = text.index("**Long sweeps draw a progress bar on stderr.**")
+    para = text[start:text.index("\n\n", start)]
+    # Whitespace-flattened first. The paragraph wraps, and a `group action` pair
+    # split across a line break is invisible to the pattern — which this test hit
+    # on its own first run, silently dropping two verbs while passing everything
+    # else. A check that can quietly cover less than it claims is the failure mode
+    # this file exists to prevent.
+    documented = set(re.findall(r"`([a-z]+) ([a-z-]+)`", re.sub(r"\s+", " ", para)))
+
+    instrumented = set()
+    for (gname, aname), cmd in _actions(build_parser()).items():
+        handler = getattr(cmd.callback, "_handler", None)
+        if handler is None:
+            continue
+        try:
+            src = inspect.getsource(handler)
+        except (OSError, TypeError):
+            continue
+        if "progress(" in src:
+            instrumented.add((gname, aname))
+    assert instrumented, "no action resolved a handler — the _handler seam is gone"
+
+    undocumented = instrumented - documented
+    assert not undocumented, (
+        "these actions draw a progress bar and the VERBS.md paragraph does not "
+        f"say so: {sorted(undocumented)}")
+    stale = documented - instrumented
+    assert not stale, (
+        "the VERBS.md paragraph promises a progress bar these actions no longer "
+        f"draw: {sorted(stale)}")

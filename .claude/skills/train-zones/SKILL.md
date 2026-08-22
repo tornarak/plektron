@@ -8,16 +8,23 @@ description: Train, evaluate and install the page-segmentation model from gt/zon
 Four commands, in order. Everything that used to be a rule you had to remember is
 now a refusal, so this file is mostly about the judgement the tooling cannot make.
 
-    uv run harness zones assemble           lay out train/bogoras-seg/, report the command
+    uv run harness zones assemble           lay out train/bogoras-seg/data/, report the command
     <the reported ketos invocation>         the only slow step; runs in the user's terminal
     uv run harness zones install CKPT       preview: scores it, refuses a permuted map
     uv run harness zones install CKPT --commit
+
+**The two `install` runs cost one sweep, not two.** Scoring a checkpoint segments
+every keyed page — the preview cannot be cheaper, since the permutation refusal is
+derived from that score and the manifest embeds it — but the predictions are cached
+on the checkpoint's own sha256, so the `--commit` replays in seconds. It takes
+`--jobs` as well: **processes**, four of them doing 206 pages where one does 73 in
+the same 100 s, because the sweep is single-core CPU with the card idle.
 
 `zones assemble` computes the base model and whether `--resize` is needed, and
 reports the invocation to run. **Run what it prints.** It is not a fixed template:
 it picks `models/bogoras-seg/zones-seg.safetensors` over stock blla once one is
 installed, it omits `--resize` when the class sets already match, it allocates a
-fresh `run-N` output directory, and it fills in this machine's device and worker
+fresh `run-N` output directory under `train/bogoras-seg/model/`, and it fills in this machine's device and worker
 count so the command runs as printed. It once did not, and the run that followed
 used kraken's default **single** loader worker.
 
@@ -83,15 +90,16 @@ class set is exactly the six the installed model carries, so `assemble` reports
   region drawn on one is spurious and nothing can offset it. Seven plates ruled
   mid-session once took a split's precision from 79% to 53%, which reads as
   the model degrading when what changed was the denominator.
-- **`train/bogoras-seg/` is scratch.** Nothing reads it after training. Clobber
-  freely. `models/bogoras-seg/` is the tracked half and holds the artifacts.
+- **`train/bogoras-seg/` is scratch**, `data/` the laid-out set and `model/` the
+  run's checkpoints. Nothing reads it after training. Clobber freely.
+  `models/bogoras-seg/` is the tracked half and holds the artifacts.
 - **`zones score` says when the corpus moved** under a model, rather than silently
   comparing against a reference that has changed.
 
 ## Read `split_from` before you read the numbers
 
 **A bare `zones score` — no `--model` — takes its split from
-`train/bogoras-seg/*.lst`, and `assemble` rewrites those whenever the next run is
+`train/bogoras-seg/data/*.lst`, and `assemble` rewrites those whenever the next run is
 prepared.** So after an assemble, the splits it labels its rows with are the *next*
 run's, while `mz/zones/` still holds the *installed* model's predictions. Nothing
 refuses this; the report names its source in `split_from` and that is the whole

@@ -280,6 +280,14 @@ def action(grp: cloup.Group, name: str, func, *, help: str, pageable: bool = Tru
             print(doc)
         return rc
 
+    # The handler, reachable from the command. Every callback here is this same
+    # wrapper, so `inspect.getsource(cmd.callback)` reads one closure for all forty
+    # actions and can say nothing about any of them —
+    # `test_the_progress_paragraph_names_every_instrumented_action` needs the
+    # function that was actually written. Named rather than dug out of
+    # `__closure__`, since a cell index is not an interface.
+    callback._handler = func
+
     cmd = _Command(name, help=help, params=globals_params(),
                    callback=callback)
     # **Stored, not passed to the constructor.** cloup resolves a constraint's
@@ -417,9 +425,14 @@ def add_all(p, what: str):
 
 JOBS_HELP = ("worker threads for the per-page raster work; 1 runs serially and "
              "builds no pool [cores, capped]")
+# The model sweeps get their own wording, because on those the unit is a **process**
+# and the ceiling is the card as well as the cores. Reusing the thread-flavoured
+# string there would make the flag say something untrue about what it spawns.
+JOBS_HELP_PROC = ("worker **processes** for the segmentation; 1 keeps the "
+                  "single-process path [cores, capped by free VRAM]")
 
 
-def add_jobs(p):
+def add_jobs(p, processes: bool = False):
     """`--jobs N`, on the actions whose per-page cost is a raster decode.
 
     **Declared per-action rather than alongside the globals**, because a flag that
@@ -430,8 +443,12 @@ def add_jobs(p):
     `--jobs 1` is the control arm, not a debug switch: the claim these verbs rest
     on is that concurrency moves wall clock and nothing else, and saying so means
     running both sides and diffing the output.
+
+    `processes=True` for the model sweeps, whose workers are processes and whose
+    cap is free VRAM — one flag name, two honest descriptions of what it spawns.
     """
-    return opt(p, "--jobs", type=int, default=None, metavar="N", help=JOBS_HELP)
+    return opt(p, "--jobs", type=int, default=None, metavar="N",
+               help=JOBS_HELP_PROC if processes else JOBS_HELP)
 
 
 def refs_arg(p, *, all_: str | None = None, extra: str = ""):

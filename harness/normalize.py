@@ -71,6 +71,7 @@ import unicodedata
 from pathlib import Path
 
 from .detectors import apostrophe_flags, footnote_report, unlicensed_marks
+from .parallel import ptrack
 from .proposal_check import key_order
 
 # §2.9: sentence-ending double space and thin space before ;/:/,/!/? are typesetting
@@ -639,7 +640,8 @@ def _filter_scoped(universe: list[Path], paths: list[Path]) -> list[Path]:
     return out
 
 
-def scan(root: Path = Path("."), paths: list[Path] | None = None) -> dict:
+def scan(root: Path = Path("."), paths: list[Path] | None = None,
+         tick=None) -> dict:
     """Per-file conformance, without writing anything.
 
     `delta` is the codepoint count NFD would add, which is the honest size of the
@@ -657,7 +659,7 @@ def scan(root: Path = Path("."), paths: list[Path] | None = None) -> dict:
     universe = scoped_files(root, include_path_only=paths is not None)
     if paths is not None:
         universe = _filter_scoped(universe, paths)
-    for p in universe:
+    for p in ptrack(universe, tick):
         rel = str(p.relative_to(root))
         try:
             text = p.read_text(encoding="utf-8")
@@ -690,7 +692,7 @@ def scan(root: Path = Path("."), paths: list[Path] | None = None) -> dict:
 
 
 def convert(root: Path = Path("."), dry_run: bool = False,
-            paths: list[Path] | None = None) -> dict:
+            paths: list[Path] | None = None, tick=None) -> dict:
     """Rewrite non-conformant files to NFD.
 
     `paths` scopes to specific files or directories, same contract as `scan`'s —
@@ -737,7 +739,7 @@ def convert(root: Path = Path("."), dry_run: bool = False,
     universe = scoped_files(root, include_path_only=paths is not None)
     if paths is not None:
         universe = _filter_scoped(universe, paths)
-    for p in universe:
+    for p in ptrack(universe, tick):
         try:
             before = p.read_text(encoding="utf-8")
         except (OSError, UnicodeDecodeError):

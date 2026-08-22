@@ -127,7 +127,8 @@ CLI settled on `--all` for every corpus form; the old spelling is trapped.)
                                  whatever builds an epub. `harness fig crops`
     scans/                       reported, never built here: tools/extract_scans.py
                                  over pdfs/ (symlinks outside the repo)
-    train/bogoras-seg/           reported, never built here: assemble's scratch
+    train/bogoras-seg/data/      reported, never built here: assemble's scratch —
+                                 the laid-out set; the checkpoints go to model/
 
 **Two more trees under `scans/` are deliberately *not* farms**, and saying so is the
 point: `scans/w-blotted/` (`ocr blot`, pink and blue for a human to read) and

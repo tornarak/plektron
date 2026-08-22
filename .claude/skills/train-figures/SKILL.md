@@ -9,7 +9,7 @@ Five commands. `train-zones` is the sibling and most of its judgement carries;
 what follows is only what differs, and the differences are not cosmetic.
 
     uv run harness fig remark-eval --commit   mint or extend the split
-    uv run harness fig assemble               lay out train/bogoras-fig/, report the command
+    uv run harness fig assemble               lay out train/bogoras-fig/data/, report the command
     <the reported ketos invocation>           the only slow step; runs in the user's terminal
     uv run harness fig install CKPT           preview: scores it, refuses a swapped map
     uv run harness fig install CKPT --commit
@@ -85,7 +85,7 @@ then `remark-eval` again. Today it is 3.
   test degenerates to a swap test, and it is still worth running: `--resize new`
   renumbers the output layer, and a model that learned "caption" on the channel it
   calls "picture" scores plausibly on counts while being wrong about every box.
-- **`fig install` refuses if `train/bogoras-fig/*.lst` are gone.** The split a run
+- **`fig install` refuses if `train/bogoras-fig/data/*.lst` are gone.** The split a run
   consumed is frozen beside the model, or its scores belong to a division nobody
   kept.
 - **`fig assemble` names its base model in the report.** With no blla and nothing
@@ -135,7 +135,7 @@ wrong — it teaches. That is also why there is no read view over `gt/fig/` and
 ## Do not
 
 - Do not run the training command yourself.
-- Do not link the blotted rasters into `train/bogoras-fig/`.
+- Do not link the blotted rasters into `train/bogoras-fig/data/`.
 - Do not write an empty ALTO into `gt/fig/` to mean "no figures" — that is what
   `harness fig delete` is for, and what `assemble` synthesizes.
 - Do not treat a page with unaccounted or excused ink as a negative.

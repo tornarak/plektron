@@ -18,7 +18,18 @@ import click
 
 from .. import figures as F
 from .. import zones_config as zc
-from ._common import action, arg, group, opt, out, out_per_ref, page_refs, refs_arg
+from ..render import progress
+from ._common import (
+    action,
+    add_jobs,
+    arg,
+    group,
+    opt,
+    out,
+    out_per_ref,
+    page_refs,
+    refs_arg,
+)
 
 
 def register(cli):
@@ -75,8 +86,7 @@ def register(cli):
              "new mtime and a new ETag and stop the browser ever caching one")
     opt(p, "--out", metavar="DIR", default=None,
         help="where to write them [scans/fig-crops/]")
-    opt(p, "--jobs", type=int, default=None, metavar="N",
-        help="worker threads; 1 runs serially and builds no pool [cores, capped]")
+    add_jobs(p)
 
     p = action(g, "witness", run_witness, section="The store",
                help="compare the fresh caption reading against data/readings.md, "
@@ -188,7 +198,7 @@ def register(cli):
 
     p = action(g, "assemble", run_assemble, section="The segmenter",
                pageable=False,
-               help="lay out train/bogoras-fig/ and report the ketos command. "
+               help="lay out train/bogoras-fig/data/ and report the ketos command. "
                "Runs nothing: training holds the GPU for hours and belongs in "
                "your own terminal. A page with no figures gets a synthesized "
                "empty ALTO here and nowhere else — the store never holds one, "
@@ -328,9 +338,10 @@ def run_delete(a) -> int:
 
 def run_crops(a) -> int:
     from pathlib import Path
-    rep = F.crop_all(page_refs(a) or None, root=a.root,
-                     out_dir=Path(a.out) if a.out else None,
-                     force=a.force, jobs=a.jobs)
+    with progress("cropping") as tick:
+        rep = F.crop_all(page_refs(a) or None, root=a.root,
+                         out_dir=Path(a.out) if a.out else None,
+                         force=a.force, jobs=a.jobs, tick=tick)
     rows = rep.pop("rows")
     # The per-page rows only when pages were named. Over the whole store 252 rows
     # of mostly zeroes buries the totals, which are the answer to "did the sweep
@@ -446,8 +457,10 @@ def run_predict(a) -> int:
     refs = page_refs(a) or [
         p.stem.replace("chukchi-", "")
         for p in sorted((a.root / "scans").glob("chukchi-*.png"))]
-    out(a, F.predict(refs, a.root, model_path=a.model, device=a.device,
-                     force=a.force))
+    with progress("segmenting figures") as tick:
+        rows = F.predict(refs, a.root, model_path=a.model, device=a.device,
+                         force=a.force, tick=tick)
+    out(a, rows)
     return 0
 
 
