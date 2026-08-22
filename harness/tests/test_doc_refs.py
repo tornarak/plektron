@@ -41,6 +41,22 @@ DOCS = [
     "docs/rasters.md",
     "docs/decisions.md",
     "docs/open-questions.md",
+    # Added when this gate was widened. The omissions were not principled — they
+    # were the files that happened not to be here — and they included the largest
+    # document in the repo and the CLI reference, between them naming ~90 paths
+    # that nothing checked. `CLAUDE.md`'s routing table is the list of documents
+    # that own something; every entry in it belongs here.
+    "docs/edition.md",
+    "harness/VERBS.md",
+    "concordance.md",
+    "README.md",
+    ".claude/skills/train-zones/SKILL.md",
+    ".claude/skills/train-figures/SKILL.md",
+    ".claude/skills/read-moll-page/SKILL.md",
+    ".claude/skills/rebuild-groundtruth/dispatch.md",
+    ".claude/agents/collator.md",
+    ".claude/agents/groundtruth-reader.md",
+    ".claude/rules/zones.md",
 ]
 
 # A repo-relative path inside backticks: it must contain a directory separator.
@@ -51,6 +67,27 @@ DOCS = [
 # stops meaning anything. What this catches is the form a reader would actually
 # follow: a path they could open.
 PATH_RE = re.compile(r"`((?:[\w.\-]+/)+[\w.\-]+)`")
+
+# **And a directory, which the pattern above cannot see.** It requires a basename
+# after the separator, so `gt/seg/` — a store deleted a year ago and still named
+# in three documents — was invisible to this gate for its whole life. The blind
+# spot only ever fails one way: writing a *more* specific reference makes the
+# check stricter, so the vaguer a stale pointer is the safer it was.
+#
+# **Two components at least**, and that is the same rule `PATH_RE` applies for
+# the same reason. A bare `crops/` or `web/` in prose is a directory *name* used
+# relatively — "the crops/ subdirectory" — not something a reader could open from
+# the repo root, and matching those brought 25 findings of which 20 were nothing.
+# Requiring a separator inside the token brings exactly the 5 that are real.
+DIR_RE = re.compile(r"`((?:[\w.\-]+/){2,})`")
+
+#: Suffixes this repo actually stores things under. Used only to tell a file from
+#: a code citation: `web/edition._figref_state` names a module attribute, not a
+#: path, and nothing but the suffix distinguishes the two shapes.
+KNOWN_SUFFIXES = frozenset(
+    ".py .md .json .xml .png .jpg .lst .rng .jsonl .txt .toml .lock .js .html "
+    ".css .yaml .yml .sh .csv .tsv .mlmodel .pdf .svg .geojson".split()
+)
 
 # Named but deliberately absent, each for a reason a reader should meet rather
 # than trip over. Kept explicit so that "not there" and "not there *yet*" are
@@ -94,14 +131,44 @@ EXPECTED_ABSENT = {
     # specific, which is the direction that blind spot always fails in.
     "gt/fig/METS.xml",
     "gt/ocr/METS.xml",
+    # --- surfaced by widening the gate, each a real absence -------------------
+    # **The first segmentation attempt, deleted.** `docs/segmentation.md` opens
+    # by saying so, and CLAUDE.md and `harness/README.md` refer back to it —
+    # correct prose about a store that is gone. It sat unnoticed for this gate's
+    # whole life because the docs write it `gt/seg/`, with the trailing slash
+    # `PATH_RE` cannot match. `DIR_RE` is what found it.
+    "gt/seg",
+    # Declared and **not yet trained** — CLAUDE.md says "fig-seg is declared but
+    # not yet trained". The distinction this list exists to draw: not there *yet*
+    # is a different state from not there, and `train-figures/SKILL.md` is the
+    # record of what would fill it.
+    "models/bogoras-fig",
+    # Declared, derived, gitignored, and currently empty: no machine figure
+    # predictions have been kept. `mz/fig` has no view over it either.
+    "mz/fig",
+    # Derived raster farms, gitignored like every other. Not to be confused with
+    # `scans/w-figs-blotted/`, which exists and is a different farm: `farms.py`
+    # declares FIGS_BLOT (the segmenter's training rasters, figures painted
+    # white) and LINE_BLOT (`ocr blot`'s pink-and-blue output for a human)
+    # separately, and `lines_ui.BLOT_CACHE` adds the editor's per-session copy.
+    "scans/w-blotted",
+    "scans/w-blotted-edit",
+    # Named relative to the web root rather than the repo: the file is really at
+    # `harness/web/static/js/hover.js`, and `docs/edition.md` is describing the
+    # served tree, where that *is* its path.
+    "static/js/hover.js",
+    # Prose, not a path: "a `ref/key` written into the page" means one or the
+    # other. Indistinguishable by pattern from `gt/seg` — two lowercase words
+    # around a slash — which is why it is exempted rather than filtered.
+    "ref/key",
 }
 
 
 def named_paths(doc: str) -> set[str]:
     text = (REPO / doc).read_text(encoding="utf-8")
-    return {
-        m.group(1) for m in PATH_RE.finditer(text) if _looks_like_a_path(m.group(1))
-    }
+    toks = ({m.group(1) for m in PATH_RE.finditer(text)}
+            | {m.group(1).rstrip("/") for m in DIR_RE.finditer(text)})
+    return {t for t in toks if _looks_like_a_path(t)}
 
 
 def _looks_like_a_path(tok: str) -> bool:
@@ -112,10 +179,37 @@ def _looks_like_a_path(tok: str) -> bool:
     (`gitlab.com/scripta/escriptorium`) is a path to somewhere else. Each would
     otherwise land in the exemption list, where it would read as a file this repo
     is missing.
+
+    The four below were found by widening the gate, and each is a *class* rather
+    than an instance — the exemption list is for things that are paths and are
+    absent, and filling it with things that were never paths is how a check stops
+    meaning anything. Where a class could not be drawn honestly the token is
+    exempted instead, with its reason.
     """
     if not any("a" <= c.lower() <= "z" for c in tok):
         return False  # a fraction, or Cyrillic
-    return "." not in tok.split("/", 1)[0]  # a domain, not a directory
+    if "." in tok.split("/", 1)[0]:
+        return False  # a domain, not a directory
+    parts = tok.split("/")
+    # A CLI metavariable: `DIR/METS.xml` is the shape of a written path, with the
+    # directory left for the caller to name. Every metavar in VERBS.md is spelled
+    # this way — DIR, STORE, REF, QUERY, FARM — so the convention carries it.
+    if any(re.fullmatch(r"[A-Z][A-Z0-9_]*", p) for p in parts):
+        return False
+    # A ratio set as a fraction with a word on top: `chars/4`, an estimate of
+    # tokens. The all-numeric side is what distinguishes it from `part/2`.
+    if parts[-1].isdigit():
+        return False
+    # An element path, not a file path: `Shape/Polygon` is where a coordinate
+    # lives inside ALTO. Nothing in this repo is a directory of CamelCase names.
+    if all(re.fullmatch(r"[A-Z][a-zA-Z]*", p) for p in parts):
+        return False
+    # A code citation: `web/edition._figref_state` names a module attribute the
+    # way this repo cites code everywhere. A real file's last component either
+    # carries a suffix the repo stores things under, or none at all.
+    if "." in parts[-1] and not any(parts[-1].endswith(s) for s in KNOWN_SUFFIXES):
+        return False
+    return True
 
 
 @pytest.mark.parametrize("doc", DOCS)
