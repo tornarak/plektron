@@ -380,12 +380,13 @@ pooled, and the contrast between it and the per-ref rows is the finding:
   sending the next batch, or the next batch reproduces it.
 
 Three arms, and only the first two are decisive. `rare` lists a form whose
-character the corpus almost never sets — bare `g` at 6.1% of Tier-1 `g` — so
+character the corpus almost never sets — bare `g` at 2.8% of Tier-1 `g` — so
 `2-033`'s four bare `g` would have been named without opening a scan. `conflict`
 finds one word spelled two ways against the store, which is how `2-040`'s
 `vaˊɪrgɪt` shows up against `2-033`'s adjudicated `vaˊɪrg̣ɪt`. `ratio` is the
-weak one: it counts types rather than characters, because `2-036`'s 10% `ɪ`-share
-is one word four times, and it reports a rank rather than a probability.
+weak one: it counts types rather than characters, because `2-036` carries six
+Tier-1 records over three types with `Pehiˊttin` four of them, and it reports a
+rank rather than a probability.
 
 **Check `pages` first.** A reading degraded all the way to ASCII carries no
 Tier-1 tokens, so every arm goes silent on it and the report looks clean. `types:

@@ -1,5 +1,5 @@
 {
-  "_provenance": "Contrast pairs and thresholds for harness proposal marks. Priors are NOT here: they are derived from gt/ocr/ at run time (detectors.native_corpus), so the check recalibrates as the store grows rather than carrying a number that goes stale unnoticed. Shares quoted in comments were measured 2026-08-02 over 29 Tier-1-carrying pages.",
+  "_provenance": "Contrast pairs and thresholds for harness proposal marks. Priors are NOT here: they are derived from gt/ocr/ at run time (detectors.native_corpus), so the check recalibrates as the store grows rather than carrying a number that goes stale unnoticed — and it did: the shares below were first measured over 29 Tier-1-carrying pages and the store now holds 476, while the check itself needed no edit. Every share is a DATED observation supporting the decision to list a contrast, never a threshold the code reads. Re-measured 2026-08-21 over 476 Tier-1-carrying pages, 1488 distinct folded forms.",
   "contrasts": [
     {
       "name": "g-dot",
@@ -7,7 +7,7 @@
       "confusable": "g",
       "position": "any",
       "spec": "5.1",
-      "note": "bare g is 6.1% of Tier-1 g (8 occurrences, 4 pages). The leading dropped-mark class; census ranks it second overall and first among classes still live."
+      "note": "bare g is 2.8% of Tier-1 g (14 occurrences on 13 pages, against 494 g-dot on 180). Still the leading dropped-mark class. The share HALVED as the store grew from 29 pages to 476, which is the prior doing its job: the earlier 6.1% was 8 occurrences in a small sample, not a worse-keyed corpus."
     },
     {
       "name": "caron-c",
@@ -15,7 +15,7 @@
       "confusable": "c",
       "position": "any",
       "spec": "2.2",
-      "note": "bare c is 1.9% (2 occurrences, 1 page)."
+      "note": "bare c is 4.8% (18 occurrences on 11 pages, against 359 caron-c on 152). Was 1.9% at 2 occurrences on 1 page; the rise is a larger sample reaching a real rate, and it is now the second dropped-mark class rather than a near-absent one."
     },
     {
       "name": "smallcap-i",
@@ -23,7 +23,7 @@
       "confusable": "i",
       "position": "any",
       "spec": "5.2",
-      "note": "470 ɪ against 250 Tier-1 i. Contentious at any position, and the leading live class in the census since 2026-07-31."
+      "note": "1732 ɪ on 317 pages against 1173 Tier-1 i on 302 — the confusable takes 40.4% of the axis. Was 470 against 250. Contentious at any position, still the leading live class, and the only contrast whose two members are both ordinary."
     },
     {
       "name": "smallcap-I",
@@ -31,14 +31,15 @@
       "confusable": "I",
       "position": "initial",
       "spec": "5.2",
-      "note": "word-INITIAL only. 16 initial ASCII I against 24 initial ɪ, so genuinely contentious there; word-medial ASCII caps already belong to detectors.MEDIAL_CAPS (2 in the corpus against 446 medial ɪ) and a share would add nothing to a claim that sharp."
+      "note": "word-INITIAL only. 44 initial ASCII I on 21 pages against 28 initial ɪ on 13 — the confusable now leads at 61.1%. THE DIRECTION REVERSED: it was 16 I against 24 ɪ, so the note used to describe a position where the small cap was the norm and now describes one where ASCII is. The conclusion is unchanged and is why the contrast is still listed — both forms occur initially in quantity, so neither can be assumed. Word-medial ASCII caps still belong to detectors.MEDIAL_CAPS and are not this contrast's business."
     },
     {
       "name": "smallcap-e",
       "expected": "ᴇ",
       "confusable": "e",
       "position": "any",
-      "spec": "2.3"
+      "spec": "2.3",
+      "note": "189 ᴇ on 91 pages against 2121 Tier-1 e on 387 — 91.8% of the axis is the confusable, and unlike every other pair here that is not evidence of dropped marks. At position any, an ordinary lowercase e inside a Tier-1 form counts as the confusable, so the prior is dominated by e's that were never candidates for the small cap. This is the noisiest contrast in the list and the arm that carries it is the relative one; it is listed because a page setting many ᴇ still stands out against a per-page prior, not because the corpus share means anything on its own. The only contrast that had no note; written now because its share reads alarming and is not."
     },
     {
       "name": "smallcap-E",
@@ -46,7 +47,7 @@
       "confusable": "E",
       "position": "initial",
       "spec": "2.3",
-      "note": "word-INITIAL only, as smallcap-I. 12 initial E against 31 initial ᴇ."
+      "note": "word-INITIAL only, as smallcap-I. 129 initial E on 66 pages against 53 initial ᴇ on 26 — the confusable leads at 70.9%. THE DIRECTION REVERSED, and further than smallcap-I's: it was 12 E against 31 ᴇ, so the small cap was the initial norm by 2.6 to 1 and ASCII is now the norm by 2.4 to 1. A reader taking the old note at face value would have drawn the opposite conclusion about the corpus. The contrast stays for the same reason as smallcap-I — both occur in quantity."
     },
     {
       "name": "smallcap-a",
@@ -54,7 +55,7 @@
       "confusable": "A",
       "position": "initial",
       "spec": "2.3",
-      "note": "word-INITIAL only. 28 initial A against 0 initial ᴀ — the prior will read 100% ASCII, which is the corpus speaking and not a rule to hardcode."
+      "note": "word-INITIAL only. 216 initial A on 92 pages against 0 initial ᴀ — the prior reads 100% ASCII, which is the corpus speaking and not a rule to hardcode. Was 28 against 0: the zero has held across a 7.7x larger sample, which is much stronger evidence for the same claim and still not a licence to encode it."
     },
     {
       "name": "smallcap-l",
@@ -62,7 +63,7 @@
       "confusable": "L",
       "position": "initial",
       "spec": "2.3",
-      "note": "word-INITIAL only. 7 initial L against 0 initial ʟ."
+      "note": "word-INITIAL only. 34 initial L on 23 pages against 0 initial ʟ, as smallcap-a and on the same terms. Was 7 against 0."
     }
   ],
   "rare_max_pct": 10.0,

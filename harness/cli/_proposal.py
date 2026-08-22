@@ -171,7 +171,7 @@ def register(cli):
     p = action(g, "marks", run_marks, section="Checking",
                help="is the character distribution of these readings "
             "plausible — before a human opens them. Three arms: `rare` lists a "
-            "form the corpus almost never sets (a bare g is 6.1% of Tier-1 g); "
+            "form the corpus almost never sets (a bare g is 2.8% of Tier-1 g); "
             "`conflict` finds one word spelled two ways across the refs and the "
             "store; `ratio` compares the expected-form share, in types, against a "
             "leave-one-out prior. Pass every ref of a pass together: most pages "

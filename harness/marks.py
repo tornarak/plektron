@@ -9,22 +9,26 @@ not a mark on a base — at any scope.
 
 **Three arms, and they are not equally strong.** Read them in this order:
 
-`rare` is deterministic and needs no statistics. Bare `g` is 6.1% of Tier-1 `g` —
-8 occurrences on 4 pages in the whole store — so a page setting four of them is
+`rare` is deterministic and needs no statistics. Bare `g` is 2.8% of Tier-1 `g` —
+14 occurrences on 13 pages in the whole store — so a page setting four of them is
 visible by listing. Only a contrast whose confusable is *corpus-rare* can reach
 this arm, and which those are is derived from the prior at run time rather than
 declared, so it moves as the store grows.
 
 `conflict` is deterministic too, and sharper than its size suggests: over the
-store only 7 of 519 folded forms carry more than one spelling, and 3 of those are
-live `i`/`ɪ` inconsistencies inside adjudicated ground truth.
+store only 7 of 1488 folded forms carry more than one spelling — 25 rows on 22
+pages — and 4 of those folds are live `i`/`ɪ` inconsistencies inside adjudicated
+ground truth.
 
-`ratio` points and never decides. A per-character binomial flags 19 page-base
-cells over 29 already-adjudicated pages, because the marks are lexical rather
-than independent: `2-036`'s 10% `ɪ`-share is one word, `Pehiˊttin`, four times.
-So it counts **types**, and reports a rank against the observed per-page range
-rather than a p-value, which would assert an independence model this data
-refutes.
+`ratio` points and never decides, because the marks are lexical rather than
+independent. `2-036` is the standing illustration: 6 Tier-1 records over 3 types,
+`Pehiˊttin` four of them, so any per-character ratio on that page is one word
+rather than six draws. So the arm counts **types**, and reports a rank against
+the observed per-page range rather than a p-value, which would assert an
+independence model this data refutes. (A per-character binomial flagged 19
+page-base cells over the 29 pages adjudicated by 2026-08-02 — the measurement
+that settled the design. It has not been re-run at 476 pages, and the figure is
+kept as the dated evidence it is rather than restated as if it were current.)
 
 **Why it takes several refs.** Most pages of this book carry only a handful of
 Tier-1 terms, so one page is rarely a sample worth a verdict. Pooling the refs a
@@ -46,11 +50,19 @@ Two properties of the prior a reader must carry:
   firewall, `review`'s span diff and `zones score`'s `unseen` row. Excluding
   conditionally — only when the page is present — is the same thing with a step
   where it can be forgotten.
-- **It is drawn from density-selected pages.** `gt/ocr/`'s pages were chosen for
-  Tier-1 density: median 13 types, range 2 to 56, and 7 of 29 carry fewer than 5.
-  The bulk of the book carries a handful of Tier-1 terms, so on an ordinary page
-  the `ratio` arm is silent — the correct output for n=3, and the reason a batch
-  rather than a page is the pooling unit.
+- **It is no longer drawn from density-selected pages, and that strengthened the
+  argument rather than weakening it.** When this was written `gt/ocr/` held 29
+  Tier-1-carrying pages chosen for density: median 13 types, range 2 to 56, 7 of
+  29 carrying fewer than 5. It now holds **476**: median **3** types, range 1 to
+  56, and **337 of 476 carry fewer than 5**. The maximum did not move — the
+  densest pages were already in — so what arrived is the ordinary body of the
+  book, which is what the earlier note predicted the rest of the corpus would
+  look like.
+
+  The consequence is that the `ratio` arm is now silent on the **majority** of
+  pages rather than a quarter of them. That is the correct output for n=3, and it
+  makes a batch rather than a page the pooling unit by necessity rather than by
+  preference.
 """
 from __future__ import annotations
 
@@ -388,17 +400,26 @@ def _axis_counts(tokens, contrast) -> tuple[int, int]:
     return exp, conf
 
 
-PRIOR_NOTE = ("gt/ocr/ minus the refs under test; those pages were selected for "
-              "Tier-1 density, so this is a prior about dense pages, not a "
-              "population estimate")
+#: Emitted in every report, so it is the one stale claim here that would have
+#: reached a reader. It used to say the prior was "about dense pages, not a
+#: population estimate" — a caveat telling the reader to discount it. That was
+#: true of 29 density-selected pages with a median of 13 Tier-1 types; the store
+#: now holds 476 with a median of 3, so the discount had inverted: the prior is
+#: closer to a population estimate than the note admitted, and the note was
+#: arguing against its own evidence.
+PRIOR_NOTE = ("gt/ocr/ minus the refs under test — 476 pages, median 3 Tier-1 "
+              "types. The earliest pages were selected for density and the "
+              "densest are still in it (range 1 to 56), so it leans dense at the "
+              "top; it is no longer a prior about dense pages only")
 
 
 def _conflicts(batch: dict, prior: dict, contrasts: list[dict]) -> list[dict]:
     """One word, two spellings — across the batch and the store together.
 
     **Scoped to folds the batch touches**: at least one variant must come from the
-    refs under test. The store carries 3 standing `i`/`ɪ` inconsistencies of its
-    own (`2-030` ×2, `3-028` ×1); re-reporting them on every batch run would bury
+    refs under test. The store carries 4 standing `i`/`ɪ` inconsistencies of its
+    own — `keiˊñin`, `kukuˊlpin`, `taˊn˙ñitan` and an exempted `čeˊwin`, over 15
+    pages between them; re-reporting them on every batch run would bury
     the batch's own finding, which is the same reason `zones check` merges
     adjacent ink bands rather than reporting 38 rows for one missing region.
     Those 3 are a hand-repair worklist for the adjudicator, not this verb's news.
@@ -494,9 +515,10 @@ def _rare(batch: dict, prior_tokens: list[str], contrasts: list[dict],
 
     **Which contrasts this arm can reach is derived, never declared**: exactly
     those whose confusable sits at or under `rare_max` of its axis. Bare `g` at
-    6.1% qualifies; plain `i` at ~35% never can, and need not — `ratio` and
+    2.8% qualifies; plain `i` at ~40% never can, and need not — `ratio` and
     `conflict` carry that one. The division moves with the store rather than with
-    a constant somebody would have to remember to revisit.
+    a constant somebody would have to remember to revisit, and it has: `g` was
+    6.1% over 29 pages and is 2.8% over 476, still comfortably inside the arm.
 
     One row per `(ref, form)` carrying a count, because a keyer repeats a slip
     along a page — 13 dropped dots on `2-040`, 14 on `3-004`, then a tail of 1-3.
@@ -504,8 +526,15 @@ def _rare(batch: dict, prior_tokens: list[str], contrasts: list[dict],
     read as four independent signals.
 
     `corpus_pct` is *occurrence*-level, unlike `ratio`'s type-level `prior_pct`:
-    "how often does the corpus set a bare `g`" is a different question, and 6.1%
-    is the figure `keying_spec.md` §5.1 publishes.
+    "how often does the corpus set a bare `g`" is a different question from "how
+    many forms carry one".
+
+    **It is computed here and cited nowhere**, which corrects a claim this
+    docstring used to make. It said the share "is the figure `keying_spec.md`
+    §5.1 publishes" — §5 publishes no figure at all, by policy: it is titled
+    *Priors (measured; cite the verb, never a number)* and gives the recomputing
+    verb instead, precisely because every share in a mid-rebuild store moves. It
+    moved: 6.1% over 29 pages, 2.8% over 476.
     """
     out = []
     for c in contrasts:
@@ -534,10 +563,11 @@ def _ratio_rows(c: dict, batch: dict, prior: dict, min_types: int) -> list[dict]
     """Expected-form share, in **types**, against the leave-one-out prior.
 
     Types rather than tokens because the marks are lexical, not independent: a
-    per-character binomial flags 19 page-base cells over 29 already-adjudicated
-    pages, and `2-036`'s 10% `ɪ`-share is one word four times. A type counts once
-    toward each side it contains, so `miluteˊmkɪn` is one type on each side of the
-    `ɪ`/`i` axis rather than a coin-flip.
+    per-character binomial flagged 19 page-base cells over the 29 pages
+    adjudicated when this was measured, and `2-036` is why — 6 Tier-1 records
+    over 3 types, `Pehiˊttin` four of them, so its `ɪ`/`i` ratio is one word
+    rather than six draws. A type counts once toward each side it contains, so
+    `miluteˊmkɪn` is one type on each side of the axis rather than a coin-flip.
 
     `outside` is a **rank** statement against the band, never a p-value — which
     would assert exactly the independence the data refutes. It reads `?` wherever
@@ -570,7 +600,9 @@ def _ratio_rows(c: dict, batch: dict, prior: dict, min_types: int) -> list[dict]
     `prior_pct` is the whole prior pooled, computed by the same type-level rule as
     `expected_pct` so the two columns are in the same unit. (`rare`'s `corpus_pct`
     is deliberately *occurrence*-level — "how often does the corpus set a bare g"
-    is a different question, and 6.1% is the figure `keying_spec` §5.1 publishes.)
+    is a different question. Both are computed from the store; neither is quoted
+    from `keying_spec`, which by §5's own title publishes the verb and never the
+    number.)
     """
     def share(tokens) -> tuple[int, int]:
         types = set(tokens)
