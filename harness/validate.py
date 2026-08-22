@@ -1001,6 +1001,350 @@ def _rule_foreign_lang(root, q, ctx, r: Report) -> None:
             "ordinary European orthography is not one at all")
 
 
+def _rule_entities(root, q, ctx, r: Report, store=None):
+    """Proper nouns, and the entity references over them. The pass marks
+    *category* from the page; identity resolves here, against `entities/`.
+
+    **Resolves the store and returns it**, because `relink-missing` needs the
+    same one — the second of the three couplings, and returning it is what makes
+    that visible at the call site rather than buried in a shared local.
+
+    Returns `(store, names, untyped, refs, ruled)`.
+    """
+    # Proper nouns, and the entity references over them. The pass marks
+    # *category* from the page; identity now resolves, against `entities/`.
+    #
+    # **A supplied `store` is not the `tier1_terms` case.** That one is re-read
+    # from `gt/ocr/` on purpose and must never come out of `ctx`, because the
+    # pass authored the TEI *from* `ctx` and checking one against the other would
+    # make the two witnesses one. The entity store is the opposite: it is the
+    # reference this resolves identity against, not anything the pass produced,
+    # and `load(root)` here and in `build_context` read the same files moments
+    # apart. Hoisting that read out of a corpus loop shares an input; it does not
+    # merge a comparison. Every verdict below is still computed from this page.
+    store = load(Path(ctx["root"]) if ctx and ctx.get("root") else Path(".")) \
+        if store is None else store
+    idx = alias_index(store)
+    autos = auto_forms(idx)
+    # The printed resolution table, for the names the alias table cannot resolve
+    # alone: `Nelson` is a man and a book, and a locator after it says which.
+    sigla = apparatus.sigla(
+        Path(ctx["root"]) if ctx and ctx.get("root") else Path("."))
+    names = untyped = refs = ruled = 0
+    # **The `once` forms this page has already spent its rule-link on.** Filled
+    # in document order, `root.iter` yielding it. This checks the *count* and not
+    # the position — that the link sits on the page's first occurrence rather
+    # than its third is `tei diff` against the freshly generated baseline, which
+    # is where a placement disagreement belongs and where a reader can see it.
+    # What is checked here is the failure that is silent otherwise: two `#mz`
+    # links on one form, which is `once` having quietly become twice.
+    spent: dict[str, str] = {}
+    for el in root.iter(q("name"), q("rs")):
+        local = etree.QName(el).localname
+        kind = el.get("type")
+        if local == "name":
+            names += 1
+            if kind is None:
+                untyped += 1
+            elif kind not in NAME_TYPES:
+                r.errors.append(
+                    f"<name type={kind!r}> is not a declared type "
+                    f"({', '.join(sorted(NAME_TYPES))})")
+            for attr in NAME_IDENTITY_ATTRS:
+                if el.get(attr) is not None:
+                    r.errors.append(
+                        f"<name @{attr}> spells identity a way this corpus does "
+                        f"not — @ref is the one spelling, and it holds a "
+                        f"`class:slug` pointing into entities/")
+        span = " ".join("".join(el.itertext()).split())
+        ref = el.get("ref")
+        if local == "rs" and not ref:
+            r.errors.append(
+                f"<rs> {span[:40]!r} carries no @ref. `rs` is this corpus's "
+                "entity reference and nothing else — it says which entity a "
+                "string names, so one with no referent marks nothing. Give it a "
+                "@ref or unwrap it")
+            continue
+        if ref is None:
+            continue
+        refs += 1
+        rec = store.get(ref)
+        if rec is None:
+            try:
+                split_id(ref)
+                why = "no such entity in entities/"
+            except ValueError as e:
+                why = str(e).split(": ", 1)[-1]
+            r.errors.append(
+                f"<{local} ref={ref!r}> resolves to nothing — {why}. Either the "
+                f"entry has not been written (`harness entity new {ref}`) or the "
+                f"reference is wrong")
+            continue
+        # A type from the page and a class from the store are two witnesses to
+        # one fact, so they are compared rather than one overwriting the other.
+        # An *untyped* <name ref> is fine: untyped is a designed state, and the
+        # class does not fill it in — only a reader of the page can say the page
+        # marked a proper noun of some kind.
+        if local == "name" and kind is not None:
+            want = ENTITY_CLASSES[rec["class"]]
+            if want != kind:
+                says = repr(want) if want else "(none — it is never a <name>)"
+                r.errors.append(
+                    f"<name type={kind!r} ref={ref!r}> — {ref} is class "
+                    f"{rec['class']!r}, whose name-type is {says}. One of the "
+                    f"two is about the wrong entity")
+        if local == "rs" and kind is not None:
+            r.errors.append(
+                f"<rs type={kind!r} ref={ref!r}> — an rs carries no @type here. "
+                f"The class is the ref's prefix, so a second copy of it can only "
+                f"disagree with the first")
+        if rec["status"] != "ratified":
+            r.worklist.append(
+                f"<{local} ref={ref!r}> points at a proposed entry — resolvable, "
+                f"but nobody has audited it. `harness entity ratify {ref}` after "
+                f"reading it against the pages it claims")
+        resp = el.get("resp")
+        if resp is not None and resp not in RESP_RANKS:
+            r.errors.append(f"<{local} ref={ref!r}> carries resp={resp!r}, which "
+                            f"is not a declared rank")
+        elif resp == RULED:
+            ruled += 1
+            # **The whole licence of #mz, re-derived here on every run.** The
+            # claim is not "a rule wrote this once" but "the store says this
+            # right now": the entry is ratified, the alias is still there and
+            # still uncontested, and the text still matches it. Weaken any of
+            # those in `entities/` and the link fails rather than going quietly
+            # stale — the same maintenance property #gt has, and the only reason
+            # a machine-applied rank is admissible at all.
+            form = " ".join(span.split())
+            owner = autos.get(form)
+            if owner is not None and idx[form][0]["scope"] == "first":
+                # The second `#mz` link on a `once` form derives from nothing:
+                # the rule spent this page's link higher up. Recorded before the
+                # `owner is None` cascade so the message below can name where.
+                if form in spent:
+                    owner = None
+                else:
+                    spent[form] = owner
+            if owner is None and _cites(el, form, ref, sigla, store, idx):
+                # **The printed citation form is the other way a rule may resolve
+                # a name**, and it is re-derived exactly as the alias table is:
+                # the page still prints a locator after this name, the sigla
+                # still say which work, and the entry still says it is that work.
+                # Edit any of the three and the link fails. It is checked here
+                # rather than accepted on the attribute's word for `#mz`'s only
+                # reason for existing.
+                owner = ref
+            if owner is None:
+                claims = idx.get(form, [])
+                if not claims:
+                    why = (f"the store has no alias {form!r} — it was removed, "
+                           f"or the text was edited after the link was made")
+                elif len(claims) > 1:
+                    why = (f"{form!r} is now claimed by "
+                           f"{' and '.join(sorted(c['id'] for c in claims))}, so "
+                           f"it is ambiguous and no rule may resolve it")
+                elif not claims[0]["auto"]:
+                    why = f"{form!r} is `auto: no` — it needs a reader, not a rule"
+                elif claims[0]["scope"] == "first" and form in spent:
+                    why = (f"{form!r} is `auto: once` and this page already "
+                           f"links it to {spent[form]}. The convention is one "
+                           f"link per page, on the first occurrence; the rest "
+                           f"stay bare")
+                else:
+                    why = (f"{claims[0]['id']} is {store[claims[0]['id']]['status']}"
+                           f", and a rule may only apply a ratified entry")
+                r.errors.append(
+                    f"<{local} ref={ref!r} resp=\"{RULED}\"> no longer derives: {why}. "
+                    f"Re-run `harness tei generate` for this page, or judge the "
+                    f"span yourself and set resp=\"{PROPOSED}\"")
+            elif owner != ref:
+                r.errors.append(
+                    f"<{local} ref={ref!r} resp=\"{RULED}\"> — the store now resolves "
+                    f"{form!r} to {owner}. A rule-applied link that disagrees "
+                    f"with the rule is the stale stamp {RULED} exists to prevent")
+
+    return store, names, untyped, refs, ruled
+
+
+def _rule_provenance(root, q, ctx, r: Report, ratified: bool = False) -> None:
+    """THE check, re-anchored: provenance rank, not agreement with an upstream file.
+
+    Every Tier-1 element declares who read it, and this pass may only ever claim
+    the proposed rank. `#ed` is a human's to write. Both the missing case and the
+    over-claim are errors, and the missing case is the more dangerous of the two —
+    an unmarked span is indistinguishable from a ratified one to every consumer
+    that does not check, so silence here would launder a model reading into an
+    adopted glyph identity.
+
+    **Deliberately no check that `@resp` resolves to a `<respStmt>` in this
+    file.** The ranks are declared once in the corpus teiHeader; a page file is a
+    fragment that already defers title, publication and source the same way, so a
+    pointer that dangles when the page is read alone is the normal state and not
+    a defect. `RESP_RANKS` is the closed set, and membership in it is the real
+    check.
+
+    **The verbatim-substring test against `catmus_draft` used to live here, and
+    is gone.** It enforced the *canonicity of the upstream* — every Tier-1 span
+    had to appear character-for-character in whatever `ocr/` happened to hold —
+    and that is not what the firewall is about. The firewall is a rule about
+    **hierarchies of provenance**: a glyph identity may not be *originated* by a
+    model reading a scan, and a lower-authority witness may not be promoted to a
+    higher one. It says nothing about whether some particular upstream file
+    agrees.
+
+    Anchored to an upstream instead, it was one of three things depending on what
+    the draft happened to be, and never the intended one:
+
+      * draft is a human key       -> the test binds, but only incidentally; what
+                                      binds is the human's authority, not the bytes.
+      * draft is recognizer output -> unsatisfiable. CATMuS emits no inventory
+                                      glyph at all (0% of the inventory, measured),
+                                      so every Tier-1 span fails on a correct TEI.
+      * draft is an LLM reading    -> tautology. The check compares a TEI against
+                                      its own source and passes unconditionally,
+                                      while still rendering as a verified PASS.
+
+    The replacement belongs in the TEI, not here: each Tier-1 span carries its own
+    provenance, and a ratified build refuses to emit a span whose provenance is
+    machine-proposed. Until that exists this file makes no provenance claim, and
+    `provenance-summary`'s count is a worklist item rather than a verdict — which
+    is the honest state, where a PASS on an unsatisfiable or tautological test was
+    not.
+
+    **`ratified` selects branches here, and never gates the rule.** It is one of
+    only two rules it reaches into at all (`provenance-summary` is the other), so
+    it is a parameter rather than a dispatch key.
+    """
+    # The page's ratified tokens, read once. Not from the context payload: this is
+    # a check against the store, and reading it out of the same dict the pass was
+    # handed would make the two inputs one witness again.
+    adopted: set[str] = set()
+    if ctx is not None:
+        from .context import tier1_terms
+        # `keys=False`: only `text` is read here, and the `key` column costs a
+        # walk of every keyed page (1.57s) to build. This ran once per page on
+        # top of the one `build_context` already pays, so a corpus-wide
+        # `tei validate` was rebuilding the lexicon index twice a page.
+        adopted = {t["text"] for t in tier1_terms(ctx["page_ref"],
+                                                  Path(ctx["root"]), keys=False)}
+    for el in root.iter():
+        if not isinstance(el.tag, str) or el.get(XML_LANG) not in TIER1:
+            continue
+        name = etree.QName(el).localname
+        span = " ".join("".join(el.itertext()).split())[:40]
+        resp = el.get("resp")
+        if resp is None:
+            r.errors.append(
+                f"PROVENANCE: <{name} xml:lang='{el.get(XML_LANG)}'> {span!r} carries "
+                f"no @resp — every Tier-1 span states who read it; use resp='{PROPOSED}'")
+        elif resp not in RESP_RANKS:
+            r.errors.append(
+                f"PROVENANCE: <{name}> resp={resp!r} is not a declared rank "
+                f"({', '.join(sorted(RESP_RANKS))})")
+        elif resp == RULED:
+            # Refused here rather than left to fall through, and in *both* modes.
+            # Unratified, the "this pass may only emit #llm" branch below would
+            # have caught it; ratified, it would have been a worklist line — a
+            # rank asserting a machine read a Tier-1 glyph, reported as work
+            # pending rather than as the firewall breach it is. The rank is
+            # confined to entity reference, and a Tier-1 span is the one place
+            # nothing mechanical may speak at all.
+            r.errors.append(
+                f"PROVENANCE: <{name}> {span!r} claims resp={RULED!r}, which says "
+                f"a rule applied it. No rule may originate a Tier-1 reading — "
+                f"{RULED} is confined to @ref on <rs>, and never carries a glyph")
+        elif resp == ADOPTED:
+            # Checked, not accepted. `adopted` holds the page's ratified token set;
+            # empty means the page has no ground truth at all, so the claim cannot
+            # be true of anything on it.
+            text = unicodedata.normalize("NFD", "".join(el.itertext())).strip()
+            if text not in adopted:
+                r.errors.append(
+                    f"PROVENANCE: <{name}> {span!r} claims resp={ADOPTED!r} but "
+                    "is not a token in this page's ground truth" +
+                    ("" if adopted else
+                     " — gt/ocr/ does not hold this page, so nothing on it can "
+                     "be adopted") +
+                    ". The rank is verified against gt/ocr/ on every run, so it "
+                    "also fails once the ground truth is corrected under it")
+        elif not ratified and resp != PROPOSED:
+            r.errors.append(
+                f"PROVENANCE: <{name}> {span!r} claims resp={resp!r} "
+                f"({RESP_RANKS[resp]}) — this pass may only emit {PROPOSED!r} or, "
+                f"through `harness tei expand`, {ADOPTED!r}; rank rises by a human "
+                "act, never by a pass asserting it")
+        elif ratified and resp != RATIFIED:
+            r.worklist.append(
+                f"unratified: <{name}> {span!r} still at resp={resp!r} "
+                f"({RESP_RANKS[resp]}) — needs a reading against the page")
+
+
+def _rule_lang_and_glyphs(root, q, ctx, r: Report) -> tuple[int, int]:
+    """Declared language codes, and codepoint hygiene **by scope**.
+
+    The scoping is the whole of it, and the two arms are deliberately not one.
+    Inside a Tier-1 span the lookalike greps fire, because there U+0027 and
+    U+002D are the only apostrophe and hyphen (`keying_spec.md` §1) and anything
+    resembling them is a notation question a human answers. Outside one, English
+    prose reproduces the print *including* curly quotes, so the same character is
+    correct — which is why `LOOKALIKE_GREPS` and the prose table are held apart
+    by `test_lookalike_scope.py` rather than merged.
+
+    A **mark licence** violation is not scoped, and that asymmetry is the point:
+    an impossible mark/base sequence is wrong in a Latin binomial and in Russian
+    prose for the same reason it is wrong in a Chukchee form, so it is an error
+    rather than a worklist line — there is no reading for a human to choose
+    between.
+
+    **Returns `(tier1_spans, tier1_adopted)`, and this is the rule that counts
+    them** — not `provenance`, which is adjacent and whose name suggests it. The
+    enumeration commit credited the wrong neighbour;
+    `test_validate_rules.py` now checks the attribution against the code.
+    """
+    tier1_spans = 0
+    tier1_adopted = 0
+    for el in root.iter():
+        if not isinstance(el.tag, str):
+            continue
+        lang = _lang_of(el)
+        own_text = (el.text or "") + "".join(ch.tail or "" for ch in el)
+        own_text = unicodedata.normalize("NFD", own_text)
+        if lang in TIER1:
+            if el.get(XML_LANG) in TIER1:
+                tier1_spans += 1
+                tier1_adopted += 1 if el.get("resp") == ADOPTED else 0
+            for ch_ in own_text:
+                if ch_ in LOOKALIKE_GREPS:
+                    r.worklist.append(
+                        f"[{lang}] <{etree.QName(el).localname}> "
+                        f"{LOOKALIKE_GREPS[ch_]} in {own_text.strip()[:40]!r}")
+            for seq, msg in LOOKALIKE_SEQ_GREPS.items():
+                if seq in own_text:
+                    r.worklist.append(
+                        f"[{lang}] <{etree.QName(el).localname}> "
+                        f"{msg} in {own_text.strip()[:40]!r}")
+        # Not scoped to Tier-1, unlike the greps above. A licensing violation is an
+        # impossible sequence rather than a notation question, so it is wrong in a
+        # Latin binomial and in Russian prose for the same reason it is wrong in a
+        # Chukchee form — and an ERROR, not a worklist line, since there is no reading
+        # for a human to choose between.
+        for h in unlicensed_marks(own_text):
+            r.errors.append(
+                f"MARK LICENCE: {h['mark']} on {h['base']} — licensed only on "
+                f"{h['licensed_on']} (keying spec 2.6) in {h['context']!r}")
+        if lang not in TIER1:
+            bad = sorted({c for c in own_text if c in FORBIDDEN_PROSE})
+            if bad:
+                r.errors.append(
+                    f"non-ASCII quote/apostrophe {[f'U+{ord(c):04X}' for c in bad]} "
+                    f"in {lang!r} prose: {own_text.strip()[:60]!r}")
+        v = el.get(XML_LANG)
+        if v and v not in TIER1 and len(v) not in (2, 3):
+            r.warnings.append(f"suspicious xml:lang '{v}'")
+    return tier1_spans, tier1_adopted
+
+
 def _rule_tier1_unglossed(root, q, ctx, r: Report) -> int:
     """A Tier-1 span a reader can do nothing with. Neither glossed nor identified
     is a warning and not an error, because the book genuinely leaves forms
@@ -1430,6 +1774,7 @@ def validate(tei_path: Path, ctx: dict | None = None,
         tier1-unglossed     a Tier-1 span a reader can do nothing with
         entities            proper nouns and the @ref over them; loads the store
         relink-missing      the same check from the other side; reuses that store
+        figrefs             cross-references marked, and printed ones that are not
         bibl-extent         a citation's extent, never which work it names
         measures            value, and the relations between ways of stating it
         metrics             fifteen counters, assigned wholesale
@@ -1514,150 +1859,11 @@ def validate(tei_path: Path, ctx: dict | None = None,
     _rule_foreign_lang(root, q, ctx, r)
 
     # ── rule: provenance ─────────────────────────────────────────────────────
-    # THE check, re-anchored: provenance rank, not agreement with an upstream file.
-    # Every Tier-1 element declares who read it, and this pass may only ever claim
-    # the proposed rank. `#ed` is a human's to write.
-    # Both the missing case and the over-claim are errors, and the missing case is
-    # the more dangerous of the two — an unmarked span is indistinguishable from a
-    # ratified one to every consumer that does not check, so silence here would
-    # launder a model reading into an adopted glyph identity.
-    # The page's ratified tokens, read once. Not from the context payload: this is
-    # a check against the store, and reading it out of the same dict the pass was
-    # handed would make the two inputs one witness again.
-    adopted: set[str] = set()
-    if ctx is not None:
-        from .context import tier1_terms
-        # `keys=False`: only `text` is read here, and the `key` column costs a
-        # walk of every keyed page (1.57s) to build. This ran once per page on
-        # top of the one `build_context` already pays, so a corpus-wide
-        # `tei validate` was rebuilding the lexicon index twice a page.
-        adopted = {t["text"] for t in tier1_terms(ctx["page_ref"],
-                                                  Path(ctx["root"]), keys=False)}
-    for el in root.iter():
-        if not isinstance(el.tag, str) or el.get(XML_LANG) not in TIER1:
-            continue
-        name = etree.QName(el).localname
-        span = " ".join("".join(el.itertext()).split())[:40]
-        resp = el.get("resp")
-        if resp is None:
-            r.errors.append(
-                f"PROVENANCE: <{name} xml:lang='{el.get(XML_LANG)}'> {span!r} carries "
-                f"no @resp — every Tier-1 span states who read it; use resp='{PROPOSED}'")
-        elif resp not in RESP_RANKS:
-            r.errors.append(
-                f"PROVENANCE: <{name}> resp={resp!r} is not a declared rank "
-                f"({', '.join(sorted(RESP_RANKS))})")
-        elif resp == RULED:
-            # Refused here rather than left to fall through, and in *both* modes.
-            # Unratified, the "this pass may only emit #llm" branch below would
-            # have caught it; ratified, it would have been a worklist line — a
-            # rank asserting a machine read a Tier-1 glyph, reported as work
-            # pending rather than as the firewall breach it is. The rank is
-            # confined to entity reference, and a Tier-1 span is the one place
-            # nothing mechanical may speak at all.
-            r.errors.append(
-                f"PROVENANCE: <{name}> {span!r} claims resp={RULED!r}, which says "
-                f"a rule applied it. No rule may originate a Tier-1 reading — "
-                f"{RULED} is confined to @ref on <rs>, and never carries a glyph")
-        elif resp == ADOPTED:
-            # Checked, not accepted. `adopted` holds the page's ratified token set;
-            # empty means the page has no ground truth at all, so the claim cannot
-            # be true of anything on it.
-            text = unicodedata.normalize("NFD", "".join(el.itertext())).strip()
-            if text not in adopted:
-                r.errors.append(
-                    f"PROVENANCE: <{name}> {span!r} claims resp={ADOPTED!r} but "
-                    "is not a token in this page's ground truth" +
-                    ("" if adopted else
-                     " — gt/ocr/ does not hold this page, so nothing on it can "
-                     "be adopted") +
-                    ". The rank is verified against gt/ocr/ on every run, so it "
-                    "also fails once the ground truth is corrected under it")
-        elif not ratified and resp != PROPOSED:
-            r.errors.append(
-                f"PROVENANCE: <{name}> {span!r} claims resp={resp!r} "
-                f"({RESP_RANKS[resp]}) — this pass may only emit {PROPOSED!r} or, "
-                f"through `harness tei expand`, {ADOPTED!r}; rank rises by a human "
-                "act, never by a pass asserting it")
-        elif ratified and resp != RATIFIED:
-            r.worklist.append(
-                f"unratified: <{name}> {span!r} still at resp={resp!r} "
-                f"({RESP_RANKS[resp]}) — needs a reading against the page")
-
-    # Deliberately no check that `@resp` resolves to a <respStmt> in this file. The
-    # ranks are declared once in the corpus teiHeader; a page file is a fragment that
-    # already defers title, publication and source the same way, so a pointer that
-    # dangles when the page is read alone is the normal state and not a defect.
-    # `RESP_RANKS` above is the closed set, and membership in it is the real check.
-
-    # The verbatim-substring test against `catmus_draft` used to live here, and is
-    # gone. It enforced the *canonicity of the upstream* — every Tier-1 span had to
-    # appear character-for-character in whatever `ocr/` happened to hold — and that
-    # is not what the firewall is about. The firewall is a rule about **hierarchies
-    # of provenance**: a glyph identity may not be *originated* by a model reading a
-    # scan, and a lower-authority witness may not be promoted to a higher one. It
-    # says nothing about whether some particular upstream file agrees.
-    #
-    # Anchored to an upstream instead, it was one of three things depending on what
-    # the draft happened to be, and never the intended one:
-    #
-    #   * draft is a human key      -> the test binds, but only incidentally; what
-    #                                  binds is the human's authority, not the bytes.
-    #   * draft is recognizer output -> unsatisfiable. CATMuS emits no inventory
-    #                                  glyph at all (0% of the inventory, measured),
-    #                                  so every Tier-1 span fails on a correct TEI.
-    #   * draft is an LLM reading    -> tautology. The check compares a TEI against
-    #                                  its own source and passes unconditionally,
-    #                                  while still rendering as a verified PASS.
-    #
-    # The replacement belongs in the TEI, not here: each Tier-1 span carries its own
-    # provenance, and a ratified build refuses to emit a span whose provenance is
-    # machine-proposed. Until that exists this file makes no provenance claim, and
-    # the count below is a worklist item rather than a verdict — which is the honest
-    # state, where a PASS on an unsatisfiable or tautological test was not.
+    _rule_provenance(root, q, ctx, r, ratified)
 
     # ── rule: lang-and-glyphs ────────────────────────────────────────────────
-    # language codes + two-scope codepoint hygiene
-    tier1_spans = 0
-    tier1_adopted = 0
-    for el in root.iter():
-        if not isinstance(el.tag, str):
-            continue
-        lang = _lang_of(el)
-        own_text = (el.text or "") + "".join(ch.tail or "" for ch in el)
-        own_text = unicodedata.normalize("NFD", own_text)
-        if lang in TIER1:
-            if el.get(XML_LANG) in TIER1:
-                tier1_spans += 1
-                tier1_adopted += 1 if el.get("resp") == ADOPTED else 0
-            for ch_ in own_text:
-                if ch_ in LOOKALIKE_GREPS:
-                    r.worklist.append(
-                        f"[{lang}] <{etree.QName(el).localname}> "
-                        f"{LOOKALIKE_GREPS[ch_]} in {own_text.strip()[:40]!r}")
-            for seq, msg in LOOKALIKE_SEQ_GREPS.items():
-                if seq in own_text:
-                    r.worklist.append(
-                        f"[{lang}] <{etree.QName(el).localname}> "
-                        f"{msg} in {own_text.strip()[:40]!r}")
-        # Not scoped to Tier-1, unlike the greps above. A licensing violation is an
-        # impossible sequence rather than a notation question, so it is wrong in a
-        # Latin binomial and in Russian prose for the same reason it is wrong in a
-        # Chukchee form — and an ERROR, not a worklist line, since there is no reading
-        # for a human to choose between.
-        for h in unlicensed_marks(own_text):
-            r.errors.append(
-                f"MARK LICENCE: {h['mark']} on {h['base']} — licensed only on "
-                f"{h['licensed_on']} (keying spec 2.6) in {h['context']!r}")
-        if lang not in TIER1:
-            bad = sorted({c for c in own_text if c in FORBIDDEN_PROSE})
-            if bad:
-                r.errors.append(
-                    f"non-ASCII quote/apostrophe {[f'U+{ord(c):04X}' for c in bad]} "
-                    f"in {lang!r} prose: {own_text.strip()[:60]!r}")
-        v = el.get(XML_LANG)
-        if v and v not in TIER1 and len(v) not in (2, 3):
-            r.warnings.append(f"suspicious xml:lang '{v}'")
+    # Sets the two Tier-1 counters `provenance-summary` and `metrics` read.
+    tier1_spans, tier1_adopted = _rule_lang_and_glyphs(root, q, ctx, r)
 
     # ── rule: provenance-summary ─────────────────────────────────────────────
     # Consumes `tier1_spans` / `tier1_adopted`, which **`lang-and-glyphs` sets**,
@@ -1671,166 +1877,17 @@ def validate(tei_path: Path, ctx: dict | None = None,
     tier1_unglossed = _rule_tier1_unglossed(root, q, ctx, r)
 
     # ── rule: entities ───────────────────────────────────────────────────────
-    # Loads the entity store, which `relink-missing` below then reuses: the
-    # second of the three couplings.
-    #
-    # Proper nouns, and the entity references over them. The pass marks
-    # *category* from the page; identity now resolves, against `entities/`.
-    #
-    # **A supplied `store` is not the `tier1_terms` case.** That one is re-read
-    # from `gt/ocr/` on purpose and must never come out of `ctx`, because the
-    # pass authored the TEI *from* `ctx` and checking one against the other would
-    # make the two witnesses one. The entity store is the opposite: it is the
-    # reference this resolves identity against, not anything the pass produced,
-    # and `load(root)` here and in `build_context` read the same files moments
-    # apart. Hoisting that read out of a corpus loop shares an input; it does not
-    # merge a comparison. Every verdict below is still computed from this page.
-    store = load(Path(ctx["root"]) if ctx and ctx.get("root") else Path(".")) \
-        if store is None else store
-    idx = alias_index(store)
-    autos = auto_forms(idx)
-    # The printed resolution table, for the names the alias table cannot resolve
-    # alone: `Nelson` is a man and a book, and a locator after it says which.
-    sigla = apparatus.sigla(
-        Path(ctx["root"]) if ctx and ctx.get("root") else Path("."))
-    names = untyped = refs = ruled = 0
-    # **The `once` forms this page has already spent its rule-link on.** Filled
-    # in document order, `root.iter` yielding it. This checks the *count* and not
-    # the position — that the link sits on the page's first occurrence rather
-    # than its third is `tei diff` against the freshly generated baseline, which
-    # is where a placement disagreement belongs and where a reader can see it.
-    # What is checked here is the failure that is silent otherwise: two `#mz`
-    # links on one form, which is `once` having quietly become twice.
-    spent: dict[str, str] = {}
-    for el in root.iter(q("name"), q("rs")):
-        local = etree.QName(el).localname
-        kind = el.get("type")
-        if local == "name":
-            names += 1
-            if kind is None:
-                untyped += 1
-            elif kind not in NAME_TYPES:
-                r.errors.append(
-                    f"<name type={kind!r}> is not a declared type "
-                    f"({', '.join(sorted(NAME_TYPES))})")
-            for attr in NAME_IDENTITY_ATTRS:
-                if el.get(attr) is not None:
-                    r.errors.append(
-                        f"<name @{attr}> spells identity a way this corpus does "
-                        f"not — @ref is the one spelling, and it holds a "
-                        f"`class:slug` pointing into entities/")
-        span = " ".join("".join(el.itertext()).split())
-        ref = el.get("ref")
-        if local == "rs" and not ref:
-            r.errors.append(
-                f"<rs> {span[:40]!r} carries no @ref. `rs` is this corpus's "
-                "entity reference and nothing else — it says which entity a "
-                "string names, so one with no referent marks nothing. Give it a "
-                "@ref or unwrap it")
-            continue
-        if ref is None:
-            continue
-        refs += 1
-        rec = store.get(ref)
-        if rec is None:
-            try:
-                split_id(ref)
-                why = "no such entity in entities/"
-            except ValueError as e:
-                why = str(e).split(": ", 1)[-1]
-            r.errors.append(
-                f"<{local} ref={ref!r}> resolves to nothing — {why}. Either the "
-                f"entry has not been written (`harness entity new {ref}`) or the "
-                f"reference is wrong")
-            continue
-        # A type from the page and a class from the store are two witnesses to
-        # one fact, so they are compared rather than one overwriting the other.
-        # An *untyped* <name ref> is fine: untyped is a designed state, and the
-        # class does not fill it in — only a reader of the page can say the page
-        # marked a proper noun of some kind.
-        if local == "name" and kind is not None:
-            want = ENTITY_CLASSES[rec["class"]]
-            if want != kind:
-                says = repr(want) if want else "(none — it is never a <name>)"
-                r.errors.append(
-                    f"<name type={kind!r} ref={ref!r}> — {ref} is class "
-                    f"{rec['class']!r}, whose name-type is {says}. One of the "
-                    f"two is about the wrong entity")
-        if local == "rs" and kind is not None:
-            r.errors.append(
-                f"<rs type={kind!r} ref={ref!r}> — an rs carries no @type here. "
-                f"The class is the ref's prefix, so a second copy of it can only "
-                f"disagree with the first")
-        if rec["status"] != "ratified":
-            r.worklist.append(
-                f"<{local} ref={ref!r}> points at a proposed entry — resolvable, "
-                f"but nobody has audited it. `harness entity ratify {ref}` after "
-                f"reading it against the pages it claims")
-        resp = el.get("resp")
-        if resp is not None and resp not in RESP_RANKS:
-            r.errors.append(f"<{local} ref={ref!r}> carries resp={resp!r}, which "
-                            f"is not a declared rank")
-        elif resp == RULED:
-            ruled += 1
-            # **The whole licence of #mz, re-derived here on every run.** The
-            # claim is not "a rule wrote this once" but "the store says this
-            # right now": the entry is ratified, the alias is still there and
-            # still uncontested, and the text still matches it. Weaken any of
-            # those in `entities/` and the link fails rather than going quietly
-            # stale — the same maintenance property #gt has, and the only reason
-            # a machine-applied rank is admissible at all.
-            form = " ".join(span.split())
-            owner = autos.get(form)
-            if owner is not None and idx[form][0]["scope"] == "first":
-                # The second `#mz` link on a `once` form derives from nothing:
-                # the rule spent this page's link higher up. Recorded before the
-                # `owner is None` cascade so the message below can name where.
-                if form in spent:
-                    owner = None
-                else:
-                    spent[form] = owner
-            if owner is None and _cites(el, form, ref, sigla, store, idx):
-                # **The printed citation form is the other way a rule may resolve
-                # a name**, and it is re-derived exactly as the alias table is:
-                # the page still prints a locator after this name, the sigla
-                # still say which work, and the entry still says it is that work.
-                # Edit any of the three and the link fails. It is checked here
-                # rather than accepted on the attribute's word for `#mz`'s only
-                # reason for existing.
-                owner = ref
-            if owner is None:
-                claims = idx.get(form, [])
-                if not claims:
-                    why = (f"the store has no alias {form!r} — it was removed, "
-                           f"or the text was edited after the link was made")
-                elif len(claims) > 1:
-                    why = (f"{form!r} is now claimed by "
-                           f"{' and '.join(sorted(c['id'] for c in claims))}, so "
-                           f"it is ambiguous and no rule may resolve it")
-                elif not claims[0]["auto"]:
-                    why = f"{form!r} is `auto: no` — it needs a reader, not a rule"
-                elif claims[0]["scope"] == "first" and form in spent:
-                    why = (f"{form!r} is `auto: once` and this page already "
-                           f"links it to {spent[form]}. The convention is one "
-                           f"link per page, on the first occurrence; the rest "
-                           f"stay bare")
-                else:
-                    why = (f"{claims[0]['id']} is {store[claims[0]['id']]['status']}"
-                           f", and a rule may only apply a ratified entry")
-                r.errors.append(
-                    f"<{local} ref={ref!r} resp=\"{RULED}\"> no longer derives: {why}. "
-                    f"Re-run `harness tei generate` for this page, or judge the "
-                    f"span yourself and set resp=\"{PROPOSED}\"")
-            elif owner != ref:
-                r.errors.append(
-                    f"<{local} ref={ref!r} resp=\"{RULED}\"> — the store now resolves "
-                    f"{form!r} to {owner}. A rule-applied link that disagrees "
-                    f"with the rule is the stale stamp {RULED} exists to prevent")
+    store, names, untyped, refs, ruled = _rule_entities(root, q, ctx, r, store)
 
     # ── rule: relink-missing ─────────────────────────────────────────────────
     # Takes the `store` the `entities` rule loaded: the second coupling.
     _rule_relink_missing(tei_path, store, r)
 
+    # ── rule: figrefs ────────────────────────────────────────────────────────
+    # Its own rule, and the enumeration missed that: it was already a helper
+    # before this pass, so it had no banner and fell inside `relink-missing`'s by
+    # position. It checks a different thing (cross-references marked, and printed
+    # ones carrying no mark) and feeds two of its own counters.
     figrefs_marked, figrefs_missing = _figrefs(root, r, ctx)
 
     # ── rule: bibl-extent ────────────────────────────────────────────────────

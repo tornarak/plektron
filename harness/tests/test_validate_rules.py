@@ -96,16 +96,38 @@ def test_the_tier1_counters_are_credited_to_the_rule_that_sets_them():
     does not suggest counting, while `provenance` — which does — counts nothing.
     The two are adjacent, and the first pass credited the wrong one.
 
-    Checked against the code rather than against the prose: find where the
-    counters are assigned, and assert that position falls inside the rule the
-    docstring names."""
-    banners = [(m.start(), m.group(1)) for m in BANNER.finditer(SRC)]
-    setter = SRC.index("    tier1_spans = 0")
-    owner = [name for pos, name in banners if pos < setter][-1]
-    assert owner == "lang-and-glyphs", (
-        f"`tier1_spans` is now initialised inside {owner!r}. Update the coupling "
-        "note in validate()'s docstring and the comment on provenance-summary — "
-        "both name the rule that sets it."
+    Checked against the code rather than against the prose, and by AST rather
+    than by string position — the first version walked back from
+    `tier1_spans = 0` to the nearest banner, which stopped meaning anything the
+    moment the rule became a function that sits above every banner."""
+    import ast
+
+    tree = ast.parse(SRC)
+    owners = [
+        fn.name for fn in tree.body
+        if isinstance(fn, ast.FunctionDef) and fn.name.startswith("_rule_")
+        and any(isinstance(n, ast.Name) and n.id == "tier1_spans"
+                and isinstance(n.ctx, ast.Store)
+                for n in ast.walk(fn))
+    ]
+    assert owners == ["_rule_lang_and_glyphs"], (
+        f"`tier1_spans` is assigned in {owners}. Exactly one rule may own it, "
+        "and the coupling note in validate()'s docstring plus the comment on "
+        "provenance-summary both name which."
+    )
+    # `validate` binds it too, by unpacking that rule's return — which is the
+    # coupling made explicit rather than a second owner. Assert the source.
+    fn = next(f for f in tree.body
+              if isinstance(f, ast.FunctionDef) and f.name == "validate")
+    src = [n for n in ast.walk(fn)
+           if isinstance(n, ast.Assign)
+           and any(isinstance(t, ast.Tuple) and any(
+               isinstance(e, ast.Name) and e.id == "tier1_spans" for e in t.elts)
+               for t in n.targets)]
+    assert len(src) == 1 and isinstance(src[0].value, ast.Call) and \
+        src[0].value.func.id == "_rule_lang_and_glyphs", (
+        "validate() no longer gets the counters from _rule_lang_and_glyphs — "
+        "if they now come from somewhere else, the coupling note is stale"
     )
     assert "**`lang-and-glyphs`**" in SRC, (
         "the docstring no longer credits lang-and-glyphs with the counters"
