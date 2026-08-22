@@ -925,6 +925,39 @@ def validate(tei_path: Path, ctx: dict | None = None,
     Two modes rather than one permissive rule, because a single rule accepting both
     ranks would make the distinction unfalsifiable — which is the failure the old
     substring test had. Neither mode is silent about the other's state.
+
+    **The rules, in the order they run.** Each is marked in the body with a
+    `── rule: name ──` banner, and `test_validate_rules.py` holds this list and
+    those banners to each other, so neither can drift. Until this existed the
+    count was unknown: a review put it at 22 by counting comment blocks, several
+    of which are notes *inside* a rule, and one of which described two rules that
+    had been deleted while the code beneath it checked something else entirely.
+
+        folio               <pb> first, @n against the predicted folio
+        seam-shape          @part/@prev/@next legal and only at the edges
+        line-and-division   no <lb>, no <div> — ALTO holds lines, pages are div-less
+        milestones          heading ids exist in the ToC; #mz ones re-derived
+        notes               marker/note pairing, and the printed marker's shape
+        figures             <figure n> against the page's own printed numbers
+        tier1-facs          a cited OCR line must be one the page supplies
+        unexpanded-handle   a surviving index= is a file `tei expand` never saw
+        foreign-lang        <foreign> with no @xml:lang asserts nothing
+        provenance          THE check: rank, never agreement with an upstream file
+        lang-and-glyphs     declared codes, and codepoint hygiene by scope
+        provenance-summary  one line for the page's state, so PASS is never bare
+        tier1-unglossed     a Tier-1 span a reader can do nothing with
+        entities            proper nouns and the @ref over them; loads the store
+        relink-missing      the same check from the other side; reuses that store
+        bibl-extent         a citation's extent, never which work it names
+        measures            value, and the relations between ways of stating it
+        metrics             fifteen counters, assigned wholesale
+        schema              conformance, and **last** — see the comment there
+
+    **Three couplings**, which are what make this a function rather than a list:
+    `provenance-summary` consumes `provenance`'s counters, `relink-missing`
+    reuses the store `entities` loaded, and `metrics` gathers counters from the
+    whole length of the body. Anything that extracts these into functions has to
+    answer all three; the banners mark where.
     """
     r = Report()
     try:
@@ -939,6 +972,7 @@ def validate(tei_path: Path, ctx: dict | None = None,
         r.errors.append("no <body>")
         return r
 
+    # ── rule: folio ──────────────────────────────────────────────────────────
     # pb: first element. @n is the folio the model read off the image; absent
     # @n asserts the page carries no printed folio (plate, blank, part title).
     # That assertion is load-bearing downstream — it tells the seam ledger not
@@ -964,6 +998,7 @@ def validate(tei_path: Path, ctx: dict | None = None,
 
     _opening_witness(body, q, r)
 
+    # ── rule: seam-shape ─────────────────────────────────────────────────────
     # forbidden structure.
     #
     # @part used to be banned outright, on the grounds that continuation was a
@@ -1006,40 +1041,43 @@ def validate(tei_path: Path, ctx: dict | None = None,
                     "spellings; a fragmentable element is parted, a linkable one "
                     "is linked, never both")
     _check_ids(r, root, ctx)
-    # No whitespace immediately before a <note>.
+    # **Two rules were removed from this spot and their reasoning stayed**, which
+    # left a 29-line comment about `<note>` placement sitting immediately above a
+    # check about `<lb>` and `<div>`. Nothing tied them together but adjacency,
+    # and the heading ("No whitespace immediately before a <note>") described no
+    # code at all. Recorded here because a mechanical read of this function —
+    # which is what extracting these rules into functions amounts to — would have
+    # carried that comment onto the check below and named it for notes.
     #
-    # The element stands in for the printed marker, and the book sets a thin space
-    # before the raised digit ("[albino] ¹)"). That is the same class of thing as
-    # the French spacing before `;` and `:` which keying spec 2.9 already
-    # overrides: a typesetting convention with no lexical content, which survives
-    # nowhere in the book's meaning and which puts a stray space into the reading
-    # text of every consumer that strips the marker. Key it tight.
+    # What went, and why, kept because both are live encoding decisions:
     #
-    # Checked here rather than in `normalize` because it is a question about where
-    # an element sits, not about a character sequence — `normalize` runs over whole
-    # files as text and cannot see that the space precedes a <note> rather than a
-    # word.
+    #   **A note at the foot is where a note goes.** The error here used to say a
+    #   `<note>` that is a direct child of `<body>` "has not been anchored" and
+    #   should move inline to the character its printed marker follows. That was
+    #   right while the generator spliced notes into the prose; it splices none
+    #   now. The marker stays where the printer set it and carries a
+    #   `<ref type="note">`, the note stays at the foot, and a marker printed
+    #   twice is simply two references — which is what `1-147` and `1-226` do,
+    #   and what the old shape had to call ambiguous because a spliced note can
+    #   only be in one place.
     #
-    # **A note at the foot is where a note goes**, and the error that used to sit
-    # here said the opposite. It read: a `<note>` that is a direct child of
-    # `<body>` "has not been anchored", move it inline to the character its
-    # printed marker follows. That was right while the generator spliced notes
-    # into the prose; it splices none now. The marker stays in the text where the
-    # printer set it and carries a `<ref type="note">`, the note stays at the
-    # foot, and a marker printed twice is simply two references — which is what
-    # `1-147` and `1-226` do, and what the old shape had to call ambiguous
-    # because a spliced note can only be in one place.
-    # The whitespace rule above it went the same way and for the same reason. It
-    # read "space before <note …> — the marker sets tight against the character
-    # it anchors to", which was a rule about an element standing *in place of* a
-    # marker. Nothing stands in place of one now: the thin space the book sets
-    # ahead of a raised digit (`1-100`: `[albino] ¹)`) is simply the print, kept
-    # as printed, and there is no element beside it to set tight against.
+    #   **The whitespace rule went the same way and for the same reason.** It
+    #   read "space before <note …> — the marker sets tight against the character
+    #   it anchors to", which was a rule about an element standing *in place of*
+    #   a marker. Nothing stands in place of one now: the thin space the book
+    #   sets ahead of a raised digit (`1-100`: `[albino] ¹)`) is the print, kept
+    #   as printed, with no element beside it to set tight against.
+
+    # ── rule: line-and-division ──────────────────────────────────────────────
+    # Neither element belongs in a page file. ALTO holds the line record, and a
+    # page is div-less because a chapter spans a hundred of them —
+    # `docs/edition.md` and the collator's contract carry the reasoning.
     if root.find(f".//{q('lb')}") is not None:
         r.errors.append("<lb/> present — ALTO holds the line record")
     if root.find(f".//{q('div')}") is not None:
         r.errors.append("<div> present — page files are div-less")
 
+    # ── rule: milestones ─────────────────────────────────────────────────────
     # milestones. An id must exist in the ToC — that is the hard check. Falling
     # outside the supplied window is only a warning: the window is keyed to a
     # predicted folio, so a milestone outside it may mean the prediction is
@@ -1095,6 +1133,7 @@ def validate(tei_path: Path, ctx: dict | None = None,
                 "the supplied window — either the folio prediction is off or this "
                 "milestone belongs elsewhere; resolve before commit")
 
+    # ── rule: notes ──────────────────────────────────────────────────────────
     # notes
     comments_text = " ".join(c.text or "" for c in root.iter(etree.Comment))
     for note in root.iter(q("note")):
@@ -1110,6 +1149,7 @@ def validate(tei_path: Path, ctx: dict | None = None,
             r.warnings.append(f"<note n='{note.get('n')}'>: non-integer marker "
                               "(book uses integers) — confirm against image")
 
+    # ── rule: figures ────────────────────────────────────────────────────────
     # figures
     if ctx is not None:
         # The page's own captions are the witness, not a set of ids the context
@@ -1133,6 +1173,7 @@ def validate(tei_path: Path, ctx: dict | None = None,
                     f"<figure facs='{fig.get('facs')}'> — figures are anchored "
                     "by the printed number; the build resolves the zones")
 
+    # ── rule: tier1-facs ─────────────────────────────────────────────────────
     # Tier-1 @facs (optional): if a span cites an OCR line, the line must be
     # real. Mirrors the <figure facs> check above — a dangling citation is
     # strictly worse than none, so it errors rather than warns.
@@ -1151,6 +1192,7 @@ def validate(tei_path: Path, ctx: dict | None = None,
                     r.errors.append(f"<{name} facs='#{lid}'> matches no "
                                     "supplied OCR line")
 
+    # ── rule: unexpanded-handle ──────────────────────────────────────────────
     # An unexpanded `index=` is not a dangling pointer — it is a file that never
     # went through `harness tei expand`, holding no text where the ratified form
     # should be. Named as the missing step rather than as a bad reference, and
@@ -1172,6 +1214,7 @@ def validate(tei_path: Path, ctx: dict | None = None,
                 "never expanded — run `harness tei expand` to write the "
                 "ratified form in")
 
+    # ── rule: foreign-lang ───────────────────────────────────────────────────
     # **A <foreign> with no @xml:lang says nothing at all**, and is the one element
     # where that is true by definition: TEI's <foreign> means "not the surrounding
     # language", so without naming the language it asserts a negative about an
@@ -1205,6 +1248,7 @@ def validate(tei_path: Path, ctx: dict | None = None,
             "an inventory mark is not by itself a foreign form, and a name in an "
             "ordinary European orthography is not one at all")
 
+    # ── rule: provenance ─────────────────────────────────────────────────────
     # THE check, re-anchored: provenance rank, not agreement with an upstream file.
     # Every Tier-1 element declares who read it, and this pass may only ever claim
     # the proposed rank. `#ed` is a human's to write.
@@ -1307,6 +1351,7 @@ def validate(tei_path: Path, ctx: dict | None = None,
     # the count below is a worklist item rather than a verdict — which is the honest
     # state, where a PASS on an unsatisfiable or tautological test was not.
 
+    # ── rule: lang-and-glyphs ────────────────────────────────────────────────
     # language codes + two-scope codepoint hygiene
     tier1_spans = 0
     tier1_adopted = 0
@@ -1349,6 +1394,10 @@ def validate(tei_path: Path, ctx: dict | None = None,
         if v and v not in TIER1 and len(v) not in (2, 3):
             r.warnings.append(f"suspicious xml:lang '{v}'")
 
+    # ── rule: provenance-summary ─────────────────────────────────────────────
+    # Consumes `tier1_spans` / `tier1_adopted` from `provenance` above: one of
+    # the three couplings that make this function more than a sequence.
+    #
     # One summary line for the page's provenance state, so a PASS never reads as
     # "these forms are settled". Saying so once is cheaper than a human inferring
     # it from a rank they'd have to go look up.
@@ -1374,6 +1423,7 @@ def validate(tei_path: Path, ctx: dict | None = None,
             "reading here; what is unratified about them is which token the pass "
             "chose, not what it says")
 
+    # ── rule: tier1-unglossed ────────────────────────────────────────────────
     # A Tier-1 span a reader can do nothing with. Neither glossed nor identified
     # is a warning and not an error, because the book genuinely leaves forms
     # bare and no model may write a gloss the page does not carry — the remedy
@@ -1438,6 +1488,10 @@ def validate(tei_path: Path, ctx: dict | None = None,
             "the printed gloss, type the name, or leave it if the page really "
             "says nothing about the word")
 
+    # ── rule: entities ───────────────────────────────────────────────────────
+    # Loads the entity store, which `relink-missing` below then reuses: the
+    # second of the three couplings.
+    #
     # Proper nouns, and the entity references over them. The pass marks
     # *category* from the page; identity now resolves, against `entities/`.
     #
@@ -1591,6 +1645,7 @@ def validate(tei_path: Path, ctx: dict | None = None,
                     f"{form!r} to {owner}. A rule-applied link that disagrees "
                     f"with the rule is the stale stamp {RULED} exists to prevent")
 
+    # ── rule: relink-missing ─────────────────────────────────────────────────
     # **The other direction of the same check.** Everything above re-derives the
     # `#mz` links this page *has*; nothing looked for the ones it lacks. A page
     # is collated after it is generated, so an entry ratified afterwards leaves
@@ -1612,6 +1667,7 @@ def validate(tei_path: Path, ctx: dict | None = None,
 
     figrefs_marked, figrefs_missing = _figrefs(root, r, ctx)
 
+    # ── rule: bibl-extent ────────────────────────────────────────────────────
     # A citation's extent, and nothing about which work it names. Counted rather
     # than gated for presence: a page citing nothing is the ordinary page.
     bibls = 0
@@ -1625,6 +1681,7 @@ def validate(tei_path: Path, ctx: dict | None = None,
                     "its answer is not written down; the key is the annotation "
                     "pass's, over finished TEI")
 
+    # ── rule: measures ───────────────────────────────────────────────────────
     # Value, and the relations between the ways of stating it. `<measureGrp>` is TEI's
     # "dimensional specifications which relate to the same object", which is read here
     # as *these measures bear on one priced thing* and deliberately not as *these are
@@ -1665,6 +1722,12 @@ def validate(tei_path: Path, ctx: dict | None = None,
                     "not do — the page's own words are the record, and a per-page "
                     "pass minting units produces one vocabulary per page")
 
+    # ── rule: metrics ────────────────────────────────────────────────────────
+    # **The third coupling, and the one that constrains the extraction most.**
+    # Fifteen keys gathered from locals set the length of this function, and
+    # *assigned* wholesale rather than updated — so it must run after every rule
+    # that produces a counter, and each extracted rule has to hand its counters
+    # back rather than keep them.
     r.metrics = {
         "tier1_spans": tier1_spans,
         # A subset of the above, not a fourth column of the same thing: how much
@@ -1704,6 +1767,10 @@ def validate(tei_path: Path, ctx: dict | None = None,
         "measure_groups": groups,
         "worklist": len(r.worklist),
     }
+    # ── rule: schema ─────────────────────────────────────────────────────────
+    # **Must stay last**, for the reason below. The only whole-rule gate in the
+    # function: `ratified` gates branches inside `provenance` and
+    # `provenance-summary`, never a rule entire.
     if schema:
         from .schema import check
         # Last, and appended rather than interleaved: a conformance failure is a
