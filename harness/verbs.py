@@ -23,7 +23,24 @@ import re
 from pathlib import Path
 
 DOC = Path("harness/VERBS.md")
-HEAD = re.compile(r"^### (?P<name>[a-z-]+(?: [a-z-]+)?)", re.MULTILINE)
+
+#: `### group action`, and **both words are required**.
+#:
+#: The second was optional, which made a bare `### ocr` heading parse as an
+#: *action* named `ocr` — and `lookup` tests `q in all_` before it tries the
+#: group prefix, so that stub would answer every `lookup("ocr")` with one blurb
+#: instead of the group's twelve entries, and without the Conventions block,
+#: which is the one thing a group lookup exists to attach. `test_cli_surface`'s
+#: own `_HEADING` requires both words, so it could never have reported such a
+#: heading: the two parsers of this file would simply have disagreed in silence.
+#:
+#: The character class matches `_HEADING`'s `[\w-]` for the same reason. It was
+#: `[a-z-]`, under which `### tei validate2` truncated to `tei validate` and
+#: **silently overwrote** the real entry in `entries()`, dropping an action from
+#: the index with no error, while the surface gate read `validate2` and saw
+#: nothing wrong. No heading triggers either case today; the set-equality test
+#: in `test_verbs_and_codepoints.py` is what keeps it that way.
+HEAD = re.compile(r"^### (?P<name>[\w-]+ [\w-]+)", re.MULTILINE)
 
 
 def _text(root: Path = Path(".")) -> str:

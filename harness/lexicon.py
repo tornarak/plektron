@@ -160,6 +160,37 @@ def parse(text: str, where: str = "") -> dict:
     }
 
 
+def set_status(text: str, status: str, where: str = "") -> str:
+    """Move an entry's `status`, keyed off the line the parser actually reads.
+
+    **Not a literal substring replace, and the difference is a false success.**
+    `cli/_lexicon.run_ratify` searched the whole file for `- status: proposed`
+    with `count=1`. Two things make that wrong together: `_FIELD` accepts
+    `- status:proposed` with no space after the colon, and `parse` reads fields
+    only from `head`, the text *before* the first `## section`. So on an entry
+    spelled without the space, the first literal match was inside the editor's
+    note — the verb rewrote that prose, left the status `proposed`, and reported
+    `now: ratified, wrote: true`. A report asserting a change that did not
+    happen, with nothing to notice it.
+
+    So this reuses `_FIELD` itself rather than restating its shape, and searches
+    the same `head` region `parse` does. The two cannot disagree about what a
+    field line is, because there is only one pattern.
+    """
+    if status not in STATUSES:
+        raise ValueError(f"status {status!r} — one of {', '.join(STATUSES)}")
+    at = f"{where}: " if where else ""
+    first = _SECTION.search(text)
+    head = text[:first.start()] if first else text
+    for m in _FIELD.finditer(head):
+        if m.group(1) == "status":
+            s, e = m.span(2)          # the value alone, not the line
+            return text[:s] + status + text[e:]
+    raise Malformed(
+        f"{at}no `- status:` field above the first `##` section — that is where "
+        f"`parse` reads it, so an entry without one does not load either")
+
+
 def load(root: Path = Path(".")) -> dict:
     """The whole store, keyed by form. An absent store is `{}`, not an error."""
     d = lex_dir(root)

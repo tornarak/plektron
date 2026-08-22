@@ -44,18 +44,57 @@ def log_call(ref: str, action: str, root: Path = Path("."),
 
     A ledger that can abort the command it records would make reading a page
     depend on the bookkeeping succeeding, which inverts what this is for.
+
+    **"Any failure" now means any**, which it did not. The catch was `OSError`
+    alone, so a `detail` value `json` cannot encode — a `Path`, a `set`, a numpy
+    scalar, all of which the call sites have to hand — raised `TypeError` out of
+    `json.dumps` and killed the reading this was recording. `default=str` renders
+    such a value rather than refusing it, because a ledger entry that says
+    `"span": "PosixPath('…')"` is worth more than no entry and much more than a
+    dead pass, and the broadened catch is the backstop under that.
+
+    **Zero is a count, and it was being deleted.** The filter read `v not in
+    (None, "", False)`, and `0 == False` in Python, so `images=0` and `zoom=0`
+    vanished — reading back indistinguishable from a call that never named them.
+    This module exists because self-reported counts come out flattering, so
+    silently dropping the smallest count there is was the one bias it could not
+    afford. Identity for `False`, equality for the rest.
     """
     try:
         p = calls_path(ref, root)
         p.parent.mkdir(parents=True, exist_ok=True)
-        rec = {"action": action, **{k: v for k, v in detail.items() if v not in
-                                    (None, "", False)}}
+        rec = {"action": action,
+               **{k: v for k, v in detail.items()
+                  if v is not None and v is not False and v != ""}}
         if reason:
             rec["reason"] = reason
+        line = json.dumps(rec, ensure_ascii=False, default=str)
         with p.open("a", encoding="utf-8") as fh:
-            fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
-    except OSError:
+            # **A crashed write costs one record, not two.** An interrupted
+            # append leaves a tail with no newline; opening in "a" put the next
+            # record on that same line, so the pair became one unparseable line
+            # and `read_calls` dropped both. Cheap to prevent, and the case is
+            # ordinary here — the pass this records is killed by a reader that
+            # ran out of turns.
+            if fh.tell() and not _ends_with_newline(p):
+                fh.write("\n")
+            fh.write(line + "\n")
+    except (OSError, TypeError, ValueError):
         pass
+
+
+def _ends_with_newline(p: Path) -> bool:
+    """Whether the ledger's last byte is a newline. Read, not remembered: another
+    process may have appended since this one opened the file."""
+    try:
+        with p.open("rb") as fh:
+            fh.seek(0, 2)
+            if not fh.tell():
+                return True
+            fh.seek(-1, 2)
+            return fh.read(1) == b"\n"
+    except OSError:
+        return True
 
 
 def read_calls(ref: str, root: Path = Path(".")) -> list[dict]:
@@ -95,7 +134,11 @@ def call_summary(ref: str, root: Path = Path(".")) -> dict:
             if line in seen:
                 repeats += 1
             seen.add(line)
-    zooms = [c for c in calls if c["action"] == "zoom"]
+    # `.get`, not `[...]`. `read_calls` tolerates a malformed *line* and then
+    # this crashed on a well-formed one lacking `action` — a JSON object the
+    # reader hands back intact. The tolerance stopped one layer short of being
+    # useful, which is the shape of a guard that only half exists.
+    zooms = [c for c in calls if c.get("action") == "zoom"]
     return {"ref": norm_ref(ref), "calls": len(calls), "zooms": len(zooms),
             "at_4x": sum(1 for c in zooms if c.get("zoom") == 4),
             "lines_opened": len(seen), "repeats": repeats,

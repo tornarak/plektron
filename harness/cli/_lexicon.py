@@ -293,9 +293,14 @@ def run_ratify(a) -> int:
             continue
         p = Path(rec["path"])
         text = p.read_text(encoding="utf-8")
-        new = text.replace("- status: proposed", "- status: ratified", 1)
+        # Through the store's own field writer, not a substring replace: the
+        # parser accepts `- status:proposed` without the space and reads fields
+        # only above the first `## section`, so a literal search could land in
+        # the editor's note and report a ratification that never happened.
+        new = lex.set_status(text, "ratified", where=str(p))
         if new == text:
-            raise ValueError(f"{p}: no `- status: proposed` line to change")
+            raise ValueError(f"{p}: status was already `ratified` in the file "
+                             f"though the store read it as {rec['status']!r}")
         if a.commit:
             p.write_text(new, encoding="utf-8")
         rows.append({"form": f, "was": "proposed", "now": "ratified",
