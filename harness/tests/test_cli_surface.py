@@ -376,7 +376,7 @@ STAR_WITHOUT_ALL_OK = {
     ("verbs", "show"): "lists the action names; touches no store",
     # The rule this gate holds is about *sweeps* — `zones check` bare walking 832
     # pages with nothing at the call site saying so. A bare `find authority`
-    # prints the 73 rows of one small JSON file, which is the printed
+    # prints the 74 rows of one small JSON file, which is the printed
     # bibliography and not a corpus run, and the omission has meant that since
     # the verb existed. The `*` here is what made several citations askable at
     # once; requiring `--all` to keep the listing would be the gate reshaping a

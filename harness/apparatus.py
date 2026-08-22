@@ -160,8 +160,12 @@ def sigla(root: Path = Path(".")) -> list[dict]:
 
     What the List of Authorities Quoted *is*, and the table `citations.cited`
     resolves a footnote against. Read here for `authority_names`' reason — one
-    store, one reader — and 51 rows over 47 printed sigla, because a siglum
+    store, one reader — and 52 rows over 34 printed sigla, because a siglum
     printed across several volumes is a row per volume.
+
+    The 34 is not `authority_names`' 47. That set is every name Bogoras cites a
+    work under; these are only the names carrying a printed siglum, and the 13
+    in the difference are cited without one. The two were conflated here.
     """
     return authorities.sigla(_authorities(root))
 

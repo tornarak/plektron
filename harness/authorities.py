@@ -1,7 +1,7 @@
 """Search `data/authorities.json` — the book's own bibliography, as a lookup.
 
 The consumer is the annotation pass, which meets a citation in the body and has
-to say which of the 73 works it names. Three properties of the store make that a
+to say which of the 74 works it names. Three properties of the store make that a
 search problem rather than a dictionary lookup, and all three are recorded in
 docs/apparatus.md:
 
@@ -10,7 +10,7 @@ docs/apparatus.md:
     references are indirect prose — "Krause reports that…" — carrying the name
     alone. So `author` has to be reachable, and so does the title, and so does
     the printed block itself when nothing else catches.
-  - **`name` is ambiguous by construction.** 51 sigla over 34 distinct names:
+  - **`name` is ambiguous by construction.** 52 sigla over 34 distinct names:
     three Krauses, three Houghs, two Masons, two Jacksons, four Jochelsons.
     A search that returned one hit would be manufacturing a resolution.
   - **The list is open.** No hit is a legitimate outcome — folio 9's asterism
@@ -284,10 +284,14 @@ def siglum_name(cited_as: list[dict]) -> str:
 def sigla(works: list[dict], name: str | None = None) -> list[dict]:
     """The resolution table: one row per `cited_as` entry, not per work.
 
-    51 rows from 47 printed sigla, because a siglum printed over several volumes
+    52 rows from 34 printed sigla, because a siglum printed over several volumes
     splits into one entry per volume. This is the table an annotation pass wants
     in front of it — the ambiguity is visible in it rather than discovered one
     lookup at a time.
+
+    Not to be confused with `authority_names`' 47, which this docstring once
+    was: that is every name Bogoras cites a work under, the 34 carrying a
+    printed siglum plus 13 cited without one.
     """
     q = _norm_words(name or "")
     out = []

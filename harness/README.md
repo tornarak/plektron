@@ -771,8 +771,8 @@ route because a full page as a data URI is ~10 MB of markup.
 The client sends a column index and never an x — the geometry is re-measured
 server-side on save, so a zone of the wrong measure has no field to travel in.
 
-**`authorities.py`** — search over the book's own 73-work bibliography. Returns every
-hit ranked and resolves nothing: 51 sigla share 34 names, so one answer would be
+**`authorities.py`** — search over the book's own 74-work bibliography. Returns every
+hit ranked and resolves nothing: 52 sigla share 34 names, so one answer would be
 manufactured, and no hit at all is legitimate because the list is explicitly open.
 
 **`marks.py`** — is a reading's character distribution plausible, before a human

@@ -9,7 +9,7 @@ new module's author copies whichever one they happened to be looking at.
 
 **Imports nothing from this package**, like `atomic.py` and for the same reason:
 `context.py` is the obvious home for something everything needs and it sits in
-eight of the fifteen mutual import cycles here, so a constant living beside it
+ten of the nineteen mutual import cycles here, so a constant living beside it
 arrives through a function-body import at each call site.
 
 Not a general "constants" module. Namespace URIs are external identifiers fixed

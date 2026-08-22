@@ -338,7 +338,7 @@ def _run_leaves(run: dict, root: Path) -> list[dict]:
     kind = run.get("kind")
     # One pass over the encyclopedia for the whole run rather than one per entry.
     # The link is the record's own `authority` field and never a match on the
-    # printed name: 51 sigla over 34 names, so a name match would be a guess.
+    # printed name: 52 sigla over 34 names, so a name match would be a guess.
     by_authority = {rec["authority"]: ident
                     for ident, rec in (stores.load(root) or {}).items()
                     if rec.get("authority")}

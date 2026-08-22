@@ -1565,8 +1565,8 @@ resolves anything, and no hit is a legitimate outcome.
 ```
 
 ### find authority [QUERY...]
-**Does** works matching a citation read in the body — siglum, bare name in prose, title, or a string off the printed entry. Every match returned and ranked by which field caught it: 51 sigla share 34 names, so a single answer would be manufactured. A footnote form (`Dall, I, p. 375.`) goes in whole; the lifted volume is echoed on stderr, because a silently rewritten query is an unexplainable miss.
-**Several queries pool into one table** with a leading `query` column, and a query that matched nothing gets a row saying so — dropping it would make "no such work" indistinguishable from "I forgot to ask". One query emits exactly what it always did. A page's footnotes name half a dozen works, and asking six times was six turns against a collator's budget. Bare, it lists all 73: the printed bibliography, not a corpus sweep.
+**Does** works matching a citation read in the body — siglum, bare name in prose, title, or a string off the printed entry. Every match returned and ranked by which field caught it: 52 sigla share 34 names, so a single answer would be manufactured. A footnote form (`Dall, I, p. 375.`) goes in whole; the lifted volume is echoed on stderr, because a silently rewritten query is an unexplainable miss.
+**Several queries pool into one table** with a leading `query` column, and a query that matched nothing gets a row saying so — dropping it would make "no such work" indistinguishable from "I forgot to ask". One query emits exactly what it always did. A page's footnotes name half a dozen works, and asking six times was six turns against a collator's budget. Bare, it lists all 74 records — the 73 printed on folios 3–9 plus the unprinted `jochelson1905` — which is one small JSON file, not a corpus sweep.
 **Reads** `data/authorities.json`. **Writes** — **Exit** 0.
 ```
 --volume V    volume the citation names (II or 2); excludes on contradiction, not absence

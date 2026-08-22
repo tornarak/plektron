@@ -640,6 +640,13 @@ keyed with a BibTeX-style moniker (`bogoras1900`, `krause1882`, `nordquist1882a`
 third apparatus store alongside `loi.json` and `toc.json`, and apparatus for the same
 reason — reachable without parsing TEI, and the annotation pass is its consumer.
 
+**73 is the printed count, not the record count.** The store holds **74**, the
+extra being the unprinted `jochelson1905` the provision below admits. Which
+number a sentence wants turns on whether it is about folios 3–9 or about what a
+reader returns: `source.count` is 73 and `read_from` is true of those alone,
+while `find authority` bare lists 74 and all 74 resolve to a `source:` entity.
+The two have been conflated in this file and in `authorities.py` before.
+
 `harness find authority` is the reader. It searches `cited_as`, then `author`, then the
 titles, then the printed blocks, reports which of those caught each hit, and
 **returns all of them** — 52 sigla over 34 names means a single answer would be
@@ -668,8 +675,8 @@ not a string**, because the surface form in the body is not the form printed her
   `Krasheninnikoff, II, p. 49.` in the same apparatus, so the comma carries no
   information: `authorities.parse_citation` splits on commas and whitespace alike and
   asks the same question of every token. Hence `volume` as its own field, and hence a
-  siglum printed over several volumes splits into one entry per volume — 47 printed
-  sigla, 51 `cited_as` entries.
+  siglum printed over several volumes splits into one entry per volume — 34 printed
+  sigla, 52 `cited_as` entries.
 - **Most references are not sigla at all.** They are indirect prose — "Krause reports
   that…" — carrying the name alone, no volume, no short title, no footnote. A resolver
   keyed on the footnote form misses the majority. `name` is what reaches them, and it

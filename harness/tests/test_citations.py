@@ -95,7 +95,7 @@ class TestCitationResolution:
         assert expected_key in {h["key"] for h in hits}
 
     def test_a_bare_name_returns_every_candidate_not_one(self, works):
-        """51 sigla over 34 names, so a single answer would be manufactured. The
+        """52 sigla over 34 names, so a single answer would be manufactured. The
         caller is a human reading candidates."""
         hits = search(works, "Bogoras", None)
         assert len(hits) > 1

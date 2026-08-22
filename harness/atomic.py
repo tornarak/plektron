@@ -1,8 +1,8 @@
 """How a file lands on disk, in one place.
 
 **Imports nothing from this package**, deliberately. Every store module needs
-this and `context.py` — the obvious home for a shared primitive — sits in eight
-of the fifteen mutual import cycles here, so anything that lives beside it gets
+this and `context.py` — the obvious home for a shared primitive — sits in ten
+of the nineteen mutual import cycles here, so anything that lives beside it gets
 imported through a function body at each call site and the cycle grows. A module
 with no package imports cannot join one.
 

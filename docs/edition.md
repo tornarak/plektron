@@ -366,7 +366,7 @@ place to put the fact was a free-text field nothing could read or check. Thirtee
 rows moved into the column. `people:chukchi` is the one worth looking at — it
 now says in a column that Чукча is Russian and oraˊwêʟ̣at is the autonym.
 
-- **Blank means unstated**, and most of the store is blank: 466 of 738 rows are
+- **Blank means unstated**, and most of the store is blank: 439 of 711 rows are
   the book's own English, where saying so adds nothing. Requiring the column
   would have made an editorial pass out of a schema change.
 - **A code outside the vocabulary is an error.** That is a typo, not a gap, and
@@ -1198,8 +1198,8 @@ printed list poses, and each is **omitted rather than guessed** where it cannot.
   oddities and not rules waiting to be widened. This is emphatically **not** the LoI reconciliation
   `docs/open-questions.md` defers — it links, and it gates nothing.
 - An authority's siglum goes to `entities/source/…` through the entity record's
-  own `authority` field, never a match on the printed name: 51 sigla over 34
-  names would make that a guess. All 73 resolve.
+  own `authority` field, never a match on the printed name: 52 sigla over 34
+  names would make that a guess. All 74 resolve.
 
 **Printed is the record**, `find authority`'s own rule: the Authorities run shows
 the block the store copied off the page, and the parsed fields ride beneath it

@@ -50,8 +50,11 @@ def scan_for(ref: str, root: Path = Path(".")) -> Path:
     it was — byte-identical bodies, except that `edition_ui`'s spelled the
     directory as the literal `"scans"` while `zones`' used the constant, so the
     two would have parted company the day the farm moved. `farms.SCANS` is the
-    one name for it and `farms` imports nothing from this package, so this
-    cannot become a cycle.
+    one name for it, and `farms` imports nothing from this package *at module
+    level*, so importing it here costs no cycle today. The qualifier is load-
+    bearing: `farms` does reach back into `context` from inside a function body,
+    for the ref primitives. Move those primitives to a leaf and the sentence
+    becomes true without it.
     """
     return root / SCANS / f"chukchi-{norm_ref(ref)}.png"
 

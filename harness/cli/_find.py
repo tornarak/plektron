@@ -2,7 +2,7 @@
 
 Every action here is a *search over a store a human then reads*. None resolves
 anything: `authority` returns every match ranked by which field caught it,
-because 51 sigla share 34 names and a single answer would be manufactured, and
+because 52 sigla share 34 names and a single answer would be manufactured, and
 because folio 9's asterism makes the list explicitly open so no hit is a
 legitimate outcome. All exit 0 — an empty result is an answer.
 
@@ -62,7 +62,7 @@ def register(cli):
                "queries are pooled into one table with a `query` column, which is "
                "the ordinary case — a page's footnotes name half a dozen works, "
                "and asking six times is six turns against a collator's budget. "
-               "Omit to list all 73.")
+               "Omit to list all 74.")
     arg(p, "queries", nargs=-1, required=False, metavar="QUERY")
     opt(p, "--volume", default=None,
         help="volume the citation names (II or 2, either form); "
