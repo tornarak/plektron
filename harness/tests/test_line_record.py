@@ -92,6 +92,52 @@ def test_every_value_is_a_scalar(real_page):
             )
 
 
+class TestAbsentGeometryLicensesNoInference:
+    """`reading_order` ran unguarded `None` arithmetic, on every page.
+
+    `_baseline_y` returns `None` where a record has neither a `BASELINE` nor a
+    `vpos`, and two sites subtracted that directly — `_line_pitch`'s gap
+    measurement and the band-grouping loop. Both crash on such a line. The
+    omission was inconsistency rather than policy: `_x_disjoint` two functions
+    up states the rule ("a record missing an extent is treated as overlapping
+    everything... banding it would license a reorder on none"), and the sort key
+    four lines below the second site already guarded `hpos` the same way.
+
+    The corpus does not currently contain such a line — 0 of 27,595 `TextLine`s
+    in `gt/ocr` lack geometry, and the two elements that do are `TextBlock`s,
+    which `read_blocks` skips outright. So this is about ALTO from anywhere else:
+    a hand-built fixture, another tool's export, a store mid-migration.
+    """
+
+    def _recs(self):
+        """Two ordinary lines and one with no vertical position at all."""
+        return [
+            {"index": 0, "hpos": 100, "vpos": 100, "width": 400, "height": 40,
+             "baseline": "100 140 500 140"},
+            {"index": 1, "hpos": 100, "vpos": None, "width": None,
+             "height": None, "baseline": None},
+            {"index": 2, "hpos": 100, "vpos": 200, "width": 400, "height": 40,
+             "baseline": "100 240 500 240"},
+        ]
+
+    def test_line_pitch_survives_a_line_with_no_vertical_position(self):
+        from harness.lines import _line_pitch
+        assert _line_pitch(self._recs()) >= 0
+
+    def test_reading_order_survives_it_too(self):
+        from harness.lines import reading_order
+        out = reading_order(self._recs())
+        assert len(out) == 3, "a line was dropped rather than ordered"
+        assert all("y_rank" in r for r in out)
+
+    def test_the_positionless_line_is_not_silently_reordered(self):
+        """The conservative direction the module's own rule names: with no
+        evidence that it starts a new band, it does not close the open one."""
+        from harness.lines import reading_order
+        out = reading_order(self._recs())
+        assert {r["index"] for r in out} == {0, 1, 2}
+
+
 def test_the_geometry_is_typed_as_optional():
     """Not decoration. ALTO omits `HPOS` on a line the segmenter gave no box, so
     `rec["hpos"] + rec["width"]` is arithmetic on a possible `None` at every site

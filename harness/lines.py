@@ -421,9 +421,16 @@ def _line_pitch(ordered: list[dict]) -> float:
     Falls back to the median polygon height on a page with no such pair — a page
     of one line, or one with no geometry to speak of.
     """
-    gaps = sorted(_baseline_y(b) - _baseline_y(a)
-                  for a, b in zip(ordered, ordered[1:], strict=False)
-                  if not _x_disjoint(a, b))
+    # A pair where either line has no vertical position contributes no gap, on
+    # `_x_disjoint`'s rule one line up: **missing geometry licenses no
+    # inference.** `_baseline_y` returns None where a record has neither a
+    # BASELINE nor a `vpos`, and subtracting that was an unguarded crash in a
+    # function every page runs through — the omission rather than a policy, since
+    # `reading_order` below already guards `hpos` the same way.
+    pairs = ((_baseline_y(a), _baseline_y(b))
+             for a, b in zip(ordered, ordered[1:], strict=False)
+             if not _x_disjoint(a, b))
+    gaps = sorted(yb - ya for ya, yb in pairs if ya is not None and yb is not None)
     if gaps:
         return gaps[len(gaps) // 2]
     heights = sorted(r["height"] for r in ordered if r.get("height"))
@@ -480,7 +487,12 @@ def reading_order(recs: list[dict]) -> list[dict]:
     out: list[dict] = []
     band: list[dict] = []
     for r in ordered:
-        if band and (_baseline_y(r) - _baseline_y(band[0]) > tol
+        # Same rule: a line with no vertical position cannot be shown to start a
+        # new band, so it does not close the open one. Splitting on `None` was a
+        # crash, and splitting *by default* would reorder a page on no evidence.
+        y, y0 = _baseline_y(r), _baseline_y(band[0]) if band else None
+        started_new_band = (y is not None and y0 is not None and y - y0 > tol)
+        if band and (started_new_band
                      or not all(_x_disjoint(r, b) for b in band)):
             out += sorted(band, key=lambda r: (r["hpos"] if r["hpos"] is not None else 0))
             band = []
