@@ -83,9 +83,39 @@ LOOKALIKES = set("\u00B4\u2019\u02BC\u02BB\u00B7\u02E2\u2091\u04E9\u2010")
 # `data/authorities.json` \u2014 73 bibliography entries, most printed twice, once in
 # pre-1918 Russian \u2014 is what exposed this: 72 errors, no readings. Collation will hit
 # it far harder once Russian body text starts arriving.
-MARK_LICENSE = {
-    "\u0306": set("ui") | set("\u0438\u0418"),  # breve: \u016D (\u00A72.2), \u012D (\u00A72.6); \u0439/\u0419 Cyrillic short i
+# The bases on which a mark is ordinary European or Russian orthography rather than
+# notation an editor read off a letterform. `proposal_check._notation_codepoints`
+# reads it to decide what a `resolved` field must account for: that field is an
+# account of a mark the reader *settled at the raster*, so asking for one about \u0439 in
+# a Russian title or \u00FC in a German one demands an invented account, indistinguishable
+# from a real one. `MARK_LICENSE` reads the breve row for the opposite purpose. One
+# source, so the two cannot drift apart about which bases those are.
+#
+# **An exclusion list, not a licensed-base list, and that is the whole point.** A
+# diaeresis on a base named nowhere here is still counted, so a novel one is a loud
+# question rather than a silent skip \u2014 the same call `MARK_LICENSE` makes below
+# against a "consult the table only for Latin bases" script test.
+#
+# Measured off `gt/ocr`, not assumed. Diaeresis: \u00E4 162, \u00C4 8, \u00EB 1 are Tier-1 (\u00A72.3,
+# and the alphabet key on `1-030` sets no other base); \u00F6 34, \u00FC 6, \u00DC 1 are
+# Nordenski\u00F6ld, M\u00FCller and L\u00FCtke, and \u00EF 2 is `Ma\u00EFn` on `1-175`, hiatus in a Russian
+# river name. The one \u00EB is `Ge\u00EBk Land` on `1-048`, beside `Ve\u1D4B\u00F1` on the same line \u2014
+# Tier-1, which is why `e` is absent here and `a` with it.
+ORTHOGRAPHIC_BASES = {
+    "\u0306": "\u0438\u0418",        # \u0439/\u0419 Cyrillic short i. NOT u/i: \u016D (\u00A72.2) and \u012D (\u00A72.6) are sorts
+    "\u0308": "oOuUiI",    # \u00F6 \u00FC \u00EF in European names. NOT a/e: \u00E4 and \u00EB are sorts (\u00A72.3)
 }
+
+MARK_LICENSE = {
+    "\u0306": set("ui") | set(ORTHOGRAPHIC_BASES["\u0306"]),  # breve: \u016D (\u00A72.2), \u012D (\u00A72.6); \u0439/\u0419 Cyrillic short i
+}
+# U+0308 deliberately has **no** `MARK_LICENSE` row, and adding one would be a
+# defect rather than the next tidy step. `MARK_LICENSE` is a hard gate \u2014 `corpus
+# normalize` exits 1, `tei validate` raises, `ocr restore` refuses to write \u2014 and
+# the diaeresis's non-Tier-1 bases are ordinary Latin vowels that European names
+# use freely, so a row would fail on all 43 attested \u00F6/\u00FC/\u00DC/\u00EF. keying_spec.md says
+# the opposite in as many words at `Nordenski\u00F6ld`: "Gate: none." The breve can be
+# gated only because its non-Tier-1 bases are a closed foreign-script pair.
 
 
 # The licensed marks as one character class, so *finding* them is a C-level scan
@@ -1347,6 +1377,61 @@ def cyrillic(token: str) -> bool:
     return any("Ѐ" <= c <= "ӿ" for c in token)
 
 
+def bears_inventory(token: str) -> bool:
+    """Does this token carry an inventory glyph *as notation*?
+
+    `any(c in INVENTORY_CHARS for c in tok)` is the test this replaces, and it
+    asks a character-level question about a fact that depends on the base. Two of
+    the inventory's combining marks are also the commonest diacritics in ordinary
+    European spelling — U+0306 (й under NFD) and U+0308 (ö, ü, ï) — so a bare
+    membership test reads `Nordenskiöld`, `für` and `Maïn` as Chukchi. Measured
+    over `gt/ocr`: **43 occurrences across 12 types**, every one a German or
+    Swedish name, and they were entering the frequency tables `keying_spec.md`
+    §5.1 cites. `3-146` reported 13 Tier-1 types on a page that has none.
+
+    `ORTHOGRAPHIC_BASES` is the discount, so this and
+    `proposal_check._notation_codepoints` cannot drift about which bases those
+    are. What still counts: `ä` and `ë` (§2.3), `ŭ` and `ĭ` (§2.2, §2.6), and any
+    mark on a base the table does not name — the table is an exclusion list so a
+    novel base stays loud.
+
+    **Both halves of `proposal marks` must apply this, and the reason is that
+    they already disagreed without it.** `native_corpus_context` builds the prior
+    from `gt/ocr` and `marks._proposal_tokens` builds the batch from
+    `proposal.json`; only the first excluded Cyrillic, so a Russian token counted
+    in the batch and not in the prior, and the comparison was between two
+    populations selected by different rules. A before/after is not a measurement
+    unless both sides were made the same way.
+    """
+    return bool(inventory_glyphs(token))
+
+
+def inventory_glyphs(text: str) -> list[str]:
+    """Every inventory character in `text` that is there *as notation*, in order.
+
+    The primitive `bears_inventory` is the boolean of, and the one selection rule
+    every arm that asks "is this Tier-1?" must share. Four of them do:
+    `native_corpus_context` (the prior), `marks.page_tokens` (the batch),
+    `review.tier1_glyphs` (which line the reviewer's attention is worth most on)
+    and `context.tier1_terms` (which token the generator wraps as a handle).
+    They were four separate `any(c in INVENTORY_CHARS …)` tests and they did not
+    agree: only two excluded Cyrillic, none discounted the diaeresis, so the same
+    word could be a Tier-1 handle in the reading view, a native token in one
+    frequency table and absent from another.
+
+    **Not `detect_all`'s arms, deliberately.** Transcription detection is a
+    declared floor and CLAUDE.md sanctions its over-inclusiveness in as many
+    words — "a hit is never a verdict — an inventory mark fires on ordinary
+    German too". Firing there costs a reviewer one glance; asserting Tier-1 here
+    mints a handle, moves a published prior, or tells a reviewer a line carries
+    notation it does not.
+    """
+    nfd = unicodedata.normalize("NFD", text)
+    return [c for i, c in enumerate(nfd)
+            if c in INVENTORY_CHARS
+            and not (i and nfd[i - 1] in ORTHOGRAPHIC_BASES.get(c, ""))]
+
+
 def native_corpus_lines(root: Path = Path(".")) -> list[tuple[str, str, str]]:
     """(ref, line index, token) — `native_corpus` with the line each token sat on.
 
@@ -1392,8 +1477,7 @@ def native_corpus_context(root: Path = Path(".")) -> list[dict]:
         for rec, line in zip(recs, texts, strict=True):
             for m in TOKEN.finditer(line):
                 tok = m.group().strip(EDGE_PUNCT)
-                if tok and not cyrillic(tok) and any(c in INVENTORY_CHARS
-                                                      for c in tok):
+                if tok and not cyrillic(tok) and bears_inventory(tok):
                     out.append({"ref": ref, "line": str(rec["index"]),
                                 "token": tok, "text": line})
     return out

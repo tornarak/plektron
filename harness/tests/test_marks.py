@@ -75,3 +75,58 @@ def test_input_need_not_be_pre_normalized():
     """Precomposed `ĭ` (U+012D) decomposes to a licensed pair; the caller should
     not have to know that."""
     assert unlicensed_marks("ĭ") == []
+
+
+# ------------------------------------------- selecting Tier-1 tokens
+
+
+@pytest.mark.parametrize("token", [
+    "Nordenskiöld", "Müller", "Lütke", "für", "Völker", "Maïn", "Über",
+])
+def test_a_european_name_is_not_a_native_token(token):
+    """U+0308 is an inventory member and also the commonest diacritic in German
+    and Swedish, so a character-level membership test read these as Chukchi —
+    43 occurrences over 12 types in gt/ocr, entering the frequency tables
+    keying_spec.md §5.1 cites."""
+    from harness.detectors import bears_inventory
+    assert not bears_inventory(nfd(token))
+
+
+@pytest.mark.parametrize("token", ["Черкасскій", "Чукотскій", "Край", "Ушканій"])
+def test_pre_reform_russian_is_not_a_native_token(token):
+    """й is и + U+0306, an inventory member meant as a length mark. Same class
+    as the diaeresis above and the reason `cyrillic` exists."""
+    from harness.detectors import bears_inventory
+    assert not bears_inventory(nfd(token))
+
+
+@pytest.mark.parametrize("token", ["vaˊɪrg̣ɪt", "ačaiˊkᴇlat", "kŭmɪˊñɪn",
+                                   "Geëk", "vaˊlwɪjŋ-ä"])
+def test_the_inventory_itself_still_selects(token):
+    """The discount is per base, not per mark. `ä`/`ë` are §2.3 sorts and
+    `ŭ`/`ĭ` are §2.2/§2.6 sorts — an exception keyed on the mark alone would
+    have taken the inventory with it."""
+    from harness.detectors import bears_inventory
+    assert bears_inventory(nfd(token))
+
+
+def test_a_mark_on_an_unnamed_base_still_selects():
+    """`ORTHOGRAPHIC_BASES` is an exclusion list, so a base nobody has ruled on
+    stays loud rather than being skipped."""
+    from harness.detectors import bears_inventory
+    assert bears_inventory(nfd("ÿ"))
+
+
+def test_both_halves_of_the_comparison_select_the_same_way():
+    """`proposal marks` compares a batch against a prior, and the two were built
+    by different rules: only the prior excluded Cyrillic, so a Russian token
+    counted on one side and not the other. A before/after is not a measurement
+    unless both sides were made the same way."""
+    import inspect
+
+    from harness import detectors, marks
+    prior = inspect.getsource(detectors.native_corpus_context)
+    batch = inspect.getsource(marks.page_tokens)
+    for src in (prior, batch):
+        assert "bears_inventory(tok)" in src
+        assert "cyrillic(tok)" in src

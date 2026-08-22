@@ -174,6 +174,31 @@ def _notation_codepoints(text: str) -> list[int]:
     would make it invisible for having the wrong identity instead of a
     licensing problem.
 
+    **One exception, and it is a base allow-list rather than a script test.**
+    A mark sitting on one of `detectors.ORTHOGRAPHIC_BASES`' bases is ordinary
+    European or Russian spelling, not a mark anybody read off a letterform:
+    U+0306 on и is Cyrillic й under NFD, U+0308 on o/u/i is ö/ü/ï in a German or
+    Russian name. Both were counted for a long time, and readers paid for it —
+    six proposals before `3-147` carry near-identical boilerplate in `resolved`
+    narrating the Cyrillic decomposition (`1-031`, `1-086`, `1-147`, `1-359`,
+    `3-038`, `3-106`), and `3-146` hit the pair eleven times on one page. That is
+    the field's own purpose inverted: it exists so a reader accounts for the
+    marks it *settled*, which is why a handled line is exempt six lines below;
+    demanding an account of й or of `Müller` asks for an invented one,
+    indistinguishable from a real account.
+
+    **What stays counted is the point.** `ŭ`/`ĭ` are §2.2/§2.6 sorts, and `ä`/`ë`
+    are §2.3 sorts — the single `ë` in the corpus is `Geëk Land` on `1-048`,
+    beside `Veᵋñ` on the same line. All still answer for themselves. So does a
+    diaeresis on any base the table does not name, the table being an exclusion
+    list precisely so a novel one is loud rather than skipped.
+
+    The breve row is also `MARK_LICENSE`'s, and the reasoning for an explicit
+    base set over a "consult the table only for Latin bases" script test is
+    written there in full — along with why the diaeresis gets no `MARK_LICENSE`
+    row of its own, which is a different question from this one and answered the
+    other way.
+
     Also counts a word-medial ASCII A/E/I/L (`detectors.MEDIAL_CAPS`, the same
     check `harness tei context` already runs over OCR text) as a codepoint present.
     This is what `1-100` line 37 needed and did not have: a plain 'A' typed for
@@ -184,9 +209,12 @@ def _notation_codepoints(text: str) -> list[int]:
     — either it now matches `resolved` correctly, or `fix()` sees two dangling
     items and correctly refuses to guess instead of pairing them wrong.
     """
+    from .detectors import ORTHOGRAPHIC_BASES
+
     nfd = unicodedata.normalize("NFD", text)
-    codepoints = [ord(ch) for ch in nfd
-                 if ch in NOTATION_CHARS or unicodedata.category(ch) == "Mn"]
+    codepoints = [ord(ch) for i, ch in enumerate(nfd)
+                 if (ch in NOTATION_CHARS or unicodedata.category(ch) == "Mn")
+                 and not (i and nfd[i - 1] in ORTHOGRAPHIC_BASES.get(ch, ""))]
     codepoints += [ord(nfd[i]) for i in medial_cap_positions(nfd)]
     return codepoints
 

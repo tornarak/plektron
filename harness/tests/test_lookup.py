@@ -530,6 +530,51 @@ def test_a_handled_line_is_not_asked_to_narrate_a_reading_it_did_not_make(tmp_pa
     assert any("no resolved field" in i for i in mixed)
 
 
+def test_cyrillic_short_i_is_not_notation_to_account_for(tmp_path):
+    """й is `и` + U+0306 under NFD — a letter of the Russian alphabet, not a mark
+    a reader settled at the raster. Demanding `resolved` for it asks for an
+    invented account, which is what six proposals before `3-147` supplied:
+    near-identical boilerplate narrating the decomposition. The pair is
+    `MARK_LICENSE`'s, so this arm and `unlicensed_marks` cannot disagree."""
+    russian = _issues(tmp_path, {"text": nfd("Якутскіе Казаки, Москва, 1883.")})
+    assert not any("no resolved field" in i for i in russian)
+
+
+def test_the_breve_exception_does_not_reach_the_tier1_sorts(tmp_path):
+    """Only the Cyrillic bases are exempt. `ŭ`/`ĭ` are §2.2/§2.6 sorts on Latin
+    bases and still answer for themselves — an exception that swallowed the mark
+    wholesale would take the inventory with it."""
+    latin = _issues(tmp_path, {"text": nfd("kŭmɪˊñɪn")})
+    assert any("no resolved field" in i for i in latin)
+
+
+def test_a_diaeresis_in_a_european_name_is_not_notation(tmp_path):
+    """ö, ü and ï are ordinary spelling in the names this book cites constantly —
+    Nordenskiöld, Müller, Lütke, and `Maïn` on `1-175`. 43 occurrences in gt/ocr
+    against no row for any of those bases in the alphabet key on `1-030`."""
+    german = _issues(tmp_path, {"text": nfd("13. Müller, G. F. Description of")})
+    assert not any("no resolved field" in i for i in german)
+    swedish = _issues(tmp_path, {"text": nfd("Nordenskiöld reports that")})
+    assert not any("no resolved field" in i for i in swedish)
+
+
+def test_the_diaeresis_exception_does_not_reach_a_or_e(tmp_path):
+    """`ä` and `ë` ARE §2.3 sorts, so they still answer for themselves. The one
+    `ë` in the corpus is `Geëk Land` on `1-048`, on the same line as `Veᵋñ` —
+    an exception keyed on the mark rather than the base would have lost it."""
+    for word in ("Geëk Land", "vaˊlwɪjŋ-ä"):
+        got = _issues(tmp_path, {"text": nfd(word)})
+        assert any("no resolved field" in i for i in got), word
+
+
+def test_a_diaeresis_on_an_unnamed_base_is_still_asked_about(tmp_path):
+    """The table is an exclusion list, so a base nobody has ruled on is a loud
+    question rather than a silent skip. This is the property a licensed-base
+    list would have inverted."""
+    got = _issues(tmp_path, {"text": nfd("ÿ")})
+    assert any("no resolved field" in i for i in got)
+
+
 def test_an_expansion_is_not_a_correction(tmp_path):
     """**The reason expansion happens on write and not when the page is served.**
 

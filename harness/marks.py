@@ -75,6 +75,8 @@ from .detectors import (
     EDGE_PUNCT,
     INVENTORY_CHARS,
     TOKEN,
+    bears_inventory,
+    cyrillic,
     native_corpus,
     native_corpus_lines,
 )
@@ -385,7 +387,12 @@ def page_tokens(path: Path) -> list[tuple[str, str]]:
         text = _nfd(rec.get("text", ""))
         for m in TOKEN.finditer(text):
             tok = m.group().strip(EDGE_PUNCT)
-            if tok and any(ch in INVENTORY_CHARS for ch in tok):
+            # **The same selection as the prior's, and it has to be.** This is
+            # the batch half of the comparison `native_corpus_context` supplies
+            # the other half of; the two were selected by different rules until
+            # now — only the prior excluded Cyrillic — so a Russian token was
+            # counted here and not there. See `detectors.bears_inventory`.
+            if tok and not cyrillic(tok) and bears_inventory(tok):
                 out.append((idx, tok))
     return out
 

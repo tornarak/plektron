@@ -50,7 +50,13 @@ from lxml import etree
 # character diffs), which is a different subject entirely.
 from . import corrections as _corr
 from .atomic import tmp_for
-from .detectors import DOT_ABOVE_G, INVENTORY_CHARS, LOOKALIKES, unlicensed_marks
+from .detectors import (
+    DOT_ABOVE_G,
+    LOOKALIKES,
+    bears_inventory,
+    inventory_glyphs,
+    unlicensed_marks,
+)
 from .lines import DEFAULT_STORE, alto_for_lines, page_lines, raster_path
 from .lookup import HANDLE
 from .paths import crops_dir, decisions_path, html_path, page_dirs, proposal_path
@@ -94,7 +100,7 @@ def classify(catmus: str, claude: str) -> str:
         tags.append("non_ascii")
     else:
         tags.append("ascii_only")
-    if any(c in INVENTORY_CHARS for c in claude):
+    if bears_inventory(claude):
         tags.append("inventory")
     if any(c in LOOKALIKES for c in claude):
         tags.append("lookalike_in_proposal")
@@ -120,8 +126,16 @@ def tier1_glyphs(text: str) -> str:
     — so a line of pure Tier-1 in those letters produces no glyph here at all. An
     unflagged line is "nothing detected", never "no notation present", and a UI that
     lets the two read alike would turn the flag into an invitation to skip lines.
+
+    **A mark on an orthographic base is not one of them**, which is why this goes
+    through `detectors.inventory_glyphs` rather than testing `INVENTORY_CHARS`
+    directly. `й` is `и` + U+0306 and `ü` is `u` + U+0308, both inventory members
+    under NFD, so a line of pre-reform Russian or a German title was flagged as
+    carrying notation and sent the reviewer looking for a Chukchee form that was
+    never there — `3-149`'s `служилый` / `приказный` were reported exactly so.
+    The floor above is about what this *misses*; this is about what it invents.
     """
-    return "".join(dict.fromkeys(c for c in text if c in INVENTORY_CHARS))
+    return "".join(dict.fromkeys(inventory_glyphs(text)))
 
 
 def load_proposal(ref: str, root: Path = Path(".")) -> dict[int, dict]:

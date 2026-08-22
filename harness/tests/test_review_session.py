@@ -728,3 +728,46 @@ def test_a_whole_save_patches_only_the_listed_lines(flagged):
     other = json.loads(decisions_path("2-047", flagged).read_text())["lines"]
     assert other["1"]["note"] == "fine"
     assert other["1"]["text"] == "human 2-047 1"
+
+
+# ------------------------------------- what the Tier-1 flag may not invent
+
+
+def nfd(s: str) -> str:
+    import unicodedata
+    return unicodedata.normalize("NFD", s)
+
+
+def test_pre_reform_russian_does_not_flag_a_line_as_tier1():
+    """`3-149` L3-4 set `служилый` and `приказный`. Both carry й, which is и +
+    U+0306 under NFD and so an INVENTORY_CHARS member — the flag fired and sent
+    the reviewer hunting for a Chukchee form that was never on the line.
+
+    The flag's documented weakness is that it MISSES notation (four inventory
+    members are unmarked ASCII). Inventing notation is a different fault and a
+    worse one: a floor that a reviewer learns to distrust upward is no floor."""
+    from harness.review import tier1_glyphs
+    assert tier1_glyphs(nfd("(служилый приказный человѣкъ)")) == ""
+
+
+def test_a_german_name_does_not_flag_a_line_as_tier1():
+    """U+0308 is an inventory member and German's commonest diacritic."""
+    from harness.review import tier1_glyphs
+    assert tier1_glyphs(nfd("Müller, Nordenskiöld and Lütke")) == ""
+
+
+def test_a_real_tier1_line_still_flags():
+    """The floor still has to catch what it was built for. `ä`/`ë` are §2.3
+    sorts and are not discounted with the German diaereses."""
+    from harness.review import tier1_glyphs
+    assert tier1_glyphs(nfd("vaˊɪrg̣ɪt")) != ""
+    assert tier1_glyphs(nfd("Geëk Land")) != ""
+
+
+def test_the_flag_and_the_frequency_tables_agree():
+    """They are the same question asked by two arms, and they disagreed: the
+    review flag counted Cyrillic that every frequency table excluded."""
+    from harness.detectors import bears_inventory
+    from harness.review import tier1_glyphs
+    for s in ("служилый", "Müller", "vaˊɪrg̣ɪt", "Geëk", "kŭmɪˊñɪn", "ÿ"):
+        assert bool(tier1_glyphs(nfd(s))) == bears_inventory(nfd(s)), s
