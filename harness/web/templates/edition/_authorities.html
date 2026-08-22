@@ -9,8 +9,8 @@
    the entity store's `authority` field, and nothing inferred from the name.
    A `<ul>` rather than a `<dl>`: the leaf marks have to sit in the flow with the
    entries, and a `<dt>`/`<dd>` pair has nowhere to put one. #}
-<ul class='authorities'>
-{% for it in items %}
+{% macro authority_items(stream) %}
+{% for it in stream %}
   {% set e = it.entry %}
   <li class='{{ 'authority' if e else 'leaf-only' }}'>
     {% if it.leaf %}{{ leafmark(it.leaf) }}{% endif %}
@@ -24,8 +24,45 @@
         if e.year %} · {{ e.year }}{% endif %}{%
         if e.lang %} · {{ e.lang }}{% endif %}</p>
     </div>
-    {% if e.folio %}<span class='page-no'>{{ e.folio }}</span>{% endif %}
+    {# **No `page-no` here, unlike `_loi.html`, and the difference is in the
+       data.** An LoI entry's folio is where the *figure* appears — Sledge on
+       folio 17, printed on leaf 1-014 — so it is a second fact worth its own
+       column. An authority's folio is where the *entry* is printed, which is
+       its leaf's folio and nothing else: across all 78 records it is a pure
+       function of `ref`, every 1-023 entry folio 3 and every 1-024 folio 4,
+       without one exception. Printing it per entry restated the leaf mark on
+       the left 73 times over. The leaf mark keeps it, once per leaf, where it
+       is also the anchor. #}
     {% endif %}
   </li>
 {% endfor %}
+{% endmacro %}
+
+<ul class='authorities'>
+{{ authority_items(items) }}
 </ul>
+
+{# **The tail is the list's own deferral, made followable.** Folio 9 closes with
+   an asterism and "For other authorities see references in the text", so a work
+   cited in the body with no entry above is expected rather than missing. Where
+   the store has since keyed one off the page it *is* printed on, it belongs
+   here — reachable from the list that points at it, but never inside it.
+
+   The heading is not decoration. Run silently on to the end of the `<ul>` and
+   the page would say that folios 3–9 hold 77 works, which is exactly the
+   distinction `source.count` is kept at 73 to preserve. Same markup as the list
+   above, through one macro, so the two cannot drift into rendering an entry
+   differently depending on which half it landed in. #}
+{% if tail_items %}
+<div class='authorities-tail'>
+  <p class='draft-note'><span class='draft-tag'>not printed here</span> — the
+  section above closes with the book's own provision, <em>{{
+  '"For other authorities see references in the text."' }}</em> These are works
+  the store has keyed from the text it points at, printed elsewhere in the book
+  and not in {{ run.title | lower }}. The folio in the margin is where each one
+  is actually set.</p>
+  <ul class='authorities'>
+  {{ authority_items(tail_items) }}
+  </ul>
+</div>
+{% endif %}

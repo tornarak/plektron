@@ -37,7 +37,7 @@ the project's rules, `CLAUDE.md` governs; for the character inventory,
 | `scans/w-figs-blotted/` | training rasters: figures painted **white**. Derived, ignored; the 580 figure-less pages are symlinks | `zones blot`, `views build w-figs-blotted` |
 | `scans/w-figs/` | the raster of every page carrying a `gt/fig/` ALTO — a selection, not a view. Derived, ignored | `views build w-figs` |
 | `scans/w-ocr/` | raster beside ALTO for every page a human has been through. Membership is `gt/ocr/`; the ALTO link points at the `ocr/` **view**, so promoting a page needs no rebuild. Derived, ignored | `views build w-ocr` |
-| `train/bogoras-seg/` | training scratch: the symlink farm, its two `.lst` files, and each run's checkpoints. Derived, ignored, **read by nothing once training ends** | `zones assemble`, `ketos segtrain` |
+| `train/bogoras-seg/` | training scratch, in two halves: `data/` is the symlink farm and its two `.lst` files, `model/` each run's checkpoints. Nothing sits in the base. Derived, ignored, **read by nothing once training ends** | `zones assemble`, `ketos segtrain` |
 | `models/bogoras-seg/` | the models this project trains — **tracked**, each with the split it saw as `<model>.train.lst`/`.eval.lst` and a small `<model>.json` | `zones install --commit` |
 | `models/` (rest) | downloaded third-party weights, 675 MB, ignored | not authored here |
 
@@ -534,8 +534,13 @@ spelling because `blla.segment` does. And `no_legacy_polygons` moved from an
 unset silently restores the slow polygon path.
 
 **`predict_all` parallelizes across processes, and `predict_workers` says how
-many.** This is the one sweep in the harness that does not use `parallel.pmap`,
-because its cost is not a decode: a page is ~17 s, `blla.segment` ~15 of it and
+many.** It is not the only such sweep any more — `zones.predicted_zones` does the
+same for `zones score` and `zones install`, on the same evidence — so the sizing
+rule, the VRAM constant and the worker stderr capture now live in
+`parallel.py` (`gpu_workers`, `VRAM_PER_WORKER`, `capture_stderr`,
+`worker_output`), which sits under both; `zones` cannot import `recognize`, the
+graph running the other way. `predict_workers` remains as the name this document
+and `VERBS.md` cite. What the two share is that their cost is not a decode: a page is ~17 s, `blla.segment` ~15 of it and
 recognition ~1.5, and the segmenter's time is scipy `correlate1d`, shapely
 `intersection` and kraken's own boundary tracing — vectorization on one core, with
 the GPU at ~4.5% throughout. Only ~55% of that is GIL-free, so threads plateau at
@@ -545,7 +550,7 @@ processes to feed a 1.5 s phase.
 
 `spawn`, not fork — a forked child inherits a CUDA context it cannot use. The
 worker count is capped by **free VRAM as well as cores**, read off the card at run
-time: a worker holds ~1.4 GB of CUDA context (the weights are 22 MiB of it), and a
+time: a worker holds ~1.6 GB of CUDA context (the weights are 22 MiB of it), and a
 constant here would be wrong on the next machine, the same argument the column
 measure rests on. An explicit `--jobs` wins outright, including one that will not
 fit, which is `predict_skip`'s `single` rule applied to a different resource.
@@ -785,8 +790,8 @@ route because a full page as a data URI is ~10 MB of markup.
 The client sends a column index and never an x — the geometry is re-measured
 server-side on save, so a zone of the wrong measure has no field to travel in.
 
-**`authorities.py`** — search over the book's own 74-work bibliography. Returns every
-hit ranked and resolves nothing: 52 sigla share 34 names, so one answer would be
+**`authorities.py`** — search over the book's own 95-work bibliography. Returns every
+hit ranked and resolves nothing: 67 sigla share 42 names, so one answer would be
 manufactured, and no hit at all is legitimate because the list is explicitly open.
 
 **`marks.py`** — is a reading's character distribution plausible, before a human

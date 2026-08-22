@@ -640,16 +640,17 @@ keyed with a BibTeX-style moniker (`bogoras1900`, `krause1882`, `nordquist1882a`
 third apparatus store alongside `loi.json` and `toc.json`, and apparatus for the same
 reason — reachable without parsing TEI, and the annotation pass is its consumer.
 
-**73 is the printed count, not the record count.** The store holds **74**, the
-extra being the unprinted `jochelson1905` the provision below admits. Which
-number a sentence wants turns on whether it is about folios 3–9 or about what a
-reader returns: `source.count` is 73 and `read_from` is true of those alone,
-while `find authority` bare lists 74 and all 74 resolve to a `source:` entity.
-The two have been conflated in this file and in `authorities.py` before.
+**73 is the printed count, not the record count.** The store holds **95**, the
+extras being the twenty-two `source.unprinted` records the provision below
+admits — `jochelson1905`, plus all twenty-one of the chapter XXIII footnote
+bibliography. Which number a sentence wants turns on whether it is about folios
+3–9 or about what a reader returns: `source.count` is 73 and `read_from` is true
+of those alone, while `find authority` bare lists 95. The two have been conflated
+in this file and in `authorities.py` before.
 
 `harness find authority` is the reader. It searches `cited_as`, then `author`, then the
 titles, then the printed blocks, reports which of those caught each hit, and
-**returns all of them** — 52 sigla over 34 names means a single answer would be
+**returns all of them** — 67 sigla over 42 names means a single answer would be
 manufactured, and no hit at all is a legitimate outcome on an open list. It
 resolves nothing; a human reads the candidates.
 
@@ -675,8 +676,8 @@ not a string**, because the surface form in the body is not the form printed her
   `Krasheninnikoff, II, p. 49.` in the same apparatus, so the comma carries no
   information: `authorities.parse_citation` splits on commas and whitespace alike and
   asks the same question of every token. Hence `volume` as its own field, and hence a
-  siglum printed over several volumes splits into one entry per volume — 34 printed
-  sigla, 52 `cited_as` entries.
+  siglum printed over several volumes splits into one entry per volume — 42 printed
+  sigla, 67 `cited_as` entries.
 - **Most references are not sigla at all.** They are indirect prose — "Krause reports
   that…" — carrying the name alone, no volume, no short title, no footnote. A resolver
   keyed on the footnote form misses the majority. `name` is what reaches them, and it
@@ -706,9 +707,26 @@ where a figure outside LoI 1–302 would be a defect.
 edit — and `source.unprinted` names every record keyed from the body instead, so
 `records = count + len(unprinted)` and `read_from` remains true of the 73 and of
 nothing else. Such a record carries `ref: null`, `folio: null`, `printed: []`, and
-its `note` says why it is there; `apparatus.entries_for` and `edition runs` both
-filter on `ref`, so it renders on no leaf and is invisible to the span gate. The
-first is **`jochelson1905`**, *The Koryak* — Jesup Vol. VI, cited 36 times in parts
+its `note` says why it is there; `apparatus.entries_for` filters on `ref`, so it
+renders on no leaf.
+
+**Null `ref` records the absence of a printed block, and nothing else.** It used
+to do double duty: the span gate ran in both directions, so *any* record naming a
+leaf outside the `authorities` run failed `edition runs`, and dropping `ref` was
+the only way to admit one. That made a record about rendering rather than about
+the print, and it could not express the case that actually arrived — a work
+printed in the book but not in folios 3–9. The gate now runs **one way**: a run
+demands every leaf it names be witnessed, and the store may hold more. So a
+body-printed work keeps its `ref`, its `folio` and its `printed` block, and stays
+off the leaf for the reason it always should have — `entries_for` resolves the
+leaf to a run first, and no run covers it. The worked case is the **chapter XXIII
+footnote on `3-146`/`3-147`** (folios 680–681): twenty-one numbered works, most
+set twice as the front list is, closing with the very sentence folio 9 closes
+with. It is what the asterism points at, and it is a text page rather than an
+apparatus leaf, so it reaches the edition through `gt/ocr` → TEI; a run over it
+would render the bibliography a second time.
+
+The first unprinted record is **`jochelson1905`**, *The Koryak* — Jesup Vol. VI, cited 36 times in parts
 2 and 3 and impossible in part 1's list, which went to press the year before the
 work appeared. It exists so that `Vol. VI, Jochelson, The Koryak, p. 117.`
 resolves when those parts are collated, and it asserts nothing about the print.
@@ -751,6 +769,25 @@ Three properties of that number:
   `nordquist1882b`'s DOI is the 1880 separate printing, `murdoch1884`'s scan the
   1890 separate issue. Modern facsimile reprints, by contrast, are **not** recorded
   — a Cambridge Library Collection DOI names a 2013–14 edition, not Bogoras's source.
+
+**The chapter XXIII twenty-one were identified separately, and by hand.** No sweep
+reaches them: they are Russian books and journal runs living on prlib.ru,
+elib.tomsk.ru and Commons — the hand work against library catalogues the first
+property above describes. **Twenty of the twenty-one now carry an identification** in
+`note`, `#llm` and unratified like every other, and **eight a located scan**;
+`anon1856` is *searched and not found* and stays so, an anonymous article in a
+`Вѣстникъ ИРГО` volume whose contents are not online, where the one 1856 Chukchee
+item that does surface is a different title under a named author.
+
+Two of the identifications **changed how a printed fact reads**, which is the return
+on doing them at all: `baramygin1855`'s bare `57`, set by both witnesses, is the
+publication year 1857 and not a volume — the work is in `Записки Сибирскаго отдѣла`
+кн. IV, 1857 — and its `1855`, which the English witness alone supplies, is the year
+of the *journey*, printed in the work's own title. `pilgrim1887`'s English `(monthly)`
+is wrong about a weekly, so a merge of the two blocks would have carried the error
+into the record silently. One near-miss of the second kind above was caught and is
+recorded rather than filed: `muller1750`'s title resolves on prlib to the **1787**
+second edition.
 
 One reading is unresolved and flagged in the file: `melikoff1896`'s Russian quoted
 title closes with a mark whose form is not separable at this magnification. That is

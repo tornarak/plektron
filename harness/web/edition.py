@@ -326,8 +326,11 @@ def _neighbours(request: Request, ref: str) -> tuple[str, str]:
 
 
 def _run_leaves(run: dict, root: Path) -> list[dict]:
-    """One record per leaf of a run: its anchors, its folio if anything witnesses
-    one, and the entries the store records as printed on it.
+    """`(leaves, tail)` — one record per leaf of the run, then the entries the
+    store records as printed on a leaf the run does not cover.
+
+    Each record carries its anchors, its folio if anything witnesses one, and its
+    entries decorated for display.
 
     **Every leaf gets a record, including one the store says nothing about.** The
     anchor is what a redirect lands on, and a leaf with no anchor is a redirect
@@ -366,10 +369,11 @@ def _run_leaves(run: dict, root: Path) -> list[dict]:
     by_ref = (dict(zip([ui.norm_ref(r) for r in src_refs], printed, strict=True))
               if len(printed) == len(src_refs) else {})
 
-    out = []
-    for ref in [ui.norm_ref(r) for r in run.get("refs") or []]:
+    refs = [ui.norm_ref(r) for r in run.get("refs") or []]
+
+    def _leaf(ref: str) -> dict:
         folio = apparatus.folio_of(ref, index)
-        out.append({
+        return {
             "ref": ref,
             "anchor": apparatus.anchor("leaf", ref),
             "folio": folio,
@@ -378,8 +382,23 @@ def _run_leaves(run: dict, root: Path) -> list[dict]:
             "editor": ui.leaf_source(ref, root)[1] == "ed",
             "entries": [_decorate(e, kind, root, index, by_authority, by_plate)
                         for e in entries_by_ref.get(ref, [])],
-        })
-    return out
+        }
+
+    # **The tail is what the printed list's own closing note points at.** An open
+    # list defers — folio 9 ends Authorities Quoted with "For other authorities
+    # see references in the text" — and the store may hold a work printed
+    # somewhere the run does not cover. Those entries have a `ref`, so they are
+    # not the `jochelson1905` case (no printed block at all, `ref: null`, and
+    # nothing to render); they are printed, just not on a leaf of this list.
+    #
+    # They are kept OUT of `leaves` deliberately. `leaves` is the run's span —
+    # it drives the scan viewer and the page's own "over N leaves (A–B)" line —
+    # and folding a folio-680 entry into it would make the run claim a leaf the
+    # printed list does not contain. The template renders the tail under its own
+    # heading for the same reason: appended silently, the page would assert that
+    # folios 3–9 hold 77 works, undoing the distinction `source.count` keeps.
+    tail = [_leaf(ref) for ref in sorted(entries_by_ref) if ref not in refs]
+    return [_leaf(ref) for ref in refs], tail
 
 
 def _run_items(leaves: list[dict]) -> list[dict]:
@@ -517,7 +536,7 @@ def run_page(request: Request, run_id: str):
         raise HTTPException(404, f"no run {run_id!r} in data/runs.json")
     head = ui.norm_ref((run.get("refs") or [""])[0])
     prev, next_ = _neighbours(request, head)
-    leaves = _run_leaves(run, root)
+    leaves, tail = _run_leaves(run, root)
     # The alphabet run is the one whose page is not a list. Its store holds
     # grids as well as entries, and the chart joins them to `ipa.RULES`,
     # `ipa.MODERN` and the corpus's own attestation counts — four witnesses
@@ -526,6 +545,7 @@ def run_page(request: Request, run_id: str):
         request,
         "edition/run.html",
         _ctx(request, run=run, leaves=leaves, items=_run_items(leaves),
+             tail_items=_run_items(tail),
              chart=stores.alphabet_chart(root) if run.get("kind") == "alphabet" else None,
              here=run["title"],
              # `leaves` is what makes the scan button show the whole span: the

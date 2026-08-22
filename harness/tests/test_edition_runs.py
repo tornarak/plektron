@@ -580,3 +580,77 @@ def test_a_vector_leaf_wins_over_a_raster_one(tmp_path: Path):
     _write(tmp_path, "gt/page-img/chukchi-1-361.png", "x")
     _write(tmp_path, "gt/page-img/chukchi-1-361.svg", "<svg/>")
     assert ui.leaf_source("1-361", tmp_path)[0].suffix == ".svg"
+
+
+# -------------------------------------------- the open list's tail
+
+
+@pytest.fixture
+def open_list(tmp_path: Path) -> Path:
+    """Authorities Quoted over two leaves, plus one work the store records as
+    printed on a leaf the run does not cover — the case folio 9's asterism
+    admits and `3-146`'s chapter XXIII footnote bibliography actually is."""
+    _write(tmp_path, "data/authorities.json", json.dumps({
+        "source": {"refs": ["1-023", "1-024"], "count": 2,
+                   "unprinted": ["priklonsky1896"]},
+        "authorities": [
+            {"key": "steller1774", "ref": "1-023", "folio": "3",
+             "printed": [{"ref": "1-023", "text": "STELLER. Beschreibung…"}]},
+            {"key": "dall1870", "ref": "1-024", "folio": "4",
+             "printed": [{"ref": "1-024", "text": "DALL. Alaska…"}]},
+            {"key": "priklonsky1896", "ref": "3-146", "folio": "680",
+             "printed": [{"ref": "3-146", "text": "14. Приклонскій, В. Л. …"}]},
+        ],
+    }))
+    _write(tmp_path, "data/runs.json", json.dumps({"runs": [{
+        "id": "authorities", "kind": "authorities", "title": "Authorities Quoted",
+        "refs": ["1-023", "1-024"], "source": "data/authorities.json"}]}))
+    _exempt(tmp_path, "1-023", "1-024")
+    for ref in ("1-023", "1-024"):
+        _scan(tmp_path, ref)
+    return tmp_path
+
+
+def test_a_work_printed_outside_the_run_reaches_the_page(open_list: Path):
+    """The list defers to the text and the store has keyed what it defers to, so
+    the reader can follow it. Dropping the entry would leave the deferral
+    pointing at nothing this edition can reach."""
+    body = _app(open_list).get("/edition/run/authorities").text
+    assert "priklonsky1896" in body
+    assert "Приклонскій" in body
+
+
+def test_the_tail_is_marked_and_not_folded_into_the_printed_list(open_list: Path):
+    """**The marker is the point.** Appended silently, the page would say that
+    the printed section contains a work it does not — exactly the conflation
+    `source.count` is kept separate from the record count to prevent."""
+    body = _app(open_list).get("/edition/run/authorities").text
+    assert "authorities-tail" in body
+    assert "not printed here" in body
+    # The tail opens after the printed list closes, never inside it.
+    assert body.index("dall1870") < body.index("authorities-tail")
+    assert body.index("authorities-tail") < body.index("priklonsky1896")
+
+
+def test_the_tail_does_not_join_the_runs_span(open_list: Path):
+    """`leaves` drives the scan viewer and the page's own "over N leaves" line.
+    A folio-680 entry joining it would make the run claim a leaf the printed
+    list does not contain, and the scan button would offer it as one."""
+    from harness.web import edition as E
+    run = {"id": "authorities", "kind": "authorities",
+           "refs": ["1-023", "1-024"], "source": "data/authorities.json"}
+    leaves, tail = E._run_leaves(run, open_list)
+    assert [leaf["ref"] for leaf in leaves] == ["1-023", "1-024"]
+    assert [leaf["ref"] for leaf in tail] == ["3-146"]
+
+
+def test_a_record_with_no_ref_at_all_stays_off_the_page(open_list: Path):
+    """`jochelson1905`'s case: not printed in the book's lists at all, so it has
+    no printed block to show. It exists for `find authority` to resolve a body
+    citation, and rendering it would put an empty entry on the page."""
+    doc = json.loads((open_list / "data" / "authorities.json").read_text())
+    doc["authorities"].append({"key": "jochelson1905", "ref": None,
+                               "folio": None, "printed": []})
+    _write(open_list, "data/authorities.json", json.dumps(doc))
+    assert "jochelson1905" not in _app(open_list).get(
+        "/edition/run/authorities").text

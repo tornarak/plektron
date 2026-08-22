@@ -23,11 +23,36 @@
     "read_from": "scans at 300 dpi, directly",
     "count": 73,
     "unprinted": [
-      "jochelson1905"
+      "jochelson1905",
+      "acts1841",
+      "supplements",
+      "monuments",
+      "laws1857",
+      "senatearchive",
+      "holyfathers1850",
+      "pilgrim1887",
+      "slovtzov1886",
+      "northarchive1825",
+      "journaleducation1890",
+      "anon1790",
+      "fischer1768",
+      "muller1750",
+      "priklonsky1896",
+      "shcheglov1883",
+      "andriyevich1889",
+      "titov1890",
+      "manykin1883",
+      "anon1856",
+      "plenisner1852",
+      "baramygin1855"
     ],
     "closing_note": "For other authorities see references in the text.",
     "caveats": [
-      "`count` is the PRINTED list and stays 73 whatever this file holds; `unprinted` names every record keyed from the body instead of from folios 3-9, and `records = count + len(unprinted)`. Such a record carries `ref: null`, `folio: null`, `printed: []` and says why in its `note`. It exists so that a citation parts 2 and 3 make can resolve; it is not a claim that the printed list contains the work, and no consumer may read it as one. `read_from` is true of the 73 and of nothing else.",
+      "`count` is the PRINTED list and stays 73 whatever this file holds; `unprinted` names every record keyed from the body instead of from folios 3-9, and `records = count + len(unprinted)`. `unprinted` means NOT PRINTED IN Authorities Quoted — it is not a claim that the work is unprinted in the book, and no consumer may read it as one. `read_from` is true of the 73 and of nothing else; an unprinted record says in its `note` where it was read from instead.",
+      "An unprinted record with `ref: null`, `folio: null`, `printed: []` has no printed block anywhere — jochelson1905, keyed from citations parts 2 and 3 make. An unprinted record that IS printed somewhere in the book keeps its `ref`, `folio` and `printed` block, and the block is the record exactly as it is for the 73. The nulls used to be forced on every unprinted record by the span gate, which ran in both directions and failed any entry naming a leaf outside the `authorities` run; `edition runs` now checks one way only (a run demands every leaf it names be witnessed, the store may hold more), so a record no longer has to discard the leaf it is printed on in order to be admitted. Such a record still renders on no leaf: apparatus.entries_for resolves the leaf to a run first, and no run covers it.",
+      "The chapter XXIII footnote on 3-146/3-147 (folios 680-681) is a SECOND printed bibliography: twenty-one numbered works, most set twice as the front list is, opening 'Besides the sources enumerated in the list of authorities (p. 3)' and closing with the very sentence folio 9 closes with. It is what the folio-9 asterism points at. Those leaves are ordinary text pages (gt/zones _train.lst), not apparatus leaves, so their content reaches the edition through gt/ocr -> TEI; a run over them would render the bibliography twice, which is why there is no second run and why these records carry ref without one. All twenty-one are here, items 1-17 on 3-146 and 18-21 on 3-147, and the run page shows them under their own heading after the printed list rather than inside it.",
+      "MINTING A RECORD AND IDENTIFYING A WORK ARE TWO ACTS, and only the second needs an external witness. `printed` is the record, so a record built from a keyed printed block asserts nothing beyond what the page sets and needs no lookup at all. Matching an entry to a published work is enrichment and lives in `note`, `doi` and `url`, every one of them #llm until a human opens the link. Twenty of the twenty-one now carry an identification, four made while keying (acts1841, holyfathers1850, anon1790, priklonsky1896) and sixteen in a later pass against library catalogues; every one of them is #llm and unratified, and eight carry a located scan in `url`, also #llm. The twenty-first, anon1856, says the identification was SEARCHED AND NOT FOUND, and that sentence is the honest state, not a placeholder to be filled by guessing — the same rule that governed `Identification not looked up` before it. Two of the sixteen changed how a printed fact reads and say so in their own notes: baramygin1855's bare `57` is a publication year, not a volume, and its 1855 is the year of the journey; pilgrim1887's English `(monthly)` is wrong about a weekly, which is why the two witnesses are kept apart rather than merged. One near-miss was caught and is recorded rather than filed: muller1750's title resolves to an 1787 second edition on prlib.",
+      "Four keys in the 3-146/3-147 batch carry NO year — supplements, monuments, senatearchive and (in the front list's own style) any future one like them — because their entries print none. The house key form is name+year; inventing a year to satisfy it would put a fabricated fact in the one field a reader most expects to be witnessed, so the stem stands alone instead. baramygin1855 is the opposite case and is flagged in its own note: its year comes from the English witness only, the Russian block printing no date.",
       "The list is explicitly OPEN. The section closes on folio 9 with an asterism and the line recorded in closing_note, so a citation in the body with no entry here is expected and is not a reconciliation failure. This is unlike data/loi.json, where a figure outside 1-302 is a defect.",
       "`printed` is the record. The parsed fields (author, title, title_en, year, place, container) are a derived convenience and may flatten what the block actually says; when they disagree with `printed`, `printed` wins.",
       "Russian entries are in pre-1918 orthography. The letters ъ ѣ і ѳ and endings -аго/-яго are NOT misspellings and must never be 'corrected'. The collation licence to fix European-language orthography does not reach them.",
@@ -2676,6 +2701,553 @@
         "url": "https://digitallibrary.amnh.org/items/adc6d4e0-f978-4e88-80b4-00e1cb98aced",
         "provenance": "#ed"
       }
+    },
+    {
+      "key": "acts1841",
+      "cited_as": [
+        {"name": "Acts", "volume": "III", "short_title": null},
+        {"name": "Acts", "volume": "IV", "short_title": null},
+        {"name": "Acts", "volume": "V", "short_title": null}
+      ],
+      "author": null,
+      "author_printed": null,
+      "title": "Историческіе Акты, собранные и издаииые Археографической Коммисіей",
+      "title_en": "Historical Acts, collected and edited by the Archeographical Commission",
+      "lang": "ru",
+      "year": null,
+      "place": null,
+      "container": null,
+      "in": null,
+      "ref": "3-146",
+      "folio": "680",
+      "printed": [
+        {"ref": "3-146", "folio": "680", "lang": "ru", "kind": "entry",
+         "text": "1. Историческіе Акты, собранные и издаииые Археографической Коммисіей, III, IV, V."},
+        {"ref": "3-146", "folio": "680", "lang": "en", "kind": "translation",
+         "text": "Historical Acts, collected and edited by the Archeographical Commission, III, IV, V (cited Acts, III, IV, V)."}
+      ],
+      "note": "Item 1 of the chapter XXIII footnote bibliography, and the first of four records keyed from it. NOT PRINTED IN Authorities Quoted; `unprinted` says only that. `cited_as` is the entry's own declaration — it prints '(cited Acts, III, IV, V)', which folios 3-9 never do for any work, so this is the one part of the store witnessed by the print rather than reconstructed from it. TWO print facts, both recorded as printed and neither corrected, per the pre-1918 caveat above and keying_spec §2.14. First, `издаииые` is a genuine misprint for `изданные`: the ии are cleanly formed, contrasted at 4x against the нн of `собранные` in the same line, so a set wrong letter rather than wear. Second, Bogoras cites loosely — the work is published as `Акты историческіе, собранные и изданные Археографическою коммиссіею` (St Petersburg, 1841-42, 5 vols, Археографическая коммиссія), so his word order differs and he sets `Коммисіей` for `коммиссіею`, single с for double. Correcting either would erase the evidence that he cited from memory and would make his form unfindable against his own English. Identification #llm, from library catalogue records; unratified.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "supplements",
+      "cited_as": [
+        {"name": "Supplements", "volume": "III", "short_title": null},
+        {"name": "Supplements", "volume": "IV", "short_title": null},
+        {"name": "Supplements", "volume": "V", "short_title": null}
+      ],
+      "author": null,
+      "author_printed": null,
+      "title": "Дополненія къ Историческимъ Актамъ, собранныя и изданныя Археографической Коммисіей",
+      "title_en": "Supplements to the Historical Acts, collected and edited by the Archeographical Commission",
+      "lang": "ru",
+      "year": null,
+      "place": null,
+      "container": null,
+      "in": null,
+      "ref": "3-146",
+      "folio": "680",
+      "printed": [
+        {"ref": "3-146", "folio": "680", "lang": "ru", "kind": "entry",
+         "text": "2. Дополненія къ Историческимъ Актамъ, собранныя и изданныя Археографической Коммисіей, III, IV, V."},
+        {"ref": "3-146", "folio": "680", "lang": "en", "kind": "translation",
+         "text": "Supplements to the Historical Acts, collected and edited by the Archeographical Commission, III, IV, V (cited Supplements, III, IV, V)."}
+      ],
+      "note": "Item 2. The companion series to acts1841 and set immediately after it, with the same publisher and the same self-declared short form. Note the entry keys `изданныя` correctly where item 1 sets `издаииые` — the two are the same word in different genders one line apart, which is the sharpest evidence available that item 1's ии is the compositor's error and not a reading of ours. No year is printed; `year` stays null rather than being supplied from the series. The series is `Дополненія къ Актамъ историческимъ, собранныя и изданныя Археографическою коммиссіею` (С.-Петербургъ, 1846-1875, 12 vols), the continuation of acts1841 by the same commission, so vols III-V are of it and the missing year is a range rather than a date. Bogoras reverses the title's halves here as he reorders acts1841's — `къ Историческимъ Актамъ` for `къ Актамъ историческимъ` — and sets the same single-с `Коммисіей`, which is the second instance of the one habit and the reason neither is treated as a reading error. Identification #llm, from library catalogue records; unratified.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "monuments",
+      "cited_as": [
+        {"name": "Monuments", "volume": "I", "short_title": null},
+        {"name": "Monuments", "volume": "II", "short_title": null}
+      ],
+      "author": null,
+      "author_printed": null,
+      "title": "Памятники Сибирской Исторіи XVIII Вѣка",
+      "title_en": "Monuments of the History of Siberia in the XVIII Century",
+      "lang": "ru",
+      "year": null,
+      "place": null,
+      "container": null,
+      "in": null,
+      "ref": "3-146",
+      "folio": "680",
+      "printed": [
+        {"ref": "3-146", "folio": "680", "lang": "ru", "kind": "entry",
+         "text": "3. Памятники Сибирской Исторіи XVIII Вѣка, I, II."},
+        {"ref": "3-146", "folio": "680", "lang": "en", "kind": "translation",
+         "text": "Monuments of the History of Siberia in the XVIII Century, I, II (cited Monuments, I, II)."}
+      ],
+      "note": "Item 3. Two volumes, short form declared. No year printed. Published as `Памятники сибирской исторіи XVIII вѣка` (С.-Петербургъ, типографія Министерства внутреннихъ дѣлъ), кн. 1 in 1882 covering 1700-1713 and кн. 2 in 1885 covering 1713-1724, edited by A. I. Timofeyev for the same Археографическая коммиссія as items 1 and 2. The two books Bogoras cites as I, II are the whole of the work, so the absent year costs a reader nothing here. Identification #llm, from library catalogue records; unratified.",
+      "doi": null,
+      "url": {
+        "url": "https://elib.tomsk.ru/purl/1-28102/",
+        "provenance": "#llm"
+      }
+    },
+    {
+      "key": "laws1857",
+      "cited_as": [],
+      "author": null,
+      "author_printed": null,
+      "title": "Сводъ Законовъ Россійской Имперіи",
+      "title_en": "Code of Laws of the Russian Empire",
+      "lang": "ru",
+      "year": 1857,
+      "place": null,
+      "container": null,
+      "in": null,
+      "ref": "3-146",
+      "folio": "680",
+      "printed": [
+        {"ref": "3-146", "folio": "680", "lang": "ru", "kind": "entry",
+         "text": "4. Сводъ Законовъ Россійской Имперіи. Изданія 1857, 1876, 1892, 1899."},
+        {"ref": "3-146", "folio": "680", "lang": "en", "kind": "translation",
+         "text": "Code of Laws of the Russian Empire. Editions 1857, 1876, 1892, 1899."}
+      ],
+      "note": "Item 4. FOUR editions cited as one entry — 1857, 1876, 1892, 1899 — and one record covers all four because the entry does; `year` holds the first, as jochelson1905's does for a work in two parts. The `Сводъ Законовъ Россійской Имперіи` was first printed in 1832 and reprinted entire in 1842 and 1857; after 1857 no complete reprint followed and only individual volumes were reissued, a sixteenth volume being added in 1892. The four dates Bogoras lists are therefore not four of a kind — 1857 is the last full edition and 1876, 1892 and 1899 name reissues at the volume level — which is worth knowing before a citation to `Laws, 1892` is resolved to a whole set. Identification #llm, from library catalogue records; unratified.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "senatearchive",
+      "cited_as": [],
+      "author": null,
+      "author_printed": null,
+      "title": "Сенатскій Архивъ",
+      "title_en": "Archive of the Senate",
+      "lang": "ru",
+      "year": null,
+      "place": null,
+      "container": null,
+      "in": null,
+      "ref": "3-146",
+      "folio": "680",
+      "printed": [
+        {"ref": "3-146", "folio": "680", "lang": "ru", "kind": "entry",
+         "text": "5. Сенатскій Архивъ, Томъ II."},
+        {"ref": "3-146", "folio": "680", "lang": "en", "kind": "translation",
+         "text": "Archive of the Senate, Vol. II."}
+      ],
+      "note": "Item 5. One of four keys in this batch carrying NO year, because the entry prints none — see the caveat on key form. The volume cited is `Сенатскій архивъ. 2. Журналы и опредѣленія Правительствующаго Сената` (С.-Петербургъ, типографія Правительствующаго Сената, 1889). A year for it therefore exists; it is recorded here and deliberately NOT moved into `year`, which stays null with the print, since the entry's silence is what the store witnesses. Identification #llm, from library catalogue records; unratified.",
+      "doi": null,
+      "url": {
+        "url": "https://www.prlib.ru/item/444144",
+        "provenance": "#llm"
+      }
+    },
+    {
+      "key": "holyfathers1850",
+      "cited_as": [],
+      "author": null,
+      "author_printed": null,
+      "title": "Дополненія къ Твореніямъ Святыхъ Отцовъ",
+      "title_en": "Supplements to the Works of the Holy Fathers",
+      "lang": "ru",
+      "year": 1850,
+      "place": "Москва",
+      "container": null,
+      "in": null,
+      "ref": "3-146",
+      "folio": "680",
+      "printed": [
+        {"ref": "3-146", "folio": "680", "lang": "ru", "kind": "entry",
+         "text": "6. Дополненія къ Твореніямъ Святыхъ Отцовъ, Части 9, 11. (Москва, 1850—52)."},
+        {"ref": "3-146", "folio": "680", "lang": "en", "kind": "translation",
+         "text": "Supplements to the Works of the Holy Fathers, Parts 9, 11 (Moscow, 1850—52)."}
+      ],
+      "note": "Item 6 of the chapter XXIII footnote bibliography. NOT PRINTED IN Authorities Quoted. The part numerals are ARABIC 11, not Roman II, and the reading proposal had them as Roman on both lines: in the English line the pair has the same form as the 1 opening 1850 in the same crop, and the series settles it independently — Прибавленія къ изданію твореній святыхъ отцовъ въ русскомъ переводѣ (Moscow, Московская духовная академія, 1843-1891) ran Part 8 = 1849 and Part 12 = 1853, so Parts 9 and 11 are 1850 and 1852, exactly the printed range. Roman II = 2 contradicts Bogoras's own dates. Corrected in gt/ocr as a keying defect (the ink and the keyed text disagreed), which is a different act from repairing the book. Bogoras again cites loosely: the series is `Прибавленія`, he prints `Дополненія`. `year` holds the first part's; the record covers both parts, as the entry does. Identification #llm; unratified.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "pilgrim1887",
+      "cited_as": [],
+      "author": null,
+      "author_printed": null,
+      "title": "Русскій Паломникъ",
+      "title_en": "Russian Pilgrim (monthly)",
+      "lang": "ru",
+      "year": 1887,
+      "place": null,
+      "container": null,
+      "in": null,
+      "ref": "3-146",
+      "folio": "680",
+      "printed": [
+        {"ref": "3-146", "folio": "680", "lang": "ru", "kind": "entry",
+         "text": "7. Русскій Паломникъ 1887."},
+        {"ref": "3-146", "folio": "680", "lang": "en", "kind": "translation",
+         "text": "Russian Pilgrim (monthly), 1887."}
+      ],
+      "note": "Item 7. A periodical. `(monthly)` is the English witness's alone — the Russian says nothing of frequency — recorded as printed on both sides rather than merged. `Русскій Паломникъ` is the illustrated Orthodox periodical published in St Petersburg from 1 September 1885 to 1917, its first publisher-editor A. I. Popovitsky. It was WEEKLY. So `(monthly)` is not merely the English witness's addition but is wrong about the work, and this is the clearest case in the batch for keeping the two blocks apart instead of merging them: a merge would have carried the error into the record silently. Identification #llm, from library catalogue records; unratified.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "slovtzov1886",
+      "cited_as": [
+        {"name": "Slovtzov", "volume": null, "short_title": null}
+      ],
+      "author": "П. Словцовъ",
+      "author_printed": "named",
+      "title": "Историческое Обозрѣніе Сибири",
+      "title_en": "Historical Survey of Siberia",
+      "lang": "ru",
+      "year": 1886,
+      "place": "С-Петербургъ",
+      "container": null,
+      "in": null,
+      "ref": "3-146",
+      "folio": "680",
+      "printed": [
+        {"ref": "3-146", "folio": "680", "lang": "ru", "kind": "entry",
+         "text": "8. Словцовъ, П. Историческое Обозрѣніе Сибири, С-Петербургъ, 1886."},
+        {"ref": "3-146", "folio": "680", "lang": "en", "kind": "translation",
+         "text": "Slovtzov, P. Historical Survey of Siberia, St. Petersburg, 1886 (cited Slovtzov)."}
+      ],
+      "note": "Item 8. Short form declared by the entry. `author` holds the Cyrillic form the Russian block sets; the English block's `Slovtzov` is Bogoras's own transliteration and is what `cited_as.name` carries, since that is the form the body would use. The work is P. A. Slovtsov's (1767-1843) `Историческое обозрѣніе Сибири`, of which 1886 is the St Petersburg reissue (типографія И. Н. Скороходова) in two books, кн. 1 covering 1585-1742 and кн. 2 1742-1823; the two parts first appeared separately in 1838 and 1844, and Bogoras cites the 1886 reissue, not the first edition. Identification #llm, from library catalogue records; unratified.",
+      "doi": null,
+      "url": {
+        "url": "https://www.prlib.ru/item/335080",
+        "provenance": "#llm"
+      }
+    },
+    {
+      "key": "northarchive1825",
+      "cited_as": [],
+      "author": null,
+      "author_printed": null,
+      "title": "Сѣверный Архивъ",
+      "title_en": "North Archive (periodical)",
+      "lang": "ru",
+      "year": 1825,
+      "place": null,
+      "container": null,
+      "in": null,
+      "ref": "3-146",
+      "folio": "680",
+      "printed": [
+        {"ref": "3-146", "folio": "680", "lang": "ru", "kind": "entry",
+         "text": "9. Сѣверный Архивъ, 1825."},
+        {"ref": "3-146", "folio": "680", "lang": "en", "kind": "translation",
+         "text": "North Archive (periodical), 1825."}
+      ],
+      "note": "Item 9. As with pilgrim1887, `(periodical)` is the English witness's addition. Here it is accurate, unlike pilgrim1887's `(monthly)`: `Сѣверный архивъ` is the St Petersburg journal Faddey Bulgarin published from 1822, twice a month, and from 1825 jointly with Nikolay Grech under a lengthened title; it ran to 1828 and merged into `Сынъ Отечества` in 1829. The 1825 Bogoras cites falls in the joint years. Identification #llm, from library catalogue records; unratified.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "journaleducation1890",
+      "cited_as": [],
+      "author": null,
+      "author_printed": null,
+      "title": "Журналъ Министерства Народнаго Просвѣщенія",
+      "title_en": "Journal of the Department of Education (monthly)",
+      "lang": "ru",
+      "year": 1890,
+      "place": null,
+      "container": null,
+      "in": null,
+      "ref": "3-146",
+      "folio": "680",
+      "printed": [
+        {"ref": "3-146", "folio": "680", "lang": "ru", "kind": "entry",
+         "text": "10. Журналъ Министерства Народнаго Просвѣщенія, 1890."},
+        {"ref": "3-146", "folio": "680", "lang": "en", "kind": "translation",
+         "text": "Journal of the Department of Education (monthly), 1890."}
+      ],
+      "note": "Item 10. The Russian names a ministry (Министерства Народнаго Просвѣщенія, of Popular Enlightenment); the English renders it 'Department of Education'. Recorded as printed on both sides, unadjudicated, per the readings.md habit. The periodical is the ministry's own, `Журналъ Министерства Народнаго Просвѣщенія`, St Petersburg 1834-1917, and it was in fact monthly, so the English's parenthesis holds here where pilgrim1887's does not. Identification #llm, from library catalogue records; unratified.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "anon1790",
+      "cited_as": [],
+      "author": null,
+      "author_printed": null,
+      "title": "Собраніе сочиненій изъ мѣсяцеслововъ различныхъ лѣтъ",
+      "title_en": "Collection of Papers selected from Monthly Records of Various Years",
+      "lang": "ru",
+      "year": 1790,
+      "place": "С-Петербургъ",
+      "container": null,
+      "in": null,
+      "ref": "3-146",
+      "folio": "680",
+      "printed": [
+        {"ref": "3-146", "folio": "680", "lang": "ru", "kind": "entry",
+         "text": "11. Собраніе сочиненій изъ мѣсяцеслововъ различныхъ лѣтъ, С-Петербургъ, 1790."},
+        {"ref": "3-146", "folio": "680", "lang": "en", "kind": "translation",
+         "text": "Collection of Papers selected from Monthly Records of Various Years, St. Petersburg, 1790."}
+      ],
+      "note": "Item 11 of the chapter XXIII footnote bibliography. NOT PRINTED IN Authorities Quoted. One unresolved letterform, kept as printed: in `мѣсяцеслововъ` the sort between с and ц prints н-shaped and no я bowl is visible at 4x, the magnification ceiling. Read as a damaged sort per keying_spec §2.14 ('wear is not a letter'), class artifact, rather than as a set н — externally corroborated, since the work is published as `Собраніе сочиненій, выбранныхъ изъ мѣсяцослововъ на разные годы` (St Petersburg, 1790) and месяцесловов is the genitive plural of месяцесловъ, an almanac. So я is the letter the compositor set. Bogoras abridges: he drops `выбранныхъ` from the Russian while keeping 'selected' in his English, and sets `различныхъ лѣтъ` for `на разные годы`. Note the published title also sets мѣсяцо- where Bogoras sets мѣсяце-. Identification #llm; unratified.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "fischer1768",
+      "cited_as": [
+        {"name": "Fischer", "volume": "I", "short_title": null},
+        {"name": "Fischer", "volume": "II", "short_title": null}
+      ],
+      "author": "Johann Eberhard Fischer",
+      "author_printed": "named",
+      "title": "Sibirische Geschichte",
+      "title_en": null,
+      "lang": "de",
+      "year": 1768,
+      "place": "St. Petersburg",
+      "container": null,
+      "in": null,
+      "ref": "3-146",
+      "folio": "680",
+      "printed": [
+        {"ref": "3-146", "folio": "680", "lang": "de", "kind": "entry",
+         "text": "12. Fischer, Johann Eberhard, Sibirische Geschichte, I, II, St. Petersburg, 1768."}
+      ],
+      "note": "Item 12, and one of TWO entries in this bibliography printed ONCE rather than twice — the footnote's own opening says 'Almost all of them are Russian, and their titles are given with English translation', and this is one of the exceptions it allows for. So `printed` holds a single block and `title_en` is null: there is no second witness to disagree with, which is a fact about the print and not a gap in the keying. cf. muller1750. The work is J. E. Fischer's (1697-1771) `Sibirische Geschichte von der Entdekkung Sibiriens bis auf die Eroberung dieses Lands durch die Russische Waffen`, read to the Academy of Sciences and published by it at St Petersburg in 1768 in two volumes — Bogoras's I, II — with a Russian translation, `Сибирская исторія`, following. Fischer had taken over Müller's Siberian work on the Second Kamchatka expedition, which is why items 12 and 13 sit together. Identification #llm, from library catalogue records; unratified.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "muller1750",
+      "cited_as": [
+        {"name": "Müller", "volume": null, "short_title": null}
+      ],
+      "author": "G. F. Müller",
+      "author_printed": "named",
+      "title": "Description of the Siberian Kingdom",
+      "title_en": null,
+      "lang": "en",
+      "year": 1750,
+      "place": "St. Petersburg",
+      "container": null,
+      "in": null,
+      "ref": "3-146",
+      "folio": "680",
+      "printed": [
+        {"ref": "3-146", "folio": "680", "lang": "en", "kind": "entry",
+         "text": "13. Müller, G. F. Description of the Siberian Kingdom, St. Petersburg, 1750."}
+      ],
+      "note": "Item 13, the second of the two entries printed once (cf. fischer1768). `lang` is en because the block is: Bogoras gives an English title for a work published in Russian as Описаніе Сибирскаго царства, so `title` is his rendering rather than the title page's and `title_en` is null because there is no second block. This entry's `ü` is the corpus case that showed U+0308 was being counted as Tier-1 notation on any base; see detectors.ORTHOGRAPHIC_BASES. The work is G. F. Müller's (1705-1783) `Описаніе Сибирскаго царства и всѣхъ произшедшихъ въ немъ дѣлъ`, кн. 1 (С.-Петербургъ, Императорская Академія наукъ, 1750); only that first book appeared, later parts coming out as periodical excerpts, which is consistent with Bogoras citing no volume where he gives I, II for items 12 and 16. A NEAR-MISS worth recording, of the class docs/apparatus.md warns about: prlib.ru/item/434782 carries this exact title but is the SECOND edition of 1787, and would have looked right sitting in `url`. The 1750 printing is scanned at Wikimedia Commons (`Описание Сибирского царства (Миллер, 1750).djvu`, from runivers.ru), which is what `url` holds. Identification #llm, from library catalogue records; unratified.",
+      "doi": null,
+      "url": {
+        "url": "https://commons.wikimedia.org/wiki/File:%D0%9E%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D0%B5_%D0%A1%D0%B8%D0%B1%D0%B8%D1%80%D1%81%D0%BA%D0%BE%D0%B3%D0%BE_%D1%86%D0%B0%D1%80%D1%81%D1%82%D0%B2%D0%B0_(%D0%9C%D0%B8%D0%BB%D0%BB%D0%B5%D1%80,_1750).djvu",
+        "provenance": "#llm"
+      }
+    },
+    {
+      "key": "priklonsky1896",
+      "cited_as": [],
+      "author": "Василій Львовичъ Приклонскій",
+      "author_printed": "named",
+      "title": "Хроника Якутской Области, составленная по оффиціальнымъ и историческимъ даннымъ",
+      "title_en": "Chronicle of the Country of Yakutsk, arranged from Official and Historical Data",
+      "lang": "ru",
+      "year": 1896,
+      "place": "Красноярскъ",
+      "container": null,
+      "in": null,
+      "ref": "3-146",
+      "folio": "680",
+      "printed": [
+        {"ref": "3-146", "folio": "680", "lang": "ru", "kind": "entry",
+         "text": "14. Приклонскій, В. Л. Хроника Якутской Области, составленная по оффиціальнымъ и историческимъ даннымъ, Красноярскъ, 1896."},
+        {"ref": "3-146", "folio": "680", "lang": "en", "kind": "translation",
+         "text": "Priklonsky, V. L. Chronicle of the Country of Yakutsk, arranged from Official and Historical Data, Krasnoyarsk, 1896."}
+      ],
+      "note": "Item 14 of the chapter XXIII footnote bibliography. NOT PRINTED IN Authorities Quoted. The clearest case in this store of Bogoras citing a title inexactly rather than a reading being wrong: the work is published as `Лѣтопись Якутскаго края, составленная по оффиціальнымъ и историческимъ даннымъ` (Красноярскъ, изданіе Г. В. Юдина, 1896, 222 pp.), by V. L. Priklonsky (1852-1899), vice-governor of the Yakut region. The SECOND clause matches the published title word for word, `оффиціальнымъ` with its double ф included, which is what shows the reading is accurate; the first shares almost no letterforms with `Лѣтопись Якутскаго края`, so it cannot be a misreading of it. Bogoras substituted his own wording, and his English 'Chronicle of the Country of Yakutsk' renders HIS Russian rather than the title page's. Kept as printed. The Russian entry is set across a line break in the print, `дан-` / `нымъ`; `printed.text` joins it, as the store does elsewhere. Identification #llm; unratified.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "shcheglov1883",
+      "cited_as": [
+        {"name": "Shcheglov", "volume": null, "short_title": null}
+      ],
+      "author": "И. В. Щегловъ",
+      "author_printed": "named",
+      "title": "Хронологическій перечень Важнѣйшихъ Данныхъ изъ исторіи Сибири",
+      "title_en": "Chronological List of the Most Important Data of the History of Siberia",
+      "lang": "ru",
+      "year": 1883,
+      "place": "Иркутскъ",
+      "container": null,
+      "in": null,
+      "ref": "3-146",
+      "folio": "680",
+      "printed": [
+        {"ref": "3-146", "folio": "680", "lang": "ru", "kind": "entry",
+         "text": "15. Щегловъ, И. В. Хронологическій перечень Важнѣйшихъ Данныхъ изъ исторіи Сибири, Иркутскъ, 1883."},
+        {"ref": "3-146", "folio": "680", "lang": "en", "kind": "translation",
+         "text": "Shcheglov, I. V. Chronological List of the Most Important Data of the History of Siberia, Irkutsk, 1883 (cited Shcheglov)."}
+      ],
+      "note": "Item 15. Short form declared. The work is I. V. Shcheglov's (1855-1884) `Хронологическій перечень важнѣйшихъ данныхъ изъ исторіи Сибири: 1032-1882 гг.` (Иркутскъ, изданіе Восточно-Сибирскаго отдѣла Императорскаго Русскаго Географическаго Общества, 1883, 778 pp.), edited by V. I. Vagin. Bogoras's title matches the published one word for word as far as he gives it, dropping only the date range — the opposite of priklonsky1896, and the reason his loose citations there and at items 1 and 2 are legible as habit rather than as reading error. Identification #llm, from library catalogue records; unratified.",
+      "doi": null,
+      "url": {
+        "url": "https://elib.tomsk.ru/purl/1-659/",
+        "provenance": "#llm"
+      }
+    },
+    {
+      "key": "andriyevich1889",
+      "cited_as": [
+        {"name": "Andriyevich", "volume": "I", "short_title": null},
+        {"name": "Andriyevich", "volume": "II", "short_title": null}
+      ],
+      "author": "В. К. Андріевичъ",
+      "author_printed": "named",
+      "title": "Исторія Сибири",
+      "title_en": "History of Siberia",
+      "lang": "ru",
+      "year": 1889,
+      "place": "С-Петербургъ",
+      "container": null,
+      "in": null,
+      "ref": "3-146",
+      "folio": "680",
+      "printed": [
+        {"ref": "3-146", "folio": "680", "lang": "ru", "kind": "entry",
+         "text": "16. Андріевичъ, В. К. Исторія Сибири, I, II, С-Петербургъ, 1889."},
+        {"ref": "3-146", "folio": "680", "lang": "en", "kind": "translation",
+         "text": "Andriyevich, V. K. History of Siberia, I, II, St. Petersburg, 1889 (cited Andriyevich)."}
+      ],
+      "note": "Item 16. Two volumes, short form declared, so one cited_as entry per volume as the front list does for a multi-volume siglum. The work is V. K. Andriyevich's (1838-1898) `Исторія Сибири` (С.-Петербургъ, типографія и литографія В. В. Комарова, 1889) in two parts: ч. 1 from the earliest times to the primacy of Tobolsk and the founding of the Irkutsk ostrog, ч. 2 from 1660 to the accession of Empress Elizabeth. Bogoras's I, II are those two, and both are scanned — `url` holds ч. 1 (prlib.ru/item/416962); ч. 2 is at elib.tomsk.ru/purl/1-663. Identification #llm, from library catalogue records; unratified.",
+      "doi": null,
+      "url": {
+        "url": "https://www.prlib.ru/item/416962",
+        "provenance": "#llm"
+      }
+    },
+    {
+      "key": "titov1890",
+      "cited_as": [],
+      "author": "А. Титовъ",
+      "author_printed": "named",
+      "title": "Сибирь въ XVII Вѣкѣ",
+      "title_en": "Siberia in the XVII Century",
+      "lang": "ru",
+      "year": 1890,
+      "place": "Москва",
+      "container": null,
+      "in": null,
+      "ref": "3-146",
+      "folio": "680",
+      "printed": [
+        {"ref": "3-146", "folio": "680", "lang": "ru", "kind": "entry",
+         "text": "17. Титовъ, А. Сибирь въ XVII Вѣкѣ, Москва, 1890."},
+        {"ref": "3-146", "folio": "680", "lang": "en", "kind": "translation",
+         "text": "Titov, A. Siberia in the XVII Century, Moscow, 1890."}
+      ],
+      "note": "Item 17, the last on folio 680. No short form declared. The work is A. A. Titov's (1844-1911) `Сибирь въ XVII вѣкѣ: сборникъ старинныхъ русскихъ статей о Сибири и прилежащихъ къ ней земляхъ` (Москва, изданіе Г. Юдина, типографія Л. и А. Снегиревыхъ, 1890), with a facsimile of an old map of Siberia — a collection of seventeenth-century Russian texts, so what Bogoras cites through it are documents rather than Titov's own account. Published by the Krasnoyarsk bibliophile G. V. Yudin, who also published priklonsky1896. Identification #llm, from library catalogue records; unratified.",
+      "doi": null,
+      "url": {
+        "url": "https://elib.tomsk.ru/purl/1-14853/",
+        "provenance": "#llm"
+      }
+    },
+    {
+      "key": "manykin1883",
+      "cited_as": [],
+      "author": "А. И. Маныкинъ-Невструевъ",
+      "author_printed": "named",
+      "title": "Завоеватели Восточной Сибири, Якутскіе Казаки",
+      "title_en": "Cossacks of Yakutsk, Conquerors of East Siberia",
+      "lang": "ru",
+      "year": 1883,
+      "place": "Москва",
+      "container": null,
+      "in": null,
+      "ref": "3-147",
+      "folio": "681",
+      "printed": [
+        {"ref": "3-147", "folio": "681", "lang": "ru", "kind": "entry",
+         "text": "18. Маныкинъ-Невструевъ, А. И. Завоеватели Восточной Сибири, Якутскіе Казаки, Москва, 1883."},
+        {"ref": "3-147", "folio": "681", "lang": "en", "kind": "translation",
+         "text": "Manykin-Nevstruyev, A. I. Cossacks of Yakutsk, Conquerors of East Siberia, Moscow, 1883."}
+      ],
+      "note": "Item 18, the first of four on folio 681. The two witnesses SWAP the title's halves: the Russian sets `Завоеватели Восточной Сибири, Якутскіе Казаки` (Conquerors of East Siberia, Yakutsk Cossacks) and the English `Cossacks of Yakutsk, Conquerors of East Siberia`. Both recorded as printed, unadjudicated; `title` takes the Russian order. This entry's `Якутскіе` was keyed with a Latin i U+0069 and corrected to U+0456 in gt/ocr per keying_spec §2.7 — a keying slip no gate catches, Russian being Tier-2 and outside the §3 greps. The work is A. I. Manykin-Nevstruyev's `Завоеватели Восточной Сибири. Якутскіе казаки`, an очеркъ of 78 pp. with one map (Москва, Университетская типографія (М. Катковъ), 1883). The published title runs in the RUSSIAN witness's order, so the English block is the side that swaps the halves and `title` already takes the right one. Identification #llm, from library catalogue records; unratified.",
+      "doi": null,
+      "url": {
+        "url": "https://elib.tomsk.ru/purl/1-660/",
+        "provenance": "#llm"
+      }
+    },
+    {
+      "key": "anon1856",
+      "cited_as": [],
+      "author": null,
+      "author_printed": null,
+      "title": "Историческая Записка о Чукотскомъ народѣ",
+      "title_en": "Historical Sketch of the Chukchee People",
+      "lang": "ru",
+      "year": 1856,
+      "place": null,
+      "container": "Вѣстникъ Императорскаго Русскаго Географическаго Общества",
+      "in": null,
+      "ref": "3-147",
+      "folio": "681",
+      "printed": [
+        {"ref": "3-147", "folio": "681", "lang": "ru", "kind": "entry",
+         "text": "19. Историческая Записка о Чукотскомъ народѣ (Вѣстникъ Императорскаго Русскаго Географическаго Общества, 1856, V)."},
+        {"ref": "3-147", "folio": "681", "lang": "en", "kind": "translation",
+         "text": "Historical Sketch of the Chukchee People (in Messenger of the Imperial Russian Geographical Society, 1856, V.)."}
+      ],
+      "note": "Item 19. Anonymous, and the most directly on this book's subject of the twenty-one. The Russian entry is set across two printed lines, `…Географическаго` / `Общества, 1856, V).`; `printed.text` joins it. IDENTIFICATION SEARCHED AND NOT FOUND, which is the state this record stays in: the article is in no index reachable by search, and the Вѣстникъ ИРГО's own 1856 contents are not online in a readable form. The one 1856 Chukchee item in that journal that does surface is K. von Ditmar's `О корякахъ и весьма близкихъ къ нимъ по происхожденію чукчахъ` — a different title under a named author, where this entry is anonymous — and it must not be written into this record; an anonymous entry is exactly where a plausible attribution would never be caught. Note also this is a different society organ from maydell1871's Извѣстія Восточно-Сибирскаго Отдѣла, and the two should not be conflated on the strength of the shared `Императорскаго Русскаго Географическаго Общества`.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "plenisner1852",
+      "cited_as": [],
+      "author": "Плениснеръ",
+      "author_printed": "named",
+      "title": "Карта Чукотской земли, составлена Плениснеромъ",
+      "title_en": "The Chart of the Chukchee Land, projected by Plenisner",
+      "lang": "ru",
+      "year": 1852,
+      "place": null,
+      "container": "Записки Гидрографическаго Департамента Морского Министерства",
+      "in": null,
+      "ref": "3-147",
+      "folio": "681",
+      "printed": [
+        {"ref": "3-147", "folio": "681", "lang": "ru", "kind": "entry",
+         "text": "20. Карта Чукотской земли, составлена Плениснеромъ (Записки Гидрографическаго Департамента Морского Министерства 1852, Часть X)."},
+        {"ref": "3-147", "folio": "681", "lang": "en", "kind": "translation",
+         "text": "The Chart of the Chukchee Land, projected by Plenisner (in Memoirs of the Hydrographical Department, 1852, Part X)."}
+      ],
+      "note": "Item 20, and a MAP rather than a text — the only one in either bibliography. The witnesses disagree on the container: the Russian names Записки Гидрографическаго Департамента Морского Министерства (Hydrographic Department OF THE NAVAL MINISTRY) and the English drops the ministry, giving only 'Memoirs of the Hydrographical Department'. `container` takes the Russian, the fuller reading; both blocks recorded. Same class of disagreement as maydell1871, where the Russian is the side that drops a word. The author is named only in the oblique (Плениснеромъ, instrumental); `author` gives the nominative stem, which is a grammatical fact rather than a reading. The map is Friedrich Plenisner's chart of the Chukchee land, drawn 1763 and printed with an introductory article by A. Sokolov in `Записки Гидрографическаго Департамента Морского Министерства`, ч. X (С.-Петербургъ, Морская типографія, 1852), pp. 119-123 — so the RUSSIAN witness's fuller container is the published one, as `container` already has it. Identification #llm; unratified, and weaker than the others in this batch: the part and page range come from a secondary account of Plenisner rather than from a catalogue record, and no scan of ч. X was located — prlib.ru/item/1661046 is ч. 8, a different part, and is not recorded.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "baramygin1855",
+      "cited_as": [],
+      "author": "М. Барамыгинъ",
+      "author_printed": "named",
+      "title": "Путевой Журналъ во время поѣздки въ Анюйскую Крѣпость",
+      "title_en": "Diary of the Voyage to Anui Fair",
+      "lang": "ru",
+      "year": 1855,
+      "place": null,
+      "container": "Записки Сибирскаго Отдѣла Императорскаго Русскаго Географическаго Общества",
+      "in": null,
+      "ref": "3-147",
+      "folio": "681",
+      "printed": [
+        {"ref": "3-147", "folio": "681", "lang": "ru", "kind": "entry",
+         "text": "21. Барамыгинъ, М. Путевой Журналъ во время поѣздки въ Анюйскую Крѣпость (Записки Сибирскаго Отдѣла Императорскаго Русскаго Географическаго Общества, 57, кн. 4)."},
+        {"ref": "3-147", "folio": "681", "lang": "en", "kind": "translation",
+         "text": "Baramygin, M. Diary of the Voyage to Anui Fair, 1855 (in Memoirs of the Siberian Section of the Imperial Russian Geographical Society, 57, Vol. 4)."}
+      ],
+      "note": "Item 21, the last of the bibliography — the numbered list closes here and the line 'For other authorities see references in the text.' follows it, which is the sentence folio 9 of Authorities Quoted also closes with. THE YEAR IS THE ENGLISH WITNESS'S ALONE: the Russian block prints no date at all and the English supplies 1855. `year` takes it, and this note is the record that it rests on one witness rather than two — the opposite direction from plenisner1852, where the English is the side that drops information. The two also differ on the destination: `Анюйскую Крѣпость` is the Anui FORTRESS, where the English says 'Anui Fair'; the annual fair was held at the fortress, so this is Bogoras glossing rather than translating. Both recorded. IDENTIFIED, and the identification changes how two printed facts read: the work is `Путевой журналъ купца Михаила Барамыгина, во время поѣздки изъ Нижнеколымска въ Анюйскую крѣпость въ 1855 году`, communicated by Sverbeyev, in `Записки Сибирскаго отдѣла Императорскаго Русскаго Географическаго Общества`, кн. IV, 1857. First, the 1855 the English witness alone supplies is corroborated — but as the year of the JOURNEY, which the work's own title carries, not of publication; the record's `year` and this key therefore hold a travel date, and no consumer may read them as an imprint date. Second, the bare `57` both witnesses set is that publication year abbreviated, not a volume number: кн. 4 is the volume and the Записки Сибирскаго отдѣла never ran to a vol. 57. The reading stands as printed either way. Identification #llm, from two bibliographic indexes and no copy seen; unratified.",
+      "doi": null,
+      "url": null
     }
   ]
 }

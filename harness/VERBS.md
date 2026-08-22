@@ -102,10 +102,19 @@ alongside `--root` and `--pager`; the four share the trailing
 `--root --json --toon --pager` line of each fence below rather than being
 restated per entry.
 
-**Long sweeps draw a progress bar on stderr.** The pooled raster sweeps (`zones
-check --ink`, `zones paragraphs`, `zones blot`, `ocr gaps`, `ocr blot`) and the
-slow serial ones (`ocr predict`, `zones predict`, `ocr crops`/`sheets`/`zoom`)
-report the page they are on, how many are done and how long it has taken. It
+**Long sweeps draw a progress bar on stderr.** The thread-pooled raster sweeps
+(`zones check`, `zones paragraphs`, `zones blot`, `ocr gaps`, `ocr blot`,
+`fig crops`, `views build`), the **process**-pooled model sweeps (`ocr predict`,
+`zones score`, `zones install` — where `--jobs` spawns processes and the cap is
+free VRAM as well as cores), and the serial ones (`zones predict`, `fig predict`,
+`ocr crops`, `ocr sheets`, `ocr zoom`, `ocr numbered`, `corpus normalize`) —
+`ocr edit` too, before it binds, when `--unsettled` makes it measure every page to
+decide the itinerary —
+report the page they are on, how many are done and how long it has taken. Every
+verb is spelled in full here, group and action, because
+`test_cli_surface.test_the_progress_paragraph_names_every_instrumented_action`
+holds this list against the parser in both directions — a shorthand it could not
+parse would drop a verb from the check without saying so. It
 appears only when stderr is a terminal and only once the work has run for about
 half a second, so a short run stays silent and a redirected one is byte-identical
 to a run with no bar at all. stdout is untouched: `harness … > file` holds exactly
@@ -814,7 +823,7 @@ Opcodes come from difflib over **NFD** text, so a dropped combining mark ranks a
 **Note** stock CATMuS reads ~91% of the ASCII and **0% of the transcription inventory**. This store is a witness to line geometry and to English, and to nothing else.
 **Note** **a worker never writes to the terminal, and the summary says if it tried.** A `spawn`ed child inherits the parent's fd 2, and rich redirects `stderr` only for Python-level writes *in the parent* — so anything a worker emits lands between two frames of the progress bar, leaving rich's cursor accounting wrong and the count apparently frozen while `mz/ocr/` fills normally. It presented as two faults and was one. Each worker's fd 2 is now `dup2`'d to a file of its own before the models load (`dup2`, not `sys.stderr =`, because scipy, shapely and torch all have C in them), and the pool reads those files when it closes: `stderr_lines` and `stderr_log` in the summary, both empty on a quiet run, and the directory removed when nothing landed in it. Nothing is silenced — an empty capture is what makes a non-empty one worth reading.
 **Note** **the recognizer runs under kraken's new polygon extractor, and every page in this store was produced that way.** `models/blla.mlmodel` predates it, so kraken warns "Enforcing use of the new polygon extractor for models trained with old version. Accuracy may be affected." once per worker process. Stated here because it is a property of the pinned model rather than of any page, and filtered in the workers by message — never by category — so the capture stays empty in the ordinary case while the next unseen warning still reaches it. `--jobs 1` raises it in-process, where rich catches it and prints it above the bar.
-**Note** the sweep runs **4 workers by default**, not `MAX_WORKERS`: `min(process_cpu_count(), 4)`, then capped by free VRAM at ~1.4 GB a worker. A `--jobs` you type wins outright, including one that will not fit. Measured over 8 pages: 14.16 s/page serial, 5.14 with four processes.
+**Note** the sweep runs **4 workers by default**, not `MAX_WORKERS`: `min(process_cpu_count(), 4)`, then capped by free VRAM at ~1.6 GB a worker. A `--jobs` you type wins outright, including one that will not fit. Measured over 8 pages: 14.16 s/page serial, 5.14 with four processes.
 **Note** **several named refs go through the sweep, not a loop over the single-page form** — both models load once, which is most of the cost (~25 s standalone against ~17 s each in one process), and that is the whole reason to name them together. The single-page override travels with them: a named ref means *that page* even where a human ruled it exempt, so a named plate is refused loudly rather than dropped in silence by the command that named it. `--all` is the other case and there the exempt ruling holds.
 ```
 --all            every page with zones
@@ -1043,13 +1052,17 @@ opinion of which pages are held out.
 --model PATH     segment this checkpoint in memory instead of reading mz/zones/ [read mz/]
 --decode {raw,dp} [dp]
 --device DEV     torch device [auto]
+--jobs N         worker **processes** for the segmentation; 1 keeps the single-process path [cores, capped by free VRAM]
 --root --json --toon --pager
 ```
+**Note** **`--model` is minutes, and a bare run is seconds.** Reading `mz/zones/` is ~0.1 s over the corpus; segmenting a checkpoint in memory is **~7 min under `dp`, ~11 min under `raw`** (measured warm against the installed model over 717 pages: 0.58 and 0.96 s a page), because that is what measuring a model *before* it is trusted costs. It draws a bar, and it ran silently until 2026-08-22, which is indistinguishable from a hung process. **Do not carry `ocr predict`'s ~14 s/page over to this verb** — that sweep traces baselines and this model is region-only, and the mistake was made here first, putting "~2.8 h" in this file for an eleven-minute run.
+**Note** **`--jobs` here means processes, and the pool is worth it because the sweep is CPU-bound with the card idle.** Measured with `/usr/bin/time -v`: 123% of one CPU over a 90 s run on a 16-core machine, GPU utilization indistinguishable from the desktop's own idle. Four workers do 206 pages where one does 73 in the same 100 s — **2.8×**, the same figure `ocr predict` measured for four processes. Each worker holds ~1.4 GB on the card, and the parent holds none: the cache key is the checkpoint's file hash, so nothing here loads a model unless it is going to segment with it.
+**Note** the predictions are **cached under `mz/zones/_pred_cache/`**, keyed on the checkpoint's sha256, the decoder, and (for `dp`) the config digest — so a re-run, or the `install` that follows, replays in about five seconds instead of segmenting again. `predictions_cached` in the report says how many pages came back that way. A stale entry is a miss, never a stale hit: each is stamped with its blot's mtime and size.
 
 ### zones assemble
-**Does** lays out `train/bogoras-seg/` from the split marks and reports the ketos invocation. Runs nothing.
+**Does** lays out `train/bogoras-seg/data/` from the split marks and reports the ketos invocation. Runs nothing.
 **Reads** `gt/zones/`, `scans/w-figs-blotted/`, the split lists.
-**Writes** `train/bogoras-seg/` — pure scratch, clobbered freely, because the split a model trained on travels in that model's own manifest.
+**Writes** `train/bogoras-seg/data/` — the page links, the folded ALTOs and `train.lst`/`eval.lst` — and makes the empty `train/bogoras-seg/model/` the reported command writes its checkpoints into. Pure scratch, clobbered freely, because the split a model trained on travels in that model's own manifest.
 **Exit** 1 if any listed page has no blotted raster.
 ```
 --scratch  train from random init: no -i, kraken's default spec — the one configuration
@@ -1066,8 +1079,11 @@ opinion of which pages are held out.
 --name NAME  installed model name; the accuracy stays out of it [zones-seg]
 --device DEV torch device [auto]
 --commit     copy the checkpoint and its split [off — previews]
+--jobs N     worker **processes** for the segmentation; 1 keeps the single-process path [cores, capped by free VRAM]
 --root --json --toon --pager
 ```
+**Note** **the preview costs what the commit costs — ~11 min — and that is not an oversight.** The score runs before the `--commit` check because it is a *precondition* of installing: the permutation refusal is derived from it and the manifest embeds it, so a preview is "run every check, print the numbers, stop before writing", not a cheaper mode. It cannot score `mz/zones/` instead, which holds a different model's output — a comparison whose two witnesses may be one. And there is no cheap subset: the permutation map is derived on the training pages, so the 580 cannot be skipped to reach the refusal. **The second run is free**: predictions are cached on the checkpoint's own sha256 (see `zones score`), so the `--commit` that follows a preview replays in about five seconds.
+**Note** **it scores with `raw` while `zones score` defaults to `dp`, and those are different measurements.** `install_model` takes `score`'s function default; the CLI's default is the other one, chosen deliberately because "the decode matters more than the model has" — 61.3% precision against 90.8% on identical weights. So the figures this verb prints, and the `score` block it writes into the manifest, are the model's **undecoded** ones, and they will not match what `harness zones score` shows for the same checkpoint. Nothing here is wrong about the model; the two numbers answer different questions and the manifest does not say which it holds.
 
 ### zones remap
 **Does** puts the learned names back on the model's output channels, when `score` shows a consistent relabelling rather than a weak model. Derives the map on the training pages and refuses unless it is 1-1 and holds out. Prints two tables.
@@ -1532,11 +1548,11 @@ place.
 ### edition runs
 **Does** the page-runs the reading view serves as one document instead of a leaf at a time — the printed Contents, List of Illustrations and Authorities Quoted — plus a census of what every leaf outside the transcription tracks was ruled, one row per leaf and per editor's leaf, and everything wrong with the declarations. Six scans of List of Illustrations are one printed list, and serving them as six pages is serving the binding rather than the book. Reports the folio count too: every folio link a run renders goes through the index, and that number says how much of the book the locator can reach at all.
 **Reads** `data/runs.json` and each run's `source`, `gt/zones/` split lists, `tei/`, `gt/ocr/`, `gt/page-img/`, `scans/`. **Writes** — **Exit** 0 clean / 1 on a declaration that cannot be true.
-**Note** the fatal set: a run over a leaf not ruled `apparatus` (`not-apparatus`), a leaf ruled `apparatus` that no run names (`apparatus-not-in-run`), a ref that is no scan, a span that is discontiguous or that two runs both claim, a `kind` with no renderer, a span its own store contradicts, two pages claiming one folio **at the same rank**, and an editor's leaf that is for a page still in the tracks or is a different shape from the scan (>0.5% aspect). A folio two witnesses of *different* rank disagree on is a **warning**: rank resolves it, and the disagreement is usually a misread running title worth seeing rather than a fault.
+**Note** the fatal set: a run over a leaf not ruled `apparatus` (`not-apparatus`), a leaf ruled `apparatus` that no run names (`apparatus-not-in-run`), a ref that is no scan, a span that is discontiguous or that two runs both claim, a `kind` with no renderer, a span its own store contradicts, a run leaf the store records no entry for (`unwitnessed-leaf`), two pages claiming one folio **at the same rank**, and an editor's leaf that is for a page still in the tracks or is a different shape from the scan (>0.5% aspect). A folio two witnesses of *different* rank disagree on is a **warning**: rank resolves it, and the disagreement is usually a misread running title worth seeing rather than a fault.
 **Note** **`apparatus` is checked in both directions, and only one of them used to be.** A run's leaves must be ruled `apparatus` rather than merely be out of the transcription tracks: a plate in a run would render as a list of entries it does not have, and the looser test could not say so, a plate having left the tracks exactly as the Contents did. The other direction is new — the kind promises the leaf's content is held parsed somewhere and the run is what names which store, so a leaf ruled `apparatus` with no run has a promise and no reading behind it, and falls back to a bare scan.
 **Note** `leaf_kinds` is the census — one row per `zones.LEAF_KINDS` member and how many leaves carry it. **Measurement, never a gate**, and it is the frame the rest of the report is read in: a run is a span of `apparatus` leaves, so how many of each kind exist is what says whether the runs cover what they should.
 **Note** `plates_located` is a **measurement and does not gate**: a plate carries no number on its own leaf, so `figures.by_plate` derives it by matching the printed list's abbreviated caption against the keyed under-figure one. What would be wrong is a plate resolving to two leaves, and that resolves to none by construction — the reading view then prints it plain.
-**Note** **three statements of one span, checked rather than merged** — `runs.json`'s `refs`, the store's own `source.refs`, and the set of per-entry `ref` fields inside it. All three were already in the tree; the check is that they agree. A store with no per-entry `ref` is reported unrenderable, because `entries_for` has no fallback: a leaf shows what the store says was printed on it, and attributing a whole list to one leaf would be inventing that.
+**Note** **three statements of one span, and they are not all checked the same way.** `runs.json`'s `refs` and the store's own `source.refs` must **agree** — both are declarations about the printed section, and a disagreement means one of them is stale. The per-entry `ref` fields are checked in **one direction only: the run demands full presence, and the store may hold more.** Every leaf a run names must carry at least one entry (`unwitnessed-leaf`), because a run declaring a leaf its store says nothing about renders an empty apparatus page and nothing else could report it. An entry naming a leaf **outside** every run is not a fault: Authorities Quoted is an open list, folio 9's asterism admits a work printed anywhere in the book, and the chapter XXIII footnote on `3-146`/`3-147` is a second bibliography of twenty-one numbered works. Gating that direction made the run the store's boundary and forced such a record to drop its `ref` — discarding the leaf it is printed on to satisfy a check about rendering. Nothing is needed to keep it off a leaf: `entries_for` resolves the leaf to a run first and returns `[]` when there is none. A store with no per-entry `ref` **at all** is still reported unrenderable, because `entries_for` has no fallback: a leaf shows what the store says was printed on it, and attributing a whole list to one leaf would be inventing that.
 ```
 --root --json --toon
 ```
@@ -1565,8 +1581,8 @@ resolves anything, and no hit is a legitimate outcome.
 ```
 
 ### find authority [QUERY...]
-**Does** works matching a citation read in the body — siglum, bare name in prose, title, or a string off the printed entry. Every match returned and ranked by which field caught it: 52 sigla share 34 names, so a single answer would be manufactured. A footnote form (`Dall, I, p. 375.`) goes in whole; the lifted volume is echoed on stderr, because a silently rewritten query is an unexplainable miss.
-**Several queries pool into one table** with a leading `query` column, and a query that matched nothing gets a row saying so — dropping it would make "no such work" indistinguishable from "I forgot to ask". One query emits exactly what it always did. A page's footnotes name half a dozen works, and asking six times was six turns against a collator's budget. Bare, it lists all 74 records — the 73 printed on folios 3–9 plus the unprinted `jochelson1905` — which is one small JSON file, not a corpus sweep.
+**Does** works matching a citation read in the body — siglum, bare name in prose, title, or a string off the printed entry. Every match returned and ranked by which field caught it: 67 sigla share 42 names, so a single answer would be manufactured. A footnote form (`Dall, I, p. 375.`) goes in whole; the lifted volume is echoed on stderr, because a silently rewritten query is an unexplainable miss.
+**Several queries pool into one table** with a leading `query` column, and a query that matched nothing gets a row saying so — dropping it would make "no such work" indistinguishable from "I forgot to ask". One query emits exactly what it always did. A page's footnotes name half a dozen works, and asking six times was six turns against a collator's budget. Bare, it lists all 95 records — the 73 printed on folios 3–9 plus the twenty-two `source.unprinted` ones (`jochelson1905`, and the twenty-one of the chapter XXIII footnote bibliography on `3-146`/`3-147`) — which is one small JSON file, not a corpus sweep.
 **Reads** `data/authorities.json`. **Writes** — **Exit** 0.
 ```
 --volume V    volume the citation names (II or 2); excludes on contradiction, not absence
@@ -1628,6 +1644,7 @@ single store can answer it.
 --commit     write the fixes; required to touch any file, scoped or not [off]
 --root --json --toon --pager
 ```
+**Note** **`--all` is ~8 s over ~2000 files and draws two bars, one per pass.** Two rather than one for the same reason there are two tables: a single bar spanning both would present two witnesses as one. It takes no `--jobs` — the sweep was benched twice, before and after a 2.2× optimization of `unlicensed_marks`, and is GIL-bound both times (`parallel.py`).
 
 ### corpus figures
 **Does** reconciles `gt/fig/` zone geometry against `data/readings.md` captions in both directions, and against the source PDFs' own photograph placements in both directions.
@@ -1753,7 +1770,8 @@ PP-NNN...     which pages; several may be given
 --all         every page the figure store holds
 --force       re-cut crops that are newer than both their inputs
 --out DIR     where to write them [scans/fig-crops/]
---jobs N      worker threads; 1 runs serially and builds no pool [cores, capped]
+--jobs N      worker threads for the per-page raster work; 1 runs serially and
+              builds no pool [cores, capped]
 --root --json --toon --pager
 ```
 
@@ -1855,9 +1873,9 @@ KEY           the caption's PP-NNN|<zone-suffix>, as `fig sheets` labels every s
 **Note** additive: a mark a human made is never moved. Held out has to stay held out, or the eval set drifts with whatever was keyed most recently and stops being one.
 
 ### fig assemble
-**Does** lays out `train/bogoras-fig/` and **reports** the `ketos segtrain` invocation.
+**Does** lays out `train/bogoras-fig/data/` and **reports** the `ketos segtrain` invocation.
 **Reads** `gt/fig/`, its split lists, `scans/`.
-**Writes** `train/bogoras-fig/` — symlinks, synthesized ALTOs for the negatives, and `train.lst`/`eval.lst`. Pure scratch; clobbered on every run.
+**Writes** `train/bogoras-fig/data/` — symlinks, synthesized ALTOs for the negatives, and `train.lst`/`eval.lst` — and makes `train/bogoras-fig/model/`, where the run's checkpoints go. Pure scratch; clobbered on every run.
 **Exit** always 0.
 ```
 --scratch     random init rather than fine-tuning blla or the installed model
@@ -1881,6 +1899,7 @@ PP-NNN...     which pages; several may be given
 --device D    torch device [auto]
 --root --json --toon --pager
 ```
+**Note** **`--all` is a corpus-wide inference sweep over 832 pages, and it draws a bar.** **Unmeasured**: `models/bogoras-fig/` does not exist yet, so this verb has never run and no honest per-page figure can be given. The zone segmenter, which is the same shape of model on the same rasters, runs ~1 s a page — so expect minutes rather than hours, and put the real number here once it has run. Contrast `fig score` and `fig install`, which are seconds: they read `mz/fig/` rather than segmenting, so the figure track predicts to a store first and scores the store afterwards. The zone track scores in memory instead, so that a checkpoint can be measured without touching a store — which is the whole reason `zones install` is expensive and `fig install` is not.
 **Note** **no exempt skip.** Plates are exempt in the zone track and are exactly where figures live.
 **Note** `--force` is required to overwrite, because that file's processing step is the store's only witness to which model wrote it.
 **Note** there is **no `fig/` view** over `gt/fig/` and `mz/fig/`. A prediction reaches a human through the editor, which shows it as a proposal and asks, or not at all — see the group note above.
@@ -1902,7 +1921,7 @@ PP-NNN...     which pages; several may be given
 
 ### fig install CKPT
 **Does** scores a checkpoint, refuses a swapped class map, then installs it.
-**Reads** the checkpoint, both stores, `train/bogoras-fig/*.lst`.
+**Reads** the checkpoint, both stores, `train/bogoras-fig/data/*.lst`.
 **Writes** with `--commit`: `models/bogoras-fig/` — the weights, a manifest, and verbatim copies of the two split lists.
 **Exit** 0; refuses by reporting rather than by exit code.
 ```
@@ -1914,7 +1933,7 @@ CKPT          the .safetensors ketos wrote
 ```
 **Note** everything that makes a checkpoint trustworthy is a **precondition of installing it**, so the score runs first, the manifest is written before the weights, and the copy is last — `zones install`'s shape and its reasoning.
 **Note** with two classes the permutation test degenerates to a **swap test**, and it is still worth running: `--resize new` renumbers the output layer, and a model that learned "caption" on the channel it calls "picture" scores plausibly on counts while being wrong about every box.
-**Note** **refuses if `train/bogoras-fig/*.lst` are gone.** The split a run consumed has to be frozen beside the model, or its scores belong to a division nobody kept. Manifest paths are relative to the repo root: it is committed, and a record of one machine's filesystem is no record.
+**Note** **refuses if `train/bogoras-fig/data/*.lst` are gone.** The split a run consumed has to be frozen beside the model, or its scores belong to a division nobody kept. Manifest paths are relative to the repo root: it is committed, and a record of one machine's filesystem is no record.
 
 ---
 
@@ -1951,7 +1970,7 @@ FARM...       which trees, space-separated: ocr, zones, w-figs-blotted, w-figs,
 --root --json --toon --pager
 ```
 **Note** the selector is a **positional, not `--only`**, because `--only` already means "line indices" throughout `ocr` and the harness holds to one meaning per flag name. "Everything" must be *said* rather than implied, for symmetry with `build`, where the cost is real — a selector meaning "everything" on one action and needing to be spelled on the other is a difference the caller has to carry between two commands usually typed in sequence. It used to be spelled `all`, a *value* of the positional, which made this the one place in the CLI where everything was not `--all`; the old form is caught by the rename trap.
-**Note** four states, and the fourth is the point. `absent` is the directory not existing; `stale` is membership disagreeing with the criterion, or a link pointing nowhere; `ok` is neither; **`?` is no verdict available** — `scans/` and `train/bogoras-seg/` have no criterion the harness can compute, and reporting `ok` there would be a clean bill of health nobody issued. `?` does not gate: it describes the check's reach, not the tree.
+**Note** four states, and the fourth is the point. `absent` is the directory not existing; `stale` is membership disagreeing with the criterion, or a link pointing nowhere; `ok` is neither; **`?` is no verdict available** — `scans/` and `train/bogoras-seg/data/` have no criterion the harness can compute, and reporting `ok` there would be a clean bill of health nobody issued. `?` does not gate: it describes the check's reach, not the tree.
 **Note** `verified` says how deep the comparison went, and `membership` is not a hedge — but it is a statement about *this verb*, not about what is knowable. Nothing here opens pixel data or the timestamps behind it, so `state: ok` must not be read as "up to date". This entry used to justify the column by calling the blot tree's freshness *uncheckable*, which was false: see `zones blot`. What genuinely escapes any timestamp is a **deleted** figure ALTO, and that is a membership question anyway.
 **Note** `dangling` counts links whose target has gone. On a machine without `scans/` the two selection farms report their whole membership as dangling, which is correct and deliberate — see `views build`.
 
@@ -1964,11 +1983,14 @@ FARM...       which trees, space-separated: ocr, zones, w-figs-blotted, w-figs,
 FARM...       which trees, space-separated: ocr, zones, w-figs-blotted, w-figs,
               w-ocr
 --all         every farm this action handles
+--jobs N      worker threads for the per-page raster work; 1 runs serially and
+              builds no pool [cores, capped]
 --root --json --toon --pager
 ```
+**Note** **the raster farms were always pooled here; what `--jobs` adds is the control arm.** `blot_all` and `crop_all` take a worker count and this verb passed none, which `parallel.workers` reads as "as many as the machine has" — so the sweep ran wide and there was no way to ask for the serial run a pooled one has to be diffable against. It draws a bar per farm now, too: one per farm rather than one across all of them, since each has its own denominator.
 **Note** **`--all` must be said, and this verb is why.** Rebuilding `scans/w-figs-blotted/` repaints 252 page composites and is by a wide margin the most expensive thing in the harness — a cost entirely invisible at the call site, since nothing about `harness views build` suggests a corpus-wide raster pass. The caller who wanted one view relinked after a `restore` was the one paying it. **Name the farm in a per-page loop**: `views build ocr` and `views build zones` relink one view and are what a page-level pass wants; `views build --all` is for a deliberate corpus-level sweep, the way `corpus normalize --all` is against naming the page.
 **Note** **a farm whose builder must *read* an absent tree is skipped with a row**, never attempted and never silently dropped. The distinction is between what a builder opens and what its links merely point at: the blot builder reads pixels out of `scans/`, so with no `scans/` it cannot run; `w-figs` and `w-ocr` need only their tracked membership sources and build fine, leaving raster links that dangle — this repo's stated disposition for a link into an ignored tree. Hence exit 0 on a clone: building what can be built is the success case, and `views check` is what says what is still missing.
-**Note** `scans/` and `train/bogoras-seg/` are reported by `check` and built by neither. `scans/` is `pdftoppm` over `pdfs/`, whose entries are symlinks pointing outside the repo, so on a clone the rasters cannot be regenerated at all; `train/` is scratch that `zones assemble` clobbers by design.
+**Note** `scans/` and `train/bogoras-seg/data/` are reported by `check` and built by neither. `scans/` is `pdftoppm` over `pdfs/`, whose entries are symlinks pointing outside the repo, so on a clone the rasters cannot be regenerated at all; `train/` is scratch that `zones assemble` clobbers by design.
 
 ## agents
 

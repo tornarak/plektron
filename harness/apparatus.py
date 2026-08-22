@@ -437,11 +437,27 @@ def check(root: Path = Path(".")) -> dict:
                 "run": rid, "rule": "no-entry-provenance",
                 "detail": f"{run.get('source')} records no per-entry `ref`, so "
                           "nothing can be attributed to a leaf"})
-        elif entry_refs - set(refs):
+        # **The run demands full presence; the store may hold more.** A run is a
+        # rendering span over leaves this repository holds parsed, so what must
+        # be true is that every leaf it names is witnessed — a run declaring a
+        # leaf the store says nothing about renders an empty apparatus page and
+        # nothing else could report it.
+        #
+        # The converse was gated for a while and was the wrong direction. It made
+        # the run the store's boundary, which is false for an open list: folio
+        # 9's asterism ("For other authorities see references in the text")
+        # admits a work printed anywhere in the book, and Bogoras uses it — the
+        # chapter XXIII footnote on `3-146`/`3-147` is a second bibliography of
+        # twenty-one numbered works. Under the old test the only way to record
+        # one was to strip its `ref`, which threw away the leaf it is printed on
+        # to satisfy a check about rendering. `entries_for` already returns []
+        # where no run covers the leaf, so an entry outside every run renders
+        # nowhere on its own, with no gate needed to keep it out.
+        elif set(refs) - entry_refs:
             errors.append({
-                "run": rid, "rule": "span-disagreement",
-                "detail": "entries name scans outside the run: "
-                          + " ".join(sorted(entry_refs - set(refs)))})
+                "run": rid, "rule": "unwitnessed-leaf",
+                "detail": "run names leaves the store records no entry for: "
+                          + " ".join(sorted(set(refs) - entry_refs))})
 
         # **Where the plates are, reported and not gated.** A plate carries no
         # number on its own leaf, so `figures.by_plate` derives it by matching
