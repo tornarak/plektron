@@ -806,7 +806,9 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
     buckets = [rows for _, rows in blocks]
 
     by_line: dict[int, list[dict]] = {}
-    for t in tier1_terms(ref, root):
+    # `keys=False`: the generator buckets by `line` and writes `index`; the
+    # `key` column is the collator prompt's and costs a corpus walk to build.
+    for t in tier1_terms(ref, root, keys=False):
         by_line.setdefault(t["line"], []).append(t)
 
     store = load(root)

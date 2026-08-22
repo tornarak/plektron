@@ -78,7 +78,9 @@ def expand_page(ref: str, root: Path = Path("."), commit: bool = False) -> dict:
     if not path.exists():
         raise ValueError(f"no TEI for {ref} at {path}")
 
-    terms = {str(t["index"]): t for t in tier1_terms(ref, root)}
+    # `keys=False`: `index` and `text` are what this reads. The `key` column
+    # costs a walk of every keyed page and nothing here would look at it.
+    terms = {str(t["index"]): t for t in tier1_terms(ref, root, keys=False)}
     tree = etree.parse(str(path))
     resolved, unresolved = [], []
     for el in tree.getroot().iter():

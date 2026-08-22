@@ -10,6 +10,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from .. import lookup
 from ..context import build_context
 from ..emit import emit_lines
 from ..expand import expand_page
@@ -293,9 +294,24 @@ def run_validate(a) -> int:
     # `ocr review` used to have and gave up once its payload turned out to be
     # records after all. Exit is the worst across refs.
     refs = page_refs(a) or _collated(a.root)
+    # **The lexicon index, built once for the run rather than once a page.**
+    # `lookup.index` walks every keyed page and costs 1.57s; `build_context` is
+    # the only consumer of the `key` column it feeds, and used to rebuild it per
+    # ref. Not a module cache — a cache is a property of a server, and this
+    # process reads the store once and exits — just the loop hoisting its own
+    # invariant, the way `lookup.resolve`/`search`/`expand` already accept `idx=`.
+    #
+    # Built only for a real batch. A single ref would pay the same 1.57s inside
+    # `build_context` anyway, and a page with no Tier-1 terms never builds it at
+    # all, so eager construction would be a regression on exactly that page.
+    # Through the module rather than a bound name: `_with_keys` reaches
+    # `lookup.index` by a function-local import, so a bound alias here would be
+    # a second resolution path and a test spying on one would silently miss the
+    # other. It did, while this was written the other way.
+    idx = lookup.index(a.root) if len(refs) > 1 else None
     worst = 0
     for r in refs:
-        ctx = build_context(r, a.root)
+        ctx = build_context(r, a.root, idx=idx)
         # The page's own path, built here rather than read out of `ctx`. It used to
         # ride in the payload as `output_path`, which put a path the model never
         # needed into every collation prompt so that this one line could avoid

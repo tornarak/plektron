@@ -1212,8 +1212,12 @@ def validate(tei_path: Path, ctx: dict | None = None,
     adopted: set[str] = set()
     if ctx is not None:
         from .context import tier1_terms
+        # `keys=False`: only `text` is read here, and the `key` column costs a
+        # walk of every keyed page (1.57s) to build. This ran once per page on
+        # top of the one `build_context` already pays, so a corpus-wide
+        # `tei validate` was rebuilding the lexicon index twice a page.
         adopted = {t["text"] for t in tier1_terms(ctx["page_ref"],
-                                                  Path(ctx["root"]))}
+                                                  Path(ctx["root"]), keys=False)}
     for el in root.iter():
         if not isinstance(el.tag, str) or el.get(XML_LANG) not in TIER1:
             continue

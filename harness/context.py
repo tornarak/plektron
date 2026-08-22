@@ -574,7 +574,8 @@ def _ocr_lines(ocr_path: Path, root: Path = Path("."),
             if r["zone"] not in APPARATUS_ZONES]
 
 
-def tier1_terms(ref: str, root: Path = Path(".")) -> list[dict]:
+def tier1_terms(ref: str, root: Path = Path("."), keys: bool = True,
+                idx: dict | None = None) -> list[dict]:
     """Tier-1 tokens a human has already keyed on this page, with a local handle.
 
     **Copying is a fresh error surface bolted onto a solved problem.** Where
@@ -614,6 +615,22 @@ def tier1_terms(ref: str, root: Path = Path(".")) -> list[dict]:
     `line` is the ALTO line index, the same identity `ocr_lines` and
     `detector_flags` carry, so a term resolves with `harness ocr zoom REF --only
     <line> --store gt` like everything else.
+
+    **`keys=False` omits the `key` column, and omits the corpus walk that builds
+    it.** Measured at 1.57s a call — `lookup.index` reads every keyed page twice
+    — against ~10ms for everything else here, so the key column *is* the cost of
+    this function. Three of its four callers never read the column: `validate`
+    takes `text`, `expand` takes `index` and `text`, `generate` takes `line`.
+    Only `build_context` needs it, because the collator prompt prints it.
+
+    The column is **absent** rather than empty under `keys=False`, and the
+    difference is the usual one here: `key: ""` is a claim — no key resolves back
+    to this form, which `_with_keys` decides one form at a time — while a missing
+    field is the absence of a claim, and a consumer that wants one gets a
+    `KeyError` rather than a false negative.
+
+    `idx` is a prebuilt `lookup.index`, for a caller looping over pages; it
+    changes nothing about the answer.
     """
     from .detectors import EDGE_PUNCT, INVENTORY_CHARS, TOKEN, cyrillic
     from .lines import page_lines
@@ -661,10 +678,11 @@ def tier1_terms(ref: str, root: Path = Path(".")) -> list[dict]:
                     and any(c in INVENTORY_CHARS or c == "'" for c in tok)):
                 out.append({"index": len(out) + 1, "line": rec["index"],
                             "text": tok})
-    return _with_keys(out, root)
+    return _with_keys(out, root, idx) if keys else out
 
 
-def _with_keys(rows: list[dict], root: Path) -> list[dict]:
+def _with_keys(rows: list[dict], root: Path,
+               idx: dict | None = None) -> list[dict]:
     """Add the lexicon handle to each term, where one resolves back to it.
 
     **`index` addresses this page and `key` addresses the corpus**, and the
@@ -698,6 +716,14 @@ def _with_keys(rows: list[dict], root: Path) -> list[dict]:
     config is a tree where no key exists, so every cell is empty and nothing
     raises: `tier1_terms` still answers its own question.
 
+    **`idx` lets a caller looping over pages build it once instead of once a
+    page.** Measured at 1.57s a build, against ~10ms for the rest of
+    `tier1_terms`, so a corpus-wide `tei validate` was spending essentially all
+    of its time here. Not a module cache — `harness/README.md` holds that a cache
+    is a property of a server and the CLI reads a store once and exits — but the
+    same `idx=` parameter `lookup.resolve`, `search` and `expand` already take,
+    extended one layer inward rather than invented.
+
     **That last sentence is the whole licence, and the guard used to be wider
     than it.** `except Exception` also swallowed a corpus that would not read —
     so "there is no config here" and "the index failed to build" reached a
@@ -711,7 +737,7 @@ def _with_keys(rows: list[dict], root: Path) -> list[dict]:
     from .marks import MarksConfigError, handle_key
 
     try:
-        idx = index(root)
+        idx = index(root) if idx is None else idx
     except MarksConfigError:
         return [{**r, "key": ""} for r in rows]
     out = []
@@ -788,7 +814,8 @@ def entity_hits(ref: str, root: Path = Path(".")) -> list[dict]:
     return out
 
 
-def build_context(ref: str, root: Path = Path(".")) -> dict:
+def build_context(ref: str, root: Path = Path("."),
+                  idx: dict | None = None) -> dict:
     """The whole per-page input contract for the collation pass, as one dict.
 
     Everything a model needs to produce this page's TEI and nothing it would have
@@ -801,6 +828,10 @@ def build_context(ref: str, root: Path = Path(".")) -> dict:
     Imported locally, not at module scope: `figures` imports `norm_ref` from here,
     so a top-level import would close a cycle. Three other call sites in this
     package do the same for the same reason.
+
+    `idx` is a prebuilt `lookup.index`, passed straight to `tier1_terms` — this
+    is the one caller of it that wants the `key` column, and so the one that pays
+    the corpus walk. A caller looping over pages should build it once.
     """
     from .generate import GENDIR
     from .seam import tail as seam_tail
@@ -889,7 +920,7 @@ def build_context(ref: str, root: Path = Path(".")) -> dict:
     # here could have matched anything.
     # `t["line"]`, not `t["index"]` — the latter is the handle `tei expand`
     # resolves, and these two numberings share neither meaning nor range.
-    terms = tier1_terms(ref, root)
+    terms = tier1_terms(ref, root, idx=idx)
     ratified = {(str(t["line"]), t["text"]) for t in terms}
     detected["tokens"] = [f for f in detected["tokens"]
                           if (f["index"], f["token"]) not in ratified]
