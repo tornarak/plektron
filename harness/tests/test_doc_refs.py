@@ -79,6 +79,21 @@ EXPECTED_ABSENT = {
     # rebuild restores them, and the test starts checking them again.
     "gt/ocr/chukchi-2-034.xml",
     "gt/ocr/chukchi-3-119.xml",
+    # **Removed on purpose, and named in prose precisely because they were.** A
+    # METS manifest is `#mz` — re-derived from its store on every run so that it
+    # fails rather than goes stale — and a committed one is a second copy of its
+    # store's shape with nothing keeping the two honest. Both proved it:
+    # `gt/fig/METS.xml` described a store rewritten under it, and
+    # `gt/ocr/METS.xml` outlived that removal to manifest 20 files against a
+    # store of 663. `corpus mets STORE --out DIR` builds either on demand.
+    #
+    # Worth knowing how these arrived here: the `gt/fig` one had been gone for
+    # ages without this gate noticing, because the prose said "`gt/fig/`" and
+    # `PATH_RE` requires a basename after the separator. Writing the full path
+    # is what surfaced it — the gate got stricter because the doc got more
+    # specific, which is the direction that blind spot always fails in.
+    "gt/fig/METS.xml",
+    "gt/ocr/METS.xml",
 }
 
 

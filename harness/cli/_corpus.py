@@ -14,6 +14,9 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import click
+
+from ..mets import ALTO_STORES, write_mets
 from ..normalize import convert, scan
 from ..pipeline import STAGES
 from ._common import (
@@ -94,6 +97,27 @@ def register(cli):
            "reading whose zone is gone) must both be empty; a total that merely "
            "matches is not coverage, which is how two absent pages once went "
            "unnoticed by cancelling against two zone-only ones")
+
+    # Here rather than under `fig`, where it began, because it was never about
+    # figures: `build_mets` takes filenames and returns markup, and every ALTO
+    # store can be handed to eScriptorium. `fig mets` named the one caller it
+    # happened to have. The store is a **positional**, matching `views build
+    # FARM` — the group whose subject is likewise "which of these trees" — and
+    # not a `--store` flag, because a selector spelled as a flag is what that
+    # group already decided against.
+    p = action(g, "mets", run_mets, pageable=False,
+               help="write a METS manifest over one ALTO store into a "
+               "directory you name, for importing that store into "
+               "eScriptorium. Built on demand and never tracked: both stores "
+               "that ever held one committed beside themselves went stale "
+               "under it, gt/ocr/METS.xml manifesting 20 files against 663")
+    arg(p, "store", metavar="STORE", type=click.Choice(ALTO_STORES))
+    p.help += ("\n\nSTORE: which ALTO store. One of: "
+               + ", ".join(ALTO_STORES) + ". The bare names are the read views.")
+    opt(p, "--out", metavar="DIR", required=True,
+        help="where to write METS.xml. Required and has no default, so this "
+             "cannot land back inside a store by omission. Always named "
+             "METS.xml, so two stores want two directories")
 
 
 def _targets(a) -> list[Path] | None:
@@ -251,3 +275,11 @@ def run_figures(a) -> int:
     # counts alone never decide it: 250 pages was once the expected total *and*
     # wrong in two compensating directions at the same time.
     return 1 if (rep["missing"] or rep["orphan"]) else 0
+
+
+def run_mets(a) -> int:
+    # `write_mets` raises on an empty store, which `main` renders as the usage
+    # error it is: naming a store this clone does not hold — every `mz/` tree is
+    # derived — is a mistake about the invocation, not a corpus defect to gate on.
+    out(a, write_mets(a.store, a.out, a.root))
+    return 0

@@ -137,12 +137,27 @@ gt/zones/_journal.jsonl
 # `METS.xml` joins them because it is *derived from the store it sits in* — the one
 # that used to be tracked here was an eScriptorium export artifact describing a
 # store that has since been rewritten under it, which is a second copy of the
-# store's shape with nothing keeping the two honest. `harness fig mets --out DIR`
-# builds one on demand, and requires the directory so it cannot land back here.
+# store's shape with nothing keeping the two honest. `harness corpus mets gt/fig
+# --out DIR` builds one on demand, and requires the directory so it cannot land
+# back here.
 gt/fig/*.prev
 gt/fig/*.tmp
 gt/fig/_journal.jsonl
 gt/fig/METS.xml
+# **And `gt/ocr/METS.xml` on the same argument, which it took a second pass to
+# reach.** The rule above was written for `gt/fig/` and stopped there, so the
+# `gt/ocr/` manifest stayed tracked from the baseline commit and became the
+# predicted failure rather than a hypothetical one: it manifested **20 files
+# against a store of 663**, an export from when the store had twenty pages.
+#
+# The provenance case is the stronger one. A METS manifest is `#mz` — mechanical
+# output, which asserts nothing on its own and is re-derived from its store on
+# every run so that it fails rather than goes stale. Tracked inside `gt/`, it
+# takes the rank of something a human ratified against the artifact, and it was
+# the only file in `gt/` claiming a rank no human wrote. Nothing reads it:
+# `normalize.py` skips it by name, and `farms.py`'s glob is `chukchi-*.xml`,
+# which never matched it.
+gt/ocr/METS.xml
 # `gt/lines/` is tracked on the same terms — the correction fragments and
 # `_ink_exempt.json` are the authored record, the recovery copy beside them is
 # not. Note what is *not* ignored: `gt/lines/*.xml` is a human's geometry over

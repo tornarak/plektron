@@ -727,6 +727,7 @@ RENAMED_VALUES = {
 RENAMED_ACTIONS = {
     ("ocr", "link"): "views build ocr",
     ("zones", "link"): "views build zones",
+    ("fig", "mets"): "corpus mets gt/fig",
 }
 
 

@@ -320,7 +320,7 @@ def _w_ocr_wanted(root: Path) -> tuple[dict[str, Path], dict[str, Path]]:
     for p in (root / "gt" / "ocr").glob("chukchi-*.xml"):
         try:
             refs.append(norm_ref(p.stem))
-        except ValueError:      # `gt/ocr/METS` is not a page
+        except ValueError:      # matched the glob but is not a ref
             continue
     refs = sorted(set(refs), key=parse_ref)
     return (

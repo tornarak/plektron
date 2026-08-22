@@ -96,10 +96,13 @@ and never imported is a migration nobody can check afterwards".
 one-shot migrations**, kept for the reasoning in their docstrings; re-running any
 would corrupt what it already converted, and each says so at the top.
 
-The METS manifest is `harness fig mets --out DIR` now, not a script — and it
-writes only where you point it, because the one that used to sit tracked in
-`gt/fig/` was an export artifact describing a store that has since been
-rewritten under it. The two `strip_*_lines.py`, which produced the line-free
+The METS manifest is `harness corpus mets STORE --out DIR` now, not a script,
+and it serves any ALTO store rather than `gt/fig/` alone — it was `fig mets`
+while that was the only caller, though the builder never read a figure. It
+writes only where you point it, because both manifests that ever sat tracked in
+a store described a store that had been rewritten under them: `gt/fig/METS.xml`,
+and `gt/ocr/METS.xml`, which outlived the first removal and manifested 20 files
+against a store of 663. The two `strip_*_lines.py`, which produced the line-free
 `gt/fig/`, are gone: `git log -- tools/strip_lines.py` has them, and the tag-ID
 lesson one of them recorded is quoted where it is load-bearing.
 

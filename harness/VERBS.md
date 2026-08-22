@@ -1639,6 +1639,18 @@ single store can answer it.
 --root --json --toon --pager
 ```
 
+### corpus mets STORE --out DIR
+**Does** writes a METS manifest over one ALTO store, for importing that store into eScriptorium.
+**Reads** the filenames in `STORE`. **Writes** `DIR/METS.xml`.
+**Exit** always 0; a store holding no ALTOs is a usage error (2), as is a store outside the list.
+```
+STORE         gt/ocr, gt/fig, gt/zones, gt/lines, mz/ocr, mz/fig, mz/zones, ocr, zones
+--out DIR     where to write it; required, with no default
+--root --json --toon --pager
+```
+**Note** **Was `fig mets`, and was never about figures.** `build_mets` takes filenames and returns markup; the `fig` group named the one caller it happened to have, while every ALTO store can be handed to eScriptorium. The store is a positional for `views build FARM`'s reason — a selector spelled as a flag is what that group already decided against. The old spelling errors with the new one.
+**Note** **`--out` is required so this cannot land back inside a store by omission**, and the file is always `METS.xml`, so two stores want two directories. Both stores that ever held a committed manifest proved why: `gt/fig/METS.xml` described a store rewritten under it, and `gt/ocr/METS.xml` — tracked from the baseline commit, missed when the `gt/fig` one was removed — manifested 20 files against a store of 663. A manifest is `#mz`, re-derived on every run so it fails rather than goes stale.
+
 ---
 
 ## fig
@@ -1744,17 +1756,6 @@ PP-NNN...     which pages; several may be given
 --jobs N      worker threads; 1 runs serially and builds no pool [cores, capped]
 --root --json --toon --pager
 ```
-
-### fig mets --out DIR
-**Does** writes a METS manifest over `gt/fig/` for importing the store into eScriptorium.
-**Reads** the filenames in `gt/fig/`.
-**Writes** `DIR/METS.xml`.
-**Exit** always 0; a store with no ALTOs is a usage error (2).
-```
---out DIR     where to write it; required, with no default
---root --json --toon --pager
-```
-**Note** **`--out` is required so this cannot land in `gt/fig/` by omission.** The manifest that used to live there was an export artifact, tracked, and describing a store that has since been rewritten under it — a manifest committed beside the thing it manifests is a second copy of that thing's shape with nothing keeping the two honest. Built on demand instead; zip it at the root beside the store's files.
 
 ### fig remark-eval
 **Does** mints or extends `gt/fig/_train.lst` and `_eval.lst`.

@@ -78,17 +78,6 @@ def register(cli):
     opt(p, "--jobs", type=int, default=None, metavar="N",
         help="worker threads; 1 runs serially and builds no pool [cores, capped]")
 
-    p = action(g, "mets", run_mets, section="The store", pageable=False,
-               help="write a METS manifest over gt/fig/ into a directory you "
-               "name, for importing the store into eScriptorium. Built on "
-               "demand and never tracked: the one that used to sit in gt/fig/ "
-               "was an export artifact describing a store that has since been "
-               "rewritten, which is the failure mode of committing a manifest "
-               "beside the thing it manifests")
-    opt(p, "--out", metavar="DIR", required=True,
-        help="where to write METS.xml. Required and has no default, so this "
-             "cannot land in gt/fig/ by omission")
-
     # ---- the segmenter -----------------------------------------------------
 
     p = action(g, "remark-eval", run_remark, section="The segmenter",
@@ -256,8 +245,6 @@ def run_crops(a) -> int:
     return 0
 
 
-def run_mets(a) -> int:
-    out(a, F.write_mets(a.root, a.out))
     return 0
 
 

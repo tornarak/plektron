@@ -236,11 +236,21 @@ def test_a_page_promoted_to_gt_makes_the_selection_stale_then_ok(tmp_path):
         Path("../../ocr/chukchi-1-060.xml")
 
 
-def test_METS_is_not_a_page(tmp_path):
-    """`gt/ocr/METS` exists and would otherwise be selected into the farm."""
+def test_a_non_page_file_beside_the_altos_is_not_a_page(tmp_path):
+    """Two different exclusions, and this test used to exercise only one.
+
+    It was written for the tracked `gt/ocr/METS.xml` — since removed, being a
+    `#mz` manifest that had gone stale at 20 files against 663 — and named a
+    file `METS`, which the `chukchi-*.xml` glob never matched. So it passed
+    without ever reaching the `except ValueError` it was written to cover.
+
+    Both arms are asserted now: a name the glob rejects, and a name the glob
+    accepts but `norm_ref` cannot parse, which is the only path to the guard.
+    """
     (tmp_path / "gt" / "ocr").mkdir(parents=True)
     (tmp_path / "gt" / "ocr" / "chukchi-1-048.xml").write_text("<x/>")
-    (tmp_path / "gt" / "ocr" / "METS").write_text("<x/>")
+    (tmp_path / "gt" / "ocr" / "METS.xml").write_text("<x/>")        # glob
+    (tmp_path / "gt" / "ocr" / "chukchi-draft.xml").write_text("<x/>")  # guard
     pngs, xmls = F._w_ocr_wanted(tmp_path)
     assert set(xmls) == {"chukchi-1-048.xml"}
 

@@ -52,7 +52,8 @@ proposal until ratified; no index entry is minted unreviewed.
   `ketos --help` rather than trusting remembered or documented syntax, including
   anything asserted in this file.
 - eScriptorium is **out of the loop** — keying is `zones edit`/`ocr edit` in the
-  browser. The ALTO stores keep its shape and `fig mets` still exports for it.
+  browser. The ALTO stores keep its shape and `corpus mets` still exports any
+  of them for it.
 - GPU: Turing card, ~100× over CPU.
 
 # Encoding

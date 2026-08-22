@@ -810,6 +810,15 @@ and its claim markers live beside the directories they deal out, so **no caller 
 glob `review/*` and assume a ref**. Five did, and three survived only by filtering
 on `proposal.json` existing.
 
+**`mets.py`** — a METS manifest over any ALTO store, for eScriptorium import, and
+`ALTO_STORES`, the pool `corpus mets` accepts. **Imports nothing from this
+package**, like `ns.py` and `atomic.py`: a manifest is a function of a filename
+list and nothing else. It sat in `figures.py` while `gt/fig/` was its only
+caller, which made a store-agnostic builder look like part of the figure track.
+Never written into the store it describes — `write_mets` requires the output
+directory — because both stores that ever held a committed manifest went stale
+under it, `gt/ocr/METS.xml` reaching 20 files against a store of 663.
+
 **`migrate.py`** — moving every stored coordinate from the legacy `pdftoppm`
 render's space into the extracted master's. A **translation**, taken as one rounded
 integer per page from `data/pdf_images.json`, and that is what makes it checkable:
