@@ -1,0 +1,401 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-3-147.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-3-147.png; regions_from: zones/chukchi-3-147.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+                <TextBlock ID="mz_3-147_r1" HPOS="366" VPOS="453" WIDTH="1782" HEIGHT="94" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="366 453 2148 453 2148 547 366 547"/>
+                    </Shape>
+                    <TextLine ID="mz_3-147_l1" HPOS="941" VPOS="466" WIDTH="614" HEIGHT="51" BASELINE="943 500 1555 504" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1547 468 943 466 943 500 941 513 1551 517 1555 504 1553 492 1547 468"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l2" HPOS="2032" VPOS="470" WIDTH="92" HEIGHT="47" BASELINE="2032 502 2124 502" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2110 474 2091 472 2071 470 2052 470 2032 488 2032 502 2032 515 2122 517 2124 502 2124 474 2110 474"/>
+                        </Shape>
+                        <String CONTENT="681"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-147_r2" HPOS="366" VPOS="570" WIDTH="1782" HEIGHT="1380" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="366 570 2148 570 2148 1950 366 1950"/>
+                    </Shape>
+                    <TextLine ID="mz_3-147_l3" HPOS="471" VPOS="566" WIDTH="1661" HEIGHT="58" BASELINE="473 611 2132 607" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="473 611 473 624 2130 620 2132 607 2130 578 2087 566 2085 566 2083 566 2081 566 2052 576 2005 566 2003 566 1933 578 1792 578 1779 566 1777 566 1775 566 1773 566 1771 566 1738 578 1553 578 1539 566 1537 566 1535 566 1533 566 1397 576 1301 566 1299 566 1297 566 1272 578 1225 568 1223 568 1221 568 1192 578 1114 568 1112 568 1110 568 1079 578 471 576 473 611"/>
+                        </Shape>
+                        <String CONTENT="Manykin-Nevstruyev says that the Kolyma River was discovered in the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l4" HPOS="364" VPOS="624" WIDTH="1768" HEIGHT="72" BASELINE="366 675 2132 665" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="364 646 366 675 366 696 465 687 2130 687 2132 665 2130 636 2104 624 2102 624 2100 624 2098 624 2096 624 2081 634 1964 624 1962 624 1902 634 1878 624 1876 624 1874 624 1872 624 1870 624 1855 634 1664 626 1662 626 1611 636 1533 626 1531 626 1412 638 1179 628 1177 628 1067 640 771 630 769 630 767 630 744 640 528 632 526 632 364 644 364 646"/>
+                        </Shape>
+                        <String CONTENT="year 1638. Maydell mentions as the discoverer of the Kolyma the Cossack"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l5" HPOS="362" VPOS="687" WIDTH="1770" HEIGHT="60" BASELINE="364 733 2132 728" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="364 733 364 747 2130 741 2132 728 2128 700 2032 687 2030 687 2028 687 1999 698 1931 698 1904 687 1902 687 1900 687 1820 698 1748 687 1746 687 1681 698 1644 687 1642 687 1640 687 1578 698 1545 687 1543 687 1541 687 1539 687 1537 687 1518 700 1459 689 1457 689 1455 689 1420 702 1292 702 1270 689 1268 689 1266 689 1264 689 1198 700 1083 689 1081 689 906 702 863 691 861 691 859 691 800 702 783 691 781 691 779 691 777 691 697 702 535 691 533 691 471 702 397 691 395 691 393 691 362 698 364 733"/>
+                        </Shape>
+                        <String CONTENT="Ivan Erastov, with his companions. He says that in 1644 three winter ham-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l6" HPOS="362" VPOS="745" WIDTH="1766" HEIGHT="64" BASELINE="364 792 2128 788" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="364 792 364 806 2124 809 2128 788 2126 759 2095 745 2093 745 2091 745 2089 745 2087 745 2067 757 1999 745 1921 745 1919 745 1917 745 1915 745 1900 757 1853 745 1851 745 1849 745 1847 745 1824 757 1783 745 1781 745 1779 745 1777 745 1744 757 1707 747 1705 747 1703 747 1629 755 1615 745 1613 745 1611 745 1533 745 1531 745 1529 745 1506 757 1449 745 1447 745 1237 759 1186 747 1184 747 1182 747 1118 759 1025 747 949 747 947 747 945 747 943 747 927 759 882 747 880 747 878 747 876 747 851 761 781 761 761 747 760 747 758 747 756 747 754 747 728 757 709 747 707 747 705 747 658 757 611 747 609 747 607 747 576 759 405 759 389 747 387 747 385 747 383 747 381 747 362 755 364 792"/>
+                        </Shape>
+                        <String CONTENT="lets were founded on the Kolyma River, — Nishne-Kolymsk, Sredne-Kolymsk,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l7" HPOS="364" VPOS="804" WIDTH="1762" HEIGHT="64" BASELINE="366 850 2126 845" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="366 850 366 868 2124 862 2126 845 2120 806 1794 813 1713 804 1711 804 1615 813 1599 804 1598 804 1596 804 1594 804 1522 815 1434 806 1432 806 1430 806 1407 815 1393 806 1391 806 1389 806 1270 806 1268 806 1266 806 1241 815 1216 806 1214 806 1212 806 1141 815 1050 806 1048 806 949 817 910 808 908 808 906 808 904 808 867 817 837 808 836 808 834 808 754 817 664 808 662 808 660 808 619 817 545 808 543 808 541 808 522 817 440 808 438 808 364 819 366 850"/>
+                        </Shape>
+                        <String CONTENT="and Verkhne-Kolymsk (Lower Kolymsk, Middle Kolymsk, and Upper Kolymsk).¹"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l8" HPOS="364" VPOS="866" WIDTH="1766" HEIGHT="60" BASELINE="366 913 2130 903" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="366 913 366 926 2128 924 2130 903 2124 866 364 876 366 913"/>
+                        </Shape>
+                        <String CONTENT="I am not sure that all three hamlets were founded as early as that, and all"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l9" HPOS="364" VPOS="926" WIDTH="1768" HEIGHT="59" BASELINE="366 973 2132 965" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="366 973 366 985 2130 981 2132 965 2130 938 2089 926 2087 926 2085 926 2083 926 2054 936 1929 926 1927 926 1808 936 1775 926 1773 926 1771 926 1769 926 1767 926 1753 936 1689 926 1687 926 1599 938 1498 928 1496 928 1494 928 1461 938 1389 928 1387 928 1204 940 1075 930 1073 930 1027 940 364 938 366 973"/>
+                        </Shape>
+                        <String CONTENT="in exactly the same year. On a copy of a chart of Siberia, made in the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l10" HPOS="366" VPOS="987" WIDTH="1762" HEIGHT="66" BASELINE="368 1032 2128 1026" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="368 1032 368 1053 2126 1047 2128 1026 2126 999 2091 987 2089 987 2087 987 1843 997 1703 987 1701 987 1699 987 1679 997 1627 987 1625 987 1537 999 1504 989 1502 989 1500 989 1451 999 1383 989 1381 989 1165 999 1087 989 1085 989 1083 989 1050 999 999 989 997 989 995 989 993 989 978 999 717 991 715 991 713 991 711 991 697 1000 646 991 645 991 643 991 600 1000 530 991 528 991 366 1002 368 1032"/>
+                        </Shape>
+                        <String CONTENT="year 1672 all three winter hamlets are mentioned, — the Lower, the Middle,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l11" HPOS="364" VPOS="1043" WIDTH="1758" HEIGHT="63" BASELINE="366 1090 2122 1082" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="366 1090 366 1106 2120 1104 2122 1082 2114 1043 2093 1053 1923 1043 1921 1043 1870 1053 1755 1043 1753 1043 1752 1043 1730 1053 1693 1043 1691 1043 1689 1043 1687 1043 1685 1043 1668 1057 1352 1057 1319 1045 1317 1045 1315 1045 1233 1057 913 1047 912 1047 910 1047 873 1057 804 1047 802 1047 732 1059 440 1049 438 1049 364 1061 366 1090"/>
+                        </Shape>
+                        <String CONTENT="and the Upper. Nishne-Kolymsk in some documents was called “Dog Fortress,”"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l12" HPOS="364" VPOS="1106" WIDTH="1768" HEIGHT="58" BASELINE="366 1151 2132 1145" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="366 1151 366 1164 2130 1162 2132 1145 2130 1117 2087 1106 2085 1106 2083 1106 2081 1106 2056 1115 2042 1106 2040 1106 2038 1106 2036 1106 1853 1115 1822 1106 1820 1106 1818 1106 1816 1106 1790 1115 1744 1106 1742 1106 1740 1106 1718 1117 1599 1117 1566 1106 1564 1106 1562 1106 1561 1106 1537 1117 1358 1108 1356 1108 1294 1117 1262 1108 1260 1108 1258 1108 1256 1108 1231 1117 1204 1108 1202 1108 1200 1108 1036 1117 1001 1108 999 1108 997 1108 995 1108 951 1119 915 1110 913 1110 912 1110 910 1110 880 1119 859 1110 857 1110 855 1110 660 1119 607 1110 606 1110 533 1119 514 1110 512 1110 387 1110 385 1110 383 1110 381 1110 364 1117 366 1151"/>
+                        </Shape>
+                        <String CONTENT="doubtless because of the dogs used for driving. It was the largest of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l13" HPOS="364" VPOS="1166" WIDTH="1771" HEIGHT="66" BASELINE="366 1209 2135 1203" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="366 1209 366 1223 674 1232 676 1232 2134 1221 2135 1203 2128 1166 2089 1176 2050 1166 2048 1166 2046 1166 2044 1166 2042 1166 2026 1178 1933 1178 1904 1166 1902 1166 1900 1166 1898 1166 1876 1176 1849 1166 1847 1166 1845 1166 1843 1166 1841 1166 1826 1178 1527 1178 1494 1168 1492 1168 1490 1168 1366 1178 1346 1168 1344 1168 1108 1168 1106 1168 1104 1168 1103 1168 1087 1178 956 1168 954 1168 952 1168 951 1168 935 1180 849 1170 847 1170 791 1180 578 1170 576 1170 483 1180 387 1170 385 1170 383 1170 381 1170 364 1178 366 1209"/>
+                        </Shape>
+                        <String CONTENT="three settlements. From Michael Stadukhin we have a report of the 22d of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l14" HPOS="366" VPOS="1227" WIDTH="1768" HEIGHT="58" BASELINE="368 1273 2134 1266" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="368 1273 368 1285 2132 1281 2134 1266 2132 1238 2091 1227 2089 1227 2087 1227 2085 1227 2056 1236 1902 1227 1900 1227 1689 1238 1658 1229 1656 1229 1654 1229 1594 1238 1204 1230 1202 1230 1200 1230 1198 1230 1182 1240 847 1230 845 1230 843 1230 804 1242 744 1232 742 1232 516 1242 500 1232 498 1232 496 1232 383 1232 381 1232 379 1232 378 1232 366 1240 368 1273"/>
+                        </Shape>
+                        <String CONTENT="April, 1647, taken down, as was the custom, from his own words, by the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l15" HPOS="366" VPOS="1287" WIDTH="1768" HEIGHT="58" BASELINE="368 1330 2134 1326" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="368 1330 368 1345 2132 1342 2134 1326 2132 1299 2091 1287 2089 1287 2087 1287 1999 1299 1748 1299 1718 1287 1716 1287 1714 1287 1713 1287 1677 1297 1640 1287 1638 1287 1637 1287 1635 1287 1633 1287 1617 1297 1561 1287 1559 1287 1451 1297 1301 1287 1299 1287 1225 1299 683 1289 682 1289 680 1289 678 1289 662 1301 438 1301 383 1289 381 1289 379 1289 378 1289 366 1297 368 1330"/>
+                        </Shape>
+                        <String CONTENT="Government clerk in the assembly-room (съѣзжая изба), in the presence of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l16" HPOS="366" VPOS="1345" WIDTH="1768" HEIGHT="59" BASELINE="368 1390 2134 1384" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="368 1390 368 1404 2132 1400 2134 1384 2130 1355 1545 1345 1543 1345 1541 1345 1522 1355 1009 1347 1007 1347 366 1359 368 1390"/>
+                        </Shape>
+                        <String CONTENT="two governors of the Yakutsk Province, Pushkin and Suponev.² In this report"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l17" HPOS="364" VPOS="1404" WIDTH="1770" HEIGHT="64" BASELINE="366 1451 2134 1445" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="366 1451 366 1468 2132 1468 2134 1445 2130 1414 1660 1404 1658 1404 1539 1414 1027 1406 1025 1406 951 1418 364 1418 366 1451"/>
+                        </Shape>
+                        <String CONTENT="it is said that “the public-service official (служилый человѣкъ),³ Michael Stadukhin,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l18" HPOS="366" VPOS="1466" WIDTH="1766" HEIGHT="59" BASELINE="368 1511 2132 1505" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="368 1511 368 1525 2130 1523 2132 1505 2130 1478 2093 1466 2091 1466 2089 1466 2087 1466 2056 1476 2022 1466 2020 1466 2019 1466 1896 1476 1796 1466 1794 1466 1709 1476 1601 1466 1599 1466 1500 1478 1079 1468 1077 1468 1075 1468 1073 1468 1058 1480 952 1480 913 1470 912 1470 910 1470 652 1480 592 1470 590 1470 588 1470 549 1480 510 1470 508 1470 506 1470 504 1470 463 1480 407 1470 405 1470 403 1470 366 1482 368 1511"/>
+                        </Shape>
+                        <String CONTENT="who, in the past 154th year (1646), went from the Kolyma River with the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l19" HPOS="366" VPOS="1525" WIDTH="1766" HEIGHT="64" BASELINE="368 1570 2132 1564" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="368 1570 368 1583 1541 1589 1543 1589 1545 1589 1547 1589 1564 1579 2130 1579 2132 1564 2130 1534 2100 1525 2098 1525 2096 1525 2003 1534 1976 1525 1974 1525 1972 1525 1970 1525 1968 1525 1950 1536 1662 1536 1582 1525 1580 1525 1578 1525 1529 1536 1309 1527 1307 1527 1305 1527 1303 1527 1288 1538 1079 1538 1028 1527 1027 1527 1025 1527 1023 1527 1007 1536 576 1529 574 1529 512 1538 475 1529 473 1529 471 1529 469 1529 467 1529 452 1538 383 1529 381 1529 379 1529 378 1529 366 1536 368 1570"/>
+                        </Shape>
+                        <String CONTENT="Czar’s tribute, relates that he was on the Kolyma River two years for col-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l20" HPOS="364" VPOS="1583" WIDTH="1770" HEIGHT="61" BASELINE="366 1632 2134 1624" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="366 1632 366 1644 2132 1642 2134 1624 2132 1597 2089 1583 2087 1583 2085 1583 2083 1583 2057 1595 2040 1583 2038 1583 2036 1583 2034 1583 1939 1595 1911 1583 1909 1583 1907 1583 1905 1583 1861 1595 1761 1583 1759 1583 1683 1597 1635 1585 1633 1585 1631 1585 1629 1585 1601 1599 1381 1599 1362 1585 1360 1585 1358 1585 1356 1585 1354 1585 1325 1597 1225 1587 1143 1587 1141 1587 1140 1587 1138 1587 1120 1599 1075 1587 1073 1587 1071 1587 997 1599 878 1587 876 1587 804 1601 777 1589 775 1589 658 1589 656 1589 654 1589 652 1589 635 1601 586 1589 584 1589 582 1589 580 1589 537 1601 465 1589 463 1589 364 1595 366 1632"/>
+                        </Shape>
+                        <String CONTENT="lecting the Czar’s tribute. The Kolyma is a great river of the size of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l21" HPOS="366" VPOS="1644" WIDTH="1768" HEIGHT="72" BASELINE="368 1692 2134 1683" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="368 1692 368 1716 504 1704 1218 1710 1219 1710 1221 1710 1241 1700 1321 1710 1323 1710 1325 1710 1327 1710 1340 1700 1354 1710 1356 1710 1358 1710 1360 1710 1584 1698 1644 1708 1646 1708 1709 1698 1728 1708 1730 1708 1732 1708 1804 1696 1826 1706 1828 1706 1829 1708 2118 1708 2118 1706 2120 1706 2122 1706 2134 1696 2134 1683 2130 1655 1818 1644 1816 1644 1716 1655 1535 1646 1533 1646 1447 1655 1432 1646 1430 1646 1428 1646 1426 1646 1424 1646 1375 1657 1157 1648 1155 1648 1028 1649 1027 1649 1025 1649 1009 1659 830 1649 828 1649 826 1649 785 1659 750 1649 748 1649 746 1649 744 1649 707 1659 366 1657 368 1692"/>
+                        </Shape>
+                        <String CONTENT="Lena. It runs in the same direction, east and north. On this Kolyma River"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l22" HPOS="366" VPOS="1702" WIDTH="1766" HEIGHT="72" BASELINE="368 1751 2132 1743" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="368 1751 368 1764 668 1764 721 1774 722 1774 724 1774 726 1774 742 1764 843 1772 845 1772 1334 1761 1658 1770 1660 1770 1954 1759 2128 1768 2132 1743 2128 1714 2020 1702 2019 1702 1958 1712 1939 1702 1937 1702 1935 1702 1872 1712 1839 1702 1837 1702 1835 1702 1790 1712 1765 1702 1763 1702 1761 1702 1759 1702 1736 1712 1713 1702 1711 1702 1709 1702 1615 1714 1375 1704 1373 1704 1241 1716 1198 1706 1196 1706 1194 1706 1192 1706 1165 1716 1151 1706 1149 1706 1147 1706 1145 1706 1143 1706 1114 1716 1101 1706 1099 1706 1097 1706 1095 1706 1093 1706 1056 1716 830 1706 828 1706 728 1718 645 1708 643 1708 590 1718 506 1708 504 1708 366 1714 368 1751"/>
+                        </Shape>
+                        <String CONTENT="live the natives, Kolyma men of their own tribe, driving [Reindeer] and walking"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l23" HPOS="368" VPOS="1766" WIDTH="1764" HEIGHT="67" BASELINE="370 1809 2132 1805" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="370 1809 370 1833 621 1831 623 1831 625 1831 641 1821 1247 1829 1249 1829 1317 1819 1391 1829 1393 1829 1395 1829 1438 1819 2128 1829 2132 1805 2128 1778 2001 1778 1983 1766 1981 1766 1980 1766 1978 1766 1835 1776 1635 1766 1633 1766 1631 1766 1592 1776 1465 1766 1292 1766 1290 1766 1227 1780 1114 1780 1097 1768 1095 1768 1093 1768 1091 1768 995 1778 368 1774 370 1809"/>
+                        </Shape>
+                        <String CONTENT="[sedentary],⁴ — numerous people, — and they have a language of their own;"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l24" HPOS="366" VPOS="1823" WIDTH="1766" HEIGHT="60" BASELINE="368 1870 2132 1864" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="368 1870 368 1883 2130 1881 2132 1864 2126 1825 1944 1835 1927 1823 1925 1823 1923 1823 1921 1823 1843 1833 1790 1823 1789 1823 1787 1823 1753 1835 1718 1823 1716 1823 1714 1823 1713 1823 1687 1833 1674 1823 1672 1823 1670 1823 1543 1823 1541 1823 1539 1823 1537 1823 1518 1837 1473 1825 1471 1825 1469 1825 1467 1825 1434 1837 1338 1825 1336 1825 1334 1825 1303 1839 933 1839 898 1827 896 1827 894 1827 892 1827 871 1839 851 1827 849 1827 847 1827 845 1827 724 1839 557 1827 555 1827 553 1827 551 1827 533 1839 471 1827 469 1827 467 1827 465 1827 446 1840 366 1840 368 1870"/>
+                        </Shape>
+                        <String CONTENT="on this Kolyma, and also on a separate river, the Chiukhcha (чюхча), — and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l25" HPOS="370" VPOS="1881" WIDTH="1762" HEIGHT="63" BASELINE="372 1930 2132 1922" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="372 1930 372 1944 2130 1940 2132 1922 2130 1895 2100 1881 2098 1881 2096 1881 2095 1881 2048 1893 1968 1881 1966 1881 1964 1881 1962 1881 1941 1895 1829 1895 1785 1881 1783 1881 1781 1881 1779 1881 1777 1881 1759 1893 1734 1881 1732 1881 1730 1881 1728 1881 1687 1895 1512 1883 1510 1883 1508 1883 1469 1897 1311 1897 1262 1883 1260 1883 1258 1883 1256 1883 1255 1883 1235 1897 1003 1885 1001 1885 999 1885 968 1897 865 1885 863 1885 861 1885 859 1885 839 1897 615 1887 613 1887 611 1887 586 1899 498 1887 496 1887 494 1887 455 1899 391 1887 389 1887 387 1887 385 1887 370 1897 372 1930"/>
+                        </Shape>
+                        <String CONTENT="this river Chiukhcha flows directly to the sea, and its mouth lies on this side"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-147_r3" HPOS="366" VPOS="1973" WIDTH="1782" HEIGHT="1127" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="366 1973 2148 1973 2148 3100 366 3100"/>
+                    </Shape>
+                    <TextLine ID="mz_3-147_l26" HPOS="372" VPOS="1977" WIDTH="1586" HEIGHT="47" BASELINE="374 2006 1958 2002" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="374 2006 374 2024 1956 2020 1958 2002 1952 1977 372 1979 374 2006"/>
+                        </Shape>
+                        <String CONTENT="18. Маныкинъ-Невструевъ, А. И. Завоеватели Восточной Сибири, Якутскіе Казаки, Москва, 1883."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l27" HPOS="430" VPOS="2018" WIDTH="1452" HEIGHT="47" BASELINE="432 2049 1882 2043" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="432 2049 432 2065 1880 2061 1882 2043 1876 2018 430 2022 432 2049"/>
+                        </Shape>
+                        <String CONTENT="Manykin-Nevstruyev, A. I. Cossacks of Yakutsk, Conquerors of East Siberia, Moscow, 1883."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l28" HPOS="368" VPOS="2080" WIDTH="1766" HEIGHT="47" BASELINE="370 2111 2134 2106" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="370 2111 370 2127 2132 2121 2134 2106 2128 2080 368 2084 370 2111"/>
+                        </Shape>
+                        <String CONTENT="19. Историческая Записка о Чукотскомъ народѣ (Вѣстникъ Императорскаго Русскаго Географическаго"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l29" HPOS="455" VPOS="2121" WIDTH="326" HEIGHT="49" BASELINE="457 2146 781 2150" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="457 2146 455 2162 469 2170 471 2170 473 2170 475 2170 779 2168 781 2150 779 2125 457 2121 457 2146"/>
+                        </Shape>
+                        <String CONTENT="Общества, 1856, V)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l30" HPOS="432" VPOS="2160" WIDTH="1700" HEIGHT="49" BASELINE="434 2191 2132 2185" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="434 2191 434 2209 2130 2203 2132 2185 2126 2160 432 2164 434 2191"/>
+                        </Shape>
+                        <String CONTENT="Historical Sketch of the Chukchee People (in Messenger of the Imperial Russian Geographical Society, 1856, V.)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l31" HPOS="366" VPOS="2222" WIDTH="1768" HEIGHT="49" BASELINE="368 2254 2134 2248" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="368 2254 368 2271 2132 2265 2134 2248 2130 2222 366 2222 368 2254"/>
+                        </Shape>
+                        <String CONTENT="20. Карта Чукотской земли, составлена Плениснеромъ (Записки Гидрографическаго Департамента Морского"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l32" HPOS="459" VPOS="2269" WIDTH="490" HEIGHT="41" BASELINE="459 2295 949 2295" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="459 2295 459 2308 947 2310 949 2295 949 2269 459 2269 459 2295"/>
+                        </Shape>
+                        <String CONTENT="Министерства 1852, Часть X)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l33" HPOS="432" VPOS="2302" WIDTH="1700" HEIGHT="51" BASELINE="434 2335 2132 2328" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="434 2335 434 2353 2130 2353 2132 2328 2126 2302 432 2308 434 2335"/>
+                        </Shape>
+                        <String CONTENT="The Chart of the Chukchee Land, projected by Plenisner (in Memoirs of the Hydrographical Department,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l34" HPOS="467" VPOS="2353" WIDTH="246" HEIGHT="41" BASELINE="467 2378 713 2378" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="467 2378 467 2394 713 2394 713 2378 713 2353 467 2353 467 2378"/>
+                        </Shape>
+                        <String CONTENT="1852, Part X)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l35" HPOS="366" VPOS="2410" WIDTH="1768" HEIGHT="46" BASELINE="368 2441 2134 2435" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="368 2441 368 2456 2132 2450 2134 2435 2128 2410 366 2413 368 2441"/>
+                        </Shape>
+                        <String CONTENT="21. Барамыгинъ, М. Путевой Журналъ во время поѣздки въ Анюйскую Крѣпость (Записки Сибирскаго"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l36" HPOS="457" VPOS="2452" WIDTH="1195" HEIGHT="45" BASELINE="459 2478 1652 2476" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="459 2478 459 2493 1648 2497 1652 2476 1646 2452 457 2452 459 2478"/>
+                        </Shape>
+                        <String CONTENT="Отдѣла Императорскаго Русскаго Географическаго Общества, 57, кн. 4)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l37" HPOS="432" VPOS="2489" WIDTH="1702" HEIGHT="49" BASELINE="434 2521 2134 2515" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="434 2521 434 2538 2132 2532 2134 2515 2128 2489 432 2493 434 2521"/>
+                        </Shape>
+                        <String CONTENT="Baramygin, M. Diary of the Voyage to Anui Fair, 1855 (in Memoirs of the Siberian Section of the Imperial"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l38" HPOS="465" VPOS="2534" WIDTH="675" HEIGHT="47" BASELINE="467 2563 1140 2560" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="467 2563 467 2579 1136 2581 1140 2560 1134 2534 465 2536 467 2563"/>
+                        </Shape>
+                        <String CONTENT="Russian Geographical Society, 57, Vol. 4)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l39" HPOS="370" VPOS="2579" WIDTH="768" HEIGHT="41" BASELINE="372 2606 1138 2602" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="372 2606 372 2620 1136 2616 1138 2602 1132 2579 370 2581 372 2606"/>
+                        </Shape>
+                        <String CONTENT="For other authorities see references in the text."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l40" HPOS="477" VPOS="2618" WIDTH="487" HEIGHT="43" BASELINE="479 2643 964 2647" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="479 2643 477 2657 960 2661 964 2647 962 2622 479 2618 479 2643"/>
+                        </Shape>
+                        <String CONTENT="¹ Compare Maydell, II, p. 73."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l41" HPOS="479" VPOS="2661" WIDTH="1655" HEIGHT="43" BASELINE="479 2686 2134 2686" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="479 2686 479 2704 2134 2704 2134 2686 2134 2661 479 2661 479 2686"/>
+                        </Shape>
+                        <String CONTENT="² The Russian governors (воеводы) of the Moscow period were often sent in pairs, partly with the idea"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l42" HPOS="372" VPOS="2706" WIDTH="871" HEIGHT="41" BASELINE="372 2731 1243 2731" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="372 2731 372 2747 1243 2747 1243 2731 1243 2706 372 2706 372 2731"/>
+                        </Shape>
+                        <String CONTENT="that one would prevent any misdemeanor of the other."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l43" HPOS="479" VPOS="2745" WIDTH="1549" HEIGHT="43" BASELINE="479 2770 2028 2770" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="479 2770 479 2788 2028 2788 2028 2770 2028 2745 479 2745 479 2770"/>
+                        </Shape>
+                        <String CONTENT="³ Thus were called all categories of soldiers and lower officials in the service of the Government."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l44" HPOS="477" VPOS="2784" WIDTH="1657" HEIGHT="45" BASELINE="479 2811 2134 2807" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="479 2811 479 2829 2132 2827 2134 2807 2128 2784 477 2786 479 2811"/>
+                        </Shape>
+                        <String CONTENT="⁴ The Maritime (sedentary) Chukchee usually are called in the reports “walking,” in contrast to the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l45" HPOS="370" VPOS="2827" WIDTH="1764" HEIGHT="46" BASELINE="372 2858 2134 2850" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="372 2858 372 2873 2132 2869 2134 2850 2128 2827 370 2832 372 2858"/>
+                        </Shape>
+                        <String CONTENT="Reindeer division of the tribe. Among the Reindeer Chukchee each member of the family has a team of its"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l46" HPOS="370" VPOS="2869" WIDTH="1764" HEIGHT="45" BASELINE="372 2901 2134 2893" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="372 2901 372 2914 2132 2912 2134 2893 2128 2869 370 2875 372 2901"/>
+                        </Shape>
+                        <String CONTENT="own: so all can drive. Among the Maritime Chukchee a family usually has but one team, and most of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l47" HPOS="372" VPOS="2912" WIDTH="1763" HEIGHT="49" BASELINE="374 2944 2135 2938" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="374 2944 374 2961 2135 2949 2135 2938 2130 2912 372 2916 374 2944"/>
+                        </Shape>
+                        <String CONTENT="people have to walk. It seems that in earlier times the dog-teams of the Chukchee were still more unfit"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l48" HPOS="372" VPOS="2951" WIDTH="1762" HEIGHT="49" BASELINE="374 2986 2134 2977" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="374 2986 374 3000 2132 2998 2134 2977 2128 2951 372 2961 374 2986"/>
+                        </Shape>
+                        <String CONTENT="for swift and efficient driving than they are now, in comparison with the dogs of the Maritime Koryak and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l49" HPOS="374" VPOS="2996" WIDTH="1760" HEIGHT="49" BASELINE="376 3027 2134 3021" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="376 3027 376 3045 2134 3045 2134 3021 2128 2996 374 3000 376 3027"/>
+                        </Shape>
+                        <String CONTENT="Russianized natives. So in a campaign the warriors of the Reindeer Chukchee were usually driving reindeer,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-147_l50" HPOS="372" VPOS="3041" WIDTH="933" HEIGHT="47" BASELINE="374 3070 1305 3064" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="374 3070 374 3088 1303 3084 1305 3064 1299 3041 372 3045 374 3070"/>
+                        </Shape>
+                        <String CONTENT="while the warriors of the Maritime Chukchee had to walk."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

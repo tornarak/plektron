@@ -1,0 +1,201 @@
+{
+ "ref": "3-149",
+ "proposal": "review/3-149/proposal.json",
+ "saved_at": "2026-08-22T18:08:28-0400",
+ "lines": {
+  "0": {
+   "text": "683",
+   "edited": false
+  },
+  "1": {
+   "text": "BOGORAS, THE CHUKCHEE.",
+   "edited": false
+  },
+  "2": {
+   "text": "several parties of Cossacks and service-men on the Anadyr. One party was",
+   "edited": false
+  },
+  "3": {
+   "text": "headed by Semen Deshnev and the inspecting service official (служилый",
+   "edited": false
+  },
+  "4": {
+   "text": "приказный человѣкъ)¹ Semen Motora. Another party was headed by Michael",
+   "edited": false
+  },
+  "5": {
+   "text": "Stadukhin, who had come from the Kolyma River. Stadukhin made attempts",
+   "edited": false
+  },
+  "6": {
+   "text": "to subjugate to himself all other parties, and to be the chief leader of the",
+   "edited": false
+  },
+  "7": {
+   "text": "public officials of Anadyr. The strife brought forth several reports, which",
+   "edited": false
+  },
+  "8": {
+   "text": "were presented to the Governor of Yakutsk.² All these reports are just as",
+   "edited": false
+  },
+  "9": {
+   "text": "interesting as the report of Michael Stadukhin concerning the Kolyma.",
+   "edited": false
+  },
+  "10": {
+   "text": "Thus one Theodore Vetoshka, in a report of 1655, says, “In the past",
+   "edited": false
+  },
+  "11": {
+   "text": "157th year (1649) it became known on the Kolyma River — from the lips",
+   "edited": false
+  },
+  "12": {
+   "text": "of Angara, the hostage of the Khodyntzy,³ whom we, your slaves [the report",
+   "edited": false
+  },
+  "13": {
+   "text": "is formulated as a direct address to the Czar], took on the upper stream of",
+   "edited": false
+  },
+  "14": {
+   "text": "the Anui River, and from other captives in the same raid of ours — that a",
+   "edited": false
+  },
+  "15": {
+   "text": "new trans-mountain river, the Anadyr,⁴ comes quite near to the upper course",
+   "edited": false
+  },
+  "16": {
+   "text": "of the Anui. By reason of these facts we have gathered together among",
+   "edited": false
+  },
+  "17": {
+   "text": "ourselves volunteer hunters, and we have struck the ground (i. e., petitioned)",
+   "edited": false
+  },
+  "18": {
+   "text": "before you, O Czar! because we desired to go to that new country with the",
+   "edited": false
+  },
+  "19": {
+   "text": "intention of bringing down the tributeless tribes under your high hand, and",
+   "edited": false
+  },
+  "20": {
+   "text": "we had to give into your treasury forty sables. Then we were given leave",
+   "edited": false
+  },
+  "21": {
+   "text": "to undertake that service, together with the public officials Semen Motora",
+   "edited": false
+  },
+  "22": {
+   "text": "and comrades.... And in the same 157th year, in the month of July, the",
+   "edited": false
+  },
+  "23": {
+   "text": "service-men Michael Stadukhin and comrades made an attempt to go by sea",
+   "edited": false
+  },
+  "24": {
+   "text": "from the Kolyma River to the new river Pahycha,⁵ but came back from the",
+   "edited": false
+  },
+  "25": {
+   "text": "sea to the Kolyma on Sept. 7. When we came over the mountain to the",
+   "edited": false
+  },
+  "26": {
+   "text": "Anadyr River, and he (Michael Stadukhin) was going down the Anadyr and",
+   "edited": false
+  },
+  "27": {
+   "text": "passed by our camp, he sent to us, requesting that we come to him and ask",
+   "edited": false
+  },
+  "28": {
+   "text": "to be accepted into his regiment, and stating that if we did not consent, he",
+   "edited": false
+  },
+  "29": {
+   "text": "would order all of us to be exterminated. Then he took from us by force",
+   "edited": false,
+   "note": "speck"
+  },
+  "30": {
+   "text": "the inspecting official Semen Motora, and put him into the stocks for nine",
+   "edited": false
+  },
+  "31": {
+   "text": "days, and extorted from him a paper promising to remain under his (Michael’s)",
+   "edited": false
+  },
+  "32": {
+   "text": "command.”",
+   "edited": false
+  },
+  "33": {
+   "text": "It seems that Michael Stadukhin could not accomplish his purpose. So",
+   "edited": false
+  },
+  "34": {
+   "text": "¹ An official of this kind was added to cossack parties to collect tribute and to take care of it.",
+   "edited": true,
+   "note": "The print sets lowercase 'cossack' here — confirmed at 2x, the c is x-height and matches the c of 'collect' on the same line. Adjudication had capitalised it to 'Cossack'; reverted per §2.14 ('gt/ocr never repairs the book'). The page capitalises 'Cossacks' in body text on line 2, which is what makes the harmonisation look right; the footnote sets it lower. Inconsistent typography is the book's, and gt/ocr is line images paired with their text."
+  },
+  "35": {
+   "text": "² Supplements, IV, pp. 9-27.",
+   "edited": false
+  },
+  "36": {
+   "text": "³ Compare p. 18.",
+   "edited": false
+  },
+  "37": {
+   "text": "⁴ In these oldest reports Kolyma is often called “Kovyma”, and Anadyr is called “Anandyr.”",
+   "edited": false
+  },
+  "38": {
+   "text": "⁵ The name “Pahycha River” is repeated several times in the reports. The Pahycha River is said to be",
+   "edited": false
+  },
+  "39": {
+   "text": "rich in sables. Some recent scientists have suggested that this name may have referred to the Amur River,",
+   "edited": false
+  },
+  "40": {
+   "text": "which in reality, even up to the present, abounds in sables; but the natives of the Kolyma hardly knew any-",
+   "edited": false
+  },
+  "41": {
+   "text": "thing of the distant Amur. They had knowledge only of the nearest rivers, such as the Anadyr and the",
+   "edited": false
+  },
+  "42": {
+   "text": "Penshina. Of these rivers, the Anadyr is mentioned as being, even at that time, poor in sable. The next",
+   "edited": false
+  },
+  "43": {
+   "text": "large river is the Poqaˊč, which forms the northern boundary-line of the sable territory, and which even now,",
+   "edited": false
+  },
+  "44": {
+   "text": "when the sable is rapidly vanishing in the north, still has some of the darkest and most valuable sables. It",
+   "edited": false
+  },
+  "45": {
+   "text": "is quite probable that the natives of the Kolyma, when speaking of Pahycha, had in mind this Poqaˊč River;",
+   "edited": false
+  },
+  "46": {
+   "text": "and also the Kolyma Cossacks, in their search for sable, wanted to find the said Poqaˊč, the boundary-line of",
+   "edited": false
+  },
+  "47": {
+   "text": "the sable territory.",
+   "edited": false
+  }
+ }
+}

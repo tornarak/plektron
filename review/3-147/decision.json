@@ -1,0 +1,209 @@
+{
+ "ref": "3-147",
+ "proposal": "review/3-147/proposal.json",
+ "saved_at": "2026-08-22T16:13:05-0400",
+ "lines": {
+  "0": {
+   "text": "BOGORAS, THE CHUKCHEE.",
+   "edited": false
+  },
+  "1": {
+   "text": "681",
+   "edited": false
+  },
+  "2": {
+   "text": "Manykin-Nevstruyev says that the Kolyma River was discovered in the",
+   "edited": false
+  },
+  "3": {
+   "text": "year 1638. Maydell mentions as the discoverer of the Kolyma the Cossack",
+   "edited": false
+  },
+  "4": {
+   "text": "Ivan Erastov, with his companions. He says that in 1644 three winter ham-",
+   "edited": false
+  },
+  "5": {
+   "text": "lets were founded on the Kolyma River, — Nishne-Kolymsk, Sredne-Kolymsk,",
+   "edited": false
+  },
+  "6": {
+   "text": "and Verkhne-Kolymsk (Lower Kolymsk, Middle Kolymsk, and Upper Kolymsk).¹",
+   "edited": false
+  },
+  "7": {
+   "text": "I am not sure that all three hamlets were founded as early as that, and all",
+   "edited": false
+  },
+  "8": {
+   "text": "in exactly the same year. On a copy of a chart of Siberia, made in the",
+   "edited": false
+  },
+  "9": {
+   "text": "year 1672 all three winter hamlets are mentioned, — the Lower, the Middle,",
+   "edited": false
+  },
+  "10": {
+   "text": "and the Upper. Nishne-Kolymsk in some documents was called “Dog Fortress,”",
+   "edited": false
+  },
+  "11": {
+   "text": "doubtless because of the dogs used for driving. It was the largest of the",
+   "edited": false
+  },
+  "12": {
+   "text": "three settlements. From Michael Stadukhin we have a report of the 22d of",
+   "edited": false
+  },
+  "13": {
+   "text": "April, 1647, taken down, as was the custom, from his own words, by the",
+   "edited": false
+  },
+  "14": {
+   "text": "Government clerk in the assembly-room (съѣзжая изба), in the presence of the",
+   "edited": false
+  },
+  "15": {
+   "text": "two governors of the Yakutsk Province, Pushkin and Suponev.² In this report",
+   "edited": false
+  },
+  "16": {
+   "text": "it is said that “the public-service official (служилый человѣкъ),³ Michael Stadukhin,",
+   "edited": false
+  },
+  "17": {
+   "text": "who, in the past 154th year (1646), went from the Kolyma River with the",
+   "edited": false
+  },
+  "18": {
+   "text": "Czar’s tribute, relates that he was on the Kolyma River two years for col-",
+   "edited": false
+  },
+  "19": {
+   "text": "lecting the Czar’s tribute. The Kolyma is a great river of the size of the",
+   "edited": false
+  },
+  "20": {
+   "text": "Lena. It runs in the same direction, east and north. On this Kolyma River",
+   "edited": false
+  },
+  "21": {
+   "text": "live the natives, Kolyma men of their own tribe, driving [Reindeer] and walking",
+   "edited": false
+  },
+  "22": {
+   "text": "[sedentary],⁴ — numerous people, — and they have a language of their own;",
+   "edited": false
+  },
+  "23": {
+   "text": "on this Kolyma, and also on a separate river, the Chiukhcha (чюхча), — and",
+   "edited": false
+  },
+  "24": {
+   "text": "this river Chiukhcha flows directly to the sea, and its mouth lies on this side",
+   "edited": false
+  },
+  "25": {
+   "text": "18. Маныкинъ-Невструевъ, А. И. Завоеватели Восточной Сибири, Якутскіе Казаки, Москва, 1883.",
+   "edited": false,
+   "note": "Latin i U+0069 keyed inside a Cyrillic word; corrected to і U+0456 per §2.7 ('inside a Cyrillic word it is U+0456, never Latin'). A keying slip, not a print feature — the other sixteen decimal-i on these two leaves are already U+0456. No mechanical catch exists: §2.7 records that Russian is Tier-2 and outside the §3 greps, and corpus normalize reports the page clean. Correction proposed by a model, #llm, awaiting ratification.",
+   "class": "draft"
+  },
+  "26": {
+   "text": "Manykin-Nevstruyev, A. I. Cossacks of Yakutsk, Conquerors of East Siberia, Moscow, 1883.",
+   "edited": false
+  },
+  "27": {
+   "text": "19. Историческая Записка о Чукотскомъ народѣ (Вѣстникъ Императорскаго Русскаго Географическаго",
+   "edited": false
+  },
+  "28": {
+   "text": "Общества, 1856, V).",
+   "edited": false
+  },
+  "29": {
+   "text": "Historical Sketch of the Chukchee People (in Messenger of the Imperial Russian Geographical Society, 1856, V.).",
+   "edited": false
+  },
+  "30": {
+   "text": "20. Карта Чукотской земли, составлена Плениснеромъ (Записки Гидрографическаго Департамента Морского",
+   "edited": false
+  },
+  "31": {
+   "text": "Министерства 1852, Часть X).",
+   "edited": false
+  },
+  "32": {
+   "text": "The Chart of the Chukchee Land, projected by Plenisner (in Memoirs of the Hydrographical Department,",
+   "edited": false
+  },
+  "33": {
+   "text": "1852, Part X).",
+   "edited": false
+  },
+  "34": {
+   "text": "21. Барамыгинъ, М. Путевой Журналъ во время поѣздки въ Анюйскую Крѣпость (Записки Сибирскаго",
+   "edited": false
+  },
+  "35": {
+   "text": "Отдѣла Императорскаго Русскаго Географическаго Общества, 57, кн. 4).",
+   "edited": false
+  },
+  "36": {
+   "text": "Baramygin, M. Diary of the Voyage to Anui Fair, 1855 (in Memoirs of the Siberian Section of the Imperial",
+   "edited": false
+  },
+  "37": {
+   "text": "Russian Geographical Society, 57, Vol. 4).",
+   "edited": false
+  },
+  "38": {
+   "text": "For other authorities see references in the text.",
+   "edited": false
+  },
+  "39": {
+   "text": "¹ Compare Maydell, II, p. 73.",
+   "edited": false
+  },
+  "40": {
+   "text": "² The Russian governors (воеводы) of the Moscow period were often sent in pairs, partly with the idea",
+   "edited": false
+  },
+  "41": {
+   "text": "that one would prevent any misdemeanor of the other.",
+   "edited": false
+  },
+  "42": {
+   "text": "³ Thus were called all categories of soldiers and lower officials in the service of the Government.",
+   "edited": false
+  },
+  "43": {
+   "text": "⁴ The Maritime (sedentary) Chukchee usually are called in the reports “walking,” in contrast to the",
+   "edited": false
+  },
+  "44": {
+   "text": "Reindeer division of the tribe. Among the Reindeer Chukchee each member of the family has a team of its",
+   "edited": false
+  },
+  "45": {
+   "text": "own: so all can drive. Among the Maritime Chukchee a family usually has but one team, and most of the",
+   "edited": false
+  },
+  "46": {
+   "text": "people have to walk. It seems that in earlier times the dog-teams of the Chukchee were still more unfit",
+   "edited": false
+  },
+  "47": {
+   "text": "for swift and efficient driving than they are now, in comparison with the dogs of the Maritime Koryak and",
+   "edited": false
+  },
+  "48": {
+   "text": "Russianized natives. So in a campaign the warriors of the Reindeer Chukchee were usually driving reindeer,",
+   "edited": false
+  },
+  "49": {
+   "text": "while the warriors of the Maritime Chukchee had to walk.",
+   "edited": false
+  }
+ }
+}
