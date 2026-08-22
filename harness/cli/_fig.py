@@ -78,6 +78,31 @@ def register(cli):
     opt(p, "--jobs", type=int, default=None, metavar="N",
         help="worker threads; 1 runs serially and builds no pool [cores, capped]")
 
+    p = action(g, "zoom", run_zoom, section="The store",
+               help="magnify one caption block, sliced into strips that fill the "
+               "client. **For a Tier-1 glyph you cannot resolve off the contact "
+               "sheet, and for nothing else** — 34 of this store's 395 captions "
+               "carry a Tier-1 glyph at all, so the other 361 are settled at 1x "
+               "and magnifying them spends images re-reading what you have "
+               "already read. 2x default, 4x ceiling; nothing is sharpened or "
+               "denoised, since filtering manufactures evidence rather than "
+               "revealing it")
+    arg(p, "key", metavar="KEY")
+    p.help = (f"{p.help}\n\nKEY: the caption's `PP-NNN|<zone-suffix>`, as "
+              "`fig sheets` labels every strip and the manifest lists them.")
+    opt(p, "--zoom", type=int, default=2, metavar="N",
+        help="magnification, 1..4 [2]. At 4x a strip returns about a fifth of a "
+             "caption, so a whole one costs several images")
+    opt(p, "--reason", required=True,
+        help="which glyph, and what you are trying to settle — in a few words, "
+             "recorded with the call. Required for `ocr zoom`'s reason: a zoom "
+             "nobody has to justify is one nobody counts, and the pages that "
+             "failed there did so at 59 and 81 crops apiece, each individually "
+             "plausible. Naming the question before the call is also what "
+             "separates re-aiming a miss from asking the same thing louder")
+    opt(p, "--out", metavar="DIR", default=None,
+        help="where to write them [review/captions/zoom/]")
+
     p = action(g, "sheets", run_sheets, section="The store",
                help="tile every caption onto contact sheets for reading, ~12 "
                "strips apiece. The sheet is the unit of this pass and the "
@@ -265,6 +290,16 @@ def run_crops(a) -> int:
     # of mostly zeroes buries the totals, which are the answer to "did the sweep
     # run"; naming a page means the page is the question.
     out(a, {**rep, "rows": rows} if page_refs(a) else rep)
+    return 0
+
+
+def run_zoom(a) -> int:
+    from pathlib import Path
+
+    from ..paths import CAPTIONS, review_dir
+    out_dir = Path(a.out) if a.out else review_dir(CAPTIONS, a.root) / "zoom"
+    rows = F.write_caption_zoom(a.key, out_dir, a.root, zoom=a.zoom)
+    out(a, {"key": a.key, "zoom": a.zoom, "sheets": len(rows), "rows": rows})
     return 0
 
 

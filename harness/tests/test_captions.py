@@ -334,6 +334,63 @@ def test_a_page_with_no_caption_block_contributes_nothing(tmp_path):
     assert write_caption_sheets(tmp_path / "out", tmp_path)["captions"] == 0
 
 
+def test_zoom_magnifies_the_same_block_the_sheet_showed(tmp_path):
+    """The region is `caption_strips`' own, not a second guess at where it is.
+
+    That is the whole reason the verb exists: the alternative a reader reaches for
+    is `convert` with hand-typed bounds, which names the wrong region the moment a
+    coordinate is fat-fingered and which no later reader can check.
+    """
+    from harness.figures import write_caption_zoom
+
+    _fig_alto(tmp_path, "1-049", [("fig_1-049_006", "GraphicZone-FigDesc",
+                                   400, 1000, 600, 100)])
+    _raster(tmp_path, "1-049")
+    rows = write_caption_zoom("1-049|006", tmp_path / "z", tmp_path, zoom=2)
+    assert rows and rows[0]["zoom"] == 2
+    assert rows[0]["key"] == "1-049|006"
+    assert (tmp_path / "z").exists()
+
+
+def test_zoom_refuses_past_the_ceiling(tmp_path):
+    """4x is the rung above which a magnifier returns the resampler, not the page."""
+    from harness.figures import write_caption_zoom
+
+    _fig_alto(tmp_path, "1-049", [("fig_1-049_006", "GraphicZone-FigDesc",
+                                   400, 1000, 600, 100)])
+    _raster(tmp_path, "1-049")
+    with pytest.raises(ValueError, match="past the ceiling"):
+        write_caption_zoom("1-049|006", tmp_path / "z", tmp_path, zoom=8)
+
+
+def test_zoom_needs_a_caption_key_not_a_ref(tmp_path):
+    """A page has several captions, so a ref names no one block to magnify."""
+    from harness.figures import write_caption_zoom
+
+    _fig_alto(tmp_path, "1-049", [("fig_1-049_006", "GraphicZone-FigDesc",
+                                   400, 1000, 600, 100)])
+    _raster(tmp_path, "1-049")
+    with pytest.raises(ValueError, match="not a caption key"):
+        write_caption_zoom("1-049", tmp_path / "z", tmp_path)
+    with pytest.raises(ValueError, match="names no caption block"):
+        write_caption_zoom("1-049|404", tmp_path / "z", tmp_path)
+
+
+def test_zoom_takes_no_pad_where_the_sheet_takes_one(tmp_path):
+    """The sheet pads to show a line the box may have missed; a zoom asks about a
+    glyph *inside* the box, so padding would spend magnification on neighbours."""
+    from harness.figures import caption_strips, write_caption_zoom
+
+    _fig_alto(tmp_path, "1-049", [("fig_1-049_006", "GraphicZone-FigDesc",
+                                   400, 1000, 600, 100)])
+    _raster(tmp_path, "1-049")
+    (_, unpadded, _), = caption_strips("1-049", tmp_path, pad=0.0)
+    rows = write_caption_zoom("1-049|006", tmp_path / "z", tmp_path, zoom=1)
+    # One strip at 1x, so the sheet carries the block's own 100px height.
+    assert unpadded.height == 100
+    assert len(rows) == 1
+
+
 def test_check_swaps_the_orphan_rule_rather_than_firing_the_line_one(tmp_path):
     """The whole point of the branch: a caption key resolves against `gt/fig/`.
 

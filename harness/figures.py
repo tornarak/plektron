@@ -2940,6 +2940,59 @@ def write_caption_sheets(out_dir: Path, root: Path = Path("."),
     return man
 
 
+def write_caption_zoom(key: str, out_dir: Path, root: Path = Path("."),
+                       zoom: int = 2, scans: str = "scans",
+                       overlap: int = 60, sheet_h: int = 1600,
+                       client_w: int = 1450) -> list[dict]:
+    """One caption block, magnified and sliced into strips that fill the client.
+
+    The reading pass reached for `convert` with hand-typed pixel bounds, which is
+    the failure `lines.write_line_zoom` was built to end one store over: bounds
+    nobody can check, naming the wrong region the moment a coordinate is
+    fat-fingered. Here the region is `caption_strips`' own, so a zoom is the *same*
+    block enlarged rather than a second guess at where it is.
+
+    **Pad 0, unlike the contact sheet.** The sheet pads to show a printed line the
+    box may have missed; a zoom answers a question about a glyph inside the box, and
+    padding it would spend magnification on the neighbours.
+
+    2x by default and 4x the ceiling, the project's rule: at 4x a strip returns
+    about a fifth of a caption, so a whole one costs several images, and there is no
+    rung above because filtering manufactures evidence rather than revealing it.
+    """
+    from PIL import Image
+
+    from .lines import ZOOM_MAX, sheet_namer, zoom_window
+
+    if not 1 <= zoom <= ZOOM_MAX:
+        raise ValueError(f"zoom is 1..{ZOOM_MAX}; {zoom} is past the ceiling, and "
+                         "past it magnification stops adding evidence")
+    ref, _, suffix = key.partition("|")
+    if not suffix:
+        raise ValueError(f"{key!r} is not a caption key — they are "
+                         "`PP-NNN|<zone-suffix>`, as `harness fig sheets` labels "
+                         "every strip and as the manifest lists them")
+    strip = next((s for k, s, _ in caption_strips(ref, root, scans, pad=0.0)
+                  if k == key), None)
+    if strip is None:
+        raise ValueError(f"{key} names no caption block on {ref}")
+
+    window = zoom_window(zoom, client_w)
+    step = max(1, window - overlap)
+    resample = Image.Resampling.NEAREST
+    strips = []
+    for i, x in enumerate(range(0, max(1, strip.width - overlap), step)):
+        s = strip.crop((x, 0, min(strip.width, x + window), strip.height))
+        strips.append((f"{suffix}.{i}",
+                       s.resize((s.width * zoom, s.height * zoom), resample)))
+
+    sheets, index = compose_sheets(strips, out_dir, per_sheet=len(strips),
+                                   sheet_w=client_w, max_h=sheet_h,
+                                   name_for=sheet_namer(f"{ref}-zoom{zoom}"))
+    return [{"sheet": str(out_dir / e["sheet"]), "key": key, "zoom": zoom,
+             "strips": " ".join(e["items"])} for e in index]
+
+
 def caption_manifest(root: Path = Path(".")) -> dict:
     """The sheet manifest, or `{}` before `harness fig sheets` has run."""
     from .paths import caption_sheets_dir

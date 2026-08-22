@@ -126,6 +126,25 @@ illegible at this resolution. **On these sheets they frequently are legible** �
 Use `(??/????)` only where the digits genuinely are not resolvable, and note it.
 Do not carry the old file's limitation into a reading meant to test it.
 
+**R2a. Zoom only for a Tier-1 glyph, and only with `harness fig zoom`.**
+
+    uv run harness fig zoom '1-049|006' --reason "the g in Nu?nligren — dot below?"
+
+**Never `convert`, `magick`, PIL or a one-off crop script.** Hand-typed pixel
+bounds name a region nobody can check and the wrong one the moment a coordinate
+is fat-fingered; the verb magnifies the same block the sheet showed you.
+
+The stipulation is a rule you keep, not a check that stops you: **34 of the 395
+captions carry a Tier-1 glyph at all.** The other 361 are ordinary English at a
+66-character median and are settled at 1× on the contact sheet — magnifying one
+spends an image to re-read what you have already read. If the question is "is
+that `g` dotted", zoom. If it is "does that say Harpoon-Heads", it does.
+
+2× is the default and 4× the ceiling. At 300 dpi a character is ~30 px and every
+ink pixel is already a 4×4 block, so past 4× a magnifier returns the resampler
+rather than the page. Nothing sharpens or denoises: isolation is the benefit, and
+filtering would manufacture evidence.
+
 **R3. Never invent a codepoint.** The inventory is `keying_spec.md` — **read it
 before you start**; it is one file and it binds this pass. If a glyph is not in
 it, that is a finding: write what you see, describe it in `note`, and say so in

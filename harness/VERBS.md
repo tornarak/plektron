@@ -1776,6 +1776,24 @@ PP-NNN...     which pages; several may be given
 --root --json --toon --pager
 ```
 
+### fig zoom KEY
+**Does** magnifies one caption block and slices it into overlapping strips sized so `zoom`× fills the client exactly, packed onto as few sheets as fit.
+**Reads** `gt/fig/` and `scans/`.
+**Writes** `review/captions/zoom/` (derived).
+**Exit** always 0; a key naming no caption block is a usage error.
+**Note** **for a Tier-1 glyph the contact sheet could not settle, and for nothing else.** 34 of the 395 captions carry a Tier-1 glyph at all — the store is ~26 KB of mostly plain English at a 66-character median — so the other 361 are settled at 1× and magnifying one spends images re-reading what has already been read. The stipulation is stated rather than enforced: a mechanical gate was built first and measurement killed it. `detect_all` flags every *correctly transcribed* Tier-1 form (`Uñiˊsak`, `Nuˊnlig̣ren`, `Valkaˊʟᴇn` all return `inventory_glyph`) and flags **nothing** on the partial reading a reader can actually type before they can read it — `Ka'ka`, `Kere?tkun`, `gin` and `qaa` all detect clean. A gate on that would refuse precisely the calls the verb exists to serve, which is the shape of gate this project has already rejected once: one the actor it gates cannot satisfy.
+**Note** **`--reason` is required**, `ocr zoom`'s rule and for its reason: a zoom nobody has to justify is one nobody counts, and the reading pages that failed there did so at 59 and 81 crops apiece, each individually plausible. Naming the question before the call is also what separates re-aiming a miss from asking the same thing louder.
+**Note** **pad 0, unlike `fig sheets`.** The contact sheet pads to show a printed line the box may have missed; a zoom answers a question about a glyph *inside* the box, so padding would spend magnification on the neighbours.
+**Note** 2× default and **4× the ceiling**, the project's rule: at 300 dpi a character is ~30 px and every ink pixel is already a 4×4 block, so past it a magnifier returns the resampler rather than the page. Nothing is sharpened, denoised or upscaled beyond the integral resize — filtering manufactures evidence rather than revealing it, and isolation is the whole benefit.
+**Note** the region is `caption_strips`' own, so a zoom is the *same* block enlarged rather than a second guess at where it is. That is the point of the verb existing: the alternative readers reach for is `convert` with hand-typed pixel bounds, which no later reader can check and which names the wrong region the moment a coordinate is fat-fingered.
+```
+KEY           the caption's PP-NNN|<zone-suffix>, as `fig sheets` labels every strip
+--reason TEXT which glyph, and what you are trying to settle (required)
+--zoom N      magnification, 1..4 [2]
+--out DIR     where to write them [review/captions/zoom/]
+--root --json --toon --pager
+```
+
 ### fig remark-eval
 **Does** mints or extends `gt/fig/_train.lst` and `_eval.lst`.
 **Reads** `gt/fig/`, `gt/zones/`'s splits and `_ink_cache.json`.
