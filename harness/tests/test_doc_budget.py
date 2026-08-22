@@ -107,21 +107,75 @@ def test_claude_md_stays_under_budget():
     )
 
 
-def test_every_doc_is_named_by_the_router():
+def _routing_haystack() -> str:
+    """CLAUDE.md, plus every document its precedence table routes to.
+
+    **Two levels, because routing is two levels.** `.claude/agents/moll-reader.md`
+    is named nowhere in CLAUDE.md, and is not an orphan: the table gives
+    `.claude/skills/read-moll-page/` the Moll pass "whole", and that skill names
+    its agent three times, including "Read `.claude/agents/moll-reader.md` and
+    follow it as written". A one-level check would report it and the only ways to
+    satisfy that report are to spend CLAUDE.md budget on a row that says nothing
+    new, or to delete a true statement. Both are worse than the check being right.
+    """
     router = (REPO / "CLAUDE.md").read_text(encoding="utf-8")
-    orphans = sorted(
-        p.name
-        for p in (REPO / "docs").glob("*.md")
-        if f"docs/{p.name}" not in router
-    )
+    parts = [router]
+    for p in sorted(REPO.glob(".claude/skills/*/*.md")) + \
+            sorted((REPO / "docs").glob("*.md")):
+        named = str(p.relative_to(REPO)) in router or \
+            f"{p.parent.relative_to(REPO)}/" in router
+        if named:
+            parts.append(p.read_text(encoding="utf-8"))
+    return "".join(parts)
+
+
+def _routable():
+    """Every document that owns something, by CLAUDE.md's own account of what a
+    document is. A skill is named by its directory, everything else by its path."""
+    for p in sorted((REPO / "docs").glob("*.md")):
+        yield str(p.relative_to(REPO))
+    for p in sorted(REPO.glob(".claude/skills/*/SKILL.md")):
+        yield f"{p.parent.relative_to(REPO)}/"
+    for pat in (".claude/agents/*.md", ".claude/rules/*.md"):
+        for p in sorted(REPO.glob(pat)):
+            yield str(p.relative_to(REPO))
+
+
+def test_every_doc_is_named_by_the_router():
+    """**Widened from `docs/*.md` alone**, which left 5 skills, 3 agents and
+    `.claude/rules/` invisible to the one check that asks whether a document is
+    reachable. They are where this project keeps its passes, and a pass nothing
+    routes to is a pass nobody runs.
+
+    This is the strict half of the pair. Its sibling — the stranded-citation
+    check below — would get *looser* if widened the same way, which is why the
+    two are not one commit and not one edit.
+    """
+    haystack = _routing_haystack()
+    orphans = sorted(d for d in _routable() if d not in haystack)
     assert not orphans, (
-        f"docs/ holds files CLAUDE.md's precedence table does not name: "
-        f"{orphans}. A doc nothing routes to is a doc nobody reads — add a row "
-        "saying what it owns, or merge it into one that has a row."
+        f"documents CLAUDE.md's precedence table does not reach: {orphans}. A "
+        "doc nothing routes to is a doc nobody reads — add a row saying what it "
+        "owns, name it from a document that already has one, or merge it into "
+        "one that does."
     )
 
 
 def test_no_code_citation_is_stranded():
+    """**Deliberately not widened, on a measurement.**
+
+    The obvious symmetry with the orphan check above is to grow this haystack to
+    the skills, the agents and `harness/README.md` too, on the reasoning that a
+    passage which moved into a skill now reads as stranded. Measured both ways:
+    **0 stranded either way.** So widening buys nothing today and costs the one
+    thing a gate has — a citation that moves into a skill would stop being
+    reported, and reporting it is arguably correct, since CLAUDE.md's table says
+    which document owns what and a citation should name the owner.
+
+    Left narrow until a real false positive appears, at which point the fix is
+    known and this note is why it waits. The two halves of this file pull in
+    opposite directions and only one of them was a strengthening.
+    """
     haystack = (REPO / "CLAUDE.md").read_text(encoding="utf-8")
     for doc in (REPO / "docs").glob("*.md"):
         haystack += doc.read_text(encoding="utf-8")
