@@ -755,8 +755,16 @@ def _with_keys(rows: list[dict], root: Path,
     return out
 
 
-def entity_hits(ref: str, root: Path = Path(".")) -> list[dict]:
+def entity_hits(ref: str, root: Path = Path("."),
+                store: dict | None = None) -> list[dict]:
     """Every entity-alias hit on this page, linked or not.
+
+    `store` is an `entities.load` a caller already holds. Without it this globs
+    and parses all 461 entity files — **29ms**, against ~3ms for everything else
+    here — once per page, which a corpus-wide run pays per page twice over
+    (`validate` loads it again for the same reason). `alias_index` and
+    `auto_forms` stay derived here: 0.3ms and 0.1ms, so passing them too would be
+    three parameters buying nothing over one.
 
     **The same matcher the generator ran**, over the same joined text, so the
     rows and the page agree by construction rather than by two implementations
@@ -776,7 +784,7 @@ def entity_hits(ref: str, root: Path = Path(".")) -> list[dict]:
     path = root / "gt" / "ocr" / f"chukchi-{norm_ref(ref)}.xml"
     if not path.exists():
         return []
-    store = load(root)
+    store = load(root) if store is None else store
     idx = alias_index(store)
     if not idx:
         return []
@@ -815,7 +823,8 @@ def entity_hits(ref: str, root: Path = Path(".")) -> list[dict]:
 
 
 def build_context(ref: str, root: Path = Path("."),
-                  idx: dict | None = None) -> dict:
+                  idx: dict | None = None,
+                  store: dict | None = None) -> dict:
     """The whole per-page input contract for the collation pass, as one dict.
 
     Everything a model needs to produce this page's TEI and nothing it would have
@@ -832,6 +841,12 @@ def build_context(ref: str, root: Path = Path("."),
     `idx` is a prebuilt `lookup.index`, passed straight to `tier1_terms` — this
     is the one caller of it that wants the `key` column, and so the one that pays
     the corpus walk. A caller looping over pages should build it once.
+
+    `store` is the same arrangement for the entity store, passed to
+    `entity_hits`: 29ms of glob-and-parse over 461 files, which `validate` then
+    repeats for its own read of the same store. Both are reads of a fixed input
+    hoisted out of a loop, and neither moves a judgement — every verdict is still
+    computed per page from the page's own content.
     """
     from .generate import GENDIR
     from .seam import tail as seam_tail
@@ -998,7 +1013,7 @@ def build_context(ref: str, root: Path = Path("."),
         # page; this is the same set gathered into one table, so a reader can see
         # at a glance that one form recurs eight times rather than meeting it
         # eight separate times.
-        "entity_hits": entity_hits(ref, root),
+        "entity_hits": entity_hits(ref, root, store),
         # Two tables, not one: token-level hits and paragraph-level balance
         # complaints are different record shapes and are kept apart so each
         # stays uniform.

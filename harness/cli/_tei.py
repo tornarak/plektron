@@ -13,6 +13,7 @@ from pathlib import Path
 from .. import lookup
 from ..context import build_context
 from ..emit import emit_lines
+from ..entities import load as load_entities
 from ..expand import expand_page
 from ..generate import Unready, generate
 from ..generate import diff as gen_diff
@@ -309,15 +310,26 @@ def run_validate(a) -> int:
     # a second resolution path and a test spying on one would silently miss the
     # other. It did, while this was written the other way.
     idx = lookup.index(a.root) if len(refs) > 1 else None
+    # The entity store, on the same terms and for a sharper reason: it was read
+    # **twice per page** — once by `build_context` for `entity_hits`, once by
+    # `validate` to resolve `@ref` — at 29ms a read over 461 files.
+    #
+    # **Unconditionally, unlike the index above.** That one is skipped for a lone
+    # ref because a page with no Tier-1 terms never builds it at all, so eager
+    # construction could only lose. Nothing short-circuits the store: both
+    # readers reach it on every page, so even one ref reads it twice and building
+    # it here makes that one. The guard that belongs on `idx` would be a
+    # pessimisation here, which is the kind of symmetry worth not assuming.
+    store = load_entities(a.root)
     worst = 0
     for r in refs:
-        ctx = build_context(r, a.root, idx=idx)
+        ctx = build_context(r, a.root, idx=idx, store=store)
         # The page's own path, built here rather than read out of `ctx`. It used to
         # ride in the payload as `output_path`, which put a path the model never
         # needed into every collation prompt so that this one line could avoid
         # recomputing it.
         page = a.root / "tei" / f"chukchi-{ctx['page_ref']}.xml"
-        worst = max(worst, _render_gate(a, validate(page, ctx,
+        worst = max(worst, _render_gate(a, validate(page, ctx, store=store,
                                                     ratified=a.ratified,
                                                     schema=a.schema),
                                         r if len(refs) > 1 else None))

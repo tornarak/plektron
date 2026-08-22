@@ -900,8 +900,14 @@ def _figrefs(root, r: Report, ctx: dict | None) -> tuple[int, int]:
 
 
 def validate(tei_path: Path, ctx: dict | None = None,
-             ratified: bool = False, schema: bool = False) -> Report:
+             ratified: bool = False, schema: bool = False,
+             store: dict | None = None) -> Report:
     """Gate one page's TEI. `ratified` switches which provenance rank is expected.
+
+    `store` is an `entities.load` a caller already holds — 29ms of glob-and-parse
+    over 461 files, which a corpus run otherwise pays twice a page, once here and
+    once in `build_context`. The comment at the read says why sharing it is not
+    the collapse of two witnesses into one that `tier1_terms` guards against.
 
     `schema` adds the **conformance** check — is this actually TEI — against the
     committed `data/tei_all.rng`. It is off here and on at the CLI, because
@@ -1434,7 +1440,17 @@ def validate(tei_path: Path, ctx: dict | None = None,
 
     # Proper nouns, and the entity references over them. The pass marks
     # *category* from the page; identity now resolves, against `entities/`.
-    store = load(Path(ctx["root"]) if ctx and ctx.get("root") else Path("."))
+    #
+    # **A supplied `store` is not the `tier1_terms` case.** That one is re-read
+    # from `gt/ocr/` on purpose and must never come out of `ctx`, because the
+    # pass authored the TEI *from* `ctx` and checking one against the other would
+    # make the two witnesses one. The entity store is the opposite: it is the
+    # reference this resolves identity against, not anything the pass produced,
+    # and `load(root)` here and in `build_context` read the same files moments
+    # apart. Hoisting that read out of a corpus loop shares an input; it does not
+    # merge a comparison. Every verdict below is still computed from this page.
+    store = load(Path(ctx["root"]) if ctx and ctx.get("root") else Path(".")) \
+        if store is None else store
     idx = alias_index(store)
     autos = auto_forms(idx)
     # The printed resolution table, for the names the alias table cannot resolve
