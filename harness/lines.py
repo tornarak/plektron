@@ -1165,7 +1165,7 @@ def line_gaps(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path(".")
     # rather than assumed: all 43 pages with OCR anchor from their own ink, none
     # fall back.
     from .zones import page_windows as _page_windows
-    _wins = _page_windows(ref, root, ink=img)
+    _wins = _page_windows(ref, root, mask=img)
     col0, col1 = min(int(v["x0"]) for v in _wins), max(int(v["x1"]) for v in _wins)
     col0, col1 = max(0, col0), min(w, col1)
 

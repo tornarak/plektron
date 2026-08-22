@@ -341,7 +341,7 @@ def has_zones(ref: str, root: Path = Path("."), store: str = ZONEDIR) -> bool:
 
 # ------------------------------------------------------------ column anchoring
 
-def _content_rows(ink, width: int, cfg: dict) -> tuple[int, int] | None:
+def _content_rows(mask, width: int, cfg: dict) -> tuple[int, int] | None:
     """First and last row of real ink on the page, or None if there is none.
 
     A run of `CONTENT_MIN_RUN` consecutive inked rows is required at each end, so a
@@ -351,7 +351,7 @@ def _content_rows(ink, width: int, cfg: dict) -> tuple[int, int] | None:
     photograph raise the bar above every line of type on the same page.
     """
     import numpy as np
-    row = ink.sum(axis=1)
+    row = mask.sum(axis=1)
     inked = row > max(3, int(width * cfg["view"]["content_ink_fraction"]))
     if not inked.any():
         return None
@@ -407,7 +407,7 @@ def _column_runs(col, n_rows: int, a: dict) -> list[tuple[int, int]]:
 
 
 def measure_frame(ref: str, root: Path = Path("."),
-                  cfg: dict | None = None, ink=None) -> dict:
+                  cfg: dict | None = None, mask=None) -> dict:
     """Where this page's text column sits, and how far down the leaf it runs.
 
     Both measurements come off one raster read, because the editor needs both on
@@ -458,12 +458,19 @@ def measure_frame(ref: str, root: Path = Path("."),
     measure = int(spec["measure"])
     pad = int(cfg["view"]["content_pad_px"])
 
-    # `ink` lets a caller that has already decoded the page hand it over. The decode
-    # is the cost of this whole check — see `lines.ink_mask`.
-    ink = ink_mask(ink if ink is not None else scan_for(ref, root))
-    h, w = ink.shape
+    # `mask` lets a caller that has already decoded the page hand it over. The
+    # decode is the cost of this whole check — see `lines.ink_mask`.
+    #
+    # **Named `mask` and not `ink`**, which is what it was: `ink` also names a
+    # *boolean* on `validate_page` and `validate_corpus` in this module, with
+    # opposite defaults, and `validate_page` even reads `bool(ink and zones)` —
+    # correct for the flag and a `ValueError: truth value of an array is
+    # ambiguous` for the array. Not `ink_mask` either: that is the function
+    # called on the next line, and a parameter of that name would shadow it.
+    mask = ink_mask(mask if mask is not None else scan_for(ref, root))
+    h, w = mask.shape
 
-    rows = _content_rows(ink, w, cfg)
+    rows = _content_rows(mask, w, cfg)
     content = ({"y0": max(0, rows[0] - pad), "y1": min(h, rows[1] + pad)}
                if rows else {"y0": 0, "y1": h})
 
@@ -472,7 +479,7 @@ def measure_frame(ref: str, root: Path = Path("."),
         return {"ref": ref, "columns": over, "measured": False,
                 "source": "override", "content": content}
 
-    band = ink[int(h * a["band_top"]):int(h * a["band_bottom"]), :]
+    band = mask[int(h * a["band_top"]):int(h * a["band_bottom"]), :]
     col = band.sum(axis=0)
     runs = _column_runs(col, band.shape[0], a)
     # Specks out by absolute width, then take the SPAN of what survives — not the
@@ -502,15 +509,15 @@ def measure_frame(ref: str, root: Path = Path("."),
 
 
 def measure_columns(ref: str, root: Path = Path("."),
-                    cfg: dict | None = None, ink=None) -> dict:
+                    cfg: dict | None = None, mask=None) -> dict:
     """Back-compatible name for the horizontal half of `measure_frame`."""
-    return measure_frame(ref, root, cfg, ink)
+    return measure_frame(ref, root, cfg, mask)
 
 
 def page_windows(ref: str, root: Path = Path("."),
-                 cfg: dict | None = None, ink=None) -> list[dict]:
+                 cfg: dict | None = None, mask=None) -> list[dict]:
     """Just the windows, for callers that do not care how they were arrived at."""
-    return measure_frame(ref, root, cfg, ink)["columns"]
+    return measure_frame(ref, root, cfg, mask)["columns"]
 
 
 # ---------------------------------------------------------------- split marking
@@ -1424,7 +1431,7 @@ def _position_error(z: dict, windows: list[dict], tol: float) -> str | None:
 
 def uncovered_ink(ref: str, zones: list[dict], root: Path = Path("."),
                   cfg: dict | None = None,
-                  windows: list[dict] | None = None, ink=None) -> list[dict]:
+                  windows: list[dict] | None = None, mask=None) -> list[dict]:
     """Bands of ink inside the text column that no zone and no figure accounts for.
 
     The partition check, and the only one that consults the page rather than the
@@ -1457,9 +1464,9 @@ def uncovered_ink(ref: str, zones: list[dict], root: Path = Path("."),
 
     cfg = cfg or zc.load_config(root)
     ref = norm_ref(ref)
-    ink = ink_mask(ink if ink is not None else scan_for(ref, root))
-    h = ink.shape[0]
-    windows = windows or page_windows(ref, root, cfg, ink)
+    mask = ink_mask(mask if mask is not None else scan_for(ref, root))
+    h = mask.shape[0]
+    windows = windows or page_windows(ref, root, cfg, mask)
 
     covered = np.zeros(h, dtype=bool)
     for box in list(zones) + [{"y0": z["vpos"], "y1": z["vpos"] + z["height"]}
@@ -1469,7 +1476,7 @@ def uncovered_ink(ref: str, zones: list[dict], root: Path = Path("."),
 
     x0 = min(int(win["x0"]) for win in windows)
     x1 = max(int(win["x1"]) for win in windows)
-    return _merge_bands(ink_bands(ink, x0, x1, covered))
+    return _merge_bands(ink_bands(mask, x0, x1, covered))
 
 
 def _merge_bands(bands: list[dict]) -> list[dict]:
@@ -2476,7 +2483,7 @@ def _figure_rects(ref: str, root: Path = Path(".")) -> list[tuple[int, int, int,
              z["vpos"], z["vpos"] + z["height"]) for z in fig_zones(ref, root)]
 
 
-def _ink_lines(ink, y0: int, y1: int, x0: int, x1: int,
+def _ink_lines(mask, y0: int, y1: int, x0: int, x1: int,
                min_h: int, min_w: int,
                figs: list[tuple[int, int, int, int]] | None = None,
                ) -> list[list]:
@@ -2505,7 +2512,7 @@ def _ink_lines(ink, y0: int, y1: int, x0: int, x1: int,
     and 61 boundaries went missing that way.
     """
     import numpy as np
-    sub = ink[y0:y1, x0:x1]
+    sub = mask[y0:y1, x0:x1]
     rows = sub.any(axis=1)
     runs, s = [], None
     for i, v in enumerate(rows):
@@ -2634,7 +2641,7 @@ def _page_margins(lines: list[list], min_w: int, pct: int = 25) -> dict[int, int
     return {e: stat[cluster[e]] for e in edges}
 
 
-def _page_lines(zones: list[dict], ink, figs, min_h: int, min_w: int,
+def _page_lines(zones: list[dict], mask, figs, min_h: int, min_w: int,
                 margin_pct: int = 25
                 ) -> dict[int, list[tuple[int, int, int, int]]]:
     """Every zone's lines, with indents normalised against the whole page.
@@ -2648,7 +2655,7 @@ def _page_lines(zones: list[dict], ink, figs, min_h: int, min_w: int,
     against one margin and reported against another would be describing a page
     nobody generated.
     """
-    raw = {i: _ink_lines(ink, z["y0"], z["y1"], z["x0"], z["x1"],
+    raw = {i: _ink_lines(mask, z["y0"], z["y1"], z["x0"], z["x1"],
                          min_h, min_w, figs)
            for i, z in enumerate(zones)}
     margins = _page_margins([ln for v in raw.values() for ln in v], min_w,
@@ -2677,7 +2684,7 @@ def load_para_exempt(root: Path = Path(".")) -> dict[str, list[dict]]:
 
 
 def paragraph_starts(ref: str, root: Path = Path("."), cfg: dict | None = None,
-                     zones: list[dict] | None = None, ink=None,
+                     zones: list[dict] | None = None, mask=None,
                      store: str = ZONEDIR,
                      exempt: dict[str, list[dict]] | None = None) -> list[dict]:
     """Lines that open a paragraph *inside* a body zone — places it should be two.
@@ -2721,12 +2728,12 @@ def paragraph_starts(ref: str, root: Path = Path("."), cfg: dict | None = None,
     ref = norm_ref(ref)
     if zones is None:
         zones = read_zones(ref, root, store=store)
-    if ink is None:
-        ink = _para_ink(ref, root)
+    if mask is None:
+        mask = _para_ink(ref, root)
 
     figs = _figure_rects(ref, root)
     ruled = (load_para_exempt(root) if exempt is None else exempt).get(ref, ())
-    by_zone = _page_lines(zones, ink, figs, min_h, min_w, margin_pct)
+    by_zone = _page_lines(zones, mask, figs, min_h, min_w, margin_pct)
     out = []
     for zi, z in enumerate(zones, start=1):
         if z["label"] not in labels:
@@ -2760,7 +2767,7 @@ def paragraph_starts(ref: str, root: Path = Path("."), cfg: dict | None = None,
 
 
 def split_at_paragraphs(zones: list[dict], ref: str, root: Path = Path("."),
-                        cfg: dict | None = None, ink=None) -> list[dict]:
+                        cfg: dict | None = None, mask=None) -> list[dict]:
     """Cut each body zone at the paragraph openings inside it.
 
     The decoder half of `paragraph_starts`. Splits are made at the *top of the
@@ -2773,7 +2780,7 @@ def split_at_paragraphs(zones: list[dict], ref: str, root: Path = Path("."),
     direction = spec.get("consolidate", "down")
 
     marks: dict[int, list[int]] = {}
-    for s in paragraph_starts(ref, root, cfg, zones=zones, ink=ink):
+    for s in paragraph_starts(ref, root, cfg, zones=zones, mask=mask):
         if s["exempt"]:
             continue          # ruled not a paragraph opening; do not cut on it
         marks.setdefault(s["zone"], []).append(s["y"])
@@ -3061,12 +3068,12 @@ def paragraph_audit(root: Path = Path("."), cfg: dict | None = None,
         if not zones:
             return None
         try:
-            ink = _para_ink(ref, root)
+            mask = _para_ink(ref, root)
         except FileNotFoundError:
             return None
         figs = _figure_rects(ref, root)
         tol = int(cfg.get("min_zone_h_px", 30))
-        by_zone = _page_lines(zones, ink, figs, min_h, min_w, margin_pct)
+        by_zone = _page_lines(zones, mask, figs, min_h, min_w, margin_pct)
         acc: dict = {
             "heights": [ln[1] - ln[0] for v in by_zone.values() for ln in v],
             "internal": 0, "fired": 0, "asserted": 0, "recovered": 0, "rows": []}
@@ -3080,10 +3087,10 @@ def paragraph_audit(root: Path = Path("."), cfg: dict | None = None,
             merged = {**run[0], "y1": run[-1]["y1"]}
             want = [z["y0"] for z in run[1:]]           # what the editor keyed
 
-            starts = paragraph_starts(ref, root, cfg, zones=[merged], ink=ink)
-            mlines = _page_lines([merged], ink, figs, min_h, min_w, margin_pct)[0]
+            starts = paragraph_starts(ref, root, cfg, zones=[merged], mask=mask)
+            mlines = _page_lines([merged], mask, figs, min_h, min_w, margin_pct)[0]
             acc["internal"] += max(0, len(mlines) - 1)
-            got_zones = split_at_paragraphs([merged], ref, root, cfg, ink)
+            got_zones = split_at_paragraphs([merged], ref, root, cfg, mask)
             got = [z["y0"] for z in got_zones[1:]]      # what survives consolidation
             acc["fired"] += len(got)
             detail = {s["y"]: s for s in starts}
