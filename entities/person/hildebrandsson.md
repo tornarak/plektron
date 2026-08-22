@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Hildebrandsson | | yes | 1-045 note, "réduites par H. Hildebrand Hildebrandsson" |
+| Hildebrandsson | | yes | 1-045 note, "réduites par H. Hildebrand Hildebrandsson" |
 
 ## gloss
 

@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Indians | | yes | 1-096 "North American Indians"; 1-356 "the Mexican and Zuñi Indians" |
+| Indians | | yes | 1-096 "North American Indians"; 1-356 "the Mexican and Zuñi Indians" |
 
 ## gloss
 

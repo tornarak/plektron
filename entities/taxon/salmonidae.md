@@ -24,7 +24,7 @@ Members here:
 - **[[taxon:salmo]]** — 1-250, and the family's type genus either way.
 
 **[[taxon:coregonus]] is deliberately not here**, though 1-190 names it two
-clauses later: that sentence runs "on the Pacific … Salmonidæ … ; on the Arctic,
+clauses later: that sentence runs "on the Pacific … Salmonidæ …; on the Arctic,
 for catching various species of Coregonus", which is 1-188's split again, so the
 Coregonus half is the *contrast* to Salmonidæ and not an instance of it. Modern
 taxonomy puts Coregonus inside Salmonidae as a subfamily, and reading it in here

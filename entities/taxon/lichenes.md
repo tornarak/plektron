@@ -22,6 +22,6 @@ either way would be this store choosing between two centuries of botany on no
 evidence from the page, so the rank stands alone until an editor rules.
 
 Note that only two of the seven have a Latin name at all. The other five —
-Qai-wattaˊpqai, Koihuˊ-wattaˊp, Mɪˊrg̣ɪčhɪn, Aioˊpɪču-wattaˊp, and the two
+Qai-wattaˊpqai, Koihuˊ-wattaˊp, Mɪˊrg̣ɪčhɪn, Aioˊpɪču-wattaˊp, and the two
 colour varieties — are Chukchee folk taxa with no binomial in the print, and
 they are the [[lexicon]]'s, not this store's.
