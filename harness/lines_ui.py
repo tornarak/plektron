@@ -35,7 +35,7 @@ from pathlib import Path
 
 from . import corrections as corr
 from . import zones as zn
-from .lines import DEFAULT_ALTO_DIR, alto_for_lines, line_gaps, page_lines
+from .lines import DEFAULT_STORE, alto_for_lines, line_gaps, page_lines
 from .refs import norm_ref
 
 PORT = 8733
@@ -49,7 +49,7 @@ BLOT_CACHE = "w-blotted-edit"
 
 
 def page_state(ref: str, root: Path = Path("."),
-               alto_dir: str = DEFAULT_ALTO_DIR) -> dict:
+               store: str = DEFAULT_STORE) -> dict:
     """Everything the page needs, resolved server-side.
 
     The client re-derives nothing: it is handed raster-space geometry for every
@@ -59,7 +59,7 @@ def page_state(ref: str, root: Path = Path("."),
     """
     ref = norm_ref(ref)
     w, h = zn.raster_size(ref, root)
-    alto = alto_for_lines(ref, alto_dir, root)
+    alto = alto_for_lines(ref, root, store)
 
     lines, corrected = [], []
     if alto.exists():
@@ -109,7 +109,7 @@ def page_state(ref: str, root: Path = Path("."),
         box.pop("line_id", None)
 
     zones = zn.read_zones(ref, root)
-    bands = line_gaps(ref, alto_dir, root) if alto.exists() else []
+    bands = line_gaps(ref, root, store) if alto.exists() else []
     return {
         "ref": ref, "w": w, "h": h,
         "has_zones": zn.has_zones(ref, root),
@@ -127,15 +127,15 @@ def page_state(ref: str, root: Path = Path("."),
 
 
 def page_row(ref: str, root: Path = Path("."),
-             alto_dir: str = DEFAULT_ALTO_DIR) -> dict:
+             store: str = DEFAULT_STORE) -> dict:
     """One page's state for the list — the slow column measured, the rest read.
 
     `bands` is the raster read (~0.2 s) and everything else is a file test, which
     is why the list draws the cheap columns immediately and fetches this per row.
     """
     ref = norm_ref(ref)
-    alto = alto_for_lines(ref, alto_dir, root)
-    bands = line_gaps(ref, alto_dir, root) if alto.exists() else []
+    alto = alto_for_lines(ref, root, store)
+    bands = line_gaps(ref, root, store) if alto.exists() else []
     return {"ref": ref, "live": sum(1 for b in bands if not b["exempted"]),
             "ruled": sum(1 for b in bands if b["exempted"]),
             "corrections": len(corr.load_lines(ref, root))}
@@ -149,7 +149,7 @@ def _zone_of(box: dict, zones: list[dict]) -> str:
 
 
 def save_payload(payload: dict, root: Path = Path("."),
-                 alto_dir: str = DEFAULT_ALTO_DIR) -> dict:
+                 store: str = DEFAULT_STORE) -> dict:
     """Write one page's corrections and its line-level rulings.
 
     Both stores or neither: they are two halves of one sitting, and a save that
@@ -194,7 +194,7 @@ def save_payload(payload: dict, root: Path = Path("."),
     # what the client believed before it saved — and through the same store the
     # page was opened against, or a `--store gt` session would save and then
     # report a tally measured somewhere else.
-    bands = line_gaps(ref, alto_dir, root)
+    bands = line_gaps(ref, root, store)
     return {**res,
             "live_bands": [b for b in bands if not b["exempted"]],
             "bands": len(bands)}

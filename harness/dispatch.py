@@ -158,7 +158,7 @@ def survey(ref: str, root: Path = Path(".")) -> dict:
         "blocks": 0,
     }
     if out["mz"]:
-        alto = alto_for_lines(ref, "mz/ocr", root)
+        alto = alto_for_lines(ref, root, "mz/ocr")
         recs = page_lines(alto, root)
         out["lines"] = len(recs)
         out["blocks"] = len({r["block_id"] for r in recs if r.get("block_id")})

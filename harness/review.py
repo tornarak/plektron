@@ -51,7 +51,7 @@ from lxml import etree
 from . import corrections as _corr
 from .atomic import tmp_for
 from .detectors import DOT_ABOVE_G, INVENTORY_CHARS, LOOKALIKES, unlicensed_marks
-from .lines import DEFAULT_ALTO_DIR, alto_for_lines, page_lines, raster_path
+from .lines import DEFAULT_STORE, alto_for_lines, page_lines, raster_path
 from .lookup import HANDLE
 from .paths import crops_dir, decisions_path, html_path, page_dirs, proposal_path
 from .proposal_check import NOTE_CLASSES
@@ -167,13 +167,13 @@ def line_spans(catmus: str, claude: str) -> list[dict]:
     return out
 
 
-def page_spans(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
-               root: Path = Path(".")) -> list[dict]:
+def page_spans(ref: str, root: Path = Path("."),
+               store: str = DEFAULT_STORE) -> list[dict]:
     """Every differing span on one page, one flat record each."""
     ref = norm_ref(ref)
     prop = load_proposal(ref, root)
     out = []
-    for rec in page_lines(alto_for_lines(ref, alto_dir, root), root, ref=ref):
+    for rec in page_lines(alto_for_lines(ref, root, store), root, ref=ref):
         mine = prop.get(rec["index"])
         if mine is None:
             continue
@@ -565,11 +565,11 @@ def restore_skip(ref: str, root: Path = Path("."), force: bool = False) -> str:
     return ""
 
 
-def restore(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
+def restore(ref: str, root: Path = Path("."), store: str = DEFAULT_STORE,
             force: bool = False, commit: bool = False) -> dict:
     """Write adjudicated text into `gt/ocr/chukchi-<ref>.xml`, keeping the geometry.
 
-    The ALTO in `alto_dir` is the skeleton: every line has exactly one `String`
+    The ALTO in `store` is the skeleton: every line has exactly one `String`
     whose box mirrors the `TextLine`'s, so this only sets `@CONTENT`; nothing
     structural moves.
 
@@ -630,7 +630,7 @@ def restore(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
         raise ValueError(f"no decisions for {ref}: adjudicate it first "
                          f"(harness ocr review {ref})")
 
-    src = alto_for_lines(ref, alto_dir, root)
+    src = alto_for_lines(ref, root, store)
     tree = etree.parse(str(src))
     lines = list(tree.iter("{*}TextLine"))
 
@@ -926,8 +926,8 @@ def _palette() -> list[dict]:
     return palette
 
 
-def page_context(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
-                 root: Path = Path("."), crops: Path | None = None,
+def page_context(ref: str, root: Path = Path("."),
+                 store: str = DEFAULT_STORE, crops: Path | None = None,
                  queue: list[dict] | None = None,
                  scan_href: str | None = None,
                  crop_base: str = "crops",
@@ -971,7 +971,7 @@ def page_context(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
     from .lines import write_line_crops
     ref = norm_ref(ref)
     crops = crops or crops_dir(ref, root)
-    recs = {r["index"]: r for r in write_line_crops(ref, crops, alto_dir, root)}
+    recs = {r["index"]: r for r in write_line_crops(ref, crops, root, store)}
     # Reading order, not index order. `recs` is keyed by `index` because that is the
     # identity the client submits and `save_decisions` stores under; but iterating
     # `sorted(recs)` would walk the *segmenter's* order, which is not reading order on
@@ -979,7 +979,7 @@ def page_context(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
     order = sorted(recs, key=lambda i: recs[i]["y_rank"])
     prop = load_proposal(ref, root)
     saved = load_decisions(ref, root)
-    spans = page_spans(ref, alto_dir, root)
+    spans = page_spans(ref, root, store)
     summ = summary(spans, len(recs))
 
     # Computed over the text on screen — saved edits included — not over the
@@ -1168,8 +1168,8 @@ def _text_now(idx: int, prop: dict, saved: dict) -> str:
     return _nfd(prop[idx]["text"]) if idx in prop else ""
 
 
-def issues_context(items: list[dict], alto_dir: str = DEFAULT_ALTO_DIR,
-                   root: Path = Path("."), crop_base: str = "crops",
+def issues_context(items: list[dict], root: Path = Path("."),
+                   store: str = DEFAULT_STORE, crop_base: str = "crops",
                    font: str | None = None, font_size: int | None = None,
                    box_lines: int | None = None) -> dict:
     """One document: every listed line, each with a context line either side.
@@ -1194,7 +1194,7 @@ def issues_context(items: list[dict], alto_dir: str = DEFAULT_ALTO_DIR,
         if ref not in cache:
             recs = {r["index"]: r
                     for r in write_line_crops(ref, crops_dir(ref, root),
-                                              alto_dir, root)}
+                                              root, store)}
             order = sorted(recs, key=lambda i: recs[i]["y_rank"])
             cache[ref] = (recs, order, load_proposal(ref, root),
                           load_decisions(ref, root))

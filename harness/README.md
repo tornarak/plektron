@@ -52,7 +52,7 @@ also carry an `mz_` id prefix, so a file identifies itself even out of context.
 naming them on a write hides which real store is being touched — and a write landing
 in a store nobody meant to touch is how this repo lost its ground truth once. Reading
 is the opposite case: resolving a page to its current OCR is the entire purpose of a
-union view. `lines.DEFAULT_ALTO_DIR` is that default; `restore` names `gt/ocr/`.
+union view. `lines.DEFAULT_STORE` is that default; `restore` names `gt/ocr/`.
 
 **The same rule, again, for zones: reads may resolve through `zones/`; writes name
 `gt/zones/`.** `save_zones` takes no store parameter at all, which is the strongest
@@ -500,8 +500,8 @@ Also `link_view`/`link_one`, the `ocr/` farm — `zones.link_view`'s twin, and
 deliberately the same shape, since the argument for the layout is that a file's
 role must not live only in the directory holding it.
 
-Three caller invariants. **It cannot name `gt/ocr/`** — there is no `store`, `out`
-or `alto_dir` parameter, the property `save_zones` has and for its reason: a write
+Three caller invariants. **It cannot name `gt/ocr/`** — there is no `store` or
+`out` parameter, the property `save_zones` has and for its reason: a write
 landing in a store nobody meant to touch. **`tags` on a `Region` is `{key: [{"type": label}]}`, never
 `{key: label}`** — `serialize` builds its typology with `for t in v if 'type' in t`,
 so a bare string iterates characters, matches none, and writes `TAGREFS=""` against

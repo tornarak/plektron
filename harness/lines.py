@@ -302,7 +302,7 @@ LINE_KEYS = ("index", "line_id", "block_id", "text",
 # This replaced `end-of-eval/`, the stock-CATMuS output, which was deleted once the
 # ground-truth rebuild finished. Four verbs defaulted to it by name and died with an
 # OSError the moment it went; hence one constant rather than eight literals.
-DEFAULT_ALTO_DIR = "ocr"
+DEFAULT_STORE = "ocr"
 
 
 def raster_path(ref: str, root: Path = Path("."), scans: str = "scans") -> Path:
@@ -323,8 +323,8 @@ def raster_path(ref: str, root: Path = Path("."), scans: str = "scans") -> Path:
     return p
 
 
-def alto_for_lines(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
-                   root: Path = Path(".")) -> Path:
+def alto_for_lines(ref: str, root: Path = Path("."),
+                   store: str = DEFAULT_STORE) -> Path:
     """Path to one page's ALTO in whichever store is being read.
 
     Takes the directory as an argument rather than hardcoding it, because callers
@@ -345,15 +345,15 @@ def alto_for_lines(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
     same real file another part of the same verb writes. `restore` handles that
     case by name — see its `mode` field.
 
-    Refuses when `alto_dir` is a **derived tree that was never built**, so the
+    Refuses when `store` is a **derived tree that was never built**, so the
     default path on a fresh clone names the missing view rather than letting lxml
     raise `Error reading file 'ocr/chukchi-1-048.xml'` — loud enough, but blaming
     the page for a directory nobody made. A store that merely holds nothing is not
     an error and is not touched; see `farms.require`.
     """
     from . import farms
-    farms.require(root, alto_dir)
-    return root / alto_dir / f"chukchi-{norm_ref(ref)}.xml"
+    farms.require(root, store)
+    return root / store / f"chukchi-{norm_ref(ref)}.xml"
 
 
 def _line_text(tl) -> str:
@@ -810,7 +810,7 @@ def line_box(rec: dict, sx: float, sy: float, size: tuple[int, int]) -> tuple | 
     return box if box[2] > box[0] and box[3] > box[1] else None
 
 
-def line_crops(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
+def line_crops(ref: str, root: Path = Path("."), store: str = DEFAULT_STORE,
                scans: str = "scans"):
     """Yield `(record, PIL.Image)` per line on one page, cropped from the raster.
 
@@ -826,7 +826,7 @@ def line_crops(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."
     """
     from PIL import Image
     ref = norm_ref(ref)
-    alto = alto_for_lines(ref, alto_dir, root)
+    alto = alto_for_lines(ref, root, store)
     page = etree.parse(str(alto)).find(".//{*}Page")
     img = Image.open(raster_path(ref, root, scans))
     sx, sy = _scale_for(page, img.size)
@@ -1037,8 +1037,8 @@ def annexed_bands(ref: str, root: Path = Path(".")) -> dict[int, list[dict]]:
     return out
 
 
-def covered_faults(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
-                   root: Path = Path(".")) -> list[dict]:
+def covered_faults(ref: str, root: Path = Path("."),
+                   store: str = DEFAULT_STORE) -> list[dict]:
     """`covered_by` rulings whose named line does not bear them out.
 
     **This is the half "not type" could never have.** A ruling that ink is not
@@ -1067,7 +1067,7 @@ def covered_faults(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
                if r.get("covered_by") is not None]
     if not regions:
         return []
-    alto = alto_for_lines(ref, alto_dir, root)
+    alto = alto_for_lines(ref, root, store)
     if not alto.exists():
         return []          # absent is not wrong — see `_orphan_line_issues`
     by_index = {int(r["index"]): r for r in page_lines(alto, root)}
@@ -1087,7 +1087,7 @@ def covered_faults(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
     return out
 
 
-def line_gaps(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
+def line_gaps(ref: str, root: Path = Path("."), store: str = DEFAULT_STORE,
               scans: str = "scans") -> list[dict]:
     """Bands of ink on the page that no `TextLine` covers — dropped lines.
 
@@ -1125,7 +1125,7 @@ def line_gaps(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path(".")
     """
     from PIL import Image
     ref = norm_ref(ref)
-    alto = alto_for_lines(ref, alto_dir, root)
+    alto = alto_for_lines(ref, root, store)
     page = etree.parse(str(alto)).find(".//{*}Page")
     img = Image.open(raster_path(ref, root, scans)).convert("L")
     w, h = img.size
@@ -1328,8 +1328,8 @@ def _band_zone(band: dict, zones: list[dict]) -> str:
     return best if share >= ZONE_INSIDE else ""
 
 
-def write_blot(ref: str, out_dir: Path, alto_dir: str = DEFAULT_ALTO_DIR,
-               root: Path = Path("."), scans: str = "scans",
+def write_blot(ref: str, out_dir: Path, root: Path = Path("."),
+               store: str = DEFAULT_STORE, scans: str = "scans",
                exemptions: bool = True) -> dict:
     """The page with every line box and every figure zone painted out.
 
@@ -1381,7 +1381,7 @@ def write_blot(ref: str, out_dir: Path, alto_dir: str = DEFAULT_ALTO_DIR,
 
     from .figures import zones as _zones
     ref = norm_ref(ref)
-    alto = alto_for_lines(ref, alto_dir, root)
+    alto = alto_for_lines(ref, root, store)
     page = etree.parse(str(alto)).find(".//{*}Page")
     img = Image.open(raster_path(ref, root, scans)).convert("RGB")
     sx, sy = _scale_for(page, img.size)
@@ -1593,8 +1593,8 @@ FIG_TITLE_MIN, FIG_TITLE_MAX = 16, 220
 FIG_SUB_RATIO = 0.55
 
 
-def write_numbered_page(ref: str, out_path: Path, alto_dir: str = DEFAULT_ALTO_DIR,
-                        root: Path = Path("."), scans: str = "scans",
+def write_numbered_page(ref: str, out_path: Path, root: Path = Path("."),
+                        store: str = DEFAULT_STORE, scans: str = "scans",
                         gutter: int = NUMBER_GUTTER,
                         font_size: int = NUMBER_FONT) -> dict:
     """The page raster with every line's ALTO `index` drawn in a left gutter.
@@ -1621,7 +1621,7 @@ def write_numbered_page(ref: str, out_path: Path, alto_dir: str = DEFAULT_ALTO_D
     """
     from PIL import Image, ImageDraw, ImageFont
     ref = norm_ref(ref)
-    alto = alto_for_lines(ref, alto_dir, root)
+    alto = alto_for_lines(ref, root, store)
     page = etree.parse(str(alto)).find(".//{*}Page")
     src = Image.open(raster_path(ref, root, scans)).convert("L")
     sx, sy = _scale_for(page, src.size)
@@ -1825,8 +1825,8 @@ def write_numbered_page(ref: str, out_path: Path, alto_dir: str = DEFAULT_ALTO_D
 LINE_SHEET_H = 1960
 
 
-def write_line_sheets(ref: str, out_dir: Path, alto_dir: str = DEFAULT_ALTO_DIR,
-                      root: Path = Path("."), scans: str = "scans",
+def write_line_sheets(ref: str, out_dir: Path, root: Path = Path("."),
+                      store: str = DEFAULT_STORE, scans: str = "scans",
                       per_sheet: int = 8,
                       sheet_h: int | None = LINE_SHEET_H,
                       only: set[int] | None = None) -> list[dict]:
@@ -1863,7 +1863,7 @@ def write_line_sheets(ref: str, out_dir: Path, alto_dir: str = DEFAULT_ALTO_DIR,
     """
     from .figures import LABEL_W, compose_sheets
     items, seen = [], []
-    for rec, crop in line_crops(ref, alto_dir, root, scans):
+    for rec, crop in line_crops(ref, root, store, scans):
         if only is not None and rec["index"] not in only:
             continue
         seen.append(rec["index"])
@@ -2130,7 +2130,7 @@ def write_line_zoom(ref: str, out_dir: Path,
                     zoom: int = ZOOM, window: int | None = None,
                     overlap: int = ZOOM_OVERLAP, sheet_h: int = ZOOM_SHEET_H,
                     client_w: int = ZOOM_CLIENT_W,
-                    alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
+                    root: Path = Path("."), store: str = DEFAULT_STORE,
                     scans: str = "scans",
                     smooth: bool = False) -> list[dict]:
     """Magnified lines, sliced into overlapping strips and packed into few sheets.
@@ -2174,7 +2174,7 @@ def write_line_zoom(ref: str, out_dir: Path,
                 else Image.Resampling.NEAREST)
     spans = only if isinstance(only, dict) else None
     strips, seen = [], []
-    for rec, line_img in line_crops(ref, alto_dir, root, scans):
+    for rec, line_img in line_crops(ref, root, store, scans):
         if only is not None and rec["index"] not in only:
             continue
         seen.append(rec["index"])
@@ -2213,8 +2213,8 @@ def write_line_zoom(ref: str, out_dir: Path,
              "strips": " ".join(e["items"])} for e in index]
 
 
-def write_line_crops(ref: str, out_dir: Path, alto_dir: str = DEFAULT_ALTO_DIR,
-                     root: Path = Path("."), scans: str = "scans") -> list[dict]:
+def write_line_crops(ref: str, out_dir: Path, root: Path = Path("."),
+                     store: str = DEFAULT_STORE, scans: str = "scans") -> list[dict]:
     """Crop every line to `out_dir/<y_rank>-<index>-<line_id>.png`. Returns the records.
 
     Filenames lead with the zero-padded **reading position**, so a directory
@@ -2238,10 +2238,10 @@ def write_line_crops(ref: str, out_dir: Path, alto_dir: str = DEFAULT_ALTO_DIR,
     ref = norm_ref(ref)
     out_dir.mkdir(parents=True, exist_ok=True)
     src = max((p.stat().st_mtime for p in
-               (alto_for_lines(ref, alto_dir, root), raster_path(ref, root, scans))
+               (alto_for_lines(ref, root, store), raster_path(ref, root, scans))
                if p.exists()), default=0.0)
     out = []
-    for rec, crop in line_crops(ref, alto_dir, root, scans):
+    for rec, crop in line_crops(ref, root, store, scans):
         path = out_dir / f"{rec['y_rank']:03d}-{rec['index']:03d}-{rec['line_id']}.png"
         if not (path.exists() and path.stat().st_mtime >= src):
             crop.save(path)

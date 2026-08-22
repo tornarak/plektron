@@ -78,7 +78,7 @@ def _page(tmp_path: Path, ref: str = "1-048", *, mark: tuple | None = None) -> P
 def test_a_line_still_masks_its_own_ink(tmp_path):
     """The control. Box-masking must not start reporting the very line it covers."""
     root = _page(tmp_path)
-    assert line_gaps("1-048", "gt/ocr", root) == []
+    assert line_gaps("1-048", root, "gt/ocr") == []
 
 
 def test_ink_beside_a_covered_line_is_found(tmp_path):
@@ -88,7 +88,7 @@ def test_ink_beside_a_covered_line_is_found(tmp_path):
     detector.
     """
     root = _page(tmp_path, mark=(700, 900, 100, 140))
-    bands = line_gaps("1-048", "gt/ocr", root)
+    bands = line_gaps("1-048", root, "gt/ocr")
     assert len(bands) == 1, f"expected the mark beside the line, got {bands}"
     b = bands[0]
     assert 690 <= b["hpos"] <= 710, b
@@ -109,4 +109,4 @@ def test_the_strip_is_measured_against_its_own_width(tmp_path, x0, x1):
     against a folio 43 px wide. Searching wider must not detect less.
     """
     root = _page(tmp_path, mark=(x0, x1, 100, 140))
-    assert len(line_gaps("1-048", "gt/ocr", root)) == 1
+    assert len(line_gaps("1-048", root, "gt/ocr")) == 1

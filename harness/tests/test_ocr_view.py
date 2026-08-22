@@ -132,7 +132,7 @@ def test_nothing_here_can_name_the_ground_truth_store():
     this project lost 18 pages of transcription."""
     import inspect
     params = inspect.signature(R.predict).parameters
-    assert "store" not in params and "out" not in params and "alto_dir" not in params
+    assert "store" not in params and "out" not in params
 
 
 # --- the zone labels, and what reads them ----------------------------------

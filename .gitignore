@@ -116,7 +116,7 @@ tei/_claims/
 # half that was already written down. The other half is what `ocr/` is *for*: it is
 # the read view over every OCR store, the stable name by which a page's current OCR
 # is reached whatever produced it, and `harness`'s default `--from`
-# (`lines.DEFAULT_ALTO_DIR`). Raw recognizer output, if any is produced again, links
+# (`lines.DEFAULT_STORE`). Raw recognizer output, if any is produced again, links
 # in beside the ground truth from its own real store rather than displacing it — so
 # a file's rank stays readable from where its link points, which is precisely the
 # property whose absence caused the ground-truth loss.

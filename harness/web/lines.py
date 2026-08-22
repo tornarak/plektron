@@ -74,9 +74,9 @@ def page(request: Request, ref: str = ""):
     s = _session(request)
     r = _ref(ref or s.get("start", ""))
     root = _root(request)
-    alto_dir = s.get("alto_dir") or ""
+    store = s.get("store") or ""
     cfg = lines_config.load_config(root)
-    st = ui.page_state(r, root, alto_dir)
+    st = ui.page_state(r, root, store)
 
     it = s.get("itinerary") or []
     i = it.index(st["ref"]) if st["ref"] in it else -1
@@ -135,7 +135,7 @@ def row(request: Request, ref: str = ""):
     parses the body as JSON, so a failure has to arrive as JSON too — an HTML
     traceback would raise inside the `fetch` and throw away the reason."""
     s = _session(request)
-    return ui.page_row(_ref(ref), _root(request), s.get("alto_dir") or "")
+    return ui.page_row(_ref(ref), _root(request), s.get("store") or "")
 
 
 @router.get("/layers.css")
@@ -182,7 +182,7 @@ def blot(request: Request, ref: str):
     s = _session(request)
     root = _root(request)
     res = write_blot(_ref(ref), root / "scans" / ui.BLOT_CACHE,
-                     s.get("alto_dir") or "", root, exemptions=True)
+                     root, s.get("store") or "", exemptions=True)
     return send_file(request, Path(res["path"]))
 
 
@@ -194,7 +194,7 @@ def save(request: Request, body: Save):
     # default the store reads as an instruction — `save_payload` asks
     # `"ink_exempt" in payload` for exactly that reason.
     res = ui.save_payload(body.model_dump(exclude_unset=True), _root(request),
-                          s.get("alto_dir") or "")
+                          s.get("store") or "")
     print(f"saved {res['path']}: {res['lines']} correction(s), "
           f"{len(res['live_bands'])} band(s) left")
     return res

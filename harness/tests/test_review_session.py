@@ -29,7 +29,7 @@ from harness.tests.conftest import write_scan
 ALTO_NS = "http://www.loc.gov/standards/alto/ns-v4#"
 
 
-def render_queue_html(ref, alto_dir, root, **kw):
+def render_queue_html(ref, store, root, **kw):
     """The review page as a string, through the template the server uses.
 
     The renderer used to return HTML directly; it returns a context now and the
@@ -39,7 +39,7 @@ def render_queue_html(ref, alto_dir, root, **kw):
     """
     from harness.web import templates
 
-    ctx = page_context(ref, alto_dir, root, **kw)
+    ctx = page_context(ref, root, store, **kw)
     return templates.get_template("review/page.html").render(
         **ctx, base="/review", static="/static", request=None)
 
@@ -94,7 +94,7 @@ class Session:
 
         self.refs, self.root = list(dict.fromkeys(refs)), root
         self.base = "/review"
-        session = {"queue": self.refs, "alto_dir": "mz/ocr",
+        session = {"queue": self.refs, "store": "mz/ocr",
                    "issues": list(issues or [])}
         self.app = create_app(root, Sessions(root=root,
                                              by_editor={"review": session}),
@@ -388,7 +388,7 @@ def test_restore_reports_a_note_on_a_line_nobody_edited(two):
                          "lines": {"0": {"text": "human 2-046 0"},        # unchanged
                                    "1": {"text": "human 2-046 1",
                                          "note": "speck, not type"}}})
-    rep = restore("2-046", "mz/ocr", two)
+    rep = restore("2-046", two, "mz/ocr")
     assert rep["edited_by_human"] == 0, "no text was changed"
     assert rep["edits"] == []
     assert rep["noted"] == 1

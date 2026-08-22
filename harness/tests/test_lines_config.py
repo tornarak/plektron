@@ -52,7 +52,7 @@ def _page(tmp_path: Path, cfg: dict, ref: str = "1-048") -> str:
     Image.new("RGB", (600, 800), "white").save(
         root / "scans" / f"chukchi-{ref}.png")
 
-    session = {"start": ref, "alto_dir": "gt/ocr", "itinerary": [ref],
+    session = {"start": ref, "store": "gt/ocr", "itinerary": [ref],
                "itinerary_name": ""}
     app = create_app(root, Sessions(root=root, by_editor={"lines": session}),
                      editor="lines")

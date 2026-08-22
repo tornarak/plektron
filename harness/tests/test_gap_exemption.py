@@ -146,7 +146,7 @@ def page(tmp_path):
 def in_zone(tmp_path):
     """The same page, with its uncovered band inside a declared zone."""
     alto = _page(tmp_path)
-    band = line_gaps("1-048", "gt/ocr", tmp_path)[0]
+    band = line_gaps("1-048", tmp_path, "gt/ocr")[0]
     _zoned(tmp_path, band["vpos"] - 20, band["vpos"] + band["height"] + 20)
     return tmp_path, alto, band
 
@@ -155,7 +155,7 @@ def test_an_unexempted_band_reports_the_columns_unset(page):
     """The fields are always present, so a caller never has to distinguish
     "not exempted" from "this build does not know about exemptions"."""
     tmp_path, _ = page
-    band = line_gaps("1-048", "gt/ocr", tmp_path)[0]
+    band = line_gaps("1-048", tmp_path, "gt/ocr")[0]
     assert band["exempted"] is False
     assert band["note"] == ""
     assert band["layer"] == ""
@@ -165,11 +165,11 @@ def test_an_unzoned_band_is_the_zone_layers_to_settle(page):
     """No zoning, so nothing says this ink belongs inside a region — which is the
     zoning's question, and its ruling answers it."""
     tmp_path, _ = page
-    band = line_gaps("1-048", "gt/ocr", tmp_path)[0]
+    band = line_gaps("1-048", tmp_path, "gt/ocr")[0]
     assert band["zone"] == ""
     _exempt(tmp_path, band["vpos"] - 5, band["vpos"] + band["height"] + 5)
 
-    ruled = line_gaps("1-048", "gt/ocr", tmp_path)[0]
+    ruled = line_gaps("1-048", tmp_path, "gt/ocr")[0]
     assert ruled["exempted"] is True
     assert ruled["note"] == "scanner artifact"
     assert ruled["layer"] == "zones"
@@ -179,10 +179,10 @@ def test_an_exempted_band_still_reports(page):
     """Flagged, never suppressed. A `gaps` that dropped the band would hide a
     wrong ruling forever, and the next dropped line on the page with it."""
     tmp_path, _ = page
-    band = line_gaps("1-048", "gt/ocr", tmp_path)[0]
+    band = line_gaps("1-048", tmp_path, "gt/ocr")[0]
     _exempt(tmp_path, band["vpos"] - 5, band["vpos"] + band["height"] + 5)
 
-    after = line_gaps("1-048", "gt/ocr", tmp_path)
+    after = line_gaps("1-048", tmp_path, "gt/ocr")
     assert len(after) == 1
     assert after[0]["vpos"] == band["vpos"]
 
@@ -192,7 +192,7 @@ def test_a_region_matching_nothing_leaves_the_band_alone(page):
     uses — an exemption recorded elsewhere on the page must not bleed onto it."""
     tmp_path, _ = page
     _exempt(tmp_path, 0, 40)
-    band = line_gaps("1-048", "gt/ocr", tmp_path)[0]
+    band = line_gaps("1-048", tmp_path, "gt/ocr")[0]
     assert band["exempted"] is False
     assert band["note"] == ""
 
@@ -216,7 +216,7 @@ def test_a_corrected_band_goes_quiet(in_zone):
     corr.save_lines("1-048", [{"x0": band["hpos"], "y0": band["vpos"],
                                "x1": band["hpos"] + band["width"],
                                "y1": band["vpos"] + band["height"]}], tmp_path)
-    assert line_gaps("1-048", "gt/ocr", tmp_path) == []
+    assert line_gaps("1-048", tmp_path, "gt/ocr") == []
 
 
 def test_a_band_inside_a_zone_names_it(in_zone):
@@ -224,7 +224,7 @@ def test_a_band_inside_a_zone_names_it(in_zone):
     rather than left implicit — and it is what hands a recovered folio the
     `RunningTitleZone` that makes it a folio downstream."""
     tmp_path, _alto, _band = in_zone
-    band = line_gaps("1-048", "gt/ocr", tmp_path)[0]
+    band = line_gaps("1-048", tmp_path, "gt/ocr")[0]
     assert band["zone"] == "RunningTitleZone"
 
 
@@ -238,7 +238,7 @@ def test_a_zone_ruling_does_not_settle_a_band_inside_a_zone(in_zone):
     _exempt(tmp_path, band["vpos"] - 5, band["vpos"] + band["height"] + 5,
             layer="zones")
 
-    after = line_gaps("1-048", "gt/ocr", tmp_path)[0]
+    after = line_gaps("1-048", tmp_path, "gt/ocr")[0]
     assert after["zone"] == "RunningTitleZone"
     assert after["exempted"] is False, "a zone-level ruling settled a line-level band"
     assert after["layer"] == ""
@@ -252,7 +252,7 @@ def test_a_line_ruling_settles_a_band_inside_a_zone(in_zone):
     _exempt(tmp_path, band["vpos"] - 5, band["vpos"] + band["height"] + 5,
             note="printed rule", layer="lines")
 
-    after = line_gaps("1-048", "gt/ocr", tmp_path)[0]
+    after = line_gaps("1-048", tmp_path, "gt/ocr")[0]
     assert after["exempted"] is True
     assert after["note"] == "printed rule"
     assert after["layer"] == "lines"
@@ -276,12 +276,12 @@ def test_a_line_ruling_does_settle_a_band_outside_every_zone(page):
     The upstream direction stays shut — see the test above.
     """
     tmp_path, _ = page
-    band = line_gaps("1-048", "gt/ocr", tmp_path)[0]
+    band = line_gaps("1-048", tmp_path, "gt/ocr")[0]
     assert band["zone"] == "", "the fixture stopped producing an out-of-zone band"
     _exempt(tmp_path, band["vpos"] - 5, band["vpos"] + band["height"] + 5,
             note="marginal blot", layer="lines")
 
-    after = line_gaps("1-048", "gt/ocr", tmp_path)[0]
+    after = line_gaps("1-048", tmp_path, "gt/ocr")[0]
     assert after["zone"] == ""
     assert after["exempted"] is True
     assert after["layer"] == "lines"
@@ -293,11 +293,11 @@ def test_a_ruled_band_is_not_offered_as_work(page):
     rather than a verb: a settled band stops appearing among the ones left to
     decide, while remaining visible and carrying its note."""
     tmp_path, _ = page
-    band = line_gaps("1-048", "gt/ocr", tmp_path)[0]
+    band = line_gaps("1-048", tmp_path, "gt/ocr")[0]
     _exempt(tmp_path, band["vpos"] - 5, band["vpos"] + band["height"] + 5,
             note="offset from the facing page")
 
-    bands = line_gaps("1-048", "gt/ocr", tmp_path)
+    bands = line_gaps("1-048", tmp_path, "gt/ocr")
     assert [b for b in bands if not b["exempted"]] == []
     assert bands[0]["note"] == "offset from the facing page"
 
@@ -332,7 +332,7 @@ def test_a_ruling_without_covered_by_reports_as_not_type(in_zone):
     _exempt(tmp_path, band["vpos"] - 5, band["vpos"] + band["height"] + 5,
             note="printed rule", layer="lines")
 
-    after = line_gaps("1-048", "gt/ocr", tmp_path)[0]
+    after = line_gaps("1-048", tmp_path, "gt/ocr")[0]
     assert after["reason"] == "not_type"
     assert after["covered_by"] == ""
 
@@ -345,7 +345,7 @@ def test_a_covered_ruling_names_the_line_that_keys_the_ink(in_zone):
     _covered(tmp_path, band["vpos"] - 5, band["vpos"] + band["height"] + 5,
              line=0)
 
-    after = line_gaps("1-048", "gt/ocr", tmp_path)[0]
+    after = line_gaps("1-048", tmp_path, "gt/ocr")[0]
     assert after["exempted"] is True
     assert after["reason"] == "covered"
     assert after["covered_by"] == 0
@@ -366,7 +366,7 @@ def test_a_covered_ruling_naming_no_line_is_a_fault(in_zone):
     _covered(tmp_path, band["vpos"] - 5, band["vpos"] + band["height"] + 5,
              line=99)
 
-    faults = covered_faults("1-048", "gt/ocr", tmp_path)
+    faults = covered_faults("1-048", tmp_path, "gt/ocr")
     assert [f["fault"] for f in faults] == ["no_line"]
     assert faults[0]["covered_by"] == 99
 
@@ -391,7 +391,7 @@ def test_a_covered_ruling_naming_an_empty_line_is_a_fault(tmp_path):
         encoding="utf-8")
     _covered(tmp_path, 400, 440, line=0, ref=ref)
 
-    faults = covered_faults(ref, "gt/ocr", tmp_path)
+    faults = covered_faults(ref, tmp_path, "gt/ocr")
     assert [f["fault"] for f in faults] == ["empty_line"]
 
 
@@ -403,7 +403,7 @@ def test_a_covered_ruling_that_checks_out_is_silent(in_zone):
     tmp_path, _alto, band = in_zone
     _covered(tmp_path, band["vpos"] - 5, band["vpos"] + band["height"] + 5,
              line=0)
-    assert covered_faults("1-048", "gt/ocr", tmp_path) == []
+    assert covered_faults("1-048", tmp_path, "gt/ocr") == []
 
 
 def test_a_not_type_ruling_is_never_checked_for_faults(in_zone):
@@ -414,7 +414,7 @@ def test_a_not_type_ruling_is_never_checked_for_faults(in_zone):
     tmp_path, _alto, band = in_zone
     _exempt(tmp_path, band["vpos"] - 5, band["vpos"] + band["height"] + 5,
             note="scanner artifact", layer="lines")
-    assert covered_faults("1-048", "gt/ocr", tmp_path) == []
+    assert covered_faults("1-048", tmp_path, "gt/ocr") == []
 
 
 def test_a_line_ruling_wins_over_a_zone_ruling_on_the_same_band(page):
@@ -426,12 +426,12 @@ def test_a_line_ruling_wins_over_a_zone_ruling_on_the_same_band(page):
     that settled it.
     """
     tmp_path, _ = page
-    band = line_gaps("1-048", "gt/ocr", tmp_path)[0]
+    band = line_gaps("1-048", tmp_path, "gt/ocr")[0]
     y0, y1 = band["vpos"] - 5, band["vpos"] + band["height"] + 5
     _exempt(tmp_path, y0, y1, note="scanner artifact", layer="zones")
     _exempt(tmp_path, y0, y1, note="marginal blot", layer="lines")
 
-    after = line_gaps("1-048", "gt/ocr", tmp_path)[0]
+    after = line_gaps("1-048", tmp_path, "gt/ocr")[0]
     assert after["layer"] == "lines"
     assert after["note"] == "marginal blot"
 
@@ -445,10 +445,10 @@ def test_a_zone_ruling_still_settles_an_out_of_zone_band_alone(page):
     counting.
     """
     tmp_path, _ = page
-    band = line_gaps("1-048", "gt/ocr", tmp_path)[0]
+    band = line_gaps("1-048", tmp_path, "gt/ocr")[0]
     _exempt(tmp_path, band["vpos"] - 5, band["vpos"] + band["height"] + 5,
             note="scanner artifact", layer="zones")
 
-    after = line_gaps("1-048", "gt/ocr", tmp_path)[0]
+    after = line_gaps("1-048", tmp_path, "gt/ocr")[0]
     assert after["exempted"] is True
     assert after["layer"] == "zones"

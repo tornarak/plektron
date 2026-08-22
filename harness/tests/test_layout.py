@@ -273,7 +273,7 @@ def test_a_masked_figure_carries_its_placard(tmp_path):
     from harness.lines import FIG_FILL, FIG_INK, write_numbered_page
 
     root = _figured_page(tmp_path)
-    res = write_numbered_page("1-048", root / "numbered.png", "gt/ocr", root)
+    res = write_numbered_page("1-048", root / "numbered.png", root, "gt/ocr")
     img = Image.open(res["path"]).convert("L")
     hist = img.histogram()
     # The grey is the placard's, and the lettering is drawn over it — so the box

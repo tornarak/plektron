@@ -72,7 +72,7 @@ def page(tmp_path: Path):
 
 
 def _restore(root, **kw):
-    return restore("1-048", "gt/ocr", root, **kw)
+    return restore("1-048", root, "gt/ocr", **kw)
 
 
 def test_a_page_with_a_correction_restores_at_all(page):

@@ -75,7 +75,7 @@ def _in_queue(request: Request, ref: str) -> str:
 
 def _render(request: Request, ref: str):
     s = _session(request)
-    ctx = rv.page_context(ref, s.get("alto_dir") or "", _root(request),
+    ctx = rv.page_context(ref, _root(request), s.get("store") or "",
                           queue=_state(request),
                           scan_href=f"{BASE}/scan/{ref}",
                           crop_base=f"{BASE}/crop/{ref}",
@@ -120,7 +120,7 @@ def issues(request: Request):
         raise HTTPException(404, "no issue list in this session — start one with "
                                  "`harness ocr review --issues -`")
     s = _session(request)
-    ctx = rv.issues_context(items, s.get("alto_dir") or "", _root(request),
+    ctx = rv.issues_context(items, _root(request), s.get("store") or "",
                             crop_base=f"{BASE}/crop",
                             font=s.get("font"), font_size=s.get("font_size"),
                             box_lines=s.get("box_lines"))

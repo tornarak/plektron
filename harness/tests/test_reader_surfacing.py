@@ -112,11 +112,11 @@ def _rendered(root: Path, lines: dict, draft: dict | None = None) -> str:
     from harness.review import page_context
     from harness.web import templates
 
-    def render_queue_html(ref, alto_dir, root, **kw):
+    def render_queue_html(ref, store, root, **kw):
         # The renderer returns a context now and the markup is a template, so a
         # test that wants the page goes through the same two steps the server
         # does. One renderer, so the served page and `--html` cannot drift.
-        ctx = page_context(ref, alto_dir, root, **kw)
+        ctx = page_context(ref, root, store, **kw)
         return templates.get_template("review/page.html").render(
             **ctx, base="/review", static="/static", request=None)
 

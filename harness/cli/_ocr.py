@@ -34,7 +34,7 @@ import click
 
 from ..calls import call_summary, log_call, read_calls
 from ..lines import (
-    DEFAULT_ALTO_DIR,
+    DEFAULT_STORE,
     LINE_SHEET_H,
     NUMBER_FONT,
     NUMBER_GUTTER,
@@ -112,7 +112,7 @@ OUT_HELP =("write the images somewhere other than the page's own review/PP-NNN/ 
 
 
 def _store(p, default=None):
-    """`--store gt|mz`, resolved to a directory on the namespace as `alto_dir`.
+    """`--store gt|mz`, resolved to a directory through `_store_dir`.
 
     `default` is the store a bare invocation reads; `None` means the view. Only
     `review` sets one, because only there is the view actively wrong — see its
@@ -123,8 +123,8 @@ def _store(p, default=None):
     return p
 
 
-def _alto_dir(a) -> str:
-    return STORES.get(getattr(a, "store", None), DEFAULT_ALTO_DIR)
+def _store_dir(a) -> str:
+    return STORES.get(getattr(a, "store", None), DEFAULT_STORE)
 
 
 CANON_REF = re.compile(r"^(?:chukchi-)?[1-3]-\d{3}$")
@@ -555,7 +555,7 @@ def register(cli):
 
 
 def run_pages(a) -> int:
-    refs = all_refs(a.root, _alto_dir(a))
+    refs = all_refs(a.root, _store_dir(a))
     if a.show_store:
         from ..recognize import presence
         out(a, presence(refs, a.root))
@@ -573,14 +573,14 @@ def _store_refs(a) -> list[str]:
     neither publishes a rate, so the "name the store, not the view" rule does not
     reach them; `--store` narrows either.
     """
-    return page_refs(a) or all_refs(a.root, _alto_dir(a))
+    return page_refs(a) or all_refs(a.root, _store_dir(a))
 
 
 def run_lines(a) -> int:
     from ..lines import annexed_bands
     pairs = []
     for r in _store_refs(a):
-        recs = page_lines(alto_for_lines(r, _alto_dir(a), a.root), a.root, ref=r)
+        recs = page_lines(alto_for_lines(r, a.root, _store_dir(a)), a.root, ref=r)
         # **A line whose box a human has said is short of its ink says so here.**
         # The ruling lives on the band and is read off `ocr gaps`; a reader keys
         # from this table, and without the marker the one view that matters is the
@@ -610,7 +610,7 @@ def _keyed_lines(a, ref: str) -> list[dict]:
     reads. In a text dump it is a blank line carrying no information, and in a
     search it is a line that can never match.
     """
-    recs = page_lines(alto_for_lines(ref, _alto_dir(a), a.root), a.root, ref=ref)
+    recs = page_lines(alto_for_lines(ref, a.root, _store_dir(a)), a.root, ref=ref)
     return [rec for rec in recs if (rec.get("text") or "").strip()]
 
 
@@ -685,7 +685,7 @@ def run_gaps(a) -> int:
     from ..parallel import pmap
     refs = _store_refs(a)
     with progress("measuring ink") as tick:
-        done = pmap(lambda r: line_gaps(r, _alto_dir(a), a.root), refs, a.jobs,
+        done = pmap(lambda r: line_gaps(r, a.root, _store_dir(a)), refs, a.jobs,
                     tick)
     out_per_ref(a, list(zip(refs, done, strict=True)))
     # **A page that has been worked reports differently from one nobody has
@@ -722,7 +722,7 @@ def run_gaps(a) -> int:
     # can weigh it. Reported, never gated: `gaps` is measurement, and
     # `measurement never gates` (VERBS.md, Conventions).
     from ..lines import covered_faults
-    faults = [f for r in refs for f in covered_faults(r, _alto_dir(a), a.root)]
+    faults = [f for r in refs for f in covered_faults(r, a.root, _store_dir(a))]
     if faults:
         out(a, {"covered_faults": faults}, "covered_faults")
     return 0
@@ -791,7 +791,7 @@ def run_crops(a) -> int:
         for r in ptrack(refs, tick):
             _page_link(a, r)
             pairs.append((r, write_line_crops(
-                r, a.out or crops_dir(r, a.root), _alto_dir(a), a.root)))
+                r, a.out or crops_dir(r, a.root), a.root, _store_dir(a))))
             log_call(r, "crops", a.root, images=len(pairs[-1][1]))
     out_per_ref(a, pairs)
     return 0
@@ -880,7 +880,7 @@ def run_numbered(a) -> int:
         for r in ptrack(refs, tick):
             _page_link(a, r)
             rows.append(write_numbered_page(
-                r, a.out or numbered_path(r, a.root), _alto_dir(a), a.root,
+                r, a.out or numbered_path(r, a.root), a.root, _store_dir(a),
                 gutter=a.gutter, font_size=a.font_size))
             log_call(r, "numbered", a.root, images=1)
     out(a, rows)
@@ -899,7 +899,7 @@ def run_sheets(a) -> int:
         for r in ptrack(refs, tick):
             _page_link(a, r)
             pairs.append((r, write_line_sheets(
-                r, a.out or sheets_dir(r, a.root), _alto_dir(a), a.root,
+                r, a.out or sheets_dir(r, a.root), a.root, _store_dir(a),
                 per_sheet=a.per_sheet, sheet_h=a.sheet_h,
                 only=parse_selection(spec) if spec else None)))
             log_call(r, "sheets", a.root, only=spec or "all",
@@ -950,7 +950,7 @@ def _refuse_apparatus(ref: str, spec: str | None, a) -> None:
         return
     from ..lines import page_lines
     try:
-        recs = page_lines(alto_for_lines(ref, _alto_dir(a), a.root), a.root, ref=ref)
+        recs = page_lines(alto_for_lines(ref, a.root, _store_dir(a)), a.root, ref=ref)
     except Exception:
         return          # a page whose lines will not load has a louder problem
     hit = apparatus_hits(recs, parse_spans(spec))
@@ -985,7 +985,7 @@ def run_zoom(a) -> int:
                 only=parse_spans(spec) if spec else None,
                 zoom=a.zoom, window=a.window, overlap=a.overlap,
                 sheet_h=a.sheet_h, client_w=a.client_w,
-                alto_dir=_alto_dir(a), root=a.root,
+                store=_store_dir(a), root=a.root,
                 smooth=a.smooth)))
             log_call(r, "zoom", a.root, reason=a.reason, zoom=a.zoom,
                      only=spec or "all", smooth=a.smooth,
@@ -998,7 +998,7 @@ def run_zoom(a) -> int:
     # rendered. Measured over eight readings it was the largest avoidable line item
     # after the fixed contract. What stays per-call is what is *about* this call.
     from ..lines import page_lines, zoom_capacity
-    recs = page_lines(alto_for_lines(refs[0], _alto_dir(a), a.root), a.root,
+    recs = page_lines(alto_for_lines(refs[0], a.root, _store_dir(a)), a.root,
                       ref=refs[0])
     caps = zoom_capacity([int(r["width"]) for r in recs if r.get("width")],
                          [int(r["height"]) for r in recs if r.get("height")],
@@ -1081,9 +1081,9 @@ def run_edit(a) -> int:
         # ALTO. Skipped here rather than guarded inside the detector: absence is a
         # fact about this invocation's page list, not about the page.
         def _bands(r: str) -> list[dict]:
-            if not alto_for_lines(r, _alto_dir(a), a.root).exists():
+            if not alto_for_lines(r, a.root, _store_dir(a)).exists():
                 return []
-            return line_gaps(r, _alto_dir(a), a.root)
+            return line_gaps(r, a.root, _store_dir(a))
 
         with progress("measuring ink") as tick:
             bands = pmap(_bands, walk, a.jobs if hasattr(a, "jobs") else 1, tick)
@@ -1099,7 +1099,7 @@ def run_edit(a) -> int:
               "--all for the whole book (--unsettled narrows it to the pages "
               "still carrying a band)", file=sys.stderr)
         return 2
-    session = {"start": start, "alto_dir": _alto_dir(a), "itinerary": walk,
+    session = {"start": start, "store": _store_dir(a), "itinerary": walk,
                "itinerary_name": label}
     # **Try the running server before binding one.** The four editors share a
     # process now, so a second verb started while one is up hands its work over
@@ -1144,7 +1144,7 @@ def run_blot(a) -> int:
     def _stale(r: str) -> bool:
         if not (getattr(a, "all", False) and not a.force):
             return True
-        src = alto_for_lines(r, _alto_dir(a), a.root)
+        src = alto_for_lines(r, a.root, _store_dir(a))
         painted = dest / f"chukchi-{r}.png"
         return not (painted.exists() and src.exists()
                     and painted.stat().st_mtime >= src.stat().st_mtime)
@@ -1154,7 +1154,7 @@ def run_blot(a) -> int:
     # The skip is decided first, so the pool gets only pages that will be painted
     # — every one of them a decode, a paint and an encode.
     with progress("blotting") as tick:
-        done = pmap(lambda r: write_blot(r, dest, _alto_dir(a), a.root,
+        done = pmap(lambda r: write_blot(r, dest, a.root, _store_dir(a),
                                          exemptions=a.exemptions),
                     todo, a.jobs, tick)
     out_per_ref(a, list(zip(todo, done, strict=True)))
@@ -1228,17 +1228,17 @@ def run_review(a) -> int:
         # existed on the server's stderr, which in the ordinary backgrounded case
         # is a log nobody is reading.
         queue = list(dict.fromkeys(norm_ref(r) for r in refs))
-        gone = [(r, alto_for_lines(r, _alto_dir(a), a.root)) for r in queue]
+        gone = [(r, alto_for_lines(r, a.root, _store_dir(a))) for r in queue]
         gone = [(r, p) for r, p in gone if not p.exists()]
         if gone:
-            other = "gt" if "mz" in _alto_dir(a) else "mz"
+            other = "gt" if "mz" in _store_dir(a) else "mz"
             print("ERROR: no ALTO in this store for "
                   + ", ".join(f"{r} ({p})" for r, p in gone)
                   + f" — review reads --store mz by default; try --store {other}, "
                     "or `harness ocr predict` to write the prediction.",
                   file=sys.stderr)
             return 2
-        session = {"queue": queue, "alto_dir": _alto_dir(a), "font": a.font,
+        session = {"queue": queue, "store": _store_dir(a), "font": a.font,
                    "font_size": a.font_size, "box_lines": a.box_lines,
                    "issues": items or []}
         # The issue list is a different document, so it is a different landing
@@ -1297,7 +1297,7 @@ def run_review(a) -> int:
             # straight off the filesystem — where it used to carry them base64'd
             # because there was no server to address them through.
             dest.write_text(
-                _review_html(page_context(r, _alto_dir(a), a.root, font=a.font,
+                _review_html(page_context(r, a.root, _store_dir(a), font=a.font,
                                           font_size=a.font_size,
                                           box_lines=a.box_lines)),
                 encoding="utf-8")
@@ -1318,7 +1318,7 @@ def run_diff(a) -> int:
     # part-way down a batch would otherwise arrive after several pages of
     # reassuring output, which is where it is least likely to be read.
     for r in refs:
-        src = alto_for_lines(r, _alto_dir(a), a.root)
+        src = alto_for_lines(r, a.root, _store_dir(a))
         gt = a.root / "gt" / "ocr" / f"chukchi-{norm_ref(r)}.xml"
         if src.exists() and gt.exists() and src.resolve() == gt.resolve():
             print(f"ERROR: {src} resolves to the ground truth for {r} ({gt}), so "
@@ -1333,8 +1333,8 @@ def run_diff(a) -> int:
     # did not parse as anything.
     sums, queues = [], []
     for r in refs:
-        spans = page_spans(r, _alto_dir(a), a.root)
-        n = len(page_lines(alto_for_lines(r, _alto_dir(a), a.root), a.root, ref=r))
+        spans = page_spans(r, a.root, _store_dir(a))
+        n = len(page_lines(alto_for_lines(r, a.root, _store_dir(a)), a.root, ref=r))
         sums.append((r, summary(spans, n)))
         queues.append((r, spans if a.spans else group_spans(spans)))
     out_per_ref(a, sums)
@@ -1359,7 +1359,7 @@ def run_restore(a) -> int:
     if a.commit and len(refs) > 1:
         for r in refs:
             if not (sweep and restore_skip(r, a.root, a.force)):
-                restore(r, _alto_dir(a), a.root, a.force or sweep, commit=False)
+                restore(r, a.root, _store_dir(a), a.force or sweep, commit=False)
     pairs, skipped = [], []
     for r in refs:
         # A sweep asks `restore_skip` and carries `force` on the adjudicator's
@@ -1371,7 +1371,7 @@ def run_restore(a) -> int:
             if why:
                 skipped.append({"ref": r, "why": why})
                 continue
-        pairs.append((r, restore(r, _alto_dir(a), a.root,
+        pairs.append((r, restore(r, a.root, _store_dir(a),
                                  a.force or sweep, a.commit)))
     # One ref keeps the two-document shape it always had — the report, then the
     # edits — because `edits` was already emitted separately here. Several go

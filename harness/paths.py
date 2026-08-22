@@ -90,8 +90,8 @@ def _refs_under(root: Path, pattern: str) -> list[str]:
     return sorted(set(refs), key=parse_ref)
 
 
-def all_refs(root: Path = Path("."), alto_dir: str = "ocr") -> list[str]:
-    """Every ref with OCR present in `alto_dir` — i.e. workable now.
+def all_refs(root: Path = Path("."), store: str = "ocr") -> list[str]:
+    """Every ref with OCR present in `store` — i.e. workable now.
 
     The default is the **view**, so this answers "what can be collated", which is
     the question the collation loop asks and which `mz/ocr/` legitimately widens:
@@ -103,7 +103,7 @@ def all_refs(root: Path = Path("."), alto_dir: str = "ocr") -> list[str]:
     computing a published number must do that**, since a figure blended across
     ranks describes neither.
     """
-    return _refs_under(root, f"{alto_dir}/chukchi-*.xml")
+    return _refs_under(root, f"{store}/chukchi-*.xml")
 
 
 def all_scans(root: Path = Path(".")) -> list[str]:

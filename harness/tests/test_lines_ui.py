@@ -38,7 +38,7 @@ def client(root, walk=None, cur="1-048"):
 
     from harness.web import Sessions, create_app
 
-    session = {"start": cur, "alto_dir": "gt/ocr",
+    session = {"start": cur, "store": "gt/ocr",
                "itinerary": walk or [cur], "itinerary_name": "unsettled"}
     app = create_app(root, Sessions(root=root, by_editor={"lines": session}),
                      editor="lines")

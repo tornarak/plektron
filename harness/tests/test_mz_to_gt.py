@@ -84,7 +84,7 @@ def page(tmp_path):
 def test_a_page_with_no_ground_truth_can_be_built_from_a_prediction(page):
     """The whole point. `gt/ocr/chukchi-1-060.xml` does not exist beforehand; the
     geometry comes from the prediction and the text from the adjudication."""
-    rep = restore("1-060", "mz/ocr", page, commit=True)
+    rep = restore("1-060", page, "mz/ocr", commit=True)
     assert rep["mode"] == "restoration"
     target = page / "gt" / "ocr" / "chukchi-1-060.xml"
     assert target.exists(), "restore must create the ground-truth file"
@@ -96,7 +96,7 @@ def test_the_machine_text_does_not_reach_the_ground_truth(page):
     which is what keeps a recognizer's reading from becoming ground truth by
     proximity — CATMuS reads 0% of the transcription inventory."""
     from harness.lines import page_lines
-    restore("1-060", "mz/ocr", page, commit=True)
+    restore("1-060", page, "mz/ocr", commit=True)
     got = [r["text"] for r in page_lines(page / "gt" / "ocr" / "chukchi-1-060.xml")]
     assert got == ["human one", "human two"]
     assert "machine one" not in got
@@ -106,7 +106,7 @@ def test_the_machine_geometry_does_survive(page):
     """The half that *is* adopted, and the reason to source from `mz/` at all: a
     page nobody has segmented has no lines to write text into."""
     from harness.lines import page_lines
-    restore("1-060", "mz/ocr", page, commit=True)
+    restore("1-060", page, "mz/ocr", commit=True)
     src = page_lines(page / "mz" / "ocr" / "chukchi-1-060.xml")
     out = page_lines(page / "gt" / "ocr" / "chukchi-1-060.xml")
     # `strict`: a restore that changed the line count must fail here rather
@@ -118,7 +118,7 @@ def test_the_machine_geometry_does_survive(page):
 
 def test_the_preview_writes_nothing(page):
     """`--commit` gates a writer into the ground-truth store, here as everywhere."""
-    rep = restore("1-060", "mz/ocr", page)
+    rep = restore("1-060", page, "mz/ocr")
     assert rep["commit"] is False
     assert not (page / "gt" / "ocr" / "chukchi-1-060.xml").exists()
 
@@ -131,16 +131,16 @@ def test_a_partial_adjudication_is_still_refused(tmp_path):
     _proposal(tmp_path, ["human one", "human two"])
     save_decisions("1-060", {0: {"text": "human one"}}, tmp_path)
     with pytest.raises(ValueError, match="have no decision"):
-        restore("1-060", "mz/ocr", tmp_path, commit=True)
+        restore("1-060", tmp_path, "mz/ocr", commit=True)
 
 
 def test_restoring_twice_needs_force(page):
     """Once the page is ground truth, the second write is a *revision* of human
     work and has to say so — the guard that survives from the rebuild."""
-    restore("1-060", "mz/ocr", page, commit=True)
+    restore("1-060", page, "mz/ocr", commit=True)
     with pytest.raises(ValueError, match="already holds"):
-        restore("1-060", "mz/ocr", page, commit=True)
-    rep = restore("1-060", "mz/ocr", page, force=True, commit=True)
+        restore("1-060", page, "mz/ocr", commit=True)
+    rep = restore("1-060", page, "mz/ocr", force=True, commit=True)
     assert rep["mode"] == "restoration", "source is still mz/, so still not a revision"
 
 
@@ -149,7 +149,7 @@ def test_mz_satisfies_the_span_diffs_second_witness_rule(page):
     the proposal produced. `mz/ocr/` is a different inode from `gt/ocr/`, so it is
     an independent witness — which is what the view is not, once the view starts
     resolving into `gt/`."""
-    restore("1-060", "mz/ocr", page, commit=True)
+    restore("1-060", page, "mz/ocr", commit=True)
     gt = page / "gt" / "ocr" / "chukchi-1-060.xml"
     mz = page / "mz" / "ocr" / "chukchi-1-060.xml"
     assert mz.resolve() != gt.resolve(), "the diff would compare a file with itself"
@@ -177,11 +177,11 @@ def test_a_committed_restore_repoints_the_view_itself(page):
     gt = page / "gt" / "ocr" / "chukchi-1-060.xml"
 
     # A preview must leave the disk alone — including the view.
-    rep = restore("1-060", "mz/ocr", page, commit=False)
+    rep = restore("1-060", page, "mz/ocr", commit=False)
     assert rep["view"] == ""
     assert not gt.exists()
 
-    rep = restore("1-060", "mz/ocr", page, commit=True)
+    rep = restore("1-060", page, "mz/ocr", commit=True)
     assert rep["view"] == "gt/ocr"
     assert view.resolve() == gt.resolve()
 
@@ -193,5 +193,5 @@ def test_the_restore_report_has_one_key_set_either_way(page):
     caller should not have to know which branch produced a report to know which
     keys it has.
     """
-    assert (set(restore("1-060", "mz/ocr", page, commit=False))
-            == set(restore("1-060", "mz/ocr", page, commit=True)))
+    assert (set(restore("1-060", page, "mz/ocr", commit=False))
+            == set(restore("1-060", page, "mz/ocr", commit=True)))

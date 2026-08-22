@@ -73,7 +73,7 @@ from .atomic import tmp_for
 from .refs import norm_ref, parse_ref
 
 # The machine store, its human counterpart, and the view over both. `lines.py`
-# spells the view `DEFAULT_ALTO_DIR = "ocr"`; these are the two real stores it
+# spells the view `DEFAULT_STORE = "ocr"`; these are the two real stores it
 # resolves to, and the reason a writer must never take the view's name.
 GTDIR = "gt/ocr"
 MZDIR = "mz/ocr"

@@ -952,9 +952,9 @@ def _added_terminal_punctuation(data: dict, ref: str, root: Path) -> list[dict]:
     lines = data.get("lines")
     if not isinstance(lines, dict) or not lines:
         return []
-    from .lines import DEFAULT_ALTO_DIR, alto_for_lines, page_lines
+    from .lines import DEFAULT_STORE, alto_for_lines, page_lines
     try:
-        alto = alto_for_lines(ref, DEFAULT_ALTO_DIR, root)
+        alto = alto_for_lines(ref, root, DEFAULT_STORE)
     except Exception:
         return []
     if not alto.exists():
@@ -1010,9 +1010,9 @@ def _orphan_line_issues(data: dict, ref: str, root: Path) -> list[dict]:
     lines = data.get("lines")
     if not isinstance(lines, dict) or not lines:
         return []
-    from .lines import DEFAULT_ALTO_DIR, alto_for_lines, page_lines
+    from .lines import DEFAULT_STORE, alto_for_lines, page_lines
     try:
-        alto = alto_for_lines(ref, DEFAULT_ALTO_DIR, root)
+        alto = alto_for_lines(ref, root, DEFAULT_STORE)
     except Exception:
         return []
     if not alto.exists():
