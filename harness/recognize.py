@@ -70,7 +70,7 @@ from pathlib import Path
 from . import farms as F
 from . import zones as Z
 from .atomic import tmp_for
-from .context import norm_ref, parse_ref
+from .refs import norm_ref, parse_ref
 
 # The machine store, its human counterpart, and the view over both. `lines.py`
 # spells the view `DEFAULT_ALTO_DIR = "ocr"`; these are the two real stores it

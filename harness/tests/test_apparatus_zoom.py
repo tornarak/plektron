@@ -24,8 +24,8 @@ spending, and the correctness question is a separate instrument.
 from __future__ import annotations
 
 from harness.cli._ocr import apparatus_hits
-from harness.context import FOLIO_ZONES
 from harness.lines import parse_spans
+from harness.refs import FOLIO_ZONES
 
 
 def page(*zones) -> list[dict]:

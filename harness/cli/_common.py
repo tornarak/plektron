@@ -477,7 +477,7 @@ def page_refs(a) -> list[str]:
     Returning `[]` for `--all` is safe only because of that error: an empty list
     out of here means the corpus was asked for, never that nothing was named.
     """
-    from ..context import norm_ref
+    from ..refs import norm_ref
 
     refs = getattr(a, "ref", None)
     refs = [refs] if isinstance(refs, str) else list(refs or [])

@@ -42,7 +42,8 @@ from pathlib import Path
 from . import figures as fg
 from . import zones as zn
 from . import zones_config as zc
-from .context import all_scans, norm_ref, parse_ref
+from .paths import all_scans
+from .refs import norm_ref, parse_ref
 
 PORT = 8732
 

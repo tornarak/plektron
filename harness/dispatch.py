@@ -50,10 +50,10 @@ from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 
-from .context import norm_ref
 from .generate import GENDIR
 from .lines import ZOOM
 from .marks import MarksConfigError
+from .refs import norm_ref
 
 DOC = Path(".claude/skills/rebuild-groundtruth/dispatch.md")
 # The page block, rendered by `claim` — everything true of one page in particular.

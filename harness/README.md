@@ -254,10 +254,24 @@ decode but baseline vectorization on one core, which is only partly GIL-free —
 threads plateau where processes do not. The measurements are `recognize.py`'s
 entry below, once.
 
-**`context.py`** — the `PP-NNN` contract (`parse_ref`, `norm_ref`, `stem_for`) and
-`build_context`, the per-page input the collation pass consumes. Everything in it is
-deterministic and precomputed: a pass that re-derived any of it could disagree with
-the validator that checks it.
+**`refs.py`** — the `PP-NNN` contract: `parse_ref`, `norm_ref`, `stem_for`,
+`parse_context`, `figure_number`, the folio reader `_folio_in`, and the
+`FOLIO_ZONES`/`APPARATUS_ZONES` vocabularies. **A leaf**, and the most load-bearing
+one: `norm_ref` and `parse_ref` are the two most-imported names in the harness, and
+while they lived in `context.py` every module that wanted to spell a ref had to
+reach into the module that assembles a whole collation prompt — through a function
+body, to avoid closing a loop. Splitting them out took the package from 19 mutual
+import cycles to 10, `context.py` from 10 of them to 1, and function-local imports
+from 392 to 259. `test_leaf_modules.py` holds it to importing nothing.
+
+**`paths.py`** also gained the page census — `all_refs`, `all_scans`,
+`with_context` — for the reason its own docstring gives: finding pages needs
+`farms.require` to tell an unbuilt derived tree from an empty store, which a leaf
+must not carry.
+
+**`context.py`** — `build_context`, the per-page input the collation pass consumes.
+Everything in it is deterministic and precomputed: a pass that re-derived any of it
+could disagree with the validator that checks it.
 
 Also `_running_title`, the page's own folio, read from the three zones a number can
 print in — `FOLIO_ZONES`, in order of confidence — and the second witness to

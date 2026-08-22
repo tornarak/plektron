@@ -71,7 +71,6 @@ import unicodedata
 from collections.abc import Collection
 from pathlib import Path
 
-from .context import norm_ref
 from .detectors import (
     EDGE_PUNCT,
     INVENTORY_CHARS,
@@ -79,6 +78,7 @@ from .detectors import (
     native_corpus,
     native_corpus_lines,
 )
+from .refs import norm_ref
 
 CONFIG = "data/marks_config.json"
 

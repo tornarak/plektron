@@ -34,7 +34,7 @@ import numpy as np
 from lxml import etree
 
 from .atomic import tmp_for, write_atomic
-from .context import figure_number, norm_ref, parse_ref
+from .refs import figure_number, norm_ref, parse_ref
 
 GRAPHIC = "GraphicZone"
 FIGDESC = "GraphicZone-FigDesc"
@@ -1916,7 +1916,7 @@ def figure_boxes(ref: str, root: Path = Path(".")) -> list[dict]:
     record is a thing the book numbers:
 
         {"key": "001",                    # the topmost picture zone's suffix
-         "n": "87" | None,                # context.figure_number(caption)
+         "n": "87" | None,                # refs.figure_number(caption)
          "zone_ids": ["fig_1-207_001",…], # every picture box under this caption
          "caption_zone": "fig_1-207_004", # full id, as `paired` gives it; "" if none
          "caption": "Fig. 87, a …",
@@ -2115,7 +2115,7 @@ def by_number(root: Path = Path(".")) -> dict[str, list[dict]]:
     otherwise — resolving a two-element list to one would be inventing the
     answer the collision is telling it nobody has.
 
-    Numbers are the caption's own, as `context.figure_number` read them, and are
+    Numbers are the caption's own, as `refs.figure_number` read them, and are
     kept as strings for that reason: `figure_boxes` does not parse them into
     integers and neither does this.
 

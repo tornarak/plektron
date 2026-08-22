@@ -17,191 +17,21 @@ recorded one.
 """
 from __future__ import annotations
 
-import bisect
-import re
 import unicodedata
 from pathlib import Path
 
-from . import farms
 from .detectors import detect_all, join_broken_words
+from .refs import (
+    _FOLIO_RE,
+    APPARATUS_ZONES,
+    FOLIO_ZONES,
+    _folio_in,
+    _window_folio,
+    figure_number,
+    norm_ref,
+    stem_for,
+)
 from .state import entry_state, foreign_terms_nearby, load_toc, toc_window
-
-REF_RE = re.compile(r"^(?:chukchi-)?(\d+)-(\d+)$")
-
-# **Where a folio may be printed, in the order it is looked for.** Three places,
-# because the book puts the number in three, and the order is the order of
-# confidence rather than of frequency:
-#
-#   RunningTitleZone  the ordinary page. Head line, folio bare beside the head.
-#   QuireMarksZone    a chapter opening. No running title at all, the number set
-#                     at the **foot** of the page and **in brackets** — `1-151`
-#                     reads `[115]` at vpos 3231 of a 3897 px page, and its
-#                     collated TEI gives `<pb n="115"/>`.
-#   NumberingZone     the old full-SegmOnto vocabulary `gt/ocr/` descends from,
-#                     which split the folio out of the head as its own zone. The
-#                     current scheme cannot express that split — a fixed-width
-#                     vertical partition has nowhere to put it, and the two are on
-#                     one printed line (`data/zones_config.json`). Last because it
-#                     is the store-specific spelling, not a place on the page: it
-#                     appears at the head on `1-048` and at the foot on `1-151`.
-#
-# Reading all three matters because the two stores speak different vocabularies for
-# the same ink, and `gt/ocr/` — which speaks the old one — is where the collation
-# frontier is.
-FOLIO_ZONES = ("RunningTitleZone", "QuireMarksZone", "NumberingZone")
-
-# Zones whose text the printer set rather than the author: the head line, the
-# signature line at the foot of a gathering, and the folio in whichever of them it
-# lands. `build_context` keeps them out of the collation draft; see the comment at
-# the exclusion for why there and not at the point the page is recognized.
-APPARATUS_ZONES = frozenset(FOLIO_ZONES)
-
-
-def parse_ref(ref: str) -> tuple[int, int]:
-    """'1-048' | '1-48' | 'chukchi-1-048' -> (1, 48). Anything else is an error.
-
-    Deliberately strict about shape and deliberately lenient about zero-padding:
-    the ref is typed by hand at a CLI, but a bare integer must never silently
-    become a page.
-    """
-    m = REF_RE.match(str(ref).strip())
-    if not m:
-        raise ValueError(
-            f"{ref!r} is not a page ref — expected PP-NNN (part, scan index "
-            "within that part), e.g. '1-048'. Bare page numbers are not page "
-            "identifiers: the printed folio is not derivable from the scan index.")
-    return int(m.group(1)), int(m.group(2))
-
-
-def norm_ref(ref: str) -> str:
-    """Canonical ref spelling, matching the filenames: part bare, index to 3."""
-    part, idx = parse_ref(ref)
-    return f"{part}-{idx:03d}"
-
-
-def stem_for(ref: str, root: Path = Path(".")) -> str:
-    return f"chukchi-{norm_ref(ref)}"
-
-
-CONTEXT_RE = re.compile(r"^(?:(\d+)|(?:(?:-(\d+))?(?:\+(\d+))?))$")
-
-
-def parse_context(spec: str) -> tuple[int, int]:
-    """`'5' | '+5' | '-5' | '-5+3'` -> (behind, ahead). Counts are inclusive.
-
-    A bare count means that many **each way**, which is what someone asking for
-    "context" almost always means; the signed forms are for when the question is
-    one-sided — what a seam ran into, or what a batch is about to reach.
-
-    Signed and unsigned are deliberately not mixed (`5+3` is refused): a reader of
-    the command should not have to know whether the bare number binds left, right
-    or both when a sign is already present.
-    """
-    s = str(spec).strip()
-    m = CONTEXT_RE.match(s)
-    if not m or not s:
-        raise ValueError(
-            f"--context {spec!r}: expected N (each way), +N (ahead), -N (behind) "
-            "or -N+M. Counts are inclusive and a sign binds only its own side.")
-    both, behind, ahead = m.groups()
-    if both is not None:
-        return int(both), int(both)
-    return int(behind or 0), int(ahead or 0)
-
-
-def with_context(refs: list[str], spec: str,
-                 root: Path = Path(".")) -> list[str]:
-    """`refs` plus their neighbours by scan index, deduplicated and in page order.
-
-    **Neighbours are drawn from `scans/`, never derived by arithmetic.** A ref
-    `PP-NNN` sits in a part whose length this function has no business knowing,
-    and a window that ran off the end would invent refs no page answers to — so
-    the window is applied to the *observed* index list for that part, which also
-    means a gap in the scans (an unnumbered plate pulled from the sequence) is
-    stepped over rather than silently counted as a page.
-
-    Parts do not run into each other: a window at the head of part 2 does not
-    reach back into part 1, because `1-362` and `2-001` are neighbours in the
-    binding and nothing else, and a context that crossed there would be asserting
-    a continuity the scan index does not carry.
-    """
-    behind, ahead = parse_context(spec)
-    if not (behind or ahead):
-        return [norm_ref(r) for r in refs]
-    by_part: dict[int, list[int]] = {}
-    for r in all_scans(root):
-        p, i = parse_ref(r)
-        by_part.setdefault(p, []).append(i)
-    for idxs in by_part.values():
-        idxs.sort()
-    out: set[str] = set()
-    for r in refs:
-        part, idx = parse_ref(r)
-        seq = by_part.get(part, [])
-        at = bisect.bisect_left(seq, idx)
-        lo = max(0, at - behind)
-        hi = min(len(seq), at + ahead + 1)
-        out.add(norm_ref(r))
-        out.update(f"{part}-{i:03d}" for i in seq[lo:hi])
-    return sorted(out, key=parse_ref)
-
-
-def _refs_under(root: Path, pattern: str) -> list[str]:
-    """Every ref matching `pattern`, in (part, scan index) order.
-
-    **Refuses when the directory is a derived tree that was never built**, and this
-    is the one place in the harness that distinguishes absent from empty.
-    `Path.glob()` on a missing directory returns empty *silently*, so a fresh clone
-    used to run `harness ocr pages`, walk an `ocr/` nobody had built, and report zero
-    workable pages with exit 0. Blank was indistinguishable from clean — the same
-    fault the zone store's `exempt` mark exists to separate.
-
-    **The refusal is scoped by the registry, not by this function**, and the line is
-    stores. A missing `mz/ocr/` means nothing has been predicted: a true statement
-    about the corpus, and the ordinary state of a clone. A missing `ocr/` means
-    nobody built the view: a statement about this working copy. `farms.require`
-    raises only for a registered farm path, so `--store mz` over an empty machine
-    store still answers "none" — which is the answer — while the view says it was
-    never built. See `harness/farms.py` on where that line falls.
-    """
-    d, _, _ = pattern.rpartition("/")
-    if d:
-        farms.require(root, d)
-    refs = []
-    for p in root.glob(pattern):
-        try:
-            refs.append(norm_ref(p.stem))
-        except ValueError:
-            continue
-    return sorted(set(refs), key=parse_ref)
-
-
-def all_refs(root: Path = Path("."), alto_dir: str = "ocr") -> list[str]:
-    """Every ref with OCR present in `alto_dir` — i.e. workable now.
-
-    The default is the **view**, so this answers "what can be collated", which is
-    the question the collation loop asks and which `mz/ocr/` legitimately widens:
-    a machine-read page is workable. It was sparse by construction while `gt/ocr/`
-    was the only store under the view, and it is not any more.
-
-    Name a real store to ask a narrower question — `gt/ocr/` for "what has a human
-    been through", `mz/ocr/` for "what has the recognizer read". **Anything
-    computing a published number must do that**, since a figure blended across
-    ranks describes neither.
-    """
-    return _refs_under(root, f"{alto_dir}/chukchi-*.xml")
-
-
-def all_scans(root: Path = Path(".")) -> list[str]:
-    """Every ref that physically exists, in (part, scan index) order.
-
-    This, not `all_refs`, is the sequence folio prediction walks. The OCR set is
-    sparse — a pilot selection scattered through the volume — so stepping
-    through it would happily predict folio+1 across a four-scan gap. Physical
-    adjacency is the only thing that licenses the prediction.
-    """
-    return _refs_under(root, "scans/chukchi-*.png")
-
 
 ALTO_STRING = ".//{*}TextLine"
 
@@ -237,30 +67,6 @@ def _lines_from_alto(path: Path) -> list[str]:
     return [rec["text"] for rec in page_lines(path) if rec["text"].strip()]
 
 
-# A folio is a number standing **alone** on its line, optionally in brackets.
-# Arabic for the body, roman for the front matter (part 1's is printed xii-xvii).
-#
-# **Deliberately strict about everything else**: no other punctuation, no digits
-# embedded in words, nothing repaired. A recognizer's `2S` for `28` must fail this
-# and fall through, leaving the line for a human to read — the alternative is a
-# plausible page number with no error signal, which is the failure this project is
-# organised against.
-#
-# The brackets are captured rather than tolerated. `1-151` prints `[115]` at the
-# foot of a chapter opening and its collated TEI reads `<pb n="115"/>`, so the
-# editor read through them — but whether a bracketed folio is the printer's or
-# supplied is a judgement about the book, and `bracketed` carries it forward
-# instead of discarding it at the point the number is parsed.
-_FOLIO_RE = re.compile(r"^(\[)?(\d{1,4}|[ivxlcdm]{1,7}|[IVXLCDM]{1,7})(?(1)\])$")
-
-
-def _folio_in(lines: list[dict]) -> tuple[str, bool] | None:
-    """First line that is nothing but a page number. `(folio, bracketed)`."""
-    for r in lines:
-        m = _FOLIO_RE.match((r["text"] or "").strip())
-        if m:
-            return m.group(2), bool(m.group(1))
-    return None
 
 
 def _running_title(recs: list[dict], ref: str, root: Path) -> dict | None:
@@ -320,44 +126,6 @@ def _running_title(recs: list[dict], ref: str, root: Path) -> dict | None:
             "bracketed": bracketed, "lines": sum(len(v) for v in by_zone.values())}
 
 
-def _window_folio(expected: int | None, running: dict | None) -> tuple[int | None, str]:
-    """Which folio centres `toc_window`, and which witness supplied it.
-
-    **The cold start this exists for.** `expected_folio` is a prediction from the
-    preceding *collated* page, so it is null at the front of any run; `toc_window`
-    filters ToC entries by distance from it, so with a null folio the distance test
-    never fires and the window falls back to `believed_open` — itself a fold over
-    collated pages, and likewise empty when nothing precedes. The window therefore
-    came back empty, no heading could match an entry that was not in it, and the
-    collation rules turn every unmatched heading into an unresolved comment. Serially
-    that was the first page of a run; under a dispatched batch it is all of them.
-    `1-075` is the case: two headings, both chapter openings, both invisible.
-
-    The page's own running title is the better witness anyway. CLAUDE.md's rule is
-    that the page says what page it is and nothing infers it — a running title is the
-    page saying so, where `expected_folio` is a neighbour's arithmetic.
-
-    **`expected_folio` is deliberately not filled from this.** It is the *prediction*
-    and when there is none there is none; writing this page's own folio into it would
-    manufacture the second witness and leave the disagreement check comparing a value
-    with itself. That is the comparison whose witnesses may be one witness, which
-    CLAUDE.md says must say so — and it says so here, in the returned witness, rather
-    than by falling silent.
-
-    `running["folio"]` is transcribed content and so a string, and not always an
-    integer: a number that did not read cleanly stays in `text` with `folio` null, on
-    `_running_title`'s own "null means go and look" contract. Both witnesses absent is
-    a real state, and `"none"` is what separates "nothing near this folio" from "no
-    folio to be near" — an empty window alone cannot say which.
-    """
-    if expected is not None:
-        return expected, "expected_folio"
-    try:
-        return int(str((running or {}).get("folio")).strip()), "running_title"
-    except (TypeError, ValueError):
-        return None, "none"
-
-
 def _lines_in_zone(recs: list[dict], ref: str, root: Path,
                    label: str) -> list[dict]:
     """Lines whose vertical midpoint falls in a zone of this label.
@@ -387,10 +155,6 @@ def _lines_in_zone(recs: list[dict], ref: str, root: Path,
     return out
 
 
-def _draft_text(lines: list[str]) -> str:
-    # Paragraph reconstruction is the model's job (indent/blank-line reading of
-    # the image); the draft is line-per-line, NFD like everything else.
-    return unicodedata.normalize("NFD", "\n".join(lines))
 
 
 def _figures_on_page(ref: str, root: Path = Path(".")) -> list[dict]:
@@ -448,20 +212,6 @@ def _figures_on_page(ref: str, root: Path = Path(".")) -> list[dict]:
     return out
 
 
-_FIG_N = re.compile(r"^\s*Figs?\.\s*(\d+)")
-
-
-def figure_number(caption: str) -> str | None:
-    """The figure number a caption prints, or None.
-
-    Deliberately anchored at the start and deliberately not clever: `1-207`
-    opens `Fig. 87, a (??/????), b …` and the answer is 87, where the catalogue
-    numbers, the letters and the dimensions that follow are not numbers of
-    anything. A caption that does not open this way has no number, which is a
-    real state — `3-006`'s zone has no caption at all.
-    """
-    m = _FIG_N.match(caption or "")
-    return m.group(1) if m else None
 
 
 def _figure_line_warnings(recs: list[dict], ref: str,

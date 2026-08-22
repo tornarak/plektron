@@ -30,8 +30,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from .context import norm_ref
 from .paths import review_dir
+from .refs import norm_ref
 
 
 def calls_path(ref: str, root: Path = Path(".")) -> Path:

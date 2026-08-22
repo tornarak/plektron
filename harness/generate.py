@@ -72,16 +72,12 @@ from pathlib import Path
 from xml.sax.saxutils import escape
 
 from . import apparatus, citations, figrefs
-from .context import (
-    APPARATUS_ZONES,
-    _running_title,
-    norm_ref,
-    tier1_terms,
-)
+from .context import _running_title, tier1_terms
 from .detectors import join_broken_words
 from .entities import alias_index, auto_forms, load
 from .lines import page_lines
 from .ns import TEI_NS
+from .refs import APPARATUS_ZONES, norm_ref
 from .state import MILESTONE_UNITS, heads_on, load_toc, printed_head, toc_starts
 from .zones import read_zones
 

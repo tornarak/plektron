@@ -27,7 +27,7 @@ import pytest
 from conftest import write_scan
 
 from harness import farms as F
-from harness.context import all_refs
+from harness.paths import all_refs
 
 REPO = Path(__file__).resolve().parent.parent.parent
 

@@ -47,8 +47,8 @@ from typing import TYPE_CHECKING
 
 from lxml import etree
 
-from .context import norm_ref
 from .figures import _bbox, _scale_for
+from .refs import norm_ref
 
 if TYPE_CHECKING:
     import numpy as np

@@ -156,7 +156,8 @@ def build_ledger(root: Path = Path(".")) -> dict[str, dict]:
     Refs are folded in (part, scan index) order; the fold restarts at each part
     boundary, since heading state does not carry across a physical volume.
     """
-    from .context import all_scans, parse_ref, stem_for
+    from .paths import all_scans
+    from .refs import parse_ref, stem_for
 
     toc = load_toc(root)
     levels = {e["id"]: e.get("level", 0) for e in toc if e.get("id")}
@@ -210,7 +211,7 @@ def build_ledger(root: Path = Path(".")) -> dict[str, dict]:
 
 def _next_scan(ref: str, ledger: dict) -> str | None:
     """The following scan in the same part. Gaps never cross a part boundary."""
-    from .context import parse_ref
+    from .refs import parse_ref
     part, idx = parse_ref(ref)
     nxt = f"{part}-{idx + 1:03d}"
     return nxt if nxt in ledger else None
@@ -225,7 +226,7 @@ def ledger_rows(root: Path = Path("."), part: int | None = None) -> list[dict]:
     strings are joined rather than nested for the same reason: a list-valued
     cell would break the collapse.
     """
-    from .context import parse_ref
+    from .refs import parse_ref
 
     rows = []
     for ref, v in build_ledger(root).items():
@@ -257,7 +258,8 @@ def foreign_terms_nearby(ref: str, root: Path = Path("."),
     page's draft, and the firewall check in validate.py enforces that against
     the draft alone.
     """
-    from .context import all_scans, parse_ref, stem_for
+    from .paths import all_scans
+    from .refs import parse_ref, stem_for
 
     part, _ = parse_ref(ref)
     refs = [r for r in all_scans(root) if parse_ref(r)[0] == part]
@@ -334,7 +336,8 @@ def entry_state(ref: str, root: Path = Path(".")) -> dict:
     every row, including the boundary column, which is exactly why it is a
     different function rather than this one generalized.
     """
-    from .context import all_scans, parse_ref, stem_for
+    from .paths import all_scans
+    from .refs import parse_ref, stem_for
 
     part, _ = parse_ref(ref)
     refs = [r for r in all_scans(root) if parse_ref(r)[0] == part]

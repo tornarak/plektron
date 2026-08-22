@@ -1,10 +1,16 @@
 """How a file lands on disk, in one place.
 
 **Imports nothing from this package**, deliberately. Every store module needs
-this and `context.py` — the obvious home for a shared primitive — sits in ten
-of the nineteen mutual import cycles here, so anything that lives beside it gets
-imported through a function body at each call site and the cycle grows. A module
-with no package imports cannot join one.
+this, and the obvious home for a shared primitive used to be `context.py`, which
+sat in ten of the package's nineteen mutual import cycles — so anything living
+beside it arrived through a function body at each call site and the cycle grew.
+A module with no package imports cannot join one.
+
+That argument has since been applied to `context.py` itself: the ref primitives
+moved out to `refs.py`, another leaf, and the count is ten cycles with `context`
+in one. The reasoning is unchanged and the evidence is smaller, which is the
+outcome it was aiming at. `test_leaf_modules.py` now enforces what this
+paragraph claims, in both directions.
 
 The rule it exists to hold: **a write that replaces a whole file replaces it by
 rename, and the temp carries the pid.** `zones._write_ink_cache` had this and

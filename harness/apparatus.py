@@ -25,7 +25,8 @@ import json
 from pathlib import Path
 
 from . import authorities, figrefs
-from .context import all_scans, norm_ref, parse_ref
+from .paths import all_scans
+from .refs import norm_ref, parse_ref
 from .state import _tei_facts, load_toc
 
 RUNS_JSON = "data/runs.json"
@@ -235,8 +236,9 @@ def folio_index(root: Path = Path(".")) -> dict[int, list[dict]]:
     run inside a server cache it on the store's content stamp (`web/stores.py`);
     the CLI pays it once per invocation.
     """
-    from .context import _running_title, all_refs
+    from .context import _running_title
     from .lines import page_lines
+    from .paths import all_refs
 
     out: dict[int, list[dict]] = {}
     seen: set[tuple[int, str]] = set()

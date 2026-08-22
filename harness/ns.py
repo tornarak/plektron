@@ -7,10 +7,13 @@ twenty-two more copies across the tests. None of them can drift into being
 that the set of names a reader has to recognise grows with the file count, and a
 new module's author copies whichever one they happened to be looking at.
 
-**Imports nothing from this package**, like `atomic.py` and for the same reason:
-`context.py` is the obvious home for something everything needs and it sits in
-ten of the nineteen mutual import cycles here, so a constant living beside it
-arrives through a function-body import at each call site.
+**Imports nothing from this package**, like `atomic.py`, `refs.py` and `mets.py`,
+and for the same reason: the obvious home for something everything needs was
+`context.py`, which sat in ten of the package's nineteen mutual import cycles, so
+a constant living beside it arrived through a function-body import at each call
+site. `refs.py` is that argument turned on `context.py` itself — the ref
+primitives are a leaf now, and the package is down to ten cycles with `context`
+in one. `test_leaf_modules.py` enforces the claim rather than restating it.
 
 Not a general "constants" module. Namespace URIs are external identifiers fixed
 by somebody else's standard — the one class of value that is genuinely the same

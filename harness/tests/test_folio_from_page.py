@@ -13,7 +13,8 @@ from __future__ import annotations
 
 import pytest
 
-from harness.context import FOLIO_ZONES, _folio_in, _running_title, _window_folio
+from harness.context import _running_title
+from harness.refs import FOLIO_ZONES, _folio_in, _window_folio
 from harness.state import toc_window
 
 

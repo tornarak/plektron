@@ -20,8 +20,8 @@ from pydantic import BaseModel, Field
 from .. import lines_config
 from .. import lines_ui as ui
 from .. import zones as zn
-from ..context import norm_ref
 from ..lines import write_blot
+from ..refs import norm_ref
 from . import Editor, register, templates
 from .errors import fetched
 from .files import send_file

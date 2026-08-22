@@ -1,4 +1,19 @@
-"""Where the ground-truth rebuild pass keeps a page's working set.
+"""Which pages exist, and where the rebuild pass keeps a page's working set.
+
+**Two jobs, and the first arrived when `context.py` was split.** Finding pages —
+`all_refs`, `all_scans`, `with_context` and the `_refs_under` walk beneath them —
+needs to know the stores and nothing else, and it had been sitting in the module
+that assembles a whole collation prompt. It belongs with the layout authority
+because that is what it is: a question about what is on disk.
+
+Not in `refs.py` with the ref primitives, for a reason worth stating since the
+choice looks arbitrary: `refs.py` is a **leaf** and must stay one, while this
+walk needs `farms.require` to tell an unbuilt derived tree from an empty store —
+the one place in the harness that distinguishes absent from empty. Putting it in
+the leaf would either drag `farms` in behind it or lose that distinction. Here it
+costs nothing: this module already imported `farms` for `SCANS`, and `farms` does
+not import this one back (`farms.py:417` says why it globs directly rather than
+calling `all_scans`), so the pair stays acyclic.
 
 One directory per page — `review/<ref>/` — holding both what was authored and what
 was generated:
@@ -37,10 +52,106 @@ lived only in the directory holding it. Note that nothing here writes into `gt/`
 `restore` does, once, from `decision.json`.
 """
 
+import bisect
 from pathlib import Path
 
-from .context import norm_ref, parse_ref
+from . import farms
 from .farms import SCANS
+from .refs import norm_ref, parse_context, parse_ref
+
+
+def _refs_under(root: Path, pattern: str) -> list[str]:
+    """Every ref matching `pattern`, in (part, scan index) order.
+
+    **Refuses when the directory is a derived tree that was never built**, and this
+    is the one place in the harness that distinguishes absent from empty.
+    `Path.glob()` on a missing directory returns empty *silently*, so a fresh clone
+    used to run `harness ocr pages`, walk an `ocr/` nobody had built, and report zero
+    workable pages with exit 0. Blank was indistinguishable from clean — the same
+    fault the zone store's `exempt` mark exists to separate.
+
+    **The refusal is scoped by the registry, not by this function**, and the line is
+    stores. A missing `mz/ocr/` means nothing has been predicted: a true statement
+    about the corpus, and the ordinary state of a clone. A missing `ocr/` means
+    nobody built the view: a statement about this working copy. `farms.require`
+    raises only for a registered farm path, so `--store mz` over an empty machine
+    store still answers "none" — which is the answer — while the view says it was
+    never built. See `harness/farms.py` on where that line falls.
+    """
+    d, _, _ = pattern.rpartition("/")
+    if d:
+        farms.require(root, d)
+    refs = []
+    for p in root.glob(pattern):
+        try:
+            refs.append(norm_ref(p.stem))
+        except ValueError:
+            continue
+    return sorted(set(refs), key=parse_ref)
+
+
+def all_refs(root: Path = Path("."), alto_dir: str = "ocr") -> list[str]:
+    """Every ref with OCR present in `alto_dir` — i.e. workable now.
+
+    The default is the **view**, so this answers "what can be collated", which is
+    the question the collation loop asks and which `mz/ocr/` legitimately widens:
+    a machine-read page is workable. It was sparse by construction while `gt/ocr/`
+    was the only store under the view, and it is not any more.
+
+    Name a real store to ask a narrower question — `gt/ocr/` for "what has a human
+    been through", `mz/ocr/` for "what has the recognizer read". **Anything
+    computing a published number must do that**, since a figure blended across
+    ranks describes neither.
+    """
+    return _refs_under(root, f"{alto_dir}/chukchi-*.xml")
+
+
+def all_scans(root: Path = Path(".")) -> list[str]:
+    """Every ref that physically exists, in (part, scan index) order.
+
+    This, not `all_refs`, is the sequence folio prediction walks. The OCR set is
+    sparse — a pilot selection scattered through the volume — so stepping
+    through it would happily predict folio+1 across a four-scan gap. Physical
+    adjacency is the only thing that licenses the prediction.
+    """
+    return _refs_under(root, "scans/chukchi-*.png")
+
+
+def with_context(refs: list[str], spec: str,
+                 root: Path = Path(".")) -> list[str]:
+    """`refs` plus their neighbours by scan index, deduplicated and in page order.
+
+    **Neighbours are drawn from `scans/`, never derived by arithmetic.** A ref
+    `PP-NNN` sits in a part whose length this function has no business knowing,
+    and a window that ran off the end would invent refs no page answers to — so
+    the window is applied to the *observed* index list for that part, which also
+    means a gap in the scans (an unnumbered plate pulled from the sequence) is
+    stepped over rather than silently counted as a page.
+
+    Parts do not run into each other: a window at the head of part 2 does not
+    reach back into part 1, because `1-362` and `2-001` are neighbours in the
+    binding and nothing else, and a context that crossed there would be asserting
+    a continuity the scan index does not carry.
+    """
+    behind, ahead = parse_context(spec)
+    if not (behind or ahead):
+        return [norm_ref(r) for r in refs]
+    by_part: dict[int, list[int]] = {}
+    for r in all_scans(root):
+        p, i = parse_ref(r)
+        by_part.setdefault(p, []).append(i)
+    for idxs in by_part.values():
+        idxs.sort()
+    out: set[str] = set()
+    for r in refs:
+        part, idx = parse_ref(r)
+        seq = by_part.get(part, [])
+        at = bisect.bisect_left(seq, idx)
+        lo = max(0, at - behind)
+        hi = min(len(seq), at + ahead + 1)
+        out.add(norm_ref(r))
+        out.update(f"{part}-{i:03d}" for i in seq[lo:hi])
+    return sorted(out, key=parse_ref)
 
 
 def scan_for(ref: str, root: Path = Path(".")) -> Path:
@@ -50,11 +161,11 @@ def scan_for(ref: str, root: Path = Path(".")) -> Path:
     it was — byte-identical bodies, except that `edition_ui`'s spelled the
     directory as the literal `"scans"` while `zones`' used the constant, so the
     two would have parted company the day the farm moved. `farms.SCANS` is the
-    one name for it, and `farms` imports nothing from this package *at module
-    level*, so importing it here costs no cycle today. The qualifier is load-
-    bearing: `farms` does reach back into `context` from inside a function body,
-    for the ref primitives. Move those primitives to a leaf and the sentence
-    becomes true without it.
+    one name for it, and `farms` imports nothing from this package but `refs`,
+    which is a leaf — so this cannot become a cycle. The qualifier used to be
+    "at module level", because `farms` reached back into `context` from a
+    function body for the ref primitives; moving those to `refs.py` is what
+    retired the qualifier.
     """
     return root / SCANS / f"chukchi-{norm_ref(ref)}.png"
 

@@ -45,8 +45,8 @@ from pathlib import Path
 
 from lxml import etree
 
-from .context import norm_ref
 from .ns import TEI_NS, XML_ID
+from .refs import norm_ref
 
 # The kind set is exactly what something can point *at*. `name` earns its place the
 # same way the others did, by acquiring a referrer: a glossed proper noun —
@@ -374,7 +374,7 @@ def page_glossary(root_el, ref: str, root: Path = Path("."),
 
 def glossary(root: Path = Path(".")) -> dict:
     """Every resolved term↔gloss pair in the committed TEI, corpus-wide."""
-    from .context import norm_ref as _n
+    from .refs import norm_ref as _n
 
     # One cache across the whole sweep, so a run-on list resolving its scope back
     # through @prev reuses the page this loop has already parsed rather than

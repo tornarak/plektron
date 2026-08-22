@@ -39,7 +39,6 @@ from pathlib import Path
 
 from . import geo, geomap
 from .cli._entity import TEMPLATE
-from .context import norm_ref
 from .entities import (
     GEO_CLASSES,
     WIKILINK,
@@ -53,6 +52,7 @@ from .entities import (
 # `scan_for` is re-exported: this module's callers name it here, and the
 # definition moved to `paths` because there were two byte-identical copies.
 from .paths import scan_for
+from .refs import norm_ref
 
 PORT = 8734
 REF_OK = re.compile(r"^\d+-\d+$")

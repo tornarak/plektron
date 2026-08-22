@@ -9,7 +9,7 @@ from pathlib import Path
 
 import pytest
 
-from harness.context import norm_ref, parse_ref, stem_for
+from harness.refs import norm_ref, parse_ref, stem_for
 
 
 @pytest.mark.parametrize("given,expected", [
@@ -76,7 +76,7 @@ def test_parse_context_reads_each_form(spec, expected):
     """A bare count is both ways, which is what "context" ordinarily means; the
     signed forms are for a one-sided question — what a seam ran into, or what a
     batch is about to reach."""
-    from harness.context import parse_context
+    from harness.refs import parse_context
     assert parse_context(spec) == expected
 
 
@@ -85,7 +85,7 @@ def test_parse_context_refuses_a_mixed_or_empty_spec(spec):
     """`5+3` is refused rather than guessed at: with a sign already present, a
     reader of the command should not have to know whether the bare number binds
     left, right or both. `3-5` looks like a range and is not one."""
-    from harness.context import parse_context
+    from harness.refs import parse_context
     with pytest.raises(ValueError, match="--context"):
         parse_context(spec)
 
@@ -97,7 +97,7 @@ def test_with_context_windows_over_the_scans_not_over_arithmetic(tmp_path):
     else, and a context spanning them would assert a continuity the scan index does
     not carry.
     """
-    from harness.context import with_context
+    from harness.paths import with_context
     scans = tmp_path / "scans"
     scans.mkdir()
     # A deliberate hole at 1-003, and a second part starting over at 001.
@@ -119,7 +119,7 @@ def test_with_context_windows_over_the_scans_not_over_arithmetic(tmp_path):
 def test_with_context_merges_overlapping_windows_in_page_order():
     """Two refs a few apart must give one ordered run, not two lists with a
     duplicate where they meet."""
-    from harness.context import with_context
+    from harness.paths import with_context
     got = with_context(["1-045", "1-047"], "1", Path("."))
     assert got == ["1-044", "1-045", "1-046", "1-047", "1-048"]
     assert len(got) == len(set(got))

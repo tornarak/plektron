@@ -33,7 +33,6 @@ from pathlib import Path
 import click
 
 from ..calls import call_summary, log_call, read_calls
-from ..context import all_refs, norm_ref
 from ..lines import (
     DEFAULT_ALTO_DIR,
     LINE_SHEET_H,
@@ -58,6 +57,7 @@ from ..lines import (
 )
 from ..parallel import ptrack
 from ..paths import (
+    all_refs,
     clean,
     crops_dir,
     decisions_path,
@@ -68,6 +68,7 @@ from ..paths import (
     zoom_dir,
 )
 from ..recognize import DEFAULT_REC_MODEL, DEFAULT_SEG_MODEL
+from ..refs import norm_ref
 from ..render import progress
 from ..review import (
     DEFAULT_BOX_LINES,
@@ -918,7 +919,7 @@ def apparatus_hits(recs, asked) -> list[int]:
     line that does not exist is a different error with a different message, and
     swallowing it here would answer the wrong question.
     """
-    from ..context import FOLIO_ZONES
+    from ..refs import FOLIO_ZONES
     zoned = {int(r["index"]): r.get("zone")
              for r in recs if r.get("index") is not None}
     return [i for i in sorted(asked) if zoned.get(i) in FOLIO_ZONES]

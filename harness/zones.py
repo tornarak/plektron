@@ -70,11 +70,11 @@ from . import zones_config as zc
 if TYPE_CHECKING:
     from kraken.lib.vgsl import TorchVGSLModel
 from .atomic import tmp_for, write_atomic
-from .context import norm_ref, parse_ref
 from .figures import read_blocks
 from .ns import ALTO_NS
 from .parallel import pmap
 from .paths import scan_for  # re-exported; this module's callers name it here
+from .refs import norm_ref, parse_ref
 
 ZONEDIR = "gt/zones"
 # Aliased from `farms.py`, which is the one declaration of every derived path. The
@@ -1889,7 +1889,7 @@ def blot_all(root: Path = Path("."), jobs: int | None = None, tick=None) -> dict
     the rasters are handed to `pmap`. Which page is which is `blot_one`'s own answer
     (`gt/fig/` present or not), asked once here rather than reimplemented.
     """
-    from .context import all_scans
+    from .paths import all_scans
     refs = all_scans(root)
     figs = root / "gt" / "fig"
     has_fig = {r: (figs / f"chukchi-{r}.xml").exists() for r in refs}
@@ -2392,7 +2392,7 @@ def predict_all(root: Path = Path("."), refs: list[str] | None = None,
     net, sha = load_segmenter(model_path, root)
     splits = load_splits(root)
     if refs is None:
-        from .context import all_scans
+        from .paths import all_scans
         refs = all_scans(root)
 
     started = time.monotonic()

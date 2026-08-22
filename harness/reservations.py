@@ -27,7 +27,7 @@ from pathlib import Path
 
 from lxml import etree
 
-from .context import norm_ref
+from .refs import norm_ref
 from .seam import tei_path
 from .validate import OPENS_PREFIX
 

@@ -409,7 +409,7 @@ def nearby(ref: str, root: Path = Path("."), span: int = NEARBY_SPAN,
     Nothing about how a form is built, segmented or related to any other form is
     computed or implied. These are strings the store holds and counts of them.
     """
-    from .context import norm_ref, parse_ref
+    from .refs import norm_ref, parse_ref
 
     part, num = parse_ref(norm_ref(ref))
     window = {f"{part}-{n:03d}" for n in range(max(1, num - span), num)}

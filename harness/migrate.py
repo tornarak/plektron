@@ -51,8 +51,8 @@ from pathlib import Path
 
 from lxml import etree
 
-from .context import norm_ref, parse_ref
 from .figures import PDF_IMAGES, pdf_images
+from .refs import norm_ref, parse_ref
 
 #: Stores holding raster-pixel coordinates. **`ocr/` and `zones/` are absent on
 #: purpose**: they are the read views, and migrating through a view writes through

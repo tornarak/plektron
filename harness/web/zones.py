@@ -18,7 +18,7 @@ from pydantic import BaseModel
 from .. import zones as zn
 from .. import zones_config as zc
 from .. import zones_ui as ui
-from ..context import norm_ref
+from ..refs import norm_ref
 from . import Editor, register, templates
 from .errors import fetched
 from .files import send_file

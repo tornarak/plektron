@@ -225,7 +225,7 @@ def test_the_number_stops_at_the_figure_number(tmp_path):
     The catalogue numbers, the letters and the dimensions after it are not the
     number of anything.
     """
-    from harness.context import figure_number
+    from harness.refs import figure_number
     assert figure_number("Fig. 87, a (??/????), b (??/????). Designs. 1/9 nat.") == "87"
     assert figure_number("Figs. 2, 3. Drums.") == "2"
     assert figure_number("") is None

@@ -42,7 +42,7 @@ def register(cli):
                "census across every corpus store. Reports by default and exits 1 on "
                "drift; --commit writes the fixes")
     # **A mixed positional list: a `PP-NNN` ref, or a path.** A ref's shape is
-    # closed (`context.parse_ref`), so the two never collide, and a required file
+    # closed (`refs.parse_ref`), so the two never collide, and a required file
     # argument spelled as a flag was the smell that prompted the whole plural
     # pass. Naming a page scopes to that page's files across the corpus globs —
     # its ALTO, its decision, and its proposal.
@@ -137,7 +137,7 @@ def _targets(a) -> list[Path] | None:
     the mid-pass protection that exists for a proposal being authored survives,
     and a finished page's dead apostrophe hits still stay out of the gate.
     """
-    from ..context import norm_ref, parse_ref
+    from ..refs import norm_ref, parse_ref
 
     # The same two rules `page_refs` holds for a ref positional, written out here
     # because the targets are not all refs: exactly one way of saying what to work
@@ -196,7 +196,7 @@ def run_state(a) -> int:
     silent truncation this project forbids — the caller named the number, so the
     bound is at the call site, which is where every other cost here sits.
     """
-    from ..context import all_scans, with_context
+    from ..paths import all_scans, with_context
     from ..pipeline import survey, tally
 
     refs = page_refs(a)

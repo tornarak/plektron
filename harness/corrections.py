@@ -48,8 +48,8 @@ from pathlib import Path
 from lxml import etree
 
 from .atomic import tmp_for, write_atomic
-from .context import norm_ref, parse_ref
 from .ns import ALTO_NS
+from .refs import norm_ref, parse_ref
 
 INK_EXEMPT_JSON = "_ink_exempt.json"
 

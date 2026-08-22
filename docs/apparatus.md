@@ -136,7 +136,7 @@ did that — which is the same act, extracted under duress and at the wrong mome
 
 ### `data/figure_numbers.json`: where a printer beat the derivation
 
-Two rules stand between a picture and its printed number. `context.figure_number`
+Two rules stand between a picture and its printed number. `refs.figure_number`
 reads the number off the caption, and the pairing decides from the page's geometry
 which picture a caption belongs to. Three figures in this corpus defeat one or the
 other, and **the answer is not to widen the rule**: a derivation loosened to admit

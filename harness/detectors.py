@@ -1111,8 +1111,9 @@ def suggest_lexicon(root: Path = Path("."), common: int | None = None) -> dict:
     The report gains a `scope` row and the boundary window; `tokens` and
     `suppressed` keep their meaning, with the entity store as the only suppressor.
     """
-    from .context import _draft_text, all_refs, stem_for
     from .lines import page_lines
+    from .paths import all_refs
+    from .refs import _draft_text, stem_for
 
     base, full = _base_lexicon(root), _lexicon(root)
     counts: dict[str, int] = {}
@@ -1275,7 +1276,8 @@ def _restored_refs(root: Path = Path(".")) -> list[str]:
     Also the one filter that knows which of the 20 pilot refs are still empty
     export shells (CLAUDE.md, "The ground-truth loss").
     """
-    from .context import all_refs, stem_for
+    from .paths import all_refs
+    from .refs import stem_for
 
     out = []
     for ref in all_refs(root, "gt/ocr"):

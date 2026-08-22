@@ -17,7 +17,7 @@ from functools import lru_cache
 from pathlib import Path
 
 from .. import alphabet, apparatus, entities, figures, geo, lexicon, lookup, tei_html
-from ..context import norm_ref
+from ..refs import norm_ref
 from ..state import load_toc
 from .cache import MAXSIZE, digest, stamp
 

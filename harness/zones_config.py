@@ -26,7 +26,7 @@ import json
 from itertools import pairwise
 from pathlib import Path
 
-from .context import norm_ref, parse_ref
+from .refs import norm_ref, parse_ref
 
 CONFIG = "data/zones_config.json"
 

@@ -33,8 +33,8 @@ from urllib.parse import quote
 from lxml import etree
 
 from . import figrefs
-from .context import norm_ref
 from .ns import TEI_NS, XML_ID, XML_LANG
+from .refs import norm_ref
 from .seam import OPENS_MEANS
 from .validate import TIER1
 

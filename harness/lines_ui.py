@@ -35,8 +35,8 @@ from pathlib import Path
 
 from . import corrections as corr
 from . import zones as zn
-from .context import norm_ref
 from .lines import DEFAULT_ALTO_DIR, alto_for_lines, line_gaps, page_lines
+from .refs import norm_ref
 
 PORT = 8733
 

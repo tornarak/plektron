@@ -306,7 +306,7 @@ def run_edit(a) -> int:
     # otherwise want a scratch file. `--all` walks the book.
     itin = refs or _itin(a, zmod)
     if getattr(a, "all", False):
-        from ..context import all_scans
+        from ..paths import all_scans
         itin = all_scans(a.root)
     start = itin[0] if refs else None
     if not start and itin:

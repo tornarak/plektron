@@ -315,7 +315,7 @@ def _w_ocr_wanted(root: Path) -> tuple[dict[str, Path], dict[str, Path]]:
     Two sweeps rather than one because the farm holds two kinds of file and a single
     prune pattern would have each kind deleting the other's entries.
     """
-    from .context import norm_ref, parse_ref
+    from .refs import norm_ref, parse_ref
     refs = []
     for p in (root / "gt" / "ocr").glob("chukchi-*.xml"):
         try:
@@ -414,7 +414,7 @@ def _wanted_for(name: str, root: Path) -> dict[str, Path] | None:
         return {f"chukchi-{r}.xml": root / (ZONEDIR if r in gt else MZDIR)
                 / f"chukchi-{r}.xml" for r in gt | mz}
     if name == "w-figs-blotted":
-        # Globbed here rather than through `context.all_scans`, deliberately: that
+        # Globbed here rather than through `paths.all_scans`, deliberately: that
         # one is guarded, and `scans/` is a registered farm, so it refuses when the
         # directory is absent. The blot farm can outlive `scans/` (its 252 painted
         # pages are real files), and a survey that raised while describing that

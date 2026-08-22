@@ -45,8 +45,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from .context import norm_ref
 from .paths import decisions_path, proposal_path
+from .refs import norm_ref
 
 # In rung order, lowest first. The order is the module's whole content: `stage`
 # is `max` over it and `skipped` is everything below the max that is absent, so

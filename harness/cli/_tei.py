@@ -254,7 +254,7 @@ def _collated(root: Path) -> list[str]:
     """Every ref with a committed TEI page. `corpus-header.xml` drops out of its
     own accord — its stem is not a ref, and `_refs_under` skips what will not
     parse. A store rather than a farm, so an empty `tei/` answers empty."""
-    from ..context import all_refs
+    from ..paths import all_refs
     return all_refs(root, "tei")
 
 
@@ -262,7 +262,7 @@ def _generatable(root: Path) -> list[str]:
     """Every page holding both inputs. The intersection, not either store alone:
     a page with zones and no ground truth is not a page this can read, and one with
     ground truth and no zones has no paragraph boundaries to honour."""
-    from ..context import all_refs
+    from ..paths import all_refs
     return sorted(set(all_refs(root, "gt/ocr")) & set(all_refs(root, "gt/zones")))
 
 
@@ -283,7 +283,7 @@ def run_generate(a) -> int:
 def run_diff(a) -> int:
     """An aggregate, like `zones diff`: refs scope the table rather than multiply
     it, and every row already carries `ref`."""
-    from ..context import all_refs
+    from ..paths import all_refs
     refs = page_refs(a) or all_refs(a.root, "mz/tei")
     out(a, [gen_diff(r, a.root) for r in refs])
     return 0
@@ -495,7 +495,7 @@ def run_ledger(a) -> int:
         # the same refs come back as an array — the serializer changes, the
         # payload does not, which is the rule everywhere else in this CLI and
         # used to be violated here alone.
-        from ..context import parse_ref
+        from ..refs import parse_ref
         led = build_ledger(a.root)
         refs = [r for r, v in led.items()
                 if not v["transcribed"]

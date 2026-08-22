@@ -50,12 +50,12 @@ from lxml import etree
 # character diffs), which is a different subject entirely.
 from . import corrections as _corr
 from .atomic import tmp_for
-from .context import norm_ref
 from .detectors import DOT_ABOVE_G, INVENTORY_CHARS, LOOKALIKES, unlicensed_marks
 from .lines import DEFAULT_ALTO_DIR, alto_for_lines, page_lines, raster_path
 from .lookup import HANDLE
 from .paths import crops_dir, decisions_path, html_path, page_dirs, proposal_path
 from .proposal_check import NOTE_CLASSES
+from .refs import norm_ref
 from .usage import since_stamp
 
 CONTEXT_CHARS = 24

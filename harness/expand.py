@@ -49,8 +49,9 @@ from pathlib import Path
 
 from lxml import etree
 
-from .context import norm_ref, tier1_terms
+from .context import tier1_terms
 from .ns import XML_LANG
+from .refs import norm_ref
 from .validate import ADOPTED, TIER1
 
 

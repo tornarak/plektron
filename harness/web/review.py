@@ -19,9 +19,9 @@ from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel, Field
 
 from .. import review as rv
-from ..context import norm_ref
 from ..lines import raster_path
 from ..paths import crops_dir, decisions_path
+from ..refs import norm_ref
 from . import Editor, register, templates
 from .errors import fetched
 from .files import send_file
