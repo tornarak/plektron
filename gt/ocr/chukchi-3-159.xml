@@ -1,0 +1,402 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-3-159.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-3-159.png; regions_from: zones/chukchi-3-159.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="QuireMarksZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_6" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+                <TextBlock ID="mz_3-159_r1" HPOS="399" VPOS="446" WIDTH="1782" HEIGHT="93" TAGREFS="TYPE_5">
+<Shape>
+                        <Polygon POINTS="399 446 2181 446 2181 539 399 539"/>
+                    </Shape>
+                    <TextLine ID="mz_3-159_l1" HPOS="2054" VPOS="466" WIDTH="95" HEIGHT="61" BASELINE="2056 498 2149 502" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="2134 470 2122 468 2056 466 2056 498 2054 509 2100 527 2102 527 2104 527 2147 519 2149 502 2147 472 2134 470"/>
+                        </Shape>
+                        <String CONTENT="693"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l2" HPOS="966" VPOS="466" WIDTH="618" HEIGHT="51" BASELINE="966 500 1584 500" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="1570 470 1562 466 978 466 966 476 966 500 966 517 1584 517 1584 500 1580 484 1570 470"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-159_r2" HPOS="399" VPOS="562" WIDTH="1782" HEIGHT="178" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="399 562 2181 562 2181 740 399 740"/>
+                    </Shape>
+                    <TextLine ID="mz_3-159_l3" HPOS="385" VPOS="562" WIDTH="1770" HEIGHT="60" BASELINE="387 607 2155 603" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="678 564 658 566 639 566 619 568 600 568 580 568 561 570 541 570 522 572 502 572 483 572 463 574 444 574 424 576 413 576 385 576 387 607 387 622 2153 619 2155 603 2151 574 1759 562 1757 562 1695 572 1672 562 1670 562 1668 562 1666 562 1646 572 1623 562 1621 562 1619 562 1617 562 1590 572 1543 562 1541 562 1539 562 1520 572 1496 562 1494 562 1492 562 1391 572 1342 562 1340 562 1227 574 1208 564 1206 564 1204 564 1202 564 1179 574 1118 564 1116 564 1114 564 1112 564 1097 576 970 576 943 564 941 564 939 564 937 564 935 564 919 574 896 564 894 564 892 564 890 564 888 564 874 574 808 564 806 564 804 564 802 564 789 574 738 564 736 564 734 564 717 574 703 564 701 564 699 564 697 564 678 564"/>
+                        </Shape>
+                        <String CONTENT="connected with the Chukchee, — Chukchee Channel, Chukchee Ridge, Chukochya"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l4" HPOS="387" VPOS="622" WIDTH="1768" HEIGHT="59" BASELINE="389 665 2155 661" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="389 665 389 681 2153 679 2155 661 2153 636 2110 622 2108 622 2106 622 2104 622 2073 634 1976 622 1974 622 1972 622 1941 636 1621 636 1603 622 1601 622 1599 622 1598 622 1596 622 1572 634 1555 622 1553 622 1551 622 1549 622 1547 622 1523 634 1500 622 1498 622 1496 622 1494 622 1444 634 1381 622 1379 622 1377 622 1344 634 1249 624 1247 624 1245 624 1243 624 1223 638 1151 638 1126 624 1124 624 1122 624 1050 638 834 638 800 624 798 624 797 624 795 624 760 636 736 624 734 624 648 624 646 624 645 624 643 624 625 636 586 624 584 624 582 624 387 628 389 665"/>
+                        </Shape>
+                        <String CONTENT="Hamlet.¹ Still the story mentions that the Chukchee came over from the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l5" HPOS="387" VPOS="683" WIDTH="536" HEIGHT="62" BASELINE="389 724 923 728" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="389 724 387 737 397 745 399 745 401 745 403 745 921 739 923 728 921 698 837 685 836 685 834 685 800 698 756 698 744 687 744 685 742 685 740 685 738 685 736 685 707 696 695 685 693 685 691 685 689 685 617 695 598 683 596 683 594 683 592 683 531 696 467 696 455 685 455 683 454 683 452 683 450 683 389 693 389 724"/>
+                        </Shape>
+                        <String CONTENT="other side of the river."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-159_r3" HPOS="399" VPOS="740" WIDTH="1782" HEIGHT="554" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="399 740 2181 740 2181 1294 399 1294"/>
+                    </Shape>
+                    <TextLine ID="mz_3-159_l6" HPOS="498" VPOS="745" WIDTH="1659" HEIGHT="59" BASELINE="500 788 2157 782" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="500 788 500 804 2155 798 2157 782 2151 745 498 747 500 788"/>
+                        </Shape>
+                        <String CONTENT="The attack of the Chukchee on the hamlet Duvannoye is also an historical"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l7" HPOS="387" VPOS="804" WIDTH="1768" HEIGHT="56" BASELINE="389 847 2155 841" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="389 847 389 860 2153 858 2155 841 2151 813 1566 804 1564 804 1562 804 1541 815 387 815 389 847"/>
+                        </Shape>
+                        <String CONTENT="fact. Even the name Duvannoye (“Spoil Shared”) is connected with the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l8" HPOS="387" VPOS="868" WIDTH="1768" HEIGHT="55" BASELINE="389 907 2155 901" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="389 907 389 923 2153 919 2155 901 2151 874 428 868 426 868 424 868 387 878 389 907"/>
+                        </Shape>
+                        <String CONTENT="attack. In front of the hamlet stands a high wooden crucifix, as is the custom"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l9" HPOS="387" VPOS="923" WIDTH="1772" HEIGHT="58" BASELINE="389 965 2159 962" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="389 965 389 981 2157 977 2159 962 2151 923 2112 934 1923 934 1898 923 1896 923 1894 923 1796 932 1775 923 1773 923 1771 923 1769 923 1767 923 1752 934 1642 934 1590 923 1588 923 1586 923 1564 932 1502 923 1500 923 1451 932 1393 923 1391 923 1270 934 1235 924 1233 924 1231 924 1141 934 1089 924 1087 924 1085 924 1060 934 1044 924 1042 924 1040 924 1038 924 1036 924 1001 934 873 924 871 924 802 934 732 924 730 924 387 932 389 965"/>
+                        </Shape>
+                        <String CONTENT="in many Russian villages of the Kolyma. The inhabitants show the traces of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l10" HPOS="387" VPOS="983" WIDTH="1772" HEIGHT="60" BASELINE="389 1030 2159 1022" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="389 1030 389 1043 2157 1036 2159 1022 2155 995 2083 983 2081 983 1970 993 1948 983 1946 983 1944 983 1867 993 1829 983 1828 983 1826 983 1711 995 1389 985 1387 985 1385 985 1383 985 1368 995 1038 987 1036 987 1034 987 1032 987 1017 999 387 999 389 1030"/>
+                        </Shape>
+                        <String CONTENT="Chukchee arrows that were shot at that crucifix during the assault. A number"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l11" HPOS="389" VPOS="1039" WIDTH="1770" HEIGHT="65" BASELINE="391 1090 2159 1080" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="391 1090 391 1104 2157 1096 2159 1080 2155 1053 2040 1053 2020 1039 2019 1039 2017 1039 2015 1039 2013 1039 1980 1053 1863 1053 1841 1039 1839 1039 1837 1039 1835 1039 1833 1039 1792 1053 1648 1041 1646 1041 1644 1041 1642 1041 1625 1055 1522 1055 1492 1041 1490 1041 1488 1041 1486 1041 1444 1055 1426 1043 1424 1043 1422 1043 1420 1043 1282 1055 1204 1043 1202 1043 1200 1043 1161 1055 1124 1043 1122 1043 1120 1043 1017 1057 795 1045 793 1045 791 1045 740 1059 666 1047 664 1047 600 1059 584 1047 582 1047 580 1047 415 1047 413 1047 411 1047 409 1047 389 1057 391 1090"/>
+                        </Shape>
+                        <String CONTENT="of other names of villages and localities of the Lower Kolyma have reference"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l12" HPOS="389" VPOS="1104" WIDTH="1766" HEIGHT="66" BASELINE="391 1149 2155 1141" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="391 1149 391 1170 2153 1156 2155 1141 2151 1114 1714 1104 1713 1104 1666 1114 1502 1106 1500 1106 1268 1115 409 1110 407 1110 405 1110 403 1110 389 1115 391 1149"/>
+                        </Shape>
+                        <String CONTENT="to the atrocities supposed to have been perpetrated by the Chukchee invaders. —"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l13" HPOS="389" VPOS="1160" WIDTH="1772" HEIGHT="65" BASELINE="391 1209 2161 1201" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="391 1209 391 1225 2159 1219 2161 1201 2155 1166 2081 1172 2050 1160 2048 1160 2046 1160 2044 1160 2007 1172 1991 1160 1989 1160 1987 1160 1913 1160 1911 1160 1909 1160 1907 1160 1888 1174 1769 1174 1720 1160 1718 1160 1716 1160 1654 1174 1564 1164 1562 1164 1488 1174 1461 1162 1459 1162 1457 1162 1403 1174 1364 1162 1362 1162 1360 1162 1358 1162 1325 1174 1288 1162 1286 1162 1284 1162 1282 1162 1280 1162 1262 1176 1231 1164 1229 1164 1227 1164 1225 1164 1223 1164 1202 1178 1085 1178 988 1164 986 1164 984 1164 982 1164 962 1178 734 1178 680 1166 678 1166 676 1166 643 1178 530 1166 528 1166 471 1178 415 1166 413 1166 411 1166 409 1166 389 1176 391 1209"/>
+                        </Shape>
+                        <String CONTENT="the village Pogromnoye (“Destroyed One”), the river Ubiyenna (“Murdered"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l14" HPOS="393" VPOS="1225" WIDTH="975" HEIGHT="66" BASELINE="393 1267 1368 1267" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="393 1267 393 1279 504 1291 506 1291 508 1291 549 1281 1336 1291 1338 1291 1340 1291 1368 1279 1368 1267 1366 1227 1075 1234 1011 1225 1009 1225 949 1234 888 1225 886 1225 884 1225 841 1234 789 1225 787 1225 785 1225 783 1225 783 1227 773 1236 703 1236 682 1225 680 1225 678 1225 606 1234 590 1225 588 1225 586 1225 584 1225 528 1234 498 1225 496 1225 494 1225 448 1234 415 1225 413 1225 411 1225 409 1225 407 1225 393 1232 393 1267"/>
+                        </Shape>
+                        <String CONTENT="One”), the river Tomilina (“Languishing”).²"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-159_r4" HPOS="399" VPOS="1294" WIDTH="1782" HEIGHT="482" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="399 1294 2181 1294 2181 1776 399 1776"/>
+                    </Shape>
+                    <TextLine ID="mz_3-159_l15" HPOS="498" VPOS="1287" WIDTH="1665" HEIGHT="55" BASELINE="500 1326 2163 1320" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="500 1326 500 1342 2161 1338 2163 1320 2157 1287 498 1295 500 1326"/>
+                        </Shape>
+                        <String CONTENT="In the story referring to the Anadyr, some episodes are clearly borrowed"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l16" HPOS="391" VPOS="1343" WIDTH="1772" HEIGHT="59" BASELINE="393 1388 2163 1381" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="393 1388 393 1402 2161 1398 2163 1381 2157 1345 1607 1353 1584 1343 1582 1343 1580 1343 1578 1343 1553 1353 1527 1343 1525 1343 1523 1343 1451 1353 1418 1343 1416 1343 1414 1343 1412 1343 1381 1353 1350 1343 1348 1343 1346 1343 1344 1343 1321 1353 1210 1345 1208 1345 1157 1355 1050 1345 1048 1345 980 1355 917 1345 915 1345 913 1345 874 1355 837 1345 836 1345 834 1345 771 1357 409 1347 407 1347 405 1347 403 1347 391 1355 393 1388"/>
+                        </Shape>
+                        <String CONTENT="from Chukchee folk-tales. Thus the episode of the woman who concealed"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l17" HPOS="393" VPOS="1402" WIDTH="1770" HEIGHT="58" BASELINE="395 1447 2163 1441" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="395 1447 395 1460 2161 1457 2163 1441 2159 1414 1954 1402 1952 1402 1950 1402 1948 1402 1933 1414 1787 1414 1755 1402 1753 1402 1752 1402 1750 1402 1748 1402 1732 1414 1568 1414 1549 1404 1547 1404 1545 1404 1543 1404 1518 1414 1504 1404 1502 1404 1500 1404 1498 1404 1329 1414 1301 1404 1299 1404 1297 1404 1295 1404 1256 1414 1206 1404 1204 1404 1202 1404 1182 1414 1151 1404 1149 1404 1147 1404 1145 1404 1114 1416 393 1416 395 1447"/>
+                        </Shape>
+                        <String CONTENT="herself in the hollow and escaped the thrusts of the spear is met with in the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l18" HPOS="395" VPOS="1458" WIDTH="1768" HEIGHT="65" BASELINE="397 1507 2163 1499" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="397 1507 397 1523 2161 1519 2163 1499 2157 1462 1999 1470 1981 1458 1980 1458 1978 1458 1976 1458 1904 1470 1878 1458 1876 1458 1874 1458 1872 1458 1870 1458 1849 1472 1676 1472 1658 1460 1656 1460 1654 1460 1652 1460 1584 1472 1566 1460 1564 1460 1562 1460 1561 1460 1559 1460 1535 1472 1520 1460 1518 1460 1516 1460 1451 1460 1449 1460 1447 1460 1412 1472 1381 1460 1379 1460 1377 1460 1375 1460 1327 1472 1284 1460 1282 1460 1280 1460 1278 1460 1276 1460 1258 1474 1163 1462 1161 1462 1089 1474 1071 1462 1069 1462 1067 1462 904 1462 902 1462 900 1462 898 1462 880 1474 771 1464 769 1464 767 1464 765 1464 746 1476 699 1464 697 1464 695 1464 615 1476 415 1464 413 1464 411 1464 409 1464 395 1474 397 1507"/>
+                        </Shape>
+                        <String CONTENT="Chukchee tale about “Eleˊndi and his Sons” which has been mentioned several"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l19" HPOS="395" VPOS="1521" WIDTH="1768" HEIGHT="70" BASELINE="397 1570 2163 1562" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="397 1570 397 1581 629 1591 631 1591 929 1579 2159 1579 2163 1562 2161 1533 2137 1521 2135 1521 2134 1521 2132 1521 2130 1521 2112 1531 1874 1521 1872 1521 1870 1521 1868 1521 1853 1533 1718 1533 1676 1523 1674 1523 1672 1523 1529 1533 1508 1523 1506 1523 1504 1523 1502 1523 1481 1533 1377 1523 1375 1523 1268 1534 847 1525 845 1525 843 1525 841 1525 828 1536 779 1527 777 1527 775 1527 740 1536 549 1527 547 1527 473 1536 418 1527 416 1527 415 1527 413 1527 395 1534 397 1570"/>
+                        </Shape>
+                        <String CONTENT="times before. In that tale it concerns a Chukchee girl captured by Koryak"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l20" HPOS="393" VPOS="1585" WIDTH="1770" HEIGHT="57" BASELINE="395 1630 2163 1620" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="395 1630 395 1642 2161 1640 2163 1620 2157 1585 393 1595 395 1630"/>
+                        </Shape>
+                        <String CONTENT="invaders. The episode of the ransoming of captive women from an island"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l21" HPOS="395" VPOS="1642" WIDTH="1766" HEIGHT="62" BASELINE="397 1690 2161 1681" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="397 1690 397 1704 2159 1700 2161 1681 2157 1653 1972 1642 1970 1642 1968 1642 1935 1651 1904 1642 1902 1642 1900 1642 1898 1642 1874 1651 1523 1644 1522 1644 1449 1655 1200 1646 1198 1646 1196 1646 1194 1646 1179 1655 900 1648 898 1648 791 1657 752 1648 750 1648 748 1648 668 1659 582 1649 580 1649 578 1649 576 1649 561 1661 395 1661 397 1690"/>
+                        </Shape>
+                        <String CONTENT="across the strait must have been taken from a Chukchee tale referring to a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l22" HPOS="399" VPOS="1702" WIDTH="737" HEIGHT="62" BASELINE="401 1747 1136 1741" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="401 1747 401 1761 1124 1764 1126 1764 1128 1764 1130 1764 1130 1763 1132 1763 1136 1757 1136 1741 1132 1714 956 1702 954 1702 952 1702 951 1702 951 1704 941 1712 847 1704 845 1704 763 1714 738 1704 736 1704 734 1704 672 1714 646 1704 645 1704 643 1704 641 1704 639 1704 623 1716 547 1706 545 1706 399 1718 401 1747"/>
+                        </Shape>
+                        <String CONTENT="war with the American Eskimo."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-159_r5" HPOS="399" VPOS="1776" WIDTH="1782" HEIGHT="538" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="399 1776 2181 1776 2181 2314 399 2314"/>
+                    </Shape>
+                    <TextLine ID="mz_3-159_l23" HPOS="504" VPOS="1759" WIDTH="1661" HEIGHT="72" BASELINE="506 1809 2165 1801" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="506 1809 506 1821 871 1831 873 1831 1040 1819 1182 1829 1184 1829 1375 1817 1553 1827 1555 1827 1557 1827 1578 1817 1603 1827 1605 1827 1607 1827 1804 1815 1962 1825 1964 1825 2163 1817 2165 1801 2161 1772 2087 1772 2069 1759 2067 1759 2065 1759 2063 1759 2061 1759 2059 1759 2040 1770 1867 1759 1865 1759 1863 1759 1820 1770 1728 1761 1726 1761 1724 1761 1722 1761 1707 1772 1689 1761 1687 1761 1685 1761 1683 1761 1681 1761 1679 1761 1660 1772 1601 1761 1599 1761 1598 1761 1549 1772 1520 1761 1518 1761 1516 1761 1514 1761 1481 1772 1412 1761 1410 1761 1409 1761 1407 1761 1387 1774 1192 1774 1165 1763 1163 1763 1161 1763 1159 1763 1126 1776 1028 1776 921 1763 919 1763 917 1763 915 1763 900 1772 804 1764 802 1764 800 1764 798 1764 783 1776 748 1764 746 1764 526 1764 524 1764 522 1764 520 1764 504 1774 506 1809"/>
+                        </Shape>
+                        <String CONTENT="Pavlutsky’s Expedition. — I presume that the Chukchee raids may have"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l24" HPOS="397" VPOS="1823" WIDTH="1768" HEIGHT="58" BASELINE="399 1870 2165 1862" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="399 1870 399 1881 2163 1879 2165 1862 2161 1833 1738 1823 1736 1823 1734 1823 1701 1835 397 1835 399 1870"/>
+                        </Shape>
+                        <String CONTENT="been one among other causes which led to the organization of the military"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l25" HPOS="399" VPOS="1881" WIDTH="1768" HEIGHT="61" BASELINE="401 1926 2167 1920" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="401 1926 401 1942 2165 1936 2167 1920 2163 1893 1902 1881 1900 1881 1898 1881 1876 1891 1841 1881 1839 1881 1837 1881 1835 1881 1812 1893 1625 1893 1582 1881 1580 1881 1578 1881 1576 1881 1574 1881 1559 1893 1058 1883 1056 1883 984 1895 522 1885 520 1885 399 1897 401 1926"/>
+                        </Shape>
+                        <String CONTENT="expedition of Shestakov and Pavlutsky, the most important of all that ever"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l26" HPOS="399" VPOS="1944" WIDTH="1768" HEIGHT="56" BASELINE="401 1987 2167 1983" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="401 1987 401 2000 2165 2000 2167 1983 2163 1955 1867 1944 1865 1944 1863 1944 1826 1955 1502 1955 1449 1944 1447 1944 1446 1944 1407 1953 1371 1944 1370 1944 1368 1944 1266 1955 1233 1946 1231 1946 1229 1946 1134 1955 1040 1946 1038 1946 912 1955 775 1946 773 1946 771 1946 732 1955 685 1946 683 1946 682 1946 646 1955 569 1946 567 1946 399 1953 401 1987"/>
+                        </Shape>
+                        <String CONTENT="had place in those countries. It began in the year 1729; and in the next"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l27" HPOS="401" VPOS="2000" WIDTH="1766" HEIGHT="70" BASELINE="403 2049 2167 2041" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="403 2049 403 2070 504 2061 2165 2061 2167 2041 2161 2004 1861 2010 1828 2000 1826 2000 1824 2000 1699 2012 1677 2002 1676 2002 1674 2002 1629 2012 1601 2002 1599 2002 1598 2002 1596 2002 1559 2012 1522 2002 1520 2002 1518 2002 1473 2012 1459 2002 1457 2002 1455 2002 1317 2002 1315 2002 1313 2002 1276 2014 1200 2004 1198 2004 1104 2014 1091 2004 1089 2004 1087 2004 919 2004 917 2004 915 2004 913 2004 898 2016 791 2016 541 2006 539 2006 537 2006 535 2006 520 2018 401 2018 403 2049"/>
+                        </Shape>
+                        <String CONTENT="year Shestakov was defeated, and perished.³ Pavlutsky undertook several"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l28" HPOS="401" VPOS="2065" WIDTH="1762" HEIGHT="56" BASELINE="403 2107 2163 2104" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="403 2107 403 2121 2161 2119 2163 2104 2159 2074 1288 2065 1286 2065 1231 2074 660 2067 658 2067 401 2076 403 2107"/>
+                        </Shape>
+                        <String CONTENT="more expeditions; but he also was defeated, and perished in the year 1747."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l29" HPOS="401" VPOS="2121" WIDTH="1768" HEIGHT="61" BASELINE="403 2168 2169 2162" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="403 2168 403 2182 2167 2176 2169 2162 2165 2133 1818 2121 1816 2121 1814 2121 1785 2133 1615 2133 1588 2121 1586 2121 1584 2121 1582 2121 1580 2121 1566 2133 1555 2123 1553 2123 1551 2123 1549 2123 1547 2123 1508 2133 1457 2123 1455 2123 1453 2123 1410 2133 1366 2123 1364 2123 1362 2123 1336 2133 1280 2123 1278 2123 1180 2133 401 2133 403 2168"/>
+                        </Shape>
+                        <String CONTENT="Mr. Jochelson⁴ has given most of the details of those expeditions, and has"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l30" HPOS="401" VPOS="2182" WIDTH="1768" HEIGHT="60" BASELINE="403 2228 2169 2220" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="403 2228 403 2242 2167 2238 2169 2220 2165 2193 1968 2182 1966 2182 1964 2182 1962 2182 1946 2193 1787 2193 1726 2182 1724 2182 1631 2193 1286 2183 1284 2183 1180 2195 863 2187 861 2187 859 2187 834 2197 777 2187 530 2187 528 2187 526 2187 494 2197 430 2187 428 2187 426 2187 401 2197 403 2228"/>
+                        </Shape>
+                        <String CONTENT="also discussed the strange theory of Maydell, who wanted to prove that most"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l31" HPOS="403" VPOS="2242" WIDTH="1617" HEIGHT="66" BASELINE="405 2285 2020 2281" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="405 2285 405 2298 972 2308 974 2308 976 2308 978 2308 993 2298 2019 2298 2020 2281 2017 2252 1212 2242 1210 2242 1208 2242 1188 2252 442 2244 440 2244 438 2244 403 2254 405 2285"/>
+                        </Shape>
+                        <String CONTENT="of the Chukchee fighting was treacherously done by disguised Koryak."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-159_r6" HPOS="399" VPOS="2314" WIDTH="1782" HEIGHT="353" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="399 2314 2181 2314 2181 2667 399 2667"/>
+                    </Shape>
+                    <TextLine ID="mz_3-159_l32" HPOS="508" VPOS="2298" WIDTH="1661" HEIGHT="63" BASELINE="510 2347 2169 2339" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="510 2347 510 2361 2167 2357 2169 2339 2165 2310 1773 2298 1771 2298 1769 2298 1746 2310 1619 2300 1617 2300 1561 2310 1531 2300 1529 2300 1527 2300 1447 2310 1420 2300 1418 2300 1416 2300 1334 2312 1085 2302 1083 2302 1081 2302 1079 2302 1064 2312 896 2304 894 2304 892 2304 865 2314 810 2304 808 2304 666 2314 522 2304 520 2304 518 2304 516 2304 508 2310 510 2347"/>
+                        </Shape>
+                        <String CONTENT="I have mentioned some details in regard to the death of Pavlutsky, taken"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l33" HPOS="401" VPOS="2359" WIDTH="1770" HEIGHT="60" BASELINE="403 2406 2171 2400" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="403 2406 403 2419 2169 2413 2171 2400 2165 2363 2026 2371 1978 2359 1976 2359 1974 2359 1972 2359 1970 2359 1952 2373 1902 2373 1868 2359 1867 2359 1865 2359 1863 2359 1833 2369 1732 2359 1730 2359 1646 2371 1619 2359 1617 2359 1615 2359 1613 2359 1611 2359 1592 2373 1416 2373 1389 2361 1387 2361 1385 2361 1383 2361 1381 2361 1362 2374 1219 2374 1151 2361 1149 2361 1147 2361 1120 2373 1091 2361 1089 2361 1087 2361 1085 2361 1083 2361 1065 2373 904 2363 902 2363 822 2374 791 2363 789 2363 787 2363 785 2363 742 2374 705 2363 703 2363 701 2363 699 2363 676 2374 586 2363 584 2363 582 2363 555 2374 528 2363 526 2363 436 2363 434 2363 432 2363 401 2374 403 2406"/>
+                        </Shape>
+                        <String CONTENT="chiefly from local tradition. A few more facts may be added from historical"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l34" HPOS="403" VPOS="2421" WIDTH="1766" HEIGHT="59" BASELINE="405 2464 2169 2460" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="405 2464 405 2480 2167 2480 2169 2460 2167 2433 2137 2421 2135 2421 2134 2421 2050 2431 1677 2421 1676 2421 1596 2431 1514 2421 1512 2421 1381 2431 1301 2421 1299 2421 1297 2421 1295 2421 1282 2433 1233 2423 1231 2423 1229 2423 1190 2433 982 2423 980 2423 978 2423 976 2423 960 2435 837 2435 779 2423 777 2423 726 2433 654 2423 652 2423 650 2423 648 2423 633 2435 403 2435 405 2464"/>
+                        </Shape>
+                        <String CONTENT="sources. According to Slovtzov, the first expedition of Pavlutsky started in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l35" HPOS="409" VPOS="2480" WIDTH="1762" HEIGHT="62" BASELINE="411 2528 2171 2519" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="411 2528 411 2542 2169 2536 2171 2519 2167 2489 1829 2480 1828 2480 1826 2480 1802 2489 783 2486 781 2486 779 2486 758 2495 450 2487 448 2487 446 2487 409 2497 411 2528"/>
+                        </Shape>
+                        <String CONTENT="1731 from the fortress of Anadyrsk, and proceeded northward to the Arctic"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l36" HPOS="405" VPOS="2540" WIDTH="1767" HEIGHT="57" BASELINE="407 2585 2172 2581" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="407 2585 407 2597 2171 2595 2172 2581 2167 2546 1779 2552 1752 2540 1750 2540 1748 2540 1746 2540 1711 2552 1677 2540 1676 2540 1674 2540 1531 2552 1512 2540 1510 2540 1508 2540 1506 2540 1444 2550 1401 2540 1399 2540 1397 2540 1395 2540 1393 2540 1373 2552 1239 2542 1237 2542 1235 2542 1212 2554 1182 2542 1180 2542 1179 2542 1101 2554 1085 2542 1083 2542 1081 2542 1079 2542 960 2552 910 2542 908 2542 906 2542 904 2542 886 2556 773 2556 756 2542 754 2542 752 2542 672 2542 670 2542 668 2542 635 2554 569 2542 567 2542 493 2554 418 2542 416 2542 415 2542 413 2542 405 2546 407 2585"/>
+                        </Shape>
+                        <String CONTENT="Sea. He had two hundred and fifteen Russians and about two hundred"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l37" HPOS="407" VPOS="2602" WIDTH="1760" HEIGHT="65" BASELINE="409 2641 2167 2645" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="409 2641 407 2655 2163 2667 2167 2645 2165 2614 2075 2602 2073 2602 1966 2612 1925 2602 1923 2602 1794 2602 1792 2602 1790 2602 1789 2602 1773 2612 1662 2602 1660 2602 1658 2602 1625 2612 1568 2602 1566 2602 1508 2612 1412 2602 1410 2602 1409 2602 1370 2612 1313 2602 1311 2602 409 2604 409 2641"/>
+                        </Shape>
+                        <String CONTENT="Koryak and Yukaghir. After two months of marching, he reached the seashore,"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-159_r7" HPOS="399" VPOS="2698" WIDTH="1782" HEIGHT="402" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="399 2698 2181 2698 2181 3100 399 3100"/>
+                    </Shape>
+                    <TextLine ID="mz_3-159_l38" HPOS="516" VPOS="2704" WIDTH="290" HEIGHT="50" BASELINE="518 2731 806 2727" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="518 2731 518 2745 635 2754 637 2754 804 2741 806 2727 800 2704 516 2706 518 2731"/>
+                        </Shape>
+                        <String CONTENT="¹ Compare p. 16."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l39" HPOS="518" VPOS="2743" WIDTH="1656" HEIGHT="47" BASELINE="518 2770 2174 2770" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="518 2770 518 2790 2172 2790 2174 2770 2171 2743 518 2745 518 2770"/>
+                        </Shape>
+                        <String CONTENT="² According to tradition, a young girl, wounded by the Chukchee, was languishing on the shores of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l40" HPOS="407" VPOS="2788" WIDTH="173" HEIGHT="42" BASELINE="409 2813 580 2817" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="409 2813 407 2827 576 2830 580 2817 580 2792 409 2788 409 2813"/>
+                        </Shape>
+                        <String CONTENT="that river."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l41" HPOS="520" VPOS="2830" WIDTH="1654" HEIGHT="43" BASELINE="520 2856 2174 2856" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="520 2856 520 2873 2174 2873 2174 2856 2174 2830 520 2830 520 2856"/>
+                        </Shape>
+                        <String CONTENT="³ These were the years in which the great expedition of Bering took place. Krasheninnikoff mentions"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l42" HPOS="409" VPOS="2871" WIDTH="1763" HEIGHT="43" BASELINE="411 2901 2172 2895" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="411 2901 411 2914 2171 2912 2172 2895 2167 2871 409 2875 411 2901"/>
+                        </Shape>
+                        <String CONTENT="that the ship “Gabriel,” which was at the disposal of that expedition, also took part in the war against the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l43" HPOS="411" VPOS="2914" WIDTH="1761" HEIGHT="43" BASELINE="413 2942 2172 2938" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="413 2942 413 2957 2171 2955 2172 2938 2167 2914 411 2916 413 2942"/>
+                        </Shape>
+                        <String CONTENT="Chukchee. This ship visited Chukchee Cape. The inhabitants fled, and left their houses; and the Cossacks"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l44" HPOS="409" VPOS="2955" WIDTH="1760" HEIGHT="49" BASELINE="411 2983 2169 2979" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="411 2983 411 3002 2165 3004 2169 2979 2163 2955 409 2957 411 2983"/>
+                        </Shape>
+                        <String CONTENT="took from them various things, among other objects a chain cut from a whole walrus-tusk, Koryak fashion"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l45" HPOS="409" VPOS="2996" WIDTH="454" HEIGHT="47" BASELINE="411 3023 863 3027" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="411 3023 409 3039 859 3043 863 3027 861 3000 411 2996 411 3023"/>
+                        </Shape>
+                        <String CONTENT="(Krasheninnikoff, II, p. 51)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-159_l46" HPOS="518" VPOS="3037" WIDTH="526" HEIGHT="45" BASELINE="520 3064 1044 3068" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="520 3064 518 3078 1040 3082 1044 3068 1042 3041 520 3037 520 3064"/>
+                        </Shape>
+                        <String CONTENT="⁴ Vol. VI of this series, p. 789."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-159_r8" HPOS="399" VPOS="3114" WIDTH="1782" HEIGHT="60" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="399 3114 2181 3114 2181 3174 399 3174"/>
+                    </Shape>
+                    <TextLine ID="mz_3-159_l47" HPOS="409" VPOS="3115" WIDTH="682" HEIGHT="49" BASELINE="411 3144 1091 3140" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="1087 3131 1085 3115 409 3117 411 3144 411 3162 1087 3164 1091 3140 1089 3133 1087 3131"/>
+                        </Shape>
+                        <String CONTENT="87—JESUP NORTH PACIFIC EXPED., VOL. VII."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

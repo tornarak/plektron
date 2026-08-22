@@ -1,0 +1,155 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "701"
+    },
+    "2": {
+      "text": "Eeñeiˊvu, and carried a paper relating to the stopping of the war. Along",
+      "resolved": "ñ = n + U+0303 COMBINING TILDE; ˊ = U+02CA MODIFIER LETTER ACUTE ACCENT (stress), placed between ei and vu",
+      "note": "Raised comma-shaped mark between 'ei' and 'vu' is stress, U+02CA, not an apostrophe (R4, keying_spec.md §2.1: 'word stress, postposed to the stressed vowel, U+02CA'). CATMuS draft rendered it as a straight apostrophe. Confirmed at 2x zoom.",
+      "class": "draft"
+    },
+    "3": {
+      "text": "with that paper he took a large medal of silver.”"
+    },
+    "4": {
+      "text": "The paper in question, together with the medal, were actually preserved"
+    },
+    "5": {
+      "text": "in a Chukchee family on the Large Anui River. The owners put them in a"
+    },
+    "6": {
+      "text": "flat wooden box, and used this box in the ceremonial as one of the family",
+      "note": "A disconnected black mark floats above 'us' in 'used' in the raster; it does not touch the letters and has no consistent letterform (no accented English words appear elsewhere on the page). Ruled a stray ink blot, not a diacritic — keyed as plain 'used' per keying_spec.md §2.14 (wear/blots are not letters).",
+      "class": "artifact"
+    },
+    "7": {
+      "text": "charms. I bought it from them. The paper proved to be a document dated"
+    },
+    "8": {
+      "text": "Feb. 8, 1789. It was directed to a “Chukchee Chaun Chief, Khamakhei,"
+    },
+    "9": {
+      "text": "who in the year 1788 expressed his desire to become a subject of her Majesty,"
+    },
+    "10": {
+      "text": "and to pay tribute, together with his kinsmen. For that promise he was"
+    },
+    "11": {
+      "text": "presented with a crimson coat, and with a parade dagger bearing the inscription"
+    },
+    "12": {
+      "text": "‘Russian true subject.’ Thus all authorities would thereafter have to meet"
+    },
+    "13": {
+      "text": "him as a true subject and a slave of her Majesty.”"
+    },
+    "14": {
+      "text": "Khamakhei is the Chukchee name Qɪˊmɪqäi (“Little Worm”). Another",
+      "resolved": "Q + ɪ(U+026A) + ˊ(U+02CA stress) + m + ɪ(U+026A) + q + ä(a+U+0308) + i, keyed via lexicon handle Qi_'mi_qa:i",
+      "note": "harness lexicon lookup found this form ratified as key Qi_'mi_qa:i, matching Qɪˊmɪqäi at 1-060 (two occurrences). Confirmed at 4x: both vowels after Q and after m are bare-stemmed, serifed top and bottom, no dot — small-cap dotless ɪ, not ASCII i (R2). CATMuS draft misread the first ɪ as 'r' and the second as plain 'i' (R6, keying_spec.md §5.2 'ɪ over i').",
+      "class": "draft",
+      "as_typed": "Khamakhei is the Chukchee name {Qi_'mi_qa:i} (“Little Worm”). Another"
+    },
+    "15": {
+      "text": "man of this name, whom Wrangel met on Cape Erri, may have been the"
+    },
+    "16": {
+      "text": "descendant of this first “true subject.” It may be seen from this document"
+    },
+    "17": {
+      "text": "that the Russian officials sought again to induce the Chukchee to become"
+    },
+    "18": {
+      "text": "subjects, and to pay tribute; but from this time on, it was done with great"
+    },
+    "19": {
+      "text": "caution, by means of persuasion and without any constraint. This policy has"
+    },
+    "20": {
+      "text": "not changed up to recent times, notwithstanding the fact that efforts were"
+    },
+    "21": {
+      "text": "made by a few officers to force the Chukchee into more real subjection."
+    },
+    "22": {
+      "text": "The most active of all in this respect was Maydell."
+    },
+    "23": {
+      "text": "Even the Russian Code contains special articles referring to “natives not"
+    },
+    "24": {
+      "text": "wholly subjugated.”¹ Of these articles, the 1254th says. “They are governed",
+      "note": "Footnote body reference keyed as superscript ¹ (U+00B9) per keying_spec.md §2.10, tight against the closing quotation mark, as printed. CATMuS draft gives a plain ASCII '1'.",
+      "class": "draft"
+    },
+    "25": {
+      "text": "and judged according to their own customs and usages, and are subject to"
+    },
+    "26": {
+      "text": "Russian law only in case of murder or pillage committed on Russian territory.”"
+    },
+    "27": {
+      "text": "I mentioned before that at the Anui fair only the inner space of the fort is"
+    },
+    "28": {
+      "text": "considered to be Russian territory. Outside the gate begins the free territory"
+    },
+    "29": {
+      "text": "of the Chukchee."
+    },
+    "30": {
+      "text": "Article 1256 says, “The Chukchee pay tribute in quantity and quality"
+    },
+    "31": {
+      "text": "according to their own free will.” This article, however, was excluded in the"
+    },
+    "32": {
+      "text": "next edition of the Code, in 1876."
+    },
+    "33": {
+      "text": "Chukchee Tribute and “Chukchee Presents.” — In order to induce the"
+    },
+    "34": {
+      "text": "Chukchee to consent more readily to the payment of tribute, Banner obtained"
+    },
+    "35": {
+      "text": "from the Government a yearly assignment for the so-called “Chukchee presents.”"
+    },
+    "36": {
+      "text": "The sum was assigned from funds of his Imperial Majesty’s own Cabinet, in"
+    },
+    "37": {
+      "text": "accordance with the fact that tribute from the natives was turned likewise"
+    },
+    "38": {
+      "text": "into the same Cabinet. The sum varied greatly from year to year. Thus,"
+    },
+    "39": {
+      "text": "in the year 1791 it was 500 rubles; in the next year, only 85 rubles; a"
+    },
+    "40": {
+      "text": "century later, in 1861, and after that, it was 150 rubles. Maydell mentions"
+    },
+    "41": {
+      "text": "143 rubles as the probable sum for the year 1869. With this money were"
+    },
+    "42": {
+      "text": "bought tobacco, kettles, and knives, which were then taken to the fair and"
+    },
+    "43": {
+      "text": "¹ Russian Code, edition of 1857, IX, Articles 1251-1256.",
+      "note": "Footnote opener keyed as superscript ¹ (U+00B9) per keying_spec.md §2.10, space before 'Russian' as printed.",
+      "class": "draft"
+    },
+    "44": {
+      "text": "88—JESUP NORTH PACIFIC EXPED., VOL. VII."
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

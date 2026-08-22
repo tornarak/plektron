@@ -1,0 +1,177 @@
+{
+  "lines": {
+    "0": {
+      "text": "689"
+    },
+    "1": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "2": {
+      "text": "of the Kolyma River, and Daniel Busormanov remained on the shallow coast"
+    },
+    "3": {
+      "text": "near the mouth of the Konkova River. We were starving. So he, Daniel,"
+    },
+    "4": {
+      "text": "sent us by tundra to the winter hamlet (зимовье) of the Lower Kolyma. We",
+      "note": "Russian parenthetical gloss, pre-reform orthography, keyed as printed per keying_spec.md §2.7 (Russian is Tier-2, outside the ASCII/Tier-1 policy). Machine draft had garbled Latin lookalikes \"(Jumobpe)\".",
+      "class": "draft"
+    },
+    "5": {
+      "text": "lost our way and fed on weeds, and reached the Kolyma on the tenth day,"
+    },
+    "6": {
+      "text": "where we found Cossacks occupied with fishing. There we have staid until"
+    },
+    "7": {
+      "text": "this present year 1710. In January of this year some Chukchee robbers came"
+    },
+    "8": {
+      "text": "with deceit to the Lower Kolyma winter hamlet. One of them was taken",
+      "note": "Faint specks before \"One\" and after \"taken\" are bleed-through from the periods/comma of the lines directly above and below, not this line's own type.",
+      "class": "artifact"
+    },
+    "9": {
+      "text": "captive, Niˊtkal, according to his Chukchee name. The said Niˊtkal said that",
+      "note": "Raised mark after \"Ni\" keyed as stress U+02CA per R1/§2.1; no lexicon key found for this name (lexicon lookup \"Ni'tkal\"/\"Nitkal\" returned no match), keyed by hand from the raster.",
+      "class": "doubt",
+      "resolved": "Niˊtkal: N + i + U+02CA stress + t + k + a + l"
+    },
+    "10": {
+      "text": "Daniel Busormanov, going by sea, did not recognize the mouth of the Kolyma,"
+    },
+    "11": {
+      "text": "and passed beyond as far as the mouth of the Big River; and there the"
+    },
+    "12": {
+      "text": "Shelag Chukchee murdered him and his comrades.”¹ This is the first direct",
+      "note": "Footnote 1 body reference keyed as superscript U+00B9, tight against the closing curly quote, per keying_spec.md §2.10.",
+      "class": "print"
+    },
+    "13": {
+      "text": "mention of the unknown Shelag, much earlier than that by Wrangell.²",
+      "note": "Footnote 2 body reference keyed as superscript U+00B2 per §2.10. Machine draft appended a stray straight-quote character after \"Wrangell.\" that is not on the page.",
+      "class": "draft"
+    },
+    "14": {
+      "text": "Still more interesting is the report of Sept. 2, 1711, presented in the"
+    },
+    "15": {
+      "text": "fortress of Anadyrsk, in the judicial chamber (судная изба), to the officer",
+      "note": "Russian parenthetical gloss keyed as printed (§2.7). Machine draft garbled it as \"(cymas ngóa)\".",
+      "class": "draft"
+    },
+    "16": {
+      "text": "Matthew Skrebykin by the serving-man Popov, who was sent to the Chukchee",
+      "note": "Machine draft misread \"Popov\" as \"Popoy\"; confirmed at 2x zoom.",
+      "class": "draft"
+    },
+    "17": {
+      "text": "Land to collect information concerning the Chukchee, and also to invite them"
+    },
+    "18": {
+      "text": "to pay tribute."
+    },
+    "19": {
+      "text": "The report says, “He [Popov] and the Anadyr hunter George Toldin,",
+      "note": "Machine draft misread the closing bracket as \"l\": \"[Popovl\". Confirmed \"[Popov]\" at zoom.",
+      "class": "draft"
+    },
+    "20": {
+      "text": "and the newly baptized Yukaghir Ivan Tereshkin, went from the mouth of"
+    },
+    "21": {
+      "text": "the Anadyr to Chukchee Cape. And those unpeaceful Chukchee said that"
+    },
+    "22": {
+      "text": "before that the Russian men had come to them by sea,³ but they had paid",
+      "note": "Footnote 3 body reference keyed as superscript U+00B3, tight against the comma, per §2.10.",
+      "class": "print"
+    },
+    "23": {
+      "text": "them no tribute. Likewise at the present time they would not pay anything,"
+    },
+    "24": {
+      "text": "nor would they give hostages . . . And from that cape he came with his",
+      "note": "Ellipsis set as three spaced periods, keyed with the printed spacing rather than the machine draft's collapsed \"hostages...And\".",
+      "class": "draft"
+    },
+    "25": {
+      "text": "comrades to the Anadyr River, and collected tribute from the River Chukchee"
+    },
+    "26": {
+      "text": "Nokon and his comrades, — five red foxes, one fox from every man. The"
+    },
+    "27": {
+      "text": "Reindeer Chukchee live on the cape along the hills. The ‘walking’ Chukchee",
+      "note": "Curly single quotes on both sides of \"walking\"; machine draft dropped the opening quote (\"walking'\").",
+      "class": "draft"
+    },
+    "28": {
+      "text": "live on both sides of the cape, in earthen houses along the spits, near the"
+    },
+    "29": {
+      "text": "sea, where the walrus dwell . . . According to their custom, the Chukchee,",
+      "note": "Ellipsis set as three spaced periods, keyed with the printed spacing rather than the machine draft's collapsed \"dwell...According\".",
+      "class": "draft"
+    },
+    "30": {
+      "text": "when concluding an agreement, call on the Sun as a witness."
+    },
+    "31": {
+      "text": "“And opposite that Anadyr Cape, on both sides of the Kolyma Sea",
+      "note": "Opening curly double quote; machine draft rendered it as a guillemet «, which is not on the page.",
+      "class": "draft"
+    },
+    "32": {
+      "text": "and of the Anadyr Sea, there is to be seen an island. About that island, the"
+    },
+    "33": {
+      "text": "Cape Chukchee Makachkin and his kinsmen have told him for quite certain"
+    },
+    "34": {
+      "text": "that there live upon that island (large) toothed people. Their religion and"
+    },
+    "35": {
+      "text": "customs and language are different from those of the Chukchee, and since"
+    },
+    "36": {
+      "text": "ancient times there has been no peace between the Cape Chukchee and those"
+    },
+    "37": {
+      "text": "island people. They attack each other and fight. The fighting of the islanders"
+    },
+    "38": {
+      "text": "is with bows, and of the Chukchee the same. Of those island people he has"
+    },
+    "39": {
+      "text": "seen among the Chukchee about ten or more taken captive. Besides their"
+    },
+    "40": {
+      "text": "natural teeth, they have small pieces of walrus-ivory put in through the cheeks"
+    },
+    "41": {
+      "text": "close to the natural teeth.",
+      "note": "A leading speck before \"close\" is bleed-through ink, not type; not keyed. The quoted report opened at line 19 (“He [Popov]…) has no closing quotation mark anywhere on the page — confirmed at zoom, keyed as printed.",
+      "class": "artifact"
+    },
+    "42": {
+      "text": "¹ Monuments, II, No. 123, p. 527.",
+      "note": "Footnote opener keyed as superscript U+00B9 with a following space, per §2.10.",
+      "class": "print"
+    },
+    "43": {
+      "text": "² Compare p. 17.",
+      "note": "Footnote opener keyed as superscript U+00B2 with a following space, per §2.10.",
+      "class": "print"
+    },
+    "44": {
+      "text": "³ Probably Semen Deshnev and his men, in 1648.",
+      "note": "Footnote opener keyed as superscript U+00B3 with a following space, per §2.10.",
+      "class": "print"
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}
