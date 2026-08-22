@@ -90,6 +90,28 @@ def test_the_deleted_rules_comment_is_not_attached_to_a_live_check():
     )
 
 
+def test_the_tier1_counters_are_credited_to_the_rule_that_sets_them():
+    """**The enumeration commit got this wrong and this is why it exists.**
+    `tier1_spans` and `tier1_adopted` are set in `lang-and-glyphs`, whose name
+    does not suggest counting, while `provenance` — which does — counts nothing.
+    The two are adjacent, and the first pass credited the wrong one.
+
+    Checked against the code rather than against the prose: find where the
+    counters are assigned, and assert that position falls inside the rule the
+    docstring names."""
+    banners = [(m.start(), m.group(1)) for m in BANNER.finditer(SRC)]
+    setter = SRC.index("    tier1_spans = 0")
+    owner = [name for pos, name in banners if pos < setter][-1]
+    assert owner == "lang-and-glyphs", (
+        f"`tier1_spans` is now initialised inside {owner!r}. Update the coupling "
+        "note in validate()'s docstring and the comment on provenance-summary — "
+        "both name the rule that sets it."
+    )
+    assert "**`lang-and-glyphs`**" in SRC, (
+        "the docstring no longer credits lang-and-glyphs with the counters"
+    )
+
+
 def test_the_couplings_are_documented():
     """Three, and they are the whole design problem of extracting this. A
     docstring that stopped naming them would let someone extract the rules into

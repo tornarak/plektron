@@ -899,6 +899,290 @@ def _figrefs(root, r: Report, ctx: dict | None) -> tuple[int, int]:
     return marked, unmarked
 
 
+# ---------------------------------------------------------------- the rules
+#
+# One function per `── rule: name ──` banner in `validate`, extracted from a
+# body that had grown to 800 lines. **Argument order is `(root, q, ctx, r)`**,
+# inputs before the report they append to, and a rule takes only what it reads —
+# the three older helpers here (`_check_ids`, `_opening_witness`, `_figrefs`)
+# each chose a different order, which is the naming drift a later pass is for.
+#
+# A rule that produces a counter **returns it** rather than setting a local, on
+# `_figrefs`' precedent: `r.metrics` is assigned wholesale at the end from
+# values gathered the length of the function, so a rule that kept its own count
+# would be invisible to it. That is why these first ten — the ones that produce
+# nothing — came out first and alone.
+
+
+def _rule_line_and_division(root, q, ctx, r: Report) -> None:
+    """Neither element belongs in a page file. ALTO holds the line record, and a
+    page is div-less because a chapter spans a hundred of them —
+    `docs/edition.md` and the collator's contract carry the reasoning."""
+    if root.find(f".//{q('lb')}") is not None:
+        r.errors.append("<lb/> present — ALTO holds the line record")
+    if root.find(f".//{q('div')}") is not None:
+        r.errors.append("<div> present — page files are div-less")
+
+
+def _rule_notes(root, q, ctx, r: Report) -> None:
+    """Marker and note: at the foot, numbered, or explained by a continuation."""
+    comments_text = " ".join(c.text or "" for c in root.iter(etree.Comment))
+    for note in root.iter(q("note")):
+        if note.get("place") != "bottom":
+            r.errors.append("a <note> lacks place='bottom'")
+        # Silent on an unanchored note: the anchoring error already tells the
+        # reviewer to set `@n` from the printed marker, and a second line naming the
+        # same missing attribute in different words reads as a second thing to do.
+        if (note.get("n") is None and NOTE_CONT_COMMENT not in comments_text
+                and etree.QName(note.getparent()).localname != "body"):
+            r.errors.append("<note> without n= but no continuation comment present")
+        if note.get("n") is not None and not note.get("n").isdigit():
+            r.warnings.append(f"<note n='{note.get('n')}'>: non-integer marker "
+                              "(book uses integers) — confirm against image")
+
+
+def _rule_unexpanded_handle(root, q, ctx, r: Report) -> None:
+    """An unexpanded `index=` is not a dangling pointer — it is a file that never
+    went through `harness tei expand`, holding no text where the ratified form
+    should be. Named as the missing step rather than as a bad reference, and
+    detectable rather than merely suspected: `@index` is not a TEI attribute.
+
+    **Silent where the element carries no Tier-1 `xml:lang`**, because there the
+    missing step is not this one. `expand` refuses a handle whose element is not
+    a Tier-1 span — "English is not transcluded" — so telling a reviewer to run it
+    would send them to a verb that cannot help, and `foreign-lang` already says
+    what actually has to happen. Every generated page arrives with one handle per
+    ratified token, so without this the ordinary state of a page nobody has
+    touched is two errors per handle naming two different remedies, one of them
+    inert. A detector firing on the ordinary case buries the one that is not.
+    """
+    for el in root.iter():
+        if (isinstance(el.tag, str) and el.get("index") is not None
+                and el.get(XML_LANG) in TIER1):
+            r.errors.append(
+                f"<{etree.QName(el).localname} index='{el.get('index')}'> was "
+                "never expanded — run `harness tei expand` to write the "
+                "ratified form in")
+
+
+def _rule_foreign_lang(root, q, ctx, r: Report) -> None:
+    """**A <foreign> with no @xml:lang says nothing at all**, and is the one element
+    where that is true by definition: TEI's <foreign> means "not the surrounding
+    language", so without naming the language it asserts a negative about an
+    unnamed positive. Every other element here has a real untyped state — an
+    untyped <name> records "the page marked a proper noun and did not say what
+    kind", which is a finding — but there is no fact a lang-less <foreign> can be
+    recording.
+
+    It is a gate rather than a worklist because the pass cannot leave one behind
+    by accident: `harness tei generate` writes exactly this shape, one per
+    `tier1_terms` hit, precisely so the reviewer has to dispose of each. Two
+    dispositions, and both are cheap — assign the language, and `tei expand` fills
+    the ratified glyphs from `gt/ocr/`; or unwrap, because the detector is a floor
+    over inventory marks and cannot tell a Chukchee form from a German surname
+    carrying the same combining diaeresis. `Döring` on `1-022` is the standing
+    case: U+0308 is an inventory mark, `NON_ENGLISH_HITS` fires correctly, and the
+    word is ordinary German in English prose that was never foreign to mark.
+
+    Unwrapping is the commoner answer on front matter and the rarer one in the
+    body, and nothing here leans either way — that is the judgement being asked
+    for. The check also closes a hole that predates the generator: a hand-written
+    <foreign> with text and no language used to pass in silence.
+    """
+    for el in root.iter(q("foreign")):
+        if el.get(XML_LANG):
+            continue
+        span = " ".join("".join(el.itertext()).split())[:40]
+        held = f"index={el.get('index')!r}" if el.get("index") else repr(span)
+        r.errors.append(
+            f"<foreign {held}> carries no xml:lang — language unjudged. Assign one "
+            "(and `harness tei expand` writes the ratified form in), or unwrap it: "
+            "an inventory mark is not by itself a foreign form, and a name in an "
+            "ordinary European orthography is not one at all")
+
+
+def _rule_milestones(root, q, ctx, r: Report) -> None:
+    """An id must exist in the ToC — that is the hard check. Falling outside the
+    supplied window is only a warning: the window is keyed to a predicted folio,
+    so a milestone outside it may mean the prediction is wrong rather than the
+    milestone. Marks inform; they do not decide.
+
+    **A `#mz` milestone is re-derived here, on the page's own printed folio.**
+    `resp="#mz"` on one says a rule joined `data/toc.json` to this page, and
+    `#mz`'s whole licence is that the claim is recomputed from its store every
+    run rather than trusted because it is written down. What is re-derived is
+    the durable half — the ToC opens this id at the folio this page prints —
+    and not the generator's text match, deliberately: review is expected to
+    restructure the block the head sits in, and a check that failed when a
+    collator did its job would be a check nobody could satisfy honestly.
+    """
+    window_ids, all_toc_ids = set(), set()
+    starts_here: set[str] = set()
+    if ctx:
+        window_ids = {e["id"] for e in ctx.get("toc_window", [])}
+        toc = load_toc(Path(ctx.get("root", ".")))
+        all_toc_ids = {e["id"] for e in toc if e.get("id")}
+        pb = root.find(f".//{q('pb')}")
+        printed = pb.get("n") if pb is not None else None
+        starts_here = {e["id"] for e in
+                       toc_starts(toc, int(printed) if (printed or "").isdigit()
+                                  else None)}
+    for ms in root.iter(q("milestone")):
+        extra = set(ms.keys()) - {"unit", "n", "resp"}
+        if extra:
+            r.errors.append(f"<milestone> carries extra attributes {extra}")
+        if ms.get("resp") is not None and ms.get("resp") != RULED:
+            r.errors.append(
+                f"<milestone resp='{ms.get('resp')}'>: a milestone is either a "
+                f"rule's join against data/toc.json ({RULED}) or a reading with "
+                "no @resp at all — no other rank has anything to assert about a "
+                "structural boundary")
+        if ms.get("unit") not in {"chapter", "section", "subsection", "subsubsection"}:
+            r.errors.append(f"<milestone unit='{ms.get('unit')}'> not in the level map")
+        if ctx and ms.get("resp") == RULED and ms.get("n") not in starts_here:
+            r.errors.append(
+                f"<milestone n='{ms.get('n')}' resp='{RULED}'> does not re-derive: "
+                "data/toc.json does not open it at the folio this page prints. "
+                f"Either it belongs on another page, or the <pb n> moved under it, "
+                f"or a human placed it — in which case drop the @resp, since {RULED} "
+                "claims a join no rule would make")
+        if all_toc_ids and ms.get("n") not in all_toc_ids:
+            r.errors.append(f"<milestone n='{ms.get('n')}'> matches no ToC id")
+        # Only meaningful when the window is keyed to a folio at all; with no
+        # prediction the window is just the believed-open set, and "outside it"
+        # carries no information worth interrupting for.
+        elif window_ids and ctx.get("expected_folio") is not None \
+                and ms.get("n") not in window_ids:
+            r.warnings.append(
+                f"<milestone n='{ms.get('n')}'> is a real ToC id but falls outside "
+                "the supplied window — either the folio prediction is off or this "
+                "milestone belongs elsewhere; resolve before commit")
+
+
+def _rule_seam_shape(root, q, ctx, r: Report) -> None:
+    """Forbidden structure at a page seam.
+
+    @part used to be banned outright, on the grounds that continuation was a
+    later pass's job. The ban was too wide: a gap's two ends are one fact, and
+    the page *after* the gap is the only place both witnesses exist — it holds
+    the previous page's tail, its own opening text and its own first-line
+    indent. So `harness tei seam` writes @part on both sides, and the TEI is the
+    record rather than a materialization of some sidecar.
+
+    What is checked here is therefore the *shape*: a legal I/M/F value, on a
+    direct child of <body>, and only on the first or last of them. An element
+    in the middle of a page cannot span either gap, so @part there is always
+    wrong. @prev/@next stay banned — they carry ids, and the id scheme is
+    unsettled; a run-on <list> or <table> is refused by `seam` for that reason
+    rather than given a pointer that resolves to nothing.
+    """
+    from .seam import body_elements
+    spanning = body_elements(root)
+    edge = {id(el) for el in (spanning[:1] + spanning[-1:])}
+    for el in root.iter():
+        if not isinstance(el.tag, str):
+            continue
+        name = etree.QName(el).localname
+        if el.get("part") is not None:
+            if el.get("part") not in ("I", "M", "F"):
+                r.errors.append(
+                    f"@part={el.get('part')!r} on <{name}> — TEI allows I, M or F")
+            elif id(el) not in edge:
+                r.errors.append(
+                    f"@part on <{name}>, which is neither the first nor the last "
+                    "top-level element of <body> — nothing in the middle of a "
+                    "page spans either gap")
+        for att in ("prev", "next"):
+            if el.get(att) is not None and id(el) not in edge:
+                r.errors.append(
+                    f"@{att} on <{name}>, which is neither the first nor the last "
+                    "top-level element of <body> — only those touch a gap")
+            if el.get(att) is not None and el.get("part") is not None:
+                r.errors.append(
+                    f"<{name}> carries both @part and @{att} — one gap, two "
+                    "spellings; a fragmentable element is parted, a linkable one "
+                    "is linked, never both")
+    _check_ids(r, root, ctx)
+
+
+def _rule_folio(body, q, ctx, r: Report) -> None:
+    """pb: first element. @n is the folio the model read off the image; absent
+    @n asserts the page carries no printed folio (plate, blank, part title).
+    That assertion is load-bearing downstream — it tells the seam ledger not
+    to advance the printed count — so it is surfaced, not accepted silently.
+
+    Takes `body` rather than `root`: it is the only rule about the *order* of
+    `<body>`'s children, so the element it needs is the one it asks for.
+    """
+    kids = [c for c in body if isinstance(c.tag, str)]
+    if not kids or kids[0].tag != q("pb"):
+        r.errors.append("<pb> is not the first element in <body>")
+    else:
+        n = kids[0].get("n")
+        if n is None:
+            r.warnings.append("<pb/> without @n — asserts this page carries no "
+                              "printed folio; confirm against the image")
+        elif not n.isdigit():
+            r.errors.append(f"<pb n='{n}'> is not an integer folio")
+        elif ctx and ctx.get("expected_folio") is not None \
+                and int(n) != ctx["expected_folio"]:
+            basis = ctx.get("folio_basis", {})
+            r.warnings.append(
+                f"printed folio {n} != expected {ctx['expected_folio']} "
+                f"(predicted from {basis.get('basis_ref')} = "
+                f"{basis.get('basis_folio')}) — mismatch comment required "
+                "(harness: folio wins, the prediction is only a prediction)")
+
+    _opening_witness(body, q, r)
+
+
+def _rule_figures(root, q, ctx, r: Report) -> None:
+    """`<figure n>` against the numbers this page's own captions print."""
+    if ctx is None:
+        return
+    # The page's own captions are the witness, not a set of ids the context
+    # handed over: a figure anchored on the wrong page is the error worth
+    # catching, and only the book's own numbering can see it.
+    printed = {f["n"] for f in ctx.get("figures_on_page", []) if f["n"]}
+    for fig in root.iter(q("figure")):
+        n = fig.get("n")
+        if n is None:
+            r.errors.append("<figure> without n= — anchor it at the figure "
+                            "number the caption prints")
+        elif n not in printed:
+            r.errors.append(
+                f"<figure n='{n}'> — no caption on this page prints that "
+                f"number (this page sets {sorted(printed) or 'none'})")
+        if fig.get("facs") is not None:
+            # Geometry is the build's join, through `data/readings.md`. A
+            # zone id here is the pass placing a figure, which is not its
+            # competence and not checkable from the text it can see.
+            r.errors.append(
+                f"<figure facs='{fig.get('facs')}'> — figures are anchored "
+                "by the printed number; the build resolves the zones")
+
+
+def _rule_tier1_facs(root, q, ctx, r: Report) -> None:
+    """Tier-1 @facs (optional): if a span cites an OCR line, the line must be
+    real. Mirrors `figures`' `@facs` check — a dangling citation is strictly
+    worse than none, so it errors rather than warns."""
+    if ctx is None:
+        return
+    line_ids = {str(ln["index"]) for ln in ctx.get("ocr_lines", [])}
+    for el in root.iter():
+        if not isinstance(el.tag, str) or el.get(XML_LANG) not in TIER1:
+            continue
+        facs = el.get("facs")
+        if facs is None:
+            continue
+        name = etree.QName(el).localname
+        for tok in facs.split():
+            lid = tok.lstrip("#")
+            if lid not in line_ids:
+                r.errors.append(f"<{name} facs='#{lid}'> matches no "
+                                "supplied OCR line")
+
+
 def validate(tei_path: Path, ctx: dict | None = None,
              ratified: bool = False, schema: bool = False,
              store: dict | None = None) -> Report:
@@ -954,10 +1238,16 @@ def validate(tei_path: Path, ctx: dict | None = None,
         schema              conformance, and **last** — see the comment there
 
     **Three couplings**, which are what make this a function rather than a list:
-    `provenance-summary` consumes `provenance`'s counters, `relink-missing`
-    reuses the store `entities` loaded, and `metrics` gathers counters from the
-    whole length of the body. Anything that extracts these into functions has to
-    answer all three; the banners mark where.
+    `provenance-summary` consumes the `tier1_spans`/`tier1_adopted` counters that
+    **`lang-and-glyphs`** sets, `relink-missing` reuses the store `entities`
+    loaded, and `metrics` gathers counters from the whole length of the body.
+    Anything that extracts these into functions has to answer all three; the
+    banners mark where.
+
+    That first coupling is worth reading twice, because the enumeration commit
+    got it wrong: the counting sits in `lang-and-glyphs`, whose name does not
+    suggest it, while `provenance` — which does — counts nothing. They are
+    adjacent, which is exactly how the misreading happened.
     """
     r = Report()
     try:
@@ -973,74 +1263,10 @@ def validate(tei_path: Path, ctx: dict | None = None,
         return r
 
     # ── rule: folio ──────────────────────────────────────────────────────────
-    # pb: first element. @n is the folio the model read off the image; absent
-    # @n asserts the page carries no printed folio (plate, blank, part title).
-    # That assertion is load-bearing downstream — it tells the seam ledger not
-    # to advance the printed count — so it is surfaced, not accepted silently.
-    kids = [c for c in body if isinstance(c.tag, str)]
-    if not kids or kids[0].tag != q("pb"):
-        r.errors.append("<pb> is not the first element in <body>")
-    else:
-        n = kids[0].get("n")
-        if n is None:
-            r.warnings.append("<pb/> without @n — asserts this page carries no "
-                              "printed folio; confirm against the image")
-        elif not n.isdigit():
-            r.errors.append(f"<pb n='{n}'> is not an integer folio")
-        elif ctx and ctx.get("expected_folio") is not None \
-                and int(n) != ctx["expected_folio"]:
-            basis = ctx.get("folio_basis", {})
-            r.warnings.append(
-                f"printed folio {n} != expected {ctx['expected_folio']} "
-                f"(predicted from {basis.get('basis_ref')} = "
-                f"{basis.get('basis_folio')}) — mismatch comment required "
-                "(harness: folio wins, the prediction is only a prediction)")
-
-    _opening_witness(body, q, r)
+    _rule_folio(body, q, ctx, r)
 
     # ── rule: seam-shape ─────────────────────────────────────────────────────
-    # forbidden structure.
-    #
-    # @part used to be banned outright, on the grounds that continuation was a
-    # later pass's job. The ban was too wide: a gap's two ends are one fact, and
-    # the page *after* the gap is the only place both witnesses exist — it holds
-    # the previous page's tail, its own opening text and its own first-line
-    # indent. So `harness tei seam` writes @part on both sides, and the TEI is the
-    # record rather than a materialization of some sidecar.
-    #
-    # What is checked here is therefore the *shape*: a legal I/M/F value, on a
-    # direct child of <body>, and only on the first or last of them. An element
-    # in the middle of a page cannot span either gap, so @part there is always
-    # wrong. @prev/@next stay banned — they carry ids, and the id scheme is
-    # unsettled; a run-on <list> or <table> is refused by `seam` for that reason
-    # rather than given a pointer that resolves to nothing.
-    from .seam import body_elements
-    spanning = body_elements(root)
-    edge = {id(el) for el in (spanning[:1] + spanning[-1:])}
-    for el in root.iter():
-        if not isinstance(el.tag, str):
-            continue
-        name = etree.QName(el).localname
-        if el.get("part") is not None:
-            if el.get("part") not in ("I", "M", "F"):
-                r.errors.append(
-                    f"@part={el.get('part')!r} on <{name}> — TEI allows I, M or F")
-            elif id(el) not in edge:
-                r.errors.append(
-                    f"@part on <{name}>, which is neither the first nor the last "
-                    "top-level element of <body> — nothing in the middle of a "
-                    "page spans either gap")
-        for att in ("prev", "next"):
-            if el.get(att) is not None and id(el) not in edge:
-                r.errors.append(
-                    f"@{att} on <{name}>, which is neither the first nor the last "
-                    "top-level element of <body> — only those touch a gap")
-            if el.get(att) is not None and el.get("part") is not None:
-                r.errors.append(
-                    f"<{name}> carries both @part and @{att} — one gap, two "
-                    "spellings; a fragmentable element is parted, a linkable one "
-                    "is linked, never both")
-    _check_ids(r, root, ctx)
+    _rule_seam_shape(root, q, ctx, r)
     # **Two rules were removed from this spot and their reasoning stayed**, which
     # left a 29-line comment about `<note>` placement sitting immediately above a
     # check about `<lb>` and `<div>`. Nothing tied them together but adjacency,
@@ -1069,184 +1295,25 @@ def validate(tei_path: Path, ctx: dict | None = None,
     #   as printed, with no element beside it to set tight against.
 
     # ── rule: line-and-division ──────────────────────────────────────────────
-    # Neither element belongs in a page file. ALTO holds the line record, and a
-    # page is div-less because a chapter spans a hundred of them —
-    # `docs/edition.md` and the collator's contract carry the reasoning.
-    if root.find(f".//{q('lb')}") is not None:
-        r.errors.append("<lb/> present — ALTO holds the line record")
-    if root.find(f".//{q('div')}") is not None:
-        r.errors.append("<div> present — page files are div-less")
+    _rule_line_and_division(root, q, ctx, r)
 
     # ── rule: milestones ─────────────────────────────────────────────────────
-    # milestones. An id must exist in the ToC — that is the hard check. Falling
-    # outside the supplied window is only a warning: the window is keyed to a
-    # predicted folio, so a milestone outside it may mean the prediction is
-    # wrong rather than the milestone. Marks inform; they do not decide.
-    #
-    # **A `#mz` milestone is re-derived here, on the page's own printed folio.**
-    # `resp="#mz"` on one says a rule joined `data/toc.json` to this page, and
-    # `#mz`'s whole licence is that the claim is recomputed from its store every
-    # run rather than trusted because it is written down. What is re-derived is
-    # the durable half — the ToC opens this id at the folio this page prints —
-    # and not the generator's text match, deliberately: review is expected to
-    # restructure the block the head sits in, and a check that failed when a
-    # collator did its job would be a check nobody could satisfy honestly.
-    window_ids, all_toc_ids = set(), set()
-    starts_here: set[str] = set()
-    if ctx:
-        window_ids = {e["id"] for e in ctx.get("toc_window", [])}
-        toc = load_toc(Path(ctx.get("root", ".")))
-        all_toc_ids = {e["id"] for e in toc if e.get("id")}
-        pb = root.find(f".//{q('pb')}")
-        printed = pb.get("n") if pb is not None else None
-        starts_here = {e["id"] for e in
-                       toc_starts(toc, int(printed) if (printed or "").isdigit()
-                                  else None)}
-    for ms in root.iter(q("milestone")):
-        extra = set(ms.keys()) - {"unit", "n", "resp"}
-        if extra:
-            r.errors.append(f"<milestone> carries extra attributes {extra}")
-        if ms.get("resp") is not None and ms.get("resp") != RULED:
-            r.errors.append(
-                f"<milestone resp='{ms.get('resp')}'>: a milestone is either a "
-                f"rule's join against data/toc.json ({RULED}) or a reading with "
-                "no @resp at all — no other rank has anything to assert about a "
-                "structural boundary")
-        if ms.get("unit") not in {"chapter", "section", "subsection", "subsubsection"}:
-            r.errors.append(f"<milestone unit='{ms.get('unit')}'> not in the level map")
-        if ctx and ms.get("resp") == RULED and ms.get("n") not in starts_here:
-            r.errors.append(
-                f"<milestone n='{ms.get('n')}' resp='{RULED}'> does not re-derive: "
-                "data/toc.json does not open it at the folio this page prints. "
-                f"Either it belongs on another page, or the <pb n> moved under it, "
-                f"or a human placed it — in which case drop the @resp, since {RULED} "
-                "claims a join no rule would make")
-        if all_toc_ids and ms.get("n") not in all_toc_ids:
-            r.errors.append(f"<milestone n='{ms.get('n')}'> matches no ToC id")
-        # Only meaningful when the window is keyed to a folio at all; with no
-        # prediction the window is just the believed-open set, and "outside it"
-        # carries no information worth interrupting for.
-        elif window_ids and ctx.get("expected_folio") is not None \
-                and ms.get("n") not in window_ids:
-            r.warnings.append(
-                f"<milestone n='{ms.get('n')}'> is a real ToC id but falls outside "
-                "the supplied window — either the folio prediction is off or this "
-                "milestone belongs elsewhere; resolve before commit")
+    _rule_milestones(root, q, ctx, r)
 
     # ── rule: notes ──────────────────────────────────────────────────────────
-    # notes
-    comments_text = " ".join(c.text or "" for c in root.iter(etree.Comment))
-    for note in root.iter(q("note")):
-        if note.get("place") != "bottom":
-            r.errors.append("a <note> lacks place='bottom'")
-        # Silent on an unanchored note: the anchoring error already tells the
-        # reviewer to set `@n` from the printed marker, and a second line naming the
-        # same missing attribute in different words reads as a second thing to do.
-        if (note.get("n") is None and NOTE_CONT_COMMENT not in comments_text
-                and etree.QName(note.getparent()).localname != "body"):
-            r.errors.append("<note> without n= but no continuation comment present")
-        if note.get("n") is not None and not note.get("n").isdigit():
-            r.warnings.append(f"<note n='{note.get('n')}'>: non-integer marker "
-                              "(book uses integers) — confirm against image")
+    _rule_notes(root, q, ctx, r)
 
     # ── rule: figures ────────────────────────────────────────────────────────
-    # figures
-    if ctx is not None:
-        # The page's own captions are the witness, not a set of ids the context
-        # handed over: a figure anchored on the wrong page is the error worth
-        # catching, and only the book's own numbering can see it.
-        printed = {f["n"] for f in ctx.get("figures_on_page", []) if f["n"]}
-        for fig in root.iter(q("figure")):
-            n = fig.get("n")
-            if n is None:
-                r.errors.append("<figure> without n= — anchor it at the figure "
-                                "number the caption prints")
-            elif n not in printed:
-                r.errors.append(
-                    f"<figure n='{n}'> — no caption on this page prints that "
-                    f"number (this page sets {sorted(printed) or 'none'})")
-            if fig.get("facs") is not None:
-                # Geometry is the build's join, through `data/readings.md`. A
-                # zone id here is the pass placing a figure, which is not its
-                # competence and not checkable from the text it can see.
-                r.errors.append(
-                    f"<figure facs='{fig.get('facs')}'> — figures are anchored "
-                    "by the printed number; the build resolves the zones")
+    _rule_figures(root, q, ctx, r)
 
     # ── rule: tier1-facs ─────────────────────────────────────────────────────
-    # Tier-1 @facs (optional): if a span cites an OCR line, the line must be
-    # real. Mirrors the <figure facs> check above — a dangling citation is
-    # strictly worse than none, so it errors rather than warns.
-    if ctx is not None:
-        line_ids = {str(ln["index"]) for ln in ctx.get("ocr_lines", [])}
-        for el in root.iter():
-            if not isinstance(el.tag, str) or el.get(XML_LANG) not in TIER1:
-                continue
-            facs = el.get("facs")
-            if facs is None:
-                continue
-            name = etree.QName(el).localname
-            for tok in facs.split():
-                lid = tok.lstrip("#")
-                if lid not in line_ids:
-                    r.errors.append(f"<{name} facs='#{lid}'> matches no "
-                                    "supplied OCR line")
+    _rule_tier1_facs(root, q, ctx, r)
 
     # ── rule: unexpanded-handle ──────────────────────────────────────────────
-    # An unexpanded `index=` is not a dangling pointer — it is a file that never
-    # went through `harness tei expand`, holding no text where the ratified form
-    # should be. Named as the missing step rather than as a bad reference, and
-    # detectable rather than merely suspected: `@index` is not a TEI attribute.
-    #
-    # **Silent where the element carries no Tier-1 `xml:lang`**, because there the
-    # missing step is not this one. `expand` refuses a handle whose element is not
-    # a Tier-1 span — "English is not transcluded" — so telling a reviewer to run it
-    # would send them to a verb that cannot help, and the check below already says
-    # what actually has to happen. Every generated page arrives with one handle per
-    # ratified token, so without this the ordinary state of a page nobody has
-    # touched is two errors per handle naming two different remedies, one of them
-    # inert. A detector firing on the ordinary case buries the one that is not.
-    for el in root.iter():
-        if (isinstance(el.tag, str) and el.get("index") is not None
-                and el.get(XML_LANG) in TIER1):
-            r.errors.append(
-                f"<{etree.QName(el).localname} index='{el.get('index')}'> was "
-                "never expanded — run `harness tei expand` to write the "
-                "ratified form in")
+    _rule_unexpanded_handle(root, q, ctx, r)
 
     # ── rule: foreign-lang ───────────────────────────────────────────────────
-    # **A <foreign> with no @xml:lang says nothing at all**, and is the one element
-    # where that is true by definition: TEI's <foreign> means "not the surrounding
-    # language", so without naming the language it asserts a negative about an
-    # unnamed positive. Every other element here has a real untyped state — an
-    # untyped <name> records "the page marked a proper noun and did not say what
-    # kind", which is a finding — but there is no fact a lang-less <foreign> can be
-    # recording.
-    #
-    # It is a gate rather than a worklist because the pass cannot leave one behind
-    # by accident: `harness tei generate` writes exactly this shape, one per
-    # `tier1_terms` hit, precisely so the reviewer has to dispose of each. Two
-    # dispositions, and both are cheap — assign the language, and `tei expand` fills
-    # the ratified glyphs from `gt/ocr/`; or unwrap, because the detector is a floor
-    # over inventory marks and cannot tell a Chukchee form from a German surname
-    # carrying the same combining diaeresis. `Döring` on `1-022` is the standing
-    # case: U+0308 is an inventory mark, `NON_ENGLISH_HITS` fires correctly, and the
-    # word is ordinary German in English prose that was never foreign to mark.
-    #
-    # Unwrapping is the commoner answer on front matter and the rarer one in the
-    # body, and nothing here leans either way — that is the judgement being asked
-    # for. The check also closes a hole that predates the generator: a hand-written
-    # <foreign> with text and no language used to pass in silence.
-    for el in root.iter(q("foreign")):
-        if el.get(XML_LANG):
-            continue
-        span = " ".join("".join(el.itertext()).split())[:40]
-        held = f"index={el.get('index')!r}" if el.get("index") else repr(span)
-        r.errors.append(
-            f"<foreign {held}> carries no xml:lang — language unjudged. Assign one "
-            "(and `harness tei expand` writes the ratified form in), or unwrap it: "
-            "an inventory mark is not by itself a foreign form, and a name in an "
-            "ordinary European orthography is not one at all")
+    _rule_foreign_lang(root, q, ctx, r)
 
     # ── rule: provenance ─────────────────────────────────────────────────────
     # THE check, re-anchored: provenance rank, not agreement with an upstream file.
@@ -1395,8 +1462,10 @@ def validate(tei_path: Path, ctx: dict | None = None,
             r.warnings.append(f"suspicious xml:lang '{v}'")
 
     # ── rule: provenance-summary ─────────────────────────────────────────────
-    # Consumes `tier1_spans` / `tier1_adopted` from `provenance` above: one of
-    # the three couplings that make this function more than a sequence.
+    # Consumes `tier1_spans` / `tier1_adopted`, which **`lang-and-glyphs` sets**,
+    # not `provenance` — the two rules sit next to each other and the counting
+    # happens in the one whose name does not suggest it. One of the three
+    # couplings that make this function more than a sequence.
     #
     # One summary line for the page's provenance state, so a PASS never reads as
     # "these forms are settled". Saying so once is cheaper than a human inferring
