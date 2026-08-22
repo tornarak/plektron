@@ -237,10 +237,6 @@ def register(cli):
     add_jobs(p)
     opt(p, "--itinerary", metavar="LST", default=None, help=ITIN_HELP)
 
-    p = action(g, "link", run_link, section="The store", help="rebuild zones/, the read view over both stores: one "
-            "name per page, the human file winning wherever it exists. Derived "
-            "and gitignored; reads may resolve through it, writes never do")
-
     p = action(g, "blot", run_blot, section="The store", help="write the figure-blotted raster the segmenter trains "
             "on — gt/fig/ zones painted **white**, so paragraph wrap around an "
             "illustration cannot shape what the model learns about zone geometry. "
@@ -488,12 +484,6 @@ def run_paragraphs(a) -> int:
     out(a, summary)
     if rows:
         out(a, rows, "boundaries")
-    return 0
-
-
-def run_link(a) -> int:
-    zmod, _ = _mod()
-    out(a, zmod.link_view(a.root))
     return 0
 
 

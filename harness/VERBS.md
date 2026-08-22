@@ -444,7 +444,7 @@ writes the overlay, and geometry only.
 **Writes** —
 **Exit** always 0.
 **Note** through the view by default, so a page only the recognizer has read counts. That is deliberate: a machine-read page *is* workable. It was sparse by construction while `gt/ocr/` was the only store under the view and is not any more, so narrow it when the question is narrower.
-**Note** `--show-store` turns the bare list into `{ref, gt, mz, view}`. `--store` still picks the rows; the flag adds the columns. **`view` is read off the farm, not derived** from `gt`/`mz` — derived it would restate the rule and could never disagree with itself, whereas `ocr/` is derived output that nothing rebuilds automatically, so a page restored into `gt/ocr/` since the last `ocr link` shows `view: mz` and says so. `""` is no live link; `?` is a link resolving outside both stores.
+**Note** `--show-store` turns the bare list into `{ref, gt, mz, view}`. `--store` still picks the rows; the flag adds the columns. **`view` is read off the farm, not derived** from `gt`/`mz` — derived it would restate the rule and could never disagree with itself, whereas `ocr/` is derived output that nothing rebuilds automatically, so a page restored into `gt/ocr/` since the last `views build ocr` shows `view: mz` and says so. `""` is no live link; `?` is a link resolving outside both stores.
 ```
 --store {gt,mz}  which store to read [omit: the ocr/ view, which resolves per page
                  to the human file where there is one]
@@ -828,16 +828,6 @@ Opcodes come from difflib over **NFD** text, so a dropped combining mark ranks a
 --root --json --toon --pager
 ```
 
-### ocr link
-**Does** rebuilds `ocr/`, the read view over `gt/ocr/` and `mz/ocr/`, the human file winning wherever it exists. `zones link`'s twin — the same shape over the same three-store layout.
-**Reads** `gt/ocr/`, `mz/ocr/`.
-**Writes** `ocr/` (derived). Relative links; a link whose target has gone is removed and counted rather than left to dangle.
-**Exit** always 0.
-**Note** `from_gt`/`from_mz` is the number worth reading: how much of the corpus is still only the machines' word.
-```
---root --json --toon --pager
-```
-
 ---
 
 ## proposal
@@ -1135,15 +1125,6 @@ opinion of which pages are held out.
 --all            every keyed page
 --itinerary LST  scope to a work-list [whole corpus]
 --jobs N         worker threads; 1 runs serially and builds no pool [cores, capped]
---root --json --toon --pager
-```
-
-### zones link
-**Does** rebuilds `zones/`, the read view over both stores, the human file winning. Reports the split, which is how much of the corpus is still the machine's word.
-**Reads** both stores.
-**Writes** `zones/` (derived) — relative symlinks; stale ones are removed and counted.
-**Exit** always 0.
-```
 --root --json --toon --pager
 ```
 
@@ -1870,8 +1851,10 @@ is the split list, never the directory's contents, which is what lets a leaf
 re-ruled `plate` → `blank` report `stale` on the farm it left instead of sitting
 in both.
 
-`ocr link` and `zones link` are the same act said from inside those groups, and
-call the same functions. Two spellings, one implementation.
+**Naming a farm is how one view gets relinked**: `views build ocr`,
+`views build zones`. There were per-domain spellings for those two — `ocr link`
+and `zones link` — which called the same functions with the same argument; two
+spellings of one implementation, retired as duplicate surface.
 
 ### views check [FARM ...]
 **Does** one row per **named** derived tree: whether it exists, whether its membership still matches whatever decides it, and **how deep that comparison went**.
@@ -1900,7 +1883,7 @@ FARM...       which trees, space-separated: ocr, zones, w-figs-blotted, w-figs,
 --all         every farm this action handles
 --root --json --toon --pager
 ```
-**Note** **`--all` must be said, and this verb is why.** Rebuilding `scans/w-figs-blotted/` repaints 252 page composites and is by a wide margin the most expensive thing in the harness — a cost entirely invisible at the call site, since nothing about `harness views build` suggests a corpus-wide raster pass. The caller who wanted one view relinked after a `restore` was the one paying it. **Prefer the per-domain spelling in a per-page loop**: `ocr link` and `zones link` relink one view and are what a page-level pass wants; `views build --all` is for a deliberate corpus-level sweep, the way `corpus normalize --all` is against naming the page.
+**Note** **`--all` must be said, and this verb is why.** Rebuilding `scans/w-figs-blotted/` repaints 252 page composites and is by a wide margin the most expensive thing in the harness — a cost entirely invisible at the call site, since nothing about `harness views build` suggests a corpus-wide raster pass. The caller who wanted one view relinked after a `restore` was the one paying it. **Name the farm in a per-page loop**: `views build ocr` and `views build zones` relink one view and are what a page-level pass wants; `views build --all` is for a deliberate corpus-level sweep, the way `corpus normalize --all` is against naming the page.
 **Note** **a farm whose builder must *read* an absent tree is skipped with a row**, never attempted and never silently dropped. The distinction is between what a builder opens and what its links merely point at: the blot builder reads pixels out of `scans/`, so with no `scans/` it cannot run; `w-figs` and `w-ocr` need only their tracked membership sources and build fine, leaving raster links that dangle — this repo's stated disposition for a link into an ignored tree. Hence exit 0 on a clone: building what can be built is the success case, and `views check` is what says what is still missing.
 **Note** `scans/` and `train/bogoras-seg/` are reported by `check` and built by neither. `scans/` is `pdftoppm` over `pdfs/`, whose entries are symlinks pointing outside the repo, so on a clone the rasters cannot be regenerated at all; `train/` is scratch that `zones assemble` clobbers by design.
 

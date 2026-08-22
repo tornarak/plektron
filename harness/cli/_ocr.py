@@ -177,7 +177,7 @@ def register(cli):
                    help="a row per ref instead of a bare list: which real stores "
                         "hold the page, and which one the ocr/ view actually "
                         "reaches. `view` is read off the farm rather than derived, "
-                        "so a page restored since the last `ocr link` shows up as "
+                        "so a page restored since the last `views build ocr` shows up as "
                         "still pointing at mz")
 
     p = _store(refs_arg(add("lines", help="per-line records for a page — line id, "
@@ -551,10 +551,6 @@ def register(cli):
     # raster decode. The default is capped by free VRAM as well as by cores, since
     # each worker holds ~1.4 GB of CUDA context.
     add_jobs(p)
-
-    p = add("link", help="rebuild ocr/, the read view over gt/ocr/ and mz/ocr/, "
-            "the human file winning wherever it exists. Derived: the links are "
-            "relative and a stale one is removed rather than left to dangle")
 
 
 def run_pages(a) -> int:
@@ -1461,7 +1457,3 @@ def run_predict(a) -> int:
     return 0
 
 
-def run_link(a) -> int:
-    from ..recognize import link_view
-    out(a, link_view(a.root))
-    return 0

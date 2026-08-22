@@ -155,7 +155,7 @@ def presence(refs: list[str], root: Path = Path(".")) -> list[dict]:
     restate the rule (`gt` if present, else `mz`) and could never disagree with
     itself; reading the link can, and a disagreement is exactly the finding worth
     having — `ocr/` is a derived farm that nothing rebuilds automatically, so a
-    page restored into `gt/ocr/` since the last `ocr link` still points at the
+    page restored into `gt/ocr/` since the last `views build ocr` still points at the
     machine file. That is a stale view reading as current, which is the shape of
     error this project is organised against, and here it costs one column to see.
 

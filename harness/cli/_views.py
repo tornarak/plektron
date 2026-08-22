@@ -1,10 +1,13 @@
 """`harness views` — the derived trees git does not carry.
 
 An action lands here only if it is about a **whole derived tree** rather than about
-the pages inside one: `check` reports every farm's state, `build` rebuilds them. The
-per-domain spellings stay — `ocr link` and `zones link` are the natural way to say
-"relink that view" while working in those groups, and both call the same functions
-this group does. Two spellings, one implementation.
+the pages inside one: `check` reports every farm's state, `build` rebuilds them.
+
+**This is the only spelling.** `ocr link` and `zones link` used to say the same
+thing from inside those groups, calling the same functions this group calls with
+the same argument — kept for a while as the natural phrasing while working
+there, and retired as duplicate surface. `views build ocr` names the farm, so a
+single view can still be relinked without the corpus-wide sweep.
 
 The group is named for what most of its members are, and the exception is worth
 knowing: `scans/w-figs-blotted/` is painted pixels, not a view over stores. What all

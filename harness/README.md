@@ -17,14 +17,14 @@ the project's rules, `CLAUDE.md` governs; for the character inventory,
 | path | what | written by |
 |---|---|---|
 | `scans/` | 832 rasters at 300 dpi, bitonal where the page has no photograph. **Derived** from `pdfs/`, not in git | `tools/extract_scans.py` |
-| `ocr/` | the **read view** over both OCR stores — symlinks, the human file always winning. Derived, ignored; nothing rebuilds it automatically, so `ocr pages --show-store` reports what each link *actually* reaches | `ocr link`, and `ocr predict` for the page it wrote |
+| `ocr/` | the **read view** over both OCR stores — symlinks, the human file always winning. Derived, ignored; nothing rebuilds it automatically, so `ocr pages --show-store` reports what each link *actually* reaches | `views build ocr`, and `ocr predict` for the page it wrote |
 | `gt/ocr/` | human ground truth — the pages a reader has been through and an adjudicator has signed | `ocr restore --commit` |
 | `gt/lines/` | the **corrections overlay**: boxes a human drew over ink the segmenter left unboxed, per page, in raster coordinates, `+ _ink_exempt.json`. Folded into every page's lines by `lines.page_lines`, so a correction is reachable on the pages that have no ground truth at all | `ocr edit` (geometry), `ocr restore --commit` (text) |
 | `mz/ocr/` | what the models emitted: lines from `blla`, text from CATMuS, structured by the zones. Derived, ignored | `ocr predict` |
 | `gt/fig/` | 252 figure ALTOs, geometry only, **no `TextLine` at all** | `zones edit`'s figure track (`zones_ui._save_figs` → `figures.save_figs`) |
 | `gt/zones/` | the **current** segmentation: seven types, fixed-width bands, `+ _train.lst _eval.lst`, one list per leaf kind (`_plate.lst _blank.lst _cover.lst _map.lst _apparatus.lst` — `zones.LEAF_KINDS`, asked through `is_exempt`), `_rule_exempt.json _ink_exempt.json _para_exempt.json` | `zones edit` |
 | `mz/zones/` | what the trained segmenter emitted: raw kraken ALTO, free polygons, kraken's ids. Derived, ignored | `zones predict` |
-| `zones/` | the **read view** over both zone stores — symlinks, the human file always winning. Derived, ignored | `zones link` |
+| `zones/` | the **read view** over both zone stores — symlinks, the human file always winning. Derived, ignored | `views build zones` |
 | `tei/` | the collation output, and the system of record for seam state — including `corpus-header.xml`, which is a fragment, not a page | the collation pass, `tei seam --commit` |
 | `mz/tei/` | the generated first-draft page, by rule from `gt/zones/` + `gt/ocr/`. Derived, ignored; **no view over the tei pair**, since naming the two apart is the point | `tei generate` |
 | `entities/` | the encyclopedia: one markdown record per entity under its class directory. The referent of every `@ref`, and the source of the alias vocabulary a rule links by | `entity new --commit`, `entity ratify --commit`, `edition serve` |

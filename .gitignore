@@ -261,8 +261,8 @@ train/
 # the losable-file failure in a different costume. This way a new authored name shows
 # up in `git status` and only the page files are dropped.
 /tei/chukchi-*.xml
-# The two read views, one name per page, the human file winning: `harness zones link`
-# builds the first, `harness ocr link` the second.
+# The two read views, one name per page, the human file winning:
+# `harness views build zones` builds the first, `views build ocr` the second.
 #
 # **`ocr/` was tracked until `ocr predict` existed, and that is exactly why it is not
 # any more.** Its links used to resolve inside tracked `gt/ocr/`, so a clone got

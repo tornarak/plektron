@@ -666,7 +666,7 @@ RENAMED_FLAGS = {
     ("zones", "--delete"): "zones delete REF",
     ("zones", "--diff"): "zones diff [REF]",
     ("zones", "--paragraphs"): "zones paragraphs [REF]",
-    ("zones", "--link"): "zones link",
+    ("zones", "--link"): "views build zones",
     ("zones", "--blot"): "zones blot [REF]",
     ("zones", "--ink"): "zones check --ink",
     ("zones", "--lines"): "zones check --lines",
@@ -712,6 +712,21 @@ RENAMED_FLAGS = {
 # the problem and not the fix.
 RENAMED_VALUES = {
     ("views", "all"): "views {action} --all",
+}
+
+# Retired *actions* under a group that survived. Click answers a removed action
+# with "No such command", which names the problem and not the fix — the same gap
+# the two tables above exist to close, one tier up.
+#
+# `ocr link` and `zones link` were two spellings of one implementation: both
+# called the same `link_view` with the same argument that `views build` calls,
+# and `views build ocr|zones` names the farm exactly. They were kept for a while
+# as the natural phrasing from inside those groups; the whole-tree review found
+# them as duplicate surface and they went. Nothing was given up — a farm can
+# still be relinked alone, which is what the per-domain form was for.
+RENAMED_ACTIONS = {
+    ("ocr", "link"): "views build ocr",
+    ("zones", "link"): "views build zones",
 }
 
 
@@ -806,6 +821,8 @@ def check_renamed(argv: list[str], surface: dict[tuple[str, str], set[str]]
     if head in RENAMED_VERBS:
         return RENAMED_VERBS[head]
     actions = {a for (g, a) in surface if g == head}
+    if len(argv) > 1 and argv[1] not in actions and (head, argv[1]) in RENAMED_ACTIONS:
+        return RENAMED_ACTIONS[(head, argv[1])]
     named = argv[1] if len(argv) > 1 and argv[1] in actions else None
     live = surface.get((head, named), set()) if named else set()
     for tok in argv[1:]:

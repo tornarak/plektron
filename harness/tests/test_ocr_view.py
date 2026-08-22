@@ -1,7 +1,8 @@
 """`ocr/` as a view over two stores, and the skip rule that feeds it.
 
-The `zones/` layout arrived with `zones link` and a store rule; `ocr/` acquired
-the same shape only when `ocr predict` gave it a second store to resolve into.
+The `zones/` layout arrived with a linker and a store rule; `ocr/` acquired the
+same shape only when `ocr predict` gave it a second store to resolve into. Both
+are built by `views build` now.
 What is tested here is the part that has no other witness: **which store a name
 resolves to**, and **when a page is left alone**.
 
@@ -235,8 +236,9 @@ def test_presence_keeps_one_key_set(store):
 
 def test_view_is_read_off_the_farm_not_derived(store):
     """The column's justification. `ocr/` is derived and nothing rebuilds it
-    automatically, so a page restored into `gt/ocr/` since the last `ocr link`
-    still points at the machine file — a stale view reading as current.
+    automatically, so a page restored into `gt/ocr/` since the last
+    `views build ocr` still points at the machine file — a stale view reading as
+    current.
 
     Derived from gt/mz this could never disagree with itself and would report
     nothing. Read off the link it reports the truth, which is the finding.

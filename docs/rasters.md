@@ -111,7 +111,7 @@ reports them, `harness views build` rebuilds them. **Both name their farms and
 neither has a default**: `views build --all` is a corpus-level sweep costing 252
 repainted page composites, and nothing at the call site said so, so the caller
 who wanted one view relinked after a `restore` was the one paying for it. In a
-per-page loop reach for the per-domain spelling — `ocr link`, `zones link` —
+per-page loop name the farm — `views build ocr`, `views build zones` —
 the same way a per-page normalize names its page rather than sweeping the corpus.
 (That "everything" was spelled `all`, a *value* of the FARM positional, until the
 CLI settled on `--all` for every corpus form; the old spelling is trapped.)
