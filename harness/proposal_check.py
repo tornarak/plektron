@@ -797,14 +797,25 @@ def check(path: Path, ref: str | None = None, root: Path = Path("."),
     }
     data = json.loads(path.read_text(encoding="utf-8"))
     out = []
-    out += _segmenter_missed_issues(data)
-    out += _footnote_issues(data)
-    if ref is not None:
-        from .marks import page_issues
+    # **Which arms run is decided by the target, not by a flag.** Four of them ask
+    # a question about one page's lines — is this index in the ALTO, did a terminal
+    # stop appear that the recognizer's draft lacked, do the footnote markers form
+    # a run — and a caption proposal has no page, no line indices and no footnotes.
+    # Run against 395 captions they would produce 395 findings and no information.
+    # What survives is everything about the *text*: apostrophes, marks, resolved
+    # against text. Those are the same questions whatever the key means.
+    captions = caption_keyed(data)
+    if captions:
+        out += _orphan_caption_issues(data, root)
+    else:
+        out += _segmenter_missed_issues(data)
+        out += _footnote_issues(data)
+        if ref is not None:
+            from .marks import page_issues
 
-        out += _orphan_line_issues(data, ref, root)
-        out += _added_terminal_punctuation(data, ref, root)
-        out += page_issues(path, ref, root, cohort, corpus)
+            out += _orphan_line_issues(data, ref, root)
+            out += _added_terminal_punctuation(data, ref, root)
+            out += page_issues(path, ref, root, cohort, corpus)
     # Built once for the page and only when some note could name a key at all —
     # `index` walks the whole corpus, and most pages carry no such note.
     # Leave-one-out or nothing, and the batch is the unit: see
@@ -825,7 +836,7 @@ def check(path: Path, ref: str | None = None, root: Path = Path("."),
     # key happens to come from a sibling. So this one sees everything.
     if lex_all is None:
         lex_all = _lexicon_loader(root, ())
-    for idx, rec in sorted(data.get("lines", {}).items(), key=lambda kv: int(kv[0])):
+    for idx, rec in sorted(data.get("lines", {}).items(), key=_key_order):
         text = rec.get("text", "")
         resolved = rec.get("resolved", "")
         nclass, note = rec.get("class", ""), rec.get("note", "")
@@ -1033,6 +1044,73 @@ def _orphan_line_issues(data: dict, ref: str, root: Path) -> list[dict]:
             if str(k) not in have]
 
 
+def caption_keyed(data: dict) -> bool:
+    """Whether this proposal is the caption pass's rather than a page's.
+
+    **Read off the keys, not off a flag.** A page proposal is keyed by the ALTO's
+    line indices and a caption proposal by `<ref>|<zone-suffix>`; the two key
+    spaces are disjoint by shape, so the file already says which it is. A
+    `--captions` switch beside a `--path` that already names one file would be a
+    second way to say the same thing, and the two could then disagree.
+
+    This matters beyond tidiness: half of `check`'s arms resolve a key against one
+    page's `gt/ocr/` lines, and every one of them would fire on all 395 captions.
+    """
+    lines = data.get("lines")
+    return bool(isinstance(lines, dict) and lines
+                and all("|" in k for k in lines))
+
+
+def _key_order(kv):
+    """Sort proposal keys, whichever space they are in.
+
+    Line indices sort numerically; caption keys sort by ref then zone suffix, both
+    zero-padded in the store, so lexical order is reading order. Without this the
+    per-line loop's `int(kv[0])` raises on the first caption key it meets.
+    """
+    return (0, int(kv[0]), "") if kv[0].isdigit() else (1, 0, kv[0])
+
+
+def _orphan_caption_issues(data: dict, root: Path) -> list[dict]:
+    """Caption keys naming no `GraphicZone-FigDesc` in `gt/fig/`.
+
+    `_orphan_line_issues` one key space over, and for the identical reason: a
+    reading whose block does not exist has nowhere to land, and `fig restore` would
+    silently drop it. The block id's last field is the foreign key the whole figure
+    track turns on — `figures.save_figs` preserves ids rather than re-minting them
+    precisely so this join keeps holding.
+
+    A page with no figure ALTO is reported rather than skipped, unlike the line
+    case: the caption store is one flat file over the whole corpus, so a key naming
+    an absent page is a typo, never the ordinary state of an unread page.
+    """
+    lines = data.get("lines")
+    if not isinstance(lines, dict) or not lines:
+        return []
+    from .figures import FIGDESC, zone_suffix, zones
+    have: dict[str, set[str]] = {}
+    out = []
+    for k in sorted(lines, key=lambda s: s):
+        ref, _, suffix = k.partition("|")
+        if ref not in have:
+            try:
+                have[ref] = {zone_suffix(b["id"]) for b in zones(ref, root)
+                             if b["label"] == FIGDESC}
+            except ValueError:
+                have[ref] = set()
+        if suffix in have[ref]:
+            continue
+        out.append(issue(
+            k, "names no GraphicZone-FigDesc in gt/fig/ — a caption is keyed by "
+               "its block's id suffix and `fig restore` joins on it, so this text "
+               "has no block to land in. Either the key is mistyped or the box "
+               "was withdrawn; check `harness fig check` for the page, and do not "
+               "invent a block for it.",
+            context=(lines[k] or {}).get("text", "")[:60],
+            detail=f"{ref} holds {len(have[ref])} caption block(s)"))
+    return out
+
+
 def _footnote_issues(data: dict) -> list[dict]:
     """`detectors.footnote_report` turned into proposal-check's issue records.
 
@@ -1054,7 +1132,7 @@ def _footnote_issues(data: dict) -> list[dict]:
     detectors (`ISSUE_FIELDS`) and cannot carry a field of its own.
     """
     texts = [rec.get("text", "") for _, rec in
-             sorted(data.get("lines", {}).items(), key=lambda kv: int(kv[0]))]
+             sorted(data.get("lines", {}).items(), key=_key_order)]
     rep = footnote_report(texts)
     problems = []
     if rep["gaps"]:

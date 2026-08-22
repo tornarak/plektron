@@ -479,6 +479,14 @@ def sync_all(root: Path = Path("."), commit: bool = True) -> list[dict]:
     contract and rewriting the other one on its way past would put an unrelated
     tracked file in the commit. `agents sync` is the report over both, which is the
     form the question actually takes: *is any contract stale*, not *is this one*.
+
+    **Tracks only, and a skill is deliberately not one.** Transclusion buys a
+    byte-identical prompt prefix across a swarm of parallel agents, which is what
+    makes turn 1 cacheable — the reason stated at the top of this module. A skill is
+    read once, in one session, by a model that can open a file: it is instructed to
+    read `keying_spec.md` and there is nothing to keep in step. Copying the
+    machinery there would inline 400 lines into a document nobody caches, and buy a
+    staleness check for a copy that need not exist.
     """
     return [sync_transcludes(root, t.agent, commit) for t in TRACKS.values()]
 

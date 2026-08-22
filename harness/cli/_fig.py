@@ -78,6 +78,29 @@ def register(cli):
     opt(p, "--jobs", type=int, default=None, metavar="N",
         help="worker threads; 1 runs serially and builds no pool [cores, capped]")
 
+    p = action(g, "sheets", run_sheets, section="The store",
+               help="tile every caption onto contact sheets for reading, ~12 "
+               "strips apiece. The sheet is the unit of this pass and the "
+               "census is why: 151 of the 250 captioned pages hold exactly one "
+               "caption and the median caption is 66 characters, so a page is "
+               "not a batch. Padded vertically, unlike `fig crops` — a caption "
+               "strip exists for somebody to read the type, and the commonest "
+               "defect here is a box drawn round the wrong number of printed "
+               "lines, which a strip cut at the declared edge cannot show; the "
+               "declared edge is ruled on the strip instead. Plate captions set "
+               "rotated beside their picture are turned upright, by the same "
+               "width>=height test that pairs them. Derived output: it writes "
+               "on invocation and takes no --commit")
+    _refs(p, "every page the figure store holds")
+    opt(p, "--out", metavar="DIR", default=None,
+        help="where to write them [review/captions/sheets/]")
+    opt(p, "--per-sheet", type=int, default=12, metavar="N",
+        help="strips per sheet [12]")
+    opt(p, "--pad", type=float, default=F.CAP_PAD, metavar="F",
+        help=f"vertical pad as a multiple of the block's own height "
+             f"[{F.CAP_PAD}]. 0 cuts at the declared edge and hides exactly the "
+             f"defect the pad is for")
+
     # ---- the segmenter -----------------------------------------------------
 
     p = action(g, "remark-eval", run_remark, section="The segmenter",
@@ -245,6 +268,21 @@ def run_crops(a) -> int:
     return 0
 
 
+def run_sheets(a) -> int:
+    from pathlib import Path
+
+    from ..paths import caption_sheets_dir
+    out_dir = Path(a.out) if a.out else caption_sheets_dir(a.root)
+    man = F.write_caption_sheets(out_dir, a.root, refs=page_refs(a) or None,
+                                 per_sheet=a.per_sheet, pad=a.pad)
+    rotated = sum(1 for b in man["blocks"].values()
+                  if b["orientation"] == "rotated")
+    # The blocks themselves are the manifest's business, not the terminal's: 395
+    # rows would bury the two numbers that answer "did it run and what is there".
+    # `rotated` prints because it is the one class a reader has to be told about
+    # in advance — a strip that came out sideways is a defect, not a caption.
+    out(a, {"sheets": len(man["sheets"]), "captions": man["captions"],
+            "rotated": rotated, "out": str(out_dir)})
     return 0
 
 

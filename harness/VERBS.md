@@ -1757,6 +1757,25 @@ PP-NNN...     which pages; several may be given
 --root --json --toon --pager
 ```
 
+### fig sheets [PP-NNN ...]
+**Does** tiles every `GraphicZone-FigDesc` on the named pages onto contact sheets for reading — ~12 padded, upright strips apiece, each labelled with its `<ref>|<zone-suffix>` key — plus a `manifest.json` mapping every key to its sheet, strip index, orientation and pad.
+**Reads** `gt/fig/` and `scans/`.
+**Writes** `review/captions/sheets/` (derived).
+**Exit** always 0. A page with no caption block contributes nothing rather than erroring; `fig check` is where geometry gates.
+**Note** **the sheet is the unit of work, and the census is the argument.** 151 of the 250 captioned pages hold exactly one caption, 68 hold two; the median caption is 66 characters over one or two printed lines, and 34 of the 395 carry a Tier-1 glyph at all. The whole store is ~26 KB of mostly plain English. Dealing that out a page at a time — a directory, a queue entry and an agent apiece, as the line pass does — would be scaffolding standing in for a store; twelve strips to a sheet puts the corpus in **33 images**. The line pass is heavy because a page there is forty lines of dense phonetic type, which is a fact about that pass and not about this one.
+**Note** **padded vertically, which is the opposite of `fig crops` and for the opposite reason.** A picture crop wants the picture, so a pad there pulls body prose in. A caption strip exists for somebody to *read the type*, and the commonest defect in this store is a box drawn round the wrong number of printed lines — the very failure that stripped the `TextLine`s from `gt/fig/` in the first place. A strip cut at the declared edge cannot show a line the box excluded, so the reader would reproduce the segmentation's mistake with no way to see it. The declared edge is **ruled on the strip** instead: between the rules is what the store claims, outside is context. `--pad 0` restores the old blindness and is offered only so the choice is visible.
+**Note** **rotated plate captions are turned upright, by `paired`'s own discriminator.** A plate sets its caption rotated beside the picture, reading bottom-to-top — `1-049`'s three are 86×457, 92×506, 82×636 against a text figure's 610×96 — so `width >= height` decides it, exactly as `_gap` uses it to choose whether to look below a picture or beside it. Measured over the store, **64 blocks are portrait and the narrowest is 4.3× taller than wide**: there is no borderline case, so the test is unambiguous rather than a threshold anyone has to calibrate. The pad follows the reading axis, so a rotated caption is padded on x. **Rotation is presentation and reaches no store** — the manifest records `orientation` so a reading keys back, and `gt/fig/` keeps saying what it said.
+**Note** **not the `scans/fig-crops/` farm, deliberately.** That farm's membership is computed by `crops_wanted`, which enumerates `GraphicZone` only, and it and `write_crops` must enumerate the same set or `views check fig-crops` reports drift against itself forever. Caption strips are review ephemera and live with the pass that reads them, so the farm is untouched and no membership question arises.
+**Note** no `--commit`: the tree is derived, `fig crops`' rule.
+```
+PP-NNN...     which pages; several may be given
+--all         every page the figure store holds
+--out DIR     where to write them [review/captions/sheets/]
+--per-sheet N strips per sheet [12]
+--pad F       vertical pad as a multiple of the block's own height [0.6]. 0 cuts at the declared edge and hides exactly the defect the pad is for
+--root --json --toon --pager
+```
+
 ### fig remark-eval
 **Does** mints or extends `gt/fig/_train.lst` and `_eval.lst`.
 **Reads** `gt/fig/`, `gt/zones/`'s splits and `_ink_cache.json`.

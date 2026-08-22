@@ -258,7 +258,14 @@ SCOPE_GLOBS = ("gt/ocr/*.xml", "gt/fig/*.xml", "tei/*.xml",
                # `restore` actually writes to gt/ocr/ — so it stays in the default
                # sweep alongside the rest of the corpus. `save_decisions` normalizes
                # on write, so this is a regression check, not a live worklist.
-               "review/*/decision.json")
+               "review/*/decision.json",
+               # The caption pass's adjudication, on exactly the same footing: an
+               # editorial act, and what `fig restore` writes into `gt/fig/`. One
+               # file rather than one per page because a caption is keyed
+               # `<ref>|<suffix>` and most pages hold one — see `captions.py`. Its
+               # proposal is not swept here: `proposal fix` is the reading's own NFD
+               # pass, as it is for the line pass.
+               "review/captions/decision.json")
 
 # `proposal.json` is a model's pre-adjudication reading, checked on demand
 # (`--path review/PP-NNN/proposal.json`, part of the rebuild-groundtruth loop

@@ -2802,6 +2802,153 @@ def crops_wanted(root: Path = Path(".")) -> dict[str, str]:
             for b in zones(ref, root) if b["label"] == GRAPHIC}
 
 
+#: Vertical pad on a caption strip, as a multiple of the block's own height.
+#:
+#: **The opposite choice from `write_crops`' pad 0, and for the opposite reason.**
+#: A picture crop wants the picture, so a pad there pulls body prose in. A caption
+#: crop exists for somebody to *read the type*, and the commonest defect in this
+#: store is a box drawn around the wrong number of printed lines — the very failure
+#: that stripped the `TextLine`s in the first place. A strip cut at the declared
+#: edge cannot show a line the box excluded, so the reader would reproduce the
+#: segmentation's mistake with no way to see it. The pad is what makes a dropped
+#: line visible, and the rule drawn at the declared edge is what keeps it honest
+#: about which pixels the store actually claims.
+CAP_PAD = 0.6
+
+
+def caption_strips(ref: str, root: Path = Path("."), scans: str = "scans",
+                   pad: float = CAP_PAD):
+    """One padded, upright image per `GraphicZone-FigDesc` on a page.
+
+    Yields `(key, image, record)` in reading order, `key` being `<ref>|<suffix>` —
+    the key `data/readings.md` uses, so a reading taken off these strips joins that
+    store block for block when `fig witness` compares them.
+
+    **Portrait strips are rotated, and the discriminator is `paired`'s own.** A
+    plate sets its caption rotated beside the picture, reading bottom-to-top —
+    `1-049`'s three are 86×457, 92×506, 82×636 against a text figure's 610×96 — so
+    `width >= height` is what tells the two apart, exactly as `_gap` uses it to
+    decide whether to look below a picture or beside it. Deriving it from the box
+    rather than from a prior classification of the page means a mixed page comes
+    out right zone by zone, and it needs no threshold anyone has to calibrate.
+
+    The rotation is presentation and **nothing about it reaches `gt/fig/`**: the
+    record carries `orientation` so the reading can be keyed back, and the store
+    keeps saying what it said.
+    """
+    from PIL import Image
+
+    from .lines import raster_path
+    ref = norm_ref(ref)
+    caps = [b for b in zones(ref, root) if b["label"] == FIGDESC]
+    if not caps:
+        return
+    caps.sort(key=lambda b: (b["vpos"], b["hpos"]))
+
+    alto, raster = alto_for(ref, root), raster_path(ref, root, scans)
+    if not raster.exists():
+        return
+    page = etree.parse(str(alto)).find(".//{*}Page")
+    img = Image.open(raster)
+    sx, sy = _scale_for(page, img.size)
+
+    for b in caps:
+        x0, y0 = b["hpos"], b["vpos"]
+        x1, y1 = x0 + b["width"], y0 + b["height"]
+        # Padded on the reading axis only. A rotated caption reads along y in page
+        # space, so its "next line" is sideways — padding the wrong axis there would
+        # widen the strip into the picture and show nothing a reader needs.
+        upright = b["width"] >= b["height"]
+        grow = int(round((b["height"] if upright else b["width"]) * pad))
+        if upright:
+            cy0, cy1, cx0, cx1 = y0 - grow, y1 + grow, x0, x1
+        else:
+            cy0, cy1, cx0, cx1 = y0, y1, x0 - grow, x1 + grow
+        box = (max(0, int(cx0 * sx)), max(0, int(cy0 * sy)),
+               min(img.width, int(cx1 * sx)), min(img.height, int(cy1 * sy)))
+        if box[2] <= box[0] or box[3] <= box[1]:
+            continue
+        strip = img.crop(box)
+
+        # The declared edge, drawn on the padded strip: everything between the two
+        # rules is what the store claims, everything outside is what it left out.
+        # Without this the pad would silently enlarge the box in the reader's mind,
+        # which is the same defect as no pad at all wearing the other hat.
+        from PIL import ImageDraw
+        strip = strip.convert("L")
+        d = ImageDraw.Draw(strip)
+        if upright:
+            for edge in (int(y0 * sy) - box[1], int(y1 * sy) - box[1]):
+                d.line([(0, edge), (strip.width, edge)], fill=190, width=1)
+        else:
+            for edge in (int(x0 * sx) - box[0], int(x1 * sx) - box[0]):
+                d.line([(edge, 0), (edge, strip.height)], fill=190, width=1)
+            # Bottom-to-top type turned upright to read left-to-right. **ROTATE_270,
+            # not ROTATE_90**: PIL rotates counter-clockwise, and this type already
+            # reads bottom-to-top, so a second counter-clockwise turn stands it on
+            # its head. Verified against `1-049`'s three plate captions rather than
+            # reasoned about — the first attempt was upside down and looked, at a
+            # glance, merely rotated.
+            strip = strip.transpose(Image.Transpose.ROTATE_270)
+
+        key = f"{ref}|{zone_suffix(b['id'])}"
+        yield key, strip, {"key": key, "ref": ref,
+                           "suffix": zone_suffix(b["id"]),
+                           "orientation": "upright" if upright else "rotated",
+                           "pad": grow, "box": [x0, y0, x1, y1]}
+
+
+def write_caption_sheets(out_dir: Path, root: Path = Path("."),
+                         refs: list[str] | None = None, scans: str = "scans",
+                         per_sheet: int = 12, pad: float = CAP_PAD) -> dict:
+    """Tile every caption in the corpus onto contact sheets. Returns the manifest.
+
+    **The sheet is the unit of work for this pass, and the census is why.** 151 of
+    the 250 captioned pages hold exactly one caption; the median caption is 66
+    characters over one or two printed lines. Dealing that out a page at a time —
+    a directory, a queue entry and an agent apiece — would be scaffolding standing
+    in for a store. Twelve strips to a sheet puts the whole corpus in ~33 images.
+
+    `compose_sheets` already does the tiling, draws each strip's label in the left
+    margin and rules between strips, so a reading keys back to its zone without
+    relying on order. Its own docstring notes captions are the case where
+    downscaling costs nothing: the reading is of ordinary words, not of whether a
+    dot sits under a `g`.
+
+    The manifest is what the reader and the review page both read back — key to
+    sheet, orientation, and the pad each strip carries.
+    """
+    refs = [norm_ref(r) for r in (refs or fig_refs(root))]
+    items, recs = [], {}
+    for ref in refs:
+        for key, strip, rec in caption_strips(ref, root, scans, pad):
+            items.append((key, strip))
+            recs[key] = rec
+    if not items:
+        return {"sheets": [], "captions": 0, "blocks": {}}
+
+    sheets, index = compose_sheets(items, out_dir, per_sheet=per_sheet,
+                                   prefix="captions")
+    for entry in index:
+        for i, key in enumerate(entry["items"]):
+            recs[key]["sheet"] = entry["sheet"]
+            recs[key]["strip"] = i
+    man = {"sheets": [p.name for p in sheets], "captions": len(recs),
+           "per_sheet": per_sheet, "pad": pad, "blocks": recs}
+    write_atomic(out_dir / "manifest.json",
+                 json.dumps(man, ensure_ascii=False, indent=1))
+    return man
+
+
+def caption_manifest(root: Path = Path(".")) -> dict:
+    """The sheet manifest, or `{}` before `harness fig sheets` has run."""
+    from .paths import caption_sheets_dir
+    p = caption_sheets_dir(root) / "manifest.json"
+    if not p.exists():
+        return {}
+    return json.loads(p.read_text(encoding="utf-8"))
+
+
 def _chunk_sheets(items, per_sheet: int, max_h: int | None):
     """Split (label, image) pairs into sheet-sized runs, in order.
 

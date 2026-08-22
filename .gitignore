@@ -65,6 +65,13 @@ figs-ocr300/
 # ignored, i.e. untracked and losable — the exact failure mode. Under this one a
 # forgotten entry commits a few PNGs: noise, and visible. `harness/paths.py:DERIVED`
 # is the list these mirror; keep the two in step.
+#
+# The one directory under `review/` that is not a page is `review/captions/`, the
+# caption pass's flat store — and every rule below already covers it, `*` matching
+# one segment whatever that segment means. Its `sheets/` are derived like any
+# other's, its `.jsonl` journal is recovery data like any other's, and its
+# `proposal.json`/`decision.json` are authored and tracked like any other's. A
+# second rule naming it would say what these already say.
 review/*/crops/
 review/*/sheets/
 review/*/zoom/

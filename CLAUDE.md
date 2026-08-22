@@ -192,6 +192,7 @@ every byte of this file on every page.
 | `.claude/skills/transcribe-page/` | dispatching a batch of collators, and the seam afterwards |
 | `.claude/agents/groundtruth-reader.md` | the raster→ALTO reading contract, whole — a reader's system prompt, spec transcluded |
 | `.claude/skills/rebuild-groundtruth/` | dispatching and adjudicating a batch of readers |
+| `.claude/skills/read-captions/` | the figure-caption re-read, whole — contact sheets, and the blindness the comparison needs |
 | `.claude/skills/train-zones/` | the zone segmenter's train→score→install loop, its measured state, and the judgement in it |
 | `.claude/skills/train-figures/` | the same for the figure segmenter — trains on raw scans, and why its negatives had to be witnessed |
 | `.claude/rules/zones.md` | code-facing zones/raster internals; loads itself when those modules are open |

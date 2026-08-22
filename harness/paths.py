@@ -179,7 +179,25 @@ def scan_for(ref: str, root: Path = Path(".")) -> Path:
 DERIVED = ("crops", "sheets", "zoom", "review.html", "numbered.png")
 
 
+#: The one working directory under `review/` that is not a page.
+#:
+#: The caption pass reads all 395 captions in one session off contact sheets, so it
+#: has one proposal and one adjudication for the whole corpus rather than a pair per
+#: page — see `captions.py` for the census that settles it. Naming that directory
+#: with a word rather than a ref is what lets `harness proposal check captions` and
+#: `harness proposal set captions <key>` work: the target of a `proposal` verb is a
+#: proposal, and `captions` names one exactly as `1-151` does.
+#:
+#: **It is not a ref and `norm_ref` still refuses it.** Only `review_dir` below
+#: knows the word, so it reaches `proposal_path`/`decisions_path` and nothing else;
+#: `page_dirs` continues to exclude the directory because it is not ref-shaped, and
+#: no store verb can be handed it by accident.
+CAPTIONS = "captions"
+
+
 def review_dir(ref: str, root: Path = Path(".")) -> Path:
+    if ref == CAPTIONS:
+        return root / "review" / CAPTIONS
     return root / "review" / norm_ref(ref)
 
 
@@ -224,6 +242,15 @@ def proposal_path(ref: str, root: Path = Path(".")) -> Path:
 
 def decisions_path(ref: str, root: Path = Path(".")) -> Path:
     return review_dir(ref, root) / "decision.json"
+
+
+# The caption sheets. Derived, and covered by `.gitignore`'s existing
+# `review/*/sheets/` without a rule of their own — `*` matches one segment whatever
+# that segment means, so the caption directory inherits every disposition a page
+# directory has. `DERIVED` already carries `sheets`, and `test_layout.py` holds the
+# two together. `harness fig sheets` rebuilds them.
+def caption_sheets_dir(root: Path = Path(".")) -> Path:
+    return review_dir(CAPTIONS, root) / "sheets"
 
 
 def crops_dir(ref: str, root: Path = Path(".")) -> Path:

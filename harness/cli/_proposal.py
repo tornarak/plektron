@@ -201,16 +201,37 @@ def _path(a, ref: str | None = None) -> Path:
 
 
 def _proposals(a) -> list[str]:
-    """The pages this invocation names, or every one holding a proposal.
+    """The proposals this invocation names, or every one on disk.
 
     `--path` names one file, so it and a second ref are a usage error. `review/`
     is authored working state rather than a farm or a store, so an empty answer
     is a true statement — nothing has been proposed — and not an unbuilt tree.
+
+    **`captions` is a target here and is not a ref**, so it is taken out before
+    `page_refs` normalizes, which would refuse it as a bare word. The caption pass
+    holds one proposal for the whole corpus rather than one per page (see
+    `captions.py`), and a `proposal` verb's target is a proposal — so naming it
+    the way a page is named is the shape that needs no new flag and no optional
+    positional. Only this group knows the word: `norm_ref` still refuses it
+    everywhere else, so no store verb can be handed it by accident.
+
+    It is deliberately **not** in the `--all` sweep. That sweep asks "is any page's
+    reading self-consistent", and folding 395 captions into it would put a second
+    pass's findings in a report about the first, under keys the first has no space
+    for.
     """
-    refs = page_refs(a)
-    one_page_only(a, {"path": "--path"}, refs)
-    if refs:
-        return refs
+    from ..paths import CAPTIONS
+
+    named = getattr(a, "ref", None)
+    named = [named] if isinstance(named, str) else list(named or [])
+    caption_target = [r for r in named if r == CAPTIONS]
+    if caption_target:
+        a.ref = tuple(r for r in named if r != CAPTIONS)
+
+    refs = page_refs(a) if (a.ref or not caption_target) else []
+    one_page_only(a, {"path": "--path"}, caption_target + refs)
+    if caption_target or refs:
+        return caption_target + refs
     from ..paths import page_refs_under
     return [r for r in page_refs_under(a.root)
             if proposal_path(r, a.root).exists()]
