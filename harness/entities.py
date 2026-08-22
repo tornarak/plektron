@@ -73,6 +73,7 @@ from __future__ import annotations
 
 import re
 import unicodedata
+from functools import lru_cache
 from pathlib import Path
 
 from .geo import index as geo_index
@@ -849,6 +850,31 @@ def _pattern(forms) -> re.Pattern | None:
     return re.compile(_BEFORE + "(?:" + "|".join(alts) + ")" + _AFTER)
 
 
+@lru_cache(maxsize=4)
+def _matcher(forms: tuple[str, ...]) -> tuple[re.Pattern | None, dict[str, str]]:
+    """`match`'s two derived tables, built once per distinct form set.
+
+    **A memo on a pure function of its own argument, not a cache over a store.**
+    The key *is* the whole input — the sorted form tuple — so this cannot answer
+    from a stale store the way a `root`-keyed cache could; `harness/README.md`'s
+    rule that a cache is a property of a server is about store reads and does not
+    reach here. `alias_index` builds a fresh dict per call, so a caller that
+    re-reads the store gets a new tuple and a new entry.
+
+    Measured on the live store, 654 forms: **34ms cold, 2.0ms warm**, and the
+    warm cost is *entirely* rebuilding the alternation string — `re.compile` then
+    hits its own internal cache, which is why this looked cheap when timed in a
+    loop and was not. `relink` calls `match` once per frame and once per segment,
+    hundreds of times a page, so that 2.0ms was ~0.6s per page of rebuilding a
+    string in order to look it up. Keying costs 0.1ms.
+
+    `maxsize=4` rather than 1 because a process legitimately holds more than one
+    index at a time — the full one and a leave-one-out — and a single slot would
+    thrash between them, which is the shape that turns a memo into a slowdown.
+    """
+    return _pattern(forms), {f.replace("-", ""): f for f in forms}
+
+
 def _explained_by_break(text: str, start: int, raw: str, form: str) -> bool:
     """True when every hyphen the page has and the store's form lacks ends a line.
 
@@ -925,13 +951,14 @@ def match(text: str, idx: dict[str, list[dict]]) -> list[dict]:
     case-insensitive match on a short form would fire on ordinary words.
     """
     text = unicodedata.normalize("NFD", text)
-    pat = _pattern(idx)
+    # Both tables are pure functions of the form set and were rebuilt on every
+    # call; `_matcher` memoises them on it. `dehyphenated` is only consulted when
+    # the exact spelling is not in the index, so an alias that legitimately
+    # carries a hyphen (`Sredne-Kolymsk`) still resolves as itself, not through
+    # this.
+    pat, dehyphenated = _matcher(tuple(sorted(idx)))
     if pat is None:
         return []
-    # Only consulted when the exact spelling is not in the index, so an alias
-    # that legitimately carries a hyphen (`Sredne-Kolymsk`) still resolves as
-    # itself rather than through this.
-    dehyphenated = {f.replace("-", ""): f for f in idx}
     out = []
     for m in pat.finditer(text):
         got = " ".join(m.group(0).split())

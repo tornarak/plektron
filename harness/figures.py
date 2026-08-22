@@ -30,6 +30,7 @@ import time
 import unicodedata
 from pathlib import Path
 
+import numpy as np
 from lxml import etree
 
 from .atomic import tmp_for, write_atomic
@@ -1536,11 +1537,19 @@ def readings(root: Path = Path(".")) -> dict[str, dict]:
     return out
 
 
-def readings_for(ref: str, root: Path = Path(".")) -> dict[str, dict]:
-    """The readings on one page, keyed by bare zone-id suffix."""
+def readings_for(ref: str, root: Path = Path("."),
+                 all_readings: dict | None = None) -> dict[str, dict]:
+    """The readings on one page, keyed by bare zone-id suffix.
+
+    `all_readings` is a `readings(root)` a caller already holds. Without it this
+    parses the whole of `data/readings.md` — 395 rows, 2.2ms — to keep the rows
+    for one page, which `fig check --all` did 252 times over. Same `idx=` idiom
+    `lookup.resolve` and `context.tier1_terms` take, and it changes nothing about
+    the answer.
+    """
     ref = norm_ref(ref)
-    return {r["zone_suffix"]: r for r in readings(root).values()
-            if r["ref"] == ref}
+    rows = readings(root) if all_readings is None else all_readings
+    return {r["zone_suffix"]: r for r in rows.values() if r["ref"] == ref}
 
 
 def pdf_images(root: Path = Path(".")) -> dict[str, dict]:
@@ -1652,16 +1661,37 @@ def _outside(rect: list[int], boxes: list[tuple[int, int, int, int]],
     exact answer wants a union of rectangles, and this number is **reported and
     never gated on** — a measure that only has to be right to a percent should not
     carry a geometry library's worth of ways to be wrong.
+
+    **The same grid, marked by slice rather than walked point by point.** This was
+    a nested `range` over the rect testing every sample against every box, and at
+    300 dpi a photograph rect is ~187,000 samples: `corpus figures` spent **33 of
+    its 34 seconds here**, over 76.7 million evaluations of the membership test.
+    Since the sample coordinates are sorted, the indices a box covers are two
+    `searchsorted` calls per axis, and marking them is one slice assignment — so
+    the work is proportional to the number of boxes rather than to the area.
+
+    `searchsorted` reproduces the old bounds exactly: `left` on the low edge gives
+    the first sample `>= g0`, `right` on the high edge the first `> g1`, which is
+    the closed interval `g0 <= v <= g1` the loop tested.
+    `test_fig_ink_geometry.py` holds the two implementations against each other on
+    randomised inputs, because "same answer, faster" is the whole claim and it is
+    not visible in any output.
     """
     x0, y0, x1, y1 = rect
-    grown = [(b[0] - pad, b[1] - pad, b[2] + pad, b[3] + pad) for b in boxes]
-    tot = miss = 0
-    for y in range(y0, max(y0 + 1, y1), step):
-        for x in range(x0, max(x0 + 1, x1), step):
-            tot += 1
-            if not any(g[0] <= x <= g[2] and g[1] <= y <= g[3] for g in grown):
-                miss += 1
-    return (miss / tot) if tot else 0.0
+    xs = np.arange(x0, max(x0 + 1, x1), step)
+    ys = np.arange(y0, max(y0 + 1, y1), step)
+    tot = int(xs.size) * int(ys.size)
+    if not tot:
+        return 0.0
+    covered = np.zeros((ys.size, xs.size), dtype=bool)
+    for b in boxes:
+        ix0 = np.searchsorted(xs, b[0] - pad, "left")
+        ix1 = np.searchsorted(xs, b[2] + pad, "right")
+        iy0 = np.searchsorted(ys, b[1] - pad, "left")
+        iy1 = np.searchsorted(ys, b[3] + pad, "right")
+        if ix1 > ix0 and iy1 > iy0:
+            covered[iy0:iy1, ix0:ix1] = True
+    return float(int((~covered).sum()) / tot)
 
 
 def fig_ink(ref: str, root: Path = Path("."), store: str = FIGDIR,
@@ -1780,8 +1810,14 @@ def _gap(g: dict, c: dict) -> float | None:
                g["hpos"] - (c["hpos"] + c["width"]))
 
 
-def paired(ref: str, root: Path = Path(".")) -> dict:
+def paired(ref: str, root: Path = Path("."),
+           all_readings: dict | None = None) -> dict:
     """One record per figure — the picture, its caption — in reading order.
+
+    `all_readings` is passed straight to `readings_for`. It matters most to
+    `reconcile`, which already holds a `readings(root)` and then called this once
+    per figure page — 252 further whole-file parses of `data/readings.md`, each
+    to keep one page's rows.
 
     **The pairing is done here, once, and recorded.** `GraphicZone`↔FigDesc
     pairing is not in the data, and every consumer that re-derives it derives it
@@ -1844,7 +1880,7 @@ def paired(ref: str, root: Path = Path(".")) -> dict:
     blocks = zones(ref, root)
     caps = [b for b in blocks if b["label"] == FIGDESC]
     try:
-        texts = readings_for(ref, root)
+        texts = readings_for(ref, root, all_readings)
     except (ValueError, OSError):
         texts = {}
 
@@ -2340,11 +2376,18 @@ def reconcile(root: Path = Path(".")) -> dict:
     case the reading should go too.
     """
     known = readings(root)
+    # Bucketed once. Both uses below were per-ref scans of the whole store —
+    # `paired` re-parsed `data/readings.md` from disk for each of the 252 figure
+    # pages, and `have` re-filtered all 395 rows for each. Neither changes the
+    # answer; the store is read once here and the loop reads this.
+    by_ref: dict[str, dict] = {}
+    for r in known.values():
+        by_ref.setdefault(r["ref"], {})[r["zone_suffix"]] = r
     missing, orphan, unpaired = [], [], []
     zones, caps = 0, 0
     for ref in fig_refs(root):
         unpaired += [f"{ref}|{zone_suffix(z)}"
-                     for z in paired(ref, root)["unpaired_captions"]]
+                     for z in paired(ref, root, known)["unpaired_captions"]]
         tree = etree.parse(str(alto_for(ref, root)))
         labels = _labels(tree)
         ids = set()
@@ -2355,7 +2398,7 @@ def reconcile(root: Path = Path(".")) -> dict:
             elif lab == FIGDESC:
                 caps += 1
                 ids.add(zone_suffix(blk.get("ID")))
-        have = {r["zone_suffix"] for r in known.values() if r["ref"] == ref}
+        have = set(by_ref.get(ref, {}))
         missing += [f"{ref}|{z}" for z in sorted(ids - have)]
         orphan += [f"{ref}|{z}" for z in sorted(have - ids)]
     # Hoisted: `set(fig_refs(root))` re-globbed `gt/fig/` once per reading. The
