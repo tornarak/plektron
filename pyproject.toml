@@ -4,7 +4,6 @@ version = "0.1.0"
 description = "Bogoras, The Chukchee — annotated digital edition"
 requires-python = ">=3.14"
 dependencies = [
-    "chocomufin>=1.0.2",
     # **Declared because the CLI is built on them**, not because either is new to
     # the environment — both arrive transitively through kraken, and did before
     # anything here imported them. `click` is the parser (`harness/cli/`); `rich`

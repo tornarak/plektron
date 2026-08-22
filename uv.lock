@@ -196,24 +196,6 @@ wheels = [
 ]
 
 [[package]]
-name = "chocomufin"
-version = "1.0.2"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "click" },
-    { name = "lxml" },
-    { name = "mufidecode" },
-    { name = "regex" },
-    { name = "tabulate" },
-    { name = "tqdm" },
-    { name = "unidecode" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/15/f6/2394ca8703e1b6b1d2112ba92e627fc352b321fb4ffd8cfedcabbdc443af/chocomufin-1.0.2.tar.gz", hash = "sha256:2296614ea44b489b67a7adf0e9a2eec0165cb2b0190bab7cc2321299d8c6f521", size = 46552, upload-time = "2026-05-30T09:45:32.007Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/74/2a/d812ca8aaed7c2917eb8237e71279c2e155e3cb014b81ef3d23e10686e3a/chocomufin-1.0.2-py3-none-any.whl", hash = "sha256:1a021b3caf622db4505a8a695e4e9824309ab4eabb48629aacc317a4946d18c9", size = 38705, upload-time = "2026-05-30T09:45:30.939Z" },
-]
-
-[[package]]
 name = "click"
 version = "8.2.1"
 source = { registry = "https://pypi.org/simple" }
@@ -790,18 +772,6 @@ wheels = [
 ]
 
 [[package]]
-name = "mufidecode"
-version = "0.1.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "unidecode" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/2b/64/1d1b6c2399ea2d6841ba74142df9d2d52931ddfb381cad4712da1e3d7caa/mufidecode-0.1.0.tar.gz", hash = "sha256:3ed0f737c59e045da855958ab073357377f5bbd85760e0f2f48aeff39b4e2143", size = 16250, upload-time = "2019-06-03T14:48:49.209Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/2f/8d/2cfa9f02b17be2eb0a45b1ded94bbfb147f625bd60709cc977a534c18d5f/mufidecode-0.1.0-py2.py3-none-any.whl", hash = "sha256:a85928b8447a6595a57eb42133d1e1932555f097bbf2a41dad1d92cc1c9c865a", size = 27800, upload-time = "2019-06-03T14:48:47.62Z" },
-]
-
-[[package]]
 name = "multidict"
 version = "6.7.1"
 source = { registry = "https://pypi.org/simple" }
@@ -1109,7 +1079,6 @@ name = "plektron"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
-    { name = "chocomufin" },
     { name = "click" },
     { name = "cloup" },
     { name = "fastapi" },
@@ -1135,7 +1104,6 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "chocomufin", specifier = ">=1.0.2" },
     { name = "click", specifier = ">=8.2" },
     { name = "cloup", specifier = ">=3.1.0" },
     { name = "fastapi", specifier = ">=0.120" },
@@ -1764,15 +1732,6 @@ wheels = [
 ]
 
 [[package]]
-name = "tabulate"
-version = "0.10.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/46/58/8c37dea7bbf769b20d58e7ace7e5edfe65b849442b00ffcdd56be88697c6/tabulate-0.10.0.tar.gz", hash = "sha256:e2cfde8f79420f6deeffdeda9aaec3b6bc5abce947655d17ac662b126e48a60d", size = 91754, upload-time = "2026-03-04T18:55:34.402Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/99/55/db07de81b5c630da5cbf5c7df646580ca26dfaefa593667fc6f2fe016d2e/tabulate-0.10.0-py3-none-any.whl", hash = "sha256:f0b0622e567335c8fabaaa659f1b33bcb6ddfe2e496071b743aa113f8774f2d3", size = 39814, upload-time = "2026-03-04T18:55:31.284Z" },
-]
-
-[[package]]
 name = "tensorboard"
 version = "2.21.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1975,15 +1934,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/55/e3/70399cb7dd41c10ac53367ae42139cf4b1ca5f36bb3dc6c9d33acdb43655/typing_inspection-0.4.2.tar.gz", hash = "sha256:ba561c48a67c5958007083d386c3295464928b01faa735ab8547c5692e87f464", size = 75949, upload-time = "2025-10-01T02:14:41.687Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/dc/9b/47798a6c91d8bdb567fe2698fe81e0c6b7cb7ef4d13da4114b41d239f65d/typing_inspection-0.4.2-py3-none-any.whl", hash = "sha256:4ed1cacbdc298c220f1bd249ed5287caa16f34d44ef4e9c3d0cbad5b521545e7", size = 14611, upload-time = "2025-10-01T02:14:40.154Z" },
-]
-
-[[package]]
-name = "unidecode"
-version = "1.4.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/94/7d/a8a765761bbc0c836e397a2e48d498305a865b70a8600fd7a942e85dcf63/Unidecode-1.4.0.tar.gz", hash = "sha256:ce35985008338b676573023acc382d62c264f307c8f7963733405add37ea2b23", size = 200149, upload-time = "2025-04-24T08:45:03.798Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/8f/b7/559f59d57d18b44c6d1250d2eeaa676e028b9c527431f5d0736478a73ba1/Unidecode-1.4.0-py3-none-any.whl", hash = "sha256:c3c7606c27503ad8d501270406e345ddb480a7b5f38827eafe4fa82a137f0021", size = 235837, upload-time = "2025-04-24T08:45:01.609Z" },
 ]
 
 [[package]]
