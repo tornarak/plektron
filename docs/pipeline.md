@@ -222,7 +222,7 @@ the stages that are built.
    and nothing else. `entity new` scaffolds at `proposed`, `entity occurrences`
    finds the rest of a form once one instance is understood, `entity alias` and
    `entity locate` fill the record, and `entity check` gates the lot. The store
-   holds **461 entries against zero collated pages** — `0d6fe61` alone added 152 —
+   holds **482 entries against zero collated pages** — `0d6fe61` alone added 152 —
    which is the plainest available statement of the point: the encyclopedia owes
    this stage nothing.
 
