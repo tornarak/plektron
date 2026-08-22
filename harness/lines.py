@@ -43,7 +43,7 @@ from __future__ import annotations
 
 import unicodedata
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, TypedDict
 
 from lxml import etree
 
@@ -52,6 +52,63 @@ from .refs import norm_ref
 
 if TYPE_CHECKING:
     import numpy as np
+
+# The line record's closed key set, and the four properties `ISSUE_FIELDS` has:
+# a module-level tuple naming the keys, one place that builds the record, every
+# value a scalar, and a **runtime** test that a finished record's keys equal this
+# tuple (`test_line_record.py`).
+#
+# **The runtime test is the load-bearing half, not the TypedDict.** The defect
+# this guards is a TOON one and therefore a runtime one: the encoder collapses a
+# list of records to a header plus rows only while they are flat and share one
+# key set, so a single ragged record silently de-tabularizes the whole table.
+# A type checker never sees the encoder, and `ty` is not a gate here in any case.
+#
+# The record is assembled in three places rather than one — `page_lines` writes
+# eleven keys and stamps `src`, `mark_figure_overlap` adds the three figure keys,
+# `reading_order` adds `y_rank` — which is why the tuple is worth having at all:
+# no single site can be read to learn the shape.
+LINE_FIELDS = (
+    "index", "line_id", "block_id", "zone", "text",
+    "hpos", "vpos", "width", "height", "baseline", "points",
+    "src",
+    "in_figdesc", "in_graphic", "figdesc_straddle",
+    "y_rank",
+)
+
+
+class LineRec(TypedDict):
+    """One ALTO line as the harness passes it around.
+
+    `total=True` by default, and that is the point: **every record carries every
+    key, `None` where it does not apply.** The `except ValueError` in
+    `mark_figure_overlap` stamps the three figure keys `None` precisely so the
+    key set stays closed, and this turns that convention into something a checker
+    can hold.
+
+    The geometry is `int | None` — ALTO omits `HPOS` on a line the segmenter gave
+    no box — which is the payoff: every `rec["hpos"] + rec["width"]` in this
+    module is arithmetic on a value that may be absent, and there are enough of
+    them that finding the guarded ones by eye is not a plan. `generate.py:487`
+    already crashed once on exactly that shape, `r["vpos"] + r.get("height", 0)`
+    with `vpos` None.
+    """
+    index: int
+    line_id: str
+    block_id: str | None
+    zone: str
+    text: str
+    hpos: int | None
+    vpos: int | None
+    width: int | None
+    height: int | None
+    baseline: str | None
+    points: str | None
+    src: str
+    in_figdesc: str | None
+    in_graphic: str | None
+    figdesc_straddle: str | None
+    y_rank: int
 
 # Padding around a line crop, in raster pixels, asymmetric on the vertical.
 #
