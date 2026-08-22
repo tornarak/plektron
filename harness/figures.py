@@ -29,6 +29,7 @@ import re
 import time
 import unicodedata
 from pathlib import Path
+from typing import NotRequired, TypedDict
 
 import numpy as np
 from lxml import etree
@@ -148,6 +149,69 @@ def _bbox(el) -> dict | None:
         except ValueError:
             return None
     return vals
+
+
+# The two rectangle shapes this project carries, and the conversion between them.
+#
+# **They are two spellings of one thing and both are load-bearing.** ALTO stores
+# a box as origin-plus-extent (`HPOS/VPOS/WIDTH/HEIGHT`), which is what
+# `read_blocks` returns unchanged because the store is the record. Every
+# *geometric* consumer wants corners, because overlap and containment are
+# comparisons of edges — so `zones.read_zones` converts, and so does
+# `zones_ui`, and so does this module in four places.
+#
+# `to_rect` is that conversion, once. It was written out inline at three sites
+# and the arithmetic appears at **eighteen** in all; collapsing the three that
+# build a rect record is what this does, and the other fifteen are expressions
+# in the middle of larger comparisons that want the guard question answered
+# first (see `LineRec`'s note on `int | None` geometry).
+BLOCK_FIELDS = ("id", "label", "hpos", "vpos", "width", "height")
+RECT_FIELDS = ("id", "label", "x0", "y0", "x1", "y1")
+
+
+class Block(TypedDict):
+    """A block as ALTO stores it: origin and extent.
+
+    `with_points=True` adds `points`, which is why this is `total=False`-adjacent
+    in spirit — the key is genuinely optional and declared `NotRequired` rather
+    than stamped `None`, unlike `LineRec`'s figure keys. The difference is the
+    consumer: these records are not emitted as a TOON table, so a ragged key set
+    costs nothing here and pretending otherwise would be cargo-culting the line
+    record's constraint into a place that does not have it.
+    """
+    id: str
+    label: str
+    hpos: int
+    vpos: int
+    width: int
+    height: int
+    points: NotRequired[str | None]
+
+
+class Rect(TypedDict):
+    """The same box as corners, which is what every overlap test wants."""
+    id: str
+    label: str
+    x0: int
+    y0: int
+    x1: int
+    y1: int
+    points: NotRequired[str | None]
+
+
+def to_rect(b, with_points: bool = False) -> dict:
+    """One `Block` as a `Rect`. The conversion, in one place.
+
+    Three sites built this dict literally and identically — `zones.read_zones`,
+    `zones_ui`, and `save_figs` here — which is the shape `crop_name`'s rule
+    names: one function where several callers must agree exactly.
+    """
+    rec = {"id": b["id"], "label": b["label"],
+           "x0": b["hpos"], "y0": b["vpos"],
+           "x1": b["hpos"] + b["width"], "y1": b["vpos"] + b["height"]}
+    if with_points:
+        rec["points"] = b.get("points")
+    return rec
 
 
 def read_blocks(path: Path, with_points: bool = False) -> list[dict]:

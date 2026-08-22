@@ -230,10 +230,7 @@ def _fig_state(ref: str, root: Path, cfg: dict) -> dict:
     if not gt and fg.alto_for(ref, root, fg.MZFIGDIR).exists():
         gt = fg.zones(ref, root, fg.MZFIGDIR)
         proposal = "mz"
-    figs = [{"id": b["id"], "label": b["label"],
-             "x0": b["hpos"], "y0": b["vpos"],
-             "x1": b["hpos"] + b["width"], "y1": b["vpos"] + b["height"]}
-            for b in gt]
+    figs = [fg.to_rect(b) for b in gt]
     exempt = fg.load_rule_exempt(root).get(ref, {})
     return {
         "figs": figs,

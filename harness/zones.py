@@ -70,7 +70,7 @@ from . import zones_config as zc
 if TYPE_CHECKING:
     from kraken.lib.vgsl import TorchVGSLModel
 from .atomic import tmp_for, write_atomic
-from .figures import read_blocks
+from .figures import read_blocks, to_rect
 from .ns import ALTO_NS
 from .parallel import pmap
 from .paths import scan_for  # re-exported; this module's callers name it here
@@ -312,12 +312,7 @@ def read_zones(ref: str, root: Path = Path("."),
     """
     out = []
     for b in read_blocks(alto_for(ref, root, store), with_points=with_points):
-        rec = {"id": b["id"], "label": b["label"],
-               "x0": b["hpos"], "y0": b["vpos"],
-               "x1": b["hpos"] + b["width"], "y1": b["vpos"] + b["height"]}
-        if with_points:
-            rec["points"] = b["points"]
-        out.append(rec)
+        out.append(to_rect(b, with_points))
     return sorted(out, key=lambda z: (z["y0"], z["x0"]))
 
 

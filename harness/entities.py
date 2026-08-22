@@ -75,6 +75,7 @@ import re
 import unicodedata
 from functools import lru_cache
 from pathlib import Path
+from typing import TypedDict
 
 from .geo import index as geo_index
 from .langs import ALIAS_LANGS
@@ -198,6 +199,68 @@ STATUSES = ("proposed", "ratified")
 #: The section an entity's alias table lives under. Named as a constant because
 #: the parser refuses the *old* spelling by name, and the two must not drift.
 ALIASES = "aliases"
+
+# The entity record's closed key set, in two halves, on `lines.LINE_FIELDS`' and
+# `proposal_check.ISSUE_FIELDS`' arrangement: a tuple naming the keys, and a
+# **runtime** test that a record's keys equal it (`test_entity_record.py`).
+#
+# **The split is the point, and it is a real distinction rather than tidiness.**
+# `parse` reads one file's text and knows nothing about where that file sits;
+# `load` walks the store and adds the three facts only the walk can supply. So a
+# `parse` result genuinely has no `path`, and code holding one must not reach for
+# it — `cli/_entity.py` binds a bare `parse` result at two sites, and today
+# neither subscripts `path`. That is luck rather than design, and the split is
+# what turns it into something a checker can state.
+PARSE_FIELDS = (
+    "id", "class", "slug", "canonical", "status",
+    "within", "part_of", "geo", "frame", "links",
+    "authority", "aliases", "gloss",
+)
+
+#: What `load` adds on top: where the file was found, which is not in the file.
+LOAD_FIELDS = ("dir_class", "stem", "path")
+
+ENTITY_FIELDS = PARSE_FIELDS + LOAD_FIELDS
+
+#: One row of an entity's alias table. Its own closed set, because the rows are
+#: emitted as a TOON table by `entity show` and carry the same raggedness hazard
+#: one level down: `lang` is `""` where unstated, never absent.
+ALIAS_FIELDS = ("form", "lang", "auto", "scope", "note")
+
+
+class AliasRow(TypedDict):
+    """One row of the alias table. `lang: ""` means unstated, and that is a
+    claim the store makes on purpose — 439 of 711 rows are the book's own
+    English, where saying so adds nothing."""
+    form: str
+    lang: str
+    auto: bool
+    scope: str
+    note: str
+
+
+class ParsedEntity(TypedDict):
+    """One entity file's own content, as `parse` returns it.
+
+    Everything here comes from the text. `frame` is `tuple | None` because an
+    entity may declare no reference frame; `geo`, `links` and `aliases` are
+    lists, which is why an entity record is **not** TOON-flat and `entity show`
+    renders it as a document rather than a row — the opposite trade from
+    `lines.LineRec`, and made deliberately.
+    """
+    id: str
+    class_: str          # spelled `class` in the record; see ENTITY_FIELDS
+    slug: str
+    canonical: str
+    status: str
+    within: str
+    part_of: str
+    geo: list
+    frame: tuple | None
+    links: list
+    authority: str
+    aliases: list[AliasRow]
+    gloss: str
 
 #: How one entry names another, in a gloss or an alias note. Brackets rather
 #: than a bare `class:slug`, so a reference is distinguishable from prose that
