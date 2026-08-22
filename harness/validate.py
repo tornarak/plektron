@@ -1001,6 +1001,204 @@ def _rule_foreign_lang(root, q, ctx, r: Report) -> None:
             "ordinary European orthography is not one at all")
 
 
+def _rule_tier1_unglossed(root, q, ctx, r: Report) -> int:
+    """A Tier-1 span a reader can do nothing with. Neither glossed nor identified
+    is a warning and not an error, because the book genuinely leaves forms
+    bare and no model may write a gloss the page does not carry — the remedy
+    is to link the printed gloss, mark the name, or say why neither applies.
+
+    **Glossed is decided by `xml:id` membership, and a span with no id is
+    unglossed exactly rather than approximately.** `ids.py` and this file both
+    state the scheme's rule as "no id without a referrer": an id exists *iff*
+    something points at it. So absence of an id is absence of an incoming
+    gloss, by construction and not by luck — which is why there is no
+    containment fallback here, the inference `ids.pair_glosses` and
+    `ids.page_glossary` both refuse in writing.
+
+    **Identified is a `<name>` carrying an approved `@type`, or an `@ref`.**
+    A bare `<name>` is not enough here, and `entities`' `names_untyped` count
+    does not license one: that argument is about the page's names at large,
+    most of which are English prose and typed only where the page evidences a
+    category. A Tier-1 span is a handful per page and the question asked of it
+    is different — a native word a reader cannot place is exactly the thing
+    this edition exists to resolve, and "it is a name of some kind" places it
+    nowhere. `@ref` counts because a rule-applied link is an `<rs>`, which
+    carries no `@type` at all: the class is the ref's own prefix.
+
+    **A re-mention does not fire.** `1-101` glosses `qeˊñu` in one item and
+    uses it inside another item's gloss; demanding a second gloss there asks
+    for the same fact twice. Compared case-sensitively — folding here would
+    import `marks.fold`'s judgement that two settings are one word, which is
+    not this gate's to make.
+
+    Returns the count of unglossed spans.
+    """
+    from .ids import glossed_ids
+
+    def _span(el) -> str:
+        return unicodedata.normalize(
+            "NFD", " ".join("".join(el.itertext()).split()))
+
+    glossed = glossed_ids(root)
+    by_id = {i: el for el in root.iter()
+             if isinstance(el.tag, str) and (i := el.get(XML_ID_ATTR))}
+    glossed_text = {_span(by_id[i]) for i in glossed if i in by_id}
+    tier1_unglossed = 0
+    for el in root.iter():
+        if not isinstance(el.tag, str) or el.get(XML_LANG) not in TIER1:
+            continue
+        parent = el.getparent()
+        if (el.get(XML_ID_ATTR) in glossed
+                or any(isinstance(d.tag, str)
+                       and etree.QName(d).localname == "name"
+                       and d.get("type") in NAME_TYPES
+                       for d in el.iter())
+                or el.get("ref")
+                or (parent is not None and parent.get("ref"))):
+            continue
+        span = _span(el)
+        if span in glossed_text:
+            continue
+        tier1_unglossed += 1
+        r.warnings.append(
+            f"<{etree.QName(el).localname} xml:lang={el.get(XML_LANG)!r}> "
+            f"{span[:40]!r} is "
+            "neither glossed nor identified — no <gloss target> points at it, "
+            "no <name> with a declared @type covers it, and no entity @ref "
+            "stands over it, so a reader meeting it has nowhere to go. Link "
+            "the printed gloss, type the name, or leave it if the page really "
+            "says nothing about the word")
+    return tier1_unglossed
+
+
+def _rule_provenance_summary(tier1_spans: int, tier1_adopted: int,
+                             ratified: bool, r: Report) -> None:
+    """One summary line for the page's provenance state, so a PASS never reads as
+    "these forms are settled". Saying so once is cheaper than a human inferring
+    it from a rank they'd have to go look up.
+
+    **Split by rank, because it was written when there were three.** It counted
+    every Tier-1 span and called them all proposals "each needing a human reading
+    against the page" — which after `tei expand` is false about exactly the spans
+    `#gt` exists to describe: nobody will read those against this page, the
+    reading happened one artifact upstream, and demanding it again is asking for
+    the retyping the transclusion removed. A worklist line naming work that must
+    not be done is worse than no line, and it is this project's own failure shape
+    — a summary that stays fluent while the thing it summarises moves under it.
+
+    **The first coupling, and it takes its counters as arguments** rather than
+    reaching for them: `lang-and-glyphs` sets them, not `provenance`, and the
+    enumeration commit credited the wrong neighbour. Passing them in is what
+    makes the dependency impossible to misread from here.
+    """
+    proposed = tier1_spans - tier1_adopted
+    if proposed and not ratified:
+        r.worklist.append(
+            f"{proposed} Tier-1 span(s) at {PROPOSED} — proposals, not adopted "
+            "glyph identities; each needs a human reading against the page before "
+            "anything downstream may treat it as settled")
+    if tier1_adopted:
+        r.worklist.append(
+            f"{tier1_adopted} Tier-1 span(s) at {ADOPTED} — transcluded from "
+            "gt/ocr/ and re-checked against it on this run, so the glyphs want no "
+            "reading here; what is unratified about them is which token the pass "
+            "chose, not what it says")
+
+
+def _rule_relink_missing(tei_path, store, r: Report) -> None:
+    """**The other direction of the same check.** `entities` re-derives the `#mz`
+    links this page *has*; nothing looked for the ones it lacks. A page is
+    collated after it is generated, so an entry ratified afterwards leaves its
+    form in plain text here — and from the outside that is indistinguishable from
+    a page whose text never printed the form at all. A worklist line, not an
+    error: the page is not wrong, it is out of date with a store that moved under
+    it, and `harness entity ratify` is what brings it up.
+
+    **One of the three couplings**, and the reason this signature is not
+    `(root, q, ctx, r)`: it reuses the `store` the `entities` rule loaded, and it
+    reads the file's *text* rather than the parsed tree, so it takes `tei_path`.
+    Both are the honest dependencies rather than a uniform shape imposed on them.
+    """
+    from .relink import missing
+
+    unlinked = missing(tei_path.read_text(encoding="utf-8"), store)
+    if unlinked:
+        forms = sorted({f"{u['form']} → {u.get('id') or u['why']}"
+                        for u in unlinked})
+        r.worklist.append(
+            f"{len(unlinked)} form(s) a ratified entry now claims sit unlinked "
+            f"here: {'; '.join(forms[:6])}"
+            f"{' …' if len(forms) > 6 else ''}. The page was collated before the "
+            f"store said so; `harness entity ratify` applies them")
+
+
+def _rule_measures(root, q, ctx, r: Report) -> tuple[int, int]:
+    """Value, and the relations between the ways of stating it. `<measureGrp>` is TEI's
+    "dimensional specifications which relate to the same object", which is read here
+    as *these measures bear on one priced thing* and deliberately not as *these are
+    equal*. The looser reading is the one the chapter needs: 1-094 prices a bundle
+    of tobacco seven ways in one sentence — 30 kopeks in southern Russia, 60 in
+    Yakutsk, 1.80 rubles in Sredne-Kolymsk, 2.40 or 3 black fawn-skins at the Anui
+    fair — and those seven are pointedly *not* equal to each other. Under "equal"
+    the subject would have to sit in seven groups at once, which no tree expresses;
+    under "one object" it is one group, and the ellipsis the print leaves ("in
+    Yakutsk, 60 kopeks") is resolved by the reader who has the paragraph open.
+
+    Returns `(measures, groups)`.
+    """
+    measures = groups = 0
+    for el in root.iter(q("measure"), q("measureGrp")):
+        local = etree.QName(el).localname
+        if local == "measure":
+            measures += 1
+            kind = el.get("type")
+            if kind is None:
+                span = " ".join("".join(el.itertext()).split())[:40]
+                r.errors.append(
+                    f"<measure> {span!r} carries no @type — which regime "
+                    f"of value it belongs to is the whole reason to mark it "
+                    f"({', '.join(sorted(MEASURE_TYPES))})")
+            elif kind not in MEASURE_TYPES:
+                r.errors.append(
+                    f"<measure type={kind!r}> is not a declared type "
+                    f"({', '.join(sorted(MEASURE_TYPES))})")
+        else:
+            groups += 1
+            if el.find(f".//{q('measure')}") is None:
+                r.errors.append(
+                    "<measureGrp> holds no <measure> — the element records that "
+                    "some measure is a valuation of the thing this span names, so "
+                    "one with none in it records nothing")
+        for attr in MEASURE_IDENTITY_ATTRS:
+            if el.get(attr) is not None:
+                r.errors.append(
+                    f"<{local} @{attr}> normalizes the value, which this pass does "
+                    "not do — the page's own words are the record, and a per-page "
+                    "pass minting units produces one vocabulary per page")
+    return measures, groups
+
+
+def _rule_bibl_extent(root, q, ctx, r: Report) -> int:
+    """A citation's extent, and nothing about which work it names. Counted rather
+    than gated for presence: a page citing nothing is the ordinary page.
+
+    **Returns its count**, like every rule here that feeds `metrics`. `r.metrics`
+    is assigned wholesale from values gathered the length of `validate`, so a
+    rule holding its own counter would simply vanish from the report.
+    """
+    bibls = 0
+    for el in root.iter(q("bibl")):
+        bibls += 1
+        for attr in BIBL_IDENTITY_ATTRS:
+            if el.get(attr) is not None:
+                r.errors.append(
+                    f"<bibl @{attr}> names which work is cited, which this pass "
+                    "does not do — `find authority` is read while collating and "
+                    "its answer is not written down; the key is the annotation "
+                    "pass's, over finished TEI")
+    return bibls
+
+
 def _rule_milestones(root, q, ctx, r: Report) -> None:
     """An id must exist in the ToC — that is the hard check. Falling outside the
     supplied window is only a warning: the window is keyed to a predicted folio,
@@ -1467,95 +1665,10 @@ def validate(tei_path: Path, ctx: dict | None = None,
     # happens in the one whose name does not suggest it. One of the three
     # couplings that make this function more than a sequence.
     #
-    # One summary line for the page's provenance state, so a PASS never reads as
-    # "these forms are settled". Saying so once is cheaper than a human inferring
-    # it from a rank they'd have to go look up.
-    #
-    # **Split by rank, because it was written when there were three.** It counted
-    # every Tier-1 span and called them all proposals "each needing a human reading
-    # against the page" — which after `tei expand` is false about exactly the spans
-    # `#gt` exists to describe: nobody will read those against this page, the
-    # reading happened one artifact upstream, and demanding it again is asking for
-    # the retyping the transclusion removed. A worklist line naming work that must
-    # not be done is worse than no line, and it is this project's own failure shape
-    # — a summary that stays fluent while the thing it summarises moves under it.
-    proposed = tier1_spans - tier1_adopted
-    if proposed and not ratified:
-        r.worklist.append(
-            f"{proposed} Tier-1 span(s) at {PROPOSED} — proposals, not adopted "
-            "glyph identities; each needs a human reading against the page before "
-            "anything downstream may treat it as settled")
-    if tier1_adopted:
-        r.worklist.append(
-            f"{tier1_adopted} Tier-1 span(s) at {ADOPTED} — transcluded from "
-            "gt/ocr/ and re-checked against it on this run, so the glyphs want no "
-            "reading here; what is unratified about them is which token the pass "
-            "chose, not what it says")
+    _rule_provenance_summary(tier1_spans, tier1_adopted, ratified, r)
 
     # ── rule: tier1-unglossed ────────────────────────────────────────────────
-    # A Tier-1 span a reader can do nothing with. Neither glossed nor identified
-    # is a warning and not an error, because the book genuinely leaves forms
-    # bare and no model may write a gloss the page does not carry — the remedy
-    # is to link the printed gloss, mark the name, or say why neither applies.
-    #
-    # **Glossed is decided by `xml:id` membership, and a span with no id is
-    # unglossed exactly rather than approximately.** `ids.py` and this file both
-    # state the scheme's rule as "no id without a referrer": an id exists *iff*
-    # something points at it. So absence of an id is absence of an incoming
-    # gloss, by construction and not by luck — which is why there is no
-    # containment fallback here, the inference `ids.pair_glosses` and
-    # `ids.page_glossary` both refuse in writing.
-    #
-    # **Identified is a `<name>` carrying an approved `@type`, or an `@ref`.**
-    # A bare `<name>` is not enough here, and the `names_untyped` comment below
-    # does not license one: that argument is about the page's names at large,
-    # most of which are English prose and typed only where the page evidences a
-    # category. A Tier-1 span is a handful per page and the question asked of it
-    # is different — a native word a reader cannot place is exactly the thing
-    # this edition exists to resolve, and "it is a name of some kind" places it
-    # nowhere. `@ref` counts because a rule-applied link is an `<rs>`, which
-    # carries no `@type` at all: the class is the ref's own prefix.
-    #
-    # **A re-mention does not fire.** `1-101` glosses `qeˊñu` in one item and
-    # uses it inside another item's gloss; demanding a second gloss there asks
-    # for the same fact twice. Compared case-sensitively — folding here would
-    # import `marks.fold`'s judgement that two settings are one word, which is
-    # not this gate's to make.
-    from .ids import glossed_ids
-
-    def _span(el) -> str:
-        return unicodedata.normalize(
-            "NFD", " ".join("".join(el.itertext()).split()))
-
-    glossed = glossed_ids(root)
-    by_id = {i: el for el in root.iter()
-             if isinstance(el.tag, str) and (i := el.get(XML_ID_ATTR))}
-    glossed_text = {_span(by_id[i]) for i in glossed if i in by_id}
-    tier1_unglossed = 0
-    for el in root.iter():
-        if not isinstance(el.tag, str) or el.get(XML_LANG) not in TIER1:
-            continue
-        parent = el.getparent()
-        if (el.get(XML_ID_ATTR) in glossed
-                or any(isinstance(d.tag, str)
-                       and etree.QName(d).localname == "name"
-                       and d.get("type") in NAME_TYPES
-                       for d in el.iter())
-                or el.get("ref")
-                or (parent is not None and parent.get("ref"))):
-            continue
-        span = _span(el)
-        if span in glossed_text:
-            continue
-        tier1_unglossed += 1
-        r.warnings.append(
-            f"<{etree.QName(el).localname} xml:lang={el.get(XML_LANG)!r}> "
-            f"{span[:40]!r} is "
-            "neither glossed nor identified — no <gloss target> points at it, "
-            "no <name> with a declared @type covers it, and no entity @ref "
-            "stands over it, so a reader meeting it has nowhere to go. Link "
-            "the printed gloss, type the name, or leave it if the page really "
-            "says nothing about the word")
+    tier1_unglossed = _rule_tier1_unglossed(root, q, ctx, r)
 
     # ── rule: entities ───────────────────────────────────────────────────────
     # Loads the entity store, which `relink-missing` below then reuses: the
@@ -1715,81 +1828,16 @@ def validate(tei_path: Path, ctx: dict | None = None,
                     f"with the rule is the stale stamp {RULED} exists to prevent")
 
     # ── rule: relink-missing ─────────────────────────────────────────────────
-    # **The other direction of the same check.** Everything above re-derives the
-    # `#mz` links this page *has*; nothing looked for the ones it lacks. A page
-    # is collated after it is generated, so an entry ratified afterwards leaves
-    # its form in plain text here — and from the outside that is indistinguishable
-    # from a page whose text never printed the form at all. A worklist line, not
-    # an error: the page is not wrong, it is out of date with a store that moved
-    # under it, and `harness entity ratify` is what brings it up.
-    from .relink import missing
-
-    unlinked = missing(tei_path.read_text(encoding="utf-8"), store)
-    if unlinked:
-        forms = sorted({f"{u['form']} → {u.get('id') or u['why']}"
-                        for u in unlinked})
-        r.worklist.append(
-            f"{len(unlinked)} form(s) a ratified entry now claims sit unlinked "
-            f"here: {'; '.join(forms[:6])}"
-            f"{' …' if len(forms) > 6 else ''}. The page was collated before the "
-            f"store said so; `harness entity ratify` applies them")
+    # Takes the `store` the `entities` rule loaded: the second coupling.
+    _rule_relink_missing(tei_path, store, r)
 
     figrefs_marked, figrefs_missing = _figrefs(root, r, ctx)
 
     # ── rule: bibl-extent ────────────────────────────────────────────────────
-    # A citation's extent, and nothing about which work it names. Counted rather
-    # than gated for presence: a page citing nothing is the ordinary page.
-    bibls = 0
-    for el in root.iter(q("bibl")):
-        bibls += 1
-        for attr in BIBL_IDENTITY_ATTRS:
-            if el.get(attr) is not None:
-                r.errors.append(
-                    f"<bibl @{attr}> names which work is cited, which this pass "
-                    "does not do — `find authority` is read while collating and "
-                    "its answer is not written down; the key is the annotation "
-                    "pass's, over finished TEI")
+    bibls = _rule_bibl_extent(root, q, ctx, r)
 
     # ── rule: measures ───────────────────────────────────────────────────────
-    # Value, and the relations between the ways of stating it. `<measureGrp>` is TEI's
-    # "dimensional specifications which relate to the same object", which is read here
-    # as *these measures bear on one priced thing* and deliberately not as *these are
-    # equal*. The looser reading is the one the chapter needs: 1-094 prices a bundle
-    # of tobacco seven ways in one sentence — 30 kopeks in southern Russia, 60 in
-    # Yakutsk, 1.80 rubles in Sredne-Kolymsk, 2.40 or 3 black fawn-skins at the Anui
-    # fair — and those seven are pointedly *not* equal to each other. Under "equal"
-    # the subject would have to sit in seven groups at once, which no tree expresses;
-    # under "one object" it is one group, and the ellipsis the print leaves ("in
-    # Yakutsk, 60 kopeks") is resolved by the reader who has the paragraph open.
-    measures = groups = 0
-    for el in root.iter(q("measure"), q("measureGrp")):
-        local = etree.QName(el).localname
-        if local == "measure":
-            measures += 1
-            kind = el.get("type")
-            if kind is None:
-                span = " ".join("".join(el.itertext()).split())[:40]
-                r.errors.append(
-                    f"<measure> {span!r} carries no @type — which regime "
-                    f"of value it belongs to is the whole reason to mark it "
-                    f"({', '.join(sorted(MEASURE_TYPES))})")
-            elif kind not in MEASURE_TYPES:
-                r.errors.append(
-                    f"<measure type={kind!r}> is not a declared type "
-                    f"({', '.join(sorted(MEASURE_TYPES))})")
-        else:
-            groups += 1
-            if el.find(f".//{q('measure')}") is None:
-                r.errors.append(
-                    "<measureGrp> holds no <measure> — the element records that "
-                    "some measure is a valuation of the thing this span names, so "
-                    "one with none in it records nothing")
-        for attr in MEASURE_IDENTITY_ATTRS:
-            if el.get(attr) is not None:
-                r.errors.append(
-                    f"<{local} @{attr}> normalizes the value, which this pass does "
-                    "not do — the page's own words are the record, and a per-page "
-                    "pass minting units produces one vocabulary per page")
+    measures, groups = _rule_measures(root, q, ctx, r)
 
     # ── rule: metrics ────────────────────────────────────────────────────────
     # **The third coupling, and the one that constrains the extraction most.**
