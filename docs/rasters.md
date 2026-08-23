@@ -8,7 +8,9 @@ AMNH Digital Library PDFs (`M11Pt01–03`).
 
 **`scans/` is derived, not source.** It is **`harness scans extract --all --rasters
 DIR`** over `pdfs/`, then **`harness scans swap DIR`**, so it is regenerable and
-stays out of git. Every page carries a PNG `tEXt` chunk naming the PDF it was cut
+stays out of git. The cut is ~20 s over the whole corpus on eight cores, and 133 s
+on one: `--jobs` there means **processes**, because the page read is C-level and
+holds the GIL — four *threads* made it slower than serial. Every page carries a PNG `tEXt` chunk naming the PDF it was cut
 from and that file's sha256, and the manifest's `_sources` block digests the PDFs
 themselves — `harness scans audit` re-reads them and says so if one has changed.
 The PDFs are MRC-layered: a **1-bit JBIG2 master** for each page's type, plus

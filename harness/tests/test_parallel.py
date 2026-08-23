@@ -11,7 +11,14 @@ import threading
 
 import pytest
 
-from harness.parallel import MAX_WORKERS, pmap, ptrack, workers
+from harness.parallel import (
+    MAX_WORKERS,
+    cpu_workers,
+    pchunks,
+    pmap,
+    ptrack,
+    workers,
+)
 
 
 def test_results_come_back_in_input_order():
@@ -177,3 +184,62 @@ def test_ptrack_ticks_after_the_body_not_before():
 
 def test_ptrack_without_a_tick_is_just_the_items():
     assert list(ptrack([1, 2, 3])) == [1, 2, 3]
+
+
+# --- pchunks: the same contract, in processes ---------------------------------
+#
+# A separate pool because the work it serves holds the GIL: `pymupdf`'s page read
+# is C-level, CPU-bound and does not release it, so threads made `scans extract`
+# *slower* (20.6 s serial, 22.6 s on four threads) where processes took it to
+# 2.9 s on eight. These hold the same three properties `pmap`'s tests do, since a
+# pool that reorders or swallows is no safer for being made of processes.
+
+
+def _double(chunk):
+    return [x * 2 for x in chunk]
+
+
+def _boom(chunk):
+    if 3 in chunk:
+        raise ValueError("chunk with 3")
+    return list(chunk)
+
+
+def test_pchunks_returns_chunks_in_submission_order():
+    got = pchunks(_double, [(0, 1), (2, 3), (4, 5)], jobs=3)
+    assert got == [[0, 2], [4, 6], [8, 10]]
+
+
+def test_pchunks_jobs_1_builds_no_pool():
+    """The control arm. It must run in *this* process, or a `--jobs 1` run is not
+    the thing the pooled run is being diffed against."""
+    import os
+    got = pchunks(lambda c: os.getpid(), [(1,), (2,)], jobs=1)
+    assert got == [os.getpid(), os.getpid()]
+
+
+@pytest.mark.parametrize("jobs", [1, 3])
+def test_pchunks_reports_the_earliest_failing_chunk(jobs):
+    """Item order, not completion order — `pmap`'s rule and for its reason: which
+    page a sweep names must not depend on which worker finished first."""
+    with pytest.raises(ValueError, match="chunk with 3"):
+        pchunks(_boom, [(1,), (3,), (5,)], jobs=jobs)
+
+
+@pytest.mark.parametrize("jobs", [1, 3])
+def test_pchunks_ticks_once_per_chunk_with_a_running_count(jobs):
+    seen = []
+    pchunks(_double, [(0,), (1,), (2,)], jobs=jobs,
+            tick=lambda c, done, total: seen.append((done, total)))
+    assert seen == [(1, 3), (2, 3), (3, 3)] if jobs == 1 else len(seen) == 3
+
+
+def test_cpu_workers_caps_on_cores_and_on_the_work():
+    assert cpu_workers(None, 1) == 1                     # never more than the work
+    assert cpu_workers(4, 100) == 4                      # a typed number wins
+    assert cpu_workers(None, 10_000) <= MAX_WORKERS
+
+
+def test_cpu_workers_refuses_zero():
+    with pytest.raises(ValueError, match="at least 1"):
+        cpu_workers(0, 10)

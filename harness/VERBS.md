@@ -129,10 +129,12 @@ not a property of the verb.
 
 **Where `--jobs` appears the sweep is pooled, and it means two different things.**
 Threads on the raster sweeps — `zones check`, `zones paragraphs`, `zones blot`,
-`ocr gaps`, `ocr blot`, `fig crops`, `views build` — where the per-page cost is a
-PNG decode and the inflate releases the GIL. **Processes** on the model sweeps —
-`ocr predict`, `train score`, `train install` — where the work is single-core
-CPU-bound inside scipy and shapely, and the cap is free VRAM as well as cores.
+`ocr gaps`, `ocr blot`, `fig crops`, `views build`, `scans info`, `scans census`,
+`scans audit`, `scans space` — where the per-page cost is a PNG decode and the
+inflate releases the GIL. **Processes** on the model sweeps — `ocr predict`,
+`train score`, `train install` — and on `scans extract`, where the work is
+single-core CPU-bound inside scipy, shapely or mupdf; the model sweeps cap on free
+VRAM as well as cores, `scans extract` on cores alone.
 On the two `train` actions the flag is **zones only**, since only that track
 segments a checkpoint in memory; naming it on another track exits 2.
 `ocr edit` takes it for the measuring pass `--unsettled` runs before it binds.
@@ -140,6 +142,18 @@ segments a checkpoint in memory; naming it on another track exits 2.
 `test_the_progress_paragraph_names_every_pooled_action` holds that list against
 the parser, since which kind of worker a flag spawns is the one thing about a
 pooled sweep the parser cannot say.
+
+**The four `scans` read sweeps are threaded for a machine this is not.** Locally
+they are 0.5–1.8 s and most of that is the interpreter starting, so on this
+workstation the flag buys nothing measurable and `parallel.py`'s own rule would
+exclude them. They carry it for the VPS with the corpus on NFS, where each page's
+`stat` and header read is a network round trip and the sweep is latency-bound
+rather than CPU-bound — threads absorb latency whatever the GIL is doing, because
+a syscall releases it. **That is reasoning, not a measurement**: no NFS mount was
+benchmarked, and the honest claim is a predicted win rather than a demonstrated
+one. What *was* measured is the round-trip count, which fell on its own: `info`
+opened each raster twice and stat'd it twice, and now opens once — 3062 `openat`
+to 2224 over 832 pages.
 
 The bar appears only when stderr is a terminal and only once the work has run for
 about half a second, so a short run stays silent and a redirected one is
@@ -2045,6 +2059,7 @@ against itself. `audit` re-reads the PDFs and makes a fuss if one changed.
 --rasters DIR also cut the tree into DIR — a sibling, never scans/ — with the
               manifest it was cut at alongside it. Needs --all
 --commit      write data/pdf_images.json. Needs --all
+--jobs N      worker **processes**; 1 runs serially and builds no pool [cores, capped]
 --root --json --toon --pager
 ```
 **Emits** `extract` (`pages`, `bitonal`, `composite`, `rendered`, `photographs`, `refused`, `manifest`, `rasters`) and `refused` where there is one.
@@ -2061,7 +2076,8 @@ against itself. `audit` re-reads the PDFs and makes a fuss if one changed.
 --commit  perform it
 --root --json --toon --pager
 ```
-**Emits** `swap`, `shifts` (pages whose space changed), `stores`, `dependents`, `touched_up`, and `refusals` where there are any.
+**Emits** `swap` (the headline: rasters to install, pages shifted, stored files rewritten, derived files discarded), `shifts` (pages whose space changed), `stores`, `dependents`, `touched_up`, and `refusals` where there are any.
+**Note** **the `dependents` table counts this run, not the dependency graph.** It listed every store as `translated` and every farm as `discarded` — true of what *depends on* the geometry, and printed directly above a `stores` block reading `migrated: 0`. A reader asking what a `--commit` would do got two answers in one report and the confident-looking one was wrong. Every row now carries `files` and `changes`, and `response` reads `—` where the answer is none; the `swap` block sums them so a no-op is legible without adding up a table. On a re-cut from the same PDFs the honest answer is 832 rasters installed, 0 pages shifted, 0 stored files rewritten.
 **Note** **the shift is manifest-to-manifest, not the manifest's `offset`.** That field records where a master sat in the legacy pdftoppm space and is *spent* — the stores left that space and `data/_migrated.json` is the receipt. What a re-cut needs is `new placement − old placement`, per page. Reading `offset` would re-apply a shift already applied once.
 **Note** **what "atomic" can honestly mean across six trees.** Not one syscall. Every translation is computed and digest-checked before anything is written, any refusal aborts the whole run with nothing moved, and the receipt records which manifest the stores are now in. That last is not ceremony: a zero shift leaves a page byte-identical, so "correctly untouched" and "not yet reached" cannot be told apart by looking. It is part 2's lesson — 2550x3525 before and after — generalised.
 **Note** **where the two spaces are the same size and the shift is not zero, the run aborts.** No page box can say which side of the shift a file is on, and both guesses are wrong: "already" leaves every coordinate stale, "source" may shift a page twice. The render→master migration never met this because every page that moved also changed size.
@@ -2074,6 +2090,7 @@ against itself. `audit` re-reads the PDFs and makes a fuss if one changed.
 **Reads** `data/pdf_images.json`, `scans/`, `gt/zones/`'s split lists. **Writes** — **Exit** 0.
 ```
 --all  every page the manifest holds
+--jobs N      worker threads; 1 runs serially and builds no pool [cores, capped]
 --root --json --toon --pager
 ```
 **Emits** `info`, and `photos` where the pages named carry any.
@@ -2086,9 +2103,13 @@ against itself. `audit` re-reads the PDFs and makes a fuss if one changed.
 **Reads** `data/pdf_images.json`, `scans/`. **Writes** — **Exit** 0.
 ```
 --all  every page the manifest holds
+--jobs N      worker threads; 1 runs serially and builds no pool [cores, capped]
 --root --json --toon --pager
 ```
-**Emits** `census`, `masters`, `offsets`.
+**Emits** `census` and `classes`.
+**Note** **one table of combinations, not three of marginals.** It printed master sizes and placements as separate distributions, and from those a reader cannot tell whether the single page at 2824x3897 is also the odd one placed at `(0, 0)` — it is, and it is `1-303`. The class is `(source file, colour, size, offset, photographs)`, which is `cut | sort | uniq -c` over the fields `pdfimages` reports, and the joint shape is what is worth reading: 16 classes over 832 pages, nine of them the ordinary body of one part and the rest exceptions.
+**Note** **sorted by the class, not by its population.** Ordering by count interleaved the three parts and scattered the one-offs; sorted by key, each exception falls immediately after the class it is an exception to. The first page of a class breaks ties, so the order is total and two runs cannot differ.
+**Note** **a class of five pages or fewer is named rather than counted.** A row reading `1 page` sends the reader away to find out which, and the singletons are the whole reason to look — the two covers, `1-303`, the foldout, `2-255`'s four photographs. `scans.NAME_AT_MOST` is the threshold.
 **Note** **the counts are written down nowhere else, deliberately.** `CLAUDE.md` refuses to state them because a number in a file nothing regenerates goes stale; this is the command that answers instead. Today: 832 pages, 593 bitonal, 236 composite carrying 371 photographs, 3 rendered at their own size, 186 MB.
 **Note** the `offsets` table is the shape of the whole problem in three rows — 358 pages at (21, 15), 272 at (0, 0), 202 at (−35, −9). One scan, three arbitrary paper sizes.
 
@@ -2097,6 +2118,7 @@ against itself. `audit` re-reads the PDFs and makes a fuss if one changed.
 **Reads** `data/pdf_images.json`, `scans/`, `pdfs/`. **Writes** — **Exit** 0 clean · 1 a gating finding.
 ```
 --all  every page the manifest holds
+--jobs N      worker threads; 1 runs serially and builds no pool [cores, capped]
 --root --json --toon --pager
 ```
 **Emits** `audit` (`checked`, `findings`, `gating`) and `findings`.
@@ -2110,6 +2132,7 @@ against itself. `audit` re-reads the PDFs and makes a fuss if one changed.
 **Reads** the six coordinate stores, `data/pdf_images.json`. **Writes** — **Exit** 0 clean · 1 a page is not in master space.
 ```
 --all  every page of every coordinate store
+--jobs N      worker threads; 1 runs serially and builds no pool [cores, capped]
 --root --json --toon --pager
 ```
 **Emits** `space` (`files`, then a count per space) and `not_master`.

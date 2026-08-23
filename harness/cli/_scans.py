@@ -20,6 +20,7 @@ from pathlib import Path
 from .. import render, scans
 from ._common import (
     action,
+    add_jobs,
     arg,
     group,
     opt,
@@ -62,6 +63,7 @@ def register(cli):
         help="write data/pdf_images.json, the one tracked output. Requires "
              "--all, for the same reason --rasters does: a partial manifest "
              "would silently drop the 800 pages it did not walk")
+    add_jobs(p, processes=True)
 
     p = action(g, "swap", run_swap, section="Building the tree",
                help="install a cut tree, and move everything keyed to its "
@@ -96,15 +98,22 @@ def register(cli):
                "where a photograph's own resolution and the shift live. "
                "Reports; never gates")
     refs_arg(p, all_="every page the manifest holds")
+    add_jobs(p)
 
     p = action(g, "census", run_census, section="What the rasters are",
-               help="the counts, which are deliberately written down nowhere: "
-               "bitonal, composite and rendered-at-own-size pages, photographs "
-               "carried, master sizes and placements by population, and the "
-               "bytes on disk. A number in a file nothing regenerates goes "
-               "stale, so this is the command that answers instead. Reports; "
-               "never gates")
+               help="the counts, which are deliberately written down nowhere, "
+               "and **one table of combinations rather than three of "
+               "marginals**: every distinct `(source file, colour, size, "
+               "offset, photographs)` with how many pages hold it, sorted by "
+               "the class so each one-off falls beside the class it is an "
+               "exception to. Separate distributions could not say whether "
+               "the one page at 2824x3897 was also the odd one at (0,0) — it "
+               "is. **A class of five pages or fewer is named**, since a row "
+               "reading `1 page` is the one worth looking at. A number in a "
+               "file nothing regenerates goes stale, so this is the command "
+               "that answers instead. Reports; never gates")
     refs_arg(p, all_="every page the manifest holds")
+    add_jobs(p)
 
     p = action(g, "audit", run_audit, section="What the rasters are",
                help="the manifest against the tree on disk: a page in one and "
@@ -114,6 +123,7 @@ def register(cli):
                "raster with no manifest entry. Findings only; a page that is "
                "present and right says nothing. Exit 1 on any finding")
     refs_arg(p, all_="every page the manifest holds")
+    add_jobs(p)
 
     p = action(g, "space", run_space, section="What the rasters are",
                help="which coordinate space each store's pages declare, read "
@@ -127,6 +137,7 @@ def register(cli):
                "being two stores' answer under one name. Exit 1 on any page "
                "not in master space")
     refs_arg(p, all_="every page of every coordinate store")
+    add_jobs(p)
 
 
 # --- Building the tree --------------------------------------------------------
@@ -142,7 +153,8 @@ def run_extract(a) -> int:
                          "use --all, or drop them to report on the refs named")
     rasters = Path(a.rasters) if a.rasters else None
     with render.progress("extract") as tick:
-        manifest, records = scans.extract(a.root, refs or None, rasters, tick)
+        manifest, records = scans.extract(a.root, refs or None, rasters, tick,
+                                          jobs=a.jobs)
 
     ok = [r for r in records if not r["refuse"]]
     bad = [r for r in records if r["refuse"]]
@@ -186,9 +198,17 @@ def run_swap(a) -> int:
     out(a, rep["touched_up"], name="touched_up", heading=True)
     if rep["refusals"]:
         out(a, rep["refusals"], name="refusals", heading=True)
+    sw = rep["swap"]
+    # The exit line says what would happen, not merely that something might. A
+    # `--commit swaps` that swaps nothing and one that rewrites 3000 coordinates
+    # read identically, and the second is the one worth pausing over.
+    would = (f"--commit would install {sw.get('rasters', 0)} rasters, "
+             f"shift {sw.get('pages_shifted', 0)} pages, rewrite "
+             f"{sw.get('files_changing', 0)} stored files and discard "
+             f"{sw.get('files_discarded', 0)} derived ones")
     return verdict(a, 1 if rep["refusals"] else 0,
                    "refused; nothing moved" if rep["refusals"]
-                   else "swapped" if a.commit else "report only; --commit swaps")
+                   else "swapped" if a.commit else would)
 
 
 # --- What the rasters are -----------------------------------------------------
@@ -201,7 +221,7 @@ def _scope(a) -> list[str]:
 def run_info(a) -> int:
     refs = _scope(a)
     with render.progress("info") as tick:
-        rows = scans.info(refs, a.root, tick)
+        rows = scans.info(refs, a.root, tick, jobs=a.jobs)
     out(a, rows, name="info")
     ph = scans.photos(refs, a.root)
     if ph:
@@ -211,16 +231,15 @@ def run_info(a) -> int:
 
 def run_census(a) -> int:
     with render.progress("census") as tick:
-        r = scans.census(page_refs(a) or None, a.root, tick)
+        r = scans.census(page_refs(a) or None, a.root, tick, jobs=a.jobs)
     out(a, r["census"], name="census")
-    out(a, r["masters"], name="masters", heading=True)
-    out(a, r["offsets"], name="offsets", heading=True)
+    out(a, r["classes"], name="classes", heading=True)
     return 0
 
 
 def run_audit(a) -> int:
     with render.progress("audit") as tick:
-        findings = scans.audit(page_refs(a) or None, a.root, tick=tick)
+        findings = scans.audit(page_refs(a) or None, a.root, tick=tick, jobs=a.jobs)
     # **`gates` is a column, not a filter.** A source PDF this machine cannot see
     # and a raster cut before the provenance chunk existed are both worth saying and
     # neither is a disagreement — every worktree has dangling `pdfs/` links, and an
@@ -237,7 +256,7 @@ def run_audit(a) -> int:
 
 def run_space(a) -> int:
     with render.progress("space") as tick:
-        rows = scans.space(page_refs(a) or None, a.root, tick)
+        rows = scans.space(page_refs(a) or None, a.root, tick, jobs=a.jobs)
     wrong = [r for r in rows if r["space"] != "master"]
     by_space: dict[str, int] = {}
     for r in rows:

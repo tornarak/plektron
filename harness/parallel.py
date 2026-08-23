@@ -193,6 +193,91 @@ def _call(fn: Callable, item):
         raise
 
 
+# ------------------------------------------------- the CPU-worker machinery
+#
+# **A second reason to reach for processes, and it is not the GPU's.** The pool
+# below exists for work that is C-level, CPU-bound and *holds the GIL* — where
+# threads do not merely fail to help, they lose. `pymupdf`'s page read is the
+# case that forced it: over 120 pages of part 1, measured on this machine,
+#
+#     serial       20.6 s
+#     4 threads    22.6 s      <- slower
+#     8 threads    25.0 s      <- slower still
+#     4 processes   5.8 s
+#     8 processes   2.9 s      7.3x
+#
+# The module docstring's rule — "a page has to be doing something that *releases*
+# the GIL before a thread pool can help" — is correct and this is its other half:
+# when the answer is no, the instrument is processes, not resignation. `harness
+# scans extract` was 133 s of one saturated core before this.
+#
+# **Chunked, because the per-item cost is small and the hand-off is not.** A task
+# here is a contiguous run of items, so a worker opens its expensive handle (a
+# PDF, a store) once and amortizes it, and the pickling is paid per chunk rather
+# than per page. Chunks are deliberately several times the worker count: it is
+# what keeps a straggler from owning the tail, and what keeps a progress bar
+# moving rather than jumping in `n` steps.
+
+
+def cpu_workers(jobs: int | None, n_items: int) -> int:
+    """How many processes a CPU-bound sweep will use.
+
+    `gpu_workers` without the card: cores and `MAX_WORKERS`, no VRAM term, because
+    nothing here holds a CUDA context. A `jobs` a human typed wins outright —
+    including `--jobs 1`, which builds no pool at all and is the control arm every
+    pooled sweep in this repo has to stay diffable against.
+    """
+    if jobs is not None:
+        if jobs < 1:
+            raise ValueError(f"--jobs must be at least 1, got {jobs}")
+        return max(1, min(jobs, n_items))
+    return max(1, min(os.process_cpu_count() or 1, MAX_WORKERS, n_items))
+
+
+def pchunks(fn: Callable, chunks: list, jobs: int | None = None,
+            tick: Callable | None = None) -> list:
+    """`[fn(c) for c in chunks]`, in **processes**, in order.
+
+    `pmap`'s contract with a process pool underneath: results land by submission
+    index, exceptions are re-raised in item order so the page named does not
+    depend on which worker finished first, and `tick(chunk, done, total)` fires
+    from the calling thread.
+
+    `fn` and every chunk must be picklable, which is why the callers here pass
+    plain tuples of paths and integers and let the worker open its own handle. A
+    closure over an open `Document` would be the obvious shape and cannot cross a
+    process boundary — and *sharing* one is what the library forbids anyway.
+    """
+    chunks = list(chunks)
+    n = cpu_workers(jobs, len(chunks))
+    total = len(chunks)
+    if n == 1 or total < 2:
+        out = []
+        for done, c in enumerate(chunks, 1):
+            out.append(_call(fn, c))
+            if tick:
+                tick(c, done, total)
+        return out
+
+    from concurrent.futures import ProcessPoolExecutor
+
+    results: list = [None] * total
+    errors: dict[int, BaseException] = {}
+    with ProcessPoolExecutor(max_workers=n) as pool:
+        futures = {pool.submit(fn, c): i for i, c in enumerate(chunks)}
+        for done, fut in enumerate(as_completed(futures), 1):
+            i = futures[fut]
+            try:
+                results[i] = fut.result()
+            except BaseException as exc:      # noqa: BLE001 — re-raised below
+                errors[i] = exc
+            if tick:
+                tick(chunks[i], done, total)
+    if errors:
+        raise errors[min(errors)]
+    return results
+
+
 # ----------------------------------------------------- the GPU-worker machinery
 #
 # **Processes, where everything above is threads**, and the split is measured

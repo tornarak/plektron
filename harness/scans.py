@@ -53,7 +53,7 @@ import os
 import shutil
 from pathlib import Path
 
-from . import farms, paths, provenance
+from . import farms, parallel, paths, provenance
 from .refs import norm_ref, parse_ref
 
 #: The source PDFs' own embedded-image geometry. **Derived but tracked**, on
@@ -95,6 +95,13 @@ PASTE_TOL = 0.02       # a photo's paste ratio against the nearest integer
 #: given to two decimal places, and 0.01 pt is 0.0417 px at 300 dpi, so 1e-3 is
 #: forty times clear of anything real. `1-037` is the live case.
 SNAP = 1e-3
+
+#: How small a class has to be before `census` names its pages instead of counting
+#: them. Five is where a list still reads as a list rather than as a paragraph —
+#: and the classes worth looking at in this corpus are all of size 1 or 2 (the two
+#: covers, the odd full-page master on `1-303`, the foldout), which is exactly the
+#: population a bare count hides.
+NAME_AT_MOST = 5
 
 # --- provenance ---------------------------------------------------------------
 #
@@ -548,16 +555,54 @@ def _png_meta(p: provenance.Producer):
     return meta
 
 
+#: Pages per task. Several times the worker count over a full corpus (832 pages
+#: make ~52 tasks at 16), so a straggler cannot own the tail and the bar moves in
+#: steps a human reads as progress rather than in one jump per worker.
+CHUNK = 16
+
+
+def _read_chunk(chunk: tuple) -> list[dict]:
+    """One contiguous run of pages, in a worker process.
+
+    Module-level and taking only plain data, because `ProcessPoolExecutor` pickles
+    both. The `Document` is opened **here** — one per chunk, never handed across a
+    process boundary and never shared, which is the library's actual constraint.
+    """
+    pdf, part, pages, rasters, source = chunk
+    import pymupdf
+
+    out = []
+    dest = Path(rasters) if rasters else None
+    with pymupdf.open(pdf) as doc:
+        for i in pages:
+            ref = f"{part}-{i:03d}"
+            rec = page_record(doc[i - 1], ref)
+            if not rec["refuse"] and dest is not None:
+                cut = cut_page(doc, rec, dest, source)
+                rec["mode"] = cut.get("mode", "")
+                if cut.get("refuse"):
+                    rec["refuse"] = cut["refuse"]
+            out.append(rec)
+    return out
+
+
 def extract(root: Path = Path("."), refs: list[str] | None = None,
-            rasters: Path | None = None, tick=None) -> tuple[dict, list[dict]]:
+            rasters: Path | None = None, tick=None,
+            jobs: int | None = None) -> tuple[dict, list[dict]]:
     """Walk the PDFs. Returns `(manifest, records)`; writes only under `rasters`.
 
-    **Serial, and `--jobs` is deliberately absent.** The per-page cost here is a PNG
-    encode, which is exactly the GIL-releasing work `parallel.pmap` exists for — but
-    a `pymupdf.Document` is not safe to touch from several threads, and the pool
-    would have to be per-PDF with a document each, which is three workers for three
-    files of wildly different lengths. The bar reports; the work is one page at a
-    time.
+    **Processes, and the measurement is why.** This said "serial, and `--jobs` is
+    deliberately absent" on the grounds that a `pymupdf.Document` is not thread-safe
+    — true of *sharing* one, and beside the point: a worker can open its own. What
+    actually rules threads out is that the page read holds the GIL, so they lose.
+    Over 120 pages of part 1: 20.6 s serial, 22.6 s on 4 threads, 5.8 s on 4
+    processes, 2.9 s on 8. The whole corpus was 133 s at 101 % CPU — one core
+    saturated on a 16-core machine — and the cut is the same shape, since a PNG
+    encode is per page too.
+
+    The chunk is a contiguous run of pages so each worker opens the PDF once, and
+    `CHUNK` is small enough that 832 pages make ~52 tasks: enough to keep the tail
+    balanced and the bar moving, few enough that the pickling is noise.
     """
     import pymupdf
 
@@ -591,38 +636,42 @@ def extract(root: Path = Path("."), refs: list[str] | None = None,
     if rasters is not None:
         rasters.mkdir(parents=True, exist_ok=True)
 
-    # The denominator is counted first, in its own pass, because `pmap`'s rule holds
-    # for a hand-rolled bar too: the party that knows the work-list is the one that
-    # must size it. `page_count` opens no page.
-    if want is not None:
-        total = len(want)
-    else:
-        total = 0
-        for pdf in pdfs:
-            with pymupdf.open(pdf) as doc:
-                total += doc.page_count
-    done = 0
+    # The work-list first, because the chunker is the only party that knows its own
+    # size — `pmap`'s rule, and it holds for a hand-rolled bar too. `page_count`
+    # opens no page.
+    chunks: list[tuple] = []
     for pdf in pdfs:
         part = part_of(pdf)
         with pymupdf.open(pdf) as doc:
-            for i, page in enumerate(doc, start=1):
-                ref = f"{part}-{i:03d}"
-                if want is not None and ref not in want:
-                    continue
-                rec = page_record(page, ref)
-                if not rec["refuse"] and rasters is not None:
-                    cut = cut_page(doc, rec, rasters, src.get(str(part)))
-                    rec["mode"] = cut.get("mode", "")
-                    if cut.get("refuse"):
-                        rec["refuse"] = cut["refuse"]
-                records.append(rec)
-                done += 1
-                if tick:
-                    tick(ref, done, total)
-                if rec["refuse"]:
-                    continue
-                manifest[ref] = {"master": rec["master"], "offset": rec["offset"],
-                                 "render": rec["render"], "images": rec["images"]}
+            n_pages = doc.page_count
+        pages = [i for i in range(1, n_pages + 1)
+                 if want is None or f"{part}-{i:03d}" in want]
+        for lo in range(0, len(pages), CHUNK):
+            chunks.append((str(pdf), part, tuple(pages[lo:lo + CHUNK]),
+                           str(rasters) if rasters else "", src.get(str(part), {})))
+
+    # **The bar counts pages and names one, where the pool counts chunks and hands
+    # back a tuple.** Ticking with the chunk itself printed the PDF's path, sixteen
+    # page numbers and the whole source record — a sha256 included — into the bar's
+    # item field on every completion, which is not a progress bar but a wall of
+    # text. It also read `52` where a human wants `832`, the unit the flag's
+    # argument and the report are both in.
+    n_pages = sum(len(c[2]) for c in chunks)
+    seen_pages = 0
+
+    def by_page(chunk, _done, _total):
+        nonlocal seen_pages
+        seen_pages += len(chunk[2])
+        tick(f"{chunk[1]}-{chunk[2][0]:03d}", seen_pages, n_pages)
+
+    for batch in parallel.pchunks(_read_chunk, chunks, jobs,
+                                  by_page if tick else None):
+        records.extend(batch)
+    for rec in records:
+        if rec["refuse"]:
+            continue
+        manifest[rec["ref"]] = {"master": rec["master"], "offset": rec["offset"],
+                                "render": rec["render"], "images": rec["images"]}
     return manifest, records
 
 
@@ -637,23 +686,53 @@ def write_manifest(manifest: dict, path: Path) -> None:
 
 # --- what the rasters are -----------------------------------------------------
 
+def _labelled(tick, label):
+    """Wrap a bar's `tick` so it names the item instead of printing the work-item.
+
+    **The work-item and the thing a human wants to read are not the same object.**
+    `pmap` and `pchunks` hand the caller's tick whatever was in the list, which here
+    is a `(ref, manifest-entry)` pair or a `(store, Path)` — and `rich` renders it
+    with `str()`, so the bar filled with a page's whole geometry record, sha256 and
+    all. One page's worth of that is wider than any terminal, and at eight workers
+    it arrives faster than it can be read.
+    """
+    if tick is None:
+        return None
+
+    def inner(item, done, total):
+        tick(label(item), done, total)
+    return inner
+
+
 def _raster_facts(path: Path) -> dict:
     """A raster's own account of itself, or why there is none.
 
     Opens the header only — PIL is lazy until `load()` — so this is a stat and a few
     hundred bytes per page rather than a decode of the whole corpus.
     """
-    if not path.exists():
-        return {"on_disk": False, "px": "", "mode": "", "bytes": 0}
     from PIL import Image
+
+    # **One `stat` and one open, and the provenance comes out of the same open.**
+    # It was `exists()`, then an open for the size, then a second `stat` for the
+    # bytes, then a *second open* in `read_png_provenance` — five touches of one
+    # file where two do. On a local disk that is free and it read as tidy; on the
+    # NFS-backed VPS this has to run on, each one is a network round trip, so the
+    # sweep was paying 4160 of them over the corpus instead of 1664. The `tEXt`
+    # chunk is already in `im.info` once the header is parsed, so carrying it here
+    # costs nothing at all.
+    try:
+        st = path.stat()
+    except OSError:
+        return {"on_disk": False, "px": "", "mode": "", "bytes": 0, "prov": None}
     try:
         with Image.open(path) as im:
             size, mode = im.size, im.mode
+            prov = provenance.decode(str((im.info or {}).get(PNG_KEY, "")))
     except OSError as e:
-        return {"on_disk": True, "px": "", "mode": "", "bytes": path.stat().st_size,
-                "why": f"unreadable: {e}"}
+        return {"on_disk": True, "px": "", "mode": "", "bytes": st.st_size,
+                "prov": None, "why": f"unreadable: {e}"}
     return {"on_disk": True, "px": f"{size[0]}x{size[1]}", "mode": mode,
-            "bytes": path.stat().st_size}
+            "bytes": st.st_size, "prov": prov}
 
 
 def _leaf_kinds(root: Path) -> dict[str, str]:
@@ -669,19 +748,28 @@ def _leaf_kinds(root: Path) -> dict[str, str]:
     return {r: s for r, s in load_splits(root).items() if s in LEAF_KINDS}
 
 
-def info(refs: list[str], root: Path = Path("."), tick=None) -> list[dict]:
+def info(refs: list[str], root: Path = Path("."), tick=None,
+         jobs: int | None = None) -> list[dict]:
     """Per page: the manifest's geometry against the file on disk.
 
     The verb an agent reaches for instead of `identify` or a PIL one-liner. It
     answers in one place what the manifest knows (master, placement, the photographs
     and their native resolution) and what the tree holds (pixels, mode, bytes), and
     **says whether the two agree** — which neither source can say alone.
+
+    **Threaded, and on this machine that buys nothing.** Locally the whole corpus is
+    0.8 s and most of that is the interpreter starting: the per-page work is two
+    header reads and a `stat`, which `parallel.py`'s measured rule would exclude. It
+    is threaded for the machine this will actually run on — a VPS with the corpus on
+    NFS, where those three syscalls are three network round trips and the sweep is
+    latency-bound rather than CPU-bound. Threads absorb latency whatever the GIL is
+    doing, because a syscall releases it; that is the case the rule was not written
+    against.
     """
     manifest = pdf_images(root)
     leaves = _leaf_kinds(root)
-    out = []
-    for ref in refs:
-        ref = norm_ref(ref)
+
+    def one(ref: str) -> dict:
         entry = manifest.get(ref, {})
         m = entry.get("master") or {}
         facts = _raster_facts(paths.scan_for(ref, root))
@@ -697,19 +785,21 @@ def info(refs: list[str], root: Path = Path("."), tick=None) -> list[dict]:
             "render": "x".join(str(v) for v in entry.get("render") or []),
             "leaf": leaves.get(ref, ""),
             "photos": len(entry.get("images") or []),
-            **facts,
+            **{k: v for k, v in facts.items() if k != "prov"},
         }
-        # What the file itself says made it — `""` where it says nothing, which is
-        # every raster cut before the chunk existed.
-        prov = read_png_provenance(paths.scan_for(ref, root))
+        # What the file itself says made it, out of the open `_raster_facts` already
+        # did — `""` where it says nothing, which is every raster cut before the
+        # chunk existed.
+        prov = facts["prov"]
         rec["cut_from"] = prov.inputs.get("source", "") if prov else ""
         rec["cut_sha"] = (prov.inputs.get("source_sha256", "")[:16]
                           if prov else "")
         # The agreement is computed, not left to the reader to eyeball: an `agrees`
         # column that says `false` is the whole reason both halves are in one table.
         rec["agrees"] = bool(entry) and facts["on_disk"] and facts["px"] == want
-        out.append(rec)
-    return out
+        return rec
+
+    return parallel.pmap(one, [norm_ref(r) for r in refs], jobs, tick)
 
 
 def photos(refs: list[str], root: Path = Path(".")) -> list[dict]:
@@ -734,51 +824,91 @@ def photos(refs: list[str], root: Path = Path(".")) -> list[dict]:
 
 
 def census(refs: list[str] | None = None, root: Path = Path("."),
-           tick=None) -> dict:
+           tick=None, jobs: int | None = None) -> dict:
     """The counts `CLAUDE.md` deliberately refuses to state, from the manifest.
 
     Deliberately *not* stored anywhere: a number in a file nothing regenerates goes
     stale, and this is the command whose job is to answer instead.
+
+    The manifest arithmetic is free; what costs is the `stat` per page for the byte
+    total, which is why this is threaded at all — `info`'s reasoning, and the same
+    NFS it was written for.
     """
     manifest = pdf_images(root)
     want = {norm_ref(r) for r in refs} if refs else None
     rows = [(ref, e) for ref, e in manifest.items()
             if want is None or ref in want]
 
+    src_of = {part: rec.get("file", f"part {part}")
+              for part, rec in (manifest_meta(root / PDF_IMAGES).get("_sources")
+                                or {}).items()}
+
+    def one(row: tuple) -> dict:
+        ref, e = row
+        m = e.get("master") or {}
+        imgs = e.get("images") or []
+        p = paths.scan_for(ref, root)
+        # One `stat` and no second call: `exists()` followed by `st_size` is two
+        # round trips on a networked store for one fact.
+        try:
+            size = p.stat().st_size
+        except OSError:
+            size = -1
+        part = ref.split("-")[0]
+        return {
+            "ref": ref,
+            "photos": len(imgs),
+            "kind": ("rendered" if m.get("rendered")
+                     else "composite" if imgs else "bitonal"),
+            "bytes": size,
+            # The class this page belongs to. Ordered as a reader reads it:
+            # which file it came out of, what kind of image, how big, where placed.
+            "key": (src_of.get(part, f"part {part}"),
+                    f"{m.get('bpc')}-bit {m.get('cs')}",
+                    f"{m.get('w')}x{m.get('h')}",
+                    ",".join(str(v) for v in e.get("offset") or [0, 0]),
+                    len(imgs)),
+        }
+
     kinds: dict[str, int] = {}
-    masters: dict[str, int] = {}
-    offsets: dict[str, int] = {}
+    classes: dict[tuple, dict] = {}
     photo_n = 0
     total_bytes = 0
     on_disk = 0
-    for ref, e in rows:
-        m = e.get("master") or {}
-        imgs = e.get("images") or []
-        photo_n += len(imgs)
-        kind = ("rendered" if m.get("rendered")
-                else "composite" if imgs else "bitonal")
-        kinds[kind] = kinds.get(kind, 0) + 1
-        masters[f"{m.get('w')}x{m.get('h')}"] = (
-            masters.get(f"{m.get('w')}x{m.get('h')}", 0) + 1)
-        off = ",".join(str(v) for v in e.get("offset") or [0, 0])
-        offsets[off] = offsets.get(off, 0) + 1
-        p = paths.scan_for(ref, root)
-        if p.exists():
+    for got in parallel.pmap(one, rows, jobs, _labelled(tick, lambda r: r[0])):
+        photo_n += got["photos"]
+        kinds[got["kind"]] = kinds.get(got["kind"], 0) + 1
+        if got["bytes"] >= 0:
             on_disk += 1
-            total_bytes += p.stat().st_size
-        if tick:
-            tick(ref, sum(kinds.values()), len(rows))
+            total_bytes += got["bytes"]
+        cl = classes.setdefault(got["key"], {"pages": 0, "bytes": 0, "refs": []})
+        cl["pages"] += 1
+        cl["bytes"] += max(0, got["bytes"])
+        cl["refs"].append(got["ref"])
 
     summary = {"pages": len(rows), "photographs": photo_n,
-               "on_disk": on_disk, "bytes": total_bytes}
+               "on_disk": on_disk, "bytes": total_bytes,
+               "classes": len(classes)}
     summary.update({k: kinds.get(k, 0)
                     for k in ("bitonal", "composite", "rendered")})
     return {
         "census": summary,
-        "masters": [{"size": k, "pages": v}
-                    for k, v in sorted(masters.items(), key=lambda kv: -kv[1])],
-        "offsets": [{"offset": k, "pages": v}
-                    for k, v in sorted(offsets.items(), key=lambda kv: -kv[1])],
+        "classes": [
+            {"src": k[0], "color": k[1], "size": k[2], "offset": k[3],
+             "photos": k[4], "pages": v["pages"], "bytes": v["bytes"],
+             # **Named where the class is small enough to name.** A row reading
+             # `1 page` and nothing else sends the reader to grep for which one,
+             # and the singletons are the whole reason to look at this table.
+             "refs": ", ".join(sorted(v["refs"], key=parse_ref))
+                     if v["pages"] <= NAME_AT_MOST else ""}
+            # **By the class, not by its population.** This is `sort | uniq -c`,
+            # and the sorted thing is the key: ordering by count interleaved the
+            # three parts, so part 1's ordinary body sat between part 3's and part
+            # 2's and the one-offs scattered through the table instead of falling
+            # next to the class they are exceptions to. The first page of the class
+            # breaks a tie, so the order is total and two runs cannot differ.
+            for k, v in sorted(classes.items(),
+                               key=lambda kv: (kv[0], parse_ref(kv[1]["refs"][0])))],
     }
 
 
@@ -831,7 +961,7 @@ def check_sources(root: Path = Path("."), meta_path: Path | None = None) -> list
 
 def audit(refs: list[str] | None = None, root: Path = Path("."),
           tree: Path | None = None, manifest: dict | None = None,
-          tick=None) -> list[dict]:
+          tick=None, jobs: int | None = None) -> list[dict]:
     """The manifest against a tree of rasters. One function, two callers.
 
     `scans audit` runs it over `scans/` and the committed manifest; `swap` runs it
@@ -856,50 +986,65 @@ def audit(refs: list[str] | None = None, root: Path = Path("."),
     # which is what each raster's own chunk is checked against.
     recorded_sha = {part: (rec.get("sha256") or "") for part, rec
                     in (manifest_meta(meta_path).get("_sources") or {}).items()}
-    seen = set()
     todo = [(r, e) for r, e in manifest.items() if want is None or r in want]
-    for ref, e in todo:
-        seen.add(ref)
-        if tick:
-            tick(ref, len(seen), len(todo))
+    seen = {r for r, _ in todo}
+
+    def one(row: tuple) -> tuple[list[dict], str]:
+        """This page's findings, and its ref if the raster is unwitnessed.
+
+        Returns rather than appends: two threads sharing `out.append` would give a
+        findings order that depends on which page finished first, and a report whose
+        row order changes run to run is one nobody can diff.
+        """
+        found: list[dict] = []
+        ref, e = row
         m = e.get("master") or {}
         facts = _raster_facts(tree / f"chukchi-{ref}.png")
         if not facts["on_disk"]:
-            out.append({"ref": ref, "finding": "missing", "gates": True,
-                        "detail": f"manifest has {m.get('w')}x{m.get('h')}, "
-                                  "no raster"})
-            continue
+            found.append({"ref": ref, "finding": "missing", "gates": True,
+                          "detail": f"manifest has {m.get('w')}x{m.get('h')}, "
+                                    "no raster"})
+            return found, ""
         if facts.get("why"):
-            out.append({"ref": ref, "finding": "unreadable", "gates": True,
-                        "detail": facts["why"]})
-            continue
+            found.append({"ref": ref, "finding": "unreadable", "gates": True,
+                          "detail": facts["why"]})
+            return found, ""
         want_px = f"{m.get('w')}x{m.get('h')}"
         if facts["px"] != want_px:
-            out.append({"ref": ref, "finding": "size", "gates": True,
-                        "detail": f"raster {facts['px']}, manifest {want_px}"})
+            found.append({"ref": ref, "finding": "size", "gates": True,
+                          "detail": f"raster {facts['px']}, manifest {want_px}"})
         # **Mode is checked against what the source is, not against a list of modes
         # seen.** A bitonal page that came back `L` means something resampled it,
         # which is the entire failure this tree was rebuilt to undo.
         expect = ("RGB" if m.get("rendered")
                   else "L" if e.get("images") else "1")
         if facts["mode"] != expect:
-            out.append({"ref": ref, "finding": "mode", "gates": True,
-                        "detail": f"raster {facts['mode']}, expected {expect}"})
+            found.append({"ref": ref, "finding": "mode", "gates": True,
+                          "detail": f"raster {facts['mode']}, expected {expect}"})
         # **The raster's own account of itself, against the manifest's.** These are
         # two independent records of the same cut — the chunk was written into the
         # PNG and the entry into the JSON — so a disagreement means one of them
         # belongs to a different run. A page carrying no chunk is `unwitnessed`
         # rather than wrong: it predates the block, and saying otherwise would make
         # every raster cut before today read as a defect.
-        prov = read_png_provenance(tree / f"chukchi-{ref}.png")
+        prov = facts["prov"]
         cut_sha = prov.inputs.get("source_sha256", "") if prov else ""
         if prov is None:
-            unwitnessed.append(ref)
-        elif (recorded_sha and cut_sha
-              and cut_sha != recorded_sha.get(ref.split("-")[0], "")):
-            out.append({"ref": ref, "finding": "source-mismatch", "gates": True,
-                        "detail": f"raster was cut from sha256 {cut_sha[:16]}…, "
-                                  "the manifest records another for this part"})
+            return found, ref
+        if (recorded_sha and cut_sha
+                and cut_sha != recorded_sha.get(ref.split("-")[0], "")):
+            found.append({"ref": ref, "finding": "source-mismatch", "gates": True,
+                          "detail": f"raster was cut from sha256 {cut_sha[:16]}…, "
+                                    "the manifest records another for this part"})
+        return found, ""
+
+    # Folded in submission order, which `pmap` guarantees, so the report reads in
+    # page order however the threads finished.
+    for found, unwit in parallel.pmap(one, todo, jobs,
+                                      _labelled(tick, lambda r: r[0])):
+        out.extend(found)
+        if unwit:
+            unwitnessed.append(unwit)
 
     if tree.is_dir():
         for p in sorted(tree.glob("chukchi-*.png")):
@@ -920,7 +1065,7 @@ def audit(refs: list[str] | None = None, root: Path = Path("."),
 
 
 def space(refs: list[str] | None = None, root: Path = Path("."),
-          tick=None) -> list[dict]:
+          tick=None, jobs: int | None = None) -> list[dict]:
     """Which coordinate space every store page declares, by its own page box.
 
     **This gates**, where measurement usually does not. The migration into master
@@ -940,63 +1085,105 @@ def space(refs: list[str] | None = None, root: Path = Path("."),
             if (root / store).is_dir()
             for p in sorted((root / store).glob("chukchi-*.xml"))
             if want is None or norm_ref(p.stem) in want]
-    out = []
-    for n, (store, p) in enumerate(todo, start=1):
+    def one(item: tuple) -> dict:
+        store, p = item
         ref = norm_ref(p.stem)
-        if tick:
-            tick(ref, n, len(todo))
         try:
             box = page_box(etree.parse(str(p)))
         except etree.XMLSyntaxError as e:
-            out.append({"ref": ref, "store": store, "box": "",
-                        "space": "unparseable", "detail": str(e)[:60]})
-            continue
+            return {"ref": ref, "store": store, "box": "",
+                    "space": "unparseable", "detail": str(e)[:60]}
         entry = manifest.get(ref, {})
         _, name = rects_in(entry, box[0], box[1])
-        out.append({"ref": ref, "store": store,
-                    "box": f"{box[0]}x{box[1]}",
-                    "space": name or ("no-entry" if not entry else "neither"),
-                    "detail": ""})
-    return out
+        return {"ref": ref, "store": store,
+                "box": f"{box[0]}x{box[1]}",
+                "space": name or ("no-entry" if not entry else "neither"),
+                "detail": ""}
+
+    return parallel.pmap(one, todo, jobs,
+                         _labelled(tick, lambda it: norm_ref(it[1].stem)))
 
 
 # --- the swap -----------------------------------------------------------------
 
-def geometry_dependents(root: Path = Path(".")) -> list[dict]:
-    """Everything keyed to the rasters' geometry, and how each answers a shift.
+def geometry_dependents(root: Path = Path("."), dry: dict | None = None
+                        ) -> list[dict]:
+    """Everything keyed to the rasters' geometry, and what **this run** would do.
 
     **Composed from what already declares itself**, never re-enumerated here. The
     coordinate stores are `migrate.STORES`; the painted trees are the farms whose
-    own `reads` names `scans/`. That last rule is doing real work rather than
-    restating a list: it *excludes* the `select` leaf farms (`scans/plate/` and the
-    rest), which are links by filename and unaffected by a shift, and a filter on
-    `kind` would have discarded them for nothing.
+    own `reads` names `scans/`. That rule is doing real work rather than restating
+    a list: it *excludes* the `select` leaf farms (`scans/plate/` and the rest),
+    which are links by filename and unaffected by a shift, and a filter on `kind`
+    would have discarded them for nothing.
+
+    **They still go, and the reason is the tree and not the shift.** Every farm
+    lives *inside* `scans/`, so replacing that directory takes all of them —
+    `plate/`, `w-figs/`, `w-ocr/` included — however little the geometry moved.
+    That is the intended behaviour and they are one `views build --all` away; what
+    is not intended is a table that reads as though they survive, so the swap
+    report names the whole tree as what it replaces.
+
+    **`changes` is counted, and that is the whole of the difference from what this
+    used to print.** It listed `gt/zones — translated` and `w-figs-blotted —
+    discarded` as static facts about the dependency graph, in a report whose reader
+    is asking what a `--commit` would do — directly above a `stores` block saying
+    `migrated: 0`. Two answers to one question, and the confident-looking one was
+    the wrong one. Now every row says how many files it holds and how many of them
+    this run would touch, `0` included; `response` is `—` where the answer is none.
+    A row that cannot be counted says so rather than guessing.
 
     `gt/page-img/` and `gt/fig-img/` are absent on purpose and reported by `swap`
-    instead: they are a human's touch-ups cut from a raster, so a geometry change
+    separately: they are a human's touch-ups cut from a raster, so a geometry change
     makes them stale — but nothing mechanical may rewrite an authored image, and a
-    tool that silently regenerated one would be overwriting the only copy of work no
+    tool that silently regenerated one would overwrite the only copy of work no
     script can reproduce.
     """
     from .migrate import BAND_FILES, DROP_FILES, STORES
 
-    out = [{"dependent": s, "kind": "coordinates", "response": "translated",
-            "rebuild": ""} for s in STORES]
-    out += [{"dependent": b, "kind": "bands", "response": "y-shifted",
-             "rebuild": ""} for b in BAND_FILES]
-    out += [{"dependent": d, "kind": "cache", "response": "dropped",
-             "rebuild": "refilled on next use"} for d in DROP_FILES]
+    files = (dry or {}).get("files") or []
+    moved: dict[str, int] = {}
+    held: dict[str, int] = {}
+    for f in files:
+        store = f.get("store", "")
+        held[store] = held.get(store, 0) + 1
+        if f["action"] == "migrated":
+            moved[store] = moved.get(store, 0) + 1
+
+    def row(dep, kind, n, changes, verb, rebuild=""):
+        return {"dependent": dep, "kind": kind, "files": n, "changes": changes,
+                "response": verb if changes else "—", "rebuild": rebuild}
+
+    out = [row(st, "coordinates", held.get(st, 0), moved.get(st, 0), "translated")
+           for st in STORES]
+
+    bands = {b["path"]: b for b in (dry or {}).get("bands") or []}
+    for b in BAND_FILES:
+        got = bands.get(b)
+        out.append(row(b, "bands", 1 if got else 0,
+                       (got or {}).get("bands", 0), "y-shifted"))
+
+    dropped = set((dry or {}).get("dropped") or [])
+    for d in DROP_FILES:
+        out.append(row(d, "cache", 1 if (root / d).exists() else 0,
+                       1 if d in dropped else 0, "dropped",
+                       "refilled on next use"))
+
     for f in farms.FARMS:
         if f.kind == "raster" and farms.SCANS in f.reads:
-            out.append({"dependent": f.path, "kind": "painted",
-                        "response": "discarded", "rebuild": f.builder})
+            n = sum(1 for _ in (root / f.path).iterdir()) \
+                if (root / f.path).is_dir() else 0
+            out.append(row(f.path, "painted", n, n, "discarded", f.builder))
+
     # **`paths.DERIVED`, not `review/`.** A review directory holds `proposal.json`
     # and `decision.json`, both tracked and neither derived from a raster; only the
     # crops, sheets, zoom, numbered page and rendered HTML are pixels. Discarding
     # the directory would take a pass's adjudicated readings with it.
-    out += [{"dependent": f"review/*/{d}", "kind": "derived images",
-             "response": "discarded", "rebuild": "harness ocr crops / sheets / zoom"}
-            for d in paths.DERIVED]
+    for d in paths.DERIVED:
+        n = sum(1 for _ in (root / "review").glob(f"*/{d}")) \
+            if (root / "review").is_dir() else 0
+        out.append(row(f"review/*/{d}", "derived images", n, n, "discarded",
+                       "harness ocr crops / sheets / zoom"))
     return out
 
 
@@ -1066,18 +1253,47 @@ def swap(tree: Path, root: Path = Path("."), commit: bool = False) -> dict:
         rep["refusals"].append({"what": f"{f.get('store', '')}/{f['ref']}",
                                 "why": f["why"]})
 
-    rep["dependents"] = geometry_dependents(root)
+    rep["dependents"] = geometry_dependents(root, dry)
     rep["touched_up"] = [{"path": t, "files": len(list((root / t).glob("*")))
                           if (root / t).is_dir() else 0,
                           "note": "authored; re-cut by hand if the geometry moved"}
                          for t in TOUCHED_UP]
+
+    # **The headline answers the question the report is read to answer.** Whether
+    # anything would happen at all, and how much — a reader should not have to add
+    # up a table to find out that a swap is a no-op, and the tables are where the
+    # old report managed to say "translated" and "migrated: 0" at once.
+    rep["swap"]["pages_shifted"] = len(rep["shifts"])
+    rep["swap"]["files_changing"] = sum(d["changes"] for d in rep["dependents"]
+                                        if d["kind"] in ("coordinates", "bands"))
+    rep["swap"]["files_discarded"] = sum(
+        d["changes"] for d in rep["dependents"]
+        if d["kind"] in ("painted", "derived images", "cache"))
+    rep["swap"]["rasters"] = len(new)
+    # Every farm lives inside `scans/`, so the move takes all of them whatever the
+    # shift was. Counted and named here rather than left for the caller to discover
+    # by finding `views check` red afterwards.
+    rep["swap"]["farms_replaced"] = sum(
+        1 for f in farms.FARMS
+        if f.path.startswith(f"{farms.SCANS}/") and (root / f.path).is_dir())
 
     if not commit or rep["refusals"]:
         return rep
 
     # --- past this line the stage has been verified; what follows is the move ----
     migrate.run(root, refs=None, commit=True, old=old, new=new)
-    write_manifest({"_about": ABOUT, **new}, root / PDF_IMAGES)
+    # **The tree's `_sources` comes with it, and leaving it out silently unwitnessed
+    # the corpus.** `read_manifest` strips every underscore key — every caller wants
+    # pages and only pages — so `{**new}` is the page entries alone, and writing
+    # that as the tracked manifest dropped the block digesting the three PDFs. The
+    # rasters still carried their own chunks, so `audit` went on reporting a
+    # *source* it could no longer check: the one finding in the group that answers
+    # "was this cut from the file it says" lost its other witness, and said nothing
+    # about having lost it. Carried from the tree's own metadata rather than
+    # recomputed, because the digests belong to the run that cut those pixels.
+    meta = manifest_meta(tree / TREE_MANIFEST)
+    write_manifest({"_about": ABOUT, "_sources": meta.get("_sources", {}), **new},
+                   root / PDF_IMAGES)
 
     # **The old tree is moved aside, not deleted, until the new one is in place.**
     # Deleting first leaves a window where a failed move — a full disk, a rename

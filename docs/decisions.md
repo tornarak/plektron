@@ -1038,3 +1038,53 @@ must not be discovered afterwards. The chunk carries no timestamp and no absolut
 so two cuts of the same PDFs are byte-identical — which is what let the port be checked
 by cutting all 832 pages and diffing them against the tree in use. They matched exactly,
 as did every page entry of the regenerated manifest.
+
+## A pool rule that was measured on the wrong axis
+
+`parallel.py` carries a bench table and a rule drawn from it: a page has to be
+doing something that *releases* the GIL before a thread pool can help, and the
+cheap sweeps were measured and deliberately left serial. Both halves were true and
+the rule was still wrong twice.
+
+**It read as "threads or nothing".** `harness scans extract` was documented as
+unpoolable, on the grounds that a `pymupdf.Document` is not thread-safe. That is
+true of *sharing* one and beside the point — a worker can open its own — and it
+was never the real obstacle. The real one is that the page read holds the GIL, so
+threads lose outright:
+
+    serial       20.6 s        4 processes   5.8 s
+    4 threads    22.6 s        8 processes   2.9 s
+    8 threads    25.0 s
+
+Over the corpus that is 133 s at 101 % CPU — one core saturated on a sixteen-core
+machine — against ~20 s. The docstring had stated a real constraint, checked
+nothing against it, and used it to close the question. **When the answer to "do
+threads help" is no, the next question is processes, not resignation.**
+
+**And "is it slow here" is not the criterion.** The four `scans` read sweeps are
+0.5–1.8 s locally, almost all of it the interpreter starting, so the measured rule
+excluded them correctly *for this machine*. The corpus is going to be read on a
+VPS with the store on NFS, where the per-page cost is not CPU at all — it is a
+`stat` and a header read, two network round trips, and the sweep is latency-bound.
+Threads absorb latency whatever the GIL is doing, because a syscall releases it.
+The bench table measured CPU on a local SSD and the rule inherited that scope
+without saying so.
+
+That is recorded in `VERBS.md` as **reasoning rather than measurement**: no NFS
+mount was benchmarked here, so the honest claim is a predicted win. What the
+prediction did buy was a real fix. Counting the round trips to argue about them
+showed `info` touching each raster five times — `exists()`, an open for the size,
+a `stat` for the bytes, then a second open for the provenance chunk — where two
+do. Measured: 3062 `openat` to 2224 over 832 pages, and no threads involved.
+**The optimisation that survives a slow disk was found by asking what the slow
+disk would charge for, not by adding workers.**
+
+One thing the pool broke on its way in, worth keeping because it is a class.
+`pchunks` hands the caller's `tick` the work-item, and a chunk here is a tuple of
+a PDF path, sixteen page numbers and the source record with its sha256 — which
+`rich` rendered with `str()` into the bar's item field, eight times a second. The
+bar also counted 52 where the report counted 832. **A progress bar's unit is the
+one the human asked in, and its label is a name, not the object.** Three of the
+four threaded sweeps had the same fault for the same reason, since their items are
+`(ref, entry)` and `(store, path)` pairs; `scans._labelled` is the one wrapper and
+`test_scans.py` holds every bar to a ref-shaped label.

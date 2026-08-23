@@ -18,6 +18,7 @@ records as bit depth is a fact about the PDF writer and not about the geometry.
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 import pytest
@@ -620,3 +621,159 @@ def test_refs_without_the_write_flags_report_just_those_pages(tmp_path, capsys):
     code, doc = _run(capsys, "--root", str(tmp_path), "scans", "extract", "2-002")
     assert code == 0 and doc["extract"]["pages"] == 1
     assert not (tmp_path / "data" / "pdf_images.json").exists()
+
+
+# --- the pool -----------------------------------------------------------------
+
+def _multipage(root: Path, n: int) -> Path:
+    """A PDF of `n` pages, each a scale-1.0 master, for the pool tests."""
+    return _corpus(root, [{"box": (400, 600),
+                           "images": [("bitonal", (400, 600, 0, 0, 1.0))]}
+                          for _ in range(n)])
+
+
+def test_the_pool_and_the_serial_arm_agree(tmp_path):
+    """**The control arm, and it is the only thing that makes the pool sayable.**
+
+    `parallel.py`'s rule: a sweep that grew a `--jobs` has to stay diffable against
+    `--jobs 1`, because "concurrency changed wall clock and nothing else" is a claim
+    about output, not about speed. Over the real corpus the two manifests are
+    byte-identical and both equal the committed one; this holds it on a synthetic
+    so the property is checked on every run rather than on the day someone thought
+    to look.
+    """
+    _multipage(tmp_path, 40)
+    serial, recs1 = scans.extract(tmp_path, jobs=1)
+    pooled, recs8 = scans.extract(tmp_path, jobs=8)
+    assert serial == pooled
+    assert [r["ref"] for r in recs1] == [r["ref"] for r in recs8]
+    # And in page order, not completion order — the ordering `pchunks` promises.
+    assert [r["ref"] for r in recs1] == [f"2-{i:03d}" for i in range(1, 41)]
+
+
+def test_the_cut_rasters_agree_too(tmp_path):
+    """Same again for the pixels, since the workers write them, not the parent."""
+    _multipage(tmp_path, 8)
+    scans.extract(tmp_path, rasters=tmp_path / "a", jobs=1)
+    scans.extract(tmp_path, rasters=tmp_path / "b", jobs=4)
+    for ref in (f"2-{i:03d}" for i in range(1, 9)):
+        assert ((tmp_path / "a" / f"chukchi-{ref}.png").read_bytes()
+                == (tmp_path / "b" / f"chukchi-{ref}.png").read_bytes())
+
+
+def test_the_bar_is_told_a_ref_and_a_page_count(tmp_path):
+    """**What the pool counts is not what a human reads.**
+
+    A chunk is a tuple holding a PDF path, sixteen page numbers and the source
+    record with its sha256, and `rich` renders the item field with `str()` — so
+    ticking with the work-item filled the terminal with one page's geometry per
+    completion, at eight workers, and counted 3 where the report said 40. The bar
+    gets a ref and a page count.
+    """
+    _multipage(tmp_path, 40)
+    seen = []
+    scans.extract(tmp_path, tick=lambda item, done, total: seen.append(
+        (item, done, total)), jobs=4)
+    assert all(re.fullmatch(r"\d+-\d{3}", str(i)) for i, _, _ in seen), seen[:2]
+    assert [t for _, _, t in seen] == [40] * len(seen)
+    assert [d for _, d, _ in seen][-1] == 40
+
+
+@pytest.mark.parametrize("verb", ["info", "census", "audit", "space"])
+def test_the_read_sweeps_label_their_bar_with_a_ref(tmp_path, verb):
+    """The same hazard in the four threaded sweeps, whose work-items are
+    `(ref, manifest-entry)` and `(store, Path)` pairs."""
+    _manifest(tmp_path, {"2-001": ((400, 600), (400, 600), (0, 0), []),
+                         "2-002": ((400, 600), (400, 600), (0, 0), [])})
+    _raster(tmp_path, "2-001", (400, 600))
+    _raster(tmp_path, "2-002", (400, 600))
+    _alto(tmp_path, "gt/zones", "2-001", (400, 600))
+    seen = []
+    tick = lambda item, done, total: seen.append(str(item))   # noqa: E731
+    # `info` takes an explicit ref list — the CLI's `_scope` resolves `--all` for
+    # it — where the other three read `None` as "every page the manifest holds".
+    scope = ["2-001", "2-002"] if verb == "info" else None
+    getattr(scans, verb)(scope, tmp_path, tick=tick)
+    assert seen, f"{verb} drew no ticks"
+    assert all(re.fullmatch(r"\d+-\d{3}", s) for s in seen), seen
+
+
+def test_a_raster_is_opened_once_for_its_size_and_its_provenance(tmp_path):
+    """Five touches of one file where two do.
+
+    `exists()`, an open for the size, a `stat` for the bytes, then a *second* open
+    for the `tEXt` chunk. Free on a local disk and four network round trips on the
+    NFS this has to run on, so the facts come out of one open. Measured on the real
+    corpus: 3062 `openat` to 2224 over 832 pages.
+    """
+    _one_page(tmp_path)
+    scans.extract(tmp_path, rasters=tmp_path / "scans")
+    facts = scans._raster_facts(tmp_path / "scans" / "chukchi-2-001.png")
+    assert facts["px"] == "400x600"
+    assert facts["prov"] is not None and facts["prov"].kind == "rule"
+
+
+def test_the_dependents_table_counts_this_run_and_not_the_graph(tmp_path, capsys):
+    """**What a dry-run prints must be about the run, not about the dependency
+    graph.**
+
+    It listed every store as `translated` and every farm as `discarded` — a static
+    statement of what *depends on* the geometry — directly above a `stores` block
+    reading `migrated: 0`. Two answers to one question in one report, and the
+    confident-looking one was wrong: on a re-cut from the same PDFs nothing moves,
+    and the table said everything would.
+    """
+    _swap_corpus(tmp_path)                       # 2-001 shifts, 2-002 does not
+    _, doc = _run(capsys, "--root", str(tmp_path), "scans", "swap",
+                  str(tmp_path / "cut"))
+    by = {d["dependent"]: d for d in doc["dependents"]}
+    # gt/zones holds two pages and exactly one of them moves.
+    assert (by["gt/zones"]["files"], by["gt/zones"]["changes"]) == (2, 1)
+    assert by["gt/zones"]["response"] == "translated"
+    # A store with nothing in it says nothing would happen, rather than "translated".
+    assert by["gt/ocr"]["changes"] == 0 and by["gt/ocr"]["response"] == "—"
+    # The painted farm holds one raster and loses it.
+    assert by["scans/w-figs-blotted"]["changes"] == 1
+    # And the headline adds up without the reader summing a table.
+    assert doc["swap"]["pages_shifted"] == 1
+    assert doc["swap"]["files_changing"] == 1
+
+
+def test_a_swap_that_would_do_nothing_says_so(tmp_path, capsys):
+    """The live case: a re-cut from the same PDFs. Every count is zero except the
+    rasters themselves and the derived trees that go with them."""
+    _manifest(tmp_path, {"2-001": ((400, 600), (400, 600), (0, 0), [])})
+    _raster(tmp_path, "2-001", (400, 600))
+    _alto(tmp_path, "gt/zones", "2-001", (400, 600))
+    _tree(tmp_path, "cut", {"2-001": ((400, 600), (400, 600), (0, 0), [])})
+    _, doc = _run(capsys, "--root", str(tmp_path), "scans", "swap",
+                  str(tmp_path / "cut"))
+    assert doc["swap"]["pages_shifted"] == 0
+    assert doc["swap"]["files_changing"] == 0
+    assert all(d["response"] == "—" for d in doc["dependents"]
+               if d["kind"] == "coordinates")
+
+
+def test_the_swap_carries_the_trees_source_digests(tmp_path, capsys):
+    """**A swap must not unwitness the corpus, and one did.**
+
+    `read_manifest` strips every underscore key, because every other caller wants
+    pages and only pages — so `{"_about": ABOUT, **new}` wrote the page entries and
+    silently dropped `_sources`, the block digesting the three PDFs. The rasters
+    kept their own chunks, so `audit` went on checking a raster against a manifest
+    that could no longer say what the sources were: the finding that answers "was
+    this cut from the file it claims" lost half its evidence and reported nothing
+    about the loss. Found in the live corpus after a real swap, not here.
+    """
+    _swap_corpus(tmp_path)
+    src = {"2": {"file": "test.pdf", "sha256": "a" * 64, "bytes": 1, "pages": 2}}
+    tree_manifest = tmp_path / "cut" / scans.TREE_MANIFEST
+    doc = json.loads(tree_manifest.read_text())
+    tree_manifest.write_text(json.dumps({"_sources": src, **doc}))
+
+    code, _ = _run(capsys, "--root", str(tmp_path), "scans", "swap",
+                   str(tmp_path / "cut"), "--commit")
+    assert code == 0
+    after = scans.manifest_meta(tmp_path / scans.PDF_IMAGES)
+    assert after["_sources"] == src, "the tree's digests did not survive the swap"
+    assert "_about" in after
