@@ -2,7 +2,8 @@
 // ref to go back to — this file is a cached static asset served from one
 // place, so neither can be baked into it.
 const B = LIST.base;
-  '#filters .chip[data-state], #filters .chip[data-ink], #filters .chip[data-label]')];
+const rows = [...document.querySelectorAll('tbody tr')];
+const chips = [...document.querySelectorAll('#filters .chip[data-state], #filters .chip[data-ink], #filters .chip[data-label]')];
 const on = new Set();
 
 // Any-of, not all-of: the question a filter answers here is "which pages have a
