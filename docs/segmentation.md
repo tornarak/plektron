@@ -108,8 +108,31 @@ On a contradiction the most exclusionary list wins; the kinds share a rank
 between themselves, because a leaf is not more blank than it is a plate, and
 `validate_corpus` reports a leaf in two rather than picking. A ruled leaf is also
 not judged by the layout warnings, which describe a text page and would be
-permanent known-false noise on a plate — but its mechanical errors still stand,
-or the mark would hide a mistake rather than describe a plate.
+permanent known-false noise on a plate.
+
+**`exempt => no zones`, and the ruling is the whole record.** A leaf with no text
+column has nothing for a zone to sit in, so ruling one *clears* both stores — its
+`gt/zones/` ALTO and any `mz/zones/` prediction — and the kind in the split lists
+is what says a human looked. An empty ALTO beside the mark was the older spelling,
+from before the kinds existed, and it was one fact stated twice with the weaker
+half surviving a `cp -r`; `zones check` errors `exempt-holds-zones` on a page that
+still carries one. **Most plates do carry a running title, and it is deliberately
+ignored** — the folio propagates through the seam ledger, so zoning the head of a
+plate records nothing the corpus reads and leaves a text-page label on a leaf that
+is not one.
+
+The `mz/` half is the one with teeth. A segmenter asked about a leaf does not
+decline; it finds the column anyway. 32 predictions outlived a ruling and carried
+98 zones — 57 `MainZone-P`, 27 `MainZone-Other`, 9 `RunningTitleZone` — against 1
+in ground truth, several of them paragraphs on blank paper. Nothing read them
+because `gt/` outranks `mz/` in the view, which is a fact about today's consumers
+and not a property of the store.
+
+Two predicates follow, and keeping them apart is the point. `has_zones` is a
+**file** question and is what `present` and `paras_zones` ask; `keyed` is "has a
+human been through", which a ruling answers as fully as keying does, and is what
+the editor's Done button, its progress count and the itinerary's resume ask.
+Reading the second off the first reported every plate in the corpus as unfinished.
 
 **This was one value, `exempt`, and the split is why it stopped being one.** It
 began as training bookkeeping and then became the only way to save a leaf with no

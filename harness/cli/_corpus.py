@@ -18,7 +18,7 @@ import click
 
 from ..mets import ALTO_STORES, write_mets
 from ..normalize import convert, scan
-from ..pipeline import STAGES
+from ..pipeline import EXEMPT_STAGE, STAGES
 from ..render import progress
 from ._common import (
     action,
@@ -74,7 +74,7 @@ def register(cli):
              "already every page")
     opt(p, "--stage", "stage", multiple=True, metavar="NAME",
         help="only pages at this rung (repeatable). One of: absent, "
-             + ", ".join(STAGES))
+             + ", ".join((*STAGES, EXEMPT_STAGE)))
     opt(p, "--skipped", is_flag=True,
         help="only pages that missed a rung below the one they reached")
     opt(p, "--tally", is_flag=True,
@@ -222,10 +222,11 @@ def run_state(a) -> int:
         rows = survey(refs or all_scans(a.root), a.root, tick=tick)
     if a.stage:
         allowed = set(a.stage)
-        unknown = allowed - {"absent", *STAGES}
+        unknown = allowed - {"absent", *STAGES, EXEMPT_STAGE}
         if unknown:
             raise ValueError(f"--stage {sorted(unknown)}: not a rung. "
-                             f"One of: absent, {', '.join(STAGES)}")
+                             "One of: absent, "
+                             + ", ".join((*STAGES, EXEMPT_STAGE)))
         rows = [r for r in rows if r["stage"] in allowed]
     if a.skipped:
         rows = [r for r in rows if r["skipped"]]

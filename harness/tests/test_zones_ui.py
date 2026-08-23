@@ -326,11 +326,30 @@ def test_save_carries_split_and_exemptions_through(tmp_path):
     assert zn.load_exempt(tmp_path) == {"1-048": ["rank-monotone"]}
 
 
-def test_saving_no_zones_writes_the_empty_record_when_exempt(tmp_path):
-    """A plate saves as zero zones — but only once a human has marked it one."""
+def test_ruling_a_leaf_through_the_editor_clears_both_stores(tmp_path):
+    """The slip this closes: keying a page and *then* ruling it a plate saved
+    both, and nothing ever swept the prediction. 32 leaves kept a segmenter's
+    guess at a text column they do not have — 98 zones against 1 in ground truth,
+    some of them paragraphs on blank paper — and two kept a human's zones.
+
+    `cleared` is what the client redraws off, and `dropped` is what went."""
     scans(tmp_path, "1-001")
-    ui.save_payload({"ref": "1-001", "zones": [], "split": "plate"}, tmp_path, cfg())
-    assert zn.has_zones("1-001", tmp_path) and zn.read_zones("1-001", tmp_path) == []
+    ui.save_payload({"ref": "1-001", "zones": [
+        {"label": "MainZone-P", "y0": 300, "y1": 900, "column": 0}]},
+        tmp_path, cfg())
+    zn.alto_for("1-001", tmp_path, zn.MZDIR).parent.mkdir(parents=True, exist_ok=True)
+    zn.alto_for("1-001", tmp_path, zn.MZDIR).write_bytes(
+        zn.alto_for("1-001", tmp_path).read_bytes())
+
+    res = ui.save_payload({"ref": "1-001", "zones": [], "split": "plate"},
+                          tmp_path, cfg())
+    assert res["cleared"] == "gt/zones mz/zones"
+    assert res["dropped"] == 1 and res["zones"] == 0
+    assert zn.has_zones("1-001", tmp_path) is False
+    assert zn.has_zones("1-001", tmp_path, zn.MZDIR) is False
+    # The ruling survives — it is the record — and the page stays settled.
+    assert zn.load_splits(tmp_path).get("1-001") == "plate"
+    assert zn.keyed("1-001", tmp_path) is True
 
 
 def test_saving_no_zones_on_a_text_page_is_refused(tmp_path):

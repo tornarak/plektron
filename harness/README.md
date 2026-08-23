@@ -693,6 +693,18 @@ exemptions, `validate_page`/`validate_corpus`, the blot sweep, the segtrain
 assembly, the predictor and the view. **Errors are mechanical and set the exit code;
 the ordering assumptions are warnings.**
 
+**`exempt => no zones`, and three predicates keep that honest.** Ruling a leaf a
+`plate`/`blank`/`cover`/`map`/`apparatus` calls `clear_leaf`: `.prev` on both
+stores, delete both, keep the mark, journal it — the kind in the split lists is
+the whole record that a human looked, and an empty ALTO beside it was the older
+spelling from before the kinds existed. `save_zones` routes there whenever the
+effective split is a leaf kind, so the editor and the CLI perform one act, and
+`validate_page` errors `exempt-holds-zones` on a page that drifted out of it.
+`has_zones` is the **file** question and `keyed` is "has a human been through" —
+a ruled leaf answers the second without the first, `settled_refs` is that union
+for a sweep or a page list, and substituting either for the other has already
+gone wrong in both directions. `.claude/rules/zones.md` has which to ask where.
+
 `zone_dir`/`alto_for` take a `store`, defaulting to `gt/zones/`, and the **default is
 the design**: every sidecar reader calls `zone_dir(root)` bare and so keeps resolving
 to the human store without a line of change. That is not an accident to tidy up

@@ -21,6 +21,13 @@ rung's input is the one below it**:
     generated  the rules built a first-draft TEI            — mz/tei/
     collated   a reader signed the page                     — tei/
 
+**And one terminus off the side of it**, `zoned-exempt`: a leaf a human ruled a
+plate, blank, cover, map or apparatus is *finished*, not pending. It holds no
+zone file — `exempt => no zones`, the ruling is the record — and it will never
+climb another rung, there being no text to recognize, propose or collate. It
+read as `zoned-gt` until the stage existed, which put 115 leaves in the column a
+reader scans for work still to do.
+
 **`stage` is the furthest rung reached and is therefore a summary, so it ships
 beside `skipped`** — the rungs below it that are *not* satisfied. A summary that
 can hide the anomaly it is summarising is this project's standing failure shape,
@@ -55,11 +62,24 @@ from .refs import norm_ref
 STAGES = ("scanned", "zoned-mz", "zoned-gt", "ocr-mz",
           "proposed", "decided", "ocr-gt", "generated", "collated")
 
+#: **Where a ruled leaf stops, and it is a terminus rather than a rung.** A plate
+#: or a blank is finished the moment somebody rules it: there is no text to
+#: recognize, nothing to propose, nothing to collate, and it will never climb
+#: another step. Reported as `zoned-gt` it read as a page *waiting* for OCR, which
+#: put 115 leaves in the same column as work that is genuinely pending — the
+#: summary hiding the distinction it exists to draw.
+#:
+#: Not a member of `STAGES`, deliberately, because that tuple is the ladder and
+#: `skipped` is "everything below the furthest rung that is absent". A rung no
+#: text page can satisfy would be a skipped rung on all 717 of them, which is the
+#: same defect one column over. `tally` lists it beside the ladder instead.
+EXEMPT_STAGE = "zoned-exempt"
+
 # What `zones` reports when a human ruled the page is not a text page at all: the
 # **kind they ruled** — `plate`, `blank`, `cover`, `map`, `apparatus` — and not a
-# flat `exempt`. It satisfies the `zoned-gt` rung either way: that rung asks whether
-# a human has been through the page, and "this is a plate" is a judgement, not the
-# absence of one.
+# flat `exempt`. It still satisfies the rungs below, since "this is a plate" is a
+# judgement and not the absence of one; what it does *not* do is sit on `zoned-gt`
+# as though waiting for OCR. `EXEMPT_STAGE` is where such a page is reported.
 #
 # Naming the kind here is most of what `--refs` is for. A worklist that said
 # `exempt` 115 times could only be crossed off by opening each page; one that says
@@ -136,6 +156,12 @@ def page_state(ref: str, root: Path = Path("."),
     top = max((i for i, s in enumerate(STAGES) if reached[s]), default=-1)
     row["stage"] = STAGES[top] if top >= 0 else "absent"
     row["skipped"] = ",".join(s for s in STAGES[:top] if not reached[s])
+    # A ruled leaf leaves the ladder here. `skipped` is cleared with it: the rungs
+    # above are not steps this page failed to take, they are steps that do not
+    # apply to it, and a page reported as having skipped seven of them would read
+    # as damaged rather than done.
+    if exempt:
+        row["stage"], row["skipped"] = EXEMPT_STAGE, ""
     return row
 
 
@@ -155,7 +181,7 @@ def tally(rows: list[dict]) -> list[dict]:
     has reached it and one that reads zero because everything has passed it are
     different facts, and omitting the row makes them look the same.
     """
-    counts = dict.fromkeys(("absent", *STAGES), 0)
+    counts = dict.fromkeys(("absent", *STAGES, EXEMPT_STAGE), 0)
     skipped = 0
     for r in rows:
         counts[r["stage"]] = counts.get(r["stage"], 0) + 1

@@ -319,26 +319,65 @@ def read_zones(ref: str, root: Path = Path("."),
 
 
 def has_zones(ref: str, root: Path = Path("."), store: str = ZONEDIR) -> bool:
-    """Whether this page has been keyed at all — file present, zones or not.
+    """Whether this store holds a zone file for this page — zones in it or not.
 
-    The distinction is the point. A plate carries no text column, so its correct
-    segmentation is zero zones; an empty file is that record. A page nobody has
-    opened is also zero zones. Only the file's existence separates "looked at,
-    holds nothing" from "not looked at", which is why navigation never writes one.
+    A file question and nothing more. **It used to be the answer to "has a human
+    been through this page" as well, and it is not any more**: that reading rested
+    on an empty file being the record of a leaf a human had ruled out of the text
+    tracks, which was true before the leaf kinds existed and stopped being true
+    when they arrived. `keyed` is the predicate for that question now, and this one
+    should be asked only where the file itself is the subject — an overwrite guard,
+    a store census, "is there a prediction" against `MZDIR`.
 
-    **Asked of the default store, this answers "has a human been through it".** The
-    editor's resume and its unkeyed counts depend on that reading, so a machine
-    prediction must never satisfy them: `--predict` over an itinerary would
-    otherwise mark the whole list done and leave the next session with nowhere to
-    resume. A caller that means "is there a prediction" passes `store=MZDIR` and is
-    asking a different question.
-
-    That separation lives outside the store, though, which is why an empty file is
-    only allowed to mean the first when the page is marked `exempt` — see
-    `save_zones`. A file is a weak witness: it survives a `cp -r`, and the loss this
-    project has already paid for was exactly a role that lived nowhere but a path.
+    Under the leaf kinds an exempt leaf holds **no zone file at all**: the split
+    mark is the record that somebody looked, and an empty ALTO beside it was one
+    fact stated twice, with the weaker of the two spellings surviving a `cp -r`.
     """
     return alto_for(ref, root, store).exists()
+
+
+def settled_refs(root: Path = Path("."), store: str = ZONEDIR,
+                 splits: dict[str, str] | None = None) -> list[str]:
+    """Every page a human has been through: keyed zones, or a ruled leaf.
+
+    `zone_refs` is the store census and answers a file question. This is the
+    *worklist* question, and the two stopped being the same answer when a ruled
+    leaf stopped holding a file — a sweep or a page list built on `zone_refs`
+    alone drops all 115 ruled leaves, so the editor could no longer navigate back
+    to a plate it had just ruled and `zones check --all` stopped reporting them at
+    all. Both are pages somebody settled, and a census of settled work that omits
+    them is wrong in the direction that looks like less work remaining.
+
+    Only for the human store: a machine store has no leaf rulings in it, so the
+    union degenerates and `zone_refs` is the whole answer.
+    """
+    refs = set(zone_refs(root, store))
+    if store == ZONEDIR:
+        # `splits` for `validate_page`'s reason: seven `.lst` files re-read and
+        # every name re-parsed through `norm_ref`. A caller that already holds the
+        # map hands it down rather than making a second one.
+        splits = load_splits(root) if splits is None else splits
+        refs |= {r for r, v in splits.items() if v in LEAF_KINDS}
+    return sorted(refs, key=parse_ref)
+
+
+def keyed(ref: str, root: Path = Path("."),
+          splits: dict[str, str] | None = None) -> bool:
+    """Has a human been through this page — by keying zones, or by ruling the leaf.
+
+    **The two ways a page gets settled, and they are not interchangeable.** Keying
+    zones says "this is a text page and here is its column"; ruling a leaf kind
+    says "this is not a text page at all". Both are a human's act and both take the
+    page off the worklist, so every caller that means "is there anything left to do
+    here" has to accept either — the editor's `keyed` flag, its progress count, and
+    the itinerary's resume most of all, since a page that reads unsettled forever
+    is one the resume returns to forever.
+
+    **Never satisfied by a machine.** `has_zones(store=MZDIR)` is a different
+    question and answering this one with it would let a `zones predict` sweep mark
+    the whole corpus done and leave the next session with nowhere to resume.
+    """
+    return has_zones(ref, root) or is_exempt(ref, root, splits)
 
 
 # ------------------------------------------------------------ column anchoring
@@ -1248,16 +1287,30 @@ def save_zones(ref: str, zones: list[dict], root: Path = Path("."),
     `zones` carry resolved coordinates — the caller has already turned a side and a
     column index into an x-pair. Nothing below knows what a side is.
 
-    **An empty page is refused unless it is marked with a leaf kind**, and this is
-    the same distinction the splits exist to draw. A text page with no zones and a
-    page nobody has reached are byte-identical in this store — `zone_refs` finds
-    both, the sweep counts both as keyed, the list draws both as done — so an empty
-    save does not record a judgement, it erases the difference between having made
-    one and not. A leaf kind is how a human says "I looked at this, and it is a
-    plate"; that is a statement, and it saves. "Nothing here" is not.
+    **An empty text page is refused**, and this is the distinction the splits exist
+    to draw. A text page with no zones and a page nobody has reached would be
+    byte-identical in this store — `zone_refs` finds both, the sweep counts both as
+    keyed, the list draws both as done — so an empty save does not record a
+    judgement, it erases the difference between having made one and not. "Nothing
+    here" is not a statement. Mechanical, like every other refusal here: it needs
+    no reading of the page, and no layout rule can be configured to allow it.
 
-    Mechanical, like every other refusal here: it needs no reading of the page, and
-    no layout rule can be configured to allow it.
+    **A leaf kind is the statement, and it writes no file at all** — it hands off
+    to `clear_leaf`, which removes this page's `gt/zones/` ALTO *and* its
+    `mz/zones/` prediction and leaves the mark as the whole record. `exempt => no
+    zones`: a leaf has no text column, so there is nothing for a zone to be. An
+    empty ALTO beside the mark was the older spelling, from before the kinds
+    existed, and it was one fact stated twice with the weaker half surviving a
+    `cp -r`.
+
+    The machine file was worse than redundant. A segmenter asked about a leaf with
+    no text column does not decline — it finds the column anyway, so the 32
+    predictions that outlived a ruling held 98 zones against 1 in ground truth,
+    several of them paragraphs on blank paper.
+
+    This is therefore also the repair path for a page keyed *before* it was ruled.
+    The editor's slip was that keying zones and then ruling the leaf saved both,
+    and nothing ever swept the prediction; the ruling is what clears them now.
     """
     ref = norm_ref(ref)
     effective = split or load_splits(root).get(ref) or DEFAULT_SPLIT
@@ -1272,6 +1325,8 @@ def save_zones(ref: str, zones: list[dict], root: Path = Path("."),
             "if it should not be in the store at all. That third one is reachable "
             "from here: a page keyed and then emptied has no other way to be "
             "withdrawn.")
+    if effective in LEAF_KINDS:
+        return clear_leaf(ref, root, effective, exempt=exempt, stamp=stamp)
     stamp = stamp or time.strftime("%Y-%m-%dT%H:%M:%S%z")
     size = raster_size(ref, root)
     tree = build_alto(ref, zones, size)
@@ -1304,6 +1359,71 @@ def save_zones(ref: str, zones: list[dict], root: Path = Path("."),
     return {"ref": ref, "path": str(p), "zones": len(zones),
             "split": split or marked or DEFAULT_SPLIT,
             "labels": " ".join(f"{k}:{v}" for k, v in sorted(counts.items()))}
+
+
+def clear_leaf(ref: str, root: Path = Path("."), split: str = "",
+               exempt: list[str] | None = None,
+               stamp: str | None = None) -> dict:
+    """Rule a leaf out of the text tracks: keep the mark, drop both zone files.
+
+    **`exempt => no zones`.** A plate, a blank, a cover, a map, an apparatus leaf
+    has no text column, so there is nothing for a zone to be — and the leaf kind in
+    the split lists is the whole record that a human looked. Most plates *do* carry
+    a running title, and it is deliberately ignored: the folio propagates through
+    the seam ledger (`harness/state.py`), so zoning the head of a plate records
+    nothing the corpus reads and leaves a text-page label on a leaf that is not one.
+
+    Not `delete_zones`, which is the different act: that withdraws the page from the
+    store entirely, mark and all, for a ref keyed in error. This *keeps* the ruling —
+    that is the judgement being recorded — and removes only what the ruling makes
+    false.
+
+    **`mz/zones/` goes too, and this is the half nothing did before.** A segmenter
+    asked about a leaf with no text column does not decline; it finds the column
+    anyway. The 32 predictions that outlived a ruling carried 98 zones —
+    57 `MainZone-P`, 27 `MainZone-Other`, 9 `RunningTitleZone` — against 1 in
+    ground truth, several of them paragraphs on blank paper. Nothing read them,
+    because `gt/` outranks `mz/` in the view; that is a fact about today's
+    consumers rather than a property of the store.
+
+    `.prev` on both, and the journal, for `save_zones`' durability reason: this
+    deletes tracked work, and the window before a commit exists is exactly when
+    this repo lost pages once.
+    """
+    ref = norm_ref(ref)
+    stamp = stamp or time.strftime("%Y-%m-%dT%H:%M:%S%z")
+    split = split or load_splits(root).get(ref) or ""
+    # **`save_zones`' key set, so a caller need not know which of the two ran.**
+    # `zones` is what the page holds *now*, which is zero; `dropped` is what was
+    # taken away. Reporting the removed count as `zones` would put a live-looking
+    # number on a file that no longer exists — the editor writes it straight into
+    # its store selector, so the page would read `gt — 1` with no gt at all.
+    # `cleared` is the flag the client keys its redraw off.
+    out = {"ref": ref, "path": str(alto_for(ref, root)), "zones": 0,
+           "split": split, "labels": "", "dropped": 0, "cleared": ""}
+    gone = []
+    for store in (ZONEDIR, MZDIR):
+        p = alto_for(ref, root, store)
+        if not p.exists():
+            continue
+        if store == ZONEDIR:
+            out["dropped"] = len(read_zones(ref, root, store=store))
+        p.with_suffix(".xml.prev").write_bytes(p.read_bytes())
+        p.unlink()
+        gone.append(store)
+    out["cleared"] = " ".join(gone)
+
+    if exempt is not None:
+        set_exempt(ref, exempt, root)
+    if split:
+        set_split(ref, split, root)
+    with (zone_dir(root) / JOURNAL).open("a", encoding="utf-8") as fh:
+        fh.write(json.dumps({"saved_at": stamp, "ref": ref, "zones": 0,
+                             "labels": {}, "split": split,
+                             "dropped": out["dropped"],
+                             "cleared": out["cleared"]},
+                            ensure_ascii=False) + "\n")
+    return out
 
 
 def delete_zones(ref: str, root: Path = Path("."), commit: bool = False,
@@ -1604,6 +1724,26 @@ def validate_page(ref: str, root: Path = Path("."), cfg: dict | None = None,
             if store == ZONEDIR else
             "the model returned no region for a page still ruled a text page")
 
+    # **`exempt => no zones`, and the file is what is checked.** A ruled leaf has
+    # no text column, so there is nothing for a zone to be and nothing for the
+    # store to hold; the split mark is the whole record. The editor clears both
+    # stores on a ruling now, so this catches the page that predates that — or one
+    # ruled by hand in a `.lst` — and it is an error rather than a warning because
+    # it is mechanical and has one remedy.
+    #
+    # The `mz/` arm is the one with teeth. A segmenter asked about a leaf does not
+    # decline, it finds a column anyway: the 32 predictions that outlived a ruling
+    # carried 98 zones against 1 in ground truth, several of them paragraphs on a
+    # blank leaf. Nothing read them because `gt/` outranks `mz/` in the view, which
+    # is a fact about today's consumers and not a property of the store.
+    if has_zones(ref, root, store) and is_exempt(ref, root, splits):
+        err("exempt-holds-zones",
+            f"ruled {splits.get(ref)} — not a text page — while {store}/ still "
+            f"holds a zone file ({len(zones)} zone(s)). A leaf has no column for a "
+            "zone to sit in, so the ruling is the record and the file is a second, "
+            "weaker spelling of it. Re-save the ruling in the editor, which clears "
+            "both stores, or key it as a text page if the ruling is wrong.")
+
     measure = int(zc.part_spec(cfg, ref)["measure"])
     over = zc.override_windows(cfg, ref)
     # The measured column needs the raster, so it is only consulted when the ink
@@ -1670,7 +1810,11 @@ def validate_page(ref: str, root: Path = Path("."), cfg: dict | None = None,
     # errors above still stand: whatever zones the page does carry must still be
     # the right shape, or the mark is hiding a mistake rather than a plate.
     if split in LEAF_KINDS:
-        return {"ref": ref, "keyed": has_zones(ref, root, store), "zones": len(zones),
+        # **Settled, though it holds no file.** `exempt => no zones`, so the
+        # ruling is the record and the file test would report every plate in
+        # the corpus as unkeyed — on the very row a human reads to decide
+        # whether a page still needs work.
+        return {"ref": ref, "keyed": True, "zones": len(zones),
                 "split": split, "ink_checked": False,
                 "errors": errors, "warnings": [], "uncovered": []}
 
@@ -1785,7 +1929,10 @@ def validate_corpus(root: Path = Path("."), cfg: dict | None = None,
                 read_zones(ref, root, store=store))
 
     verdicts: list[tuple[str, dict]] = []
-    todo = list(refs if refs is not None else zone_refs(root, store))
+    # `settled_refs`, not `zone_refs`: a ruled leaf holds no file and is still a
+    # page somebody has been through, so a sweep built on the store census
+    # alone would drop every plate and report less work as more done.
+    todo = list(refs if refs is not None else settled_refs(root, store))
     for ref, r, zs in pmap(_measure, todo, jobs, tick):
         if ink and store == ZONEDIR:
             verdicts.append((ref, r))
@@ -4238,14 +4385,19 @@ def assemble(root: Path = Path("."), scratch: bool = False,
     listed: dict[str, list[str]] = {"train": [], "eval": []}
     merged_pages = 0
 
-    exempted = 0
+    # **Counted from the marks, not from the store.** A plate is neither an example
+    # of the layout nor a fair test of it, so it goes into neither list — and the
+    # count has to survive, because "a set that shrank without saying so would look
+    # like pages that were never keyed" is the whole reason it is reported. Under
+    # `exempt => no zones` a ruled leaf holds no file at all, so counting the
+    # skips inside the loop below silently reported nought held out where 115 were.
+    exempted = sum(1 for v in splits.values() if v in LEAF_KINDS)
     for ref in ptrack(zone_refs(root), tick):
         split = splits.get(ref, DEFAULT_SPLIT)
-        # A plate is neither an example of the layout nor a fair test of it, so it
-        # goes into neither list. Counted, not silently dropped — a set that
-        # shrank without saying so would look like pages that were never keyed.
+        # Still guarded, for the page that drifted into holding both a ruling and a
+        # file — `zones check` errors on it as `exempt-holds-zones`, and until it is
+        # repaired it must not reach a training list.
         if split in LEAF_KINDS:
-            exempted += 1
             continue
         alto = alto_for(ref, root)
         blot = blot_dir(root) / f"chukchi-{ref}.png"

@@ -249,10 +249,13 @@ def test_a_page_never_keyed_reports_nothing_and_says_so(tmp_path):
 
 
 def test_a_ruled_empty_leaf_is_keyed_and_clean(tmp_path):
-    """A plate has no text column; zero zones is its correct segmentation, and the
-    leaf kind is what makes that a statement rather than an absence."""
+    """A plate has no text column, so it holds no zone file at all — and it is
+    still *settled*. `keyed` on this row means "a human has been through", which
+    a ruling answers as fully as keying does; reading it off the file would
+    report every plate in the corpus as unfinished."""
     make_scan(tmp_path)
     zn.save_zones("1-048", [], tmp_path, split="plate")
+    assert zn.has_zones("1-048", tmp_path) is False
     r = zn.validate_page("1-048", tmp_path, cfg_for())
     assert r["keyed"] is True and r["errors"] == [] and r["warnings"] == []
 
@@ -295,7 +298,13 @@ def test_an_empty_page_already_in_the_store_is_an_error(tmp_path):
     """The refusal only guards new writes; a page can predate it or arrive by
     hand, and that page is invisible to every other check."""
     make_scan(tmp_path)
-    zn.save_zones("1-048", [], tmp_path, split="plate")
+    # Built by hand, because no save reaches this state any more: ruling a leaf
+    # clears the file rather than writing an empty one. That is exactly what this
+    # test is for — the page that predates the rule, or arrives by hand.
+    zn.save_zones("1-048", covering(), tmp_path)
+    zn.alto_for("1-048", tmp_path).write_bytes(
+        etree.tostring(zn.build_alto("1-048", [], zn.raster_size("1-048", tmp_path)),
+                       xml_declaration=True, encoding="UTF-8"))
     zn.set_split("1-048", "train", tmp_path)
     r = zn.validate_page("1-048", tmp_path, cfg_for(), ink=False)
     assert "empty-page" in rules(r["errors"])
@@ -449,17 +458,24 @@ def test_an_exempt_page_is_not_judged_by_text_page_rules(tmp_path):
     assert r["warnings"] == [] and r["uncovered"] == []
 
 
-def test_a_ruled_leaf_still_reports_mechanical_errors(tmp_path):
-    """Otherwise the mark would hide a mistake rather than describe a plate."""
+def test_a_ruled_leaf_holding_zones_is_itself_the_error(tmp_path):
+    """**`exempt => no zones`.** This asserted that a ruled leaf's zones were
+    still width-checked, on the reasoning that the mark must not hide a mistake.
+    The mark cannot reach that state now — ruling a leaf clears both stores — so
+    a page in it arrived by hand or predates the rule, and the finding is the
+    file's existence rather than any property of the zones in it.
+
+    The `mz/` arm is the one with teeth: a segmenter asked about a leaf finds a
+    column anyway, and 32 predictions that outlived a ruling carried 98 zones
+    against 1 in ground truth."""
     make_scan(tmp_path)
-    zn.save_zones(
-        "1-048",
-        [zone("MainZone-P", 600, 900, x0=100, x1=1200)],
-        tmp_path,
-        split="plate",
-    )
+    zn.save_zones("1-048", [zone("MainZone-P", 600, 900, x0=100, x1=1200)], tmp_path)
+    zn.set_split("1-048", "plate", tmp_path)
     r = zn.validate_page("1-048", tmp_path, cfg_for(), ink=False)
-    assert rules(r["errors"]) == ["column-width"]
+    assert "exempt-holds-zones" in rules(r["errors"])
+    # And re-saving the ruling is the remedy the message names.
+    zn.save_zones("1-048", [], tmp_path, split="plate")
+    assert zn.validate_page("1-048", tmp_path, cfg_for(), ink=False)["errors"] == []
 
 
 def test_order_violation_is_a_warning_never_an_error(tmp_path):
@@ -809,3 +825,88 @@ def test_batched_and_per_page_recording_write_the_same_file(tmp_path):
     # And the verdicts themselves are the ones the page list draws.
     assert {r["ref"]: r["state"] for r in zn.record_ink_many(reports, tmp_path)} == {
         "1-048": "clean", "1-049": "ink"}
+
+
+# ------------------------------------------------- exempt => no zones
+
+
+def test_ruling_a_leaf_clears_both_stores(tmp_path):
+    """**The editor slip this closes.** Keying a page and *then* ruling it a plate
+    saved the ruling and the zones together, and nothing ever swept the machine
+    store — so 32 leaves kept a segmenter's guess at a text column they do not
+    have, 98 zones against 1 in ground truth, several of them paragraphs on a leaf
+    with no ink on it at all.
+
+    The ruling is the record; the files are what it makes false."""
+    make_scan(tmp_path)
+    zn.save_zones("1-048", covering(), tmp_path)
+    mz = zn.alto_for("1-048", tmp_path, zn.MZDIR)
+    mz.parent.mkdir(parents=True, exist_ok=True)
+    mz.write_bytes(zn.alto_for("1-048", tmp_path).read_bytes())
+
+    res = zn.save_zones("1-048", covering(), tmp_path, split="plate")
+
+    assert res["cleared"] == "gt/zones mz/zones"
+    assert res["dropped"] == len(covering()) and res["zones"] == 0
+    assert zn.has_zones("1-048", tmp_path) is False
+    assert zn.has_zones("1-048", tmp_path, zn.MZDIR) is False
+    # The ruling survives, and it is what keeps the page settled.
+    assert zn.load_splits(tmp_path).get("1-048") == "plate"
+    assert zn.keyed("1-048", tmp_path) is True
+
+
+def test_a_leaf_ruled_with_nothing_to_clear_says_so(tmp_path):
+    """The ordinary case — a leaf ruled on a page nobody keyed. Nothing to remove,
+    and the mark still lands. The editor's confirmation is silent here for the
+    same reason: a prompt that fires when nothing happens is one people learn to
+    dismiss."""
+    make_scan(tmp_path)
+    res = zn.save_zones("1-048", [], tmp_path, split="blank")
+    assert res["cleared"] == "" and res["dropped"] == 0
+    assert zn.keyed("1-048", tmp_path) is True
+
+
+def test_clearing_keeps_a_prev_of_what_it_deleted(tmp_path):
+    """It deletes tracked work, and the window before a commit exists is exactly
+    when this repo lost pages once."""
+    make_scan(tmp_path)
+    zn.save_zones("1-048", covering(), tmp_path)
+    zn.save_zones("1-048", [], tmp_path, split="plate")
+    prev = zn.alto_for("1-048", tmp_path).with_suffix(".xml.prev")
+    assert prev.exists()
+    assert len(list(etree.parse(str(prev)).iter("{*}TextBlock"))) == len(covering())
+
+
+def test_keyed_and_has_zones_are_different_questions(tmp_path):
+    """Keeping them apart is the point of there being two. `has_zones` is a file
+    question — the editor's store selector asks it, and gating that on the other
+    drew `gt — 0` for a page whose ALTO had just been deleted. `keyed` is "has a
+    human been through", which a ruling answers as fully as keying does."""
+    make_scan(tmp_path)
+    assert zn.keyed("1-048", tmp_path) is False
+    assert zn.has_zones("1-048", tmp_path) is False
+
+    zn.save_zones("1-048", [], tmp_path, split="plate")
+    assert zn.keyed("1-048", tmp_path) is True
+    assert zn.has_zones("1-048", tmp_path) is False
+
+
+def test_a_ruled_leaf_is_on_the_settled_list_though_it_holds_no_file(tmp_path):
+    """`zone_refs` is the store census; `settled_refs` is the worklist. They
+    stopped being the same answer when a ruled leaf stopped holding a file, and a
+    sweep or page list built on the census alone drops every plate — reporting
+    less work as more done, and leaving no way back to the page from the one
+    screen that navigates the store."""
+    make_scan(tmp_path)
+    make_scan(tmp_path, "1-049")
+    zn.save_zones("1-048", covering(), tmp_path)
+    zn.save_zones("1-049", [], tmp_path, split="plate")
+
+    assert zn.zone_refs(tmp_path) == ["1-048"]
+    assert zn.settled_refs(tmp_path) == ["1-048", "1-049"]
+    # And the corpus sweep reports both — the ruled leaf under its kind, which is
+    # what `summary["keyed"]` counts: a page with a split has been settled.
+    summary, rows = zn.validate_corpus(tmp_path, cfg_for())
+    assert [r["ref"] for r in rows] == ["1-048", "1-049"]
+    assert [r["split"] for r in rows] == ["train", "plate"]
+    assert summary["keyed"] == 2 and summary["todo"] == 0

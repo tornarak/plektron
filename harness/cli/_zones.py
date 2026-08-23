@@ -252,12 +252,17 @@ def run_edit(a) -> int:
     if not start and itin:
         # Resume: the first page on the list nobody has keyed. Falls back to the
         # head of the list once it is finished, so the session still opens.
-        # `has_zones` is a store read per page, and `--all` makes the itinerary
-        # the whole book — so resuming is a sweep before the socket is bound,
-        # with nothing on screen to say the session is still coming up.
+        # `keyed` is a store read per page, and `--all` makes the itinerary the
+        # whole book — so resuming is a sweep before the socket is bound, with
+        # nothing on screen to say the session is still coming up.
+        #
+        # **`keyed`, not `has_zones`**: a leaf ruled `plate` holds no zone file
+        # at all, so the file test would call every exempt leaf unsettled and
+        # send the resume back to the same plate every session.
         with progress("finding where to resume") as tick:
+            splits = zmod.load_splits(a.root)
             start = next((r for r in ptrack(itin, tick)
-                          if not zmod.has_zones(r, a.root)), itin[0])
+                          if not zmod.keyed(r, a.root, splits)), itin[0])
     if not start:
         print("zones edit needs a page to start at: name one or more refs, or "
               "--itinerary to take one from, or --all for the whole book",
@@ -281,8 +286,9 @@ def run_edit(a) -> int:
               "   (Done button on the page, or ctrl-c)"]
     if itin:
         with progress("counting the itinerary") as tick:
+            splits = zmod.load_splits(a.root)
             done = sum(1 for r in ptrack(itin, tick)
-                       if zmod.has_zones(r, a.root))
+                       if zmod.keyed(r, a.root, splits))
         banner.append(
             f"itinerary {a.itinerary or ''}: {len(itin)} pages, {done} keyed")
     banner.append(f"store -> {zmod.zone_dir(a.root)}")

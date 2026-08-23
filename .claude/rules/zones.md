@@ -8,6 +8,27 @@ Code-facing facts for the modules this rule is scoped to. The design
 reasoning is `docs/segmentation.md`; the training loop is
 `.claude/skills/train-zones/SKILL.md`.
 
+**Three predicates about a page, and mixing them up is the live hazard.**
+`has_zones` is a **file** question — does this store hold an ALTO for this ref.
+`keyed` is "has a human been through", which a ruled leaf answers *without*
+holding a file, since `exempt => no zones` and the leaf kind in the split lists
+is the record. `settled_refs` is that same union one level up, for a sweep or a
+page list; `zone_refs` remains the store census and drops all 115 ruled leaves.
+
+Ask the file question wherever the subject is the file: the editor's store
+selector (`present`), its paragraph pill (`paras_zones`), an overwrite guard, "is
+there a prediction" against `MZDIR`. Ask `keyed` wherever the subject is whether
+work remains: the Done button, the progress count, the itinerary's resume. Both
+substitutions have already been made and both were wrong in a way that reads as
+plausible — `present` gated on `keyed` drew `gt — 0` for a page whose ALTO had
+just been deleted, and the resume gated on `has_zones` sent a human back to the
+same plate every session.
+
+`clear_leaf` is what a ruling performs: `.prev` on both stores, delete both,
+keep the mark, journal it. `save_zones` routes to it whenever the effective
+split is a leaf kind, so the editor and the CLI perform one act. `zones check`
+errors `exempt-holds-zones` on a page that drifted out of that state.
+
 **The page list (`l` in the editor) carries the ink verdict, and it is cached rather
 than recomputed.** Every other column costs ~1 ms and is read straight off the files;
 this one opens the raster and costs ~0.20 s, which over a 122-page itinerary is most

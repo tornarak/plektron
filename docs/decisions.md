@@ -912,3 +912,57 @@ decays silently the day the encoding changes. `_producer_stamp` reads both forms
 every page collated before the move carries the comment, and `SURVIVING` still
 lists `generated:` for that reason — and the fallback is pinned by a test that was
 mutation-checked by deleting it.
+
+## A ruling that did not clear what it made false, and a docstring that outlived its mechanism
+
+Ruling a leaf `plate` or `blank` in the editor saved the ruling *and* whatever
+zones were on the canvas, and never touched `mz/zones/` at all. So 32 leaves kept
+a segmenter's guess at a text column they do not have — 98 zones against 1 in
+ground truth, 57 of them `MainZone-P`, several on paper with no ink on it — and
+two kept a human's. `1-325`, a plate, carried eleven paragraphs decoded out of a
+photograph's tonal bands. Nothing read any of it, because `gt/` outranks `mz/` in
+the view; that is a fact about today's consumers rather than a property of the
+store, and it is the reason the residue survived a year without a symptom.
+
+The rule is `exempt => no zones`: a leaf has no text column, so there is nothing
+for a zone to be, and the kind in the split lists is the whole record that a human
+looked. Ruling one now clears both stores, after a confirmation that fires only
+when there is something to lose.
+
+**The empty ALTO was the older spelling of that record, and a docstring still said
+so.** `has_zones` read: *"A plate carries no text column, so its correct
+segmentation is zero zones; an empty file is that record… Only the file's
+existence separates 'looked at, holds nothing' from 'not looked at'."* That was
+true before the leaf kinds existed and false after — the kinds took over both jobs
+— but the prose stayed, and it was cited here as the reason the files had to be
+kept. **Prose in this repo carries a date it does not print.** A comment that
+describes a mechanism is evidence about the mechanism *as it was*, and the
+question to ask of one is not "is this well argued" but "is what it describes
+still what happens". The cost of not asking was an argument for preserving 115
+files whose whole justification had been superseded.
+
+What replaced it is two predicates, and keeping them apart is the point.
+`has_zones` is a **file** question — the editor's store selector and its
+paragraph pill ask it, and gating those on the other one drew `gt — 0` for a page
+whose ALTO had just been deleted, the old convention coming back as a live-looking
+number. `keyed` is "has a human been through", which a ruling answers as fully as
+keying does; the Done button, the progress count and the itinerary's resume ask
+it, and reading them off the file reported every plate in the corpus as unfinished
+and sent the resume back to the same plate every session. `settled_refs` is the
+same distinction one level up, for the sweep and the page list.
+
+**Reading the ink is not the same as reading the policy.** `1-245` is a plate
+carrying a real running title — "BOGORAS, THE CHUKCHEE." and folio 189 — with a
+`RunningTitleZone` sitting exactly on it. Looking at the raster, that zone is
+correct, and it was defended here as correct human work the rule would destroy.
+It is not: most plates carry a running title, they are deliberately ignored, and
+the folio propagates through the seam ledger instead. Zoning one records nothing
+the corpus reads and leaves a text-page label on a leaf that is not a text page.
+The ink was evidence about the ink and about nothing else; the store's rule was
+the question, and it is not answerable from the page.
+
+The counterpart failure is on the same two leaves. `1-316` is blank — no ink at
+all bar two specks of scanner dust — and its keyed `MainZone-P` was read here as
+"a folio number or a signature mark, and the human keyed exactly it". A
+justification was invented for a mark that has nothing under it, in the middle of
+a report about other instances of exactly that. Look at the page.

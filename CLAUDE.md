@@ -101,7 +101,9 @@ Layout, all at the repo root:
     gt/     what a human has been through: ocr/, fig/ (bounding boxes for the
             pictures and their captions; no lines), zones/ (the segmentation, and
             the split that says a leaf is a plate/blank/cover/map/apparatus rather
-            than a text page at all), lines/ (corrections), fig-img/ and page-img/
+            than a text page at all — **and such a leaf holds no zone file in
+            either store: the mark is the record**), lines/ (corrections),
+            fig-img/ and page-img/
             (touch-ups, a crop and a whole leaf). Tracked — and page-img/ holds
             work no script rebuilds. **The views are only views, and nothing
             writes through a view**; the caller invariants are

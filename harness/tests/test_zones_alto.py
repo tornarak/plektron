@@ -119,12 +119,20 @@ def test_zones_are_written_in_reading_order(tmp_path):
     assert [z["y0"] for z in got] == sorted(z["y0"] for z in got)
 
 
-def test_saving_an_empty_page_is_a_record(tmp_path):
-    """A plate's correct segmentation is zero zones, and that has to be sayable."""
+def test_ruling_a_leaf_records_the_mark_and_no_file(tmp_path):
+    """**`exempt => no zones`**, and the mark is the whole record.
+
+    This asserted the opposite until the leaf kinds settled what an exempt page
+    is: an empty ALTO used to be how "a plate's correct segmentation is zero
+    zones" was said, and `has_zones` was how a caller asked whether a human had
+    been through. Both jobs moved to the split mark, and the file became one fact
+    stated twice with the weaker spelling surviving a `cp -r`. `keyed` is the
+    predicate for "settled" now; `has_zones` is only ever about the file."""
     make_scan(tmp_path, "1-001")
-    assert zn.has_zones("1-001", tmp_path) is False
+    assert zn.keyed("1-001", tmp_path) is False
     zn.save_zones("1-001", [], tmp_path, split="plate")
-    assert zn.has_zones("1-001", tmp_path) is True
+    assert zn.has_zones("1-001", tmp_path) is False
+    assert zn.keyed("1-001", tmp_path) is True
     assert zn.read_zones("1-001", tmp_path) == []
 
 
@@ -259,7 +267,9 @@ def test_a_page_can_be_ruled_any_leaf_kind(tmp_path, kind):
     zn.save_zones("1-049", [], tmp_path, split=kind)
     assert zn.load_splits(tmp_path) == {"1-049": kind}
     assert zn.is_exempt("1-049", tmp_path) is True
-    assert zn.has_zones("1-049", tmp_path) is True
+    # Settled, and holding nothing: the ruling is the record and the store is empty.
+    assert zn.keyed("1-049", tmp_path) is True
+    assert zn.has_zones("1-049", tmp_path) is False
     assert (zn.zone_dir(tmp_path) / f"_{kind}.lst").read_text() \
         == "chukchi-1-049.xml\n"
     assert (zn.zone_dir(tmp_path) / zn.TRAIN_LST).read_text() == ""
@@ -321,7 +331,11 @@ def test_save_can_set_split_and_exempt_together(tmp_path):
 
 
 def test_zone_refs_lists_keyed_pages_in_page_order(tmp_path):
+    """**Keyed text pages, which is what the store holds a file for.** These were
+    ruled plates and so held an empty ALTO apiece; under `exempt => no zones` a
+    ruled leaf holds nothing, so the pages have to carry real zones for this to
+    be a test of the ordering rather than of the exemption."""
     for ref in ("3-005", "1-048", "1-151"):
         make_scan(tmp_path, ref, (2481, 3508) if ref.startswith("3") else (2824, 3897))
-        zn.save_zones(ref, [], tmp_path, split="plate")
+        zn.save_zones(ref, sample()[:1], tmp_path)
     assert zn.zone_refs(tmp_path) == ["1-048", "1-151", "3-005"]
