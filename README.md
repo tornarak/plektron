@@ -42,6 +42,11 @@ uv run harness corpus state
 
 The `harness` was written from the ground up for use & maintenance by agentic AI.
 
+The pipeline is designed to self-improve.
+It becomes more accurate (and easier to use)
+as instructions are fine-tuned
+and additional context ratified by the human in the loop.
+
 Its core interfaces are textual in nature,
 designed to minimize redundant tool-calls
 and hallucination surface.
@@ -69,14 +74,14 @@ either as metadata within a file, or implicitly by its containing directory.
 There are four provenance levels:
 
 - `#mz`: Produced mechanically by a "dumb" algorithm (regex, lookup table, OCR, CNN). Untracked. Regenerated *ad libitum*. Not expected to be stable; softly expected to be idempotent.
-- `#gt`: Produced by a machine (a "dumb" `#mz` algorithm or heavily-restricted LLM subagent) as a reproduction of the "ground truth" of an artifact, such as the text, figures, or paragraph boundaries of a page. Reviewed and ratified by a human comparing it to the original through a CLI, coding agent, and/or `harness` [web interface](#web-interfaces). Tracked. All changes gated by explicit overwrite flags. Expected to be stable, and to converge on a "right answer" with successive review passes.
 - `#llm`: Produced by an LLM explicitly instructed by a human to furnish the relevant information.
+- `#gt`: Produced by a machine (a "dumb" `#mz` algorithm or heavily-restricted LLM subagent) as a reproduction of the "ground truth" of an artifact, such as the text, figures, or paragraph boundaries of a page. Reviewed and ratified by a human comparing it to the original through a CLI, coding agent, and/or `harness` [web interface](#web-interfaces). Tracked. All changes gated by explicit overwrite flags. Expected to be stable, and to converge on a "right answer" with successive review passes.
 - `#ed`: Produced (or individually promoted from `#llm`) by a human editor.
 
 ## The Pipeline
 
 1. Create project. Insert source document[s] into `pdfs/`
-2. Extract images from PDF[s] into `scans/`. It is important that scans are the original resolution. Tooling for this is currently limited but your agent should be able to analyze and extract the pages with typical command-line tools. DJVU, PS, PDF-with-nontrivial-text-layer TBD.
+2. Extract images from PDF[s] into `scans/`. This is the base of everything else so it's worth carefully inspecting and migrating with the `harness scans` tool; ask your agent for a more thorough analysis. DJVU, PS, PDF-with-nontrivial-text-layer TBD.
 3. Ask your agent to parse important metadata pages from the front matter, such as the table of contents, list of figures, bibliography, notes, et al.; these are often specific to the document so the format is quite permissive.
 4. Configure your project's zone types and start annotating the pages in `harness zones edit`. The editor is designed to be fast and frictionless to use; please modify it if it becomes a burden! After ~100 representative pages are labelled you'll have enough data to [train a small neural network](.claude/skills/train-zones/SKILL.md) to classify the remainder. The resulting `#mz` drafts can be approved at a glance, with the push of a button. Figures are annotated and [recognized](.claude/skills/train-figures/SKILL.md) by an identical track.
 5. Generate `#mz` OCR, patch segmenter lacunae with `harness ocr edit`, then [deploy swarms](.claude/skills/rebuild-groundtruth/SKILL.md) of [groundtruth-reader](.claude/agents/groundtruth-reader.md) agents to refine it into adjudicated `#gt`. Difficult lines will be flagged for manual review. As the swarms progress through the document they will build up an internal lexicon and base of domain-knowledge that allow them to make fewer and fewer mistakes as the pass progresses. This is the most stressful, tedious, token- and attention-demanding stage of the pipeline, but if done up to a high standard gets you ~80% of the edition for free.
@@ -91,18 +96,19 @@ As given by `harness corpus state`. The stages are a **ladder** — each rung's 
 the one below it — so a page's `stage` is the furthest rung it has reached, and
 `skipped` names any rung below that it never passed through.
 
-| state       | meaning                                                                         |
-|-------------|---------------------------------------------------------------------------------|
-| `absent`    | lacuna in page list                                                             |
-| `scanned`   | page extracted from source document into its own image                          |
-| `zoned-mz`  | scan zoned by NN                                                                |
-| `zoned-gt`  | human has been through the zones, or ruled the leaf not a text page at all      |
-| `ocr-mz`    | lines detected and recognized within those zones                                |
-| `proposed`  | agent has read the page off the raster into a line-keyed reading proposal       |
-| `decided`   | human has adjudicated that proposal, line by line                               |
-| `ocr-gt`    | adjudicated text has been written back over the source geometry as ground truth |
-| `generated` | rules built a first-draft TEI page out of that ground truth                     |
-| `collated`  | agent reviewed the draft against the scan and the page was signed off           |
+| state          | meaning                                                                             |
+|----------------|-------------------------------------------------------------------------------------|
+| `absent`       | lacuna in page list                                                                 |
+| `scanned`      | page extracted from source document into its own image                              |
+| `zoned-exempt` | page ruled by human as a special case "exempt" from zone track and all downstreams |
+| `zoned-mz`     | scan zoned by NN                                                                    |
+| `zoned-gt`     | human has been through the zones, or ruled the leaf not a text page at all          |
+| `ocr-mz`       | lines detected and recognized within those zones                                    |
+| `proposed`     | agent has read the page off the raster into a line-keyed reading proposal           |
+| `decided`      | human has adjudicated that proposal, line by line                                   |
+| `ocr-gt`       | adjudicated text has been written back over the source geometry as ground truth     |
+| `generated`    | rules built a first-draft TEI page out of that ground truth                         |
+| `collated`     | agent reviewed the draft against the scan and the page was signed off               |
 
 #### Stage Transitions
 
