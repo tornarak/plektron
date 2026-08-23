@@ -411,7 +411,7 @@ def test_a_quote_zone_becomes_a_quote(tmp_path):
 
 
 def test_a_caption_line_is_not_body_text(tmp_path):
-    """The project holds a *human* reading of every caption in `data/readings.md`,
+    """The project holds a *human* reading of every caption in `gt/fig/`,
     and putting the recognizer's copy in the body too would hand the reviewer two
     witnesses of different rank and invite reconciling them."""
     blocks = [("MainZone-P", lines_at(["Body text."]))]

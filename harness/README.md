@@ -28,7 +28,7 @@ the project's rules, `CLAUDE.md` governs; for the character inventory,
 | `tei/` | the collation output, and the system of record for seam state — including `corpus-header.xml`, which is a fragment, not a page | the collation pass, `tei seam --commit` |
 | `mz/tei/` | the generated first-draft page, by rule from `gt/zones/` + `gt/ocr/`. Derived, ignored; **no view over the tei pair**, since naming the two apart is the point | `tei generate` |
 | `entities/` | the encyclopedia: one markdown record per entity under its class directory. The referent of every `@ref`, and the source of the alias vocabulary a rule links by | `entity new --commit`, `entity ratify --commit`, `edition serve` |
-| `data/` | `readings.md` `loi.json` `toc.json` `authorities.json` `runs.json` `alphabet.json` `lexicon_extra.txt` `zones_config.json` `lines_config.json` | by hand |
+| `data/` | `loi.json` `toc.json` `authorities.json` `runs.json` `alphabet.json` `lexicon_extra.txt` `zones_config.json` `lines_config.json` | by hand |
 | `gt/page-img/` | an editor's own version of a whole leaf, `gt/fig-img/`'s doctrine one level up. Resolved by `edition_ui.leaf_source`, **reading view only and ruled leaves only** (any `LEAF_KINDS` member, not `map` alone). **Derived but tracked**, `data/geo/`'s split: `1-361`'s master is ChaiNNer work no script here rebuilds | by hand |
 | `mz/page-img/` | what a leaf is *delivered* as — an anti-aliased linework PNG over a colour JPEG at a third scale, Mixed Raster Content. Derived and gitignored, `mz/tei/`'s disposition; `edition_ui.leaf_layers` returns both or neither | `tools/build_leaf_layers.py` |
 | `data/geo/` | the compiled shape store the atlas draws: watersheds, language areas, coastline, `+ index.json SOURCES.md`. **Derived but tracked** — its sources are outside the repository, so a clone cannot rebuild it | `tools/build_geo.py --commit` |
@@ -341,7 +341,7 @@ carries the comment and a reader of only the element would report the whole
 reviewed corpus as unstamped — a regression dressed as caution.
 
 **`entities.py`** — the encyclopedia store, and the one matcher over it. Parses
-`entities/<class>/<slug>.md` on the `readings.md` pattern (heading-sliced, NFD on
+`entities/<class>/<slug>.md` on the caption store's old pattern (heading-sliced, NFD on
 read, absence is `{}`); an identity is `class:slug` and lives twice, as the
 directory and in the heading, so `check` can compare them — a file's role must not
 live only in its directory name. `auto_forms` is the whole bar for a machine link:
@@ -645,8 +645,8 @@ XIV outright. The names come from `Authorities Quoted`, so telling them apart is
 a lookup in a store a human keyed. Measured over the corpus: 601 references link,
 114 are another author's, 58 refuse and each names the store that declined.
 
-**`figures.py`** — the figure track whole: `gt/fig/` geometry against
-`data/readings.md` text, reconciled by `reconcile()` (`corpus figures`); the
+**`figures.py`** — the figure track whole: `gt/fig/` geometry *and* caption text,
+checked by `reconcile()` (`corpus figures`); the
 store's writes (`save_figs`, `delete_figs`, its own split lists and
 `_rule_exempt.json` under `gt/fig/`, never shared with `gt/zones/`); the checks
 (`validate_fig_page`); and the segmenter quartet (`remark_eval`, `assemble`,
@@ -657,8 +657,9 @@ bindings.
 
 Two caller invariants are this module's alone, and both are silent when broken:
 
-- **A block id's last field is a foreign key** into `data/readings.md`, so
-  `save_figs` preserves ids where `save_zones` re-mints them by position. The mint
+- **A block id's last field keys the caption on it**, so `save_figs` preserves ids
+  where `save_zones` re-mints them by position — and refuses outright a save that
+  would drop a block still holding ratified text. The mint
   floor is the union of the incoming ids and the ids on disk — the batch alone
   cannot see an ordinal a reading still names. Re-minting produces a well-formed
   file with the same counts and the same *set* of suffixes, so `corpus figures`

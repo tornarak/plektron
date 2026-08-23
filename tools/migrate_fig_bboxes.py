@@ -20,9 +20,12 @@ writes down what was already being read, and `migrate_store` refuses outright if
 page's numbers move — that equality is the whole argument, not a hope.
 
 Ids become `fig_PP-NNN_NNN` in geometric order, replacing eScriptorium's
-`eSc_textblock_ca04178c`. `data/readings.md` keys its 395 hand-read captions by a
-block id's last field, so the two files are one fact and move in one commit; a store
-whose ids shifted and a readings file still on the old ones reconciles to nothing.
+`eSc_textblock_ca04178c`. At the time this ran, the 395 hand-read captions lived in
+a markdown file of their own and were keyed by a block id's last field, so the two
+files were one fact and moved in one commit; a store whose ids shifted and a
+readings file still on the old ones reconciled to nothing. **That file has since
+been retired** — the ratified caption now lives on the FigDesc block it keys — so
+this script cannot be re-run even in principle, on top of the reasons above.
 
 Gate it on both sides with `uv run harness corpus figures` — 252 / 414 / 395 / 395 /
 250 with one known unpaired caption (`2-068`, figs. 239 and 240 stacked under two

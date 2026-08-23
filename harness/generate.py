@@ -106,7 +106,7 @@ class Stores:
     much" is exactly the reasoning that produces a wrong optimisation: over 40
     pages of `tei generate --force`, `entities.load` was **68% of the run** — 30
     ms and 482 files, once per page, 19,280 `parse` calls in all — with
-    `figures.readings` re-parsing `data/readings.md` beside it. None of the six
+    `figures.readings` re-reading the caption store beside it. None of the six
     can change during a sweep: `build` writes only `mz/tei/`, which none of them
     reads.
 
@@ -124,7 +124,7 @@ class Stores:
     cited: frozenset[str]
     #: `apparatus.sigla` — the printed (name, volume, short title) table.
     sigla: list[dict]
-    #: `figures.readings` — every hand-read caption, keyed as `readings.md` keys.
+    #: `figures.readings` — every ratified caption, keyed `<ref>|<zone-suffix>`.
     readings: dict
 
 
@@ -369,10 +369,10 @@ def _marker_sites(body: list[str], marker: str) -> list[tuple[int, int]]:
     would be spliced into a comment, where it is both invisible and unparseable.
 
     Figures are skipped for a different reason. A `<figDesc>` is caption text
-    transcluded from `data/readings.md`, a store this file does not author; a note
+    transcluded from `gt/fig/`, a store this file does not author; a note
     anchoring inside one would splice this page's apparatus into another store's
     text. **No caption in the corpus carries a superscript today**, so the guard
-    catches nothing — it is here because `readings.md` is hand-edited and the
+    catches nothing — it is here because the caption is hand-adjudicated and the
     failure would be silent, not because anything has gone wrong.
     """
     out = []
@@ -871,7 +871,7 @@ def page_blocks(ref: str, root: Path = Path(".")
         out = []
         for r in bucket:
             if r.get("in_figdesc"):
-                continue          # the project holds a human reading in readings.md
+                continue          # the project holds a human reading in gt/fig/
             text = text_of.get(r["index"], r.get("text") or "")
             if not text.strip():
                 continue
@@ -1181,11 +1181,11 @@ def build(ref: str, root: Path = Path("."),
                 # The one figure question left, and it is about the store rather
                 # than the page: `1-037`'s caption ends "Fig. 1." and the number
                 # never parsed, while `1-254`'s artwork prints none at all. Two
-                # pages, and neither is fixable from here — `data/readings.md` is
+                # pages, and neither is fixable from here — the caption store is
                 # off the collator's surface — so it asks for a report line.
                 out.append(
-                    '      <!-- figure with no number: data/readings.md parsed '
-                    'none from this caption. Say in your report whether the page '
+                    '      <!-- figure with no number: no number parsed from this '
+                    'caption in gt/fig/. Say in your report whether the page '
                     'prints one -->')
             attr = f' n="{escape(n)}"' if n else ""
             if f["caption"]:

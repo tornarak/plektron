@@ -1,9 +1,9 @@
 """`harness corpus` — the whole-corpus gates, and the census across every store.
 
 An action lands here only if its subject is the corpus as a whole rather than one
-store: `normalize` walks every store, `figures` holds `gt/fig/` geometry and
-`data/readings.md` captions against each other, `state` reports where each page
-has got to across all of them. Not a miscellaneous bin.
+store: `normalize` walks every store, `figures` holds `gt/fig/` against its own
+captions and against the source PDFs' photographs, `state` reports where each
+page has got to across all of them. Not a miscellaneous bin.
 
 `state` is the one that does not gate, and it belongs here for the same reason
 the other two do — no single store can answer it. Every store's own verb already
@@ -50,7 +50,7 @@ def register(cli):
     arg(p, "target", metavar="REF|PATH", nargs=-1, required=False)
     p.help += ("\n\nREF|PATH: a page ref (PP-NNN), scoping to that page's files, "
                "or a file or directory path. Several may be given, and they may "
-               "be mixed: `1-052 data/readings.md` scopes to both. For checking "
+               "be mixed: `1-052 data/authorities.json` scopes to both. For checking "
                "or converting one just-authored file without touching the "
                "other 280+.")
     add_all(p, "every file the corpus globs reach")
@@ -92,10 +92,9 @@ def register(cli):
              "census would be a false one")
 
     action(g, "figures", run_figures,
-           help="reconcile the figure track — gt/fig/ zone geometry "
-           "against data/readings.md caption text, in both directions. "
-           "`missing` (a zone whose caption was never read) and `orphan` (a "
-           "reading whose zone is gone) must both be empty; a total that merely "
+           help="reconcile the figure track — gt/fig/ against itself and "
+           "against the source PDF's own photographs. `missing` (a FigDesc "
+           "block carrying no caption text) must be empty; a total that merely "
            "matches is not coverage, which is how two absent pages once went "
            "unnoticed by cancelling against two zone-only ones")
 
@@ -141,7 +140,7 @@ def _targets(a) -> list[Path] | None:
     path. **A relative path is taken against `--root`, not the cwd**, which is a
     change from the `--path` flag it replaces and the only coherent reading of a
     mixed list: a ref means "this page of this corpus" and is root-relative by
-    construction, so having `1-052` and `data/readings.md` resolve against
+    construction, so having `1-052` and `data/authorities.json` resolve against
     different bases in one argument list would be a trap. The two agree wherever
     `--root` is left at its default, which is everywhere outside the tests.
 
@@ -296,7 +295,7 @@ def run_figures(a) -> int:
     # Exit non-zero on a real reconciliation failure, so this can gate. The
     # counts alone never decide it: 250 pages was once the expected total *and*
     # wrong in two compensating directions at the same time.
-    return 1 if (rep["missing"] or rep["orphan"]) else 0
+    return 1 if rep["missing"] else 0
 
 
 def run_provenance(a) -> int:

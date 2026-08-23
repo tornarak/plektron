@@ -9,7 +9,7 @@ a check of that claim rather than an aspiration — a page whose numbers move me
 the claim was wrong, and the whole run refuses.
 
 The other half is the readings key. Block ids are re-minted `fig_PP-NNN_NNN`, and
-`data/readings.md` keys 395 hand-read captions by a block id's last field, so the
+the separate readings file keyed 395 hand-read captions by a block id's last field, so the
 two files move together or neither does. The store and the readings are one fact
 in two files; a rewrite of either alone reconciles to nothing.
 """
@@ -135,9 +135,22 @@ def test_a_commit_moves_both_files_together(root):
 
 
 def test_the_page_reconciles_after(root):
+    """`missing` alone now, and it is not empty — which is the honest result.
+
+    `orphan` meant "a reading whose zone is gone" and cannot happen once the
+    caption lives on the block: `readings()` reads the very blocks it would be
+    compared against, so `have ⊆ ids` by construction. It is gone rather than
+    reporting an empty list forever.
+
+    What is left is `1-037|002`, the migrated FigDesc, carrying no text — because
+    this fixture's caption is in the migration's own `READINGS` string and the
+    migration moves *keys*, never text into the store. `fig restore` is what fills
+    a block, and a page that has not had it is exactly what `missing` is for.
+    """
     F.migrate_store(root, commit=True)
     rec = F.reconcile(root)
-    assert rec["missing"] == [] and rec["orphan"] == ["2-068|44f33841"]
+    assert "orphan" not in rec
+    assert rec["missing"] == ["1-037|002"]
 
 
 def test_geometry_drift_refuses_the_whole_run(root):
@@ -159,22 +172,3 @@ def test_geometry_drift_refuses_the_whole_run(root):
     assert out["geometry_drift"] == ["1-037"]
     assert out["committed"] is False
     assert (root / "gt/fig/chukchi-1-037.xml").read_bytes() == before
-
-
-def test_a_reading_naming_no_zone_survives_untouched_for_reconcile_to_name(root):
-    """An orphan reading is **not** this pass's to catch, and it does not stop it.
-
-    Its header maps to nothing, so it is left exactly as written and the counts
-    still agree — the migration only ever claims that the headers it *could* move
-    it did move. Naming orphans is `reconcile`'s job, it already does it in both
-    directions, and duplicating that check here would put one fact in two places
-    while making the migration refuse over a condition it did not create.
-    """
-    (root / "data/readings.md").write_text(
-        READINGS + "\n## 1-037|deadbeef\nA caption for nothing.\n",
-        encoding="utf-8")
-    out = F.migrate_store(root, commit=True)
-    assert out["committed"] is True
-    assert out["headers_rewritten"] == out["captions"] == 1
-    assert "## 1-037|deadbeef" in (root / "data/readings.md").read_text()
-    assert F.reconcile(root)["orphan"] == ["1-037|deadbeef", "2-068|44f33841"]

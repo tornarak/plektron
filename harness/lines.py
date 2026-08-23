@@ -539,7 +539,7 @@ def mark_figure_overlap(recs: list[dict], ref: str, root: Path = Path(".")) -> l
 
       * `in_figdesc` — the line is a **caption**, ≥`FIGDESC_INSIDE` inside a
         `GraphicZone-FigDesc`. The project already holds a human reading of every
-        caption in `data/readings.md`, and `harness tei context` hands it to collation
+        caption on its own block in `gt/fig/`, and `harness tei context` hands it to collation
         from there, so a line segment over one is a redundant second witness —
         machine-rank, on the 812 pages not yet keyed by hand.
       * `in_graphic` — the line lies inside a plain `GraphicZone`. **Flagged, never

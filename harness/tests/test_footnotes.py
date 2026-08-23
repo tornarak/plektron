@@ -261,7 +261,7 @@ def test_normalize_scopes_the_check_to_stores_holding_running_text(tmp_path):
     Firing there would be pure noise in a bucket meant to be read."""
     from harness.normalize import _footnote_hits
     for rel in ("gt/fig/chukchi-1-123.xml", "gt/seg/chukchi-1-123.xml",
-                "data/authorities.json", "data/readings.md"):
+                "data/authorities.json", "data/loi.json"):
         p = tmp_path / rel
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text("1 See Chapter XIV.", encoding="utf-8")

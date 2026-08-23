@@ -395,9 +395,9 @@ NO_ALL_OK = {
         "command someone types. `ocr clean` has --all because it deletes only "
         "derived output; this deletes authored work",
     ("fig", "delete"):
-        "`zones delete`'s reason, and one more: withdrawing a figure page orphans "
-        "the hand-read captions in data/readings.md that name its blocks, so a "
-        "corpus form would strand all 395 of them in one keystroke",
+        "`zones delete`'s reason, and one more: withdrawing a figure page takes "
+        "the ratified captions on its blocks with it, so a corpus form would "
+        "strand all 395 of them in one keystroke",
     ("tei", "state"):
         "`tei ledger` IS the corpus form, and a second spelling of one report is "
         "how two answers to one question start to drift",

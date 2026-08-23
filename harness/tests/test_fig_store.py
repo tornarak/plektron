@@ -3,7 +3,7 @@
 `gt/fig/` and `gt/zones/` look like the same store twice: region-only ALTO, a
 split list, a rule-exemption file, an atomic save with a `.prev` and a journal.
 They differ in exactly one place, and it is the place a copy-paste would land
-wrong — **a figure block's id is a foreign key**. `data/readings.md` files 395
+wrong — **a figure block's id keys the caption on it**. The store files 395
 hand-read captions under the last field of a block id, so `save_figs` preserves
 ids where `save_zones` re-mints them positionally.
 

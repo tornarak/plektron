@@ -240,7 +240,7 @@ paying 423 questions for it.
 
     Free markdown, authored English, CC BY.
 
-Parsed on the `data/readings.md` precedent: heading-sliced, **NFD on read**,
+Parsed on the caption store's precedent: heading-sliced, **NFD on read**,
 absence is `{}`. NFD matters more here than tidiness — an alias the store holds
 precomposed silently fails to match a page that holds it decomposed, and a
 silent miss is the failure class the project is organised against.
@@ -930,7 +930,7 @@ the index listed it as `1-361` with no tag.
 
 The objection that rule answered was to *inference* — deciding what a page is
 from evidence no store carries, which on this book would mean reading the
-plate/text-figure split out of prose in a `readings.md` `@note`. That objection
+plate/text-figure split out of prose in a caption's adjudication note. That objection
 stands and the kinds do not violate it. A kind is **declared**, not derived: it
 is written by a human in `zones edit` at the moment they are looking at the
 raster, which is the only authority entitled to make the call. Nothing proposes

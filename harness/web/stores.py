@@ -456,17 +456,19 @@ def _fig_layout(ref: str, root: str, _key: bytes) -> dict:
 def fig_layout(ref: str, root: Path) -> dict:
     """One page's figures and where they sat in the measure.
 
-    Three files can change this answer and all three are in the key: the figure
-    geometry, the zones the column is read from, and `data/readings.md` — the
-    captions, which decide the fold and therefore which boxes belong to which
-    figure. `stamp` folds a missing file in as absent, so a page with no figures
-    is a cheap and correct empty rather than a special case.
+    Two files can change this answer and both are in the key: the figure store —
+    geometry *and* caption, the captions deciding the fold and therefore which
+    boxes belong to which figure — and the zones the column is read from. It was
+    three while the caption text lived in a file of its own; that file is gone and
+    the third entry with it, which is the one kind of key change that is safe to
+    make: an input folded into one already named. `stamp` folds a missing file in
+    as absent, so a page with no figures is a cheap and correct empty rather than
+    a special case.
     """
     root = Path(root)
     return _fig_layout(ref, str(root), stamp([
         root / "gt" / "fig" / f"chukchi-{ref}.xml",
         root / "gt" / "zones" / f"chukchi-{ref}.xml",
-        root / "data" / "readings.md",
     ]))
 
 

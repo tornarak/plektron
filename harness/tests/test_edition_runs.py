@@ -31,15 +31,11 @@ def _fig(root: Path, ref: str, caption: str) -> None:
     _fig_alto(root, ref, [
         (f"fig_{ref}_001", "GraphicZone", 400, 600, 1800, 900),
         (f"fig_{ref}_002", "GraphicZone-FigDesc", 2250, 600, 90, 460)])
-    # Appended rather than replacing: a fixture builds several leaves and each
-    # call must keep the captions the previous ones wrote.
-    doc = {f"{ref}|002": caption}
-    old = root / "data" / "readings.md"
-    if old.exists():
-        for block in old.read_text(encoding="utf-8").split("## ")[1:]:
-            k, _, v = block.partition("\n")
-            doc.setdefault(k.strip(), v.strip())
-    _readings(root, doc)
+    # No accumulation needed: a caption is written into its own leaf's ALTO, so
+    # each call touches one page and leaves the rest alone. The single-file
+    # caption store had to be re-read and re-written whole on every call, which is
+    # what this dance was.
+    _readings(root, {f"{ref}|002": caption})
 
 
 def _only(root: Path, keep: str) -> Path:
@@ -238,12 +234,15 @@ def test_a_resolvable_figure_number_links_and_an_ambiguous_one_does_not(
     _fig_alto(tmp_path, "1-081", [
         ("fig_1-081_001", "GraphicZone", 400, 600, 1800, 900),
         ("fig_1-081_002", "GraphicZone-FigDesc", 2250, 600, 90, 460)])
-    _readings(tmp_path, {"1-049|002": "Fig. 1. Sledge.",
-                         "1-081|002": "Fig. 1. Another sledge.",
-                         "1-050|002": "Fig. 9. Harpoon."})
+    # The geometry first, for all three: a caption lives on the block it captions,
+    # so the block has to exist before there is anywhere to put the text. The
+    # single-file store let these run in either order.
     _fig_alto(tmp_path, "1-050", [
         ("fig_1-050_001", "GraphicZone", 400, 600, 1800, 900),
         ("fig_1-050_002", "GraphicZone-FigDesc", 2250, 600, 90, 460)])
+    _readings(tmp_path, {"1-049|002": "Fig. 1. Sledge.",
+                         "1-081|002": "Fig. 1. Another sledge.",
+                         "1-050|002": "Fig. 9. Harpoon."})
     _write(tmp_path, "data/loi.json", json.dumps({
         "source": {"refs": ["1-014"]},
         "figures": [

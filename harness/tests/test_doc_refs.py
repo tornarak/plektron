@@ -63,7 +63,7 @@ DOCS = [
 # A repo-relative path inside backticks: it must contain a directory separator.
 #
 # A bare `normalize.py` in prose names the *module*, not a file at the repo root,
-# and `readings.md` names the store rather than a path — matching those would fill
+# and a bare store name is not a path — matching those would fill
 # the exemption list with entries that are not exemptions, which is how a check
 # stops meaning anything. What this catches is the form a reader would actually
 # follow: a path they could open.
@@ -119,6 +119,11 @@ EXPECTED_ABSENT = {
     # Written by `ocr queue` and cleared by the next one, so it exists only while
     # a batch is out. A checkout that has it is mid-dispatch, not complete.
     "review/_queue.txt",
+    # The caption pass's derived images, `paths.DERIVED` under the `captions`
+    # pseudo-ref: built by `fig sheets`/`fig zoom` when the pass runs and removed
+    # with it. Absent between passes, which is the ordinary state.
+    "review/captions/sheets",
+    "review/captions/zoom",
     # Deleted by the rebuild sweep and not yet re-read. Both pages were keyed in
     # eScriptorium, so their ALTO carried that tool's zone vocabulary and their
     # readings predate the current pipeline; `keying_spec.md` still cites them as

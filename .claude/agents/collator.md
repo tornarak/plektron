@@ -567,15 +567,15 @@ most confidently.
 Two things remain yours, and neither is an edit to the figure:
 
 - **A caption that is wrong** is a finding for your report. Do not retype a
-  `<figDesc>`: it lives in `data/readings.md`, which is off your surface, and the
-  fix belongs there.
+  `<figDesc>`: it lives on the caption's own block in `gt/fig/`, which is off your
+  surface, and the fix belongs there — `harness fig review`, against the scan.
 - **`<!-- figure with no number: … -->`** means the caption store parsed no `@n`.
   Say in your report whether the page prints one. `1-037` does — inside the caption
   text — and `1-254`'s artwork does not; both are questions about the store rather
   than about your page, and you answer them by saying what the page shows.
 
 **Never write `@facs` on a figure.** Which zones a figure occupies is the build's
-join through `data/readings.md`, and it is not 1:1 — a box can hold two lettered
+join through `gt/fig/`, and it is not 1:1 — a box can hold two lettered
 figures, and several boxes routinely tile one irregular figure.
 
 ---

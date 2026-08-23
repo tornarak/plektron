@@ -236,7 +236,7 @@ def _fig_state(ref: str, root: Path, cfg: dict) -> dict:
         "figs": figs,
         "fig_proposal": proposal,
         # An `mz` proposal's ids are the machine's and mean nothing to
-        # `data/readings.md`, so they are dropped rather than carried into a save
+        # the caption store, so they are dropped rather than carried into a save
         # where they would look like keys. `save_figs` mints real ones.
         "fig_ids": "" if proposal else "gt",
         "fig_exempt": exempt,
@@ -476,7 +476,7 @@ def _save_figs(payload: dict, ref: str, root: Path, cfg: dict) -> dict:
              "x1": min(w, x1), "y1": min(h, y1)}
         # An id survives only when it came from `gt/fig/`. A machine proposal's
         # ids are the segmenter's and key nothing, so carrying them into a save
-        # would put a string shaped like a `data/readings.md` key into the store
+        # would put a string shaped like a caption key into the store
         # with no reading behind it.
         if f.get("id") and payload.get("fig_ids") == "gt":
             b["id"] = f["id"]

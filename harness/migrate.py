@@ -36,7 +36,7 @@ set, the `OtherTag/@LABEL` multiset, and every box's width and height. All three
 are invariant under translation by definition, so any drift in them is a defect
 rather than a difference.
 
-IDS ARE NEVER RE-MINTED. `data/readings.md` keys 395 captions by the last field of
+IDS ARE NEVER RE-MINTED. A block id's last field keys the caption on it, and
 a `gt/fig/` block id. And `gt/lines/` correction ids encode the y they were made at
 (`corr_PP-NNN-671`), which this deliberately leaves alone: the id is a key, not a
 measurement, and re-minting it would break the id-keyed carry-forward in

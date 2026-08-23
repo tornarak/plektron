@@ -408,22 +408,27 @@ def test_figure_boxes_is_keyed_on_that_leafs_own_file(tmp_path, monkeypatch):
     assert stores.figure_boxes("1-030", tmp_path) == before, "the key is not narrow"
 
 
-def test_fig_layout_is_keyed_on_all_three_files(tmp_path, monkeypatch):
-    """The docstring names the geometry, the zones and `data/readings.md`, and
-    the third is the one an obvious key would miss: the captions decide the fold
-    and therefore which boxes belong to which figure, so a corrected reading
-    moves the placement without touching either ALTO."""
+def test_fig_layout_is_keyed_on_both_files(tmp_path, monkeypatch):
+    """Geometry and zones, and the captions ride in on the first of them.
+
+    This named three files while the caption text lived in `data/readings.md`,
+    and the third was the one an obvious key would miss: the captions decide the
+    fold and therefore which boxes belong to which figure, so a corrected reading
+    moves the placement without touching either ALTO. That is still true — the
+    caption now lives *on* the FigDesc block, so an edit to it is an edit to
+    `gt/fig/`, and the key that would have missed it is the one it is folded
+    into. The last pin is that property: a caption edited in place moves the
+    answer.
+    """
     files = [tmp_path / "gt" / "fig" / "chukchi-1-030.xml",
-             tmp_path / "gt" / "zones" / "chukchi-1-030.xml",
-             tmp_path / "data" / "readings.md"]
+             tmp_path / "gt" / "zones" / "chukchi-1-030.xml"]
     monkeypatch.setattr("harness.figures.layout", Probe(lambda: files))
 
     pins(lambda: stores.fig_layout("1-030", tmp_path),
          ("gt/fig/", lambda: write(files[0], "<alto/>")),
          ("gt/zones/", lambda: write(files[1], "<alto/>")),
-         ("data/readings.md", lambda: write(files[2], "# readings\n")),
-         ("an edited caption in data/readings.md",
-          lambda: write(files[2], "# readings\n\nFig. 87\n")))
+         ("an edited caption, which is an edit to gt/fig/",
+          lambda: write(files[0], "<alto><!-- Fig. 87 --></alto>")))
 
 
 def test_fig_layout_reads_a_page_with_no_figures_as_an_empty(tmp_path, monkeypatch):
@@ -431,8 +436,7 @@ def test_fig_layout_reads_a_page_with_no_figures_as_an_empty(tmp_path, monkeypat
     cheap and correct empty rather than a special case" — and the file arriving
     later still moves the answer, which is what makes the absence safe to key."""
     files = [tmp_path / "gt" / "fig" / "chukchi-1-030.xml",
-             tmp_path / "gt" / "zones" / "chukchi-1-030.xml",
-             tmp_path / "data" / "readings.md"]
+             tmp_path / "gt" / "zones" / "chukchi-1-030.xml"]
     monkeypatch.setattr("harness.figures.layout", Probe(lambda: files))
 
     pins(lambda: stores.fig_layout("1-030", tmp_path),

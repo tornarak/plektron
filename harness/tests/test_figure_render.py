@@ -4,7 +4,7 @@ Three things are held here.
 
 **The caption reaches the reader.** `el_figure` used to build a `[fig. N]` chip
 and never call `inline`, so the `<figDesc>` the generator had gone to
-`data/readings.md` to fetch was dropped on the floor of every page.
+the caption store to fetch was dropped on the floor of every page.
 
 **No geometry goes into the rendered HTML.** `stores.render` is cached on the
 TEI file's bytes alone, so a box baked into that HTML would let a corrected
@@ -19,6 +19,8 @@ which reads as correct and is invisible.
 from __future__ import annotations
 
 from pathlib import Path
+
+from conftest import write_captions
 
 ALTO_NS = "http://www.loc.gov/standards/alto/ns-v4#"
 TEI_NS = "http://www.tei-c.org/ns/1.0"
@@ -57,9 +59,7 @@ def _zones_alto(tmp_path: Path, ref: str, x0: int, x1: int) -> Path:
 
 
 def _readings(tmp_path: Path, blocks: dict[str, str]) -> None:
-    tmp_path.joinpath("data").mkdir(parents=True, exist_ok=True)
-    tmp_path.joinpath("data", "readings.md").write_text(
-        "".join(f"## {k}\n{v}\n\n" for k, v in blocks.items()), encoding="utf-8")
+    write_captions(tmp_path, blocks)
 
 
 def _tei(tmp_path: Path, ref: str, body: str) -> Path:

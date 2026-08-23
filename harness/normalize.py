@@ -3,7 +3,7 @@
 `keying_spec.md` section 1 has declared **NFD, corpus-wide** with a verification
 one-liner for as long as the spec has existed, and nothing ever ran it. This is that
 one-liner promoted to something a pre-commit hook can call, which matters because the
-drift it was written to catch had already happened: `data/readings.md` held both
+drift it was written to catch had already happened: the caption store held both
 encodings of the same glyph (17 precomposed `ê` against 13 decomposed, and similarly
 for `ñ` and `ä`), so exact comparison between it and any other store silently failed.
 
@@ -54,8 +54,8 @@ a glyph identity on its own authority. The gate names the occurrence; a human ke
 The second rule is *unscoped* by necessity, and that needs saying because the ASCII
 policy is not. Under the Tier-1-scoped policy the four curly quotes are legitimate in
 English prose, and U+2019-inside-Tier-1 is enforced against the TEI by
-`validate.LOOKALIKE_GREPS`, where the language is actually known. But `data/readings.md`
-carries no language markup at all, so nothing here can tell a caption's English from
+`validate.LOOKALIKE_GREPS`, where the language is actually known. But a caption in
+`gt/fig/` carries no language markup at all, so nothing here can tell its English from
 its Chukchee. What survives that limitation is the set of characters with no
 legitimate use in *either*: the confusable modifier letters, and `g`+U+0307 for
 `g`+U+0323. Those are reportable wherever they sit.
@@ -88,7 +88,7 @@ from .proposal_check import key_order
 # here and the one in the spec are the same list, and neither may narrow without the
 # other.
 #
-# A **run** of `!`/`?` is excluded, and that is not fussiness: `data/readings.md` writes
+# A **run** of `!`/`?` is excluded, and that is not fussiness: a caption writes
 # an unknown figure number as `(??/???? ??/????)`, where the space before each `??` is
 # notation and not typesetting. Widening the class without the lookahead made
 # `--commit` willing to rewrite that file's placeholders — a gate corrupting a store it
@@ -255,7 +255,7 @@ SCOPE_GLOBS = ("gt/ocr/*.xml", "gt/fig/*.xml", "tei/*.xml",
                # NFD arm sweeps the file whole and the two prose arms skip the
                # table rows. See `_is_entity`.
                "entities/*/*.md",
-               "data/readings.md", "data/*.json", "data/lexicon_extra.txt",
+               "data/*.json", "data/lexicon_extra.txt",
                # decision.json is an editorial act — the adjudicated record that
                # `restore` actually writes to gt/ocr/ — so it stays in the default
                # sweep alongside the rest of the corpus. `save_decisions` normalizes
@@ -268,10 +268,10 @@ SCOPE_GLOBS = ("gt/ocr/*.xml", "gt/fig/*.xml", "tei/*.xml",
                # **Both, and the proposal is not optional here the way a line
                # proposal is.** That one reaches `gt/ocr/` only through a decision,
                # and `save_decisions` folds on the way; this one is *compared byte
-               # for byte against `data/readings.md`* by `fig witness`, which is the
-               # whole reason it exists, and a comparison between two normal forms
-               # of the same glyph is the exact drift this module was written for —
-               # `readings.md` itself once held 17 precomposed `ê` against 13
+               # for byte against the caption in `gt/fig/`* by `fig witness`, which
+               # is the whole reason it exists, and a comparison between two normal
+               # forms of the same glyph is the exact drift this module was written
+               # for — the caption store once held 17 precomposed `ê` against 13
                # decomposed. It was left out first on the reasoning that `proposal
                # fix` folds the file. It does not: `fix` swaps one mark against
                # `resolved` and touches nothing else, so the reading sat outside
@@ -448,7 +448,7 @@ def _quote_hits(p: Path, root: Path) -> list[dict]:
     is directly actionable (`harness ocr zoom PP-NNN --only <index>`) rather than
     requiring a second lookup to translate the id into something zoomable.
 
-    `note`/`resolved` fields and `@note:`-prefixed `readings.md` lines are
+    `note`/`resolved` fields and an entity file's `@note:` lines are
     **not scanned at all**, not just excused on a miss: those are editorial
     commentary *about* the corpus, not print-reproduction content, and can
     legitimately quote something verbatim that a curly conversion would
@@ -485,7 +485,7 @@ def _quote_hits(p: Path, root: Path) -> list[dict]:
                     hits.append({"path": rel, "trap": STRAIGHT_QUOTE_TRAP,
                                 "line": i, "token": _token_at(content, pos)})
                     start = pos + 1
-    elif p.name == "readings.md" or _is_entity(p):
+    elif _is_entity(p):
         for lineno, line in enumerate(p.read_text(encoding="utf-8").splitlines(), start=1):
             if line.startswith("@note") or line.startswith("|"):
                 continue
@@ -508,7 +508,7 @@ _APOSTROPHE_TRAPS = {
 def _apostrophe_hits(p: Path, root: Path) -> list[dict]:
     """Every straight U+0027 in *authored content*, same content-scoping as
     `_quote_hits` (JSON `text` fields, `ocr`/`gt/ocr` `CONTENT` attributes,
-    non-`@note` `readings.md` lines) but the per-occurrence judgement is
+    non-`@note` entity lines) but the per-occurrence judgement is
     `detectors.apostrophe_flags`, which names the kind: an English token
     wants the curly ’ the book sets, a Tier-1 token has no licensed position
     for the codepoint at all (§2.1), so both are defects. A corpus-wide check
@@ -539,7 +539,7 @@ def _apostrophe_hits(p: Path, root: Path) -> list[dict]:
                 for h in apostrophe_flags(content):
                     hits.append({"path": rel, "trap": _APOSTROPHE_TRAPS[h["kind"]],
                                 "line": i, "token": h["token"]})
-    elif p.name == "readings.md" or _is_entity(p):
+    elif _is_entity(p):
         for lineno, line in enumerate(p.read_text(encoding="utf-8").splitlines(), start=1):
             if line.startswith("@note") or line.startswith("|"):
                 continue
@@ -631,8 +631,8 @@ def _filter_scoped(universe: list[Path], paths: list[Path]) -> list[Path]:
     """Narrow `universe` to files matching `paths` — each entry either a file
     (exact match) or a directory (every scoped file resolving underneath it).
 
-    Mixed lists work: `--path review/1-052 --path data/readings.md` scopes to
-    both a whole page directory and one unrelated file. Either way this only
+    Mixed lists work: `--path review/1-052 --path data/authorities.json` scopes
+    to both a whole page directory and one unrelated file. Either way this only
     narrows the corpus glob, never widens it — a directory outside `SCOPE_GLOBS`
     (or with nothing scoped inside it) simply contributes no files.
     """

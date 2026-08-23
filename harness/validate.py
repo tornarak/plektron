@@ -1697,7 +1697,7 @@ def _rule_figures(root, q, ctx, r: Report) -> None:
                 f"<figure n='{n}'> — no caption on this page prints that "
                 f"number (this page sets {sorted(printed) or 'none'})")
         if fig.get("facs") is not None:
-            # Geometry is the build's join, through `data/readings.md`. A
+            # Geometry is the build's join, through `gt/fig/`. A
             # zone id here is the pass placing a figure, which is not its
             # competence and not checkable from the text it can see.
             r.errors.append(

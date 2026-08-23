@@ -19,7 +19,7 @@ in for an unread glyph.
   assembly.** `docs/apparatus.md` describes a per-entry reconciliation — every LoI
   text-figure located on a page, no caption numbering outside the LoI, all 35
   plates placed — and it is a hand check living in no code: `figures.reconcile`
-  opens `gt/fig/` and `data/readings.md` only, while `harness/VERBS.md` lists
+  opens `gt/fig/` only, while `harness/VERBS.md` lists
   `data/loi.json` under `corpus figures`' **Reads**, which is currently untrue.
   Building it was scoped and deferred rather than attempted, and the reason is
   sequencing: an LoI entry says which *folio* a figure falls on, so checking it

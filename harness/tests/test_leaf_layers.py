@@ -22,6 +22,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from conftest import write_captions
+
 from harness import edition_ui as ui
 
 
@@ -63,9 +65,10 @@ def _raster(root: Path, ref: str) -> None:
 
 
 def _readings(root: Path) -> None:
-    p = root / "data" / "readings.md"
-    p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text("", encoding="utf-8")
+    """No captions. The store says that by holding no FigDesc text, which a page
+    with no figure ALTO already does — so this is a no-op kept for its call
+    sites, where it names the precondition the test depends on."""
+    write_captions(root, {})
 
 
 def _app(root):

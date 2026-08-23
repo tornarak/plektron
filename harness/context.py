@@ -3,7 +3,7 @@
 Everything here is deterministic. The model consumes this; it never re-derives it.
 Repo layout assumed:  scans/chukchi-PP-NNN.png   gt/fig/chukchi-PP-NNN.xml
                       ocr/chukchi-PP-NNN.xml     tei/chukchi-PP-NNN.xml
-                      data/toc.json              data/readings.md
+                      data/toc.json              gt/fig/ (captions)
                       data/lexicon_extra.txt
 
 PAGE REFS. A page is identified by its **PP-NNN** ref — part, and scan index
@@ -164,7 +164,7 @@ def _figures_on_page(ref: str, root: Path = Path(".")) -> list[dict]:
     **`n` is the book's identity, not the store's.** The pass anchors
     `<figure n="87"/>` at the textual reference it is already reading in English
     prose, and the build joins that number to the zones through
-    `data/readings.md`. Nothing about geometry reaches the model, which is the
+    `gt/fig/`. Nothing about geometry reaches the model, which is the
     whole point: **placing a figure is not the collator's competence**. Its
     competence is finding where the prose says "(Fig. 87, a)".
 
@@ -193,12 +193,16 @@ def _figures_on_page(ref: str, root: Path = Path(".")) -> list[dict]:
     numbering per plate and are full-page artwork with no body text, so they
     reach this list and are never referenced from it.
 
-    `caption` comes from **`data/readings.md`**, not from the ALTO. `gt/fig/`
-    carries no `TextLine` — the lines were stripped, because the exported line
-    segmentation dropped whole printed lines. Reading `String/@CONTENT` here used
-    to be the source, and after the strip it returned `""` for every zone on
-    every page: the model was handed figures with no captions and nothing said
-    so.
+    `caption` comes from `gt/fig/` — the adjudicated text on the FigDesc block
+    itself, through `paired`. It used to come from a separate markdown file, which was
+    the caption store while the ALTO carried geometry alone; the two later held
+    58 disagreeing captions with nothing reporting it, and the markdown is gone.
+
+    **The failure this passage used to describe is still the one to fear.** When
+    the lines were stripped out of the ALTO, `String/@CONTENT` went on being read
+    and returned `""` for every zone on every page: the model was handed figures
+    with no captions and nothing said so. An empty caption here is `3-006` and
+    `3-007`, artwork the book captions nowhere — two pages, not 252.
     """
     from .figures import paired
     out, seen = [], set()
@@ -301,7 +305,7 @@ def _ocr_lines(ocr_path: Path, root: Path = Path("."),
 
     A caption line stays, and the difference is worth keeping straight: a caption
     is excluded from the *draft* only, because the project already has a human
-    reading of it in `data/readings.md` and showing the model two witnesses of
+    reading of it in `gt/fig/` and showing the model two witnesses of
     different rank invites it to reconcile them. It remains citable, so it remains
     here.
 
@@ -629,7 +633,7 @@ def build_context(ref: str, root: Path = Path("."),
     from .lines import page_lines
     recs = page_lines(ocr, root)
     # A caption is text the project already has a *human* reading of
-    # (`data/readings.md`, all 395), and it reaches the model below as
+    # (`gt/fig/`, all 395), and it reaches the model below as
     # `figures_on_page[].text`. Leaving the line segment in the draft too would
     # hand the model the same caption twice, from two witnesses of different rank,
     # and invite it to reconcile them. Marked lines are excluded from the draft

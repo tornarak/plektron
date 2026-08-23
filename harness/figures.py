@@ -1,22 +1,30 @@
-"""The figure-caption track: `gt/fig/` for geometry, `data/readings.md` for text.
+"""The figure-caption track: `gt/fig/` for the geometry **and** the text.
 
-**The two are separate stores and neither substitutes for the other.** The 252
-figure ALTOs in `gt/fig/` carry `GraphicZone` blocks (the images) and
-`GraphicZone-FigDesc` blocks (where a caption sits) — 414 and 395 of them
-respectively — and **no `TextLine` at all**: every line was stripped, because the
-exported line segmentation dropped whole printed lines and a line-level witness
-in the ALTO would have silently disagreed with the readings. So the caption text
-lives only in `data/readings.md`, one block per FigDesc zone, keyed
-`<ref>|<zone-id suffix>` and read by hand off the 300 dpi scans.
+**One store.** The 252 figure ALTOs carry `GraphicZone` blocks (the images) and
+`GraphicZone-FigDesc` blocks (where a caption sits) — 414 and 395 of them — and
+each FigDesc block carries the adjudicated caption as one `String` per printed
+line inside one `TextLine`. `readings()` reads them back; `save_caption_text`
+writes them, out of `review/captions/decision.json` over `proposal.json`.
 
-Anything that wants caption text must go through `readings()`. Reading
-`String/@CONTENT` out of `gt/fig/` returns the empty string for every zone on every
-page — not an error, just nothing, which is the worst possible failure here.
+**It was two stores, and that is worth remembering rather than deleting.** The
+text lived in `data/readings.md`, keyed `<ref>|<zone-id suffix>`, because the
+exported line segmentation had dropped whole printed lines and a line-level
+witness in the ALTO would have silently disagreed with the readings. The blind
+re-read pass settled that, `fig restore` moved the ratified text into the block
+that carries the caption's own geometry — and the markdown was left in place,
+still being read by every consumer. The two then drifted: **58 of 395 captions
+disagreed**, the store holding the adjudication and the edition serving the
+markdown, with nothing anywhere reporting it. The file is gone and the key is now
+the block id, which is the same key filed where the thing it names lives.
 
-There is no longer a keyed/unkeyed boundary. All 395 captions in
-`data/readings.md` are hand-read, so the old `KEYED_COUNT = 50` marker is gone;
-`gt/fig/` and `data/readings.md` reconcile 1:1 in both directions, and that
-reconciliation is the check worth running — `reconcile()` below.
+So `String/@CONTENT` out of `gt/fig/` is the caption, and `block_text` is how to
+read it — a list of printed lines, never joined here, because 31 of the 196
+multi-line captions break on a hyphen and only some of those hyphens are the
+book's.
+
+A caption's reasoning is **not** in this store. What the reader said about a
+caption lives in `review/captions/proposal.json` and `decision.json`, which is
+also where the two readings of it can still be compared.
 
 Zone types are read from `OtherTag/@LABEL`, never from the tag ID. The IDs are
 per-export (`BT55`/`BT56` in one export, `BT68`/`BT69` in the next) and code
@@ -93,7 +101,7 @@ UNACCOUNTED_PAD = 20
 
 
 def zone_suffix(block_id: str) -> str:
-    """The part of a block id that keys `data/readings.md`.
+    """The part of a block id the caption on it is filed under.
 
     Two id schemes exist and this reads both: eScriptorium's
     `eSc_textblock_ca04178c` and this project's `fig_1-037_002`. Taking the last
@@ -1181,7 +1189,7 @@ def migrate_page(ref: str, root: Path = Path("."),
 
     Returns `{ref, blocks, remap, before, after}` — `blocks` ready for `build_alto`,
     `remap` the old-to-new suffix map for the page's **FigDesc** blocks alone, since
-    those are the ones `data/readings.md` keys by, and `before`/`after` the geometry
+    those are the ones a caption is keyed by, and `before`/`after` the geometry
     as a sorted tuple so the caller can assert they match.
 
     **The reduction changes no reader's answer, by construction.** Every consumer of
@@ -1415,7 +1423,7 @@ def save_figs(ref: str, blocks: list[dict], root: Path = Path("."),
 
     **An id that arrives is kept, and that is the whole reason this is not
     `save_zones` with a different directory.** A block id's last field is the key
-    `data/readings.md` files its caption text under, so re-minting by position — as
+    its caption text is filed under, so re-minting by position — as
     the zone store does, harmlessly, because nothing points at a zone id — would
     re-point every caption below an inserted figure at the wrong picture. It would
     do so silently: the file stays well-formed, the counts still reconcile, and
@@ -1552,10 +1560,11 @@ def delete_figs(ref: str, root: Path = Path("."), commit: bool = False,
     say "this page has no figures after all". Same durability as a save, because
     this is the more dangerous direction, and `--commit` is required.
 
-    **It does not touch `data/readings.md`.** A deleted page's captions become
-    orphans, which is exactly what `harness corpus figures` exists to report — a
-    silent cascade from a geometry withdrawal into hand-read text would be a far
-    worse outcome than a loud reconciliation failure. The report names them and a
+    **A deleted page's captions go with it**, the text living on the blocks
+    being deleted. That is why `save_figs` refuses a *geometry* save that would
+    drop a block still holding ratified text: withdrawing a picture is this verb,
+    deliberate and `--commit`-gated, where a silent cascade out of an ordinary
+    save would be the worse outcome. The report names them and a
     human decides.
     """
     ref = norm_ref(ref)
@@ -1611,75 +1620,82 @@ TERMINAL_KEYWORDS = ("VERBATIM", "MISPRINT")
 _HDR = re.compile(r"^## (\S+?)\|(\S+)$", re.M)
 
 
-def readings(root: Path = Path(".")) -> dict[str, dict]:
-    """`data/readings.md` parsed to `{"<ref>|<zone-suffix>": record}`.
+def _page_readings(ref: str, root: Path) -> dict[str, dict]:
+    """One page's captions, off its own `gt/fig/` ALTO. `{}` for a page with none.
 
-    **This is the only source of caption text.** `gt/fig/` carries no `TextLine`.
-
-    `lines` preserves the printed line breaks and the printed hyphenation —
-    hyphens are load-bearing in Americanist notation, so joining is a rendering
-    decision made downstream, not here. `note` is the raw `@note` text if any,
-    and `keyword` the adjudication keyword it opens with, if any.
-
-    A `**bold heading**` on its own line ends the reading and opens trailing
-    commentary, kept out of `lines`/`text` and returned as `aside`. `2-030` uses
-    this to park a superseded machine attempt beside the human key for
-    comparison; folding the two together would have produced 53 lines of two
-    different transcriptions of one caption, presented as the caption.
+    NFD on read, keying spec §1's form and the rule `data/readings.md` kept before
+    it. `save_caption_text` writes what the adjudication holds and `corpus
+    normalize` gates the store, but a normal form that depends on which writer ran
+    is exactly what folding here prevents.
     """
-    # NFD on read, matching the corpus form (keying spec section 1). The file is
-    # hand-maintained and nothing but `harness corpus normalize` writes it, so it can drift
-    # between edits; folding here means a caption's normal form cannot depend on
-    # which session keyed it. NFD, never NFKC — NFKC rewrites U+1D4B and U+02D9,
-    # which are inventory glyphs.
-    p = root / READINGS
+    p = alto_for(ref, root)
     if not p.exists():
-        # Absence is `{}`, not an exception — the same disposition `read_blocks`
-        # keeps for a missing ALTO, and for the same reason: this module's callers
-        # ask "what has been read here" and "nothing" is a legitimate answer. It
-        # matters beyond tidiness now that the editor asks on every page it draws,
-        # where a corpus with no caption track at all must simply show none.
         return {}
-    text = unicodedata.normalize("NFD", p.read_text(encoding="utf-8"))
-    hits = list(_HDR.finditer(text))
+    try:
+        tree = etree.parse(str(p))
+    except (OSError, etree.XMLSyntaxError):
+        # Absence and unreadability are both `{}` — `read_blocks`' disposition,
+        # and for its reason: callers ask "what has been read here" and "nothing"
+        # is a legitimate answer for a store still being written.
+        return {}
+    labels = _labels(tree)
     out = {}
-    for i, m in enumerate(hits):
-        end = hits[i + 1].start() if i + 1 < len(hits) else len(text)
-        body = text[m.end():end].strip("\n")
-        note = ""
-        if "\n@note:" in "\n" + body:
-            body, _, note = body.partition("@note:")
-            note = note.strip()
-        aside = ""
-        cut = re.search(r"^\*\*.*\*\*\s*$", body, re.M)
-        if cut:
-            body, aside = body[:cut.start()], body[cut.start():].strip()
-        lines = [ln for ln in body.strip().split("\n") if ln.strip()]
-        out[f"{m.group(1)}|{m.group(2)}"] = {
-            "ref": m.group(1),
-            "zone_suffix": m.group(2),
-            "lines": lines,
-            "text": " ".join(lines),
-            "note": note,
-            "keyword": next((k for k in NOTE_KEYWORDS if note.startswith(k)), ""),
-            "aside": aside,
-        }
+    for blk in tree.iter("{*}TextBlock"):
+        if _block_label(blk, labels) != FIGDESC:
+            continue
+        lines = [unicodedata.normalize("NFD", ln) for ln in block_text(blk) if ln]
+        if not lines:
+            continue
+        suffix = zone_suffix(blk.get("ID") or "")
+        out[suffix] = {"ref": ref, "zone_suffix": suffix,
+                       "lines": lines, "text": " ".join(lines)}
+    return out
+
+
+def readings(root: Path = Path(".")) -> dict[str, dict]:
+    """Every caption in `gt/fig/`, as `{"<ref>|<zone-suffix>": record}`.
+
+    **The store holds the caption, and this is how it is read back.** It used to
+    parse `data/readings.md`, which was the caption store before the adjudicated
+    text moved into the ALTO under the block that carries the caption's own
+    geometry. Both files existed for a while and **58 of the 395 captions had
+    drifted apart** — `½` against `1/2`, catalogue numbers that gained a suffix
+    letter on a re-read, `6cm.` against `6 cm.` — with the store holding the
+    adjudication and the edition serving the markdown. One caption store, keyed by
+    the block id, is what closes that.
+
+    `lines` preserves the printed line breaks and so the printed hyphenation:
+    **31 of the 196 multi-line captions break on a hyphen and they are not the
+    same kind of hyphen** — `Leaf-Tobacco` is the book's compound and `attach-ing`
+    is a wrap artifact. Joining is a rendering decision downstream, never here.
+    `block_text` keeps the division for that reason and this preserves it.
+
+    A caption's `@note` is **not** here any more. The adjudication that produced
+    the text records its own reasoning in `review/captions/proposal.json` and
+    `review/captions/decision.json`, which is where a reader of a note should go;
+    a second copy filed beside the text would be a note that could outlive it.
+    """
+    out = {}
+    for ref in fig_refs(root):
+        for suffix, rec in _page_readings(ref, root).items():
+            out[f"{ref}|{suffix}"] = rec
     return out
 
 
 def readings_for(ref: str, root: Path = Path("."),
                  all_readings: dict | None = None) -> dict[str, dict]:
-    """The readings on one page, keyed by bare zone-id suffix.
+    """The captions on one page, keyed by bare zone-id suffix.
 
-    `all_readings` is a `readings(root)` a caller already holds. Without it this
-    parses the whole of `data/readings.md` — 395 rows, 2.2ms — to keep the rows
-    for one page, which `fig check --all` did 252 times over. Same `idx=` idiom
-    `lookup.resolve` and `context.tier1_terms` take, and it changes nothing about
-    the answer.
+    `all_readings` is a `readings(root)` a caller already holds — `reconcile` and
+    `tei generate` sweep the store once and hand it down. Without it this now
+    reads **one page's ALTO** rather than the whole caption store, which reverses
+    the old cost: `data/readings.md` had to be parsed entire to answer about one
+    page, and a page's own file answers directly.
     """
     ref = norm_ref(ref)
-    rows = readings(root) if all_readings is None else all_readings
-    return {r["zone_suffix"]: r for r in rows.values() if r["ref"] == ref}
+    if all_readings is None:
+        return _page_readings(ref, root)
+    return {r["zone_suffix"]: r for r in all_readings.values() if r["ref"] == ref}
 
 
 # **The manifest lives in `scans.py`, and these are its names here.** It is a fact
@@ -1887,7 +1903,7 @@ def paired(ref: str, root: Path = Path("."),
 
     `all_readings` is passed straight to `readings_for`. It matters most to
     `reconcile`, which already holds a `readings(root)` and then called this once
-    per figure page — 252 further whole-file parses of `data/readings.md`, each
+    per figure page — 252 further whole-store sweeps, each
     to keep one page's rows.
 
     **The pairing is done here, once, and recorded.** `GraphicZone`↔FigDesc
@@ -1903,7 +1919,7 @@ def paired(ref: str, root: Path = Path("."),
     **A figure is a `GraphicZone`.** The FigDesc is its caption, not a second
     figure, so it is a field here rather than a row — which is also why `text: ""`
     stops being the normal case: a picture zone can never carry a reading (they
-    are keyed by FigDesc suffix in `data/readings.md`), so an empty caption now
+    are keyed by FigDesc suffix), so an empty caption now
     means `3-006`, artwork the book captions nowhere.
 
     **The rule branches on the caption's own shape, and the book is why.** A text
@@ -2024,7 +2040,7 @@ def figure_boxes(ref: str, root: Path = Path("."),
     `all_readings` is a `readings(root)` a caller already holds, handed down to
     `paired` — the same `idx=` idiom `readings_for` documents, extended one rung
     because `generate` is the sweep that needed it: without it a 691-page run
-    re-parses `data/readings.md` 691 times.
+    re-reads the whole caption store 691 times.
     """
     ref = norm_ref(ref)
     boxes = {b["id"]: b for b in zones(ref, root)}
@@ -2445,24 +2461,30 @@ def resolve_figures(handles: list[dict], figs: list[dict]) -> list[dict]:
 
 
 def reconcile(root: Path = Path("."), tick: Callable | None = None) -> dict:
-    """Cross-check `gt/fig/` against `data/readings.md` in both directions.
+    """Check `gt/fig/` against itself and against the source PDF's photographs.
 
-    Empty `missing` and `orphan` lists is the invariant. `missing` means a zone
-    whose caption was never read; `orphan` means a reading whose zone is gone —
-    usually a spurious FigDesc that was deleted from the segmentation, in which
-    case the reading should go too.
+    Empty `missing` is the invariant: a FigDesc block carrying no caption text is
+    a caption nobody has read, and `fig restore` is what fills it.
+
+    **There is no `orphan` any more, and its removal is the point of the
+    retirement.** It meant "a reading whose zone is gone" and it was the other
+    half of a cross-check between two stores — `data/readings.md` held the text,
+    this store held the geometry, and either could name a block the other did not.
+    The text now lives on the block, so a caption cannot outlive the thing it
+    captions and the list could only ever be empty. A check that cannot fail is a
+    clean bill of health nobody issued, so it is gone rather than reassuring.
+
+    What that cross-check was really guarding is now guarded by construction, and
+    by `save_figs`, which refuses a geometry save that would drop a block holding
+    ratified text.
     """
     from .parallel import ptrack
 
     known = readings(root)
-    # Bucketed once. Both uses below were per-ref scans of the whole store —
-    # `paired` re-parsed `data/readings.md` from disk for each of the 252 figure
-    # pages, and `have` re-filtered all 395 rows for each. Neither changes the
-    # answer; the store is read once here and the loop reads this.
     by_ref: dict[str, dict] = {}
     for r in known.values():
         by_ref.setdefault(r["ref"], {})[r["zone_suffix"]] = r
-    missing, orphan, unpaired = [], [], []
+    missing, unpaired = [], []
     zones, caps = 0, 0
     for ref in ptrack(fig_refs(root), tick):
         unpaired += [f"{ref}|{zone_suffix(z)}"
@@ -2479,14 +2501,8 @@ def reconcile(root: Path = Path("."), tick: Callable | None = None) -> dict:
                 ids.add(zone_suffix(blk.get("ID")))
         have = set(by_ref.get(ref, {}))
         missing += [f"{ref}|{z}" for z in sorted(ids - have)]
-        orphan += [f"{ref}|{z}" for z in sorted(have - ids)]
-    # Hoisted: `set(fig_refs(root))` re-globbed `gt/fig/` once per reading. The
-    # correct form was already fifteen lines below as `keyed_refs`, which is now
-    # this one.
     seen_refs = {r["ref"] for r in known.values()}
     keyed_refs = set(fig_refs(root))
-    orphan += [k for k, r in sorted(known.items())
-               if r["ref"] not in keyed_refs]
 
     # The third store, and the only one of the three no person and no model wrote:
     # the source PDFs' own image placements. `unaccounted` is the gate — a
@@ -2542,11 +2558,10 @@ def reconcile(root: Path = Path("."), tick: Callable | None = None) -> dict:
         "line_art_pictures": line_art,
         "loose_boxes": loose,
         "missing": missing,
-        "orphan": sorted(set(orphan)),
-        # A caption no picture claimed. Reported rather than gated: `missing` and
-        # `orphan` are reconciliation between two stores that must agree, where
-        # this is a geometric reading of one of them, and `paired`'s rule is the
-        # only witness against it. It should always be empty — see `paired`.
+        # A caption no picture claimed. Reported rather than gated: `missing` is a
+        # fact about the store's own contents, where this is a *geometric* reading
+        # of it and `paired`'s rule is the only witness against it. It should
+        # always be empty — see `paired`.
         "unpaired_captions": unpaired,
     }
 # A `misordered` column was built here and removed, and the reasoning is worth
@@ -2836,8 +2851,8 @@ def caption_strips(ref: str, root: Path = Path("."), scans: str = "scans",
     """One padded, upright image per `GraphicZone-FigDesc` on a page.
 
     Yields `(key, image, record)` in reading order, `key` being `<ref>|<suffix>` —
-    the key `data/readings.md` uses, so a reading taken off these strips joins that
-    store block for block when `fig witness` compares them.
+    the key the store files each caption under, so a reading taken off these strips
+    joins it block for block when `fig witness` compares them.
 
     **Portrait strips are rotated, and the discriminator is `paired`'s own.** A
     plate sets its caption rotated beside the picture, reading bottom-to-top —

@@ -41,7 +41,7 @@ class TestSpacing:
         "unknown plate (?? ??)",
     ])
     def test_a_run_of_marks_is_notation_not_typesetting(self, given):
-        """`data/readings.md` writes an unknown figure number as `??/????`, and the
+        """A caption writes an unknown figure number as `??/????`, and the
         space before it is notation. Widening the class to `!`/`?` without this guard
         made `--commit` willing to rewrite that store's placeholders."""
         assert _fix_spacing(given) == given
@@ -107,7 +107,7 @@ class TestSpacing:
         assert "outer layer" in out
 
     def test_commentary_scoping_is_off_by_default(self):
-        """Every non-JSON caller keeps the old behaviour: `readings.md` prose and
+        """Every non-JSON caller keeps the old behaviour: entity prose and
         `lexicon_extra.txt` have no such fields, and a default that skipped
         anything quoted would be a silent widening."""
         assert [h["line"] for h in _spacing_hits(self.COMMENTARY)] == [2, 3, 4]

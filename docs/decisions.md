@@ -59,10 +59,10 @@ but the shape that produced it is not, and a `gt`-with-no-proposal page is
 invisible to `ocr pages`, which reports the store rather than the review
 directory.
 
-What that page settled is worth more than its six corrections: **`gt/ocr/` and
-`data/readings.md` are not independent witnesses on a figure page.** This
+What that page settled is worth more than its six corrections: **`gt/ocr/` and the
+caption text are not independent witnesses on a figure page.** This
 ground truth was hand-corrected from CATMuS and the caption block descends from
-the same recognizer pass, so three commas the machine invented sat in both files
+the same recognizer pass, so three commas the machine invented sat in both
 corroborating each other, and only a fresh raster read separated them. Nothing
 in either file records the shared ancestor. Same fault as the verbatim firewall,
 `review`'s span diff and `train score zones`'s `unseen` row — two inputs that turn out

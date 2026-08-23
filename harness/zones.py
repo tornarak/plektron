@@ -1248,7 +1248,7 @@ def build_alto(ref: str, zones: list[dict], size: tuple[int, int],
     #
     # The zone store never supplies one, and does not need to: nothing anywhere
     # points at a zone id, so re-minting the whole page on every save is free. The
-    # figure store is the opposite case — `data/readings.md` keys 395 caption blocks
+    # figure store is the opposite case — a block id keys the caption text on it
     # by the last field of their block id (`figures.zone_suffix`) — so a figure drawn
     # above an existing one would, under positional minting, silently renumber every
     # block below it and re-point every caption on the page at the wrong picture.

@@ -12,7 +12,7 @@ type. Captions are not that. Measured over the store:
 
 That is ~26 KB of mostly plain English, two lines at a time. So the unit of work
 is the **contact sheet**, not the page, and the store is one pair of files keyed
-`<ref>|<zone-suffix>` — the key `data/readings.md` already uses, which is what
+`<ref>|<zone-suffix>` — the key the caption store files each block under, which is what
 lets the two be joined block for block when the comparison runs.
 
 **What is copied from `review.save_decisions`, deliberately and in full**, because
@@ -59,7 +59,7 @@ from .refs import norm_ref
 #: Adjudication keywords that may open a caption's note. The first two are
 #: terminal — the page was re-examined and the question is closed. The rest mark
 #: work outstanding. Copied from `figures.NOTE_KEYWORDS` rather than imported:
-#: that copy serves the `data/readings.md` parser and dies with it, and this one
+#: that copy served the old markdown parser and died with it, and this one
 #: is the vocabulary of the store that replaces it. Longest-first so a prefix
 #: match cannot shadow a longer keyword.
 NOTE_KEYWORDS = (
@@ -108,7 +108,7 @@ def _fold(s: str) -> str:
 def load_proposal(root: Path = Path(".")) -> dict[str, dict]:
     """`review/captions/proposal.json` -> `{"<ref>|<suffix>": record}`.
 
-    A reading, never truth, and **never seeded from `data/readings.md`**. The whole
+    A reading, never truth, and **never seeded from the caption already in `gt/fig/`**. The whole
     purpose of this file is to be a second witness to captions that store already
     holds, and `docs/decisions.md` records what happens when two files that look
     independent turn out to share an ancestor: three invented commas sat in both,
@@ -123,7 +123,7 @@ def load_proposal(root: Path = Path(".")) -> dict[str, dict]:
         raise ValueError(
             f"no caption proposal at {p}. It is a reading of the contact sheets "
             f"`harness fig sheets` writes, authored in one pass by the "
-            f"read-captions skill — never seeded from `data/readings.md`, which "
+            f"read-captions skill — never seeded from the store it is compared against, which "
             f"is the witness it exists to be compared against.")
     doc = json.loads(p.read_text(encoding="utf-8"))
     return dict(doc.get("lines", {}))
@@ -183,7 +183,7 @@ def save_decisions(blocks: dict, root: Path = Path("."),
         # Stored only when it says something, `review.save_decisions`' rule: an
         # empty note on all 395 would make "this caption was remarked on"
         # unfindable by the only means anyone has, the key existing. This is the
-        # adjudicator's note and the home the `@note` line of `data/readings.md`
+        # adjudicator's note and the home the old `@note` line
         # moves to — distinct from the proposal's note, which is the reader's.
         note = _nfd("" if isinstance(v, str) else (v.get("note") or "")).strip()
         if note:
@@ -225,11 +225,11 @@ def save_decisions(blocks: dict, root: Path = Path("."),
 
 
 def witness(root: Path = Path("."), source: dict | None = None) -> dict:
-    """Compare the fresh reading against `data/readings.md`, block for block.
+    """Compare the fresh reading against the caption in `gt/fig/`, block for block.
 
     **Measurement, never a gate.** Two ratified human readings disagreeing is a
     finding and not an error, and nothing here decides which is right — that is a
-    human's act in `harness fig review`, against the scan. `readings.md` is not
+    human's act in `harness fig review`, against the scan. The store is not
     edited to match, because a store edited toward the thing being compared to it
     stops being a witness.
 
@@ -246,7 +246,7 @@ def witness(root: Path = Path("."), source: dict | None = None) -> dict:
     **The header states whether the reading was blind, and that is the report's
     load-bearing field.** A comparison whose two inputs may be one input has to say
     so (CLAUDE.md); `docs/decisions.md` records the case where `gt/ocr/` and
-    `readings.md` corroborated three invented commas because the caption text
+    the caption text corroborated three invented commas because it
     descended from the same recognizer pass, and only a fresh raster read separated
     them. A run whose reader had the old file open produces a table that looks
     exactly like this one and means nothing, so `blind` travels with the numbers.
@@ -308,7 +308,7 @@ def restore(root: Path = Path("."), refs: list[str] | None = None,
     """Write the adjudicated captions into `gt/fig/`. **This is the migration.**
 
     The store is populated by restoring rulings, not by a script transcribing
-    `data/readings.md` — which is the whole point of the exercise. What lands is
+    an earlier reading — which is the whole point of the exercise. What lands is
     what a human ratified against the scan, so the text in `gt/fig/` can carry
     `#gt`: machine-shaped output a human confirmed, transcluded from its store and
     re-derived on every run.
@@ -415,7 +415,7 @@ def _reader_note(rec: dict) -> str:
     because on a Tier-1 caption it *is* the substance of the disagreement and not
     a footnote to it. On `1-049|006` the reader wrote "there may be a dot below
     the g; at sheet scale I could not resolve it either way" and resolved it as a
-    bare g — which is precisely why `readings.md`'s dotted `g̣` is the competing
+    bare g — which is precisely why the store's dotted `g̣` is the competing
     reading. An adjudicator shown only the two strings would have to rediscover
     that from the raster.
 
@@ -493,7 +493,7 @@ def review_context(root: Path = Path("."), verdict: str = "differ",
         blocks.append({
             "ref": ref, "idx": int(suffix), "issue": r["old"],
             "field": f"{ref}:{int(suffix)}",
-            "before": {"idx": "readings.md", "text": r["old"]},
+            "before": {"idx": "gt/fig", "text": r["old"]},
             "after": None,
             "text": text, "prior": text,
             "crop": f"{crop_base}/{r['key']}.png",

@@ -102,7 +102,7 @@ whose correctness argument sits in a script that is run once and never imported 
 migration nobody can check afterwards".
 `greyscale_scans.py` (poppler wrote RGB and the JBIG2 master is grey),
 `migrate_coords.py` (150→300 dpi) and `migrate_fig_bboxes.py` (which reduced
-`gt/fig/` to bounding boxes and re-keyed `data/readings.md` with it) are **spent
+`gt/fig/` to bounding boxes and re-keyed the caption store with it) are **spent
 one-shot migrations**, kept for the reasoning in their docstrings; re-running any
 would corrupt what it already converted, and each says so at the top.
 

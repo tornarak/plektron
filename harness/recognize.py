@@ -45,7 +45,7 @@ an acceptable cost.** It fills the *declared* figure box and not a pixel more â€
 pad was considered and rejected precisely because body text sits hard against an
 inset figure on pages like `1-283`, and padding would have erased it. So the type
 survives; only the pictures go. Figure captions go too, since `gt/fig/` declares
-`GraphicZone-FigDesc` as well, and they should: captions live in `data/readings.md`
+`GraphicZone-FigDesc` as well, and they should: captions live in `gt/fig/`
 and are not body text.
 
 **A line whose baseline still falls in no zone is kept, not dropped.** It is

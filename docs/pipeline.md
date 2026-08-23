@@ -25,7 +25,7 @@ the stages that are built.
    than a cost accepted: it fills the *declared* figure box and not a pixel more,
    the pad having been rejected precisely because body text sits hard against an
    inset figure on `1-283`. Figure captions do go, and should — they live in
-   `data/readings.md` and are not body text.
+   `gt/fig/` on the block that captions them, and are not body text.
 
    **It also paints the source's own photograph rects**, from
    `data/pdf_images.json`, and that buys two things the old blot argued for
@@ -66,8 +66,8 @@ the stages that are built.
    that list is the set of `@facs` pointer targets, and a running head, a folio or
    a signature line is never in the TEI body, so citing one is a mistake by
    construction. A **caption** is different and stays — it is dropped from the
-   draft only, because the project already holds a human reading of it in
-   `data/readings.md`, and it remains legitimately citable.
+   draft only, because the project already holds a human reading of it on the
+   FigDesc block in `gt/fig/`, and it remains legitimately citable.
 
    **They leave the draft and arrive as `running_title`**, a `tei context` field
    carrying `{text, folio, folio_from, bracketed, lines}` — restructured rather
@@ -258,8 +258,8 @@ the stages that are built.
 ## Final Product
 
 1. **Original Scan Page** - `scans/chukchi-PP-NNN.png`
-2. **Figure geometry** - `gt/fig/chukchi-PP-NNN.xml`. ALTO containing only `GraphicZone` and `GraphicZone-FigDesc` blocks, as **bounding boxes**. No lines, no text. Written in the zone editor's figure track (`b`); checked by `harness fig check`; **absence of the file is how the store records "no figures on this page"**, so it never holds an empty one. `docs/apparatus.md` is the track's record.
-3. **Figure captions** - `data/readings.md`, keyed `1-123|<zone-id suffix>` — the last field of the block id, which makes it a **foreign key**: `figures.save_figs` preserves ids for that reason where `zones.save_zones` re-mints them. The only caption store.
+2. **Figures, geometry and caption together** - `gt/fig/chukchi-PP-NNN.xml`. ALTO containing only `GraphicZone` and `GraphicZone-FigDesc` blocks, as **bounding boxes**, each FigDesc carrying its adjudicated caption as one `String` per printed line. Geometry is written in the zone editor's figure track (`b`); the text by `harness fig restore`, out of `review/captions/decision.json` over `proposal.json`. Checked by `harness fig check`; **absence of the file is how the store records "no figures on this page"**, so it never holds an empty one. `docs/apparatus.md` is the track's record.
+3. **The caption's reasoning** - `review/captions/proposal.json` (`#llm`, the blind re-read) and `decision.json` (`#ed`). What the reader *said about* a caption stays here; only the ratified text reaches the store. The caption text used to live in a markdown file of its own, keyed by the same block-id suffix; the two then drifted 58 captions apart with nothing reporting it, and that file is gone.
 4. **OCR transcript** - `ocr/chukchi-PP-NNN.xml`, the view: `gt/ocr/` where a human
    has been through the page, `mz/ocr/` otherwise. ALTO carrying the zones as
    regions and the lines within them. The regions are no longer useless — they are

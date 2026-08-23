@@ -728,7 +728,7 @@ class Renderer:
         """A figure becomes a real block with its caption, and no geometry.
 
         **The caption used to be dropped outright** — this method never called
-        `inline`, so the `<figDesc>` the generator had gone to `data/readings.md`
+        `inline`, so the `<figDesc>` the generator had gone to `gt/fig/`
         for reached the reader as nothing at all, behind a `[fig. N]` chip.
 
         **No coordinates are emitted here, and that is a cache argument as much

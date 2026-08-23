@@ -7,8 +7,8 @@ tracks share one editor and one keyboard; they share no geometry, no split
 lists and no exemption files.
 
 `harness corpus figures` stays where it is and is not aliased here. It is a
-corpus-wide reconciliation *between two stores* — geometry against the
-hand-read captions in `data/readings.md` — which is the same species as
+corpus-wide reconciliation of the store against itself and against the source
+PDFs' own photographs — which is the same species as
 `corpus normalize` and belongs with it. `fig check` is the different question:
 one page's own boxes, against the rules.
 """
@@ -35,8 +35,8 @@ from ._common import (
 
 def register(cli):
     g = group(cli, "fig", "the figure and caption track in gt/fig/ — freely "
-              "placed rectangles over the picture and its caption, paired "
-              "with the hand-read text in data/readings.md, and the "
+              "placed rectangles over the picture and its caption, each caption "
+              "block carrying its adjudicated text, and the "
               "segmenter trained on them",
               sections=("The store", "The segmenter"), section="The passes")
 
@@ -60,10 +60,9 @@ def register(cli):
                "mark and its rule exemptions. The counterpart to the store's "
                "refusal of an empty page — absence of a file is how this store "
                "records 'no figures here', so an emptied page has no other way "
-               "to say so. It does NOT touch data/readings.md: a geometry "
-               "withdrawal cascading into hand-read text would be far worse "
-               "than the loud reconciliation failure, and the report counts the "
-               "captions it orphans so `corpus figures` can name them")
+               "to say so. Withdrawing a block withdraws the caption on it, which "
+               "is why `save_figs` refuses a geometry save that would drop "
+               "ratified text unless the caller says it means to")
     _refs(p)
     opt(p, "--commit", is_flag=True,
         help="actually delete. Without it the row is a preview and nothing is "
@@ -90,7 +89,7 @@ def register(cli):
     add_jobs(p)
 
     p = action(g, "witness", run_witness, section="The store",
-               help="compare the fresh caption reading against data/readings.md, "
+               help="compare the fresh caption reading against the caption in gt/fig/, "
                "block for block — the whole point of reading them twice. "
                "Measurement and never a gate: two ratified readings disagreeing "
                "is a finding, and which one is right is a human's ruling against "
@@ -108,8 +107,8 @@ def register(cli):
                help="write the adjudicated captions into gt/fig/ as "
                "String/@CONTENT — one String per printed line, inside one "
                "TextLine carrying the block's own bbox. **This is the "
-               "migration**: the store is populated by restoring rulings, not by "
-               "transcribing data/readings.md, which is what lets the text carry "
+               "one writer**: the store is populated by restoring rulings, which is "
+               "what lets the text carry "
                "#gt. Refuses a block with neither a ruling nor a reading, a "
                "target that already holds text without --force, and any "
                "unlicensed mark")
@@ -124,7 +123,7 @@ def register(cli):
     p = action(g, "review", run_review, section="The store",
                help="adjudicate the captions the two readings disagree on, in "
                "the browser — every one in a single document, each with its own "
-               "strip and what data/readings.md reads beside the box. This is "
+               "strip and what the store already holds beside the box. This is "
                "`ocr review --issues` with a different block builder and a "
                "different store: same page, same palette, same keyboard, same "
                "all-or-nothing and prior-text guards, because adjudicating "

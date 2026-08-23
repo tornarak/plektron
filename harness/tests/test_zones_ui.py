@@ -542,7 +542,7 @@ def test_a_figure_save_says_the_blot_is_stale(tmp_path):
 
 def test_gt_ids_round_trip_and_machine_ids_do_not(tmp_path):
     """An `mz` proposal's ids are the segmenter's and key nothing in
-    `data/readings.md`; carrying one into a save would put a string shaped like a
+    the caption store; carrying one into a save would put a string shaped like a
     caption key into the store with no reading behind it."""
     scans(tmp_path, "1-048")
     fg.save_figs("1-048", [_fig(G, 400, 900, 2200, 2500)], tmp_path)

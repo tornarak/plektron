@@ -280,7 +280,7 @@ def test_a_photograph_over_several_boxes_changes_neither(tmp_path):
 
 
 def test_block_ids_survive_the_growth(tmp_path):
-    """`data/readings.md` keys 395 captions by the last field of a block id."""
+    """The store keys 395 captions by the last field of a block id."""
     _keyed(tmp_path, "1-037", [_box(G, 460, 930, 2200, 2540),
                                _box(D, 460, 2600, 2200, 2700)], size=MASTER)
     _manifest(tmp_path, "1-037", [[435, 907, 2188, 2532]])

@@ -1,6 +1,6 @@
 ---
 name: read-captions
-description: Read all 395 Bogoras figure captions off contact sheets into review/captions/proposal.json, blind to data/readings.md, so the two can be compared. Use when re-reading the caption store, running the caption pass, or on /read-captions. Not the page-line ground-truth pass — that is rebuild-groundtruth.
+description: Read all 395 Bogoras figure captions off contact sheets into review/captions/proposal.json, blind to the caption already in gt/fig/, so the two can be compared. Use when re-reading the caption store, running the caption pass, or on /read-captions. Not the page-line ground-truth pass — that is rebuild-groundtruth.
 ---
 
 # Read the figure captions off the sheets
@@ -10,13 +10,14 @@ no agent, no queue, no claim. One session reads 33 sheets and writes one file.
 
 ## Why this pass exists, which decides how you must run it
 
-`data/readings.md` already holds a reading of all 395 captions. This pass exists
-to produce a **second, independent** one, so the two can be compared and the
-store migrated on the strength of the comparison rather than on trust.
+`gt/fig/` already holds a ratified reading of all 395 captions, on the FigDesc
+block that carries each one's geometry. This pass exists to produce a **second,
+independent** one, so the two can be compared and a correction made on the
+strength of the comparison rather than on trust.
 
 `docs/decisions.md` records what a second witness is worth when it is not really
-second: `gt/ocr/` and `data/readings.md` once agreed on three commas the machine
-had invented, because the caption text descended from the same recognizer pass,
+second: `gt/ocr/` and the caption text once agreed on three commas the machine
+had invented, because both descended from the same recognizer pass,
 and *only a fresh raster read separated them*. Nothing in either file recorded
 the shared ancestor.
 
@@ -29,7 +30,7 @@ in the file you write.
 
 | file | why it is a witness |
 |---|---|
-| `data/readings.md` | the reading you are being compared against |
+| `gt/fig/` | the ratified caption you are being compared against. **Do not open it** |
 | `docs/apparatus.md` | quotes the hard adjudications verbatim — the `seated`/`sealed` misprint, `1-049`'s dotted `g̣` |
 | `data/loi.json` | the List of Illustrations. Book-internal apparatus **binds the adjudicator, not the reader**: completing an illegible word from it makes your proposal a paraphrase, and the List's captions are abbreviated anyway |
 | `mz/tei/`, `tei/` | `<figDesc>` transcludes every caption into 205 generated pages |
@@ -53,8 +54,8 @@ produces a table that looks exactly like a clean one.
        uv run harness fig sheets --all
 
    33 sheets into `review/captions/sheets/`, ~12 strips apiece, plus
-   `manifest.json` keyed `<ref>|<zone-suffix>` — the same key `data/readings.md`
-   uses, which is what lets the two be joined later.
+   `manifest.json` keyed `<ref>|<zone-suffix>` — the block-id suffix the store
+   files each caption under, which is what lets the two be joined later.
 
 2. **Read each sheet with `Read`.** Every strip carries its key in the left
    margin and two faint rules marking the **declared box edge**. The padding
@@ -212,6 +213,6 @@ As a reader you may propose any of these in `note`. **Only a human ratifies one*
   the inventory does not have;
 - anything the book does that the rules above did not anticipate.
 
-Do **not** run `harness fig witness` yourself and do not open `data/readings.md`
+Do **not** run `harness fig witness` yourself and do not open `gt/fig/`
 afterwards to see how you did. The comparison is a separate act.
 

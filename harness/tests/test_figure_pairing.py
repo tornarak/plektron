@@ -13,6 +13,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from conftest import write_captions
+
 ALTO_NS = "http://www.loc.gov/standards/alto/ns-v4#"
 TEI_NS = "http://www.tei-c.org/ns/1.0"
 
@@ -44,9 +46,7 @@ def _tei(tmp_path: Path, ref: str, body: str) -> Path:
 
 
 def _readings(tmp_path: Path, blocks: dict[str, str]) -> None:
-    tmp_path.joinpath("data").mkdir(parents=True, exist_ok=True)
-    tmp_path.joinpath("data", "readings.md").write_text(
-        "".join(f"## {k}\n{v}\n\n" for k, v in blocks.items()), encoding="utf-8")
+    write_captions(tmp_path, blocks)
 
 
 def test_text_figure_caption_is_below_its_picture(tmp_path):
@@ -249,7 +249,7 @@ def test_a_figure_must_name_a_number_this_page_prints(tmp_path):
 
 
 def test_a_figure_may_not_carry_a_zone_id(tmp_path):
-    """Placing a figure is the build's join through `data/readings.md`, not the
+    """Placing a figure is the build's join through `gt/fig/`, not the
     collator's — its competence is finding where the prose refers to one."""
     from harness.validate import validate
     p = _tei(tmp_path, "1-151", '<figure n="30" facs="#eSc_textblock_78034cff"/>')

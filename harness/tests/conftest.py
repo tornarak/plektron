@@ -62,3 +62,24 @@ def write_scan(tmp_path: Path, ref: str, size: tuple[int, int] = A4_300,
                ink: tuple[tuple[int, int, int, int], ...] = ()) -> Path:
     """`<tmp_path>/scans/chukchi-<ref>.png`, the layout every reader assumes."""
     return write_png(tmp_path / "scans" / f"chukchi-{ref}.png", size, mode, ink)
+
+
+def write_captions(root: Path, blocks: dict[str, str]) -> None:
+    """Caption text into `gt/fig/`, keyed `"<ref>|<zone-suffix>"` as the store is.
+
+    The store holds the caption on the FigDesc block that carries its geometry, so
+    a fixture that wants one has to put it there. This used to write
+    a separate markdown caption file, in five copies of the same helper — which is how a
+    caption store nothing read stayed plausible for as long as it did.
+
+    A newline in `text` is a printed line break and is preserved as one: the split
+    is what `block_text` keeps, and half of what a caption fixture is testing.
+    """
+    from harness.figures import save_caption_text
+
+    by_ref: dict[str, dict[str, list[str]]] = {}
+    for key, text in blocks.items():
+        ref, _, suffix = key.partition("|")
+        by_ref.setdefault(ref, {})[suffix] = text.split("\n")
+    for ref, texts in by_ref.items():
+        save_caption_text(ref, root, texts)

@@ -8,8 +8,8 @@ them settled.
 # Figure track
 
 The 252 pages with figures have been segmented to isolate `GraphicZone`s and
-`GraphicZone-FigDesc`s — **414 zones and 395 captions** in `gt/fig/`, one
-`data/readings.md` block per caption, reconciled in both directions by `harness
+`GraphicZone-FigDesc`s — **414 zones and 395 captions** in `gt/fig/`, each
+caption carried as text on its own FigDesc block and checked by `harness
 corpus figures`. The images are cut by `harness fig crops` into `scans/fig-crops/`,
 a derived tree — see "Cutting the pictures out" below.
 
@@ -25,8 +25,9 @@ was already being read. It refuses the whole run if any page's numbers move, and
 none did.
 
 Ids became `fig_PP-NNN_NNN` in geometric order, replacing eScriptorium's
-`eSc_textblock_ca04178c`, and `data/readings.md`'s 395 keys moved with them in one
-commit. **A block id's last field is a foreign key**, which is why `figures.
+`eSc_textblock_ca04178c`, and the 395 caption keys in the separate readings file
+moved with them in one commit. **A block id's last field was a foreign key** —
+the caption text has since moved onto the block it keys, and the file is gone — which is why `figures.
 save_figs` preserves ids where `zones.save_zones` re-mints them by position:
 inserting a picture above an existing one would otherwise renumber every block
 below it and re-point every caption on the page at the wrong picture — silently,
@@ -291,7 +292,7 @@ the count sat at 250 pages while two were missing, because 250 was also what the
 List of Illustrations implies, and the two absences cancelled exactly against
 `3-006`/`3-007`, which carry a zone and no caption and are not LoI pages at all.
 Only the per-entry check catches that. **It is a check somebody ran by hand and
-no code performs** — `figures.reconcile` opens `gt/fig/` and `data/readings.md`
+no code performs** — `figures.reconcile` opens `gt/fig/`
 and never `data/loi.json`, so nothing re-runs this and nothing would notice it
 ceasing to hold. Writing it waits on chapter assembly, because an LoI entry
 places a figure by *folio*; `docs/open-questions.md` carries the reasoning.
@@ -541,7 +542,7 @@ that settles it is prose inside the caption, which is why no geometric handle
 could.
 
 **The generated TEI now carries the figures themselves**, `<figure n><figDesc>`
-with the caption from `data/readings.md`, one per printed figure on the same
+with the caption off its FigDesc block in `gt/fig/`, one per printed figure on the same
 dedupe as `_figures_on_page` — 197 of them over 131 pages. They are positioned
 where their boxes physically sit, and that placement is final. It used to carry a
 comment saying move me to the first textual reference; that spent the one
@@ -597,8 +598,8 @@ Two things it is not. First, LoI captions are **abbreviated** — they drop
 catalogue numbers, dimensions and provenance notes ("from a photograph") that the
 printed under-figure caption carries. They bind the caption *core*, not the full
 text. Second, the two witnesses **disagree**, and neither automatically wins.
-Where they do, `data/readings.md` records the reading as printed and adjudicates in
-the `@note` — `MISPRINT` when the printed form is the book's own error (fig. 302's
+Where they do, the store records the reading as printed and the adjudication
+notes it in `review/captions/decision.json` — `MISPRINT` when the printed form is the book's own error (fig. 302's
 caption reads "Envelope officially **seated**", verified at magnification, against
 the LoI's "**sealed**"; the LoI misprints fig. 234's folio as "39" for 329),
 `VERBATIM` when what looked like a defect is what the printer set. Either way the
@@ -615,8 +616,8 @@ because two figures share a caption. Classify a page as text-figure or plate
 Native forms in the LoI (`Uñiˊsak`, `Nuˊnligren`, `Kereˊtkun`, `Valkaˊʟᴇn`) are
 flagged `tier1` and are **proposals for keying, not adopted glyph identities** —
 the firewall's subject is rank, a proposal rises only by a human act, and the
-LoI is only reachable by reading a scan. The same applies to the Tier-1 forms in
-`data/readings.md`, which are flagged in their `@note`. One is worth knowing about:
+LoI is only reachable by reading a scan. The same applies to the Tier-1 forms in the captions, which are flagged in
+their adjudication note. One is worth knowing about:
 `1-049`'s Plate I caption prints `Nuˊnlig̣ren` with a **dotted g** where the LoI
 sets `Nuˊnligren` plain. Recorded as printed, not adjudicated.
 
@@ -690,7 +691,7 @@ disagreement. Three properties of the print any consumer must know:
   rendering in brackets. One work, two `printed` blocks (`entry` and `translation`),
   and the two **disagree** often enough to matter: `anon1894` sets № 14 against No. 4
   for the same issue; `maydell1871` drops Географическаго from the society name the
-  English spells out. Both recorded, unadjudicated, per the `readings.md` habit.
+  English spells out. Both recorded, unadjudicated, per the caption store's habit.
 - **Repeated authors print as a long rule.** The rule is not reproduced in `text`;
   `author_printed` is `"named"` or `"rule"` and `author` carries the inherited name.
 - **Order is the print's and is not chronological.** `murdoch1884` follows

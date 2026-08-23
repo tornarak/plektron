@@ -124,7 +124,7 @@ Layout, all at the repo root:
     lexicon/  one file per Tier-1 form an editor has written a note about; the
             identity is the form, and the rest of its card is derived. Tracked;
             `lexicon check` gates it. Declared and still empty — no notes yet.
-    data/   readings.md  loi.json  toc.json  authorities.json  lexicon_extra.txt
+    data/   loi.json  toc.json  authorities.json  lexicon_extra.txt
             figure_numbers.json  zones_config.json  lines_config.json
             tei_all.rng (the schema).
     data/geo/  the atlas's shapes — watersheds, language areas, named

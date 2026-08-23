@@ -20,7 +20,7 @@ result into place, and "the editor saves a page while a sweep is running" is an
 ordinary sequence here rather than a theoretical one. That reasoning was applied
 to the **disposable cache** and to no other store: six corpus-wide files an
 editor and a sweep both write — `_ink_exempt.json`, the split lists, the figure
-exemptions, and `data/readings.md`, the whole caption store — were bare
+exemptions, and the caption store — were bare
 `write_text`, and a `POST /zones/save` performs up to four of them in a row.
 
 Nothing here takes a lock. A rename makes a torn file impossible; it does not

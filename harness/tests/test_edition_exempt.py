@@ -20,6 +20,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from conftest import write_captions
+
 ALTO_NS = "http://www.loc.gov/standards/alto/ns-v4#"
 TEI_NS = "http://www.tei-c.org/ns/1.0"
 
@@ -48,9 +50,7 @@ def _fig_alto(root: Path, ref: str, blocks) -> None:
 
 
 def _readings(root: Path, blocks: dict[str, str]) -> None:
-    root.joinpath("data").mkdir(parents=True, exist_ok=True)
-    root.joinpath("data", "readings.md").write_text(
-        "".join(f"## {k}\n{v}\n\n" for k, v in blocks.items()), encoding="utf-8")
+    write_captions(root, blocks)
 
 
 def _tei(root: Path, ref: str, body: str) -> None:

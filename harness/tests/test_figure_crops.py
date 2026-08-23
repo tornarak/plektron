@@ -22,6 +22,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from conftest import write_captions
+
 ALTO_NS = "http://www.loc.gov/standards/alto/ns-v4#"
 
 
@@ -43,9 +45,7 @@ def _fig_alto(tmp_path: Path, ref: str, blocks) -> Path:
 
 
 def _readings(tmp_path: Path, blocks: dict[str, str]) -> None:
-    tmp_path.joinpath("data").mkdir(parents=True, exist_ok=True)
-    tmp_path.joinpath("data", "readings.md").write_text(
-        "".join(f"## {k}\n{v}\n\n" for k, v in blocks.items()), encoding="utf-8")
+    write_captions(tmp_path, blocks)
 
 
 def _raster(tmp_path: Path, ref: str, size=(2824, 3897)):
