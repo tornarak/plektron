@@ -866,3 +866,74 @@ doing what it says. The first version of it also hashed `Page` and `PrintSpace`,
 which are supposed to change, and duly aborted all 832 pages. A gate whose first run
 fails everything is either a real finding or a wrong gate, and the way to tell is to
 name what it should be blind to *before* looking at the count.
+
+## The geometry change was a transaction nobody had written down
+
+The entry above ends with the correction: cut the rasters from the layers, translate
+every stored coordinate. What it does not say is how that correction was *performed*,
+and the answer is a PEP 723 script, a hand `mv`, and a receipt written afterwards.
+
+The script could not be tested. `tools/extract_scans.py` declared `pymupdf` inline so
+that it ran in an environment with no harness in it, and the isolation was argued for
+here as a firewall: a script that cannot import the package cannot drift into being
+part of a loop. That argument was about a hazard nobody had met. What the isolation
+actually cost was the assertion that mattered — no test could say that a master placed
+at a known offset came back at that offset — and it cost it for the whole twenty months
+the wrong rasters were in use. **A firewall around the one piece of code with no second
+witness is not a firewall.** The cut is `harness/scans.py` now and
+`harness/tests/test_scans.py` holds the arithmetic: the placement, the snap, the
+integral paste, and each of the six refusals firing.
+
+**The manifest had no reader, so its numbers went unchecked.** `data/pdf_images.json`
+was written by the script and read by `figures.py` for one check; nothing printed it,
+so nothing compared it to what the docs said. Two errors sat in it undisturbed. The
+first is the one the entry above is about — "295.5 dpi", divided by the mediabox. The
+second is smaller and was still there when this group was built: the comment claiming
+`1-303`'s master is 2824×3866, among neighbours at 2781×3866. It is 2824×3897, which
+`scans census` prints in a table of five rows. Both numbers were precise, quotable and
+never read back off the thing they described.
+
+**The swap was the missing verb.** `--rasters DIR` wrote a sibling tree and a human
+was expected to move it into place; the coordinate migration was a second command; the
+farms were rebuilt by a third, if anyone remembered. Those are one operation — every
+box in six stores, two band ledgers, a cache, the painted farms and the review images
+describe pixels in a particular master's space — and performing it in three steps means
+each step can be the last one that ran. `scans swap` is the transaction: stage, verify,
+move, receipt.
+
+Three things fell out of writing it down that were not visible while it was three
+commands.
+
+**The shift is manifest-to-manifest, and `offset` is not it.** `offset` records where
+a master sat inside the legacy pdftoppm space. It is spent — the stores left that space
+— and a re-cut needs `new placement − old placement`, per page. Reaching for the field
+that is already in the file would re-apply a shift that had been applied once. The
+legacy migration is now that same function with its arguments defaulted, which is what
+keeps the tested path and the path that will actually run next from being two paths.
+
+**Part 2's hazard has a second form, and it aborts.** "No size check can distinguish
+'correctly untouched' from 'not yet reached'" was recorded above as a reason for the
+receipt. It is also a reason to refuse: where two manifests give the same page-box size
+and a *non-zero* shift, nothing in the file says which side of the shift it is on, and
+both available guesses corrupt something. The render→master migration never met this
+because every page that moved also changed size. The generalisation met it in its first
+test run, as a page that quietly reported "already".
+
+**The dependency set had to be composed, not listed.** A hand-written list of what a
+geometry change invalidates is a list that goes stale the day a farm is added. It is
+built from `migrate.STORES` and from the farms whose own `reads` names `scans/` — and
+that rule is doing work: it excludes the `select` leaf farms, which are links by
+filename and do not move under a shift, where a filter on `kind` would have thrown them
+away. The one thing it must *not* touch it also names: `gt/page-img/` and `gt/fig-img/`
+are a human's touch-ups cut from a raster, so a shift makes them stale, and nothing
+mechanical may rewrite an authored image. They are reported as work a human owes.
+
+**And `scans/` now says what made it.** Each PNG carries a `tEXt` chunk in
+`provenance.py`'s vocabulary naming the PDF it was cut from and that file's sha256, and
+the manifest digests the three sources; `scans audit` re-reads them. The sources live
+outside the repository behind a symlink and can be replaced with nothing noticing,
+which is the same class of thing as the wrong render: not a disaster, but a fact that
+must not be discovered afterwards. The chunk carries no timestamp and no absolute path,
+so two cuts of the same PDFs are byte-identical — which is what let the port be checked
+by cutting all 832 pages and diffing them against the tree in use. They matched exactly,
+as did every page entry of the regenerated manifest.

@@ -11,7 +11,7 @@ directories and intersecting them by eye.
 **The ladder is the pipeline, and it is a ladder rather than a set because each
 rung's input is the one below it**:
 
-    scanned    tools/extract_scans.py over pdfs/ — scans/
+    scanned    harness scans extract over pdfs/ — scans/
     zoned-mz   the segmenter ran                            — mz/zones/
     zoned-gt   a human has been through the zones           — gt/zones/
     ocr-mz     baselines + CATMuS ran                       — mz/ocr/

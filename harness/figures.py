@@ -34,8 +34,11 @@ from typing import NotRequired, TypedDict
 import numpy as np
 from lxml import etree
 
+from . import paths
 from .atomic import tmp_for, write_atomic
 from .refs import figure_number, norm_ref, parse_ref
+from .scans import PDF_IMAGES, pdf_images, pdf_images_for
+from .scans import rects_in as _scans_rects_in
 
 GRAPHIC = "GraphicZone"
 FIGDESC = "GraphicZone-FigDesc"
@@ -59,12 +62,6 @@ FIGDIR = "gt/fig"
 # which asks, or not at all.
 MZFIGDIR = "mz/fig"
 READINGS = "data/readings.md"
-
-# The source PDFs' own embedded-image geometry, built by `tools/extract_scans.py`.
-# Derived but tracked, `data/geo/`'s split: the sources are symlinks outside the
-# repository, so a clone cannot rebuild it, and the harness reads only what is
-# committed. See `pdf_images`.
-PDF_IMAGES = "data/pdf_images.json"
 
 #: The rule id `fig check` reports an unaccounted photograph under, and the key a
 #: page excuses it by in `gt/fig/_rule_exempt.json`. Declared in
@@ -604,7 +601,7 @@ def assemble(root: Path = Path("."), scratch: bool = False) -> dict:
     positives = synthesized = 0
     missing: list[str] = []
     for ref, split in sorted(splits.items(), key=lambda kv: parse_ref(kv[0])):
-        scan = root / "scans" / f"chukchi-{ref}.png"
+        scan = paths.scan_for(ref, root)
         if not scan.exists():
             missing.append(ref)
             continue
@@ -695,7 +692,7 @@ def predict(refs: list[str], root: Path = Path("."),
     for ref in refs:
         ref = norm_ref(ref)
         dest = alto_for(ref, root, MZFIGDIR)
-        scan = root / "scans" / f"chukchi-{ref}.png"
+        scan = paths.scan_for(ref, root)
         if not scan.exists():
             out.append({"ref": ref, "wrote": False, "note": "no raster"})
             continue
@@ -714,7 +711,7 @@ def _predict_one(ref, root, net, dev, model_path, sha, dest) -> dict:
 
     from .zones import build_alto
 
-    with Image.open(root / "scans" / f"chukchi-{ref}.png") as s:
+    with Image.open(paths.scan_for(ref, root)) as s:
         page = s.convert("RGB")
     seg = blla.segment(page, model=net, device=dev)
     blocks = [{"label": label,
@@ -1652,72 +1649,13 @@ def readings_for(ref: str, root: Path = Path("."),
     return {r["zone_suffix"]: r for r in rows.values() if r["ref"] == ref}
 
 
-def pdf_images(root: Path = Path(".")) -> dict[str, dict]:
-    """`data/pdf_images.json` — the source PDFs' own embedded-image geometry.
-
-    **The one witness to a figure's place that no model and no human produced.**
-    The scans are MRC-layered: a 1-bit master per page plus separate embedded JPEGs
-    for the photographs, and the scanner's own segmentation decided which pixels
-    were which. `tools/extract_scans.py` reads the placement out; this reads what it
-    wrote. Derived but tracked, on `data/geo/`'s precedent — `pdfs/` are symlinks
-    outside the repository, so a clone cannot rebuild it.
-
-    Per ref: `master` (`w`, `h`, `bpc`, `cs`, `rendered`), `offset` — the integer
-    shift from the legacy `pdftoppm` render space into master space, such that
-    `master = render - offset` — and `images`, each with `rect` in **master**
-    pixels.
-
-    Missing file is `{}`, `readings`' disposition and for its reason: a corpus that
-    has never run the extractor must show none rather than raise.
-    """
-    p = root / PDF_IMAGES
-    if not p.exists():
-        return {}
-    try:
-        data = json.loads(p.read_text(encoding="utf-8"))
-    except json.JSONDecodeError:
-        return {}
-    return {k: v for k, v in data.items() if not k.startswith("_")}
-
-
-def pdf_images_for(ref: str, root: Path = Path(".")) -> dict:
-    """One page's manifest entry, or `{}`."""
-    return pdf_images(root).get(norm_ref(ref), {})
-
-
-def _rects_in(entry: dict, page_w: int, page_h: int) -> tuple[list[list[int]], str]:
-    """This page's photo rects in the coordinate space a store of size `page_w` x
-    `page_h` is using, plus the name of that space.
-
-    **The manifest speaks master space and a store may not.** Until the rasters are
-    rebuilt, `gt/fig/` holds the legacy render's coordinates, which differ from the
-    master's by a translation of up to 35 px — enough to turn a correct box into a
-    finding. So the space is *decided from the file's own declared page box* rather
-    than assumed, which is `_scale_for`'s philosophy applied to translation instead
-    of to scale.
-
-    Three answers and no fourth: `master` when the box is the master's own size,
-    `render` when it is the legacy render's, and `""` when it is neither — for which
-    the caller reports `skip`. A guess here would be a comparison between two
-    coordinate systems presented as a fact about figures.
-
-    **The render size is read from the manifest, never computed as master + offset.**
-    That arithmetic is wrong by the right-hand margin — part 1's master is 2781x3866
-    at (21, 15) inside a 2824x3897 page, so it predicts 2802x3881 — and being wrong
-    here does not raise: it files every part 1 page as an unrecognised space and
-    reports `skip`, which reads as "nothing to say" about 176 pages that had
-    plenty. It did exactly that before this line was a lookup.
-    """
-    m = entry.get("master") or {}
-    mw, mh = m.get("w"), m.get("h")
-    rw, rh = entry.get("render") or [0, 0]
-    dx, dy = entry.get("offset") or [0, 0]
-    rects = [list(im["rect"]) for im in entry.get("images") or []]
-    if (page_w, page_h) == (mw, mh):
-        return rects, "master"
-    if (page_w, page_h) == (rw, rh):
-        return [[r[0] + dx, r[1] + dy, r[2] + dx, r[3] + dy] for r in rects], "render"
-    return [], ""
+# **The manifest lives in `scans.py`, and these are its names here.** It is a fact
+# about the rasters rather than about figures — `migrate`, `zones_ui` and the new
+# `scans` group all read it — and it sat in this module only because the figure
+# check was its first caller. Aliased rather than swept: one definition, one import
+# line, and every existing `figures.pdf_images` / `figures._rects_in` call site
+# keeps working, which is the whole of what a re-export is for.
+_rects_in = _scans_rects_in
 
 
 def _ruled(detail: str, exempt: dict, rule: str) -> str:

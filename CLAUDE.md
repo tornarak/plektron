@@ -72,7 +72,7 @@ scope and **must not be merged** — `test_lookalike_scope.py` holds them apart.
 
 # Source rasters
 
-**`scans/` is derived, not source** — `tools/extract_scans.py` **cuts** it from the
+**`scans/` is derived, not source** — `harness scans extract` **cuts** it from the
 PDFs' own layers, a bitonal master per page plus its photographs, never rendered.
 `docs/rasters.md` has the geometry, the coordinate migration, and what a rebuild
 must swap whole.
@@ -154,8 +154,8 @@ modules are open.
 root — all paths resolve relative to the cwd unless `--root` says otherwise.
 
 **Two tiers: a group, then an action** — `tei`, `ocr`, `proposal`, `zones`, `fig`,
-`views`, `lexicon`, `entity`, `geo`, `edition`, `find`, `corpus`, `agents`,
-`verbs`. The group names what the command touches; the action names what it does.
+`scans`, `views`, `lexicon`, `entity`, `geo`, `edition`, `find`, `corpus`,
+`agents`, `verbs`. The group names what it touches; the action what it does.
 
 **`harness/VERBS.md` is the reference** — one entry per action: what it does,
 what it reads, what it writes, what its exit code means, and every flag with

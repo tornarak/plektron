@@ -21,6 +21,7 @@ import unicodedata
 from pathlib import Path
 
 from .detectors import detect_all, join_broken_words
+from .paths import scan_for
 from .refs import (
     _FOLIO_RE,
     APPARATUS_ZONES,
@@ -703,7 +704,7 @@ def build_context(ref: str, root: Path = Path("."),
         # nothing in the pass should.
         "page_ref": ref,
         "root": str(root),
-        "page_image": str(root / "scans" / f"{stem}.png"),
+        "page_image": str(scan_for(ref, root)),
         # The generated page under review. **This replaces `catmus_draft`**, which
         # was the pass's input while it authored TEI from plaintext, and which had a
         # whole section of the contract defending against it: what arrived under a

@@ -1918,6 +1918,119 @@ CKPT          the .safetensors ketos wrote
 
 ---
 
+## scans
+
+The source rasters: the geometry the PDFs declare, what `scans/` actually holds,
+and the swap that installs a re-cut tree together with every coordinate keyed to
+it.
+
+**`scans/` is derived and it is `#mz`.** It was `pdftoppm -r 300` over the *page
+box* once, and the boxes these scans were wrapped in are arbitrary — part 1's
+master sits centred with 43 px of white padding at a *fractional* offset, part 2's
+was already the box and poppler smeared 247 grey values out of a 2-value source,
+and part 3's was jammed onto A4 so the render was **cropped** ~35 px a side. Part 3
+was segmented and OCR'd on that raster for twenty months. `extract` cuts from the
+PDF's own MRC layers instead: the 1-bit JBIG2 master, with the embedded JPEGs
+pasted back nearest at their integral scale.
+
+**The group exists because none of this was reachable.** The cut was
+`tools/extract_scans.py`, a script outside the package that no test could import,
+and the geometry it wrote to `data/pdf_images.json` had no verb that read it back
+— so "how big is this page, and in which coordinate space" was answered by
+`identify`, a PIL one-liner or a guess. The three reporting actions are that
+answer, and `space` is the standing version of a check that was previously made
+once, by hand, during a migration.
+
+**Provenance travels two ways.** The manifest's `_sources` block digests each
+source PDF, and every cut raster carries a PNG `tEXt` chunk naming the file it came
+out of and that file's sha256 — `harness/provenance.py`'s vocabulary (`harness`,
+`kind`, `step`, `label`, `version`, `in.*`), because a raster copied out of the
+tree leaves the manifest behind. Nothing in the chunk is a timestamp or an absolute
+path, so two runs over the same PDFs are byte-identical and the tree stays diffable
+against itself. `audit` re-reads the PDFs and makes a fuss if one changed.
+
+### scans extract [PP-NNN...]
+**Does** read the PDFs' own embedded layers and derive each page's geometry — the master, its placement, and every photograph on it — refusing any page it cannot read honestly. With `--rasters`, also cuts the tree. The geometry is derived **per page, never per part**: `1-303`'s master is 2824x3897 among 357 neighbours at 2781x3866, so a constant would be wrong there and silently.
+**Reads** `pdfs/`. **Writes** `data/pdf_images.json` on `--commit`; `DIR/` and `DIR/pdf_images.json` on `--rasters`. **Exit** 0 clean · 1 a page was refused.
+```
+--all         every page of every PDF in pdfs/
+--rasters DIR also cut the tree into DIR — a sibling, never scans/ — with the
+              manifest it was cut at alongside it. Needs --all
+--commit      write data/pdf_images.json. Needs --all
+--root --json --toon --pager
+```
+**Emits** `extract` (`pages`, `bitonal`, `composite`, `rendered`, `photographs`, `refused`, `manifest`, `rasters`) and `refused` where there is one.
+**Note** **`--commit` and `--rasters` require `--all`, and refs are report-only.** A manifest is a statement about the whole corpus; written from three refs it would be a file that looks complete and holds three pages, which is worse than no file. The tree has the sharper version: a three-page tree carries a three-page manifest, so it would pass `swap`'s audit against its own manifest and install itself as `scans/`.
+**Note** **it never writes `scans/`.** `swap` does. A raster is cheap and a bad one costs a re-run, but a raster in `scans/` whose geometry differs from the space the stores are keyed to is the defect this group exists to make impossible.
+**Note** the refusals, each of which was a way of producing something plausible: two full-page images, a master not at scale 1.0, a photo rect outside its master, a non-integral paste, a decode whose size disagrees with the placement, and **a page named in `MASTERLESS` that turns out to carry a master**. That last is new. The set of three RGB leaves was asserted in two files and checked in neither, and it is exactly the set of pages whose two coordinate spaces differ by a *scale* — so a wrong member is every coordinate on that page wrong by a factor.
+**Note** the `render` field is a **historical** number: the size poppler produced, recorded so that a store's old coordinates can still be recognised. It is not master + offset — that arithmetic misses by the right-hand margin — and it is read, never computed.
+**Note** **serial, and there is no `--jobs`.** The per-page cost is a PNG encode, which is the GIL-releasing work `parallel.pmap` is for, but a `pymupdf.Document` is not safe across threads and a per-PDF pool is three workers for three files of very different lengths.
+
+### scans swap DIR
+**Does** install a cut tree, and move everything keyed to its geometry with it: the six coordinate stores translated, the band ledgers y-shifted, the ink cache dropped, the painted farms and the review working set discarded. Reports by default; the report is the per-page shift between the two manifests, what each store would do, and what would be discarded.
+**Reads** `DIR/`, `DIR/pdf_images.json`, `data/pdf_images.json`, the stores. **Writes** on `--commit`: `scans/`, the stores, `data/pdf_images.json`, `data/_migrated.json`. **Exit** 0 clean · 1 refused, nothing moved.
+```
+--commit  perform it
+--root --json --toon --pager
+```
+**Emits** `swap`, `shifts` (pages whose space changed), `stores`, `dependents`, `touched_up`, and `refusals` where there are any.
+**Note** **the shift is manifest-to-manifest, not the manifest's `offset`.** That field records where a master sat in the legacy pdftoppm space and is *spent* — the stores left that space and `data/_migrated.json` is the receipt. What a re-cut needs is `new placement − old placement`, per page. Reading `offset` would re-apply a shift already applied once.
+**Note** **what "atomic" can honestly mean across six trees.** Not one syscall. Every translation is computed and digest-checked before anything is written, any refusal aborts the whole run with nothing moved, and the receipt records which manifest the stores are now in. That last is not ceremony: a zero shift leaves a page byte-identical, so "correctly untouched" and "not yet reached" cannot be told apart by looking. It is part 2's lesson — 2550x3525 before and after — generalised.
+**Note** **where the two spaces are the same size and the shift is not zero, the run aborts.** No page box can say which side of the shift a file is on, and both guesses are wrong: "already" leaves every coordinate stale, "source" may shift a page twice. The render→master migration never met this because every page that moved also changed size.
+**Note** **the dependents are composed from what already declares itself** — `migrate.STORES` for coordinates, and the farms whose own `reads` names `scans/` for pixels. That rule *excludes* the `select` leaf farms (`scans/plate/` and the rest), which are links by filename and unaffected by a shift; a filter on `kind` would have discarded them for nothing. And it names `review/*/crops` and its siblings rather than `review/*/`, which holds tracked adjudications.
+**Note** **`gt/page-img/` and `gt/fig-img/` are reported and never touched.** They are a human's touch-ups cut from a raster, so a geometry change makes them stale — but nothing mechanical may rewrite an authored image, and a tool that regenerated one would overwrite the only copy of work no script can reproduce. The report names them as work a human owes.
+**Note** the tree must carry `pdf_images.json` or it is refused: a directory of PNGs with no geometry cannot be placed, and naming a space for it would be the guess this group exists to refuse.
+
+### scans info [PP-NNN...]
+**Does** one page's geometry from the manifest and from the file on disk, with **whether the two agree** — master size, bit depth, colourspace, the placement, the recorded legacy render size, the leaf kind, pixels, mode, bytes, and what the raster says it was cut from. Every photograph's rect, native size, paste scale and ppi follow in their own table.
+**Reads** `data/pdf_images.json`, `scans/`, `gt/zones/`'s split lists. **Writes** — **Exit** 0.
+```
+--all  every page the manifest holds
+--root --json --toon --pager
+```
+**Emits** `info`, and `photos` where the pages named carry any.
+**Note** **this is the verb instead of `identify` or a PIL one-liner.** Neither can see the manifest, and the manifest is where a photograph's own resolution, the placement and the source digest live. The two halves are in one table on purpose: `agrees` is a fact neither source can state alone.
+**Note** the photographs are their own table because a list-valued field degrades the whole outer table to the verbose form — `emit.py`'s rule.
+**Note** `cut_from`/`cut_sha` are empty for a raster cut before the provenance chunk existed, which today is all of them.
+
+### scans census [PP-NNN...]
+**Does** the counts: bitonal, composite and rendered-at-own-size pages, photographs carried, master sizes and placements by population, and the bytes on disk.
+**Reads** `data/pdf_images.json`, `scans/`. **Writes** — **Exit** 0.
+```
+--all  every page the manifest holds
+--root --json --toon --pager
+```
+**Emits** `census`, `masters`, `offsets`.
+**Note** **the counts are written down nowhere else, deliberately.** `CLAUDE.md` refuses to state them because a number in a file nothing regenerates goes stale; this is the command that answers instead. Today: 832 pages, 593 bitonal, 236 composite carrying 371 photographs, 3 rendered at their own size, 186 MB.
+**Note** the `offsets` table is the shape of the whole problem in three rows — 358 pages at (21, 15), 272 at (0, 0), 202 at (−35, −9). One scan, three arbitrary paper sizes.
+
+### scans audit [PP-NNN...]
+**Does** the manifest against the tree on disk, and the manifest against its own sources: a page in one and not the other, a size that disagrees, a **mode** that does, a raster with no manifest entry, a source PDF whose digest has changed, and a raster whose embedded provenance names a different source than the manifest records.
+**Reads** `data/pdf_images.json`, `scans/`, `pdfs/`. **Writes** — **Exit** 0 clean · 1 a gating finding.
+```
+--all  every page the manifest holds
+--root --json --toon --pager
+```
+**Emits** `audit` (`checked`, `findings`, `gating`) and `findings`.
+**Note** **`gates` is a column, not a filter, and the split is the point.** A size or mode mismatch is a disagreement and gates. A source PDF this machine cannot see is *unverifiable*, not wrong — every worktree's `pdfs/` links dangle, as does a fresh clone's — and a raster cut before the provenance chunk existed is unwitnessed rather than defective. An audit that failed on those is one people learn to run with `|| true`.
+**Note** **mode is checked against what the source is**, not against a list of modes seen: a bitonal page that came back 8-bit means something resampled it, which is the whole failure the tree was re-cut to undo.
+**Note** `unwitnessed` is **one row with a count**, not one per page. A tree cut before the chunk existed is entirely unwitnessed, and 832 identical rows would bury every finding that is about a page — but the count is stated, because a silence there would read as "every raster is witnessed".
+**Note** `swap` runs this same function over the tree it is about to install, against the manifest that tree carries. One check, two callers: a finding that read differently depending on who asked would be two checks.
+
+### scans space [PP-NNN...]
+**Does** which coordinate space each store's pages declare, read from each file's own page box against the manifest: `master`, the legacy `render`, or neither.
+**Reads** the six coordinate stores, `data/pdf_images.json`. **Writes** — **Exit** 0 clean · 1 a page is not in master space.
+```
+--all  every page of every coordinate store
+--root --json --toon --pager
+```
+**Emits** `space` (`files`, then a count per space) and `not_master`.
+**Note** **this gates, where measurement usually does not.** The migration into master space is complete and has a receipt, so a page still declaring the old box will silently mis-place every coordinate on it. Reporting that at exit 0 would file a fault as a fact.
+**Note** it walks `migrate.STORES` — the six real stores. `ocr/` and `zones/` are absent on purpose: they are the read views, and a view blends a ratified page and an unratified one under one name.
+**Note** three answers and no fourth. `master` when the box is the master's own size, `render` when it is the recorded legacy size, and neither otherwise — a guess here would be a comparison between two coordinate systems presented as a fact.
+
+---
+
 ## views
 
 The derived trees git does not carry: the read views over the paired stores

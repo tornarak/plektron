@@ -1,7 +1,7 @@
 """The source PDF's own photograph placements, and the check built on them.
 
 The scans are MRC-layered: a 1-bit master per page plus separate embedded JPEGs
-for the photographs. `tools/extract_scans.py` writes those placements to
+for the photographs. `harness scans extract` writes those placements to
 `data/pdf_images.json`, and `figures.fig_ink` compares them against `gt/fig/`.
 
 **The rule is overlap, and the tests here exist mostly to keep it overlap.** It was

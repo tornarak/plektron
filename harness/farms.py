@@ -130,14 +130,14 @@ FARMS = (
     Farm("fig-crops", FIG_CROPS, "raster", (SCANS, "gt/fig"),
          "harness fig crops --all", "membership"),
     # Reported, never built here. `scans/` has no builder in this repo — it is
-    # `tools/extract_scans.py` over `pdfs/`, whose three entries are symlinks
+    # `harness scans extract` over `pdfs/`, whose three entries are symlinks
     # pointing outside the repo, so on a clone the rasters cannot be regenerated at
     # all. The script also runs under `uv run --script` with no harness in its
     # environment, which is what keeps a PDF reader out of the package. `train/` is
     # scratch that `zones assemble` clobbers by design; rebuilding it out of band
     # would be preparing a training run nobody asked for.
     Farm("scans", SCANS, "source", (),
-         "uv run --script tools/extract_scans.py --commit --rasters DIR",
+         "harness scans extract --all --rasters DIR && harness scans swap DIR",
          "none"),
     Farm("train", TRAIN_WORK, "scratch", (),
          "harness zones assemble", "none"),

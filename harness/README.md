@@ -16,7 +16,7 @@ the project's rules, `CLAUDE.md` governs; for the character inventory,
 
 | path | what | written by |
 |---|---|---|
-| `scans/` | 832 rasters at 300 dpi, bitonal where the page has no photograph. **Derived** from `pdfs/`, not in git | `tools/extract_scans.py` |
+| `scans/` | 832 rasters at 300 dpi, bitonal where the page has no photograph, each carrying a PNG `tEXt` chunk naming the PDF it was cut from. **Derived** from `pdfs/`, not in git | `scans extract --all --rasters DIR`, then `scans swap DIR` |
 | `ocr/` | the **read view** over both OCR stores — symlinks, the human file always winning. Derived, ignored; nothing rebuilds it automatically, so `ocr pages --show-store` reports what each link *actually* reaches | `views build ocr`, and `ocr predict` for the page it wrote |
 | `gt/ocr/` | human ground truth — the pages a reader has been through and an adjudicator has signed | `ocr restore --commit` |
 | `gt/lines/` | the **corrections overlay**: boxes a human drew over ink the segmenter left unboxed, per page, in raster coordinates, `+ _ink_exempt.json`. Folded into every page's lines by `lines.page_lines`, so a correction is reachable on the pages that have no ground truth at all | `ocr edit` (geometry), `ocr restore --commit` (text) |
@@ -32,7 +32,7 @@ the project's rules, `CLAUDE.md` governs; for the character inventory,
 | `gt/page-img/` | an editor's own version of a whole leaf, `gt/fig-img/`'s doctrine one level up. Resolved by `edition_ui.leaf_source`, **reading view only and ruled leaves only** (any `LEAF_KINDS` member, not `map` alone). **Derived but tracked**, `data/geo/`'s split: `1-361`'s master is ChaiNNer work no script here rebuilds | by hand |
 | `mz/page-img/` | what a leaf is *delivered* as — an anti-aliased linework PNG over a colour JPEG at a third scale, Mixed Raster Content. Derived and gitignored, `mz/tei/`'s disposition; `edition_ui.leaf_layers` returns both or neither | `tools/build_leaf_layers.py` |
 | `data/geo/` | the compiled shape store the atlas draws: watersheds, language areas, coastline, `+ index.json SOURCES.md`. **Derived but tracked** — its sources are outside the repository, so a clone cannot rebuild it | `tools/build_geo.py --commit` |
-| `data/pdf_images.json` | the source PDFs' own embedded-image geometry: each page's master, the photographs on it, and the shift from the legacy render space. **Derived but tracked**, `data/geo/`'s split and for its reason. The one witness to a figure's place that no person and no model produced | `tools/extract_scans.py --commit` |
+| `data/pdf_images.json` | the source PDFs' own embedded-image geometry: each page's master, the photographs on it, the shift from the legacy render space, and `_sources`, which digests the PDFs themselves. **Derived but tracked**, `data/geo/`'s split and for its reason. The one witness to a figure's place that no person and no model produced | `scans extract --all --commit` |
 | `review/<ref>/` | `proposal.json` + `decision.json` authored; crops/sheets/zoom/html derived | `ocr review`, `ocr crops`, `ocr zoom` |
 | `scans/w-figs-blotted/` | training rasters: figures painted **white**. Derived, ignored; the 580 figure-less pages are symlinks | `zones blot`, `views build w-figs-blotted` |
 | `scans/w-figs/` | the raster of every page carrying a `gt/fig/` ALTO — a selection, not a view. Derived, ignored | `views build w-figs` |
@@ -75,8 +75,8 @@ predicted polygon fails the fixed-measure width check by construction.
 ## Modules
 
 **`cli/`** — the two-tier command tree, **click**, one module per group: `_tei _ocr
-_proposal _zones _fig _lexicon _entity _geo _edition _find _corpus _views _agents
-_verbs`, each exposing `register(cli)` and
+_proposal _zones _fig _lexicon _entity _geo _edition _find _corpus _scans _views
+_agents _verbs`, each exposing `register(cli)` and
 one `run_*` handler per action, which returns the exit code. `__init__.py` holds
 `main`, `build_parser` (separate so the surface test can walk the tree without
 running anything), and the rename trap. `_common.py` holds the declaration

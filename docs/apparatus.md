@@ -166,7 +166,7 @@ must fail rather than go stale when the leaf is re-boxed.
 
 The scans are MRC-layered — a bitonal master plus separate embedded JPEGs — so the
 scanner recorded, when the book was digitised, which pixels it took for photograph
-and which for type. `tools/extract_scans.py` writes those rects to
+and which for type. `harness scans extract` writes those rects to
 `data/pdf_images.json`, and **that is a witness neither a person nor a model
 produced**. `figures.fig_ink` compares it against `gt/fig/` on the model of the
 zone track's uncovered ink, with two departures each worth its line.
@@ -405,7 +405,7 @@ quietly honoured. `docs/edition.md` has the rest.
 ### A leaf is delivered as two layers, and neither is the artefact
 
 `1-361`, part 1's foldout ethnographic map, is the leaf the store was built for.
-`tools/extract_scans.py` writes it as one of three masterless RGB leaves — a
+`harness scans extract` writes it as one of three masterless RGB leaves — a
 single 150 ppi photograph at its own size, 1833x1994, which is thin for a sheet
 carrying several hundred toponyms in 6 pt. The master in `gt/page-img/` is a 2x
 ChaiNNer upscale of it, hand-repaired afterwards where `2_MangaScaleV3`

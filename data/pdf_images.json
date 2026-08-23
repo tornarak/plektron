@@ -1,5 +1,25 @@
 {
- "_about": "Derived but tracked, on data/geo/'s precedent: pdfs/ are symlinks outside the repository, so a clone cannot rebuild this. Built by tools/extract_scans.py --commit. Per page: `master` is the full-page image scans/ is cut from, `offset` is the integer shift from the legacy pdftoppm render space into master space (master = render - offset), and `images` are the embedded photographs with `rect` in MASTER pixels, rounded outward. `rendered: true` marks the three masterless RGB pages, which are rasterised at 300 dpi as before and do not move.",
+ "_about": "Derived but tracked, on data/geo/'s precedent: pdfs/ are symlinks outside the repository, so a clone cannot rebuild this. Built by `harness scans extract --all --commit`. Per page: `master` is the full-page image scans/ is cut from, `offset` is the integer shift from the legacy pdftoppm render space into master space (master = render - offset), and `images` are the embedded photographs with `rect` in MASTER pixels, rounded outward. `rendered: true` marks the three masterless RGB pages, which are rasterised at 300 dpi as before and do not move. `_sources` digests the PDFs these pages were cut from, and `harness scans audit` re-reads them: a source that changed underneath this file is a finding, not a silence.",
+ "_sources": {
+  "1": {
+   "file": "The Chukchee, Part I - Material Culture - Waldemar Bogoras.pdf",
+   "sha256": "5bc5221fe3963af71a05c6e934acdf0a97122d8183d08d5f032b5917ce880d9d",
+   "bytes": 25098596,
+   "pages": 362
+  },
+  "2": {
+   "file": "The Chukchee, Part II - Religion - Waldemar Bogoras.pdf",
+   "sha256": "7e03e7e8b5ac3b76caac838b2ec4af9d0b4b71b94a56080343b7aa563125abc0",
+   "bytes": 16254185,
+   "pages": 268
+  },
+  "3": {
+   "file": "The Chukchee, Part III - Social Organizati - Waldemar Bogoras.pdf",
+   "sha256": "2a54cfecf8038c7e5e9e84ac19e2774027e64b8ff5d7c5a611d8f8c777279a9d",
+   "bytes": 11481765,
+   "pages": 202
+  }
+ },
  "1-001": {
   "master": {
    "w": 1391,

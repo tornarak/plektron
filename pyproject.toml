@@ -24,6 +24,15 @@ dependencies = [
     # which could not type an array it had no declared package for.
     "numpy>=2.4",
     "pillow>=11.0",
+    # **The PDF layer reader**, for `harness scans extract`. It was declared inline
+    # (PEP 723) by `tools/extract_scans.py`, which ran under `uv run --script` in an
+    # environment with no harness in it — the isolation was argued for at the time
+    # as a firewall keeping a PDF out of any loop. What it actually bought was a
+    # cut nothing could test and a manifest nothing read back, and part 3 was read
+    # below source resolution for twenty months underneath it. The reader is a
+    # dependency like the rest now; what keeps a PDF out of the passes is that no
+    # pass calls the one verb that opens one.
+    "pymupdf>=1.24",
     "tensorboard>=2.21.0",
     "toon-format>=0.9.0b1",
     "cloup>=3.1.0",

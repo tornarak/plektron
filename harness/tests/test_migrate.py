@@ -337,4 +337,4 @@ def test_an_abort_anywhere_stops_the_receipt(tmp_path):
 
 def test_no_manifest_is_an_error_and_not_a_silent_no_op(tmp_path):
     rep = migrate.run(tmp_path, commit=True)
-    assert "extract_scans" in rep["error"]
+    assert "scans extract" in rep["error"]

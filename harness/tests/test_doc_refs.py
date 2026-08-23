@@ -146,6 +146,24 @@ EXPECTED_ABSENT = {
     # Declared, derived, gitignored, and currently empty: no machine figure
     # predictions have been kept. `mz/fig` has no view over it either.
     "mz/fig",
+    # **Replaced by the `scans` group and named in prose because they were.**
+    # `extract_scans.py` cut the rasters from a PEP 723 script no test could
+    # import, and `migrate_to_master.py` was the driver for `harness/migrate.py`;
+    # `harness scans extract` and `harness scans swap` are both now, with the
+    # arithmetic under test in `test_scans.py`. `docs/decisions.md` carries why
+    # the isolation cost more than it bought, `docs/rasters.md` and
+    # `harness/README.md` point at what replaced them, and none of those
+    # sentences can be written without naming the file that is gone.
+    "tools/extract_scans.py",
+    "tools/migrate_to_master.py",
+    # **A forward reference, and the only kind this list should ever hold.**
+    # `harness/scans.py` builds its provenance map in `provenance.py`'s vocabulary
+    # rather than inventing a second spelling of it, and says so — but that module
+    # landed on main after this branch was cut, so the reference is true of where
+    # this is going and not of where it is. **Delete this entry on the merge**, at
+    # which point the gate checks it like any other path; if it is still here and
+    # `harness/provenance.py` exists, the entry is the stale thing.
+    "harness/provenance.py",
     # Derived raster farms, gitignored like every other. Not to be confused with
     # `scans/w-figs-blotted/`, which exists and is a different farm: `farms.py`
     # declares FIGS_BLOT (the segmenter's training rasters, figures painted

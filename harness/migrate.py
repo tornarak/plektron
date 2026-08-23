@@ -1,7 +1,7 @@
 """Move every stored coordinate from the legacy render's space into the master's.
 
 `scans/` was `pdftoppm -r 300` over the *page box*, and the page boxes the scans
-were wrapped in are arbitrary. `tools/extract_scans.py` cuts the rasters from the
+were wrapped in are arbitrary. `harness scans extract` cuts the rasters from the
 embedded master instead, which changes each page's pixel dimensions — and every
 coordinate in `gt/zones/`, `gt/ocr/`, `gt/fig/`, `gt/lines/`, `mz/zones/` and
 `mz/ocr/` has to follow.
@@ -88,21 +88,73 @@ def _fmt(value: float, source: str) -> str:
     return f"{value:.1f}" if "." in source else str(int(round(value)))
 
 
+def render_space(manifest: dict[str, dict]) -> dict[str, dict]:
+    """The legacy pdftoppm space, expressed as a manifest.
+
+    **This is what makes the original migration a special case rather than a
+    separate code path.** A store in render space is a store whose master is the
+    page box and whose placement is the origin — so the render space *is* a
+    manifest, with `master` set to the recorded render size and `offset` at
+    `(0, 0)`, and "render -> master" is then just one manifest to another. Writing
+    it this way is not tidiness: it means the corpus's one real migration and every
+    future re-cut are checked by the same code, rather than the tested path being
+    the one that will never run again.
+    """
+    out = {}
+    for ref, e in manifest.items():
+        w, h = e.get("render") or [0, 0]
+        m = e.get("master") or {}
+        out[ref] = {"master": {"w": w, "h": h, "rendered": bool(m.get("rendered"))},
+                    "offset": [0, 0], "render": [w, h], "images": []}
+    return out
+
+
+def plan(old: dict[str, dict], new: dict[str, dict]) -> dict[str, dict]:
+    """Per ref: the page boxes either side, the shift between them, and `scaled`.
+
+    **The shift is the difference of two placements, not either manifest's
+    `offset`.** `offset` records where a master sat inside the *legacy* render, and
+    it is spent — the stores left that space and `data/_migrated.json` says so.
+    What a store needs when the rasters are re-cut is `new placement - old
+    placement`, per page, because a coordinate is at `x` in the old master, at
+    `x + old_offset` in the shared page space both manifests describe, and at
+    `x + old_offset - new_offset` in the new one. Reading `offset` directly would
+    re-apply a shift that has already been applied once.
+
+    `scaled` marks the pages where the two spaces differ by a **ratio** rather than
+    a translation — the masterless RGB leaves, whose own ppi is whatever the
+    photograph was. A translation cannot express that, so `migrate_file` refuses
+    such a page if it carries any coordinate at all rather than moving it wrongly.
+    """
+    out = {}
+    for ref, n in new.items():
+        o = old.get(ref)
+        nm = n.get("master") or {}
+        to = (nm.get("w", 0), nm.get("h", 0))
+        if o is None:
+            # A page the old manifest never had. Nothing of ours is in its space, so
+            # there is nothing to translate — but it is reported, not assumed away.
+            out[ref] = {"from": to, "to": to, "shift": (0, 0), "scaled": False,
+                        "new": True}
+            continue
+        om = o.get("master") or {}
+        frm = (om.get("w", 0), om.get("h", 0))
+        ox, oy = o.get("offset") or [0, 0]
+        nx, ny = n.get("offset") or [0, 0]
+        # Two spaces are related by a scale, not a translation, when either side is a
+        # page taken at its own ppi and the sizes disagree. Both sides are checked:
+        # a page that stops being masterless is as much a ratio as one that starts.
+        scaled = ((bool(om.get("rendered")) or bool(nm.get("rendered")))
+                  and frm != to)
+        out[ref] = {"from": frm, "to": to, "shift": (nx - ox, ny - oy),
+                    "scaled": scaled, "new": False}
+    return out
+
+
 def shifts(root: Path = Path(".")) -> dict[str, tuple[int, int]]:
-    """Every page's `(dx, dy)`, such that `master = render - (dx, dy)`."""
+    """Every page's legacy `(dx, dy)`, such that `master = render - (dx, dy)`."""
     return {ref: tuple(e.get("offset") or [0, 0])
             for ref, e in pdf_images(root).items()}
-
-
-def sizes(root: Path = Path(".")) -> dict[str, dict[str, tuple[int, int]]]:
-    """Every page's `render` and `master` page-box sizes, from the manifest."""
-    out = {}
-    for ref, e in pdf_images(root).items():
-        m = e.get("master") or {}
-        out[ref] = {"render": tuple(e.get("render") or [0, 0]),
-                    "master": (m.get("w", 0), m.get("h", 0)),
-                    "rendered": bool(m.get("rendered"))}
-    return out
 
 
 def text_digest(tree) -> str:
@@ -231,9 +283,13 @@ def page_box(tree) -> tuple[int, int]:
         return (0, 0)
 
 
-def migrate_file(path: Path, shift: tuple[int, int],
-                 size: dict[str, tuple[int, int]], commit: bool) -> dict:
-    """One ALTO. Reports rather than raises; the caller decides what gates."""
+def migrate_file(path: Path, step: dict, commit: bool) -> dict:
+    """One ALTO, from one manifest's space into another's.
+
+    `step` is one entry of `plan`: the page box either side, the shift between them,
+    and whether the two are related by a scale. Reports rather than raises; the
+    caller decides what gates.
+    """
     ref = norm_ref(path.stem)
     rec = {"ref": ref, "path": str(path), "action": "", "clamped": 0, "why": ""}
     try:
@@ -244,41 +300,55 @@ def migrate_file(path: Path, shift: tuple[int, int],
         return rec
 
     box = page_box(tree)
-    if box == size["master"]:
+    # **Where the two spaces are the same size and the shift is not zero, the page
+    # box cannot say which of them this file is in**, and neither can anything else
+    # in the file. Refused, because both of the available guesses are wrong: calling
+    # it "already" leaves every coordinate on the page unmoved and silently stale,
+    # and calling it "source" shifts a page that may already have been shifted. This
+    # is part 2's hazard — 2550x3525 before and after — arriving on a page that
+    # actually has to move, which the render->master migration never faced because
+    # every page that moved also changed size.
+    if step["from"] == step["to"] and step["shift"] != (0, 0):
+        rec["action"] = "ABORTED"
+        rec["why"] = (f"page box {box[0]}x{box[1]} is both the source and the "
+                      f"target size, and the shift is {step['shift']}: no box can "
+                      "say which side of it this file is on")
+        return rec
+    if box == step["to"]:
         rec["action"] = "already"
         return rec
-    if box != size["render"]:
+    if box != step["from"]:
         # Neither space. Refused rather than translated on the assumption that it
         # must have been the old one — that assumption is how a store ends up
         # shifted twice.
         rec["action"] = "ABORTED"
-        rec["why"] = (f"page box {box[0]}x{box[1]} is neither the render "
-                      f"{size['render']} nor the master {size['master']}")
+        rec["why"] = (f"page box {box[0]}x{box[1]} is neither the source "
+                      f"{step['from']} nor the target {step['to']}")
         return rec
 
-    # **A masterless page's two spaces differ by a scale, not a translation.** The
-    # three RGB leaves are one 150 ppi photograph each, where the legacy render
-    # doubled them; moving a coordinate between those spaces would need a ratio,
-    # which this module does not do and should not start doing for three pages.
-    # All three are fully exempt and hold no coordinate at all, so setting the page
-    # box and shifting nothing is exactly right — but that is a fact about this
-    # corpus, checked here rather than relied upon.
+    # **Where the two spaces differ by a scale, a translation is the wrong
+    # operation.** The three masterless RGB leaves are one 150 ppi photograph each,
+    # where the legacy render doubled them; moving a coordinate between those spaces
+    # would need a ratio, which this module does not do and should not start doing
+    # for three pages. All three are fully exempt and hold no coordinate at all, so
+    # setting the page box and shifting nothing is exactly right — but that is a
+    # fact about this corpus, checked here rather than relied upon.
     # `Page` and `PrintSpace` are excluded for `structural_digest`'s reason, and
     # this is the second time that distinction has had to be made: they *state* the
     # raster's size rather than describe a box on it, so `PrintSpace/@HPOS` is not
     # a coordinate and counting it made all three abort as "carries coordinates".
-    if size.get("rendered") and any(
+    if step.get("scaled") and any(
             etree.QName(el).localname not in ("Page", "PrintSpace")
             and (el.get("HPOS") is not None or el.get("POINTS") is not None
                  or el.get("BASELINE") is not None)
             for el in tree.iter()):
         rec["action"] = "ABORTED"
-        rec["why"] = ("masterless page carries coordinates; render and master "
+        rec["why"] = ("masterless page carries coordinates; the two spaces "
                       "differ by a scale and this migration only translates")
         return rec
 
     before = (text_digest(tree), structural_digest(tree))
-    out = migrate_tree(tree, shift[0], shift[1], size["master"])
+    out = migrate_tree(tree, step["shift"][0], step["shift"][1], step["to"])
     after = (text_digest(tree), structural_digest(tree))
     if before != after:
         rec["action"] = "ABORTED"
@@ -369,13 +439,23 @@ def read_receipt(root: Path) -> dict:
 
 
 def run(root: Path = Path("."), stores: tuple[str, ...] = STORES,
-        refs: list[str] | None = None, commit: bool = False) -> dict:
-    """Translate every store. Report by default; `--commit` writes."""
-    manifest = pdf_images(root)
+        refs: list[str] | None = None, commit: bool = False,
+        old: dict | None = None, new: dict | None = None) -> dict:
+    """Translate every store from one manifest's space into another's.
+
+    **The default pair is the historical one** — the legacy render space into the
+    committed manifest's masters — so the corpus's one real migration is this
+    function with its arguments left out. `scans swap` passes the pair explicitly:
+    the committed manifest as `old`, the cut tree's as `new`. One code path, and the
+    special case is a default rather than a branch.
+    """
+    manifest = pdf_images(root) if new is None else new
     if not manifest:
-        return {"error": f"no {PDF_IMAGES}; run tools/extract_scans.py --commit",
+        return {"error": f"no {PDF_IMAGES}; run `harness scans extract --all "
+                         "--commit`",
                 "files": [], "bands": [], "dropped": [], "receipt": ""}
-    sh, sz = shifts(root), sizes(root)
+    source = render_space(manifest) if old is None else old
+    steps = plan(source, manifest)
     want = {norm_ref(r) for r in refs} if refs else None
 
     files, corr_pages = [], []
@@ -384,16 +464,17 @@ def run(root: Path = Path("."), stores: tuple[str, ...] = STORES,
             ref = norm_ref(p.stem)
             if want is not None and ref not in want:
                 continue
-            if ref not in sh:
+            if ref not in steps:
                 files.append({"ref": ref, "path": str(p), "action": "ABORTED",
                               "clamped": 0, "why": "no manifest entry"})
                 continue
-            rec = migrate_file(p, sh[ref], sz[ref], commit)
+            rec = migrate_file(p, steps[ref], commit)
             rec["store"] = store
             files.append(rec)
             if store == "gt/lines" and rec["action"] == "migrated":
                 corr_pages.append(ref)
 
+    sh = {ref: s["shift"] for ref, s in steps.items()}
     bands = migrate_bands(root, sh, commit)
 
     dropped = []
@@ -410,15 +491,15 @@ def run(root: Path = Path("."), stores: tuple[str, ...] = STORES,
     if commit and not aborted:
         doc = read_receipt(root)
         doc.setdefault("_about", (
-            "Which pages have been moved from the legacy pdftoppm render space "
-            "into the master's. Part 2 does not move, so its pages are recorded "
-            "here as a shift of [0, 0] rather than omitted — the whole point is "
-            "that 'correctly untouched' and 'not yet reached' must be "
-            "distinguishable, and page dimensions cannot tell them apart."))
+            "Which manifest's space each page's stored coordinates are in, and the "
+            "shift that put them there. A page whose shift is [0, 0] is recorded "
+            "rather than omitted — the whole point is that 'correctly untouched' "
+            "and 'not yet reached' must be distinguishable, and page dimensions "
+            "cannot tell them apart."))
         for f in files:
             if f["action"] in ("migrated", "already"):
-                doc[f["ref"]] = {"shift": list(sh[f["ref"]]),
-                                 "size": list(sz[f["ref"]]["master"])}
+                doc[f["ref"]] = {"shift": list(steps[f["ref"]]["shift"]),
+                                 "size": list(steps[f["ref"]]["to"])}
         p = receipt_path(root)
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text(json.dumps(doc, indent=1) + "\n", encoding="utf-8")

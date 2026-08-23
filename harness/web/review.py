@@ -133,7 +133,7 @@ def scan(request: Request, ref: str):
     r = _in_queue(request, ref)
     return send_file(request, raster_path(r, _root(request)),
                      missing=f"no raster for {r} — scans/ is derived; render it "
-                             "with tools/extract_scans.py over pdfs/")
+                             "with harness scans extract over pdfs/")
 
 
 @router.get("/crop/{ref}/{name}")

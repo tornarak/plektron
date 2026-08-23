@@ -68,6 +68,7 @@ from functools import lru_cache
 from pathlib import Path
 
 from . import farms as F
+from . import paths as P
 from . import zones as Z
 from .atomic import tmp_for
 from .refs import norm_ref, parse_ref
@@ -486,7 +487,7 @@ def predict_skip(ref: str, root: Path = Path("."), force: bool = False,
         return "ruled not a text page"
     if not force and has_text(ref, root, MZDIR):
         return "already recognized"
-    if not (root / "scans" / f"chukchi-{ref}.png").exists():
+    if not P.scan_for(ref, root).exists():
         return "no raster"
     if not Z.read_zones(ref, root, store=Z.VIEWDIR):
         return "no zones (run `harness zones predict`)"

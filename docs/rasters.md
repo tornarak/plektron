@@ -6,8 +6,11 @@ Moved out of `CLAUDE.md` whole; headings kept verbatim so citations resolve.
 
 AMNH Digital Library PDFs (`M11Pt01–03`).
 
-**`scans/` is derived, not source.** It is **`uv run --script tools/extract_scans.py
---commit --rasters DIR`** over `pdfs/`, so it is regenerable and stays out of git.
+**`scans/` is derived, not source.** It is **`harness scans extract --all --rasters
+DIR`** over `pdfs/`, then **`harness scans swap DIR`**, so it is regenerable and
+stays out of git. Every page carries a PNG `tEXt` chunk naming the PDF it was cut
+from and that file's sha256, and the manifest's `_sources` block digests the PDFs
+themselves — `harness scans audit` re-reads them and says so if one has changed.
 The PDFs are MRC-layered: a **1-bit JBIG2 master** for each page's type, plus
 separate embedded JPEGs for the photographs. The rasters are cut from those layers
 rather than rendered from the page.
@@ -66,15 +69,18 @@ can tell "correctly untouched" from "not yet reached".
 harness is offline and deterministic over what is committed. None of it is part
 of a loop.
 
-`extract_scans.py` is the live one: it builds `scans/` and `data/pdf_images.json`
-from the PDFs' embedded layers. It declares `pymupdf` **inline (PEP 723)**, as
-`build_geo.py` declares shapely, and that isolation is doing real work rather than
-saving a line in `pyproject.toml` — under `uv run --script` the environment has no
-harness in it, so a script that *cannot* import the package cannot drift into being
-part of a loop. `--commit` gates the tracked manifest; `--rasters DIR` additionally
-cuts the tree, into a sibling that is swapped whole, because `scans/` must never be
-half one coordinate space and half the other.
-`build_leaf_layers.py` is the second live one, and the only script here whose
+**`extract_scans.py` is gone, and the cut is `harness scans` now.** It declared
+`pymupdf` inline (PEP 723) and the isolation was argued for here as a firewall: an
+environment with no harness in it, so a script that *cannot* import the package
+cannot drift into a loop. What the isolation actually bought was a cut no test
+could reach and a manifest no verb read back, and part 3 was read below source
+resolution for twenty months underneath it. `harness scans extract` cuts,
+`harness scans swap` installs the tree together with every coordinate keyed to it,
+and `harness/tests/test_scans.py` holds the arithmetic. `pymupdf` is a declared
+dependency; what keeps a PDF out of the passes is that no pass calls the one verb
+that opens one. The group is `harness/VERBS.md`'s.
+
+`build_leaf_layers.py` is the live one now, and the only script here whose
 input is *tracked*: it splits an editor's leaf in `gt/page-img/` into the two
 layers the reading view serves, into the derived `mz/page-img/`. Same PEP 723
 isolation and the same reason. It runs over every master by default and takes
@@ -86,10 +92,12 @@ drops are `docs/apparatus.md`'s.
 `docs/edition.md`'s; `gazetteer.py` proposes identities for unlocated entities
 against a live API and derives `geo:` from the ones a human adopted, and is
 `docs/edition.md`'s too.
-`migrate_to_master.py` moves stored coordinates into the master's space. It is the
-**driver only** — the logic is `harness/migrate.py`, on `migrate_fig_bboxes.py`'s
-rule that "a migration whose correctness argument sits in a script that is run once
-and never imported is a migration nobody can check afterwards".
+`migrate_to_master.py` is gone with it: it was the driver for `harness/migrate.py`
+and `harness scans swap` is that driver now — which is also the generalisation, from
+"the legacy render into the master" to any manifest into any other. The rule it was
+written under stands and is why the logic never lived in the script: "a migration
+whose correctness argument sits in a script that is run once and never imported is a
+migration nobody can check afterwards".
 `greyscale_scans.py` (poppler wrote RGB and the JBIG2 master is grey),
 `migrate_coords.py` (150→300 dpi) and `migrate_fig_bboxes.py` (which reduced
 `gt/fig/` to bounding boxes and re-keyed `data/readings.md` with it) are **spent
@@ -125,8 +133,8 @@ CLI settled on `--all` for every corpus form; the old spelling is trapped.)
     scans/fig-crops/             the figures themselves, cut out: one PNG per
                                  GraphicZone in gt/fig/, for the edition and
                                  whatever builds an epub. `harness fig crops`
-    scans/                       reported, never built here: tools/extract_scans.py
-                                 over pdfs/ (symlinks outside the repo)
+    scans/                       reported, never built here: harness scans extract
+                                 over pdfs/ (symlinks outside the repo), then swap
     train/bogoras-seg/           reported, never built here: assemble's scratch
 
 **Two more trees under `scans/` are deliberately *not* farms**, and saying so is the
