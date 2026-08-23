@@ -33,7 +33,11 @@ def nfd(s):
 
 CURLY = "‘’“”"
 # No legitimate use in English prose *or* in the notation, so every table may hold them.
-UNIVERSAL = "´ʼʻ‐"
+# U+2013 joined on the same footing: §2.11 says the book sets one dash and no en dash,
+# and the store holds 1041 U+2014 against 0 U+2013 over 476 pages. It traps the hyphen,
+# not the em dash — what gets typed as an en dash is a numeric range, and a range is a
+# compound joiner rather than one of §2.11's three dash settings.
+UNIVERSAL = "´ʼʻ‐–"
 
 
 def test_normalize_excludes_curly_quotes():
@@ -190,3 +194,33 @@ def test_the_hyphen_rule_keeps_its_one_known_false_positive_visible():
     """
     from harness.detectors import medial_cap_positions
     assert medial_cap_positions(nfd("Êˊnnɪčhɪ-Latuˊᵋwg̣ê")) != []
+
+
+def test_the_trap_map_agrees_with_the_tier1_worklist():
+    """`detectors.TIER1_TRAPS` is the machine-readable form of what
+    `validate.LOOKALIKE_GREPS` states as prose, so a fold can use it. Two copies
+    with a gate between them — this repo's idiom — rather than two copies with a
+    comment. Every single-target entry in the worklist must appear in the map with
+    the same target; U+02E2 is exempt, trapping two glyphs and so affording no
+    reconstruction."""
+    import re
+
+    from harness.detectors import TIER1_TRAPS
+    for ch, msg in LOOKALIKE_GREPS.items():
+        targets = re.findall(r"traps ((?:U\+[0-9A-F]{4})(?:/U\+[0-9A-F]{4})*)", msg)
+        assert targets, f"{msg!r} does not state what {ch!r} traps"
+        if "/" in targets[0]:
+            assert ch not in TIER1_TRAPS, (
+                f"{ch!r} traps two glyphs; a fold needs one target")
+            continue
+        assert ch in TIER1_TRAPS, f"{ch!r} is a Tier-1 trap with no fold target"
+        assert ord(TIER1_TRAPS[ch]) == int(targets[0][2:], 16), (
+            f"{ch!r}: map says U+{ord(TIER1_TRAPS[ch]):04X}, worklist says {targets[0]}")
+
+
+def test_the_trap_map_is_not_a_lookalike_table():
+    """It answers a different question — not "is this suspicious" but "what was
+    meant" — and holds entries the worklist does not (U+0027, U+0131)."""
+    from harness.detectors import LOOKALIKES, TIER1_TRAPS
+    assert set(TIER1_TRAPS) != LOOKALIKES
+    assert "'" in TIER1_TRAPS and "'" not in LOOKALIKES

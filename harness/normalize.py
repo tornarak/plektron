@@ -320,6 +320,13 @@ LOOKALIKE_CHARS = {
     "ₑ": "U+2091 traps U+1D49",
     "ө": "U+04E9 traps U+0275",
     "‐": "U+2010 traps U+002D",
+    # §2.11 is categorical — "the book sets one dash, U+2014, no en dash" — and the
+    # store agrees: 1041 U+2014 against 0 U+2013 over 476 keyed pages. It traps the
+    # HYPHEN rather than the em dash, because what actually gets typed as U+2013 is a
+    # numeric range (`1820–24`), and a range is a compound joiner, not one of §2.11's
+    # three dash settings. `3-188` keyed one and was first "corrected" to em, which
+    # was the same error one sort over; the corpus sets ranges 38 hyphen to 0 dash.
+    "–": "U+2013 traps U+002D",
     # Not in keying_spec.md §2.3 at all — the only licensed dotless small-cap
     # sort is ɪ (U+026A). Plain Turkish dotless-ı is the ASCII-keyboard-adjacent
     # slip for it: `1-100`'s proposal keyed it ~20 times this way, of which

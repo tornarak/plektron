@@ -13,9 +13,15 @@
       "resolved": "čauˊču = č(c+U+030C), a, u, U+02CA (stress), č(c+U+030C), u",
       "note": "Raised mark read as stress U+02CA, never apostrophe, per §4's default ('Read every raised mark as stress by default, full stop'); postposed to the stressed u of the au diphthong."
     },
-    "3": {"text": "tribe call themselves by this name in distinction from other kindred people;"},
-    "4": {"text": "as, for instance, the Reindeer Koryak or the Maritime Chukchee. The same"},
-    "5": {"text": "word is used, too, by the Reindeer Koryak, while both tribes call each other"},
+    "3": {
+      "text": "tribe call themselves by this name in distinction from other kindred people;"
+    },
+    "4": {
+      "text": "as, for instance, the Reindeer Koryak or the Maritime Chukchee. The same"
+    },
+    "5": {
+      "text": "word is used, too, by the Reindeer Koryak, while both tribes call each other"
+    },
     "6": {
       "text": "taˊn˙ñɪtan (pl. taˊn˙ñɪt).",
       "resolved": "taˊn˙ñɪtan = t, a, U+02CA (stress), n, U+02D9 (palatalization), ñ(n+U+0303), ɪ(U+026A), t, a, n",
@@ -31,7 +37,9 @@
       "resolved": "aˊñqᴀ = a, U+02CA (stress), ñ(n+U+0303), q, ᴀ(U+1D00); ramaˊg̣lat = r,a,m,a, U+02CA (stress), g+U+0323, l,a,t",
       "note": "Final letter of añqᴀ keyed small-cap ᴀ (U+1D00, §2.3) — at 4× visibly shorter than the full-height capitals nearby (e.g. 'The' two lines up). g of ramaˊg̣lat keyed dotted (g+U+0323): a faint separate mark below the bowl is visible at 4×, consistent with §5.1's 93.9%-dotted prior for Tier-1 g, but this line offers no second g (Tier-1 or English) for direct contrast — flagging for adjudicator confirmation per the 'no contrast on this line' allowance."
     },
-    "9": {"text": "In distinction from other alien tribes, both Reindeer and Maritime Chukchee"},
+    "9": {
+      "text": "In distinction from other alien tribes, both Reindeer and Maritime Chukchee"
+    },
     "10": {
       "text": "call themselves lɪˊi-yiˊlɪlɪt (“those of genuine language”), also oraˊwêʟ̣at (“men”)",
       "resolved": "lɪˊi-yiˊlɪlɪt = l, ɪ(U+026A), U+02CA (stress), i, -, y, i, U+02CA (stress), l, ɪ(U+026A), l, ɪ(U+026A), t; oraˊwêʟ̣at = o,r,a, U+02CA (stress), w, ê(e+U+0302), ʟ(U+029F)+U+0323, a, t",
@@ -52,10 +60,18 @@
       "resolved": "aˊlva-yêˊlɪlɪt = a, U+02CA (stress), l,v,a, -, y, ê(e+U+0302), U+02CA (stress), l, ɪ(U+026A), l, ɪ(U+026A), t",
       "note": "Two stress marks U+02CA, one per hyphenated component (aˊlva / yêˊlɪlɪt), same convention as line 10. lɪlɪt ending keyed ɪ (U+026A), dotless at 4×, matching lines 10-12's pattern for the same suffix shape."
     },
-    "14": {"text": "alien language”). All other names used by various writers in connection with"},
-    "15": {"text": "the Chukchee tribe are for the most part the result of misunderstanding."},
-    "16": {"text": "Thus the assertion of so many travellers, from Krasheninnikoff to Bog-"},
-    "17": {"text": "danovitch, that the maritime inhabitants of the Chukchee or Koryak shores"},
+    "14": {
+      "text": "alien language”). All other names used by various writers in connection with"
+    },
+    "15": {
+      "text": "the Chukchee tribe are for the most part the result of misunderstanding."
+    },
+    "16": {
+      "text": "Thus the assertion of so many travellers, from Krasheninnikoff to Bog-"
+    },
+    "17": {
+      "text": "danovitch, that the maritime inhabitants of the Chukchee or Koryak shores"
+    },
     "18": {
       "text": "call themselves also Čauˊču, shows only that the people with whom they",
       "resolved": "Čauˊču = Č(C+U+030C), a, u, U+02CA (stress), č(c+U+030C), u",
@@ -69,9 +85,15 @@
       "text": "of Reindeer stock, and probably still had some herds farther inland. The",
       "note": "A faint dashed mark sits beneath 'farther' in the raster, continuing the speck noted on line 19 above it. Plain English word; treated as printer's ink artifact, not transcribed."
     },
-    "21": {"text": "like is actually the case everywhere within the limits of the coast of the"},
-    "22": {"text": "Chukchee and the Koryak."},
-    "23": {"text": "The name Tuski, adopted by W. H. Hooper with the strange explanation"},
+    "21": {
+      "text": "like is actually the case everywhere within the limits of the coast of the"
+    },
+    "22": {
+      "text": "Chukchee and the Koryak."
+    },
+    "23": {
+      "text": "The name Tuski, adopted by W. H. Hooper with the strange explanation"
+    },
     "24": {
       "text": "that it means a confederation or brotherhood, has probably arisen from an",
       "note": "The whole-page overview render shows a faint mark above 'confederation'; absent at 4× zoom of this line specifically — a downsampling artifact of the overview, not printed ink."
@@ -81,7 +103,9 @@
       "resolved": "Чукотскій: Ч,у,к,о,т,с,к, U+0456 (pre-reform і), й (=и+U+0306 under NFD)",
       "note": "Pre-reform і (U+0456) keyed before й, per keying_spec.md §2.7: 'pre-reform і appears before another vowel or before й'. й itself decomposes under NFD to и (U+0438) + U+0306 combining breve, which is why a breve shows up in this line though nothing was hand-typed as one."
     },
-    "26": {"text": "the Russian adjective from the substantive Tchukcha (Чукча, “Chukchee”)."},
+    "26": {
+      "text": "the Russian adjective from the substantive Tchukcha (Чукча, “Chukchee”)."
+    },
     "27": {
       "text": "Hooper writes Tchutskoi Noss instead of Tchukotskiy Noss (“Chukotsky Cape”). ¹",
       "resolved": "¹ = U+00B9 SUPERSCRIPT ONE",
@@ -101,15 +125,23 @@
       "resolved": "‘ = U+2018 LEFT SINGLE QUOTATION MARK",
       "note": "A small raised mark precedes 'the' with no visible closing partner anywhere in the sentence or the one before it. Keyed as printed, closest catalogued shape U+2018, but flagged: its function is unclear (isolated printer's mark, or a genuine but unmatched opening quote around 'the Chukchee'). Adjudicator should confirm against the raster."
     },
-    "31": {"text": "people living on the Opukski and Tumanski coasts; i. e., respectively to the"},
+    "31": {
+      "text": "people living on the Opukski and Tumanski coasts; i. e., respectively to the"
+    },
     "32": {
       "text": "Kerek and the Telqäˊp Reindeer Chukchee, who are in reality the rudest and",
       "resolved": "Telqäˊp = T,e,l,q, ä(a+U+0308), U+02CA (stress), p",
       "note": "ä = a+U+0308 (§2.2, long counterpart of the obscure-vowel series); two dots clearly visible at 4×. Raised mark after ä keyed stress U+02CA (§4), postposed to ä."
     },
-    "33": {"text": "most primitive branches of the Koryak and the Chukchee tribes."},
-    "34": {"text": "W. H. Dall even considers the Kerek to be Eskimo. At least, he"},
-    "35": {"text": "asserts that the Eskimo are slowly moving to the south along the coast. In"},
+    "33": {
+      "text": "most primitive branches of the Koryak and the Chukchee tribes."
+    },
+    "34": {
+      "text": "W. H. Dall even considers the Kerek to be Eskimo. At least, he"
+    },
+    "35": {
+      "text": "asserts that the Eskimo are slowly moving to the south along the coast. In"
+    },
     "36": {
       "text": "¹ The word Tchutski was employed before that by M. Sauer.",
       "resolved": "¹ = U+00B9 SUPERSCRIPT ONE",
@@ -125,6 +157,7 @@
       "note": "Bracketed folio, plain ASCII digits per §2.12."
     }
   },
-  "segmenter_missed": {},
-  "contamination": {"blind": true}
+  "contamination": {
+    "blind": true
+  }
 }

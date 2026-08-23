@@ -1,56 +1,143 @@
 {
   "lines": {
-    "0": {"text": "BOGORAS, THE CHUKCHEE."},
-    "1": {"text": "495"},
-    "2": {"text": "time villages to allow them to hamper their movements by similar customs."},
-    "3": {"text": "Another taboo of the Asiatic Eskimo forbids long migratory journeys with"},
-    "4": {"text": "household and family, to be performed on dog-sledges. Such journeys must be"},
-    "5": {"text": "performed exclusively in summer-time and with the large skin boat of the family."},
-    "6": {"text": "Still another taboo existing among the Asiatic Eskimo refers to the boats"},
-    "7": {"text": "going to the open sea for hunting sea-mammals. They are forbidden to take"},
-    "8": {"text": "with them provisions and fresh water, and especially fuel for cooking. Indeed,"},
-    "9": {"text": "to make a fire in a boat in the open sea is considered as a grave trespass"},
-    "10": {"text": "against the hunting-chance of the party. The hunters, therefore, can assuage"},
-    "11": {"text": "their thirst only by sucking sea-ice, when pieces of a proper quality can be"},
-    "12": {"text": "found, or by swallowing the viscous fluid from the intestines of walrus or"},
-    "13": {"text": "thong-seal before mentioned."},
-    "14": {"text": "For provisions, the hunters usually take only raw or dried meat. To"},
-    "15": {"text": "take along cold cooked meat is permitted only after the coming of puffins,"},
-    "16": {"text": "which for this reason are often called simply the “cooked.” To cook a meal",
-           "note": "Printed close quote is curly U+201D RIGHT DOUBLE QUOTATION MARK, per keying_spec.md §1 (\"English prose reproduces the print, curly quotes included\"); mz/ocr machine text shows an escaped straight quote, not a reading of the raster."},
-    "17": {"text": "in the boat is, however, strictly forbidden. To cut off and eat a piece of"},
-    "18": {"text": "raw meat from one of the animals freshly killed by their exertions is considered"},
-    "19": {"text": "most fitting for the hunters. As the Maritime people consume the gristle,"},
-    "20": {"text": "the intestines, and the blubber, — raw as well as cooked, — this proscription",
-           "resolved": "— = U+2014 EM DASH, spaced both sides, ×2, per keying_spec.md §2.11 (\"The book sets one dash: — U+2014\")",
-           "note": "Confirmed at 2x zoom (review/2-225/zoom/zoom2-41-42_16p61-100_20p55-95.png, strip 20.0): both dashes are unspaced-adjacent-punctuation em dashes reproduced as printed, spaced on both sides as set."},
-    "21": {"text": "does not seem to be very inconvenient for them."},
-    "22": {"text": "I cannot say what may be the cause of this strange taboo. The natives"},
-    "23": {"text": "themselves are conscious that it seriously hampers their hunting-expeditions,"},
-    "24": {"text": "since it makes it impossible for them to go far out to sea. They say, however,"},
-    "25": {"text": "that the Sea-Being instituted this taboo through his care for the people, lest"},
-    "26": {"text": "too many of them perish in the open sea. The Sea-Being gave to the Maritime"},
-    "27": {"text": "people an explicit command not to venture out in the open sea beyond the"},
-    "28": {"text": "limit where the line of the shore-hills could be seen, and for further security"},
-    "29": {"text": "he instituted this taboo."},
-    "30": {"text": "The arctic Chukchee, however, have no such taboo. They take with"},
-    "31": {"text": "them cooked meat, water, fuel for fire, skins, and covering for their beds."},
-    "32": {"text": "While in the open sea, they make a fire in the boat on a large piece of sod"},
-    "33": {"text": "or on a flat box filled with sand, and cook their meat on that improvised"},
-    "34": {"text": "hearth. Therefore they are able to go out into the open sea far beyond the"},
-    "35": {"text": "limit of sight of the shore-hills. There they eat and sleep, and often stay"},
-    "36": {"text": "for two or three days, which, of course, gives them more chance for hunting."},
-    "37": {"text": "For their return they rely on the north wind, which blows there frequently,"},
-    "38": {"text": "and brings their boats in toward the shore."},
-    "39": {"text": "The Maritime Chukchee of the Pacific shore are not, however, so daring"},
-    "40": {"text": "on the sea, and their sea-expeditions are by no means the equal of those of"},
-    "41": {"text": "the Eskimo.¹",
-           "resolved": "¹ = U+00B9 SUPERSCRIPT ONE, the footnote reference marker, per keying_spec.md §2.10.",
-           "note": "mz/ocr machine text misread the superscript reference marker as a bracket \"]\"; confirmed at 2x zoom (review/2-225/zoom/zoom2-41-42_16p61-100_20p55-95.png, strip 41.0) as a raised digit 1, not a bracket."},
-    "42": {"text": "¹ For other taboos see Chapter XVII.",
-           "resolved": "¹ = U+00B9 SUPERSCRIPT ONE, the footnote opener marker matching the reference on line 41 (index 41), per keying_spec.md §2.10.",
-           "note": "mz/ocr machine text has a plain ASCII digit \"1\" for the opener; confirmed at 2x zoom (review/2-225/zoom/zoom2-41-42_16p61-100_20p55-95.png, strip 42.0) as the superscript sort, matching the page's only footnote reference (index 41). Only one footnote marker on the page; run 1..1, value occurs twice (reference + opener), per §2.10."}
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "495"
+    },
+    "2": {
+      "text": "time villages to allow them to hamper their movements by similar customs."
+    },
+    "3": {
+      "text": "Another taboo of the Asiatic Eskimo forbids long migratory journeys with"
+    },
+    "4": {
+      "text": "household and family, to be performed on dog-sledges. Such journeys must be"
+    },
+    "5": {
+      "text": "performed exclusively in summer-time and with the large skin boat of the family."
+    },
+    "6": {
+      "text": "Still another taboo existing among the Asiatic Eskimo refers to the boats"
+    },
+    "7": {
+      "text": "going to the open sea for hunting sea-mammals. They are forbidden to take"
+    },
+    "8": {
+      "text": "with them provisions and fresh water, and especially fuel for cooking. Indeed,"
+    },
+    "9": {
+      "text": "to make a fire in a boat in the open sea is considered as a grave trespass"
+    },
+    "10": {
+      "text": "against the hunting-chance of the party. The hunters, therefore, can assuage"
+    },
+    "11": {
+      "text": "their thirst only by sucking sea-ice, when pieces of a proper quality can be"
+    },
+    "12": {
+      "text": "found, or by swallowing the viscous fluid from the intestines of walrus or"
+    },
+    "13": {
+      "text": "thong-seal before mentioned."
+    },
+    "14": {
+      "text": "For provisions, the hunters usually take only raw or dried meat. To"
+    },
+    "15": {
+      "text": "take along cold cooked meat is permitted only after the coming of puffins,"
+    },
+    "16": {
+      "text": "which for this reason are often called simply the “cooked.” To cook a meal",
+      "note": "Printed close quote is curly U+201D RIGHT DOUBLE QUOTATION MARK, per keying_spec.md §1 (\"English prose reproduces the print, curly quotes included\"); mz/ocr machine text shows an escaped straight quote, not a reading of the raster."
+    },
+    "17": {
+      "text": "in the boat is, however, strictly forbidden. To cut off and eat a piece of"
+    },
+    "18": {
+      "text": "raw meat from one of the animals freshly killed by their exertions is considered"
+    },
+    "19": {
+      "text": "most fitting for the hunters. As the Maritime people consume the gristle,"
+    },
+    "20": {
+      "text": "the intestines, and the blubber, — raw as well as cooked, — this proscription",
+      "resolved": "— = U+2014 EM DASH, spaced both sides, ×2, per keying_spec.md §2.11 (\"The book sets one dash: — U+2014\")",
+      "note": "Confirmed at 2x zoom (review/2-225/zoom/zoom2-41-42_16p61-100_20p55-95.png, strip 20.0): both dashes are unspaced-adjacent-punctuation em dashes reproduced as printed, spaced on both sides as set."
+    },
+    "21": {
+      "text": "does not seem to be very inconvenient for them."
+    },
+    "22": {
+      "text": "I cannot say what may be the cause of this strange taboo. The natives"
+    },
+    "23": {
+      "text": "themselves are conscious that it seriously hampers their hunting-expeditions,"
+    },
+    "24": {
+      "text": "since it makes it impossible for them to go far out to sea. They say, however,"
+    },
+    "25": {
+      "text": "that the Sea-Being instituted this taboo through his care for the people, lest"
+    },
+    "26": {
+      "text": "too many of them perish in the open sea. The Sea-Being gave to the Maritime"
+    },
+    "27": {
+      "text": "people an explicit command not to venture out in the open sea beyond the"
+    },
+    "28": {
+      "text": "limit where the line of the shore-hills could be seen, and for further security"
+    },
+    "29": {
+      "text": "he instituted this taboo."
+    },
+    "30": {
+      "text": "The arctic Chukchee, however, have no such taboo. They take with"
+    },
+    "31": {
+      "text": "them cooked meat, water, fuel for fire, skins, and covering for their beds."
+    },
+    "32": {
+      "text": "While in the open sea, they make a fire in the boat on a large piece of sod"
+    },
+    "33": {
+      "text": "or on a flat box filled with sand, and cook their meat on that improvised"
+    },
+    "34": {
+      "text": "hearth. Therefore they are able to go out into the open sea far beyond the"
+    },
+    "35": {
+      "text": "limit of sight of the shore-hills. There they eat and sleep, and often stay"
+    },
+    "36": {
+      "text": "for two or three days, which, of course, gives them more chance for hunting."
+    },
+    "37": {
+      "text": "For their return they rely on the north wind, which blows there frequently,"
+    },
+    "38": {
+      "text": "and brings their boats in toward the shore."
+    },
+    "39": {
+      "text": "The Maritime Chukchee of the Pacific shore are not, however, so daring"
+    },
+    "40": {
+      "text": "on the sea, and their sea-expeditions are by no means the equal of those of"
+    },
+    "41": {
+      "text": "the Eskimo.¹",
+      "resolved": "¹ = U+00B9 SUPERSCRIPT ONE, the footnote reference marker, per keying_spec.md §2.10.",
+      "note": "mz/ocr machine text misread the superscript reference marker as a bracket \"]\"; confirmed at 2x zoom (review/2-225/zoom/zoom2-41-42_16p61-100_20p55-95.png, strip 41.0) as a raised digit 1, not a bracket."
+    },
+    "42": {
+      "text": "¹ For other taboos see Chapter XVII.",
+      "resolved": "¹ = U+00B9 SUPERSCRIPT ONE, the footnote opener marker matching the reference on line 41 (index 41), per keying_spec.md §2.10.",
+      "note": "mz/ocr machine text has a plain ASCII digit \"1\" for the opener; confirmed at 2x zoom (review/2-225/zoom/zoom2-41-42_16p61-100_20p55-95.png, strip 42.0) as the superscript sort, matching the page's only footnote reference (index 41). Only one footnote marker on the page; run 1..1, value occurs twice (reference + opener), per §2.10."
+    }
   },
-  "segmenter_missed": {},
-  "contamination": {"blind": true}
+  "contamination": {
+    "blind": true
+  }
 }

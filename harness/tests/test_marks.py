@@ -130,3 +130,65 @@ def test_both_halves_of_the_comparison_select_the_same_way():
     for src in (prior, batch):
         assert "bears_inventory(tok)" in src
         assert "cyrillic(tok)" in src
+
+
+# ------------------------------------ the arm that looks outside the inventory
+
+
+def _proposal(tmp_path, lines):
+    import json
+    p = tmp_path / "review" / "9-001" / "proposal.json"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps(
+        {"lines": {str(i): {"text": t} for i, t in enumerate(lines)}}),
+        encoding="utf-8")
+    return p
+
+
+def test_a_tier1_name_keyed_with_a_curly_apostrophe_is_found(tmp_path):
+    """`3-199` keyed `Ke’rek` twice and `3-024` keyed `Ta’lo` eight times, two
+    hundred pages and one written post-mortem apart. Neither was findable: U+2019
+    is not an inventory member, so the token is not selected, so the page reports
+    `tokens: 0, types: 0` — identical to a page of plain English. The wrong glyph
+    was not a bad reading the arms could weigh, it was an exit from the population
+    they judge. Folding the trap and asking the store closes that exit."""
+    from harness.marks import trap_hits
+    p = _proposal(tmp_path, ["the Ke’rek people", "plain English here"])
+    hits = trap_hits(p, {nfd("Keˊrek").casefold(): ["1-039", "2-025"]})
+    assert len(hits) == 1
+    assert hits[0]["token"] == nfd("Ke’rek")
+    assert hits[0]["candidate"] == nfd("Keˊrek")
+    assert hits[0]["seen"] == 2
+
+
+def test_an_english_apostrophe_is_not_a_hit(tmp_path):
+    """The corpus prints curly quotes and English prose reproduces them, which is
+    why U+2019 is scoped out of the corpus-wide table. The fold alone would flag
+    every possessive; what makes a hit is the *store* holding the folded form."""
+    from harness.marks import trap_hits
+    p = _proposal(tmp_path, ["the chief’s tent", "don’t"])
+    assert trap_hits(p, {nfd("Keˊrek").casefold(): ["1-039"]}) == []
+
+
+def test_a_correctly_keyed_form_is_not_a_hit(tmp_path):
+    """No trap character, nothing to reconstruct."""
+    from harness.marks import trap_hits
+    p = _proposal(tmp_path, [nfd("the Keˊrek people")])
+    assert trap_hits(p, {nfd("Keˊrek").casefold(): ["1-039"]}) == []
+
+
+def test_the_match_is_case_insensitive(tmp_path):
+    """A name is sentence-initial on one page and mid-sentence on another. The
+    question is whether the store knows the word, not how it was capitalised."""
+    from harness.marks import trap_hits
+    p = _proposal(tmp_path, ["said ke’rek to him"])
+    assert len(trap_hits(p, {nfd("Keˊrek").casefold(): ["1-039"]})) == 1
+
+
+def test_an_unknown_folded_form_is_not_invented(tmp_path):
+    """The arm reports what the corpus has ratified and nothing else — it is a
+    lookup, not a reading. A form the store has never seen stays unreported rather
+    than becoming a proposal nobody witnessed."""
+    from harness.marks import trap_hits
+    p = _proposal(tmp_path, ["the Qa’wak person"])
+    assert trap_hits(p, {nfd("Keˊrek").casefold(): ["1-039"]}) == []

@@ -29,9 +29,12 @@ from __future__ import annotations
 
 import re
 import unicodedata
+from collections.abc import Callable
 from pathlib import Path
 
 from lxml import etree
+
+from .parallel import ptrack
 
 # Marked inventory glyphs (keying spec §2), NFD bases + combiners + atomics.
 INVENTORY_CHARS = set("ᴀᴇɪʟᵋᵉɵˊ˙") | {"\u0323", "\u030C", "\u0303", "\u0302",
@@ -43,6 +46,41 @@ INVENTORY_CHARS = set("ᴀᴇɪʟᵋᵉɵˊ˙") | {"\u0323", "\u030C", "\u0303",
 # which is where that trap belongs anyway, since U+0121 is not an apostrophe
 # lookalike and flagging it here would duplicate the hit under a misleading name.
 LOOKALIKES = set("\u00B4\u2019\u02BC\u02BB\u00B7\u02E2\u2091\u04E9\u2010")
+
+# What a trap glyph *displaces*, inside a Tier-1 form. `LOOKALIKES` says a character
+# is suspicious; this says what was meant, which is what lets a check reconstruct the
+# form the reader intended and look it up in the store. That turns a wrong glyph from
+# something that hides a page into something that identifies it.
+#
+# **The failure this exists for.** A Tier-1 form keyed with U+2019 carries no
+# inventory member, so `bears_inventory` is false, so the page reports `tokens: 0,
+# types: 0` and every arm of `proposal marks` goes quiet \u2014 indistinguishable from a
+# page of plain English. `3-024` keyed `Ta\u2019lo` eight times that way and `3-199` keyed
+# `Ke\u2019rek` twice, two hundred pages and one documented post-mortem apart. Neither was
+# findable by any instrument; both were caught by someone reading the reader's prose.
+#
+# Held against `validate.LOOKALIKE_GREPS` by `test_lookalike_scope.py`. That table
+# states the same pairs as prose ("U+2019 traps U+02CA") and is the Tier-1-scoped
+# worklist; this one is machine-readable so a fold can use it. Two copies with a gate
+# between them, which is this repo's idiom for VERBS.md and the CLI tree alike; what
+# it forbids is two copies with a comment between them.
+#
+# U+02E2 is deliberately absent: it traps U+1D4B *or* U+1D49, and a reconstruction
+# needs one target. A two-way trap stays a worklist line.
+TIER1_TRAPS = {
+    "\u2019": "\u02CA",   # U+2019, and the one that has actually cost pages twice
+    "\u2018": "\u02CA",   # U+2018
+    "'": "\u02CA",   # U+0027 \u2014 \u00A72.1/\u00A73: no straight apostrophe in a Tier-1 span, ever
+    "\u00B4": "\u02CA",   # U+00B4
+    "\u02BC": "\u02CA",   # U+02BC
+    "\u02BB": "\u02CA",   # U+02BB
+    "\u00B7": "\u02D9",   # U+00B7 traps the palatalization mark
+    "\u2091": "\u1D49",   # U+2091
+    "\u04E9": "\u0275",   # U+04E9
+    "\u2010": "-",   # U+2010
+    "\u2013": "-",   # U+2013 \u2014 a numeric range is a compound joiner, not a \u00a72.11 dash
+    "\u0131": "\u026A",   # U+0131 \u2014 normalize's table carries this one; \u00A72.3 licenses only \u026A
+}
 
 # Mark\u2013base licensing (keying spec \u00A72.6), as a **closed allow-list per mark**: the
 # mark may sit on these bases and nowhere else. Closed rather than a deny-list because
@@ -1047,7 +1085,8 @@ def detect_all(lines: list[str], root: Path = Path("."),
 _BOUNDARY = 20
 
 
-def suggest_lexicon(root: Path = Path("."), common: int | None = None) -> dict:
+def suggest_lexicon(root: Path = Path("."), common: int | None = None,
+                    tick: Callable | None = None) -> dict:
     """Frequency-ranked `lexicon_miss` tokens across every hand-keyed page.
 
     Terms get approved in bulk from a real count, rather than one page at a time
@@ -1150,7 +1189,7 @@ def suggest_lexicon(root: Path = Path("."), common: int | None = None) -> dict:
     folded: dict[str, int] = {}
     where: dict[str, str] = {}
     initial: dict[str, int] = {}
-    for ref in all_refs(root, "gt/ocr"):
+    for ref in ptrack(all_refs(root, "gt/ocr"), tick):
         ocr = root / "gt" / "ocr" / f"{stem_for(ref, root)}.xml"
         if not ocr.exists():
             continue
@@ -1337,7 +1376,8 @@ def _restored_refs(root: Path = Path(".")) -> list[str]:
     return out
 
 
-def native_corpus(root: Path = Path(".")) -> list[tuple[str, str]]:
+def native_corpus(root: Path = Path("."),
+                  tick: Callable | None = None) -> list[tuple[str, str]]:
     """(ref, token) for every `inventory_glyph`-flagged token in restored ground truth.
 
     Ground truth only, never OCR draft — draft CATMuS output reads 0% of the
@@ -1349,7 +1389,7 @@ def native_corpus(root: Path = Path(".")) -> list[tuple[str, str]]:
     carrying no mark at all (a bare `c`, `s`, `j`, `x`, `h`) is invisible to
     it by construction and never enters this corpus.
     """
-    return [(ref, tok) for ref, _, tok in native_corpus_lines(root)]
+    return [(ref, tok) for ref, _, tok in native_corpus_lines(root, tick)]
 
 
 def cyrillic(token: str) -> bool:
@@ -1432,7 +1472,8 @@ def inventory_glyphs(text: str) -> list[str]:
             and not (i and nfd[i - 1] in ORTHOGRAPHIC_BASES.get(c, ""))]
 
 
-def native_corpus_lines(root: Path = Path(".")) -> list[tuple[str, str, str]]:
+def native_corpus_lines(root: Path = Path("."), tick: Callable | None = None
+                        ) -> list[tuple[str, str, str]]:
     """(ref, line index, token) — `native_corpus` with the line each token sat on.
 
     `native_corpus` is this with the middle field dropped and both are
@@ -1447,10 +1488,12 @@ def native_corpus_lines(root: Path = Path(".")) -> list[tuple[str, str, str]]:
     documented way to mis-map an adjudicated page (harness/README.md, "Three invariants
     from that work").
     """
-    return [(r["ref"], r["line"], r["token"]) for r in native_corpus_context(root)]
+    return [(r["ref"], r["line"], r["token"])
+            for r in native_corpus_context(root, tick)]
 
 
-def native_corpus_context(root: Path = Path(".")) -> list[dict]:
+def native_corpus_context(root: Path = Path("."),
+                          tick: Callable | None = None) -> list[dict]:
     """Every native token in ground truth, **with the line it was printed on**.
 
     The line is what makes a form's sense readable without opening the page:
@@ -1464,7 +1507,11 @@ def native_corpus_context(root: Path = Path(".")) -> list[dict]:
     from .lines import page_lines
 
     out = []
-    for ref in _restored_refs(root):
+    # **The one walk of `gt/ocr/` the whole native-corpus family shares**, so the
+    # bar goes here and every arm above it — `native_corpus`, its `_lines` form,
+    # `suggest_native_forms`, `mark_base_frequency`, `lookup.index` — reports by
+    # forwarding a `tick` rather than by growing a loop of its own.
+    for ref in ptrack(_restored_refs(root), tick):
         p = root / "gt" / "ocr" / f"chukchi-{ref}.xml"
         recs = page_lines(p, root, ref=ref)
         # Reading order is what `page_lines` returns, which is what the join
@@ -1483,7 +1530,8 @@ def native_corpus_context(root: Path = Path(".")) -> list[dict]:
     return out
 
 
-def suggest_native_forms(root: Path = Path(".")) -> list[dict]:
+def suggest_native_forms(root: Path = Path("."),
+                         tick: Callable | None = None) -> list[dict]:
     """Frequency-ranked native (Tier-1) word forms across restored ground truth.
 
     Inverted from `suggest_lexicon`: that hunts frequent tokens no English
@@ -1502,14 +1550,15 @@ def suggest_native_forms(root: Path = Path(".")) -> list[dict]:
     """
     counts: dict[str, int] = {}
     refs: dict[str, set[str]] = {}
-    for ref, tok in native_corpus(root):
+    for ref, tok in native_corpus(root, tick):
         counts[tok] = counts.get(tok, 0) + 1
         refs.setdefault(tok, set()).add(ref)
     return [{"form": t, "count": c, "refs": " ".join(sorted(refs[t]))}
             for t, c in sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))]
 
 
-def mark_base_frequency(root: Path = Path(".")) -> list[dict]:
+def mark_base_frequency(root: Path = Path("."),
+                        tick: Callable | None = None) -> list[dict]:
     """Bare-vs-marked frequency per base letter, across the native corpus.
 
     A prior for exactly the class of error that keeps recurring — dropped
@@ -1521,7 +1570,7 @@ def mark_base_frequency(root: Path = Path(".")) -> list[dict]:
     pilot pages land.
     """
     counts: dict[str, dict[str, int]] = {}
-    for _, tok in native_corpus(root):
+    for _, tok in native_corpus(root, tick):
         i, n = 0, len(tok)
         while i < n:
             ch = tok[i]
@@ -1562,7 +1611,8 @@ def _strip_marks(tok: str) -> str:
     return "".join(c for c in tok if unicodedata.category(c) not in _MARK_CATEGORIES)
 
 
-def suffix_frequency(root: Path = Path(".")) -> list[dict]:
+def suffix_frequency(root: Path = Path("."),
+                     tick: Callable | None = None) -> list[dict]:
     """Weighted suffix frequency (length 2-8) over mark-stripped native forms.
 
     Built to answer a concrete question raised reading `3-004`: `-g̣ɪn` /
@@ -1579,7 +1629,7 @@ def suffix_frequency(root: Path = Path(".")) -> list[dict]:
     a stale run, same caveat as `suggest_native_forms` and `mark_base_frequency`.
     """
     counts: dict[str, int] = {}
-    for rec in suggest_native_forms(root):
+    for rec in suggest_native_forms(root, tick):
         w = _strip_marks(rec["form"])
         for length in range(2, 9):
             if len(w) >= length:
@@ -1589,7 +1639,8 @@ def suffix_frequency(root: Path = Path(".")) -> list[dict]:
             for s, c in sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))]
 
 
-def digraph_frequency(root: Path = Path(".")) -> list[dict]:
+def digraph_frequency(root: Path = Path("."),
+                      tick: Callable | None = None) -> list[dict]:
     """Weighted digraph/trigraph frequency, marks and top suffixes stripped.
 
     Two strips before counting, both because a raw scan over untouched forms
@@ -1604,7 +1655,7 @@ def digraph_frequency(root: Path = Path(".")) -> list[dict]:
     Ground truth only, same floor caveat as `suffix_frequency` — recompute
     once more of the 20 pilot pages land rather than trusting a stale run.
     """
-    forms = suggest_native_forms(root)
+    forms = suggest_native_forms(root, tick)
     stripped = [(_strip_marks(rec["form"]), rec["count"])
                 for rec in forms]
 
