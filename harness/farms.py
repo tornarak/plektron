@@ -34,9 +34,12 @@ underneath all of it.
 from __future__ import annotations
 
 import os
-from collections.abc import Iterable
+from collections.abc import Callable, Iterable
 from dataclasses import dataclass
 from pathlib import Path
+
+from . import train as _train
+from .parallel import ptrack
 
 # The one declaration of every derived path. `zones.py` and `recognize.py` alias
 # these rather than being rewritten around them — 68 call sites spell `VIEWDIR`,
@@ -50,7 +53,15 @@ LINE_BLOT = "scans/w-blotted"
 W_FIGS = "scans/w-figs"
 W_OCR = "scans/w-ocr"
 FIG_CROPS = "scans/fig-crops"
-TRAIN_WORK = "train/bogoras-seg"
+# From `train.py`, which owns the track record — the path is a property of the
+# zone track, not of the farm registry, and the farm is only the half of it that
+# has members. `train` is a leaf, so taking it here closes no loop.
+TRAIN_WORK = _train.ZONES.workdir
+# The half of the track that is a farm. The base holds two directories and no pages,
+# so registering *it* made `views check` count zero entries for a training set that
+# was fully laid out — a number that reads as "nothing prepared". `model/` is not a
+# farm at all: its contents are a run's output, not links into a store.
+TRAIN_DATA = _train.ZONES.datadir
 
 # Imported by value, not by module, because `zones` imports this one: the leaf
 # vocabulary lives there (it is a fact about the store) and the farms derived from
@@ -134,13 +145,13 @@ FARMS = (
     # pointing outside the repo, so on a clone the rasters cannot be regenerated at
     # all. The script also runs under `uv run --script` with no harness in its
     # environment, which is what keeps a PDF reader out of the package. `train/` is
-    # scratch that `zones assemble` clobbers by design; rebuilding it out of band
+    # scratch that `train assemble zones` clobbers by design; rebuilding it out of band
     # would be preparing a training run nobody asked for.
     Farm("scans", SCANS, "source", (),
          "harness scans extract --all --rasters DIR && harness scans swap DIR",
          "none"),
-    Farm("train", TRAIN_WORK, "scratch", (),
-         "harness zones assemble", "none"),
+    Farm("train", TRAIN_DATA, "scratch", (),
+         "harness train assemble zones", "none"),
     # One per leaf kind: `scans/plate/`, `scans/blank/`, and so on, each a farm of
     # links into `scans/` for the leaves ruled that kind. `select`, because
     # membership is a criterion over one tree — and the criterion is a *store*
@@ -344,8 +355,15 @@ def build_w_ocr(root: Path = Path(".")) -> dict:
             "removed": a["removed"] + b["removed"]}
 
 
-def build(name: str, root: Path = Path(".")) -> dict:
+def build(name: str, root: Path = Path("."), jobs: int | None = None,
+          tick=None) -> dict:
     """Rebuild one farm by name. Builders are imported lazily; see the module head.
+
+    `jobs` and `tick` reach only the two raster builders — the link farms are
+    symlink churn at ~0.1 ms a page, which `parallel` already rules is not worth a
+    pool or a bar. Both used to be dropped here: `blot_all` and `crop_all` accept
+    them and draw a bar when reached through `zones blot` or `fig crops`, and were
+    silent when reached through this verb, which is the more expensive route.
 
     A farm whose `reads` are not all present is **skipped with a row**, never
     attempted and never silently dropped. The blot builder opens pixels out of
@@ -373,12 +391,12 @@ def build(name: str, root: Path = Path(".")) -> dict:
                 "removed": rep["removed"], "skipped": ""}
     if name == "w-figs-blotted":
         from .zones import blot_all
-        rep = blot_all(root)
+        rep = blot_all(root, jobs, tick)
         return {"farm": name, "dir": rep["dir"], "linked": rep["total"],
                 "removed": 0, "skipped": ""}
     if name == "fig-crops":
         from .figures import crop_all
-        rep = crop_all(root=root)
+        rep = crop_all(root=root, jobs=jobs, tick=tick)
         return {"farm": name, "dir": rep["dir"], "linked": rep["written"],
                 "removed": 0, "skipped": ""}
     if name in _LEAF_KINDS:
@@ -400,7 +418,7 @@ def _wanted_for(name: str, root: Path) -> dict[str, Path] | None:
 
     None is a real answer and is why `survey` can report `?`. For `scans/` there is
     no criterion in this repo at all, and for `train/` the criterion is whatever the
-    last `zones assemble` was asked for — neither is a set this module can compute,
+    last `train assemble zones` was asked for — neither is a set this module can compute,
     and computing one anyway would be inventing a verdict.
     """
     if name == "ocr":
@@ -446,7 +464,7 @@ def _wanted_for(name: str, root: Path) -> dict[str, Path] | None:
     return None
 
 
-def survey(root: Path = Path(".")) -> list[dict]:
+def survey(root: Path = Path("."), tick: Callable | None = None) -> list[dict]:
     """One fixed-key record per farm — what `harness views check` prints.
 
     Tests directories itself and never goes through a guarded enumerator: the verb
@@ -466,7 +484,7 @@ def survey(root: Path = Path(".")) -> list[dict]:
     is the honest word for it either way.
     """
     rows = []
-    for farm in FARMS:
+    for farm in ptrack(FARMS, tick):
         d = root / farm.path
         present = d.is_dir()
         wanted = _wanted_for(farm.name, root) if present else None

@@ -53,7 +53,7 @@ import os
 import shutil
 from pathlib import Path
 
-from . import farms, paths
+from . import farms, paths, provenance
 from .refs import norm_ref, parse_ref
 
 #: The source PDFs' own embedded-image geometry. **Derived but tracked**, on
@@ -105,17 +105,18 @@ SNAP = 1e-3
 # and a tEXt chunk in every PNG, which travels with the file when it is copied out
 # of the tree entirely.
 #
-# **The vocabulary is `harness/provenance.py`'s and deliberately not a second
-# spelling of it.** That module is the one writer for `mz/` ALTO and TEI and it
-# defines these key names (`harness`, `kind`, `step`, `label`, `version`, `in.*`);
-# it has no PNG or JSON serialization, which is the only reason this builds the map
-# itself rather than calling `Producer.settings()`. When the two branches meet,
-# `_producer` should become a `Producer` and this comment should go.
-SCHEMA = "1"
-
-#: The tEXt keyword the block is written under. PNG keywords are limited to Latin-1
-#: and 79 characters, which `harness` satisfies and a URI would not.
-PNG_KEY = "harness"
+# **The record is `provenance.Producer`, not a second spelling of it.** That module
+# is the one writer for every `mz/` file that says what made it, and a raster is one:
+# `kind="rule"`, because a page here is derived from a stated input by a
+# deterministic procedure rather than inferred by a model. It had no non-XML carrier,
+# so `provenance.encode`/`decode` were made public rather than the wire format
+# reimplemented here — a fourth spelling of one fact is exactly what that module
+# exists to prevent.
+#
+#: The tEXt keyword, `provenance.py`'s: the *reader* is there — `read_producers`
+#: dispatches on suffix so `corpus provenance` can count a raster store — and a
+#: keyword spelled in two modules is the drift this whole arrangement is against.
+PNG_KEY = provenance.PNG_KEY
 
 STEP = "harness scans extract --all --rasters DIR"
 LABEL = "raster cut from the PDF's own MRC layers"
@@ -154,26 +155,26 @@ def sources(root: Path = Path("."), pdfs: list[Path] | None = None) -> dict:
     return out
 
 
-def _producer(source: dict, rec: dict) -> dict:
-    """The flat `k: v` map one page's raster carries, in `provenance.py`'s wire order.
+def _producer(source: dict, rec: dict) -> provenance.Producer:
+    """What one page's raster records about the act that cut it.
 
-    `kind` is `rule` and that is the load-bearing field: this page was derived from
-    a stated input by a deterministic procedure, not inferred by a model. The
-    digest recorded is the **PDF's**, never the PNG's own — a file's hash of itself
-    restates the file and witnesses nothing.
+    The digest carried is the **PDF's**, never the PNG's own — `provenance.py`'s
+    rule, and it holds here for its reason: a file's hash of itself restates the
+    file and witnesses nothing. What a reader needs is which byte sequence this
+    page came out of.
     """
     m = rec.get("master") or {}
-    return {
-        "harness": SCHEMA, "kind": "rule", "step": STEP, "label": LABEL,
-        "version": _pymupdf_version(),
-        "in.ref": rec["ref"],
-        "in.source": source.get("file", ""),
-        "in.source_sha256": source.get("sha256", ""),
-        "in.master_xref": str(m.get("xref", "")),
-        "in.master": f"{m.get('w')}x{m.get('h')}",
-        "in.offset": ",".join(str(v) for v in rec.get("offset") or []),
-        "in.photos": str(len(rec.get("images") or [])),
-    }
+    return provenance.Producer(
+        step=STEP, label=LABEL, kind="rule", version=_pymupdf_version(),
+        inputs={
+            "ref": rec["ref"],
+            "source": source.get("file", ""),
+            "source_sha256": source.get("sha256", ""),
+            "master_xref": m.get("xref", ""),
+            "master": f"{m.get('w')}x{m.get('h')}",
+            "offset": ",".join(str(v) for v in rec.get("offset") or []),
+            "photos": len(rec.get("images") or []),
+        })
 
 
 def _pymupdf_version() -> str:
@@ -181,27 +182,22 @@ def _pymupdf_version() -> str:
     return f"pymupdf {pymupdf.version[0]}"
 
 
-def read_png_provenance(path: Path) -> dict:
-    """What a raster says made it, or `{}`.
+def read_png_provenance(path: Path) -> provenance.Producer | None:
+    """What a raster says made it, or `None`.
 
-    `{}` for a PNG written before this existed *and* for one written by something
+    `None` for a PNG written before this existed *and* for one written by something
     else entirely, which is the right conflation: both are unwitnessed, and the
     census counts what can be read rather than what was intended.
     """
     if not path.exists():
-        return {}
+        return None
     from PIL import Image
     try:
         with Image.open(path) as im:
             raw = (im.info or {}).get(PNG_KEY, "")
     except OSError:
-        return {}
-    fields = {}
-    for part in str(raw).split("; "):
-        k, sep, v = part.partition(": ")
-        if sep:
-            fields[k.strip()] = v.strip()
-    return fields if fields.get("harness") == SCHEMA else {}
+        return None
+    return provenance.decode(str(raw))
 
 
 ABOUT = (
@@ -536,23 +532,19 @@ def cut_page(doc, rec: dict, out_dir: Path, source: dict | None = None) -> dict:
     return {"ref": ref, "mode": img.mode, "photos": len(rec["images"])}
 
 
-def _png_meta(fields: dict[str, str]):
-    """The producer map as a PNG tEXt chunk, one `k: v` string under one keyword.
+def _png_meta(p: provenance.Producer):
+    """The producer as a PNG tEXt chunk: one encoded string under one keyword.
 
-    One chunk rather than one per field, so it reads back as the same flat map
-    `provenance.py` encodes into ALTO and TEI — and so that a reader checking for
-    provenance asks one question. `; ` is that module's separator and a value
-    holding one would parse back as two fields, so it is refused rather than
-    escaped: no filename or digest in this corpus contains one, and a refusal
-    names the day that stops being true.
+    One chunk rather than one per field, so what a raster carries is byte-for-byte
+    what an ALTO's `processingStepSettings` carries and `provenance.decode` reads
+    either. The separator rule and the refusal of a value containing it are
+    `Producer.settings`', enforced there — this adds no escaping of its own,
+    because two escapings of one format is how a round trip stops being one.
     """
     from PIL.PngImagePlugin import PngInfo
 
-    for k, v in fields.items():
-        if "; " in str(v) or "\n" in str(v):
-            raise ValueError(f"{k}={v!r} holds the field separator '; '")
     meta = PngInfo()
-    meta.add_text(PNG_KEY, "; ".join(f"{k}: {v}" for k, v in fields.items()))
+    meta.add_text(PNG_KEY, provenance.encode(p))
     return meta
 
 
@@ -677,7 +669,7 @@ def _leaf_kinds(root: Path) -> dict[str, str]:
     return {r: s for r, s in load_splits(root).items() if s in LEAF_KINDS}
 
 
-def info(refs: list[str], root: Path = Path(".")) -> list[dict]:
+def info(refs: list[str], root: Path = Path("."), tick=None) -> list[dict]:
     """Per page: the manifest's geometry against the file on disk.
 
     The verb an agent reaches for instead of `identify` or a PIL one-liner. It
@@ -710,8 +702,9 @@ def info(refs: list[str], root: Path = Path(".")) -> list[dict]:
         # What the file itself says made it — `""` where it says nothing, which is
         # every raster cut before the chunk existed.
         prov = read_png_provenance(paths.scan_for(ref, root))
-        rec["cut_from"] = prov.get("in.source", "")
-        rec["cut_sha"] = (prov.get("in.source_sha256") or "")[:16]
+        rec["cut_from"] = prov.inputs.get("source", "") if prov else ""
+        rec["cut_sha"] = (prov.inputs.get("source_sha256", "")[:16]
+                          if prov else "")
         # The agreement is computed, not left to the reader to eyeball: an `agrees`
         # column that says `false` is the whole reason both halves are in one table.
         rec["agrees"] = bool(entry) and facts["on_disk"] and facts["px"] == want
@@ -740,7 +733,8 @@ def photos(refs: list[str], root: Path = Path(".")) -> list[dict]:
     return out
 
 
-def census(refs: list[str] | None = None, root: Path = Path(".")) -> dict:
+def census(refs: list[str] | None = None, root: Path = Path("."),
+           tick=None) -> dict:
     """The counts `CLAUDE.md` deliberately refuses to state, from the manifest.
 
     Deliberately *not* stored anywhere: a number in a file nothing regenerates goes
@@ -772,6 +766,8 @@ def census(refs: list[str] | None = None, root: Path = Path(".")) -> dict:
         if p.exists():
             on_disk += 1
             total_bytes += p.stat().st_size
+        if tick:
+            tick(ref, sum(kinds.values()), len(rows))
 
     summary = {"pages": len(rows), "photographs": photo_n,
                "on_disk": on_disk, "bytes": total_bytes}
@@ -834,7 +830,8 @@ def check_sources(root: Path = Path("."), meta_path: Path | None = None) -> list
 
 
 def audit(refs: list[str] | None = None, root: Path = Path("."),
-          tree: Path | None = None, manifest: dict | None = None) -> list[dict]:
+          tree: Path | None = None, manifest: dict | None = None,
+          tick=None) -> list[dict]:
     """The manifest against a tree of rasters. One function, two callers.
 
     `scans audit` runs it over `scans/` and the committed manifest; `swap` runs it
@@ -860,10 +857,11 @@ def audit(refs: list[str] | None = None, root: Path = Path("."),
     recorded_sha = {part: (rec.get("sha256") or "") for part, rec
                     in (manifest_meta(meta_path).get("_sources") or {}).items()}
     seen = set()
-    for ref, e in manifest.items():
-        if want is not None and ref not in want:
-            continue
+    todo = [(r, e) for r, e in manifest.items() if want is None or r in want]
+    for ref, e in todo:
         seen.add(ref)
+        if tick:
+            tick(ref, len(seen), len(todo))
         m = e.get("master") or {}
         facts = _raster_facts(tree / f"chukchi-{ref}.png")
         if not facts["on_disk"]:
@@ -894,15 +892,14 @@ def audit(refs: list[str] | None = None, root: Path = Path("."),
         # rather than wrong: it predates the block, and saying otherwise would make
         # every raster cut before today read as a defect.
         prov = read_png_provenance(tree / f"chukchi-{ref}.png")
-        if not prov:
+        cut_sha = prov.inputs.get("source_sha256", "") if prov else ""
+        if prov is None:
             unwitnessed.append(ref)
-        elif (recorded_sha
-              and prov.get("in.source_sha256")
-              and prov["in.source_sha256"] != recorded_sha.get(ref.split("-")[0], "")):
+        elif (recorded_sha and cut_sha
+              and cut_sha != recorded_sha.get(ref.split("-")[0], "")):
             out.append({"ref": ref, "finding": "source-mismatch", "gates": True,
-                        "detail": f"raster was cut from sha256 "
-                                  f"{prov['in.source_sha256'][:16]}…, the manifest "
-                                  "records another for this part"})
+                        "detail": f"raster was cut from sha256 {cut_sha[:16]}…, "
+                                  "the manifest records another for this part"})
 
     if tree.is_dir():
         for p in sorted(tree.glob("chukchi-*.png")):
@@ -922,7 +919,8 @@ def audit(refs: list[str] | None = None, root: Path = Path("."),
     return out
 
 
-def space(refs: list[str] | None = None, root: Path = Path(".")) -> list[dict]:
+def space(refs: list[str] | None = None, root: Path = Path("."),
+          tick=None) -> list[dict]:
     """Which coordinate space every store page declares, by its own page box.
 
     **This gates**, where measurement usually does not. The migration into master
@@ -936,27 +934,29 @@ def space(refs: list[str] | None = None, root: Path = Path(".")) -> list[dict]:
 
     manifest = pdf_images(root)
     want = {norm_ref(r) for r in refs} if refs else None
+    # The work-list first, because the bar's denominator is every store's pages
+    # together and no one store knows it — `pmap`'s rule, hand-rolled.
+    todo = [(store, p) for store in STORES
+            if (root / store).is_dir()
+            for p in sorted((root / store).glob("chukchi-*.xml"))
+            if want is None or norm_ref(p.stem) in want]
     out = []
-    for store in STORES:
-        d = root / store
-        if not d.is_dir():
+    for n, (store, p) in enumerate(todo, start=1):
+        ref = norm_ref(p.stem)
+        if tick:
+            tick(ref, n, len(todo))
+        try:
+            box = page_box(etree.parse(str(p)))
+        except etree.XMLSyntaxError as e:
+            out.append({"ref": ref, "store": store, "box": "",
+                        "space": "unparseable", "detail": str(e)[:60]})
             continue
-        for p in sorted(d.glob("chukchi-*.xml")):
-            ref = norm_ref(p.stem)
-            if want is not None and ref not in want:
-                continue
-            try:
-                box = page_box(etree.parse(str(p)))
-            except etree.XMLSyntaxError as e:
-                out.append({"ref": ref, "store": store, "box": "",
-                            "space": "unparseable", "detail": str(e)[:60]})
-                continue
-            entry = manifest.get(ref, {})
-            _, name = rects_in(entry, box[0], box[1])
-            out.append({"ref": ref, "store": store,
-                        "box": f"{box[0]}x{box[1]}",
-                        "space": name or ("no-entry" if not entry else "neither"),
-                        "detail": ""})
+        entry = manifest.get(ref, {})
+        _, name = rects_in(entry, box[0], box[1])
+        out.append({"ref": ref, "store": store,
+                    "box": f"{box[0]}x{box[1]}",
+                    "space": name or ("no-entry" if not entry else "neither"),
+                    "detail": ""})
     return out
 
 

@@ -42,6 +42,7 @@ import json
 import os
 import re
 import unicodedata
+from collections.abc import Callable
 from pathlib import Path
 
 from lxml import etree
@@ -50,9 +51,16 @@ from lxml import etree
 # character diffs), which is a different subject entirely.
 from . import corrections as _corr
 from .atomic import tmp_for
-from .detectors import DOT_ABOVE_G, INVENTORY_CHARS, LOOKALIKES, unlicensed_marks
+from .detectors import (
+    DOT_ABOVE_G,
+    LOOKALIKES,
+    bears_inventory,
+    inventory_glyphs,
+    unlicensed_marks,
+)
 from .lines import DEFAULT_STORE, alto_for_lines, page_lines, raster_path
 from .lookup import HANDLE
+from .parallel import ptrack
 from .paths import crops_dir, decisions_path, html_path, page_dirs, proposal_path
 from .proposal_check import NOTE_CLASSES
 from .refs import norm_ref
@@ -94,7 +102,7 @@ def classify(catmus: str, claude: str) -> str:
         tags.append("non_ascii")
     else:
         tags.append("ascii_only")
-    if any(c in INVENTORY_CHARS for c in claude):
+    if bears_inventory(claude):
         tags.append("inventory")
     if any(c in LOOKALIKES for c in claude):
         tags.append("lookalike_in_proposal")
@@ -120,8 +128,16 @@ def tier1_glyphs(text: str) -> str:
     — so a line of pure Tier-1 in those letters produces no glyph here at all. An
     unflagged line is "nothing detected", never "no notation present", and a UI that
     lets the two read alike would turn the flag into an invitation to skip lines.
+
+    **A mark on an orthographic base is not one of them**, which is why this goes
+    through `detectors.inventory_glyphs` rather than testing `INVENTORY_CHARS`
+    directly. `й` is `и` + U+0306 and `ü` is `u` + U+0308, both inventory members
+    under NFD, so a line of pre-reform Russian or a German title was flagged as
+    carrying notation and sent the reviewer looking for a Chukchee form that was
+    never there — `3-149`'s `служилый` / `приказный` were reported exactly so.
+    The floor above is about what this *misses*; this is about what it invents.
     """
-    return "".join(dict.fromkeys(c for c in text if c in INVENTORY_CHARS))
+    return "".join(dict.fromkeys(inventory_glyphs(text)))
 
 
 def load_proposal(ref: str, root: Path = Path(".")) -> dict[int, dict]:
@@ -425,7 +441,7 @@ def _describe(old: str, new: str) -> str:
 
 
 def corrections(root: Path = Path("."), refs: list[str] | None = None,
-                since: str | None = None) -> dict:
+                since: str | None = None, tick: Callable | None = None) -> dict:
     """Character-level proposal->decision corrections, aggregated across pages.
 
     What the adjudicator changed is the only record of what readers actually get
@@ -468,7 +484,11 @@ def corrections(root: Path = Path("."), refs: list[str] | None = None,
     stamps: dict[str, list[str]] = {}
     by_page: list[dict] = []
     skipped_unstamped: list[str] = []
-    for d in page_dirs(root):
+    # The work-list is every review directory, so the bar counts directories
+    # rather than the pages that turn out to hold both files — the denominator a
+    # caller can know before the sweep starts, which is the rule `predict_all`
+    # set and every other instrumented sweep here follows.
+    for d in ptrack(page_dirs(root), tick):
         ref = norm_ref(d.name)
         if want is not None and ref not in want:
             continue

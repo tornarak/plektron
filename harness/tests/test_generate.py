@@ -624,7 +624,17 @@ def test_diff_says_it_cannot_tell_rather_than_saying_no(tmp_path):
 
     # The collated page carries no generation stamp — stripped, or written
     # before the generator stamped. Nothing says which baseline it came from.
-    _reviewed(tmp_path, "1-021", re.sub(r"<!--\s*generated:[^>]*-->", "", doc))
+    #
+    # **Both encodings are stripped**, and the second is why this line is not a
+    # one-liner. The stamp used to be an XML comment and is now `<appInfo>`; a
+    # test that removed only the comment went on passing for one release and then
+    # asserted nothing, because the page it built still carried the element. What
+    # is under test is "a page with no stamp", so the setup has to produce one
+    # whichever way the generator currently writes it.
+    stripped = re.sub(r"<!--\s*generated:[^>]*-->", "", doc)
+    stripped = re.sub(r"<appInfo>.*?</appInfo>", "", stripped, flags=re.S)
+    assert "generated:" not in stripped and "appInfo" not in stripped
+    _reviewed(tmp_path, "1-021", stripped)
     row = gen.diff("1-021", tmp_path)
     assert row["drifted"] is None, "a comparison that did not happen is not a No"
     assert "cannot tell" in row["why"]
@@ -635,6 +645,35 @@ def test_diff_says_it_cannot_tell_rather_than_saying_no(tmp_path):
     row = gen.diff("1-021", tmp_path)
     assert row["drifted"] is None
     assert "cannot tell" in row["why"]
+
+
+def test_diff_still_reads_a_page_stamped_the_old_way(tmp_path):
+    """**The regression the move to `<appInfo>` could have caused, pinned.**
+
+    The stamp used to be an XML comment and every page collated before the change
+    carries one; `SURVIVING` deliberately lets it live on into `tei/`. A reader of
+    only the element would have reported the whole reviewed corpus as carrying no
+    stamp, so `tei diff` would answer "cannot tell" everywhere — a regression
+    dressed as caution, and the sort that reads as prudence on the row a human
+    uses to decide a page is finished.
+
+    So the collated page here carries the comment and nothing else, exactly as a
+    page from before the change does, and `drifted` must still be a real False.
+    """
+    blocks = [("MainZone-P", lines_at(["Body."]))]
+    stores(tmp_path, "1-021", blocks)
+    gen.generate("1-021", tmp_path)
+    doc = gen.gen_path("1-021", tmp_path).read_text()
+
+    old = re.sub(r"<encodingDesc>.*?</encodingDesc>", "", doc, flags=re.S)
+    old = old.replace("<teiHeader>",
+                      f"<!-- {gen._stamp('1-021', tmp_path)} -->\n  <teiHeader>")
+    assert "appInfo" not in old and "generated:" in old
+    _reviewed(tmp_path, "1-021", old)
+
+    row = gen.diff("1-021", tmp_path)
+    assert row["drifted"] is False, "an old-stamped page is comparable, not unknown"
+    assert "cannot tell" not in (row["why"] or "")
 
 
 def test_diff_shows_the_shape_of_what_review_did(tmp_path):

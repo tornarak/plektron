@@ -70,6 +70,7 @@ from __future__ import annotations
 import os
 from collections.abc import Callable, Iterable
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from pathlib import Path
 
 # The default cap, above what a 4-core machine offers and below what this
 # repository's 16-core one does.
@@ -190,3 +191,106 @@ def _call(fn: Callable, item):
         # sends the reader back through the whole store to find which.
         exc.add_note(f"while processing {item!r}")
         raise
+
+
+# ----------------------------------------------------- the GPU-worker machinery
+#
+# **Processes, where everything above is threads**, and the split is measured
+# rather than stylistic. A neural sweep here is a brief forward pass and then a
+# long stretch of single-core Python — scipy, shapely, and kraken's own tracing —
+# so a thread pool gives back only the GIL-free share. `ocr predict` over 8 pages:
+# 14.16 s/page serial, 7.89 with 4 threads (1.8x), 5.14 with 4 processes (2.8x,
+# and that figure includes four model loads).
+#
+# It lives here rather than in `recognize`, where it was written, because
+# `zones` needs it too and **`zones` cannot import `recognize`** — the graph runs
+# `recognize` -> `zones` -> `context`, and this module sits under all of them.
+# `recognize` keeps its own names bound to these, so the monkeypatch seams its
+# tests use still point at the objects its `_worker_init` actually calls.
+
+# What one worker costs on the card, measured: ~1.6 GB, nearly all of it CUDA and
+# cuDNN context rather than weights (a recognizer's parameters are 22 MiB, and a
+# segmenter touches the GPU only during its forward pass). Used to divide *free*
+# VRAM at run time rather than to assert a worker count — the number that fits is
+# a property of the card, and a constant here would be wrong on the next machine.
+VRAM_PER_WORKER = 1.6 * 1024 ** 3
+
+
+def gpu_workers(jobs: int | None, n_items: int) -> int:
+    """How many processes a model sweep will use.
+
+    **Capped by VRAM as well as cores.** Four is the ceiling by default rather
+    than `MAX_WORKERS`: past that the pages queue behind one another on the card's
+    context anyway, and each worker is ~1.6 GB that has to exist at once.
+
+    A `jobs` a human typed wins outright, including one that will not fit. Naming
+    it is the request, and the same rule holds for `--jobs 1`, which is the serial
+    control arm every pooled sweep in this repo has to stay diffable against.
+    """
+    import os
+
+    if jobs is not None:
+        if jobs < 1:
+            raise ValueError(f"--jobs must be at least 1, got {jobs}")
+        return min(jobs, n_items)
+    n = max(1, min(os.process_cpu_count() or 1, 4))
+    try:
+        import torch
+        if torch.cuda.is_available():
+            free, _total = torch.cuda.mem_get_info()
+            n = max(1, min(n, int(free / VRAM_PER_WORKER)))
+    except Exception:
+        pass
+    return max(1, min(n, n_items))
+
+
+def capture_stderr(log_dir) -> None:
+    """Point this process's fd 2 at a file of its own, and never at the terminal.
+
+    **A worker must not be able to write where the parent is drawing.** Filtering
+    a known warning by message cannot promise that — it names one warning, and the
+    next library that clears its throat mid-sweep would break the display again
+    with nobody able to say why. This closes the channel rather than the message:
+    whatever the child emits, present or future, Python-level or from inside a C
+    extension, lands in a file instead of between two frames of a progress bar.
+
+    `dup2` and not `sys.stderr =`, for that last reason: rebinding the Python
+    object leaves fd 2 pointing at the terminal, and scipy, shapely and torch all
+    have C in them.
+
+    Nothing is silenced. The parent reads these files when the pool closes and
+    reports what they hold; an empty one is removed.
+    """
+    import os
+    fd = os.open(Path(log_dir) / f"worker-{os.getpid()}.log",
+                 os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o644)
+    os.dup2(fd, 2)
+    os.close(fd)
+
+
+def worker_output(log_dir) -> dict:
+    """What the workers wrote to their captured stderr, and where it is.
+
+    Read after the pool closes rather than streamed: the whole point is that this
+    text must not reach the terminal while the bar is live, and a sweep that ends
+    is the moment it can be read safely.
+
+    **Empty files are removed and an empty run reports nothing**, which is what
+    makes a non-empty one worth looking at. The directory survives only if it has
+    something in it, so the path in the report always names a file that exists.
+    """
+    log_dir = Path(log_dir)
+    files = sorted(log_dir.glob("worker-*.log")) if log_dir.exists() else []
+    kept, lines = [], 0
+    for f in files:
+        text = f.read_text(encoding="utf-8", errors="replace")
+        if text.strip():
+            kept.append(f)
+            lines += len(text.strip().splitlines())
+        else:
+            f.unlink()
+    if not kept:
+        if log_dir.exists():
+            log_dir.rmdir()
+        return {"stderr_lines": 0, "stderr_log": ""}
+    return {"stderr_lines": lines, "stderr_log": str(log_dir)}

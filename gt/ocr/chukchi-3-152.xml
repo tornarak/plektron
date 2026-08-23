@@ -1,0 +1,372 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-3-152.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-3-152.png; regions_from: zones/chukchi-3-152.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+                <TextBlock ID="mz_3-152_r1" HPOS="573" VPOS="453" WIDTH="1782" HEIGHT="102" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="573 453 2355 453 2355 555 573 555"/>
+                    </Shape>
+                    <TextLine ID="mz_3-152_l1" HPOS="1149" VPOS="476" WIDTH="610" HEIGHT="51" BASELINE="1151 507 1759 513" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1738 478 1350 476 1346 476 1327 476 1307 476 1288 476 1268 476 1249 476 1229 476 1210 476 1190 476 1171 476 1151 476 1151 507 1149 521 1755 527 1759 513 1755 509 1738 478"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-152_l2" HPOS="576" VPOS="468" WIDTH="106" HEIGHT="57" BASELINE="576 511 682 511" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="596 468 576 478 576 511 576 525 682 525 682 511 682 480 607 468 596 468"/>
+                        </Shape>
+                        <String CONTENT="686"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-152_r2" HPOS="573" VPOS="578" WIDTH="1782" HEIGHT="359" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="573 578 2355 578 2355 937 573 937"/>
+                    </Shape>
+                    <TextLine ID="mz_3-152_l3" HPOS="572" VPOS="576" WIDTH="1768" HEIGHT="62" BASELINE="574 617 2340 620" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="574 617 572 628 586 638 588 638 590 638 592 638 2338 632 2340 620 2338 589 1923 578 1921 578 1919 578 1892 587 1865 578 1863 578 1861 578 1798 587 1763 578 1761 578 1759 578 1633 587 1582 578 1580 578 1483 587 1426 576 1424 576 1422 576 1387 585 1332 576 1331 576 1329 576 1292 585 1216 576 1214 576 1157 585 1062 576 1060 576 1058 576 1027 585 993 576 991 576 989 576 988 576 962 585 929 576 927 576 925 576 923 576 898 587 793 587 777 576 775 576 773 576 771 576 769 576 742 587 646 587 631 576 629 576 627 576 625 576 574 583 574 617"/>
+                        </Shape>
+                        <String CONTENT="where they asked the natives for these. As mentioned above, the Kolyma"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-152_l4" HPOS="574" VPOS="638" WIDTH="1770" HEIGHT="57" BASELINE="574 679 2344 679" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="574 679 574 695 2342 695 2344 679 2342 650 2278 638 2276 638 2274 638 2245 648 2155 638 2153 638 2054 648 1985 638 1983 638 1981 638 1948 648 1865 638 1863 638 1802 650 1588 650 1551 638 1549 638 1547 638 1545 638 1512 648 1451 638 1449 638 1447 638 1414 650 1266 650 1243 638 1241 638 1239 638 1177 648 1104 638 1103 638 1101 638 1067 648 1027 638 1025 638 1023 638 1021 638 989 648 933 638 931 638 929 638 896 648 861 638 859 638 857 638 574 642 574 679"/>
+                        </Shape>
+                        <String CONTENT="River, which for the last fifty years has known no sables, abounded at that"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-152_l5" HPOS="570" VPOS="696" WIDTH="1768" HEIGHT="63" BASELINE="572 741 2338 737" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="572 741 572 753 2334 759 2338 737 2334 708 2143 696 2141 696 2139 696 2137 696 2122 708 2009 708 1962 696 1960 696 1882 706 1831 696 1829 696 1750 706 1685 696 1683 696 1619 706 1525 696 1523 696 1522 696 1520 696 1504 708 1393 708 1194 698 1192 698 1190 698 1149 708 1116 698 1114 698 1112 698 1027 708 978 698 976 698 873 708 810 698 808 698 806 698 804 698 789 710 652 710 594 698 592 698 590 698 588 698 570 706 572 741"/>
+                        </Shape>
+                        <String CONTENT="time, on the contrary, in the best, very dark sable. According to Slovtzov,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-152_l6" HPOS="572" VPOS="753" WIDTH="1768" HEIGHT="62" BASELINE="574 802 2340 796" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="574 802 574 813 2336 815 2340 796 2336 767 2120 767 2095 753 2093 753 2091 753 2089 753 2087 753 2069 767 1978 767 1939 753 1937 753 1935 753 1857 765 1812 753 1810 753 1808 753 1806 753 1783 765 1759 753 1757 753 1755 753 1753 753 1752 753 1732 767 1666 755 1664 755 1555 767 1527 755 1525 755 1523 755 1477 765 1389 755 1387 755 1385 755 1362 767 1317 755 1315 755 1313 755 1237 767 1188 755 1186 755 1184 755 1182 755 1155 771 970 771 952 757 951 757 949 757 947 757 890 767 822 757 760 757 758 757 756 757 754 757 738 769 678 757 676 757 674 757 637 769 598 757 596 757 594 757 592 757 572 765 574 802"/>
+                        </Shape>
+                        <String CONTENT="in the eighteenth century the fair of Sredne-Kolymsk brought to the treasury"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-152_l7" HPOS="570" VPOS="813" WIDTH="1770" HEIGHT="61" BASELINE="572 860 2340 854" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="572 860 572 874 2338 870 2340 854 2336 825 2270 813 2268 813 2266 813 2264 813 2248 825 2139 825 2118 813 2116 813 2114 813 2112 813 2087 823 2067 813 2065 813 2063 813 1983 823 1956 813 1954 813 1952 813 1868 823 1845 813 1843 813 1841 813 1769 823 1755 813 1753 813 1752 813 1750 813 1687 825 1481 815 1479 815 1477 815 1444 825 1410 815 1409 815 1407 815 1276 825 1212 815 1210 815 1208 815 1184 825 1163 815 1161 815 1159 815 1157 815 1130 827 826 817 824 817 717 827 660 817 658 817 570 829 572 860"/>
+                        </Shape>
+                        <String CONTENT="as the usual tithe ninety doublescores¹ of sables. Therefore the whole number"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-152_l8" HPOS="570" VPOS="874" WIDTH="1361" HEIGHT="58" BASELINE="572 921 1931 915" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="572 921 572 932 1929 930 1931 915 1929 886 1907 874 1905 874 1904 874 1902 874 1900 874 1884 886 1759 886 1742 874 1740 874 1738 874 1736 874 1679 884 1656 874 1654 874 1652 874 1650 874 1623 884 1520 874 1518 874 1447 886 1163 876 1161 876 1110 886 1083 876 1081 876 1079 876 991 887 689 878 687 878 685 878 646 887 615 878 613 878 611 878 609 878 570 889 572 921"/>
+                        </Shape>
+                        <String CONTENT="of sables brought to the fair was about thirty-six thousand."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-152_r3" HPOS="573" VPOS="937" WIDTH="1782" HEIGHT="1147" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="573 937 2355 937 2355 2084 573 2084"/>
+                    </Shape>
+                    <TextLine ID="mz_3-152_l9" HPOS="682" VPOS="938" WIDTH="1660" HEIGHT="55" BASELINE="682 977 2342 977" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="682 977 682 993 2342 993 2342 977 2342 950 2161 950 2130 938 2128 938 2126 938 2124 938 2087 948 1997 938 1995 938 1993 938 1958 948 1802 938 1800 938 1672 948 1568 938 1566 938 1512 948 1479 938 1477 938 1475 938 1325 948 1264 938 1262 938 1260 938 1221 948 1046 938 1044 938 972 948 929 938 927 938 925 938 871 948 837 938 836 938 834 938 832 938 798 948 682 944 682 977"/>
+                        </Shape>
+                        <String CONTENT="The Anadyr River, on the other hand, as may be seen from the reports"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-152_l10" HPOS="570" VPOS="997" WIDTH="1770" HEIGHT="56" BASELINE="572 1039 2340 1036" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="572 1039 572 1051 2336 1053 2340 1036 2336 1006 1475 997 1473 997 1471 997 1451 1006 670 999 668 999 570 1008 572 1039"/>
+                        </Shape>
+                        <String CONTENT="quoted above, even in earlier times, had no sables because of the scarcity"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-152_l11" HPOS="570" VPOS="1055" WIDTH="1768" HEIGHT="66" BASELINE="572 1100 2338 1094" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="572 1100 572 1112 900 1112 915 1121 917 1121 919 1121 921 1121 1114 1112 1155 1121 1157 1121 1159 1121 1284 1110 1488 1119 1490 1119 1492 1119 1494 1119 1510 1110 2108 1117 2110 1117 2112 1117 2130 1108 2143 1117 2145 1117 2147 1117 2149 1119 2336 1119 2338 1094 2334 1065 1985 1055 1983 1055 1808 1065 1761 1055 1759 1055 1757 1055 1755 1055 1740 1067 1295 1057 1294 1057 1292 1057 1290 1057 1274 1067 1027 1059 1025 1059 1023 1059 988 1069 929 1059 927 1059 925 1059 886 1069 832 1059 830 1059 828 1059 797 1069 783 1059 781 1059 779 1059 611 1059 609 1059 607 1059 570 1071 572 1100"/>
+                        </Shape>
+                        <String CONTENT="of wood. In the first years, however, the Cossacks succeeded in extorting"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-152_l12" HPOS="572" VPOS="1114" WIDTH="1766" HEIGHT="58" BASELINE="574 1158 2338 1152" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="574 1158 574 1172 2336 1166 2338 1152 2334 1125 2165 1114 2163 1114 2102 1123 2081 1114 2079 1114 2077 1114 1981 1123 1948 1114 1946 1114 1944 1114 1943 1114 1921 1123 1896 1114 1894 1114 1892 1114 1796 1123 1763 1114 1761 1114 1759 1114 1757 1114 1716 1125 1679 1115 1677 1115 1676 1115 1317 1125 1299 1115 1297 1115 1295 1115 1165 1115 1163 1115 1161 1115 1122 1127 586 1117 584 1117 582 1117 580 1117 572 1123 574 1158"/>
+                        </Shape>
+                        <String CONTENT="from the natives a considerable number of sable-skins, whole and split, pro-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-152_l13" HPOS="574" VPOS="1174" WIDTH="1768" HEIGHT="58" BASELINE="576 1219 2342 1215" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="576 1219 576 1232 2340 1229 2342 1215 2338 1186 2286 1174 2284 1174 2282 1174 2258 1184 2198 1174 2196 1174 2194 1174 2169 1184 2106 1174 2104 1174 2102 1174 2075 1184 2020 1174 2019 1174 2017 1174 1983 1186 1867 1186 1851 1174 1849 1174 1847 1174 1845 1174 1746 1184 1615 1174 1613 1174 1494 1184 1461 1174 1459 1174 1457 1174 1455 1174 1453 1174 1440 1186 1428 1176 1426 1176 1424 1176 1422 1176 1420 1176 1387 1186 1297 1176 1295 1176 1294 1176 1260 1186 1186 1176 1184 1176 1130 1186 1042 1176 1040 1176 1038 1176 1001 1186 947 1176 945 1176 574 1182 576 1219"/>
+                        </Shape>
+                        <String CONTENT="bably acquired by the natives from their southern neighbors. On the Anadyr"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-152_l14" HPOS="570" VPOS="1232" WIDTH="1770" HEIGHT="61" BASELINE="572 1279 2340 1271" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="572 1279 572 1293 2338 1287 2340 1271 2336 1244 2227 1244 2206 1232 2204 1232 2202 1232 2200 1232 2198 1232 2180 1244 2048 1244 2020 1232 2019 1232 2017 1232 2015 1232 1993 1242 1970 1232 1968 1232 1966 1232 1964 1232 1939 1242 1915 1232 1913 1232 1911 1232 1909 1232 1907 1232 1892 1244 1576 1234 1574 1234 1572 1234 1539 1244 1488 1234 1486 1234 1485 1234 1453 1246 1426 1236 1424 1236 1422 1236 1420 1236 1387 1246 1329 1236 1327 1236 570 1244 572 1279"/>
+                        </Shape>
+                        <String CONTENT="River and to the north of Kolymsk, the Cossacks turned their attention to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-152_l15" HPOS="572" VPOS="1295" WIDTH="1768" HEIGHT="56" BASELINE="574 1340 2340 1334" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="574 1340 574 1351 2338 1345 2340 1334 2336 1306 1845 1295 1843 1295 1769 1305 1716 1297 1714 1297 1713 1297 1711 1297 1695 1306 1568 1297 1566 1297 1371 1306 1331 1297 1329 1297 1327 1297 1264 1306 1202 1297 1200 1297 1198 1297 1157 1308 633 1299 631 1299 572 1310 574 1340"/>
+                        </Shape>
+                        <String CONTENT="walrus-tusks, which were also of great value. According to a record con-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-152_l16" HPOS="570" VPOS="1353" WIDTH="1770" HEIGHT="59" BASELINE="572 1398 2340 1392" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="572 1398 572 1412 2338 1408 2340 1392 2336 1365 2221 1365 2200 1353 2198 1353 2196 1353 2194 1353 2163 1363 2134 1353 2132 1353 2130 1353 2128 1353 2102 1365 1872 1365 1804 1353 1802 1353 1746 1365 1395 1355 1393 1355 1108 1367 1040 1357 1038 1357 791 1367 765 1357 763 1357 619 1357 617 1357 615 1357 570 1369 572 1398"/>
+                        </Shape>
+                        <String CONTENT="tained in one of the reports mentioned, fourteen sables were equivalent to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-152_l17" HPOS="569" VPOS="1414" WIDTH="1773" HEIGHT="66" BASELINE="570 1458 2342 1453" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="570 1458 570 1470 1157 1480 1159 1480 1161 1480 1163 1480 1182 1468 1488 1468 1541 1478 1543 1478 1796 1466 2044 1476 2046 1476 2100 1466 2159 1476 2161 1476 2340 1468 2342 1453 2336 1416 2044 1423 1880 1414 1878 1414 1820 1423 1783 1414 1781 1414 1779 1414 1777 1414 1746 1425 1677 1416 1676 1416 1586 1425 1502 1416 1500 1416 1498 1416 1459 1425 1405 1416 1403 1416 1401 1416 1366 1425 1288 1416 1286 1416 1155 1427 834 1418 832 1418 830 1418 795 1427 754 1418 752 1418 750 1418 569 1427 570 1458"/>
+                        </Shape>
+                        <String CONTENT="one pud of walrus-ivory; so that the fifty puds of walrus-ivory mentioned"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-152_l18" HPOS="569" VPOS="1472" WIDTH="1771" HEIGHT="61" BASELINE="570 1521 2340 1513" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="570 1521 570 1533 2338 1525 2340 1513 2338 1484 2295 1472 2293 1472 2291 1472 2241 1482 2192 1472 2190 1472 2188 1472 2186 1472 2171 1484 1880 1484 1455 1474 1453 1474 1340 1486 1013 1476 1011 1476 878 1488 600 1478 598 1478 596 1478 569 1488 570 1521"/>
+                        </Shape>
+                        <String CONTENT="above were equivalent to seven hundred sables; i.e., to seventeen double-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-152_l19" HPOS="572" VPOS="1534" WIDTH="1768" HEIGHT="57" BASELINE="572 1575 2340 1575" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="572 1575 572 1591 2340 1591 2340 1575 2340 1546 1839 1534 1837 1534 1679 1544 1642 1534 1640 1534 1638 1534 1637 1534 1635 1534 1619 1546 1490 1546 1387 1534 1385 1534 1299 1544 1218 1534 1216 1534 1151 1544 1091 1534 1089 1534 1087 1534 1046 1544 1032 1534 1030 1534 1028 1534 878 1534 876 1534 828 1544 797 1534 795 1534 793 1534 572 1544 572 1575"/>
+                        </Shape>
+                        <String CONTENT="scores and a half of sable-peltries. Numerous decrees of the Government were"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-152_l20" HPOS="569" VPOS="1593" WIDTH="1771" HEIGHT="58" BASELINE="570 1638 2340 1632" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="570 1638 570 1651 2338 1646 2340 1632 2336 1605 2007 1593 2005 1593 1933 1603 1880 1593 1878 1593 1810 1603 1759 1593 1757 1593 1755 1593 1753 1593 1738 1605 1586 1595 1584 1595 1520 1605 1461 1595 1459 1595 1368 1605 1305 1595 1303 1595 1198 1605 1116 1597 1114 1597 1112 1597 1110 1597 1095 1607 882 1597 880 1597 810 1607 761 1597 760 1597 569 1603 570 1638"/>
+                        </Shape>
+                        <String CONTENT="issued in reference to the quality of the tribute to be collected from the na-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-152_l21" HPOS="570" VPOS="1649" WIDTH="1772" HEIGHT="69" BASELINE="572 1698 2342 1690" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="572 1698 572 1718 2340 1708 2342 1690 2338 1663 2215 1649 2213 1649 2211 1649 2210 1649 2190 1663 2118 1663 2056 1649 2054 1649 1987 1661 1954 1649 1952 1649 1950 1649 1948 1649 1946 1649 1927 1661 1904 1649 1902 1649 1900 1649 1898 1649 1896 1649 1874 1663 1839 1651 1837 1651 1835 1651 1833 1651 1785 1663 1732 1651 1730 1651 1728 1651 1726 1651 1707 1665 1613 1665 1564 1651 1562 1651 1561 1651 1449 1665 1200 1653 1198 1653 1196 1653 1194 1653 1177 1665 912 1655 910 1655 908 1655 863 1667 744 1655 742 1655 685 1667 594 1655 592 1655 590 1655 588 1655 570 1665 572 1698"/>
+                        </Shape>
+                        <String CONTENT="tives. Most of them say, “You have to take good and whole sables, without"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-152_l22" HPOS="572" VPOS="1712" WIDTH="1768" HEIGHT="56" BASELINE="574 1757 2340 1753" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="574 1757 574 1768 2338 1766 2340 1753 2338 1725 2313 1712 2311 1712 2309 1712 2307 1712 2280 1724 2237 1712 2235 1712 2233 1712 2231 1712 2188 1725 2083 1725 2065 1712 2063 1712 2061 1712 2059 1712 2003 1725 1648 1725 1629 1712 1627 1712 1625 1712 1623 1712 1566 1724 1447 1714 1358 1714 1356 1714 1354 1714 1352 1714 1334 1725 1311 1714 1309 1714 1307 1714 1227 1725 1200 1714 1198 1714 1196 1714 1118 1725 1067 1714 1065 1714 1064 1714 989 1725 952 1714 951 1714 949 1714 865 1725 795 1716 793 1716 572 1720 574 1757"/>
+                        </Shape>
+                        <String CONTENT="bare spots, with tails and with bellies; and you must not take as Czar’s"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-152_l23" HPOS="570" VPOS="1774" WIDTH="1770" HEIGHT="57" BASELINE="572 1817 2340 1811" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="572 1817 572 1831 2338 1831 2340 1811 2334 1776 1455 1784 1426 1774 1424 1774 1245 1774 1243 1774 999 1786 966 1776 964 1776 962 1776 888 1786 793 1776 791 1776 724 1786 590 1776 588 1776 586 1776 584 1776 570 1784 572 1817"/>
+                        </Shape>
+                        <String CONTENT="tribute sables not whole, and with bare spots, or rotten and torn ones, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-152_l24" HPOS="570" VPOS="1831" WIDTH="1770" HEIGHT="58" BASELINE="572 1876 2340 1872" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="572 1876 572 1889 2338 1889 2340 1872 2336 1844 2274 1844 2256 1831 2254 1831 2252 1831 2250 1831 2248 1831 2221 1844 2079 1844 2054 1831 2052 1831 2050 1831 2048 1831 2046 1831 2026 1844 1777 1844 1744 1831 1742 1831 1740 1831 1652 1842 1551 1831 1549 1831 1547 1831 1508 1842 1436 1833 1434 1833 1432 1833 1430 1833 1412 1844 1350 1833 1348 1833 1190 1844 1085 1833 1083 1833 1081 1833 1054 1844 958 1833 956 1833 954 1833 917 1844 900 1833 898 1833 896 1833 689 1833 687 1833 685 1833 683 1833 668 1844 643 1837 641 1837 639 1837 570 1846 572 1876"/>
+                        </Shape>
+                        <String CONTENT="not full-haired. You have to take the tribute and presents and enter them"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-152_l25" HPOS="570" VPOS="1893" WIDTH="1772" HEIGHT="57" BASELINE="572 1936 2342 1932" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="572 1936 572 1950 2340 1946 2342 1932 2338 1905 2248 1893 2247 1893 2245 1893 2213 1903 2157 1893 2155 1893 2093 1903 1991 1893 1989 1893 1939 1903 1814 1893 1812 1893 1761 1905 1533 1905 1518 1893 1516 1893 1514 1893 1512 1893 1428 1905 1229 1895 1227 1895 1173 1905 991 1895 989 1895 570 1901 572 1936"/>
+                        </Shape>
+                        <String CONTENT="in the tribute-books, year after year, and one name after another. You have"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-152_l26" HPOS="570" VPOS="1952" WIDTH="1770" HEIGHT="58" BASELINE="572 1996 2340 1992" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="572 1996 572 2010 2338 2010 2340 1992 2334 1953 2005 1961 1956 1952 1954 1952 1952 1952 1913 1961 1843 1952 1841 1952 1839 1952 1808 1961 1777 1952 1775 1952 1773 1952 1642 1961 1592 1952 1590 1952 1588 1952 1562 1961 1512 1952 1510 1952 1508 1952 1506 1952 1492 1961 1432 1953 1430 1953 1340 1963 1235 1953 1233 1953 1095 1963 991 1953 989 1953 988 1953 986 1953 970 1963 797 1953 795 1953 742 1963 687 1953 685 1953 570 1965 572 1996"/>
+                        </Shape>
+                        <String CONTENT="to take of walrus-tusks, as tribute, only the best, and of medium size. Small"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-152_l27" HPOS="572" VPOS="2012" WIDTH="1680" HEIGHT="56" BASELINE="574 2055 2252 2051" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="574 2055 574 2068 2250 2065 2252 2051 2247 2012 2198 2022 2116 2012 2114 2012 2036 2022 2009 2012 2007 2012 2005 2012 1956 2022 1929 2012 1927 2012 1925 2012 1923 2012 1902 2024 1533 2024 1498 2012 1496 2012 1494 2012 1492 2012 1490 2012 1477 2022 1387 2014 1385 2014 1323 2024 785 2014 783 2014 695 2024 641 2014 639 2014 572 2026 574 2055"/>
+                        </Shape>
+                        <String CONTENT="tusks, weighing less than one pound each, you must not take for tribute.”"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-152_r4" HPOS="573" VPOS="2084" WIDTH="1782" HEIGHT="892" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="573 2084 2355 2084 2355 2976 573 2976"/>
+                    </Shape>
+                    <TextLine ID="mz_3-152_l28" HPOS="678" VPOS="2070" WIDTH="1660" HEIGHT="59" BASELINE="680 2115 2338 2109" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="680 2115 680 2129 2336 2127 2338 2109 2336 2082 2295 2070 2293 2070 2291 2070 2231 2082 1896 2082 1867 2070 1865 2070 1863 2070 1861 2070 1833 2080 1785 2070 1783 2070 1709 2082 1233 2072 1231 2072 1169 2084 1149 2074 1147 2074 1145 2074 1095 2084 995 2074 993 2074 880 2084 861 2074 859 2074 857 2074 738 2084 701 2074 699 2074 697 2074 695 2074 693 2074 678 2082 680 2115"/>
+                        </Shape>
+                        <String CONTENT="A great number of natives were exterminated by the conquerors. The"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-152_l29" HPOS="569" VPOS="2131" WIDTH="1769" HEIGHT="58" BASELINE="570 2176 2338 2172" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="570 2176 570 2189 2336 2189 2338 2172 2332 2135 1905 2141 1847 2131 1845 2131 1790 2141 1689 2131 1687 2131 1605 2141 1568 2131 1566 2131 1564 2131 1562 2131 1529 2141 1453 2131 1451 2131 1449 2131 1426 2143 1243 2133 1241 2133 1239 2133 1212 2143 1165 2133 1163 2133 1161 2133 1159 2133 1141 2144 1036 2144 997 2133 995 2133 993 2133 991 2133 952 2143 869 2133 867 2133 865 2133 863 2133 847 2143 703 2135 701 2135 569 2144 570 2176"/>
+                        </Shape>
+                        <String CONTENT="reports are full of remarks like the following: “The village was taken, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-152_l30" HPOS="570" VPOS="2189" WIDTH="1768" HEIGHT="61" BASELINE="572 2236 2338 2230" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="572 2236 572 2250 2336 2246 2338 2230 2334 2201 2126 2201 2104 2189 2102 2189 2100 2189 2098 2189 2065 2199 2017 2189 2015 2189 1927 2199 1886 2189 1884 2189 1882 2189 1783 2199 1753 2189 1752 2189 1750 2189 1748 2189 1746 2189 1730 2199 1541 2191 1539 2191 1537 2191 1535 2191 1522 2201 1440 2191 1438 2191 1383 2201 1062 2193 1060 2193 1058 2193 1056 2193 1040 2203 602 2193 600 2193 598 2193 570 2203 572 2236"/>
+                        </Shape>
+                        <String CONTENT="all the people put to death.” The natives defended themselves with the courage"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-152_l31" HPOS="570" VPOS="2250" WIDTH="1770" HEIGHT="68" BASELINE="572 2295 2340 2289" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="572 2295 572 2318 627 2308 1736 2314 1738 2314 1740 2314 1771 2304 2340 2304 2340 2289 2332 2250 2297 2259 2054 2250 2052 2250 1993 2259 1943 2250 1941 2250 1939 2250 1937 2250 1921 2261 1689 2261 1650 2252 1648 2252 1646 2252 1644 2252 1619 2261 1559 2252 1557 2252 1455 2261 1373 2252 1371 2252 1370 2252 1368 2252 1352 2261 1227 2254 1225 2254 1147 2263 1079 2254 1077 2254 1075 2254 1036 2263 861 2254 859 2254 857 2254 816 2263 800 2254 798 2254 797 2254 611 2254 609 2254 607 2254 570 2265 572 2295"/>
+                        </Shape>
+                        <String CONTENT="of despair; but in the contests, they could do no more than kill a few of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-152_l32" HPOS="572" VPOS="2312" WIDTH="1766" HEIGHT="55" BASELINE="572 2353 2338 2353" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="572 2353 572 2367 2336 2367 2338 2353 2336 2324 1601 2312 1599 2312 1598 2312 1596 2312 1580 2324 1446 2324 1407 2312 1405 2312 1403 2312 1295 2322 1198 2312 1196 2312 1194 2312 1192 2312 1177 2322 1095 2312 1093 2312 1027 2322 943 2312 941 2312 939 2312 937 2312 921 2324 810 2324 763 2312 761 2312 627 2322 600 2312 598 2312 596 2312 594 2312 572 2322 572 2353"/>
+                        </Shape>
+                        <String CONTENT="the assailants. Then they had to give way before steel blades and fire-arms."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-152_l33" HPOS="574" VPOS="2373" WIDTH="1764" HEIGHT="54" BASELINE="574 2411 2338 2411" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="574 2411 574 2425 2336 2427 2338 2411 2338 2384 2145 2373 2143 2373 2141 2373 2106 2382 2069 2373 2067 2373 2065 2373 2063 2373 2026 2384 1902 2384 1886 2373 1884 2373 1882 2373 1880 2373 1822 2382 1687 2373 1685 2373 1615 2384 1442 2384 1426 2373 1424 2373 1422 2373 1420 2373 1295 2382 1153 2373 1151 2373 1097 2382 1069 2373 1067 2373 1065 2373 980 2382 574 2376 574 2411"/>
+                        </Shape>
+                        <String CONTENT="Those that were left alive promised to pay tribute, and gave the best men"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-152_l34" HPOS="572" VPOS="2433" WIDTH="1764" HEIGHT="62" BASELINE="572 2472 2336 2472" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="572 2472 572 2484 763 2495 765 2495 865 2486 1233 2495 1235 2495 1237 2495 1268 2486 1461 2495 1463 2495 1465 2495 1492 2486 1633 2486 1648 2495 1650 2495 1652 2495 1654 2495 1759 2486 2011 2486 2046 2495 2048 2495 2050 2495 2336 2484 2336 2472 2336 2443 2065 2433 2063 2433 1939 2443 1886 2433 1884 2433 1882 2433 1849 2443 1790 2433 1789 2433 1787 2433 1752 2443 1695 2433 1693 2433 1469 2443 1284 2433 1282 2433 1235 2443 1186 2433 1184 2433 1182 2433 1163 2443 1048 2433 1046 2433 1044 2433 1007 2443 917 2433 915 2433 913 2433 912 2433 896 2445 691 2445 662 2433 660 2433 658 2433 572 2443 572 2472"/>
+                        </Shape>
+                        <String CONTENT="as hostages. The Cossacks, however, were quite far from enjoying their"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-152_l35" HPOS="570" VPOS="2489" WIDTH="1768" HEIGHT="67" BASELINE="572 2534 2338 2530" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="572 2534 572 2556 2336 2546 2338 2530 2334 2503 1845 2503 1828 2489 1826 2489 1824 2489 1744 2489 1742 2489 1740 2489 1689 2501 1559 2489 1557 2489 1451 2503 1410 2491 1409 2491 1407 2491 1249 2503 1155 2491 1153 2491 1151 2491 1108 2503 1011 2491 1009 2491 906 2503 814 2491 812 2491 748 2503 652 2491 650 2491 570 2505 572 2534"/>
+                        </Shape>
+                        <String CONTENT="position. The northern clime and the conditions of life were too severe even"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-152_l36" HPOS="570" VPOS="2548" WIDTH="1766" HEIGHT="60" BASELINE="572 2595 2336 2587" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="572 2595 572 2608 2334 2608 2336 2587 2334 2558 2317 2548 2315 2548 2313 2548 2311 2548 2087 2558 2056 2548 2054 2548 2052 2548 2050 2548 2048 2548 2032 2560 1892 2560 1868 2550 1867 2550 1865 2550 1798 2560 1711 2550 1709 2550 1707 2550 1705 2550 1689 2562 1440 2562 1134 2552 1132 2552 1130 2552 1128 2552 1112 2562 683 2554 682 2554 680 2554 646 2563 584 2554 582 2554 580 2554 578 2554 570 2560 572 2595"/>
+                        </Shape>
+                        <String CONTENT="for those adventurers. Thus one report says, “We live on dead red-fish"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-152_l37" HPOS="572" VPOS="2616" WIDTH="1764" HEIGHT="61" BASELINE="574 2653 2336 2649" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="574 2653 574 2677 662 2667 2332 2671 2336 2649 2332 2620 572 2616 574 2653"/>
+                        </Shape>
+                        <String CONTENT="[several species of Oncorhyncus, such as O. keta, O. niarka, O. gorbusha]."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-152_l38" HPOS="569" VPOS="2669" WIDTH="1767" HEIGHT="64" BASELINE="570 2712 2336 2708" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="570 2712 570 2723 1446 2733 1447 2733 1559 2723 2321 2731 2323 2731 2325 2731 2326 2731 2336 2721 2336 2708 2332 2678 2174 2669 2172 2669 2171 2669 2169 2669 2153 2680 2009 2680 1981 2669 1980 2669 1978 2669 1976 2669 1974 2669 1958 2680 1728 2680 1677 2669 1676 2669 1674 2669 1672 2669 1656 2678 1241 2671 1239 2671 1237 2671 1210 2680 1138 2671 1136 2671 1134 2671 1106 2680 1077 2671 1075 2671 1073 2671 876 2680 861 2671 859 2671 857 2671 697 2671 695 2671 693 2671 660 2680 588 2671 586 2671 584 2671 582 2671 569 2677 570 2712"/>
+                        </Shape>
+                        <String CONTENT="Of white-fish we catch but little, because we have no good nets. We do"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-152_l39" HPOS="570" VPOS="2727" WIDTH="1766" HEIGHT="61" BASELINE="572 2774 2336 2768" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="572 2774 572 2788 2334 2788 2336 2768 2332 2739 2159 2727 2157 2727 2065 2737 2044 2727 2042 2727 2040 2727 1960 2737 1929 2727 1927 2727 1925 2727 1923 2727 1884 2737 1822 2727 1820 2727 1818 2727 1798 2737 1773 2727 1771 2727 1769 2727 1767 2727 1736 2739 1709 2729 1707 2729 1705 2729 1703 2729 1679 2739 1492 2729 1490 2729 1299 2739 1245 2729 1243 2729 1241 2729 1219 2739 1188 2729 1186 2729 1184 2729 1182 2729 1180 2729 1163 2739 884 2731 882 2731 779 2741 693 2731 691 2731 570 2743 572 2774"/>
+                        </Shape>
+                        <String CONTENT="not dare to feed the Czar’s hostages with that dead fish, lest they die from"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-152_l40" HPOS="570" VPOS="2790" WIDTH="1768" HEIGHT="62" BASELINE="572 2832 2338 2829" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="572 2832 572 2844 2323 2852 2325 2852 2326 2852 2328 2852 2338 2842 2338 2829 2334 2801 1455 2790 1453 2790 1451 2790 1403 2801 1184 2792 1182 2792 1128 2801 1075 2792 1073 2792 1071 2792 1069 2792 1052 2803 570 2803 572 2832"/>
+                        </Shape>
+                        <String CONTENT="scurvy: so we spare the white-fish and feed them with that.” Another report"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-152_l41" HPOS="570" VPOS="2848" WIDTH="1764" HEIGHT="58" BASELINE="572 2891 2334 2887" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="572 2891 572 2905 2330 2906 2334 2887 2330 2860 1923 2848 1921 2848 1859 2858 1826 2848 1824 2848 1822 2848 1820 2848 1800 2858 1753 2848 1752 2848 1750 2848 1718 2858 1685 2848 1683 2848 1681 2848 1545 2858 1514 2848 1512 2848 1510 2848 1508 2848 1481 2858 1455 2848 1453 2848 1451 2848 1449 2848 1447 2848 1428 2860 1212 2850 1210 2850 1208 2850 1206 2850 1190 2862 1077 2862 1042 2850 1040 2850 1038 2850 816 2860 717 2850 715 2850 713 2850 711 2850 695 2862 570 2862 572 2891"/>
+                        </Shape>
+                        <String CONTENT="says, “We are starving to death, we feed on cedar-bark. Whatever fish was"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-152_l42" HPOS="570" VPOS="2908" WIDTH="1489" HEIGHT="65" BASELINE="572 2953 2059 2947" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="572 2953 572 2965 1549 2973 1551 2973 1644 2963 2036 2971 2038 2971 2040 2971 2059 2959 2059 2947 2054 2908 570 2918 572 2953"/>
+                        </Shape>
+                        <String CONTENT="left we spared for the hostages, and portioned that off to them.”"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-152_r5" HPOS="573" VPOS="2976" WIDTH="1782" HEIGHT="50" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="573 2976 2355 2976 2355 3026 573 3026"/>
+                    </Shape>
+                    <TextLine ID="mz_3-152_l43" HPOS="682" VPOS="2971" WIDTH="1650" HEIGHT="86" BASELINE="683 3012 2332 3008" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="683 3012 683 3057 1091 3055 1093 3055 1095 3055 1128 3033 1194 3033 1196 3033 1198 3033 1200 3033 1212 3023 1241 3033 1243 3033 1245 3035 1338 3035 1338 3033 1340 3033 1342 3033 1356 3023 1455 3033 1457 3033 1459 3033 1479 3023 1496 3033 1498 3033 1500 3033 1564 3021 1613 3031 1615 3031 1792 3021 1913 3037 1915 3037 1999 3021 2015 3033 2017 3033 2019 3033 2020 3033 2081 3029 2102 3043 2104 3043 2106 3043 2108 3043 2202 3021 2241 3041 2243 3041 2245 3041 2330 3025 2332 3008 2326 2971 952 2981 886 2971 884 2971 795 2981 699 2971 697 2971 695 2971 693 2971 682 2979 683 3012"/>
+                        </Shape>
+                        <String CONTENT="Along with war came trade with the natives. Thus, in the year 1646"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-152_r6" HPOS="573" VPOS="3049" WIDTH="1782" HEIGHT="63" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="573 3049 2355 3049 2355 3112 573 3112"/>
+                    </Shape>
+                    <TextLine ID="mz_3-152_l44" HPOS="1138" VPOS="3047" WIDTH="627" HEIGHT="47" BASELINE="1140 3072 1765 3076" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1763 3072 1755 3049 1140 3047 1140 3072 1138 3090 1761 3094 1765 3076 1763 3072 1763 3072"/>
+                        </Shape>
+                        <String CONTENT="¹ Sables were counted by doublescores."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

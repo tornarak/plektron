@@ -53,7 +53,7 @@ from __future__ import annotations
 
 import re
 import unicodedata
-from collections.abc import Collection
+from collections.abc import Callable, Collection
 from pathlib import Path
 
 from .detectors import native_corpus_context
@@ -67,7 +67,8 @@ HANDLE = re.compile(r"\{([A-Za-z0-9'\-_^.~:)=]+)\}")
 
 
 def index(root: Path = Path("."),
-          exclude: str | Collection[str] | None = None) -> dict:
+          exclude: str | Collection[str] | None = None,
+          tick: Callable | None = None) -> dict:
     """Every attested form, bucketed, keyed, and carrying the lines it occurs on.
 
     `exclude` drops those refs' own rows — leave-one-out, for a caller checking a
@@ -103,7 +104,7 @@ def index(root: Path = Path("."),
     contrasts = load_config(root)["contrasts"]
     buckets: dict[str, dict] = {}
     unkeyable: dict[str, dict] = {}
-    for r in native_corpus_context(root):
+    for r in native_corpus_context(root, tick):
         if r["ref"] in drop:
             continue
         tok = r["token"]
@@ -507,7 +508,8 @@ def _scan(idx: dict, terms: list[tuple[str, str]], rows: list, seen: set,
 
 
 def search(queries: list[str], root: Path = Path("."), min_pages: int = 1,
-           context: int = 2, idx: dict | None = None) -> dict:
+           context: int = 2, idx: dict | None = None,
+           tick: Callable | None = None) -> dict:
     """Forms matching any query, with what a reader needs to judge them.
 
     Matched against the key, the bucket, the form and the key's bare-ASCII
@@ -526,7 +528,7 @@ def search(queries: list[str], root: Path = Path("."), min_pages: int = 1,
     `proposal_check` resolves several candidates per page and would otherwise pay
     for a walk apiece. Same contract as `expand`'s.
     """
-    idx = idx if idx is not None else index(root)
+    idx = idx if idx is not None else index(root, tick=tick)
     rows, seen = [], set()
     terms = _terms(queries)
     split = []

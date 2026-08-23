@@ -383,7 +383,7 @@ def tier1_terms(ref: str, root: Path = Path("."), keys: bool = True,
     `idx` is a prebuilt `lookup.index`, for a caller looping over pages; it
     changes nothing about the answer.
     """
-    from .detectors import EDGE_PUNCT, INVENTORY_CHARS, TOKEN, cyrillic
+    from .detectors import EDGE_PUNCT, TOKEN, bears_inventory, cyrillic
     from .lines import page_lines
 
     path = root / "gt" / "ocr" / f"chukchi-{norm_ref(ref)}.xml"
@@ -425,8 +425,14 @@ def tier1_terms(ref: str, root: Path = Path("."), keys: bool = True,
             # correctly held nothing. Russian is Tier-2; the ASCII policy does
             # not reach it and no Cyrillic string is evidence about Bogoras's
             # notation.
+            # `bears_inventory` rather than a bare `INVENTORY_CHARS` scan, for the
+            # same reason `cyrillic` is here: U+0308 is an inventory member and
+            # also German's commonest diacritic, so `Müller` was wrapped as a
+            # Tier-1 handle and linked to a lexicon correctly holding nothing —
+            # the identical failure this comment describes for `Чукотскій`, one
+            # script over. One rule, four callers: see `detectors.inventory_glyphs`.
             if (tok and tok in whole and not cyrillic(tok)
-                    and any(c in INVENTORY_CHARS or c == "'" for c in tok)):
+                    and (bears_inventory(tok) or "'" in tok)):
                 out.append({"index": len(out) + 1, "line": rec["index"],
                             "text": tok})
     return _with_keys(out, root, idx) if keys else out

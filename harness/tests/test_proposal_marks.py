@@ -17,7 +17,7 @@ asserted directly.
 **Leave-one-out.** After `restore` a page's ground truth is the adjudicated
 descendant of its own proposal, so a prior containing the page under test compares
 a proposal against its own output — the two-witnesses-that-are-one failure the
-verbatim firewall, `review`'s span diff and `zones score`'s `unseen` row have each
+verbatim firewall, `review`'s span diff and `train score zones`'s `unseen` row have each
 produced in turn. Exclusion is unconditional, not conditional on presence: the
 conditional form is the same rule with a step where it can be forgotten.
 

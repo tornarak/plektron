@@ -280,6 +280,14 @@ def action(grp: cloup.Group, name: str, func, *, help: str, pageable: bool = Tru
             print(doc)
         return rc
 
+    # The handler, reachable from the command. Every callback here is this same
+    # wrapper, so `inspect.getsource(cmd.callback)` reads one closure for all forty
+    # actions and can say nothing about any of them —
+    # `test_the_progress_paragraph_names_every_instrumented_action` needs the
+    # function that was actually written. Named rather than dug out of
+    # `__closure__`, since a cell index is not an interface.
+    callback._handler = func
+
     cmd = _Command(name, help=help, params=globals_params(),
                    callback=callback)
     # **Stored, not passed to the constructor.** cloup resolves a constraint's
@@ -417,9 +425,14 @@ def add_all(p, what: str):
 
 JOBS_HELP = ("worker threads for the per-page raster work; 1 runs serially and "
              "builds no pool [cores, capped]")
+# The model sweeps get their own wording, because on those the unit is a **process**
+# and the ceiling is the card as well as the cores. Reusing the thread-flavoured
+# string there would make the flag say something untrue about what it spawns.
+JOBS_HELP_PROC = ("worker **processes** for the segmentation; 1 keeps the "
+                  "single-process path [cores, capped by free VRAM]")
 
 
-def add_jobs(p):
+def add_jobs(p, processes: bool = False):
     """`--jobs N`, on the actions whose per-page cost is a raster decode.
 
     **Declared per-action rather than alongside the globals**, because a flag that
@@ -430,8 +443,12 @@ def add_jobs(p):
     `--jobs 1` is the control arm, not a debug switch: the claim these verbs rest
     on is that concurrency moves wall clock and nothing else, and saying so means
     running both sides and diffing the output.
+
+    `processes=True` for the model sweeps, whose workers are processes and whose
+    cap is free VRAM — one flag name, two honest descriptions of what it spawns.
     """
-    return opt(p, "--jobs", type=int, default=None, metavar="N", help=JOBS_HELP)
+    return opt(p, "--jobs", type=int, default=None, metavar="N",
+               help=JOBS_HELP_PROC if processes else JOBS_HELP)
 
 
 def refs_arg(p, *, all_: str | None = None, extra: str = ""):
@@ -658,11 +675,11 @@ RENAMED_VERBS = {
 RENAMED_FLAGS = {
     ("zones", "--serve"): "zones edit [REF]",
     ("zones", "--predict"): "zones predict [REF]",
-    ("zones", "--score"): "zones score",
-    ("zones", "--assemble"): "zones assemble",
-    ("zones", "--install"): "zones install CHECKPOINT",
-    ("zones", "--remap-model"): "zones remap",
-    ("zones", "--remark-eval"): "zones remark-eval FRACTION",
+    ("zones", "--score"): "train score zones",
+    ("zones", "--assemble"): "train assemble zones",
+    ("zones", "--install"): "train install zones CHECKPOINT",
+    ("zones", "--remap-model"): "train remap zones",
+    ("zones", "--remark-eval"): "train remark-eval zones",
     ("zones", "--delete"): "zones delete REF",
     ("zones", "--diff"): "zones diff [REF]",
     ("zones", "--paragraphs"): "zones paragraphs [REF]",
@@ -724,10 +741,29 @@ RENAMED_VALUES = {
 # as the natural phrasing from inside those groups; the whole-tree review found
 # them as duplicate surface and they went. Nothing was given up — a farm can
 # still be relinked alone, which is what the per-domain form was for.
+#
+# The eleven training actions moved into `train`, which is the same fold one
+# tier further out: three groups had grown `remark-eval`/`assemble`/`install`/
+# `score` apiece, and "which tracks have a split, a laid-out set, an installed
+# model" had no command behind it because there was no list of tracks. Click
+# answers a removed action with "No such command", which names the problem and
+# not the fix; this table is what closes that gap, and it is the whole reason a
+# caller with the old spelling in their fingers gets told the new one.
 RENAMED_ACTIONS = {
     ("ocr", "link"): "views build ocr",
     ("zones", "link"): "views build zones",
     ("fig", "mets"): "corpus mets gt/fig",
+    ("zones", "remark-eval"): "train remark-eval zones",
+    ("zones", "assemble"): "train assemble zones",
+    ("zones", "install"): "train install zones",
+    ("zones", "score"): "train score zones",
+    ("zones", "remap"): "train remap zones",
+    ("fig", "remark-eval"): "train remark-eval fig",
+    ("fig", "assemble"): "train assemble fig",
+    ("fig", "install"): "train install fig",
+    ("fig", "score"): "train score fig",
+    ("ocr", "remark-eval"): "train remark-eval ocr",
+    ("ocr", "assemble"): "train assemble ocr",
 }
 
 
@@ -777,6 +813,32 @@ def walk_positionals(parser) -> dict[tuple[str, str], dict[str, object]]:
     return {key: {p.name: _argparse_nargs(p) for p in cmd.params
                   if isinstance(p, click.Argument)}
             for key, cmd in _actions(parser).items()}
+
+
+def walk_choices(parser) -> dict[tuple[str, str], dict[str, tuple[str, ...]]]:
+    """`{(group, action): {param name: (choice, ...)}}` for every closed set.
+
+    The third walk, and the one nothing had. `walk_surface` collects flag *names*
+    and `walk_positionals` collects arities; neither looks at what a `click.Choice`
+    actually admits, so a fence in `harness/VERBS.md` listing the wrong values
+    drifted freely — documented and enforced are two different files, and only the
+    names between them were being held together.
+
+    **Options and arguments in one map**, keyed by `p.name` rather than by spelling,
+    because a closed set is a closed set whether the caller reaches it as `--decode
+    {raw,dp}` or as a bare `FARM`. The reference documents the two forms
+    differently and the gate reading it has to know that; the parser side does not.
+    """
+    out = {}
+    for key, cmd in _actions(parser).items():
+        # Stringified, because a `Choice` may be built over ints and the
+        # reference spells every value as text. Comparing an int against the
+        # fence's `"2"` would report drift that is only a difference of type.
+        got = {p.name: tuple(str(c) for c in p.type.choices) for p in cmd.params
+               if isinstance(p.type, click.Choice)}
+        if got:
+            out[key] = got
+    return out
 
 
 def _argparse_nargs(p: click.Argument) -> str | None:

@@ -19,7 +19,8 @@ from __future__ import annotations
 import click
 
 from .. import farms as F
-from ._common import action, add_all, arg, group, out
+from ..render import progress
+from ._common import action, add_all, add_jobs, arg, group, out
 
 
 def register(cli):
@@ -42,6 +43,10 @@ def register(cli):
                "action; a farm whose source tree is absent is skipped with a row "
                "rather than attempted")
     _farm_arg(p, F.BUILDABLE)
+    # The raster farms here are pooled already — `workers(None)` is `min(cores, 8)`
+    # — so this adds the **control arm** rather than the concurrency: `--jobs 1`
+    # is the serial run a pooled one has to be diffable against.
+    add_jobs(p)
 
 
 def _farm_arg(p, pool):
@@ -84,10 +89,11 @@ def _farms(a) -> list[str]:
 
 def run_check(a) -> int:
     wanted = F.select(_farms(a))
-    rows = [r for r in F.survey(a.root) if r["farm"] in wanted]
+    with progress("surveying farms") as tick:
+        rows = [r for r in F.survey(a.root, tick) if r["farm"] in wanted]
     out(a, rows)
     # A gate, not measurement — but **only over the farms `build` can actually
-    # fix**. `scans/` and `train/bogoras-seg/` are reported and never built here,
+    # fix**. `scans/` and `train/bogoras-seg/data/` are reported and never built here,
     # so gating on them would fail a fresh clone for lacking rasters that
     # `views build` has no way to produce: an exit code demanding a fix that the
     # named command does not perform, which teaches the reader to ignore it. Their
@@ -101,7 +107,14 @@ def run_check(a) -> int:
 
 
 def run_build(a) -> int:
-    out(a, [F.build(n, a.root) for n in F.select(_farms(a), buildable_only=True)])
+    # One bar per farm, not one across all of them: each has its own denominator
+    # and they run in registry order, so a single bar would be counting two
+    # different things under one total.
+    rows = []
+    for n in F.select(_farms(a), buildable_only=True):
+        with progress(f"building {n}") as tick:
+            rows.append(F.build(n, a.root, a.jobs, tick))
+    out(a, rows)
     # Always 0. On a machine with no `scans/`, building what can be built *is* the
     # success case; `views check` remains the verb that says what is still missing.
     return 0

@@ -18,7 +18,8 @@ import click
 
 from ..mets import ALTO_STORES, write_mets
 from ..normalize import convert, scan
-from ..pipeline import STAGES
+from ..pipeline import EXEMPT_STAGE, STAGES
+from ..render import progress
 from ._common import (
     action,
     add_all,
@@ -73,7 +74,7 @@ def register(cli):
              "already every page")
     opt(p, "--stage", "stage", multiple=True, metavar="NAME",
         help="only pages at this rung (repeatable). One of: absent, "
-             + ", ".join(STAGES))
+             + ", ".join((*STAGES, EXEMPT_STAGE)))
     opt(p, "--skipped", is_flag=True,
         help="only pages that missed a rung below the one they reached")
     opt(p, "--tally", is_flag=True,
@@ -97,6 +98,19 @@ def register(cli):
            "reading whose zone is gone) must both be empty; a total that merely "
            "matches is not coverage, which is how two absent pages once went "
            "unnoticed by cancelling against two zone-only ones")
+
+    # Across every `mz/` store at once, which is what makes it a `corpus` action
+    # and not four store-local ones: the question is whether *anything* derived
+    # is standing without a witness, and each store's own verb is blind to the
+    # other three. `state`'s reasoning exactly.
+    action(g, "provenance", run_provenance, pageable=False,
+           help="what made each mz/ file, per store — files, how many record "
+           "their producer, and which producers are present. Measurement: this "
+           "never gates, and an unwitnessed row is a fact about the store rather "
+           "than a failure. A file whose provenance is legacy free text counts "
+           "as unwitnessed, because provenance that cannot be read back is "
+           "indistinguishable from none to everything except a human squinting "
+           "at prose")
 
     # Here rather than under `fig`, where it began, because it was never about
     # figures: `build_mets` takes filenames and returns markup, and every ALTO
@@ -204,13 +218,15 @@ def run_state(a) -> int:
     # error: the flags answer different questions and neither contradicts the other.
     if refs and getattr(a, "context", None):
         refs = with_context(refs, a.context, a.root)
-    rows = survey(refs or all_scans(a.root), a.root)
+    with progress("surveying") as tick:
+        rows = survey(refs or all_scans(a.root), a.root, tick=tick)
     if a.stage:
         allowed = set(a.stage)
-        unknown = allowed - {"absent", *STAGES}
+        unknown = allowed - {"absent", *STAGES, EXEMPT_STAGE}
         if unknown:
             raise ValueError(f"--stage {sorted(unknown)}: not a rung. "
-                             f"One of: absent, {', '.join(STAGES)}")
+                             "One of: absent, "
+                             + ", ".join((*STAGES, EXEMPT_STAGE)))
         rows = [r for r in rows if r["stage"] in allowed]
     if a.skipped:
         rows = [r for r in rows if r["skipped"]]
@@ -233,12 +249,14 @@ def run_state(a) -> int:
 def run_normalize(a) -> int:
     paths = _targets(a)
     if a.commit:
-        rep = convert(a.root, paths=paths)
+        with progress("converting") as tick:
+            rep = convert(a.root, paths=paths, tick=tick)
         out(a, rep)
         n = len(rep["changed"])
         return verdict(a, 0, f"wrote {n} file(s)" if n else "nothing to write")
 
-    rep = scan(a.root, paths=paths)
+    with progress("scanning") as tick:
+        rep = scan(a.root, paths=paths, tick=tick)
     # The census, then what a --commit would actually rewrite. Two tables,
     # because they are two witnesses and not one: `scan` classifies characters,
     # `convert` applies the transform and reports the files it changes, and they
@@ -246,7 +264,10 @@ def run_normalize(a) -> int:
     # as redundant — would leave the preview agreeing with itself, which is the
     # comparison-with-one-witness fault this project keeps meeting.
     out(a, rep)
-    would = convert(a.root, dry_run=True, paths=paths)
+    # A second bar, deliberately, for the same reason there are two tables: one bar
+    # spanning both passes would present two witnesses as one.
+    with progress("checking what would change") as tick:
+        would = convert(a.root, dry_run=True, paths=paths, tick=tick)
     out(a, {"would_write": len(would["changed"]),
             "files": " ".join(c["path"] for c in would["changed"]) or None},
         "would_convert")
@@ -269,12 +290,24 @@ def run_normalize(a) -> int:
 
 def run_figures(a) -> int:
     from ..figures import reconcile
-    rep = reconcile(a.root)
+    with progress("reconciling") as tick:
+        rep = reconcile(a.root, tick=tick)
     out(a, rep)
     # Exit non-zero on a real reconciliation failure, so this can gate. The
     # counts alone never decide it: 250 pages was once the expected total *and*
     # wrong in two compensating directions at the same time.
     return 1 if (rep["missing"] or rep["orphan"]) else 0
+
+
+def run_provenance(a) -> int:
+    """The provenance census. **Always exits 0**, and that is the convention
+    rather than leniency: measurement never gates, so a store full of
+    unwitnessed files is a number to act on and not a build failure. Whatever
+    gates on it later gets to say so itself.
+    """
+    from ..provenance import census
+    out(a, census(a.root))
+    return 0
 
 
 def run_mets(a) -> int:

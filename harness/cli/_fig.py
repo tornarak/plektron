@@ -18,7 +18,19 @@ import click
 
 from .. import figures as F
 from .. import zones_config as zc
-from ._common import action, arg, group, opt, out, out_per_ref, page_refs, refs_arg
+from ..parallel import ptrack
+from ..render import progress
+from ._common import (
+    action,
+    add_jobs,
+    arg,
+    group,
+    opt,
+    out,
+    out_per_ref,
+    page_refs,
+    refs_arg,
+)
 
 
 def register(cli):
@@ -75,8 +87,7 @@ def register(cli):
              "new mtime and a new ETag and stop the browser ever caching one")
     opt(p, "--out", metavar="DIR", default=None,
         help="where to write them [scans/fig-crops/]")
-    opt(p, "--jobs", type=int, default=None, metavar="N",
-        help="worker threads; 1 runs serially and builds no pool [cores, capped]")
+    add_jobs(p)
 
     p = action(g, "witness", run_witness, section="The store",
                help="compare the fresh caption reading against data/readings.md, "
@@ -174,29 +185,6 @@ def register(cli):
 
     # ---- the segmenter -----------------------------------------------------
 
-    p = action(g, "remark-eval", run_remark, section="The segmenter",
-               pageable=False,
-               help="mint or extend the train/eval split. The universe is every "
-               "page with a figure ALTO — exempt plates included, since a plate "
-               "carrying figures is the best training page there is — plus the "
-               "pages witnessed to have none. Additive: a mark a human made is "
-               "never moved, or the held-out set drifts with whatever was keyed "
-               "last and stops being held out")
-    opt(p, "--fraction", type=float, default=0.20, metavar="F",
-        help="share of the newly-marked pages to hold out [0.20]")
-    opt(p, "--commit", is_flag=True, help="write the lists; without it, a preview")
-
-    p = action(g, "assemble", run_assemble, section="The segmenter",
-               pageable=False,
-               help="lay out train/bogoras-fig/ and report the ketos command. "
-               "Runs nothing: training holds the GPU for hours and belongs in "
-               "your own terminal. A page with no figures gets a synthesized "
-               "empty ALTO here and nowhere else — the store never holds one, "
-               "because absence of the file is how it records 'no figures'")
-    opt(p, "--scratch", is_flag=True,
-        help="train from random init rather than fine-tuning blla or the "
-             "installed figure model")
-
     p = action(g, "predict", run_predict, section="The segmenter",
                help="run the figure segmenter and write raw ALTO into mz/fig/ — "
                "the machine store, never gt/. Input is the RAW scan, unlike "
@@ -243,29 +231,6 @@ def register(cli):
              "ProcessingStep is the only witness to whether the segmenter or "
              "the PDF wrote it")
 
-    p = action(g, "score", run_score, section="The segmenter", pageable=False,
-               help="compare mz/fig/ against gt/fig/, per split and per class, "
-               "never blended. Pictures and captions are scored apart because "
-               "they differ by an order of magnitude in size, and pages "
-               "witnessed to have no figures are their own bucket — a box "
-               "predicted on one is a false positive with nowhere else to go. "
-               "Measurement: always exits 0")
-    opt(p, "--model", metavar="M", default=None, help="model path [the installed one]")
-    opt(p, "--min-iou", type=float, default=0.5, metavar="F",
-        help="area overlap at which a predicted box counts as found [0.5]")
-
-    p = action(g, "install", run_install, section="The segmenter", pageable=False,
-               help="score a checkpoint, refuse a swapped class map, then "
-               "install it into models/bogoras-fig/ with its manifest and the "
-               "split it consumed. Everything that makes a checkpoint "
-               "trustworthy is a precondition of installing it, so the copy is "
-               "last")
-    arg(p, "checkpoint", metavar="CKPT")
-    p.help = f"{p.help}\n\nCKPT: the .safetensors ketos wrote."
-    opt(p, "--name", default=F.MODEL_NAME, help=f"installed name [{F.MODEL_NAME}]")
-    opt(p, "--device", metavar="D", default="auto", help="torch device [auto]")
-    opt(p, "--commit", is_flag=True, help="install it; without it, a preview")
-
 
 def _refs(p, all_: str | None = None):
     return refs_arg(p, all_=all_)
@@ -281,13 +246,17 @@ def run_check(a) -> int:
         # counts in the page's row and gives each its own ref-keyed table — the
         # shape `zones check` uses, for the same reason: on one page the detail is
         # the answer, and across several the counts are.
-        reps = [(r, F.validate_fig_page(r, a.root, cfg, store)) for r in named]
+        with progress("checking figures") as tick:
+            reps = [(r, F.validate_fig_page(r, a.root, cfg, store))
+                    for r in ptrack(named, tick)]
         out_per_ref(a, reps)
         bad = any(rep["errors"] for _, rep in reps)
         return 1 if (bad and store == F.FIGDIR) else 0
 
     refs = F.fig_refs(a.root, store)
-    rows = [F.validate_fig_page(r, a.root, cfg, store) for r in refs]
+    with progress("checking figures") as tick:
+        rows = [F.validate_fig_page(r, a.root, cfg, store)
+                for r in ptrack(refs, tick)]
     flagged = [r for r in rows if r["errors"] or r["warnings"]]
     out(a, {"pages": len(rows),
             "figures": sum(r["figures"] for r in rows),
@@ -321,16 +290,19 @@ def run_check(a) -> int:
 
 
 def run_delete(a) -> int:
-    rows = [F.delete_figs(r, a.root, commit=a.commit) for r in page_refs(a)]
+    with progress("deleting") as tick:
+        rows = [F.delete_figs(r, a.root, commit=a.commit)
+                for r in ptrack(page_refs(a), tick)]
     out(a, rows)
     return 0
 
 
 def run_crops(a) -> int:
     from pathlib import Path
-    rep = F.crop_all(page_refs(a) or None, root=a.root,
-                     out_dir=Path(a.out) if a.out else None,
-                     force=a.force, jobs=a.jobs)
+    with progress("cropping") as tick:
+        rep = F.crop_all(page_refs(a) or None, root=a.root,
+                         out_dir=Path(a.out) if a.out else None,
+                         force=a.force, jobs=a.jobs, tick=tick)
     rows = rep.pop("rows")
     # The per-page rows only when pages were named. Over the whole store 252 rows
     # of mostly zeroes buries the totals, which are the answer to "did the sweep
@@ -341,8 +313,9 @@ def run_crops(a) -> int:
 
 def run_restore(a) -> int:
     from .. import captions as C
-    rep = C.restore(a.root, refs=page_refs(a) or None,
-                    force=a.force, commit=a.commit)
+    with progress("restoring captions") as tick:
+        rep = C.restore(a.root, refs=page_refs(a) or None,
+                        force=a.force, commit=a.commit, tick=tick)
     out(a, rep)
     return 0
 
@@ -413,8 +386,9 @@ def run_sheets(a) -> int:
 
     from ..paths import caption_sheets_dir
     out_dir = Path(a.out) if a.out else caption_sheets_dir(a.root)
-    man = F.write_caption_sheets(out_dir, a.root, refs=page_refs(a) or None,
-                                 per_sheet=a.per_sheet, pad=a.pad)
+    with progress("composing sheets") as tick:
+        man = F.write_caption_sheets(out_dir, a.root, refs=page_refs(a) or None,
+                                     per_sheet=a.per_sheet, pad=a.pad, tick=tick)
     rotated = sum(1 for b in man["blocks"].values()
                   if b["orientation"] == "rotated")
     # The blocks themselves are the manifest's business, not the terminal's: 395
@@ -438,7 +412,12 @@ def run_assemble(a) -> int:
     # Printed apart from the row so it can be copied whole. It is reported and
     # never run: training holds the GPU for hours and belongs in the user's own
     # terminal, not inside a verb that looks like it returns.
-    out(a, {"run this yourself": cmd})
+    #
+    # **Named**, because two unnamed sections both take the action's name and
+    # `--json` then refuses the pair: `harness fig assemble --json` exited 2 with
+    # "2 sections resolve to ['assemble']" for as long as this verb existed. Only
+    # the table path was ever exercised. `ocr assemble` spells it the same way.
+    out(a, {"run this yourself": cmd}, "run this yourself")
     return 0
 
 
@@ -446,8 +425,10 @@ def run_predict(a) -> int:
     refs = page_refs(a) or [
         p.stem.replace("chukchi-", "")
         for p in sorted((a.root / "scans").glob("chukchi-*.png"))]
-    out(a, F.predict(refs, a.root, model_path=a.model, device=a.device,
-                     force=a.force))
+    with progress("segmenting figures") as tick:
+        rows = F.predict(refs, a.root, model_path=a.model, device=a.device,
+                         force=a.force, tick=tick)
+    out(a, rows)
     return 0
 
 
@@ -461,8 +442,9 @@ def run_extend(a) -> int:
             "may apply to any one picture. Run without --commit first — it prints "
             "what every box would gain, so the ceiling comes from the evidence.")
     frac = None if a.max_growth is None else a.max_growth / 100.0
-    rows = F.extend_all(page_refs(a) or None, a.root, max_growth=frac,
-                        commit=a.commit)
+    with progress("extending") as tick:
+        rows = F.extend_all(page_refs(a) or None, a.root, max_growth=frac,
+                            commit=a.commit, tick=tick)
     pcts = sorted(g["pct"] for r in rows for g in r["growth"])
     summary = {"pages": len(rows),
                "would_grow": sum(len(r["growth"]) for r in rows),
@@ -488,7 +470,9 @@ def run_extend(a) -> int:
 
 def run_propose(a) -> int:
     refs = page_refs(a) or sorted(F.pdf_images(a.root))
-    out(a, F.propose_from_pdf(refs, a.root, force=a.force))
+    with progress("proposing") as tick:
+        rows = F.propose_from_pdf(refs, a.root, force=a.force, tick=tick)
+    out(a, rows)
     return 0
 
 

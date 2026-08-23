@@ -36,6 +36,12 @@ collation pass may emit `#llm` and nothing else; `harness tei validate` errors o
 higher claim and on a missing `@resp` equally, because an unmarked span is
 indistinguishable from a ratified one to anything that does not check.
 
+**An `mz/` file names what produced it, machine-readably** — one writer,
+`harness/provenance.py`, censused by `corpus provenance`. Provenance that cannot
+be read back counts as none. `kind` is load-bearing: a **rule**'s output and a
+**model**'s guess are both `#mz` and neither outranks a human, but they are not
+the same witness.
+
 **A comparison whose witnesses may be one witness must say so.** The hazard
 recurs wherever a check's two inputs can turn out to be the same file, and keeps
 being found in new places; `docs/decisions.md` records the instances.
@@ -95,7 +101,9 @@ Layout, all at the repo root:
     gt/     what a human has been through: ocr/, fig/ (bounding boxes for the
             pictures and their captions; no lines), zones/ (the segmentation, and
             the split that says a leaf is a plate/blank/cover/map/apparatus rather
-            than a text page at all), lines/ (corrections), fig-img/ and page-img/
+            than a text page at all — **and such a leaf holds no zone file in
+            either store: the mark is the record**), lines/ (corrections),
+            fig-img/ and page-img/
             (touch-ups, a crop and a whole leaf). Tracked — and page-img/ holds
             work no script rebuilds. **The views are only views, and nothing
             writes through a view**; the caller invariants are
@@ -154,8 +162,9 @@ modules are open.
 root — all paths resolve relative to the cwd unless `--root` says otherwise.
 
 **Two tiers: a group, then an action** — `tei`, `ocr`, `proposal`, `zones`, `fig`,
-`scans`, `views`, `lexicon`, `entity`, `geo`, `edition`, `find`, `corpus`,
-`agents`, `verbs`. The group names what it touches; the action what it does.
+`scans`, `views`, `train`, `lexicon`, `entity`, `geo`, `edition`, `find`,
+`corpus`, `agents`, `verbs`. The group names what it touches; the action what
+it does.
 
 **`harness/VERBS.md` is the reference** — one entry per action: what it does,
 what it reads, what it writes, what its exit code means, and every flag with
@@ -195,6 +204,7 @@ every byte of this file on every page.
 | `.claude/skills/read-captions/` | the figure-caption re-read, whole — contact sheets, and the blindness the comparison needs |
 | `.claude/skills/train-zones/` | the zone segmenter's train→score→install loop, its measured state, and the judgement in it |
 | `.claude/skills/train-figures/` | the same for the figure segmenter — trains on raw scans, and why its negatives had to be witnessed |
+| `.claude/skills/train-ocr/` | the recognizer fine-tune off `gt/ocr/` — why the split unit is the page, and what the stock model is narrowly bad at |
 | `.claude/rules/zones.md` | code-facing zones/raster internals; loads itself when those modules are open |
 | `harness/VERBS.md` | the CLI surface: every action, its reads, writes, exit contract and flags. Gated by `test_cli_surface.py` |
 | `harness/README.md` | the package: module responsibilities, stores, caller invariants |

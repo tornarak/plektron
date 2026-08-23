@@ -37,8 +37,8 @@ the project's rules, `CLAUDE.md` governs; for the character inventory,
 | `scans/w-figs-blotted/` | training rasters: figures painted **white**. Derived, ignored; the 580 figure-less pages are symlinks | `zones blot`, `views build w-figs-blotted` |
 | `scans/w-figs/` | the raster of every page carrying a `gt/fig/` ALTO — a selection, not a view. Derived, ignored | `views build w-figs` |
 | `scans/w-ocr/` | raster beside ALTO for every page a human has been through. Membership is `gt/ocr/`; the ALTO link points at the `ocr/` **view**, so promoting a page needs no rebuild. Derived, ignored | `views build w-ocr` |
-| `train/bogoras-seg/` | training scratch: the symlink farm, its two `.lst` files, and each run's checkpoints. Derived, ignored, **read by nothing once training ends** | `zones assemble`, `ketos segtrain` |
-| `models/bogoras-seg/` | the models this project trains — **tracked**, each with the split it saw as `<model>.train.lst`/`.eval.lst` and a small `<model>.json` | `zones install --commit` |
+| `train/bogoras-seg/` | training scratch, in two halves: `data/` is the symlink farm and its two `.lst` files, `model/` each run's checkpoints. Nothing sits in the base. Derived, ignored, **read by nothing once training ends** | `train assemble zones`, `ketos segtrain` |
+| `models/bogoras-seg/` | the models this project trains — **tracked**, each with the split it saw as `<model>.train.lst`/`.eval.lst` and a small `<model>.json` | `train install zones --commit` |
 | `models/` (rest) | downloaded third-party weights, 675 MB, ignored | not authored here |
 
 **`gt/seg/` and `gt/zones/` are two schemes, not one store in two states.** The label
@@ -76,7 +76,7 @@ predicted polygon fails the fixed-measure width check by construction.
 
 **`cli/`** — the two-tier command tree, **click**, one module per group: `_tei _ocr
 _proposal _zones _fig _lexicon _entity _geo _edition _find _corpus _scans _views
-_agents _verbs`, each exposing `register(cli)` and
+_train _agents _verbs`, each exposing `register(cli)` and
 one `run_*` handler per action, which returns the exit code. `__init__.py` holds
 `main`, `build_parser` (separate so the surface test can walk the tree without
 running anything), and the rename trap. `_common.py` holds the declaration
@@ -211,7 +211,7 @@ docstring. `survey` is what `views check` prints.
 
 Two things a caller must know. **`relink(resolve=False)` is a bug class with a
 name**: resolving a target that is itself a symlink follows it to the far end, which
-is what once sent `zones assemble`'s .lst paths back into `gt/zones/` so the blot
+is what once sent `train assemble zones`'s .lst paths back into `gt/zones/` so the blot
 links were never read. `scans/w-ocr/` needs the unresolved form for the same reason,
 and a test for it must assert on `readlink` — resolved, the link opens the same bytes
 and any content-based check passes.
@@ -264,6 +264,33 @@ body, to avoid closing a loop. Splitting them out took the package from 19 mutua
 import cycles to 10, `context.py` from 10 of them to 1, and function-local imports
 from 392 to 259. `test_leaf_modules.py` holds it to importing nothing.
 
+**`train.py`** — the three model-training tracks as one record: `Track`
+(workdir, modeldir, split store, `mz_store`, `fraction`, ketos subcommand), the
+`TRACKS` registry, the per-action pools `harness/cli/_train.py` builds its `TRACK`
+positionals from, `next_run`, and the shared flag defaults `DECODE`/`MIN_IOU`/
+`BATCH`. **A leaf** — `farms.TRAIN_WORK` reads its path from here rather than the
+reverse, since the path is a property of the zone track and the farm is only the
+half of it that has members. `next_run` replaced three copies of five lines, one
+of which returned an `int` while the other two returned `"run-N"`. **The split
+helpers are deliberately not merged**: `zones.load_splits`/`set_split` carry a
+seven-value vocabulary (`TEXT_SPLITS + LEAF_KINDS`) against `figures`' two, so
+merging them would cost the five leaf kinds. The record generalizes; the bodies
+do not — `farms.build`'s name-keyed chain settled for the same shape.
+
+**`provenance.py`** — what made an `mz/` file, as a record rather than a format:
+`Producer`, the two emitters (`alto_processing` for a hand-built tree,
+`kraken_step` for kraken's own serializer, `tei_appinfo` for TEI), `read_producer`
+and the `census` behind `corpus provenance`. **Canopy, not a leaf** — it imports
+`ns.py` and nothing else, which is acyclic for a leaf's own reason and is what lets
+`zones`, `figures`, `recognize` and `generate` all take it at module scope;
+`test_leaf_modules.py` holds it to that. Six writers spelled this fact six ways
+before it existed, and the one that mattered was `mz/fig/`: a `propose` page
+derives from the scanner's MRC segmentation and a `predict` page is a model's
+guess, and the store could not say which it held. **`kind` is that field**, and its
+absence is what let `train score fig --model M` name a checkpoint it never loaded.
+`sha256` is always the *model file's* — a digest of the output would restate the
+file and witness nothing.
+
 **`paths.py`** also gained the page census — `all_refs`, `all_scans`,
 `with_context` — for the reason its own docstring gives: finding pages needs
 `farms.require` to tell an unbuilt derived tree from an empty store, which a leaf
@@ -296,14 +323,22 @@ the paragraph above it rather than opening one. **The keyed bands are the
 paragraphs, no rule adds to them, and this module opens no raster** — its output is
 a pure function of the tracked stores, so a clone reproduces it byte for byte.
 `zones.paragraph_starts` used to cut a band it measured as holding two; it gates
-`gt/zones/` now, that being the store its findings are answered in. Splits the footnote apparatus at its printed markers and
+`gt/zones/` now, that being the store its findings are answered in. **`Stores`
+is the six page-invariant stores a sweep reads once**, `build` constructing its
+own when a caller hands none — `entities.load` alone was 68% of a `--force` run
+over the corpus, at once per page. Splits the footnote apparatus at its printed markers and
 anchors each note at the matching marker in the body — both the printer's own
 marks, so both rules — and emits `<figure n><figDesc>` where each box sits. Emits a
 comment naming every judgement it declines: the `MainZone-Other` catch-all, a note
 whose marker reads nowhere or reads twice, a figure's place in the prose, and the
 language of a Tier-1 form. `diff` compares it against the collated page; the generation stamp
 is what lets that comparison tell a difference review made from one a regeneration
-made under it.
+made under it. **That stamp is `<appInfo><application>` and was an XML comment** —
+invisible to XPath, to the schema and to `tei validate`, on the one store whose
+provenance a reader most needs. `_producer_stamp` reads *both* forms and
+`SURVIVING` still lists `generated:`, because every page collated before the move
+carries the comment and a reader of only the element would report the whole
+reviewed corpus as unstamped — a regression dressed as caution.
 
 **`entities.py`** — the encyclopedia store, and the one matcher over it. Parses
 `entities/<class>/<slug>.md` on the `readings.md` pattern (heading-sliced, NFD on
@@ -534,8 +569,13 @@ spelling because `blla.segment` does. And `no_legacy_polygons` moved from an
 unset silently restores the slow polygon path.
 
 **`predict_all` parallelizes across processes, and `predict_workers` says how
-many.** This is the one sweep in the harness that does not use `parallel.pmap`,
-because its cost is not a decode: a page is ~17 s, `blla.segment` ~15 of it and
+many.** It is not the only such sweep any more — `zones.predicted_zones` does the
+same for `train score zones` and `train install zones`, on the same evidence — so the sizing
+rule, the VRAM constant and the worker stderr capture now live in
+`parallel.py` (`gpu_workers`, `VRAM_PER_WORKER`, `capture_stderr`,
+`worker_output`), which sits under both; `zones` cannot import `recognize`, the
+graph running the other way. `predict_workers` remains as the name this document
+and `VERBS.md` cite. What the two share is that their cost is not a decode: a page is ~17 s, `blla.segment` ~15 of it and
 recognition ~1.5, and the segmenter's time is scipy `correlate1d`, shapely
 `intersection` and kraken's own boundary tracing — vectorization on one core, with
 the GPU at ~4.5% throughout. Only ~55% of that is GIL-free, so threads plateau at
@@ -545,10 +585,30 @@ processes to feed a 1.5 s phase.
 
 `spawn`, not fork — a forked child inherits a CUDA context it cannot use. The
 worker count is capped by **free VRAM as well as cores**, read off the card at run
-time: a worker holds ~1.4 GB of CUDA context (the weights are 22 MiB of it), and a
+time: a worker holds ~1.6 GB of CUDA context (the weights are 22 MiB of it), and a
 constant here would be wrong on the next machine, the same argument the column
 measure rests on. An explicit `--jobs` wins outright, including one that will not
 fit, which is `predict_skip`'s `single` rule applied to a different resource.
+
+**It also holds the recognizer's own training track** — `remark_eval` and
+`assemble`, the `zones`/`figures` pair a third time. Here rather than in a module
+of its own for the reason those two are where they are: a track's layout belongs
+beside the model it fits, and this is the module that loads and runs the
+recognizer. The split marks live in `gt/ocr/` and are read and written by
+`figures`' `load_splits`/`set_split`, which take a `store` parameter for exactly
+this — a second track need not carry a second copy of the same four functions.
+The import runs `recognize` → `figures`, which is a direction the graph already
+allows.
+
+Two caller invariants, and both are inversions of a sibling's. **`assemble`
+links `scans/w-figs-blotted/`, where `figures.assemble` links the raw scan** —
+one rule, that a model trains on the raster it will be asked to read, and `ocr
+predict` reads the blot. **An unmarked page goes into neither list**, where both
+segmentation tracks default one to `train`: harmless there, but here it would
+enlarge the training set between a `remark_eval` and a run, so two figures
+compared across that boundary would have been taken over different sets. Nothing
+in this module trains anything; `assemble` reports the invocations and runs none
+of them. The loop and its judgement are `.claude/skills/train-ocr/`.
 
 **`review.py`** — the largest, and it does five things: span diffing, decision
 persistence (temp-then-rename, a `.prev`, and an append-only `.jsonl` journal),
@@ -632,6 +692,18 @@ on an editor whose whole subject is a mark you have to be able to see.
 exemptions, `validate_page`/`validate_corpus`, the blot sweep, the segtrain
 assembly, the predictor and the view. **Errors are mechanical and set the exit code;
 the ordering assumptions are warnings.**
+
+**`exempt => no zones`, and three predicates keep that honest.** Ruling a leaf a
+`plate`/`blank`/`cover`/`map`/`apparatus` calls `clear_leaf`: `.prev` on both
+stores, delete both, keep the mark, journal it — the kind in the split lists is
+the whole record that a human looked, and an empty ALTO beside it was the older
+spelling from before the kinds existed. `save_zones` routes there whenever the
+effective split is a leaf kind, so the editor and the CLI perform one act, and
+`validate_page` errors `exempt-holds-zones` on a page that drifted out of it.
+`has_zones` is the **file** question and `keyed` is "has a human been through" —
+a ruled leaf answers the second without the first, `settled_refs` is that union
+for a sweep or a page list, and substituting either for the other has already
+gone wrong in both directions. `.claude/rules/zones.md` has which to ask where.
 
 `zone_dir`/`alto_for` take a `store`, defaulting to `gt/zones/`, and the **default is
 the design**: every sidecar reader calls `zone_dir(root)` bare and so keeps resolving
@@ -785,8 +857,8 @@ route because a full page as a data URI is ~10 MB of markup.
 The client sends a column index and never an x — the geometry is re-measured
 server-side on save, so a zone of the wrong measure has no field to travel in.
 
-**`authorities.py`** — search over the book's own 74-work bibliography. Returns every
-hit ranked and resolves nothing: 52 sigla share 34 names, so one answer would be
+**`authorities.py`** — search over the book's own 95-work bibliography. Returns every
+hit ranked and resolves nothing: 67 sigla share 42 names, so one answer would be
 manufactured, and no hit at all is legitimate because the list is explicitly open.
 
 **`marks.py`** — is a reading's character distribution plausible, before a human
@@ -844,9 +916,11 @@ the label multiset, and every box's extent. Ids are never re-minted (395 caption
 key on a `gt/fig/` id, and a `gt/lines/` correction id encodes the y it was made
 at). `data/_migrated.json` is the receipt, and it exists because **part 2 does not
 move** — 2550×3525 before and after, so no size check can tell "correctly untouched"
-from "not yet reached". The driver is `tools/migrate_to_master.py`, on
+from "not yet reached". The driver is `harness scans swap`, on
 `migrate_fig_bboxes.py`'s rule that a migration argued for only inside a script
-nobody imports is a migration nobody can check.
+nobody imports is a migration nobody can check — and the move to a verb is also
+the generalisation: this translates between **any two manifests**, the legacy
+render→master pair being the default arguments rather than a separate path.
 
 **`dispatch.py`** — a dispatched pass's fan-out: `queue` validates a batch and
 writes its queue file, `claim` takes the next ref off it with `O_CREAT|O_EXCL`,

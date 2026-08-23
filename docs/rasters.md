@@ -55,7 +55,7 @@ checks that rather than assuming it, and refuses a masterless page that holds on
 
 `tools/greyscale_scans.py` is spent: poppler's RGB output is no longer what `scans/`
 holds. `tools/migrate_coords.py` is spent too, and its successor is
-`tools/migrate_to_master.py` — whose logic lives in `harness/migrate.py` where the
+`harness scans swap` — whose logic lives in `harness/migrate.py` where the
 tests reach it. **The move was a translation, not a rescale**, taken as one rounded
 integer per page from `data/pdf_images.json`: 1942 files migrated, 903 already in
 the target space (part 2 and the four unmoved pages), 0 aborted, 24 coordinates
@@ -135,7 +135,8 @@ CLI settled on `--all` for every corpus form; the old spelling is trapped.)
                                  whatever builds an epub. `harness fig crops`
     scans/                       reported, never built here: harness scans extract
                                  over pdfs/ (symlinks outside the repo), then swap
-    train/bogoras-seg/           reported, never built here: assemble's scratch
+    train/bogoras-seg/data/      reported, never built here: assemble's scratch —
+                                 the laid-out set; the checkpoints go to model/
 
 **Two more trees under `scans/` are deliberately *not* farms**, and saying so is the
 point: `scans/w-blotted/` (`ocr blot`, pink and blue for a human to read) and

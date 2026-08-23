@@ -3,7 +3,7 @@
 Two things here are not the zone track's, and both would be invisible if they
 broke.
 
-**The raster is the raw scan.** `zones assemble` links `scans/w-figs-blotted/`
+**The raster is the raw scan.** `train assemble zones` links `scans/w-figs-blotted/`
 so the zone segmenter cannot learn figure-shaped body zones. The blot paints
 figures white, so linking it here would ask this model to find something that
 has been erased — and the failure would look like a model that simply never
@@ -46,17 +46,17 @@ def root(tmp_path: Path) -> Path:
 
 
 def test_the_raster_is_the_raw_scan_not_the_blot(root):
-    """The link a copy-paste from `zones assemble` would get wrong."""
+    """The link a copy-paste from `train assemble zones` would get wrong."""
     (root / zn.BLOTDIR).mkdir(parents=True, exist_ok=True)
     (root / zn.BLOTDIR / "chukchi-1-037.png").write_bytes(b"not the scan")
     F.assemble(root)
-    link = root / F.WORKDIR / "chukchi-1-037.png"
+    link = root / F.DATADIR / "chukchi-1-037.png"
     assert link.resolve() == (root / "scans/chukchi-1-037.png").resolve()
 
 
 def test_a_positive_links_its_own_alto(root):
     F.assemble(root)
-    link = root / F.WORKDIR / "chukchi-1-037.xml"
+    link = root / F.DATADIR / "chukchi-1-037.xml"
     assert link.is_symlink()
     assert link.resolve() == F.alto_for("1-037", root).resolve()
 
@@ -65,7 +65,7 @@ def test_a_negative_gets_a_synthesized_empty_alto(root):
     """Written into the work dir, and **not** into the store."""
     res = F.assemble(root)
     assert res["negatives"] == 2 and res["positives"] == 1
-    xml = root / F.WORKDIR / "chukchi-1-021.xml"
+    xml = root / F.DATADIR / "chukchi-1-021.xml"
     assert xml.exists() and not xml.is_symlink()
     assert F.read_blocks(xml) == []
     assert not F.alto_for("1-021", root).exists()
@@ -79,18 +79,18 @@ def test_the_store_still_holds_no_empty_file_afterwards(root):
 
 def test_the_lists_are_relative_and_unresolved(root):
     """Resolving follows the symlink back to `gt/fig/` and silently trains on the
-    store instead of the work dir — `zones assemble` paid for this once."""
+    store instead of the work dir — `train assemble zones` paid for this once."""
     F.assemble(root)
-    lines = (root / F.WORKDIR / "train.lst").read_text().split()
-    assert lines and all(ln.startswith(f"{F.WORKDIR}/") for ln in lines)
+    lines = (root / F.DATADIR / "train.lst").read_text().split()
+    assert lines and all(ln.startswith(f"{F.DATADIR}/") for ln in lines)
     assert not any(ln.startswith("/") for ln in lines)
-    assert "gt/fig" not in (root / F.WORKDIR / "train.lst").read_text()
+    assert "gt/fig" not in (root / F.DATADIR / "train.lst").read_text()
 
 
 def test_the_splits_decide_the_lists(root):
     F.assemble(root)
-    train = (root / F.WORKDIR / "train.lst").read_text()
-    ev = (root / F.WORKDIR / "eval.lst").read_text()
+    train = (root / F.DATADIR / "train.lst").read_text()
+    ev = (root / F.DATADIR / "eval.lst").read_text()
     assert "chukchi-1-021.xml" in train and "chukchi-1-022.xml" in ev
     assert "chukchi-1-022.xml" not in train
 
@@ -99,15 +99,22 @@ def test_a_page_with_no_raster_is_reported_not_guessed(root):
     F.set_split("2-999", "train", root)
     res = F.assemble(root)
     assert res["missing_raster"] == ["2-999"]
-    assert "chukchi-2-999.xml" not in (root / F.WORKDIR / "train.lst").read_text()
+    assert "chukchi-2-999.xml" not in (root / F.DATADIR / "train.lst").read_text()
 
 
 def test_the_reported_command_names_the_work_dir_and_runs_nothing(root):
     res = F.assemble(root)
-    assert f"-t {F.WORKDIR}/train.lst" in res["command"]
-    assert f"-e {F.WORKDIR}/eval.lst" in res["command"]
+    assert f"-t {F.DATADIR}/train.lst" in res["command"]
+    assert f"-e {F.DATADIR}/eval.lst" in res["command"]
     assert "segtrain" in res["command"]
-    assert not (root / F.WORKDIR / "run-1").exists()
+    assert not (root / F.RUNDIR / "run-1").exists()
+
+
+def test_the_track_base_holds_nothing_but_the_two_halves(root):
+    """The layout, asserted rather than described: page links and lists in `data/`,
+    checkpoints in `model/`, and nothing loose beside them."""
+    F.assemble(root)
+    assert sorted(p.name for p in (root / F.WORKDIR).iterdir()) == ["data", "model"]
 
 
 def test_blla_is_the_base_and_scratch_drops_it(root):

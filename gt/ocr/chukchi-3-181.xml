@@ -1,0 +1,368 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-3-181.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-3-181.png; regions_from: zones/chukchi-3-181.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+                <TextBlock ID="mz_3-181_r1" HPOS="343" VPOS="477" WIDTH="1782" HEIGHT="101" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="343 477 2125 477 2125 578 343 578"/>
+                    </Shape>
+                    <TextLine ID="mz_3-181_l1" HPOS="915" VPOS="498" WIDTH="622" HEIGHT="48" BASELINE="915 531 1537 531" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1522 498 925 498 915 505 915 531 915 546 1537 546 1537 531 1535 527 1522 498"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l2" HPOS="2013" VPOS="502" WIDTH="91" HEIGHT="56" BASELINE="2017 542 2104 539" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2017 542 2017 554 2102 558 2104 539 2098 502 2013 504 2017 542"/>
+                        </Shape>
+                        <String CONTENT="713"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-181_r2" HPOS="343" VPOS="594" WIDTH="1782" HEIGHT="304" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="343 594 2125 594 2125 898 343 898"/>
+                    </Shape>
+                    <TextLine ID="mz_3-181_l3" HPOS="339" VPOS="593" WIDTH="1777" HEIGHT="68" BASELINE="340 642 2116 636" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="340 642 340 661 1044 652 1486 659 1488 659 1490 659 1522 650 1543 659 1545 659 1547 659 1660 650 1802 659 1804 661 2032 661 2032 659 2034 659 2057 650 2096 659 2098 659 2100 659 2102 659 2104 659 2116 650 2116 636 2108 595 2081 607 2005 607 1980 593 1978 593 1976 593 1974 593 1950 605 1925 593 1923 593 1921 593 1919 593 1917 593 1900 607 1740 607 1689 593 1687 593 1685 593 1683 593 1681 593 1662 607 1522 607 1490 595 1488 595 1486 595 1485 595 1459 607 1434 595 1432 595 1430 595 1370 607 1354 595 1352 595 1350 595 1348 595 1278 607 1229 595 1227 595 1225 595 1071 607 1044 595 1042 595 1040 595 984 605 861 597 859 597 857 597 855 597 836 609 781 597 779 597 699 609 592 597 590 597 588 597 545 609 520 597 518 597 415 597 413 597 339 611 340 642"/>
+                        </Shape>
+                        <String CONTENT="probably about fifty thousand rubles.¹ All this is spent for a population of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l4" HPOS="339" VPOS="656" WIDTH="1775" HEIGHT="60" BASELINE="340 702 2114 696" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="340 702 340 716 2112 716 2114 696 2108 661 1958 665 1933 656 1931 656 1929 656 1845 665 1798 656 1796 656 1742 665 1691 656 1689 656 1621 665 1570 656 1568 656 1566 656 1539 665 1500 657 1498 657 1292 667 1256 657 1255 657 1253 657 1175 667 1095 657 1093 657 791 669 734 659 732 659 730 659 699 669 683 659 682 659 680 659 494 659 493 659 491 659 463 669 358 659 356 659 354 659 352 659 339 667 340 702"/>
+                        </Shape>
+                        <String CONTENT="three thousand who are more or less sedentary, and of another three thousand"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l5" HPOS="340" VPOS="726" WIDTH="1774" HEIGHT="54" BASELINE="342 755 2114 759" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="342 755 340 769 354 778 356 778 358 778 360 778 1157 771 1227 780 1229 780 2112 771 2114 759 2112 730 342 726 342 755"/>
+                        </Shape>
+                        <String CONTENT="wandering natives; i.e., more than eight rubles per man. The total revenue"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l6" HPOS="340" VPOS="788" WIDTH="1774" HEIGHT="45" BASELINE="340 819 2114 819" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="340 819 340 831 2112 833 2114 819 2114 788 340 788 340 819"/>
+                        </Shape>
+                        <String CONTENT="of the Government from the Kolyma country is less than ten thousand rubles"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l7" HPOS="339" VPOS="848" WIDTH="224" HEIGHT="55" BASELINE="340 882 563 876" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="340 882 340 895 430 893 459 903 461 903 463 903 563 887 563 876 557 848 339 852 340 882"/>
+                        </Shape>
+                        <String CONTENT="per year."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-181_r3" HPOS="343" VPOS="898" WIDTH="1782" HEIGHT="1503" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="343 898 2125 898 2125 2401 343 2401"/>
+                    </Shape>
+                    <TextLine ID="mz_3-181_l8" HPOS="450" VPOS="895" WIDTH="1662" HEIGHT="57" BASELINE="450 938 2112 938" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="450 938 450 950 2110 952 2112 938 2112 909 2015 895 1935 895 1933 895 1931 895 1929 895 1913 907 1868 895 1867 895 1865 895 1863 895 1831 907 1713 895 1711 895 1621 907 1471 895 1469 895 1467 895 1465 895 1447 909 986 909 968 895 966 895 964 895 855 895 853 895 800 907 746 895 744 895 689 907 656 895 654 895 652 895 524 907 475 895 473 895 471 895 469 895 467 895 450 905 450 938"/>
+                        </Shape>
+                        <String CONTENT="As a rule, the officials are sent to remote districts such as the Kolyma"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l9" HPOS="339" VPOS="965" WIDTH="1773" HEIGHT="51" BASELINE="340 999 2112 995" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="340 999 340 1016 2110 1016 2112 995 2106 965 339 967 340 999"/>
+                        </Shape>
+                        <String CONTENT="either as punishment for some trespass, or they go tempted by the comparatively"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l10" HPOS="340" VPOS="1018" WIDTH="1772" HEIGHT="57" BASELINE="342 1059 2112 1055" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="342 1059 342 1073 2108 1075 2112 1055 2106 1018 340 1022 342 1059"/>
+                        </Shape>
+                        <String CONTENT="high salary and the short term of service (ten years) necessary for a full"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l11" HPOS="340" VPOS="1073" WIDTH="1772" HEIGHT="68" BASELINE="342 1121 2112 1115" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="342 1121 342 1141 2110 1135 2112 1115 2108 1086 2050 1073 2048 1073 2046 1073 2001 1084 1855 1073 1853 1073 1851 1073 1849 1073 1831 1086 1728 1086 1693 1073 1691 1073 1689 1073 1687 1073 1664 1084 1543 1073 1541 1073 1451 1086 1403 1075 1401 1075 1399 1075 1231 1086 1165 1075 1163 1075 1112 1084 974 1075 972 1075 970 1075 968 1075 951 1086 904 1076 902 1076 900 1076 863 1088 781 1076 779 1076 701 1088 584 1076 582 1076 514 1088 446 1076 444 1076 340 1090 342 1121"/>
+                        </Shape>
+                        <String CONTENT="pension. They enjoy the full freedom of their administrative position, which"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l12" HPOS="342" VPOS="1139" WIDTH="1770" HEIGHT="54" BASELINE="342 1178 2112 1178" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="342 1178 342 1190 2108 1193 2112 1178 2110 1151 1839 1139 1837 1139 1835 1139 1796 1149 1557 1139 1555 1139 1479 1149 342 1143 342 1178"/>
+                        </Shape>
+                        <String CONTENT="leads them very soon to indulge in excesses. After two or three years a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l13" HPOS="340" VPOS="1193" WIDTH="1772" HEIGHT="61" BASELINE="342 1240 2112 1236" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="342 1240 342 1252 2108 1254 2112 1236 2108 1207 1867 1207 1847 1193 1845 1193 1843 1193 1841 1193 1839 1193 1816 1205 1771 1193 1769 1193 1767 1193 1765 1193 1724 1207 1590 1207 1570 1193 1568 1193 1566 1193 1564 1193 1490 1205 1321 1193 1319 1193 1223 1207 1184 1195 1182 1195 1180 1195 1120 1205 1019 1195 1017 1195 1015 1195 1013 1195 995 1207 906 1195 904 1195 902 1195 871 1209 736 1209 715 1195 713 1195 711 1195 709 1195 340 1203 342 1240"/>
+                        </Shape>
+                        <String CONTENT="higher official is sent from Yakutsk to inspect and to verify the accounts."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l14" HPOS="344" VPOS="1252" WIDTH="1768" HEIGHT="60" BASELINE="346 1299 2112 1293" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="346 1299 346 1312 2110 1310 2112 1293 2108 1266 1865 1266 1843 1252 1841 1252 1839 1252 1837 1252 1835 1252 1833 1252 1816 1264 1761 1252 1759 1252 1757 1252 1730 1264 1656 1252 1654 1252 1588 1262 1564 1252 1562 1252 1561 1252 1559 1252 1557 1252 1539 1264 1485 1254 1483 1254 1481 1254 1451 1266 1391 1254 1251 1254 1249 1254 1247 1254 1216 1266 1153 1254 1058 1254 1056 1254 1054 1254 1019 1266 970 1254 968 1254 966 1254 964 1254 931 1267 904 1256 902 1256 900 1256 898 1256 865 1267 806 1256 804 1256 744 1267 699 1256 697 1256 695 1256 615 1267 535 1256 533 1256 531 1256 483 1267 434 1256 432 1256 430 1256 344 1262 346 1299"/>
+                        </Shape>
+                        <String CONTENT="This often ends either in the district official heavily bribing the inspector, or"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l15" HPOS="344" VPOS="1316" WIDTH="1768" HEIGHT="59" BASELINE="344 1357 2112 1357" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="344 1357 344 1371 2110 1375 2112 1357 2112 1326 2081 1316 2079 1316 2077 1316 1974 1328 1775 1328 1759 1316 1757 1316 1755 1316 1753 1316 1752 1316 1720 1326 1640 1316 1525 1316 1523 1316 1522 1316 1502 1326 1479 1316 1477 1316 1475 1316 1473 1316 1440 1326 1327 1316 1325 1316 1231 1326 1134 1316 1132 1316 1069 1326 970 1316 968 1316 869 1326 839 1316 837 1316 836 1316 730 1326 680 1316 678 1316 676 1316 645 1326 572 1316 570 1316 569 1316 541 1326 528 1316 526 1316 524 1316 522 1316 520 1316 491 1326 465 1316 463 1316 461 1316 344 1322 344 1357"/>
+                        </Shape>
+                        <String CONTENT="in his being deprived of his position and impeached before the court. Fully"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l16" HPOS="340" VPOS="1373" WIDTH="1774" HEIGHT="62" BASELINE="342 1419 2114 1414" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="342 1419 342 1431 2110 1435 2114 1414 2108 1381 1822 1382 1796 1373 1794 1373 1792 1373 1790 1373 1789 1373 1773 1382 1748 1373 1746 1373 1744 1373 1742 1373 1714 1382 1691 1373 1689 1373 1687 1373 1685 1373 1683 1373 1670 1382 1640 1373 1638 1373 1637 1373 1635 1373 1633 1373 1617 1382 1447 1375 1446 1375 1377 1384 1253 1375 1251 1375 1249 1375 1223 1384 1116 1375 1114 1375 1048 1384 1034 1375 1032 1375 1030 1375 933 1375 931 1375 929 1375 894 1386 867 1377 865 1377 863 1377 722 1386 670 1377 668 1377 666 1377 664 1377 648 1386 613 1377 611 1377 609 1377 607 1377 572 1386 559 1377 557 1377 555 1377 461 1377 459 1377 340 1388 342 1419"/>
+                        </Shape>
+                        <String CONTENT="one half of the chief officials of the Kolyma have ended their careers and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l17" HPOS="342" VPOS="1435" WIDTH="1770" HEIGHT="57" BASELINE="344 1474 2112 1478" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="344 1474 342 1486 2108 1492 2112 1478 2110 1449 1586 1437 1584 1437 1463 1447 1412 1437 1410 1437 1409 1437 1407 1437 1391 1449 1272 1449 1225 1435 1223 1435 1221 1435 1219 1435 1184 1445 1073 1435 1071 1435 1069 1435 1034 1445 980 1435 978 1435 898 1445 843 1435 841 1435 763 1445 646 1435 645 1435 643 1435 602 1445 569 1435 567 1435 565 1435 563 1435 535 1445 522 1435 520 1435 518 1435 516 1435 514 1435 483 1445 344 1445 344 1474"/>
+                        </Shape>
+                        <String CONTENT="even their lives while under impeachment. Some of them, too, have been"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l18" HPOS="344" VPOS="1497" WIDTH="1770" HEIGHT="55" BASELINE="344 1538 2114 1538" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="344 1538 344 1550 2110 1552 2114 1538 2112 1509 1962 1509 1939 1497 1937 1497 1935 1497 1878 1507 1798 1497 1796 1497 1794 1497 1759 1507 1288 1497 1286 1497 1186 1507 1165 1497 1163 1497 1001 1497 999 1497 997 1497 995 1497 980 1509 839 1509 785 1497 783 1497 734 1507 645 1497 643 1497 641 1497 602 1507 391 1497 389 1497 344 1507 344 1538"/>
+                        </Shape>
+                        <String CONTENT="adventurers from the very beginning. Even criminals sent from European"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l19" HPOS="344" VPOS="1554" WIDTH="1770" HEIGHT="58" BASELINE="346 1599 2114 1593" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="346 1599 346 1612 2112 1609 2114 1593 2110 1566 2061 1554 2059 1554 2057 1554 2056 1554 2040 1566 1867 1566 1849 1554 1847 1554 1845 1554 1843 1554 1841 1554 1814 1564 1699 1554 1697 1554 1638 1564 1490 1556 1488 1556 1486 1556 1485 1556 1469 1566 1438 1556 1436 1556 1434 1556 1371 1566 1319 1556 1317 1556 1270 1566 1025 1556 1023 1556 1021 1556 984 1566 898 1558 896 1558 894 1558 892 1558 878 1568 779 1558 777 1558 775 1558 742 1568 717 1558 715 1558 713 1558 344 1562 346 1599"/>
+                        </Shape>
+                        <String CONTENT="Russia to Siberia have then been accepted again into service and sent as far"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l20" HPOS="342" VPOS="1616" WIDTH="1774" HEIGHT="57" BASELINE="342 1657 2116 1657" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="342 1657 342 1673 2116 1673 2116 1657 2116 1626 2073 1616 2071 1616 2069 1616 2067 1616 2034 1626 1995 1616 1993 1616 1991 1616 1989 1616 1960 1626 1907 1616 1905 1616 1847 1626 1742 1616 1740 1616 1738 1616 1736 1616 1720 1628 1603 1628 1557 1616 1555 1616 1485 1626 1412 1616 1410 1616 1305 1626 1229 1616 1227 1616 1225 1616 1202 1626 1110 1616 1108 1616 1058 1626 1021 1616 1019 1616 1017 1616 795 1626 758 1616 756 1616 754 1616 658 1626 520 1616 518 1616 471 1626 442 1616 440 1616 438 1616 342 1626 342 1657"/>
+                        </Shape>
+                        <String CONTENT="as the Kolyma. I may mention here Vinogradov, who was in service in the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l21" HPOS="342" VPOS="1677" WIDTH="1772" HEIGHT="56" BASELINE="344 1718 2114 1714" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="344 1718 344 1731 2110 1733 2114 1714 2110 1679 366 1677 364 1677 362 1677 342 1685 344 1718"/>
+                        </Shape>
+                        <String CONTENT="thirties of the nineteenth century. In the year 1837 a member of the Provincial"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l22" HPOS="342" VPOS="1733" WIDTH="1772" HEIGHT="67" BASELINE="344 1776 2114 1772" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="344 1776 344 1790 678 1800 680 1800 682 1800 683 1800 699 1790 1021 1790 1108 1800 1110 1800 1264 1788 1642 1788 1681 1798 1683 1798 1685 1798 2112 1788 2114 1772 2110 1745 1954 1733 1952 1733 1902 1743 1874 1733 1872 1733 1870 1733 1822 1743 1785 1733 1783 1733 1781 1733 1687 1743 1652 1733 1650 1733 1648 1733 1562 1743 1483 1733 1481 1733 1479 1733 1477 1733 1461 1745 1373 1745 1317 1733 1315 1733 1258 1743 1231 1733 1229 1733 1227 1733 1225 1733 1177 1745 1028 1735 1027 1735 1025 1735 1023 1735 1007 1747 639 1747 563 1735 561 1735 559 1735 533 1745 489 1735 487 1735 415 1745 362 1735 360 1735 358 1735 356 1735 342 1743 344 1776"/>
+                        </Shape>
+                        <String CONTENT="Council, Ring, was sent to inspect his office. Almost immediately the two"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l23" HPOS="344" VPOS="1792" WIDTH="1774" HEIGHT="66" BASELINE="346 1839 2118 1833" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2106 1798 2042 1803 2019 1792 2017 1792 2015 1792 2013 1792 1968 1803 1943 1792 1941 1792 1939 1792 1865 1803 1845 1792 1843 1792 1841 1792 1839 1792 1785 1803 1752 1792 1750 1792 1748 1792 1746 1792 1709 1803 1621 1792 1619 1792 1492 1805 1461 1794 1459 1794 1457 1794 1455 1794 1407 1805 1362 1794 1360 1794 1358 1794 1356 1794 1321 1805 1303 1794 1301 1794 1299 1794 1235 1794 1233 1794 1147 1805 1130 1794 1128 1794 1126 1794 1046 1794 1044 1794 989 1805 951 1794 949 1794 947 1794 945 1794 943 1794 929 1805 787 1807 662 1796 660 1796 545 1807 459 1796 457 1796 455 1796 454 1796 436 1807 418 1798 416 1798 415 1798 344 1809 346 1839 346 1858 2116 1848 2118 1833 2114 1813 2106 1798"/>
+                        </Shape>
+                        <String CONTENT="got into a violent quarrel, which ended all of a sudden in the death of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l24" HPOS="344" VPOS="1858" WIDTH="1770" HEIGHT="55" BASELINE="346 1897 2114 1891" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="346 1897 346 1913 2112 1911 2114 1891 2108 1858 344 1862 346 1897"/>
+                        </Shape>
+                        <String CONTENT="Ring. Local tradition says that Vinogradov caused Ring to be poisoned; and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l25" HPOS="346" VPOS="1915" WIDTH="1770" HEIGHT="56" BASELINE="346 1955 2116 1955" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="346 1955 346 1971 2114 1971 2116 1955 2114 1926 2015 1915 2013 1915 2011 1915 1985 1924 1898 1915 1896 1915 1894 1915 1863 1924 1728 1915 1726 1915 1724 1915 1697 1924 1576 1915 1574 1915 1510 1924 1469 1915 1467 1915 1465 1915 1348 1924 1305 1915 1303 1915 1301 1915 1255 1924 1186 1915 1184 1915 1182 1915 1140 1926 980 1926 952 1915 951 1915 847 1915 845 1915 843 1915 841 1915 828 1924 769 1915 767 1915 765 1915 736 1924 687 1915 685 1915 346 1920 346 1955"/>
+                        </Shape>
+                        <String CONTENT="I have found in the Archives an order, directed by Vinogradov to the private"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l26" HPOS="344" VPOS="1973" WIDTH="1774" HEIGHT="56" BASELINE="346 2018 2118 2014" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="346 2018 346 2029 2116 2028 2118 2014 2110 1973 2081 1983 2024 1973 2022 1973 2020 1973 1995 1983 1946 1973 1944 1973 1943 1973 1917 1983 1847 1973 1845 1973 1843 1973 1818 1983 1075 1975 1073 1975 1071 1975 1048 1985 726 1975 724 1975 722 1975 721 1975 705 1985 670 1975 668 1975 666 1975 604 1985 535 1975 533 1975 344 1987 346 2018"/>
+                        </Shape>
+                        <String CONTENT="commander of the Cossacks of Nishne-Kolymsk, referring to the death of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l27" HPOS="346" VPOS="2033" WIDTH="1768" HEIGHT="67" BASELINE="348 2078 2114 2074" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="348 2078 348 2090 469 2100 471 2100 473 2100 475 2100 491 2090 1065 2090 1134 2100 1136 2100 1336 2088 1685 2098 1687 2098 2112 2088 2114 2074 2110 2047 2001 2047 1976 2033 1974 2033 1972 2033 1925 2043 1898 2033 1896 2033 1894 2033 1892 2033 1890 2033 1872 2047 1658 2047 1633 2033 1631 2033 1629 2033 1627 2033 1594 2045 1514 2033 1512 2033 1457 2045 1422 2033 1420 2033 1418 2033 1416 2033 1383 2045 1202 2035 1200 2035 1132 2045 1095 2035 1093 2035 1091 2035 1089 2035 1087 2035 1069 2047 1044 2035 1042 2035 1040 2035 915 2045 876 2035 874 2035 873 2035 871 2035 869 2035 853 2047 775 2035 773 2035 695 2047 680 2035 678 2035 676 2035 674 2035 672 2035 625 2047 592 2035 590 2035 588 2035 506 2047 407 2035 405 2035 346 2041 348 2078"/>
+                        </Shape>
+                        <String CONTENT="Ring, and of rather doubtful significance. Another document referring to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l28" HPOS="348" VPOS="2094" WIDTH="1768" HEIGHT="56" BASELINE="350 2137 2116 2133" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="350 2137 350 2150 2114 2148 2116 2133 2112 2106 2036 2094 2034 2094 2032 2094 2003 2104 1477 2094 1475 2094 1381 2104 1292 2094 1290 2094 1227 2106 1214 2096 1212 2096 1210 2096 1208 2096 709 2106 629 2096 627 2096 625 2096 623 2096 609 2106 530 2096 528 2096 436 2106 389 2096 387 2096 385 2096 348 2107 350 2137"/>
+                        </Shape>
+                        <String CONTENT="1839, when Vinogradov was dismissed and impeached before a court, mentions"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l29" HPOS="344" VPOS="2152" WIDTH="1770" HEIGHT="61" BASELINE="346 2199 2114 2193" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="346 2199 346 2213 2112 2213 2114 2193 2112 2164 2089 2152 2087 2152 2085 2152 1713 2162 1654 2152 1652 2152 1603 2162 1570 2152 1568 2152 1566 2152 1564 2152 1520 2166 1418 2166 1403 2154 1401 2154 1399 2154 1397 2154 1395 2154 1370 2164 1350 2154 1348 2154 1346 2154 1237 2164 1175 2154 1173 2154 1171 2154 1134 2164 1089 2154 1087 2154 980 2164 937 2154 935 2154 933 2154 931 2154 898 2166 841 2156 839 2156 765 2166 344 2164 346 2199"/>
+                        </Shape>
+                        <String CONTENT="his attempt to murder his wife, for which he was legally prosecuted. His"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l30" HPOS="346" VPOS="2213" WIDTH="1766" HEIGHT="62" BASELINE="348 2258 2112 2252" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="348 2258 348 2271 2108 2275 2112 2252 2108 2224 2030 2213 2028 2213 2026 2213 1999 2222 1689 2213 1687 2213 1637 2222 1527 2213 1525 2213 1523 2213 1492 2224 980 2215 978 2215 976 2215 974 2215 958 2224 765 2217 763 2217 713 2226 676 2217 674 2217 672 2217 670 2217 637 2226 580 2217 578 2217 576 2217 574 2217 559 2228 446 2228 387 2217 385 2217 383 2217 346 2228 348 2258"/>
+                        </Shape>
+                        <String CONTENT="wife was the daughter of a local priest. He accused her of improper conduct,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l31" HPOS="354" VPOS="2283" WIDTH="1762" HEIGHT="47" BASELINE="354 2314 2116 2314" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="354 2314 354 2330 2116 2330 2116 2314 2116 2285 354 2283 354 2314"/>
+                        </Shape>
+                        <String CONTENT="“too improper even for the Kolyma,” as it is stated in the document. I might"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l32" HPOS="346" VPOS="2335" WIDTH="1628" HEIGHT="55" BASELINE="346 2376 1974 2376" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="346 2376 346 2390 1974 2390 1974 2376 1974 2347 1894 2335 1892 2335 1890 2335 1855 2345 1533 2335 1531 2335 1529 2335 1496 2345 1461 2335 1459 2335 1457 2335 1292 2345 1194 2335 1192 2335 1128 2345 1027 2335 1025 2335 1023 2335 982 2345 921 2335 919 2335 865 2345 804 2335 802 2335 800 2335 769 2345 738 2335 736 2335 734 2335 496 2345 461 2335 459 2335 457 2335 346 2345 346 2376"/>
+                        </Shape>
+                        <String CONTENT="mention more episodes of a similar character and of more recent date."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-181_r4" HPOS="343" VPOS="2401" WIDTH="1782" HEIGHT="485" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="343 2401 2125 2401 2125 2886 343 2886"/>
+                    </Shape>
+                    <TextLine ID="mz_3-181_l33" HPOS="452" VPOS="2392" WIDTH="1662" HEIGHT="58" BASELINE="454 2437 2114 2431" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="454 2437 454 2450 2112 2449 2114 2431 2110 2404 1580 2392 1578 2392 1467 2406 1379 2406 1366 2394 1364 2394 1362 2394 1360 2394 1358 2394 1329 2404 1266 2394 1264 2394 1216 2404 1118 2394 1116 2394 1040 2404 968 2396 966 2396 964 2396 962 2396 947 2406 876 2396 874 2396 873 2396 836 2406 779 2396 777 2396 452 2402 454 2437"/>
+                        </Shape>
+                        <String CONTENT="It is no wonder that the doings of such an Administration present forms"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l34" HPOS="346" VPOS="2452" WIDTH="1770" HEIGHT="59" BASELINE="348 2497 2116 2491" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="348 2497 348 2511 2114 2507 2116 2491 2112 2464 2063 2452 2061 2452 1880 2462 1816 2452 1814 2452 1812 2452 1810 2452 1794 2464 1598 2464 1561 2452 1559 2452 1557 2452 1446 2464 978 2454 976 2454 880 2466 522 2456 520 2456 463 2466 405 2456 403 2456 346 2468 348 2497"/>
+                        </Shape>
+                        <String CONTENT="quite strange, to say the least. I will give a few instances. The inquiries"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l35" HPOS="342" VPOS="2521" WIDTH="1774" HEIGHT="50" BASELINE="344 2558 2116 2552" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="344 2558 344 2571 2114 2567 2116 2552 2110 2521 342 2525 344 2558"/>
+                        </Shape>
+                        <String CONTENT="for all persons wanted by the courts or police throughout the immense empire"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l36" HPOS="344" VPOS="2573" WIDTH="1770" HEIGHT="59" BASELINE="346 2618 2114 2612" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="346 2618 346 2632 2112 2630 2114 2612 2112 2583 2096 2573 2095 2573 2093 2573 2091 2573 1987 2583 1950 2573 1948 2573 1946 2573 1900 2583 1537 2575 1535 2575 1533 2575 1502 2585 1042 2575 1040 2575 1038 2575 1036 2575 1021 2587 865 2587 832 2577 830 2577 828 2577 783 2587 740 2577 738 2577 736 2577 545 2587 530 2577 528 2577 526 2577 524 2577 344 2589 346 2618"/>
+                        </Shape>
+                        <String CONTENT="are sent, as a rule, to every district, however remote. Thus the mail, which"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l37" HPOS="348" VPOS="2634" WIDTH="1770" HEIGHT="66" BASELINE="350 2677 2118 2671" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="350 2677 350 2690 606 2700 607 2700 609 2700 611 2700 627 2690 680 2698 682 2698 1081 2688 1161 2698 1163 2698 1165 2698 1167 2698 1182 2688 1461 2688 1525 2698 1527 2698 1646 2686 1837 2696 1839 2696 2116 2686 2118 2671 2112 2634 937 2645 454 2638 452 2638 348 2647 350 2677"/>
+                        </Shape>
+                        <String CONTENT="up to very recent times came only three times a year, would bring piles of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l38" HPOS="344" VPOS="2694" WIDTH="1774" HEIGHT="57" BASELINE="346 2735 2118 2729" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="346 2735 346 2751 2116 2745 2118 2729 2114 2702 1005 2694 1003 2694 884 2704 420 2696 418 2696 344 2706 346 2735"/>
+                        </Shape>
+                        <String CONTENT="such orders, and all local archives are full of them: as, for example, the order"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l39" HPOS="346" VPOS="2749" WIDTH="1768" HEIGHT="62" BASELINE="348 2797 2114 2792" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="348 2797 348 2811 2112 2809 2114 2792 2112 2758 2095 2749 2093 2749 2091 2749 2089 2749 2087 2749 2069 2758 2054 2749 2052 2749 2050 2749 2048 2749 2046 2749 2015 2758 1937 2749 1935 2749 1882 2758 1868 2749 1867 2749 1865 2749 1863 2749 1861 2749 1841 2758 1779 2749 1777 2749 1775 2749 1750 2758 1705 2749 1703 2749 1701 2749 1664 2758 1498 2751 1496 2751 1494 2751 1492 2751 1477 2760 1151 2751 1149 2751 1028 2760 972 2751 970 2751 968 2751 933 2762 912 2753 910 2753 908 2753 906 2753 867 2762 543 2753 541 2753 493 2762 446 2753 444 2753 442 2753 420 2762 389 2753 387 2753 385 2753 383 2753 346 2764 348 2797"/>
+                        </Shape>
+                        <String CONTENT="of the chief secretary of military affairs inquiring for the dismissed Lieut-Col."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l40" HPOS="348" VPOS="2811" WIDTH="1768" HEIGHT="60" BASELINE="350 2856 2116 2850" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="350 2856 350 2871 2114 2866 2116 2850 2114 2823 2091 2811 2089 2811 2087 2811 2085 2811 2059 2821 2044 2811 2042 2811 2040 2811 2038 2811 2036 2811 2009 2821 1769 2811 1767 2811 1693 2821 1656 2811 1654 2811 1652 2811 1650 2811 1648 2811 1633 2823 1523 2823 1436 2813 1434 2813 1255 2823 1231 2813 1229 2813 986 2813 984 2813 982 2813 980 2813 964 2823 473 2815 471 2815 348 2827 350 2856"/>
+                        </Shape>
+                        <String CONTENT="von Stempel and his step-daughter Eugenie Krumones, in reference to their"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-181_r5" HPOS="343" VPOS="2940" WIDTH="1782" HEIGHT="195" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="343 2940 2125 2940 2125 3135 343 3135"/>
+                    </Shape>
+                    <TextLine ID="mz_3-181_l41" HPOS="457" VPOS="2949" WIDTH="1661" HEIGHT="45" BASELINE="457 2975 2118 2975" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="457 2975 457 2986 2116 2994 2118 2975 2118 2949 457 2949 457 2975"/>
+                        </Shape>
+                        <String CONTENT="¹ At least another fifty thousand rubles should be added to cover the expenses, legal or illegal, falling"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l42" HPOS="350" VPOS="2992" WIDTH="1766" HEIGHT="41" BASELINE="350 3016 2116 3016" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="350 3016 350 3033 2114 3033 2116 3016 2114 2992 350 2992 350 3016"/>
+                        </Shape>
+                        <String CONTENT="directly upon the shoulders of the population; such as the conveying of officials from village to village, the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l43" HPOS="348" VPOS="3031" WIDTH="1768" HEIGHT="45" BASELINE="350 3060 2116 3055" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="350 3060 350 3076 2116 3072 2116 3055 2110 3031 348 3035 350 3060"/>
+                        </Shape>
+                        <String CONTENT="rebuilding of government houses, the carrying of loads, though in theory this has to be paid for; also various"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-181_l44" HPOS="348" VPOS="3074" WIDTH="1031" HEIGHT="49" BASELINE="350 3103 1379 3097" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="350 3103 350 3123 1377 3117 1379 3097 1373 3074 348 3078 350 3103"/>
+                        </Shape>
+                        <String CONTENT="extortions, requisitions, bribes, presents, etc., should be included."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

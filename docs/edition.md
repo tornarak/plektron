@@ -366,7 +366,7 @@ place to put the fact was a free-text field nothing could read or check. Thirtee
 rows moved into the column. `people:chukchi` is the one worth looking at — it
 now says in a column that Чукча is Russian and oraˊwêʟ̣at is the autonym.
 
-- **Blank means unstated**, and most of the store is blank: 439 of 711 rows are
+- **Blank means unstated**, and most of the store is blank: 463 of 735 rows are
   the book's own English, where saying so adds nothing. Requiring the column
   would have made an editorial pass out of a schema change.
 - **A code outside the vocabulary is an error.** That is a typo, not a gap, and

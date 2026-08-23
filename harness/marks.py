@@ -7,7 +7,7 @@ the most". This is that comparison computed. `lexicon marks` cannot be scoped to
 page at all, and it groups by base letter, so it cannot express `ɪ`/`i` — which is
 not a mark on a base — at any scope.
 
-**Three arms, and they are not equally strong.** Read them in this order:
+**Four arms, and they are not equally strong.** Read them in this order:
 
 `rare` is deterministic and needs no statistics. Bare `g` is 2.8% of Tier-1 `g` —
 14 occurrences on 13 pages in the whole store — so a page setting four of them is
@@ -30,6 +30,19 @@ page-base cells over the 29 pages adjudicated by 2026-08-02 — the measurement
 that settled the design. It has not been re-run at 476 pages, and the figure is
 kept as the dated evidence it is rather than restated as if it were current.)
 
+`traps` is the odd one, and the only arm that does not select Tier-1 tokens
+first. The other three judge a population; this one asks who *left* it. A form
+keyed with a glyph outside the inventory — `Ke’rek` for `Keˊrek`, `Ta’lo` for
+`Taˊlo` — carries no inventory member, so it is never selected, so the page
+reports `tokens: 0, types: 0` and all three fall silent on a reading that is
+wholly wrong. That is not a weak signal, it is the absence of one, and it is
+indistinguishable from a page of honest English prose. So `traps` runs over every
+token, folds `detectors.TIER1_TRAPS`, and asks whether the store already holds the
+result. It needs no knowledge of the notation, only of what has been ratified
+before, and it turns the wrong glyph from the thing that hides a page into the
+thing that names it. `3-024` and `3-199` are the two pages that motivated it,
+two hundred apart with a written post-mortem between them, neither findable.
+
 **Why it takes several refs.** Most pages of this book carry only a handful of
 Tier-1 terms, so one page is rarely a sample worth a verdict. Pooling the refs a
 coordinator passes — its subagents' returned proposals — gives a body of native
@@ -47,7 +60,7 @@ Two properties of the prior a reader must carry:
   *is* the adjudicated descendant of its own proposal, so a prior containing the
   page under test compares a proposal against its own output. That is the
   two-witnesses-that-are-one failure in a fourth place, after the verbatim
-  firewall, `review`'s span diff and `zones score`'s `unseen` row. Excluding
+  firewall, `review`'s span diff and `train score zones`'s `unseen` row. Excluding
   conditionally — only when the page is present — is the same thing with a step
   where it can be forgotten.
 - **It is no longer drawn from density-selected pages, and that strengthened the
@@ -68,13 +81,16 @@ from __future__ import annotations
 
 import json
 import unicodedata
-from collections.abc import Collection
+from collections.abc import Callable, Collection
 from pathlib import Path
 
 from .detectors import (
     EDGE_PUNCT,
     INVENTORY_CHARS,
+    TIER1_TRAPS,
     TOKEN,
+    bears_inventory,
+    cyrillic,
     native_corpus,
     native_corpus_lines,
 )
@@ -365,6 +381,49 @@ def handle_key(token: str) -> str:
     return "".join(out)
 
 
+def trap_hits(path: Path, known: dict[str, list[str]]) -> list[dict]:
+    """Tokens keyed with a trap glyph that become a known native form once folded.
+
+    **The arm that looks where the others cannot.** Every other check here selects
+    Tier-1 tokens and then judges them, so a form keyed with a glyph *outside* the
+    inventory is not selected at all and the page falls silent — `tokens: 0, types:
+    0`, identical to a page of plain English. That is how `3-024`'s `Ta’lo` and
+    `3-199`'s `Ke’rek` both survived: the wrong glyph was not a bad reading the
+    arms could weigh, it was an exit from their population.
+
+    So this one runs over *every* token, not the native ones, and asks the inverse
+    question. Fold `detectors.TIER1_TRAPS` and see whether the result is a form the
+    store already holds. `Ke’rek` folds to `Keˊrek`, attested ten times, and the
+    row writes itself — no knowledge of Chukchee required, only of what the corpus
+    has ratified before.
+
+    `known` is `{casefolded native form: [refs]}`, built once per run by the caller
+    rather than per page: the corpus walk is the expensive part and it does not
+    change between refs.
+
+    **Casefolded on both sides, deliberately.** A name is sentence-initial on one
+    page and mid-sentence on another, and `Keˊrek`/`keˊrek` are the same form for
+    this question — the point is to recognise the word, not to rule on its case.
+    Reporting the store's own spelling back keeps the caller able to see both.
+    """
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    out = []
+    for idx, rec in sorted(doc.get("lines", {}).items(), key=lambda kv: int(kv[0])):
+        text = _nfd(rec.get("text", ""))
+        for m in TOKEN.finditer(text):
+            tok = m.group().strip(EDGE_PUNCT)
+            if not tok or not any(c in TIER1_TRAPS for c in tok):
+                continue
+            folded = _nfd("".join(TIER1_TRAPS.get(c, c) for c in tok))
+            if folded == tok:
+                continue
+            refs = known.get(folded.casefold())
+            if refs:
+                out.append({"line": idx, "token": tok, "candidate": folded,
+                            "seen": len(refs), "refs": " ".join(sorted(set(refs))[:4])})
+    return out
+
+
 def page_tokens(path: Path) -> list[tuple[str, str]]:
     """(line index, NFD token) for the Tier-1 tokens in a proposal or decision.
 
@@ -385,7 +444,12 @@ def page_tokens(path: Path) -> list[tuple[str, str]]:
         text = _nfd(rec.get("text", ""))
         for m in TOKEN.finditer(text):
             tok = m.group().strip(EDGE_PUNCT)
-            if tok and any(ch in INVENTORY_CHARS for ch in tok):
+            # **The same selection as the prior's, and it has to be.** This is
+            # the batch half of the comparison `native_corpus_context` supplies
+            # the other half of; the two were selected by different rules until
+            # now — only the prior excluded Cyrillic — so a Russian token was
+            # counted here and not there. See `detectors.bears_inventory`.
+            if tok and not cyrillic(tok) and bears_inventory(tok):
                 out.append((idx, tok))
     return out
 
@@ -650,7 +714,8 @@ def _source_path(ref: str, root: Path, decisions: bool) -> Path:
 
 
 def marks(refs: list[str], root: Path = Path("."), decisions: bool = False,
-          min_types: int | None = None, rare_max: float | None = None) -> dict:
+          min_types: int | None = None, rare_max: float | None = None,
+          tick: Callable | None = None) -> dict:
     """Character-distribution check over a batch of proposals. Never gates.
 
     `decisions=True` reads `decision.json` instead — the last state before
@@ -685,14 +750,36 @@ def marks(refs: list[str], root: Path = Path("."), decisions: bool = False,
     # Leave-one-out, unconditionally — see the module docstring. Not `if ref in
     # store`: a conditional exclusion is the same rule with a step where it can be
     # forgotten, and the collapse it prevents is silent.
+    #
+    # **Read once and iterated twice.** The `prior` and the `known` table below
+    # are different tallies of the same walk, and each used to call
+    # `native_corpus` for itself — two full reads of `gt/ocr/` per run. One call
+    # is also what makes a single bar honest: two would each run to 100%, and a
+    # bar that finishes and starts again describes a run that is not happening.
+    corpus = native_corpus(root, tick)
     prior: dict[str, list[str]] = {}
-    for ref, tok in native_corpus(root):
+    for ref, tok in corpus:
         if ref not in under_test:
             prior.setdefault(ref, []).append(_nfd(tok))
     prior_tokens = [t for toks in prior.values() for t in toks]
 
     rare = _rare(batch, prior_tokens, contrasts, rare_max)
     ratio = [r for c in contrasts for r in _ratio_rows(c, batch, prior, min_types)]
+
+    # **Not leave-one-out, and that is the difference.** Every other arm compares the
+    # batch against a prior the batch is held out of, because it is asking whether
+    # this reading is unusual. This one asks whether the store already holds the word,
+    # so a sibling page in the same batch is a perfectly good witness — `3-199`'s
+    # `Ke’rek` should be answerable by `3-178` keying it correctly an hour earlier.
+    known: dict[str, list[str]] = {}
+    for ref, tok in corpus:
+        known.setdefault(_nfd(tok).casefold(), []).append(ref)
+    for ref in refs:
+        for tok in {t for _, t in batch[ref]}:
+            known.setdefault(tok.casefold(), []).append(ref)
+    traps = [{"ref": ref, **hit}
+             for ref in refs
+             for hit in trap_hits(_source_path(ref, root, decisions), known)]
 
     # No exemptions on this side, deliberately. A proposal is a **record of what a
     # reader wrote**, not a store to be corrected — rewriting one is forbidden
@@ -703,11 +790,12 @@ def marks(refs: list[str], root: Path = Path("."), decisions: bool = False,
     return {"refs": " ".join(refs),
             "source": "decisions" if decisions else "proposals",
             "prior_pages": len(prior), "prior_note": PRIOR_NOTE,
-            "pages": pages, "rare": rare,
+            "pages": pages, "rare": rare, "traps": traps,
             "conflict": _conflicts(batch, prior, contrasts), "ratio": ratio}
 
 
-def gt_conflicts(root: Path = Path(".")) -> dict:
+def gt_conflicts(root: Path = Path("."),
+                 tick: Callable | None = None) -> dict:
     """One word spelled two ways in **ground truth** — the corpus-wide arm.
 
     The store side of `proposal marks`' `conflict`, and the difference between
@@ -735,7 +823,7 @@ def gt_conflicts(root: Path = Path(".")) -> dict:
 
     buckets: dict[str, dict[str, dict[str, list[str]]]] = {}
     read = set()
-    for ref, idx, tok in native_corpus_lines(root):
+    for ref, idx, tok in native_corpus_lines(root, tick):
         read.add(ref)
         tok = _nfd(tok)
         (buckets.setdefault(fold(tok, contrasts), {})

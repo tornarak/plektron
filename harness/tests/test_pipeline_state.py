@@ -13,7 +13,13 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from harness.pipeline import STAGES, page_state, survey, tally
+from harness.pipeline import (
+    EXEMPT_STAGE,
+    STAGES,
+    page_state,
+    survey,
+    tally,
+)
 
 
 def touch(root: Path, rel: str) -> Path:
@@ -123,11 +129,41 @@ def test_a_ruled_leaf_has_been_through_the_zoning(tmp_path):
         "chukchi-1-001.png\n", encoding="utf-8")
     row = page_state("1-001", tmp_path)
     assert row["zones"] == "cover"
-    assert row["stage"] == "zoned-gt"
+    # **`zoned-exempt`, not `zoned-gt`.** The leaf is finished, not waiting for
+    # OCR, and reporting it on the ladder put 115 of them in the column a reader
+    # scans for work still pending.
+    assert row["stage"] == EXEMPT_STAGE
     # And `zoned-mz` is not a rung it skipped: `zones predict` is not how a plate
     # gets ruled a plate. Counting it put 83 plates in the report and hid the one
     # page (`1-359`) that really did reach human zoning with no prediction.
     assert row["skipped"] == ""
+
+
+def test_a_ruled_leaf_skips_nothing_though_seven_rungs_are_unreached(tmp_path):
+    """The rungs above a terminus are steps that **do not apply**, not steps the
+    page failed to take. Reported as skips, a finished plate would read as damaged
+    — and `skipped` is the column this census exists to make trustworthy."""
+    scanned(tmp_path, "1-001")
+    (tmp_path / "gt" / "zones").mkdir(parents=True)
+    (tmp_path / "gt" / "zones" / "_plate.lst").write_text(
+        "chukchi-1-001.png\n", encoding="utf-8")
+    row = page_state("1-001", tmp_path)
+    assert row["stage"] == EXEMPT_STAGE and row["skipped"] == ""
+
+
+def test_the_terminus_is_not_a_rung_on_the_ladder(tmp_path):
+    """It is kept out of `STAGES` deliberately. `skipped` is "every rung below the
+    furthest reached that is absent", so a rung no *text* page can satisfy would
+    read as a skip on all 717 of them — the same defect one column over."""
+    assert EXEMPT_STAGE not in STAGES
+    scanned(tmp_path, "1-151")
+    touch(tmp_path, "gt/zones/chukchi-1-151.xml")
+    row = page_state("1-151", tmp_path)
+    # This page *does* skip `zoned-mz` — human zoning with no prediction behind
+    # it, the `1-359` case the column exists to surface. What it must never skip
+    # is the terminus, which is not a step a text page was ever going to take.
+    assert row["skipped"] == "zoned-mz"
+    assert EXEMPT_STAGE not in row["skipped"]
 
 
 def test_the_ocr_column_reports_gt_over_mz(tmp_path):
@@ -148,7 +184,8 @@ def test_every_rung_is_listed_even_at_zero(tmp_path):
     facts, and omitting the row makes them look the same."""
     scanned(tmp_path)
     rows = tally(survey(["1-151"], tmp_path))
-    assert [r["stage"] for r in rows] == ["absent", *STAGES, "(any skipped rung)"]
+    assert [r["stage"] for r in rows] == \
+        ["absent", *STAGES, EXEMPT_STAGE, "(any skipped rung)"]
     assert {r["stage"]: r["pages"] for r in rows}["scanned"] == 1
 
 

@@ -1,0 +1,199 @@
+{
+ "ref": "3-146",
+ "proposal": "review/3-146/proposal.json",
+ "saved_at": "2026-08-22T16:12:45-0400",
+ "lines": {
+  "0": {
+   "text": "XXIII. — CONTACT OF THE CHUKCHEE WITH THE RUSSIANS.¹",
+   "edited": false
+  },
+  "1": {
+   "text": "DISCOVERY. — The first information concerning the Chukchee was brought",
+   "edited": false
+  },
+  "2": {
+   "text": "by the Cossack Michael Stadukhin, who, in 1644, went to the Kolyma River",
+   "edited": false
+  },
+  "3": {
+   "text": "and founded the winter hamlet (зимовье) of Nishne-Kolymsk.",
+   "edited": false
+  },
+  "4": {
+   "text": "¹ The historical sketch contained in this chapter is based on data collected by the author in the Archives",
+   "edited": false
+  },
+  "5": {
+   "text": "of Sredne-Kolymsk, Nishne-Kolymsk, Markova on the Anadyr, also extracted from old documents of the same",
+   "edited": false
+  },
+  "6": {
+   "text": "provenience, which are in the possession of the author. Besides the sources enumerated in the list of author-",
+   "edited": false
+  },
+  "7": {
+   "text": "ities (p. 3), several other works and editions of documents have been used. Almost all of them are Russian,",
+   "edited": false
+  },
+  "8": {
+   "text": "and their titles are given with English translation.",
+   "edited": false
+  },
+  "9": {
+   "text": "1. Историческіе Акты, собранные и издаииые Археографической Коммисіей, III, IV, V.",
+   "edited": false,
+   "class": "print",
+   "note": "издаииые is the print, keyed verbatim per §2.14 ('gt/ocr never repairs the book'). Confirmed a genuine misprint rather than a misreading: the published title is Акты историческіе, собранные и изданные Археографическою коммиссіею (SPb 1841–42), so изданные is correct and the compositor set ии for нн. The ии are cleanly formed — contrasted at 4× against the нн of собранные in the same strip — so this is branch 1 (a set wrong letter), not wear. Identification #llm. Bogoras also cites loosely here: he prints Историческіе Акты and Коммисіей where the work sets Акты историческіе and коммиссіею; that belongs in authorities.json, not in the transcript."
+  },
+  "10": {
+   "text": "Historical Acts, collected and edited by the Archeographical Commission, III, IV, V (cited Acts, III, IV, V).",
+   "edited": false
+  },
+  "11": {
+   "text": "2. Дополненія къ Историческимъ Актамъ, собранныя и изданныя Археографической Коммисіей, III, IV, V.",
+   "edited": false
+  },
+  "12": {
+   "text": "Supplements to the Historical Acts, collected and edited by the Archeographical Commission, III, IV, V",
+   "edited": false
+  },
+  "13": {
+   "text": "(cited Supplements, III, IV, V).",
+   "edited": false
+  },
+  "14": {
+   "text": "3. Памятники Сибирской Исторіи XVIII Вѣка, I, II.",
+   "edited": false
+  },
+  "15": {
+   "text": "Monuments of the History of Siberia in the XVIII Century, I, II (cited Monuments, I, II).",
+   "edited": false
+  },
+  "16": {
+   "text": "4. Сводъ Законовъ Россійской Имперіи. Изданія 1857, 1876, 1892, 1899.",
+   "edited": false
+  },
+  "17": {
+   "text": "Code of Laws of the Russian Empire. Editions 1857, 1876, 1892, 1899.",
+   "edited": false
+  },
+  "18": {
+   "text": "5. Сенатскій Архивъ, Томъ II.",
+   "edited": false
+  },
+  "19": {
+   "text": "Archive of the Senate, Vol. II.",
+   "edited": false
+  },
+  "20": {
+   "text": "6. Дополненія къ Твореніямъ Святыхъ Отцовъ, Части 9, 11. (Москва, 1850-52).",
+   "edited": false,
+   "note": "Numerals read as Roman II by the reader; corrected to Arabic 11. Bogoras's facing English (line 21) sets the same pair, and its form matches the 1 opening 1850 in the same strip. Independently: the series (Прибавленія къ изданію твореній святыхъ отцовъ, Moscow 1843–1891) ran Part 8 = 1849 and Part 12 = 1853, so Parts 9 and 11 are 1850 and 1852 — exactly the printed range (Москва, 1850—52). Roman II = 2 contradicts it. Correction proposed by a model, #llm, awaiting ratification.",
+   "class": "draft"
+  },
+  "21": {
+   "text": "Supplements to the Works of the Holy Fathers, Parts 9, 11 (Moscow, 1850-52).",
+   "edited": false,
+   "note": "Same correction as line 20, the facing English of the same entry: Roman II → Arabic 11. #llm, awaiting ratification.",
+   "class": "draft"
+  },
+  "22": {
+   "text": "7. Русскій Паломникъ 1887.",
+   "edited": false
+  },
+  "23": {
+   "text": "Russian Pilgrim (monthly), 1887.",
+   "edited": false
+  },
+  "24": {
+   "text": "8. Словцовъ, П. Историческое Обозрѣніе Сибири, С-Петербургъ, 1886.",
+   "edited": false
+  },
+  "25": {
+   "text": "Slovtzov, P. Historical Survey of Siberia, St. Petersburg, 1886 (cited Slovtzov).",
+   "edited": false
+  },
+  "26": {
+   "text": "9. Сѣверный Архивъ, 1825.",
+   "edited": false
+  },
+  "27": {
+   "text": "North Archive (periodical), 1825.",
+   "edited": false
+  },
+  "28": {
+   "text": "10. Журналъ Министерства Народнаго Просвѣщенія, 1890.",
+   "edited": false
+  },
+  "29": {
+   "text": "Journal of the Department of Education (monthly), 1890.",
+   "edited": false
+  },
+  "30": {
+   "text": "11. Собраніе сочиненій изъ мѣсяцеслововъ различныхъ лѣтъ, С-Петербургъ, 1790.",
+   "edited": false,
+   "class": "artifact",
+   "note": "мѣсяцеслововъ: the letter between с and ц prints н-shaped and no я bowl is visible at 4×, the ceiling. Read as a damaged sort per §2.14 branch 2 ('wear is not a letter') rather than as a set н, so the text stands and the class is artifact. Corroborated externally: the work is Собраніе сочиненій, выбранныхъ изъ мѣсяцослововъ на разные годы (SPb 1790), where месяцесловов is the genitive plural of месяцесловъ — so я is the letter the compositor set. Bogoras abridges the title; that difference belongs in authorities.json. Identification #llm."
+  },
+  "31": {
+   "text": "Collection of Papers selected from Monthly Records of Various Years, St. Petersburg, 1790.",
+   "edited": false
+  },
+  "32": {
+   "text": "12. Fischer, Johann Eberhard, Sibirische Geschichte, I, II, St. Petersburg, 1768.",
+   "edited": false
+  },
+  "33": {
+   "text": "13. Müller, G. F. Description of the Siberian Kingdom, St. Petersburg, 1750.",
+   "edited": false
+  },
+  "34": {
+   "text": "14. Приклонскій, В. Л. Хроника Якутской Области, составленная по оффиціальнымъ и историческимъ дан-",
+   "edited": false
+  },
+  "35": {
+   "text": "нымъ, Красноярскъ, 1896.",
+   "edited": false
+  },
+  "36": {
+   "text": "Priklonsky, V. L. Chronicle of the Country of Yakutsk, arranged from Official and Historical Data, Krasno-",
+   "edited": false
+  },
+  "37": {
+   "text": "yarsk, 1896.",
+   "edited": false
+  },
+  "38": {
+   "text": "15. Щегловъ, И. В. Хронологическій перечень Важнѣйшихъ Данныхъ изъ исторіи Сибири, Иркутскъ, 1883.",
+   "edited": false
+  },
+  "39": {
+   "text": "Shcheglov, I. V. Chronological List of the Most Important Data of the History of Siberia, Irkutsk, 1883",
+   "edited": false
+  },
+  "40": {
+   "text": "(cited Shcheglov).",
+   "edited": false
+  },
+  "41": {
+   "text": "16. Андріевичъ, В. К. Исторія Сибири, I, II, С-Петербургъ, 1889.",
+   "edited": false
+  },
+  "42": {
+   "text": "Andriyevich, V. K. History of Siberia, I, II, St. Petersburg, 1889 (cited Andriyevich).",
+   "edited": false
+  },
+  "43": {
+   "text": "17. Титовъ, А. Сибирь въ XVII Вѣкѣ, Москва, 1890.",
+   "edited": false
+  },
+  "44": {
+   "text": "Titov, A. Siberia in the XVII Century, Moscow, 1890.",
+   "edited": false
+  },
+  "45": {
+   "text": "[680]",
+   "edited": false
+  }
+ }
+}

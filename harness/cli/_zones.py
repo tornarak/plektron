@@ -27,11 +27,11 @@ import sys
 
 import click
 
+from ..parallel import ptrack
 from ..render import progress
 from ._common import (
     action,
     add_jobs,
-    arg,
     group,
     one_page_only,
     opt,
@@ -145,66 +145,6 @@ def register(cli):
                    help=DECODE_HELP)
     opt(p, "--device", default="auto", help=DEVICE_HELP)
 
-    p = action(g, "score", run_score, section="The segmenter", help="compare predictions against gt/zones/ — recall and "
-            "precision per split, never blended, plus the confusion matrix and a "
-            "held-out permutation test. Bare, it scores what is in mz/zones/; "
-            "with --model it segments in memory and writes nothing, which is how "
-            "a checkpoint gets measured before it is installed. Refuses if the "
-            "frozen split lists are gone: the live ones move, so without them the "
-            "training pages cannot be told from the rest. Measurement — exit 0")
-    opt(p, "--model", default=None,
-                   help=f"{MODEL_HELP}. Given, the checkpoint is segmented in "
-                        "memory rather than read out of mz/zones/")
-    opt(p, "--decode", type=click.Choice(("raw", "dp")), default="dp",
-                   help=DECODE_HELP)
-    opt(p, "--device", default="auto", help=DEVICE_HELP)
-
-    p = action(g, "assemble", run_assemble, section="The segmenter", help="build train/bogoras-seg/ from the train/eval marks: "
-            "each page's zone ALTO beside its blotted raster, ready for ketos "
-            "segtrain. Reports the invocation; runs nothing. Pure scratch — the "
-            "split a model trained on travels in that model's own manifest, so "
-            "this may be clobbered freely")
-    opt(p, "--scratch", is_flag=True,
-                   help="train from random init: no -i, kraken's default "
-                        "segmentation spec. The one configuration in which the "
-                        "class-map permutation cannot arise, there being no "
-                        "output layer to renumber")
-
-    p = action(g, "install", run_install, section="The segmenter", help="install a trained checkpoint into models/bogoras-seg/ "
-            "with a manifest beside it. Scores it in memory first and **refuses a "
-            "permuted class map** — that check stops being something to remember "
-            "and becomes a precondition of the artifact existing. The manifest "
-            "records the split it trained on, its classes and merges, a digest of "
-            "gt/zones/ at the time, and the score; every path in it is relative")
-    arg(p, "checkpoint", metavar="CHECKPOINT")
-    p.help += "\n\nCHECKPOINT: the .ckpt or .safetensors a training run wrote."
-    opt(p, "--name", default="zones-seg",
-                   help="installed model name (default zones-seg). The accuracy "
-                        "stays out of it: a default path that changes every "
-                        "retrain is a default nobody can use")
-    opt(p, "--device", default="auto", help=DEVICE_HELP)
-    opt(p, "--commit", is_flag=True,
-                   help="copy the checkpoint and its split into "
-                        "models/bogoras-seg/; preview otherwise")
-
-    p = action(g, "remap", run_remap, section="The segmenter", help="put the learned names back on the model's output "
-            "channels, when `score` shows the disagreement is a consistent "
-            "relabelling rather than a weak model. Derives the map on the "
-            "training pages, refuses unless it is 1-1 and holds out; the original "
-            "is kept as .bak")
-    opt(p, "--model", default=None, help=MODEL_HELP)
-    opt(p, "--commit", is_flag=True,
-                   help="rewrite the model's class map; preview otherwise")
-
-    p = action(g, "remark-eval", run_remark_eval, section="The segmenter", help="move a fraction of the train set into eval — "
-            "stratified per part, independent pages first, spread rather than "
-            "taken off the front. Additive: a page a human already marked eval or "
-            "exempt is never touched")
-    arg(p, "fraction", metavar="FRACTION", type=float)
-    p.help += "\n\nFRACTION: fraction of train to move, e.g. 0.20."
-    opt(p, "--commit", is_flag=True,
-                   help="write the split marks; report otherwise")
-
     p = action(g, "delete", run_delete, section="The store", help="un-key a page — remove its file from gt/zones/ and "
             "every mark that referred to it (split, rule and ink exemptions). The "
             "one thing the store could not express: `save_zones` refuses an empty "
@@ -312,7 +252,17 @@ def run_edit(a) -> int:
     if not start and itin:
         # Resume: the first page on the list nobody has keyed. Falls back to the
         # head of the list once it is finished, so the session still opens.
-        start = next((r for r in itin if not zmod.has_zones(r, a.root)), itin[0])
+        # `keyed` is a store read per page, and `--all` makes the itinerary the
+        # whole book — so resuming is a sweep before the socket is bound, with
+        # nothing on screen to say the session is still coming up.
+        #
+        # **`keyed`, not `has_zones`**: a leaf ruled `plate` holds no zone file
+        # at all, so the file test would call every exempt leaf unsettled and
+        # send the resume back to the same plate every session.
+        with progress("finding where to resume") as tick:
+            splits = zmod.load_splits(a.root)
+            start = next((r for r in ptrack(itin, tick)
+                          if not zmod.keyed(r, a.root, splits)), itin[0])
     if not start:
         print("zones edit needs a page to start at: name one or more refs, or "
               "--itinerary to take one from, or --all for the whole book",
@@ -335,7 +285,10 @@ def run_edit(a) -> int:
               f"{web.url_for('zones', f'/?ref={start}', port=a.port)}"
               "   (Done button on the page, or ctrl-c)"]
     if itin:
-        done = sum(1 for r in itin if zmod.has_zones(r, a.root))
+        with progress("counting the itinerary") as tick:
+            splits = zmod.load_splits(a.root)
+            done = sum(1 for r in ptrack(itin, tick)
+                       if zmod.keyed(r, a.root, splits))
         banner.append(
             f"itinerary {a.itinerary or ''}: {len(itin)} pages, {done} keyed")
     banner.append(f"store -> {zmod.zone_dir(a.root)}")
@@ -381,7 +334,13 @@ def run_predict(a) -> int:
 
 def run_score(a) -> int:
     zmod, _ = _mod()
-    rep = zmod.score(a.root, model_path=a.model, decode=a.decode, device=a.device)
+    # `"scoring"`, not `"segmenting"`: `predict` owns that word above, and with a
+    # `--model` these two do the same work for opposite reasons. The bar closes
+    # before anything is printed — a table written into a live transient bar is
+    # what strands the frame.
+    with progress("scoring") as tick:
+        rep = zmod.score(a.root, model_path=a.model, decode=a.decode,
+                         device=a.device, tick=tick, jobs=a.jobs)
     conf = rep.pop("confusion")
     scored = rep.pop("scored_refs")
     out(a, rep)
@@ -392,8 +351,9 @@ def run_score(a) -> int:
     # the number cannot say so. `_independent` has been the rule `remark-eval`
     # selects on since the set was drawn; this is the first thing to report it, so
     # the qualifier travels with the figure instead of expiring at selection time.
-    out(a, zmod.departure_composition(zmod.departures(scored, a.root)),
-        "independence")
+    with progress("measuring departure") as tick:
+        dep = zmod.departures(scored, a.root, tick=tick)
+    out(a, zmod.departure_composition(dep), "independence")
     # A consistent relabelling is a different fault from a weak model and has a
     # different remedy, so it does not get to hide in a table.
     p = rep["permutation"]
@@ -408,16 +368,21 @@ def run_score(a) -> int:
 
 def run_assemble(a) -> int:
     zmod, _ = _mod()
-    rep = zmod.assemble(a.root, scratch=a.scratch)
+    with progress("assembling") as tick:
+        rep = zmod.assemble(a.root, scratch=a.scratch, tick=tick)
     out(a, rep)
     return 1 if rep["missing_blot"] else 0
 
 
 def run_install(a) -> int:
     zmod, load_config = _mod()
-    out(a, zmod.install_model(a.checkpoint, a.root, name=a.name,
-                              cfg=load_config(a.root), commit=a.commit,
-                              device=a.device))
+    # Split out of the `out(...)` call it used to sit inside, so the bar is closed
+    # before the report is printed.
+    with progress("scoring") as tick:
+        rep = zmod.install_model(a.checkpoint, a.root, name=a.name,
+                                 cfg=load_config(a.root), commit=a.commit,
+                                 device=a.device, tick=tick, jobs=a.jobs)
+    out(a, rep)
     return 0
 
 
@@ -432,14 +397,18 @@ def run_remap(a) -> int:
 
 def run_remark_eval(a) -> int:
     zmod, _ = _mod()
-    out(a, zmod.remark_eval(a.root, a.fraction, commit=a.commit))
+    with progress("measuring independence") as tick:
+        rep = zmod.remark_eval(a.root, a.fraction, commit=a.commit, tick=tick)
+    out(a, rep)
     return 0
 
 
 def run_delete(a) -> int:
     zmod, _ = _mod()
-    out_per_ref(a, [(r, zmod.delete_zones(r, a.root, commit=a.commit))
-                    for r in page_refs(a)])
+    with progress("deleting") as tick:
+        rows = [(r, zmod.delete_zones(r, a.root, commit=a.commit))
+                for r in ptrack(page_refs(a), tick)]
+    out_per_ref(a, rows)
     return 0
 
 
@@ -452,7 +421,9 @@ def run_diff(a) -> int:
     scope = page_refs(a) or sorted(
         set(zmod.zone_refs(a.root)) & set(zmod.zone_refs(a.root, zmod.MZDIR)),
         key=zmod.parse_ref)
-    rows = [r for ref_ in scope for r in zmod.zone_diff(ref_, a.root, cfg)]
+    with progress("diffing zones") as tick:
+        rows = [r for ref_ in ptrack(scope, tick)
+                for r in zmod.zone_diff(ref_, a.root, cfg)]
     out(a, {"pages": len(scope), "differences": len(rows),
             "pages_differing": len({r["ref"] for r in rows}),
             "by_kind": " ".join(f"{k}:{v}" for k, v in
@@ -470,8 +441,10 @@ def run_diff(a) -> int:
     # a column reporting coverage it does not have, which is the trap `LOOKALIKES`
     # already paid for once with U+0121. So the counts differ between the two
     # sections by exactly the pages nothing predicted, and that is the point.
-    out(a, zmod.departures(page_refs(a) or zmod.zone_refs(a.root), a.root),
-        "departure")
+    with progress("measuring departure") as tick:
+        dep = zmod.departures(page_refs(a) or zmod.zone_refs(a.root), a.root,
+                              tick=tick)
+    out(a, dep, "departure")
     return 0
 
 

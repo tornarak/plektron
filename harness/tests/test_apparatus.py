@@ -391,9 +391,34 @@ def test_a_vector_leaf_reports_unmeasured_rather_than_fine(book: Path):
                              "scale": "vector", "aspect": ""}
 
 
-def test_an_entry_outside_its_own_run_fails(book: Path):
-    doc = json.loads((book / "data" / "loi.json").read_text())
-    doc["figures"][0]["ref"] = "1-099"
-    _store(book, "loi.json", doc)
-    errs = [e for e in A.check(book)["errors"] if e["rule"] == "span-disagreement"]
-    assert any("1-099" in e["detail"] for e in errs)
+def test_a_run_leaf_the_store_records_no_entry_for_fails(book: Path):
+    """The run demands full presence: every leaf it names must be witnessed.
+    A run declaring a leaf its store says nothing about renders an empty
+    apparatus page, and nothing else in the tree could report it."""
+    doc = json.loads((book / "data" / "authorities.json").read_text())
+    doc["authorities"] = [e for e in doc["authorities"] if e["ref"] != "1-024"]
+    _store(book, "authorities.json", doc)
+    errs = [e for e in A.check(book)["errors"] if e["rule"] == "unwitnessed-leaf"]
+    assert errs and "1-024" in errs[0]["detail"]
+
+
+def test_an_entry_outside_every_run_is_kept_and_renders_nowhere(book: Path):
+    """The converse is NOT a failure, and gating it was the wrong direction.
+
+    Authorities Quoted is an open list — folio 9's asterism ("For other
+    authorities see references in the text") admits a work printed anywhere in
+    the book, and Bogoras uses it: the chapter XXIII footnote on `3-146`/`3-147`
+    is a second bibliography of twenty-one numbered works. Making the run the
+    store's boundary meant the only way to record one was to strip its `ref` —
+    discarding the leaf it is printed on to satisfy a check about rendering.
+
+    Nothing is needed to keep such an entry off a leaf: `entries_for` resolves
+    the leaf to a run first and returns [] when there is none."""
+    doc = json.loads((book / "data" / "authorities.json").read_text())
+    doc["authorities"].append(
+        {"key": "priklonsky1896", "ref": "3-146", "folio": "680",
+         "printed": [{"ref": "3-146", "text": "14. Приклонскій, В. Л. …"}]})
+    _store(book, "authorities.json", doc)
+    assert not [e for e in A.check(book)["errors"]
+                if e["rule"] in ("span-disagreement", "unwitnessed-leaf")]
+    assert A.entries_for("3-146", book) == []

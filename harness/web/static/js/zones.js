@@ -1060,6 +1060,34 @@ function confirmAdoption() {
     + `human has been through. Nothing else writes there.`);
 }
 
+// Ruling a leaf clears both stores — `exempt => no zones` — so it asks first
+// whenever there is something to lose. Silent for the ordinary case, which is a
+// leaf ruled on a page nobody has keyed and nothing has predicted: a prompt that
+// fires when nothing happens is a prompt people learn to dismiss.
+//
+// This is the slip it exists to stop. Keying a page and *then* ruling it a plate
+// used to save both — the zones and the ruling — and nothing ever swept the
+// prediction, so 32 leaves kept a segmenter's guess at a text column they do not
+// have, 98 zones against 1 in ground truth, some of them paragraphs on blank
+// paper. Two pages kept a human's zones the same way.
+function confirmLeafClear() {
+  const leaf = (CFG.leaf_kinds || []).some(x => x.kind === S.split);
+  if (!leaf) return true;
+  const gt = ST.present && ST.present.gt;
+  const mz = ST.present && ST.present.mz;
+  const lose = [];
+  if (S.zones.length) lose.push(`${S.zones.length} zone(s) on screen`);
+  if (gt) lose.push(`gt/zones/ (${gt})`);
+  if (mz) lose.push(`mz/zones/ (${mz})`);
+  if (!lose.length) return true;
+  return confirm(
+    `Rule ${ST.ref} ${S.split} — not a text page?\n\n`
+    + `A leaf with no text column has no zones, so this DELETES ${lose.join(', ')}.\n`
+    + `The ${S.split} mark stays and is the record that you looked.\n\n`
+    + `A running title on a plate is deliberately ignored: the folio propagates `
+    + `through the seam ledger, so zoning it records nothing the corpus reads.`);
+}
+
 async function save() {
   // Caught here rather than as a 500 from the server, because the remedy is a
   // choice between three different statements and the page is where they are made.
@@ -1071,6 +1099,7 @@ async function save() {
     return;
   }
   if (!confirmAdoption()) { say('not adopted', 'bad'); return; }
+  if (!confirmLeafClear()) { say('not ruled', 'bad'); return; }
   const body = {
     ref: ST.ref, split: S.split, exempt: S.exempt, nudge: S.nudge,
     ink_exempt: S.inkEx,
@@ -1100,10 +1129,27 @@ async function save() {
   // claiming a machine proposal, so the one act the store split exists to make
   // visible was the one act with no visible outcome — and pressing `s` again
   // re-asked to adopt something already adopted.
+  // **`keyed` means settled, not "there is a file".** A ruled leaf holds neither
+  // store and is still finished — the split mark is the record — so the Done
+  // button and the resume both have to accept it. `present` is the other half of
+  // that distinction and must go the other way: it says what each store *holds*,
+  // so a cleared page reads `null` there and not `0`, or the selector offers a gt
+  // that was just deleted.
   ST.keyed = true;
   ST.proposal = '';
-  ST.shown = 'gt';
-  if (ST.present) ST.present.gt = res.zones;
+  if (res.cleared) {
+    // The canvas follows the store: there is nothing on this leaf any more.
+    // `S.issues` and `S.ink` are deliberately *not* touched — they were assigned
+    // from `res` a few lines up, and the server's verdict replacing the client's
+    // on every save is this editor's rule. Clearing them here would discard an
+    // answer that had just arrived, on the one save that deletes tracked work.
+    S.zones = []; S.dirty = false;
+    ST.shown = '';
+    if (ST.present) { ST.present.gt = null; ST.present.mz = null; }
+  } else {
+    ST.shown = 'gt';
+    if (ST.present) ST.present.gt = res.zones;
+  }
   ST.paras_zones = res.paras_zones;
   renderStores();
   let extra = '';
@@ -1120,7 +1166,10 @@ async function save() {
       .concat((res.fig_errors || []).map(e => ({...e, kind: 'e', exempted: false})))
       .concat((res.fig_warnings || []).map(w => ({...w, kind: 'w'})));
   }
-  say(`saved ${res.zones} zones to gt` + extra +
+  say((res.cleared
+       ? `ruled ${ST.ref} ${res.split} — cleared ${res.cleared}`
+         + (res.dropped ? ` (${res.dropped} zone(s))` : '')
+       : `saved ${res.zones} zones to gt`) + extra +
       (res.errors.length ? ` · ${res.errors.length} error(s)` : ''),
       res.errors.length ? 'bad' : 'ok');
   render();

@@ -8,6 +8,27 @@ Code-facing facts for the modules this rule is scoped to. The design
 reasoning is `docs/segmentation.md`; the training loop is
 `.claude/skills/train-zones/SKILL.md`.
 
+**Three predicates about a page, and mixing them up is the live hazard.**
+`has_zones` is a **file** question — does this store hold an ALTO for this ref.
+`keyed` is "has a human been through", which a ruled leaf answers *without*
+holding a file, since `exempt => no zones` and the leaf kind in the split lists
+is the record. `settled_refs` is that same union one level up, for a sweep or a
+page list; `zone_refs` remains the store census and drops all 115 ruled leaves.
+
+Ask the file question wherever the subject is the file: the editor's store
+selector (`present`), its paragraph pill (`paras_zones`), an overwrite guard, "is
+there a prediction" against `MZDIR`. Ask `keyed` wherever the subject is whether
+work remains: the Done button, the progress count, the itinerary's resume. Both
+substitutions have already been made and both were wrong in a way that reads as
+plausible — `present` gated on `keyed` drew `gt — 0` for a page whose ALTO had
+just been deleted, and the resume gated on `has_zones` sent a human back to the
+same plate every session.
+
+`clear_leaf` is what a ruling performs: `.prev` on both stores, delete both,
+keep the mark, journal it. `save_zones` routes to it whenever the effective
+split is a leaf kind, so the editor and the CLI perform one act. `zones check`
+errors `exempt-holds-zones` on a page that drifted out of that state.
+
 **The page list (`l` in the editor) carries the ink verdict, and it is cached rather
 than recomputed.** Every other column costs ~1 ms and is read straight off the files;
 this one opens the raster and costs ~0.20 s, which over a 122-page itinerary is most
@@ -87,7 +108,37 @@ returns.
 
 **Recognition is not where `ocr predict` spends its time, and the measurement is
 worth keeping because it inverts the obvious fix.** A page is ~17 s:
-`blla.segment` is ~15 s of it and recognition ~1.5 s. Nor is the segmenter's time
+`blla.segment` is ~15 s of it and recognition ~1.5 s.
+
+**This paragraph is about `ocr predict` and its numbers do not transfer to the
+zone track.** The 15 s is baseline vectorization — the profile below says so — and
+`gt/zones/` carries no `TextLine`, so the zone model is region-only and never runs
+that code at all. Measured warm against the installed model over 717 pages,
+`zones score --model` is **0.96 s a page under `raw` and 0.58 under `dp`**, i.e.
+7–11 minutes rather than hours. The figure *was* carried over, and put "~2.8 h"
+into `VERBS.md` for an eleven-minute sweep.
+
+**The profile, though, is the same one, and it was measured here rather than
+assumed.** `/usr/bin/time -v` over a 90 s run of `zones score --model --decode raw`:
+user 102.6 s, sys 8.6 s, **123% of one CPU** on a 16-core machine, with GPU
+utilization indistinguishable from the desktop's own 8–14% idle. One core
+saturated, fifteen idle, the card asleep — `ocr predict`'s shape exactly, and the
+reason its `--jobs` means **processes**. So the two facts point opposite ways and
+both are true: the sweep is far shorter than this file used to imply, *and* it is
+single-core CPU-bound, so a process pool is the right instrument if the eleven
+minutes are ever worth attacking. Do not re-derive either number from the
+`ocr predict` paragraph above.
+
+**They were attacked, and the pool pays the same 2.8× it pays there.** `zones
+score --model --decode raw`, 100 s each side: **73 pages serial, 206 with four
+processes**. `predicted_zones` routes only the cache *misses* through
+`zones._segment_pool` (`parallel.gpu_workers` sizes it, `capture_stderr` closes
+each worker's fd 2 so kraken's polygon warning cannot land on the live bar), and
+the parent loads no model at all on that path — the cache key is the checkpoint's
+**file** hash, so `n` workers mean `n` CUDA contexts and never `n + 1` on an 8 GB
+card. Cache entries are written **per completion**, not after the sweep returns:
+storing the returned list instead silently cost a killed run everything it had
+done, on exactly the runs long enough to be killed. Nor is the segmenter's time
 GPU work — profiled, it is scipy `correlate1d` (6.1 s), shapely `intersection`
 (2.2 s) and kraken's own `boundary_tracing`/`moore_neighborhood` (3.2 s), i.e.
 **baseline vectorization on one core**. That is what the ~4.5% mean GPU
@@ -105,7 +156,7 @@ byte-identical.
 
 Two things that follow. `spawn`, not fork — a forked child inherits a CUDA
 context it cannot use. And the default worker count is capped by **free VRAM as
-well as cores**, since a worker holds ~1.4 GB of CUDA context (the recognizer's
+well as cores**, since a worker holds ~1.6 GB of CUDA context (the recognizer's
 weights are 22 MiB; almost none of it is the model). That cap is read off the card
 at run time rather than written down, for the same reason the column measure is
 derived: a constant here would be wrong on the next machine. A `--jobs` a human

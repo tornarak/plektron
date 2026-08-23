@@ -559,11 +559,11 @@ def test_a_sweep_reports_what_it_skipped_rather_than_omitting_it(tmp_path):
 
 
 def frozen_split(root: Path, train: list[str], evl: list[str]):
-    d = root / zn.WORKDIR
+    d = root / zn.DATADIR
     d.mkdir(parents=True, exist_ok=True)
     for name, refs in (("train", train), ("eval", evl)):
         (d / f"{name}.lst").write_text(
-            "".join(f"{zn.WORKDIR}/chukchi-{r}.xml\n" for r in refs), encoding="utf-8"
+            "".join(f"{zn.DATADIR}/chukchi-{r}.xml\n" for r in refs), encoding="utf-8"
         )
 
 
@@ -1096,13 +1096,33 @@ def test_a_train_merge_folds_the_training_copy_and_not_the_store(tmp_path):
     assert "MainZone-Quote" not in rep["classes"]
 
     # The training copy is folded...
-    train = (tmp_path / zn.WORKDIR / "chukchi-1-048.xml").read_text(encoding="utf-8")
+    train = (tmp_path / zn.DATADIR / "chukchi-1-048.xml").read_text(encoding="utf-8")
     assert "MainZone-Quote" not in train and "MainZone-Other" in train
     # ...and is a real file, never a link back into the store: writing through one
     # would edit the ground truth, which is the failure this repo already paid for.
-    assert not (tmp_path / zn.WORKDIR / "chukchi-1-048.xml").is_symlink()
+    assert not (tmp_path / zn.DATADIR / "chukchi-1-048.xml").is_symlink()
     # ...while the keyed file still says what the editor was told.
     assert zn.read_zones("1-048", tmp_path)[0]["label"] == "MainZone-Quote"
+
+
+def test_a_declared_fold_no_page_carries_still_links(tmp_path):
+    """The fold is declared corpus-wide; whether it applies is a fact about the
+    page. Keyed on the declaration alone this copied every ALTO in the store to
+    change nothing in any of them — 717 files identical to the ground truth, each
+    one able to fall behind it."""
+    import json
+
+    multi_page(tmp_path, "1-048", zn.ZONEDIR, [("MainZone-P", 600, 900)])
+    (tmp_path / zn.BLOTDIR).mkdir(parents=True, exist_ok=True)
+    (tmp_path / zn.BLOTDIR / "chukchi-1-048.png").write_bytes(b"x")
+    (tmp_path / "data").mkdir(parents=True, exist_ok=True)
+    cfg = json.loads((REPO / "data/zones_config.json").read_text(encoding="utf-8"))
+    (tmp_path / "data/zones_config.json").write_text(json.dumps(cfg), encoding="utf-8")
+
+    rep = zn.assemble(tmp_path)
+    assert rep["merged"] == "MainZone-Quote->MainZone-Other"   # declared...
+    assert rep["merged_pages"] == 0                            # ...and touching nothing
+    assert (tmp_path / zn.DATADIR / "chukchi-1-048.xml").is_symlink()
 
 
 def test_no_merge_declared_keeps_assemble_on_symlinks(tmp_path):
@@ -1119,7 +1139,11 @@ def test_no_merge_declared_keeps_assemble_on_symlinks(tmp_path):
     (tmp_path / "data/zones_config.json").write_text(json.dumps(cfg), encoding="utf-8")
     rep = zn.assemble(tmp_path)
     assert rep["merged"] == "" and rep["merged_pages"] == 0
-    assert (tmp_path / zn.WORKDIR / "chukchi-1-048.xml").is_symlink()
+    assert (tmp_path / zn.DATADIR / "chukchi-1-048.xml").is_symlink()
+    # The layout, asserted rather than described: the training set and the lists in
+    # `data/`, a run's checkpoints in `model/`, nothing loose in the base.
+    assert sorted(p.name for p in (tmp_path / zn.WORKDIR).iterdir()) == [
+        "data", "model"]
 
 
 # --------------------------------------------------------------- the ignores

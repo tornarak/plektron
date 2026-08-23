@@ -1,64 +1,154 @@
 {
   "lines": {
-    "0": {"text": "BOGORAS, THE CHUKCHEE."},
-    "1": {"text": "12", "note": "Running-title folio. Printed digit '1' is a bare serifed stem indistinguishable from roman I in this font, but roman numerals and folio slots are keyed plain ASCII always (keying_spec.md §2.12: \"Every roman numeral in the book is keyed in plain ASCII capitals, whatever the setting\"), and only page 1 itself is named as the genuinely ambiguous case. Keyed as ASCII digits '12'."},
-    "2": {"text": "the year 1879, he says, a new Eskimo colony settled at Cape Olutorsky, and"},
-    "3": {"text": "another one was going to join them the next year.¹ The Cape Olutorsky",
-          "resolved": "¹ = U+00B9 SUPERSCRIPT ONE, footnote reference marker (paired with the opener on line 42)",
-          "note": "Footnote reference keyed as the Unicode superscript digit per keying_spec.md §2.10, not the ASCII digit CATMuS read here as '!'."},
-    "4": {"text": "of Russian and American maps is in reality Cape Anannon, close to which"},
-    "5": {"text": "are situated the first southwestern villages of the Kerek; while the real Cape"},
-    "6": {"text": "Olutorsky lies close to Baron Korff’s Bay (on the Russian maps, Cape Govensky)."},
-    "7": {"text": "In former times the Eskimo of Indian Point and other villages actually"},
-    "8": {"text": "sent trading-expeditions to Capes Barykoff and Navarin, on the shores of which"},
-    "9": {"text": "are situated the first northeastern villages of the Kerek, while Cape Anannon"},
-    "10": {"text": "and Baron Korff’s Bay were not within their reach. Furthermore, no attempts"},
-    "11": {"text": "at colonization were made as recently as the eighties of the last century; nor"},
-    "12": {"text": "could the country around any of the capes mentioned be found uninhabited,"},
-    "13": {"text": "as Mr. Dall was told by the people of Plover Bay."},
-    "14": {"text": "The Russians call several of the divisions of the Reindeer Chukchee —"},
-    "15": {"text": "for instance, those living around Chaun Bay and to the north of the Anadyr"},
-    "16": {"text": "River — “White-Sea Chukchee.” This name is probably connected with the"},
-    "17": {"text": "term êlh-aˊñqa-ñaw-yɪtooˊot (“offspring of the white-sea-woman”), which the",
-           "resolved": "ê = e+U+0302 COMBINING CIRCUMFLEX ACCENT; ñ (x2) = n+U+0303 COMBINING TILDE; ˊ (x2, after the first a and after yɪto) = U+02CA MODIFIER LETTER ACUTE ACCENT (word stress); ɪ = U+026A LATIN SMALL CAPITAL LETTER I",
-           "note": "Both raised marks read as stress U+02CA per keying_spec.md §4/§5.8 default (\"Read every raised mark as stress (U+02CA) by default, full stop\"); neither position licenses spirant or pause (not post-b/p/d/t/g/k, not V_V). The vowel in 'yɪto' is dotless at 4x zoom, contrasted against the dotted i in 'which' on the same line (keying_spec.md §5.2 technique) — read as ɪ, not i."},
-    "18": {"text": "Chukchee apply to themselves in their heroic tales. To the Maritime Chuk-"},
-    "19": {"text": "chee the Russians give the name “Cape Chukchee,” or sometimes “Kavralin,”"},
-    "20": {"text": "from the Chukchee word kavraˊlɪt (“those going around”). The Chukchee",
-           "resolved": "ˊ = U+02CA MODIFIER LETTER ACUTE ACCENT (word stress), after 'kavra'; ɪ = U+026A LATIN SMALL CAPITAL LETTER I in 'lɪt'",
-           "note": "Raised mark keyed stress per §4/§5.8 (post-a, pre-l: not b/p/d/t/g/k, not V_V, so not licensed as apostrophe). Dotless vowel at 4x confirmed ɪ; no plain-i contrast on this line, but consistent with the same word's other occurrence (line 24) and with the corpus-wide ɪ:i skew noted at keying_spec.md §5.2."},
-    "21": {"text": "give this name to a peculiar class of traders, who travel all their lives with"},
-    "22": {"text": "reindeer from East Cape and Indian Point to the fairs held on the shores of",
-           "note": "Line ends without punctuation. The mark CATMuS read as a period after 'of' is, at 4x zoom, an irregular ink speck sitting above the baseline, not a full stop or comma — and the sentence continues unbroken onto line 23 ('...of the Kolyma and the Anadyr, bartering...'), which a full stop here would contradict."},
-    "23": {"text": "the Kolyma and the Anadyr, bartering, as they proceed on their way, among"},
-    "24": {"text": "the camps of the Reindeer people. Almost all the Kavraˊlɪt are of Maritime",
-           "resolved": "ˊ = U+02CA MODIFIER LETTER ACUTE ACCENT (word stress), after 'Kavra'; ɪ = U+026A LATIN SMALL CAPITAL LETTER I in 'lɪt'",
-           "note": "Same term as line 20, word-initial capital K kept as ASCII (word-initial capitals are ordinary per keying_spec.md §5.2, unlike medial ones)."},
-    "25": {"text": "descent. Many of them, in their youth, were poor seal-hunters; then they"},
-    "26": {"text": "turned to reindeer-breeding, and, after obtaining a few score animals, started"},
-    "27": {"text": "to travel for barter."},
-    "28": {"text": "ANCIENT HABITAT. — According to the traditions of the Chukchee, they"},
-    "29": {"text": "were in olden times primarily a coast people, engaged in maritime pursuits"},
-    "30": {"text": "and occupations, but also carried on reindeer-breeding. In the modern life of"},
-    "31": {"text": "the Reindeer Chukchee there are several traces of this former state of affairs."},
-    "32": {"text": "Thus their tales treat chiefly of maritime subjects, and but comparatively few"},
-    "33": {"text": "refer to reindeer-breeding. Their winter habitations are arranged in the same"},
-    "34": {"text": "manner as those of the maritime people. They remain in one place for three"},
-    "35": {"text": "or four months, while the herdsmen move from one pasture to another with"},
-    "36": {"text": "their herds."},
-    "37": {"text": "Moreover, the inner room of the winter house is called “polar-bear skin”"},
-    "38": {"text": "(umkᴀˊ-neˊlhɪn), though at present even the Arctic Maritime Chukchee make",
-           "resolved": "ᴀ = U+1D00 LATIN LETTER SMALL CAPITAL A (medial position); ˊ (x2) = U+02CA MODIFIER LETTER ACUTE ACCENT (word stress); ɪ = U+026A LATIN SMALL CAPITAL LETTER I",
-           "note": "Medial capital-shaped letter after 'umk' read at 4x as small-cap height (shorter than the ascenders of the neighbouring l/h, taller than lowercase u/m/k) — keyed ᴀ per keying_spec.md §5.2's measured claim that a medial ASCII capital is essentially never right (2 occurrences against 509 medial small caps). Both raised marks keyed stress per §4/§5.8 (neither position licenses spirant/pause)."},
-    "39": {"text": "its covering of reindeer-skins. The tool-bag of the Reindeer Chukchee is"},
-    "40": {"text": "called “whalebone receptacle” (ñalaˊwg̣očhɪn), though no whalebone is used at",
-           "resolved": "ñ = n+U+0303 COMBINING TILDE; ˊ = U+02CA MODIFIER LETTER ACUTE ACCENT (word stress); g̣ = g+U+0323 COMBINING DOT BELOW; č = c+U+030C COMBINING CARON; ɪ = U+026A LATIN SMALL CAPITAL LETTER I",
-           "note": "Dot below the g confirmed at 4x zoom (clearly visible under the descender); no plain-g contrast on this line to check against, so this rests on the direct look plus keying_spec.md §5.1's 93.9%-dotted prior. Raised mark after 'ñala' keyed stress per §4/§5.8."},
-    "41": {"text": "present for any kind of implement. The larger bags for storing food and"},
-    "42": {"text": "¹ Geographical Notes (Proceedings of the Royal Geographical Society and Monthly Record of Geography,",
-           "resolved": "¹ = U+00B9 SUPERSCRIPT ONE, footnote opener (paired with the reference on line 3)"},
-    "43": {"text": "New Series, Vol. III, No. 1, p. 49)."}
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "12",
+      "note": "Running-title folio. Printed digit '1' is a bare serifed stem indistinguishable from roman I in this font, but roman numerals and folio slots are keyed plain ASCII always (keying_spec.md §2.12: \"Every roman numeral in the book is keyed in plain ASCII capitals, whatever the setting\"), and only page 1 itself is named as the genuinely ambiguous case. Keyed as ASCII digits '12'."
+    },
+    "2": {
+      "text": "the year 1879, he says, a new Eskimo colony settled at Cape Olutorsky, and"
+    },
+    "3": {
+      "text": "another one was going to join them the next year.¹ The Cape Olutorsky",
+      "resolved": "¹ = U+00B9 SUPERSCRIPT ONE, footnote reference marker (paired with the opener on line 42)",
+      "note": "Footnote reference keyed as the Unicode superscript digit per keying_spec.md §2.10, not the ASCII digit CATMuS read here as '!'."
+    },
+    "4": {
+      "text": "of Russian and American maps is in reality Cape Anannon, close to which"
+    },
+    "5": {
+      "text": "are situated the first southwestern villages of the Kerek; while the real Cape"
+    },
+    "6": {
+      "text": "Olutorsky lies close to Baron Korff’s Bay (on the Russian maps, Cape Govensky)."
+    },
+    "7": {
+      "text": "In former times the Eskimo of Indian Point and other villages actually"
+    },
+    "8": {
+      "text": "sent trading-expeditions to Capes Barykoff and Navarin, on the shores of which"
+    },
+    "9": {
+      "text": "are situated the first northeastern villages of the Kerek, while Cape Anannon"
+    },
+    "10": {
+      "text": "and Baron Korff’s Bay were not within their reach. Furthermore, no attempts"
+    },
+    "11": {
+      "text": "at colonization were made as recently as the eighties of the last century; nor"
+    },
+    "12": {
+      "text": "could the country around any of the capes mentioned be found uninhabited,"
+    },
+    "13": {
+      "text": "as Mr. Dall was told by the people of Plover Bay."
+    },
+    "14": {
+      "text": "The Russians call several of the divisions of the Reindeer Chukchee —"
+    },
+    "15": {
+      "text": "for instance, those living around Chaun Bay and to the north of the Anadyr"
+    },
+    "16": {
+      "text": "River — “White-Sea Chukchee.” This name is probably connected with the"
+    },
+    "17": {
+      "text": "term êlh-aˊñqa-ñaw-yɪtooˊot (“offspring of the white-sea-woman”), which the",
+      "resolved": "ê = e+U+0302 COMBINING CIRCUMFLEX ACCENT; ñ (x2) = n+U+0303 COMBINING TILDE; ˊ (x2, after the first a and after yɪto) = U+02CA MODIFIER LETTER ACUTE ACCENT (word stress); ɪ = U+026A LATIN SMALL CAPITAL LETTER I",
+      "note": "Both raised marks read as stress U+02CA per keying_spec.md §4/§5.8 default (\"Read every raised mark as stress (U+02CA) by default, full stop\"); neither position licenses spirant or pause (not post-b/p/d/t/g/k, not V_V). The vowel in 'yɪto' is dotless at 4x zoom, contrasted against the dotted i in 'which' on the same line (keying_spec.md §5.2 technique) — read as ɪ, not i."
+    },
+    "18": {
+      "text": "Chukchee apply to themselves in their heroic tales. To the Maritime Chuk-"
+    },
+    "19": {
+      "text": "chee the Russians give the name “Cape Chukchee,” or sometimes “Kavralin,”"
+    },
+    "20": {
+      "text": "from the Chukchee word kavraˊlɪt (“those going around”). The Chukchee",
+      "resolved": "ˊ = U+02CA MODIFIER LETTER ACUTE ACCENT (word stress), after 'kavra'; ɪ = U+026A LATIN SMALL CAPITAL LETTER I in 'lɪt'",
+      "note": "Raised mark keyed stress per §4/§5.8 (post-a, pre-l: not b/p/d/t/g/k, not V_V, so not licensed as apostrophe). Dotless vowel at 4x confirmed ɪ; no plain-i contrast on this line, but consistent with the same word's other occurrence (line 24) and with the corpus-wide ɪ:i skew noted at keying_spec.md §5.2."
+    },
+    "21": {
+      "text": "give this name to a peculiar class of traders, who travel all their lives with"
+    },
+    "22": {
+      "text": "reindeer from East Cape and Indian Point to the fairs held on the shores of",
+      "note": "Line ends without punctuation. The mark CATMuS read as a period after 'of' is, at 4x zoom, an irregular ink speck sitting above the baseline, not a full stop or comma — and the sentence continues unbroken onto line 23 ('...of the Kolyma and the Anadyr, bartering...'), which a full stop here would contradict."
+    },
+    "23": {
+      "text": "the Kolyma and the Anadyr, bartering, as they proceed on their way, among"
+    },
+    "24": {
+      "text": "the camps of the Reindeer people. Almost all the Kavraˊlɪt are of Maritime",
+      "resolved": "ˊ = U+02CA MODIFIER LETTER ACUTE ACCENT (word stress), after 'Kavra'; ɪ = U+026A LATIN SMALL CAPITAL LETTER I in 'lɪt'",
+      "note": "Same term as line 20, word-initial capital K kept as ASCII (word-initial capitals are ordinary per keying_spec.md §5.2, unlike medial ones)."
+    },
+    "25": {
+      "text": "descent. Many of them, in their youth, were poor seal-hunters; then they"
+    },
+    "26": {
+      "text": "turned to reindeer-breeding, and, after obtaining a few score animals, started"
+    },
+    "27": {
+      "text": "to travel for barter."
+    },
+    "28": {
+      "text": "ANCIENT HABITAT. — According to the traditions of the Chukchee, they"
+    },
+    "29": {
+      "text": "were in olden times primarily a coast people, engaged in maritime pursuits"
+    },
+    "30": {
+      "text": "and occupations, but also carried on reindeer-breeding. In the modern life of"
+    },
+    "31": {
+      "text": "the Reindeer Chukchee there are several traces of this former state of affairs."
+    },
+    "32": {
+      "text": "Thus their tales treat chiefly of maritime subjects, and but comparatively few"
+    },
+    "33": {
+      "text": "refer to reindeer-breeding. Their winter habitations are arranged in the same"
+    },
+    "34": {
+      "text": "manner as those of the maritime people. They remain in one place for three"
+    },
+    "35": {
+      "text": "or four months, while the herdsmen move from one pasture to another with"
+    },
+    "36": {
+      "text": "their herds."
+    },
+    "37": {
+      "text": "Moreover, the inner room of the winter house is called “polar-bear skin”"
+    },
+    "38": {
+      "text": "(umkᴀˊ-neˊlhɪn), though at present even the Arctic Maritime Chukchee make",
+      "resolved": "ᴀ = U+1D00 LATIN LETTER SMALL CAPITAL A (medial position); ˊ (x2) = U+02CA MODIFIER LETTER ACUTE ACCENT (word stress); ɪ = U+026A LATIN SMALL CAPITAL LETTER I",
+      "note": "Medial capital-shaped letter after 'umk' read at 4x as small-cap height (shorter than the ascenders of the neighbouring l/h, taller than lowercase u/m/k) — keyed ᴀ per keying_spec.md §5.2's measured claim that a medial ASCII capital is essentially never right (2 occurrences against 509 medial small caps). Both raised marks keyed stress per §4/§5.8 (neither position licenses spirant/pause)."
+    },
+    "39": {
+      "text": "its covering of reindeer-skins. The tool-bag of the Reindeer Chukchee is"
+    },
+    "40": {
+      "text": "called “whalebone receptacle” (ñalaˊwg̣očhɪn), though no whalebone is used at",
+      "resolved": "ñ = n+U+0303 COMBINING TILDE; ˊ = U+02CA MODIFIER LETTER ACUTE ACCENT (word stress); g̣ = g+U+0323 COMBINING DOT BELOW; č = c+U+030C COMBINING CARON; ɪ = U+026A LATIN SMALL CAPITAL LETTER I",
+      "note": "Dot below the g confirmed at 4x zoom (clearly visible under the descender); no plain-g contrast on this line to check against, so this rests on the direct look plus keying_spec.md §5.1's 93.9%-dotted prior. Raised mark after 'ñala' keyed stress per §4/§5.8."
+    },
+    "41": {
+      "text": "present for any kind of implement. The larger bags for storing food and"
+    },
+    "42": {
+      "text": "¹ Geographical Notes (Proceedings of the Royal Geographical Society and Monthly Record of Geography,",
+      "resolved": "¹ = U+00B9 SUPERSCRIPT ONE, footnote opener (paired with the reference on line 3)"
+    },
+    "43": {
+      "text": "New Series, Vol. III, No. 1, p. 49)."
+    }
   },
-  "segmenter_missed": {},
-  "contamination": {"blind": true}
+  "contamination": {
+    "blind": true
+  }
 }

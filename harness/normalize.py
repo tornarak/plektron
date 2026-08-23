@@ -71,6 +71,7 @@ import unicodedata
 from pathlib import Path
 
 from .detectors import apostrophe_flags, footnote_report, unlicensed_marks
+from .parallel import ptrack
 from .proposal_check import key_order
 
 # §2.9: sentence-ending double space and thin space before ;/:/,/!/? are typesetting
@@ -319,6 +320,13 @@ LOOKALIKE_CHARS = {
     "ₑ": "U+2091 traps U+1D49",
     "ө": "U+04E9 traps U+0275",
     "‐": "U+2010 traps U+002D",
+    # §2.11 is categorical — "the book sets one dash, U+2014, no en dash" — and the
+    # store agrees: 1041 U+2014 against 0 U+2013 over 476 keyed pages. It traps the
+    # HYPHEN rather than the em dash, because what actually gets typed as U+2013 is a
+    # numeric range (`1820–24`), and a range is a compound joiner, not one of §2.11's
+    # three dash settings. `3-188` keyed one and was first "corrected" to em, which
+    # was the same error one sort over; the corpus sets ranges 38 hyphen to 0 dash.
+    "–": "U+2013 traps U+002D",
     # Not in keying_spec.md §2.3 at all — the only licensed dotless small-cap
     # sort is ɪ (U+026A). Plain Turkish dotless-ı is the ASCII-keyboard-adjacent
     # slip for it: `1-100`'s proposal keyed it ~20 times this way, of which
@@ -639,7 +647,8 @@ def _filter_scoped(universe: list[Path], paths: list[Path]) -> list[Path]:
     return out
 
 
-def scan(root: Path = Path("."), paths: list[Path] | None = None) -> dict:
+def scan(root: Path = Path("."), paths: list[Path] | None = None,
+         tick=None) -> dict:
     """Per-file conformance, without writing anything.
 
     `delta` is the codepoint count NFD would add, which is the honest size of the
@@ -657,7 +666,7 @@ def scan(root: Path = Path("."), paths: list[Path] | None = None) -> dict:
     universe = scoped_files(root, include_path_only=paths is not None)
     if paths is not None:
         universe = _filter_scoped(universe, paths)
-    for p in universe:
+    for p in ptrack(universe, tick):
         rel = str(p.relative_to(root))
         try:
             text = p.read_text(encoding="utf-8")
@@ -690,7 +699,7 @@ def scan(root: Path = Path("."), paths: list[Path] | None = None) -> dict:
 
 
 def convert(root: Path = Path("."), dry_run: bool = False,
-            paths: list[Path] | None = None) -> dict:
+            paths: list[Path] | None = None, tick=None) -> dict:
     """Rewrite non-conformant files to NFD.
 
     `paths` scopes to specific files or directories, same contract as `scan`'s —
@@ -737,7 +746,7 @@ def convert(root: Path = Path("."), dry_run: bool = False,
     universe = scoped_files(root, include_path_only=paths is not None)
     if paths is not None:
         universe = _filter_scoped(universe, paths)
-    for p in universe:
+    for p in ptrack(universe, tick):
         try:
             before = p.read_text(encoding="utf-8")
         except (OSError, UnicodeDecodeError):

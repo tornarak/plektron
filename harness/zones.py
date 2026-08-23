@@ -53,9 +53,11 @@ whatever last ran the check, stamped with the mtimes it was true for.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import time
+from collections.abc import Callable
 from functools import lru_cache
 from itertools import pairwise
 from pathlib import Path
@@ -64,7 +66,7 @@ from typing import TYPE_CHECKING, cast
 from lxml import etree
 
 from . import corrections as _corr
-from . import farms
+from . import farms, provenance, train
 from . import zones_config as zc
 
 if TYPE_CHECKING:
@@ -72,7 +74,7 @@ if TYPE_CHECKING:
 from .atomic import tmp_for, write_atomic
 from .figures import read_blocks, to_rect
 from .ns import ALTO_NS
-from .parallel import pmap
+from .parallel import gpu_workers, pmap, ptrack
 from .paths import scan_for  # re-exported; this module's callers name it here
 from .refs import norm_ref, parse_ref
 
@@ -317,26 +319,65 @@ def read_zones(ref: str, root: Path = Path("."),
 
 
 def has_zones(ref: str, root: Path = Path("."), store: str = ZONEDIR) -> bool:
-    """Whether this page has been keyed at all — file present, zones or not.
+    """Whether this store holds a zone file for this page — zones in it or not.
 
-    The distinction is the point. A plate carries no text column, so its correct
-    segmentation is zero zones; an empty file is that record. A page nobody has
-    opened is also zero zones. Only the file's existence separates "looked at,
-    holds nothing" from "not looked at", which is why navigation never writes one.
+    A file question and nothing more. **It used to be the answer to "has a human
+    been through this page" as well, and it is not any more**: that reading rested
+    on an empty file being the record of a leaf a human had ruled out of the text
+    tracks, which was true before the leaf kinds existed and stopped being true
+    when they arrived. `keyed` is the predicate for that question now, and this one
+    should be asked only where the file itself is the subject — an overwrite guard,
+    a store census, "is there a prediction" against `MZDIR`.
 
-    **Asked of the default store, this answers "has a human been through it".** The
-    editor's resume and its unkeyed counts depend on that reading, so a machine
-    prediction must never satisfy them: `--predict` over an itinerary would
-    otherwise mark the whole list done and leave the next session with nowhere to
-    resume. A caller that means "is there a prediction" passes `store=MZDIR` and is
-    asking a different question.
-
-    That separation lives outside the store, though, which is why an empty file is
-    only allowed to mean the first when the page is marked `exempt` — see
-    `save_zones`. A file is a weak witness: it survives a `cp -r`, and the loss this
-    project has already paid for was exactly a role that lived nowhere but a path.
+    Under the leaf kinds an exempt leaf holds **no zone file at all**: the split
+    mark is the record that somebody looked, and an empty ALTO beside it was one
+    fact stated twice, with the weaker of the two spellings surviving a `cp -r`.
     """
     return alto_for(ref, root, store).exists()
+
+
+def settled_refs(root: Path = Path("."), store: str = ZONEDIR,
+                 splits: dict[str, str] | None = None) -> list[str]:
+    """Every page a human has been through: keyed zones, or a ruled leaf.
+
+    `zone_refs` is the store census and answers a file question. This is the
+    *worklist* question, and the two stopped being the same answer when a ruled
+    leaf stopped holding a file — a sweep or a page list built on `zone_refs`
+    alone drops all 115 ruled leaves, so the editor could no longer navigate back
+    to a plate it had just ruled and `zones check --all` stopped reporting them at
+    all. Both are pages somebody settled, and a census of settled work that omits
+    them is wrong in the direction that looks like less work remaining.
+
+    Only for the human store: a machine store has no leaf rulings in it, so the
+    union degenerates and `zone_refs` is the whole answer.
+    """
+    refs = set(zone_refs(root, store))
+    if store == ZONEDIR:
+        # `splits` for `validate_page`'s reason: seven `.lst` files re-read and
+        # every name re-parsed through `norm_ref`. A caller that already holds the
+        # map hands it down rather than making a second one.
+        splits = load_splits(root) if splits is None else splits
+        refs |= {r for r, v in splits.items() if v in LEAF_KINDS}
+    return sorted(refs, key=parse_ref)
+
+
+def keyed(ref: str, root: Path = Path("."),
+          splits: dict[str, str] | None = None) -> bool:
+    """Has a human been through this page — by keying zones, or by ruling the leaf.
+
+    **The two ways a page gets settled, and they are not interchangeable.** Keying
+    zones says "this is a text page and here is its column"; ruling a leaf kind
+    says "this is not a text page at all". Both are a human's act and both take the
+    page off the worklist, so every caller that means "is there anything left to do
+    here" has to accept either — the editor's `keyed` flag, its progress count, and
+    the itinerary's resume most of all, since a page that reads unsettled forever
+    is one the resume returns to forever.
+
+    **Never satisfied by a machine.** `has_zones(store=MZDIR)` is a different
+    question and answering this one with it would let a `zones predict` sweep mark
+    the whole corpus done and leave the next session with nowhere to resume.
+    """
+    return has_zones(ref, root) or is_exempt(ref, root, splits)
 
 
 # ------------------------------------------------------------ column anchoring
@@ -707,7 +748,8 @@ DEPARTURE_KINDS = (
 
 
 def departures(refs: list[str], root: Path = Path("."),
-               nudge_px: int = NUDGE_PX) -> list[dict]:
+               nudge_px: int = NUDGE_PX,
+               tick: Callable | None = None) -> list[dict]:
     """Per page: how far the human ruling went beyond the prediction it started from.
 
     **The criterion existed and the audit did not.** `_independent` has been the
@@ -733,7 +775,7 @@ def departures(refs: list[str], root: Path = Path("."),
     """
     splits = load_splits(root)
     out = []
-    for ref in refs:
+    for ref in ptrack(refs, tick):
         ref = norm_ref(ref)
         split = splits.get(ref, "")
         kind, shift = ("not a text page", 10**9) if split in LEAF_KINDS \
@@ -823,7 +865,7 @@ def set_splits(mapping: dict[str, str], root: Path = Path(".")) -> dict:
 
 
 def remark_eval(root: Path = Path("."), fraction: float = 0.20,
-                commit: bool = False) -> dict:
+                commit: bool = False, tick: Callable | None = None) -> dict:
     """Move a fraction of `train` into `eval`, per part, independent pages first.
 
     **Additive: nothing already in `eval` or `exempt` is touched.** A page a human
@@ -862,10 +904,15 @@ def remark_eval(root: Path = Path("."), fraction: float = 0.20,
     for p in sorted(exact, key=lambda p: -(exact[p] - quota[p]))[:target - sum(quota.values())]:
         quota[p] += 1
 
+    # `_independent` reads both stores per ref and is the whole cost here, so it
+    # runs once over the train list — under the bar — rather than per part inside
+    # the loop below. Same set, and the only place a count of the work exists.
+    independent = {r for r in ptrack(train, tick) if _independent(r, root)}
+
     picked, rows = [], []
     for part in sorted(by_part):
-        indep = [r for r in by_part[part] if _independent(r, root)]
-        rest = [r for r in by_part[part] if r not in set(indep)]
+        indep = [r for r in by_part[part] if r in independent]
+        rest = [r for r in by_part[part] if r not in independent]
         take = _spread(indep, quota[part])
         fill = _spread(rest, quota[part] - len(take))
         picked += take + fill
@@ -1240,16 +1287,30 @@ def save_zones(ref: str, zones: list[dict], root: Path = Path("."),
     `zones` carry resolved coordinates — the caller has already turned a side and a
     column index into an x-pair. Nothing below knows what a side is.
 
-    **An empty page is refused unless it is marked with a leaf kind**, and this is
-    the same distinction the splits exist to draw. A text page with no zones and a
-    page nobody has reached are byte-identical in this store — `zone_refs` finds
-    both, the sweep counts both as keyed, the list draws both as done — so an empty
-    save does not record a judgement, it erases the difference between having made
-    one and not. A leaf kind is how a human says "I looked at this, and it is a
-    plate"; that is a statement, and it saves. "Nothing here" is not.
+    **An empty text page is refused**, and this is the distinction the splits exist
+    to draw. A text page with no zones and a page nobody has reached would be
+    byte-identical in this store — `zone_refs` finds both, the sweep counts both as
+    keyed, the list draws both as done — so an empty save does not record a
+    judgement, it erases the difference between having made one and not. "Nothing
+    here" is not a statement. Mechanical, like every other refusal here: it needs
+    no reading of the page, and no layout rule can be configured to allow it.
 
-    Mechanical, like every other refusal here: it needs no reading of the page, and
-    no layout rule can be configured to allow it.
+    **A leaf kind is the statement, and it writes no file at all** — it hands off
+    to `clear_leaf`, which removes this page's `gt/zones/` ALTO *and* its
+    `mz/zones/` prediction and leaves the mark as the whole record. `exempt => no
+    zones`: a leaf has no text column, so there is nothing for a zone to be. An
+    empty ALTO beside the mark was the older spelling, from before the kinds
+    existed, and it was one fact stated twice with the weaker half surviving a
+    `cp -r`.
+
+    The machine file was worse than redundant. A segmenter asked about a leaf with
+    no text column does not decline — it finds the column anyway, so the 32
+    predictions that outlived a ruling held 98 zones against 1 in ground truth,
+    several of them paragraphs on blank paper.
+
+    This is therefore also the repair path for a page keyed *before* it was ruled.
+    The editor's slip was that keying zones and then ruling the leaf saved both,
+    and nothing ever swept the prediction; the ruling is what clears them now.
     """
     ref = norm_ref(ref)
     effective = split or load_splits(root).get(ref) or DEFAULT_SPLIT
@@ -1264,6 +1325,8 @@ def save_zones(ref: str, zones: list[dict], root: Path = Path("."),
             "if it should not be in the store at all. That third one is reachable "
             "from here: a page keyed and then emptied has no other way to be "
             "withdrawn.")
+    if effective in LEAF_KINDS:
+        return clear_leaf(ref, root, effective, exempt=exempt, stamp=stamp)
     stamp = stamp or time.strftime("%Y-%m-%dT%H:%M:%S%z")
     size = raster_size(ref, root)
     tree = build_alto(ref, zones, size)
@@ -1296,6 +1359,71 @@ def save_zones(ref: str, zones: list[dict], root: Path = Path("."),
     return {"ref": ref, "path": str(p), "zones": len(zones),
             "split": split or marked or DEFAULT_SPLIT,
             "labels": " ".join(f"{k}:{v}" for k, v in sorted(counts.items()))}
+
+
+def clear_leaf(ref: str, root: Path = Path("."), split: str = "",
+               exempt: list[str] | None = None,
+               stamp: str | None = None) -> dict:
+    """Rule a leaf out of the text tracks: keep the mark, drop both zone files.
+
+    **`exempt => no zones`.** A plate, a blank, a cover, a map, an apparatus leaf
+    has no text column, so there is nothing for a zone to be — and the leaf kind in
+    the split lists is the whole record that a human looked. Most plates *do* carry
+    a running title, and it is deliberately ignored: the folio propagates through
+    the seam ledger (`harness/state.py`), so zoning the head of a plate records
+    nothing the corpus reads and leaves a text-page label on a leaf that is not one.
+
+    Not `delete_zones`, which is the different act: that withdraws the page from the
+    store entirely, mark and all, for a ref keyed in error. This *keeps* the ruling —
+    that is the judgement being recorded — and removes only what the ruling makes
+    false.
+
+    **`mz/zones/` goes too, and this is the half nothing did before.** A segmenter
+    asked about a leaf with no text column does not decline; it finds the column
+    anyway. The 32 predictions that outlived a ruling carried 98 zones —
+    57 `MainZone-P`, 27 `MainZone-Other`, 9 `RunningTitleZone` — against 1 in
+    ground truth, several of them paragraphs on blank paper. Nothing read them,
+    because `gt/` outranks `mz/` in the view; that is a fact about today's
+    consumers rather than a property of the store.
+
+    `.prev` on both, and the journal, for `save_zones`' durability reason: this
+    deletes tracked work, and the window before a commit exists is exactly when
+    this repo lost pages once.
+    """
+    ref = norm_ref(ref)
+    stamp = stamp or time.strftime("%Y-%m-%dT%H:%M:%S%z")
+    split = split or load_splits(root).get(ref) or ""
+    # **`save_zones`' key set, so a caller need not know which of the two ran.**
+    # `zones` is what the page holds *now*, which is zero; `dropped` is what was
+    # taken away. Reporting the removed count as `zones` would put a live-looking
+    # number on a file that no longer exists — the editor writes it straight into
+    # its store selector, so the page would read `gt — 1` with no gt at all.
+    # `cleared` is the flag the client keys its redraw off.
+    out = {"ref": ref, "path": str(alto_for(ref, root)), "zones": 0,
+           "split": split, "labels": "", "dropped": 0, "cleared": ""}
+    gone = []
+    for store in (ZONEDIR, MZDIR):
+        p = alto_for(ref, root, store)
+        if not p.exists():
+            continue
+        if store == ZONEDIR:
+            out["dropped"] = len(read_zones(ref, root, store=store))
+        p.with_suffix(".xml.prev").write_bytes(p.read_bytes())
+        p.unlink()
+        gone.append(store)
+    out["cleared"] = " ".join(gone)
+
+    if exempt is not None:
+        set_exempt(ref, exempt, root)
+    if split:
+        set_split(ref, split, root)
+    with (zone_dir(root) / JOURNAL).open("a", encoding="utf-8") as fh:
+        fh.write(json.dumps({"saved_at": stamp, "ref": ref, "zones": 0,
+                             "labels": {}, "split": split,
+                             "dropped": out["dropped"],
+                             "cleared": out["cleared"]},
+                            ensure_ascii=False) + "\n")
+    return out
 
 
 def delete_zones(ref: str, root: Path = Path("."), commit: bool = False,
@@ -1596,6 +1724,26 @@ def validate_page(ref: str, root: Path = Path("."), cfg: dict | None = None,
             if store == ZONEDIR else
             "the model returned no region for a page still ruled a text page")
 
+    # **`exempt => no zones`, and the file is what is checked.** A ruled leaf has
+    # no text column, so there is nothing for a zone to be and nothing for the
+    # store to hold; the split mark is the whole record. The editor clears both
+    # stores on a ruling now, so this catches the page that predates that — or one
+    # ruled by hand in a `.lst` — and it is an error rather than a warning because
+    # it is mechanical and has one remedy.
+    #
+    # The `mz/` arm is the one with teeth. A segmenter asked about a leaf does not
+    # decline, it finds a column anyway: the 32 predictions that outlived a ruling
+    # carried 98 zones against 1 in ground truth, several of them paragraphs on a
+    # blank leaf. Nothing read them because `gt/` outranks `mz/` in the view, which
+    # is a fact about today's consumers and not a property of the store.
+    if has_zones(ref, root, store) and is_exempt(ref, root, splits):
+        err("exempt-holds-zones",
+            f"ruled {splits.get(ref)} — not a text page — while {store}/ still "
+            f"holds a zone file ({len(zones)} zone(s)). A leaf has no column for a "
+            "zone to sit in, so the ruling is the record and the file is a second, "
+            "weaker spelling of it. Re-save the ruling in the editor, which clears "
+            "both stores, or key it as a text page if the ruling is wrong.")
+
     measure = int(zc.part_spec(cfg, ref)["measure"])
     over = zc.override_windows(cfg, ref)
     # The measured column needs the raster, so it is only consulted when the ink
@@ -1662,7 +1810,11 @@ def validate_page(ref: str, root: Path = Path("."), cfg: dict | None = None,
     # errors above still stand: whatever zones the page does carry must still be
     # the right shape, or the mark is hiding a mistake rather than a plate.
     if split in LEAF_KINDS:
-        return {"ref": ref, "keyed": has_zones(ref, root, store), "zones": len(zones),
+        # **Settled, though it holds no file.** `exempt => no zones`, so the
+        # ruling is the record and the file test would report every plate in
+        # the corpus as unkeyed — on the very row a human reads to decide
+        # whether a page still needs work.
+        return {"ref": ref, "keyed": True, "zones": len(zones),
                 "split": split, "ink_checked": False,
                 "errors": errors, "warnings": [], "uncovered": []}
 
@@ -1777,7 +1929,10 @@ def validate_corpus(root: Path = Path("."), cfg: dict | None = None,
                 read_zones(ref, root, store=store))
 
     verdicts: list[tuple[str, dict]] = []
-    todo = list(refs if refs is not None else zone_refs(root, store))
+    # `settled_refs`, not `zone_refs`: a ruled leaf holds no file and is still a
+    # page somebody has been through, so a sweep built on the store census
+    # alone would drop every plate and report less work as more done.
+    todo = list(refs if refs is not None else settled_refs(root, store))
     for ref, r, zs in pmap(_measure, todo, jobs, tick):
         if ink and store == ZONEDIR:
             verdicts.append((ref, r))
@@ -1913,8 +2068,8 @@ def blot_all(root: Path = Path("."), jobs: int | None = None, tick=None) -> dict
 # Models this project trains live together, tracked, one directory apart from the
 # downloaded weights in `models/` — which are large, third-party and gitignored.
 # A model here is an artifact with a manifest beside it; see `install_model`.
-MODELDIR = "models/bogoras-seg"
-DEFAULT_MODEL = f"{MODELDIR}/zones-seg.safetensors"
+MODELDIR = train.ZONES.modeldir
+DEFAULT_MODEL = train.ZONES.default_model
 
 
 def mz_dir(root: Path = Path(".")) -> Path:
@@ -2174,7 +2329,6 @@ def predict_dp(ref: str, root: Path = Path("."), net=None, sha: str = "",
     provenance and a `dp_` id prefix, so which decode produced a file is readable
     from the file rather than from what was running at the time.
     """
-    from kraken.containers import ProcessingStep
     from PIL import Image
 
     cfg = cfg or zc.load_config(root)
@@ -2211,25 +2365,19 @@ def predict_dp(ref: str, root: Path = Path("."), net=None, sha: str = "",
     zones = split_at_paragraphs(zones, ref, root, cfg, ink)
     split_added = len(zones) - before
 
-    step = ProcessingStep(
-        id="harness-zones-predict",
-        category="processing",
-        description="region segmentation, harness zones predict --decode dp",
-        settings={"model": str(model_path), "sha256": sha, "device": device,
-                  "decoder": "segmental-dp + paragraph-split",
-                  "paragraph_cuts": split_added,
-                  "input": f"{BLOTDIR}/chukchi-{ref}.png"})
+    producer = provenance.Producer(
+        step="harness zones predict --decode dp",
+        label="region segmentation",
+        kind="model", version=provenance.kraken_version(),
+        model=str(model_path), sha256=sha, device=device,
+        inputs={"decoder": "segmental-dp + paragraph-split",
+                "paragraph_cuts": split_added,
+                "raster": f"{BLOTDIR}/chukchi-{ref}.png"})
     tree = build_alto(ref, zones, size, id_prefix=DP_ID_PREFIX)
     # The provenance kraken would have written for us on the blob path; here the
     # writer is ours, so the step is spliced in by hand rather than dropped.
     desc = tree.getroot().find(f"{{{ALTO_NS}}}Description")
-    proc = etree.SubElement(desc, f"{{{ALTO_NS}}}Processing", {"ID": "OCR_0"})
-    etree.SubElement(proc, f"{{{ALTO_NS}}}processingStepDescription").text = \
-        step.description
-    etree.SubElement(proc, f"{{{ALTO_NS}}}processingStepSettings").text = \
-        "; ".join(f"{k}: {v}" for k, v in step.settings.items())
-    soft = etree.SubElement(proc, f"{{{ALTO_NS}}}processingSoftware")
-    etree.SubElement(soft, f"{{{ALTO_NS}}}softwareName").text = "harness zones"
+    desc.append(provenance.alto_processing(producer))
 
     out = mz_dir(root)
     out.mkdir(parents=True, exist_ok=True)
@@ -2281,7 +2429,6 @@ def predict(ref: str, root: Path = Path("."), net=None, sha: str = "",
             "question than the one it was trained on.")
 
     from kraken import blla, serialization
-    from kraken.containers import ProcessingStep
     from PIL import Image
 
     if net is None:
@@ -2307,21 +2454,24 @@ def predict(ref: str, root: Path = Path("."), net=None, sha: str = "",
     # The gt store's own name for the raster (`build_alto`), not the blotted path
     # kraken defaults to: the two stores describe one page and should say so alike.
     seg.imagename = f"chukchi-{ref}.png"
-    step = ProcessingStep(
-        id="harness-zones-predict",
-        category="processing",
-        # **Names its decoder, as the dp path already did.** Only one of the two
-        # said which it was, so a `raw` file was silent and a silent file is
-        # indistinguishable from a dp one to anything that does not already know.
-        # That asymmetry cost a corpus-wide sweep: a re-prediction taken with the
-        # default decoder replaced a dp-decoded store, and the ~20% fall in zone
-        # count that followed was read as a property of the rasters it had just
-        # been run against. Both arms name themselves now.
-        description="region segmentation, harness zones predict --decode raw",
-        settings={"model": str(model_path), "sha256": sha, "device": device,
-                  "input": f"{BLOTDIR}/chukchi-{ref}.png"})
-    xml = serialization.serialize(seg, image_size=size, template="alto",
-                                  processing_steps=[step])
+    # **Names its decoder, as the dp path already did.** Only one of the two said
+    # which it was, so a `raw` file was silent and a silent file is
+    # indistinguishable from a dp one to anything that does not already know.
+    # That asymmetry cost a corpus-wide sweep: a re-prediction taken with the
+    # default decoder replaced a dp-decoded store, and the ~20% fall in zone
+    # count that followed was read as a property of the rasters it had just been
+    # run against. Both arms name themselves now, and `Producer.step` is where
+    # the rule that they must lives.
+    producer = provenance.Producer(
+        step="harness zones predict --decode raw",
+        label="region segmentation",
+        kind="model", version=provenance.kraken_version(),
+        model=str(model_path), sha256=sha, device=device,
+        inputs={"raster": f"{BLOTDIR}/chukchi-{ref}.png"})
+    xml = serialization.serialize(
+        seg, image_size=size, template="alto",
+        processing_steps=[provenance.kraken_step(
+            producer, ident="harness-zones-predict")])
 
     out = mz_dir(root)
     out.mkdir(parents=True, exist_ok=True)
@@ -3244,14 +3394,14 @@ def model_splits(model_path: str | Path,
 
 
 def _frozen_splits(root: Path = Path(".")) -> dict[str, str] | None:
-    """The split the training run actually consumed, from `bogoras-seg/*.lst`.
+    """The split the training run actually consumed, from `bogoras-seg/data/*.lst`.
 
     **Not `load_splits`.** The live lists move — a page keyed after the run defaults
     into `train` — so asking them which pages the model trained on gives an answer
     that is wrong in exactly the direction that flatters the model. Returns None when
     the frozen lists are missing, and the caller refuses rather than substituting.
     """
-    work = root / WORKDIR
+    work = root / DATADIR
     out: dict[str, str] = {}
     for split in ("train", "eval"):
         p = work / f"{split}.lst"
@@ -3269,10 +3419,182 @@ def _y_overlap(a: dict, b: dict) -> int:
     return max(0, min(a["y1"], b["y1"]) - max(a["y0"], b["y0"]))
 
 
+# kraken raises this once per process, and it is a property of the pinned model
+# rather than of any page: `models/blla.mlmodel` predates its new polygon
+# extractor. It lives here, beside `load_segmenter`, because both pooled sweeps
+# filter it in their workers and `recognize` may import from this module while the
+# reverse is not allowed. `recognize` re-exports the name it has always used.
+POLYGON_WARNING = "Enforcing use of the new polygon extractor"
+
+PRED_CACHE = "_pred_cache"
+
+
+def pred_cache_key(model_sha: str, decode: str, cfg: dict | None = None) -> str:
+    """The cache key: the weights, the decoder, and whatever else the decoder reads.
+
+    **`raw` reads nothing but the net**, so the sha and the decoder name it
+    completely. **`dp` reads `cfg`** — `_dp_zones` decodes the page against the
+    zone config's own numbers — so the config is part of the input and has to be
+    part of the key. A key that does not name every input is a stale hit waiting
+    to happen, and this one would have been reachable by an ordinary edit to
+    `data/zones_config.json`.
+    """
+    if decode != "dp":
+        return f"{model_sha[:16]}-{decode}"
+    body = json.dumps(cfg or {}, sort_keys=True, ensure_ascii=False)
+    return (f"{model_sha[:16]}-dp-"
+            f"{hashlib.sha256(body.encode('utf-8')).hexdigest()[:8]}")
+
+
+def pred_cache_dir(key: str, root: Path = Path(".")) -> Path:
+    """Where a checkpoint's in-memory predictions are kept between processes.
+
+    **Under `mz/zones/`, because that is the store for what a model emitted** and
+    this is exactly that — the difference being that these are a *candidate*
+    model's and so must not be mistaken for the installed one's. Hence a
+    subdirectory keyed by the checkpoint's own sha256 rather than loose files:
+    `zone_refs` globs `chukchi-*.xml`, so nothing that reads the store can see it.
+
+    Not `train/bogoras-seg/`, the other obvious home: that track's base holds
+    `data/` and `model/` and nothing else, which two tests assert.
+    """
+    return zone_dir(root, MZDIR) / PRED_CACHE / key
+
+
+def _cached_pred(path: Path, blot: Path) -> list | None:
+    """This page's zones from the cache, or None if nothing usable is there.
+
+    **A stale entry is unknown, never stale-but-usable** — `_ink_cache`'s rule, and
+    for its reason: a verdict about the page as it was two saves ago, presented
+    beside a live one, is the fluent nonsense this project is organised against.
+
+    Stamped with the *blot's* mtime and size, since the blot is what
+    `predicted_zones` actually reads. `corpus_digest` would be the wrong witness:
+    it digests `gt/zones/` geometry and a repainted raster does not move it.
+    """
+    try:
+        rec = json.loads(path.read_text(encoding="utf-8"))
+        st = blot.stat()
+        if rec["mtime_ns"] == st.st_mtime_ns and rec["size"] == st.st_size:
+            return rec["zones"]
+    except (OSError, ValueError, KeyError):
+        pass
+    return None
+
+
+def _segment_page(blot: Path, net, device: str, decode: str, ref: str,
+                  root: Path, cfg: dict) -> list:
+    """One page's zones. The unit both the serial loop and the pool run."""
+    from kraken import blla
+    from PIL import Image
+
+    with Image.open(blot) as s:
+        page = s.convert("RGB")
+    if decode == "dp":
+        return _dp_zones(ref, root, cfg, net, page)
+    seg = blla.segment(page, model=net, device=device)
+    return [
+        {"label": label,
+         "x0": min(p[0] for p in g.boundary), "x1": max(p[0] for p in g.boundary),
+         "y0": min(p[1] for p in g.boundary), "y1": max(p[1] for p in g.boundary)}
+        for label, group in (seg.regions or {}).items() for g in group]
+
+
+_WORKER: dict = {}
+
+
+def _seg_worker_init(root: Path, model_path, device: str, decode: str,
+                     cfg: dict, log_dir=None) -> None:
+    """Load this worker's segmenter once, with its stderr already closed off.
+
+    **The capture comes before the load**, `recognize._worker_init`'s rule and for
+    its reason: kraken and torch both talk while a model comes up, and a warning
+    raised during the load is as much a write to the shared fd as one raised on
+    page 400.
+    """
+    import os
+    import warnings
+
+    from .parallel import capture_stderr
+
+    if log_dir is not None:
+        capture_stderr(log_dir)
+    # By message, never by category: the pinned `blla.mlmodel` predates kraken's
+    # new polygon extractor and says so once per process, which is a property of
+    # the model and not of any page. Filtering it keeps the capture file empty in
+    # the ordinary case, and an empty file is what makes a non-empty one worth
+    # reading.
+    warnings.filterwarnings("ignore", message=POLYGON_WARNING)
+
+    os.chdir(root)
+    net, _ = load_segmenter(model_path, root)
+    _WORKER.update(net=net, device=device, decode=decode, root=root, cfg=cfg)
+
+
+def _seg_worker(item: tuple[str, str]) -> list:
+    ref, blot = item
+    w = _WORKER
+    return _segment_page(Path(blot), w["net"], w["device"], w["decode"],
+                         ref, w["root"], w["cfg"])
+
+
+def _segment_pool(todo, n, root, model_path, device, decode, cfg, tick=None,
+                  done_before=0, total=0, on_done=None):
+    """`todo` across `n` processes, each loading the segmenter once.
+
+    `recognize._predict_pool`'s shape, and the same measurement underneath it:
+    this sweep is a brief forward pass and then single-core Python, so threads
+    return only the GIL-free share. Measured on `train score zones --model --decode raw`
+    with `/usr/bin/time -v`: **123% of one CPU** across a 90 s run on a 16-core
+    machine, with GPU utilization indistinguishable from the desktop's own idle.
+    One core saturated, fifteen idle, the card asleep — which is `ocr predict`'s
+    profile exactly, and why `--jobs` means processes on both.
+
+    **`spawn`, not fork**: a forked child inherits a CUDA context it cannot use.
+
+    Results come back in `todo` order — `as_completed` into a pre-sized list —
+    so the report never reshuffles by which page happened to finish first. The
+    `tick` continues the caller's count rather than restarting it, because the
+    cache hits it already reported are part of the same total.
+
+    **`on_done` fires per completion, not at the end**, and that is not a detail:
+    the serial path caches each page as it finishes, so an interrupted sweep keeps
+    what it did. Returning the whole list and letting the caller store it
+    afterwards quietly took that away — a killed pooled run left nothing behind at
+    all, which is the property the cache exists for on exactly the runs long
+    enough to be killed.
+    """
+    import multiprocessing as mp
+    import tempfile
+    from concurrent.futures import ProcessPoolExecutor, as_completed
+
+    from .parallel import worker_output
+
+    out: list = [None] * len(todo)
+    log_dir = Path(tempfile.mkdtemp(prefix="harness-segment-"))
+    with ProcessPoolExecutor(
+            max_workers=n, mp_context=mp.get_context("spawn"),
+            initializer=_seg_worker_init,
+            initargs=(root, model_path, device, decode, cfg, log_dir)) as ex:
+        futures = {ex.submit(_seg_worker, (r, str(b))): i
+                   for i, (r, b) in enumerate(todo)}
+        for k, fut in enumerate(as_completed(futures), 1):
+            i = futures[fut]
+            out[i] = fut.result()
+            if on_done:
+                on_done(todo[i][0], todo[i][1], out[i])
+            if tick:
+                tick(todo[i][0], done_before + k, total or len(todo))
+    return out, worker_output(log_dir)
+
+
 def predicted_zones(refs: list[str], root: Path = Path("."),
                     cfg: dict | None = None,
                     model_path: str | Path | None = None,
-                    decode: str = "raw", device: str = "auto") -> dict[str, list]:
+                    decode: str = "dp", device: str = "auto",
+                    tick=None, cache: bool = True,
+                    stats: dict | None = None,
+                    jobs: int | None = None) -> dict[str, list]:
     """`{ref: [zone]}` — the predictions to score, from a store or from a model.
 
     One place, because there were three. `score`, `_recall_precision` and
@@ -3285,41 +3607,148 @@ def predicted_zones(refs: list[str], root: Path = Path("."),
     which is the point: a model can be measured before it is trusted, without
     overwriting the store or disturbing an editing session. Without it, the existing
     `mz/zones/` is read, which is what a bare `--score` means.
+
+    **The model branch reports**, because it used to be the quietest expensive
+    thing here: minutes over every keyed page with nothing on the terminal to
+    distinguish it from a hung process. Measured on this machine against the
+    installed model, warm, 717 pages — **0.96 s a page under `raw` (~11 min), 0.58 s
+    under `dp` (~7 min)**. *Not* the ~14 s/page in `.claude/rules/zones.md`: that
+    number is `ocr predict`'s, where `blla.segment` also traces baselines, and this
+    model is region-only — `gt/zones/` carries no `TextLine`, so there is no
+    baseline head and the expensive part never runs. The figure was carried over
+    here once and put "~2.8 h" in this file's own docs for a sweep that takes
+    eleven minutes.
+
+    The store branch does not report — 717 `read_zones` is ~0.1 s, and a bar there
+    is the flash `PROGRESS_AFTER` exists to suppress.
+
+    **And it is cached, keyed on the checkpoint's own sha256.** `install_model`
+    calls `score`, so installing a model *is* this sweep — and the documented
+    workflow runs it twice over one checkpoint (`install` to preview, then `install
+    --commit`), in two separate processes, each re-deriving byte-identical
+    predictions from identical weights over identical rasters. ~11 min becomes ~22,
+    and a repeat run drops to about five seconds. The figure track never had the
+    problem because it predicts to `mz/fig/` and scores the store afterwards; this
+    is the zone track keeping its in-memory scoring — which is what lets a
+    checkpoint be measured without clobbering `mz/zones/` under an editing
+    session — while stopping it from paying for itself a second time.
+
+    `cache=False` is the control arm, and there is deliberately **no flag for it**:
+    the key is content-addressed on the weights, so no sequence anybody can type
+    reaches a stale hit. `stats`, when given, is filled with `{"cached": n}` so the
+    caller can report the reuse rather than leave it invisible.
+
+    **`jobs` runs the misses across processes** — the profile is single-core CPU
+    with the card idle, so this is `ocr predict`'s trade and not a new one.
+    `--jobs 1` keeps the in-process loop below, unchanged, as the control arm: the
+    two must produce identical reports and there is a test that says so.
     """
     if model_path is None:
         return {r: read_zones(r, root, store=MZDIR) for r in refs}
 
-    from kraken import blla
-    from PIL import Image
     cfg = cfg or zc.load_config(root)
-    net, _ = load_segmenter(model_path, root)
+    # **The sha off the file, not out of a loaded model.** `load_segmenter` returns
+    # `_model_sha256(p)` anyway, so hashing 5 MB here buys the cache key without a
+    # CUDA context — and the parent holding one was not free: with `--jobs 4` its
+    # context plus four workers' is five on an 8 GB card, which does not fit, and
+    # the run sat at 3% CPU making no progress at all. The model is loaded below
+    # only on the path that actually segments in this process.
+    src = Path(model_path)
+    if not src.is_absolute():
+        src = root / src
+    if not src.exists():
+        raise FileNotFoundError(f"no segmentation model at {src}")
+    sha = _model_sha256(src)
     if device == "auto":
         import torch
         device = "cuda:0" if torch.cuda.is_available() else "cpu"
 
+    # Both decoders, each under its own key — see `pred_cache_key`. They cannot
+    # share: `train score zones` defaults to `dp` while `install_model` takes `score`'s
+    # own default and gets `raw`, so the two verbs produce genuinely different
+    # zones from the same weights and a shared entry would hand one the other's.
+    cdir = (pred_cache_dir(pred_cache_key(sha, decode, cfg), root)
+            if (cache and sha) else None)
+    hits = 0
+
     out: dict[str, list] = {}
+    todo: list[tuple[str, Path]] = []
+    reported = 0
+
+    def _report(item) -> None:
+        nonlocal reported
+        reported += 1
+        if tick:
+            tick(item, reported, len(refs))
+
+    def _store(ref: str, blot: Path) -> None:
+        if cdir is None:
+            return
+        st = blot.stat()
+        cdir.mkdir(parents=True, exist_ok=True)
+        # Written per page rather than as one file at the end, so an interrupted
+        # sweep keeps the pages it finished — most of the value, on the run that is
+        # actually likely to be killed.
+        (cdir / f"chukchi-{ref}.json").write_text(
+            json.dumps({"mtime_ns": st.st_mtime_ns, "size": st.st_size,
+                        "zones": out[ref]}), encoding="utf-8")
+
+    # **The cache is read and written in the parent, never in a worker.** Both
+    # halves of that are deliberate: a hit costs a stat and a small JSON read, so
+    # shipping one to another process would cost more than it saves; and keeping
+    # every write on this side means the pool's workers stay a pure function from
+    # page to zones, with nothing to say about where the answer is kept.
+    #
+    # A page with no blot still counts. The denominator is the work-list the caller
+    # named — `predict_all`'s rule — and a bar whose total shrinks as it goes is a
+    # bar that cannot be read.
     for ref in refs:
         blot = blot_dir(root) / f"chukchi-{ref}.png"
         if not blot.exists():
             out[ref] = []
+            _report(ref)
             continue
-        with Image.open(blot) as s:
-            page = s.convert("RGB")
-        if decode == "dp":
-            out[ref] = _dp_zones(ref, root, cfg, net, page)
-            continue
-        seg = blla.segment(page, model=net, device=device)
-        out[ref] = [
-            {"label": label,
-             "x0": min(p[0] for p in g.boundary), "x1": max(p[0] for p in g.boundary),
-             "y0": min(p[1] for p in g.boundary), "y1": max(p[1] for p in g.boundary)}
-            for label, group in (seg.regions or {}).items() for g in group]
+        if cdir is not None:
+            got = _cached_pred(cdir / f"chukchi-{ref}.json", blot)
+            if got is not None:
+                out[ref], hits = got, hits + 1
+                _report(ref)
+                continue
+        todo.append((ref, blot))
+
+    n = gpu_workers(jobs, len(todo)) if todo else 1
+    if n > 1:
+        # The workers load their own segmenters and this process loads none, which
+        # is the whole reason the sha is taken off the file above: `n` contexts on
+        # the card, never `n + 1`.
+        def _landed(ref, blot, zones):
+            out[ref] = zones
+            _store(ref, blot)
+
+        _rows, worker = _segment_pool(todo, n, root, model_path, device, decode,
+                                      cfg, tick, reported, len(refs),
+                                      on_done=_landed)
+        reported += len(todo)
+        if stats is not None and worker.get("stderr_lines"):
+            stats.update(worker)
+    elif todo:
+        # Loaded here and nowhere else, so a fully cached run — the ordinary case
+        # once a checkpoint has been scored once — never touches the GPU at all.
+        net, _ = load_segmenter(model_path, root)
+        for ref, blot in todo:
+            out[ref] = _segment_page(blot, net, device, decode, ref, root, cfg)
+            _store(ref, blot)
+            _report(ref)
+
+    if stats is not None:
+        stats["cached"] = hits
+        stats["workers"] = n
     return out
 
 
 def score(root: Path = Path("."), cfg: dict | None = None,
-          model_path: str | Path | None = None, decode: str = "raw",
-          device: str = "auto") -> dict:
+          model_path: str | Path | None = None, decode: str = "dp",
+          device: str = "auto", tick=None, jobs: int | None = None) -> dict:
     """Compare `mz/zones/` against `gt/zones/` on every page that has both.
 
     Zones here are a vertical partition, so a prediction is matched to the ground
@@ -3351,11 +3780,11 @@ def score(root: Path = Path("."), cfg: dict | None = None,
     split_src = "manifest"
     if frozen is None:
         frozen = _frozen_splits(root)
-        split_src = f"{WORKDIR}/*.lst"
+        split_src = f"{DATADIR}/*.lst"
     if frozen is None:
         raise FileNotFoundError(
             f"no split for this model: neither a manifest beside it nor "
-            f"{WORKDIR}/train.lst. One of them has to say what the run trained on, "
+            f"{DATADIR}/train.lst. One of them has to say what the run trained on, "
             "or the score is blended with the training set and reads better than "
             "it is.")
 
@@ -3384,7 +3813,9 @@ def score(root: Path = Path("."), cfg: dict | None = None,
     both = sorted(candidates - set(skipped_exempt), key=parse_ref)
 
     cfg = cfg or zc.load_config(root)
-    preds = predicted_zones(both, root, cfg, model_path, decode, device)
+    pred_stats: dict = {}
+    preds = predicted_zones(both, root, cfg, model_path, decode, device, tick,
+                            stats=pred_stats, jobs=jobs)
 
     buckets = {"trained-on": [], "eval": [], "unseen": []}
     confusion: dict[tuple[str, str], int] = {}
@@ -3423,6 +3854,12 @@ def score(root: Path = Path("."), cfg: dict | None = None,
     conf = [{"truth": t, "predicted": p or "(unmatched)", "n": n}
             for (t, p), n in sorted(confusion.items(), key=lambda kv: -kv[1])]
     return {"pages_compared": len(both),
+            # How many of those pages came out of the checkpoint's prediction cache
+            # instead of the segmenter. Reported because a cache nobody can see is a
+            # cache nobody can trust — and because it is the difference between an
+            # eleven-minute run and a five-second one, which the reader should be
+            # told before they wonder which of the two just happened.
+            "predictions_cached": pred_stats.get("cached", 0),
             # The exact set scored, so the independence report beside it is over
             # those pages and not over a re-derived list that could differ. Popped
             # by the CLI before the report is printed — a 700-ref string is not a
@@ -3574,7 +4011,8 @@ def _permutation_test(refs: list[str], frozen: dict[str, str],
 
 def install_model(checkpoint: str | Path, root: Path = Path("."),
                   name: str = "zones-seg", cfg: dict | None = None,
-                  commit: bool = False, device: str = "auto") -> dict:
+                  commit: bool = False, device: str = "auto", tick=None,
+                  jobs: int | None = None, decode: str = "dp") -> dict:
     """Score a checkpoint, refuse it if its class map is permuted, and install it.
 
     Installing is a verb rather than a `cp` because everything that makes a
@@ -3601,7 +4039,19 @@ def install_model(checkpoint: str | Path, root: Path = Path("."),
     if not src.exists():
         raise FileNotFoundError(f"no checkpoint at {checkpoint}")
 
-    rep = score(root, cfg, model_path=checkpoint, device=device)
+    # The score is a precondition of installing, not a cheaper preview: the
+    # permutation refusal below is derived from it and the manifest embeds it. So a
+    # preview run pays the full sweep too, and `tick` is what says so on screen.
+    #
+    # **`dp`, and named here rather than left to a default.** It scored `raw` for
+    # as long as `score`'s *function* default was `raw` while the CLI's was `dp` —
+    # so the numbers this verb printed, and wrote into the manifest, were the
+    # model's undecoded ones (61.3% precision against 90.8% on identical weights)
+    # and did not match what `harness train score zones` showed for the same checkpoint.
+    # Nothing was wrong about the model; the manifest simply answered a different
+    # question from the one anybody was asking, and said nothing about which.
+    rep = score(root, cfg, model_path=checkpoint, device=device, tick=tick,
+                jobs=jobs, decode=decode)
     perm = rep["permutation"]
     if perm["bijective"] and not perm["is_identity"] and perm["holds_out"] >= 90:
         raise ValueError(
@@ -3621,11 +4071,11 @@ def install_model(checkpoint: str | Path, root: Path = Path("."),
             for r in rep["splits"] if r["pages"]}
 
     # The split is copied, not re-encoded — see `model_splits`.
-    lists = {s: root / WORKDIR / f"{s}.lst" for s in ("train", "eval")}
+    lists = {s: root / DATADIR / f"{s}.lst" for s in ("train", "eval")}
     missing = [s for s, p in lists.items() if not p.exists()]
     if missing:
         raise FileNotFoundError(
-            f"no {', '.join(missing)}.lst in {WORKDIR} — the split this checkpoint "
+            f"no {', '.join(missing)}.lst in {DATADIR} — the split this checkpoint "
             "trained on has to be copied beside it, or nothing can tell later which "
             "pages it saw. Run `--assemble` before training, and install before "
             "assembling again.")
@@ -3638,6 +4088,12 @@ def install_model(checkpoint: str | Path, root: Path = Path("."),
         "train_merges": zc.train_merges(cfg),
         "corpus_digest": corpus_digest(root),
         "kraken": _kraken_version(),
+        # **Which decoder the score below was taken with**, because the two differ
+        # by ~30 points of precision and a figure that does not say which it is
+        # cannot be compared with anything. The manifest is the model's own record;
+        # a number in it whose method is unstated is the fluent nonsense this
+        # project is organised against.
+        "decode": decode,
         "score": kept,
     }
     counts = {s: len(_read_lst(p)) for s, p in lists.items()}
@@ -3810,11 +4266,23 @@ def link_view(root: Path = Path(".")) -> dict:
 # to remember. It used to be both the training input *and* the only record of what a
 # past run consumed, which meant preparing a new run destroyed the ability to
 # interpret the model you already had.
-WORKDIR = farms.TRAIN_WORK
+#
+# The three paths come from `train.ZONES`, which is where the track record lives.
+# The track's two halves, and the base holds neither: `data/` is what `assemble`
+# lays out and what `ketos` reads — a raster link and an ALTO per page, plus the two
+# `.lst` files naming them; `model/` is where the run writes its per-epoch
+# checkpoints. They were one directory, and a thousand page links sat beside the
+# lists and the run outputs with nothing but a suffix to tell them apart. Separated
+# so a glob over the training set cannot pick up a checkpoint and clearing one half
+# does not touch the other.
+WORKDIR = train.ZONES.workdir
+DATADIR = train.ZONES.datadir
+RUNDIR = train.ZONES.rundir
 
 
 def _write_merged(src: Path, dest: Path, merges: dict[str, str]) -> bool:
-    """Copy a zone ALTO into the training set with `train_merges` applied.
+    """Copy a zone ALTO into the training set with `train_merges` applied — **if the
+    fold touches this page at all.**
 
     Rewrites `OtherTag/@LABEL` only — the geometry, the ids and the `TAGREFS` are
     untouched, so what the segmenter sees is this page exactly as keyed but with two
@@ -3822,8 +4290,14 @@ def _write_merged(src: Path, dest: Path, merges: dict[str, str]) -> bool:
     two tags carrying the same label, which is what kraken's own merged-class support
     expects (`BaselineSet.merged_classes`: several strings, one index).
 
-    Returns whether anything was folded, so `assemble` can report the count rather
-    than leave the training set quietly different from the store.
+    Returns whether anything was folded — which is also **whether anything was
+    written**, and the caller links the page instead when nothing was. A declared
+    fold is a statement about the corpus, not about any given page: with
+    `MainZone-Quote->MainZone-Other` declared and no page in the store carrying a
+    `MainZone-Quote`, this wrote 717 copies to change nothing. A copy that is
+    byte-identical to the store is not a safer copy — it is a second file that can
+    silently fall behind the first, which is the thing the whole work dir is
+    arranged to avoid.
     """
     tree = etree.parse(str(src))
     hit = False
@@ -3832,17 +4306,20 @@ def _write_merged(src: Path, dest: Path, merges: dict[str, str]) -> bool:
         if label in merges:
             tag.set("LABEL", merges[label])
             hit = True
-    tree.write(str(dest), xml_declaration=True, encoding="UTF-8")
+    if hit:
+        tree.write(str(dest), xml_declaration=True, encoding="UTF-8")
     return hit
 
 
-def assemble(root: Path = Path("."), scratch: bool = False) -> dict:
+def assemble(root: Path = Path("."), scratch: bool = False,
+             tick: Callable | None = None) -> dict:
     """Lay out `bogoras-seg/` for `ketos segtrain`, and report the invocation.
 
     ketos resolves a page's image through the ALTO's own
     `sourceImageInformation/fileName`, relative to the XML — so the zone file and
     its **blotted** raster have to sit in one directory under the name the ALTO
-    already carries. Both are symlinked; nothing is copied.
+    already carries. Both are symlinked — except the ALTO of a page `train_merges`
+    actually folds, which is a copy because it has to differ from the store.
 
     **Refuses a page whose blot is missing** rather than falling back to the plain
     scan. Silently training half the set on unblotted pages would teach exactly the
@@ -3882,8 +4359,10 @@ def assemble(root: Path = Path("."), scratch: bool = False) -> dict:
       is the concrete case for the rule above the whole file: verify against the
       source, not the help, and never against a tutorial.
 
-    Output goes to `bogoras-seg/`, not `models/`: segtrain writes a checkpoint per
-    epoch, and this repo keeps only the trained model, in `models/`, by hand.
+    Output goes to `bogoras-seg/model/`, not `models/`: segtrain writes a checkpoint
+    per epoch, and this repo keeps only the trained model, in `models/`, by hand. The
+    training set it reads is `bogoras-seg/data/`, and the two never share a
+    directory — a run's checkpoints and its input are cleared on different occasions.
     """
     import os
     splits = load_splits(root)
@@ -3895,21 +4374,30 @@ def assemble(root: Path = Path("."), scratch: bool = False) -> dict:
         merges = zc.train_merges(zc.load_config(root))
     except (FileNotFoundError, ValueError):
         merges = {}
-    work = root / WORKDIR
+    work = root / DATADIR
     work.mkdir(parents=True, exist_ok=True)
+    # The run directory, made here rather than left to `ketos -o`: kraken creates the
+    # output directory it is given but not its parents, and the reported command is
+    # meant to run as printed.
+    (root / RUNDIR).mkdir(parents=True, exist_ok=True)
     counts = {"train": 0, "eval": 0}
     missing: list[str] = []
     listed: dict[str, list[str]] = {"train": [], "eval": []}
     merged_pages = 0
 
-    exempted = 0
-    for ref in zone_refs(root):
+    # **Counted from the marks, not from the store.** A plate is neither an example
+    # of the layout nor a fair test of it, so it goes into neither list — and the
+    # count has to survive, because "a set that shrank without saying so would look
+    # like pages that were never keyed" is the whole reason it is reported. Under
+    # `exempt => no zones` a ruled leaf holds no file at all, so counting the
+    # skips inside the loop below silently reported nought held out where 115 were.
+    exempted = sum(1 for v in splits.values() if v in LEAF_KINDS)
+    for ref in ptrack(zone_refs(root), tick):
         split = splits.get(ref, DEFAULT_SPLIT)
-        # A plate is neither an example of the layout nor a fair test of it, so it
-        # goes into neither list. Counted, not silently dropped — a set that
-        # shrank without saying so would look like pages that were never keyed.
+        # Still guarded, for the page that drifted into holding both a ruling and a
+        # file — `zones check` errors on it as `exempt-holds-zones`, and until it is
+        # repaired it must not reach a training list.
         if split in LEAF_KINDS:
-            exempted += 1
             continue
         alto = alto_for(ref, root)
         blot = blot_dir(root) / f"chukchi-{ref}.png"
@@ -3917,18 +4405,20 @@ def assemble(root: Path = Path("."), scratch: bool = False) -> dict:
             missing.append(ref)
             continue
         # The raster is always a link — it is identical to what is in the store.
-        # The ALTO is a link only when nothing is folded: with `train_merges`
-        # declared it has to be a **copy**, since the training set must differ from
-        # `gt/zones/` in exactly one respect and the store must not learn of it.
-        # Writing through a symlink here would edit the ground truth, which is the
-        # failure this repo has already paid for once.
+        # The ALTO is a copy **only on a page the fold actually changes**, since
+        # that page has to differ from `gt/zones/` in exactly one respect and the
+        # store must not learn of it; writing through a symlink there would edit the
+        # ground truth, which is the failure this repo has already paid for once.
+        # Every other page is a link, whether or not a fold is declared: a declared
+        # fold that no page carries produced 717 copies of files identical to the
+        # store, and an identical copy is not a safer one.
         for target, name in ((alto, f"chukchi-{ref}.xml"),
                              (blot, f"chukchi-{ref}.png")):
             link = work / name
             if link.is_symlink() or link.exists():
                 link.unlink()
-            if merges and target is alto:
-                merged_pages += _write_merged(target, link, merges)
+            if merges and target is alto and _write_merged(target, link, merges):
+                merged_pages += 1
             else:
                 link.symlink_to(os.path.relpath(target.resolve(), work.resolve()))
         # The work-dir path, **unresolved and relative to the root** — and both
@@ -3946,7 +4436,7 @@ def assemble(root: Path = Path("."), scratch: bool = False) -> dict:
         # already assumes the repo root as cwd, and a path that only works on one
         # filesystem is not something to leave lying around on the strength of a
         # `.gitignore` line.
-        listed[split].append(f"{WORKDIR}/chukchi-{ref}.xml")
+        listed[split].append(f"{DATADIR}/chukchi-{ref}.xml")
         counts[split] += 1
 
     for split in ("train", "eval"):
@@ -3991,7 +4481,7 @@ def assemble(root: Path = Path("."), scratch: bool = False) -> dict:
                      "once did not, and trained on one worker. Re-verify after any "
                      "kraken upgrade."),
             "command": SEGTRAIN_CMD.format(
-                work=WORKDIR, out=f"{WORKDIR}/{_next_run(root)}",
+                work=DATADIR, out=f"{RUNDIR}/{train.next_run(train.ZONES, root)}",
                 device=_dev, workers=_wrk,
                 load=("" if not base else
                       f" -i {base}" + (f" --resize {resize}" if resize else "")))}
@@ -4036,15 +4526,6 @@ def _base_and_resize(root: Path, classes: list[str]) -> tuple[str, str, str]:
             "no installed model yet; blla is the stock layout net and its single "
             "`text` region class is replaced by these")
 
-
-def _next_run(root: Path) -> str:
-    """A fresh output directory per run. Three runs writing `best_*.safetensors`
-    into one directory left them distinguishable only by an accuracy in the
-    filename, which is not an identity."""
-    n = 1
-    while (root / WORKDIR / f"run-{n}").exists():
-        n += 1
-    return f"run-{n}"
 
 
 # The invocation `--assemble` reports. A template rather than a string built at the

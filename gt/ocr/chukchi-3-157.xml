@@ -1,0 +1,436 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-3-157.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-3-157.png; regions_from: zones/chukchi-3-157.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Other"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+                <TextBlock ID="mz_3-157_r1" HPOS="376" VPOS="453" WIDTH="1782" HEIGHT="86" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="376 453 2158 453 2158 539 376 539"/>
+                    </Shape>
+                    <TextLine ID="mz_3-157_l1" HPOS="954" VPOS="463" WIDTH="616" HEIGHT="50" BASELINE="954 496 1570 496" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1559 463 970 463 954 470 954 496 954 513 1570 513 1570 496 1570 474 1559 463"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l2" HPOS="2044" VPOS="468" WIDTH="95" HEIGHT="55" BASELINE="2044 496 2139 496" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2122 472 2102 468 2044 468 2044 496 2044 507 2079 523 2081 523 2083 523 2085 523 2139 507 2139 496 2139 474 2122 472"/>
+                        </Shape>
+                        <String CONTENT="691"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-157_r2" HPOS="376" VPOS="562" WIDTH="1782" HEIGHT="2389" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="376 562 2158 562 2158 2951 376 2951"/>
+                    </Shape>
+                    <TextLine ID="mz_3-157_l3" HPOS="473" VPOS="562" WIDTH="1672" HEIGHT="47" BASELINE="475 589 2145 593" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="475 589 473 605 2141 609 2145 593 2143 566 475 562 475 589"/>
+                        </Shape>
+                        <String CONTENT="“It was in the Chukochya (adjective from Chukchee) hamlet. This hamlet lies forty miles to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l4" HPOS="374" VPOS="611" WIDTH="1769" HEIGHT="45" BASELINE="376 638 2143 642" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="376 613 376 638 374 652 2139 656 2143 642 2141 615 378 611 376 613"/>
+                        </Shape>
+                        <String CONTENT="the west of Pokhotsk. It is now uninhabited, save that some fishing is done there early in the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l5" HPOS="374" VPOS="654" WIDTH="1769" HEIGHT="50" BASELINE="376 689 2143 685" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="376 689 376 702 2139 704 2143 685 2137 654 374 661 376 689"/>
+                        </Shape>
+                        <String CONTENT="fall. There was a watch-tower there. Now it has fallen down, and lies on its side. It happened"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l6" HPOS="374" VPOS="704" WIDTH="1767" HEIGHT="47" BASELINE="376 735 2141 730" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="376 735 376 751 2139 749 2141 730 2135 704 374 704 376 735"/>
+                        </Shape>
+                        <String CONTENT="long ago. The tower was built to watch from there for the Chukchee. It was quite large. Every"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l7" HPOS="376" VPOS="749" WIDTH="1767" HEIGHT="45" BASELINE="378 776 2143 780" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="378 776 376 790 2139 794 2143 780 2141 753 378 749 378 776"/>
+                        </Shape>
+                        <String CONTENT="wall was four sashen (twenty-eight feet) high. Its top was on exactly the same level as the church"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l8" HPOS="376" VPOS="792" WIDTH="1767" HEIGHT="51" BASELINE="376 827 2143 827" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="376 827 376 843 2143 843 2143 827 2143 802 376 792 376 827"/>
+                        </Shape>
+                        <String CONTENT="in the town (of Nishne-Kolymsk). It had two floors, one below and another above. One time an"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l9" HPOS="374" VPOS="845" WIDTH="1771" HEIGHT="44" BASELINE="376 874 2145 870" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="376 874 376 889 2143 886 2145 870 2139 845 374 847 376 874"/>
+                        </Shape>
+                        <String CONTENT="old man stood on the top of the tower watching. The morning was dawning. He looked over"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l10" HPOS="374" VPOS="889" WIDTH="1769" HEIGHT="45" BASELINE="376 917 2143 921" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="376 917 374 930 2139 934 2143 921 2141 893 376 889 376 917"/>
+                        </Shape>
+                        <String CONTENT="the river (a tributary of the Kolyma, the so-called ‘Chukchee Channel,’ quite narrow and quiet)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l11" HPOS="378" VPOS="938" WIDTH="1765" HEIGHT="45" BASELINE="378 967 2143 967" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="378 967 378 981 2139 983 2143 967 2141 940 378 938 378 967"/>
+                        </Shape>
+                        <String CONTENT="The trunk of a tree, lying on its side, was visible, and all at once it appeared to him as if a man"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l12" HPOS="374" VPOS="985" WIDTH="1765" HEIGHT="45" BASELINE="376 1014 2139 1010" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="376 1014 376 1030 2137 1026 2139 1010 2134 985 374 987 376 1014"/>
+                        </Shape>
+                        <String CONTENT="clad in a Chukchee overcoat, — an overcoat made of seal-intestines, similar to our window-covering, —"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l13" HPOS="376" VPOS="1032" WIDTH="1771" HEIGHT="43" BASELINE="378 1061 2147 1057" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="378 1061 378 1075 2145 1073 2147 1057 2141 1032 376 1034 378 1061"/>
+                        </Shape>
+                        <String CONTENT="were stepping over that trunk. The old man said to the younger people, ‘Look here, boys! It"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l14" HPOS="374" VPOS="1078" WIDTH="1771" HEIGHT="43" BASELINE="376 1108 2145 1104" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="376 1108 376 1121 2143 1119 2145 1104 2139 1078 374 1080 376 1108"/>
+                        </Shape>
+                        <String CONTENT="seems as if the Chukchee were stealing about and wanted to attack our village.’ The younger"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l15" HPOS="376" VPOS="1117" WIDTH="1771" HEIGHT="57" BASELINE="378 1154 2147 1151" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="378 1154 378 1174 2145 1168 2147 1151 2143 1121 463 1117 461 1117 376 1127 378 1154"/>
+                        </Shape>
+                        <String CONTENT="people did not believe him. He took a bag on his back, a walking-staff in his hand, and walked"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l16" HPOS="376" VPOS="1174" WIDTH="1771" HEIGHT="41" BASELINE="376 1199 2147 1199" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="376 1199 376 1215 2147 1215 2147 1199 2147 1174 376 1174 376 1199"/>
+                        </Shape>
+                        <String CONTENT="away to Pokhotsk. They staid there for the summer, then for the fall also. When the nights"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l17" HPOS="376" VPOS="1221" WIDTH="1769" HEIGHT="45" BASELINE="376 1248 2145 1248" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="376 1248 376 1266 2143 1262 2145 1248 2143 1221 376 1221 376 1248"/>
+                        </Shape>
+                        <String CONTENT="grew longer, the Chukchee came, surprised them in their sleep, and killed all of them. As soon"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l18" HPOS="376" VPOS="1266" WIDTH="1771" HEIGHT="46" BASELINE="378 1295 2147 1291" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="378 1295 378 1308 2143 1312 2147 1291 2141 1266 376 1267 378 1295"/>
+                        </Shape>
+                        <String CONTENT="as any one ran out of the house, they would kill him then and there. Two brothers, however,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l19" HPOS="378" VPOS="1312" WIDTH="1767" HEIGHT="43" BASELINE="378 1340 2145 1340" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="378 1340 378 1353 2143 1355 2145 1340 2145 1312 378 1312 378 1340"/>
+                        </Shape>
+                        <String CONTENT="were so nimble that the Chuckchee could not, in spite of all their efforts, either stab them with"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l20" HPOS="378" VPOS="1353" WIDTH="1767" HEIGHT="49" BASELINE="378 1386 2145 1386" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="378 1386 378 1400 2143 1402 2145 1386 2143 1353 378 1357 378 1386"/>
+                        </Shape>
+                        <String CONTENT="spears, or hit them with arrows. So they ran about. At last the older brother passed by an old"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l21" HPOS="376" VPOS="1404" WIDTH="1769" HEIGHT="45" BASELINE="378 1433 2145 1429" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="378 1433 378 1449 2143 1447 2145 1429 2139 1404 376 1406 378 1433"/>
+                        </Shape>
+                        <String CONTENT="Chukchee woman sitting on a reindeer-sledge, — so old she could hardly walk. She threw a bone"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l22" HPOS="378" VPOS="1447" WIDTH="1767" HEIGHT="49" BASELINE="379 1480 2145 1474" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="379 1480 379 1496 2143 1494 2145 1474 2139 1447 378 1453 379 1480"/>
+                        </Shape>
+                        <String CONTENT="arrow at him and hit him under the knee. He fell down, and exclaimed, ‘Oh, you, my brother!"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l23" HPOS="379" VPOS="1496" WIDTH="1766" HEIGHT="44" BASELINE="379 1525 2145 1525" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="379 1525 379 1538 2141 1540 2145 1525 2143 1499 379 1496 379 1525"/>
+                        </Shape>
+                        <String CONTENT="Do you want to live in the world all alone by yourself? How could you live like that?’ The"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l24" HPOS="379" VPOS="1546" WIDTH="1766" HEIGHT="47" BASELINE="379 1573 2145 1573" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="379 1573 379 1587 2141 1593 2145 1573 2143 1546 379 1546 379 1573"/>
+                        </Shape>
+                        <String CONTENT="other immediately surrendered, and both were killed. Still another young man fell down among"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l25" HPOS="378" VPOS="1585" WIDTH="1767" HEIGHT="53" BASELINE="379 1620 2145 1614" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="379 1620 379 1638 2143 1638 2145 1614 2139 1585 378 1593 379 1620"/>
+                        </Shape>
+                        <String CONTENT="the dead with face upwards, simulating death. He lay there thus, and looked on. They dressed"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l26" HPOS="379" VPOS="1630" WIDTH="1768" HEIGHT="53" BASELINE="381 1667 2147 1663" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="381 1667 381 1683 2145 1681 2147 1663 2141 1630 379 1640 381 1667"/>
+                        </Shape>
+                        <String CONTENT="one brother in an overcoat of white reindeer-skins, and on the other one they put an overcoat of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l27" HPOS="379" VPOS="1675" WIDTH="1766" HEIGHT="56" BASELINE="381 1716 2145 1710" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="381 1716 381 1729 2141 1731 2145 1710 2141 1683 970 1675 968 1675 865 1685 452 1677 450 1677 379 1686 381 1716"/>
+                        </Shape>
+                        <String CONTENT="spotted reindeer-skins. They laid the first one on bedding of white skin, and the other on bedding"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l28" HPOS="381" VPOS="1725" WIDTH="1764" HEIGHT="51" BASELINE="381 1759 2145 1759" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="381 1759 381 1772 2143 1776 2145 1759 2143 1725 381 1731 381 1759"/>
+                        </Shape>
+                        <String CONTENT="of spotted skin. The old woman, unable to walk, crept along from corpse to corpse, and looked"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l29" HPOS="379" VPOS="1776" WIDTH="1766" HEIGHT="45" BASELINE="381 1805 2145 1801" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="381 1805 381 1821 2143 1821 2145 1801 2141 1776 379 1776 381 1805"/>
+                        </Shape>
+                        <String CONTENT="into each face. When she reached the one feigning death, she took her tailoring-knife. It was"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l30" HPOS="379" VPOS="1821" WIDTH="1764" HEIGHT="49" BASELINE="381 1850 2143 1846" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="381 1850 381 1870 2141 1870 2143 1846 2137 1821 379 1823 381 1850"/>
+                        </Shape>
+                        <String CONTENT="of iron and very old, with no edge, because the Chukchee in that time had hardly any iron. With"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l31" HPOS="381" VPOS="1866" WIDTH="1764" HEIGHT="49" BASELINE="381 1899 2145 1899" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="381 1899 381 1915 2145 1915 2145 1899 2143 1866 381 1870 381 1899"/>
+                        </Shape>
+                        <String CONTENT="that blunt-edged knife she began to chop him quite slowly across the forehead. Tap, tap! tap, tap!"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l32" HPOS="379" VPOS="1915" WIDTH="1766" HEIGHT="46" BASELINE="381 1946 2145 1940" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="381 1946 381 1961 2143 1959 2145 1940 2139 1915 379 1918 381 1946"/>
+                        </Shape>
+                        <String CONTENT="She broke all the middle portion of his forehead; but he uttered not a sound, God granted him"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l33" HPOS="379" VPOS="1961" WIDTH="1764" HEIGHT="45" BASELINE="381 1992 2143 1987" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="381 1992 381 2006 2141 2004 2143 1987 2137 1961 379 1965 381 1992"/>
+                        </Shape>
+                        <String CONTENT="such patience. When they had gone, he arose and went to Pokhotsk with the news. The"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l34" HPOS="379" VPOS="2008" WIDTH="1770" HEIGHT="47" BASELINE="381 2041 2149 2035" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="381 2041 381 2055 2147 2051 2149 2035 2143 2008 379 2012 381 2041"/>
+                        </Shape>
+                        <String CONTENT="report was sent to the fortress of Nishne-Kolymsk. At that time the Cossacks in the fortress were"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l35" HPOS="379" VPOS="2057" WIDTH="1770" HEIGHT="45" BASELINE="381 2086 2149 2082" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="381 2086 381 2102 2147 2098 2149 2082 2143 2057 379 2059 381 2086"/>
+                        </Shape>
+                        <String CONTENT="as numerous as mosquitoes. The magazines, at present empty, were filled with flour up to the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l36" HPOS="379" VPOS="2104" WIDTH="1770" HEIGHT="42" BASELINE="381 2131 2149 2127" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="381 2131 381 2146 2147 2144 2149 2127 2143 2104 379 2106 381 2131"/>
+                        </Shape>
+                        <String CONTENT="ceiling. So a party was sent, properly armed, to overtake the Chukchee. They came to the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l37" HPOS="381" VPOS="2150" WIDTH="1768" HEIGHT="43" BASELINE="381 2176 2149 2176" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="381 2176 381 2193 2149 2193 2149 2176 2149 2150 381 2150 381 2176"/>
+                        </Shape>
+                        <String CONTENT="Chukochya hamlet, and saw smoke off the ridge of hills, — the so-called ‘Chukchee Ridge,’ to the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l38" HPOS="381" VPOS="2187" WIDTH="1770" HEIGHT="51" BASELINE="383 2222 2151 2219" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="383 2222 383 2238 2149 2236 2151 2219 2145 2187 381 2197 383 2222"/>
+                        </Shape>
+                        <String CONTENT="west of the Kolyma. Still they did not want to have a fight. In those days they were afraid of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l39" HPOS="381" VPOS="2244" WIDTH="1766" HEIGHT="43" BASELINE="381 2269 2147 2269" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="381 2269 381 2285 2143 2287 2147 2269 2145 2244 381 2244 381 2269"/>
+                        </Shape>
+                        <String CONTENT="the very name of the Chukchee. So they played false, and said nothing about the smoke. They"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l40" HPOS="379" VPOS="2283" WIDTH="825" HEIGHT="49" BASELINE="381 2312 1204 2318" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="381 2312 379 2326 1200 2332 1204 2318 1200 2283 381 2283 381 2312"/>
+                        </Shape>
+                        <String CONTENT="came back and said, ‘We have seen nothing.’"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l41" HPOS="487" VPOS="2337" WIDTH="1664" HEIGHT="41" BASELINE="487 2363 2151 2363" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="487 2363 487 2378 2151 2378 2151 2363 2151 2337 487 2337 487 2363"/>
+                        </Shape>
+                        <String CONTENT="“In after times the Chukchee related the following: ‘We came from over the river upon the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l42" HPOS="378" VPOS="2378" WIDTH="1773" HEIGHT="51" BASELINE="379 2411 2151 2406" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="379 2411 379 2427 2147 2429 2151 2406 2145 2378 378 2382 379 2411"/>
+                        </Shape>
+                        <String CONTENT="ice, and spent the summer on the Chukchee Ridge. When the Russians came to hunt moulting"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l43" HPOS="379" VPOS="2429" WIDTH="1772" HEIGHT="47" BASELINE="381 2458 2151 2454" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="381 2458 381 2476 2149 2470 2151 2454 2145 2429 379 2431 381 2458"/>
+                        </Shape>
+                        <String CONTENT="geese, we tried to throw our grass insoles¹ across the path of those who were friendly to us, in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l44" HPOS="379" VPOS="2468" WIDTH="1772" HEIGHT="51" BASELINE="381 2503 2151 2499" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="381 2503 381 2519 2149 2517 2151 2499 2145 2468 379 2476 381 2503"/>
+                        </Shape>
+                        <String CONTENT="order to make them think of it; but they paid no attention.’ After that the Chukchee wandered"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l45" HPOS="381" VPOS="2523" WIDTH="1772" HEIGHT="42" BASELINE="381 2550 2153 2550" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="381 2550 381 2565 2153 2565 2153 2550 2153 2525 381 2523 381 2550"/>
+                        </Shape>
+                        <String CONTENT="in various directions. One party reached the Indighirka River. Some young men went to hunt"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l46" HPOS="379" VPOS="2567" WIDTH="1770" HEIGHT="51" BASELINE="381 2599 2149 2593" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="381 2599 381 2618 2147 2618 2149 2593 2143 2567 379 2571 381 2599"/>
+                        </Shape>
+                        <String CONTENT="geese. There was an old man, Portniaghin, on the Portniaghin fishing-coast. They came to him,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l47" HPOS="379" VPOS="2614" WIDTH="1772" HEIGHT="45" BASELINE="381 2643 2151 2638" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="381 2643 381 2659 2149 2655 2151 2638 2145 2614 379 2618 381 2643"/>
+                        </Shape>
+                        <String CONTENT="and said, ‘It is very strange! When we are hunting geese, Chukchee bone arrows come over to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l48" HPOS="381" VPOS="2661" WIDTH="1772" HEIGHT="43" BASELINE="383 2688 2153 2684" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="383 2688 383 2704 2151 2702 2153 2684 2147 2661 381 2663 383 2688"/>
+                        </Shape>
+                        <String CONTENT="us from somewhere. One of our number has already been killed. Still, when we land on the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l49" HPOS="381" VPOS="2708" WIDTH="1774" HEIGHT="43" BASELINE="383 2737 2155 2733" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="383 2737 383 2751 2153 2747 2155 2733 2149 2708 381 2710 383 2737"/>
+                        </Shape>
+                        <String CONTENT="shore and look for the enemy, we are unable to find anything.’ He said, ‘Take me to that"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l50" HPOS="381" VPOS="2753" WIDTH="1770" HEIGHT="50" BASELINE="383 2784 2151 2776" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="383 2784 383 2803 2149 2797 2151 2776 2145 2753 381 2758 383 2784"/>
+                        </Shape>
+                        <String CONTENT="place. Perhaps I can find them.’ So they went together. ‘Where is the place?’ — ‘This"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l51" HPOS="381" VPOS="2793" WIDTH="1774" HEIGHT="51" BASELINE="383 2830 2155 2827" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="383 2830 383 2844 2153 2842 2155 2827 2149 2793 381 2801 383 2830"/>
+                        </Shape>
+                        <String CONTENT="here.’ They landed, and ascended the bank, but nobody was there. Only a number of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l52" HPOS="385" VPOS="2846" WIDTH="1768" HEIGHT="45" BASELINE="385 2875 2153 2875" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="385 2875 385 2891 2153 2891 2153 2875 2153 2850 385 2846 385 2875"/>
+                        </Shape>
+                        <String CONTENT="hummocks were to be seen on the swampy plain, — very many of them, and quite big ones."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l53" HPOS="385" VPOS="2891" WIDTH="1764" HEIGHT="45" BASELINE="387 2916 2149 2920" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="387 2916 385 2932 2145 2936 2149 2920 2147 2893 387 2891 387 2916"/>
+                        </Shape>
+                        <String CONTENT="‘There!’ said the old man, ‘shoot at those hummocks!’ They shot at the hummocks. With every"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-157_r3" HPOS="376" VPOS="2979" WIDTH="1782" HEIGHT="109" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="376 2979 2158 2979 2158 3088 376 3088"/>
+                    </Shape>
+                    <TextLine ID="mz_3-157_l54" HPOS="491" VPOS="2986" WIDTH="1664" HEIGHT="45" BASELINE="493 3012 2155 3016" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="493 3012 491 3027 2151 3031 2155 3016 2153 2990 493 2986 493 3012"/>
+                        </Shape>
+                        <String CONTENT="¹ The grass insoles of the Chukchee boot are more obtuse and rounder at the toe than those of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-157_l55" HPOS="381" VPOS="3029" WIDTH="1706" HEIGHT="51" BASELINE="383 3055 2087 3062" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="383 3055 381 3072 2083 3080 2087 3062 2085 3037 383 3029 383 3055"/>
+                        </Shape>
+                        <String CONTENT="Russians. An experienced eye can distinguish without much trouble one from the other (compare p. 239)."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

@@ -1,0 +1,379 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-3-179.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-3-179.png; regions_from: zones/chukchi-3-179.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+                <TextBlock ID="mz_3-179_r1" HPOS="394" VPOS="477" WIDTH="1782" HEIGHT="93" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="394 477 2176 477 2176 570 394 570"/>
+                    </Shape>
+                    <TextLine ID="mz_3-179_l1" HPOS="968" VPOS="492" WIDTH="624" HEIGHT="50" BASELINE="970 523 1592 527" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1574 492 1278 492 1262 492 1243 492 1223 492 1204 492 1184 492 1165 492 1145 492 1126 492 1106 492 1087 492 1067 492 1048 492 1028 492 1009 492 989 492 970 492 970 523 968 539 1588 542 1592 527 1588 507 1574 492"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l2" HPOS="2063" VPOS="498" WIDTH="90" HEIGHT="52" BASELINE="2065 535 2153 531" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2065 535 2065 548 2151 550 2153 531 2147 498 2063 500 2065 535"/>
+                        </Shape>
+                        <String CONTENT="711"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-179_r2" HPOS="394" VPOS="594" WIDTH="1782" HEIGHT="124" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="394 594 2176 594 2176 718 394 718"/>
+                    </Shape>
+                    <TextLine ID="mz_3-179_l3" HPOS="389" VPOS="591" WIDTH="1770" HEIGHT="61" BASELINE="391 636 2159 632" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="682 595 666 595 646 605 611 597 604 599 584 599 565 601 557 601 545 605 522 601 506 603 487 603 467 605 448 605 428 607 409 607 389 607 391 636 391 652 2157 650 2159 632 2153 595 1837 603 1818 591 1816 591 1814 591 1812 591 1720 601 1668 591 1666 591 1664 591 1662 591 1642 605 1582 605 1481 591 1479 591 1477 591 1442 603 1381 591 1379 591 1377 591 1340 603 1284 591 1282 591 1280 591 1278 591 1258 607 1077 607 1058 593 1056 593 1054 593 978 593 976 593 974 593 947 607 783 607 693 595 682 595"/>
+                        </Shape>
+                        <String CONTENT="during the three years of his stay at Anadyr, kept a detailed account of all"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l4" HPOS="389" VPOS="652" WIDTH="1538" HEIGHT="58" BASELINE="391 691 1927 695" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="391 691 389 706 1923 710 1927 695 1923 654 1876 663 1829 654 1828 654 1773 663 1576 654 1574 654 1522 663 1473 654 1471 654 1422 663 1399 654 1397 654 1395 654 1393 654 1373 663 1346 654 1344 654 1342 654 1278 663 1210 654 1208 654 1206 654 1177 663 1110 652 1108 652 1106 652 1077 661 972 652 970 652 874 663 754 663 740 652 738 652 736 652 734 652 732 652 711 663 617 663 604 652 602 652 600 652 598 652 596 652 594 652 576 663 473 663 461 652 459 652 457 652 455 652 391 659 391 691"/>
+                        </Shape>
+                        <String CONTENT="sales and purchases, debits and credits, of the Russianized natives.¹"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-179_r3" HPOS="394" VPOS="718" WIDTH="1782" HEIGHT="361" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="394 718 2176 718 2176 1079 394 1079"/>
+                    </Shape>
+                    <TextLine ID="mz_3-179_l5" HPOS="502" VPOS="716" WIDTH="1657" HEIGHT="53" BASELINE="502 757 2159 757" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="502 757 502 767 2155 769 2159 757 2159 728 2118 716 2116 716 2114 716 2112 716 2079 728 1867 728 1853 716 1851 716 1849 716 1757 716 1755 716 1753 716 1752 716 1738 726 1672 716 1670 716 1668 716 1637 726 502 720 502 757"/>
+                        </Shape>
+                        <String CONTENT="I know another official who at the very same time held sway on the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l6" HPOS="389" VPOS="772" WIDTH="1770" HEIGHT="63" BASELINE="391 819 2159 813" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="391 819 391 833 2155 835 2159 813 2155 784 1925 784 1909 772 1907 772 1905 772 1904 772 1902 772 1876 784 1728 784 1713 772 1711 772 1709 772 1707 772 1705 772 1668 782 1588 772 1586 772 1584 772 1582 772 1561 786 1436 786 1418 774 1416 774 1414 774 1412 774 1321 784 1130 774 1128 774 1034 784 993 774 991 774 989 774 988 774 986 774 972 786 925 776 923 776 771 786 654 776 652 776 389 780 391 819"/>
+                        </Shape>
+                        <String CONTENT="Lower Kolyma, and who, in order to exterminate syphilis, kept another account,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l7" HPOS="393" VPOS="843" WIDTH="1764" HEIGHT="54" BASELINE="395 874 2157 878" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="395 874 393 886 2153 897 2157 878 2155 843 395 843 395 874"/>
+                        </Shape>
+                        <String CONTENT="not less detailed, of all sexual intercourse between men and women, hoping"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l8" HPOS="393" VPOS="895" WIDTH="1768" HEIGHT="53" BASELINE="393 934 2161 934" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="393 934 393 946 2159 948 2161 934 2161 907 2028 907 2013 895 2011 895 2009 895 2007 895 1958 907 1853 907 1837 895 1835 895 1833 895 1742 895 1740 895 1738 895 1736 895 1720 907 1588 907 1572 895 1570 895 1568 895 1566 895 1520 905 1506 895 1504 895 1502 895 1500 895 1498 895 1465 905 1440 895 1438 895 1436 895 1344 905 1276 895 1274 895 1180 905 1017 895 1015 895 1013 895 976 905 931 895 929 895 927 895 892 905 869 895 867 895 865 895 771 905 393 901 393 934"/>
+                        </Shape>
+                        <String CONTENT="in this way to find the bearers of the original disease. Both records were"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l9" HPOS="391" VPOS="952" WIDTH="1768" HEIGHT="60" BASELINE="393 997 2159 991" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="393 997 393 1012 2157 1006 2159 991 2155 963 2017 952 2015 952 1929 962 1907 952 1905 952 1904 952 1902 952 1900 952 1884 962 1857 952 1855 952 1853 952 1851 952 1828 963 1627 963 1594 952 1592 952 1590 952 1516 963 1444 954 1442 954 1440 954 1409 963 1214 954 1212 954 1136 963 1040 954 1038 954 1036 954 1034 954 1019 965 391 965 393 997"/>
+                        </Shape>
+                        <String CONTENT="failures, but they are very characteristic for the whole system of the adminis-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l10" HPOS="391" VPOS="1022" WIDTH="515" HEIGHT="53" BASELINE="393 1051 906 1057" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="393 1051 391 1069 399 1075 401 1075 403 1075 405 1075 904 1069 906 1057 904 1028 393 1022 393 1051"/>
+                        </Shape>
+                        <String CONTENT="tration of the country."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-179_r4" HPOS="394" VPOS="1079" WIDTH="1782" HEIGHT="845" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="394 1079 2176 1079 2176 1924 394 1924"/>
+                    </Shape>
+                    <TextLine ID="mz_3-179_l11" HPOS="500" VPOS="1073" WIDTH="1659" HEIGHT="58" BASELINE="502 1115 2159 1112" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="502 1115 502 1131 2157 1131 2159 1112 2157 1084 2128 1073 2126 1073 2124 1073 2122 1073 2096 1082 2056 1073 2054 1073 2052 1073 2050 1073 2024 1084 1935 1084 1919 1073 1917 1073 1915 1073 1913 1073 1861 1082 1845 1073 1843 1073 1841 1073 1839 1073 1837 1073 1814 1082 1757 1073 1755 1073 1753 1073 1724 1082 1703 1073 1701 1073 1699 1073 1697 1073 1656 1082 1559 1073 1557 1073 1422 1082 1385 1073 1383 1073 1381 1073 1321 1084 1223 1075 1221 1075 1169 1084 1095 1075 1093 1075 1091 1075 1056 1084 500 1080 502 1115"/>
+                        </Shape>
+                        <String CONTENT="TRADE IN ALCOHOL. — I made mention before of the brisk trade in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l12" HPOS="389" VPOS="1133" WIDTH="1772" HEIGHT="58" BASELINE="391 1178 2161 1174" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="391 1178 391 1191 2159 1190 2161 1174 2157 1145 2081 1133 2079 1133 2077 1133 2054 1143 1898 1133 1896 1133 1894 1133 1892 1133 1876 1145 1714 1145 1687 1133 1685 1133 1683 1133 1681 1133 1679 1133 1664 1145 1420 1145 1315 1133 1313 1133 1219 1145 1179 1135 1177 1135 1175 1135 1173 1135 1143 1145 746 1135 744 1135 695 1145 559 1135 557 1135 389 1147 391 1178"/>
+                        </Shape>
+                        <String CONTENT="strong liquor which is carried on in the Kolyma country between the Russians"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l13" HPOS="393" VPOS="1193" WIDTH="1768" HEIGHT="57" BASELINE="395 1236 2161 1232" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="395 1236 395 1250 2159 1246 2161 1232 2157 1205 2046 1193 2044 1193 1999 1203 1978 1193 1976 1193 1974 1193 1972 1193 1970 1193 1954 1205 1664 1205 1605 1193 1603 1193 1533 1203 1481 1193 1479 1193 1331 1203 1297 1193 1295 1193 1294 1193 1200 1205 607 1195 606 1195 604 1195 576 1205 463 1195 461 1195 393 1207 395 1236"/>
+                        </Shape>
+                        <String CONTENT="and the Chukchee.² A few more words regarding this matter may be inter-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l14" HPOS="395" VPOS="1256" WIDTH="1768" HEIGHT="54" BASELINE="395 1295 2163 1295" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="395 1295 395 1310 2163 1310 2163 1295 2163 1267 1841 1267 1781 1256 1779 1256 1777 1256 1750 1267 1582 1267 1502 1256 1500 1256 1498 1256 1496 1256 1481 1267 1299 1267 1262 1256 1260 1256 1258 1256 1134 1266 1095 1256 1093 1256 1091 1256 1089 1256 1046 1266 949 1256 947 1256 900 1266 767 1256 765 1256 763 1256 730 1266 678 1256 676 1256 674 1256 639 1266 594 1256 592 1256 502 1266 463 1256 461 1256 459 1256 395 1266 395 1295"/>
+                        </Shape>
+                        <String CONTENT="esting. In the thirties of the nineteenth century, liquor was still very scarce at"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l15" HPOS="391" VPOS="1312" WIDTH="1770" HEIGHT="61" BASELINE="393 1357 2161 1351" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="393 1357 393 1373 2159 1373 2161 1351 2159 1324 2130 1312 2128 1312 2126 1312 2124 1312 2096 1322 2024 1312 2022 1312 1925 1322 1905 1312 1904 1312 1902 1312 1900 1312 1898 1312 1882 1324 1670 1324 1638 1312 1637 1312 1635 1312 1568 1324 1516 1314 1514 1314 1512 1314 1479 1324 1385 1314 1383 1314 1284 1324 1089 1314 1087 1314 980 1326 947 1316 945 1316 943 1316 722 1326 707 1316 705 1316 703 1316 514 1316 512 1316 510 1316 473 1326 411 1316 409 1316 407 1316 405 1316 391 1324 393 1357"/>
+                        </Shape>
+                        <String CONTENT="the Anui fair. Only the aged interpreter Kobelev, whose name has already"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l16" HPOS="393" VPOS="1373" WIDTH="1768" HEIGHT="58" BASELINE="395 1418 2161 1414" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="395 1418 395 1431 2159 1431 2161 1414 2157 1384 1981 1384 1956 1373 1954 1373 1952 1373 1950 1373 1915 1382 1874 1373 1872 1373 1870 1373 1800 1382 1718 1373 1716 1373 1714 1373 1685 1382 1599 1373 1598 1373 1260 1386 1171 1386 1155 1375 1153 1375 1151 1375 1149 1375 1099 1386 986 1386 964 1375 962 1375 960 1375 894 1386 773 1386 758 1375 756 1375 754 1375 752 1375 393 1379 395 1418"/>
+                        </Shape>
+                        <String CONTENT="been mentioned, was able to sell some at retail. The price of the liquor was"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l17" HPOS="393" VPOS="1433" WIDTH="1768" HEIGHT="59" BASELINE="395 1476 2161 1472" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="395 1476 395 1492 2159 1492 2161 1472 2157 1445 1993 1433 1991 1433 1929 1443 1902 1433 1900 1433 1898 1433 1845 1443 1790 1433 1789 1433 1787 1433 1785 1433 1769 1445 1555 1445 1518 1433 1516 1433 1514 1433 1512 1433 1473 1443 1371 1433 1370 1433 1368 1433 1344 1443 1110 1435 1108 1435 1106 1435 1069 1445 1030 1435 1028 1435 1027 1435 1025 1435 997 1445 945 1435 943 1435 941 1435 939 1435 921 1447 798 1447 730 1435 728 1435 726 1435 703 1445 633 1435 631 1435 629 1435 606 1445 545 1435 543 1435 393 1447 395 1476"/>
+                        </Shape>
+                        <String CONTENT="a marten-skin for a small glassful. One of the documents adds, that because"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l18" HPOS="393" VPOS="1494" WIDTH="1766" HEIGHT="62" BASELINE="395 1533 2159 1536" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="395 1533 393 1546 407 1556 409 1556 411 1556 413 1556 2157 1554 2159 1536 2157 1507 1835 1496 1833 1496 1831 1496 1800 1505 1750 1496 1748 1496 1670 1505 1637 1496 1635 1496 1633 1496 1506 1505 1451 1496 1449 1496 1447 1496 1446 1496 1432 1505 1381 1496 1379 1496 1377 1496 1336 1505 1258 1494 1138 1494 1136 1494 1134 1494 1132 1494 1118 1503 1093 1494 1091 1494 1089 1494 962 1505 793 1505 777 1494 775 1494 773 1494 771 1494 769 1494 742 1503 687 1494 685 1494 395 1501 395 1533"/>
+                        </Shape>
+                        <String CONTENT="of this traffic, he was greatly loved by all the people. At the same time,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l19" HPOS="393" VPOS="1552" WIDTH="1768" HEIGHT="62" BASELINE="395 1597 2161 1593" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="395 1597 395 1614 2159 1614 2161 1593 2157 1564 2034 1564 2017 1552 2015 1552 2013 1552 2011 1552 1952 1562 1925 1552 1923 1552 1921 1552 1919 1552 1898 1564 1718 1564 1703 1552 1701 1552 1699 1552 1697 1552 1695 1552 1670 1564 1559 1564 1541 1552 1539 1552 1537 1552 1535 1552 1533 1552 1500 1562 1418 1552 1416 1552 1266 1564 1241 1554 1239 1554 1237 1554 1235 1554 1208 1564 1177 1554 1175 1554 1173 1554 1171 1554 1145 1564 1132 1554 1130 1554 1128 1554 1126 1554 1124 1554 1093 1564 1030 1554 1028 1554 933 1564 874 1554 873 1554 769 1564 744 1554 742 1554 740 1554 393 1560 395 1597"/>
+                        </Shape>
+                        <String CONTENT="however (1827), Nishne-Kolymsk had a regular saloon, where even fruit-brandy"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l20" HPOS="393" VPOS="1620" WIDTH="1770" HEIGHT="51" BASELINE="395 1659 2163 1653" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="395 1659 395 1671 2161 1665 2163 1653 2159 1634 2054 1634 2020 1620 1972 1634 1943 1620 1921 1634 1794 1634 1755 1620 1732 1634 1685 1620 1666 1634 1541 1636 1305 1634 1276 1622 1231 1636 1149 1622 1064 1636 1017 1622 982 1638 954 1624 863 1638 730 1638 711 1624 393 1632 395 1659"/>
+                        </Shape>
+                        <String CONTENT="(five barrels³) was sold. In 1842 there was a great famine on the Lower"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l21" HPOS="395" VPOS="1675" WIDTH="1764" HEIGHT="56" BASELINE="395 1714 2159 1714" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="395 1714 395 1727 2157 1731 2159 1714 2159 1685 2134 1675 2132 1675 2130 1675 2128 1675 2091 1685 1958 1675 1956 1675 1843 1685 1804 1675 1802 1675 1800 1675 1798 1675 1773 1685 1736 1675 1734 1675 1732 1675 1730 1675 1701 1685 1666 1675 1664 1675 1662 1675 1660 1675 1633 1686 1520 1686 1498 1675 1496 1675 1494 1675 1492 1675 1459 1685 1270 1675 1268 1675 1266 1675 1237 1685 1208 1675 1206 1675 1204 1675 1149 1685 1134 1675 1132 1675 1130 1675 1128 1675 1126 1675 1093 1685 1079 1675 1077 1675 1075 1675 1073 1675 1027 1685 395 1681 395 1714"/>
+                        </Shape>
+                        <String CONTENT="Kolyma, and some cases of death by starvation on both Anui Rivers. In"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l22" HPOS="395" VPOS="1735" WIDTH="1768" HEIGHT="57" BASELINE="395 1776 2163 1776" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="395 1776 395 1792 2163 1792 2163 1776 2163 1739 2022 1735 2020 1735 2019 1735 1983 1745 1923 1735 1921 1735 1865 1745 1833 1735 1831 1735 1829 1735 1769 1745 1722 1735 1720 1735 1718 1735 1679 1745 1594 1735 1592 1735 1590 1735 1564 1745 1508 1735 1506 1735 1449 1745 1418 1735 1416 1735 1414 1735 1354 1745 1319 1735 1317 1735 1315 1735 1124 1745 1071 1735 1069 1735 962 1745 921 1735 919 1735 917 1735 845 1745 793 1735 791 1735 789 1735 787 1735 771 1747 471 1747 418 1735 416 1735 415 1735 395 1745 395 1776"/>
+                        </Shape>
+                        <String CONTENT="the same year the saloon above mentioned sold thirty barrels of undiluted"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l23" HPOS="397" VPOS="1794" WIDTH="1766" HEIGHT="56" BASELINE="397 1837 2163 1837" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="397 1837 397 1850 2161 1850 2163 1837 2163 1807 2120 1794 2118 1794 2116 1794 2114 1794 2081 1805 1933 1794 1931 1794 1929 1794 1904 1805 1872 1794 1870 1794 1868 1794 1867 1794 1865 1794 1845 1805 1816 1794 1814 1794 1812 1794 1730 1805 1701 1794 1699 1794 1697 1794 1695 1794 1693 1794 1676 1807 1621 1807 1574 1794 1572 1794 1570 1794 1568 1794 1527 1805 1459 1794 1457 1794 1393 1805 1354 1794 1352 1794 1350 1794 1286 1805 1251 1794 1249 1794 1247 1794 1188 1805 1140 1794 1138 1794 1136 1794 1134 1794 1132 1794 1114 1805 1038 1794 1036 1794 1034 1794 1032 1794 1013 1807 878 1807 804 1794 802 1794 738 1805 660 1794 658 1794 578 1805 563 1794 561 1794 559 1794 557 1794 555 1794 522 1803 493 1794 491 1794 489 1794 487 1794 485 1794 465 1805 430 1794 428 1794 426 1794 424 1794 397 1805 397 1837"/>
+                        </Shape>
+                        <String CONTENT="alcohol, and in 1847 even fifty barrels. In 1864 the price of alcohol at the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l24" HPOS="397" VPOS="1856" WIDTH="1054" HEIGHT="57" BASELINE="397 1895 1451 1895" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="397 1895 397 1907 1449 1913 1451 1895 1451 1866 1418 1856 1416 1856 1414 1856 1346 1866 1332 1856 1331 1856 1329 1856 1327 1856 1325 1856 1299 1866 1013 1856 1011 1856 1009 1856 1007 1856 991 1868 865 1868 839 1856 837 1856 836 1856 834 1856 832 1856 832 1858 822 1868 611 1868 541 1856 539 1856 537 1856 535 1856 524 1864 516 1858 516 1856 514 1856 512 1856 418 1856 416 1856 415 1856 397 1864 397 1895"/>
+                        </Shape>
+                        <String CONTENT="Anui fair was two beaver-skins for one bottle."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-179_r5" HPOS="394" VPOS="1924" WIDTH="1782" HEIGHT="720" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="394 1924 2176 1924 2176 2644 394 2644"/>
+                    </Shape>
+                    <TextLine ID="mz_3-179_l25" HPOS="498" VPOS="1913" WIDTH="1665" HEIGHT="58" BASELINE="500 1957 2163 1953" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="500 1957 500 1971 2161 1971 2163 1953 2159 1926 1888 1924 1872 1913 1870 1913 1868 1913 1794 1913 1792 1913 1790 1913 1789 1913 1773 1924 1716 1913 1714 1913 1713 1913 1681 1924 1586 1913 1584 1913 1506 1922 1475 1913 1473 1913 1471 1913 1469 1913 1467 1913 1449 1924 1414 1913 1412 1913 1410 1913 1409 1913 1379 1924 1348 1913 1346 1913 1344 1913 1342 1913 1313 1926 1132 1915 1130 1915 1128 1915 1097 1926 1050 1915 1048 1915 1046 1915 1044 1915 1009 1926 822 1915 820 1915 818 1915 775 1926 703 1915 701 1915 699 1915 658 1926 553 1915 551 1915 498 1920 500 1957"/>
+                        </Shape>
+                        <String CONTENT="From that time on, the imports of alcohol into the Kolyma country"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l26" HPOS="395" VPOS="1975" WIDTH="1768" HEIGHT="56" BASELINE="395 2018 2163 2018" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="395 2018 395 2029 2161 2031 2163 2018 2163 1985 2128 1975 2126 1975 2124 1975 2122 1975 2093 1985 2005 1975 2003 1975 2001 1975 1968 1987 1878 1987 1863 1975 1861 1975 1859 1975 1857 1975 1855 1975 1822 1985 1744 1975 1742 1975 1664 1985 1644 1975 1642 1975 1640 1975 1590 1985 1555 1975 1553 1975 1551 1975 1549 1975 1518 1985 1438 1975 1436 1975 1434 1975 1401 1985 1385 1975 1383 1975 1381 1975 1379 1975 1334 1985 1321 1975 1319 1975 1317 1975 1315 1975 1313 1975 1282 1985 1130 1975 1128 1975 1126 1975 1093 1985 1079 1975 1077 1975 1075 1975 1073 1975 978 1985 931 1975 929 1975 927 1975 892 1985 878 1975 876 1975 874 1975 873 1975 804 1985 697 1975 695 1975 635 1985 606 1975 604 1975 602 1975 555 1985 395 1983 395 2018"/>
+                        </Shape>
+                        <String CONTENT="increased quite regularly until they reached three hundred barrels yearly. At"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l27" HPOS="395" VPOS="2033" WIDTH="1766" HEIGHT="67" BASELINE="397 2072 2161 2076" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="397 2072 395 2086 592 2098 594 2100 2159 2100 2161 2076 2159 2047 1896 2035 1894 2035 1792 2045 1730 2035 1728 2035 1726 2035 1703 2047 1562 2047 1527 2035 1525 2035 1523 2035 1522 2035 1490 2045 1442 2035 1440 2035 1393 2045 1362 2035 1360 2035 1358 2035 1280 2045 1196 2033 1194 2033 1192 2033 1161 2043 1128 2033 1126 2033 1124 2033 999 2043 892 2033 890 2033 888 2033 855 2043 769 2033 767 2033 765 2033 738 2043 658 2033 656 2033 609 2045 454 2045 438 2033 436 2033 434 2033 432 2033 430 2033 397 2041 397 2072"/>
+                        </Shape>
+                        <String CONTENT="the same time the price regularly decreased. During my stay on the Kolyma,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l28" HPOS="395" VPOS="2096" WIDTH="1766" HEIGHT="56" BASELINE="395 2135 2161 2135" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="395 2135 395 2148 2157 2152 2161 2135 2159 2107 2106 2096 2104 2096 2056 2106 1245 2096 1243 2096 1112 2106 1073 2096 1071 2096 1069 2096 1007 2106 951 2096 949 2096 947 2096 910 2106 777 2096 775 2096 773 2096 754 2106 717 2096 715 2096 713 2096 711 2096 709 2096 693 2106 660 2096 658 2096 656 2096 580 2106 547 2096 545 2096 543 2096 473 2106 418 2096 416 2096 415 2096 395 2106 395 2135"/>
+                        </Shape>
+                        <String CONTENT="the price of alcohol in the saloons of Sredne-Kolymsk was two or two and a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l29" HPOS="393" VPOS="2152" WIDTH="1770" HEIGHT="61" BASELINE="395 2197 2163 2193" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="395 2197 395 2213 2161 2213 2163 2193 2159 2164 2095 2152 2093 2152 2091 2152 2069 2162 2040 2152 2038 2152 2036 2152 2034 2152 2032 2152 2017 2162 1980 2152 1978 2152 1976 2152 1909 2162 1882 2152 1880 2152 1878 2152 1876 2152 1855 2164 1703 2164 1687 2152 1685 2152 1683 2152 1681 2152 1679 2152 1654 2162 1586 2152 1584 2152 1449 2162 1434 2152 1432 2152 1430 2152 1303 2152 1301 2152 1299 2152 1270 2164 1155 2154 1153 2154 1151 2154 1114 2164 1025 2154 1023 2154 956 2164 886 2154 785 2154 783 2154 781 2154 779 2154 763 2164 607 2154 606 2154 393 2160 395 2197"/>
+                        </Shape>
+                        <String CONTENT="half rubles per bottle. The saloon of Nishne-Kolymsk was abolished, but"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l30" HPOS="395" VPOS="2213" WIDTH="1768" HEIGHT="68" BASELINE="397 2258 2163 2254" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="397 2258 397 2281 528 2281 528 2279 530 2279 531 2279 547 2269 682 2279 683 2279 775 2269 2159 2271 2163 2254 2161 2226 2114 2213 2112 2213 2110 2213 2108 2213 2081 2226 1968 2226 1941 2213 1939 2213 1937 2213 1935 2213 1933 2213 1915 2226 1845 2226 1783 2213 1781 2213 1779 2213 1777 2213 1759 2226 1683 2226 1539 2213 1537 2213 1535 2213 1533 2213 1516 2224 1377 2213 1375 2213 1373 2213 1348 2224 1299 2213 1297 2213 1295 2213 1294 2213 1292 2213 1272 2228 1188 2228 1169 2215 1167 2215 1165 2215 1085 2215 1083 2215 1081 2215 1079 2215 1064 2226 1001 2215 999 2215 997 2215 995 2215 976 2228 783 2228 604 2215 602 2215 545 2226 426 2215 424 2215 422 2215 395 2226 397 2258"/>
+                        </Shape>
+                        <String CONTENT="plenty of liquor was to be had on the Lower Kolyma. The price at the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l31" HPOS="397" VPOS="2275" WIDTH="1766" HEIGHT="57" BASELINE="397 2316 2163 2316" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="397 2316 397 2332 2161 2332 2163 2316 2163 2287 2120 2275 2118 2275 2116 2275 2114 2275 2083 2285 2003 2275 2001 2275 1999 2275 1966 2285 1802 2275 1800 2275 1709 2285 1658 2275 1656 2275 1598 2285 1549 2275 1547 2275 1545 2275 1514 2285 1485 2275 1483 2275 1481 2275 1479 2275 1459 2285 1368 2275 1366 2275 1294 2285 1280 2275 1278 2275 1276 2275 1171 2275 1169 2275 1167 2275 1165 2275 1149 2287 1050 2287 982 2275 980 2275 978 2275 952 2285 843 2275 841 2275 615 2285 598 2275 596 2275 594 2275 420 2275 418 2275 416 2275 397 2285 397 2316"/>
+                        </Shape>
+                        <String CONTENT="Anui fair was a red fox-skin per bottle, which is five times cheaper than the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l32" HPOS="395" VPOS="2335" WIDTH="1766" HEIGHT="61" BASELINE="395 2376 2161 2376" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="395 2376 395 2396 2159 2394 2161 2376 2161 2347 2120 2335 2118 2335 2116 2335 2114 2335 2085 2345 2040 2335 2038 2335 2036 2335 2005 2345 1943 2335 1941 2335 1315 2345 1282 2335 1280 2335 1278 2335 1276 2335 1256 2345 1141 2335 1140 2335 1138 2335 1101 2345 1048 2335 1046 2335 970 2345 923 2335 921 2335 857 2345 814 2335 812 2335 810 2335 736 2345 662 2335 660 2335 588 2345 549 2335 547 2335 545 2335 543 2335 510 2345 450 2335 448 2335 395 2345 395 2376"/>
+                        </Shape>
+                        <String CONTENT="price in 1864. In 1895 the Cossack commander of Sredne-Kolymsk, by"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l33" HPOS="395" VPOS="2394" WIDTH="1766" HEIGHT="56" BASELINE="397 2433 2161 2437" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="397 2433 395 2445 2157 2450 2161 2437 2161 2408 2118 2396 2116 2396 2114 2396 1804 2406 1699 2396 1697 2396 1640 2406 1440 2396 1438 2396 1364 2406 1278 2394 1276 2394 1196 2404 1157 2394 1155 2394 1153 2394 1151 2394 1114 2406 674 2406 656 2394 654 2394 652 2394 650 2394 604 2404 545 2394 543 2394 397 2402 397 2433"/>
+                        </Shape>
+                        <String CONTENT="official order, sent a man to the Reindeer Chukchee of the western tundra"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l34" HPOS="395" VPOS="2452" WIDTH="1764" HEIGHT="63" BASELINE="397 2495 2159 2491" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="397 2495 397 2509 2155 2515 2159 2491 2157 2464 2128 2452 2126 2452 2124 2452 2122 2452 2098 2462 1917 2452 1915 2452 1913 2452 1911 2452 1894 2464 1752 2464 1726 2452 1724 2452 1722 2452 1720 2452 1699 2462 1674 2452 1672 2452 1670 2452 1668 2452 1642 2462 1609 2452 1607 2452 1605 2452 1537 2462 1510 2452 1508 2452 1506 2452 1446 2462 1412 2452 1410 2452 1409 2452 1305 2462 1280 2452 1278 2452 1276 2452 1274 2452 1272 2452 1253 2464 1208 2454 1206 2454 1204 2454 1175 2464 1145 2454 1143 2454 1141 2454 1140 2454 1101 2464 906 2454 904 2454 902 2454 859 2464 802 2454 800 2454 798 2454 777 2464 639 2454 637 2454 565 2464 479 2454 477 2454 395 2466 397 2495"/>
+                        </Shape>
+                        <String CONTENT="to buy reindeer for alcohol, only in the order the alcohol was called simply"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l35" HPOS="401" VPOS="2517" WIDTH="1762" HEIGHT="60" BASELINE="403 2550 2163 2556" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="403 2550 401 2563 434 2575 436 2575 438 2575 863 2567 991 2577 993 2577 2161 2569 2163 2556 2159 2517 403 2519 403 2550"/>
+                        </Shape>
+                        <String CONTENT="“liquor.” The man brought with him one barrel of this liquor, and slaughtered"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l36" HPOS="395" VPOS="2577" WIDTH="1768" HEIGHT="53" BASELINE="397 2612 2163 2616" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="397 2612 395 2626 2159 2630 2163 2616 2159 2577 397 2581 397 2612"/>
+                        </Shape>
+                        <String CONTENT="twenty-two reindeer. I was a witness to the whole transaction. I was informed"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-179_r6" HPOS="394" VPOS="2714" WIDTH="1782" HEIGHT="421" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="394 2714 2176 2714 2176 3135 394 3135"/>
+                    </Shape>
+                    <TextLine ID="mz_3-179_l37" HPOS="502" VPOS="2733" WIDTH="1661" HEIGHT="43" BASELINE="504 2758 2163 2762" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="504 2758 502 2772 2159 2776 2163 2762 2161 2737 504 2733 504 2758"/>
+                        </Shape>
+                        <String CONTENT="¹ After the energetic activity of Mr. Gondatti, there came for the Anadyr a period of quiet. So the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l38" HPOS="397" VPOS="2780" WIDTH="1764" HEIGHT="43" BASELINE="397 2803 2161 2803" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="397 2803 397 2819 2159 2823 2161 2803 2161 2780 397 2780 397 2803"/>
+                        </Shape>
+                        <String CONTENT="Governor in Vladivostok said to the successor of Mr. Gondatti, “You must remember that we gave to Grinevitzky"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l39" HPOS="399" VPOS="2821" WIDTH="1762" HEIGHT="43" BASELINE="399 2846 2161 2846" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="399 2846 399 2860 2159 2864 2161 2846 2161 2821 399 2821 399 2846"/>
+                        </Shape>
+                        <String CONTENT="two thousand rubles for the investigation of the country, and to Gondatti fifteen hundred rubles. Now we"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l40" HPOS="397" VPOS="2860" WIDTH="1764" HEIGHT="45" BASELINE="399 2885 2161 2891" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="399 2885 397 2899 2157 2905 2161 2891 2159 2866 399 2860 399 2885"/>
+                        </Shape>
+                        <String CONTENT="consider that the country is thoroughly investigated. And you are to be, not an investigator, but a simple"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l41" HPOS="399" VPOS="2906" WIDTH="1762" HEIGHT="43" BASELINE="399 2932 2161 2932" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="399 2932 399 2945 2159 2949 2161 2932 2161 2906 399 2906 399 2932"/>
+                        </Shape>
+                        <String CONTENT="chief of the district.” I may agree with the idea expressed in these words, in so far as the less active the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l42" HPOS="397" VPOS="2944" WIDTH="1470" HEIGHT="44" BASELINE="399 2969 1867 2973" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="399 2969 397 2984 1863 2988 1867 2973 1865 2947 399 2944 399 2969"/>
+                        </Shape>
+                        <String CONTENT="representative of the Russian authority is, the better it is for the inhabitants of the country."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l43" HPOS="506" VPOS="2986" WIDTH="289" HEIGHT="51" BASELINE="508 3012 795 3016" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="508 3012 506 3023 689 3037 691 3037 793 3027 795 3016 793 2990 508 2986 508 3012"/>
+                        </Shape>
+                        <String CONTENT="² Compare p. 61."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l44" HPOS="512" VPOS="3025" WIDTH="1649" HEIGHT="49" BASELINE="514 3055 2161 3059" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="514 3055 512 3070 2157 3074 2161 3059 2159 3031 514 3025 514 3055"/>
+                        </Shape>
+                        <String CONTENT="³ A barrel of the kind in question forms one-half of the load of a pack-horse. It contains 3 vedros"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-179_l45" HPOS="395" VPOS="3070" WIDTH="1204" HEIGHT="47" BASELINE="397 3096 1599 3099" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="397 3096 395 3113 1596 3117 1599 3099 1598 3074 397 3070 397 3096"/>
+                        </Shape>
+                        <String CONTENT="(“buckets”) of 20 bottles each. A Russian vedro is equal to 3249 gallons."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

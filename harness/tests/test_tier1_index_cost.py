@@ -72,9 +72,13 @@ def _count_index_builds(monkeypatch) -> list[int]:
     built: list[int] = []
     real = lk.index
 
-    def spy(root, exclude=None):
+    # `**kw` rather than the signature spelled out: this spy counts *builds*, and
+    # the only thing it needs to be right about is that it forwards whatever it
+    # was given. It named `exclude` alone and broke the moment `index` grew a
+    # `tick`, which is a test failing on a parameter it has no opinion about.
+    def spy(root, exclude=None, **kw):
         built.append(1)
-        return real(root, exclude)
+        return real(root, exclude, **kw)
 
     monkeypatch.setattr(lk, "index", spy)
     return built

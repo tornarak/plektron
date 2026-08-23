@@ -14,6 +14,7 @@ when they disagree, so it names the pair and stops.
 from __future__ import annotations
 
 from ..geo import boxes, listing, verify
+from ..render import progress
 from ._common import action, arg, group, opt, out
 
 
@@ -102,7 +103,8 @@ def run_list(a) -> int:
 
 
 def run_verify(a) -> int:
-    r = verify(a.root)
+    with progress("verifying shapes") as tick:
+        r = verify(a.root, tick=tick)
     out(a, r["scope"], name="scope")
     # First, because it is the only section that needs no shape: it speaks about
     # every `within:` in the store, where containment can only speak about the

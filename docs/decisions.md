@@ -65,7 +65,7 @@ ground truth was hand-corrected from CATMuS and the caption block descends from
 the same recognizer pass, so three commas the machine invented sat in both files
 corroborating each other, and only a fresh raster read separated them. Nothing
 in either file records the shared ancestor. Same fault as the verbatim firewall,
-`review`'s span diff and `zones score`'s `unseen` row — two inputs that turn out
+`review`'s span diff and `train score zones`'s `unseen` row — two inputs that turn out
 to be one — arriving through provenance nobody wrote down.
 
 What that measured is worth carrying: **the residual error classes are
@@ -867,11 +867,112 @@ which are supposed to change, and duly aborted all 832 pages. A gate whose first
 fails everything is either a real finding or a wrong gate, and the way to tell is to
 name what it should be blind to *before* looking at the count.
 
+## Six spellings of "what made this", and the one that let a report name a model it never loaded
+
+Every `mz/` store already recorded something about its producer and no two
+recorded it alike. `mz/zones/` and `mz/ocr/` wrote a `<Processing>` block from
+four hand-built places; `mz/fig/` wrote a bare
+`f"{model_path} sha256:{sha[:16]} device:{dev}"` from a fifth and a rule
+description from a sixth; `mz/tei/` wrote an XML comment, which no XPath reaches,
+no schema constrains and `tei validate` could not see.
+
+**The cost was not the duplication.** It was that `mz/fig/` held two kinds of
+claim — a segmenter's guess from `fig predict`, and the scanner's own MRC
+segmentation from `fig propose` — as two free-text strings no reader could tell
+apart without matching prose. `figures.score` took a `model_path`, used it only in
+the returned dict and always compared `mz/fig/` against `gt/fig/`. So
+`train score fig --model M` named a checkpoint it never opened, over a store that might
+hold no model's work at all: a diagnostic answering a question it had not asked,
+in the store's own report. Fluent nonsense inside the instrument built to detect it.
+
+The correction is one record with a **`kind`** field (`harness/provenance.py`) and
+one writer behind all six sites. A rule's output and a model's guess are both
+`#mz` and neither outranks a human; they are not the same witness, and the store
+now says which it holds.
+
+**A machine-readable block declares itself, and legacy free text reads as
+unwitnessed.** This is the part worth keeping. `read_producer` could have scraped
+`model:` out of the old prose — it is right there, and the parse is four lines.
+Then `corpus provenance` would have reported every store fully witnessed before a
+single file was rewritten, the backfill would have been indistinguishable from a
+no-op, and the one instrument built to prove the change would have been the thing
+that concealed it. A census whose number cannot move is not a census. The marker
+is a leading `harness: 1`; the number moved 0 → 236, 0 → 717, 0 → 749 as each
+store was rebuilt, which is what proved the rebuild.
+
+**Moving `mz/tei/`'s stamp into `<appInfo>` nearly broke `tei diff`, and the test
+that should have caught it was the test that hid it.**
+`test_diff_says_it_cannot_tell_rather_than_saying_no` built its "page with no
+stamp" by regex-stripping the XML comment. Once the stamp was an element, that
+setup produced a page that still carried one, so the test asserted nothing about
+the case it names. It failed loudly here only because the *assertion* happened to
+still bite; a differently-worded assertion would have gone green and stayed green.
+A test whose setup constructs its precondition by removing a specific encoding
+decays silently the day the encoding changes. `_producer_stamp` reads both forms —
+every page collated before the move carries the comment, and `SURVIVING` still
+lists `generated:` for that reason — and the fallback is pinned by a test that was
+mutation-checked by deleting it.
+
+## A ruling that did not clear what it made false, and a docstring that outlived its mechanism
+
+Ruling a leaf `plate` or `blank` in the editor saved the ruling *and* whatever
+zones were on the canvas, and never touched `mz/zones/` at all. So 32 leaves kept
+a segmenter's guess at a text column they do not have — 98 zones against 1 in
+ground truth, 57 of them `MainZone-P`, several on paper with no ink on it — and
+two kept a human's. `1-325`, a plate, carried eleven paragraphs decoded out of a
+photograph's tonal bands. Nothing read any of it, because `gt/` outranks `mz/` in
+the view; that is a fact about today's consumers rather than a property of the
+store, and it is the reason the residue survived a year without a symptom.
+
+The rule is `exempt => no zones`: a leaf has no text column, so there is nothing
+for a zone to be, and the kind in the split lists is the whole record that a human
+looked. Ruling one now clears both stores, after a confirmation that fires only
+when there is something to lose.
+
+**The empty ALTO was the older spelling of that record, and a docstring still said
+so.** `has_zones` read: *"A plate carries no text column, so its correct
+segmentation is zero zones; an empty file is that record… Only the file's
+existence separates 'looked at, holds nothing' from 'not looked at'."* That was
+true before the leaf kinds existed and false after — the kinds took over both jobs
+— but the prose stayed, and it was cited here as the reason the files had to be
+kept. **Prose in this repo carries a date it does not print.** A comment that
+describes a mechanism is evidence about the mechanism *as it was*, and the
+question to ask of one is not "is this well argued" but "is what it describes
+still what happens". The cost of not asking was an argument for preserving 115
+files whose whole justification had been superseded.
+
+What replaced it is two predicates, and keeping them apart is the point.
+`has_zones` is a **file** question — the editor's store selector and its
+paragraph pill ask it, and gating those on the other one drew `gt — 0` for a page
+whose ALTO had just been deleted, the old convention coming back as a live-looking
+number. `keyed` is "has a human been through", which a ruling answers as fully as
+keying does; the Done button, the progress count and the itinerary's resume ask
+it, and reading them off the file reported every plate in the corpus as unfinished
+and sent the resume back to the same plate every session. `settled_refs` is the
+same distinction one level up, for the sweep and the page list.
+
+**Reading the ink is not the same as reading the policy.** `1-245` is a plate
+carrying a real running title — "BOGORAS, THE CHUKCHEE." and folio 189 — with a
+`RunningTitleZone` sitting exactly on it. Looking at the raster, that zone is
+correct, and it was defended here as correct human work the rule would destroy.
+It is not: most plates carry a running title, they are deliberately ignored, and
+the folio propagates through the seam ledger instead. Zoning one records nothing
+the corpus reads and leaves a text-page label on a leaf that is not a text page.
+The ink was evidence about the ink and about nothing else; the store's rule was
+the question, and it is not answerable from the page.
+
+The counterpart failure is on the same two leaves. `1-316` is blank — no ink at
+all bar two specks of scanner dust — and its keyed `MainZone-P` was read here as
+"a folio number or a signature mark, and the human keyed exactly it". A
+justification was invented for a mark that has nothing under it, in the middle of
+a report about other instances of exactly that. Look at the page.
+
 ## The geometry change was a transaction nobody had written down
 
-The entry above ends with the correction: cut the rasters from the layers, translate
-every stored coordinate. What it does not say is how that correction was *performed*,
-and the answer is a PEP 723 script, a hand `mv`, and a receipt written afterwards.
+"Part 3 was read below source resolution for twenty months" ends with the
+correction: cut the rasters from the layers, translate every stored coordinate.
+What it does not say is how that correction was *performed*, and the answer is a
+PEP 723 script, a hand `mv`, and a receipt written afterwards.
 
 The script could not be tested. `tools/extract_scans.py` declared `pymupdf` inline so
 that it ran in an environment with no harness in it, and the isolation was argued for

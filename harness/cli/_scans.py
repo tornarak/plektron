@@ -200,7 +200,9 @@ def _scope(a) -> list[str]:
 
 def run_info(a) -> int:
     refs = _scope(a)
-    out(a, scans.info(refs, a.root), name="info")
+    with render.progress("info") as tick:
+        rows = scans.info(refs, a.root, tick)
+    out(a, rows, name="info")
     ph = scans.photos(refs, a.root)
     if ph:
         out(a, ph, name="photos", heading=True)
@@ -208,7 +210,8 @@ def run_info(a) -> int:
 
 
 def run_census(a) -> int:
-    r = scans.census(page_refs(a) or None, a.root)
+    with render.progress("census") as tick:
+        r = scans.census(page_refs(a) or None, a.root, tick)
     out(a, r["census"], name="census")
     out(a, r["masters"], name="masters", heading=True)
     out(a, r["offsets"], name="offsets", heading=True)
@@ -216,7 +219,8 @@ def run_census(a) -> int:
 
 
 def run_audit(a) -> int:
-    findings = scans.audit(page_refs(a) or None, a.root)
+    with render.progress("audit") as tick:
+        findings = scans.audit(page_refs(a) or None, a.root, tick=tick)
     # **`gates` is a column, not a filter.** A source PDF this machine cannot see
     # and a raster cut before the provenance chunk existed are both worth saying and
     # neither is a disagreement — every worktree has dangling `pdfs/` links, and an
@@ -232,7 +236,8 @@ def run_audit(a) -> int:
 
 
 def run_space(a) -> int:
-    rows = scans.space(page_refs(a) or None, a.root)
+    with render.progress("space") as tick:
+        rows = scans.space(page_refs(a) or None, a.root, tick)
     wrong = [r for r in rows if r["space"] != "master"]
     by_space: dict[str, int] = {}
     for r in rows:

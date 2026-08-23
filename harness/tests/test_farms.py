@@ -62,7 +62,7 @@ def test_relinking_replaces_rather_than_raising(tmp_path):
 def test_resolve_false_keeps_a_link_to_a_link(tmp_path):
     """The `w-ocr` case, and the reason the assertion is lexical.
 
-    `zones assemble` was bitten by the resolving form: it followed its targets back
+    `train assemble zones` was bitten by the resolving form: it followed its targets back
     to `gt/zones/`, so kraken looked for rasters beside the real ALTOs and the blot
     links the function existed to make were never read. Both links below open the
     same bytes; only `readlink` can tell them apart.

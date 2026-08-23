@@ -1,0 +1,367 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-3-183.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-3-183.png; regions_from: zones/chukchi-3-183.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+                <TextBlock ID="mz_3-183_r1" HPOS="344" VPOS="461" WIDTH="1782" HEIGHT="94" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="344 461 2126 461 2126 555 344 555"/>
+                    </Shape>
+                    <TextLine ID="mz_3-183_l1" HPOS="919" VPOS="480" WIDTH="620" HEIGHT="51" BASELINE="919 513 1539 513" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1523 486 1512 480 933 480 919 492 919 513 919 531 1539 531 1539 513 1535 502 1523 486"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l2" HPOS="2013" VPOS="484" WIDTH="91" HEIGHT="55" BASELINE="2015 523 2104 519" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2091 492 2071 488 2061 484 2013 488 2015 523 2015 533 2102 539 2104 519 2098 492 2091 492"/>
+                        </Shape>
+                        <String CONTENT="715"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-183_r2" HPOS="344" VPOS="578" WIDTH="1782" HEIGHT="725" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="344 578 2126 578 2126 1303 344 1303"/>
+                    </Shape>
+                    <TextLine ID="mz_3-183_l3" HPOS="340" VPOS="578" WIDTH="1772" HEIGHT="68" BASELINE="342 622 2112 617" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="340 603 342 622 342 636 643 646 645 646 646 646 648 646 664 636 2110 636 2112 617 2108 591 1999 578 1997 578 1995 578 1993 578 1976 591 1909 591 1849 578 1847 578 1845 578 1798 591 1601 591 1572 578 1570 578 1568 578 1496 591 1223 580 1221 580 1219 580 1180 591 1143 580 1141 580 1140 580 1075 591 853 581 851 581 849 581 806 595 658 595 600 581 598 581 596 581 553 593 491 581 489 581 487 581 485 581 465 595 346 595 340 603"/>
+                        </Shape>
+                        <String CONTENT="once for all, 1.20 rubles per pud. The difference is over 7 rubles. Thus"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l4" HPOS="340" VPOS="644" WIDTH="1772" HEIGHT="54" BASELINE="342 683 2112 679" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="342 683 342 698 2110 698 2112 679 2108 652 360 644 358 644 356 644 354 644 340 650 342 683"/>
+                        </Shape>
+                        <String CONTENT="the merchants who undertake every year to carry the salt allowance from"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l5" HPOS="348" VPOS="702" WIDTH="1766" HEIGHT="55" BASELINE="348 741 2114 741" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="348 741 348 757 2112 757 2114 741 2110 704 1087 712 1030 702 1028 702 1027 702 1001 714 857 714 748 702 746 702 691 712 662 702 660 702 658 702 656 702 654 702 637 714 535 714 520 702 518 702 516 702 348 702 348 741"/>
+                        </Shape>
+                        <String CONTENT="Yakutsk to the Kolyma prefer to carry one tenth of the quantity agreed"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l6" HPOS="340" VPOS="759" WIDTH="1774" HEIGHT="60" BASELINE="342 806 2114 798" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="342 806 342 819 2112 811 2114 798 2110 771 1872 759 1870 759 1804 769 1773 759 1771 759 1769 759 1767 759 1765 759 1750 769 1638 761 1637 761 1564 771 1535 761 1533 761 1531 761 1420 771 1364 761 1362 761 1360 761 1358 761 1340 771 1151 763 1149 763 1147 763 1104 772 1054 763 1052 763 943 772 874 763 873 763 871 763 845 772 516 765 514 765 512 765 510 765 494 776 340 776 342 806"/>
+                        </Shape>
+                        <String CONTENT="upon; for the other nine tenths they get the receipts from the chief officer"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l7" HPOS="339" VPOS="819" WIDTH="1773" HEIGHT="61" BASELINE="340 866 2112 860" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="340 866 340 878 2110 880 2112 860 2108 831 1974 819 1972 819 1970 819 1948 831 1829 831 1794 819 1792 819 1790 819 1789 819 1755 829 1720 819 1718 819 1716 819 1714 819 1676 829 1638 819 1637 819 1635 819 1633 819 1611 831 1327 831 1294 821 1292 821 1290 821 1177 831 1075 821 1073 821 1028 831 991 821 989 821 988 821 927 833 894 823 892 823 890 823 682 833 666 823 664 823 662 823 420 823 418 823 339 835 340 866"/>
+                        </Shape>
+                        <String CONTENT="at Sredne-Kolymsk. The salt of the previous years remains in the storehouse,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l8" HPOS="342" VPOS="880" WIDTH="1772" HEIGHT="58" BASELINE="344 923 2114 919" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="344 923 344 938 2112 938 2114 919 2108 882 1654 889 1617 880 1615 880 1613 880 1611 880 1590 889 1506 880 1504 880 1438 889 1403 880 1401 880 1399 880 1270 889 1231 880 1229 880 1227 880 1225 880 1198 891 1067 882 1065 882 995 891 966 882 964 882 962 882 960 882 939 891 884 882 882 882 758 891 705 882 703 882 701 882 680 893 551 893 504 882 502 882 450 891 416 882 415 882 413 882 342 893 344 923"/>
+                        </Shape>
+                        <String CONTENT="and only a small quantity is sold to the people. The large profit is divided"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l9" HPOS="342" VPOS="942" WIDTH="1770" HEIGHT="58" BASELINE="344 985 2112 977" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="344 985 344 1000 2110 995 2112 977 2108 950 1227 942 1225 942 1223 942 1200 952 806 944 804 944 342 956 344 985"/>
+                        </Shape>
+                        <String CONTENT="among the merchant contractors and the officials interested in the transaction."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l10" HPOS="342" VPOS="999" WIDTH="1770" HEIGHT="60" BASELINE="344 1045 2112 1039" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="344 1045 344 1059 2110 1059 2112 1039 2110 1008 2095 999 2093 999 2091 999 2089 999 2087 999 2057 1010 1991 999 1989 999 1987 999 1948 1012 1806 1012 1769 999 1767 999 1765 999 1763 999 1726 1010 1687 999 1685 999 1683 999 1681 999 1648 1010 1529 999 1527 999 1426 1014 1260 1014 1227 1000 1225 1000 1223 1000 1221 1000 1184 1012 1165 1000 1163 1000 1161 1000 1159 1000 1103 1012 1017 1000 1015 1000 1013 1000 976 1012 902 1002 900 1002 775 1014 609 1002 607 1002 483 1014 440 1002 438 1002 436 1002 434 1002 397 1014 381 1002 379 1002 378 1002 376 1002 342 1006 344 1045"/>
+                        </Shape>
+                        <String CONTENT="It is needless to mention that all the state provisions in the care of such"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l11" HPOS="344" VPOS="1069" WIDTH="1768" HEIGHT="56" BASELINE="344 1104 2112 1104" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="344 1104 344 1115 2110 1125 2112 1104 2112 1073 344 1069 344 1104"/>
+                        </Shape>
+                        <String CONTENT="keepers are subject to constant reduction and destruction by mice, wind,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l12" HPOS="344" VPOS="1121" WIDTH="1772" HEIGHT="59" BASELINE="344 1162 2116 1162" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="344 1162 344 1180 2116 1180 2116 1162 2116 1131 2096 1121 2095 1121 2093 1121 2040 1131 1980 1121 1978 1121 1976 1121 1943 1131 1904 1121 1902 1121 1900 1121 1898 1121 1863 1131 1808 1121 1806 1121 1804 1121 1771 1131 1676 1121 1574 1121 1572 1121 1570 1121 1568 1121 1555 1131 1520 1121 1518 1121 1516 1121 1467 1131 1377 1121 1375 1121 1373 1121 1340 1131 1245 1121 1243 1121 1194 1131 1062 1121 1060 1121 1058 1121 1023 1131 937 1121 935 1121 843 1131 701 1121 699 1121 697 1121 666 1133 547 1133 526 1121 524 1121 522 1121 520 1121 491 1131 475 1121 473 1121 471 1121 469 1121 467 1121 438 1131 344 1129 344 1162"/>
+                        </Shape>
+                        <String CONTENT="inundation, moisture, mildew, fire, partly real, partly fictitious, for the benefit"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l13" HPOS="342" VPOS="1180" WIDTH="1772" HEIGHT="64" BASELINE="344 1225 2114 1219" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="344 1225 344 1238 1522 1244 1523 1244 2112 1232 2114 1219 2110 1191 1748 1180 1746 1180 1693 1190 1656 1180 1654 1180 1652 1180 1650 1180 1631 1190 1584 1180 1582 1180 1490 1191 1093 1182 1091 1182 1038 1191 960 1182 958 1182 956 1182 927 1191 816 1184 814 1184 812 1184 810 1184 795 1193 383 1184 381 1184 379 1184 342 1195 344 1225"/>
+                        </Shape>
+                        <String CONTENT="of the supervisors. I found in official reports paragraphs in which even sheet-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l14" HPOS="344" VPOS="1242" WIDTH="996" HEIGHT="55" BASELINE="344 1283 1340 1283" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="344 1283 344 1295 1338 1297 1340 1283 1340 1254 1272 1242 1270 1242 1268 1242 1237 1252 1177 1242 1175 1242 1173 1242 1143 1252 1124 1242 1122 1242 1120 1242 1118 1242 1093 1254 958 1254 937 1242 935 1242 933 1242 857 1254 763 1254 754 1244 754 1242 752 1242 750 1242 748 1242 746 1242 722 1252 650 1242 648 1242 646 1242 615 1254 496 1254 487 1244 487 1242 485 1242 483 1242 481 1242 479 1242 459 1252 448 1242 446 1242 444 1242 442 1242 344 1250 344 1283"/>
+                        </Shape>
+                        <String CONTENT="lead is mentioned as subject to desiccation."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-183_r3" HPOS="344" VPOS="1303" WIDTH="1782" HEIGHT="479" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="344 1303 2126 1303 2126 1782 344 1782"/>
+                    </Shape>
+                    <TextLine ID="mz_3-183_l15" HPOS="452" VPOS="1299" WIDTH="1664" HEIGHT="58" BASELINE="454 1342 2116 1338" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="454 1342 454 1357 2114 1353 2116 1338 2112 1310 1789 1299 1787 1299 1785 1299 1761 1310 1605 1310 1574 1299 1572 1299 1570 1299 1440 1308 1403 1299 1401 1299 1399 1299 1397 1299 1377 1308 1332 1299 1331 1299 1223 1310 1159 1301 1157 1301 1110 1312 935 1312 919 1301 917 1301 915 1301 913 1301 912 1301 880 1310 791 1301 789 1301 452 1308 454 1342"/>
+                        </Shape>
+                        <String CONTENT="I will give still another example. In all clans and communities of natives"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l16" HPOS="342" VPOS="1361" WIDTH="1774" HEIGHT="57" BASELINE="344 1404 2116 1396" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="344 1404 344 1418 2114 1412 2116 1396 2112 1369 1229 1361 1227 1361 1161 1371 413 1365 411 1365 342 1375 344 1404"/>
+                        </Shape>
+                        <String CONTENT="and creoles, besides the ordinary tribute and taxes, there is collected also"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l17" HPOS="344" VPOS="1418" WIDTH="1774" HEIGHT="60" BASELINE="346 1464 2118 1458" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="346 1464 346 1478 2116 1474 2118 1458 2114 1429 1779 1429 1722 1418 1720 1418 1549 1427 1529 1418 1527 1418 1525 1418 1523 1418 1502 1427 995 1419 993 1419 991 1419 966 1429 939 1419 937 1419 935 1419 933 1419 898 1431 874 1421 873 1421 871 1421 820 1431 543 1421 541 1421 422 1431 370 1421 368 1421 366 1421 344 1431 346 1464"/>
+                        </Shape>
+                        <String CONTENT="the so-called “dark collection” (темный сборъ), which is spent without any account"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l18" HPOS="346" VPOS="1478" WIDTH="1770" HEIGHT="68" BASELINE="348 1525 2116 1519" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="348 1525 348 1536 578 1546 580 1546 582 1546 609 1536 863 1536 919 1546 921 1546 995 1534 1243 1544 1245 1544 1247 1544 1249 1544 1264 1534 1430 1544 1432 1544 1584 1533 1845 1533 1861 1542 1863 1542 1865 1542 1867 1542 2114 1533 2116 1519 2112 1492 1964 1492 1946 1478 1944 1478 1943 1478 1941 1478 1939 1478 1913 1490 1894 1478 1892 1478 1890 1478 1888 1478 1886 1478 1855 1490 1709 1478 1707 1478 1705 1478 1672 1490 1633 1478 1631 1478 1629 1478 1627 1478 1596 1490 1485 1480 1483 1480 1481 1480 1479 1480 1463 1492 1420 1480 1418 1480 1311 1480 1309 1480 1307 1480 1280 1492 1218 1480 1216 1480 1214 1480 1177 1490 1120 1480 1118 1480 1116 1480 1114 1480 1097 1492 1028 1484 1027 1484 890 1494 841 1482 839 1482 837 1482 836 1482 797 1494 728 1482 726 1482 639 1494 526 1482 524 1482 522 1482 483 1494 422 1482 420 1482 346 1486 348 1525"/>
+                        </Shape>
+                        <String CONTENT="being kept of it. It goes to all the officials, from the lowest clerk up to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l19" HPOS="346" VPOS="1540" WIDTH="1774" HEIGHT="57" BASELINE="346 1581 2120 1581" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="346 1581 346 1597 2120 1597 2120 1581 2120 1550 2077 1540 2075 1540 1980 1540 1978 1540 1976 1540 1974 1540 1958 1550 1711 1540 1709 1540 1660 1550 1611 1540 1609 1540 1527 1550 1477 1540 1475 1540 1305 1550 1276 1540 1274 1540 1272 1540 1188 1550 1157 1540 1155 1540 1153 1540 1040 1550 949 1540 947 1540 859 1550 845 1540 843 1540 841 1540 750 1540 748 1540 687 1550 660 1540 658 1540 656 1540 654 1540 652 1540 637 1550 609 1540 607 1540 606 1540 604 1540 569 1550 473 1540 471 1540 401 1550 374 1540 372 1540 370 1540 368 1540 346 1550 346 1581"/>
+                        </Shape>
+                        <String CONTENT="the chief of the district. I know also of cases where the chief of the district"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l20" HPOS="346" VPOS="1603" WIDTH="1770" HEIGHT="60" BASELINE="348 1644 2116 1640" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="348 1644 348 1657 2112 1663 2116 1640 2112 1610 436 1603 434 1603 346 1612 348 1644"/>
+                        </Shape>
+                        <String CONTENT="would lose at card-playing the whole amount of the taxes of some community,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l21" HPOS="346" VPOS="1659" WIDTH="1770" HEIGHT="61" BASELINE="348 1704 2116 1698" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="348 1704 348 1720 2114 1720 2116 1698 2114 1669 2085 1659 2083 1659 2081 1659 2079 1659 2077 1659 2061 1671 1896 1671 1870 1659 1868 1659 1867 1659 1865 1659 1845 1669 1798 1659 1796 1659 1746 1669 1695 1659 1693 1659 1691 1659 1658 1669 1586 1659 1584 1659 1582 1659 1561 1669 1529 1659 1527 1659 1525 1659 1523 1659 1522 1659 1504 1671 1403 1661 1401 1661 1399 1661 1375 1673 978 1673 939 1661 937 1661 935 1661 933 1661 900 1673 839 1663 837 1663 567 1673 481 1663 479 1663 477 1663 455 1673 418 1663 416 1663 415 1663 346 1675 348 1704"/>
+                        </Shape>
+                        <String CONTENT="and then would make the accounts so complicated that they had to pay it"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l22" HPOS="346" VPOS="1725" WIDTH="723" HEIGHT="53" BASELINE="348 1764 1069 1761" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="348 1764 348 1778 1067 1778 1069 1761 1065 1733 428 1725 426 1725 346 1735 348 1764"/>
+                        </Shape>
+                        <String CONTENT="again the next year as arrears."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-183_r4" HPOS="344" VPOS="1782" WIDTH="1782" HEIGHT="1268" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="344 1782 2126 1782 2126 3050 344 3050"/>
+                    </Shape>
+                    <TextLine ID="mz_3-183_l23" HPOS="452" VPOS="1776" WIDTH="1666" HEIGHT="61" BASELINE="454 1825 2118 1819" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="454 1825 454 1837 2116 1835 2118 1819 2116 1790 2083 1776 2081 1776 2079 1776 2077 1776 2050 1790 1923 1790 1905 1776 1904 1776 1902 1776 1900 1776 1831 1786 1798 1776 1796 1776 1794 1776 1726 1788 1711 1776 1709 1776 1707 1776 1705 1776 1703 1776 1677 1786 1615 1776 1613 1776 1611 1776 1609 1776 1594 1788 1564 1776 1562 1776 1561 1776 1455 1790 1163 1778 1161 1778 1095 1790 1009 1778 1007 1778 1005 1778 949 1792 771 1792 758 1780 756 1780 754 1780 752 1780 541 1790 475 1780 473 1780 471 1780 469 1780 452 1790 454 1825"/>
+                        </Shape>
+                        <String CONTENT="Strange Reforms. — When administrators of this kind undertake certain"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l24" HPOS="344" VPOS="1837" WIDTH="1774" HEIGHT="62" BASELINE="346 1885 2118 1877" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="346 1885 346 1899 2116 1895 2118 1877 2114 1848 2067 1837 2065 1837 2063 1837 2044 1846 2024 1837 2022 1837 2020 1837 2019 1837 1997 1846 1861 1837 1859 1837 1857 1837 1829 1846 1728 1837 1726 1837 1670 1848 1650 1839 1648 1839 1646 1839 1644 1839 1613 1848 1486 1839 1485 1839 1424 1848 1387 1839 1385 1839 1383 1839 1175 1850 818 1840 816 1840 814 1840 785 1852 403 1842 401 1842 344 1854 346 1885"/>
+                        </Shape>
+                        <String CONTENT="reforms, still worse things than extortion result. Thus the chief officer of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l25" HPOS="346" VPOS="1903" WIDTH="1772" HEIGHT="54" BASELINE="348 1944 2118 1938" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="348 1944 348 1957 2116 1955 2118 1938 2112 1903 346 1909 348 1944"/>
+                        </Shape>
+                        <String CONTENT="Kolyma, in the year 1888, suddenly conceived the idea that he would"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l26" HPOS="346" VPOS="1961" WIDTH="1770" HEIGHT="63" BASELINE="346 2002 2116 2002" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="346 2002 346 2016 2112 2024 2116 2002 2116 1971 2100 1961 2098 1961 2096 1961 2095 1961 1991 1971 1948 1961 1946 1961 1944 1961 1943 1961 1909 1971 1802 1961 1800 1961 1594 1971 1559 1961 1557 1961 1555 1961 1553 1961 1514 1971 1395 1961 1393 1961 1342 1971 1311 1961 1309 1961 1307 1961 1243 1971 1157 1961 1155 1961 1093 1973 989 1973 974 1961 972 1961 970 1961 968 1961 966 1961 937 1971 878 1961 876 1961 346 1969 346 2002"/>
+                        </Shape>
+                        <String CONTENT="introduce into his district the smoking of herrings. It must be borne in mind,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l27" HPOS="344" VPOS="2018" WIDTH="1772" HEIGHT="62" BASELINE="346 2065 2116 2057" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="346 2065 346 2080 2114 2080 2116 2057 2112 2029 2030 2018 2028 2018 1937 2028 1911 2018 1909 2018 1907 2018 1822 2028 1796 2018 1794 2018 1792 2018 1707 2028 1676 2018 1674 2018 1672 2018 1609 2029 1350 2020 1348 2020 1346 2020 1307 2029 1272 2020 1270 2020 1268 2020 1266 2020 1219 2031 1192 2022 1190 2022 1188 2022 1140 2031 1089 2022 1087 2022 1085 2022 1083 2022 1067 2033 876 2033 789 2022 787 2022 785 2022 760 2033 358 2024 356 2024 354 2024 352 2024 344 2029 346 2065"/>
+                        </Shape>
+                        <String CONTENT="first of all, that there are no herring in the Kolyma River; but there is a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l28" HPOS="346" VPOS="2080" WIDTH="1770" HEIGHT="63" BASELINE="348 2125 2116 2121" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="348 2125 348 2139 2112 2143 2116 2121 2112 2092 2057 2080 2056 2080 2054 2080 2022 2090 1414 2080 1412 2080 1410 2080 1387 2092 1229 2092 1192 2082 1190 2082 1188 2082 1186 2082 1157 2092 1104 2082 1103 2082 1101 2082 1069 2092 1056 2082 1054 2082 1052 2082 1050 2082 828 2092 758 2082 756 2082 703 2092 607 2082 606 2082 604 2082 574 2092 561 2082 559 2082 557 2082 436 2082 434 2082 346 2094 348 2125"/>
+                        </Shape>
+                        <String CONTENT="small fish there, Coregonus albula, the meat of which is soft and very tender,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l29" HPOS="346" VPOS="2141" WIDTH="1774" HEIGHT="56" BASELINE="348 2183 2120 2180" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="348 2183 348 2197 2118 2195 2120 2180 2116 2152 1861 2141 1859 2141 1812 2150 1783 2141 1781 2141 1779 2141 1677 2150 1615 2141 1613 2141 1518 2150 1479 2141 1477 2141 1475 2141 1426 2150 1340 2141 1338 2141 1336 2141 1334 2141 1319 2150 1087 2143 1085 2143 1083 2143 1056 2154 869 2154 818 2143 816 2143 814 2143 771 2152 709 2143 707 2143 485 2152 389 2143 387 2143 385 2143 346 2154 348 2183"/>
+                        </Shape>
+                        <String CONTENT="which goes under the name of herring. The places for smoke-drying were"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l30" HPOS="344" VPOS="2199" WIDTH="1776" HEIGHT="64" BASELINE="346 2246 2120 2238" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="346 2246 346 2259 1674 2263 1676 2263 2118 2252 2120 2238 2116 2211 1857 2199 1855 2199 1798 2209 1738 2199 1736 2199 1650 2211 1607 2201 1605 2201 1603 2201 1395 2211 1297 2201 1295 2201 1294 2201 1264 2211 1046 2203 1044 2203 1042 2203 1040 2203 1025 2215 923 2215 869 2203 867 2203 553 2215 537 2205 535 2205 533 2205 391 2205 389 2205 387 2205 344 2217 346 2246"/>
+                        </Shape>
+                        <String CONTENT="selected, as if purposely, up the river, where even this species of Coregonus"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l31" HPOS="346" VPOS="2258" WIDTH="1772" HEIGHT="60" BASELINE="348 2306 2118 2298" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="348 2306 348 2318 2116 2310 2118 2298 2114 2269 2059 2258 2057 2258 2056 2258 2028 2267 1884 2258 1882 2258 1880 2258 1843 2267 1816 2258 1814 2258 1812 2258 1765 2267 1691 2258 1689 2258 1687 2258 1685 2258 1666 2269 1395 2259 1393 2259 1391 2259 1350 2269 1297 2259 1295 2259 1294 2259 1262 2269 1235 2259 1233 2259 1231 2259 1229 2259 1198 2271 1179 2261 1177 2261 1175 2261 1173 2261 1143 2271 1027 2261 1025 2261 346 2269 348 2306"/>
+                        </Shape>
+                        <String CONTENT="is quite scarce. The inhabitants built the sheds and undertook the smoke-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l32" HPOS="346" VPOS="2318" WIDTH="1774" HEIGHT="68" BASELINE="348 2363 2120 2357" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="348 2363 348 2376 493 2386 494 2386 496 2386 498 2386 514 2376 789 2376 880 2386 882 2386 884 2386 886 2386 902 2376 1414 2382 1416 2382 1582 2373 1685 2382 1687 2382 1753 2373 2030 2382 2032 2382 2118 2371 2120 2357 2116 2330 1599 2318 1598 2318 1520 2330 1485 2320 1483 2320 1481 2320 1479 2320 1451 2330 1208 2320 1206 2320 1124 2330 1046 2320 1044 2320 1042 2320 1040 2320 1023 2330 808 2322 806 2322 804 2322 802 2322 785 2334 658 2334 567 2322 565 2322 467 2332 370 2322 368 2322 366 2322 364 2322 346 2330 348 2363"/>
+                        </Shape>
+                        <String CONTENT="drying. Of course they knew just as little about it as did the official instigator"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l33" HPOS="346" VPOS="2386" WIDTH="1774" HEIGHT="61" BASELINE="348 2425 2120 2417" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="348 2425 348 2437 607 2447 609 2447 793 2435 997 2445 999 2445 1046 2435 2118 2435 2120 2417 2116 2390 381 2386 379 2386 378 2386 346 2396 348 2425"/>
+                        </Shape>
+                        <String CONTENT="of the experiment. As may have been expected, the result was that some"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l34" HPOS="348" VPOS="2439" WIDTH="1772" HEIGHT="56" BASELINE="350 2482 2120 2478" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="350 2482 350 2495 2118 2493 2120 2478 2114 2441 1753 2449 1650 2439 1648 2439 1646 2439 1617 2449 1586 2439 1584 2439 1582 2439 1494 2449 1436 2439 1434 2439 1366 2449 1311 2439 1309 2439 1307 2439 1274 2449 1196 2441 1194 2441 1192 2441 1190 2441 1173 2452 1050 2452 1019 2441 1017 2441 1015 2441 941 2450 892 2441 890 2441 888 2441 886 2441 871 2452 740 2452 701 2441 699 2441 697 2441 695 2441 672 2450 528 2441 526 2441 524 2441 491 2450 389 2441 387 2441 385 2441 348 2452 350 2482"/>
+                        </Shape>
+                        <String CONTENT="of the “herring” were charred to coals, others dropped off from the rods, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l35" HPOS="348" VPOS="2501" WIDTH="1772" HEIGHT="57" BASELINE="350 2542 2120 2538" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="350 2542 350 2558 2118 2558 2120 2538 2114 2501 834 2511 758 2501 756 2501 627 2511 524 2501 522 2501 348 2513 350 2542"/>
+                        </Shape>
+                        <String CONTENT="some of the remaining ones were quite bitter and unfit for eating. It should"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l36" HPOS="346" VPOS="2556" WIDTH="1774" HEIGHT="72" BASELINE="348 2604 2120 2595" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="348 2604 348 2618 635 2628 637 2628 748 2616 1054 2626 1056 2626 1126 2614 1409 2624 1410 2624 1498 2612 1603 2622 1605 2622 1607 2622 1640 2612 1664 2622 1666 2622 1668 2622 2118 2610 2120 2595 2118 2567 2089 2556 2087 2556 2085 2556 2083 2556 2081 2556 2067 2565 2042 2556 2040 2556 2038 2556 1919 2565 1855 2556 1853 2556 1763 2567 1685 2558 1683 2558 1681 2558 1642 2567 1319 2560 1317 2560 1315 2560 1313 2560 1297 2569 1081 2560 1079 2560 1077 2560 1052 2571 789 2562 787 2562 785 2562 765 2571 551 2563 549 2563 547 2563 545 2563 531 2573 457 2563 455 2563 454 2563 436 2573 422 2563 420 2563 418 2563 416 2563 346 2575 348 2604"/>
+                        </Shape>
+                        <String CONTENT="not be forgotten that the people on the Kolyma River live on fish as their"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l37" HPOS="346" VPOS="2616" WIDTH="1774" HEIGHT="62" BASELINE="348 2665 2120 2655" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="348 2665 348 2678 2118 2675 2120 2655 2118 2628 2095 2616 2093 2616 2091 2616 2032 2626 1746 2618 1744 2618 1742 2618 1718 2628 1479 2618 1477 2618 1475 2618 1447 2628 1412 2618 1410 2618 1409 2618 1332 2630 1190 2620 1188 2620 1048 2632 951 2622 949 2622 898 2632 705 2622 703 2622 643 2634 609 2624 607 2624 606 2624 487 2634 383 2624 381 2624 379 2624 346 2636 348 2665"/>
+                        </Shape>
+                        <String CONTENT="staple food, without bread or vegetables. Only freshly caught or frozen fish"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l38" HPOS="346" VPOS="2677" WIDTH="1776" HEIGHT="64" BASELINE="348 2723 2122 2716" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="348 2723 348 2737 1676 2741 1677 2741 2120 2729 2122 2716 2118 2688 1705 2677 1703 2677 1631 2688 1603 2678 1601 2678 1599 2678 1598 2678 1572 2688 1348 2678 1346 2678 1344 2678 1303 2688 1235 2678 1233 2678 1128 2690 1095 2680 1093 2680 1091 2680 999 2690 910 2680 908 2680 861 2690 346 2690 348 2723"/>
+                        </Shape>
+                        <String CONTENT="is suitable for such a diet. Fish dried in the sun and slightly smoked after-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l39" HPOS="348" VPOS="2737" WIDTH="1776" HEIGHT="60" BASELINE="350 2784 2124 2778" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="350 2784 350 2797 2122 2792 2124 2778 2122 2749 2096 2737 2095 2737 2093 2737 2091 2737 2063 2747 1705 2737 1703 2737 1635 2747 1553 2737 1551 2737 1483 2749 1444 2739 1442 2739 1440 2739 1173 2749 1007 2739 1005 2739 904 2751 820 2741 818 2741 728 2751 697 2741 695 2741 693 2741 646 2751 615 2741 613 2741 611 2741 609 2741 607 2741 592 2753 487 2753 450 2741 448 2741 446 2741 348 2753 350 2784"/>
+                        </Shape>
+                        <String CONTENT="wards, as is done by the inhabitants, and fish slightly salted (three pounds"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l40" HPOS="348" VPOS="2797" WIDTH="1774" HEIGHT="61" BASELINE="350 2844 2122 2836" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="350 2844 350 2858 2120 2854 2122 2836 2118 2809 1948 2797 1946 2797 1944 2797 1905 2807 1872 2797 1870 2797 1868 2797 1867 2797 1865 2797 1849 2807 1652 2799 1650 2799 1492 2809 1459 2799 1457 2799 1455 2799 1274 2809 1237 2799 1235 2799 1233 2799 1231 2799 1198 2811 962 2801 960 2801 843 2811 806 2801 804 2801 802 2801 687 2811 645 2803 643 2803 641 2803 639 2803 623 2813 385 2803 383 2803 381 2803 348 2815 350 2844"/>
+                        </Shape>
+                        <String CONTENT="of salt to a hundred pounds of fish, the proportions used among the Russian"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l41" HPOS="348" VPOS="2860" WIDTH="1776" HEIGHT="58" BASELINE="350 2905 2124 2897" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="350 2905 350 2918 2122 2912 2124 2897 2118 2862 1364 2869 1301 2860 1299 2860 1297 2860 1295 2860 1278 2871 1157 2871 1130 2862 1128 2862 1126 2862 1124 2862 1103 2871 1030 2862 1028 2862 962 2871 923 2862 921 2862 919 2862 917 2862 890 2871 793 2862 791 2862 697 2873 442 2864 440 2864 348 2875 350 2905"/>
+                        </Shape>
+                        <String CONTENT="creoles of the Kolyma in salting), are also eaten by them. Strongly salted"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l42" HPOS="348" VPOS="2918" WIDTH="1776" HEIGHT="66" BASELINE="350 2963 2124 2957" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="350 2963 350 2975 915 2984 917 2984 986 2975 1525 2983 1527 2983 1578 2973 2124 2973 2124 2957 2120 2930 1615 2918 1613 2918 1611 2918 1586 2928 1555 2918 1553 2918 1551 2918 1483 2930 1192 2920 1190 2920 1089 2930 1015 2920 1013 2920 939 2932 902 2922 900 2922 898 2922 631 2932 572 2922 570 2922 569 2922 567 2922 551 2934 440 2934 366 2922 364 2922 362 2922 360 2922 348 2930 350 2963"/>
+                        </Shape>
+                        <String CONTENT="fish, on the other hand, or fish smoked in the usual civilized way, is almost"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_3-183_l43" HPOS="350" VPOS="2979" WIDTH="536" HEIGHT="58" BASELINE="352 3025 886 3021" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="352 3025 352 3037 886 3037 886 3021 882 2992 802 2979 800 2979 798 2979 773 2990 748 2979 746 2979 744 2979 742 2979 699 2990 664 2979 662 2979 660 2979 658 2979 656 2979 656 2981 645 2990 584 2981 582 2981 522 2992 493 2981 491 2981 489 2981 487 2981 459 2992 420 2981 418 2981 416 2981 350 2994 352 3025"/>
+                        </Shape>
+                        <String CONTENT="unfit for the local diet."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_3-183_r5" HPOS="344" VPOS="3051" WIDTH="1782" HEIGHT="61" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="344 3051 2126 3051 2126 3112 344 3112"/>
+                    </Shape>
+                    <TextLine ID="mz_3-183_l44" HPOS="457" VPOS="3037" WIDTH="1665" HEIGHT="68" BASELINE="459 3082 2122 3078" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2114 3072 2108 3043 2096 3037 2095 3037 2093 3037 2091 3037 2061 3047 1997 3037 1995 3037 1993 3037 1962 3047 1783 3037 1781 3037 1687 3047 1557 3037 1555 3037 1371 3047 1303 3037 1301 3037 1299 3037 1297 3037 1284 3049 1202 3039 1200 3039 1065 3049 1038 3039 1036 3039 1034 3039 941 3049 882 3039 880 3039 878 3039 876 3039 859 3051 750 3051 719 3039 717 3039 715 3039 713 3039 711 3039 697 3051 531 3051 475 3039 473 3039 471 3039 469 3039 457 3047 459 3082 459 3105 2120 3099 2122 3078 2120 3066 2114 3072"/>
+                        </Shape>
+                        <String CONTENT="One year the catching of spawning fish was suddenly prohibited, though"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

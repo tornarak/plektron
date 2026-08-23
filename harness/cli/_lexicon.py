@@ -31,6 +31,7 @@ from ..ids import glossary
 from ..ipa import rows as ipa_rows
 from ..lookup import search
 from ..marks import gt_conflicts
+from ..render import progress
 from ._common import action, arg, group, opt, out, verdict
 
 
@@ -310,7 +311,9 @@ def run_ratify(a) -> int:
 
 
 def run_lookup(a) -> int:
-    r = search(list(a.queries), a.root, min_pages=a.min_pages, context=a.context)
+    with progress("indexing the corpus") as tick:
+        r = search(list(a.queries), a.root, min_pages=a.min_pages,
+                   context=a.context, tick=tick)
     out(a, [{k: v for k, v in r.items() if k not in ("matches", "context")}],
         name="scope")
     out(a, r["matches"], name="matches", heading=True)
@@ -320,7 +323,8 @@ def run_lookup(a) -> int:
 
 def run_ipa(a) -> int:
     if a.every_form:
-        forms = [r["form"] for r in suggest_native_forms(a.root)]
+        with progress("reading the corpus") as tick:
+            forms = [r["form"] for r in suggest_native_forms(a.root, tick)]
     else:
         forms = list(a.forms)
     if not forms:
@@ -339,10 +343,22 @@ def run_ipa(a) -> int:
 def run_misses(a) -> int:
     # `--common`'s range is the parser's, per VERBS.md's Conventions: 0 is a
     # legible request (cut nothing) and a negative is not a count at all.
-    out(a, suggest_lexicon(a.root, common=a.common))
+    with progress("reading the corpus") as tick:
+        rep = suggest_lexicon(a.root, common=a.common, tick=tick)
+    out(a, rep)
     return 0
 
 
 def _emit(a, fn) -> int:
-    out(a, fn(a.root))
+    """The five frequency arms and `glosses`, each one call over a whole store.
+
+    **Every `fn` here takes `tick`, and that is a condition of registering one
+    through `add`** rather than something this checks: the reports differ in what
+    they count and not in what they walk, so an arm that could not report its
+    progress would be the one silent verb in a group whose every other member is
+    the same sweep under a different tally.
+    """
+    with progress("reading the corpus") as tick:
+        rep = fn(a.root, tick=tick)
+    out(a, rep)
     return 0

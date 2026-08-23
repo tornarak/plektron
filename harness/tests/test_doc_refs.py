@@ -52,6 +52,7 @@ DOCS = [
     "README.md",
     ".claude/skills/train-zones/SKILL.md",
     ".claude/skills/train-figures/SKILL.md",
+    ".claude/skills/train-ocr/SKILL.md",
     ".claude/skills/read-moll-page/SKILL.md",
     ".claude/skills/rebuild-groundtruth/dispatch.md",
     ".claude/agents/collator.md",
@@ -86,7 +87,12 @@ DIR_RE = re.compile(r"`((?:[\w.\-]+/){2,})`")
 #: path, and nothing but the suffix distinguishes the two shapes.
 KNOWN_SUFFIXES = frozenset(
     ".py .md .json .xml .png .jpg .lst .rng .jsonl .txt .toml .lock .js .html "
-    ".css .yaml .yml .sh .csv .tsv .mlmodel .pdf .svg .geojson".split()
+    ".css .yaml .yml .sh .csv .tsv .mlmodel .pdf .svg .geojson "
+    # **`.safetensors` was missing while `.mlmodel` was here**, so the stock
+    # models this project only consumes were checked and the four it trains and
+    # installs were not — the ones that actually move. All four resolved when
+    # this was added; the gap was that nothing could have said so.
+    ".safetensors".split()
 )
 
 # Named but deliberately absent, each for a reason a reader should meet rather
@@ -105,6 +111,11 @@ EXPECTED_ABSENT = {
     "review/PP-NNN/decision.json",
     "tei/chukchi-1-100.xml",
     "data/zones_config.json",
+    # Not there *yet*, which is the distinction this list exists to draw. The
+    # recognizer track is laid out and unrun: `train-ocr` names where a trained
+    # model will be installed, and nothing has been trained, so there is nothing
+    # to install. Remove this entry with the first run.
+    "models/bogoras-ocr",
     # Written by `ocr queue` and cleared by the next one, so it exists only while
     # a batch is out. A checkout that has it is mid-dispatch, not complete.
     "review/_queue.txt",

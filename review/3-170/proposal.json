@@ -1,0 +1,157 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "702"
+    },
+    "2": {
+      "text": "given to the Chukchee as if in payment for their tribute. The tribute was,"
+    },
+    "3": {
+      "text": "as in earlier times, from each man one fox, mostly red, but sometimes also"
+    },
+    "4": {
+      "text": "white, though the white fox is considerably cheaper than the red one. It"
+    },
+    "5": {
+      "text": "seems that in the beginning the Chukchee, in their eagerness for trade, were"
+    },
+    "6": {
+      "text": "even ready to pay some real tribute.",
+      "note": "Speck below line end (near hpos 1698, vpos 814) is the scanner-artifact band already exempted in gaps (reason: not_type, note: \"scanner artifact\"); reviewed, not keyed.",
+      "class": "artifact"
+    },
+    "7": {
+      "text": "Thus, the tale about the opening of the Anui fair, cited before, continues"
+    },
+    "8": {
+      "text": "as follows: “The officer from the Czarina said again, ‘My heart is angry.",
+      "note": "Nested quotation: outer curly double “…”, inner curly single ‘…’, confirmed at 2x. mz draft had the inner opener as an escaped straight double quote.",
+      "class": "draft"
+    },
+    "9": {
+      "text": "Why have you killed so many of the Czar’s people?’ — ‘Control your anger,’"
+    },
+    "10": {
+      "text": "said the Chukchee. ‘Stop asking about the murdered men. Better assign a",
+      "note": "Inner quotation opener is a single curly quote U+2018, confirmed at 2x; mz draft had a double curly quote here.",
+      "class": "draft"
+    },
+    "11": {
+      "text": "chief to count all the people. Let the chief, with the people, pay to the"
+    },
+    "12": {
+      "text": "Czarina tribute in restitution for the murdered men.’”",
+      "note": "Line closes the nested quotation: single curly close U+2019 then double curly close U+201D, confirmed at 2x; mz draft carried only an escaped straight double quote.",
+      "class": "draft"
+    },
+    "13": {
+      "text": "I have this tale from a member of the family of Eiˊheli, whose name has",
+      "note": "lexicon lookup: key Ei'heli -> Eiˊheli, 33 occurrences on 14 pages.",
+      "as_typed": "I have this tale from a member of the family of {Ei'heli}, whose name has",
+      "class": "semantic"
+    },
+    "14": {
+      "text": "been mentioned several times; and probably it reflects knowledge of the more"
+    },
+    "15": {
+      "text": "recent measures carried out by Maydell. Still most of it refers to an earlier"
+    },
+    "16": {
+      "text": "time. The Russians certainly could have succeeded in exacting some kind of"
+    },
+    "17": {
+      "text": "trade-tax, to be collected at the fair. Instead of that, they tried to introduce"
+    },
+    "18": {
+      "text": "again tribute by subjection, the same as that which led to all the earlier wars."
+    },
+    "19": {
+      "text": "This tribute was paid very irregularly, — one year (1835) by twenty-seven"
+    },
+    "20": {
+      "text": "men, another year (1837) by twenty men, and still another year (1838) by"
+    },
+    "21": {
+      "text": "only eight. And with the presents of the Government the paying of tribute"
+    },
+    "22": {
+      "text": "soon became quite similar to traffic. The Chukchee wanted to get the most"
+    },
+    "23": {
+      "text": "possible, the Russian officer wanted to give less, and thus haggling over the"
+    },
+    "24": {
+      "text": "tribute ensued. Still, in most cases the present given represented the current"
+    },
+    "25": {
+      "text": "price of the furs brought for tribute. Thus in 1806 the Chukchee tribute was"
+    },
+    "26": {
+      "text": "ten red foxes; as an equivalent in presents, 27 pounds of tobacco, valued at"
+    },
+    "27": {
+      "text": "40.5 rubles, were given. The Governor of the Yakutsk Province, however,"
+    },
+    "28": {
+      "text": "was displeased with the transaction, because the value of the foxes was equal"
+    },
+    "29": {
+      "text": "to the value of the tobacco, plus transportation. In 1832, for each red fox,"
+    },
+    "30": {
+      "text": "three pounds of tobacco and an iron spear-head were given, which was still"
+    },
+    "31": {
+      "text": "less favorable for the Russians. In 1837, for each red fox, two pounds and"
+    },
+    "32": {
+      "text": "a half of tobacco, a large knife, some beads, needles, also candy, hard tack,"
+    },
+    "33": {
+      "text": "etc., were given."
+    },
+    "34": {
+      "text": "The so-called “complimentary tribute” (поклонный ясакъ)¹ also appeared",
+      "note": "Cyrillic gloss is pre-reform Russian, keyed as printed per §2.7: word-final hard sign ъ (U+044A) retained on ясакъ. Footnote marker keyed as superscript U+00B9, confirmed at 2x. mz draft mis-OCR'd the Cyrillic as Latin letters and dropped the closing paren/marker shape.",
+      "class": "draft"
+    },
+    "35": {
+      "text": "from time to time. Thus in 1812 there were presented to the Czar seven"
+    },
+    "36": {
+      "text": "black foxes on the part of seven different men. In 1814 there were presented"
+    },
+    "37": {
+      "text": "to the Czar by the Chukchee seventy puds of walrus-ivory and seventeen"
+    },
+    "38": {
+      "text": "puds of peltries. This last present is uncommonly large. I presume that it"
+    },
+    "39": {
+      "text": "was simply the result of traffic carried on by officials with Government property"
+    },
+    "40": {
+      "text": "for the benefit of the Treasury."
+    },
+    "41": {
+      "text": "Some of the Chukchee tribute was paid by the Reindeer Chukchee,"
+    },
+    "42": {
+      "text": "another portion by the Maritime Chukchee traders (kavraˊlɪt), who played such",
+      "note": "lexicon lookup: key kavra'li_t -> kavraˊlɪt, matches lowercase form attested on 1-032.",
+      "as_typed": "another portion by the Maritime Chukchee traders ({kavra'li_t}), who played such",
+      "class": "semantic"
+    },
+    "43": {
+      "text": "¹ Compare Jochelson, The Koryak, Vol. VI of this series, p. 799.",
+      "note": "Footnote opener keyed as superscript U+00B9, confirmed at 2x; mz draft had a plain ASCII \"1\".",
+      "class": "draft"
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

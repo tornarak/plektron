@@ -288,11 +288,29 @@ def test_a_cut_raster_says_what_it_was_cut_from(tmp_path):
     pdf = _one_page(tmp_path)
     scans.extract(tmp_path, rasters=tmp_path / "cut")
     prov = scans.read_png_provenance(tmp_path / "cut" / "chukchi-2-001.png")
-    assert prov["kind"] == "rule"          # a procedure, not a model's guess
-    assert prov["in.ref"] == "2-001"
-    assert prov["in.source"] == pdf.name   # the basename, never this machine's path
-    assert prov["in.source_sha256"] == scans._digest(pdf)
-    assert prov["in.master"] == "400x600"
+    assert prov.kind == "rule"             # a procedure, not a model's guess
+    assert prov.model is None and prov.sha256 is None   # a rule names no checkpoint
+    assert prov.inputs["ref"] == "2-001"
+    # The basename, never this machine's path.
+    assert prov.inputs["source"] == pdf.name
+    assert prov.inputs["source_sha256"] == scans._digest(pdf)
+    assert prov.inputs["master"] == "400x600"
+
+
+def test_the_chunk_is_the_same_record_an_alto_would_carry(tmp_path):
+    """One vocabulary, three carriers. A raster is `#mz` like an `mz/` ALTO, and
+    what it holds is `provenance.encode` of the same `Producer` — so `decode` reads
+    either and there is no fourth spelling of the fact to keep in step."""
+    from harness import provenance
+
+    _one_page(tmp_path)
+    scans.extract(tmp_path, rasters=tmp_path / "cut")
+    from PIL import Image
+    with Image.open(tmp_path / "cut" / "chukchi-2-001.png") as im:
+        raw = im.info[scans.PNG_KEY]
+    assert raw.startswith(f"harness: {provenance.SCHEMA}; kind: rule; ")
+    assert provenance.decode(raw) == scans.read_png_provenance(
+        tmp_path / "cut" / "chukchi-2-001.png")
 
 
 def test_two_runs_over_one_pdf_are_byte_identical(tmp_path):

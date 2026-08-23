@@ -1,0 +1,81 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "733",
+      "note": "Folio in RunningTitleZone, plain ASCII per keying_spec.md §2.12. The composite's own index label ('1') printed beside the band is not part of the folio; the ALTO box holds only '733'.",
+      "class": "layout"
+    },
+    "2": {
+      "text": "shirt should also be added to the total number of useful innovations. Even"
+    },
+    "3": {
+      "text": "the Russian creoles use a single shirt without change, and keep it on their"
+    },
+    "4": {
+      "text": "backs until it drops off in old greasy rags. The Reindeer Chukchee occasion-"
+    },
+    "5": {
+      "text": "ally put on an old shirt bought from the Russians. They call it “louse-"
+    },
+    "6": {
+      "text": "catcher” (mɪčuˊkwun), and assert that its chief purpose is to attract the lice",
+      "resolved": "ɪ = U+026A LATIN LETTER SMALL CAPITAL I (word-medial, no dot, serifed stem, per keying_spec.md §2.3); č = c + U+030C COMBINING CARON; ˊ = U+02CA MODIFIER LETTER ACUTE ACCENT (stress, postposed to the stressed vowel, §2.1)",
+      "note": "Native gloss 'louse-catcher' (mɪčuˊkwun); lexicon lookup returned no ratified key for this form, so it is keyed by hand from the raster. Confirmed at 4×: the vowel after m is a bare, dotless, serifed stem at x-height matching the small-cap series (§2.3), not lowercase dotted i.",
+      "class": "doubt"
+    },
+    "7": {
+      "text": "from the skin, so that they can be easily destroyed."
+    },
+    "8": {
+      "text": "Along with all these acquisitions were also brought contagious diseases,"
+    },
+    "9": {
+      "text": "alcohol, and card-playing, and their influence certainly equals that of the newly"
+    },
+    "10": {
+      "text": "introduced inventions. I will repeat once more the words of Kuvaˊr, the Eskimo",
+      "note": "{Kuva'r} = lexicon key for Kuvaˊr (ratified, 17 occurrences across 11 pages incl. 1-088, 1-089, 1-099); raster confirmed capital K, then u-v-a, stress mark U+02CA, then r.",
+      "class": "print",
+      "as_typed": "introduced inventions. I will repeat once more the words of {Kuva'r}, the Eskimo"
+    },
+    "11": {
+      "text": "trader at Indian Point (see p. 36), in reference to this very circumstance: “The"
+    },
+    "12": {
+      "text": "spirits, it seems, take care that the people of this country shall not multiply."
+    },
+    "13": {
+      "text": "In olden times war was sent down to ward off increase. After that, in spite"
+    },
+    "14": {
+      "text": "of the abundant variety of sea-game, famine would come and carry off the"
+    },
+    "15": {
+      "text": "surplus. At present, with the fulsome supply of American food, the disease"
+    },
+    "16": {
+      "text": "comes down, and the result is exactly the same.”"
+    },
+    "17": {
+      "text": "From all that has been said, the general conclusion may be drawn that"
+    },
+    "18": {
+      "text": "the Chukchee tribe, Reindeer or Maritime, being very primitive, may continue"
+    },
+    "19": {
+      "text": "to exist in its barren desert only if left alone by civilization. As soon as the"
+    },
+    "20": {
+      "text": "latter comes too near, the Chukchee must follow in the way of so many other"
+    },
+    "21": {
+      "text": "primitive tribes, and die."
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

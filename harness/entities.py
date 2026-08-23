@@ -73,12 +73,14 @@ from __future__ import annotations
 
 import re
 import unicodedata
+from collections.abc import Callable
 from functools import lru_cache
 from pathlib import Path
 from typing import TypedDict
 
 from .geo import index as geo_index
 from .langs import ALIAS_LANGS
+from .parallel import ptrack
 
 ENTDIR = "entities"
 
@@ -1112,7 +1114,8 @@ def _unlinked_text(el) -> str:
     return "".join(out)
 
 
-def occurrences(ids, refs, store: dict, root: Path = Path(".")) -> dict:
+def occurrences(ids, refs, store: dict, root: Path = Path("."),
+                tick: Callable | None = None) -> dict:
     """Where these entities appear across `refs`: `{id: {linked, unlinked}}`.
 
     **The corpus is the caller's and not this function's opinion.** `entity
@@ -1147,7 +1150,7 @@ def occurrences(ids, refs, store: dict, root: Path = Path(".")) -> dict:
     wanted = {f: c for f, c in idx.items() if any(x["id"] in set(ids) for x in c)}
     out: dict[str, dict] = {i: {"linked": [], "unlinked": []} for i in ids}
 
-    for ref in refs:
+    for ref in ptrack(refs, tick):
         path, rank = page_source(ref, root)
         if path is None:
             continue
@@ -1189,7 +1192,7 @@ def occurrences(ids, refs, store: dict, root: Path = Path(".")) -> dict:
     return out
 
 
-def check(root: Path = Path(".")) -> dict:
+def check(root: Path = Path("."), tick: Callable | None = None) -> dict:
     """The store gate. Errors are defects; rows are what a reader should see.
 
     What it cannot check is whether an entry is *true* — that is what `status`
@@ -1201,7 +1204,7 @@ def check(root: Path = Path(".")) -> dict:
     store: dict[str, dict] = {}
     d = ent_dir(root)
     if d.is_dir():
-        for p in sorted(d.glob("*/*.md")):
+        for p in ptrack(sorted(d.glob("*/*.md")), tick):
             try:
                 rec = parse(p.read_text(encoding="utf-8"), where=str(p))
             except (Malformed, ValueError) as e:

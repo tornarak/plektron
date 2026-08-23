@@ -28,13 +28,14 @@ import json
 import re
 import time
 import unicodedata
+from collections.abc import Callable
 from pathlib import Path
 from typing import NotRequired, TypedDict
 
 import numpy as np
 from lxml import etree
 
-from . import paths
+from . import paths, provenance, train
 from .atomic import tmp_for, write_atomic
 from .refs import figure_number, norm_ref, parse_ref
 from .scans import PDF_IMAGES, pdf_images, pdf_images_for
@@ -62,6 +63,13 @@ FIGDIR = "gt/fig"
 # which asks, or not at all.
 MZFIGDIR = "mz/fig"
 READINGS = "data/readings.md"
+
+#: The version `fig propose` stamps into an `mz/fig/` page's provenance. Bump it
+#: when the rule that turns a manifest entry into a block changes — the point of
+#: recording it is that a page written before the change is *detectable*, and a
+#: constant nobody moves is the same as no constant at all.
+PROPOSE_VERSION = 1
+
 
 #: The rule id `fig check` reports an unaccounted photograph under, and the key a
 #: page excuses it by in `gt/fig/_rule_exempt.json`. Declared in
@@ -460,10 +468,16 @@ def set_rule_exempt(ref: str, rules, root: Path = Path("."),
 # segmenter cannot learn from pages where its target has been erased. That is also
 # why the two are separate models rather than one with four classes: they read
 # different rasters.
-WORKDIR = "train/bogoras-fig"
-MODELDIR = "models/bogoras-fig"
-MODEL_NAME = "fig-seg"
-DEFAULT_MODEL = f"{MODELDIR}/{MODEL_NAME}.safetensors"
+#
+# All from `train.FIG`, which is where the track record lives. `zones`' split of
+# the track, verbatim: `data/` is the laid-out training set and its two `.lst`
+# files, `model/` holds a run's checkpoints, and the base holds neither.
+WORKDIR = train.FIG.workdir
+DATADIR = train.FIG.datadir
+RUNDIR = train.FIG.rundir
+MODELDIR = train.FIG.modeldir
+MODEL_NAME = train.FIG.model_name
+DEFAULT_MODEL = train.FIG.default_model
 
 
 def negative_refs(root: Path = Path(".")) -> dict[str, list[str]]:
@@ -570,13 +584,13 @@ def remark_eval(root: Path = Path("."), fraction: float = 0.20,
 
 
 def assemble(root: Path = Path("."), scratch: bool = False) -> dict:
-    """Lay out `train/bogoras-fig/` for `ketos segtrain`, and report the command.
+    """Lay out `train/bogoras-fig/data/` for `ketos segtrain`, and report the command.
 
     ketos resolves a page's image through the ALTO's own
     `sourceImageInformation/fileName`, relative to the XML, so each page's file and
     its raster sit together under the name the ALTO already carries.
 
-    **The raster is the raw `scans/` page, never the blot.** `zones assemble` links
+    **The raster is the raw `scans/` page, never the blot.** `train assemble zones` links
     `scans/w-figs-blotted/` because the zone segmenter must not learn figure-shaped
     body zones; here the blot paints the target white, so training on it would be
     asking the model to find something that has been erased.
@@ -590,11 +604,14 @@ def assemble(root: Path = Path("."), scratch: bool = False) -> dict:
     """
     from .zones import SEGTRAIN_CMD, _runtime_flags, build_alto, raster_size
 
-    work = root / WORKDIR
+    work = root / DATADIR
     for p in sorted(work.glob("*")) if work.exists() else []:
         if p.is_file() or p.is_symlink():
             p.unlink()
     work.mkdir(parents=True, exist_ok=True)
+    # See `zones.assemble`: kraken makes the output directory it is given, not its
+    # parents, and the reported command has to run as printed.
+    (root / RUNDIR).mkdir(parents=True, exist_ok=True)
 
     splits = load_splits(root, FIGDIR)
     lists: dict[str, list[str]] = {"train": [], "eval": []}
@@ -623,7 +640,7 @@ def assemble(root: Path = Path("."), scratch: bool = False) -> dict:
         # Relative and unresolved. Resolving follows the symlink back to `gt/fig/`
         # and silently trains on the store instead of the work dir — the lesson
         # `zones.assemble` records, and it applies verbatim.
-        lists[split].append(f"{WORKDIR}/{name}.xml")
+        lists[split].append(f"{DATADIR}/{name}.xml")
 
     for split, names in lists.items():
         (work / f"{split}.lst").write_text(
@@ -653,8 +670,8 @@ def assemble(root: Path = Path("."), scratch: bool = False) -> dict:
         "base": base,
         "missing_raster": missing,
         "command": SEGTRAIN_CMD.format(
-            device=device, workers=workers, load=load, work=WORKDIR,
-            out=f"{WORKDIR}/run-{_fig_next_run(root)}"),
+            device=device, workers=workers, load=load, work=DATADIR,
+            out=f"{RUNDIR}/{train.next_run(train.FIG, root)}"),
     }
     notes = [n for n in (base_note,
                          "pages with no raster were left out of both lists"
@@ -666,7 +683,7 @@ def assemble(root: Path = Path("."), scratch: bool = False) -> dict:
 
 def predict(refs: list[str], root: Path = Path("."),
             model_path: str | Path | None = None, device: str = "auto",
-            force: bool = False) -> list[dict]:
+            force: bool = False, tick=None) -> list[dict]:
     """Run the figure segmenter over pages and write raw ALTO into `mz/fig/`.
 
     Input is the **raw scan**, matching what the model was trained on and unlike
@@ -687,9 +704,14 @@ def predict(refs: list[str], root: Path = Path("."),
     if device == "auto":
         import torch
         device = "cuda:0" if torch.cuda.is_available() else "cpu"
+    from .parallel import ptrack
+
     net, sha = None, ""
     out = []
-    for ref in refs:
+    # Every ref counts, the skips included: `--all` is 832 pages at ~15 s each and
+    # the total a reader needs is the one they asked for, not the one left after
+    # the run has quietly discounted itself.
+    for ref in ptrack(refs, tick):
         ref = norm_ref(ref)
         dest = alto_for(ref, root, MZFIGDIR)
         scan = paths.scan_for(ref, root)
@@ -726,13 +748,24 @@ def _predict_one(ref, root, net, dev, model_path, sha, dest) -> dict:
     # The witness to which model wrote this. Without it an `mz/` file is a claim
     # with no provenance, and the store's whole value is that it is separable from
     # anybody's judgement.
+    #
+    # **`kind="model"` is the half that was missing**, not the model path. This
+    # wrote a bare `f"{model_path} sha256:… device:…"` into the description and
+    # nothing else, so a `predict` page and a `propose` page — a segmenter's guess
+    # and the scanner's own MRC segmentation — were two free-text strings that no
+    # reader could tell apart without matching prose. `train score fig --model M` is the
+    # bug that grew in that gap.
     desc = tree.getroot().find("{*}Description")
-    from lxml import etree as _et
-    steps = _et.SubElement(desc, "{http://www.loc.gov/standards/alto/ns-v4#}"
-                                 "Processing")
-    _et.SubElement(steps, "{http://www.loc.gov/standards/alto/ns-v4#}"
-                          "processingStepDescription").text = (
-        f"{model_path} sha256:{sha[:16]} device:{dev}")
+    desc.append(provenance.alto_processing(provenance.Producer(
+        step="harness fig predict", label="figure segmentation",
+        kind="model", version=provenance.kraken_version(),
+        model=str(model_path), sha256=sha, device=dev,
+        # **The raw scan, and naming it is not decoration.** The zone segmenter
+        # reads `scans/w-figs-blotted/`, where this model's target is painted
+        # white; the two models read two rasters and neither can be folded into
+        # the other. A file that records which one it was read off is a file that
+        # can be told from one produced by the other track.
+        inputs={"raster": f"scans/chukchi-{ref}.png"})))
     tmp = tmp_for(dest)
     tree.write(str(tmp), xml_declaration=True, encoding="UTF-8",
                standalone=None, pretty_print=True)
@@ -743,7 +776,8 @@ def _predict_one(ref, root, net, dev, model_path, sha, dest) -> dict:
 
 
 def propose_from_pdf(refs: list[str], root: Path = Path("."),
-                     force: bool = False) -> list[dict]:
+                     force: bool = False,
+                     tick: Callable | None = None) -> list[dict]:
     """Write `mz/fig/` proposals from the source PDF's own image placements.
 
     `predict` writes the same store from the figure segmenter. This writes it from
@@ -776,11 +810,12 @@ def propose_from_pdf(refs: list[str], root: Path = Path("."),
     file to outrank it — but that is a fact about this corpus rather than a
     guarantee, so run this after the migration and not before.
     """
-    from .zones import ALTO_NS, build_alto
+    from .parallel import ptrack
+    from .zones import build_alto
 
     manifest = pdf_images(root)
     out = []
-    for ref in refs:
+    for ref in ptrack(refs, tick):
         ref = norm_ref(ref)
         entry = manifest.get(ref) or {}
         images = entry.get("images") or []
@@ -799,11 +834,13 @@ def propose_from_pdf(refs: list[str], root: Path = Path("."),
         dest.parent.mkdir(parents=True, exist_ok=True)
         tree = build_alto(ref, blocks, (m["w"], m["h"]), id_prefix="mzfig_")
         desc = tree.getroot().find("{*}Description")
-        steps = etree.SubElement(desc, f"{{{ALTO_NS}}}Processing")
         # Names the manifest and not a model, so a reader can tell a scanner's
-        # segmentation from a segmenter's guess without opening either.
-        etree.SubElement(steps, f"{{{ALTO_NS}}}processingStepDescription").text = (
-            f"{PDF_IMAGES} embedded-image placement")
+        # segmentation from a segmenter's guess without opening either — and now
+        # says so in `kind` rather than only in prose a reader has to recognize.
+        desc.append(provenance.alto_processing(provenance.Producer(
+            step="harness fig propose", label="embedded-image placement",
+            kind="rule", version=f"harness {PROPOSE_VERSION}",
+            inputs={"manifest": PDF_IMAGES})))
         tmp = tmp_for(dest)
         tree.write(str(tmp), xml_declaration=True, encoding="UTF-8",
                    standalone=None, pretty_print=True)
@@ -959,12 +996,14 @@ def extend_to_rects(ref: str, root: Path = Path("."),
 
 
 def extend_all(refs: list[str] | None = None, root: Path = Path("."),
-               max_growth: float | None = None,
-               commit: bool = False) -> list[dict]:
+               max_growth: float | None = None, commit: bool = False,
+               tick: Callable | None = None) -> list[dict]:
     """`extend_to_rects` over a set of pages, reporting only what it touched."""
+    from .parallel import ptrack
+
     refs = refs if refs is not None else sorted(pdf_images(root))
     out = []
-    for ref in refs:
+    for ref in ptrack(refs, tick):
         rec = extend_to_rects(ref, root, max_growth=max_growth, commit=commit)
         if rec["grew"] or rec["out_of_scope"] or rec["over"] or rec["note"]:
             out.append(rec)
@@ -1075,13 +1114,13 @@ def install_model(checkpoint: str | Path, root: Path = Path("."),
     if not src.exists():
         raise FileNotFoundError(f"no checkpoint at {checkpoint}")
 
-    work = root / WORKDIR
+    work = root / DATADIR
     lists = {s: work / f"{s}.lst" for s in FIG_SPLITS}
     missing = [s for s, p in lists.items() if not p.exists()]
     if missing:
         raise FileNotFoundError(
-            f"{WORKDIR}/{missing[0]}.lst is gone, so the split this run consumed "
-            "cannot be frozen beside the model — re-run `harness fig assemble` "
+            f"{DATADIR}/{missing[0]}.lst is gone, so the split this run consumed "
+            "cannot be frozen beside the model — re-run `harness train assemble fig` "
             "before installing, or the scores would belong to a split nobody kept")
 
     sc = score(root, src)
@@ -1133,12 +1172,6 @@ def _swap_check(sc: dict) -> bool:
     # A swapped model matches almost nothing straight while predicting plenty.
     return straight == 0 and (g.get("predicted", 0) + d.get("predicted", 0)) > 0
 
-
-def _fig_next_run(root: Path) -> int:
-    n = 1
-    while (root / WORKDIR / f"run-{n}").exists():
-        n += 1
-    return n
 
 
 
@@ -1944,7 +1977,8 @@ def paired(ref: str, root: Path = Path("."),
     }
 
 
-def figure_boxes(ref: str, root: Path = Path(".")) -> list[dict]:
+def figure_boxes(ref: str, root: Path = Path("."),
+                 all_readings: dict | None = None) -> list[dict]:
     """One record per **printed** figure on a page, top first.
 
     `paired` returns one row per `GraphicZone`; the book does not. 16 figures in
@@ -1986,11 +2020,16 @@ def figure_boxes(ref: str, root: Path = Path(".")) -> list[dict]:
     re-mints. Deliberately not a page-local ordinal either: `docs/apparatus.md`
     records that shape failing twice, the zone count not being the figure count
     in either direction.
+
+    `all_readings` is a `readings(root)` a caller already holds, handed down to
+    `paired` — the same `idx=` idiom `readings_for` documents, extended one rung
+    because `generate` is the sweep that needed it: without it a 691-page run
+    re-parses `data/readings.md` 691 times.
     """
     ref = norm_ref(ref)
     boxes = {b["id"]: b for b in zones(ref, root)}
     groups: dict[str, list[dict]] = {}
-    for f in paired(ref, root)["figures"]:
+    for f in paired(ref, root, all_readings)["figures"]:
         # An empty caption groups by zone id, i.e. not at all. `paired` has
         # already sorted by position, so first-seen is topmost throughout.
         groups.setdefault(f["caption"] or f"\0{f['zone_id']}", []).append(f)
@@ -2405,7 +2444,7 @@ def resolve_figures(handles: list[dict], figs: list[dict]) -> list[dict]:
     return out
 
 
-def reconcile(root: Path = Path(".")) -> dict:
+def reconcile(root: Path = Path("."), tick: Callable | None = None) -> dict:
     """Cross-check `gt/fig/` against `data/readings.md` in both directions.
 
     Empty `missing` and `orphan` lists is the invariant. `missing` means a zone
@@ -2413,6 +2452,8 @@ def reconcile(root: Path = Path(".")) -> dict:
     usually a spurious FigDesc that was deleted from the segmentation, in which
     case the reading should go too.
     """
+    from .parallel import ptrack
+
     known = readings(root)
     # Bucketed once. Both uses below were per-ref scans of the whole store —
     # `paired` re-parsed `data/readings.md` from disk for each of the 252 figure
@@ -2423,7 +2464,7 @@ def reconcile(root: Path = Path(".")) -> dict:
         by_ref.setdefault(r["ref"], {})[r["zone_suffix"]] = r
     missing, orphan, unpaired = [], [], []
     zones, caps = 0, 0
-    for ref in fig_refs(root):
+    for ref in ptrack(fig_refs(root), tick):
         unpaired += [f"{ref}|{zone_suffix(z)}"
                      for z in paired(ref, root, known)["unpaired_captions"]]
         tree = etree.parse(str(alto_for(ref, root)))
@@ -2718,7 +2759,7 @@ def write_crops(ref: str, out_dir: Path, root: Path = Path("."),
 
 def crop_all(refs: list[str] | None = None, root: Path = Path("."),
              out_dir: Path | None = None, scans: str = "scans",
-             force: bool = False, jobs: int | None = None) -> dict:
+             force: bool = False, jobs: int | None = None, tick=None) -> dict:
     """Crop the named pages, or every page the figure store holds.
 
     Threaded on `parallel.pmap` for `zones blot`'s reason: the PNG decode is the
@@ -2745,7 +2786,7 @@ def crop_all(refs: list[str] | None = None, root: Path = Path("."),
             "note": "",
         }
 
-    rows = list(pmap(one, todo, jobs=jobs))
+    rows = list(pmap(one, todo, jobs, tick))
     return {
         "dir": str(dest.relative_to(root)) if dest.is_relative_to(root) else str(dest),
         "pages": len(rows),
@@ -2874,7 +2915,8 @@ def caption_strips(ref: str, root: Path = Path("."), scans: str = "scans",
 
 def write_caption_sheets(out_dir: Path, root: Path = Path("."),
                          refs: list[str] | None = None, scans: str = "scans",
-                         per_sheet: int = 12, pad: float = CAP_PAD) -> dict:
+                         per_sheet: int = 12, pad: float = CAP_PAD,
+                         tick: Callable | None = None) -> dict:
     """Tile every caption in the corpus onto contact sheets. Returns the manifest.
 
     **The sheet is the unit of work for this pass, and the census is why.** 151 of
@@ -2892,9 +2934,11 @@ def write_caption_sheets(out_dir: Path, root: Path = Path("."),
     The manifest is what the reader and the review page both read back — key to
     sheet, orientation, and the pad each strip carries.
     """
+    from .parallel import ptrack
+
     refs = [norm_ref(r) for r in (refs or fig_refs(root))]
     items, recs = [], {}
-    for ref in refs:
+    for ref in ptrack(refs, tick):
         for key, strip, rec in caption_strips(ref, root, scans, pad):
             items.append((key, strip))
             recs[key] = rec

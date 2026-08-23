@@ -19,7 +19,8 @@ from ..generate import Unready, generate
 from ..generate import diff as gen_diff
 from ..ids import fix_page as fix_ids
 from ..ids import pair_glosses
-from ..render import mode, report, rule
+from ..parallel import ptrack
+from ..render import mode, progress, report, rule
 from ..seam import set_seam
 from ..state import build_ledger, entry_state, ledger_rows
 from ..validate import check_corpus_header, validate
@@ -269,13 +270,24 @@ def _generatable(root: Path) -> list[str]:
 def run_generate(a) -> int:
     """Report per ref. Never gates: a page it cannot build is `Unready` with the
     verb that fixes it, which is a worklist line and not a failure of this run."""
+    from ..generate import stores
+
+    refs = page_refs(a) or _generatable(a.root)
+    # **Read once for the run, on `run_validate`'s reasoning and its measurement.**
+    # `generate.Stores` carries the six stores that are the same on every page;
+    # `build` was reading all six per page, and `entities.load` alone was 68% of
+    # a `--force` sweep. Built for a real batch only: a single ref would pay the
+    # same read inside `build` either way, so hoisting it there buys nothing and
+    # costs a reader the question of why it is out here.
+    shared = stores(a.root) if len(refs) > 1 else None
     rows = []
-    for r in page_refs(a) or _generatable(a.root):
-        try:
-            rows.append(generate(r, a.root, force=a.force))
-        except Unready as e:
-            from ..generate import skipped
-            rows.append(skipped(r, str(e)))
+    with progress("generating") as tick:
+        for r in ptrack(refs, tick):
+            try:
+                rows.append(generate(r, a.root, force=a.force, shared=shared))
+            except Unready as e:
+                from ..generate import skipped
+                rows.append(skipped(r, str(e)))
     out(a, rows)
     return 0
 
@@ -285,7 +297,9 @@ def run_diff(a) -> int:
     it, and every row already carries `ref`."""
     from ..paths import all_refs
     refs = page_refs(a) or all_refs(a.root, "mz/tei")
-    out(a, [gen_diff(r, a.root) for r in refs])
+    with progress("diffing") as tick:
+        rows = [gen_diff(r, a.root) for r in ptrack(refs, tick)]
+    out(a, rows)
     return 0
 
 
@@ -309,7 +323,8 @@ def run_validate(a) -> int:
     # `lookup.index` by a function-local import, so a bound alias here would be
     # a second resolution path and a test spying on one would silently miss the
     # other. It did, while this was written the other way.
-    idx = lookup.index(a.root) if len(refs) > 1 else None
+    with progress("indexing the corpus") as tick:
+        idx = lookup.index(a.root, tick=tick) if len(refs) > 1 else None
     # The entity store, on the same terms and for a sharper reason: it was read
     # **twice per page** — once by `build_context` for `entity_hits`, once by
     # `validate` to resolve `@ref` — at 29ms a read over 461 files.
@@ -321,18 +336,29 @@ def run_validate(a) -> int:
     # it here makes that one. The guard that belongs on `idx` would be a
     # pessimisation here, which is the kind of symmetry worth not assuming.
     store = load_entities(a.root)
+    # **Validated under the bar, rendered after it.** Every other instrumented
+    # sweep builds rows and emits once, so the question never arose; this one
+    # printed its payload from inside the loop, and a `rich` live display and a
+    # bare `print` to stdout share a terminal badly — the frame is redrawn over
+    # the report and the report scrolls the frame. Buffering costs the streaming
+    # that a per-page `# REF` report otherwise gives, which is a real loss on a
+    # long run and the reason the bar has to earn it: it says which page is
+    # under the schema right now, which the streamed reports did not.
+    reps = []
+    with progress("validating") as tick:
+        for r in ptrack(refs, tick):
+            ctx = build_context(r, a.root, idx=idx, store=store)
+            # The page's own path, built here rather than read out of `ctx`. It used
+            # to ride in the payload as `output_path`, which put a path the model
+            # never needed into every collation prompt so that this one line could
+            # avoid recomputing it.
+            page = a.root / "tei" / f"chukchi-{ctx['page_ref']}.xml"
+            reps.append((r if len(refs) > 1 else None,
+                         validate(page, ctx, store=store, ratified=a.ratified,
+                                  schema=a.schema)))
     worst = 0
-    for r in refs:
-        ctx = build_context(r, a.root, idx=idx, store=store)
-        # The page's own path, built here rather than read out of `ctx`. It used to
-        # ride in the payload as `output_path`, which put a path the model never
-        # needed into every collation prompt so that this one line could avoid
-        # recomputing it.
-        page = a.root / "tei" / f"chukchi-{ctx['page_ref']}.xml"
-        worst = max(worst, _render_gate(a, validate(page, ctx, store=store,
-                                                    ratified=a.ratified,
-                                                    schema=a.schema),
-                                        r if len(refs) > 1 else None))
+    for name, rep in reps:
+        worst = max(worst, _render_gate(a, rep, name))
     return worst
 
 
@@ -341,7 +367,9 @@ def run_header(a) -> int:
 
 
 def run_state(a) -> int:
-    out_per_ref(a, [(r, entry_state(r, a.root)) for r in page_refs(a)])
+    with progress("reading seam state") as tick:
+        rows = [(r, entry_state(r, a.root)) for r in ptrack(page_refs(a), tick)]
+    out_per_ref(a, rows)
     return 0
 
 
@@ -353,10 +381,17 @@ def _write_all(a, fn) -> int:
     repaired does not arrive with earlier pages already rewritten.
     """
     refs = page_refs(a) or _collated(a.root)
+    # **Two bars for the two passes**, on `corpus normalize`'s precedent: the
+    # preview is a whole second sweep of the same length, and one bar spanning
+    # both would run to 100% and start again, which reads as a stall or a
+    # restart rather than as the up-front check it is.
     if a.commit and len(refs) > 1:
-        for r in refs:
-            fn(r, a.root, commit=False)
-    out_per_ref(a, [(r, fn(r, a.root, commit=a.commit)) for r in refs])
+        with progress("previewing") as tick:
+            for r in ptrack(refs, tick):
+                fn(r, a.root, commit=False)
+    with progress("writing" if a.commit else "checking") as tick:
+        rows = [(r, fn(r, a.root, commit=a.commit)) for r in ptrack(refs, tick)]
+    out_per_ref(a, rows)
     return 0
 
 
@@ -378,10 +413,13 @@ def run_seam(a) -> int:
     a.open_gap = a.continues
     refs = page_refs(a)
     if a.commit and len(refs) > 1:
-        for r in refs:
-            set_seam(r, a.open_gap, a.root, commit=False)
-    out_per_ref(a, [(r, set_seam(r, a.open_gap, a.root, commit=a.commit))
-                           for r in refs])
+        with progress("previewing") as tick:
+            for r in ptrack(refs, tick):
+                set_seam(r, a.open_gap, a.root, commit=False)
+    with progress("writing" if a.commit else "checking") as tick:
+        rows = [(r, set_seam(r, a.open_gap, a.root, commit=a.commit))
+                for r in ptrack(refs, tick)]
+    out_per_ref(a, rows)
     return 0
 
 
@@ -480,8 +518,14 @@ def run_reservations(a) -> int:
     import click
 
     from ..reservations import page_reservations, unchecked
-    refs = page_refs(a)
-    rows = [row for ref in refs for row in page_reservations(ref, a.root)]
+    # `--all` is declared on this action and used to reach here as the empty list
+    # `page_refs` returns for it, so the corpus form pooled nothing and reported
+    # no reservations at all — a sweep that answers "none" is indistinguishable
+    # from a corpus with none. Same fallback as every other action in the group.
+    refs = page_refs(a) or _collated(a.root)
+    with progress("reading reservations") as tick:
+        rows = [row for ref in ptrack(refs, tick)
+                for row in page_reservations(ref, a.root)]
     out(a, rows, name="reservations")
     if not getattr(a, "json", False):
         for line in unchecked(refs, a.root):

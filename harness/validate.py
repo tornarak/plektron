@@ -276,7 +276,7 @@ OPENS = {
 # (keying spec section 1) English prose reproduces the print, curly quotes included, so
 # forbidding them here would reject correct text. What remains is the set with no
 # legitimate use in English at all, each an error wherever it appears.
-FORBIDDEN_PROSE = set("\u00B4\u02BC\u02BB\u2010")
+FORBIDDEN_PROSE = set("\u00B4\u02BC\u02BB\u2010\u2013")
 LOOKALIKE_GREPS = {  # keying spec §3 — reported over Tier-1 spans as worklist
     "\u00B4": "U+00B4 traps U+02CA", "\u2019": "U+2019 traps U+02CA",
     "\u02BC": "U+02BC traps U+02CA", "\u02BB": "U+02BB traps U+02CA",
@@ -284,6 +284,7 @@ LOOKALIKE_GREPS = {  # keying spec §3 — reported over Tier-1 spans as worklis
     "\u00B7": "U+00B7 traps U+02D9",
     "\u02E2": "U+02E2 traps U+1D4B/U+1D49", "\u2091": "U+2091 traps U+1D49",
     "\u04E9": "U+04E9 traps U+0275", "\u2010": "U+2010 traps U+002D",
+    "\u2013": "U+2013 traps U+002D",
 }
 # Traps that are a *sequence* rather than a codepoint, and so cannot live in the dict
 # above, which is consulted one character at a time. U+0121 used to sit there and was

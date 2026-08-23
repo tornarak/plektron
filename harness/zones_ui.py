@@ -287,7 +287,16 @@ def page_state(ref: str, root: Path, cfg: dict, nudge: int = 0,
     tol = cfg["width_tolerance_px"]
     if store not in STORES:
         raise ValueError(f"store must be one of {', '.join(STORES)}, not {store!r}")
-    keyed = zn.has_zones(ref, root)
+    # A ruled leaf is settled without holding a zone file, so this is `keyed`
+    # rather than the file test — otherwise the editor draws every plate as
+    # unkeyed and its Done button never comes on.
+    #
+    # **Loaded once and handed down.** `keyed` asks `is_exempt`, which reads
+    # seven `.lst` files when it is not given them, and the `done` count below
+    # asks it per page of the whole work-list — the same per-page re-read of
+    # the split lists `validate_page` was already profiled for.
+    _splits = zn.load_splits(root)
+    keyed = zn.keyed(ref, root, _splits)
     shown = effective_store(ref, root, store)
 
     zones, dropped, short = [], [], 0
@@ -330,19 +339,31 @@ def page_state(ref: str, root: Path, cfg: dict, nudge: int = 0,
         # page that has both, `shown` is `mz` while the view still answers `gt`. The
         # pill reports the store rule, not the thing being looked at.
         "view": effective_store(ref, root, "zones"),
+        # **`has_zones`, not `keyed`, and the difference is the whole point of
+        # there being two.** This column says what each store *holds*, so `None`
+        # has to mean "no file" — and a ruled leaf is settled while holding
+        # nothing. Gated on `keyed` it drew `gt — 0` for a plate whose ALTO had
+        # just been deleted, which is the old empty-file convention coming back as
+        # a live-looking number in the one place a human reads to decide which
+        # store to open. The `mz` line beside it always asked the file question.
         "present": {
-            "gt": len(zn.read_zones(ref, root)) if keyed else None,
+            "gt": (len(zn.read_zones(ref, root))
+                   if zn.has_zones(ref, root) else None),
             "mz": (len(zn.read_zones(ref, root, store=zn.MZDIR))
                    if zn.has_zones(ref, root, zn.MZDIR) else None),
         },
         # How many zones the paragraph rule would make of this page — so the pill
-        # says whether it would change anything before you switch to it.
+        # says whether it would change anything before you switch to it. Derived
+        # from `gt`, so it asks the file question for `present`'s reason: a ruled
+        # leaf has no ALTO for the rule to run over, and `0` there would read as
+        # "the rule found nothing" rather than "there is nothing to run it on".
         "paras_zones": (len(zn.split_at_paragraphs(
-            zn.read_zones(ref, root), ref, root, cfg)) if keyed else "—"),
+            zn.read_zones(ref, root), ref, root, cfg))
+            if zn.has_zones(ref, root) else "—"),
         "proposal": "mz" if shown == "mz" else "",
         "proposal_dropped": dropped,
         "proposal_short": short,
-        "split": zn.load_splits(root).get(ref, zn.DEFAULT_SPLIT),
+        "split": _splits.get(ref, zn.DEFAULT_SPLIT),
         "exempt": zn.load_exempt(root).get(ref, []),
         # Ink no zone accounts for, shown as the page is keyed rather than only
         # after a save. Skipped on a page with no zones, where every mark on the
@@ -366,7 +387,7 @@ def page_state(ref: str, root: Path, cfg: dict, nudge: int = 0,
         # How much of the work-list is behind you. The count is what a sweep is
         # for, and it is not derivable from the position when the list is not
         # being walked in order.
-        "done": sum(1 for r in scans if zn.has_zones(r, root)),
+        "done": sum(1 for r in scans if zn.keyed(r, root, _splits)),
     }
 
 
@@ -418,8 +439,11 @@ def save_payload(payload: dict, root: Path, cfg: dict) -> dict:
     # than leave the counts as they were when the page was served. The `paras` count
     # is derived from `gt`, so a save moves it too, and a stale proposal count sitting
     # beside a fresh one is the kind of thing this project reads as a live number.
-    res["paras_zones"] = len(zn.split_at_paragraphs(
+    # `"—"` where a ruling has just cleared the store, matching `page_state`: the
+    # rule has nothing to run over, and `0` would say it ran and found nothing.
+    res["paras_zones"] = (len(zn.split_at_paragraphs(
         zn.read_zones(ref, root), ref, root, cfg))
+        if zn.has_zones(ref, root) else "—")
     res.update(_save_figs(payload, ref, root, cfg))
     return res
 
@@ -649,6 +673,12 @@ def list_context(root: Path, cfg: dict, itinerary: list[str] | None = None,
     few that have files, and nothing at all for the rest.
     """
     by_label = zc.types_by_label(cfg)
+    # **Read once for the whole list**, and before the scope branch because the
+    # unscoped universe needs it too: `settled_refs` reads the leaf rulings, and a
+    # second `load_splits` there is seven `.lst` files re-read and every name
+    # re-parsed through `norm_ref`. `validate_page` takes it below for the same
+    # reason — over 832 rows that hoist was 9.9 s of a 5 s response.
+    _splits = zn.load_splits(root)
     # Unscoped, the universe is **both stores**, not just the keyed one. A page with
     # a prediction and no ground truth is the only kind of work this list exists to
     # queue, and enumerating `gt/zones/` alone would mean the `proposed` state could
@@ -659,15 +689,17 @@ def list_context(root: Path, cfg: dict, itinerary: list[str] | None = None,
     elif scope == "all":
         refs = all_scans(root)
     else:
-        refs = sorted(set(zn.zone_refs(root)) | set(zn.zone_refs(root, zn.MZDIR)),
-                      key=parse_ref)
-    # **Both read once for the list, not once per row.** `validate_page` builds
-    # `load_splits` when not handed one — seven `.lst` files re-read and every
-    # name re-parsed through `norm_ref` — and `cached_ink` parses the whole cache
-    # file to look up one entry. Over 832 rows that was 9.9s and 2.0s of a 5s
-    # response, and 700k `norm_ref` calls. Neither changes per ref inside one
-    # render, and the ink staleness check still runs per ref against live mtimes.
-    splits = zn.load_splits(root)
+        # `settled_refs` on the human side, so a leaf a human has just ruled is
+        # still on the list. It holds no file under `exempt => no zones`, and a
+        # list built on the store census alone would drop every plate — leaving
+        # no way back to the page from the one screen that navigates the store.
+        refs = sorted(set(zn.settled_refs(root, splits=_splits))
+                      | set(zn.zone_refs(root, zn.MZDIR)), key=parse_ref)
+    # `cached_ink` is the other one read once rather than per row: it parses the
+    # whole cache file to look up one entry, 2.0 s of that same response. Neither
+    # changes per ref inside one render, and the ink staleness check still runs
+    # per ref against live mtimes.
+    splits = _splits
     ink_cache = zn.load_ink_cache(root)
     rows = []
     n_keyed = n_err = n_warn = 0

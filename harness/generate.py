@@ -68,10 +68,11 @@ from __future__ import annotations
 
 import hashlib
 import re
+from dataclasses import dataclass
 from pathlib import Path
 from xml.sax.saxutils import escape
 
-from . import apparatus, citations, figrefs
+from . import apparatus, citations, figrefs, provenance
 from .context import _running_title, tier1_terms
 from .detectors import join_broken_words
 from .entities import alias_index, auto_forms, load
@@ -88,6 +89,54 @@ from .zones import read_zones
 VERSION = 5
 
 GENDIR = "mz/tei"
+
+
+@dataclass(frozen=True)
+class Stores:
+    """The stores `build` reads that are the same on every page of a run.
+
+    **The loop's invariants, hoisted — not a cache.** `tei validate` states the
+    distinction in full and this is the same act: a cache is a property of a
+    server, and these processes read the stores once and exit. What makes it
+    worth a type rather than five keyword arguments is that they are six things
+    with one lifetime, and a caller that hoisted four of them and forgot the
+    fifth would get a correct answer at a cost it thought it had paid.
+
+    Measured before it was written, because "obviously the loop reloads too
+    much" is exactly the reasoning that produces a wrong optimisation: over 40
+    pages of `tei generate --force`, `entities.load` was **68% of the run** — 30
+    ms and 482 files, once per page, 19,280 `parse` calls in all — with
+    `figures.readings` re-parsing `data/readings.md` beside it. None of the six
+    can change during a sweep: `build` writes only `mz/tei/`, which none of them
+    reads.
+
+    `build` still constructs its own when given none, so a single-page call is
+    unchanged and no caller is obliged to know this exists.
+    """
+
+    #: `entities.load` — the whole entity store, by identity.
+    store: dict
+    #: `alias_index` over `store`: every alias form to the entities claiming it.
+    ents: dict
+    #: `auto_forms` over `ents`: the forms an auto-link licence covers.
+    autos: dict
+    #: `apparatus.authority_names` — the names `_figref_spans` will not swallow.
+    cited: frozenset[str]
+    #: `apparatus.sigla` — the printed (name, volume, short title) table.
+    sigla: list[dict]
+    #: `figures.readings` — every hand-read caption, keyed as `readings.md` keys.
+    readings: dict
+
+
+def stores(root: Path = Path(".")) -> Stores:
+    """Read the six page-invariant stores once, for a caller sweeping pages."""
+    from .figures import readings
+
+    store = load(root)
+    ents = alias_index(store)
+    return Stores(store=store, ents=ents, autos=auto_forms(ents),
+                  cited=apparatus.authority_names(root),
+                  sigla=apparatus.sigla(root), readings=readings(root))
 
 #: Zone labels that become body prose, and what each becomes. A label absent from
 #: here is not prose and is handled by name below; a label absent from *both* is a
@@ -202,7 +251,8 @@ def _run_on_note(text: str, pos: int, open_marker: str) -> int | None:
     return None
 
 
-def _figures_with_geometry(ref: str, root: Path) -> list[dict]:
+def _figures_with_geometry(ref: str, root: Path,
+                           all_readings: dict | None = None) -> list[dict]:
     """The page's figures — number, caption, and where the box sits — top first.
 
     **`_figures_on_page` deliberately drops geometry and this deliberately keeps
@@ -228,7 +278,7 @@ def _figures_with_geometry(ref: str, root: Path) -> list[dict]:
     """
     from .figures import figure_boxes
     return [{"n": f["n"], "caption": f["caption"], "y": f["y"]}
-            for f in figure_boxes(ref, root)]
+            for f in figure_boxes(ref, root, all_readings)]
 
 
 def _mark_notes(body: list[str], rows: list[tuple[int, str]], rendered) \
@@ -385,17 +435,61 @@ def _inputs(ref: str, root: Path) -> tuple[Path, Path]:
             root / "gt" / "zones" / f"chukchi-{ref}.xml")
 
 
+def _digest(ref: str, root: Path) -> str:
+    """A digest of both generator inputs. Raises if either is gone."""
+    h = hashlib.sha256()
+    for p in _inputs(ref, root):
+        h.update(p.read_bytes())
+    return h.hexdigest()[:16]
+
+
 def _stamp(ref: str, root: Path) -> str:
     """Version plus a digest of both inputs, so a stale baseline is detectable.
 
     Without it `tei diff` cannot tell a difference review made from one a
     regeneration made under it, and would report the second as the first — a diff
     whose witness may have moved is exactly the comparison that must say so.
+
+    **Still the canonical string, though it is no longer how a page carries it.**
+    A generated page records its producer in `<appInfo>` now; this is the form
+    both sides of `tei diff` are *compared* in, and `_producer_stamp` reconstructs
+    it from the element. Keeping one string means the comparison did not have to
+    learn about two encodings.
     """
-    h = hashlib.sha256()
-    for p in _inputs(ref, root):
-        h.update(p.read_bytes())
-    return f"generated: harness tei generate v{VERSION} inputs={h.hexdigest()[:16]}"
+    return f"generated: harness tei generate v{VERSION} inputs={_digest(ref, root)}"
+
+
+def _producer(ref: str, root: Path) -> provenance.Producer:
+    """What `tei generate` records about itself in the page it writes."""
+    return provenance.Producer(
+        step="harness tei generate", label="rule-built page", kind="rule",
+        version=str(VERSION), inputs={"digest": _digest(ref, root)})
+
+
+def _producer_stamp(path: Path) -> str:
+    """The canonical stamp of a TEI page, from `<appInfo>` or from the comment.
+
+    **Both forms, and that is not transitional politeness.** `mz/tei/` records
+    its producer in an element; every page a collator copied before that change
+    carries the old XML comment, and `SURVIVING` deliberately lets the comment
+    live on into `tei/`. A reader of only the element would report every one of
+    those pages as carrying no stamp — `tei diff` would answer "cannot tell" for
+    the whole reviewed corpus, which is a regression dressed as caution. The
+    element is read first because a page carrying both was written by today's
+    generator.
+    """
+    from lxml import etree
+
+    try:
+        root_el = etree.parse(str(path)).getroot()
+    except (OSError, etree.XMLSyntaxError):
+        return ""
+    p = provenance.read_producer(path)
+    if p is not None and p.step == "harness tei generate":
+        return (f"generated: harness tei generate v{p.version} "
+                f"inputs={p.inputs.get('digest', '')}")
+    comments = [(c.text or "").strip() for c in root_el.iter(etree.Comment)]
+    return next((c for c in comments if c.startswith("generated:")), "")
 
 
 class Unready(ValueError):
@@ -790,8 +884,13 @@ def page_blocks(ref: str, root: Path = Path(".")
     return out
 
 
-def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
-    """The page's generated TEI, and a report of what the rules could and could not do."""
+def build(ref: str, root: Path = Path("."),
+          shared: Stores | None = None) -> tuple[str, dict]:
+    """The page's generated TEI, and a report of what the rules could and could not do.
+
+    `shared` is a `Stores` a caller sweeping pages built once; without one this
+    reads all six itself, so a single-page call is exactly what it was.
+    """
     ref = norm_ref(ref)
     _require(ref, root)
     ocr, _ = _inputs(ref, root)
@@ -807,14 +906,13 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
     for t in tier1_terms(ref, root, keys=False):
         by_line.setdefault(t["line"], []).append(t)
 
-    store = load(root)
-    ents = alias_index(store)
-    autos = auto_forms(ents)
-    cited = apparatus.authority_names(root)
-    # The printed resolution table: `(name, volume, short title)` → work, which is
-    # what the List of Authorities Quoted *is*. Loaded once per page, beside the
-    # names the figure guard reads out of the same store.
-    sigla = apparatus.sigla(root)
+    # The printed resolution table among them: `(name, volume, short title)` →
+    # work, which is what the List of Authorities Quoted *is*, beside the names
+    # the figure guard reads out of the same store. All six were loaded here per
+    # page until a sweep's profile put `entities.load` alone at 68% of the run.
+    sh = shared if shared is not None else stores(root)
+    store, ents, autos = sh.store, sh.ents, sh.autos
+    cited, sigla = sh.cited, sh.sigla
     pending: list[dict] = []          # candidates, to be commented after the block
     # **Which `once` forms this page has already spent its link on.** Page-scoped
     # because the convention is, and mutable across `rendered` calls because a
@@ -1034,7 +1132,7 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
     #: Lines of the paragraph currently open across one or more bands.
     para: list[tuple[int, str]] = []
 
-    figs = _figures_with_geometry(ref, root)
+    figs = _figures_with_geometry(ref, root, sh.readings)
     rep["figures"] = len(figs)
     fig_at = 0
     at_y = 0
@@ -1336,23 +1434,35 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
 
     src = f"see corpus teiHeader; page {folio}" if folio is not None \
         else "see corpus teiHeader; folio not parsed"
+    # **The stamp is an element, not a comment.** It was
+    # `<!-- generated: harness tei generate v5 inputs=… -->`, which no XPath
+    # reaches, no schema constrains and `tei validate` could not see — so the one
+    # store whose provenance mattered most to a reader was the one store that
+    # recorded it where only a text search would find it. TEI has `<appInfo>`.
+    from lxml import etree
+
+    appinfo = etree.tostring(
+        provenance.tei_appinfo(_producer(ref, root)), encoding="unicode",
+    ).replace(f' xmlns="{TEI_NS}"', "")
     doc = (
         '<TEI xmlns="http://www.tei-c.org/ns/1.0">\n'
-        f'  <!-- {_stamp(ref, root)} -->\n'
         '  <teiHeader>\n    <fileDesc>\n      <titleStmt>\n'
         '        <title>see corpus teiHeader</title>\n'
         '      </titleStmt>\n      <publicationStmt>\n'
         '        <p>see corpus teiHeader</p>\n'
         '      </publicationStmt>\n      <sourceDesc>\n'
         f'        <p>{escape(src)}</p>\n'
-        '      </sourceDesc>\n    </fileDesc>\n  </teiHeader>\n'
+        '      </sourceDesc>\n    </fileDesc>\n'
+        f'    <encodingDesc>\n      {appinfo}\n    </encodingDesc>\n'
+        '  </teiHeader>\n'
         '  <text>\n    <body>\n'
         + "\n".join(body)
         + '\n    </body>\n  </text>\n</TEI>\n')
     return doc, rep
 
 
-def generate(ref: str, root: Path = Path("."), force: bool = False) -> dict:
+def generate(ref: str, root: Path = Path("."), force: bool = False,
+             shared: Stores | None = None) -> dict:
     """Build and write one page. Reports `written: False` where a baseline exists.
 
     **Not gated on `--commit`.** The conventions reserve that for the authored
@@ -1366,7 +1476,7 @@ def generate(ref: str, root: Path = Path("."), force: bool = False) -> dict:
     out = gen_path(ref, root)
     if out.exists() and not force:
         return {**skipped(ref), "why": "a baseline exists; --force replaces it"}
-    doc, rep = build(ref, root)
+    doc, rep = build(ref, root, shared)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(doc, encoding="utf-8")
     return {**rep, "written": True, "why": ""}
@@ -1400,6 +1510,11 @@ GEN_MARKS = ("generated:", "zone-opens:", "unresolved zone",
 #: Counting them made a correctly finished page report an unanswered question,
 #: which is the kind of standing false positive that teaches a reader to skip a
 #: column.
+#:
+#: `generated:` stays here although the generator no longer writes it. Pages
+#: collated before the stamp moved into `<appInfo>` still carry the comment, and
+#: dropping it from this tuple would make every one of them report a standing
+#: unanswered question on the strength of a change they predate.
 SURVIVING = ("generated:", "zone-opens:")
 
 
@@ -1427,7 +1542,7 @@ def _counts(path: Path) -> dict:
          for t in ("p", "note", "figure", "name", "foreign", "milestone",
                    "quote", "list", "table")}
     comments = [(c.text or "").strip() for c in root.iter(etree.Comment)]
-    n["stamp"] = next((c for c in comments if c.startswith("generated:")), "")
+    n["stamp"] = _producer_stamp(path)
     n["gen_comments"] = sum(1 for c in comments
                             if c.startswith(GEN_MARKS) and
                             not c.startswith(SURVIVING))
