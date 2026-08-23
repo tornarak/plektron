@@ -132,9 +132,9 @@
    "edited": false
   },
   "32": {
-   "text": "that visited the Kolyma country, that of Baron Wrangell (1820—24) seems",
+   "text": "that visited the Kolyma country, that of Baron Wrangell (1820-24) seems",
    "edited": false,
-   "note": "Date-range dash keyed U+2014, not the U+2013 the reading proposed. §2.11 is SETTLED and measured and states the book sets ONE dash — 'no en dash, no --' — which is a claim about the inventory rather than about the sentence position; the proposal read it as scoped to sentence dashes only. Corpus check: U+2014 occurs 1041 times in gt/ocr against 0 for U+2013 across 476 keyed pages, so keying it would have introduced the corpus's first en dash on a single reading. Two other readers in this same batch met an en dash in the machine draft and corrected it TO em by citing §2.11 (3-177 L44, 3-185 L44). Crop at 4x shows a full-width dash, clearly not a hyphen; an exact width comparison against a sentence dash is not resolvable by eye at the ceiling, which is what the corpus-wide measurement already settles."
+   "note": "Date range keyed with the hyphen U+002D, on the editor's ruling. The reading proposed U+2013; §2.11 licenses no en dash and the corpus attests none in 1041 dashes, but the correction to em U+2014 was also wrong: a numeric range is a compound joiner, not one of §2.11's three dash settings (run-in heading, list introduction, quire mark). Corpus evidence: numeric ranges in gt/ocr run 33 hyphen against 5 em dash, and three of those five were keyed in this same session."
   },
   "33": {
    "text": "to have been the most scrupulous and sober-minded. Still local tradition",
