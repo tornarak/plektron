@@ -48,9 +48,11 @@ from __future__ import annotations
 import json
 import time
 import unicodedata
+from collections.abc import Callable
 from pathlib import Path
 
 from .atomic import tmp_for
+from .parallel import ptrack
 from .paths import CAPTIONS, decisions_path, proposal_path
 from .refs import norm_ref
 
@@ -301,7 +303,8 @@ def witness(root: Path = Path("."), source: dict | None = None) -> dict:
 
 
 def restore(root: Path = Path("."), refs: list[str] | None = None,
-            force: bool = False, commit: bool = False) -> dict:
+            force: bool = False, commit: bool = False,
+            tick: Callable | None = None) -> dict:
     """Write the adjudicated captions into `gt/fig/`. **This is the migration.**
 
     The store is populated by restoring rulings, not by a script transcribing
@@ -345,7 +348,7 @@ def restore(root: Path = Path("."), refs: list[str] | None = None,
 
     wanted = [norm_ref(r) for r in refs] if refs else fig_refs(root)
     rows, marks, holes, occupied = [], [], [], []
-    for ref in wanted:
+    for ref in ptrack(wanted, tick):
         blocks = [b for b in zones(ref, root) if b["label"] == FIGDESC]
         if not blocks:
             continue

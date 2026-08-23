@@ -50,8 +50,11 @@ from __future__ import annotations
 
 import json
 import math
+from collections.abc import Callable
 from functools import lru_cache
 from pathlib import Path
+
+from .parallel import ptrack
 
 GEODIR = "data/geo"
 
@@ -866,7 +869,7 @@ def meridian(root: Path = Path(".")) -> list[dict]:
     return out
 
 
-def verify(root: Path = Path(".")) -> dict:
+def verify(root: Path = Path("."), tick: Callable | None = None) -> dict:
     """The geometry against what a human authored. Reports; never gates.
 
     Findings, and the wording of each is load-bearing:
@@ -904,7 +907,7 @@ def verify(root: Path = Path(".")) -> dict:
 
     containment, shared = [], []
     claims = member_claims(store)
-    for rec in sorted(store.values(), key=lambda r: r["id"]):
+    for rec in ptrack(sorted(store.values(), key=lambda r: r["id"]), tick):
         parent = store.get(rec["within"]) if rec["within"] else None
         if not parent:
             continue

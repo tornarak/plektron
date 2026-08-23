@@ -34,9 +34,11 @@ underneath all of it.
 from __future__ import annotations
 
 import os
-from collections.abc import Iterable
+from collections.abc import Callable, Iterable
 from dataclasses import dataclass
 from pathlib import Path
+
+from .parallel import ptrack
 
 # The one declaration of every derived path. `zones.py` and `recognize.py` alias
 # these rather than being rewritten around them — 68 call sites spell `VIEWDIR`,
@@ -458,7 +460,7 @@ def _wanted_for(name: str, root: Path) -> dict[str, Path] | None:
     return None
 
 
-def survey(root: Path = Path(".")) -> list[dict]:
+def survey(root: Path = Path("."), tick: Callable | None = None) -> list[dict]:
     """One fixed-key record per farm — what `harness views check` prints.
 
     Tests directories itself and never goes through a guarded enumerator: the verb
@@ -478,7 +480,7 @@ def survey(root: Path = Path(".")) -> list[dict]:
     is the honest word for it either way.
     """
     rows = []
-    for farm in FARMS:
+    for farm in ptrack(FARMS, tick):
         d = root / farm.path
         present = d.is_dir()
         wanted = _wanted_for(farm.name, root) if present else None

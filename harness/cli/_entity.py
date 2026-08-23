@@ -35,6 +35,8 @@ from ..entities import (
     split_id,
 )
 from ..geo import index as geo_index
+from ..parallel import ptrack
+from ..render import progress
 from ._common import (
     action,
     add_all,
@@ -479,7 +481,8 @@ def run_locate(a) -> int:
 
 def run_check(a) -> int:
     try:
-        r = check(a.root)
+        with progress("reading the store") as tick:
+            r = check(a.root, tick=tick)
     except (Malformed, ValueError) as e:
         out(a, [{"error": str(e)}], "errors", heading=True)
         return verdict(a, 1, "the store does not parse")
@@ -496,10 +499,11 @@ def run_check(a) -> int:
 
 def run_list(a) -> int:
     store = _store(a)
-    rows = [{"id": r["id"], "status": r["status"], "canonical": r["canonical"],
-             "aliases": len(r["aliases"]),
-             "auto": sum(1 for t in r["aliases"] if t["auto"])}
-            for r in store.values()]
+    with progress("listing") as tick:
+        rows = [{"id": r["id"], "status": r["status"], "canonical": r["canonical"],
+                 "aliases": len(r["aliases"]),
+                 "auto": sum(1 for t in r["aliases"] if t["auto"])}
+                for r in ptrack(store.values(), tick)]
     # Proposed first: the list is read as a worklist more often than as a census,
     # and what wants doing should not be sorted in among what is done.
     rows.sort(key=lambda r: (r["status"] != "proposed", r["id"]))
@@ -1005,7 +1009,8 @@ def run_occurrences(a) -> int:
     # and what `VERBS.md` documents. `entities.occurrences` takes its corpus
     # from its caller precisely so that the reading view's wider one — which
     # includes the generated drafts under `--drafts` — does not leak in here.
-    got = occurrences(ids, collated(a.root), store, a.root)
+    with progress("scanning collated pages") as tick:
+        got = occurrences(ids, collated(a.root), store, a.root, tick=tick)
 
     out(a, [{"id": i, "linked": len(got[i]["linked"]),
              "unlinked": len(got[i]["unlinked"]),

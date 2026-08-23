@@ -57,6 +57,7 @@ import hashlib
 import json
 import os
 import time
+from collections.abc import Callable
 from functools import lru_cache
 from itertools import pairwise
 from pathlib import Path
@@ -73,7 +74,7 @@ if TYPE_CHECKING:
 from .atomic import tmp_for, write_atomic
 from .figures import read_blocks, to_rect
 from .ns import ALTO_NS
-from .parallel import gpu_workers, pmap
+from .parallel import gpu_workers, pmap, ptrack
 from .paths import scan_for  # re-exported; this module's callers name it here
 from .refs import norm_ref, parse_ref
 
@@ -708,7 +709,8 @@ DEPARTURE_KINDS = (
 
 
 def departures(refs: list[str], root: Path = Path("."),
-               nudge_px: int = NUDGE_PX) -> list[dict]:
+               nudge_px: int = NUDGE_PX,
+               tick: Callable | None = None) -> list[dict]:
     """Per page: how far the human ruling went beyond the prediction it started from.
 
     **The criterion existed and the audit did not.** `_independent` has been the
@@ -734,7 +736,7 @@ def departures(refs: list[str], root: Path = Path("."),
     """
     splits = load_splits(root)
     out = []
-    for ref in refs:
+    for ref in ptrack(refs, tick):
         ref = norm_ref(ref)
         split = splits.get(ref, "")
         kind, shift = ("not a text page", 10**9) if split in LEAF_KINDS \
@@ -824,7 +826,7 @@ def set_splits(mapping: dict[str, str], root: Path = Path(".")) -> dict:
 
 
 def remark_eval(root: Path = Path("."), fraction: float = 0.20,
-                commit: bool = False) -> dict:
+                commit: bool = False, tick: Callable | None = None) -> dict:
     """Move a fraction of `train` into `eval`, per part, independent pages first.
 
     **Additive: nothing already in `eval` or `exempt` is touched.** A page a human
@@ -863,10 +865,15 @@ def remark_eval(root: Path = Path("."), fraction: float = 0.20,
     for p in sorted(exact, key=lambda p: -(exact[p] - quota[p]))[:target - sum(quota.values())]:
         quota[p] += 1
 
+    # `_independent` reads both stores per ref and is the whole cost here, so it
+    # runs once over the train list — under the bar — rather than per part inside
+    # the loop below. Same set, and the only place a count of the work exists.
+    independent = {r for r in ptrack(train, tick) if _independent(r, root)}
+
     picked, rows = [], []
     for part in sorted(by_part):
-        indep = [r for r in by_part[part] if _independent(r, root)]
-        rest = [r for r in by_part[part] if r not in set(indep)]
+        indep = [r for r in by_part[part] if r in independent]
+        rest = [r for r in by_part[part] if r not in independent]
         take = _spread(indep, quota[part])
         fill = _spread(rest, quota[part] - len(take))
         picked += take + fill
@@ -4161,7 +4168,8 @@ def _write_merged(src: Path, dest: Path, merges: dict[str, str]) -> bool:
     return hit
 
 
-def assemble(root: Path = Path("."), scratch: bool = False) -> dict:
+def assemble(root: Path = Path("."), scratch: bool = False,
+             tick: Callable | None = None) -> dict:
     """Lay out `bogoras-seg/` for `ketos segtrain`, and report the invocation.
 
     ketos resolves a page's image through the ALTO's own
@@ -4235,7 +4243,7 @@ def assemble(root: Path = Path("."), scratch: bool = False) -> dict:
     merged_pages = 0
 
     exempted = 0
-    for ref in zone_refs(root):
+    for ref in ptrack(zone_refs(root), tick):
         split = splits.get(ref, DEFAULT_SPLIT)
         # A plate is neither an example of the layout nor a fair test of it, so it
         # goes into neither list. Counted, not silently dropped — a set that

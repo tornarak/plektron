@@ -27,6 +27,7 @@ import sys
 
 import click
 
+from ..parallel import ptrack
 from ..render import progress
 from ._common import (
     action,
@@ -314,7 +315,12 @@ def run_edit(a) -> int:
     if not start and itin:
         # Resume: the first page on the list nobody has keyed. Falls back to the
         # head of the list once it is finished, so the session still opens.
-        start = next((r for r in itin if not zmod.has_zones(r, a.root)), itin[0])
+        # `has_zones` is a store read per page, and `--all` makes the itinerary
+        # the whole book — so resuming is a sweep before the socket is bound,
+        # with nothing on screen to say the session is still coming up.
+        with progress("finding where to resume") as tick:
+            start = next((r for r in ptrack(itin, tick)
+                          if not zmod.has_zones(r, a.root)), itin[0])
     if not start:
         print("zones edit needs a page to start at: name one or more refs, or "
               "--itinerary to take one from, or --all for the whole book",
@@ -337,7 +343,9 @@ def run_edit(a) -> int:
               f"{web.url_for('zones', f'/?ref={start}', port=a.port)}"
               "   (Done button on the page, or ctrl-c)"]
     if itin:
-        done = sum(1 for r in itin if zmod.has_zones(r, a.root))
+        with progress("counting the itinerary") as tick:
+            done = sum(1 for r in ptrack(itin, tick)
+                       if zmod.has_zones(r, a.root))
         banner.append(
             f"itinerary {a.itinerary or ''}: {len(itin)} pages, {done} keyed")
     banner.append(f"store -> {zmod.zone_dir(a.root)}")
@@ -400,8 +408,9 @@ def run_score(a) -> int:
     # the number cannot say so. `_independent` has been the rule `remark-eval`
     # selects on since the set was drawn; this is the first thing to report it, so
     # the qualifier travels with the figure instead of expiring at selection time.
-    out(a, zmod.departure_composition(zmod.departures(scored, a.root)),
-        "independence")
+    with progress("measuring departure") as tick:
+        dep = zmod.departures(scored, a.root, tick=tick)
+    out(a, zmod.departure_composition(dep), "independence")
     # A consistent relabelling is a different fault from a weak model and has a
     # different remedy, so it does not get to hide in a table.
     p = rep["permutation"]
@@ -416,7 +425,8 @@ def run_score(a) -> int:
 
 def run_assemble(a) -> int:
     zmod, _ = _mod()
-    rep = zmod.assemble(a.root, scratch=a.scratch)
+    with progress("assembling") as tick:
+        rep = zmod.assemble(a.root, scratch=a.scratch, tick=tick)
     out(a, rep)
     return 1 if rep["missing_blot"] else 0
 
@@ -444,14 +454,18 @@ def run_remap(a) -> int:
 
 def run_remark_eval(a) -> int:
     zmod, _ = _mod()
-    out(a, zmod.remark_eval(a.root, a.fraction, commit=a.commit))
+    with progress("measuring independence") as tick:
+        rep = zmod.remark_eval(a.root, a.fraction, commit=a.commit, tick=tick)
+    out(a, rep)
     return 0
 
 
 def run_delete(a) -> int:
     zmod, _ = _mod()
-    out_per_ref(a, [(r, zmod.delete_zones(r, a.root, commit=a.commit))
-                    for r in page_refs(a)])
+    with progress("deleting") as tick:
+        rows = [(r, zmod.delete_zones(r, a.root, commit=a.commit))
+                for r in ptrack(page_refs(a), tick)]
+    out_per_ref(a, rows)
     return 0
 
 
@@ -464,7 +478,9 @@ def run_diff(a) -> int:
     scope = page_refs(a) or sorted(
         set(zmod.zone_refs(a.root)) & set(zmod.zone_refs(a.root, zmod.MZDIR)),
         key=zmod.parse_ref)
-    rows = [r for ref_ in scope for r in zmod.zone_diff(ref_, a.root, cfg)]
+    with progress("diffing zones") as tick:
+        rows = [r for ref_ in ptrack(scope, tick)
+                for r in zmod.zone_diff(ref_, a.root, cfg)]
     out(a, {"pages": len(scope), "differences": len(rows),
             "pages_differing": len({r["ref"] for r in rows}),
             "by_kind": " ".join(f"{k}:{v}" for k, v in
@@ -482,8 +498,10 @@ def run_diff(a) -> int:
     # a column reporting coverage it does not have, which is the trap `LOOKALIKES`
     # already paid for once with U+0121. So the counts differ between the two
     # sections by exactly the pages nothing predicted, and that is the point.
-    out(a, zmod.departures(page_refs(a) or zmod.zone_refs(a.root), a.root),
-        "departure")
+    with progress("measuring departure") as tick:
+        dep = zmod.departures(page_refs(a) or zmod.zone_refs(a.root), a.root,
+                              tick=tick)
+    out(a, dep, "departure")
     return 0
 
 

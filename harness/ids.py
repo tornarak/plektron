@@ -41,11 +41,13 @@ from __future__ import annotations
 
 import re
 from collections import Counter
+from collections.abc import Callable
 from pathlib import Path
 
 from lxml import etree
 
 from .ns import TEI_NS, XML_ID
+from .parallel import ptrack
 from .refs import norm_ref
 
 # The kind set is exactly what something can point *at*. `name` earns its place the
@@ -372,7 +374,7 @@ def page_glossary(root_el, ref: str, root: Path = Path("."),
     return {"pairs": linked, "unlinked_terms": unlinked}
 
 
-def glossary(root: Path = Path(".")) -> dict:
+def glossary(root: Path = Path("."), tick: Callable | None = None) -> dict:
     """Every resolved term↔gloss pair in the committed TEI, corpus-wide."""
     from .refs import norm_ref as _n
 
@@ -380,7 +382,7 @@ def glossary(root: Path = Path(".")) -> dict:
     # through @prev reuses the page this loop has already parsed rather than
     # reading it again per gloss.
     pairs, unlinked, pages, cache = [], 0, 0, {}
-    for p in sorted((root / "tei").glob("chukchi-*.xml")):
+    for p in ptrack(sorted((root / "tei").glob("chukchi-*.xml")), tick):
         try:
             ref = _n(p.stem)
         except ValueError:

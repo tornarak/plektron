@@ -89,7 +89,8 @@ def _farms(a) -> list[str]:
 
 def run_check(a) -> int:
     wanted = F.select(_farms(a))
-    rows = [r for r in F.survey(a.root) if r["farm"] in wanted]
+    with progress("surveying farms") as tick:
+        rows = [r for r in F.survey(a.root, tick) if r["farm"] in wanted]
     out(a, rows)
     # A gate, not measurement — but **only over the farms `build` can actually
     # fix**. `scans/` and `train/bogoras-seg/data/` are reported and never built here,

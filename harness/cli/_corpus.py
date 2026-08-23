@@ -205,7 +205,8 @@ def run_state(a) -> int:
     # error: the flags answer different questions and neither contradicts the other.
     if refs and getattr(a, "context", None):
         refs = with_context(refs, a.context, a.root)
-    rows = survey(refs or all_scans(a.root), a.root)
+    with progress("surveying") as tick:
+        rows = survey(refs or all_scans(a.root), a.root, tick=tick)
     if a.stage:
         allowed = set(a.stage)
         unknown = allowed - {"absent", *STAGES}
@@ -275,7 +276,8 @@ def run_normalize(a) -> int:
 
 def run_figures(a) -> int:
     from ..figures import reconcile
-    rep = reconcile(a.root)
+    with progress("reconciling") as tick:
+        rep = reconcile(a.root, tick=tick)
     out(a, rep)
     # Exit non-zero on a real reconciliation failure, so this can gate. The
     # counts alone never decide it: 250 pages was once the expected total *and*

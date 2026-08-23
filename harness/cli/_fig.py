@@ -18,6 +18,7 @@ import click
 
 from .. import figures as F
 from .. import zones_config as zc
+from ..parallel import ptrack
 from ..render import progress
 from ._common import (
     action,
@@ -291,13 +292,17 @@ def run_check(a) -> int:
         # counts in the page's row and gives each its own ref-keyed table — the
         # shape `zones check` uses, for the same reason: on one page the detail is
         # the answer, and across several the counts are.
-        reps = [(r, F.validate_fig_page(r, a.root, cfg, store)) for r in named]
+        with progress("checking figures") as tick:
+            reps = [(r, F.validate_fig_page(r, a.root, cfg, store))
+                    for r in ptrack(named, tick)]
         out_per_ref(a, reps)
         bad = any(rep["errors"] for _, rep in reps)
         return 1 if (bad and store == F.FIGDIR) else 0
 
     refs = F.fig_refs(a.root, store)
-    rows = [F.validate_fig_page(r, a.root, cfg, store) for r in refs]
+    with progress("checking figures") as tick:
+        rows = [F.validate_fig_page(r, a.root, cfg, store)
+                for r in ptrack(refs, tick)]
     flagged = [r for r in rows if r["errors"] or r["warnings"]]
     out(a, {"pages": len(rows),
             "figures": sum(r["figures"] for r in rows),
@@ -331,7 +336,9 @@ def run_check(a) -> int:
 
 
 def run_delete(a) -> int:
-    rows = [F.delete_figs(r, a.root, commit=a.commit) for r in page_refs(a)]
+    with progress("deleting") as tick:
+        rows = [F.delete_figs(r, a.root, commit=a.commit)
+                for r in ptrack(page_refs(a), tick)]
     out(a, rows)
     return 0
 
@@ -352,8 +359,9 @@ def run_crops(a) -> int:
 
 def run_restore(a) -> int:
     from .. import captions as C
-    rep = C.restore(a.root, refs=page_refs(a) or None,
-                    force=a.force, commit=a.commit)
+    with progress("restoring captions") as tick:
+        rep = C.restore(a.root, refs=page_refs(a) or None,
+                        force=a.force, commit=a.commit, tick=tick)
     out(a, rep)
     return 0
 
@@ -424,8 +432,9 @@ def run_sheets(a) -> int:
 
     from ..paths import caption_sheets_dir
     out_dir = Path(a.out) if a.out else caption_sheets_dir(a.root)
-    man = F.write_caption_sheets(out_dir, a.root, refs=page_refs(a) or None,
-                                 per_sheet=a.per_sheet, pad=a.pad)
+    with progress("composing sheets") as tick:
+        man = F.write_caption_sheets(out_dir, a.root, refs=page_refs(a) or None,
+                                     per_sheet=a.per_sheet, pad=a.pad, tick=tick)
     rotated = sum(1 for b in man["blocks"].values()
                   if b["orientation"] == "rotated")
     # The blocks themselves are the manifest's business, not the terminal's: 395
@@ -474,8 +483,9 @@ def run_extend(a) -> int:
             "may apply to any one picture. Run without --commit first — it prints "
             "what every box would gain, so the ceiling comes from the evidence.")
     frac = None if a.max_growth is None else a.max_growth / 100.0
-    rows = F.extend_all(page_refs(a) or None, a.root, max_growth=frac,
-                        commit=a.commit)
+    with progress("extending") as tick:
+        rows = F.extend_all(page_refs(a) or None, a.root, max_growth=frac,
+                            commit=a.commit, tick=tick)
     pcts = sorted(g["pct"] for r in rows for g in r["growth"])
     summary = {"pages": len(rows),
                "would_grow": sum(len(r["growth"]) for r in rows),
@@ -501,7 +511,9 @@ def run_extend(a) -> int:
 
 def run_propose(a) -> int:
     refs = page_refs(a) or sorted(F.pdf_images(a.root))
-    out(a, F.propose_from_pdf(refs, a.root, force=a.force))
+    with progress("proposing") as tick:
+        rows = F.propose_from_pdf(refs, a.root, force=a.force, tick=tick)
+    out(a, rows)
     return 0
 
 

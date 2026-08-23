@@ -28,6 +28,7 @@ import json
 import re
 import time
 import unicodedata
+from collections.abc import Callable
 from pathlib import Path
 from typing import NotRequired, TypedDict
 
@@ -758,7 +759,8 @@ def _predict_one(ref, root, net, dev, model_path, sha, dest) -> dict:
 
 
 def propose_from_pdf(refs: list[str], root: Path = Path("."),
-                     force: bool = False) -> list[dict]:
+                     force: bool = False,
+                     tick: Callable | None = None) -> list[dict]:
     """Write `mz/fig/` proposals from the source PDF's own image placements.
 
     `predict` writes the same store from the figure segmenter. This writes it from
@@ -791,11 +793,12 @@ def propose_from_pdf(refs: list[str], root: Path = Path("."),
     file to outrank it — but that is a fact about this corpus rather than a
     guarantee, so run this after the migration and not before.
     """
+    from .parallel import ptrack
     from .zones import ALTO_NS, build_alto
 
     manifest = pdf_images(root)
     out = []
-    for ref in refs:
+    for ref in ptrack(refs, tick):
         ref = norm_ref(ref)
         entry = manifest.get(ref) or {}
         images = entry.get("images") or []
@@ -974,12 +977,14 @@ def extend_to_rects(ref: str, root: Path = Path("."),
 
 
 def extend_all(refs: list[str] | None = None, root: Path = Path("."),
-               max_growth: float | None = None,
-               commit: bool = False) -> list[dict]:
+               max_growth: float | None = None, commit: bool = False,
+               tick: Callable | None = None) -> list[dict]:
     """`extend_to_rects` over a set of pages, reporting only what it touched."""
+    from .parallel import ptrack
+
     refs = refs if refs is not None else sorted(pdf_images(root))
     out = []
-    for ref in refs:
+    for ref in ptrack(refs, tick):
         rec = extend_to_rects(ref, root, max_growth=max_growth, commit=commit)
         if rec["grew"] or rec["out_of_scope"] or rec["over"] or rec["note"]:
             out.append(rec)
@@ -2018,7 +2023,8 @@ def paired(ref: str, root: Path = Path("."),
     }
 
 
-def figure_boxes(ref: str, root: Path = Path(".")) -> list[dict]:
+def figure_boxes(ref: str, root: Path = Path("."),
+                 all_readings: dict | None = None) -> list[dict]:
     """One record per **printed** figure on a page, top first.
 
     `paired` returns one row per `GraphicZone`; the book does not. 16 figures in
@@ -2060,11 +2066,16 @@ def figure_boxes(ref: str, root: Path = Path(".")) -> list[dict]:
     re-mints. Deliberately not a page-local ordinal either: `docs/apparatus.md`
     records that shape failing twice, the zone count not being the figure count
     in either direction.
+
+    `all_readings` is a `readings(root)` a caller already holds, handed down to
+    `paired` — the same `idx=` idiom `readings_for` documents, extended one rung
+    because `generate` is the sweep that needed it: without it a 691-page run
+    re-parses `data/readings.md` 691 times.
     """
     ref = norm_ref(ref)
     boxes = {b["id"]: b for b in zones(ref, root)}
     groups: dict[str, list[dict]] = {}
-    for f in paired(ref, root)["figures"]:
+    for f in paired(ref, root, all_readings)["figures"]:
         # An empty caption groups by zone id, i.e. not at all. `paired` has
         # already sorted by position, so first-seen is topmost throughout.
         groups.setdefault(f["caption"] or f"\0{f['zone_id']}", []).append(f)
@@ -2479,7 +2490,7 @@ def resolve_figures(handles: list[dict], figs: list[dict]) -> list[dict]:
     return out
 
 
-def reconcile(root: Path = Path(".")) -> dict:
+def reconcile(root: Path = Path("."), tick: Callable | None = None) -> dict:
     """Cross-check `gt/fig/` against `data/readings.md` in both directions.
 
     Empty `missing` and `orphan` lists is the invariant. `missing` means a zone
@@ -2487,6 +2498,8 @@ def reconcile(root: Path = Path(".")) -> dict:
     usually a spurious FigDesc that was deleted from the segmentation, in which
     case the reading should go too.
     """
+    from .parallel import ptrack
+
     known = readings(root)
     # Bucketed once. Both uses below were per-ref scans of the whole store —
     # `paired` re-parsed `data/readings.md` from disk for each of the 252 figure
@@ -2497,7 +2510,7 @@ def reconcile(root: Path = Path(".")) -> dict:
         by_ref.setdefault(r["ref"], {})[r["zone_suffix"]] = r
     missing, orphan, unpaired = [], [], []
     zones, caps = 0, 0
-    for ref in fig_refs(root):
+    for ref in ptrack(fig_refs(root), tick):
         unpaired += [f"{ref}|{zone_suffix(z)}"
                      for z in paired(ref, root, known)["unpaired_captions"]]
         tree = etree.parse(str(alto_for(ref, root)))
@@ -2948,7 +2961,8 @@ def caption_strips(ref: str, root: Path = Path("."), scans: str = "scans",
 
 def write_caption_sheets(out_dir: Path, root: Path = Path("."),
                          refs: list[str] | None = None, scans: str = "scans",
-                         per_sheet: int = 12, pad: float = CAP_PAD) -> dict:
+                         per_sheet: int = 12, pad: float = CAP_PAD,
+                         tick: Callable | None = None) -> dict:
     """Tile every caption in the corpus onto contact sheets. Returns the manifest.
 
     **The sheet is the unit of work for this pass, and the census is why.** 151 of
@@ -2966,9 +2980,11 @@ def write_caption_sheets(out_dir: Path, root: Path = Path("."),
     The manifest is what the reader and the review page both read back — key to
     sheet, orientation, and the pad each strip carries.
     """
+    from .parallel import ptrack
+
     refs = [norm_ref(r) for r in (refs or fig_refs(root))]
     items, recs = [], {}
-    for ref in refs:
+    for ref in ptrack(refs, tick):
         for key, strip, rec in caption_strips(ref, root, scans, pad):
             items.append((key, strip))
             recs[key] = rec

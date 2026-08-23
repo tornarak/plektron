@@ -296,7 +296,10 @@ the paragraph above it rather than opening one. **The keyed bands are the
 paragraphs, no rule adds to them, and this module opens no raster** — its output is
 a pure function of the tracked stores, so a clone reproduces it byte for byte.
 `zones.paragraph_starts` used to cut a band it measured as holding two; it gates
-`gt/zones/` now, that being the store its findings are answered in. Splits the footnote apparatus at its printed markers and
+`gt/zones/` now, that being the store its findings are answered in. **`Stores`
+is the six page-invariant stores a sweep reads once**, `build` constructing its
+own when a caller hands none — `entities.load` alone was 68% of a `--force` run
+over the corpus, at once per page. Splits the footnote apparatus at its printed markers and
 anchors each note at the matching marker in the body — both the printer's own
 marks, so both rules — and emits `<figure n><figDesc>` where each box sits. Emits a
 comment naming every judgement it declines: the `MainZone-Other` catch-all, a note
@@ -554,6 +557,26 @@ time: a worker holds ~1.6 GB of CUDA context (the weights are 22 MiB of it), and
 constant here would be wrong on the next machine, the same argument the column
 measure rests on. An explicit `--jobs` wins outright, including one that will not
 fit, which is `predict_skip`'s `single` rule applied to a different resource.
+
+**It also holds the recognizer's own training track** — `remark_eval` and
+`assemble`, the `zones`/`figures` pair a third time. Here rather than in a module
+of its own for the reason those two are where they are: a track's layout belongs
+beside the model it fits, and this is the module that loads and runs the
+recognizer. The split marks live in `gt/ocr/` and are read and written by
+`figures`' `load_splits`/`set_split`, which take a `store` parameter for exactly
+this — a second track need not carry a second copy of the same four functions.
+The import runs `recognize` → `figures`, which is a direction the graph already
+allows.
+
+Two caller invariants, and both are inversions of a sibling's. **`assemble`
+links `scans/w-figs-blotted/`, where `figures.assemble` links the raw scan** —
+one rule, that a model trains on the raster it will be asked to read, and `ocr
+predict` reads the blot. **An unmarked page goes into neither list**, where both
+segmentation tracks default one to `train`: harmless there, but here it would
+enlarge the training set between a `remark_eval` and a run, so two figures
+compared across that boundary would have been taken over different sets. Nothing
+in this module trains anything; `assemble` reports the invocations and runs none
+of them. The loop and its judgement are `.claude/skills/train-ocr/`.
 
 **`review.py`** — the largest, and it does five things: span diffing, decision
 persistence (temp-then-rename, a `.prev`, and an append-only `.jsonl` journal),

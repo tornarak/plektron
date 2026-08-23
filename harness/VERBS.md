@@ -102,23 +102,40 @@ alongside `--root` and `--pager`; the four share the trailing
 `--root --json --toon --pager` line of each fence below rather than being
 restated per entry.
 
-**Long sweeps draw a progress bar on stderr.** The thread-pooled raster sweeps
-(`zones check`, `zones paragraphs`, `zones blot`, `ocr gaps`, `ocr blot`,
-`fig crops`, `views build`), the **process**-pooled model sweeps (`ocr predict`,
-`zones score`, `zones install` — where `--jobs` spawns processes and the cap is
-free VRAM as well as cores), and the serial ones (`zones predict`, `fig predict`,
-`ocr crops`, `ocr sheets`, `ocr zoom`, `ocr numbered`, `corpus normalize`) —
-`ocr edit` too, before it binds, when `--unsettled` makes it measure every page to
-decide the itinerary —
-report the page they are on, how many are done and how long it has taken. Every
-verb is spelled in full here, group and action, because
-`test_cli_surface.test_the_progress_paragraph_names_every_instrumented_action`
-holds this list against the parser in both directions — a shorthand it could not
-parse would drop a verb from the check without saying so. It
-appears only when stderr is a terminal and only once the work has run for about
-half a second, so a short run stays silent and a redirected one is byte-identical
-to a run with no bar at all. stdout is untouched: `harness … > file` holds exactly
-the payload.
+**Long sweeps draw a progress bar on stderr, and `--all` is the rule.** Every
+action that takes `--all` reports the item it is on, how many are done and how
+long it has taken — that flag being exactly the statement that the work-list is
+however big the store is, which is the only durable criterion here. How long a
+verb takes is a fact about a machine: the corpus is read on more than one, and a
+sweep that is a second on a workstation is not a second on a laptop. So the
+question the rule asks is not "is this slow" but "does the corpus decide the
+size", and `test_cli_surface.test_every_corpus_wide_action_reports_progress`
+holds it against the parser, so a new `--all` action cannot arrive silent.
+Several verbs without `--all` report too — `ocr crops`, `ocr sheets`, `ocr zoom`,
+`ocr numbered`, `zones score`, `zones install` — which is never a defect; the
+rule is a floor. The exceptions are `agents usage` and `agents transcript`, whose
+`--all` enumerates this project's sessions in `/tmp`, reaped between runs: a bar
+whose appearance depends on when the machine last cleared its temp directory is
+not a property of the verb.
+
+**Where `--jobs` appears the sweep is pooled, and it means two different things.**
+Threads on the raster sweeps — `zones check`, `zones paragraphs`, `zones blot`,
+`ocr gaps`, `ocr blot`, `fig crops`, `views build` — where the per-page cost is a
+PNG decode and the inflate releases the GIL. **Processes** on the model sweeps —
+`ocr predict`, `zones score`, `zones install` — where the work is single-core
+CPU-bound inside scipy and shapely, and the cap is free VRAM as well as cores.
+`ocr edit` takes it for the measuring pass `--unsettled` runs before it binds.
+`--jobs 1` is the control arm everywhere and builds no pool at all.
+`test_the_progress_paragraph_names_every_pooled_action` holds that list against
+the parser, since which kind of worker a flag spawns is the one thing about a
+pooled sweep the parser cannot say.
+
+The bar appears only when stderr is a terminal and only once the work has run for
+about half a second, so a short run stays silent and a redirected one is
+byte-identical to a run with no bar at all. That is what lets the rule be
+mechanical rather than a judgement about cost that has to be revisited every time
+the corpus grows. stdout is untouched: `harness … > file` holds exactly the
+payload.
 
 **The pager is opt-in: `--pager`, `$PAGER`, default `less -SRFX`.** It was on by
 default in table mode on git's reasoning — `-F` prints and exits when the content
@@ -197,6 +214,7 @@ them apart is the entire point of `tei diff`.
 **Writes** `mz/tei/chukchi-PP-NNN.xml` — derived, gitignored.
 **Exit** always 0. A page it cannot build reports `written: false` with the verb that fixes it; that is a worklist line, not a failure of the run.
 **Note** **no `--commit`.** The conventions reserve it for the authored stores and this writes `mz/`, exactly as `zones predict` and `ocr predict` do. `--force` is the guard instead, and it guards something specific: a baseline a collator has already copied is one half of `tei diff`, so replacing it mid-review makes that comparison a lie.
+**Note** **a sweep reads the six page-invariant stores once, not once a page.** `generate.Stores` carries them — the entity store and its two derived alias tables, the authority names, the printed sigla, and `data/readings.md` — and `build` constructs its own only when given none, so a single-page call is unchanged. It read all six per page until a profile of `--force` put `entities.load` alone at **68% of the run**: 30 ms over 482 files, 691 times, 19,280 `parse` calls. Hoisting them took the corpus sweep from **50.1 s to 8.1 s**, output byte-identical over all 691 pages. Same act `tei validate` performs for `lookup.index` and the entity store, and for the same stated reason — the loop hoisting its own invariant, never a cache.
 **Note** **it authors nothing the stores already hold, and guesses nothing they do not.** Every judgement it cannot make leaves a comment naming itself — `unresolved zone (MainZone-Other)` for the catch-all that holds headings, tables, verse and captions alike; a note whose marker reads nowhere in the prose or reads in two places; a figure's place in the prose. Clearing those comments is what review *is*.
 **Note** **a heading is linked by joining the ToC to the folio the page prints, and the folio only chooses which title to look for.** `data/toc.json` prints which folio opens each heading, the running title prints which folio this is, and where a block then begins with that heading's own title — word-sequence equality, anchored at the front of the block, set off by the compositor's own mark (`TITLE. — `, or the line end) — three printed witnesses agree and the milestone is a rule's. 126 of the 128 headings the ToC opens on a generated page link this way, with **no ambiguous case at all**: scoping to the folio is what removes the three titles the book prints twice (`Names`, `Anui Fair`, `Taboos`), which matching against the whole ToC has nothing mechanical to choose between. Not `starts_here`, which `collator.md` forbids leaning on — that mark is keyed to a *predicted* folio; this is the printed one, and even so the heading on the page is the whole of the evidence a heading is there. A page printing no arabic folio says `ToC join did not run`, which is a finding about this page's inputs and not about the book.
 **Note** **a block that is nothing but a heading stops being a reader's question.** `MainZone-Other`'s `rank: null` says the store cannot tell a heading from a table from verse from a caption, so the generator normally declines too — but where the join consumes the *whole* block, that question has a printed answer and the comment and the block both go. 14 blocks over the corpus. The printed text is not carried across beside the milestone: a page file is div-less, so `<milestone>` is TEI's heading here and it holds an id, not words — `data/toc.json` holds the title and the reading view resolves it, which is why `stores.render`'s cache names the ToC among its inputs. The words are still in `gt/ocr/`, where the page's own words live.
@@ -384,6 +402,7 @@ them apart is the entire point of `tei diff`.
 **Note** **read the rows against each other, not one at a time.** One page adrift is a page to re-read; all of them leaning the same way is the contract or the spec, not the collators. Reading twenty page files individually is twenty separate judgements, which is exactly what a per-page pass cannot do for itself.
 **Note** **`opens:` is excluded.** It is on every page by construction, so pooling it would bury the real rows under itself, and it records an answer rather than a question. `tei seam` is what reads it.
 **Note** **the report says what it could not check.** In a dispatched batch `expected_folio` is null on every page but the first, so `folio_disagrees` cannot fire — not because the folios agree but because nothing compared them. A silent clean report would be a confident output with the error signal removed, so the verb names the blind pages and points at `tei ledger`, which folds the whole run at once.
+**Note** **`--all` reads every collated page**, which it did not: the handler took `page_refs`, which is the empty list for `--all` by design, so the corpus form pooled nothing and reported no reservations at all. A sweep answering "none" is indistinguishable from a corpus with none, which is this repo's own failure mode with a flag in front of it. Same `page_refs(a) or _collated(a.root)` fallback every other action in the group uses.
 **Note** the classes come from the comment forms the collation contract fixes verbatim, and the two copies have a gate: `test_reservations.py` asserts every pattern matches a form the agent body states. It checks that direction because an unmatched *contract* form lands in `other` and is visible, while an unmatched *pattern* is dead surface nobody would see.
 ```
 --all        every collated page in tei/
@@ -837,6 +856,38 @@ Opcodes come from difflib over **NFD** text, so a dropped combining mark ranks a
 --root --json --toon --pager
 ```
 
+### ocr remark-eval
+**Does** mints or extends the recognizer's train/eval split over `gt/ocr/`, stratified per part and spread rather than taken off the front. Additive: a mark already made is never moved.
+**Reads** `gt/ocr/`, and the two split lists in it.
+**Writes** `gt/ocr/_train.lst`, `gt/ocr/_eval.lst` under `--commit`. Tracked — a split a model trained on is a record, not scratch.
+**Exit** always 0 — bookkeeping.
+**Note** **the unit is the page, and this is the decision the track turns on.** kraken's own `--partition` divides the pooled *line* set and every recipe online uses it. Lines off one leaf share its ink weight, its wear, its bleed-through and the compositor's stick, so a model that has seen forty lines of a page has seen the conditions under which the other ten were printed. A line-level split then measures memorising a page rather than reading a new one — **and measures it high**, which is the direction nobody goes looking. `assemble` always passes `-t`/`-e`, which is what turns `--partition` off: kraken sets it to 1 when an evaluation set is named.
+**Note** the default fraction is **0.10 against the two segmenters' 0.20**, because the unit here is a line: a tenth of 717 pages is ~3 000 held-out lines, where a tenth of the zone corpus would be a few dozen pages. Both tracks want an eval set big enough to separate two models; this one buys it for proportionally less of the training data.
+```
+--fraction F  share of the newly-marked pages to hold out [0.10]
+--commit      write the lists [off — previews]
+--root --json --toon --pager
+```
+
+### ocr assemble
+**Does** lays out `train/bogoras-ocr/data/` — each split-marked page's ground-truth ALTO symlinked beside its blotted raster under the name the ALTO already carries — and reports the five `ketos` invocations. Runs nothing.
+**Reads** `gt/ocr/`, the split lists, `scans/w-figs-blotted/`, `gt/lines/`.
+**Writes** `train/bogoras-ocr/data/` (pure scratch, cleared on every run) and `train/bogoras-ocr/model/`, the latter empty so the reported `-o` runs as printed — kraken creates the output directory it is given but not its parents.
+**Exit** 0 clean, 1 if any page's blot is missing.
+**Note** **the raster is the blot, the exact mirror of `fig assemble`.** That track links the raw `scans/` because the blot paints *its* target white; this one links `scans/w-figs-blotted/` because that is what `ocr predict` reads. One rule, opposite conclusions: a model is trained on the raster it will be asked to read. A line polygon abutting an inset figure — `1-283` is the standing case — is dewarped with that figure's ink in it on the raw page and with white in it on the blot. A page with no blot is refused rather than substituted.
+**Note** **two silent shrinks, and neither fails.** kraken's `_validate_manifests` reads `-F`/`-t`/`-e` line by line, keeps what `os.path.isfile` accepts and **logs the rest as a warning**, so a `.lst` written with the wrong relative prefix compiles a smaller dataset and exits 0 — compare the line count `ketos compile` prints against `train_lines`/`eval_lines` here, which already exclude the empty lines `--skip-empty-lines` would drop. And a `gt/lines/` correction is a box a human drew over ink the segmenter left unboxed: `lines.page_lines` appends it at read time, so every other consumer in the harness sees it and `ketos compile -f alto` cannot. Reported apart as `corrections_excluded` rather than folded into a total — the one place in the harness where the merged view would overstate a set, by exactly the lines somebody went out of their way to add.
+**Note** paths in the lists are **relative to the repo root and unresolved**. Resolving follows the symlink back into `gt/ocr/` and compiles the store instead of the work directory, which is `zones assemble`'s recorded lesson and applies verbatim.
+**Note** **the baseline `test` is reported with the run rather than left to be remembered.** Command 5 scores `models/catmus-print-fondue-large.mlmodel` over the same eval manifest by the same command as command 4 scores the fine-tune. A CER for a new model is not a result on its own; it is a result against what the corpus is read with today, taken the same way.
+**Note** flags verified against `ketos --help` **and** kraken 7.0.3's own source, not against a tutorial. `-s`/`-d`/`--workers` are group-level, and on `ketos train` `-s` means `--spec`; `-u NFD` is said out loud because ketos normalizes nothing unless told and **`NFKC`/`NFKD` would destroy `ᵋ` U+1D4B and `˙` U+02D9**; `--resize union` keeps the base codec and appends the inventory where `new` would refit the output layer to this corpus alone, and kraken's installed `vgsl.py` trainer implements only `fail`/`union`/`new` — the help advertises `add` and `both` and `recognition.py`'s own mismatch error suggests `add`, and both crash, the trap `zones assemble` already records for `segtrain`. `-e` takes a manifest naming a dataset, never a dataset, hence `data/eval.mft`.
+**Note** the loop, its measured state and the judgement in it are `.claude/skills/train-ocr/`. There is no `ocr install` yet; it waits on a first run, there being no checkpoint to score and no evidence about what an install ought to refuse.
+```
+--scratch    train from random init rather than fine-tuning CATMuS or an
+             installed recognizer [off]
+--batch N    lines per forward pass in the reported command [8] — the first
+             thing to lower if the run runs out of VRAM
+--root --json --toon --pager
+```
+
 ---
 
 ## proposal
@@ -847,13 +898,14 @@ fail to match this file's own NFD form. They write without `--commit` — a
 proposal is a working file of a live pass, not an authored store.
 
 ### proposal marks REF [REF ...]
-**Does** asks whether a batch's character distribution is plausible, before a human opens it — three arms over the Tier-1 tokens of each page's proposal.
+**Does** asks whether a batch's character distribution is plausible, before a human opens it — three arms over the Tier-1 tokens of each page's proposal, plus a fourth that runs over *every* token because the other three cannot see outside their own population.
 **Reads** `review/PP-NNN/proposal.json` (or `decision.json` under `--decisions`), `gt/ocr/` for the prior, `data/marks_config.json`.
 **Writes** —
 **Exit** always 0 — measurement. An outlier is a page to re-read, never a page to correct by ratio. Refuses (exit 2) only when a named ref has no source file.
 **Note** takes several refs, like `ocr review`, and "batch" means only that — the refs you pass. Most pages of this book carry a handful of Tier-1 terms, so a coordinator hands it every ref of a pass at once and gets a sample worth holding against the corpus. `dispatch.md` used to prescribe eyeballing `lexicon marks` here; this is that comparison computed, and `lexicon marks` could not do it — corpus-wide only, and grouped by base letter, so it cannot express `ɪ`/`i`, which is not a mark on a base.
 
-**The three arms are not equally strong.** `rare[]{ref,form,count,lines,position,corpus_pct,corpus_n,spec}` lists every occurrence of a form whose confusable the corpus almost never sets — bare `g` at 6.1% of Tier-1 `g`, 8 occurrences on 4 pages. Deterministic, no statistics. **One row per (ref, form) carrying a count**, because a keyer repeats a slip along a page (13 dropped dots on `2-040`, 14 on `3-004`, then a tail of 1–3): four bare `g` on a page is one finding of weight four, not four independent hits. Which contrasts can reach this arm is **derived from the prior at run time**, not declared — plain `i` at ~34% of its axis never qualifies and does not need to.
+**Note** **`traps[]{ref,line,token,candidate,seen,refs}` is the fourth arm and the only one that does not select Tier-1 tokens first.** The other three judge a population; this asks who left it. A form keyed with a glyph *outside* the inventory carries no inventory member, so it is never selected, so the page reports `tokens: 0, types: 0` and every other arm goes quiet on a wholly wrong reading — indistinguishable from honest English prose. So this one walks every token, folds `detectors.TIER1_TRAPS` (`’ ‘ ' ´ ʼ ʻ` → U+02CA, `·` → U+02D9, `ı` → U+026A, `– ‐` → U+002D), and reports where the folded form is one the store already holds. It needs no knowledge of the notation, only of what has been ratified. **Not leave-one-out**, unlike every other arm here: it asks whether the corpus knows the word, so a sibling page in the same batch is a good witness — `3-199`'s `Ke’rek` is answerable by `3-178` keying it correctly an hour earlier. Matching is casefolded on both sides, a name being sentence-initial on one page and medial on another. A folded form the store has never seen is **not** reported: this is a lookup, not a reading, and inventing a candidate nobody witnessed is the failure the whole module exists against.
+**The other three arms are not equally strong.** `rare[]{ref,form,count,lines,position,corpus_pct,corpus_n,spec}` lists every occurrence of a form whose confusable the corpus almost never sets — bare `g` at 6.1% of Tier-1 `g`, 8 occurrences on 4 pages. Deterministic, no statistics. **One row per (ref, form) carrying a count**, because a keyer repeats a slip along a page (13 dropped dots on `2-040`, 14 on `3-004`, then a tail of 1–3): four bare `g` on a page is one finding of weight four, not four independent hits. Which contrasts can reach this arm is **derived from the prior at run time**, not declared — plain `i` at ~34% of its axis never qualifies and does not need to.
 
 `conflict[]{fold,form,source,ref,lines,count,in_batch}` finds one word spelled two ways. Fold collapses every contrast axis then casefolds; a bucket whose **casefolded** spellings differ is a hit. That suppresses `äˊmmê`/`Äˊmmê` while catching `Iᵋplɪˊlɪ`/`ɪᵋplɪˊlɪ`, because `casefold("I")` is `"i"` but `casefold("ɪ")` is `"ɪ"` — U+026A has no case mapping. Scoped to folds the batch touches: the store carries standing `i`/`ɪ` inconsistencies of its own and re-reporting them every run would bury the batch's news. `in_batch` separates the batch disagreeing with itself from the batch disagreeing with ground truth.
 
@@ -1072,6 +1124,8 @@ opinion of which pages are held out.
 
 ### zones install CHECKPOINT
 **Does** installs a trained checkpoint into `models/bogoras-seg/` with a manifest. Scores it in memory first and **refuses a permuted class map**.
+
+CHECKPOINT: the `.ckpt` or `.safetensors` a run wrote. `ketos segtrain` converts its best checkpoint to `best_<score>.safetensors`, naming the file with that checkpoint's own accuracy — so the name is not knowable until the run ends, and no two runs share one. That is why `assemble` allocates a fresh `run-N` directory under `model/`: an accuracy in a filename is not an identity, and three runs once shared a directory on exactly that basis.
 **Reads** the checkpoint, `gt/zones/`, the split lists.
 **Writes** `models/bogoras-seg/` under `--commit`.
 **Exit** always 0; refuses a permuted map with an error.
@@ -1925,7 +1979,9 @@ PP-NNN...     which pages; several may be given
 **Writes** with `--commit`: `models/bogoras-fig/` — the weights, a manifest, and verbatim copies of the two split lists.
 **Exit** 0; refuses by reporting rather than by exit code.
 ```
-CKPT          the .safetensors ketos wrote
+CKPT          the .safetensors ketos wrote — `best_<score>.safetensors` in the
+              run's own directory, named with the checkpoint's own accuracy
+              (`zones install`'s entry has why that matters)
 --name N      installed name [fig-seg]
 --device D    torch device [auto]
 --commit      install it

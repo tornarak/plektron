@@ -37,6 +37,12 @@ from harness.cli._common import (
 )
 
 VERBS_MD = Path(__file__).resolve().parent.parent / "VERBS.md"
+# The two paragraphs the progress tests read, each by its opening sentence. Named
+# here rather than inline: a test locating prose by a literal buried in its own
+# body is one that silently stops looking after a rewording, and these two have
+# been reworded once already.
+PROGRESS_PARA = "**Long sweeps draw a progress bar on stderr, and `--all` is the rule.**"
+JOBS_PARA = "**Where `--jobs` appears the sweep is pooled"
 
 # `### group action [ARGS]` — the heading form every entry uses. Positionals are
 # part of the heading and deliberately not checked here: a parameter's metavar and
@@ -514,59 +520,127 @@ def test_the_readme_names_every_cli_module():
     assert not missing, f"harness/README.md's cli/ list omits {sorted(missing)}"
 
 
-def test_the_progress_paragraph_names_every_instrumented_action():
-    """**Which verbs draw a bar, held against the tree in both directions.**
+def _reports_progress(handler) -> bool:
+    """Does this handler open a progress bar, directly or through a helper?
 
-    `VERBS.md`'s "Long sweeps draw a progress bar on stderr" paragraph is the only
-    place a reader learns whether silence means "fast" or "hung", and nothing
-    gated it. It was accurate and *incomplete*: it named nine verbs while the three
-    longest-running in the tree — `zones score`, `zones install`, `fig predict`,
-    each a multi-hour corpus sweep — reported nothing at all, which is what sent
-    somebody to `ps` to find out whether a run was alive.
+    `progress(` in the handler's own source is the ordinary case — `parallel`
+    never learns what a terminal is, so the `with` block is always at the CLI
+    layer. But three of the `tei` actions are one line each, delegating to
+    `_write_all`, and reading only the handler would call them silent while they
+    draw the same bar as everything else. So a name the handler calls that is
+    defined in the handler's **own module** is followed, one level.
 
-    Both directions, because the two failures are different and both real: a verb
-    instrumented and left out of the paragraph is a cost nobody is warned about,
-    and a verb named there whose bar was dropped in a refactor is a promise the
-    tree no longer keeps.
-
-    The check is `progress(` in the action's **handler** source, which is where the
-    idiom puts it — `parallel` never learns what a terminal is, so the `with` block
-    is always at the CLI layer. `cmd.callback` is no use: every action shares one
-    wrapper from `_common.action`, so reading its source says the same thing forty
-    times. `_handler` is the function somebody wrote.
+    One level and not a walk: the helper is a sibling in the same file, which is
+    the shape delegation takes here, and a general call-graph search would start
+    finding `progress` down through `out()` and stop meaning anything.
     """
     import inspect
 
+    try:
+        src = inspect.getsource(handler)
+    except (OSError, TypeError):
+        return False
+    if "progress(" in src:
+        return True
+    mod = inspect.getmodule(handler)
+    for name in set(re.findall(r"\b(_\w+)\s*\(", src)):
+        helper = getattr(mod, name, None)
+        if not callable(helper):
+            continue
+        try:
+            if "progress(" in inspect.getsource(helper):
+                return True
+        except (OSError, TypeError):
+            continue
+    return False
+
+
+def test_every_corpus_wide_action_reports_progress():
+    """**`--all` means the corpus decides the size, so the run must say where it is.**
+
+    This replaces a test that held `VERBS.md`'s paragraph against a hand-written
+    list of instrumented verbs, in both directions. That worked and did not
+    scale: the list reached fifty entries, and a paragraph naming fifty verbs is
+    not a paragraph anybody reads. Worse, it could only ever be as complete as
+    the last person to edit it — a *new* `--all` action was never its business,
+    and a new `--all` action is exactly the thing that arrives silent.
+
+    So the rule is checked instead of the list. `--all` is the flag that says
+    "the work-list is however big the corpus is", which is the whole criterion:
+    not how long a verb takes on the machine it was written on, but whether its
+    size is the store's to decide. `render.progress` makes that free at both ends
+    — it yields `None` off a terminal and draws nothing under `PROGRESS_AFTER` —
+    so an action that turns out to be fast pays nothing for saying so, and one
+    that turns out to be slow on somebody else's machine is already instrumented.
+
+    The exemptions are read out of `VERBS.md` rather than written here, so the
+    document a reader consults and the rule the tree enforces cannot disagree.
+    They are checked in **both** directions: an exemption that has since been
+    instrumented is as stale as a missing bar is a defect.
+    """
     from harness.cli._common import _actions
 
     text = VERBS_MD.read_text(encoding="utf-8")
-    start = text.index("**Long sweeps draw a progress bar on stderr.**")
-    para = text[start:text.index("\n\n", start)]
-    # Whitespace-flattened first. The paragraph wraps, and a `group action` pair
-    # split across a line break is invisible to the pattern — which this test hit
-    # on its own first run, silently dropping two verbs while passing everything
-    # else. A check that can quietly cover less than it claims is the failure mode
-    # this file exists to prevent.
-    documented = set(re.findall(r"`([a-z]+) ([a-z-]+)`", re.sub(r"\s+", " ", para)))
+    start = text.index(PROGRESS_PARA)
+    para = re.sub(r"\s+", " ", text[start:text.index("\n\n", start)])
+    m = re.search(r"The exceptions are (.*?)(?:\.|$)", para)
+    assert m, ("the progress paragraph no longer names its exceptions — the "
+               "exemption list has exactly one home and this is it")
+    exempt = set(re.findall(r"`([a-z]+) ([a-z-]+)`", m.group(1)))
 
-    instrumented = set()
+    sweeps, reporting = set(), set()
     for (gname, aname), cmd in _actions(build_parser()).items():
+        if "all" not in {p.name for p in cmd.params}:
+            continue
+        sweeps.add((gname, aname))
         handler = getattr(cmd.callback, "_handler", None)
-        if handler is None:
-            continue
-        try:
-            src = inspect.getsource(handler)
-        except (OSError, TypeError):
-            continue
-        if "progress(" in src:
-            instrumented.add((gname, aname))
-    assert instrumented, "no action resolved a handler — the _handler seam is gone"
+        if handler is not None and _reports_progress(handler):
+            reporting.add((gname, aname))
+    assert sweeps, "no action declares --all — the parser walk found nothing"
+    assert reporting, "no action resolved a handler — the _handler seam is gone"
 
-    undocumented = instrumented - documented
-    assert not undocumented, (
-        "these actions draw a progress bar and the VERBS.md paragraph does not "
-        f"say so: {sorted(undocumented)}")
-    stale = documented - instrumented
-    assert not stale, (
-        "the VERBS.md paragraph promises a progress bar these actions no longer "
-        f"draw: {sorted(stale)}")
+    silent = sweeps - reporting - exempt
+    assert not silent, (
+        "these actions take --all — a work-list the corpus's size decides — and "
+        f"open no progress bar: {sorted(silent)}. Either instrument them, or "
+        "name them among the exceptions in VERBS.md and say why")
+    unknown = exempt - sweeps
+    assert not unknown, (
+        "VERBS.md exempts these from the progress rule and they take no --all, "
+        f"so the exemption names nothing: {sorted(unknown)}")
+    settled = exempt & reporting
+    assert not settled, (
+        "VERBS.md exempts these from the progress rule and they now draw a bar "
+        f"anyway: {sorted(settled)}. Drop them from the exception list")
+
+
+def test_the_progress_paragraph_names_every_pooled_action():
+    """**Where `--jobs` exists, the paragraph has to say which kind of worker it is.**
+
+    The rule above covers *whether* a sweep reports. This covers the one thing
+    about it that is genuinely per-verb and cannot be derived from the parser: a
+    pooled sweep's `--jobs` means **threads** on the raster verbs and
+    **processes** on the model verbs, and the cap on the second is free VRAM as
+    well as cores. A caller sizing a run needs to know which they are typing.
+
+    Held in both directions, as the retired enumeration test was: a `--jobs` the
+    paragraph does not mention is a cost nobody was warned about, and a verb the
+    paragraph calls pooled that no longer takes `--jobs` is a promise the tree
+    does not keep.
+    """
+    from harness.cli._common import _actions
+
+    text = VERBS_MD.read_text(encoding="utf-8")
+    start = text.index(JOBS_PARA)
+    para = re.sub(r"\s+", " ", text[start:text.index("\n\n", start)])
+    named = set(re.findall(r"`([a-z]+) ([a-z-]+)`", para))
+
+    pooled = {(g, a) for (g, a), cmd in _actions(build_parser()).items()
+              if "jobs" in {p.name for p in cmd.params}}
+    assert pooled, "no action declares --jobs — the parser walk found nothing"
+
+    missing = pooled - named
+    assert not missing, (
+        "these actions take --jobs and the VERBS.md progress paragraph does not "
+        f"name them, so it does not say whether they spawn threads or "
+        f"processes: {sorted(missing)}")

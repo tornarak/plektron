@@ -68,6 +68,7 @@ from __future__ import annotations
 
 import hashlib
 import re
+from dataclasses import dataclass
 from pathlib import Path
 from xml.sax.saxutils import escape
 
@@ -88,6 +89,54 @@ from .zones import read_zones
 VERSION = 5
 
 GENDIR = "mz/tei"
+
+
+@dataclass(frozen=True)
+class Stores:
+    """The stores `build` reads that are the same on every page of a run.
+
+    **The loop's invariants, hoisted — not a cache.** `tei validate` states the
+    distinction in full and this is the same act: a cache is a property of a
+    server, and these processes read the stores once and exit. What makes it
+    worth a type rather than five keyword arguments is that they are six things
+    with one lifetime, and a caller that hoisted four of them and forgot the
+    fifth would get a correct answer at a cost it thought it had paid.
+
+    Measured before it was written, because "obviously the loop reloads too
+    much" is exactly the reasoning that produces a wrong optimisation: over 40
+    pages of `tei generate --force`, `entities.load` was **68% of the run** — 30
+    ms and 482 files, once per page, 19,280 `parse` calls in all — with
+    `figures.readings` re-parsing `data/readings.md` beside it. None of the six
+    can change during a sweep: `build` writes only `mz/tei/`, which none of them
+    reads.
+
+    `build` still constructs its own when given none, so a single-page call is
+    unchanged and no caller is obliged to know this exists.
+    """
+
+    #: `entities.load` — the whole entity store, by identity.
+    store: dict
+    #: `alias_index` over `store`: every alias form to the entities claiming it.
+    ents: dict
+    #: `auto_forms` over `ents`: the forms an auto-link licence covers.
+    autos: dict
+    #: `apparatus.authority_names` — the names `_figref_spans` will not swallow.
+    cited: frozenset[str]
+    #: `apparatus.sigla` — the printed (name, volume, short title) table.
+    sigla: list[dict]
+    #: `figures.readings` — every hand-read caption, keyed as `readings.md` keys.
+    readings: dict
+
+
+def stores(root: Path = Path(".")) -> Stores:
+    """Read the six page-invariant stores once, for a caller sweeping pages."""
+    from .figures import readings
+
+    store = load(root)
+    ents = alias_index(store)
+    return Stores(store=store, ents=ents, autos=auto_forms(ents),
+                  cited=apparatus.authority_names(root),
+                  sigla=apparatus.sigla(root), readings=readings(root))
 
 #: Zone labels that become body prose, and what each becomes. A label absent from
 #: here is not prose and is handled by name below; a label absent from *both* is a
@@ -202,7 +251,8 @@ def _run_on_note(text: str, pos: int, open_marker: str) -> int | None:
     return None
 
 
-def _figures_with_geometry(ref: str, root: Path) -> list[dict]:
+def _figures_with_geometry(ref: str, root: Path,
+                           all_readings: dict | None = None) -> list[dict]:
     """The page's figures — number, caption, and where the box sits — top first.
 
     **`_figures_on_page` deliberately drops geometry and this deliberately keeps
@@ -228,7 +278,7 @@ def _figures_with_geometry(ref: str, root: Path) -> list[dict]:
     """
     from .figures import figure_boxes
     return [{"n": f["n"], "caption": f["caption"], "y": f["y"]}
-            for f in figure_boxes(ref, root)]
+            for f in figure_boxes(ref, root, all_readings)]
 
 
 def _mark_notes(body: list[str], rows: list[tuple[int, str]], rendered) \
@@ -790,8 +840,13 @@ def page_blocks(ref: str, root: Path = Path(".")
     return out
 
 
-def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
-    """The page's generated TEI, and a report of what the rules could and could not do."""
+def build(ref: str, root: Path = Path("."),
+          shared: Stores | None = None) -> tuple[str, dict]:
+    """The page's generated TEI, and a report of what the rules could and could not do.
+
+    `shared` is a `Stores` a caller sweeping pages built once; without one this
+    reads all six itself, so a single-page call is exactly what it was.
+    """
     ref = norm_ref(ref)
     _require(ref, root)
     ocr, _ = _inputs(ref, root)
@@ -807,14 +862,13 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
     for t in tier1_terms(ref, root, keys=False):
         by_line.setdefault(t["line"], []).append(t)
 
-    store = load(root)
-    ents = alias_index(store)
-    autos = auto_forms(ents)
-    cited = apparatus.authority_names(root)
-    # The printed resolution table: `(name, volume, short title)` → work, which is
-    # what the List of Authorities Quoted *is*. Loaded once per page, beside the
-    # names the figure guard reads out of the same store.
-    sigla = apparatus.sigla(root)
+    # The printed resolution table among them: `(name, volume, short title)` →
+    # work, which is what the List of Authorities Quoted *is*, beside the names
+    # the figure guard reads out of the same store. All six were loaded here per
+    # page until a sweep's profile put `entities.load` alone at 68% of the run.
+    sh = shared if shared is not None else stores(root)
+    store, ents, autos = sh.store, sh.ents, sh.autos
+    cited, sigla = sh.cited, sh.sigla
     pending: list[dict] = []          # candidates, to be commented after the block
     # **Which `once` forms this page has already spent its link on.** Page-scoped
     # because the convention is, and mutable across `rendered` calls because a
@@ -1034,7 +1088,7 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
     #: Lines of the paragraph currently open across one or more bands.
     para: list[tuple[int, str]] = []
 
-    figs = _figures_with_geometry(ref, root)
+    figs = _figures_with_geometry(ref, root, sh.readings)
     rep["figures"] = len(figs)
     fig_at = 0
     at_y = 0
@@ -1352,7 +1406,8 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
     return doc, rep
 
 
-def generate(ref: str, root: Path = Path("."), force: bool = False) -> dict:
+def generate(ref: str, root: Path = Path("."), force: bool = False,
+             shared: Stores | None = None) -> dict:
     """Build and write one page. Reports `written: False` where a baseline exists.
 
     **Not gated on `--commit`.** The conventions reserve that for the authored
@@ -1366,7 +1421,7 @@ def generate(ref: str, root: Path = Path("."), force: bool = False) -> dict:
     out = gen_path(ref, root)
     if out.exists() and not force:
         return {**skipped(ref), "why": "a baseline exists; --force replaces it"}
-    doc, rep = build(ref, root)
+    doc, rep = build(ref, root, shared)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(doc, encoding="utf-8")
     return {**rep, "written": True, "why": ""}

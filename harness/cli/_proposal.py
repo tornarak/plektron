@@ -21,6 +21,7 @@ import click
 
 from ..detectors import native_corpus
 from ..marks import marks as marks_report
+from ..parallel import ptrack
 from ..paths import proposal_path
 from ..proposal_check import DEFECT, _parse_which, line_codepoints, replace_in_field
 from ..proposal_check import _lexicon_loader as lexicon_loader
@@ -28,6 +29,7 @@ from ..proposal_check import check as check_proposal
 from ..proposal_check import fix as fix_proposal
 from ..proposal_check import set_field as set_proposal_field
 from ..proposal_check import set_fields as set_proposal_fields
+from ..render import progress
 from ._common import (
     REF_HELP,
     action,
@@ -251,11 +253,16 @@ def run_check(a) -> int:
     # Same reasoning for `marks.page_issues`' prior: one walk of `gt/ocr/` for the
     # run rather than one per page. The walk does not depend on the ref — only the
     # leave-one-out filtering does — and it is 2.4s at 645 pages.
-    corpus = native_corpus(a.root) if len(refs) > 1 else None
+    if len(refs) > 1:
+        with progress("reading the corpus") as tick:
+            corpus = native_corpus(a.root, tick)
+    else:
+        corpus = None
     # The second index: full, for the handle-resolves check. See `check`.
     lex_all = lexicon_loader(a.root, ())
-    pairs = [(r, check_proposal(_path(a, r), r, a.root, cohort, lex, corpus,
-                                lex_all)) for r in refs]
+    with progress("checking proposals") as tick:
+        pairs = [(r, check_proposal(_path(a, r), r, a.root, cohort, lex, corpus,
+                                    lex_all)) for r in ptrack(refs, tick)]
     # Exit is the worst across refs: one dirty page fails the batch, which is the
     # contract a gate has to have or a batch would launder a failure.
     out_per_ref(a, pairs)
@@ -289,7 +296,10 @@ def run_check(a) -> int:
 
 
 def run_fix(a) -> int:
-    out_per_ref(a, [(r, fix_proposal(_path(a, r), a.root)) for r in _proposals(a)])
+    with progress("fixing") as tick:
+        rows = [(r, fix_proposal(_path(a, r), a.root))
+                for r in ptrack(_proposals(a), tick)]
+    out_per_ref(a, rows)
     return 0
 
 
@@ -307,8 +317,10 @@ def run_codepoints(a) -> int:
     refs = list(getattr(a, "ref", None) or ())
     a.line = refs.pop() if refs and refs[-1].isdigit() else None
     a.ref = tuple(refs)
-    out_per_ref(a, [(r, line_codepoints(_path(a, r), a.line, a.field))
-                    for r in _proposals(a)])
+    with progress("reading codepoints") as tick:
+        rows = [(r, line_codepoints(_path(a, r), a.line, a.field))
+                for r in ptrack(_proposals(a), tick)]
+    out_per_ref(a, rows)
     return 0
 
 
@@ -356,6 +368,8 @@ def run_replace(a) -> int:
 
 
 def run_marks(a) -> int:
-    out(a, marks_report(_proposals(a), a.root, decisions=a.decisions,
-                        min_types=a.min_types, rare_max=a.rare_max))
+    with progress("reading the corpus") as tick:
+        rep = marks_report(_proposals(a), a.root, decisions=a.decisions,
+                           min_types=a.min_types, rare_max=a.rare_max, tick=tick)
+    out(a, rep)
     return 0

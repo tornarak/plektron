@@ -168,7 +168,8 @@ def register(cli):
               "line records, the dropped-line detector, crops and "
               "contact sheets, the browser review, and the write back "
               "into gt/ocr/",
-              sections=("Reading a page", "The correction loop", "Recognition"), section="The passes")
+              sections=("Reading a page", "The correction loop", "Recognition",
+                        "The recognizer"), section="The passes")
     add = lambda name, **kw: action(g, name, globals()[f"run_{name.replace('-','_')}"], **kw)
 
     p = _store(add("pages", help="every ref with OCR present, i.e. workable now. "
@@ -553,6 +554,56 @@ def register(cli):
     # each worker holds ~1.4 GB of CUDA context.
     add_jobs(p)
 
+    p = action(g, "remark-eval", run_remark_eval, section="The recognizer",
+               pageable=False,
+               help="mint or extend the recognizer's train/eval split over "
+               "gt/ocr/. **The unit is the page, never the line**: kraken's own "
+               "--partition divides the pooled line set, and lines off one leaf "
+               "share its ink, its wear and its bleed-through, so a line-level "
+               "split measures memorising a page rather than reading a new one "
+               "— and measures it high. Additive: a mark already made is never "
+               "moved, or the held-out set drifts with whatever was keyed last")
+    opt(p, "--fraction", type=float, default=0.10, metavar="F",
+        help="share of the newly-marked pages to hold out [0.10]. Lower than "
+             "the segmenters' 0.20 because the unit here is a line: a tenth of "
+             "the keyed corpus is still thousands of held-out lines")
+    opt(p, "--commit", is_flag=True, help="write the lists; without it, a preview")
+
+    p = action(g, "assemble", run_assemble, section="The recognizer",
+               pageable=False,
+               help="lay out train/bogoras-ocr/data/ — each keyed page's ALTO "
+               "beside its **blotted** raster, the raster `ocr predict` reads — "
+               "and report the ketos compile/train/test invocations. Runs "
+               "nothing: a run holds the GPU for hours and belongs in your own "
+               "terminal. Reports the baseline `test` against the current "
+               "recognizer too, so the fine-tune's number arrives beside one "
+               "taken the same way")
+    opt(p, "--scratch", is_flag=True,
+        help="train from random init rather than fine-tuning CATMuS or an "
+             "installed recognizer")
+    opt(p, "--batch", type=int, default=8, metavar="N",
+        help="lines per forward pass in the reported command [8]. The first "
+             "thing to lower if the run runs out of VRAM")
+
+
+def run_remark_eval(a) -> int:
+    from ..recognize import remark_eval
+    out(a, remark_eval(a.root, a.fraction, commit=a.commit))
+    return 0
+
+
+def run_assemble(a) -> int:
+    from ..recognize import assemble
+    with progress("assembling") as tick:
+        rep = assemble(a.root, scratch=a.scratch, batch=a.batch, tick=tick)
+    cmds = rep.pop("commands")
+    out(a, rep)
+    # Printed apart from the row so the block can be copied whole. Reported and
+    # never run — see the action's help, and both sibling training tracks.
+    out(a, [{"step": i, "command": c} for i, c in enumerate(cmds, 1)],
+        "run these yourself")
+    return 1 if rep["missing_blot"] else 0
+
 
 def run_pages(a) -> int:
     refs = all_refs(a.root, _store_dir(a))
@@ -578,8 +629,8 @@ def _store_refs(a) -> list[str]:
 
 def run_lines(a) -> int:
     from ..lines import annexed_bands
-    pairs = []
-    for r in _store_refs(a):
+
+    def one(r: str) -> list[dict]:
         recs = page_lines(alto_for_lines(r, a.root, _store_dir(a)), a.root, ref=r)
         # **A line whose box a human has said is short of its ink says so here.**
         # The ruling lives on the band and is read off `ocr gaps`; a reader keys
@@ -596,7 +647,10 @@ def run_lines(a) -> int:
             # form (see emit.py).
             drop = ("baseline", "points")
             recs = [{k: v for k, v in rec.items() if k not in drop} for rec in recs]
-        pairs.append((r, recs))
+        return recs
+
+    with progress("reading lines") as tick:
+        pairs = [(r, one(r)) for r in ptrack(_store_refs(a), tick)]
     out_per_ref(a, pairs)
     return 0
 
@@ -618,7 +672,9 @@ def run_text(a) -> int:
     from ..emit import emit_lines
 
     refs = _store_refs(a)
-    pages = [(r, [rec["text"] for rec in _keyed_lines(a, r)]) for r in refs]
+    with progress("reading text") as tick:
+        pages = [(r, [rec["text"] for rec in _keyed_lines(a, r)])
+                 for r in ptrack(refs, tick)]
     if getattr(a, "json", False):
         out(a, [{"ref": r, "lines": lines} for r, lines in pages])
         return 0
@@ -652,23 +708,24 @@ def run_grep(a) -> int:
     refs = _store_refs(a)
     rows: dict[tuple[str, int], dict] = {}
     hits = read = 0
-    for r in refs:
-        recs = _keyed_lines(a, r)
-        read += len(recs)
-        for i, rec in enumerate(recs):
-            if not rx.search(rec["text"]):
-                continue
-            hits += 1
-            lo = max(0, i - a.context)
-            for j in range(lo, min(len(recs), i + a.context + 1)):
-                # Keyed by identity, so two hits whose context windows overlap
-                # yield one row each and not one per window — and a line that is
-                # both a hit and another hit's context stays a hit.
-                key = (r, int(recs[j]["index"]))
-                if j == i or key not in rows:
-                    rows[key] = {"ref": r, "index": recs[j]["index"],
-                                 "zone": recs[j]["zone"], "hit": j == i,
-                                 "text": recs[j]["text"]}
+    with progress("searching") as tick:
+        for r in ptrack(refs, tick):
+            recs = _keyed_lines(a, r)
+            read += len(recs)
+            for i, rec in enumerate(recs):
+                if not rx.search(rec["text"]):
+                    continue
+                hits += 1
+                lo = max(0, i - a.context)
+                for j in range(lo, min(len(recs), i + a.context + 1)):
+                    # Keyed by identity, so two hits whose context windows overlap
+                    # yield one row each and not one per window — and a line that
+                    # is both a hit and another hit's context stays a hit.
+                    key = (r, int(recs[j]["index"]))
+                    if j == i or key not in rows:
+                        rows[key] = {"ref": r, "index": recs[j]["index"],
+                                     "zone": recs[j]["zone"], "hit": j == i,
+                                     "text": recs[j]["text"]}
     # **The scope row prints on every run, empty result or not.** A search that
     # found nothing has two readings — the corpus does not say this, or the
     # pages searched do not hold it — and only `pages`/`store` separate them.
@@ -704,15 +761,20 @@ def run_gaps(a) -> int:
     from ..lines import _band_zone
     from ..zones import read_zones
     rows = []
-    for r in refs:
-        zs = read_zones(r, a.root)
-        for c in load_lines(r, a.root):
-            box = {"hpos": c["x0"], "vpos": c["y0"],
-                   "width": c["x1"] - c["x0"], "height": c["y1"] - c["y0"]}
-            rows.append({"ref": r, "zone": _band_zone(box, zs) or "-",
-                         "vpos": box["vpos"], "hpos": box["hpos"],
-                         "width": box["width"], "height": box["height"],
-                         "keyed": c["text"] or ""})
+    # A second bar for a second sweep of the same refs. It is not the pooled ink
+    # measurement above and does not resume its count, so folding the two into
+    # one bar would report 200% or restart at zero — either of which describes a
+    # run that is not happening.
+    with progress("reading corrections") as tick:
+        for r in ptrack(refs, tick):
+            zs = read_zones(r, a.root)
+            for c in load_lines(r, a.root):
+                box = {"hpos": c["x0"], "vpos": c["y0"],
+                       "width": c["x1"] - c["x0"], "height": c["y1"] - c["y0"]}
+                rows.append({"ref": r, "zone": _band_zone(box, zs) or "-",
+                             "vpos": box["vpos"], "hpos": box["hpos"],
+                             "width": box["width"], "height": box["height"],
+                             "keyed": c["text"] or ""})
     if rows:
         out(a, {"pages_corrected": len({x["ref"] for x in rows}),
                 "corrections": len(rows), "corrected": rows}, "pages_corrected")
@@ -722,7 +784,9 @@ def run_gaps(a) -> int:
     # can weigh it. Reported, never gated: `gaps` is measurement, and
     # `measurement never gates` (VERBS.md, Conventions).
     from ..lines import covered_faults
-    faults = [f for r in refs for f in covered_faults(r, a.root, _store_dir(a))]
+    with progress("checking covered rulings") as tick:
+        faults = [f for r in ptrack(refs, tick)
+                  for f in covered_faults(r, a.root, _store_dir(a))]
     if faults:
         out(a, {"covered_faults": faults}, "covered_faults")
     return 0
@@ -771,7 +835,9 @@ def run_calls(a) -> int:
     from ..paths import page_dirs
     refs = page_refs(a) or [d.name for d in page_dirs(a.root)
                             if calls_path(d.name, a.root).exists()]
-    out(a, [call_summary(r, a.root) for r in refs])
+    with progress("summarising calls") as tick:
+        summaries = [call_summary(r, a.root) for r in ptrack(refs, tick)]
+    out(a, summaries)
     # The series only under named refs. A corpus sweep wants the per-page counts —
     # which reader is an outlier — and pooling every call of every page into one
     # table buries exactly that in a few thousand rows.
@@ -1228,7 +1294,9 @@ def run_review(a) -> int:
         # existed on the server's stderr, which in the ordinary backgrounded case
         # is a log nobody is reading.
         queue = list(dict.fromkeys(norm_ref(r) for r in refs))
-        gone = [(r, alto_for_lines(r, a.root, _store_dir(a))) for r in queue]
+        with progress("resolving the queue") as tick:
+            gone = [(r, alto_for_lines(r, a.root, _store_dir(a)))
+                    for r in ptrack(queue, tick)]
         gone = [(r, p) for r, p in gone if not p.exists()]
         if gone:
             other = "gt" if "mz" in _store_dir(a) else "mz"
@@ -1317,26 +1385,37 @@ def run_diff(a) -> int:
     # Checked for **every** ref before any table is printed. A collapsed witness
     # part-way down a batch would otherwise arrive after several pages of
     # reassuring output, which is where it is least likely to be read.
-    for r in refs:
-        src = alto_for_lines(r, a.root, _store_dir(a))
-        gt = a.root / "gt" / "ocr" / f"chukchi-{norm_ref(r)}.xml"
-        if src.exists() and gt.exists() and src.resolve() == gt.resolve():
-            print(f"ERROR: {src} resolves to the ground truth for {r} ({gt}), so "
-                  "a proposal diff against it would compare that reading with "
-                  "itself and report no differences. The span diff needs an "
-                  f"independent witness — `--store mz` is one, or use `harness "
-                  f"ocr review {r}` to adjudicate.", file=sys.stderr)
-            return 1
+    #
+    # The collapsed pair is reported after the bar rather than from inside the
+    # loop: the bar draws on stderr and so does this, and a frame redrawn over
+    # the refusal is the one message in this action that must survive.
+    collapsed = []
+    with progress("checking witnesses") as tick:
+        for r in ptrack(refs, tick):
+            src = alto_for_lines(r, a.root, _store_dir(a))
+            gt = a.root / "gt" / "ocr" / f"chukchi-{norm_ref(r)}.xml"
+            if src.exists() and gt.exists() and src.resolve() == gt.resolve():
+                collapsed.append((r, src, gt))
+    if collapsed:
+        r, src, gt = collapsed[0]
+        print(f"ERROR: {src} resolves to the ground truth for {r} ({gt}), so "
+              "a proposal diff against it would compare that reading with "
+              "itself and report no differences. The span diff needs an "
+              f"independent witness — `--store mz` is one, or use `harness "
+              f"ocr review {r}` to adjudicate.", file=sys.stderr)
+        return 1
     # Two key sets, two tables — and pooled across refs rather than printed as N
     # `# ref`-separated pairs, which is what this did while it was the only
     # multi-ref action. A pooled table parses as one document; the separated form
     # did not parse as anything.
     sums, queues = [], []
-    for r in refs:
-        spans = page_spans(r, a.root, _store_dir(a))
-        n = len(page_lines(alto_for_lines(r, a.root, _store_dir(a)), a.root, ref=r))
-        sums.append((r, summary(spans, n)))
-        queues.append((r, spans if a.spans else group_spans(spans)))
+    with progress("diffing") as tick:
+        for r in ptrack(refs, tick):
+            spans = page_spans(r, a.root, _store_dir(a))
+            n = len(page_lines(alto_for_lines(r, a.root, _store_dir(a)), a.root,
+                               ref=r))
+            sums.append((r, summary(spans, n)))
+            queues.append((r, spans if a.spans else group_spans(spans)))
     out_per_ref(a, sums)
     out_per_ref(a, queues, "spans" if a.spans else "groups")
     return 0
@@ -1357,22 +1436,25 @@ def run_restore(a) -> int:
     # needs: an unadjudicated line on the fourth page must not arrive with three
     # pages of ground truth already replaced.
     if a.commit and len(refs) > 1:
-        for r in refs:
-            if not (sweep and restore_skip(r, a.root, a.force)):
-                restore(r, a.root, _store_dir(a), a.force or sweep, commit=False)
+        with progress("previewing") as tick:
+            for r in ptrack(refs, tick):
+                if not (sweep and restore_skip(r, a.root, a.force)):
+                    restore(r, a.root, _store_dir(a), a.force or sweep,
+                            commit=False)
     pairs, skipped = [], []
-    for r in refs:
-        # A sweep asks `restore_skip` and carries `force` on the adjudicator's
-        # behalf where it says go: every page in gt/ocr/ holds text, so the bare
-        # guard would refuse the whole store and a sweep that refuses everything
-        # is not a sweep. A named ref keeps the guard exactly as it was.
-        if sweep:
-            why = restore_skip(r, a.root, a.force)
-            if why:
-                skipped.append({"ref": r, "why": why})
-                continue
-        pairs.append((r, restore(r, a.root, _store_dir(a),
-                                 a.force or sweep, a.commit)))
+    with progress("restoring" if a.commit else "checking") as tick:
+        for r in ptrack(refs, tick):
+            # A sweep asks `restore_skip` and carries `force` on the adjudicator's
+            # behalf where it says go: every page in gt/ocr/ holds text, so the
+            # bare guard would refuse the whole store and a sweep that refuses
+            # everything is not a sweep. A named ref keeps the guard as it was.
+            if sweep:
+                why = restore_skip(r, a.root, a.force)
+                if why:
+                    skipped.append({"ref": r, "why": why})
+                    continue
+            pairs.append((r, restore(r, a.root, _store_dir(a),
+                                     a.force or sweep, a.commit)))
     # One ref keeps the two-document shape it always had — the report, then the
     # edits — because `edits` was already emitted separately here. Several go
     # through the general split: counts in the row, each list its own ref-keyed
@@ -1394,7 +1476,8 @@ def run_corrections(a) -> int:
     # An aggregate: refs *scope* it rather than multiplying it, so there is one
     # report whether one page was named or forty.
     refs = page_refs(a) or None
-    rep = corrections(a.root, refs=refs, since=a.since)
+    with progress("reading decisions") as tick:
+        rep = corrections(a.root, refs=refs, since=a.since, tick=tick)
     if a.min > 1:
         rep["changes"] = [c for c in rep["changes"] if c["count"] >= a.min]
     out(a, rep)
@@ -1408,7 +1491,9 @@ def run_clean(a) -> int:
         refs = page_refs_under(a.root)
     # `removed` is a list, so this is the splitting emitter: a count per page and
     # the names in their own ref-keyed table.
-    out_per_ref(a, [(r, clean(r, a.root)) for r in refs])
+    with progress("cleaning") as tick:
+        rows = [(r, clean(r, a.root)) for r in ptrack(refs, tick)]
+    out_per_ref(a, rows)
     return 0
 
 

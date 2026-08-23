@@ -43,6 +43,7 @@ question and it costs a raster. This reports where a page is, never how well.
 """
 from __future__ import annotations
 
+from collections.abc import Callable
 from pathlib import Path
 
 from .paths import decisions_path, proposal_path
@@ -138,11 +139,13 @@ def page_state(ref: str, root: Path = Path("."),
     return row
 
 
-def survey(refs: list[str], root: Path = Path(".")) -> list[dict]:
+def survey(refs: list[str], root: Path = Path("."),
+           tick: Callable | None = None) -> list[dict]:
     """`page_state` over many refs, reading the split lists once."""
+    from .parallel import ptrack
     from .zones import load_splits
     splits = load_splits(root)
-    return [page_state(r, root, splits) for r in refs]
+    return [page_state(r, root, splits) for r in ptrack(refs, tick)]
 
 
 def tally(rows: list[dict]) -> list[dict]:
