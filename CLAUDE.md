@@ -195,6 +195,7 @@ every byte of this file on every page.
 | `.claude/skills/read-captions/` | the figure-caption re-read, whole — contact sheets, and the blindness the comparison needs |
 | `.claude/skills/train-zones/` | the zone segmenter's train→score→install loop, its measured state, and the judgement in it |
 | `.claude/skills/train-figures/` | the same for the figure segmenter — trains on raw scans, and why its negatives had to be witnessed |
+| `.claude/skills/train-ocr/` | the recognizer fine-tune off `gt/ocr/` — why the split unit is the page, and what the stock model is narrowly bad at |
 | `.claude/rules/zones.md` | code-facing zones/raster internals; loads itself when those modules are open |
 | `harness/VERBS.md` | the CLI surface: every action, its reads, writes, exit contract and flags. Gated by `test_cli_surface.py` |
 | `harness/README.md` | the package: module responsibilities, stores, caller invariants |

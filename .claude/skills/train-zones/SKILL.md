@@ -13,6 +13,13 @@ now a refusal, so this file is mostly about the judgement the tooling cannot mak
     uv run harness zones install CKPT       preview: scores it, refuses a permuted map
     uv run harness zones install CKPT --commit
 
+**CKPT is `best_<score>.safetensors`, and the score in the name is why the run
+directory below is fresh each time.** `ketos segtrain` converts its best
+checkpoint to a file named with that checkpoint's own accuracy, so the name is
+not knowable until the run ends — and an accuracy is not an identity, which is
+what three runs sharing one output directory established the hard way. The
+per-epoch `checkpoint_*.ckpt` files sit beside it and `install` accepts those too.
+
 **The two `install` runs cost one sweep, not two.** Scoring a checkpoint segments
 every keyed page — the preview cannot be cheaper, since the permutation refusal is
 derived from that score and the manifest embeds it — but the predictions are cached

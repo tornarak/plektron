@@ -283,7 +283,7 @@ any report, and treat its rows as the worklist for the raster checks above; run 
 after, as this batch did, and you will have found by hand what it would have handed
 you.
 
-### The page that no arm can see
+### The page that no arm could see — and the arm that now sees it
 
 `3-024`'s reader keyed the name `Ta’lo` eight times with U+2019, reporting it
 "confirmed at 4× and not a stress mark". `3-023` and `3-025` — the same tale, the
@@ -303,6 +303,29 @@ inventory removes the page from every distributional check**, so the row is the
 finding: a page whose zones promise native forms and whose row says `types: 0` is a
 page to open, and for a recurring name the cheapest instrument is the other pages
 that carry it.
+
+**It recurred, and "check `pages` first" did not stop it.** `3-199` keyed `Ke’rek`
+twice with U+2019 "per English-prose convention", two hundred pages after `3-024`
+and with the paragraph above already written. The remedy failed for a reason worth
+stating plainly: it asks a human to notice a `types: 0` row on a page that *ought*
+to carry native forms, and `3-199` sat among **sixteen** pages in its batch that
+genuinely carry none. There was nothing to notice. It was caught by reading the
+reader's own account of what it had done.
+
+So the check is now mechanical, and it is `proposal marks`' fourth arm. **`traps`
+runs over every token rather than the Tier-1 ones**, folds `detectors.TIER1_TRAPS`
+— the curly and straight apostrophes to U+02CA, `·` to U+02D9, `ı` to U+026A, the
+en dash and U+2010 to the hyphen — and reports where the folded form is one
+`gt/ocr/` already holds. `Ke’rek` folds to `Keˊrek`, sixteen attestations, and the
+row writes itself. Unlike every other arm it is **not** leave-one-out: it asks
+whether the corpus knows the word, so a sibling page in the same batch counts, and
+`3-178` keying it correctly an hour earlier would have answered `3-199` on its own.
+
+Two things it deliberately does not do. It does not report a folded form the store
+has never seen — that would be inventing a reading, which is the failure this
+module exists against — so a genuinely new name keyed with the wrong apostrophe
+still gets past it, and the `pages` row remains the only signal there. And it does
+not gate: like everything else here it is measurement, and a hit is a line to open.
 
 The adjudication half has its own lesson here. `3-024` came back unedited and
 unnoted while every other flagged correction in the batch was taken — which is what
@@ -379,7 +402,10 @@ pooled, and the contrast between it and the per-ref rows is the finding:
   reading, and nothing else in the loop can see it. Fix the instructions before
   sending the next batch, or the next batch reproduces it.
 
-Three arms, and only the first two are decisive. `rare` lists a form whose
+Four arms, and only the first three are decisive. `traps` is described in full
+above and needs nothing said here beyond that a row is always worth opening: it
+fires only where the store already holds the folded form, so it does not guess.
+`rare` lists a form whose
 character the corpus almost never sets — bare `g` at 2.8% of Tier-1 `g` — so
 `2-033`'s four bare `g` would have been named without opening a scan. `conflict`
 finds one word spelled two ways against the store, which is how `2-040`'s

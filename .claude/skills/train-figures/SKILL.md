@@ -19,6 +19,11 @@ what follows is only what differs, and the differences are not cosmetic.
 command with this machine's device and worker count already in it; hand it over
 and let the user run it. It holds the GPU for hours.
 
+**CKPT is `best_<score>.safetensors` in the run's own directory**, exactly as on
+the zone track — `segtrain` names the file with the checkpoint's own accuracy, so
+it is not knowable until the run ends. See `train-zones` for why that makes the
+per-run directory load-bearing rather than tidy.
+
 ## Where things stand
 
 **Not trained.** The store is complete and the training set is laid out — that is
