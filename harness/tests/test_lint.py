@@ -15,7 +15,7 @@ entire job is to verify the write.
 `E4,E7,E9,F`; 0.16.1 additionally enables flake8-bandit, implicit-str-concat and much
 of RUF, and reports 161 findings on this tree where the pinned selection reports none.
 A gate that changes meaning when a dev dependency is upgraded cannot be acted on —
-the same reason `zones score` must be told which model it is scoring rather than
+the same reason `train score zones` must be told which model it is scoring rather than
 reading whichever lists are lying around. So `select` is asserted to be an explicit
 list, and `RUF001`-`003` are asserted absent from it by name.
 

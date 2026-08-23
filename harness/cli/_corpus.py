@@ -99,6 +99,19 @@ def register(cli):
            "matches is not coverage, which is how two absent pages once went "
            "unnoticed by cancelling against two zone-only ones")
 
+    # Across every `mz/` store at once, which is what makes it a `corpus` action
+    # and not four store-local ones: the question is whether *anything* derived
+    # is standing without a witness, and each store's own verb is blind to the
+    # other three. `state`'s reasoning exactly.
+    action(g, "provenance", run_provenance, pageable=False,
+           help="what made each mz/ file, per store — files, how many record "
+           "their producer, and which producers are present. Measurement: this "
+           "never gates, and an unwitnessed row is a fact about the store rather "
+           "than a failure. A file whose provenance is legacy free text counts "
+           "as unwitnessed, because provenance that cannot be read back is "
+           "indistinguishable from none to everything except a human squinting "
+           "at prose")
+
     # Here rather than under `fig`, where it began, because it was never about
     # figures: `build_mets` takes filenames and returns markup, and every ALTO
     # store can be handed to eScriptorium. `fig mets` named the one caller it
@@ -283,6 +296,17 @@ def run_figures(a) -> int:
     # counts alone never decide it: 250 pages was once the expected total *and*
     # wrong in two compensating directions at the same time.
     return 1 if (rep["missing"] or rep["orphan"]) else 0
+
+
+def run_provenance(a) -> int:
+    """The provenance census. **Always exits 0**, and that is the convention
+    rather than leniency: measurement never gates, so a store full of
+    unwitnessed files is a number to act on and not a build failure. Whatever
+    gates on it later gets to say so itself.
+    """
+    from ..provenance import census
+    out(a, census(a.root))
+    return 0
 
 
 def run_mets(a) -> int:

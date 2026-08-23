@@ -59,7 +59,7 @@ def test_the_segmenter_is_asked_for_the_root_and_not_the_device(root, calls):
 
     Handed `"auto"`, `load_segmenter` does `p = root / p` and looks for the
     weights under `auto/models/bogoras-fig/…`, then raises `FileNotFoundError`
-    advising `harness zones assemble` — naming neither the real path nor the
+    advising `harness train assemble zones` — naming neither the real path nor the
     real fault.
     """
     F.predict(["1-021"], root, device="cpu")

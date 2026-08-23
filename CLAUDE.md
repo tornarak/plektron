@@ -36,6 +36,12 @@ collation pass may emit `#llm` and nothing else; `harness tei validate` errors o
 higher claim and on a missing `@resp` equally, because an unmarked span is
 indistinguishable from a ratified one to anything that does not check.
 
+**An `mz/` file names what produced it, machine-readably** — one writer,
+`harness/provenance.py`, censused by `corpus provenance`. Provenance that cannot
+be read back counts as none. `kind` is load-bearing: a **rule**'s output and a
+**model**'s guess are both `#mz` and neither outranks a human, but they are not
+the same witness.
+
 **A comparison whose witnesses may be one witness must say so.** The hazard
 recurs wherever a check's two inputs can turn out to be the same file, and keeps
 being found in new places; `docs/decisions.md` records the instances.
@@ -154,8 +160,9 @@ modules are open.
 root — all paths resolve relative to the cwd unless `--root` says otherwise.
 
 **Two tiers: a group, then an action** — `tei`, `ocr`, `proposal`, `zones`, `fig`,
-`views`, `lexicon`, `entity`, `geo`, `edition`, `find`, `corpus`, `agents`,
-`verbs`. The group names what the command touches; the action names what it does.
+`views`, `train`, `lexicon`, `entity`, `geo`, `edition`, `find`, `corpus`,
+`agents`, `verbs`. The group names what the command touches; the action names
+what it does.
 
 **`harness/VERBS.md` is the reference** — one entry per action: what it does,
 what it reads, what it writes, what its exit code means, and every flag with

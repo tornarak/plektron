@@ -5,10 +5,10 @@ description: Fine-tune, evaluate and install the text recognizer from gt/ocr/, a
 
 # Train the recognizer (gt/ocr/ → a checkpoint → models/bogoras-ocr/)
 
-    uv run harness ocr remark-eval --commit   mint or extend the split
-    uv run harness ocr assemble               lay out train/bogoras-ocr/data/, report five commands
-    <the five reported invocations>           compile ×2, train, test ×2; the user's terminal
-    <copy the checkpoint into models/>        `ocr install` does not exist yet — see below
+    uv run harness train remark-eval ocr --commit   mint or extend the split
+    uv run harness train assemble ocr               lay out train/bogoras-ocr/data/, report five commands
+    <the five reported invocations>                 compile ×2, train, test ×2; the user's terminal
+    <copy the checkpoint into models/>              no `train install ocr` yet — see below
 
 `train-zones` is the eldest sibling and most of its judgement carries. What
 follows is what differs, and none of the differences are cosmetic — this is the
@@ -185,7 +185,7 @@ firewall is about provenance, not about accuracy: a model reading better is
 still a model, and `#gt` is a human's ratification against the artifact. A
 better recognizer makes `/rebuild-groundtruth` cheaper; it does not shorten it.
 
-## `ocr install` does not exist yet
+## `train install ocr` does not exist yet
 
 The sibling tracks install through a verb that scores a checkpoint, refuses it,
 and writes a manifest recording the split, a corpus digest and the score. This

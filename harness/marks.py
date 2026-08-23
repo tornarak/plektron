@@ -60,7 +60,7 @@ Two properties of the prior a reader must carry:
   *is* the adjudicated descendant of its own proposal, so a prior containing the
   page under test compares a proposal against its own output. That is the
   two-witnesses-that-are-one failure in a fourth place, after the verbatim
-  firewall, `review`'s span diff and `zones score`'s `unseen` row. Excluding
+  firewall, `review`'s span diff and `train score zones`'s `unseen` row. Excluding
   conditionally — only when the page is present — is the same thing with a step
   where it can be forgotten.
 - **It is no longer drawn from density-selected pages, and that strengthened the

@@ -35,6 +35,7 @@ from typing import NotRequired, TypedDict
 import numpy as np
 from lxml import etree
 
+from . import provenance, train
 from .atomic import tmp_for, write_atomic
 from .refs import figure_number, norm_ref, parse_ref
 
@@ -66,6 +67,12 @@ READINGS = "data/readings.md"
 # repository, so a clone cannot rebuild it, and the harness reads only what is
 # committed. See `pdf_images`.
 PDF_IMAGES = "data/pdf_images.json"
+
+#: The version `fig propose` stamps into an `mz/fig/` page's provenance. Bump it
+#: when the rule that turns a manifest entry into a block changes — the point of
+#: recording it is that a page written before the change is *detectable*, and a
+#: constant nobody moves is the same as no constant at all.
+PROPOSE_VERSION = 1
 
 #: The rule id `fig check` reports an unaccounted photograph under, and the key a
 #: page excuses it by in `gt/fig/_rule_exempt.json`. Declared in
@@ -464,14 +471,16 @@ def set_rule_exempt(ref: str, rules, root: Path = Path("."),
 # segmenter cannot learn from pages where its target has been erased. That is also
 # why the two are separate models rather than one with four classes: they read
 # different rasters.
-WORKDIR = "train/bogoras-fig"
-# `zones`' split of the track, verbatim: `data/` is the laid-out training set and its
-# two `.lst` files, `model/` holds a run's checkpoints, and the base holds neither.
-DATADIR = f"{WORKDIR}/data"
-RUNDIR = f"{WORKDIR}/model"
-MODELDIR = "models/bogoras-fig"
-MODEL_NAME = "fig-seg"
-DEFAULT_MODEL = f"{MODELDIR}/{MODEL_NAME}.safetensors"
+#
+# All from `train.FIG`, which is where the track record lives. `zones`' split of
+# the track, verbatim: `data/` is the laid-out training set and its two `.lst`
+# files, `model/` holds a run's checkpoints, and the base holds neither.
+WORKDIR = train.FIG.workdir
+DATADIR = train.FIG.datadir
+RUNDIR = train.FIG.rundir
+MODELDIR = train.FIG.modeldir
+MODEL_NAME = train.FIG.model_name
+DEFAULT_MODEL = train.FIG.default_model
 
 
 def negative_refs(root: Path = Path(".")) -> dict[str, list[str]]:
@@ -584,7 +593,7 @@ def assemble(root: Path = Path("."), scratch: bool = False) -> dict:
     `sourceImageInformation/fileName`, relative to the XML, so each page's file and
     its raster sit together under the name the ALTO already carries.
 
-    **The raster is the raw `scans/` page, never the blot.** `zones assemble` links
+    **The raster is the raw `scans/` page, never the blot.** `train assemble zones` links
     `scans/w-figs-blotted/` because the zone segmenter must not learn figure-shaped
     body zones; here the blot paints the target white, so training on it would be
     asking the model to find something that has been erased.
@@ -665,7 +674,7 @@ def assemble(root: Path = Path("."), scratch: bool = False) -> dict:
         "missing_raster": missing,
         "command": SEGTRAIN_CMD.format(
             device=device, workers=workers, load=load, work=DATADIR,
-            out=f"{RUNDIR}/run-{_fig_next_run(root)}"),
+            out=f"{RUNDIR}/{train.next_run(train.FIG, root)}"),
     }
     notes = [n for n in (base_note,
                          "pages with no raster were left out of both lists"
@@ -742,13 +751,24 @@ def _predict_one(ref, root, net, dev, model_path, sha, dest) -> dict:
     # The witness to which model wrote this. Without it an `mz/` file is a claim
     # with no provenance, and the store's whole value is that it is separable from
     # anybody's judgement.
+    #
+    # **`kind="model"` is the half that was missing**, not the model path. This
+    # wrote a bare `f"{model_path} sha256:… device:…"` into the description and
+    # nothing else, so a `predict` page and a `propose` page — a segmenter's guess
+    # and the scanner's own MRC segmentation — were two free-text strings that no
+    # reader could tell apart without matching prose. `train score fig --model M` is the
+    # bug that grew in that gap.
     desc = tree.getroot().find("{*}Description")
-    from lxml import etree as _et
-    steps = _et.SubElement(desc, "{http://www.loc.gov/standards/alto/ns-v4#}"
-                                 "Processing")
-    _et.SubElement(steps, "{http://www.loc.gov/standards/alto/ns-v4#}"
-                          "processingStepDescription").text = (
-        f"{model_path} sha256:{sha[:16]} device:{dev}")
+    desc.append(provenance.alto_processing(provenance.Producer(
+        step="harness fig predict", label="figure segmentation",
+        kind="model", version=provenance.kraken_version(),
+        model=str(model_path), sha256=sha, device=dev,
+        # **The raw scan, and naming it is not decoration.** The zone segmenter
+        # reads `scans/w-figs-blotted/`, where this model's target is painted
+        # white; the two models read two rasters and neither can be folded into
+        # the other. A file that records which one it was read off is a file that
+        # can be told from one produced by the other track.
+        inputs={"raster": f"scans/chukchi-{ref}.png"})))
     tmp = tmp_for(dest)
     tree.write(str(tmp), xml_declaration=True, encoding="UTF-8",
                standalone=None, pretty_print=True)
@@ -794,7 +814,7 @@ def propose_from_pdf(refs: list[str], root: Path = Path("."),
     guarantee, so run this after the migration and not before.
     """
     from .parallel import ptrack
-    from .zones import ALTO_NS, build_alto
+    from .zones import build_alto
 
     manifest = pdf_images(root)
     out = []
@@ -817,11 +837,13 @@ def propose_from_pdf(refs: list[str], root: Path = Path("."),
         dest.parent.mkdir(parents=True, exist_ok=True)
         tree = build_alto(ref, blocks, (m["w"], m["h"]), id_prefix="mzfig_")
         desc = tree.getroot().find("{*}Description")
-        steps = etree.SubElement(desc, f"{{{ALTO_NS}}}Processing")
         # Names the manifest and not a model, so a reader can tell a scanner's
-        # segmentation from a segmenter's guess without opening either.
-        etree.SubElement(steps, f"{{{ALTO_NS}}}processingStepDescription").text = (
-            f"{PDF_IMAGES} embedded-image placement")
+        # segmentation from a segmenter's guess without opening either — and now
+        # says so in `kind` rather than only in prose a reader has to recognize.
+        desc.append(provenance.alto_processing(provenance.Producer(
+            step="harness fig propose", label="embedded-image placement",
+            kind="rule", version=f"harness {PROPOSE_VERSION}",
+            inputs={"manifest": PDF_IMAGES})))
         tmp = tmp_for(dest)
         tree.write(str(tmp), xml_declaration=True, encoding="UTF-8",
                    standalone=None, pretty_print=True)
@@ -1101,7 +1123,7 @@ def install_model(checkpoint: str | Path, root: Path = Path("."),
     if missing:
         raise FileNotFoundError(
             f"{DATADIR}/{missing[0]}.lst is gone, so the split this run consumed "
-            "cannot be frozen beside the model — re-run `harness fig assemble` "
+            "cannot be frozen beside the model — re-run `harness train assemble fig` "
             "before installing, or the scores would belong to a split nobody kept")
 
     sc = score(root, src)
@@ -1153,12 +1175,6 @@ def _swap_check(sc: dict) -> bool:
     # A swapped model matches almost nothing straight while predicting plenty.
     return straight == 0 and (g.get("predicted", 0) + d.get("predicted", 0)) > 0
 
-
-def _fig_next_run(root: Path) -> int:
-    n = 1
-    while (root / RUNDIR / f"run-{n}").exists():
-        n += 1
-    return n
 
 
 

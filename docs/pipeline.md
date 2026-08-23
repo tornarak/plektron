@@ -89,7 +89,11 @@ the stages that are built.
    Recognition is stock CATMuS — a witness to line geometry and English and to
    nothing else (it reads 0% of the inventory; the measurement and its
    substitution table live with the passes that use it). The `Processing` block
-   names both models and both sha256s.
+   names both models and both sha256s — two of them, one per act, because the
+   segmenter and the recognizer are different models and collapsing the pair
+   would lose whichever a reader was not asking about. `harness/provenance.py`
+   is the one writer behind every `mz/` store's block, and `corpus provenance`
+   is the census over them.
 
    **A line `blla` finds outside every zone is kept, not dropped**, assigned to no
    region and counted as `lines_outside_zones`. Artwork produces these and they are

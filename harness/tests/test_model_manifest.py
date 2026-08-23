@@ -10,7 +10,7 @@ skill exists to inform.
 
 This is worth a gate where the other stale numbers in this repo are not, and the
 reason is narrow: **the model manifest is machine-written**, so there is a source
-of truth to compare against. `zones install --commit` writes `score`, `pages`,
+of truth to compare against. `train install zones --commit` writes `score`, `pages`,
 `recall` and `precision` from the run itself. A doc asserting one of those is
 asserting something checkable, unlike a timing measurement or a prose count.
 
@@ -87,7 +87,7 @@ def test_the_scrape_actually_found_numbers():
 
 
 def test_the_manifest_is_shaped_the_way_this_gate_reads_it():
-    """`zones install --commit` writes this; if its shape moves, so must this."""
+    """`train install zones --commit` writes this; if its shape moves, so must this."""
     if not MANIFEST.exists():
         pytest.skip("no installed model in this tree")
     scores = _manifest()["score"]

@@ -68,6 +68,7 @@ from functools import lru_cache
 from pathlib import Path
 
 from . import farms as F
+from . import provenance, train
 from . import zones as Z
 from .atomic import tmp_for
 from .parallel import capture_stderr as _capture_stderr
@@ -329,7 +330,6 @@ def predict(ref: str, root: Path = Path("."), seg_net=None, seg_sha: str = "",
 
     from kraken import blla, containers, serialization
     from kraken.configs import RecognitionInferenceConfig
-    from kraken.containers import ProcessingStep
     from PIL import Image
 
     if seg_net is None:
@@ -419,17 +419,24 @@ def predict(ref: str, root: Path = Path("."), seg_net=None, seg_sha: str = "",
     records = list(rec_net.predict(page, bound, cfg))
     text = [r.prediction or "" for r in records]
 
+    # **Two producers, written in the order they acted.** The page is segmented
+    # and then recognized by two different models, and collapsing the pair would
+    # lose whichever a reader happened not to be asking about. `read_producer`
+    # returns the last of them for that reason — the recognizer is what shaped
+    # the text a consumer is holding.
+    kv = provenance.kraken_version()
     steps = [
-        ProcessingStep(id="harness-ocr-predict-lines", category="processing",
-                       description="baseline segmentation, harness ocr predict",
-                       settings={"model": str(seg_model), "sha256": seg_sha,
-                                 "device": dev,
-                                 "input": f"{Z.BLOTDIR}/chukchi-{ref}.png",
-                                 "regions_from": f"{Z.VIEWDIR}/chukchi-{ref}.xml"}),
-        ProcessingStep(id="harness-ocr-predict-text", category="processing",
-                       description="recognition, harness ocr predict",
-                       settings={"model": str(rec_model), "sha256": rec_sha,
-                                 "device": dev}),
+        provenance.kraken_step(provenance.Producer(
+            step="harness ocr predict", label="baseline segmentation",
+            kind="model", version=kv, model=str(seg_model), sha256=seg_sha,
+            device=dev,
+            inputs={"raster": f"{Z.BLOTDIR}/chukchi-{ref}.png",
+                    "regions_from": f"{Z.VIEWDIR}/chukchi-{ref}.xml"}),
+            ident="harness-ocr-predict-lines"),
+        provenance.kraken_step(provenance.Producer(
+            step="harness ocr predict", label="recognition",
+            kind="model", version=kv, model=str(rec_model), sha256=rec_sha,
+            device=dev), ident="harness-ocr-predict-text"),
     ]
     # **`sub_line_segmentation=False`, and it is not a size optimization.**
     # `serialize` defaults it True, which makes the ALTO template walk each
@@ -667,7 +674,7 @@ def predict_workers(jobs: int | None, n_pages: int) -> int:
 
     Kept as a name here because `harness/README.md` and `VERBS.md` both cite it,
     and a doc should not have to move for a refactor. The rule and the VRAM cap
-    are `parallel`'s, since `zones score` sizes its pool the same way and cannot
+    are `parallel`'s, since `train score zones` sizes its pool the same way and cannot
     import this module.
     """
     return gpu_workers(jobs, n_pages)
@@ -746,22 +753,23 @@ def link_view(root: Path = Path(".")) -> dict:
 # the invocation; a run holds the GPU for hours and belongs in the operator's
 # own terminal, as it does on both sibling tracks.
 
-WORKDIR = "train/bogoras-ocr"
-#: `zones`' split of the track, verbatim: `data/` is the laid-out training set,
-#: its two page lists and the compiled datasets; `model/` holds a run's
-#: checkpoints. Separated so a glob over the training set cannot pick up a
-#: checkpoint, and clearing one half does not touch the other.
-DATADIR = f"{WORKDIR}/data"
-RUNDIR = f"{WORKDIR}/model"
-MODELDIR = "models/bogoras-ocr"
-MODEL_NAME = "text-rec"
-INSTALLED_MODEL = f"{MODELDIR}/{MODEL_NAME}.mlmodel"
+#: All from `train.OCR`, which is where the track record lives. `zones`' split of
+#: the track, verbatim: `data/` is the laid-out training set, its two page lists
+#: and the compiled datasets; `model/` holds a run's checkpoints. Separated so a
+#: glob over the training set cannot pick up a checkpoint, and clearing one half
+#: does not touch the other.
+WORKDIR = train.OCR.workdir
+DATADIR = train.OCR.datadir
+RUNDIR = train.OCR.rundir
+MODELDIR = train.OCR.modeldir
+MODEL_NAME = train.OCR.model_name
+INSTALLED_MODEL = train.OCR.default_model
 
 #: The split marks live in the store they divide, beside `gt/fig/`'s and
 #: `gt/zones/`'s, and are read and written by `figures`' helpers — which take a
 #: `store` parameter for exactly this, so a second track need not carry a second
 #: copy of the same four functions.
-SPLIT_STORE = GTDIR
+SPLIT_STORE = train.OCR.split_store
 
 
 def rec_splits(root: Path = Path(".")) -> dict[str, str]:
@@ -827,11 +835,6 @@ def remark_eval(root: Path = Path("."), fraction: float = 0.10,
     return out
 
 
-def _next_run(root: Path) -> str:
-    n = 1
-    while (root / RUNDIR / f"run-{n}").exists():
-        n += 1
-    return f"run-{n}"
 
 
 #: The four invocations `assemble` reports, as templates rather than strings
@@ -1012,7 +1015,7 @@ def assemble(root: Path = Path("."), scratch: bool = False,
             f"no {DEFAULT_REC_MODEL} and nothing installed, so the reported "
             "command trains from random init — pass --scratch to mean that")
 
-    out_dir = f"{RUNDIR}/{_next_run(root)}"
+    out_dir = f"{RUNDIR}/{train.next_run(train.OCR, root)}"
     rep = {
         "dir": str(work),
         "train_pages": len(listed["train"]), "eval_pages": len(listed["eval"]),
@@ -1058,7 +1061,7 @@ def assemble(root: Path = Path("."), scratch: bool = False,
     ]
     if unmarked:
         rep["note"] += (f" {len(unmarked)} keyed pages carry no split mark and "
-                        "are in neither list — run `ocr remark-eval --commit`.")
+                        "are in neither list — run `train remark-eval ocr --commit`.")
     if corrections:
         rep["note"] += (f" {corrections} ratified lines live in gt/lines/ rather "
                         "than in the ALTO and cannot be compiled from it; they "

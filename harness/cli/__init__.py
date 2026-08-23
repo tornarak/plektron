@@ -73,6 +73,7 @@ from . import (
     _ocr,
     _proposal,
     _tei,
+    _train,
     _verbs,
     _views,
     _zones,
@@ -90,7 +91,7 @@ from ._common import (
 )
 
 GROUPS = (_tei, _ocr, _proposal, _zones, _fig, _lexicon, _entity, _geo, _edition,
-          _find, _corpus, _views, _agents, _verbs)
+          _find, _corpus, _views, _train, _agents, _verbs)
 
 
 def build_parser() -> click.Group:

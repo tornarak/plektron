@@ -8,12 +8,12 @@ description: Train, evaluate and install the figure/caption segmentation model f
 Five commands. `train-zones` is the sibling and most of its judgement carries;
 what follows is only what differs, and the differences are not cosmetic.
 
-    uv run harness fig remark-eval --commit   mint or extend the split
-    uv run harness fig assemble               lay out train/bogoras-fig/data/, report the command
-    <the reported ketos invocation>           the only slow step; runs in the user's terminal
-    uv run harness fig install CKPT           preview: scores it, refuses a swapped map
-    uv run harness fig install CKPT --commit
-    uv run harness fig predict --all          then `fig score`
+    uv run harness train remark-eval fig --commit   mint or extend the split
+    uv run harness train assemble fig               lay out train/bogoras-fig/data/, report the command
+    <the reported ketos invocation>                 the only slow step; runs in the user's terminal
+    uv run harness train install fig CKPT           preview: scores it, refuses a swapped map
+    uv run harness train install fig CKPT --commit
+    uv run harness fig predict --all                then `train score fig`
 
 **Never launch the training yourself.** `assemble` reports a complete, runnable
 command with this machine's device and worker count already in it; hand it over
@@ -38,7 +38,7 @@ owns this track's record, and this one owns the loop.
 ## The two things that are not the zone track's
 
 **It trains on the raw `scans/`, and that is why it is a separate model rather
-than more classes on `zones-seg`.** `zones assemble` links
+than more classes on `zones-seg`.** `train assemble zones` links
 `scans/w-figs-blotted/` so the zone segmenter cannot learn figure-shaped body
 zones. The blot paints *this* model's target white. Two models reading two
 rasters; neither can be folded into the other, and a copy-paste that linked the
@@ -86,23 +86,23 @@ then `remark-eval` again. Today it is 3.
 
 ## What the tooling refuses, so you need not check
 
-- **`fig install` refuses a swapped class map.** With two classes the permutation
+- **`train install fig` refuses a swapped class map.** With two classes the permutation
   test degenerates to a swap test, and it is still worth running: `--resize new`
   renumbers the output layer, and a model that learned "caption" on the channel it
   calls "picture" scores plausibly on counts while being wrong about every box.
-- **`fig install` refuses if `train/bogoras-fig/data/*.lst` are gone.** The split a run
+- **`train install fig` refuses if `train/bogoras-fig/data/*.lst` are gone.** The split a run
   consumed is frozen beside the model, or its scores belong to a division nobody
   kept.
-- **`fig assemble` names its base model in the report.** With no blla and nothing
+- **`train assemble fig` names its base model in the report.** With no blla and nothing
   installed it emits a from-scratch command, and says so — fine-tuning and random
   init are different experiments, and the one that arrives by a missing file is
   the one nobody chose.
 - **`fig predict` will not overwrite without `--force`**: an `mz/fig/` file's
   processing step is the store's only witness to which model wrote it.
 
-## Reading `fig score`
+## Reading `train score fig`
 
-**Per split, never blended**, for `zones score`'s reason: agreement on the
+**Per split, never blended**, for `train score zones`'s reason: agreement on the
 trained-on pages is the editor's own judgement read back.
 
 **Pictures and captions are scored apart.** They differ by an order of magnitude
@@ -144,5 +144,5 @@ wrong — it teaches. That is also why there is no read view over `gt/fig/` and
 - Do not write an empty ALTO into `gt/fig/` to mean "no figures" — that is what
   `harness fig delete` is for, and what `assemble` synthesizes.
 - Do not treat a page with unaccounted or excused ink as a negative.
-- Do not read a clean `fig score` on the positives as a working model until
+- Do not read a clean `train score fig` on the positives as a working model until
   `spurious_on_empty` has been read too.

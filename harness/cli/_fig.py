@@ -185,29 +185,6 @@ def register(cli):
 
     # ---- the segmenter -----------------------------------------------------
 
-    p = action(g, "remark-eval", run_remark, section="The segmenter",
-               pageable=False,
-               help="mint or extend the train/eval split. The universe is every "
-               "page with a figure ALTO — exempt plates included, since a plate "
-               "carrying figures is the best training page there is — plus the "
-               "pages witnessed to have none. Additive: a mark a human made is "
-               "never moved, or the held-out set drifts with whatever was keyed "
-               "last and stops being held out")
-    opt(p, "--fraction", type=float, default=0.20, metavar="F",
-        help="share of the newly-marked pages to hold out [0.20]")
-    opt(p, "--commit", is_flag=True, help="write the lists; without it, a preview")
-
-    p = action(g, "assemble", run_assemble, section="The segmenter",
-               pageable=False,
-               help="lay out train/bogoras-fig/data/ and report the ketos command. "
-               "Runs nothing: training holds the GPU for hours and belongs in "
-               "your own terminal. A page with no figures gets a synthesized "
-               "empty ALTO here and nowhere else — the store never holds one, "
-               "because absence of the file is how it records 'no figures'")
-    opt(p, "--scratch", is_flag=True,
-        help="train from random init rather than fine-tuning blla or the "
-             "installed figure model")
-
     p = action(g, "predict", run_predict, section="The segmenter",
                help="run the figure segmenter and write raw ALTO into mz/fig/ — "
                "the machine store, never gt/. Input is the RAW scan, unlike "
@@ -253,29 +230,6 @@ def register(cli):
         help="overwrite an existing mz/fig/ page. Required because that file's "
              "ProcessingStep is the only witness to whether the segmenter or "
              "the PDF wrote it")
-
-    p = action(g, "score", run_score, section="The segmenter", pageable=False,
-               help="compare mz/fig/ against gt/fig/, per split and per class, "
-               "never blended. Pictures and captions are scored apart because "
-               "they differ by an order of magnitude in size, and pages "
-               "witnessed to have no figures are their own bucket — a box "
-               "predicted on one is a false positive with nowhere else to go. "
-               "Measurement: always exits 0")
-    opt(p, "--model", metavar="M", default=None, help="model path [the installed one]")
-    opt(p, "--min-iou", type=float, default=0.5, metavar="F",
-        help="area overlap at which a predicted box counts as found [0.5]")
-
-    p = action(g, "install", run_install, section="The segmenter", pageable=False,
-               help="score a checkpoint, refuse a swapped class map, then "
-               "install it into models/bogoras-fig/ with its manifest and the "
-               "split it consumed. Everything that makes a checkpoint "
-               "trustworthy is a precondition of installing it, so the copy is "
-               "last")
-    arg(p, "checkpoint", metavar="CKPT")
-    p.help = f"{p.help}\n\nCKPT: the .safetensors ketos wrote."
-    opt(p, "--name", default=F.MODEL_NAME, help=f"installed name [{F.MODEL_NAME}]")
-    opt(p, "--device", metavar="D", default="auto", help="torch device [auto]")
-    opt(p, "--commit", is_flag=True, help="install it; without it, a preview")
 
 
 def _refs(p, all_: str | None = None):
@@ -458,7 +412,12 @@ def run_assemble(a) -> int:
     # Printed apart from the row so it can be copied whole. It is reported and
     # never run: training holds the GPU for hours and belongs in the user's own
     # terminal, not inside a verb that looks like it returns.
-    out(a, {"run this yourself": cmd})
+    #
+    # **Named**, because two unnamed sections both take the action's name and
+    # `--json` then refuses the pair: `harness fig assemble --json` exited 2 with
+    # "2 sections resolve to ['assemble']" for as long as this verb existed. Only
+    # the table path was ever exercised. `ocr assemble` spells it the same way.
+    out(a, {"run this yourself": cmd}, "run this yourself")
     return 0
 
 

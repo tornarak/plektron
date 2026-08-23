@@ -119,7 +119,7 @@ def test_preview_writes_nothing(root):
 
 
 def test_the_raster_is_the_blot_not_the_raw_scan(root):
-    """The link a copy-paste from `fig assemble` would get wrong. `ocr predict`
+    """The link a copy-paste from `train assemble fig` would get wrong. `ocr predict`
     reads the blot, so a model trained on the raw page meets, at inference, a
     version of every figure-adjacent line it has never seen."""
     R.remark_eval(root, 0.0, commit=True)

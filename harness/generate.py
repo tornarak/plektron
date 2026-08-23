@@ -72,7 +72,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from xml.sax.saxutils import escape
 
-from . import apparatus, citations, figrefs
+from . import apparatus, citations, figrefs, provenance
 from .context import _running_title, tier1_terms
 from .detectors import join_broken_words
 from .entities import alias_index, auto_forms, load
@@ -435,17 +435,61 @@ def _inputs(ref: str, root: Path) -> tuple[Path, Path]:
             root / "gt" / "zones" / f"chukchi-{ref}.xml")
 
 
+def _digest(ref: str, root: Path) -> str:
+    """A digest of both generator inputs. Raises if either is gone."""
+    h = hashlib.sha256()
+    for p in _inputs(ref, root):
+        h.update(p.read_bytes())
+    return h.hexdigest()[:16]
+
+
 def _stamp(ref: str, root: Path) -> str:
     """Version plus a digest of both inputs, so a stale baseline is detectable.
 
     Without it `tei diff` cannot tell a difference review made from one a
     regeneration made under it, and would report the second as the first — a diff
     whose witness may have moved is exactly the comparison that must say so.
+
+    **Still the canonical string, though it is no longer how a page carries it.**
+    A generated page records its producer in `<appInfo>` now; this is the form
+    both sides of `tei diff` are *compared* in, and `_producer_stamp` reconstructs
+    it from the element. Keeping one string means the comparison did not have to
+    learn about two encodings.
     """
-    h = hashlib.sha256()
-    for p in _inputs(ref, root):
-        h.update(p.read_bytes())
-    return f"generated: harness tei generate v{VERSION} inputs={h.hexdigest()[:16]}"
+    return f"generated: harness tei generate v{VERSION} inputs={_digest(ref, root)}"
+
+
+def _producer(ref: str, root: Path) -> provenance.Producer:
+    """What `tei generate` records about itself in the page it writes."""
+    return provenance.Producer(
+        step="harness tei generate", label="rule-built page", kind="rule",
+        version=str(VERSION), inputs={"digest": _digest(ref, root)})
+
+
+def _producer_stamp(path: Path) -> str:
+    """The canonical stamp of a TEI page, from `<appInfo>` or from the comment.
+
+    **Both forms, and that is not transitional politeness.** `mz/tei/` records
+    its producer in an element; every page a collator copied before that change
+    carries the old XML comment, and `SURVIVING` deliberately lets the comment
+    live on into `tei/`. A reader of only the element would report every one of
+    those pages as carrying no stamp — `tei diff` would answer "cannot tell" for
+    the whole reviewed corpus, which is a regression dressed as caution. The
+    element is read first because a page carrying both was written by today's
+    generator.
+    """
+    from lxml import etree
+
+    try:
+        root_el = etree.parse(str(path)).getroot()
+    except (OSError, etree.XMLSyntaxError):
+        return ""
+    p = provenance.read_producer(path)
+    if p is not None and p.step == "harness tei generate":
+        return (f"generated: harness tei generate v{p.version} "
+                f"inputs={p.inputs.get('digest', '')}")
+    comments = [(c.text or "").strip() for c in root_el.iter(etree.Comment)]
+    return next((c for c in comments if c.startswith("generated:")), "")
 
 
 class Unready(ValueError):
@@ -1390,16 +1434,27 @@ def build(ref: str, root: Path = Path("."),
 
     src = f"see corpus teiHeader; page {folio}" if folio is not None \
         else "see corpus teiHeader; folio not parsed"
+    # **The stamp is an element, not a comment.** It was
+    # `<!-- generated: harness tei generate v5 inputs=… -->`, which no XPath
+    # reaches, no schema constrains and `tei validate` could not see — so the one
+    # store whose provenance mattered most to a reader was the one store that
+    # recorded it where only a text search would find it. TEI has `<appInfo>`.
+    from lxml import etree
+
+    appinfo = etree.tostring(
+        provenance.tei_appinfo(_producer(ref, root)), encoding="unicode",
+    ).replace(f' xmlns="{TEI_NS}"', "")
     doc = (
         '<TEI xmlns="http://www.tei-c.org/ns/1.0">\n'
-        f'  <!-- {_stamp(ref, root)} -->\n'
         '  <teiHeader>\n    <fileDesc>\n      <titleStmt>\n'
         '        <title>see corpus teiHeader</title>\n'
         '      </titleStmt>\n      <publicationStmt>\n'
         '        <p>see corpus teiHeader</p>\n'
         '      </publicationStmt>\n      <sourceDesc>\n'
         f'        <p>{escape(src)}</p>\n'
-        '      </sourceDesc>\n    </fileDesc>\n  </teiHeader>\n'
+        '      </sourceDesc>\n    </fileDesc>\n'
+        f'    <encodingDesc>\n      {appinfo}\n    </encodingDesc>\n'
+        '  </teiHeader>\n'
         '  <text>\n    <body>\n'
         + "\n".join(body)
         + '\n    </body>\n  </text>\n</TEI>\n')
@@ -1455,6 +1510,11 @@ GEN_MARKS = ("generated:", "zone-opens:", "unresolved zone",
 #: Counting them made a correctly finished page report an unanswered question,
 #: which is the kind of standing false positive that teaches a reader to skip a
 #: column.
+#:
+#: `generated:` stays here although the generator no longer writes it. Pages
+#: collated before the stamp moved into `<appInfo>` still carry the comment, and
+#: dropping it from this tuple would make every one of them report a standing
+#: unanswered question on the strength of a change they predate.
 SURVIVING = ("generated:", "zone-opens:")
 
 
@@ -1482,7 +1542,7 @@ def _counts(path: Path) -> dict:
          for t in ("p", "note", "figure", "name", "foreign", "milestone",
                    "quote", "list", "table")}
     comments = [(c.text or "").strip() for c in root.iter(etree.Comment)]
-    n["stamp"] = next((c for c in comments if c.startswith("generated:")), "")
+    n["stamp"] = _producer_stamp(path)
     n["gen_comments"] = sum(1 for c in comments
                             if c.startswith(GEN_MARKS) and
                             not c.startswith(SURVIVING))

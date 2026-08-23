@@ -7,7 +7,7 @@ pass with the instrumentation ripped out. The recorder is injected as `tick`
 instead, which is what `test_parallel.py` does for the same reason.
 
 The defect these cover is not "a bar exists" but **a `tick` that stops partway
-down**: `zones score` accepted no callback at all and ran `blla.segment` over 717
+down**: `train score zones` accepted no callback at all and ran `blla.segment` over 717
 pages in silence — minutes indistinguishable from a hung process — because the
 chain `install_model -> score -> predicted_zones` had nowhere to put one. So the
 forwarding tests assert **object identity**, which is the cheapest true statement
@@ -286,7 +286,7 @@ def test_cache_false_is_the_control_arm(tmp_path, fake_segmenter):
 def test_the_dp_decode_is_cached_under_its_config(tmp_path, fake_segmenter,
                                                   monkeypatch):
     """**`dp` has to be cached too, and this is the case that nearly went missing.**
-    `zones score`'s CLI default is `dp` while `install_model` takes `score`'s own
+    `train score zones`'s CLI default is `dp` while `install_model` takes `score`'s own
     default and gets `raw` — so a raw-only cache would have left the verb a human
     actually runs paying full price, which is how the omission was caught.
 
@@ -473,29 +473,45 @@ def test_cached_pages_never_reach_the_pool(tmp_path, fake_segmenter, monkeypatch
 def test_every_default_decoder_is_the_same_decoder():
     """**The CLI's default and the function defaults must agree, and they did not.**
 
-    `zones score --model X` decoded `dp`; `install_model`, which calls `score`
+    `train score zones --model X` decoded `dp`; `install_model`, which calls `score`
     without naming one, got the *function* default `raw` — so installing a model
     measured it undecoded (61.3% precision against 90.8% on identical weights) and
-    wrote that figure into the manifest, where it disagreed with what `zones score`
+    wrote that figure into the manifest, where it disagreed with what `train score zones`
     printed for the same checkpoint with nothing to say why.
 
     This is the hazard `DECODE_HELP` names in its own last sentence — the 30-point
     decode being what you get by leaving an argument off — surviving one level
     below the flag that was written to prevent it.
+
+    **The declared default moved when the three tracks folded into `train`**, and
+    it had to. One `--decode` now serves a pool, so the option must parse with
+    `default=None` — a value on the option would be one track's answer given to
+    all of them — and `_train._fill` applies `train.DECODE` afterwards. So the
+    assertion reads that constant rather than the flag: the guarantee is
+    unchanged, but the thing it must be read off is no longer the parser.
+
+    The flag is still checked for `None`, because a literal creeping back onto it
+    would take precedence over the constant and quietly restore the split this
+    test exists to prevent.
     """
     import inspect
 
+    from harness import train as T
     from harness.cli import build_parser
     from harness.cli._common import _actions
 
-    cli = _actions(build_parser())[("zones", "score")]
+    cli = _actions(build_parser())[("train", "score")]
     flag = next(p for p in cli.params if "--decode" in p.opts)
-    assert flag.default == "dp"
+    assert flag.default is None, (
+        "--decode carries a parser default again. It serves a pool of tracks now, "
+        "so the default belongs to `train.DECODE`, which is what the functions "
+        "below are held against")
+    assert T.DECODE == "dp"
     for fn in (zn.score, zn.predicted_zones, zn.install_model):
         got = inspect.signature(fn).parameters["decode"].default
-        assert got == flag.default, (
-            f"{fn.__name__} defaults to {got!r} where `zones score --decode` "
-            f"defaults to {flag.default!r}")
+        assert got == T.DECODE, (
+            f"{fn.__name__} defaults to {got!r} where `train score zones --decode` "
+            f"defaults to {T.DECODE!r}")
 
 
 def test_the_manifest_records_which_decoder_scored_the_model(tmp_path,

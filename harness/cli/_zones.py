@@ -32,7 +32,6 @@ from ..render import progress
 from ._common import (
     action,
     add_jobs,
-    arg,
     group,
     one_page_only,
     opt,
@@ -145,68 +144,6 @@ def register(cli):
     opt(p, "--decode", type=click.Choice(("raw", "dp")), default="dp",
                    help=DECODE_HELP)
     opt(p, "--device", default="auto", help=DEVICE_HELP)
-
-    p = action(g, "score", run_score, section="The segmenter", help="compare predictions against gt/zones/ — recall and "
-            "precision per split, never blended, plus the confusion matrix and a "
-            "held-out permutation test. Bare, it scores what is in mz/zones/; "
-            "with --model it segments in memory and writes nothing, which is how "
-            "a checkpoint gets measured before it is installed. Refuses if the "
-            "frozen split lists are gone: the live ones move, so without them the "
-            "training pages cannot be told from the rest. Measurement — exit 0")
-    opt(p, "--model", default=None,
-                   help=f"{MODEL_HELP}. Given, the checkpoint is segmented in "
-                        "memory rather than read out of mz/zones/")
-    opt(p, "--decode", type=click.Choice(("raw", "dp")), default="dp",
-                   help=DECODE_HELP)
-    opt(p, "--device", default="auto", help=DEVICE_HELP)
-    add_jobs(p, processes=True)
-
-    p = action(g, "assemble", run_assemble, section="The segmenter", help="build train/bogoras-seg/data/ from the train/eval marks: "
-            "each page's zone ALTO beside its blotted raster, ready for ketos "
-            "segtrain. Reports the invocation; runs nothing. Pure scratch — the "
-            "split a model trained on travels in that model's own manifest, so "
-            "this may be clobbered freely")
-    opt(p, "--scratch", is_flag=True,
-                   help="train from random init: no -i, kraken's default "
-                        "segmentation spec. The one configuration in which the "
-                        "class-map permutation cannot arise, there being no "
-                        "output layer to renumber")
-
-    p = action(g, "install", run_install, section="The segmenter", help="install a trained checkpoint into models/bogoras-seg/ "
-            "with a manifest beside it. Scores it in memory first and **refuses a "
-            "permuted class map** — that check stops being something to remember "
-            "and becomes a precondition of the artifact existing. The manifest "
-            "records the split it trained on, its classes and merges, a digest of "
-            "gt/zones/ at the time, and the score; every path in it is relative")
-    arg(p, "checkpoint", metavar="CHECKPOINT")
-    p.help += "\n\nCHECKPOINT: the .ckpt or .safetensors a training run wrote."
-    opt(p, "--name", default="zones-seg",
-                   help="installed model name (default zones-seg). The accuracy "
-                        "stays out of it: a default path that changes every "
-                        "retrain is a default nobody can use")
-    opt(p, "--device", default="auto", help=DEVICE_HELP)
-    opt(p, "--commit", is_flag=True,
-                   help="copy the checkpoint and its split into "
-                        "models/bogoras-seg/; preview otherwise")
-    add_jobs(p, processes=True)
-
-    p = action(g, "remap", run_remap, section="The segmenter", help="put the learned names back on the model's output "
-            "channels, when `score` shows the disagreement is a consistent "
-            "relabelling rather than a weak model. Derives the map on the "
-            "training pages, refuses unless it is 1-1 and holds out; the original "
-            "is kept as .bak")
-    opt(p, "--model", default=None, help=MODEL_HELP)
-    opt(p, "--commit", is_flag=True,
-                   help="rewrite the model's class map; preview otherwise")
-
-    p = action(g, "remark-eval", run_remark_eval, section="The segmenter", help="move a fraction of the train set into eval — "
-            "stratified per part, independent pages first, spread rather than "
-            "taken off the front. Additive: a page a human already marked eval or "
-            "exempt is never touched")
-    arg(p, "fraction", metavar="FRACTION", type=float)
-    p.help += "\n\nFRACTION: fraction of train to move, e.g. 0.20."
-    opt(p, "--commit", is_flag=True,
-                   help="write the split marks; report otherwise")
 
     p = action(g, "delete", run_delete, section="The store", help="un-key a page — remove its file from gt/zones/ and "
             "every mark that referred to it (split, rule and ink exemptions). The "

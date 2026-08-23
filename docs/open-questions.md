@@ -285,3 +285,23 @@ in for an unread glyph.
 
   It leaves this list when the pass exists, or when a generator comment makes the
   question a collator's again.
+
+- **`train score fig` cannot score a checkpoint in memory, and the zone track
+  can.** `train score zones --model X` loads the checkpoint and segments the
+  corpus, so a model is measurable *before* it is installed; the figure track's
+  score is always `mz/fig/` against `gt/fig/`, so measuring a checkpoint there
+  means predicting to the store first — which overwrites whatever the store
+  held, and makes the two operations one where the zone track keeps them apart.
+
+  Under the folded verb `--model` therefore means one thing, "segment this
+  checkpoint in memory", and **exits 2 for `fig`**. It used to be accepted there
+  and silently ignored: `figures.score` took a `model_path`, printed it in the
+  report and never opened it, so the report named a model it had not consulted.
+  The refusal is not the resolution — it is the honest statement of a gap.
+
+  Closing it means either giving `figures.score` an in-memory path of its own,
+  or giving `fig predict` a scratch destination so a checkpoint can be predicted
+  somewhere that is not the store. Neither is urgent: `models/bogoras-fig/` does
+  not exist yet, so nothing has ever been scored on this track. **It waits on the
+  first figure-segmenter run**, which is when the shape of the answer becomes
+  arguable from evidence rather than from symmetry with the zone track.

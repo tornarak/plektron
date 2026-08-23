@@ -283,7 +283,7 @@ empty are their own bucket, so a model that hallucinates on them cannot hide
 behind the pages that have figures.
 
 **Not yet trained.** The store is laid out (606 train / 152 eval) and the command
-is `harness fig assemble`'s to report; the run itself, and the scores it earns,
+is `harness train assemble fig`'s to report; the run itself, and the scores it earns,
 belong here when it has happened.
 
 **A total that matches is not coverage**, and this track is where that was learned:

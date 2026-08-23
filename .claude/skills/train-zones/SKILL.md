@@ -8,10 +8,10 @@ description: Train, evaluate and install the page-segmentation model from gt/zon
 Four commands, in order. Everything that used to be a rule you had to remember is
 now a refusal, so this file is mostly about the judgement the tooling cannot make.
 
-    uv run harness zones assemble           lay out train/bogoras-seg/data/, report the command
-    <the reported ketos invocation>         the only slow step; runs in the user's terminal
-    uv run harness zones install CKPT       preview: scores it, refuses a permuted map
-    uv run harness zones install CKPT --commit
+    uv run harness train assemble zones         lay out train/bogoras-seg/data/, report the command
+    <the reported ketos invocation>             the only slow step; runs in the user's terminal
+    uv run harness train install zones CKPT     preview: scores it, refuses a permuted map
+    uv run harness train install zones CKPT --commit
 
 **CKPT is `best_<score>.safetensors`, and the score in the name is why the run
 directory below is fresh each time.** `ketos segtrain` converts its best
@@ -27,7 +27,7 @@ on the checkpoint's own sha256, so the `--commit` replays in seconds. It takes
 `--jobs` as well: **processes**, four of them doing 206 pages where one does 73 in
 the same 100 s, because the sweep is single-core CPU with the card idle.
 
-`zones assemble` computes the base model and whether `--resize` is needed, and
+`train assemble zones` computes the base model and whether `--resize` is needed, and
 reports the invocation to run. **Run what it prints.** It is not a fixed template:
 it picks `models/bogoras-seg/zones-seg.safetensors` over stock blla once one is
 installed, it omits `--resize` when the class sets already match, it allocates a
@@ -35,12 +35,12 @@ fresh `run-N` output directory under `train/bogoras-seg/model/`, and it fills in
 count so the command runs as printed. It once did not, and the run that followed
 used kraken's default **single** loader worker.
 
-`zones assemble --scratch` trains from random init instead — no `-i`, kraken's
+`train assemble zones --scratch` trains from random init instead — no `-i`, kraken's
 default spec. That is the one configuration in which the class-map permutation
 cannot arise even in principle, because `--resize` is what renumbers an existing
 output layer and there is no existing output layer.
 
-`zones install` scores the checkpoint in memory against `gt/zones/`, **refuses a
+`train install zones` scores the checkpoint in memory against `gt/zones/`, **refuses a
 permuted class map**, and copies the split beside the weights. Preview first;
 `--commit` writes.
 
@@ -86,12 +86,12 @@ class set is exactly the six the installed model carries, so `assemble` reports
   layer and Python randomises string hashing per process, so a run can emit a model
   whose stored names do not match what its channels learned. The first one did: 0.2%
   agreement on its own training data, far below the ~14% of guessing among seven
-  classes. `zones remap --commit` repairs it; `zones install` will not accept it
+  classes. `train remap zones --commit` repairs it; `train install zones` will not accept it
   otherwise.
 - **A model cannot be installed without its split.** The `train.lst`/`eval.lst` it
-  trained on are copied beside the weights, so `zones score --model X` reads *X's*
+  trained on are copied beside the weights, so `train score zones --model X` reads *X's*
   split and cannot be handed whatever was last laid out.
-- **`zones score` refuses when there is no split at all** (exit 2) rather than
+- **`train score zones` refuses when there is no split at all** (exit 2) rather than
   falling back to the live `gt/zones/` lists, which move as pages are keyed.
 - **A ruled leaf is never scored.** A plate has no correct segmentation, so every
   region drawn on one is spurious and nothing can offset it. Seven plates ruled
@@ -100,12 +100,12 @@ class set is exactly the six the installed model carries, so `assemble` reports
 - **`train/bogoras-seg/` is scratch**, `data/` the laid-out set and `model/` the
   run's checkpoints. Nothing reads it after training. Clobber freely.
   `models/bogoras-seg/` is the tracked half and holds the artifacts.
-- **`zones score` says when the corpus moved** under a model, rather than silently
+- **`train score zones` says when the corpus moved** under a model, rather than silently
   comparing against a reference that has changed.
 
 ## Read `split_from` before you read the numbers
 
-**A bare `zones score` — no `--model` — takes its split from
+**A bare `train score zones` — no `--model` — takes its split from
 `train/bogoras-seg/data/*.lst`, and `assemble` rewrites those whenever the next run is
 prepared.** So after an assemble, the splits it labels its rows with are the *next*
 run's, while `mz/zones/` still holds the *installed* model's predictions. Nothing
@@ -122,7 +122,7 @@ against an installed model that trained on 211 pages and held out 60. Roughly 36
 of those "trained-on" pages it never saw, and the "eval" row contains pages it did
 train on. The numbers are real measurements of nothing anyone asked about.
 
-**So: `zones score --model models/bogoras-seg/zones-seg.safetensors` whenever you
+**So: `train score zones --model models/bogoras-seg/zones-seg.safetensors` whenever you
 want a figure about the installed model.** A manifest cannot be mis-attributed; a
 working directory can. The bare form is for scoring the store's predictions as a
 store, and its rows mean whatever `split_from` says they mean.
@@ -206,7 +206,7 @@ The failure modes are distinguishable and the tooling separates them:
 
 | symptom | what it is |
 |---|---|
-| agreement *below chance* on training data | permuted class map — `zones remap` |
+| agreement *below chance* on training data | permuted class map — `train remap zones` |
 | `score` permutation `bijective`, not identity, holds out | same; the geometry was learned |
 | high recall, low precision | over-segmentation — try `--decode dp` |
 | low recall on eval, high on train | memorisation |
@@ -240,13 +240,13 @@ amount of undertraining does that. It was a 3-cycle and two swaps:
     MainZone-Continued ↔ MainZone-Other
     MainZone-Quote     ↔ QuireMarksZone
 
-**Establish it rather than assume it.** `zones score` derives a 1-1 map on the
+**Establish it rather than assume it.** `train score zones` derives a 1-1 map on the
 *training* pages and tests it on the *held-out* ones — 93.9% there, on zones it was
 never fitted to. A permutation read off a set and scored on the same set agrees
 with itself by construction, so deriving and testing on one split would prove
 nothing.
 
-`zones remap` inverts it: `new[T] = old[perm[T]]`, since a region truly of class
+`train remap zones` inverts it: `new[T] = old[perm[T]]`, since a region truly of class
 `T` surfaces on the channel currently named `perm[T]`, so that channel *means* `T`.
 It refuses unless the map is bijective, holds out above 80%, and covers every
 declared class; the original is kept as `.bak`. Note the identity is bijective and

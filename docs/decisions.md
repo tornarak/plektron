@@ -65,7 +65,7 @@ ground truth was hand-corrected from CATMuS and the caption block descends from
 the same recognizer pass, so three commas the machine invented sat in both files
 corroborating each other, and only a fresh raster read separated them. Nothing
 in either file records the shared ancestor. Same fault as the verbatim firewall,
-`review`'s span diff and `zones score`'s `unseen` row — two inputs that turn out
+`review`'s span diff and `train score zones`'s `unseen` row — two inputs that turn out
 to be one — arriving through provenance nobody wrote down.
 
 What that measured is worth carrying: **the residual error classes are
@@ -866,3 +866,49 @@ doing what it says. The first version of it also hashed `Page` and `PrintSpace`,
 which are supposed to change, and duly aborted all 832 pages. A gate whose first run
 fails everything is either a real finding or a wrong gate, and the way to tell is to
 name what it should be blind to *before* looking at the count.
+
+## Six spellings of "what made this", and the one that let a report name a model it never loaded
+
+Every `mz/` store already recorded something about its producer and no two
+recorded it alike. `mz/zones/` and `mz/ocr/` wrote a `<Processing>` block from
+four hand-built places; `mz/fig/` wrote a bare
+`f"{model_path} sha256:{sha[:16]} device:{dev}"` from a fifth and a rule
+description from a sixth; `mz/tei/` wrote an XML comment, which no XPath reaches,
+no schema constrains and `tei validate` could not see.
+
+**The cost was not the duplication.** It was that `mz/fig/` held two kinds of
+claim — a segmenter's guess from `fig predict`, and the scanner's own MRC
+segmentation from `fig propose` — as two free-text strings no reader could tell
+apart without matching prose. `figures.score` took a `model_path`, used it only in
+the returned dict and always compared `mz/fig/` against `gt/fig/`. So
+`train score fig --model M` named a checkpoint it never opened, over a store that might
+hold no model's work at all: a diagnostic answering a question it had not asked,
+in the store's own report. Fluent nonsense inside the instrument built to detect it.
+
+The correction is one record with a **`kind`** field (`harness/provenance.py`) and
+one writer behind all six sites. A rule's output and a model's guess are both
+`#mz` and neither outranks a human; they are not the same witness, and the store
+now says which it holds.
+
+**A machine-readable block declares itself, and legacy free text reads as
+unwitnessed.** This is the part worth keeping. `read_producer` could have scraped
+`model:` out of the old prose — it is right there, and the parse is four lines.
+Then `corpus provenance` would have reported every store fully witnessed before a
+single file was rewritten, the backfill would have been indistinguishable from a
+no-op, and the one instrument built to prove the change would have been the thing
+that concealed it. A census whose number cannot move is not a census. The marker
+is a leading `harness: 1`; the number moved 0 → 236, 0 → 717, 0 → 749 as each
+store was rebuilt, which is what proved the rebuild.
+
+**Moving `mz/tei/`'s stamp into `<appInfo>` nearly broke `tei diff`, and the test
+that should have caught it was the test that hid it.**
+`test_diff_says_it_cannot_tell_rather_than_saying_no` built its "page with no
+stamp" by regex-stripping the XML comment. Once the stamp was an element, that
+setup produced a page that still carried one, so the test asserted nothing about
+the case it names. It failed loudly here only because the *assertion* happened to
+still bite; a differently-worded assertion would have gone green and stayed green.
+A test whose setup constructs its precondition by removing a specific encoding
+decays silently the day the encoding changes. `_producer_stamp` reads both forms —
+every page collated before the move carries the comment, and `SURVIVING` still
+lists `generated:` for that reason — and the fallback is pinned by a test that was
+mutation-checked by deleting it.

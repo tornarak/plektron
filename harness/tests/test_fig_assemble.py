@@ -3,7 +3,7 @@
 Two things here are not the zone track's, and both would be invisible if they
 broke.
 
-**The raster is the raw scan.** `zones assemble` links `scans/w-figs-blotted/`
+**The raster is the raw scan.** `train assemble zones` links `scans/w-figs-blotted/`
 so the zone segmenter cannot learn figure-shaped body zones. The blot paints
 figures white, so linking it here would ask this model to find something that
 has been erased — and the failure would look like a model that simply never
@@ -46,7 +46,7 @@ def root(tmp_path: Path) -> Path:
 
 
 def test_the_raster_is_the_raw_scan_not_the_blot(root):
-    """The link a copy-paste from `zones assemble` would get wrong."""
+    """The link a copy-paste from `train assemble zones` would get wrong."""
     (root / zn.BLOTDIR).mkdir(parents=True, exist_ok=True)
     (root / zn.BLOTDIR / "chukchi-1-037.png").write_bytes(b"not the scan")
     F.assemble(root)
@@ -79,7 +79,7 @@ def test_the_store_still_holds_no_empty_file_afterwards(root):
 
 def test_the_lists_are_relative_and_unresolved(root):
     """Resolving follows the symlink back to `gt/fig/` and silently trains on the
-    store instead of the work dir — `zones assemble` paid for this once."""
+    store instead of the work dir — `train assemble zones` paid for this once."""
     F.assemble(root)
     lines = (root / F.DATADIR / "train.lst").read_text().split()
     assert lines and all(ln.startswith(f"{F.DATADIR}/") for ln in lines)

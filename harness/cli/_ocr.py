@@ -554,37 +554,6 @@ def register(cli):
     # each worker holds ~1.4 GB of CUDA context.
     add_jobs(p)
 
-    p = action(g, "remark-eval", run_remark_eval, section="The recognizer",
-               pageable=False,
-               help="mint or extend the recognizer's train/eval split over "
-               "gt/ocr/. **The unit is the page, never the line**: kraken's own "
-               "--partition divides the pooled line set, and lines off one leaf "
-               "share its ink, its wear and its bleed-through, so a line-level "
-               "split measures memorising a page rather than reading a new one "
-               "— and measures it high. Additive: a mark already made is never "
-               "moved, or the held-out set drifts with whatever was keyed last")
-    opt(p, "--fraction", type=float, default=0.10, metavar="F",
-        help="share of the newly-marked pages to hold out [0.10]. Lower than "
-             "the segmenters' 0.20 because the unit here is a line: a tenth of "
-             "the keyed corpus is still thousands of held-out lines")
-    opt(p, "--commit", is_flag=True, help="write the lists; without it, a preview")
-
-    p = action(g, "assemble", run_assemble, section="The recognizer",
-               pageable=False,
-               help="lay out train/bogoras-ocr/data/ — each keyed page's ALTO "
-               "beside its **blotted** raster, the raster `ocr predict` reads — "
-               "and report the ketos compile/train/test invocations. Runs "
-               "nothing: a run holds the GPU for hours and belongs in your own "
-               "terminal. Reports the baseline `test` against the current "
-               "recognizer too, so the fine-tune's number arrives beside one "
-               "taken the same way")
-    opt(p, "--scratch", is_flag=True,
-        help="train from random init rather than fine-tuning CATMuS or an "
-             "installed recognizer")
-    opt(p, "--batch", type=int, default=8, metavar="N",
-        help="lines per forward pass in the reported command [8]. The first "
-             "thing to lower if the run runs out of VRAM")
-
 
 def run_remark_eval(a) -> int:
     from ..recognize import remark_eval

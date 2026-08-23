@@ -38,6 +38,7 @@ from collections.abc import Callable, Iterable
 from dataclasses import dataclass
 from pathlib import Path
 
+from . import train as _train
 from .parallel import ptrack
 
 # The one declaration of every derived path. `zones.py` and `recognize.py` alias
@@ -52,12 +53,15 @@ LINE_BLOT = "scans/w-blotted"
 W_FIGS = "scans/w-figs"
 W_OCR = "scans/w-ocr"
 FIG_CROPS = "scans/fig-crops"
-TRAIN_WORK = "train/bogoras-seg"
+# From `train.py`, which owns the track record — the path is a property of the
+# zone track, not of the farm registry, and the farm is only the half of it that
+# has members. `train` is a leaf, so taking it here closes no loop.
+TRAIN_WORK = _train.ZONES.workdir
 # The half of the track that is a farm. The base holds two directories and no pages,
 # so registering *it* made `views check` count zero entries for a training set that
 # was fully laid out — a number that reads as "nothing prepared". `model/` is not a
 # farm at all: its contents are a run's output, not links into a store.
-TRAIN_DATA = f"{TRAIN_WORK}/data"
+TRAIN_DATA = _train.ZONES.datadir
 
 # Imported by value, not by module, because `zones` imports this one: the leaf
 # vocabulary lives there (it is a fact about the store) and the farms derived from
@@ -141,13 +145,13 @@ FARMS = (
     # pointing outside the repo, so on a clone the rasters cannot be regenerated at
     # all. The script also runs under `uv run --script` with no harness in its
     # environment, which is what keeps a PDF reader out of the package. `train/` is
-    # scratch that `zones assemble` clobbers by design; rebuilding it out of band
+    # scratch that `train assemble zones` clobbers by design; rebuilding it out of band
     # would be preparing a training run nobody asked for.
     Farm("scans", SCANS, "source", (),
          "uv run --script tools/extract_scans.py --commit --rasters DIR",
          "none"),
     Farm("train", TRAIN_DATA, "scratch", (),
-         "harness zones assemble", "none"),
+         "harness train assemble zones", "none"),
     # One per leaf kind: `scans/plate/`, `scans/blank/`, and so on, each a farm of
     # links into `scans/` for the leaves ruled that kind. `select`, because
     # membership is a criterion over one tree — and the criterion is a *store*
@@ -414,7 +418,7 @@ def _wanted_for(name: str, root: Path) -> dict[str, Path] | None:
 
     None is a real answer and is why `survey` can report `?`. For `scans/` there is
     no criterion in this repo at all, and for `train/` the criterion is whatever the
-    last `zones assemble` was asked for — neither is a set this module can compute,
+    last `train assemble zones` was asked for — neither is a set this module can compute,
     and computing one anyway would be inventing a verdict.
     """
     if name == "ocr":

@@ -66,7 +66,7 @@ from typing import TYPE_CHECKING, cast
 from lxml import etree
 
 from . import corrections as _corr
-from . import farms
+from . import farms, provenance, train
 from . import zones_config as zc
 
 if TYPE_CHECKING:
@@ -1921,8 +1921,8 @@ def blot_all(root: Path = Path("."), jobs: int | None = None, tick=None) -> dict
 # Models this project trains live together, tracked, one directory apart from the
 # downloaded weights in `models/` — which are large, third-party and gitignored.
 # A model here is an artifact with a manifest beside it; see `install_model`.
-MODELDIR = "models/bogoras-seg"
-DEFAULT_MODEL = f"{MODELDIR}/zones-seg.safetensors"
+MODELDIR = train.ZONES.modeldir
+DEFAULT_MODEL = train.ZONES.default_model
 
 
 def mz_dir(root: Path = Path(".")) -> Path:
@@ -2182,7 +2182,6 @@ def predict_dp(ref: str, root: Path = Path("."), net=None, sha: str = "",
     provenance and a `dp_` id prefix, so which decode produced a file is readable
     from the file rather than from what was running at the time.
     """
-    from kraken.containers import ProcessingStep
     from PIL import Image
 
     cfg = cfg or zc.load_config(root)
@@ -2219,25 +2218,19 @@ def predict_dp(ref: str, root: Path = Path("."), net=None, sha: str = "",
     zones = split_at_paragraphs(zones, ref, root, cfg, ink)
     split_added = len(zones) - before
 
-    step = ProcessingStep(
-        id="harness-zones-predict",
-        category="processing",
-        description="region segmentation, harness zones predict --decode dp",
-        settings={"model": str(model_path), "sha256": sha, "device": device,
-                  "decoder": "segmental-dp + paragraph-split",
-                  "paragraph_cuts": split_added,
-                  "input": f"{BLOTDIR}/chukchi-{ref}.png"})
+    producer = provenance.Producer(
+        step="harness zones predict --decode dp",
+        label="region segmentation",
+        kind="model", version=provenance.kraken_version(),
+        model=str(model_path), sha256=sha, device=device,
+        inputs={"decoder": "segmental-dp + paragraph-split",
+                "paragraph_cuts": split_added,
+                "raster": f"{BLOTDIR}/chukchi-{ref}.png"})
     tree = build_alto(ref, zones, size, id_prefix=DP_ID_PREFIX)
     # The provenance kraken would have written for us on the blob path; here the
     # writer is ours, so the step is spliced in by hand rather than dropped.
     desc = tree.getroot().find(f"{{{ALTO_NS}}}Description")
-    proc = etree.SubElement(desc, f"{{{ALTO_NS}}}Processing", {"ID": "OCR_0"})
-    etree.SubElement(proc, f"{{{ALTO_NS}}}processingStepDescription").text = \
-        step.description
-    etree.SubElement(proc, f"{{{ALTO_NS}}}processingStepSettings").text = \
-        "; ".join(f"{k}: {v}" for k, v in step.settings.items())
-    soft = etree.SubElement(proc, f"{{{ALTO_NS}}}processingSoftware")
-    etree.SubElement(soft, f"{{{ALTO_NS}}}softwareName").text = "harness zones"
+    desc.append(provenance.alto_processing(producer))
 
     out = mz_dir(root)
     out.mkdir(parents=True, exist_ok=True)
@@ -2289,7 +2282,6 @@ def predict(ref: str, root: Path = Path("."), net=None, sha: str = "",
             "question than the one it was trained on.")
 
     from kraken import blla, serialization
-    from kraken.containers import ProcessingStep
     from PIL import Image
 
     if net is None:
@@ -2315,21 +2307,24 @@ def predict(ref: str, root: Path = Path("."), net=None, sha: str = "",
     # The gt store's own name for the raster (`build_alto`), not the blotted path
     # kraken defaults to: the two stores describe one page and should say so alike.
     seg.imagename = f"chukchi-{ref}.png"
-    step = ProcessingStep(
-        id="harness-zones-predict",
-        category="processing",
-        # **Names its decoder, as the dp path already did.** Only one of the two
-        # said which it was, so a `raw` file was silent and a silent file is
-        # indistinguishable from a dp one to anything that does not already know.
-        # That asymmetry cost a corpus-wide sweep: a re-prediction taken with the
-        # default decoder replaced a dp-decoded store, and the ~20% fall in zone
-        # count that followed was read as a property of the rasters it had just
-        # been run against. Both arms name themselves now.
-        description="region segmentation, harness zones predict --decode raw",
-        settings={"model": str(model_path), "sha256": sha, "device": device,
-                  "input": f"{BLOTDIR}/chukchi-{ref}.png"})
-    xml = serialization.serialize(seg, image_size=size, template="alto",
-                                  processing_steps=[step])
+    # **Names its decoder, as the dp path already did.** Only one of the two said
+    # which it was, so a `raw` file was silent and a silent file is
+    # indistinguishable from a dp one to anything that does not already know.
+    # That asymmetry cost a corpus-wide sweep: a re-prediction taken with the
+    # default decoder replaced a dp-decoded store, and the ~20% fall in zone
+    # count that followed was read as a property of the rasters it had just been
+    # run against. Both arms name themselves now, and `Producer.step` is where
+    # the rule that they must lives.
+    producer = provenance.Producer(
+        step="harness zones predict --decode raw",
+        label="region segmentation",
+        kind="model", version=provenance.kraken_version(),
+        model=str(model_path), sha256=sha, device=device,
+        inputs={"raster": f"{BLOTDIR}/chukchi-{ref}.png"})
+    xml = serialization.serialize(
+        seg, image_size=size, template="alto",
+        processing_steps=[provenance.kraken_step(
+            producer, ident="harness-zones-predict")])
 
     out = mz_dir(root)
     out.mkdir(parents=True, exist_ok=True)
@@ -3402,7 +3397,7 @@ def _segment_pool(todo, n, root, model_path, device, decode, cfg, tick=None,
 
     `recognize._predict_pool`'s shape, and the same measurement underneath it:
     this sweep is a brief forward pass and then single-core Python, so threads
-    return only the GIL-free share. Measured on `zones score --model --decode raw`
+    return only the GIL-free share. Measured on `train score zones --model --decode raw`
     with `/usr/bin/time -v`: **123% of one CPU** across a 90 s run on a 16-core
     machine, with GPU utilization indistinguishable from the desktop's own idle.
     One core saturated, fifteen idle, the card asleep — which is `ocr predict`'s
@@ -3522,7 +3517,7 @@ def predicted_zones(refs: list[str], root: Path = Path("."),
         device = "cuda:0" if torch.cuda.is_available() else "cpu"
 
     # Both decoders, each under its own key — see `pred_cache_key`. They cannot
-    # share: `zones score` defaults to `dp` while `install_model` takes `score`'s
+    # share: `train score zones` defaults to `dp` while `install_model` takes `score`'s
     # own default and gets `raw`, so the two verbs produce genuinely different
     # zones from the same weights and a shared entry would hand one the other's.
     cdir = (pred_cache_dir(pred_cache_key(sha, decode, cfg), root)
@@ -3905,7 +3900,7 @@ def install_model(checkpoint: str | Path, root: Path = Path("."),
     # as long as `score`'s *function* default was `raw` while the CLI's was `dp` —
     # so the numbers this verb printed, and wrote into the manifest, were the
     # model's undecoded ones (61.3% precision against 90.8% on identical weights)
-    # and did not match what `harness zones score` showed for the same checkpoint.
+    # and did not match what `harness train score zones` showed for the same checkpoint.
     # Nothing was wrong about the model; the manifest simply answered a different
     # question from the one anybody was asking, and said nothing about which.
     rep = score(root, cfg, model_path=checkpoint, device=device, tick=tick,
@@ -4124,17 +4119,18 @@ def link_view(root: Path = Path(".")) -> dict:
 # to remember. It used to be both the training input *and* the only record of what a
 # past run consumed, which meant preparing a new run destroyed the ability to
 # interpret the model you already had.
-WORKDIR = farms.TRAIN_WORK
-
-# The track's two halves, and the base holds neither. `data/` is what `--assemble`
+#
+# The three paths come from `train.ZONES`, which is where the track record lives.
+# The track's two halves, and the base holds neither: `data/` is what `assemble`
 # lays out and what `ketos` reads — a raster link and an ALTO per page, plus the two
 # `.lst` files naming them; `model/` is where the run writes its per-epoch
 # checkpoints. They were one directory, and a thousand page links sat beside the
 # lists and the run outputs with nothing but a suffix to tell them apart. Separated
 # so a glob over the training set cannot pick up a checkpoint and clearing one half
 # does not touch the other.
-DATADIR = f"{WORKDIR}/data"
-RUNDIR = f"{WORKDIR}/model"
+WORKDIR = train.ZONES.workdir
+DATADIR = train.ZONES.datadir
+RUNDIR = train.ZONES.rundir
 
 
 def _write_merged(src: Path, dest: Path, merges: dict[str, str]) -> bool:
@@ -4333,7 +4329,7 @@ def assemble(root: Path = Path("."), scratch: bool = False,
                      "once did not, and trained on one worker. Re-verify after any "
                      "kraken upgrade."),
             "command": SEGTRAIN_CMD.format(
-                work=DATADIR, out=f"{RUNDIR}/{_next_run(root)}",
+                work=DATADIR, out=f"{RUNDIR}/{train.next_run(train.ZONES, root)}",
                 device=_dev, workers=_wrk,
                 load=("" if not base else
                       f" -i {base}" + (f" --resize {resize}" if resize else "")))}
@@ -4378,15 +4374,6 @@ def _base_and_resize(root: Path, classes: list[str]) -> tuple[str, str, str]:
             "no installed model yet; blla is the stock layout net and its single "
             "`text` region class is replaced by these")
 
-
-def _next_run(root: Path) -> str:
-    """A fresh output directory per run. Three runs writing `best_*.safetensors`
-    into one directory left them distinguishable only by an accuracy in the
-    filename, which is not an identity."""
-    n = 1
-    while (root / RUNDIR / f"run-{n}").exists():
-        n += 1
-    return f"run-{n}"
 
 
 # The invocation `--assemble` reports. A template rather than a string built at the

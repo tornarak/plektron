@@ -202,13 +202,13 @@ since a default path that changes every retrain is a default nobody can use.
 **Two directories, and the split between them is the point.** `train/bogoras-seg/`
 is scratch — `data/` the symlink farm and the two `.lst` files, `model/` each run's
 checkpoints, nothing in the base — and **nothing reads it once training ends**, so
-`zones assemble` may clobber it freely.
+`train assemble zones` may clobber it freely.
 `models/bogoras-seg/` is tracked and holds the artifacts: the weights, the split
 they saw as `<model>.train.lst`/`.eval.lst`, and a small `<model>.json` for the few
 facts that are not lists. They used to be one directory, and the `.lst` files were
 both the *next* run's input and the only record of what a *past* run consumed —
 so preparing a run destroyed the ability to interpret the model already installed,
-and `zones score` would read whichever lists happened to be lying there regardless of
+and `train score zones` would read whichever lists happened to be lying there regardless of
 which model it was scoring. Nothing detected that.
 
 **Its output does not go in `gt/zones/`, and this is the store rule rather than a
