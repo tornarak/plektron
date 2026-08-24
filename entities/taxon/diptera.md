@@ -7,7 +7,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| | | no | |
+| carrion-flies | en | no | 1-251; a habit, not a clade |
 
 ## gloss
 

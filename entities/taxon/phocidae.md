@@ -7,7 +7,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| | | no | |
+| seal | en | no | 1-252, seal-blood and seal-meat |
 
 ## gloss
 

@@ -8,6 +8,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Œdemagena tarandi | la | yes | 1-108 "Another fly, of smaller size and darker color (Œdemagena tarandi Slunin)" |
+| reindeer-fly | en | no | 1-250; which of 1-108's two flies is unstated, so oestrus-tarandi claims it too |
 
 ## gloss
 

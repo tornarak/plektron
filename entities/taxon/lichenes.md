@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| | | no | |
+| moss | en | no | 1-251, 1-253, the half-digested moss of the paunch |
 
 ## gloss
 

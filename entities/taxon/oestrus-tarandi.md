@@ -8,6 +8,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Œstrus tarandi | la | yes | 1-108, Nordenskiöld's name for the same fly Slunin calls Tabanus tarandinus |
+| reindeer-fly | en | no | 1-250; which of 1-108's two flies is unstated, so oedemagena-tarandi claims it too |
 
 ## gloss
 

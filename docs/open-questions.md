@@ -7,6 +7,20 @@ in for an unread glyph.
 
 ## Open
 
+- **The oysters and shells of 1-249 have no entity, and no rank to hang one
+  from.** The chapter's opening page has the Maritime Chukchee "gather oysters and
+  shells on sandy beaches or in shallow waters", and that is the whole of the
+  evidence: no binomial, no second mention, no Chukchee form beside it. Two things
+  block an entry. **No true oyster inhabits Chukotkan waters** — Ostreidae do not
+  reach the Bering and Chukchi seas — so "oysters" is either a loose English word
+  for the mussels and cockles that do, or a report Bogoras took on trust; either
+  way the identification would be the store's invention rather than the page's.
+  And **the store holds no mollusc anywhere**: minting `taxon:mollusca` for one
+  clause would add a rank carrying a single unresolved member, which is what
+  [[taxon:animalia]]'s admission rule refuses. Left out of the Chapter VIII pass
+  deliberately. **Waits on a second attestation** — another page naming a shellfish,
+  or a Chukchee form for one — which would say what the word is doing and give the
+  rank something to hold.
 - **One curly apostrophe sits inside a Tier-1 span, and nothing exempts it.** The
   book quotes an Iñupiaq form from another author, in that author's notation, and
   the form carries an ordinary U+2019: `3-070` L37, `kin-ĭ-g’un`. `ipk` is a

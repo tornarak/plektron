@@ -7,7 +7,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| | | no | |
+| fish | en | no | 1-249, and throughout; the English word names no clade |
 
 ## gloss
 
