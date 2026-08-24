@@ -1657,3 +1657,44 @@ def test_a_label_in_a_list_is_still_a_list_term(tmp_path):
                  '</list></body></text></TEI>', encoding="utf-8")
     got = tei_html.render(p)["html"]
     assert '<li class="label">' in got and 'class="runin"' not in got
+
+
+# ------------------------------------------- the compositor's hyphen, in the TEI
+
+def test_a_broken_word_the_corpus_accounts_for_is_set_whole(tmp_path):
+    """The hyphen a reader meets in the middle of a sentence, and the only arm
+    that may close it. `1-022` sets `Chukchee` away from a line end; `1-021`
+    broke it, and the corpus is what says which hyphen that is."""
+    stores(tmp_path, "1-022", [("MainZone-P", lines_at(["Chukchee country."]))])
+    stores(tmp_path, "1-021", [("MainZone-P", lines_at(["of the Chuk-",
+                                                        "chee people."]))])
+    doc, rep = gen.build("1-021", tmp_path)
+    # The printed line break survives inside the `<p>` — the block is set line
+    # per line and always has been. What moved is the hyphen, and the word is
+    # whole on the line it started on.
+    assert "Chuk-chee" not in doc and "<p>of the Chukchee\npeople.</p>" in doc
+    assert (rep["hyphens_closed"], rep["hyphens_open"]) == (1, 0)
+    assert "line-end hyphen" not in doc, "nothing decided needs a comment"
+
+
+def test_a_hyphen_no_page_witnesses_is_kept_and_asked_about(tmp_path):
+    """The 13% the counts cannot settle. The hyphen stays — the print is what it
+    is — and the comment says which two spellings were weighed and how often,
+    because "ambiguous" alone asks the reader to redo the measurement."""
+    stores(tmp_path, "1-021", [("MainZone-P", lines_at(["a nose-",
+                                                        "plumage here."]))])
+    doc, rep = gen.build("1-021", tmp_path)
+    assert "nose-plumage" in doc
+    assert (rep["hyphens_closed"], rep["hyphens_open"]) == (0, 1)
+    assert "line-end hyphen, line 0: the corpus sets neither" in doc
+
+
+def test_the_page_does_not_witness_its_own_break(tmp_path):
+    """`gt/ocr/` is both the text being set and the corpus deciding it, so the
+    two witnesses can be one file. Here they are: the only `Chukchee` on any page
+    is the one this page's own join produced, and it decides nothing."""
+    stores(tmp_path, "1-021", [("MainZone-P", lines_at(["of the Chuk-",
+                                                        "chee people,",
+                                                        "Chukchee all."]))])
+    doc, rep = gen.build("1-021", tmp_path)
+    assert "Chuk-chee" in doc and rep["hyphens_open"] == 1

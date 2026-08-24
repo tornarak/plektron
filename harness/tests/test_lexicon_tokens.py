@@ -32,8 +32,11 @@ from harness.detectors import (
     detect_all,
     english_genitive,
     join_broken_words,
+    joined_words,
     lexicon_miss,
+    midline_forms,
     native_corpus_lines,
+    resolve_break_hyphens,
     suggest_lexicon,
 )
 from harness.tests.test_entities import entry
@@ -717,3 +720,107 @@ def test_a_ligature_row_is_not_reported_as_suppressed(tmp_path):
     got = _common(tmp_path, 0)
     assert "Salmonidæ" in {r["token"] for r in got["tokens"]}
     assert "Salmonidæ" not in {r["token"] for r in got["suppressed"]}
+
+
+# --- the compositor's hyphen, closed against the corpus's own witness ---------
+
+def test_the_join_reports_where_it_cut():
+    """The offset is the whole of what separates `Chuk-chee` from `so-called`,
+    and it exists for exactly as long as the join keeps it. `join_broken_words`
+    throws it away because its six callers want the token intact; the arm that
+    sets prose takes it."""
+    texts, cuts = joined_words([rec("of the Chuk-"), rec("chee people")])
+    assert texts == ["of the Chuk-chee", "people"]
+    assert cuts == [[11], []]
+    assert texts[0][cuts[0][0]] == "-"
+
+
+def test_a_word_broken_twice_carries_both_cuts():
+    """Both hyphens in `trans-for-mations` are the printer's, and the second was
+    put there by a splice that happened before the first. The offsets follow the
+    text through both, which is why they are absolute in the line."""
+    texts, cuts = joined_words([rec("trans-"), rec("for-"), rec("mations here")])
+    assert texts[0] == "trans-for-mations"
+    assert [texts[0][c] for c in cuts[0]] == ["-", "-"]
+    assert cuts[0] == [5, 9]
+
+
+def test_a_donor_line_keeps_its_own_cuts_when_it_loses_its_head():
+    """A line can be both stem and donor. `bbb-ccc` was joined on line 1 and
+    line 0 then took `aaa` off its head, so line 1's remaining cut has to move
+    back by what it lost — a cut that stayed put would name a letter."""
+    texts, cuts = joined_words([rec("trans-"), rec("aaa bbb-"), rec("ccc")])
+    assert texts == ["trans-aaa", "bbb-ccc", ""]
+    assert [texts[i][c] for i, cs in enumerate(cuts) for c in cs] == ["-", "-"]
+
+
+def test_a_token_carrying_a_cut_is_not_a_witness_to_its_own_spelling(tmp_path):
+    """The one thing this index has to get right. A page that broke `Chuk-chee`
+    would otherwise attest `Chuk-chee` mid-line and confirm every break in it,
+    which is the same-file hazard in the shape it takes here."""
+    _gt_page(tmp_path, "1-001", [("of the Chuk-", 400, 1774),
+                                 ("chee people", 400, 1774)])
+    assert midline_forms(tmp_path) == {"of": (1, frozenset({"1-001"})),
+                                       "the": (1, frozenset({"1-001"})),
+                                       "people": (1, frozenset({"1-001"}))}
+
+
+def test_the_corpus_closes_a_hyphen_it_accounts_for(tmp_path):
+    """`Chuk-chee` against 1 mid-line `Chukchee` on another page. The dictionary
+    could not have answered this one — no wordlist of English carries it — and
+    the corpus answers it 2,931 times."""
+    idx = {"chukchee": (2931, frozenset({"1-002", "1-003"}))}
+    text, verdicts = resolve_break_hyphens("of the Chuk-chee", [11], "1-001", idx)
+    assert text == "of the Chukchee"
+    assert verdicts == [{"token": "Chuk-chee", "resolved": "Chukchee",
+                         "verdict": "joined", "joined": 2931, "hyphenated": 0}]
+
+
+def test_the_corpus_keeps_a_hyphen_the_book_sets(tmp_path):
+    """`new-born` is the case the dictionary rule got wrong: `newborn` is a word
+    of modern English and not one of this book's, which sets the hyphen 10 times
+    away from any line end. Nothing is written, and that is the point."""
+    idx = {"new-born": (10, frozenset({"1-002", "1-003"}))}
+    text, verdicts = resolve_break_hyphens("a new-born calf", [5], "1-001", idx)
+    assert text == "a new-born calf"
+    assert verdicts[0]["verdict"] == "kept"
+    assert (verdicts[0]["hyphenated"], verdicts[0]["joined"]) == (10, 0)
+
+
+def test_a_tie_and_a_silence_are_both_left_open(tmp_path):
+    """Two different silences and neither is a verdict. `spring-time` 6 against
+    `springtime` 6 is a page the reader settles; a form the book sets once, here,
+    has no witness at all. Both keep the hyphen and both get a comment."""
+    tie = {"spring-time": (6, frozenset({"1-002", "1-003"})),
+           "springtime": (6, frozenset({"1-004", "1-005"}))}
+    text, vs = resolve_break_hyphens("in spring-time here", [9], "1-001", tie)
+    assert text == "in spring-time here" and vs[0]["verdict"] == "open"
+    text, vs = resolve_break_hyphens("a nose-plumage", [6], "1-001", {})
+    assert text == "a nose-plumage" and vs[0]["verdict"] == "open"
+
+
+def test_the_page_being_resolved_is_not_its_own_witness(tmp_path):
+    """A form attested only on the page whose hyphen is in question decides
+    nothing. `_attested` is the guard, and two refs are kept per form because two
+    is what answers *some other page*."""
+    only_here = {"chukchee": (40, frozenset({"1-001"}))}
+    text, vs = resolve_break_hyphens("the Chuk-chee", [8], "1-001", only_here)
+    assert text == "the Chuk-chee", "40 hits, all of them this page, decide nothing"
+    assert vs[0]["verdict"] == "open"
+    elsewhere = {"chukchee": (40, frozenset({"1-001", "1-002"}))}
+    text, _ = resolve_break_hyphens("the Chuk-chee", [8], "1-001", elsewhere)
+    assert text == "the Chukchee"
+
+
+def test_a_tier1_form_is_refused_before_any_count_is_consulted(tmp_path):
+    """The firewall, and the one place in this rule it reaches. Inside the
+    notation U+002D is a licensed sort, so closing one edits an inventory
+    character — and an index saying `Torwaˊwaq` 90 times would not make that a
+    reading a rule may originate."""
+    idx = {"torwaˊwaq": (90, frozenset({"1-002", "1-003"}))}
+    form = nfd("(Tor-waˊwaq)")
+    text, vs = resolve_break_hyphens(form, [4], "1-001", idx)
+    assert text == form
+    assert vs[0]["verdict"] == "tier1"
+    assert (vs[0]["joined"], vs[0]["hyphenated"]) == (0, 0), \
+        "refused, not outvoted — no count was read"

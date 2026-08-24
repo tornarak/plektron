@@ -1088,3 +1088,89 @@ one the human asked in, and its label is a name, not the object.** Three of the
 four threaded sweeps had the same fault for the same reason, since their items are
 `(ref, entry)` and `(store, path)` pairs; `scans._labelled` is the one wrapper and
 `test_scans.py` holds every bar to a ref-shaped label.
+
+## The hyphen the corpus could account for all along
+
+`join_broken_words` rejoined a word the compositor broke across a line end and
+kept the hyphen it broke across. That was deliberate and had a measurement behind
+it: dropping the hyphen is what a modern de-hyphenator does, and doing it here
+manufactured nine words the book does not contain — `reindeerowner`, `treetrunk`,
+`beaconlamp`, `Shootingstars` — because a real compound hyphen falling at a line
+end is indistinguishable from a break. The docstring closed with *nothing in the
+ALTO can separate the two*, and for the flag arms that was the right answer:
+`lexicon_miss` resolves `Chuk-chee` by **testing** the concatenation, which reads
+the token rather than editing it, and needs the token to keep saying where it was
+cut.
+
+The generated TEI inherited the same text, and there it was not a preserved
+ambiguity but a defect a reader met: `of the Chuk-chee people`, `con-sidered`,
+`some-times`, set in the middle of sentences the edition asks people to read.
+
+**Nothing in the ALTO had to separate them.** `gt/ocr/` sets these same words
+*away from a line end* on other pages, where the measure does not account for a
+hyphen and the spelling is therefore the book's own. That is a second witness, and
+it was sitting in the store the whole time. `sometimes` 316 times mid-line and
+`some-times` never; `seal-skin` 81 and `sealskin` never. So the claim was not
+weak, it was **an evidence problem asserted as an ambiguity** — the same failure
+`docs/edition.md` records one section earlier, where the position of the hyphen
+turned out to be in the ALTO and the generator was throwing it away. Twice now, in
+the same paragraph of the same book, the answer to "nothing can tell these apart"
+has been *something already in the record can*.
+
+The rule: offer each joined token to the index twice, as it stands and with the
+cut closed, and take the spelling ground truth sets mid-line **on some other
+page**. Measured over 717 pages and 1,350 breaks — 958 closed, 219 confirmed as
+the book's own hyphen, 173 asked about, 30 refused as Tier-1. 87% decided.
+
+**The dictionary was the obvious witness and is the wrong one.** It was the first
+proposal — drop the hyphen where the halves form a common word — and against the
+corpus's own spelling it agrees 97.4% of the time. The 2.6% is not noise; it is a
+class, and it is the class this book is made of. `newborn`, `sealskin`,
+`summertime`, `earrings`, `everyday`, `crosspiece` are all words of modern
+English, and this is a book of 1904 that sets every one of them with the hyphen,
+81 times in the case of `seal-skin`, against zero witnesses for the closed form. A
+plain `/usr/share/dict` is worse again — 89.8%, its 99 misses every one a proper
+name it has never heard of, `Chuk-chee` at the head of them with 2,931 mid-line
+witnesses to `Chukchee`. **A general dictionary is a statement about the language;
+the corpus is a statement about the book.**
+
+**A ratio would decide 12 more of them and is deliberately not used.** `sea-coast`
+is set once mid-line against 17 `seacoast`, and a rule reading "ten to one is
+decisive" would close it. That number would be a threshold nobody measured,
+tippable by one mis-keyed page, and the whole of what this rule has over the
+dictionary is that it asserts nothing it cannot point at. Twelve reader questions
+is not a cost worth buying it with.
+
+Three things the rule needed that the idea did not come with.
+
+**The cut has to be recorded, not re-found.** `Chuk-chee` and `so-called` are the
+same string shape and a different hyphen, and the only thing that separates them
+is the offset the join knew and discarded. `joined_words` returns it now and
+`join_broken_words` is its text-only face, kept because six callers want exactly
+that. A word broken twice carries two offsets, and they follow the text through
+both splices — which is also what lets the multi-hyphen cases resolve, `rein-` /
+`deer-breeding` closing to the `reindeer-breeding` the corpus sets 93 times rather
+than being refused for having a hyphen the rule could not place.
+
+**The two witnesses can be one file.** `gt/ocr/` is both the text being set and
+the corpus deciding it, so a page that broke `Chuk-chee` would attest `Chuk-chee`
+mid-line and confirm every break in itself. Two guards, and they are different:
+the index refuses any token *carrying a cut* as a witness at all, and a form is
+consulted only where some page **other than this one** sets it. The index keeps
+two refs per form because two is exactly what answers that question. This is the
+hazard `CLAUDE.md` names — a comparison whose witnesses may be one witness — found
+in a new place, which is where it keeps being found.
+
+**`mz/ocr/` is not in it, and the reason is a measurement rather than a rank
+argument.** English prose spelling is not what the firewall governs, so the
+recognizer's pages were admissible; adding all 717 of them moved not one verdict
+of 1,350, because the recognizer's pages are the keyed pages. A witness that
+changes nothing is not worth the rank question it raises.
+
+What did not change: **a token bearing an inventory glyph is refused before any
+count is consulted.** Inside the notation U+002D is a licensed sort
+(`keying_spec.md` §1), a line-end hyphen in a form is an anomaly to reproduce and
+comment, and an index reading `Torwaˊwaq` ninety times would not make closing one
+a reading a rule may originate. The refusal is `bears_inventory`, the project's one
+definition of a token carrying the notation, and the verdict records zero counts
+rather than a losing tally — refused, not outvoted.

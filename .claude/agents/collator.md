@@ -986,7 +986,16 @@ it is narrow: a thin space has no lexical content and would put a space inside a
 for every tokenizer downstream. This licenses nothing else. `i. e.,` keeps its space.
 In English prose small caps are rendition only: normalize silently to ordinary case,
 or `<hi rend="smallcaps">` where the emphasis is evidently deliberate. A line-end
-hyphen in English is a printing artifact the generator has already joined.
+hyphen in English is a printing artifact the generator has already joined, and
+closed wherever the corpus sets that word away from a line end — so a hyphen still
+standing in prose is either the word's own or a question the generator marked. It
+marks them: `<!-- line-end hyphen, line N: … -->` names the two spellings weighed
+and how often ground truth sets each, and is a comment to answer like any other.
+**Answer it from the page and from the book's habit, not from modern spelling.**
+This book sets `seal-skin`, `new-born` and `ear-rings`; that a word is closed up
+today is not evidence about 1904. Where the page itself decides nothing, say so in
+your report and leave the hyphen — the printed ambiguity intact is the correct
+outcome, and the comment is what carries it forward.
 
 ### At a page edge, never complete, capitalize, or punctuate
 

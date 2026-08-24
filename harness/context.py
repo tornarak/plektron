@@ -550,7 +550,12 @@ def entity_hits(ref: str, root: Path = Path("."),
     if not idx:
         return []
     autos = auto_forms(idx)
-    blocks = page_blocks(ref, root)
+    # The verdicts are the generator's to report — `tei generate` comments the
+    # open ones into the page. What this arm needs is the *text*, joined and
+    # resolved exactly as the generator resolves it, so that a name the rules
+    # linked as `Chukchee` is not offered here as an open question about
+    # `Chuk-chee`. That is the whole reason this is one function and not two.
+    blocks, _ = page_blocks(ref, root)
     out = []
     for band, rows in blocks:
         if band is not None and band["label"] in APPARATUS_ZONES:

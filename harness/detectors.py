@@ -399,7 +399,26 @@ _BREAK_HYPHEN = re.compile(r"[^\W\d_][̀-ͯ]*-$")
 
 
 def join_broken_words(recs: list[dict]) -> list[str]:
+    """The texts of `joined_words`, which is where the reasoning lives.
+
+    Six callers want exactly this and nothing else — the flag arms, the handle
+    arm, the native-corpus walk — because for them the hyphen is the evidence
+    and not a defect: `lexicon_miss` resolves `Chuk-chee` by testing the
+    concatenation as a *reading* of the token, which is only possible while the
+    token still says where it was cut. The one caller that must produce prose,
+    `generate.page_blocks`, takes the cuts as well.
+    """
+    return joined_words(recs)[0]
+
+
+def joined_words(recs: list[dict]) -> tuple[list[str], list[list[int]]]:
     """Rejoin words the compositor broke across a line end. Same length in, out.
+
+    Returns the joined texts and, beside each, the character offsets in it that
+    hold **a hyphen this function put there** — the compositor's cut, which is
+    the one fact about it no later pass can recover by looking. `Chuk-chee` and
+    `so-called` are the same string shape and a different hyphen; the offset is
+    what separates them, and `resolve_break_hyphens` is what spends it.
 
     Takes `lines.page_lines` records and returns their texts, so the caller's
     records and this output stay positional to each other and `index` never
@@ -466,6 +485,18 @@ def join_broken_words(recs: list[dict]) -> list[str]:
     it already owns, by testing the concatenation too (`lexicon_miss`), which is a
     reading of the token rather than an edit to it.
 
+    **What was wrong with that was the word *nothing*.** Nothing in the ALTO can
+    separate the two, and nothing had to: `gt/ocr/` sets the same word mid-line
+    on other pages, where the measure does not account for a hyphen, and that is
+    a witness — `seal-skin` 81 times and `seaskin` never, `sometimes` 316 times
+    and `some-times` never. So the ambiguity was an evidence problem asserted as
+    an ambiguity, which is this project's most-named failure and the one it is
+    least good at seeing in itself; `docs/decisions.md` has the measurement.
+    This function still keeps the hyphen, because its callers need the token to
+    say where it was cut. `resolve_break_hyphens` spends the offsets, on the one
+    arm that sets prose, and refuses a Tier-1 token before it counts anything —
+    the reason above holds there unchanged and is the reason it is refused.
+
     **The continuation must be in the same zone, and that is not the geometric
     guard this function threw out.** That one asked whether a box was too far
     away, which is arithmetic over coordinates and can only guess; this reads the
@@ -489,9 +520,13 @@ def join_broken_words(recs: list[dict]) -> list[str]:
     business and not this function's.
 
     Iterates from the last line back, so a word broken twice (a stem, a
-    continuation itself ending in a hyphen) resolves in one pass.
+    continuation itself ending in a hyphen) resolves in one pass — and the
+    offsets follow the text through both splices, which is why they are absolute
+    in the line rather than relative to a token. A doubly-broken word ends up one
+    token carrying two of them.
     """
     out = [(r.get("text") or "") for r in recs]
+    cuts: list[list[int]] = [[] for _ in out]
     for i in range(len(out) - 2, -1, -1):
         stem = out[i].rstrip()
         if not _BREAK_HYPHEN.search(stem):
@@ -504,9 +539,139 @@ def join_broken_words(recs: list[dict]) -> list[str]:
         if recs[i].get("zone") != recs[nxt].get("zone"):
             continue
         parts = out[nxt].split(None, 1)
+        # `stem` is a prefix of `out[i]`, so its hyphen's offset is its offset in
+        # the joined line too, and the continuation's own cuts shift by exactly
+        # the length that now precedes them. The rest of the donor line keeps
+        # its cuts, moved back by the head it lost.
+        head = len(stem)
+        rest = len(out[nxt]) - (len(parts[1]) if len(parts) > 1 else 0)
+        cuts[i] = (cuts[i] + [head - 1]
+                   + [c + head for c in cuts[nxt] if c < len(parts[0])])
+        cuts[nxt] = [c - rest for c in cuts[nxt] if c >= rest]
         out[i] = stem + parts[0]
         out[nxt] = parts[1] if len(parts) > 1 else ""
-    return out
+    return out, [sorted(c) for c in cuts]
+
+
+#: `midline_forms`, memoised on the root. Keyed on the root alone and not
+#: stamped the way `_lexicon` stamps `entities/`, because the difference is real:
+#: `entities/` changes *inside* a process — `edition_ui._guarded` writes it on a
+#: browser click — and `gt/ocr/` does not. `ocr restore` and `ocr edit` are
+#: separate invocations, and the one long-lived process that reads this,
+#: `edition serve`, writes `mz/tei/` and the entity store and never the ALTO.
+_MIDLINE: dict[str, dict[str, tuple[int, frozenset[str]]]] = {}
+
+
+def _fold(tok: str) -> str:
+    """A token as the attestation index keys it: NFD, edge-stripped, lowercased."""
+    return unicodedata.normalize("NFD", tok).strip(EDGE_PUNCT).lower()
+
+
+def midline_forms(root: Path = Path("."), tick: Callable | None = None
+                  ) -> dict[str, tuple[int, frozenset[str]]]:
+    """Every form ground truth sets **away from a line end**, and where.
+
+    `form → (occurrences, up to two of the refs setting it)`. The value of a
+    mid-line token is that the compositor's measure does not account for its
+    spelling: a hyphen there is the word's own, and its absence is the word's
+    own too. That makes this corpus the second witness the line-end case has
+    never had — one that knows `seal-skin` (81 mid-line) from `sometimes` (630),
+    which no dictionary of modern English can do for a book of 1904.
+
+    **A token carrying a cut of its own is not a witness and is excluded**, which
+    is the whole of the care this needs. Otherwise a page that broke `Chuk-chee`
+    would attest `Chuk-chee`, and the index would confirm every break in it.
+
+    **`gt/ocr/` only.** Not a rank argument — English prose spelling is not what
+    the firewall governs — but a measurement: adding `mz/ocr/`'s 717 pages moved
+    not one verdict of 1350, because the recognizer's pages are the keyed pages.
+    A witness that changes nothing is not worth the rank question it raises.
+
+    Only two refs are kept per form. The one question asked of them is whether a
+    form is attested on some page *other* than the one being resolved — the
+    same-file hazard, in the shape it takes here — and two answers that.
+    """
+    from .lines import page_lines
+
+    key = str(root.resolve())
+    if key in _MIDLINE:
+        return _MIDLINE[key]
+    idx: dict[str, tuple[int, frozenset[str]]] = {}
+    for ref in ptrack(_restored_refs(root), tick):
+        p = root / "gt" / "ocr" / f"chukchi-{ref}.xml"
+        texts, cuts = joined_words(page_lines(p, root, ref=ref))
+        for text, cut in zip(texts, cuts, strict=True):
+            for m in re.finditer(r"\S+", text):
+                if any(m.start() <= c < m.end() for c in cut):
+                    continue
+                form = _fold(m.group())
+                if not form:
+                    continue
+                n, refs = idx.get(form, (0, frozenset()))
+                idx[form] = (n + 1, refs if len(refs) > 1 else refs | {ref})
+    _MIDLINE[key] = idx
+    return idx
+
+
+def _attested(idx: dict, form: str, ref: str) -> int:
+    """Occurrences of `form` mid-line, or 0 if `ref` is the only page setting it."""
+    n, refs = idx.get(form, (0, frozenset()))
+    return 0 if not n or refs <= {ref} else n
+
+
+def resolve_break_hyphens(text: str, cuts: list[int], ref: str, idx: dict
+                          ) -> tuple[str, list[dict]]:
+    """Drop the compositor's hyphens the corpus itself can account for.
+
+    `text` and `cuts` are one `joined_words` line; `idx` is `midline_forms`.
+    Returns the text to set and one verdict per cut token: `token`, `resolved`,
+    `verdict`, and the two counts that decided it.
+
+    **The rule is a comparison of witnesses, not a reading.** A joined token is
+    offered to the corpus twice — as it stands, and with the cut closed — and the
+    spelling ground truth sets mid-line, on some other page, wins. Where the
+    corpus sets one and not the other there is nothing left to judge; where it
+    sets both (`spring-time` 6, `springtime` 6) or neither, the hyphen stays and
+    the generator asks. That is 87% decided and 13% asked, against a rule that
+    asked all of it.
+
+    **A token bearing an inventory glyph is refused outright**, before any count
+    is consulted. Inside the notation U+002D is a licensed sort (keying_spec.md
+    §1) and a line-end hyphen in a form is an anomaly to reproduce and comment,
+    not to close; and closing one would edit an inventory character on the
+    strength of a frequency table, which is what the firewall exists to forbid.
+    `bears_inventory` is the test because it is the project's one definition of
+    a token carrying the notation, U+0308 and the rest of the marks included.
+
+    The `kept` verdict writes nothing — the hyphen was already there. It is
+    reported because "the corpus says this hyphen is real" and "nobody looked"
+    are different states, and a count is the difference.
+    """
+    if not cuts:
+        return text, []
+    held = set(cuts)
+    pieces, verdicts, pos = [], [], 0
+    for m in re.finditer(r"\S+", text):
+        rel = sorted(c - m.start() for c in held if m.start() <= c < m.end())
+        if not rel:
+            continue
+        tok = m.group()
+        flat = "".join(c for i, c in enumerate(tok) if i not in set(rel))
+        if bears_inventory(tok):
+            verdict, joined, hyph = "tier1", 0, 0
+        else:
+            joined = _attested(idx, _fold(flat), ref)
+            hyph = _attested(idx, _fold(tok), ref)
+            verdict = ("joined" if joined and not hyph else
+                       "kept" if hyph and not joined else "open")
+        verdicts.append({"token": tok, "resolved": flat, "verdict": verdict,
+                         "joined": joined, "hyphenated": hyph})
+        if verdict == "joined":
+            pieces.append(text[pos:m.start()])
+            pieces.append(flat)
+            pos = m.end()
+    pieces.append(text[pos:])
+    return "".join(pieces), verdicts
 
 
 # Detectors that already establish a token is not English. For these, a

@@ -74,7 +74,7 @@ from xml.sax.saxutils import escape
 
 from . import apparatus, citations, figrefs, provenance
 from .context import _running_title, tier1_terms
-from .detectors import join_broken_words
+from .detectors import EDGE_PUNCT, joined_words, midline_forms, resolve_break_hyphens
 from .entities import alias_index, auto_forms, load
 from .lines import page_lines
 from .ns import TEI_NS
@@ -98,7 +98,7 @@ class Stores:
     **The loop's invariants, hoisted — not a cache.** `tei validate` states the
     distinction in full and this is the same act: a cache is a property of a
     server, and these processes read the stores once and exit. What makes it
-    worth a type rather than five keyword arguments is that they are six things
+    worth a type rather than five keyword arguments is that they are seven things
     with one lifetime, and a caller that hoisted four of them and forgot the
     fifth would get a correct answer at a cost it thought it had paid.
 
@@ -106,7 +106,7 @@ class Stores:
     much" is exactly the reasoning that produces a wrong optimisation: over 40
     pages of `tei generate --force`, `entities.load` was **68% of the run** — 30
     ms and 482 files, once per page, 19,280 `parse` calls in all — with
-    `figures.readings` re-reading the caption store beside it. None of the six
+    `figures.readings` re-reading the caption store beside it. None of the seven
     can change during a sweep: `build` writes only `mz/tei/`, which none of them
     reads.
 
@@ -126,17 +126,24 @@ class Stores:
     sigla: list[dict]
     #: `figures.readings` — every ratified caption, keyed `<ref>|<zone-suffix>`.
     readings: dict
+    #: `detectors.midline_forms` — the spelling ground truth sets away from a
+    #: line end, which is what decides a compositor's hyphen. A corpus walk, so
+    #: much the most expensive of the seven; `midline_forms` memoises on the root
+    #: as well, so a caller that forgot this still pays it only once.
+    midline: dict
 
 
 def stores(root: Path = Path(".")) -> Stores:
-    """Read the six page-invariant stores once, for a caller sweeping pages."""
+    """Read the seven page-invariant stores once, for a caller sweeping pages."""
+    from .detectors import midline_forms
     from .figures import readings
 
     store = load(root)
     ents = alias_index(store)
     return Stores(store=store, ents=ents, autos=auto_forms(ents),
                   cited=apparatus.authority_names(root),
-                  sigla=apparatus.sigla(root), readings=readings(root))
+                  sigla=apparatus.sigla(root), readings=readings(root),
+                  midline=midline_forms(root))
 
 #: Zone labels that become body prose, and what each becomes. A label absent from
 #: here is not prose and is handled by name below; a label absent from *both* is a
@@ -843,14 +850,25 @@ def _emit(full: str, spans: list, indent: str) -> str:
     return render(ordered, 0, len(full))
 
 
-def page_blocks(ref: str, root: Path = Path(".")
-                ) -> list[tuple[dict | None, list[tuple[int, str]]]]:
-    """The page's text in the blocks the rules read it as.
+def page_blocks(ref: str, root: Path = Path("."), shared: Stores | None = None
+                ) -> tuple[list[tuple[dict | None, list[tuple[int, str]]]],
+                           list[dict]]:
+    """The page's text in the blocks the rules read it as, and its hyphen verdicts.
 
     One entry per band, in order, each `(band, [(line index, joined text), …])`;
     the last entry's band is None and holds the lines inside no zone. Captions
     and empty lines are dropped, and each line's text is the *joined* one, so a
     word broken across two lines is whole on the first of them.
+
+    **This is the only arm that closes the compositor's hyphen**, and it is the
+    only one that should: it is the arm that produces prose. The flag arms and
+    the handle arm read `join_broken_words` and keep the cut, because for them it
+    is the evidence — `lexicon_miss` answers `Chuk-chee` by *testing* the
+    concatenation rather than writing it. Here the text is what a reader meets,
+    and `Chuk-chee` in the middle of a sentence is a defect of the setting that
+    the corpus itself can account for. `detectors.resolve_break_hyphens` has the
+    rule; the verdicts come back so `build` can ask about the 13% it cannot
+    settle, and each carries `line`.
 
     **A block is the unit an alias is matched over**, which is why this is one
     function and not two. The generator marks up a block at a time, so an alias
@@ -862,8 +880,14 @@ def page_blocks(ref: str, root: Path = Path(".")
     """
     ocr, _ = _inputs(ref, root)
     recs = page_lines(ocr, root, ref=ref)
-    joined = join_broken_words(recs)
-    text_of = {r["index"]: t for r, t in zip(recs, joined, strict=True)}
+    joined, cuts = joined_words(recs)
+    idx = (shared.midline if shared is not None else midline_forms(root))
+    verdicts: list[dict] = []
+    text_of = {}
+    for r, t, c in zip(recs, joined, cuts, strict=True):
+        t, vs = resolve_break_hyphens(t, c, ref, idx)
+        text_of[r["index"]] = t
+        verdicts.extend(v | {"line": r["index"]} for v in vs)
     bands = _bands(ref, root)
     buckets = _assign(recs, bands)
 
@@ -881,7 +905,13 @@ def page_blocks(ref: str, root: Path = Path(".")
     out: list[tuple[dict | None, list[tuple[int, str]]]] = [
         (b, rows_of(k)) for b, k in zip(bands, buckets[:-1], strict=True)]
     out.append((None, rows_of(buckets[-1])))
-    return out
+    # **A verdict about a line this page does not set is not a question.** The
+    # caption lines go out with `in_figdesc` — the project holds a human reading
+    # of those in `gt/fig/` and the figure track asks its own hyphen question
+    # there (`read-captions` has the 31 of them) — so a comment here would send a
+    # reader to look for a word the file does not contain.
+    kept = {ln for _, rows in out for ln, _ in rows}
+    return out, [v for v in verdicts if v["line"] in kept]
 
 
 def build(ref: str, root: Path = Path("."),
@@ -889,14 +919,19 @@ def build(ref: str, root: Path = Path("."),
     """The page's generated TEI, and a report of what the rules could and could not do.
 
     `shared` is a `Stores` a caller sweeping pages built once; without one this
-    reads all six itself, so a single-page call is exactly what it was.
+    reads all seven itself, so a single-page call is exactly what it was.
     """
     ref = norm_ref(ref)
     _require(ref, root)
     ocr, _ = _inputs(ref, root)
 
+    # Hoisted above `page_blocks` rather than beside its five siblings below,
+    # because the join now reads one of them: the seventh store decides which of
+    # this page's line-end hyphens the corpus can account for.
+    sh = shared if shared is not None else stores(root)
+
     running = _running_title(page_lines(ocr, root, ref=ref), ref, root)
-    blocks = page_blocks(ref, root)
+    blocks, hyphens = page_blocks(ref, root, sh)
     bands = [b for b, _ in blocks[:-1]]
     buckets = [rows for _, rows in blocks]
 
@@ -908,12 +943,19 @@ def build(ref: str, root: Path = Path("."),
 
     # The printed resolution table among them: `(name, volume, short title)` →
     # work, which is what the List of Authorities Quoted *is*, beside the names
-    # the figure guard reads out of the same store. All six were loaded here per
+    # the figure guard reads out of the same store. All seven were loaded here per
     # page until a sweep's profile put `entities.load` alone at 68% of the run.
-    sh = shared if shared is not None else stores(root)
     store, ents, autos = sh.store, sh.ents, sh.autos
     cited, sigla = sh.cited, sh.sigla
     pending: list[dict] = []          # candidates, to be commented after the block
+    # **The hyphens the corpus could not account for, and the lines already set.**
+    # A verdict is commented after the block its line sits in, which is where a
+    # reader will be looking; `rendered` is the only thing that knows a line has
+    # been placed, so it records that and `flush_candidates` spends it. Whatever
+    # no block claimed goes at the foot rather than being dropped — a question
+    # nobody is shown is the same as no question.
+    hyph_open = [v for v in hyphens if v["verdict"] == "open"]
+    placed: set[int] = set()
     # **Which `once` forms this page has already spent its link on.** Page-scoped
     # because the convention is, and mutable across `rendered` calls because a
     # block is not the unit. That makes placement order-dependent, which is safe
@@ -934,6 +976,7 @@ def build(ref: str, root: Path = Path("."),
         """
         if not rows:
             return ""
+        placed.update(ln for ln, _ in rows)
         texts = [t for _, t in rows]
         offsets, at = [], 0
         for t in texts:
@@ -957,7 +1000,18 @@ def build(ref: str, root: Path = Path("."),
            "handles": 0, "links": 0, "figrefs": 0, "candidates": 0,
            "outside_zones": 0, "unknown_labels": "",
            "figures": 0, "notes_anchored": 0, "noterefs": 0,
-           "milestones": 0, "milestones_missing": 0}
+           "milestones": 0, "milestones_missing": 0,
+           "hyphens_closed": 0, "hyphens_open": 0}
+    # Counted off the verdicts and not off the comments below, because the two
+    # answer different questions and only one of them is about this page: a
+    # closed hyphen leaves no mark in the file at all, which is the point of
+    # closing it, and a page reporting `0/0` has to be readable as "no word broke
+    # here" rather than as "the rule did not run".
+    for v in hyphens:
+        if v["verdict"] == "joined":
+            rep["hyphens_closed"] += 1
+        elif v["verdict"] == "open":
+            rep["hyphens_open"] += 1
 
     def flush_candidates() -> None:
         """One comment per distinct unlinked alias, after the block it sits in.
@@ -1028,6 +1082,44 @@ def build(ref: str, root: Path = Path("."),
             body.append(f'      <!-- entity candidate: {escape(shown)!r} '
                         f'— {say} -->')
         pending.clear()
+        flush_hyphens(lambda v: v["line"] in placed)
+
+    def flush_hyphens(take) -> None:
+        """One comment per line-end hyphen the corpus could not account for.
+
+        The two silences are different and are said differently. *Both* spellings
+        attested is a page the reader has to settle — `spring-time` 6 mid-line
+        against `springtime` 6, and no arithmetic breaks that tie. *Neither*
+        attested is a form the book sets once, here, and the counts are the
+        honest report of why the rule declined rather than a hedge.
+
+        Both name their counts, because the alternative is a comment that says
+        "ambiguous" and leaves the reader to redo the measurement to find out how
+        ambiguous. A verdict of `kept` gets no comment: the rule wrote nothing,
+        the hyphen the reader meets is the one the compositor set, and the corpus
+        agrees with it.
+        """
+        for v in [h for h in hyph_open if take(h)]:
+            # The edge punctuation the token was cut with is stripped for the
+            # quote, because it is not part of the question and a comment reading
+            # `'“nose-plumage]).'` asks the reader to find the word inside it.
+            # The *counts* were taken off the stripped form too — `_fold` is what
+            # the index is keyed by — so the comment quotes what was measured.
+            v = v | {"token": v["token"].strip(EDGE_PUNCT),
+                     "resolved": v["resolved"].strip(EDGE_PUNCT)}
+            if v["joined"] and v["hyphenated"]:
+                say = (f'the corpus sets both away from a line end — '
+                       f'{v["hyphenated"]}× {escape(v["token"])!r} against '
+                       f'{v["joined"]}× {escape(v["resolved"])!r} — so nothing '
+                       f'mechanical decides this one. Read the page and close '
+                       f'the hyphen or leave it')
+            else:
+                say = (f'the corpus sets neither {escape(v["token"])!r} nor '
+                       f'{escape(v["resolved"])!r} away from a line end, so no '
+                       f'page witnesses the spelling. Read this one, and close '
+                       f'the hyphen or leave it')
+            body.append(f'      <!-- line-end hyphen, line {v["line"]}: {say} -->')
+        hyph_open[:] = [h for h in hyph_open if not take(h)]
 
     folio = (running or {}).get("folio")
     rep["folio"] = folio
@@ -1419,6 +1511,11 @@ def build(ref: str, root: Path = Path("."),
             body.append(f'      <p>{rendered(rows)}</p>')
             flush_candidates()
 
+    # Whatever no block claimed — a line the apparatus path set, or one dropped
+    # between the two. `lambda _: True` rather than a second condition, because
+    # the only thing left to say about these is that they are left.
+    flush_hyphens(lambda _: True)
+
     rep["unknown_labels"] = ",".join(sorted(unknown))
     # Counted off the emitted markup rather than tallied as it is built: what the
     # file actually carries is the thing a reviewer meets, and a counter kept
@@ -1646,4 +1743,5 @@ def skipped(ref: str, why: str = "") -> dict:
             "outside_zones": 0, "unknown_labels": "",
             "figures": 0, "notes_anchored": 0, "noterefs": 0,
             "milestones": 0, "milestones_missing": 0,
+            "hyphens_closed": 0, "hyphens_open": 0,
             "written": False, "why": why}
