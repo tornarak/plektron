@@ -99,9 +99,22 @@ def test_a_semicolon_still_ends_a_run_before_anything_but_a_numeral():
 
 def test_the_semicolon_is_the_figure_run_s_alone():
     """`I` is a roman numeral, so a semicolon in the plate loop would read a
-    second plate out of a pronoun. Nothing in the corpus separates two plates
-    with one, and the licence stays as narrow as its evidence."""
+    second plate out of a pronoun. A plate run continues past one only where
+    a `, Fig.` follows the roman, and the licence stays as narrow as that."""
     assert _printed("(Plate II; I have seen it)") == ["plate::II"]
+
+
+def test_a_plate_run_continues_past_its_figure():
+    """`1-301` sets `Plates XXIII, Fig. 1; XXIV, Fig. 2; also Fig. 168`: two
+    plates, each with its own picture, then a text figure. The semicolon still
+    ends each plate's scope — `Fig. 2` is XXIV's and `168` is nobody's — but
+    reading only the first plate left `XXIV` plain and its figure unscoped,
+    which is a link to text-figure 2."""
+    assert _printed("(Plates XXIII, Fig. 1; XXIV, Fig. 2; also Fig. 168)") == [
+        "plate::XXIII", "figure:XXIII:1", "plate::XXIV", "figure:XXIV:2",
+        "figure::168"]
+    assert _printed("(Plates X, Fig. 4; XI, Fig. 1).") == [
+        "plate::X", "figure:X:4", "plate::XI", "figure:XI:1"]
 
 
 def test_a_range_names_the_numerals_it_prints():
@@ -167,6 +180,31 @@ def test_a_possessive_is_the_word_that_says_whose_figure_it_is():
     assert figrefs.foreign_citation("with Kroeber’s ", NAMES | {"Kroeber"}) \
         == "Kroeber"
     assert figrefs.foreign_citation("with Nelson's ", NAMES) == "Nelson"
+
+
+def test_ibid_is_somebody_else_s_book():
+    """`1-277` prints `¹ Nelson, Fig. 32, p. 116.` and under it `² Ibid., Fig.
+    33, p. 117.` — Nelson's Fig. 33, and it was linked to this book's. `Ibid.`
+    never points at this book, which cites itself with `See p.`, so the word
+    stands where a name would and takes the same furniture — including a page
+    locator, which `2-069` sets before the figure: `Ibid., p. 325, Fig. 115`."""
+    assert figrefs.foreign_citation("² Ibid., ", NAMES) == "Ibid."
+    assert figrefs.foreign_citation("² Ibid., p. 325, ", NAMES) == "Ibid."
+    assert figrefs.foreign_citation("³ Ibid., Plate XLV, ", NAMES) == "Ibid."
+    assert figrefs.foreign_citation("Ibid, ", NAMES) == "Ibid."
+
+
+def test_a_run_s_later_members_are_the_same_author_s():
+    """The guard is asked once per numeral. For the `4` of `Ibid., Plate
+    XLVIII, Figs. 3, 4` (1-285) and the `29` of `Murdoch, Eskimo Bows, Plate X,
+    Fig. 27; Plate XI, Figs. 28, 29` (1-195), what stands between the name and
+    the span is the references before it — furniture of the same citation,
+    not prose that ends it."""
+    assert figrefs.foreign_citation(
+        "⁴ Ibid., Plate XLVIII, Figs. 3, ", NAMES) == "Ibid."
+    assert figrefs.foreign_citation(
+        "¹ Murdoch, Eskimo Bows, Plate X, Fig. 27; Plate XI, Figs. 28, ",
+        NAMES | {"Murdoch"}) == "Murdoch"
 
 
 def test_a_sentence_ends_the_citation():

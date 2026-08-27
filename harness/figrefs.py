@@ -178,6 +178,19 @@ _FIG_SEP = re.compile(r"\s*(?:[,;]|and|&|[-–—])\s*")
 #: number of the same value are different pictures.
 _ATTACHED = re.compile(r"^[\s,(]*$")
 
+#: A plate run that continues past its figure: `Plates XXIII, Fig. 1; XXIV,
+#: Fig. 2` (1-301), `Plates XXXI, Fig. 2; XXVII, Fig. 4` (1-323), `Plates X,
+#: Fig. 4; XI, Fig. 1` (1-170). The semicolon is what ends a plate's *scope*,
+#: and it still does — each figure hangs off the roman just before it — but
+#: here it also separates two members of one plate run, and reading only the
+#: first left `XXIV` plain and its `Fig. 2` scoped to nothing.
+#:
+#: **The licence is the `, Fig.` after the roman**, which is what the three
+#: attestations share and what a pronoun cannot have: `Plate II; I have seen`
+#: still ends at the plate. The figure run is skipped over here and read by
+#: the figure loop, which finds the roman before it the ordinary way.
+_PLATE_CONT = re.compile(r",\s*Figs?\.[^;)]*;\s*(?=[IVXLC]+\b\s*,\s*Figs?\.)")
+
 
 #: One page in a locator's run. No locants — a folio has no sub-parts — and no
 #: roman, this index being the arabic folio `apparatus.folio_index` is keyed by.
@@ -212,7 +225,10 @@ def scan(text: str) -> list[dict]:
                         "number": r.group(1), "plate": ""})
             plates.append((r.start(1), r.end(1), r.group(1)))
             pos = r.end()
-            if (s := _SEP.match(text, pos)) is None:
+            # The continuation first: `_SEP` takes the comma of `, Fig.` and
+            # then finds no roman, which is how the run used to end there.
+            if (s := _PLATE_CONT.match(text, pos)) is None \
+                    and (s := _SEP.match(text, pos)) is None:
                 break
             pos = s.end()
 
@@ -374,6 +390,15 @@ def foreign_citation(before: str, names: set[str]) -> str:
     if not names:
         return ""
     tail = before[-160:]
+    # `Ibid.` names the work cited last, and in this book that is never this
+    # book: Bogoras points at his own pages with `See p.` and `Compare p.`,
+    # and every one of the 24 printed `Ibid.` closes a run of footnotes to
+    # somebody else. Four of them carry a figure or plate number — `Ibid., Fig.
+    # 33, p. 117` (1-277) is Nelson's Fig. 33, and it was linked to this book's
+    # until a reader noticed. The word is its own head, standing where the name
+    # would, so it takes the same furniture the name does.
+    if _IBID.search(tail):
+        return "Ibid."
     for name in names:
         for m in re.finditer(rf"(?:^|[^\w]){re.escape(name)}\b", tail):
             rest = tail[m.end():]
@@ -383,13 +408,33 @@ def foreign_citation(before: str, names: set[str]) -> str:
             # where somebody could see it.
             if rest[:2] in ("’s", "'s"):
                 rest = rest[2:]
-            if re.fullmatch(
-                r"[\s,.]*(?:(?:in|op\.\s*cit\.|l\.\s*c\.)[\s,]*"
-                r"|[A-Z][\w’']*[\s,.]*|[(\[])*",
-                rest,
-            ):
+            if re.fullmatch(_FURNITURE, rest):
                 return name
     return ""
+
+
+#: What may stand between a citing name and the reference it governs: citation
+#: punctuation, `in`, `op. cit.`, a capitalized short title, an opening bracket,
+#: and **a page locator** — `Ibid., p. 325, Fig. 115` (2-069) is Nelson's
+#: figure with his page in front of it, and the locator is furniture of the
+#: same kind as the short title. A lower-case word that is not one of these
+#: ends the citation, which is what keeps a sentence's worth of prose out.
+#:
+#: **A reference already governed is furniture for the next one.** `Ibid.,
+#: Plate XLVIII, Figs. 3, 4` (1-285) and `Murdoch, Eskimo Bows, Plate X, Fig.
+#: 27; Plate XI, Figs. 28, 29` (1-195) cite one work throughout, and the guard
+#: is asked once per numeral: for the `4` and the `29` what stands between the
+#: name and the span is the plate and the figures before them. Without this
+#: the first member of every run printed plain and the rest linked to this
+#: book — the exact failure the guard exists for, one numeral later.
+_FURNITURE = (
+    r"[\s,.]*(?:(?:in|op\.\s*cit\.|l\.\s*c\.|pp?\.\s*\d+)[\s,]*"
+    r"|Plates?\.?\s+[IVXLC]+[\s,;]*|Figs?\.\s*\d+" + _LOCANTS + r"[\s,;]*"
+    r"|[A-Z][\w’']*[\s,.]*|[(\[])*")
+
+#: `Ibid.` at the head of what precedes a reference, with only furniture
+#: between. `Ibid` and `Ibid.` both, since `2-004` prints it without the stop.
+_IBID = re.compile(r"(?:^|[^\w])Ibid\.?" + _FURNITURE + r"\Z")
 
 
 def resolve(span: dict, by_number: dict, by_plate: dict,
