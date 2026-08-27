@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="QuireMarksZone"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_3-193_r1" HPOS="417" VPOS="469" WIDTH="1782" HEIGHT="93" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="417 469 2199 469 2199 562 417 562"/>
-                    </Shape>
-                    <TextLine ID="mz_3-193_l1" HPOS="989" VPOS="480" WIDTH="616" HEIGHT="53" BASELINE="991 511 1605 517" TAGREFS="TYPE_5">
+                <TextBlock ID="text_3-193" HPOS="413" VPOS="480" WIDTH="1785" HEIGHT="2699"><TextLine ID="mz_3-193_l1" HPOS="989" VPOS="480" WIDTH="616" HEIGHT="53" BASELINE="991 511 1605 517" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1596 494 1584 482 1007 480 991 507 991 511 989 527 1601 533 1605 517 1601 500 1596 494"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="725"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-193_r2" HPOS="417" VPOS="578" WIDTH="1782" HEIGHT="485" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="417 578 2199 578 2199 1063 417 1063"/>
-                    </Shape>
-                    <TextLine ID="mz_3-193_l3" HPOS="413" VPOS="580" WIDTH="1771" HEIGHT="58" BASELINE="415 624 2184 620" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-193_l3" HPOS="413" VPOS="580" WIDTH="1771" HEIGHT="58" BASELINE="415 624 2184 620" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="510 585 491 587 471 589 452 589 432 591 413 591 413 591 415 624 415 638 2182 636 2184 620 2176 580 2141 589 1219 581 1218 581 1216 581 1214 581 1200 591 1138 581 1136 581 1134 581 1106 591 945 581 943 581 892 591 859 581 857 581 855 581 853 581 828 591 765 581 763 581 761 581 760 581 746 591 662 581 660 581 658 581 635 591 514 585 510 585"/>
                         </Shape>
@@ -111,12 +98,7 @@
                         </Shape>
                         <String CONTENT="ever lived there."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-193_r3" HPOS="417" VPOS="1063" WIDTH="1782" HEIGHT="969" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="417 1063 2199 1063 2199 2032 417 2032"/>
-                    </Shape>
-                    <TextLine ID="mz_3-193_l11" HPOS="528" VPOS="1065" WIDTH="1658" HEIGHT="54" BASELINE="530 1104 2186 1100" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-193_l11" HPOS="528" VPOS="1065" WIDTH="1658" HEIGHT="54" BASELINE="530 1104 2186 1100" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="530 1104 530 1119 2184 1119 2186 1100 2180 1065 528 1065 530 1104"/>
                         </Shape>
@@ -227,12 +209,7 @@
                         </Shape>
                         <String CONTENT="the tundra, in one of the outlying Yakut settlements."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-193_r4" HPOS="417" VPOS="2032" WIDTH="1782" HEIGHT="598" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="417 2032 2199 2032 2199 2630 417 2630"/>
-                    </Shape>
-                    <TextLine ID="mz_3-193_l27" HPOS="531" VPOS="2024" WIDTH="1661" HEIGHT="54" BASELINE="533 2063 2192 2059" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-193_l27" HPOS="531" VPOS="2024" WIDTH="1661" HEIGHT="54" BASELINE="533 2063 2192 2059" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="533 2063 533 2078 2190 2074 2192 2059 2188 2031 549 2024 547 2024 545 2024 543 2024 531 2029 533 2063"/>
                         </Shape>
@@ -301,12 +278,7 @@
                         </Shape>
                         <String CONTENT="to the Chukchee."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-193_r5" HPOS="417" VPOS="2630" WIDTH="1782" HEIGHT="482" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="417 2630 2199 2630 2199 3112 417 3112"/>
-                    </Shape>
-                    <TextLine ID="mz_3-193_l37" HPOS="533" VPOS="2620" WIDTH="1661" HEIGHT="57" BASELINE="535 2663 2194 2659" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-193_l37" HPOS="533" VPOS="2620" WIDTH="1661" HEIGHT="57" BASELINE="535 2663 2194 2659" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="535 2663 535 2677 2192 2677 2194 2659 2190 2632 2089 2620 2005 2620 2003 2620 2001 2620 1999 2620 1987 2630 1946 2620 1944 2620 1943 2620 1841 2630 1732 2620 1730 2620 1666 2630 1623 2620 1621 2620 1619 2620 1553 2630 1436 2620 1434 2620 1432 2620 1395 2630 1270 2622 1268 2622 1266 2622 1247 2632 1198 2622 1196 2622 1194 2622 1157 2632 937 2622 935 2622 882 2634 761 2634 746 2622 744 2622 742 2622 740 2622 533 2628 535 2663"/>
                         </Shape>
@@ -361,19 +333,13 @@
                         </Shape>
                         <String CONTENT="anti-Yakut parish, I do not know whether purposely or not. After a few"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-193_r6" HPOS="417" VPOS="3135" WIDTH="1782" HEIGHT="62" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="417 3135 2199 3135 2199 3197 417 3197"/>
-                    </Shape>
-                    <TextLine ID="mz_3-193_l45" HPOS="426" VPOS="3135" WIDTH="694" HEIGHT="44" BASELINE="428 3166 1120 3160" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-193_l45" HPOS="426" VPOS="3135" WIDTH="694" HEIGHT="44" BASELINE="428 3166 1120 3160" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="428 3166 428 3179 1120 3173 1120 3160 1114 3135 426 3138 428 3166"/>
                         </Shape>
                         <String CONTENT="91—JESUP NORTH PACIFIC EXPED., VOL. VII."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-Other"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-046_r1" HPOS="572" VPOS="608" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="572 608 2350 608 2350 698 572 698"/>
-                    </Shape>
-                    <TextLine ID="mz_1-046_l1" HPOS="1148" VPOS="625" WIDTH="615" HEIGHT="54" BASELINE="1150 658 1763 662" TAGREFS="TYPE_5">
+                <TextBlock ID="text_1-046" HPOS="568" VPOS="621" WIDTH="1780" HEIGHT="2643"><TextLine ID="mz_1-046_l1" HPOS="1148" VPOS="625" WIDTH="615" HEIGHT="54" BASELINE="1150 658 1763 662" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1756 630 1744 625 1170 625 1152 640 1150 658 1148 675 1759 679 1763 662 1761 658 1756 630"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="26"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-046_r2" HPOS="572" VPOS="723" WIDTH="1778" HEIGHT="129" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="572 723 2350 723 2350 852 572 852"/>
-                    </Shape>
-                    <TextLine ID="mz_1-046_l3" HPOS="568" VPOS="738" WIDTH="1773" HEIGHT="52" BASELINE="570 773 2341 768" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-046_l3" HPOS="568" VPOS="738" WIDTH="1773" HEIGHT="52" BASELINE="570 773 2341 768" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="570 773 570 790 2339 786 2341 768 2326 738 568 738 570 773"/>
                         </Shape>
@@ -69,23 +56,13 @@
                         </Shape>
                         <String CONTENT="the season running."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-046_r3" HPOS="572" VPOS="852" WIDTH="1778" HEIGHT="65" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="572 852 2350 852 2350 917 572 917"/>
-                    </Shape>
-                    <TextLine ID="mz_1-046_l5" HPOS="678" VPOS="846" WIDTH="1243" HEIGHT="61" BASELINE="680 892 1921 887" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-046_l5" HPOS="678" VPOS="846" WIDTH="1243" HEIGHT="61" BASELINE="680 892 1921 887" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="680 892 680 907 1919 902 1921 887 1917 859 1661 846 1659 846 1657 846 1655 846 1655 848 1644 859 1419 859 1391 846 1388 846 1386 846 1384 846 1382 846 1367 857 1297 846 1295 846 1293 846 1245 859 1163 848 1161 848 678 857 680 892"/>
                         </Shape>
                         <String CONTENT="The groups of Reindeer Chukchee are as follows: —"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-046_r4" HPOS="572" VPOS="939" WIDTH="1778" HEIGHT="2343" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="572 939 2350 939 2350 3282 572 3282"/>
-                    </Shape>
-                    <TextLine ID="mz_1-046_l6" HPOS="570" VPOS="959" WIDTH="1771" HEIGHT="47" BASELINE="572 989 2341 985" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-046_l6" HPOS="570" VPOS="959" WIDTH="1771" HEIGHT="47" BASELINE="572 989 2341 985" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="2324 959 570 961 572 989 572 1006 2339 1002 2341 985 2335 959 2324 959"/>
                         </Shape>
@@ -399,8 +376,7 @@
                         </Shape>
                         <String CONTENT="Big River), and farther on along the Koryak border, including those scattered on the Parapolsky"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

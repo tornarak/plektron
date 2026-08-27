@@ -23,20 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_3-175_r1" HPOS="359" VPOS="469" WIDTH="1782" HEIGHT="93" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="359 469 2141 469 2141 562 359 562"/>
-                    </Shape>
-                    <TextLine ID="mz_3-175_l1" HPOS="925" VPOS="488" WIDTH="620" HEIGHT="49" BASELINE="925 521 1545 521" TAGREFS="TYPE_3">
+                <TextBlock ID="text_3-175" HPOS="350" VPOS="488" WIDTH="1778" HEIGHT="2609"><TextLine ID="mz_3-175_l1" HPOS="925" VPOS="488" WIDTH="620" HEIGHT="49" BASELINE="925 521 1545 521" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="1533 488 941 488 927 511 925 521 925 537 1545 537 1545 521 1545 496 1533 488"/>
                         </Shape>
@@ -49,12 +43,7 @@
                         </Shape>
                         <String CONTENT="707"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-175_r2" HPOS="359" VPOS="594" WIDTH="1782" HEIGHT="1137" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="359 594 2141 594 2141 1731 359 1731"/>
-                    </Shape>
-                    <TextLine ID="mz_3-175_l3" HPOS="455" VPOS="583" WIDTH="1667" HEIGHT="59" BASELINE="457 628 2122 624" TAGREFS="TYPE_3">
+<TextLine ID="mz_3-175_l3" HPOS="455" VPOS="583" WIDTH="1667" HEIGHT="59" BASELINE="457 628 2122 624" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="457 628 457 640 2118 642 2122 624 2118 597 2003 597 1962 583 1960 583 1958 583 1956 583 1954 583 1937 597 1804 597 1787 585 1785 585 1783 585 1781 585 1779 585 1755 595 1740 583 1738 583 1736 583 1648 583 1646 583 1644 583 1601 595 1512 583 1510 583 1508 583 1506 583 1490 595 1461 583 1459 583 1457 583 1340 595 1297 583 1295 583 1294 583 1235 595 1171 585 1169 585 1167 585 1165 585 1149 597 1060 585 1058 585 1056 585 1027 595 935 585 933 585 931 585 886 597 834 585 832 585 830 585 828 585 808 597 775 585 773 585 771 585 701 597 641 585 639 585 637 585 635 585 615 597 479 585 477 585 475 585 473 585 455 595 457 628"/>
                         </Shape>
@@ -186,12 +175,7 @@
                         </Shape>
                         <String CONTENT="were more primitive."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-175_r3" HPOS="359" VPOS="1731" WIDTH="1782" HEIGHT="1381" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="359 1731 2141 1731 2141 3112 359 3112"/>
-                    </Shape>
-                    <TextLine ID="mz_3-175_l22" HPOS="463" VPOS="1722" WIDTH="1663" HEIGHT="60" BASELINE="465 1766 2126 1761" TAGREFS="TYPE_3">
+<TextLine ID="mz_3-175_l22" HPOS="463" VPOS="1722" WIDTH="1663" HEIGHT="60" BASELINE="465 1766 2126 1761" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="465 1766 465 1782 2124 1780 2126 1761 2122 1733 1921 1722 1919 1722 1917 1722 1915 1722 1900 1733 1744 1733 1713 1722 1711 1722 1709 1722 1660 1731 1633 1722 1631 1722 1629 1722 1551 1735 1418 1735 1405 1724 1403 1724 1401 1724 1399 1724 1397 1724 1366 1733 1235 1724 1233 1724 1231 1724 1190 1733 1138 1724 1136 1724 997 1735 982 1725 980 1725 978 1725 976 1725 892 1735 841 1725 839 1725 748 1735 722 1725 721 1725 719 1725 463 1731 465 1766"/>
                         </Shape>
@@ -351,8 +335,7 @@
                         </Shape>
                         <String CONTENT="for the tribute of skins, one ruble for every single skin. This standard is"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

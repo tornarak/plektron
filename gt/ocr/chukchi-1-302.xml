@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-302_r1" HPOS="612" VPOS="591" WIDTH="1778" HEIGHT="95" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="612 591 2390 591 2390 686 612 686"/>
-                    </Shape>
-                    <TextLine ID="mz_1-302_l1" HPOS="1187" VPOS="604" WIDTH="619" HEIGHT="56" BASELINE="1189 638 1806 643" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-302" HPOS="602" VPOS="604" WIDTH="1783" HEIGHT="2626"><TextLine ID="mz_1-302_l1" HPOS="1187" VPOS="604" WIDTH="619" HEIGHT="56" BASELINE="1189 638 1806 643" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1795 612 1785 606 1198 604 1189 608 1189 638 1187 656 1802 660 1806 643 1804 632 1795 612"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="236"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-302_r2" HPOS="612" VPOS="704" WIDTH="1778" HEIGHT="190" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="612 704 2390 704 2390 894 612 894"/>
-                    </Shape>
-                    <TextLine ID="mz_1-302_l3" HPOS="609" VPOS="705" WIDTH="1771" HEIGHT="63" BASELINE="611 751 2380 747" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-302_l3" HPOS="609" VPOS="705" WIDTH="1771" HEIGHT="63" BASELINE="611 751 2380 747" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="611 751 611 768 2378 768 2380 747 2376 716 1544 705 1542 705 1449 716 700 708 697 708 609 718 611 751"/>
                         </Shape>
@@ -75,12 +63,7 @@
                         </Shape>
                         <String CONTENT="hair thinned out, so that it offers appreciably less protection from the cold."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-302_r3" HPOS="612" VPOS="894" WIDTH="1778" HEIGHT="545" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="612 894 2390 894 2390 1439 612 1439"/>
-                    </Shape>
-                    <TextLine ID="mz_1-302_l6" HPOS="719" VPOS="892" WIDTH="1663" HEIGHT="54" BASELINE="721 928 2382 933" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-302_l6" HPOS="719" VPOS="892" WIDTH="1663" HEIGHT="54" BASELINE="721 928 2382 933" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="721 928 719 941 2378 946 2382 933 2380 900 721 892 721 928"/>
                         </Shape>
@@ -142,12 +125,7 @@
                         </Shape>
                         <String CONTENT="Eskimo on both shores of Bering Sea."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-302_r4" HPOS="612" VPOS="1439" WIDTH="1778" HEIGHT="481" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="612 1439 2390 1439 2390 1920 612 1920"/>
-                    </Shape>
-                    <TextLine ID="mz_1-302_l15" HPOS="719" VPOS="1426" WIDTH="1666" HEIGHT="61" BASELINE="719 1470 2385 1470" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-302_l15" HPOS="719" VPOS="1426" WIDTH="1666" HEIGHT="61" BASELINE="719 1470 2385 1470" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="719 1470 719 1487 2385 1487 2385 1470 2385 1439 2328 1426 2326 1426 2324 1426 2298 1437 2285 1426 2283 1426 2281 1426 2278 1426 2276 1426 2239 1437 2170 1426 2168 1426 2101 1437 2027 1426 2025 1426 2023 1426 2001 1437 1934 1426 1932 1426 1930 1426 1904 1437 1826 1426 1824 1426 1821 1426 1795 1437 1722 1426 1720 1426 1644 1437 1562 1426 1559 1426 1557 1426 1529 1437 1514 1426 1512 1426 1510 1426 1507 1426 1440 1437 1343 1426 1341 1426 1291 1437 1250 1426 1248 1426 1245 1426 1243 1426 1217 1437 1180 1426 1178 1426 1176 1426 1118 1437 1057 1426 1055 1426 1053 1426 1022 1437 994 1426 992 1426 990 1426 912 1437 890 1426 888 1426 886 1426 719 1431 719 1470"/>
                         </Shape>
@@ -202,12 +180,7 @@
                         </Shape>
                         <String CONTENT="Koryak, is the absence of this lower strip."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-302_r5" HPOS="612" VPOS="1920" WIDTH="1778" HEIGHT="769" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="612 1920 2390 1920 2390 2689 612 2689"/>
-                    </Shape>
-                    <TextLine ID="mz_1-302_l23" HPOS="717" VPOS="1905" WIDTH="1663" HEIGHT="58" BASELINE="719 1950 2380 1946" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-302_l23" HPOS="717" VPOS="1905" WIDTH="1663" HEIGHT="58" BASELINE="719 1950 2380 1946" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="719 1950 719 1963 2378 1959 2380 1946 2378 1918 2328 1905 2326 1905 2324 1905 2322 1905 2294 1918 2047 1918 2032 1905 2029 1905 2027 1905 2025 1905 2023 1905 2001 1916 1876 1905 1754 1905 1752 1905 1750 1905 1748 1905 1731 1916 1590 1907 1588 1907 1585 1907 1546 1918 1531 1907 1529 1907 1527 1907 1525 1907 1445 1918 1341 1907 1339 1907 1336 1907 1334 1907 1321 1918 1271 1907 1269 1907 1204 1918 1137 1907 1135 1907 1027 1918 717 1911 719 1950"/>
                         </Shape>
@@ -297,12 +270,7 @@
                         </Shape>
                         <String CONTENT="snow just like an animal after sleeping in the open."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-302_r6" HPOS="612" VPOS="2689" WIDTH="1778" HEIGHT="485" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="612 2689 2390 2689 2390 3174 612 3174"/>
-                    </Shape>
-                    <TextLine ID="mz_1-302_l36" HPOS="715" VPOS="2691" WIDTH="1661" HEIGHT="52" BASELINE="717 2725 2376 2721" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-302_l36" HPOS="715" VPOS="2691" WIDTH="1661" HEIGHT="52" BASELINE="717 2725 2376 2721" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="717 2725 717 2743 2374 2738 2376 2721 2372 2693 715 2691 717 2725"/>
                         </Shape>
@@ -357,19 +325,13 @@
                         </Shape>
                         <String CONTENT="like heavy overcoats than mere shirts."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-302_r7" HPOS="612" VPOS="3174" WIDTH="1778" HEIGHT="59" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="612 3174 2390 3174 2390 3233 612 3233"/>
-                    </Shape>
-                    <TextLine ID="mz_1-302_l44" HPOS="713" VPOS="3161" WIDTH="1661" HEIGHT="69" BASELINE="715 3202 2374 3206" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-302_l44" HPOS="713" VPOS="3161" WIDTH="1661" HEIGHT="69" BASELINE="715 3202 2374 3206" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="715 3202 713 3219 730 3230 732 3230 734 3230 736 3230 2372 3221 2374 3206 2374 3174 2359 3163 2356 3163 2354 3163 2352 3163 2231 3174 2161 3163 2159 3163 2099 3174 2040 3163 2038 3163 2036 3163 1999 3174 1962 3163 1960 3163 1958 3163 1865 3174 1813 3163 1720 3163 1718 3163 1715 3163 1713 3163 1700 3174 1644 3163 1642 3163 1640 3163 1611 3174 1427 3174 1414 3161 1412 3161 1410 3161 1408 3161 1321 3171 1254 3161 1252 3161 1178 3171 715 3165 715 3202"/>
                         </Shape>
                         <String CONTENT="The outer trousers (Fig. 169) are made chiefly of the leg-skins of the"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

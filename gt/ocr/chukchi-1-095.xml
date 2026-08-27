@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-095_r1" HPOS="363" VPOS="579" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="363 579 2141 579 2141 669 363 669"/>
-                    </Shape>
-                    <TextLine ID="mz_1-095_l1" HPOS="936" VPOS="597" WIDTH="617" HEIGHT="56" BASELINE="938 632 1553 636" TAGREFS="TYPE_5">
+                <TextBlock ID="text_1-095" HPOS="362" VPOS="597" WIDTH="1773" HEIGHT="1100"><TextLine ID="mz_1-095_l1" HPOS="936" VPOS="597" WIDTH="617" HEIGHT="56" BASELINE="938 632 1553 636" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="938 632 936 651 1549 653 1553 636 1544 599 938 597 938 632"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="69"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-095_r2" HPOS="363" VPOS="694" WIDTH="1778" HEIGHT="372" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="363 694 2141 694 2141 1066 363 1066"/>
-                    </Shape>
-                    <TextLine ID="mz_1-095_l3" HPOS="362" VPOS="701" WIDTH="1773" HEIGHT="61" BASELINE="364 744 2135 740" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-095_l3" HPOS="362" VPOS="701" WIDTH="1773" HEIGHT="61" BASELINE="364 744 2135 740" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="2008 703 1986 703 1964 703 1943 703 1921 703 1899 703 1878 703 1856 703 1834 703 1813 703 1791 703 1769 703 1761 701 1178 701 1176 701 1174 701 1128 712 1033 701 1031 701 970 712 819 701 817 701 814 701 780 712 700 703 687 703 665 705 643 705 622 708 615 708 576 712 555 710 535 712 513 712 492 712 470 714 448 714 427 716 405 716 383 718 362 718 364 744 364 762 2133 757 2135 740 2131 703 2008 701 2008 703"/>
                         </Shape>
@@ -97,12 +84,7 @@
                         </Shape>
                         <String CONTENT="As stated before, this trade is carried on chiefly with the Eskimo.¹"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-095_r3" HPOS="363" VPOS="1066" WIDTH="1778" HEIGHT="426" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="363 1066 2141 1066 2141 1492 363 1492"/>
-                    </Shape>
-                    <TextLine ID="mz_1-095_l9" HPOS="477" VPOS="1065" WIDTH="1658" HEIGHT="56" BASELINE="477 1104 2135 1104" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-095_l9" HPOS="477" VPOS="1065" WIDTH="1658" HEIGHT="56" BASELINE="477 1104 2135 1104" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="477 1104 477 1121 2135 1121 2135 1104 2135 1073 477 1065 477 1104"/>
                         </Shape>
@@ -150,12 +132,7 @@
                         </Shape>
                         <String CONTENT="only approximate."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-095_r4" HPOS="363" VPOS="1522" WIDTH="1778" HEIGHT="189" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="363 1522 2141 1522 2141 1711 363 1711"/>
-                    </Shape>
-                    <TextLine ID="mz_1-095_l16" HPOS="477" VPOS="1524" WIDTH="1656" HEIGHT="45" BASELINE="477 1550 2133 1550" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-095_l16" HPOS="477" VPOS="1524" WIDTH="1656" HEIGHT="45" BASELINE="477 1550 2133 1550" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="477 1550 477 1569 2133 1569 2133 1550 2133 1524 477 1524 477 1550"/>
                         </Shape>
@@ -182,8 +159,7 @@
                         </Shape>
                         <String CONTENT="take a more active share in trading with whalers than those on the Pacific."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

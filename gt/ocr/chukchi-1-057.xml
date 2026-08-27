@@ -23,20 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-057_r1" HPOS="365" VPOS="606" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="365 606 2143 606 2143 696 365 696"/>
-                    </Shape>
-                    <TextLine ID="mz_1-057_l1" HPOS="940" VPOS="619" WIDTH="619" HEIGHT="52" BASELINE="942 653 1559 651" TAGREFS="TYPE_3">
+                <TextBlock ID="text_1-057" HPOS="360" VPOS="619" WIDTH="1782" HEIGHT="2632"><TextLine ID="mz_1-057_l1" HPOS="940" VPOS="619" WIDTH="619" HEIGHT="52" BASELINE="942 653 1559 651" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="1546 619 940 619 942 653 942 671 1557 669 1559 651 1553 625 1546 619"/>
                         </Shape>
@@ -49,12 +43,7 @@
                         </Shape>
                         <String CONTENT="35"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-057_r2" HPOS="365" VPOS="721" WIDTH="1778" HEIGHT="608" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="365 721 2143 721 2143 1329 365 1329"/>
-                    </Shape>
-                    <TextLine ID="mz_1-057_l3" HPOS="470" VPOS="731" WIDTH="1665" HEIGHT="48" BASELINE="470 764 2135 764" TAGREFS="TYPE_3">
+<TextLine ID="mz_1-057_l3" HPOS="470" VPOS="731" WIDTH="1665" HEIGHT="48" BASELINE="470 764 2135 764" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="470 764 470 779 2135 779 2135 764 2135 731 470 731 470 764"/>
                         </Shape>
@@ -123,12 +112,7 @@
                         </Shape>
                         <String CONTENT="still less so under the conditions of nomad arctic life."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-057_r3" HPOS="365" VPOS="1332" WIDTH="1778" HEIGHT="534" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="365 1332 2143 1332 2143 1866 365 1866"/>
-                    </Shape>
-                    <TextLine ID="mz_1-057_l13" HPOS="466" VPOS="1327" WIDTH="1669" HEIGHT="56" BASELINE="468 1361 2135 1368" TAGREFS="TYPE_3">
+<TextLine ID="mz_1-057_l13" HPOS="466" VPOS="1327" WIDTH="1669" HEIGHT="56" BASELINE="468 1361 2135 1368" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="468 1361 466 1374 2131 1383 2135 1368 2133 1333 468 1327 468 1361"/>
                         </Shape>
@@ -190,12 +174,7 @@
                         </Shape>
                         <String CONTENT="same anthropological stock or not."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-057_r4" HPOS="365" VPOS="1866" WIDTH="1778" HEIGHT="423" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="365 1866 2143 1866 2143 2289 365 2289"/>
-                    </Shape>
-                    <TextLine ID="mz_1-057_l22" HPOS="472" VPOS="1859" WIDTH="1668" HEIGHT="61" BASELINE="474 1907 2140 1903" TAGREFS="TYPE_3">
+<TextLine ID="mz_1-057_l22" HPOS="472" VPOS="1859" WIDTH="1668" HEIGHT="61" BASELINE="474 1907 2140 1903" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="474 1907 474 1920 2138 1916 2140 1903 2138 1872 2094 1859 2092 1859 2090 1859 2088 1859 2064 1872 1960 1872 1943 1859 1941 1859 1938 1859 1936 1859 1863 1870 1832 1859 1830 1859 1828 1859 1739 1870 1718 1859 1715 1859 1713 1859 1711 1859 1687 1870 1661 1859 1659 1859 1657 1859 1557 1870 1462 1859 1460 1859 1458 1859 1421 1870 1393 1859 1391 1859 1388 1859 1386 1859 1352 1870 1308 1859 1306 1859 1304 1859 1302 1859 1300 1859 1278 1872 1089 1862 1087 1862 1085 1862 1057 1872 1044 1862 1042 1862 1040 1862 949 1862 947 1862 944 1862 942 1862 929 1872 871 1862 869 1862 799 1872 524 1862 522 1862 472 1870 474 1907"/>
                         </Shape>
@@ -243,12 +222,7 @@
                         </Shape>
                         <String CONTENT="them dead), had fourteen children living."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-057_r5" HPOS="365" VPOS="2289" WIDTH="1778" HEIGHT="777" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="365 2289 2143 2289 2143 3066 365 3066"/>
-                    </Shape>
-                    <TextLine ID="mz_1-057_l29" HPOS="472" VPOS="2290" WIDTH="1668" HEIGHT="50" BASELINE="474 2323 2140 2327" TAGREFS="TYPE_3">
+<TextLine ID="mz_1-057_l29" HPOS="472" VPOS="2290" WIDTH="1668" HEIGHT="50" BASELINE="474 2323 2140 2327" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="474 2323 472 2336 2135 2340 2140 2327 2138 2290 474 2290 474 2323"/>
                         </Shape>
@@ -338,12 +312,7 @@
                         </Shape>
                         <String CONTENT="the decrease is not produced by any reduction in the number of births."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-057_r6" HPOS="365" VPOS="3066" WIDTH="1778" HEIGHT="192" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="365 3066 2143 3066 2143 3258 365 3258"/>
-                    </Shape>
-                    <TextLine ID="mz_1-057_l42" HPOS="481" VPOS="3074" WIDTH="1661" HEIGHT="48" BASELINE="481 3104 2142 3104" TAGREFS="TYPE_3">
+<TextLine ID="mz_1-057_l42" HPOS="481" VPOS="3074" WIDTH="1661" HEIGHT="48" BASELINE="481 3104 2142 3104" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="481 3104 481 3122 2142 3122 2142 3104 2142 3074 481 3074 481 3104"/>
                         </Shape>
@@ -363,8 +332,7 @@
                         </Shape>
                         <String CONTENT="exactly as was the case in other countries. It began with extermination during"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

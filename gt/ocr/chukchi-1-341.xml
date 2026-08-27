@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-341_r1" HPOS="369" VPOS="609" WIDTH="1778" HEIGHT="86" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="369 609 2147 609 2147 695 369 695"/>
-                    </Shape>
-                    <TextLine ID="mz_1-341_l1" HPOS="970" VPOS="619" WIDTH="624" HEIGHT="52" BASELINE="973 651 1594 656" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-341" HPOS="388" VPOS="619" WIDTH="1784" HEIGHT="1667"><TextLine ID="mz_1-341_l1" HPOS="970" VPOS="619" WIDTH="624" HEIGHT="52" BASELINE="973 651 1594 656" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="973 634 973 651 970 666 1590 671 1594 656 1592 621 986 619 973 634"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="263"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-341_r2" HPOS="369" VPOS="721" WIDTH="1778" HEIGHT="362" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="369 721 2147 721 2147 1083 369 1083"/>
-                    </Shape>
-                    <TextLine ID="mz_1-341_l3" HPOS="399" VPOS="721" WIDTH="1769" HEIGHT="60" BASELINE="399 764 2168 764" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-341_l3" HPOS="399" VPOS="721" WIDTH="1769" HEIGHT="60" BASELINE="399 764 2168 764" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="399 764 399 777 2166 781 2168 764 2168 734 2064 721 2062 721 2060 721 2036 731 1986 721 1984 721 1982 721 1956 731 1921 721 1919 721 1917 721 1845 731 1830 721 1828 721 1826 721 1824 721 1700 731 1618 721 1616 721 1614 721 1611 721 1596 734 1419 734 1365 721 1362 721 1360 721 1330 731 1300 721 1297 721 1295 721 1293 721 1269 731 1174 721 1172 721 1100 731 996 721 994 721 938 731 851 721 849 721 847 721 812 731 784 721 782 721 780 721 778 721 775 721 758 734 533 734 440 721 438 721 435 721 399 731 399 764"/>
                         </Shape>
@@ -96,12 +84,7 @@
                         </Shape>
                         <String CONTENT="World as far west as Lapland."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-341_r3" HPOS="369" VPOS="1083" WIDTH="1778" HEIGHT="481" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="369 1083 2147 1083 2147 1564 369 1564"/>
-                    </Shape>
-                    <TextLine ID="mz_1-341_l9" HPOS="498" VPOS="1084" WIDTH="1674" HEIGHT="54" BASELINE="500 1119 2172 1123" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-341_l9" HPOS="498" VPOS="1084" WIDTH="1674" HEIGHT="54" BASELINE="500 1119 2172 1123" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="500 1119 498 1134 2168 1138 2172 1123 2168 1084 500 1084 500 1119"/>
                         </Shape>
@@ -156,12 +139,7 @@
                         </Shape>
                         <String CONTENT="use plain wooden sticks."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-341_r4" HPOS="369" VPOS="1564" WIDTH="1778" HEIGHT="540" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="369 1564 2147 1564 2147 2104 369 2104"/>
-                    </Shape>
-                    <TextLine ID="mz_1-341_l17" HPOS="505" VPOS="1556" WIDTH="994" HEIGHT="61" BASELINE="505 1602 1499 1602" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-341_l17" HPOS="505" VPOS="1556" WIDTH="994" HEIGHT="61" BASELINE="505 1602 1499 1602" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="505 1602 505 1617 1499 1617 1499 1602 1499 1569 1328 1556 1326 1556 1323 1556 1278 1567 1245 1556 1243 1556 1241 1556 1239 1556 1237 1556 1226 1567 1204 1556 1202 1556 1200 1556 1198 1556 1196 1556 1196 1558 1185 1569 1087 1569 1059 1556 1057 1556 1055 1556 1053 1556 1050 1556 1038 1567 1003 1556 1001 1556 999 1556 996 1556 994 1556 994 1558 983 1569 916 1569 892 1556 890 1556 888 1556 832 1567 814 1556 812 1556 810 1556 808 1556 806 1556 804 1556 788 1567 730 1556 728 1556 648 1567 630 1556 628 1556 626 1556 624 1556 552 1567 531 1556 529 1556 526 1556 524 1556 505 1565 505 1602"/>
                         </Shape>
@@ -223,12 +201,7 @@
                         </Shape>
                         <String CONTENT="those Chukchee of the Kolyma who live farther to the south."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-341_r5" HPOS="369" VPOS="2104" WIDTH="1778" HEIGHT="185" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="369 2104 2147 2104 2147 2289 369 2289"/>
-                    </Shape>
-                    <TextLine ID="mz_1-341_l26" HPOS="498" VPOS="2093" WIDTH="1670" HEIGHT="74" BASELINE="500 2141 2168 2134" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-341_l26" HPOS="498" VPOS="2093" WIDTH="1670" HEIGHT="74" BASELINE="500 2141 2168 2134" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="500 2141 500 2167 2168 2150 2168 2134 2164 2106 1891 2106 1850 2093 1847 2093 1845 2093 1843 2093 1841 2093 1826 2106 1726 2106 1666 2093 1663 2093 1661 2093 1659 2093 1646 2104 1618 2093 1616 2093 1614 2093 1611 2093 1575 2106 1243 2095 1241 2095 1165 2106 1087 2095 1085 2095 1083 2095 1048 2108 999 2098 996 2098 723 2108 516 2098 513 2098 511 2098 509 2098 498 2106 500 2141"/>
                         </Shape>
@@ -248,8 +221,7 @@
                         </Shape>
                         <String CONTENT="fastened to the sole crosswise to prevent slipping."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

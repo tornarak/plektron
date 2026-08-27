@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-035_r1" HPOS="387" VPOS="625" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="387 625 2165 625 2165 715 387 715"/>
-                    </Shape>
-                    <TextLine ID="mz_1-035_l1" HPOS="960" VPOS="636" WIDTH="621" HEIGHT="52" BASELINE="962 669 1581 673" TAGREFS="TYPE_5">
+                <TextBlock ID="text_1-035" HPOS="364" VPOS="636" WIDTH="1797" HEIGHT="2667"><TextLine ID="mz_1-035_l1" HPOS="960" VPOS="636" WIDTH="621" HEIGHT="52" BASELINE="962 669 1581 673" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1568 636 981 636 964 656 962 669 960 684 1577 688 1581 673 1579 653 1568 636"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="15"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-035_r2" HPOS="387" VPOS="740" WIDTH="1778" HEIGHT="364" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="387 740 2165 740 2165 1104 387 1104"/>
-                    </Shape>
-                    <TextLine ID="mz_1-035_l3" HPOS="386" VPOS="736" WIDTH="1769" HEIGHT="71" BASELINE="388 783 2155 779" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-035_l3" HPOS="386" VPOS="736" WIDTH="1769" HEIGHT="71" BASELINE="388 783 2155 779" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="388 783 388 796 938 807 940 807 942 807 944 807 960 796 2153 796 2155 779 2153 749 2127 736 2125 736 2122 736 2120 736 2094 747 2003 736 2001 736 1999 736 1973 747 1884 736 1882 736 1880 736 1878 736 1863 749 1754 749 1737 736 1735 736 1733 736 1536 736 1533 736 1462 747 1410 736 1408 736 1332 747 1278 736 1276 736 1274 736 1245 749 1193 738 1191 738 1189 738 1161 749 1044 738 1042 738 1040 738 1038 738 1022 751 873 751 821 738 819 738 756 749 700 738 697 738 695 738 693 738 676 749 643 738 641 738 639 738 494 749 446 738 444 738 442 738 440 738 386 751 388 783"/>
                         </Shape>
@@ -97,12 +84,7 @@
                         </Shape>
                         <String CONTENT="all the inmates were burned alive."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-035_r3" HPOS="387" VPOS="1104" WIDTH="1778" HEIGHT="542" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="387 1104 2165 1104 2165 1646 387 1646"/>
-                    </Shape>
-                    <TextLine ID="mz_1-035_l9" HPOS="496" VPOS="1108" WIDTH="1663" HEIGHT="48" BASELINE="498 1141 2159 1136" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-035_l9" HPOS="496" VPOS="1108" WIDTH="1663" HEIGHT="48" BASELINE="498 1141 2159 1136" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="498 1141 498 1156 2157 1151 2159 1136 2155 1108 496 1108 498 1141"/>
                         </Shape>
@@ -164,12 +146,7 @@
                         </Shape>
                         <String CONTENT="Anadyrsk, the remotest Russian post in northeastern Asia, to be demolished."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-035_r4" HPOS="387" VPOS="1646" WIDTH="1778" HEIGHT="426" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="387 1646 2165 1646 2165 2072 387 2072"/>
-                    </Shape>
-                    <TextLine ID="mz_1-035_l18" HPOS="496" VPOS="1649" WIDTH="1663" HEIGHT="48" BASELINE="498 1682 2159 1678" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-035_l18" HPOS="496" VPOS="1649" WIDTH="1663" HEIGHT="48" BASELINE="498 1682 2159 1678" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="498 1682 498 1697 2157 1693 2159 1678 2155 1649 496 1649 498 1682"/>
                         </Shape>
@@ -217,12 +194,7 @@
                         </Shape>
                         <String CONTENT="face has never been seen, nor a word of the Russian language heard."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-035_r5" HPOS="387" VPOS="2066" WIDTH="1778" HEIGHT="712" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="387 2066 2165 2066 2165 2778 387 2778"/>
-                    </Shape>
-                    <TextLine ID="mz_1-035_l25" HPOS="496" VPOS="2063" WIDTH="1661" HEIGHT="56" BASELINE="498 2104 2157 2095" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-035_l25" HPOS="496" VPOS="2063" WIDTH="1661" HEIGHT="56" BASELINE="498 2104 2157 2095" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="498 2104 498 2119 2155 2113 2157 2095 2153 2063 520 2063 518 2063 516 2063 496 2072 498 2104"/>
                         </Shape>
@@ -305,12 +277,7 @@
                         </Shape>
                         <String CONTENT="side with them on the borders of the forest."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-035_r6" HPOS="387" VPOS="2778" WIDTH="1778" HEIGHT="374" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="387 2778 2165 2778 2165 3152 387 3152"/>
-                    </Shape>
-                    <TextLine ID="mz_1-035_l37" HPOS="496" VPOS="2773" WIDTH="1663" HEIGHT="71" BASELINE="498 2825 2159 2814" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-035_l37" HPOS="496" VPOS="2773" WIDTH="1663" HEIGHT="71" BASELINE="498 2825 2159 2814" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="498 2825 498 2840 1642 2844 1644 2844 1646 2844 1674 2834 1735 2844 1737 2844 1834 2831 2006 2842 2008 2842 2010 2842 2038 2831 2131 2842 2133 2842 2135 2842 2159 2829 2159 2814 2155 2786 2068 2773 2066 2773 2064 2773 2023 2784 2006 2773 2003 2773 2001 2773 1999 2773 1997 2773 1995 2773 1980 2786 1886 2786 1863 2773 1860 2773 1858 2773 1793 2786 1575 2775 1572 2775 1490 2788 1347 2777 1345 2777 1295 2788 1267 2777 1265 2777 1263 2777 1185 2788 1167 2777 1165 2777 1163 2777 1161 2777 1159 2777 1157 2777 1137 2790 1122 2780 1120 2780 1118 2780 1115 2780 1113 2780 1092 2790 1029 2780 1027 2780 968 2790 908 2780 905 2780 903 2780 858 2790 832 2780 830 2780 827 2780 825 2780 778 2793 749 2782 747 2782 745 2782 578 2793 518 2782 516 2782 513 2782 511 2782 496 2790 498 2825"/>
                         </Shape>
@@ -351,12 +318,7 @@
                         </Shape>
                         <String CONTENT="to the Parapolsky Dol,² interspersing themselves among the Koryak as far"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-035_r7" HPOS="387" VPOS="3182" WIDTH="1778" HEIGHT="100" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="387 3182 2165 3182 2165 3282 387 3282"/>
-                    </Shape>
-                    <TextLine ID="mz_1-035_l43" HPOS="572" VPOS="3176" WIDTH="132" HEIGHT="50" BASELINE="574 3208 704 3204" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-035_l43" HPOS="572" VPOS="3176" WIDTH="132" HEIGHT="50" BASELINE="574 3208 704 3204" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="574 3208 574 3226 704 3226 704 3204 700 3176 572 3176 574 3208"/>
                         </Shape>
@@ -369,8 +331,7 @@
                         </Shape>
                         <String CONTENT="² The high flat country between Penshina and Baron Korff’s Bays."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

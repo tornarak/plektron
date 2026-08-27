@@ -23,33 +23,20 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-097_r1" HPOS="349" VPOS="616" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="349 616 2127 616 2127 706 349 706"/>
-                    </Shape>
-                    <TextLine ID="mz_1-097_l1" HPOS="923" VPOS="628" WIDTH="623" HEIGHT="54" BASELINE="925 660 1546 664" TAGREFS="TYPE_5">
+                <TextBlock ID="text_1-097" HPOS="347" VPOS="628" WIDTH="1782" HEIGHT="2623"><TextLine ID="mz_1-097_l1" HPOS="923" VPOS="628" WIDTH="623" HEIGHT="54" BASELINE="925 660 1546 664" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="925 638 925 660 923 677 1542 682 1546 664 1544 630 942 628 925 638"/>
                         </Shape>
                         <String CONTENT="BOGORAS, THE CHUKCHEE."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-097_r2" HPOS="349" VPOS="731" WIDTH="1778" HEIGHT="839" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="349 731 2127 731 2127 1570 349 1570"/>
-                    </Shape>
-                    <TextLine ID="mz_1-097_l2" HPOS="455" VPOS="740" WIDTH="1667" HEIGHT="48" BASELINE="455 770 2122 770" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-097_l2" HPOS="455" VPOS="740" WIDTH="1667" HEIGHT="48" BASELINE="455 770 2122 770" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="455 770 455 788 2120 788 2122 770 2120 740 455 740 455 770"/>
                         </Shape>
@@ -146,12 +133,7 @@
                         </Shape>
                         <String CONTENT="merchant caravans."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-097_r3" HPOS="349" VPOS="1570" WIDTH="1778" HEIGHT="777" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="349 1570 2127 1570 2127 2347 349 2347"/>
-                    </Shape>
-                    <TextLine ID="mz_1-097_l16" HPOS="459" VPOS="1565" WIDTH="1661" HEIGHT="69" BASELINE="461 1608 2120 1613" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-097_l16" HPOS="459" VPOS="1565" WIDTH="1661" HEIGHT="69" BASELINE="461 1608 2120 1613" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="461 1608 459 1623 477 1634 479 1634 481 1634 483 1634 2118 1628 2120 1613 2118 1580 2034 1567 2032 1567 2029 1567 1982 1578 1928 1567 1925 1567 1863 1578 1839 1567 1837 1567 1834 1567 1666 1580 1499 1580 1484 1567 1481 1567 1479 1567 1477 1567 1189 1576 1176 1565 1174 1565 1172 1565 1170 1565 1167 1565 1137 1576 1053 1565 1050 1565 1048 1565 1025 1576 1007 1565 1005 1565 1003 1565 1001 1565 999 1565 975 1576 951 1565 949 1565 947 1565 895 1576 864 1565 862 1565 860 1565 858 1565 856 1565 838 1578 752 1578 739 1565 736 1565 734 1565 732 1565 730 1565 728 1565 713 1576 628 1565 626 1565 461 1571 461 1608"/>
                         </Shape>
@@ -241,12 +223,7 @@
                         </Shape>
                         <String CONTENT="service.¹"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-097_r4" HPOS="349" VPOS="2347" WIDTH="1778" HEIGHT="675" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="349 2347 2127 2347 2127 3022 349 3022"/>
-                    </Shape>
-                    <TextLine ID="mz_1-097_l29" HPOS="457" VPOS="2347" WIDTH="1665" HEIGHT="60" BASELINE="459 2392 2122 2388" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-097_l29" HPOS="457" VPOS="2347" WIDTH="1665" HEIGHT="60" BASELINE="459 2392 2122 2388" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="459 2392 459 2407 2120 2405 2122 2388 2118 2357 1365 2347 1362 2347 1239 2360 457 2360 459 2392"/>
                         </Shape>
@@ -322,12 +299,7 @@
                         </Shape>
                         <String CONTENT="are in charge of one of his relatives among the herdsmen. From time to"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-097_r5" HPOS="349" VPOS="3066" WIDTH="1778" HEIGHT="206" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="349 3066 2127 3066 2127 3272 349 3272"/>
-                    </Shape>
-                    <TextLine ID="mz_1-097_l40" HPOS="466" VPOS="3083" WIDTH="1663" HEIGHT="45" BASELINE="466 3109 2129 3109" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-097_l40" HPOS="466" VPOS="3083" WIDTH="1663" HEIGHT="45" BASELINE="466 3109 2129 3109" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="466 3109 466 3128 2129 3128 2129 3109 2129 3083 466 3083 466 3109"/>
                         </Shape>
@@ -354,8 +326,7 @@
                         </Shape>
                         <String CONTENT="begun with or without dogs."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

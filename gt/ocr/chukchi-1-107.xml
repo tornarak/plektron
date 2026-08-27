@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-107_r1" HPOS="344" VPOS="603" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="344 603 2122 603 2122 693 344 693"/>
-                    </Shape>
-                    <TextLine ID="mz_1-107_l1" HPOS="923" VPOS="608" WIDTH="621" HEIGHT="56" BASELINE="925 643 1544 647" TAGREFS="TYPE_5">
+                <TextBlock ID="text_1-107" HPOS="342" VPOS="608" WIDTH="1778" HEIGHT="2635"><TextLine ID="mz_1-107_l1" HPOS="923" VPOS="608" WIDTH="621" HEIGHT="56" BASELINE="925 643 1544 647" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1533 610 925 608 925 643 923 660 1540 664 1544 647 1542 623 1533 610"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="79"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-107_r2" HPOS="344" VPOS="718" WIDTH="1778" HEIGHT="961" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="344 718 2122 718 2122 1679 344 1679"/>
-                    </Shape>
-                    <TextLine ID="mz_1-107_l3" HPOS="342" VPOS="710" WIDTH="1774" HEIGHT="65" BASELINE="344 757 2116 753" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-107_l3" HPOS="342" VPOS="710" WIDTH="1774" HEIGHT="65" BASELINE="344 757 2116 753" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="364 718 344 718 342 721 344 757 344 770 2112 775 2116 753 2114 723 2077 710 2075 710 2073 710 2071 710 2042 721 2008 710 2006 710 2003 710 2001 710 1977 723 1733 723 1705 710 1702 710 1700 710 1592 721 1468 710 1466 710 1386 721 1330 710 1328 710 1271 721 1241 710 1239 710 1237 710 1146 723 518 712 516 712 513 712 511 712 496 725 401 725 377 716 364 718"/>
                         </Shape>
@@ -167,12 +154,7 @@
                         </Shape>
                         <String CONTENT="fifth or sixth year. The doe breeds to the end of her life.²"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-107_r3" HPOS="344" VPOS="1679" WIDTH="1778" HEIGHT="295" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="344 1679 2122 1679 2122 1974 344 1974"/>
-                    </Shape>
-                    <TextLine ID="mz_1-107_l19" HPOS="451" VPOS="1671" WIDTH="1667" HEIGHT="61" BASELINE="453 1717 2118 1712" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-107_l19" HPOS="451" VPOS="1671" WIDTH="1667" HEIGHT="61" BASELINE="453 1717 2118 1712" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="453 1717 453 1732 2116 1727 2118 1712 2114 1684 2021 1671 2019 1671 2016 1671 2014 1671 1999 1684 1912 1684 1886 1671 1884 1671 1882 1671 1811 1682 1765 1671 1763 1671 1761 1671 1705 1682 1657 1671 1655 1671 1653 1671 1650 1671 1648 1671 1635 1682 1577 1671 1575 1671 1507 1682 1471 1671 1468 1671 1466 1671 1464 1671 1462 1671 1445 1684 1330 1684 1297 1671 1295 1671 1293 1671 1217 1684 925 1673 923 1673 921 1673 879 1684 849 1673 847 1673 845 1673 843 1673 810 1684 734 1673 732 1673 451 1682 453 1717"/>
                         </Shape>
@@ -206,12 +188,7 @@
                         </Shape>
                         <String CONTENT="selecting the best breeding-does."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-107_r4" HPOS="344" VPOS="1974" WIDTH="1778" HEIGHT="1092" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="344 1974 2122 1974 2122 3066 344 3066"/>
-                    </Shape>
-                    <TextLine ID="mz_1-107_l24" HPOS="448" VPOS="1970" WIDTH="1668" HEIGHT="65" BASELINE="451 2020 2116 2011" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-107_l24" HPOS="448" VPOS="1970" WIDTH="1668" HEIGHT="65" BASELINE="451 2020 2116 2011" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="451 2020 451 2035 2114 2026 2116 2011 2109 1978 1793 1981 1763 1970 1761 1970 1759 1970 1756 1970 1731 1983 1499 1983 1462 1972 1460 1972 1458 1972 1388 1983 1336 1972 1334 1972 1332 1972 1330 1972 1315 1985 1085 1985 1033 1974 1031 1974 1029 1974 1027 1974 1009 1985 886 1974 884 1974 672 1987 656 1976 654 1976 652 1976 470 1976 468 1976 466 1976 464 1976 448 1985 451 2020"/>
                         </Shape>
@@ -336,12 +313,7 @@
                         </Shape>
                         <String CONTENT="man is often more ready to kill a breeding-doe than a large fattened buck."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-107_r5" HPOS="344" VPOS="3104" WIDTH="1778" HEIGHT="146" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="344 3104 2122 3104 2122 3250 344 3250"/>
-                    </Shape>
-                    <TextLine ID="mz_1-107_l42" HPOS="457" VPOS="3111" WIDTH="223" HEIGHT="41" BASELINE="457 3137 680 3137" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-107_l42" HPOS="457" VPOS="3111" WIDTH="223" HEIGHT="41" BASELINE="457 3137 680 3137" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="457 3137 457 3152 680 3152 680 3137 680 3111 457 3111 457 3137"/>
                         </Shape>
@@ -361,8 +333,7 @@
                         </Shape>
                         <String CONTENT="this is a misprint, since the average life of the reindeer is from twelve to fifteen years. See also p. 75."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

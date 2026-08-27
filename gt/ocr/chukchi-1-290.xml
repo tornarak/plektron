@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-290_r1" HPOS="621" VPOS="591" WIDTH="1778" HEIGHT="95" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="621 591 2399 591 2399 686 621 686"/>
-                    </Shape>
-                    <TextLine ID="mz_1-290_l1" HPOS="1204" VPOS="608" WIDTH="617" HEIGHT="56" BASELINE="1206 645 1821 640" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-290" HPOS="613" VPOS="604" WIDTH="1795" HEIGHT="2622"><TextLine ID="mz_1-290_l1" HPOS="1204" VPOS="608" WIDTH="617" HEIGHT="56" BASELINE="1206 645 1821 640" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1811 608 1204 610 1204 612 1206 645 1206 664 1819 660 1821 640 1815 610 1811 608"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="228"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-290_r2" HPOS="621" VPOS="721" WIDTH="1778" HEIGHT="474" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="621 721 2399 721 2399 1195 621 1195"/>
-                    </Shape>
-                    <TextLine ID="mz_1-290_l3" HPOS="730" VPOS="710" WIDTH="1668" HEIGHT="60" BASELINE="732 755 2398 749" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-290_l3" HPOS="730" VPOS="710" WIDTH="1668" HEIGHT="60" BASELINE="732 755 2398 749" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2376 727 2354 725 2333 725 2311 725 2289 723 2268 723 2246 721 2224 721 2203 721 2181 718 2159 718 2138 716 2116 716 2101 714 2062 714 2051 714 2047 712 1841 710 1839 710 1778 721 752 714 749 714 747 714 745 714 730 721 732 755 732 770 2395 764 2398 749 2393 727 2376 727"/>
                         </Shape>
@@ -110,12 +98,7 @@
                         </Shape>
                         <String CONTENT="with untiring patience."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-290_r3" HPOS="621" VPOS="1195" WIDTH="1778" HEIGHT="300" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="621 1195 2399 1195 2399 1495 621 1495"/>
-                    </Shape>
-                    <TextLine ID="mz_1-290_l11" HPOS="730" VPOS="1188" WIDTH="1668" HEIGHT="67" BASELINE="732 1234 2398 1229" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-290_l11" HPOS="730" VPOS="1188" WIDTH="1668" HEIGHT="67" BASELINE="732 1234 2398 1229" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="732 1234 732 1249 2374 1255 2376 1255 2378 1255 2380 1255 2398 1245 2398 1229 2393 1201 2294 1201 2278 1188 2276 1188 2274 1188 2272 1188 2270 1188 2246 1199 2155 1188 2153 1188 2151 1188 2129 1199 2053 1188 2051 1188 2049 1188 2023 1199 1967 1188 1964 1188 1962 1188 1921 1199 1841 1188 1839 1188 1622 1199 1594 1188 1592 1188 1590 1188 1588 1188 1559 1201 1544 1190 1542 1190 1540 1190 1538 1190 1536 1190 1488 1203 1386 1203 1369 1190 1367 1190 1365 1190 1362 1190 1360 1190 1332 1201 1297 1190 1295 1190 1293 1190 1291 1190 1245 1201 1211 1190 1209 1190 1206 1190 1204 1190 1176 1201 1150 1190 1148 1190 1146 1190 1061 1201 983 1190 981 1190 730 1195 732 1234"/>
                         </Shape>
@@ -149,12 +132,7 @@
                         </Shape>
                         <String CONTENT="Indians. Chukchee work of this kind is a mere imitation of foreign patterns."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-290_r4" HPOS="621" VPOS="1495" WIDTH="1778" HEIGHT="661" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="621 1495 2399 1495 2399 2156 621 2156"/>
-                    </Shape>
-                    <TextLine ID="mz_1-290_l16" HPOS="728" VPOS="1500" WIDTH="1667" HEIGHT="50" BASELINE="730 1535 2395 1530" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-290_l16" HPOS="728" VPOS="1500" WIDTH="1667" HEIGHT="50" BASELINE="730 1535 2395 1530" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="730 1535 730 1550 2393 1545 2395 1530 2391 1500 728 1500 730 1535"/>
                         </Shape>
@@ -230,12 +208,7 @@
                         </Shape>
                         <String CONTENT="natives of Markova."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-290_r5" HPOS="621" VPOS="2155" WIDTH="1778" HEIGHT="717" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="621 2155 2399 2155 2399 2872 621 2872"/>
-                    </Shape>
-                    <TextLine ID="mz_1-290_l27" HPOS="1932" VPOS="2147" WIDTH="461" HEIGHT="63" BASELINE="1934 2193 2393 2188" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-290_l27" HPOS="1932" VPOS="2147" WIDTH="461" HEIGHT="63" BASELINE="1934 2193 2393 2188" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1934 2193 1934 2210 2391 2206 2393 2188 2389 2160 2259 2147 2257 2147 2203 2158 2179 2147 2177 2147 2174 2147 2099 2160 2034 2150 2032 2150 2029 2150 2027 2150 2010 2160 1945 2150 1943 2150 1941 2150 1938 2150 1938 2152 1936 2152 1932 2154 1934 2193"/>
                         </Shape>
@@ -318,12 +291,7 @@
                         </Shape>
                         <String CONTENT="to that figured by Nelson.¹"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-290_r6" HPOS="621" VPOS="2872" WIDTH="1778" HEIGHT="239" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="621 2872 2399 2872 2399 3111 621 3111"/>
-                    </Shape>
-                    <TextLine ID="mz_1-290_l39" HPOS="1559" VPOS="2866" WIDTH="828" HEIGHT="67" BASELINE="1562 2905 2387 2909" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-290_l39" HPOS="1559" VPOS="2866" WIDTH="828" HEIGHT="67" BASELINE="1562 2905 2387 2909" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1562 2905 1559 2918 1997 2933 1999 2933 2385 2922 2387 2909 2385 2879 1562 2866 1562 2905"/>
                         </Shape>
@@ -350,19 +318,13 @@
                         </Shape>
                         <String CONTENT="the circumference to the centre, so that the whole skin makes one long line."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-290_r7" HPOS="621" VPOS="3153" WIDTH="1778" HEIGHT="93" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="621 3153 2399 3153 2399 3246 621 3246"/>
-                    </Shape>
-                    <TextLine ID="mz_1-290_l43" HPOS="1196" VPOS="3167" WIDTH="608" HEIGHT="59" BASELINE="1198 3195 1804 3206" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-290_l43" HPOS="1196" VPOS="3167" WIDTH="608" HEIGHT="59" BASELINE="1198 3195 1804 3206" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1782 3182 1765 3176 1202 3167 1198 3171 1198 3195 1196 3215 1800 3226 1804 3206 1802 3187 1782 3182"/>
                         </Shape>
                         <String CONTENT="¹ Nelson, Plate LXII, Fig. 10, p. 162."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

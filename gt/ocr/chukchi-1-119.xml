@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-119_r1" HPOS="387" VPOS="625" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="387 625 2165 625 2165 715 387 715"/>
-                    </Shape>
-                    <TextLine ID="mz_1-119_l1" HPOS="964" VPOS="638" WIDTH="626" HEIGHT="52" BASELINE="966 671 1590 675" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-119" HPOS="386" VPOS="638" WIDTH="1778" HEIGHT="2616"><TextLine ID="mz_1-119_l1" HPOS="964" VPOS="638" WIDTH="626" HEIGHT="52" BASELINE="966 671 1590 675" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1572 640 1570 638 981 638 968 651 966 671 964 686 1585 690 1590 675 1588 649 1572 640"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="91"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-119_r2" HPOS="387" VPOS="740" WIDTH="1778" HEIGHT="1981" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="387 740 2165 740 2165 2721 387 2721"/>
-                    </Shape>
-                    <TextLine ID="mz_1-119_l3" HPOS="388" VPOS="747" WIDTH="1773" HEIGHT="60" BASELINE="390 779 2161 783" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-119_l3" HPOS="388" VPOS="747" WIDTH="1773" HEIGHT="60" BASELINE="390 779 2161 783" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="390 779 388 794 516 807 518 807 2159 799 2161 783 2159 751 390 747 390 779"/>
                         </Shape>
@@ -285,12 +273,7 @@
                         </Shape>
                         <String CONTENT="driving-sledges, of whatever shape, are usually supplied with a low back."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-119_r3" HPOS="387" VPOS="2721" WIDTH="1778" HEIGHT="477" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="387 2721 2165 2721 2165 3198 387 3198"/>
-                    </Shape>
-                    <TextLine ID="mz_1-119_l36" HPOS="496" VPOS="2721" WIDTH="1665" HEIGHT="63" BASELINE="498 2751 2161 2758" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-119_l36" HPOS="496" VPOS="2721" WIDTH="1665" HEIGHT="63" BASELINE="498 2751 2161 2758" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="498 2751 496 2769 511 2780 513 2780 516 2780 518 2780 1050 2771 1609 2784 1611 2784 2159 2773 2161 2758 2161 2728 498 2721 498 2751"/>
                         </Shape>
@@ -345,19 +328,13 @@
                         </Shape>
                         <String CONTENT="or “moon” according to its pattern, is also fastened on the back of the sledge."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-119_r4" HPOS="387" VPOS="3198" WIDTH="1778" HEIGHT="68" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="387 3198 2165 3198 2165 3266 387 3266"/>
-                    </Shape>
-                    <TextLine ID="mz_1-119_l44" HPOS="498" VPOS="3191" WIDTH="1661" HEIGHT="63" BASELINE="500 3230 2159 3236" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-119_l44" HPOS="498" VPOS="3191" WIDTH="1661" HEIGHT="63" BASELINE="500 3230 2159 3236" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="500 3230 498 3247 2155 3254 2159 3236 2159 3206 1622 3206 1544 3193 1542 3193 1087 3202 1057 3191 1055 3191 1053 3191 500 3197 500 3230"/>
                         </Shape>
                         <String CONTENT="A man or a woman riding a sledge usually sits astride of it, with a piece"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

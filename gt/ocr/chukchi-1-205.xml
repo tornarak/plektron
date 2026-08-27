@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-205_r1" HPOS="401" VPOS="592" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="401 592 2179 592 2179 682 401 682"/>
-                    </Shape>
-                    <TextLine ID="mz_1-205_l1" HPOS="970" VPOS="606" WIDTH="622" HEIGHT="52" BASELINE="970 638 1592 638" TAGREFS="TYPE_5">
+                <TextBlock ID="text_1-205" HPOS="390" VPOS="599" WIDTH="1784" HEIGHT="2633"><TextLine ID="mz_1-205_l1" HPOS="970" VPOS="606" WIDTH="622" HEIGHT="52" BASELINE="970 638 1592 638" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="970 638 970 658 1592 658 1592 638 1592 606 970 606 970 638"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="163"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-205_r2" HPOS="401" VPOS="707" WIDTH="1778" HEIGHT="137" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="401 707 2179 707 2179 844 401 844"/>
-                    </Shape>
-                    <TextLine ID="mz_1-205_l3" HPOS="390" VPOS="703" WIDTH="1778" HEIGHT="61" BASELINE="392 749 2168 742" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-205_l3" HPOS="390" VPOS="703" WIDTH="1778" HEIGHT="61" BASELINE="392 749 2168 742" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="390 742 392 749 392 764 2168 760 2168 742 2164 714 1579 703 1577 703 1575 703 1551 714 425 708 422 708 420 708 405 712 390 742"/>
                         </Shape>
@@ -69,12 +56,7 @@
                         </Shape>
                         <String CONTENT="of Japanese make¹ mentioned before (Fig. 85). In the region of the Palpal"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-205_r3" HPOS="401" VPOS="2675" WIDTH="1778" HEIGHT="304" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="401 2675 2179 2675 2179 2979 401 2979"/>
-                    </Shape>
-                    <TextLine ID="mz_1-205_l5" HPOS="396" VPOS="2673" WIDTH="1776" HEIGHT="63" BASELINE="399 2721 2172 2710" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-205_l5" HPOS="396" VPOS="2673" WIDTH="1776" HEIGHT="63" BASELINE="399 2721 2172 2710" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="2107 2676 2086 2676 2064 2676 2049 2676 2040 2682 1899 2682 1886 2676 1869 2676 1852 2676 1843 2680 1834 2676 1826 2676 1804 2676 1782 2676 1767 2676 1718 2682 1516 2673 1501 2673 1479 2673 1458 2673 1455 2673 1440 2684 1326 2673 1323 2673 1321 2673 1295 2686 396 2686 399 2721 399 2736 2170 2725 2172 2710 2168 2682 2116 2676 2107 2676"/>
                         </Shape>
@@ -108,12 +90,7 @@
                         </Shape>
                         <String CONTENT="as a reason, that he might have need of it in strife with some of his neighbors."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-205_r4" HPOS="401" VPOS="2979" WIDTH="1778" HEIGHT="179" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="401 2979 2179 2979 2179 3158 401 3158"/>
-                    </Shape>
-                    <TextLine ID="mz_1-205_l10" HPOS="511" VPOS="2974" WIDTH="1663" HEIGHT="61" BASELINE="513 3020 2174 3011" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-205_l10" HPOS="511" VPOS="2974" WIDTH="1663" HEIGHT="61" BASELINE="513 3020 2174 3011" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="513 3020 513 3035 2174 3026 2174 3011 2168 2974 511 2981 513 3020"/>
                         </Shape>
@@ -133,19 +110,13 @@
                         </Shape>
                         <String CONTENT="strips of leather and easily folded. The shape of the plates, and the manner"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-205_r5" HPOS="401" VPOS="3174" WIDTH="1778" HEIGHT="52" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="401 3174 2179 3174 2179 3226 401 3226"/>
-                    </Shape>
-                    <TextLine ID="mz_1-205_l13" HPOS="1200" VPOS="3171" WIDTH="193" HEIGHT="61" BASELINE="1202 3202 1393 3206" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-205_l13" HPOS="1200" VPOS="3171" WIDTH="193" HEIGHT="61" BASELINE="1202 3202 1393 3206" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1202 3202 1200 3219 1297 3232 1300 3232 1391 3221 1393 3206 1393 3178 1202 3171 1202 3202"/>
                         </Shape>
                         <String CONTENT="¹ See p. 54."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

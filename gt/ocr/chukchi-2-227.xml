@@ -23,23 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-Other"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_6" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_2-227_r1" HPOS="432" VPOS="457" WIDTH="1776" HEIGHT="90" TAGREFS="TYPE_5">
-<Shape>
-                        <Polygon POINTS="432 457 2208 457 2208 547 432 547"/>
-                    </Shape>
-                    <TextLine ID="mz_2-227_l1" HPOS="1004" VPOS="477" WIDTH="605" HEIGHT="49" BASELINE="1004 509 1609 509" TAGREFS="TYPE_6">
+                <TextBlock ID="text_2-227" HPOS="423" VPOS="473" WIDTH="1774" HEIGHT="2623"><TextLine ID="mz_2-227_l1" HPOS="1004" VPOS="477" WIDTH="605" HEIGHT="49" BASELINE="1004 509 1609 509" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="1596 477 1018 477 1006 495 1004 509 1004 526 1609 526 1609 509 1607 491 1596 477"/>
                         </Shape>
@@ -52,12 +43,7 @@
                         </Shape>
                         <String CONTENT="497"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-227_r2" HPOS="432" VPOS="566" WIDTH="1776" HEIGHT="314" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="432 566 2208 566 2208 880 432 880"/>
-                    </Shape>
-                    <TextLine ID="mz_2-227_l3" HPOS="425" VPOS="569" WIDTH="1760" HEIGHT="59" BASELINE="426 612 2185 609" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-227_l3" HPOS="425" VPOS="569" WIDTH="1760" HEIGHT="59" BASELINE="426 612 2185 609" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="483 575 464 575 444 577 442 577 425 583 426 612 426 628 2183 628 2185 609 2181 581 1891 569 1889 569 1837 579 1799 569 1797 569 1795 569 1719 579 1660 569 1658 569 1656 569 1654 569 1639 579 585 571 583 571 581 571 538 581 487 573 483 575"/>
                         </Shape>
@@ -91,23 +77,13 @@
                         </Shape>
                         <String CONTENT="Winds. They are scattered (in crumbs) in all directions. The end.¹"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-227_r3" HPOS="432" VPOS="896" WIDTH="1776" HEIGHT="68" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="432 896 2208 896 2208 964 432 964"/>
-                    </Shape>
-                    <TextLine ID="mz_2-227_l8" HPOS="898" VPOS="906" WIDTH="1291" HEIGHT="45" BASELINE="898 936 2189 936" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-227_l8" HPOS="898" VPOS="906" WIDTH="1291" HEIGHT="45" BASELINE="898 936 2189 936" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="898 936 898 951 2189 951 2189 936 2189 908 898 906 898 936"/>
                         </Shape>
                         <String CONTENT="Told by Aiñanwaˊt, a Reindeer Chukchee man of the Kolyma Country."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-227_r4" HPOS="432" VPOS="983" WIDTH="1776" HEIGHT="1155" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="432 983 2208 983 2208 2138 432 2138"/>
-                    </Shape>
-                    <TextLine ID="mz_2-227_l9" HPOS="524" VPOS="985" WIDTH="1665" HEIGHT="62" BASELINE="526 1034 2189 1028" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-227_l9" HPOS="524" VPOS="985" WIDTH="1665" HEIGHT="62" BASELINE="526 1034 2189 1028" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="526 1034 526 1047 2187 1041 2189 1028 2185 998 2079 998 2058 985 2056 985 2054 985 2052 985 2050 985 2048 985 2030 998 1931 998 1874 985 1872 985 1870 985 1846 996 1764 985 1762 985 1760 985 1758 985 1741 996 1719 985 1717 985 1649 985 1647 985 1645 985 1613 998 1594 987 1592 987 1590 987 1588 987 1586 987 1584 987 1564 998 1470 987 1468 987 1466 987 1464 987 1443 1000 1396 1000 1378 987 1376 987 1374 987 1372 987 1300 996 1275 987 1273 987 1271 987 1269 987 1233 998 1204 987 1202 987 1200 987 1198 987 1196 987 1180 998 1128 987 1126 987 940 1000 916 988 914 988 912 988 750 1000 560 988 558 988 556 988 524 1000 526 1034"/>
                         </Shape>
@@ -239,34 +215,19 @@
                         </Shape>
                         <String CONTENT="noise of the people. But he is heavy, and less shy than before. The end."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-227_r5" HPOS="432" VPOS="2143" WIDTH="1776" HEIGHT="95" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="432 2143 2208 2143 2208 2238 432 2238"/>
-                    </Shape>
-                    <TextLine ID="mz_2-227_l28" HPOS="1157" VPOS="2163" WIDTH="1038" HEIGHT="47" BASELINE="1159 2191 2195 2197" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-227_l28" HPOS="1157" VPOS="2163" WIDTH="1038" HEIGHT="47" BASELINE="1159 2191 2195 2197" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="1159 2191 1157 2205 2191 2210 2195 2197 2193 2169 1159 2163 1159 2191"/>
                         </Shape>
                         <String CONTENT="Told by Keᵋuteˊhɪn (man) on the Oˊnmɪlɪn Tundra, 1901."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-227_r6" HPOS="432" VPOS="2300" WIDTH="1776" HEIGHT="89" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="432 2300 2208 2300 2208 2389 432 2389"/>
-                    </Shape>
-                    <TextLine ID="mz_2-227_l29" HPOS="472" VPOS="2310" WIDTH="1688" HEIGHT="55" BASELINE="473 2351 2160 2346" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-227_l29" HPOS="472" VPOS="2310" WIDTH="1688" HEIGHT="55" BASELINE="473 2351 2160 2346" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="473 2351 473 2365 2158 2363 2160 2346 2156 2316 556 2310 554 2310 472 2320 473 2351"/>
                         </Shape>
                         <String CONTENT="2. INCANTATION USED ON THE MIDDLE ANADYR IN HUNTING WILD REINDEER."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-227_r7" HPOS="432" VPOS="2417" WIDTH="1776" HEIGHT="571" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="432 2417 2208 2417 2208 2988 432 2988"/>
-                    </Shape>
-                    <TextLine ID="mz_2-227_l30" HPOS="536" VPOS="2430" WIDTH="1659" HEIGHT="55" BASELINE="538 2471 2195 2467" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-227_l30" HPOS="536" VPOS="2430" WIDTH="1659" HEIGHT="55" BASELINE="538 2471 2195 2467" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="538 2471 538 2485 2193 2481 2195 2467 2191 2438 550 2430 548 2430 546 2430 544 2430 536 2434 538 2471"/>
                         </Shape>
@@ -328,19 +289,13 @@
                         </Shape>
                         <String CONTENT="species of animal I become unrecognizable. Only the soot of my face appears"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-227_r8" HPOS="432" VPOS="3031" WIDTH="1776" HEIGHT="84" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="432 3031 2208 3031 2208 3115 432 3115"/>
-                    </Shape>
-                    <TextLine ID="mz_2-227_l39" HPOS="983" VPOS="3051" WIDTH="660" HEIGHT="45" BASELINE="983 3074 1643 3074" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-227_l39" HPOS="983" VPOS="3051" WIDTH="660" HEIGHT="45" BASELINE="983 3074 1643 3074" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="1629 3053 1625 3051 985 3051 983 3062 983 3074 983 3096 1643 3096 1643 3074 1643 3062 1629 3053"/>
                         </Shape>
                         <String CONTENT="¹ See Bogoras, Chukchee Materials, p. 143."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

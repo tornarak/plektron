@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-177_r1" HPOS="375" VPOS="603" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="375 603 2153 603 2153 693 375 693"/>
-                    </Shape>
-                    <TextLine ID="mz_1-177_l1" HPOS="955" VPOS="617" WIDTH="622" HEIGHT="54" BASELINE="957 649 1577 653" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-177" HPOS="373" VPOS="617" WIDTH="1782" HEIGHT="2628"><TextLine ID="mz_1-177_l1" HPOS="955" VPOS="617" WIDTH="622" HEIGHT="54" BASELINE="957 649 1577 653" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1566 617 973 617 957 640 957 649 955 666 1572 671 1577 653 1575 625 1566 617"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="135"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-177_r2" HPOS="375" VPOS="718" WIDTH="1778" HEIGHT="481" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="375 718 2153 718 2153 1199 375 1199"/>
-                    </Shape>
-                    <TextLine ID="mz_1-177_l3" HPOS="485" VPOS="727" WIDTH="1670" HEIGHT="52" BASELINE="485 762 2155 762" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-177_l3" HPOS="485" VPOS="727" WIDTH="1670" HEIGHT="52" BASELINE="485 762 2155 762" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="485 762 485 779 2155 779 2155 762 2155 731 485 727 485 762"/>
                         </Shape>
@@ -110,12 +98,7 @@
                         </Shape>
                         <String CONTENT="deer-breeders."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-177_r3" HPOS="375" VPOS="1199" WIDTH="1778" HEIGHT="483" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="375 1199 2153 1199 2153 1682 375 1682"/>
-                    </Shape>
-                    <TextLine ID="mz_1-177_l11" HPOS="487" VPOS="1199" WIDTH="1664" HEIGHT="61" BASELINE="487 1242 2151 1242" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-177_l11" HPOS="487" VPOS="1199" WIDTH="1664" HEIGHT="61" BASELINE="487 1242 2151 1242" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2148 1210 2099 1199 2097 1199 2027 1210 1787 1199 1785 1199 1782 1199 1756 1210 1707 1199 1705 1199 1702 1199 1679 1210 1653 1199 1650 1199 1648 1199 1646 1199 1616 1212 1445 1212 1356 1199 1354 1199 1256 1210 1239 1199 1237 1199 1235 1199 1122 1199 1120 1199 1055 1210 1003 1199 1001 1199 918 1210 871 1199 869 1199 866 1199 741 1210 708 1199 706 1199 704 1199 633 1210 602 1199 600 1199 598 1199 596 1199 557 1210 513 1199 511 1199 509 1199 507 1199 487 1208 487 1242 487 1260 2151 1260 2151 1242 2151 1219 2148 1210"/>
                         </Shape>
@@ -170,12 +153,7 @@
                         </Shape>
                         <String CONTENT="and in some places single snares are still spread on the reindeer-trail."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-177_r4" HPOS="375" VPOS="1682" WIDTH="1778" HEIGHT="130" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="375 1682 2153 1682 2153 1812 375 1812"/>
-                    </Shape>
-                    <TextLine ID="mz_1-177_l19" HPOS="490" VPOS="1684" WIDTH="1658" HEIGHT="54" BASELINE="490 1721 2148 1721" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-177_l19" HPOS="490" VPOS="1684" WIDTH="1658" HEIGHT="54" BASELINE="490 1721 2148 1721" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="490 1721 490 1738 2148 1738 2148 1721 2148 1691 490 1684 490 1721"/>
                         </Shape>
@@ -188,12 +166,7 @@
                         </Shape>
                         <String CONTENT="the rivers (Fig. 47, b) is similar to the common Eskimo form, but it is covered"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-177_r5" HPOS="375" VPOS="2567" WIDTH="1778" HEIGHT="680" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="375 2567 2153 2567 2153 3247 375 3247"/>
-                    </Shape>
-                    <TextLine ID="mz_1-177_l21" HPOS="375" VPOS="2572" WIDTH="1773" HEIGHT="60" BASELINE="377 2617 2148 2613" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-177_l21" HPOS="375" VPOS="2572" WIDTH="1773" HEIGHT="60" BASELINE="377 2617 2148 2613" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="377 2617 377 2632 2146 2628 2148 2613 2144 2585 2084 2572 2081 2572 2079 2572 2051 2583 1843 2572 1841 2572 1750 2583 1728 2572 1726 2572 1724 2572 1722 2572 1679 2583 1648 2572 1646 2572 1644 2572 1642 2572 1611 2583 1581 2572 1579 2572 1577 2572 1575 2572 1553 2583 1527 2572 1525 2572 1523 2572 1388 2583 1323 2572 1321 2572 1258 2585 1226 2574 1224 2574 1222 2574 981 2585 955 2574 953 2574 951 2574 949 2574 912 2585 817 2574 814 2574 812 2574 782 2585 710 2574 708 2574 706 2574 704 2574 687 2585 548 2574 546 2574 481 2585 416 2574 414 2574 412 2574 375 2587 377 2617"/>
                         </Shape>
@@ -269,8 +242,7 @@
                         </Shape>
                         <String CONTENT="almost disappears on the Pacific, again appears on the waters of the Middle"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

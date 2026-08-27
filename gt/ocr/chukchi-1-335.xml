@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="QuireMarksZone"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-335_r1" HPOS="407" VPOS="619" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="407 619 2185 619 2185 709 407 709"/>
-                    </Shape>
-                    <TextLine ID="mz_1-335_l1" HPOS="981" VPOS="621" WIDTH="620" HEIGHT="56" BASELINE="981 658 1601 653" TAGREFS="TYPE_5">
+                <TextBlock ID="text_1-335" HPOS="405" VPOS="621" WIDTH="1782" HEIGHT="2704"><TextLine ID="mz_1-335_l1" HPOS="981" VPOS="621" WIDTH="620" HEIGHT="56" BASELINE="981 658 1601 653" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="981 647 981 658 981 677 1598 673 1601 653 1594 621 996 621 981 647"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="257"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-335_r2" HPOS="407" VPOS="723" WIDTH="1778" HEIGHT="135" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="407 723 2185 723 2185 858 407 858"/>
-                    </Shape>
-                    <TextLine ID="mz_1-335_l3" HPOS="518" VPOS="721" WIDTH="1654" HEIGHT="60" BASELINE="520 766 2172 762" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-335_l3" HPOS="518" VPOS="721" WIDTH="1654" HEIGHT="60" BASELINE="520 766 2172 762" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="520 766 520 781 2170 777 2172 762 2168 734 2081 721 2079 721 2019 731 1891 721 1889 721 1886 721 1850 731 1824 721 1821 721 1819 721 1817 721 1815 721 1798 734 1609 734 1575 721 1572 721 1570 721 1462 731 1427 721 1425 721 1423 721 1421 721 1419 721 1406 734 1293 734 1271 723 1269 723 1267 723 1154 734 518 725 520 766"/>
                         </Shape>
@@ -69,12 +56,7 @@
                         </Shape>
                         <String CONTENT="It is a narrow strip of leather, with a single bead tied to one of the ends"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-335_r3" HPOS="407" VPOS="2751" WIDTH="1778" HEIGHT="502" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="407 2751 2185 2751 2185 3253 407 3253"/>
-                    </Shape>
-                    <TextLine ID="mz_1-335_l5" HPOS="407" VPOS="2756" WIDTH="1780" HEIGHT="67" BASELINE="409 2810 2187 2801" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-335_l5" HPOS="407" VPOS="2756" WIDTH="1780" HEIGHT="67" BASELINE="409 2810 2187 2801" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="2183 2793 2166 2769 2012 2769 1999 2760 1988 2760 1967 2760 1956 2760 1908 2767 1891 2758 1880 2758 1860 2758 1785 2767 1765 2756 1754 2756 1711 2771 1449 2771 1425 2758 1423 2758 1421 2758 1419 2758 1416 2758 1399 2769 1378 2758 1375 2758 1373 2758 1371 2758 1369 2758 1356 2769 1297 2758 1295 2758 1293 2758 1291 2758 1274 2771 1072 2760 1070 2760 1016 2771 981 2760 979 2760 977 2760 923 2771 866 2760 864 2760 862 2760 860 2760 838 2773 427 2762 425 2762 422 2762 420 2762 407 2771 409 2810 409 2823 2185 2816 2187 2801 2185 2797 2183 2793"/>
                         </Shape>
@@ -129,19 +111,13 @@
                         </Shape>
                         <String CONTENT="and iron finger-rings (Fig. 189, c)."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-335_r4" HPOS="407" VPOS="3272" WIDTH="1778" HEIGHT="65" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="407 3272 2185 3272 2185 3337 407 3337"/>
-                    </Shape>
-                    <TextLine ID="mz_1-335_l13" HPOS="412" VPOS="3273" WIDTH="697" HEIGHT="52" BASELINE="414 3310 1109 3301" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-335_l13" HPOS="412" VPOS="3273" WIDTH="697" HEIGHT="52" BASELINE="414 3310 1109 3301" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="414 3310 414 3325 1107 3319 1109 3301 1102 3273 412 3280 414 3310"/>
                         </Shape>
                         <String CONTENT="33—JESUP NORTH PACIFIC EXPED., VOL. VII."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_2-197_r1" HPOS="459" VPOS="462" WIDTH="1776" HEIGHT="86" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="459 462 2235 462 2235 548 459 548"/>
-                    </Shape>
-                    <TextLine ID="mz_2-197_l1" HPOS="2119" VPOS="471" WIDTH="88" HEIGHT="63" BASELINE="2121 513 2207 509" TAGREFS="TYPE_5">
+                <TextBlock ID="text_2-197" HPOS="448" VPOS="471" WIDTH="1780" HEIGHT="2631"><TextLine ID="mz_2-197_l1" HPOS="2119" VPOS="471" WIDTH="88" HEIGHT="63" BASELINE="2121 513 2207 509" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="2197 475 2177 473 2158 473 2142 471 2119 481 2121 513 2121 526 2193 534 2195 534 2197 534 2199 534 2199 532 2201 532 2207 524 2207 509 2203 475 2197 475"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="BOGORAS, THE CHUKCHEE."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-197_r2" HPOS="459" VPOS="572" WIDTH="1776" HEIGHT="243" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="459 572 2235 572 2235 815 459 815"/>
-                    </Shape>
-                    <TextLine ID="mz_2-197_l3" HPOS="452" VPOS="573" WIDTH="1763" HEIGHT="63" BASELINE="452 614 2215 614" TAGREFS="TYPE_5">
+<TextLine ID="mz_2-197_l3" HPOS="452" VPOS="573" WIDTH="1763" HEIGHT="63" BASELINE="452 614 2215 614" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="589 575 587 575 517 583 493 577 491 577 472 577 464 577 452 583 452 614 452 626 1004 626 1026 636 1028 636 1030 636 1077 626 1488 626 1504 636 1506 636 1508 636 1510 636 2215 628 2215 614 2215 585 1940 573 1938 573 1936 573 1915 585 1752 585 1719 573 1717 573 1715 573 1713 573 1711 573 1696 585 1341 585 1253 573 1251 573 1249 573 1247 573 1231 585 1069 585 1010 573 1008 573 1006 573 979 583 881 573 879 573 877 573 836 583 802 573 801 573 799 573 646 583 609 573 589 575"/>
                         </Shape>
@@ -83,12 +70,7 @@
                         </Shape>
                         <String CONTENT="the addition of an extra tuft on the crown or on the nape of the neck."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-197_r3" HPOS="459" VPOS="815" WIDTH="1776" HEIGHT="909" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="459 815 2235 815 2235 1724 459 1724"/>
-                    </Shape>
-                    <TextLine ID="mz_2-197_l7" HPOS="562" VPOS="824" WIDTH="1655" HEIGHT="45" BASELINE="562 853 2217 853" TAGREFS="TYPE_5">
+<TextLine ID="mz_2-197_l7" HPOS="562" VPOS="824" WIDTH="1655" HEIGHT="45" BASELINE="562 853 2217 853" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="562 853 562 865 2215 869 2217 853 2217 824 562 824 562 853"/>
                         </Shape>
@@ -192,12 +174,7 @@
                         </Shape>
                         <String CONTENT="possessing itself of the mind of the murderer."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-197_r4" HPOS="459" VPOS="1724" WIDTH="1776" HEIGHT="600" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="459 1724 2235 1724 2235 2324 459 2324"/>
-                    </Shape>
-                    <TextLine ID="mz_2-197_l22" HPOS="566" VPOS="1713" WIDTH="1660" HEIGHT="53" BASELINE="567 1752 2226 1748" TAGREFS="TYPE_5">
+<TextLine ID="mz_2-197_l22" HPOS="566" VPOS="1713" WIDTH="1660" HEIGHT="53" BASELINE="567 1752 2226 1748" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="567 1752 567 1766 2224 1764 2226 1748 2222 1717 587 1713 585 1713 583 1713 566 1721 567 1752"/>
                         </Shape>
@@ -266,12 +243,7 @@
                         </Shape>
                         <String CONTENT="protection to the person concerned."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-197_r5" HPOS="459" VPOS="2324" WIDTH="1776" HEIGHT="598" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="459 2324 2235 2324 2235 2922 459 2922"/>
-                    </Shape>
-                    <TextLine ID="mz_2-197_l32" HPOS="569" VPOS="2306" WIDTH="1655" HEIGHT="67" BASELINE="571 2348 2224 2353" TAGREFS="TYPE_5">
+<TextLine ID="mz_2-197_l32" HPOS="569" VPOS="2306" WIDTH="1655" HEIGHT="67" BASELINE="571 2348 2224 2353" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="571 2348 569 2361 585 2371 587 2371 589 2371 591 2371 1016 2363 1126 2373 1128 2373 2222 2365 2224 2353 2220 2312 2158 2320 2046 2310 2044 2310 2042 2310 2007 2322 1964 2310 1962 2310 1960 2310 1958 2310 1935 2322 1848 2310 1846 2310 1844 2310 1811 2322 1733 2310 1731 2310 1558 2320 1541 2308 1539 2308 1537 2308 1535 2308 1414 2320 1380 2308 1378 2308 1376 2308 1374 2308 1347 2320 1306 2308 1304 2308 1302 2308 1247 2320 1220 2308 1218 2308 1216 2308 1122 2320 842 2320 824 2306 822 2306 820 2306 818 2306 816 2306 791 2318 761 2306 759 2306 757 2306 755 2306 728 2320 630 2320 591 2306 589 2306 587 2306 585 2306 583 2306 571 2314 571 2348"/>
                         </Shape>
@@ -340,30 +312,19 @@
                         </Shape>
                         <String CONTENT="(“raven old man”), etc."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-197_r6" HPOS="459" VPOS="2922" WIDTH="1776" HEIGHT="110" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="459 2922 2235 2922 2235 3032 459 3032"/>
-                    </Shape>
-                    <TextLine ID="mz_2-197_l42" HPOS="575" VPOS="2914" WIDTH="1653" HEIGHT="52" BASELINE="575 2951 2228 2951" TAGREFS="TYPE_5">
+<TextLine ID="mz_2-197_l42" HPOS="575" VPOS="2914" WIDTH="1653" HEIGHT="52" BASELINE="575 2951 2228 2951" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="575 2951 575 2966 2228 2966 2228 2951 2228 2921 575 2914 575 2951"/>
                         </Shape>
                         <String CONTENT="The most effective supplementary means against diseases is, however, the"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-197_r7" HPOS="459" VPOS="3055" WIDTH="1776" HEIGHT="55" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="459 3055 2235 3055 2235 3110 459 3110"/>
-                    </Shape>
-                    <TextLine ID="mz_2-197_l43" HPOS="1206" VPOS="3047" WIDTH="272" HEIGHT="55" BASELINE="1208 3072 1478 3078" TAGREFS="TYPE_5">
+<TextLine ID="mz_2-197_l43" HPOS="1206" VPOS="3047" WIDTH="272" HEIGHT="55" BASELINE="1208 3072 1478 3078" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1208 3072 1206 3088 1298 3102 1300 3102 1476 3094 1478 3078 1478 3053 1208 3047 1208 3072"/>
                         </Shape>
                         <String CONTENT="¹ Compare p. 18."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

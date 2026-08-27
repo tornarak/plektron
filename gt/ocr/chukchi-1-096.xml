@@ -23,33 +23,20 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="QuireMarksZone"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-096_r1" HPOS="642" VPOS="871" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="642 871 2420 871 2420 961 642 961"/>
-                    </Shape>
-                    <TextLine ID="mz_1-096_l1" HPOS="1139" VPOS="870" WIDTH="786" HEIGHT="74" BASELINE="1141 920 1925 915" TAGREFS="TYPE_5">
+                <TextBlock ID="text_1-096" HPOS="639" VPOS="870" WIDTH="1785" HEIGHT="2440"><TextLine ID="mz_1-096_l1" HPOS="1139" VPOS="870" WIDTH="786" HEIGHT="74" BASELINE="1141 920 1925 915" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1139 896 1141 920 1141 935 1908 944 1910 944 1912 944 1915 944 1915 941 1925 931 1925 915 1921 881 1330 870 1328 870 1326 870 1323 870 1323 872 1313 883 1222 883 1161 870 1159 870 1139 896"/>
                         </Shape>
                         <String CONTENT="IV. — REINDEER-BREEDING."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-096_r2" HPOS="642" VPOS="986" WIDTH="1778" HEIGHT="370" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="642 986 2420 986 2420 1356 642 1356"/>
-                    </Shape>
-                    <TextLine ID="mz_1-096_l2" HPOS="749" VPOS="993" WIDTH="1672" HEIGHT="63" BASELINE="752 1037 2421 1041" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-096_l2" HPOS="749" VPOS="993" WIDTH="1672" HEIGHT="63" BASELINE="752 1037 2421 1041" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="2419 1013 2413 1006 1977 996 1975 996 1897 1006 1865 996 1863 996 1860 996 1858 996 1821 1006 1793 996 1791 996 1789 996 1687 1006 1655 996 1653 996 1650 996 1648 996 1618 1006 1585 993 1583 993 1581 993 1514 1004 1267 993 1265 993 752 1002 752 1037 749 1050 2417 1056 2421 1041 2419 1013 2419 1013"/>
                         </Shape>
@@ -90,12 +77,7 @@
                         </Shape>
                         <String CONTENT="eastern corner of Asia."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-096_r3" HPOS="642" VPOS="1356" WIDTH="1778" HEIGHT="548" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="642 1356 2420 1356 2420 1904 642 1904"/>
-                    </Shape>
-                    <TextLine ID="mz_1-096_l8" HPOS="752" VPOS="1353" WIDTH="1669" HEIGHT="67" BASELINE="754 1396 2421 1400" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-096_l8" HPOS="752" VPOS="1353" WIDTH="1669" HEIGHT="67" BASELINE="754 1396 2421 1400" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="754 1396 752 1409 760 1418 760 1420 762 1420 765 1420 767 1420 2419 1411 2421 1400 2419 1368 2036 1355 2034 1355 1977 1366 1956 1355 1954 1355 1951 1355 1949 1355 1947 1355 1930 1366 1906 1355 1904 1355 1902 1355 1899 1355 1897 1355 1880 1368 1759 1368 1731 1355 1728 1355 1726 1355 1724 1355 1681 1366 1653 1355 1650 1355 1648 1355 1646 1355 1614 1366 1581 1353 1579 1353 1577 1353 1575 1353 1544 1364 1481 1353 1479 1353 1477 1353 1447 1364 1425 1353 1423 1353 1421 1353 1419 1353 1375 1366 979 1366 966 1353 964 1353 962 1353 960 1353 957 1353 929 1364 819 1353 817 1353 754 1361 754 1396"/>
                         </Shape>
@@ -157,12 +139,7 @@
                         </Shape>
                         <String CONTENT="shepherd-dog in managing their herds."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-096_r4" HPOS="642" VPOS="1904" WIDTH="1778" HEIGHT="538" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="642 1904 2420 1904 2420 2442 642 2442"/>
-                    </Shape>
-                    <TextLine ID="mz_1-096_l17" HPOS="754" VPOS="1896" WIDTH="1670" HEIGHT="67" BASELINE="756 1933 2424 1937" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-096_l17" HPOS="754" VPOS="1896" WIDTH="1670" HEIGHT="67" BASELINE="756 1933 2424 1937" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="756 1933 754 1948 799 1961 801 1961 804 1961 1525 1952 1603 1963 1605 1963 2421 1952 2424 1937 2421 1907 756 1896 756 1933"/>
                         </Shape>
@@ -224,12 +201,7 @@
                         </Shape>
                         <String CONTENT="however, raise large herds, so that they are able to live on their products."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-096_r5" HPOS="642" VPOS="2442" WIDTH="1778" HEIGHT="204" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="642 2442 2420 2442 2420 2646 642 2646"/>
-                    </Shape>
-                    <TextLine ID="mz_1-096_l26" HPOS="752" VPOS="2433" WIDTH="1665" HEIGHT="63" BASELINE="754 2479 2417 2474" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-096_l26" HPOS="752" VPOS="2433" WIDTH="1665" HEIGHT="63" BASELINE="754 2479 2417 2474" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="754 2479 754 2496 2415 2492 2417 2474 2413 2446 2296 2446 2283 2433 2281 2433 2278 2433 2276 2433 2274 2433 2229 2444 1798 2433 1795 2433 1793 2433 1791 2433 1778 2446 1579 2446 1564 2435 1562 2435 1559 2435 1557 2435 1555 2435 1525 2446 1492 2435 1490 2435 1488 2435 1486 2435 1460 2446 1254 2435 1252 2435 1172 2446 1094 2435 1092 2435 1089 2435 1057 2446 1003 2435 1001 2435 999 2435 973 2446 960 2435 957 2435 955 2435 773 2435 771 2435 769 2435 767 2435 752 2444 754 2479"/>
                         </Shape>
@@ -249,12 +221,7 @@
                         </Shape>
                         <String CONTENT="(Fig. 4) with stanchions fitted into circular holes in the runners and fastened"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-096_r6" HPOS="642" VPOS="3095" WIDTH="1778" HEIGHT="141" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="642 3095 2420 3095 2420 3236 642 3236"/>
-                    </Shape>
-                    <TextLine ID="mz_1-096_l29" HPOS="643" VPOS="3100" WIDTH="1765" HEIGHT="61" BASELINE="646 3141 2408 3145" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-096_l29" HPOS="643" VPOS="3100" WIDTH="1765" HEIGHT="61" BASELINE="646 3141 2408 3145" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="2400 3124 2389 3113 1579 3113 1525 3100 1523 3100 646 3106 646 3141 643 3156 2404 3161 2408 3145 2406 3141 2400 3124"/>
                         </Shape>
@@ -267,19 +234,13 @@
                         </Shape>
                         <String CONTENT="the same as is used throughout eastern Siberia for dog-teams."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-096_r7" HPOS="642" VPOS="3239" WIDTH="1778" HEIGHT="71" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="642 3239 2420 3239 2420 3310 642 3310"/>
-                    </Shape>
-                    <TextLine ID="mz_1-096_l31" HPOS="1471" VPOS="3221" WIDTH="95" HEIGHT="89" BASELINE="1475 3284 1566 3277" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-096_l31" HPOS="1471" VPOS="3221" WIDTH="95" HEIGHT="89" BASELINE="1475 3284 1566 3277" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1475 3284 1475 3301 1486 3310 1488 3310 1490 3310 1492 3310 1494 3310 1497 3310 1518 3297 1566 3303 1566 3277 1557 3221 1471 3236 1475 3284"/>
                         </Shape>
                         <String CONTENT="[70]"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

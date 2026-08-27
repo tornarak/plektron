@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_2-209_r1" HPOS="406" VPOS="462" WIDTH="1776" HEIGHT="86" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="406 462 2182 462 2182 548 406 548"/>
-                    </Shape>
-                    <TextLine ID="mz_2-209_l1" HPOS="983" VPOS="479" WIDTH="611" HEIGHT="49" BASELINE="983 511 1594 511" TAGREFS="TYPE_4">
+                <TextBlock ID="text_2-209" HPOS="399" VPOS="471" WIDTH="1776" HEIGHT="2629"><TextLine ID="mz_2-209_l1" HPOS="983" VPOS="479" WIDTH="611" HEIGHT="49" BASELINE="983 511 1594 511" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1590 489 1572 479 983 479 983 511 983 528 1594 528 1594 511 1592 505 1590 489"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="479"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-209_r2" HPOS="406" VPOS="572" WIDTH="1776" HEIGHT="791" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="406 572 2182 572 2182 1363 406 1363"/>
-                    </Shape>
-                    <TextLine ID="mz_2-209_l3" HPOS="515" VPOS="579" WIDTH="1657" HEIGHT="55" BASELINE="517 611 2172 614" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-209_l3" HPOS="515" VPOS="579" WIDTH="1657" HEIGHT="55" BASELINE="517 611 2172 614" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="517 611 515 626 524 634 526 634 528 634 530 634 2170 626 2172 614 2170 583 517 579 517 611"/>
                         </Shape>
@@ -145,12 +133,7 @@
                         </Shape>
                         <String CONTENT="employed for a “spell.”"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-209_r3" HPOS="406" VPOS="1363" WIDTH="1776" HEIGHT="540" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="406 1363 2182 1363 2182 1903 406 1903"/>
-                    </Shape>
-                    <TextLine ID="mz_2-209_l16" HPOS="517" VPOS="1357" WIDTH="1656" HEIGHT="49" BASELINE="519 1394 2173 1390" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-209_l16" HPOS="517" VPOS="1357" WIDTH="1656" HEIGHT="49" BASELINE="519 1394 2173 1390" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="519 1394 519 1406 2172 1404 2173 1390 2168 1357 517 1357 519 1394"/>
                         </Shape>
@@ -212,12 +195,7 @@
                         </Shape>
                         <String CONTENT="of the speed of the dead on their last trail."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-209_r4" HPOS="406" VPOS="1903" WIDTH="1776" HEIGHT="958" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="406 1903 2182 1903 2182 2861 406 2861"/>
-                    </Shape>
-                    <TextLine ID="mz_2-209_l25" HPOS="513" VPOS="1899" WIDTH="1657" HEIGHT="47" BASELINE="515 1932 2170 1928" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-209_l25" HPOS="513" VPOS="1899" WIDTH="1657" HEIGHT="47" BASELINE="515 1932 2170 1928" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="515 1932 515 1946 2168 1942 2170 1928 2166 1899 513 1899 515 1932"/>
                         </Shape>
@@ -328,12 +306,7 @@
                         </Shape>
                         <String CONTENT="will speedily die."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-209_r5" HPOS="406" VPOS="2861" WIDTH="1776" HEIGHT="123" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="406 2861 2182 2861 2182 2984 406 2984"/>
-                    </Shape>
-                    <TextLine ID="mz_2-209_l41" HPOS="509" VPOS="2851" WIDTH="1657" HEIGHT="53" BASELINE="511 2890 2166 2886" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-209_l41" HPOS="509" VPOS="2851" WIDTH="1657" HEIGHT="53" BASELINE="511 2890 2166 2886" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="511 2890 511 2904 2166 2900 2166 2886 2160 2851 509 2857 511 2890"/>
                         </Shape>
@@ -346,19 +319,13 @@
                         </Shape>
                         <String CONTENT="use their teeth for tearing away the desired pieces. This greatly increases"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-209_r6" HPOS="406" VPOS="3032" WIDTH="1776" HEIGHT="78" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="406 3032 2182 3032 2182 3110 406 3110"/>
-                    </Shape>
-                    <TextLine ID="mz_2-209_l43" HPOS="1137" VPOS="3045" WIDTH="294" HEIGHT="55" BASELINE="1139 3070 1431 3078" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-209_l43" HPOS="1137" VPOS="3045" WIDTH="294" HEIGHT="55" BASELINE="1139 3070 1431 3078" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1139 3070 1137 3086 1226 3100 1227 3100 1429 3094 1431 3078 1431 3055 1143 3045 1139 3070"/>
                         </Shape>
                         <String CONTENT="¹ Compare p. 197."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

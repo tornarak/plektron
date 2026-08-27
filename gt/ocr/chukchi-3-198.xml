@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_3-198_r1" HPOS="528" VPOS="485" WIDTH="1782" HEIGHT="93" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="528 485 2310 485 2310 578 528 578"/>
-                    </Shape>
-                    <TextLine ID="mz_3-198_l1" HPOS="1106" VPOS="505" WIDTH="614" HEIGHT="51" BASELINE="1106 539 1720 539" TAGREFS="TYPE_4">
+                <TextBlock ID="text_3-198" HPOS="524" VPOS="505" WIDTH="1779" HEIGHT="2643"><TextLine ID="mz_3-198_l1" HPOS="1106" VPOS="505" WIDTH="614" HEIGHT="51" BASELINE="1106 539 1720 539" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1711 517 1697 505 1124 505 1108 521 1106 539 1106 556 1720 556 1720 539 1714 523 1711 517"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="730"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-198_r2" HPOS="528" VPOS="609" WIDTH="1782" HEIGHT="1260" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="528 609 2310 609 2310 1869 528 1869"/>
-                    </Shape>
-                    <TextLine ID="mz_3-198_l3" HPOS="528" VPOS="607" WIDTH="1771" HEIGHT="60" BASELINE="528 648 2299 648" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-198_l3" HPOS="528" VPOS="607" WIDTH="1771" HEIGHT="60" BASELINE="528 648 2299 648" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2282 622 2262 620 2243 620 2223 619 2204 619 2186 617 2163 617 2145 617 2141 615 1488 607 1486 607 1485 607 1483 607 1467 617 1412 607 1410 607 1409 607 1387 617 1309 607 1307 607 1305 607 1272 617 1179 607 1177 607 1132 617 1095 607 1093 607 1091 607 878 617 839 607 837 607 836 607 769 617 697 607 695 607 606 617 553 607 551 607 549 607 528 617 528 648 528 661 2297 667 2299 648 2299 622 2282 622"/>
                         </Shape>
@@ -201,12 +189,7 @@
                         </Shape>
                         <String CONTENT="Christianity among the Russian creoles on the Kolyma."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-198_r3" HPOS="528" VPOS="1869" WIDTH="1782" HEIGHT="1266" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="528 1869 2310 1869 2310 3135 528 3135"/>
-                    </Shape>
-                    <TextLine ID="mz_3-198_l24" HPOS="631" VPOS="1862" WIDTH="1666" HEIGHT="58" BASELINE="633 1905 2297 1901" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-198_l24" HPOS="631" VPOS="1862" WIDTH="1666" HEIGHT="58" BASELINE="633 1905 2297 1901" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="633 1905 633 1918 2293 1920 2297 1901 2295 1874 2266 1862 2264 1862 2262 1862 2217 1872 2202 1862 2200 1862 2198 1862 2196 1862 2194 1862 2163 1872 2001 1862 1999 1862 1886 1872 1839 1862 1837 1862 1779 1872 1728 1862 1726 1862 1724 1862 1722 1862 1709 1872 1697 1862 1695 1862 1693 1862 1601 1862 1599 1862 1523 1872 1473 1862 1471 1862 1469 1862 1426 1874 1407 1864 1405 1864 1403 1864 1340 1874 1280 1864 1278 1864 1108 1874 890 1864 888 1864 806 1874 654 1864 652 1864 650 1864 648 1864 631 1872 633 1905"/>
                         </Shape>
@@ -352,8 +335,7 @@
                         </Shape>
                         <String CONTENT="pipe. He like him. Russian man good man. Suppose he gave it him my"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

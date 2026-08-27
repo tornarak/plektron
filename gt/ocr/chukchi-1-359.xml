@@ -23,20 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Other"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MarginTextZone-Notes"/>
         <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-359_r1" HPOS="447" VPOS="808" WIDTH="1778" HEIGHT="1597" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="447 808 2225 808 2225 2405 447 2405"/>
-                    </Shape>
-                    <TextLine ID="mz_1-359_l1" HPOS="1081" VPOS="827" WIDTH="498" HEIGHT="54" BASELINE="1083 866 1579 861" TAGREFS="TYPE_3">
+                <TextBlock ID="text_1-359" HPOS="446" VPOS="827" WIDTH="1785" HEIGHT="2134"><TextLine ID="mz_1-359_l1" HPOS="1081" VPOS="827" WIDTH="498" HEIGHT="54" BASELINE="1083 866 1579 861" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="1083 866 1083 881 1577 876 1579 861 1557 827 1081 829 1083 866"/>
                         </Shape>
@@ -539,12 +533,7 @@
                         </Shape>
                         <String CONTENT="Big River"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-359_r2" HPOS="447" VPOS="2405" WIDTH="1778" HEIGHT="568" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="447 2405 2225 2405 2225 2973 447 2973"/>
-                    </Shape>
-                    <TextLine ID="mz_1-359_l73" HPOS="570" VPOS="2409" WIDTH="1654" HEIGHT="46" BASELINE="570 2437 2224 2437" TAGREFS="TYPE_3">
+<TextLine ID="mz_1-359_l73" HPOS="570" VPOS="2409" WIDTH="1654" HEIGHT="46" BASELINE="570 2437 2224 2437" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="570 2437 570 2455 2222 2455 2224 2437 2222 2409 570 2409 570 2437"/>
                         </Shape>
@@ -634,8 +623,7 @@
                         </Shape>
                         <String CONTENT="much farther to the south."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

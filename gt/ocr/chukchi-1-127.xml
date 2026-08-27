@@ -23,32 +23,20 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="QuireMarksZone"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-127_r1" HPOS="377" VPOS="600" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="377 600 2155 600 2155 690 377 690"/>
-                    </Shape>
-                    <TextLine ID="mz_1-127_l1" HPOS="955" VPOS="623" WIDTH="622" HEIGHT="56" BASELINE="955 658 1577 658" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-127" HPOS="377" VPOS="623" WIDTH="1776" HEIGHT="2702"><TextLine ID="mz_1-127_l1" HPOS="955" VPOS="623" WIDTH="622" HEIGHT="56" BASELINE="955 658 1577 658" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1540 623 1518 623 1497 623 1475 623 1453 623 1432 623 968 623 955 634 955 658 955 679 1577 679 1577 658 1577 623 1562 623 1540 623"/>
                         </Shape>
                         <String CONTENT="BOGORAS, THE CHUKCHEE."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-127_r2" HPOS="377" VPOS="715" WIDTH="1778" HEIGHT="571" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="377 715 2155 715 2155 1286 377 1286"/>
-                    </Shape>
-                    <TextLine ID="mz_1-127_l2" HPOS="377" VPOS="725" WIDTH="1776" HEIGHT="61" BASELINE="379 768 2153 764" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-127_l2" HPOS="377" VPOS="725" WIDTH="1776" HEIGHT="61" BASELINE="379 768 2153 764" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2135 725 2036 725 2023 729 2001 729 1980 729 1958 729 1936 729 1915 729 1893 729 1871 729 1850 729 1828 729 1806 729 1785 729 1763 729 1741 729 1720 729 1698 729 1676 729 1655 729 1633 727 1611 725 1349 725 1347 725 1245 736 394 727 392 727 390 727 388 727 377 734 379 768 379 786 2151 781 2153 764 2148 734 2135 725"/>
                         </Shape>
@@ -110,19 +98,13 @@
                         </Shape>
                         <String CONTENT="off to the Eskimo of St. Lawrence Island for whale-skin and blubber."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-127_r3" HPOS="377" VPOS="3269" WIDTH="1778" HEIGHT="79" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="377 3269 2155 3269 2155 3348 377 3348"/>
-                    </Shape>
-                    <TextLine ID="mz_1-127_l11" HPOS="392" VPOS="3275" WIDTH="684" HEIGHT="50" BASELINE="394 3306 1076 3301" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-127_l11" HPOS="392" VPOS="3275" WIDTH="684" HEIGHT="50" BASELINE="394 3306 1076 3301" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1063 3277 1053 3275 392 3277 394 3306 394 3325 1076 3321 1076 3301 1074 3293 1063 3277"/>
                         </Shape>
                         <String CONTENT="13—JESUP NORTH PACIFIC EXPED., VOL. VII."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

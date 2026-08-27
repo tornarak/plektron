@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="QuireMarksZone"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-179_r1" HPOS="365" VPOS="614" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="365 614 2143 614 2143 704 365 704"/>
-                    </Shape>
-                    <TextLine ID="mz_1-179_l1" HPOS="944" VPOS="623" WIDTH="622" HEIGHT="52" BASELINE="944 656 1566 656" TAGREFS="TYPE_5">
+                <TextBlock ID="text_1-179" HPOS="360" VPOS="623" WIDTH="1784" HEIGHT="2698"><TextLine ID="mz_1-179_l1" HPOS="944" VPOS="623" WIDTH="622" HEIGHT="52" BASELINE="944 656 1566 656" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1562 623 953 623 944 628 944 656 944 675 1566 675 1566 656 1566 625 1562 623"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="137"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-179_r2" HPOS="365" VPOS="729" WIDTH="1778" HEIGHT="237" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="365 729 2143 729 2143 966 365 966"/>
-                    </Shape>
-                    <TextLine ID="mz_1-179_l3" HPOS="360" VPOS="723" WIDTH="1778" HEIGHT="58" BASELINE="362 766 2138 760" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-179_l3" HPOS="360" VPOS="723" WIDTH="1778" HEIGHT="58" BASELINE="362 766 2138 760" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="362 766 362 781 2135 775 2138 760 2133 731 953 723 951 723 877 734 522 725 520 725 360 736 362 766"/>
                         </Shape>
@@ -83,12 +70,7 @@
                         </Shape>
                         <String CONTENT="more valuable than reindeer-skin."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-179_r3" HPOS="365" VPOS="966" WIDTH="1778" HEIGHT="244" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="365 966 2143 966 2143 1210 365 1210"/>
-                    </Shape>
-                    <TextLine ID="mz_1-179_l7" HPOS="468" VPOS="961" WIDTH="1670" HEIGHT="61" BASELINE="470 1006 2138 1002" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-179_l7" HPOS="468" VPOS="961" WIDTH="1670" HEIGHT="61" BASELINE="470 1006 2138 1002" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="470 1006 470 1022 2135 1017 2138 1002 2133 974 2064 961 2062 961 1971 974 1889 974 1876 961 1873 961 1871 961 1869 961 1795 974 1622 974 1607 961 1605 961 1603 961 1601 961 1598 961 1557 974 1464 974 1449 961 1447 961 1445 961 1442 961 1300 974 1215 963 1213 963 1109 976 977 976 964 963 962 963 960 963 957 963 955 963 927 974 836 963 834 963 832 963 799 974 769 963 767 963 765 963 468 970 470 1006"/>
                         </Shape>
@@ -115,12 +97,7 @@
                         </Shape>
                         <String CONTENT="the hunter is able to catch it with his lasso."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-179_r4" HPOS="365" VPOS="1210" WIDTH="1778" HEIGHT="2045" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="365 1210 2143 1210 2143 3255 365 3255"/>
-                    </Shape>
-                    <TextLine ID="mz_1-179_l11" HPOS="466" VPOS="1210" WIDTH="1674" HEIGHT="50" BASELINE="468 1240 2140 1245" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-179_l11" HPOS="466" VPOS="1210" WIDTH="1674" HEIGHT="50" BASELINE="468 1240 2140 1245" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="468 1240 466 1255 2135 1260 2140 1245 2140 1210 468 1210 468 1240"/>
                         </Shape>
@@ -357,19 +334,13 @@
                         </Shape>
                         <String CONTENT="simply with the hands, the animal having been dazed with smoke beforehand."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-179_r5" HPOS="365" VPOS="3272" WIDTH="1778" HEIGHT="73" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="365 3272 2143 3272 2143 3345 365 3345"/>
-                    </Shape>
-                    <TextLine ID="mz_1-179_l45" HPOS="368" VPOS="3273" WIDTH="693" HEIGHT="48" BASELINE="370 3301 1061 3299" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-179_l45" HPOS="368" VPOS="3273" WIDTH="693" HEIGHT="48" BASELINE="370 3301 1061 3299" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="370 3301 370 3321 1061 3319 1061 3299 1055 3273 368 3273 370 3301"/>
                         </Shape>
                         <String CONTENT="18—JESUP NORTH PACIFIC EXPED., VOL. VII."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

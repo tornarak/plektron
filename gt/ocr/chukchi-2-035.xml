@@ -23,23 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="QuireMarksZone"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_6" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_2-035_r1" HPOS="395" VPOS="470" WIDTH="1776" HEIGHT="94" TAGREFS="TYPE_5">
-<Shape>
-                        <Polygon POINTS="395 470 2171 470 2171 564 395 564"/>
-                    </Shape>
-                    <TextLine ID="mz_2-035_l1" HPOS="963" VPOS="483" WIDTH="617" HEIGHT="53" BASELINE="965 515 1580 520" TAGREFS="TYPE_6">
+                <TextBlock ID="text_2-035" HPOS="385" VPOS="483" WIDTH="1785" HEIGHT="2707"><TextLine ID="mz_2-035_l1" HPOS="963" VPOS="483" WIDTH="617" HEIGHT="53" BASELINE="965 515 1580 520" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="967 495 965 515 963 530 1576 536 1580 520 1578 487 979 483 967 495"/>
                         </Shape>
@@ -52,12 +43,7 @@
                         </Shape>
                         <String CONTENT="309"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-035_r2" HPOS="395" VPOS="580" WIDTH="1776" HEIGHT="117" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="395 580 2171 580 2171 697 395 697"/>
-                    </Shape>
-                    <TextLine ID="mz_2-035_l3" HPOS="385" VPOS="583" WIDTH="1765" HEIGHT="69" BASELINE="387 626 2150 622" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-035_l3" HPOS="385" VPOS="583" WIDTH="1765" HEIGHT="69" BASELINE="387 626 2150 622" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="387 626 387 642 687 642 746 652 748 652 881 642 961 652 963 652 965 652 967 652 983 642 1288 650 1290 650 1511 640 1605 650 1607 650 1723 640 1743 650 1745 650 1747 652 1872 652 1872 650 1874 650 1876 650 1889 640 1954 650 1956 650 1958 650 1960 650 1974 640 1985 650 1987 650 1989 650 1991 652 2128 652 2128 650 2130 650 2132 650 2150 638 2150 622 2142 583 2105 593 2070 583 2068 583 2066 583 2064 583 2042 593 2019 583 2017 583 2015 583 2013 583 1989 593 1864 583 1862 583 1860 583 1833 593 1788 583 1786 583 1784 583 1760 593 1694 583 1692 583 1690 583 1688 583 1674 593 1647 583 1645 583 1643 583 1568 593 1537 583 1535 583 1533 583 1531 583 1529 583 1513 595 1400 595 1376 583 1374 583 1372 583 1257 595 1194 585 1192 585 1190 585 1163 595 1112 585 1110 585 1108 585 1081 595 1055 585 1053 585 1051 585 942 595 893 585 891 585 804 595 695 585 693 585 628 595 524 585 522 585 385 597 387 626"/>
                         </Shape>
@@ -70,23 +56,13 @@
                         </Shape>
                         <String CONTENT="The relative positions of these constellations are represented in Fig. 216."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-035_r3" HPOS="395" VPOS="697" WIDTH="1776" HEIGHT="79" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="395 697 2171 697 2171 776 395 776"/>
-                    </Shape>
-                    <TextLine ID="mz_2-035_l5" HPOS="493" VPOS="708" WIDTH="1389" HEIGHT="57" BASELINE="493 748 1882 748" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-035_l5" HPOS="493" VPOS="708" WIDTH="1389" HEIGHT="57" BASELINE="493 748 1882 748" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="493 748 493 763 1880 765 1882 748 1882 720 1684 708 1682 708 1578 718 1545 708 1543 708 1541 708 1539 708 1515 720 1353 720 1323 708 1322 708 1320 708 1261 718 1229 708 1227 708 1226 708 1149 718 1122 708 1120 708 1118 708 1116 708 1085 720 916 720 883 708 881 708 879 708 877 708 853 718 806 708 804 708 742 718 685 708 683 708 603 718 511 708 509 708 507 708 505 708 493 716 493 748"/>
                         </Shape>
                         <String CONTENT="Corona Borealis is supposed to be the paw of a polar bear."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-035_r4" HPOS="395" VPOS="1880" WIDTH="1776" HEIGHT="130" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="395 1880 2171 1880 2171 2010 395 2010"/>
-                    </Shape>
-                    <TextLine ID="mz_2-035_l6" HPOS="505" VPOS="1878" WIDTH="1236" HEIGHT="60" BASELINE="507 1925 1741 1919" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-035_l6" HPOS="505" VPOS="1878" WIDTH="1236" HEIGHT="60" BASELINE="507 1925 1741 1919" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="1739 1903 1737 1901 1725 1885 1690 1880 1680 1880 1670 1880 1647 1887 1637 1880 1621 1880 1602 1880 1600 1880 1541 1887 1525 1880 1523 1880 1504 1880 1492 1889 1392 1889 1374 1878 1367 1878 1357 1878 1314 1889 1286 1878 1284 1878 1282 1878 1133 1889 1106 1878 1104 1878 1102 1878 1100 1878 1079 1889 1059 1878 1057 1878 1055 1878 1053 1878 953 1887 918 1878 916 1878 914 1878 912 1878 910 1878 893 1891 832 1880 830 1880 828 1880 802 1889 755 1880 754 1880 752 1880 730 1891 577 1891 566 1881 566 1880 564 1880 562 1880 515 1880 513 1880 511 1880 509 1880 509 1881 507 1881 505 1881 507 1925 507 1938 1739 1934 1741 1919 1739 1905 1739 1903"/>
                         </Shape>
@@ -99,12 +75,7 @@
                         </Shape>
                         <String CONTENT="star ζ representing its head, and four other stars its flippers."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-035_r5" HPOS="395" VPOS="2010" WIDTH="1776" HEIGHT="178" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="395 2010 2171 2010 2171 2188 395 2188"/>
-                    </Shape>
-                    <TextLine ID="mz_2-035_l8" HPOS="505" VPOS="1997" WIDTH="1232" HEIGHT="71" BASELINE="507 2044 1737 2038" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-035_l8" HPOS="505" VPOS="1997" WIDTH="1232" HEIGHT="71" BASELINE="507 2044 1737 2038" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="507 2044 507 2058 734 2068 736 2068 738 2068 740 2068 740 2066 750 2058 812 2058 853 2068 855 2068 857 2068 922 2056 977 2066 979 2066 1735 2056 1737 2038 1735 2009 1705 1997 1703 1997 1701 1997 1369 2007 1351 1997 1349 1997 1347 1997 1345 1997 1343 1997 1341 1997 1320 2009 887 2001 885 2001 883 2001 881 2001 881 2003 871 2011 822 2001 820 2001 575 2011 517 2001 515 2001 513 2001 511 2001 511 2003 509 2003 505 2005 507 2044"/>
                         </Shape>
@@ -124,12 +95,7 @@
                         </Shape>
                         <String CONTENT="west and to contain numerous islands."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-035_r6" HPOS="395" VPOS="2188" WIDTH="1776" HEIGHT="123" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="395 2188 2171 2188 2171 2311 395 2311"/>
-                    </Shape>
-                    <TextLine ID="mz_2-035_l11" HPOS="505" VPOS="2179" WIDTH="1236" HEIGHT="59" BASELINE="507 2222 1741 2218" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-035_l11" HPOS="505" VPOS="2179" WIDTH="1236" HEIGHT="59" BASELINE="507 2222 1741 2218" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="507 2222 507 2238 1739 2234 1741 2218 1737 2191 1605 2179 1604 2179 1553 2189 1519 2179 1517 2179 1515 2179 1513 2179 1470 2189 1425 2179 1423 2179 1367 2189 1333 2179 1331 2179 1329 2179 1327 2179 1325 2179 1310 2189 1263 2179 1261 2179 1259 2179 1257 2179 1243 2191 1120 2191 1073 2181 1071 2181 1069 2181 1039 2191 998 2181 996 2181 994 2181 992 2181 969 2193 769 2193 732 2181 730 2181 728 2181 726 2181 703 2191 634 2181 632 2181 575 2191 517 2181 515 2181 513 2181 511 2181 511 2183 505 2187 507 2222"/>
                         </Shape>
@@ -142,12 +108,7 @@
                         </Shape>
                         <String CONTENT="five reindeer-bucks standing in the middle of the river."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-035_r7" HPOS="395" VPOS="2851" WIDTH="1776" HEIGHT="118" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="395 2851 2171 2851 2171 2969 395 2969"/>
-                    </Shape>
-                    <TextLine ID="mz_2-035_l13" HPOS="507" VPOS="2837" WIDTH="1655" HEIGHT="65" BASELINE="509 2888 2162 2878" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-035_l13" HPOS="507" VPOS="2837" WIDTH="1655" HEIGHT="65" BASELINE="509 2888 2162 2878" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="509 2888 509 2902 2160 2892 2162 2878 2154 2837 2132 2847 1925 2837 1923 2837 1827 2849 1670 2839 1668 2839 1666 2839 1629 2849 1594 2839 1592 2839 1590 2839 1588 2839 1586 2839 1570 2849 1476 2841 1474 2841 1472 2841 1451 2851 1349 2841 1347 2841 1161 2853 1120 2843 1118 2843 1116 2843 1114 2843 1075 2853 507 2851 509 2888"/>
                         </Shape>
@@ -160,12 +121,7 @@
                         </Shape>
                         <String CONTENT="differ from mine only in the method of transcription; but he calls Cassiopeia"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-035_r8" HPOS="395" VPOS="2984" WIDTH="1776" HEIGHT="133" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="395 2984 2171 2984 2171 3117 395 3117"/>
-                    </Shape>
-                    <TextLine ID="mz_2-035_l15" HPOS="513" VPOS="2982" WIDTH="1657" HEIGHT="55" BASELINE="515 3013 2170 3006" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-035_l15" HPOS="513" VPOS="2982" WIDTH="1657" HEIGHT="55" BASELINE="515 3013 2170 3006" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="515 3013 515 3027 736 3037 738 3037 2170 3021 2170 3006 2164 2982 513 2988 515 3013"/>
                         </Shape>
@@ -185,19 +141,13 @@
                         </Shape>
                         <String CONTENT="² Vega Expeditionens Vetenskapliga jakttagelser, I, p. 397."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-035_r9" HPOS="395" VPOS="3144" WIDTH="1776" HEIGHT="60" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="395 3144 2171 3144 2171 3204 395 3204"/>
-                    </Shape>
-                    <TextLine ID="mz_2-035_l18" HPOS="399" VPOS="3143" WIDTH="693" HEIGHT="47" BASELINE="401 3176 1092 3168" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-035_l18" HPOS="399" VPOS="3143" WIDTH="693" HEIGHT="47" BASELINE="401 3176 1092 3168" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="401 3176 401 3190 1092 3186 1092 3168 1086 3143 399 3149 401 3176"/>
                         </Shape>
                         <String CONTENT="40—JESUP NORTH PACIFIC EXPED., VOL. VII."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

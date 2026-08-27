@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-180_r1" HPOS="573" VPOS="606" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="573 606 2351 606 2351 696 573 696"/>
-                    </Shape>
-                    <TextLine ID="mz_1-180_l1" HPOS="1157" VPOS="617" WIDTH="619" HEIGHT="54" BASELINE="1159 651 1776 656" TAGREFS="TYPE_5">
+                <TextBlock ID="text_1-180" HPOS="572" VPOS="615" WIDTH="1778" HEIGHT="2636"><TextLine ID="mz_1-180_l1" HPOS="1157" VPOS="617" WIDTH="619" HEIGHT="54" BASELINE="1159 651 1776 656" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1765 621 1763 619 1178 617 1159 628 1159 651 1157 666 1772 671 1776 656 1774 621 1765 619 1765 621"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="138"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-180_r2" HPOS="573" VPOS="721" WIDTH="1778" HEIGHT="963" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="573 721 2351 721 2351 1684 573 1684"/>
-                    </Shape>
-                    <TextLine ID="mz_1-180_l3" HPOS="578" VPOS="721" WIDTH="1772" HEIGHT="58" BASELINE="578 764 2350 764" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-180_l3" HPOS="578" VPOS="721" WIDTH="1772" HEIGHT="58" BASELINE="578 764 2350 764" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="2159 723 2138 723 2116 721 2094 721 2073 721 2001 721 1999 721 1997 721 1995 721 1980 731 1917 721 1915 721 1863 731 1793 721 1791 721 1733 731 1646 721 1505 721 1503 721 1501 721 1499 721 1484 731 1395 721 1271 721 1269 721 1267 721 1265 721 1252 731 1198 721 1196 721 1193 721 1163 731 578 727 578 764 578 779 2350 779 2350 764 2350 734 2166 723 2159 723"/>
                         </Shape>
@@ -167,12 +154,7 @@
                         </Shape>
                         <String CONTENT="burrow is dug after, especially since often it does not hide in its own hole."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-180_r3" HPOS="573" VPOS="1684" WIDTH="1778" HEIGHT="130" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="573 1684 2351 1684 2351 1814 573 1814"/>
-                    </Shape>
-                    <TextLine ID="mz_1-180_l19" HPOS="687" VPOS="1680" WIDTH="1663" HEIGHT="69" BASELINE="689 1721 2350 1725" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-180_l19" HPOS="687" VPOS="1680" WIDTH="1663" HEIGHT="69" BASELINE="689 1721 2350 1725" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="689 1721 687 1736 702 1747 704 1747 706 1747 708 1747 843 1736 1403 1747 1406 1747 1488 1736 1531 1747 1533 1747 1536 1747 2207 1738 2302 1749 2304 1749 2307 1749 2348 1736 2350 1725 2348 1695 2248 1682 2246 1682 2244 1682 2211 1693 2153 1682 2151 1682 2055 1693 2010 1682 2008 1682 2006 1682 1947 1693 1876 1682 1873 1682 1802 1693 1705 1682 1702 1682 1700 1682 1668 1693 1479 1680 1477 1680 1475 1680 1429 1691 1349 1680 1347 1680 1345 1680 1317 1693 1193 1693 1178 1680 1176 1680 1174 1680 1172 1680 1098 1691 689 1684 689 1721"/>
                         </Shape>
@@ -185,12 +167,7 @@
                         </Shape>
                         <String CONTENT="common throughout the northern part of the Old World and possibly brought"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-180_r4" HPOS="573" VPOS="2686" WIDTH="1778" HEIGHT="491" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="573 2686 2351 2686 2351 3177 573 3177"/>
-                    </Shape>
-                    <TextLine ID="mz_1-180_l21" HPOS="572" VPOS="2697" WIDTH="1776" HEIGHT="52" BASELINE="574 2730 2348 2734" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-180_l21" HPOS="572" VPOS="2697" WIDTH="1776" HEIGHT="52" BASELINE="574 2730 2348 2734" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="574 2730 572 2745 2343 2749 2348 2734 2346 2702 574 2697 574 2730"/>
                         </Shape>
@@ -245,19 +222,13 @@
                         </Shape>
                         <String CONTENT="the sinew cords. On the other hand, this kind of trap is not very safe for"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-180_r5" HPOS="573" VPOS="3198" WIDTH="1778" HEIGHT="57" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="573 3198 2351 3198 2351 3255 573 3255"/>
-                    </Shape>
-                    <TextLine ID="mz_1-180_l29" HPOS="1100" VPOS="3202" WIDTH="721" HEIGHT="49" BASELINE="1102 3230 1821 3234" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-180_l29" HPOS="1100" VPOS="3202" WIDTH="721" HEIGHT="49" BASELINE="1102 3230 1821 3234" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1102 3230 1100 3247 1817 3251 1821 3234 1819 3206 1102 3202 1102 3230"/>
                         </Shape>
                         <String CONTENT="¹ For description, see Nelson, pp. 122, 123."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

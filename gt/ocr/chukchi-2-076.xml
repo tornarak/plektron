@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_2-076_r1" HPOS="387" VPOS="454" WIDTH="1776" HEIGHT="94" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="387 454 2163 454 2163 548 387 548"/>
-                    </Shape>
-                    <TextLine ID="mz_2-076_l1" HPOS="965" VPOS="475" WIDTH="615" HEIGHT="49" BASELINE="965 509 1580 509" TAGREFS="TYPE_4">
+                <TextBlock ID="text_2-076" HPOS="377" VPOS="475" WIDTH="1781" HEIGHT="2660"><TextLine ID="mz_2-076_l1" HPOS="965" VPOS="475" WIDTH="615" HEIGHT="49" BASELINE="965 509 1580 509" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1572 475 981 475 967 495 965 509 965 524 1580 524 1580 509 1578 505 1572 475"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="350"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-076_r2" HPOS="387" VPOS="572" WIDTH="1776" HEIGHT="493" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="387 572 2163 572 2163 1065 387 1065"/>
-                    </Shape>
-                    <TextLine ID="mz_2-076_l3" HPOS="489" VPOS="571" WIDTH="1665" HEIGHT="65" BASELINE="491 614 2154 618" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-076_l3" HPOS="489" VPOS="571" WIDTH="1665" HEIGHT="65" BASELINE="491 614 2154 618" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2136 575 2134 573 2132 573 2130 573 2128 573 2019 585 1974 573 1972 573 1970 573 1884 585 1821 573 1819 573 1817 573 1786 585 1745 573 1743 573 1741 573 1678 585 1623 573 1621 573 1619 573 1582 585 1566 573 1564 573 1562 573 1560 573 1502 585 1443 573 1441 573 1439 573 1437 573 1419 587 1351 587 1318 571 1316 571 1314 571 1312 571 1282 583 1255 571 1253 571 1251 571 1180 581 1145 571 1143 571 1141 571 1139 571 1137 571 1118 583 1030 571 1028 571 1026 571 998 581 969 571 967 571 965 571 963 571 961 571 940 585 869 585 844 571 842 571 840 571 838 571 806 583 730 571 728 571 726 571 701 583 491 577 491 614 489 626 505 636 507 636 509 636 511 636 2152 628 2154 618 2154 605 2136 575"/>
                         </Shape>
@@ -110,12 +98,7 @@
                         </Shape>
                         <String CONTENT="connection with the herd. The holes made by drilling are considered the"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-076_r3" HPOS="387" VPOS="2256" WIDTH="1776" HEIGHT="546" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="387 2256 2163 2256 2163 2802 387 2802"/>
-                    </Shape>
-                    <TextLine ID="mz_2-076_l11" HPOS="383" VPOS="2256" WIDTH="1318" HEIGHT="64" BASELINE="385 2295 1701 2299" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-076_l11" HPOS="383" VPOS="2256" WIDTH="1318" HEIGHT="64" BASELINE="385 2295 1701 2299" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1658 2261 1639 2261 1619 2261 1600 2261 1580 2261 1560 2261 1547 2259 1265 2267 1198 2257 1196 2257 1194 2257 1173 2269 1057 2269 1024 2256 1022 2256 1020 2256 1018 2256 991 2265 977 2256 975 2256 973 2256 971 2256 918 2265 855 2256 853 2256 851 2256 808 2265 748 2256 746 2256 744 2256 703 2265 677 2256 675 2256 673 2256 671 2256 644 2265 595 2256 593 2256 423 2263 405 2265 385 2269 385 2295 383 2308 405 2320 407 2320 409 2320 1700 2312 1701 2299 1701 2269 1672 2261 1658 2261"/>
                         </Shape>
@@ -177,12 +160,7 @@
                         </Shape>
                         <String CONTENT="derived from its daily connection with the fire of the hearth."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-076_r4" HPOS="387" VPOS="2802" WIDTH="1776" HEIGHT="314" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="387 2802 2163 2802 2163 3116 387 3116"/>
-                    </Shape>
-                    <TextLine ID="mz_2-076_l20" HPOS="493" VPOS="2796" WIDTH="1663" HEIGHT="57" BASELINE="495 2835 2156 2839" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-076_l20" HPOS="493" VPOS="2796" WIDTH="1663" HEIGHT="57" BASELINE="495 2835 2156 2839" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2121 2800 2101 2800 2091 2798 1850 2808 1598 2798 1596 2798 1478 2808 1429 2798 1427 2798 1359 2808 1325 2796 1323 2796 1322 2796 1320 2796 1292 2806 1231 2796 1229 2796 1182 2806 1163 2796 1161 2796 1159 2796 1053 2806 495 2802 495 2835 493 2849 2152 2853 2156 2839 2156 2810 2136 2800 2121 2800"/>
                         </Shape>
@@ -216,8 +194,7 @@
                         </Shape>
                         <String CONTENT="to generation. Each boy born to the family is given, when he is four or five"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

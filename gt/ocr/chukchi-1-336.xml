@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-336_r1" HPOS="572" VPOS="609" WIDTH="1778" HEIGHT="80" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="572 609 2350 609 2350 689 572 689"/>
-                    </Shape>
-                    <TextLine ID="mz_1-336_l1" HPOS="1148" VPOS="623" WIDTH="621" HEIGHT="56" BASELINE="1150 658 1769 662" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-336" HPOS="568" VPOS="623" WIDTH="1778" HEIGHT="2622"><TextLine ID="mz_1-336_l1" HPOS="1148" VPOS="623" WIDTH="621" HEIGHT="56" BASELINE="1150 658 1769 662" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1150 628 1150 658 1148 675 1765 679 1769 662 1756 625 1159 623 1150 628"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="258"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-336_r2" HPOS="572" VPOS="727" WIDTH="1778" HEIGHT="307" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="572 727 2350 727 2350 1034 572 1034"/>
-                    </Shape>
-                    <TextLine ID="mz_1-336_l3" HPOS="685" VPOS="725" WIDTH="1656" HEIGHT="67" BASELINE="687 766 2341 773" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-336_l3" HPOS="685" VPOS="725" WIDTH="1656" HEIGHT="67" BASELINE="687 766 2341 773" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2333 744 2311 744 2289 742 2268 742 2246 742 2224 740 2203 740 2187 738 864 725 860 727 838 727 817 727 795 727 773 727 758 725 687 725 687 766 685 783 2337 792 2341 773 2339 744 2333 744"/>
                         </Shape>
@@ -96,12 +84,7 @@
                         </Shape>
                         <String CONTENT="(Fig."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-336_r3" HPOS="572" VPOS="1034" WIDTH="1778" HEIGHT="668" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="572 1034 2350 1034 2350 1702 572 1702"/>
-                    </Shape>
-                    <TextLine ID="mz_1-336_l9" HPOS="1510" VPOS="1024" WIDTH="833" HEIGHT="62" BASELINE="1512 1069 2343 1065" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-336_l9" HPOS="1510" VPOS="1024" WIDTH="833" HEIGHT="62" BASELINE="1512 1069 2343 1065" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1512 1069 1512 1086 2341 1082 2343 1065 2341 1037 2330 1026 2330 1024 2328 1024 2326 1024 2324 1024 2322 1024 2320 1024 2302 1035 2239 1024 2237 1024 2235 1024 2233 1024 2233 1026 2222 1037 1984 1037 1958 1024 1956 1024 1954 1024 1951 1024 1921 1039 1795 1039 1785 1028 1785 1026 1782 1026 1780 1026 1778 1026 1776 1026 1752 1037 1646 1026 1644 1026 1510 1035 1512 1069"/>
                         </Shape>
@@ -177,12 +160,7 @@
                         </Shape>
                         <String CONTENT="“wooden manikins” (ottaˊᵋ-laˊulqaitê). I"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-336_r4" HPOS="572" VPOS="3116" WIDTH="1778" HEIGHT="149" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="572 3116 2350 3116 2350 3265 572 3265"/>
-                    </Shape>
-                    <TextLine ID="mz_1-336_l20" HPOS="568" VPOS="3115" WIDTH="1775" HEIGHT="65" BASELINE="570 3161 2343 3154" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-336_l20" HPOS="568" VPOS="3115" WIDTH="1775" HEIGHT="65" BASELINE="570 3161 2343 3154" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="570 3161 570 3171 2317 3180 2320 3180 2322 3180 2324 3180 2343 3167 2343 3154 2339 3124 1161 3115 1159 3115 1157 3115 1126 3126 799 3117 797 3117 568 3128 570 3161"/>
                         </Shape>
@@ -195,8 +173,7 @@
                         </Shape>
                         <String CONTENT="people on the Wolverene River. Head-bands with wooden images attached are"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

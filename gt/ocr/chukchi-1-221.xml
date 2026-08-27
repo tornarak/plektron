@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-221_r1" HPOS="412" VPOS="597" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="412 597 2190 597 2190 687 412 687"/>
-                    </Shape>
-                    <TextLine ID="mz_1-221_l1" HPOS="1001" VPOS="612" WIDTH="615" HEIGHT="54" BASELINE="1001 645 1616 645" TAGREFS="TYPE_5">
+                <TextBlock ID="text_1-221" HPOS="414" VPOS="612" WIDTH="1780" HEIGHT="2637"><TextLine ID="mz_1-221_l1" HPOS="1001" VPOS="612" WIDTH="615" HEIGHT="54" BASELINE="1001 645 1616 645" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1607 617 1596 612 1001 612 1001 645 1001 666 1616 666 1616 645 1614 632 1607 617"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="173"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-221_r2" HPOS="412" VPOS="712" WIDTH="1778" HEIGHT="127" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="412 712 2190 712 2190 839 412 839"/>
-                    </Shape>
-                    <TextLine ID="mz_1-221_l3" HPOS="416" VPOS="712" WIDTH="1776" HEIGHT="58" BASELINE="416 755 2192 755" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-221_l3" HPOS="416" VPOS="712" WIDTH="1776" HEIGHT="58" BASELINE="416 755 2192 755" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="654 716 633 716 611 718 604 718 574 723 568 721 546 721 524 723 520 723 503 723 481 725 459 725 438 727 416 727 416 755 416 770 2192 770 2192 755 2192 725 2140 712 2138 712 2135 712 2107 723 2092 712 2090 712 2088 712 2086 712 1984 723 1882 712 1880 712 1878 712 1830 723 1477 712 1475 712 1419 723 1401 712 1399 712 1397 712 1395 712 1341 723 1328 712 1326 712 1323 712 1204 712 1202 712 1200 712 1176 723 1146 712 1144 712 1141 712 1014 723 986 712 983 712 981 712 912 723 897 712 895 712 892 712 775 712 773 712 771 712 745 723 672 714 654 716"/>
                         </Shape>
@@ -69,12 +56,7 @@
                         </Shape>
                         <String CONTENT="combinations of winds and points of the compass referred to previously.¹"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-221_r3" HPOS="412" VPOS="839" WIDTH="1778" HEIGHT="1980" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="412 839 2190 839 2190 2819 412 2819"/>
-                    </Shape>
-                    <TextLine ID="mz_1-221_l5" HPOS="524" VPOS="842" WIDTH="1668" HEIGHT="52" BASELINE="524 876 2192 876" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-221_l5" HPOS="524" VPOS="842" WIDTH="1668" HEIGHT="52" BASELINE="524 876 2192 876" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="524 876 524 894 2190 894 2192 876 2190 846 524 842 524 876"/>
                         </Shape>
@@ -304,12 +286,7 @@
                         </Shape>
                         <String CONTENT="at hand in the outer room."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-221_r4" HPOS="412" VPOS="2819" WIDTH="1778" HEIGHT="360" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="412 2819 2190 2819 2190 3179 412 3179"/>
-                    </Shape>
-                    <TextLine ID="mz_1-221_l38" HPOS="533" VPOS="2814" WIDTH="777" HEIGHT="67" BASELINE="533 2855 1310 2855" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-221_l38" HPOS="533" VPOS="2814" WIDTH="777" HEIGHT="67" BASELINE="533 2855 1310 2855" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="533 2855 533 2870 648 2870 659 2879 659 2881 661 2881 663 2881 665 2881 1310 2868 1310 2855 1310 2827 1228 2814 1226 2814 1172 2825 1120 2814 1118 2814 1115 2814 1087 2825 1014 2814 1012 2814 1009 2814 975 2825 905 2814 903 2814 849 2825 788 2814 786 2814 784 2814 745 2825 533 2823 533 2855"/>
                         </Shape>
@@ -350,19 +327,13 @@
                         </Shape>
                         <String CONTENT="together, similar to those of the Eskimo. Each blanket serves for a whole family."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-221_r5" HPOS="412" VPOS="3198" WIDTH="1778" HEIGHT="55" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="412 3198 2190 3198 2190 3253 412 3253"/>
-                    </Shape>
-                    <TextLine ID="mz_1-221_l44" HPOS="1161" VPOS="3191" WIDTH="294" HEIGHT="58" BASELINE="1163 3219 1455 3223" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-221_l44" HPOS="1161" VPOS="3191" WIDTH="294" HEIGHT="58" BASELINE="1163 3219 1455 3223" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1163 3219 1161 3234 1323 3249 1326 3249 1453 3238 1455 3223 1453 3195 1163 3191 1163 3219"/>
                         </Shape>
                         <String CONTENT="¹ Compare, p. 27."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

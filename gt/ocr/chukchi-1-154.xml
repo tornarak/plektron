@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-154_r1" HPOS="608" VPOS="595" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="608 595 2386 595 2386 685 608 685"/>
-                    </Shape>
-                    <TextLine ID="mz_1-154_l1" HPOS="1193" VPOS="608" WIDTH="615" HEIGHT="56" BASELINE="1193 640 1808 640" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-154" HPOS="604" VPOS="602" WIDTH="1783" HEIGHT="2617"><TextLine ID="mz_1-154_l1" HPOS="1193" VPOS="608" WIDTH="615" HEIGHT="56" BASELINE="1193 640 1808 640" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1800 619 1778 608 1756 608 1735 608 1713 608 1692 608 1670 608 1648 608 1627 608 1605 608 1583 608 1562 608 1540 608 1518 608 1497 608 1475 608 1453 608 1432 608 1410 608 1388 608 1367 608 1345 608 1323 608 1302 608 1280 608 1258 608 1237 608 1215 608 1193 608 1193 640 1193 664 1808 664 1808 640 1804 628 1800 619"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="118"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-154_r2" HPOS="608" VPOS="710" WIDTH="1778" HEIGHT="359" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="608 710 2386 710 2386 1069 608 1069"/>
-                    </Shape>
-                    <TextLine ID="mz_1-154_l3" HPOS="607" VPOS="705" WIDTH="1780" HEIGHT="74" BASELINE="609 755 2387 749" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-154_l3" HPOS="607" VPOS="705" WIDTH="1780" HEIGHT="74" BASELINE="609 755 2387 749" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2361 718 2339 718 2317 716 2296 716 2274 714 2252 714 2231 714 2218 716 2205 712 2187 712 2166 710 2164 710 2140 716 2122 710 2122 710 2101 708 2086 708 1993 716 1956 705 1954 705 1951 705 1949 705 1947 705 1932 716 1778 708 1776 708 1774 708 1772 708 1756 721 1624 721 1585 708 1583 708 1581 708 1486 718 1382 708 1380 708 1378 708 1375 708 1360 718 1267 708 1265 708 1263 708 1230 718 1204 708 1202 708 1200 708 1198 708 1196 708 1176 721 741 710 739 710 736 710 702 721 641 710 639 710 637 710 607 721 609 755 609 766 665 779 667 779 669 779 704 768 1109 779 1111 779 1232 766 1657 777 1659 777 1661 777 1705 766 1789 777 1791 777 1793 777 1824 764 2365 775 2367 775 2369 775 2372 775 2387 762 2387 749 2382 718 2361 718"/>
                         </Shape>
@@ -96,12 +84,7 @@
                         </Shape>
                         <String CONTENT="harpoon-head is released as soon as it strikes the game."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-154_r3" HPOS="608" VPOS="1069" WIDTH="1778" HEIGHT="602" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="608 1069 2386 1069 2386 1671 608 1671"/>
-                    </Shape>
-                    <TextLine ID="mz_1-154_l9" HPOS="713" VPOS="1065" WIDTH="1672" HEIGHT="63" BASELINE="715 1110 2385 1104" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-154_l9" HPOS="713" VPOS="1065" WIDTH="1672" HEIGHT="63" BASELINE="715 1110 2385 1104" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="715 1110 715 1128 2382 1121 2385 1104 2380 1076 1847 1065 1845 1065 1843 1065 1821 1076 1295 1067 1293 1067 1230 1080 713 1080 715 1110"/>
                         </Shape>
@@ -170,12 +153,7 @@
                         </Shape>
                         <String CONTENT="cylinder and hangs down suspended by the loop."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-154_r4" HPOS="608" VPOS="1671" WIDTH="1778" HEIGHT="1574" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="608 1671 2386 1671 2386 3245 608 3245"/>
-                    </Shape>
-                    <TextLine ID="mz_1-154_l19" HPOS="719" VPOS="1671" WIDTH="1666" HEIGHT="52" BASELINE="719 1706 2385 1706" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-154_l19" HPOS="719" VPOS="1671" WIDTH="1666" HEIGHT="52" BASELINE="719 1706 2385 1706" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="719 1706 719 1723 2385 1723 2385 1706 2385 1675 719 1671 719 1706"/>
                         </Shape>
@@ -356,8 +334,7 @@
                         </Shape>
                         <String CONTENT="hunter suddenly stands up and throws the harpoon straight down into the hole"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

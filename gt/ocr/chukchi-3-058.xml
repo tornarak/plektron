@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_3-058_r1" HPOS="352" VPOS="453" WIDTH="1782" HEIGHT="94" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="352 453 2134 453 2134 547 352 547"/>
-                    </Shape>
-                    <TextLine ID="mz_3-058_l1" HPOS="929" VPOS="470" WIDTH="608" HEIGHT="51" BASELINE="929 504 1537 504" TAGREFS="TYPE_4">
+                <TextBlock ID="text_3-058" HPOS="348" VPOS="470" WIDTH="1772" HEIGHT="2616"><TextLine ID="mz_3-058_l1" HPOS="929" VPOS="470" WIDTH="608" HEIGHT="51" BASELINE="929 504 1537 504" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1533 480 1516 470 929 470 929 504 929 521 1537 521 1537 504 1537 480 1533 480"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="592"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-058_r2" HPOS="352" VPOS="570" WIDTH="1782" HEIGHT="725" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="352 570 2134 570 2134 1295 352 1295"/>
-                    </Shape>
-                    <TextLine ID="mz_3-058_l3" HPOS="348" VPOS="566" WIDTH="1766" HEIGHT="62" BASELINE="350 613 2114 605" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-058_l3" HPOS="348" VPOS="566" WIDTH="1766" HEIGHT="62" BASELINE="350 613 2114 605" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2102 576 2083 576 2063 574 2044 574 2024 574 2017 572 1806 576 1714 566 1713 566 1599 578 1572 568 1570 568 1568 568 1566 568 1547 578 1525 568 1523 568 1522 568 1520 568 1518 568 1504 578 1442 568 1440 568 1438 568 1403 578 1303 568 1301 568 1251 578 1235 568 1233 568 1231 568 1229 568 915 580 892 570 890 570 888 570 886 570 853 580 828 570 826 570 824 570 822 570 787 581 629 572 627 572 578 581 526 572 524 572 522 572 487 581 395 572 393 572 391 572 348 583 350 613 350 628 2112 620 2114 605 2108 576 2102 576"/>
                         </Shape>
@@ -138,12 +126,7 @@
                         </Shape>
                         <String CONTENT="the Chukchee brother-in-law has to relieve them, even almost against his will."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-058_r3" HPOS="352" VPOS="1295" WIDTH="1782" HEIGHT="1144" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="352 1295 2134 1295 2134 2439 352 2439"/>
-                    </Shape>
-                    <TextLine ID="mz_3-058_l15" HPOS="455" VPOS="1287" WIDTH="1659" HEIGHT="60" BASELINE="457 1334 2114 1324" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-058_l15" HPOS="455" VPOS="1287" WIDTH="1659" HEIGHT="60" BASELINE="457 1334 2114 1324" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="457 1334 457 1347 2112 1342 2114 1324 2110 1297 1829 1287 1828 1287 1734 1299 455 1299 457 1334"/>
                         </Shape>
@@ -275,12 +258,7 @@
                         </Shape>
                         <String CONTENT="reindeer-breeding family."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-058_r4" HPOS="352" VPOS="2439" WIDTH="1782" HEIGHT="179" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="352 2439 2134 2439 2134 2618 352 2618"/>
-                    </Shape>
-                    <TextLine ID="mz_3-058_l34" HPOS="459" VPOS="2425" WIDTH="1659" HEIGHT="57" BASELINE="461 2470 2118 2464" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-058_l34" HPOS="459" VPOS="2425" WIDTH="1659" HEIGHT="57" BASELINE="461 2470 2118 2464" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="461 2470 461 2482 2116 2476 2118 2464 2114 2437 2013 2425 2011 2425 2009 2425 2007 2425 1993 2437 1880 2437 1843 2425 1841 2425 1839 2425 1837 2425 1835 2425 1818 2437 1693 2437 1658 2425 1656 2425 1654 2425 1607 2435 1568 2425 1566 2425 1564 2425 1562 2425 1537 2437 1525 2427 1523 2427 1522 2427 1520 2427 1366 2437 1352 2427 1350 2427 1348 2427 1204 2427 1202 2427 1200 2427 1161 2437 1106 2427 1104 2427 1009 2439 884 2429 882 2429 781 2439 742 2429 740 2429 738 2429 609 2439 576 2429 574 2429 572 2429 570 2429 537 2439 477 2429 475 2429 473 2429 471 2429 459 2437 461 2470"/>
                         </Shape>
@@ -300,12 +278,7 @@
                         </Shape>
                         <String CONTENT="past, and half to the present."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-058_r5" HPOS="352" VPOS="2618" WIDTH="1782" HEIGHT="478" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="352 2618 2134 2618 2134 3096 352 3096"/>
-                    </Shape>
-                    <TextLine ID="mz_3-058_l37" HPOS="463" VPOS="2604" WIDTH="1655" HEIGHT="59" BASELINE="465 2649 2118 2643" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-058_l37" HPOS="463" VPOS="2604" WIDTH="1655" HEIGHT="59" BASELINE="465 2649 2118 2643" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="465 2649 465 2663 2116 2661 2118 2643 2116 2616 2087 2604 2085 2604 2083 2604 2081 2604 2056 2614 2007 2604 2005 2604 2003 2604 1970 2616 1841 2616 1820 2604 1818 2604 1816 2604 1644 2614 1615 2604 1613 2604 1611 2604 1609 2604 1607 2604 1592 2614 1568 2604 1566 2604 1564 2604 1562 2604 1561 2604 1549 2616 1529 2606 1527 2606 1525 2606 1471 2616 1449 2606 1447 2606 1446 2606 1444 2606 1418 2616 1373 2606 1371 2606 1370 2606 1344 2616 1260 2606 1258 2606 1093 2616 1040 2606 1038 2606 1036 2606 1003 2618 463 2612 465 2649"/>
                         </Shape>
@@ -360,8 +333,7 @@
                         </Shape>
                         <String CONTENT="belonged lived on the frontier of the Chukchee territory, and were in constant"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

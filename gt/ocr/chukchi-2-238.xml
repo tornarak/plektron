@@ -23,23 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-Other"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_6" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_2-238_r1" HPOS="328" VPOS="470" WIDTH="1776" HEIGHT="94" TAGREFS="TYPE_5">
-<Shape>
-                        <Polygon POINTS="328 470 2104 470 2104 564 328 564"/>
-                    </Shape>
-                    <TextLine ID="mz_2-238_l1" HPOS="342" VPOS="479" WIDTH="96" HEIGHT="61" BASELINE="342 522 438 522" TAGREFS="TYPE_6">
+                <TextBlock ID="text_2-238" HPOS="323" VPOS="479" WIDTH="1776" HEIGHT="2623"><TextLine ID="mz_2-238_l1" HPOS="342" VPOS="479" WIDTH="96" HEIGHT="61" BASELINE="342 522 438 522" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="342 522 342 540 438 534 438 522 438 489 409 479 407 479 405 479 342 489 342 522"/>
                         </Shape>
@@ -52,12 +43,7 @@
                         </Shape>
                         <String CONTENT="BOGORAS, THE CHUKCHEE."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-238_r2" HPOS="328" VPOS="588" WIDTH="1776" HEIGHT="117" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="328 588 2104 588 2104 705 328 705"/>
-                    </Shape>
-                    <TextLine ID="mz_2-238_l3" HPOS="334" VPOS="583" WIDTH="1761" HEIGHT="65" BASELINE="336 622 2095 626" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-238_l3" HPOS="334" VPOS="583" WIDTH="1761" HEIGHT="65" BASELINE="336 622 2095 626" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="336 622 334 636 558 648 560 648 2093 642 2095 626 2093 597 1739 585 1737 585 1641 595 1611 585 1609 585 1607 585 1605 585 1604 585 1588 597 1392 597 1333 585 1331 585 1249 595 1161 583 1159 583 1085 593 1061 583 1059 583 1057 583 1004 593 906 583 904 583 848 593 785 583 783 583 716 595 515 595 499 583 497 583 495 583 493 583 491 583 466 593 438 583 436 583 434 583 336 591 336 622"/>
                         </Shape>
@@ -70,12 +56,7 @@
                         </Shape>
                         <String CONTENT="head to foot. Indeed, the husband begins to be drawn towards her.)"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-238_r3" HPOS="328" VPOS="705" WIDTH="1776" HEIGHT="243" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="328 705 2104 705 2104 948 328 948"/>
-                    </Shape>
-                    <TextLine ID="mz_2-238_l5" HPOS="448" VPOS="706" WIDTH="1651" HEIGHT="55" BASELINE="448 748 2099 748" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-238_l5" HPOS="448" VPOS="706" WIDTH="1651" HEIGHT="55" BASELINE="448 748 2099 748" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="448 748 448 761 2099 761 2099 748 2099 718 2048 706 2046 706 2044 706 2017 716 1950 706 1948 706 1946 706 1917 716 1848 706 1846 706 1795 716 1770 706 1768 706 1766 706 1764 706 1725 718 1605 718 1590 706 1588 706 1586 706 1584 706 1582 706 1555 716 1517 706 1515 706 1513 706 1425 716 448 708 448 748"/>
                         </Shape>
@@ -102,34 +83,19 @@
                         </Shape>
                         <String CONTENT="insistent!” And really the husband leaves off his former passion."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-238_r4" HPOS="328" VPOS="948" WIDTH="1776" HEIGHT="84" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="328 948 2104 948 2104 1032 328 1032"/>
-                    </Shape>
-                    <TextLine ID="mz_2-238_l9" HPOS="1057" VPOS="973" WIDTH="1040" HEIGHT="53" BASELINE="1059 1002 2097 1006" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-238_l9" HPOS="1057" VPOS="973" WIDTH="1040" HEIGHT="53" BASELINE="1059 1002 2097 1006" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="1059 1002 1057 1018 1071 1026 1073 1026 1075 1026 1077 1026 2095 1018 2097 1006 2095 977 1059 973 1059 1002"/>
                         </Shape>
                         <String CONTENT="Told by Äqäˊññä (woman) in the village of Čeˊčin, 1901."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-238_r5" HPOS="328" VPOS="1032" WIDTH="1776" HEIGHT="106" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="328 1032 2104 1032 2104 1138 328 1138"/>
-                    </Shape>
-                    <TextLine ID="mz_2-238_l10" HPOS="928" VPOS="1065" WIDTH="578" HEIGHT="55" BASELINE="930 1110 1506 1106" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-238_l10" HPOS="928" VPOS="1065" WIDTH="578" HEIGHT="55" BASELINE="930 1110 1506 1106" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="930 1110 930 1120 1504 1116 1506 1106 1502 1077 1216 1065 1214 1065 1212 1065 1210 1065 1210 1067 1208 1067 1200 1077 1051 1067 1049 1067 1047 1067 1045 1067 1045 1069 1036 1077 945 1069 944 1069 942 1069 940 1069 928 1075 930 1110"/>
                         </Shape>
                         <String CONTENT="13. RAVEN INCANTATION."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-238_r6" HPOS="328" VPOS="1159" WIDTH="1776" HEIGHT="846" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="328 1159 2104 1159 2104 2005 328 2005"/>
-                    </Shape>
-                    <TextLine ID="mz_2-238_l11" HPOS="440" VPOS="1163" WIDTH="1655" HEIGHT="59" BASELINE="440 1200 2095 1200" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-238_l11" HPOS="440" VPOS="1163" WIDTH="1655" HEIGHT="59" BASELINE="440 1200 2095 1200" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="440 1200 440 1212 1032 1212 1045 1222 1047 1222 1049 1222 1051 1222 1226 1212 1731 1212 1821 1222 1823 1222 2095 1212 2095 1200 2095 1163 440 1163 440 1200"/>
                         </Shape>
@@ -226,34 +192,19 @@
                         </Shape>
                         <String CONTENT="my own purposes.¹"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-238_r7" HPOS="328" VPOS="2005" WIDTH="1776" HEIGHT="94" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="328 2005 2104 2005 2104 2099 328 2099"/>
-                    </Shape>
-                    <TextLine ID="mz_2-238_l25" HPOS="1145" VPOS="2026" WIDTH="944" HEIGHT="45" BASELINE="1145 2056 2089 2056" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-238_l25" HPOS="1145" VPOS="2026" WIDTH="944" HEIGHT="45" BASELINE="1145 2056 2089 2056" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="1145 2056 1145 2071 2089 2071 2089 2056 2089 2028 1145 2026 1145 2056"/>
                         </Shape>
                         <String CONTENT="Told by Hɪyewteˊhɪn (man) at Mariinsky Post, 1900."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-238_r8" HPOS="328" VPOS="2107" WIDTH="1776" HEIGHT="86" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="328 2107 2104 2107 2104 2193 328 2193"/>
-                    </Shape>
-                    <TextLine ID="mz_2-238_l26" HPOS="577" VPOS="2115" WIDTH="1262" HEIGHT="56" BASELINE="579 2160 1839 2156" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-238_l26" HPOS="577" VPOS="2115" WIDTH="1262" HEIGHT="56" BASELINE="579 2160 1839 2156" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="579 2160 579 2171 1837 2167 1839 2156 1835 2126 1588 2115 1586 2115 1584 2115 1582 2115 1582 2116 1572 2126 1378 2126 1298 2115 1296 2115 1294 2115 1292 2115 1292 2116 1282 2124 705 2116 703 2116 701 2116 699 2116 687 2128 577 2128 579 2160"/>
                         </Shape>
                         <String CONTENT="14. INCANTATIONS AGAINST THE RIVALS IN A FOOT-RACE."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-238_r9" HPOS="328" VPOS="2209" WIDTH="1776" HEIGHT="360" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="328 2209 2104 2209 2104 2569 328 2569"/>
-                    </Shape>
-                    <TextLine ID="mz_2-238_l27" HPOS="426" VPOS="2205" WIDTH="1661" HEIGHT="68" BASELINE="428 2252 2087 2248" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-238_l27" HPOS="426" VPOS="2205" WIDTH="1661" HEIGHT="68" BASELINE="428 2252 2087 2248" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="428 2252 428 2263 597 2273 599 2273 601 2273 640 2263 1008 2263 1065 2273 1067 2273 1155 2263 2085 2263 2087 2248 2085 2218 2056 2205 2054 2205 1987 2205 1985 2205 1983 2205 1982 2205 1964 2218 1846 2218 1821 2205 1819 2205 1817 2205 1815 2205 1813 2205 1795 2218 1705 2218 1647 2205 1645 2205 1568 2216 1541 2205 1539 2205 1537 2205 1463 2216 1437 2205 1435 2205 1433 2205 1431 2205 1394 2218 1243 2218 1224 2207 1222 2207 1220 2207 1218 2207 1133 2218 1110 2207 1108 2207 1106 2207 987 2218 891 2207 889 2207 830 2218 752 2207 750 2207 748 2207 746 2207 728 2218 675 2207 673 2207 671 2207 669 2207 654 2218 630 2209 628 2209 626 2209 564 2218 548 2207 546 2207 544 2207 542 2207 540 2207 507 2216 450 2207 448 2207 446 2207 444 2207 426 2216 428 2252"/>
                         </Shape>
@@ -294,23 +245,13 @@
                         </Shape>
                         <String CONTENT="not keep up with his rival.²"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-238_r10" HPOS="328" VPOS="2569" WIDTH="1776" HEIGHT="79" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="328 2569 2104 2569 2104 2648 328 2648"/>
-                    </Shape>
-                    <TextLine ID="mz_2-238_l33" HPOS="1094" VPOS="2588" WIDTH="993" HEIGHT="45" BASELINE="1096 2618 2087 2622" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-238_l33" HPOS="1094" VPOS="2588" WIDTH="993" HEIGHT="45" BASELINE="1096 2618 2087 2622" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="1096 2618 1094 2630 2083 2633 2087 2622 2085 2592 1096 2588 1096 2618"/>
                         </Shape>
                         <String CONTENT="Told by a Reindeer Chukchee of the Kolyma Country."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-238_r11" HPOS="328" VPOS="2656" WIDTH="1776" HEIGHT="258" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="328 2656 2104 2656 2104 2914 328 2914"/>
-                    </Shape>
-                    <TextLine ID="mz_2-238_l34" HPOS="425" VPOS="2655" WIDTH="1662" HEIGHT="63" BASELINE="426 2704 2087 2696" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-238_l34" HPOS="425" VPOS="2655" WIDTH="1662" HEIGHT="63" BASELINE="426 2704 2087 2696" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="426 2704 426 2718 2085 2714 2087 2696 2085 2667 2058 2655 2056 2655 2054 2655 2052 2655 2050 2655 2036 2667 1917 2667 1899 2655 1897 2655 1895 2655 1893 2655 1819 2665 1790 2655 1788 2655 1786 2655 1784 2655 1764 2665 1701 2655 1700 2655 1698 2655 1666 2667 1605 2657 1604 2657 1602 2657 1572 2667 1439 2657 1437 2657 1351 2667 1284 2657 1282 2657 1280 2657 1247 2669 1104 2659 1102 2659 1100 2659 1069 2669 1038 2659 1036 2659 1034 2659 1032 2659 1030 2659 1014 2671 914 2671 883 2659 881 2659 879 2659 877 2659 836 2671 442 2661 440 2661 438 2661 436 2661 425 2669 426 2704"/>
                         </Shape>
@@ -337,23 +278,13 @@
                         </Shape>
                         <String CONTENT="He will stumble over them, and his speed will be hampered."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-238_r12" HPOS="328" VPOS="2914" WIDTH="1776" HEIGHT="63" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="328 2914 2104 2914 2104 2977 328 2977"/>
-                    </Shape>
-                    <TextLine ID="mz_2-238_l38" HPOS="1024" VPOS="2923" WIDTH="1061" HEIGHT="45" BASELINE="1024 2953 2085 2953" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-238_l38" HPOS="1024" VPOS="2923" WIDTH="1061" HEIGHT="45" BASELINE="1024 2953 2085 2953" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="1024 2953 1024 2968 2085 2968 2085 2953 2085 2925 1024 2923 1024 2953"/>
                         </Shape>
                         <String CONTENT="Told by Scratching-Woman (man) at Mariinsky Post, 1900."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-238_r13" HPOS="328" VPOS="3016" WIDTH="1776" HEIGHT="102" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="328 3016 2104 3016 2104 3118 328 3118"/>
-                    </Shape>
-                    <TextLine ID="mz_2-238_l39" HPOS="425" VPOS="3015" WIDTH="1055" HEIGHT="45" BASELINE="426 3041 1480 3045" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-238_l39" HPOS="425" VPOS="3015" WIDTH="1055" HEIGHT="45" BASELINE="426 3041 1480 3045" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="426 3041 425 3056 1476 3060 1480 3045 1478 3019 426 3015 426 3041"/>
                         </Shape>
@@ -366,8 +297,7 @@
                         </Shape>
                         <String CONTENT="² See Bogoras, Chukchee Materials, p. 142."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

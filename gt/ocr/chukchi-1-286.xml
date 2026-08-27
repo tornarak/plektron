@@ -23,20 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-286_r1" HPOS="597" VPOS="600" WIDTH="1778" HEIGHT="95" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="597 600 2375 600 2375 695 597 695"/>
-                    </Shape>
-                    <TextLine ID="mz_1-286_l1" HPOS="1185" VPOS="619" WIDTH="613" HEIGHT="56" BASELINE="1185 653 1798 653" TAGREFS="TYPE_3">
+                <TextBlock ID="text_1-286" HPOS="596" VPOS="615" WIDTH="1780" HEIGHT="2623"><TextLine ID="mz_1-286_l1" HPOS="1185" VPOS="619" WIDTH="613" HEIGHT="56" BASELINE="1185 653 1798 653" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="1791 619 1198 619 1187 634 1185 653 1185 675 1798 675 1798 653 1798 630 1791 619"/>
                         </Shape>
@@ -49,12 +43,7 @@
                         </Shape>
                         <String CONTENT="226"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-286_r2" HPOS="597" VPOS="730" WIDTH="1778" HEIGHT="659" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="597 730 2375 730 2375 1389 597 1389"/>
-                    </Shape>
-                    <TextLine ID="mz_1-286_l3" HPOS="704" VPOS="718" WIDTH="1672" HEIGHT="61" BASELINE="706 764 2376 760" TAGREFS="TYPE_3">
+<TextLine ID="mz_1-286_l3" HPOS="704" VPOS="718" WIDTH="1672" HEIGHT="61" BASELINE="706 764 2376 760" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="2350 727 2328 727 2307 727 2294 725 2270 729 2233 723 2220 723 2198 723 2177 723 2170 723 2129 731 1791 731 1713 718 1711 718 1575 729 1551 718 1549 718 1546 718 1544 718 1503 731 717 721 715 721 713 721 710 721 710 723 704 727 706 764 706 779 2374 775 2376 760 2374 729 2367 727 2350 727"/>
                         </Shape>
@@ -130,12 +119,7 @@
                         </Shape>
                         <String CONTENT="silk bought from traders."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-286_r3" HPOS="597" VPOS="1389" WIDTH="1778" HEIGHT="356" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="597 1389 2375 1389 2375 1745 597 1745"/>
-                    </Shape>
-                    <TextLine ID="mz_1-286_l14" HPOS="708" VPOS="1377" WIDTH="1666" HEIGHT="62" BASELINE="710 1422 2374 1416" TAGREFS="TYPE_3">
+<TextLine ID="mz_1-286_l14" HPOS="708" VPOS="1377" WIDTH="1666" HEIGHT="62" BASELINE="710 1422 2374 1416" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="710 1422 710 1439 2372 1433 2374 1416 2369 1387 1993 1377 1990 1377 1813 1387 1373 1379 1371 1379 708 1390 710 1422"/>
                         </Shape>
@@ -176,12 +160,7 @@
                         </Shape>
                         <String CONTENT="the sleeves, or the backs of women’s frocks, where tassels are fastened."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-286_r4" HPOS="597" VPOS="1745" WIDTH="1778" HEIGHT="239" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="597 1745 2375 1745 2375 1984 597 1984"/>
-                    </Shape>
-                    <TextLine ID="mz_1-286_l20" HPOS="708" VPOS="1734" WIDTH="1666" HEIGHT="65" BASELINE="710 1784 2374 1775" TAGREFS="TYPE_3">
+<TextLine ID="mz_1-286_l20" HPOS="708" VPOS="1734" WIDTH="1666" HEIGHT="65" BASELINE="710 1784 2374 1775" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="710 1784 710 1799 2372 1792 2374 1775 2369 1747 2244 1734 2242 1734 2140 1745 2122 1734 2120 1734 2118 1734 2116 1734 2114 1734 2081 1745 2060 1734 2058 1734 2055 1734 1949 1747 1633 1736 1631 1736 1629 1736 1585 1747 1564 1736 1562 1736 1559 1736 1557 1736 1520 1751 1232 1751 1219 1738 1217 1738 1215 1738 1213 1738 1211 1738 1185 1749 1172 1738 1170 1738 1167 1738 1165 1738 1057 1751 964 1740 962 1740 708 1747 710 1784"/>
                         </Shape>
@@ -208,12 +187,7 @@
                         </Shape>
                         <String CONTENT="trimmed with fringe and red-dyed fur tassels (Fig. 158, a-c)."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-286_r5" HPOS="597" VPOS="1984" WIDTH="1778" HEIGHT="298" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="597 1984 2375 1984 2375 2282 597 2282"/>
-                    </Shape>
-                    <TextLine ID="mz_1-286_l24" HPOS="708" VPOS="1976" WIDTH="1668" HEIGHT="74" BASELINE="710 2024 2376 2017" TAGREFS="TYPE_3">
+<TextLine ID="mz_1-286_l24" HPOS="708" VPOS="1976" WIDTH="1668" HEIGHT="74" BASELINE="710 2024 2376 2017" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="710 2024 710 2039 962 2050 964 2050 1393 2037 1475 2048 1477 2048 1479 2048 1501 2037 1581 2048 1583 2048 1585 2048 1620 2037 1657 2048 1659 2048 1661 2048 1663 2048 1666 2048 1681 2037 2064 2046 2066 2046 2068 2046 2071 2046 2084 2035 2122 2046 2125 2046 2127 2046 2129 2046 2151 2035 2239 2046 2242 2046 2244 2046 2246 2046 2263 2035 2374 2035 2376 2017 2372 1987 2322 1976 2320 1976 2317 1976 2294 1989 2062 1989 2036 1976 2034 1976 2032 1976 1934 1987 1858 1976 1856 1976 1778 1989 1765 1978 1763 1978 1761 1978 1759 1978 1756 1978 1735 1989 1551 1978 1549 1978 1486 1989 1304 1978 1302 1978 1243 1991 1200 1981 1198 1981 1196 1981 1193 1981 1165 1994 1003 1994 990 1981 988 1981 986 1981 983 1981 708 1987 710 2024"/>
                         </Shape>
@@ -247,12 +221,7 @@
                         </Shape>
                         <String CONTENT="came from the south."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-286_r6" HPOS="597" VPOS="2281" WIDTH="1778" HEIGHT="131" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="597 2281 2375 2281 2375 2412 597 2412"/>
-                    </Shape>
-                    <TextLine ID="mz_1-286_l29" HPOS="706" VPOS="2277" WIDTH="1668" HEIGHT="72" BASELINE="708 2323 2374 2318" TAGREFS="TYPE_3">
+<TextLine ID="mz_1-286_l29" HPOS="706" VPOS="2277" WIDTH="1668" HEIGHT="72" BASELINE="708 2323 2374 2318" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="708 2323 708 2338 1191 2338 1284 2349 1287 2349 1356 2338 1499 2349 1501 2349 1503 2349 1505 2349 1520 2336 1635 2336 1718 2347 1720 2347 1824 2336 1960 2347 1962 2347 2372 2334 2374 2318 2369 2290 2300 2277 2298 2277 1923 2288 1850 2277 1847 2277 1793 2288 1756 2277 1754 2277 1752 2277 1629 2288 1566 2277 1564 2277 1562 2277 1533 2292 1323 2292 1304 2279 1302 2279 1300 2279 1297 2279 1295 2279 1261 2290 1232 2279 1230 2279 1228 2279 1226 2279 1198 2290 1105 2279 1102 2279 706 2288 708 2323"/>
                         </Shape>
@@ -265,12 +234,7 @@
                         </Shape>
                         <String CONTENT="own patterns; so that, if they ever had a meaning, it is forgotten by this time."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-286_r7" HPOS="597" VPOS="2412" WIDTH="1778" HEIGHT="769" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="597 2412 2375 2412 2375 3181 597 3181"/>
-                    </Shape>
-                    <TextLine ID="mz_1-286_l31" HPOS="706" VPOS="2398" WIDTH="1670" HEIGHT="61" BASELINE="708 2444 2376 2440" TAGREFS="TYPE_3">
+<TextLine ID="mz_1-286_l31" HPOS="706" VPOS="2398" WIDTH="1670" HEIGHT="61" BASELINE="708 2444 2376 2440" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="708 2444 708 2459 2374 2455 2376 2440 2372 2409 1553 2398 1551 2398 1549 2398 1525 2409 730 2401 728 2401 726 2401 706 2409 708 2444"/>
                         </Shape>
@@ -360,19 +324,13 @@
                         </Shape>
                         <String CONTENT="or red, and crossed with several diagonal lines."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-286_r8" HPOS="597" VPOS="3181" WIDTH="1778" HEIGHT="69" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="597 3181 2375 3181 2375 3250 597 3250"/>
-                    </Shape>
-                    <TextLine ID="mz_1-286_l44" HPOS="710" VPOS="3174" WIDTH="1662" HEIGHT="64" BASELINE="713 3221 2372 3215" TAGREFS="TYPE_3">
+<TextLine ID="mz_1-286_l44" HPOS="710" VPOS="3174" WIDTH="1662" HEIGHT="64" BASELINE="713 3221 2372 3215" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="2365 3180 2356 3174 2354 3174 2352 3174 2350 3174 2348 3174 2346 3174 2330 3184 2261 3174 2259 3174 2257 3174 2211 3184 2166 3174 2164 3174 2161 3174 2159 3174 2157 3174 2142 3184 2073 3174 2071 3174 1817 3187 1802 3176 1800 3176 1798 3176 1795 3176 1722 3187 1644 3176 1642 3176 1590 3187 1525 3176 1523 3176 1520 3176 1490 3187 1460 3176 1458 3176 1455 3176 1295 3187 1267 3176 1265 3176 1263 3176 1261 3176 1219 3189 1118 3178 1025 3178 1022 3178 1020 3178 1018 3178 1005 3189 970 3178 968 3178 966 3178 710 3182 713 3221 713 3238 2372 3234 2372 3215 2369 3208 2365 3180"/>
                         </Shape>
                         <String CONTENT="The Asiatic Eskimo adorn their fur shirts with a band of embroidered"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

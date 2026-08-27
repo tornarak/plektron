@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-036_r1" HPOS="562" VPOS="627" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="562 627 2340 627 2340 717 562 717"/>
-                    </Shape>
-                    <TextLine ID="mz_1-036_l1" HPOS="1150" VPOS="640" WIDTH="619" HEIGHT="55" BASELINE="1150 675 1769 675" TAGREFS="TYPE_5">
+                <TextBlock ID="text_1-036" HPOS="561" VPOS="640" WIDTH="1815" HEIGHT="2620"><TextLine ID="mz_1-036_l1" HPOS="1150" VPOS="640" WIDTH="619" HEIGHT="55" BASELINE="1150 675 1769 675" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1756 643 1750 640 1159 640 1150 645 1150 675 1150 695 1769 695 1769 675 1769 647 1756 643"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="16"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-036_r2" HPOS="562" VPOS="742" WIDTH="1778" HEIGHT="360" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="562 742 2340 742 2340 1102 562 1102"/>
-                    </Shape>
-                    <TextLine ID="mz_1-036_l3" HPOS="565" VPOS="738" WIDTH="1774" HEIGHT="63" BASELINE="568 783 2339 779" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-036_l3" HPOS="565" VPOS="738" WIDTH="1774" HEIGHT="63" BASELINE="568 783 2339 779" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="2298 744 2276 744 2265 742 2239 749 2177 740 2168 740 2151 740 2140 751 1938 751 1919 738 1917 738 1915 738 1912 738 1910 738 1908 738 1891 749 1756 738 1754 738 1752 738 1750 738 1733 751 1533 751 1507 738 1505 738 1503 738 1436 751 1401 740 1399 740 1397 740 1102 751 983 740 981 740 979 740 977 740 962 751 856 740 853 740 851 740 849 740 832 751 736 740 734 740 565 753 568 783 568 801 2337 796 2339 779 2337 751 2320 744 2298 744"/>
                         </Shape>
@@ -97,12 +84,7 @@
                         </Shape>
                         <String CONTENT="Reindeer Chukchee and Koryak are identical and the languages very similar."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-036_r3" HPOS="562" VPOS="1102" WIDTH="1778" HEIGHT="777" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="562 1102 2340 1102 2340 1879 562 1879"/>
-                    </Shape>
-                    <TextLine ID="mz_1-036_l9" HPOS="674" VPOS="1099" WIDTH="1659" HEIGHT="61" BASELINE="676 1145 2333 1141" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-036_l9" HPOS="674" VPOS="1099" WIDTH="1659" HEIGHT="61" BASELINE="676 1145 2333 1141" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="676 1145 676 1160 2330 1156 2333 1141 2328 1112 2185 1099 2183 1099 2105 1110 2077 1099 2075 1099 2073 1099 2012 1110 1988 1099 1986 1099 1984 1099 1930 1110 1886 1099 1884 1099 1882 1099 1880 1099 1832 1110 1754 1099 1752 1099 1750 1099 1726 1112 1553 1112 1512 1099 1510 1099 1507 1099 1505 1099 1503 1099 1488 1115 1393 1115 1378 1102 1375 1102 1373 1102 1371 1102 1369 1102 1336 1112 1287 1102 1284 1102 1282 1102 1245 1112 1042 1102 1040 1102 979 1112 734 1102 732 1102 674 1110 676 1145"/>
                         </Shape>
@@ -192,12 +174,7 @@
                         </Shape>
                         <String CONTENT="are no maritime villages within three hundred miles to the east off these places."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-036_r4" HPOS="562" VPOS="1879" WIDTH="1778" HEIGHT="902" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="562 1879 2340 1879 2340 2781 562 2781"/>
-                    </Shape>
-                    <TextLine ID="mz_1-036_l22" HPOS="676" VPOS="1877" WIDTH="1659" HEIGHT="69" BASELINE="678 1918 2335 1924" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-036_l22" HPOS="676" VPOS="1877" WIDTH="1659" HEIGHT="69" BASELINE="678 1918 2335 1924" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="678 1918 676 1933 691 1944 693 1944 695 1944 697 1946 2333 1946 2335 1924 2333 1894 2281 1881 2142 1881 2140 1881 2138 1881 2135 1881 2122 1892 2062 1881 2060 1881 2058 1881 2034 1892 1945 1881 1943 1881 1941 1881 1915 1892 1902 1881 1899 1881 1897 1881 1804 1881 1802 1881 1800 1881 1798 1881 1782 1892 1620 1879 1618 1879 1616 1879 1581 1892 1464 1892 1449 1879 1447 1879 1445 1879 1442 1879 1391 1890 1315 1879 1313 1879 1232 1890 1178 1877 1176 1877 1174 1877 1109 1888 678 1883 678 1918"/>
                         </Shape>
@@ -301,12 +278,7 @@
                         </Shape>
                         <String CONTENT="fered by the Chukchee Kamakai on Cape Erri, in conversation with Wrangell.¹"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-036_r5" HPOS="562" VPOS="2781" WIDTH="1778" HEIGHT="247" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="562 2781 2340 2781 2340 3028 562 3028"/>
-                    </Shape>
-                    <TextLine ID="mz_1-036_l37" HPOS="674" VPOS="2782" WIDTH="1663" HEIGHT="65" BASELINE="676 2818 2337 2823" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-036_l37" HPOS="674" VPOS="2782" WIDTH="1663" HEIGHT="65" BASELINE="676 2818 2337 2823" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="676 2818 674 2831 1609 2847 1611 2847 2335 2836 2337 2823 2335 2790 676 2782 676 2818"/>
                         </Shape>
@@ -333,12 +305,7 @@
                         </Shape>
                         <String CONTENT="and lived somewhere along the Arctic shore. The remnants of the houses"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-036_r6" HPOS="562" VPOS="3076" WIDTH="1778" HEIGHT="185" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="562 3076 2340 3076 2340 3261 562 3261"/>
-                    </Shape>
-                    <TextLine ID="mz_1-036_l41" HPOS="676" VPOS="3085" WIDTH="325" HEIGHT="54" BASELINE="676 3111 1001 3111" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-036_l41" HPOS="676" VPOS="3085" WIDTH="325" HEIGHT="54" BASELINE="676 3111 1001 3111" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="676 3111 676 3126 780 3139 782 3139 1001 3126 1001 3111 1001 3085 676 3085 676 3111"/>
                         </Shape>
@@ -365,8 +332,7 @@
                         </Shape>
                         <String CONTENT="Yukaghir and Chuvantzy elements with some admixture of Koryak and Russian."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

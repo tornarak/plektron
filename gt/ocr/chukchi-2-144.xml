@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_2-144_r1" HPOS="375" VPOS="462" WIDTH="1776" HEIGHT="94" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="375 462 2151 462 2151 556 375 556"/>
-                    </Shape>
-                    <TextLine ID="mz_2-144_l1" HPOS="953" VPOS="481" WIDTH="611" HEIGHT="53" BASELINE="955 513 1564 518" TAGREFS="TYPE_4">
+                <TextBlock ID="text_2-144" HPOS="372" VPOS="481" WIDTH="1774" HEIGHT="2621"><TextLine ID="mz_2-144_l1" HPOS="953" VPOS="481" WIDTH="611" HEIGHT="53" BASELINE="955 513 1564 518" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1549 483 969 481 957 493 955 513 953 528 1560 534 1564 518 1560 501 1549 483"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="416"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-144_r2" HPOS="375" VPOS="580" WIDTH="1776" HEIGHT="423" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="375 580 2151 580 2151 1003 375 1003"/>
-                    </Shape>
-                    <TextLine ID="mz_2-144_l3" HPOS="376" VPOS="583" WIDTH="1770" HEIGHT="57" BASELINE="377 626 2146 622" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-144_l3" HPOS="376" VPOS="583" WIDTH="1770" HEIGHT="57" BASELINE="377 626 2146 622" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2119 593 2099 593 2079 593 2066 591 2064 593 2044 591 2040 591 2021 591 2001 589 1982 589 1962 589 1958 589 1950 595 1792 595 1762 583 1760 583 1758 583 1705 593 1645 583 1643 583 1641 583 1607 593 1547 583 1545 583 1463 593 1423 583 1421 583 1419 583 1259 595 1212 585 1210 585 1208 585 1169 595 726 585 724 585 722 585 695 597 513 597 497 585 495 585 493 585 389 585 387 585 385 585 383 585 376 589 377 626 377 640 2144 638 2146 622 2144 595 2136 593 2119 593"/>
                         </Shape>
@@ -103,12 +91,7 @@
                         </Shape>
                         <String CONTENT="to pick him out from among many others."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-144_r3" HPOS="375" VPOS="1003" WIDTH="1776" HEIGHT="670" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="375 1003 2151 1003 2151 1673 375 1673"/>
-                    </Shape>
-                    <TextLine ID="mz_2-144_l10" HPOS="485" VPOS="1004" WIDTH="1661" HEIGHT="61" BASELINE="485 1045 2146 1045" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-144_l10" HPOS="485" VPOS="1004" WIDTH="1661" HEIGHT="61" BASELINE="485 1045 2146 1045" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="485 1045 485 1059 2144 1065 2146 1045 2146 1016 1976 1004 1974 1004 1972 1004 1940 1014 1907 1004 1905 1004 1903 1004 1764 1014 485 1008 485 1045"/>
                         </Shape>
@@ -184,12 +167,7 @@
                         </Shape>
                         <String CONTENT="The least doubt or sneer makes him break off the performance and retire."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-144_r4" HPOS="375" VPOS="1673" WIDTH="1776" HEIGHT="594" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="375 1673 2151 1673 2151 2267 375 2267"/>
-                    </Shape>
-                    <TextLine ID="mz_2-144_l21" HPOS="485" VPOS="1662" WIDTH="1659" HEIGHT="61" BASELINE="485 1705 2144 1705" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-144_l21" HPOS="485" VPOS="1662" WIDTH="1659" HEIGHT="61" BASELINE="485 1705 2144 1705" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="485 1705 485 1717 2142 1723 2144 1705 2144 1672 2115 1662 2113 1662 2111 1662 2044 1672 1980 1662 1837 1662 1835 1662 1833 1662 1813 1672 1784 1662 1782 1662 1780 1662 1778 1662 1748 1672 1707 1662 1705 1662 1703 1662 1643 1672 1555 1662 1553 1662 1508 1672 1492 1662 1490 1662 1488 1662 1486 1662 1484 1662 1447 1672 1382 1662 1380 1662 1378 1662 1351 1672 1288 1662 1286 1662 1284 1662 1251 1672 1204 1662 1202 1662 1145 1674 1061 1674 1047 1662 1045 1662 1043 1662 1041 1662 922 1672 828 1662 826 1662 740 1672 485 1668 485 1705"/>
                         </Shape>
@@ -258,12 +236,7 @@
                         </Shape>
                         <String CONTENT="to those present."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-144_r5" HPOS="375" VPOS="2267" WIDTH="1776" HEIGHT="723" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="375 2267 2151 2267 2151 2990 375 2990"/>
-                    </Shape>
-                    <TextLine ID="mz_2-144_l31" HPOS="489" VPOS="2259" WIDTH="1655" HEIGHT="63" BASELINE="491 2297 2144 2301" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-144_l31" HPOS="489" VPOS="2259" WIDTH="1655" HEIGHT="63" BASELINE="491 2297 2144 2301" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="491 2297 489 2310 526 2322 528 2322 530 2322 2142 2314 2144 2301 2142 2273 2052 2261 2050 2261 1944 2271 1839 2261 1750 2261 1748 2261 1747 2261 1745 2261 1731 2271 1445 2261 1443 2261 1441 2261 1439 2261 1421 2273 1322 2273 1296 2259 1294 2259 1292 2259 1220 2269 1133 2259 1132 2259 1039 2269 971 2259 969 2259 967 2259 932 2271 773 2271 755 2259 754 2259 752 2259 750 2259 748 2259 716 2269 703 2259 701 2259 699 2259 697 2259 695 2259 667 2269 611 2259 609 2259 491 2265 491 2297"/>
                         </Shape>
@@ -346,12 +319,7 @@
                         </Shape>
                         <String CONTENT="abject terms begs for freedom."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-144_r6" HPOS="375" VPOS="2990" WIDTH="1776" HEIGHT="120" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="375 2990 2151 2990 2151 3110 375 3110"/>
-                    </Shape>
-                    <TextLine ID="mz_2-144_l43" HPOS="485" VPOS="2978" WIDTH="1653" HEIGHT="69" BASELINE="485 3019 2138 3019" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-144_l43" HPOS="485" VPOS="2978" WIDTH="1653" HEIGHT="69" BASELINE="485 3019 2138 3019" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="485 3019 485 3035 834 3035 848 3045 850 3045 851 3045 853 3047 1043 3047 1043 3045 1045 3045 1047 3045 1061 3035 1218 3045 1220 3047 1312 3047 1312 3045 1314 3045 1316 3045 1329 3035 1447 3045 1449 3045 1970 3035 2107 3045 2109 3045 2111 3045 2138 3033 2138 3019 2138 2992 1968 2992 1950 2978 1948 2978 1946 2978 1944 2978 1942 2978 1911 2990 1888 2978 1886 2978 1884 2978 1882 2978 1844 2988 1809 2978 1807 2978 1805 2978 1803 2978 1778 2992 1578 2992 1560 2978 1558 2978 1557 2978 1555 2978 1480 2992 1322 2992 1294 2978 1292 2978 1190 2978 1188 2978 1186 2978 1184 2978 1167 2992 1055 2992 1030 2978 1028 2978 1026 2978 953 2990 485 2982 485 3019"/>
                         </Shape>
@@ -364,8 +332,7 @@
                         </Shape>
                         <String CONTENT="chical impressions of a kind to which they are unused; as, for instance, to"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

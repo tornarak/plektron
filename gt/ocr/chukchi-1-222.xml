@@ -23,20 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-222_r1" HPOS="608" VPOS="589" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="608 589 2386 589 2386 679 608 679"/>
-                    </Shape>
-                    <TextLine ID="mz_1-222_l1" HPOS="1193" VPOS="599" WIDTH="615" HEIGHT="54" BASELINE="1193 634 1808 634" TAGREFS="TYPE_3">
+                <TextBlock ID="text_1-222" HPOS="609" VPOS="599" WIDTH="1786" HEIGHT="2631"><TextLine ID="mz_1-222_l1" HPOS="1193" VPOS="599" WIDTH="615" HEIGHT="54" BASELINE="1193 634 1808 634" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="1800 604 1778 599 1756 599 1735 599 1713 599 1692 599 1670 599 1648 599 1627 602 1605 602 1583 602 1562 602 1540 602 1518 602 1497 602 1475 604 1453 604 1432 604 1410 604 1388 604 1367 604 1345 604 1323 606 1302 606 1280 606 1258 606 1237 606 1215 606 1193 606 1193 634 1193 653 1808 653 1808 634 1808 608 1800 604"/>
                         </Shape>
@@ -49,12 +43,7 @@
                         </Shape>
                         <String CONTENT="174"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-222_r2" HPOS="608" VPOS="704" WIDTH="1778" HEIGHT="1795" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="608 704 2386 704 2386 2499 608 2499"/>
-                    </Shape>
-                    <TextLine ID="mz_1-222_l3" HPOS="719" VPOS="699" WIDTH="1676" HEIGHT="69" BASELINE="721 744 2395 740" TAGREFS="TYPE_3">
+<TextLine ID="mz_1-222_l3" HPOS="719" VPOS="699" WIDTH="1676" HEIGHT="69" BASELINE="721 744 2395 740" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="2213 705 2192 703 2187 703 2170 710 2131 703 2127 703 2105 701 2090 701 2053 710 1977 699 1975 699 1895 710 719 708 721 744 721 757 1529 768 1531 768 1594 757 2393 757 2395 740 2391 712 2224 712 2216 705 2213 705"/>
                         </Shape>
@@ -263,12 +252,7 @@
                         </Shape>
                         <String CONTENT="of fuel."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-222_r3" HPOS="608" VPOS="2499" WIDTH="1778" HEIGHT="729" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="608 2499 2386 2499 2386 3228 608 3228"/>
-                    </Shape>
-                    <TextLine ID="mz_1-222_l33" HPOS="1828" VPOS="2498" WIDTH="554" HEIGHT="63" BASELINE="1828 2541 2382 2541" TAGREFS="TYPE_3">
+<TextLine ID="mz_1-222_l33" HPOS="1828" VPOS="2498" WIDTH="554" HEIGHT="63" BASELINE="1828 2541 2382 2541" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="1828 2541 1828 2561 2382 2561 2382 2541 2382 2509 2335 2498 2333 2498 2330 2498 2328 2498 2300 2509 2235 2498 2233 2498 2231 2498 2203 2509 2101 2498 2099 2498 2049 2509 2023 2498 2021 2498 2019 2498 2016 2498 1969 2509 1828 2505 1828 2541"/>
                         </Shape>
@@ -351,8 +335,7 @@
                         </Shape>
                         <String CONTENT="do not use the fire of the hearth for heating-purposes. The temperature"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

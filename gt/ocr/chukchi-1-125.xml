@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-125_r1" HPOS="353" VPOS="608" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="353 608 2131 608 2131 698 353 698"/>
-                    </Shape>
-                    <TextLine ID="mz_1-125_l1" HPOS="934" VPOS="617" WIDTH="615" HEIGHT="54" BASELINE="934 651 1549 647" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-125" HPOS="351" VPOS="617" WIDTH="1780" HEIGHT="2617"><TextLine ID="mz_1-125_l1" HPOS="934" VPOS="617" WIDTH="615" HEIGHT="54" BASELINE="934 651 1549 647" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1538 617 1516 617 1494 617 1473 617 1451 617 1429 617 1408 617 1386 617 1365 617 1343 617 1321 617 1300 617 1278 617 1256 617 1235 617 1213 617 1191 617 1170 617 1148 617 1126 617 1105 617 1083 617 1061 617 1040 617 1018 617 996 617 975 617 953 617 934 632 934 651 934 671 1546 666 1549 647 1546 643 1538 617"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="95"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-125_r2" HPOS="353" VPOS="723" WIDTH="1778" HEIGHT="419" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="353 723 2131 723 2131 1142 353 1142"/>
-                    </Shape>
-                    <TextLine ID="mz_1-125_l3" HPOS="355" VPOS="729" WIDTH="1776" HEIGHT="50" BASELINE="355 760 2131 760" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-125_l3" HPOS="355" VPOS="729" WIDTH="1776" HEIGHT="50" BASELINE="355 760 2131 760" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="355 760 355 779 2131 779 2131 760 2131 729 355 729 355 760"/>
                         </Shape>
@@ -103,12 +91,7 @@
                         </Shape>
                         <String CONTENT="reindeer; otherwise they would become entangled, and could not graze at all."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-125_r3" HPOS="353" VPOS="1142" WIDTH="1778" HEIGHT="838" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="353 1142 2131 1142 2131 1980 353 1980"/>
-                    </Shape>
-                    <TextLine ID="mz_1-125_l10" HPOS="459" VPOS="1134" WIDTH="1668" HEIGHT="63" BASELINE="461 1180 2127 1173" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-125_l10" HPOS="459" VPOS="1134" WIDTH="1668" HEIGHT="63" BASELINE="461 1180 2127 1173" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="461 1180 461 1197 2125 1190 2127 1173 2122 1145 1674 1134 1672 1134 1555 1145 1222 1136 1219 1136 459 1147 461 1180"/>
                         </Shape>
@@ -205,12 +188,7 @@
                         </Shape>
                         <String CONTENT="“All stakes are taken by the largest breeders.”"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-125_r4" HPOS="353" VPOS="1980" WIDTH="1778" HEIGHT="1270" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="353 1980 2131 1980 2131 3250 353 3250"/>
-                    </Shape>
-                    <TextLine ID="mz_1-125_l24" HPOS="459" VPOS="1970" WIDTH="1670" HEIGHT="63" BASELINE="461 2017 2129 2011" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-125_l24" HPOS="459" VPOS="1970" WIDTH="1670" HEIGHT="63" BASELINE="461 2017 2129 2011" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="461 2017 461 2033 2127 2028 2129 2011 2125 1981 1778 1970 1776 1970 459 1983 461 2017"/>
                         </Shape>
@@ -356,8 +334,7 @@
                         </Shape>
                         <String CONTENT="reindeer-breeders, who buy them with slaughter-animals from the Tungus, Lamut,"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-176_r1" HPOS="703" VPOS="606" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="703 606 2481 606 2481 696 703 696"/>
-                    </Shape>
-                    <TextLine ID="mz_1-176_l1" HPOS="1287" VPOS="608" WIDTH="619" HEIGHT="56" BASELINE="1289 643 1906 647" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-176" HPOS="700" VPOS="608" WIDTH="1782" HEIGHT="2633"><TextLine ID="mz_1-176_l1" HPOS="1287" VPOS="608" WIDTH="619" HEIGHT="56" BASELINE="1289 643 1906 647" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1895 623 1878 610 1308 608 1289 617 1289 643 1287 660 1902 664 1906 647 1904 638 1895 623"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="134"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-176_r2" HPOS="703" VPOS="721" WIDTH="1778" HEIGHT="1017" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="703 721 2481 721 2481 1738 703 1738"/>
-                    </Shape>
-                    <TextLine ID="mz_1-176_l3" HPOS="704" VPOS="725" WIDTH="1776" HEIGHT="45" BASELINE="704 755 2480 755" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-176_l3" HPOS="704" VPOS="725" WIDTH="1776" HEIGHT="45" BASELINE="704 755 2480 755" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="704 755 704 770 2480 770 2480 755 2480 725 704 725 704 755"/>
                         </Shape>
@@ -173,12 +161,7 @@
                         </Shape>
                         <String CONTENT="which, though not so long, is much handier to use (Fig. 47, a)."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-176_r3" HPOS="703" VPOS="1738" WIDTH="1778" HEIGHT="1311" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="703 1738 2481 1738 2481 3049 703 3049"/>
-                    </Shape>
-                    <TextLine ID="mz_1-176_l20" HPOS="817" VPOS="1729" WIDTH="1661" HEIGHT="61" BASELINE="817 1773 2478 1773" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-176_l20" HPOS="817" VPOS="1729" WIDTH="1661" HEIGHT="61" BASELINE="817 1773 2478 1773" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="817 1773 817 1790 2478 1790 2478 1773 2478 1742 2393 1729 2391 1729 2311 1740 2209 1729 2207 1729 2142 1740 2062 1729 2060 1729 2058 1729 2032 1740 2016 1729 2014 1729 2012 1729 2010 1729 2008 1729 1982 1742 1778 1742 1750 1729 1748 1729 1746 1729 1672 1740 1577 1729 1575 1729 1497 1740 1410 1729 1408 1729 1406 1729 1384 1740 1360 1729 1358 1729 1356 1729 1295 1740 1180 1729 1178 1729 1176 1729 1150 1740 1109 1729 1107 1729 1105 1729 1102 1729 1081 1740 1016 1729 1014 1729 817 1734 817 1773"/>
                         </Shape>
@@ -331,12 +314,7 @@
                         </Shape>
                         <String CONTENT="the river even as late as the middle of November."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-176_r4" HPOS="703" VPOS="3049" WIDTH="1778" HEIGHT="193" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="703 3049 2481 3049 2481 3242 703 3242"/>
-                    </Shape>
-                    <TextLine ID="mz_1-176_l42" HPOS="814" VPOS="3046" WIDTH="1664" HEIGHT="60" BASELINE="817 3091 2478 3087" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-176_l42" HPOS="814" VPOS="3046" WIDTH="1664" HEIGHT="60" BASELINE="817 3091 2478 3087" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="817 3091 817 3106 2478 3102 2478 3087 2473 3059 2142 3059 2122 3046 2120 3046 2118 3046 2116 3046 2114 3046 2090 3057 2014 3046 2012 3046 2010 3046 1982 3057 1891 3046 1889 3046 1886 3046 1850 3057 1795 3046 1793 3046 1672 3057 1648 3046 1646 3046 1644 3046 1642 3046 1603 3059 1551 3048 1549 3048 1486 3059 1447 3048 1445 3048 1442 3048 1349 3059 1289 3048 1287 3048 1284 3048 1252 3059 1209 3048 1206 3048 1204 3048 814 3054 817 3091"/>
                         </Shape>
@@ -356,8 +334,7 @@
                         </Shape>
                         <String CONTENT="strips, drying it on special drying-racks in sun and wind."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

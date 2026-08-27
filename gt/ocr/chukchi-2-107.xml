@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_2-107_r1" HPOS="430" VPOS="454" WIDTH="1776" HEIGHT="94" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="430 454 2206 454 2206 548 430 548"/>
-                    </Shape>
-                    <TextLine ID="mz_2-107_l1" HPOS="1010" VPOS="470" WIDTH="615" HEIGHT="50" BASELINE="1010 501 1625 501" TAGREFS="TYPE_4">
+                <TextBlock ID="text_2-107" HPOS="425" VPOS="470" WIDTH="1780" HEIGHT="2626"><TextLine ID="mz_2-107_l1" HPOS="1010" VPOS="470" WIDTH="615" HEIGHT="50" BASELINE="1010 501 1625 501" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1617 471 1613 470 1026 470 1010 497 1010 501 1010 520 1625 520 1625 501 1625 475 1617 471"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="379"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-107_r2" HPOS="430" VPOS="572" WIDTH="1776" HEIGHT="668" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="430 572 2206 572 2206 1240 430 1240"/>
-                    </Shape>
-                    <TextLine ID="mz_2-107_l3" HPOS="534" VPOS="564" WIDTH="1671" HEIGHT="66" BASELINE="536 612 2205 605" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-107_l3" HPOS="534" VPOS="564" WIDTH="1671" HEIGHT="66" BASELINE="536 612 2205 605" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="536 612 536 624 1782 630 1784 630 1868 620 2189 628 2191 628 2193 628 2195 628 2205 618 2205 605 2199 569 2009 573 1987 564 1985 564 1983 564 1982 564 1940 573 1907 564 1905 564 1903 564 1833 573 1817 564 1815 564 1813 564 1811 564 1809 564 1782 575 1698 565 1696 565 1694 565 1676 575 1664 565 1662 565 1660 565 1555 565 1553 565 1551 565 1549 565 1535 575 1511 565 1510 565 1508 565 1410 575 1372 565 1370 565 1369 565 1159 577 1092 567 1090 567 1038 577 969 567 967 567 965 567 940 579 740 569 738 569 685 579 562 569 560 569 558 569 534 579 536 612"/>
                         </Shape>
@@ -131,12 +119,7 @@
                         </Shape>
                         <String CONTENT="home and herd require no such ceremony."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-107_r3" HPOS="430" VPOS="1240" WIDTH="1776" HEIGHT="599" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="430 1240 2206 1240 2206 1839 430 1839"/>
-                    </Shape>
-                    <TextLine ID="mz_2-107_l14" HPOS="536" VPOS="1227" WIDTH="1663" HEIGHT="57" BASELINE="538 1270 2199 1267" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-107_l14" HPOS="536" VPOS="1227" WIDTH="1663" HEIGHT="57" BASELINE="538 1270 2199 1267" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="538 1270 538 1284 2197 1280 2199 1267 2195 1237 1398 1227 1396 1227 1394 1227 1363 1239 536 1239 538 1270"/>
                         </Shape>
@@ -205,12 +188,7 @@
                         </Shape>
                         <String CONTENT="to the ceremonial of the whale."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-107_r4" HPOS="430" VPOS="1839" WIDTH="1776" HEIGHT="1079" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="430 1839 2206 1839 2206 2918 430 2918"/>
-                    </Shape>
-                    <TextLine ID="mz_2-107_l24" HPOS="538" VPOS="1823" WIDTH="1659" HEIGHT="60" BASELINE="540 1870 2197 1866" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-107_l24" HPOS="538" VPOS="1823" WIDTH="1659" HEIGHT="60" BASELINE="540 1870 2197 1866" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="540 1870 540 1883 2195 1880 2197 1866 2193 1836 2119 1836 2093 1823 2091 1823 2089 1823 2019 1836 1807 1836 1790 1823 1788 1823 1786 1823 1784 1823 1782 1823 1758 1834 1743 1823 1741 1823 1739 1823 1737 1823 1735 1823 1701 1833 1652 1823 1651 1823 1649 1823 1647 1823 1631 1834 1551 1823 1549 1823 1470 1833 1433 1823 1431 1823 1429 1823 1427 1823 1425 1823 1410 1834 1357 1825 1355 1825 1353 1825 1351 1825 1333 1836 1302 1825 1300 1825 1298 1825 1239 1836 1204 1825 1202 1825 1200 1825 1130 1838 953 1838 920 1825 918 1825 916 1825 824 1836 779 1825 777 1825 775 1825 730 1834 689 1825 687 1825 685 1825 683 1825 654 1836 595 1825 593 1825 538 1833 540 1870"/>
                         </Shape>
@@ -335,30 +313,19 @@
                         </Shape>
                         <String CONTENT="he may “untie” the incantation."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-107_r5" HPOS="430" VPOS="2918" WIDTH="1776" HEIGHT="59" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="430 2918 2206 2918 2206 2977 430 2977"/>
-                    </Shape>
-                    <TextLine ID="mz_2-107_l42" HPOS="540" VPOS="2902" WIDTH="1655" HEIGHT="60" BASELINE="542 2949 2195 2943" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-107_l42" HPOS="540" VPOS="2902" WIDTH="1655" HEIGHT="60" BASELINE="542 2949 2195 2943" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="542 2949 542 2962 2195 2959 2195 2943 2191 2914 2054 2902 2052 2902 2050 2902 2048 2902 2032 2912 2009 2902 2007 2902 2005 2902 2003 2902 2001 2902 1987 2914 1842 2914 1817 2902 1815 2902 1813 2902 1729 2912 1703 2902 1701 2902 1700 2902 1698 2902 1696 2902 1682 2912 1598 2904 1596 2904 1594 2904 1592 2904 1578 2914 1564 2904 1562 2904 1560 2904 1558 2904 1498 2914 1461 2904 1459 2904 1457 2904 1455 2904 1435 2914 1414 2904 1412 2904 1410 2904 1351 2914 1322 2904 1320 2904 1318 2904 1247 2914 1208 2904 1206 2904 1204 2904 1202 2904 1165 2914 540 2914 542 2949"/>
                         </Shape>
                         <String CONTENT="The third stomach of the animal is filled with blood, and suspended from"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-107_r6" HPOS="430" VPOS="3024" WIDTH="1776" HEIGHT="78" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="430 3024 2206 3024 2206 3102 430 3102"/>
-                    </Shape>
-                    <TextLine ID="mz_2-107_l43" HPOS="1214" VPOS="3043" WIDTH="207" HEIGHT="53" BASELINE="1214 3066 1421 3066" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-107_l43" HPOS="1214" VPOS="3043" WIDTH="207" HEIGHT="53" BASELINE="1214 3066 1421 3066" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1214 3066 1214 3082 1316 3094 1318 3096 1318 3094 1421 3082 1421 3066 1421 3043 1214 3043 1214 3066"/>
                         </Shape>
                         <String CONTENT="¹ See p. 74."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

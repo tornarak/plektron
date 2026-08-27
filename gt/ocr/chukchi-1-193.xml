@@ -23,33 +23,20 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-Other"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-193_r1" HPOS="387" VPOS="546" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="387 546 2165 546 2165 636 387 636"/>
-                    </Shape>
-                    <TextLine ID="mz_1-193_l1" HPOS="962" VPOS="565" WIDTH="617" HEIGHT="54" BASELINE="962 599 1579 599" TAGREFS="TYPE_5">
+                <TextBlock ID="text_1-193" HPOS="379" VPOS="565" WIDTH="1778" HEIGHT="2622"><TextLine ID="mz_1-193_l1" HPOS="962" VPOS="565" WIDTH="617" HEIGHT="54" BASELINE="962 599 1579 599" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1568 565 970 565 962 571 962 599 962 619 1579 619 1579 599 1579 571 1568 565"/>
                         </Shape>
                         <String CONTENT="BOGORAS, THE CHUKCHEE."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-193_r2" HPOS="387" VPOS="661" WIDTH="1778" HEIGHT="191" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="387 661 2165 661 2165 852 387 852"/>
-                    </Shape>
-                    <TextLine ID="mz_1-193_l2" HPOS="390" VPOS="677" WIDTH="1767" HEIGHT="50" BASELINE="390 708 2157 708" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-193_l2" HPOS="390" VPOS="677" WIDTH="1767" HEIGHT="50" BASELINE="390 708 2157 708" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="390 708 390 727 2155 727 2157 708 2155 677 390 677 390 708"/>
                         </Shape>
@@ -69,12 +56,7 @@
                         </Shape>
                         <String CONTENT="Anadyr Chukchee angle for grayling, the Chaun Chukchee for salmon-trout, etc."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-193_r3" HPOS="387" VPOS="2304" WIDTH="1778" HEIGHT="317" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="387 2304 2165 2304 2165 2621 387 2621"/>
-                    </Shape>
-                    <TextLine ID="mz_1-193_l5" HPOS="487" VPOS="2303" WIDTH="1668" HEIGHT="63" BASELINE="487 2349 2155 2349" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-193_l5" HPOS="487" VPOS="2303" WIDTH="1668" HEIGHT="63" BASELINE="487 2349 2155 2349" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="2112 2312 2090 2312 2068 2312 2047 2312 2025 2312 2003 2312 1982 2312 1960 2312 1938 2310 1917 2310 1895 2310 1873 2310 1852 2310 1830 2310 1808 2310 1787 2310 1765 2310 1756 2308 1460 2314 1432 2305 1419 2305 1412 2305 1401 2314 1313 2303 1310 2303 1308 2303 1267 2314 1239 2303 1237 2303 1235 2303 1232 2303 1189 2314 1152 2303 1150 2303 1148 2303 1146 2303 1144 2303 1128 2314 1102 2303 1100 2303 1098 2303 1096 2303 1057 2314 999 2303 996 2303 994 2303 962 2316 784 2316 749 2303 747 2303 745 2303 687 2314 663 2303 661 2303 659 2303 656 2303 622 2314 600 2303 598 2303 596 2303 594 2303 561 2314 503 2303 500 2303 498 2303 496 2303 487 2310 487 2349 487 2366 2153 2366 2155 2349 2153 2316 2131 2312 2112 2312"/>
                         </Shape>
@@ -108,23 +90,13 @@
                         </Shape>
                         <String CONTENT="Koryak, and the Kamchadal."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-193_r4" HPOS="387" VPOS="2646" WIDTH="1778" HEIGHT="89" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="387 2646 2165 2646 2165 2735 387 2735"/>
-                    </Shape>
-                    <TextLine ID="mz_1-193_l10" HPOS="1204" VPOS="2652" WIDTH="141" HEIGHT="63" BASELINE="1204 2699 1345 2699" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-193_l10" HPOS="1204" VPOS="2652" WIDTH="141" HEIGHT="63" BASELINE="1204 2699 1345 2699" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1204 2699 1204 2715 1345 2715 1345 2699 1345 2669 1287 2669 1267 2652 1265 2652 1263 2652 1261 2652 1204 2658 1204 2699"/>
                         </Shape>
                         <String CONTENT="WAR."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-193_r5" HPOS="387" VPOS="2762" WIDTH="1778" HEIGHT="366" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="387 2762 2165 2762 2165 3128 387 3128"/>
-                    </Shape>
-                    <TextLine ID="mz_1-193_l11" HPOS="490" VPOS="2760" WIDTH="1663" HEIGHT="65" BASELINE="492 2810 2153 2801" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-193_l11" HPOS="490" VPOS="2760" WIDTH="1663" HEIGHT="65" BASELINE="492 2810 2153 2801" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="492 2810 492 2823 2148 2825 2153 2801 2148 2773 1906 2760 1904 2760 1830 2771 1802 2760 1800 2760 1798 2760 1713 2773 1399 2762 1397 2762 1395 2762 1393 2762 1375 2775 490 2775 492 2810"/>
                         </Shape>
@@ -165,19 +137,13 @@
                         </Shape>
                         <String CONTENT="with so and so many Chukchee men “versed in archery.”"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-193_r6" HPOS="387" VPOS="3128" WIDTH="1778" HEIGHT="68" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="387 3128 2165 3128 2165 3196 387 3196"/>
-                    </Shape>
-                    <TextLine ID="mz_1-193_l17" HPOS="494" VPOS="3128" WIDTH="1661" HEIGHT="59" BASELINE="496 3167 2155 3158" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-193_l17" HPOS="494" VPOS="3128" WIDTH="1661" HEIGHT="59" BASELINE="496 3167 2155 3158" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="496 3167 496 3187 2153 3178 2155 3158 2151 3130 494 3128 496 3167"/>
                         </Shape>
                         <String CONTENT="The epic tales are full of descriptions of shooting-bouts and contests."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

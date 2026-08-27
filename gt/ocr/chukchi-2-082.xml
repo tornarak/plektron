@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_2-082_r1" HPOS="370" VPOS="462" WIDTH="1776" HEIGHT="86" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="370 462 2146 462 2146 548 370 548"/>
-                    </Shape>
-                    <TextLine ID="mz_2-082_l1" HPOS="949" VPOS="475" WIDTH="611" HEIGHT="51" BASELINE="949 509 1560 509" TAGREFS="TYPE_4">
+                <TextBlock ID="text_2-082" HPOS="362" VPOS="473" WIDTH="1778" HEIGHT="2630"><TextLine ID="mz_2-082_l1" HPOS="949" VPOS="475" WIDTH="611" HEIGHT="51" BASELINE="949 509 1560 509" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1557 499 1539 475 959 475 949 479 949 509 949 526 1560 526 1560 509 1557 501 1557 499"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="354"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-082_r2" HPOS="370" VPOS="580" WIDTH="1776" HEIGHT="546" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="370 580 2146 580 2146 1126 370 1126"/>
-                    </Shape>
-                    <TextLine ID="mz_2-082_l3" HPOS="472" VPOS="577" WIDTH="1666" HEIGHT="59" BASELINE="473 614 2138 620" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-082_l3" HPOS="472" VPOS="577" WIDTH="1666" HEIGHT="59" BASELINE="473 614 2138 620" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2119 593 2099 591 2079 591 2074 589 473 577 473 614 472 626 487 636 489 636 491 636 493 636 2136 630 2138 620 2136 593 2119 593"/>
                         </Shape>
@@ -117,12 +105,7 @@
                         </Shape>
                         <String CONTENT="antlers."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-082_r3" HPOS="370" VPOS="1126" WIDTH="1776" HEIGHT="241" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="370 1126 2146 1126 2146 1367 370 1367"/>
-                    </Shape>
-                    <TextLine ID="mz_2-082_l12" HPOS="473" VPOS="1114" WIDTH="1667" HEIGHT="66" BASELINE="475 1155 2140 1159" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-082_l12" HPOS="473" VPOS="1114" WIDTH="1667" HEIGHT="66" BASELINE="475 1155 2140 1159" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="475 1155 473 1165 493 1176 495 1176 497 1176 1038 1169 1151 1178 1153 1178 1308 1169 1645 1180 1647 1180 2138 1169 2140 1159 2140 1129 2113 1116 2111 1116 2109 1116 2107 1116 2079 1128 1989 1116 1987 1116 1895 1128 1803 1116 1801 1116 1799 1116 1756 1129 1654 1129 1633 1116 1631 1116 1629 1116 1627 1116 1560 1128 1457 1116 1455 1116 1453 1116 1417 1128 1349 1116 1347 1116 1345 1116 1308 1128 1059 1114 1057 1114 869 1126 791 1114 789 1114 787 1114 748 1126 475 1118 475 1155"/>
                         </Shape>
@@ -149,12 +132,7 @@
                         </Shape>
                         <String CONTENT="forked bough wrapped in a piece of skin which represents the skin dress (Fig. 250)."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-082_r4" HPOS="370" VPOS="1367" WIDTH="1776" HEIGHT="238" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="370 1367 2146 1367 2146 1605 370 1605"/>
-                    </Shape>
-                    <TextLine ID="mz_2-082_l16" HPOS="477" VPOS="1357" WIDTH="1659" HEIGHT="54" BASELINE="477 1400 2136 1400" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-082_l16" HPOS="477" VPOS="1357" WIDTH="1659" HEIGHT="54" BASELINE="477 1400 2136 1400" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="477 1400 477 1410 2134 1411 2136 1400 2136 1370 2079 1357 2077 1357 2076 1357 2040 1368 1980 1357 1978 1357 1976 1357 1950 1368 1911 1357 1909 1357 1907 1357 1905 1357 1903 1357 1888 1368 1841 1357 1839 1357 1837 1357 1835 1357 1807 1368 1784 1357 1782 1357 1780 1357 1778 1357 1729 1370 1639 1370 1623 1357 1621 1357 1619 1357 1617 1357 1615 1357 1584 1368 1445 1357 1443 1357 1441 1357 1404 1368 1339 1357 1337 1357 1251 1370 1059 1370 989 1357 987 1357 820 1368 783 1357 781 1357 779 1357 777 1357 775 1357 757 1370 567 1370 477 1359 477 1400"/>
                         </Shape>
@@ -181,12 +159,7 @@
                         </Shape>
                         <String CONTENT="also considered the chief “mistress” of the house and the protectress of the herd."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-082_r5" HPOS="370" VPOS="1605" WIDTH="1776" HEIGHT="1259" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="370 1605 2146 1605 2146 2864 370 2864"/>
-                    </Shape>
-                    <TextLine ID="mz_2-082_l20" HPOS="1496" VPOS="1609" WIDTH="640" HEIGHT="45" BASELINE="1496 1639 2136 1639" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-082_l20" HPOS="1496" VPOS="1609" WIDTH="640" HEIGHT="45" BASELINE="1496 1639 2136 1639" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1496 1639 1496 1654 2136 1654 2136 1639 2136 1609 1496 1609 1496 1639"/>
                         </Shape>
@@ -332,12 +305,7 @@
                         </Shape>
                         <String CONTENT="“spirit-border” and “spirit-woman.”"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-082_r6" HPOS="370" VPOS="2864" WIDTH="1776" HEIGHT="183" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="370 2864 2146 2864 2146 3047 370 3047"/>
-                    </Shape>
-                    <TextLine ID="mz_2-082_l41" HPOS="472" VPOS="2859" WIDTH="1662" HEIGHT="55" BASELINE="472 2898 2134 2898" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-082_l41" HPOS="472" VPOS="2859" WIDTH="1662" HEIGHT="55" BASELINE="472 2898 2134 2898" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="472 2898 472 2914 2134 2914 2134 2898 2134 2870 2056 2859 2054 2859 1944 2868 1923 2859 1921 2859 1919 2859 1862 2868 1488 2859 1486 2859 1484 2859 1482 2859 1464 2870 1229 2870 1192 2859 1190 2859 1188 2859 1061 2868 1010 2859 1008 2859 961 2868 910 2859 908 2859 906 2859 904 2859 891 2870 763 2870 648 2859 646 2859 644 2859 611 2868 489 2859 487 2859 485 2859 483 2859 472 2867 472 2898"/>
                         </Shape>
@@ -357,19 +325,13 @@
                         </Shape>
                         <String CONTENT="are male. The latter are the more numerous. All these figures taken"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-082_r7" HPOS="370" VPOS="3055" WIDTH="1776" HEIGHT="63" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="370 3055 2146 3055 2146 3118 370 3118"/>
-                    </Shape>
-                    <TextLine ID="mz_2-082_l44" HPOS="566" VPOS="3055" WIDTH="1355" HEIGHT="48" BASELINE="567 3080 1921 3086" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-082_l44" HPOS="566" VPOS="3055" WIDTH="1355" HEIGHT="48" BASELINE="567 3080 1921 3086" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="567 3080 566 3098 1917 3103 1921 3086 1919 3060 567 3055 567 3080"/>
                         </Shape>
                         <String CONTENT="¹ Concerning the stem kama (kamak), compare p. 341. See also p. 289, Footnote 3."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

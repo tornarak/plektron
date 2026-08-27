@@ -23,44 +23,26 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Other"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="QuireMarksZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-213_r1" HPOS="402" VPOS="877" WIDTH="1778" HEIGHT="78" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="402 877 2180 877 2180 955 402 955"/>
-                    </Shape>
-                    <TextLine ID="mz_1-213_l1" HPOS="643" VPOS="892" WIDTH="1280" HEIGHT="54" BASELINE="643 928 1923 928" TAGREFS="TYPE_5">
+                <TextBlock ID="text_1-213" HPOS="394" VPOS="892" WIDTH="1785" HEIGHT="2463"><TextLine ID="mz_1-213_l1" HPOS="643" VPOS="892" WIDTH="1280" HEIGHT="54" BASELINE="643 928 1923 928" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1921 892 643 892 643 928 643 946 1923 946 1923 928 1923 920 1921 892"/>
                         </Shape>
                         <String CONTENT="VII. — HABITATIONS, HOUSEHOLD UTENSILS."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-213_r2" HPOS="402" VPOS="990" WIDTH="1778" HEIGHT="68" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="402 990 2180 990 2180 1058 402 1058"/>
-                    </Shape>
-                    <TextLine ID="mz_1-213_l2" HPOS="1137" VPOS="1002" WIDTH="308" HEIGHT="52" BASELINE="1137 1035 1445 1035" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-213_l2" HPOS="1137" VPOS="1002" WIDTH="308" HEIGHT="52" BASELINE="1137 1035 1445 1035" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1137 1035 1137 1054 1445 1054 1445 1035 1445 1002 1137 1002 1137 1035"/>
                         </Shape>
                         <String CONTENT="HABITATIONS."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-213_r3" HPOS="402" VPOS="1088" WIDTH="1778" HEIGHT="312" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="402 1088 2180 1088 2180 1400 402 1400"/>
-                    </Shape>
-                    <TextLine ID="mz_1-213_l3" HPOS="518" VPOS="1099" WIDTH="1654" HEIGHT="50" BASELINE="518 1132 2172 1132" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-213_l3" HPOS="518" VPOS="1099" WIDTH="1654" HEIGHT="50" BASELINE="518 1132 2172 1132" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="518 1132 518 1149 2170 1149 2172 1132 2170 1102 518 1099 518 1132"/>
                         </Shape>
@@ -94,12 +76,7 @@
                         </Shape>
                         <String CONTENT="house” (lɪˊê-ran).¹"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-213_r4" HPOS="402" VPOS="1400" WIDTH="1778" HEIGHT="176" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="402 1400 2180 1400 2180 1576 402 1576"/>
-                    </Shape>
-                    <TextLine ID="mz_1-213_l8" HPOS="507" VPOS="1387" WIDTH="1670" HEIGHT="65" BASELINE="509 1437 2177 1429" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-213_l8" HPOS="507" VPOS="1387" WIDTH="1670" HEIGHT="65" BASELINE="509 1437 2177 1429" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="509 1437 509 1452 2174 1446 2177 1429 2172 1398 1785 1387 1782 1387 1722 1398 1412 1390 1410 1390 1336 1403 507 1403 509 1437"/>
                         </Shape>
@@ -119,12 +96,7 @@
                         </Shape>
                         <String CONTENT="is from ten to fifteen feet; and its diameter, from fifteen to twenty-five feet."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-213_r5" HPOS="402" VPOS="1576" WIDTH="1778" HEIGHT="1549" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="402 1576 2180 1576 2180 3125 402 3125"/>
-                    </Shape>
-                    <TextLine ID="mz_1-213_l11" HPOS="511" VPOS="1580" WIDTH="1663" HEIGHT="50" BASELINE="513 1615 2174 1610" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-213_l11" HPOS="511" VPOS="1580" WIDTH="1663" HEIGHT="50" BASELINE="513 1615 2174 1610" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="513 1615 513 1630 2172 1626 2174 1610 2170 1582 511 1580 513 1615"/>
                         </Shape>
@@ -305,12 +277,7 @@
                         </Shape>
                         <String CONTENT="time. The poles are stronger, and the lashings are more carefully made, than"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-213_r6" HPOS="402" VPOS="3150" WIDTH="1778" HEIGHT="86" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="402 3150 2180 3150 2180 3236 402 3236"/>
-                    </Shape>
-                    <TextLine ID="mz_1-213_l37" HPOS="524" VPOS="3139" WIDTH="1650" HEIGHT="52" BASELINE="526 3174 2174 3165" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-213_l37" HPOS="524" VPOS="3139" WIDTH="1650" HEIGHT="52" BASELINE="526 3174 2174 3165" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="526 3174 526 3191 2172 3182 2174 3165 2168 3139 524 3145 526 3174"/>
                         </Shape>
@@ -323,30 +290,19 @@
                         </Shape>
                         <String CONTENT="camp, liˊi-nɪˊmnɪm (“genuine habitation”); and the people themselves, liˊê-oraˊwêʟat (“genuine men”). See p. 11."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-213_r7" HPOS="402" VPOS="3239" WIDTH="1778" HEIGHT="73" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="402 3239 2180 3239 2180 3312 402 3312"/>
-                    </Shape>
-                    <TextLine ID="mz_1-213_l39" HPOS="1237" VPOS="3230" WIDTH="112" HEIGHT="82" BASELINE="1239 3273 1347 3282" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-213_l39" HPOS="1237" VPOS="3230" WIDTH="112" HEIGHT="82" BASELINE="1239 3273 1347 3282" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1239 3273 1237 3306 1289 3299 1339 3312 1347 3282 1349 3230 1241 3230 1239 3273"/>
                         </Shape>
                         <String CONTENT="[169]"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-213_r8" HPOS="402" VPOS="3307" WIDTH="1778" HEIGHT="51" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="402 3307 2180 3307 2180 3358 402 3358"/>
-                    </Shape>
-                    <TextLine ID="mz_1-213_l40" HPOS="394" VPOS="3299" WIDTH="708" HEIGHT="56" BASELINE="396 3334 1102 3327" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-213_l40" HPOS="394" VPOS="3299" WIDTH="708" HEIGHT="56" BASELINE="396 3334 1102 3327" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="396 3334 396 3355 1100 3347 1102 3327 1096 3299 394 3303 396 3334"/>
                         </Shape>
                         <String CONTENT="22—JESUP NORTH PACIFIC EXPED., VOL. VII."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

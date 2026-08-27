@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-261_r1" HPOS="349" VPOS="543" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="349 543 2127 543 2127 633 349 633"/>
-                    </Shape>
-                    <TextLine ID="mz_1-261_l1" HPOS="925" VPOS="556" WIDTH="619" HEIGHT="52" BASELINE="925 589 1544 589" TAGREFS="TYPE_5">
+                <TextBlock ID="text_1-261" HPOS="347" VPOS="556" WIDTH="1778" HEIGHT="2624"><TextLine ID="mz_1-261_l1" HPOS="925" VPOS="556" WIDTH="619" HEIGHT="52" BASELINE="925 589 1544 589" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1531 556 1055 556 1033 556 1012 558 990 558 968 560 947 563 925 563 925 589 925 608 1544 608 1544 589 1542 576 1531 556"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="205"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-261_r2" HPOS="349" VPOS="658" WIDTH="1778" HEIGHT="541" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="349 658 2127 658 2127 1199 349 1199"/>
-                    </Shape>
-                    <TextLine ID="mz_1-261_l3" HPOS="351" VPOS="669" WIDTH="1774" HEIGHT="47" BASELINE="351 699 2125 699" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-261_l3" HPOS="351" VPOS="669" WIDTH="1774" HEIGHT="47" BASELINE="351 699 2125 699" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="2122 669 351 669 351 699 351 716 2125 716 2125 699 2125 671 2122 669"/>
                         </Shape>
@@ -118,12 +105,7 @@
                         </Shape>
                         <String CONTENT="resented by Nelson¹ have their counterparts in Asia."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-261_r3" HPOS="349" VPOS="1202" WIDTH="1778" HEIGHT="358" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="349 1202 2127 1202 2127 1560 349 1560"/>
-                    </Shape>
-                    <TextLine ID="mz_1-261_l12" HPOS="457" VPOS="1203" WIDTH="1668" HEIGHT="50" BASELINE="457 1238 2125 1238" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-261_l12" HPOS="457" VPOS="1203" WIDTH="1668" HEIGHT="50" BASELINE="457 1238 2125 1238" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="457 1238 457 1253 2122 1253 2125 1238 2122 1208 457 1203 457 1238"/>
                         </Shape>
@@ -164,12 +146,7 @@
                         </Shape>
                         <String CONTENT="tance, but on the Pacific chewing is much more general."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-261_r4" HPOS="349" VPOS="1560" WIDTH="1778" HEIGHT="352" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="349 1560 2127 1560 2127 1912 349 1912"/>
-                    </Shape>
-                    <TextLine ID="mz_1-261_l18" HPOS="455" VPOS="1563" WIDTH="1670" HEIGHT="50" BASELINE="457 1595 2125 1591" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-261_l18" HPOS="455" VPOS="1563" WIDTH="1670" HEIGHT="50" BASELINE="457 1595 2125 1591" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="457 1595 457 1613 2122 1613 2125 1591 2120 1563 455 1563 457 1595"/>
                         </Shape>
@@ -210,12 +187,7 @@
                         </Shape>
                         <String CONTENT="They do not compare with the Koryak, however, in their passion for agaric."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-261_r5" HPOS="349" VPOS="1912" WIDTH="1778" HEIGHT="541" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="349 1912 2127 1912 2127 2453 349 2453"/>
-                    </Shape>
-                    <TextLine ID="mz_1-261_l24" HPOS="464" VPOS="1916" WIDTH="1658" HEIGHT="56" BASELINE="464 1952 2122 1952" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-261_l24" HPOS="464" VPOS="1916" WIDTH="1658" HEIGHT="56" BASELINE="464 1952 2122 1952" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="464 1952 464 1972 2122 1972 2122 1952 2122 1924 464 1916 464 1952"/>
                         </Shape>
@@ -277,12 +249,7 @@
                         </Shape>
                         <String CONTENT="in order to trade it to their less civilized reindeer-breeding neighbors."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-261_r6" HPOS="349" VPOS="2453" WIDTH="1778" HEIGHT="483" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="349 2453 2127 2453 2127 2936 349 2936"/>
-                    </Shape>
-                    <TextLine ID="mz_1-261_l33" HPOS="457" VPOS="2461" WIDTH="1665" HEIGHT="52" BASELINE="457 2496 2122 2496" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-261_l33" HPOS="457" VPOS="2461" WIDTH="1665" HEIGHT="52" BASELINE="457 2496 2122 2496" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="457 2496 457 2513 2122 2513 2122 2496 2122 2466 457 2461 457 2496"/>
                         </Shape>
@@ -337,12 +304,7 @@
                         </Shape>
                         <String CONTENT="woman chews the mushroom, and offers the ready quid to her husband to swallow."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-261_r7" HPOS="349" VPOS="2936" WIDTH="1778" HEIGHT="176" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="349 2936 2127 2936 2127 3112 349 3112"/>
-                    </Shape>
-                    <TextLine ID="mz_1-261_l41" HPOS="464" VPOS="2938" WIDTH="1656" HEIGHT="52" BASELINE="464 2972 2120 2972" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-261_l41" HPOS="464" VPOS="2938" WIDTH="1656" HEIGHT="52" BASELINE="464 2972 2120 2972" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="464 2972 464 2990 2120 2990 2120 2972 2120 2944 464 2938 464 2972"/>
                         </Shape>
@@ -362,19 +324,13 @@
                         </Shape>
                         <String CONTENT="intoxication comes on rather suddenly, in about a quarter of an hour after"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-261_r8" HPOS="349" VPOS="3133" WIDTH="1778" HEIGHT="63" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="349 3133 2127 3133 2127 3196 349 3196"/>
-                    </Shape>
-                    <TextLine ID="mz_1-261_l44" HPOS="795" VPOS="3126" WIDTH="890" HEIGHT="54" BASELINE="797 3154 1685 3161" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-261_l44" HPOS="795" VPOS="3126" WIDTH="890" HEIGHT="54" BASELINE="797 3154 1685 3161" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="797 3154 795 3174 1681 3180 1685 3161 1683 3132 797 3126 797 3154"/>
                         </Shape>
                         <String CONTENT="¹ See Nelson, Plate LXXXVI, Figs. 5, 6, 20, 23, p. 270."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

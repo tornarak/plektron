@@ -23,23 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="QuireMarksZone"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_6" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-149_r1" HPOS="364" VPOS="597" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_5">
-<Shape>
-                        <Polygon POINTS="364 597 2142 597 2142 687 364 687"/>
-                    </Shape>
-                    <TextLine ID="mz_1-149_l1" HPOS="934" VPOS="617" WIDTH="625" HEIGHT="52" BASELINE="934 651 1559 651" TAGREFS="TYPE_6">
+                <TextBlock ID="text_1-149" HPOS="355" VPOS="617" WIDTH="1787" HEIGHT="2686"><TextLine ID="mz_1-149_l1" HPOS="934" VPOS="617" WIDTH="625" HEIGHT="52" BASELINE="934 651 1559 651" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="1542 617 940 617 934 621 934 651 934 669 1559 669 1559 651 1559 625 1542 617"/>
                         </Shape>
@@ -52,12 +43,7 @@
                         </Shape>
                         <String CONTENT="113"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-149_r2" HPOS="364" VPOS="712" WIDTH="1778" HEIGHT="129" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="364 712 2142 712 2142 841 364 841"/>
-                    </Shape>
-                    <TextLine ID="mz_1-149_l3" HPOS="355" VPOS="714" WIDTH="1774" HEIGHT="67" BASELINE="357 764 2129 760" TAGREFS="TYPE_6">
+<TextLine ID="mz_1-149_l3" HPOS="355" VPOS="714" WIDTH="1774" HEIGHT="67" BASELINE="357 764 2129 760" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="420 725 399 727 377 727 360 727 355 727 357 764 357 777 2125 781 2129 760 2125 727 1839 714 1837 714 1765 725 1750 714 1748 714 1746 714 1744 714 1741 714 1739 714 1724 725 1711 714 1709 714 1707 714 1705 714 1616 725 1520 714 1518 714 1323 725 1269 714 1267 714 1206 727 1189 716 1187 716 1185 716 1183 716 433 727 422 725 420 725"/>
                         </Shape>
@@ -70,12 +56,7 @@
                         </Shape>
                         <String CONTENT="and it is difficult to hold them in till everything is ready."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-149_r3" HPOS="364" VPOS="841" WIDTH="1778" HEIGHT="475" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="364 841 2142 841 2142 1316 364 1316"/>
-                    </Shape>
-                    <TextLine ID="mz_1-149_l5" HPOS="466" VPOS="846" WIDTH="1663" HEIGHT="50" BASELINE="466 881 2129 881" TAGREFS="TYPE_6">
+<TextLine ID="mz_1-149_l5" HPOS="466" VPOS="846" WIDTH="1663" HEIGHT="50" BASELINE="466 881 2129 881" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="466 881 466 896 2129 896 2129 881 2129 851 466 846 466 881"/>
                         </Shape>
@@ -130,12 +111,7 @@
                         </Shape>
                         <String CONTENT="easier to handle than a heavy one."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-149_r4" HPOS="364" VPOS="1316" WIDTH="1778" HEIGHT="244" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="364 1316 2142 1316 2142 1560 364 1560"/>
-                    </Shape>
-                    <TextLine ID="mz_1-149_l13" HPOS="468" VPOS="1314" WIDTH="1665" HEIGHT="58" BASELINE="470 1359 2133 1355" TAGREFS="TYPE_6">
+<TextLine ID="mz_1-149_l13" HPOS="468" VPOS="1314" WIDTH="1665" HEIGHT="58" BASELINE="470 1359 2133 1355" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="470 1359 470 1372 2131 1368 2133 1355 2129 1327 1393 1314 1391 1314 1388 1314 1347 1325 1304 1314 1302 1314 1300 1314 1224 1327 1118 1316 1115 1316 1113 1316 1081 1329 897 1329 879 1316 877 1316 875 1316 873 1316 871 1316 830 1329 676 1329 663 1316 661 1316 659 1316 656 1316 468 1325 470 1359"/>
                         </Shape>
@@ -162,12 +138,7 @@
                         </Shape>
                         <String CONTENT="and fifty miles in twenty-three hours, and two hundred miles in two days."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-149_r5" HPOS="364" VPOS="1560" WIDTH="1778" HEIGHT="413" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="364 1560 2142 1560 2142 1973 364 1973"/>
-                    </Shape>
-                    <TextLine ID="mz_1-149_l17" HPOS="472" VPOS="1563" WIDTH="1661" HEIGHT="50" BASELINE="472 1595 2133 1595" TAGREFS="TYPE_6">
+<TextLine ID="mz_1-149_l17" HPOS="472" VPOS="1563" WIDTH="1661" HEIGHT="50" BASELINE="472 1595 2133 1595" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="472 1595 472 1613 2133 1613 2133 1595 2133 1565 472 1563 472 1595"/>
                         </Shape>
@@ -215,12 +186,7 @@
                         </Shape>
                         <String CONTENT="dogs have been known to exhibit over long distances."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-149_r6" HPOS="364" VPOS="1973" WIDTH="1778" HEIGHT="954" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="364 1973 2142 1973 2142 2927 364 2927"/>
-                    </Shape>
-                    <TextLine ID="mz_1-149_l24" HPOS="470" VPOS="1968" WIDTH="1665" HEIGHT="62" BASELINE="472 2017 2135 2011" TAGREFS="TYPE_6">
+<TextLine ID="mz_1-149_l24" HPOS="470" VPOS="1968" WIDTH="1665" HEIGHT="62" BASELINE="472 2017 2135 2011" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="472 2017 472 2030 2133 2024 2135 2011 2131 1981 2008 1981 1984 1968 1982 1968 1980 1968 1977 1968 1975 1968 1962 1981 1867 1981 1826 1968 1824 1968 1821 1968 1819 1968 1817 1968 1800 1981 1533 1981 1494 1970 1492 1970 1490 1970 1423 1981 1395 1970 1393 1970 1391 1970 1388 1970 1386 1970 1371 1983 1161 1983 1128 1970 1126 1970 1124 1970 1044 1981 1031 1970 1029 1970 1027 1970 1025 1970 1022 1970 970 1983 955 1972 953 1972 951 1972 949 1972 470 1981 472 2017"/>
                         </Shape>
@@ -331,12 +297,7 @@
                         </Shape>
                         <String CONTENT="animals had been ill fed in the fall, and well-nigh starved in the spring."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-149_r7" HPOS="364" VPOS="2927" WIDTH="1778" HEIGHT="190" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="364 2927 2142 2927 2142 3117 364 3117"/>
-                    </Shape>
-                    <TextLine ID="mz_1-149_l40" HPOS="479" VPOS="2929" WIDTH="1663" HEIGHT="56" BASELINE="481 2972 2142 2964" TAGREFS="TYPE_6">
+<TextLine ID="mz_1-149_l40" HPOS="479" VPOS="2929" WIDTH="1663" HEIGHT="56" BASELINE="481 2972 2142 2964" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="481 2972 481 2985 2142 2977 2142 2964 2135 2931 500 2929 498 2929 496 2929 494 2929 479 2935 481 2972"/>
                         </Shape>
@@ -356,12 +317,7 @@
                         </Shape>
                         <String CONTENT="short distance a dog-team can haul much more than that. The Kamchatka"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-149_r8" HPOS="364" VPOS="3139" WIDTH="1778" HEIGHT="97" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="364 3139 2142 3139 2142 3236 364 3236"/>
-                    </Shape>
-                    <TextLine ID="mz_1-149_l43" HPOS="477" VPOS="3137" WIDTH="1663" HEIGHT="45" BASELINE="479 3167 2140 3163" TAGREFS="TYPE_6">
+<TextLine ID="mz_1-149_l43" HPOS="477" VPOS="3137" WIDTH="1663" HEIGHT="45" BASELINE="479 3167 2140 3163" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="479 3167 479 3182 2140 3178 2140 3163 2133 3137 477 3139 479 3167"/>
                         </Shape>
@@ -374,19 +330,13 @@
                         </Shape>
                         <String CONTENT="of one pack-horse, which is about 6 pud; i. e., 240 Russian pounds, or 216 pounds Avoirdupois."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-149_r9" HPOS="364" VPOS="3255" WIDTH="1778" HEIGHT="68" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="364 3255 2142 3255 2142 3323 364 3323"/>
-                    </Shape>
-                    <TextLine ID="mz_1-149_l45" HPOS="368" VPOS="3254" WIDTH="695" HEIGHT="49" BASELINE="370 3288 1063 3282" TAGREFS="TYPE_6">
+<TextLine ID="mz_1-149_l45" HPOS="368" VPOS="3254" WIDTH="695" HEIGHT="49" BASELINE="370 3288 1063 3282" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="370 3288 370 3303 1063 3299 1063 3282 1057 3254 368 3258 370 3288"/>
                         </Shape>
                         <String CONTENT="15—JESUP NORTH PACIFIC EXPED., VOL. VII."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

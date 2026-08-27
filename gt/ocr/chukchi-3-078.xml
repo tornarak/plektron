@@ -23,33 +23,20 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Other"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="QuireMarksZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_3-078_r1" HPOS="382" VPOS="742" WIDTH="1782" HEIGHT="93" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="382 742 2164 742 2164 835 382 835"/>
-                    </Shape>
-                    <TextLine ID="mz_3-078_l1" HPOS="859" VPOS="751" WIDTH="797" HEIGHT="72" BASELINE="859 800 1656 800" TAGREFS="TYPE_5">
+                <TextBlock ID="text_3-078" HPOS="374" VPOS="751" WIDTH="1777" HEIGHT="2417"><TextLine ID="mz_3-078_l1" HPOS="859" VPOS="751" WIDTH="797" HEIGHT="72" BASELINE="859 800 1656 800" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="859 800 859 813 869 821 871 821 873 821 874 823 960 823 960 821 962 821 964 821 964 819 974 811 1069 811 1083 821 1085 821 1087 821 1089 821 1656 809 1656 800 1656 765 1631 751 1629 751 1576 751 1574 751 1572 751 1570 751 1557 761 1545 751 1543 751 1541 751 1539 751 1537 751 1535 751 1535 753 1523 763 1504 751 1502 751 1500 751 1498 751 1496 751 1477 761 1403 751 1401 751 1399 751 1397 751 1397 753 1383 765 1360 753 1358 753 1270 753 1268 753 1266 753 1233 765 1221 755 1221 753 1219 753 1218 753 1216 753 1143 761 1132 751 1130 751 1128 751 1126 751 1124 751 1067 765 873 753 871 753 869 753 867 753 867 755 859 763 859 800"/>
                         </Shape>
                         <String CONTENT="XX. — CAMP AND VILLAGE."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-078_r2" HPOS="382" VPOS="874" WIDTH="1782" HEIGHT="1804" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="382 874 2164 874 2164 2678 382 2678"/>
-                    </Shape>
-                    <TextLine ID="mz_3-078_l2" HPOS="485" VPOS="866" WIDTH="1654" HEIGHT="60" BASELINE="487 913 2139 905" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-078_l2" HPOS="485" VPOS="866" WIDTH="1654" HEIGHT="60" BASELINE="487 913 2139 905" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="2102 872 2083 872 2069 870 2061 876 2052 870 2044 870 2024 870 2020 868 2003 876 1964 866 1946 866 1937 866 1921 878 1720 880 1570 880 1553 866 1551 866 1549 866 1547 866 1483 880 1229 880 1200 868 1198 868 1196 868 1194 868 1151 880 962 868 960 868 818 882 485 874 487 913 487 926 2137 919 2139 905 2137 878 2116 872 2102 872"/>
                         </Shape>
@@ -258,12 +245,7 @@
                         </Shape>
                         <String CONTENT="two families of assistants dependent on the master."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-078_r3" HPOS="382" VPOS="2678" WIDTH="1782" HEIGHT="299" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="382 2678 2164 2678 2164 2977 382 2977"/>
-                    </Shape>
-                    <TextLine ID="mz_3-078_l32" HPOS="494" VPOS="2663" WIDTH="1655" HEIGHT="58" BASELINE="496 2708 2149 2704" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-078_l32" HPOS="494" VPOS="2663" WIDTH="1655" HEIGHT="58" BASELINE="496 2708 2149 2704" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="496 2708 496 2721 2147 2721 2149 2704 2147 2677 2104 2663 2102 2663 2100 2663 2098 2663 2069 2675 2026 2663 2024 2663 2022 2663 1950 2675 1900 2663 1898 2663 1896 2663 1894 2663 1855 2675 1829 2663 1828 2663 1826 2663 1824 2663 1787 2677 1615 2677 1512 2663 1510 2663 1508 2663 1481 2677 1311 2677 1245 2665 1243 2665 1180 2678 1011 2678 972 2665 970 2665 968 2665 966 2665 929 2677 910 2665 908 2665 906 2665 830 2665 828 2665 769 2677 623 2665 621 2665 619 2665 590 2677 510 2665 508 2665 506 2665 504 2665 494 2673 496 2708"/>
                         </Shape>
@@ -297,41 +279,25 @@
                         </Shape>
                         <String CONTENT="“camp-companion,” “camp-neighbor”); also yaarraˊlɪn (“that of the rear house”)."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-078_r4" HPOS="382" VPOS="2977" WIDTH="1782" HEIGHT="57" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="382 2977 2164 2977 2164 3034 382 3034"/>
-                    </Shape>
-                    <TextLine ID="mz_3-078_l37" HPOS="494" VPOS="2963" WIDTH="1651" HEIGHT="82" BASELINE="496 3008 2145 3004" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-078_l37" HPOS="494" VPOS="2963" WIDTH="1651" HEIGHT="82" BASELINE="496 3008 2145 3004" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="496 3008 496 3045 656 3043 658 3043 660 3043 680 3029 783 3029 783 3027 785 3027 787 3027 798 3018 818 3027 820 3027 822 3027 869 3018 906 3029 908 3029 910 3029 956 3020 972 3029 974 3029 976 3029 978 3031 1071 3031 1071 3029 1073 3029 1075 3029 1087 3020 1101 3029 1103 3029 1104 3029 1106 3031 1219 3031 1219 3029 1221 3029 1223 3029 1237 3020 1274 3029 1276 3029 1278 3029 1280 3029 1319 3016 1342 3027 1344 3027 1346 3027 1399 3016 1416 3027 1418 3027 1420 3027 1422 3029 1475 3029 1475 3027 1477 3027 1479 3027 1494 3016 1551 3027 1553 3029 1607 3029 1607 3027 1609 3027 1611 3027 1627 3016 1664 3027 1666 3027 1668 3027 1670 3027 1672 3027 1689 3016 1759 3029 1761 3029 1763 3029 1765 3029 1783 3016 1798 3029 1800 3029 1802 3029 1941 3035 1943 3035 1944 3035 1980 3016 1995 3027 1997 3027 1999 3027 2001 3027 2087 3020 2141 3031 2145 3004 2143 2975 2112 2963 2110 2963 2108 2963 2106 2963 2083 2973 2019 2963 2017 2963 2015 2963 1991 2973 1966 2963 1964 2963 1962 2963 1960 2963 1929 2973 1849 2963 1847 2963 1845 2963 1816 2973 1730 2963 1728 2963 1726 2963 1697 2973 1685 2963 1683 2963 1681 2963 1679 2963 1677 2963 1637 2975 1549 2975 1533 2963 1531 2963 1529 2963 1527 2963 1525 2963 1498 2973 1321 2965 1319 2965 1317 2965 1315 2965 1303 2975 1264 2965 1262 2965 1260 2965 1258 2965 1233 2977 1134 2977 1118 2965 1116 2965 1114 2965 1112 2965 1110 2965 1085 2975 997 2965 995 2965 993 2965 964 2975 912 2965 910 2965 818 2975 738 2965 736 2965 494 2971 496 3008"/>
                         </Shape>
                         <String CONTENT="The position of the front house is “on the front of the others;” that is,"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-078_r5" HPOS="382" VPOS="3057" WIDTH="1782" HEIGHT="70" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="382 3057 2164 3057 2164 3127 382 3127"/>
-                    </Shape>
-                    <TextLine ID="mz_3-078_l38" HPOS="859" VPOS="3057" WIDTH="807" HEIGHT="56" BASELINE="861 3082 1666 3086" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-078_l38" HPOS="859" VPOS="3057" WIDTH="807" HEIGHT="56" BASELINE="861 3082 1666 3086" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="861 3082 859 3097 1038 3111 1040 3113 1192 3113 1192 3111 1194 3111 1196 3111 1196 3109 1206 3101 1465 3101 1475 3111 1475 3113 1477 3113 1479 3113 1481 3113 1664 3105 1666 3086 1664 3060 861 3057 861 3082"/>
                         </Shape>
                         <String CONTENT="¹ Aunraˊlɪn generally means “master” (cf. p. 285)."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-078_r6" HPOS="382" VPOS="3127" WIDTH="1782" HEIGHT="47" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="382 3127 2164 3127 2164 3174 382 3174"/>
-                    </Shape>
-                    <TextLine ID="mz_3-078_l39" HPOS="1214" VPOS="3105" WIDTH="111" HEIGHT="63" BASELINE="1216 3138 1325 3142" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-078_l39" HPOS="1214" VPOS="3105" WIDTH="111" HEIGHT="63" BASELINE="1216 3138 1325 3142" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1216 3138 1214 3164 1216 3166 1218 3166 1218 3168 1219 3168 1221 3168 1223 3168 1323 3162 1325 3142 1325 3109 1216 3105 1216 3138"/>
                         </Shape>
                         <String CONTENT="[612]"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

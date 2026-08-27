@@ -23,32 +23,20 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-115_r1" HPOS="339" VPOS="587" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="339 587 2117 587 2117 677 339 677"/>
-                    </Shape>
-                    <TextLine ID="mz_1-115_l1" HPOS="914" VPOS="612" WIDTH="624" HEIGHT="57" BASELINE="916 649 1538 645" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-115" HPOS="338" VPOS="612" WIDTH="1776" HEIGHT="2633"><TextLine ID="mz_1-115_l1" HPOS="914" VPOS="612" WIDTH="624" HEIGHT="57" BASELINE="916 649 1538 645" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1520 617 1510 612 918 615 914 619 916 649 916 669 1536 664 1538 645 1536 640 1520 617"/>
                         </Shape>
                         <String CONTENT="BOGORAS, THE CHUKCHEE."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-115_r2" HPOS="339" VPOS="702" WIDTH="1778" HEIGHT="681" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="339 702 2117 702 2117 1383 339 1383"/>
-                    </Shape>
-                    <TextLine ID="mz_1-115_l2" HPOS="340" VPOS="712" WIDTH="1772" HEIGHT="69" BASELINE="342 755 2112 760" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-115_l2" HPOS="340" VPOS="712" WIDTH="1772" HEIGHT="69" BASELINE="342 755 2112 760" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="804 712 782 723 743 714 730 716 717 716 704 723 674 716 665 718 643 718 624 718 620 723 604 718 600 721 578 721 557 721 535 723 513 723 492 723 470 723 448 725 427 725 405 725 383 727 362 727 342 727 342 755 340 773 353 781 355 781 357 781 360 781 2109 775 2112 760 2109 727 1782 714 1780 714 1718 725 1666 714 1663 714 1661 714 1635 725 1609 714 1607 714 1605 714 1458 725 1432 714 1429 714 1427 714 1425 714 1393 725 1367 714 1365 714 1362 714 1360 714 1358 714 1341 725 1313 714 1310 714 1308 714 1306 714 1274 725 1170 712 1167 712 1089 723 1038 712 1035 712 1033 712 1009 723 994 712 992 712 990 712 892 712 890 712 888 712 886 712 873 723 812 712 804 712"/>
                         </Shape>
@@ -124,12 +112,7 @@
                         </Shape>
                         <String CONTENT="completely tired out."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-115_r3" HPOS="339" VPOS="1385" WIDTH="1778" HEIGHT="1868" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="339 1385 2117 1385 2117 3253 339 3253"/>
-                    </Shape>
-                    <TextLine ID="mz_1-115_l13" HPOS="455" VPOS="1381" WIDTH="342" HEIGHT="63" BASELINE="455 1418 797 1418" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-115_l13" HPOS="455" VPOS="1381" WIDTH="342" HEIGHT="63" BASELINE="455 1418 797 1418" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="455 1418 455 1431 496 1444 498 1444 500 1444 555 1433 760 1444 762 1444 765 1444 797 1431 797 1418 797 1390 455 1381 455 1418"/>
                         </Shape>
@@ -345,8 +328,7 @@
                         </Shape>
                         <String CONTENT="times a stronger breastpiece is fastened in the same way."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

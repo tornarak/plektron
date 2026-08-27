@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-234_r1" HPOS="622" VPOS="592" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="622 592 2400 592 2400 682 622 682"/>
-                    </Shape>
-                    <TextLine ID="mz_1-234_l1" HPOS="628" VPOS="606" WIDTH="106" HEIGHT="65" BASELINE="630 647 734 651" TAGREFS="TYPE_5">
+                <TextBlock ID="text_1-234" HPOS="622" VPOS="606" WIDTH="1776" HEIGHT="2630"><TextLine ID="mz_1-234_l1" HPOS="628" VPOS="606" WIDTH="106" HEIGHT="65" BASELINE="630 647 734 651" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="630 617 630 647 628 662 635 669 635 671 637 671 639 671 641 671 732 662 734 651 734 619 685 606 682 606 680 606 630 615 630 617"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="BOGORAS, THE CHUKCHEE."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-234_r2" HPOS="622" VPOS="707" WIDTH="1778" HEIGHT="910" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="622 707 2400 707 2400 1617 622 1617"/>
-                    </Shape>
-                    <TextLine ID="mz_1-234_l3" HPOS="622" VPOS="721" WIDTH="1773" HEIGHT="54" BASELINE="624 751 2395 757" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-234_l3" HPOS="622" VPOS="721" WIDTH="1773" HEIGHT="54" BASELINE="624 751 2395 757" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="2378 727 2356 725 2335 725 2313 725 2291 723 2270 723 2268 721 624 721 624 751 622 768 2391 775 2395 757 2393 727 2378 727"/>
                         </Shape>
@@ -160,12 +147,7 @@
                         </Shape>
                         <String CONTENT="till the next spring.¹"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-234_r3" HPOS="622" VPOS="1617" WIDTH="1778" HEIGHT="1365" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="622 1617 2400 1617 2400 2982 622 2982"/>
-                    </Shape>
-                    <TextLine ID="mz_1-234_l18" HPOS="1882" VPOS="1615" WIDTH="513" HEIGHT="54" BASELINE="1884 1656 2395 1652" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-234_l18" HPOS="1882" VPOS="1615" WIDTH="513" HEIGHT="54" BASELINE="1884 1656 2395 1652" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1884 1656 1884 1669 2393 1665 2395 1652 2391 1623 1891 1615 1889 1615 1886 1615 1884 1615 1884 1617 1882 1617 1884 1656"/>
                         </Shape>
@@ -325,12 +307,7 @@
                         </Shape>
                         <String CONTENT="sealing expeditions in winter."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-234_r4" HPOS="622" VPOS="2982" WIDTH="1778" HEIGHT="170" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="622 2982 2400 2982 2400 3152 622 3152"/>
-                    </Shape>
-                    <TextLine ID="mz_1-234_l41" HPOS="734" VPOS="2979" WIDTH="1659" HEIGHT="71" BASELINE="736 3016 2393 3033" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-234_l41" HPOS="734" VPOS="2979" WIDTH="1659" HEIGHT="71" BASELINE="736 3016 2393 3033" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="736 3016 734 3033 2389 3050 2393 3033 2391 2998 736 2979 736 3016"/>
                         </Shape>
@@ -350,19 +327,13 @@
                         </Shape>
                         <String CONTENT="several other diseases, and expressed the opinion that the decrease in the"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-234_r5" HPOS="622" VPOS="3182" WIDTH="1778" HEIGHT="68" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="622 3182 2400 3182 2400 3250 622 3250"/>
-                    </Shape>
-                    <TextLine ID="mz_1-234_l44" HPOS="723" VPOS="3174" WIDTH="1651" HEIGHT="62" BASELINE="726 3202 2374 3217" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-234_l44" HPOS="723" VPOS="3174" WIDTH="1651" HEIGHT="62" BASELINE="726 3202 2374 3217" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="726 3202 723 3221 2369 3236 2374 3217 2372 3189 726 3174 726 3202"/>
                         </Shape>
                         <String CONTENT="¹ In the Koryak underground house the lower passage is used in summer, and the top hole in winter."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

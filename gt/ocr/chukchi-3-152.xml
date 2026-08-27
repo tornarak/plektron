@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_3-152_r1" HPOS="573" VPOS="453" WIDTH="1782" HEIGHT="102" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="573 453 2355 453 2355 555 573 555"/>
-                    </Shape>
-                    <TextLine ID="mz_3-152_l1" HPOS="1149" VPOS="476" WIDTH="610" HEIGHT="51" BASELINE="1151 507 1759 513" TAGREFS="TYPE_5">
+                <TextBlock ID="text_3-152" HPOS="569" VPOS="468" WIDTH="1775" HEIGHT="2626"><TextLine ID="mz_3-152_l1" HPOS="1149" VPOS="476" WIDTH="610" HEIGHT="51" BASELINE="1151 507 1759 513" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1738 478 1350 476 1346 476 1327 476 1307 476 1288 476 1268 476 1249 476 1229 476 1210 476 1190 476 1171 476 1151 476 1151 507 1149 521 1755 527 1759 513 1755 509 1738 478"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="686"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-152_r2" HPOS="573" VPOS="578" WIDTH="1782" HEIGHT="359" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="573 578 2355 578 2355 937 573 937"/>
-                    </Shape>
-                    <TextLine ID="mz_3-152_l3" HPOS="572" VPOS="576" WIDTH="1768" HEIGHT="62" BASELINE="574 617 2340 620" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-152_l3" HPOS="572" VPOS="576" WIDTH="1768" HEIGHT="62" BASELINE="574 617 2340 620" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="574 617 572 628 586 638 588 638 590 638 592 638 2338 632 2340 620 2338 589 1923 578 1921 578 1919 578 1892 587 1865 578 1863 578 1861 578 1798 587 1763 578 1761 578 1759 578 1633 587 1582 578 1580 578 1483 587 1426 576 1424 576 1422 576 1387 585 1332 576 1331 576 1329 576 1292 585 1216 576 1214 576 1157 585 1062 576 1060 576 1058 576 1027 585 993 576 991 576 989 576 988 576 962 585 929 576 927 576 925 576 923 576 898 587 793 587 777 576 775 576 773 576 771 576 769 576 742 587 646 587 631 576 629 576 627 576 625 576 574 583 574 617"/>
                         </Shape>
@@ -97,12 +84,7 @@
                         </Shape>
                         <String CONTENT="of sables brought to the fair was about thirty-six thousand."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-152_r3" HPOS="573" VPOS="937" WIDTH="1782" HEIGHT="1147" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="573 937 2355 937 2355 2084 573 2084"/>
-                    </Shape>
-                    <TextLine ID="mz_3-152_l9" HPOS="682" VPOS="938" WIDTH="1660" HEIGHT="55" BASELINE="682 977 2342 977" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-152_l9" HPOS="682" VPOS="938" WIDTH="1660" HEIGHT="55" BASELINE="682 977 2342 977" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="682 977 682 993 2342 993 2342 977 2342 950 2161 950 2130 938 2128 938 2126 938 2124 938 2087 948 1997 938 1995 938 1993 938 1958 948 1802 938 1800 938 1672 948 1568 938 1566 938 1512 948 1479 938 1477 938 1475 938 1325 948 1264 938 1262 938 1260 938 1221 948 1046 938 1044 938 972 948 929 938 927 938 925 938 871 948 837 938 836 938 834 938 832 938 798 948 682 944 682 977"/>
                         </Shape>
@@ -234,12 +216,7 @@
                         </Shape>
                         <String CONTENT="tusks, weighing less than one pound each, you must not take for tribute.”"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-152_r4" HPOS="573" VPOS="2084" WIDTH="1782" HEIGHT="892" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="573 2084 2355 2084 2355 2976 573 2976"/>
-                    </Shape>
-                    <TextLine ID="mz_3-152_l28" HPOS="678" VPOS="2070" WIDTH="1660" HEIGHT="59" BASELINE="680 2115 2338 2109" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-152_l28" HPOS="678" VPOS="2070" WIDTH="1660" HEIGHT="59" BASELINE="680 2115 2338 2109" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="680 2115 680 2129 2336 2127 2338 2109 2336 2082 2295 2070 2293 2070 2291 2070 2231 2082 1896 2082 1867 2070 1865 2070 1863 2070 1861 2070 1833 2080 1785 2070 1783 2070 1709 2082 1233 2072 1231 2072 1169 2084 1149 2074 1147 2074 1145 2074 1095 2084 995 2074 993 2074 880 2084 861 2074 859 2074 857 2074 738 2084 701 2074 699 2074 697 2074 695 2074 693 2074 678 2082 680 2115"/>
                         </Shape>
@@ -343,30 +320,19 @@
                         </Shape>
                         <String CONTENT="left we spared for the hostages, and portioned that off to them.”"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-152_r5" HPOS="573" VPOS="2976" WIDTH="1782" HEIGHT="50" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="573 2976 2355 2976 2355 3026 573 3026"/>
-                    </Shape>
-                    <TextLine ID="mz_3-152_l43" HPOS="682" VPOS="2971" WIDTH="1650" HEIGHT="86" BASELINE="683 3012 2332 3008" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-152_l43" HPOS="682" VPOS="2971" WIDTH="1650" HEIGHT="86" BASELINE="683 3012 2332 3008" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="683 3012 683 3057 1091 3055 1093 3055 1095 3055 1128 3033 1194 3033 1196 3033 1198 3033 1200 3033 1212 3023 1241 3033 1243 3033 1245 3035 1338 3035 1338 3033 1340 3033 1342 3033 1356 3023 1455 3033 1457 3033 1459 3033 1479 3023 1496 3033 1498 3033 1500 3033 1564 3021 1613 3031 1615 3031 1792 3021 1913 3037 1915 3037 1999 3021 2015 3033 2017 3033 2019 3033 2020 3033 2081 3029 2102 3043 2104 3043 2106 3043 2108 3043 2202 3021 2241 3041 2243 3041 2245 3041 2330 3025 2332 3008 2326 2971 952 2981 886 2971 884 2971 795 2981 699 2971 697 2971 695 2971 693 2971 682 2979 683 3012"/>
                         </Shape>
                         <String CONTENT="Along with war came trade with the natives. Thus, in the year 1646"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-152_r6" HPOS="573" VPOS="3049" WIDTH="1782" HEIGHT="63" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="573 3049 2355 3049 2355 3112 573 3112"/>
-                    </Shape>
-                    <TextLine ID="mz_3-152_l44" HPOS="1138" VPOS="3047" WIDTH="627" HEIGHT="47" BASELINE="1140 3072 1765 3076" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-152_l44" HPOS="1138" VPOS="3047" WIDTH="627" HEIGHT="47" BASELINE="1140 3072 1765 3076" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1763 3072 1755 3049 1140 3047 1140 3072 1138 3090 1761 3094 1765 3076 1763 3072 1763 3072"/>
                         </Shape>
                         <String CONTENT="¹ Sables were counted by doublescores."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

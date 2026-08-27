@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_2-252_r1" HPOS="368" VPOS="446" WIDTH="1776" HEIGHT="94" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="368 446 2144 446 2144 540 368 540"/>
-                    </Shape>
-                    <TextLine ID="mz_2-252_l1" HPOS="372" VPOS="456" WIDTH="94" HEIGHT="55" BASELINE="374 497 466 493" TAGREFS="TYPE_5">
+                <TextBlock ID="text_2-252" HPOS="356" VPOS="456" WIDTH="1774" HEIGHT="2624"><TextLine ID="mz_2-252_l1" HPOS="372" VPOS="456" WIDTH="94" HEIGHT="55" BASELINE="374 497 466 493" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="460 462 383 456 376 458 372 462 374 497 374 511 464 505 466 493 462 464 460 462"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="BOGORAS, THE CHUKCHEE."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-252_r2" HPOS="368" VPOS="564" WIDTH="1776" HEIGHT="948" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="368 564 2144 564 2144 1512 368 1512"/>
-                    </Shape>
-                    <TextLine ID="mz_2-252_l3" HPOS="364" VPOS="560" WIDTH="1764" HEIGHT="62" BASELINE="366 603 2128 597" TAGREFS="TYPE_5">
+<TextLine ID="mz_2-252_l3" HPOS="364" VPOS="560" WIDTH="1764" HEIGHT="62" BASELINE="366 603 2128 597" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="2107 569 2087 569 2068 567 2048 567 2029 565 2023 567 1997 565 1989 565 1970 564 1950 564 1931 564 1911 562 1891 562 1884 560 1872 569 1537 569 1502 560 1500 560 1498 560 1296 569 1263 560 1261 560 1259 560 1257 560 1231 569 1216 560 1214 560 1212 560 1049 560 1047 560 949 571 926 562 924 562 922 562 585 571 536 562 534 562 532 562 530 562 515 571 383 564 381 564 379 564 377 564 364 569 366 603 366 620 830 612 949 622 951 622 953 622 955 622 977 611 1249 611 1280 620 1282 620 1284 620 1286 620 1288 620 1304 611 1329 620 1331 620 1333 620 1461 611 1529 620 1531 620 1533 620 1535 620 1549 609 1562 618 1564 618 1566 618 1568 620 1831 620 1831 618 1833 618 1835 618 1848 609 1899 618 1901 620 1997 620 1997 618 1999 618 2001 618 2015 609 2027 618 2029 618 2030 618 2032 618 2126 616 2128 597 2125 569 2107 569"/>
                         </Shape>
@@ -167,12 +154,7 @@
                         </Shape>
                         <String CONTENT="household charms. It, also, is called enaˊal."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-252_r3" HPOS="368" VPOS="1512" WIDTH="1776" HEIGHT="674" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="368 1512 2144 1512 2144 2186 368 2186"/>
-                    </Shape>
-                    <TextLine ID="mz_2-252_l19" HPOS="470" VPOS="1513" WIDTH="1656" HEIGHT="57" BASELINE="472 1556 2126 1552" TAGREFS="TYPE_5">
+<TextLine ID="mz_2-252_l19" HPOS="470" VPOS="1513" WIDTH="1656" HEIGHT="57" BASELINE="472 1556 2126 1552" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="472 1556 472 1570 2125 1570 2126 1552 2125 1527 2079 1513 2077 1513 2076 1513 2074 1513 2044 1527 1831 1527 1805 1513 1803 1513 1801 1513 1799 1513 1766 1527 1639 1527 1607 1513 1605 1513 1604 1513 1602 1513 1572 1525 1464 1513 1463 1513 1461 1513 1429 1525 1376 1513 1374 1513 1372 1513 1331 1525 1300 1513 1298 1513 1296 1513 1294 1513 1265 1525 1169 1515 1167 1515 1165 1515 1163 1515 1147 1527 1069 1515 1004 1515 1002 1515 1000 1515 998 1515 981 1527 869 1515 867 1515 865 1515 863 1515 846 1529 724 1529 683 1515 681 1515 487 1515 485 1515 483 1515 481 1515 481 1517 470 1525 472 1556"/>
                         </Shape>
@@ -248,12 +230,7 @@
                         </Shape>
                         <String CONTENT="shall be disposed of."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-252_r4" HPOS="368" VPOS="2186" WIDTH="1776" HEIGHT="775" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="368 2186 2144 2186 2144 2961 368 2961"/>
-                    </Shape>
-                    <TextLine ID="mz_2-252_l30" HPOS="468" VPOS="2171" WIDTH="1655" HEIGHT="67" BASELINE="470 2214 2123 2210" TAGREFS="TYPE_5">
+<TextLine ID="mz_2-252_l30" HPOS="468" VPOS="2171" WIDTH="1655" HEIGHT="67" BASELINE="470 2214 2123 2210" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="470 2214 470 2228 1188 2238 1190 2238 1192 2238 1194 2238 1208 2228 1627 2236 1629 2236 1721 2226 1735 2236 1737 2236 1739 2236 1741 2238 1825 2238 1825 2236 1827 2236 1866 2226 1919 2236 1921 2236 1923 2236 1925 2236 1940 2226 1960 2236 1962 2236 1964 2238 2121 2238 2123 2210 2119 2183 2056 2171 2054 2171 2052 2171 2027 2181 1956 2171 1954 2171 1952 2171 1931 2181 1884 2171 1882 2171 1880 2171 1856 2181 1794 2171 1792 2171 1733 2183 1617 2183 1600 2171 1598 2171 1596 2171 1594 2171 1265 2183 1231 2173 1229 2173 1227 2173 1226 2173 1200 2183 1175 2173 1173 2173 1171 2173 1077 2183 918 2173 916 2173 468 2177 470 2214"/>
                         </Shape>
@@ -343,12 +320,7 @@
                         </Shape>
                         <String CONTENT="one must be “asked” which method he personally chooses for himself, and"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-252_r5" HPOS="368" VPOS="3016" WIDTH="1776" HEIGHT="78" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="368 3016 2144 3016 2144 3094 368 3094"/>
-                    </Shape>
-                    <TextLine ID="mz_2-252_l43" HPOS="462" VPOS="3025" WIDTH="293" HEIGHT="55" BASELINE="464 3051 755 3056" TAGREFS="TYPE_5">
+<TextLine ID="mz_2-252_l43" HPOS="462" VPOS="3025" WIDTH="293" HEIGHT="55" BASELINE="464 3051 755 3056" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="464 3051 462 3066 560 3080 562 3080 754 3072 755 3056 754 3031 464 3025 464 3051"/>
                         </Shape>
@@ -361,8 +333,7 @@
                         </Shape>
                         <String CONTENT="² Compare p. 355."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

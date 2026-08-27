@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-272_r1" HPOS="632" VPOS="600" WIDTH="1778" HEIGHT="95" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="632 600 2410 600 2410 695 632 695"/>
-                    </Shape>
-                    <TextLine ID="mz_1-272_l1" HPOS="637" VPOS="621" WIDTH="108" HEIGHT="54" BASELINE="639 653 745 649" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-272" HPOS="630" VPOS="615" WIDTH="1787" HEIGHT="2623"><TextLine ID="mz_1-272_l1" HPOS="637" VPOS="621" WIDTH="108" HEIGHT="54" BASELINE="639 653 745 649" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="637 625 639 653 639 666 728 675 730 675 732 675 734 675 745 664 745 649 739 621 637 623 637 625"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="BOGORAS, THE CHUKCHEE."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-272_r2" HPOS="632" VPOS="712" WIDTH="1778" HEIGHT="247" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="632 712 2410 712 2410 959 632 959"/>
-                    </Shape>
-                    <TextLine ID="mz_1-272_l3" HPOS="630" VPOS="712" WIDTH="1776" HEIGHT="65" BASELINE="633 760 2406 753" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-272_l3" HPOS="630" VPOS="712" WIDTH="1776" HEIGHT="65" BASELINE="633 760 2406 753" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="633 760 633 777 2404 770 2406 753 2402 723 1830 712 1828 712 1826 712 1824 712 1804 723 1267 714 1265 714 1191 727 630 727 633 760"/>
                         </Shape>
@@ -82,12 +70,7 @@
                         </Shape>
                         <String CONTENT="so tough that it is quite impossible to get along without a knife."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-272_r3" HPOS="632" VPOS="959" WIDTH="1778" HEIGHT="181" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="632 959 2410 959 2410 1140 632 1140"/>
-                    </Shape>
-                    <TextLine ID="mz_1-272_l7" HPOS="739" VPOS="963" WIDTH="1669" HEIGHT="50" BASELINE="741 996 2408 991" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-272_l7" HPOS="739" VPOS="963" WIDTH="1669" HEIGHT="50" BASELINE="741 996 2408 991" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="741 996 741 1013 2406 1009 2408 991 2404 963 739 963 741 996"/>
                         </Shape>
@@ -107,12 +90,7 @@
                         </Shape>
                         <String CONTENT="small bits of iron, rudely set in a handle, and unfit for many uses."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-272_r4" HPOS="632" VPOS="1140" WIDTH="1778" HEIGHT="539" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="632 1140 2410 1140 2410 1679 632 1679"/>
-                    </Shape>
-                    <TextLine ID="mz_1-272_l10" HPOS="743" VPOS="1130" WIDTH="1665" HEIGHT="63" BASELINE="745 1180 2408 1173" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-272_l10" HPOS="743" VPOS="1130" WIDTH="1665" HEIGHT="63" BASELINE="745 1180 2408 1173" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="745 1180 745 1193 2406 1186 2408 1173 2404 1143 2333 1130 2330 1130 2328 1130 2304 1143 2036 1143 2010 1130 2008 1130 2006 1130 1945 1141 1930 1130 1928 1130 1925 1130 1923 1130 1921 1130 1878 1141 1856 1130 1854 1130 1852 1130 1850 1130 1847 1130 1830 1143 1817 1132 1815 1132 1813 1132 1811 1132 1808 1132 1761 1143 1681 1132 1679 1132 1607 1143 1512 1132 1510 1132 1507 1132 1481 1143 1471 1132 1468 1132 1466 1132 1373 1132 1371 1132 1369 1132 1367 1132 1354 1143 1278 1134 1276 1134 1274 1134 1271 1134 1256 1145 1185 1134 1183 1134 1180 1134 1157 1145 1144 1134 1141 1134 1139 1134 1137 1134 1135 1134 1089 1145 942 1134 940 1134 743 1141 745 1180"/>
                         </Shape>
@@ -174,12 +152,7 @@
                         </Shape>
                         <String CONTENT="roughly sewed or laced with a thin strip of leather (see Fig. 83, p. 161)."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-272_r5" HPOS="632" VPOS="1679" WIDTH="1778" HEIGHT="301" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="632 1679 2410 1679 2410 1980 632 1980"/>
-                    </Shape>
-                    <TextLine ID="mz_1-272_l19" HPOS="741" VPOS="1684" WIDTH="1670" HEIGHT="48" BASELINE="741 1717 2411 1717" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-272_l19" HPOS="741" VPOS="1684" WIDTH="1670" HEIGHT="48" BASELINE="741 1717 2411 1717" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="741 1717 741 1732 2411 1732 2411 1717 2411 1686 741 1684 741 1717"/>
                         </Shape>
@@ -213,12 +186,7 @@
                         </Shape>
                         <String CONTENT="Chukchee use American cutlery chiefly."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-272_r6" HPOS="632" VPOS="1980" WIDTH="1778" HEIGHT="180" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="632 1980 2410 1980 2410 2160 632 2160"/>
-                    </Shape>
-                    <TextLine ID="mz_1-272_l24" HPOS="747" VPOS="1976" WIDTH="1668" HEIGHT="57" BASELINE="747 2015 2415 2015" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-272_l24" HPOS="747" VPOS="1976" WIDTH="1668" HEIGHT="57" BASELINE="747 2015 2415 2015" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="747 2015 747 2033 2413 2033 2415 2015 2413 1985 747 1976 747 2015"/>
                         </Shape>
@@ -238,12 +206,7 @@
                         </Shape>
                         <String CONTENT="a loop of leather, and a toggle formed simply by a knot of the string."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-272_r7" HPOS="632" VPOS="2160" WIDTH="1778" HEIGHT="539" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="632 2160 2410 2160 2410 2699 632 2699"/>
-                    </Shape>
-                    <TextLine ID="mz_1-272_l27" HPOS="747" VPOS="2154" WIDTH="1666" HEIGHT="60" BASELINE="747 2195 2413 2195" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-272_l27" HPOS="747" VPOS="2154" WIDTH="1666" HEIGHT="60" BASELINE="747 2195 2413 2195" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="747 2195 747 2214 2413 2214 2413 2195 2413 2167 2181 2167 2142 2154 2140 2154 2138 2154 2135 2154 2112 2167 1928 2167 1908 2154 1906 2154 1904 2154 1902 2154 1899 2154 1873 2165 1778 2154 1776 2154 1774 2154 1748 2165 1670 2154 1540 2154 1538 2154 1536 2154 1514 2165 1384 2154 1382 2154 1300 2165 1258 2154 1256 2154 1055 2154 1053 2154 1050 2154 1018 2165 983 2154 981 2154 979 2154 747 2156 747 2195"/>
                         </Shape>
@@ -305,12 +268,7 @@
                         </Shape>
                         <String CONTENT="made with a stone drill-point."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-272_r8" HPOS="632" VPOS="2699" WIDTH="1778" HEIGHT="364" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="632 2699 2410 2699 2410 3063 632 3063"/>
-                    </Shape>
-                    <TextLine ID="mz_1-272_l36" HPOS="1416" VPOS="2691" WIDTH="999" HEIGHT="63" BASELINE="1419 2736 2415 2732" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-272_l36" HPOS="1416" VPOS="2691" WIDTH="999" HEIGHT="63" BASELINE="1419 2736 2415 2732" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1419 2736 1419 2754 2413 2749 2415 2732 2411 2704 2220 2704 2200 2691 2198 2691 2196 2691 2194 2691 2192 2691 2151 2702 2120 2691 2118 2691 2116 2691 2114 2691 2112 2691 2094 2702 2073 2691 2071 2691 2068 2691 2012 2702 1982 2691 1980 2691 1977 2691 1975 2691 1973 2691 1973 2693 1962 2704 1629 2704 1575 2693 1572 2693 1570 2693 1546 2704 1538 2695 1538 2693 1536 2693 1533 2693 1427 2693 1425 2693 1423 2693 1421 2693 1421 2695 1419 2695 1416 2695 1419 2736"/>
                         </Shape>
@@ -351,12 +309,7 @@
                         </Shape>
                         <String CONTENT="which is frequently found on the seashore near the mouths of rivers."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-272_r9" HPOS="632" VPOS="3063" WIDTH="1778" HEIGHT="178" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="632 3063 2410 3063 2410 3241 632 3241"/>
-                    </Shape>
-                    <TextLine ID="mz_1-272_l42" HPOS="743" VPOS="3059" WIDTH="1674" HEIGHT="65" BASELINE="743 3093 2417 3093" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-272_l42" HPOS="743" VPOS="3059" WIDTH="1674" HEIGHT="65" BASELINE="743 3093 2417 3093" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2411 3087 2404 3059 743 3061 743 3093 743 3109 825 3122 827 3122 892 3111 1365 3122 1367 3124 1518 3124 1518 3122 1520 3122 1523 3122 1536 3111 2006 3111 2038 3122 2040 3122 2042 3122 2183 3111 2244 3122 2246 3122 2352 3111 2367 3122 2369 3122 2372 3122 2374 3122 2376 3122 2417 3109 2417 3093 2415 3059 2413 3059 2411 3087"/>
                         </Shape>
@@ -376,8 +329,7 @@
                         </Shape>
                         <String CONTENT="A few revolving grindstones have been bought from the Russians and Americans."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

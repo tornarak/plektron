@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_3-009_r1" HPOS="410" VPOS="453" WIDTH="1782" HEIGHT="94" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="410 453 2192 453 2192 547 410 547"/>
-                    </Shape>
-                    <TextLine ID="mz_3-009_l1" HPOS="978" VPOS="470" WIDTH="618" HEIGHT="53" BASELINE="980 507 1596 504" TAGREFS="TYPE_5">
+                <TextBlock ID="text_3-009" HPOS="401" VPOS="470" WIDTH="1779" HEIGHT="2620"><TextLine ID="mz_3-009_l1" HPOS="978" VPOS="470" WIDTH="618" HEIGHT="53" BASELINE="980 507 1596 504" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1582 476 1566 470 986 472 978 478 980 507 980 523 1594 519 1596 504 1594 500 1582 476"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="543"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-009_r2" HPOS="410" VPOS="570" WIDTH="1782" HEIGHT="187" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="410 570 2192 570 2192 757 410 757"/>
-                    </Shape>
-                    <TextLine ID="mz_3-009_l3" HPOS="401" VPOS="570" WIDTH="1770" HEIGHT="64" BASELINE="403 617 2171 611" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-009_l3" HPOS="401" VPOS="570" WIDTH="1770" HEIGHT="64" BASELINE="403 617 2171 611" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="403 617 403 630 2167 634 2171 611 2167 581 1944 570 1943 570 1855 580 1820 570 1818 570 1816 570 1769 580 1742 570 1740 570 1738 570 1666 580 1633 570 1631 570 1629 570 1627 570 1576 581 1210 572 1208 572 1081 581 991 572 989 572 927 583 894 574 892 574 890 574 672 583 420 574 418 574 416 574 415 574 401 581 403 617"/>
                         </Shape>
@@ -76,12 +63,7 @@
                         </Shape>
                         <String CONTENT="In war the family-group acted as a unit against all other parties."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-009_r3" HPOS="410" VPOS="757" WIDTH="1782" HEIGHT="906" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="410 757 2192 757 2192 1663 410 1663"/>
-                    </Shape>
-                    <TextLine ID="mz_3-009_l6" HPOS="506" VPOS="751" WIDTH="1666" HEIGHT="64" BASELINE="508 796 2172 792" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-009_l6" HPOS="506" VPOS="751" WIDTH="1666" HEIGHT="64" BASELINE="508 796 2172 792" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="508 796 508 809 2169 815 2172 792 2169 763 2056 751 2054 751 2052 751 2050 751 2036 763 1925 763 1900 751 1898 751 1896 751 1794 761 1769 751 1767 751 1765 751 1763 751 1761 751 1748 763 1629 763 1599 751 1598 751 1596 751 1594 751 1561 763 506 763 508 796"/>
                         </Shape>
@@ -185,12 +167,7 @@
                         </Shape>
                         <String CONTENT="greater detail.²"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-009_r4" HPOS="410" VPOS="1663" WIDTH="1782" HEIGHT="895" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="410 1663 2192 1663 2192 2558 410 2558"/>
-                    </Shape>
-                    <TextLine ID="mz_3-009_l21" HPOS="520" VPOS="1651" WIDTH="1658" HEIGHT="57" BASELINE="520 1692 2178 1692" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-009_l21" HPOS="520" VPOS="1651" WIDTH="1658" HEIGHT="57" BASELINE="520 1692 2178 1692" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="520 1692 520 1708 2178 1708 2178 1692 2178 1663 2095 1651 2093 1651 1935 1661 1870 1651 1687 1651 1685 1651 1683 1651 1681 1651 1670 1661 1619 1651 1617 1651 1615 1651 1576 1663 1375 1663 1358 1651 1356 1651 1354 1651 1352 1651 1301 1661 1266 1651 1264 1651 1262 1651 1260 1651 1219 1661 1165 1651 1163 1651 1161 1651 1130 1661 1060 1651 1058 1651 1056 1651 1030 1661 1017 1651 1015 1651 1013 1651 1011 1651 962 1661 913 1651 912 1651 520 1655 520 1692"/>
                         </Shape>
@@ -294,12 +271,7 @@
                         </Shape>
                         <String CONTENT="and not all the families pay, either. Those that are unfriendly to the Russians"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-009_r5" HPOS="410" VPOS="2613" WIDTH="1782" HEIGHT="491" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="410 2613 2192 2613 2192 3104 410 3104"/>
-                    </Shape>
-                    <TextLine ID="mz_3-009_l36" HPOS="518" VPOS="2622" WIDTH="1662" HEIGHT="43" BASELINE="520 2647 2180 2651" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-009_l36" HPOS="518" VPOS="2622" WIDTH="1662" HEIGHT="43" BASELINE="520 2647 2180 2651" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="520 2647 518 2661 2176 2665 2180 2651 2178 2626 520 2622 520 2647"/>
                         </Shape>
@@ -375,8 +347,7 @@
                         </Shape>
                         <String CONTENT="of the Archives of Kolyma."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

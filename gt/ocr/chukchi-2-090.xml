@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_2-090_r1" HPOS="378" VPOS="470" WIDTH="1776" HEIGHT="94" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="378 470 2154 470 2154 564 378 564"/>
-                    </Shape>
-                    <TextLine ID="mz_2-090_l1" HPOS="963" VPOS="489" WIDTH="611" HEIGHT="51" BASELINE="963 520 1574 520" TAGREFS="TYPE_5">
+                <TextBlock ID="text_2-090" HPOS="377" VPOS="481" WIDTH="1775" HEIGHT="2634"><TextLine ID="mz_2-090_l1" HPOS="963" VPOS="489" WIDTH="611" HEIGHT="51" BASELINE="963 520 1574 520" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1570 491 1562 489 979 489 963 520 963 540 1574 540 1574 520 1574 501 1570 491"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="362"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-090_r2" HPOS="378" VPOS="595" WIDTH="1776" HEIGHT="180" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="378 595 2154 595 2154 775 378 775"/>
-                    </Shape>
-                    <TextLine ID="mz_2-090_l3" HPOS="485" VPOS="589" WIDTH="1667" HEIGHT="55" BASELINE="485 630 2152 630" TAGREFS="TYPE_5">
+<TextLine ID="mz_2-090_l3" HPOS="485" VPOS="589" WIDTH="1667" HEIGHT="55" BASELINE="485 630 2152 630" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="2150 630 2136 601 1989 601 1962 589 1960 589 1958 589 1956 589 1921 599 1696 589 1694 589 1637 599 1584 589 1582 589 1580 589 1541 599 1488 589 1486 589 1484 589 1482 589 1466 601 1363 601 1145 589 1143 589 1141 589 1108 599 898 589 897 589 895 589 893 589 877 601 585 601 503 589 501 589 499 589 497 589 485 597 485 630 485 644 2152 644 2152 630 2152 601 2150 601 2150 630"/>
                         </Shape>
@@ -76,12 +63,7 @@
                         </Shape>
                         <String CONTENT="The differences discoverable are largely due to differences in their mode of life."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-090_r3" HPOS="378" VPOS="775" WIDTH="1776" HEIGHT="955" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="378 775 2154 775 2154 1730 378 1730"/>
-                    </Shape>
-                    <TextLine ID="mz_2-090_l6" HPOS="487" VPOS="765" WIDTH="1663" HEIGHT="59" BASELINE="489 808 2150 804" TAGREFS="TYPE_5">
+<TextLine ID="mz_2-090_l6" HPOS="487" VPOS="765" WIDTH="1663" HEIGHT="59" BASELINE="489 808 2150 804" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="489 808 489 824 2148 824 2150 804 2140 775 2099 765 2097 765 2095 765 2074 775 2052 765 2050 765 2048 765 2046 765 2023 777 1907 777 1886 765 1884 765 1882 765 1880 765 1858 775 1839 765 1837 765 1835 765 1833 765 1803 775 1756 765 1754 765 1692 775 1617 765 1615 765 1613 765 1592 775 1531 765 1529 765 1484 775 1455 765 1453 765 1451 765 1449 765 1419 775 1392 765 1390 765 1388 765 1386 765 1351 775 1325 765 1323 765 1322 765 1320 765 1318 765 1302 777 1204 767 1202 767 1200 767 1171 777 1104 767 1102 767 769 777 695 767 693 767 691 767 658 777 646 767 644 767 642 767 509 767 507 767 505 767 503 767 487 775 489 808"/>
                         </Shape>
@@ -192,23 +174,13 @@
                         </Shape>
                         <String CONTENT="while it is being demolished."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-090_r4" HPOS="378" VPOS="1730" WIDTH="1776" HEIGHT="64" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="378 1730 2154 1730 2154 1794 378 1794"/>
-                    </Shape>
-                    <TextLine ID="mz_2-090_l22" HPOS="487" VPOS="1719" WIDTH="1657" HEIGHT="68" BASELINE="489 1762 2144 1772" TAGREFS="TYPE_5">
+<TextLine ID="mz_2-090_l22" HPOS="487" VPOS="1719" WIDTH="1657" HEIGHT="68" BASELINE="489 1762 2144 1772" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="489 1762 487 1776 2140 1787 2144 1772 2144 1737 2126 1727 2125 1727 2123 1727 2121 1727 1997 1737 1903 1727 1901 1727 1899 1727 1876 1737 1803 1725 1801 1725 1729 1735 1384 1723 1382 1723 1380 1723 1349 1733 1298 1723 1296 1723 1141 1731 1126 1721 1124 1721 1122 1721 1034 1721 1032 1721 1030 1721 1028 1721 1014 1731 897 1721 895 1721 893 1721 863 1731 820 1719 818 1719 816 1719 814 1719 793 1729 730 1719 728 1719 726 1719 724 1719 708 1729 691 1719 689 1719 687 1719 685 1719 661 1729 489 1727 489 1762"/>
                         </Shape>
                         <String CONTENT="Many of the Maritime Chukchee also have the charm-strings (Fig. 255),"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-090_r5" HPOS="378" VPOS="2546" WIDTH="1776" HEIGHT="423" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="378 2546 2154 2546 2154 2969 378 2969"/>
-                    </Shape>
-                    <TextLine ID="mz_2-090_l23" HPOS="381" VPOS="2545" WIDTH="1769" HEIGHT="61" BASELINE="383 2592 2150 2586" TAGREFS="TYPE_5">
+<TextLine ID="mz_2-090_l23" HPOS="381" VPOS="2545" WIDTH="1769" HEIGHT="61" BASELINE="383 2592 2150 2586" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="2144 2563 2132 2553 2099 2545 2097 2545 2095 2545 2072 2555 1982 2545 1980 2545 1903 2555 1878 2545 1876 2545 1874 2545 1815 2555 1731 2545 1729 2545 1649 2555 1619 2545 1617 2545 1615 2545 1555 2557 1521 2547 1519 2547 1517 2547 1515 2547 1486 2557 1390 2547 1388 2547 1386 2547 1353 2559 1081 2559 1047 2547 1045 2547 1043 2547 932 2559 900 2549 898 2549 897 2549 895 2549 861 2561 660 2561 638 2549 636 2549 634 2549 632 2549 597 2559 522 2549 520 2549 381 2555 383 2592 383 2606 2148 2602 2150 2586 2146 2563 2144 2563"/>
                         </Shape>
@@ -256,30 +228,19 @@
                         </Shape>
                         <String CONTENT="serve likewise for hunting-charms."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-090_r6" HPOS="378" VPOS="2969" WIDTH="1776" HEIGHT="63" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="378 2969 2154 2969 2154 3032 378 3032"/>
-                    </Shape>
-                    <TextLine ID="mz_2-090_l30" HPOS="493" VPOS="2964" WIDTH="1655" HEIGHT="110" BASELINE="495 3009 2148 3006" TAGREFS="TYPE_5">
+<TextLine ID="mz_2-090_l30" HPOS="493" VPOS="2964" WIDTH="1655" HEIGHT="110" BASELINE="495 3009 2148 3006" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="495 3009 495 3074 2146 3060 2148 3006 2144 2976 2056 2964 2054 2964 2052 2964 2025 2974 1938 2964 1936 2964 1935 2964 1901 2974 1856 2964 1854 2964 1762 2974 1680 2964 1678 2964 1676 2964 1647 2976 1498 2976 1482 2964 1480 2964 1478 2964 1476 2964 1310 2976 1247 2966 1245 2966 1243 2966 1220 2976 1204 2966 1202 2966 1200 2966 1198 2966 1102 2976 828 2966 826 2966 824 2966 787 2976 493 2974 495 3009"/>
                         </Shape>
                         <String CONTENT="The human figures are called “guardians” or “assistants.”¹ Sometimes"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-090_r7" HPOS="378" VPOS="3055" WIDTH="1776" HEIGHT="63" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="378 3055 2154 3055 2154 3118 378 3118"/>
-                    </Shape>
-                    <TextLine ID="mz_2-090_l31" HPOS="1049" VPOS="3058" WIDTH="439" HEIGHT="57" BASELINE="1051 3084 1488 3090" TAGREFS="TYPE_5">
+<TextLine ID="mz_2-090_l31" HPOS="1049" VPOS="3058" WIDTH="439" HEIGHT="57" BASELINE="1051 3084 1488 3090" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1051 3084 1049 3098 1231 3113 1233 3113 1414 3105 1466 3115 1468 3115 1470 3115 1472 3115 1486 3103 1488 3090 1486 3064 1051 3058 1051 3084"/>
                         </Shape>
                         <String CONTENT="¹ Compare pp. 341 et seq."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

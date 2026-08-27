@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-Other"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-102_r1" HPOS="625" VPOS="592" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="625 592 2403 592 2403 682 625 682"/>
-                    </Shape>
-                    <TextLine ID="mz_1-102_l1" HPOS="1215" VPOS="602" WIDTH="615" HEIGHT="51" BASELINE="1215 634 1830 634" TAGREFS="TYPE_5">
+                <TextBlock ID="text_1-102" HPOS="624" VPOS="595" WIDTH="1780" HEIGHT="2624"><TextLine ID="mz_1-102_l1" HPOS="1215" VPOS="602" WIDTH="615" HEIGHT="51" BASELINE="1215 634 1830 634" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1821 608 1804 602 1215 602 1215 634 1215 653 1830 653 1830 634 1828 619 1821 608"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="76"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-102_r2" HPOS="625" VPOS="707" WIDTH="1778" HEIGHT="359" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="625 707 2403 707 2403 1066 625 1066"/>
-                    </Shape>
-                    <TextLine ID="mz_1-102_l3" HPOS="633" VPOS="695" WIDTH="1771" HEIGHT="75" BASELINE="635 747 2404 740" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-102_l3" HPOS="633" VPOS="695" WIDTH="1771" HEIGHT="75" BASELINE="635 747 2404 740" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="2387 710 2365 710 2343 708 2322 708 2311 705 2311 708 1982 697 1980 697 1977 697 1958 708 1943 695 1941 695 1938 695 1845 695 1843 695 1841 695 1808 710 1761 697 1759 697 1756 697 1754 697 1752 697 1735 710 1646 697 1644 697 1557 710 1486 697 1484 697 1481 697 1449 710 1384 697 1382 697 1380 697 1352 708 1258 697 1256 697 1254 697 1213 712 1159 699 1157 699 1154 699 1152 699 1100 712 1081 699 1079 699 1076 699 1074 699 1009 712 940 699 938 699 875 712 793 699 791 699 788 699 752 712 736 699 734 699 732 699 730 699 633 708 635 747 635 760 1174 770 1176 770 1178 770 1180 770 1196 760 1412 768 1414 768 1416 768 1419 768 1434 757 1746 757 1811 768 1813 768 1930 755 1971 766 1973 766 1975 768 2177 768 2177 766 2179 766 2181 766 2194 755 2213 766 2216 766 2218 766 2287 755 2382 766 2385 766 2387 766 2389 766 2404 753 2404 740 2402 710 2387 710"/>
                         </Shape>
@@ -97,12 +84,7 @@
                         </Shape>
                         <String CONTENT="the women prefer spotted ones."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-102_r3" HPOS="625" VPOS="1066" WIDTH="1778" HEIGHT="179" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="625 1066 2403 1066 2403 1245 625 1245"/>
-                    </Shape>
-                    <TextLine ID="mz_1-102_l9" HPOS="741" VPOS="1061" WIDTH="1663" HEIGHT="58" BASELINE="741 1102 2404 1102" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-102_l9" HPOS="741" VPOS="1061" WIDTH="1663" HEIGHT="58" BASELINE="741 1102 2404 1102" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="741 1102 741 1119 2404 1119 2404 1102 2404 1071 2367 1061 2365 1061 2363 1061 2361 1061 2335 1073 2161 1073 2146 1061 2144 1061 2142 1061 2140 1061 2029 1073 1828 1073 1804 1061 1802 1061 1800 1061 1692 1071 1549 1061 1546 1061 1475 1071 1414 1061 1412 1061 1313 1071 1222 1061 1219 1061 1111 1071 1035 1061 1033 1061 1031 1061 1001 1071 884 1061 882 1061 741 1067 741 1102"/>
                         </Shape>
@@ -122,12 +104,7 @@
                         </Shape>
                         <String CONTENT="seven species of reindeer-moss: —"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-102_r4" HPOS="625" VPOS="1256" WIDTH="1778" HEIGHT="629" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="625 1256 2403 1256 2403 1885 625 1885"/>
-                    </Shape>
-                    <TextLine ID="mz_1-102_l12" HPOS="637" VPOS="1266" WIDTH="1767" HEIGHT="48" BASELINE="637 1296 2404 1296" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-102_l12" HPOS="637" VPOS="1266" WIDTH="1767" HEIGHT="48" BASELINE="637 1296 2404 1296" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="637 1296 637 1314 2402 1314 2404 1296 2402 1266 637 1266 637 1296"/>
                         </Shape>
@@ -217,12 +194,7 @@
                         </Shape>
                         <String CONTENT="7. Aioˊpɪču-wattaˊp (“pricking moss”), of two different colors, — light green and dark brown."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-102_r5" HPOS="625" VPOS="1898" WIDTH="1778" HEIGHT="246" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="625 1898 2403 1898 2403 2144 625 2144"/>
-                    </Shape>
-                    <TextLine ID="mz_1-102_l25" HPOS="732" VPOS="1898" WIDTH="1666" HEIGHT="65" BASELINE="734 1939 2398 1944" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-102_l25" HPOS="732" VPOS="1898" WIDTH="1666" HEIGHT="65" BASELINE="734 1939 2398 1944" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="734 1939 732 1950 762 1963 765 1963 767 1963 2395 1961 2398 1944 2395 1914 2008 1901 2006 1901 2003 1901 2001 1901 1986 1914 1601 1914 1566 1898 1564 1898 1562 1898 1559 1898 1523 1909 1481 1898 1479 1898 1477 1898 1475 1898 1442 1909 1336 1898 1334 1898 1271 1909 1204 1898 1202 1898 1115 1909 955 1898 953 1898 951 1898 918 1909 890 1898 888 1898 886 1898 734 1907 734 1939"/>
                         </Shape>
@@ -249,12 +221,7 @@
                         </Shape>
                         <String CONTENT="grow only on burnt places, and are scarce."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-102_r6" HPOS="625" VPOS="2144" WIDTH="1778" HEIGHT="1076" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="625 2144 2403 2144 2403 3220 625 3220"/>
-                    </Shape>
-                    <TextLine ID="mz_1-102_l29" HPOS="739" VPOS="2143" WIDTH="1663" HEIGHT="65" BASELINE="741 2178 2402 2182" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-102_l29" HPOS="739" VPOS="2143" WIDTH="1663" HEIGHT="65" BASELINE="741 2178 2402 2182" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="741 2178 739 2193 938 2206 940 2206 1492 2197 1605 2208 1607 2208 2400 2197 2402 2182 2400 2152 741 2143 741 2178"/>
                         </Shape>
@@ -379,8 +346,7 @@
                         </Shape>
                         <String CONTENT="who subsist on fish, and ride reindeer instead of driving dogs, keep their"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

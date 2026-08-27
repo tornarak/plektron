@@ -23,20 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-114_r1" HPOS="682" VPOS="546" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="682 546 2460 546 2460 636 682 636"/>
-                    </Shape>
-                    <TextLine ID="mz_1-114_l1" HPOS="1261" VPOS="569" WIDTH="617" HEIGHT="52" BASELINE="1263 602 1878 606" TAGREFS="TYPE_3">
+                <TextBlock ID="text_1-114" HPOS="680" VPOS="569" WIDTH="1780" HEIGHT="2620"><TextLine ID="mz_1-114_l1" HPOS="1261" VPOS="569" WIDTH="617" HEIGHT="52" BASELINE="1263 602 1878 606" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="1869 571 1867 569 1278 569 1263 580 1263 602 1261 617 1873 621 1878 606 1876 573 1869 571"/>
                         </Shape>
@@ -49,12 +43,7 @@
                         </Shape>
                         <String CONTENT="86"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-114_r2" HPOS="682" VPOS="661" WIDTH="1778" HEIGHT="801" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="682 661 2460 661 2460 1462 682 1462"/>
-                    </Shape>
-                    <TextLine ID="mz_1-114_l3" HPOS="680" VPOS="682" WIDTH="1774" HEIGHT="49" BASELINE="680 710 2454 710" TAGREFS="TYPE_3">
+<TextLine ID="mz_1-114_l3" HPOS="680" VPOS="682" WIDTH="1774" HEIGHT="49" BASELINE="680 710 2454 710" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="2439 682 682 682 680 699 680 710 680 731 2454 731 2454 710 2454 708 2439 682"/>
                         </Shape>
@@ -144,12 +133,7 @@
                         </Shape>
                         <String CONTENT="reindeer, after having been"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-114_r3" HPOS="682" VPOS="1874" WIDTH="1778" HEIGHT="1346" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="682 1874 2460 1874 2460 3220 682 3220"/>
-                    </Shape>
-                    <TextLine ID="mz_1-114_l16" HPOS="2094" VPOS="1875" WIDTH="366" HEIGHT="71" BASELINE="2097 1916 2460 1911" TAGREFS="TYPE_3">
+<TextLine ID="mz_1-114_l16" HPOS="2094" VPOS="1875" WIDTH="366" HEIGHT="71" BASELINE="2097 1916 2460 1911" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="2447 1881 2382 1879 2376 1879 2363 1877 2348 1877 2333 1877 2311 1877 2289 1877 2268 1875 2265 1875 2252 1883 2112 1875 2094 1885 2097 1916 2097 1933 2229 1946 2231 1946 2352 1933 2432 1942 2434 1942 2437 1942 2460 1929 2460 1911 2456 1885 2447 1881"/>
                         </Shape>
@@ -309,8 +293,7 @@
                         </Shape>
                         <String CONTENT="track, or even"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

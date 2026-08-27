@@ -23,32 +23,20 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-153_r1" HPOS="376" VPOS="587" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="376 587 2154 587 2154 677 376 677"/>
-                    </Shape>
-                    <TextLine ID="mz_1-153_l1" HPOS="2045" VPOS="593" WIDTH="71" HEIGHT="65" BASELINE="2045 634 2116 632" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-153" HPOS="370" VPOS="593" WIDTH="1746" HEIGHT="2624"><TextLine ID="mz_1-153_l1" HPOS="2045" VPOS="593" WIDTH="71" HEIGHT="65" BASELINE="2045 634 2116 632" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2107 595 2086 593 2062 593 2047 612 2045 634 2045 651 2112 658 2116 632 2112 595 2107 595"/>
                         </Shape>
                         <String CONTENT="117"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-153_r2" HPOS="376" VPOS="1530" WIDTH="1778" HEIGHT="371" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="376 1530 2154 1530 2154 1901 376 1901"/>
-                    </Shape>
-                    <TextLine ID="mz_1-153_l2" HPOS="373" VPOS="1537" WIDTH="777" HEIGHT="71" BASELINE="375 1584 1150 1574" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-153_l2" HPOS="373" VPOS="1537" WIDTH="777" HEIGHT="71" BASELINE="375 1584 1150 1574" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1131 1550 1109 1550 1087 1548 1066 1548 1044 1548 1022 1548 1001 1545 979 1545 957 1545 936 1543 914 1543 892 1543 860 1545 851 1541 849 1541 827 1541 823 1541 814 1548 754 1539 741 1539 730 1537 717 1548 602 1539 600 1539 598 1539 596 1539 596 1541 585 1552 381 1554 373 1569 375 1584 375 1597 524 1608 526 1608 529 1608 557 1595 786 1604 788 1604 791 1604 817 1593 923 1602 925 1602 927 1602 929 1602 947 1591 988 1602 990 1602 992 1602 1059 1589 1124 1600 1126 1600 1128 1600 1131 1600 1150 1587 1150 1574 1146 1550 1131 1550"/>
                         </Shape>
@@ -89,12 +77,7 @@
                         </Shape>
                         <String CONTENT="same stock."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-153_r3" HPOS="376" VPOS="1901" WIDTH="1778" HEIGHT="1327" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="376 1901 2154 1901 2154 3228 376 3228"/>
-                    </Shape>
-                    <TextLine ID="mz_1-153_l8" HPOS="487" VPOS="1901" WIDTH="661" HEIGHT="62" BASELINE="490 1942 1148 1935" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-153_l8" HPOS="487" VPOS="1901" WIDTH="661" HEIGHT="62" BASELINE="490 1942 1148 1935" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="490 1942 490 1957 830 1963 832 1963 940 1950 1068 1961 1070 1961 1072 1961 1074 1961 1087 1950 1107 1961 1109 1961 1111 1961 1113 1961 1148 1946 1148 1935 1144 1907 500 1901 498 1901 496 1901 494 1901 494 1903 487 1907 490 1942"/>
                         </Shape>
@@ -247,8 +230,7 @@
                         </Shape>
                         <String CONTENT="game. The end of the line is usu-"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

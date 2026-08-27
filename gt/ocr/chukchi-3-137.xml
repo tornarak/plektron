@@ -23,23 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-Other"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_6" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_3-137_r1" HPOS="353" VPOS="461" WIDTH="1782" HEIGHT="94" TAGREFS="TYPE_5">
-<Shape>
-                        <Polygon POINTS="353 461 2135 461 2135 555 353 555"/>
-                    </Shape>
-                    <TextLine ID="mz_3-137_l1" HPOS="921" VPOS="476" WIDTH="622" HEIGHT="49" BASELINE="923 507 1543 511" TAGREFS="TYPE_6">
+                <TextBlock ID="text_3-137" HPOS="344" VPOS="476" WIDTH="1786" HEIGHT="2633"><TextLine ID="mz_3-137_l1" HPOS="921" VPOS="476" WIDTH="622" HEIGHT="49" BASELINE="923 507 1543 511" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="1527 476 1231 476 1216 476 1196 476 1177 476 1157 476 1138 476 1118 476 1099 476 1079 476 1060 476 1040 476 1021 476 1001 476 982 476 962 476 943 476 923 476 923 507 921 521 1539 525 1543 511 1541 490 1527 476"/>
                         </Shape>
@@ -52,12 +43,7 @@
                         </Shape>
                         <String CONTENT="671"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-137_r2" HPOS="353" VPOS="578" WIDTH="1782" HEIGHT="1318" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="353 578 2135 578 2135 1896 353 1896"/>
-                    </Shape>
-                    <TextLine ID="mz_3-137_l3" HPOS="346" VPOS="574" WIDTH="1772" HEIGHT="60" BASELINE="348 620 2118 615" TAGREFS="TYPE_6">
+<TextLine ID="mz_3-137_l3" HPOS="346" VPOS="574" WIDTH="1772" HEIGHT="60" BASELINE="348 620 2118 615" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="522 580 502 580 483 581 463 583 444 585 424 585 405 587 385 589 366 589 346 591 348 620 348 634 2116 630 2118 615 2116 585 2091 574 2089 574 2087 574 2032 583 2011 574 2009 574 2007 574 2005 574 1983 585 1781 585 1709 574 1707 574 1705 574 1703 574 1687 585 1555 585 1529 574 1527 574 1525 574 1430 585 1366 576 1364 576 1262 585 1235 576 1233 576 1231 576 1229 576 1196 585 1161 576 1159 576 1157 576 1155 576 1132 587 968 587 941 576 939 576 937 576 935 576 894 587 522 578 522 580"/>
                         </Shape>
@@ -210,12 +196,7 @@
                         </Shape>
                         <String CONTENT="this case tea and tobacco were really “dear to the heart” of the accused man."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-137_r3" HPOS="353" VPOS="1896" WIDTH="1782" HEIGHT="304" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="353 1896 2135 1896 2135 2200 353 2200"/>
-                    </Shape>
-                    <TextLine ID="mz_3-137_l25" HPOS="465" VPOS="1899" WIDTH="1655" HEIGHT="54" BASELINE="467 1932 2120 1938" TAGREFS="TYPE_6">
+<TextLine ID="mz_3-137_l25" HPOS="465" VPOS="1899" WIDTH="1655" HEIGHT="54" BASELINE="467 1932 2120 1938" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="467 1932 465 1946 2116 1953 2120 1938 2118 1907 467 1899 467 1932"/>
                         </Shape>
@@ -249,12 +230,7 @@
                         </Shape>
                         <String CONTENT="Suitor,” in which such an incident is described with characteristic details."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-137_r4" HPOS="353" VPOS="2215" WIDTH="1782" HEIGHT="819" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="353 2215 2135 2215 2135 3034 353 3034"/>
-                    </Shape>
-                    <TextLine ID="mz_3-137_l30" HPOS="463" VPOS="2228" WIDTH="1655" HEIGHT="55" BASELINE="465 2256 2118 2263" TAGREFS="TYPE_6">
+<TextLine ID="mz_3-137_l30" HPOS="463" VPOS="2228" WIDTH="1655" HEIGHT="55" BASELINE="465 2256 2118 2263" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="465 2256 463 2267 500 2279 502 2279 504 2279 834 2271 880 2281 882 2283 2116 2283 2118 2263 2116 2236 465 2228 465 2256"/>
                         </Shape>
@@ -372,19 +348,13 @@
                         </Shape>
                         <String CONTENT="his wife.”"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-137_r5" HPOS="353" VPOS="3057" WIDTH="1782" HEIGHT="55" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="353 3057 2135 3057 2135 3112 353 3112"/>
-                    </Shape>
-                    <TextLine ID="mz_3-137_l47" HPOS="1093" VPOS="3051" WIDTH="308" HEIGHT="58" BASELINE="1095 3078 1401 3086" TAGREFS="TYPE_6">
+<TextLine ID="mz_3-137_l47" HPOS="1093" VPOS="3051" WIDTH="308" HEIGHT="58" BASELINE="1095 3078 1401 3086" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="1095 3078 1093 3092 1194 3105 1196 3105 1317 3099 1323 3107 1325 3107 1325 3109 1327 3109 1329 3109 1331 3109 1399 3099 1401 3086 1399 3059 1095 3051 1095 3078"/>
                         </Shape>
                         <String CONTENT="¹ Compare p. 573."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-318_r1" HPOS="559" VPOS="609" WIDTH="1778" HEIGHT="95" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="559 609 2337 609 2337 704 559 704"/>
-                    </Shape>
-                    <TextLine ID="mz_1-318_l1" HPOS="1135" VPOS="623" WIDTH="617" HEIGHT="56" BASELINE="1137 660 1752 656" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-318" HPOS="552" VPOS="621" WIDTH="1802" HEIGHT="2626"><TextLine ID="mz_1-318_l1" HPOS="1135" VPOS="623" WIDTH="617" HEIGHT="56" BASELINE="1137 660 1752 656" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1741 636 1720 625 1713 623 1148 625 1135 636 1137 660 1137 679 1750 675 1752 656 1746 638 1741 636"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="248"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-318_r2" HPOS="559" VPOS="727" WIDTH="1778" HEIGHT="187" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="559 727 2337 727 2337 914 559 914"/>
-                    </Shape>
-                    <TextLine ID="mz_1-318_l3" HPOS="663" VPOS="734" WIDTH="1667" HEIGHT="52" BASELINE="665 768 2330 762" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-318_l3" HPOS="663" VPOS="734" WIDTH="1667" HEIGHT="52" BASELINE="665 768 2330 762" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2309 736 2287 736 2265 734 2244 734 663 734 665 768 665 786 2328 779 2330 762 2326 736 2309 736"/>
                         </Shape>
@@ -75,12 +63,7 @@
                         </Shape>
                         <String CONTENT="the Russians."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-318_r3" HPOS="559" VPOS="914" WIDTH="1778" HEIGHT="605" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="559 914 2337 914 2337 1519 559 1519"/>
-                    </Shape>
-                    <TextLine ID="mz_1-318_l6" HPOS="661" VPOS="907" WIDTH="1669" HEIGHT="60" BASELINE="663 950 2330 946" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-318_l6" HPOS="661" VPOS="907" WIDTH="1669" HEIGHT="60" BASELINE="663 950 2330 946" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="663 950 663 967 2328 967 2330 946 2326 915 674 907 672 907 669 907 667 907 667 909 661 913 663 950"/>
                         </Shape>
@@ -149,12 +132,7 @@
                         </Shape>
                         <String CONTENT="while to prepare for the milder, damp weather of the short summer months."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-318_r4" HPOS="559" VPOS="1519" WIDTH="1778" HEIGHT="892" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="559 1519 2337 1519 2337 2411 559 2411"/>
-                    </Shape>
-                    <TextLine ID="mz_1-318_l16" HPOS="665" VPOS="1513" WIDTH="1665" HEIGHT="52" BASELINE="667 1548 2330 1543" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-318_l16" HPOS="665" VPOS="1513" WIDTH="1665" HEIGHT="52" BASELINE="667 1548 2330 1543" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="667 1548 667 1561 2326 1565 2330 1543 2326 1515 665 1513 667 1548"/>
                         </Shape>
@@ -258,12 +236,7 @@
                         </Shape>
                         <String CONTENT="quite dry in half an hour’s time."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-318_r5" HPOS="559" VPOS="2411" WIDTH="1778" HEIGHT="300" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="559 2411 2337 2411 2337 2711 559 2711"/>
-                    </Shape>
-                    <TextLine ID="mz_1-318_l31" HPOS="672" VPOS="2405" WIDTH="1667" HEIGHT="54" BASELINE="674 2440 2339 2444" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-318_l31" HPOS="672" VPOS="2405" WIDTH="1667" HEIGHT="54" BASELINE="674 2440 2339 2444" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="674 2440 672 2455 2335 2459 2339 2444 2337 2414 674 2405 674 2440"/>
                         </Shape>
@@ -297,12 +270,7 @@
                         </Shape>
                         <String CONTENT="thickness and oiliness of seal-skin, they are nearly impervious to water."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-318_r6" HPOS="559" VPOS="2711" WIDTH="1778" HEIGHT="243" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="559 2711 2337 2711 2337 2954 559 2954"/>
-                    </Shape>
-                    <TextLine ID="mz_1-318_l36" HPOS="674" VPOS="2699" WIDTH="1665" HEIGHT="61" BASELINE="676 2741 2339 2745" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-318_l36" HPOS="674" VPOS="2699" WIDTH="1665" HEIGHT="61" BASELINE="676 2741 2339 2745" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="676 2741 674 2756 2335 2760 2339 2745 2337 2715 2274 2702 2272 2702 2194 2712 2064 2702 2062 2702 2060 2702 2025 2712 1956 2702 1954 2702 1886 2715 1724 2715 1700 2702 1698 2702 1696 2702 1694 2702 1650 2712 1412 2699 1410 2699 1408 2699 1382 2710 1343 2699 1341 2699 1339 2699 1336 2699 1302 2712 1187 2712 1172 2699 1170 2699 1167 2699 1165 2699 1163 2699 1133 2710 676 2704 676 2741"/>
                         </Shape>
@@ -329,12 +297,7 @@
                         </Shape>
                         <String CONTENT="have no special boot-sole creasers, they use their teeth for this purpose."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-318_r7" HPOS="559" VPOS="2954" WIDTH="1778" HEIGHT="235" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="559 2954 2337 2954 2337 3189 559 3189"/>
-                    </Shape>
-                    <TextLine ID="mz_1-318_l40" HPOS="674" VPOS="2940" WIDTH="1667" HEIGHT="65" BASELINE="676 2979 2341 2983" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-318_l40" HPOS="674" VPOS="2940" WIDTH="1667" HEIGHT="65" BASELINE="676 2979 2341 2983" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="676 2979 674 2994 691 3005 693 3005 695 3005 697 3005 2339 2996 2341 2983 2341 2953 676 2940 676 2979"/>
                         </Shape>
@@ -361,19 +324,13 @@
                         </Shape>
                         <String CONTENT="or cloth for the embroidered fringe of the overcoat. Boots of the style just"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-318_r8" HPOS="559" VPOS="3198" WIDTH="1778" HEIGHT="60" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="559 3198 2337 3198 2337 3258 559 3258"/>
-                    </Shape>
-                    <TextLine ID="mz_1-318_l44" HPOS="1300" VPOS="3202" WIDTH="307" HEIGHT="45" BASELINE="1300 3228 1607 3228" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-318_l44" HPOS="1300" VPOS="3202" WIDTH="307" HEIGHT="45" BASELINE="1300 3228 1607 3228" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1300 3228 1300 3247 1607 3247 1607 3228 1607 3202 1300 3202 1300 3228"/>
                         </Shape>
                         <String CONTENT="¹ Compare p. 220."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

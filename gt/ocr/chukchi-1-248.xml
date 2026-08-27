@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-248_r1" HPOS="638" VPOS="611" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="638 611 2416 611 2416 701 638 701"/>
-                    </Shape>
-                    <TextLine ID="mz_1-248_l1" HPOS="1224" VPOS="630" WIDTH="619" HEIGHT="56" BASELINE="1226 664 1843 669" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-248" HPOS="639" VPOS="630" WIDTH="1774" HEIGHT="1058"><TextLine ID="mz_1-248_l1" HPOS="1224" VPOS="630" WIDTH="619" HEIGHT="56" BASELINE="1226 664 1843 669" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1832 634 1830 632 1226 630 1226 664 1224 682 1839 686 1843 669 1841 651 1832 634"/>
                         </Shape>
@@ -50,34 +43,19 @@
                         </Shape>
                         <String CONTENT="192"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-248_r2" HPOS="638" VPOS="726" WIDTH="1778" HEIGHT="83" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="638 726 2416 726 2416 809 638 809"/>
-                    </Shape>
-                    <TextLine ID="mz_1-248_l3" HPOS="749" VPOS="729" WIDTH="1664" HEIGHT="74" BASELINE="752 773 2413 777" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-248_l3" HPOS="749" VPOS="729" WIDTH="1664" HEIGHT="74" BASELINE="752 773 2413 777" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="752 773 749 788 1583 803 1585 803 2411 792 2413 777 2413 742 2389 731 2387 731 2385 731 2307 742 2274 731 2272 731 2270 731 2094 744 1741 744 1713 731 1711 731 1709 731 1707 731 1705 731 1687 744 1585 744 1525 729 1419 729 1416 729 1414 729 1412 729 1397 740 1321 729 1319 729 1317 729 1274 740 1232 729 1230 729 1228 729 1167 740 1120 729 1118 729 1115 729 1113 729 1092 740 1070 729 1068 729 1066 729 1007 740 752 736 752 773"/>
                         </Shape>
                         <String CONTENT="The bags filled with oil or blubber, on the contrary, are rounded, with"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-248_r3" HPOS="638" VPOS="1270" WIDTH="1778" HEIGHT="89" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="638 1270 2416 1270 2416 1359 638 1359"/>
-                    </Shape>
-                    <TextLine ID="mz_1-248_l4" HPOS="639" VPOS="1279" WIDTH="1774" HEIGHT="61" BASELINE="639 1322 2413 1322" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-248_l4" HPOS="639" VPOS="1279" WIDTH="1774" HEIGHT="61" BASELINE="639 1322 2413 1322" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2411 1290 2387 1279 2385 1279 2382 1279 2380 1279 2346 1290 2311 1279 2309 1279 2307 1279 2304 1279 2270 1290 2213 1279 2211 1279 1765 1290 1670 1279 1668 1279 1592 1290 1562 1279 1559 1279 1557 1279 1555 1279 1512 1290 1371 1279 1369 1279 1367 1279 1326 1290 1263 1279 1261 1279 1196 1290 1170 1279 1167 1279 1165 1279 964 1290 934 1279 931 1279 929 1279 927 1279 901 1290 856 1279 853 1279 851 1279 849 1279 812 1290 721 1279 719 1279 639 1290 639 1322 639 1340 2413 1340 2413 1322 2413 1292 2411 1290"/>
                         </Shape>
                         <String CONTENT="a short slit for a mouth. The blubber is pulled out of the bag with a hook"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-248_r4" HPOS="638" VPOS="1560" WIDTH="1778" HEIGHT="138" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="638 1560 2416 1560 2416 1698 638 1698"/>
-                    </Shape>
-                    <TextLine ID="mz_1-248_l5" HPOS="639" VPOS="1556" WIDTH="1769" HEIGHT="76" BASELINE="641 1615 2408 1602" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-248_l5" HPOS="639" VPOS="1556" WIDTH="1769" HEIGHT="76" BASELINE="641 1615 2408 1602" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2398 1565 2369 1556 2367 1556 2365 1556 2363 1556 2341 1567 2224 1556 2222 1556 2220 1556 2179 1567 2153 1556 2151 1556 2148 1556 2146 1556 2107 1569 1941 1558 1938 1558 1936 1558 1895 1569 1871 1558 1869 1558 1867 1558 1802 1574 1635 1574 1605 1561 1603 1561 1601 1561 1490 1574 1386 1563 1384 1563 1382 1563 1349 1574 1245 1563 1243 1563 1120 1576 951 1565 949 1565 947 1565 912 1578 879 1567 877 1567 875 1567 756 1578 656 1567 654 1567 652 1567 650 1567 639 1576 641 1615 641 1632 2406 1632 2408 1602 2406 1595 2398 1565"/>
                         </Shape>
@@ -90,8 +68,7 @@
                         </Shape>
                         <String CONTENT="and the Kamchadal."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

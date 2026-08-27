@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-268_r1" HPOS="574" VPOS="487" WIDTH="1778" HEIGHT="96" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="574 487 2352 487 2352 583 574 583"/>
-                    </Shape>
-                    <TextLine ID="mz_1-268_l1" HPOS="1167" VPOS="506" WIDTH="615" HEIGHT="54" BASELINE="1167 539 1782 539" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-268" HPOS="570" VPOS="506" WIDTH="1793" HEIGHT="2624"><TextLine ID="mz_1-268_l1" HPOS="1167" VPOS="506" WIDTH="615" HEIGHT="54" BASELINE="1167 539 1782 539" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1774 506 1601 506 1579 506 1557 506 1536 506 1514 506 1492 506 1471 506 1449 508 1427 508 1406 508 1384 508 1362 508 1341 508 1319 508 1297 511 1276 511 1254 511 1232 511 1211 511 1189 511 1167 511 1167 539 1167 560 1782 560 1782 539 1780 532 1774 506"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="212"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-268_r2" HPOS="574" VPOS="600" WIDTH="1778" HEIGHT="1385" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="574 600 2352 600 2352 1985 574 1985"/>
-                    </Shape>
-                    <TextLine ID="mz_1-268_l3" HPOS="587" VPOS="604" WIDTH="1776" HEIGHT="65" BASELINE="587 649 2363 649" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-268_l3" HPOS="587" VPOS="604" WIDTH="1776" HEIGHT="65" BASELINE="587 649 2363 649" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2298 606 2296 604 2248 615 1834 604 1832 604 1750 615 1724 604 1722 604 1720 604 1718 604 1679 615 1650 604 1648 604 1646 604 1644 604 1616 615 1588 604 1585 604 1583 604 1581 604 1559 615 1538 604 1536 604 1533 604 1464 615 1440 604 1438 604 1436 604 1358 615 1317 604 1315 604 1313 604 1310 604 1308 604 1293 617 1137 617 1109 604 1107 604 1105 604 1102 604 1100 604 1085 617 938 617 873 604 871 604 869 604 830 615 702 604 700 604 641 615 615 604 613 604 611 604 609 604 587 612 587 617 587 649 587 669 2363 669 2363 649 2363 617 2317 606 2298 606"/>
                         </Shape>
@@ -215,12 +203,7 @@
                         </Shape>
                         <String CONTENT="drill described before. It is used for drilling bone and even for sheet-iron."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-268_r3" HPOS="574" VPOS="1985" WIDTH="1778" HEIGHT="1152" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="574 1985 2352 1985 2352 3137 574 3137"/>
-                    </Shape>
-                    <TextLine ID="mz_1-268_l26" HPOS="689" VPOS="1981" WIDTH="1661" HEIGHT="62" BASELINE="691 2017 2350 2026" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-268_l26" HPOS="689" VPOS="1981" WIDTH="1661" HEIGHT="62" BASELINE="691 2017 2350 2026" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="691 2017 689 2035 2346 2043 2350 2026 2348 1996 691 1981 691 2017"/>
                         </Shape>
@@ -352,8 +335,7 @@
                         </Shape>
                         <String CONTENT="handle with a peg, or simply tied to it by a thin strip of leather (Fig. 132, a, b, c)."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

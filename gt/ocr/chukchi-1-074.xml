@@ -23,32 +23,20 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-074_r1" HPOS="709" VPOS="584" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="709 584 2487 584 2487 674 709 674"/>
-                    </Shape>
-                    <TextLine ID="mz_1-074_l1" HPOS="1287" VPOS="599" WIDTH="617" HEIGHT="54" BASELINE="1287 634 1904 634" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-074" HPOS="706" VPOS="599" WIDTH="1774" HEIGHT="1780"><TextLine ID="mz_1-074_l1" HPOS="1287" VPOS="599" WIDTH="617" HEIGHT="54" BASELINE="1287 634 1904 634" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1893 599 1871 599 1850 599 1828 599 1806 599 1785 599 1763 599 1741 599 1720 599 1698 599 1676 599 1655 599 1633 599 1611 599 1590 599 1568 599 1546 599 1525 599 1503 599 1481 599 1460 599 1438 599 1416 599 1395 599 1373 599 1352 599 1330 599 1308 599 1287 612 1287 634 1287 653 1904 653 1904 634 1902 625 1893 599"/>
                         </Shape>
                         <String CONTENT="BOGORAS, THE CHUKCHEE."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-074_r2" HPOS="709" VPOS="699" WIDTH="1778" HEIGHT="758" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="709 699 2487 699 2487 1457 709 1457"/>
-                    </Shape>
-                    <TextLine ID="mz_1-074_l2" HPOS="730" VPOS="692" WIDTH="1748" HEIGHT="68" BASELINE="732 736 2478 729" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-074_l2" HPOS="730" VPOS="692" WIDTH="1748" HEIGHT="68" BASELINE="732 736 2478 729" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2462 701 2441 701 2419 701 2413 699 1313 692 1310 692 1308 692 1267 703 801 695 799 695 730 705 732 736 732 751 1891 760 1893 760 1954 749 2460 757 2462 757 2465 757 2467 757 2478 747 2478 729 2473 701 2462 699 2462 701"/>
                         </Shape>
@@ -159,12 +147,7 @@
                         </Shape>
                         <String CONTENT="Yawrɪˊna means “in the next year,” and is applied to the beginning of the next fall."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-074_r3" HPOS="709" VPOS="1477" WIDTH="1778" HEIGHT="914" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="709 1477 2487 1477 2487 2391 709 2391"/>
-                    </Shape>
-                    <TextLine ID="mz_1-074_l18" HPOS="810" VPOS="1472" WIDTH="1670" HEIGHT="65" BASELINE="812 1524 2480 1515" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-074_l18" HPOS="810" VPOS="1472" WIDTH="1670" HEIGHT="65" BASELINE="812 1524 2480 1515" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="812 1524 812 1537 2478 1528 2480 1515 2475 1485 2309 1472 2307 1472 2304 1472 2272 1483 2242 1472 2239 1472 2237 1472 2138 1483 2105 1472 2103 1472 2101 1472 2099 1472 2047 1485 1837 1474 1834 1474 1832 1474 1787 1485 1756 1474 1754 1474 1752 1474 1640 1487 1289 1476 1287 1476 1284 1476 1282 1476 1269 1487 1161 1478 1159 1478 1157 1478 1154 1478 1141 1491 864 1491 825 1478 823 1478 821 1478 819 1478 817 1478 817 1481 810 1485 812 1524"/>
                         </Shape>
@@ -268,8 +251,7 @@
                         </Shape>
                         <String CONTENT="and more useful for scientific investigation."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

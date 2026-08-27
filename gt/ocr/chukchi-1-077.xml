@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-077_r1" HPOS="326" VPOS="600" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="326 600 2104 600 2104 690 326 690"/>
-                    </Shape>
-                    <TextLine ID="mz_1-077_l1" HPOS="905" VPOS="615" WIDTH="622" HEIGHT="54" BASELINE="908 651 1527 647" TAGREFS="TYPE_5">
+                <TextBlock ID="text_1-077" HPOS="323" VPOS="615" WIDTH="1780" HEIGHT="2617"><TextLine ID="mz_1-077_l1" HPOS="905" VPOS="615" WIDTH="622" HEIGHT="54" BASELINE="908 651 1527 647" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1512 619 1503 615 905 617 905 619 908 651 908 669 1525 664 1527 647 1520 623 1512 619"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="55"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-077_r2" HPOS="326" VPOS="715" WIDTH="1778" HEIGHT="124" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="326 715 2104 715 2104 839 326 839"/>
-                    </Shape>
-                    <TextLine ID="mz_1-077_l3" HPOS="332" VPOS="712" WIDTH="1767" HEIGHT="67" BASELINE="334 760 2099 753" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-077_l3" HPOS="332" VPOS="712" WIDTH="1767" HEIGHT="67" BASELINE="334 760 2099 753" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="334 760 334 779 2097 773 2099 753 2094 723 1518 712 1516 712 1514 712 1512 712 1494 723 960 714 957 714 869 727 332 727 334 760"/>
                         </Shape>
@@ -69,12 +56,7 @@
                         </Shape>
                         <String CONTENT="or shish (“needle”), because of the iron needles obtained from them.¹"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-077_r3" HPOS="326" VPOS="839" WIDTH="1778" HEIGHT="244" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="326 839 2104 839 2104 1083 326 1083"/>
-                    </Shape>
-                    <TextLine ID="mz_1-077_l5" HPOS="440" VPOS="833" WIDTH="1659" HEIGHT="61" BASELINE="442 874 2099 879" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-077_l5" HPOS="440" VPOS="833" WIDTH="1659" HEIGHT="61" BASELINE="442 874 2099 879" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="442 874 440 889 2094 894 2099 879 2097 848 1930 835 1928 835 1858 846 1772 835 1769 835 1681 846 1624 835 1622 835 1533 846 1492 835 1490 835 1488 835 1429 848 1323 848 1308 835 1306 835 1304 835 1302 835 1300 835 1269 846 1081 846 1066 833 1063 833 1061 833 1059 833 1007 844 994 833 992 833 990 833 988 833 986 833 960 844 942 833 940 833 938 833 936 833 934 833 899 844 882 833 879 833 877 833 875 833 821 844 793 833 791 833 788 833 786 833 756 844 723 833 721 833 719 833 717 833 695 844 442 840 442 874"/>
                         </Shape>
@@ -101,12 +83,7 @@
                         </Shape>
                         <String CONTENT="of bone and iron.²"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-077_r4" HPOS="326" VPOS="1083" WIDTH="1778" HEIGHT="599" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="326 1083 2104 1083 2104 1682 326 1682"/>
-                    </Shape>
-                    <TextLine ID="mz_1-077_l9" HPOS="438" VPOS="1073" WIDTH="1663" HEIGHT="70" BASELINE="438 1117 2101 1117" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-077_l9" HPOS="438" VPOS="1073" WIDTH="1663" HEIGHT="70" BASELINE="438 1117 2101 1117" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="438 1117 438 1130 661 1143 663 1143 769 1132 1001 1143 1003 1143 1141 1132 1399 1143 1401 1143 1403 1143 1434 1132 1906 1132 2014 1143 2016 1143 2101 1130 2101 1117 2101 1086 1997 1073 1995 1073 1904 1084 1858 1073 1856 1073 1854 1073 1852 1073 1819 1084 1804 1073 1802 1073 1800 1073 1798 1073 1795 1073 1759 1084 1724 1073 1722 1073 1720 1073 1633 1084 1585 1073 1583 1073 1581 1073 1579 1073 1544 1084 1479 1073 1477 1073 1475 1073 1442 1084 1375 1073 1373 1073 1291 1084 1265 1073 1263 1073 1261 1073 1258 1073 1232 1084 1217 1073 1215 1073 1213 1073 1211 1073 1150 1084 1009 1073 1007 1073 438 1082 438 1117"/>
                         </Shape>
@@ -175,12 +152,7 @@
                         </Shape>
                         <String CONTENT="the Russians, and spread from tribe to tribe over a space of two thousand miles."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-077_r5" HPOS="326" VPOS="1682" WIDTH="1778" HEIGHT="774" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="326 1682 2104 1682 2104 2456 326 2456"/>
-                    </Shape>
-                    <TextLine ID="mz_1-077_l19" HPOS="438" VPOS="1682" WIDTH="1661" HEIGHT="52" BASELINE="440 1717 2099 1710" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-077_l19" HPOS="438" VPOS="1682" WIDTH="1661" HEIGHT="52" BASELINE="440 1717 2099 1710" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="440 1717 440 1734 2097 1727 2099 1710 2094 1682 438 1682 440 1717"/>
                         </Shape>
@@ -270,12 +242,7 @@
                         </Shape>
                         <String CONTENT="made into ear-rings."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-077_r6" HPOS="326" VPOS="2456" WIDTH="1778" HEIGHT="539" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="326 2456 2104 2456 2104 2995 326 2995"/>
-                    </Shape>
-                    <TextLine ID="mz_1-077_l32" HPOS="433" VPOS="2461" WIDTH="1664" HEIGHT="59" BASELINE="435 2494 2097 2489" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-077_l32" HPOS="433" VPOS="2461" WIDTH="1664" HEIGHT="59" BASELINE="435 2494 2097 2489" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="435 2494 435 2509 1196 2520 1198 2520 1200 2520 1226 2509 1330 2518 1332 2518 1655 2507 1737 2518 1739 2518 1741 2518 1769 2507 1819 2518 1821 2518 1824 2518 1858 2507 1869 2518 1871 2518 1873 2518 1876 2520 2077 2520 2077 2518 2079 2518 2081 2518 2097 2505 2097 2489 2092 2461 433 2461 435 2494"/>
                         </Shape>
@@ -337,23 +304,13 @@
                         </Shape>
                         <String CONTENT="new term is very striking."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-077_r7" HPOS="326" VPOS="2995" WIDTH="1778" HEIGHT="63" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="326 2995 2104 2995 2104 3058 326 3058"/>
-                    </Shape>
-                    <TextLine ID="mz_1-077_l41" HPOS="433" VPOS="2998" WIDTH="1664" HEIGHT="50" BASELINE="435 3033 2097 3028" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-077_l41" HPOS="433" VPOS="2998" WIDTH="1664" HEIGHT="50" BASELINE="435 3033 2097 3028" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="435 3033 435 3048 2097 3044 2097 3028 2092 2998 433 2998 435 3033"/>
                         </Shape>
                         <String CONTENT="The first century of intercourse between the Russians and the Chukchee"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-077_r8" HPOS="326" VPOS="3093" WIDTH="1778" HEIGHT="149" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="326 3093 2104 3093 2104 3242 326 3242"/>
-                    </Shape>
-                    <TextLine ID="mz_1-077_l42" HPOS="1488" VPOS="3091" WIDTH="312" HEIGHT="61" BASELINE="1490 3119 1800 3124" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-077_l42" HPOS="1488" VPOS="3091" WIDTH="312" HEIGHT="61" BASELINE="1490 3119 1800 3124" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1490 3119 1488 3137 1663 3152 1666 3152 1798 3141 1800 3124 1798 3096 1490 3091 1490 3119"/>
                         </Shape>
@@ -387,8 +344,7 @@
                         </Shape>
                         <String CONTENT="⁵ Jochelson, Yukaghir Materials, p. 77."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

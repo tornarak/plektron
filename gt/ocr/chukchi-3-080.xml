@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_3-080_r1" HPOS="336" VPOS="446" WIDTH="1782" HEIGHT="101" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="336 446 2118 446 2118 547 336 547"/>
-                    </Shape>
-                    <TextLine ID="mz_3-080_l1" HPOS="912" VPOS="466" WIDTH="613" HEIGHT="53" BASELINE="913 498 1525 504" TAGREFS="TYPE_4">
+                <TextBlock ID="text_3-080" HPOS="327" VPOS="463" WIDTH="1783" HEIGHT="2625"><TextLine ID="mz_3-080_l1" HPOS="912" VPOS="466" WIDTH="613" HEIGHT="53" BASELINE="913 498 1525 504" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1518 478 1508 468 929 466 913 490 913 498 912 513 1522 519 1525 504 1522 484 1518 478"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="614"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-080_r2" HPOS="336" VPOS="570" WIDTH="1782" HEIGHT="834" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="336 570 2118 570 2118 1404 336 1404"/>
-                    </Shape>
-                    <TextLine ID="mz_3-080_l3" HPOS="331" VPOS="576" WIDTH="1775" HEIGHT="48" BASELINE="333 607 2106 611" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-080_l3" HPOS="331" VPOS="576" WIDTH="1775" HEIGHT="48" BASELINE="333 607 2106 611" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2104 583 2085 583 2065 583 2046 581 2026 581 2007 581 1987 580 1968 580 1964 578 333 576 333 607 331 620 2102 624 2106 611 2104 583 2104 583"/>
                         </Shape>
@@ -152,12 +140,7 @@
                         </Shape>
                         <String CONTENT="thief’s own ear-mark, and to change the marks of grown animals."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-080_r3" HPOS="336" VPOS="1404" WIDTH="1782" HEIGHT="1033" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="336 1404 2118 1404 2118 2437 336 2437"/>
-                    </Shape>
-                    <TextLine ID="mz_3-080_l17" HPOS="440" VPOS="1406" WIDTH="1668" HEIGHT="58" BASELINE="442 1451 2108 1445" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-080_l17" HPOS="440" VPOS="1406" WIDTH="1668" HEIGHT="58" BASELINE="442 1451 2108 1445" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="442 1451 442 1464 2108 1457 2108 1445 2100 1406 2059 1418 1913 1418 1898 1406 1896 1406 1894 1406 1892 1406 1839 1416 1763 1406 1761 1406 1759 1406 1718 1416 1685 1406 1683 1406 1681 1406 1679 1406 1640 1416 1477 1408 1475 1408 1473 1408 1451 1419 1344 1419 1329 1408 1327 1408 1325 1408 1323 1408 1321 1408 1295 1419 1149 1419 1126 1408 1124 1408 1122 1408 1120 1408 1091 1418 1079 1408 1077 1408 1075 1408 1073 1408 970 1410 968 1410 966 1410 952 1419 859 1410 857 1410 855 1410 820 1419 775 1410 773 1410 722 1419 440 1414 442 1451"/>
                         </Shape>
@@ -275,12 +258,7 @@
                         </Shape>
                         <String CONTENT="for mutual reproach."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-080_r4" HPOS="336" VPOS="2437" WIDTH="1782" HEIGHT="602" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="336 2437 2118 2437 2118 3039 336 3039"/>
-                    </Shape>
-                    <TextLine ID="mz_3-080_l34" HPOS="436" VPOS="2427" WIDTH="1674" HEIGHT="64" BASELINE="438 2472 2110 2462" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-080_l34" HPOS="436" VPOS="2427" WIDTH="1674" HEIGHT="64" BASELINE="438 2472 2110 2462" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="438 2472 438 2484 986 2491 988 2491 989 2491 991 2491 1005 2482 1516 2487 1518 2487 1601 2478 1631 2487 1633 2487 1635 2487 1637 2487 1668 2478 1773 2487 1775 2487 1777 2487 1802 2476 1987 2486 1989 2486 1991 2486 2015 2476 2089 2486 2091 2486 2093 2486 2095 2486 2110 2474 2110 2462 2104 2427 436 2437 438 2472"/>
                         </Shape>
@@ -349,19 +327,13 @@
                         </Shape>
                         <String CONTENT="and the loss of even one counts."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-080_r5" HPOS="336" VPOS="3039" WIDTH="1782" HEIGHT="74" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="336 3039 2118 3039 2118 3113 336 3113"/>
-                    </Shape>
-                    <TextLine ID="mz_3-080_l44" HPOS="442" VPOS="3021" WIDTH="1658" HEIGHT="67" BASELINE="444 3072 2100 3060" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-080_l44" HPOS="442" VPOS="3021" WIDTH="1658" HEIGHT="67" BASELINE="444 3072 2100 3060" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="444 3072 444 3088 2098 3082 2100 3060 2096 3035 1991 3033 1978 3021 1976 3021 1974 3021 1972 3021 1970 3021 1919 3033 1761 3023 1759 3023 1757 3023 1755 3023 1738 3035 1578 3023 1576 3023 1574 3023 1572 3023 1561 3033 1531 3025 1529 3025 1527 3025 1194 3039 1093 3027 1091 3027 1089 3027 1087 3027 1067 3039 1028 3027 1027 3027 1025 3027 1023 3027 991 3043 873 3043 857 3029 855 3029 853 3029 851 3029 717 3043 658 3031 656 3031 654 3031 613 3041 479 3031 477 3031 475 3031 442 3043 444 3072"/>
                         </Shape>
                         <String CONTENT="Assistants. — Camps of rich men, as stated before, have assistants"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

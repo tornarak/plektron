@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-169_r1" HPOS="340" VPOS="616" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="340 616 2118 616 2118 706 340 706"/>
-                    </Shape>
-                    <TextLine ID="mz_1-169_l1" HPOS="927" VPOS="625" WIDTH="613" HEIGHT="54" BASELINE="927 660 1540 660" TAGREFS="TYPE_5">
+                <TextBlock ID="text_1-169" HPOS="338" VPOS="625" WIDTH="1778" HEIGHT="2629"><TextLine ID="mz_1-169_l1" HPOS="927" VPOS="625" WIDTH="613" HEIGHT="54" BASELINE="927 660 1540 660" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1533 638 1512 634 1490 628 1479 625 947 625 929 643 927 660 927 679 1540 679 1540 660 1536 645 1533 638"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="127"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-169_r2" HPOS="340" VPOS="731" WIDTH="1778" HEIGHT="181" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="340 731 2118 731 2118 912 340 912"/>
-                    </Shape>
-                    <TextLine ID="mz_1-169_l3" HPOS="340" VPOS="723" WIDTH="1774" HEIGHT="67" BASELINE="342 766 2114 770" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-169_l3" HPOS="340" VPOS="723" WIDTH="1774" HEIGHT="67" BASELINE="342 766 2114 770" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="448 731 427 731 405 734 383 734 362 736 342 736 342 766 340 781 351 790 353 790 355 790 357 790 2112 786 2114 770 2112 738 1882 738 1865 725 1863 725 1860 725 1858 725 1785 736 1733 725 1731 725 1728 725 1687 736 1648 725 1646 725 1644 725 1538 736 1306 725 1304 725 1245 736 1230 723 1228 723 1226 723 1224 723 1126 736 983 736 968 723 966 723 964 723 962 723 908 736 754 736 739 723 736 723 734 723 732 723 730 723 693 734 628 723 626 723 624 723 589 734 451 729 448 731"/>
                         </Shape>
@@ -76,12 +63,7 @@
                         </Shape>
                         <String CONTENT="to go shooting water-fowl along the shore, to inspect the fish and seal nets, etc."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-169_r3" HPOS="340" VPOS="912" WIDTH="1778" HEIGHT="897" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="340 912 2118 912 2118 1809 340 1809"/>
-                    </Shape>
-                    <TextLine ID="mz_1-169_l6" HPOS="448" VPOS="911" WIDTH="1666" HEIGHT="52" BASELINE="451 944 2114 948" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-169_l6" HPOS="448" VPOS="911" WIDTH="1666" HEIGHT="52" BASELINE="451 944 2114 948" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="451 944 448 959 2109 963 2114 948 2112 915 451 911 451 944"/>
                         </Shape>
@@ -185,12 +167,7 @@
                         </Shape>
                         <String CONTENT="are clumsier, and their sea qualities poorer."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-169_r4" HPOS="340" VPOS="1809" WIDTH="1778" HEIGHT="907" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="340 1809 2118 1809 2118 2716 340 2716"/>
-                    </Shape>
-                    <TextLine ID="mz_1-169_l21" HPOS="448" VPOS="1801" WIDTH="1666" HEIGHT="63" BASELINE="451 1846 2114 1842" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-169_l21" HPOS="448" VPOS="1801" WIDTH="1666" HEIGHT="63" BASELINE="451 1846 2114 1842" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="451 1846 451 1864 2112 1859 2114 1842 2112 1814 2062 1801 2060 1801 2058 1801 2055 1801 2032 1812 1644 1801 1642 1801 1588 1812 1555 1801 1553 1801 1551 1801 1445 1812 1371 1801 1369 1801 1241 1814 1176 1803 1174 1803 1172 1803 1146 1814 1133 1803 1131 1803 1128 1803 1126 1803 1124 1803 1100 1816 996 1816 981 1803 979 1803 977 1803 975 1803 973 1803 927 1814 858 1803 856 1803 853 1803 827 1816 665 1816 646 1803 643 1803 641 1803 639 1803 448 1812 451 1846"/>
                         </Shape>
@@ -294,12 +271,7 @@
                         </Shape>
                         <String CONTENT="drippings, at present more frequently with oil paints bought from whalers."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-169_r5" HPOS="340" VPOS="2716" WIDTH="1778" HEIGHT="477" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="340 2716 2118 2716 2118 3193 340 3193"/>
-                    </Shape>
-                    <TextLine ID="mz_1-169_l36" HPOS="448" VPOS="2702" WIDTH="1668" HEIGHT="62" BASELINE="451 2747 2116 2743" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-169_l36" HPOS="448" VPOS="2702" WIDTH="1668" HEIGHT="62" BASELINE="451 2747 2116 2743" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="451 2747 451 2764 2114 2760 2116 2743 2112 2712 1293 2702 1291 2702 1178 2715 448 2715 451 2747"/>
                         </Shape>
@@ -354,19 +326,13 @@
                         </Shape>
                         <String CONTENT="paddle. It is curious that the oars of the Koryak boats, rest in loops instead"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-169_r6" HPOS="340" VPOS="3207" WIDTH="1778" HEIGHT="65" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="340 3207 2118 3207 2118 3272 340 3272"/>
-                    </Shape>
-                    <TextLine ID="mz_1-169_l44" HPOS="905" VPOS="3206" WIDTH="657" HEIGHT="48" BASELINE="905 3232 1562 3232" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-169_l44" HPOS="905" VPOS="3206" WIDTH="657" HEIGHT="48" BASELINE="905 3232 1562 3232" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="905 3232 905 3254 1562 3254 1562 3232 1562 3206 905 3206 905 3232"/>
                         </Shape>
                         <String CONTENT="¹ Nelson, Plate LXXVIII, Fig. 38, p. 218."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-Other"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-240_r1" HPOS="594" VPOS="606" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="594 606 2372 606 2372 696 594 696"/>
-                    </Shape>
-                    <TextLine ID="mz_1-240_l1" HPOS="1174" VPOS="617" WIDTH="615" HEIGHT="54" BASELINE="1176 651 1789 656" TAGREFS="TYPE_5">
+                <TextBlock ID="text_1-240" HPOS="598" VPOS="612" WIDTH="1776" HEIGHT="2633"><TextLine ID="mz_1-240_l1" HPOS="1174" VPOS="617" WIDTH="615" HEIGHT="54" BASELINE="1176 651 1789 656" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1782 619 1176 617 1176 651 1174 666 1785 671 1789 656 1787 628 1782 619"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="184"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-240_r2" HPOS="594" VPOS="721" WIDTH="1778" HEIGHT="175" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="594 721 2372 721 2372 896 594 896"/>
-                    </Shape>
-                    <TextLine ID="mz_1-240_l3" HPOS="598" VPOS="731" WIDTH="1767" HEIGHT="55" BASELINE="598 762 2365 762" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-240_l3" HPOS="598" VPOS="731" WIDTH="1767" HEIGHT="55" BASELINE="598 762 2365 762" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="598 762 598 779 2361 786 2365 762 2363 731 598 731 598 762"/>
                         </Shape>
@@ -76,12 +63,7 @@
                         </Shape>
                         <String CONTENT="last for a very considerable time, even in the open air."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-240_r3" HPOS="594" VPOS="896" WIDTH="1778" HEIGHT="739" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="594 896 2372 896 2372 1635 594 1635"/>
-                    </Shape>
-                    <TextLine ID="mz_1-240_l6" HPOS="704" VPOS="898" WIDTH="1665" HEIGHT="72" BASELINE="706 944 2369 937" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-240_l6" HPOS="704" VPOS="898" WIDTH="1665" HEIGHT="72" BASELINE="706 944 2369 937" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="706 944 706 959 1165 970 1167 970 1170 970 1172 970 1187 957 1715 957 1811 967 1813 967 1906 954 2014 965 2016 965 2019 965 2058 954 2084 965 2086 965 2088 965 2367 954 2369 937 2365 909 1830 898 1828 898 1774 909 1302 900 1300 900 1232 913 704 913 706 944"/>
                         </Shape>
@@ -164,23 +146,13 @@
                         </Shape>
                         <String CONTENT="even among those who are settled on the Middle Anadyr."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-240_r4" HPOS="594" VPOS="1682" WIDTH="1778" HEIGHT="92" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="594 1682 2372 1682 2372 1774 594 1774"/>
-                    </Shape>
-                    <TextLine ID="mz_1-240_l18" HPOS="1237" VPOS="1704" WIDTH="502" HEIGHT="49" BASELINE="1237 1736 1739 1736" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-240_l18" HPOS="1237" VPOS="1704" WIDTH="502" HEIGHT="49" BASELINE="1237 1736 1739 1736" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1237 1736 1237 1753 1739 1753 1739 1736 1739 1704 1237 1704 1237 1736"/>
                         </Shape>
                         <String CONTENT="HOUSEHOLD UTENSILS."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-240_r5" HPOS="594" VPOS="1798" WIDTH="1778" HEIGHT="899" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="594 1798 2372 1798 2372 2697 594 2697"/>
-                    </Shape>
-                    <TextLine ID="mz_1-240_l19" HPOS="704" VPOS="1797" WIDTH="1665" HEIGHT="60" BASELINE="706 1842 2369 1838" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-240_l19" HPOS="704" VPOS="1797" WIDTH="1665" HEIGHT="60" BASELINE="706 1842 2369 1838" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="2359 1810 2198 1810 2185 1797 2183 1797 2181 1797 2179 1797 2177 1797 2148 1807 2103 1797 2101 1797 2099 1797 2097 1797 2064 1807 1932 1797 1839 1797 1837 1797 1834 1797 1832 1797 1821 1807 1782 1797 1780 1797 1778 1797 1683 1807 1581 1797 1579 1797 1514 1810 1429 1799 1427 1799 1425 1799 1399 1810 1330 1799 1328 1799 1326 1799 1300 1810 1287 1799 1284 1799 1282 1799 1187 1799 1185 1799 1183 1799 1180 1799 1167 1810 1124 1799 1122 1799 1120 1799 1046 1810 704 1807 706 1842 706 1857 2367 1853 2369 1838 2365 1812 2359 1810"/>
                         </Shape>
@@ -284,12 +256,7 @@
                         </Shape>
                         <String CONTENT="seen in Russian houses."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-240_r6" HPOS="594" VPOS="2697" WIDTH="1778" HEIGHT="553" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="594 2697 2372 2697 2372 3250 594 3250"/>
-                    </Shape>
-                    <TextLine ID="mz_1-240_l34" HPOS="1696" VPOS="2697" WIDTH="671" HEIGHT="70" BASELINE="1696 2738 2367 2738" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-240_l34" HPOS="1696" VPOS="2697" WIDTH="671" HEIGHT="70" BASELINE="1696 2738 2367 2738" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1696 2738 1696 2749 1824 2762 1826 2762 1828 2762 1830 2762 1845 2751 1958 2751 1969 2760 1969 2762 1971 2762 1973 2762 1975 2762 2075 2751 2155 2764 2157 2764 2159 2764 2192 2751 2222 2764 2224 2764 2226 2767 2333 2767 2333 2764 2335 2764 2367 2749 2367 2738 2367 2710 2207 2710 2196 2699 2196 2697 2194 2697 2192 2697 2190 2697 1696 2706 1696 2738"/>
                         </Shape>
@@ -351,8 +318,7 @@
                         </Shape>
                         <String CONTENT="used as lamps. The lamp is usually placed in a shallow wooden bowl, standing,"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

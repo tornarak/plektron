@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_2-185_r1" HPOS="414" VPOS="478" WIDTH="1776" HEIGHT="94" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="414 478 2190 478 2190 572 414 572"/>
-                    </Shape>
-                    <TextLine ID="mz_2-185_l1" HPOS="992" VPOS="495" WIDTH="612" HEIGHT="49" BASELINE="994 528 1604 526" TAGREFS="TYPE_4">
+                <TextBlock ID="text_2-185" HPOS="415" VPOS="495" WIDTH="1770" HEIGHT="2622"><TextLine ID="mz_2-185_l1" HPOS="992" VPOS="495" WIDTH="612" HEIGHT="49" BASELINE="994 528 1604 526" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1582 495 992 495 994 528 994 544 1602 542 1604 526 1598 503 1582 495"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="455"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-185_r2" HPOS="414" VPOS="595" WIDTH="1776" HEIGHT="426" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="414 595 2190 595 2190 1021 414 1021"/>
-                    </Shape>
-                    <TextLine ID="mz_2-185_l3" HPOS="532" VPOS="591" WIDTH="1651" HEIGHT="63" BASELINE="532 630 2183 630" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-185_l3" HPOS="532" VPOS="591" WIDTH="1651" HEIGHT="63" BASELINE="532 630 2183 630" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="532 630 532 644 1218 644 1233 654 1235 654 1237 654 1239 654 2046 644 2181 654 2183 630 2183 603 2123 591 2121 591 2034 603 1466 603 1404 591 1402 591 1400 591 1398 591 1380 603 1114 603 1075 591 1073 591 1071 591 1069 591 1043 601 971 591 969 591 967 591 965 591 947 603 787 603 705 591 703 591 630 601 532 591 532 630"/>
                         </Shape>
@@ -103,12 +91,7 @@
                         </Shape>
                         <String CONTENT="they carefully avoided giving me time or opportunity for any annoying questions."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-185_r3" HPOS="414" VPOS="1021" WIDTH="1776" HEIGHT="180" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="414 1021 2190 1021 2190 1201 414 1201"/>
-                    </Shape>
-                    <TextLine ID="mz_2-185_l10" HPOS="526" VPOS="1014" WIDTH="1659" HEIGHT="51" BASELINE="526 1049 2185 1049" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-185_l10" HPOS="526" VPOS="1014" WIDTH="1659" HEIGHT="51" BASELINE="526 1049 2185 1049" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="526 1049 526 1065 2185 1065 2185 1049 2185 1016 526 1014 526 1049"/>
                         </Shape>
@@ -128,12 +111,7 @@
                         </Shape>
                         <String CONTENT="from the very beginning of his “shamanistic” call."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-185_r4" HPOS="414" VPOS="1201" WIDTH="1776" HEIGHT="659" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="414 1201 2190 1201 2190 1860 414 1860"/>
-                    </Shape>
-                    <TextLine ID="mz_2-185_l13" HPOS="528" VPOS="1188" WIDTH="1657" HEIGHT="65" BASELINE="530 1225 2185 1229" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-185_l13" HPOS="528" VPOS="1188" WIDTH="1657" HEIGHT="65" BASELINE="530 1225 2185 1229" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="530 1225 528 1239 544 1249 546 1249 548 1249 550 1249 640 1241 654 1251 656 1251 658 1251 660 1251 1282 1241 1478 1253 1480 1253 1482 1253 1510 1243 1682 1253 1684 1253 1739 1243 1872 1243 1886 1253 1888 1253 1889 1253 1891 1253 2183 1241 2185 1229 2183 1202 2093 1190 2091 1190 1433 1200 1398 1190 1396 1190 1394 1190 1392 1190 1359 1200 1320 1188 1318 1188 1316 1188 1314 1188 1278 1198 1257 1188 1255 1188 1253 1188 1251 1188 1212 1198 530 1190 530 1225"/>
                         </Shape>
@@ -209,12 +187,7 @@
                         </Shape>
                         <String CONTENT="sex, and is likewise applied to native cases.¹"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-185_r5" HPOS="414" VPOS="1860" WIDTH="1776" HEIGHT="539" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="414 1860 2190 1860 2190 2399 414 2399"/>
-                    </Shape>
-                    <TextLine ID="mz_2-185_l24" HPOS="528" VPOS="1846" WIDTH="1653" HEIGHT="59" BASELINE="530 1885 2181 1891" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-185_l24" HPOS="528" VPOS="1846" WIDTH="1653" HEIGHT="59" BASELINE="530 1885 2181 1891" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="530 1885 528 1897 2177 1905 2181 1891 2179 1862 1995 1862 1962 1850 1960 1850 1958 1850 1833 1860 1762 1850 1760 1850 1425 1858 1365 1848 1363 1848 1296 1858 1269 1848 1267 1848 1265 1848 1200 1858 1173 1848 1171 1848 1169 1848 1106 1858 1081 1846 1079 1846 908 1846 906 1846 904 1846 883 1856 828 1846 826 1846 824 1846 783 1856 530 1848 530 1885"/>
                         </Shape>
@@ -276,12 +249,7 @@
                         </Shape>
                         <String CONTENT="easily found a quite young girl who consented to become her wife."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-185_r6" HPOS="414" VPOS="2399" WIDTH="1776" HEIGHT="539" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="414 2399 2190 2399 2190 2938 414 2938"/>
-                    </Shape>
-                    <TextLine ID="mz_2-185_l33" HPOS="526" VPOS="2389" WIDTH="1653" HEIGHT="60" BASELINE="528 2426 2179 2430" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-185_l33" HPOS="526" VPOS="2389" WIDTH="1653" HEIGHT="60" BASELINE="528 2426 2179 2430" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="528 2426 526 2438 683 2449 685 2449 2177 2447 2179 2430 2177 2398 528 2389 528 2426"/>
                         </Shape>
@@ -343,12 +311,7 @@
                         </Shape>
                         <String CONTENT="lawful children. Thus this person could have had in her youth children of"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-185_r7" HPOS="414" VPOS="2977" WIDTH="1776" HEIGHT="149" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="414 2977 2190 2977 2190 3126 414 3126"/>
-                    </Shape>
-                    <TextLine ID="mz_2-185_l42" HPOS="519" VPOS="2990" WIDTH="1662" HEIGHT="41" BASELINE="519 3013 2181 3013" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-185_l42" HPOS="519" VPOS="2990" WIDTH="1662" HEIGHT="41" BASELINE="519 3013 2181 3013" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="519 3013 519 3031 2181 3031 2181 3013 2181 2990 519 2990 519 3013"/>
                         </Shape>
@@ -368,8 +331,7 @@
                         </Shape>
                         <String CONTENT="men were allowed to pass through it, while the men always used the roof-entrance (see Steller, p. 35, footnote)."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

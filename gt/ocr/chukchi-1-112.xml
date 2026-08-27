@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-112_r1" HPOS="550" VPOS="603" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="550 603 2328 603 2328 693 550 693"/>
-                    </Shape>
-                    <TextLine ID="mz_1-112_l1" HPOS="1133" VPOS="623" WIDTH="619" HEIGHT="54" BASELINE="1133 656 1752 656" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-112" HPOS="548" VPOS="615" WIDTH="1780" HEIGHT="2628"><TextLine ID="mz_1-112_l1" HPOS="1133" VPOS="623" WIDTH="619" HEIGHT="54" BASELINE="1133 656 1752 656" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1739 625 1733 623 1137 623 1133 625 1133 656 1133 677 1752 677 1752 656 1750 638 1739 625"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="84"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-112_r2" HPOS="550" VPOS="718" WIDTH="1778" HEIGHT="305" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="550 718 2328 718 2328 1023 550 1023"/>
-                    </Shape>
-                    <TextLine ID="mz_1-112_l3" HPOS="552" VPOS="721" WIDTH="1774" HEIGHT="62" BASELINE="555 764 2326 768" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-112_l3" HPOS="552" VPOS="721" WIDTH="1774" HEIGHT="62" BASELINE="555 764 2326 768" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2285 727 2263 727 2248 725 2187 734 2088 723 2086 723 2084 723 2049 736 1941 736 1925 723 1923 723 1921 723 1919 723 1863 734 1759 723 1756 723 1754 723 1724 734 1624 723 1622 723 1620 723 1590 734 1577 723 1575 723 1572 723 1570 723 1330 731 1313 721 1310 721 1308 721 1211 721 1209 721 1206 721 1204 721 1191 731 1157 721 1154 721 1152 721 1150 721 1115 731 1048 721 1046 721 555 729 555 764 552 777 2322 783 2326 768 2326 736 2291 727 2285 727"/>
                         </Shape>
@@ -89,12 +77,7 @@
                         </Shape>
                         <String CONTENT="have more leisure for visits and amusements."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-112_r3" HPOS="550" VPOS="1023" WIDTH="1778" HEIGHT="783" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="550 1023 2328 1023 2328 1806 550 1806"/>
-                    </Shape>
-                    <TextLine ID="mz_1-112_l8" HPOS="663" VPOS="1022" WIDTH="1665" HEIGHT="60" BASELINE="663 1065 2328 1065" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-112_l8" HPOS="663" VPOS="1022" WIDTH="1665" HEIGHT="60" BASELINE="663 1065 2328 1065" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="663 1065 663 1082 2328 1082 2328 1065 2328 1032 2291 1022 2289 1022 2287 1022 2231 1032 2157 1022 2155 1022 2153 1022 2116 1032 2079 1022 2077 1022 2075 1022 2073 1022 2047 1032 2021 1022 2019 1022 2016 1022 2014 1022 1990 1032 1973 1022 1971 1022 1969 1022 1967 1022 1964 1022 1938 1032 1839 1022 1837 1022 1834 1022 1808 1032 1744 1022 1741 1022 1685 1032 1657 1022 1655 1022 1653 1022 1650 1022 1627 1035 1425 1035 1410 1022 1408 1022 1406 1022 1403 1022 1328 1032 1306 1022 1304 1022 1302 1022 1204 1035 962 1035 947 1022 944 1022 942 1022 940 1022 938 1022 912 1032 897 1022 895 1022 892 1022 890 1022 663 1028 663 1065"/>
                         </Shape>
@@ -184,12 +167,7 @@
                         </Shape>
                         <String CONTENT="wound; and the blood will sometimes continue to trickle down for hours."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-112_r4" HPOS="550" VPOS="1806" WIDTH="1778" HEIGHT="1078" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="550 1806 2328 1806 2328 2884 550 2884"/>
-                    </Shape>
-                    <TextLine ID="mz_1-112_l21" HPOS="659" VPOS="1803" WIDTH="1669" HEIGHT="67" BASELINE="661 1846 2328 1840" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-112_l21" HPOS="659" VPOS="1803" WIDTH="1669" HEIGHT="67" BASELINE="661 1846 2328 1840" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="661 1846 661 1859 968 1870 970 1870 2326 1855 2328 1840 2322 1803 659 1810 661 1846"/>
                         </Shape>
@@ -314,12 +292,7 @@
                         </Shape>
                         <String CONTENT="pliable."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-112_r5" HPOS="550" VPOS="2884" WIDTH="1778" HEIGHT="366" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="550 2884 2328 2884 2328 3250 550 3250"/>
-                    </Shape>
-                    <TextLine ID="mz_1-112_l39" HPOS="1276" VPOS="2890" WIDTH="1046" HEIGHT="48" BASELINE="1276 2922 2322 2922" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-112_l39" HPOS="1276" VPOS="2890" WIDTH="1046" HEIGHT="48" BASELINE="1276 2922 2322 2922" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1276 2922 1276 2938 2322 2938 2322 2922 2322 2890 1276 2890 1276 2922"/>
                         </Shape>
@@ -360,8 +333,7 @@
                         </Shape>
                         <String CONTENT="his neck in a thick coil, like a huge boa. It is sometimes used in hunting"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

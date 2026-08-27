@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_2-048_r1" HPOS="333" VPOS="478" WIDTH="1776" HEIGHT="94" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="333 478 2109 478 2109 572 333 572"/>
-                    </Shape>
-                    <TextLine ID="mz_2-048_l1" HPOS="910" VPOS="495" WIDTH="615" HEIGHT="49" BASELINE="910 528 1525 528" TAGREFS="TYPE_4">
+                <TextBlock ID="text_2-048" HPOS="329" VPOS="495" WIDTH="1778" HEIGHT="2612"><TextLine ID="mz_2-048_l1" HPOS="910" VPOS="495" WIDTH="615" HEIGHT="49" BASELINE="910 528 1525 528" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="910 528 910 544 1525 544 1525 528 1525 495 910 495 910 528"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="322"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-048_r2" HPOS="333" VPOS="595" WIDTH="1776" HEIGHT="102" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="333 595 2109 595 2109 697 333 697"/>
-                    </Shape>
-                    <TextLine ID="mz_2-048_l3" HPOS="330" VPOS="597" WIDTH="1775" HEIGHT="55" BASELINE="332 630 2105 626" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-048_l3" HPOS="330" VPOS="597" WIDTH="1775" HEIGHT="55" BASELINE="332 630 2105 626" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="332 630 332 652 2103 640 2105 626 2099 597 330 597 332 630"/>
                         </Shape>
@@ -68,12 +56,7 @@
                         </Shape>
                         <String CONTENT="and Asia, and by Russianized natives everywhere in northeastern Siberia."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-048_r3" HPOS="333" VPOS="713" WIDTH="1776" HEIGHT="257" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="333 713 2109 713 2109 970 333 970"/>
-                    </Shape>
-                    <TextLine ID="mz_2-048_l5" HPOS="440" VPOS="716" WIDTH="1667" HEIGHT="61" BASELINE="442 765 2107 759" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-048_l5" HPOS="440" VPOS="716" WIDTH="1667" HEIGHT="61" BASELINE="442 765 2107 759" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="442 765 442 777 2105 773 2107 759 2105 724 2091 716 2089 716 2087 716 2085 716 2083 716 2081 716 2064 730 1966 730 1903 716 1901 716 1899 716 1866 728 1842 716 1841 716 1839 716 1762 728 1745 716 1743 716 1741 716 1739 716 1737 716 1709 726 1682 716 1680 716 1678 716 1676 716 1641 728 1611 716 1609 716 1607 716 1547 732 1378 732 1359 718 1357 718 1355 718 1353 718 1351 718 1310 730 1273 718 1271 718 1269 718 1267 718 1239 730 1180 718 1179 718 1177 718 1145 730 1102 718 1100 718 1098 718 1096 718 1067 730 977 720 975 720 973 720 971 720 951 734 757 734 722 720 720 720 718 720 440 726 442 765"/>
                         </Shape>
@@ -100,12 +83,7 @@
                         </Shape>
                         <String CONTENT="on the contrary, that, passing each other, they exchange mutual abuse."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-048_r4" HPOS="333" VPOS="970" WIDTH="1776" HEIGHT="127" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="333 970 2109 970 2109 1097 333 1097"/>
-                    </Shape>
-                    <TextLine ID="mz_2-048_l9" HPOS="440" VPOS="959" WIDTH="1667" HEIGHT="63" BASELINE="442 1002 2107 998" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-048_l9" HPOS="440" VPOS="959" WIDTH="1667" HEIGHT="63" BASELINE="442 1002 2107 998" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="442 1002 442 1016 2087 1022 2089 1022 2091 1022 2093 1022 2107 1012 2107 998 2103 971 2052 959 2050 959 2048 959 2019 969 1968 959 1966 959 1964 959 1938 969 1901 959 1899 959 1897 959 1895 959 1866 969 1727 959 1725 959 1723 959 1682 969 1643 959 1641 959 1639 959 1586 969 1486 959 1484 959 1396 969 1329 959 1327 959 1271 971 1249 961 1247 961 1245 961 1194 973 1106 973 1092 961 1090 961 1088 961 1086 961 1085 961 1059 971 989 961 987 961 926 973 799 973 781 961 779 961 777 961 775 961 671 971 658 961 656 961 654 961 652 961 440 965 442 1002"/>
                         </Shape>
@@ -118,12 +96,7 @@
                         </Shape>
                         <String CONTENT="of our earth, and spend their time shovelling snow with huge shovels made"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-048_r5" HPOS="333" VPOS="2381" WIDTH="1776" HEIGHT="128" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="333 2381 2109 2381 2109 2509 333 2509"/>
-                    </Shape>
-                    <TextLine ID="mz_2-048_l11" HPOS="332" VPOS="2389" WIDTH="1771" HEIGHT="56" BASELINE="334 2430 2103 2434" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-048_l11" HPOS="332" VPOS="2389" WIDTH="1771" HEIGHT="56" BASELINE="334 2430 2103 2434" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1921 2397 1909 2395 1886 2395 1882 2395 1862 2395 1842 2395 1823 2395 1803 2395 1784 2395 1764 2395 1745 2395 1725 2395 1719 2393 1615 2400 1547 2393 1529 2393 1519 2391 1451 2400 1419 2391 1417 2391 1416 2391 1329 2400 1280 2391 1278 2391 1276 2391 1237 2400 1177 2389 1175 2389 1173 2389 1130 2398 1041 2389 1039 2389 940 2398 924 2389 922 2389 920 2389 918 2389 916 2389 877 2398 804 2389 802 2389 801 2389 769 2398 755 2389 754 2389 752 2389 750 2389 681 2398 658 2389 656 2389 654 2389 334 2397 334 2430 332 2440 2099 2445 2103 2434 2101 2402 1938 2397 1921 2397"/>
                         </Shape>
@@ -136,12 +109,7 @@
                         </Shape>
                         <String CONTENT="old mistress, who causes snow-storms by shaking the snow from her dwelling."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-048_r6" HPOS="333" VPOS="2509" WIDTH="1776" HEIGHT="609" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="333 2509 2109 2509 2109 3118 333 3118"/>
-                    </Shape>
-                    <TextLine ID="mz_2-048_l13" HPOS="446" VPOS="2510" WIDTH="1657" HEIGHT="57" BASELINE="446 2553 2103 2553" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-048_l13" HPOS="446" VPOS="2510" WIDTH="1657" HEIGHT="57" BASELINE="446 2553 2103 2553" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="446 2553 446 2567 2103 2567 2103 2553 2103 2522 2079 2510 2077 2510 2076 2510 1964 2522 1940 2510 1938 2510 1936 2510 1864 2520 1839 2510 1837 2510 1835 2510 1833 2510 1831 2510 1813 2522 1747 2510 1745 2510 1743 2510 1713 2522 1690 2510 1688 2510 1686 2510 1684 2510 1641 2524 1576 2524 1557 2510 1555 2510 1553 2510 1551 2510 1549 2510 1498 2522 1392 2522 1376 2510 1374 2510 1372 2510 1370 2510 1369 2510 1337 2522 1269 2510 1267 2510 1151 2522 1126 2510 1124 2510 1122 2510 1051 2522 953 2510 951 2510 949 2510 920 2524 850 2524 832 2510 830 2510 828 2510 826 2510 746 2522 689 2510 687 2510 685 2510 656 2522 595 2510 593 2510 540 2520 446 2514 446 2553"/>
                         </Shape>
@@ -210,8 +178,7 @@
                         </Shape>
                         <String CONTENT="from the Tungus or from the Russianized natives."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

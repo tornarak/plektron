@@ -23,23 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="QuireMarksZone"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_6" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-099_r1" HPOS="406" VPOS="565" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_5">
-<Shape>
-                        <Polygon POINTS="406 565 2184 565 2184 655 406 655"/>
-                    </Shape>
-                    <TextLine ID="mz_1-099_l1" HPOS="986" VPOS="582" WIDTH="617" HEIGHT="54" BASELINE="988 615 1603 619" TAGREFS="TYPE_6">
+                <TextBlock ID="text_1-099" HPOS="403" VPOS="582" WIDTH="1782" HEIGHT="2698"><TextLine ID="mz_1-099_l1" HPOS="986" VPOS="582" WIDTH="617" HEIGHT="54" BASELINE="988 615 1603 619" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="1594 595 1575 582 1295 582 1291 582 1269 582 1248 582 1226 582 1204 582 1183 582 1161 582 1139 582 1118 582 1096 582 1074 582 1053 582 1031 582 1009 582 988 589 988 615 986 632 1598 636 1603 619 1603 584 1594 582 1594 595"/>
                         </Shape>
@@ -52,12 +43,7 @@
                         </Shape>
                         <String CONTENT="73"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-099_r2" HPOS="406" VPOS="680" WIDTH="1778" HEIGHT="549" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="406 680 2184 680 2184 1229 406 1229"/>
-                    </Shape>
-                    <TextLine ID="mz_1-099_l3" HPOS="407" VPOS="682" WIDTH="1776" HEIGHT="60" BASELINE="409 727 2183 723" TAGREFS="TYPE_6">
+<TextLine ID="mz_1-099_l3" HPOS="407" VPOS="682" WIDTH="1776" HEIGHT="60" BASELINE="409 727 2183 723" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="581 686 559 686 537 688 516 688 494 690 487 690 407 697 409 727 409 742 2181 738 2183 723 2179 695 2071 682 2068 682 2066 682 2025 692 1689 682 1687 682 1685 682 1683 682 1668 695 1488 695 1310 682 1308 682 1213 695 1180 684 1178 684 1176 684 793 695 732 684 730 684 728 684 691 695 581 684 581 686"/>
                         </Shape>
@@ -119,12 +105,7 @@
                         </Shape>
                         <String CONTENT="Omolon country were greatly reduced by the hoof-disease."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-099_r3" HPOS="406" VPOS="1229" WIDTH="1778" HEIGHT="301" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="406 1229 2184 1229 2184 1530 406 1530"/>
-                    </Shape>
-                    <TextLine ID="mz_1-099_l12" HPOS="516" VPOS="1219" WIDTH="1669" HEIGHT="62" BASELINE="518 1266 2185 1260" TAGREFS="TYPE_6">
+<TextLine ID="mz_1-099_l12" HPOS="516" VPOS="1219" WIDTH="1669" HEIGHT="62" BASELINE="518 1266 2185 1260" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="518 1266 518 1281 2183 1277 2185 1260 2181 1232 1919 1219 1917 1219 1821 1229 1763 1219 1761 1219 1668 1229 1644 1219 1642 1219 1640 1219 1637 1219 1635 1219 1616 1234 1503 1234 1488 1221 1486 1221 1484 1221 1481 1221 1479 1221 1442 1232 1308 1221 1306 1221 1135 1232 1107 1221 1105 1221 1102 1221 1100 1221 1068 1234 1007 1223 1005 1223 1003 1223 970 1234 892 1223 890 1223 888 1223 847 1234 836 1223 834 1223 832 1223 830 1223 516 1229 518 1266"/>
                         </Shape>
@@ -158,12 +139,7 @@
                         </Shape>
                         <String CONTENT="every American, Russian, or Eskimo ware required for the use of his family."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-099_r4" HPOS="406" VPOS="1530" WIDTH="1778" HEIGHT="780" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="406 1530 2184 1530 2184 2310 406 2310"/>
-                    </Shape>
-                    <TextLine ID="mz_1-099_l17" HPOS="513" VPOS="1522" WIDTH="1668" HEIGHT="60" BASELINE="516 1567 2181 1561" TAGREFS="TYPE_6">
+<TextLine ID="mz_1-099_l17" HPOS="513" VPOS="1522" WIDTH="1668" HEIGHT="60" BASELINE="516 1567 2181 1561" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="516 1567 516 1582 2179 1576 2181 1561 2177 1532 1748 1522 1746 1522 1588 1535 513 1535 516 1567"/>
                         </Shape>
@@ -253,12 +229,7 @@
                         </Shape>
                         <String CONTENT="with it. On the hind part, near the tail, the fat is about two inches thick."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-099_r5" HPOS="406" VPOS="2310" WIDTH="1778" HEIGHT="596" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="406 2310 2184 2310 2184 2906 406 2906"/>
-                    </Shape>
-                    <TextLine ID="mz_1-099_l30" HPOS="511" VPOS="2305" WIDTH="1672" HEIGHT="59" BASELINE="513 2349 2183 2340" TAGREFS="TYPE_6">
+<TextLine ID="mz_1-099_l30" HPOS="511" VPOS="2305" WIDTH="1672" HEIGHT="59" BASELINE="513 2349 2183 2340" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="513 2349 513 2364 2181 2355 2183 2340 2179 2312 938 2305 936 2305 845 2316 533 2308 531 2308 529 2308 526 2308 511 2314 513 2349"/>
                         </Shape>
@@ -327,12 +298,7 @@
                         </Shape>
                         <String CONTENT="cheaper, and better fitted for the purpose."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-099_r6" HPOS="406" VPOS="2906" WIDTH="1778" HEIGHT="187" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="406 2906 2184 2906 2184 3093 406 3093"/>
-                    </Shape>
-                    <TextLine ID="mz_1-099_l40" HPOS="511" VPOS="2901" WIDTH="1670" HEIGHT="63" BASELINE="513 2946 2181 2938" TAGREFS="TYPE_6">
+<TextLine ID="mz_1-099_l40" HPOS="511" VPOS="2901" WIDTH="1670" HEIGHT="63" BASELINE="513 2946 2181 2938" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="513 2946 513 2964 2179 2955 2181 2938 2177 2909 1347 2901 1345 2901 1289 2912 949 2903 947 2903 944 2903 942 2903 923 2914 529 2905 526 2905 524 2905 522 2905 511 2912 513 2946"/>
                         </Shape>
@@ -352,12 +318,7 @@
                         </Shape>
                         <String CONTENT="a couple of weeks later than with the tame one. One by one wild bucks"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-099_r7" HPOS="406" VPOS="3117" WIDTH="1778" HEIGHT="92" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="406 3117 2184 3117 2184 3209 406 3209"/>
-                    </Shape>
-                    <TextLine ID="mz_1-099_l43" HPOS="516" VPOS="3113" WIDTH="1663" HEIGHT="48" BASELINE="518 3143 2179 3139" TAGREFS="TYPE_6">
+<TextLine ID="mz_1-099_l43" HPOS="516" VPOS="3113" WIDTH="1663" HEIGHT="48" BASELINE="518 3143 2179 3139" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="2172 3117 2172 3113 516 3115 518 3143 518 3161 2179 3156 2179 3139 2177 3132 2172 3117"/>
                         </Shape>
@@ -370,19 +331,13 @@
                         </Shape>
                         <String CONTENT="herds on the Middle Omolon."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-099_r8" HPOS="406" VPOS="3228" WIDTH="1778" HEIGHT="63" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="406 3228 2184 3228 2184 3291 406 3291"/>
-                    </Shape>
-                    <TextLine ID="mz_1-099_l45" HPOS="407" VPOS="3232" WIDTH="691" HEIGHT="48" BASELINE="409 3262 1098 3258" TAGREFS="TYPE_6">
+<TextLine ID="mz_1-099_l45" HPOS="407" VPOS="3232" WIDTH="691" HEIGHT="48" BASELINE="409 3262 1098 3258" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="409 3262 409 3280 1098 3275 1098 3258 1092 3232 407 3234 409 3262"/>
                         </Shape>
                         <String CONTENT="10—JESUP NORTH PACIFIC EXPED., VOL. VII."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

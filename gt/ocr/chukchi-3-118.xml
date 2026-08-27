@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Other"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_3-118_r1" HPOS="559" VPOS="446" WIDTH="1782" HEIGHT="101" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="559 446 2341 446 2341 547 559 547"/>
-                    </Shape>
-                    <TextLine ID="mz_3-118_l1" HPOS="1136" VPOS="466" WIDTH="614" HEIGHT="53" BASELINE="1138 498 1750 504" TAGREFS="TYPE_5">
+                <TextBlock ID="text_3-118" HPOS="555" VPOS="463" WIDTH="1775" HEIGHT="2629"><TextLine ID="mz_3-118_l1" HPOS="1136" VPOS="466" WIDTH="614" HEIGHT="53" BASELINE="1138 498 1750 504" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1744 468 1155 466 1140 482 1138 498 1136 513 1746 519 1750 504 1748 470 1744 468"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="652"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-118_r2" HPOS="559" VPOS="562" WIDTH="1782" HEIGHT="453" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="559 562 2341 562 2341 1015 559 1015"/>
-                    </Shape>
-                    <TextLine ID="mz_3-118_l3" HPOS="668" VPOS="568" WIDTH="1662" HEIGHT="52" BASELINE="670 595 2330 601" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-118_l3" HPOS="668" VPOS="568" WIDTH="1662" HEIGHT="52" BASELINE="670 595 2330 601" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="2326 583 2307 583 2287 581 2268 581 2248 580 2229 580 2210 578 2190 578 2171 578 2151 576 2132 576 2112 574 2093 574 2083 572 670 568 670 595 668 609 705 620 707 620 709 620 2328 615 2330 601 2328 583 2326 583"/>
                         </Shape>
@@ -118,12 +105,7 @@
                         </Shape>
                         <String CONTENT="we did not know. Our people chastized the dogs, and they became a people.”²"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-118_r3" HPOS="559" VPOS="1022" WIDTH="1782" HEIGHT="135" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="559 1022 2341 1022 2341 1157 559 1157"/>
-                    </Shape>
-                    <TextLine ID="mz_3-118_l12" HPOS="664" VPOS="1024" WIDTH="1666" HEIGHT="60" BASELINE="666 1071 2330 1065" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-118_l12" HPOS="664" VPOS="1024" WIDTH="1666" HEIGHT="60" BASELINE="666 1071 2330 1065" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="666 1071 666 1084 2328 1078 2330 1065 2326 1038 2178 1024 2176 1024 2108 1036 2059 1024 2057 1024 2056 1024 2054 1024 2052 1024 2032 1038 1847 1038 1804 1024 1802 1024 1800 1024 1798 1024 1755 1038 1724 1026 1722 1026 1720 1026 1644 1036 1617 1026 1615 1026 1613 1026 1611 1026 1578 1038 1545 1026 1543 1026 1453 1026 1451 1026 1383 1039 1196 1039 1159 1028 1157 1028 1155 1028 1081 1039 1019 1028 1017 1028 1015 1028 966 1039 888 1028 886 1028 884 1028 882 1028 865 1039 777 1030 775 1030 724 1039 687 1028 685 1028 683 1028 682 1028 680 1028 664 1038 666 1071"/>
                         </Shape>
@@ -136,12 +118,7 @@
                         </Shape>
                         <String CONTENT="breeders, in opposition to the Russian dog-drivers."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-118_r4" HPOS="559" VPOS="1157" WIDTH="1782" HEIGHT="1323" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="559 1157 2341 1157 2341 2480 559 2480"/>
-                    </Shape>
-                    <TextLine ID="mz_3-118_l14" HPOS="662" VPOS="1143" WIDTH="1664" HEIGHT="62" BASELINE="664 1191 2326 1186" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-118_l14" HPOS="662" VPOS="1143" WIDTH="1664" HEIGHT="62" BASELINE="664 1191 2326 1186" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="664 1191 664 1205 2325 1203 2326 1186 2325 1156 2272 1143 2270 1143 2268 1143 2266 1143 2264 1143 2245 1154 2130 1143 2128 1143 2075 1154 2059 1143 2057 1143 2056 1143 2054 1143 1972 1152 1946 1143 1944 1143 1943 1143 1941 1143 1939 1143 1925 1152 1872 1143 1870 1143 1868 1143 1826 1154 1783 1143 1781 1143 1779 1143 1777 1143 1775 1143 1755 1156 1701 1145 1699 1145 1697 1145 1664 1156 1640 1145 1638 1145 1637 1145 1635 1145 1599 1154 1588 1145 1586 1145 1584 1145 1479 1145 1477 1145 1475 1145 1449 1158 1294 1158 1245 1145 1243 1145 1241 1145 1239 1145 1214 1158 1155 1147 1153 1147 1075 1158 873 1147 871 1147 869 1147 843 1160 769 1160 689 1147 687 1147 685 1147 662 1158 664 1191"/>
                         </Shape>
@@ -294,12 +271,7 @@
                         </Shape>
                         <String CONTENT="Cossacks of local birth and the infantry that he brought along from Yakutsk."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-118_r5" HPOS="559" VPOS="2527" WIDTH="1782" HEIGHT="577" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="559 2527 2341 2527 2341 3104 559 3104"/>
-                    </Shape>
-                    <TextLine ID="mz_3-118_l36" HPOS="664" VPOS="2536" WIDTH="1664" HEIGHT="49" BASELINE="666 2567 2328 2560" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-118_l36" HPOS="664" VPOS="2536" WIDTH="1664" HEIGHT="49" BASELINE="666 2567 2328 2560" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="666 2567 666 2581 2313 2585 2315 2585 2317 2585 2319 2585 2328 2575 2328 2560 2323 2536 664 2542 666 2567"/>
                         </Shape>
@@ -389,8 +361,7 @@
                         </Shape>
                         <String CONTENT="upon the whole, are inclined to substitute for alien names new compositions of their own."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_2-127_r1" HPOS="448" VPOS="470" WIDTH="1776" HEIGHT="94" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="448 470 2224 470 2224 564 448 564"/>
-                    </Shape>
-                    <TextLine ID="mz_2-127_l1" HPOS="1024" VPOS="483" WIDTH="617" HEIGHT="49" BASELINE="1026 515 1641 518" TAGREFS="TYPE_4">
+                <TextBlock ID="text_2-127" HPOS="444" VPOS="483" WIDTH="1784" HEIGHT="2624"><TextLine ID="mz_2-127_l1" HPOS="1024" VPOS="483" WIDTH="617" HEIGHT="49" BASELINE="1026 515 1641 518" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1633 493 1621 483 1039 483 1028 501 1026 515 1024 528 1637 532 1641 518 1637 499 1633 493"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="399"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-127_r2" HPOS="448" VPOS="580" WIDTH="1776" HEIGHT="188" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="448 580 2224 580 2224 768 448 768"/>
-                    </Shape>
-                    <TextLine ID="mz_2-127_l3" HPOS="444" VPOS="581" WIDTH="1778" HEIGHT="61" BASELINE="446 626 2222 622" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-127_l3" HPOS="444" VPOS="581" WIDTH="1778" HEIGHT="61" BASELINE="446 626 2222 622" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="581 585 562 587 542 587 522 589 503 589 483 591 464 593 444 593 446 626 446 640 2219 642 2222 622 2219 595 2148 581 2146 581 2066 593 2034 581 2032 581 2030 581 1954 595 1854 595 1835 581 1833 581 1831 581 1829 581 1827 581 1799 593 1737 581 1735 581 1733 581 1700 593 1598 581 1596 581 1594 581 1562 593 1510 581 1508 581 1506 581 1472 593 1353 581 1351 581 1255 597 1149 597 1128 583 1126 583 1124 583 1122 583 1120 583 1086 595 1018 583 1016 583 1014 583 983 595 904 583 902 583 900 583 865 595 826 583 824 583 822 583 757 595 738 583 736 583 734 583 671 583 669 583 667 583 665 583 648 595 589 583 581 585"/>
                         </Shape>
@@ -75,12 +63,7 @@
                         </Shape>
                         <String CONTENT="last night a woman occupies the stool, and keeps the watch."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-127_r3" HPOS="448" VPOS="768" WIDTH="1776" HEIGHT="368" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="448 768 2224 768 2224 1136 448 1136"/>
-                    </Shape>
-                    <TextLine ID="mz_2-127_l6" HPOS="552" VPOS="763" WIDTH="1672" HEIGHT="57" BASELINE="554 806 2224 802" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-127_l6" HPOS="552" VPOS="763" WIDTH="1672" HEIGHT="57" BASELINE="554 806 2224 802" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="554 806 554 820 2222 818 2224 802 2222 775 2193 763 2191 763 2189 763 2140 773 2107 763 2105 763 2103 763 2101 763 2076 773 2044 763 2042 763 2040 763 1985 773 1860 763 1858 763 1856 763 1823 773 1795 763 1794 763 1792 763 1696 773 1660 763 1658 763 1656 763 1590 773 1500 763 1498 763 1433 773 1396 763 1394 763 1392 763 1308 775 1241 765 1239 765 1192 775 949 765 947 765 832 775 746 765 744 765 742 765 740 765 726 775 665 765 663 765 661 765 632 775 567 765 566 765 564 765 562 765 552 771 554 806"/>
                         </Shape>
@@ -121,12 +104,7 @@
                         </Shape>
                         <String CONTENT="bought from reindeer-breeders."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-127_r4" HPOS="448" VPOS="1136" WIDTH="1776" HEIGHT="538" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="448 1136 2224 1136 2224 1674 448 1674"/>
-                    </Shape>
-                    <TextLine ID="mz_2-127_l12" HPOS="562" VPOS="1120" WIDTH="1666" HEIGHT="60" BASELINE="564 1167 2228 1163" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-127_l12" HPOS="562" VPOS="1120" WIDTH="1666" HEIGHT="60" BASELINE="564 1167 2228 1163" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="564 1167 564 1180 2226 1176 2228 1163 2224 1133 2097 1122 2095 1122 2093 1122 2064 1131 2046 1120 2044 1120 2042 1120 2040 1120 2038 1120 2015 1131 1989 1120 1987 1120 1985 1120 1983 1120 1960 1131 1876 1122 1874 1122 1792 1131 1774 1120 1772 1120 1770 1120 1768 1120 1705 1133 1586 1133 1568 1120 1566 1120 1564 1120 1562 1120 1560 1120 1533 1131 1474 1120 1472 1120 1470 1120 1468 1120 1451 1133 1378 1133 1331 1122 1329 1122 1327 1122 1325 1122 1282 1133 1196 1122 1194 1122 1192 1122 1169 1133 1145 1122 1143 1122 1141 1122 1139 1122 1110 1133 1036 1122 1034 1122 955 1131 865 1122 863 1122 861 1122 836 1133 562 1128 564 1167"/>
                         </Shape>
@@ -188,12 +166,7 @@
                         </Shape>
                         <String CONTENT="monial of the whale.”"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-127_r5" HPOS="448" VPOS="1674" WIDTH="1776" HEIGHT="1019" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="448 1674 2224 1674 2224 2693 448 2693"/>
-                    </Shape>
-                    <TextLine ID="mz_2-127_l21" HPOS="558" VPOS="1662" WIDTH="1670" HEIGHT="67" BASELINE="560 1701 2228 1705" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-127_l21" HPOS="558" VPOS="1662" WIDTH="1670" HEIGHT="67" BASELINE="560 1701 2228 1705" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="560 1701 558 1715 567 1723 569 1723 571 1723 716 1725 718 1725 1331 1715 1421 1727 1423 1727 1425 1727 1466 1717 1570 1727 1572 1729 1668 1729 1668 1727 1670 1727 1672 1727 1686 1717 2125 1727 2126 1727 2226 1715 2228 1705 2228 1676 2183 1664 2181 1664 2179 1664 2177 1664 2140 1674 2066 1664 2064 1664 1862 1674 1803 1664 1801 1664 1799 1664 1766 1676 1580 1676 1562 1664 1560 1664 1558 1664 1557 1664 1304 1672 1288 1662 1286 1662 1284 1662 1282 1662 1280 1662 1237 1674 1135 1674 1120 1662 1118 1662 1116 1662 1114 1662 1053 1672 991 1662 989 1662 942 1672 926 1662 924 1662 922 1662 920 1662 867 1672 785 1662 783 1662 736 1672 679 1662 677 1662 560 1668 560 1701"/>
                         </Shape>
@@ -311,12 +284,7 @@
                         </Shape>
                         <String CONTENT="may change owners two or three times before it is carried away from the house."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-127_r6" HPOS="448" VPOS="2693" WIDTH="1776" HEIGHT="415" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="448 2693 2224 2693 2224 3108 448 3108"/>
-                    </Shape>
-                    <TextLine ID="mz_2-127_l38" HPOS="558" VPOS="2682" WIDTH="1662" HEIGHT="61" BASELINE="560 2718 2220 2722" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-127_l38" HPOS="558" VPOS="2682" WIDTH="1662" HEIGHT="61" BASELINE="560 2718 2220 2722" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="560 2718 558 2731 783 2743 785 2743 2219 2737 2220 2722 2219 2694 2156 2682 2154 2682 2079 2692 560 2684 560 2718"/>
                         </Shape>
@@ -364,8 +332,7 @@
                         </Shape>
                         <String CONTENT="opportunity to obtain an equivalent of her gift."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

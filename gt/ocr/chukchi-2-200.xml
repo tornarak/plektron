@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_2-200_r1" HPOS="330" VPOS="446" WIDTH="1776" HEIGHT="94" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="330 446 2106 446 2106 540 330 540"/>
-                    </Shape>
-                    <TextLine ID="mz_2-200_l1" HPOS="914" VPOS="462" WIDTH="607" HEIGHT="51" BASELINE="916 495 1521 499" TAGREFS="TYPE_5">
+                <TextBlock ID="text_2-200" HPOS="321" VPOS="462" WIDTH="1774" HEIGHT="2636"><TextLine ID="mz_2-200_l1" HPOS="914" VPOS="462" WIDTH="607" HEIGHT="51" BASELINE="916 495 1521 499" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1508 464 916 462 916 495 914 509 1517 513 1521 499 1519 475 1508 464"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="470"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-200_r2" HPOS="330" VPOS="564" WIDTH="1776" HEIGHT="118" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="330 564 2106 564 2106 682 330 682"/>
-                    </Shape>
-                    <TextLine ID="mz_2-200_l3" HPOS="323" VPOS="562" WIDTH="1772" HEIGHT="52" BASELINE="325 603 2095 599" TAGREFS="TYPE_5">
+<TextLine ID="mz_2-200_l3" HPOS="323" VPOS="562" WIDTH="1772" HEIGHT="52" BASELINE="325 603 2095 599" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="2085 569 2066 569 2064 567 393 562 391 562 323 571 325 603 325 614 2095 611 2095 599 2091 569 2085 569"/>
                         </Shape>
@@ -69,12 +56,7 @@
                         </Shape>
                         <String CONTENT="person to acquire an incantation for future use."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-200_r3" HPOS="330" VPOS="682" WIDTH="1776" HEIGHT="428" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="330 682 2106 682 2106 1110 330 1110"/>
-                    </Shape>
-                    <TextLine ID="mz_2-200_l5" HPOS="432" VPOS="679" WIDTH="1659" HEIGHT="57" BASELINE="432 720 2091 720" TAGREFS="TYPE_5">
+<TextLine ID="mz_2-200_l5" HPOS="432" VPOS="679" WIDTH="1659" HEIGHT="57" BASELINE="432 720 2091 720" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="432 720 432 732 2089 736 2091 720 2091 691 2021 679 2019 679 1958 689 1905 679 1903 679 1823 689 1799 679 1797 679 1795 679 1794 679 1760 691 1623 691 1607 679 1605 679 1604 679 1602 679 1515 689 1416 679 1414 679 1308 689 1255 679 1253 679 1251 679 1220 689 1067 679 1065 679 971 689 879 679 877 679 875 679 838 689 744 679 742 679 695 689 658 679 656 679 654 679 652 679 614 689 432 687 432 720"/>
                         </Shape>
@@ -122,12 +104,7 @@
                         </Shape>
                         <String CONTENT="tations must be repeated over them at stated intervals.¹"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-200_r4" HPOS="330" VPOS="1110" WIDTH="1776" HEIGHT="718" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="330 1110 2106 1110 2106 1828 330 1828"/>
-                    </Shape>
-                    <TextLine ID="mz_2-200_l12" HPOS="428" VPOS="1096" WIDTH="1665" HEIGHT="63" BASELINE="430 1139 2093 1135" TAGREFS="TYPE_5">
+<TextLine ID="mz_2-200_l12" HPOS="428" VPOS="1096" WIDTH="1665" HEIGHT="63" BASELINE="430 1139 2093 1135" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="430 1139 430 1151 2077 1159 2079 1159 2081 1159 2083 1159 2093 1149 2093 1135 2091 1108 2048 1096 2046 1096 2044 1096 2042 1096 2017 1106 1938 1096 1936 1096 1935 1096 1909 1106 1807 1096 1805 1096 1803 1096 1801 1096 1788 1108 1664 1108 1633 1096 1631 1096 1629 1096 1580 1106 1553 1096 1551 1096 1549 1096 1547 1096 1523 1106 1417 1096 1416 1096 1357 1106 1308 1096 1306 1096 1216 1108 442 1098 440 1098 438 1098 436 1098 428 1104 430 1139"/>
                         </Shape>
@@ -210,12 +187,7 @@
                         </Shape>
                         <String CONTENT="The incantation is said to force the owner to lose it."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-200_r5" HPOS="330" VPOS="1828" WIDTH="1776" HEIGHT="898" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="330 1828 2106 1828 2106 2726 330 2726"/>
-                    </Shape>
-                    <TextLine ID="mz_2-200_l24" HPOS="430" VPOS="1815" WIDTH="1661" HEIGHT="66" BASELINE="432 1858 2091 1852" TAGREFS="TYPE_5">
+<TextLine ID="mz_2-200_l24" HPOS="430" VPOS="1815" WIDTH="1661" HEIGHT="66" BASELINE="432 1858 2091 1852" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="432 1858 432 1872 861 1881 863 1881 865 1881 867 1881 881 1872 2089 1872 2091 1852 2087 1827 1933 1827 1911 1815 1909 1815 1907 1815 1905 1815 1876 1825 1823 1815 1821 1815 1733 1825 1476 1817 1474 1817 1472 1817 1470 1817 1459 1827 1408 1817 1406 1817 1404 1817 1370 1827 1083 1817 1081 1817 981 1827 897 1819 895 1819 893 1819 891 1819 877 1829 430 1825 432 1858"/>
                         </Shape>
@@ -319,12 +291,7 @@
                         </Shape>
                         <String CONTENT="the shore with all speed."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-200_r6" HPOS="330" VPOS="2726" WIDTH="1776" HEIGHT="243" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="330 2726 2106 2726 2106 2969 330 2969"/>
-                    </Shape>
-                    <TextLine ID="mz_2-200_l39" HPOS="430" VPOS="2714" WIDTH="1661" HEIGHT="60" BASELINE="432 2757 2091 2753" TAGREFS="TYPE_5">
+<TextLine ID="mz_2-200_l39" HPOS="430" VPOS="2714" WIDTH="1661" HEIGHT="60" BASELINE="432 2757 2091 2753" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="432 2757 432 2771 2087 2774 2091 2753 2087 2724 1341 2714 1339 2714 1245 2726 430 2726 432 2757"/>
                         </Shape>
@@ -351,12 +318,7 @@
                         </Shape>
                         <String CONTENT="tation to shorten the distance ahead. In like manner, a hungry person"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-200_r7" HPOS="330" VPOS="3016" WIDTH="1776" HEIGHT="94" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="330 3016 2106 3016 2106 3110 330 3110"/>
-                    </Shape>
-                    <TextLine ID="mz_2-200_l43" HPOS="517" VPOS="3041" WIDTH="740" HEIGHT="55" BASELINE="519 3066 1257 3070" TAGREFS="TYPE_5">
+<TextLine ID="mz_2-200_l43" HPOS="517" VPOS="3041" WIDTH="740" HEIGHT="55" BASELINE="519 3066 1257 3070" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="519 3066 517 3084 605 3096 607 3096 1255 3088 1257 3070 1255 3045 519 3041 519 3066"/>
                         </Shape>
@@ -369,8 +331,7 @@
                         </Shape>
                         <String CONTENT="² Compare p. 359."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

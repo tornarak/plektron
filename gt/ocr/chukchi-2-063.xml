@@ -23,20 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_2-063_r1" HPOS="437" VPOS="470" WIDTH="1776" HEIGHT="86" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="437 470 2213 470 2213 556 437 556"/>
-                    </Shape>
-                    <TextLine ID="mz_2-063_l1" HPOS="1006" VPOS="481" WIDTH="617" HEIGHT="53" BASELINE="1008 515 1623 520" TAGREFS="TYPE_3">
+                <TextBlock ID="text_2-063" HPOS="428" VPOS="481" WIDTH="1771" HEIGHT="584"><TextLine ID="mz_2-063_l1" HPOS="1006" VPOS="481" WIDTH="617" HEIGHT="53" BASELINE="1008 515 1623 520" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="1615 487 1613 485 1022 481 1008 493 1008 515 1006 528 1619 534 1623 520 1621 489 1615 487"/>
                         </Shape>
@@ -49,12 +43,7 @@
                         </Shape>
                         <String CONTENT="337"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-063_r2" HPOS="437" VPOS="588" WIDTH="1776" HEIGHT="248" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="437 588 2213 588 2213 836 437 836"/>
-                    </Shape>
-                    <TextLine ID="mz_2-063_l3" HPOS="534" VPOS="583" WIDTH="1665" HEIGHT="61" BASELINE="536 628 2199 622" TAGREFS="TYPE_3">
+<TextLine ID="mz_2-063_l3" HPOS="534" VPOS="583" WIDTH="1665" HEIGHT="61" BASELINE="536 628 2199 622" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="2195 593 2164 583 2162 583 2160 583 1786 593 1680 583 1678 583 1676 583 1639 595 1098 585 1096 585 1034 597 971 587 969 587 742 597 683 587 681 587 679 587 654 597 556 587 554 587 552 587 550 587 534 597 536 628 536 644 2197 638 2199 622 2197 605 2195 593"/>
                         </Shape>
@@ -81,12 +70,7 @@
                         </Shape>
                         <String CONTENT="class, called “genuine keˊlet.”"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-063_r3" HPOS="437" VPOS="836" WIDTH="1776" HEIGHT="243" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="437 836 2213 836 2213 1079 437 1079"/>
-                    </Shape>
-                    <TextLine ID="mz_2-063_l7" HPOS="540" VPOS="820" WIDTH="1659" HEIGHT="74" BASELINE="542 869 2199 859" TAGREFS="TYPE_3">
+<TextLine ID="mz_2-063_l7" HPOS="540" VPOS="820" WIDTH="1659" HEIGHT="74" BASELINE="542 869 2199 859" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="542 869 542 883 869 894 871 894 873 894 898 883 1114 893 1116 893 1433 881 1484 891 1486 891 1488 891 1490 891 1506 881 1762 889 1764 889 1893 877 2032 877 2048 887 2050 887 2052 887 2054 887 2056 887 2087 877 2103 887 2105 887 2107 887 2109 887 2199 873 2199 859 2195 832 2101 820 2099 820 2097 820 2095 820 2081 832 1976 832 1946 820 1944 820 1942 820 1888 830 1872 820 1870 820 1868 820 1866 820 1864 820 1839 834 1680 834 1654 822 1652 822 1651 822 1649 822 1611 832 1582 822 1580 822 1578 822 1517 834 1398 824 1396 824 1394 824 1392 824 1378 836 1290 836 1229 824 1227 824 1226 824 1192 836 983 826 981 826 979 826 945 836 908 826 906 826 904 826 902 826 900 826 887 836 777 828 775 828 773 828 771 828 755 840 597 840 558 828 556 828 554 828 552 828 550 828 540 834 542 869"/>
                         </Shape>
@@ -113,8 +97,7 @@
                         </Shape>
                         <String CONTENT="later on."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

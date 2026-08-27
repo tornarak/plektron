@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_3-192_r1" HPOS="513" VPOS="469" WIDTH="1782" HEIGHT="93" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="513 469 2295 469 2295 562 513 562"/>
-                    </Shape>
-                    <TextLine ID="mz_3-192_l1" HPOS="1087" VPOS="484" WIDTH="614" HEIGHT="51" BASELINE="1089 517 1701 521" TAGREFS="TYPE_4">
+                <TextBlock ID="text_3-192" HPOS="508" VPOS="484" WIDTH="1774" HEIGHT="2615"><TextLine ID="mz_3-192_l1" HPOS="1087" VPOS="484" WIDTH="614" HEIGHT="51" BASELINE="1089 517 1701 521" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1693 484 1393 484 1381 484 1362 484 1342 484 1323 484 1303 484 1284 484 1264 484 1245 484 1225 484 1206 484 1186 484 1167 484 1147 484 1128 484 1108 484 1089 484 1089 517 1087 531 1697 535 1701 521 1699 490 1693 484"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="724"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-192_r2" HPOS="513" VPOS="586" WIDTH="1782" HEIGHT="421" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="513 586 2295 586 2295 1007 513 1007"/>
-                    </Shape>
-                    <TextLine ID="mz_3-192_l3" HPOS="510" VPOS="581" WIDTH="1770" HEIGHT="61" BASELINE="512 628 2280 622" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-192_l3" HPOS="510" VPOS="581" WIDTH="1770" HEIGHT="61" BASELINE="512 628 2280 622" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2264 591 2245 591 2225 591 2206 589 2200 595 2130 595 2114 587 2108 587 2089 587 2069 587 2057 585 2003 593 1989 583 1972 583 1970 583 1948 591 1925 583 1913 583 1907 581 1865 593 1833 581 1831 581 1829 581 1683 595 1648 583 1646 583 1644 583 1527 595 1494 583 1492 583 1490 583 1488 583 1455 595 1362 583 1360 583 1290 595 1210 583 1208 583 1206 583 1165 595 1101 583 1099 583 1097 583 1056 597 621 585 619 585 617 585 590 597 533 585 531 585 530 585 528 585 510 593 512 628 512 642 2278 642 2280 622 2276 593 2266 591 2264 591"/>
                         </Shape>
@@ -103,12 +91,7 @@
                         </Shape>
                         <String CONTENT="abolishment of the fortress of Anadyrsk, he was restored to his former place."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-192_r3" HPOS="513" VPOS="1007" WIDTH="1782" HEIGHT="543" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="513 1007 2295 1007 2295 1550 513 1550"/>
-                    </Shape>
-                    <TextLine ID="mz_3-192_l10" HPOS="619" VPOS="1002" WIDTH="1659" HEIGHT="59" BASELINE="619 1045 2278 1045" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-192_l10" HPOS="619" VPOS="1002" WIDTH="1659" HEIGHT="59" BASELINE="619 1045 2278 1045" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="619 1045 619 1057 2276 1061 2278 1045 2278 1012 2258 1002 2256 1002 2254 1002 2252 1002 2250 1002 2223 1014 2159 1002 2157 1002 2044 1014 2003 1002 2001 1002 1882 1002 1880 1002 1878 1002 1849 1014 1763 1002 1761 1002 1759 1002 1728 1014 1640 1002 1638 1002 1637 1002 1599 1014 1500 1002 1498 1002 1381 1014 1301 1002 1299 1002 1208 1016 1058 1016 1025 1002 1023 1002 1021 1002 1019 1002 988 1014 943 1002 941 1002 939 1002 863 1014 756 1002 754 1002 752 1002 711 1014 646 1002 645 1002 643 1002 619 1010 619 1045"/>
                         </Shape>
@@ -170,12 +153,7 @@
                         </Shape>
                         <String CONTENT="how many Chukchee have read the said epistle!"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-192_r4" HPOS="513" VPOS="1550" WIDTH="1782" HEIGHT="1554" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="513 1550 2295 1550 2295 3104 513 3104"/>
-                    </Shape>
-                    <TextLine ID="mz_3-192_l19" HPOS="617" VPOS="1538" WIDTH="1665" HEIGHT="65" BASELINE="619 1583 2282 1579" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-192_l19" HPOS="617" VPOS="1538" WIDTH="1665" HEIGHT="65" BASELINE="619 1583 2282 1579" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="619 1583 619 1595 2266 1603 2268 1603 2270 1603 2272 1603 2282 1593 2282 1579 2280 1550 2256 1538 2254 1538 2252 1538 2250 1538 2215 1548 2190 1538 2188 1538 2186 1538 2184 1538 2163 1548 2019 1538 2017 1538 1952 1548 1929 1538 1927 1538 1925 1538 1923 1538 1888 1548 1851 1538 1849 1538 1847 1538 1845 1538 1824 1550 1691 1550 1607 1538 1605 1538 1525 1548 1449 1538 1447 1538 1393 1550 1360 1540 1358 1540 1356 1540 1354 1540 1325 1550 1303 1540 1301 1540 1299 1540 1297 1540 1255 1552 1083 1552 1062 1540 1060 1540 1058 1540 1056 1540 1030 1550 976 1540 974 1540 972 1540 935 1552 834 1552 820 1540 818 1540 816 1540 814 1540 617 1548 619 1583"/>
                         </Shape>
@@ -356,8 +334,7 @@
                         </Shape>
                         <String CONTENT="have from Ataˊto himself, who in 1895 was still living. Shortly after that,"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

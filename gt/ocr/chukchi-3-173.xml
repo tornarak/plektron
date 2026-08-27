@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_3-173_r1" HPOS="361" VPOS="453" WIDTH="1782" HEIGHT="102" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="361 453 2143 453 2143 555 361 555"/>
-                    </Shape>
-                    <TextLine ID="mz_3-173_l1" HPOS="937" VPOS="474" WIDTH="620" HEIGHT="49" BASELINE="939 507 1557 505" TAGREFS="TYPE_4">
+                <TextBlock ID="text_3-173" HPOS="358" VPOS="474" WIDTH="1776" HEIGHT="2622"><TextLine ID="mz_3-173_l1" HPOS="937" VPOS="474" WIDTH="620" HEIGHT="49" BASELINE="939 507 1557 505" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1541 480 1531 474 945 474 937 482 939 507 939 523 1555 521 1557 505 1551 492 1541 480"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="705"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-173_r2" HPOS="361" VPOS="578" WIDTH="1782" HEIGHT="600" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="361 578 2143 578 2143 1178 361 1178"/>
-                    </Shape>
-                    <TextLine ID="mz_3-173_l3" HPOS="360" VPOS="576" WIDTH="1770" HEIGHT="54" BASELINE="360 615 2130 615" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-173_l3" HPOS="360" VPOS="576" WIDTH="1770" HEIGHT="54" BASELINE="360 615 2130 615" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="399 581 379 583 364 583 360 585 360 615 360 628 2126 630 2130 615 2128 587 1444 576 1442 576 1317 585 1258 576 1256 576 1255 576 1229 585 1216 576 1214 576 1212 576 1103 576 1101 576 1099 576 1097 576 1083 585 1005 576 1003 576 943 585 886 576 884 576 882 576 841 585 781 576 779 576 777 576 775 576 760 587 483 587 416 580 399 581"/>
                         </Shape>
@@ -124,12 +112,7 @@
                         </Shape>
                         <String CONTENT="infringement of the regulations of the Anui fair."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-173_r3" HPOS="361" VPOS="1178" WIDTH="1782" HEIGHT="487" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="361 1178 2143 1178 2143 1665 361 1665"/>
-                    </Shape>
-                    <TextLine ID="mz_3-173_l13" HPOS="469" VPOS="1180" WIDTH="1661" HEIGHT="56" BASELINE="469 1215 2130 1215" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-173_l13" HPOS="469" VPOS="1180" WIDTH="1661" HEIGHT="56" BASELINE="469 1215 2130 1215" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="469 1215 469 1229 2128 1236 2130 1215 2130 1186 469 1180 469 1215"/>
                         </Shape>
@@ -184,12 +167,7 @@
                         </Shape>
                         <String CONTENT="Chukchee; and this was immediately forbidden."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-173_r4" HPOS="361" VPOS="1665" WIDTH="1782" HEIGHT="837" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="361 1665 2143 1665 2143 2502 361 2502"/>
-                    </Shape>
-                    <TextLine ID="mz_3-173_l21" HPOS="469" VPOS="1657" WIDTH="1665" HEIGHT="53" BASELINE="469 1692 2134 1692" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-173_l21" HPOS="469" VPOS="1657" WIDTH="1665" HEIGHT="53" BASELINE="469 1692 2134 1692" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="469 1692 469 1710 2134 1710 2134 1692 2132 1657 469 1657 469 1692"/>
                         </Shape>
@@ -286,12 +264,7 @@
                         </Shape>
                         <String CONTENT="stronger than the permission to exercise freedom in trading."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-173_r5" HPOS="361" VPOS="2502" WIDTH="1782" HEIGHT="594" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="361 2502 2143 2502 2143 3096 361 3096"/>
-                    </Shape>
-                    <TextLine ID="mz_3-173_l35" HPOS="467" VPOS="2489" WIDTH="1665" HEIGHT="57" BASELINE="467 2530 2132 2530" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-173_l35" HPOS="467" VPOS="2489" WIDTH="1665" HEIGHT="57" BASELINE="467 2530 2132 2530" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="467 2530 467 2546 2132 2546 2132 2530 2132 2501 2057 2489 2056 2489 2009 2499 1812 2489 1810 2489 1732 2499 1705 2489 1703 2489 1701 2489 1623 2499 1592 2489 1590 2489 1588 2489 1586 2489 1543 2499 1465 2489 1463 2489 1461 2489 1432 2499 1403 2489 1401 2489 1399 2489 1301 2499 1223 2489 1221 2489 1101 2499 1007 2489 1005 2489 1003 2489 1001 2489 988 2501 828 2501 730 2489 728 2489 726 2489 689 2499 594 2489 592 2489 590 2489 553 2499 491 2489 489 2489 487 2489 467 2499 467 2530"/>
                         </Shape>
@@ -360,8 +333,7 @@
                         </Shape>
                         <String CONTENT="for the purpose of exacting tribute; these clans were to have chiefs at the head,"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

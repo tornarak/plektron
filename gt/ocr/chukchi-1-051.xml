@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Other"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-051_r1" HPOS="375" VPOS="603" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="375 603 2153 603 2153 693 375 693"/>
-                    </Shape>
-                    <TextLine ID="mz_1-051_l1" HPOS="942" VPOS="617" WIDTH="622" HEIGHT="56" BASELINE="944 649 1564 656" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-051" HPOS="370" VPOS="617" WIDTH="1774" HEIGHT="2634"><TextLine ID="mz_1-051_l1" HPOS="942" VPOS="617" WIDTH="622" HEIGHT="56" BASELINE="944 649 1564 656" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1555 619 962 617 944 645 944 649 942 666 1559 673 1564 656 1562 628 1555 619"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="29"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-051_r2" HPOS="375" VPOS="714" WIDTH="1778" HEIGHT="564" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="375 714 2153 714 2153 1278 375 1278"/>
-                    </Shape>
-                    <TextLine ID="mz_1-051_l3" HPOS="377" VPOS="723" WIDTH="1763" HEIGHT="52" BASELINE="379 755 2140 751" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-051_l3" HPOS="377" VPOS="723" WIDTH="1763" HEIGHT="52" BASELINE="379 755 2140 751" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="507 723 485 725 464 725 442 725 420 727 399 727 377 727 379 755 379 775 2138 770 2140 751 2135 723 529 723 507 723"/>
                         </Shape>
@@ -131,12 +119,7 @@
                         </Shape>
                         <String CONTENT="successful even at that (Register, 4 houses, 19 inhabitants)."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-051_r3" HPOS="375" VPOS="1302" WIDTH="1778" HEIGHT="1087" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="375 1302 2153 1302 2153 2389 375 2389"/>
-                    </Shape>
-                    <TextLine ID="mz_1-051_l14" HPOS="1176" VPOS="1307" WIDTH="160" HEIGHT="52" BASELINE="1178 1344 1336 1338" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-051_l14" HPOS="1176" VPOS="1307" WIDTH="160" HEIGHT="52" BASELINE="1178 1344 1336 1338" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1178 1344 1178 1359 1334 1355 1336 1338 1330 1307 1176 1312 1178 1344"/>
                         </Shape>
@@ -282,12 +265,7 @@
                         </Shape>
                         <String CONTENT="with 442 inhabitants, all of them Aiˊwan (Register, 51 houses, 500 inhabitants).⁴"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-051_r4" HPOS="375" VPOS="2416" WIDTH="1778" HEIGHT="179" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="375 2416 2153 2416 2153 2595 375 2595"/>
-                    </Shape>
-                    <TextLine ID="mz_1-051_l35" HPOS="1005" VPOS="2420" WIDTH="502" HEIGHT="52" BASELINE="1007 2457 1507 2448" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-051_l35" HPOS="1005" VPOS="2420" WIDTH="502" HEIGHT="52" BASELINE="1007 2457 1507 2448" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1007 2457 1007 2472 1507 2463 1507 2448 1501 2420 1005 2427 1007 2457"/>
                         </Shape>
@@ -307,12 +285,7 @@
                         </Shape>
                         <String CONTENT="the last Aiˊwan village: 4 houses, 37 inhabitants (Register, 5 houses, 52 inhabitants)."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-051_r5" HPOS="375" VPOS="2618" WIDTH="1778" HEIGHT="637" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="375 2618 2153 2618 2153 3255 375 3255"/>
-                    </Shape>
-                    <TextLine ID="mz_1-051_l38" HPOS="490" VPOS="2604" WIDTH="1652" HEIGHT="54" BASELINE="492 2641 2142 2630" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-051_l38" HPOS="490" VPOS="2604" WIDTH="1652" HEIGHT="54" BASELINE="492 2641 2142 2630" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="492 2641 492 2658 2140 2647 2142 2630 2135 2604 490 2613 492 2641"/>
                         </Shape>
@@ -416,8 +389,7 @@
                         </Shape>
                         <String CONTENT="⁶ Messrs. Bogdanovitch and Gondatti call it Ettyhren."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

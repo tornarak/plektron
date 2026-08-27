@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Other"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_3-093_r1" HPOS="446" VPOS="461" WIDTH="1782" HEIGHT="94" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="446 461 2228 461 2228 555 446 555"/>
-                    </Shape>
-                    <TextLine ID="mz_3-093_l1" HPOS="1017" VPOS="476" WIDTH="620" HEIGHT="51" BASELINE="1019 507 1637 511" TAGREFS="TYPE_5">
+                <TextBlock ID="text_3-093" HPOS="438" VPOS="476" WIDTH="1775" HEIGHT="2635"><TextLine ID="mz_3-093_l1" HPOS="1017" VPOS="476" WIDTH="620" HEIGHT="51" BASELINE="1019 507 1637 511" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1623 476 1332 476 1331 476 1311 476 1292 476 1272 476 1253 476 1233 476 1214 476 1194 476 1175 476 1155 476 1136 476 1116 476 1097 476 1077 476 1058 476 1038 476 1019 507 1017 523 1633 527 1637 511 1635 490 1623 476"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="627"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-093_r2" HPOS="446" VPOS="570" WIDTH="1782" HEIGHT="180" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="446 570 2228 570 2228 750 446 750"/>
-                    </Shape>
-                    <TextLine ID="mz_3-093_l3" HPOS="444" VPOS="574" WIDTH="1767" HEIGHT="58" BASELINE="446 615 2211 609" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-093_l3" HPOS="444" VPOS="574" WIDTH="1767" HEIGHT="58" BASELINE="446 615 2211 609" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="678 578 658 580 639 580 619 581 600 581 580 583 561 585 541 585 522 587 502 587 483 589 463 591 444 591 446 615 446 632 2210 626 2211 609 2208 581 1050 574 1048 574 1046 574 1044 574 1027 583 682 576 678 578"/>
                         </Shape>
@@ -76,12 +63,7 @@
                         </Shape>
                         <String CONTENT="tundra. The Luck-giving Being (Kɪntaˊ-vaˊɪrg̣ɪn¹), in later time, however, made him poor.”²"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-093_r3" HPOS="446" VPOS="765" WIDTH="1782" HEIGHT="1156" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="446 765 2228 765 2228 1921 446 1921"/>
-                    </Shape>
-                    <TextLine ID="mz_3-093_l6" HPOS="549" VPOS="769" WIDTH="1662" HEIGHT="58" BASELINE="551 815 2211 811" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-093_l6" HPOS="549" VPOS="769" WIDTH="1662" HEIGHT="58" BASELINE="551 815 2211 811" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="551 815 551 827 2210 825 2211 811 2208 782 2141 782 2124 769 2122 769 2120 769 2118 769 2116 769 2089 780 2073 769 2071 769 2069 769 2067 769 2065 769 2019 782 1818 782 1800 769 1798 769 1796 769 1794 769 1707 778 1679 769 1677 769 1676 769 1674 769 1672 769 1654 782 1467 782 1409 769 1407 769 1405 769 1403 769 1385 780 1171 771 1169 771 1167 771 1134 782 1089 771 1087 771 1085 771 1083 771 1060 782 1036 771 1034 771 1032 771 933 780 896 771 894 771 892 771 890 771 888 771 874 780 841 771 839 771 837 771 674 782 656 771 654 771 652 771 650 771 648 771 615 780 567 771 565 771 563 771 561 771 561 772 549 780 551 815"/>
                         </Shape>
@@ -213,12 +195,7 @@
                         </Shape>
                         <String CONTENT="but nobody wanted her in his sleeping-room."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-093_r4" HPOS="446" VPOS="1921" WIDTH="1782" HEIGHT="836" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="446 1921 2228 1921 2228 2757 446 2757"/>
-                    </Shape>
-                    <TextLine ID="mz_3-093_l25" HPOS="551" VPOS="1907" WIDTH="1662" HEIGHT="66" BASELINE="553 1952 2213 1948" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-093_l25" HPOS="551" VPOS="1907" WIDTH="1662" HEIGHT="66" BASELINE="553 1952 2213 1948" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="553 1952 553 1963 1301 1973 1303 1973 1414 1961 1555 1971 1557 1971 1559 1971 1599 1961 1775 1961 1806 1971 1808 1971 1810 1971 2211 1961 2213 1948 2210 1918 1944 1907 1943 1907 1941 1907 1939 1907 1925 1918 1777 1918 1714 1907 1713 1907 1711 1907 1709 1907 1695 1918 1594 1918 1551 1907 1549 1907 1547 1907 1545 1907 1512 1916 1455 1907 1453 1907 1329 1918 1266 1909 1264 1909 1262 1909 1223 1918 1089 1909 1087 1909 1015 1918 982 1909 980 1909 978 1909 869 1918 771 1909 769 1909 699 1918 668 1909 666 1909 664 1909 662 1909 623 1918 578 1909 576 1909 574 1909 551 1918 553 1952"/>
                         </Shape>
@@ -315,12 +292,7 @@
                         </Shape>
                         <String CONTENT="the whole, he seemed a specimen of some lower type of man."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-093_r5" HPOS="446" VPOS="2757" WIDTH="1782" HEIGHT="245" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="446 2757 2228 2757 2228 3002 446 3002"/>
-                    </Shape>
-                    <TextLine ID="mz_3-093_l39" HPOS="555" VPOS="2741" WIDTH="1655" HEIGHT="72" BASELINE="557 2792 2210 2784" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-093_l39" HPOS="555" VPOS="2741" WIDTH="1655" HEIGHT="72" BASELINE="557 2792 2210 2784" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="557 2792 557 2803 783 2813 785 2813 871 2803 945 2813 947 2813 949 2813 972 2801 1071 2811 1073 2811 1134 2801 2206 2801 2210 2784 2208 2754 2178 2741 2176 2741 2174 2741 2116 2753 2067 2741 2065 2741 2063 2741 2011 2753 1985 2741 1983 2741 1981 2741 1863 2753 1839 2741 1837 2741 1835 2741 1833 2741 1831 2741 1814 2753 1709 2743 1707 2743 1705 2743 1703 2743 1685 2754 1483 2743 1481 2743 1428 2754 1399 2743 1397 2743 1395 2743 1393 2743 1391 2743 1373 2756 1239 2745 1237 2745 1235 2745 1233 2745 1218 2758 1050 2758 1007 2745 1005 2745 1003 2745 1001 2745 964 2758 902 2747 900 2747 898 2747 869 2758 834 2747 832 2747 830 2747 777 2756 695 2747 693 2747 691 2747 648 2758 570 2747 569 2747 567 2747 565 2747 555 2754 557 2792"/>
                         </Shape>
@@ -347,12 +319,7 @@
                         </Shape>
                         <String CONTENT="nɪm-takaˊčhɪn (“neighboring camp”). Nɪm is the root of the noun nɪˊmnɪm"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-093_r6" HPOS="446" VPOS="3049" WIDTH="1782" HEIGHT="78" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="446 3049 2228 3049 2228 3127 446 3127"/>
-                    </Shape>
-                    <TextLine ID="mz_3-093_l43" HPOS="1438" VPOS="3060" WIDTH="618" HEIGHT="51" BASELINE="1440 3086 2056 3084" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-093_l43" HPOS="1438" VPOS="3060" WIDTH="618" HEIGHT="51" BASELINE="1440 3086 2056 3084" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1440 3086 1440 3101 2038 3111 2040 3111 2042 3111 2044 3111 2056 3101 2056 3084 2050 3060 1438 3060 1440 3086"/>
                         </Shape>
@@ -365,8 +332,7 @@
                         </Shape>
                         <String CONTENT="¹ The deity of reindeer-luck (cf. p. 314)."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

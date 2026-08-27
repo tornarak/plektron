@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="QuireMarksZone"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-137_r1" HPOS="378" VPOS="600" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="378 600 2156 600 2156 690 378 690"/>
-                    </Shape>
-                    <TextLine ID="mz_1-137_l1" HPOS="953" VPOS="612" WIDTH="624" HEIGHT="54" BASELINE="955 647 1577 651" TAGREFS="TYPE_5">
+                <TextBlock ID="text_1-137" HPOS="373" VPOS="612" WIDTH="1784" HEIGHT="2709"><TextLine ID="mz_1-137_l1" HPOS="953" VPOS="612" WIDTH="624" HEIGHT="54" BASELINE="955 647 1577 651" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="955 617 955 647 953 662 1572 666 1577 651 1575 617 964 612 955 617"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="105"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-137_r2" HPOS="378" VPOS="715" WIDTH="1778" HEIGHT="135" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="378 715 2156 715 2156 850 378 850"/>
-                    </Shape>
-                    <TextLine ID="mz_1-137_l3" HPOS="373" VPOS="714" WIDTH="1778" HEIGHT="69" BASELINE="375 760 2151 753" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-137_l3" HPOS="373" VPOS="714" WIDTH="1778" HEIGHT="69" BASELINE="375 760 2151 753" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="373 725 375 760 375 775 1536 783 1538 783 1594 773 2148 773 2151 753 2146 723 966 714 964 714 962 714 929 725 390 716 388 716 386 716 383 716 373 725"/>
                         </Shape>
@@ -69,12 +56,7 @@
                         </Shape>
                         <String CONTENT="a brake (Fig. 21, a¹). The length of the runners is 3-3.5 m.; breadth, 8 cm.;"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-137_r3" HPOS="378" VPOS="2749" WIDTH="1778" HEIGHT="430" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="378 2749 2156 2749 2156 3179 378 3179"/>
-                    </Shape>
-                    <TextLine ID="mz_1-137_l5" HPOS="379" VPOS="2764" WIDTH="1778" HEIGHT="52" BASELINE="381 2801 2157 2797" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-137_l5" HPOS="379" VPOS="2764" WIDTH="1778" HEIGHT="52" BASELINE="381 2801 2157 2797" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="381 2801 381 2816 2157 2812 2157 2797 2151 2764 379 2767 381 2801"/>
                         </Shape>
@@ -122,30 +104,19 @@
                         </Shape>
                         <String CONTENT="and ruder."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-137_r4" HPOS="378" VPOS="3179" WIDTH="1778" HEIGHT="74" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="378 3179 2156 3179 2156 3253 378 3253"/>
-                    </Shape>
-                    <TextLine ID="mz_1-137_l12" HPOS="487" VPOS="3174" WIDTH="1666" HEIGHT="67" BASELINE="490 3223 2153 3217" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-137_l12" HPOS="487" VPOS="3174" WIDTH="1666" HEIGHT="67" BASELINE="490 3223 2153 3217" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="490 3223 490 3241 2153 3241 2153 3217 2151 3187 2107 3174 2105 3174 2103 3174 2034 3184 1839 3174 1837 3174 1592 3187 1271 3176 1269 3176 1267 3176 1265 3176 1248 3189 1115 3189 1048 3176 1046 3176 981 3189 916 3178 914 3178 912 3178 882 3189 758 3178 756 3178 589 3189 513 3178 511 3178 509 3178 507 3178 487 3189 490 3223"/>
                         </Shape>
                         <String CONTENT="All parts of the dog-sledge, especially the runners, are made, if possible,"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-137_r5" HPOS="378" VPOS="3272" WIDTH="1778" HEIGHT="57" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="378 3272 2156 3272 2156 3329 378 3329"/>
-                    </Shape>
-                    <TextLine ID="mz_1-137_l13" HPOS="383" VPOS="3269" WIDTH="691" HEIGHT="52" BASELINE="386 3303 1074 3299" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-137_l13" HPOS="383" VPOS="3269" WIDTH="691" HEIGHT="52" BASELINE="386 3303 1074 3299" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="386 3303 386 3321 1074 3316 1074 3299 1068 3269 383 3271 386 3303"/>
                         </Shape>
                         <String CONTENT="14—JESUP NORTH PACIFIC EXPED., VOL. VII."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_2-015_r1" HPOS="417" VPOS="474" WIDTH="1776" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="417 474 2193 474 2193 564 417 564"/>
-                    </Shape>
-                    <TextLine ID="mz_2-015_l1" HPOS="996" VPOS="485" WIDTH="615" HEIGHT="53" BASELINE="998 515 1611 522" TAGREFS="TYPE_5">
+                <TextBlock ID="text_2-015" HPOS="409" VPOS="479" WIDTH="1780" HEIGHT="2632"><TextLine ID="mz_2-015_l1" HPOS="996" VPOS="485" WIDTH="615" HEIGHT="53" BASELINE="998 515 1611 522" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1605 495 1592 487 1310 485 1292 485 1273 485 1253 485 1233 485 1214 485 1194 485 1175 485 1155 485 1135 485 1116 485 1096 485 1077 485 1057 485 1038 485 1018 485 1000 503 998 515 996 536 1607 538 1611 522 1609 503 1605 495"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="289"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-015_r2" HPOS="417" VPOS="589" WIDTH="1776" HEIGHT="302" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="417 589 2193 589 2193 891 417 891"/>
-                    </Shape>
-                    <TextLine ID="mz_2-015_l3" HPOS="415" VPOS="587" WIDTH="1774" HEIGHT="55" BASELINE="415 628 2189 628" TAGREFS="TYPE_5">
+<TextLine ID="mz_2-015_l3" HPOS="415" VPOS="587" WIDTH="1774" HEIGHT="55" BASELINE="415 628 2189 628" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="415 628 415 642 2187 642 2189 628 2187 599 2111 587 2109 587 2107 587 2074 597 1976 587 1974 587 1972 587 1935 597 1903 587 1901 587 1899 587 1713 599 1521 599 1506 587 1504 587 1502 587 1500 587 1498 587 1468 597 1280 587 1278 587 1186 597 1161 587 1159 587 1157 587 1100 597 1018 587 1016 587 1014 587 979 597 891 587 889 587 832 597 415 593 415 628"/>
                         </Shape>
@@ -90,12 +77,7 @@
                         </Shape>
                         <String CONTENT="Raven (Kuyqɪnn˙aˊqu), turned to stone."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-015_r3" HPOS="417" VPOS="891" WIDTH="1776" HEIGHT="243" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="417 891 2193 891 2193 1134 417 1134"/>
-                    </Shape>
-                    <TextLine ID="mz_2-015_l8" HPOS="522" VPOS="891" WIDTH="1661" HEIGHT="56" BASELINE="524 924 2183 928" TAGREFS="TYPE_5">
+<TextLine ID="mz_2-015_l8" HPOS="522" VPOS="891" WIDTH="1661" HEIGHT="56" BASELINE="524 924 2183 928" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="524 924 522 938 2179 947 2183 928 2181 896 524 891 524 924"/>
                         </Shape>
@@ -122,12 +104,7 @@
                         </Shape>
                         <String CONTENT="to all these stones, as do the Koryak now."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-015_r4" HPOS="417" VPOS="1134" WIDTH="1776" HEIGHT="598" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="417 1134 2193 1134 2193 1732 417 1732"/>
-                    </Shape>
-                    <TextLine ID="mz_2-015_l12" HPOS="526" VPOS="1126" WIDTH="1659" HEIGHT="56" BASELINE="526 1167 2185 1167" TAGREFS="TYPE_5">
+<TextLine ID="mz_2-015_l12" HPOS="526" VPOS="1126" WIDTH="1659" HEIGHT="56" BASELINE="526 1167 2185 1167" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="526 1167 526 1182 2185 1182 2185 1167 2185 1137 2113 1126 2111 1126 2027 1135 1145 1126 1143 1126 1098 1135 1069 1126 1067 1126 1065 1126 979 1135 949 1126 947 1126 945 1126 944 1126 942 1126 932 1135 920 1126 918 1126 916 1126 822 1126 820 1126 818 1126 783 1135 736 1126 734 1126 732 1126 730 1126 712 1137 611 1137 548 1126 546 1126 544 1126 526 1133 526 1167"/>
                         </Shape>
@@ -196,12 +173,7 @@
                         </Shape>
                         <String CONTENT="to the trading-jargon, and signifies the Russian “priest.”³"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-015_r5" HPOS="417" VPOS="1732" WIDTH="1776" HEIGHT="368" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="417 1732 2193 1732 2193 2100 417 2100"/>
-                    </Shape>
-                    <TextLine ID="mz_2-015_l22" HPOS="520" VPOS="1725" WIDTH="1659" HEIGHT="57" BASELINE="520 1766 2179 1766" TAGREFS="TYPE_5">
+<TextLine ID="mz_2-015_l22" HPOS="520" VPOS="1725" WIDTH="1659" HEIGHT="57" BASELINE="520 1766 2179 1766" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="520 1766 520 1782 2179 1782 2179 1766 2179 1735 2152 1725 2150 1725 2148 1725 2030 1737 1794 1737 1778 1725 1776 1725 1774 1725 1772 1725 1770 1725 1745 1735 1656 1725 1654 1725 1652 1725 1623 1735 1609 1725 1607 1725 1605 1725 1604 1725 1511 1735 1490 1725 1488 1725 1486 1725 1369 1735 1200 1725 1198 1725 1196 1725 1161 1735 1135 1725 1133 1725 1132 1725 1028 1735 979 1725 977 1725 918 1735 520 1731 520 1766"/>
                         </Shape>
@@ -242,12 +214,7 @@
                         </Shape>
                         <String CONTENT="various persons, or are seen by shamans even, against their own will."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-015_r6" HPOS="417" VPOS="2127" WIDTH="1776" HEIGHT="999" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="417 2127 2193 2127 2193 3126 417 3126"/>
-                    </Shape>
-                    <TextLine ID="mz_2-015_l28" HPOS="519" VPOS="2138" WIDTH="1664" HEIGHT="43" BASELINE="519 2163 2183 2163" TAGREFS="TYPE_5">
+<TextLine ID="mz_2-015_l28" HPOS="519" VPOS="2138" WIDTH="1664" HEIGHT="43" BASELINE="519 2163 2183 2163" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="519 2163 519 2181 2181 2181 2183 2163 2181 2138 519 2138 519 2163"/>
                         </Shape>
@@ -484,8 +451,7 @@
                         </Shape>
                         <String CONTENT="He marries by Christian rite, He puts on a hat (nuptial crown)."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

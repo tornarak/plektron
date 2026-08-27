@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-260_r1" HPOS="664" VPOS="603" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="664 603 2442 603 2442 693 664 693"/>
-                    </Shape>
-                    <TextLine ID="mz_1-260_l1" HPOS="1243" VPOS="615" WIDTH="624" HEIGHT="51" BASELINE="1243 647 1867 647" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-260" HPOS="661" VPOS="615" WIDTH="1778" HEIGHT="2617"><TextLine ID="mz_1-260_l1" HPOS="1243" VPOS="615" WIDTH="624" HEIGHT="51" BASELINE="1243 647 1867 647" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1852 615 1243 615 1243 647 1243 666 1867 666 1867 647 1865 638 1852 615"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="204"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-260_r2" HPOS="664" VPOS="718" WIDTH="1778" HEIGHT="134" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="664 718 2442 718 2442 852 664 852"/>
-                    </Shape>
-                    <TextLine ID="mz_1-260_l3" HPOS="661" VPOS="712" WIDTH="1778" HEIGHT="71" BASELINE="663 757 2439 751" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-260_l3" HPOS="661" VPOS="712" WIDTH="1778" HEIGHT="71" BASELINE="663 757 2439 751" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2424 721 1899 712 1897 712 1832 723 762 716 760 716 661 727 663 757 663 773 1250 783 1252 783 1419 773 1824 781 1826 781 1906 770 2413 779 2415 779 2417 779 2439 766 2439 751 2437 738 2424 721"/>
                         </Shape>
@@ -68,12 +56,7 @@
                         </Shape>
                         <String CONTENT="of the pestle is put into the mortar, while the other end is moved slowly"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-260_r3" HPOS="664" VPOS="2816" WIDTH="1778" HEIGHT="298" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="664 2816 2442 2816 2442 3114 664 3114"/>
-                    </Shape>
-                    <TextLine ID="mz_1-260_l5" HPOS="661" VPOS="2808" WIDTH="1776" HEIGHT="60" BASELINE="663 2853 2437 2847" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-260_l5" HPOS="661" VPOS="2808" WIDTH="1776" HEIGHT="60" BASELINE="663 2853 2437 2847" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2426 2814 1254 2808 1252 2808 1250 2808 1248 2808 1232 2818 827 2810 812 2812 791 2814 769 2814 747 2816 726 2818 704 2821 682 2821 661 2823 663 2853 663 2868 2434 2862 2437 2847 2432 2818 2426 2814"/>
                         </Shape>
@@ -107,12 +90,7 @@
                         </Shape>
                         <String CONTENT="generally, but for chewing rather than for snuffing."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-260_r4" HPOS="664" VPOS="3114" WIDTH="1778" HEIGHT="131" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="664 3114 2442 3114 2442 3245 664 3245"/>
-                    </Shape>
-                    <TextLine ID="mz_1-260_l10" HPOS="782" VPOS="3104" WIDTH="1657" HEIGHT="70" BASELINE="784 3152 2439 3148" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-260_l10" HPOS="782" VPOS="3104" WIDTH="1657" HEIGHT="70" BASELINE="784 3152 2439 3148" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="784 3152 784 3163 1607 3174 1609 3174 1611 3174 1635 3163 2417 3171 2419 3171 2421 3171 2424 3171 2439 3161 2439 3148 2434 3117 2382 3104 2380 3104 2378 3104 2354 3115 2229 3104 2226 3104 2170 3115 2122 3104 2120 3104 2118 3104 1815 3115 1767 3104 1765 3104 1763 3104 1711 3115 1683 3104 1681 3104 1679 3104 1590 3117 1553 3106 1551 3106 1549 3106 1546 3106 1518 3119 1403 3119 1388 3106 1386 3106 1384 3106 1382 3106 1317 3117 782 3111 784 3152"/>
                         </Shape>
@@ -125,8 +103,7 @@
                         </Shape>
                         <String CONTENT="Maritime Koryak. These boxes are made of birch wood or bark (Fig. 124),"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

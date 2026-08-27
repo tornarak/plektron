@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-324_r1" HPOS="564" VPOS="591" WIDTH="1778" HEIGHT="87" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="564 591 2342 591 2342 678 564 678"/>
-                    </Shape>
-                    <TextLine ID="mz_1-324_l1" HPOS="1146" VPOS="604" WIDTH="617" HEIGHT="56" BASELINE="1146 640 1763 636" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-324" HPOS="559" VPOS="604" WIDTH="1789" HEIGHT="2622"><TextLine ID="mz_1-324_l1" HPOS="1146" VPOS="604" WIDTH="617" HEIGHT="56" BASELINE="1146 640 1763 636" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1750 604 1161 604 1148 625 1146 640 1146 660 1761 656 1763 636 1759 606 1750 604"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="252"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-324_r2" HPOS="564" VPOS="704" WIDTH="1778" HEIGHT="1204" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="564 704 2342 704 2342 1908 564 1908"/>
-                    </Shape>
-                    <TextLine ID="mz_1-324_l3" HPOS="570" VPOS="705" WIDTH="1778" HEIGHT="61" BASELINE="570 749 2348 749" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-324_l3" HPOS="570" VPOS="705" WIDTH="1778" HEIGHT="61" BASELINE="570 749 2348 749" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2346 718 2324 718 2302 716 2281 716 2259 714 2237 714 2224 714 2218 716 1694 705 1692 705 1512 716 1475 705 1473 705 1471 705 1408 716 1343 705 1341 705 1280 716 1224 705 1222 705 1219 705 1191 716 1135 705 1133 705 1131 705 1094 716 1063 705 1061 705 1059 705 983 716 936 705 934 705 931 705 929 705 888 716 858 705 856 705 853 705 851 705 814 716 765 705 762 705 760 705 739 716 630 705 628 705 570 716 570 749 570 766 2348 766 2348 749 2348 718 2346 718"/>
                         </Shape>
@@ -194,12 +182,7 @@
                         </Shape>
                         <String CONTENT="is taken from the Chukchee."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-324_r3" HPOS="564" VPOS="1908" WIDTH="1778" HEIGHT="357" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="564 1908 2342 1908 2342 2265 564 2265"/>
-                    </Shape>
-                    <TextLine ID="mz_1-324_l23" HPOS="1824" VPOS="1909" WIDTH="519" HEIGHT="56" BASELINE="1826 1946 2343 1942" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-324_l23" HPOS="1824" VPOS="1909" WIDTH="519" HEIGHT="56" BASELINE="1826 1946 2343 1942" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1826 1946 1826 1965 2341 1961 2343 1942 2337 1909 1824 1911 1826 1946"/>
                         </Shape>
@@ -240,12 +223,7 @@
                         </Shape>
                         <String CONTENT="fawn-skins are used."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-324_r4" HPOS="564" VPOS="2265" WIDTH="1778" HEIGHT="653" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="564 2265 2342 2265 2342 2918 564 2918"/>
-                    </Shape>
-                    <TextLine ID="mz_1-324_l29" HPOS="674" VPOS="2256" WIDTH="1667" HEIGHT="69" BASELINE="676 2297 2341 2308" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-324_l29" HPOS="674" VPOS="2256" WIDTH="1667" HEIGHT="69" BASELINE="676 2297 2341 2308" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="676 2297 674 2312 691 2323 693 2323 695 2323 697 2323 1005 2314 1022 2325 1025 2325 1027 2325 1029 2325 2339 2321 2341 2308 2341 2275 676 2256 676 2297"/>
                         </Shape>
@@ -321,12 +299,7 @@
                         </Shape>
                         <String CONTENT="Koryak camps."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-324_r5" HPOS="564" VPOS="2918" WIDTH="1778" HEIGHT="185" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="564 2918 2342 2918 2342 3103 564 3103"/>
-                    </Shape>
-                    <TextLine ID="mz_1-324_l40" HPOS="667" VPOS="2922" WIDTH="1668" HEIGHT="63" BASELINE="669 2953 2335 2964" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-324_l40" HPOS="667" VPOS="2922" WIDTH="1668" HEIGHT="63" BASELINE="669 2953 2335 2964" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="669 2953 667 2968 784 2981 786 2981 1326 2974 1352 2985 1354 2985 1356 2985 2333 2979 2335 2964 2333 2933 669 2922 669 2953"/>
                         </Shape>
@@ -346,12 +319,7 @@
                         </Shape>
                         <String CONTENT="longer, because the regular female garment is not adapted to the child’s needs."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-324_r6" HPOS="564" VPOS="3103" WIDTH="1778" HEIGHT="130" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="564 3103 2342 3103 2342 3233 564 3233"/>
-                    </Shape>
-                    <TextLine ID="mz_1-324_l43" HPOS="665" VPOS="3100" WIDTH="1665" HEIGHT="63" BASELINE="667 3135 2330 3143" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-324_l43" HPOS="665" VPOS="3100" WIDTH="1665" HEIGHT="63" BASELINE="667 3135 2330 3143" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="667 3135 665 3148 858 3161 860 3161 1083 3152 2326 3163 2330 3143 2328 3111 667 3100 667 3135"/>
                         </Shape>
@@ -364,8 +332,7 @@
                         </Shape>
                         <String CONTENT="when in the inner sleeping-room, are accustomed to strip naked except for"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

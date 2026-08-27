@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-158_r1" HPOS="591" VPOS="595" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="591 595 2369 595 2369 685 591 685"/>
-                    </Shape>
-                    <TextLine ID="mz_1-158_l1" HPOS="1170" VPOS="608" WIDTH="619" HEIGHT="54" BASELINE="1172 640 1789 645" TAGREFS="TYPE_5">
+                <TextBlock ID="text_1-158" HPOS="589" VPOS="608" WIDTH="1787" HEIGHT="2620"><TextLine ID="mz_1-158_l1" HPOS="1170" VPOS="608" WIDTH="619" HEIGHT="54" BASELINE="1172 640 1789 645" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1778 612 1765 608 1479 608 1475 608 1453 608 1432 608 1410 608 1388 608 1367 608 1345 608 1323 608 1302 608 1280 608 1258 608 1237 608 1215 608 1193 608 1172 617 1172 640 1170 658 1785 662 1789 645 1787 628 1778 612"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="120"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-158_r2" HPOS="591" VPOS="710" WIDTH="1778" HEIGHT="123" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="591 710 2369 710 2369 833 591 833"/>
-                    </Shape>
-                    <TextLine ID="mz_1-158_l3" HPOS="596" VPOS="723" WIDTH="1769" HEIGHT="47" BASELINE="596 755 2365 755" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-158_l3" HPOS="596" VPOS="723" WIDTH="1769" HEIGHT="47" BASELINE="596 755 2365 755" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="2350 725 2328 723 596 723 596 755 596 770 2365 770 2365 755 2365 727 2350 725"/>
                         </Shape>
@@ -69,12 +56,7 @@
                         </Shape>
                         <String CONTENT="These two methods are quite similar to those of the American Eskimo.¹"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-158_r3" HPOS="591" VPOS="833" WIDTH="1778" HEIGHT="1074" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="591 833 2369 833 2369 1907 591 1907"/>
-                    </Shape>
-                    <TextLine ID="mz_1-158_l5" HPOS="700" VPOS="829" WIDTH="1669" HEIGHT="69" BASELINE="702 874 2369 870" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-158_l5" HPOS="700" VPOS="829" WIDTH="1669" HEIGHT="69" BASELINE="702 874 2369 870" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="702 874 702 887 1523 898 1525 898 1527 898 1570 887 2350 896 2352 896 2354 896 2356 896 2369 885 2369 870 2365 842 2265 829 2263 829 2174 840 2151 829 2148 829 2146 829 2144 829 2142 829 2129 842 2021 842 1997 829 1995 829 1993 829 1941 840 1863 829 1860 829 1785 840 1722 829 1720 829 1635 840 1609 829 1607 829 1605 829 1514 842 1432 831 1429 831 1427 831 1397 842 1048 831 1046 831 1044 831 1042 831 1025 842 960 831 957 831 830 842 713 831 710 831 708 831 706 831 706 833 700 838 702 874"/>
                         </Shape>
@@ -199,12 +181,7 @@
                         </Shape>
                         <String CONTENT="ice from one to another of its holes, but loses its way."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-158_r4" HPOS="591" VPOS="1907" WIDTH="1778" HEIGHT="722" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="591 1907 2369 1907 2369 2629 591 2629"/>
-                    </Shape>
-                    <TextLine ID="mz_1-158_l23" HPOS="669" VPOS="1903" WIDTH="1698" HEIGHT="69" BASELINE="672 1946 2367 1948" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-158_l23" HPOS="669" VPOS="1903" WIDTH="1698" HEIGHT="69" BASELINE="672 1946 2367 1948" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="672 1946 669 1959 882 1972 884 1972 2365 1961 2367 1948 2365 1916 754 1916 672 1903 672 1946"/>
                         </Shape>
@@ -287,12 +264,7 @@
                         </Shape>
                         <String CONTENT="the Kanchalan Hills."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-158_r5" HPOS="591" VPOS="2629" WIDTH="1778" HEIGHT="426" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="591 2629 2369 2629 2369 3055 591 3055"/>
-                    </Shape>
-                    <TextLine ID="mz_1-158_l35" HPOS="704" VPOS="2621" WIDTH="1663" HEIGHT="65" BASELINE="706 2660 2367 2665" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-158_l35" HPOS="704" VPOS="2621" WIDTH="1663" HEIGHT="65" BASELINE="706 2660 2367 2665" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="706 2660 704 2676 713 2684 713 2686 715 2686 717 2686 719 2686 2365 2678 2367 2665 2367 2634 1594 2634 1538 2621 1536 2621 706 2628 706 2660"/>
                         </Shape>
@@ -340,12 +312,7 @@
                         </Shape>
                         <String CONTENT="aim was correct, one of the hooks will catch into it. When the body is too"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-158_r6" HPOS="591" VPOS="3090" WIDTH="1778" HEIGHT="146" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="591 3090 2369 3090 2369 3236 591 3236"/>
-                    </Shape>
-                    <TextLine ID="mz_1-158_l42" HPOS="697" VPOS="3091" WIDTH="607" HEIGHT="46" BASELINE="700 3119 1304 3124" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-158_l42" HPOS="697" VPOS="3091" WIDTH="607" HEIGHT="46" BASELINE="700 3119 1304 3124" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="700 3119 697 3132 1300 3137 1304 3124 1302 3096 700 3091 700 3119"/>
                         </Shape>
@@ -365,8 +332,7 @@
                         </Shape>
                         <String CONTENT="Eskimo, p. 485."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

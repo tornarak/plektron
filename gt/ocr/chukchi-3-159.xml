@@ -23,23 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="QuireMarksZone"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_6" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_3-159_r1" HPOS="399" VPOS="446" WIDTH="1782" HEIGHT="93" TAGREFS="TYPE_5">
-<Shape>
-                        <Polygon POINTS="399 446 2181 446 2181 539 399 539"/>
-                    </Shape>
-                    <TextLine ID="mz_3-159_l1" HPOS="2054" VPOS="466" WIDTH="95" HEIGHT="61" BASELINE="2056 498 2149 502" TAGREFS="TYPE_6">
+                <TextBlock ID="text_3-159" HPOS="385" VPOS="466" WIDTH="1789" HEIGHT="2698"><TextLine ID="mz_3-159_l1" HPOS="2054" VPOS="466" WIDTH="95" HEIGHT="61" BASELINE="2056 498 2149 502" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="2134 470 2122 468 2056 466 2056 498 2054 509 2100 527 2102 527 2104 527 2147 519 2149 502 2147 472 2134 470"/>
                         </Shape>
@@ -52,12 +43,7 @@
                         </Shape>
                         <String CONTENT="BOGORAS, THE CHUKCHEE."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-159_r2" HPOS="399" VPOS="562" WIDTH="1782" HEIGHT="178" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="399 562 2181 562 2181 740 399 740"/>
-                    </Shape>
-                    <TextLine ID="mz_3-159_l3" HPOS="385" VPOS="562" WIDTH="1770" HEIGHT="60" BASELINE="387 607 2155 603" TAGREFS="TYPE_6">
+<TextLine ID="mz_3-159_l3" HPOS="385" VPOS="562" WIDTH="1770" HEIGHT="60" BASELINE="387 607 2155 603" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="678 564 658 566 639 566 619 568 600 568 580 568 561 570 541 570 522 572 502 572 483 572 463 574 444 574 424 576 413 576 385 576 387 607 387 622 2153 619 2155 603 2151 574 1759 562 1757 562 1695 572 1672 562 1670 562 1668 562 1666 562 1646 572 1623 562 1621 562 1619 562 1617 562 1590 572 1543 562 1541 562 1539 562 1520 572 1496 562 1494 562 1492 562 1391 572 1342 562 1340 562 1227 574 1208 564 1206 564 1204 564 1202 564 1179 574 1118 564 1116 564 1114 564 1112 564 1097 576 970 576 943 564 941 564 939 564 937 564 935 564 919 574 896 564 894 564 892 564 890 564 888 564 874 574 808 564 806 564 804 564 802 564 789 574 738 564 736 564 734 564 717 574 703 564 701 564 699 564 697 564 678 564"/>
                         </Shape>
@@ -77,12 +63,7 @@
                         </Shape>
                         <String CONTENT="other side of the river."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-159_r3" HPOS="399" VPOS="740" WIDTH="1782" HEIGHT="554" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="399 740 2181 740 2181 1294 399 1294"/>
-                    </Shape>
-                    <TextLine ID="mz_3-159_l6" HPOS="498" VPOS="745" WIDTH="1659" HEIGHT="59" BASELINE="500 788 2157 782" TAGREFS="TYPE_6">
+<TextLine ID="mz_3-159_l6" HPOS="498" VPOS="745" WIDTH="1659" HEIGHT="59" BASELINE="500 788 2157 782" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="500 788 500 804 2155 798 2157 782 2151 745 498 747 500 788"/>
                         </Shape>
@@ -144,12 +125,7 @@
                         </Shape>
                         <String CONTENT="One”), the river Tomilina (“Languishing”).²"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-159_r4" HPOS="399" VPOS="1294" WIDTH="1782" HEIGHT="482" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="399 1294 2181 1294 2181 1776 399 1776"/>
-                    </Shape>
-                    <TextLine ID="mz_3-159_l15" HPOS="498" VPOS="1287" WIDTH="1665" HEIGHT="55" BASELINE="500 1326 2163 1320" TAGREFS="TYPE_6">
+<TextLine ID="mz_3-159_l15" HPOS="498" VPOS="1287" WIDTH="1665" HEIGHT="55" BASELINE="500 1326 2163 1320" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="500 1326 500 1342 2161 1338 2163 1320 2157 1287 498 1295 500 1326"/>
                         </Shape>
@@ -204,12 +180,7 @@
                         </Shape>
                         <String CONTENT="war with the American Eskimo."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-159_r5" HPOS="399" VPOS="1776" WIDTH="1782" HEIGHT="538" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="399 1776 2181 1776 2181 2314 399 2314"/>
-                    </Shape>
-                    <TextLine ID="mz_3-159_l23" HPOS="504" VPOS="1759" WIDTH="1661" HEIGHT="72" BASELINE="506 1809 2165 1801" TAGREFS="TYPE_6">
+<TextLine ID="mz_3-159_l23" HPOS="504" VPOS="1759" WIDTH="1661" HEIGHT="72" BASELINE="506 1809 2165 1801" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="506 1809 506 1821 871 1831 873 1831 1040 1819 1182 1829 1184 1829 1375 1817 1553 1827 1555 1827 1557 1827 1578 1817 1603 1827 1605 1827 1607 1827 1804 1815 1962 1825 1964 1825 2163 1817 2165 1801 2161 1772 2087 1772 2069 1759 2067 1759 2065 1759 2063 1759 2061 1759 2059 1759 2040 1770 1867 1759 1865 1759 1863 1759 1820 1770 1728 1761 1726 1761 1724 1761 1722 1761 1707 1772 1689 1761 1687 1761 1685 1761 1683 1761 1681 1761 1679 1761 1660 1772 1601 1761 1599 1761 1598 1761 1549 1772 1520 1761 1518 1761 1516 1761 1514 1761 1481 1772 1412 1761 1410 1761 1409 1761 1407 1761 1387 1774 1192 1774 1165 1763 1163 1763 1161 1763 1159 1763 1126 1776 1028 1776 921 1763 919 1763 917 1763 915 1763 900 1772 804 1764 802 1764 800 1764 798 1764 783 1776 748 1764 746 1764 526 1764 524 1764 522 1764 520 1764 504 1774 506 1809"/>
                         </Shape>
@@ -271,12 +242,7 @@
                         </Shape>
                         <String CONTENT="of the Chukchee fighting was treacherously done by disguised Koryak."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-159_r6" HPOS="399" VPOS="2314" WIDTH="1782" HEIGHT="353" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="399 2314 2181 2314 2181 2667 399 2667"/>
-                    </Shape>
-                    <TextLine ID="mz_3-159_l32" HPOS="508" VPOS="2298" WIDTH="1661" HEIGHT="63" BASELINE="510 2347 2169 2339" TAGREFS="TYPE_6">
+<TextLine ID="mz_3-159_l32" HPOS="508" VPOS="2298" WIDTH="1661" HEIGHT="63" BASELINE="510 2347 2169 2339" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="510 2347 510 2361 2167 2357 2169 2339 2165 2310 1773 2298 1771 2298 1769 2298 1746 2310 1619 2300 1617 2300 1561 2310 1531 2300 1529 2300 1527 2300 1447 2310 1420 2300 1418 2300 1416 2300 1334 2312 1085 2302 1083 2302 1081 2302 1079 2302 1064 2312 896 2304 894 2304 892 2304 865 2314 810 2304 808 2304 666 2314 522 2304 520 2304 518 2304 516 2304 508 2310 510 2347"/>
                         </Shape>
@@ -317,12 +283,7 @@
                         </Shape>
                         <String CONTENT="Koryak and Yukaghir. After two months of marching, he reached the seashore,"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-159_r7" HPOS="399" VPOS="2698" WIDTH="1782" HEIGHT="402" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="399 2698 2181 2698 2181 3100 399 3100"/>
-                    </Shape>
-                    <TextLine ID="mz_3-159_l38" HPOS="516" VPOS="2704" WIDTH="290" HEIGHT="50" BASELINE="518 2731 806 2727" TAGREFS="TYPE_6">
+<TextLine ID="mz_3-159_l38" HPOS="516" VPOS="2704" WIDTH="290" HEIGHT="50" BASELINE="518 2731 806 2727" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="518 2731 518 2745 635 2754 637 2754 804 2741 806 2727 800 2704 516 2706 518 2731"/>
                         </Shape>
@@ -384,19 +345,13 @@
                         </Shape>
                         <String CONTENT="⁴ Vol. VI of this series, p. 789."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-159_r8" HPOS="399" VPOS="3114" WIDTH="1782" HEIGHT="60" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="399 3114 2181 3114 2181 3174 399 3174"/>
-                    </Shape>
-                    <TextLine ID="mz_3-159_l47" HPOS="409" VPOS="3115" WIDTH="682" HEIGHT="49" BASELINE="411 3144 1091 3140" TAGREFS="TYPE_6">
+<TextLine ID="mz_3-159_l47" HPOS="409" VPOS="3115" WIDTH="682" HEIGHT="49" BASELINE="411 3144 1091 3140" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="1087 3131 1085 3115 409 3117 411 3144 411 3162 1087 3164 1091 3140 1089 3133 1087 3131"/>
                         </Shape>
                         <String CONTENT="87—JESUP NORTH PACIFIC EXPED., VOL. VII."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

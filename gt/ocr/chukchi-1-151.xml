@@ -23,44 +23,26 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Other"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="QuireMarksZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-151_r1" HPOS="370" VPOS="882" WIDTH="1778" HEIGHT="87" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="370 882 2148 882 2148 969 370 969"/>
-                    </Shape>
-                    <TextLine ID="mz_1-151_l1" HPOS="726" VPOS="896" WIDTH="1046" HEIGHT="52" BASELINE="726 933 1772 933" TAGREFS="TYPE_5">
+                <TextBlock ID="text_1-151" HPOS="364" VPOS="896" WIDTH="1778" HEIGHT="2397"><TextLine ID="mz_1-151_l1" HPOS="726" VPOS="896" WIDTH="1046" HEIGHT="52" BASELINE="726 933 1772 933" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1769 896 726 896 726 933 726 948 1772 948 1772 933 1772 900 1769 896"/>
                         </Shape>
                         <String CONTENT="VI. — HUNTING AND FISHING; WAR."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-151_r2" HPOS="370" VPOS="1009" WIDTH="1778" HEIGHT="74" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="370 1009 2148 1009 2148 1083 370 1083"/>
-                    </Shape>
-                    <TextLine ID="mz_1-151_l2" HPOS="992" VPOS="1019" WIDTH="531" HEIGHT="50" BASELINE="992 1052 1523 1052" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-151_l2" HPOS="992" VPOS="1019" WIDTH="531" HEIGHT="50" BASELINE="992 1052 1523 1052" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="992 1052 992 1069 1523 1069 1523 1052 1523 1019 992 1019 992 1052"/>
                         </Shape>
                         <String CONTENT="HUNTING AND FISHING."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-151_r3" HPOS="370" VPOS="1115" WIDTH="1778" HEIGHT="485" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="370 1115 2148 1115 2148 1600 370 1600"/>
-                    </Shape>
-                    <TextLine ID="mz_1-151_l3" HPOS="470" VPOS="1110" WIDTH="1668" HEIGHT="72" BASELINE="472 1160 2138 1154" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-151_l3" HPOS="470" VPOS="1110" WIDTH="1668" HEIGHT="72" BASELINE="472 1160 2138 1154" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="2008 1115 2003 1112 1995 1121 1871 1110 1869 1110 1763 1121 1739 1110 1737 1110 1735 1110 1733 1110 1731 1110 1713 1123 1566 1123 1038 1112 1035 1112 1033 1112 1031 1112 1031 1115 1018 1125 960 1115 957 1115 791 1125 485 1115 483 1115 481 1115 479 1115 479 1117 470 1123 472 1160 472 1173 986 1182 988 1182 990 1182 1029 1171 1271 1171 1468 1182 1471 1182 1473 1182 1510 1171 1579 1182 1581 1182 1687 1169 1724 1180 1726 1180 1728 1180 2135 1169 2138 1154 2133 1123 2036 1123 2027 1115 2008 1115"/>
                         </Shape>
@@ -115,12 +97,7 @@
                         </Shape>
                         <String CONTENT="“thong-seal;” Russian Siberian, лахтакъ; Chukchee, uˊᵋnel)."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-151_r4" HPOS="370" VPOS="1600" WIDTH="1778" HEIGHT="1495" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="370 1600 2148 1600 2148 3095 370 3095"/>
-                    </Shape>
-                    <TextLine ID="mz_1-151_l11" HPOS="477" VPOS="1602" WIDTH="1658" HEIGHT="54" BASELINE="477 1636 2135 1636" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-151_l11" HPOS="477" VPOS="1602" WIDTH="1658" HEIGHT="54" BASELINE="477 1636 2135 1636" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="477 1636 477 1652 2133 1656 2135 1636 2135 1606 477 1602 477 1636"/>
                         </Shape>
@@ -294,12 +271,7 @@
                         </Shape>
                         <String CONTENT="The iron blade is firmly fastened into its slit with a wooden, bone, or iron peg."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-151_r5" HPOS="370" VPOS="3131" WIDTH="1778" HEIGHT="97" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="370 3131 2148 3131 2148 3228 370 3228"/>
-                    </Shape>
-                    <TextLine ID="mz_1-151_l36" HPOS="474" VPOS="3128" WIDTH="1664" HEIGHT="52" BASELINE="477 3158 2138 3154" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-151_l36" HPOS="474" VPOS="3128" WIDTH="1664" HEIGHT="52" BASELINE="477 3158 2138 3154" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="477 3158 477 3180 2138 3176 2138 3154 2131 3128 474 3130 477 3158"/>
                         </Shape>
@@ -312,19 +284,13 @@
                         </Shape>
                         <String CONTENT="sub-species of Phoca ochotensis of Pallas."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-151_r6" HPOS="370" VPOS="3231" WIDTH="1778" HEIGHT="76" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="370 3231 2148 3231 2148 3307 370 3307"/>
-                    </Shape>
-                    <TextLine ID="mz_1-151_l38" HPOS="1189" VPOS="3217" WIDTH="128" HEIGHT="76" BASELINE="1189 3273 1317 3273" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-151_l38" HPOS="1189" VPOS="3217" WIDTH="128" HEIGHT="76" BASELINE="1189 3273 1317 3273" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1189 3273 1189 3290 1315 3293 1317 3273 1317 3226 1297 3217 1295 3217 1293 3217 1230 3230 1209 3217 1206 3217 1204 3217 1202 3217 1200 3217 1198 3217 1198 3219 1189 3228 1189 3273"/>
                         </Shape>
                         <String CONTENT="[115]"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

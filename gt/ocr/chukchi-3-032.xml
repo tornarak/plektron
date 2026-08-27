@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Other"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_3-032_r1" HPOS="333" VPOS="432" WIDTH="1782" HEIGHT="90" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="333 432 2115 432 2115 522 333 522"/>
-                    </Shape>
-                    <TextLine ID="mz_3-032_l1" HPOS="921" VPOS="457" WIDTH="616" HEIGHT="50" BASELINE="923 488 1537 492" TAGREFS="TYPE_4">
+                <TextBlock ID="text_3-032" HPOS="327" VPOS="449" WIDTH="1789" HEIGHT="2643"><TextLine ID="mz_3-032_l1" HPOS="921" VPOS="457" WIDTH="616" HEIGHT="50" BASELINE="923 488 1537 492" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1527 463 1518 457 939 457 925 478 923 488 921 504 1533 507 1537 492 1535 470 1527 463"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="566"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-032_r2" HPOS="333" VPOS="547" WIDTH="1782" HEIGHT="2452" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="333 547 2115 547 2115 2999 333 2999"/>
-                    </Shape>
-                    <TextLine ID="mz_3-032_l3" HPOS="342" VPOS="564" WIDTH="1774" HEIGHT="49" BASELINE="342 593 2116 593" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-032_l3" HPOS="342" VPOS="564" WIDTH="1774" HEIGHT="49" BASELINE="342 593 2116 593" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2096 568 2077 566 2057 566 2038 566 2019 564 1999 564 342 564 342 593 342 605 2114 613 2116 593 2116 568 2096 568"/>
                         </Shape>
@@ -418,19 +406,13 @@
                         </Shape>
                         <String CONTENT="he awoke, he would not come out of the sleeping-room. He remained there all the time. Among"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-032_r3" HPOS="333" VPOS="3029" WIDTH="1782" HEIGHT="74" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="333 3029 2115 3029 2115 3103 333 3103"/>
-                    </Shape>
-                    <TextLine ID="mz_3-032_l55" HPOS="1062" VPOS="3035" WIDTH="313" HEIGHT="57" BASELINE="1064 3060 1375 3066" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-032_l55" HPOS="1062" VPOS="3035" WIDTH="313" HEIGHT="57" BASELINE="1064 3060 1375 3066" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1064 3060 1062 3076 1169 3092 1171 3092 1373 3082 1375 3066 1375 3041 1064 3035 1064 3060"/>
                         </Shape>
                         <String CONTENT="¹ Compare p. 335."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

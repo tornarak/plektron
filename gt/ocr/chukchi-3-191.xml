@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_3-191_r1" HPOS="381" VPOS="469" WIDTH="1782" HEIGHT="93" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="381 469 2163 469 2163 562 381 562"/>
-                    </Shape>
-                    <TextLine ID="mz_3-191_l1" HPOS="954" VPOS="486" WIDTH="614" HEIGHT="51" BASELINE="954 519 1568 519" TAGREFS="TYPE_5">
+                <TextBlock ID="text_3-191" HPOS="378" VPOS="486" WIDTH="1775" HEIGHT="2613"><TextLine ID="mz_3-191_l1" HPOS="954" VPOS="486" WIDTH="614" HEIGHT="51" BASELINE="954 519 1568 519" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1559 496 1541 486 954 486 954 519 954 537 1568 537 1568 519 1568 486 1559 486 1559 496"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="723"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-191_r2" HPOS="381" VPOS="586" WIDTH="1782" HEIGHT="191" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="381 586 2163 586 2163 777 381 777"/>
-                    </Shape>
-                    <TextLine ID="mz_3-191_l3" HPOS="378" VPOS="581" WIDTH="1767" HEIGHT="73" BASELINE="379 632 2145 624" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-191_l3" HPOS="378" VPOS="581" WIDTH="1767" HEIGHT="73" BASELINE="379 632 2145 624" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="378 607 379 632 379 654 874 642 2141 644 2145 624 2139 587 1999 591 1983 581 1981 581 1980 581 1978 581 1976 581 1946 591 1892 581 1890 581 1888 581 1847 591 1820 581 1818 581 1816 581 1814 581 1812 581 1796 593 1580 593 1553 583 1551 583 1549 583 1547 583 1545 583 1529 595 1436 595 1385 583 1383 583 1323 593 1262 583 1260 583 1054 595 933 585 931 585 703 597 617 587 615 587 569 597 450 587 448 587 383 599 378 607"/>
                         </Shape>
@@ -76,12 +63,7 @@
                         </Shape>
                         <String CONTENT="language: чукчишки, “(those) small Chukchee;” якутишки, “(those) small Yakut.”"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-191_r3" HPOS="381" VPOS="777" WIDTH="1782" HEIGHT="839" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="381 777 2163 777 2163 1616 381 1616"/>
-                    </Shape>
-                    <TextLine ID="mz_3-191_l6" HPOS="485" VPOS="765" WIDTH="1660" HEIGHT="58" BASELINE="487 808 2145 804" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-191_l6" HPOS="485" VPOS="765" WIDTH="1660" HEIGHT="58" BASELINE="487 808 2145 804" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="487 808 487 823 2143 823 2145 804 2141 776 2026 765 2024 765 1929 774 1913 765 1911 765 1909 765 1907 765 1905 765 1880 774 1865 765 1863 765 1861 765 1859 765 1789 774 1742 765 1740 765 1677 774 1644 765 1642 765 1640 765 1638 765 1603 774 1512 765 1510 765 1447 774 1416 765 1414 765 1412 765 1410 765 1409 765 1395 774 1315 765 1313 765 1311 765 1309 765 1294 776 1255 767 1253 767 1251 767 1085 776 915 767 913 767 912 767 890 776 670 767 668 767 666 767 639 776 502 767 500 767 498 767 496 767 485 774 487 808"/>
                         </Shape>
@@ -178,12 +160,7 @@
                         </Shape>
                         <String CONTENT="the Aleut missionary Veniaminov or the Altai missionary Verbitzky."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-191_r4" HPOS="381" VPOS="1616" WIDTH="1782" HEIGHT="419" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="381 1616 2163 1616 2163 2035 381 2035"/>
-                    </Shape>
-                    <TextLine ID="mz_3-191_l20" HPOS="491" VPOS="1612" WIDTH="1658" HEIGHT="51" BASELINE="491 1646 2149 1646" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-191_l20" HPOS="491" VPOS="1612" WIDTH="1658" HEIGHT="51" BASELINE="491 1646 2149 1646" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="491 1646 491 1659 2147 1663 2149 1646 2149 1614 491 1612 491 1646"/>
                         </Shape>
@@ -231,12 +208,7 @@
                         </Shape>
                         <String CONTENT="1848, ordered the priests to denounce and extirpate this evil.³"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-191_r5" HPOS="381" VPOS="2035" WIDTH="1782" HEIGHT="531" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="381 2035 2163 2035 2163 2566 381 2566"/>
-                    </Shape>
-                    <TextLine ID="mz_3-191_l27" HPOS="494" VPOS="2022" WIDTH="1657" HEIGHT="56" BASELINE="494 2065 2151 2065" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-191_l27" HPOS="494" VPOS="2022" WIDTH="1657" HEIGHT="56" BASELINE="494 2065 2151 2065" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="494 2065 494 2076 2147 2078 2151 2065 2151 2033 2128 2022 2126 2022 2124 2022 2122 2022 2098 2031 2032 2022 2030 2022 1937 2031 1870 2022 1868 2022 1771 2031 1724 2022 1722 2022 1720 2022 1699 2031 1670 2022 1668 2022 1666 2022 1664 2022 1625 2031 1599 2022 1598 2022 1596 2022 1594 2022 1570 2031 1399 2022 1397 2022 1395 2022 1370 2031 1338 2022 1336 2022 1334 2022 1332 2022 1292 2031 1171 2022 1089 2022 1087 2022 1085 2022 1083 2022 1071 2031 1019 2022 1017 2022 1015 2022 984 2031 927 2022 925 2022 923 2022 894 2031 865 2022 863 2022 861 2022 859 2022 832 2031 773 2022 771 2022 769 2022 740 2031 645 2022 643 2022 641 2022 613 2031 494 2029 494 2065"/>
                         </Shape>
@@ -298,12 +270,7 @@
                         </Shape>
                         <String CONTENT="three assistants, was sent to this country; but all of them were murdered by"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-191_r6" HPOS="381" VPOS="2621" WIDTH="1782" HEIGHT="491" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="381 2621 2163 2621 2163 3112 381 3112"/>
-                    </Shape>
-                    <TextLine ID="mz_3-191_l36" HPOS="489" VPOS="2630" WIDTH="1662" HEIGHT="52" BASELINE="491 2657 2151 2661" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-191_l36" HPOS="489" VPOS="2630" WIDTH="1662" HEIGHT="52" BASELINE="491 2657 2151 2661" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="491 2657 489 2671 2147 2682 2151 2661 2149 2634 491 2630 491 2657"/>
                         </Shape>
@@ -379,8 +346,7 @@
                         </Shape>
                         <String CONTENT="more soot and charcoal-fumes."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

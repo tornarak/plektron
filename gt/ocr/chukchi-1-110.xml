@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-110_r1" HPOS="621" VPOS="597" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="621 597 2399 597 2399 687 621 687"/>
-                    </Shape>
-                    <TextLine ID="mz_1-110_l1" HPOS="1200" VPOS="615" WIDTH="615" HEIGHT="54" BASELINE="1200 649 1815 649" TAGREFS="TYPE_5">
+                <TextBlock ID="text_1-110" HPOS="620" VPOS="610" WIDTH="1782" HEIGHT="2633"><TextLine ID="mz_1-110_l1" HPOS="1200" VPOS="615" WIDTH="615" HEIGHT="54" BASELINE="1200 649 1815 649" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1806 628 1791 615 1217 615 1202 638 1200 649 1200 669 1815 669 1815 649 1811 634 1806 628"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="82"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-110_r2" HPOS="621" VPOS="712" WIDTH="1778" HEIGHT="246" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="621 712 2399 712 2399 958 621 958"/>
-                    </Shape>
-                    <TextLine ID="mz_1-110_l3" HPOS="620" VPOS="712" WIDTH="1775" HEIGHT="63" BASELINE="622 755 2395 760" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-110_l3" HPOS="620" VPOS="712" WIDTH="1775" HEIGHT="63" BASELINE="622 755 2395 760" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="2265 716 2244 714 2222 714 2200 714 2179 714 1973 714 1971 714 1969 714 1945 725 1546 714 1544 714 1542 714 1510 725 1434 712 1432 712 1341 723 1323 712 1321 712 1319 712 1317 712 1315 712 1287 723 1274 712 1271 712 1269 712 1267 712 1265 712 1217 723 1159 712 1157 712 1154 712 1128 723 1102 712 1100 712 1098 712 1096 712 1072 723 1050 712 1048 712 1046 712 1044 712 1018 723 622 721 622 755 620 768 2391 775 2395 760 2395 727 2287 716 2265 716"/>
                         </Shape>
@@ -83,12 +70,7 @@
                         </Shape>
                         <String CONTENT="will use only a lasso or a trap for killing it."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-110_r3" HPOS="621" VPOS="958" WIDTH="1778" HEIGHT="724" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="621 958 2399 958 2399 1682 621 1682"/>
-                    </Shape>
-                    <TextLine ID="mz_1-110_l7" HPOS="730" VPOS="952" WIDTH="1670" HEIGHT="74" BASELINE="732 996 2400 991" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-110_l7" HPOS="730" VPOS="952" WIDTH="1670" HEIGHT="74" BASELINE="732 996 2400 991" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="732 996 732 1026 838 1011 1562 1019 1564 1019 1566 1019 1594 1009 1614 1022 1616 1022 1618 1022 1620 1024 1718 1024 1718 1022 1720 1022 1722 1022 1735 1011 1878 1022 1880 1022 1882 1022 1908 1009 2001 1022 2003 1022 2064 1009 2081 1019 2084 1019 2086 1019 2088 1019 2157 1009 2185 1019 2187 1019 2190 1022 2378 1022 2378 1019 2380 1019 2382 1019 2400 1006 2400 991 2395 963 1774 952 1772 952 730 963 732 996"/>
                         </Shape>
@@ -171,12 +153,7 @@
                         </Shape>
                         <String CONTENT="expression of the heroic tales."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-110_r4" HPOS="621" VPOS="1682" WIDTH="1778" HEIGHT="1432" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="621 1682 2399 1682 2399 3114 621 3114"/>
-                    </Shape>
-                    <TextLine ID="mz_1-110_l19" HPOS="728" VPOS="1673" WIDTH="1674" HEIGHT="61" BASELINE="730 1719 2402 1714" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-110_l19" HPOS="728" VPOS="1673" WIDTH="1674" HEIGHT="61" BASELINE="730 1719 2402 1714" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="730 1719 730 1734 2400 1729 2402 1714 2398 1684 1577 1673 1575 1673 1572 1673 1544 1686 728 1686 730 1719"/>
                         </Shape>
@@ -343,30 +320,19 @@
                         </Shape>
                         <String CONTENT="in walking, and ability to go without sleep for a long time."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-110_r5" HPOS="621" VPOS="3114" WIDTH="1778" HEIGHT="71" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="621 3114 2399 3114 2399 3185 621 3185"/>
-                    </Shape>
-                    <TextLine ID="mz_1-110_l43" HPOS="730" VPOS="3115" WIDTH="1668" HEIGHT="61" BASELINE="732 3156 2398 3150" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-110_l43" HPOS="730" VPOS="3115" WIDTH="1668" HEIGHT="61" BASELINE="732 3156 2398 3150" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="732 3156 732 3176 2395 3169 2398 3150 2393 3119 752 3115 749 3115 747 3115 745 3115 730 3122 732 3156"/>
                         </Shape>
                         <String CONTENT="A small herd is more difficult to handle than a large one;¹ and several"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-110_r6" HPOS="621" VPOS="3196" WIDTH="1778" HEIGHT="57" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="621 3196 2399 3196 2399 3253 621 3253"/>
-                    </Shape>
-                    <TextLine ID="mz_1-110_l44" HPOS="884" VPOS="3195" WIDTH="1256" HEIGHT="48" BASELINE="884 3221 2140 3221" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-110_l44" HPOS="884" VPOS="3195" WIDTH="1256" HEIGHT="48" BASELINE="884 3221 2140 3221" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="884 3221 884 3243 2140 3243 2140 3221 2140 3195 884 3195 884 3221"/>
                         </Shape>
                         <String CONTENT="¹ “A small herd, like a short lasso, slips out of the hands,” says the proverb."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

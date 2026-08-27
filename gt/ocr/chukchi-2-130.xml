@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_2-130_r1" HPOS="362" VPOS="462" WIDTH="1776" HEIGHT="94" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="362 462 2138 462 2138 556 362 556"/>
-                    </Shape>
-                    <TextLine ID="mz_2-130_l1" HPOS="942" VPOS="481" WIDTH="650" HEIGHT="53" BASELINE="944 515 1592 518" TAGREFS="TYPE_4">
+                <TextBlock ID="text_2-130" HPOS="356" VPOS="481" WIDTH="1780" HEIGHT="2622"><TextLine ID="mz_2-130_l1" HPOS="942" VPOS="481" WIDTH="650" HEIGHT="53" BASELINE="944 515 1592 518" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1590 489 1576 483 957 481 944 493 944 515 942 528 1588 534 1592 518 1590 495 1590 489"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="402"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-130_r2" HPOS="362" VPOS="580" WIDTH="1776" HEIGHT="133" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="362 580 2138 580 2138 713 362 713"/>
-                    </Shape>
-                    <TextLine ID="mz_2-130_l3" HPOS="360" VPOS="581" WIDTH="1776" HEIGHT="61" BASELINE="362 626 2136 622" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-130_l3" HPOS="360" VPOS="581" WIDTH="1776" HEIGHT="61" BASELINE="362 626 2136 622" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2083 585 2074 583 2058 591 2036 583 2025 583 2021 583 2001 591 1891 581 1889 581 1888 581 1860 591 1754 581 1752 581 1750 581 1729 591 1715 581 1713 581 1711 581 1709 581 1707 581 1672 593 1551 593 1533 581 1531 581 1529 581 1527 581 1306 591 1275 581 1273 581 1271 581 1269 581 1243 595 1071 595 1055 583 1053 583 1051 583 1049 583 998 593 961 583 959 583 957 583 955 583 924 593 885 583 883 583 881 583 787 593 748 583 746 583 744 583 654 593 630 583 628 583 626 583 581 593 548 583 546 583 544 583 542 583 509 593 360 591 362 626 362 642 2136 636 2136 622 2132 593 2101 585 2083 585"/>
                         </Shape>
@@ -68,12 +56,7 @@
                         </Shape>
                         <String CONTENT="line. Very simple whistles (Fig. 281) made of goose-quill or of wood, with"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-130_r3" HPOS="362" VPOS="1841" WIDTH="1776" HEIGHT="850" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="362 1841 2138 1841 2138 2691 362 2691"/>
-                    </Shape>
-                    <TextLine ID="mz_2-130_l5" HPOS="362" VPOS="1850" WIDTH="1772" HEIGHT="57" BASELINE="364 1883 2134 1887" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-130_l5" HPOS="362" VPOS="1850" WIDTH="1772" HEIGHT="57" BASELINE="364 1883 2134 1887" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="364 1883 362 1899 374 1907 376 1907 377 1907 379 1907 2132 1899 2134 1887 2132 1850 364 1852 364 1883"/>
                         </Shape>
@@ -170,12 +153,7 @@
                         </Shape>
                         <String CONTENT="does not mention the use of such whistles among the natives of Alaska."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-130_r4" HPOS="362" VPOS="2691" WIDTH="1776" HEIGHT="419" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="362 2691 2138 2691 2138 3110 362 3110"/>
-                    </Shape>
-                    <TextLine ID="mz_2-130_l19" HPOS="468" VPOS="2679" WIDTH="1658" HEIGHT="68" BASELINE="470 2718 2126 2727" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-130_l19" HPOS="468" VPOS="2679" WIDTH="1658" HEIGHT="68" BASELINE="470 2718 2126 2727" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="470 2718 468 2729 517 2741 519 2741 799 2733 851 2743 853 2743 1016 2735 2123 2747 2126 2727 2125 2696 1694 2696 1623 2684 1621 2684 1470 2694 1369 2682 1367 2682 1149 2692 1135 2680 1133 2680 1132 2680 1130 2680 912 2690 893 2680 891 2680 889 2680 812 2688 801 2679 799 2679 797 2679 795 2679 748 2688 732 2679 730 2679 728 2679 726 2679 470 2686 470 2718"/>
                         </Shape>
@@ -223,8 +201,7 @@
                         </Shape>
                         <String CONTENT="flippers of which are fastened the pelt of a fox and an iron kettle. A"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

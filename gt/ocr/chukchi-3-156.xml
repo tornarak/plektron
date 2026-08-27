@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_3-156_r1" HPOS="526" VPOS="461" WIDTH="1782" HEIGHT="94" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="526 461 2308 461 2308 555 526 555"/>
-                    </Shape>
-                    <TextLine ID="mz_3-156_l1" HPOS="533" VPOS="474" WIDTH="110" HEIGHT="68" BASELINE="533 515 643 515" TAGREFS="TYPE_4">
+                <TextBlock ID="text_3-156" HPOS="522" VPOS="474" WIDTH="1777" HEIGHT="2635"><TextLine ID="mz_3-156_l1" HPOS="533" VPOS="474" WIDTH="110" HEIGHT="68" BASELINE="533 515 643 515" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="572 478 553 476 551 474 551 474 533 482 533 515 533 527 567 542 569 542 570 542 643 527 643 515 643 486 584 478 572 478"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="BOGORAS, THE CHUKCHEE."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-156_r2" HPOS="526" VPOS="594" WIDTH="1782" HEIGHT="1018" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="526 594 2308 594 2308 1612 526 1612"/>
-                    </Shape>
-                    <TextLine ID="mz_3-156_l3" HPOS="648" VPOS="581" WIDTH="1649" HEIGHT="57" BASELINE="648 622 2297 622" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-156_l3" HPOS="648" VPOS="581" WIDTH="1649" HEIGHT="57" BASELINE="648 622 2297 622" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2052 583 2036 583 2011 593 1968 581 1966 581 1964 581 1962 581 1931 595 1777 595 1755 581 1753 581 1752 581 1750 581 1660 595 1598 595 1580 581 1578 581 1576 581 1574 581 1572 581 1533 593 1510 581 1508 581 1506 581 1412 593 1397 581 1395 581 1393 581 1340 581 1338 581 1336 581 1334 581 1319 593 1258 581 1256 581 1255 581 1219 595 1083 595 1062 581 1060 581 1058 581 1056 581 1054 581 1011 593 958 581 956 581 954 581 921 593 826 581 824 581 822 581 791 593 773 581 771 581 769 581 767 581 648 585 648 622 648 638 2297 638 2297 622 2297 595 2085 595 2052 583 2052 583"/>
                         </Shape>
@@ -173,12 +161,7 @@
                         </Shape>
                         <String CONTENT="years. And the Chukchee call that island a large land.”¹"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-156_r3" HPOS="526" VPOS="1612" WIDTH="1782" HEIGHT="714" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="526 1612 2308 1612 2308 2326 526 2326"/>
-                    </Shape>
-                    <TextLine ID="mz_3-156_l20" HPOS="639" VPOS="1599" WIDTH="1656" HEIGHT="56" BASELINE="639 1640 2295 1640" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-156_l20" HPOS="639" VPOS="1599" WIDTH="1656" HEIGHT="56" BASELINE="639 1640 2295 1640" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="639 1640 639 1655 2293 1655 2295 1640 2293 1610 2219 1599 2217 1599 2215 1599 2188 1609 2120 1599 2118 1599 2116 1599 2091 1609 2007 1599 2005 1599 2003 1599 1978 1609 1915 1599 1913 1599 1911 1599 1876 1609 1812 1599 1810 1599 1808 1599 1781 1609 1752 1599 1750 1599 1748 1599 1746 1599 1705 1610 1539 1610 1518 1599 1516 1599 1514 1599 1512 1599 1473 1609 1381 1599 1379 1599 1377 1599 1348 1609 1272 1599 1270 1599 1268 1599 1241 1609 1177 1599 1175 1599 1173 1599 1138 1609 1087 1599 1085 1599 1083 1599 1044 1609 954 1599 952 1599 951 1599 921 1609 900 1599 898 1599 896 1599 894 1599 865 1609 800 1599 798 1599 797 1599 771 1609 639 1605 639 1640"/>
                         </Shape>
@@ -261,12 +244,7 @@
                         </Shape>
                         <String CONTENT="of the beginning of the eighteenth century."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-156_r4" HPOS="526" VPOS="2326" WIDTH="1782" HEIGHT="238" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="526 2326 2308 2326 2308 2564 526 2564"/>
-                    </Shape>
-                    <TextLine ID="mz_3-156_l32" HPOS="631" VPOS="2318" WIDTH="1664" HEIGHT="62" BASELINE="631 2359 2295 2359" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-156_l32" HPOS="631" VPOS="2318" WIDTH="1664" HEIGHT="62" BASELINE="631 2359 2295 2359" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="631 2359 631 2371 1346 2371 1410 2380 1412 2380 1459 2371 1744 2380 1746 2380 1792 2371 2020 2371 2044 2380 2046 2380 2048 2380 2295 2371 2295 2359 2295 2330 2252 2318 2250 2318 2248 2318 2247 2318 2210 2330 2122 2318 2120 2318 2054 2332 1886 2332 1849 2318 1847 2318 1845 2318 1843 2318 1810 2330 1728 2318 1726 2318 1724 2318 1687 2332 1535 2332 1500 2318 1498 2318 1496 2318 1494 2318 1463 2332 1329 2332 1307 2318 1305 2318 1303 2318 1301 2318 1299 2318 1268 2330 1198 2318 1196 2318 1141 2328 1007 2318 1005 2318 1003 2318 1001 2318 986 2330 951 2318 949 2318 947 2318 884 2330 857 2318 855 2318 853 2318 797 2330 631 2324 631 2359"/>
                         </Shape>
@@ -293,12 +271,7 @@
                         </Shape>
                         <String CONTENT="Russians."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-156_r5" HPOS="526" VPOS="2564" WIDTH="1782" HEIGHT="477" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="526 2564 2308 2564 2308 3041 526 3041"/>
-                    </Shape>
-                    <TextLine ID="mz_3-156_l36" HPOS="635" VPOS="2562" WIDTH="1660" HEIGHT="60" BASELINE="635 2599 2295 2599" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-156_l36" HPOS="635" VPOS="2562" WIDTH="1660" HEIGHT="60" BASELINE="635 2599 2295 2599" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="635 2599 635 2612 1110 2612 1190 2622 1192 2622 1258 2612 1486 2622 1488 2622 1490 2622 1525 2612 1695 2622 1697 2622 1699 2622 1701 2622 1714 2612 1790 2622 1792 2622 2295 2610 2295 2599 2295 2562 635 2562 635 2599"/>
                         </Shape>
@@ -353,12 +326,7 @@
                         </Shape>
                         <String CONTENT="first decades of the eighteenth century: —"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-156_r6" HPOS="526" VPOS="3057" WIDTH="1782" HEIGHT="62" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="526 3057 2308 3057 2308 3119 526 3119"/>
-                    </Shape>
-                    <TextLine ID="mz_3-156_l44" HPOS="545" VPOS="3057" WIDTH="18" HEIGHT="40" BASELINE="545 3080 563 3080" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-156_l44" HPOS="545" VPOS="3057" WIDTH="18" HEIGHT="40" BASELINE="545 3080 563 3080" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="545 3080 549 3097 563 3088 563 3080 563 3057 545 3057 545 3080"/>
                         </Shape>
@@ -378,8 +346,7 @@
                         </Shape>
                         <String CONTENT="² Compare p. 21."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

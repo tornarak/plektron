@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-275_r1" HPOS="342" VPOS="609" WIDTH="1778" HEIGHT="95" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="342 609 2120 609 2120 704 342 704"/>
-                    </Shape>
-                    <TextLine ID="mz_1-275_l1" HPOS="923" VPOS="623" WIDTH="623" HEIGHT="54" BASELINE="925 660 1546 656" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-275" HPOS="340" VPOS="623" WIDTH="1778" HEIGHT="2628"><TextLine ID="mz_1-275_l1" HPOS="923" VPOS="623" WIDTH="623" HEIGHT="54" BASELINE="925 660 1546 656" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1529 623 931 625 923 632 925 660 925 677 1544 673 1546 656 1542 636 1529 623"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="215"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-275_r2" HPOS="342" VPOS="730" WIDTH="1778" HEIGHT="306" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="342 730 2120 730 2120 1036 342 1036"/>
-                    </Shape>
-                    <TextLine ID="mz_1-275_l3" HPOS="457" VPOS="723" WIDTH="1659" HEIGHT="67" BASELINE="459 766 2116 770" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-275_l3" HPOS="457" VPOS="723" WIDTH="1659" HEIGHT="67" BASELINE="459 766 2116 770" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="459 766 457 779 472 790 474 790 477 790 479 790 2114 788 2116 770 2114 738 1852 725 1850 725 1744 736 1713 725 1711 725 1709 725 1707 725 1676 736 1663 725 1661 725 1659 725 1657 725 1655 725 1624 736 1579 725 1577 725 1575 725 1572 725 1546 736 1462 725 1460 725 1458 725 1432 736 1410 725 1408 725 1406 725 1403 725 1356 736 1131 723 1128 723 1126 723 1098 734 1040 723 1038 723 951 736 860 736 847 723 845 723 843 723 840 723 838 723 814 734 734 723 732 723 730 723 706 734 689 723 687 723 685 723 682 723 680 723 659 734 635 723 633 723 630 723 628 723 581 734 459 727 459 766"/>
                         </Shape>
@@ -89,12 +77,7 @@
                         </Shape>
                         <String CONTENT="split wood by means of wedges made of the same material."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-275_r3" HPOS="342" VPOS="1036" WIDTH="1778" HEIGHT="358" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="342 1036 2120 1036 2120 1394 342 1394"/>
-                    </Shape>
-                    <TextLine ID="mz_1-275_l8" HPOS="455" VPOS="1030" WIDTH="1663" HEIGHT="52" BASELINE="455 1067 2118 1067" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-275_l8" HPOS="455" VPOS="1030" WIDTH="1663" HEIGHT="52" BASELINE="455 1067 2118 1067" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="455 1067 455 1082 2118 1082 2118 1067 2118 1037 455 1030 455 1067"/>
                         </Shape>
@@ -135,12 +118,7 @@
                         </Shape>
                         <String CONTENT="sianized natives."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-275_r4" HPOS="342" VPOS="1394" WIDTH="1778" HEIGHT="838" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="342 1394 2120 1394 2120 2232 342 2232"/>
-                    </Shape>
-                    <TextLine ID="mz_1-275_l14" HPOS="455" VPOS="1381" WIDTH="1659" HEIGHT="69" BASELINE="457 1429 2114 1424" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-275_l14" HPOS="455" VPOS="1381" WIDTH="1659" HEIGHT="69" BASELINE="457 1429 2114 1424" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2109 1394 2109 1394 2058 1381 2055 1381 2053 1381 2014 1392 1990 1381 1988 1381 1986 1381 1984 1381 1962 1392 1893 1381 1891 1381 1889 1381 1886 1381 1869 1392 1798 1381 1795 1381 1793 1381 1791 1381 1772 1394 1609 1394 1596 1381 1594 1381 1592 1381 1590 1381 1588 1381 1555 1392 1440 1381 1438 1381 1321 1392 1293 1381 1291 1381 1289 1381 1287 1381 1284 1381 1267 1394 1226 1383 1224 1383 1222 1383 1219 1383 1178 1394 1085 1383 1083 1383 1081 1383 1057 1394 1003 1383 1001 1383 999 1383 996 1383 979 1394 890 1383 888 1383 797 1394 728 1383 726 1383 723 1383 693 1394 682 1383 680 1383 678 1383 676 1383 455 1390 457 1429 457 1446 2109 1450 2114 1424 2112 1416 2109 1394"/>
                         </Shape>
@@ -237,12 +215,7 @@
                         </Shape>
                         <String CONTENT="iron saw of native make is also used for this purpose (Fig. 137)."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-275_r5" HPOS="342" VPOS="2232" WIDTH="1778" HEIGHT="656" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="342 2232 2120 2232 2120 2888 342 2888"/>
-                    </Shape>
-                    <TextLine ID="mz_1-275_l28" HPOS="453" VPOS="2221" WIDTH="671" HEIGHT="69" BASELINE="455 2269 1124 2262" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-275_l28" HPOS="453" VPOS="2221" WIDTH="671" HEIGHT="69" BASELINE="455 2269 1124 2262" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="455 2269 455 2279 674 2290 676 2290 782 2279 1107 2286 1109 2286 1111 2286 1113 2286 1124 2275 1124 2262 1118 2223 734 2232 702 2221 700 2221 697 2221 628 2234 591 2223 589 2223 587 2223 522 2234 461 2223 459 2223 457 2223 455 2223 455 2225 453 2225 455 2269"/>
                         </Shape>
@@ -318,12 +291,7 @@
                         </Shape>
                         <String CONTENT="of human cleverness."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-275_r6" HPOS="342" VPOS="2888" WIDTH="1778" HEIGHT="241" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="342 2888 2120 2888 2120 3129 342 3129"/>
-                    </Shape>
-                    <TextLine ID="mz_1-275_l39" HPOS="451" VPOS="2870" WIDTH="1665" HEIGHT="74" BASELINE="453 2929 2116 2914" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-275_l39" HPOS="451" VPOS="2870" WIDTH="1665" HEIGHT="74" BASELINE="453 2929 2116 2914" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1986 2870 1912 2881 1891 2870 1889 2870 1886 2870 1884 2870 1882 2870 1867 2883 1705 2873 1702 2873 1583 2886 1403 2875 1401 2875 1341 2888 1172 2877 1170 2877 1107 2890 1083 2879 1081 2879 1079 2879 981 2890 929 2879 927 2879 925 2879 923 2879 910 2890 897 2881 895 2881 892 2881 890 2881 769 2892 715 2881 713 2881 637 2896 509 2896 490 2883 487 2883 485 2883 483 2883 481 2883 451 2892 453 2929 453 2944 2114 2938 2116 2914 2112 2883 1988 2870 1986 2870"/>
                         </Shape>
@@ -350,30 +318,19 @@
                         </Shape>
                         <String CONTENT="clever, with a face “like that of a blacksmith.”"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-275_r7" HPOS="342" VPOS="3129" WIDTH="1778" HEIGHT="60" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="342 3129 2120 3129 2120 3189 342 3189"/>
-                    </Shape>
-                    <TextLine ID="mz_1-275_l43" HPOS="457" VPOS="3113" WIDTH="1659" HEIGHT="67" BASELINE="459 3165 2116 3154" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-275_l43" HPOS="457" VPOS="3113" WIDTH="1659" HEIGHT="67" BASELINE="459 3165 2116 3154" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="459 3165 459 3180 2116 3171 2116 3154 2114 3124 2094 3113 2092 3113 2090 3113 2088 3113 2001 3124 1977 3113 1975 3113 1973 3113 1971 3113 1969 3113 1954 3124 1886 3113 1884 3113 1778 3128 1635 3128 1611 3115 1609 3115 1607 3115 1605 3115 1603 3115 1590 3128 1488 3128 1455 3115 1453 3115 1451 3115 1449 3115 1410 3128 1245 3117 1243 3117 1191 3128 1165 3117 1163 3117 1161 3117 1159 3117 1115 3132 979 3132 966 3119 964 3119 962 3119 823 3119 821 3119 819 3119 784 3132 713 3122 710 3122 659 3132 633 3122 630 3122 628 3122 457 3128 459 3165"/>
                         </Shape>
                         <String CONTENT="The Maritime Chukchee on the Pacific side are better acquainted with"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-275_r8" HPOS="342" VPOS="3198" WIDTH="1778" HEIGHT="60" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="342 3198 2120 3198 2120 3258 342 3258"/>
-                    </Shape>
-                    <TextLine ID="mz_1-275_l44" HPOS="918" VPOS="3204" WIDTH="633" HEIGHT="47" BASELINE="918 3230 1551 3230" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-275_l44" HPOS="918" VPOS="3204" WIDTH="633" HEIGHT="47" BASELINE="918 3230 1551 3230" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="918 3230 918 3251 1551 3251 1551 3230 1551 3204 918 3204 918 3230"/>
                         </Shape>
                         <String CONTENT="¹ Bogoras, Chukchee Materials, p. 324."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

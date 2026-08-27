@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-354_r1" HPOS="640" VPOS="600" WIDTH="1778" HEIGHT="95" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="640 600 2418 600 2418 695 640 695"/>
-                    </Shape>
-                    <TextLine ID="mz_1-354_l1" HPOS="1217" VPOS="619" WIDTH="622" HEIGHT="54" BASELINE="1219 651 1839 658" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-354" HPOS="639" VPOS="619" WIDTH="1774" HEIGHT="2624"><TextLine ID="mz_1-354_l1" HPOS="1217" VPOS="619" WIDTH="622" HEIGHT="54" BASELINE="1219 651 1839 658" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1828 621 1239 619 1222 640 1219 651 1217 666 1834 673 1839 658 1837 636 1828 621"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="272"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-354_r2" HPOS="640" VPOS="721" WIDTH="1778" HEIGHT="130" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="640 721 2418 721 2418 851 640 851"/>
-                    </Shape>
-                    <TextLine ID="mz_1-354_l3" HPOS="749" VPOS="718" WIDTH="1659" HEIGHT="72" BASELINE="752 766 2408 762" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-354_l3" HPOS="749" VPOS="718" WIDTH="1659" HEIGHT="72" BASELINE="752 766 2408 762" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2395 755 2380 729 2179 718 2177 718 2090 729 2060 718 2058 718 2055 718 2053 718 2012 729 1980 718 1977 718 1975 718 1973 718 1971 718 1956 731 1867 731 1808 718 1806 718 1756 729 1728 718 1726 718 1724 718 1663 729 1629 718 1627 718 1624 718 1622 718 1577 731 1549 721 1546 721 1544 721 1542 721 1516 731 1503 721 1501 721 1499 721 1497 721 1347 731 1254 721 1252 721 1176 731 1144 721 1141 721 1139 721 1137 721 1111 731 1016 721 1014 721 1012 721 981 734 804 734 773 721 771 721 769 721 767 721 765 721 749 729 752 766 752 777 864 790 866 790 957 779 1685 788 1687 788 1750 777 1999 788 2001 790 2101 790 2101 788 2103 788 2105 788 2118 777 2144 788 2146 788 2148 788 2252 777 2337 788 2339 788 2341 788 2343 788 2356 777 2385 788 2387 788 2389 788 2391 788 2393 788 2408 775 2408 762 2404 731 2395 729 2395 755"/>
                         </Shape>
@@ -68,12 +56,7 @@
                         </Shape>
                         <String CONTENT="number of small wooden hoops of various sizes (Fig. 197, a). The hoops"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-354_r3" HPOS="640" VPOS="2808" WIDTH="1778" HEIGHT="442" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="640 2808 2418 2808 2418 3250 640 3250"/>
-                    </Shape>
-                    <TextLine ID="mz_1-354_l5" HPOS="639" VPOS="2810" WIDTH="1774" HEIGHT="60" BASELINE="641 2855 2413 2849" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-354_l5" HPOS="639" VPOS="2810" WIDTH="1774" HEIGHT="60" BASELINE="641 2855 2413 2849" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2400 2816 1254 2810 1252 2810 1250 2810 1226 2821 762 2812 760 2812 639 2823 641 2855 641 2870 2411 2864 2413 2849 2408 2823 2400 2816"/>
                         </Shape>
@@ -121,8 +104,7 @@
                         </Shape>
                         <String CONTENT="the next party begins to play. After all the hoops have been “killed,” the"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-131_r1" HPOS="390" VPOS="611" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="390 611 2168 611 2168 701 390 701"/>
-                    </Shape>
-                    <TextLine ID="mz_1-131_l1" HPOS="966" VPOS="625" WIDTH="624" HEIGHT="54" BASELINE="968 658 1590 662" TAGREFS="TYPE_5">
+                <TextBlock ID="text_1-131" HPOS="388" VPOS="625" WIDTH="1793" HEIGHT="2626"><TextLine ID="mz_1-131_l1" HPOS="966" VPOS="625" WIDTH="624" HEIGHT="54" BASELINE="968 658 1590 662" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1577 625 983 625 970 645 968 658 966 675 1585 679 1590 662 1588 636 1577 625"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="99"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-131_r2" HPOS="390" VPOS="726" WIDTH="1778" HEIGHT="1388" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="390 726 2168 726 2168 2114 390 2114"/>
-                    </Shape>
-                    <TextLine ID="mz_1-131_l3" HPOS="390" VPOS="725" WIDTH="1778" HEIGHT="61" BASELINE="392 773 2168 768" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-131_l3" HPOS="390" VPOS="725" WIDTH="1778" HEIGHT="61" BASELINE="392 773 2168 768" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="680 727 620 738 583 731 563 731 544 731 526 738 511 734 498 734 477 734 455 734 433 736 429 736 390 740 392 773 392 786 2166 781 2168 768 2164 738 2109 725 2107 725 2105 725 2084 736 1934 725 1932 725 1930 725 1928 725 1910 736 1886 725 1884 725 1882 725 1806 736 1769 725 1767 725 1765 725 1763 725 1739 736 1713 725 1711 725 1709 725 1566 736 1505 725 1503 725 1449 736 1332 725 1330 725 1265 738 682 727 680 727"/>
                         </Shape>
@@ -216,12 +203,7 @@
                         </Shape>
                         <String CONTENT="in which the dogs are still attached in the old way (Plate VII, Fig. 1)."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-131_r3" HPOS="390" VPOS="2114" WIDTH="1778" HEIGHT="239" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="390 2114 2168 2114 2168 2353 390 2353"/>
-                    </Shape>
-                    <TextLine ID="mz_1-131_l26" HPOS="503" VPOS="2104" WIDTH="1665" HEIGHT="63" BASELINE="505 2152 2168 2145" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-131_l26" HPOS="503" VPOS="2104" WIDTH="1665" HEIGHT="63" BASELINE="505 2152 2168 2145" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="505 2152 505 2167 2166 2160 2168 2145 2166 2117 2133 2104 2131 2104 2129 2104 2127 2104 2125 2104 2105 2117 1681 2117 1657 2104 1655 2104 1653 2104 1650 2104 1605 2117 1592 2106 1590 2106 1588 2106 1585 2106 1583 2106 1553 2117 1477 2106 1475 2106 1473 2106 1445 2117 942 2108 940 2108 938 2108 936 2108 923 2119 901 2108 899 2108 897 2108 895 2108 864 2119 836 2108 834 2108 832 2108 734 2119 659 2108 656 2108 559 2119 522 2108 520 2108 518 2108 516 2108 513 2108 503 2117 505 2152"/>
                         </Shape>
@@ -248,12 +230,7 @@
                         </Shape>
                         <String CONTENT="of the Eskimo sledge described by Boas.⁴"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-131_r4" HPOS="390" VPOS="2353" WIDTH="1778" HEIGHT="355" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="390 2353 2168 2353 2168 2708 390 2708"/>
-                    </Shape>
-                    <TextLine ID="mz_1-131_l30" HPOS="500" VPOS="2357" WIDTH="1670" HEIGHT="50" BASELINE="500 2390 2170 2390" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-131_l30" HPOS="500" VPOS="2357" WIDTH="1670" HEIGHT="50" BASELINE="500 2390 2170 2390" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="500 2390 500 2407 2170 2407 2170 2390 2170 2360 500 2357 500 2390"/>
                         </Shape>
@@ -294,12 +271,7 @@
                         </Shape>
                         <String CONTENT="the Lena and Indighirka."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-131_r5" HPOS="390" VPOS="2708" WIDTH="1778" HEIGHT="249" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="390 2708 2168 2708 2168 2957 390 2957"/>
-                    </Shape>
-                    <TextLine ID="mz_1-131_l36" HPOS="498" VPOS="2704" WIDTH="1672" HEIGHT="63" BASELINE="500 2749 2170 2745" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-131_l36" HPOS="498" VPOS="2704" WIDTH="1672" HEIGHT="63" BASELINE="500 2749 2170 2745" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="500 2749 500 2767 2168 2762 2170 2745 2166 2715 1988 2704 1986 2704 1925 2715 1902 2704 1899 2704 1897 2704 1895 2704 1893 2704 1878 2717 1655 2717 1549 2704 1546 2704 1494 2715 1460 2704 1458 2704 1455 2704 1453 2704 1451 2704 1438 2715 1410 2704 1408 2704 1406 2704 1284 2717 1269 2706 1267 2706 1265 2706 1263 2706 1007 2717 960 2706 957 2706 955 2706 953 2706 931 2717 778 2706 775 2706 773 2706 745 2717 708 2706 706 2706 704 2706 630 2717 511 2706 509 2706 507 2706 505 2706 505 2708 498 2712 500 2749"/>
                         </Shape>
@@ -326,12 +298,7 @@
                         </Shape>
                         <String CONTENT="has been said, was similar in shape to the Chukchee reindeer-sledge; and the"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-131_r6" HPOS="390" VPOS="2995" WIDTH="1778" HEIGHT="260" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="390 2995 2168 2995 2168 3255 390 3255"/>
-                    </Shape>
-                    <TextLine ID="mz_1-131_l40" HPOS="1739" VPOS="2990" WIDTH="280" HEIGHT="58" BASELINE="1741 3018 2019 3022" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-131_l40" HPOS="1739" VPOS="2990" WIDTH="280" HEIGHT="58" BASELINE="1741 3018 2019 3022" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1741 3018 1739 3031 1889 3048 1891 3048 2016 3035 2019 3022 2019 2994 1741 2990 1741 3018"/>
                         </Shape>
@@ -386,8 +353,7 @@
                         </Shape>
                         <String CONTENT="sledges of this shape are or were manufactured by Eskimo on the American shore."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

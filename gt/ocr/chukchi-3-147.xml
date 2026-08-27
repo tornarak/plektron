@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_3-147_r1" HPOS="366" VPOS="453" WIDTH="1782" HEIGHT="94" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="366 453 2148 453 2148 547 366 547"/>
-                    </Shape>
-                    <TextLine ID="mz_3-147_l1" HPOS="941" VPOS="466" WIDTH="614" HEIGHT="51" BASELINE="943 500 1555 504" TAGREFS="TYPE_4">
+                <TextBlock ID="text_3-147" HPOS="362" VPOS="466" WIDTH="1773" HEIGHT="2622"><TextLine ID="mz_3-147_l1" HPOS="941" VPOS="466" WIDTH="614" HEIGHT="51" BASELINE="943 500 1555 504" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1547 468 943 466 943 500 941 513 1551 517 1555 504 1553 492 1547 468"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="681"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-147_r2" HPOS="366" VPOS="570" WIDTH="1782" HEIGHT="1380" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="366 570 2148 570 2148 1950 366 1950"/>
-                    </Shape>
-                    <TextLine ID="mz_3-147_l3" HPOS="471" VPOS="566" WIDTH="1661" HEIGHT="58" BASELINE="473 611 2132 607" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-147_l3" HPOS="471" VPOS="566" WIDTH="1661" HEIGHT="58" BASELINE="473 611 2132 607" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="473 611 473 624 2130 620 2132 607 2130 578 2087 566 2085 566 2083 566 2081 566 2052 576 2005 566 2003 566 1933 578 1792 578 1779 566 1777 566 1775 566 1773 566 1771 566 1738 578 1553 578 1539 566 1537 566 1535 566 1533 566 1397 576 1301 566 1299 566 1297 566 1272 578 1225 568 1223 568 1221 568 1192 578 1114 568 1112 568 1110 568 1079 578 471 576 473 611"/>
                         </Shape>
@@ -215,12 +203,7 @@
                         </Shape>
                         <String CONTENT="this river Chiukhcha flows directly to the sea, and its mouth lies on this side"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-147_r3" HPOS="366" VPOS="1973" WIDTH="1782" HEIGHT="1127" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="366 1973 2148 1973 2148 3100 366 3100"/>
-                    </Shape>
-                    <TextLine ID="mz_3-147_l26" HPOS="372" VPOS="1977" WIDTH="1586" HEIGHT="47" BASELINE="374 2006 1958 2002" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-147_l26" HPOS="372" VPOS="1977" WIDTH="1586" HEIGHT="47" BASELINE="374 2006 1958 2002" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="374 2006 374 2024 1956 2020 1958 2002 1952 1977 372 1979 374 2006"/>
                         </Shape>
@@ -394,8 +377,7 @@
                         </Shape>
                         <String CONTENT="while the warriors of the Maritime Chukchee had to walk."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

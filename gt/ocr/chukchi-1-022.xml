@@ -23,31 +23,20 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-022_r1" HPOS="724" VPOS="635" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="724 635 2502 635 2502 725 724 725"/>
-                    </Shape>
-                    <TextLine ID="mz_1-022_l1" HPOS="1302" VPOS="645" WIDTH="621" HEIGHT="54" BASELINE="1304 679 1923 684" TAGREFS="TYPE_3">
+                <TextBlock ID="text_1-022" HPOS="723" VPOS="645" WIDTH="1776" HEIGHT="524"><TextLine ID="mz_1-022_l1" HPOS="1302" VPOS="645" WIDTH="621" HEIGHT="54" BASELINE="1304 679 1923 684" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="1910 645 1323 645 1306 666 1304 679 1302 695 1919 699 1923 684 1921 666 1910 645"/>
                         </Shape>
                         <String CONTENT="2 BOGORAS, THE CHUKCHEE."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-022_r2" HPOS="724" VPOS="750" WIDTH="1778" HEIGHT="186" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="724 750 2502 750 2502 936 724 936"/>
-                    </Shape>
-                    <TextLine ID="mz_1-022_l2" HPOS="836" VPOS="742" WIDTH="1663" HEIGHT="65" BASELINE="838 792 2499 786" TAGREFS="TYPE_3">
+<TextLine ID="mz_1-022_l2" HPOS="836" VPOS="742" WIDTH="1663" HEIGHT="65" BASELINE="838 792 2499 786" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="2484 751 2452 744 2439 744 2434 744 2417 753 2395 744 2395 744 2380 744 2361 755 2255 755 2239 742 2237 742 2235 742 2233 742 2034 753 2008 742 2006 742 2003 742 2001 742 1971 753 1947 742 1945 742 1943 742 1941 742 1906 755 1878 744 1876 744 1873 744 1871 744 1832 755 1778 744 1776 744 1720 755 1707 744 1705 744 1702 744 1700 744 1605 755 1581 744 1579 744 1577 744 1438 755 1410 744 1408 744 1406 744 1347 757 1313 747 1310 747 1308 747 1215 757 1189 747 1187 747 1185 747 836 751 838 792 838 807 2497 801 2499 786 2497 779 2484 751"/>
                         </Shape>
@@ -67,12 +56,7 @@
                         </Shape>
                         <String CONTENT="will be stated later on in this account."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-022_r3" HPOS="724" VPOS="936" WIDTH="1778" HEIGHT="239" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="724 936 2502 936 2502 1175 724 1175"/>
-                    </Shape>
-                    <TextLine ID="mz_1-022_l5" HPOS="840" VPOS="928" WIDTH="1657" HEIGHT="74" BASELINE="843 972 2497 963" TAGREFS="TYPE_3">
+<TextLine ID="mz_1-022_l5" HPOS="840" VPOS="928" WIDTH="1657" HEIGHT="74" BASELINE="843 972 2497 963" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="843 972 843 1002 936 985 1505 985 1551 998 1553 998 1555 998 1557 998 1559 998 1577 985 1661 993 1663 993 1666 993 1668 993 1668 991 1679 983 2034 996 2036 996 2038 996 2040 996 2053 985 2380 993 2382 993 2385 993 2432 980 2478 991 2480 991 2482 991 2484 991 2486 991 2497 980 2497 963 2493 941 2207 941 2185 928 2103 941 2084 928 2062 944 1971 944 1954 931 1772 931 1744 944 1696 931 1666 946 1640 933 1579 946 1527 933 1501 946 1462 933 1432 946 840 941 843 972"/>
                         </Shape>
@@ -99,8 +83,7 @@
                         </Shape>
                         <String CONTENT="from several photographs in my collection."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

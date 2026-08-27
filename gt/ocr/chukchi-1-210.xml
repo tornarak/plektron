@@ -23,20 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-210_r1" HPOS="551" VPOS="641" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="551 641 2329 641 2329 731 551 731"/>
-                    </Shape>
-                    <TextLine ID="mz_1-210_l1" HPOS="1137" VPOS="664" WIDTH="615" HEIGHT="54" BASELINE="1137 697 1752 697" TAGREFS="TYPE_3">
+                <TextBlock ID="text_1-210" HPOS="559" VPOS="656" WIDTH="1769" HEIGHT="1130"><TextLine ID="mz_1-210_l1" HPOS="1137" VPOS="664" WIDTH="615" HEIGHT="54" BASELINE="1137 697 1752 697" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="1744 682 1726 664 1137 664 1137 697 1137 718 1752 718 1752 697 1748 686 1744 682"/>
                         </Shape>
@@ -49,12 +43,7 @@
                         </Shape>
                         <String CONTENT="168"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-210_r2" HPOS="551" VPOS="756" WIDTH="1778" HEIGHT="1048" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="551 756 2329 756 2329 1804 551 1804"/>
-                    </Shape>
-                    <TextLine ID="mz_1-210_l3" HPOS="559" VPOS="764" WIDTH="1769" HEIGHT="61" BASELINE="559 807 2328 807" TAGREFS="TYPE_3">
+<TextLine ID="mz_1-210_l3" HPOS="559" VPOS="764" WIDTH="1769" HEIGHT="61" BASELINE="559 807 2328 807" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="559 807 559 825 2328 825 2328 807 2328 777 2272 764 2270 764 2216 775 2071 764 2068 764 2066 764 2036 775 1982 764 1980 764 1917 775 1886 764 1884 764 1882 764 1880 764 1850 775 1746 764 1744 764 1741 764 1709 775 559 766 559 807"/>
                         </Shape>
@@ -172,8 +161,7 @@
                         </Shape>
                         <String CONTENT="more nearly with the probable facts."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

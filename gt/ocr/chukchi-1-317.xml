@@ -23,20 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-317_r1" HPOS="423" VPOS="609" WIDTH="1778" HEIGHT="95" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="423 609 2201 609 2201 704 423 704"/>
-                    </Shape>
-                    <TextLine ID="mz_1-317_l1" HPOS="1001" VPOS="628" WIDTH="619" HEIGHT="51" BASELINE="1001 660 1620 660" TAGREFS="TYPE_3">
+                <TextBlock ID="text_1-317" HPOS="416" VPOS="628" WIDTH="1780" HEIGHT="2626"><TextLine ID="mz_1-317_l1" HPOS="1001" VPOS="628" WIDTH="619" HEIGHT="51" BASELINE="1001 660 1620 660" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="1614 628 1001 628 1001 660 1001 679 1620 679 1620 660 1620 632 1614 628"/>
                         </Shape>
@@ -49,12 +43,7 @@
                         </Shape>
                         <String CONTENT="247"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-317_r2" HPOS="423" VPOS="730" WIDTH="1778" HEIGHT="491" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="423 730 2201 730 2201 1221 423 1221"/>
-                    </Shape>
-                    <TextLine ID="mz_1-317_l3" HPOS="529" VPOS="723" WIDTH="1658" HEIGHT="67" BASELINE="531 773 2187 766" TAGREFS="TYPE_3">
+<TextLine ID="mz_1-317_l3" HPOS="529" VPOS="723" WIDTH="1658" HEIGHT="67" BASELINE="531 773 2187 766" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="2179 734 2120 723 2118 723 2116 723 2086 734 1969 723 1967 723 1915 734 1785 723 1782 723 1681 734 1648 723 1646 723 1644 723 1572 738 1245 738 1230 725 1228 725 1226 725 1224 725 1042 740 814 740 799 727 797 727 795 727 793 727 791 727 762 738 749 727 747 727 745 727 743 727 529 734 531 773 531 790 2185 790 2187 766 2185 753 2179 734"/>
                         </Shape>
@@ -109,12 +98,7 @@
                         </Shape>
                         <String CONTENT="suit as underclothing."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-317_r3" HPOS="423" VPOS="1221" WIDTH="1778" HEIGHT="2037" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="423 1221 2201 1221 2201 3258 423 3258"/>
-                    </Shape>
-                    <TextLine ID="mz_1-317_l11" HPOS="507" VPOS="1214" WIDTH="481" HEIGHT="54" BASELINE="507 1251 988 1251" TAGREFS="TYPE_3">
+<TextLine ID="mz_1-317_l11" HPOS="507" VPOS="1214" WIDTH="481" HEIGHT="54" BASELINE="507 1251 988 1251" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="507 1251 507 1268 988 1268 988 1251 988 1221 507 1214 507 1251"/>
                         </Shape>
@@ -351,8 +335,7 @@
                         </Shape>
                         <String CONTENT="imitation of the deity. At all other times these coats are kept in bags."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

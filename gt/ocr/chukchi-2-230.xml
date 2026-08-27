@@ -23,23 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-Other"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_6" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_2-230_r1" HPOS="360" VPOS="463" WIDTH="1776" HEIGHT="90" TAGREFS="TYPE_5">
-<Shape>
-                        <Polygon POINTS="360 463 2136 463 2136 553 360 553"/>
-                    </Shape>
-                    <TextLine ID="mz_2-230_l1" HPOS="385" VPOS="477" WIDTH="104" HEIGHT="45" BASELINE="387 509 489 505" TAGREFS="TYPE_6">
+                <TextBlock ID="text_2-230" HPOS="358" VPOS="473" WIDTH="1786" HEIGHT="2627"><TextLine ID="mz_2-230_l1" HPOS="385" VPOS="477" WIDTH="104" HEIGHT="45" BASELINE="387 509 489 505" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="385 487 387 509 387 522 489 518 489 505 483 477 391 479 385 487"/>
                         </Shape>
@@ -52,12 +43,7 @@
                         </Shape>
                         <String CONTENT="BOGORAS, THE CHUKCHEE."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-230_r2" HPOS="360" VPOS="578" WIDTH="1776" HEIGHT="180" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="360 578 2136 578 2136 758 360 758"/>
-                    </Shape>
-                    <TextLine ID="mz_2-230_l3" HPOS="379" VPOS="573" WIDTH="1763" HEIGHT="55" BASELINE="381 616 2142 612" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-230_l3" HPOS="379" VPOS="573" WIDTH="1763" HEIGHT="55" BASELINE="381 616 2142 612" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="2123 577 2103 577 2083 577 2064 575 2044 575 2025 575 2005 575 1991 573 381 579 379 603 381 616 381 628 2140 624 2142 612 2136 577 2123 577"/>
                         </Shape>
@@ -77,23 +63,13 @@
                         </Shape>
                         <String CONTENT="cannot find the man among the pebbles on the shore."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-230_r3" HPOS="360" VPOS="774" WIDTH="1776" HEIGHT="68" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="360 774 2136 774 2136 842 360 842"/>
-                    </Shape>
-                    <TextLine ID="mz_2-230_l6" HPOS="732" VPOS="787" WIDTH="1410" HEIGHT="45" BASELINE="734 816 2142 820" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-230_l6" HPOS="732" VPOS="787" WIDTH="1410" HEIGHT="45" BASELINE="734 816 2142 820" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="734 816 732 828 2138 832 2142 820 2140 791 734 787 734 816"/>
                         </Shape>
                         <String CONTENT="Told by Aiñanwaˊt, a Reindeer Chukchee man, in the Kolyma Country, 1895."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-230_r4" HPOS="360" VPOS="858" WIDTH="1776" HEIGHT="206" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="360 858 2136 858 2136 1064 360 1064"/>
-                    </Shape>
-                    <TextLine ID="mz_2-230_l7" HPOS="485" VPOS="861" WIDTH="1655" HEIGHT="61" BASELINE="485 910 1032 902 2140 908" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-230_l7" HPOS="485" VPOS="861" WIDTH="1655" HEIGHT="61" BASELINE="485 910 1032 902 2140 908" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="485 910 485 922 2138 920 2140 908 2136 869 2048 875 2003 863 2001 863 1999 863 1997 863 1972 875 1886 863 1884 863 1829 875 1782 863 1780 863 1778 863 1776 863 1739 875 1701 863 1700 863 1698 863 1696 863 1645 875 1582 863 1580 863 1578 863 1535 875 1435 863 1433 863 1302 875 1226 863 1224 863 1155 875 1114 863 1112 863 1110 863 1059 873 991 863 989 863 987 863 944 875 928 863 926 863 924 863 836 863 834 863 832 863 801 875 589 861 587 861 585 861 583 861 569 873 519 863 517 863 515 863 485 873 485 910"/>
                         </Shape>
@@ -113,34 +89,19 @@
                         </Shape>
                         <String CONTENT="inside of it, the other keˊlet would not be able to find me."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-230_r5" HPOS="360" VPOS="1067" WIDTH="1776" HEIGHT="73" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="360 1067 2136 1067 2136 1140 360 1140"/>
-                    </Shape>
-                    <TextLine ID="mz_2-230_l10" HPOS="1094" VPOS="1073" WIDTH="1046" HEIGHT="58" BASELINE="1096 1100 2140 1108" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-230_l10" HPOS="1094" VPOS="1073" WIDTH="1046" HEIGHT="58" BASELINE="1096 1100 2140 1108" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="1096 1100 1094 1112 1139 1126 1141 1126 1143 1126 1190 1116 1294 1126 1296 1126 1298 1126 1322 1116 1361 1128 1363 1128 1365 1128 1425 1118 1439 1128 1441 1128 1443 1128 1445 1129 1535 1129 1535 1128 1537 1128 1539 1128 1539 1126 1549 1118 1750 1129 1752 1129 1936 1122 1946 1129 1946 1131 1948 1131 1950 1131 1952 1131 2138 1120 2140 1108 2140 1081 1096 1073 1096 1100"/>
                         </Shape>
                         <String CONTENT="Told by Qoˊtêrg̣ɪn (man) in the village of Mɪˊs˙qᴀn, 1900."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-230_r6" HPOS="360" VPOS="1172" WIDTH="1776" HEIGHT="76" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="360 1172 2136 1172 2136 1248 360 1248"/>
-                    </Shape>
-                    <TextLine ID="mz_2-230_l11" HPOS="470" VPOS="1182" WIDTH="1572" HEIGHT="47" BASELINE="470 1214 2042 1214" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-230_l11" HPOS="470" VPOS="1182" WIDTH="1572" HEIGHT="47" BASELINE="470 1214 2042 1214" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="470 1214 470 1225 2040 1229 2042 1214 2042 1182 470 1182 470 1214"/>
                         </Shape>
                         <String CONTENT="6. INCANTATION USED TO PROTECT THE HERD FROM THE HOOF-DISEASE."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-230_r7" HPOS="360" VPOS="1267" WIDTH="1776" HEIGHT="135" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="360 1267 2136 1267 2136 1402 360 1402"/>
-                    </Shape>
-                    <TextLine ID="mz_2-230_l12" HPOS="481" VPOS="1270" WIDTH="1659" HEIGHT="59" BASELINE="481 1316 2140 1316" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-230_l12" HPOS="481" VPOS="1270" WIDTH="1659" HEIGHT="59" BASELINE="481 1316 2140 1316" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="481 1316 481 1325 2138 1329 2140 1316 2140 1280 2111 1270 2109 1270 2107 1270 2105 1270 2103 1270 2087 1280 2003 1270 2001 1270 1999 1270 1997 1270 1982 1280 1872 1270 1870 1270 1868 1270 1866 1270 1850 1282 1748 1282 1723 1270 1721 1270 1719 1270 1647 1280 1619 1270 1617 1270 1615 1270 1613 1270 1592 1280 1525 1270 1523 1270 1521 1270 1519 1270 1506 1282 1419 1282 1343 1270 1341 1270 1339 1270 1337 1270 1322 1280 1171 1270 1169 1270 1167 1270 1128 1280 1055 1270 1053 1270 918 1280 851 1270 850 1270 804 1280 775 1270 773 1270 771 1270 769 1270 767 1270 754 1282 671 1282 646 1270 644 1270 642 1270 640 1270 607 1280 585 1270 583 1270 581 1270 524 1280 499 1270 497 1270 495 1270 493 1270 491 1270 481 1276 481 1316"/>
                         </Shape>
@@ -153,23 +114,13 @@
                         </Shape>
                         <String CONTENT="my herd, and then turn the key. How can he (that is, the keˊlᴇ) enter there?"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-230_r8" HPOS="360" VPOS="1440" WIDTH="1776" HEIGHT="87" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="360 1440 2136 1440 2136 1527 360 1527"/>
-                    </Shape>
-                    <TextLine ID="mz_2-230_l14" HPOS="419" VPOS="1445" WIDTH="1680" HEIGHT="60" BASELINE="419 1494 605 1486 2099 1488" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-230_l14" HPOS="419" VPOS="1445" WIDTH="1680" HEIGHT="60" BASELINE="419 1494 605 1486 2099 1488" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="419 1494 419 1505 2097 1498 2099 1488 2097 1457 1899 1445 1897 1445 1833 1455 998 1445 996 1445 994 1445 992 1445 979 1457 789 1457 522 1445 520 1445 419 1455 419 1494"/>
                         </Shape>
                         <String CONTENT="7. INCANTATION AGAINST ATTACK by WOLVES, TO BE USED BY A HERDSMAN."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-230_r9" HPOS="360" VPOS="1546" WIDTH="1776" HEIGHT="184" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="360 1546 2136 1546 2136 1730 360 1730"/>
-                    </Shape>
-                    <TextLine ID="mz_2-230_l15" HPOS="481" VPOS="1552" WIDTH="1657" HEIGHT="49" BASELINE="483 1588 2138 1584" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-230_l15" HPOS="481" VPOS="1552" WIDTH="1657" HEIGHT="49" BASELINE="483 1588 2138 1584" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="483 1588 483 1601 2138 1601 2138 1584 2134 1552 481 1552 483 1588"/>
                         </Shape>
@@ -189,34 +140,19 @@
                         </Shape>
                         <String CONTENT="directions, and frighten the wolves. Thus they cannot approach the herd."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-230_r10" HPOS="360" VPOS="1749" WIDTH="1776" HEIGHT="59" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="360 1749 2136 1749 2136 1808 360 1808"/>
-                    </Shape>
-                    <TextLine ID="mz_2-230_l18" HPOS="979" VPOS="1746" WIDTH="1153" HEIGHT="59" BASELINE="981 1780 2132 1786" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-230_l18" HPOS="979" VPOS="1746" WIDTH="1153" HEIGHT="59" BASELINE="981 1780 2132 1786" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="981 1780 979 1793 1130 1805 1132 1805 2130 1801 2132 1786 2130 1758 1795 1758 1748 1746 1747 1746 981 1750 981 1780"/>
                         </Shape>
                         <String CONTENT="Nos. 6 &amp; 7 told by Scratching-Woman at Mariinsky Post, 1900."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-230_r11" HPOS="360" VPOS="1841" WIDTH="1776" HEIGHT="84" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="360 1841 2136 1841 2136 1925 360 1925"/>
-                    </Shape>
-                    <TextLine ID="mz_2-230_l19" HPOS="820" VPOS="1850" WIDTH="866" HEIGHT="55" BASELINE="822 1891 1686 1889" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-230_l19" HPOS="820" VPOS="1850" WIDTH="866" HEIGHT="55" BASELINE="822 1891 1686 1889" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="822 1891 822 1905 1684 1903 1686 1889 1682 1860 834 1850 832 1850 830 1850 828 1850 820 1856 822 1891"/>
                         </Shape>
                         <String CONTENT="8. INCANTATIONS OF MAGIC MEDICINE."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-230_r12" HPOS="360" VPOS="1946" WIDTH="1776" HEIGHT="971" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="360 1946 2136 1946 2136 2917 360 2917"/>
-                    </Shape>
-                    <TextLine ID="mz_2-230_l20" HPOS="470" VPOS="1946" WIDTH="1662" HEIGHT="59" BASELINE="472 1991 2132 1987" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-230_l20" HPOS="470" VPOS="1946" WIDTH="1662" HEIGHT="59" BASELINE="472 1991 2132 1987" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="472 1991 472 2005 2130 2005 2132 1987 2128 1960 2034 1960 2017 1946 2015 1946 2013 1946 2011 1946 2009 1946 1985 1958 1938 1946 1936 1946 1935 1946 1933 1946 1905 1958 1794 1946 1792 1946 1790 1946 1788 1946 1772 1960 1713 1960 1598 1946 1596 1946 1594 1946 1592 1946 1574 1960 1423 1960 1372 1946 1370 1946 1369 1946 1298 1960 1271 1948 1269 1948 1267 1948 1265 1948 1220 1960 996 1948 994 1948 992 1948 957 1960 867 1948 865 1948 863 1948 861 1948 846 1960 830 1948 828 1948 826 1948 824 1948 746 1960 728 1948 726 1948 724 1948 722 1948 622 1960 605 1948 603 1948 601 1948 499 1948 497 1948 495 1948 470 1960 472 1991"/>
                         </Shape>
@@ -327,12 +263,7 @@
                         </Shape>
                         <String CONTENT="“No, it is I!” — “How wonderful! Where from?” — “I belong to the people"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-230_r13" HPOS="360" VPOS="2955" WIDTH="1776" HEIGHT="146" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="360 2955 2136 2955 2136 3101 360 3101"/>
-                    </Shape>
-                    <TextLine ID="mz_2-230_l36" HPOS="464" VPOS="2966" WIDTH="366" HEIGHT="53" BASELINE="466 2994 830 2998" TAGREFS="TYPE_6">
+<TextLine ID="mz_2-230_l36" HPOS="464" VPOS="2966" WIDTH="366" HEIGHT="53" BASELINE="466 2994 830 2998" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="466 2994 464 3006 538 3017 540 3017 628 3009 644 3019 646 3019 648 3019 650 3019 828 3009 830 2998 828 2970 466 2966 466 2994"/>
                         </Shape>
@@ -352,8 +283,7 @@
                         </Shape>
                         <String CONTENT="meaning of the first half of each name was unknown to the speaker."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

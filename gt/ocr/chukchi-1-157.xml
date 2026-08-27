@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-157_r1" HPOS="367" VPOS="597" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="367 597 2145 597 2145 687 367 687"/>
-                    </Shape>
-                    <TextLine ID="mz_1-157_l1" HPOS="944" VPOS="606" WIDTH="618" HEIGHT="56" BASELINE="944 643 1562 638" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-157" HPOS="366" VPOS="606" WIDTH="1778" HEIGHT="2622"><TextLine ID="mz_1-157_l1" HPOS="944" VPOS="606" WIDTH="618" HEIGHT="56" BASELINE="944 643 1562 638" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1549 606 957 606 944 628 944 643 944 662 1559 658 1562 638 1555 606 1549 606"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="119"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-157_r2" HPOS="367" VPOS="712" WIDTH="1778" HEIGHT="666" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="367 712 2145 712 2145 1378 367 1378"/>
-                    </Shape>
-                    <TextLine ID="mz_1-157_l3" HPOS="368" VPOS="705" WIDTH="1776" HEIGHT="74" BASELINE="370 753 2144 749" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-157_l3" HPOS="368" VPOS="705" WIDTH="1776" HEIGHT="74" BASELINE="370 753 2144 749" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="585 708 563 710 542 710 520 712 500 712 472 718 448 714 433 716 412 716 390 718 375 718 368 721 370 753 370 768 676 768 732 779 734 779 810 768 840 779 843 779 845 779 973 768 1148 779 1150 779 1152 779 1189 768 1243 779 1245 779 1416 777 1419 777 1421 777 1436 766 1698 777 1700 777 2142 764 2144 749 2142 716 2127 705 2125 705 2122 705 2120 705 2118 705 2075 716 2049 705 2047 705 2045 705 2042 705 2021 716 1949 705 1947 705 1871 716 1850 705 1847 705 1845 705 1774 716 1752 705 1750 705 1748 705 1683 716 1635 705 1633 705 1631 705 1629 705 1585 716 1557 705 1555 705 1553 705 1551 705 1549 705 1531 718 1386 718 1354 705 1352 705 1349 705 1254 718 1224 708 1222 708 1219 708 1217 708 1189 718 1118 708 1115 708 1055 718 721 708 719 708 650 718 635 708 633 708 630 708 607 708 585 708"/>
                         </Shape>
@@ -131,12 +119,7 @@
                         </Shape>
                         <String CONTENT="waiting for the familiar sound of the blowing seal."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-157_r3" HPOS="367" VPOS="1378" WIDTH="1778" HEIGHT="1856" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="367 1378 2145 1378 2145 3234 367 3234"/>
-                    </Shape>
-                    <TextLine ID="mz_1-157_l14" HPOS="479" VPOS="1374" WIDTH="1661" HEIGHT="61" BASELINE="481 1411 2140 1405" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-157_l14" HPOS="479" VPOS="1374" WIDTH="1661" HEIGHT="61" BASELINE="481 1411 2140 1405" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="481 1411 481 1424 812 1435 814 1435 817 1435 819 1435 834 1424 1031 1433 1033 1433 1230 1422 1313 1433 1315 1433 1373 1422 1429 1433 1432 1433 1434 1433 1436 1433 1451 1422 1462 1433 1464 1433 1466 1433 1468 1433 1603 1420 1670 1431 1672 1431 2138 1420 2140 1405 2135 1377 479 1374 481 1411"/>
                         </Shape>
@@ -352,8 +335,7 @@
                         </Shape>
                         <String CONTENT="immediately lies still, and does not proceed until the seal lies down again."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

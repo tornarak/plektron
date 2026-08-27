@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-242_r1" HPOS="603" VPOS="589" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="603 589 2381 589 2381 679 603 679"/>
-                    </Shape>
-                    <TextLine ID="mz_1-242_l1" HPOS="613" VPOS="599" WIDTH="110" HEIGHT="67" BASELINE="615 645 723 640" TAGREFS="TYPE_5">
+                <TextBlock ID="text_1-242" HPOS="602" VPOS="599" WIDTH="1774" HEIGHT="2633"><TextLine ID="mz_1-242_l1" HPOS="613" VPOS="599" WIDTH="110" HEIGHT="67" BASELINE="615 645 723 640" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="700 608 678 602 672 599 613 612 613 615 615 645 615 656 665 666 667 666 669 666 723 651 723 640 721 617 700 608"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="BOGORAS, THE CHUKCHEE."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-242_r2" HPOS="603" VPOS="704" WIDTH="1778" HEIGHT="140" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="603 704 2381 704 2381 844 603 844"/>
-                    </Shape>
-                    <TextLine ID="mz_1-242_l3" HPOS="713" VPOS="703" WIDTH="1663" HEIGHT="63" BASELINE="715 753 2376 747" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-242_l3" HPOS="713" VPOS="703" WIDTH="1663" HEIGHT="63" BASELINE="715 753 2376 747" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="2363 714 2307 703 2304 703 2229 714 2211 703 2209 703 2207 703 2205 703 2203 703 2181 714 2159 703 2157 703 2155 703 2062 714 2034 703 2032 703 2029 703 2027 703 1986 714 1943 703 1941 703 1938 703 1841 714 1826 703 1824 703 1821 703 1819 703 1720 716 1447 705 1445 705 1442 705 1412 718 713 718 715 753 715 766 2374 764 2376 747 2374 736 2363 714"/>
                         </Shape>
@@ -69,12 +56,7 @@
                         </Shape>
                         <String CONTENT="kettles which were used in former times, and two of these were made for"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-242_r3" HPOS="603" VPOS="1318" WIDTH="1778" HEIGHT="133" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="603 1318 2381 1318 2381 1451 603 1451"/>
-                    </Shape>
-                    <TextLine ID="mz_1-242_l5" HPOS="609" VPOS="1322" WIDTH="1765" HEIGHT="72" BASELINE="611 1366 2374 1370" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-242_l5" HPOS="609" VPOS="1322" WIDTH="1765" HEIGHT="72" BASELINE="611 1366 2374 1370" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="2365 1338 2361 1335 2311 1325 2309 1325 2218 1335 1915 1325 1912 1325 1824 1335 1795 1325 1793 1325 1791 1325 1789 1325 1765 1335 1737 1325 1735 1325 1733 1325 1644 1335 1607 1325 1605 1325 1603 1325 1503 1335 1408 1322 1406 1322 1334 1333 1256 1322 1254 1322 1252 1322 1211 1333 1159 1322 1157 1322 1154 1322 1126 1333 1102 1322 1100 1322 1098 1322 1096 1322 1057 1333 1035 1322 1033 1322 1031 1322 975 1333 921 1322 918 1322 916 1322 914 1322 897 1333 639 1333 633 1335 611 1340 611 1366 609 1379 667 1392 669 1392 1473 1383 1536 1394 1538 1394 2372 1383 2374 1370 2372 1364 2365 1338"/>
                         </Shape>
@@ -87,12 +69,7 @@
                         </Shape>
                         <String CONTENT="They are similar in shape to the soapstone kettles of the American Eskimo,¹"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-242_r4" HPOS="603" VPOS="2140" WIDTH="1778" HEIGHT="530" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="603 2140 2381 2140 2381 2670 603 2670"/>
-                    </Shape>
-                    <TextLine ID="mz_1-242_l7" HPOS="604" VPOS="2137" WIDTH="1768" HEIGHT="69" BASELINE="607 2180 2372 2184" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-242_l7" HPOS="604" VPOS="2137" WIDTH="1768" HEIGHT="69" BASELINE="607 2180 2372 2184" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="2365 2150 2311 2139 2309 2139 2307 2139 2276 2150 2161 2139 2159 2139 2157 2139 2112 2150 2023 2139 2014 2139 1993 2139 1971 2139 1949 2139 1912 2139 1910 2139 1908 2139 1906 2139 1891 2150 1863 2139 1860 2139 1858 2139 1806 2152 1720 2152 1705 2139 1702 2139 1700 2139 1698 2139 1609 2150 1566 2139 1564 2139 1562 2139 1559 2139 1518 2150 1235 2150 1219 2137 1217 2137 1215 2137 1213 2137 1120 2147 1046 2137 1044 2137 1042 2137 1012 2147 940 2137 938 2137 936 2137 903 2147 830 2137 827 2137 622 2145 607 2160 607 2180 604 2191 626 2204 628 2204 630 2204 1352 2195 1497 2206 1499 2206 2369 2195 2372 2184 2369 2156 2365 2150"/>
                         </Shape>
@@ -154,12 +131,7 @@
                         </Shape>
                         <String CONTENT="shapes were also in use."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-242_r5" HPOS="603" VPOS="2670" WIDTH="1778" HEIGHT="493" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="603 2670 2381 2670 2381 3163 603 3163"/>
-                    </Shape>
-                    <TextLine ID="mz_1-242_l16" HPOS="715" VPOS="2673" WIDTH="1657" HEIGHT="68" BASELINE="717 2717 2372 2723" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-242_l16" HPOS="715" VPOS="2673" WIDTH="1657" HEIGHT="68" BASELINE="717 2717 2372 2723" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="717 2717 715 2730 2367 2741 2372 2723 2369 2691 2307 2678 2304 2678 2040 2689 2012 2678 2010 2678 2008 2678 2006 2678 1971 2689 1895 2678 1893 2678 1824 2689 1666 2689 1646 2676 1644 2676 1642 2676 1640 2676 1637 2676 1592 2686 1577 2676 1575 2676 1572 2676 1570 2676 1516 2686 1395 2676 1393 2676 1391 2676 1347 2686 1230 2686 1213 2673 1211 2673 1209 2673 1206 2673 1204 2673 1176 2684 1137 2673 1135 2673 1133 2673 1131 2673 1098 2684 1081 2673 1079 2673 1076 2673 1074 2673 1022 2684 717 2678 717 2717"/>
                         </Shape>
@@ -214,19 +186,13 @@
                         </Shape>
                         <String CONTENT="baked, and I was told by Mr. W. Hough that some of them which he had"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-242_r6" HPOS="603" VPOS="3182" WIDTH="1778" HEIGHT="65" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="603 3182 2381 3182 2381 3247 603 3247"/>
-                    </Shape>
-                    <TextLine ID="mz_1-242_l24" HPOS="1005" VPOS="3180" WIDTH="970" HEIGHT="52" BASELINE="1007 3208 1975 3215" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-242_l24" HPOS="1005" VPOS="3180" WIDTH="970" HEIGHT="52" BASELINE="1007 3208 1975 3215" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1007 3208 1005 3226 1971 3232 1975 3215 1973 3187 1007 3180 1007 3208"/>
                         </Shape>
                         <String CONTENT="¹ Compare the illustration in Hough, Lamp, Plate 9, Fig. 4."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-080_r1" HPOS="716" VPOS="606" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="716 606 2494 606 2494 696 716 696"/>
-                    </Shape>
-                    <TextLine ID="mz_1-080_l1" HPOS="1295" VPOS="617" WIDTH="620" HEIGHT="56" BASELINE="1297 651 1915 656" TAGREFS="TYPE_5">
+                <TextBlock ID="text_1-080" HPOS="710" VPOS="612" WIDTH="1783" HEIGHT="2642"><TextLine ID="mz_1-080_l1" HPOS="1295" VPOS="617" WIDTH="620" HEIGHT="56" BASELINE="1297 651 1915 656" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1906 619 1317 617 1297 625 1297 651 1295 669 1910 673 1915 656 1912 628 1906 619"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="58"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-080_r2" HPOS="716" VPOS="721" WIDTH="1778" HEIGHT="248" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="716 721 2494 721 2494 969 716 969"/>
-                    </Shape>
-                    <TextLine ID="mz_1-080_l3" HPOS="719" VPOS="718" WIDTH="1774" HEIGHT="63" BASELINE="721 766 2493 762" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-080_l3" HPOS="719" VPOS="718" WIDTH="1774" HEIGHT="63" BASELINE="721 766 2493 762" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="2473 727 2452 727 2430 727 2413 725 2391 725 2387 725 2365 725 2356 723 2296 723 2278 723 2272 721 2105 718 2103 718 2053 729 2040 718 2038 718 2036 718 1923 718 1921 718 1919 718 1917 718 1899 729 1828 718 1826 718 1707 729 1627 718 1624 718 1622 718 1620 718 1598 731 1412 721 1410 721 1358 731 1332 721 1330 721 1328 721 1326 721 1323 721 1304 734 1176 734 1128 721 1126 721 1124 721 1122 721 1100 731 1020 721 1018 721 1016 721 1014 721 996 734 856 734 840 721 838 721 836 721 745 721 743 721 741 721 739 721 719 729 721 766 721 781 2491 777 2493 762 2488 727 2473 727"/>
                         </Shape>
@@ -83,12 +70,7 @@
                         </Shape>
                         <String CONTENT="to the fair from the maritime villages."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-080_r3" HPOS="716" VPOS="969" WIDTH="1778" HEIGHT="653" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="716 969 2494 969 2494 1622 716 1622"/>
-                    </Shape>
-                    <TextLine ID="mz_1-080_l7" HPOS="825" VPOS="959" WIDTH="1668" HEIGHT="73" BASELINE="827 1006 2493 998" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-080_l7" HPOS="825" VPOS="959" WIDTH="1668" HEIGHT="73" BASELINE="827 1006 2493 998" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="827 1006 827 1032 897 1022 1653 1028 1655 1028 1746 1017 2068 1026 2071 1026 2491 1013 2493 998 2488 970 2075 959 2073 959 2071 959 2042 970 843 965 840 965 838 965 836 965 825 972 827 1006"/>
                         </Shape>
@@ -164,12 +146,7 @@
                         </Shape>
                         <String CONTENT="to the Lamut, Russianized Yukaghir, etc."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-080_r4" HPOS="716" VPOS="1622" WIDTH="1778" HEIGHT="1140" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="716 1622 2494 1622 2494 2762 716 2762"/>
-                    </Shape>
-                    <TextLine ID="mz_1-080_l18" HPOS="819" VPOS="1617" WIDTH="1674" HEIGHT="63" BASELINE="821 1662 2493 1658" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-080_l18" HPOS="819" VPOS="1617" WIDTH="1674" HEIGHT="63" BASELINE="821 1662 2493 1658" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="821 1662 821 1680 2491 1675 2493 1658 2488 1630 2437 1617 2434 1617 2432 1617 2406 1628 2352 1617 2350 1617 2133 1628 2058 1617 2055 1617 1973 1628 1921 1617 1919 1617 1856 1628 1826 1617 1824 1617 1821 1617 1819 1617 1793 1628 1700 1617 1698 1617 1696 1617 1650 1630 1581 1619 1579 1619 1577 1619 1549 1630 1486 1619 1484 1619 1375 1630 1347 1619 1345 1619 1343 1619 1341 1619 1297 1630 1254 1619 1252 1619 1250 1619 1248 1619 1245 1619 1230 1632 1131 1632 1005 1619 1003 1619 1001 1619 977 1630 843 1619 840 1619 838 1619 836 1619 819 1628 821 1662"/>
                         </Shape>
@@ -301,12 +278,7 @@
                         </Shape>
                         <String CONTENT="more than a few thousand rubles."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-080_r5" HPOS="716" VPOS="2762" WIDTH="1778" HEIGHT="423" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="716 2762 2494 2762 2494 3185 716 3185"/>
-                    </Shape>
-                    <TextLine ID="mz_1-080_l37" HPOS="827" VPOS="2764" WIDTH="1666" HEIGHT="52" BASELINE="827 2799 2493 2799" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-080_l37" HPOS="827" VPOS="2764" WIDTH="1666" HEIGHT="52" BASELINE="827 2799 2493 2799" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="827 2799 827 2816 2493 2816 2493 2799 2493 2771 827 2764 827 2799"/>
                         </Shape>
@@ -354,19 +326,13 @@
                         </Shape>
                         <String CONTENT="relates in his book.¹ Mr. Gilder names him Vanker, a corruption of his two"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-080_r6" HPOS="716" VPOS="3198" WIDTH="1778" HEIGHT="60" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="716 3198 2494 3198 2494 3258 716 3258"/>
-                    </Shape>
-                    <TextLine ID="mz_1-080_l44" HPOS="1466" VPOS="3197" WIDTH="282" HEIGHT="57" BASELINE="1468 3226 1748 3228" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-080_l44" HPOS="1466" VPOS="3197" WIDTH="282" HEIGHT="57" BASELINE="1468 3226 1748 3228" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1468 3226 1466 3241 1585 3254 1588 3254 1746 3243 1748 3228 1746 3200 1468 3197 1468 3226"/>
                         </Shape>
                         <String CONTENT="¹ Gilder, p. 148."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

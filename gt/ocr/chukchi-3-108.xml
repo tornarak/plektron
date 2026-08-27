@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_3-108_r1" HPOS="618" VPOS="453" WIDTH="1782" HEIGHT="94" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="618 453 2400 453 2400 547 618 547"/>
-                    </Shape>
-                    <TextLine ID="mz_3-108_l1" HPOS="619" VPOS="466" WIDTH="105" HEIGHT="65" BASELINE="621 507 724 504" TAGREFS="TYPE_5">
+                <TextBlock ID="text_3-108" HPOS="613" VPOS="466" WIDTH="1780" HEIGHT="2633"><TextLine ID="mz_3-108_l1" HPOS="619" VPOS="466" WIDTH="105" HEIGHT="65" BASELINE="621 507 724 504" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="619 480 621 507 621 517 668 531 670 531 672 531 674 531 724 515 724 504 721 476 635 466 633 466 619 480"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="BOGORAS, THE CHUKCHEE."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-108_r2" HPOS="618" VPOS="570" WIDTH="1782" HEIGHT="1021" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="618 570 2400 570 2400 1591 618 1591"/>
-                    </Shape>
-                    <TextLine ID="mz_3-108_l3" HPOS="617" VPOS="570" WIDTH="1774" HEIGHT="58" BASELINE="617 611 2391 615" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-108_l3" HPOS="617" VPOS="570" WIDTH="1774" HEIGHT="58" BASELINE="617 611 2391 615" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="2369 576 2350 576 2342 576 2323 581 2022 572 2020 572 1863 581 1833 572 1831 572 1829 572 1828 572 1796 583 1580 583 1455 570 1453 570 1405 580 1391 570 1389 570 1387 570 1385 570 1383 570 1346 580 1301 570 1299 570 1190 580 1112 570 1110 570 1038 580 980 570 978 570 976 570 956 580 917 570 915 570 913 570 617 578 617 611 617 628 2389 628 2391 615 2391 583 2371 576 2369 576"/>
                         </Shape>
@@ -174,12 +161,7 @@
                         </Shape>
                         <String CONTENT="the promised peltries."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-108_r3" HPOS="618" VPOS="1591" WIDTH="1782" HEIGHT="1030" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="618 1591 2400 1591 2400 2621 618 2621"/>
-                    </Shape>
-                    <TextLine ID="mz_3-108_l20" HPOS="728" VPOS="1589" WIDTH="1661" HEIGHT="59" BASELINE="730 1632 2389 1628" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-108_l20" HPOS="728" VPOS="1589" WIDTH="1661" HEIGHT="59" BASELINE="730 1632 2389 1628" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="730 1632 730 1648 2387 1646 2389 1628 2385 1601 2305 1589 2303 1589 2301 1589 2270 1601 2098 1601 2083 1589 2081 1589 2079 1589 2077 1589 2075 1589 2042 1599 1991 1589 1989 1589 1987 1589 1944 1599 1880 1589 1878 1589 1824 1601 1646 1601 1629 1589 1627 1589 1625 1589 1623 1589 1502 1601 1387 1591 1274 1591 1272 1591 1270 1591 1268 1591 1256 1601 1245 1591 1243 1591 1241 1591 1239 1591 1159 1601 1073 1591 1071 1591 1069 1591 1034 1601 997 1591 995 1591 993 1591 991 1591 956 1601 925 1591 923 1591 921 1591 919 1591 882 1601 728 1597 730 1632"/>
                         </Shape>
@@ -297,12 +279,7 @@
                         </Shape>
                         <String CONTENT="“strongest man” is also the poorest, as will be shown presently."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-108_r4" HPOS="618" VPOS="2621" WIDTH="1782" HEIGHT="239" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="618 2621 2400 2621 2400 2860 618 2860"/>
-                    </Shape>
-                    <TextLine ID="mz_3-108_l37" HPOS="738" VPOS="2612" WIDTH="1651" HEIGHT="59" BASELINE="740 2645 2389 2647" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-108_l37" HPOS="738" VPOS="2612" WIDTH="1651" HEIGHT="59" BASELINE="740 2645 2389 2647" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="740 2645 738 2655 777 2669 779 2669 781 2671 939 2671 939 2669 941 2669 943 2669 954 2659 976 2669 978 2669 980 2671 1083 2671 1083 2669 1085 2669 1087 2669 1103 2659 1196 2659 1210 2669 1212 2669 1214 2669 1216 2669 1268 2659 1297 2669 1299 2669 1301 2669 1371 2659 1397 2669 1399 2669 1401 2671 1502 2671 1502 2669 1504 2669 1506 2669 1518 2659 1547 2669 1549 2669 1551 2669 1553 2669 1594 2659 1695 2669 1697 2669 1800 2659 1857 2669 1859 2669 1941 2659 2020 2669 2022 2669 2387 2659 2389 2647 2387 2618 740 2612 740 2645"/>
                         </Shape>
@@ -329,12 +306,7 @@
                         </Shape>
                         <String CONTENT="a very interesting difference between both branches of the tribe."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-108_r5" HPOS="618" VPOS="2860" WIDTH="1782" HEIGHT="174" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="618 2860 2400 2860 2400 3034 618 3034"/>
-                    </Shape>
-                    <TextLine ID="mz_3-108_l41" HPOS="728" VPOS="2844" WIDTH="1661" HEIGHT="66" BASELINE="730 2891 2389 2885" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-108_l41" HPOS="728" VPOS="2844" WIDTH="1661" HEIGHT="66" BASELINE="730 2891 2389 2885" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="730 2891 730 2903 1822 2910 1824 2910 1826 2910 1855 2901 2373 2908 2375 2908 2377 2908 2379 2908 2389 2899 2389 2885 2385 2856 2317 2844 2315 2844 2313 2844 2293 2854 2268 2844 2266 2844 2264 2844 2262 2844 2243 2854 2184 2844 2182 2844 2106 2854 2073 2844 2071 2844 2069 2844 2067 2844 2065 2844 2052 2854 2022 2844 2020 2844 2019 2844 2017 2844 2015 2844 1999 2854 1962 2844 1960 2844 1958 2844 1956 2844 1913 2854 1841 2844 1839 2844 1837 2844 1812 2856 1785 2846 1783 2846 1781 2846 1779 2846 1742 2858 1613 2858 1592 2846 1590 2846 1492 2846 1490 2846 1488 2846 1486 2846 1475 2856 1424 2846 1422 2846 1420 2846 1383 2856 728 2856 730 2891"/>
                         </Shape>
@@ -354,19 +326,13 @@
                         </Shape>
                         <String CONTENT="against the “front” family of the same camp. I will relate a very character-"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-108_r6" HPOS="618" VPOS="3049" WIDTH="1782" HEIGHT="55" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="618 3049 2400 3049 2400 3104 618 3104"/>
-                    </Shape>
-                    <TextLine ID="mz_3-108_l44" HPOS="1356" VPOS="3047" WIDTH="300" HEIGHT="52" BASELINE="1358 3072 1656 3078" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-108_l44" HPOS="1356" VPOS="3047" WIDTH="300" HEIGHT="52" BASELINE="1358 3072 1656 3078" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1358 3072 1356 3086 1457 3099 1459 3099 1654 3092 1656 3078 1656 3053 1358 3047 1358 3072"/>
                         </Shape>
                         <String CONTENT="¹ Compare p. 287."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

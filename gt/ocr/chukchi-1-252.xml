@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-252_r1" HPOS="608" VPOS="595" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="608 595 2386 595 2386 685 608 685"/>
-                    </Shape>
-                    <TextLine ID="mz_1-252_l1" HPOS="1200" VPOS="612" WIDTH="619" HEIGHT="54" BASELINE="1202 649 1819 645" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-252" HPOS="617" VPOS="608" WIDTH="1781" HEIGHT="2624"><TextLine ID="mz_1-252_l1" HPOS="1200" VPOS="612" WIDTH="619" HEIGHT="54" BASELINE="1202 649 1819 645" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1806 615 1798 612 1200 615 1200 617 1202 649 1202 666 1817 662 1819 645 1815 623 1806 615"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="196"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-252_r2" HPOS="608" VPOS="710" WIDTH="1778" HEIGHT="489" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="608 710 2386 710 2386 1199 608 1199"/>
-                    </Shape>
-                    <TextLine ID="mz_1-252_l3" HPOS="622" VPOS="712" WIDTH="1776" HEIGHT="61" BASELINE="624 757 2398 753" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-252_l3" HPOS="622" VPOS="712" WIDTH="1776" HEIGHT="61" BASELINE="624 757 2398 753" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="624 757 624 773 2395 768 2398 753 2391 721 1837 723 1769 712 1767 712 1765 712 1720 723 1689 712 1687 712 1685 712 1683 712 1648 723 1583 712 1581 712 1579 712 1555 723 1512 712 1510 712 1507 712 1505 712 1503 712 1481 725 1224 714 1222 714 1219 714 1198 725 1170 714 1167 714 1165 714 1066 725 960 714 957 714 955 714 908 725 827 714 825 714 823 714 821 714 806 727 706 727 639 714 637 714 635 714 633 714 622 721 624 757"/>
                         </Shape>
@@ -110,12 +98,7 @@
                         </Shape>
                         <String CONTENT="use fresh meat, and sell them at a low price to the Russians for dog-food."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-252_r3" HPOS="608" VPOS="1199" WIDTH="1778" HEIGHT="480" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="608 1199 2386 1199 2386 1679 608 1679"/>
-                    </Shape>
-                    <TextLine ID="mz_1-252_l11" HPOS="734" VPOS="1201" WIDTH="1659" HEIGHT="52" BASELINE="736 1238 2393 1232" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-252_l11" HPOS="734" VPOS="1201" WIDTH="1659" HEIGHT="52" BASELINE="736 1238 2393 1232" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="736 1238 736 1253 2391 1247 2393 1232 2389 1201 734 1201 736 1238"/>
                         </Shape>
@@ -170,12 +153,7 @@
                         </Shape>
                         <String CONTENT="blubber is not chewed, as is done by the Central Eskimo in America."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-252_r4" HPOS="608" VPOS="1679" WIDTH="1778" HEIGHT="839" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="608 1679 2386 1679 2386 2518 608 2518"/>
-                    </Shape>
-                    <TextLine ID="mz_1-252_l19" HPOS="730" VPOS="1671" WIDTH="1665" HEIGHT="61" BASELINE="732 1717 2395 1712" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-252_l19" HPOS="730" VPOS="1671" WIDTH="1665" HEIGHT="61" BASELINE="732 1717 2395 1712" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="732 1717 732 1732 2393 1727 2395 1712 2391 1682 1564 1671 1562 1671 1559 1671 1557 1671 1540 1684 730 1684 732 1717"/>
                         </Shape>
@@ -272,12 +250,7 @@
                         </Shape>
                         <String CONTENT="the Russianized natives."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-252_r5" HPOS="608" VPOS="2518" WIDTH="1778" HEIGHT="231" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="608 2518 2386 2518 2386 2749 608 2749"/>
-                    </Shape>
-                    <TextLine ID="mz_1-252_l33" HPOS="734" VPOS="2511" WIDTH="1659" HEIGHT="59" BASELINE="734 2552 2393 2552" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-252_l33" HPOS="734" VPOS="2511" WIDTH="1659" HEIGHT="59" BASELINE="734 2552 2393 2552" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="734 2552 734 2570 2393 2570 2393 2552 2393 2520 734 2511 734 2552"/>
                         </Shape>
@@ -304,12 +277,7 @@
                         </Shape>
                         <String CONTENT="as hard as wood, and almost as tasteless."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-252_r6" HPOS="608" VPOS="2749" WIDTH="1778" HEIGHT="428" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="608 2749 2386 2749 2386 3177 608 3177"/>
-                    </Shape>
-                    <TextLine ID="mz_1-252_l37" HPOS="732" VPOS="2756" WIDTH="1659" HEIGHT="52" BASELINE="734 2793 2391 2788" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-252_l37" HPOS="732" VPOS="2756" WIDTH="1659" HEIGHT="52" BASELINE="734 2793 2391 2788" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="734 2793 734 2808 2389 2803 2391 2788 2387 2760 732 2756 734 2793"/>
                         </Shape>
@@ -357,19 +325,13 @@
                         </Shape>
                         <String CONTENT="cerning the tongue and the gastrocnemius muscle of the sacrificed fawn."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-252_r7" HPOS="608" VPOS="3177" WIDTH="1778" HEIGHT="92" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="608 3177 2386 3177 2386 3269 608 3269"/>
-                    </Shape>
-                    <TextLine ID="mz_1-252_l44" HPOS="732" VPOS="3174" WIDTH="1657" HEIGHT="58" BASELINE="732 3210 2389 3210" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-252_l44" HPOS="732" VPOS="3174" WIDTH="1657" HEIGHT="58" BASELINE="732 3210 2389 3210" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2385 3178 732 3174 732 3210 732 3232 2389 3232 2389 3210 2389 3206 2385 3178"/>
                         </Shape>
                         <String CONTENT="The Maritime Chukchee eat all kinds of animals except a few birds, such"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

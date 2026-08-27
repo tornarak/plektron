@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_2-047_r1" HPOS="458" VPOS="470" WIDTH="1776" HEIGHT="86" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="458 470 2234 470 2234 556 458 556"/>
-                    </Shape>
-                    <TextLine ID="mz_2-047_l1" HPOS="1041" VPOS="483" WIDTH="615" HEIGHT="51" BASELINE="1041 517 1656 517" TAGREFS="TYPE_4">
+                <TextBlock ID="text_2-047" HPOS="454" VPOS="483" WIDTH="1780" HEIGHT="2620"><TextLine ID="mz_2-047_l1" HPOS="1041" VPOS="483" WIDTH="615" HEIGHT="51" BASELINE="1041 517 1656 517" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1652 483 1041 483 1041 517 1041 534 1656 534 1656 517 1656 487 1652 483"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="321"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-047_r2" HPOS="458" VPOS="588" WIDTH="1776" HEIGHT="422" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="458 588 2234 588 2234 1010 458 1010"/>
-                    </Shape>
-                    <TextLine ID="mz_2-047_l3" HPOS="569" VPOS="581" WIDTH="1665" HEIGHT="65" BASELINE="571 622 2234 626" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-047_l3" HPOS="569" VPOS="581" WIDTH="1665" HEIGHT="65" BASELINE="571 622 2234 626" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="571 589 571 622 569 634 656 646 658 646 2232 638 2234 626 2234 597 2193 583 2191 583 2189 583 2091 595 1974 585 1972 585 1893 595 1878 583 1876 583 1874 583 1872 583 1774 595 1707 583 1705 583 1703 583 1672 595 1478 583 1476 583 1474 583 1443 595 1392 581 1390 581 1388 581 1327 593 1273 581 1271 581 1161 593 1020 593 1006 581 1004 581 1002 581 940 581 938 581 936 581 934 581 916 593 573 585 571 589"/>
                         </Shape>
@@ -103,12 +91,7 @@
                         </Shape>
                         <String CONTENT="Indian Point, it is of the same nature, but comes from the southwest. The"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-047_r3" HPOS="458" VPOS="2546" WIDTH="1776" HEIGHT="186" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="458 2546 2234 2546 2234 2732 458 2732"/>
-                    </Shape>
-                    <TextLine ID="mz_2-047_l10" HPOS="456" VPOS="2543" WIDTH="1772" HEIGHT="61" BASELINE="458 2590 2228 2585" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-047_l10" HPOS="456" VPOS="2543" WIDTH="1772" HEIGHT="61" BASELINE="458 2590 2228 2585" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2219 2553 2177 2543 2175 2543 2173 2543 2146 2553 2034 2543 2032 2543 2030 2543 2007 2555 1770 2555 1692 2543 1690 2543 1633 2555 1459 2545 1457 2545 1406 2555 1374 2545 1372 2545 1370 2545 1239 2555 1180 2545 1179 2545 1177 2545 1175 2545 1159 2557 1045 2557 989 2547 987 2547 585 2557 497 2547 495 2547 493 2547 456 2559 458 2590 458 2604 2226 2598 2228 2585 2224 2565 2219 2553"/>
                         </Shape>
@@ -128,12 +111,7 @@
                         </Shape>
                         <String CONTENT="along the seashore, but from west-southwest."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-047_r4" HPOS="458" VPOS="2765" WIDTH="1776" HEIGHT="250" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="458 2765 2234 2765 2234 3015 458 3015"/>
-                    </Shape>
-                    <TextLine ID="mz_2-047_l13" HPOS="560" VPOS="2765" WIDTH="1668" HEIGHT="56" BASELINE="562 2806 2228 2800" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-047_l13" HPOS="560" VPOS="2765" WIDTH="1668" HEIGHT="56" BASELINE="562 2806 2228 2800" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="562 2806 562 2821 2226 2816 2228 2800 2224 2774 1672 2765 1670 2765 1668 2765 1629 2776 560 2776 562 2806"/>
                         </Shape>
@@ -167,12 +145,7 @@
                         </Shape>
                         <String CONTENT="signifies “northeast.”"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-047_r5" HPOS="458" VPOS="3015" WIDTH="1776" HEIGHT="95" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="458 3015 2234 3015 2234 3110 458 3110"/>
-                    </Shape>
-                    <TextLine ID="mz_2-047_l18" HPOS="562" VPOS="3011" WIDTH="1666" HEIGHT="44" BASELINE="562 3039 2228 3039" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-047_l18" HPOS="562" VPOS="3011" WIDTH="1666" HEIGHT="44" BASELINE="562 3039 2228 3039" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="562 3039 562 3055 2228 3055 2228 3039 2228 3011 562 3011 562 3039"/>
                         </Shape>
@@ -185,8 +158,7 @@
                         </Shape>
                         <String CONTENT="wind, eˊwtelan (“down-[stream wind]”) for the south-southwest wind, onm-eˊwtelan (“inner down-"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

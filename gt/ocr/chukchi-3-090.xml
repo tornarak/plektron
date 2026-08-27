@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_3-090_r1" HPOS="353" VPOS="453" WIDTH="1782" HEIGHT="94" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="353 453 2135 453 2135 547 353 547"/>
-                    </Shape>
-                    <TextLine ID="mz_3-090_l1" HPOS="931" VPOS="476" WIDTH="616" HEIGHT="51" BASELINE="931 507 1547 507" TAGREFS="TYPE_4">
+                <TextBlock ID="text_3-090" HPOS="344" VPOS="470" WIDTH="1780" HEIGHT="2627"><TextLine ID="mz_3-090_l1" HPOS="931" VPOS="476" WIDTH="616" HEIGHT="51" BASELINE="931 507 1547 507" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1535 476 945 476 931 492 931 507 931 527 1547 527 1547 507 1547 484 1535 476"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="624"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-090_r2" HPOS="353" VPOS="570" WIDTH="1782" HEIGHT="1201" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="353 570 2135 570 2135 1771 353 1771"/>
-                    </Shape>
-                    <TextLine ID="mz_3-090_l3" HPOS="352" VPOS="574" WIDTH="1768" HEIGHT="58" BASELINE="352 617 2120 617" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-090_l3" HPOS="352" VPOS="574" WIDTH="1768" HEIGHT="58" BASELINE="352 617 2120 617" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2106 583 2087 583 2067 581 2048 581 2028 581 2009 580 1989 580 1970 580 1950 578 1465 583 1407 574 1405 574 1358 583 1331 574 1329 574 1327 574 1325 574 1286 583 1229 574 1227 574 1225 574 1184 583 1157 574 1155 574 1153 574 1151 574 1118 583 1083 574 1081 574 1079 574 978 583 951 574 949 574 947 574 884 583 847 574 845 574 843 574 769 583 748 574 746 574 744 574 742 574 722 583 701 574 699 574 697 574 695 574 668 583 619 574 617 574 557 583 533 574 531 574 530 574 528 574 526 574 510 585 422 585 397 574 395 574 393 574 391 574 352 583 352 617 352 632 2120 632 2120 617 2118 583 2106 583"/>
                         </Shape>
@@ -194,12 +182,7 @@
                         </Shape>
                         <String CONTENT="and wanders far away to hunt wild reindeer or mountain-sheep."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-090_r3" HPOS="353" VPOS="1771" WIDTH="1782" HEIGHT="1333" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="353 1771 2135 1771 2135 3104 353 3104"/>
-                    </Shape>
-                    <TextLine ID="mz_3-090_l23" HPOS="455" VPOS="1772" WIDTH="1665" HEIGHT="68" BASELINE="457 1817 2120 1811" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-090_l23" HPOS="455" VPOS="1772" WIDTH="1665" HEIGHT="68" BASELINE="457 1817 2120 1811" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="457 1817 457 1829 541 1840 543 1840 615 1829 1093 1829 1545 1839 1547 1839 1549 1839 1551 1839 1566 1827 1613 1837 1615 1837 1617 1837 1660 1827 1841 1837 1843 1837 2120 1825 2120 1811 2116 1784 2059 1772 2057 1772 2001 1782 1876 1772 1874 1772 1872 1772 1870 1772 1855 1784 1744 1784 1714 1772 1713 1772 1711 1772 1562 1784 1529 1774 1527 1774 1525 1774 1467 1784 1255 1774 1253 1774 1251 1774 1249 1774 1235 1786 1091 1786 1015 1774 1013 1774 1011 1774 1009 1774 997 1784 886 1776 884 1776 882 1776 880 1776 869 1786 818 1776 816 1776 652 1786 473 1776 471 1776 469 1776 467 1776 455 1784 457 1817"/>
                         </Shape>
@@ -352,8 +335,7 @@
                         </Shape>
                         <String CONTENT="present from the master of the camp."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

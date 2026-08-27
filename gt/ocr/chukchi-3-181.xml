@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_3-181_r1" HPOS="343" VPOS="477" WIDTH="1782" HEIGHT="101" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="343 477 2125 477 2125 578 343 578"/>
-                    </Shape>
-                    <TextLine ID="mz_3-181_l1" HPOS="915" VPOS="498" WIDTH="622" HEIGHT="48" BASELINE="915 531 1537 531" TAGREFS="TYPE_5">
+                <TextBlock ID="text_3-181" HPOS="339" VPOS="498" WIDTH="1779" HEIGHT="2625"><TextLine ID="mz_3-181_l1" HPOS="915" VPOS="498" WIDTH="622" HEIGHT="48" BASELINE="915 531 1537 531" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1522 498 925 498 915 505 915 531 915 546 1537 546 1537 531 1535 527 1522 498"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="713"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-181_r2" HPOS="343" VPOS="594" WIDTH="1782" HEIGHT="304" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="343 594 2125 594 2125 898 343 898"/>
-                    </Shape>
-                    <TextLine ID="mz_3-181_l3" HPOS="339" VPOS="593" WIDTH="1777" HEIGHT="68" BASELINE="340 642 2116 636" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-181_l3" HPOS="339" VPOS="593" WIDTH="1777" HEIGHT="68" BASELINE="340 642 2116 636" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="340 642 340 661 1044 652 1486 659 1488 659 1490 659 1522 650 1543 659 1545 659 1547 659 1660 650 1802 659 1804 661 2032 661 2032 659 2034 659 2057 650 2096 659 2098 659 2100 659 2102 659 2104 659 2116 650 2116 636 2108 595 2081 607 2005 607 1980 593 1978 593 1976 593 1974 593 1950 605 1925 593 1923 593 1921 593 1919 593 1917 593 1900 607 1740 607 1689 593 1687 593 1685 593 1683 593 1681 593 1662 607 1522 607 1490 595 1488 595 1486 595 1485 595 1459 607 1434 595 1432 595 1430 595 1370 607 1354 595 1352 595 1350 595 1348 595 1278 607 1229 595 1227 595 1225 595 1071 607 1044 595 1042 595 1040 595 984 605 861 597 859 597 857 597 855 597 836 609 781 597 779 597 699 609 592 597 590 597 588 597 545 609 520 597 518 597 415 597 413 597 339 611 340 642"/>
                         </Shape>
@@ -90,12 +77,7 @@
                         </Shape>
                         <String CONTENT="per year."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-181_r3" HPOS="343" VPOS="898" WIDTH="1782" HEIGHT="1503" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="343 898 2125 898 2125 2401 343 2401"/>
-                    </Shape>
-                    <TextLine ID="mz_3-181_l8" HPOS="450" VPOS="895" WIDTH="1662" HEIGHT="57" BASELINE="450 938 2112 938" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-181_l8" HPOS="450" VPOS="895" WIDTH="1662" HEIGHT="57" BASELINE="450 938 2112 938" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="450 938 450 950 2110 952 2112 938 2112 909 2015 895 1935 895 1933 895 1931 895 1929 895 1913 907 1868 895 1867 895 1865 895 1863 895 1831 907 1713 895 1711 895 1621 907 1471 895 1469 895 1467 895 1465 895 1447 909 986 909 968 895 966 895 964 895 855 895 853 895 800 907 746 895 744 895 689 907 656 895 654 895 652 895 524 907 475 895 473 895 471 895 469 895 467 895 450 905 450 938"/>
                         </Shape>
@@ -269,12 +251,7 @@
                         </Shape>
                         <String CONTENT="mention more episodes of a similar character and of more recent date."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-181_r4" HPOS="343" VPOS="2401" WIDTH="1782" HEIGHT="485" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="343 2401 2125 2401 2125 2886 343 2886"/>
-                    </Shape>
-                    <TextLine ID="mz_3-181_l33" HPOS="452" VPOS="2392" WIDTH="1662" HEIGHT="58" BASELINE="454 2437 2114 2431" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-181_l33" HPOS="452" VPOS="2392" WIDTH="1662" HEIGHT="58" BASELINE="454 2437 2114 2431" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="454 2437 454 2450 2112 2449 2114 2431 2110 2404 1580 2392 1578 2392 1467 2406 1379 2406 1366 2394 1364 2394 1362 2394 1360 2394 1358 2394 1329 2404 1266 2394 1264 2394 1216 2404 1118 2394 1116 2394 1040 2404 968 2396 966 2396 964 2396 962 2396 947 2406 876 2396 874 2396 873 2396 836 2406 779 2396 777 2396 452 2402 454 2437"/>
                         </Shape>
@@ -329,12 +306,7 @@
                         </Shape>
                         <String CONTENT="von Stempel and his step-daughter Eugenie Krumones, in reference to their"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-181_r5" HPOS="343" VPOS="2940" WIDTH="1782" HEIGHT="195" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="343 2940 2125 2940 2125 3135 343 3135"/>
-                    </Shape>
-                    <TextLine ID="mz_3-181_l41" HPOS="457" VPOS="2949" WIDTH="1661" HEIGHT="45" BASELINE="457 2975 2118 2975" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-181_l41" HPOS="457" VPOS="2949" WIDTH="1661" HEIGHT="45" BASELINE="457 2975 2118 2975" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="457 2975 457 2986 2116 2994 2118 2975 2118 2949 457 2949 457 2975"/>
                         </Shape>
@@ -361,8 +333,7 @@
                         </Shape>
                         <String CONTENT="extortions, requisitions, bribes, presents, etc., should be included."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

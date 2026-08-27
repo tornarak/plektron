@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-293_r1" HPOS="407" VPOS="627" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="407 627 2185 627 2185 717 407 717"/>
-                    </Shape>
-                    <TextLine ID="mz_1-293_l1" HPOS="986" VPOS="634" WIDTH="621" HEIGHT="52" BASELINE="986 666 1607 666" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-293" HPOS="401" VPOS="634" WIDTH="1780" HEIGHT="2624"><TextLine ID="mz_1-293_l1" HPOS="986" VPOS="634" WIDTH="621" HEIGHT="52" BASELINE="986 666 1607 666" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1592 636 1588 634 1012 634 1007 636 988 656 986 666 986 686 1607 686 1607 666 1607 645 1592 636"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="229"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-293_r2" HPOS="407" VPOS="742" WIDTH="1778" HEIGHT="717" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="407 742 2185 742 2185 1459 407 1459"/>
-                    </Shape>
-                    <TextLine ID="mz_1-293_l3" HPOS="412" VPOS="734" WIDTH="1769" HEIGHT="60" BASELINE="412 777 2181 777" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-293_l3" HPOS="412" VPOS="734" WIDTH="1769" HEIGHT="60" BASELINE="412 777 2181 777" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="412 777 412 792 2179 794 2181 777 2181 747 1908 734 1906 734 1854 744 1687 734 1685 734 1683 734 1653 744 1624 734 1622 734 1620 734 1618 734 1581 744 1395 734 1393 734 1391 734 1352 744 1280 734 1278 734 1213 744 1139 734 1137 734 1027 744 895 734 892 734 890 734 853 744 817 734 814 734 812 734 717 744 412 740 412 777"/>
                         </Shape>
@@ -138,12 +126,7 @@
                         </Shape>
                         <String CONTENT="(mêmɪčêˊčhɪn), and it is better in quality than the reindeer-skin line."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-293_r3" HPOS="407" VPOS="1459" WIDTH="1778" HEIGHT="361" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="407 1459 2185 1459 2185 1820 407 1820"/>
-                    </Shape>
-                    <TextLine ID="mz_1-293_l15" HPOS="516" VPOS="1461" WIDTH="1661" HEIGHT="50" BASELINE="518 1494 2177 1489" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-293_l15" HPOS="516" VPOS="1461" WIDTH="1661" HEIGHT="50" BASELINE="518 1494 2177 1489" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="518 1494 518 1511 2174 1511 2177 1489 2172 1461 516 1461 518 1494"/>
                         </Shape>
@@ -184,12 +167,7 @@
                         </Shape>
                         <String CONTENT="the proper direction. The entire line seems of exactly the same width."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-293_r4" HPOS="407" VPOS="1820" WIDTH="1778" HEIGHT="1072" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="407 1820 2185 1820 2185 2892 407 2892"/>
-                    </Shape>
-                    <TextLine ID="mz_1-293_l21" HPOS="511" VPOS="1812" WIDTH="1663" HEIGHT="58" BASELINE="511 1855 2174 1855" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-293_l21" HPOS="511" VPOS="1812" WIDTH="1663" HEIGHT="58" BASELINE="511 1855 2174 1855" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="511 1855 511 1870 2174 1870 2174 1855 2174 1823 2131 1812 2129 1812 2127 1812 2032 1823 1990 1812 1988 1812 1986 1812 1427 1823 1347 1812 1345 1812 1284 1823 1222 1812 1219 1812 1217 1812 1176 1823 1072 1812 1070 1812 1009 1823 973 1812 970 1812 968 1812 860 1823 827 1812 825 1812 823 1812 769 1823 713 1812 710 1812 708 1812 706 1812 691 1825 594 1825 526 1812 524 1812 522 1812 520 1812 511 1818 511 1855"/>
                         </Shape>
@@ -314,12 +292,7 @@
                         </Shape>
                         <String CONTENT="implement is suspended from the house-frame."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-293_r5" HPOS="407" VPOS="2892" WIDTH="1778" HEIGHT="366" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="407 2892 2185 2892 2185 3258 407 3258"/>
-                    </Shape>
-                    <TextLine ID="mz_1-293_l39" HPOS="513" VPOS="2890" WIDTH="1369" HEIGHT="58" BASELINE="513 2931 1882 2931" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-293_l39" HPOS="513" VPOS="2890" WIDTH="1369" HEIGHT="58" BASELINE="513 2931 1882 2931" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="513 2931 513 2948 1882 2948 1882 2931 1882 2903 1828 2890 1826 2890 1741 2901 1689 2890 1687 2890 1685 2890 1655 2901 1622 2890 1620 2890 1618 2890 1616 2890 1572 2901 1512 2890 1510 2890 1507 2890 1466 2901 1421 2890 1419 2890 1416 2890 1414 2890 1388 2901 1365 2890 1362 2890 1360 2890 1308 2901 1228 2890 1226 2890 1224 2890 1196 2901 1118 2890 1115 2890 1113 2890 1087 2901 513 2899 513 2931"/>
                         </Shape>
@@ -360,8 +333,7 @@
                         </Shape>
                         <String CONTENT="done by hand. The sinew or reindeer-skin rope is often smeared with oil"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

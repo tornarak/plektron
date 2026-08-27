@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_3-052_r1" HPOS="368" VPOS="446" WIDTH="1782" HEIGHT="93" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="368 446 2150 446 2150 539 368 539"/>
-                    </Shape>
-                    <TextLine ID="mz_3-052_l1" HPOS="935" VPOS="465" WIDTH="618" HEIGHT="50" BASELINE="937 500 1553 496" TAGREFS="TYPE_4">
+                <TextBlock ID="text_3-052" HPOS="356" VPOS="457" WIDTH="1791" HEIGHT="2621"><TextLine ID="mz_3-052_l1" HPOS="935" VPOS="465" WIDTH="618" HEIGHT="50" BASELINE="937 500 1553 496" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1541 465 943 466 935 474 937 500 937 515 1551 511 1553 496 1549 482 1541 465"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="586"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-052_r2" HPOS="368" VPOS="562" WIDTH="1782" HEIGHT="663" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="368 562 2150 562 2150 1225 368 1225"/>
-                    </Shape>
-                    <TextLine ID="mz_3-052_l3" HPOS="356" VPOS="566" WIDTH="1770" HEIGHT="56" BASELINE="356 609 2126 609" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-052_l3" HPOS="356" VPOS="566" WIDTH="1770" HEIGHT="56" BASELINE="356 609 2126 609" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2110 576 2091 576 2079 574 2075 576 2071 574 2071 574 2052 574 2032 574 2022 572 2011 576 1952 570 1935 570 1915 568 1904 568 1878 578 1713 578 1683 566 1681 566 1679 566 1677 566 1648 578 1486 578 1471 566 1469 566 1467 566 1375 566 1373 566 1371 566 1370 566 1356 576 1270 566 1268 566 1210 576 1171 566 1169 566 1167 566 972 576 933 566 931 566 929 566 861 576 783 566 781 566 779 566 777 566 761 578 664 578 623 566 621 566 619 566 553 576 520 566 518 566 516 566 434 576 399 566 397 566 395 566 393 566 356 576 356 609 356 622 2124 622 2126 609 2122 576 2110 576"/>
                         </Shape>
@@ -131,12 +119,7 @@
                         </Shape>
                         <String CONTENT="hood of his succeeding to part of it."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-052_r3" HPOS="368" VPOS="1225" WIDTH="1782" HEIGHT="547" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="368 1225 2150 1225 2150 1772 368 1772"/>
-                    </Shape>
-                    <TextLine ID="mz_3-052_l14" HPOS="471" VPOS="1221" WIDTH="1666" HEIGHT="64" BASELINE="473 1264 2137 1267" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-052_l14" HPOS="471" VPOS="1221" WIDTH="1666" HEIGHT="64" BASELINE="473 1264 2137 1267" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="473 1264 471 1273 535 1285 537 1285 2135 1277 2137 1267 2135 1236 1820 1225 1818 1225 1590 1234 1533 1225 1531 1225 1529 1225 1508 1236 1387 1236 1356 1225 1354 1225 1352 1225 1350 1225 1323 1234 1307 1223 1305 1223 1303 1223 1301 1223 1231 1232 1184 1223 1182 1223 962 1232 834 1223 832 1223 830 1223 828 1223 814 1234 689 1234 662 1223 660 1223 658 1223 563 1232 473 1221 473 1264"/>
                         </Shape>
@@ -198,12 +181,7 @@
                         </Shape>
                         <String CONTENT="put his mark on their ears. All these become his property."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-052_r4" HPOS="368" VPOS="1772" WIDTH="1782" HEIGHT="1252" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="368 1772 2150 1772 2150 3024 368 3024"/>
-                    </Shape>
-                    <TextLine ID="mz_3-052_l23" HPOS="475" VPOS="1764" WIDTH="1666" HEIGHT="63" BASELINE="477 1801 2141 1805" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-052_l23" HPOS="475" VPOS="1764" WIDTH="1666" HEIGHT="63" BASELINE="477 1801 2141 1805" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="477 1801 475 1813 539 1825 541 1825 1307 1817 1356 1827 1358 1827 2139 1817 2141 1805 2139 1766 1531 1774 1494 1764 1492 1764 1490 1764 1488 1764 1455 1774 1389 1764 1387 1764 1307 1774 477 1764 477 1801"/>
                         </Shape>
@@ -349,19 +327,13 @@
                         </Shape>
                         <String CONTENT="bridegroom’s life."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-052_r5" HPOS="368" VPOS="3024" WIDTH="1782" HEIGHT="81" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="368 3024 2150 3024 2150 3105 368 3105"/>
-                    </Shape>
-                    <TextLine ID="mz_3-052_l44" HPOS="477" VPOS="3020" WIDTH="1670" HEIGHT="58" BASELINE="477 3062 2147 3062" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-052_l44" HPOS="477" VPOS="3020" WIDTH="1670" HEIGHT="58" BASELINE="477 3062 2147 3062" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="477 3062 477 3076 2143 3078 2147 3062 2147 3033 2114 3020 2112 3020 2110 3020 2057 3029 2034 3020 2032 3020 2030 3020 2028 3020 2026 3020 2009 3033 1929 3033 1900 3020 1898 3020 1896 3020 1894 3020 1892 3020 1874 3033 1650 3033 1617 3020 1615 3020 1613 3020 1611 3020 1609 3020 1594 3031 1459 3031 1410 3020 1409 3020 1407 3020 1338 3031 1307 3020 1305 3020 1303 3020 1301 3020 1299 3020 1280 3033 1206 3033 1175 3020 1173 3020 1171 3020 1169 3020 1167 3020 1151 3031 1083 3020 1081 3020 1079 3020 1077 3020 1060 3033 966 3033 876 3020 874 3020 873 3020 871 3020 853 3031 818 3020 816 3020 814 3020 812 3020 777 3031 734 3020 732 3020 730 3020 641 3029 625 3020 623 3020 621 3020 518 3020 516 3020 514 3020 477 3031 477 3062"/>
                         </Shape>
                         <String CONTENT="Adopted Sons-in-Law. — Much easier than serving a term for a bride"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

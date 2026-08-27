@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_3-134_r1" HPOS="594" VPOS="453" WIDTH="1782" HEIGHT="102" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="594 453 2376 453 2376 555 594 555"/>
-                    </Shape>
-                    <TextLine ID="mz_3-134_l1" HPOS="1169" VPOS="476" WIDTH="610" HEIGHT="51" BASELINE="1171 505 1779 513" TAGREFS="TYPE_5">
+                <TextBlock ID="text_3-134" HPOS="586" VPOS="468" WIDTH="1774" HEIGHT="2635"><TextLine ID="mz_3-134_l1" HPOS="1169" VPOS="476" WIDTH="610" HEIGHT="51" BASELINE="1171 505 1779 513" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1775 480 1773 478 1473 476 1463 476 1444 476 1424 476 1405 476 1385 476 1366 476 1346 476 1327 476 1307 476 1288 476 1268 476 1249 476 1229 476 1210 476 1190 476 1171 476 1171 505 1169 519 1775 527 1779 513 1777 482 1775 480"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="668"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-134_r2" HPOS="594" VPOS="578" WIDTH="1782" HEIGHT="476" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="594 578 2376 578 2376 1054 594 1054"/>
-                    </Shape>
-                    <TextLine ID="mz_3-134_l3" HPOS="588" VPOS="578" WIDTH="1768" HEIGHT="56" BASELINE="588 619 2356 619" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-134_l3" HPOS="588" VPOS="578" WIDTH="1768" HEIGHT="56" BASELINE="588 619 2356 619" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="2342 591 2323 591 2303 589 2284 589 2264 589 2245 587 2225 587 2223 585 2223 587 1736 578 1734 578 1732 578 1711 587 1621 578 1619 578 1617 578 1586 587 1553 578 1551 578 1549 578 1486 587 1397 578 1395 578 1309 587 1278 578 1276 578 1274 578 1103 587 1052 578 1050 578 1003 587 966 578 964 578 962 578 900 587 722 578 721 578 646 587 609 578 607 578 606 578 604 578 602 578 588 585 588 619 588 632 2354 634 2356 619 2356 591 2342 591"/>
                         </Shape>
@@ -111,12 +98,7 @@
                         </Shape>
                         <String CONTENT="formed the basis of it."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-134_r3" HPOS="594" VPOS="1054" WIDTH="1782" HEIGHT="1392" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="594 1054 2376 1054 2376 2446 594 2446"/>
-                    </Shape>
-                    <TextLine ID="mz_3-134_l11" HPOS="693" VPOS="1059" WIDTH="1665" HEIGHT="55" BASELINE="695 1100 2358 1096" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-134_l11" HPOS="693" VPOS="1059" WIDTH="1665" HEIGHT="55" BASELINE="695 1100 2358 1096" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="695 1100 695 1114 2356 1112 2358 1096 2352 1059 693 1063 695 1100"/>
                         </Shape>
@@ -276,12 +258,7 @@
                         </Shape>
                         <String CONTENT="of the killed men were reduced to starving orphans.²"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-134_r4" HPOS="594" VPOS="2446" WIDTH="1782" HEIGHT="416" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="594 2446 2376 2446 2376 2862 594 2862"/>
-                    </Shape>
-                    <TextLine ID="mz_3-134_l34" HPOS="697" VPOS="2439" WIDTH="1663" HEIGHT="58" BASELINE="699 2472 2360 2476" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-134_l34" HPOS="697" VPOS="2439" WIDTH="1663" HEIGHT="58" BASELINE="699 2472 2360 2476" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="699 2472 697 2484 1110 2495 1112 2495 1506 2487 1623 2497 1625 2497 2358 2487 2360 2476 2358 2447 699 2439 699 2472"/>
                         </Shape>
@@ -329,12 +306,7 @@
                         </Shape>
                         <String CONTENT="(liˊñɪlɪt). Another hunter explained to me that among men and beasts there"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-134_r5" HPOS="594" VPOS="2893" WIDTH="1782" HEIGHT="219" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="594 2893 2376 2893 2376 3112 594 3112"/>
-                    </Shape>
-                    <TextLine ID="mz_3-134_l41" HPOS="703" VPOS="2883" WIDTH="306" HEIGHT="55" BASELINE="705 2908 1009 2914" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-134_l41" HPOS="703" VPOS="2883" WIDTH="306" HEIGHT="55" BASELINE="705 2908 1009 2914" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="705 2908 703 2920 806 2936 808 2936 873 2926 882 2934 882 2936 884 2936 886 2936 888 2936 931 2928 964 2938 966 2938 968 2938 970 2938 1007 2926 1009 2914 1009 2889 705 2883 705 2908"/>
                         </Shape>
@@ -368,8 +340,7 @@
                         </Shape>
                         <String CONTENT="By this he knew that a fox was caught in his traps and had died there."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

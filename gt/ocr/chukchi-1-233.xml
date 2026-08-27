@@ -23,20 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-233_r1" HPOS="419" VPOS="603" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="419 603 2197 603 2197 693 419 693"/>
-                    </Shape>
-                    <TextLine ID="mz_1-233_l1" HPOS="996" VPOS="608" WIDTH="620" HEIGHT="54" BASELINE="999 640 1616 645" TAGREFS="TYPE_3">
+                <TextBlock ID="text_1-233" HPOS="422" VPOS="608" WIDTH="1778" HEIGHT="2622"><TextLine ID="mz_1-233_l1" HPOS="996" VPOS="608" WIDTH="620" HEIGHT="54" BASELINE="999 640 1616 645" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="1607 608 1306 608 1302 608 1280 608 1258 608 1237 608 1215 608 1193 608 1172 608 1150 608 1128 608 1107 608 1085 608 1063 608 1042 608 1020 608 999 610 999 640 996 658 1611 662 1616 645 1614 615 1607 608"/>
                         </Shape>
@@ -49,12 +43,7 @@
                         </Shape>
                         <String CONTENT="181"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-233_r2" HPOS="419" VPOS="718" WIDTH="1778" HEIGHT="2537" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="419 718 2197 718 2197 3255 419 3255"/>
-                    </Shape>
-                    <TextLine ID="mz_1-233_l3" HPOS="422" VPOS="710" WIDTH="1778" HEIGHT="60" BASELINE="425 757 2200 753" TAGREFS="TYPE_3">
+<TextLine ID="mz_1-233_l3" HPOS="422" VPOS="710" WIDTH="1778" HEIGHT="60" BASELINE="425 757 2200 753" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="574 714 552 716 548 716 539 725 422 725 425 757 425 770 2198 766 2200 753 2198 723 2148 710 2146 710 2144 710 2142 710 2118 721 1453 710 1451 710 1449 710 1447 710 1432 721 1161 712 1159 712 1096 723 1048 712 1046 712 1044 712 1042 712 994 723 767 712 765 712 762 712 741 723 710 712 708 712 706 712 648 723 578 714 574 714"/>
                         </Shape>
@@ -347,8 +336,7 @@
                         </Shape>
                         <String CONTENT="winter, because in summer it was filled with water. The level of the floor"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

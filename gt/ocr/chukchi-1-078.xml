@@ -23,33 +23,20 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-078_r1" HPOS="737" VPOS="592" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="737 592 2515 592 2515 682 737 682"/>
-                    </Shape>
-                    <TextLine ID="mz_1-078_l1" HPOS="1313" VPOS="599" WIDTH="617" HEIGHT="54" BASELINE="1315 632 1930 636" TAGREFS="TYPE_5">
+                <TextBlock ID="text_1-078" HPOS="734" VPOS="599" WIDTH="1780" HEIGHT="2616"><TextLine ID="mz_1-078_l1" HPOS="1313" VPOS="599" WIDTH="617" HEIGHT="54" BASELINE="1315 632 1930 636" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1921 599 1620 599 1618 599 1596 599 1575 599 1553 599 1531 599 1510 599 1488 599 1466 599 1445 599 1423 599 1401 599 1380 599 1358 599 1336 599 1315 599 1315 632 1313 649 1925 653 1930 636 1928 617 1921 599"/>
                         </Shape>
                         <String CONTENT="BOGORAS, THE CHUKCHEE."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-078_r2" HPOS="737" VPOS="707" WIDTH="1778" HEIGHT="414" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="737 707 2515 707 2515 1121 737 1121"/>
-                    </Shape>
-                    <TextLine ID="mz_1-078_l2" HPOS="741" VPOS="714" WIDTH="1773" HEIGHT="50" BASELINE="741 747 2514 747" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-078_l2" HPOS="741" VPOS="714" WIDTH="1773" HEIGHT="50" BASELINE="741 747 2514 747" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="2495 718 2473 718 2452 716 2430 716 2408 714 2387 714 2365 714 741 714 741 747 741 764 2514 764 2514 747 2514 718 2495 718"/>
                         </Shape>
@@ -97,12 +84,7 @@
                         </Shape>
                         <String CONTENT="by hammering them into the desired shape."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-078_r3" HPOS="737" VPOS="1121" WIDTH="1778" HEIGHT="1983" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="737 1121 2515 1121 2515 3104 737 3104"/>
-                    </Shape>
-                    <TextLine ID="mz_1-078_l9" HPOS="849" VPOS="1121" WIDTH="1665" HEIGHT="59" BASELINE="849 1162 2514 1162" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-078_l9" HPOS="849" VPOS="1121" WIDTH="1665" HEIGHT="59" BASELINE="849 1162 2514 1162" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="849 1162 849 1180 2514 1180 2514 1162 2514 1132 2144 1121 2142 1121 2053 1132 1975 1121 1973 1121 1971 1121 1943 1132 1891 1121 1889 1121 1886 1121 1858 1132 1787 1121 1785 1121 1782 1121 1756 1134 1494 1134 1421 1121 1419 1121 1416 1121 1391 1132 1332 1121 1330 1121 1250 1132 1206 1121 1204 1121 1202 1121 1200 1121 1198 1121 1183 1134 1092 1134 992 1121 990 1121 988 1121 986 1121 970 1132 871 1121 869 1121 866 1121 864 1121 849 1130 849 1162"/>
                         </Shape>
@@ -332,12 +314,7 @@
                         </Shape>
                         <String CONTENT="8 blue foxes, and 1563 walrus-tusks sold that year at the fair. These figures,"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-078_r4" HPOS="737" VPOS="3128" WIDTH="1778" HEIGHT="103" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="737 3128 2515 3128 2515 3231 737 3231"/>
-                    </Shape>
-                    <TextLine ID="mz_1-078_l42" HPOS="840" VPOS="3124" WIDTH="631" HEIGHT="47" BASELINE="843 3152 1471 3156" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-078_l42" HPOS="840" VPOS="3124" WIDTH="631" HEIGHT="47" BASELINE="843 3152 1471 3156" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="843 3152 840 3167 1466 3171 1471 3156 1468 3128 843 3124 843 3152"/>
                         </Shape>
@@ -357,8 +334,7 @@
                         </Shape>
                         <String CONTENT="³ A ruble is equivalent to about fifty cents."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

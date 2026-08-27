@@ -23,20 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-160_r1" HPOS="566" VPOS="603" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="566 603 2344 603 2344 693 566 693"/>
-                    </Shape>
-                    <TextLine ID="mz_1-160_l1" HPOS="568" VPOS="617" WIDTH="104" HEIGHT="49" BASELINE="570 651 672 647" TAGREFS="TYPE_3">
+                <TextBlock ID="text_1-160" HPOS="561" VPOS="615" WIDTH="1778" HEIGHT="2636"><TextLine ID="mz_1-160_l1" HPOS="568" VPOS="617" WIDTH="104" HEIGHT="49" BASELINE="570 651 672 647" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="570 651 570 666 672 664 672 647 665 617 568 619 570 651"/>
                         </Shape>
@@ -49,12 +43,7 @@
                         </Shape>
                         <String CONTENT="BOGORAS, THE CHUKCHEE."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-160_r2" HPOS="566" VPOS="718" WIDTH="1778" HEIGHT="777" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="566 718 2344 718 2344 1495 566 1495"/>
-                    </Shape>
-                    <TextLine ID="mz_1-160_l3" HPOS="663" VPOS="712" WIDTH="1674" HEIGHT="67" BASELINE="665 755 2337 762" TAGREFS="TYPE_3">
+<TextLine ID="mz_1-160_l3" HPOS="663" VPOS="712" WIDTH="1674" HEIGHT="67" BASELINE="665 755 2337 762" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="2333 736 2311 736 2289 734 2268 734 2246 731 2224 731 2203 729 2181 729 2159 727 2138 727 2116 725 2094 725 2073 723 2010 727 1982 718 1964 718 1958 716 1895 727 1679 714 1676 714 1616 725 1568 714 1566 714 1564 714 1562 714 1529 725 1494 714 1492 714 1490 714 1425 727 1243 727 1204 712 1202 712 1200 712 1141 725 1053 725 1040 712 1038 712 1035 712 1033 712 957 723 665 718 665 755 663 770 2333 779 2337 762 2335 736 2333 736"/>
                         </Shape>
@@ -144,12 +133,7 @@
                         </Shape>
                         <String CONTENT="a hold for the separate loops on the end of the line (Fig. 39, b)."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-160_r3" HPOS="566" VPOS="1497" WIDTH="1778" HEIGHT="1214" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="566 1497 2344 1497 2344 2711 566 2711"/>
-                    </Shape>
-                    <TextLine ID="mz_1-160_l16" HPOS="1022" VPOS="1506" WIDTH="1315" HEIGHT="50" BASELINE="1022 1537 2337 1537" TAGREFS="TYPE_3">
+<TextLine ID="mz_1-160_l16" HPOS="1022" VPOS="1506" WIDTH="1315" HEIGHT="50" BASELINE="1022 1537 2337 1537" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="1022 1537 1022 1556 2337 1556 2337 1537 2337 1506 1022 1506 1022 1537"/>
                         </Shape>
@@ -288,12 +272,7 @@
                         </Shape>
                         <String CONTENT="island of Kihiˊni, they still form the staple food of the inhabitants."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-160_r4" HPOS="566" VPOS="3120" WIDTH="1778" HEIGHT="127" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="566 3120 2344 3120 2344 3247 566 3247"/>
-                    </Shape>
-                    <TextLine ID="mz_1-160_l36" HPOS="669" VPOS="3111" WIDTH="1666" HEIGHT="71" BASELINE="672 3152 2335 3161" TAGREFS="TYPE_3">
+<TextLine ID="mz_1-160_l36" HPOS="669" VPOS="3111" WIDTH="1666" HEIGHT="71" BASELINE="672 3152 2335 3161" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="2322 3128 2138 3117 2135 3117 2073 3128 2025 3117 2023 3117 2021 3117 1969 3128 1886 3115 1884 3115 1882 3115 1854 3126 1808 3115 1806 3115 1804 3115 1674 3126 1650 3115 1648 3115 1646 3115 1644 3115 1642 3115 1629 3126 1549 3115 1546 3115 1544 3115 1505 3126 1494 3115 1481 3113 1462 3124 1367 3113 1365 3113 1248 3124 1226 3113 1224 3113 1222 3113 1219 3113 1217 3113 1200 3126 1102 3126 1087 3113 1083 3113 1072 3111 1059 3122 994 3111 992 3111 990 3111 944 3122 912 3111 910 3111 908 3111 905 3111 864 3122 808 3111 806 3111 804 3111 780 3122 713 3111 710 3111 708 3111 672 3119 672 3152 669 3167 723 3180 726 3180 1044 3171 1085 3182 1087 3182 1089 3182 2333 3176 2335 3161 2333 3154 2322 3128"/>
                         </Shape>
@@ -306,8 +285,7 @@
                         </Shape>
                         <String CONTENT="from Holy Cross Bay to East Cape and back again (Plate X, Figs. 1, 3)."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

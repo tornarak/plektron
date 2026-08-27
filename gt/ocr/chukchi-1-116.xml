@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-116_r1" HPOS="690" VPOS="592" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="690 592 2468 592 2468 682 690 682"/>
-                    </Shape>
-                    <TextLine ID="mz_1-116_l1" HPOS="693" VPOS="604" WIDTH="69" HEIGHT="58" BASELINE="693 651 762 647" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-116" HPOS="689" VPOS="604" WIDTH="1778" HEIGHT="2634"><TextLine ID="mz_1-116_l1" HPOS="693" VPOS="604" WIDTH="69" HEIGHT="58" BASELINE="693 651 762 647" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="754 612 732 608 723 604 706 610 693 651 693 662 762 660 762 647 760 612 756 612 754 612"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="BOGORAS, THE CHUKCHEE."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-116_r2" HPOS="690" VPOS="707" WIDTH="1778" HEIGHT="1692" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="690 707 2468 707 2468 2399 690 2399"/>
-                    </Shape>
-                    <TextLine ID="mz_1-116_l3" HPOS="801" VPOS="718" WIDTH="1661" HEIGHT="57" BASELINE="801 757 2462 757" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-116_l3" HPOS="801" VPOS="718" WIDTH="1661" HEIGHT="57" BASELINE="801 757 2462 757" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="801 757 801 775 2462 775 2462 757 2462 725 801 718 801 757"/>
                         </Shape>
@@ -257,12 +245,7 @@
                         </Shape>
                         <String CONTENT="15)."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-116_r3" HPOS="690" VPOS="2399" WIDTH="1778" HEIGHT="303" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="690 2399 2468 2399 2468 2702 690 2702"/>
-                    </Shape>
-                    <TextLine ID="mz_1-116_l32" HPOS="1841" VPOS="2396" WIDTH="626" HEIGHT="59" BASELINE="1843 2440 2467 2435" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-116_l32" HPOS="1841" VPOS="2396" WIDTH="626" HEIGHT="59" BASELINE="1843 2440 2467 2435" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1843 2440 1843 2455 2465 2450 2467 2435 2462 2405 1856 2396 1854 2396 1852 2396 1850 2396 1841 2403 1843 2440"/>
                         </Shape>
@@ -296,12 +279,7 @@
                         </Shape>
                         <String CONTENT="out being thus attached."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-116_r4" HPOS="690" VPOS="2702" WIDTH="1778" HEIGHT="423" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="690 2702 2468 2702 2468 3125 690 3125"/>
-                    </Shape>
-                    <TextLine ID="mz_1-116_l37" HPOS="1847" VPOS="2695" WIDTH="620" HEIGHT="67" BASELINE="1850 2738 2467 2734" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-116_l37" HPOS="1847" VPOS="2695" WIDTH="620" HEIGHT="67" BASELINE="1850 2738 2467 2734" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1850 2738 1850 2751 2146 2762 2148 2762 2233 2751 2450 2760 2452 2760 2454 2760 2456 2760 2467 2749 2467 2734 2462 2706 1865 2695 1863 2695 1860 2695 1858 2695 1847 2704 1850 2738"/>
                         </Shape>
@@ -349,19 +327,13 @@
                         </Shape>
                         <String CONTENT="side of the right one. The trace is double, and for attachment is simply slung"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-116_r5" HPOS="690" VPOS="3179" WIDTH="1778" HEIGHT="71" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="690 3179 2468 3179 2468 3250 690 3250"/>
-                    </Shape>
-                    <TextLine ID="mz_1-116_l44" HPOS="1308" VPOS="3184" WIDTH="537" HEIGHT="54" BASELINE="1310 3213 1845 3221" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-116_l44" HPOS="1308" VPOS="3184" WIDTH="537" HEIGHT="54" BASELINE="1310 3213 1845 3221" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1839 3191 1310 3184 1310 3213 1308 3230 1841 3238 1845 3221 1845 3197 1839 3191"/>
                         </Shape>
                         <String CONTENT="¹ Compare Middendorff, p. 1275."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

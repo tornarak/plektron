@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-247_r1" HPOS="340" VPOS="597" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="340 597 2118 597 2118 687 340 687"/>
-                    </Shape>
-                    <TextLine ID="mz_1-247_l1" HPOS="925" VPOS="615" WIDTH="617" HEIGHT="54" BASELINE="927 647 1542 651" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-247" HPOS="338" VPOS="615" WIDTH="1778" HEIGHT="2615"><TextLine ID="mz_1-247_l1" HPOS="925" VPOS="615" WIDTH="617" HEIGHT="54" BASELINE="927 647 1542 651" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1533 617 1531 615 944 615 929 636 927 647 925 664 1538 669 1542 651 1540 619 1533 617"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="191"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-247_r2" HPOS="340" VPOS="712" WIDTH="1778" HEIGHT="186" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="340 712 2118 712 2118 898 340 898"/>
-                    </Shape>
-                    <TextLine ID="mz_1-247_l3" HPOS="347" VPOS="723" WIDTH="1769" HEIGHT="54" BASELINE="349 755 2116 762" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-247_l3" HPOS="347" VPOS="723" WIDTH="1769" HEIGHT="54" BASELINE="349 755 2116 762" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="479 725 457 725 435 725 414 725 392 727 370 727 349 727 349 755 347 770 2112 777 2116 762 2114 729 494 723 479 725"/>
                         </Shape>
@@ -75,12 +63,7 @@
                         </Shape>
                         <String CONTENT="are occasionally used."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-247_r3" HPOS="340" VPOS="898" WIDTH="1778" HEIGHT="1490" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="340 898 2118 898 2118 2388 340 2388"/>
-                    </Shape>
-                    <TextLine ID="mz_1-247_l6" HPOS="455" VPOS="907" WIDTH="453" HEIGHT="50" BASELINE="455 937 908 937" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-247_l6" HPOS="455" VPOS="907" WIDTH="453" HEIGHT="50" BASELINE="455 937 908 937" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="455 937 455 957 908 957 908 937 908 907 455 907 455 937"/>
                         </Shape>
@@ -254,12 +237,7 @@
                         </Shape>
                         <String CONTENT="of the scarcity of wood."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-247_r4" HPOS="340" VPOS="2388" WIDTH="1778" HEIGHT="724" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="340 2388 2118 2388 2118 3112 340 3112"/>
-                    </Shape>
-                    <TextLine ID="mz_1-247_l31" HPOS="451" VPOS="2388" WIDTH="1100" HEIGHT="69" BASELINE="453 2433 1551 2427" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-247_l31" HPOS="451" VPOS="2388" WIDTH="1100" HEIGHT="69" BASELINE="453 2433 1551 2427" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="453 2433 453 2446 713 2446 769 2457 771 2457 834 2444 918 2457 921 2457 923 2457 970 2444 1022 2457 1025 2457 1027 2457 1029 2457 1068 2444 1122 2457 1124 2457 1126 2457 1382 2442 1395 2453 1395 2455 1397 2455 1399 2455 1401 2457 1533 2457 1533 2455 1536 2455 1538 2455 1538 2453 1551 2440 1551 2427 1549 2401 1516 2388 1514 2388 1512 2388 1304 2398 1271 2388 1269 2388 1267 2388 1265 2388 1263 2388 1263 2390 1252 2398 1157 2390 1154 2390 1152 2390 1150 2390 1133 2403 1018 2403 1005 2390 1003 2390 1001 2390 999 2390 996 2390 966 2401 856 2390 853 2390 851 2390 812 2403 767 2392 765 2392 762 2392 697 2403 451 2401 453 2433"/>
                         </Shape>
@@ -342,12 +320,7 @@
                         </Shape>
                         <String CONTENT="mixed with pounded leaves, forms a sledge-load for one reindeer."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-247_r5" HPOS="340" VPOS="3112" WIDTH="1778" HEIGHT="127" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="340 3112 2118 3112 2118 3239 340 3239"/>
-                    </Shape>
-                    <TextLine ID="mz_1-247_l43" HPOS="448" VPOS="3102" WIDTH="1659" HEIGHT="67" BASELINE="451 3152 2107 3143" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-247_l43" HPOS="448" VPOS="3102" WIDTH="1659" HEIGHT="67" BASELINE="451 3152 2107 3143" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="451 3152 451 3169 2105 3161 2107 3143 2103 3113 1726 3102 1724 3102 1653 3113 1358 3104 1356 3104 1274 3115 955 3106 953 3106 448 3117 451 3152"/>
                         </Shape>
@@ -360,8 +333,7 @@
                         </Shape>
                         <String CONTENT="The flat narrow pillow-bag of the movable sleeping-room has a similar shape."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

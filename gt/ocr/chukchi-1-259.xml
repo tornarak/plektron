@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-259_r1" HPOS="362" VPOS="587" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="362 587 2140 587 2140 677 362 677"/>
-                    </Shape>
-                    <TextLine ID="mz_1-259_l1" HPOS="936" VPOS="602" WIDTH="617" HEIGHT="56" BASELINE="938 636 1553 640" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-259" HPOS="362" VPOS="602" WIDTH="1771" HEIGHT="2639"><TextLine ID="mz_1-259_l1" HPOS="936" VPOS="602" WIDTH="617" HEIGHT="56" BASELINE="938 636 1553 640" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1523 606 1501 606 1479 606 1458 606 1436 606 1414 606 1403 604 947 602 938 604 938 636 936 653 1549 658 1553 640 1544 606 1523 606"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="203"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-259_r2" HPOS="362" VPOS="702" WIDTH="1778" HEIGHT="248" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="362 702 2140 702 2140 950 362 950"/>
-                    </Shape>
-                    <TextLine ID="mz_1-259_l3" HPOS="472" VPOS="708" WIDTH="1659" HEIGHT="62" BASELINE="472 749 2131 749" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-259_l3" HPOS="472" VPOS="708" WIDTH="1659" HEIGHT="62" BASELINE="472 749 2131 749" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="472 749 472 770 2131 770 2131 749 2131 721 2045 708 2042 708 2040 708 1993 721 1886 721 1871 708 1869 708 1867 708 1865 708 1813 718 1759 708 1756 708 1689 718 1676 708 1674 708 1672 708 1670 708 1668 708 1640 718 1605 708 1603 708 1601 708 1598 708 1564 718 1479 708 1477 708 1475 708 1445 718 1332 708 1330 708 1328 708 1291 718 1198 708 1196 708 1061 718 472 710 472 749"/>
                         </Shape>
@@ -82,12 +70,7 @@
                         </Shape>
                         <String CONTENT="with crude embroidery."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-259_r3" HPOS="362" VPOS="950" WIDTH="1778" HEIGHT="1793" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="362 950 2140 950 2140 2743 362 2743"/>
-                    </Shape>
-                    <TextLine ID="mz_1-259_l7" HPOS="472" VPOS="957" WIDTH="509" HEIGHT="49" BASELINE="472 987 981 987" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-259_l7" HPOS="472" VPOS="957" WIDTH="509" HEIGHT="49" BASELINE="472 987 981 987" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="472 987 472 1006 981 1006 981 987 981 957 472 957 472 987"/>
                         </Shape>
@@ -296,12 +279,7 @@
                         </Shape>
                         <String CONTENT="only relief-work."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-259_r4" HPOS="362" VPOS="2743" WIDTH="1778" HEIGHT="431" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="362 2743 2140 2743 2140 3174 362 3174"/>
-                    </Shape>
-                    <TextLine ID="mz_1-259_l37" HPOS="479" VPOS="2738" WIDTH="504" HEIGHT="70" BASELINE="479 2782 983 2782" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-259_l37" HPOS="479" VPOS="2738" WIDTH="504" HEIGHT="70" BASELINE="479 2782 983 2782" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="479 2782 479 2797 492 2805 494 2805 496 2805 498 2805 578 2795 615 2805 617 2805 620 2805 687 2795 723 2805 726 2805 728 2805 730 2805 767 2795 797 2805 799 2805 801 2808 897 2808 897 2805 899 2805 901 2805 901 2803 912 2795 966 2805 968 2805 970 2805 973 2805 983 2795 983 2782 983 2751 953 2738 951 2738 949 2738 947 2738 944 2738 927 2751 910 2738 908 2738 905 2738 903 2738 840 2754 784 2754 771 2741 771 2738 769 2738 767 2738 765 2738 762 2738 721 2751 479 2745 479 2782"/>
                         </Shape>
@@ -349,19 +327,13 @@
                         </Shape>
                         <String CONTENT="wooden mortar (Fig. 123) by means of a long, heavy, wooden pestle. The"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-259_r5" HPOS="362" VPOS="3188" WIDTH="1778" HEIGHT="54" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="362 3188 2140 3188 2140 3242 362 3242"/>
-                    </Shape>
-                    <TextLine ID="mz_1-259_l44" HPOS="594" VPOS="3174" WIDTH="1314" HEIGHT="67" BASELINE="596 3202 1908 3213" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-259_l44" HPOS="594" VPOS="3174" WIDTH="1314" HEIGHT="67" BASELINE="596 3202 1908 3213" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1893 3210 1884 3182 596 3174 596 3202 594 3221 1191 3238 1193 3238 1365 3230 1380 3241 1382 3241 1384 3241 1386 3241 1906 3232 1908 3213 1906 3210 1893 3210"/>
                         </Shape>
                         <String CONTENT="¹ Nelson, Plates LXXXVIII and LXXXIX; also Fig. 94, p. 281; and Fig. 95, p. 284."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

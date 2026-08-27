@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-199_r1" HPOS="364" VPOS="608" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="364 608 2142 608 2142 698 364 698"/>
-                    </Shape>
-                    <TextLine ID="mz_1-199_l1" HPOS="942" VPOS="623" WIDTH="622" HEIGHT="52" BASELINE="942 656 1564 656" TAGREFS="TYPE_5">
+                <TextBlock ID="text_1-199" HPOS="364" VPOS="621" WIDTH="1776" HEIGHT="2633"><TextLine ID="mz_1-199_l1" HPOS="942" VPOS="623" WIDTH="622" HEIGHT="52" BASELINE="942 656 1564 656" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="942 636 942 656 942 675 1564 675 1564 656 1564 623 957 623 942 636"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="157"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-199_r2" HPOS="364" VPOS="723" WIDTH="1778" HEIGHT="124" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="364 723 2142 723 2142 847 364 847"/>
-                    </Shape>
-                    <TextLine ID="mz_1-199_l3" HPOS="366" VPOS="721" WIDTH="1774" HEIGHT="60" BASELINE="366 764 2140 764" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-199_l3" HPOS="366" VPOS="721" WIDTH="1774" HEIGHT="60" BASELINE="366 764 2140 764" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="877 721 875 721 873 721 845 731 784 721 782 721 732 731 717 723 713 723 700 723 676 731 620 723 604 725 591 725 576 734 483 734 474 725 474 727 453 727 431 727 409 727 403 727 366 729 366 764 366 781 2140 781 2140 764 2140 734 2060 721 2058 721 2055 721 2027 731 1993 721 1990 721 1988 721 1915 731 1795 721 1793 721 1791 721 1759 734 1594 734 1570 721 1568 721 1566 721 1464 731 1419 721 1416 721 1414 721 1412 721 1386 731 1349 721 1347 721 1345 721 1258 734 1150 734 1135 721 1133 721 1131 721 1128 721 1074 731 983 721 981 721 914 731 879 721 877 721"/>
                         </Shape>
@@ -69,12 +56,7 @@
                         </Shape>
                         <String CONTENT="stick, as in canes, arrow-shafts, sledge-rails, etc."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-199_r3" HPOS="364" VPOS="847" WIDTH="1778" HEIGHT="477" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="364 847 2142 847 2142 1324 364 1324"/>
-                    </Shape>
-                    <TextLine ID="mz_1-199_l5" HPOS="477" VPOS="848" WIDTH="1661" HEIGHT="63" BASELINE="477 885 2138 885" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-199_l5" HPOS="477" VPOS="848" WIDTH="1661" HEIGHT="63" BASELINE="477 885 2138 885" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="477 885 477 898 570 911 572 911 574 911 617 900 793 900 806 911 808 911 810 911 812 911 951 900 1432 900 1447 911 1449 911 1451 911 1453 911 1735 900 1858 911 1860 911 1984 900 2092 911 2094 911 2097 911 2138 898 2138 885 2138 855 477 848 477 885"/>
                         </Shape>
@@ -129,12 +111,7 @@
                         </Shape>
                         <String CONTENT="three feathers (Fig. 75). The length of the arrows was from 60 to 85 cm.¹"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-199_r4" HPOS="364" VPOS="1324" WIDTH="1778" HEIGHT="661" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="364 1324 2142 1324 2142 1985 364 1985"/>
-                    </Shape>
-                    <TextLine ID="mz_1-199_l13" HPOS="472" VPOS="1318" WIDTH="617" HEIGHT="63" BASELINE="474 1366 1089 1361" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-199_l13" HPOS="472" VPOS="1318" WIDTH="617" HEIGHT="63" BASELINE="474 1366 1089 1361" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="474 1366 474 1381 1087 1377 1089 1361 1085 1331 905 1318 903 1318 901 1318 899 1318 886 1329 858 1318 856 1318 853 1318 851 1318 849 1318 849 1320 838 1329 600 1320 598 1320 516 1331 485 1320 483 1320 481 1320 479 1320 477 1320 477 1322 474 1322 472 1322 474 1366"/>
                         </Shape>
@@ -210,12 +187,7 @@
                         </Shape>
                         <String CONTENT="which are found in Kamchatka."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-199_r5" HPOS="364" VPOS="1985" WIDTH="1778" HEIGHT="178" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="364 1985 2142 1985 2142 2163 364 2163"/>
-                    </Shape>
-                    <TextLine ID="mz_1-199_l24" HPOS="472" VPOS="1976" WIDTH="1666" HEIGHT="65" BASELINE="474 2028 2138 2013" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-199_l24" HPOS="472" VPOS="1976" WIDTH="1666" HEIGHT="65" BASELINE="474 2028 2138 2013" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="474 2028 474 2041 2135 2028 2138 2013 2133 1983 1427 1976 1425 1976 1373 1987 1222 1978 1219 1978 947 1991 494 1985 492 1985 490 1985 487 1985 472 1991 474 2028"/>
                         </Shape>
@@ -235,12 +207,7 @@
                         </Shape>
                         <String CONTENT="by shoulder-straps, like a knapsack (Fig. 76; see also Plate XXII). Sometimes, to"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-199_r6" HPOS="364" VPOS="2949" WIDTH="1778" HEIGHT="125" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="364 2949 2142 2949 2142 3074 364 3074"/>
-                    </Shape>
-                    <TextLine ID="mz_1-199_l27" HPOS="366" VPOS="2940" WIDTH="1772" HEIGHT="80" BASELINE="368 3000 2138 2977" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-199_l27" HPOS="366" VPOS="2940" WIDTH="1772" HEIGHT="80" BASELINE="368 3000 2138 2977" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="2131 2942 1633 2940 1631 2940 1629 2940 1581 2951 1345 2944 1343 2944 1341 2944 1306 2955 687 2953 685 2953 682 2953 641 2964 516 2955 513 2955 366 2966 368 3000 368 3020 2135 2992 2138 2977 2133 2944 2131 2942"/>
                         </Shape>
@@ -253,12 +220,7 @@
                         </Shape>
                         <String CONTENT="also embroidered. A covering for the bow was employed for the same purpose."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-199_r7" HPOS="364" VPOS="3074" WIDTH="1778" HEIGHT="135" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="364 3074 2142 3074 2142 3209 364 3209"/>
-                    </Shape>
-                    <TextLine ID="mz_1-199_l29" HPOS="477" VPOS="3065" WIDTH="1661" HEIGHT="70" BASELINE="479 3119 2138 3098" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-199_l29" HPOS="477" VPOS="3065" WIDTH="1661" HEIGHT="70" BASELINE="479 3119 2138 3098" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="479 3119 479 3135 2135 3113 2138 3098 2133 3067 1308 3065 1306 3065 1135 3078 494 3076 492 3076 490 3076 487 3076 477 3083 479 3119"/>
                         </Shape>
@@ -271,19 +233,13 @@
                         </Shape>
                         <String CONTENT="Besides the usual bow, crossbows are much used, with some variations in the"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-199_r8" HPOS="364" VPOS="3209" WIDTH="1778" HEIGHT="54" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="364 3209 2142 3209 2142 3263 364 3263"/>
-                    </Shape>
-                    <TextLine ID="mz_1-199_l31" HPOS="936" VPOS="3206" WIDTH="641" HEIGHT="48" BASELINE="938 3238 1577 3232" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-199_l31" HPOS="936" VPOS="3206" WIDTH="641" HEIGHT="48" BASELINE="938 3238 1577 3232" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="938 3238 938 3254 1577 3251 1577 3232 1570 3206 936 3210 938 3238"/>
                         </Shape>
                         <String CONTENT="¹ According to Adler (I), 51 to 78 cm."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

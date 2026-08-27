@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Other"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-101_r1" HPOS="381" VPOS="603" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="381 603 2159 603 2159 693 381 693"/>
-                    </Shape>
-                    <TextLine ID="mz_1-101_l1" HPOS="957" VPOS="615" WIDTH="620" HEIGHT="56" BASELINE="960 651 1577 647" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-101" HPOS="379" VPOS="615" WIDTH="1782" HEIGHT="2623"><TextLine ID="mz_1-101_l1" HPOS="957" VPOS="615" WIDTH="620" HEIGHT="56" BASELINE="960 651 1577 647" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1564 617 1542 617 1520 617 1499 617 1477 617 1455 617 1434 617 1412 617 1391 617 1369 617 1347 617 1326 617 1304 617 1282 617 1263 617 957 617 960 651 960 671 1575 666 1577 647 1570 615 1564 615 1564 617"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="75"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-101_r2" HPOS="381" VPOS="717" WIDTH="1778" HEIGHT="542" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="381 717 2159 717 2159 1259 381 1259"/>
-                    </Shape>
-                    <TextLine ID="mz_1-101_l3" HPOS="381" VPOS="712" WIDTH="1772" HEIGHT="61" BASELINE="383 755 2153 747" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-101_l3" HPOS="381" VPOS="712" WIDTH="1772" HEIGHT="61" BASELINE="383 755 2153 747" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="823 712 775 712 771 714 758 714 381 725 383 755 383 773 2151 764 2153 747 2148 718 825 712 823 712"/>
                         </Shape>
@@ -180,12 +168,7 @@
                         </Shape>
                         <String CONTENT="yellowish-gray ground])."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-101_r3" HPOS="381" VPOS="1264" WIDTH="1778" HEIGHT="415" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="381 1264 2159 1264 2159 1679 381 1679"/>
-                    </Shape>
-                    <TextLine ID="mz_1-101_l21" HPOS="485" VPOS="1255" WIDTH="1672" HEIGHT="61" BASELINE="487 1301 2157 1296" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-101_l21" HPOS="485" VPOS="1255" WIDTH="1672" HEIGHT="61" BASELINE="487 1301 2157 1296" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="487 1301 487 1316 2155 1312 2157 1296 2153 1266 1321 1255 1319 1255 1317 1255 1271 1268 485 1268 487 1301"/>
                         </Shape>
@@ -233,12 +216,7 @@
                         </Shape>
                         <String CONTENT="room-Eater (Poˊñolɪn), etc."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-101_r4" HPOS="381" VPOS="1679" WIDTH="1778" HEIGHT="181" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="381 1679 2159 1679 2159 1860 381 1860"/>
-                    </Shape>
-                    <TextLine ID="mz_1-101_l28" HPOS="492" VPOS="1684" WIDTH="1665" HEIGHT="52" BASELINE="494 1721 2157 1714" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-101_l28" HPOS="492" VPOS="1684" WIDTH="1665" HEIGHT="52" BASELINE="494 1721 2157 1714" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="494 1721 494 1736 2157 1729 2157 1714 2153 1684 492 1684 494 1721"/>
                         </Shape>
@@ -258,12 +236,7 @@
                         </Shape>
                         <String CONTENT="follows: —"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-101_r5" HPOS="381" VPOS="1866" WIDTH="1778" HEIGHT="639" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="381 1866 2159 1866 2159 2505 381 2505"/>
-                    </Shape>
-                    <TextLine ID="mz_1-101_l31" HPOS="485" VPOS="1881" WIDTH="713" HEIGHT="48" BASELINE="485 1911 1198 1911" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-101_l31" HPOS="485" VPOS="1881" WIDTH="713" HEIGHT="48" BASELINE="485 1911 1198 1911" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="485 1911 485 1929 1198 1929 1198 1911 1198 1881 485 1881 485 1911"/>
                         </Shape>
@@ -353,12 +326,7 @@
                         </Shape>
                         <String CONTENT="Čŭˊmñɪñ (“buck”), more than seven years old."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-101_r6" HPOS="381" VPOS="2518" WIDTH="1778" HEIGHT="740" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="381 2518 2159 2518 2159 3258 381 3258"/>
-                    </Shape>
-                    <TextLine ID="mz_1-101_l44" HPOS="492" VPOS="2509" WIDTH="1667" HEIGHT="67" BASELINE="494 2561 2159 2552" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-101_l44" HPOS="492" VPOS="2509" WIDTH="1667" HEIGHT="67" BASELINE="494 2561 2159 2552" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="494 2561 494 2576 2157 2567 2159 2552 2157 2522 2107 2509 2105 2509 2103 2509 1949 2520 1936 2509 1934 2509 1932 2509 1843 2509 1841 2509 1839 2509 1819 2520 1798 2509 1795 2509 1793 2509 1733 2522 1627 2511 1624 2511 1510 2522 1481 2511 1479 2511 1477 2511 1475 2511 1434 2522 1403 2511 1401 2511 1399 2511 1397 2511 1371 2522 1345 2511 1343 2511 1341 2511 1339 2511 1336 2511 1317 2524 1306 2513 1304 2513 1302 2513 1300 2513 1297 2513 1271 2524 1100 2513 1098 2513 1096 2513 1094 2513 1076 2526 949 2526 914 2513 912 2513 910 2513 908 2513 905 2513 886 2526 849 2515 847 2515 845 2515 843 2515 817 2526 732 2515 730 2515 492 2524 494 2561"/>
                         </Shape>
@@ -441,8 +409,7 @@
                         </Shape>
                         <String CONTENT="more highly valued, and bring almost three times the price of gray ones."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

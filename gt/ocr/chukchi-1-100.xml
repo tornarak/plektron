@@ -23,23 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-Other"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_6" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-100_r1" HPOS="577" VPOS="584" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_5">
-<Shape>
-                        <Polygon POINTS="577 584 2355 584 2355 674 577 674"/>
-                    </Shape>
-                    <TextLine ID="mz_1-100_l1" HPOS="1165" VPOS="591" WIDTH="615" HEIGHT="56" BASELINE="1167 628 1780 632" TAGREFS="TYPE_6">
+                <TextBlock ID="text_1-100" HPOS="576" VPOS="591" WIDTH="1780" HEIGHT="2632"><TextLine ID="mz_1-100_l1" HPOS="1165" VPOS="591" WIDTH="615" HEIGHT="56" BASELINE="1167 628 1780 632" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="1774 621 1754 593 1167 591 1167 628 1165 643 1776 647 1780 632 1778 625 1774 621"/>
                         </Shape>
@@ -52,12 +43,7 @@
                         </Shape>
                         <String CONTENT="74"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-100_r2" HPOS="577" VPOS="699" WIDTH="1778" HEIGHT="1443" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="577 699 2355 699 2355 2142 577 2142"/>
-                    </Shape>
-                    <TextLine ID="mz_1-100_l3" HPOS="581" VPOS="708" WIDTH="1775" HEIGHT="47" BASELINE="581 738 2356 738" TAGREFS="TYPE_6">
+<TextLine ID="mz_1-100_l3" HPOS="581" VPOS="708" WIDTH="1775" HEIGHT="47" BASELINE="581 738 2356 738" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="2335 710 2313 710 2291 708 2270 708 581 708 581 738 581 755 2356 755 2356 738 2356 710 2335 710"/>
                         </Shape>
@@ -224,12 +210,7 @@
                         </Shape>
                         <String CONTENT="not attract any special attention."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-100_r3" HPOS="577" VPOS="2142" WIDTH="1778" HEIGHT="355" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="577 2142 2355 2142 2355 2497 577 2497"/>
-                    </Shape>
-                    <TextLine ID="mz_1-100_l27" HPOS="689" VPOS="2141" WIDTH="1665" HEIGHT="54" BASELINE="689 2175 2354 2175" TAGREFS="TYPE_6">
+<TextLine ID="mz_1-100_l27" HPOS="689" VPOS="2141" WIDTH="1665" HEIGHT="54" BASELINE="689 2175 2354 2175" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="689 2175 689 2195 2354 2195 2354 2175 2354 2147 689 2141 689 2175"/>
                         </Shape>
@@ -270,12 +251,7 @@
                         </Shape>
                         <String CONTENT="reindeer-skin: —"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-100_r4" HPOS="577" VPOS="2499" WIDTH="1778" HEIGHT="580" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="577 2499 2355 2499 2355 3079 577 3079"/>
-                    </Shape>
-                    <TextLine ID="mz_1-100_l33" HPOS="585" VPOS="2511" WIDTH="1767" HEIGHT="50" BASELINE="585 2541 2352 2541" TAGREFS="TYPE_6">
+<TextLine ID="mz_1-100_l33" HPOS="585" VPOS="2511" WIDTH="1767" HEIGHT="50" BASELINE="585 2541 2352 2541" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="585 2541 585 2561 2350 2561 2352 2541 2350 2511 585 2511 585 2541"/>
                         </Shape>
@@ -414,12 +390,7 @@
                         </Shape>
                         <String CONTENT="14. Ilhɪ-lileˊ (“white-eyed” [albino]¹)."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-100_r5" HPOS="577" VPOS="3090" WIDTH="1778" HEIGHT="141" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="577 3090 2355 3090 2355 3231 577 3231"/>
-                    </Shape>
-                    <TextLine ID="mz_1-100_l53" HPOS="687" VPOS="3087" WIDTH="1661" HEIGHT="43" BASELINE="689 3115 2348 3117" TAGREFS="TYPE_6">
+<TextLine ID="mz_1-100_l53" HPOS="687" VPOS="3087" WIDTH="1661" HEIGHT="43" BASELINE="689 3115 2348 3117" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="689 3115 687 3128 2343 3130 2348 3117 2346 3089 689 3087 689 3115"/>
                         </Shape>
@@ -439,8 +410,7 @@
                         </Shape>
                         <String CONTENT="do not like anything abnormal among their reindeer."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

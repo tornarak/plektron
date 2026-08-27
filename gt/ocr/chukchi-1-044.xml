@@ -23,23 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-Other"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_6" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-044_r1" HPOS="620" VPOS="611" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_5">
-<Shape>
-                        <Polygon POINTS="620 611 2398 611 2398 701 620 701"/>
-                    </Shape>
-                    <TextLine ID="mz_1-044_l1" HPOS="1193" VPOS="619" WIDTH="620" HEIGHT="54" BASELINE="1196 653 1813 658" TAGREFS="TYPE_6">
+                <TextBlock ID="text_1-044" HPOS="615" VPOS="619" WIDTH="1780" HEIGHT="2635"><TextLine ID="mz_1-044_l1" HPOS="1193" VPOS="619" WIDTH="620" HEIGHT="54" BASELINE="1196 653 1813 658" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="1802 623 1800 621 1213 619 1196 632 1196 653 1193 669 1808 673 1813 658 1811 630 1802 623"/>
                         </Shape>
@@ -52,12 +43,7 @@
                         </Shape>
                         <String CONTENT="24"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-044_r2" HPOS="620" VPOS="726" WIDTH="1778" HEIGHT="175" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="620 726 2398 726 2398 901 620 901"/>
-                    </Shape>
-                    <TextLine ID="mz_1-044_l3" HPOS="617" VPOS="718" WIDTH="1774" HEIGHT="65" BASELINE="620 766 2391 760" TAGREFS="TYPE_6">
+<TextLine ID="mz_1-044_l3" HPOS="617" VPOS="718" WIDTH="1774" HEIGHT="65" BASELINE="620 766 2391 760" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="2372 727 2350 727 2335 727 2330 729 2274 725 2263 725 2242 725 2220 723 2198 723 2177 723 2168 721 2122 729 2099 721 2090 721 2081 718 2019 729 1982 718 1980 718 1977 718 1798 731 1761 721 1759 721 1756 721 1668 731 1614 721 1611 721 1527 734 1343 734 1308 721 1306 721 1304 721 1198 734 1122 723 1120 723 1005 734 895 723 892 723 617 729 620 766 620 783 2389 777 2391 760 2389 731 2378 727 2372 727"/>
                         </Shape>
@@ -77,12 +63,7 @@
                         </Shape>
                         <String CONTENT="in the coldest time of the year, as on the Chukchee Peninsula."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-044_r3" HPOS="620" VPOS="901" WIDTH="1778" HEIGHT="1259" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="620 901 2398 901 2398 2160 620 2160"/>
-                    </Shape>
-                    <TextLine ID="mz_1-044_l6" HPOS="723" VPOS="902" WIDTH="1670" HEIGHT="59" BASELINE="723 946 2393 946" TAGREFS="TYPE_6">
+<TextLine ID="mz_1-044_l6" HPOS="723" VPOS="902" WIDTH="1670" HEIGHT="59" BASELINE="723 946 2393 946" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="723 946 723 961 2393 961 2393 946 2393 913 2348 902 2346 902 2343 902 2341 902 2307 913 2042 902 2040 902 2038 902 2036 902 2021 915 1863 915 1824 902 1821 902 1819 902 1817 902 1815 902 1800 915 1488 915 1432 902 1429 902 1427 902 1380 913 1304 902 1302 902 1300 902 1269 915 1081 915 1018 902 1016 902 1014 902 990 913 940 902 938 902 882 913 853 902 851 902 849 902 797 913 745 902 743 902 741 902 739 902 723 911 723 946"/>
                         </Shape>
@@ -228,12 +209,7 @@
                         </Shape>
                         <String CONTENT="and are obliged to bring it from farther inland."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-044_r4" HPOS="620" VPOS="2160" WIDTH="1778" HEIGHT="364" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="620 2160 2398 2160 2398 2524 620 2524"/>
-                    </Shape>
-                    <TextLine ID="mz_1-044_l27" HPOS="726" VPOS="2165" WIDTH="1665" HEIGHT="56" BASELINE="728 2199 2391 2206" TAGREFS="TYPE_6">
+<TextLine ID="mz_1-044_l27" HPOS="726" VPOS="2165" WIDTH="1665" HEIGHT="56" BASELINE="728 2199 2391 2206" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="728 2199 726 2214 2387 2221 2391 2206 2389 2173 728 2165 728 2199"/>
                         </Shape>
@@ -274,12 +250,7 @@
                         </Shape>
                         <String CONTENT="often starve for want of fodder."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-044_r5" HPOS="620" VPOS="2524" WIDTH="1778" HEIGHT="127" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="620 2524 2398 2524 2398 2651 620 2651"/>
-                    </Shape>
-                    <TextLine ID="mz_1-044_l33" HPOS="732" VPOS="2526" WIDTH="1659" HEIGHT="54" BASELINE="734 2557 2391 2563" TAGREFS="TYPE_6">
+<TextLine ID="mz_1-044_l33" HPOS="732" VPOS="2526" WIDTH="1659" HEIGHT="54" BASELINE="734 2557 2391 2563" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="734 2557 732 2574 2387 2580 2391 2563 2389 2533 734 2526 734 2557"/>
                         </Shape>
@@ -292,12 +263,7 @@
                         </Shape>
                         <String CONTENT="of the seasons in the Kolyma country is as follows: —"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-044_r6" HPOS="620" VPOS="2659" WIDTH="1778" HEIGHT="401" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="620 2659 2398 2659 2398 3060 620 3060"/>
-                    </Shape>
-                    <TextLine ID="mz_1-044_l35" HPOS="1362" VPOS="2667" WIDTH="345" HEIGHT="43" BASELINE="1362 2695 1707 2695" TAGREFS="TYPE_6">
+<TextLine ID="mz_1-044_l35" HPOS="1362" VPOS="2667" WIDTH="345" HEIGHT="43" BASELINE="1362 2695 1707 2695" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="1362 2695 1362 2710 1707 2708 1707 2695 1707 2667 1362 2667 1362 2695"/>
                         </Shape>
@@ -387,12 +353,7 @@
                         </Shape>
                         <String CONTENT="Absolute minimum, Sredne-Kolymsk, —54.0° C. (—58.72° F.)."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-044_r7" HPOS="620" VPOS="3079" WIDTH="1778" HEIGHT="184" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="620 3079 2398 3079 2398 3263 620 3263"/>
-                    </Shape>
-                    <TextLine ID="mz_1-044_l48" HPOS="728" VPOS="3076" WIDTH="452" HEIGHT="56" BASELINE="730 3104 1180 3106" TAGREFS="TYPE_6">
+<TextLine ID="mz_1-044_l48" HPOS="728" VPOS="3076" WIDTH="452" HEIGHT="56" BASELINE="730 3104 1180 3106" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="730 3104 728 3119 806 3132 808 3132 1178 3126 1180 3106 1178 3078 730 3076 730 3104"/>
                         </Shape>
@@ -419,8 +380,7 @@
                         </Shape>
                         <String CONTENT="and Paren."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

@@ -23,20 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-108_r1" HPOS="622" VPOS="589" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="622 589 2400 589 2400 679 622 679"/>
-                    </Shape>
-                    <TextLine ID="mz_1-108_l1" HPOS="1204" VPOS="604" WIDTH="617" HEIGHT="52" BASELINE="1204 636 1821 636" TAGREFS="TYPE_3">
+                <TextBlock ID="text_1-108" HPOS="620" VPOS="604" WIDTH="1780" HEIGHT="2628"><TextLine ID="mz_1-108_l1" HPOS="1204" VPOS="604" WIDTH="617" HEIGHT="52" BASELINE="1204 636 1821 636" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="1813 604 1222 604 1206 621 1204 636 1204 656 1821 656 1821 636 1821 621 1813 604"/>
                         </Shape>
@@ -49,12 +43,7 @@
                         </Shape>
                         <String CONTENT="80"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-108_r2" HPOS="622" VPOS="704" WIDTH="1778" HEIGHT="1086" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="622 704 2400 704 2400 1790 622 1790"/>
-                    </Shape>
-                    <TextLine ID="mz_1-108_l3" HPOS="726" VPOS="705" WIDTH="1674" HEIGHT="57" BASELINE="728 747 2400 740" TAGREFS="TYPE_3">
+<TextLine ID="mz_1-108_l3" HPOS="726" VPOS="705" WIDTH="1674" HEIGHT="57" BASELINE="728 747 2400 740" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="2393 710 2372 710 2350 710 2328 708 2307 708 2285 708 2263 708 2261 705 739 705 736 705 734 705 732 705 732 708 726 712 728 747 728 762 2398 755 2400 740 2395 710 2393 710"/>
                         </Shape>
@@ -179,12 +168,7 @@
                         </Shape>
                         <String CONTENT="quiet when the flies are numerous."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-108_r3" HPOS="622" VPOS="1790" WIDTH="1778" HEIGHT="707" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="622 1790 2400 1790 2400 2497 622 2497"/>
-                    </Shape>
-                    <TextLine ID="mz_1-108_l21" HPOS="730" VPOS="1784" WIDTH="1670" HEIGHT="60" BASELINE="732 1829 2400 1825" TAGREFS="TYPE_3">
+<TextLine ID="mz_1-108_l21" HPOS="730" VPOS="1784" WIDTH="1670" HEIGHT="60" BASELINE="732 1829 2400 1825" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="732 1829 732 1844 2398 1842 2400 1825 2395 1792 754 1784 752 1784 749 1784 730 1792 732 1829"/>
                         </Shape>
@@ -267,12 +251,7 @@
                         </Shape>
                         <String CONTENT="animals."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-108_r4" HPOS="622" VPOS="2497" WIDTH="1778" HEIGHT="731" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="622 2497 2400 2497 2400 3228 622 3228"/>
-                    </Shape>
-                    <TextLine ID="mz_1-108_l33" HPOS="730" VPOS="2500" WIDTH="1670" HEIGHT="63" BASELINE="732 2546 2400 2541" TAGREFS="TYPE_3">
+<TextLine ID="mz_1-108_l33" HPOS="730" VPOS="2500" WIDTH="1670" HEIGHT="63" BASELINE="732 2546 2400 2541" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="732 2546 732 2563 2398 2559 2400 2541 2395 2513 2283 2500 2281 2500 2278 2500 2244 2513 2081 2513 2062 2500 2060 2500 2058 2500 2055 2500 2053 2500 2051 2500 2036 2513 1845 2513 1806 2500 1804 2500 1802 2500 1728 2511 1711 2500 1709 2500 1707 2500 1568 2500 1566 2500 1564 2500 1538 2513 743 2502 741 2502 739 2502 736 2502 736 2505 730 2509 732 2546"/>
                         </Shape>
@@ -355,8 +334,7 @@
                         </Shape>
                         <String CONTENT="of another disease, that is not so frequent but much more dangerous, is a"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

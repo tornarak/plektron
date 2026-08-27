@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-122_r1" HPOS="604" VPOS="587" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="604 587 2382 587 2382 677 604 677"/>
-                    </Shape>
-                    <TextLine ID="mz_1-122_l1" HPOS="1183" VPOS="610" WIDTH="617" HEIGHT="54" BASELINE="1185 645 1800 649" TAGREFS="TYPE_5">
+                <TextBlock ID="text_1-122" HPOS="604" VPOS="610" WIDTH="1781" HEIGHT="2620"><TextLine ID="mz_1-122_l1" HPOS="1183" VPOS="610" WIDTH="617" HEIGHT="54" BASELINE="1185 645 1800 649" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1791 623 1778 612 1200 610 1185 617 1185 645 1183 660 1795 664 1800 649 1798 634 1791 623"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="94"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-122_r2" HPOS="604" VPOS="702" WIDTH="1778" HEIGHT="1456" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="604 702 2382 702 2382 2158 604 2158"/>
-                    </Shape>
-                    <TextLine ID="mz_1-122_l3" HPOS="607" VPOS="725" WIDTH="1775" HEIGHT="48" BASELINE="607 755 2382 755" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-122_l3" HPOS="607" VPOS="725" WIDTH="1775" HEIGHT="48" BASELINE="607 755 2382 755" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="607 755 607 773 2382 773 2382 755 2382 725 607 725 607 755"/>
                         </Shape>
@@ -223,12 +210,7 @@
                         </Shape>
                         <String CONTENT="be taken by hand. The whole operation takes not more than an hour."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-122_r3" HPOS="604" VPOS="2158" WIDTH="1778" HEIGHT="593" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="604 2158 2382 2158 2382 2751 604 2751"/>
-                    </Shape>
-                    <TextLine ID="mz_1-122_l27" HPOS="710" VPOS="2158" WIDTH="1666" HEIGHT="52" BASELINE="713 2191 2376 2195" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-122_l27" HPOS="710" VPOS="2158" WIDTH="1666" HEIGHT="52" BASELINE="713 2191 2376 2195" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="713 2191 710 2206 2372 2210 2376 2195 2374 2162 713 2158 713 2191"/>
                         </Shape>
@@ -297,12 +279,7 @@
                         </Shape>
                         <String CONTENT="signal, “like the crew on a man-of-war,” to use the words of Polander."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-122_r4" HPOS="604" VPOS="2751" WIDTH="1778" HEIGHT="380" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="604 2751 2382 2751 2382 3131 604 3131"/>
-                    </Shape>
-                    <TextLine ID="mz_1-122_l37" HPOS="717" VPOS="2751" WIDTH="1659" HEIGHT="65" BASELINE="719 2786 2376 2793" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-122_l37" HPOS="717" VPOS="2751" WIDTH="1659" HEIGHT="65" BASELINE="719 2786 2376 2793" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="719 2786 717 2801 929 2814 931 2814 1252 2805 1332 2816 1334 2816 2374 2810 2376 2793 2374 2762 719 2751 719 2786"/>
                         </Shape>
@@ -343,19 +320,13 @@
                         </Shape>
                         <String CONTENT="the animal, so that it keeps continually treading on it with the hind-feet."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-122_r5" HPOS="604" VPOS="3166" WIDTH="1778" HEIGHT="79" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="604 3166 2382 3166 2382 3245 604 3245"/>
-                    </Shape>
-                    <TextLine ID="mz_1-122_l43" HPOS="1237" VPOS="3176" WIDTH="504" HEIGHT="54" BASELINE="1239 3206 1741 3213" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-122_l43" HPOS="1237" VPOS="3176" WIDTH="504" HEIGHT="54" BASELINE="1239 3206 1741 3213" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1737 3193 1720 3180 1239 3176 1239 3206 1237 3223 1737 3230 1741 3213 1739 3202 1737 3193"/>
                         </Shape>
                         <String CONTENT="¹ Nordenskiöld, II, pp. 17, 18."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="QuireMarksZone"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-171_r1" HPOS="364" VPOS="611" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="364 611 2142 611 2142 701 364 701"/>
-                    </Shape>
-                    <TextLine ID="mz_1-171_l1" HPOS="938" VPOS="625" WIDTH="624" HEIGHT="54" BASELINE="940 658 1562 664" TAGREFS="TYPE_5">
+                <TextBlock ID="text_1-171" HPOS="362" VPOS="625" WIDTH="1778" HEIGHT="2698"><TextLine ID="mz_1-171_l1" HPOS="938" VPOS="625" WIDTH="624" HEIGHT="54" BASELINE="940 658 1562 664" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1553 630 940 625 940 658 938 673 1557 679 1562 664 1559 640 1553 630"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="129"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-171_r2" HPOS="364" VPOS="726" WIDTH="1778" HEIGHT="186" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="364 726 2142 726 2142 912 364 912"/>
-                    </Shape>
-                    <TextLine ID="mz_1-171_l3" HPOS="362" VPOS="725" WIDTH="1773" HEIGHT="69" BASELINE="364 773 2135 766" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-171_l3" HPOS="362" VPOS="725" WIDTH="1773" HEIGHT="69" BASELINE="364 773 2135 766" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="405 734 383 736 379 736 362 742 364 773 364 790 2118 794 2120 794 2122 794 2125 794 2135 783 2135 766 2131 738 1973 725 1971 725 1813 736 1780 725 1778 725 1776 725 1774 725 1772 725 1754 736 1731 725 1728 725 1726 725 1659 736 1627 725 1624 725 1622 725 1529 738 1488 727 1486 727 1484 727 1241 738 1122 727 1120 727 1118 727 1092 738 520 729 518 729 446 740 420 734 405 734"/>
                         </Shape>
@@ -76,12 +63,7 @@
                         </Shape>
                         <String CONTENT="prevent friction of the oars."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-171_r3" HPOS="364" VPOS="912" WIDTH="1778" HEIGHT="477" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="364 912 2142 912 2142 1389 364 1389"/>
-                    </Shape>
-                    <TextLine ID="mz_1-171_l6" HPOS="477" VPOS="907" WIDTH="667" HEIGHT="60" BASELINE="477 950 1144 950" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-171_l6" HPOS="477" VPOS="907" WIDTH="667" HEIGHT="60" BASELINE="477 950 1144 950" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="477 950 477 967 1144 967 1144 950 1144 920 1059 907 1057 907 1055 907 1012 918 999 907 996 907 994 907 992 907 918 920 843 920 832 909 832 907 830 907 827 907 825 907 823 907 793 918 747 907 745 907 743 907 741 907 710 918 477 913 477 950"/>
                         </Shape>
@@ -136,12 +118,7 @@
                         </Shape>
                         <String CONTENT="will catch the rope."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-171_r4" HPOS="364" VPOS="1389" WIDTH="1778" HEIGHT="477" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="364 1389 2142 1389 2142 1866 364 1866"/>
-                    </Shape>
-                    <TextLine ID="mz_1-171_l14" HPOS="472" VPOS="1383" WIDTH="676" HEIGHT="69" BASELINE="474 1431 1148 1424" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-171_l14" HPOS="472" VPOS="1383" WIDTH="676" HEIGHT="69" BASELINE="474 1431 1148 1424" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="474 1431 474 1444 921 1452 923 1452 981 1442 1131 1450 1133 1450 1135 1450 1137 1450 1148 1439 1148 1424 1144 1396 1081 1383 1079 1383 912 1396 899 1385 897 1385 895 1385 892 1385 795 1396 695 1385 693 1385 691 1385 689 1385 669 1398 487 1387 485 1387 483 1387 481 1387 481 1390 472 1396 474 1431"/>
                         </Shape>
@@ -196,12 +173,7 @@
                         </Shape>
                         <String CONTENT="rupted travel."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-171_r5" HPOS="364" VPOS="1866" WIDTH="1778" HEIGHT="834" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="364 1866 2142 1866 2142 2700 364 2700"/>
-                    </Shape>
-                    <TextLine ID="mz_1-171_l22" HPOS="479" VPOS="1872" WIDTH="669" HEIGHT="50" BASELINE="479 1907 1148 1907" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-171_l22" HPOS="479" VPOS="1872" WIDTH="669" HEIGHT="50" BASELINE="479 1907 1148 1907" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="479 1907 479 1920 1146 1922 1148 1907 1148 1879 479 1872 479 1907"/>
                         </Shape>
@@ -298,12 +270,7 @@
                         </Shape>
                         <String CONTENT="fastened, one on the right, and the other on the left side."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-171_r6" HPOS="364" VPOS="2700" WIDTH="1778" HEIGHT="547" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="364 2700 2142 2700 2142 3247 364 3247"/>
-                    </Shape>
-                    <TextLine ID="mz_1-171_l36" HPOS="477" VPOS="2710" WIDTH="1661" HEIGHT="61" BASELINE="479 2747 2138 2743" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-171_l36" HPOS="477" VPOS="2710" WIDTH="1661" HEIGHT="61" BASELINE="479 2747 2138 2743" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="479 2747 479 2760 1209 2771 1211 2771 1213 2771 1215 2771 1228 2760 1297 2769 1300 2769 1302 2769 1336 2758 1637 2758 1661 2769 1663 2769 1666 2769 1668 2769 1702 2758 1735 2769 1737 2769 1739 2769 1945 2758 1958 2769 1960 2769 1962 2769 1964 2769 1967 2769 1993 2758 2006 2769 2008 2769 2010 2769 2012 2771 2118 2771 2118 2769 2120 2769 2122 2769 2138 2756 2138 2743 2133 2712 477 2710 479 2747"/>
                         </Shape>
@@ -365,19 +332,13 @@
                         </Shape>
                         <String CONTENT="gular one, copied after that of the whalers (Plate XI, Figs. 2, 3), which enables"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-171_r7" HPOS="364" VPOS="3269" WIDTH="1778" HEIGHT="68" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="364 3269 2142 3269 2142 3337 364 3337"/>
-                    </Shape>
-                    <TextLine ID="mz_1-171_l45" HPOS="368" VPOS="3273" WIDTH="687" HEIGHT="50" BASELINE="370 3308 1055 3301" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-171_l45" HPOS="368" VPOS="3273" WIDTH="687" HEIGHT="50" BASELINE="370 3308 1055 3301" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1046 3273 368 3277 370 3308 370 3323 1055 3319 1055 3301 1053 3299 1046 3273"/>
                         </Shape>
                         <String CONTENT="17—JESUP NORTH PACIFIC EXPED., VOL. VII."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

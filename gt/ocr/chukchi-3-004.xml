@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-Other"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_3-004_r1" HPOS="367" VPOS="468" WIDTH="1782" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="367 468 2149 468 2149 558 367 558"/>
-                    </Shape>
-                    <TextLine ID="mz_3-004_l1" HPOS="960" VPOS="486" WIDTH="618" HEIGHT="51" BASELINE="962 521 1578 517" TAGREFS="TYPE_5">
+                <TextBlock ID="text_3-004" HPOS="366" VPOS="478" WIDTH="1789" HEIGHT="2629"><TextLine ID="mz_3-004_l1" HPOS="960" VPOS="486" WIDTH="618" HEIGHT="51" BASELINE="962 521 1578 517" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="962 521 962 537 1576 533 1578 517 1572 486 960 488 962 521"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="538"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-004_r2" HPOS="367" VPOS="583" WIDTH="1782" HEIGHT="501" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="367 583 2149 583 2149 1084 367 1084"/>
-                    </Shape>
-                    <TextLine ID="mz_3-004_l3" HPOS="379" VPOS="587" WIDTH="1774" HEIGHT="57" BASELINE="381 630 2153 626" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-004_l3" HPOS="379" VPOS="587" WIDTH="1774" HEIGHT="57" BASELINE="381 630 2153 626" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="381 630 381 642 2149 644 2153 626 2149 599 1716 587 1714 587 1638 597 1584 587 1582 587 1580 587 1578 587 1562 599 1327 599 1266 587 1264 587 1262 587 1260 587 1245 599 594 589 592 589 379 601 381 630"/>
                         </Shape>
@@ -111,12 +98,7 @@
                         </Shape>
                         <String CONTENT="ship are as follows: —"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-004_r3" HPOS="367" VPOS="1108" WIDTH="1782" HEIGHT="953" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="367 1108 2149 1108 2149 2061 367 2061"/>
-                    </Shape>
-                    <TextLine ID="mz_3-004_l11" HPOS="1114" VPOS="1117" WIDTH="304" HEIGHT="47" BASELINE="1114 1147 1418 1147" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-004_l11" HPOS="1114" VPOS="1117" WIDTH="304" HEIGHT="47" BASELINE="1114 1147 1418 1147" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1114 1147 1114 1164 1418 1164 1418 1147 1418 1117 1114 1117 1114 1147"/>
                         </Shape>
@@ -311,12 +293,7 @@
                         </Shape>
                         <String CONTENT="ɪˊnpɪčɪ-čaˊkêt-tɵˊmg̣ɪn (“elder sister-mate”) Elder sister (said by female)."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-004_r4" HPOS="367" VPOS="2086" WIDTH="1782" HEIGHT="1044" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="367 2086 2149 2086 2149 3130 367 3130"/>
-                    </Shape>
-                    <TextLine ID="mz_3-004_l39" HPOS="475" VPOS="2088" WIDTH="1666" HEIGHT="53" BASELINE="477 2113 2141 2117" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-004_l39" HPOS="475" VPOS="2088" WIDTH="1666" HEIGHT="53" BASELINE="477 2113 2141 2117" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="477 2113 475 2129 2137 2141 2141 2117 2139 2092 477 2088 477 2113"/>
                         </Shape>
@@ -483,8 +460,7 @@
                         </Shape>
                         <String CONTENT="used for the younger brother only."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

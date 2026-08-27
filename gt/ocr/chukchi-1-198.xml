@@ -23,20 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-198_r1" HPOS="676" VPOS="603" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="676 603 2454 603 2454 693 676 693"/>
-                    </Shape>
-                    <TextLine ID="mz_1-198_l1" HPOS="1256" VPOS="619" WIDTH="620" HEIGHT="54" BASELINE="1256 653 1876 653" TAGREFS="TYPE_3">
+                <TextBlock ID="text_1-198" HPOS="674" VPOS="615" WIDTH="1778" HEIGHT="2615"><TextLine ID="mz_1-198_l1" HPOS="1256" VPOS="619" WIDTH="620" HEIGHT="54" BASELINE="1256 653 1876 653" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="1863 619 1256 619 1256 653 1256 673 1876 673 1876 653 1873 636 1863 619"/>
                         </Shape>
@@ -49,12 +43,7 @@
                         </Shape>
                         <String CONTENT="156"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-198_r2" HPOS="676" VPOS="718" WIDTH="1778" HEIGHT="205" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="676 718 2454 718 2454 923 676 923"/>
-                    </Shape>
-                    <TextLine ID="mz_1-198_l3" HPOS="676" VPOS="718" WIDTH="1776" HEIGHT="61" BASELINE="676 764 2452 764" TAGREFS="TYPE_3">
+<TextLine ID="mz_1-198_l3" HPOS="676" VPOS="718" WIDTH="1776" HEIGHT="61" BASELINE="676 764 2452 764" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="2430 721 2426 718 2424 718 2421 718 2335 729 2270 718 2268 718 2265 718 2233 729 2131 718 2129 718 2010 729 1980 718 1977 718 1975 718 1973 718 1971 718 1956 731 1791 731 1707 718 1705 718 1648 729 1624 718 1622 718 1620 718 1533 729 1451 718 1449 718 1447 718 1445 718 1429 729 1406 718 1403 718 1401 718 1399 718 1360 729 1300 718 1297 718 1185 729 1120 718 1118 718 1115 718 1113 718 1094 731 897 731 869 718 866 718 864 718 862 718 830 729 788 718 786 718 784 718 782 718 752 729 721 718 719 718 717 718 715 718 676 729 676 764 676 779 2452 779 2452 764 2450 755 2430 721"/>
                         </Shape>
@@ -74,12 +63,7 @@
                         </Shape>
                         <String CONTENT="in a hole in the tip of the shaft. I was told that some were simply slanted"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-198_r3" HPOS="676" VPOS="3049" WIDTH="1778" HEIGHT="190" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="676 3049 2454 3049 2454 3239 676 3239"/>
-                    </Shape>
-                    <TextLine ID="mz_1-198_l6" HPOS="674" VPOS="3061" WIDTH="1776" HEIGHT="56" BASELINE="674 3091 2450 3091" TAGREFS="TYPE_3">
+<TextLine ID="mz_1-198_l6" HPOS="674" VPOS="3061" WIDTH="1776" HEIGHT="56" BASELINE="674 3091 2450 3091" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="2441 3061 674 3061 674 3091 674 3104 1191 3117 1193 3117 1196 3117 1226 3106 1328 3117 1330 3117 1403 3106 1536 3117 1538 3117 1590 3106 1696 3106 1711 3117 1713 3117 1715 3117 1718 3117 2302 3106 2400 3117 2402 3117 2404 3117 2450 3104 2450 3091 2450 3070 2441 3061"/>
                         </Shape>
@@ -99,8 +83,7 @@
                         </Shape>
                         <String CONTENT="in northeastern Siberia, and is used, for instance, in lashing a man’s crooked"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

@@ -23,23 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="QuireMarksZone"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_6" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-071_r1" HPOS="355" VPOS="592" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_5">
-<Shape>
-                        <Polygon POINTS="355 592 2133 592 2133 682 355 682"/>
-                    </Shape>
-                    <TextLine ID="mz_1-071_l1" HPOS="927" VPOS="608" WIDTH="619" HEIGHT="54" BASELINE="929 640 1546 645" TAGREFS="TYPE_6">
+                <TextBlock ID="text_1-071" HPOS="349" VPOS="608" WIDTH="1786" HEIGHT="2695"><TextLine ID="mz_1-071_l1" HPOS="927" VPOS="608" WIDTH="619" HEIGHT="54" BASELINE="929 640 1546 645" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="1232 608 1211 608 1189 608 1167 608 1146 608 1124 608 1102 608 1081 608 1059 608 1038 608 1016 608 994 608 973 608 951 608 929 610 929 640 927 658 1542 662 1546 645 1544 610 1237 608 1232 608"/>
                         </Shape>
@@ -52,12 +43,7 @@
                         </Shape>
                         <String CONTENT="49"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-071_r2" HPOS="355" VPOS="707" WIDTH="1778" HEIGHT="546" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="355 707 2133 707 2133 1253 355 1253"/>
-                    </Shape>
-                    <TextLine ID="mz_1-071_l3" HPOS="349" VPOS="712" WIDTH="1776" HEIGHT="56" BASELINE="351 755 2125 749" TAGREFS="TYPE_6">
+<TextLine ID="mz_1-071_l3" HPOS="349" VPOS="712" WIDTH="1776" HEIGHT="56" BASELINE="351 755 2125 749" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="652 714 630 714 609 716 587 716 565 718 544 718 522 721 500 721 479 721 457 723 435 723 414 725 392 725 370 727 349 727 351 755 351 768 2122 762 2125 749 2120 716 667 712 652 714"/>
                         </Shape>
@@ -119,12 +105,7 @@
                         </Shape>
                         <String CONTENT="will steal even fresh excrement from under a man.”"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-071_r3" HPOS="355" VPOS="1253" WIDTH="1778" HEIGHT="1376" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="355 1253 2133 1253 2133 2629 355 2629"/>
-                    </Shape>
-                    <TextLine ID="mz_1-071_l12" HPOS="464" VPOS="1260" WIDTH="1661" HEIGHT="47" BASELINE="464 1290 2125 1290" TAGREFS="TYPE_6">
+<TextLine ID="mz_1-071_l12" HPOS="464" VPOS="1260" WIDTH="1661" HEIGHT="47" BASELINE="464 1290 2125 1290" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="464 1290 464 1307 2125 1307 2125 1290 2125 1260 464 1260 464 1290"/>
                         </Shape>
@@ -284,12 +265,7 @@
                         </Shape>
                         <String CONTENT="skiöld² relates similar tricks, chiefly of the Arctic Maritime Chukchee."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-071_r4" HPOS="355" VPOS="2629" WIDTH="1778" HEIGHT="420" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="355 2629 2133 2629 2133 3049 355 3049"/>
-                    </Shape>
-                    <TextLine ID="mz_1-071_l35" HPOS="466" VPOS="2617" WIDTH="1659" HEIGHT="67" BASELINE="468 2669 2125 2660" TAGREFS="TYPE_6">
+<TextLine ID="mz_1-071_l35" HPOS="466" VPOS="2617" WIDTH="1659" HEIGHT="67" BASELINE="468 2669 2125 2660" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="468 2669 468 2684 2122 2676 2125 2660 2122 2630 2086 2617 2084 2617 2081 2617 2014 2628 1884 2617 1882 2617 1880 2617 1856 2628 1830 2617 1828 2617 1826 2617 1824 2617 1821 2617 1808 2628 1663 2619 1661 2619 1659 2619 1657 2619 1640 2630 1618 2619 1616 2619 1614 2619 1611 2619 1585 2630 1540 2619 1538 2619 1536 2619 1533 2619 1499 2630 1447 2619 1445 2619 1442 2619 1440 2619 1423 2632 1265 2632 1250 2621 1248 2621 1245 2621 1243 2621 1241 2621 1217 2632 1115 2621 1113 2621 940 2632 882 2621 879 2621 730 2634 490 2624 487 2624 485 2624 483 2624 466 2632 468 2669"/>
                         </Shape>
@@ -337,12 +313,7 @@
                         </Shape>
                         <String CONTENT="Russian wares, and American rifles and cartridges, which come all the way"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-071_r5" HPOS="355" VPOS="3090" WIDTH="1778" HEIGHT="144" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="355 3090 2133 3090 2133 3234 355 3234"/>
-                    </Shape>
-                    <TextLine ID="mz_1-071_l42" HPOS="466" VPOS="3089" WIDTH="1661" HEIGHT="54" BASELINE="468 3122 2127 3115" TAGREFS="TYPE_6">
+<TextLine ID="mz_1-071_l42" HPOS="466" VPOS="3089" WIDTH="1661" HEIGHT="54" BASELINE="468 3122 2127 3115" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="468 3122 468 3143 2125 3137 2127 3115 2120 3089 466 3093 468 3122"/>
                         </Shape>
@@ -362,19 +333,13 @@
                         </Shape>
                         <String CONTENT="² Nordenskiöld, II, pp. 136, 137."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-071_r6" HPOS="355" VPOS="3247" WIDTH="1778" HEIGHT="73" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="355 3247 2133 3247 2133 3320 355 3320"/>
-                    </Shape>
-                    <TextLine ID="mz_1-071_l45" HPOS="355" VPOS="3254" WIDTH="674" HEIGHT="49" BASELINE="357 3286 1029 3282" TAGREFS="TYPE_6">
+<TextLine ID="mz_1-071_l45" HPOS="355" VPOS="3254" WIDTH="674" HEIGHT="49" BASELINE="357 3286 1029 3282" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="1018 3254 355 3256 357 3286 357 3303 1029 3299 1029 3282 1027 3275 1018 3254"/>
                         </Shape>
                         <String CONTENT="7—JESUP NORTH PACIFIC EXPED., VOL. VII."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

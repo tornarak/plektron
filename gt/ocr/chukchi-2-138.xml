@@ -23,20 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_2-138_r1" HPOS="381" VPOS="462" WIDTH="1776" HEIGHT="94" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="381 462 2157 462 2157 556 381 556"/>
-                    </Shape>
-                    <TextLine ID="mz_2-138_l1" HPOS="955" VPOS="477" WIDTH="615" HEIGHT="53" BASELINE="957 511 1570 515" TAGREFS="TYPE_3">
+                <TextBlock ID="text_2-138" HPOS="377" VPOS="477" WIDTH="1781" HEIGHT="2621"><TextLine ID="mz_2-138_l1" HPOS="955" VPOS="477" WIDTH="615" HEIGHT="53" BASELINE="957 511 1570 515" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="1564 487 1551 479 975 477 957 485 957 511 955 526 1566 530 1570 515 1568 495 1564 487"/>
                         </Shape>
@@ -49,12 +43,7 @@
                         </Shape>
                         <String CONTENT="410"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-138_r2" HPOS="381" VPOS="588" WIDTH="1776" HEIGHT="302" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="381 588 2157 588 2157 890 381 890"/>
-                    </Shape>
-                    <TextLine ID="mz_2-138_l3" HPOS="483" VPOS="579" WIDTH="1669" HEIGHT="57" BASELINE="485 624 2152 620" TAGREFS="TYPE_3">
+<TextLine ID="mz_2-138_l3" HPOS="483" VPOS="579" WIDTH="1669" HEIGHT="57" BASELINE="485 624 2152 620" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="2148 593 2128 593 2109 591 2089 591 2070 591 2050 589 2030 589 2011 589 1991 587 1980 587 1958 589 1886 583 1874 583 1854 583 1835 581 1825 581 1794 589 1748 579 1747 579 1676 589 1615 579 1613 579 1519 591 1337 591 1322 579 1320 579 1318 579 1316 579 1255 591 1202 581 1200 581 1128 593 953 593 936 581 934 581 932 581 930 581 928 581 889 591 806 581 804 581 724 591 483 589 485 624 485 636 2150 634 2152 620 2148 593 2148 593"/>
                         </Shape>
@@ -88,12 +77,7 @@
                         </Shape>
                         <String CONTENT="from time to time, swing their arms, as if brandishing an imaginary spear."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-138_r3" HPOS="381" VPOS="890" WIDTH="1776" HEIGHT="656" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="381 890 2157 890 2157 1546 381 1546"/>
-                    </Shape>
-                    <TextLine ID="mz_2-138_l8" HPOS="485" VPOS="889" WIDTH="1665" HEIGHT="49" BASELINE="487 922 2150 918" TAGREFS="TYPE_3">
+<TextLine ID="mz_2-138_l8" HPOS="485" VPOS="889" WIDTH="1665" HEIGHT="49" BASELINE="487 922 2150 918" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="487 922 487 938 2148 938 2150 918 2146 891 485 889 487 922"/>
                         </Shape>
@@ -169,12 +153,7 @@
                         </Shape>
                         <String CONTENT="sack pirates in a boat, and was almost devoid of local features."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-138_r4" HPOS="381" VPOS="1546" WIDTH="1776" HEIGHT="419" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="381 1546 2157 1546 2157 1965 381 1965"/>
-                    </Shape>
-                    <TextLine ID="mz_2-138_l19" HPOS="499" VPOS="1539" WIDTH="1651" HEIGHT="64" BASELINE="499 1582 2150 1582" TAGREFS="TYPE_3">
+<TextLine ID="mz_2-138_l19" HPOS="499" VPOS="1539" WIDTH="1651" HEIGHT="64" BASELINE="499 1582 2150 1582" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="499 1582 499 1592 622 1603 624 1603 683 1594 1310 1594 1425 1603 1427 1603 1486 1594 1987 1594 2148 1603 2150 1582 2150 1552 1895 1552 1878 1539 1876 1539 1874 1539 1872 1539 1870 1539 1844 1549 1831 1539 1829 1539 1827 1539 1723 1539 1721 1539 1719 1539 1688 1551 1645 1539 1643 1539 1641 1539 1568 1552 1439 1552 1414 1539 1412 1539 1410 1539 1408 1539 1359 1551 1312 1539 1310 1539 1308 1539 1306 1539 1280 1551 1224 1539 1222 1539 1157 1552 1073 1552 1055 1539 1053 1539 1051 1539 969 1539 967 1539 965 1539 963 1539 947 1551 875 1539 781 1539 779 1539 777 1539 775 1539 757 1552 644 1552 618 1539 616 1539 614 1539 613 1539 581 1551 546 1539 544 1539 542 1539 499 1547 499 1582"/>
                         </Shape>
@@ -222,12 +201,7 @@
                         </Shape>
                         <String CONTENT="“racers” or “masters of the race” (ireˊlɪt)."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-138_r5" HPOS="381" VPOS="1965" WIDTH="1776" HEIGHT="1145" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="381 1965 2157 1965 2157 3110 381 3110"/>
-                    </Shape>
-                    <TextLine ID="mz_2-138_l26" HPOS="487" VPOS="1960" WIDTH="1667" HEIGHT="55" BASELINE="487 1999 2154 1999" TAGREFS="TYPE_3">
+<TextLine ID="mz_2-138_l26" HPOS="487" VPOS="1960" WIDTH="1667" HEIGHT="55" BASELINE="487 1999 2154 1999" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="487 1999 487 2015 2154 2015 2154 1999 2154 1970 2111 1960 2109 1960 2107 1960 2105 1960 2074 1970 1911 1960 1909 1960 1907 1960 1905 1960 1891 1972 1427 1972 1355 1960 1353 1960 1149 1970 1092 1960 1090 1960 1088 1960 1051 1970 992 1960 991 1960 989 1960 951 1970 828 1960 826 1960 824 1960 781 1970 710 1960 708 1960 707 1960 665 1970 611 1960 609 1960 607 1960 575 1970 505 1960 503 1960 501 1960 499 1960 487 1968 487 1999"/>
                         </Shape>
@@ -359,8 +333,7 @@
                         </Shape>
                         <String CONTENT="at this, and there are those who can keep upright for three successive jumps."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

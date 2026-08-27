@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_3-088_r1" HPOS="351" VPOS="469" WIDTH="1782" HEIGHT="93" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="351 469 2133 469 2133 562 351 562"/>
-                    </Shape>
-                    <TextLine ID="mz_3-088_l1" HPOS="356" VPOS="484" WIDTH="107" HEIGHT="60" BASELINE="358 519 463 523" TAGREFS="TYPE_4">
+                <TextBlock ID="text_3-088" HPOS="342" VPOS="484" WIDTH="1786" HEIGHT="2654"><TextLine ID="mz_3-088_l1" HPOS="356" VPOS="484" WIDTH="107" HEIGHT="60" BASELINE="358 519 463 523" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="416 488 397 486 379 484 358 490 358 519 356 529 409 544 411 544 413 544 461 533 463 523 461 496 422 488 416 488"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="BOGORAS, THE CHUKCHEE."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-088_r2" HPOS="351" VPOS="586" WIDTH="1782" HEIGHT="1146" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="351 586 2133 586 2133 1732 351 1732"/>
-                    </Shape>
-                    <TextLine ID="mz_3-088_l3" HPOS="354" VPOS="591" WIDTH="1772" HEIGHT="63" BASELINE="354 630 2126 630" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-088_l3" HPOS="354" VPOS="591" WIDTH="1772" HEIGHT="63" BASELINE="354 630 2126 630" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2089 599 2069 599 2050 597 2030 597 2020 597 2005 601 1691 591 1689 591 1687 591 1685 591 1672 601 1637 591 1635 591 1633 591 1543 601 1504 591 1502 591 1500 591 1498 591 1496 591 1481 603 1346 603 1262 591 1260 591 1163 601 1122 591 1120 591 1118 591 1116 591 1087 601 1005 591 1003 591 1001 591 972 601 906 591 904 591 902 591 867 601 830 591 828 591 826 591 722 601 602 591 600 591 508 601 391 591 389 591 387 591 354 601 354 630 354 642 715 654 717 654 719 654 750 644 855 644 871 654 873 654 874 654 876 654 982 644 1334 654 1336 654 1407 644 2124 646 2126 630 2126 603 2098 599 2089 599"/>
                         </Shape>
@@ -187,12 +175,7 @@
                         </Shape>
                         <String CONTENT="in the tale before mentioned."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-088_r3" HPOS="351" VPOS="1732" WIDTH="1782" HEIGHT="909" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="351 1732 2133 1732 2133 2641 351 2641"/>
-                    </Shape>
-                    <TextLine ID="mz_3-088_l22" HPOS="455" VPOS="1735" WIDTH="1665" HEIGHT="55" BASELINE="455 1770 2120 1770" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-088_l22" HPOS="455" VPOS="1735" WIDTH="1665" HEIGHT="55" BASELINE="455 1770 2120 1770" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="455 1770 455 1784 2118 1790 2120 1770 2120 1741 455 1735 455 1770"/>
                         </Shape>
@@ -296,12 +279,7 @@
                         </Shape>
                         <String CONTENT="sumed too much rancid reindeer-blood from the supply of the family."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-088_r4" HPOS="351" VPOS="2641" WIDTH="1782" HEIGHT="359" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="351 2641 2133 2641 2133 3000 351 3000"/>
-                    </Shape>
-                    <TextLine ID="mz_3-088_l37" HPOS="454" VPOS="2628" WIDTH="1666" HEIGHT="54" BASELINE="455 2671 2120 2667" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-088_l37" HPOS="454" VPOS="2628" WIDTH="1666" HEIGHT="54" BASELINE="455 2671 2120 2667" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="455 2671 455 2682 2120 2678 2120 2667 2112 2628 2071 2638 1987 2628 1985 2628 1933 2640 1781 2640 1753 2628 1752 2628 1750 2628 1748 2628 1707 2638 1666 2628 1664 2628 1662 2628 1562 2638 1301 2628 1299 2628 1297 2628 1247 2640 1177 2630 1175 2630 1173 2630 1141 2640 1067 2630 1065 2630 1019 2640 454 2636 455 2671"/>
                         </Shape>
@@ -342,12 +320,7 @@
                         </Shape>
                         <String CONTENT="poor assistants."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-088_r5" HPOS="351" VPOS="3000" WIDTH="1782" HEIGHT="119" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="351 3000 2133 3000 2133 3119 351 3119"/>
-                    </Shape>
-                    <TextLine ID="mz_3-088_l43" HPOS="454" VPOS="2986" WIDTH="1660" HEIGHT="61" BASELINE="455 3031 2114 3027" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-088_l43" HPOS="454" VPOS="2986" WIDTH="1660" HEIGHT="61" BASELINE="455 3031 2114 3027" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="455 3031 455 3047 2112 3047 2114 3027 2112 2996 2098 2986 2096 2986 2095 2986 2093 2986 2091 2986 2057 3000 1978 3000 1952 2986 1950 2986 1948 2986 1946 2986 1909 2998 1872 2986 1870 2986 1868 2986 1867 2986 1837 3000 1761 3000 1742 2986 1740 2986 1738 2986 1736 2986 1734 2986 1703 2998 1646 2986 1644 2986 1642 2986 1603 2998 1461 2986 1459 2986 1457 2986 1420 3000 1255 3000 1188 2988 1186 2988 1184 2988 1134 3002 888 3002 871 2988 869 2988 867 2988 865 2988 754 3000 652 2988 600 2988 598 2988 596 2988 594 2988 578 3000 514 2988 512 2988 454 2994 455 3031"/>
                         </Shape>
@@ -360,8 +333,7 @@
                         </Shape>
                         <String CONTENT="as Eiˊheli of the Oloi River, Omrêlqoˊt of the Upper Omolon, Araˊro of the"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

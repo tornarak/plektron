@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_2-140_r1" HPOS="393" VPOS="462" WIDTH="1776" HEIGHT="86" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="393 462 2169 462 2169 548 393 548"/>
-                    </Shape>
-                    <TextLine ID="mz_2-140_l1" HPOS="969" VPOS="477" WIDTH="613" HEIGHT="51" BASELINE="969 511 1582 511" TAGREFS="TYPE_4">
+                <TextBlock ID="text_2-140" HPOS="385" VPOS="477" WIDTH="1777" HEIGHT="1771"><TextLine ID="mz_2-140_l1" HPOS="969" VPOS="477" WIDTH="613" HEIGHT="51" BASELINE="969 511 1582 511" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1576 497 1560 477 969 477 969 511 969 528 1582 528 1582 511 1578 501 1576 497"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="412"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-140_r2" HPOS="393" VPOS="580" WIDTH="1776" HEIGHT="1564" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="393 580 2169 580 2169 2144 393 2144"/>
-                    </Shape>
-                    <TextLine ID="mz_2-140_l3" HPOS="495" VPOS="573" WIDTH="1657" HEIGHT="69" BASELINE="497 620 2152 614" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-140_l3" HPOS="495" VPOS="573" WIDTH="1657" HEIGHT="69" BASELINE="497 620 2152 614" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2140 585 2121 585 2101 583 2081 583 2062 583 2042 581 1978 585 1931 577 1925 577 1905 577 1895 575 1876 585 1803 573 1801 573 1799 573 1797 573 1782 587 1721 587 1694 573 1692 573 1690 573 1688 573 1641 585 1613 573 1611 573 1609 573 1543 587 1476 575 1474 575 1472 575 1443 589 1357 589 1316 575 1314 575 1312 575 1310 575 1275 587 1222 575 1220 575 1149 587 1049 575 1047 575 1045 575 1043 575 1028 589 1000 577 998 577 996 577 994 577 957 591 824 591 797 577 795 577 718 577 716 577 714 577 685 589 665 577 663 577 661 577 660 577 583 587 517 577 515 577 513 577 511 577 495 587 497 620 497 632 991 640 992 640 1188 630 1349 640 1351 640 1353 640 1394 630 1419 640 1421 640 1423 642 1594 642 1594 640 1596 640 1637 628 1682 638 1684 638 1754 628 2125 638 2126 638 2128 638 2152 626 2152 614 2146 585 2140 585"/>
                         </Shape>
@@ -236,19 +224,13 @@
                         </Shape>
                         <String CONTENT="had grass tied around them, and received frequent sacrifices.³"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-140_r3" HPOS="393" VPOS="2178" WIDTH="1776" HEIGHT="70" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="393 2178 2169 2178 2169 2248 393 2248"/>
-                    </Shape>
-                    <TextLine ID="mz_2-140_l29" HPOS="499" VPOS="2191" WIDTH="1657" HEIGHT="57" BASELINE="501 2216 2156 2222" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-140_l29" HPOS="499" VPOS="2191" WIDTH="1657" HEIGHT="57" BASELINE="501 2216 2156 2222" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="501 2216 499 2228 603 2244 605 2246 771 2246 771 2244 773 2244 812 2232 1098 2246 1100 2248 1576 2248 1576 2246 1578 2246 1602 2234 1962 2248 1964 2248 2154 2238 2156 2222 2154 2197 501 2191 501 2216"/>
                         </Shape>
                         <String CONTENT="¹ Compare p. 391. ² See Vol. VI, Jochelson, The Koryak, p. 37. ³ Krasheninnikoff, II, p. 103."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

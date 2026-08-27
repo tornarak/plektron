@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_2-188_r1" HPOS="383" VPOS="462" WIDTH="1776" HEIGHT="86" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="383 462 2159 462 2159 548 383 548"/>
-                    </Shape>
-                    <TextLine ID="mz_2-188_l1" HPOS="963" VPOS="477" WIDTH="605" HEIGHT="53" BASELINE="965 515 1568 511" TAGREFS="TYPE_4">
+                <TextBlock ID="text_2-188" HPOS="383" VPOS="468" WIDTH="1765" HEIGHT="2620"><TextLine ID="mz_2-188_l1" HPOS="963" VPOS="477" WIDTH="605" HEIGHT="53" BASELINE="965 515 1568 511" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1558 477 963 479 963 481 965 515 965 530 1566 526 1568 511 1562 477 1558 477"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="458"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-188_r2" HPOS="383" VPOS="572" WIDTH="1776" HEIGHT="298" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="383 572 2159 572 2159 870 383 870"/>
-                    </Shape>
-                    <TextLine ID="mz_2-188_l3" HPOS="385" VPOS="573" WIDTH="1763" HEIGHT="57" BASELINE="387 616 2148 612" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-188_l3" HPOS="385" VPOS="573" WIDTH="1763" HEIGHT="57" BASELINE="387 616 2148 612" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2128 585 2109 585 2089 583 2070 583 2068 583 2050 583 2030 581 2011 581 1991 581 1972 579 1952 579 1933 579 1921 577 1903 585 1378 585 1306 573 1304 573 1302 573 1263 585 407 575 405 575 403 575 401 575 385 583 387 616 387 630 2146 626 2148 612 2146 585 2128 585"/>
                         </Shape>
@@ -89,12 +77,7 @@
                         </Shape>
                         <String CONTENT="Asiatic Eskimo."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-188_r3" HPOS="383" VPOS="870" WIDTH="1776" HEIGHT="435" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="383 870 2159 870 2159 1305 383 1305"/>
-                    </Shape>
-                    <TextLine ID="mz_2-188_l8" HPOS="491" VPOS="873" WIDTH="1657" HEIGHT="57" BASELINE="493 914 2148 910" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-188_l8" HPOS="491" VPOS="873" WIDTH="1657" HEIGHT="57" BASELINE="493 914 2148 910" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="493 914 493 930 2148 924 2148 910 2144 883 1323 873 1322 873 1320 873 1286 885 491 885 493 914"/>
                         </Shape>
@@ -142,12 +125,7 @@
                         </Shape>
                         <String CONTENT="shamans, of adopting the clothes and the ways of a woman."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-188_r4" HPOS="383" VPOS="1305" WIDTH="1776" HEIGHT="532" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="383 1305 2159 1305 2159 1837 383 1837"/>
-                    </Shape>
-                    <TextLine ID="mz_2-188_l15" HPOS="493" VPOS="1294" WIDTH="1653" HEIGHT="57" BASELINE="495 1335 2146 1329" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-188_l15" HPOS="493" VPOS="1294" WIDTH="1653" HEIGHT="57" BASELINE="495 1335 2146 1329" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="495 1335 495 1351 2144 1345 2146 1329 2142 1302 1059 1294 1057 1294 1055 1294 1026 1304 511 1296 509 1296 507 1296 505 1296 493 1302 495 1335"/>
                         </Shape>
@@ -209,12 +187,7 @@
                         </Shape>
                         <String CONTENT="their patients."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-188_r5" HPOS="383" VPOS="1837" WIDTH="1776" HEIGHT="1257" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="383 1837 2159 1837 2159 3094 383 3094"/>
-                    </Shape>
-                    <TextLine ID="mz_2-188_l24" HPOS="1635" VPOS="1827" WIDTH="507" HEIGHT="56" BASELINE="1637 1872 2142 1868" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-188_l24" HPOS="1635" VPOS="1827" WIDTH="507" HEIGHT="56" BASELINE="1637 1872 2142 1868" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1637 1872 1637 1883 2140 1880 2142 1868 2140 1840 2103 1827 2101 1827 2099 1827 2097 1827 2095 1827 2076 1838 2015 1827 2013 1827 1954 1838 1931 1827 1929 1827 1927 1827 1925 1827 1884 1840 1651 1829 1649 1829 1647 1829 1645 1829 1645 1831 1635 1838 1637 1872"/>
                         </Shape>
@@ -360,8 +333,7 @@
                         </Shape>
                         <String CONTENT="fringe made of curried leather. The cuts and the fringe are considered the"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-310_r1" HPOS="598" VPOS="609" WIDTH="1778" HEIGHT="95" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="598 609 2376 609 2376 704 598 704"/>
-                    </Shape>
-                    <TextLine ID="mz_1-310_l1" HPOS="1204" VPOS="628" WIDTH="617" HEIGHT="54" BASELINE="1206 664 1821 660" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-310" HPOS="591" VPOS="628" WIDTH="1785" HEIGHT="2628"><TextLine ID="mz_1-310_l1" HPOS="1204" VPOS="628" WIDTH="617" HEIGHT="54" BASELINE="1206 664 1821 660" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1204 636 1206 664 1206 682 1819 677 1821 660 1815 628 1215 630 1204 636"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="242"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-310_r2" HPOS="598" VPOS="738" WIDTH="1778" HEIGHT="122" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="598 738 2376 738 2376 860 598 860"/>
-                    </Shape>
-                    <TextLine ID="mz_1-310_l3" HPOS="708" VPOS="729" WIDTH="1657" HEIGHT="61" BASELINE="708 773 2365 773" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-310_l3" HPOS="708" VPOS="729" WIDTH="1657" HEIGHT="61" BASELINE="708 773 2365 773" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2356 740 2298 729 2296 729 2200 740 2177 729 2174 729 2172 729 2170 729 2144 742 1947 742 1910 729 1908 729 1906 729 1819 740 1737 729 1735 729 1670 740 1614 729 1611 729 1609 729 1577 740 1562 729 1559 729 1557 729 1555 729 1503 740 1442 729 1440 729 1438 729 1410 742 1276 742 1258 729 1256 729 1254 729 1252 729 1250 729 1222 740 1124 729 1122 729 1120 729 1089 740 1048 729 1046 729 1044 729 927 740 708 734 708 773 708 786 2363 790 2365 773 2365 770 2356 740"/>
                         </Shape>
@@ -68,12 +56,7 @@
                         </Shape>
                         <String CONTENT="the Tungus. The Russians have, besides this cap, a combination of it and"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-310_r3" HPOS="598" VPOS="1985" WIDTH="1778" HEIGHT="659" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="598 1985 2376 1985 2376 2644 598 2644"/>
-                    </Shape>
-                    <TextLine ID="mz_1-310_l5" HPOS="594" VPOS="1985" WIDTH="1773" HEIGHT="71" BASELINE="596 2026 2367 2030" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-310_l5" HPOS="594" VPOS="1985" WIDTH="1773" HEIGHT="71" BASELINE="596 2026 2367 2030" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2307 1991 2285 1991 2263 1991 2242 1991 2220 1991 2198 1991 2177 1991 2155 1989 2133 1989 2112 1989 2090 1989 2073 1989 2062 1998 2036 1989 2025 1989 2019 1989 1993 1998 1828 1987 1826 1987 1824 1987 1793 1998 1763 1987 1761 1987 1759 1987 1756 1987 1728 1998 1698 1987 1696 1987 1694 1987 1326 1996 1310 1985 1308 1985 1306 1985 1304 1985 1213 1998 983 1998 968 1985 966 1985 964 1985 962 1985 960 1985 936 1996 910 1985 908 1985 905 1985 903 1985 875 1998 730 1998 715 1985 713 1985 710 1985 708 1985 596 1994 596 2026 594 2041 1542 2056 1544 2056 2365 2046 2367 2030 2365 2000 2309 1991 2307 1991"/>
                         </Shape>
@@ -149,12 +132,7 @@
                         </Shape>
                         <String CONTENT="seal-skin or of crimson cloth."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-310_r4" HPOS="598" VPOS="2644" WIDTH="1778" HEIGHT="314" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="598 2644 2376 2644 2376 2958 598 2958"/>
-                    </Shape>
-                    <TextLine ID="mz_1-310_l16" HPOS="702" VPOS="2650" WIDTH="1661" HEIGHT="62" BASELINE="704 2686 2363 2691" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-310_l16" HPOS="702" VPOS="2650" WIDTH="1661" HEIGHT="62" BASELINE="704 2686 2363 2691" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="704 2686 702 2702 719 2712 721 2712 723 2712 726 2712 2361 2708 2363 2691 2361 2656 704 2650 704 2686"/>
                         </Shape>
@@ -188,12 +166,7 @@
                         </Shape>
                         <String CONTENT="them for reindeer-skins."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-310_r5" HPOS="598" VPOS="2958" WIDTH="1778" HEIGHT="300" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="598 2958 2376 2958 2376 3258 598 3258"/>
-                    </Shape>
-                    <TextLine ID="mz_1-310_l21" HPOS="704" VPOS="2944" WIDTH="1665" HEIGHT="67" BASELINE="706 2990 2369 2985" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-310_l21" HPOS="704" VPOS="2944" WIDTH="1665" HEIGHT="67" BASELINE="706 2990 2369 2985" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="706 2990 706 3000 1527 3011 1529 3011 1583 3000 2348 3009 2350 3009 2352 3009 2354 3009 2369 2998 2369 2985 2367 2957 2341 2944 2339 2944 2337 2944 2270 2957 2122 2957 2107 2944 2105 2944 2103 2944 2101 2944 2099 2944 2062 2955 2019 2944 2016 2944 2014 2944 2012 2944 1990 2955 1969 2944 1967 2944 1964 2944 1910 2955 1808 2944 1806 2944 1748 2955 1692 2944 1689 2944 1559 2955 1542 2944 1540 2944 1538 2944 1536 2944 1533 2944 1481 2959 1265 2959 1248 2946 1245 2946 1243 2946 1241 2946 1239 2946 1202 2957 986 2946 983 2946 704 2953 706 2990"/>
                         </Shape>
@@ -227,8 +200,7 @@
                         </Shape>
                         <String CONTENT="piece in front for the same purpose."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

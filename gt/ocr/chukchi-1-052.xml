@@ -23,33 +23,20 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Other"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-052_r1" HPOS="588" VPOS="608" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="588 608 2366 608 2366 698 588 698"/>
-                    </Shape>
-                    <TextLine ID="mz_1-052_l1" HPOS="1172" VPOS="619" WIDTH="615" HEIGHT="54" BASELINE="1172 653 1787 653" TAGREFS="TYPE_5">
+                <TextBlock ID="text_1-052" HPOS="583" VPOS="619" WIDTH="1778" HEIGHT="2626"><TextLine ID="mz_1-052_l1" HPOS="1172" VPOS="619" WIDTH="615" HEIGHT="54" BASELINE="1172 653 1787 653" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1172 653 1172 673 1787 673 1787 653 1787 619 1172 619 1172 653"/>
                         </Shape>
                         <String CONTENT="BOGORAS, THE CHUKCHEE."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-052_r2" HPOS="588" VPOS="723" WIDTH="1778" HEIGHT="1448" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="588 723 2366 723 2366 2171 588 2171"/>
-                    </Shape>
-                    <TextLine ID="mz_1-052_l2" HPOS="585" VPOS="714" WIDTH="1771" HEIGHT="59" BASELINE="587 755 2356 751" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-052_l2" HPOS="585" VPOS="714" WIDTH="1771" HEIGHT="59" BASELINE="587 755 2356 751" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="2339 727 2317 727 2296 725 2274 725 2252 723 2231 723 2224 721 602 714 600 714 598 714 596 714 585 721 587 755 587 773 2354 768 2356 751 2352 727 2339 727"/>
                         </Shape>
@@ -230,23 +217,13 @@
                         </Shape>
                         <String CONTENT="people are Nɵˊɵkalɪt Eskimo."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-052_r3" HPOS="588" VPOS="2198" WIDTH="1778" HEIGHT="76" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="588 2198 2366 2198 2366 2274 588 2274"/>
-                    </Shape>
-                    <TextLine ID="mz_1-052_l28" HPOS="693" VPOS="2195" WIDTH="1189" HEIGHT="63" BASELINE="695 2243 1882 2236" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-052_l28" HPOS="693" VPOS="2195" WIDTH="1189" HEIGHT="63" BASELINE="695 2243 1882 2236" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="695 2243 695 2258 1880 2251 1882 2236 1878 2208 1640 2195 1637 2195 1635 2195 1633 2195 1633 2197 1622 2206 1189 2197 1187 2197 1185 2197 1148 2208 1098 2197 1096 2197 1094 2197 1092 2197 1074 2212 905 2212 890 2199 888 2199 886 2199 884 2199 693 2208 695 2243"/>
                         </Shape>
                         <String CONTENT="The villages on the Arctic coast are as follows: —"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-052_r4" HPOS="588" VPOS="2285" WIDTH="1778" HEIGHT="892" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="588 2285 2366 2285 2366 3177 588 3177"/>
-                    </Shape>
-                    <TextLine ID="mz_1-052_l29" HPOS="587" VPOS="2290" WIDTH="1769" HEIGHT="54" BASELINE="589 2323 2356 2329" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-052_l29" HPOS="587" VPOS="2290" WIDTH="1769" HEIGHT="54" BASELINE="589 2323 2356 2329" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="589 2323 587 2338 2352 2344 2356 2329 2354 2297 589 2290 589 2323"/>
                         </Shape>
@@ -350,19 +327,13 @@
                         </Shape>
                         <String CONTENT="Iqäˊlurun (Eskimo, Iqaˊluwhak): 10 houses (Register, 7 houses, 48 inhabitants; Nordquist, 5 houses)."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-052_r5" HPOS="588" VPOS="3196" WIDTH="1778" HEIGHT="59" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="588 3196 2366 3196 2366 3255 588 3255"/>
-                    </Shape>
-                    <TextLine ID="mz_1-052_l44" HPOS="957" VPOS="3193" WIDTH="1029" HEIGHT="52" BASELINE="960 3221 1986 3228" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-052_l44" HPOS="957" VPOS="3193" WIDTH="1029" HEIGHT="52" BASELINE="960 3221 1986 3228" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="960 3221 957 3238 1982 3245 1986 3228 1984 3200 960 3193 960 3221"/>
                         </Shape>
                         <String CONTENT="¹ Cape Prince of Wales is called by the same name (cf. p. 21)."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

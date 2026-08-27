@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-Other"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_3-171_r1" HPOS="363" VPOS="454" WIDTH="1782" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="363 454 2145 454 2145 544 363 544"/>
-                    </Shape>
-                    <TextLine ID="mz_3-171_l1" HPOS="937" VPOS="474" WIDTH="622" HEIGHT="49" BASELINE="937 507 1559 507" TAGREFS="TYPE_5">
+                <TextBlock ID="text_3-171" HPOS="358" VPOS="474" WIDTH="1791" HEIGHT="2612"><TextLine ID="mz_3-171_l1" HPOS="937" VPOS="474" WIDTH="622" HEIGHT="49" BASELINE="937 507 1559 507" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1545 474 951 474 939 488 937 507 937 523 1559 523 1559 507 1557 490 1545 474"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="703"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-171_r2" HPOS="363" VPOS="569" WIDTH="1782" HEIGHT="243" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="363 569 2145 569 2145 812 363 812"/>
-                    </Shape>
-                    <TextLine ID="mz_3-171_l3" HPOS="358" VPOS="574" WIDTH="1770" HEIGHT="64" BASELINE="358 617 2128 617" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-171_l3" HPOS="358" VPOS="574" WIDTH="1770" HEIGHT="64" BASELINE="358 617 2128 617" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="455 578 436 580 416 581 397 581 378 583 370 583 358 583 358 617 358 630 2124 638 2128 617 2128 585 2087 574 2085 574 2083 574 2081 574 2052 585 1572 585 1508 574 1506 574 1440 583 1403 574 1401 574 1399 574 1278 583 1227 574 1225 574 1223 574 1221 574 1210 583 1196 574 1194 574 1192 574 1101 574 1099 574 999 583 952 574 951 574 949 574 919 583 861 574 859 574 857 574 828 583 795 574 793 574 791 574 789 574 765 583 709 574 707 574 705 574 683 585 502 585 465 578 455 578"/>
                         </Shape>
@@ -83,12 +70,7 @@
                         </Shape>
                         <String CONTENT="were brought by the traders of this group."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-171_r3" HPOS="363" VPOS="812" WIDTH="1782" HEIGHT="1265" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="363 812 2145 812 2145 2077 363 2077"/>
-                    </Shape>
-                    <TextLine ID="mz_3-171_l7" HPOS="465" VPOS="809" WIDTH="1669" HEIGHT="61" BASELINE="467 856 2134 850" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-171_l7" HPOS="465" VPOS="809" WIDTH="1669" HEIGHT="61" BASELINE="467 856 2134 850" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="467 856 467 870 2132 868 2134 850 2130 823 1935 823 1915 809 1913 809 1911 809 1909 809 1907 809 1905 809 1890 821 1867 809 1865 809 1863 809 1861 809 1820 823 1648 823 1584 809 1582 809 1580 809 1578 809 1562 823 1549 811 1547 811 1545 811 1543 811 1541 811 1506 823 1471 811 1469 811 1467 811 1465 811 1438 823 1364 811 1362 811 1360 811 1358 811 1338 825 1255 825 1229 811 1227 811 1126 811 1124 811 1122 811 1120 811 1103 825 1019 825 984 813 982 813 980 813 898 823 795 813 793 813 791 813 740 825 676 813 487 813 485 813 483 813 481 813 465 823 467 856"/>
                         </Shape>
@@ -234,12 +216,7 @@
                         </Shape>
                         <String CONTENT="meat and clothing. In other years even that right was taken away."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-171_r4" HPOS="363" VPOS="2077" WIDTH="1782" HEIGHT="198" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="363 2077 2145 2077 2145 2275 363 2275"/>
-                    </Shape>
-                    <TextLine ID="mz_3-171_l28" HPOS="479" VPOS="2070" WIDTH="1666" HEIGHT="67" BASELINE="481 2113 2145 2109" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-171_l28" HPOS="479" VPOS="2070" WIDTH="1666" HEIGHT="67" BASELINE="481 2113 2145 2109" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="481 2113 481 2127 802 2127 845 2137 847 2137 849 2137 958 2127 1303 2135 1305 2135 1527 2125 1640 2135 1642 2135 1644 2135 1646 2135 1660 2125 1744 2135 1746 2135 1804 2125 1857 2135 1859 2135 1861 2135 1890 2125 1972 2135 1974 2135 2145 2123 2145 2109 2137 2070 2098 2080 2026 2070 2024 2070 2022 2070 1993 2080 1917 2070 1915 2070 1913 2070 1890 2080 1824 2070 1822 2070 1820 2070 1796 2082 1514 2082 1500 2070 1498 2070 1496 2070 1494 2070 1447 2080 1346 2070 1344 2070 1290 2082 1190 2072 1188 2072 1186 2072 1159 2084 1081 2084 1067 2072 1065 2072 1064 2072 1062 2072 1060 2072 1034 2082 1003 2072 1001 2072 999 2072 997 2072 970 2082 888 2072 886 2072 828 2082 804 2072 802 2072 800 2072 754 2082 697 2072 695 2072 479 2076 481 2113"/>
                         </Shape>
@@ -259,12 +236,7 @@
                         </Shape>
                         <String CONTENT="but usually it ran on from year to year without change, as follows: —"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-171_r5" HPOS="363" VPOS="2283" WIDTH="1782" HEIGHT="716" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="363 2283 2145 2283 2145 2999 363 2999"/>
-                    </Shape>
-                    <TextLine ID="mz_3-171_l31" HPOS="1683" VPOS="2295" WIDTH="353" HEIGHT="42" BASELINE="1683 2320 2036 2320" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-171_l31" HPOS="1683" VPOS="2295" WIDTH="353" HEIGHT="42" BASELINE="1683 2320 2036 2320" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1683 2320 1683 2337 2036 2337 2036 2320 2036 2295 1683 2295 1683 2320"/>
                         </Shape>
@@ -529,19 +501,13 @@
                         </Shape>
                         <String CONTENT="1 parkee 1 red fox."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-171_r6" HPOS="363" VPOS="3016" WIDTH="1782" HEIGHT="87" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="363 3016 2145 3016 2145 3103 363 3103"/>
-                    </Shape>
-                    <TextLine ID="mz_3-171_l69" HPOS="381" VPOS="3021" WIDTH="1768" HEIGHT="65" BASELINE="383 3064 2149 3060" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-171_l69" HPOS="381" VPOS="3021" WIDTH="1768" HEIGHT="65" BASELINE="383 3064 2149 3060" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="381 3049 383 3064 383 3086 2147 3086 2149 3060 2139 3021 2069 3031 1983 3021 1981 3021 1629 3031 1599 3021 1598 3021 1596 3021 1594 3021 1568 3031 1547 3021 1545 3021 1409 3021 1407 3021 1352 3031 1329 3021 1327 3021 1325 3021 1253 3033 1227 3023 1225 3023 1223 3023 1221 3023 1198 3033 1163 3023 1161 3023 1159 3023 1157 3023 1132 3033 1079 3023 1077 3023 1075 3023 1052 3033 1038 3023 1036 3023 1034 3023 1032 3023 1030 3023 1003 3035 910 3035 894 3023 892 3023 890 3023 888 3023 886 3023 855 3033 810 3023 808 3023 754 3033 732 3023 730 3023 728 3023 674 3033 537 3023 535 3023 389 3031 381 3049"/>
                         </Shape>
                         <String CONTENT="The foxes and all other peltries had to be full-haired and whole, with a tail"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

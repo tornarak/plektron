@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_2-219_r1" HPOS="428" VPOS="470" WIDTH="1776" HEIGHT="86" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="428 470 2204 470 2204 556 428 556"/>
-                    </Shape>
-                    <TextLine ID="mz_2-219_l1" HPOS="2077" VPOS="477" WIDTH="96" HEIGHT="67" BASELINE="2077 517 2173 517" TAGREFS="TYPE_4">
+                <TextBlock ID="text_2-219" HPOS="411" VPOS="477" WIDTH="1782" HEIGHT="2619"><TextLine ID="mz_2-219_l1" HPOS="2077" VPOS="477" WIDTH="96" HEIGHT="67" BASELINE="2077 517 2173 517" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2117 477 2107 477 2089 483 2077 493 2077 517 2077 534 2091 544 2093 544 2095 544 2097 544 2173 532 2173 517 2173 489 2125 477 2117 477"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="BOGORAS, THE CHUKCHEE."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-219_r2" HPOS="428" VPOS="580" WIDTH="1776" HEIGHT="478" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="428 580 2204 580 2204 1058 428 1058"/>
-                    </Shape>
-                    <TextLine ID="mz_2-219_l3" HPOS="413" VPOS="581" WIDTH="1760" HEIGHT="63" BASELINE="413 624 2173 624" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-219_l3" HPOS="413" VPOS="581" WIDTH="1760" HEIGHT="63" BASELINE="413 624 2173 624" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="413 624 413 636 2172 644 2173 624 2173 591 2140 581 2138 581 2136 581 2134 581 2107 593 1946 593 1925 581 1923 581 1921 581 1815 591 1756 581 1754 581 1752 581 1719 591 1627 581 1625 581 1468 591 1388 581 1386 581 1292 591 1276 581 1275 581 1273 581 1271 581 1269 581 1226 593 1014 593 992 581 991 581 989 581 920 593 785 593 763 581 761 581 759 581 757 581 730 591 701 581 699 581 697 581 413 587 413 624"/>
                         </Shape>
@@ -110,12 +98,7 @@
                         </Shape>
                         <String CONTENT="should be misunderstood."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-219_r3" HPOS="428" VPOS="1058" WIDTH="1776" HEIGHT="435" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="428 1058 2204 1058 2204 1493 428 1493"/>
-                    </Shape>
-                    <TextLine ID="mz_2-219_l11" HPOS="522" VPOS="1059" WIDTH="1659" HEIGHT="59" BASELINE="524 1106 1316 1098 2181 1102" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-219_l11" HPOS="522" VPOS="1059" WIDTH="1659" HEIGHT="59" BASELINE="524 1106 1316 1098 2181 1102" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="524 1106 524 1118 2179 1114 2181 1102 2179 1071 1848 1059 1846 1059 1844 1059 1823 1071 1715 1071 1666 1059 1664 1059 1662 1059 1660 1059 1645 1071 1533 1071 1496 1059 1494 1059 1492 1059 1490 1059 1488 1059 1476 1069 1419 1061 1417 1061 1416 1061 1390 1071 1369 1061 1367 1061 1365 1061 1306 1071 1265 1061 1263 1061 1261 1061 1069 1071 1038 1061 1036 1061 1034 1061 1032 1061 1012 1071 893 1061 891 1061 889 1061 887 1061 871 1071 802 1061 801 1061 714 1071 681 1061 679 1061 677 1061 599 1071 546 1061 544 1061 542 1061 540 1061 522 1071 524 1106"/>
                         </Shape>
@@ -163,12 +146,7 @@
                         </Shape>
                         <String CONTENT="another shoulder-blade may be tried for some other direction of moving."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-219_r4" HPOS="428" VPOS="1493" WIDTH="1776" HEIGHT="361" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="428 1493 2204 1493 2204 1854 428 1854"/>
-                    </Shape>
-                    <TextLine ID="mz_2-219_l18" HPOS="532" VPOS="1480" WIDTH="1655" HEIGHT="67" BASELINE="534 1525 2187 1519" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-219_l18" HPOS="532" VPOS="1480" WIDTH="1655" HEIGHT="67" BASELINE="534 1525 2187 1519" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="534 1525 534 1537 969 1547 971 1547 1114 1535 2185 1535 2187 1519 2181 1480 532 1486 534 1525"/>
                         </Shape>
@@ -209,12 +187,7 @@
                         </Shape>
                         <String CONTENT="natural forces, so as to obtain a favorable issue for the hunt."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-219_r5" HPOS="428" VPOS="1854" WIDTH="1776" HEIGHT="1256" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="428 1854 2204 1854 2204 3110 428 3110"/>
-                    </Shape>
-                    <TextLine ID="mz_2-219_l24" HPOS="481" VPOS="1838" WIDTH="983" HEIGHT="59" BASELINE="483 1883 1464 1878" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-219_l24" HPOS="481" VPOS="1838" WIDTH="983" HEIGHT="59" BASELINE="483 1883 1464 1878" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="483 1883 483 1897 1463 1891 1464 1878 1461 1850 1359 1838 1357 1838 1355 1838 1353 1838 1353 1840 1343 1850 1196 1850 1167 1838 1165 1838 1163 1838 1161 1838 1122 1850 1108 1840 1106 1840 1104 1840 1102 1840 945 1850 918 1840 916 1840 914 1840 912 1840 910 1840 910 1842 900 1852 740 1852 489 1842 487 1842 485 1842 483 1842 483 1844 481 1844 483 1883"/>
                         </Shape>
@@ -360,8 +333,7 @@
                         </Shape>
                         <String CONTENT="of the Lamut and the reindeer after having come together. Evidently the"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

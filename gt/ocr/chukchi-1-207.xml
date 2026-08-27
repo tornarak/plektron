@@ -23,20 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-207_r1" HPOS="404" VPOS="603" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="404 603 2182 603 2182 693 404 693"/>
-                    </Shape>
-                    <TextLine ID="mz_1-207_l1" HPOS="979" VPOS="612" WIDTH="624" HEIGHT="57" BASELINE="981 649 1603 645" TAGREFS="TYPE_3">
+                <TextBlock ID="text_1-207" HPOS="405" VPOS="612" WIDTH="1778" HEIGHT="2642"><TextLine ID="mz_1-207_l1" HPOS="979" VPOS="612" WIDTH="624" HEIGHT="57" BASELINE="981 649 1603 645" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="1585 612 979 615 981 649 981 669 1601 664 1603 645 1596 619 1585 612"/>
                         </Shape>
@@ -49,23 +43,13 @@
                         </Shape>
                         <String CONTENT="165"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-207_r2" HPOS="404" VPOS="718" WIDTH="1778" HEIGHT="83" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="404 718 2182 718 2182 801 404 801"/>
-                    </Shape>
-                    <TextLine ID="mz_1-207_l3" HPOS="405" VPOS="708" WIDTH="1772" HEIGHT="82" BASELINE="407 764 2177 751" TAGREFS="TYPE_3">
+<TextLine ID="mz_1-207_l3" HPOS="405" VPOS="708" WIDTH="1772" HEIGHT="82" BASELINE="407 764 2177 751" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="418 718 418 721 416 721 405 747 407 764 407 779 422 790 425 790 427 790 429 790 431 790 459 779 481 790 483 790 485 790 487 790 526 779 626 790 628 790 732 777 957 788 960 788 1081 775 1098 786 1100 786 1102 786 1105 786 1352 773 1367 783 1369 783 1371 783 1373 783 1514 773 1579 781 1581 781 1583 781 1585 781 1598 770 1876 781 1878 781 1880 781 1923 768 1945 779 1947 779 1949 781 2151 781 2151 779 2153 779 2177 766 2177 751 2172 723 2073 710 2071 710 2006 721 1984 708 1982 708 1980 708 1977 708 1975 708 1923 721 1904 708 1902 708 1899 708 1897 708 1895 708 1893 708 1873 723 1772 710 1769 710 1767 710 1765 710 1746 723 1718 710 1715 710 1713 710 1711 710 1670 723 1635 710 1633 710 1631 710 1629 710 1627 710 1607 723 1590 710 1588 710 1585 710 1583 710 1581 710 1542 725 1406 712 1403 712 1401 712 1349 725 1291 712 1289 712 1287 712 1245 729 1141 729 1102 714 1100 714 1098 714 1096 714 1050 727 1005 714 1003 714 1001 714 999 714 996 714 979 729 934 716 931 716 929 716 654 731 425 718 422 718 420 718 418 718 418 718"/>
                         </Shape>
                         <String CONTENT="(Fig. 87; see also Fig. 84, b), or with pieces of tin fashioned after Rus-"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-207_r3" HPOS="404" VPOS="1687" WIDTH="1778" HEIGHT="1574" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="404 1687 2182 1687 2182 3261 404 3261"/>
-                    </Shape>
-                    <TextLine ID="mz_1-207_l4" HPOS="407" VPOS="1684" WIDTH="949" HEIGHT="63" BASELINE="409 1729 1356 1721" TAGREFS="TYPE_3">
+<TextLine ID="mz_1-207_l4" HPOS="407" VPOS="1684" WIDTH="949" HEIGHT="63" BASELINE="409 1729 1356 1721" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="1339 1688 1317 1688 1295 1688 1274 1688 1252 1688 1230 1688 1209 1688 1187 1688 1180 1688 1176 1693 1053 1693 1029 1686 1014 1686 992 1686 966 1693 927 1686 905 1686 890 1684 869 1695 771 1684 769 1684 767 1684 765 1684 765 1686 754 1697 503 1697 435 1686 433 1686 431 1686 407 1695 409 1729 409 1742 1328 1747 1330 1747 1332 1747 1356 1734 1356 1721 1352 1688 1339 1688"/>
                         </Shape>
@@ -246,8 +230,7 @@
                         </Shape>
                         <String CONTENT="When the armor was used, the left arm probably had one of the loops around"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

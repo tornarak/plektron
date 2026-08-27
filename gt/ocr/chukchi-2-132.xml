@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_2-132_r1" HPOS="359" VPOS="446" WIDTH="1776" HEIGHT="94" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="359 446 2135 446 2135 540 359 540"/>
-                    </Shape>
-                    <TextLine ID="mz_2-132_l1" HPOS="934" VPOS="468" WIDTH="615" HEIGHT="50" BASELINE="934 501 1549 501" TAGREFS="TYPE_4">
+                <TextBlock ID="text_2-132" HPOS="354" VPOS="468" WIDTH="1778" HEIGHT="2620"><TextLine ID="mz_2-132_l1" HPOS="934" VPOS="468" WIDTH="615" HEIGHT="50" BASELINE="934 501 1549 501" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1541 479 1527 468 938 468 934 470 934 501 934 518 1549 518 1549 501 1545 485 1541 479"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="404"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-132_r2" HPOS="359" VPOS="572" WIDTH="1776" HEIGHT="117" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="359 572 2135 572 2135 689 359 689"/>
-                    </Shape>
-                    <TextLine ID="mz_2-132_l3" HPOS="354" VPOS="567" WIDTH="1771" HEIGHT="59" BASELINE="356 609 2125 612" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-132_l3" HPOS="354" VPOS="567" WIDTH="1771" HEIGHT="59" BASELINE="356 609 2125 612" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2097 577 2077 577 2058 577 2038 575 2019 575 1999 575 1980 575 1960 573 1940 573 1921 573 1901 573 1893 573 1592 579 1539 569 1537 569 1535 569 1502 579 1427 569 1425 569 1349 579 1294 569 1292 569 1290 569 1259 579 1226 567 1224 567 1222 567 1220 567 1184 577 1053 567 1051 567 969 579 703 579 669 567 667 567 665 567 663 567 630 577 564 567 562 567 356 575 356 609 354 620 2121 626 2125 612 2125 581 2115 577 2097 577"/>
                         </Shape>
@@ -68,12 +56,7 @@
                         </Shape>
                         <String CONTENT="along different parts of the coast-line."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-132_r3" HPOS="359" VPOS="689" WIDTH="1776" HEIGHT="370" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="359 689 2135 689 2135 1059 359 1059"/>
-                    </Shape>
-                    <TextLine ID="mz_2-132_l5" HPOS="462" VPOS="689" WIDTH="1664" HEIGHT="63" BASELINE="464 728 2126 732" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-132_l5" HPOS="462" VPOS="689" WIDTH="1664" HEIGHT="63" BASELINE="464 728 2126 732" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="464 728 462 742 473 750 475 750 477 750 479 750 1208 742 1296 752 1298 752 2125 742 2126 732 2126 703 2085 691 2083 691 2081 691 2079 691 2040 701 1968 691 1966 691 1725 703 1545 703 1531 691 1529 691 1527 691 1525 691 1441 703 1296 703 1245 689 1243 689 1241 689 1239 689 1204 699 1083 689 1081 689 1079 689 1039 699 981 689 979 689 873 699 783 689 781 689 697 699 464 693 464 728"/>
                         </Shape>
@@ -114,12 +97,7 @@
                         </Shape>
                         <String CONTENT="and the attacks of hungry foxes."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-132_r4" HPOS="359" VPOS="1059" WIDTH="1776" HEIGHT="659" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="359 1059 2135 1059 2135 1718 359 1718"/>
-                    </Shape>
-                    <TextLine ID="mz_2-132_l11" HPOS="470" VPOS="1047" WIDTH="1658" HEIGHT="59" BASELINE="472 1090 2128 1086" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-132_l11" HPOS="470" VPOS="1047" WIDTH="1658" HEIGHT="59" BASELINE="472 1090 2128 1086" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="472 1090 472 1106 2126 1106 2128 1086 2125 1059 2054 1047 2052 1047 2050 1047 2021 1059 1866 1059 1850 1047 1848 1047 1846 1047 1844 1047 1842 1047 1815 1057 1545 1047 1543 1047 1288 1059 1110 1049 1108 1049 1024 1059 470 1053 472 1090"/>
                         </Shape>
@@ -195,12 +173,7 @@
                         </Shape>
                         <String CONTENT="are not considered necessary for the ceremonial."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-132_r5" HPOS="359" VPOS="1718" WIDTH="1776" HEIGHT="719" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="359 1718 2135 1718 2135 2437 359 2437"/>
-                    </Shape>
-                    <TextLine ID="mz_2-132_l22" HPOS="468" VPOS="1707" WIDTH="1660" HEIGHT="55" BASELINE="468 1746 2128 1746" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-132_l22" HPOS="468" VPOS="1707" WIDTH="1660" HEIGHT="55" BASELINE="468 1746 2128 1746" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="468 1746 468 1762 2128 1762 2128 1746 2128 1717 2099 1707 2097 1707 2095 1707 2093 1707 2060 1717 1901 1707 1899 1707 1897 1707 1874 1717 1850 1707 1848 1707 1846 1707 1844 1707 1842 1707 1827 1719 1651 1719 1623 1707 1621 1707 1619 1707 1566 1717 1535 1707 1533 1707 1531 1707 1529 1707 1527 1707 1510 1719 1325 1719 1294 1707 1292 1707 1290 1707 1288 1707 1259 1717 1227 1707 1226 1707 1224 1707 1020 1717 987 1707 985 1707 983 1707 981 1707 945 1717 879 1707 877 1707 697 1717 636 1707 634 1707 632 1707 597 1717 489 1707 487 1707 485 1707 468 1715 468 1746"/>
                         </Shape>
@@ -283,12 +256,7 @@
                         </Shape>
                         <String CONTENT="the first course of the year, which is necessarily short, and conducted with caution."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-132_r6" HPOS="359" VPOS="2437" WIDTH="1776" HEIGHT="657" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="359 2437 2135 2437 2135 3094 359 3094"/>
-                    </Shape>
-                    <TextLine ID="mz_2-132_l34" HPOS="466" VPOS="2422" WIDTH="1666" HEIGHT="65" BASELINE="468 2463 2132 2467" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-132_l34" HPOS="466" VPOS="2422" WIDTH="1666" HEIGHT="65" BASELINE="468 2463 2132 2467" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="468 2463 466 2475 810 2487 812 2487 2130 2479 2132 2467 2132 2436 2087 2424 2085 2424 2083 2424 2009 2434 1966 2424 1964 2424 1962 2424 1719 2434 1703 2424 1701 2424 1700 2424 1604 2424 1602 2424 1551 2434 1527 2424 1525 2424 1523 2424 1427 2434 1404 2424 1402 2424 1400 2424 1353 2434 1327 2424 1325 2424 1323 2424 1322 2424 1300 2434 1220 2422 1218 2422 1167 2432 1114 2422 1112 2422 1036 2432 973 2422 971 2422 881 2432 791 2422 789 2422 736 2434 624 2434 609 2422 607 2422 605 2422 603 2422 468 2430 468 2463"/>
                         </Shape>
@@ -364,8 +332,7 @@
                         </Shape>
                         <String CONTENT="the great ceremonial of the fall answers for all such purposes."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

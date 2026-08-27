@@ -23,23 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-Other"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_6" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_3-124_r1" HPOS="573" VPOS="453" WIDTH="1782" HEIGHT="102" TAGREFS="TYPE_5">
-<Shape>
-                        <Polygon POINTS="573 453 2355 453 2355 555 573 555"/>
-                    </Shape>
-                    <TextLine ID="mz_3-124_l1" HPOS="1140" VPOS="474" WIDTH="615" HEIGHT="51" BASELINE="1141 505 1755 509" TAGREFS="TYPE_6">
+                <TextBlock ID="text_3-124" HPOS="561" VPOS="466" WIDTH="1779" HEIGHT="2633"><TextLine ID="mz_3-124_l1" HPOS="1140" VPOS="474" WIDTH="615" HEIGHT="51" BASELINE="1141 505 1755 509" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="1746 476 1744 474 1155 474 1143 494 1141 505 1140 521 1752 525 1755 509 1753 478 1746 476"/>
                         </Shape>
@@ -52,12 +43,7 @@
                         </Shape>
                         <String CONTENT="658"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-124_r2" HPOS="573" VPOS="578" WIDTH="1782" HEIGHT="117" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="573 578 2355 578 2355 695 573 695"/>
-                    </Shape>
-                    <TextLine ID="mz_3-124_l3" HPOS="563" VPOS="572" WIDTH="1771" HEIGHT="68" BASELINE="565 620 2334 615" TAGREFS="TYPE_6">
+<TextLine ID="mz_3-124_l3" HPOS="563" VPOS="572" WIDTH="1771" HEIGHT="68" BASELINE="565 620 2334 615" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="2317 583 2297 583 2278 581 2258 581 2239 581 2219 580 2200 580 2172 583 2149 578 2141 578 2122 576 2114 576 2096 585 1909 585 1882 572 1880 572 1878 572 1794 583 1763 572 1761 572 1759 572 1757 572 1755 572 1742 581 1683 574 1681 574 1679 574 1677 574 1660 585 1629 574 1627 574 1625 574 1623 574 1598 585 1572 574 1570 574 1568 574 1566 574 1539 585 1490 574 1488 574 1486 574 1485 574 1483 574 1463 587 1358 587 1241 574 1239 574 1237 574 1235 574 1216 585 1071 576 1069 576 1007 587 976 576 974 576 972 576 721 587 672 576 670 576 668 576 563 589 565 620 565 640 2332 632 2334 615 2330 585 2319 583 2317 583"/>
                         </Shape>
@@ -70,12 +56,7 @@
                         </Shape>
                         <String CONTENT="arise on the ground of mutual taunting."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-124_r3" HPOS="573" VPOS="695" WIDTH="1782" HEIGHT="130" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="573 695 2355 695 2355 825 573 825"/>
-                    </Shape>
-                    <TextLine ID="mz_3-124_l5" HPOS="670" VPOS="691" WIDTH="1666" HEIGHT="68" BASELINE="672 732 2336 737" TAGREFS="TYPE_6">
+<TextLine ID="mz_3-124_l5" HPOS="670" VPOS="691" WIDTH="1666" HEIGHT="68" BASELINE="672 732 2336 737" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="672 732 670 745 693 757 695 757 697 757 1206 749 1223 759 1225 759 1227 759 1229 759 2334 751 2336 737 2332 695 2272 706 2038 695 2036 695 1685 704 1664 693 1662 693 1660 693 1658 693 1492 704 1430 693 1428 693 1426 693 1424 693 1409 704 1393 693 1391 693 1389 693 1325 693 1323 693 1321 693 1282 704 1227 691 1225 691 1223 691 1221 691 1219 691 1200 704 1128 704 1110 691 1108 691 1106 691 1104 691 1103 691 1075 702 976 691 974 691 972 691 941 704 880 704 861 691 859 691 857 691 855 691 853 691 828 704 742 704 711 691 709 691 707 691 705 691 672 700 672 732"/>
                         </Shape>
@@ -88,12 +69,7 @@
                         </Shape>
                         <String CONTENT="against the Koryak."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-124_r4" HPOS="573" VPOS="853" WIDTH="1782" HEIGHT="616" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="573 853 2355 853 2355 1469 573 1469"/>
-                    </Shape>
-                    <TextLine ID="mz_3-124_l7" HPOS="674" VPOS="848" WIDTH="1662" HEIGHT="53" BASELINE="676 876 2336 882" TAGREFS="TYPE_6">
+<TextLine ID="mz_3-124_l7" HPOS="674" VPOS="848" WIDTH="1662" HEIGHT="53" BASELINE="676 876 2336 882" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="676 876 674 889 711 901 713 901 715 901 2334 895 2336 882 2334 854 676 848 676 876"/>
                         </Shape>
@@ -183,12 +159,7 @@
                         </Shape>
                         <String CONTENT="among the people, and all of them set forth against the Taˊn˙ñɪt.”"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-124_r5" HPOS="573" VPOS="1490" WIDTH="1782" HEIGHT="850" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="573 1490 2355 1490 2355 2340 573 2340"/>
-                    </Shape>
-                    <TextLine ID="mz_3-124_l20" HPOS="672" VPOS="1496" WIDTH="1666" HEIGHT="48" BASELINE="672 1529 2338 1529" TAGREFS="TYPE_6">
+<TextLine ID="mz_3-124_l20" HPOS="672" VPOS="1496" WIDTH="1666" HEIGHT="48" BASELINE="672 1529 2338 1529" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="672 1529 672 1542 2336 1544 2338 1529 2338 1496 672 1496 672 1529"/>
                         </Shape>
@@ -285,12 +256,7 @@
                         </Shape>
                         <String CONTENT="had a quarrel with the people from Chaun, and had nearly come to blows."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-124_r6" HPOS="573" VPOS="2340" WIDTH="1782" HEIGHT="175" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="573 2340 2355 2340 2355 2515 573 2515"/>
-                    </Shape>
-                    <TextLine ID="mz_3-124_l34" HPOS="676" VPOS="2328" WIDTH="1664" HEIGHT="56" BASELINE="676 2369 2340 2369" TAGREFS="TYPE_6">
+<TextLine ID="mz_3-124_l34" HPOS="676" VPOS="2328" WIDTH="1664" HEIGHT="56" BASELINE="676 2369 2340 2369" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="676 2369 676 2384 2340 2384 2340 2369 2340 2337 2297 2328 2295 2328 2293 2328 2291 2328 2260 2337 2122 2328 2120 2328 2054 2337 1976 2328 1974 2328 1972 2328 1944 2337 1929 2328 1927 2328 1925 2328 1923 2328 1857 2337 1777 2328 1775 2328 1699 2337 1627 2328 1625 2328 1578 2339 1428 2339 1407 2328 1405 2328 1403 2328 1401 2328 1371 2337 1331 2328 1329 2328 1327 2328 1325 2328 1294 2337 1165 2328 1163 2328 1114 2339 1009 2339 995 2328 993 2328 991 2328 989 2328 912 2337 676 2334 676 2369"/>
                         </Shape>
@@ -310,12 +276,7 @@
                         </Shape>
                         <String CONTENT="episode of this kind."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-124_r7" HPOS="573" VPOS="2527" WIDTH="1782" HEIGHT="499" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="573 2527 2355 2527 2355 3026 573 3026"/>
-                    </Shape>
-                    <TextLine ID="mz_3-124_l37" HPOS="676" VPOS="2540" WIDTH="1662" HEIGHT="51" BASELINE="678 2567 2338 2573" TAGREFS="TYPE_6">
+<TextLine ID="mz_3-124_l37" HPOS="676" VPOS="2540" WIDTH="1662" HEIGHT="51" BASELINE="678 2567 2338 2573" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="678 2567 676 2581 2334 2591 2338 2573 2336 2546 678 2540 678 2567"/>
                         </Shape>
@@ -384,19 +345,13 @@
                         </Shape>
                         <String CONTENT="soup for himself, so large was the arrow. Some time after that, they pitched their tents in a new"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-124_r8" HPOS="573" VPOS="3049" WIDTH="1782" HEIGHT="63" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="573 3049 2355 3049 2355 3112 573 3112"/>
-                    </Shape>
-                    <TextLine ID="mz_3-124_l47" HPOS="676" VPOS="3051" WIDTH="1645" HEIGHT="48" BASELINE="678 3078 2321 3084" TAGREFS="TYPE_6">
+<TextLine ID="mz_3-124_l47" HPOS="676" VPOS="3051" WIDTH="1645" HEIGHT="48" BASELINE="678 3078 2321 3084" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="678 3078 676 3094 2317 3099 2321 3084 2319 3057 678 3051 678 3078"/>
                         </Shape>
                         <String CONTENT="¹ Easterners. The Chukchee of the Telqäˊp and of the Anadyr River are called by this name (cf. p. 27)."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

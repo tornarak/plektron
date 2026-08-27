@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-094_r1" HPOS="804" VPOS="595" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="804 595 2582 595 2582 685 804 685"/>
-                    </Shape>
-                    <TextLine ID="mz_1-094_l1" HPOS="808" VPOS="599" WIDTH="80" HEIGHT="67" BASELINE="808 643 888 643" TAGREFS="TYPE_5">
+                <TextBlock ID="text_1-094" HPOS="801" VPOS="599" WIDTH="1783" HEIGHT="2637"><TextLine ID="mz_1-094_l1" HPOS="808" VPOS="599" WIDTH="80" HEIGHT="67" BASELINE="808 643 888 643" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="884 610 832 599 830 599 808 617 808 643 808 658 819 666 821 666 823 666 825 666 888 653 888 643 888 615 884 610"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="BOGORAS, THE CHUKCHEE."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-094_r2" HPOS="804" VPOS="710" WIDTH="1778" HEIGHT="237" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="804 710 2582 710 2582 947 804 947"/>
-                    </Shape>
-                    <TextLine ID="mz_1-094_l3" HPOS="801" VPOS="703" WIDTH="1776" HEIGHT="67" BASELINE="804 755 2577 749" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-094_l3" HPOS="801" VPOS="703" WIDTH="1776" HEIGHT="67" BASELINE="804 755 2577 749" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="2534 710 2512 710 2497 708 2462 714 2393 705 2382 705 2365 705 2352 714 2294 703 2291 703 2289 703 2244 714 2218 703 2216 703 2213 703 2140 714 2112 703 2109 703 2107 703 2105 703 2103 703 2088 716 1980 716 1928 705 1925 705 1923 705 1893 716 1843 705 1841 705 1640 716 1577 705 1575 705 1572 705 1570 705 1553 716 1442 705 1440 705 1347 718 990 708 988 708 856 718 823 708 821 708 819 708 817 708 814 708 801 716 804 755 804 770 2575 770 2577 749 2575 716 2553 710 2534 710"/>
                         </Shape>
@@ -83,12 +70,7 @@
                         </Shape>
                         <String CONTENT="black fawns-kins; in the Chukchee Peninsula, 1 white-fox skin."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-094_r3" HPOS="804" VPOS="947" WIDTH="1778" HEIGHT="366" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="804 947 2582 947 2582 1313 804 1313"/>
-                    </Shape>
-                    <TextLine ID="mz_1-094_l7" HPOS="912" VPOS="944" WIDTH="1667" HEIGHT="65" BASELINE="914 991 2579 987" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-094_l7" HPOS="912" VPOS="944" WIDTH="1667" HEIGHT="65" BASELINE="914 991 2579 987" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="914 991 914 1009 2577 1009 2579 987 2575 957 2506 944 2504 944 2501 944 2478 954 2395 944 2393 944 2391 944 2389 944 2374 957 2229 957 2209 944 2207 944 2205 944 2203 944 2200 944 2155 954 2129 944 2127 944 2125 944 2008 954 1980 944 1977 944 1975 944 1876 954 1863 944 1860 944 1858 944 1746 944 1744 944 1741 944 1709 957 1614 946 1611 946 1609 946 1575 957 1352 946 1349 946 1347 946 1345 946 1332 959 1254 959 1224 946 1222 946 1219 946 1159 957 994 946 992 946 990 946 966 957 927 946 925 946 923 946 921 946 918 946 918 948 912 952 914 991"/>
                         </Shape>
@@ -129,12 +111,7 @@
                         </Shape>
                         <String CONTENT="gray fawn-skin of the smaller size."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-094_r4" HPOS="804" VPOS="1313" WIDTH="1778" HEIGHT="775" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="804 1313 2582 1313 2582 2088 804 2088"/>
-                    </Shape>
-                    <TextLine ID="mz_1-094_l13" HPOS="910" VPOS="1303" WIDTH="1669" HEIGHT="65" BASELINE="912 1353 2579 1346" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-094_l13" HPOS="910" VPOS="1303" WIDTH="1669" HEIGHT="65" BASELINE="912 1353 2579 1346" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="912 1353 912 1368 2577 1361 2579 1346 2575 1316 2029 1303 2027 1303 2025 1303 2023 1303 2008 1316 1964 1305 1962 1305 1960 1305 1958 1305 1932 1316 1806 1305 1804 1305 1802 1305 1767 1316 1741 1305 1739 1305 1737 1305 1627 1316 1611 1305 1609 1305 1607 1305 1503 1305 1501 1305 1421 1318 1399 1307 1397 1307 1395 1307 1113 1318 1094 1307 1092 1307 1089 1307 934 1307 931 1307 929 1307 927 1307 910 1316 912 1353"/>
                         </Shape>
@@ -224,12 +201,7 @@
                         </Shape>
                         <String CONTENT="bone; etc."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-094_r5" HPOS="804" VPOS="2088" WIDTH="1778" HEIGHT="661" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="804 2088 2582 2088 2582 2749 804 2749"/>
-                    </Shape>
-                    <TextLine ID="mz_1-094_l26" HPOS="912" VPOS="2085" WIDTH="1670" HEIGHT="60" BASELINE="914 2130 2582 2126" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-094_l26" HPOS="912" VPOS="2085" WIDTH="1670" HEIGHT="60" BASELINE="914 2130 2582 2126" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="914 2130 914 2145 2579 2141 2582 2126 2577 2095 1748 2085 1746 2085 1744 2085 1741 2085 1724 2095 936 2087 934 2087 931 2087 912 2095 914 2130"/>
                         </Shape>
@@ -305,12 +277,7 @@
                         </Shape>
                         <String CONTENT="lesser value in comparison with Russian wares."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-094_r6" HPOS="804" VPOS="2749" WIDTH="1778" HEIGHT="298" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="804 2749 2582 2749 2582 3047 804 3047"/>
-                    </Shape>
-                    <TextLine ID="mz_1-094_l37" HPOS="912" VPOS="2743" WIDTH="1667" HEIGHT="62" BASELINE="914 2790 2579 2784" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-094_l37" HPOS="912" VPOS="2743" WIDTH="1667" HEIGHT="62" BASELINE="914 2790 2579 2784" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="914 2790 914 2805 2577 2799 2579 2784 2575 2756 2326 2743 2324 2743 2322 2743 2320 2743 2304 2756 2086 2756 2053 2743 2051 2743 2049 2743 2047 2743 2001 2758 1618 2758 1585 2745 1583 2745 1581 2745 1447 2758 1332 2747 1330 2747 912 2754 914 2790"/>
                         </Shape>
@@ -344,30 +311,19 @@
                         </Shape>
                         <String CONTENT="Among the Kerek a Winchester rifle with accessories is worth 2 sable-skins."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-094_r7" HPOS="804" VPOS="3047" WIDTH="1778" HEIGHT="62" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="804 3047 2582 3047 2582 3109 804 3109"/>
-                    </Shape>
-                    <TextLine ID="mz_1-094_l42" HPOS="916" VPOS="3048" WIDTH="1659" HEIGHT="58" BASELINE="918 3083 2575 3089" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-094_l42" HPOS="916" VPOS="3048" WIDTH="1659" HEIGHT="58" BASELINE="918 3083 2575 3089" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="918 3083 916 3100 2571 3106 2575 3089 2573 3050 918 3048 918 3083"/>
                         </Shape>
                         <String CONTENT="The total yearly trade between the Chukchee and the Russians, in all"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-094_r8" HPOS="804" VPOS="3171" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="804 3171 2582 3171 2582 3261 804 3261"/>
-                    </Shape>
-                    <TextLine ID="mz_1-094_l43" HPOS="1321" VPOS="3189" WIDTH="750" HEIGHT="47" BASELINE="1321 3215 2071 3215" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-094_l43" HPOS="1321" VPOS="3189" WIDTH="750" HEIGHT="47" BASELINE="1321 3215 2071 3215" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1321 3215 1321 3236 2071 3236 2071 3215 2071 3189 1321 3189 1321 3215"/>
                         </Shape>
                         <String CONTENT="¹ A kopek is equivalent to about half a cent."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

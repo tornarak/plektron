@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-144_r1" HPOS="656" VPOS="597" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="656 597 2434 597 2434 687 656 687"/>
-                    </Shape>
-                    <TextLine ID="mz_1-144_l1" HPOS="661" VPOS="606" WIDTH="104" HEIGHT="56" BASELINE="663 651 765 647" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-144" HPOS="650" VPOS="606" WIDTH="1778" HEIGHT="2630"><TextLine ID="mz_1-144_l1" HPOS="661" VPOS="606" WIDTH="104" HEIGHT="56" BASELINE="663 651 765 647" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="661 625 663 651 663 662 765 660 765 647 762 617 726 606 723 606 721 606 667 617 661 625"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="BOGORAS, THE CHUKCHEE."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-144_r2" HPOS="656" VPOS="712" WIDTH="1778" HEIGHT="138" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="656 712 2434 712 2434 850 656 850"/>
-                    </Shape>
-                    <TextLine ID="mz_1-144_l3" HPOS="654" VPOS="712" WIDTH="1774" HEIGHT="69" BASELINE="656 757 2428 753" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-144_l3" HPOS="654" VPOS="712" WIDTH="1774" HEIGHT="69" BASELINE="656 757 2428 753" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="656 757 656 770 1003 770 1042 781 1044 781 1046 781 1226 770 1302 781 1304 781 1306 781 1308 781 1328 770 1527 779 1529 779 1531 779 1555 768 1973 768 1990 779 1993 779 1995 779 1997 779 2103 768 2246 779 2248 779 2250 779 2272 768 2404 779 2406 779 2408 779 2411 779 2428 766 2428 753 2424 723 1542 712 1540 712 1466 723 674 714 672 714 669 714 667 714 654 721 656 757"/>
                         </Shape>
@@ -68,12 +56,7 @@
                         </Shape>
                         <String CONTENT="toggle (c), or simply twisted around the curved shaft and then tied to the"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-144_r3" HPOS="656" VPOS="1484" WIDTH="1778" HEIGHT="910" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="656 1484 2434 1484 2434 2394 656 2394"/>
-                    </Shape>
-                    <TextLine ID="mz_1-144_l5" HPOS="652" VPOS="1487" WIDTH="1772" HEIGHT="61" BASELINE="654 1532 2424 1528" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-144_l5" HPOS="652" VPOS="1487" WIDTH="1772" HEIGHT="61" BASELINE="654 1532 2424 1528" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2255 1489 2233 1489 2211 1489 2190 1489 2172 1489 2138 1496 2118 1489 2103 1489 2092 1489 2084 1498 1925 1498 1858 1487 1843 1487 1832 1487 1798 1496 1772 1487 1756 1487 1752 1487 1737 1496 1380 1487 1378 1487 1313 1498 1228 1487 1226 1487 1224 1487 1189 1498 1137 1487 1135 1487 1133 1487 1131 1487 1115 1500 964 1500 869 1487 866 1487 814 1498 762 1487 760 1487 652 1500 654 1532 654 1548 2421 1543 2424 1528 2419 1498 2272 1489 2255 1489"/>
                         </Shape>
@@ -177,12 +160,7 @@
                         </Shape>
                         <String CONTENT="jostling. The two lines of dogs generally follow in the tracks of the runners"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-144_r4" HPOS="656" VPOS="3058" WIDTH="1778" HEIGHT="116" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="656 3058 2434 3058 2434 3174 656 3174"/>
-                    </Shape>
-                    <TextLine ID="mz_1-144_l20" HPOS="659" VPOS="3065" WIDTH="1767" HEIGHT="48" BASELINE="659 3096 2426 3096" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-144_l20" HPOS="659" VPOS="3065" WIDTH="1767" HEIGHT="48" BASELINE="659 3096 2426 3096" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="659 3096 659 3113 2424 3113 2426 3096 2424 3065 659 3065 659 3096"/>
                         </Shape>
@@ -195,19 +173,13 @@
                         </Shape>
                         <String CONTENT="left between the two lines, which keeps the dogs apart."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-144_r5" HPOS="656" VPOS="3179" WIDTH="1778" HEIGHT="74" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="656 3179 2434 3179 2434 3253 656 3253"/>
-                    </Shape>
-                    <TextLine ID="mz_1-144_l22" HPOS="765" VPOS="3174" WIDTH="1659" HEIGHT="62" BASELINE="765 3215 2424 3215" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-144_l22" HPOS="765" VPOS="3174" WIDTH="1659" HEIGHT="62" BASELINE="765 3215 2424 3215" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="765 3215 765 3236 2424 3236 2424 3215 2424 3182 2411 3174 2408 3174 2406 3174 2404 3174 2402 3174 2380 3184 2363 3174 2361 3174 2359 3174 2356 3174 2354 3174 2313 3187 2187 3187 2172 3174 2170 3174 2168 3174 2166 3174 2164 3174 2138 3187 2047 3187 2032 3174 2029 3174 2027 3174 2025 3174 2023 3174 1997 3184 1928 3174 1925 3174 1923 3174 1889 3184 1776 3174 1774 3174 1772 3174 1741 3184 1724 3174 1722 3174 1720 3174 1718 3174 1715 3174 1689 3184 1627 3174 1624 3174 1622 3174 1583 3184 1479 3174 1477 3174 1425 3184 1319 3174 1317 3174 1315 3174 1278 3184 1263 3174 1261 3174 1258 3174 1256 3174 1131 3184 1092 3174 1089 3174 1087 3174 1085 3174 1055 3184 765 3178 765 3215"/>
                         </Shape>
                         <String CONTENT="The harness described above allows of variation. One form, the so-called"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

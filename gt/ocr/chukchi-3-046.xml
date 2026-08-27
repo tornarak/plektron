@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_3-046_r1" HPOS="377" VPOS="446" WIDTH="1782" HEIGHT="93" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="377 446 2159 446 2159 539 377 539"/>
-                    </Shape>
-                    <TextLine ID="mz_3-046_l1" HPOS="374" VPOS="461" WIDTH="103" HEIGHT="56" BASELINE="376 504 477 500" TAGREFS="TYPE_5">
+                <TextBlock ID="text_3-046" HPOS="370" VPOS="461" WIDTH="1787" HEIGHT="2633"><TextLine ID="mz_3-046_l1" HPOS="374" VPOS="461" WIDTH="103" HEIGHT="56" BASELINE="376 504 477 500" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="471 468 438 461 432 463 413 465 401 465 374 472 376 504 376 517 477 513 477 500 473 470 471 468"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="BOGORAS, THE CHUKCHEE."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-046_r2" HPOS="377" VPOS="570" WIDTH="1782" HEIGHT="593" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="377 570 2159 570 2159 1163 377 1163"/>
-                    </Shape>
-                    <TextLine ID="mz_3-046_l3" HPOS="370" VPOS="566" WIDTH="1777" HEIGHT="56" BASELINE="370 607 2147 607" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-046_l3" HPOS="370" VPOS="566" WIDTH="1777" HEIGHT="56" BASELINE="370 607 2147 607" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1890 570 1870 570 1863 568 1790 578 1714 566 1713 566 1711 566 1685 578 1625 566 1623 566 1529 578 1461 566 1459 566 1457 566 1455 566 1440 578 1182 578 1159 566 1157 566 1155 566 1095 576 1058 566 1056 566 1054 566 1052 566 1001 578 949 566 947 566 945 566 900 578 863 566 861 566 859 566 797 578 713 566 711 566 709 566 707 566 687 580 602 580 582 566 580 566 578 566 576 566 430 576 395 566 393 566 391 566 389 566 387 566 370 576 370 607 370 622 2145 622 2147 607 2145 580 1948 580 1909 570 1890 570"/>
                         </Shape>
@@ -125,12 +112,7 @@
                         </Shape>
                         <String CONTENT="of Chukchee life, which is so plain, filthy, and democratic."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-046_r3" HPOS="377" VPOS="1163" WIDTH="1782" HEIGHT="1391" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="377 1163 2159 1163 2159 2554 377 2554"/>
-                    </Shape>
-                    <TextLine ID="mz_3-046_l13" HPOS="481" VPOS="1166" WIDTH="1668" HEIGHT="57" BASELINE="481 1207 2149 1207" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-046_l13" HPOS="481" VPOS="1166" WIDTH="1668" HEIGHT="57" BASELINE="481 1207 2149 1207" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="481 1207 481 1223 2149 1223 2149 1207 2149 1176 2114 1166 2112 1166 2110 1166 2108 1166 2073 1176 1983 1166 1981 1166 1980 1166 1954 1176 1886 1166 1792 1166 1790 1166 1789 1166 1787 1166 1773 1176 1716 1166 1714 1166 1713 1166 1687 1176 1603 1166 1601 1166 1599 1166 1568 1176 1492 1166 1490 1166 1381 1176 1319 1166 1317 1166 1315 1166 1284 1176 1249 1166 1247 1166 1245 1166 1243 1166 1214 1176 1184 1166 1182 1166 1097 1166 1095 1166 1093 1166 1091 1166 1079 1176 1032 1166 1030 1166 1028 1166 997 1176 945 1166 943 1166 878 1176 785 1166 783 1166 691 1176 481 1172 481 1207"/>
                         </Shape>
@@ -290,12 +272,7 @@
                         </Shape>
                         <String CONTENT="of the bride.¹"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-046_r4" HPOS="377" VPOS="2554" WIDTH="1782" HEIGHT="235" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="377 2554 2159 2554 2159 2789 377 2789"/>
-                    </Shape>
-                    <TextLine ID="mz_3-046_l36" HPOS="487" VPOS="2542" WIDTH="1670" HEIGHT="57" BASELINE="489 2581 2157 2587" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-046_l36" HPOS="487" VPOS="2542" WIDTH="1670" HEIGHT="57" BASELINE="489 2581 2157 2587" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="489 2581 487 2593 2153 2599 2157 2587 2153 2544 2106 2554 1857 2544 1855 2544 1853 2544 1833 2554 1787 2544 1785 2544 1783 2544 1744 2554 1693 2544 1691 2544 1615 2554 1599 2542 1598 2542 1596 2542 1594 2542 1535 2552 1473 2542 1471 2542 1469 2542 1434 2552 1342 2542 1340 2542 1251 2552 489 2544 489 2581"/>
                         </Shape>
@@ -322,12 +299,7 @@
                         </Shape>
                         <String CONTENT="is glad to have a husband. Then the parents have to give their consent."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-046_r5" HPOS="377" VPOS="2789" WIDTH="1782" HEIGHT="237" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="377 2789 2159 2789 2159 3026 377 3026"/>
-                    </Shape>
-                    <TextLine ID="mz_3-046_l40" HPOS="483" VPOS="2780" WIDTH="1670" HEIGHT="58" BASELINE="485 2821 2153 2827" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-046_l40" HPOS="483" VPOS="2780" WIDTH="1670" HEIGHT="58" BASELINE="485 2821 2153 2827" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="485 2821 483 2832 2149 2838 2153 2827 2153 2795 2120 2784 2118 2784 2116 2784 1907 2793 1872 2784 1870 2784 1868 2784 1867 2784 1841 2793 1806 2784 1804 2784 1802 2784 1800 2784 1759 2793 1728 2784 1726 2784 1724 2784 1627 2793 1598 2782 1596 2782 1594 2782 1533 2792 1204 2782 1202 2782 1200 2782 1179 2792 1155 2782 1153 2782 1151 2782 1054 2792 989 2780 988 2780 986 2780 956 2792 804 2792 787 2780 785 2780 783 2780 781 2780 779 2780 754 2790 738 2780 736 2780 734 2780 732 2780 730 2780 705 2790 683 2780 682 2780 680 2780 678 2780 648 2790 578 2780 576 2780 485 2788 485 2821"/>
                         </Shape>
@@ -354,19 +326,13 @@
                         </Shape>
                         <String CONTENT="popular and were repeated over and over again in many tales. It is curious"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-046_r6" HPOS="377" VPOS="3041" WIDTH="1782" HEIGHT="63" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="377 3041 2159 3041 2159 3104 377 3104"/>
-                    </Shape>
-                    <TextLine ID="mz_3-046_l44" HPOS="956" VPOS="3039" WIDTH="620" HEIGHT="55" BASELINE="958 3066 1576 3072" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-046_l44" HPOS="956" VPOS="3039" WIDTH="620" HEIGHT="55" BASELINE="958 3066 1576 3072" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="958 3066 956 3082 1028 3094 1030 3094 1574 3090 1576 3072 1574 3045 958 3039 958 3066"/>
                         </Shape>
                         <String CONTENT="¹ Bogoras, Chukchee Materials, p. 235."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

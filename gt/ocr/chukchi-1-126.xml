@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-126_r1" HPOS="600" VPOS="600" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="600 600 2378 600 2378 690 600 690"/>
-                    </Shape>
-                    <TextLine ID="mz_1-126_l1" HPOS="1183" VPOS="617" WIDTH="615" HEIGHT="54" BASELINE="1183 651 1798 651" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-126" HPOS="598" VPOS="610" WIDTH="1780" HEIGHT="2622"><TextLine ID="mz_1-126_l1" HPOS="1183" VPOS="617" WIDTH="615" HEIGHT="54" BASELINE="1183 651 1798 651" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1789 617 1767 617 1746 617 1724 617 1702 617 1681 617 1659 617 1637 617 1616 617 1594 617 1572 617 1551 617 1529 617 1507 617 1486 617 1464 617 1442 617 1421 617 1399 617 1378 617 1356 617 1334 617 1313 617 1291 617 1269 617 1248 617 1226 617 1204 617 1183 617 1183 651 1183 671 1798 671 1798 651 1798 625 1789 617"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="96"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-126_r2" HPOS="600" VPOS="715" WIDTH="1778" HEIGHT="1322" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="600 715 2378 715 2378 2037 600 2037"/>
-                    </Shape>
-                    <TextLine ID="mz_1-126_l3" HPOS="600" VPOS="714" WIDTH="1778" HEIGHT="72" BASELINE="602 762 2378 757" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-126_l3" HPOS="600" VPOS="714" WIDTH="1778" HEIGHT="72" BASELINE="602 762 2378 757" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2333 718 2326 718 2313 725 2291 716 2289 716 2274 716 2261 729 2190 729 2172 714 2170 714 2168 714 2166 714 1921 727 1886 714 1884 714 1882 714 1806 727 1787 714 1785 714 1782 714 1780 714 1778 714 1731 725 1670 714 1668 714 1666 714 1663 714 1646 729 1425 729 1356 716 1354 716 1352 716 1317 729 1209 716 1206 716 1204 716 1165 729 1115 716 1113 716 1111 716 1109 716 1068 729 1018 716 1016 716 1014 716 1012 716 1009 716 992 731 938 731 921 716 918 716 916 716 676 716 674 716 600 731 602 762 602 775 871 786 873 786 2376 773 2378 757 2376 729 2352 718 2333 718"/>
                         </Shape>
@@ -208,12 +196,7 @@
                         </Shape>
                         <String CONTENT="who cannot even count more than one or two scores."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-126_r3" HPOS="600" VPOS="2037" WIDTH="1778" HEIGHT="362" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="600 2037 2378 2037 2378 2399 600 2399"/>
-                    </Shape>
-                    <TextLine ID="mz_1-126_l25" HPOS="708" VPOS="2035" WIDTH="1666" HEIGHT="60" BASELINE="710 2078 2374 2074" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-126_l25" HPOS="708" VPOS="2035" WIDTH="1666" HEIGHT="60" BASELINE="710 2078 2374 2074" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="710 2078 710 2095 2372 2091 2374 2074 2369 2043 726 2035 723 2035 721 2035 719 2035 708 2041 710 2078"/>
                         </Shape>
@@ -254,12 +237,7 @@
                         </Shape>
                         <String CONTENT="the reindeer-breeders."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-126_r4" HPOS="600" VPOS="2399" WIDTH="1778" HEIGHT="851" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="600 2399 2378 2399 2378 3250 600 3250"/>
-                    </Shape>
-                    <TextLine ID="mz_1-126_l31" HPOS="713" VPOS="2392" WIDTH="1663" HEIGHT="61" BASELINE="713 2435 2376 2435" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-126_l31" HPOS="713" VPOS="2392" WIDTH="1663" HEIGHT="61" BASELINE="713 2435 2376 2435" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="713 2435 713 2453 2376 2453 2376 2435 2376 2405 2120 2405 2086 2392 2084 2392 2081 2392 2079 2392 2051 2403 2038 2392 2036 2392 2034 2392 2032 2392 1928 2403 1847 2392 1845 2392 1789 2403 1767 2392 1765 2392 1763 2392 1705 2403 1661 2392 1659 2392 1657 2392 1655 2392 1627 2403 1611 2392 1609 2392 1607 2392 1605 2392 1603 2392 1577 2403 1442 2392 1440 2392 1438 2392 1416 2403 1393 2392 1391 2392 1388 2392 1304 2403 1263 2392 1261 2392 1258 2392 1256 2392 1226 2403 713 2398 713 2435"/>
                         </Shape>
@@ -356,8 +334,7 @@
                         </Shape>
                         <String CONTENT="and their constant journeyings between the shores of Bering Strait. Even"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

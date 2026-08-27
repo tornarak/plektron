@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-209_r1" HPOS="447" VPOS="660" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="447 660 2225 660 2225 750 447 750"/>
-                    </Shape>
-                    <TextLine ID="mz_1-209_l1" HPOS="2122" VPOS="675" WIDTH="91" HEIGHT="65" BASELINE="2127 716 2213 710" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-209" HPOS="446" VPOS="675" WIDTH="1778" HEIGHT="2633"><TextLine ID="mz_1-209_l1" HPOS="2122" VPOS="675" WIDTH="91" HEIGHT="65" BASELINE="2127 716 2213 710" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2198 675 2122 679 2127 716 2127 734 2181 740 2183 740 2185 740 2213 725 2213 710 2207 679 2198 675"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="BOGORAS, THE CHUKCHEE."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-209_r2" HPOS="447" VPOS="775" WIDTH="1778" HEIGHT="126" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="447 775 2225 775 2225 901 447 901"/>
-                    </Shape>
-                    <TextLine ID="mz_1-209_l3" HPOS="451" VPOS="777" WIDTH="1773" HEIGHT="61" BASELINE="453 820 2224 816" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-209_l3" HPOS="451" VPOS="777" WIDTH="1773" HEIGHT="61" BASELINE="453 820 2224 816" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="453 820 453 838 2222 833 2224 816 2220 786 492 777 490 777 487 777 451 788 453 820"/>
                         </Shape>
@@ -68,23 +56,13 @@
                         </Shape>
                         <String CONTENT="the Gilyak specimen."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-209_r3" HPOS="447" VPOS="901" WIDTH="1778" HEIGHT="71" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="447 901 2225 901 2225 972 447 972"/>
-                    </Shape>
-                    <TextLine ID="mz_1-209_l5" HPOS="559" VPOS="898" WIDTH="1665" HEIGHT="56" BASELINE="561 939 2224 935" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-209_l5" HPOS="559" VPOS="898" WIDTH="1665" HEIGHT="56" BASELINE="561 939 2224 935" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="561 939 561 954 2222 954 2224 935 2220 907 576 898 574 898 572 898 570 898 559 905 561 939"/>
                         </Shape>
                         <String CONTENT="Greaves and arm-guards were also used. They were made of hide and"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-209_r4" HPOS="447" VPOS="2819" WIDTH="1778" HEIGHT="428" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="447 2819 2225 2819 2225 3247 447 3247"/>
-                    </Shape>
-                    <TextLine ID="mz_1-209_l6" HPOS="446" VPOS="2812" WIDTH="1776" HEIGHT="80" BASELINE="448 2868 2222 2849" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-209_l6" HPOS="446" VPOS="2812" WIDTH="1776" HEIGHT="80" BASELINE="448 2868 2222 2849" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2114 2814 2101 2812 2088 2812 2071 2812 2049 2812 2027 2812 2008 2812 1986 2821 1722 2812 1720 2812 1718 2812 1689 2823 1657 2812 1655 2812 1653 2812 1650 2812 1622 2827 1395 2827 1343 2816 1341 2816 1339 2816 1336 2816 1321 2827 1196 2818 1193 2818 1191 2818 1161 2829 1057 2818 1055 2818 1053 2818 1050 2818 1029 2831 674 2823 672 2823 669 2823 639 2836 490 2825 487 2825 485 2825 446 2838 448 2868 448 2883 838 2892 840 2892 1434 2875 2198 2877 2200 2877 2203 2877 2205 2877 2222 2866 2222 2849 2218 2821 2120 2814 2114 2814"/>
                         </Shape>
@@ -132,19 +110,13 @@
                         </Shape>
                         <String CONTENT="the left leg were protected by these guards."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-209_r5" HPOS="447" VPOS="3247" WIDTH="1778" HEIGHT="76" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="447 3247 2225 3247 2225 3323 447 3323"/>
-                    </Shape>
-                    <TextLine ID="mz_1-209_l13" HPOS="561" VPOS="3232" WIDTH="1661" HEIGHT="76" BASELINE="563 3284 2222 3271" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-209_l13" HPOS="561" VPOS="3232" WIDTH="1661" HEIGHT="76" BASELINE="563 3284 2222 3271" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="563 3284 563 3299 1111 3308 1113 3308 2222 3286 2222 3271 2218 3243 1997 3232 1995 3232 1891 3245 561 3247 563 3284"/>
                         </Shape>
                         <String CONTENT="The lance was used, together with the armor, as a weapon of defence."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

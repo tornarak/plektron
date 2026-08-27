@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_2-251_r1" HPOS="435" VPOS="454" WIDTH="1776" HEIGHT="86" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="435 454 2211 454 2211 540 435 540"/>
-                    </Shape>
-                    <TextLine ID="mz_2-251_l1" HPOS="2091" VPOS="468" WIDTH="90" HEIGHT="47" BASELINE="2093 503 2181 499" TAGREFS="TYPE_4">
+                <TextBlock ID="text_2-251" HPOS="421" VPOS="468" WIDTH="1776" HEIGHT="2616"><TextLine ID="mz_2-251_l1" HPOS="2091" VPOS="468" WIDTH="90" HEIGHT="47" BASELINE="2093 503 2181 499" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2170 473 2150 470 2144 468 2091 470 2093 503 2093 515 2179 513 2181 499 2175 473 2170 473"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="BOGORAS, THE CHUKCHEE."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-251_r2" HPOS="435" VPOS="564" WIDTH="1776" HEIGHT="180" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="435 564 2211 564 2211 744 435 744"/>
-                    </Shape>
-                    <TextLine ID="mz_2-251_l3" HPOS="423" VPOS="562" WIDTH="1764" HEIGHT="66" BASELINE="425 607 2187 601" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-251_l3" HPOS="423" VPOS="562" WIDTH="1764" HEIGHT="66" BASELINE="425 607 2187 601" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="425 607 425 618 703 618 728 628 730 628 732 628 783 618 832 628 834 628 924 618 1000 628 1002 628 1004 628 1006 628 1022 616 1478 626 1480 626 1482 626 1484 626 1500 616 1582 624 1584 624 1586 624 1588 624 1604 614 1876 614 1948 624 1950 624 1952 624 1978 614 2076 624 2077 624 2079 624 2109 614 2166 624 2168 624 2170 624 2172 624 2187 612 2187 601 2185 573 2144 562 2142 562 2140 562 2138 562 2109 571 1754 562 1752 562 1703 571 1647 562 1645 562 1533 573 1190 564 1188 564 1186 564 1184 564 1169 575 1008 575 520 565 519 565 517 565 515 565 501 575 464 565 462 565 460 565 458 565 423 577 425 607"/>
                         </Shape>
@@ -75,12 +63,7 @@
                         </Shape>
                         <String CONTENT="added scraper and work-bag with needle-case and thimble."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-251_r3" HPOS="435" VPOS="744" WIDTH="1776" HEIGHT="731" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="435 744 2211 744 2211 1475 435 1475"/>
-                    </Shape>
-                    <TextLine ID="mz_2-251_l6" HPOS="532" VPOS="742" WIDTH="1657" HEIGHT="58" BASELINE="534 787 2189 781" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-251_l6" HPOS="532" VPOS="742" WIDTH="1657" HEIGHT="58" BASELINE="534 787 2189 781" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="534 787 534 800 2187 795 2189 781 2187 753 2144 742 2142 742 2140 742 2138 742 2109 752 1974 742 1972 742 1970 742 1968 742 1950 753 1841 753 1790 742 1788 742 1786 742 1784 742 1768 753 1656 753 1641 742 1639 742 1637 742 1635 742 1578 753 1312 744 1310 744 1308 744 1273 753 1237 744 1235 744 1233 744 1041 755 554 746 552 746 550 746 548 746 532 753 534 787"/>
                         </Shape>
@@ -163,12 +146,7 @@
                         </Shape>
                         <String CONTENT="and even to all other settlements in the vicinity."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-251_r4" HPOS="435" VPOS="1475" WIDTH="1776" HEIGHT="897" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="435 1475 2211 1475 2211 2372 435 2372"/>
-                    </Shape>
-                    <TextLine ID="mz_2-251_l18" HPOS="532" VPOS="1460" WIDTH="1661" HEIGHT="63" BASELINE="534 1504 2193 1500" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-251_l18" HPOS="532" VPOS="1460" WIDTH="1661" HEIGHT="63" BASELINE="534 1504 2193 1500" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="534 1504 534 1515 2068 1523 2070 1523 2072 1523 2101 1513 2173 1523 2175 1523 2177 1523 2179 1523 2193 1511 2193 1500 2189 1472 1729 1460 1727 1460 1649 1470 1596 1460 1594 1460 1592 1460 1590 1460 1576 1472 1463 1472 1400 1460 1398 1460 1396 1460 1359 1472 1139 1462 1137 1462 1135 1462 1110 1472 1083 1462 1081 1462 1079 1462 1077 1462 1038 1472 987 1462 985 1462 938 1472 885 1462 883 1462 881 1462 857 1472 824 1462 822 1462 820 1462 718 1472 683 1462 681 1462 679 1462 618 1472 556 1462 554 1462 552 1462 550 1462 532 1470 534 1504"/>
                         </Shape>
@@ -272,12 +250,7 @@
                         </Shape>
                         <String CONTENT="repeated by every one of the “followers.”"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-251_r5" HPOS="435" VPOS="2372" WIDTH="1776" HEIGHT="478" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="435 2372 2211 2372 2211 2850 435 2850"/>
-                    </Shape>
-                    <TextLine ID="mz_2-251_l33" HPOS="538" VPOS="2363" WIDTH="1659" HEIGHT="57" BASELINE="540 2402 2197 2397" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-251_l33" HPOS="538" VPOS="2363" WIDTH="1659" HEIGHT="57" BASELINE="540 2402 2197 2397" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="540 2402 540 2416 2177 2420 2179 2420 2181 2420 2183 2420 2197 2410 2197 2397 2191 2363 538 2365 540 2402"/>
                         </Shape>
@@ -332,12 +305,7 @@
                         </Shape>
                         <String CONTENT="feeling against me!”."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-251_r6" HPOS="435" VPOS="2850" WIDTH="1776" HEIGHT="236" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="435 2850 2211 2850 2211 3086 435 3086"/>
-                    </Shape>
-                    <TextLine ID="mz_2-251_l41" HPOS="538" VPOS="2831" WIDTH="1655" HEIGHT="67" BASELINE="540 2882 2193 2872" TAGREFS="TYPE_4">
+<TextLine ID="mz_2-251_l41" HPOS="538" VPOS="2831" WIDTH="1655" HEIGHT="67" BASELINE="540 2882 2193 2872" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="540 2882 540 2896 1860 2898 1862 2898 1864 2898 1866 2898 1878 2888 2191 2888 2193 2872 2191 2843 2154 2831 2152 2831 2150 2831 2148 2831 2146 2831 2130 2843 1931 2843 1909 2831 1907 2831 1905 2831 1903 2831 1860 2843 1844 2833 1842 2833 1841 2833 1839 2833 1837 2833 1835 2833 1821 2843 1725 2833 1723 2833 1637 2843 1615 2833 1613 2833 1611 2833 1609 2833 1572 2843 1551 2833 1549 2833 1547 2833 1545 2833 1543 2833 1527 2845 1482 2835 1480 2835 1478 2835 1455 2845 1288 2835 1286 2835 1196 2847 1171 2837 1169 2837 1167 2837 973 2847 926 2837 924 2837 848 2849 814 2839 812 2839 810 2839 669 2849 562 2839 560 2839 558 2839 556 2839 538 2847 540 2882"/>
                         </Shape>
@@ -364,8 +332,7 @@
                         </Shape>
                         <String CONTENT="meals. Every one of the “followers” dips the bunch into the cup, and then"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

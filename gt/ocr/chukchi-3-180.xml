@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_3-180_r1" HPOS="554" VPOS="453" WIDTH="1782" HEIGHT="94" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="554 453 2336 453 2336 547 554 547"/>
-                    </Shape>
-                    <TextLine ID="mz_3-180_l1" HPOS="1130" VPOS="472" WIDTH="612" HEIGHT="53" BASELINE="1130 507 1742 504" TAGREFS="TYPE_4">
+                <TextBlock ID="text_3-180" HPOS="549" VPOS="472" WIDTH="1777" HEIGHT="2624"><TextLine ID="mz_3-180_l1" HPOS="1130" VPOS="472" WIDTH="612" HEIGHT="53" BASELINE="1130 507 1742 504" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1732 480 1718 472 1143 472 1130 496 1130 507 1130 525 1740 521 1742 504 1738 488 1732 480"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="712"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-180_r2" HPOS="554" VPOS="570" WIDTH="1782" HEIGHT="421" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="554 570 2336 570 2336 991 554 991"/>
-                    </Shape>
-                    <TextLine ID="mz_3-180_l3" HPOS="549" VPOS="572" WIDTH="1768" HEIGHT="60" BASELINE="551 617 2317 613" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-180_l3" HPOS="549" VPOS="572" WIDTH="1768" HEIGHT="60" BASELINE="551 617 2317 613" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2303 583 2284 583 2264 583 2245 581 2225 581 2206 581 2186 581 2176 580 2174 581 2159 580 2147 580 2128 580 2108 580 2089 578 2083 578 2075 583 1857 583 1713 572 1711 572 1709 572 1681 581 1635 572 1633 572 1566 581 1469 572 1467 572 1395 583 1373 574 1371 574 1370 574 1368 574 1334 583 1313 574 1311 574 1309 574 1307 574 1270 583 1167 574 1165 574 1163 574 1141 585 1019 585 986 574 984 574 982 574 980 574 947 583 896 574 894 574 892 574 853 583 777 574 775 574 773 574 732 583 685 574 683 574 549 585 551 617 551 632 2315 632 2317 613 2315 583 2303 583"/>
                         </Shape>
@@ -103,12 +91,7 @@
                         </Shape>
                         <String CONTENT="at present."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-180_r3" HPOS="554" VPOS="991" WIDTH="1782" HEIGHT="791" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="554 991 2336 991 2336 1782 554 1782"/>
-                    </Shape>
-                    <TextLine ID="mz_3-180_l10" HPOS="656" VPOS="995" WIDTH="1663" HEIGHT="56" BASELINE="658 1036 2319 1032" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-180_l10" HPOS="656" VPOS="995" WIDTH="1663" HEIGHT="56" BASELINE="658 1036 2319 1032" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="658 1036 658 1051 2317 1051 2319 1032 2315 1002 674 995 672 995 670 995 668 995 656 1000 658 1036"/>
                         </Shape>
@@ -198,12 +181,7 @@
                         </Shape>
                         <String CONTENT="hostages, by torturing on the rack, and by executions."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-180_r4" HPOS="554" VPOS="1782" WIDTH="1782" HEIGHT="478" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="554 1782 2336 1782 2336 2260 554 2260"/>
-                    </Shape>
-                    <TextLine ID="mz_3-180_l23" HPOS="660" VPOS="1776" WIDTH="1663" HEIGHT="53" BASELINE="662 1815 2323 1811" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-180_l23" HPOS="660" VPOS="1776" WIDTH="1663" HEIGHT="53" BASELINE="662 1815 2323 1811" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="662 1815 662 1829 2321 1827 2323 1811 2317 1776 660 1778 662 1815"/>
                         </Shape>
@@ -258,12 +236,7 @@
                         </Shape>
                         <String CONTENT="of all."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-180_r5" HPOS="554" VPOS="2260" WIDTH="1782" HEIGHT="844" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="554 2260 2336 2260 2336 3104 554 3104"/>
-                    </Shape>
-                    <TextLine ID="mz_3-180_l31" HPOS="662" VPOS="2252" WIDTH="1661" HEIGHT="56" BASELINE="662 2293 2323 2293" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-180_l31" HPOS="662" VPOS="2252" WIDTH="1661" HEIGHT="56" BASELINE="662 2293 2323 2293" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="662 2293 662 2308 2323 2308 2323 2293 2323 2263 2231 2252 2229 2252 1038 2261 989 2252 988 2252 986 2252 984 2252 970 2263 814 2263 685 2252 683 2252 682 2252 662 2261 662 2293"/>
                         </Shape>
@@ -360,8 +333,7 @@
                         </Shape>
                         <String CONTENT="pud of flour. The total expenses of the State for administration thus reach"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

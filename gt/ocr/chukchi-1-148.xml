@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-148_r1" HPOS="601" VPOS="600" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="601 600 2379 600 2379 690 601 690"/>
-                    </Shape>
-                    <TextLine ID="mz_1-148_l1" HPOS="1176" VPOS="612" WIDTH="619" HEIGHT="57" BASELINE="1178 649 1795 645" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-148" HPOS="594" VPOS="612" WIDTH="1782" HEIGHT="2626"><TextLine ID="mz_1-148_l1" HPOS="1176" VPOS="612" WIDTH="619" HEIGHT="57" BASELINE="1178 649 1795 645" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1782 617 1772 612 1180 615 1176 619 1178 649 1178 669 1793 664 1795 645 1789 621 1782 617"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="112"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-148_r2" HPOS="601" VPOS="715" WIDTH="1778" HEIGHT="546" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="601 715 2379 715 2379 1261 601 1261"/>
-                    </Shape>
-                    <TextLine ID="mz_1-148_l3" HPOS="596" VPOS="716" WIDTH="1778" HEIGHT="67" BASELINE="598 760 2374 755" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-148_l3" HPOS="596" VPOS="716" WIDTH="1778" HEIGHT="67" BASELINE="598 760 2374 755" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="598 760 598 773 1035 783 1038 783 1040 783 1042 783 1057 773 1380 773 1481 783 1484 783 1486 783 1488 783 1507 770 1581 781 1583 781 1698 770 2294 781 2296 781 2372 768 2374 755 2369 725 624 716 622 716 620 716 596 725 598 760"/>
                         </Shape>
@@ -117,12 +105,7 @@
                         </Shape>
                         <String CONTENT="word of command, to stop the team."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-148_r3" HPOS="601" VPOS="1261" WIDTH="1778" HEIGHT="601" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="601 1261 2379 1261 2379 1862 601 1862"/>
-                    </Shape>
-                    <TextLine ID="mz_1-148_l12" HPOS="710" VPOS="1258" WIDTH="1666" HEIGHT="67" BASELINE="713 1299 2376 1292" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-148_l12" HPOS="710" VPOS="1258" WIDTH="1666" HEIGHT="67" BASELINE="713 1299 2376 1292" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="713 1299 713 1312 1022 1325 1025 1325 1027 1325 1029 1325 1044 1314 1746 1322 1748 1322 1750 1322 1752 1322 1767 1312 2285 1320 2287 1320 2289 1320 2313 1309 2352 1320 2354 1320 2356 1320 2359 1320 2361 1320 2376 1307 2376 1292 2372 1258 710 1258 713 1299"/>
                         </Shape>
@@ -191,12 +174,7 @@
                         </Shape>
                         <String CONTENT="a strap, and avoid throwing it at the dogs."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-148_r4" HPOS="601" VPOS="1862" WIDTH="1778" HEIGHT="1315" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="601 1862 2379 1862 2379 3177 601 3177"/>
-                    </Shape>
-                    <TextLine ID="mz_1-148_l22" HPOS="1429" VPOS="1851" WIDTH="945" HEIGHT="63" BASELINE="1432 1898 2374 1894" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-148_l22" HPOS="1429" VPOS="1851" WIDTH="945" HEIGHT="63" BASELINE="1432 1898 2374 1894" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1432 1898 1432 1914 2372 1909 2374 1894 2369 1864 2231 1851 2229 1851 2226 1851 2224 1851 2224 1853 2213 1864 2140 1864 2120 1851 2118 1851 2116 1851 2114 1851 2112 1851 2090 1862 2068 1851 2066 1851 2064 1851 2062 1851 2036 1862 1986 1851 1984 1851 1925 1862 1904 1851 1902 1851 1899 1851 1897 1851 1895 1851 1880 1864 1516 1853 1514 1853 1512 1853 1510 1853 1494 1864 1440 1853 1438 1853 1436 1853 1434 1853 1434 1855 1432 1855 1429 1855 1432 1898"/>
                         </Shape>
@@ -349,19 +327,13 @@
                         </Shape>
                         <String CONTENT="this, their collar-straps are fastened with a thin line to the next loop-hole ahead."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-148_r5" HPOS="601" VPOS="3177" WIDTH="1778" HEIGHT="73" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="601 3177 2379 3177 2379 3250 601 3250"/>
-                    </Shape>
-                    <TextLine ID="mz_1-148_l44" HPOS="708" VPOS="3167" WIDTH="1661" HEIGHT="71" BASELINE="710 3215 2369 3208" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-148_l44" HPOS="708" VPOS="3167" WIDTH="1661" HEIGHT="71" BASELINE="710 3215 2369 3208" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="708 3210 710 3215 710 3232 2350 3238 2352 3238 2354 3238 2356 3238 2369 3228 2369 3208 2365 3180 2125 3167 2122 3167 2120 3167 2118 3167 2105 3180 1984 3180 1964 3167 1962 3167 1960 3167 1958 3167 1956 3167 1954 3167 1938 3178 1793 3169 1791 3169 1789 3169 1754 3180 1731 3169 1728 3169 1726 3169 1724 3169 1705 3180 1683 3169 1681 3169 1679 3169 1676 3169 1674 3169 1659 3182 1536 3182 1505 3169 1503 3169 1501 3169 1429 3180 1395 3169 1393 3169 1391 3169 1326 3180 1297 3169 1295 3169 1293 3169 1291 3169 1289 3169 1271 3180 840 3171 838 3171 836 3171 801 3182 723 3171 708 3210"/>
                         </Shape>
                         <String CONTENT="The driving of East Siberian dogs is very fatiguing, and more like a race"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

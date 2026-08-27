@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-085_r1" HPOS="379" VPOS="608" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="379 608 2157 608 2157 698 379 698"/>
-                    </Shape>
-                    <TextLine ID="mz_1-085_l1" HPOS="957" VPOS="617" WIDTH="620" HEIGHT="52" BASELINE="957 649 1577 649" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-085" HPOS="377" VPOS="617" WIDTH="1780" HEIGHT="2619"><TextLine ID="mz_1-085_l1" HPOS="957" VPOS="617" WIDTH="620" HEIGHT="52" BASELINE="957 649 1577 649" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1564 617 957 617 957 649 957 669 1577 669 1577 649 1575 638 1564 617"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="59"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-085_r2" HPOS="379" VPOS="723" WIDTH="1778" HEIGHT="243" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="379 723 2157 723 2157 966 379 966"/>
-                    </Shape>
-                    <TextLine ID="mz_1-085_l3" HPOS="377" VPOS="716" WIDTH="1774" HEIGHT="61" BASELINE="379 762 2151 755" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-085_l3" HPOS="377" VPOS="716" WIDTH="1774" HEIGHT="61" BASELINE="379 762 2151 755" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="379 762 379 777 2148 770 2151 755 2146 725 968 716 966 716 377 729 379 762"/>
                         </Shape>
@@ -82,12 +70,7 @@
                         </Shape>
                         <String CONTENT="still living, is even one of the few Russian shamans of the Lower Kolyma."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-085_r3" HPOS="379" VPOS="966" WIDTH="1778" HEIGHT="897" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="379 966 2157 966 2157 1863 379 1863"/>
-                    </Shape>
-                    <TextLine ID="mz_1-085_l7" HPOS="487" VPOS="954" WIDTH="1664" HEIGHT="72" BASELINE="490 1000 2151 996" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-085_l7" HPOS="487" VPOS="954" WIDTH="1664" HEIGHT="72" BASELINE="490 1000 2151 996" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="490 1000 490 1015 710 1026 713 1026 765 1015 1128 1015 1245 1026 1248 1026 1250 1026 1293 1015 1828 1024 1830 1024 2040 1013 2125 1024 2127 1024 2129 1024 2131 1024 2151 1011 2151 996 2146 967 2071 954 2068 954 2066 954 2040 965 2006 954 2003 954 2001 954 1923 967 1442 967 1419 954 1416 954 1414 954 1315 967 1191 957 1189 957 1126 967 1081 957 1079 957 1076 957 1022 967 994 957 992 957 990 957 988 957 947 967 903 957 901 957 899 957 897 957 866 967 845 957 843 957 840 957 838 957 795 967 739 957 736 957 487 963 490 1000"/>
                         </Shape>
@@ -191,12 +174,7 @@
                         </Shape>
                         <String CONTENT="Reindeer Chukchee, and even some of the Kerek, visit the port."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-085_r4" HPOS="379" VPOS="1863" WIDTH="1778" HEIGHT="179" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="379 1863 2157 1863 2157 2042 379 2042"/>
-                    </Shape>
-                    <TextLine ID="mz_1-085_l22" HPOS="492" VPOS="1853" WIDTH="1663" HEIGHT="63" BASELINE="494 1898 2155 1892" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-085_l22" HPOS="492" VPOS="1853" WIDTH="1663" HEIGHT="63" BASELINE="494 1898 2155 1892" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="494 1898 494 1916 2153 1909 2155 1892 2151 1864 1700 1853 1698 1853 1596 1866 492 1866 494 1898"/>
                         </Shape>
@@ -216,12 +194,7 @@
                         </Shape>
                         <String CONTENT="known to all tribes of northeastern Siberia."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-085_r5" HPOS="379" VPOS="2042" WIDTH="1778" HEIGHT="598" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="379 2042 2157 2042 2157 2640 379 2640"/>
-                    </Shape>
-                    <TextLine ID="mz_1-085_l25" HPOS="487" VPOS="2039" WIDTH="1670" HEIGHT="56" BASELINE="490 2080 2157 2074" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-085_l25" HPOS="487" VPOS="2039" WIDTH="1670" HEIGHT="56" BASELINE="490 2080 2157 2074" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="490 2080 490 2095 2155 2089 2157 2074 2153 2041 500 2039 498 2039 496 2039 494 2039 494 2041 487 2046 490 2080"/>
                         </Shape>
@@ -290,12 +263,7 @@
                         </Shape>
                         <String CONTENT="sooty lungs, and was acquitted of the charge."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-085_r6" HPOS="379" VPOS="2640" WIDTH="1778" HEIGHT="184" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="379 2640 2157 2640 2157 2824 379 2824"/>
-                    </Shape>
-                    <TextLine ID="mz_1-085_l35" HPOS="498" VPOS="2641" WIDTH="1657" HEIGHT="56" BASELINE="500 2680 2155 2671" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-085_l35" HPOS="498" VPOS="2641" WIDTH="1657" HEIGHT="56" BASELINE="500 2680 2155 2671" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="500 2680 500 2697 2153 2689 2155 2671 2151 2641 498 2641 500 2680"/>
                         </Shape>
@@ -315,12 +283,7 @@
                         </Shape>
                         <String CONTENT="continues as follows: —"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-085_r7" HPOS="379" VPOS="2824" WIDTH="1778" HEIGHT="234" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="379 2824 2157 2824 2157 3058 379 3058"/>
-                    </Shape>
-                    <TextLine ID="mz_1-085_l38" HPOS="498" VPOS="2814" WIDTH="1659" HEIGHT="61" BASELINE="500 2857 2157 2853" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-085_l38" HPOS="498" VPOS="2814" WIDTH="1659" HEIGHT="61" BASELINE="500 2857 2157 2853" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="500 2857 500 2875 2155 2875 2157 2853 2153 2825 1328 2814 1326 2814 1323 2814 1295 2827 498 2827 500 2857"/>
                         </Shape>
@@ -347,12 +310,7 @@
                         </Shape>
                         <String CONTENT="have a longing for tobacco, and pay for it with large fish and otters."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-085_r8" HPOS="379" VPOS="3058" WIDTH="1778" HEIGHT="189" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="379 3058 2157 3058 2157 3247 379 3247"/>
-                    </Shape>
-                    <TextLine ID="mz_1-085_l42" HPOS="505" VPOS="3063" WIDTH="1652" HEIGHT="50" BASELINE="505 3093 2157 3093" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-085_l42" HPOS="505" VPOS="3063" WIDTH="1652" HEIGHT="50" BASELINE="505 3093 2157 3093" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="505 3093 505 3113 2157 3113 2157 3093 2157 3065 505 3063 505 3093"/>
                         </Shape>
@@ -372,8 +330,7 @@
                         </Shape>
                         <String CONTENT="and buy tobacco with the skins of the lynx and of the muskrat."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

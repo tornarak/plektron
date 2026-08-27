@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Other"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_3-189_r1" HPOS="428" VPOS="465" WIDTH="1782" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="428 465 2210 465 2210 555 428 555"/>
-                    </Shape>
-                    <TextLine ID="mz_3-189_l1" HPOS="2100" VPOS="490" WIDTH="92" HEIGHT="51" BASELINE="2102 525 2192 519" TAGREFS="TYPE_5">
+                <TextBlock ID="text_3-189" HPOS="424" VPOS="488" WIDTH="1782" HEIGHT="2623"><TextLine ID="mz_3-189_l1" HPOS="2100" VPOS="490" WIDTH="92" HEIGHT="51" BASELINE="2102 525 2192 519" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="2178 494 2157 492 2153 490 2110 492 2100 509 2102 525 2102 541 2192 535 2192 519 2186 496 2178 494"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="BOGORAS, THE CHUKCHEE."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-189_r2" HPOS="428" VPOS="584" WIDTH="1782" HEIGHT="1558" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="428 584 2210 584 2210 2142 428 2142"/>
-                    </Shape>
-                    <TextLine ID="mz_3-189_l3" HPOS="430" VPOS="591" WIDTH="1766" HEIGHT="45" BASELINE="430 620 2196 620" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-189_l3" HPOS="430" VPOS="591" WIDTH="1766" HEIGHT="45" BASELINE="430 620 2196 620" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="450 591 430 591 430 620 430 636 2194 636 2196 620 2194 591 469 591 450 591"/>
                         </Shape>
@@ -286,12 +273,7 @@
                         </Shape>
                         <String CONTENT="men relate a part of their adventures.”"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-189_r3" HPOS="428" VPOS="2166" WIDTH="1782" HEIGHT="852" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="428 2166 2210 2166 2210 3018 428 3018"/>
-                    </Shape>
-                    <TextLine ID="mz_3-189_l36" HPOS="531" VPOS="2170" WIDTH="1663" HEIGHT="54" BASELINE="533 2209 2194 2205" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-189_l36" HPOS="531" VPOS="2170" WIDTH="1663" HEIGHT="54" BASELINE="533 2209 2194 2205" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="533 2209 533 2224 2192 2224 2194 2205 2190 2178 549 2170 547 2170 545 2170 543 2170 531 2176 533 2209"/>
                         </Shape>
@@ -388,19 +370,13 @@
                         </Shape>
                         <String CONTENT="quite considerable. Still for such things as illegal children, the Russians had"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-189_r4" HPOS="428" VPOS="3059" WIDTH="1782" HEIGHT="68" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="428 3059 2210 3059 2210 3127 428 3127"/>
-                    </Shape>
-                    <TextLine ID="mz_3-189_l50" HPOS="855" VPOS="3059" WIDTH="910" HEIGHT="52" BASELINE="857 3086 1765 3090" TAGREFS="TYPE_5">
+<TextLine ID="mz_3-189_l50" HPOS="855" VPOS="3059" WIDTH="910" HEIGHT="52" BASELINE="857 3086 1765 3090" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="857 3086 855 3101 882 3111 884 3111 886 3111 1763 3103 1765 3090 1763 3062 857 3059 857 3086"/>
                         </Shape>
                         <String CONTENT="¹ Jochelson, The Koryak, Vol. VI of this series, p. 736."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

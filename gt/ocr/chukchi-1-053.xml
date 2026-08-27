@@ -23,33 +23,20 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Other"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-053_r1" HPOS="340" VPOS="595" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="340 595 2118 595 2118 685 340 685"/>
-                    </Shape>
-                    <TextLine ID="mz_1-053_l1" HPOS="908" VPOS="602" WIDTH="625" HEIGHT="56" BASELINE="910 640 1533 636" TAGREFS="TYPE_5">
+                <TextBlock ID="text_1-053" HPOS="336" VPOS="602" WIDTH="1771" HEIGHT="2636"><TextLine ID="mz_1-053_l1" HPOS="908" VPOS="602" WIDTH="625" HEIGHT="56" BASELINE="910 640 1533 636" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1518 602 908 604 910 640 910 658 1531 653 1533 636 1527 606 1518 602"/>
                         </Shape>
                         <String CONTENT="BOGORAS, THE CHUKCHEE."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-053_r2" HPOS="340" VPOS="710" WIDTH="1778" HEIGHT="2255" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="340 710 2118 710 2118 2965 340 2965"/>
-                    </Shape>
-                    <TextLine ID="mz_1-053_l2" HPOS="338" VPOS="705" WIDTH="1769" HEIGHT="50" BASELINE="340 738 2107 742" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-053_l2" HPOS="338" VPOS="705" WIDTH="1769" HEIGHT="50" BASELINE="340 738 2107 742" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="340 738 338 751 2103 755 2107 742 2105 710 340 705 340 738"/>
                         </Shape>
@@ -328,12 +315,7 @@
                         </Shape>
                         <String CONTENT="Three different places on Cape Erri: 6 houses (Register, 2 houses, 10 inhabitants; Nordquist, 13 houses)."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-053_r3" HPOS="340" VPOS="2990" WIDTH="1778" HEIGHT="143" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="340 2990 2118 2990 2118 3133 340 3133"/>
-                    </Shape>
-                    <TextLine ID="mz_1-053_l42" HPOS="444" VPOS="2985" WIDTH="1661" HEIGHT="69" BASELINE="446 3037 2105 3024" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-053_l42" HPOS="444" VPOS="2985" WIDTH="1661" HEIGHT="69" BASELINE="446 3037 2105 3024" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="446 3037 446 3054 2103 3041 2105 3024 2101 2996 1906 2985 1904 2985 1817 2996 1598 2987 1596 2987 1447 3000 444 3000 446 3037"/>
                         </Shape>
@@ -346,12 +328,7 @@
                         </Shape>
                         <String CONTENT="the Chukchee on the Pacific shore, 1100; for the Eskimo, 1200;¹ for the"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-053_r4" HPOS="340" VPOS="3150" WIDTH="1778" HEIGHT="100" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="340 3150 2118 3150 2118 3250 340 3250"/>
-                    </Shape>
-                    <TextLine ID="mz_1-053_l44" HPOS="448" VPOS="3141" WIDTH="1659" HEIGHT="52" BASELINE="451 3174 2107 3167" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-053_l44" HPOS="448" VPOS="3141" WIDTH="1659" HEIGHT="52" BASELINE="451 3174 2107 3167" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="451 3174 451 3193 2107 3189 2107 3167 2101 3141 448 3145 451 3174"/>
                         </Shape>
@@ -364,8 +341,7 @@
                         </Shape>
                         <String CONTENT="so that the whole number of Eskimo in Asia, in round numbers, is 1600."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

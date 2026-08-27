@@ -23,23 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="QuireMarksZone"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_6" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-241_r1" HPOS="350" VPOS="616" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_5">
-<Shape>
-                        <Polygon POINTS="350 616 2128 616 2128 706 350 706"/>
-                    </Shape>
-                    <TextLine ID="mz_1-241_l1" HPOS="925" VPOS="632" WIDTH="621" HEIGHT="54" BASELINE="925 666 1546 666" TAGREFS="TYPE_6">
+                <TextBlock ID="text_1-241" HPOS="353" VPOS="632" WIDTH="1782" HEIGHT="2697"><TextLine ID="mz_1-241_l1" HPOS="925" VPOS="632" WIDTH="621" HEIGHT="54" BASELINE="925 666 1546 666" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="1533 632 925 632 925 666 925 686 1546 686 1546 666 1546 640 1533 632"/>
                         </Shape>
@@ -52,12 +43,7 @@
                         </Shape>
                         <String CONTENT="185"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-241_r2" HPOS="350" VPOS="731" WIDTH="1778" HEIGHT="1855" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="350 731 2128 731 2128 2586 350 2586"/>
-                    </Shape>
-                    <TextLine ID="mz_1-241_l3" HPOS="353" VPOS="740" WIDTH="1767" HEIGHT="65" BASELINE="355 775 2120 770" TAGREFS="TYPE_6">
+<TextLine ID="mz_1-241_l3" HPOS="353" VPOS="740" WIDTH="1767" HEIGHT="65" BASELINE="355 775 2120 770" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="2107 764 2103 740 357 740 353 742 355 775 355 792 624 803 626 803 628 803 630 803 646 792 806 792 888 803 890 803 892 803 912 792 925 803 927 803 929 803 931 805 1027 805 1027 803 1029 803 1061 792 1232 803 1235 803 1237 803 1239 803 1263 790 1666 790 1713 801 1715 801 1718 801 1789 790 1817 801 1819 801 1821 801 2118 790 2120 770 2116 742 2112 740 2107 764"/>
                         </Shape>
@@ -273,12 +259,7 @@
                         </Shape>
                         <String CONTENT="even to the natives."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-241_r3" HPOS="350" VPOS="2586" WIDTH="1778" HEIGHT="610" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="350 2586 2128 2586 2128 3196 350 3196"/>
-                    </Shape>
-                    <TextLine ID="mz_1-241_l34" HPOS="470" VPOS="2593" WIDTH="1663" HEIGHT="59" BASELINE="472 2630 2133 2624" TAGREFS="TYPE_6">
+<TextLine ID="mz_1-241_l34" HPOS="470" VPOS="2593" WIDTH="1663" HEIGHT="59" BASELINE="472 2630 2133 2624" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="472 2630 472 2645 1577 2652 1579 2652 1581 2652 1583 2652 1603 2641 2131 2641 2133 2624 2129 2593 470 2593 472 2630"/>
                         </Shape>
@@ -347,30 +328,19 @@
                         </Shape>
                         <String CONTENT="give a better support to the oblique position of the lamp.¹"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-241_r4" HPOS="350" VPOS="3209" WIDTH="1778" HEIGHT="52" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="350 3209 2128 3209 2128 3261 350 3261"/>
-                    </Shape>
-                    <TextLine ID="mz_1-241_l44" HPOS="756" VPOS="3204" WIDTH="990" HEIGHT="50" BASELINE="758 3232 1746 3236" TAGREFS="TYPE_6">
+<TextLine ID="mz_1-241_l44" HPOS="756" VPOS="3204" WIDTH="990" HEIGHT="50" BASELINE="758 3232 1746 3236" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="758 3232 756 3249 1741 3254 1746 3236 1744 3208 758 3204 758 3232"/>
                         </Shape>
                         <String CONTENT="¹ Compare the illustration in Hough, Lamp, Plate 15, Fig. 3."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-241_r5" HPOS="350" VPOS="3274" WIDTH="1778" HEIGHT="79" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="350 3274 2128 3274 2128 3353 350 3353"/>
-                    </Shape>
-                    <TextLine ID="mz_1-241_l45" HPOS="364" VPOS="3280" WIDTH="691" HEIGHT="49" BASELINE="366 3312 1055 3306" TAGREFS="TYPE_6">
+<TextLine ID="mz_1-241_l45" HPOS="364" VPOS="3280" WIDTH="691" HEIGHT="49" BASELINE="366 3312 1055 3306" TAGREFS="TYPE_6">
                         <Shape>
                             <Polygon POINTS="366 3312 366 3329 1053 3327 1055 3306 1048 3280 364 3284 366 3312"/>
                         </Shape>
                         <String CONTENT="24—JESUP NORTH PACIFIC EXPED., VOL. VII."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

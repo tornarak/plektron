@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_3-024_r1" HPOS="385" VPOS="453" WIDTH="1782" HEIGHT="102" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="385 453 2167 453 2167 555 385 555"/>
-                    </Shape>
-                    <TextLine ID="mz_3-024_l1" HPOS="958" VPOS="472" WIDTH="616" HEIGHT="53" BASELINE="960 505 1574 509" TAGREFS="TYPE_4">
+                <TextBlock ID="text_3-024" HPOS="378" VPOS="470" WIDTH="1777" HEIGHT="2639"><TextLine ID="mz_3-024_l1" HPOS="958" VPOS="472" WIDTH="616" HEIGHT="53" BASELINE="960 505 1574 509" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1564 480 1557 474 986 472 980 474 960 480 960 505 958 521 1570 525 1574 509 1570 490 1564 480"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="558"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-024_r2" HPOS="385" VPOS="578" WIDTH="1782" HEIGHT="2406" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="385 578 2167 578 2167 2984 385 2984"/>
-                    </Shape>
-                    <TextLine ID="mz_3-024_l3" HPOS="378" VPOS="574" WIDTH="1771" HEIGHT="68" BASELINE="379 615 2149 619" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-024_l3" HPOS="378" VPOS="574" WIDTH="1771" HEIGHT="68" BASELINE="379 615 2149 619" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2132 583 2112 583 2093 583 2079 581 2069 585 1691 576 1689 576 1687 576 1646 585 1609 576 1607 576 1605 576 1510 585 1481 576 1479 576 1477 576 1475 576 1453 585 1364 576 1362 576 1274 585 1239 574 1237 574 1235 574 1165 583 1124 574 1122 574 1120 574 1118 574 1091 585 876 585 853 574 851 574 849 574 847 574 812 583 787 574 785 574 783 574 781 574 758 583 635 574 633 574 379 581 379 615 378 630 389 638 391 638 393 638 395 638 567 630 658 640 660 640 662 640 691 630 715 640 717 640 719 640 1180 630 1525 630 1551 642 1553 642 1555 642 2147 630 2149 619 2149 587 2135 583 2132 583"/>
                         </Shape>
@@ -334,12 +322,7 @@
                         </Shape>
                         <String CONTENT="of whalebone."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-024_r3" HPOS="385" VPOS="3018" WIDTH="1782" HEIGHT="109" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="385 3018 2167 3018 2167 3127 385 3127"/>
-                    </Shape>
-                    <TextLine ID="mz_3-024_l43" HPOS="496" VPOS="3023" WIDTH="1659" HEIGHT="45" BASELINE="496 3049 2155 3049" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-024_l43" HPOS="496" VPOS="3023" WIDTH="1659" HEIGHT="45" BASELINE="496 3049 2155 3049" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2153 3049 2149 3023 496 3023 496 3049 496 3068 2155 3068 2155 3049 2155 3023 2153 3023 2153 3049"/>
                         </Shape>
@@ -352,8 +335,7 @@
                         </Shape>
                         <String CONTENT="² Chukchee woman (cf. p. 12)."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

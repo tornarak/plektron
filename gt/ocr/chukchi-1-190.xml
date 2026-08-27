@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-190_r1" HPOS="558" VPOS="584" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="558 584 2336 584 2336 674 558 674"/>
-                    </Shape>
-                    <TextLine ID="mz_1-190_l1" HPOS="1133" VPOS="599" WIDTH="617" HEIGHT="54" BASELINE="1135 634 1750 630" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-190" HPOS="552" VPOS="595" WIDTH="1778" HEIGHT="2626"><TextLine ID="mz_1-190_l1" HPOS="1133" VPOS="599" WIDTH="617" HEIGHT="54" BASELINE="1135 634 1750 630" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1739 599 1718 599 1696 599 1674 599 1653 599 1631 599 1609 599 1588 599 1566 599 1544 599 1523 599 1501 599 1479 599 1458 599 1436 599 1133 599 1135 634 1135 653 1748 649 1750 630 1746 608 1739 599"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="148"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-190_r2" HPOS="558" VPOS="699" WIDTH="1778" HEIGHT="251" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="558 699 2336 699 2336 950 558 950"/>
-                    </Shape>
-                    <TextLine ID="mz_1-190_l3" HPOS="555" VPOS="695" WIDTH="1771" HEIGHT="65" BASELINE="557 744 2326 738" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-190_l3" HPOS="555" VPOS="695" WIDTH="1771" HEIGHT="65" BASELINE="557 744 2326 738" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2315 708 2220 699 2200 699 2179 697 2166 697 2107 708 2086 695 2084 695 2081 695 2079 695 2077 695 2049 708 2021 695 2019 695 2016 695 2014 695 1988 708 1800 708 1744 695 1741 695 1739 695 1670 710 1341 697 1339 697 1336 697 1282 710 1245 697 1243 697 1241 697 1239 697 1193 710 1148 697 1146 697 1144 697 1141 697 1081 712 1066 699 1063 699 1061 699 1059 699 715 712 598 699 596 699 594 699 555 714 555 716 557 744 557 760 2324 755 2326 738 2322 716 2315 708"/>
                         </Shape>
@@ -82,12 +70,7 @@
                         </Shape>
                         <String CONTENT="a hole on the upper edge (Fig. 62, b), are also used for the purpose."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-190_r3" HPOS="558" VPOS="2009" WIDTH="1778" HEIGHT="609" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="558 2009 2336 2009 2336 2618 558 2618"/>
-                    </Shape>
-                    <TextLine ID="mz_1-190_l7" HPOS="663" VPOS="2013" WIDTH="1665" HEIGHT="61" BASELINE="665 2059 2328 2052" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-190_l7" HPOS="663" VPOS="2013" WIDTH="1665" HEIGHT="61" BASELINE="665 2059 2328 2052" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2027 2015 2006 2015 1984 2015 1962 2015 1941 2015 1919 2013 1897 2013 1876 2013 1854 2013 1832 2013 1817 2013 1689 2022 1232 2013 1230 2013 1228 2013 1196 2026 663 2026 665 2059 665 2074 2326 2067 2328 2052 2311 2020 2038 2015 2027 2015"/>
                         </Shape>
@@ -156,12 +139,7 @@
                         </Shape>
                         <String CONTENT="catch the fish. These methods are used chiefly by the Reindeer people."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-190_r4" HPOS="558" VPOS="2618" WIDTH="1778" HEIGHT="480" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="558 2618 2336 2618 2336 3098 558 3098"/>
-                    </Shape>
-                    <TextLine ID="mz_1-190_l17" HPOS="667" VPOS="2619" WIDTH="1657" HEIGHT="57" BASELINE="669 2658 2324 2652" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-190_l17" HPOS="667" VPOS="2619" WIDTH="1657" HEIGHT="57" BASELINE="669 2658 2324 2652" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="669 2658 669 2673 2320 2676 2324 2652 2320 2621 667 2619 669 2658"/>
                         </Shape>
@@ -216,12 +194,7 @@
                         </Shape>
                         <String CONTENT="as Coregonus omul, C. leucichtys, C. maksun, C. nasutus, etc."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-190_r5" HPOS="558" VPOS="3098" WIDTH="1778" HEIGHT="136" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="558 3098 2336 3098 2336 3234 558 3234"/>
-                    </Shape>
-                    <TextLine ID="mz_1-190_l25" HPOS="661" VPOS="3102" WIDTH="1665" HEIGHT="50" BASELINE="663 3137 2326 3130" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-190_l25" HPOS="661" VPOS="3102" WIDTH="1665" HEIGHT="50" BASELINE="663 3137 2326 3130" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="663 3137 663 3152 2324 3145 2326 3130 2322 3102 661 3102 663 3137"/>
                         </Shape>
@@ -234,8 +207,7 @@
                         </Shape>
                         <String CONTENT="ice-picks having stout iron points (formerly the points were made of bone)."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

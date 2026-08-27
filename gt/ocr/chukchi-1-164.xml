@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-164_r1" HPOS="591" VPOS="600" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="591 600 2369 600 2369 690 591 690"/>
-                    </Shape>
-                    <TextLine ID="mz_1-164_l1" HPOS="1163" VPOS="612" WIDTH="617" HEIGHT="52" BASELINE="1165 645 1780 649" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-164" HPOS="589" VPOS="612" WIDTH="1776" HEIGHT="2626"><TextLine ID="mz_1-164_l1" HPOS="1163" VPOS="612" WIDTH="617" HEIGHT="52" BASELINE="1165 645 1780 649" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1772 623 1759 612 1183 612 1167 630 1165 645 1163 660 1776 664 1780 649 1776 630 1772 623"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="124"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-164_r2" HPOS="591" VPOS="715" WIDTH="1778" HEIGHT="1021" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="591 715 2369 715 2369 1736 591 1736"/>
-                    </Shape>
-                    <TextLine ID="mz_1-164_l3" HPOS="702" VPOS="714" WIDTH="1663" HEIGHT="65" BASELINE="704 753 2365 757" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-164_l3" HPOS="702" VPOS="714" WIDTH="1663" HEIGHT="65" BASELINE="704 753 2365 757" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2348 727 2326 727 2304 725 2283 725 2261 723 2239 723 2218 723 2209 721 704 714 704 753 702 766 767 779 769 779 2363 770 2365 757 2363 727 2348 727"/>
                         </Shape>
@@ -173,12 +161,7 @@
                         </Shape>
                         <String CONTENT="old, now unused weapon (Fig. 42, a, b)."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-164_r3" HPOS="591" VPOS="1736" WIDTH="1778" HEIGHT="546" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="591 1736 2369 1736 2369 2282 591 2282"/>
-                    </Shape>
-                    <TextLine ID="mz_1-164_l20" HPOS="1046" VPOS="1734" WIDTH="1313" HEIGHT="60" BASELINE="1046 1775 2359 1775" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-164_l20" HPOS="1046" VPOS="1734" WIDTH="1313" HEIGHT="60" BASELINE="1046 1775 2359 1775" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1046 1775 1046 1790 2356 1794 2359 1775 2359 1747 2270 1734 2268 1734 2198 1745 2140 1734 2138 1734 2135 1734 2101 1747 1765 1747 1754 1736 1754 1734 1752 1734 1750 1734 1748 1734 1746 1734 1713 1745 1668 1734 1666 1734 1663 1734 1598 1745 1583 1734 1581 1734 1579 1734 1577 1734 1499 1745 1466 1734 1464 1734 1462 1734 1460 1734 1436 1745 1406 1734 1403 1734 1401 1734 1399 1734 1369 1745 1358 1736 1358 1734 1356 1734 1354 1734 1352 1734 1300 1745 1239 1734 1237 1734 1046 1740 1046 1775"/>
                         </Shape>
@@ -240,12 +223,7 @@
                         </Shape>
                         <String CONTENT="and Paren."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-164_r4" HPOS="591" VPOS="2282" WIDTH="1778" HEIGHT="849" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="591 2282 2369 2282 2369 3131 591 3131"/>
-                    </Shape>
-                    <TextLine ID="mz_1-164_l29" HPOS="1040" VPOS="2271" WIDTH="1321" HEIGHT="65" BASELINE="1042 2321 2361 2314" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-164_l29" HPOS="1040" VPOS="2271" WIDTH="1321" HEIGHT="65" BASELINE="1042 2321 2361 2314" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1042 2321 1042 2336 2361 2327 2361 2314 2356 2284 2278 2271 2276 2271 2060 2282 2008 2271 2006 2271 1910 2284 1876 2273 1873 2273 1871 2273 1869 2273 1841 2286 1562 2286 1514 2273 1512 2273 1510 2273 1421 2286 1055 2275 1053 2275 1050 2275 1048 2275 1048 2277 1040 2284 1042 2321"/>
                         </Shape>
@@ -342,12 +320,7 @@
                         </Shape>
                         <String CONTENT="net and the ice, and rises to the surface. That done, it will, as is its wont,"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-164_r5" HPOS="591" VPOS="3144" WIDTH="1778" HEIGHT="106" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="591 3144 2369 3144 2369 3250 591 3250"/>
-                    </Shape>
-                    <TextLine ID="mz_1-164_l43" HPOS="700" VPOS="3143" WIDTH="314" HEIGHT="54" BASELINE="702 3171 1014 3180" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-164_l43" HPOS="700" VPOS="3143" WIDTH="314" HEIGHT="54" BASELINE="702 3171 1014 3180" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="702 3171 700 3189 1009 3197 1014 3180 1014 3152 702 3143 702 3171"/>
                         </Shape>
@@ -360,8 +333,7 @@
                         </Shape>
                         <String CONTENT="² In this figure the ice is represented only on one side, in order to show the position of the net."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

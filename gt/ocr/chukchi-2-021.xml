@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Other"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_2-021_r1" HPOS="408" VPOS="479" WIDTH="1776" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="408 479 2184 479 2184 569 408 569"/>
-                    </Shape>
-                    <TextLine ID="mz_2-021_l1" HPOS="985" VPOS="493" WIDTH="619" HEIGHT="49" BASELINE="987 524 1604 528" TAGREFS="TYPE_5">
+                <TextBlock ID="text_2-021" HPOS="407" VPOS="493" WIDTH="1780" HEIGHT="2630"><TextLine ID="mz_2-021_l1" HPOS="985" VPOS="493" WIDTH="619" HEIGHT="49" BASELINE="987 524 1604 528" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1594 493 1004 493 989 505 987 524 985 538 1600 542 1604 528 1602 505 1594 493"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="295"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-021_r2" HPOS="408" VPOS="594" WIDTH="1776" HEIGHT="126" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="408 594 2184 594 2184 720 408 720"/>
-                    </Shape>
-                    <TextLine ID="mz_2-021_l3" HPOS="513" VPOS="593" WIDTH="1670" HEIGHT="70" BASELINE="515 638 2183 632" TAGREFS="TYPE_5">
+<TextLine ID="mz_2-021_l3" HPOS="513" VPOS="593" WIDTH="1670" HEIGHT="70" BASELINE="515 638 2183 632" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="515 638 515 663 640 652 1034 661 1036 661 1038 661 1071 650 1132 659 1133 659 1135 659 1175 650 1265 659 1267 659 1269 659 1310 650 1457 659 1459 661 1607 661 1607 659 1609 659 1611 659 1629 648 1921 648 1936 658 1938 658 1940 658 1942 658 2181 648 2183 632 2177 597 1854 603 1817 593 1815 593 1813 593 1811 593 1792 603 1762 593 1760 593 1758 593 1756 593 1754 593 1739 603 1707 593 1705 593 1703 593 1701 593 1700 593 1682 605 1529 605 1492 595 1490 595 1488 595 1369 605 1333 595 1331 595 1329 595 1273 605 1216 595 1214 595 1212 595 1169 605 1085 595 1083 595 1081 595 1079 595 1063 607 1006 597 1004 597 824 607 722 597 720 597 646 607 534 597 532 597 530 597 528 597 513 605 515 638"/>
                         </Shape>
@@ -69,12 +56,7 @@
                         </Shape>
                         <String CONTENT="feed their children with it.¹ A shaman said to me, —"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-021_r3" HPOS="408" VPOS="744" WIDTH="1776" HEIGHT="163" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="408 744 2184 744 2184 907 408 907"/>
-                    </Shape>
-                    <TextLine ID="mz_2-021_l5" HPOS="509" VPOS="746" WIDTH="1672" HEIGHT="54" BASELINE="511 773 2181 779" TAGREFS="TYPE_5">
+<TextLine ID="mz_2-021_l5" HPOS="509" VPOS="746" WIDTH="1672" HEIGHT="54" BASELINE="511 773 2181 779" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="511 773 509 789 552 800 554 800 556 800 2179 795 2181 779 2179 752 511 746 511 773"/>
                         </Shape>
@@ -94,12 +76,7 @@
                         </Shape>
                         <String CONTENT="to another, and unable to obtain anything whatsoever gratuitously.”"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-021_r4" HPOS="408" VPOS="912" WIDTH="1776" HEIGHT="136" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="408 912 2184 912 2184 1048 408 1048"/>
-                    </Shape>
-                    <TextLine ID="mz_2-021_l8" HPOS="517" VPOS="916" WIDTH="1666" HEIGHT="61" BASELINE="519 963 2183 957" TAGREFS="TYPE_5">
+<TextLine ID="mz_2-021_l8" HPOS="517" VPOS="916" WIDTH="1666" HEIGHT="61" BASELINE="519 963 2183 957" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="519 963 519 977 2181 971 2183 957 2179 928 1966 916 1964 916 1878 926 1846 916 1844 916 1842 916 1841 916 1819 928 1664 928 1639 916 1637 916 1635 916 1633 916 1631 916 1617 928 1586 918 1584 918 1582 918 1580 918 1537 928 1233 918 1231 918 1179 928 1141 918 1139 918 1137 918 1053 930 1034 920 1032 920 1030 920 971 930 718 920 716 920 630 930 540 920 538 920 536 920 534 920 517 928 519 963"/>
                         </Shape>
@@ -112,12 +89,7 @@
                         </Shape>
                         <String CONTENT="the western tundra of the Kolyma, says as follows: —"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-021_r5" HPOS="408" VPOS="1064" WIDTH="1776" HEIGHT="444" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="408 1064 2184 1064 2184 1508 408 1508"/>
-                    </Shape>
-                    <TextLine ID="mz_2-021_l10" HPOS="515" VPOS="1079" WIDTH="1668" HEIGHT="43" BASELINE="515 1104 2183 1104" TAGREFS="TYPE_5">
+<TextLine ID="mz_2-021_l10" HPOS="515" VPOS="1079" WIDTH="1668" HEIGHT="43" BASELINE="515 1104 2183 1104" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="515 1104 515 1122 2183 1122 2183 1104 2183 1079 515 1079 515 1104"/>
                         </Shape>
@@ -179,12 +151,7 @@
                         </Shape>
                         <String CONTENT="the time of that dream the disease could seize all of my family.”³"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-021_r6" HPOS="408" VPOS="1516" WIDTH="1776" HEIGHT="265" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="408 1516 2184 1516 2184 1781 408 1781"/>
-                    </Shape>
-                    <TextLine ID="mz_2-021_l19" HPOS="536" VPOS="1523" WIDTH="1651" HEIGHT="65" BASELINE="538 1562 2187 1566" TAGREFS="TYPE_5">
+<TextLine ID="mz_2-021_l19" HPOS="536" VPOS="1523" WIDTH="1651" HEIGHT="65" BASELINE="538 1562 2187 1566" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="538 1562 536 1572 560 1586 562 1586 564 1586 1349 1576 1361 1586 1363 1586 1365 1586 1367 1586 1950 1578 2079 1588 2081 1588 2185 1576 2187 1566 2187 1537 2146 1525 2144 1525 2142 1525 2140 1525 2099 1535 1976 1525 1974 1525 1972 1525 1936 1535 1901 1525 1899 1525 1897 1525 1895 1525 1856 1535 1721 1525 1719 1525 1672 1535 1658 1525 1656 1525 1654 1525 1652 1525 1651 1525 1619 1535 1476 1525 1474 1525 1351 1533 1337 1523 1335 1523 1333 1523 1331 1523 1284 1533 538 1527 538 1562"/>
                         </Shape>
@@ -211,12 +178,7 @@
                         </Shape>
                         <String CONTENT="longing for human liver: —"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-021_r7" HPOS="408" VPOS="1787" WIDTH="1776" HEIGHT="405" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="408 1787 2184 1787 2184 2192 408 2192"/>
-                    </Shape>
-                    <TextLine ID="mz_2-021_l23" HPOS="519" VPOS="1801" WIDTH="1666" HEIGHT="43" BASELINE="519 1827 2185 1827" TAGREFS="TYPE_5">
+<TextLine ID="mz_2-021_l23" HPOS="519" VPOS="1801" WIDTH="1666" HEIGHT="43" BASELINE="519 1827 2185 1827" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="519 1827 519 1844 2185 1844 2185 1827 2185 1801 519 1801 519 1827"/>
                         </Shape>
@@ -271,23 +233,13 @@
                         </Shape>
                         <String CONTENT="began to seek for human liver.”"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-021_r8" HPOS="408" VPOS="2200" WIDTH="1776" HEIGHT="68" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="408 2200 2184 2200 2184 2268 408 2268"/>
-                    </Shape>
-                    <TextLine ID="mz_2-021_l31" HPOS="522" VPOS="2203" WIDTH="1548" HEIGHT="54" BASELINE="524 2246 2070 2240" TAGREFS="TYPE_5">
+<TextLine ID="mz_2-021_l31" HPOS="522" VPOS="2203" WIDTH="1548" HEIGHT="54" BASELINE="524 2246 2070 2240" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="524 2246 524 2257 2068 2252 2070 2240 2064 2203 522 2209 524 2246"/>
                         </Shape>
                         <String CONTENT="The same taste for liver is ascribed by the Koryak to their kaˊla.⁴"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-021_r9" HPOS="408" VPOS="2268" WIDTH="1776" HEIGHT="533" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="408 2268 2184 2268 2184 2801 408 2801"/>
-                    </Shape>
-                    <TextLine ID="mz_2-021_l32" HPOS="522" VPOS="2267" WIDTH="1665" HEIGHT="51" BASELINE="522 2304 2187 2304" TAGREFS="TYPE_5">
+<TextLine ID="mz_2-021_l32" HPOS="522" VPOS="2267" WIDTH="1665" HEIGHT="51" BASELINE="522 2304 2187 2304" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="522 2304 522 2318 2185 2318 2187 2304 2183 2267 522 2269 522 2304"/>
                         </Shape>
@@ -349,12 +301,7 @@
                         </Shape>
                         <String CONTENT="human villages, and about shamans retaliating in exactly the same way."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-021_r10" HPOS="408" VPOS="2801" WIDTH="1776" HEIGHT="133" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="408 2801 2184 2801 2184 2934 408 2934"/>
-                    </Shape>
-                    <TextLine ID="mz_2-021_l41" HPOS="524" VPOS="2800" WIDTH="1659" HEIGHT="67" BASELINE="526 2843 2183 2839" TAGREFS="TYPE_5">
+<TextLine ID="mz_2-021_l41" HPOS="524" VPOS="2800" WIDTH="1659" HEIGHT="67" BASELINE="526 2843 2183 2839" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="526 2843 526 2857 1024 2867 1026 2867 2183 2855 2183 2839 2179 2812 2083 2800 2081 2800 2079 2800 2058 2812 1921 2812 1905 2800 1903 2800 1901 2800 1899 2800 1897 2800 1874 2810 1848 2800 1846 2800 1844 2800 1842 2800 1813 2810 1719 2800 1717 2800 1715 2800 1676 2810 1578 2800 1576 2800 1488 2810 1314 2802 1312 2802 1310 2802 1308 2802 1294 2812 1220 2802 1218 2802 1124 2814 991 2814 969 2802 967 2802 965 2802 881 2812 524 2808 526 2843"/>
                         </Shape>
@@ -367,12 +314,7 @@
                         </Shape>
                         <String CONTENT="said to me, —"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_2-021_r11" HPOS="408" VPOS="2974" WIDTH="1776" HEIGHT="154" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="408 2974 2184 2974 2184 3128 408 3128"/>
-                    </Shape>
-                    <TextLine ID="mz_2-021_l43" HPOS="524" VPOS="2990" WIDTH="1193" HEIGHT="41" BASELINE="524 3015 1717 3015" TAGREFS="TYPE_5">
+<TextLine ID="mz_2-021_l43" HPOS="524" VPOS="2990" WIDTH="1193" HEIGHT="41" BASELINE="524 3015 1717 3015" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="524 3015 524 3031 1715 3031 1717 3015 1715 2990 524 2990 524 3015"/>
                         </Shape>
@@ -399,8 +341,7 @@
                         </Shape>
                         <String CONTENT="⁴ See Vol. VI, Jochelson, The Koryak, p. 295."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

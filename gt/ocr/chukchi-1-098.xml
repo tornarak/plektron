@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-098_r1" HPOS="856" VPOS="597" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="856 597 2634 597 2634 687 856 687"/>
-                    </Shape>
-                    <TextLine ID="mz_1-098_l1" HPOS="1434" VPOS="604" WIDTH="619" HEIGHT="54" BASELINE="1436 638 2053 643" TAGREFS="TYPE_5">
+                <TextBlock ID="text_1-098" HPOS="856" VPOS="604" WIDTH="1778" HEIGHT="2628"><TextLine ID="mz_1-098_l1" HPOS="1434" VPOS="604" WIDTH="619" HEIGHT="54" BASELINE="1436 638 2053 643" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1544 606 1523 606 1501 606 1479 606 1458 606 1436 606 1436 638 1434 653 2049 658 2053 643 2051 608 1557 604 1544 606"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="72"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-098_r2" HPOS="856" VPOS="712" WIDTH="1778" HEIGHT="300" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="856 712 2634 712 2634 1012 856 1012"/>
-                    </Shape>
-                    <TextLine ID="mz_1-098_l3" HPOS="860" VPOS="705" WIDTH="1771" HEIGHT="61" BASELINE="862 751 2631 747" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-098_l3" HPOS="860" VPOS="705" WIDTH="1771" HEIGHT="61" BASELINE="862 751 2631 747" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="2614 718 2592 718 2571 718 2549 716 2527 716 2506 716 2484 716 2462 714 2450 714 2441 714 2419 714 2413 712 1746 705 1744 705 1741 705 1702 716 886 708 884 708 882 708 860 716 862 751 862 766 2629 764 2631 747 2627 718 2614 718"/>
                         </Shape>
@@ -90,12 +77,7 @@
                         </Shape>
                         <String CONTENT="the sea-fisheries."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-098_r3" HPOS="856" VPOS="1012" WIDTH="1778" HEIGHT="1677" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="856 1012 2634 1012 2634 2689 856 2689"/>
-                    </Shape>
-                    <TextLine ID="mz_1-098_l8" HPOS="968" VPOS="1015" WIDTH="1666" HEIGHT="61" BASELINE="970 1052 2634 1048" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-098_l8" HPOS="968" VPOS="1015" WIDTH="1666" HEIGHT="61" BASELINE="970 1052 2634 1048" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="970 1052 970 1065 1741 1065 1795 1076 1798 1076 1800 1076 1841 1063 1854 1073 1856 1073 1858 1073 1860 1073 1982 1063 2025 1073 2027 1073 2029 1073 2097 1063 2203 1063 2218 1073 2220 1073 2222 1073 2224 1076 2441 1076 2441 1073 2443 1073 2445 1073 2458 1063 2514 1073 2517 1073 2519 1073 2543 1063 2610 1073 2612 1073 2614 1073 2616 1073 2634 1061 2634 1048 2629 1017 968 1015 970 1052"/>
                         </Shape>
@@ -290,12 +272,7 @@
                         </Shape>
                         <String CONTENT="everlasting reindeer-meat?”³"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-098_r4" HPOS="856" VPOS="2689" WIDTH="1778" HEIGHT="187" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="856 2689 2634 2689 2634 2876 856 2876"/>
-                    </Shape>
-                    <TextLine ID="mz_1-098_l36" HPOS="966" VPOS="2695" WIDTH="1659" HEIGHT="52" BASELINE="966 2730 2625 2730" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-098_l36" HPOS="966" VPOS="2695" WIDTH="1659" HEIGHT="52" BASELINE="966 2730 2625 2730" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="966 2730 966 2747 2625 2747 2625 2730 2625 2697 966 2695 966 2730"/>
                         </Shape>
@@ -315,12 +292,7 @@
                         </Shape>
                         <String CONTENT="with their forward movement in a western and southern direction.⁴ When I"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-098_r5" HPOS="856" VPOS="2922" WIDTH="1778" HEIGHT="328" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="856 2922 2634 2922 2634 3250 856 3250"/>
-                    </Shape>
-                    <TextLine ID="mz_1-098_l39" HPOS="964" VPOS="2931" WIDTH="1661" HEIGHT="52" BASELINE="964 2957 2625 2957" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-098_l39" HPOS="964" VPOS="2931" WIDTH="1661" HEIGHT="52" BASELINE="964 2957 2625 2957" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="964 2957 964 2968 1005 2981 1007 2981 1009 2983 1425 2983 1425 2981 1427 2981 1429 2981 1445 2970 1672 2981 1674 2981 2393 2970 2406 2981 2408 2981 2411 2981 2413 2983 2586 2983 2586 2981 2588 2981 2625 2968 2625 2957 2625 2931 964 2931 964 2957"/>
                         </Shape>
@@ -368,8 +340,7 @@
                         </Shape>
                         <String CONTENT="very few herds numbered their reindeer by the thousands."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

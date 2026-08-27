@@ -23,22 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-134_r1" HPOS="681" VPOS="597" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
-<Shape>
-                        <Polygon POINTS="681 597 2459 597 2459 687 681 687"/>
-                    </Shape>
-                    <TextLine ID="mz_1-134_l1" HPOS="1261" VPOS="617" WIDTH="615" HEIGHT="54" BASELINE="1261 651 1876 651" TAGREFS="TYPE_5">
+                <TextBlock ID="text_1-134" HPOS="680" VPOS="617" WIDTH="1780" HEIGHT="2628"><TextLine ID="mz_1-134_l1" HPOS="1261" VPOS="617" WIDTH="615" HEIGHT="54" BASELINE="1261 651 1876 651" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="1867 628 1845 621 1830 617 1261 617 1261 651 1261 671 1876 671 1876 651 1876 630 1867 628"/>
                         </Shape>
@@ -51,12 +43,7 @@
                         </Shape>
                         <String CONTENT="102"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-134_r2" HPOS="681" VPOS="712" WIDTH="1778" HEIGHT="243" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="681 712 2459 712 2459 955 681 955"/>
-                    </Shape>
-                    <TextLine ID="mz_1-134_l3" HPOS="680" VPOS="718" WIDTH="1774" HEIGHT="59" BASELINE="682 762 2454 755" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-134_l3" HPOS="680" VPOS="718" WIDTH="1774" HEIGHT="59" BASELINE="682 762 2454 755" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="2434 727 2413 727 2391 727 2369 725 2348 725 2326 725 2304 725 2298 723 693 718 691 718 689 718 687 718 687 721 680 725 682 762 682 777 2452 773 2454 755 2450 727 2434 727"/>
                         </Shape>
@@ -83,12 +70,7 @@
                         </Shape>
                         <String CONTENT="and eliˊhɪkɪ."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-134_r3" HPOS="681" VPOS="955" WIDTH="1778" HEIGHT="545" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="681 955 2459 955 2459 1500 681 1500"/>
-                    </Shape>
-                    <TextLine ID="mz_1-134_l7" HPOS="791" VPOS="965" WIDTH="1667" HEIGHT="52" BASELINE="791 998 2458 998" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-134_l7" HPOS="791" VPOS="965" WIDTH="1667" HEIGHT="52" BASELINE="791 998 2458 998" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="791 998 791 1017 2456 1017 2458 998 2456 967 791 965 791 998"/>
                         </Shape>
@@ -150,12 +132,7 @@
                         </Shape>
                         <String CONTENT="or five white fox-skins, or two dogs with an American shotgun with accessories, etc."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-134_r4" HPOS="681" VPOS="1500" WIDTH="1778" HEIGHT="953" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="681 1500 2459 1500 2459 2453 681 2453"/>
-                    </Shape>
-                    <TextLine ID="mz_1-134_l16" HPOS="791" VPOS="1500" WIDTH="1663" HEIGHT="56" BASELINE="793 1537 2454 1541" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-134_l16" HPOS="791" VPOS="1500" WIDTH="1663" HEIGHT="56" BASELINE="793 1537 2454 1541" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="793 1537 791 1550 2450 1556 2454 1541 2452 1509 793 1500 793 1537"/>
                         </Shape>
@@ -266,12 +243,7 @@
                         </Shape>
                         <String CONTENT="grow so fat that they can hardly walk.¹"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-134_r5" HPOS="681" VPOS="2453" WIDTH="1778" HEIGHT="726" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="681 2453 2459 2453 2459 3179 681 3179"/>
-                    </Shape>
-                    <TextLine ID="mz_1-134_l32" HPOS="791" VPOS="2459" WIDTH="1665" HEIGHT="54" BASELINE="793 2492 2456 2498" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-134_l32" HPOS="791" VPOS="2459" WIDTH="1665" HEIGHT="54" BASELINE="793 2492 2456 2498" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="793 2492 791 2507 2452 2513 2456 2498 2454 2468 793 2459 793 2492"/>
                         </Shape>
@@ -354,19 +326,13 @@
                         </Shape>
                         <String CONTENT="walrus-meat or whale-skin, form the daily ration of every dog. During the"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-134_r6" HPOS="681" VPOS="3198" WIDTH="1778" HEIGHT="65" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="681 3198 2459 3198 2459 3263 681 3263"/>
-                    </Shape>
-                    <TextLine ID="mz_1-134_l44" HPOS="860" VPOS="3189" WIDTH="1416" HEIGHT="56" BASELINE="862 3217 2276 3228" TAGREFS="TYPE_5">
+<TextLine ID="mz_1-134_l44" HPOS="860" VPOS="3189" WIDTH="1416" HEIGHT="56" BASELINE="862 3217 2276 3228" TAGREFS="TYPE_5">
                         <Shape>
                             <Polygon POINTS="862 3217 860 3234 2272 3245 2276 3228 2274 3200 862 3189 862 3217"/>
                         </Shape>
                         <String CONTENT="¹ As regards the poor quality of blubber diet for dogs, compare also Maydell, I, p. 570."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

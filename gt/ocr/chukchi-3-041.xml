@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_3-041_r1" HPOS="454" VPOS="461" WIDTH="1782" HEIGHT="94" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="454 461 2236 461 2236 555 454 555"/>
-                    </Shape>
-                    <TextLine ID="mz_3-041_l1" HPOS="1030" VPOS="478" WIDTH="618" HEIGHT="51" BASELINE="1030 511 1648 511" TAGREFS="TYPE_4">
+                <TextBlock ID="text_3-041" HPOS="446" VPOS="478" WIDTH="1793" HEIGHT="2623"><TextLine ID="mz_3-041_l1" HPOS="1030" VPOS="478" WIDTH="618" HEIGHT="51" BASELINE="1030 511 1648 511" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1635 478 1048 478 1030 511 1030 529 1648 529 1648 511 1646 490 1635 478"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="575"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-041_r2" HPOS="454" VPOS="578" WIDTH="1782" HEIGHT="842" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="454 578 2236 578 2236 1420 454 1420"/>
-                    </Shape>
-                    <TextLine ID="mz_3-041_l3" HPOS="446" VPOS="574" WIDTH="1779" HEIGHT="62" BASELINE="448 620 2225 615" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-041_l3" HPOS="446" VPOS="574" WIDTH="1779" HEIGHT="62" BASELINE="448 620 2225 615" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="524 585 504 587 485 589 465 589 446 591 448 620 448 636 2223 632 2225 615 2221 585 1985 574 1983 574 1981 574 1960 585 1826 585 1783 574 1781 574 1779 574 1718 583 1691 574 1689 574 1687 574 1625 585 1069 576 1067 576 1065 576 1064 576 1048 585 676 578 674 578 551 587 533 585 524 585"/>
                         </Shape>
@@ -152,12 +140,7 @@
                         </Shape>
                         <String CONTENT="years later the girl was married to a Russian of the Kolyma."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-041_r3" HPOS="454" VPOS="1420" WIDTH="1782" HEIGHT="727" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="454 1420 2236 1420 2236 2147 454 2147"/>
-                    </Shape>
-                    <TextLine ID="mz_3-041_l17" HPOS="559" VPOS="1418" WIDTH="1672" HEIGHT="56" BASELINE="561 1458 2231 1455" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-041_l17" HPOS="559" VPOS="1418" WIDTH="1672" HEIGHT="56" BASELINE="561 1458 2231 1455" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="561 1458 561 1474 2229 1474 2231 1455 2227 1427 1401 1418 1399 1418 1331 1427 576 1419 574 1419 572 1419 570 1419 559 1425 561 1458"/>
                         </Shape>
@@ -240,12 +223,7 @@
                         </Shape>
                         <String CONTENT="he was five years old."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-041_r4" HPOS="454" VPOS="2147" WIDTH="1782" HEIGHT="775" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="454 2147 2236 2147 2236 2922 454 2922"/>
-                    </Shape>
-                    <TextLine ID="mz_3-041_l29" HPOS="567" VPOS="2137" WIDTH="1668" HEIGHT="54" BASELINE="567 2178 2235 2178" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-041_l29" HPOS="567" VPOS="2137" WIDTH="1668" HEIGHT="54" BASELINE="567 2178 2235 2178" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="567 2178 567 2189 2233 2191 2235 2178 2235 2146 2208 2137 2206 2137 2204 2137 2143 2146 1670 2137 1668 2137 1615 2146 1522 2137 1520 2137 1424 2146 1344 2137 1342 2137 1292 2146 1262 2137 1260 2137 1258 2137 1256 2137 1255 2137 1237 2148 1130 2148 1052 2137 1050 2137 941 2146 894 2137 892 2137 836 2146 750 2137 748 2137 746 2137 717 2146 646 2137 645 2137 643 2137 619 2146 586 2137 584 2137 582 2137 580 2137 578 2137 567 2144 567 2178"/>
                         </Shape>
@@ -335,12 +313,7 @@
                         </Shape>
                         <String CONTENT="time the father consented to leave her there."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-041_r5" HPOS="454" VPOS="2922" WIDTH="1782" HEIGHT="182" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="454 2922 2236 2922 2236 3104 454 3104"/>
-                    </Shape>
-                    <TextLine ID="mz_3-041_l42" HPOS="570" VPOS="2914" WIDTH="1669" HEIGHT="57" BASELINE="572 2955 2239 2951" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-041_l42" HPOS="570" VPOS="2914" WIDTH="1669" HEIGHT="57" BASELINE="572 2955 2239 2951" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="572 2955 572 2971 2237 2971 2239 2951 2231 2914 2192 2924 1765 2914 1763 2914 1601 2924 1564 2914 1562 2914 1561 2914 1368 2926 1352 2916 1350 2916 1348 2916 1346 2916 1299 2926 570 2918 572 2955"/>
                         </Shape>
@@ -360,8 +333,7 @@
                         </Shape>
                         <String CONTENT="other only gave cause to much laughter in the neighborhood. In a third case,"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

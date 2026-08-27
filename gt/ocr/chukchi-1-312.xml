@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-312_r1" HPOS="580" VPOS="583" WIDTH="1778" HEIGHT="95" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="580 583 2358 583 2358 678 580 678"/>
-                    </Shape>
-                    <TextLine ID="mz_1-312_l1" HPOS="1159" VPOS="597" WIDTH="617" HEIGHT="56" BASELINE="1161 634 1776 630" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-312" HPOS="574" VPOS="597" WIDTH="1782" HEIGHT="2616"><TextLine ID="mz_1-312_l1" HPOS="1159" VPOS="597" WIDTH="617" HEIGHT="56" BASELINE="1161 634 1776 630" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1765 612 1744 599 1722 599 1700 599 1679 599 1657 599 1635 599 1614 599 1592 599 1570 599 1549 599 1527 599 1505 599 1484 599 1462 599 1176 599 1159 610 1161 634 1161 653 1774 649 1776 630 1769 597 1765 597 1765 612"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="244"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-312_r2" HPOS="580" VPOS="704" WIDTH="1778" HEIGHT="476" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="580 704 2358 704 2358 1180 580 1180"/>
-                    </Shape>
-                    <TextLine ID="mz_1-312_l3" HPOS="576" VPOS="699" WIDTH="1780" HEIGHT="61" BASELINE="578 744 2356 740" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-312_l3" HPOS="576" VPOS="699" WIDTH="1780" HEIGHT="61" BASELINE="578 744 2356 740" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2352 718 2330 718 2309 716 2287 716 2265 714 2244 714 2222 712 2200 712 2060 712 2042 701 2027 701 2021 701 1986 710 1921 699 1919 699 1778 710 1683 699 1681 699 1596 710 1466 699 1464 699 1462 699 1460 699 1442 712 782 701 780 701 778 701 775 701 760 712 650 701 648 701 576 714 578 744 578 760 2354 755 2356 740 2352 718 2352 718"/>
                         </Shape>
@@ -110,12 +98,7 @@
                         </Shape>
                         <String CONTENT="dyed yellow with ochre, or dark red with alder-bark."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-312_r3" HPOS="580" VPOS="1180" WIDTH="1778" HEIGHT="309" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="580 1180 2358 1180 2358 1489 580 1489"/>
-                    </Shape>
-                    <TextLine ID="mz_1-312_l11" HPOS="682" VPOS="1177" WIDTH="1670" HEIGHT="70" BASELINE="685 1221 2352 1225" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-312_l11" HPOS="682" VPOS="1177" WIDTH="1670" HEIGHT="70" BASELINE="685 1221 2352 1225" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="685 1221 682 1232 713 1245 715 1245 717 1247 2350 1247 2352 1225 2350 1193 2287 1180 2285 1180 2226 1190 2016 1180 2014 1180 2012 1180 1990 1190 1949 1180 1947 1180 1945 1180 1943 1180 1941 1180 1921 1193 1811 1193 1709 1180 1707 1180 1650 1190 1559 1180 1557 1180 1555 1180 1529 1190 1497 1177 1494 1177 1492 1177 1490 1177 1453 1188 1414 1177 1412 1177 1410 1177 1408 1177 1380 1188 1352 1177 1349 1177 1347 1177 1293 1190 866 1190 851 1177 849 1177 847 1177 845 1177 843 1177 817 1188 801 1177 799 1177 797 1177 795 1177 685 1186 685 1221"/>
                         </Shape>
@@ -149,12 +132,7 @@
                         </Shape>
                         <String CONTENT="different color, the reverse side of the skin being turned out."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-312_r4" HPOS="580" VPOS="1489" WIDTH="1778" HEIGHT="183" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="580 1489 2358 1489 2358 1672 580 1672"/>
-                    </Shape>
-                    <TextLine ID="mz_1-312_l16" HPOS="689" VPOS="1483" WIDTH="1665" HEIGHT="60" BASELINE="691 1517 2354 1522" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-312_l16" HPOS="689" VPOS="1483" WIDTH="1665" HEIGHT="60" BASELINE="691 1517 2354 1522" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="691 1517 689 1532 704 1543 706 1543 708 1543 710 1543 2352 1535 2354 1522 2352 1491 691 1483 691 1517"/>
                         </Shape>
@@ -174,12 +152,7 @@
                         </Shape>
                         <String CONTENT="red, or blue. These are embroidered in various designs."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-312_r5" HPOS="580" VPOS="1672" WIDTH="1778" HEIGHT="1543" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="580 1672 2358 1672 2358 3215 580 3215"/>
-                    </Shape>
-                    <TextLine ID="mz_1-312_l19" HPOS="687" VPOS="1662" WIDTH="1669" HEIGHT="63" BASELINE="689 1697 2356 1704" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-312_l19" HPOS="687" VPOS="1662" WIDTH="1669" HEIGHT="63" BASELINE="689 1697 2356 1704" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="689 1697 687 1710 767 1723 769 1723 1170 1714 1245 1725 1248 1725 2354 1717 2356 1704 2354 1665 689 1662 689 1697"/>
                         </Shape>
@@ -360,8 +333,7 @@
                         </Shape>
                         <String CONTENT="Arctic Asia (see Plate XXIV, Fig. 2)."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

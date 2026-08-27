@@ -23,32 +23,19 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Other"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="QuireMarksZone"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/><OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="MarginTextZone-Notes"/>
-    </Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/></Tags>
     <Layout>
         <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-                <TextBlock ID="mz_3-146_r1" HPOS="553" VPOS="695" WIDTH="1782" HEIGHT="94" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="553 695 2335 695 2335 789 553 789"/>
-                    </Shape>
-                    <TextLine ID="mz_3-146_l1" HPOS="543" VPOS="704" WIDTH="1766" HEIGHT="61" BASELINE="545 755 2309 751" TAGREFS="TYPE_4">
+                <TextBlock ID="text_3-146" HPOS="543" VPOS="704" WIDTH="1778" HEIGHT="2415"><TextLine ID="mz_3-146_l1" HPOS="543" VPOS="704" WIDTH="1766" HEIGHT="61" BASELINE="545 755 2309 751" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="2297 716 2278 716 2258 716 2239 716 2219 716 2200 716 2180 716 2161 714 2141 714 2122 714 2102 714 2083 714 2063 714 2044 714 2024 712 2005 712 1985 712 1966 712 1946 712 1927 712 1907 712 1888 712 1868 710 1849 710 1829 710 1810 710 1790 710 1771 710 1752 710 1732 708 1713 708 1693 708 1674 708 1654 708 1635 708 1615 708 1596 708 1576 706 1557 706 1537 706 1518 706 1498 706 1479 706 1459 706 1440 706 1422 704 1332 714 1280 704 1278 704 1003 714 834 704 832 704 830 704 828 704 812 716 703 716 682 704 680 704 563 704 561 704 559 704 557 704 543 712 545 755 545 765 2307 765 2309 751 2305 716 2297 716"/>
                         </Shape>
                         <String CONTENT="XXIII. — CONTACT OF THE CHUKCHEE WITH THE RUSSIANS.¹"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-146_r2" HPOS="553" VPOS="812" WIDTH="1782" HEIGHT="195" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="553 812 2335 812 2335 1007 553 1007"/>
-                    </Shape>
-                    <TextLine ID="mz_3-146_l2" HPOS="650" VPOS="815" WIDTH="1671" HEIGHT="61" BASELINE="652 860 2321 854" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-146_l2" HPOS="650" VPOS="815" WIDTH="1671" HEIGHT="61" BASELINE="652 860 2321 854" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="652 860 652 876 2319 872 2321 854 2319 827 2284 815 2282 815 2280 815 2278 815 2247 825 2145 815 2143 815 2141 815 2139 815 2124 827 1978 827 1950 815 1948 815 1946 815 1944 815 1943 815 1929 825 1915 815 1913 815 1911 815 1820 815 1818 815 1716 827 1648 817 1646 817 1588 829 1424 829 1403 817 1401 817 1399 817 1342 827 1272 817 1270 817 1190 827 1110 819 1108 819 1106 819 1104 819 1093 829 1052 819 1050 819 1048 819 982 829 650 827 652 860"/>
                         </Shape>
@@ -68,12 +55,7 @@
                         </Shape>
                         <String CONTENT="and founded the winter hamlet (зимовье) of Nishne-Kolymsk."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-146_r3" HPOS="553" VPOS="1035" WIDTH="1782" HEIGHT="2028" TAGREFS="TYPE_5">
-<Shape>
-                        <Polygon POINTS="553 1035 2335 1035 2335 3063 553 3063"/>
-                    </Shape>
-                    <TextLine ID="mz_3-146_l5" HPOS="654" VPOS="1045" WIDTH="1667" HEIGHT="43" BASELINE="656 1073 2321 1069" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-146_l5" HPOS="654" VPOS="1045" WIDTH="1667" HEIGHT="43" BASELINE="656 1073 2321 1069" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="656 1073 656 1088 2319 1084 2321 1069 2315 1045 654 1047 656 1073"/>
                         </Shape>
@@ -359,19 +341,13 @@
                         </Shape>
                         <String CONTENT="Titov, A. Siberia in the XVII Century, Moscow, 1890."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_3-146_r4" HPOS="553" VPOS="3061" WIDTH="1782" HEIGHT="67" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="553 3061 2335 3061 2335 3128 553 3128"/>
-                    </Shape>
-                    <TextLine ID="mz_3-146_l46" HPOS="1379" VPOS="3064" WIDTH="111" HEIGHT="55" BASELINE="1379 3096 1490 3096" TAGREFS="TYPE_4">
+<TextLine ID="mz_3-146_l46" HPOS="1379" VPOS="3064" WIDTH="111" HEIGHT="55" BASELINE="1379 3096 1490 3096" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1483 3064 1379 3064 1379 3096 1379 3115 1488 3119 1490 3096 1490 3084 1483 3064"/>
                         </Shape>
                         <String CONTENT="[680]"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

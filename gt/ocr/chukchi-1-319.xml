@@ -23,21 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="QuireMarksZone"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-319_r1" HPOS="435" VPOS="600" WIDTH="1778" HEIGHT="95" TAGREFS="TYPE_3">
-<Shape>
-                        <Polygon POINTS="435 600 2213 600 2213 695 435 695"/>
-                    </Shape>
-                    <TextLine ID="mz_1-319_l1" HPOS="1001" VPOS="615" WIDTH="621" HEIGHT="56" BASELINE="1003 649 1622 653" TAGREFS="TYPE_4">
+                <TextBlock ID="text_1-319" HPOS="422" VPOS="615" WIDTH="1785" HEIGHT="2701"><TextLine ID="mz_1-319_l1" HPOS="1001" VPOS="615" WIDTH="621" HEIGHT="56" BASELINE="1003 649 1622 653" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="1609 617 1007 615 1003 617 1003 649 1001 666 1618 671 1622 653 1620 640 1609 617"/>
                         </Shape>
@@ -50,12 +43,7 @@
                         </Shape>
                         <String CONTENT="249"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-319_r2" HPOS="435" VPOS="712" WIDTH="1778" HEIGHT="139" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="435 712 2213 712 2213 851 435 851"/>
-                    </Shape>
-                    <TextLine ID="mz_1-319_l3" HPOS="422" VPOS="716" WIDTH="1774" HEIGHT="67" BASELINE="425 764 2196 760" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-319_l3" HPOS="422" VPOS="716" WIDTH="1774" HEIGHT="67" BASELINE="425 764 2196 760" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="448 718 446 718 422 727 425 764 425 779 2192 783 2196 760 2192 727 1319 716 1317 716 1258 727 451 718 448 718"/>
                         </Shape>
@@ -68,12 +56,7 @@
                         </Shape>
                         <String CONTENT="the Asiatic Eskimo, and the American Eskimo of Alaska. Whaling-crews"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-319_r3" HPOS="435" VPOS="2869" WIDTH="1778" HEIGHT="364" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="435 2869 2213 2869 2213 3233 435 3233"/>
-                    </Shape>
-                    <TextLine ID="mz_1-319_l5" HPOS="435" VPOS="2883" WIDTH="1770" HEIGHT="48" BASELINE="435 2916 2205 2916" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-319_l5" HPOS="435" VPOS="2883" WIDTH="1770" HEIGHT="48" BASELINE="435 2916 2205 2916" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="435 2916 435 2931 2205 2931 2205 2916 2205 2883 435 2883 435 2916"/>
                         </Shape>
@@ -114,19 +97,13 @@
                         </Shape>
                         <String CONTENT="who walk constantly through cold water."/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-319_r4" HPOS="435" VPOS="3258" WIDTH="1778" HEIGHT="70" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="435 3258 2213 3258 2213 3328 435 3328"/>
-                    </Shape>
-                    <TextLine ID="mz_1-319_l11" HPOS="433" VPOS="3267" WIDTH="691" HEIGHT="49" BASELINE="433 3295 1124 3295" TAGREFS="TYPE_4">
+<TextLine ID="mz_1-319_l11" HPOS="433" VPOS="3267" WIDTH="691" HEIGHT="49" BASELINE="433 3295 1124 3295" TAGREFS="TYPE_4">
                         <Shape>
                             <Polygon POINTS="433 3295 433 3316 1124 3316 1124 3295 1124 3267 433 3267 433 3295"/>
                         </Shape>
                         <String CONTENT="32—JESUP NORTH PACIFIC EXPED., VOL. VII."/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>

@@ -23,20 +23,14 @@
                 <softwareVersion>7.0.3</softwareVersion>
             </processingSoftware>
         </Processing>
-    </Description>
+    <Processing ID="OCR_tools-flatten-ocr"><processingStepDescription>flatten, tools/flatten_ocr.py</processingStepDescription><processingStepSettings>harness: 1; kind: rule; step: tools/flatten_ocr.py; label: flatten; version: harness 1</processingStepSettings><processingSoftware><softwareName>harness</softwareName></processingSoftware></Processing></Description>
     <Tags>
-        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
-        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="RunningTitleZone"/>
         <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
         <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
             <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-                <TextBlock ID="mz_1-306_r1" HPOS="638" VPOS="600" WIDTH="1778" HEIGHT="95" TAGREFS="TYPE_2">
-<Shape>
-                        <Polygon POINTS="638 600 2416 600 2416 695 638 695"/>
-                    </Shape>
-                    <TextLine ID="mz_1-306_l1" HPOS="1211" VPOS="619" WIDTH="619" HEIGHT="54" BASELINE="1213 653 1830 658" TAGREFS="TYPE_3">
+                <TextBlock ID="text_1-306" HPOS="624" VPOS="619" WIDTH="1776" HEIGHT="2617"><TextLine ID="mz_1-306_l1" HPOS="1211" VPOS="619" WIDTH="619" HEIGHT="54" BASELINE="1213 653 1830 658" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="1819 621 1817 619 1230 619 1215 632 1213 653 1211 669 1826 673 1830 658 1828 640 1819 621"/>
                         </Shape>
@@ -49,12 +43,7 @@
                         </Shape>
                         <String CONTENT="238"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-306_r2" HPOS="638" VPOS="721" WIDTH="1778" HEIGHT="199" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="638 721 2416 721 2416 920 638 920"/>
-                    </Shape>
-                    <TextLine ID="mz_1-306_l3" HPOS="624" VPOS="721" WIDTH="1771" HEIGHT="69" BASELINE="626 764 2395 760" TAGREFS="TYPE_3">
+<TextLine ID="mz_1-306_l3" HPOS="624" VPOS="721" WIDTH="1771" HEIGHT="69" BASELINE="626 764 2395 760" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="1100 727 1079 727 1057 727 1035 725 1014 725 1001 723 944 723 942 723 624 734 626 764 626 779 1345 790 1347 790 2395 777 2395 760 2391 731 1510 721 1507 721 1505 721 1503 721 1486 731 1115 725 1100 727"/>
                         </Shape>
@@ -74,12 +63,7 @@
                         </Shape>
                         <String CONTENT="in the vamp. The legs of men’s boots are usually short. Around the edge"/>
                     </TextLine>
-</TextBlock>
-                <TextBlock ID="mz_1-306_r3" HPOS="638" VPOS="3051" WIDTH="1778" HEIGHT="199" TAGREFS="TYPE_1">
-<Shape>
-                        <Polygon POINTS="638 3051 2416 3051 2416 3250 638 3250"/>
-                    </Shape>
-                    <TextLine ID="mz_1-306_l6" HPOS="630" VPOS="3054" WIDTH="1768" HEIGHT="65" BASELINE="633 3102 2398 3098" TAGREFS="TYPE_3">
+<TextLine ID="mz_1-306_l6" HPOS="630" VPOS="3054" WIDTH="1768" HEIGHT="65" BASELINE="633 3102 2398 3098" TAGREFS="TYPE_3">
                         <Shape>
                             <Polygon POINTS="2387 3065 2341 3057 2341 3057 2322 3057 2304 3065 1971 3057 1951 3057 1943 3054 1889 3054 1886 3054 1884 3054 1882 3054 1867 3067 1767 3067 1737 3054 1735 3054 1733 3054 1731 3054 1728 3054 1713 3065 1624 3054 1622 3054 1512 3067 1471 3057 1468 3057 1466 3057 951 3067 908 3057 905 3057 903 3057 901 3057 899 3057 886 3067 847 3057 845 3057 843 3057 778 3067 674 3057 672 3057 669 3057 630 3070 633 3102 633 3115 2393 3119 2398 3098 2395 3085 2387 3065"/>
                         </Shape>
@@ -99,8 +83,7 @@
                         </Shape>
                         <String CONTENT="at the same time makes the boot fit the foot more snugly. On account of"/>
                     </TextLine>
-</TextBlock>
-            </PrintSpace>
+</TextBlock></PrintSpace>
         </Page>
     </Layout>
 </alto>
