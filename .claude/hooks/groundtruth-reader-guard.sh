@@ -69,7 +69,7 @@ readable() {
     *.claude/skills/rebuild-groundtruth/*) return 0 ;;
     *"$MEMORY"*) return 0 ;;
     # `config/` holds the pass configuration and the editor's rulings —
-    # lexicon_extra.txt, marks_config.json — which used to sit in `data/`. The
+    # lexicon_extra.txt, marks.json — which used to sit in `data/`. The
     # arm moved with them: a read-allow that quietly stops matching refuses a
     # file the reader is meant to have, and reads as forbidden rather than moved.
     */config/*|config/*) return 0 ;;

@@ -40,8 +40,8 @@ def repo(tmp_path: Path) -> Path:
     # config: `validate_page` and `list_context` both refuse without one, and a
     # tree lacking it would exercise the refusal rather than the hoist.
     (tmp_path / "config").mkdir(parents=True)
-    (tmp_path / "config" / "zones_config.json").write_text(
-        (REPO / "config" / "zones_config.json").read_text(encoding="utf-8"),
+    (tmp_path / "config" / "zones.json").write_text(
+        (REPO / "config" / "zones.json").read_text(encoding="utf-8"),
         encoding="utf-8")
     d = tmp_path / "gt" / "zones"
     d.mkdir(parents=True)

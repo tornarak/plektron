@@ -1,4 +1,4 @@
-"""`config/zones_config.json`: the seven zone types and the columns they are drawn in.
+"""`config/zones.json`: the seven zone types and the columns they are drawn in.
 
 One file, two consumers, and that is the whole reason it is a file rather than a
 table of module constants. `zones.py` validates against it; the browser UI receives
@@ -28,7 +28,7 @@ from pathlib import Path
 
 from .refs import norm_ref, parse_ref
 
-CONFIG = "config/zones_config.json"
+CONFIG = "config/zones.json"
 
 
 class ConfigError(ValueError):
@@ -45,7 +45,7 @@ def config_path(root: Path = Path(".")) -> Path:
 
 
 def load_config(root: Path = Path(".")) -> dict:
-    """Read and check `config/zones_config.json`.
+    """Read and check `config/zones.json`.
 
     Checks the properties the rest of the package then assumes: labels and keys
     unique, `auto_select` naming types that exist, every part carrying both sides

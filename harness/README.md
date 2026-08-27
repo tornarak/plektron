@@ -26,7 +26,9 @@ the project's rules, `CLAUDE.md` governs; for the character inventory,
 | `tei/` | the collation output, and the system of record for seam state — including `corpus-header.xml`, which is a fragment, not a page | the collation pass, `tei seam --commit` |
 | `mz/tei/` | the generated first-draft page, by rule from `gt/zones/` + `gt/ocr/`. Derived, ignored; **no view over the tei pair**, since naming the two apart is the point | `tei generate` |
 | `edition/entities/` | the encyclopedia: one markdown record per entity under its class directory. The referent of every `@ref`, and the source of the alias vocabulary a rule links by | `entity new --commit`, `entity ratify --commit`, `edition serve` |
-| `data/` | `loi.json` `toc.json` `authorities.json` `runs.json` `alphabet.json` `lexicon_extra.txt` `zones_config.json` `lines_config.json` | by hand |
+| `edition/` | the book's apparatus, amended and so no part of `gt/`: `toc.json` `loi.json` `authorities.json` `alphabet.json` `runs.json` `figure_numbers.json` | by hand |
+| `config/` | what a pass is tuned by — `zones.json` `lines.json` `marks.json`, validated at load — and the editor's rulings over one, `marks_exempt.json` `lexicon_extra.txt`, which are `#ed` rank and no part of the edition | by hand |
+| `data/` | nothing authored: `pdf_images.json` and `_migrated.json` are machine receipts, `tei_all.rng` the vendored TEI schema | `scans extract --commit`, and not by hand |
 | `edition/page-img/` | an editor's own version of a whole leaf, `edition/fig-img/`'s doctrine one level up. Resolved by `edition_ui.leaf_source`, **reading view only and ruled leaves only** (any `LEAF_KINDS` member, not `map` alone). **Derived but tracked**, `edition/geo/`'s split: `1-361`'s master is ChaiNNer work no script here rebuilds | by hand |
 | `mz/page-img/` | what a leaf is *delivered* as — an anti-aliased linework PNG over a colour JPEG at a third scale, Mixed Raster Content. Derived and gitignored, `mz/tei/`'s disposition; `edition_ui.leaf_layers` returns both or neither | `tools/build_leaf_layers.py` |
 | `edition/geo/` | the compiled shape store the atlas draws: watersheds, language areas, coastline, `+ index.json SOURCES.md`. **Derived but tracked** — its sources are outside the repository, so a clone cannot rebuild it | `tools/build_geo.py --commit` |
@@ -672,13 +674,13 @@ Two caller invariants are this module's alone, and both are silent when broken:
   and names `fig delete`; the empty region sets a segmenter needs are synthesized
   in `assemble` and land only in `train/`.
 
-**`zones_config.py`** — loads and checks `config/zones_config.json`: the seven types
+**`zones_config.py`** — loads and checks `config/zones.json`: the seven types
 with their keys and colours, the per-part text measure and anchor calibration, the
 declarative order rules. `order_warnings` is pure and is transcribed into the
 editor's JS, with `harness/tests/test_zones_order.py` holding the two together. Every rule
 here is a *warning* — nothing in this config can refuse a save.
 
-**`lines_config.py`** — the same for `config/lines_config.json`: the line editor's
+**`lines_config.py`** — the same for `config/lines.json`: the line editor's
 layers with their colours, its keybindings, its zoom. Deliberately the same shape,
 so a human moving between the two editors configures one tool with two subjects
 rather than learning a second format. The overlay's stylesheet (`layer_css`) and
@@ -1159,7 +1161,7 @@ over `gt/ocr/` or `data/` fails the day the corpus legitimately changes, which t
 everyone to ignore it. The exceptions are explicit and are facts about the printed
 book or about committed configuration rather than about any code: the
 citation-resolution tests, the `DERIVED`-versus-`.gitignore` check, and the
-`config/zones_config.json` checks — that file is data two modules trust, and nothing
+`config/zones.json` checks — that file is data two modules trust, and nothing
 else would notice a stray comma in it.
 
 `test_cli_surface.py` is the other exception and is the newest: it builds the real

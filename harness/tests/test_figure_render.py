@@ -282,11 +282,11 @@ def _config(tmp_path: Path, **figures) -> None:
     swallowed by the fallback and the test would pass while proving nothing.
     """
     import json
-    real = json.loads(Path("config/zones_config.json").read_text(encoding="utf-8"))
+    real = json.loads(Path("config/zones.json").read_text(encoding="utf-8"))
     real["figures"] = {**real["figures"], **figures}
     d = tmp_path / "config"
     d.mkdir(parents=True, exist_ok=True)
-    (d / "zones_config.json").write_text(json.dumps(real), encoding="utf-8")
+    (d / "zones.json").write_text(json.dumps(real), encoding="utf-8")
 
 
 def test_the_float_threshold_comes_from_the_book_config(tmp_path):

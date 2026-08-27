@@ -411,8 +411,8 @@ def test_fix_refuses_a_handle_the_floor_declined(tmp_path):
     root = tmp_path / "one-page"
     (root / "gt" / "ocr").mkdir(parents=True)
     (root / "config").mkdir()
-    (root / "config" / "marks_config.json").write_text(
-        (REPO / "config" / "marks_config.json").read_text(encoding="utf-8"),
+    (root / "config" / "marks.json").write_text(
+        (REPO / "config" / "marks.json").read_text(encoding="utf-8"),
         encoding="utf-8")
     src = next((REPO / "gt" / "ocr").glob("chukchi-1-051.xml"))
     (root / "gt" / "ocr" / src.name).write_text(src.read_text(encoding="utf-8"),
@@ -647,8 +647,8 @@ def _store(tmp_path: Path, *refs: str) -> Path:
     root = tmp_path / "store"
     (root / "gt" / "ocr").mkdir(parents=True)
     (root / "config").mkdir()
-    (root / "config" / "marks_config.json").write_text(
-        (REPO / "config" / "marks_config.json").read_text(encoding="utf-8"),
+    (root / "config" / "marks.json").write_text(
+        (REPO / "config" / "marks.json").read_text(encoding="utf-8"),
         encoding="utf-8")
     for ref in refs:
         src = REPO / "gt" / "ocr" / f"chukchi-{ref}.xml"
@@ -815,7 +815,7 @@ def test_an_unconsultable_lexicon_does_not_refuse_the_dispatch(tmp_path):
     because a reader shown nothing would read it as a statement about the book."""
     from harness.dispatch import build
     from harness.tests.test_dispatch_prompt import make_page
-    root = make_page(tmp_path)                     # no config/marks_config.json in it
+    root = make_page(tmp_path)                     # no config/marks.json in it
     block = build("3-063", root)["page_block"]
     assert "unavailable" in block and "infer nothing from its silence" in block
 

@@ -190,7 +190,7 @@ example in both directions: folding it into `MainZone-Other` raised held-out
 precision 61.3% → 78.2%, and then the editor concluded the distinction was not
 worth drawing at all and retyped the store. A fold is a claim about a model's
 capacity; retyping is a claim about the book. Record the measurement in
-`config/zones_config.json`'s `train_merges`, which is where a fold has to be
+`config/zones.json`'s `train_merges`, which is where a fold has to be
 arguable, and note that a fold is applied by `assemble` when it writes the training
 copies and **nowhere else** — `gt/zones/` keeps the distinction, because a human
 drew it and it is evidence.

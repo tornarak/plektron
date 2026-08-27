@@ -8,10 +8,12 @@ the migration writes down what was already being read, and the geometry check is
 a check of that claim rather than an aspiration — a page whose numbers move means
 the claim was wrong, and the whole run refuses.
 
-The other half is the readings key. Block ids are re-minted `fig_PP-NNN_NNN`, and
-the separate readings file keyed 395 hand-read captions by a block id's last field, so the
-two files move together or neither does. The store and the readings are one fact
-in two files; a rewrite of either alone reconciles to nothing.
+It had a second half, and the tests for it are gone with the store they covered.
+Block ids are re-minted `fig_PP-NNN_NNN`, and a separate markdown file keyed the
+395 hand-read captions by a block id's last field, so the two moved together or
+neither did. That file was retired — the ratified caption now lives on the FigDesc
+block it keys — so there is no second file to keep in step, and the id remap is
+checked here against the store alone.
 """
 from __future__ import annotations
 
@@ -46,24 +48,11 @@ EXPORT = """<?xml version="1.0" encoding="UTF-8"?>
 </alto>
 """
 
-READINGS = """# Figure-caption readings
-
-## 1-037|ca04178c
-Fig. 21.—Drum of the Reindeer Chukchee.
-@note: VERBATIM
-
-## 2-068|44f33841
-Fig. 239.—Wooden vessel.
-"""
-
-
 @pytest.fixture
 def root(tmp_path: Path) -> Path:
     write_scan(tmp_path, "1-037", size=(2824, 3897))
     (tmp_path / "gt/fig").mkdir(parents=True)
     (tmp_path / "gt/fig/chukchi-1-037.xml").write_text(EXPORT, encoding="utf-8")
-    (tmp_path / "data").mkdir()
-    (tmp_path / "data/readings.md").write_text(READINGS, encoding="utf-8")
     return tmp_path
 
 
@@ -89,25 +78,8 @@ def test_ids_are_reminted_in_geometric_order(root):
 
 
 def test_the_remap_covers_captions_only(root):
-    """Only FigDesc suffixes key `readings.md`, so only they can move a key."""
+    """Only FigDesc suffixes ever keyed a caption, so only they can move a key."""
     assert F.migrate_page("1-037", root)["remap"] == {"ca04178c": "002"}
-
-
-# --- the readings key --------------------------------------------------------
-
-def test_headers_are_rewritten_and_counted(root):
-    text, n = F.remap_readings(READINGS, {"1-037": {"ca04178c": "002"}})
-    assert "## 1-037|002" in text and n == 1
-    assert "## 2-068|44f33841" in text          # no map for it, left alone
-
-
-def test_only_headers_move_never_the_caption_text(root):
-    """A caption may legitimately print something shaped like a key, so a global
-    substitution is the one implementation that must not be used."""
-    text = "## 1-037|ca04178c\nSee ca04178c in the plate.\n"
-    out, n = F.remap_readings(text, {"1-037": {"ca04178c": "002"}})
-    assert out == "## 1-037|002\nSee ca04178c in the plate.\n"
-    assert n == 1
 
 
 # --- the run -----------------------------------------------------------------
@@ -117,13 +89,12 @@ def test_a_dry_run_writes_nothing(root):
     out = F.migrate_store(root)
     assert out["committed"] is False
     assert (root / "gt/fig/chukchi-1-037.xml").read_bytes() == before
-    assert (root / "data/readings.md").read_text() == READINGS
 
 
-def test_a_commit_moves_both_files_together(root):
+def test_a_commit_rewrites_the_store(root):
     out = F.migrate_store(root, commit=True)
     assert out["committed"] is True
-    assert (out["captions"], out["headers_rewritten"]) == (1, 1)
+    assert out["captions"] == 1
 
     blocks = F.read_blocks(F.alto_for("1-037", root), with_points=True)
     assert [b["id"] for b in blocks] == ["fig_1-037_001", "fig_1-037_002"]
@@ -131,7 +102,6 @@ def test_a_commit_moves_both_files_together(root):
     # `not-a-rectangle` error was firing on across the whole un-migrated store.
     cap = next(b for b in blocks if b["label"] == F.FIGDESC)
     assert cap["points"] == "782 2541 1826 2541 1826 2639 782 2639"
-    assert "## 1-037|002" in (root / "data/readings.md").read_text()
 
 
 def test_the_page_reconciles_after(root):
@@ -143,8 +113,8 @@ def test_the_page_reconciles_after(root):
     reporting an empty list forever.
 
     What is left is `1-037|002`, the migrated FigDesc, carrying no text — because
-    this fixture's caption is in the migration's own `READINGS` string and the
-    migration moves *keys*, never text into the store. `fig restore` is what fills
+    this fixture supplies no caption text at all and the migration moves *keys*,
+    never text into the store. `fig restore` is what fills
     a block, and a page that has not had it is exactly what `missing` is for.
     """
     F.migrate_store(root, commit=True)

@@ -62,7 +62,7 @@ def nfd(s):
 
 def _config(root, cfg=None):
     (root / "config").mkdir(parents=True, exist_ok=True)
-    (root / "config" / "marks_config.json").write_text(
+    (root / "config" / "marks.json").write_text(
         json.dumps(cfg or CFG, ensure_ascii=False), encoding="utf-8")
 
 

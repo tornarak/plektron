@@ -1030,8 +1030,8 @@ def test_a_train_merge_folds_the_training_copy_and_not_the_store(tmp_path):
     (tmp_path / "config").mkdir(parents=True, exist_ok=True)
     import json
 
-    cfg = json.loads((REPO / "config/zones_config.json").read_text(encoding="utf-8"))
-    (tmp_path / "config/zones_config.json").write_text(json.dumps(cfg), encoding="utf-8")
+    cfg = json.loads((REPO / "config/zones.json").read_text(encoding="utf-8"))
+    (tmp_path / "config/zones.json").write_text(json.dumps(cfg), encoding="utf-8")
 
     rep = zn.assemble(tmp_path)
     assert rep["merged"] == "MainZone-Quote->MainZone-Other"
@@ -1059,8 +1059,8 @@ def test_a_declared_fold_no_page_carries_still_links(tmp_path):
     (tmp_path / zn.BLOTDIR).mkdir(parents=True, exist_ok=True)
     (tmp_path / zn.BLOTDIR / "chukchi-1-048.png").write_bytes(b"x")
     (tmp_path / "config").mkdir(parents=True, exist_ok=True)
-    cfg = json.loads((REPO / "config/zones_config.json").read_text(encoding="utf-8"))
-    (tmp_path / "config/zones_config.json").write_text(json.dumps(cfg), encoding="utf-8")
+    cfg = json.loads((REPO / "config/zones.json").read_text(encoding="utf-8"))
+    (tmp_path / "config/zones.json").write_text(json.dumps(cfg), encoding="utf-8")
 
     rep = zn.assemble(tmp_path)
     assert rep["merged"] == "MainZone-Quote->MainZone-Other"   # declared...
@@ -1077,9 +1077,9 @@ def test_no_merge_declared_keeps_assemble_on_symlinks(tmp_path):
     (tmp_path / zn.BLOTDIR).mkdir(parents=True, exist_ok=True)
     (tmp_path / zn.BLOTDIR / "chukchi-1-048.png").write_bytes(b"x")
     (tmp_path / "config").mkdir(parents=True, exist_ok=True)
-    cfg = json.loads((REPO / "config/zones_config.json").read_text(encoding="utf-8"))
+    cfg = json.loads((REPO / "config/zones.json").read_text(encoding="utf-8"))
     cfg.pop("train_merges", None)
-    (tmp_path / "config/zones_config.json").write_text(json.dumps(cfg), encoding="utf-8")
+    (tmp_path / "config/zones.json").write_text(json.dumps(cfg), encoding="utf-8")
     rep = zn.assemble(tmp_path)
     assert rep["merged"] == "" and rep["merged_pages"] == 0
     assert (tmp_path / zn.DATADIR / "chukchi-1-048.xml").is_symlink()

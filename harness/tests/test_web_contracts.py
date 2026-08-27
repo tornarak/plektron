@@ -159,7 +159,7 @@ def _app(root):
     from harness.web import Sessions, create_app
     repo = Path(__file__).resolve().parent.parent.parent
     (root / "config").mkdir(parents=True, exist_ok=True)
-    shutil.copy(repo / "config" / "zones_config.json", root / "config")
+    shutil.copy(repo / "config" / "zones.json", root / "config")
     return TestClient(create_app(root, Sessions(root=root), editor="zones"))
 
 

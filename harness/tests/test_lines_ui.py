@@ -68,8 +68,8 @@ def root(tmp_path: Path) -> Path:
     Image.new("RGB", (1200, 1600), "white").save(
         tmp_path / "scans" / "chukchi-1-048.png")
     (tmp_path / "config").mkdir()
-    shutil.copy(Path("config") / "zones_config.json", tmp_path / "config")
-    shutil.copy(Path("config") / "lines_config.json", tmp_path / "config")
+    shutil.copy(Path("config") / "zones.json", tmp_path / "config")
+    shutil.copy(Path("config") / "lines.json", tmp_path / "config")
     alto = tmp_path / "gt" / "ocr" / "chukchi-1-048.xml"
     alto.parent.mkdir(parents=True)
     alto.write_text(
@@ -268,7 +268,7 @@ def test_the_mount_prefix_reaches_the_client(root):
 
 
 def test_the_generated_layer_css_carries_a_validator(root):
-    """It is derived from `config/lines_config.json`, so it cannot be a static
+    """It is derived from `config/lines.json`, so it cannot be a static
     file — but it is still an asset, and it gets an ETag keyed on the config's
     own contents so an edit invalidates it and nothing else does."""
     c = client(root)

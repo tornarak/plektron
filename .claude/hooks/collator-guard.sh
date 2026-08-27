@@ -71,7 +71,7 @@ readable() {
     # silently stops matching does not fail, it refuses a file the collator is
     # meant to have, which reads as the file being forbidden rather than moved.
     */edition/*|edition/*) return 0 ;;
-    # The pass configuration and the editor's rulings — marks_config.json,
+    # The pass configuration and the editor's rulings — marks.json,
     # marks_exempt.json, lexicon_extra.txt.
     */config/*|config/*) return 0 ;;
     # What is left in `data/`: the TEI schema and the machine receipts.
@@ -101,7 +101,7 @@ case "$TOOL" in
         exit 2 ;;
     esac
     readable "$P" && allow "collator reading its page, the raster, the apparatus, or its own memory"
-    echo "Blocked: you read your page's raster and working directory, tei/, the normative text (concordance.md, CLAUDE.md, harness/README.md, docs/), data/, and your own memory under $MEMORY. Nothing else on this machine is evidence about your page. If something you genuinely need is outside that list, say so in your report rather than reaching around the rule." >&2
+    echo "Blocked: you read your page's raster and working directory, tei/, the normative text (concordance.md, CLAUDE.md, harness/README.md, docs/), edition/, config/ and data/, and your own memory under $MEMORY. Nothing else on this machine is evidence about your page. If something you genuinely need is outside that list, say so in your report rather than reaching around the rule." >&2
     exit 2 ;;
 
   Write|Edit)

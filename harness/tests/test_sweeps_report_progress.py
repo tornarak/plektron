@@ -291,7 +291,7 @@ def test_the_dp_decode_is_cached_under_its_config(tmp_path, fake_segmenter,
     actually runs paying full price, which is how the omission was caught.
 
     `_dp_zones` reads the config, so the config is part of the input and part of
-    the key: an edit to `config/zones_config.json` must miss, not hand back zones
+    the key: an edit to `config/zones.json` must miss, not hand back zones
     decoded against numbers nobody is using any more.
     """
     calls = {"n": 0}

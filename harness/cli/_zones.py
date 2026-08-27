@@ -68,7 +68,7 @@ DECODE_HELP = (
 def register(cli):
     g = group(cli, "zones", "the seven-type page segmentation in "
               "gt/zones/ — a vertical partition of the text column, two "
-              "clicks per zone, x taken from config/zones_config.json and "
+              "clicks per zone, x taken from config/zones.json and "
               "never from the pointer — plus the segmenter trained on it",
               sections=("The store", "The segmenter"), section="The passes")
 

@@ -133,8 +133,8 @@ Layout, all at the repo root:
               sources are outside the repo, so a clone cannot rebuild it.
               tools/build_geo.py builds, SOURCES.md records provenance,
               `geo list` is the census.
-    config/ what a pass is tuned by, validated at load — zones_config.json
-            lines_config.json marks_config.json — and the editor's rulings over
+    config/ what a pass is tuned by, validated at load — zones.json
+            lines.json marks.json — and the editor's rulings over
             one: marks_exempt.json lexicon_extra.txt, `#ed` **rank** but no part
             of the edition, which is why they sit here and not in it.
     data/   nothing authored: pdf_images.json _migrated.json are machine

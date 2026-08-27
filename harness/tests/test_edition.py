@@ -1626,12 +1626,12 @@ ALTO_NS = "http://www.loc.gov/standards/alto/ns-v4#"
 def _gt(root: Path, ref: str, lines: list[str]) -> None:
     """A ground-truth page, plus the committed fold table `lookup.index` needs.
 
-    The real `config/marks_config.json` and not a copy of one: the fold is what
+    The real `config/marks.json` and not a copy of one: the fold is what
     decides whether two settings are one word, and a test writing its own would
     be asserting against a table nothing in the corpus uses.
     """
     (root / "config").mkdir(parents=True, exist_ok=True)
-    shutil.copy(REPO / "config" / "marks_config.json", root / "config")
+    shutil.copy(REPO / "config" / "marks.json", root / "config")
     p = root / "gt" / "ocr" / f"chukchi-{ref}.xml"
     p.parent.mkdir(parents=True, exist_ok=True)
     body = "".join(

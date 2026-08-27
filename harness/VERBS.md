@@ -596,13 +596,13 @@ PATTERN          a Python regular expression, normalized to NFD before it compil
 
 ### ocr edit [REF ...]
 **Does** the line-correction editor in the browser — the human end of `gaps`, and `zones edit`'s sibling one stage down. Adopt a band as a line, rule it not type, or rule it already keyed by a line whose box strangled it; the verdicts in one sitting, because deciding between them is one act.
-**Reads** the `--store` store, `scans/`, `gt/zones/` and `gt/lines/` with both `_ink_exempt.json` layers, `gt/fig/`, `config/zones_config.json`.
+**Reads** the `--store` store, `scans/`, `gt/zones/` and `gt/lines/` with both `_ink_exempt.json` layers, `gt/fig/`, `config/zones.json`.
 **Writes** `gt/lines/` and `gt/lines/_ink_exempt.json` on save. **No `--commit`** — the save click is the human act, the same contract `zones edit` and `ocr review` have.
 **Exit** 2 if nothing supplies a start page.
 **Note** **it draws and never keys.** A recovered line's text is adjudicated in `ocr review` like any other line's and written by `restore`; duplicating that machinery here would be a second place a reading could be originated, and this store exists on the argument that its writer cannot originate one.
 **Note** **a box in no zone is refused, and the refusal names `zones edit`.** Ink no region covers is a defect in the *zoning*, not a line this editor can adopt — recording a line inside no region would leave the region missing. It is also what keeps the two ink checks disjoint. A page with no zoning at all is refused outright: line correction comes after zoning, which is a stage-order invariant rather than a statement about this corpus.
 **Note** `b` toggles the blotted view, rendered on demand with **both** ruling layers painted, so what is left is what nobody has settled. That is deliberately the opposite of `ocr blot`'s default, which stays an independent witness.
-**Note** **every colour and every key is `config/lines_config.json`'s**, `config/zones_config.json`'s shape and validated the same way — a key bound twice, a layer the editor paints by name and the config does not declare, a `zoom_step` of 1, are each refused at load rather than met as a dead key three pages into a sitting. The overlay's stylesheet and the panel's key list are both *generated* from it, so a rebound key moves in one place and the help cannot lie about the tool.
+**Note** **every colour and every key is `config/lines.json`'s**, `config/zones.json`'s shape and validated the same way — a key bound twice, a layer the editor paints by name and the config does not declare, a `zoom_step` of 1, are each refused at load rather than met as a dead key three pages into a sitting. The overlay's stylesheet and the panel's key list are both *generated* from it, so a rebound key moves in one place and the help cannot lie about the tool.
 **Note** **the panel is a control surface, not a legend**: every action's row does the thing when clicked, so it is reachable without knowing its shortcut or having kept one. A key may be set to `null` — the shortcut comes off the keyboard, the control stays. Rows whose action has nothing to act on (delete with no selection, withdraw with no ruling) draw dimmed and stay put, since a control that comes and goes is harder to learn than one that is visibly not applicable.
 **Note** zoom is the instrument, not a convenience: the subject is a mark ~40 px wide on a 2824 px leaf, which at fit is some 17 screen pixels — too small to tell a numeral from a printed rule. `frame_band` jumps straight to the first undecided band at a legible step.
 **Note** a ruling can be **withdrawn**, as in `zones edit`, and the page's rulings are listed with their reasons beside the keys — each showing *which* disposition it is, not only its note, since two rulings that silence the same band for opposite reasons must not render alike. A reason recorded once through a prompt and never shown again is a record nobody can check, and the whole argument for requiring one is that a year later it is all that separates a ruled artifact from a hidden mistake.
@@ -907,7 +907,7 @@ Opcodes come from difflib over **NFD** text, so a dropped combining mark ranks a
 
 ### proposal marks REF [REF ...]
 **Does** asks whether a batch's character distribution is plausible, before a human opens it — three arms over the Tier-1 tokens of each page's proposal, plus a fourth that runs over *every* token because the other three cannot see outside their own population.
-**Reads** `review/PP-NNN/proposal.json` (or `decision.json` under `--decisions`), `gt/ocr/` for the prior, `config/marks_config.json`.
+**Reads** `review/PP-NNN/proposal.json` (or `decision.json` under `--decisions`), `gt/ocr/` for the prior, `config/marks.json`.
 **Writes** —
 **Exit** always 0 — measurement. An outlier is a page to re-read, never a page to correct by ratio. Refuses (exit 2) only when a named ref has no source file.
 **Note** takes several refs, like `ocr review`, and "batch" means only that — the refs you pass. Most pages of this book carry a handful of Tier-1 terms, so a coordinator hands it every ref of a pass at once and gets a sample worth holding against the corpus. `dispatch.md` used to prescribe eyeballing `lexicon marks` here; this is that comparison computed, and `lexicon marks` could not do it — corpus-wide only, and grouped by base letter, so it cannot express `ɪ`/`i`, which is not a mark on a base.
@@ -943,21 +943,21 @@ The band is the **per-page** spread over ground-truth pages clearing `--min-type
 --all            every review/ page with a proposal
 --decisions      read decision.json instead of proposal.json — the last state
                  before restore writes [off]
---min-types N    types a scope needs before ratio judges it [config/marks_config.json]
+--min-types N    types a scope needs before ratio judges it [config/marks.json]
 --rare-max PCT   a confusable at or below this share of its axis is rare enough
-                 to list every occurrence [config/marks_config.json]
+                 to list every occurrence [config/marks.json]
 --root --json --toon --pager
 ```
 
 ### proposal check [REF ...]
 **Does** cross-checks `resolved` against the codepoints `text` actually contains; flags a straight apostrophe, a dot-prone bare suffix, a note whose `class` is outside the closed set (doubt/semantic/print/draft/layout/artifact) or absent, a line ending in sentence punctuation the draft does not end in, a note naming a lexicon key the line then types by hand, and — via `marks` — a rare form or a word spelled two ways against the store.
-**Reads** `review/PP-NNN/proposal.json`, plus `gt/ocr/` and `config/marks_config.json` for the two corpus arms, the lexicon index where a note could name a key, and **`mz/ocr/` by name** for the draft the punctuation arm compares against — the recognizer's reading is the second witness and can never be the proposal's own output. It used to read the `ocr/` view, which on every restored page was this proposal's own adjudicated text, so the arm compared a reading with itself and went quiet: the shape `ocr diff` refuses outright.
+**Reads** `review/PP-NNN/proposal.json`, plus `gt/ocr/` and `config/marks.json` for the two corpus arms, the lexicon index where a note could name a key, and **`mz/ocr/` by name** for the draft the punctuation arm compares against — the recognizer's reading is the second witness and can never be the proposal's own output. It used to read the `ocr/` view, which on every restored page was this proposal's own adjudicated text, so the arm compared a reading with itself and went quiet: the shape `ocr diff` refuses outright.
 **Note** **the named-key arm tests the expansion against the line, not whether a key was mentioned.** It fires only where the proposal itself wrote the key — a brace in a `note`, where braces do nothing, or a bare key beside the word — *and* `text` already holds exactly what that key expands to. So a reader that read its page against the corpus and kept what it saw is silent by construction: `3-085`'s `Eiñeˊwg̣i` against a ratified `Eiñewg̣i`, `3-092`'s capital `Tatk-Omruˊwg̣ê`, `3-103`'s `Mɪˊs˙qän` against `Mɪˊs˙qᴀn` all expand to something the line does not contain. The general form of this arm — every hand-typed form a lookup could have supplied — is deliberately absent: it would fire on ordinary reading on nearly every Tier-1 line, and its only reading would be "use a handle here", which is pressure off the raster. Measured over chapter XX's twenty-seven pages, the narrow arm found eight, on five pages. Advisory, because a handle is a saving and not a reading.
 **Note** **a line index the store does not have is `restore`'s refusal, not this check's finding.** A proposal is keyed by the ALTO's indices and `restore` joins on them, so a key naming no `TextLine` is text with no box to land in. This used to flag it at the reader, whose remedy it never was — "that is upstream human action and not yours to correct" — while `restore` dropped the key in silence. The join is `restore`'s, so both halves of it refuse there now. A top-level `segmenter_missed` block — the retired field that used to carry this inside the proposal — is still a defect here; an empty one `proposal fix` strips silently, a non-empty one a human must disposition. This cannot see the neighbouring fault, a stray reading appended to a *real* line's text (`1-037`'s folio); that one is the reader contract's.
 **Writes** —
 **Exit** 1 on a **defect**, on any ref — one dirty page fails the batch, which is the contract a gate must have or a batch would launder a failure. Never on an advisory alone, unless `--strict`.
 **Note** **the exit code is also printed, as a closing `verdict` section** — `exit` and a `means` line naming why it is what it is. A groundtruth-reader is refused shell operators, so `$?` is a fact about its own work it cannot obtain, and it was spending turns on `proposal check REF; echo "EXIT: $?"` to get it — four such reaches across three readers in the `1-064`–`1-069` batch, a turn apiece against a budget of eighty. Relaxing the operator rule to admit one idiom would buy back one fact and give up the property that makes the surface auditable; printing the fact costs a row. And `means` carries what `$?` cannot: **the two exit-0 cases are not the same result** — nothing found, versus advisories found and deliberately not gated on — and only the second leaves the reader work to do, in the line's `note`. `corpus normalize` closes the same way, for the same reason and the same readers.
-**Note** the corpus arms are `proposal marks`'s two **deterministic** ones, run over the single page so a reader catches its own slip before writing its report. `ratio` is deliberately not among them: one page is a poor sample and it is the arm that cannot decide, so folding it into a per-page gate would assert exactly what `marks` refuses to. A repeated form is one issue naming its other lines, not one issue per occurrence — a keyer's single habit is one fault. The prior is leave-one-out here too, so a revision is not checked against its own descendant. Where `config/marks_config.json` is absent (a fresh clone), the arms are skipped and the rest still runs.
+**Note** the corpus arms are `proposal marks`'s two **deterministic** ones, run over the single page so a reader catches its own slip before writing its report. `ratio` is deliberately not among them: one page is a poor sample and it is the arm that cannot decide, so folding it into a per-page gate would assert exactly what `marks` refuses to. A repeated form is one issue naming its other lines, not one issue per occurrence — a keyer's single habit is one fault. The prior is leave-one-out here too, so a revision is not checked against its own descendant. Where `config/marks.json` is absent (a fresh clone), the arms are skipped and the rest still runs.
 
 **Overlap with the suffix check is wanted, not deduplicated**: a bare `-gɪn` yields both a `bare suffix` and a `rare form` issue on the same line. They reach one defect from different directions — a measured shape and a corpus share — and a second witness this cheap is what the governing principle asks for.
 
@@ -975,7 +975,7 @@ The band is the **per-page** spread over ground-truth pages clearing `--min-type
 
 ### proposal fix [REF ...]
 **Does** expands every `{key}` handle in a `text` field to the ratified form, recording the line as typed in `as_typed`; then applies the one unambiguous correction — a single mark `resolved` names that `text` lacks, swapped for the single mark `text` has that `resolved` lacks.
-**Reads** the proposal, and `gt/ocr/` + `config/marks_config.json` when a line carries a handle.
+**Reads** the proposal, and `gt/ocr/` + `config/marks.json` when a line carries a handle.
 **Writes** the proposal, in place — keeping one `.prev` and journalling both sides of every edit to `proposal.jsonl`.
 **Exit** always 0; raises on a handle that does not resolve, and writes nothing.
 **Note** nothing to clobber under `--all`: it repairs only what is already wrong, so a page with nothing to fix is untouched.
@@ -1060,7 +1060,7 @@ opinion of which pages are held out.
 
 ### zones check [REF ...]
 **Does** the gate. Named pages in full; `--all` sweeps every keyed page.
-**Reads** the `--store` store, `config/zones_config.json`, the `gt/` sidecars, and `scans/` when ink runs.
+**Reads** the `--store` store, `config/zones.json`, the `gt/` sidecars, and `scans/` when ink runs.
 **Writes** `gt/zones/_ink_cache.json` (derived) when it reads a raster.
 **Exit** 1 if any named page has errors and `--store gt`; **always 0 under `--store mz`**, which is measurement.
 **Note** **named pages always ink-check, however many.** `--ink` is a sweep economy — ~0.20 s a page against ~1 ms for the file-level checks — and naming two pages must not quietly buy a weaker check than naming one, since this is the only check that can see a *missing* zone. Pooled, `errors`/`warnings`/`uncovered` become counts in the row and each gets its own ref-keyed table; one ref prints the report exactly as it always did.
@@ -1078,7 +1078,7 @@ opinion of which pages are held out.
 
 ### zones edit [REF ...]
 **Does** the segmentation editor on 127.0.0.1, arrow keys walking the corpus. `/` and `?` cycle the store shown (`gt`, `mz`, `paras`); a machine page opens as an unsaved proposal.
-**Reads** both stores, `config/zones_config.json`, `scans/`.
+**Reads** both stores, `config/zones.json`, `scans/`.
 **Writes** `gt/zones/` on save — no `--commit`, the save click is the human act.
 **Exit** 2 if nothing supplies a start page. This is the one argument check the parser cannot express.
 **Note** **several refs *are* an itinerary**: the session opens at the first and walks the list, which is the same work-list an `.lst` supplies, spelled for the two-page case that would otherwise want a scratch file. One ref is a page to start at, not the only page reachable. `--all` walks the book.
@@ -1119,7 +1119,7 @@ opinion of which pages are held out.
 
 ### zones diff [REF ...]
 **Does** what differs between the two stores, paired by vertical overlap: `only_in_gt`, `only_in_mz`, `label`, `edge`. Prints a summary, then the rows, then a per-page **`departure`** table — a different question from the rows: not *what* differs but **how far the human went beyond the model**, on the scale `--remark-eval` selects held-out pages by (`identical` < `geometry only` < `a label differs` < `zone count differs` < `no prediction`, plus `exempt`, which is off the scale).
-**Reads** both stores, `config/zones_config.json`, the split lists.
+**Reads** both stores, `config/zones.json`, the split lists.
 **Writes** —
 **Exit** always 0 — measurement.
 **Note** an aggregate: refs scope the summary rather than multiplying it, and the rows already carry `ref`.
@@ -1132,7 +1132,7 @@ opinion of which pages are held out.
 
 ### zones paragraphs [REF ...]
 **Does** audits the paragraph-boundary rule both ways. `false_negative` is a recall figure; `false_positive` is a **worklist, not a precision figure**, since gt cannot arbitrate a rule that corrects it.
-**Reads** `gt/zones/`, `scans/w-figs-blotted/`, `config/zones_config.json`, `gt/zones/_para_exempt.json`.
+**Reads** `gt/zones/`, `scans/w-figs-blotted/`, `config/zones.json`, `gt/zones/_para_exempt.json`.
 **Writes** —
 **Exit** always 0 — measurement.
 **Note** an aggregate, like `zones diff`.
@@ -1245,7 +1245,7 @@ entry.
 ### lexicon lookup QUERY...
 **Does** finds a ratified native form by a typeable key and shows the lines it was printed on, so a form's sense is readable without opening the page — `Kuluˊči` alone is a string, "south of Kuluˊči Bay" is a place. The key is what a reader writes in braces for `proposal set` to expand. Match is a substring of the key, the fold, the form, or the key's bare reduction, so `kulu` reaches it. A non-ASCII query is matched as its key too (`marks.handle_key`), so the form as the book prints it reaches it as well.
 **Note** **a miss is a fact about the query before it is one about the corpus**, and two shapes produced silent wrong negatives. The printed form matched nothing, because the bare reduction drops a small cap whole (`Taˊn˙ñɪn` → `tannn`) while its key spells the letter `i_` and keeps the `i` — the corpus's commonest glyph, parting the two sides the reduction exists to align. And a hyphenated compound the corpus holds only as its elements returned nothing with every element ratified; the elements are now retried **after** the whole misses, and `split` names them, so a widened search says so rather than answering a question nobody asked. `3-125` hand-keyed `Taˊn˙ñɪn` against ten occurrences on six pages for the first reason, and generalized the one miss across four lines. The floor line still holds on top of both: a form carrying no inventory glyph is invisible here whatever the query.
-**Reads** `gt/ocr/`, `config/marks_config.json`. **Writes** — **Exit** 0.
+**Reads** `gt/ocr/`, `config/marks.json`. **Writes** — **Exit** 0.
 ```
 QUERY...       any substring; several are an OR, and one call is one index
                build — a page's whole unglossed vocabulary belongs in it
@@ -1300,7 +1300,7 @@ FORM...        a keyed form, NFD or not; several are several rows
 
 ### lexicon conflicts
 **Does** one word spelled two ways across ground truth — the corpus-wide, store-side arm of `proposal marks`' `conflict`.
-**Reads** `gt/ocr/`, `config/marks_config.json`, `config/marks_exempt.json`. **Writes** — **Exit** 0.
+**Reads** `gt/ocr/`, `config/marks.json`, `config/marks_exempt.json`. **Writes** — **Exit** 0.
 ```
 --root --json --toon --pager
 ```
@@ -1708,7 +1708,7 @@ which asks, or not at all.
 
 ### fig check [PP-NNN ...]
 **Does** the gate. Named pages give their errors, warnings and exemptions in full; `--all` sweeps the store and lists only the pages with something to say.
-**Reads** `gt/fig/` or `mz/fig/` per `--store`, `gt/fig/_rule_exempt.json`, the split lists, `config/zones_config.json`, `edition/figure_numbers.json`, and each page's raster for its dimensions.
+**Reads** `gt/fig/` or `mz/fig/` per `--store`, `gt/fig/_rule_exempt.json`, the split lists, `config/zones.json`, `edition/figure_numbers.json`, and each page's raster for its dimensions.
 **Writes** —
 **Exit** 1 if any page in `gt/` has an **error**, or if the figure-number patch table names a zone the store does not hold; 0 otherwise. Always 0 for `--store mz`, which is measurement.
 ```
@@ -1718,7 +1718,7 @@ PP-NNN...     which pages; several may be given
 --root --json --toon --pager
 ```
 **Note** **three errors, and the list is short on purpose.** A label the store does not declare; a `Shape/Polygon` that is not the rectangle its own bbox claims; a box off the raster. Each is unarguable — nothing could read the first, nothing does read the second, and the third describes part of a page that does not exist.
-**Note** everything else is a **warning**: configured in `config/zones_config.json`, exemptable per page, never gating. `captions-lte-figures` is a fact about *this book* (414 pictures to 395 captions, and every caption-heavy page this store ever held turned out to be a segmentation fault). `picture-overlap` and `tiny-picture` were briefly written as errors, on the zone track's model, and that was importing a rule from a geometry regime that does not apply: zones partition the page and form a chain, so an overlap there is unrepresentable and can be refused, while figures are freely placed — an inset sits inside the frame it insets, two pictures on a plate may abut, and a 14×38 px box is suspicious rather than impossible. Over the migrated store the two produce exactly three findings (`1-189`, `1-334`, `2-085`), every one a real thing to look at and not one a thing the store must refuse to hold.
+**Note** everything else is a **warning**: configured in `config/zones.json`, exemptable per page, never gating. `captions-lte-figures` is a fact about *this book* (414 pictures to 395 captions, and every caption-heavy page this store ever held turned out to be a segmentation fault). `picture-overlap` and `tiny-picture` were briefly written as errors, on the zone track's model, and that was importing a rule from a geometry regime that does not apply: zones partition the page and form a chain, so an overlap there is unrepresentable and can be refused, while figures are freely placed — an inset sits inside the frame it insets, two pictures on a plate may abut, and a 14×38 px box is suspicious rather than impossible. Over the migrated store the two produce exactly three findings (`1-189`, `1-334`, `2-085`), every one a real thing to look at and not one a thing the store must refuse to hold.
 **Note** a corpus sweep of `gt/` also checks `edition/figure_numbers.json`, the hand-keyed table for the three figures whose number no rule can derive (`docs/apparatus.md`). Each entry names picture zones on a leaf, so it is a claim about *this* store and is verified against it rather than trusted — re-box that leaf and the patch must fail, not go stale.
 **Note** an exempted rule **still reports**, flagged, the way the zone track's do — a warning that vanished when excused would leave no way to notice the excuse had outlived its page. An exemption naming a rule the config does not declare is an *error*, since a typo would otherwise excuse nothing while reading as a considered judgement.
 

@@ -353,7 +353,7 @@ function go(ref) {
 }
 
 // **Dispatched by action name, bound in the config.** The keys live in
-// `config/lines_config.json` beside the colours, so rebinding one is an edit to a
+// `config/lines.json` beside the colours, so rebinding one is an edit to a
 // file rather than to a source string — and the loader refuses a config that
 // binds a key twice, which would otherwise present as a broken shortcut.
 // An action bound to null or "" is deliberately off the keyboard and reachable

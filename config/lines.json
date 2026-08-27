@@ -1,5 +1,5 @@
 {
- "_about": "The line-correction editor: what each layer on the page is drawn in, and what every key does. Read by `harness/lines_config.py`, handed to the browser verbatim as a JS literal, and the editor draws and binds from it — so a colour or a keystroke changes here and nowhere else. Same shape as `config/zones_config.json` on purpose: a human moving between `zones edit` and `ocr edit` should be configuring one tool with two subjects.",
+ "_about": "The line-correction editor: what each layer on the page is drawn in, and what every key does. Read by `harness/lines_config.py`, handed to the browser verbatim as a JS literal, and the editor draws and binds from it — so a colour or a keystroke changes here and nowhere else. Same shape as `config/zones.json` on purpose: a human moving between `zones edit` and `ocr edit` should be configuring one tool with two subjects.",
 
  "_layers": "Every kind of thing the overlay draws, in painting order. `fill` and `stroke` are CSS colours; `dash` non-empty makes the outline dashed. The subject of this editor is `band` and `correction` — the rest is context and is deliberately quieter. `band_no_zone` is drawn as a refusal rather than an invitation: a band in no zone is a defect in the zoning, and this editor will not adopt it.",
  "layers": [

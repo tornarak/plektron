@@ -70,7 +70,7 @@ def _page(tmp_path: Path, ref: str = "1-048") -> Path:
     # zone config — the real one, so the fixture measures the page the way the
     # corpus does rather than against a contrived set of pads.
     (tmp_path / "config").mkdir()
-    shutil.copy(Path("config") / "zones_config.json", tmp_path / "config")
+    shutil.copy(Path("config") / "zones.json", tmp_path / "config")
 
     w, h = 600, 800
     img = Image.new("RGB", (w, h), "white")

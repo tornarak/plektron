@@ -322,7 +322,7 @@ def _native(root: str, _key: bytes) -> dict:
     try:
         return lookup.index(Path(root))
     except MarksConfigError:
-        # A root with no `config/marks_config.json` has no fold table, so it has
+        # A root with no `config/marks.json` has no fold table, so it has
         # no buckets — the same answer `entities.load` gives for a missing
         # store, and for the same reason: absence is emptiness, not a 500 on a
         # page that would otherwise render.

@@ -7,7 +7,7 @@ queue replaced a text editor; this replaces eScriptorium, whose import/export lo
 is the friction the whole store layout was designed around.
 
 **The interaction is the specification.** A zone's left and right edges come from
-`config/zones_config.json`; the pointer supplies only a top and a bottom. So the
+`config/zones.json`; the pointer supplies only a top and a bottom. So the
 editor cannot express a zone of the wrong width, and the fixed-measure claim the
 training set rests on is true by construction rather than by care. Chain mode then
 makes the bottom of one zone the top of the next, which is what a vertical

@@ -150,7 +150,7 @@ def row(request: Request, ref: str = ""):
 
 @router.get("/layers.css")
 def layers_css(request: Request):
-    """The layer colours, generated from `config/lines_config.json`.
+    """The layer colours, generated from `config/lines.json`.
 
     A route rather than a static file because it is derived from a config the
     human edits, and a route rather than an inline `<style>` because it is still

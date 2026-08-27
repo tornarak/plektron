@@ -1,11 +1,11 @@
-"""Reduce `gt/fig/` to bounding boxes, re-mint block ids, re-key the readings.
+"""Reduce `gt/fig/` to bounding boxes and re-mint block ids.
 
     uv run python tools/migrate_fig_bboxes.py           # report
     uv run python tools/migrate_fig_bboxes.py --commit  # write
 
 A one-off, kept afterwards as the record of what was done — `tools/migrate_coords.py`
 is the precedent and the reason for the shape. **The logic is not here.** It lives in
-`harness/figures.py` (`migrate_page`, `remap_readings`, `migrate_store`) where the
+`harness/figures.py` (`migrate_page`, `migrate_store`) where the
 tests can reach it; this file is the driver and nothing else. A migration whose
 correctness argument sits in a script that is run once and never imported is a
 migration nobody can check afterwards.

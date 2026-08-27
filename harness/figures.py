@@ -7,7 +7,7 @@ line inside one `TextLine`. `readings()` reads them back; `save_caption_text`
 writes them, out of `review/captions/decision.json` over `proposal.json`.
 
 **It was two stores, and that is worth remembering rather than deleting.** The
-text lived in `data/readings.md`, keyed `<ref>|<zone-id suffix>`, because the
+text lived in a markdown file of its own, keyed `<ref>|<zone-id suffix>`, because the
 exported line segmentation had dropped whole printed lines and a line-level
 witness in the ALTO would have silently disagreed with the readings. The blind
 re-read pass settled that, `fig restore` moved the ratified text into the block
@@ -71,7 +71,6 @@ FIGDIR = "gt/fig"
 # segmenter then training on them. A proposal reaches a human through the editor,
 # which asks, or not at all.
 MZFIGDIR = "mz/fig"
-READINGS = "data/readings.md"
 
 #: The version the **derived rasters** stamp into their provenance — the blots,
 #: the crops, the numbered page and the contact sheets, in this module and in
@@ -94,7 +93,7 @@ PROPOSE_VERSION = 1
 
 #: The rule id `fig check` reports an unaccounted photograph under, and the key a
 #: page excuses it by in `gt/fig/_rule_exempt.json`. Declared in
-#: `config/zones_config.json` under `figures.rules` so that `unknown-exemption`
+#: `config/zones.json` under `figures.rules` so that `unknown-exemption`
 #: catches a typo in the excuse rather than letting it read as a judgement.
 UNACCOUNTED_RULE = "unaccounted-picture"
 
@@ -1236,67 +1235,37 @@ def migrate_page(ref: str, root: Path = Path("."),
             "size": raster_size(ref, root)}
 
 
-def remap_readings(text: str, remap: dict[str, dict[str, str]]) -> tuple[str, int]:
-    """Rewrite `## <ref>|<suffix>` headers through a per-ref suffix map.
-
-    Header-only and by whole line: a caption's *text* may legitimately contain
-    anything, including something shaped like a key, so a global substitution over
-    the file is the one implementation that must not be used here.
-
-    Returns the new text and the number of headers rewritten, so the caller can
-    check it against the number of FigDesc blocks rather than trusting the walk.
-    """
-    n = 0
-
-    def sub(m):
-        nonlocal n
-        ref, old = m.group(1), m.group(2)
-        new = (remap.get(ref) or {}).get(old)
-        if new is None:
-            return m.group(0)
-        n += 1
-        return f"## {ref}|{new}"
-
-    return _HDR.sub(sub, text), n
-
-
 def migrate_store(root: Path = Path("."), commit: bool = False) -> dict:
-    """Reduce every page of `gt/fig/` to boxes, re-mint ids, re-key the readings.
+    """Reduce every page of `gt/fig/` to boxes and re-mint its ids.
 
-    Report by default. `--commit` writes the 252 ALTOs and `data/readings.md`
-    together, because they are one fact in two files: a store whose ids moved and a
-    readings file still keyed to the old ones reconciles to nothing at all.
+    Report by default; `--commit` writes the 252 ALTOs. Refuses on any page whose
+    geometry would change, which is a condition the caller could not otherwise see
+    until `corpus figures` failed, by which point the store is already rewritten.
 
-    Refuses on any page whose geometry would change, and on a readings rewrite whose
-    header count does not match the FigDesc blocks the remap covered. Both are
-    conditions the caller could not otherwise see until `corpus figures` failed,
-    by which point the store is already rewritten.
+    **This migration had a second half and no longer does.** The caption text sat
+    in a markdown file keyed by the very ids this re-mints, so the two were written
+    together — a store whose ids moved and a text file still keyed to the old ones
+    reconciles to nothing at all — and a mismatch between headers rewritten and
+    blocks remapped was a refusal. That file was phased out when `fig restore`
+    moved the ratified text onto the block carrying the caption's own geometry, so
+    there is no second file to keep in step and no cross-check left to make. What
+    remains is the geometry half, which is what the record is for.
     """
     from .zones import build_alto
 
     pages, drift, changed = [], [], 0
-    remap: dict[str, dict[str, str]] = {}
     for ref in fig_refs(root):
         m = migrate_page(ref, root)
         if m["before"] != m["after"]:
             drift.append(ref)
-        remap[ref] = m["remap"]
         changed += len(m["remap"])
         pages.append(m)
 
-    text = (root / READINGS).read_text(encoding="utf-8")
-    new_text, rewritten = remap_readings(text, remap)
-
     out = {"pages": len(pages), "blocks": sum(len(p["blocks"]) for p in pages),
-           "captions": changed, "headers_rewritten": rewritten,
-           "geometry_drift": drift, "committed": False}
+           "captions": changed, "geometry_drift": drift, "committed": False}
     if drift:
         out["note"] = ("geometry changed on these pages — the reduction must be "
                        "the bbox every reader already computes, and is not")
-        return out
-    if rewritten != changed:
-        out["note"] = (f"{changed} caption blocks remapped but {rewritten} headers "
-                       "rewritten — a reading names a zone this store does not have")
         return out
     if not commit:
         out["note"] = "preview only — pass --commit to write"
@@ -1306,7 +1275,6 @@ def migrate_store(root: Path = Path("."), commit: bool = False) -> dict:
         tree = build_alto(p["ref"], p["blocks"], p["size"], id_prefix="fig_")
         tree.write(str(alto_for(p["ref"], root)), xml_declaration=True,
                    encoding="UTF-8", standalone=None, pretty_print=True)
-    write_atomic(root / READINGS, new_text)
     out["committed"] = True
     return out
 
@@ -1630,13 +1598,11 @@ NOTE_KEYWORDS = (
 )
 TERMINAL_KEYWORDS = ("VERBATIM", "MISPRINT")
 
-_HDR = re.compile(r"^## (\S+?)\|(\S+)$", re.M)
-
 
 def _page_readings(ref: str, root: Path) -> dict[str, dict]:
     """One page's captions, off its own `gt/fig/` ALTO. `{}` for a page with none.
 
-    NFD on read, keying spec §1's form and the rule `data/readings.md` kept before
+    NFD on read, keying spec §1's form and the rule the old markdown store kept before
     it. `save_caption_text` writes what the adjudication holds and `corpus
     normalize` gates the store, but a normal form that depends on which writer ran
     is exactly what folding here prevents.
@@ -1669,7 +1635,7 @@ def readings(root: Path = Path(".")) -> dict[str, dict]:
     """Every caption in `gt/fig/`, as `{"<ref>|<zone-suffix>": record}`.
 
     **The store holds the caption, and this is how it is read back.** It used to
-    parse `data/readings.md`, which was the caption store before the adjudicated
+    parse a separate markdown file, which was the caption store before the adjudicated
     text moved into the ALTO under the block that carries the caption's own
     geometry. Both files existed for a while and **58 of the 395 captions had
     drifted apart** — `½` against `1/2`, catalogue numbers that gained a suffix
@@ -1702,7 +1668,7 @@ def readings_for(ref: str, root: Path = Path("."),
     `all_readings` is a `readings(root)` a caller already holds — `reconcile` and
     `tei generate` sweep the store once and hand it down. Without it this now
     reads **one page's ALTO** rather than the whole caption store, which reverses
-    the old cost: `data/readings.md` had to be parsed entire to answer about one
+    the old cost: the whole markdown store had to be parsed to answer about one
     page, and a page's own file answers directly.
     """
     ref = norm_ref(ref)
@@ -2088,7 +2054,7 @@ def figure_boxes(ref: str, root: Path = Path("."),
 
 
 #: Fallback for `figures.float_min_residual` when the book's config omits it.
-#: **A knob, not a discovery** — the real one lives in `config/zones_config.json`,
+#: **A knob, not a discovery** — the real one lives in `config/zones.json`,
 #: because it is a fact about how a particular book sets its pictures and this
 #: pipeline is meant for more than one. A default here only keeps a config that
 #: predates the key working.
@@ -2481,7 +2447,7 @@ def reconcile(root: Path = Path("."), tick: Callable | None = None) -> dict:
 
     **There is no `orphan` any more, and its removal is the point of the
     retirement.** It meant "a reading whose zone is gone" and it was the other
-    half of a cross-check between two stores — `data/readings.md` held the text,
+    half of a cross-check between two stores — a markdown file held the text,
     this store held the geometry, and either could name a block the other did not.
     The text now lives on the block, so a caption cannot outlive the thing it
     captions and the list could only ever be empty. A check that cannot fail is a

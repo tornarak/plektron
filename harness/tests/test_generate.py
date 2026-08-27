@@ -95,8 +95,8 @@ def stores(tmp_path: Path, ref: str, blocks, bands=None) -> None:
     """
     cfg = tmp_path / "config"
     cfg.mkdir(exist_ok=True)
-    (cfg / "zones_config.json").write_bytes(
-        (REPO / "config" / "zones_config.json").read_bytes())
+    (cfg / "zones.json").write_bytes(
+        (REPO / "config" / "zones.json").read_bytes())
     write_scan(tmp_path, ref)
     alto(tmp_path, ref, blocks)
     save_zones(ref, bands if bands is not None else bands_for(blocks), tmp_path)
@@ -511,7 +511,7 @@ def test_a_line_in_no_zone_is_kept_and_counted(tmp_path):
 
 
 def test_an_unknown_label_is_named_rather_than_silently_prose(tmp_path):
-    """The vocabulary lives in `config/zones_config.json` and can grow without this
+    """The vocabulary lives in `config/zones.json` and can grow without this
     module hearing about it. A label with no rule here is a fact about the
     generator, so it says which label it did not know instead of quietly choosing
     a side."""

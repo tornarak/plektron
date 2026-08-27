@@ -1,4 +1,4 @@
-"""`config/lines_config.json` — the line editor's colours and keys, validated at load.
+"""`config/lines.json` — the line editor's colours and keys, validated at load.
 
 `zones_config.py`'s sibling and deliberately the same shape: a human moving
 between the two editors should be configuring one tool with two subjects, not
@@ -20,12 +20,12 @@ import pytest
 
 from harness import lines_config as lc
 
-REAL = json.loads((Path("config") / "lines_config.json").read_text(encoding="utf-8"))
+REAL = json.loads((Path("config") / "lines.json").read_text(encoding="utf-8"))
 
 
 def _write(tmp_path: Path, cfg: dict) -> Path:
     (tmp_path / "config").mkdir(parents=True, exist_ok=True)
-    (tmp_path / "config" / "lines_config.json").write_text(
+    (tmp_path / "config" / "lines.json").write_text(
         json.dumps(cfg), encoding="utf-8")
     return tmp_path
 
@@ -47,7 +47,7 @@ def _page(tmp_path: Path, cfg: dict, ref: str = "1-048") -> str:
     from harness.web import Sessions, create_app
 
     root = _write(tmp_path, cfg)
-    shutil.copy(Path("config") / "zones_config.json", root / "config")
+    shutil.copy(Path("config") / "zones.json", root / "config")
     (root / "scans").mkdir(exist_ok=True)
     Image.new("RGB", (600, 800), "white").save(
         root / "scans" / f"chukchi-{ref}.png")

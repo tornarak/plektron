@@ -411,7 +411,7 @@ def test_figure_boxes_is_keyed_on_that_leafs_own_file(tmp_path, monkeypatch):
 def test_fig_layout_is_keyed_on_both_files(tmp_path, monkeypatch):
     """Geometry and zones, and the captions ride in on the first of them.
 
-    This named three files while the caption text lived in `data/readings.md`,
+    This named three files while the caption text lived in its own markdown store,
     and the third was the one an obvious key would miss: the captions decide the
     fold and therefore which boxes belong to which figure, so a corrected reading
     moves the placement without touching either ALTO. That is still true — the
@@ -654,7 +654,7 @@ def test_the_native_memo_is_the_no_exclude_index_only(tmp_path, monkeypatch):
 
 @pytest.mark.xfail(strict=True, reason="the fold table is not in native's key")
 def test_native_notices_the_fold_table(tmp_path, monkeypatch):
-    """`lookup.index` reads `config/marks_config.json` for the contrasts it folds
+    """`lookup.index` reads `config/marks.json` for the contrasts it folds
     on, so the fold table decides the buckets — and it is not in the key.
 
     Marked expected-to-fail rather than fixed here: this file is a gate, not a
@@ -673,6 +673,6 @@ def test_native_notices_the_fold_table(tmp_path, monkeypatch):
     write(tmp_path / CONFIG, json.dumps({"contrasts": []}))
 
     pins(lambda: stores.native(tmp_path),
-         ("config/marks_config.json",
+         ("config/marks.json",
           lambda: write(tmp_path / CONFIG,
                         json.dumps({"contrasts": ["˙"]}))))

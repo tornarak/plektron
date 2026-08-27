@@ -96,7 +96,7 @@ from .detectors import (
 )
 from .refs import norm_ref
 
-CONFIG = "config/marks_config.json"
+CONFIG = "config/marks.json"
 
 
 class MarksConfigError(ValueError):
@@ -113,7 +113,7 @@ def config_path(root: Path = Path(".")) -> Path:
 
 
 def load_config(root: Path = Path(".")) -> dict:
-    """Read and check `config/marks_config.json`.
+    """Read and check `config/marks.json`.
 
     Declares *what to compare and how hard*, and never the priors — those come
     from `gt/ocr/` at run time so the check recalibrates as the store grows
@@ -871,7 +871,7 @@ def page_issues(path: Path, ref: str, root: Path = Path("."),
     would report a keyer's single habit as several independent faults.
 
     Returns nothing rather than raising when the config is absent — a reader
-    running `proposal check` on a clone that has no `config/marks_config.json`
+    running `proposal check` on a clone that has no `config/marks.json`
     should get the checks that do not need it, not a traceback.
 
     **`cohort` is the leave-one-out set and the batch is its unit.** Excluding

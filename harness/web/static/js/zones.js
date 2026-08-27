@@ -1161,7 +1161,7 @@ async function save() {
     // The one thing a human has to leave the editor to finish. Said now, naming
     // the block, rather than left for `corpus figures` to find as an orphan.
     if ((res.readings_missing || []).length)
-      extra += ` · key ${res.readings_missing.join(', ')} in data/readings.md`;
+      extra += ` · ${res.readings_missing.join(', ')} has no caption text yet — read it in the caption pass, then 'harness fig restore --commit'`;
     S.issues = S.issues
       .concat((res.fig_errors || []).map(e => ({...e, kind: 'e', exempted: false})))
       .concat((res.fig_warnings || []).map(w => ({...w, kind: 'w'})));

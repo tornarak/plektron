@@ -1,7 +1,7 @@
 """`gt/zones/`: the seven-type page segmentation, its store and its checks.
 
 A zone here is a **fixed-width band of the text column** — two clicks give its top
-and bottom, and its left and right edges come from `config/zones_config.json`, never
+and bottom, and its left and right edges come from `config/zones.json`, never
 from the pointer. That is not a shortcut, it is the modelling claim: the book sets
 one measure, ~1794 px across all three parts (see the config's `_provenance`), so a
 page's zones form a vertical partition of a column whose width was decided by the
@@ -1647,7 +1647,7 @@ def validate_page(ref: str, root: Path = Path("."), cfg: dict | None = None,
     Only errors set the exit code.
 
     Every ordering assumption is therefore a warning, per the brief: they are
-    configurable in `config/zones_config.json`, exemptible per page, and a page that
+    configurable in `config/zones.json`, exemptible per page, and a page that
     breaks them is the interesting page rather than the rejected one.
 
     `ink` is the raster read — ~0.20 s, against ~1 ms for everything else — so the
@@ -3428,7 +3428,7 @@ def pred_cache_key(model_sha: str, decode: str, cfg: dict | None = None) -> str:
     zone config's own numbers — so the config is part of the input and has to be
     part of the key. A key that does not name every input is a stale hit waiting
     to happen, and this one would have been reachable by an ordinary edit to
-    `config/zones_config.json`.
+    `config/zones.json`.
     """
     if decode != "dp":
         return f"{model_sha[:16]}-{decode}"

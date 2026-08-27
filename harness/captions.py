@@ -445,7 +445,7 @@ def review_context(root: Path = Path("."), verdict: str = "differ",
 
     Two fields carry the caption pass's own meaning:
 
-      `issue`   what `data/readings.md` reads. The reviewer is not being asked
+      `issue`   what the caption in `gt/fig/` reads. The reviewer is not being asked
                 "is this right" in the abstract but "which of these two is the
                 page", so the other witness *is* the issue.
       `before`  the same text again, as read-only context beside the box, where
