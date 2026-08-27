@@ -56,7 +56,8 @@ def _ref(raw: str) -> str:
 
 
 @router.get("/")
-def page(request: Request, ref: str = "", nudge: int = 0, store: str = "zones"):
+def page(request: Request, ref: str = "", nudge: int = 0,
+         store: str | None = None):
     s = _session(request)
     ctx = ui.page_context(_ref(ref or s.get("start", "")), _root(request),
                           _cfg(request), nudge,

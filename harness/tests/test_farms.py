@@ -121,14 +121,14 @@ def test_a_prune_pattern_does_not_eat_the_other_kind(tmp_path):
 def test_require_names_the_command_that_builds_it(tmp_path):
     """The whole point of refusing: the error has to end the problem, not start it."""
     with pytest.raises(FileNotFoundError) as e:
-        F.require(tmp_path, F.OCR_VIEW)
+        F.require(tmp_path, F.W_FIGS)
     assert "views build" in str(e.value)
-    assert F.OCR_VIEW in str(e.value)
+    assert F.W_FIGS in str(e.value)
 
 
 def test_require_returns_the_path_when_it_is_there(tmp_path):
-    (tmp_path / F.OCR_VIEW).mkdir(parents=True)
-    assert F.require(tmp_path, F.OCR_VIEW) == tmp_path / F.OCR_VIEW
+    (tmp_path / F.W_FIGS).mkdir(parents=True)
+    assert F.require(tmp_path, F.W_FIGS) == tmp_path / F.W_FIGS
 
 
 def test_require_is_silent_about_a_missing_store(tmp_path):
@@ -143,17 +143,17 @@ def test_the_same_function_refuses_a_farm_and_tolerates_a_store(tmp_path):
     the scope is the registry and not the call site.
 
     `harness ocr pages --store mz` reaches `all_refs(root, "mz/ocr")` through the
-    very same `_refs_under` that `harness ocr pages` reaches as `all_refs(root,
-    "ocr")`. A blanket refusal in that function would refuse a clone for having
-    predicted nothing yet, which is not a defect but the ordinary starting state.
+    very same `_refs_under` that `all_scans` reaches for `scans/`. A blanket
+    refusal in that function would refuse a clone for having predicted nothing
+    yet, which is not a defect but the ordinary starting state.
 
     Keep both halves here together. Read alone, either looks like an inconsistency
     worth tidying away — the `test_lookalike_scope.py` situation, where a
     consolidation was nearly carried out on an audit that mistook a real
     distinction for drift.
     """
-    with pytest.raises(FileNotFoundError, match="views build"):
-        all_refs(tmp_path, F.OCR_VIEW)          # a farm: never built
+    with pytest.raises(FileNotFoundError, match="scans extract"):
+        all_refs(tmp_path, F.SCANS)             # a farm: never built
     assert all_refs(tmp_path, "mz/ocr") == []   # a store: nothing predicted yet
     assert all_refs(tmp_path, "gt/ocr") == []   # a store: nothing keyed yet
 
@@ -186,8 +186,8 @@ def test_farm_for_matches_the_path_exactly_never_a_parent(tmp_path):
 def test_survey_reports_absent_rather_than_empty(tmp_path):
     """Blank is indistinguishable from clean, which is the fault this exists for."""
     rows = {r["farm"]: r for r in F.survey(tmp_path)}
-    assert rows["ocr"]["state"] == "absent"
-    assert rows["ocr"]["entries"] == 0
+    assert rows["w-figs"]["state"] == "absent"
+    assert rows["w-figs"]["entries"] == 0
 
 
 def test_survey_will_not_call_a_verdict_it_cannot_compute(tmp_path):
@@ -213,27 +213,24 @@ def test_a_page_promoted_to_gt_makes_the_selection_stale_then_ok(tmp_path):
     """The live defect this builder was written for, generalised: `scans/w-ocr/` was
     missing `1-060` because nothing rebuilds a hand-made farm when gt gains a page."""
     (tmp_path / "gt" / "ocr").mkdir(parents=True)
-    (tmp_path / F.OCR_VIEW).mkdir(parents=True)
     for ref in ("1-048", "1-060"):
         write_scan(tmp_path, ref)
         (tmp_path / "gt" / "ocr" / f"chukchi-{ref}.xml").write_text("<x/>")
-        F.relink(tmp_path / F.OCR_VIEW / f"chukchi-{ref}.xml",
-                 tmp_path / "gt" / "ocr" / f"chukchi-{ref}.xml")
 
     # Built when the store held only one page — the farm's state before today.
     F.rebuild(tmp_path / F.W_OCR,
               {"chukchi-1-048.png": tmp_path / "scans" / "chukchi-1-048.png"},
               "chukchi-*.png")
     F.rebuild(tmp_path / F.W_OCR,
-              {"chukchi-1-048.xml": tmp_path / F.OCR_VIEW / "chukchi-1-048.xml"},
-              "chukchi-*.xml", resolve=False)
+              {"chukchi-1-048.xml": tmp_path / "gt" / "ocr" / "chukchi-1-048.xml"},
+              "chukchi-*.xml")
 
     assert {r["farm"]: r for r in F.survey(tmp_path)}["w-ocr"]["state"] == "stale"
     F.build("w-ocr", tmp_path)
     assert {r["farm"]: r for r in F.survey(tmp_path)}["w-ocr"]["state"] == "ok"
-    # And the ALTO still points at the view, not through it.
+    # And the ALTO names the ground-truth store, the only store it ever selects from.
     assert (tmp_path / F.W_OCR / "chukchi-1-060.xml").readlink() == \
-        Path("../../ocr/chukchi-1-060.xml")
+        Path("../../gt/ocr/chukchi-1-060.xml")
 
 
 def test_a_non_page_file_beside_the_altos_is_not_a_page(tmp_path):
@@ -255,24 +252,14 @@ def test_a_non_page_file_beside_the_altos_is_not_a_page(tmp_path):
     assert set(xmls) == {"chukchi-1-048.xml"}
 
 
-def test_a_view_builds_from_gt_alone_when_the_machine_store_is_absent(tmp_path):
-    """The shape of a fresh clone, and a bug the clone simulation actually caught.
-
-    `mz/ocr/` absent means nothing has been predicted — a legitimate empty, not a
-    missing input — so the view must build gt-only rather than be skipped. The first
-    version of `FARMS` listed both stores as required reads and duly skipped the two
-    farms a clone most needs, on the grounds that the machine had not spoken yet.
-    That contradicted this module's own store rule while stating it in the docstring
-    directly above.
-    """
-    (tmp_path / "gt" / "ocr").mkdir(parents=True)
-    (tmp_path / "gt" / "ocr" / "chukchi-1-048.xml").write_text("<x/>")
-
-    rep = F.build("ocr", tmp_path)
-    assert rep["skipped"] == ""
-    assert rep["linked"] == 1
-    assert (tmp_path / F.OCR_VIEW / "chukchi-1-048.xml").readlink() == \
-        Path("../gt/ocr/chukchi-1-048.xml")
+def test_there_is_no_view_farm(tmp_path):
+    """`ocr/` and `zones/` were symlink views over the paired stores, and every
+    reader that took no store read through them — a blend of ranks in front of the
+    layer whose subject is rank. Retired; a store is named or nothing is read."""
+    assert not any(f.kind == "view" for f in F.FARMS)
+    assert F.farm_for("ocr") is None and F.farm_for("zones") is None
+    # …and so `require` tolerates the bare names like any other non-farm path.
+    assert F.require(tmp_path, "ocr") == tmp_path / "ocr"
 
 
 def test_a_builder_whose_source_is_absent_is_skipped_with_a_row(tmp_path):
@@ -332,14 +319,10 @@ def test_all_expands_to_the_pool_it_was_asked_about():
 
 
 def test_a_selection_comes_back_in_registry_order():
-    """Dependency order is the registry's and survives however it was typed.
-
-    `w-ocr` links into the `ocr/` view, so honouring the caller's order would build
-    the selection farm against a view about to be rewritten under it — a stale farm
-    produced by the command whose job is to un-stale one.
-    """
-    assert F.select(["w-ocr", "ocr"], buildable_only=True) == ("ocr", "w-ocr")
-    assert F.select(["ocr", "ocr"], buildable_only=True) == ("ocr",)
+    """Order is the registry's and survives however it was typed, so a selection
+    is reproducible; duplicates collapse, since asking twice is a typo."""
+    assert F.select(["w-ocr", "w-figs"], buildable_only=True) == ("w-figs", "w-ocr")
+    assert F.select(["w-ocr", "w-ocr"], buildable_only=True) == ("w-ocr",)
 
 
 def test_a_bare_build_is_a_usage_error_not_a_build_of_everything():
@@ -365,15 +348,16 @@ def test_a_bare_build_is_a_usage_error_not_a_build_of_everything():
 def test_check_gates_only_over_the_farms_it_was_asked_about(tmp_path):
     """Scoping the selection scopes the exit code.
 
-    Asking about `ocr` and being failed for a blot tree nobody named would make the
-    code unreadable — and unreadable is how an exit code stops being acted on.
+    Asking about `w-figs` and being failed for a blot tree nobody named would make
+    the code unreadable — and unreadable is how an exit code stops being acted on.
     """
-    (tmp_path / "gt" / "ocr").mkdir(parents=True)
-    (tmp_path / "gt" / "ocr" / "chukchi-1-048.xml").write_text("<x/>")
-    F.build("ocr", tmp_path)                        # ocr/ is now ok; nothing else exists
+    (tmp_path / "gt" / "fig").mkdir(parents=True)
+    (tmp_path / "gt" / "fig" / "chukchi-1-048.xml").write_text("<x/>")
+    write_scan(tmp_path, "1-048")
+    F.build("w-figs", tmp_path)                     # w-figs is now ok; nothing else exists
     rows = {r["farm"]: r for r in F.survey(tmp_path)}
-    assert rows["ocr"]["state"] == "ok"
-    assert rows["w-figs"]["state"] == "absent"      # would gate, if asked about
+    assert rows["w-figs"]["state"] == "ok"
+    assert rows["w-ocr"]["state"] == "absent"       # would gate, if asked about
 
 
 # ------------------------------------------------------- the leaf-kind farms

@@ -1,9 +1,9 @@
-"""Two zone stores and the view over them: what each one is allowed to answer.
+"""Two zone stores: what each one is allowed to answer.
 
 `gt/zones/` is what a human has been through; `mz/zones/` is what the trained
-segmenter emitted; `zones/` is a symlink farm joining them under one set of names,
-the human file always winning. The shape is `ocr/` over `gt/ocr/` and so is the
-rule — **reads may resolve through the view, writes never do.**
+segmenter emitted. There is no view over the pair — there was, a symlink farm the
+human file always won, and it went with `ocr/`'s — so every reader names one of
+the two, and the editor's store selector is how a human looks at either.
 
 What these tests hold is the set of distinctions that would be invisible if they
 broke. A store parameter that leaked into the sidecars would let a machine sweep
@@ -137,28 +137,29 @@ def test_a_prediction_does_not_make_a_page_look_keyed(tmp_path):
 
 
 def test_zone_refs_dedupes_by_real_path(tmp_path):
-    """A symlink farm must not double-count. The README's invariant is
-    unconditional and the store parameter is what first makes a farm reachable."""
+    """A directory of links must not double-count. The README's invariant is
+    unconditional: no store here is a farm any more, but the store parameter is a
+    free path and a caller could still point it at one."""
     import os
 
     write_page(tmp_path, "1-048", zn.ZONEDIR)
-    view = tmp_path / zn.VIEWDIR
-    view.mkdir(parents=True)
+    farm = tmp_path / "somewhere"
+    farm.mkdir(parents=True)
     for name in ("chukchi-1-048.xml", "chukchi-1-049.xml"):
-        (view / name).symlink_to(
+        (farm / name).symlink_to(
             os.path.relpath(
-                (tmp_path / zn.ZONEDIR / "chukchi-1-048.xml").resolve(), view.resolve()
+                (tmp_path / zn.ZONEDIR / "chukchi-1-048.xml").resolve(), farm.resolve()
             )
         )
     # Two names, one inode: one ref, not two.
-    assert zn.zone_refs(tmp_path, zn.VIEWDIR) == ["1-048"]
+    assert zn.zone_refs(tmp_path, "somewhere") == ["1-048"]
 
 
 def test_a_broken_link_is_skipped_not_raised(tmp_path):
-    view = tmp_path / zn.VIEWDIR
-    view.mkdir(parents=True)
-    (view / "chukchi-1-048.xml").symlink_to("../gt/zones/gone.xml")
-    assert zn.zone_refs(tmp_path, zn.VIEWDIR) == []
+    farm = tmp_path / "somewhere"
+    farm.mkdir(parents=True)
+    (farm / "chukchi-1-048.xml").symlink_to("../gt/zones/gone.xml")
+    assert zn.zone_refs(tmp_path, "somewhere") == []
 
 
 # --------------------------------------------------------------- the sidecars
@@ -226,68 +227,6 @@ def test_a_human_sweep_still_writes_it(tmp_path):
     assert zn.cached_ink("1-048", tmp_path) is not None
 
 
-# ---------------------------------------------------------------- the view
-
-
-def test_the_human_file_wins(tmp_path):
-    write_page(tmp_path, "1-048", zn.ZONEDIR)
-    write_page(tmp_path, "1-048", zn.MZDIR)
-    write_page(tmp_path, "1-102", zn.MZDIR)
-    rep = zn.link_view(tmp_path)
-    assert rep == {
-        "dir": str(tmp_path / zn.VIEWDIR),
-        "from_gt": 1,
-        "from_mz": 1,
-        "removed": 0,
-    }
-    view = tmp_path / zn.VIEWDIR
-    assert (view / "chukchi-1-048.xml").resolve() == (
-        tmp_path / zn.ZONEDIR / "chukchi-1-048.xml"
-    ).resolve()
-    assert (view / "chukchi-1-102.xml").resolve() == (
-        tmp_path / zn.MZDIR / "chukchi-1-102.xml"
-    ).resolve()
-
-
-def test_the_links_are_relative(tmp_path):
-    """So the farm survives a clone or a move, as `paths.ensure_page_link` and
-    `assemble` already require of theirs."""
-    import os
-
-    write_page(tmp_path, "1-048", zn.ZONEDIR)
-    zn.link_view(tmp_path)
-    target = os.readlink(tmp_path / zn.VIEWDIR / "chukchi-1-048.xml")
-    assert not Path(target).is_absolute()
-
-
-def test_a_stale_link_is_removed_and_counted(tmp_path):
-    """A dangling entry in the view would read as a missing page rather than as a
-    link nobody cleaned up."""
-    write_page(tmp_path, "1-048", zn.ZONEDIR)
-    write_page(tmp_path, "1-102", zn.MZDIR)
-    zn.link_view(tmp_path)
-    (tmp_path / zn.MZDIR / "chukchi-1-102.xml").unlink()
-    rep = zn.link_view(tmp_path)
-    assert rep["removed"] == 1 and rep["from_mz"] == 0
-    assert not (tmp_path / zn.VIEWDIR / "chukchi-1-102.xml").exists()
-    assert list((tmp_path / zn.VIEWDIR).glob("*.xml")) != []
-
-
-def test_a_page_promoted_to_gt_reroutes_its_link(tmp_path):
-    """The review loop's visible effect: once a human saves, the same name stops
-    resolving to the machine's word."""
-    write_page(tmp_path, "1-102", zn.MZDIR)
-    zn.link_view(tmp_path)
-    assert (tmp_path / zn.VIEWDIR / "chukchi-1-102.xml").resolve() == (
-        tmp_path / zn.MZDIR / "chukchi-1-102.xml"
-    ).resolve()
-    write_page(tmp_path, "1-102", zn.ZONEDIR)
-    zn.link_view(tmp_path)
-    assert (tmp_path / zn.VIEWDIR / "chukchi-1-102.xml").resolve() == (
-        tmp_path / zn.ZONEDIR / "chukchi-1-102.xml"
-    ).resolve()
-
-
 # ---------------------------------------------------------------- the predictor
 
 
@@ -349,30 +288,37 @@ def test_a_page_with_no_ground_truth_opens_on_the_prediction(tmp_path):
 
 
 def test_ground_truth_wins_in_the_editor_too(tmp_path):
-    """The precedence is the store rule, so it cannot hold in the view and not
-    here — this is the surface that reads from both."""
-    
+    """The editor's opening choice, with no store asked for: `gt` where the page
+    is keyed, `mz` otherwise — reported as the real store shown, `pinned: False`,
+    never as a third name. This is what the retired `zones/` view used to decide
+    for every reader; the one surface that still needs the choice makes it in
+    the open."""
+
     write_page(tmp_path, "1-048", zn.ZONEDIR, label="MainZone-P")
     write_page(tmp_path, "1-048", zn.MZDIR, label="RunningTitleZone")
     make_scan(tmp_path, "1-048")
     st = ui.page_state("1-048", tmp_path, zc.load_config(REPO))
     assert st["proposal"] == "" and st["zones"][0]["label"] == "MainZone-P"
+    assert (st["store"], st["shown"], st["pinned"]) == ("gt", "gt", False)
+    pinned = ui.page_state("1-048", tmp_path, zc.load_config(REPO), store="mz")
+    assert (pinned["store"], pinned["shown"], pinned["pinned"]) == ("mz", "mz", True)
 
 
 def test_the_selector_shows_each_store_on_a_page_that_has_both(tmp_path):
     """The point of the selector: on a page with ground truth *and* a prediction,
-    the view resolves to the human file but either can still be looked at. Without
-    this, the machine's reading of the 117 pages that also have gt is unreachable
-    from the one surface built for looking at zones."""
-    
+    either can be looked at by name. Without this, the machine's reading of the
+    pages that also have gt is unreachable from the one surface built for looking
+    at zones. There is no `zones` option any more — the view it named is gone —
+    and no `view` key: what is shown is what was asked for."""
+
     cfg = zc.load_config(REPO)
     write_page(tmp_path, "1-048", zn.ZONEDIR, label="MainZone-P", y0=600, y1=900)
     write_page(tmp_path, "1-048", zn.MZDIR, label="RunningTitleZone", y0=610, y1=880)
     make_scan(tmp_path, "1-048")
     seen = {s: ui.page_state("1-048", tmp_path, cfg, store=s) for s in ui.STORES}
+    assert set(seen) == {"gt", "mz", "paras"}
     assert seen["gt"]["shown"] == "gt"
     assert seen["mz"]["shown"] == "mz"
-    assert seen["zones"]["shown"] == "gt"  # the view's own rule
     assert seen["gt"]["zones"][0]["label"] == "MainZone-P"
     assert seen["mz"]["zones"][0]["label"] == "RunningTitleZone"
     assert seen["mz"]["proposal"] == "mz" and seen["gt"]["proposal"] == ""
@@ -380,10 +326,7 @@ def test_the_selector_shows_each_store_on_a_page_that_has_both(tmp_path):
     # before you switch to it rather than discovered by switching.
     for st in seen.values():
         assert st["present"] == {"gt": 1, "mz": 1}
-    # And the view's resolution is the *store rule*, not an echo of what is being
-    # looked at: with `mz` pinned, `shown` is `mz` while the view still answers `gt`.
-    for st in seen.values():
-        assert st["view"] == "gt"
+        assert "view" not in st
 
 
 def test_an_empty_store_is_an_answer_not_an_error(tmp_path):
@@ -1171,7 +1114,6 @@ def test_the_derived_stores_are_ignored_and_gt_is_not():
         )
 
     assert ignored("mz/zones/chukchi-1-048.xml")
-    assert ignored("zones/chukchi-1-048.xml")
     assert not ignored("gt/zones/chukchi-9-999.xml")
     assert not ignored("gt/zones/_train.lst")
 

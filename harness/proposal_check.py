@@ -896,7 +896,6 @@ def check(path: Path, ref: str | None = None, root: Path = Path("."),
         if ref is not None:
             from .marks import page_issues
 
-            out += _orphan_line_issues(data, ref, root)
             out += _added_terminal_punctuation(data, ref, root)
             out += page_issues(path, ref, root, cohort, corpus)
     # Built once for the page and only when some note could name a key at all —
@@ -1037,6 +1036,12 @@ def _added_terminal_punctuation(data: dict, ref: str, root: Path) -> list[dict]:
     a competent witness to ASCII punctuation, so a disagreement is worth one look
     at `@100` — the length of the crop is not a judgement call there.
 
+    **`mz/ocr/` by name.** The recognizer's draft is the second witness, and it
+    can never be the proposal's own output. This used to read the `ocr/` view,
+    which resolved to `gt/ocr/` on every restored page — text written from this
+    proposal's own decisions — so on a finished corpus the check compared a
+    reading with itself and went quiet. The shape `ocr diff` refuses outright.
+
     A defect when the line says nothing about it, an advisory once the line carries
     a `note`: the gate is satisfiable either way — look, then delete the mark or
     say what you saw — and a reader that looked and found the comma genuinely
@@ -1046,11 +1051,9 @@ def _added_terminal_punctuation(data: dict, ref: str, root: Path) -> list[dict]:
     lines = data.get("lines")
     if not isinstance(lines, dict) or not lines:
         return []
-    from .lines import DEFAULT_STORE, alto_for_lines, page_lines
-    try:
-        alto = alto_for_lines(ref, root, DEFAULT_STORE)
-    except Exception:
-        return []
+    from .lines import alto_for_lines, page_lines
+    from .recognize import MZDIR
+    alto = alto_for_lines(ref, root, MZDIR)
     if not alto.exists():
         return []
     draft = {str(r["index"]): (r.get("text") or "") for r in page_lines(alto, root)}
@@ -1076,55 +1079,6 @@ def _added_terminal_punctuation(data: dict, ref: str, root: Path) -> list[dict]:
                          token=text[-1], context=text[-28:],
                          severity=ADVISORY if (rec or {}).get("note") else DEFECT))
     return out
-
-
-def _orphan_line_issues(data: dict, ref: str, root: Path) -> list[dict]:
-    """Proposal lines with no `TextLine` in the store to hold them.
-
-    **A proposal is keyed by the ALTO's line indices**, and `restore` joins on
-    them: a key naming an index the store does not have describes text with no
-    box, which is the dropped-line case wearing a different hat. Ground truth is a
-    correspondence between a box and its contents, so a reading that has nowhere
-    to go is not a reading. It is upstream human action — a box drawn in `ocr
-    edit` — and never a line here.
-
-    A defect rather than an advisory because there is nothing to weigh: the index
-    either exists or it does not, and `restore` will silently drop what it cannot
-    join. Silently is the problem. `1-037` produced the neighbouring version of
-    this — a folio appended to the running title's own `text` — which this cannot
-    see, since that key is a real index; the reader contract carries that half.
-
-    Resolved through the view *and the corrections overlay*, so a page reads
-    against whichever store is current — `mz/ocr/` before a restore and `gt/ocr/`
-    after — plus any line a human has since drawn in `ocr edit`. A keyed
-    correction is therefore not an orphan: the index exists, which is the whole
-    point of giving the line a box. A page with no ALTO at all is skipped rather
-    than reported — absent is not the same as wrong, and every line would fire.
-    """
-    lines = data.get("lines")
-    if not isinstance(lines, dict) or not lines:
-        return []
-    from .lines import DEFAULT_STORE, alto_for_lines, page_lines
-    try:
-        alto = alto_for_lines(ref, root, DEFAULT_STORE)
-    except Exception:
-        return []
-    if not alto.exists():
-        return []
-    have = {str(r["index"]) for r in page_lines(alto, root)}
-    if not have:
-        return []
-    return [issue(k, "line index is not in the store — a proposal is keyed by "
-                     "the ALTO's line indices and `restore` joins on them, so "
-                     "this text has no box to land in. If it is printed matter "
-                     "the segmenter missed, that is upstream human action and "
-                     "not yours to correct: drop the key, say what you saw in "
-                     "your report, and a human gives the band a box in `harness "
-                     "ocr edit` before the page is read again.",
-                  context=(lines[k] or {}).get("text", "")[:60],
-                  detail=f"store holds {len(have)} lines")
-            for k in sorted(lines, key=lambda s: (len(s), s))
-            if str(k) not in have]
 
 
 def caption_keyed(data: dict) -> bool:

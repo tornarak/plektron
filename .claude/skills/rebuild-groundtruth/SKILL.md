@@ -92,8 +92,7 @@ is why none of it is in the agent body.
    with the first already replaced.
 
    No `--force` on a restoration: the target does not exist, and the guard demanding
-   it is the one protecting exactly that. `restore --commit` re-points `ocr/` for
-   that page itself, so no relink follows.
+   it is the one protecting exactly that.
 
    **Read `edits` as the page's error profile, not only as a save-check.** It is the
    full proposal-vs-decision diff, so it names which class from `keying_spec.md` §5

@@ -38,6 +38,17 @@ def _root(request: Request) -> Path:
     return Path(request.app.state.root)
 
 
+def _store(request: Request) -> str:
+    """The store this session was opened on. `run_review` always sets it; a
+    session without one is a server bug, and reading `""` in its place would
+    build a path into the repo root and blame the page."""
+    store = _session(request).get("store")
+    if not store:
+        raise HTTPException(500, "no store in this session — a review session is "
+                                 "opened on gt/ocr or mz/ocr by `harness ocr review`")
+    return store
+
+
 def _queue(request: Request) -> list[str]:
     return list(_session(request).get("queue") or [])
 
@@ -75,7 +86,7 @@ def _in_queue(request: Request, ref: str) -> str:
 
 def _render(request: Request, ref: str):
     s = _session(request)
-    ctx = rv.page_context(ref, _root(request), s.get("store") or "",
+    ctx = rv.page_context(ref, _root(request), _store(request),
                           queue=_state(request),
                           scan_href=f"{BASE}/scan/{ref}",
                           crop_base=f"{BASE}/crop/{ref}",
@@ -120,7 +131,7 @@ def issues(request: Request):
         raise HTTPException(404, "no issue list in this session — start one with "
                                  "`harness ocr review --issues -`")
     s = _session(request)
-    ctx = rv.issues_context(items, _root(request), s.get("store") or "",
+    ctx = rv.issues_context(items, _root(request), _store(request),
                             crop_base=f"{BASE}/crop",
                             font=s.get("font"), font_size=s.get("font_size"),
                             box_lines=s.get("box_lines"))

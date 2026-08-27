@@ -1,16 +1,15 @@
 """`harness zones` — the seven-type page segmentation, and the segmenter over it.
 
-Three stores and a view, and the split between them is the point:
+Two stores, and the split between them is the point:
 
     gt/zones/     what a human has been through. Tracked.
     mz/zones/     what the model emitted. Derived, ignored.
-    zones/        the read view over both, the human file always winning.
 
-`--store` picks which of the two real stores an action reads. It is a closed set
-of two and deliberately not a free directory path, unlike the `ocr` group's
-a free path: that is how a check ends up compared against its own input, and
-checking through the view would blend ratified and unratified pages under one
-exit code. The view is not offered for the same reason.
+`--store` picks which of the two an action reads. It is a closed set of two and
+deliberately not a free directory path: that is how a check ends up compared
+against its own input. There used to be a read view over the pair, the human file
+winning; it was never offered here, since checking through it would have blended
+ratified and unratified pages under one exit code, and it is gone from the repo.
 
 **gt gates, mz measures.** `check --store mz` runs the same checks and always
 exits 0 — nothing there is ratified, and a raw predicted polygon fails the
@@ -111,7 +110,7 @@ def register(cli):
     p = action(g, "edit", run_edit, section="The store", pageable=False, help="open the segmentation editor on 127.0.0.1 and keep "
             "serving — the session steps through pages with the arrow keys and "
             "saves into gt/zones/, so the ref is where to start, not the only "
-            "page reachable. `/` and `?` cycle the store shown (view, gt, mz, "
+            "page reachable. `/` and `?` cycle the store shown (gt, mz, "
             "paras); a machine page opens as an unsaved proposal and promoting it "
             "takes an edit or an explicit save")
     refs_arg(p, all_="every scan, in order",

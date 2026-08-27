@@ -58,7 +58,7 @@ from .detectors import (
     inventory_glyphs,
     unlicensed_marks,
 )
-from .lines import DEFAULT_STORE, alto_for_lines, page_lines, raster_path
+from .lines import alto_for_lines, page_lines, raster_path
 from .lookup import HANDLE
 from .parallel import ptrack
 from .paths import crops_dir, decisions_path, html_path, page_dirs, proposal_path
@@ -183,8 +183,7 @@ def line_spans(catmus: str, claude: str) -> list[dict]:
     return out
 
 
-def page_spans(ref: str, root: Path = Path("."),
-               store: str = DEFAULT_STORE) -> list[dict]:
+def page_spans(ref: str, root: Path, store: str) -> list[dict]:
     """Every differing span on one page, one flat record each."""
     ref = norm_ref(ref)
     prop = load_proposal(ref, root)
@@ -585,7 +584,7 @@ def restore_skip(ref: str, root: Path = Path("."), force: bool = False) -> str:
     return ""
 
 
-def restore(ref: str, root: Path = Path("."), store: str = DEFAULT_STORE,
+def restore(ref: str, root: Path, store: str,
             force: bool = False, commit: bool = False) -> dict:
     """Write adjudicated text into `gt/ocr/chukchi-<ref>.xml`, keeping the geometry.
 
@@ -594,15 +593,16 @@ def restore(ref: str, root: Path = Path("."), store: str = DEFAULT_STORE,
     structural moves.
 
     **Two modes, and the returned `mode` field says which one ran.** They differ
-    only in whether the geometry source and the write target are the same file:
+    only in whether the geometry source and the write target are the same file,
+    which is now a question of which store the caller named:
 
-      * `restoration` — the source is some other store, and `gt/ocr/` is being
-        filled in from it. This is what the ground-truth rebuild did, page by
-        page, when `gt/ocr/` held export shells with no `TextLine` at all.
-      * `revision` — the source resolves to the target. Under the default store
-        that is the ordinary case now that the rebuild is complete: `ocr/<ref>` is
-        a symlink onto `gt/ocr/<ref>`, so re-adjudicating a finished page reads
-        its own geometry and writes its own text back.
+      * `restoration` — `store` is `mz/ocr/`, and `gt/ocr/` is being filled in
+        from the prediction's skeleton. This is the ordinary case at the stage the
+        verb runs: a page reaches adjudication with a machine reading and no
+        ground truth, and this is the act that creates it.
+      * `revision` — `store` is `gt/ocr/`: re-adjudicating a finished page reads
+        its own geometry and writes its own text back. `--store gt` is how a
+        caller says so, and `force` is required besides.
 
     Revision is *safe* rather than merely tolerated, and it is worth saying why,
     because "reads the file it writes" is normally a bug. `etree.parse` builds the
@@ -613,10 +613,10 @@ def restore(ref: str, root: Path = Path("."), store: str = DEFAULT_STORE,
     different act in the two cases — one reconstructs, the other edits in place —
     and a caller that cannot tell them apart cannot report honestly on either.
 
-    Writes `gt/ocr/` by name, never `ocr/`. They are the same inode — `ocr/*.xml`
-    are symlinks — and naming the real store is what stops the next reader
-    reasoning about the wrong one. Reads are the other way round: see
-    `lines.alto_for_lines` on why resolving *through* `ocr/` is fine.
+    Writes `gt/ocr/` by name, and reads the store it was given by name. It used to
+    read through the `ocr/` view, under which the source could *silently* be the
+    target — the mode had to be discovered by resolving symlinks. With every read
+    naming its store, the mode is a fact the caller stated.
 
     `commit` gates the actual write, same contract as `normalize`'s `--convert`:
     every check below still runs and the full report — including `edits`, so a
@@ -670,6 +670,21 @@ def restore(ref: str, root: Path = Path("."), store: str = DEFAULT_STORE,
         raise ValueError(f"{ref}: {len(missing)} of {len(recs)} lines have no "
                          f"decision (indices {missing[:12]}…); refusing a partial "
                          "restore — ground truth with holes is worse than none")
+    # **The converse, and it was unguarded.** A decision keyed to an index the
+    # page does not have is text with no box: the write loop below iterates the
+    # ALTO's lines and the correction join tests `id in index_of`, so such a key
+    # was dropped in silence — adjudicated text that reached no store. It used to
+    # be `proposal check`'s finding, at the reader, whose remedy it never was
+    # ("that is upstream human action and not yours to correct"). The join is
+    # here, so both halves of it refuse here.
+    orphans = sorted(i for i in dec if not 0 <= i < len(recs))
+    if orphans:
+        raise ValueError(
+            f"{ref}: decisions {orphans[:12]} name no line — the page holds "
+            f"{len(recs)} (indices 0–{len(recs) - 1}, corrections included). "
+            "A reading with no box to land in is not a reading; if it is printed "
+            "matter the segmenter missed, give the band a box in `harness ocr edit` "
+            "and adjudicate it there, otherwise drop the key")
 
     bad = [f"line {i}: {h['mark']} on {h['base']} (licensed on "
            f"{h['licensed_on']}) in {h['context']!r}"
@@ -682,12 +697,10 @@ def restore(ref: str, root: Path = Path("."), store: str = DEFAULT_STORE,
             f"harness ocr review {ref}:\n  " + "\n  ".join(bad))
 
     target = root / "gt" / "ocr" / f"chukchi-{ref}.xml"
-    # Same real file, reached under two names, is `revision`; anything else is a
-    # `restoration` from a separate store. Compared by resolved path rather than by
-    # directory name, since `ocr/` reaches `gt/ocr/` by symlink and a name test
-    # would call that a restoration.
-    mode = ("revision" if target.exists() and src.exists()
-            and src.resolve() == target.resolve() else "restoration")
+    # The same file under the name it was given is `revision`; any other source is
+    # a `restoration` from a separate store. A name test suffices now that no
+    # symlink view can make two names one file.
+    mode = "revision" if src == target else "restoration"
     if target.exists() and not force:
         existing = sum(len(s.get("CONTENT") or "")
                        for s in etree.parse(str(target)).getroot().iter("{*}String"))
@@ -795,12 +808,8 @@ def restore(ref: str, root: Path = Path("."), store: str = DEFAULT_STORE,
                 "lines": len(recs), "corrections": len(boxes),
                 "chars": sum(len(_nfd(v["text"])) for v in dec.values()),
                 "geometry_drift": drift, "text_mismatch": wrong,
-                # `view` is "" here, not absent: one fixed key set across both
-                # branches, since a caller reading the report should not have to
-                # know which one produced it to know which keys exist.
                 "edited_by_human": len(edits), "edits": edits,
-                "noted": len(notes), "notes": notes, "commit": False,
-                "view": ""}
+                "noted": len(notes), "notes": notes, "commit": False}
     tmp.replace(target)
     # The fragment second, and verified by reading it back rather than trusting the
     # write — the same rule the ALTO side follows above. `save_lines` rebuilds the
@@ -811,33 +820,12 @@ def restore(ref: str, root: Path = Path("."), store: str = DEFAULT_STORE,
         after = {b["id"]: b["text"] for b in _corr.load_lines(ref, root)}
         wrong += [i for cid, i in sorted(index_of.items(), key=lambda kv: kv[1])
                   if after.get(cid) != _nfd(dec[i]["text"])]
-    # **The promotion is the write plus the relink, and it was only ever half
-    # wired.** `recognize.link_one`'s own docstring says so — "promoting a page is a
-    # matter of `restore` writing `gt/ocr/` and this relinking, never of moving
-    # anything" — and `ocr predict` has always paired the two, relinking each page it
-    # writes into `mz/ocr/`. `restore` did not, so a page that had no ground truth
-    # came back from a restoration with `gt/ocr/` written and `ocr/` still pointing
-    # at the prediction: the view silently one save out of date, and `ocr pages
-    # --show-store` reporting a `gt,mz` row that still reads `view: mz`.
-    #
-    # Relinking here is not a write *through* the view — the rule the store layout
-    # exists for — it is a rebuild *of* the view, from the same registry `views
-    # build` uses, after the authored write has already landed. It is gated on
-    # `commit` because a preview must leave the disk alone, and it is a per-page
-    # relink rather than a farm sweep because the page is what changed.
-    #
-    # Imported here rather than at module scope: there is no cycle (`recognize` does
-    # not import this module), but it pulls `zones`, and `restore` should not cost a
-    # segmenter import to write a line of text.
-    from .recognize import link_one
-    view = link_one(ref, root)
     return {"path": str(target), "source": str(src), "mode": mode,
             "lines": len(recs), "corrections": len(boxes),
             "chars": sum(len(_nfd(v["text"])) for v in dec.values()),
             "geometry_drift": drift, "text_mismatch": wrong,
             "edited_by_human": len(edits), "edits": edits,
-            "noted": len(notes), "notes": notes, "commit": True,
-            "view": view}
+            "noted": len(notes), "notes": notes, "commit": True}
 
 
 def _esc(s: str) -> str:
@@ -946,8 +934,8 @@ def _palette() -> list[dict]:
     return palette
 
 
-def page_context(ref: str, root: Path = Path("."),
-                 store: str = DEFAULT_STORE, crops: Path | None = None,
+def page_context(ref: str, root: Path,
+                 store: str, crops: Path | None = None,
                  queue: list[dict] | None = None,
                  scan_href: str | None = None,
                  crop_base: str = "crops",
@@ -1188,8 +1176,8 @@ def _text_now(idx: int, prop: dict, saved: dict) -> str:
     return _nfd(prop[idx]["text"]) if idx in prop else ""
 
 
-def issues_context(items: list[dict], root: Path = Path("."),
-                   store: str = DEFAULT_STORE, crop_base: str = "crops",
+def issues_context(items: list[dict], root: Path,
+                   store: str, crop_base: str = "crops",
                    font: str | None = None, font_size: int | None = None,
                    box_lines: int | None = None) -> dict:
     """One document: every listed line, each with a context line either side.

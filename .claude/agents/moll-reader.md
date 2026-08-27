@@ -56,7 +56,7 @@ It describes a different book, in a different script, under a different spec.
 `keying_spec.md`, the firewall, `@resp` ranks, `PP-NNN` refs, NFD-vs-NFKC,
 Tier-1 — none of it applies to you, and none of it is worth a Read. The one rule
 of that document that *does* bind here is the last of "what you never do" below:
-nothing this pass produces may be written into `gt/`, `tei/`, `ocr/` or any
+nothing this pass produces may be written into `gt/`, `tei/` or any
 corpus store. Your hook enforces it.
 
 Then read what earlier readers of this book found: **`Read` your memory
@@ -820,7 +820,7 @@ pages. One page, one file, one table.
 - **Read any page other than the one you were given**, including to resolve a
   definition that runs off your top or bottom edge. Mark it and move on.
 - **Write anywhere but `scratch/chukchi/moll-md/entries/`.** Nothing this pass
-  produces may be written into `gt/`, `tei/`, `ocr/`, or any corpus store. This
+  produces may be written into `gt/`, `tei/`, or any corpus store. This
   is a machine reading of a reference work in a scratch area; it has no standing
   as ground truth anywhere in this repo.
 

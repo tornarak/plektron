@@ -683,7 +683,6 @@ RENAMED_FLAGS = {
     ("zones", "--delete"): "zones delete REF",
     ("zones", "--diff"): "zones diff [REF]",
     ("zones", "--paragraphs"): "zones paragraphs [REF]",
-    ("zones", "--link"): "views build zones",
     ("zones", "--blot"): "zones blot [REF]",
     ("zones", "--ink"): "zones check --ink",
     ("zones", "--lines"): "zones check --lines",
@@ -694,13 +693,12 @@ RENAMED_FLAGS = {
     ("ocr", "--ref"): "ocr corrections PP-NNN [PP-NNN ...]  (or --all)",
     # `--from DIR` across the whole `ocr` group became `--store gt|mz`, the same
     # closed set `zones` has had, once `mz/ocr/` gave the group a second real
-    # store. It was never used as a free path — only ever `gt/ocr`, `mz/ocr` or
-    # the view — so nothing was given up, and the view stopped being nameable,
-    # which is the point.
+    # store. It was never used as a free path — only ever `gt/ocr` or `mz/ocr` —
+    # so nothing was given up.
     # `{action}` is filled in from what was actually typed. A group-wide flag
     # rename has no single action to name, and the alternative — picking one as an
     # exemplar — points the reader at a command they did not run.
-    ("ocr", "--from"): "ocr {action} --store gt|mz (omit for the ocr/ view)",
+    ("ocr", "--from"): "ocr {action} --store gt|mz",
     ("lexicon", "--native"): "lexicon native",
     ("lexicon", "--marks"): "lexicon marks",
     ("lexicon", "--suffixes"): "lexicon suffixes",
@@ -735,12 +733,9 @@ RENAMED_VALUES = {
 # with "No such command", which names the problem and not the fix — the same gap
 # the two tables above exist to close, one tier up.
 #
-# `ocr link` and `zones link` were two spellings of one implementation: both
-# called the same `link_view` with the same argument that `views build` calls,
-# and `views build ocr|zones` names the farm exactly. They were kept for a while
-# as the natural phrasing from inside those groups; the whole-tree review found
-# them as duplicate surface and they went. Nothing was given up — a farm can
-# still be relinked alone, which is what the per-domain form was for.
+# `ocr link` and `zones link` are not here, and were: they relinked the `ocr/`
+# and `zones/` read views, which were retired outright, so there is no new
+# spelling to redirect to and Click's "No such command" is the whole truth.
 #
 # The eleven training actions moved into `train`, which is the same fold one
 # tier further out: three groups had grown `remark-eval`/`assemble`/`install`/
@@ -750,8 +745,6 @@ RENAMED_VALUES = {
 # not the fix; this table is what closes that gap, and it is the whole reason a
 # caller with the old spelling in their fingers gets told the new one.
 RENAMED_ACTIONS = {
-    ("ocr", "link"): "views build ocr",
-    ("zones", "link"): "views build zones",
     ("fig", "mets"): "corpus mets gt/fig",
     ("zones", "remark-eval"): "train remark-eval zones",
     ("zones", "assemble"): "train assemble zones",

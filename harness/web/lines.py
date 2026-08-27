@@ -49,6 +49,17 @@ def _root(request: Request) -> Path:
     return Path(request.app.state.root)
 
 
+def _store(request: Request) -> str:
+    """The store this session was opened on. `run_edit` always sets it; a session
+    without one is a server bug, and reading `""` in its place would build a path
+    into the repo root and blame the page."""
+    store = _session(request).get("store")
+    if not store:
+        raise HTTPException(500, "no store in this session — a lines session is "
+                                 "opened on gt/ocr or mz/ocr by `harness ocr edit`")
+    return store
+
+
 class Save(BaseModel):
     """One sitting's output: boxes drawn, and bands ruled not-type.
 
@@ -74,7 +85,7 @@ def page(request: Request, ref: str = ""):
     s = _session(request)
     r = _ref(ref or s.get("start", ""))
     root = _root(request)
-    store = s.get("store") or ""
+    store = _store(request)
     cfg = lines_config.load_config(root)
     st = ui.page_state(r, root, store)
 
@@ -134,8 +145,7 @@ def row(request: Request, ref: str = ""):
     """One page's counts. Marked `fetched`: the list drives this from JS and
     parses the body as JSON, so a failure has to arrive as JSON too — an HTML
     traceback would raise inside the `fetch` and throw away the reason."""
-    s = _session(request)
-    return ui.page_row(_ref(ref), _root(request), s.get("store") or "")
+    return ui.page_row(_ref(ref), _root(request), _store(request))
 
 
 @router.get("/layers.css")
@@ -179,22 +189,20 @@ def blot(request: Request, ref: str):
     sweep's blot must *not* be — hence its own cache directory rather than
     sharing `scans/w-blotted/`.
     """
-    s = _session(request)
     root = _root(request)
     res = write_blot(_ref(ref), root / "scans" / ui.BLOT_CACHE,
-                     root, s.get("store") or "", exemptions=True)
+                     root, _store(request), exemptions=True)
     return send_file(request, Path(res["path"]))
 
 
 @router.post("/save")
 @fetched
 def save(request: Request, body: Save):
-    s = _session(request)
     # `exclude_unset`, so a key the client did not send does not arrive as a
     # default the store reads as an instruction — `save_payload` asks
     # `"ink_exempt" in payload` for exactly that reason.
     res = ui.save_payload(body.model_dump(exclude_unset=True), _root(request),
-                          s.get("store") or "")
+                          _store(request))
     print(f"saved {res['path']}: {res['lines']} correction(s), "
           f"{len(res['live_bands'])} band(s) left")
     return res

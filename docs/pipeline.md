@@ -7,19 +7,23 @@ the stages that are built.
 ## Pages
 
 1. **Zoning** — this project's own segmenter (`harness zones predict` →
-   `mz/zones/`), corrected in the editor into `gt/zones/`, read through `zones/`.
-   **These regions carry semantic value**, which is the difference from the old
-   pipeline: seven declared types, a vertical partition of a measured column. The
-   LADaS regions they replaced had none and existed only to impose a reading order.
-2. **Lines + recognition, one pass** — `harness ocr predict` → `mz/ocr/`, linked
-   into `ocr/`. `blla` finds baselines off `scans/w-figs-blotted/`, the same raster
-   `zones predict` reads, so artwork raises no baselines; **its regions are
-   discarded and the zones replace them**, so a line arrives already knowing
-   whether it sits in a running title, a paragraph, a footnote or a signature
-   line, and the collation pass gets that structure instead of re-deriving it.
-   The label travels in the ALTO as `OtherTag/@LABEL` via `TAGREFS` and surfaces
-   as `zone` in `harness ocr lines`. Reading order is zone order, then down the
-   page — so in this store, unlike `gt/ocr/`, document order *is* reading order.
+   `mz/zones/`), corrected in the editor into `gt/zones/`. **These regions carry
+   semantic value**, which is the difference from the old pipeline: seven
+   declared types, a vertical partition of a measured column. The LADaS regions
+   they replaced had none and existed only to impose a reading order.
+2. **Lines + recognition, one pass** — `harness ocr predict` → `mz/ocr/`. `blla`
+   finds baselines off `scans/w-figs-blotted/`, the same raster `zones predict`
+   reads, so artwork raises no baselines; **its regions are discarded and nothing
+   replaces them.** The page is written as bare lines — one unlabelled block,
+   lines in geometric order — and a line's `zone` is derived by containment
+   against `gt/zones/` on every read (`lines.page_lines`), which is how it
+   surfaces in `harness ocr lines` and reaches the collation draft. This pass
+   used to bake the keyed zones in as labelled regions, so a line "arrived
+   knowing" where it sat; `restore` then copied those labels into `gt/ocr/`, and
+   they went stale on the first re-cut — every consumer had already gone back to
+   geometry for exactly that reason. Document order is geometric in this store
+   and whatever the export assigned in `gt/ocr/`; nothing downstream may assume
+   it is reading order of either.
 
    **Nothing is lost to the blot**, and that is a property of how it paints rather
    than a cost accepted: it fills the *declared* figure box and not a pixel more,
@@ -260,16 +264,17 @@ the stages that are built.
 1. **Original Scan Page** - `scans/chukchi-PP-NNN.png`
 2. **Figures, geometry and caption together** - `gt/fig/chukchi-PP-NNN.xml`. ALTO containing only `GraphicZone` and `GraphicZone-FigDesc` blocks, as **bounding boxes**, each FigDesc carrying its adjudicated caption as one `String` per printed line. Geometry is written in the zone editor's figure track (`b`); the text by `harness fig restore`, out of `review/captions/decision.json` over `proposal.json`. Checked by `harness fig check`; **absence of the file is how the store records "no figures on this page"**, so it never holds an empty one. `docs/apparatus.md` is the track's record.
 3. **The caption's reasoning** - `review/captions/proposal.json` (`#llm`, the blind re-read) and `decision.json` (`#ed`). What the reader *said about* a caption stays here; only the ratified text reaches the store. The caption text used to live in a markdown file of its own, keyed by the same block-id suffix; the two then drifted 58 captions apart with nothing reporting it, and that file is gone.
-4. **OCR transcript** - `ocr/chukchi-PP-NNN.xml`, the view: `gt/ocr/` where a human
-   has been through the page, `mz/ocr/` otherwise. ALTO carrying the zones as
-   regions and the lines within them. The regions are no longer useless — they are
-   the seven declared types, and they are what stage 3 reads structure out of.
-   **The collation pass no longer sees this file at all**: it reads a generated
-   page built from `gt/ocr/` by name, and the guard hook refuses it the raw ALTO.
+4. **OCR transcript** - `gt/ocr/chukchi-PP-NNN.xml` where a human has been through
+   the page, `mz/ocr/` otherwise, and every reader names which. Bare lines in one
+   unlabelled block; the zone a line sits in is `gt/zones/`'s to say and
+   `page_lines`' to derive. There was a view over the pair, `ocr/`, giving one
+   name to whichever was current, and it is gone: a reader handed it could not
+   see the rank of what it held. **The collation pass never sees this file at
+   all**: it reads a generated page built from `gt/ocr/` by name, and the guard
+   hook refuses it the raw ALTO.
 5. **Generated TEI** - `mz/tei/chukchi-PP-NNN.xml`. Derived and gitignored, and
-   **there is deliberately no view over the tei pair** the way `ocr/` covers the OCR
-   stores: a view exists to give one name to a page's current best reading, and here
-   naming the two apart is the whole point. It carries a generation stamp — version
+   **there is no view over the tei pair**, nor was there ever: naming the two
+   apart is the whole point. It carries a generation stamp — version
    plus a digest of both inputs — which is what lets `tei diff` tell a difference
    review made from one a regeneration made under it.
 6. **TEI** - `tei/chukchi-PP-NNN.xml`. Also the system of record for seam state:

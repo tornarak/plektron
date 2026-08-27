@@ -64,6 +64,30 @@ def write_scan(tmp_path: Path, ref: str, size: tuple[int, int] = A4_300,
     return write_png(tmp_path / "scans" / f"chukchi-{ref}.png", size, mode, ink)
 
 
+def write_zones(root: Path, ref: str, bands: list[tuple[str, int, int]],
+                x0: int = 100, x1: int = 1800) -> Path:
+    """A keyed page in `gt/zones/`: one labelled block per `(label, y0, y1)` band.
+
+    Since the OCR ALTOs stopped carrying zone labels, a line's `zone` is derived
+    by containment against this store — so a fixture that wants a running title
+    or a footnote recognised as one writes the bands here, beside its ALTO.
+    """
+    p = root / "gt" / "zones" / f"chukchi-{ref}.xml"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    tags = "".join(f'<OtherTag ID="BT{i}" LABEL="{label}"/>'
+                   for i, (label, _, _) in enumerate(bands, 1))
+    blocks = "".join(
+        f'<TextBlock ID="mz_{ref}_r{i}" HPOS="{x0}" VPOS="{y0}" WIDTH="{x1 - x0}" '
+        f'HEIGHT="{y1 - y0}" TAGREFS="BT{i}"><Shape><Polygon POINTS="{x0} {y0} '
+        f'{x1} {y0} {x1} {y1} {x0} {y1}"/></Shape></TextBlock>'
+        for i, (_, y0, y1) in enumerate(bands, 1))
+    p.write_text('<alto xmlns="http://www.loc.gov/standards/alto/ns-v4#">'
+                 f'<Tags>{tags}</Tags><Layout><Page WIDTH="2824" HEIGHT="3897">'
+                 f'<PrintSpace>{blocks}</PrintSpace></Page></Layout></alto>',
+                 encoding="utf-8")
+    return p
+
+
 def write_captions(root: Path, blocks: dict[str, str]) -> None:
     """Caption text into `gt/fig/`, keyed `"<ref>|<zone-suffix>"` as the store is.
 

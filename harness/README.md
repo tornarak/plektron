@@ -17,14 +17,12 @@ the project's rules, `CLAUDE.md` governs; for the character inventory,
 | path | what | written by |
 |---|---|---|
 | `scans/` | 832 rasters at 300 dpi, bitonal where the page has no photograph, each carrying a PNG `tEXt` chunk naming the PDF it was cut from. **Derived** from `pdfs/`, not in git | `scans extract --all --rasters DIR`, then `scans swap DIR` |
-| `ocr/` | the **read view** over both OCR stores — symlinks, the human file always winning. Derived, ignored; nothing rebuilds it automatically, so `ocr pages --show-store` reports what each link *actually* reaches | `views build ocr`, and `ocr predict` for the page it wrote |
-| `gt/ocr/` | human ground truth — the pages a reader has been through and an adjudicator has signed | `ocr restore --commit` |
+| `gt/ocr/` | human ground truth — the pages a reader has been through and an adjudicator has signed. **Bare lines**: one unlabelled block a page, a line's zone derived by containment against `gt/zones/` on every read and never stored here | `ocr restore --commit` |
 | `gt/lines/` | the **corrections overlay**: boxes a human drew over ink the segmenter left unboxed, per page, in raster coordinates, `+ _ink_exempt.json`. Folded into every page's lines by `lines.page_lines`, so a correction is reachable on the pages that have no ground truth at all | `ocr edit` (geometry), `ocr restore --commit` (text) |
-| `mz/ocr/` | what the models emitted: lines from `blla`, text from CATMuS, structured by the zones. Derived, ignored | `ocr predict` |
+| `mz/ocr/` | what the models emitted: lines from `blla`, text from CATMuS, the same bare-lines shape as `gt/ocr/` — `restore` copies this skeleton into it. Derived, ignored | `ocr predict` |
 | `gt/fig/` | 252 figure ALTOs, geometry only, **no `TextLine` at all** | `zones edit`'s figure track (`zones_ui._save_figs` → `figures.save_figs`) |
 | `gt/zones/` | the **current** segmentation: seven types, fixed-width bands, `+ _train.lst _eval.lst`, one list per leaf kind (`_plate.lst _blank.lst _cover.lst _map.lst _apparatus.lst` — `zones.LEAF_KINDS`, asked through `is_exempt`), `_rule_exempt.json _ink_exempt.json _para_exempt.json` | `zones edit` |
 | `mz/zones/` | what the trained segmenter emitted: raw kraken ALTO, free polygons, kraken's ids. Derived, ignored | `zones predict` |
-| `zones/` | the **read view** over both zone stores — symlinks, the human file always winning. Derived, ignored | `views build zones` |
 | `tei/` | the collation output, and the system of record for seam state — including `corpus-header.xml`, which is a fragment, not a page | the collation pass, `tei seam --commit` |
 | `mz/tei/` | the generated first-draft page, by rule from `gt/zones/` + `gt/ocr/`. Derived, ignored; **no view over the tei pair**, since naming the two apart is the point | `tei generate` |
 | `entities/` | the encyclopedia: one markdown record per entity under its class directory. The referent of every `@ref`, and the source of the alias vocabulary a rule links by | `entity new --commit`, `entity ratify --commit`, `edition serve` |
@@ -36,7 +34,7 @@ the project's rules, `CLAUDE.md` governs; for the character inventory,
 | `review/<ref>/` | `proposal.json` + `decision.json` authored; crops/sheets/zoom/html derived | `ocr review`, `ocr crops`, `ocr zoom` |
 | `scans/w-figs-blotted/` | training rasters: figures painted **white**. Derived, ignored; the 580 figure-less pages are symlinks | `zones blot`, `views build w-figs-blotted` |
 | `scans/w-figs/` | the raster of every page carrying a `gt/fig/` ALTO — a selection, not a view. Derived, ignored | `views build w-figs` |
-| `scans/w-ocr/` | raster beside ALTO for every page a human has been through. Membership is `gt/ocr/`; the ALTO link points at the `ocr/` **view**, so promoting a page needs no rebuild. Derived, ignored | `views build w-ocr` |
+| `scans/w-ocr/` | raster beside ALTO for every page a human has been through. Membership is `gt/ocr/`, and so is the ALTO the link names. Derived, ignored | `views build w-ocr` |
 | `train/bogoras-seg/` | training scratch, in two halves: `data/` is the symlink farm and its two `.lst` files, `model/` each run's checkpoints. Nothing sits in the base. Derived, ignored, **read by nothing once training ends** | `train assemble zones`, `ketos segtrain` |
 | `models/bogoras-seg/` | the models this project trains — **tracked**, each with the split it saw as `<model>.train.lst`/`.eval.lst` and a small `<model>.json` | `train install zones --commit` |
 | `models/` (rest) | downloaded third-party weights, 675 MB, ignored | not authored here |
@@ -48,11 +46,15 @@ produced it*. **A file's role must not live only in the directory holding it** �
 so the role lives in the directory again and the two do not alias. Blocks written by `zones`
 also carry an `mz_` id prefix, so a file identifies itself even out of context.
 
-**Reads may resolve through `ocr/`; writes may not.** `ocr/*.xml` are symlinks, so
-naming them on a write hides which real store is being touched — and a write landing
-in a store nobody meant to touch is how this repo lost its ground truth once. Reading
-is the opposite case: resolving a page to its current OCR is the entire purpose of a
-union view. `lines.DEFAULT_STORE` is that default; `restore` names `gt/ocr/`.
+**Every read names its store, and there is no view over any pair.** `ocr/` and
+`zones/` were symlink views over the paired stores, the human file winning, and a
+reader that named no store read through them — a blend of ranks in front of the one
+layer whose subject is rank. They are gone: the library's `store` parameters have no
+default, the `ocr` CLI group defaults to `mz` (every verb there runs while the page
+has only a machine reading), and the readers of the loop's output name `gt/ocr/`.
+`restore` writes `gt/ocr/` by name, as it always did. The one surface that still
+chooses a store for a human — the zones editor, opening on `gt` where a page is keyed
+and `mz` otherwise — reports the store it chose and that it was not pinned.
 
 **The same rule, again, for zones: reads may resolve through `zones/`; writes name
 `gt/zones/`.** `save_zones` takes no store parameter at all, which is the strongest

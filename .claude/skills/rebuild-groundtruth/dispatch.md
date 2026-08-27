@@ -182,7 +182,7 @@ assertion inside it could never catch the case it exists for.
   infer, an agent reaches for the default view, and the view is the wrong witness.
 - **Name the deliverable and where it stops.** "Your deliverable is
   `review/PP-NNN/proposal.json`, normalized and clean. STOP THERE." Then bar the
-  rest by name: no `ocr review`, no `restore`, no `gt/ocr/` write, no `views build`, no
+  rest by name: no `ocr review`, no `restore`, no `gt/ocr/` write, no
   `--all` form of anything, no git commit. A prohibition that names the verb is
   checkable; "don't overstep" is not. `--all` is worth naming as a class now that
   every corpus-wide form is spelled that way: one flag stands between a per-page

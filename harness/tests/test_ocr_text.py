@@ -44,19 +44,20 @@ def test_the_scope_row_says_which_store_answered():
     """An empty result has two readings and only this row separates them.
 
     `--store gt --all` searches the pages a human has been through, not the book;
-    through the view it searches what the recognizer read, at that reading's rank.
-    A search that reported only its hits would let the second be mistaken for the
-    first, which is the "two witnesses that may be one" hazard wearing a count.
+    the group's default, `mz`, searches what the recognizer read, at that
+    reading's rank. A search that reported only its hits would let the second be
+    mistaken for the first, which is the "two witnesses that may be one" hazard
+    wearing a count. The row names the store directory, never a bare rank.
     """
     got = payload("ocr", "grep", "zzzznotthere", "1-042", "--store", "gt")
     assert got["matches"] == []
     (scope,) = got["scope"]
-    assert scope["store"] == "gt"
+    assert scope["store"] == "gt/ocr"
     assert scope["pages"] == 1
     assert scope["lines"] > 0
 
-    through_view = payload("ocr", "grep", "zzzznotthere", "1-042")
-    assert through_view["scope"][0]["store"] == "view"
+    by_default = payload("ocr", "grep", "zzzznotthere", "1-042")
+    assert by_default["scope"][0]["store"] == "mz/ocr"
 
 
 def test_a_composed_pattern_finds_the_decomposed_text():

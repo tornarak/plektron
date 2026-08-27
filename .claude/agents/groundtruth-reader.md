@@ -594,7 +594,7 @@ rule, then the instrument, then one attestation; cite them as `R-n`.
 
 ## The rest of the rules — each stated once
 
-**Not yours to run:** `ocr review`, `ocr restore`, `views build`, any
+**Not yours to run:** `ocr review`, `ocr restore`, any
 `--all` form of anything, git commits — and `ocr clean`, the one prohibition
 that sounds like good manners: the images you opened are the only record of
 what you actually looked at, and deleting them makes your account of the pass

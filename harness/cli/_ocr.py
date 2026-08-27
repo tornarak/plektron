@@ -34,7 +34,6 @@ import click
 
 from ..calls import call_summary, log_call, read_calls
 from ..lines import (
-    DEFAULT_STORE,
     LINE_SHEET_H,
     NUMBER_FONT,
     NUMBER_GUTTER,
@@ -103,28 +102,38 @@ from ._common import (
 # reads through the view, which resolves per page to gt-if-it-exists-else-mz; that
 # is "whatever is current for this page", not a store, and it stays unnamed.
 STORE_HELP = ("which store to read: 'gt' is what a human has been through, 'mz' "
-              "what the recognizer read. Omit to read through the ocr/ view, which "
-              "resolves per page to the human file where there is one")
+              "what the recognizer read")
 STORES = {"gt": "gt/ocr", "mz": "mz/ocr"}
+# **The group's default is `mz`, and it follows the lifecycle, not the census.**
+# Through a book's life every verb here is used while the page has *only* a
+# machine reading: the crops, sheets and zoom serve the reader, `gaps` and `edit`
+# find the ink the segmenter missed, `diff` and `review` weigh a proposal against
+# the recognizer, and `restore` needs `mz/ocr/` as its skeleton since `gt/ocr/`
+# does not exist until it writes it. `gt/ocr/` is the loop's output, and the
+# readers of the output — collation, the detectors, the apparatus — name it.
+# `--store gt` is how a verb here is pointed at ratified text: a revision, or
+# crops off ground truth. That every page of *this* corpus is restored says
+# nothing about the default, because the next book starts at the top.
+DEFAULT_STORE_NAME = "mz"
 OUT_HELP =("write the images somewhere other than the page's own review/PP-NNN/ "
             "subdirectory — for a one-off comparison, not for the pass, whose "
             "files the other actions expect to find in the default place")
 
 
-def _store(p, default=None):
+def _store(p):
     """`--store gt|mz`, resolved to a directory through `_store_dir`.
 
-    `default` is the store a bare invocation reads; `None` means the view. Only
-    `review` sets one, because only there is the view actively wrong — see its
-    registration.
+    One default for the whole group, `DEFAULT_STORE_NAME`, and no `None`: there
+    used to be a third value the flag could not spell — omitted, the verb read
+    the `ocr/` view — and it is gone with the view.
     """
-    opt(p, "--store", type=click.Choice(("gt", "mz")), default=default,
-                   help=STORE_HELP + (f" [default: {default}]" if default else ""))
+    opt(p, "--store", type=click.Choice(tuple(STORES)), default=DEFAULT_STORE_NAME,
+        help=STORE_HELP + f" [default: {DEFAULT_STORE_NAME}]")
     return p
 
 
 def _store_dir(a) -> str:
-    return STORES.get(getattr(a, "store", None), DEFAULT_STORE)
+    return STORES[getattr(a, "store", None) or DEFAULT_STORE_NAME]
 
 
 CANON_REF = re.compile(r"^(?:chukchi-)?[1-3]-\d{3}$")
@@ -172,15 +181,12 @@ def register(cli):
                         "The recognizer"), section="The passes")
     add = lambda name, **kw: action(g, name, globals()[f"run_{name.replace('-','_')}"], **kw)
 
-    p = _store(add("pages", help="every ref with OCR present, i.e. workable now. "
-              "Through the view by default, so a machine-read page counts — that "
-              "is what makes it workable. Narrow it with --store"))
+    p = _store(add("pages", help="every ref with a page in the store read — "
+              "mz by default, i.e. what the recognizer has read; --store gt for "
+              "what a human has been through"))
     opt(p, "--show-store", is_flag=True,
-                   help="a row per ref instead of a bare list: which real stores "
-                        "hold the page, and which one the ocr/ view actually "
-                        "reaches. `view` is read off the farm rather than derived, "
-                        "so a page restored since the last `views build ocr` shows up as "
-                        "still pointing at mz")
+                   help="a row per ref instead of a bare list: which of the two "
+                        "real stores hold the page")
 
     p = _store(refs_arg(add("lines", help="per-line records for a page — line id, "
               "geometry and text, in reading order with empties kept. `index` is "
@@ -428,7 +434,7 @@ def register(cli):
     # adjudicating one are not the same verb. Split 2026-08-21.
     p = _store(add("diff", pageable=True,
                help="a span-level diff of each proposal against a second witness, "
-                    "grouped by substitution class"), default="mz")
+                    "grouped by substitution class"))
     refs_arg(p, all_="every page holding a proposal and no decision — the "
                      "pending-adjudication queue")
     opt(p, "--spans", is_flag=True,
@@ -441,7 +447,7 @@ def register(cli):
                constraints=(exclusive("issues", "html"),),
                help="adjudicate reading proposals in the browser, one or more "
                     "pages in one session — serves on 127.0.0.1 and accepts "
-                    "saves into review/PP-NNN/decision.json"), default="mz")
+                    "saves into review/PP-NNN/decision.json"))
     refs_arg(p, all_="every page holding a proposal and no decision — the "
                      "pending-adjudication queue",
              extra=": walked in the order named, one page on screen at a time")
@@ -587,11 +593,8 @@ def run_pages(a) -> int:
 def _store_refs(a) -> list[str]:
     """The pages this invocation works on: the ones named, or the store's own.
 
-    `--all` here reads through whatever `--store` resolved to, which is the view
-    unless one was named — the `ocr pages` rule, that a machine-read page is
-    workable and that is what these verbs report. Neither of them gates and
-    neither publishes a rate, so the "name the store, not the view" rule does not
-    reach them; `--store` narrows either.
+    `--all` here is every page the `--store` store holds — `mz/ocr/` by the
+    group's default, which is the set the reading pass works over.
     """
     return page_refs(a) or all_refs(a.root, _store_dir(a))
 
@@ -700,7 +703,7 @@ def run_grep(a) -> int:
     # pages searched do not hold it — and only `pages`/`store` separate them.
     # Unkeyed pages are not searched and cannot be: `--store gt` over the corpus
     # is a search of the pages a human has been through, not of the book.
-    out(a, [{"pattern": a.pattern, "store": a.store or "view", "pages": len(refs),
+    out(a, [{"pattern": a.pattern, "store": _store_dir(a), "pages": len(refs),
              "lines": read, "hits": hits}], name="scope", heading=True)
     out(a, list(rows.values()), name="matches", heading=True)
     return 0

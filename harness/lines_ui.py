@@ -35,7 +35,7 @@ from pathlib import Path
 
 from . import corrections as corr
 from . import zones as zn
-from .lines import DEFAULT_STORE, alto_for_lines, line_gaps, page_lines
+from .lines import alto_for_lines, line_gaps, page_lines
 from .refs import norm_ref
 
 PORT = 8733
@@ -48,8 +48,7 @@ PORT = 8733
 BLOT_CACHE = "w-blotted-edit"
 
 
-def page_state(ref: str, root: Path = Path("."),
-               store: str = DEFAULT_STORE) -> dict:
+def page_state(ref: str, root: Path, store: str) -> dict:
     """Everything the page needs, resolved server-side.
 
     The client re-derives nothing: it is handed raster-space geometry for every
@@ -126,8 +125,7 @@ def page_state(ref: str, root: Path = Path("."),
     }
 
 
-def page_row(ref: str, root: Path = Path("."),
-             store: str = DEFAULT_STORE) -> dict:
+def page_row(ref: str, root: Path, store: str) -> dict:
     """One page's state for the list — the slow column measured, the rest read.
 
     `bands` is the raster read (~0.2 s) and everything else is a file test, which
@@ -148,8 +146,7 @@ def _zone_of(box: dict, zones: list[dict]) -> str:
                        "height": box["y1"] - box["y0"]}, zones)
 
 
-def save_payload(payload: dict, root: Path = Path("."),
-                 store: str = DEFAULT_STORE) -> dict:
+def save_payload(payload: dict, root: Path, store: str) -> dict:
     """Write one page's corrections and its line-level rulings.
 
     Both stores or neither: they are two halves of one sitting, and a save that

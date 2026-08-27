@@ -130,10 +130,12 @@ def test_tei_is_a_store_and_never_a_farm():
     exists precisely to refuse — and the schema gate failed on a draft still carrying
     the `<foreign index="N">` scaffolds collation is supposed to replace.
 
-    `zones/` and `ocr/` are farms because their two stores hold the same kind of
-    thing at different ranks, and a caller wants the best one without caring which.
-    These two hold *different* things, and every caller above cares. The edition UI
-    reaches the generated store by naming it, not by following a link.
+    `zones/` and `ocr/` *were* farms, on the reasoning that their two stores held
+    the same kind of thing at different ranks and a caller wanted the best one
+    without caring which. That reasoning is retired with them — a caller names a
+    rank — and it never held here: these two hold *different* things, and every
+    caller above cares. The edition UI reaches the generated store by naming it,
+    not by following a link.
     """
     store = REPO / "tei"
     if not store.is_dir():

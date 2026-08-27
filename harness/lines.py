@@ -294,16 +294,14 @@ LINE_KEYS = ("index", "line_id", "block_id", "text",
              "hpos", "vpos", "width", "height", "baseline", "points")
 
 
-# The store a verb reads when none is named. `ocr/` is the *read view* over every
-# OCR store the project has: today a symlink farm into `gt/ocr/`, and the place a
-# raw-recognizer sibling links in beside it if one is ever
-# produced again. It is the default because a reader almost always wants "whatever
-# this page's OCR currently is", not a named generation of it.
-#
-# This replaced `end-of-eval/`, the stock-CATMuS output, which was deleted once the
-# ground-truth rebuild finished. Four verbs defaulted to it by name and died with an
-# OSError the moment it went; hence one constant rather than eight literals.
-DEFAULT_STORE = "ocr"
+# There is no default store in this module, and there used to be one — `ocr/`, a
+# symlink view resolving per page to `gt/ocr/` where a human had been through it
+# and `mz/ocr/` otherwise. Every reader here took it when no store was named,
+# which put a blend of ranks in front of the one layer whose subject is rank: a
+# verb adjudicating machine output against the artifact, defaulting to a store
+# that might *be* machine output, with nothing in the payload saying which.
+# `store` is required now; the CLI supplies `mz/ocr`, the store the reading pass
+# works in, and `gt/ocr` is named by the readers of the loop's output.
 
 
 def raster_path(ref: str, root: Path = Path("."), scans: str = "scans") -> Path:
@@ -324,33 +322,24 @@ def raster_path(ref: str, root: Path = Path("."), scans: str = "scans") -> Path:
     return p
 
 
-def alto_for_lines(ref: str, root: Path = Path("."),
-                   store: str = DEFAULT_STORE) -> Path:
-    """Path to one page's ALTO in whichever store is being read.
+def alto_for_lines(ref: str, root: Path, store: str) -> Path:
+    """Path to one page's ALTO in the store being read.
 
     Takes the directory as an argument rather than hardcoding it, because callers
-    want different stores for the same ref: an inspection reads the current OCR
-    through `ocr/`, while a comparison against a specific generation names that
-    generation. Note `figures.alto_for` is not this — it is hardwired to `gt/fig/`
-    and answers a different question.
+    want different stores for the same ref: the reading pass works in `mz/ocr/`,
+    a revision of a finished page reads `gt/ocr/`, and a comparison names the
+    generation it compares against. Note `figures.alto_for` is not this — it is
+    hardwired to `gt/fig/` and answers a different question.
 
-    **Reads may resolve through `ocr/`; writes may not.** The earlier rule here
-    forbade `ocr/` outright, on the grounds that its entries are symlinks into
-    `gt/ocr/` and naming them hides what is being touched. That is right about
-    *writing* — `restore` still names `gt/ocr/` explicitly, and the loss this repo
-    suffered came from a write landing in a store nobody meant to touch. It is
-    wrong about reading: resolving a page to its current OCR is the whole purpose
-    of a union view, and a read cannot destroy anything.
+    **No default.** There was one, the `ocr/` view, and under it a verb could read
+    the same real file another part of the verb was writing — a case `restore` had
+    to detect by resolving symlinks. With the store named, that is a store-name
+    test, and a reader can never be handed a rank it did not ask for.
 
-    The consequence a caller must know: under the default, this can resolve to the
-    same real file another part of the same verb writes. `restore` handles that
-    case by name — see its `mode` field.
-
-    Refuses when `store` is a **derived tree that was never built**, so the
-    default path on a fresh clone names the missing view rather than letting lxml
-    raise `Error reading file 'ocr/chukchi-1-048.xml'` — loud enough, but blaming
-    the page for a directory nobody made. A store that merely holds nothing is not
-    an error and is not touched; see `farms.require`.
+    Refuses when `store` is a **registered derived tree that was never built**,
+    so a caller naming one gets the command that builds it rather than lxml's
+    `Error reading file`. A store that merely holds nothing is not an error and is
+    not touched; see `farms.require`.
     """
     from . import farms
     farms.require(root, store)
@@ -591,13 +580,14 @@ def _zones_for(ref: str, root: Path = Path(".")) -> list[dict]:
 
 
 def _fold_corrections(out: list[dict], root: Path | None, ref: str | None,
-                      page) -> list[dict]:
+                      page, zones: list[dict] | None = None) -> list[dict]:
     """Append this page's `gt/lines/` corrections to the ALTO's own records.
 
     The merging lives here rather than in `corrections.py` because it is entirely
-    about this structure — it needs `_scale_for`, `_overlap_fraction` and
-    `_band_zone`, all of which are geometry over line records. That module owns
-    the *store*; this owns what a page's lines are.
+    about this structure — it needs `_scale_for` and `_line_zone`, both geometry
+    over line records. That module owns the *store*; this owns what a page's
+    lines are. `zones` is the page's bands if the caller has already read them;
+    a correction is placed by the same rule as an ALTO line, `_line_zone`.
 
     **Indices are assigned after the ALTO's maximum, never interleaved**, which is
     what makes the whole overlay safe: every existing `proposal.json` and
@@ -617,22 +607,21 @@ def _fold_corrections(out: list[dict], root: Path | None, ref: str | None,
     if not recs:
         return out
 
-    page_zones = _zones_for(ref, root or Path("."))
+    page_zones = zones if zones is not None else _zones_for(ref, root or Path("."))
     aw, ah = float(page.get("WIDTH") or 0), float(page.get("HEIGHT") or 0)
     for j, r in enumerate(recs):
         rw, rh = r["page_w"] or aw, r["page_h"] or ah
         sx, sy = (rw / aw if aw else 1.0), (rh / ah if ah else 1.0)
         # Containment is asked in raster space, where both the fragment and the
         # zones live; the geometry is scaled into the ALTO's space afterwards.
-        band = {"hpos": r["x0"], "vpos": r["y0"],
-                "width": r["x1"] - r["x0"], "height": r["y1"] - r["y0"]}
+        band = {"vpos": r["y0"], "height": r["y1"] - r["y0"]}
         x, y = round(r["x0"] / sx), round(r["y0"] / sy)
-        w, h = round(band["width"] / sx), round(band["height"] / sy)
+        w, h = round((r["x1"] - r["x0"]) / sx), round(band["height"] / sy)
         out.append({
             "index": len(out) + j,
             "line_id": r["id"],
             "block_id": f"{r['id']}_block",
-            "zone": _band_zone(band, page_zones),
+            "zone": _line_zone(band, page_zones),
             "text": r["text"],
             "hpos": x, "vpos": y, "width": w, "height": h,
             "baseline": f"{x} {y + h} {x + w} {y + h}",
@@ -678,21 +667,19 @@ def page_lines(alto_path: Path, root: Path | None = None,
     file omits it the index stands in as `line-<n>`, so the join never silently
     falls back to position alone without saying so.
 
-    `zone` is the containing block's declared type, resolved through `TAGREFS` to
-    `OtherTag/@LABEL` — **never from the tag ID**, which is assigned per export.
-    It is `""` wherever the store does not label its blocks, which is every page of
-    `gt/ocr/` and `gt/seg/`: those blocks came from a segmentation whose regions
-    carried no semantic value. `mz/ocr/` labels every one, because `ocr predict`
-    writes the zones in as the regions, and that field is what lets a consumer drop
-    the running title and the signature line without a second walk of the tree.
-    A correction's `zone` is resolved differently — by containment against
-    `gt/zones/`, since the fragment stores no label — and that is deliberate:
-    stored, a label would go stale the moment the page was re-zoned, and the way a
-    stranded correction announces itself is by resolving to no zone at all.
+    `zone` is **derived by containment against `gt/zones/`**, for every record
+    alike — the ALTO's own lines and the corrections — and never read off the
+    ALTO. The ALTO used to carry it: `ocr predict` wrote the keyed zones in as
+    labelled blocks, `restore` copied that skeleton into `gt/ocr/`, and this
+    resolved the label through `TAGREFS`. That was a stored copy of a fact whose
+    home is the zone store, and it went stale on the first re-cut — every other
+    consumer had already gone back to geometry for exactly that reason, and
+    `tools/flatten_ocr.py` has since taken the blocks out of both stores. `""`
+    where the page has no zones or the line sits in none, which is how a stranded
+    line announces itself. The rule is `_line_zone`'s: the line's vertical centre
+    against the bands, y alone.
     """
-    from .figures import _block_label, _labels
     tree = etree.parse(str(alto_path))
-    labels = _labels(tree)
     out = []
     for i, tl in enumerate(tree.iter("{*}TextLine")):
         bb = _bbox(tl) or {}
@@ -705,7 +692,7 @@ def page_lines(alto_path: Path, root: Path | None = None,
             "index": i,
             "line_id": tl.get("ID") or f"line-{i}",
             "block_id": (blk.get("ID") if blk is not None else None),
-            "zone": (_block_label(blk, labels) if blk is not None else ""),
+            "zone": "",
             "text": _line_text(tl),
             "hpos": bb.get("HPOS"),
             "vpos": bb.get("VPOS"),
@@ -739,13 +726,49 @@ def page_lines(alto_path: Path, root: Path | None = None,
         for rec in out:
             rec["in_figdesc"] = rec["in_graphic"] = rec["figdesc_straddle"] = None
     if found:
+        # One read of the zone store for the page, shared with the fold below so
+        # an ALTO line and a correction are placed against the same bands.
+        zones = _zones_for(found, at)
+        for rec in out:
+            rec["zone"] = _line_zone(rec, zones)
         page = tree.getroot().find(".//{*}Page")
         before = len(out)
-        _fold_corrections(out, at, found, page)
+        _fold_corrections(out, at, found, page, zones)
         for rec in out[before:]:
             rec["src"] = "corr"
             rec["in_figdesc"] = rec["in_graphic"] = rec["figdesc_straddle"] = None
     return reading_order(out)
+
+
+def _line_zone(rec: dict, zones: list[dict]) -> str:
+    """The label of the band holding this line's vertical centre, or `""`.
+
+    **y alone, and testing x too is a bug rather than a tightening** — the rule
+    `generate._assign` records, with its measurement: the zones are a vertical
+    partition of a measured column, fixed-width bands by construction, so a band's
+    x range carries no membership information, and requiring both axes dropped 15
+    of `1-021`'s lines into the outside bucket on the first run. The centre rather
+    than the top edge, for the reason given there too: a line polygon starts above
+    its ink, so the top edge of a paragraph's opening line sits a few pixels above
+    the cut drawn for it.
+
+    Not `_band_zone`, which is `line_gaps`' rule for *ink*: a marginal mark shares
+    its rows with a body zone and only a two-axis overlap keeps it out. A text line
+    is inside the column by construction, and the first-match on abutting bands is
+    the tie-break a partition wants.
+
+    Coordinates are compared unscaled: zone geometry is raster geometry by
+    construction, and so is every OCR ALTO's since `migrate_coords`. The same
+    assumption `generate._assign` and `context.head_lines` already make.
+    """
+    v, h = rec.get("vpos"), rec.get("height")
+    if v is None or h is None:
+        return ""
+    mid = float(v) + float(h) / 2
+    for z in zones:
+        if z["y0"] <= mid <= z["y1"]:
+            return z["label"]
+    return ""
 
 
 def _poly_bounds(points: str) -> tuple[int, int, int, int] | None:
@@ -811,7 +834,7 @@ def line_box(rec: dict, sx: float, sy: float, size: tuple[int, int]) -> tuple | 
     return box if box[2] > box[0] and box[3] > box[1] else None
 
 
-def line_crops(ref: str, root: Path = Path("."), store: str = DEFAULT_STORE,
+def line_crops(ref: str, root: Path, store: str,
                scans: str = "scans"):
     """Yield `(record, PIL.Image)` per line on one page, cropped from the raster.
 
@@ -1038,8 +1061,7 @@ def annexed_bands(ref: str, root: Path = Path(".")) -> dict[int, list[dict]]:
     return out
 
 
-def covered_faults(ref: str, root: Path = Path("."),
-                   store: str = DEFAULT_STORE) -> list[dict]:
+def covered_faults(ref: str, root: Path, store: str) -> list[dict]:
     """`covered_by` rulings whose named line does not bear them out.
 
     **This is the half "not type" could never have.** A ruling that ink is not
@@ -1088,7 +1110,7 @@ def covered_faults(ref: str, root: Path = Path("."),
     return out
 
 
-def line_gaps(ref: str, root: Path = Path("."), store: str = DEFAULT_STORE,
+def line_gaps(ref: str, root: Path, store: str,
               scans: str = "scans") -> list[dict]:
     """Bands of ink on the page that no `TextLine` covers — dropped lines.
 
@@ -1365,8 +1387,8 @@ def _raster_producer(step: str, label: str, src: Path, inputs: dict,
                 **inputs})
 
 
-def write_blot(ref: str, out_dir: Path, root: Path = Path("."),
-               store: str = DEFAULT_STORE, scans: str = "scans",
+def write_blot(ref: str, out_dir: Path, root: Path,
+               store: str, scans: str = "scans",
                exemptions: bool = True) -> dict:
     """The page with every line box and every figure zone painted out.
 
@@ -1654,8 +1676,8 @@ def _numbered_producer(ref: str, root: Path, store: str, scans: str,
          "in_figures": dropped})
 
 
-def write_numbered_page(ref: str, out_path: Path, root: Path = Path("."),
-                        store: str = DEFAULT_STORE, scans: str = "scans",
+def write_numbered_page(ref: str, out_path: Path, root: Path,
+                        store: str, scans: str = "scans",
                         gutter: int = NUMBER_GUTTER,
                         font_size: int = NUMBER_FONT) -> dict:
     """The page raster with every line's ALTO `index` drawn in a left gutter.
@@ -1888,8 +1910,8 @@ def write_numbered_page(ref: str, out_path: Path, root: Path = Path("."),
 LINE_SHEET_H = 1960
 
 
-def write_line_sheets(ref: str, out_dir: Path, root: Path = Path("."),
-                      store: str = DEFAULT_STORE, scans: str = "scans",
+def write_line_sheets(ref: str, out_dir: Path, root: Path,
+                      store: str, scans: str = "scans",
                       per_sheet: int = 8,
                       sheet_h: int | None = LINE_SHEET_H,
                       only: set[int] | None = None) -> list[dict]:
@@ -2197,8 +2219,8 @@ def write_line_zoom(ref: str, out_dir: Path,
                     only: set[int] | dict[int, tuple[int, int]] | None = None,
                     zoom: int = ZOOM, window: int | None = None,
                     overlap: int = ZOOM_OVERLAP, sheet_h: int = ZOOM_SHEET_H,
-                    client_w: int = ZOOM_CLIENT_W,
-                    root: Path = Path("."), store: str = DEFAULT_STORE,
+                    client_w: int = ZOOM_CLIENT_W, *,
+                    root: Path, store: str,
                     scans: str = "scans",
                     smooth: bool = False) -> list[dict]:
     """Magnified lines, sliced into overlapping strips and packed into few sheets.
@@ -2287,8 +2309,8 @@ def write_line_zoom(ref: str, out_dir: Path,
              "strips": " ".join(e["items"])} for e in index]
 
 
-def write_line_crops(ref: str, out_dir: Path, root: Path = Path("."),
-                     store: str = DEFAULT_STORE, scans: str = "scans") -> list[dict]:
+def write_line_crops(ref: str, out_dir: Path, root: Path,
+                     store: str, scans: str = "scans") -> list[dict]:
     """Crop every line to `out_dir/<y_rank>-<index>-<line_id>.png`. Returns the records.
 
     Filenames lead with the zero-padded **reading position**, so a directory

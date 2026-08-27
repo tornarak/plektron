@@ -84,11 +84,6 @@ case "$TOOL" in
       */mz/ocr/*|mz/ocr/*)
         echo "Blocked: read the CATMuS ALTO through 'uv run harness ocr lines PP-NNN --store mz', which gives you the line indices and the zone labels in the form this pass is meant to see them. The raw XML adds geometry you have no use for and a whole page of machine text you are forbidden to treat as a witness." >&2
         exit 2 ;;
-      # The read view, checked after both stores it points into so the refusal
-      # above names the store the symlink actually resolves to.
-      */ocr/*|ocr/*|*/zones/*|zones/*)
-        echo "Blocked: ocr/ and zones/ are the read views — symlinks into gt/ and mz/, so reading one is reading whichever store won, and neither is yours to read directly. 'ocr lines --store mz' gives you your page's lines and their zone labels." >&2
-        exit 2 ;;
       */decision.json|*/decision.jsonl)
         echo "Blocked: decision.json is the adjudication — a human's, made after you finish. Reading one is reading the answers to a page someone else already keyed. Your deliverable is a proposal." >&2
         exit 2 ;;

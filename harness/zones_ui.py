@@ -93,22 +93,23 @@ def _snap_column(z: dict, windows: list[dict]) -> int:
 # It was called `split` until the name was read back cold and meant nothing: the
 # topbar already carries a `split` pill two places to its left, and that one is the
 # train/eval/exempt mark. Two unrelated things under one word in one strip of UI.
-STORES = ("gt", "mz", "zones", "paras")
+STORES = ("gt", "mz", "paras")
 
 # What the selector is offering, in the pill's tooltip. The store names are short
-# enough to be cryptic, and three of the four are not directories.
+# enough to be cryptic, and one of the three is not a directory.
+#
+# There was a fourth, `zones`: the read view, resolving to the human file wherever
+# there was one and the machine's otherwise. The view is gone from the repo and so
+# is the option — a human looking at a page names which store they are looking at,
+# and `present` says what the other holds before they switch.
 STORE_HELP = {
     "gt": "gt/zones/ — what a human has been through. A save always lands here",
     "mz": "mz/zones/ — what the segmenter emitted, shown as an unsaved proposal",
-    "zones": "the view: the human file wherever there is one, the machine's otherwise",
     "paras": "gt with the paragraph rule applied — a proposal, computed live and "
              "stored nowhere",
 }
 
-# What each name resolves to. `zones` is the view and resolves by the same rule
-# `link_view` writes — the human file wherever there is one — computed rather than
-# read off the farm, so the editor does not silently depend on `--link` having been
-# run since the last prediction.
+# What each real name resolves to.
 STORE_DIR = {"gt": zn.ZONEDIR, "mz": zn.MZDIR}
 
 
@@ -120,11 +121,6 @@ def effective_store(ref: str, root: Path, store: str) -> str:
     `mz` on a page nobody has predicted is a fair question with the answer "nothing
     here", and it is exactly the question a reviewer walking an itinerary is asking.
     """
-    if store == "zones":
-        for s in ("gt", "mz"):
-            if zn.has_zones(ref, root, STORE_DIR[s]):
-                return s
-        return ""
     if store == "paras":
         return "paras" if zn.has_zones(ref, root, zn.ZONEDIR) else ""
     return store if zn.has_zones(ref, root, STORE_DIR[store]) else ""
@@ -252,7 +248,8 @@ def _fig_state(ref: str, root: Path, cfg: dict) -> dict:
 
 
 def page_state(ref: str, root: Path, cfg: dict, nudge: int = 0,
-               itinerary: list[str] | None = None, store: str = "zones") -> dict:
+               itinerary: list[str] | None = None,
+               store: str | None = None) -> dict:
     """Everything the editor needs for one page, resolved server-side.
 
     The columns come from `zones.measure_frame` — read off this page's own ink
@@ -263,10 +260,18 @@ def page_state(ref: str, root: Path, cfg: dict, nudge: int = 0,
 
     `store` is **which store is being looked at, and it is orthogonal to the
     itinerary**: the itinerary chooses the pages, this chooses whose reading of them
-    you see. `zones` (the default) is the view — the human file wherever there is
-    one, the machine's otherwise — and `gt`/`mz` pin one store, including onto a page
-    that has nothing in it, because "the model produced nothing here" and "nobody has
-    keyed this" are both answers rather than errors.
+    you see. `gt`/`mz` pin one store, including onto a page that has nothing in it,
+    because "the model produced nothing here" and "nobody has keyed this" are both
+    answers rather than errors.
+
+    **`None` is the editor's opening choice, and it is made in the open**: `gt`
+    where the page is keyed, `mz` otherwise — the modal use of this editor is
+    keying an unkeyed page off its prediction, and a page that opened blank on
+    every arrow key would cost a keypress a page. The payload reports the real
+    store chosen as `store` and `pinned: False`; there is no third name for it.
+    The retired `zones/` view made this same choice for every reader in the repo,
+    silently, through a symlink; here it is one surface's opening state, drawn in
+    the HUD beside what the other store holds.
 
     Whatever is selected, **a save writes `gt/zones/`**. Showing `mz` shows it as a
     *proposal* — snapped to the configured column, opening clean — so the only route
@@ -285,6 +290,9 @@ def page_state(ref: str, root: Path, cfg: dict, nudge: int = 0,
     m = zn.measure_frame(ref, root, cfg)
     windows = [{"x0": w["x0"] + nudge, "x1": w["x1"] + nudge} for w in m["columns"]]
     tol = cfg["width_tolerance_px"]
+    pinned = store is not None
+    if store is None:
+        store = "gt" if zn.has_zones(ref, root, zn.ZONEDIR) else "mz"
     if store not in STORES:
         raise ValueError(f"store must be one of {', '.join(STORES)}, not {store!r}")
     # A ruled leaf is settled without holding a zone file, so this is `keyed`
@@ -334,11 +342,11 @@ def page_state(ref: str, root: Path, cfg: dict, nudge: int = 0,
         # something in `mz` before switching to it, rather than switching to find out.
         "store": store,
         "shown": shown,
-        # What the *view* resolves to, which is not the same as what the current
-        # selection resolved to and must not be drawn from it: with `mz` pinned on a
-        # page that has both, `shown` is `mz` while the view still answers `gt`. The
-        # pill reports the store rule, not the thing being looked at.
-        "view": effective_store(ref, root, "zones"),
+        # Whether the caller named the store or the editor chose it. The client
+        # carries a *pinned* store across navigation and lets an unpinned one be
+        # re-chosen per page, so a session that opened on a prediction does not
+        # arrive at the next, keyed, page showing its prediction instead.
+        "pinned": pinned,
         # **`has_zones`, not `keyed`, and the difference is the whole point of
         # there being two.** This column says what each store *holds*, so `None`
         # has to mean "no file" — and a ruled leaf is settled while holding
@@ -524,7 +532,7 @@ def _save_figs(payload: dict, ref: str, root: Path, cfg: dict) -> dict:
 
 def page_context(ref: str, root: Path, cfg: dict, nudge: int = 0,
                  itinerary: list[str] | None = None,
-                 itinerary_name: str = "", store: str = "zones",
+                 itinerary_name: str = "", store: str | None = None,
                  base: str = "/zones") -> dict:
     """Everything the editor page needs, as data.
 
@@ -536,7 +544,7 @@ def page_context(ref: str, root: Path, cfg: dict, nudge: int = 0,
     st["itinerary"] = itinerary_name
     acts = {k: v for k, v in (cfg.get("actions") or {}).items()
             if not k.startswith("_")}
-    pretty = {"cycle_store": "show gt / mz / paras / the view",
+    pretty = {"cycle_store": "show gt / mz / paras",
               "cycle_store_back": "…and back",
               "segment_page": "run the segmenter on this page (asks)",
               "delete_page": "un-key this page (types the ref)",
@@ -585,12 +593,10 @@ def page_context(ref: str, root: Path, cfg: dict, nudge: int = 0,
                   "color": t.get("color", "#999")}
                  for t in (figs_cfg.get("types") or [])]
 
-    sel = st.get("store", "zones")
+    sel = st.get("store", "gt")
     stores = []
     for name in STORES:
-        if name == "zones":
-            n = f"\u2192{st.get('view')}" if st.get("view") else "\u2014"
-        elif name == "paras":
+        if name == "paras":
             n = str(st.get("paras_zones", "\u2014"))
         else:
             c = (st.get("present") or {}).get(name)

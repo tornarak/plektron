@@ -3,16 +3,11 @@
 An action lands here only if it is about a **whole derived tree** rather than about
 the pages inside one: `check` reports every farm's state, `build` rebuilds them.
 
-**This is the only spelling.** `ocr link` and `zones link` used to say the same
-thing from inside those groups, calling the same functions this group calls with
-the same argument — kept for a while as the natural phrasing while working
-there, and retired as duplicate surface. `views build ocr` names the farm, so a
-single view can still be relinked without the corpus-wide sweep.
-
-The group is named for what most of its members are, and the exception is worth
-knowing: `scans/w-figs-blotted/` is painted pixels, not a view over stores. What all
-seven share is the property that decides this group's membership — derived,
-gitignored, and absent on a fresh clone.
+The group keeps the name it had when two of its members were read views over the
+paired stores — `ocr/` and `zones/`, since retired. What the members share is the
+property that decides this group's membership: derived, gitignored, and absent on
+a fresh clone. `scans/w-figs-blotted/` is painted pixels rather than links, and is
+here for that property alone.
 """
 from __future__ import annotations
 
@@ -25,9 +20,8 @@ from ._common import action, add_all, add_jobs, arg, group, out
 
 def register(cli):
     g = group(cli, "views", "the derived trees git does not carry — the "
-              "read views over the paired stores, the scan farms, and "
-              "the segmenter's blotted rasters: what state each is in, "
-              "and one command to rebuild them",
+              "scan farms and the segmenter's blotted rasters: what state "
+              "each is in, and one command to rebuild them",
               section="Whole-corpus")
 
     p = action(g, "check", run_check,

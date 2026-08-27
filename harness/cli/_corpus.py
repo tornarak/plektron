@@ -14,8 +14,6 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import click
-
 from ..mets import ALTO_STORES, write_mets
 from ..normalize import convert, scan
 from ..pipeline import EXEMPT_STAGE, STAGES
@@ -119,14 +117,19 @@ def register(cli):
     # not a `--store` flag, because a selector spelled as a flag is what that
     # group already decided against.
     p = action(g, "mets", run_mets, pageable=False,
-               help="write a METS manifest over one ALTO store into a "
-               "directory you name, for importing that store into "
-               "eScriptorium. Built on demand and never tracked: both stores "
-               "that ever held one committed beside themselves went stale "
-               "under it, gt/ocr/METS.xml manifesting 20 files against 663")
-    arg(p, "store", metavar="STORE", type=click.Choice(ALTO_STORES))
+               help="write a METS manifest over one ALTO store — or an ordered "
+               "pair, copying each page's winning file beside it — into a "
+               "directory you name, for importing into eScriptorium. Built on "
+               "demand and never tracked: both stores that ever held one "
+               "committed beside themselves went stale under it, "
+               "gt/ocr/METS.xml manifesting 20 files against 663")
+    # Not a `click.Choice`: the pair form is a value the pool cannot enumerate.
+    # `parse_stores` validates against the same pool and raises the usage error.
+    arg(p, "store", metavar="STORE")
     p.help += ("\n\nSTORE: which ALTO store. One of: "
-               + ", ".join(ALTO_STORES) + ". The bare names are the read views.")
+               + ", ".join(ALTO_STORES) + " — or a comma-joined pair such as "
+               "gt/ocr,mz/ocr, the first winning per page, which is the "
+               "combined export the retired ocr/ view used to serve.")
     opt(p, "--out", metavar="DIR", required=True,
         help="where to write METS.xml. Required and has no default, so this "
              "cannot land back inside a store by omission. Always named "
@@ -313,5 +316,6 @@ def run_mets(a) -> int:
     # `write_mets` raises on an empty store, which `main` renders as the usage
     # error it is: naming a store this clone does not hold — every `mz/` tree is
     # derived — is a mistake about the invocation, not a corpus defect to gate on.
-    out(a, write_mets(a.store, a.out, a.root))
+    from ..mets import parse_stores
+    out(a, write_mets(parse_stores(a.store), a.out, a.root))
     return 0

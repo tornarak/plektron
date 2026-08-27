@@ -134,8 +134,8 @@ was built, so the loop below has not been run in anger.
 **A prediction must not reach `gt/fig/` unread**, and the reason is sharper here
 than on the zone track: `zones blot` paints `gt/fig/` boxes white into the rasters
 the *zone* segmenter trains on. A wrong figure box does not merely sit there being
-wrong — it teaches. That is also why there is no read view over `gt/fig/` and
-`mz/fig/` the way `zones/` covers the zone stores.
+wrong — it teaches. That is also why there was never a read view over `gt/fig/`
+and `mz/fig/`, even while the zone and OCR pairs had one.
 
 ## Do not
 

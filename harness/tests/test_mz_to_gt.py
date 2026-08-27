@@ -12,13 +12,13 @@ is the flow. What these tests hold is that it stays true: that a page with no
 ground truth at all can be built from a prediction plus an adjudication, that the
 machine's *geometry* survives while the machine's *text* does not reach `gt/`
 except through a decision, and that the span diff's second-witness refusal is
-satisfied by `mz/ocr/` where it is not by the view.
+satisfied by `mz/ocr/`.
 
 That last one closes a gap docs/open-questions.md records as open: "`harness ocr review`'s bare
 span diff has no second witness left ... If a second witness is ever wanted again,
 it links into `ocr/` from its own store." That is exactly what `mz/ocr/` is. (That
-bare diff is `harness ocr diff` since 2026-08-21; the quotation keeps the spelling
-the entry was written with.)
+bare diff is `harness ocr diff` since 2026-08-21, and the `ocr/` view named there
+is gone; the quotation keeps the spelling the entry was written with.)
 """
 from __future__ import annotations
 
@@ -147,51 +147,38 @@ def test_restoring_twice_needs_force(page):
 def test_mz_satisfies_the_span_diffs_second_witness_rule(page):
     """`review`'s bare diff refuses when its source resolves to the ground truth
     the proposal produced. `mz/ocr/` is a different inode from `gt/ocr/`, so it is
-    an independent witness — which is what the view is not, once the view starts
-    resolving into `gt/`."""
+    an independent witness."""
     restore("1-060", page, "mz/ocr", commit=True)
     gt = page / "gt" / "ocr" / "chukchi-1-060.xml"
     mz = page / "mz" / "ocr" / "chukchi-1-060.xml"
     assert mz.resolve() != gt.resolve(), "the diff would compare a file with itself"
 
-    # ...and the view, which points at gt once gt exists, is *not* independent.
-    from harness.recognize import VIEWDIR, link_one
-    link_one("1-060", page)
-    view = page / VIEWDIR / "chukchi-1-060.xml"
-    assert view.resolve() == gt.resolve()
+
+def test_a_revision_is_named_not_discovered(page):
+    """`mode` follows the store the caller named. It used to be discovered by
+    resolving the `ocr/` view onto whichever real file it reached; with every read
+    naming its store the two acts are told apart by what was asked for."""
+    assert restore("1-060", page, "mz/ocr", commit=True)["mode"] == "restoration"
+    rep = restore("1-060", page, "gt/ocr", force=True, commit=False)
+    assert rep["mode"] == "revision"
 
 
-def test_a_committed_restore_repoints_the_view_itself(page):
-    """The promotion is the write **and** the relink, and `restore` does both.
-
-    `link_one`'s docstring has always said promoting a page is "a matter of
-    `restore` writing `gt/ocr/` and this relinking", and `ocr predict` has always
-    paired the two for what it writes into `mz/ocr/`. `restore` did not, so a page
-    restored from a prediction came back with `gt/ocr/` written and `ocr/` still
-    naming `mz/ocr/` — a view one save out of date, visible only to whoever thought
-    to run `ocr pages --show-store`, and indistinguishable there from a page still
-    genuinely awaiting a keying session.
-    """
-    from harness.recognize import VIEWDIR
-    view = page / VIEWDIR / "chukchi-1-060.xml"
-    gt = page / "gt" / "ocr" / "chukchi-1-060.xml"
-
-    # A preview must leave the disk alone — including the view.
-    rep = restore("1-060", page, "mz/ocr", commit=False)
-    assert rep["view"] == ""
-    assert not gt.exists()
-
-    rep = restore("1-060", page, "mz/ocr", commit=True)
-    assert rep["view"] == "gt/ocr"
-    assert view.resolve() == gt.resolve()
+def test_a_decision_with_no_line_is_refused(page):
+    """The converse of the partial-restore refusal, and it was unguarded: a
+    decision keyed past the page's last index reached no store and no report.
+    The reader's `proposal check` used to flag it, one key space over and at the
+    wrong party — the remedy was never the reader's — so the join refuses here,
+    where both halves of it live."""
+    save_decisions("1-060", {0: {"text": "human one"}, 1: {"text": "human two"},
+                             7: {"text": "text with no box"}}, page)
+    with pytest.raises(ValueError, match=r"decisions \[7\] name no line"):
+        restore("1-060", page, "mz/ocr", commit=True)
+    assert not (page / "gt" / "ocr" / "chukchi-1-060.xml").exists()
 
 
 def test_the_restore_report_has_one_key_set_either_way(page):
-    """`view` is `""` on a preview, never absent.
-
-    A record list whose keys vary degrades TOON to the verbose nested form, and a
-    caller should not have to know which branch produced a report to know which
-    keys it has.
-    """
+    """A record list whose keys vary degrades TOON to the verbose nested form, and
+    a caller should not have to know which branch produced a report to know which
+    keys it has."""
     assert (set(restore("1-060", page, "mz/ocr", commit=False))
             == set(restore("1-060", page, "mz/ocr", commit=True)))

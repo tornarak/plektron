@@ -102,12 +102,9 @@ def _running_title(recs: list[dict], ref: str, root: Path) -> dict | None:
     Two lines in the head is the ordinary case, not one: the title and the number
     sit on one printed line with a wide gap and the segmenter splits them.
     """
+    # `zone` is `page_lines`' containment against `gt/zones/`, for every record —
+    # there is no labelled store to prefer and no unlabelled one to fall back from.
     by_zone = {z: [r for r in recs if r.get("zone") == z] for z in FOLIO_ZONES}
-    if not any(by_zone.values()):
-        # A store whose blocks carry no label at all: fall back to the zone store's
-        # bands and take the lines inside them geometrically.
-        for z in FOLIO_ZONES:
-            by_zone[z] = _lines_in_zone(recs, ref, root, z)
     if not any(by_zone.values()):
         return None
 
@@ -125,35 +122,6 @@ def _running_title(recs: list[dict], ref: str, root: Path) -> dict | None:
                     if t and not _FOLIO_RE.match(t))
     return {"text": text, "folio": folio, "folio_from": source or None,
             "bracketed": bracketed, "lines": sum(len(v) for v in by_zone.values())}
-
-
-def _lines_in_zone(recs: list[dict], ref: str, root: Path,
-                   label: str) -> list[dict]:
-    """Lines whose vertical midpoint falls in a zone of this label.
-
-    Geometry rather than a label on the block, for the store whose blocks carry
-    none. Reads `zones/` — the view, so a human-keyed page answers from
-    `gt/zones/` and a machine-keyed one from `mz/zones/`, which is what the view
-    is for. Silent `[]` when the page has no zones: absence of a segmentation is
-    not an error here, it is the ordinary state of a page nobody has reached.
-    """
-    try:
-        from .zones import VIEWDIR, read_zones
-        bands = [(z["y0"], z["y1"]) for z in read_zones(ref, root, store=VIEWDIR)
-                 if z["label"] == label]
-    except Exception:
-        return []
-    if not bands:
-        return []
-    out = []
-    for r in recs:
-        v, h = r.get("vpos"), r.get("height")
-        if v is None or h is None:
-            continue
-        mid = v + h / 2
-        if any(y0 <= mid <= y1 for y0, y1 in bands):
-            out.append(r)
-    return out
 
 
 
@@ -618,9 +586,15 @@ def build_context(ref: str, root: Path = Path("."),
     from .seam import tail as seam_tail
     ref = norm_ref(ref)
     stem = stem_for(ref, root)
-    ocr = root / "ocr" / f"{stem}.xml"
+    # **`gt/ocr/` by name.** Collation reviews a page built from adjudicated text
+    # (`dispatch.collate_build` refuses one without it); this is reached directly
+    # by `tei context` and `tei validate` too, outside that gate, and used to open
+    # the `ocr/` view — under which a machine draft would have arrived here with
+    # nothing in the payload saying so.
+    ocr = root / "gt" / "ocr" / f"{stem}.xml"
     if not ocr.exists():
-        raise FileNotFoundError(f"no {ocr} — {ref} has no OCR yet")
+        raise FileNotFoundError(f"no {ocr} — {ref} has no ground truth yet; "
+                                "collation runs after the reading loop")
 
     state = entry_state(ref, root)
     # **`kept` outlived the draft it was built for.** It used to feed

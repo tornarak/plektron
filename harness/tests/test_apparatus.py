@@ -57,7 +57,9 @@ def _exempt(root: Path, *refs: str, kind: str = "apparatus") -> None:
 def _ocr_page(root: Path, ref: str, head: str, folio: str | None) -> None:
     """A `gt/ocr/` page whose running title carries a folio, the way the book
     sets it: the head and the number on one printed line, split into two by the
-    segmenter."""
+    segmenter. The ALTO carries no label — the band that makes those lines a
+    running title is `gt/zones/`'s, written beside it."""
+    from conftest import write_zones
     lines = [head] + ([folio] if folio else [])
     body = "".join(
         f'<TextLine ID="l{i}" HPOS="{300 + i * 900}" VPOS="200" '
@@ -67,11 +69,10 @@ def _ocr_page(root: Path, ref: str, head: str, folio: str | None) -> None:
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(
         f'<alto xmlns="{ALTO_NS}"><Layout><Page WIDTH="2781" HEIGHT="3866">'
-        f'<PrintSpace><TextBlock ID="b1" TAGREFS="BT1" HPOS="300" VPOS="200" '
+        f'<PrintSpace><TextBlock ID="text_{ref}" HPOS="300" VPOS="200" '
         f'WIDTH="2000" HEIGHT="60">{body}</TextBlock></PrintSpace>'
-        f'</Page></Layout><Tags>'
-        '<OtherTag ID="BT1" TYPE="type" LABEL="RunningTitleZone"/>'
-        "</Tags></alto>", encoding="utf-8")
+        "</Page></Layout></alto>", encoding="utf-8")
+    write_zones(root, ref, [("RunningTitleZone", 180, 280)], x0=300, x1=2300)
 
 
 def _loi(root: Path) -> dict:

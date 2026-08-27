@@ -127,10 +127,39 @@ class TestStorePool:
             assert not s.startswith("/") and not s.endswith("/")
             assert s.count("/") <= 1
 
-    def test_the_two_views_are_in_it(self):
-        """`ocr/` and `zones/` are what a person would usually export, since
-        they resolve to whichever store holds each page."""
-        assert "ocr" in ALTO_STORES and "zones" in ALTO_STORES
+    def test_the_views_are_gone_and_the_pair_is_the_export(self):
+        """`ocr/` and `zones/` were in the pool as read views, resolving each
+        page to whichever store held it — what a person would usually export.
+        The views are retired; the same export is the ordered pair."""
+        from harness.mets import parse_stores
+        assert "ocr" not in ALTO_STORES and "zones" not in ALTO_STORES
+        assert parse_stores("gt/ocr,mz/ocr") == ("gt/ocr", "mz/ocr")
+        assert parse_stores("gt/fig") == ("gt/fig",)
+        with pytest.raises(ValueError, match="not an ALTO store"):
+            parse_stores("ocr")
+        with pytest.raises(ValueError, match="named twice"):
+            parse_stores("gt/ocr,gt/ocr")
+
+    def test_a_pair_copies_each_pages_winning_file_beside_the_manifest(self, tmp_path):
+        """No directory holds the combined set, so the referents travel with the
+        manifest — the first store winning where both hold the page — and the
+        report says how many came from each, so the rank split is in the output."""
+        for store, names in (("gt/ocr", ["chukchi-1-001.xml"]),
+                             ("mz/ocr", ["chukchi-1-001.xml", "chukchi-1-002.xml"])):
+            d = tmp_path / store
+            d.mkdir(parents=True)
+            for n in names:
+                (d / n).write_text(f"<x store='{store}'/>")
+        rep = write_mets(("gt/ocr", "mz/ocr"), tmp_path / "out", tmp_path)
+        assert (rep["files"], rep["from gt/ocr"], rep["from mz/ocr"]) == (2, 1, 1)
+        assert (tmp_path / "out" / "chukchi-1-001.xml").read_text() == "<x store='gt/ocr'/>"
+        assert (tmp_path / "out" / "chukchi-1-002.xml").read_text() == "<x store='mz/ocr'/>"
+        t = ET.parse(tmp_path / "out" / "METS.xml").getroot()
+        assert len(t.findall(f".//{{{METS_NS}}}file")) == 2
+        # A second run into the same directory would manifest this run's copies
+        # as its own, so it refuses rather than keeps them.
+        with pytest.raises(ValueError, match="already holds"):
+            write_mets(("gt/ocr", "mz/ocr"), tmp_path / "out", tmp_path)
 
     def test_write_mets_does_not_enforce_the_pool(self, tmp_path):
         """The list is a CLI convenience. A caller with a store this module has

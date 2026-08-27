@@ -382,8 +382,6 @@ def test_gt_reads_the_page_and_the_spec_unprompted(path):
 @pytest.mark.parametrize("path,names", [
     ("gt/ocr/chukchi-1-030.xml", "gt/ocr/"),
     ("mz/ocr/chukchi-1-031.xml", "ocr lines"),
-    ("ocr/chukchi-1-031.xml", "read views"),
-    ("zones/chukchi-1-031.xml", "read views"),
     ("review/1-030/decision.json", "adjudication"),
     ("scans/chukchi-1-031.png", "image ladder"),
 ])

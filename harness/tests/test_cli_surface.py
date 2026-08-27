@@ -340,9 +340,9 @@ def test_a_flag_retired_under_a_live_action_is_still_caught(parser_surface):
     from harness.cli._common import check_renamed
     s = parser_surface
     assert check_renamed(["ocr", "lines", "1-048", "--from", "gt/ocr"], s) == \
-        "ocr lines --store gt|mz (omit for the ocr/ view)"
+        "ocr lines --store gt|mz"
     assert check_renamed(["ocr", "review", "1-048", "--from", "mz/ocr"], s) == \
-        "ocr review --store gt|mz (omit for the ocr/ view)"
+        "ocr review --store gt|mz"
     # No action named: the placeholder degrades rather than crashing.
     assert "<action>" in check_renamed(["ocr", "--from", "gt/ocr"], s)
 

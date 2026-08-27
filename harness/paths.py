@@ -8,8 +8,8 @@ because that is what it is: a question about what is on disk.
 
 Not in `refs.py` with the ref primitives, for a reason worth stating since the
 choice looks arbitrary: `refs.py` is a **leaf** and must stay one, while this
-walk needs `farms.require` to tell an unbuilt derived tree from an empty store —
-the one place in the harness that distinguishes absent from empty. Putting it in
+walk needs `farms.require` to tell an unbuilt derived tree (`scans/`) from an
+empty store — the one place in the harness that distinguishes absent from empty. Putting it in
 the leaf would either drag `farms` in behind it or lose that distinction. Here it
 costs nothing: this module already imported `farms` for `SCANS`, and `farms` does
 not import this one back (`farms.py:417` says why it globs directly rather than
@@ -67,17 +67,17 @@ def _refs_under(root: Path, pattern: str) -> list[str]:
     **Refuses when the directory is a derived tree that was never built**, and this
     is the one place in the harness that distinguishes absent from empty.
     `Path.glob()` on a missing directory returns empty *silently*, so a fresh clone
-    used to run `harness ocr pages`, walk an `ocr/` nobody had built, and report zero
-    workable pages with exit 0. Blank was indistinguishable from clean — the same
-    fault the zone store's `exempt` mark exists to separate.
+    once walked a farm nobody had built and reported zero pages with exit 0. Blank
+    was indistinguishable from clean — the same fault the zone store's `exempt`
+    mark exists to separate.
 
     **The refusal is scoped by the registry, not by this function**, and the line is
     stores. A missing `mz/ocr/` means nothing has been predicted: a true statement
-    about the corpus, and the ordinary state of a clone. A missing `ocr/` means
-    nobody built the view: a statement about this working copy. `farms.require`
+    about the corpus, and the ordinary state of a clone. A missing `scans/` means
+    nobody cut the rasters: a statement about this working copy. `farms.require`
     raises only for a registered farm path, so `--store mz` over an empty machine
-    store still answers "none" — which is the answer — while the view says it was
-    never built. See `harness/farms.py` on where that line falls.
+    store still answers "none" — which is the answer. See `harness/farms.py` on
+    where that line falls.
     """
     d, _, _ = pattern.rpartition("/")
     if d:
@@ -91,18 +91,16 @@ def _refs_under(root: Path, pattern: str) -> list[str]:
     return sorted(set(refs), key=parse_ref)
 
 
-def all_refs(root: Path = Path("."), store: str = "ocr") -> list[str]:
-    """Every ref with OCR present in `store` — i.e. workable now.
+def all_refs(root: Path, store: str) -> list[str]:
+    """Every ref with a page ALTO in `store`.
 
-    The default is the **view**, so this answers "what can be collated", which is
-    the question the collation loop asks and which `mz/ocr/` legitimately widens:
-    a machine-read page is workable. It was sparse by construction while `gt/ocr/`
-    was the only store under the view, and it is not any more.
-
-    Name a real store to ask a narrower question — `gt/ocr/` for "what has a human
-    been through", `mz/ocr/` for "what has the recognizer read". **Anything
-    computing a published number must do that**, since a figure blended across
-    ranks describes neither.
+    **No default.** There was one — the `ocr/` view, gt-where-present-else-mz —
+    on the reasoning that "what can be collated" was a question `mz/ocr/`
+    legitimately widened. Collation is gated on `gt/ocr/` by name now
+    (`dispatch.collate_build`), and every caller of this names a store: `gt/ocr/`
+    for "what has a human been through", `mz/ocr/` for "what has the recognizer
+    read", `tei/` and `mz/tei/` for the collation pair. A number blended across
+    ranks describes neither, and there is no longer a spelling for one.
     """
     return _refs_under(root, f"{store}/chukchi-*.xml")
 

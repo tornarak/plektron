@@ -79,21 +79,15 @@ from .paths import scan_for  # re-exported; this module's callers name it here
 from .refs import norm_ref, parse_ref
 
 ZONEDIR = "gt/zones"
-# Aliased from `farms.py`, which is the one declaration of every derived path. The
-# name stays because 68 call sites across the package spell it — and note `VIEWDIR`
-# is a different *value* here and in `recognize.py`, so there was never one constant
-# to hoist. What is hoisted is the value.
+# Aliased from `farms.py`, which is the one declaration of every derived path.
 SCANS = farms.SCANS
 
-# The machine store and the view joining the two. `mz/zones/` holds what the trained
-# segmenter emitted, raw: free polygons at whatever x kraken drew, kraken's own ids.
-# `zones/` is a symlink farm over both in which the human file always wins — the same
-# shape as `ocr/` over `gt/ocr/`, and the same rule: **reads may resolve through the
-# view; writes never do.** Both are derived and gitignored, `mz/` because it is
-# regenerable from `models/` and `scans/w-figs-blotted/`, the view because half its
-# links point into `mz/` and a committed farm would dangle on clone.
+# The machine store. `mz/zones/` holds what the trained segmenter emitted, raw: free
+# polygons at whatever x kraken drew, kraken's own ids. Derived and gitignored,
+# regenerable from `models/` and `scans/w-figs-blotted/`. There is no view over the
+# pair: every reader names one of the two, and the editor's store selector is how a
+# human looks at either.
 MZDIR = "mz/zones"
-VIEWDIR = farms.ZONES_VIEW
 
 # Provenance travelling with the data, as with `corrections.CORR_ID_PREFIX`. A block whose
 # id starts with this was drawn in this tool against a configured column; one whose
@@ -267,13 +261,10 @@ def zone_refs(root: Path = Path("."), store: str = ZONEDIR) -> list[str]:
     """Every ref with a zone file in this store, in (part, scan index) order.
 
     Deduped by **real path**, not by name, in the `seen`-set form
-    `normalize.scoped_files` uses. Neither caller here points this at `zones/` — the
-    `--store` flag deliberately offers only the two real stores, and `link_view`
-    enumerates them directly — so this is not fixing a live miscount. It is here
-    because the `store` parameter makes a symlink farm reachable for the first time
-    and the README's dedupe-by-real-path rule is unconditional; the failure it
-    prevents is a silent undercount, which is invisible in any report that would
-    otherwise look complete.
+    `normalize.scoped_files` uses. The `--store` flag offers only the two real
+    stores, so this is not fixing a live miscount; it is here because the README's
+    dedupe-by-real-path rule is unconditional, and the failure it prevents is a
+    silent undercount, invisible in any report that would otherwise look complete.
     """
     out = []
     seen: set[Path] = set()
@@ -4223,39 +4214,6 @@ def remap_model(root: Path = Path("."), model_path: str | Path = DEFAULT_MODEL,
     out["backup"] = str(bak)
     out["sha256"] = _model_sha256(p)
     return out
-
-
-# ------------------------------------------------------------------- the view
-
-def link_view(root: Path = Path(".")) -> dict:
-    """Rebuild `zones/`: one name per page, the human file winning wherever it exists.
-
-    The same shape as `ocr/` over `gt/ocr/`, and the same rule — **reads may resolve
-    through the view, writes never do.** What the view buys is that a consumer asks
-    for a page's segmentation without asking who produced it, while the answer to
-    "who produced it" stays readable from where the link points.
-
-    Links are relative, so the farm survives a clone or a move; a link whose target
-    has gone is removed and counted rather than left to dangle, since a dangling
-    entry here would read as a missing page rather than as a stale link. The linking
-    itself is `farms.rebuild`, shared with `recognize.link_view` — the two were
-    line-for-line identical and each said in its docstring that it was the other's
-    twin, which is a comment doing a function's job.
-
-    The `from_gt`/`from_mz` split is the number worth reading: it is how much of the
-    corpus is still only the machine's word. That part *is* this function's own —
-    the shared mechanic counts links, not provenance.
-    """
-    gt = set(zone_refs(root, ZONEDIR))
-    mz = set(zone_refs(root, MZDIR))
-    wanted = {}
-    for ref in sorted(gt | mz, key=parse_ref):
-        store = ZONEDIR if ref in gt else MZDIR
-        wanted[f"chukchi-{ref}.xml"] = alto_for(ref, root, store)
-
-    rep = farms.rebuild(root / VIEWDIR, wanted, "chukchi-*.xml")
-    return {"dir": rep["dir"], "from_gt": len(gt), "from_mz": len(mz - gt),
-            "removed": rep["removed"]}
 
 
 # --------------------------------------------------------- segtrain assembly

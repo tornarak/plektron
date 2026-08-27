@@ -1,37 +1,35 @@
-"""Zones to text in one pass: `zones/` + a raster → lines → OCR → `mz/ocr/`.
+"""A raster to text in one pass: blot → lines → OCR → `mz/ocr/`.
 
 The pipeline used to run as three unrelated acts with a human carrying state
-between them — segment somewhere, recognize somewhere else, hand-link the result
-into `ocr/`. This is that loop closed. One command per page, and what it produces
-is a machine store beside the human one, reachable through the same view.
-
-**Three stores, and the third is a view** — the shape `gt/zones/`, `mz/zones/`,
-`zones/` already has, adopted here for the reason it was adopted there:
+between them — segment somewhere, recognize somewhere else, hand-link the result.
+This is that loop closed. One command per page, and what it produces is a machine
+store beside the human one:
 
     gt/ocr/     what a human has been through. Tracked.
     mz/ocr/     what the models emitted. Derived, ignored.
-    ocr/        the read view over both, the human file always winning.
 
-**Reads may resolve through `ocr/`; writes name `gt/ocr/`.** Nothing here writes
-into the ground truth — `restore` does that, and only that, from an adjudicated
-`decision.json`. This module writes `mz/ocr/` and the view, and it has no
-parameter in which a caller could name anywhere else.
+**Every read names its store; writes name `gt/ocr/`.** Nothing here writes into the
+ground truth — `restore` does that, and only that, from an adjudicated
+`decision.json`. This module writes `mz/ocr/` and has no parameter in which a
+caller could name anywhere else.
 
-## What the zones are for
+## Bare lines, and no zones at all
 
-`blla` finds baselines and its own regions; **its regions are discarded and ours
-replace them.** That is the whole point of the pass. The old pipeline's regions
-"had no semantic value and were only used to impose a reading order"; these carry
-the seven declared types, so a line arrives already knowing whether it sits in a
-running title, a paragraph, a footnote or a signature line. The collation pass
-gets that structure for free instead of re-deriving it from the raster.
+`blla` finds baselines and its own regions. **The regions are discarded and
+nothing replaces them.** The page is written as one unlabelled block holding every
+line in geometric order — `flatten_page` is the shape, and it is the same shape
+`tools/flatten_ocr.py` gave every page written before this rule.
 
-Zones come from the **`zones/` view**, so a page a human has keyed is read from
-`gt/zones/` and a page only the segmenter has seen is read from `mz/zones/` — the
-best available structure, with its provenance still readable from where the link
-points. A page with no zones at all is refused rather than recognized flat: the
-structure is what this pass exists to apply, and a page without it would land in
-the store looking like any other, with nothing in it saying the zones were missing.
+This pass used to bake the keyed zones in as ALTO regions, so a line arrived
+"already knowing" whether it sat in a running title or a footnote. That was a
+stored copy of a fact whose home is `gt/zones/`, and it went stale the moment a
+band was re-cut — which is why every consumer had already gone back to geometry:
+`generate._assign` because "the bands may have been cut since `ocr predict` wrote
+those blocks", `lines.page_lines` for a correction because "stored, a label would
+go stale the moment the page was re-zoned". `restore` then copied the stale labels
+into `gt/ocr/` on every page. So the association is computed where it is used —
+`page_lines` resolves a line's `zone` by containment against `gt/zones/` — and
+this pass reads no zone store, needs none, and stamps none into its provenance.
 
 ## The blotted raster, for both steps
 
@@ -48,18 +46,23 @@ survives; only the pictures go. Figure captions go too, since `gt/fig/` declares
 `GraphicZone-FigDesc` as well, and they should: captions live in `gt/fig/`
 and are not body text.
 
-**A line whose baseline still falls in no zone is kept, not dropped.** It is
-assigned to no region, counted, and reported as `lines_outside_zones`. Blotting
-makes this rare rather than impossible — an undeclared figure, a plate, a smudge —
-and dropping the remainder would be quieter and is exactly the failure that cost
-this project a two-line paragraph on `1-053` and 18 pages before that: whatever
-text is present reads as correct, so no detector disagrees with anything and the
-page simply has less on it than the paper does. Junk in a draft is visible to the
-human reading it. A hole is not.
+**Every line `blla` finds is kept.** A line outside every zone used to be counted
+here as `lines_outside_zones`; with no zones read there is nothing to count it
+against, and the question survives where it was always better asked — `ocr gaps`
+asks it of the ink by containment, and `zones check --ink` from the other side.
+Dropping a line would be quieter and is exactly the failure that cost this project
+a two-line paragraph on `1-053` and 18 pages before that: whatever text is present
+reads as correct, so no detector disagrees with anything and the page simply has
+less on it than the paper does. Junk in a draft is visible to the human reading
+it. A hole is not.
 
-That count is therefore a **signal, not noise**. Non-zero on an ordinary text page
-means either a figure is undeclared or a zone is missing, which is what
-`zones check --ink` catches from the other side.
+## What work remains is read off `mz/ocr/`, not off an input
+
+A sweep's worklist is every page that physically exists, and `predict_skip` is the
+one rule that says which to leave alone: a ruled leaf, a page with no blot, and a
+page whose `mz/ocr/` file already records **this recognizer** by sha. The last is
+the point. It used to be "a file exists", which made a store written by two
+different models look finished; now such a store *is* the non-empty worklist.
 """
 from __future__ import annotations
 
@@ -67,7 +70,6 @@ import dataclasses
 from functools import lru_cache
 from pathlib import Path
 
-from . import farms as F
 from . import paths as P
 from . import provenance, train
 from . import zones as Z
@@ -86,12 +88,10 @@ from .refs import norm_ref, parse_ref
 # it, that rule moved, and a constant kept here for old times' sake is a second
 # place to look for one number.
 
-# The machine store, its human counterpart, and the view over both. `lines.py`
-# spells the view `DEFAULT_STORE = "ocr"`; these are the two real stores it
-# resolves to, and the reason a writer must never take the view's name.
+# The machine store and its human counterpart. There is no view over the pair:
+# every reader names one of these two.
 GTDIR = "gt/ocr"
 MZDIR = "mz/ocr"
-VIEWDIR = F.OCR_VIEW
 
 # Stock blla, named explicitly rather than left to kraken's bundled default, so a
 # sha256 can travel in the file. A default nobody can point at is a provenance
@@ -126,12 +126,15 @@ DEFAULT_REC_MODEL = "models/catmus-print-fondue-large.mlmodel"
 REC_BATCH = 16
 REC_LINE_WORKERS = 0
 
-# Every id this pass mints. Provenance travelling with the data, as everywhere
-# else here: a block or line merged out of context still says what made it.
+# Every line id this pass mints. Provenance travelling with the data, as everywhere
+# else here: a line merged out of context still says what made it.
 ID_PREFIX = "mz_"
-# The catch-all for lines no zone claimed. A distinct id stem rather than a flag
-# somewhere, so filtering them is a string test on the ALTO alone.
-UNZONED = "unzoned"
+
+# The label the recognition step is written under, and the one `recognized_by`
+# selects on when it reads the file back. A constant because the two must agree:
+# the worklist is decided by finding this step, and a step nobody can find is a
+# page that will be recognized again on every sweep.
+REC_LABEL = "recognition"
 
 
 def mz_dir(root: Path = Path(".")) -> Path:
@@ -142,57 +145,37 @@ def alto_for(ref: str, root: Path = Path("."), store: str = MZDIR) -> Path:
     return root / store / f"chukchi-{norm_ref(ref)}.xml"
 
 
-def has_text(ref: str, root: Path = Path("."), store: str = MZDIR) -> bool:
-    """Whether this store holds a recognized page — file present, lines or not.
+def recognized_by(ref: str, rec_sha: str, root: Path = Path(".")) -> bool:
+    """Whether `mz/ocr/` holds this page as read by the recognizer with this sha.
 
-    The `has_zones` distinction, for the same reason: a file with no lines is a
-    record that the pass ran and found nothing, and a missing file is a record
-    that nobody ran it. Only the file's existence separates them.
+    The recognition step is found by its label, not taken as the file's *last*
+    producer: `tools/flatten_ocr.py` appended a rule step after it on every page
+    written before the bare-lines rule, and "last" would name the flatten. A file
+    with no such step — absent, or written before provenance travelled in it — is
+    not recognized by anything this can name, and that is the answer a sweep wants.
     """
-    return alto_for(ref, root, store).exists()
+    p = alto_for(ref, root, MZDIR)
+    if not p.exists():
+        return False
+    return any(s.label == REC_LABEL and s.sha256 == rec_sha
+               for s in provenance.read_producers(p))
 
 
 def presence(refs: list[str], root: Path = Path(".")) -> list[dict]:
-    """Per ref: which real stores hold it, and which one the view actually reaches.
-
-    `{ref, gt, mz, view}`, one fixed key set so the table stays tabular.
-
-    **`view` is read off the farm, not derived from `gt`/`mz`.** Deriving it would
-    restate the rule (`gt` if present, else `mz`) and could never disagree with
-    itself; reading the link can, and a disagreement is exactly the finding worth
-    having — `ocr/` is a derived farm that nothing rebuilds automatically, so a
-    page restored into `gt/ocr/` since the last `views build ocr` still points at the
-    machine file. That is a stale view reading as current, which is the shape of
-    error this project is organised against, and here it costs one column to see.
-
-    `""` means no live link: either the farm was never built for that page or its
-    link dangles. `?` means the link resolves outside both stores, which should be
-    impossible and is therefore worth saying rather than rounding off.
-    """
+    """Per ref: which real stores hold it. `{ref, gt, mz}`, one fixed key set."""
     out = []
     for ref in refs:
         ref = norm_ref(ref)
-        paths = {k: alto_for(ref, root, d) for k, d in (("gt", GTDIR), ("mz", MZDIR))}
-        link = root / VIEWDIR / f"chukchi-{ref}.xml"
-        view = ""
-        if link.exists():                       # follows the link: a dangling one is not a view
-            try:
-                real = link.resolve()
-                view = next((k for k, p in paths.items()
-                             if p.exists() and p.resolve() == real), "?")
-            except OSError:
-                view = ""
-        out.append({"ref": ref, "gt": paths["gt"].exists(),
-                    "mz": paths["mz"].exists(), "view": view})
+        out.append({"ref": ref, "gt": alto_for(ref, root, GTDIR).exists(),
+                    "mz": alto_for(ref, root, MZDIR).exists()})
     return out
 
 
 def ocr_refs(root: Path = Path("."), store: str = MZDIR) -> list[str]:
     """Every ref with a page in this store, in (part, scan index) order.
 
-    Deduped by **real path**, in `zones.zone_refs`' form and for its reason: the
-    `store` parameter makes the view reachable, and a walk that counted one inode
-    under two names would undercount silently.
+    Deduped by **real path**, in `zones.zone_refs`' form: a walk that counted one
+    inode under two names would undercount silently.
     """
     out, seen = [], set()
     for p in (root / store).glob("chukchi-*.xml"):
@@ -235,6 +218,11 @@ def load_recognizer(model_path: str | Path = DEFAULT_REC_MODEL,
     from kraken.models.loaders import load_models
     from kraken.tasks import RecognitionTaskModel
 
+    p = _model_path(model_path, root)
+    return RecognitionTaskModel(load_models(str(p))), Z._model_sha256(p)
+
+
+def _model_path(model_path: str | Path, root: Path) -> Path:
     p = Path(model_path)
     if not p.is_absolute():
         p = root / p
@@ -242,7 +230,15 @@ def load_recognizer(model_path: str | Path = DEFAULT_REC_MODEL,
         raise FileNotFoundError(
             f"no recognition model at {p}. `models/` carries stock CATMuS print "
             f"(large and tiny); {DEFAULT_REC_MODEL} is the default.")
-    return RecognitionTaskModel(load_models(str(p))), Z._model_sha256(p)
+    return p
+
+
+def recognizer_sha(model_path: str | Path = DEFAULT_REC_MODEL,
+                   root: Path = Path(".")) -> str:
+    """The sha256 a page written by this recognizer records — **without loading
+    it.** A file hash is what lets a sweep decide its whole worklist before either
+    checkpoint comes off disk."""
+    return Z._model_sha256(_model_path(model_path, root))
 
 
 def _fabric_placement(dev: str) -> tuple[str, object]:
@@ -276,23 +272,85 @@ def _resolve_device(device: str) -> str:
         return "cpu"
 
 
-def _own(line, bands: list[tuple[str, int, int]]) -> str | None:
-    """Which zone this line sits in, by the midpoint of its baseline.
+#: The page shape's version, which the rule step `tools/flatten_ocr.py` appends
+#: records. Bump it if `flatten_page` ever changes what it writes.
+FLATTEN_VERSION = 1
 
-    The midpoint rather than any overlap fraction, because the zones are a
-    *partition*: a baseline has exactly one y and belongs to whichever band
-    contains it. An overlap rule would need a tie-break at every abutting
-    boundary, and 545 of the corpus's boundaries abut exactly.
+
+def block_id(ref: str) -> str:
+    """The one block a flattened page holds. Not `mz_`-prefixed: that prefix means
+    "minted by a pass" on a line here and "drawn against a configured column" in
+    `zones`, and this block was minted by neither — it is the page's shape, not
+    anyone's finding. Starts with a letter because an ALTO `ID` is an `xs:ID`."""
+    return f"text_{norm_ref(ref)}"
+
+
+def flatten_page(alto, ref: str) -> bool:
+    """One unlabelled `TextBlock` holding every `TextLine`, in document order.
+
+    `alto` is a parsed tree's root element, edited in place; returns whether
+    anything changed, so a caller can tell a rewrite from a no-op. Two callers:
+    `predict`, on every page it writes, and `tools/flatten_ocr.py`, once, over
+    every page written before this was the rule — one definition of the page
+    shape, so `gt/ocr/` never holds two.
+
+    **Document order is preserved byte for byte.** `page_lines` assigns `index`
+    from it, and `proposal.json`/`decision.json` are keyed on that, so a line that
+    moved would silently re-key every adjudication on the page. The lines are
+    moved as elements, in the order `iter` yields them, and nothing is renumbered.
+    Line ids are untouched for the same reason.
+
+    The block's rectangle is the union of its lines'. Its label is nothing: the
+    zone a line sits in is `page_lines`' to derive from `gt/zones/`, and a label
+    stored here is a copy that goes stale on the first re-cut.
+
+    `<Tags>` keeps every `OtherTag` something still references — the line-level
+    type kraken writes stays — and loses the block types nothing points at any
+    more. Membership by reference, not by name, so the rule needs no list of
+    which labels were zone labels.
     """
-    pts = line.baseline or line.boundary or []
-    ys = [p[1] for p in pts]
-    if not ys:
-        return None
-    mid = sum(ys) / len(ys)
-    for rid, y0, y1 in bands:
-        if y0 <= mid <= y1:
-            return rid
-    return None
+    ps = alto.find(".//{*}PrintSpace")
+    if ps is None:
+        return False
+    want = block_id(ref)
+    lines = list(alto.iter("{*}TextLine"))
+    blocks = list(ps.iter("{*}TextBlock"))
+    if (len(blocks) == 1 and blocks[0].get("ID") == want
+            and blocks[0].get("TAGREFS") is None
+            and all(ln.getparent() is blocks[0] for ln in lines)):
+        return False
+
+    from lxml import etree
+
+    from .ns import ALTO_NS
+    tb = etree.Element(f"{{{ALTO_NS}}}TextBlock", {"ID": want})
+    boxes = [tuple(int(float(ln.get(k))) for k in ("HPOS", "VPOS", "WIDTH", "HEIGHT"))
+             for ln in lines if all(ln.get(k) for k in ("HPOS", "VPOS", "WIDTH", "HEIGHT"))]
+    if boxes:
+        x0 = min(b[0] for b in boxes)
+        y0 = min(b[1] for b in boxes)
+        x1 = max(b[0] + b[2] for b in boxes)
+        y1 = max(b[1] + b[3] for b in boxes)
+        for k, v in (("HPOS", x0), ("VPOS", y0), ("WIDTH", x1 - x0), ("HEIGHT", y1 - y0)):
+            tb.set(k, str(v))
+    for ln in lines:                    # moving an element re-parents it; order kept
+        tb.append(ln)
+    for b in blocks:
+        parent = b.getparent()
+        if parent is not None:
+            parent.remove(b)
+    ps.append(tb)
+
+    tags = alto.find(".//{*}Tags")
+    if tags is not None:
+        used = set()
+        for el in alto.iter():
+            if el.get("TAGREFS"):
+                used.update(el.get("TAGREFS").split())
+        for t in list(tags):
+            if t.get("ID") not in used:
+                tags.remove(t)
+    return True
 
 
 def predict(ref: str, root: Path = Path("."), seg_net=None, seg_sha: str = "",
@@ -309,9 +367,9 @@ def predict(ref: str, root: Path = Path("."), seg_net=None, seg_sha: str = "",
     absent because it reads as recorded; `zones.predict` refuses the same omission
     on the same grounds.
     """
-    # Both refusals precede the imports: `from kraken import ...` pulls in torch and
-    # costs ~1.9 s, and neither a page without a blot nor a page without zones ever
-    # reaches a model. `zones.predict` orders itself the same way and says why.
+    # The refusal precedes the imports: `from kraken import ...` pulls in torch and
+    # costs ~1.9 s, and a page without a blot never reaches a model.
+    # `zones.predict` orders itself the same way and says why.
     ref = norm_ref(ref)
     blot = Z.blot_dir(root) / f"chukchi-{ref}.png"
     if not blot.exists():
@@ -321,15 +379,7 @@ def predict(ref: str, root: Path = Path("."), seg_net=None, seg_sha: str = "",
             "lines were found under different conditions from every other one, "
             "with nothing in the file saying so.")
 
-    zs = Z.read_zones(ref, root, store=Z.VIEWDIR)
-    if not zs:
-        raise ValueError(
-            f"{ref} has no zones in `{Z.VIEWDIR}/` — key it in `harness zones "
-            f"edit {ref}`, or run `harness zones predict {ref}`. Recognizing it "
-            "flat would put a page in the store with no structure and nothing in "
-            "it saying the structure was missing.")
-
-    from kraken import blla, containers, serialization
+    from kraken import blla, serialization
     from kraken.configs import RecognitionInferenceConfig
     from PIL import Image
 
@@ -349,53 +399,19 @@ def predict(ref: str, root: Path = Path("."), seg_net=None, seg_sha: str = "",
 
     seg = blla.segment(page, model=seg_net, device=dev)
 
-    # **Our regions replace blla's.** Each zone becomes one Region carrying its
-    # declared label; the boundary is the zone's own rectangle, which it already is
-    # in `gt/zones/` (a polygon that is not its own bounding box is a save-time
-    # error there) and is the honest reduction of a free `mz/zones/` polygon.
-    regions: dict[str, list] = {}
-    bands: list[tuple[str, int, int]] = []
-    for i, z in enumerate(zs, 1):
-        rid = f"{ID_PREFIX}{ref}_r{i}"
-        x0, y0, x1, y1 = z["x0"], z["y0"], z["x1"], z["y1"]
-        # **`tags` is `{key: [{"type": label}]}`, not `{key: label}`**, and the
-        # difference is silent. `serialization.serialize` builds its typology with
-        # `for t in v if 'type' in t` — handed a bare string, that iterates
-        # *characters*, matches none, and writes `TAGREFS=""` with a single
-        # `OtherTag LABEL="default"`. Geometry, ids and reading order all survive,
-        # so the file looks structured and carries no labels at all: the one thing
-        # this pass exists to put in it, absent, with nothing saying so.
-        regions.setdefault(z["label"], []).append(
-            containers.Region(id=rid,
-                              boundary=[(x0, y0), (x1, y0), (x1, y1), (x0, y1)],
-                              tags={"type": [{"type": z["label"]}]}))
-        bands.append((rid, y0, y1))
+    # **blla's regions are discarded and nothing replaces them** — see the module
+    # head. Document order is geometric: down the page, then across. It is *not*
+    # reading order on a two-column or footnoted page, and nothing downstream may
+    # assume it is of either store; `page_lines` sorts by `reading_order` and keeps
+    # `index` as the identity document order assigned.
+    def sort_key(ln):
+        pts = ln.baseline or ln.boundary or [(0, 0)]
+        return (min(p[1] for p in pts), min(p[0] for p in pts))
 
-    order = {rid: i for i, (rid, _, _) in enumerate(bands)}
-    placed = []
-    for ln in (seg.lines or []):
-        rid = _own(ln, bands)
-        placed.append((ln, rid))
-    outside = sum(1 for _, rid in placed if rid is None)
+    lines = [dataclasses.replace(ln, regions=[], id=f"{ID_PREFIX}{ref}_l{i}")
+             for i, ln in enumerate(sorted(seg.lines or [], key=sort_key), 1)]
 
-    # Reading order is zone order, then down the page inside a zone. Document order
-    # in the written file therefore *is* reading order — unlike `gt/ocr/`, where the
-    # two diverge on 18 of 20 pages because the ALTO's order is whatever the export
-    # assigned. Nothing downstream may assume that of the gt store; it holds here
-    # because this writer controls both.
-    def sort_key(item):
-        ln, rid = item
-        ys = [p[1] for p in (ln.baseline or ln.boundary or [(0, 0)])]
-        xs = [p[0] for p in (ln.baseline or ln.boundary or [(0, 0)])]
-        return (order.get(rid, len(order)), min(ys), min(xs))
-
-    placed.sort(key=sort_key)
-    lines = [dataclasses.replace(ln, regions=[rid] if rid else [],
-                                 id=f"{ID_PREFIX}{ref}_l{i}"
-                                 if rid else f"{ID_PREFIX}{ref}_{UNZONED}{i}")
-             for i, (ln, rid) in enumerate(placed, 1)]
-
-    bound = dataclasses.replace(seg, lines=lines, regions=regions,
+    bound = dataclasses.replace(seg, lines=lines, regions={},
                                 imagename=f"chukchi-{ref}.png")
     # **The records are what gets serialized, not the lines with `text` set on
     # them.** `serialization.serialize` reads `record.prediction` and nothing else
@@ -422,20 +438,19 @@ def predict(ref: str, root: Path = Path("."), seg_net=None, seg_sha: str = "",
 
     # **Two producers, written in the order they acted.** The page is segmented
     # and then recognized by two different models, and collapsing the pair would
-    # lose whichever a reader happened not to be asking about. `read_producer`
-    # returns the last of them for that reason — the recognizer is what shaped
-    # the text a consumer is holding.
+    # lose whichever a reader happened not to be asking about. `recognized_by`
+    # finds the second by `REC_LABEL`, not by position — a later rule step may
+    # follow it.
     kv = provenance.kraken_version()
     steps = [
         provenance.kraken_step(provenance.Producer(
             step="harness ocr predict", label="baseline segmentation",
             kind="model", version=kv, model=str(seg_model), sha256=seg_sha,
             device=dev,
-            inputs={"raster": f"{Z.BLOTDIR}/chukchi-{ref}.png",
-                    "regions_from": f"{Z.VIEWDIR}/chukchi-{ref}.xml"}),
+            inputs={"raster": f"{Z.BLOTDIR}/chukchi-{ref}.png"}),
             ident="harness-ocr-predict-lines"),
         provenance.kraken_step(provenance.Producer(
-            step="harness ocr predict", label="recognition",
+            step="harness ocr predict", label=REC_LABEL,
             kind="model", version=kv, model=str(rec_model), sha256=rec_sha,
             device=dev), ident="harness-ocr-predict-text"),
     ]
@@ -448,12 +463,11 @@ def predict(ref: str, root: Path = Path("."), seg_net=None, seg_sha: str = "",
     #
     # The size is the symptom. The reason to turn it off is that **this store must
     # be shaped like the one beside it**: `gt/ocr/` descends from eScriptorium
-    # exports, one `<String CONTENT>` per `TextLine`, and `ocr/` is a view under
-    # which a consumer reads either without asking which. `lines.page_lines` joins
-    # a line's text by concatenating its `String`s, so both forms happen to read
-    # alike today — which is precisely how a divergence like this survives: it
-    # costs nothing until something reads `String/@CONTENT` expecting a line and
-    # gets a word.
+    # exports, one `<String CONTENT>` per `TextLine`, and `restore` copies this
+    # store's skeleton into it. `lines.page_lines` joins a line's text by
+    # concatenating its `String`s, so both forms happen to read alike today —
+    # which is precisely how a divergence like this survives: it costs nothing
+    # until something reads `String/@CONTENT` expecting a line and gets a word.
     #
     # Nothing is lost that this project uses. The per-glyph boxes and confidences
     # are kraken's own recognition detail; the corpus addresses text at the line,
@@ -463,6 +477,16 @@ def predict(ref: str, root: Path = Path("."), seg_net=None, seg_sha: str = "",
         image_size=size, template="alto", processing_steps=steps,
         sub_line_segmentation=False)
 
+    # **The written shape is `flatten_page`'s, by the same function.** Whatever
+    # kraken's template does with region-less lines, the page on disk is one
+    # unlabelled block — so a page fresh from the recognizer and a page flattened
+    # after the fact are one shape, and `gt/ocr/` never holds two.
+    from lxml import etree
+    tree = etree.fromstring(xml.encode("utf-8"))
+    flatten_page(tree, ref)
+    xml = etree.tostring(tree, xml_declaration=True, encoding="UTF-8",
+                         pretty_print=True).decode("utf-8")
+
     out = mz_dir(root)
     out.mkdir(parents=True, exist_ok=True)
     dest = alto_for(ref, root, MZDIR)
@@ -470,38 +494,36 @@ def predict(ref: str, root: Path = Path("."), seg_net=None, seg_sha: str = "",
     tmp.write_text(xml, encoding="utf-8")
     tmp.replace(dest)
 
-    linked = link_one(ref, root)
     chars = sum(len(t) for t in text)
-    return {"ref": ref, "path": str(dest), "zones": len(zs),
-            "lines": len(lines), "lines_outside_zones": outside,
-            "chars": chars, "linked": linked}
+    return {"ref": ref, "path": str(dest), "lines": len(lines), "chars": chars}
 
 
 def predict_skip(ref: str, root: Path = Path("."), force: bool = False,
-                 single: bool = False) -> str:
+                 single: bool = False, rec_sha: str = "") -> str:
     """Why this page should not be recognized, or `""` to go ahead.
 
     One rule in one place, `zones.predict_skip`'s shape and its reasoning:
 
-    - **an existing page is kept unless `force`**, because the file records the
-      sha256 of the two models that wrote it, and re-running unasked after a model
-      change would replace that record page by page and leave nothing able to say
-      the store had ever held more than one pass's output;
     - **a page ruled `exempt` is refused**, `force` or not, unless `single` — a
       plate is not a text page, and a recognized plate sits in the store looking
       like any other reading. Naming a ref on the command line is `single`;
-    - **a page with no zones is refused**, since the structure is what the pass
-      applies. This is the one skip that is a missing *input* rather than a
-      judgement, so it names the command that produces it.
+    - **a page with no blot is refused**, since `predict` reads nothing else.
+      This is the one skip that is a missing *input* rather than a judgement, so
+      it names the command that produces it. It used to test the raw scan, which
+      `predict` does not open — so a page could pass here and be refused there;
+    - **a page this recognizer has already read is kept unless `force`.** The
+      test is the sha the file records against `rec_sha`, not the file's
+      existence. A file test made a store written by two models look finished;
+      under this rule such a store *is* the non-empty worklist, and the record
+      does the deciding instead of being overwritten behind it. `force` is how a
+      caller re-reads a page that is already current.
     """
     if not single and Z.is_exempt(ref, root):
         return "ruled not a text page"
-    if not force and has_text(ref, root, MZDIR):
-        return "already recognized"
-    if not P.scan_for(ref, root).exists():
-        return "no raster"
-    if not Z.read_zones(ref, root, store=Z.VIEWDIR):
-        return "no zones (run `harness zones predict`)"
+    if not (Z.blot_dir(root) / f"chukchi-{ref}.png").exists():
+        return "no blot (run `harness zones blot`)"
+    if not force and recognized_by(ref, rec_sha, root):
+        return "already recognized by this model"
     return ""
 
 
@@ -510,12 +532,14 @@ def predict_all(root: Path = Path("."), refs: list[str] | None = None,
                 rec_model: str | Path = DEFAULT_REC_MODEL,
                 device: str = "auto", force: bool = False,
                 named: bool = False, jobs: int | None = None, tick=None) -> dict:
-    """Recognize over a work-list, or over every page that has zones.
+    """Recognize over a work-list, or over every page that physically exists.
 
     What is skipped and why is `predict_skip`'s; this loops and reports. A sweep is
-    **resumable by construction** — run it again and it picks up what has nothing —
-    which over 832 pages of two models' inference is the difference between an
-    interruption costing minutes and costing the run.
+    **resumable by construction** — run it again and it picks up what this
+    recognizer has not read — which over 832 pages of two models' inference is the
+    difference between an interruption costing minutes and costing the run. The
+    worklist is read off `mz/ocr/`'s own provenance, never off an input store: the
+    output says what remains.
 
     Both models load once **per worker**, which is most of why this exists as a
     sweep rather than a shell loop over the single-page form. It is also why
@@ -539,16 +563,17 @@ def predict_all(root: Path = Path("."), refs: list[str] | None = None,
     hold.
     """
     if refs is None:
-        refs = Z.zone_refs(root, Z.VIEWDIR)
+        refs = P.all_scans(root)
     refs = [norm_ref(r) for r in refs]
 
     # **The work-list is decided before either model is loaded**, so re-running a
-    # finished sweep to confirm it is finished costs a directory walk rather than
-    # two checkpoints off disk. That is what makes "resumable" a thing you will
-    # actually do rather than a property the docstring claims.
+    # finished sweep to confirm it is finished costs a directory walk and a file
+    # hash rather than two checkpoints off disk. That is what makes "resumable" a
+    # thing you will actually do rather than a property the docstring claims.
+    rec_sha = recognizer_sha(rec_model, root)
     todo, skipped = [], []
     for ref in refs:
-        why = predict_skip(ref, root, force, single=named)
+        why = predict_skip(ref, root, force, single=named, rec_sha=rec_sha)
         (skipped.append({"ref": ref, "why": why}) if why else todo.append(ref))
 
     done, chatter = [], {"stderr_lines": 0, "stderr_log": ""}
@@ -568,7 +593,6 @@ def predict_all(root: Path = Path("."), refs: list[str] | None = None,
     return {"predicted": len(done), "skipped": len(skipped),
             "workers": predict_workers(jobs, len(todo)) if todo else 0,
             "lines": sum(d["lines"] for d in done),
-            "outside": sum(d["lines_outside_zones"] for d in done),
             **chatter,
             "pages": done, "skips": skipped}
 
@@ -679,55 +703,6 @@ def predict_workers(jobs: int | None, n_pages: int) -> int:
     import this module.
     """
     return gpu_workers(jobs, n_pages)
-
-
-# ------------------------------------------------------------------ the view
-
-def link_one(ref: str, root: Path = Path(".")) -> str:
-    """Point `ocr/<ref>` at the best store that has it. Returns the store it named.
-
-    The human file always wins, so promoting a page is a matter of `restore`
-    writing `gt/ocr/` and this relinking — never of moving anything. A machine page
-    with a gt counterpart is left in `mz/ocr/` and simply not pointed at, which is
-    what keeps the two stores from aliasing.
-    """
-    ref = norm_ref(ref)
-    view = root / VIEWDIR
-    view.mkdir(parents=True, exist_ok=True)
-    store = GTDIR if alto_for(ref, root, GTDIR).exists() else MZDIR
-    target = alto_for(ref, root, store)
-    if not target.exists():
-        return ""
-    F.relink(view / f"chukchi-{ref}.xml", target)
-    return store
-
-
-def link_view(root: Path = Path(".")) -> dict:
-    """Rebuild `ocr/`: one name per page, the human file winning wherever it exists.
-
-    `zones.link_view`'s twin, and now literally so: both call `farms.rebuild`. The
-    two stores-plus-a-view layouts should be one shape, since the whole argument for
-    the layout is that a file's role must not live only in the directory holding it
-    — and while "twin" was only a claim in two docstrings, the two copies were free
-    to drift apart without anything noticing.
-
-    Links are relative, so the farm survives a clone or a move; a link whose target
-    has gone is removed and counted rather than left to dangle, since a dangling
-    entry reads as a missing page rather than as a stale link.
-
-    `from_gt`/`from_mz` is the number worth reading: how much of the corpus is still
-    only the machines' word.
-    """
-    gt = set(ocr_refs(root, GTDIR))
-    mz = set(ocr_refs(root, MZDIR))
-    wanted = {}
-    for ref in sorted(gt | mz, key=parse_ref):
-        store = GTDIR if ref in gt else MZDIR
-        wanted[f"chukchi-{ref}.xml"] = alto_for(ref, root, store)
-
-    rep = F.rebuild(root / VIEWDIR, wanted, "chukchi-*.xml")
-    return {"dir": rep["dir"], "from_gt": len(gt), "from_mz": len(mz - gt),
-            "removed": rep["removed"]}
 
 
 # ==========================================================================

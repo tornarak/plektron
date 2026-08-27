@@ -123,19 +123,15 @@ def _keyed(tmp_path, keys, ref="1-048"):
     return p
 
 
-def test_a_line_index_the_store_lacks_is_a_defect(tmp_path):
-    """`restore` joins on the index, so a key naming no `TextLine` is text with
-    no box — the dropped-line case, which is upstream human action.
-
-    It would otherwise be dropped in silence, which is the whole problem: the
-    reading is lost and nothing says a reading was lost.
-    """
+def test_a_line_index_the_store_lacks_is_not_this_checks_finding(tmp_path):
+    """It was, and at the wrong party: the remedy — a box drawn in `ocr edit` —
+    was never the reader's, and the check had to read an OCR store to say so.
+    The join is `restore`'s, and `restore` refuses the orphan key itself now
+    (`test_mz_to_gt.py`). Here it must stay silent rather than fire a defect the
+    reader cannot clear."""
     root = _alto(tmp_path, indices=(0, 1))
     path = _keyed(tmp_path, ["0", "1", "7"])
-    rows = [r for r in check(path, "1-048", root) if "not in the store" in r["issue"]]
-    assert [r["line"] for r in rows] == ["7"]
-    assert rows[0]["severity"] == DEFECT
-    assert "ocr edit" in rows[0]["issue"]
+    assert [r for r in check(path, "1-048", root) if "not in the store" in r["issue"]] == []
 
 
 def test_a_non_empty_segmenter_missed_block_is_a_defect(tmp_path):

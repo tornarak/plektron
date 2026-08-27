@@ -1,27 +1,34 @@
 """The derived trees: what they are, what builds them, and the linking they share.
 
-Six directories in this repo are **derived** — git does not carry them, and a fresh
-clone has none of them. Until now nothing knew they were a class. Their path
-constants sat in four modules under three spellings, the relative-symlink idiom was
-copied out five times, and two of them (`scans/w-figs/`, `scans/w-ocr/`) had no
-builder at all: they were made by hand, and had drifted, which is exactly what a
-directory nobody can regenerate does.
+Several directories in this repo are **derived** — git does not carry them, and a
+fresh clone has none of them. Until this module nothing knew they were a class.
+Their path constants sat in four modules under three spellings, the relative-symlink
+idiom was copied out five times, and two of them (`scans/w-figs/`, `scans/w-ocr/`)
+had no builder at all: they were made by hand, and had drifted, which is exactly
+what a directory nobody can regenerate does.
 
 This module is the declaration. `FARMS` names each tree once; `relink`/`rebuild` are
 the mechanics every builder shares; `survey` is what `harness views check` prints.
 
+**There is no `view` kind any more.** `ocr/` and `zones/` were symlink farms over
+the paired stores, the human file winning, and every reader that took no store read
+through them — a blend of ranks in front of the one layer whose subject is rank.
+They were retired once the corpus showed every one of their 1,434 links resolving
+into `gt/`; every reader names a store now, and `corpus mets` takes an ordered pair
+of stores where the combined export is still wanted.
+
 **The registry is also the scope of the absence rule**, and that is its second job.
 `Path.glob()` on a missing directory returns empty *silently*, so before this module
-existed a fresh clone ran `harness ocr pages`, walked an `ocr/` that was never built,
-and reported zero workable pages with exit 0. An absent tree and an empty one were
-indistinguishable — the same fault as an unkeyed page against a keyed-but-empty one,
-which `gt/zones`' `exempt` mark exists to separate.
+existed a fresh clone walked a farm that was never built and reported zero pages with
+exit 0. An absent tree and an empty one were indistinguishable — the same fault as an
+unkeyed page against a keyed-but-empty one, which `gt/zones`' `exempt` mark exists
+to separate.
 
 **But the rule reaches farms and stops there, and the line is stores.** A missing
 `mz/ocr/` means nothing has been predicted, which is a true statement about the
-corpus and the ordinary state of a clone; a missing `ocr/` means nobody has built the
-view, which is a statement about this working copy. The first is a record that is
-empty, the second is a question that was never asked. So `context._refs_under` asks
+corpus and the ordinary state of a clone; a missing `scans/` means nobody has cut the
+rasters, which is a statement about this working copy. The first is a record that is
+empty, the second is a question that was never asked. So `paths._refs_under` asks
 this module whether the directory it could not find is a registered farm, and refuses
 only then — `gt/ocr`, `mz/zones` and any `--from` path stay a silent empty, which is
 what they have always been and what they should be.
@@ -41,13 +48,9 @@ from pathlib import Path
 from . import train as _train
 from .parallel import ptrack
 
-# The one declaration of every derived path. `zones.py` and `recognize.py` alias
-# these rather than being rewritten around them — 68 call sites spell `VIEWDIR`,
-# and note that name means `"zones"` in one module and `"ocr"` in the other, so
-# there is no single constant to hoist. What is hoisted is the *value*.
+# The one declaration of every derived path. `zones.py` aliases `SCANS` rather
+# than being rewritten around it.
 SCANS = "scans"
-OCR_VIEW = "ocr"
-ZONES_VIEW = "zones"
 FIGS_BLOT = "scans/w-figs-blotted"
 LINE_BLOT = "scans/w-blotted"
 W_FIGS = "scans/w-figs"
@@ -76,10 +79,8 @@ class Farm:
 
     `kind` is not decoration — it decides what `check` may honestly assert:
 
-        view     a symlink farm over two stores, the human file winning. Membership
-                 is decided by the stores, so it is exactly checkable.
-        select   a symlink farm over one tree, membership from a criterion. Also
-                 exactly checkable.
+        select   a symlink farm over one tree, membership from a criterion.
+                 Exactly checkable.
         raster   painted pixels. Membership is checkable; freshness is not
                  checked here — see `verified` below.
         source   no builder in this repo at all.
@@ -114,16 +115,6 @@ class Farm:
 
 
 FARMS = (
-    # **The views read no directory they require**, and that is the store rule
-    # again rather than an oversight. A view is built from whichever of its two
-    # stores exist; with `mz/` absent it is the gt-only view, which is exactly
-    # right on a fresh clone where nothing has been predicted. Listing the stores
-    # here would skip the two farms a clone most needs, on the grounds that the
-    # machine had not spoken yet — which is a legitimate empty, not a missing input.
-    Farm("ocr", OCR_VIEW, "view", (),
-         "harness views build ocr", "membership"),
-    Farm("zones", ZONES_VIEW, "view", (),
-         "harness views build zones", "membership"),
     # `scans/` only. `blot_one` already tolerates a page with no figure ALTO — it
     # links instead of painting — so `gt/fig/` is not a precondition; the pixels are.
     Farm("w-figs-blotted", FIGS_BLOT, "raster", (SCANS,),
@@ -178,9 +169,8 @@ BY_PATH = {f.path: f for f in FARMS}
 #: Every registered farm, in registry order.
 NAMES = tuple(f.name for f in FARMS)
 
-#: The farms `views build` will actually rebuild, in dependency order. `w-ocr`
-#: links into the `ocr/` view, so it must follow it.
-BUILDABLE = tuple(f.name for f in FARMS if f.kind in ("view", "select", "raster"))
+#: The farms `views build` will actually rebuild, in registry order.
+BUILDABLE = tuple(f.name for f in FARMS if f.kind in ("select", "raster"))
 
 #: The token that asks for every farm. Spelled out rather than implied by a bare
 #: invocation, because `views build` is the most expensive command in the harness
@@ -195,10 +185,9 @@ ALL = "all"
 def select(names: Iterable[str], *, buildable_only: bool = False) -> tuple[str, ...]:
     """Expand a CLI farm selection into registry order, `all` included.
 
-    Order is the registry's, never the caller's: `w-ocr` links into the `ocr/`
-    view, so a build that took `w-ocr ocr` at face value would link the farm
-    against a view it is about to rewrite. Duplicates collapse for the same
-    reason — asking for a farm twice is a typo, not a request to build it twice.
+    Order is the registry's, never the caller's, so a selection is reproducible
+    however it was typed. Duplicates collapse — asking for a farm twice is a typo,
+    not a request to build it twice.
     """
     pool = BUILDABLE if buildable_only else NAMES
     wanted = set(names)
@@ -251,10 +240,8 @@ def relink(link: Path, target: Path, *, resolve: bool = True) -> None:
     exactly this: resolving sent its .lst paths straight back into `gt/zones/`,
     kraken looked for rasters beside the real ALTOs, and the blot links the function
     exists to create were never read — it failed loudly only because `gt/zones/`
-    holds no PNGs. `scans/w-ocr/`'s ALTO links must point at the `ocr/` **view** and
-    not through it, so that promoting a page re-points the view and the farm needs no
-    rebuild; resolved, they would silently become links into `gt/ocr/` and that
-    property would be gone while every link still worked.
+    holds no PNGs. A link into a farm of links wants this too, so that the outer
+    farm follows the inner rather than silently pointing past it.
     """
     if link.is_symlink() or link.exists():
         link.unlink()
@@ -308,20 +295,16 @@ def _w_figs_wanted(root: Path) -> dict[str, Path]:
 def _w_ocr_wanted(root: Path) -> tuple[dict[str, Path], dict[str, Path]]:
     """The pages a human has been through, raster and ALTO, as two sweeps.
 
-    **Membership is `gt/ocr/`, not the `ocr/` view, and the hand-made farm is the
-    evidence.** The name reads as "pages with OCR" and that is what an earlier draft
-    of this builder selected. The directory refutes it: it held exactly the 20 gt
-    pages and none of the `mz`-only ones, and the single entry it lacked was the page
-    that had entered *gt* that morning. View membership would also destroy the farm's
-    point — after a corpus `ocr predict` sweep every page has OCR, so the selection
-    would be all 832 pages, which is no selection. "The raster beside the pages a
-    human has been through" stays meaningful however much the machine reads.
-
-    The ALTO link points at the **view** rather than at `gt/ocr/` directly, as the
-    hand-made farm did. That is legal — reads may resolve through the view — and it
-    is why `relink` is called with `resolve=False` for it: resolved, the link would
-    quietly become a link into `gt/ocr/`, every entry would still work, and the
-    property that the farm follows the view would be gone with nothing to show it.
+    **Membership is `gt/ocr/`, and so is the ALTO the link names.** The name reads
+    as "pages with OCR" and that is what an earlier draft of this builder
+    selected. The directory refuted it: it held exactly the 20 gt pages and none of
+    the `mz`-only ones, and the single entry it lacked was the page that had
+    entered *gt* that morning. After a corpus `ocr predict` sweep every page has
+    OCR, so "pages with OCR" would be all 832, which is no selection. "The raster
+    beside the pages a human has been through" stays meaningful however much the
+    machine reads. The ALTO link used to point at the `ocr/` view, which the
+    hand-made farm had pointed at `gt/ocr/` directly; with the view gone it does
+    again, and there is nothing left for `resolve=False` to preserve.
 
     Two sweeps rather than one because the farm holds two kinds of file and a single
     prune pattern would have each kind deleting the other's entries.
@@ -336,7 +319,7 @@ def _w_ocr_wanted(root: Path) -> tuple[dict[str, Path], dict[str, Path]]:
     refs = sorted(set(refs), key=parse_ref)
     return (
         {f"chukchi-{r}.png": root / SCANS / f"chukchi-{r}.png" for r in refs},
-        {f"chukchi-{r}.xml": root / OCR_VIEW / f"chukchi-{r}.xml" for r in refs},
+        {f"chukchi-{r}.xml": root / "gt" / "ocr" / f"chukchi-{r}.xml" for r in refs},
     )
 
 
@@ -350,7 +333,7 @@ def build_w_ocr(root: Path = Path(".")) -> dict:
     """`scans/w-ocr/`: raster beside ALTO for every page a human has been through."""
     pngs, xmls = _w_ocr_wanted(root)
     a = rebuild(root / W_OCR, pngs, "chukchi-*.png")
-    b = rebuild(root / W_OCR, xmls, "chukchi-*.xml", resolve=False)
+    b = rebuild(root / W_OCR, xmls, "chukchi-*.xml")
     return {"farm": "w-ocr", "dir": a["dir"], "linked": a["linked"] + b["linked"],
             "removed": a["removed"] + b["removed"]}
 
@@ -377,18 +360,6 @@ def build(name: str, root: Path = Path("."), jobs: int | None = None,
         return {"farm": name, "dir": farm.path, "linked": 0, "removed": 0,
                 "skipped": f"no {missing[0]}/"}
 
-    if name == "ocr":
-        from .recognize import link_view
-        rep = link_view(root)
-        return {"farm": name, "dir": rep["dir"],
-                "linked": rep["from_gt"] + rep["from_mz"],
-                "removed": rep["removed"], "skipped": ""}
-    if name == "zones":
-        from .zones import link_view
-        rep = link_view(root)
-        return {"farm": name, "dir": rep["dir"],
-                "linked": rep["from_gt"] + rep["from_mz"],
-                "removed": rep["removed"], "skipped": ""}
     if name == "w-figs-blotted":
         from .zones import blot_all
         rep = blot_all(root, jobs, tick)
@@ -421,16 +392,6 @@ def _wanted_for(name: str, root: Path) -> dict[str, Path] | None:
     last `train assemble zones` was asked for — neither is a set this module can compute,
     and computing one anyway would be inventing a verdict.
     """
-    if name == "ocr":
-        from .recognize import GTDIR, MZDIR, ocr_refs
-        gt, mz = set(ocr_refs(root, GTDIR)), set(ocr_refs(root, MZDIR))
-        return {f"chukchi-{r}.xml": root / (GTDIR if r in gt else MZDIR)
-                / f"chukchi-{r}.xml" for r in gt | mz}
-    if name == "zones":
-        from .zones import MZDIR, ZONEDIR, zone_refs
-        gt, mz = set(zone_refs(root, ZONEDIR)), set(zone_refs(root, MZDIR))
-        return {f"chukchi-{r}.xml": root / (ZONEDIR if r in gt else MZDIR)
-                / f"chukchi-{r}.xml" for r in gt | mz}
     if name == "w-figs-blotted":
         # Globbed here rather than through `paths.all_scans`, deliberately: that
         # one is guarded, and `scans/` is a registered farm, so it refuses when the

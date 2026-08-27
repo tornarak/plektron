@@ -13,6 +13,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
+
 from harness.pipeline import (
     EXEMPT_STAGE,
     STAGES,
@@ -218,7 +220,9 @@ def test_the_context_no_longer_carries_the_page_state(tmp_path):
             '<Page><PrintSpace><TextBlock ID="b1"><TextLine ID="l1">'
             '<String CONTENT="ordinary prose"/></TextLine></TextBlock>'
             "</PrintSpace></Page></Layout></alto>")
-    for rel in ("ocr/chukchi-1-151.xml", "mz/ocr/chukchi-1-151.xml"):
+    # `gt/ocr/` by name: `build_context` refuses a page with none, since collation
+    # runs after the reading loop, and it used to read the `ocr/` view instead.
+    for rel in ("gt/ocr/chukchi-1-151.xml", "mz/ocr/chukchi-1-151.xml"):
         p = tmp_path / rel
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text(alto, encoding="utf-8")
@@ -228,4 +232,7 @@ def test_the_context_no_longer_carries_the_page_state(tmp_path):
     assert ctx["generated"].endswith("mz/tei/chukchi-1-151.xml")
     # `page_state` itself is untouched and still answers for `corpus state`; what
     # changed is only that the collation payload stops carrying a copy of it.
-    assert page_state("1-151", tmp_path)["ocr"] == "mz"
+    assert page_state("1-151", tmp_path)["ocr"] == "gt"
+    (tmp_path / "gt" / "ocr" / "chukchi-1-151.xml").unlink()
+    with pytest.raises(FileNotFoundError, match="no ground truth yet"):
+        build_context("1-151", tmp_path)

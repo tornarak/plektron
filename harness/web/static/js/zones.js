@@ -1203,8 +1203,11 @@ async function nav(ref) {
   // `${B}`, not a bare `/`. The four editors share one app and this one is mounted
   // at `/zones`, so a bare root is the shell's front door — the arrow keys landed
   // there and looked like dead keys.
+  // A *pinned* store travels; an unpinned one is the editor's opening choice and
+  // is re-made per page, so a session that opened on a prediction does not reach
+  // the next, keyed, page showing its prediction instead of the work done.
   location = `${B}/?ref=${ref}` + (S.nudge ? `&nudge=${S.nudge}` : '') +
-    (ST.store !== 'zones' ? `&store=${ST.store}` : '');
+    (ST.pinned ? `&store=${ST.store}` : '');
 }
 
 // Switching store is a navigation, not a client-side toggle: the zones, the
@@ -1216,7 +1219,7 @@ async function navStore(name) {
   if (S.dirty || S.figsDirty) { try { await save(); } catch (err) {
     say('not saved: ' + err.message, 'bad'); return; } }
   location = `${B}/?ref=${ST.ref}` + (S.nudge ? `&nudge=${S.nudge}` : '') +
-    (name !== 'zones' ? `&store=${name}` : '');
+    `&store=${name}`;
 }
 
 // ---- keys
@@ -1415,14 +1418,12 @@ window.addEventListener('keydown', async e => {
       // Reload so the prediction is on screen, since the whole point was to look at
       // it. Writes `mz/zones/`; `gt` is untouched until you adopt.
       //
-      // **Staying put where the view already answers `mz`.** On an unkeyed page the
-      // view falls through to the machine store by its own rule, so pinning `mz`
-      // adds nothing and costs the thing the view is for: navigate on to a keyed
-      // neighbour with `mz` pinned and it opens blank, or worse, on that page's
-      // prediction instead of the work already done. Pin only from a store that
-      // would otherwise keep showing something else.
+      // Then show it: the prediction is what was just asked for, and it lives in
+      // `mz`. There used to be a view store that fell through to `mz` on an
+      // unkeyed page, and staying on it was the cheaper move there; with the view
+      // gone the store shown is the store named, so name it.
       say(`segmented: ${res.zones} zones`, 'ok');
-      await navStore(ST.store === 'zones' && !ST.keyed ? 'zones' : 'mz');
+      await navStore('mz');
       return;
     }
     case 'delete_page': {
@@ -1452,7 +1453,7 @@ window.addEventListener('keydown', async e => {
     // third every time you wanted the previous one back.
     case 'cycle_store':
     case 'cycle_store_back': {
-      const order = ['zones', 'gt', 'mz', 'paras'];
+      const order = ['gt', 'mz', 'paras'];
       const i = order.indexOf(ST.store);
       const step = a === 'cycle_store' ? 1 : order.length - 1;
       await navStore(order[(i + step) % order.length]);

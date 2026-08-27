@@ -1174,3 +1174,59 @@ comment, and an index reading `Torwaˊwaq` ninety times would not make closing o
 a reading a rule may originate. The refusal is `bears_inventory`, the project's one
 definition of a token carrying the notation, and the verdict records zero counts
 rather than a losing tally — refused, not outvoted.
+
+## The views were a second name for one store, and a default was their last defender
+
+`ocr/` and `zones/` were symlink farms over the paired stores, the human file
+winning. They were built for a real state of the corpus: collation could run ahead
+of the reading loop, a machine-read page was workable, and a reader wanted "whatever
+this page's OCR currently is" without asking who produced it. The entry above on
+the tautology hazard records the reversal of that premise — `tei queue` came to
+refuse a page without `gt/ocr/`, and `dispatch.collate_build` says **`gt/` by name,
+never the view** — but the reversal stopped at the collation gate. Everything below
+it kept the view: `lines.DEFAULT_STORE = "ocr"` was the default for the entire
+correction and review layer, `context.build_context` opened the view directly, and
+`paths.all_refs` defaulted to it on a docstring arguing for the blend.
+
+**The corpus showed the blend no longer fired.** All 832 leaves settled, 717 text
+pages at `gt` for zones and OCR, zero mz-only refs in either pair, and every one
+of the 1,434 view links resolving into `gt/` — not one into `mz/`. The views were an
+exact second name for `gt/ocr/` and `gt/zones/`, carrying a semantics that had
+nothing left to resolve, in front of the one layer whose subject is rank. And the
+hazard was live where it was quietest: `proposal_check`'s punctuation arm read the
+view for "the recognizer's draft", and on a finished corpus that was this
+proposal's own restored text, so the check compared a reading with itself and went
+silent — the shape `ocr diff` refuses outright, one verb over.
+
+**The default was sized to the census, and that was the wrong measure.** The first
+replacement put `gt/ocr` where the view had been, because every page was restored.
+But the `ocr` group's verbs are used while a page has *only* a machine reading — a
+fresh book has no `gt/ocr/` when `lines`, `crops`, `review` and `restore` are
+running, and `restore` needs `mz/ocr/` as its skeleton. So the group defaults to
+`mz`, the library takes no default at all, and the readers of the loop's output
+name `gt/ocr/`. A default follows the lifecycle stage a verb runs at, not what the
+finished corpus happens to hold; the census is evidence that a blend has stopped
+firing, never for what a default should be.
+
+**The baked line→zone association was the same defect in the ALTO.** `ocr predict`
+wrote the keyed zones in as labelled regions, and `restore` copied that skeleton
+into `gt/ocr/` — so the ratified store held 717 pages of `TAGREFS` while two
+docstrings said it held none. Every consumer had already gone back to geometry for
+the reason `generate._assign` records: the bands may have been cut since the
+blocks were written. Measured before the labels were removed: 30,026 lines agreed
+with containment and 16 did not, on two pages, every one a band re-labelled or
+added since prediction — the staleness exactly. `page_lines` derives `zone` by
+containment for every record now, `ocr predict` writes bare lines, and
+`tools/flatten_ocr.py` gave every earlier page the same shape, refusing on any
+drift in line ids, boxes or text.
+
+**And a worklist read off an input store made a mixed output store silent.**
+`predict_all` took its worklist from the zone view and skipped any page with a
+file; a store written by two recognizers looked finished. The worklist is every
+page that exists, and `predict_skip` skips a page whose `mz/ocr/` file records
+*this* recognizer by sha — so a mixed store *is* the non-empty worklist.
+
+What survived, in the open: the zones editor still opens an unkeyed page on its
+prediction and a keyed one on ground truth, because that is the editor's modal use.
+It reports the store it chose and that it was not pinned; there is no third name
+for the choice, and no reader anywhere else makes it.

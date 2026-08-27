@@ -287,27 +287,6 @@ train/
 # the losable-file failure in a different costume. This way a new authored name shows
 # up in `git status` and only the page files are dropped.
 /tei/chukchi-*.xml
-# The two read views, one name per page, the human file winning:
-# `harness views build zones` builds the first, `views build ocr` the second.
-#
-# **`ocr/` was tracked until `ocr predict` existed, and that is exactly why it is not
-# any more.** Its links used to resolve inside tracked `gt/ocr/`, so a clone got
-# working links and committing them cost nothing. Now half the farm points into the
-# ignored `/mz/ocr/` above, so a committed copy would dangle on clone exactly as
-# `scans/w-figs/` would — the same argument that has always kept `zones/` out, become
-# true of `ocr/` the moment it acquired a second store to resolve into. Both are
-# rebuilt in one command, and the commit that ignored `ocr/` is where its 20 tracked
-# links were removed.
-#
-# **Both patterns are anchored with a leading slash, and that is not tidiness.** A
-# bare `zones/` is a match on any directory of that name at any depth, so it silently
-# swallows the *tracked* `gt/zones/` — a newly keyed page would then never be added,
-# and `git status` would say nothing, which is the failure this repo has already paid
-# for once in a different costume. `ocr/` is the sharper case of the same trap: a bare
-# pattern would swallow `gt/ocr/`, the ground-truth store this project has already
-# lost once. Verified with `git check-ignore -v`.
-/zones/
-/ocr/
 
 # Agent worktrees — real git worktrees of this repo, never content of it.
 .claude/worktrees/

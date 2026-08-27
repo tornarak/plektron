@@ -114,28 +114,32 @@ def test_ocr_lines_omits_what_no_facs_could_point_at(tmp_path):
     than the draft's, which drops them merely as the printer's text.
 
     Asserted through the real reader over a real file, because the filter reads
-    `zone`, which only exists once the ALTO carries labels.
+    `zone`, which `page_lines` derives by containment against `gt/zones/` — the
+    ALTO carries no label, so the bands are written beside it.
     """
+    from conftest import write_zones
+
     from harness.context import _ocr_lines
     ns = "http://www.loc.gov/standards/alto/ns-v4#"
-    p = tmp_path / "ocr" / "chukchi-1-283.xml"
+    p = tmp_path / "gt" / "ocr" / "chukchi-1-283.xml"
     p.parent.mkdir(parents=True)
-    p.write_text(
-        f'<alto xmlns="{ns}"><Layout><Page><PrintSpace>'
-        '<TextBlock ID="r1" TAGREFS="T1"><TextLine ID="l1">'
-        '<String CONTENT="BOGORAS, THE CHUKCHEE."/></TextLine>'
-        '<TextLine ID="l2"><String CONTENT="223"/></TextLine></TextBlock>'
-        '<TextBlock ID="r2" TAGREFS="T2"><TextLine ID="l3">'
-        '<String CONTENT="Scissors used throughout"/></TextLine></TextBlock>'
-        '<TextBlock ID="r3" TAGREFS="T3"><TextLine ID="l4">'
-        '<String CONTENT="9-JESUP NORTH PACIFIC EXPED."/></TextLine></TextBlock>'
-        "</PrintSpace></Page></Layout>"
-        f'<Tags><OtherTag ID="T1" TYPE="type" LABEL="RunningTitleZone"/>'
-        '<OtherTag ID="T2" TYPE="type" LABEL="MainZone-P"/>'
-        '<OtherTag ID="T3" TYPE="type" LABEL="QuireMarksZone"/></Tags>'
-        "</alto>", encoding="utf-8")
 
-    got = _ocr_lines(p)
+    def line(i, y, text):
+        return (f'<TextLine ID="l{i}" HPOS="100" VPOS="{y}" WIDTH="1700" '
+                f'HEIGHT="50"><String CONTENT="{text}"/></TextLine>')
+
+    p.write_text(
+        f'<alto xmlns="{ns}"><Layout><Page WIDTH="2824" HEIGHT="3897"><PrintSpace>'
+        '<TextBlock ID="text_1-283">'
+        + line(1, 200, "BOGORAS, THE CHUKCHEE.") + line(2, 200, "223")
+        + line(3, 600, "Scissors used throughout")
+        + line(4, 3000, "9-JESUP NORTH PACIFIC EXPED.")
+        + "</TextBlock></PrintSpace></Page></Layout></alto>", encoding="utf-8")
+    write_zones(tmp_path, "1-283", [("RunningTitleZone", 180, 280),
+                                    ("MainZone-P", 500, 2800),
+                                    ("QuireMarksZone", 2950, 3100)])
+
+    got = _ocr_lines(p, tmp_path, ref="1-283")
     assert [r["text"] for r in got] == ["Scissors used throughout"]
     # `index` is an identity from ALTO document order, not a position in this
     # list, so dropping records must not renumber the survivor.

@@ -104,18 +104,16 @@ Layout, all at the repo root:
             says a leaf is a plate/blank/cover/map/apparatus rather
             than a text page at all — **and such a leaf holds no zone file in
             either store: the mark is the record**), lines/ (corrections), and
-            every page exemption beside them. Tracked. **The views are only views,
-            and nothing writes through a view**; caller invariants in
+            every page exemption beside them. Tracked. Caller invariants in
             `harness/README.md`.
     ed/     a human's own act, reproducing nothing: fig-img/, page-img/ — the
             touch-ups. Tracked; no rule writes here. An improvement on the page
             is what `gt/` may not be (`docs/apparatus.md`).
     mz/     not-yet-human: zones/, ocr/ and fig/ as the models emitted them,
             tei/ as the rules built it, and page-img/ as a leaf is *served*: two
-            layers built from the tracked master. Derived; ignored. No view over
-            fig or tei.
-    ocr/  zones/  the read views over the paired stores — symlinks, the human
-            file always winning. Derived; ignored. Never written through.
+            layers built from the tracked master. Derived; ignored. **No view over
+            any pair**: every read names `gt/` or `mz/`, and the `ocr/` and
+            `zones/` symlink views that once blended them are gone.
     tei/    the collated pages, plus corpus-header.xml — the corpus teiHeader,
             a fragment gated by `harness tei header`. The header is tracked; the
             pages are **temporarily ignored** while the generator is rewritten,
@@ -231,11 +229,12 @@ records only `<!-- opens: … -->`, the witness nobody else saw.
 
 # Current pipeline
 
-`zones predict` → editor → `gt/zones/` → `ocr predict` → `/rebuild-groundtruth` →
-`gt/ocr/` → **`tei generate` → `mz/tei/`** (by rule: the keyed zone labels are the
-paragraph boundaries) → collation (an LLM reviews that page against the scan, gated
-by `tei validate`) → `tei/` → `harness edition serve`, the reading view. Stage by
-stage, with the reasoning: `docs/pipeline.md`.
+`zones predict` → editor → `gt/zones/`; `ocr predict` → `/rebuild-groundtruth` →
+`gt/ocr/` (bare lines — a line's zone is derived by containment on every read,
+never stored in the ALTO) → **`tei generate` → `mz/tei/`** (by rule: the keyed
+zone labels are the paragraph boundaries) → collation (an LLM reviews that page
+against the scan, gated by `tei validate`) → `tei/` → `harness edition serve`,
+the reading view. Stage by stage, with the reasoning: `docs/pipeline.md`.
 
 **The reading view renders `mz/tei/` too, under `--drafts`**, so the edition reads
 from ground truth alone and collation is enrichment over a readable text rather than

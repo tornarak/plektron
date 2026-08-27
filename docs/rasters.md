@@ -68,8 +68,19 @@ can tell "correctly untouched" from "not yet reached".
 ## The tools/ scripts
 
 `tools/` is where work against something outside the repository lives — the
-harness is offline and deterministic over what is committed. None of it is part
-of a loop.
+harness is offline and deterministic over what is committed — and where a
+**one-shot migration** of a store lives: run once, then marked spent in its own
+docstring. None of it is part of a loop.
+
+**`flatten_ocr.py`** took the zone labels out of every OCR ALTO. `ocr predict`
+used to bake the keyed zones in as labelled blocks and `restore` copied that
+skeleton into `gt/ocr/`, so both stores held a copy of `gt/zones/`'s content that
+went stale on the first re-cut. The script rewrote all 1,434 pages to one
+unlabelled block each — line ids, boxes and text digested before and after and
+refused on any drift, since `index` is document order and every adjudication is
+keyed on it — and appended a rule step to each. The page shape it applies is
+`recognize.flatten_page`, which `ocr predict` applies to its own output, so the
+stores hold one shape. `harness/tests/test_flatten_ocr.py` holds it.
 
 **`extract_scans.py` is gone, and the cut is `harness scans` now.** It declared
 `pymupdf` inline (PEP 723) and the isolation was argued for here as a firewall: an
