@@ -248,10 +248,10 @@ def siglum_forms(cited_as: list[dict]) -> list[str]:
     yields both spellings and the alias table carries both. A short title is set
     with the comma throughout the corpus's footnotes and yields the one.
 
-    A siglum that is only a surname yields nothing. It is already the entry's
-    alias, and it is the ambiguous case the citation rule exists for —
-    `person:nelson` claims `Nelson` too, and no spelling of a bare name can tell
-    the man from the book.
+    A siglum that is only a surname yields nothing *here*: these are the forms
+    that earn a heading by saying which work, and a surname does not. Whether
+    the surname links is `entity sigla`'s question, answered by whether a
+    `person:` entry claims the same string.
     """
     out: list[str] = []
     for c in cited_as:

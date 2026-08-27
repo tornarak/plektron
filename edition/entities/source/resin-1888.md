@@ -7,8 +7,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Resin | | no | |
-
+| Resin | | yes | |
 ## gloss
 
 (unwritten)

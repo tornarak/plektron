@@ -7,7 +7,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Sieroszevsky | | no | |
+| Sieroszevsky | | yes | |
 | Sieroszewski | | no | |
 
 ## gloss

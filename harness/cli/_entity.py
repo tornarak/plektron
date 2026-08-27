@@ -858,26 +858,26 @@ def run_sigla(a) -> int:
     II.]` prints, a two-volume work being one work; the aliases are its
     spellings, comma and no comma, because the book sets both in one apparatus.
 
-    **It adds and it renames.** A row a human wrote is never removed, and an
-    entry whose authority lists no siglum, or whose siglum is a bare surname, is
-    not touched at all. `auto` is `yes` only where nothing else in the store
-    claims the form, which is `entity check`'s rule applied ahead of it rather
-    than a judgement made here.
+    **It adds, it raises, and it renames.** A row a human wrote is never
+    removed, and an entry whose authority lists no siglum is not touched at
+    all. `auto` is `yes` only where nothing else in the store claims the form,
+    which is `entity check`'s rule applied ahead of it rather than a judgement
+    made here.
 
-    **A bare surname is not unlinkable, and saying so was the overstatement
-    that let the guard be written on half of this.** `Steller, p. 123` names the
-    book and nothing else; `citations.py` links exactly that, by rule, on the
-    locator — 64 of the 130 `source:` links, every one a bare surname. What
-    cannot reach it is the *alias table*, because an alias is a context-free
-    string match and `person:steller` claims the same string. So the bare
-    surname yields no row here, and it needs none.
+    **The bare surname is a form like the others, on the same condition.**
+    Where a `person:` entry claims it too, the alias table cannot decide —
+    `Wrangell` in a footnote and `Wrangell` in conversation are one string —
+    so the row stays `no` and `citations.py` links the footnote on its
+    locator. Where no person claims it, because the book only ever quotes the
+    man (`docs/edition.md`: narrated → `person:`, cited → `source:`), the
+    surname is the work's alone and links by the ordinary rule. A row already
+    present at `auto: no` with an empty note is raised to `yes` on that
+    condition; a row carrying a note is a human's ruling and stands.
 
-    The rename follows from that and not from ambiguity. A siglum earns the
-    heading because it says *which work* — `Maydell, I` does, `Steller` does
-    not, naming the man as readily as the book while costing the heading the
-    year that told them apart. `siglum_forms` already returned nothing for a
-    bare surname; the rename ran anyway, and 17 entries came out titled
-    `Steller`, `Nelson`, `Murdoch`. Both halves now mean the same thing.
+    The rename is on the other ground. A siglum earns the heading because it
+    says *which work* — `Maydell, I` does, `Steller` does not, naming the man
+    as readily as the book while costing the heading the year that told them
+    apart. So a bare surname never renames, whatever it does to the table.
     """
     from .. import authorities
     from ..entities import alias_index, parse
@@ -898,15 +898,26 @@ def run_sigla(a) -> int:
             continue
         forms = authorities.siglum_forms(work["cited_as"])
         name = authorities.siglum_name(work["cited_as"])
-        if not forms:
-            continue
-        have = {t["form"] for t in rec["aliases"]}
+        surnames = sorted({c["name"] for c in work["cited_as"] if c.get("name")})
+        have = {t["form"]: t for t in rec["aliases"]}
         want = [f for f in forms if f not in have]
-        if not want and rec["canonical"] == name:
+        # A bare surname the entry already holds at `auto: no` with nothing in
+        # its note is a row nobody has ruled on, and it is raised on the same
+        # condition a new row is written `yes` on: no other entry claims it.
+        # **Only a row that exists.** A surname nobody keyed is not added —
+        # `Acts`, `Monuments`, `Supplements` are sigla and English words both,
+        # and a row minted here at `yes` would link prose nobody was asked about.
+        raise_ = [s for s in surnames
+                  if s in have and not have[s]["auto"]
+                  and not have[s].get("note")
+                  and not any(c["id"] != ident for c in idx.get(s, []))
+                  and added.get(s, ident) == ident]
+        rename = bool(forms) and rec["canonical"] != name
+        if not want and not raise_ and not rename:
             continue
         p = Path(rec["path"])
         text = p.read_text(encoding="utf-8")
-        if rec["canonical"] != name:
+        if rename:
             renamed.append({"id": ident, "was": rec["canonical"], "now": name,
                             "wrote": bool(a.commit)})
             text = text.replace(f"— {rec['canonical']}\n", f"— {name}\n", 1)
@@ -928,6 +939,14 @@ def run_sigla(a) -> int:
                 rows.append({"id": ident, "form": f, "auto": auto == "yes",
                              "wrote": bool(a.commit)})
             text = text[:start] + body + "\n" + "\n".join(new) + "\n\n" + text[end:]
+        for s in raise_:
+            text, n = re.subn(
+                rf"^(\|\s*{re.escape(s)}\s*\|[^|\n]*\|\s*)no(\s*\|\s*\|)\s*$",
+                r"\1yes\2", text, count=1, flags=re.M)
+            if n:
+                added.setdefault(s, ident)
+                rows.append({"id": ident, "form": s, "auto": True,
+                             "wrote": bool(a.commit)})
         parse(text, where=str(p))
         if a.commit:
             p.write_text(text, encoding="utf-8")

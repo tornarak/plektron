@@ -7,8 +7,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Sauer | | no | |
-
+| Sauer | | yes | |
 ## gloss
 
 (unwritten)

@@ -7,7 +7,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Ratzel | | no | |
+| Ratzel | | yes | |
 | Stäbchenpanzer | | no | |
 | Ratzel, Stäbchenpanzer | | yes | |
 

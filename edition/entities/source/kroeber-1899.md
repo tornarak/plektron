@@ -7,7 +7,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Kroeber | | no | |
+| Kroeber | | yes | |
 | Kroeber, The Eskimo of Smith Sound | | yes | |
 
 ## gloss

@@ -648,11 +648,11 @@ def _cited_owner(h: dict, full: str, sigla: list[dict], store: dict) -> str | No
     """The work an ambiguous name means where the page *cites* it, or None.
 
     **The printed citation form is the second witness the alias table has not
-    got.** `Nelson` is claimed by `person:nelson` and `source:nelson-1899`, so
-    `auto_forms` withholds a link and the generator asks — correctly, since the
-    name alone does not say which. A page locator attached to it does:
-    `Nelson, pp. 27, 28` is the book, `Nelson. Fig. 22, b, shows a sled` is the
-    man, and `citations.cited` refuses the second.
+    got.** `Wrangell` is claimed by `person:wrangell` and `source:wrangell-1840`,
+    so `auto_forms` withholds a link and the generator asks — correctly, since
+    the name alone does not say which. A page locator attached to it does:
+    `Wrangell, p. 338` is the book, `in conversation with Wrangell` is the man,
+    and `citations.cited` refuses the second.
 
     **It chooses among the store's own claims and never adds one.** The work has
     to be an entity that already claims this form — every siglum in `Authorities

@@ -233,8 +233,15 @@ here and not there.
   page does not say which. `auto: no` is what keeps `entity check`'s collision gate
   meaningful rather than merely loud.
 
-**A rank above genus earns an entry** only where it groups two or more genera the store
-holds, or the book names the group itself. [[taxon:animalia]] works the case list.
+**A rank above species earns an entry** only where it groups two or more entries the
+store holds, or the book names the group itself. [[taxon:animalia]] works the case
+list for the ranks above genus. **A genus with one species is the same case**: a
+genus printed only inside its binomial (`Anser albifrons`, `Strix nyctea`) is not a
+grouping the book gives, and the species hangs from the family or the kingdom
+directly. What keeps a one-species genus is the book printing the genus as a group of
+its own — `Gadi` ("various species of Gadi", 1-191) — or a vernacular that names the
+genus and not the species: *poplar* is [[taxon:populus]] and *aspen* is its one
+species, *toadstools* is [[taxon:fungi]] and fly-agaric its one entry.
 
 ### `sky:` — stars, constellations, the Milky Way
 
@@ -642,12 +649,20 @@ links on one form.
 
 ### The one thing that resolves an ambiguity, because the printer wrote it down
 
-`Nelson` is a man and a book, and the store says so: `person:nelson` and
-`source:nelson-1899` both claim the form, so condition 1 fails and the generator
-asks. It asked 250 times over the corpus, and most of those questions have the
-same answer — **a page locator attached to a name is what a citation is.**
-`Nelson, pp. 27, 28` is the book. `Nelson. Fig. 22, b, shows a sled` is the man,
-and the figure it then names is this book's own.
+`Wrangell` is a man and a book, and the store says so: `person:wrangell` and
+`source:wrangell-1840` both claim the form, so condition 1 fails and the
+generator asks. It asked 250 times over the corpus (`Nelson` was the commonest
+question, before a read of all 65 hits found three lines about the man against
+sixty about the book and collapsed the person into the source), and most of
+those questions have the same answer — **a page locator attached to a name is
+what a citation is.** `Wrangell, p. 338` is the book. `In conversation with
+Wrangell` (1-036) is the man.
+
+**A `person:` entry is earned by the book narrating the man, not by the book
+citing him.** Travelled, collected, held office, conversed → `person:`;
+says, mentions, figures, describes, or governs a locator → `source:`. An
+author the book only ever quotes has no person entry, and the bare surname is
+then one entry's alone and links by the ordinary rule.
 
 So `harness/citations.py` resolves that case and nothing else. Two human-keyed
 tables have to agree: `Authorities Quoted`'s printed sigla resolve
@@ -685,18 +700,22 @@ pp. 627-680.` sit in the same apparatus, which is the fact `parse_citation` was
 built around, so the comma carries no information and both spellings are the
 store's.
 
-**A bare surname leaves the entry alone entirely** — no alias, and no rename
-either — and that is the division of labour. It is already the entry's row, and
-it is the one the *alias table* cannot decide: `person:maydell` claims it too,
-and an alias is a context-free string match. **It is not undecidable, and saying
-so would be the overstatement this whole apparatus is against.** `Steller,
-p. 123` names the book and nothing else, which is what `citations.py` links on —
-64 of the 130 `source:` links, every one a bare surname. What the sigla add is
-the half the alias table *can* take: `Boas, Central Eskimo` is claimed by one
-entry, so it links by the ordinary rule with no citation evidence needed, and the
-mark covers the siglum whole. 56 rows over 47 works; `auto: yes` only where
-nothing else in the store claims the form, which is condition 1 applied before
-the row is written.
+**A bare surname is a form like the others, on the same condition.** Where a
+`person:` claims it too — `person:maydell`, `person:wrangell` — the *alias
+table* cannot decide, an alias being a context-free string match, and the row
+stays `auto: no`. **That is not undecidable, and saying so would be the
+overstatement this whole apparatus is against.** `Wrangell, p. 338` names the
+book and nothing else, which is what `citations.py` links on. Where the book
+only ever *quotes* the man there is no person entry (the rule above), the
+surname is the work's alone, and `entity sigla` raises the row it already holds
+to `auto: yes` — a row with a note in it is a ruling and stands. It used to
+leave every bare surname alone, on the ground that a person might claim it;
+once the persons who were only ever cited were dropped, that ground was gone
+for most of the store. What the sigla add besides is the half the alias table
+could always take: `Boas, Central Eskimo` is claimed by one entry, so it links
+by the ordinary rule with no citation evidence needed, and the mark covers the
+siglum whole. `auto: yes` only where nothing else in the store claims the form,
+which is condition 1 applied before the row is written.
 
 **The rename follows from what a siglum is worth as a heading, not from
 ambiguity.** `Maydell, I` earns it because it says *which work*; `Steller` names

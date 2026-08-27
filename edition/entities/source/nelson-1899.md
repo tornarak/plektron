@@ -7,8 +7,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Nelson | | no | |
-
+| Nelson | | yes | |
 ## gloss
 
 (unwritten)

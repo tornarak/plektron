@@ -866,24 +866,44 @@ def test_a_volume_yields_both_spellings_and_the_name_joins_them(tmp_path):
         "# source:maydell-1893 — Maydell, I, II\n")
 
 
-def test_a_bare_surname_siglum_leaves_the_entry_entirely_alone(tmp_path):
-    """**The guard is on both halves and was written on one.** `siglum_forms`
-    returns nothing for a bare surname, so no alias was ever added — but the
-    rename ran anyway and 17 entries came out titled `Steller`, `Nelson`,
-    `Murdoch`.
-
-    Not because a bare surname is undecidable: `Steller, p. 123` names the book
-    and `citations.py` links it on the locator. It is the *alias table* that
-    cannot reach it, an alias being a context-free string match. The rename is
-    refused on the other ground — a siglum earns the heading by saying which
-    work, and this one names the man as readily as the book while costing the
-    heading the year that told them apart."""
+def test_an_uncontested_bare_surname_is_raised_and_never_renames(tmp_path):
+    """The book only ever quotes Nelson, so no `person:` claims the string and
+    the surname is the work's alone: the row it already holds at `auto: no`
+    is raised to `yes`. The heading is untouched — a siglum earns it by saying
+    which work, and a surname names the man as readily as the book."""
     _authorities(tmp_path, ("nelson1899", [("Nelson", None, None)]))
     p = entry(tmp_path, "source:nelson-1899", canonical="Nelson 1899",
               aliases=[("Nelson", False)], extra="- authority: nelson1899\n")
+    _sigla(tmp_path)
+    rec = E.load(tmp_path)["source:nelson-1899"]
+    assert rec["canonical"] == "Nelson 1899"
+    assert [(t["form"], t["auto"]) for t in rec["aliases"]] == [("Nelson", True)]
+    assert p.read_text(encoding="utf-8").startswith(
+        "# source:nelson-1899 — Nelson 1899\n")
+
+
+def test_a_contested_bare_surname_stays_no(tmp_path):
+    """`Wrangell` is a man the book narrates and a book it cites, and the alias
+    table cannot tell them apart — that is `citations.py`'s job, on the
+    locator. Nothing here may raise it."""
+    _authorities(tmp_path, ("wrangell1840", [("Wrangell", None, None)]))
+    p = entry(tmp_path, "source:wrangell-1840", canonical="Wrangell 1840",
+              aliases=[("Wrangell", False)], extra="- authority: wrangell1840\n")
+    entry(tmp_path, "person:wrangell", aliases=[("Wrangell", False)])
     before = p.read_text(encoding="utf-8")
     _sigla(tmp_path)
     assert p.read_text(encoding="utf-8") == before
+
+
+def test_a_noted_surname_row_is_a_ruling_and_stands(tmp_path):
+    _authorities(tmp_path, ("nelson1899", [("Nelson", None, None)]))
+    p = entry(tmp_path, "source:nelson-1899", canonical="Nelson 1899",
+              extra="- authority: nelson1899\n")
+    text = p.read_text(encoding="utf-8").replace(
+        "|---|---|---|---|\n", "|---|---|---|---|\n| Nelson | | no | too common |\n")
+    p.write_text(text, encoding="utf-8")
+    _sigla(tmp_path)
+    assert E.load(tmp_path)["source:nelson-1899"]["aliases"][0]["auto"] is False
 
 
 def test_a_short_title_siglum_is_one_row_and_not_two(tmp_path):

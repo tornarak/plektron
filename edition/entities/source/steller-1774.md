@@ -7,8 +7,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Steller | | no | |
-
+| Steller | | yes | |
 ## gloss
 
 (unwritten)

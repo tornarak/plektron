@@ -7,8 +7,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Middendorff | | no | |
-
+| Middendorff | | yes | |
 ## gloss
 
 (unwritten)

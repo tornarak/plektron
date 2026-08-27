@@ -5,13 +5,14 @@ The footnotes are dense with them — `Resin, p. 156.`, `Maydell I, p. 331.`,
 the Tuski, p. 100.` — and every one is a work `Authorities Quoted` already holds,
 under a siglum a human keyed. This says which.
 
-**The problem it solves is an ambiguity the alias table cannot.** `Nelson` is a
-man and a book, and the entity store says exactly that: `person:nelson` and
-`source:nelson-1899` both claim the form, so no rule may link it and the
+**The problem it solves is an ambiguity the alias table cannot.** `Wrangell` is
+a man and a book, and the entity store says exactly that: `person:wrangell` and
+`source:wrangell-1840` both claim the form, so no rule may link it and the
 generator leaves a question instead. Which of the two a sentence means is not
 decidable from the name — but the *printed citation form* decides it, because a
-page locator after a name is what a citation is. `Nelson, pp. 27, 28` is the
-book; `Nelson. Fig. 22, b, shows a sled` is the man, and this refuses the second.
+page locator after a name is what a citation is. `Wrangell, p. 338` is the
+book; `in conversation with Wrangell` (1-036) is the man, and this refuses the
+second.
 
 **It never introduces a claim, only chooses among the store's own.** The caller
 requires the work it resolves to be one of the entities already claiming the
