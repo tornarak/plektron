@@ -23,7 +23,7 @@ from lxml import etree
 
 from . import apparatus, citations, figrefs
 from .detectors import unlicensed_marks
-from .entities import ENTITY_CLASSES, alias_index, auto_forms, load, split_id
+from .entities import ENTDIR, ENTITY_CLASSES, alias_index, auto_forms, load, split_id
 from .generate import NOTE_MARKERS
 from .langs import TIER1
 from .ns import TEI_NS, XML_ID, XML_LANG
@@ -404,6 +404,31 @@ def check_corpus_header(root: Path, schema: bool = False) -> Report:
         r.errors.append(
             f"<prefixDef ident=\"{extra}\"> declares a class ENTITY_CLASSES does "
             f"not know — nothing can author an entity under it")
+
+    # **And where each prefix resolves *to*, which the `ident` check above does
+    # not see.** `@replacementPattern` is the only statement anywhere of how a
+    # `class:slug` becomes a file, so it is the one thing in this header that
+    # every `@ref` in the corpus passes through — and it is a *path*, which means
+    # it goes stale the moment the store moves. It did: the store went from
+    # `entities/` to `edition/entities/` and this header was rewritten by hand,
+    # because nothing here was looking. A pattern naming a directory that does not
+    # exist resolves every reference in the corpus to nothing while `tei header`
+    # reports PASS, which is the failure this file exists to refuse.
+    #
+    # Derived from `entities.ENTDIR` rather than written out, so the store's own
+    # location is stated once and the header is checked against it — the idiom
+    # `test_cli_surface` uses on `VERBS.md` and `RESP_RANKS` uses just above.
+    for p in root_el.iter(q("prefixDef")):
+        ident = p.get("ident")
+        if ident not in ENTITY_CLASSES:
+            continue                      # already reported as an unknown class
+        want_pat = f"{ENTDIR}/{ident}/$1.md"
+        got = p.get("replacementPattern")
+        if got != want_pat:
+            r.errors.append(
+                f"<prefixDef ident=\"{ident}\"> resolves to {got!r}, but the "
+                f"store is {ENTDIR!r}, so it should be {want_pat!r} — every "
+                f"'{ident}:…' reference in the corpus resolves through this")
 
     for name in ("titleStmt", "publicationStmt", "sourceDesc"):
         if root_el.find(f".//{q(name)}") is None:

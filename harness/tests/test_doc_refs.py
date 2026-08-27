@@ -115,6 +115,22 @@ EXPECTED_ABSENT = {
     # model will be installed, and nothing has been trained, so there is nothing
     # to install. Remove this entry with the first run.
     "models/bogoras-ocr",
+    # The same state one store over: `edition/fig-img/` is declared, documented
+    # and empty, because no figure has been retouched yet. It has been dangling
+    # here since it was written — under its old name for its whole life, and
+    # reported on every run without anybody reading the report, which is what an
+    # exemption list is for. Remove this entry with the first touched-up picture.
+    "edition/fig-img",
+    # And the lexicon, declared and still empty — no notes written yet.
+    #
+    # **It became visible by being moved, not by breaking**, which is `DIR_RE`'s
+    # documented blind spot working exactly as that comment says it does: the
+    # store was `lexicon/`, one path segment, and the pattern requires two. It was
+    # equally absent then and nothing could report it. Naming it `edition/lexicon/`
+    # made the reference specific enough to check — so the entry is here on the
+    # first day the gate could see the thing it had always been silent about.
+    # Remove it with the first note.
+    "edition/lexicon",
     # Written by `ocr queue` and cleared by the next one, so it exists only while
     # a batch is out. A checkout that has it is mid-dispatch, not complete.
     "review/_queue.txt",
