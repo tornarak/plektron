@@ -266,7 +266,7 @@ def test_a_figure_may_not_carry_a_zone_id(tmp_path):
 
 def _patches(tmp_path: Path, *figs) -> None:
     import json
-    p = tmp_path / "data" / "figure_numbers.json"
+    p = tmp_path / "edition" / "figure_numbers.json"
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(json.dumps({"figures": list(figs)}), encoding="utf-8")
 

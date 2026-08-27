@@ -17,7 +17,7 @@ Jesup series this book is Vol. VII of. **Not in Authorities Quoted**: part 1
 went to press in 1904 and the work did not exist yet, so folio 9's asterism —
 "For other authorities see references in the text" — is the only provision the
 print makes for it. `authority: jochelson1905` points at the record keyed for
-that reason, and `data/authorities.json`'s `source.unprinted` names it.
+that reason, and `edition/authorities.json`'s `source.unprinted` names it.
 
 Parts 2 and 3 cite it 36 times, always as "Vol. VI, Jochelson, The Koryak,
 p. NN" — the `Vol. VI` is the *series* volume and stands before the name, which

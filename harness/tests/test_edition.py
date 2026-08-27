@@ -780,8 +780,8 @@ _PANEL_TOC = {"source": {"refs": ["1-007"], "printed_folios": ["v"]},
 
 def _toc(root: Path) -> None:
     import json
-    (root / "data").mkdir(parents=True, exist_ok=True)
-    (root / "data/toc.json").write_text(json.dumps(_PANEL_TOC), encoding="utf-8")
+    (root / "edition").mkdir(parents=True, exist_ok=True)
+    (root / "edition/toc.json").write_text(json.dumps(_PANEL_TOC), encoding="utf-8")
 
 
 def _panel(body: str) -> str:
@@ -1356,7 +1356,7 @@ def test_every_field_of_a_transcluded_authority_reaches_the_card():
     reader holding a footnote can match against, and it appeared nowhere in the
     encyclopedia at all.
 
-    Corpus-facing on purpose. The shape being asserted is `data/authorities.json`'s
+    Corpus-facing on purpose. The shape being asserted is `edition/authorities.json`'s
     own, and a fixture would prove only that this test agrees with itself —
     `year_printed`, which is on 3 records of 73, is exactly the field a fixture
     would have been written without.

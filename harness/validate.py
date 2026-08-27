@@ -191,7 +191,7 @@ NAME_IDENTITY_ATTRS = ("key", "nymRef")
 # attributes differ because TEI spells bibliographic identity differently — @corresp
 # and @sameAs point a citation at the work it names — but the rule is one rule: this
 # pass records that a work is being cited, never *which* work. `find authority` is
-# read while collating and its answer is not written down; `data/authorities.json`
+# read while collating and its answer is not written down; `edition/authorities.json`
 # keys belong to the annotation pass, which resolves them with the whole corpus in
 # view rather than one page at a time. The printed list is open ("For other
 # authorities see references in the text"), so a body citation outside it is expected
@@ -1551,7 +1551,7 @@ def _rule_milestones(root, q, ctx, r: Report) -> None:
     milestone. Marks inform; they do not decide.
 
     **A `#mz` milestone is re-derived here, on the page's own printed folio.**
-    `resp="#mz"` on one says a rule joined `data/toc.json` to this page, and
+    `resp="#mz"` on one says a rule joined `edition/toc.json` to this page, and
     `#mz`'s whole licence is that the claim is recomputed from its store every
     run rather than trusted because it is written down. What is re-derived is
     the durable half — the ToC opens this id at the folio this page prints —
@@ -1577,7 +1577,7 @@ def _rule_milestones(root, q, ctx, r: Report) -> None:
         if ms.get("resp") is not None and ms.get("resp") != RULED:
             r.errors.append(
                 f"<milestone resp='{ms.get('resp')}'>: a milestone is either a "
-                f"rule's join against data/toc.json ({RULED}) or a reading with "
+                f"rule's join against edition/toc.json ({RULED}) or a reading with "
                 "no @resp at all — no other rank has anything to assert about a "
                 "structural boundary")
         if ms.get("unit") not in {"chapter", "section", "subsection", "subsubsection"}:
@@ -1585,7 +1585,7 @@ def _rule_milestones(root, q, ctx, r: Report) -> None:
         if ctx and ms.get("resp") == RULED and ms.get("n") not in starts_here:
             r.errors.append(
                 f"<milestone n='{ms.get('n')}' resp='{RULED}'> does not re-derive: "
-                "data/toc.json does not open it at the folio this page prints. "
+                "edition/toc.json does not open it at the folio this page prints. "
                 f"Either it belongs on another page, or the <pb n> moved under it, "
                 f"or a human placed it — in which case drop the @resp, since {RULED} "
                 "claims a join no rule would make")

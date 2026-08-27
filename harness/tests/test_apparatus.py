@@ -31,14 +31,14 @@ ALTO_NS = "http://www.loc.gov/standards/alto/ns-v4#"
 
 
 def _runs(root: Path, *runs: dict) -> None:
-    root.joinpath("data").mkdir(parents=True, exist_ok=True)
-    root.joinpath("data", "runs.json").write_text(
+    root.joinpath("edition").mkdir(parents=True, exist_ok=True)
+    root.joinpath("edition", "runs.json").write_text(
         json.dumps({"runs": list(runs)}), encoding="utf-8")
 
 
 def _store(root: Path, name: str, doc) -> None:
-    root.joinpath("data").mkdir(parents=True, exist_ok=True)
-    root.joinpath("data", name).write_text(json.dumps(doc), encoding="utf-8")
+    root.joinpath("edition").mkdir(parents=True, exist_ok=True)
+    root.joinpath("edition", name).write_text(json.dumps(doc), encoding="utf-8")
 
 
 def _exempt(root: Path, *refs: str, kind: str = "apparatus") -> None:
@@ -90,7 +90,7 @@ def _loi(root: Path) -> dict:
                     "opposite_folio": 29, "ref": "1-015"}],
     })
     return {"id": "illustrations", "kind": "loi", "title": "List of Illustrations",
-            "refs": ["1-014", "1-015"], "source": "data/loi.json"}
+            "refs": ["1-014", "1-015"], "source": "edition/loi.json"}
 
 
 def _authorities(root: Path) -> dict:
@@ -104,7 +104,7 @@ def _authorities(root: Path) -> dict:
         ],
     })
     return {"id": "authorities", "kind": "authorities", "title": "Authorities Quoted",
-            "refs": ["1-023", "1-024"], "source": "data/authorities.json"}
+            "refs": ["1-023", "1-024"], "source": "edition/authorities.json"}
 
 
 @pytest.fixture
@@ -172,7 +172,7 @@ def test_no_fallback_when_a_store_lacks_per_entry_refs(tmp_path: Path):
     _store(tmp_path, "toc.json", [{"title": "Introductory", "page_start": 1,
                                    "id": "front.introductory"}])
     _runs(tmp_path, {"id": "contents", "kind": "toc", "title": "Contents",
-                     "refs": ["1-005"], "source": "data/toc.json"})
+                     "refs": ["1-005"], "source": "edition/toc.json"})
     _exempt(tmp_path, "1-005")
     assert A.entries_for("1-005", tmp_path) == []
     rules = {e["rule"] for e in A.check(tmp_path)["errors"]}
@@ -241,7 +241,7 @@ def test_an_unwitnessed_folio_is_contained_by_nothing():
 
 
 def test_toc_containing_reads_the_real_store():
-    """Against `data/toc.json` itself, because the fold rests on that file being
+    """Against `edition/toc.json` itself, because the fold rests on that file being
     ordered and its `page_start` monotonic, which no fixture can witness for it.
 
     Two properties over every entry: the chain a heading's own first folio
@@ -465,7 +465,7 @@ def test_a_run_leaf_the_store_records_no_entry_for_fails(book: Path):
     """The run demands full presence: every leaf it names must be witnessed.
     A run declaring a leaf its store says nothing about renders an empty
     apparatus page, and nothing else in the tree could report it."""
-    doc = json.loads((book / "data" / "authorities.json").read_text())
+    doc = json.loads((book / "edition" / "authorities.json").read_text())
     doc["authorities"] = [e for e in doc["authorities"] if e["ref"] != "1-024"]
     _store(book, "authorities.json", doc)
     errs = [e for e in A.check(book)["errors"] if e["rule"] == "unwitnessed-leaf"]
@@ -484,7 +484,7 @@ def test_an_entry_outside_every_run_is_kept_and_renders_nowhere(book: Path):
 
     Nothing is needed to keep such an entry off a leaf: `entries_for` resolves
     the leaf to a run first and returns [] when there is none."""
-    doc = json.loads((book / "data" / "authorities.json").read_text())
+    doc = json.loads((book / "edition" / "authorities.json").read_text())
     doc["authorities"].append(
         {"key": "priklonsky1896", "ref": "3-146", "folio": "680",
          "printed": [{"ref": "3-146", "text": "14. Приклонскій, В. Л. …"}]})

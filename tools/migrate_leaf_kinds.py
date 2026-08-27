@@ -14,7 +14,7 @@ sorted the 94 non-run leaves by hand into `scans/plate`, `scans/blank`,
 `scans/cover` and `scans/map` — symlink farms into `scans/`, made by looking at
 each leaf. That sort is the `#ed` act this migration transcribes; nothing in this
 script decides what a leaf is. The remaining 21 are the leaves of the runs
-`data/runs.json` declares, whose content this repository already holds parsed, and
+`edition/runs.json` declares, whose content this repository already holds parsed, and
 they become `apparatus`.
 
 Deriving any of it would be the failure this repo is organised against. Figure
@@ -38,7 +38,7 @@ import sys
 from pathlib import Path
 
 #: The sorted farms, and the kind each one witnesses. `apparatus` is not here: it
-#: comes from `data/runs.json`, which is a declaration rather than a sort.
+#: comes from `edition/runs.json`, which is a declaration rather than a sort.
 FARMS = {"plate": "scans/plate", "blank": "scans/blank",
          "cover": "scans/cover", "map": "scans/map"}
 
@@ -65,7 +65,7 @@ def plan(root: Path) -> dict:
     exempt = _lst(zones / "_exempt.lst")
 
     want = {k: _refs_in_farm(root / d) for k, d in FARMS.items()}
-    runs = json.loads((root / "data" / "runs.json").read_text(encoding="utf-8"))
+    runs = json.loads((root / "edition" / "runs.json").read_text(encoding="utf-8"))
     want["apparatus"] = {r for run in runs.get("runs") or []
                          for r in run.get("refs") or []}
 

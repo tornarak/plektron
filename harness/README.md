@@ -442,7 +442,7 @@ Writes `entities/` on a click without `--commit`, as the other editors
 write their stores, and **rolls a write back if `entity check` fails on the
 result** — every `@ref` in the corpus resolves against that store.
 
-**`alphabet.py`** — the alphabet key as a chart. Joins `data/alphabet.json` (both
+**`alphabet.py`** — the alphabet key as a chart. Joins `edition/alphabet.json` (both
 printed accounts of Bogoras's notation, and Mythology's arrangement of them) to
 `ipa.RULES`, `ipa.MODERN` and the corpus's own attestation counts. **It settles
 nothing**: where the witnesses disagree the chart shows all of them. `check` also
@@ -451,7 +451,7 @@ inventory — the fact is held twice on purpose and the comparison is what makes
 that safe.
 
 **`apparatus.py`** — page-runs: spans of scans the edition serves as one document
-(`data/runs.json`), the anchor vocabulary, the folio index over three ranked
+(`edition/runs.json`), the anchor vocabulary, the folio index over three ranked
 witnesses, and `locate`, the single resolver every redirect route goes through.
 **The locator and the anchors are the load-bearing part, not the renderers**: a
 chapter page will be a run with a derived span, and nothing downstream may care

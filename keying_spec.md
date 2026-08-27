@@ -57,7 +57,7 @@ has no use in Tier-1 text (§3).
 disjoint (ᵉ only pre-`i`, ᵋ never). U+1D49 not immediately followed by `i` is
 an error; U+1D4B immediately before `i` is a review flag.
 
-**§2.2 and §2.3 are also held machine-readably in `data/alphabet.json`**, which
+**§2.2 and §2.3 are also held machine-readably in `edition/alphabet.json`**, which
 this file owns and `harness edition runs` checks against it.
 
 ### 2.2 Letters — marked sorts (SETTLED)
@@ -246,7 +246,7 @@ plate cited out of another book carries that book's scheme: flag it for a human.
 A small-cap setting has a full-height initial and reads as a capitalized word
 until the second letter is held against the first, on the line being keyed.
 **The printed ToC is not a witness to a heading's existence**: a heading absent
-from it is keyed as set and never retitled or demoted; `data/toc.json` records
+from it is keyed as set and never retitled or demoted; `edition/toc.json` records
 the book's omissions under `editorial`. *Attested:* `2-046` `System of Winds`,
 absent from the contents at `1-009`.
 

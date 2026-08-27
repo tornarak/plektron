@@ -431,7 +431,7 @@ class TestMilestones:
         assert any("extra attributes" in e for e in r.errors)
 
     def test_only_the_mechanical_rank_or_none_is_allowed(self):
-        """A milestone is either a rule's join against `data/toc.json` or a
+        """A milestone is either a rule's join against `edition/toc.json` or a
         reading with no @resp at all — no other rank has anything to assert about
         a structural boundary."""
         r = Report()

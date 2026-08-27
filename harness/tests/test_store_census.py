@@ -69,7 +69,7 @@ def _glob(rel: str) -> int:
 def _authorities(kind: str) -> int:
     from harness import apparatus
     if kind == "printed":
-        doc = json.loads((REPO / "data" / "authorities.json").read_text("utf-8"))
+        doc = json.loads((REPO / "edition" / "authorities.json").read_text("utf-8"))
         return doc["source"]["count"]
     if kind == "records":
         return len(apparatus._authorities(REPO))
@@ -194,7 +194,7 @@ def test_the_two_authorities_quantities_are_not_the_same_number():
     that happened to pass because they were equal would be no gate at all. The
     difference is `source.unprinted` — `jochelson1905`, cited 36 times in parts
     2 and 3 and impossible in part 1's list."""
-    doc = json.loads((REPO / "data" / "authorities.json").read_text("utf-8"))
+    doc = json.loads((REPO / "edition" / "authorities.json").read_text("utf-8"))
     assert COUNTS["works_records"]() == \
         COUNTS["works_printed"]() + len(doc["source"]["unprinted"])
     assert COUNTS["works_records"]() != COUNTS["works_printed"]()

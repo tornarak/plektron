@@ -2225,7 +2225,7 @@ def by_number(root: Path = Path(".")) -> dict[str, list[dict]]:
     kept as strings for that reason: `figure_boxes` does not parse them into
     integers and neither does this.
 
-    **Then `data/figure_numbers.json` overrides, because a printer who set a page
+    **Then `edition/figure_numbers.json` overrides, because a printer who set a page
     his own way is not a rule to be widened.** Three figures in this corpus have
     no derivable number — the map on `1-037`, whose number is set after the title,
     and `2-068`'s 239 and 240, two pictures above two stacked captions that the
@@ -2248,14 +2248,14 @@ def by_number(root: Path = Path(".")) -> dict[str, list[dict]]:
 
 
 def number_patches(root: Path = Path(".")) -> list[dict]:
-    """`data/figure_numbers.json`'s entries, or none if the file is absent.
+    """`edition/figure_numbers.json`'s entries, or none if the file is absent.
 
     An editor's table, not a derivation: each entry says which zones on which
     leaf a printed figure number names, and `why` records what the rule saw
     instead. Absent is empty rather than an error — a corpus whose printers
     behaved needs no patches, and this reads as a store like any other.
     """
-    p = Path(root) / "data" / "figure_numbers.json"
+    p = Path(root) / "edition" / "figure_numbers.json"
     if not p.exists():
         return []
     return json.loads(p.read_text(encoding="utf-8")).get("figures") or []

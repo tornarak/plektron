@@ -597,7 +597,7 @@ which side the block belongs on.
 ## Headings — milestone vs. local caption
 
 **Most milestones are already on the page when you get it, and they are not yours.**
-The generator joins `data/toc.json` to the folio the page prints: where the ToC opens
+The generator joins `edition/toc.json` to the folio the page prints: where the ToC opens
 a heading on this folio and a block begins with that heading's own title, it writes
 
     <milestone unit="{unit}" n="{id}" resp="#mz"/>
@@ -620,7 +620,7 @@ label past the head into the prose.
 **Where a block held nothing but the heading, it is already gone.** The ToC answered
 `MainZone-Other`'s question outright, so the generator removed the block and left the
 milestone alone: a page file is div-less, `<milestone>` therefore holds an id rather
-than a title, and the words come from `data/toc.json` when the page is read. Do not
+than a title, and the words come from `edition/toc.json` when the page is read. Do not
 put the heading text back. If the block was not that heading, delete the milestone
 and report it.
 
@@ -666,7 +666,7 @@ on this page: check for a missed milestone or a heading straddling the page
 boundary -->`.
 
 **The generator leaves that same comment, and when it does it is a stronger claim
-than yours.** Its version names the folio and reads "data/toc.json opens it at folio
+than yours.** Its version names the folio and reads "edition/toc.json opens it at folio
 N, which is the folio this page prints" — the ToC and the running title agree that
 this heading opens here and no block begins with its title, which is a fact about the
 page rather than a mark that may be off. Clear it the way it says: find the head and

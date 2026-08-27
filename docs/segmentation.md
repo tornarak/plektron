@@ -138,7 +138,7 @@ Reading the second off the first reported every plate in the corpus as unfinishe
 began as training bookkeeping and then became the only way to save a leaf with no
 zones, at which point a flag was carrying a judgement. Five different things
 accumulated behind it, and the edition ended up sorting them with discriminators
-borrowed from other stores — figure boxes for a plate, `data/runs.json` for the
+borrowed from other stores — figure boxes for a plate, `edition/runs.json` for the
 apparatus, `edition/page-img/` for a hand-worked leaf — under which a blank verso and
 the volume's folding map were the same page. Nothing infers a kind: a model may
 not propose one, and no rule derives one from figure boxes or from a neighbour.

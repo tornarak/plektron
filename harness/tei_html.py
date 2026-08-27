@@ -308,7 +308,7 @@ def exempt(root: Path = Path(".")) -> list[str]:
     written by a human in `zones edit` at the raster. This reports membership;
     `leaf_kind` reports which. Nothing here derives the kind, and that boundary is
     the point: the edition used to sort these pages with four discriminators
-    borrowed from other stores — figure boxes for a plate, `data/runs.json` for
+    borrowed from other stores — figure boxes for a plate, `edition/runs.json` for
     the apparatus, `edition/page-img/` for a hand-worked leaf — under which a blank
     verso and the volume's folding map were the same page.
     """
@@ -388,7 +388,7 @@ class Renderer:
         self.tabindex = tabindex_offset
         #: `{toc id: {number, title}}`, what a `<milestone n>` is displayed as.
         #: Passed in rather than read here so the caller's cache can name
-        #: `data/toc.json` among its inputs — a title that changed under a memoised
+        #: `edition/toc.json` among its inputs — a title that changed under a memoised
         #: render would otherwise serve a stale heading with nothing to signal it,
         #: which is `stores.render`'s standing rule about the figure geometry.
         self.titles = titles or {}
@@ -523,7 +523,7 @@ class Renderer:
                 f'{escape(handle["number"])}">{body}</a>'
             )
         # A chapter, the same way and for the same reason — `/chapter/{roman}`
-        # looks the id up in `data/toc.json` and locates its opening folio, so
+        # looks the id up in `edition/toc.json` and locates its opening folio, so
         # nothing about the store's key scheme is written into the page.
         if handle["kind"] == "chapter":
             return (
@@ -761,7 +761,7 @@ class Renderer:
 
         **No coordinates are emitted here, and that is a cache argument as much
         as a store one.** `stores.render`'s key names every store this HTML is
-        built from — the page, and `data/toc.json` for a milestone's title — and
+        built from — the page, and `edition/toc.json` for a milestone's title — and
         `gt/fig/` is deliberately not among them; geometry baked into this HTML
         would leave a corrected box serving the old placement out of a cache with
         nothing to signal it. So the page carries only what the TEI says, the route joins
@@ -811,7 +811,7 @@ class Renderer:
     def el_milestone(self, el) -> str:
         # A milestone is a boundary, not a container — TEI's answer to a heading
         # in a text with no divisions keyed. It carries no text by design: the
-        # words are in `data/toc.json` under the id `@n` names, and putting them
+        # words are in `edition/toc.json` under the id `@n` names, and putting them
         # on the page is this module's job rather than the page file's. A page
         # that repeated the title would be a second copy of it, free to drift.
         #

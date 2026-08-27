@@ -418,7 +418,7 @@ def load_toc(root: Path = Path(".")) -> list[dict]:
     put one. So both shapes load — a bare list, and `{"source": …, "entries": […]}`
     — and every caller keeps receiving the entries either way.
     """
-    p = root / "data/toc.json"
+    p = root / "edition/toc.json"
     if not p.exists():
         return []
     doc = json.loads(p.read_text(encoding="utf-8"))
@@ -502,7 +502,7 @@ MILESTONE_UNITS = {1: "chapter", 2: "section", 3: "subsection", 4: "subsubsectio
 #:
 #: The punctuation run before the mark is a run, not a single character, because
 #: the book quotes a title it is naming: `1-213` prints `“GENUINE HOUSE.” — `, the
-#: period inside the quote, and `data/toc.json` carries the quotation marks in the
+#: period inside the quote, and `edition/toc.json` carries the quotation marks in the
 #: title too. Loosening it costs nothing — the teeth of this test are the dash, the
 #: line end or the end of the block, and never what precedes them.
 #:

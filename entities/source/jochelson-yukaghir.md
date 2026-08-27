@@ -16,7 +16,7 @@
 [[person:jochelson]]’s *Матеріалы для изученія юкагирскаго языка и фольклора* (1900),
 listed in Authorities Quoted at printed folio 8 (scan 1-028) and cited in the
 text as “Jochelson, Yukaghir Materials”. `authority:` points at its key in
-data/authorities.json; resolving a `<bibl>` to that key is still the annotation
+edition/authorities.json; resolving a `<bibl>` to that key is still the annotation
 pass’s, and this field does not do it.
 
 The distinct-identity case: [[person:jochelson]] and this entry share the string

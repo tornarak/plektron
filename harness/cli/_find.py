@@ -27,7 +27,7 @@ from ._common import action, arg, group, opt, out
 
 def register(cli):
     g = group(cli, "find", "apparatus lookups — ToC entries by heading "
-              "or by folio, and the works in data/authorities.json a "
+              "or by folio, and the works in edition/authorities.json a "
               "citation might name",
               section="Apparatus and reports")
 
@@ -50,7 +50,7 @@ def register(cli):
         help=f"folios either side of the target (default {WINDOW})")
 
     p = action(g, "authority", run_authority,
-               help="works in data/authorities.json matching a citation "
+               help="works in edition/authorities.json matching a citation "
                "read in the body — the siglum (Dall, I), a bare name in prose "
                "(Krause reports…), a title, or any string off the printed entry. "
                "Every match is returned and ranked, never resolved to one"

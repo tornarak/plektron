@@ -1066,16 +1066,16 @@ def test_another_authors_plate_is_not_marked(tmp_path):
     """`Sauer, Plate XIV` is Sauer's and this book has a Plate XIV too. Marking it
     would put a question to the collator that `Authorities Quoted` has already
     answered, and the edition is bound to decline the link anyway."""
-    (tmp_path / "data").mkdir(exist_ok=True)
-    (tmp_path / "data" / "authorities.json").write_text(json.dumps({
+    (tmp_path / "edition").mkdir(exist_ok=True)
+    (tmp_path / "edition" / "authorities.json").write_text(json.dumps({
         "source": {"refs": ["1-023"]},
         "authorities": [{"key": "sauer1802", "ref": "1-023", "folio": "3",
                          "cited_as": [{"name": "Sauer"}],
                          "printed": [{"ref": "1-023", "text": "SAUER."}]}]}),
         encoding="utf-8")
-    (tmp_path / "data" / "runs.json").write_text(json.dumps({"runs": [
+    (tmp_path / "edition" / "runs.json").write_text(json.dumps({"runs": [
         {"id": "authorities", "kind": "authorities", "title": "Authorities Quoted",
-         "refs": ["1-023"], "source": "data/authorities.json"}]}), encoding="utf-8")
+         "refs": ["1-023"], "source": "edition/authorities.json"}]}), encoding="utf-8")
     blocks = [("MainZone-P", lines_at(["compare Sauer, Plate XIV, p. 321",
                                        "and Plate XIV of this book"], 200))]
     doc, rep = page(tmp_path, "1-021", blocks)
@@ -1102,8 +1102,8 @@ def test_prose_naming_no_picture_is_marked_nowhere(tmp_path):
 
 def _authorities(tmp_path: Path) -> None:
     """The printed resolution table, as `Authorities Quoted` holds it."""
-    (tmp_path / "data").mkdir(exist_ok=True)
-    (tmp_path / "data" / "authorities.json").write_text(json.dumps({
+    (tmp_path / "edition").mkdir(exist_ok=True)
+    (tmp_path / "edition" / "authorities.json").write_text(json.dumps({
         "source": {"refs": ["1-023"]},
         "authorities": [{"key": "nelson1899", "ref": "1-023", "folio": "3",
                          "author": "E. W. Nelson", "year": 1899,
@@ -1111,10 +1111,10 @@ def _authorities(tmp_path: Path) -> None:
                          "cited_as": [{"name": "Nelson"}],
                          "printed": [{"ref": "1-023", "text": "NELSON."}]}]}),
         encoding="utf-8")
-    (tmp_path / "data" / "runs.json").write_text(json.dumps({"runs": [
+    (tmp_path / "edition" / "runs.json").write_text(json.dumps({"runs": [
         {"id": "authorities", "kind": "authorities",
          "title": "Authorities Quoted", "refs": ["1-023"],
-         "source": "data/authorities.json"}]}), encoding="utf-8")
+         "source": "edition/authorities.json"}]}), encoding="utf-8")
 
 
 def _both_nelsons(tmp_path: Path) -> None:
@@ -1257,7 +1257,7 @@ def test_a_locant_run_is_bounded_by_the_reference_that_produced_it():
 
 # --- the ToC join: which heading the printed folio says opens here -------------
 #
-# **Three printed witnesses and no judgement.** `data/toc.json` prints which folio
+# **Three printed witnesses and no judgement.** `edition/toc.json` prints which folio
 # each heading opens on, the running title prints which folio this page is, and the
 # page prints the heading's own title at the front of a block. Where all three
 # agree the generator writes the milestone; where the first two agree and the third
@@ -1268,8 +1268,8 @@ def test_a_locant_run_is_bounded_by_the_reference_that_produced_it():
 
 
 def toc(tmp_path: Path, entries: list[dict]) -> None:
-    """`data/toc.json` in the store's own bare-list shape (`load_toc`'s note)."""
-    d = tmp_path / "data"
+    """`edition/toc.json` in the store's own bare-list shape (`load_toc`'s note)."""
+    d = tmp_path / "edition"
     d.mkdir(exist_ok=True)
     (d / "toc.json").write_text(json.dumps(entries), encoding="utf-8")
 
@@ -1517,7 +1517,7 @@ def test_a_block_with_more_than_its_heading_is_still_a_question(tmp_path):
 
 def test_the_reading_view_titles_a_milestone_from_the_toc(tmp_path):
     """A `<milestone n="chXI"/>` carries no words, so the reader's heading comes
-    from `data/toc.json` — and the id is the fallback rather than the label,
+    from `edition/toc.json` — and the id is the fallback rather than the label,
     because `chXI` on the page is visibly not a heading. A milestone whose entry has
     gone missing should fail that way round; a plausible heading built out of a slug
     is the failure this project is arranged against."""

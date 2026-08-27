@@ -427,7 +427,7 @@ def render(path: Path, root: Path = Path(".")) -> dict:
     **Two files in the key, because two files decide these bytes.** A
     `<milestone>` carries an id and no words — TEI's answer to a heading in a
     div-less text, with the words left to whoever displays it — so the renderer
-    reads the title out of `data/toc.json`. That makes the ToC an input to the
+    reads the title out of `edition/toc.json`. That makes the ToC an input to the
     HTML, and an input that is not in the key is exactly how a corrected heading
     goes on being served with nothing to signal it.
 
@@ -437,7 +437,7 @@ def render(path: Path, root: Path = Path(".")) -> dict:
     join is per-figure over three stores and produces *placement*, where a page
     that placed a picture from a stale cache would look right and be wrong.
     """
-    key = stamp([Path(root) / "data" / "toc.json"])
+    key = stamp([Path(root) / "edition" / "toc.json"])
     try:
         return _render(str(path), digest(Path(path).read_bytes()), key, str(root))
     except OSError:
@@ -465,7 +465,7 @@ def toc_titles(root: Path) -> dict[str, dict]:
     reader cannot find. It is never composed: 23 of the store's entries have one
     and the other 293 print none.
     """
-    return _toc_titles(str(root), stamp([Path(root) / "data" / "toc.json"]))
+    return _toc_titles(str(root), stamp([Path(root) / "edition" / "toc.json"]))
 
 
 @lru_cache(maxsize=MAXSIZE)

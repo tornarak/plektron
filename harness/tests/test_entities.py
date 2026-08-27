@@ -104,7 +104,7 @@ def test_an_absent_store_is_empty_not_an_error(tmp_path):
 
 def test_there_is_no_since_field(tmp_path):
     """It was required, as the page whose reading prompted the entry, on the
-    argument that an unauditable apparatus store is the `data/toc.json` defect.
+    argument that an unauditable apparatus store is the `edition/toc.json` defect.
     The argument held and the answer got better: the card derives *every* page
     that mentions the entity. **A `since:` is satisfied by typing a plausible
     ref and an empty mentions list is not**, so it was the weaker witness of the
@@ -834,9 +834,9 @@ class _SiglaArgs:
 
 
 def _authorities(root: Path, *works) -> None:
-    """`data/authorities.json` with just the `cited_as` this verb reads."""
+    """`edition/authorities.json` with just the `cited_as` this verb reads."""
     import json
-    p = root / "data"
+    p = root / "edition"
     p.mkdir(parents=True, exist_ok=True)
     (p / "authorities.json").write_text(json.dumps({"authorities": [
         {"key": k, "cited_as": [{"name": n, "volume": v, "short_title": t}

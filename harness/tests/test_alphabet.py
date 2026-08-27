@@ -1,7 +1,7 @@
 """The alphabet key as a chart: the store, its join, and the two-witness gate.
 
 Scan 1-030 is the p. 10 key — fifty lines of "as in English" in no order, with
-the structure of the system nowhere on it. `data/alphabet.json` transcribes both
+the structure of the system nowhere on it. `edition/alphabet.json` transcribes both
 printed accounts and Mythology's arrangement of them; `alphabet.chart` joins that
 to `ipa.RULES`, `ipa.MODERN` and the corpus's own counts.
 
@@ -146,8 +146,8 @@ def test_anchors_are_positional_rather_than_the_sort_itself():
 
 
 def _store(tmp_path: Path, doc) -> Path:
-    tmp_path.joinpath("data").mkdir(parents=True, exist_ok=True)
-    tmp_path.joinpath("data", "alphabet.json").write_text(
+    tmp_path.joinpath("edition").mkdir(parents=True, exist_ok=True)
+    tmp_path.joinpath("edition", "alphabet.json").write_text(
         json.dumps(doc, ensure_ascii=False), encoding="utf-8")
     return tmp_path
 

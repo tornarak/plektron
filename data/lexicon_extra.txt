@@ -20,7 +20,7 @@
 # page in `gt/ocr/` attested them, so `entity new --since` had no witness and the
 # entry could not honestly be filed. They have since moved too, and the way they
 # moved is the record of why `since:` was removed: every one of the eleven is the
-# author of a work listed in Authorities Quoted, `data/authorities.json` had
+# author of a work listed in Authorities Quoted, `edition/authorities.json` had
 # adjudicated all of them, and the store now carries a `source:` entry per work
 # with the surname as an alias. The gate was refusing entries on the strength of
 # a field rather than of the evidence.

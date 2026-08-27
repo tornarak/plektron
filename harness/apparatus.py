@@ -3,12 +3,12 @@ that resolves a ref, a folio or a ToC id into a place inside one.
 
 Six scans of List of Illustrations are one printed list, not six documents, and a
 reader paging through them a leaf at a time is reading the binding rather than the
-book. So the unit the reading view serves is the **run**, and `data/runs.json`
+book. So the unit the reading view serves is the **run**, and `edition/runs.json`
 declares which spans are runs.
 
 **The locator and the anchor vocabulary are the load-bearing part, not the three
 renderers.** A chapter page is the same object with a derived span — `runs()` will
-one day fold in runs computed from `data/toc.json` and the folio index, and nothing
+one day fold in runs computed from `edition/toc.json` and the folio index, and nothing
 downstream may care which kind it got. That is why `anchor` is one function rather
 than an f-string at each call site (`figures.crop_name`'s rule: one function because
 several callers must agree exactly), and why every redirect route in `web/edition.py`
@@ -29,7 +29,7 @@ from .paths import all_scans
 from .refs import norm_ref, parse_ref
 from .state import _tei_facts, load_toc
 
-RUNS_JSON = "data/runs.json"
+RUNS_JSON = "edition/runs.json"
 
 #: The closed vocabulary of renderers, and what each kind's store looks like. A run
 #: naming a kind that is not here is a gate failure rather than a page that silently
@@ -88,7 +88,7 @@ def anchor(kind: str, key) -> str:
 def load_runs(root: Path = Path(".")) -> list[dict]:
     """The declared runs, or none.
 
-    A missing `data/runs.json` is an empty list and not an error: it is a store,
+    A missing `edition/runs.json` is an empty list and not an error: it is a store,
     and "this book declares no runs" is a true statement about a corpus — the
     next book may have no List of Illustrations at all. That is the store rule
     (an absent *farm* refuses, an absent store is a silent empty); `edition runs`
@@ -506,7 +506,7 @@ def check(root: Path = Path(".")) -> dict:
         errors.append({
             "run": "", "rule": "apparatus-not-in-run", "detail": r,
             "why": "ruled `apparatus`, so its content is supposed to be held "
-                   "parsed, but no run in data/runs.json names it and nothing "
+                   "parsed, but no run in edition/runs.json names it and nothing "
                    "says which store that would be"})
 
     # Every kind counted, whether or not it is one this report has anything else

@@ -1,4 +1,4 @@
-"""The alphabet key, as a chart: `data/alphabet.json` joined to what this
+"""The alphabet key, as a chart: `edition/alphabet.json` joined to what this
 edition has since worked out about it.
 
 Scan 1-030 is the p. 10 key, and it is the page a reader turns to on meeting
@@ -7,7 +7,7 @@ in no order, with the structure of the system nowhere on it. Everything needed
 to answer well is already in the repository, in four places that have never
 been in one room:
 
-    data/alphabet.json   the two printed keys transcribed, and Mythology's own
+    edition/alphabet.json   the two printed keys transcribed, and Mythology's own
                          arrangement of the sorts into grids
     ipa.RULES            what each sort is worth, on Bogoras's own account,
                          with its grade and its hedge
@@ -32,7 +32,7 @@ import re
 import unicodedata
 from pathlib import Path
 
-STORE = "data/alphabet.json"
+STORE = "edition/alphabet.json"
 SPEC = "keying_spec.md"
 
 

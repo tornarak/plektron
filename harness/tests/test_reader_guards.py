@@ -601,7 +601,7 @@ def test_the_keying_spec_is_refused_by_name():
 
 @pytest.mark.parametrize("path", [
     "gt/ocr/chukchi-1-075.xml",
-    "data/authorities.json",
+    "edition/authorities.json",
     "tei/corpus-header.xml",
     "../elsewhere/tei/chukchi-1-075.xml",
 ])

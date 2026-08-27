@@ -7,35 +7,35 @@
     "refs": "the scans, in binding order, contiguous within one part.",
     "source": "the store the renderer reads. Its own `source.refs` must equal `refs` here, and so must the set of per-entry `ref` fields inside it — three statements of one span, checked against each other by `edition runs` rather than merged."
   },
-  "_note": "Chapter pages will be runs too, with their spans derived from data/toc.json and the folio index rather than declared here. Nothing that consumes a run may care which of the two it got; see docs/edition.md.",
+  "_note": "Chapter pages will be runs too, with their spans derived from edition/toc.json and the folio index rather than declared here. Nothing that consumes a run may care which of the two it got; see docs/edition.md.",
   "runs": [
     {
       "id": "contents",
       "kind": "toc",
       "title": "Contents",
       "refs": ["1-007", "1-008", "1-009", "1-010", "1-011", "1-012", "1-013"],
-      "source": "data/toc.json"
+      "source": "edition/toc.json"
     },
     {
       "id": "illustrations",
       "kind": "loi",
       "title": "List of Illustrations",
       "refs": ["1-014", "1-015", "1-016", "1-017", "1-018", "1-019"],
-      "source": "data/loi.json"
+      "source": "edition/loi.json"
     },
     {
       "id": "authorities",
       "kind": "authorities",
       "title": "Authorities Quoted",
       "refs": ["1-023", "1-024", "1-025", "1-026", "1-027", "1-028", "1-029"],
-      "source": "data/authorities.json"
+      "source": "edition/authorities.json"
     },
     {
       "id": "alphabet",
       "kind": "alphabet",
       "title": "Alphabet",
       "refs": ["1-030"],
-      "source": "data/alphabet.json"
+      "source": "edition/alphabet.json"
     }
   ]
 }

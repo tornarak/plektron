@@ -653,7 +653,7 @@ def test_an_event_is_a_name_at_any_tier(tmp_path):
 # spelled in the attributes TEI uses for bibliographic identity.
 
 def test_a_citation_carries_no_key(tmp_path):
-    """Every one of these would point the citation at a data/authorities.json entry.
+    """Every one of these would point the citation at a edition/authorities.json entry.
     The printed list is open — "For other authorities see references in the text" —
     so a per-page pass resolving what it could would key the store by accident of
     which pages ran first."""

@@ -68,7 +68,7 @@ _PLATE_HEAD = re.compile(r"\bPlates?\.?\s+(?=[IVXLC])")
 #: govern, and this has.
 #:
 #: Measured over the corpus: 19 printed, 1 behind an authority, and **every one
-#: of the remaining 18 names a roman `data/toc.json` holds as a chapter.**
+#: of the remaining 18 names a roman `edition/toc.json` holds as a chapter.**
 #:
 #: `Chapters?\.?` tolerates the stop `2-004` sets in `Compare Chapter. XIII.` —
 #: adjudicated ground truth, so it is what the leaf prints. The mark covers the
@@ -281,7 +281,7 @@ _CREF = re.compile(r"^Plate ([IVXLC]+)$")
 #: directly, as it does a note marker, and the route's own refusal page is what
 #: an unwitnessed folio meets — 280 of the book's 732 have a witness today, so
 #: that path is the common one and not an edge.
-#: `chapter` resolves through `data/toc.json` and the same folio index behind it,
+#: `chapter` resolves through `edition/toc.json` and the same folio index behind it,
 #: and it refuses at serve time rather than at scan time — a roman the ToC does
 #: not hold is a question about the store, which is the answer `resolve` already
 #: gives for a plate with no leaf.
@@ -429,7 +429,7 @@ def resolve(span: dict, by_number: dict, by_plate: dict,
       a bare one in prose is. `Fig. 1` resolves only because a human keyed it:
       31 pictures print it, and the map on `1-037` that is the text series' own
       carries its number after the title where no caption parses it, so
-      `data/figure_numbers.json` names the zone instead.
+      `edition/figure_numbers.json` names the zone instead.
     """
     if span["kind"] == "plate":
         hit = by_plate.get(span["number"])
@@ -471,7 +471,7 @@ def resolve(span: dict, by_number: dict, by_plate: dict,
     # go through it too.
     # The caption is read back off the leaf rather than carried in `by_number`,
     # which indexes numbers to zones and holds no text. Matched on `key`, the
-    # store's own foreign key: a figure `data/figure_numbers.json` numbered by
+    # store's own foreign key: a figure `edition/figure_numbers.json` numbered by
     # hand may name a zone no folded record keys, and an absent caption is the
     # right answer there rather than the neighbouring figure's.
     caption = next((f.get("caption") or "" for f in figures_on(hits[0]["ref"]) or ()

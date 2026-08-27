@@ -99,7 +99,7 @@ def tei(root: Path, ref: str, body: str, store: str = "tei") -> Path:
 
 
 def runs_json(root: Path, runs: list[dict]) -> Path:
-    return write(root / "data" / "runs.json", json.dumps(runs))
+    return write(root / "edition" / "runs.json", json.dumps(runs))
 
 
 # ------------------------------------------------------------- the encyclopedia
@@ -246,13 +246,13 @@ def test_runs_is_keyed_on_the_declaration_and_on_what_it_declares(
         tmp_path, monkeypatch):
     """`_runs_files`' second half: the declaration names its source, so the key
     follows the declaration rather than a fixed path."""
-    runs_json(tmp_path, [{"id": "loi", "kind": "loi", "source": "data/loi.json",
+    runs_json(tmp_path, [{"id": "loi", "kind": "loi", "source": "edition/loi.json",
                           "refs": ["1-014"]}])
-    write(tmp_path / "data" / "loi.json", json.dumps({"figures": [], "plates": []}))
+    write(tmp_path / "edition" / "loi.json", json.dumps({"figures": [], "plates": []}))
 
     def files():
-        out = [tmp_path / "data" / "runs.json"]
-        for r in json.loads((tmp_path / "data" / "runs.json").read_text()):
+        out = [tmp_path / "edition" / "runs.json"]
+        for r in json.loads((tmp_path / "edition" / "runs.json").read_text()):
             if r.get("source"):
                 out.append(tmp_path / r["source"])
         return out
@@ -261,16 +261,16 @@ def test_runs_is_keyed_on_the_declaration_and_on_what_it_declares(
 
     pins(lambda: stores.runs(tmp_path),
          ("an edit to the store a run names",
-          lambda: write(tmp_path / "data" / "loi.json",
+          lambda: write(tmp_path / "edition" / "loi.json",
                         json.dumps({"figures": [{"n": "1"}], "plates": []}))),
          ("an edit to runs.json",
           lambda: runs_json(tmp_path, [{"id": "loi", "kind": "loi",
-                                        "source": "data/loi.json",
+                                        "source": "edition/loi.json",
                                         "refs": ["1-014", "1-015"]}])),
          ("a run re-pointed at another store",
-          lambda: (write(tmp_path / "data" / "toc.json", json.dumps([])),
+          lambda: (write(tmp_path / "edition" / "toc.json", json.dumps([])),
                    runs_json(tmp_path, [{"id": "loi", "kind": "loi",
-                                         "source": "data/toc.json",
+                                         "source": "edition/toc.json",
                                          "refs": ["1-014", "1-015"]}]))))
 
 
@@ -279,11 +279,11 @@ def test_run_store_is_keyed_on_the_file_it_names_and_no_other(
     """Both halves of the docstring: an edit to `loi.json` reaches the page, and
     an edit to another store does not — the narrowness is the point, since every
     run would otherwise be re-parsed whenever any of them changed."""
-    run = {"id": "loi", "kind": "loi", "source": "data/loi.json", "refs": ["1-014"]}
+    run = {"id": "loi", "kind": "loi", "source": "edition/loi.json", "refs": ["1-014"]}
     runs_json(tmp_path, [run])
-    loi = write(tmp_path / "data" / "loi.json",
+    loi = write(tmp_path / "edition" / "loi.json",
                 json.dumps({"figures": [], "plates": []}))
-    other = write(tmp_path / "data" / "authorities.json", json.dumps([]))
+    other = write(tmp_path / "edition" / "authorities.json", json.dumps([]))
     monkeypatch.setattr("harness.apparatus.store_for", Probe(lambda: [loi]))
 
     pins(lambda: stores.run_store(tmp_path, run),
@@ -296,7 +296,7 @@ def test_run_store_is_keyed_on_the_file_it_names_and_no_other(
 
 
 def test_authority_names_is_keyed_on_the_authorities_store(tmp_path, monkeypatch):
-    src = "data/authorities.json"
+    src = "edition/authorities.json"
     runs_json(tmp_path, [{"id": "auth", "kind": "authorities", "source": src,
                           "refs": ["1-012"]}])
     p = write(tmp_path / src, json.dumps({"authorities": []}))
@@ -314,14 +314,14 @@ def test_authority_names_is_keyed_on_the_authorities_store(tmp_path, monkeypatch
 def test_folio_index_is_keyed_on_all_three_witnesses(tmp_path, monkeypatch):
     """"Keyed on all three witnesses' stores, so a newly collated page moves it."
     The three are the TEI, the keyed ALTO, and the apparatus runs."""
-    runs_json(tmp_path, [{"id": "loi", "kind": "loi", "source": "data/loi.json",
+    runs_json(tmp_path, [{"id": "loi", "kind": "loi", "source": "edition/loi.json",
                           "refs": ["1-014"]}])
-    write(tmp_path / "data" / "loi.json", json.dumps({"figures": [], "plates": []}))
+    write(tmp_path / "edition" / "loi.json", json.dumps({"figures": [], "plates": []}))
 
     def files():
         return (sorted((tmp_path / "tei").glob("chukchi-*.xml"))
                 + sorted((tmp_path / "gt" / "ocr").glob("chukchi-*.xml"))
-                + [tmp_path / "data" / "runs.json", tmp_path / "data" / "loi.json"])
+                + [tmp_path / "edition" / "runs.json", tmp_path / "edition" / "loi.json"])
 
     monkeypatch.setattr("harness.apparatus.folio_index", Probe(files))
 
@@ -330,18 +330,18 @@ def test_folio_index_is_keyed_on_all_three_witnesses(tmp_path, monkeypatch):
          ("a newly keyed ALTO page",
           lambda: write(tmp_path / "gt" / "ocr" / "chukchi-1-021.xml", "<alto/>")),
          ("an edit to the apparatus store a run names",
-          lambda: write(tmp_path / "data" / "loi.json",
+          lambda: write(tmp_path / "edition" / "loi.json",
                         json.dumps({"figures": [{"folio": 17}], "plates": []}))),
          ("an edit to runs.json",
           lambda: runs_json(tmp_path, [{"id": "loi", "kind": "loi",
-                                        "source": "data/loi.json",
+                                        "source": "edition/loi.json",
                                         "refs": ["1-014", "1-015"]}])))
 
 
 def test_alphabet_chart_is_keyed_on_the_store_and_on_the_keyed_corpus(
         tmp_path, monkeypatch):
     """The attestation counts move with `gt/ocr/`, so the chart is not a pure
-    function of `data/alphabet.json` and the key cannot pretend it is."""
+    function of `edition/alphabet.json` and the key cannot pretend it is."""
     from harness.alphabet import STORE
 
     def files():
@@ -361,9 +361,9 @@ def test_alphabet_chart_is_keyed_on_the_store_and_on_the_keyed_corpus(
 def test_by_plate_is_keyed_on_both_sides_of_the_join(tmp_path, monkeypatch):
     """A plate number comes from the List of Illustrations and the leaf it sits
     on comes from `gt/fig/`; either moving changes where the reader is sent."""
-    run = {"id": "loi", "kind": "loi", "source": "data/loi.json", "refs": ["1-014"]}
+    run = {"id": "loi", "kind": "loi", "source": "edition/loi.json", "refs": ["1-014"]}
     runs_json(tmp_path, [run])
-    loi = write(tmp_path / "data" / "loi.json",
+    loi = write(tmp_path / "edition" / "loi.json",
                 json.dumps({"figures": [], "plates": [{"n": "I"}]}))
 
     def files():
@@ -571,8 +571,8 @@ def test_attestations_is_keyed_on_the_collated_store(tmp_path):
 def test_render_is_keyed_on_the_page_and_on_the_toc(tmp_path, monkeypatch):
     """"Two files in the key, because two files decide these bytes." A
     `<milestone>` carries an id and no words, so the heading is read out of
-    `data/toc.json` and a corrected heading has to reach the cached HTML."""
-    toc = write(tmp_path / "data" / "toc.json",
+    `edition/toc.json` and a corrected heading has to reach the cached HTML."""
+    toc = write(tmp_path / "edition" / "toc.json",
                 json.dumps([{"id": "chVII", "title": "Reindeer Breeding"}]))
     p = tei(tmp_path, "1-021", '<milestone unit="section" n="chVII"/>')
     monkeypatch.setattr("harness.tei_html.render", Probe(lambda: [p, toc]))
@@ -580,7 +580,7 @@ def test_render_is_keyed_on_the_page_and_on_the_toc(tmp_path, monkeypatch):
     pins(lambda: stores.render(p, tmp_path),
          ("an edit to the page", lambda: tei(tmp_path, "1-021",
                                              '<milestone unit="section" n="chVI"/>')),
-         ("a corrected heading in data/toc.json",
+         ("a corrected heading in edition/toc.json",
           lambda: write(toc, json.dumps([{"id": "chVII",
                                           "title": "Reindeer-Breeding"}]))))
 
@@ -588,7 +588,7 @@ def test_render_is_keyed_on_the_page_and_on_the_toc(tmp_path, monkeypatch):
 def test_a_missing_page_is_not_cached(tmp_path, monkeypatch):
     """Absence is the ordinary state of a derived tree here, and `mz/tei/` is
     one — caching the absence would outlive the `tei generate` that fixes it."""
-    write(tmp_path / "data" / "toc.json", json.dumps([]))
+    write(tmp_path / "edition" / "toc.json", json.dumps([]))
     p = tmp_path / "mz" / "tei" / "chukchi-1-021.xml"
     probe = Probe(lambda: [p])
     monkeypatch.setattr("harness.tei_html.render", probe)
@@ -599,13 +599,13 @@ def test_a_missing_page_is_not_cached(tmp_path, monkeypatch):
 
 
 def test_toc_titles_is_keyed_on_the_toc(tmp_path, monkeypatch):
-    toc = write(tmp_path / "data" / "toc.json", json.dumps([{"id": "chVII"}]))
+    toc = write(tmp_path / "edition" / "toc.json", json.dumps([{"id": "chVII"}]))
     monkeypatch.setattr(stores, "load_toc",
                         Probe(lambda: [toc],
                               lambda d: [{"id": d, "number": "", "title": ""}]))
 
     pins(lambda: stores.toc_titles(tmp_path),
-         ("an edit to data/toc.json",
+         ("an edit to edition/toc.json",
           lambda: write(toc, json.dumps([{"id": "chVII", "number": "VII"}]))))
 
 

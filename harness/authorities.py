@@ -1,4 +1,4 @@
-"""Search `data/authorities.json` — the book's own bibliography, as a lookup.
+"""Search `edition/authorities.json` — the book's own bibliography, as a lookup.
 
 The consumer is the annotation pass, which meets a citation in the body and has
 to say which of the 74 works it names. Three properties of the store make that a
@@ -109,7 +109,7 @@ def load(root: Path = Path(".")) -> list[dict]:
     confident nothing. The store is committed and required, so its absence is a
     broken tree, not a legitimate state.
     """
-    p = root / "data/authorities.json"
+    p = root / "edition/authorities.json"
     if not p.exists():
         raise FileNotFoundError(
             f"{p} — the bibliography is committed and required; "

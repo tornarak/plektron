@@ -185,7 +185,7 @@ blockquote { margin:.8rem 0 .8rem 1.5rem; color:var(--dim) }
    deep head is run-in *in the print*, so the words are on the page and the
    milestone renders as a bare anchor beside them (`.milestone.anchor`), while a
    head the printer set on its own line was a block the ToC join consumed, so its
-   words come from `data/toc.json`. Which happened is in the markup — see
+   words come from `edition/toc.json`. Which happened is in the markup — see
    `tei_html._leads_a_block` — and this file styles whichever arrived. */
 h2.milestone { font-weight:600; margin:1.6rem 0 .6rem }
 /* **Centred at levels 1 and 2 only.** The book sets those on their own lines and
@@ -225,7 +225,7 @@ span.milestone.anchor { display:inline; scroll-margin-top:4rem }
    **`all-small-caps` and not `small-caps`, and it is an approximation.** The book
    sets these heads with an initial capital and the rest in small capitals; the
    recognizer cannot tell a small capital from a capital, so `gt/ocr/` holds
-   `SEAL-HUNTING.` and the initial is not recoverable from it — `data/toc.json`
+   `SEAL-HUNTING.` and the initial is not recoverable from it — `edition/toc.json`
    has the casing but substituting the store's spelling for the page's is not
    something a stylesheet may do. `small-caps` would therefore be a no-op here,
    there being no lowercase for it to act on, and full capitals shout in a way the
@@ -459,7 +459,7 @@ html[data-theme="dark"] .crop img, .dark-raster .crop img { filter:none }
    a square box would squash it. */
 .site { height:1em; width:auto; opacity:.8; flex:none }
 /* Something that points at nothing: a wikilink to an absent entity, or an
-   authority key `data/authorities.json` does not hold. The bare class carries
+   authority key `edition/authorities.json` does not hold. The bare class carries
    the span case in `_props.html`; the anchor case needs `a.ent.dangling`
    specifically, because a family rule is `a[data-ref^=…]` and would otherwise
    outrank a lone class and repaint a broken link as a sound one. "This goes

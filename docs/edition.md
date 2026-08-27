@@ -316,7 +316,7 @@ silent miss is the failure class the project is organised against.
 
 **There is no `since:`.** Both this store and the lexicon carried one — the page
 whose reading prompted the entry — required on the argument that an apparatus
-store which cannot be traced back to a page is unauditable. `data/toc.json` is
+store which cannot be traced back to a page is unauditable. `edition/toc.json` is
 still the standing case for that, and the argument was right. Its answer got
 better: the card now derives *every* page the entry is attested on, from the
 corpus, on every load.
@@ -411,7 +411,7 @@ row cannot be answered by writing a number in a file.
   Far East and the Bering Strait counted as unlocated and as framed-by-their-
   members, when their frames had been written by hand precisely because neither
   was true.
-- **`authority:`** may cross-link `data/authorities.json`. Resolving a `<bibl>`
+- **`authority:`** may cross-link `edition/authorities.json`. Resolving a `<bibl>`
   to that key is still deferred; `BIBL_IDENTITY_ATTRS` is untouched.
 - **`link:`** holds an *identifier*, never a URL — `wikipedia:Chukchi_people`,
   not the address. `edition_ui.LINK_KINDS` maps the prefix to the address and to
@@ -424,7 +424,7 @@ row cannot be answered by writing a number in a file.
 The column is `lang`, from the vocabulary in `harness/langs.py`: shortest
 BCP-47, so `ru` and never `rus`, `ckt` where no two-letter code exists. It is
 the same string a collated page writes in `xml:lang` and the same one
-`data/authorities.json` already carries, and that is the whole reason the
+`edition/authorities.json` already carries, and that is the whole reason the
 spelling is not free — a fourth spelling of one code is how two stores stop
 agreeing without anyone finding out.
 
@@ -789,7 +789,7 @@ what language it is in.
 
 `<milestone resp="#mz">` says the book opens a ToC heading here, and it was
 admitted on the same terms and against the same test. The store is
-`data/toc.json`, which is **book-internal apparatus** — the firewall exempts that
+`edition/toc.json`, which is **book-internal apparatus** — the firewall exempts that
 outright, because it is evidence rather than a model's reading — and the join is
 the ToC's printed `page_start` against the folio the *page* prints, never the
 seam ledger's predicted one. It re-derives on every run from those two printed
@@ -801,7 +801,7 @@ the `@resp` rather than borrowing it.
 is div-less — a chapter spans a hundred of them and a `<div>` cannot be opened on
 one and closed on another — so `<milestone>` is TEI's answer here and it holds an
 id. The title lives in the ToC, once, and the reading view resolves it, which is
-why `stores.render`'s cache names `data/toc.json` among its inputs alongside the
+why `stores.render`'s cache names `edition/toc.json` among its inputs alongside the
 page. Where the compositor ran the head into its paragraph instead of setting it
 on its own line, the words *are* on the page, the generator marks that much as
 `<label>`, and the milestone renders as a bare anchor beside it. Which of the two
@@ -916,7 +916,7 @@ adjudicated page attested Almquist, Kotzebue or Sarychev, so `--since` had no
 witness to name and the entry could not honestly exist. They stayed in the
 whitelist under a heading that says why — and that heading is now the record of
 why `since:` went: the eleven are authors of works the book cites, listed in
-Authorities Quoted, and `data/authorities.json` had adjudicated every one of
+Authorities Quoted, and `edition/authorities.json` had adjudicated every one of
 them. The gate was refusing entries on the strength of a field, not of the
 evidence.
 
@@ -1076,7 +1076,7 @@ reading behind it and the page falls back to a bare scan.
 
 Six scans of List of Illustrations are **one printed list**, so the unit the view
 serves is the **run**: an ordered contiguous span of scans presented as one
-document. `data/runs.json` declares them — `{id, kind, title, refs, source}` —
+document. `edition/runs.json` declares them — `{id, kind, title, refs, source}` —
 `harness/apparatus.py` reads them, and `edition runs` is the gate.
 
 **Every leaf of a run redirects into it**, the first included, so a run has one
@@ -1118,7 +1118,7 @@ the next book declares the runs it has and no others.
 **A leaf shows the entries the store records as printed on it, and there is no
 fallback.** A store that cannot say which leaf an entry belongs to is reported
 unrenderable rather than having its whole list attributed to one leaf. That is
-why `data/toc.json` had to gain provenance before the Contents could be served —
+why `edition/toc.json` had to gain provenance before the Contents could be served —
 it was the one apparatus store not auditable back to a page, and
 `tools/toc_provenance.py` records the reading that closed it.
 
@@ -1138,7 +1138,7 @@ the run's page is a **join** and `harness/alphabet.py` is the joiner:
 
 | | |
 |---|---|
-| `data/alphabet.json` | both printed accounts transcribed, and Mythology's arrangement of the sorts into grids |
+| `edition/alphabet.json` | both printed accounts transcribed, and Mythology's arrangement of the sorts into grids |
 | `ipa.RULES` | what each sort is worth on Bogoras's own account, with its grade and its hedge |
 | `ipa.MODERN` | what a current description calls the same sound |
 | `lookup.index` | how many keyed forms actually carry the sort |
@@ -1275,7 +1275,7 @@ printed list poses, and each is **omitted rather than guessed** where it cannot.
   links for it. A number resolving to more than one zone still prints plain,
   since choosing among a collision's candidates would invent the answer the
   collision is reporting. **All 302 resolve** — three of them through
-  `data/figure_numbers.json`, the hand-keyed patch table `docs/apparatus.md`
+  `edition/figure_numbers.json`, the hand-keyed patch table `docs/apparatus.md`
   describes, because the leaves that defeat the derivation are the printer's
   oddities and not rules waiting to be widened. This is emphatically **not** the LoI reconciliation
   `docs/open-questions.md` defers — it links, and it gates nothing.
@@ -1386,7 +1386,7 @@ mentions: those are spread over twenty chapters, and unrolling all of them would
 serve the outline open.
 
 **What is marked, and by which witness.** `state.toc_containing` folds
-`data/toc.json` over its own ordering: the list is ordered, `page_start` is
+`edition/toc.json` over its own ordering: the list is ordered, `page_start` is
 monotonic across all 316 entries, so the divisions containing a folio are the
 open chain of the entries that start at or before it, an entry at level L closing
 everything at L and deeper. Level 0 is folded as level 1 — front matter emits no
@@ -1954,7 +1954,7 @@ from a page locator in one sentence:** a plate and a chapter have furniture for 
 name to govern, and `p. 24` has none.
 
 19 chapter references printed across the generated corpus, 1 behind an authority,
-and **every one of the remaining 18 names a roman `data/toc.json` holds as a
+and **every one of the remaining 18 names a roman `edition/toc.json` holds as a
 chapter** — no misses, and no ambiguity to resolve.
 
 Resolution is `/chapter/{roman}`, which looks the id up rather than building it.

@@ -34,12 +34,12 @@ in for an unread glyph.
   text-figure located on a page, no caption numbering outside the LoI, all 35
   plates placed — and it is a hand check living in no code: `figures.reconcile`
   opens `gt/fig/` only, while `harness/VERBS.md` lists
-  `data/loi.json` under `corpus figures`' **Reads**, which is currently untrue.
+  `edition/loi.json` under `corpus figures`' **Reads**, which is currently untrue.
   Building it was scoped and deferred rather than attempted, and the reason is
   sequencing: an LoI entry says which *folio* a figure falls on, so checking it
   is a question about where a figure sits in the assembled book, and the book is
   not assembled — nothing is collated against 399 drafted. The same holds for
-  `data/toc.json`. Both belong with chapter assembly, after collation, when there
+  `edition/toc.json`. Both belong with chapter assembly, after collation, when there
   is a running text for a folio to be a position in.
 
   Two things not to lose in the meantime. The reconciliation is also the most
@@ -55,7 +55,7 @@ in for an unread glyph.
   written.
 
   **The LoI now has a reader, and it is not the cross-check.** `edition serve`
-  renders `data/loi.json` as a run (`docs/edition.md`), linking each printed
+  renders `edition/loi.json` as a run (`docs/edition.md`), linking each printed
   figure number to its zone through `figures.by_number`. It links and it gates
   nothing, so the reconciliation above is untouched — but the join it needs now
   exists, which is worth knowing when it is finally built.
@@ -64,7 +64,7 @@ in for an unread glyph.
   not read them as derived.** The view folds `figure_boxes` over the figure store
   with the located plate leaves taken out — the book restarts figure numbering on
   every plate, so leaving them in made 1–4 collide with a series they are not in
-  — and then applies `data/figure_numbers.json`, where an editor has named the
+  — and then applies `edition/figure_numbers.json`, where an editor has named the
   zones for fig. 1 and for `2-068`'s 239 and 240. All **302 of 302** resolve on
   that footing. It remains a different count from the 300 above: this one counts
   LoI numbers against zones, that one text-figures against pages, and only this
@@ -113,7 +113,7 @@ in for an unread glyph.
   `@resp` is reserved for the model's reading of the rasters.
 - **The AMNH catalogue record independently corroborates two apparatus stores**, having
   been consulted for neither: `"Authorities quoted": p. 3-9` against
-  `data/authorities.json`'s folios 3–9, and `35 pl.` against `data/loi.json`'s plates
+  `edition/authorities.json`'s folios 3–9, and `35 pl.` against `edition/loi.json`'s plates
   I–XXXV. Cheap second witnesses, and both agree.
 - **The ratified build does not exist.** The `--ratified` mode of `validate` reports an
   unratified span as a worklist line, which is the right shape for a page in progress
@@ -235,7 +235,7 @@ in for an unread glyph.
   the *library* functions default it off or the test suite would pay it on every
   call. Run it after `tei expand`: `index=` is not a TEI attribute, which is what
   makes an unexpanded page detectable, so it fails here too.
-- ~~**`data/toc.json` records no provenance.**~~ **Settled.** It has 316 entries,
+- ~~**`edition/toc.json` records no provenance.**~~ **Settled.** It has 316 entries,
   not the 315 this entry claimed, and it now opens with a `source` block in
   `loi.json`'s shape plus a per-entry `ref`: the printed Contents is scans
   `1-007`–`1-013`, folios v–xi. Read off those seven leaves and ratified before

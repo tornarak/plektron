@@ -7,7 +7,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Krasheninnikoff | | no | the running text's spelling |
-| Krasheninnikov | | no | `data/authorities.json`'s spelling; unattested in `gt/ocr/` |
+| Krasheninnikov | | no | `edition/authorities.json`'s spelling; unattested in `gt/ocr/` |
 
 ## gloss
 

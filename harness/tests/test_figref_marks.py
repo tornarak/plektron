@@ -178,17 +178,17 @@ def test_a_marker_between_a_name_and_a_reference_is_simply_in_the_text(tmp_path)
     so the string the gate reads is the print's without anything being restored
     to it, and this pins that the guard still clears.
     """
-    (tmp_path / "data").mkdir(parents=True, exist_ok=True)
-    (tmp_path / "data" / "authorities.json").write_text(json.dumps({
+    (tmp_path / "edition").mkdir(parents=True, exist_ok=True)
+    (tmp_path / "edition" / "authorities.json").write_text(json.dumps({
         "source": {"refs": ["1-023"]},
         "authorities": [{"key": "nelson1899", "ref": "1-023", "folio": "3",
                          "cited_as": [{"name": "Nelson"}],
                          "printed": [{"ref": "1-023", "text": "NELSON."}]}]}),
         encoding="utf-8")
-    (tmp_path / "data" / "runs.json").write_text(json.dumps({"runs": [
+    (tmp_path / "edition" / "runs.json").write_text(json.dumps({"runs": [
         {"id": "authorities", "kind": "authorities",
          "title": "Authorities Quoted", "refs": ["1-023"],
-         "source": "data/authorities.json"}]}), encoding="utf-8")
+         "source": "edition/authorities.json"}]}), encoding="utf-8")
     body = ('<p>which is illustrated by Nelson.'
             '<ref type="note" n="1" resp="#mz">¹</ref>\nFig. '
             '<ref type="figure" n="22" resp="#mz">22</ref>, b, shows a sled</p>'
@@ -201,17 +201,17 @@ def test_another_authors_plate_is_not_expected_and_may_not_be_marked(tmp_path):
     """`Sauer, Plate XIV` is Sauer's and this book has a Plate XIV. The guard is
     the generator's, and the gate re-derives it: an unmarked citation is not a
     worklist line, and a marked one does not derive."""
-    (tmp_path / "data").mkdir(parents=True, exist_ok=True)
-    (tmp_path / "data" / "authorities.json").write_text(json.dumps({
+    (tmp_path / "edition").mkdir(parents=True, exist_ok=True)
+    (tmp_path / "edition" / "authorities.json").write_text(json.dumps({
         "source": {"refs": ["1-023"]},
         "authorities": [{"key": "sauer1802", "ref": "1-023", "folio": "3",
                          "cited_as": [{"name": "Sauer"}],
                          "printed": [{"ref": "1-023", "text": "SAUER."}]}]}),
         encoding="utf-8")
-    (tmp_path / "data" / "runs.json").write_text(json.dumps({"runs": [
+    (tmp_path / "edition" / "runs.json").write_text(json.dumps({"runs": [
         {"id": "authorities", "kind": "authorities",
          "title": "Authorities Quoted", "refs": ["1-023"],
-         "source": "data/authorities.json"}]}), encoding="utf-8")
+         "source": "edition/authorities.json"}]}), encoding="utf-8")
     assert not worklist(tmp_path, "<p>compare Sauer, Plate XIV, p. 321</p>")
     bad = errors(tmp_path, '<p>compare Sauer, Plate <ref type="plate" n="XIV" '
                            'resp="#mz">XIV</ref>, p. 321</p>')

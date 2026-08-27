@@ -14,7 +14,7 @@ Nothing here imports anything, which is what makes that possible.
 **Codes are BCP-47 shortest.** `ru`, not `rus`; `la`, not `lat`; `ckt`, because
 no two-letter code exists for Chukchi. The reason is not tidiness — this is the
 string a collator writes into `xml:lang` on a page, and the string
-`data/authorities.json` already carries in its own `lang` field. A vocabulary
+`edition/authorities.json` already carries in its own `lang` field. A vocabulary
 that disagreed with either would be a fourth spelling of the same fact.
 
 **`tier1` is the firewall's question, not a linguistic one.** It marks the
@@ -60,7 +60,7 @@ LANGS: dict[str, tuple[str, bool]] = {
     "niv": ("Nivkh (the book's “Gilyak”)", False),
     "sah": ("Sakha (Yakut)", False),
     # The languages the book itself is written and cited in.
-    # `data/authorities.json` attests ru, en, de and sv; `la` is the binomials.
+    # `edition/authorities.json` attests ru, en, de and sv; `la` is the binomials.
     "de": ("German", False),
     "en": ("English", False),
     "la": ("Latin", False),

@@ -105,7 +105,7 @@ def register(cli):
              "English word are one keystroke apart. `harness geo list` names "
              "every shape")
     opt(p, "--authority", metavar="KEY",
-        help="the entry in data/authorities.json this entity is the work of, "
+        help="the entry in edition/authorities.json this entity is the work of, "
              "e.g. `steller1774`. What puts the full printed title on the card "
              "without the entry restating it — the title lives in the "
              "authorities store, which read it off the Authorities Quoted "

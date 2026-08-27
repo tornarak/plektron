@@ -82,7 +82,7 @@ def book(tmp_path: Path) -> Path:
     """A three-leaf List of Illustrations whose middle leaf the store says
     nothing about, plus two exempt plates either side of it so the collapsed
     listing has neighbours to cross to."""
-    _write(tmp_path, "data/loi.json", json.dumps({
+    _write(tmp_path, "edition/loi.json", json.dumps({
         "source": {"refs": ["1-014", "1-015", "1-016"]},
         "figures": [
             {"kind": "figure", "numbers": [1], "caption": "Sledge",
@@ -92,9 +92,9 @@ def book(tmp_path: Path) -> Path:
         ],
         "plates": [],
     }))
-    _write(tmp_path, "data/runs.json", json.dumps({"runs": [{
+    _write(tmp_path, "edition/runs.json", json.dumps({"runs": [{
         "id": "illustrations", "kind": "loi", "title": "List of Illustrations",
-        "refs": ["1-014", "1-015", "1-016"], "source": "data/loi.json"}]}))
+        "refs": ["1-014", "1-015", "1-016"], "source": "edition/loi.json"}]}))
     _exempt(tmp_path, "1-013", "1-014", "1-015", "1-016", "1-020")
     for ref in ("1-013", "1-014", "1-015", "1-016", "1-020"):
         _scan(tmp_path, ref)
@@ -178,9 +178,9 @@ def test_a_leaf_mark_shows_the_printed_folio_where_the_store_records_one(
     """The front matter is numbered in roman, which is what the leaf carries and
     what a reader recognises — and which is not a key into the arabic folio
     index. `source.printed_folios` is where that lives."""
-    doc = json.loads((book / "data" / "loi.json").read_text())
+    doc = json.loads((book / "edition" / "loi.json").read_text())
     doc["source"]["printed_folios"] = ["xii", "xiii", "xiv"]
-    _write(book, "data/loi.json", json.dumps(doc))
+    _write(book, "edition/loi.json", json.dumps(doc))
     t = _app(book).get("/edition/run/illustrations").text
     assert ">xii</a>" in t and ">xiv</a>" in t
 
@@ -189,9 +189,9 @@ def test_a_mismatched_printed_folio_list_falls_back(book: Path):
     """`printed_folios` is positional against `source.refs`. Pairing them off
     anyway when the two disagree in length would attach a folio to the wrong
     leaf, which is worse than showing none."""
-    doc = json.loads((book / "data" / "loi.json").read_text())
+    doc = json.loads((book / "edition" / "loi.json").read_text())
     doc["source"]["printed_folios"] = ["xii", "xiii"]      # 2 against 3 refs
-    _write(book, "data/loi.json", json.dumps(doc))
+    _write(book, "edition/loi.json", json.dumps(doc))
     t = _app(book).get("/edition/run/illustrations").text
     assert ">xii</a>" not in t
     assert ">1-014</a>" in t
@@ -243,7 +243,7 @@ def test_a_resolvable_figure_number_links_and_an_ambiguous_one_does_not(
     _readings(tmp_path, {"1-049|002": "Fig. 1. Sledge.",
                          "1-081|002": "Fig. 1. Another sledge.",
                          "1-050|002": "Fig. 9. Harpoon."})
-    _write(tmp_path, "data/loi.json", json.dumps({
+    _write(tmp_path, "edition/loi.json", json.dumps({
         "source": {"refs": ["1-014"]},
         "figures": [
             {"kind": "figure", "numbers": [1], "caption": "Sledge",
@@ -251,9 +251,9 @@ def test_a_resolvable_figure_number_links_and_an_ambiguous_one_does_not(
             {"kind": "figure", "numbers": [9], "caption": "Harpoon",
              "folio": 18, "ref": "1-014"}],
         "plates": []}))
-    _write(tmp_path, "data/runs.json", json.dumps({"runs": [{
+    _write(tmp_path, "edition/runs.json", json.dumps({"runs": [{
         "id": "illustrations", "kind": "loi", "title": "List of Illustrations",
-        "refs": ["1-014"], "source": "data/loi.json"}]}))
+        "refs": ["1-014"], "source": "edition/loi.json"}]}))
     _exempt(tmp_path, "1-014")
     _scan(tmp_path, "1-014")
 
@@ -279,7 +279,7 @@ def test_a_plates_own_numbering_does_not_collide_with_the_text_series(
                      ("1-051", "Fig. 1. Anui Fair."),
                      ("1-086", "Fig. 1. Bundle of Leaf-Tobacco.")):
         _fig(tmp_path, ref, cap)
-    _write(tmp_path, "data/loi.json", json.dumps({
+    _write(tmp_path, "edition/loi.json", json.dumps({
         "source": {"refs": ["1-014"]},
         "figures": [{"kind": "figure", "numbers": [1],
                      "caption": "Bundle of Leaf-Tobacco",
@@ -291,9 +291,9 @@ def test_a_plates_own_numbering_does_not_collide_with_the_text_series(
             {"kind": "plate", "number": "II", "caption": "Anui Fair",
              "opposite_folio": 58, "ref": "1-014",
              "segments": ["Anui Fair"]}]}))
-    _write(tmp_path, "data/runs.json", json.dumps({"runs": [{
+    _write(tmp_path, "edition/runs.json", json.dumps({"runs": [{
         "id": "illustrations", "kind": "loi", "title": "List of Illustrations",
-        "refs": ["1-014"], "source": "data/loi.json"}]}))
+        "refs": ["1-014"], "source": "edition/loi.json"}]}))
     _exempt(tmp_path, "1-014")
     _scan(tmp_path, "1-014")
 
@@ -312,7 +312,7 @@ def test_an_unlocated_plate_leaves_its_numbers_ambiguous(tmp_path: Path):
     for ref, cap in (("1-049", "Fig. 1. Village Uñiˊsak."),
                      ("1-086", "Fig. 1. Bundle of Leaf-Tobacco.")):
         _fig(tmp_path, ref, cap)
-    _write(tmp_path, "data/loi.json", json.dumps({
+    _write(tmp_path, "edition/loi.json", json.dumps({
         "source": {"refs": ["1-014"]},
         "figures": [{"kind": "figure", "numbers": [1],
                      "caption": "Bundle of Leaf-Tobacco",
@@ -321,9 +321,9 @@ def test_an_unlocated_plate_leaves_its_numbers_ambiguous(tmp_path: Path):
         "plates": [{"kind": "plate", "number": "I", "caption": "Reindeer Herd",
                     "opposite_folio": 29, "ref": "1-014",
                     "segments": ["Reindeer Herd"]}]}))
-    _write(tmp_path, "data/runs.json", json.dumps({"runs": [{
+    _write(tmp_path, "edition/runs.json", json.dumps({"runs": [{
         "id": "illustrations", "kind": "loi", "title": "List of Illustrations",
-        "refs": ["1-014"], "source": "data/loi.json"}]}))
+        "refs": ["1-014"], "source": "edition/loi.json"}]}))
     _exempt(tmp_path, "1-014")
     _scan(tmp_path, "1-014")
 
@@ -342,7 +342,7 @@ def test_every_plate_resolves_to_exactly_one_leaf():
 
     from harness import figures as F
     plates = json.loads(
-        (REPO / "data" / "loi.json").read_text(encoding="utf-8"))["plates"]
+        (REPO / "edition" / "loi.json").read_text(encoding="utf-8"))["plates"]
     located = F.by_plate(plates, REPO)
     assert len(located) == len(plates) == 35
     assert located["I"]["ref"] == "1-049"
@@ -406,11 +406,11 @@ def test_a_plate_set_in_two_boxes_links_both(tmp_path: Path):
 
 
 def _loi(root: Path, figures: list, plates: list) -> None:
-    _write(root, "data/loi.json", json.dumps({
+    _write(root, "edition/loi.json", json.dumps({
         "source": {"refs": ["1-014"]}, "figures": figures, "plates": plates}))
-    _write(root, "data/runs.json", json.dumps({"runs": [{
+    _write(root, "edition/runs.json", json.dumps({"runs": [{
         "id": "illustrations", "kind": "loi", "title": "List of Illustrations",
-        "refs": ["1-014"], "source": "data/loi.json"}]}))
+        "refs": ["1-014"], "source": "edition/loi.json"}]}))
 
 
 def test_a_plate_referred_to_in_prose_carries_the_printed_lists_caption(
@@ -458,13 +458,13 @@ def test_another_authors_plate_carries_no_caption_either(tmp_path: Path):
     _loi(tmp_path, [], [{"kind": "plate", "number": "I",
                          "caption": "Village Uñiˊsak", "opposite_folio": 29,
                          "ref": "1-014", "segments": ["Village Uñiˊsak"]}])
-    _write(tmp_path, "data/authorities.json", json.dumps({
+    _write(tmp_path, "edition/authorities.json", json.dumps({
         "authorities": [{"key": "sauer", "cited_as": [{"name": "Sauer"}]}]}))
-    _write(tmp_path, "data/runs.json", json.dumps({"runs": [
+    _write(tmp_path, "edition/runs.json", json.dumps({"runs": [
         {"id": "illustrations", "kind": "loi", "title": "List of Illustrations",
-         "refs": ["1-014"], "source": "data/loi.json"},
+         "refs": ["1-014"], "source": "edition/loi.json"},
         {"id": "authorities", "kind": "authorities", "title": "Authorities",
-         "refs": ["1-018"], "source": "data/authorities.json"}]}))
+         "refs": ["1-018"], "source": "edition/authorities.json"}]}))
     got = _figref_state(
         {"figrefs": [{"kind": "plate", "number": "I", "plate": "",
                       "before": "Sauer, "}]}, tmp_path)
@@ -484,16 +484,16 @@ def test_a_toc_entry_is_addressable_by_its_own_id(tmp_path: Path):
     """The precursor property, on the page rather than in the locator: every
     entry carries `toc-{id}`, so a heading has an address before chapters have
     pages of their own — and the same address after."""
-    _write(tmp_path, "data/toc.json", json.dumps({
+    _write(tmp_path, "edition/toc.json", json.dumps({
         "source": {"refs": ["1-007"]},
         "entries": [
             {"level": 0, "title": "Introductory", "page_start": 1,
              "id": "front.introductory", "ref": "1-007"},
             {"level": 1, "number": "I", "title": "Names and Habitat",
              "page_start": 11, "id": "chI", "ref": "1-007"}]}))
-    _write(tmp_path, "data/runs.json", json.dumps({"runs": [{
+    _write(tmp_path, "edition/runs.json", json.dumps({"runs": [{
         "id": "contents", "kind": "toc", "title": "Contents",
-        "refs": ["1-007"], "source": "data/toc.json"}]}))
+        "refs": ["1-007"], "source": "edition/toc.json"}]}))
     _exempt(tmp_path, "1-007")
     _scan(tmp_path, "1-007")
     t = _app(tmp_path).get("/edition/run/contents").text
@@ -506,13 +506,13 @@ def test_a_toc_entry_is_addressable_by_its_own_id(tmp_path: Path):
 def test_folio_resolves_through_the_apparatus_witness(tmp_path: Path):
     """`authorities.json` places folio 3 on `1-023` with nothing collated —
     the store recorded it while a human was keying the bibliography."""
-    _write(tmp_path, "data/authorities.json", json.dumps({
+    _write(tmp_path, "edition/authorities.json", json.dumps({
         "source": {"refs": ["1-023"]},
         "authorities": [{"key": "steller1774", "ref": "1-023", "folio": "3",
                          "printed": [{"ref": "1-023", "text": "STELLER."}]}]}))
-    _write(tmp_path, "data/runs.json", json.dumps({"runs": [{
+    _write(tmp_path, "edition/runs.json", json.dumps({"runs": [{
         "id": "authorities", "kind": "authorities", "title": "Authorities Quoted",
-        "refs": ["1-023"], "source": "data/authorities.json"}]}))
+        "refs": ["1-023"], "source": "edition/authorities.json"}]}))
     _exempt(tmp_path, "1-023")
     _scan(tmp_path, "1-023")
     r = _app(tmp_path, follow=False).get("/edition/folio/3")
@@ -526,16 +526,16 @@ def test_an_unwitnessed_folio_refuses_rather_than_guessing(book: Path):
 
 
 def test_a_toc_id_resolves_through_its_page_start(tmp_path: Path):
-    _write(tmp_path, "data/toc.json", json.dumps(
+    _write(tmp_path, "edition/toc.json", json.dumps(
         [{"title": "Authorities Quoted", "page_start": 3,
           "id": "front.authorities-quoted"}]))
-    _write(tmp_path, "data/authorities.json", json.dumps({
+    _write(tmp_path, "edition/authorities.json", json.dumps({
         "source": {"refs": ["1-023"]},
         "authorities": [{"key": "k", "ref": "1-023", "folio": "3",
                          "printed": []}]}))
-    _write(tmp_path, "data/runs.json", json.dumps({"runs": [{
+    _write(tmp_path, "edition/runs.json", json.dumps({"runs": [{
         "id": "authorities", "kind": "authorities", "title": "Authorities Quoted",
-        "refs": ["1-023"], "source": "data/authorities.json"}]}))
+        "refs": ["1-023"], "source": "edition/authorities.json"}]}))
     _exempt(tmp_path, "1-023")
     _scan(tmp_path, "1-023")
     r = _app(tmp_path, follow=False).get("/edition/toc/front.authorities-quoted")
@@ -589,7 +589,7 @@ def open_list(tmp_path: Path) -> Path:
     """Authorities Quoted over two leaves, plus one work the store records as
     printed on a leaf the run does not cover — the case folio 9's asterism
     admits and `3-146`'s chapter XXIII footnote bibliography actually is."""
-    _write(tmp_path, "data/authorities.json", json.dumps({
+    _write(tmp_path, "edition/authorities.json", json.dumps({
         "source": {"refs": ["1-023", "1-024"], "count": 2,
                    "unprinted": ["priklonsky1896"]},
         "authorities": [
@@ -601,9 +601,9 @@ def open_list(tmp_path: Path) -> Path:
              "printed": [{"ref": "3-146", "text": "14. Приклонскій, В. Л. …"}]},
         ],
     }))
-    _write(tmp_path, "data/runs.json", json.dumps({"runs": [{
+    _write(tmp_path, "edition/runs.json", json.dumps({"runs": [{
         "id": "authorities", "kind": "authorities", "title": "Authorities Quoted",
-        "refs": ["1-023", "1-024"], "source": "data/authorities.json"}]}))
+        "refs": ["1-023", "1-024"], "source": "edition/authorities.json"}]}))
     _exempt(tmp_path, "1-023", "1-024")
     for ref in ("1-023", "1-024"):
         _scan(tmp_path, ref)
@@ -637,7 +637,7 @@ def test_the_tail_does_not_join_the_runs_span(open_list: Path):
     list does not contain, and the scan button would offer it as one."""
     from harness.web import edition as E
     run = {"id": "authorities", "kind": "authorities",
-           "refs": ["1-023", "1-024"], "source": "data/authorities.json"}
+           "refs": ["1-023", "1-024"], "source": "edition/authorities.json"}
     leaves, tail = E._run_leaves(run, open_list)
     assert [leaf["ref"] for leaf in leaves] == ["1-023", "1-024"]
     assert [leaf["ref"] for leaf in tail] == ["3-146"]
@@ -647,9 +647,9 @@ def test_a_record_with_no_ref_at_all_stays_off_the_page(open_list: Path):
     """`jochelson1905`'s case: not printed in the book's lists at all, so it has
     no printed block to show. It exists for `find authority` to resolve a body
     citation, and rendering it would put an empty entry on the page."""
-    doc = json.loads((open_list / "data" / "authorities.json").read_text())
+    doc = json.loads((open_list / "edition" / "authorities.json").read_text())
     doc["authorities"].append({"key": "jochelson1905", "ref": None,
                                "folio": None, "printed": []})
-    _write(open_list, "data/authorities.json", json.dumps(doc))
+    _write(open_list, "edition/authorities.json", json.dumps(doc))
     assert "jochelson1905" not in _app(open_list).get(
         "/edition/run/authorities").text

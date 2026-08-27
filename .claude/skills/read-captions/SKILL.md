@@ -32,7 +32,7 @@ in the file you write.
 |---|---|
 | `gt/fig/` | the ratified caption you are being compared against. **Do not open it** |
 | `docs/apparatus.md` | quotes the hard adjudications verbatim — the `seated`/`sealed` misprint, `1-049`'s dotted `g̣` |
-| `data/loi.json` | the List of Illustrations. Book-internal apparatus **binds the adjudicator, not the reader**: completing an illegible word from it makes your proposal a paraphrase, and the List's captions are abbreviated anyway |
+| `edition/loi.json` | the List of Illustrations. Book-internal apparatus **binds the adjudicator, not the reader**: completing an illegible word from it makes your proposal a paraphrase, and the List's captions are abbreviated anyway |
 | `mz/tei/`, `tei/` | `<figDesc>` transcludes every caption into 205 generated pages |
 | `review/<ref>/proposal.json`, `review/<ref>/decision.json` | the line pass's reading of the same pages, same shared ancestor |
 

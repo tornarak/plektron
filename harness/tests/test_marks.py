@@ -6,7 +6,7 @@ refuses on it.
 
 The Cyrillic cases are a regression guard. `й` is `и` + U+0306 by *canonical*
 decomposition, so corpus-wide NFD turns every ordinary Russian word into a
-base+mark sequence, and `unlicensed_marks` reported all 72 in `data/authorities.json`
+base+mark sequence, and `unlicensed_marks` reported all 72 in `edition/authorities.json`
 as errors — `MARK_LICENSE` was written for the Tier-1 Latin notation but runs over
 every character in the corpus. The fix was an allow-list entry, and nothing tested it.
 """

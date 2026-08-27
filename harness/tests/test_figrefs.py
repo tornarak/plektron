@@ -286,7 +286,7 @@ def test_a_whole_plate_takes_no_caption_from_its_leaf():
 
 def test_a_caption_is_absent_rather_than_a_neighbours():
     """`1-313` is in `by_number` and not in the box fixture, which is the shape a
-    hand-keyed `data/figure_numbers.json` entry has: it names a zone no folded
+    hand-keyed `edition/figure_numbers.json` entry has: it names a zone no folded
     record keys. The picture still resolves and the caption is simply empty."""
     out = _resolve(number="177")
     assert out["pairs"] == ["1-313/001"] and out["caption"] == ""

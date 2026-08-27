@@ -33,7 +33,7 @@
   <code>{{ row.id }}</code>
   {%- if row.title %} — {{ row.title }}
   {%- else %} — <span class='dangling'>no such key in
-  data/authorities.json</span>{% endif %}
+  edition/authorities.json</span>{% endif %}
 {%- elif row.kind == 'printed' -%}
   {# `printed` is the record — the block a human keyed off the page, set apart
      from the parsed fields so the two can be read against each other. #}

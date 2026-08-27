@@ -255,6 +255,13 @@ SCOPE_GLOBS = ("gt/ocr/*.xml", "gt/fig/*.xml", "tei/*.xml",
                # NFD arm sweeps the file whole and the two prose arms skip the
                # table rows. See `_is_entity`.
                "entities/*/*.md",
+               # **One level deep, each of them, and that is load-bearing.** These
+               # were one `data/*.json` until the stores were split by layer; a
+               # glob left behind while its files move is a gate that stops
+               # looking and says nothing, which is this module's own failure
+               # class. Whatever else moves, the count `corpus normalize --all`
+               # reports must not change with it.
+               "edition/*.json",
                "data/*.json", "data/lexicon_extra.txt",
                # decision.json is an editorial act — the adjudicated record that
                # `restore` actually writes to gt/ocr/ — so it stays in the default
@@ -554,8 +561,8 @@ def _footnote_hits(p: Path, root: Path) -> list[dict]:
 
     Scoped to OCR ALTO and adjudicated proposals — the stores that hold a
     page's running text in line order. `gt/fig/` is excluded because it carries
-    no `TextLine` at all (harness/README.md), and the `data/` apparatus because a
-    marker there is a citation, not a note anchor.
+    no `TextLine` at all (harness/README.md), and the `edition/` apparatus stores
+    because a marker there is a citation, not a note anchor.
 
     Rides on `normalize` rather than a verb of its own because everything this
     needs is already here — the corpus walk, the dedupe by real path, the
@@ -631,7 +638,7 @@ def _filter_scoped(universe: list[Path], paths: list[Path]) -> list[Path]:
     """Narrow `universe` to files matching `paths` — each entry either a file
     (exact match) or a directory (every scoped file resolving underneath it).
 
-    Mixed lists work: `--path review/1-052 --path data/authorities.json` scopes
+    Mixed lists work: `--path review/1-052 --path edition/authorities.json` scopes
     to both a whole page directory and one unrelated file. Either way this only
     narrows the corpus glob, never widens it — a directory outside `SCOPE_GLOBS`
     (or with nothing scoped inside it) simply contributes no files.
@@ -768,7 +775,7 @@ def convert(root: Path = Path("."), dry_run: bool = False,
         # still mean what they meant — and a file that never parsed cannot
         # supply one. It used to be written anyway, with the gate skipped,
         # because the gate was guarded on `shape_before is None`, which is also
-        # what an ordinary `data/*.json` answers. `_parses` is the narrow
+        # what an ordinary store JSON answers. `_parses` is the narrow
         # question; see there.
         if shape_kind is not None and not _parses(p, shape_kind):
             failed.append({"path": str(p.relative_to(root)),
@@ -805,8 +812,8 @@ def _parses(p: Path, kind: str) -> bool:
     put a hole in the structure gate.** `_xml_shape` answers `None` only for an
     unparseable file, so there the two coincide; `_json_shape` also answers
     `None` for a file that parses perfectly and simply holds no `lines` key,
-    which is every `data/*.json` but a decision. Gating a refusal on `None`
-    therefore refused most of `data/` on an XML-shaped intuition.
+    which is every scoped JSON but a decision. Gating a refusal on `None`
+    therefore refused most of them on an XML-shaped intuition.
 
     So the refusal asks this instead. It is one extra parse, on the files being
     converted only, which already parse twice.

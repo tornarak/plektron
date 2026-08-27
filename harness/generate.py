@@ -1158,7 +1158,7 @@ def build(ref: str, root: Path = Path("."),
     # `folio` is the string the running title printed, and `page_start` is an
     # integer, so the join needs the cast. A folio that will not cast is not a
     # folio — the roman front matter is deliberately outside the arabic index
-    # (`data/toc.json`'s own caveat), and `_FOLIO_RE` refusing a recognizer's `2S`
+    # (`edition/toc.json`'s own caveat), and `_FOLIO_RE` refusing a recognizer's `2S`
     # for `28` must go on refusing here rather than joining on a repair.
     printed = int(folio) if (folio or "").isdigit() else None
     expected = toc_starts(load_toc(root), printed)
@@ -1402,7 +1402,7 @@ def build(ref: str, root: Path = Path("."),
                 # text with no divisions keyed: the boundary is marked, the title
                 # lives in the ToC the `@n` points at, and putting the words on the
                 # page is the renderer's job. Carrying the text here as well would
-                # be a second copy of a string `data/toc.json` already holds, in
+                # be a second copy of a string `edition/toc.json` already holds, in
                 # the one artifact that must not hold facts twice — and the
                 # printed line is not lost either way, `gt/ocr/` being where the
                 # page's own words live.
@@ -1451,7 +1451,7 @@ def build(ref: str, root: Path = Path("."),
                "no block here begins with that title")
         body.append(
             f'      <!-- expected milestone for {escape(e["id"])} '
-            f'({escape(e["title"])}) not found on this page: data/toc.json opens '
+            f'({escape(e["title"])}) not found on this page: edition/toc.json opens '
             f'it at folio {printed}, which is the folio this page prints, and '
             f'{why}. Write <milestone unit="{MILESTONE_UNITS[e["level"]]}" '
             f'n="{escape(e["id"])}"/> where the page opens it, or say in your '

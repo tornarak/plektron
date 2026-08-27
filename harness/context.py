@@ -3,7 +3,7 @@
 Everything here is deterministic. The model consumes this; it never re-derives it.
 Repo layout assumed:  scans/chukchi-PP-NNN.png   gt/fig/chukchi-PP-NNN.xml
                       ocr/chukchi-PP-NNN.xml     tei/chukchi-PP-NNN.xml
-                      data/toc.json              gt/fig/ (captions)
+                      edition/toc.json              gt/fig/ (captions)
                       data/lexicon_extra.txt
 
 PAGE REFS. A page is identified by its **PP-NNN** ref — part, and scan index
@@ -150,7 +150,7 @@ def _figures_on_page(ref: str, root: Path = Path(".")) -> list[dict]:
     the caption.
 
     So the number does the work. It is unique across text-figures 1–302,
-    corroborated by `data/loi.json`, and `validate` checks the pass's `n`
+    corroborated by `edition/loi.json`, and `validate` checks the pass's `n`
     against the numbers printed in *this* page's captions — a real second
     witness, and the one thing that catches a figure anchored on the wrong page.
 

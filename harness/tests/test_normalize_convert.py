@@ -57,7 +57,7 @@ class TestTheRefusal:
         assert p.read_text(encoding="utf-8") == before, "refused, so untouched"
 
     def test_unparseable_json_is_refused_and_left_alone(self, root):
-        p = _write(root, "data/toc.json", '{"a": "' + PRECOMPOSED + '"')
+        p = _write(root, "edition/toc.json", '{"a": "' + PRECOMPOSED + '"')
         before = p.read_text(encoding="utf-8")
 
         out = convert(root)
@@ -123,7 +123,7 @@ class TestTheRefusalDoesNotOverreach:
         """
         # `ensure_ascii=False`, or `json.dumps` escapes it to `caf\\u00e9` — pure
         # ASCII, NFD-invariant, and the file is skipped before any gate runs.
-        p = _write(root, "data/toc.json",
+        p = _write(root, "edition/toc.json",
                    json.dumps({"a": PRECOMPOSED}, ensure_ascii=False))
 
         out = convert(root)

@@ -135,7 +135,7 @@ the box turned out to be dirt the segmenter had boxed, and it was withdrawn by a
 human. Had it been an error the page would have been ungateable until someone
 did that — which is the same act, extracted under duress and at the wrong moment.
 
-### `data/figure_numbers.json`: where a printer beat the derivation
+### `edition/figure_numbers.json`: where a printer beat the derivation
 
 Two rules stand between a picture and its printed number. `refs.figure_number`
 reads the number off the caption, and the pairing decides from the page's geometry
@@ -293,7 +293,7 @@ List of Illustrations implies, and the two absences cancelled exactly against
 `3-006`/`3-007`, which carry a zone and no caption and are not LoI pages at all.
 Only the per-entry check catches that. **It is a check somebody ran by hand and
 no code performs** — `figures.reconcile` opens `gt/fig/`
-and never `data/loi.json`, so nothing re-runs this and nothing would notice it
+and never `edition/loi.json`, so nothing re-runs this and nothing would notice it
 ceasing to hold. Writing it waits on chapter assembly, because an LoI entry
 places a figure by *folio*; `docs/open-questions.md` carries the reasoning.
 
@@ -614,7 +614,7 @@ in the volume. `1-151` is the only ordinary case in the pilot set.
 
 ## List of Illustrations
 
-`data/loi.json` — the whole volume's figure list, read from scans `1-014`…`1-019`
+`edition/loi.json` — the whole volume's figure list, read from scans `1-014`…`1-019`
 (part 1 front matter, printed folios xii–xvii): **text-figures 1–302** and
 **plates I–XXXV**, with folios. Complete run, no gaps or duplicates.
 
@@ -659,7 +659,7 @@ validator has been enforcing it.
 
 # Authorities Quoted
 
-`data/authorities.json` — the book's own bibliography, read from scans `1-023`…`1-029`
+`edition/authorities.json` — the book's own bibliography, read from scans `1-023`…`1-029`
 (printed folios 3–9, ToC `front.authorities-quoted`): **73 works**, one record each,
 keyed with a BibTeX-style moniker (`bogoras1900`, `krause1882`, `nordquist1882a`). The
 third apparatus store alongside `loi.json` and `toc.json`, and apparatus for the same

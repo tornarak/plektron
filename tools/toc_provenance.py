@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Give `data/toc.json` the provenance it was written without. **One-shot.**
+"""Give `edition/toc.json` the provenance it was written without. **One-shot.**
 
 `loi.json` and `authorities.json` each open with a `source` block naming the
 scans they were read from, and each entry carries the leaf it was printed on.
@@ -84,7 +84,7 @@ def main(argv=None) -> int:
                     help="write; otherwise report the assignment and stop")
     a = ap.parse_args(argv)
 
-    p = a.root / "data" / "toc.json"
+    p = a.root / "edition" / "toc.json"
     doc = json.loads(p.read_text(encoding="utf-8"))
     if not isinstance(doc, list):
         print(f"{p} already carries a source block — nothing to do", file=sys.stderr)

@@ -48,7 +48,7 @@ def register(cli):
     arg(p, "target", metavar="REF|PATH", nargs=-1, required=False)
     p.help += ("\n\nREF|PATH: a page ref (PP-NNN), scoping to that page's files, "
                "or a file or directory path. Several may be given, and they may "
-               "be mixed: `1-052 data/authorities.json` scopes to both. For checking "
+               "be mixed: `1-052 edition/authorities.json` scopes to both. For checking "
                "or converting one just-authored file without touching the "
                "other 280+.")
     add_all(p, "every file the corpus globs reach")
@@ -143,7 +143,7 @@ def _targets(a) -> list[Path] | None:
     path. **A relative path is taken against `--root`, not the cwd**, which is a
     change from the `--path` flag it replaces and the only coherent reading of a
     mixed list: a ref means "this page of this corpus" and is root-relative by
-    construction, so having `1-052` and `data/authorities.json` resolve against
+    construction, so having `1-052` and `edition/authorities.json` resolve against
     different bases in one argument list would be a trap. The two agree wherever
     `--root` is left at its default, which is everywhere outside the tests.
 

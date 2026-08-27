@@ -118,7 +118,7 @@ TIER1_TRAPS = {
 # than a loud error. An explicit set has exactly the members it has. The comment can
 # carry the nuance; the code should stay dumb.
 #
-# `data/authorities.json` \u2014 73 bibliography entries, most printed twice, once in
+# `edition/authorities.json` \u2014 73 bibliography entries, most printed twice, once in
 # pre-1918 Russian \u2014 is what exposed this: 72 errors, no readings. Collation will hit
 # it far harder once Russian body text starts arriving.
 # The bases on which a mark is ordinary European or Russian orthography rather than

@@ -486,7 +486,7 @@ def _decorate(entry: dict, kind: str, root: Path, index: dict,
         # that fails to locate stays in the pool and its numbers go back to
         # printing plain, which is the safe direction. Measured: all 302 of the
         # LoI's numbers now resolve — the three the rules cannot reach are
-        # hand-keyed in `data/figure_numbers.json`, which `by_number` applies.
+        # hand-keyed in `edition/figure_numbers.json`, which `by_number` applies.
         # `pair` is comma-joined because **a figure is not a box**: 16 of them
         # are drawn in two, lettered a and b under one caption, and naming only
         # `key` drew the first and dropped the rest. `figures.crop_keys` is the
@@ -673,7 +673,7 @@ def run_page(request: Request, run_id: str):
     root = _root(request)
     run = next((r for r in stores.runs(root) if r.get("id") == run_id), None)
     if run is None:
-        raise HTTPException(404, f"no run {run_id!r} in data/runs.json")
+        raise HTTPException(404, f"no run {run_id!r} in edition/runs.json")
     head = ui.norm_ref((run.get("refs") or [""])[0])
     prev, next_ = _neighbours(request, head)
     leaves, tail = _run_leaves(run, root)
@@ -738,7 +738,7 @@ def folio(request: Request, n: int):
 def chapter(request: Request, roman: str):
     """A chapter, by the roman the prose prints — `See Chapter XII.`
 
-    **The id is looked up, never built.** `chXII` is `data/toc.json`'s own
+    **The id is looked up, never built.** `chXII` is `edition/toc.json`'s own
     spelling and concatenating `ch` with the roman would be this route asserting
     the store's key scheme from outside it; the entry whose `chapter` is this
     roman *and* whose level is the chapter level is what the store says. A roman
@@ -760,7 +760,7 @@ def chapter(request: Request, roman: str):
 
 @router.get("/toc/{toc_id}")
 def toc_entry(request: Request, toc_id: str):
-    """A heading, by its `data/toc.json` id, through its opening folio.
+    """A heading, by its `edition/toc.json` id, through its opening folio.
 
     The precursor property, and the reason the locator was built before the
     renderers: this resolves *today* wherever a witness places the chapter's

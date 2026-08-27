@@ -478,7 +478,7 @@ STAR_WITHOUT_ALL_OK = {
     # the verb existed. The `*` here is what made several citations askable at
     # once; requiring `--all` to keep the listing would be the gate reshaping a
     # tool it was not aimed at.
-    ("find", "authority"): "lists data/authorities.json; walks no store",
+    ("find", "authority"): "lists edition/authorities.json; walks no store",
 }
 
 
