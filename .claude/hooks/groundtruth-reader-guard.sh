@@ -68,7 +68,12 @@ readable() {
     */docs/*|docs/*) return 0 ;;
     *.claude/skills/rebuild-groundtruth/*) return 0 ;;
     *"$MEMORY"*) return 0 ;;
-    # data/ is the apparatus the verbs read off: lexicon_extra.txt, readings.md.
+    # `config/` holds the pass configuration and the editor's rulings —
+    # lexicon_extra.txt, marks_config.json — which used to sit in `data/`. The
+    # arm moved with them: a read-allow that quietly stops matching refuses a
+    # file the reader is meant to have, and reads as forbidden rather than moved.
+    */config/*|config/*) return 0 ;;
+    # `data/` is what is left: the TEI schema and the machine receipts.
     */data/*|data/*) return 0 ;;
   esac
   return 1
@@ -101,7 +106,7 @@ case "$TOOL" in
         exit 2 ;;
     esac
     readable "$P" && allow "groundtruth-reader reading its working directory, the spec, or its own memory"
-    echo "Blocked: you read your page's working directory under review/, the normative text (keying_spec.md, concordance.md, CLAUDE.md, harness/VERBS.md, harness/README.md, docs/, your pass doc), data/, and your own memory under $MEMORY. Nothing else on this machine is evidence about your page. If something you genuinely need is outside that list, say so in your report rather than reaching around the rule." >&2
+    echo "Blocked: you read your page's working directory under review/, the normative text (keying_spec.md, concordance.md, CLAUDE.md, harness/VERBS.md, harness/README.md, docs/, your pass doc), config/ and data/, and your own memory under $MEMORY. Nothing else on this machine is evidence about your page. If something you genuinely need is outside that list, say so in your report rather than reaching around the rule." >&2
     exit 2 ;;
 
   Write|Edit)
@@ -293,7 +298,7 @@ esac
 #
 # Narrower than `Read`, deliberately, because `cat` takes a glob and `Read` does
 # not: `cat memory/*.md` is the reach that has no `Read` spelling at all, and it
-# is why pointing at the tool did not stick. The docs, `data/` and the skill stay
+# is why pointing at the tool did not stick. The docs, `config/`, `data/` and the skill stay
 # `Read`-only — those are large, and the offset-and-limit argument is real there.
 #
 # **`decision.json` is refused here exactly as `readable()` refuses it**, or this

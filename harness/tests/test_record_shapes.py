@@ -41,7 +41,7 @@ REPO = Path(__file__).resolve().parent.parent.parent
 def store() -> dict:
     s = load(REPO)
     if not s:
-        pytest.skip("entities/ is empty in this checkout")
+        pytest.skip("edition/entities/ is empty in this checkout")
     return s
 
 

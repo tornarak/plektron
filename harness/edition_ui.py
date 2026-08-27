@@ -13,7 +13,7 @@ you your place. A map is not a card — there is only ever one *here*, so it is 
 pane; what it holds is a *selection*, and clicking a place adds it, with the tree
 beneath naming what contains them all.
 
-**It writes to `entities/`, and the click is the human act.** That is the
+**It writes to `edition/entities/`, and the click is the human act.** That is the
 `zones edit` precedent, not a new licence: a loopback server, a tracked store, and
 git as the witness. Ratifying an entry here is the same act as
 `harness entity ratify --commit`, done where the evidence is — the entry beside
@@ -299,7 +299,7 @@ def gloss_html(text: str, store: dict) -> str:
     Escaped before anything else, so a gloss is text and never markup. The rest
     is a closed set of rules — `*em*`, `**strong**`, `` `code` ``, `[text](url)`
     and `- ` bullets — recognised **because the records already use them**, which
-    is the whole argument for each one. `entities/people/eskimo.md` was written
+    is the whole argument for each one. `edition/entities/people/eskimo.md` was written
     with a list and an external link before either rendered, so the card showed
     a paragraph of literal `- ` lines and a bare `[…](…)`: an author writing
     markdown in a markdown file is not a mistake to be trained out.

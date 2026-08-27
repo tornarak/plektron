@@ -214,7 +214,7 @@ the stages that are built.
    to collect against a finished corpus, and the pages are not going anywhere.
 
 5. **Annotation** — partly built, and it turned out not to be a stage after the
-   others so much as a store the earlier ones consult. `entities/` holds one
+   others so much as a store the earlier ones consult. `edition/entities/` holds one
    markdown record per entity; `tei generate` links the unambiguous forms by rule
    at `#mz` while it is building the page, and everything contested arrives as a
    candidate comment for the collator to settle. So annotation is **continuous with
@@ -226,7 +226,7 @@ the stages that are built.
    not, and with collation deferred it is the one that runs.**
    `harness lexicon misses --common` ranks the tokens no English lexicon accounts
    for across every OCR'd page — a candidate list drawn from ground truth alone, and
-   the reason the entity store and `data/lexicon_extra.txt` suppress `lexicon_miss`
+   the reason the entity store and `config/lexicon_extra.txt` suppress `lexicon_miss`
    and nothing else. `entity new` scaffolds at `proposed`, `entity occurrences`
    finds the rest of a form once one instance is understood, `entity alias` and
    `entity locate` fill the record, and `entity check` gates the lot. The store
@@ -235,7 +235,7 @@ the stages that are built.
    encyclopedia owes this stage nothing.
 
    **And the store is the unit of work, not the page.** `#mz` links are re-derived
-   from `entities/` on every `tei generate`, so an alias written today reaches every
+   from `edition/entities/` on every `tei generate`, so an alias written today reaches every
    page that has ever been generated, retroactively and without re-reading one of
    them. That is why the encyclopedic pass is worth running *ahead* of collation
    rather than behind it: its output compounds over the whole corpus, where a

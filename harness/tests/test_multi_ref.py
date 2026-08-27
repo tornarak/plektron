@@ -350,10 +350,10 @@ def test_normalize_takes_refs_and_paths_in_one_list(tmp_path, capsys):
     """A `PP-NNN` ref or a path, and the two never collide: a ref's shape is
     closed, so anything that will not parse as one is taken as given."""
     _alto(tmp_path, "gt/ocr", "1-048")
-    (tmp_path / "data").mkdir()
-    (tmp_path / "data" / "lexicon_extra.txt").write_text("plain\n", encoding="utf-8")
+    (tmp_path / "config").mkdir()
+    (tmp_path / "config" / "lexicon_extra.txt").write_text("plain\n", encoding="utf-8")
     code, out, _err = _run(capsys, "corpus", "normalize", "1-048",
-                     "data/lexicon_extra.txt", "--root", str(tmp_path))
+                     "config/lexicon_extra.txt", "--root", str(tmp_path))
     assert code == 0
     assert "files: 2" in out
 

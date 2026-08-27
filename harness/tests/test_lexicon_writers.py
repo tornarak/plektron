@@ -1,4 +1,4 @@
-"""`lexicon new` and `lexicon ratify` — the two verbs that write `lexicon/`.
+"""`lexicon new` and `lexicon ratify` — the two verbs that write `edition/lexicon/`.
 
 `test_lexicon_store.py` covers the parser and the gate; nothing covered the
 writers, which is the half that can put something on disk that a human did not

@@ -36,7 +36,7 @@ def entry(root: Path, ident: str, *, status: str = "ratified",
     rows = "\n".join(f"| {a[0]} | {a[2] if len(a) > 2 else ''} | "
                      f"{a[1] if isinstance(a[1], str) else ('yes' if a[1] else 'no')}"
                      f" | |" for a in aliases)
-    p = root / "entities" / cls / f"{slug}.md"
+    p = root / "edition" / "entities" / cls / f"{slug}.md"
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(
         f"# {ident} — {canonical or slug.title()}\n\n"
@@ -199,7 +199,7 @@ def test_the_heading_must_agree_with_the_directory(tmp_path):
     ground-truth loss produced. Here the file says what it is and the gate compares,
     so a moved file is an error rather than a silent reclassification."""
     p = entry(tmp_path, "place:markova")
-    moved = tmp_path / "entities" / "water" / "markova.md"
+    moved = tmp_path / "edition" / "entities" / "water" / "markova.md"
     moved.parent.mkdir(parents=True, exist_ok=True)
     moved.write_text(p.read_text(encoding="utf-8"), encoding="utf-8")
     p.unlink()
@@ -209,8 +209,8 @@ def test_the_heading_must_agree_with_the_directory(tmp_path):
 def test_a_file_outside_a_class_directory_is_named(tmp_path):
     """`glob("*/*.md")` cannot see it, so without this it would sit unread and
     unmentioned — indistinguishable from not existing."""
-    (tmp_path / "entities").mkdir()
-    (tmp_path / "entities" / "stray.md").write_text("# x", encoding="utf-8")
+    (tmp_path / "edition" / "entities").mkdir(parents=True)
+    (tmp_path / "edition" / "entities" / "stray.md").write_text("# x", encoding="utf-8")
     assert any("outside a class directory" in e for e in E.check(tmp_path)["errors"])
 
 
@@ -233,7 +233,7 @@ def test_a_wikilink_in_an_alias_note_is_checked_too(tmp_path):
     entry(tmp_path, "place:markova",
           aliases=[("Markova", False)],
           extra="", gloss="x")
-    p = tmp_path / "entities" / "place" / "markova.md"
+    p = tmp_path / "edition" / "entities" / "place" / "markova.md"
     p.write_text(p.read_text(encoding="utf-8").replace(
         "| Markova |  | no | |", "| Markova | | no | see [[person:ghost]] |"),
         encoding="utf-8")
@@ -562,7 +562,7 @@ def test_a_rename_repoints_within_and_wikilinks(tmp_path):
 
     store = E.load(tmp_path)
     assert "people:chukchi" in store and "people:chukchee" not in store
-    assert not (tmp_path / "entities" / "people" / "chukchee.md").exists()
+    assert not (tmp_path / "edition" / "entities" / "people" / "chukchee.md").exists()
     assert "[[people:chukchi]]" in store["place:markova"]["gloss"]
     assert E.geo_refs(store["people:reindeer"]) == ["people:chukchi"]
     assert E.check(tmp_path)["ok"]
@@ -617,8 +617,8 @@ def test_a_rename_carries_a_committed_page_with_it(tmp_path):
             '<TEI><rs ref="place:markova">M</rs></TEI>', encoding="utf-8")
 
     assert _rename(tmp_path, "place:markova", "place:markovo") == 0
-    assert not (tmp_path / "entities" / "place" / "markova.md").exists()
-    assert (tmp_path / "entities" / "place" / "markovo.md").exists()
+    assert not (tmp_path / "edition" / "entities" / "place" / "markova.md").exists()
+    assert (tmp_path / "edition" / "entities" / "place" / "markovo.md").exists()
     assert 'ref="place:markovo"' in (
         tmp_path / "tei" / "chukchi-1-021.xml").read_text(encoding="utf-8")
     # Derived, and left alone on purpose.
@@ -691,7 +691,7 @@ def test_a_reported_rename_writes_nothing(tmp_path):
     entry(tmp_path, "place:other", gloss="near [[place:markova]]")
     _rename(tmp_path, "place:markova", "place:markovo", commit=False)
 
-    assert (tmp_path / "entities" / "place" / "markova.md").exists()
+    assert (tmp_path / "edition" / "entities" / "place" / "markova.md").exists()
     assert "[[place:markova]]" in E.load(tmp_path)["place:other"]["gloss"]
 
 
@@ -796,7 +796,7 @@ def _scaffold(tmp_path, ident, canonical="X"):
     from harness.cli._entity import run_new
     run_new(_NewArgs(tmp_path, ident, canonical))
     cls, slug = ident.split(":")
-    return tmp_path / "entities" / cls / f"{slug}.md"
+    return tmp_path / "edition" / "entities" / cls / f"{slug}.md"
 
 
 def test_the_scaffolds_placeholder_row_goes_when_a_real_one_arrives(tmp_path):

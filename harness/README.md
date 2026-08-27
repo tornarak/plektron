@@ -25,7 +25,7 @@ the project's rules, `CLAUDE.md` governs; for the character inventory,
 | `mz/zones/` | what the trained segmenter emitted: raw kraken ALTO, free polygons, kraken's ids. Derived, ignored | `zones predict` |
 | `tei/` | the collation output, and the system of record for seam state — including `corpus-header.xml`, which is a fragment, not a page | the collation pass, `tei seam --commit` |
 | `mz/tei/` | the generated first-draft page, by rule from `gt/zones/` + `gt/ocr/`. Derived, ignored; **no view over the tei pair**, since naming the two apart is the point | `tei generate` |
-| `entities/` | the encyclopedia: one markdown record per entity under its class directory. The referent of every `@ref`, and the source of the alias vocabulary a rule links by | `entity new --commit`, `entity ratify --commit`, `edition serve` |
+| `edition/entities/` | the encyclopedia: one markdown record per entity under its class directory. The referent of every `@ref`, and the source of the alias vocabulary a rule links by | `entity new --commit`, `entity ratify --commit`, `edition serve` |
 | `data/` | `loi.json` `toc.json` `authorities.json` `runs.json` `alphabet.json` `lexicon_extra.txt` `zones_config.json` `lines_config.json` | by hand |
 | `edition/page-img/` | an editor's own version of a whole leaf, `edition/fig-img/`'s doctrine one level up. Resolved by `edition_ui.leaf_source`, **reading view only and ruled leaves only** (any `LEAF_KINDS` member, not `map` alone). **Derived but tracked**, `edition/geo/`'s split: `1-361`'s master is ChaiNNer work no script here rebuilds | by hand |
 | `mz/page-img/` | what a leaf is *delivered* as — an anti-aliased linework PNG over a colour JPEG at a third scale, Mixed Raster Content. Derived and gitignored, `mz/tei/`'s disposition; `edition_ui.leaf_layers` returns both or neither | `tools/build_leaf_layers.py` |
@@ -343,7 +343,7 @@ carries the comment and a reader of only the element would report the whole
 reviewed corpus as unstamped — a regression dressed as caution.
 
 **`entities.py`** — the encyclopedia store, and the one matcher over it. Parses
-`entities/<class>/<slug>.md` on the caption store's old pattern (heading-sliced, NFD on
+`edition/entities/<class>/<slug>.md` on the caption store's old pattern (heading-sliced, NFD on
 read, absence is `{}`); an identity is `class:slug` and lives twice, as the
 directory and in the heading, so `check` can compare them — a file's role must not
 live only in its directory name. `auto_forms` is the whole bar for a machine link:
@@ -438,7 +438,7 @@ highlights on.
 **`edition_ui.py`** — the reading view's domain layer; its routes are
 `harness/web/edition.py`. Two columns, a stack of entity/lexicon/scan cards under one map pane, the encyclopedia as a tree over the class, and its audit queue. A footnote marker is not a card — it keeps its href and jumps to the note at the foot, which is already on the page. A map is not a card either: there is only ever one *here*, so it is the pane, and clicking a place moves it. A hover *is* a card, fetched early and floated pointer-inert, which is why it never competes with the stack. Serves committed
 `tei/` only, or `mz/tei/` too under `edition serve --drafts`, every draft marked.
-Writes `entities/` on a click without `--commit`, as the other editors
+Writes `edition/entities/` on a click without `--commit`, as the other editors
 write their stores, and **rolls a write back if `entity check` fails on the
 result** — every `@ref` in the corpus resolves against that store.
 
@@ -672,13 +672,13 @@ Two caller invariants are this module's alone, and both are silent when broken:
   and names `fig delete`; the empty region sets a segmenter needs are synthesized
   in `assemble` and land only in `train/`.
 
-**`zones_config.py`** — loads and checks `data/zones_config.json`: the seven types
+**`zones_config.py`** — loads and checks `config/zones_config.json`: the seven types
 with their keys and colours, the per-part text measure and anchor calibration, the
 declarative order rules. `order_warnings` is pure and is transcribed into the
 editor's JS, with `harness/tests/test_zones_order.py` holding the two together. Every rule
 here is a *warning* — nothing in this config can refuse a save.
 
-**`lines_config.py`** — the same for `data/lines_config.json`: the line editor's
+**`lines_config.py`** — the same for `config/lines_config.json`: the line editor's
 layers with their colours, its keybindings, its zoom. Deliberately the same shape,
 so a human moving between the two editors configures one tool with two subjects
 rather than learning a second format. The overlay's stylesheet (`layer_css`) and
@@ -1159,7 +1159,7 @@ over `gt/ocr/` or `data/` fails the day the corpus legitimately changes, which t
 everyone to ignore it. The exceptions are explicit and are facts about the printed
 book or about committed configuration rather than about any code: the
 citation-resolution tests, the `DERIVED`-versus-`.gitignore` check, and the
-`data/zones_config.json` checks — that file is data two modules trust, and nothing
+`config/zones_config.json` checks — that file is data two modules trust, and nothing
 else would notice a stray comma in it.
 
 `test_cli_surface.py` is the other exception and is the newest: it builds the real

@@ -17,8 +17,8 @@ The store holds what is served to a reader, and that is the whole of its
 membership test. It is **not** the set of files carrying `#ed`.
 
 The two look identical until they diverge, and they diverge in one direction
-only: an editor's ruling that never reaches a reader. `data/marks_exempt.json`
-rules a keying ambiguity real, `data/lexicon_extra.txt` accounts for a coinage no
+only: an editor's ruling that never reaches a reader. `config/marks_exempt.json`
+rules a keying ambiguity real, `config/lexicon_extra.txt` accounts for a coinage no
 dictionary carries — both are a human's own act, both are `#ed`, and neither is
 anything a reader is shown. They sit with the pass they rule on.
 
@@ -42,7 +42,7 @@ resolve them against and **a pointer to nothing is worse than no pointer: it
 reads as resolved**. The deferral was recorded in `docs/open-questions.md` under
 "Corpus-stable identity", along with the shape the answer would have to take.
 
-So the store came first and the lifting followed. `entities/` is the referent,
+So the store came first and the lifting followed. `edition/entities/` is the referent,
 `validate` checks every pointer into it on every run, and the refusal survives
 in narrowed form: `@key` and `@nymRef` are still errors, because identity gets
 one spelling here or "is this name linked" becomes a question with three places
@@ -56,7 +56,7 @@ the same string names both, on the same page, and the book cites him by surname
 alone. A scheme without the class resolves one to the other silently.
 
 The class lives twice, deliberately. On disk it is the directory —
-`entities/person/jochelson.md`, because a colon in a filename is a portability
+`edition/entities/person/jochelson.md`, because a colon in a filename is a portability
 trap. Inside the file it is the first half of the `#` heading. `entity check`
 compares them, and the reason is the ground-truth loss: **a file's role must not
 live only in its directory name**, or nothing can tell what a file is once the
@@ -485,7 +485,7 @@ resolves to nothing**, on the same argument as a dangling `within:`.
 
 `*em*`, `**strong**`, `` `code` ``, `- ` bullet lists and `[text](url)`.
 **Every one of them is there because a record already used it**, which is the
-only argument any of them needs: `entities/people/eskimo.md` was written with a
+only argument any of them needs: `edition/entities/people/eskimo.md` was written with a
 list and an external link before either rendered, so its card showed a paragraph
 of literal `- ` lines and a bare `[…](…)`. An author writing markdown in a
 markdown file is not a mistake to be trained out.
@@ -895,7 +895,7 @@ beside it — a silent truncation reads as coverage.
 
 ### The store is also the corpus's proper-noun dictionary
 
-`data/lexicon_extra.txt` used to hold the book's proper nouns — authors,
+`config/lexicon_extra.txt` used to hold the book's proper nouns — authors,
 ethnicities, toponyms — so that `lexicon_miss` reported transcription candidates
 rather than vocabulary. **Twenty of its lines were already an entity's canonical
 or an alias**: one fact in two hand-maintained files, each able to go stale
@@ -1279,7 +1279,7 @@ printed list poses, and each is **omitted rather than guessed** where it cannot.
   describes, because the leaves that defeat the derivation are the printer's
   oddities and not rules waiting to be widened. This is emphatically **not** the LoI reconciliation
   `docs/open-questions.md` defers — it links, and it gates nothing.
-- An authority's siglum goes to `entities/source/…` through the entity record's
+- An authority's siglum goes to `edition/entities/source/…` through the entity record's
   own `authority` field, never a match on the printed name: 52 sigla over 34
   names would make that a guess. All 74 resolve.
 
@@ -2005,7 +2005,7 @@ with a sign on it.
 things follow, both wanted. A form only becomes `ckt` when a collator judges it,
 so an id holding a language would leave every unjudged form unaddressable. And
 the book sets one word two ways — `Čeˊwɪn` on 1-042, `Čeˊwin` on 1-052, ruled a
-real ambiguity in `data/marks_exempt.json` — where a headword scheme would have
+real ambiguity in `config/marks_exempt.json` — where a headword scheme would have
 to pick a side, which is exactly what that ruling says not to do. Here they are
 two entries, and `see:` may point one at the other without claiming they are one
 word. The inverse of `see:` is derived at render time, as `contains` is: a
@@ -2021,7 +2021,7 @@ unused. What is left is the one thing nothing derives — the extra-textual
 clarification the book cannot make, because it was written in 1904 and the reader
 is not.
 
-**A file exists only where somebody wrote a note.** `entities/` holds a hundred
+**A file exists only where somebody wrote a note.** `edition/entities/` holds a hundred
 files against thousands of proper nouns; it is not a census, it is where somebody
 had something to say. A form with no file is not missing from the lexicon — its
 card renders in full from the derived half, and says which part of it is absent.
@@ -2220,7 +2220,7 @@ dictionary's reader in `scratch/`, which had a pixel-scaled version first and
 lost the right-hand end of every crop to a panel that was never the assumed
 width.
 
-**It writes `entities/`, and the click is the human act** — the `zones edit`
+**It writes `edition/entities/`, and the click is the human act** — the `zones edit`
 precedent, not a new licence: a loopback server, a tracked store, git as the
 witness. Ratifying in the browser is the same act as `entity ratify --commit`,
 done where the evidence is. Every write runs `entity check` on the result and
@@ -2438,7 +2438,7 @@ of it survives. `index()["shapes"]` is a plain dict of what the build wrote;
 What is kept is the *reporting*. `geo list` still has a `composites` block,
 because "these two polygons are one speaker area" — `langarea:chuk1273` with
 `base:chukotka-east-of-meridian`, the Alaskan Yupik pair — is a human's
-assertion about `entities/` and earns a row. It claims nothing and resolves to
+assertion about `edition/entities/` and earns a row. It claims nothing and resolves to
 nothing; its key is sorted so two entities that named the same pair in either
 order land together, which is all that is left of the canonical spelling.
 

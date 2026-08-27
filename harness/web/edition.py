@@ -1050,7 +1050,7 @@ def _forms(root: Path) -> list[dict]:
 
     Assembled from three stores and owned by none of them — the forms and their
     counts from adjudicated ground truth, the language and attesting pages from
-    committed TEI where a collator has judged one, the note from `lexicon/`
+    committed TEI where a collator has judged one, the note from `edition/lexicon/`
     where an editor has written one. A form with no entry is not missing from
     this list; it is a form nobody has written about, which is most of them.
     """
@@ -1564,7 +1564,7 @@ def new_entity(request: Request, body: NewEntity):
 @router.get("/static/{name}")
 def site_mark(name: str):
     """The site marks the old `/static/` route served. Kept as a redirect rather
-    than dropped: `entities/` records and any bookmark still name the old path,
+    than dropped: `edition/entities/` records and any bookmark still name the old path,
     and a 404 here would show as a missing icon nobody would trace."""
     return RedirectResponse(f"/static/site/{name}", status_code=308)
 

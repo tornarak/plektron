@@ -28,7 +28,7 @@ def register(cli):
     action(g, "list", run_list,
            help="every shape in the store, with the entity that claims it — and "
            "a composite `area:` counts as a claim on each of its members, since "
-           "a union is a fact about `entities/` and this census is a fact about "
+           "a union is a fact about `edition/entities/` and this census is a fact about "
            "`edition/geo/`. The unions themselves are listed after, separately. "
            "**Also the absences**: four speaker areas this edition sought in "
            "Asher 2007 have no polygon there — Siberian Yupik, Chuvan, Kerek "

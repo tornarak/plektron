@@ -1,4 +1,4 @@
-"""The figure section of `data/zones_config.json`, and the keyboard it shares.
+"""The figure section of `config/zones_config.json`, and the keyboard it shares.
 
 One editor, two tracks, one set of keystrokes. The zone types, the figure types
 and the actions are three namespaces drawing on the same keyboard, and a key

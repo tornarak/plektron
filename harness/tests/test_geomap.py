@@ -140,7 +140,7 @@ def test_a_union_is_reported_under_a_key_that_ignores_the_order_typed():
 @built
 def test_a_union_is_not_a_row_in_the_store():
     """**The census is what the build wrote.** A union some entity happened to
-    author is a fact about `entities/`, and minting a row for it would make the
+    author is a fact about `edition/entities/`, and minting a row for it would make the
     atlas claim a shape no source drew. It used to *resolve* through `.get()`
     while staying out of iteration, which took a dict subclass to arrange; the
     members are named separately now, so there is nothing to resolve and the
@@ -342,7 +342,7 @@ def test_a_shape_two_entities_claim_is_reported_and_not_refused():
 def _store(tmp_path, *recs):
     for ident, extra in recs:
         cls, slug = ident.split(":")
-        p = tmp_path / "entities" / cls / f"{slug}.md"
+        p = tmp_path / "edition" / "entities" / cls / f"{slug}.md"
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text(f"# {ident} — {slug}\n\n- status: ratified\n- since: 1-021\n"
                      f"{extra}\n## aliases\n\n| form | lang | auto | note |\n|---|---|---|---|\n"

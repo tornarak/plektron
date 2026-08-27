@@ -321,7 +321,7 @@ never had one.)
 **Writes** —
 **Exit** 1 on FAIL — the worst across refs, so one failing page fails the batch.
 **Note** a Tier-1 span that is **neither glossed nor identified** is a warning, plus the metric `tier1_unglossed`. Glossed means a `<gloss target>` points at its `xml:id`, and nothing else — a span with no id is unglossed exactly, since the id scheme's own rule is that an id exists iff something points at it, so there is no containment fallback to write. Identified means a `<name>` with a declared `@type`, or an entity `@ref` on the span or its wrapper; a bare `<name>` does not clear it, deliberately and unlike `names_untyped`, because "a name of some kind" places a native word nowhere. A form the same page glosses elsewhere does not warn again. A **warning** and not an error: the book leaves forms bare, and no model may write a gloss the page does not carry.
-**Note** **every `#mz` claim is re-derived here, and there are two kinds of them.** An entity link is re-derived from `entities/` — the entry still exists, is still ratified, the alias is still uncontested, the text still matches; or, where the form is contested and the page *cites* it, that the locator is still printed after the name, the sigla still resolve it to one work, and that work's entry is still this one. A `<ref>` cross-reference is re-derived from the page's own text: block by block, the same scan the generator ran, with the same `Authorities Quoted` guard. Both directions are checked and the asymmetry is deliberate — a mark the text no longer supports is an **error**, a printed reference carrying no mark is a **worklist** line, since deleting a mark the sentence does not support is exactly what the collator is shown it for. The block cut matters: an anchored `<note>` is scanned as its own block and puts its printed marker back where the element stands, or `illustrated by Nelson.¹ Fig. 22` reads as `Nelson.` in front of this book's own figure and the guard refuses a mark the rule correctly wrote. Metrics `figrefs` and `figrefs_unmarked`.
+**Note** **every `#mz` claim is re-derived here, and there are two kinds of them.** An entity link is re-derived from `edition/entities/` — the entry still exists, is still ratified, the alias is still uncontested, the text still matches; or, where the form is contested and the page *cites* it, that the locator is still printed after the name, the sigla still resolve it to one work, and that work's entry is still this one. A `<ref>` cross-reference is re-derived from the page's own text: block by block, the same scan the generator ran, with the same `Authorities Quoted` guard. Both directions are checked and the asymmetry is deliberate — a mark the text no longer supports is an **error**, a printed reference carrying no mark is a **worklist** line, since deleting a mark the sentence does not support is exactly what the collator is shown it for. The block cut matters: an anchored `<note>` is scanned as its own block and puts its printed marker back where the element stands, or `illustrated by Nelson.¹ Fig. 22` reads as `Nelson.` in front of this book's own figure and the guard refuses a mark the rule correctly wrote. Metrics `figrefs` and `figrefs_unmarked`.
 **Note** `--json` swaps the rendered report for `{ok, errors, warnings, worklist, metrics}`.
 **Note** **the one action that does not pool.** Its payload is a rendered report and prose does not tabulate, so several refs print several reports under `# REF` lines. One ref prints exactly what it always did, with no header.
 **Note** **every page carries one `<!-- opens: … -->`**, immediately after `<pb>` and ahead of any other comment, from the closed set `indented` / `flush to the measure` / `no witness`. It is the seam's third witness — the first line's indent — and the only one that does not survive into the TEI: the previous page's tail is in its own file and this page's opening text is in this one, while the indent is on the raster. The collator has the image; the coordinator writing `@part` does not, and re-deriving it means reopening a page to answer a question already answered. **Witness, not verdict**: `@part` is the verdict and `tei seam` is the only thing that writes one, so the two are not one fact stated twice. Checked as the first *comment after* `<pb>` rather than the first node — a comment is not an element, so the "pb is first" rule steps over one placed before it, and starting the walk at `<pb>` is what keeps a fixed form from quietly becoming two. `no witness` is in the set because a heading or a plate has no measure to judge against, and left to the comment's absence that answer is indistinguishable from a collator that never looked.
@@ -596,13 +596,13 @@ PATTERN          a Python regular expression, normalized to NFD before it compil
 
 ### ocr edit [REF ...]
 **Does** the line-correction editor in the browser — the human end of `gaps`, and `zones edit`'s sibling one stage down. Adopt a band as a line, rule it not type, or rule it already keyed by a line whose box strangled it; the verdicts in one sitting, because deciding between them is one act.
-**Reads** the `--store` store, `scans/`, `gt/zones/` and `gt/lines/` with both `_ink_exempt.json` layers, `gt/fig/`, `data/zones_config.json`.
+**Reads** the `--store` store, `scans/`, `gt/zones/` and `gt/lines/` with both `_ink_exempt.json` layers, `gt/fig/`, `config/zones_config.json`.
 **Writes** `gt/lines/` and `gt/lines/_ink_exempt.json` on save. **No `--commit`** — the save click is the human act, the same contract `zones edit` and `ocr review` have.
 **Exit** 2 if nothing supplies a start page.
 **Note** **it draws and never keys.** A recovered line's text is adjudicated in `ocr review` like any other line's and written by `restore`; duplicating that machinery here would be a second place a reading could be originated, and this store exists on the argument that its writer cannot originate one.
 **Note** **a box in no zone is refused, and the refusal names `zones edit`.** Ink no region covers is a defect in the *zoning*, not a line this editor can adopt — recording a line inside no region would leave the region missing. It is also what keeps the two ink checks disjoint. A page with no zoning at all is refused outright: line correction comes after zoning, which is a stage-order invariant rather than a statement about this corpus.
 **Note** `b` toggles the blotted view, rendered on demand with **both** ruling layers painted, so what is left is what nobody has settled. That is deliberately the opposite of `ocr blot`'s default, which stays an independent witness.
-**Note** **every colour and every key is `data/lines_config.json`'s**, `data/zones_config.json`'s shape and validated the same way — a key bound twice, a layer the editor paints by name and the config does not declare, a `zoom_step` of 1, are each refused at load rather than met as a dead key three pages into a sitting. The overlay's stylesheet and the panel's key list are both *generated* from it, so a rebound key moves in one place and the help cannot lie about the tool.
+**Note** **every colour and every key is `config/lines_config.json`'s**, `config/zones_config.json`'s shape and validated the same way — a key bound twice, a layer the editor paints by name and the config does not declare, a `zoom_step` of 1, are each refused at load rather than met as a dead key three pages into a sitting. The overlay's stylesheet and the panel's key list are both *generated* from it, so a rebound key moves in one place and the help cannot lie about the tool.
 **Note** **the panel is a control surface, not a legend**: every action's row does the thing when clicked, so it is reachable without knowing its shortcut or having kept one. A key may be set to `null` — the shortcut comes off the keyboard, the control stays. Rows whose action has nothing to act on (delete with no selection, withdraw with no ruling) draw dimmed and stay put, since a control that comes and goes is harder to learn than one that is visibly not applicable.
 **Note** zoom is the instrument, not a convenience: the subject is a mark ~40 px wide on a 2824 px leaf, which at fit is some 17 screen pixels — too small to tell a numeral from a printed rule. `frame_band` jumps straight to the first undecided band at a legible step.
 **Note** a ruling can be **withdrawn**, as in `zones edit`, and the page's rulings are listed with their reasons beside the keys — each showing *which* disposition it is, not only its note, since two rulings that silence the same band for opposite reasons must not render alike. A reason recorded once through a prompt and never shown again is a record nobody can check, and the whole argument for requiring one is that a year later it is all that separates a ruled artifact from a hidden mistake.
@@ -907,7 +907,7 @@ Opcodes come from difflib over **NFD** text, so a dropped combining mark ranks a
 
 ### proposal marks REF [REF ...]
 **Does** asks whether a batch's character distribution is plausible, before a human opens it — three arms over the Tier-1 tokens of each page's proposal, plus a fourth that runs over *every* token because the other three cannot see outside their own population.
-**Reads** `review/PP-NNN/proposal.json` (or `decision.json` under `--decisions`), `gt/ocr/` for the prior, `data/marks_config.json`.
+**Reads** `review/PP-NNN/proposal.json` (or `decision.json` under `--decisions`), `gt/ocr/` for the prior, `config/marks_config.json`.
 **Writes** —
 **Exit** always 0 — measurement. An outlier is a page to re-read, never a page to correct by ratio. Refuses (exit 2) only when a named ref has no source file.
 **Note** takes several refs, like `ocr review`, and "batch" means only that — the refs you pass. Most pages of this book carry a handful of Tier-1 terms, so a coordinator hands it every ref of a pass at once and gets a sample worth holding against the corpus. `dispatch.md` used to prescribe eyeballing `lexicon marks` here; this is that comparison computed, and `lexicon marks` could not do it — corpus-wide only, and grouped by base letter, so it cannot express `ɪ`/`i`, which is not a mark on a base.
@@ -919,7 +919,7 @@ Opcodes come from difflib over **NFD** text, so a dropped combining mark ranks a
 
 **One row per (fold, form, page), carrying `lines`** — so two rows sharing a fold *are* the conflict, and each says where to go. The row used to be one per fold with the spellings packed into `batch_forms`/`store_forms` and no line numbers at all, which told an adjudicator a word was keyed two ways and left them to grep for it. `source` is `batch` or `store`; a `store` row has no `lines`, because the prior is `(ref, token)` off the ALTO and carries no line — look it up with `harness ocr lines`, and none is invented. `proposal check` still raises **one issue per fold**, since a word keyed two ways is one fault however many places it surfaces.
 
-**No exemption applies here.** A conflict in a proposal is a *reader's* disagreement and `proposal.json` is the record of what they wrote — never rewritten after adjudication, because `edited` is computed against it. Silencing one would delete the measurement. `data/marks_exempt.json` rules on ground truth and is read only by `lexicon conflicts`.
+**No exemption applies here.** A conflict in a proposal is a *reader's* disagreement and `proposal.json` is the record of what they wrote — never rewritten after adjudication, because `edited` is computed against it. Silencing one would delete the measurement. `config/marks_exempt.json` rules on ground truth and is read only by `lexicon conflicts`.
 
 `ratio[]{scope,contrast,position,types,expected_pct,prior_pct,gt_min_pct,gt_max_pct,band_n,outside}` points and never decides. **Types, not tokens** — the marks are lexical, not independent, and a per-character binomial flags 19 page-base cells over 29 already-adjudicated pages (`2-036`'s 10% `ɪ`-share is `Pehiˊttin` ×4). `outside` is a rank against the band, never a p-value.
 
@@ -943,21 +943,21 @@ The band is the **per-page** spread over ground-truth pages clearing `--min-type
 --all            every review/ page with a proposal
 --decisions      read decision.json instead of proposal.json — the last state
                  before restore writes [off]
---min-types N    types a scope needs before ratio judges it [data/marks_config.json]
+--min-types N    types a scope needs before ratio judges it [config/marks_config.json]
 --rare-max PCT   a confusable at or below this share of its axis is rare enough
-                 to list every occurrence [data/marks_config.json]
+                 to list every occurrence [config/marks_config.json]
 --root --json --toon --pager
 ```
 
 ### proposal check [REF ...]
 **Does** cross-checks `resolved` against the codepoints `text` actually contains; flags a straight apostrophe, a dot-prone bare suffix, a note whose `class` is outside the closed set (doubt/semantic/print/draft/layout/artifact) or absent, a line ending in sentence punctuation the draft does not end in, a note naming a lexicon key the line then types by hand, and — via `marks` — a rare form or a word spelled two ways against the store.
-**Reads** `review/PP-NNN/proposal.json`, plus `gt/ocr/` and `data/marks_config.json` for the two corpus arms, the lexicon index where a note could name a key, and **`mz/ocr/` by name** for the draft the punctuation arm compares against — the recognizer's reading is the second witness and can never be the proposal's own output. It used to read the `ocr/` view, which on every restored page was this proposal's own adjudicated text, so the arm compared a reading with itself and went quiet: the shape `ocr diff` refuses outright.
+**Reads** `review/PP-NNN/proposal.json`, plus `gt/ocr/` and `config/marks_config.json` for the two corpus arms, the lexicon index where a note could name a key, and **`mz/ocr/` by name** for the draft the punctuation arm compares against — the recognizer's reading is the second witness and can never be the proposal's own output. It used to read the `ocr/` view, which on every restored page was this proposal's own adjudicated text, so the arm compared a reading with itself and went quiet: the shape `ocr diff` refuses outright.
 **Note** **the named-key arm tests the expansion against the line, not whether a key was mentioned.** It fires only where the proposal itself wrote the key — a brace in a `note`, where braces do nothing, or a bare key beside the word — *and* `text` already holds exactly what that key expands to. So a reader that read its page against the corpus and kept what it saw is silent by construction: `3-085`'s `Eiñeˊwg̣i` against a ratified `Eiñewg̣i`, `3-092`'s capital `Tatk-Omruˊwg̣ê`, `3-103`'s `Mɪˊs˙qän` against `Mɪˊs˙qᴀn` all expand to something the line does not contain. The general form of this arm — every hand-typed form a lookup could have supplied — is deliberately absent: it would fire on ordinary reading on nearly every Tier-1 line, and its only reading would be "use a handle here", which is pressure off the raster. Measured over chapter XX's twenty-seven pages, the narrow arm found eight, on five pages. Advisory, because a handle is a saving and not a reading.
 **Note** **a line index the store does not have is `restore`'s refusal, not this check's finding.** A proposal is keyed by the ALTO's indices and `restore` joins on them, so a key naming no `TextLine` is text with no box to land in. This used to flag it at the reader, whose remedy it never was — "that is upstream human action and not yours to correct" — while `restore` dropped the key in silence. The join is `restore`'s, so both halves of it refuse there now. A top-level `segmenter_missed` block — the retired field that used to carry this inside the proposal — is still a defect here; an empty one `proposal fix` strips silently, a non-empty one a human must disposition. This cannot see the neighbouring fault, a stray reading appended to a *real* line's text (`1-037`'s folio); that one is the reader contract's.
 **Writes** —
 **Exit** 1 on a **defect**, on any ref — one dirty page fails the batch, which is the contract a gate must have or a batch would launder a failure. Never on an advisory alone, unless `--strict`.
 **Note** **the exit code is also printed, as a closing `verdict` section** — `exit` and a `means` line naming why it is what it is. A groundtruth-reader is refused shell operators, so `$?` is a fact about its own work it cannot obtain, and it was spending turns on `proposal check REF; echo "EXIT: $?"` to get it — four such reaches across three readers in the `1-064`–`1-069` batch, a turn apiece against a budget of eighty. Relaxing the operator rule to admit one idiom would buy back one fact and give up the property that makes the surface auditable; printing the fact costs a row. And `means` carries what `$?` cannot: **the two exit-0 cases are not the same result** — nothing found, versus advisories found and deliberately not gated on — and only the second leaves the reader work to do, in the line's `note`. `corpus normalize` closes the same way, for the same reason and the same readers.
-**Note** the corpus arms are `proposal marks`'s two **deterministic** ones, run over the single page so a reader catches its own slip before writing its report. `ratio` is deliberately not among them: one page is a poor sample and it is the arm that cannot decide, so folding it into a per-page gate would assert exactly what `marks` refuses to. A repeated form is one issue naming its other lines, not one issue per occurrence — a keyer's single habit is one fault. The prior is leave-one-out here too, so a revision is not checked against its own descendant. Where `data/marks_config.json` is absent (a fresh clone), the arms are skipped and the rest still runs.
+**Note** the corpus arms are `proposal marks`'s two **deterministic** ones, run over the single page so a reader catches its own slip before writing its report. `ratio` is deliberately not among them: one page is a poor sample and it is the arm that cannot decide, so folding it into a per-page gate would assert exactly what `marks` refuses to. A repeated form is one issue naming its other lines, not one issue per occurrence — a keyer's single habit is one fault. The prior is leave-one-out here too, so a revision is not checked against its own descendant. Where `config/marks_config.json` is absent (a fresh clone), the arms are skipped and the rest still runs.
 
 **Overlap with the suffix check is wanted, not deduplicated**: a bare `-gɪn` yields both a `bare suffix` and a `rare form` issue on the same line. They reach one defect from different directions — a measured shape and a corpus share — and a second witness this cheap is what the governing principle asks for.
 
@@ -975,7 +975,7 @@ The band is the **per-page** spread over ground-truth pages clearing `--min-type
 
 ### proposal fix [REF ...]
 **Does** expands every `{key}` handle in a `text` field to the ratified form, recording the line as typed in `as_typed`; then applies the one unambiguous correction — a single mark `resolved` names that `text` lacks, swapped for the single mark `text` has that `resolved` lacks.
-**Reads** the proposal, and `gt/ocr/` + `data/marks_config.json` when a line carries a handle.
+**Reads** the proposal, and `gt/ocr/` + `config/marks_config.json` when a line carries a handle.
 **Writes** the proposal, in place — keeping one `.prev` and journalling both sides of every edit to `proposal.jsonl`.
 **Exit** always 0; raises on a handle that does not resolve, and writes nothing.
 **Note** nothing to clobber under `--all`: it repairs only what is already wrong, so a page with nothing to fix is untouched.
@@ -1060,7 +1060,7 @@ opinion of which pages are held out.
 
 ### zones check [REF ...]
 **Does** the gate. Named pages in full; `--all` sweeps every keyed page.
-**Reads** the `--store` store, `data/zones_config.json`, the `gt/` sidecars, and `scans/` when ink runs.
+**Reads** the `--store` store, `config/zones_config.json`, the `gt/` sidecars, and `scans/` when ink runs.
 **Writes** `gt/zones/_ink_cache.json` (derived) when it reads a raster.
 **Exit** 1 if any named page has errors and `--store gt`; **always 0 under `--store mz`**, which is measurement.
 **Note** **named pages always ink-check, however many.** `--ink` is a sweep economy — ~0.20 s a page against ~1 ms for the file-level checks — and naming two pages must not quietly buy a weaker check than naming one, since this is the only check that can see a *missing* zone. Pooled, `errors`/`warnings`/`uncovered` become counts in the row and each gets its own ref-keyed table; one ref prints the report exactly as it always did.
@@ -1078,7 +1078,7 @@ opinion of which pages are held out.
 
 ### zones edit [REF ...]
 **Does** the segmentation editor on 127.0.0.1, arrow keys walking the corpus. `/` and `?` cycle the store shown (`gt`, `mz`, `paras`); a machine page opens as an unsaved proposal.
-**Reads** both stores, `data/zones_config.json`, `scans/`.
+**Reads** both stores, `config/zones_config.json`, `scans/`.
 **Writes** `gt/zones/` on save — no `--commit`, the save click is the human act.
 **Exit** 2 if nothing supplies a start page. This is the one argument check the parser cannot express.
 **Note** **several refs *are* an itinerary**: the session opens at the first and walks the list, which is the same work-list an `.lst` supplies, spelled for the two-page case that would otherwise want a scratch file. One ref is a page to start at, not the only page reachable. `--all` walks the book.
@@ -1119,7 +1119,7 @@ opinion of which pages are held out.
 
 ### zones diff [REF ...]
 **Does** what differs between the two stores, paired by vertical overlap: `only_in_gt`, `only_in_mz`, `label`, `edge`. Prints a summary, then the rows, then a per-page **`departure`** table — a different question from the rows: not *what* differs but **how far the human went beyond the model**, on the scale `--remark-eval` selects held-out pages by (`identical` < `geometry only` < `a label differs` < `zone count differs` < `no prediction`, plus `exempt`, which is off the scale).
-**Reads** both stores, `data/zones_config.json`, the split lists.
+**Reads** both stores, `config/zones_config.json`, the split lists.
 **Writes** —
 **Exit** always 0 — measurement.
 **Note** an aggregate: refs scope the summary rather than multiplying it, and the rows already carry `ref`.
@@ -1132,7 +1132,7 @@ opinion of which pages are held out.
 
 ### zones paragraphs [REF ...]
 **Does** audits the paragraph-boundary rule both ways. `false_negative` is a recall figure; `false_positive` is a **worklist, not a precision figure**, since gt cannot arbitrate a rule that corrects it.
-**Reads** `gt/zones/`, `scans/w-figs-blotted/`, `data/zones_config.json`, `gt/zones/_para_exempt.json`.
+**Reads** `gt/zones/`, `scans/w-figs-blotted/`, `config/zones_config.json`, `gt/zones/_para_exempt.json`.
 **Writes** —
 **Exit** always 0 — measurement.
 **Note** an aggregate, like `zones diff`.
@@ -1160,7 +1160,7 @@ opinion of which pages are held out.
 
 ## lexicon
 
-Two halves. **The store** — `new`, `check`, `show`, `ratify` — is `lexicon/`,
+Two halves. **The store** — `new`, `check`, `show`, `ratify` — is `edition/lexicon/`,
 one entry per Tier-1 form an editor has written a note about; it takes the
 `--commit` discipline and `check` exits 1 on a defect. **The reports** are
 frequency arms over the native corpus in restored `gt/ocr/`, plus `glosses`,
@@ -1179,10 +1179,10 @@ entry.
 
 ### lexicon new FORM
 **Does** scaffolds an entry at `status: proposed`. The file name is a slug you choose; the default is `handle_key` reduced to `[a-z0-9-]`.
-**Reads** `lexicon/`. **Writes** `lexicon/<slug>.md`, with `--commit`.
+**Reads** `edition/lexicon/`. **Writes** `edition/lexicon/<slug>.md`, with `--commit`.
 **Exit** 0, or 1 if the file exists.
 **Note** the slug is **not** the key. Over the corpus's 609 attested forms `handle_key` yields 23 pairs differing only in case (`Aiˊwan`/`aiˊwan` → `ai'wan`), which a case-insensitive filesystem collapses, and 34 keys containing `:`. It is also non-injective by design, so a check of the form "the heading re-keys to the filename" would pass on *both* of a colliding pair while only one file can exist. A human names the file; `check` refuses two names a filesystem might not tell apart.
-**Note** `--see` is a pointer and never a claim that two forms are one word. The book sets `Čeˊwɪn` and `Čeˊwin`, and `data/marks_exempt.json` rules that ambiguity real; nothing in this store overrides that ruling.
+**Note** `--see` is a pointer and never a claim that two forms are one word. The book sets `Čeˊwɪn` and `Čeˊwin`, and `config/marks_exempt.json` rules that ambiguity real; nothing in this store overrides that ruling.
 ```
 --slug SLUG      the file name, without `.md` [the reduced key]
 --see FORM       another form in the store this one points at
@@ -1192,7 +1192,7 @@ entry.
 
 ### lexicon check
 **Does** the store gate: every file parses, every identity is unique, no two slugs differ only in case, every `see:` resolves.
-**Reads** `lexicon/`. **Writes** — **Exit** 1 on any defect.
+**Reads** `edition/lexicon/`. **Writes** — **Exit** 1 on any defect.
 **Note** a form `handle_key` cannot spell is **reported, never fatal**. Three of the corpus's 609 carry a character outside the inventory (`Kereˊt-kun’s`, `□ña`). The entry is fine; what it has not got is a canonical URL, and a reader is owed that fact rather than left to discover it.
 ```
 --root --json --toon --pager
@@ -1200,14 +1200,14 @@ entry.
 
 ### lexicon show FORM...
 **Does** whole records, the editor's note included.
-**Reads** `lexicon/`. **Writes** — **Exit** 0, or 1 if a named form is not in the store.
+**Reads** `edition/lexicon/`. **Writes** — **Exit** 0, or 1 if a named form is not in the store.
 ```
 --root --json --toon --pager
 ```
 
 ### lexicon ratify FORM...
 **Does** `proposed` → `ratified`.
-**Reads** `lexicon/`. **Writes** `lexicon/<slug>.md`, with `--commit`. **Exit** 0.
+**Reads** `edition/lexicon/`. **Writes** `edition/lexicon/<slug>.md`, with `--commit`. **Exit** 0.
 **Note** unlike `entity ratify` this licenses no rule — nothing links a form because its note was ratified. It says the note has been read against the pages the form occurs on.
 ```
 --commit         write the change
@@ -1215,11 +1215,11 @@ entry.
 ```
 
 ### lexicon misses
-**Does** frequency-ranked `lexicon_miss` tokens, for bulk approval — a proper noun into `entities/`, anything else into `data/lexicon_extra.txt`. Two lists: `tokens` is what neither source accounts for, `suppressed` what the entity store already does.
-**Reads** `gt/ocr/`, `data/lexicon_extra.txt`, `entities/`. **Named, not the view**: every recognizer error in `mz/ocr/` is a token no dictionary carries, i.e. a `lexicon_miss`, and this list feeds committed human-edited stores that suppress the detector meant to catch them.
+**Does** frequency-ranked `lexicon_miss` tokens, for bulk approval — a proper noun into `edition/entities/`, anything else into `config/lexicon_extra.txt`. Two lists: `tokens` is what neither source accounts for, `suppressed` what the entity store already does.
+**Reads** `gt/ocr/`, `config/lexicon_extra.txt`, `edition/entities/`. **Named, not the view**: every recognizer error in `mz/ocr/` is a token no dictionary carries, i.e. a `lexicon_miss`, and this list feeds committed human-edited stores that suppress the detector meant to catch them.
 **Writes** — **Exit** 0.
-**Note** `suppressed` exists because the entity store is the *second* source and could otherwise absorb a name silently. Detection runs against the dictionary and `lexicon_extra.txt` alone; each hit is then re-tested against the store's canonicals and alias forms, so what the move to `entities/` took off this list is on it, named. A Tier-1 form in either source is inert regardless — `lexicon_miss` tests only ASCII components of length > 3.
-**Note** **`--common N` asks the other question**, and exists because the dictionary is a floor in the sense CLAUDE.md means: it accounts for every proper noun English happens to spell the same way as a word — `Wolf`, `Frost`, `Bering`, a man called `Ten` — which is precisely the class of entity candidate the default arm cannot see. So the flag drops the dictionary and `lexicon_extra.txt` and reports every token the corpus prints, less the N commonest word forms and less what `entities/` accounts for. The result is a **worklist and not a finding**: most of it is ordinary English, and the reader is scanning for the proper nouns. Measured on today's 275 restored pages at N=1000: 8,237 distinct forms, 1,030 cut, 7,462 reported, 205 suppressed and 17 held back as sentence heads. `scope` carries `forms` and `spellings` both, because either alone reads as the other — the cut ranks folded forms and the rows are spellings, so more spellings than forms can survive it without anything being wrong.
+**Note** `suppressed` exists because the entity store is the *second* source and could otherwise absorb a name silently. Detection runs against the dictionary and `lexicon_extra.txt` alone; each hit is then re-tested against the store's canonicals and alias forms, so what the move to `edition/entities/` took off this list is on it, named. A Tier-1 form in either source is inert regardless — `lexicon_miss` tests only ASCII components of length > 3.
+**Note** **`--common N` asks the other question**, and exists because the dictionary is a floor in the sense CLAUDE.md means: it accounts for every proper noun English happens to spell the same way as a word — `Wolf`, `Frost`, `Bering`, a man called `Ten` — which is precisely the class of entity candidate the default arm cannot see. So the flag drops the dictionary and `lexicon_extra.txt` and reports every token the corpus prints, less the N commonest word forms and less what `edition/entities/` accounts for. The result is a **worklist and not a finding**: most of it is ordinary English, and the reader is scanning for the proper nouns. Measured on today's 275 restored pages at N=1000: 8,237 distinct forms, 1,030 cut, 7,462 reported, 205 suppressed and 17 held back as sentence heads. `scope` carries `forms` and `spellings` both, because either alone reads as the other — the cut ranks folded forms and the rows are spellings, so more spellings than forms can survive it without anything being wrong.
 **Note** the flag changes **which lexicon counts as accounting for a word**, and one thing about what counts as a word. The shape floor is the same call with an empty lexicon — still alphabetic, still longer than three characters, still split on the internal hyphen and apostrophe — but it runs `admit_foreign=True`, which is the one axis the two arms differ on. Which is also why the stoplist is ranked over *reportable* tokens only: `the`, `of` and `and` never reach this report, and ranking over raw tokens would spend most of N on words that were already invisible.
 **Note** **`admit_foreign` exists because the shared floor was hiding names, and it hid taxa first.** As a detector `lexicon_miss` is ASCII-only for a good reason — a non-ASCII token is the *inventory* branch's business and this branch's silence is deliberate — but as a worklist floor that same test silently said "this is not a word" of `Œstrus`. A Latin binomial is where this book keeps its ligatures, so what it cost was `Salmonidæ`, `Coregonidæ`, `Œstrus`, `Œdemagena` and `chamæmorus`, none of which had ever appeared in any report; `Coregonidæ` is printed once, at 1-188, and names a fish family the entity store did not hold. **The axis is not ASCII**: dropping `isascii` outright takes `forms` from 9,367 to 9,860, five hundred of them the corpus's own Tier-1 romanizations, which are not English word forms. What widens is *a word carrying no inventory mark* — measured on one corpus with one call, both settings, **+80 forms and +31 rows, no ASCII row moving**. Eight are the ligatures and 23 are Russian (`нерпа`, `ларга`, `лахтакъ` off 1-151, beside the `акипка` the store already holds as an alias), which is wanted: this list feeds two stores that hold Russian. `test_lexicon_tokens.py` holds the two floors apart in both directions, as `test_lookalike_scope.py` does for the lookalike tables.
 **Note** **N is a request; the cut lands on a frequency boundary.** Splitting a tie by sort order would stoplist one word and keep its equally frequent neighbour on nothing but alphabet, so every form as frequent as the Nth is cut and `scope.cut` says how many that was — 1,027 for a requested 1,000, at a `floor` of 11 occurrences. Asking for more than the corpus has forms cuts all of them and reports nothing, which is the honest answer to the question as asked. The cut folds case (`The` and `the` are one word for a stoplist) where the rows do not (`Frost` and `frost` are two findings, one of which may be a person).
@@ -1230,7 +1230,7 @@ entry.
 **Note** `suppressed` catches more under `--common` than under the default arm, because `entity_forms` contributes each *component* of a multi-word name: `Bering Sea` accounts for a bare `sea`, and a person called `Wolf` would be suppressed by a `Wolf Creek`. That is the same rule both arms use rather than a second one invented here, and the list is printed for exactly this reason.
 ```
 --common N       report every token instead of the dictionary misses, less the
-                 N commonest word forms and less what entities/ accounts for.
+                 N commonest word forms and less what edition/entities/ accounts for.
                  Bare, N is 1000 [off]
 --root --json --toon --pager
 ```
@@ -1245,7 +1245,7 @@ entry.
 ### lexicon lookup QUERY...
 **Does** finds a ratified native form by a typeable key and shows the lines it was printed on, so a form's sense is readable without opening the page — `Kuluˊči` alone is a string, "south of Kuluˊči Bay" is a place. The key is what a reader writes in braces for `proposal set` to expand. Match is a substring of the key, the fold, the form, or the key's bare reduction, so `kulu` reaches it. A non-ASCII query is matched as its key too (`marks.handle_key`), so the form as the book prints it reaches it as well.
 **Note** **a miss is a fact about the query before it is one about the corpus**, and two shapes produced silent wrong negatives. The printed form matched nothing, because the bare reduction drops a small cap whole (`Taˊn˙ñɪn` → `tannn`) while its key spells the letter `i_` and keeps the `i` — the corpus's commonest glyph, parting the two sides the reduction exists to align. And a hyphenated compound the corpus holds only as its elements returned nothing with every element ratified; the elements are now retried **after** the whole misses, and `split` names them, so a widened search says so rather than answering a question nobody asked. `3-125` hand-keyed `Taˊn˙ñɪn` against ten occurrences on six pages for the first reason, and generalized the one miss across four lines. The floor line still holds on top of both: a form carrying no inventory glyph is invisible here whatever the query.
-**Reads** `gt/ocr/`, `data/marks_config.json`. **Writes** — **Exit** 0.
+**Reads** `gt/ocr/`, `config/marks_config.json`. **Writes** — **Exit** 0.
 ```
 QUERY...       any substring; several are an OR, and one call is one index
                build — a page's whole unglossed vocabulary belongs in it
@@ -1257,7 +1257,7 @@ QUERY...       any substring; several are an OR, and one call is one index
 ```
 **Emits** `scope` (the queries, the floor, `forms_indexed`, the standing `floor` caveat, and how many forms could not be keyed), `matches` (one row per form: `key`, `form`, `count`, `pages`, `refs`, `ambiguous`, `why`), and `context`.
 **Note** **the key is marked ASCII and deliberately not pretty** — `Kuluˊči` is `Kulu'c^i`, `Kavraˊlɪt` is `Kavra'li_t`. A plain-ASCII key would spell the second `kavralit` and teach an `i` that is not there, to a reader who will key it from memory on a later page: `fold` collapses exactly the axes this pass gets wrong most often, dropped U+0323 being the largest single correction class and `i`/`ɪ`/`I` the largest family. So every non-ASCII character leaves a visible marker and the key cannot be read back as a spelling. Case passes through — it is legible at any zoom, unlike the dot-below, and lowercasing collided on 11 of the 499 forms.
-**Note** **a word the book spells more than one way yields no key at all**, and a ruling in `data/marks_exempt.json` does not restore it. That ruling says the ambiguity is *real* — the book setting one word two ways rather than a keyer slipping — which is the strongest possible reason to refuse to pick a side. `Čeˊwɪn` (1-042) and `Čeˊwin` (1-052) are the live instance, and 1-042's reader flagged the disagreement rather than harmonizing to the older page's ground truth; a lookup answering with one spelling is a machine for erasing that.
+**Note** **a word the book spells more than one way yields no key at all**, and a ruling in `config/marks_exempt.json` does not restore it. That ruling says the ambiguity is *real* — the book setting one word two ways rather than a keyer slipping — which is the strongest possible reason to refuse to pick a side. `Čeˊwɪn` (1-042) and `Čeˊwin` (1-052) are the live instance, and 1-042's reader flagged the disagreement rather than harmonizing to the older page's ground truth; a lookup answering with one spelling is a machine for erasing that.
 **Note** **the floor counts pages per fold, over all a word's spellings together, and ambiguity is judged before it applies.** Per-form would delete that same instance rather than refuse it — one page each, both below the default — so a floor could hide a conflict. It may withhold a handle from a form the corpus barely attests; it may never do the other thing.
 **Note** the `floor` row is printed on every run because **an empty result is not a corpus-wide negative**: selection requires an inventory glyph, so a native token carrying no mark at all (a bare `c`, `s`, `j`, `x`, `h`) is invisible here by construction. `unkeyable` counts forms carrying something the marker table does not reach — two today, both English possessives on a native name.
 
@@ -1300,13 +1300,13 @@ FORM...        a keyed form, NFD or not; several are several rows
 
 ### lexicon conflicts
 **Does** one word spelled two ways across ground truth — the corpus-wide, store-side arm of `proposal marks`' `conflict`.
-**Reads** `gt/ocr/`, `data/marks_config.json`, `data/marks_exempt.json`. **Writes** — **Exit** 0.
+**Reads** `gt/ocr/`, `config/marks_config.json`, `config/marks_exempt.json`. **Writes** — **Exit** 0.
 ```
 --root --json --toon --pager
 ```
 **Note** rows are **one per (fold, form, page)** and carry `lines`, so a fold is a worklist rather than a notification: the fold is the word with every contrast axis collapsed, and two rows sharing one mean the corpus spells it two ways. `gt/ocr/` and not the `ocr/` view, on the rule that anything publishing a corpus-wide number names the store — through the view every predicted page would contribute, and CATMuS reads 0% of the inventory, so each of its Tier-1 tokens would be a spelling nobody keyed.
 
-**Where the book itself sets a word two ways, the ruling lives in `data/marks_exempt.json`** — a list of `{fold, refs, note}`, and all three are required. Scoped to a fold **and** the pages it was ruled on, never a fold alone: the same word mis-keyed on a page nobody has examined is exactly what this arm is for, and a fold-wide entry would silence it. That is `gt/zones/_ink_exempt.json`'s reasoning — an exemption narrow enough that it cannot hide the next real finding. `note` is required because without one "the tool complained and I made it stop" is indistinguishable from a judgement, and this file is precisely where a wrong call would hide.
+**Where the book itself sets a word two ways, the ruling lives in `config/marks_exempt.json`** — a list of `{fold, refs, note}`, and all three are required. Scoped to a fold **and** the pages it was ruled on, never a fold alone: the same word mis-keyed on a page nobody has examined is exactly what this arm is for, and a fold-wide entry would silence it. That is `gt/zones/_ink_exempt.json`'s reasoning — an exemption narrow enough that it cannot hide the next real finding. `note` is required because without one "the tool complained and I made it stop" is indistinguishable from a judgement, and this file is precisely where a wrong call would hide.
 
 An exempt row is **kept and flagged** (`exempt: true`, carrying its `note`), never dropped; an entry whose conflict no longer occurs on a page that *was* read reports under `stale_exemptions`. Both halves are the mechanism `zones check` uses for ink bands.
 
@@ -1323,7 +1323,7 @@ An exempt row is **kept and flagged** (`exempt: true`, carrying its `note`), nev
 
 ## entity
 
-The encyclopedia: one markdown file per entity at `entities/<class>/<slug>.md`,
+The encyclopedia: one markdown file per entity at `edition/entities/<class>/<slug>.md`,
 identified as `class:slug`. It is the referent of every `@ref` in the corpus and
 the source of the alias vocabulary `tei generate` applies by rule.
 
@@ -1346,7 +1346,7 @@ Human-authored and tracked, so `--commit` gates the two actions that write.
 
 ### entity alias ID FORM
 **Does** add one alias row to an entry that exists. The form may be given as a **lexicon handle in braces** — `{Kulu'c^i}` — which is expanded to the ratified form the corpus prints; a literal form is normalized to NFD and otherwise trusted. Parses the file before writing, so a bad `--lang` or a duplicate form fails as a message.
-**Reads** `entities/`, committed `tei/` and `mz/tei/` when the new form is rule-linkable, and the lexicon index only when the form is braced. **Writes** the entry, and under `--commit` every page that gained a link plus every draft rebuilt. **Exit** 0, or 1 on a refusal.
+**Reads** `edition/entities/`, committed `tei/` and `mz/tei/` when the new form is rule-linkable, and the lexicon index only when the form is braced. **Writes** the entry, and under `--commit` every page that gained a link plus every draft rebuilt. **Exit** 0, or 1 on a refusal.
 ```
 --lang CODE  the language the form is a name in, from `harness/langs.py`. Omitted means unstated, which most of the store says and which is a different claim from a wrong code
 --auto {yes,once,no}  how widely a rule may link the form: `yes` every occurrence, `once` the first on each page and the rest bare, `no` never and a reader is asked on every hit [no]. On a ratified entry `yes` and `once` license a link, so the corpus pass runs
@@ -1363,7 +1363,7 @@ Human-authored and tracked, so `--commit` gates the two actions that write.
 
 ### entity new ID
 **Does** scaffold an entry at `status: proposed`. Nothing mints one ratified — a form a rule may link has to have been read by a human first, and `entity ratify` is that act. Parses the result before writing, so a bad `--within` fails as a message rather than as a file.
-**Reads** — **Writes** `entities/<class>/<slug>.md` under `--commit`. **Exit** 0, or 1 if the entry already exists.
+**Reads** — **Writes** `edition/entities/<class>/<slug>.md` under `--commit`. **Exit** 0, or 1 if the entry already exists.
 **Note** **there is no `--since`.** Both stores carried one — the page whose reading prompted the entry — required on the argument that an apparatus store which cannot be traced back to a page is unauditable. That argument was right and its answer got better: the card derives *every* page the entry is attested on, from the corpus, on every load. **A `since:` is satisfied by typing a plausible ref and a derived attestation list is not**, so the field was the weaker witness while keeping out entries the book plainly contains whose attesting page is among the 558 not yet transcribed. `entity occurrences --all` is where an unwitnessed entry shows now, as a row reading 0 and 0.
 ```
 --canonical NAME  the display name, written into the heading. Not an alias unless you also pass it as one. Required
@@ -1379,7 +1379,7 @@ Human-authored and tracked, so `--commit` gates the two actions that write.
 
 ### entity locate ID
 **Does** set or replace an existing entry's `geo:` members, its `frame:` box, or both. **The act that puts a name on the map**, and it is a human's: a coordinate for a toponym Bogoras wrote in 1904, or the judgement that two sourced polygons are one speaker area, is an assertion about the world no rule may make. Re-parses the file before writing, as `entity new` does, and refuses a member naming a shape `edition/geo/` does not hold or an entity the store does not.
-**Reads** `entities/`, `edition/geo/index.json`. **Writes** the named file under `--commit`. **Exit** 0, or 1 if the entity does not exist.
+**Reads** `edition/entities/`, `edition/geo/index.json`. **Writes** the named file under `--commit`. **Exit** 0, or 1 if the entity does not exist.
 ```
 --geo MEMBER  a point `LAT LON` — two WGS84 decimal degrees, latitude then longitude, negative longitudes west as the store's sources write them, the shift into the atlas's continuous window being the reader's; or a shape in `edition/geo/` `kind:slug`; or another entity `class:slug`, whose extent this one takes. Repeatable, and it **replaces rather than appends**: every `--geo` on one run is the complete new member list
 --frame "W S E N"  four WGS84 decimal degrees, west south east north, saying where the map should look. Longitude first, unlike a `--geo` point, because it is a box; east may exceed 180
@@ -1395,7 +1395,7 @@ Human-authored and tracked, so `--commit` gates the two actions that write.
 
 ### entity check
 **Does** the store gate: every file parses, every class is known, every heading agrees with its directory and its filename, every `within:` resolves, is acyclic and has one of the four geographical classes at **both** ends, every `geo:` member resolves — as a shape in `edition/geo/` or as an entity — and no `geo:` chain cycles, no form is rule-linked (`auto: yes` or `auto: once`) for two entities at once, and every alias's `lang` is in the vocabulary. Collisions that are not errors are reported anyway — an ambiguous form is the normal state, and the generator surfaces it as a question rather than resolving it.
-**Reads** `entities/`, `edition/geo/index.json`. **Writes** — **Exit** 0 clean, 1 on any defect.
+**Reads** `edition/entities/`, `edition/geo/index.json`. **Writes** — **Exit** 0 clean, 1 on any defect.
 **Note** a `geo:` member **resolving** is gated here and everything *geometric* is `geo verify`'s. Resolution is a fact about names, like `within:`; whether a child's shape actually falls inside its parent's is a fact about two delineations, and a gate there would reject true rows on the strength of a coarseness the source declared in advance.
 **Note** **the three edge kinds are walked separately** — `within:`, `part-of:` and `geo:` — so a cycle message names the field a reader has to go and edit. A cycle that *crosses* two of them is deliberately not gated: `extent_of`'s path guard makes it terminate rather than hang, and an error naming no single line is one nobody can act on.
 **Note** **`within:` is geography's alone.** It answers what terrestrial thing contains this one, which `geo verify`'s nesting check can test and the atlas walks. What a thing belongs to is `part-of:`; whose extent it takes is a `geo:` member. Two peoples were filed inside a village to borrow a box, which cost them their place in their own ethnicity's extent.
@@ -1405,21 +1405,21 @@ Human-authored and tracked, so `--commit` gates the two actions that write.
 
 ### entity list
 **Does** every entry — id, status, canonical name, alias and auto-alias counts, and the page that prompted it. Proposed first: the list is read as a worklist more often than as a census.
-**Reads** `entities/`. **Writes** — **Exit** 0.
+**Reads** `edition/entities/`. **Writes** — **Exit** 0.
 ```
 --root --json --toon --pager
 ```
 
 ### entity show ID...
 **Does** whole records, aliases and gloss included.
-**Reads** `entities/`. **Writes** — **Exit** 0.
+**Reads** `edition/entities/`. **Writes** — **Exit** 0.
 ```
 --root --json --toon --pager
 ```
 
 ### entity rename OLD NEW
 **Does** move an entity to a new identity: the file, its heading, every `within:` and `[[wikilink]]` in the store that names it, and every `@ref` in a **committed `tei/` page**. With `--canonical`, files the old display name as an alias — `detectors.entity_forms` splits canonicals into the corpus's proper-noun dictionary, so retitling without it would drop the book's own spelling out of the dictionary and start reporting it as a transcription candidate. Skipped where the entry already lists the form, since `parse` refuses a form listed twice.
-**Reads** `entities/`, `tei/`, `mz/tei/`, and `gt/ocr/` + `gt/zones/` for the drafts it rebuilds. **Writes** the moved file, every re-pointed entry, every collated page and every rebuilt draft under `--commit`. **Exit** 0, or 1 on a usage error.
+**Reads** `edition/entities/`, `tei/`, `mz/tei/`, and `gt/ocr/` + `gt/zones/` for the drafts it rebuilds. **Writes** the moved file, every re-pointed entry, every collated page and every rebuilt draft under `--commit`. **Exit** 0, or 1 on a usage error.
 ```
 --canonical NAME  the new display name; the old one is filed as an alias
 --commit  write it; without this every edit is reported and none is made
@@ -1432,7 +1432,7 @@ Human-authored and tracked, so `--commit` gates the two actions that write.
 
 ### entity sigla
 **Does** carries `Authorities Quoted`'s printed sigla onto the `source:` entries — as the entry's name, and as alias rows. **The siglum is how the book names a work**: a footnote sets `Maydell, I`, and the entry was called `Maydell 1893`, a string printed nowhere in the volume. Adds and renames; never removes a row a human wrote.
-**Reads** `edition/authorities.json`, `entities/`. **Writes** the `source:` entries under `--commit`, plus every page an added `auto` form links, exactly as `entity ratify` does. **Exit** 0.
+**Reads** `edition/authorities.json`, `edition/entities/`. **Writes** the `source:` entries under `--commit`, plus every page an added `auto` form links, exactly as `entity ratify` does. **Exit** 0.
 ```
 --commit  write them; without this every change is reported and none made
 --root --json --toon --pager
@@ -1443,7 +1443,7 @@ Human-authored and tracked, so `--commit` gates the two actions that write.
 
 ### entity ratify ID...
 **Does** `proposed` → `ratified`, **and applies the links that ratification licenses to every collated page**. **The human act**, and the only thing that lets a rule link the entry's forms without asking — so it means the entry has been read against the pages it claims, not that it looks plausible.
-**Reads** `entities/`, committed `tei/`. **Writes** the named files and every page that gained a link, under `--commit`. **Exit** 0.
+**Reads** `edition/entities/`, committed `tei/`. **Writes** the named files and every page that gained a link, under `--commit`. **Exit** 0.
 ```
 --commit
 --root --json --toon --pager
@@ -1455,7 +1455,7 @@ Human-authored and tracked, so `--commit` gates the two actions that write.
 
 ### entity occurrences [ID...]
 **Does** where an entity appears, by two routes: the `@ref` links already in committed TEI, and the alias hits nobody has linked. The second is the interesting half — a large unlinked count on a ratified entity means pages collated before the entry existed, and `tei generate` will link them on the next run. Measurement; never gates.
-**Reads** `entities/`, committed `tei/`. **Writes** — **Exit** 0.
+**Reads** `edition/entities/`, committed `tei/`. **Writes** — **Exit** 0.
 **Note** **committed `tei/` alone.** `entities.occurrences` takes its page list from its caller, and the reading view passes a wider one — the drafts too, under `edition serve --drafts` — so that the card can show mentions before anything is collated. This action audits what is committed and does not inherit that scope. Neither is a flag on the other: they are different questions asked of the same function.
 ```
 --all
@@ -1486,7 +1486,7 @@ is one keystroke from an `area:` that resolves as an entity reference.
 
 ### geo bounds ID...
 **Does** the bounding box of each named region and their union — **the measurement a `frame:` is written from**. Takes entity ids and shape ids in one list. An entity's box is `geo.extent_of`: its own shape, else its own point, else the union of everything beneath it, which is what the atlas frames on; a shape's is the polygon's own. The union row carries `span_lon`/`span_lat` and a `frame` field spelled exactly as `entity locate --frame` takes it.
-**Reads** `edition/geo/`, `entities/`. **Writes** — **Exit** 0.
+**Reads** `edition/geo/`, `edition/entities/`. **Writes** — **Exit** 0.
 ```
 --margin DEG  degrees added on all four sides of the union
 --root --json --toon --pager
@@ -1498,18 +1498,18 @@ is one keystroke from an `area:` that resolves as an entity reference.
 
 ### geo list
 **Does** every shape in the store — id, kind, name, point count, area, source, and the entity that claims it. **Also the absences**: four speaker areas this edition sought in Asher 2007 have no polygon there — Siberian Yupik, Chuvan, Kerek and Tundra Yukaghir, two of them (`ypk`, `xcv`) Tier-1 codes — and they are rows here rather than silences, because an entity pointing at nothing and an entity nobody has got to yet look identical from outside.
-**Reads** `edition/geo/`, `entities/`. **Writes** — **Exit** 0.
+**Reads** `edition/geo/`, `edition/entities/`. **Writes** — **Exit** 0.
 ```
 --root --json --toon --pager
 ```
 **Emits** `scope` (`shapes`, `claimed`, the longitude `window`, `absent`, `composites`), `shapes`, `composites`, and `absent`.
-**Note** **a composite `area:` counts as a claim on each of its members.** A union is a fact about `entities/` and this census is a fact about `edition/geo/`, so the unions are listed after the store's own rows and never among them — nothing mints a shape by naming one.
+**Note** **a composite `area:` counts as a claim on each of its members.** A union is a fact about `edition/entities/` and this census is a fact about `edition/geo/`, so the unions are listed after the store's own rows and never among them — nothing mints a shape by naming one.
 **Note** **the `absent` block holds two kinds of absence and says which.** It began as "a Tier-1 code Asher 2007 draws no polygon for"; it now also holds a feature no gazetteer in hand carries at all — Bering Strait, which is in neither Natural Earth layer at 10m. A row therefore carries `sought` and `source`, what was looked for and where, so the second is not read as the first.
 **Note** longitudes are normalized into `[60, 420)`, so anything above 180 is west of the antimeridian and Chukotka runs continuously rather than tearing from +179 to −179. It is what lets every planar operation downstream treat a meridian-spanning shape as an ordinary one.
 
 ### geo verify
 **Does** the geometry against the authored hierarchy, and the hierarchy against itself. Six reports, none of which gates.
-**Reads** `edition/geo/`, `entities/`. **Writes** — **Exit** 0.
+**Reads** `edition/geo/`, `edition/entities/`. **Writes** — **Exit** 0.
 ```
 --root --json --toon --pager
 ```
@@ -1534,8 +1534,8 @@ was read from are three stores, and the point of the view is that they are in on
 place.
 
 ### edition serve
-**Does** open the reading view on 127.0.0.1 — collated TEI in a main column, a stack of entity, note, map and scan cards beside it, plus the encyclopedia, its audit queue, and `/atlas`: the `within:` hierarchy as a navigable tree with each node drawn inside its parent's extent. Shows committed `tei/` only unless `--drafts`; a generated baseline is a draft nobody has read, and an end-user preview is the last place it belongs. Ratifying an entry in the browser writes `entities/` without `--commit`, as the other editors write their stores — the click is the human act, the store is tracked, git is the witness — and every write is rolled back if `entity check` would fail on the result. Blocks until the page or ctrl-c stops it.
-**Reads** `tei/`, `entities/`, `edition/geo/`, `scans/`, and `mz/tei/` under `--drafts`. **Writes** `entities/` on an explicit click. **Exit** 0.
+**Does** open the reading view on 127.0.0.1 — collated TEI in a main column, a stack of entity, note, map and scan cards beside it, plus the encyclopedia, its audit queue, and `/atlas`: the `within:` hierarchy as a navigable tree with each node drawn inside its parent's extent. Shows committed `tei/` only unless `--drafts`; a generated baseline is a draft nobody has read, and an end-user preview is the last place it belongs. Ratifying an entry in the browser writes `edition/entities/` without `--commit`, as the other editors write their stores — the click is the human act, the store is tracked, git is the witness — and every write is rolled back if `entity check` would fail on the result. Blocks until the page or ctrl-c stops it.
+**Reads** `tei/`, `edition/entities/`, `edition/geo/`, `scans/`, and `mz/tei/` under `--drafts`. **Writes** `edition/entities/` on an explicit click. **Exit** 0.
 **Note** `--drafts` is **read-only and marked everywhere it shows**: in the listing, on the page itself and beside every search hit, because a URL typed straight in skips the listing that would otherwise carry the warning. It reaches `mz/tei/` **by naming it** — `tei/` is a store and never a symlink farm over the generated one, since nine callers read "a file is in `tei/`" as "somebody collated this" and a link is indistinguishable from a signature to all of them (`test_tei_is_a_store_and_never_a_farm`). Entity attestations stay signed-only whatever this flag says: an attestation is a claim about a reading, and a draft has read nothing.
 **Note** the atlas is **scoped to located subtrees** — a root is an entity with no `within:` that has somewhere to put on a map, itself or below it — otherwise every person and source in the store is an atlas root. A node with no `area:` and no `geo:` is framed by the union of what lies beneath it, and the map says so: no source draws a boundary for Chukotka, and a frame is a viewport rather than a claim.
 ```
@@ -1708,7 +1708,7 @@ which asks, or not at all.
 
 ### fig check [PP-NNN ...]
 **Does** the gate. Named pages give their errors, warnings and exemptions in full; `--all` sweeps the store and lists only the pages with something to say.
-**Reads** `gt/fig/` or `mz/fig/` per `--store`, `gt/fig/_rule_exempt.json`, the split lists, `data/zones_config.json`, `edition/figure_numbers.json`, and each page's raster for its dimensions.
+**Reads** `gt/fig/` or `mz/fig/` per `--store`, `gt/fig/_rule_exempt.json`, the split lists, `config/zones_config.json`, `edition/figure_numbers.json`, and each page's raster for its dimensions.
 **Writes** —
 **Exit** 1 if any page in `gt/` has an **error**, or if the figure-number patch table names a zone the store does not hold; 0 otherwise. Always 0 for `--store mz`, which is measurement.
 ```
@@ -1718,7 +1718,7 @@ PP-NNN...     which pages; several may be given
 --root --json --toon --pager
 ```
 **Note** **three errors, and the list is short on purpose.** A label the store does not declare; a `Shape/Polygon` that is not the rectangle its own bbox claims; a box off the raster. Each is unarguable — nothing could read the first, nothing does read the second, and the third describes part of a page that does not exist.
-**Note** everything else is a **warning**: configured in `data/zones_config.json`, exemptable per page, never gating. `captions-lte-figures` is a fact about *this book* (414 pictures to 395 captions, and every caption-heavy page this store ever held turned out to be a segmentation fault). `picture-overlap` and `tiny-picture` were briefly written as errors, on the zone track's model, and that was importing a rule from a geometry regime that does not apply: zones partition the page and form a chain, so an overlap there is unrepresentable and can be refused, while figures are freely placed — an inset sits inside the frame it insets, two pictures on a plate may abut, and a 14×38 px box is suspicious rather than impossible. Over the migrated store the two produce exactly three findings (`1-189`, `1-334`, `2-085`), every one a real thing to look at and not one a thing the store must refuse to hold.
+**Note** everything else is a **warning**: configured in `config/zones_config.json`, exemptable per page, never gating. `captions-lte-figures` is a fact about *this book* (414 pictures to 395 captions, and every caption-heavy page this store ever held turned out to be a segmentation fault). `picture-overlap` and `tiny-picture` were briefly written as errors, on the zone track's model, and that was importing a rule from a geometry regime that does not apply: zones partition the page and form a chain, so an overlap there is unrepresentable and can be refused, while figures are freely placed — an inset sits inside the frame it insets, two pictures on a plate may abut, and a 14×38 px box is suspicious rather than impossible. Over the migrated store the two produce exactly three findings (`1-189`, `1-334`, `2-085`), every one a real thing to look at and not one a thing the store must refuse to hold.
 **Note** a corpus sweep of `gt/` also checks `edition/figure_numbers.json`, the hand-keyed table for the three figures whose number no rule can derive (`docs/apparatus.md`). Each entry names picture zones on a leaf, so it is a claim about *this* store and is verified against it rather than trusted — re-box that leaf and the patch must fail, not go stale.
 **Note** an exempted rule **still reports**, flagged, the way the zone track's do — a warning that vanished when excused would leave no way to notice the excuse had outlived its page. An exemption naming a rule the config does not declare is an *error*, since a typo would otherwise excuse nothing while reading as a considered judgement.
 

@@ -124,8 +124,8 @@ def test_a_lexicon_entry_does_not_satisfy_the_gate(tmp_path):
     the form, and an entry written elsewhere is not that. It also keeps the gate
     from going quiet as the store fills, which is the direction a coupled gate
     would fail in."""
-    (tmp_path / "lexicon").mkdir()
-    (tmp_path / "lexicon" / "kelilin.md").write_text(
+    (tmp_path / "edition" / "lexicon").mkdir(parents=True)
+    (tmp_path / "edition" / "lexicon" / "kelilin.md").write_text(
         "# kełiˊlın\n\n- status: proposed\n- since: 1-021\n\n"
         "## editor's note\n\nThe ringed seal.\n", encoding="utf-8")
     got = warns(tmp_path, f"<p>the seal <foreign {CKT}>kełiˊlın</foreign></p>")

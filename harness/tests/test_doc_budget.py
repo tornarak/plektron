@@ -49,7 +49,7 @@ REPO = Path(__file__).resolve().parent.parent.parent
 # repository. An agent that read nothing else would delete it as derived cruft
 # or try to regenerate it, so the exception has to be visible where the rule is.
 #
-# **Raised a third time, 15_000 → 15_200, for `lexicon/`**, and it is the same
+# **Raised a third time, 15_000 → 15_200, for `lexicon/` (now `edition/lexicon/`)**, and it is the same
 # kind of raise as the two above rather than the kind this gate exists to stop.
 # The layout block enumerates *every* top-level store; a new tracked one missing
 # from it does not make the block shorter, it makes it wrong, and wrong in the

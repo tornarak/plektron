@@ -66,8 +66,8 @@ def test_the_scan_actually_reached_the_corpus(report):
     the failure it exists to prevent, one level up."""
     assert report["files"] > 0, "the corpus glob matched nothing"
     scoped = {str(p.relative_to(REPO)) for p in scoped_files(REPO)}
-    assert any(s.startswith("entities/") for s in scoped), \
-        "entities/ is out of scope — the store where the last drift appeared"
+    assert any(s.startswith("edition/entities/") for s in scoped), \
+        "edition/entities/ is out of scope — the store where the last drift appeared"
     assert any(s.startswith("gt/ocr/") for s in scoped), \
         "gt/ocr/ is out of scope — the store the NFD rule is chiefly about"
 

@@ -115,27 +115,30 @@ Layout, all at the repo root:
             a fragment gated by `harness tei header`. The header is tracked; the
             pages are **temporarily ignored** while the generator is rewritten,
             for the reason and the expiry in .gitignore.
-    edition/  what is served to a reader and nothing else — a **layer**, not a
-            rank: `#ed` lives in `@resp` and covers rulings that never reach a
-            reader. toc.json loi.json authorities.json alphabet.json runs.json
-            figure_numbers.json — the book's apparatus, amended, so none is `gt/`;
-            fig-img/, page-img/ — the touch-ups. Tracked; no rule writes here. An
-            improvement on the page is what `gt/` may not be (`docs/edition.md`;
-            the touch-ups' own rule is `docs/apparatus.md`).
-    edition/geo/  the atlas's shapes — watersheds, language areas, named
-            features, coastline.
-            **Derived but tracked**, the one store that is: its sources are
-            outside the repo, so a clone cannot rebuild it. tools/build_geo.py
-            builds, SOURCES.md records provenance, `geo list` is the census.
-    entities/  the encyclopedia, one markdown file per entity under its class
-            (person/, place/, event/ …). An identity is `class:slug`, which is
-            what every `@ref` holds. Tracked; `entity check` gates it.
-    lexicon/  one file per Tier-1 form an editor has written a note about; the
-            identity is the form, and the rest of its card is derived. Tracked;
-            `lexicon check` gates it. Declared and still empty — no notes yet.
-    data/   lexicon_extra.txt  marks_config.json  marks_exempt.json
-            zones_config.json  lines_config.json  pdf_images.json
-            tei_all.rng (the schema).
+    edition/  what is served to a reader, and nothing else — a **layer**, not a
+            rank: `#ed` lives in `@resp` and also covers rulings no reader sees.
+            Tracked; no rule writes here. `docs/edition.md`.
+            toc/loi/authorities/alphabet/runs/figure_numbers.json — the book's
+              apparatus, amended, which is why none of it is `gt/`.
+            entities/  the encyclopedia, one file per entity under its class
+              (person/, place/ …). An identity is `class:slug`, which is what
+              every `@ref` holds; `entity check` gates it.
+            lexicon/  one file per Tier-1 form an editor has noted; the identity
+              is the form, the rest of the card is derived. `lexicon check`
+              gates it. Declared and still empty.
+            fig-img/, page-img/  the touch-ups. An improvement on the page is
+              what `gt/` may not be (`docs/apparatus.md`).
+            geo/  the atlas — watersheds, language areas, named features,
+              coastline. **Derived but tracked**, the one store that is: its
+              sources are outside the repo, so a clone cannot rebuild it.
+              tools/build_geo.py builds, SOURCES.md records provenance,
+              `geo list` is the census.
+    config/ what a pass is tuned by, validated at load — zones_config.json
+            lines_config.json marks_config.json — and the editor's rulings over
+            one: marks_exempt.json lexicon_extra.txt, `#ed` **rank** but no part
+            of the edition, which is why they sit here and not in it.
+    data/   nothing authored: pdf_images.json _migrated.json are machine
+            receipts, tei_all.rng the vendored TEI schema.
     review/ one directory per page: proposal.json (a reading, not truth) and
             decision.json (adjudicated) are tracked; the images are derived and
             ignored. See harness/paths.py.
@@ -260,7 +263,7 @@ match ∪ word-medial `[AEIL]` ∪ dot-above-g ∪ apostrophe-adjacency ∪ **En
 miss**. A **floor**: unmarked ASCII inventory members (`c` = English *sh*, plain `s`,
 `j`, `x`) are undetectable by construction, and a hit is never a verdict — an
 inventory mark fires on ordinary German too. A floor is not licence for noise above
-it: the entity store's names and `data/lexicon_extra.txt`'s coinages both
+it: the entity store's names and `config/lexicon_extra.txt`'s coinages both
 **suppress `lexicon_miss` and nothing else**.
 
 **Density, measured** on the two densest pages: inventory glyphs are **3.3% of

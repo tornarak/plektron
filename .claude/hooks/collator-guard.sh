@@ -66,7 +66,15 @@ readable() {
     */docs/*|docs/*) return 0 ;;
     *"$MEMORY"*) return 0 ;;
     # The apparatus the verbs read off: authorities.json, loi.json, toc.json,
-    # readings.md, the schema.
+    # alphabet.json, runs.json. These moved out of `data/` when the stores were
+    # split by layer, and the arm below moved with them — a read-allow that
+    # silently stops matching does not fail, it refuses a file the collator is
+    # meant to have, which reads as the file being forbidden rather than moved.
+    */edition/*|edition/*) return 0 ;;
+    # The pass configuration and the editor's rulings — marks_config.json,
+    # marks_exempt.json, lexicon_extra.txt.
+    */config/*|config/*) return 0 ;;
+    # What is left in `data/`: the TEI schema and the machine receipts.
     */data/*|data/*) return 0 ;;
     # **The encyclopedia.** Deciding whether a page means people:chukchi or
     # language:chukchi is reading the two glosses and the sentence; a collator

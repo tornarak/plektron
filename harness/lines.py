@@ -1180,7 +1180,7 @@ def line_gaps(ref: str, root: Path, store: str,
     # own; the decode is the whole cost of the check. Costs ~13 ms a page anyway
     # (2.02 s -> 2.50 s over 38 pages serially), which buys the agreement.
     #
-    # It does couple this to `data/zones_config.json`. The anchor's sparse-page
+    # It does couple this to `config/zones_config.json`. The anchor's sparse-page
     # fallback is not a risk it inherits, though: a page reaches an OCR store only
     # through `ocr predict`, which runs from the zones, so a leaf blank enough to
     # defeat the measure never gets zones and never gets here — `1-330`, the

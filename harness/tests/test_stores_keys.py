@@ -106,46 +106,46 @@ def runs_json(root: Path, runs: list[dict]) -> Path:
 
 
 def test_load_is_keyed_on_every_entity_file(tmp_path, monkeypatch):
-    files = lambda: sorted((tmp_path / "entities").glob("*/*.md"))  # noqa: E731
+    files = lambda: sorted((tmp_path / "edition" / "entities").glob("*/*.md"))  # noqa: E731
     probe = Probe(files)
     monkeypatch.setattr("harness.entities.load", probe)
-    write(tmp_path / "entities" / "place" / "markova.md", "# Markova\n")
+    write(tmp_path / "edition" / "entities" / "place" / "markova.md", "# Markova\n")
 
     pins(lambda: stores.load(tmp_path),
          ("an edit to an entity",
-          lambda: write(tmp_path / "entities" / "place" / "markova.md", "# M\n")),
+          lambda: write(tmp_path / "edition" / "entities" / "place" / "markova.md", "# M\n")),
          ("a new entity",
-          lambda: write(tmp_path / "entities" / "person" / "bogoras.md", "# B\n")),
+          lambda: write(tmp_path / "edition" / "entities" / "person" / "bogoras.md", "# B\n")),
          ("a new class directory",
-          lambda: write(tmp_path / "entities" / "event" / "fair.md", "# F\n")),
+          lambda: write(tmp_path / "edition" / "entities" / "event" / "fair.md", "# F\n")),
          ("a deleted entity",
-          lambda: (tmp_path / "entities" / "person" / "bogoras.md").unlink()))
+          lambda: (tmp_path / "edition" / "entities" / "person" / "bogoras.md").unlink()))
     assert probe.calls == 5
 
 
 def test_check_is_keyed_on_the_same_store_as_load(tmp_path, monkeypatch):
     """`_guarded` writes the store and re-checks it inside one request — the
     window `cache.py` measured — so this key has to be the strict one too."""
-    files = lambda: sorted((tmp_path / "entities").glob("*/*.md"))  # noqa: E731
+    files = lambda: sorted((tmp_path / "edition" / "entities").glob("*/*.md"))  # noqa: E731
     monkeypatch.setattr("harness.entities.check", Probe(files))
-    write(tmp_path / "entities" / "place" / "markova.md", "# Markova\n")
+    write(tmp_path / "edition" / "entities" / "place" / "markova.md", "# Markova\n")
 
     pins(lambda: stores.check(tmp_path),
          ("an edit to an entity",
-          lambda: write(tmp_path / "entities" / "place" / "markova.md", "# M\n")),
+          lambda: write(tmp_path / "edition" / "entities" / "place" / "markova.md", "# M\n")),
          ("a new entity",
-          lambda: write(tmp_path / "entities" / "place" / "anadyr.md", "# A\n")))
+          lambda: write(tmp_path / "edition" / "entities" / "place" / "anadyr.md", "# A\n")))
 
 
 def test_lexicon_is_keyed_on_every_note(tmp_path, monkeypatch):
-    files = lambda: sorted((tmp_path / "lexicon").glob("*.md"))  # noqa: E731
+    files = lambda: sorted((tmp_path / "edition" / "lexicon").glob("*.md"))  # noqa: E731
     monkeypatch.setattr("harness.lexicon.load", Probe(files))
-    write(tmp_path / "lexicon" / "a.md", "one")
+    write(tmp_path / "edition" / "lexicon" / "a.md", "one")
 
     pins(lambda: stores.lexicon_store(tmp_path),
          ("an edit to a note",
-          lambda: write(tmp_path / "lexicon" / "a.md", "two")),
-         ("a new note", lambda: write(tmp_path / "lexicon" / "b.md", "three")))
+          lambda: write(tmp_path / "edition" / "lexicon" / "a.md", "two")),
+         ("a new note", lambda: write(tmp_path / "edition" / "lexicon" / "b.md", "three")))
 
 
 # ------------------------------------------------------------------ page lists
@@ -527,7 +527,7 @@ def test_occurrences_is_keyed_on_the_pages_and_on_the_alias_table(
                 + sorted((tmp_path / "mz" / "tei").glob("chukchi-*.xml")))
 
     def files():
-        return pages() + sorted((tmp_path / "entities").glob("*/*.md"))
+        return pages() + sorted((tmp_path / "edition" / "entities").glob("*/*.md"))
 
     from test_entities import entry
 
@@ -654,7 +654,7 @@ def test_the_native_memo_is_the_no_exclude_index_only(tmp_path, monkeypatch):
 
 @pytest.mark.xfail(strict=True, reason="the fold table is not in native's key")
 def test_native_notices_the_fold_table(tmp_path, monkeypatch):
-    """`lookup.index` reads `data/marks_config.json` for the contrasts it folds
+    """`lookup.index` reads `config/marks_config.json` for the contrasts it folds
     on, so the fold table decides the buckets — and it is not in the key.
 
     Marked expected-to-fail rather than fixed here: this file is a gate, not a
@@ -673,6 +673,6 @@ def test_native_notices_the_fold_table(tmp_path, monkeypatch):
     write(tmp_path / CONFIG, json.dumps({"contrasts": []}))
 
     pins(lambda: stores.native(tmp_path),
-         ("data/marks_config.json",
+         ("config/marks_config.json",
           lambda: write(tmp_path / CONFIG,
                         json.dumps({"contrasts": ["˙"]}))))

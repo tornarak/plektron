@@ -432,7 +432,7 @@ def test_a_draft_the_generator_will_not_build_does_not_fail_the_rename(
     monkeypatch.setattr("harness.generate.generate", unready)
     _entity.run_rename(_args(tmp_path, old="place:markovo",
                              new="place:markovo-1", canonical="", commit=True))
-    assert (tmp_path / "entities" / "place" / "markovo-1.md").exists()
+    assert (tmp_path / "edition" / "entities" / "place" / "markovo-1.md").exists()
 
 
 def test_an_alias_row_has_no_double_space_in_any_cell(tmp_path):

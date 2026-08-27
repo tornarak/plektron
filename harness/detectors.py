@@ -554,8 +554,8 @@ def joined_words(recs: list[dict]) -> tuple[list[str], list[list[int]]]:
 
 
 #: `midline_forms`, memoised on the root. Keyed on the root alone and not
-#: stamped the way `_lexicon` stamps `entities/`, because the difference is real:
-#: `entities/` changes *inside* a process — `edition_ui._guarded` writes it on a
+#: stamped the way `_lexicon` stamps `edition/entities/`, because the difference is real:
+#: `edition/entities/` changes *inside* a process — `edition_ui._guarded` writes it on a
 #: browser click — and `gt/ocr/` does not. `ocr restore` and `ocr edit` are
 #: separate invocations, and the one long-lived process that reads this,
 #: `edition serve`, writes `mz/tei/` and the entity store and never the ALTO.
@@ -689,7 +689,7 @@ _WORDS: dict[tuple, set[str]] = {}
 
 
 def _base_lexicon(root: Path = Path(".")) -> set[str]:
-    """System dictionary plus `data/lexicon_extra.txt`, without the entity store.
+    """System dictionary plus `config/lexicon_extra.txt`, without the entity store.
 
     Named apart from `_lexicon` because `suggest_lexicon` needs both: the
     difference between the two is exactly what the entity store suppressed, and
@@ -699,7 +699,7 @@ def _base_lexicon(root: Path = Path(".")) -> set[str]:
     words: set[str] = set()
     for cand in (Path("/usr/share/dict/american-english"),
                  Path("/usr/share/dict/words"),
-                 root / "data" / "english_lexicon.txt"):
+                 root / "config" / "english_lexicon.txt"):
         if cand.exists():
             words = {w.strip().lower()
                      for w in cand.read_text(encoding="utf-8").splitlines()}
@@ -736,14 +736,14 @@ def entity_forms(root: Path = Path(".")) -> set[str]:
 def _entities_stamp(root: Path) -> tuple:
     """Cheap identity for the entity store, for `_lexicon`'s cache key.
 
-    `data/lexicon_extra.txt` only ever changed between processes, so a cache
-    keyed on the root alone was safe. `entities/` changes *inside* one:
+    `config/lexicon_extra.txt` only ever changed between processes, so a cache
+    keyed on the root alone was safe. `edition/entities/` changes *inside* one:
     `edition_ui._guarded` writes it on a browser click. Stat rather than
     contents because this is recomputed once per page of a corpus sweep and a
     content hash over the store would be ~100 reads each time; the write path
     that matters here goes through `_guarded`, which rewrites whole files.
     """
-    d = root / "entities"
+    d = root / "edition" / "entities"
     if not d.is_dir():
         return ()
     return tuple(sorted(
@@ -754,7 +754,7 @@ def _entities_stamp(root: Path) -> tuple:
 def _lexicon(root: Path = Path(".")) -> set[str]:
     """System dictionary, the project's additions, and the entity store's names.
 
-    `data/lexicon_extra.txt` holds what a general English dictionary cannot be
+    `config/lexicon_extra.txt` holds what a general English dictionary cannot be
     expected to carry — Latin binomials, Bogoras's recurring coinages, the
     abbreviations his running heads repeat. It suppresses `lexicon_miss` and
     nothing else: the inventory, apostrophe, dot-above-g and smart-quote
@@ -783,8 +783,8 @@ def _lexicon(root: Path = Path(".")) -> set[str]:
 
 
 def load_extra_lexicon(root: Path = Path(".")) -> set[str]:
-    """`data/lexicon_extra.txt` — one term per line, `#` comments, blanks ok."""
-    p = root / "data" / "lexicon_extra.txt"
+    """`config/lexicon_extra.txt` — one term per line, `#` comments, blanks ok."""
+    p = root / "config" / "lexicon_extra.txt"
     if not p.exists():
         return set()
     out = set()
@@ -836,7 +836,7 @@ def lexicon_miss(tok: str, lex: set[str], admit_foreign: bool = False) -> bool:
     rows, and no ASCII row moves at all.** Eight are the ligatures — `larvæ`,
     `vitæ`, `diarrhœa`, `Grønland`, `mediæval`, `spatulæ`, `tædium`,
     `vertebræ` — and the five taxa that prompted this are absent from the
-    delta only because `entities/` now suppresses them, which is the report
+    delta only because `edition/entities/` now suppresses them, which is the report
     working. The other 23 are **Russian**, and wanted: `нерпа`, `ларга`,
     `лахтакъ` are 1-151's seal glosses, standing beside the `акипка` that
     `taxon:phoca-ochotensis-macrodens` already carries as an alias, and
@@ -886,7 +886,7 @@ def _unknown_word(p: str, lex: set[str], admit_foreign: bool = False) -> bool:
     """One component against the lexicon. Short and non-alphabetic components
     are never a miss, and by default non-ASCII ones are not either — as a
     detector this tests English and nothing else, which is also why a Tier-1
-    form in `data/lexicon_extra.txt` is inert.
+    form in `config/lexicon_extra.txt` is inert.
 
     That ASCII half is the only part a caller may widen, and `lexicon_miss`'s
     docstring says who may and why. Nothing else about the shape moves: still
@@ -1262,7 +1262,7 @@ def suggest_lexicon(root: Path = Path("."), common: int | None = None,
     is frequent, not what is English, and not which store a name belongs in.
 
     **Two lists, because there are now two sources.** Detection runs against
-    `_base_lexicon` — the dictionary and `data/lexicon_extra.txt` — and each hit
+    `_base_lexicon` — the dictionary and `config/lexicon_extra.txt` — and each hit
     is then tested against the full lexicon, so a token the *entity store*
     accounts for comes back under `suppressed` instead of vanishing. A whitelist
     that silently absorbed names would be the same defect as a whitelist nobody
@@ -1473,7 +1473,7 @@ def suggest_lexicon(root: Path = Path("."), common: int | None = None,
                                 "folds case for the cut, `spellings` do not"}],
             "boundary": boundary[-_BOUNDARY:],
             # `admit_foreign=True` here too, and it is not decoration: this split
-            # asks whether `entities/` already accounts for a row, and under the
+            # asks whether `edition/entities/` already accounts for a row, and under the
             # default floor every ligature-bearing row answers *no component is
             # a miss* and lands in `suppressed` — reading as "the store has it"
             # when the store has never seen it. The floor has to be the same one

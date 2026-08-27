@@ -23,11 +23,11 @@ from .cache import MAXSIZE, digest, stamp
 
 
 def _entity_files(root: Path) -> list[Path]:
-    return sorted((Path(root) / "entities").glob("*/*.md"))
+    return sorted((Path(root) / "edition" / "entities").glob("*/*.md"))
 
 
 def _lexicon_files(root: Path) -> list[Path]:
-    return sorted((Path(root) / "lexicon").glob("*.md"))
+    return sorted((Path(root) / "edition" / "lexicon").glob("*.md"))
 
 
 def _gt_ocr_files(root: Path) -> list[Path]:
@@ -322,7 +322,7 @@ def _native(root: str, _key: bytes) -> dict:
     try:
         return lookup.index(Path(root))
     except MarksConfigError:
-        # A root with no `data/marks_config.json` has no fold table, so it has
+        # A root with no `config/marks_config.json` has no fold table, so it has
         # no buckets — the same answer `entities.load` gives for a missing
         # store, and for the same reason: absence is emptiness, not a 500 on a
         # page that would otherwise render.

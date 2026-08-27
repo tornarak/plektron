@@ -28,7 +28,7 @@ from harness import geo
 
 def write(root: Path, ident: str, body: str = "", **fields) -> Path:
     cls, _, slug = ident.partition(":")
-    p = root / "entities" / cls / f"{slug}.md"
+    p = root / "edition" / "entities" / cls / f"{slug}.md"
     p.parent.mkdir(parents=True, exist_ok=True)
     rows = "".join(f"- {k.replace('_', '-')}: {v}\n"
                    for k, v in fields.items() if v)

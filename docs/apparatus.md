@@ -415,7 +415,7 @@ goes stale.
 **The store was `ed/` when the argument above was written, and the rename to
 `edition/` does not touch it.** What changed is the axis the folder is named on:
 `#ed` is a *rank* and lives in `@resp`, where it also covers rulings a reader
-never sees (`data/marks_exempt.json`), while the folder holds a *layer* — what
+never sees (`config/marks_exempt.json`), while the folder holds a *layer* — what
 is served. A retouched crop is both, which is why it did not move.
 `docs/edition.md` owns the layer; this file keeps the figure track.
 

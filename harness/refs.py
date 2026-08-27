@@ -48,7 +48,7 @@ REF_RE = re.compile(r"^(?:chukchi-)?(\d+)-(\d+)$")
 #                     which split the folio out of the head as its own zone. The
 #                     current scheme cannot express that split — a fixed-width
 #                     vertical partition has nowhere to put it, and the two are on
-#                     one printed line (`data/zones_config.json`). Last because it
+#                     one printed line (`config/zones_config.json`). Last because it
 #                     is the store-specific spelling, not a place on the page: it
 #                     appears at the head on `1-048` and at the foot on `1-151`.
 #

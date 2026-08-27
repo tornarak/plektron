@@ -252,8 +252,8 @@ def test_an_unreadable_mark_renders_as_text(tmp_path):
 def test_a_reference_inside_an_entity_link_renders_flat(tmp_path):
     """An anchor inside an anchor is not markup HTML has, and the entity link is
     the one that survives — `_referring`'s rule, unchanged."""
-    (tmp_path / "entities" / "place").mkdir(parents=True, exist_ok=True)
-    (tmp_path / "entities" / "place" / "markova.md").write_text(
+    (tmp_path / "edition" / "entities" / "place").mkdir(parents=True, exist_ok=True)
+    (tmp_path / "edition" / "entities" / "place" / "markova.md").write_text(
         "# place:markova — Markova\n\n- status: ratified\n\n## aliases\n\n"
         "| form | lang | auto | note |\n|---|---|---|---|\n"
         "| Markova | | yes | |\n\n## gloss\n\nA fair.\n", encoding="utf-8")

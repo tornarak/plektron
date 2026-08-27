@@ -399,19 +399,19 @@
       the page marked a proper noun and what kind it is.
     -->
     <listPrefixDef>
-      <prefixDef ident="person" matchPattern="(.+)" replacementPattern="entities/person/$1.md"/>
-      <prefixDef ident="people" matchPattern="(.+)" replacementPattern="entities/people/$1.md"/>
-      <prefixDef ident="place" matchPattern="(.+)" replacementPattern="entities/place/$1.md"/>
-      <prefixDef ident="land" matchPattern="(.+)" replacementPattern="entities/land/$1.md"/>
-      <prefixDef ident="water" matchPattern="(.+)" replacementPattern="entities/water/$1.md"/>
-      <prefixDef ident="river" matchPattern="(.+)" replacementPattern="entities/river/$1.md"/>
-      <prefixDef ident="animal" matchPattern="(.+)" replacementPattern="entities/animal/$1.md"/>
-      <prefixDef ident="being" matchPattern="(.+)" replacementPattern="entities/being/$1.md"/>
-      <prefixDef ident="event" matchPattern="(.+)" replacementPattern="entities/event/$1.md"/>
-      <prefixDef ident="sky" matchPattern="(.+)" replacementPattern="entities/sky/$1.md"/>
-      <prefixDef ident="taxon" matchPattern="(.+)" replacementPattern="entities/taxon/$1.md"/>
-      <prefixDef ident="institution" matchPattern="(.+)" replacementPattern="entities/institution/$1.md"/>
-      <prefixDef ident="source" matchPattern="(.+)" replacementPattern="entities/source/$1.md"/>
+      <prefixDef ident="person" matchPattern="(.+)" replacementPattern="edition/entities/person/$1.md"/>
+      <prefixDef ident="people" matchPattern="(.+)" replacementPattern="edition/entities/people/$1.md"/>
+      <prefixDef ident="place" matchPattern="(.+)" replacementPattern="edition/entities/place/$1.md"/>
+      <prefixDef ident="land" matchPattern="(.+)" replacementPattern="edition/entities/land/$1.md"/>
+      <prefixDef ident="water" matchPattern="(.+)" replacementPattern="edition/entities/water/$1.md"/>
+      <prefixDef ident="river" matchPattern="(.+)" replacementPattern="edition/entities/river/$1.md"/>
+      <prefixDef ident="animal" matchPattern="(.+)" replacementPattern="edition/entities/animal/$1.md"/>
+      <prefixDef ident="being" matchPattern="(.+)" replacementPattern="edition/entities/being/$1.md"/>
+      <prefixDef ident="event" matchPattern="(.+)" replacementPattern="edition/entities/event/$1.md"/>
+      <prefixDef ident="sky" matchPattern="(.+)" replacementPattern="edition/entities/sky/$1.md"/>
+      <prefixDef ident="taxon" matchPattern="(.+)" replacementPattern="edition/entities/taxon/$1.md"/>
+      <prefixDef ident="institution" matchPattern="(.+)" replacementPattern="edition/entities/institution/$1.md"/>
+      <prefixDef ident="source" matchPattern="(.+)" replacementPattern="edition/entities/source/$1.md"/>
     </listPrefixDef>
     <projectDesc>
       <p>A proof of concept for an open ethnographic-atlas effort: web and epub

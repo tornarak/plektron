@@ -67,7 +67,7 @@ ADOPTED = "#gt"
 # The fifth rank, admitted on exactly the terms `#gt` was and refused anything
 # more.
 #
-# It says: a human wrote an alias row into `entities/` declaring that this form,
+# It says: a human wrote an alias row into `edition/entities/` declaring that this form,
 # in this book, means this entity, and ratified the entry; a rule then applied
 # that declaration here. No model chose it, so `#llm` is false; no human read
 # this page, so `#ed` is false. As with `#gt` the responsible act happened one
@@ -176,7 +176,7 @@ NAME_TYPES = {"anthroponym", "ethnonym", "toponym", "hydronym",
               "zoonym", "mythonym", "event"}
 # Identity used to be refused outright, because there was nothing to resolve it
 # against and a pointer to nothing is worse than no pointer: it reads as resolved.
-# `entities/` is that referent now, so `@ref` is legal and *gated* — it must be a
+# `edition/entities/` is that referent now, so `@ref` is legal and *gated* — it must be a
 # `class:slug` naming a record on disk, and the check runs on every page on every
 # run rather than once when the link was written.
 #
@@ -1004,7 +1004,7 @@ def _rule_foreign_lang(root, q, ctx, r: Report) -> None:
 
 def _rule_entities(root, q, ctx, r: Report, store=None):
     """Proper nouns, and the entity references over them. The pass marks
-    *category* from the page; identity resolves here, against `entities/`.
+    *category* from the page; identity resolves here, against `edition/entities/`.
 
     **Resolves the store and returns it**, because `relink-missing` needs the
     same one — the second of the three couplings, and returning it is what makes
@@ -1013,7 +1013,7 @@ def _rule_entities(root, q, ctx, r: Report, store=None):
     Returns `(store, names, untyped, refs, ruled)`.
     """
     # Proper nouns, and the entity references over them. The pass marks
-    # *category* from the page; identity now resolves, against `entities/`.
+    # *category* from the page; identity now resolves, against `edition/entities/`.
     #
     # **A supplied `store` is not the `tier1_terms` case.** That one is re-read
     # from `gt/ocr/` on purpose and must never come out of `ctx`, because the
@@ -1056,7 +1056,7 @@ def _rule_entities(root, q, ctx, r: Report, store=None):
                     r.errors.append(
                         f"<name @{attr}> spells identity a way this corpus does "
                         f"not — @ref is the one spelling, and it holds a "
-                        f"`class:slug` pointing into entities/")
+                        f"`class:slug` pointing into edition/entities/")
         span = " ".join("".join(el.itertext()).split())
         ref = el.get("ref")
         if local == "rs" and not ref:
@@ -1073,7 +1073,7 @@ def _rule_entities(root, q, ctx, r: Report, store=None):
         if rec is None:
             try:
                 split_id(ref)
-                why = "no such entity in entities/"
+                why = "no such entity in edition/entities/"
             except ValueError as e:
                 why = str(e).split(": ", 1)[-1]
             r.errors.append(
@@ -1114,7 +1114,7 @@ def _rule_entities(root, q, ctx, r: Report, store=None):
             # claim is not "a rule wrote this once" but "the store says this
             # right now": the entry is ratified, the alias is still there and
             # still uncontested, and the text still matches it. Weaken any of
-            # those in `entities/` and the link fails rather than going quietly
+            # those in `edition/entities/` and the link fails rather than going quietly
             # stale — the same maintenance property #gt has, and the only reason
             # a machine-applied rank is admissible at all.
             form = " ".join(span.split())

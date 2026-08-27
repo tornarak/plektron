@@ -191,7 +191,7 @@ tell you which entry to look at first, and the page decides.
 
 The rules found a form and are not allowed to resolve it — either several entities
 claim it, or its author marked it unsafe out of context. Read
-`entities/<class>/<slug>.md` for the ones named, decide **from the sentence**, and
+`edition/entities/<class>/<slug>.md` for the ones named, decide **from the sentence**, and
 do one of two things:
 
 - wrap the span yourself, `<rs ref="class:slug" resp="#llm">` — your reading, your
@@ -1081,7 +1081,7 @@ resolves against the assembled document. One declaration cannot drift from itsel
   failure mode that matters; "unresolved" is a valid deliverable.
 - Run `harness tei seam`, or omit the `<!-- opens: … -->` witness it will be read
   against. Write `@part`, `@prev` or `@next` by hand.
-- Hand-edit a file under `entities/`, ratify anything, or change an entry that
+- Hand-edit a file under `edition/entities/`, ratify anything, or change an entry that
   already exists.
 - Emit `<lb/>`, or a `<div>`.
 - Edit anything under `scans/`, `gt/`, `mz/` or `data/`.

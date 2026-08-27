@@ -110,7 +110,6 @@ EXPECTED_ABSENT = {
     "review/PP-NNN/proposal.json",
     "review/PP-NNN/decision.json",
     "tei/chukchi-1-100.xml",
-    "data/zones_config.json",
     # Not there *yet*, which is the distinction this list exists to draw. The
     # recognizer track is laid out and unrun: `train-ocr` names where a trained
     # model will be installed, and nothing has been trained, so there is nothing

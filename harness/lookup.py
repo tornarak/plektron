@@ -15,7 +15,7 @@ point, because `CLAUDE.md` says a comparison whose witnesses may be one witness 
 say so. A reader that quietly copies a corpus spelling stops being an independent
 witness and the adjudicator's confirmation becomes a confirmation of the corpus.
 
-**Why the ambiguity refusal is not a nicety.** `data/marks_exempt.json` records that
+**Why the ambiguity refusal is not a nicety.** `config/marks_exempt.json` records that
 the book sets `Čeˊwɪn` (1-042) and `Čeˊwin` (1-052) — one word, two settings — and
 that 1-042's reader flagged the disagreement instead of harmonizing to the older
 page's ground truth. A lookup that answers with one spelling is a machine for

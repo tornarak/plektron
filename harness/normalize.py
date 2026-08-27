@@ -254,7 +254,7 @@ SCOPE_GLOBS = ("gt/ocr/*.xml", "gt/fig/*.xml", "tei/*.xml",
                # failure class the whole project is organised against — so the
                # NFD arm sweeps the file whole and the two prose arms skip the
                # table rows. See `_is_entity`.
-               "entities/*/*.md",
+               "edition/entities/*/*.md",
                # **One level deep, each of them, and that is load-bearing.** These
                # were one `data/*.json` until the stores were split by layer; a
                # glob left behind while its files move is a gate that stops
@@ -262,7 +262,8 @@ SCOPE_GLOBS = ("gt/ocr/*.xml", "gt/fig/*.xml", "tei/*.xml",
                # class. Whatever else moves, the count `corpus normalize --all`
                # reports must not change with it.
                "edition/*.json",
-               "data/*.json", "data/lexicon_extra.txt",
+               "config/*.json", "config/lexicon_extra.txt",
+               "data/*.json",
                # decision.json is an editorial act — the adjudicated record that
                # `restore` actually writes to gt/ocr/ — so it stays in the default
                # sweep alongside the rest of the corpus. `save_decisions` normalizes
@@ -305,7 +306,7 @@ PATH_ONLY_GLOBS = ("review/*/proposal.json",)
 
 
 def _is_entity(p: Path) -> bool:
-    """An `entities/<class>/<slug>.md` record.
+    """An `edition/entities/<class>/<slug>.md` record.
 
     By position rather than by suffix: `.md` alone would also catch every
     document in the repo if one were ever added to a glob, and the two prose

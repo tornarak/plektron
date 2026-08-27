@@ -52,8 +52,8 @@ def page(tmp_path: Path):
     (tmp_path / "scans").mkdir()
     Image.new("RGB", (1200, 1600), "white").save(
         tmp_path / "scans" / "chukchi-1-048.png")
-    (tmp_path / "data").mkdir()
-    shutil.copy(Path("data") / "zones_config.json", tmp_path / "data")
+    (tmp_path / "config").mkdir()
+    shutil.copy(Path("config") / "zones_config.json", tmp_path / "config")
 
     lines = "".join(
         f'<TextLine ID="l{i}" HPOS="100" VPOS="{1000 + i * 100}" WIDTH="800" '

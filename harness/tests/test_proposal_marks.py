@@ -61,8 +61,8 @@ def nfd(s):
 
 
 def _config(root, cfg=None):
-    (root / "data").mkdir(parents=True, exist_ok=True)
-    (root / "data" / "marks_config.json").write_text(
+    (root / "config").mkdir(parents=True, exist_ok=True)
+    (root / "config" / "marks_config.json").write_text(
         json.dumps(cfg or CFG, ensure_ascii=False), encoding="utf-8")
 
 
@@ -556,8 +556,8 @@ def test_every_cell_is_scalar_so_the_toon_tables_stay_tabular(tmp_path):
 # --- the ground-truth arm, and the ruling it can consult ----------------------
 
 def _exempt(root, entries):
-    (root / "data").mkdir(parents=True, exist_ok=True)
-    (root / "data" / "marks_exempt.json").write_text(
+    (root / "config").mkdir(parents=True, exist_ok=True)
+    (root / "config" / "marks_exempt.json").write_text(
         json.dumps(entries, ensure_ascii=False), encoding="utf-8")
 
 

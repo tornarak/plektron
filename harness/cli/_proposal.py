@@ -192,10 +192,10 @@ def register(cli):
              "the adjudication")
     opt(p, "--min-types", type=int, default=None, metavar="N",
         help="types a scope needs before ratio judges it; under this "
-             "the row reads outside=? [data/marks_config.json]")
+             "the row reads outside=? [config/marks_config.json]")
     opt(p, "--rare-max", type=float, default=None, metavar="PCT",
         help="a confusable at or below this share of its axis is rare "
-             "enough to list every occurrence [data/marks_config.json]")
+             "enough to list every occurrence [config/marks_config.json]")
 
 
 def _path(a, ref: str | None = None) -> Path:

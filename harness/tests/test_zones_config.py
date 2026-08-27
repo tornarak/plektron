@@ -1,4 +1,4 @@
-"""`data/zones_config.json` and its loader.
+"""`config/zones_config.json` and its loader.
 
 The config is the single place the zone vocabulary lives — the UI binds its keys
 from it and the validator draws its rules from it — so a malformed one is not a
@@ -66,8 +66,8 @@ def base_cfg() -> dict:
 
 
 def write(tmp_path: Path, cfg: dict) -> Path:
-    (tmp_path / "data").mkdir(exist_ok=True)
-    (tmp_path / "data" / "zones_config.json").write_text(
+    (tmp_path / "config").mkdir(exist_ok=True)
+    (tmp_path / "config" / "zones_config.json").write_text(
         json.dumps(cfg), encoding="utf-8"
     )
     return tmp_path

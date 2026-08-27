@@ -24,7 +24,7 @@ not a sweep, and it is the same blind spot `test_doc_refs.py`'s `PATH_RE` has
 from the other direction: what a pattern cannot see, a person has to declare.
 
 **Only a figure counting a CLOSED set belongs here at all**, and that rule was
-learned from the one entry that broke. `entities/` grows every time somebody
+learned from the one entry that broke. `edition/entities/` grows every time somebody
 writes an entity, so gating a prose count of it meant retyping a number into
 `docs/pipeline.md` on every pass — keeping a figure correct in a place CLAUDE.md
 says no figure belongs: *"counts deliberately absent — they go stale in a file
@@ -85,7 +85,7 @@ COUNTS = {
     "fig_pages":      lambda: _glob("gt/fig"),
     "zone_pages":     lambda: _glob("gt/zones"),
     "scans":          lambda: len(list((REPO / "scans").glob("chukchi-*.png"))),
-    "entities":       lambda: len(list((REPO / "entities").glob("*/*.md"))),
+    "entities":       lambda: len(list((REPO / "edition" / "entities").glob("*/*.md"))),
     "works_printed":  lambda: _authorities("printed"),
     "works_records":  lambda: _authorities("records"),
     "sigla_rows":     lambda: _authorities("sigla_rows"),
@@ -109,7 +109,7 @@ CLAIMS = (
           r"scans/\s+the (\d+) rasters, 300 dpi", derived=True),
     Claim("docs/apparatus.md", "fig_pages",
           r"The (\d+) pages with figures have been segmented"),
-    # **`entities/` is deliberately absent, and its removal is the rule this
+    # **`edition/entities/` is deliberately absent, and its removal is the rule this
     # table now states.** It was the one claim here counting a store under
     # active growth, so it was also the only one that ever went stale — every
     # entity written broke it, and the repair was always to retype a number

@@ -11,7 +11,7 @@ would still read as an entry.
 
 So a file holds exactly what nothing can derive — an **editor's note**, the
 extra-textual clarification the book cannot make because it was written in 1904
-and the reader is not. `entities/` is the model: 42 files against thousands of
+and the reader is not. `edition/entities/` is the model: 42 files against thousands of
 proper nouns, because it is not a census but the places somebody had something
 to say. **A form with no file is not missing from the lexicon**; it is a form
 nobody has written about yet, and its card renders in full from the derived
@@ -19,7 +19,7 @@ half.
 
 **The identity is the exact surface form, NFD, and carries no language.** Two
 consequences, both intended. The book sets one word two ways — `Čeˊwɪn` on 1-042
-and `Čeˊwin` on 1-052, ruled a real ambiguity in `data/marks_exempt.json` — and a
+and `Čeˊwin` on 1-052, ruled a real ambiguity in `config/marks_exempt.json` — and a
 headword scheme would have to pick a side, which is precisely what that ruling
 says not to do; here they are two entries and `see:` may point one at the other
 without asserting they are one word. And a form only becomes `ckt` when a
@@ -48,7 +48,7 @@ from pathlib import Path
 
 from .marks import handle_key
 
-LEXDIR = "lexicon"
+LEXDIR = "edition/lexicon"
 
 #: Same two states as the entity store, and for the same reason: `lexicon new`
 #: writes `proposed`, and only a human moves an entry on.

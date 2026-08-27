@@ -28,15 +28,15 @@ REPO = Path(__file__).parent.parent.parent
 def page(tmp_path: Path) -> Path:
     """Ground truth carrying two Tier-1 forms, as `test_tier1_expand` builds it.
 
-    With the real `data/marks_config.json` beside it, copied the way
+    With the real `config/marks_config.json` beside it, copied the way
     `test_lookup.py` does: without one `lookup.index` raises `MarksConfigError`,
     which `_with_keys` catches and turns into an empty column — so a tree
     lacking it would exercise the *refusal* path and prove nothing about what
     gets built.
     """
-    (tmp_path / "data").mkdir(parents=True, exist_ok=True)
-    (tmp_path / "data" / "marks_config.json").write_text(
-        (REPO / "data" / "marks_config.json").read_text(encoding="utf-8"),
+    (tmp_path / "config").mkdir(parents=True, exist_ok=True)
+    (tmp_path / "config" / "marks_config.json").write_text(
+        (REPO / "config" / "marks_config.json").read_text(encoding="utf-8"),
         encoding="utf-8")
     p = tmp_path / "gt" / "ocr" / "chukchi-1-151.xml"
     p.parent.mkdir(parents=True, exist_ok=True)

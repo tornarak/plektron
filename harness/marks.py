@@ -96,7 +96,7 @@ from .detectors import (
 )
 from .refs import norm_ref
 
-CONFIG = "data/marks_config.json"
+CONFIG = "config/marks_config.json"
 
 
 class MarksConfigError(ValueError):
@@ -113,7 +113,7 @@ def config_path(root: Path = Path(".")) -> Path:
 
 
 def load_config(root: Path = Path(".")) -> dict:
-    """Read and check `data/marks_config.json`.
+    """Read and check `config/marks_config.json`.
 
     Declares *what to compare and how hard*, and never the priors — those come
     from `gt/ocr/` at run time so the check recalibrates as the store grows
@@ -160,7 +160,7 @@ def load_config(root: Path = Path(".")) -> dict:
     return cfg
 
 
-EXEMPT = "data/marks_exempt.json"
+EXEMPT = "config/marks_exempt.json"
 
 
 def exempt_path(root: Path = Path(".")) -> Path:
@@ -805,7 +805,7 @@ def gt_conflicts(root: Path = Path("."),
     computed against it, so there is nothing there to silence and no exemption
     file. A conflict in `gt/ocr/` is a claim about the **corpus** — either a
     keying slip to repair, or the book setting one word two ways — and only the
-    second kind can be ruled on. That is what `data/marks_exempt.json` holds.
+    second kind can be ruled on. That is what `config/marks_exempt.json` holds.
 
     `gt/ocr/` explicitly, not the `ocr/` view: this publishes a corpus-wide
     finding, and harness/README.md's rule is that anything that gates or publishes a
@@ -871,7 +871,7 @@ def page_issues(path: Path, ref: str, root: Path = Path("."),
     would report a keyer's single habit as several independent faults.
 
     Returns nothing rather than raising when the config is absent — a reader
-    running `proposal check` on a clone that has no `data/marks_config.json`
+    running `proposal check` on a clone that has no `config/marks_config.json`
     should get the checks that do not need it, not a traceback.
 
     **`cohort` is the leave-one-out set and the batch is its unit.** Excluding
@@ -930,7 +930,7 @@ def page_issues(path: Path, ref: str, root: Path = Path("."),
     #
     # And no exemptions here either, for the reason `marks` states: this reads a
     # proposal, and a proposal records what a reader wrote rather than what the
-    # corpus holds. `data/marks_exempt.json` rules on ground truth and is consulted
+    # corpus holds. `config/marks_exempt.json` rules on ground truth and is consulted
     # only by `lexicon conflicts`.
     folds: dict[str, list[dict]] = {}
     for hit in _conflicts(batch, prior, cfg["contrasts"]):

@@ -6,10 +6,10 @@ truth in `gt/ocr/` — misses to file, forms to compare against, marks, affixes,
 n-grams — plus `glosses`, which reads committed TEI instead and says so in its
 help rather than letting the group heading imply one store. They are report-only
 and exit 0. `conflicts` is the only one that consults a *ruling*,
-`data/marks_exempt.json`; it is here rather than beside `proposal marks` because
+`config/marks_exempt.json`; it is here rather than beside `proposal marks` because
 the exemptible question is about the corpus, not about a reader.
 
-**The store** is `new` / `check` / `show` / `ratify`, over `lexicon/`, and takes
+**The store** is `new` / `check` / `show` / `ratify`, over `edition/lexicon/`, and takes
 the `--commit` discipline every authored store takes. It is thin on purpose: an
 entry holds an editor's note and nothing else, because everything else a card
 shows — the pronunciation, the attesting pages, the glosses the book prints — is
@@ -45,8 +45,8 @@ def register(cli):
 
     p = action(g, "misses", run_misses,
                help="frequency-ranked lexicon_miss tokens across every "
-               "OCR'd page, for bulk approval — a proper noun into entities/, "
-               "anything else into data/lexicon_extra.txt. Both suppress "
+               "OCR'd page, for bulk approval — a proper noun into edition/entities/, "
+               "anything else into config/lexicon_extra.txt. Both suppress "
                "lexicon_miss and nothing else, and a Tier-1 form in either is "
                "inert by construction, since the detector only ever tests ASCII "
                "components. `suppressed` names what the entity store already "
@@ -58,7 +58,7 @@ def register(cli):
     opt(p, "--common", type=click.IntRange(min=0), is_flag=False,
         flag_value=1000, default=None, metavar="N",
         help="report every token the corpus prints instead of the dictionary "
-             "misses, less the N commonest word forms and less what entities/ "
+             "misses, less the N commonest word forms and less what edition/entities/ "
              "accounts for. The stoplist is the corpus's own frequency table "
              "and not an imported list, N is a request rather than a count — "
              "the cut lands on a frequency boundary so a tie is never split by "
@@ -94,7 +94,7 @@ def register(cli):
             "of `proposal marks`' conflict check, corpus-wide. Rows are one per "
             "(fold, form, page) and carry the line numbers, so a fold is a "
             "worklist rather than a notification. Where the book itself sets a "
-            "word two ways, a ruling goes in data/marks_exempt.json scoped to "
+            "word two ways, a ruling goes in config/marks_exempt.json scoped to "
             "the fold and the pages it was read on; a ruled row still appears, "
             "flagged and carrying its reason, and an entry whose conflict no "
             "longer occurs reports as stale. Nothing here is exempted in "
@@ -110,7 +110,7 @@ def register(cli):
                "substring of the key, the fold, the form or the key's bare "
                "reduction, so `kulu` finds it. **A word the book spells more than "
                "one way yields no key at all**, and a ruling in "
-               "data/marks_exempt.json does not restore it: that ruling says the "
+               "config/marks_exempt.json does not restore it: that ruling says the "
                "ambiguity is real. The key is what a reader writes in braces for "
                "`proposal set` to expand. Reports; never gates"
                "\n\nQUERY: any substring; several are an OR, and a page's whole "

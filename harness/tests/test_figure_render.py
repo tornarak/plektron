@@ -282,9 +282,9 @@ def _config(tmp_path: Path, **figures) -> None:
     swallowed by the fallback and the test would pass while proving nothing.
     """
     import json
-    real = json.loads(Path("data/zones_config.json").read_text(encoding="utf-8"))
+    real = json.loads(Path("config/zones_config.json").read_text(encoding="utf-8"))
     real["figures"] = {**real["figures"], **figures}
-    d = tmp_path / "data"
+    d = tmp_path / "config"
     d.mkdir(parents=True, exist_ok=True)
     (d / "zones_config.json").write_text(json.dumps(real), encoding="utf-8")
 

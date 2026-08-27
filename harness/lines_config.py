@@ -1,4 +1,4 @@
-"""`data/lines_config.json`: what the line editor draws, and what every key does.
+"""`config/lines_config.json`: what the line editor draws, and what every key does.
 
 `zones_config.py`'s sibling, and deliberately the same shape — the editor loads
 it, hands it to the browser verbatim as a JS literal, and draws and binds from
@@ -14,7 +14,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-CONFIG = "data/lines_config.json"
+CONFIG = "config/lines_config.json"
 
 # The layers the editor actually paints. Held here rather than taken from
 # whatever the file happens to list, because a renamed layer would otherwise

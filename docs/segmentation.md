@@ -73,7 +73,7 @@ Blocks carry an `mz_` id prefix for the same reason.
 
 **Every domain-knowledge assumption is a warning, and configurable.** `title-first`,
 `rank-monotone` (running title → body → footnotes → signature line) and
-`max-per-page` live in `data/zones_config.json` as declarative ranks, are exemptible
+`max-per-page` live in `config/zones_config.json` as declarative ranks, are exemptible
 per page in `gt/zones/_rule_exempt.json`, and an exempted rule still reports — flagged,
 never hidden, since the exemption file is exactly where a wrong call would hide.
 Nothing in that config can refuse a save. What *can* is mechanical only: a width no

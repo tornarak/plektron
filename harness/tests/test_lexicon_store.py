@@ -1,4 +1,4 @@
-"""`lexicon/` — what an editor wrote about one Tier-1 form, and nothing else.
+"""`edition/lexicon/` — what an editor wrote about one Tier-1 form, and nothing else.
 
 The store is thin by design, so most of what these hold is the *absence* of
 things: no glosses, no attestations, no pronunciation, because all three are
@@ -120,7 +120,7 @@ def test_a_dangling_see_is_an_error(tmp_path):
 
 def test_a_resolving_see_is_not(tmp_path):
     """A pointer, and deliberately not a claim that the two are one word: the
-    book sets `Čeˊwɪn` and `Čeˊwin`, and `data/marks_exempt.json` rules that
+    book sets `Čeˊwɪn` and `Čeˊwin`, and `config/marks_exempt.json` rules that
     ambiguity real. Nothing in this store overrides a ruling."""
     entry(tmp_path, "Čeˊwɪn", slug="cewin-1", see="Čeˊwin")
     entry(tmp_path, "Čeˊwin", slug="cewin-2")

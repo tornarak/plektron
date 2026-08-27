@@ -212,10 +212,10 @@ def test_native_forms_are_joined_dequoted_and_keep_their_line(tmp_path):
 
 
 def test_broken_english_words_leave_the_miss_list(tmp_path):
-    """`suggest_lexicon` end to end. `data/lexicon_extra.txt` supplies the
+    """`suggest_lexicon` end to end. `config/lexicon_extra.txt` supplies the
     lexicon, so the assertion does not depend on the machine's dictionary."""
-    (tmp_path / "data").mkdir()
-    (tmp_path / "data" / "lexicon_extra.txt").write_text(
+    (tmp_path / "config").mkdir()
+    (tmp_path / "config" / "lexicon_extra.txt").write_text(
         "Chukchee\nreindeer\nherds\n", encoding="utf-8")
     _gt_page(tmp_path, "1-002", [
         ("the Chuk-", 400, 1774),
@@ -305,16 +305,16 @@ def test_without_a_lexicon_nothing_is_suppressed():
 
 # --- the entity store as the corpus's proper-noun dictionary ------------------
 #
-# The proper nouns used to be listed twice: once in `data/lexicon_extra.txt` and
+# The proper nouns used to be listed twice: once in `config/lexicon_extra.txt` and
 # once as an entity's canonical or alias. `detectors.entity_forms` made the
 # second the only one. What these hold is the direction of the move — a name
-# filed in `entities/` stops being a miss — and the structural fact that keeps it
+# filed in `edition/entities/` stops being a miss — and the structural fact that keeps it
 # from becoming a hole: the detector cannot see a marked form either way.
 
 
 def _extra(root: Path, *terms: str) -> None:
-    (root / "data").mkdir(parents=True, exist_ok=True)
-    (root / "data" / "lexicon_extra.txt").write_text(
+    (root / "config").mkdir(parents=True, exist_ok=True)
+    (root / "config" / "lexicon_extra.txt").write_text(
         "\n".join(terms) + "\n", encoding="utf-8")
 
 
@@ -363,7 +363,7 @@ def test_a_native_alias_reaches_the_dictionary_and_changes_nothing(tmp_path):
 
 
 def test_an_entity_filed_after_the_first_call_is_seen(tmp_path):
-    """The dictionary is cached per root, and `entities/` changes *inside* a
+    """The dictionary is cached per root, and `edition/entities/` changes *inside* a
     process — `edition_ui._guarded` writes it on a browser click. Keyed on the
     store's stamp, so the cache follows the store rather than outliving it."""
     _extra(tmp_path, "placeholder")

@@ -7,7 +7,7 @@ apart would resolve one to the other silently. The class is not decoration on
 the slug; it is half the name.
 
 It lives twice, and that is deliberate. On disk the class is the directory
-(`entities/person/jochelson.md`), because a colon in a filename is a
+(`edition/entities/person/jochelson.md`), because a colon in a filename is a
 portability trap; inside the file it is the first half of the `#` heading. The
 ground-truth loss happened because a file's role lived *only* in its directory
 name, so nothing could tell an export shell from a hand-keyed page once the
@@ -54,7 +54,7 @@ page happens to be among the 558 not yet transcribed. `entity occurrences --all`
 is where an unwitnessed entry shows up now, as a row reading 0 and 0.
 
 **This store is also the corpus's proper-noun dictionary**, and the direction of
-that is worth being exact about. `data/lexicon_extra.txt` suppresses
+that is worth being exact about. `config/lexicon_extra.txt` suppresses
 `lexicon_miss` and nothing else because it *structurally cannot* reach anything
 else; the entity store can, so `detectors.entity_forms` reads only the one thing
 out of it that a spellcheck can use — the components of every canonical and
@@ -82,7 +82,7 @@ from .geo import index as geo_index
 from .langs import ALIAS_LANGS
 from .parallel import ptrack
 
-ENTDIR = "entities"
+ENTDIR = "edition/entities"
 
 #: The classes an entity may have, mapped to the `<name @type>` each corresponds
 #: to — or to None where the class has no name-type at all.
@@ -1231,7 +1231,7 @@ def check(root: Path = Path("."), tick: Callable | None = None) -> dict:
         # `glob("*/*.md")`, so name them rather than let one sit unread.
         for p in sorted(d.glob("*.md")):
             errors.append(f"{p}: sits outside a class directory. An entity lives "
-                          f"at entities/<class>/<slug>.md")
+                          f"at edition/entities/<class>/<slug>.md")
 
     # The shape store, read once. `area:` resolving is the same kind of claim
     # as `within:` resolving — a named thing either exists or it does not — and

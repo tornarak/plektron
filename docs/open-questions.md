@@ -92,7 +92,7 @@ in for an unread glyph.
   batch, and rebuilding it in the annotation pass makes two passes derive the same
   forms by two paths.
 
-  `entities/` resolves it by being neither. It is **authored, not derived** — a
+  `edition/entities/` resolves it by being neither. It is **authored, not derived** — a
   human writes an entry and its alias forms — so it is not a snapshot of anything
   and cannot go stale against a store it was computed from. The alias index *is*
   recomputed on every run, from the store, which keeps the recompute-don't-trust
@@ -198,7 +198,7 @@ in for an unread glyph.
   `@ref`/`@key` were gate errors until a scheme existed, and named the shape the
   answer would have to take: lift the refusal rather than route around it, gate
   `@ref` on a referential-integrity check, and give a mechanically-proposed link
-  its own rank. All three were built. `entities/<class>/<slug>.md` is the store,
+  its own rank. All three were built. `edition/entities/<class>/<slug>.md` is the store,
   an identity is `class:slug` because `person:jochelson` and
   `source:jochelson-yukaghir` are the same string and different things, and `#mz`
   is the rank — admitted on `#gt`'s terms, re-derived from the store on every run.

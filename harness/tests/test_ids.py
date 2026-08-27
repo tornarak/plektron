@@ -584,7 +584,7 @@ def test_taxon_is_not_a_declared_type(tmp_path):
 
 @pytest.mark.parametrize("attr", ["key", "nymRef"])
 def test_identity_has_one_spelling_and_these_are_not_it(tmp_path, attr):
-    """`@ref` resolves against `entities/` now; these two stay refused, and not as
+    """`@ref` resolves against `edition/entities/` now; these two stay refused, and not as
     leftovers of the old blanket deferral.
 
     One spelling for one fact. Three attributes meaning "which entity" would make

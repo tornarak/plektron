@@ -33,7 +33,7 @@ ALL_RANKS = "".join(f'<respStmt xml:id="{r}"/>' for r in RANK_IDS)
 # are, and should not fail when one is added.
 ALL_PREFIXES = "<encodingDesc><listPrefixDef>" + "".join(
     f'<prefixDef ident="{c}" matchPattern="(.+)" '
-    f'replacementPattern="entities/{c}/$1.md"/>' for c in ENTITY_CLASSES
+    f'replacementPattern="edition/entities/{c}/$1.md"/>' for c in ENTITY_CLASSES
 ) + "</listPrefixDef></encodingDesc>"
 
 

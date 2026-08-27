@@ -4,7 +4,7 @@ Everything here is deterministic. The model consumes this; it never re-derives i
 Repo layout assumed:  scans/chukchi-PP-NNN.png   gt/fig/chukchi-PP-NNN.xml
                       ocr/chukchi-PP-NNN.xml     tei/chukchi-PP-NNN.xml
                       edition/toc.json              gt/fig/ (captions)
-                      data/lexicon_extra.txt
+                      config/lexicon_extra.txt
 
 PAGE REFS. A page is identified by its **PP-NNN** ref — part, and scan index
 within that part — and by nothing else. NNN is a scan index, *not* a printed

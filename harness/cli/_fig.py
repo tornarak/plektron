@@ -45,7 +45,7 @@ def register(cli):
                "label the store does not declare, a polygon that is not the "
                "rectangle its own bbox claims, a box off the raster — and they "
                "set the exit code. Everything else is a warning, configured in "
-               "data/zones_config.json and exemptable per page, because a "
+               "config/zones_config.json and exemptable per page, because a "
                "picture overlapping a picture or a caption more than its share "
                "is the interesting page rather than the rejected one")
     _refs(p, "every page the store holds")

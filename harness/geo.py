@@ -34,7 +34,7 @@ member is looked up in it directly.
 
 **A union still gets a row of its own in `listing`**, after the store's rows and
 never among them: two polygons being one speaker area is a human's assertion
-about `entities/`, not a shape `edition/geo/` holds. It is synthesized for display
+about `edition/entities/`, not a shape `edition/geo/` holds. It is synthesized for display
 and claims nothing. Two entities may name the same pair — a people and the
 subgroup inside it are the standing case — so the label names every claimant
 rather than picking one.
@@ -685,7 +685,7 @@ def listing(root: Path = Path(".")) -> dict:
         })
     absent = [absent_row(k, v) for k, v in sorted(idx["absent"].items())]
     # The unions some entity has authored, listed after the store's own rows and
-    # never among them: a union is a fact about `entities/` and the census above
+    # never among them: a union is a fact about `edition/entities/` and the census above
     # is a fact about `edition/geo/`. **Synthesized here rather than looked up**,
     # since a composite stopped being a resolvable id the day `geo:` began
     # holding its members apart — and the row was only ever built for display.

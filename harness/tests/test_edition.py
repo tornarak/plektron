@@ -3,7 +3,7 @@
 Two things worth pinning. The renderer must show what the file says is unfinished
 — an edition that tidies away an open question presents a draft as finished, and
 that is the failure this whole project is arranged against. And the server writes
-`entities/` without `--commit`, on the `zones edit` precedent, so what has to be
+`edition/entities/` without `--commit`, on the `zones edit` precedent, so what has to be
 true is that it cannot leave the store in a state `entity check` rejects.
 """
 from __future__ import annotations
@@ -416,7 +416,7 @@ def test_a_gloss_becomes_paragraphs_and_not_preformatted_text(tmp_path):
 
 
 def test_a_gloss_may_be_written_as_a_list(tmp_path):
-    """`entities/people/eskimo.md` was written with a list before one rendered,
+    """`edition/entities/people/eskimo.md` was written with a list before one rendered,
     so the card showed a paragraph of literal `- ` lines. An author writing
     markdown in a markdown file is not a mistake to be trained out."""
     got = edition_ui.gloss_html("three groups:\n\n- one\n- two\n- three", {})
@@ -1277,7 +1277,7 @@ def test_ratifying_writes_the_store(server):
     # nothing" is an ordinary outcome a caller must be able to tell from a failure.
     assert got["ok"] and got["linked"] == [] and got["pages"] == []
     assert "- status: ratified" in (
-        root / "entities" / "place" / "markova.md").read_text(encoding="utf-8")
+        root / "edition" / "entities" / "place" / "markova.md").read_text(encoding="utf-8")
 
 
 def test_a_write_that_would_break_the_store_is_rolled_back(server):
@@ -1288,7 +1288,7 @@ def test_a_write_that_would_break_the_store_is_rolled_back(server):
     got = post(base + "/ratify", {"id": "place:markova"})
     assert "refused" in got.get("error", "")
     assert "- status: proposed" in (
-        root / "entities" / "place" / "markova.md").read_text(encoding="utf-8")
+        root / "edition" / "entities" / "place" / "markova.md").read_text(encoding="utf-8")
 
 
 def test_search_finds_the_text_and_the_encyclopedia(server):
@@ -1396,7 +1396,7 @@ def test_the_properties_block_shows_the_geography(tmp_path):
     """The three geography fields, on the card, where a reader can check them
     against the map beside it."""
     entry(tmp_path, "place:y", aliases=[("Y", False)])
-    p = tmp_path / "entities" / "place" / "x.md"
+    p = tmp_path / "edition" / "entities" / "place" / "x.md"
     p.write_text("# place:x — X\n\n- status: ratified\n- since: 1-021\n"
                  "- within: place:y\n- geo: 66.0 170.0\n\n## aliases\n\n"
                  "| form | lang | auto | note |\n|---|---|---|---|\n\n## gloss\n\nx\n",
@@ -1456,7 +1456,7 @@ def test_a_node_with_no_boundary_says_its_frame_is_a_frame(server):
     a viewport and not a claim."""
     base, root = server
     entry(root, "place:parent", aliases=[("P", False)])
-    p = root / "entities" / "place" / "kid.md"
+    p = root / "edition" / "entities" / "place" / "kid.md"
     p.write_text("# place:kid — Kid\n\n- status: ratified\n- since: 1-021\n"
                  "- within: place:parent\n- geo: 66.0 170.0\n\n## aliases\n\n"
                  "| form | lang | auto | note |\n|---|---|---|---|\n\n## gloss\n\nx\n",
@@ -1626,12 +1626,12 @@ ALTO_NS = "http://www.loc.gov/standards/alto/ns-v4#"
 def _gt(root: Path, ref: str, lines: list[str]) -> None:
     """A ground-truth page, plus the committed fold table `lookup.index` needs.
 
-    The real `data/marks_config.json` and not a copy of one: the fold is what
+    The real `config/marks_config.json` and not a copy of one: the fold is what
     decides whether two settings are one word, and a test writing its own would
     be asserting against a table nothing in the corpus uses.
     """
-    (root / "data").mkdir(parents=True, exist_ok=True)
-    shutil.copy(REPO / "data" / "marks_config.json", root / "data")
+    (root / "config").mkdir(parents=True, exist_ok=True)
+    shutil.copy(REPO / "config" / "marks_config.json", root / "config")
     p = root / "gt" / "ocr" / f"chukchi-{ref}.xml"
     p.parent.mkdir(parents=True, exist_ok=True)
     body = "".join(
@@ -1716,8 +1716,8 @@ def test_the_index_lists_every_language_and_the_unjudged(server):
 def test_an_editors_note_reaches_the_card(server):
     base, root = server
     _gt(root, "1-042", ["south of Kuluˊči Bay lies the"])
-    (root / "lexicon").mkdir()
-    (root / "lexicon" / "kulu-c-i.md").write_text(
+    (root / "edition" / "lexicon").mkdir(parents=True, exist_ok=True)
+    (root / "edition" / "lexicon" / "kulu-c-i.md").write_text(
         "# Kuluˊči\n\n- status: proposed\n- since: 1-042\n\n"
         "## editor's note\n\nA bay on the [[place:markova]] side.\n",
         encoding="utf-8")

@@ -373,7 +373,7 @@ def test_gt_no_other_write_target(path):
     "docs/decisions.md",
     ".claude/skills/rebuild-groundtruth/checklist.md",
     ".claude/agent-memory/groundtruth-reader/folio-can-sit-on-own-thin-alto-line.md",
-    "data/lexicon_extra.txt",
+    "config/lexicon_extra.txt",
 ])
 def test_gt_reads_the_page_and_the_spec_unprompted(path):
     allowed(GT_GUARD, "Read", file_path=path)
@@ -416,7 +416,7 @@ def test_gt_the_normative_text_it_does_not_carry_stays_readable():
     """The refusal above is about duplication, so it must not spread to the
     documents a reader genuinely has no other route to."""
     for path in ("concordance.md", "CLAUDE.md", "harness/README.md",
-                 "docs/decisions.md", "data/lexicon_extra.txt"):
+                 "docs/decisions.md", "config/lexicon_extra.txt"):
         allowed(GT_GUARD, "Read", file_path=path)
 
 
@@ -558,9 +558,9 @@ def test_the_encyclopedia_is_readable_and_not_hand_editable():
     *is* reading the three glosses, so the entries are open. Editing them is not: the verb
     parses before it writes and can only mint at `proposed`, while a hand-written
     file can be malformed or can say `ratified`, which is a human's word."""
-    allowed(COLLATOR_GUARD, "Read", file_path="entities/people/chukchi.md")
+    allowed(COLLATOR_GUARD, "Read", file_path="edition/entities/people/chukchi.md")
     err = blocked(COLLATOR_GUARD, "Write",
-                  file_path="entities/people/chukchi.md")
+                  file_path="edition/entities/people/chukchi.md")
     assert "entity new" in err
 
 

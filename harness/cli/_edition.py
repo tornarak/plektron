@@ -26,7 +26,7 @@ def register(cli):
                "only unless `--drafts` says otherwise — a generated baseline is "
                "a draft nobody has read, and an end-user preview is the last "
                "place it belongs. Ratifying an "
-               "entry here writes `entities/` without `--commit`, as the other "
+               "entry here writes `edition/entities/` without `--commit`, as the other "
                "editors write their stores: the click is the human act, the "
                "store is tracked, and git is the witness. Every write is "
                "refused if `entity check` would fail on the result. Blocks "

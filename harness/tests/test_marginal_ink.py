@@ -40,8 +40,8 @@ def _page(tmp_path: Path, ref: str = "1-048", *, mark: tuple | None = None) -> P
     (tmp_path / "scans").mkdir()
     (tmp_path / "gt" / "fig").mkdir(parents=True)
     import shutil
-    (tmp_path / "data").mkdir()
-    shutil.copy(Path("data") / "zones_config.json", tmp_path / "data")
+    (tmp_path / "config").mkdir()
+    shutil.copy(Path("config") / "zones_config.json", tmp_path / "config")
 
     w, h = 1200, 800
     img = Image.new("RGB", (w, h), "white")

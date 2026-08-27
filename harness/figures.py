@@ -94,7 +94,7 @@ PROPOSE_VERSION = 1
 
 #: The rule id `fig check` reports an unaccounted photograph under, and the key a
 #: page excuses it by in `gt/fig/_rule_exempt.json`. Declared in
-#: `data/zones_config.json` under `figures.rules` so that `unknown-exemption`
+#: `config/zones_config.json` under `figures.rules` so that `unknown-exemption`
 #: catches a typo in the excuse rather than letting it read as a judgement.
 UNACCOUNTED_RULE = "unaccounted-picture"
 
@@ -2088,7 +2088,7 @@ def figure_boxes(ref: str, root: Path = Path("."),
 
 
 #: Fallback for `figures.float_min_residual` when the book's config omits it.
-#: **A knob, not a discovery** — the real one lives in `data/zones_config.json`,
+#: **A knob, not a discovery** — the real one lives in `config/zones_config.json`,
 #: because it is a fact about how a particular book sets its pictures and this
 #: pipeline is meant for more than one. A default here only keeps a config that
 #: predates the key working.

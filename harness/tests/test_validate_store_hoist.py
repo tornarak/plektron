@@ -32,7 +32,7 @@ TEI_NS = "http://www.tei-c.org/ns/1.0"
 
 @pytest.fixture
 def repo(tmp_path: Path) -> Path:
-    d = tmp_path / "entities" / "place"
+    d = tmp_path / "edition" / "entities" / "place"
     d.mkdir(parents=True)
     (d / "mariinsky-post.md").write_text(
         "# place:mariinsky-post — Mariinsky Post\n\n"
@@ -134,7 +134,7 @@ class TestValidateTakesASuppliedStore:
         page = _page(repo, "The party reached Mariinsky Post that winter.")
         ctx = {"page_ref": "1-151", "root": str(repo)}
         first = validate(page, ctx).metrics["entity_refs"]
-        (repo / "entities" / "place" / "anadyr.md").write_text(
+        (repo / "edition" / "entities" / "place" / "anadyr.md").write_text(
             "# place:anadyr — Anadyr\n\n- status: ratified\n\n## aliases\n\n"
             "| form | lang | auto | note |\n|---|---|---|---|\n"
             "| Anadyr | | yes | |\n", encoding="utf-8")

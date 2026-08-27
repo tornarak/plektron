@@ -70,8 +70,8 @@ def page(tmp_path: Path):
     (tmp_path / "scans").mkdir()
     Image.new("RGB", (1200, 1600), "white").save(
         tmp_path / "scans" / "chukchi-1-048.png")
-    (tmp_path / "data").mkdir()
-    shutil.copy(Path("data") / "zones_config.json", tmp_path / "data")
+    (tmp_path / "config").mkdir()
+    shutil.copy(Path("config") / "zones_config.json", tmp_path / "config")
     alto = _ocr_alto(tmp_path, "1-048", 4, 1200, 1600)
     return tmp_path, alto
 

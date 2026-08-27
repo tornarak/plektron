@@ -54,7 +54,7 @@ LANGS: dict[str, tuple[str, bool]] = {
     # with one English name between them in this book.
     "yux": ("Southern Yukaghir", True),
     # The neighbouring languages the book names peoples by. Each is witnessed by
-    # an entry under `entities/people/` or a shape in `edition/geo/`, or both.
+    # an entry under `edition/entities/people/` or a shape in `edition/geo/`, or both.
     "ale": ("Aleut", False),
     "evn": ("Evenki (the book's “Tungus”)", False),
     "niv": ("Nivkh (the book's “Gilyak”)", False),

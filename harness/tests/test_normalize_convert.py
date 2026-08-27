@@ -12,7 +12,7 @@ the one file class where a rewrite is least distinguishable from a corruption.
 
 These tests hold both sides. The refusal must fire on an unparseable file with a
 declared shape, and it must *not* fire on a suffix that legitimately has no
-shape check — `data/lexicon_extra.txt` and `entities/*/*.md` are in the sweep
+shape check — `config/lexicon_extra.txt` and `edition/entities/*/*.md` are in the sweep
 and neither parses as anything.
 """
 from __future__ import annotations
@@ -85,7 +85,7 @@ class TestTheRefusalDoesNotOverreach:
     """The fix must not turn "no check for this suffix" into a refusal."""
 
     def test_a_plain_text_file_still_converts(self, root):
-        p = _write(root, "data/lexicon_extra.txt", PRECOMPOSED + "\n")
+        p = _write(root, "config/lexicon_extra.txt", PRECOMPOSED + "\n")
 
         out = convert(root)
 
@@ -94,7 +94,7 @@ class TestTheRefusalDoesNotOverreach:
         assert p.read_text(encoding="utf-8") == "café\n"
 
     def test_an_entity_markdown_file_still_converts(self, root):
-        p = _write(root, "entities/place/x.md", f"# x\n\n{PRECOMPOSED}\n")
+        p = _write(root, "edition/entities/place/x.md", f"# x\n\n{PRECOMPOSED}\n")
 
         out = convert(root)
 
