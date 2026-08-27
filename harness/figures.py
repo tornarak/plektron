@@ -2652,32 +2652,32 @@ CROPDIR = "scans/fig-crops"
 #: directory holding it. The rule that came out of it holds here unchanged:
 #: **a store's name is its role, and nothing writes through a view.**
 #:
-#: **Under `ed/`, not `gt/`.** This lived in `gt/` on the argument that "`gt/` is
-#: what a human has been through", which is true of a retouched crop and is not
-#: what the rank means: `gt/` is the artifact reproduced or annotated, and an
-#: enhanced figure is an improvement on what the page shows — the one direction
+#: **Under `edition/`, not `gt/`.** This lived in `gt/` on the argument that
+#: "`gt/` is what a human has been through", which is true of a retouched crop and
+#: is not what the rank means: `gt/` is the artifact reproduced or annotated, and
+#: an enhanced figure is an improvement on what the page shows — the one direction
 #: that rank excludes. The tracked-and-never-rebuilt property that made this a
 #: store in the first place is an argument about the store, not the rank, and
 #: survives the move unchanged.
 #:
 #: Named `fig-img/` and deliberately not `figs/`, which sat one character from
 #: the `gt/fig/` geometry store — the same near-miss `_exempt.lst` /
-#: `_exempt.json` was renamed to avoid. Under `ed/` the collision is gone and the
-#: name is kept anyway: it still says what the files are, and renaming a store
-#: twice in one move is how a path in a doc goes stale.
+#: `_exempt.json` was renamed to avoid. Out from under `gt/` the collision is gone
+#: and the name is kept anyway: it still says what the files are, and renaming a
+#: store twice in one move is how a path in a doc goes stale.
 #:
 #: Enhancement is **manual by design**. Nothing in this module sharpens,
 #: denoises, upscales or otherwise improves a picture: a crop is the pixels the
 #: raster has inside a box a human drew. An enhanced figure is a new artefact
 #: somebody made and vouches for, so it arrives as a file in a tracked store,
 #: not as a filter in a pipeline.
-FIG_IMG = "ed/fig-img"
+FIG_IMG = "edition/fig-img"
 
 
 def crop_source(ref: str, key: str, root: Path = Path(".")) -> tuple[Path, str]:
     """Where one figure's picture comes from, and whose it is.
 
-    Returns `(path, rank)` — `"ed"` for a human's file in `ed/fig-img/`, `"mz"`
+    Returns `(path, rank)` — `"ed"` for a human's file in `edition/fig-img/`, `"mz"`
     for the machine crop. The human file wins, exactly as `ocr/` resolves over
     `gt/ocr/` and `mz/ocr/`, and for the same reason: a reader wants the best
     available version and every consumer must resolve it the same way.
@@ -2769,7 +2769,7 @@ def write_crops(ref: str, out_dir: Path, root: Path = Path("."),
         # `n` and `group` travel with every part, so a consumer can stack the
         # three crops of fig. 138 under its one caption without re-deriving the
         # grouping `figure_boxes` already did. `human` says a person's version of
-        # this picture exists in `ed/fig-img/` and is what readers will see —
+        # this picture exists in `edition/fig-img/` and is what readers will see —
         # reported on every run, because a rebuild that silently shadowed one
         # would make the manual work look lost.
         rec = {"ref": ref, "key": key, "n": f["n"], "group": f["key"],

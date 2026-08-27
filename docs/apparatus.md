@@ -379,10 +379,10 @@ asserts it against a gradient where any resample would show. An enhanced figure
 is a **new artefact somebody made and vouches for**, which is a different kind of
 thing from a mechanical derivative and gets a different kind of home.
 
-That home is **`ed/fig-img/chukchi-PP-NNN-KKK.png`, tracked**, and
+That home is **`edition/fig-img/chukchi-PP-NNN-KKK.png`, tracked**, and
 `figures.crop_source` resolves it ahead of the machine crop for every consumer.
 The split is the whole safety property: `harness fig crops` rewrites everything
-in `scans/fig-crops/` and nothing in `ed/fig-img/`, and it reports a `human`
+in `scans/fig-crops/` and nothing in `edition/fig-img/`, and it reports a `human`
 count so a rebuild can never quietly shadow the work.
 
 **Touching up a file in `scans/fig-crops/` instead would destroy it** at the next
@@ -390,7 +390,7 @@ count so a rebuild can never quietly shadow the work.
 failure exactly, where a file's role lived only in the name of the directory
 holding it.
 
-**Under `ed/`, and it was under `gt/` for a bad reason worth recording.** The
+**Under `edition/`, and it was under `gt/` for a bad reason worth recording.** The
 argument was "`gt/` is what a human has been through; that is what the directory
 means" — which is true of a retouched crop and is not what the rank means.
 `#gt` is the artifact *reproduced or annotated*, and the paragraph above says
@@ -407,12 +407,19 @@ Named `fig-img/` rather than `figs/` because the latter sat one character from
 the `gt/fig/` geometry store, the same near-miss `_exempt.lst`/`_exempt.json`
 was renamed to avoid. That pair is gone now — the split lists are named for the
 kinds (`_plate.lst`, `_blank.lst`, …) and the order rulings are
-`_rule_exempt.json` — but the lesson outlived both names. Under `ed/` the
-collision no longer exists and the name is kept regardless: it still says what
+`_rule_exempt.json` — but the lesson outlived both names. Out from under `gt/`
+the collision no longer exists and the name is kept regardless: it still says what
 the files are, and renaming a store twice inside one move is how a path in a doc
 goes stale.
 
-**A whole leaf gets the same treatment, one level up.** `ed/page-img/chukchi-PP-NNN.{svg,png,jpg}`,
+**The store was `ed/` when the argument above was written, and the rename to
+`edition/` does not touch it.** What changed is the axis the folder is named on:
+`#ed` is a *rank* and lives in `@resp`, where it also covers rulings a reader
+never sees (`data/marks_exempt.json`), while the folder holds a *layer* — what
+is served. A retouched crop is both, which is why it did not move.
+`docs/edition.md` owns the layer; this file keeps the figure track.
+
+**A whole leaf gets the same treatment, one level up.** `edition/page-img/chukchi-PP-NNN.{svg,png,jpg}`,
 **tracked**, resolved by `edition_ui.leaf_source` with the rank travelling as
 `crop_source`'s does. Two boundaries beyond the crop store's: it is **reading
 view only**, never `zones.scan_for`, because a sharpened leaf is manufactured
@@ -425,7 +432,7 @@ quietly honoured. `docs/edition.md` has the rest.
 `1-361`, part 1's foldout ethnographic map, is the leaf the store was built for.
 `harness scans extract` writes it as one of three masterless RGB leaves — a
 single 150 ppi photograph at its own size, 1833x1994, which is thin for a sheet
-carrying several hundred toponyms in 6 pt. The master in `ed/page-img/` is a 2x
+carrying several hundred toponyms in 6 pt. The master in `edition/page-img/` is a 2x
 ChaiNNer upscale of it, hand-repaired afterwards where `2_MangaScaleV3`
 hallucinated halftone into the legend swatches and turned the Yukaghir key
 orange. Nothing here rebuilds that, which is the whole reason it is in git: a

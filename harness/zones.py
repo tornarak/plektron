@@ -118,7 +118,7 @@ EVAL_LST = "_eval.lst"
 #: different things accumulated behind it. By the time the ruling reached a reader,
 #: the edition was sorting these pages with four discriminators borrowed from other
 #: stores — figure boxes for a plate, `data/runs.json` for the apparatus,
-#: `ed/page-img/` for a hand-worked leaf — and the one kind with no other store,
+#: `edition/page-img/` for a hand-worked leaf — and the one kind with no other store,
 #: a **blank**, was indistinguishable from the one whose store was merely
 #: unpopulated: the volume's folding map rendered exactly like an empty verso.
 #:

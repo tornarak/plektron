@@ -106,9 +106,6 @@ Layout, all at the repo root:
             either store: the mark is the record**), lines/ (corrections), and
             every page exemption beside them. Tracked. Caller invariants in
             `harness/README.md`.
-    ed/     a human's own act, reproducing nothing: fig-img/, page-img/ — the
-            touch-ups. Tracked; no rule writes here. An improvement on the page
-            is what `gt/` may not be (`docs/apparatus.md`).
     mz/     not-yet-human: zones/, ocr/ and fig/ as the models emitted them,
             tei/ as the rules built it, and page-img/ as a leaf is *served*: two
             layers built from the tracked master. Derived; ignored. **No view over
@@ -118,6 +115,11 @@ Layout, all at the repo root:
             a fragment gated by `harness tei header`. The header is tracked; the
             pages are **temporarily ignored** while the generator is rewritten,
             for the reason and the expiry in .gitignore.
+    edition/  what is served to a reader and nothing else — a **layer**, not a
+            rank: `#ed` lives in `@resp` and covers rulings that never reach a
+            reader. So far fig-img/, page-img/ — the touch-ups. Tracked; no rule
+            writes here. An improvement on the page is what `gt/` may not be
+            (`docs/edition.md`; the touch-ups' own rule is `docs/apparatus.md`).
     entities/  the encyclopedia, one markdown file per entity under its class
             (person/, place/, event/ …). An identity is `class:slug`, which is
             what every `@ref` holds. Tracked; `entity check` gates it.

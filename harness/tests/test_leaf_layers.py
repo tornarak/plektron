@@ -1,6 +1,6 @@
 """An editor's leaf, and the two layers it is delivered as.
 
-`ed/page-img/` holds a master somebody made and vouches for — for `1-361`, part
+`edition/page-img/` holds a master somebody made and vouches for — for `1-361`, part
 1's foldout map, a ChaiNNer upscale hand-repaired where the upscaler wrecked the
 legend swatches. It is tracked because nothing in this repo rebuilds it.
 

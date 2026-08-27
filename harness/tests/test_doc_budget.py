@@ -108,6 +108,12 @@ REPO = Path(__file__).resolve().parent.parent.parent
 # it read "what a human has been through", and an agent inheriting only this file
 # would draw exactly the conclusion this move corrects.
 #
+# **`ed/` has since become `edition/`** and the paths above are that raise's, not
+# a live pointer. The argument it records still holds and is why the store is not
+# under `gt/`; what changed is the axis the store is named on — `#ed` is a rank
+# and lives in `@resp`, while the folder holds a *layer*, which is why
+# `marks_exempt.json` is `#ed` and is not in it.
+#
 # Headroom deliberately left, on the fifth raise's argument.
 CLAUDE_MD_MAX_BYTES = 17_400
 

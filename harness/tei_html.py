@@ -309,7 +309,7 @@ def exempt(root: Path = Path(".")) -> list[str]:
     `leaf_kind` reports which. Nothing here derives the kind, and that boundary is
     the point: the edition used to sort these pages with four discriminators
     borrowed from other stores — figure boxes for a plate, `data/runs.json` for
-    the apparatus, `ed/page-img/` for a hand-worked leaf — under which a blank
+    the apparatus, `edition/page-img/` for a hand-worked leaf — under which a blank
     verso and the volume's folding map were the same page.
     """
     from .zones import LEAF_KINDS, load_splits

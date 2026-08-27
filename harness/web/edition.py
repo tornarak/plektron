@@ -125,7 +125,7 @@ def figure_crop(request: Request, ref: str, key: str):
     saying which command is the whole difference between a 404 and a fix.
 
     **Resolved through `figures.crop_source`, so a human's touched-up version in
-    `ed/fig-img/` wins over the machine crop** — one resolver, shared with every
+    `edition/fig-img/` wins over the machine crop** — one resolver, shared with every
     other consumer, rather than a second opinion about which file is current.
     """
     if not ui.REF_OK.match(ref) or not key.isalnum():

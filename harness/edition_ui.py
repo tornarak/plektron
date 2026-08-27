@@ -72,14 +72,18 @@ BASE = "/edition"
 #: for and it may end up an SVG; a resolver that assumed a raster would have to be
 #: rewritten the day it did.
 #:
-#: **Under `ed/`, not `gt/`, and the move is the definition being applied.** `gt/`
-#: is the artifact reproduced or annotated under human-checked judgement; a leaf
-#: an editor reworked is an improvement on what the leaf shows, which is the one
-#: thing that rank may not be. It sat in `gt/` on the reading that `gt/` means
+#: **Under `edition/`, not `gt/`, and the move is the definition being applied.**
+#: `gt/` is the artifact reproduced or annotated under human-checked judgement; a
+#: leaf an editor reworked is an improvement on what the leaf shows, which is the
+#: one thing that rank may not be. It sat in `gt/` on the reading that `gt/` means
 #: "what a human has been through" — true of it, and not what the rank says.
 #: The safety property is untouched: still tracked, still never rewritten by a
 #: rule, which was always an argument about the *store* and not about the rank.
-PAGE_IMG = "ed/page-img"
+#:
+#: The store it now sits in is named for the **layer**, not that rank: a retouched
+#: leaf is something a reader is served, and `#ed` stays in `@resp` where a rank
+#: belongs. See `docs/edition.md`.
+PAGE_IMG = "edition/page-img"
 LEAF_MEDIA = {".svg": "image/svg+xml", ".png": "image/png",
               ".jpg": "image/jpeg", ".jpeg": "image/jpeg"}
 LEAF_EXTS = tuple(LEAF_MEDIA)

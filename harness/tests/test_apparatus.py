@@ -428,7 +428,7 @@ def test_span_disagreement_between_the_two_statements_fails(book: Path):
 def test_an_editors_leaf_for_a_non_exempt_page_fails(book: Path):
     """It would never be served — `leaf_source` refuses it — so a file sitting
     there is work that will silently do nothing until somebody says so."""
-    p = book / "ed" / "page-img" / "chukchi-1-037.png"
+    p = book / "edition" / "page-img" / "chukchi-1-037.png"
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_bytes(b"x")
     assert any(e["rule"] == "leaf-not-exempt" for e in A.check(book)["errors"])
@@ -440,7 +440,7 @@ def test_a_reshaped_editors_leaf_fails(book: Path, tmp_path: Path):
     from PIL import Image
     (book / "scans").mkdir(exist_ok=True)
     Image.new("L", (1000, 2000), 255).save(book / "scans" / "chukchi-1-014.png")
-    d = book / "ed" / "page-img"
+    d = book / "edition" / "page-img"
     d.mkdir(parents=True, exist_ok=True)
     Image.new("L", (2000, 4000), 255).save(d / "chukchi-1-014.png")
     assert not [e for e in A.check(book)["errors"] if e["rule"] == "leaf-reshaped"]
@@ -453,7 +453,7 @@ def test_a_reshaped_editors_leaf_fails(book: Path, tmp_path: Path):
 def test_a_vector_leaf_reports_unmeasured_rather_than_fine(book: Path):
     """An SVG has no pixel aspect to compare. `""` means unmeasured and must not
     be read as measured-and-clean — the `_ink_verdict` distinction, here too."""
-    d = book / "ed" / "page-img"
+    d = book / "edition" / "page-img"
     d.mkdir(parents=True, exist_ok=True)
     (d / "chukchi-1-014.svg").write_text("<svg/>", encoding="utf-8")
     rows = {r["ref"]: r for r in A.check(book)["editor_leaves"]}

@@ -207,9 +207,9 @@ scans/w-figs-blotted/
 # none. Covered by `scans/` above and spelled out for the reason its neighbours
 # are: the entry is where the rationale lives.
 #
-# **`ed/fig-img/` is the opposite and is deliberately absent from this file.** A
+# **`edition/fig-img/` is the opposite and is deliberately absent from this file.** A
 # picture somebody touched up by hand is authored work that exists nowhere else,
-# so it is tracked. It lives under `ed/` rather than `gt/`: an enhanced figure is
+# so it is tracked. It lives under `edition/` rather than `gt/`: an enhanced figure is
 # a new artefact somebody vouches for, not a reproduction of the page, and `gt/`
 # is the latter. The split is the whole safety property: a rebuild rewrites
 # everything here and nothing there, and `figures.crop_source` resolves the human
@@ -291,8 +291,8 @@ train/
 # Agent worktrees — real git worktrees of this repo, never content of it.
 .claude/worktrees/
 
-# **`ed/page-img/` is tracked and is deliberately absent from this file**, on
-# `ed/fig-img/`'s terms one level up: an editor's own version of a whole leaf is
+# **`edition/page-img/` is tracked and is deliberately absent from this file**, on
+# `edition/fig-img/`'s terms one level up: an editor's own version of a whole leaf is
 # authored work that exists nowhere else. It was ignored for a while, pending the
 # format — a vectorization of `1-361` was being attempted and committing a 22 MB
 # raster about to be superseded would have put the wrong thing in git permanently.

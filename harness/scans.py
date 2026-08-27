@@ -1116,7 +1116,7 @@ def geometry_dependents(root: Path = Path("."), dry: dict | None = None
     this run would touch, `0` included; `response` is `—` where the answer is none.
     A row that cannot be counted says so rather than guessing.
 
-    `ed/page-img/` and `ed/fig-img/` are absent on purpose and reported by `swap`
+    `edition/page-img/` and `edition/fig-img/` are absent on purpose and reported by `swap`
     separately: they are a human's touch-ups cut from a raster, so a geometry change
     makes them stale — but nothing mechanical may rewrite an authored image, and a
     tool that silently regenerated one would overwrite the only copy of work no
@@ -1171,7 +1171,7 @@ def geometry_dependents(root: Path = Path("."), dry: dict | None = None
 
 
 #: Authored images cut from a raster. **Reported, never touched.**
-TOUCHED_UP = ("ed/page-img", "ed/fig-img")
+TOUCHED_UP = ("edition/page-img", "edition/fig-img")
 
 
 def _tree_manifest(tree: Path) -> dict[str, dict]:

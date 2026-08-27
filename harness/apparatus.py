@@ -541,7 +541,7 @@ def folio_of(ref: str, index: dict) -> int | None:
 
 
 def _check_leaves(root: Path, exempt: set[str]) -> tuple[dict, list]:
-    """Every file in `ed/page-img/`, and what is wrong with it.
+    """Every file in `edition/page-img/`, and what is wrong with it.
 
     The scale is reported whatever it is — measurement never gates, and knowing a
     leaf is served at 2x is worth having. What fails is a file that will never be

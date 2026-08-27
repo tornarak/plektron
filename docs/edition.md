@@ -11,6 +11,29 @@ mostly authored, because who Nordenskiöld was is not derivable from the page; a
 lexicon entry is almost entirely derived, because a form's sound, its pages and
 its printed gloss all are. What each file holds is what nothing else could say.
 
+## `edition/` is a layer, not a rank
+
+The store holds what is served to a reader, and that is the whole of its
+membership test. It is **not** the set of files carrying `#ed`.
+
+The two look identical until they diverge, and they diverge in one direction
+only: an editor's ruling that never reaches a reader. `data/marks_exempt.json`
+rules a keying ambiguity real, `data/lexicon_extra.txt` accounts for a coinage no
+dictionary carries — both are a human's own act, both are `#ed`, and neither is
+anything a reader is shown. They sit with the pass they rule on.
+
+So the rank stays in `@resp`, where a rank belongs and where `validate`
+re-derives it, and the folder is named for what the folder is for. Everything
+under it is authored — `gt/`'s files reproduce the artifact and these do not,
+which is the older `ed/` argument (`docs/apparatus.md`) and is unchanged by the
+rename. What the rename fixes is a folder that answered a question about
+provenance when the question a reader of the repo root actually asks is *where
+does the edition live*.
+
+The corollary is the useful one: **a file belongs here if removing it would
+change what a reader sees.** An amended ToC entry does; a suppressed detector
+finding does not.
+
 ## Why an entity store at all
 
 `@ref` was refused outright until this milestone — `validate` errored on
@@ -1281,8 +1304,8 @@ sorts on.
 
 ### An editor's own leaf
 
-`ed/page-img/chukchi-PP-NNN.{svg,png,jpg}`, resolved by
-`edition_ui.leaf_source` — `ed/fig-img/`'s doctrine (`docs/apparatus.md`) one
+`edition/page-img/chukchi-PP-NNN.{svg,png,jpg}`, resolved by
+`edition_ui.leaf_source` — `edition/fig-img/`'s doctrine (`docs/apparatus.md`) one
 level up, for a whole leaf rather than a crop, with the rank travelling with the
 answer as `crop_source` and `page_source` both do. **Vector before raster**,
 because `1-361`, part 1's foldout map, is the leaf this exists for and may become
