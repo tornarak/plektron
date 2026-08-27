@@ -1,7 +1,7 @@
-"""The shape store — `data/geo/`, read-only, and the checks over it.
+"""The shape store — `edition/geo/`, read-only, and the checks over it.
 
 Compiled by `tools/build_geo.py` from sources that live outside the repository
-and **tracked** for that reason; `data/geo/SOURCES.md` is the provenance record
+and **tracked** for that reason; `edition/geo/SOURCES.md` is the provenance record
 and carries the one licence condition (Asher 2007 is CC BY 4.0).
 
 Nothing here writes, and nothing here imports a geometry library: the store is
@@ -34,7 +34,7 @@ member is looked up in it directly.
 
 **A union still gets a row of its own in `listing`**, after the store's rows and
 never among them: two polygons being one speaker area is a human's assertion
-about `entities/`, not a shape `data/geo/` holds. It is synthesized for display
+about `entities/`, not a shape `edition/geo/` holds. It is synthesized for display
 and claims nothing. Two entities may name the same pair — a people and the
 subgroup inside it are the standing case — so the label names every claimant
 rather than picking one.
@@ -56,7 +56,7 @@ from pathlib import Path
 
 from .parallel import ptrack
 
-GEODIR = "data/geo"
+GEODIR = "edition/geo"
 
 #: Longitudes in the store live in [LON_BASE, LON_BASE+360); anything above 180
 #: is west of the antimeridian. Written by the build into `index.json`, read
@@ -139,7 +139,7 @@ def _index_cached(path: str, mtime: float) -> dict:
 def index(root: Path = Path(".")) -> dict:
     """The census. Absence is an empty index, not an exception.
 
-    A repository whose `data/geo/` has not been built yet must still run every
+    A repository whose `edition/geo/` has not been built yet must still run every
     other verb, so this is the `readings`/`load` pattern: `{}` rather than a
     raise, and the caller decides whether emptiness matters. `entity check`
     decides it does, for an `area:` that names something.
@@ -686,7 +686,7 @@ def listing(root: Path = Path(".")) -> dict:
     absent = [absent_row(k, v) for k, v in sorted(idx["absent"].items())]
     # The unions some entity has authored, listed after the store's own rows and
     # never among them: a union is a fact about `entities/` and the census above
-    # is a fact about `data/geo/`. **Synthesized here rather than looked up**,
+    # is a fact about `edition/geo/`. **Synthesized here rather than looked up**,
     # since a composite stopped being a resolvable id the day `geo:` began
     # holding its members apart — and the row was only ever built for display.
     comp = []
@@ -736,7 +736,7 @@ def member_claims(store: dict) -> dict[str, list[str]]:
     It used to have to split a composite back into members to say this at all,
     which is where the argument in its old docstring came from — that an entity
     claiming a union must count against each of its parts, or the members read
-    as unclaimed *and* the union read as a shape `data/geo/` does not hold. The
+    as unclaimed *and* the union read as a shape `edition/geo/` does not hold. The
     field holds them apart now, so the rule needs no recovery step.
     """
     claims: dict[str, list[str]] = {}

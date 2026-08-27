@@ -436,7 +436,7 @@ carrying several hundred toponyms in 6 pt. The master in `edition/page-img/` is 
 ChaiNNer upscale of it, hand-repaired afterwards where `2_MangaScaleV3`
 hallucinated halftone into the legend swatches and turned the Yukaghir key
 orange. Nothing here rebuilds that, which is the whole reason it is in git: a
-vouched-for artefact a clone does not get is not vouched for, `data/geo/`'s
+vouched-for artefact a clone does not get is not vouched for, `edition/geo/`'s
 argument exactly.
 
 It is also 21 MB, which is not a thing to hand a browser, so

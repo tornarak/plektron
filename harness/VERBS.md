@@ -1371,17 +1371,17 @@ Human-authored and tracked, so `--commit` gates the two actions that write.
 --lang CODE  the language every `--alias` on this run is a name in. Left off, they are filed with the language unstated
 --within ID  the entity that contains this one, `class:slug`. The atlas's whole structure, and the only thing that puts a location somewhere rather than merely on a map
 --part-of ID  what this entity *belongs to*, where `--within` says where it *is*. A subgroup of a people, a work inside a larger work. Nothing drawing a map reads it; a `people:` with no geography of its own falls back along it for a bound, which is the one place the two meet
---geo MEMBER  where this entity is: a point `LAT LON`, a shape in `data/geo/` `kind:slug`, or another entity `class:slug` whose extent it takes. Repeatable, and the field is the union of its members. Identifying a name Bogoras wrote in 1904 with a polygon a modern service returned is a human's act, which is why a shape is typed rather than matched by name — `watershed:main` and the English word are one keystroke apart. `geo list` names every shape
+--geo MEMBER  where this entity is: a point `LAT LON`, a shape in `edition/geo/` `kind:slug`, or another entity `class:slug` whose extent it takes. Repeatable, and the field is the union of its members. Identifying a name Bogoras wrote in 1904 with a polygon a modern service returned is a human's act, which is why a shape is typed rather than matched by name — `watershed:main` and the English word are one keystroke apart. `geo list` names every shape
 --authority KEY  the entry in `edition/authorities.json` this entity is the work of, e.g. `steller1774`. What puts the printed title on the card without the entry restating it
 --commit  write it; without this the file is reported and not created
 --root --json --toon --pager
 ```
 
 ### entity locate ID
-**Does** set or replace an existing entry's `geo:` members, its `frame:` box, or both. **The act that puts a name on the map**, and it is a human's: a coordinate for a toponym Bogoras wrote in 1904, or the judgement that two sourced polygons are one speaker area, is an assertion about the world no rule may make. Re-parses the file before writing, as `entity new` does, and refuses a member naming a shape `data/geo/` does not hold or an entity the store does not.
-**Reads** `entities/`, `data/geo/index.json`. **Writes** the named file under `--commit`. **Exit** 0, or 1 if the entity does not exist.
+**Does** set or replace an existing entry's `geo:` members, its `frame:` box, or both. **The act that puts a name on the map**, and it is a human's: a coordinate for a toponym Bogoras wrote in 1904, or the judgement that two sourced polygons are one speaker area, is an assertion about the world no rule may make. Re-parses the file before writing, as `entity new` does, and refuses a member naming a shape `edition/geo/` does not hold or an entity the store does not.
+**Reads** `entities/`, `edition/geo/index.json`. **Writes** the named file under `--commit`. **Exit** 0, or 1 if the entity does not exist.
 ```
---geo MEMBER  a point `LAT LON` — two WGS84 decimal degrees, latitude then longitude, negative longitudes west as the store's sources write them, the shift into the atlas's continuous window being the reader's; or a shape in `data/geo/` `kind:slug`; or another entity `class:slug`, whose extent this one takes. Repeatable, and it **replaces rather than appends**: every `--geo` on one run is the complete new member list
+--geo MEMBER  a point `LAT LON` — two WGS84 decimal degrees, latitude then longitude, negative longitudes west as the store's sources write them, the shift into the atlas's continuous window being the reader's; or a shape in `edition/geo/` `kind:slug`; or another entity `class:slug`, whose extent this one takes. Repeatable, and it **replaces rather than appends**: every `--geo` on one run is the complete new member list
 --frame "W S E N"  four WGS84 decimal degrees, west south east north, saying where the map should look. Longitude first, unlike a `--geo` point, because it is a box; east may exceed 180
 --commit  write it; without this the change is reported and not made
 --root --json --toon --pager
@@ -1394,8 +1394,8 @@ Human-authored and tracked, so `--commit` gates the two actions that write.
 **Note** the worklist it answers is `geo verify`'s `unlocated`.
 
 ### entity check
-**Does** the store gate: every file parses, every class is known, every heading agrees with its directory and its filename, every `within:` resolves, is acyclic and has one of the four geographical classes at **both** ends, every `geo:` member resolves — as a shape in `data/geo/` or as an entity — and no `geo:` chain cycles, no form is rule-linked (`auto: yes` or `auto: once`) for two entities at once, and every alias's `lang` is in the vocabulary. Collisions that are not errors are reported anyway — an ambiguous form is the normal state, and the generator surfaces it as a question rather than resolving it.
-**Reads** `entities/`, `data/geo/index.json`. **Writes** — **Exit** 0 clean, 1 on any defect.
+**Does** the store gate: every file parses, every class is known, every heading agrees with its directory and its filename, every `within:` resolves, is acyclic and has one of the four geographical classes at **both** ends, every `geo:` member resolves — as a shape in `edition/geo/` or as an entity — and no `geo:` chain cycles, no form is rule-linked (`auto: yes` or `auto: once`) for two entities at once, and every alias's `lang` is in the vocabulary. Collisions that are not errors are reported anyway — an ambiguous form is the normal state, and the generator surfaces it as a question rather than resolving it.
+**Reads** `entities/`, `edition/geo/index.json`. **Writes** — **Exit** 0 clean, 1 on any defect.
 **Note** a `geo:` member **resolving** is gated here and everything *geometric* is `geo verify`'s. Resolution is a fact about names, like `within:`; whether a child's shape actually falls inside its parent's is a fact about two delineations, and a gate there would reject true rows on the strength of a coarseness the source declared in advance.
 **Note** **the three edge kinds are walked separately** — `within:`, `part-of:` and `geo:` — so a cycle message names the field a reader has to go and edit. A cycle that *crosses* two of them is deliberately not gated: `extent_of`'s path guard makes it terminate rather than hang, and an error naming no single line is one nobody can act on.
 **Note** **`within:` is geography's alone.** It answers what terrestrial thing contains this one, which `geo verify`'s nesting check can test and the atlas walks. What a thing belongs to is `part-of:`; whose extent it takes is a `geo:` member. Two peoples were filed inside a village to borrow a box, which cost them their place in their own ethnicity's extent.
@@ -1466,7 +1466,7 @@ Human-authored and tracked, so `--commit` gates the two actions that write.
 
 ## geo
 
-The compiled shape store at `data/geo/` — watersheds, language areas and the
+The compiled shape store at `edition/geo/` — watersheds, language areas and the
 coastline the atlas draws — and the geometry checked against the hierarchy a
 human authored.
 
@@ -1474,7 +1474,7 @@ human authored.
 live outside the repository (`scratch/`, which is gitignored, and a symlink into
 a download directory), so the compiled store is **tracked** and nothing here
 writes. That is the split `scans/` has: a `tools/` script builds from what only
-one machine holds, the harness reads what is committed. `data/geo/SOURCES.md`
+one machine holds, the harness reads what is committed. `edition/geo/SOURCES.md`
 is the provenance record and carries the one licence condition — Asher 2007 is
 CC BY 4.0, so its citation is in the corpus `teiHeader` as well.
 
@@ -1486,7 +1486,7 @@ is one keystroke from an `area:` that resolves as an entity reference.
 
 ### geo bounds ID...
 **Does** the bounding box of each named region and their union — **the measurement a `frame:` is written from**. Takes entity ids and shape ids in one list. An entity's box is `geo.extent_of`: its own shape, else its own point, else the union of everything beneath it, which is what the atlas frames on; a shape's is the polygon's own. The union row carries `span_lon`/`span_lat` and a `frame` field spelled exactly as `entity locate --frame` takes it.
-**Reads** `data/geo/`, `entities/`. **Writes** — **Exit** 0.
+**Reads** `edition/geo/`, `entities/`. **Writes** — **Exit** 0.
 ```
 --margin DEG  degrees added on all four sides of the union
 --root --json --toon --pager
@@ -1498,18 +1498,18 @@ is one keystroke from an `area:` that resolves as an entity reference.
 
 ### geo list
 **Does** every shape in the store — id, kind, name, point count, area, source, and the entity that claims it. **Also the absences**: four speaker areas this edition sought in Asher 2007 have no polygon there — Siberian Yupik, Chuvan, Kerek and Tundra Yukaghir, two of them (`ypk`, `xcv`) Tier-1 codes — and they are rows here rather than silences, because an entity pointing at nothing and an entity nobody has got to yet look identical from outside.
-**Reads** `data/geo/`, `entities/`. **Writes** — **Exit** 0.
+**Reads** `edition/geo/`, `entities/`. **Writes** — **Exit** 0.
 ```
 --root --json --toon --pager
 ```
 **Emits** `scope` (`shapes`, `claimed`, the longitude `window`, `absent`, `composites`), `shapes`, `composites`, and `absent`.
-**Note** **a composite `area:` counts as a claim on each of its members.** A union is a fact about `entities/` and this census is a fact about `data/geo/`, so the unions are listed after the store's own rows and never among them — nothing mints a shape by naming one.
+**Note** **a composite `area:` counts as a claim on each of its members.** A union is a fact about `entities/` and this census is a fact about `edition/geo/`, so the unions are listed after the store's own rows and never among them — nothing mints a shape by naming one.
 **Note** **the `absent` block holds two kinds of absence and says which.** It began as "a Tier-1 code Asher 2007 draws no polygon for"; it now also holds a feature no gazetteer in hand carries at all — Bering Strait, which is in neither Natural Earth layer at 10m. A row therefore carries `sought` and `source`, what was looked for and where, so the second is not read as the first.
 **Note** longitudes are normalized into `[60, 420)`, so anything above 180 is west of the antimeridian and Chukotka runs continuously rather than tearing from +179 to −179. It is what lets every planar operation downstream treat a meridian-spanning shape as an ordinary one.
 
 ### geo verify
 **Does** the geometry against the authored hierarchy, and the hierarchy against itself. Six reports, none of which gates.
-**Reads** `data/geo/`, `entities/`. **Writes** — **Exit** 0.
+**Reads** `edition/geo/`, `entities/`. **Writes** — **Exit** 0.
 ```
 --root --json --toon --pager
 ```
@@ -1535,7 +1535,7 @@ place.
 
 ### edition serve
 **Does** open the reading view on 127.0.0.1 — collated TEI in a main column, a stack of entity, note, map and scan cards beside it, plus the encyclopedia, its audit queue, and `/atlas`: the `within:` hierarchy as a navigable tree with each node drawn inside its parent's extent. Shows committed `tei/` only unless `--drafts`; a generated baseline is a draft nobody has read, and an end-user preview is the last place it belongs. Ratifying an entry in the browser writes `entities/` without `--commit`, as the other editors write their stores — the click is the human act, the store is tracked, git is the witness — and every write is rolled back if `entity check` would fail on the result. Blocks until the page or ctrl-c stops it.
-**Reads** `tei/`, `entities/`, `data/geo/`, `scans/`, and `mz/tei/` under `--drafts`. **Writes** `entities/` on an explicit click. **Exit** 0.
+**Reads** `tei/`, `entities/`, `edition/geo/`, `scans/`, and `mz/tei/` under `--drafts`. **Writes** `entities/` on an explicit click. **Exit** 0.
 **Note** `--drafts` is **read-only and marked everywhere it shows**: in the listing, on the page itself and beside every search hit, because a URL typed straight in skips the listing that would otherwise carry the warning. It reaches `mz/tei/` **by naming it** — `tei/` is a store and never a symlink farm over the generated one, since nine callers read "a file is in `tei/`" as "somebody collated this" and a link is indistinguishable from a signature to all of them (`test_tei_is_a_store_and_never_a_farm`). Entity attestations stay signed-only whatever this flag says: an attestation is a claim about a reading, and a draft has read nothing.
 **Note** the atlas is **scoped to located subtrees** — a root is an entity with no `within:` that has somewhere to put on a map, itself or below it — otherwise every person and source in the store is an atlas root. A node with no `area:` and no `geo:` is framed by the union of what lies beneath it, and the map says so: no source draws a boundary for Chukotka, and a frame is a viewport rather than a claim.
 ```

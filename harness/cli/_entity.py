@@ -96,7 +96,7 @@ def register(cli):
              "geography of its own falls back along it for a bound, which is "
              "the one place the two meet")
     opt(p, "--geo", "geos", multiple=True, metavar="MEMBER",
-        help="where this entity is: a point `LAT LON`, a shape in data/geo/ "
+        help="where this entity is: a point `LAT LON`, a shape in edition/geo/ "
              "`kind:slug`, or another entity `class:slug` whose extent it "
              "takes. Repeatable, and the field is the union of its members. "
              "**Identifying a name Bogoras wrote in 1904 with a polygon a "
@@ -178,7 +178,7 @@ def register(cli):
     opt(p, "--geo", "geos", multiple=True, metavar="MEMBER",
         help="a point `LAT LON` — two WGS84 decimal degrees, latitude then "
              "longitude, `66.05 -169.6`, negative longitudes west as the "
-             "store's sources write them; or a shape in data/geo/ `kind:slug`; "
+             "store's sources write them; or a shape in edition/geo/ `kind:slug`; "
              "or another entity `class:slug`, whose extent this one takes. "
              "**Repeatable, and it replaces rather than appends** — every "
              "`--geo` on one run is the complete new member list, because a "
@@ -465,7 +465,7 @@ def run_locate(a) -> int:
                if m not in geo_index(a.root)["shapes"]]
     if unknown:
         raise ValueError(
-            f"{ident}: {', '.join(unknown)} names nothing in data/geo/. "
+            f"{ident}: {', '.join(unknown)} names nothing in edition/geo/. "
             f"`harness geo list` names every shape")
     dangling = [m for m in geo_refs(got) if m not in store]
     if dangling:

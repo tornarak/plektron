@@ -101,7 +101,7 @@ refs to scope it, so a leaf is a file drop plus one command rather than a
 special case — which matters because Jochelson's *Koryak*, the sibling Jesup
 volume, reproduces this same map. The image processing and what it deliberately
 drops are `docs/apparatus.md`'s.
-`build_geo.py` compiles `data/geo/` from three sources in `scratch/` and is
+`build_geo.py` compiles `edition/geo/` from three sources in `scratch/` and is
 `docs/edition.md`'s; `gazetteer.py` proposes identities for unlocated entities
 against a live API and derives `geo:` from the ones a human adopted, and is
 `docs/edition.md`'s too.

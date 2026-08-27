@@ -23,7 +23,7 @@ stale, which is the same argument `#gt` and `#mz` rest on in the TEI.
 **Geometry is the second witness, and it is why `propose` is worth running at
 all.** Natural Earth's `King I.` is King Island, *Tasmania* — 144 E, 40 S — and
 a name match alone adopts it without a murmur. Every candidate coordinate here
-is tested against the shapes `data/geo/` already holds: is it in the edition's
+is tested against the shapes `edition/geo/` already holds: is it in the edition's
 window, is it inside the shape of the entity's own `within:` parent, and which
 store shapes contain it at all. A candidate that lands inside the peninsula its
 entry already claims it is on has been confirmed by something other than its

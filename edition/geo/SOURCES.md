@@ -1,4 +1,4 @@
-# `data/geo/` — where the shapes come from
+# `edition/geo/` — where the shapes come from
 
 Everything under this directory is **compiled**, by `tools/build_geo.py`, from
 sources that live outside the repository. It is nonetheless **tracked**, and
@@ -110,7 +110,7 @@ have teeth for a published edition:
 - **CC BY-NC 4.0** forbids commercial use. This edition is not commercial, but
   the licence travels with the shapes to anyone who clones the repository.
 - **ODbL 1.0** is share-alike on the *database*: a derivative database must be
-  offered under ODbL, and `data/geo/watershed/` is a derivative database.
+  offered under ODbL, and `edition/geo/watershed/` is a derivative database.
   A rendered map is a "Produced Work" and needs only the notice.
 
 HydroSHEDS states no single licence — "all data products come with specific
@@ -120,7 +120,7 @@ and asks for `Source: [page title], [url] downloaded on [date] © HydroSHEDS`.
 **So this row is unfinished, and it is the only place in this repository where
 the obligation is heavier than the content.** Three things want deciding, by a
 human, before the atlas is published anywhere but a loopback port: which of the
-two MERIT branches this edition takes; whether `data/geo/watershed/` therefore
+two MERIT branches this edition takes; whether `edition/geo/watershed/` therefore
 has to carry ODbL rather than the corpus's CC BY; and whether the basins should
 be re-derived from a single, plainly-licensed source instead. Nothing here is
 blocked in the meantime — the server is loopback and the repository is not a
@@ -219,7 +219,7 @@ built shape: 180.0–190.271°E, 64.28–68.98°N.
     GeoNames, country dumps `RU` and `US`
     https://download.geonames.org/export/dump/  ·  CC BY 4.0 — attribution required
 
-**Nothing in `data/geo/` comes from it.** It carries points, not polygons, so it
+**Nothing in `edition/geo/` comes from it.** It carries points, not polygons, so it
 compiles no shape and `build_geo.py` never opens it. It is recorded here because
 it *is* where a growing number of `entities/` `geo:` values come from, by way of
 `tools/gazetteer.py`, and a coordinate whose provenance is written down nowhere
@@ -277,7 +277,7 @@ Measured, both shapes' areas move by under half a percent.
 
 ### The three sources of coordinates, which draw no shape at all
 
-Nothing below compiles into `data/geo/` either. They are here because this file
+Nothing below compiles into `edition/geo/` either. They are here because this file
 is the provenance record for the atlas, the atlas is points as well as polygons,
 and a coordinate whose origin is written down nowhere is the defect this whole
 document exists to prevent. All three are also in the `teiHeader`.

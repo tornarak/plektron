@@ -20,7 +20,7 @@ from ._common import action, arg, group, opt, out
 
 def register(cli):
     g = group(cli, "geo",
-              "the compiled shape store in data/geo/ — watersheds, language "
+              "the compiled shape store in edition/geo/ — watersheds, language "
               "areas and the coastline the atlas draws — and the geometry "
               "checked against the hierarchy a human authored",
               section="Apparatus and reports")
@@ -29,7 +29,7 @@ def register(cli):
            help="every shape in the store, with the entity that claims it — and "
            "a composite `area:` counts as a claim on each of its members, since "
            "a union is a fact about `entities/` and this census is a fact about "
-           "`data/geo/`. The unions themselves are listed after, separately. "
+           "`edition/geo/`. The unions themselves are listed after, separately. "
            "**Also the absences**: four speaker areas this edition sought in "
            "Asher 2007 have no polygon there — Siberian Yupik, Chuvan, Kerek "
            "and Tundra Yukaghir, two of them (`ypk`, `xcv`) Tier-1 codes — "

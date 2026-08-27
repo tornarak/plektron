@@ -56,7 +56,7 @@ from . import farms, parallel, paths, provenance
 from .refs import norm_ref, parse_ref
 
 #: The source PDFs' own embedded-image geometry. **Derived but tracked**, on
-#: `data/geo/`'s precedent: `pdfs/` are symlinks outside the repository, so a clone
+#: `edition/geo/`'s precedent: `pdfs/` are symlinks outside the repository, so a clone
 #: cannot rebuild it.
 PDF_IMAGES = "data/pdf_images.json"
 
@@ -201,7 +201,7 @@ def read_png_provenance(path: Path) -> provenance.Producer | None:
 
 
 ABOUT = (
-    "Derived but tracked, on data/geo/'s precedent: pdfs/ are symlinks outside the "
+    "Derived but tracked, on edition/geo/'s precedent: pdfs/ are symlinks outside the "
     "repository, so a clone cannot rebuild this. Built by "
     "`harness scans extract --all --commit`. Per page: `master` is the full-page "
     "image scans/ is cut from, `offset` is the integer shift from the legacy "

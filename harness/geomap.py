@@ -316,7 +316,7 @@ def owned(paths, ent: str = "", kind: str = "") -> list[tuple[str, str, str]]:
     a drainage divide, a stretch of open water, a coastline or a speaker area —
     and the entity class does not answer it: `place:` covers both a peninsula
     and a mountain range, and the prose stylesheet lumps `place:` and `water:`
-    into one hue because in a sentence that is the right grouping. `data/geo/`
+    into one hue because in a sentence that is the right grouping. `edition/geo/`
     declares the kind, so nothing here infers one.
     """
     return [(d, ent, kind) for d in paths]

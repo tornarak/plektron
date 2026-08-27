@@ -42,6 +42,7 @@ REPO = Path(__file__).resolve().parent.parent.parent
 # working. Say which one it is here whenever this number moves.
 #
 # **Raised again, 14_500 → 15_000, by the editor**, for the atlas: `data/geo/`
+# (now `edition/geo/`, and the path here is the raise's, not a live pointer)
 # is **derived but tracked**, which is the one store that contradicts the rule
 # the layout block states everywhere else — derived trees are ignored and a
 # clone rebuilds them. Here a clone cannot: the sources are outside the

@@ -116,7 +116,7 @@ def _yupik(tmp_path):
     write(tmp_path, "place:naukan", within="land:chukchi-peninsula",
           geo="66.0267 -169.7019")
     # A `geo:` standing in for the `area:` the real record carries: a temp store
-    # holds no `data/geo/` shapes, and what these tests need from the parent is
+    # holds no `edition/geo/` shapes, and what these tests need from the parent is
     # only that it *has* an extent for a child to inherit.
     write(tmp_path, "people:yupik", geo="64.0 -172.0")
     write(tmp_path, "people:naukans", within="place:naukan",

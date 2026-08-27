@@ -24,7 +24,7 @@ does not distinguish members of a family, neither does this: `ypk` and `ipk` are
 a family and a macrolanguage code on purpose.
 
 **A language is listed here when something in the corpus already names it** — a
-`people:` entry, a `langarea:` shape in `data/geo/`, or an authority's `lang`.
+`people:` entry, a `langarea:` shape in `edition/geo/`, or an authority's `lang`.
 Adding one is a line, but it is a line a human writes with the evidence in view,
 because `entity check` refuses an alias whose language is not in this table and
 a table padded with plausible codes would refuse nothing.
@@ -45,7 +45,7 @@ LANGS: dict[str, tuple[str, bool]] = {
     "eve": ("Lamut (Even)", True),
     "ipk": ("Inupiat", True),
     "itl": ("Itelmen (the book's “Kamchadal”)", True),
-    # Southern (Kolyma) Yukaghir, which is the variety `data/geo/` draws for the
+    # Southern (Kolyma) Yukaghir, which is the variety `edition/geo/` draws for the
     # people: `people:yukaghir` takes its extent from `langarea:sout2750`, and
     # Asher 2007 has no Tundra polygon at all (`geo list`'s `yukaghir-tundra`
     # row). **The code is the Southern one and that is a claim, not a default** —
@@ -54,7 +54,7 @@ LANGS: dict[str, tuple[str, bool]] = {
     # with one English name between them in this book.
     "yux": ("Southern Yukaghir", True),
     # The neighbouring languages the book names peoples by. Each is witnessed by
-    # an entry under `entities/people/` or a shape in `data/geo/`, or both.
+    # an entry under `entities/people/` or a shape in `edition/geo/`, or both.
     "ale": ("Aleut", False),
     "evn": ("Evenki (the book's “Tungus”)", False),
     "niv": ("Nivkh (the book's “Gilyak”)", False),

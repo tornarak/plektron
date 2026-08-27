@@ -385,7 +385,7 @@ def _geo_member(raw: str, at: str = "") -> dict:
     Three forms, told apart by the line's own spelling and by nothing else:
 
         - geo: 64.4051 -172.2409          a point
-        - geo: langarea:chuk1273          a shape in `data/geo/`
+        - geo: langarea:chuk1273          a shape in `edition/geo/`
         - geo: place:naukan               another entity, extent transcluded
 
     **The disjointness of shape kinds from `ENTITY_CLASSES` is what makes this
@@ -420,7 +420,7 @@ def _geo_member(raw: str, at: str = "") -> dict:
         return {"kind": "shape", "id": raw}
     raise Malformed(
         f"{at}`geo: {raw}` — a member is one of three things: a point, as two "
-        f"decimal degrees `64.4051 -172.2409`; a shape in `data/geo/`, as "
+        f"decimal degrees `64.4051 -172.2409`; a shape in `edition/geo/`, as "
         f"`kind:slug` (`harness geo list` names them); or another entity, as "
         f"`class:slug`, whose extent this one takes. Repeat the field for "
         f"several; the field is the union of its members")
@@ -443,7 +443,7 @@ def geo_points(rec: dict) -> list[tuple[float, float]]:
 
 
 def geo_shapes(rec: dict) -> list[str]:
-    """Every shape member, as a `data/geo/` id."""
+    """Every shape member, as a `edition/geo/` id."""
     return [m["id"] for m in rec["geo"] if m["kind"] == "shape"]
 
 
@@ -1235,7 +1235,7 @@ def check(root: Path = Path("."), tick: Callable | None = None) -> dict:
 
     # The shape store, read once. `area:` resolving is the same kind of claim
     # as `within:` resolving — a named thing either exists or it does not — and
-    # `data/geo/` is tracked, so it is always there to check against. Anything
+    # `edition/geo/` is tracked, so it is always there to check against. Anything
     # *geometric* is `harness geo verify`'s and reports rather than gates.
     shapes = geo_index(root).get("shapes", {})
     for rec in store.values():
@@ -1286,7 +1286,7 @@ def check(root: Path = Path("."), tick: Callable | None = None) -> dict:
             if m not in shapes:
                 errors.append(
                     f"{rec['path']}: `geo: {m}` resolves to nothing in "
-                    f"data/geo/. `harness geo list` names every shape; if the "
+                    f"edition/geo/. `harness geo list` names every shape; if the "
                     f"source has no polygon for it, leave the member off and "
                     f"say so in the gloss rather than pointing at an "
                     f"approximation")

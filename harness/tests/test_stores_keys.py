@@ -447,7 +447,7 @@ def test_fig_layout_reads_a_page_with_no_figures_as_an_empty(tmp_path, monkeypat
 
 
 def _geo(root: Path, shapes: list[dict]) -> Path:
-    return write(root / "data" / "geo" / "index.json",
+    return write(root / "edition" / "geo" / "index.json",
                  json.dumps({"window": [], "shapes": shapes}))
 
 
@@ -455,10 +455,10 @@ def test_shape_is_keyed_on_the_index_and_on_the_file(tmp_path, monkeypatch):
     """"`geo.shape` resolves the identity through `index()` before reading, so a
     change to either can change the answer and both have to be in the key.\""""
     _geo(tmp_path, [{"id": "anadyr", "file": "anadyr.json"}])
-    f = write(tmp_path / "data" / "geo" / "anadyr.json",
+    f = write(tmp_path / "edition" / "geo" / "anadyr.json",
               json.dumps({"features": []}))
     monkeypatch.setattr("harness.geo.shape",
-                        Probe(lambda: [tmp_path / "data" / "geo" / "index.json", f]))
+                        Probe(lambda: [tmp_path / "edition" / "geo" / "index.json", f]))
 
     pins(lambda: stores.shape("anadyr", tmp_path),
          ("a rebuilt shape file",
@@ -472,7 +472,7 @@ def test_a_rebuilt_shape_file_reaches_the_map(tmp_path):
     """The real reader, and it is the half that works: `_shape`'s key holds the
     file's own bytes and `geo.shape` reads it directly."""
     _geo(tmp_path, [{"id": "anadyr", "file": "anadyr.json"}])
-    f = tmp_path / "data" / "geo" / "anadyr.json"
+    f = tmp_path / "edition" / "geo" / "anadyr.json"
     write(f, json.dumps({"features": [{"id": 1}]}))
     assert stores.shape("anadyr", tmp_path)["features"] == [{"id": 1}]
     write(f, json.dumps({"features": [{"id": 2}]}))
@@ -496,7 +496,7 @@ def test_an_index_repointed_at_another_file_reaches_the_map(tmp_path):
     repair: the fix is in `geo.index`, not in the stamp above it.
     """
     _geo(tmp_path, [{"id": "anadyr", "file": "one.json"}])
-    g = tmp_path / "data" / "geo"
+    g = tmp_path / "edition" / "geo"
     write(g / "one.json", json.dumps({"features": [{"id": 1}]}))
     write(g / "two.json", json.dumps({"features": [{"id": 2}]}))
     assert stores.shape("anadyr", tmp_path)["features"] == [{"id": 1}]
@@ -510,7 +510,7 @@ def test_shape_survives_an_identity_the_index_does_not_hold(tmp_path, monkeypatc
     KeyError — the index is a store and a missing id is its ordinary answer."""
     _geo(tmp_path, [])
     monkeypatch.setattr("harness.geo.shape",
-                        Probe(lambda: [tmp_path / "data" / "geo" / "index.json"]))
+                        Probe(lambda: [tmp_path / "edition" / "geo" / "index.json"]))
     assert stores.shape("nowhere", tmp_path)["probe"]
 
 

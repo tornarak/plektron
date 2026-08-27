@@ -1,7 +1,7 @@
 """The shape store, the projection, and the map.
 
 The store is compiled and tracked, so most of these run against the real
-`data/geo/` — that is the thing the reading view draws, and a fixture would
+`edition/geo/` — that is the thing the reading view draws, and a fixture would
 test a shape nobody looks at. What is *not* asserted anywhere here is that a
 delineation is correct: the sources say what they say, and `geo verify`
 reports the disagreements rather than this suite pretending to adjudicate them.
@@ -19,8 +19,8 @@ from harness import edition_ui, entities, geo, geomap
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 built = pytest.mark.skipif(
-    not (ROOT / "data" / "geo" / "index.json").exists(),
-    reason="data/geo/ has not been built — see tools/build_geo.py")
+    not (ROOT / "edition" / "geo" / "index.json").exists(),
+    reason="edition/geo/ has not been built — see tools/build_geo.py")
 
 
 # ------------------------------------------------------------ the store
@@ -287,7 +287,7 @@ def test_verify_reports_and_never_gates():
 @built
 def test_a_composite_counts_as_a_claim_on_each_of_its_members():
     """Otherwise the members read as unclaimed *and* the union reads as a shape
-    `data/geo/` does not hold — two wrong answers from one right field.
+    `edition/geo/` does not hold — two wrong answers from one right field.
 
     Written when several shapes were one comma-joined `area:`, and still the
     rule: a record may name as many shapes as it likes, and each is a claim.
@@ -464,7 +464,7 @@ def test_a_path_carries_the_kind_of_shape_it_is():
     """One accent for every boundary made a wide frame unreadable — the Northeast
     Siberia map draws fourteen watersheds, five land regions and three stretches
     of open water at once, and in one hue they are a field of overlapping
-    outlines. The kind is declared in `data/geo/` and travels on the path, so the
+    outlines. The kind is declared in `edition/geo/` and travels on the path, so the
     stylesheet looks it up rather than guessing from the geometry."""
     f = geomap.Frame((150.0, 60.0, 200.0, 72.0))
     doc = geo.shape("watershed:anadyr", ROOT)
@@ -587,7 +587,7 @@ def test_the_index_is_reread_when_the_store_changes(tmp_path):
     """`edition serve` is long-lived and the cache is keyed on mtime, so a
     rebuild is picked up without a restart — a server that had to be restarted
     would teach people to rebuild less."""
-    d = tmp_path / "data" / "geo"
+    d = tmp_path / "edition" / "geo"
     d.mkdir(parents=True)
     p = d / "index.json"
     p.write_text(json.dumps({"shapes": [{"id": "watershed:a", "file": "x.json"}]}))
@@ -600,7 +600,7 @@ def test_the_index_is_reread_when_the_store_changes(tmp_path):
 
 @built
 def test_an_entity_with_no_extent_gets_a_note_rather_than_a_traceback():
-    """`data/geo/`'s `absent` block holds records — `sought`, `source`, `why` —
+    """`edition/geo/`'s `absent` block holds records — `sought`, `source`, `why` —
     and `map_context` read them as strings, so `.lower()` raised on every entry
     with neither `area:` nor `geo:` nor a located descendant. It stayed hidden
     while almost every entry had an extent; a batch of bays and capes carrying
@@ -830,7 +830,7 @@ def test_a_framed_entity_with_nothing_else_still_draws():
 
 def _geo_store(tmp_path, ident, polys):
     """A one-shape store. `polys` is a list of outer rings, each (lon, lat)."""
-    d = tmp_path / "data" / "geo"
+    d = tmp_path / "edition" / "geo"
     (d / "region").mkdir(parents=True, exist_ok=True)
     (d / "region" / "x.json").write_text(json.dumps({
         "type": "FeatureCollection", "properties": {},

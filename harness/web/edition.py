@@ -1261,7 +1261,7 @@ def _map_ctx(idents, root: Path, store: dict | None = None, hidden=(),
              dropped=()) -> dict:
     """`map_context` with the server's cached readers handed in.
 
-    One map resolves six or more shapes out of `data/geo/`, and every one
+    One map resolves six or more shapes out of `edition/geo/`, and every one
     of them was a fresh read and JSON decode of a file that had not changed.
     """
     return ui.map_context(

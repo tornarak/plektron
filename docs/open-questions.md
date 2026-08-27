@@ -178,7 +178,7 @@ in for an unread glyph.
 - ~~**The geography view is deferred to a sprint of its own.**~~ **Settled — the
   sprint happened.** The entry wanted a hierarchy of locations navigable as a
   tree, built from GeoJSON then dumped loose in `scratch/`, with no external
-  tiles. All of it exists: `data/geo/` is the store — **derived but tracked**, the
+  tiles. All of it exists: `edition/geo/` is the store — **derived but tracked**, the
   one store that is, because its sources sit outside the repo and a clone cannot
   rebuild it — carrying 64 shapes across `base/`, `region/`, `watershed/`,
   `langarea/` and `marine/`, of which 62 are claimed by an entity.

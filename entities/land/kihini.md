@@ -19,5 +19,5 @@ southwestern end — and both points fall inside the traced shape, which is the
 text and the tracing agreeing without having been asked to.
 
 No gazetteer in hand draws it, so `region:kihini` is the editor's own tracing;
-see `data/geo/SOURCES.md` for what that rank means. The bare form is `auto: no`
+see `edition/geo/SOURCES.md` for what that rank means. The bare form is `auto: no`
 for the reason [[place:kihini]] sets out.

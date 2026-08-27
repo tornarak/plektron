@@ -26,7 +26,7 @@ Alaskan varieties [[people:yupik]] is drawn from. Bogoras divides them on
 Aiˊwan of the Pacific coast, whose villages this entry names directly; the
 [[people:naukans]] of East Cape; and the [[people:sireniks]] of Wuteˊen.
 
-**Its extent is its villages, because no source draws it.** `data/geo/` records
+**Its extent is its villages, because no source draws it.** `edition/geo/` records
 the absence under `ypk`: Asher 2007 carries the Alaskan Yupik varieties and no
 Asian one, "they are its comparanda, not substitutes for it". So this entry
 names the settlements Bogoras assigns to it and the atlas frames on their union,

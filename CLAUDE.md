@@ -117,23 +117,25 @@ Layout, all at the repo root:
             for the reason and the expiry in .gitignore.
     edition/  what is served to a reader and nothing else — a **layer**, not a
             rank: `#ed` lives in `@resp` and covers rulings that never reach a
-            reader. So far fig-img/, page-img/ — the touch-ups. Tracked; no rule
-            writes here. An improvement on the page is what `gt/` may not be
-            (`docs/edition.md`; the touch-ups' own rule is `docs/apparatus.md`).
+            reader. toc.json loi.json authorities.json alphabet.json runs.json
+            figure_numbers.json — the book's apparatus, amended, so none is `gt/`;
+            fig-img/, page-img/ — the touch-ups. Tracked; no rule writes here. An
+            improvement on the page is what `gt/` may not be (`docs/edition.md`;
+            the touch-ups' own rule is `docs/apparatus.md`).
+    edition/geo/  the atlas's shapes — watersheds, language areas, named
+            features, coastline.
+            **Derived but tracked**, the one store that is: its sources are
+            outside the repo, so a clone cannot rebuild it. tools/build_geo.py
+            builds, SOURCES.md records provenance, `geo list` is the census.
     entities/  the encyclopedia, one markdown file per entity under its class
             (person/, place/, event/ …). An identity is `class:slug`, which is
             what every `@ref` holds. Tracked; `entity check` gates it.
     lexicon/  one file per Tier-1 form an editor has written a note about; the
             identity is the form, and the rest of its card is derived. Tracked;
             `lexicon check` gates it. Declared and still empty — no notes yet.
-    data/   loi.json  toc.json  authorities.json  lexicon_extra.txt
-            figure_numbers.json  zones_config.json  lines_config.json
+    data/   lexicon_extra.txt  marks_config.json  marks_exempt.json
+            zones_config.json  lines_config.json  pdf_images.json
             tei_all.rng (the schema).
-    data/geo/  the atlas's shapes — watersheds, language areas, named
-            features, coastline.
-            **Derived but tracked**, the one store that is: its sources are
-            outside the repo, so a clone cannot rebuild it. tools/build_geo.py
-            builds, SOURCES.md records provenance, `geo list` is the census.
     review/ one directory per page: proposal.json (a reading, not truth) and
             decision.json (adjudicated) are tracked; the images are derived and
             ignored. See harness/paths.py.

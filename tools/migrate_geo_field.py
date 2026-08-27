@@ -2,7 +2,7 @@
 """Fold `area:` into `geo:`, and take `within:` off everything but geography.
 
 One design change, so one pass. `geo:` is now repeatable and its members are a
-point, a shape in `data/geo/`, or another entity whose extent this one takes —
+point, a shape in `edition/geo/`, or another entity whose extent this one takes —
 which makes `area:` a second spelling of the same field, and makes `within:` on
 a people the encyclopedia's hierarchy wearing the atlas's field. Both go.
 

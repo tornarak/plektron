@@ -115,7 +115,7 @@ for an identity.
 
 **That reason stopped being true, and it is worth being exact about when.** The
 moment those peoples were filed against their `langarea:` shapes, the
-repo did attest the mapping: `data/geo/` names its own shape *Even (Lamut)*, and
+repo did attest the mapping: `edition/geo/` names its own shape *Even (Lamut)*, and
 `langarea:itel1242` is West Itelmen. The four moved on the editor's word, with
 the shape store agreeing. `Indighirka`/Indigirka still has no witness and still
 has not moved — a river's spelling is not settled by a langarea.
@@ -369,7 +369,7 @@ row cannot be answered by writing a number in a file.
   larger work is not *somewhere* because of it — letting that edge into the tree
   would put a bibliography on the map.
 - **`geo:` is the atlas's**, below, and it is **repeatable**: the field is the
-  union of its members, each of them a point, a shape in `data/geo/`, or another
+  union of its members, each of them a point, a shape in `edition/geo/`, or another
   entity whose extent this one takes. Every member must resolve, and a shape
   *kind* may never be an entity class — which is the invariant that lets one
   field hold all three. It was two fields, `geo:` for a point and `area:` for a
@@ -2234,12 +2234,12 @@ at.
 dangling parent and a cycle long before anything read the store that way. What
 this section adds is the shapes, the authored link to them, and the view.
 
-### The store: `data/geo/`, compiled and tracked
+### The store: `edition/geo/`, compiled and tracked
 
 Three sources, none of them in the repository: 24 watershed delineations and a
 53 MB world language atlas in `scratch/` (gitignored, one of them a symlink into
 a download directory), and Natural Earth for the coastline. `tools/build_geo.py`
-compiles them to `data/geo/`, which **is** tracked — a clone can neither rebuild
+compiles them to `edition/geo/`, which **is** tracked — a clone can neither rebuild
 this nor be told why the atlas is empty. The same split `scans/` has: a `tools/`
 script builds from what only one machine holds, the harness reads what is
 committed. `shapely` is a build-time dependency declared inline (PEP 723);
@@ -2247,7 +2247,7 @@ committed. `shapely` is a build-time dependency declared inline (PEP 723);
 
 ### Locating an entity: `tools/gazetteer.py`
 
-`data/geo/` answers "what shape is this drawn as". It does not answer "where is
+`edition/geo/` answers "what shape is this drawn as". It does not answer "where is
 this village", and for most of the store nothing does: 73 geographical entries
 carry no `geo:` and no `frame:`. The gazetteer cannot help — Natural
 Earth's 10m layers hold eight features in this window and every one is already
@@ -2343,7 +2343,7 @@ reach Тиличики where a prefix search would — so a small run does both 
 sweep does SPARQL alone, and the header states which, because an entry with no
 candidates means something different under each.
 
-`data/geo/SOURCES.md` is authored by hand and is a **precondition of the build**,
+`edition/geo/SOURCES.md` is authored by hand and is a **precondition of the build**,
 not a by-product. Asher 2007 is CC BY 4.0, so its citation goes in the corpus
 `teiHeader`'s rights statement as well — this file ships with the repository and
 the reading view does not.
@@ -2352,7 +2352,7 @@ the reading view does not.
 basins come from Global Watersheds (mghydro.com) over MERIT-Hydro, which is
 dual-licensed **CC BY-NC 4.0 or ODbL 1.0**: the first forbids commercial use by
 anyone who clones this, and the second is share-alike on the *database*, which
-`data/geo/watershed/` is. Which branch this edition takes, and whether those
+`edition/geo/watershed/` is. Which branch this edition takes, and whether those
 files must therefore carry ODbL rather than the corpus's CC BY, is a human's
 decision recorded as open in `SOURCES.md`. Nothing is blocked meanwhile — the
 server is loopback and a repository is not a distribution — but a rights
@@ -2396,7 +2396,7 @@ one of three things, told apart by its own spelling and by nothing else:
 | written | is | resolved by |
 |---|---|---|
 | `64.4051 -172.2409` | a point | `geo.point_box` |
-| `langarea:chuk1273` | a shape in `data/geo/` | `geo.shape` |
+| `langarea:chuk1273` | a shape in `edition/geo/` | `geo.shape` |
 | `place:naukan` | another entity, whose extent this one takes | `geo.extent_of` |
 
 **Human-authored, and that is the point** — identifying a toponym Bogoras wrote
@@ -2414,7 +2414,7 @@ positively now — it *is* one — which is the same fact doing more work.
 no flag and no wrong guess available to it.
 
 `entity check` gates exactly this: that a member resolves, as a shape in
-`data/geo/` or as an entity in the store. That is a fact about names, like
+`edition/geo/` or as an entity in the store. That is a fact about names, like
 `within:` resolving. Everything geometric is `geo verify`'s and **reports**.
 
 ### There were two location fields, and the second could only drift
@@ -2467,7 +2467,7 @@ had three relations all along.
 
 Asher's Chukchi polygon stops at 180° and this edition does not move it. What it
 adds is `base:chukotka-east-of-meridian` — Natural Earth land, cut by a declared
-topological rule (`data/geo/SOURCES.md` has the rule and why a longitude box
+topological rule (`edition/geo/SOURCES.md` has the rule and why a longitude box
 cannot express it), asserting **nothing whatever about speech**.
 
 The join is then one human act, in the entity file, where a reader can see whose
@@ -2478,7 +2478,7 @@ it is:
 
 That separation is the design. Sourced geometry in the store; the inference in
 an entity, under a `status:`, with a name on it. A shape kind that meant "this
-edition inferred it" would have put the inference back in `data/geo/`, where
+edition inferred it" would have put the inference back in `edition/geo/`, where
 every consumer treats a row as a thing a source drew.
 
 ### The witness inside the river chain
@@ -2636,7 +2636,7 @@ atlas refuses to invent.
 `harness entity locate ID` answers a row of it, setting `geo:` or `frame:`.
 `--geo` repeats and **replaces rather than appends** — a flag that only added
 could never take a member off. It re-parses the file before writing, as
-`entity new` does, and refuses a member naming a shape `data/geo/` does not hold
+`entity new` does, and refuses a member naming a shape `edition/geo/` does not hold
 or an entity the store does not. That is the whole of the
 workflow, and it ends the hand-edit: item 11 alone was four of them.
 

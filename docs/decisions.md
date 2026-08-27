@@ -718,7 +718,7 @@ scaffolded in one afternoon are all `proposed`, so the ordinary message was
 telling an editor to raise an `auto:` field that already read `yes`. Each reason
 now says itself, and the unratified one prints the verb that settles it.
 
-The same afternoon turned up a third: `map_context` read `data/geo/`'s `absent`
+The same afternoon turned up a third: `map_context` read `edition/geo/`'s `absent`
 block as strings when its rows are records, so `.lower()` raised on every entity
 with no extent. It had been latent since the block widened, because almost every
 entry had a shape; a batch of bays and capes with neither `area:` nor `geo:` made
@@ -784,7 +784,7 @@ whatever window a caller holds.
 watersheds, open water and settlements all drew in one accent, which on a narrow
 frame is one or two shapes and on a wide one is fourteen watersheds, five regions
 and three stretches of sea in a single field of outlines. The shape kind is
-declared in `data/geo/` and now travels on the path as `data-kind`, one hue each.
+declared in `edition/geo/` and now travels on the path as `data-kind`, one hue each.
 Deliberately **not** the prose vocabulary, which then grouped `place:` and
 `water:` into one hue because in a sentence "place or person" is the question —
 and on a map that was the wrong axis twice over, `place:` covering a peninsula

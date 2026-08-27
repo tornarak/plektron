@@ -3,13 +3,13 @@
 # requires-python = ">=3.12"
 # dependencies = ["shapely>=2.0"]
 # ///
-"""Compile `data/geo/` from sources that live outside the repository.
+"""Compile `edition/geo/` from sources that live outside the repository.
 
 `scratch/` is gitignored and `scratch/languages.geojson` is a symlink into
 `~/Downloads`, so **the compiled store has to be tracked** — a clone cannot
 rebuild it. That is the same split `scans/` has: a `tools/` script builds from
 something only this machine holds, and the harness reads what is committed.
-`data/geo/SOURCES.md` is the provenance record and is authored by hand.
+`edition/geo/SOURCES.md` is the provenance record and is authored by hand.
 
 `shapely` is declared inline (PEP 723) rather than added to the project:
 `edition serve` reads plain JSON and imports nothing new, so the geometry
@@ -59,7 +59,7 @@ WATERSHEDS = REPO / "scratch" / "watersheds"
 LANGUAGES = REPO / "scratch" / "languages.geojson"
 NATURALEARTH = REPO / "scratch" / "naturalearth"
 TRACED = REPO / "scratch" / "geojson"
-OUT = REPO / "data" / "geo"
+OUT = REPO / "edition" / "geo"
 
 #: Shapes **the editor drew**, and the only source here that is not a
 #: publisher's file.
@@ -861,7 +861,7 @@ def take_from_land(shapes, raw_land, notes) -> None:
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--commit", action="store_true",
-                    help="write data/geo/; without it, report and write nothing")
+                    help="write edition/geo/; without it, report and write nothing")
     a = ap.parse_args(argv)
 
     notes: list[str] = []
@@ -916,7 +916,7 @@ def main(argv=None) -> int:
           f"+ {len(idx.encode()) / 1024:.0f} KB index")
 
     # A shape whose source file was renamed leaves its old output behind, and
-    # `data/geo/` is *tracked* — so the orphan is committed, and invisible:
+    # `edition/geo/` is *tracked* — so the orphan is committed, and invisible:
     # `index.json` is rebuilt from `shapes`, so `geo list` never mentions it and
     # nothing downstream reads it. It is a shape of the atlas that no longer
     # corresponds to anything, sitting in history looking authored. Renaming
@@ -939,7 +939,7 @@ def main(argv=None) -> int:
         print("\nnotes:")
         for n in notes:
             print(f"  {n}")
-    print("\nwrote data/geo/" if a.commit else "\nreport only; --commit writes")
+    print("\nwrote edition/geo/" if a.commit else "\nreport only; --commit writes")
     return 0
 
 
