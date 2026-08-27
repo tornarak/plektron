@@ -1,7 +1,7 @@
 # taxon:strix-nyctea — Strix nyctea
 
 - status: proposed
-- part-of: taxon:strix
+- part-of: taxon:aves
 
 ## aliases
 

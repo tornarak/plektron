@@ -1,7 +1,7 @@
 # taxon:rangifer-tarandus — Rangifer tarandus
 
 - status: proposed
-- part-of: taxon:rangifer
+- part-of: taxon:mammalia
 
 ## aliases
 

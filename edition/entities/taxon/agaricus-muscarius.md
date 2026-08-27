@@ -1,7 +1,7 @@
 # taxon:agaricus-muscarius — Agaricus muscarius
 
 - status: proposed
-- part-of: taxon:agaricus
+- part-of: taxon:fungi
 
 ## aliases
 

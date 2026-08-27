@@ -1,7 +1,7 @@
 # taxon:epilobium-angustifolium — Epilobium angustifolium
 
 - status: proposed
-- part-of: taxon:epilobium
+- part-of: taxon:plantae
 
 ## aliases
 

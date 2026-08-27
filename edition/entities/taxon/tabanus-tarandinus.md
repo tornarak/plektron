@@ -1,7 +1,7 @@
 # taxon:tabanus-tarandinus — Tabanus tarandinus
 
 - status: proposed
-- part-of: taxon:tabanus
+- part-of: taxon:diptera
 
 ## aliases
 

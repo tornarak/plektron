@@ -1,7 +1,7 @@
 # taxon:oxyria-digina — Oxyria digina
 
 - status: proposed
-- part-of: taxon:oxyria
+- part-of: taxon:plantae
 
 ## aliases
 

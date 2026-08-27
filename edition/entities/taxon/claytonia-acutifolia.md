@@ -1,7 +1,7 @@
 # taxon:claytonia-acutifolia — Claytonia acutifolia
 
 - status: proposed
-- part-of: taxon:claytonia
+- part-of: taxon:plantae
 
 ## aliases
 

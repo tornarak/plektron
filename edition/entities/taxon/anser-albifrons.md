@@ -1,7 +1,7 @@
 # taxon:anser-albifrons — Anser albifrons
 
 - status: proposed
-- part-of: taxon:anser
+- part-of: taxon:anatidae
 
 ## aliases
 

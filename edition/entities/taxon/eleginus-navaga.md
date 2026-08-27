@@ -1,7 +1,7 @@
 # taxon:eleginus-navaga — Eleginus navaga
 
 - status: proposed
-- part-of: taxon:eleginus
+- part-of: taxon:gadidae
 
 ## aliases
 

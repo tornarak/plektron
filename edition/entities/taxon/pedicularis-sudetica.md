@@ -1,7 +1,7 @@
 # taxon:pedicularis-sudetica — Pedicularis sudetica
 
 - status: proposed
-- part-of: taxon:pedicularis
+- part-of: taxon:plantae
 
 ## aliases
 

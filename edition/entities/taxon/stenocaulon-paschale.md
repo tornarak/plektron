@@ -1,7 +1,7 @@
 # taxon:stenocaulon-paschale — Stenocaulon paschale
 
 - status: proposed
-- part-of: taxon:stenocaulon
+- part-of: taxon:lichenes
 
 ## aliases
 

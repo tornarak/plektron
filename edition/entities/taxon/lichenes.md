@@ -13,7 +13,7 @@
 The reindeer-moss of 1-102, which is the single most important plant in the
 book — the whole winter fodder of the herds, and Bogoras lists seven Chukchee
 kinds of it with two Latin names attached ([[taxon:cetraria]],
-[[taxon:stenocaulon]]).
+[[taxon:stenocaulon-paschale]]).
 
 **Deliberately parentless.** A lichen is a fungus in symbiosis with an alga, so
 the modern placement is under [[taxon:fungi]]; Bogoras's own century treated

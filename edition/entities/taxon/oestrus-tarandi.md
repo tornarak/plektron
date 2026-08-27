@@ -1,7 +1,7 @@
 # taxon:oestrus-tarandi — Œstrus tarandi
 
 - status: proposed
-- part-of: taxon:oestrus
+- part-of: taxon:diptera
 
 ## aliases
 

@@ -1,7 +1,7 @@
 # taxon:boreogadus-polaris — Boreogadus polaris
 
 - status: proposed
-- part-of: taxon:boreogadus
+- part-of: taxon:gadidae
 
 ## aliases
 

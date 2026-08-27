@@ -1,7 +1,7 @@
 # taxon:gulo-gulo — Gulo gulo
 
 - status: proposed
-- part-of: taxon:gulo
+- part-of: taxon:carnivora
 
 ## aliases
 

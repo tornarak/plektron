@@ -1,7 +1,7 @@
 # taxon:empetrum-nigrum — Empetrum nigrum
 
 - status: proposed
-- part-of: taxon:empetrum
+- part-of: taxon:plantae
 
 ## aliases
 

@@ -1,7 +1,7 @@
 # taxon:vaccinium-uliginosum — Vaccinium uliginosum
 
 - status: proposed
-- part-of: taxon:vaccinium
+- part-of: taxon:plantae
 
 ## aliases
 

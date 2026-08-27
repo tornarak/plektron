@@ -21,7 +21,9 @@ Members here:
 
 - **[[taxon:oncorhynchus]]** — 1-190, "on the Pacific for catching several
   species of Salmonidæ, such as humpback salmon (Oncorhynchus horbusha)".
-- **[[taxon:salmo]]** — 1-250, and the family's type genus either way.
+- **[[taxon:salmo-sanguinolentus]]** — 1-250, and the family's type genus
+  either way. The genus has no entry of its own: the book prints it only
+  inside this one binomial.
 
 **[[taxon:coregonus]] is deliberately not here**, though 1-190 names it two
 clauses later: that sentence runs "on the Pacific … Salmonidæ …; on the Arctic,
@@ -31,7 +33,7 @@ taxonomy puts Coregonus inside Salmonidae as a subfamily, and reading it in here
 on that ground would be filing the book under a classification it does not use —
 its own name for the group is printed, once, and this store follows the print.
 
-**[[taxon:thymallus]] hangs from [[taxon:pisces]] for a weaker version of the
+**[[taxon:thymallus-vulgaris]] hangs from [[taxon:pisces]] for a weaker version of the
 same reason.** 1-192 reads "for catching grayling, also various kinds of trout
 and other fresh-water species of Salmonidæ", where *other* may govern the trout
 alone or the grayling too. One ambiguous clause is not enough to place a genus,

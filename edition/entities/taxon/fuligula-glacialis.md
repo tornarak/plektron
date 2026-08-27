@@ -1,7 +1,7 @@
 # taxon:fuligula-glacialis — Fuligula glacialis
 
 - status: proposed
-- part-of: taxon:fuligula
+- part-of: taxon:anatidae
 
 ## aliases
 

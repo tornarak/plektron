@@ -12,7 +12,7 @@
 
 A root, with [[taxon:plantae]], [[taxon:fungi]] and [[taxon:lichenes]]. **None
 of the four is printed anywhere in the corpus**, and neither is any rank between
-them and the genera — `Mammalia`, `Aves`, `Pisces`, `Insecta`, `Phocidae`,
+them and the genera — `Mammalia`, `Aves`, `Pisces`, `Phocidae`,
 `Anatidae`, `Gadidae`, `Diptera` are all absent from the text. They carry no
 **Latin** alias row for that reason, which is `docs/edition.md`'s rule and not
 this card's. Several of them do now carry an *English* row — `fish`, `mice`,

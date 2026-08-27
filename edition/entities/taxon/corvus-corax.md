@@ -1,7 +1,7 @@
 # taxon:corvus-corax — Corvus corax
 
 - status: proposed
-- part-of: taxon:corvus
+- part-of: taxon:aves
 
 ## aliases
 

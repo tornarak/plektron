@@ -1,7 +1,7 @@
 # taxon:diptera — Diptera
 
 - status: proposed
-- part-of: taxon:insecta
+- part-of: taxon:animalia
 
 ## aliases
 

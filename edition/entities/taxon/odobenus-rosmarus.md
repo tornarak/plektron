@@ -1,7 +1,7 @@
 # taxon:odobenus-rosmarus — Odobenus rosmarus
 
 - status: proposed
-- part-of: taxon:odobenus
+- part-of: taxon:pinnipedia
 
 ## aliases
 

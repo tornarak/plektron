@@ -1,7 +1,7 @@
 # taxon:oedemagena-tarandi — Œdemagena tarandi
 
 - status: proposed
-- part-of: taxon:oedemagena
+- part-of: taxon:diptera
 
 ## aliases
 

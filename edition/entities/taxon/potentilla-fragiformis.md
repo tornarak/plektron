@@ -1,7 +1,7 @@
 # taxon:potentilla-fragiformis — Potentilla fragiformis
 
 - status: proposed
-- part-of: taxon:potentilla
+- part-of: taxon:plantae
 
 ## aliases
 
