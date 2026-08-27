@@ -1,7 +1,7 @@
 # taxon:odobenus — Odobenus
 
 - status: proposed
-- part-of: taxon:mammalia
+- part-of: taxon:pinnipedia
 
 ## aliases
 

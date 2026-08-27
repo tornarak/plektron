@@ -18,6 +18,7 @@
 | Roˊčhɪlɪt | ckt | yes | 1-041: “opposite-shore people” |
 | Eskimo | | no | |
 | Inupiat | en | no | the ASCII spelling; the title carries the ñ and the slug cannot |
+| Alaskan Eskimo | en | yes | |
 
 ## gloss
 

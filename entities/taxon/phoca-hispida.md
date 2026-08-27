@@ -8,6 +8,9 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Phoca hispida | | no | |
+| ringed seal | | yes | |
+| rough seal | | yes | |
+| rough-seal | | yes | |
 
 ## gloss
 

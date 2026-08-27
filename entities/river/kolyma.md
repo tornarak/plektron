@@ -3,6 +3,7 @@
 - status: ratified
 - within: land:northeast-siberia
 - geo: watershed:kolyma
+- link: wikipedia:Kolyma_River
 
 ## aliases
 

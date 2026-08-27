@@ -1,12 +1,13 @@
-# people:athapascan — Athapascan
+# taxon:carnivora — Carnivora
 
 - status: proposed
+- part-of: taxon:mammalia
 
 ## aliases
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Athapascan | | yes | 1-290 "came from the Athapascan" |
+| | | no | |
 
 ## gloss
 

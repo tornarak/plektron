@@ -8,6 +8,8 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Phoca | la | yes | the genus of the two seal species the store already holds |
+| seal | en | no |  |
+| seals | en | no |  |
 
 ## gloss
 

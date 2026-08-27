@@ -1,6 +1,9 @@
 # river:yenisei — Yenisei
 
-- status: proposed
+- status: ratified
+- within: land:russian-far-east
+- geo: watershed:yenisei
+- link: wikipedia:Yenisei
 
 ## aliases
 

@@ -1,7 +1,7 @@
 # taxon:vulpes — Vulpes
 
 - status: proposed
-- part-of: taxon:mammalia
+- part-of: taxon:carnivora
 
 ## aliases
 

@@ -1,7 +1,7 @@
 # taxon:canis — Canis
 
 - status: proposed
-- part-of: taxon:mammalia
+- part-of: taxon:carnivora
 
 ## aliases
 

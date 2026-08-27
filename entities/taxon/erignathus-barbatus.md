@@ -8,6 +8,8 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Erignathus barbatus | | no | |
+| thong-seal | | yes | |
+| ground-seal | | yes | |
 
 ## gloss
 

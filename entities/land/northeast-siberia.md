@@ -10,6 +10,7 @@
 |---|---|---|---|
 | northeastern Siberia | | yes | lower-case initial, as the book prints it mid-sentence; 13 times |
 | north-eastern Siberia | | yes | the same phrase hyphenated, 4 times — listed as itself so it resolves exactly rather than through the matcher's line-break hyphen tolerance |
+| northeastern Asia | | yes | |
 
 ## gloss
 

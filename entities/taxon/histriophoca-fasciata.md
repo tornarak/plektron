@@ -8,6 +8,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Histriophoca fasciata | | no | |
+| ribbon-seal | | yes | |
 
 ## gloss
 

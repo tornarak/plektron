@@ -9,6 +9,7 @@
 |---|---|---|---|
 | Jochelson | | no | also his books — see [[source:jochelson-yukaghir]] |
 | W. Jochelson | | yes | the form Bogoras uses for the man in narrative |
+| Mr. Jochelson | | yes | |
 
 ## gloss
 

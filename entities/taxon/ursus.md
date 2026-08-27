@@ -1,7 +1,7 @@
 # taxon:ursus — Ursus
 
 - status: proposed
-- part-of: taxon:mammalia
+- part-of: taxon:carnivora
 
 ## aliases
 

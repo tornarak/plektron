@@ -1,6 +1,6 @@
 {
  "window": [
-  79.51391504887165,
+  79.11625,
   39.71041,
   216.88720552300003,
   76.55121496780525
@@ -55,9 +55,9 @@
    "name": "lakes",
    "source": "naturalearth-50m",
    "file": "base/lakes.json",
-   "points": 415,
+   "points": 417,
    "bounds": [
-    79.514,
+    79.116,
     41.825,
     213.527,
     75.16
@@ -71,7 +71,7 @@
    "file": "base/land.json",
    "points": 1535,
    "bounds": [
-    79.514,
+    79.116,
     39.71,
     216.887,
     76.551
@@ -1263,6 +1263,28 @@
     64.265,
     140.582,
     71.426
+   ]
+  },
+  {
+   "id": "watershed:yenisei",
+   "kind": "watershed",
+   "name": "yenisei",
+   "area_km2": 2600000.0,
+   "source": "mghydro",
+   "precision": "low",
+   "message": "⚠ Unfortunately, your watershed is too large for higher-precision mode (over 50,000 km²). Reverting to low-precision mode. Delineated a watershed of 2,600,000 km² (990,000 sq. miles) with an outlet near coordinates: 70.978, 83.348.",
+   "wid": "M32000794",
+   "retrieved": "2026-08-24T10:17:43.081Z",
+   "rivers_kept": 1246,
+   "rivers_total": 4306,
+   "sorder_floor": 7,
+   "file": "watershed/yenisei.json",
+   "points": 6832,
+   "bounds": [
+    81.116,
+    46.376,
+    113.824,
+    70.979
    ]
   },
   {

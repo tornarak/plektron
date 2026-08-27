@@ -1,7 +1,7 @@
 # taxon:phocidae — Phocidae
 
 - status: proposed
-- part-of: taxon:mammalia
+- part-of: taxon:pinnipedia
 
 ## aliases
 
