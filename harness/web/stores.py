@@ -181,6 +181,26 @@ def folio_index(root: Path) -> dict:
         _tei_files(root) + _gt_ocr_files(root) + _runs_files(root)))
 
 
+def folio_by_ref(root: Path) -> dict[str, int]:
+    """The folio index inverted — `{ref: folio}` — built once per index.
+
+    `apparatus.folio_of` scans the whole index for one ref, which is the right
+    shape for the one lookup a page view does and the wrong one for an entity's
+    mentions: those are a ref list that can run to hundreds, and asking each of
+    them separately is the index walked once per row.
+
+    The strongest witness wins, which is the order `folio_index` already puts
+    them in; a ref witnessed at two folios keeps the first, since a leaf has one
+    folio and the disagreement is `apparatus.locate`'s to report, not this
+    dictionary's to average.
+    """
+    out: dict[str, int] = {}
+    for folio, seen in folio_index(root).items():
+        for w in seen:
+            out.setdefault(w["ref"], folio)
+    return out
+
+
 @lru_cache(maxsize=MAXSIZE)
 def _alphabet(root: str, _key: bytes) -> dict:
     return alphabet.chart(Path(root))

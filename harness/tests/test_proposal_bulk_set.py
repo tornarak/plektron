@@ -139,3 +139,81 @@ def test_a_malformed_payload_is_refused_rather_than_guessed(tmp_path, payload, m
 def test_neither_a_line_nor_values_nor_stdin_is_a_usage_error(tmp_path):
     with pytest.raises(ValueError, match="no LINE and no values"):
         _run(tmp_path, [])
+
+
+# --- durability -------------------------------------------------------------
+#
+# `VERBS.md`'s Conventions let these editors write without `--commit` on the
+# stated grounds that a proposal is "kept with a `.prev` and a journal". Until
+# these tests it was not, and the paragraph was describing a consideration the
+# code did not pay. They are `test_captions.py`'s two, against this store.
+
+
+def test_a_save_keeps_one_prev_and_a_second_destroys_it(tmp_path):
+    """One deep, exactly as `save_zones` and `save_decisions` keep it."""
+    p = _proposal(tmp_path, {"1": {"text": "a"}, "2": {"text": "b"}})
+    first = p.read_text(encoding="utf-8")
+    assert not p.with_name("proposal.json.prev").exists(), (
+        "nothing to back up before the first write")
+
+    set_fields(p, {"1": "one"}, "text")
+    assert p.with_name("proposal.json.prev").read_text(encoding="utf-8") == first
+
+    after_one = p.read_text(encoding="utf-8")
+    set_fields(p, {"2": "two"}, "text")
+    assert p.with_name("proposal.json.prev").read_text(encoding="utf-8") == after_one
+
+
+def test_every_save_journals_both_sides_of_what_moved(tmp_path):
+    """Both sides, which is where this departs from `save_decisions`.
+
+    That journal replays forward from a proposal it can re-read; this one guards
+    the base itself, so `from` is what makes a save reversible once `.prev` is
+    gone.
+    """
+    p = _proposal(tmp_path, {"1": {"text": "a"}, "2": {"text": "b"}})
+    set_fields(p, {"1": "one"}, "text")
+    set_fields(p, {"2": "two"}, "text")
+
+    recs = [json.loads(ln) for ln in
+            p.with_name("proposal.jsonl").read_text(encoding="utf-8").splitlines()]
+    assert [r["edits"] for r in recs] == [
+        [{"line": "1", "from": "a", "to": "one"}],
+        [{"line": "2", "from": "b", "to": "two"}]]
+    assert all(r["saved_at"] and r["by"] and r["field"] == "text" for r in recs)
+
+
+def test_an_unchanged_line_is_not_journalled_as_an_edit(tmp_path):
+    """A re-run over a page where nothing moved must not bury the next real one.
+
+    A bulk set is routinely forty-seven lines of which two differ, and a journal
+    that recorded the forty-five would be a log nobody reads.
+    """
+    p = _proposal(tmp_path, {"1": {"text": "a"}, "2": {"text": "b"}})
+    set_fields(p, {"1": "a", "2": "two"}, "text")
+
+    rec = json.loads(p.with_name("proposal.jsonl").read_text(encoding="utf-8"))
+    assert rec["edits"] == [{"line": "2", "from": "b", "to": "two"}]
+
+
+def test_a_refusal_leaves_no_prev_and_no_journal_line(tmp_path):
+    """Nothing half-writes, and nothing half-records either.
+
+    `set_fields` resolves every line before writing any, so a refusal must leave
+    the store exactly as it found it — a `.prev` or a journal line for a write
+    that never happened is a record of an act nobody performed.
+    """
+    p = _proposal(tmp_path, {"1": {"text": "a"}})
+    before = p.read_text(encoding="utf-8")
+    with pytest.raises(ValueError):
+        set_fields(p, {"1": "{no-such-handle}"}, "text")
+
+    assert p.read_text(encoding="utf-8") == before
+    assert not p.with_name("proposal.json.prev").exists()
+    assert not p.with_name("proposal.jsonl").exists()
+
+
+def test_the_write_is_atomic_leaving_no_temp_behind(tmp_path):
+    p = _proposal(tmp_path, {"1": {"text": "a"}})
+    set_fields(p, {"1": "one"}, "text")
+    assert not list(tmp_path.glob("*.tmp"))

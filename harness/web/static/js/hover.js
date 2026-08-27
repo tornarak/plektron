@@ -41,7 +41,7 @@
     }
     return p;
   }
-  window.CARDS = {get};
+  window.CARDS = {get, place};
 
   /* The same three URLs `edition.js` builds, character for character. */
   function urlFor(a) {
@@ -60,13 +60,18 @@
     if (box) { box.remove(); box = null; }
   }
 
-  function place(a) {
-    const r = a.getBoundingClientRect(), b = box.getBoundingClientRect();
+  /* Below the link, or above it where below would run off the bottom, and never
+     off either side. Takes its target as an argument rather than closing over
+     `box`, because `notes.js` floats a second thing beside a link in this same
+     text and a second copy of this arithmetic is a second thing to get wrong —
+     it is published on `window.CARDS` for that. */
+  function place(a, el) {
+    const r = a.getBoundingClientRect(), b = el.getBoundingClientRect();
     let y = r.bottom + 8;
     if (y + b.height > innerHeight - 8) y = Math.max(8, r.top - b.height - 8);
     const x = Math.max(8, Math.min(r.left, innerWidth - b.width - 8));
-    box.style.left = x + 'px';
-    box.style.top = y + 'px';
+    el.style.left = x + 'px';
+    el.style.top = y + 'px';
   }
 
   function show(a, html) {
@@ -77,7 +82,7 @@
       document.body.append(box);
     }
     box.innerHTML = '<div class="body">' + html + '</div>';
-    place(a);
+    place(a, box);
   }
 
   document.addEventListener('mouseover', ev => {

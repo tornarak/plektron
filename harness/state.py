@@ -537,6 +537,47 @@ def toc_starts(toc: list[dict], folio: int | None) -> list[dict]:
                   key=lambda e: (e.get("level") or 0, e.get("id") or ""))
 
 
+def toc_containing(toc: list[dict], folio: int | None) -> list[str]:
+    """The ToC ids open at a printed folio, shallowest first. `[]` for None.
+
+    **This witness is the printed Contents and nothing else.** The list is
+    ordered and `page_start` is monotonic across it, so the entries containing a
+    folio are the open chain of a fold over the entries that start at or before
+    it — an entry at level L closing everything at L and deeper, exactly as
+    `_apply_milestones` folds the headings a page actually prints.
+
+    That makes it a *different answer* to a question `entry_state`'s
+    `believed_open` already answers, and the two must not be confused: that one
+    folds committed `<milestone>`s out of the TEI and says what the corpus
+    witnesses; this one reads the book's own table of contents and says what the
+    printed list implies. It is a navigation aid — what to open in a contents
+    panel, which chapter to mark — and asserts nothing about any page. Nothing
+    may write it to a store.
+
+    An unknown folio returns nothing rather than a nearest chapter, for
+    `toc_starts`'s reason: most of the book has no witnessed folio, and a
+    locator that guesses where it cannot know is worse than one that says
+    nothing.
+
+    Level 0 is folded as though it were level 1. Front matter produces no
+    milestone, so it is absent from `MILESTONE_UNITS` — but it is a top-level
+    division of the printed list all the same, and left at its own level the
+    Alphabet would stay open under every chapter that follows it.
+    """
+    if folio is None:
+        return []
+    open_h: dict[int, str] = {}
+    for e in toc:
+        ps = e.get("page_start")
+        if ps is None or ps > folio or not e.get("id"):
+            continue
+        lvl = max(e.get("level") or 0, 1)
+        open_h[lvl] = e["id"]
+        for deeper in [k for k in open_h if k > lvl]:
+            del open_h[deeper]
+    return [open_h[k] for k in sorted(open_h)]
+
+
 def printed_head(text: str, entry: dict) -> tuple[str, int] | None:
     """The head `text` prints for `entry` at its very front, and where it ends.
 

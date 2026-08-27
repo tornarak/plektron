@@ -1,0 +1,42 @@
+{# The reading sidebar, whole: two tabs over one scrolling column.
+
+   **One partial because four views hold it.** The page, a run, an exempt leaf
+   and a card page each used to write their own `<aside>`, which was survivable
+   while the column held one thing and is not now that it holds a tab bar, two
+   panels and an idle rule that has to agree with the stylesheet's.
+
+   **entities is a name for what the column already was**, not a rebuild of it:
+   the map pane above, the card stack below, `edition.js` untouched. The pane
+   stays *outside* `#stack` for its own reason — everything in that script
+   indexes `STACK.childNodes` as cards, and a pane among them would be selected,
+   surfaced, pinned and deleted like one.
+
+   **The column still collapses when it is idle** — no cards, the pane shut, and
+   the contents tab not asked for. A tab bar is furniture and furniture is not a
+   reason to hold a column open across a book nobody has clicked anything in;
+   the third condition is `.side-contents` on `<html>`, set before first paint by
+   the head script so the column does not appear and jump on every page load.
+   The stylesheet's rule is the one that must agree with this comment.
+
+   `pane` and `map` are two routes' names for one fact — the page view sets the
+   first and asks for an empty pane the first click fills, the entity route sets
+   the second and arrives with the geography already drawn. #}
+<aside id='secondary'>
+  {# Not `role='tablist'`. The panels are a stack of cards and a list of links,
+     both of which a reader tabs *into*; the widget role would take the arrow
+     keys off them and hand them to the two buttons, which is the wrong trade in
+     a column whose whole content is focusable. Two buttons and a live region
+     say what this is without claiming a keyboard contract it does not keep. #}
+  <nav id='side-tabs' aria-label='sidebar'>
+    <button class='tab on' data-panel='entities'>entities</button>
+    <button class='tab' data-panel='contents'>contents</button>
+  </nav>
+  <div id='panel-entities'>
+    {% if pane | default(false) or map | default(false) %}{%
+      include "edition/_pane.html" %}{% endif %}
+    <div id='stack'></div>
+  </div>
+  {% if toc_panel %}
+  <div id='panel-contents' hidden>{% include "edition/_toc_panel.html" %}</div>
+  {% endif %}
+</aside>

@@ -29,7 +29,7 @@ from .. import apparatus, entities, figrefs, geo, ipa, langs, lexicon, speech, t
 from .. import edition_ui as ui
 from .. import figures as F
 from ..entities import ENTITY_CLASSES, alias_index, split_id
-from ..state import MILESTONE_UNITS, load_toc
+from ..state import MILESTONE_UNITS, load_toc, toc_containing
 from . import Editor, register, stores, templates
 from .errors import fetched
 from .files import send_file
@@ -125,7 +125,7 @@ def figure_crop(request: Request, ref: str, key: str):
     saying which command is the whole difference between a 404 and a fix.
 
     **Resolved through `figures.crop_source`, so a human's touched-up version in
-    `gt/fig-img/` wins over the machine crop** — one resolver, shared with every
+    `ed/fig-img/` wins over the machine crop** — one resolver, shared with every
     other consumer, rather than a second opinion about which file is current.
     """
     if not ui.REF_OK.match(ref) or not key.isalnum():
@@ -306,6 +306,10 @@ def _exempt_page(request: Request, ref: str, root):
             kind_note=LEAF_NOTES.get(kind, ""),
             plates=plates,
             here=here,
+            # An exempt leaf has no `<pb>` and prints no folio of its own, so the
+            # panel is asked what the index says about the leaf and nothing else.
+            # Usually that is nothing, and the Contents renders unmarked.
+            toc_panel=_toc_panel(root, [stores.folio_by_ref(root).get(ref)]),
             editor_leaf=ui.leaf_source(ref, root)[1] == "ed",
             leaf_layers=ui.leaf_layers(ref, root) is not None,
             state={"base": BASE, "ref": ref,
@@ -521,6 +525,142 @@ def _decorate(entry: dict, kind: str, root: Path, index: dict,
     return e
 
 
+def _toc_tree(toc: list[dict], root: Path, index: dict) -> list[dict]:
+    """The printed list as the tree its levels describe, all five deep.
+
+    Level 0 nests as level 1: front matter emits no milestone and so is absent
+    from `MILESTONE_UNITS`, but it is a top-level division of the printed list all
+    the same, and at its own depth it would swallow every chapter after it.
+
+    Rows come through `_decorate` like every other apparatus row, so the link rule
+    is written once: live only where the folio index places `page_start`, and
+    where it does not, the title is not a link either.
+    """
+    roots: list[dict] = []
+    stack: list[tuple[int, dict]] = []
+    for e in toc:
+        node = {**_decorate(e, "toc", root, index, {}, {}),
+                "depth": max(e.get("level") or 0, 1), "children": []}
+        while stack and stack[-1][0] >= node["depth"]:
+            stack.pop()
+        (stack[-1][1]["children"] if stack else roots).append(node)
+        stack.append((node["depth"], node))
+    return roots
+
+
+def _mark_tree(nodes: list[dict], here: set[str], tally: dict[str, int]) -> bool:
+    """Mark the tree in place; answer whether anything under `nodes` is marked.
+
+    Two things are decided here, and they are not the same thing:
+
+      * `here` and `hits` are the *marks* — the entries this view is at, and the
+        counts an entity's mentions put on them.
+      * `open` is what a `<details>` does about them, which is: open along the way
+        to every mark, and closed everywhere else. The whole outline is served —
+        collapsed, so it is a locator and not a wall — and what stands open is the
+        path to where you are.
+
+    Unrolling the *whole* division you are in is `_toc_panel`'s, one level up,
+    because only the caller knows which node is that division.
+    """
+    any_marked = False
+    for n in nodes:
+        below = _mark_tree(n["children"], here, tally)
+        n["here"] = bool(n.get("id")) and n["id"] in here
+        n["hits"] = tally.get(n.get("id"), 0)
+        n["open"] = below or n["here"] or bool(n["hits"])
+        any_marked = any_marked or n["open"]
+    return any_marked
+
+
+def _unroll(nodes: list[dict]) -> None:
+    """Open every `<details>` under here. What "the division you are in" means:
+    its sections, their subsections, and the siblings of the one you are at — a
+    chapter opened to the single row that matched shows you the row you already
+    had and hides the rest of the chapter, which is the opposite of a locator."""
+    for n in nodes:
+        n["open"] = True
+        _unroll(n["children"])
+
+
+def _toc_panel(root: Path, folios: list,
+               hits: dict[int, int] | None = None, absent: str = "") -> dict:
+    """The printed Contents as a locator: the whole outline, and what is marked.
+
+    `folios` are the printed folios this view *is* — one for a page, several for
+    a run. They arrive as whatever store the caller read them from, which for a
+    page is the raw `<pb n>`, so `_as_folio` is what says which of them are
+    arabic folios this index can speak about; the front matter's romans drop out
+    here rather than at every call site. `hits` is `{folio: mentions}` for an
+    entity's page, and each count is added to every entry containing that folio,
+    so a division's number is the sum of everything beneath it without anything
+    having to roll it up.
+
+    **Two kinds of mark, because a folio can be two places at once.** The
+    containing chain is where the page *is*; the entries whose `page_start` is
+    this folio are the heads the page actually *prints*, and a page can print
+    several — 1-249 sets both "Animal Food" and "Methods of Cooking". The chain
+    keeps one entry per level by construction, so it names the last of them and
+    the reader is told they are in one section of two. Both sets are marked.
+
+    **Marks nothing where nothing witnesses the folio.** `toc_containing` refuses
+    an unknown folio, and most of the book has one; a panel that guessed the
+    nearest chapter would be indistinguishable, on screen, from one that knew.
+    """
+    toc = load_toc(root)
+    index = stores.folio_index(root)
+    seen = [f for f in (apparatus._as_folio(f) for f in folios) if f is not None]
+    here = {tid for f in seen for tid in toc_containing(toc, f)}
+    here |= {e["id"] for e in toc
+             if e.get("id") and e.get("page_start") in seen}
+    tally: dict[str, int] = {}
+    for folio, n in (hits or {}).items():
+        for tid in toc_containing(toc, folio):
+            tally[tid] = tally.get(tid, 0) + n
+
+    tree = _toc_tree(toc, root, index)
+    _mark_tree(tree, here, tally)
+    # **The division you are in is unrolled whole.** Only where the page has a
+    # position, and not for an entity's mentions: those are spread over twenty
+    # chapters, and unrolling all of them would serve the outline open, which is
+    # the wall this panel is folded to avoid.
+    for node in tree:
+        if node["open"] and here:
+            _unroll(node["children"])
+
+    marked = bool(here or tally)
+    # **The empty answer is said out loud, and the caller says it.** A panel
+    # nobody asked to place anything reports nothing rather than failing to
+    # answer a question that was not put — and what was asked differs by view:
+    # a leaf has a position, an entry has mentions, a form has attestations, and
+    # one sentence covering all three would name none of them. `absent` is the
+    # caller's, for the `hits` case; the leaf's is the same wherever it is asked.
+    note = ""
+    if not marked and hits is not None:
+        note = absent
+    elif not marked and folios:
+        note = "Nothing places this leaf in the printed Contents."
+    return {"tree": tree, "marked": marked, "note": note}
+
+
+def _by_folio(counts: dict[str, int], root: Path) -> dict[int, int]:
+    """Page refs tallied onto the folios the index places them at.
+
+    A ref the index cannot place drops out, which is the rule the marks follow
+    everywhere else: the panel speaks about witnessed folios and refuses the
+    rest. `stores.folio_by_ref` inverts the index once, because
+    `apparatus.folio_of` walks the whole of it per ref and these lists run to
+    hundreds.
+    """
+    folios = stores.folio_by_ref(root)
+    out: dict[int, int] = {}
+    for ref, n in counts.items():
+        f = folios.get(ref)
+        if f is not None:
+            out[f] = out.get(f, 0) + n
+    return out
+
+
 @router.get("/run/{run_id}")
 def run_page(request: Request, run_id: str):
     """One printed list, served whole.
@@ -548,6 +688,9 @@ def run_page(request: Request, run_id: str):
              tail_items=_run_items(tail),
              chart=stores.alphabet_chart(root) if run.get("kind") == "alphabet" else None,
              here=run["title"],
+             # Every leaf of the run, since a run is one document over several
+             # leaves and the reader is at all of them at once.
+             toc_panel=_toc_panel(root, [leaf["folio"] for leaf in leaves]),
              # `leaves` is what makes the scan button show the whole span: the
              # run is one document and its scans are several.
              state={"base": BASE, "ref": head,
@@ -719,6 +862,8 @@ def page(request: Request, ref: str):
             here=here,
             state=state,
             rank=rank,
+            pane=True,
+            toc_panel=_toc_panel(root, [doc.get("folio")]),
             prev=refs[i - 1] if i > 0 else "",
             next=refs[i + 1] if 0 <= i < len(refs) - 1 else "",
         ),
@@ -769,7 +914,13 @@ def _mentions(ident: str, refs: list[str], root: Path) -> dict:
             elif kind == "linked" and not row["text"]:
                 row["text"] = r["text"]
     rows = sorted(pages.values(), key=lambda r: r["ref"])
+    # **`by_ref` is every page, and `rows` is the eight the card shows.** The
+    # contents panel marks chapters, and a chapter is not reached by the first
+    # eight pages of an entity that appears on forty — truncating before the fold
+    # would leave whole chapters unmarked and look, on screen, exactly like an
+    # entity that is not mentioned in them.
     return {"rows": rows[:MENTIONS], "pages": len(rows),
+            "by_ref": {r["ref"]: r["linked"] + r["unlinked"] for r in rows},
             "total": sum(r["linked"] + r["unlinked"] for r in rows),
             "swept": len(refs)}
 
@@ -828,6 +979,16 @@ def entity(request: Request, ident: str, partial: str = ""):
     rec = ctx.get("rec")
     if ctx.get("located"):
         ctx = {**_map_ctx(ident, root), **ctx, "map": True}
+    # Where the entry is mentioned, said in the book's own divisions rather than
+    # as a page list: a reader sizing an entry up wants to know it is a chapter's
+    # subject and a passing name in two others, and forty refs sorted by scan
+    # number do not say that.
+    #
+    # `None` and not an empty dict where the store holds no such entry: the panel
+    # reports a failure to place what it was *asked* to place, and an id nothing
+    # answers to was never asked about. That page has its own refusal to make.
+    by_folio = (None if rec is None
+                else _by_folio(ctx["mentions"]["by_ref"], root))
     return templates.TemplateResponse(
         request,
         "edition/card.html",
@@ -835,6 +996,17 @@ def entity(request: Request, ident: str, partial: str = ""):
             request,
             partial="edition/_entity.html",
             card_title=rec["canonical"] if rec else ident,
+            toc_panel=_toc_panel(
+                root, [], by_folio,
+                # Only where there were pages to place, on `_mentions`' own
+                # reasoning: a bare zero cannot be told from "never mentioned",
+                # and an entry the corpus does not mention has not failed to be
+                # placed in the Contents. The card's mention rows say that
+                # already, with `swept` beside them.
+                absent=("No mention of this entry is placed in the printed "
+                        "Contents."
+                        if rec is not None and ctx["mentions"]["by_ref"]
+                        else "")),
             **ctx,
         ),
     )
@@ -1004,15 +1176,54 @@ def lexicon_card(request: Request, key: str, partial: str = ""):
     }
     if partial:
         return templates.TemplateResponse(request, "edition/_lexicon.html", ctx)
+    # **Where the form shows up, by division** — the same mark an entity's
+    # mentions make, and it needs no more warrant here than there: the lexicon's
+    # identity *is* the form, so no alias table stands between the word and the
+    # pages. There is nothing to be wrong about, and the numbers move only when a
+    # page they were read off is corrected.
+    #
+    # **Out of `gt/ocr/`, and `tei/` only in addition.** This card does not wait
+    # on collation and neither may its marks: `attestations` sweeps committed TEI,
+    # which is 0 pages today and would have put "nothing places this form" on
+    # every card in the lexicon — the store's state reported as the Contents'
+    # failure. The keyed corpus is the witness that exists: 1562 forms, each
+    # carrying the refs a human keyed it on. The union rather than a choice,
+    # because both answer the same question and a collated page that `gt/ocr/`
+    # has not reached is a page the form is on all the same.
+    #
+    # **A count of pages, not of occurrences.** `f["count"]` is per corpus and
+    # `refs` is the set of leaves, so a folio contributes 1 and a division's
+    # number is how many attested pages lie under it. That is what these stores
+    # know: which pages carry the form. `f["count"]` would say how often, over a
+    # corpus, which is not a fact about any division.
+    rec = _native_form(native, form)
+    refs = set(ctx["pages"]) | set(rec["refs"] if rec else ())
+    by_folio = _by_folio(dict.fromkeys(refs, 1), root)
     return templates.TemplateResponse(
         request,
         "edition/card.html",
-        _ctx(request, partial="edition/_lexicon.html", card_title=form or key, **ctx),
+        _ctx(request, partial="edition/_lexicon.html", card_title=form or key,
+             toc_panel=_toc_panel(
+                 root, [], by_folio,
+                 # Only where there were pages to place. A form the corpus does
+                 # not attest has not failed to be placed in the Contents — it is
+                 # simply not there, which the card's own rows already say, and
+                 # blaming the Contents for it would name the wrong cause.
+                 absent=("No attestation of this form is placed in the printed "
+                         "Contents." if refs else "")),
+             **ctx),
     )
 
 
 def _all_forms(native: dict) -> set[str]:
     return {lexicon.norm_form(f["form"]) for f in _attested_forms(native)}
+
+
+def _native_form(native: dict, form: str) -> dict | None:
+    """This form's record in `gt/ocr/`, by its normalised spelling. `None` where
+    the keyed corpus does not attest it."""
+    return next((f for f in _attested_forms(native)
+                 if lexicon.norm_form(f["form"]) == form), None)
 
 
 def _printed_lines(native: dict, form: str) -> list[dict]:
@@ -1022,10 +1233,8 @@ def _printed_lines(native: dict, form: str) -> list[dict]:
     anybody has written a word about the form: `Kuluˊči` alone is a string,
     "south of Kuluˊči Bay" is a place.
     """
-    for f in _attested_forms(native):
-        if lexicon.norm_form(f["form"]) == form:
-            return f["lines"][:8]
-    return []
+    rec = _native_form(native, form)
+    return rec["lines"][:8] if rec else []
 
 
 def _ipa_ctx(form: str) -> dict | None:
@@ -1103,7 +1312,7 @@ def map_pane(request: Request,
         request,
         "edition/card.html",
         _ctx(request, partial="edition/_map.html", card_title=f"{title} — map",
-             **ctx),
+             toc_panel=_toc_panel(_root(request), []), **ctx),
     )
 
 

@@ -1,0 +1,77 @@
+{# The printed Contents as a locator, in the sidebar's column.
+
+   **Not `_toc.html` narrowed.** That partial is the Contents *as a document* —
+   316 rows set the way the book sets them, leaf marks in the margin, the folio
+   hard right. This is a different question asked of the same store: where am I,
+   and what is around me. So the whole outline is served, all five levels of it,
+   **collapsed** — and what stands open is the division you are in, unrolled
+   whole. Collapsed because 316 rows in a 20rem column is a thing you have to
+   read rather than a thing that tells you where you are; whole because a chapter
+   opened to the one row that matched shows you the row you already had and hides
+   its neighbours, which is the opposite of a locator.
+
+   The leaf marks are gone: where the printed Contents happened to turn a page is
+   a fact about the binding of the front matter, and it has nothing to say about
+   where you are in chapter XII.
+
+   **`<details>` and not a script**, for `_map.html`'s reason: disclosure is what
+   the element is, and a panel that needed JS to open a chapter would be a panel
+   that does not open when the JS fails. `sidebar.js` scrolls the mark into view
+   and does nothing else here.
+
+   **No ids.** `_toc.html` gives every row its `toc-{id}` anchor, and on the
+   Contents run this panel renders beside it — a second copy of those ids on one
+   page, which is the one thing an id may not be. Nothing links into this panel;
+   the mark is found by its class.
+
+   Row classes are `_toc.html`'s — `.toc-title`, `.toc-num`, `.page-no` — so the
+   two renderings of one store share their vocabulary and their link rule: live
+   only where a witness places the folio, and where it does not, the title is not
+   a link either. #}
+
+{# The row's own contents, which are the same whether or not it has children.
+   `hits` sits between the title and the folio because it belongs to the heading
+   and not to the page the heading starts on. #}
+{% macro label(n) %}
+  {% if n.folio_url %}<a class='toc-title plain' href='{{ n.folio_url }}'>{%
+    else %}<span class='toc-title'>{% endif
+    %}{% if n.number %}<span class='toc-num'>{{ n.number }}.</span> {% endif
+    %}{{ n.title }}{% if n.folio_url %}</a>{% else %}</span>{% endif %}
+  {% if n.hits %}<span class='hits' title='{{ n.hits }} mention(s)'>{{
+    n.hits }}</span>{% endif %}
+  {% if n.folio_url %}<a class='page-no' href='{{ n.folio_url }}'>{{
+    n.page_start }}</a>{% elif n.page_start %}<span
+    class='page-no'>{{ n.page_start }}</span>{% endif %}
+{% endmacro %}
+
+{# Recursive, because the outline is. A row with children is a `<details>` and a
+   row without one is a plain `<li>` — a childless disclosure triangle is a
+   control that does nothing, and the deepest level of the printed list is most
+   of the rows. #}
+{% macro rows(nodes) %}
+<ul>
+{% for n in nodes %}
+  <li class='toc-d{{ n.depth }}{{ ' here' if n.here }}'>
+  {% if n.children %}
+    <details{{ ' open' if n.open }}>
+      <summary>{{ label(n) }}</summary>
+      {{ rows(n.children) }}
+    </details>
+  {% else %}
+    {{ label(n) }}
+  {% endif %}
+  </li>
+{% endfor %}
+</ul>
+{% endmacro %}
+
+{{ rows(toc_panel.tree) }}
+{# Said out loud, because an unmarked panel and a panel that could not place this
+   page look identical: 452 of the book's 732 folios have no witness, and a
+   locator that quietly showed nothing would read as "this page is in no
+   chapter". Nothing is interpolated — `toc_containing` refuses an unknown folio
+   rather than naming the nearest heading. The sentence is `_toc_panel`'s,
+   because only the route knows what was being placed. #}
+{% if toc_panel.note %}
+<p class='meta panel-note'>{{ toc_panel.note }}</p>
+{% endif %}

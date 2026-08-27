@@ -548,8 +548,8 @@ def test_a_toc_id_resolves_through_its_page_start(tmp_path: Path):
 def test_an_editors_leaf_is_served_only_for_an_exempt_page(tmp_path: Path):
     from harness import edition_ui as ui
     _exempt(tmp_path, "1-361")
-    _write(tmp_path, "gt/page-img/chukchi-1-361.svg", "<svg/>")
-    _write(tmp_path, "gt/page-img/chukchi-1-100.svg", "<svg/>")
+    _write(tmp_path, "ed/page-img/chukchi-1-361.svg", "<svg/>")
+    _write(tmp_path, "ed/page-img/chukchi-1-100.svg", "<svg/>")
     assert ui.leaf_source("1-361", tmp_path)[1] == "ed"
     assert ui.leaf_source("1-100", tmp_path) == (None, "scan")
 
@@ -565,7 +565,7 @@ def test_the_editors_leaf_never_reaches_the_pipeline(tmp_path: Path):
     from harness import edition_ui as ui
     from harness import zones
     _exempt(tmp_path, "1-361")
-    _write(tmp_path, "gt/page-img/chukchi-1-361.png", "x")
+    _write(tmp_path, "ed/page-img/chukchi-1-361.png", "x")
     assert zones.scan_for("1-361", tmp_path).parent.name == "scans"
     assert ui.scan_for("1-361", tmp_path).parent.name == "scans"
     assert ui.leaf_source("1-361", tmp_path)[0].parent.name == "page-img"
@@ -576,8 +576,8 @@ def test_a_vector_leaf_wins_over_a_raster_one(tmp_path: Path):
     raster would have to be rewritten the day it did."""
     from harness import edition_ui as ui
     _exempt(tmp_path, "1-361")
-    _write(tmp_path, "gt/page-img/chukchi-1-361.png", "x")
-    _write(tmp_path, "gt/page-img/chukchi-1-361.svg", "<svg/>")
+    _write(tmp_path, "ed/page-img/chukchi-1-361.png", "x")
+    _write(tmp_path, "ed/page-img/chukchi-1-361.svg", "<svg/>")
     assert ui.leaf_source("1-361", tmp_path)[0].suffix == ".svg"
 
 

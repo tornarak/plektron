@@ -46,7 +46,6 @@ manifest, and `swap` installs it together with everything that has to move with 
 """
 from __future__ import annotations
 
-import hashlib
 import json
 import math
 import os
@@ -129,17 +128,11 @@ STEP = "harness scans extract --all --rasters DIR"
 LABEL = "raster cut from the PDF's own MRC layers"
 
 
-def _digest(path: Path) -> str:
-    """SHA-256 of a file, read in blocks.
-
-    The whole of `pdfs/` is 0.13 s, so nothing here is conditional on a flag: a
-    check that only runs when someone remembers to ask is not a check on anything.
-    """
-    h = hashlib.sha256()
-    with path.open("rb") as fh:
-        for block in iter(lambda: fh.read(1 << 20), b""):
-            h.update(block)
-    return h.hexdigest()
+#: SHA-256 of a file — `provenance.digest`, which every derived farm below this
+#: store now calls too. The whole of `pdfs/` is 0.13 s, so nothing here is
+#: conditional on a flag: a check that only runs when someone remembers to ask is
+#: not a check on anything.
+_digest = provenance.digest
 
 
 def sources(root: Path = Path("."), pdfs: list[Path] | None = None) -> dict:
@@ -539,20 +532,10 @@ def cut_page(doc, rec: dict, out_dir: Path, source: dict | None = None) -> dict:
     return {"ref": ref, "mode": img.mode, "photos": len(rec["images"])}
 
 
-def _png_meta(p: provenance.Producer):
-    """The producer as a PNG tEXt chunk: one encoded string under one keyword.
-
-    One chunk rather than one per field, so what a raster carries is byte-for-byte
-    what an ALTO's `processingStepSettings` carries and `provenance.decode` reads
-    either. The separator rule and the refusal of a value containing it are
-    `Producer.settings`', enforced there — this adds no escaping of its own,
-    because two escapings of one format is how a round trip stops being one.
-    """
-    from PIL.PngImagePlugin import PngInfo
-
-    meta = PngInfo()
-    meta.add_text(PNG_KEY, provenance.encode(p))
-    return meta
+#: The producer as a PNG `tEXt` chunk — `provenance.png_meta`, which was this
+#: function until the derived farms needed it too. A writer only one module can
+#: reach is a writer the other stores go without; see that function's docstring.
+_png_meta = provenance.png_meta
 
 
 #: Pages per task. Several times the worker count over a full corpus (832 pages
@@ -1133,7 +1116,7 @@ def geometry_dependents(root: Path = Path("."), dry: dict | None = None
     this run would touch, `0` included; `response` is `—` where the answer is none.
     A row that cannot be counted says so rather than guessing.
 
-    `gt/page-img/` and `gt/fig-img/` are absent on purpose and reported by `swap`
+    `ed/page-img/` and `ed/fig-img/` are absent on purpose and reported by `swap`
     separately: they are a human's touch-ups cut from a raster, so a geometry change
     makes them stale — but nothing mechanical may rewrite an authored image, and a
     tool that silently regenerated one would overwrite the only copy of work no
@@ -1188,7 +1171,7 @@ def geometry_dependents(root: Path = Path("."), dry: dict | None = None
 
 
 #: Authored images cut from a raster. **Reported, never touched.**
-TOUCHED_UP = ("gt/page-img", "gt/fig-img")
+TOUCHED_UP = ("ed/page-img", "ed/fig-img")
 
 
 def _tree_manifest(tree: Path) -> dict[str, dict]:

@@ -44,10 +44,7 @@
 
 {% block main %}
 {% if doc.ok %}
-{# The pane is empty and hidden until the first click on a located entity, and
-   `#secondary:empty` in the stylesheet means the column would not collapse with
-   a hidden child in it — so it is inside the aside, not beside it. #}
-<aside id='secondary'>{% include "edition/_pane.html" %}<div id='stack'></div></aside>
+{% include "edition/_sidebar.html" %}
 {% endif %}
 <div id='primary'>
 {% if not doc.ok %}
@@ -83,7 +80,10 @@ no <code>@resp</code> on it claims anything.</p>
 
 {# hover.js first: `edition.js`'s `fill` reads the memo it publishes. #}
 {% block page_scripts %}
+<script src="/static/js/sidebar.js"></script>
 <script src="/static/js/hover.js"></script>
 <script src="/static/js/map.js"></script>
+{# After `hover.js`: it floats a note beside a marker with that file's `place`. #}
+<script src="/static/js/notes.js"></script>
 <script src="/static/js/edition.js"></script>
 {% endblock %}

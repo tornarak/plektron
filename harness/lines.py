@@ -47,7 +47,8 @@ from typing import TYPE_CHECKING, TypedDict
 
 from lxml import etree
 
-from .figures import _bbox, _scale_for
+from . import provenance
+from .figures import RASTER_VERSION, _bbox, _scale_for
 from .refs import norm_ref
 
 if TYPE_CHECKING:
@@ -1328,6 +1329,42 @@ def _band_zone(band: dict, zones: list[dict]) -> str:
     return best if share >= ZONE_INSIDE else ""
 
 
+def _raster_producer(step: str, label: str, src: Path, inputs: dict,
+                     sha: str | None = None) -> provenance.Producer:
+    """What a derived raster records about the act that painted or cut it.
+
+    **These are the images a `#gt` ratification is performed against**, which is
+    why they carry this at all. Every keyed page in the corpus was minted by a
+    human comparing machine output to one of them; the master they came from is
+    the best-witnessed file in the repository, and until now the picture actually
+    on screen inherited none of it. A composite assembled from four stores at two
+    ranks, carrying no record of which, is what a person was asked to decide
+    against.
+
+    `kind` is `rule` throughout: every one of these is a deterministic paint or
+    cut over stated geometry, never a model's inference. So no `sha256` field —
+    that is the *model's* hash by `Producer`'s rule, and the digest that belongs
+    here is the master's, which travels in `inputs` exactly as `scans extract`
+    puts the PDF's there.
+
+    **The store is named because the store is the ambiguity.** `ocr blot` paints
+    from `gt/lines/` *or the view* — the union of `#gt` and `#mz` lines — and the
+    two produce the same picture. A reader who cannot tell which was painted
+    cannot tell whether a blank leaf means "keyed" or "predicted", which is the
+    whole question the image is looked at to answer.
+
+    `sha` is the master's digest where a caller already holds it. `write_line_crops`
+    writes one file per line — 47 on a full page — off one raster, and hashing that
+    raster once per crop would make the digest the dominant cost of a verb that
+    currently costs almost nothing. One read per page, not one per crop.
+    """
+    return provenance.Producer(
+        step=step, label=label, kind="rule", version=str(RASTER_VERSION),
+        inputs={"source": src.name,
+                "source_sha256": provenance.digest(src) if sha is None else sha,
+                **inputs})
+
+
 def write_blot(ref: str, out_dir: Path, root: Path = Path("."),
                store: str = DEFAULT_STORE, scans: str = "scans",
                exemptions: bool = True) -> dict:
@@ -1414,7 +1451,12 @@ def write_blot(ref: str, out_dir: Path, root: Path = Path("."),
 
     out_dir.mkdir(parents=True, exist_ok=True)
     path = out_dir / f"chukchi-{ref}.png"
-    img.save(path)
+    img.save(path, pnginfo=provenance.png_meta(_raster_producer(
+        "harness ocr blot" + ("" if exemptions else " --no-exemptions"),
+        "line, zone and ruling coverage painted out",
+        raster_path(ref, root, scans),
+        {"ref": ref, "store": store, "lines": n_lines, "zones": n_zones,
+         "exempt": n_exempt, "exemptions": str(exemptions).lower()})))
     return {"ref": ref, "path": str(path), "lines_blotted": n_lines,
             "zones_blotted": n_zones, "exempt_blotted": n_exempt}
 
@@ -1509,7 +1551,10 @@ def write_fig_blot(ref: str, out_dir: Path, root: Path = Path("."),
             img = img.convert("1")
     out_dir.mkdir(parents=True, exist_ok=True)
     path = out_dir / f"chukchi-{ref}.png"
-    img.save(path)
+    img.save(path, pnginfo=provenance.png_meta(_raster_producer(
+        "harness zones blot", "figure boxes and photograph rects painted white",
+        src, {"ref": ref, "boxes": len(zs), "rects": len(rects),
+              "manifest": "data/pdf_images.json"})))
     img.close()
     return {"ref": ref, "path": str(path), "painted": len(zs) + len(rects)}
 
@@ -1591,6 +1636,22 @@ FIG_FILL, FIG_INK = 140, 246
 FIG_TITLE, FIG_SUB = "BLOTTED FIGURE", "DO NOT TRANSCRIBE"
 FIG_TITLE_MIN, FIG_TITLE_MAX = 16, 220
 FIG_SUB_RATIO = 0.55
+
+
+def _numbered_producer(ref: str, root: Path, store: str, scans: str,
+                       lines: int, bands: int,
+                       dropped: int) -> provenance.Producer:
+    """`write_numbered_page`'s producer, built at either of its two exits.
+
+    Separate because the early exit — a page whose ALTO has no drawable line —
+    writes a *different* image from the same act, and an image that says nothing
+    is exactly the one a reader would most want to ask about.
+    """
+    return _raster_producer(
+        "harness ocr numbered", "line indices drawn in a gutter, figures voided",
+        raster_path(ref, root, scans),
+        {"ref": ref, "store": store, "lines": lines, "bands": bands,
+         "in_figures": dropped})
 
 
 def write_numbered_page(ref: str, out_path: Path, root: Path = Path("."),
@@ -1707,7 +1768,8 @@ def write_numbered_page(ref: str, out_path: Path, root: Path = Path("."),
     rows.sort(key=lambda r: (r[0] + r[1], r[2]))
     if not rows:
         out_path.parent.mkdir(parents=True, exist_ok=True)
-        canvas.save(out_path)
+        canvas.save(out_path, pnginfo=provenance.png_meta(_numbered_producer(
+            ref, root, store, scans, 0, 0, dropped)))
         return {"ref": ref, "path": str(out_path), "lines": 0, "bands": 0,
                 "in_figures": dropped, "size": f"{canvas.width}x{canvas.height}"}
 
@@ -1809,7 +1871,8 @@ def write_numbered_page(ref: str, out_path: Path, root: Path = Path("."),
             draw.line([(xd, d_top), (xd, d_bottom)], fill=170, width=2)
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    canvas.save(out_path)
+    canvas.save(out_path, pnginfo=provenance.png_meta(_numbered_producer(
+        ref, root, store, scans, n, len(bands), dropped)))
     return {"ref": ref, "path": str(out_path), "lines": n, "bands": len(bands),
             "in_figures": dropped, "size": f"{canvas.width}x{canvas.height}"}
 
@@ -1861,7 +1924,7 @@ def write_line_sheets(ref: str, out_dir: Path, root: Path = Path("."),
     An index that is not on the page raises, as in `write_line_zoom`: a silently
     dropped selection is a line reported as looked at that was never rendered.
     """
-    from .figures import LABEL_W, compose_sheets
+    from .figures import LABEL_W, _sheet_producer, compose_sheets
     items, seen = [], []
     for rec, crop in line_crops(ref, root, store, scans):
         if only is not None and rec["index"] not in only:
@@ -1878,7 +1941,12 @@ def write_line_sheets(ref: str, out_dir: Path, root: Path = Path("."),
     sheets, index = compose_sheets(items, out_dir,
                                   per_sheet=per_sheet,
                                   name_for=sheet_namer("lines"),
-                                  sheet_w=width, max_h=sheet_h)
+                                  sheet_w=width, max_h=sheet_h,
+                                  producer=_sheet_producer(
+                                      "harness ocr sheets",
+                                      "line crops tiled for reading",
+                                      {"ref": norm_ref(ref), "store": store,
+                                       "scans": scans}))
     # One flat record per sheet, `lines` as a joined string rather than a list:
     # a nested value de-tabularizes the whole TOON table (see the module docstring).
     return [{"sheet": str(out_dir / e["sheet"]),
@@ -2167,7 +2235,7 @@ def write_line_zoom(ref: str, out_dir: Path,
     """
     from PIL import Image
 
-    from .figures import compose_sheets
+    from .figures import _sheet_producer, compose_sheets
     window = window or zoom_window(zoom, client_w)
     step = max(1, window - overlap)
     resample = (Image.Resampling.LANCZOS if smooth
@@ -2208,7 +2276,13 @@ def write_line_zoom(ref: str, out_dir: Path,
     # that is the same every time.
     sheets, index = compose_sheets(strips, out_dir, per_sheet=len(strips),
                                   sheet_w=client_w, max_h=sheet_h,
-                                  name_for=sheet_namer(f"zoom{zoom}", smooth))
+                                  name_for=sheet_namer(f"zoom{zoom}", smooth),
+                                  producer=_sheet_producer(
+                                      "harness ocr zoom",
+                                      "line crops magnified in strips",
+                                      {"ref": norm_ref(ref), "store": store,
+                                       "scans": scans, "zoom": zoom,
+                                       "smooth": str(smooth).lower()}))
     return [{"sheet": str(out_dir / e["sheet"]), "zoom": zoom,
              "strips": " ".join(e["items"])} for e in index]
 
@@ -2237,13 +2311,22 @@ def write_line_crops(ref: str, out_dir: Path, root: Path = Path("."),
     """
     ref = norm_ref(ref)
     out_dir.mkdir(parents=True, exist_ok=True)
+    raster = raster_path(ref, root, scans)
     src = max((p.stat().st_mtime for p in
-               (alto_for_lines(ref, root, store), raster_path(ref, root, scans))
+               (alto_for_lines(ref, root, store), raster)
                if p.exists()), default=0.0)
+    # One digest for the page, not one per line — see `_raster_producer`. Read
+    # before the loop rather than lazily inside it, so a page whose every crop is
+    # already current costs it too: a cost that varies with how much work was
+    # skipped is a cost nobody can predict.
+    sha = provenance.digest(raster) if raster.exists() else ""
     out = []
     for rec, crop in line_crops(ref, root, store, scans):
         path = out_dir / f"{rec['y_rank']:03d}-{rec['index']:03d}-{rec['line_id']}.png"
         if not (path.exists() and path.stat().st_mtime >= src):
-            crop.save(path)
+            crop.save(path, pnginfo=provenance.png_meta(_raster_producer(
+                "harness ocr crops", "one line's box cut from the page", raster,
+                {"ref": ref, "store": store, "index": rec["index"],
+                 "y_rank": rec["y_rank"], "line_id": rec["line_id"]}, sha=sha)))
         out.append({**rec, "crop": str(path)})
     return out

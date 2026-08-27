@@ -29,7 +29,7 @@ the project's rules, `CLAUDE.md` governs; for the character inventory,
 | `mz/tei/` | the generated first-draft page, by rule from `gt/zones/` + `gt/ocr/`. Derived, ignored; **no view over the tei pair**, since naming the two apart is the point | `tei generate` |
 | `entities/` | the encyclopedia: one markdown record per entity under its class directory. The referent of every `@ref`, and the source of the alias vocabulary a rule links by | `entity new --commit`, `entity ratify --commit`, `edition serve` |
 | `data/` | `loi.json` `toc.json` `authorities.json` `runs.json` `alphabet.json` `lexicon_extra.txt` `zones_config.json` `lines_config.json` | by hand |
-| `gt/page-img/` | an editor's own version of a whole leaf, `gt/fig-img/`'s doctrine one level up. Resolved by `edition_ui.leaf_source`, **reading view only and ruled leaves only** (any `LEAF_KINDS` member, not `map` alone). **Derived but tracked**, `data/geo/`'s split: `1-361`'s master is ChaiNNer work no script here rebuilds | by hand |
+| `ed/page-img/` | an editor's own version of a whole leaf, `ed/fig-img/`'s doctrine one level up. Resolved by `edition_ui.leaf_source`, **reading view only and ruled leaves only** (any `LEAF_KINDS` member, not `map` alone). **Derived but tracked**, `data/geo/`'s split: `1-361`'s master is ChaiNNer work no script here rebuilds | by hand |
 | `mz/page-img/` | what a leaf is *delivered* as — an anti-aliased linework PNG over a colour JPEG at a third scale, Mixed Raster Content. Derived and gitignored, `mz/tei/`'s disposition; `edition_ui.leaf_layers` returns both or neither | `tools/build_leaf_layers.py` |
 | `data/geo/` | the compiled shape store the atlas draws: watersheds, language areas, coastline, `+ index.json SOURCES.md`. **Derived but tracked** — its sources are outside the repository, so a clone cannot rebuild it | `tools/build_geo.py --commit` |
 | `data/pdf_images.json` | the source PDFs' own embedded-image geometry: each page's master, the photographs on it, the shift from the legacy render space, and `_sources`, which digests the PDFs themselves. **Derived but tracked**, `data/geo/`'s split and for its reason. The one witness to a figure's place that no person and no model produced | `scans extract --all --commit` |
@@ -858,9 +858,10 @@ route because a full page as a data URI is ~10 MB of markup.
 The client sends a column index and never an x — the geometry is re-measured
 server-side on save, so a zone of the wrong measure has no field to travel in.
 
-**`authorities.py`** — search over the book's own 95-work bibliography. Returns every
-hit ranked and resolves nothing: 67 sigla share 42 names, so one answer would be
-manufactured, and no hit at all is legitimate because the list is explicitly open.
+**`authorities.py`** — search over the book's own bibliography. Returns every hit
+ranked and resolves nothing: sigla outnumber the names they share, so one answer
+would be manufactured, and no hit at all is legitimate because the list is
+explicitly open. The counts are `docs/apparatus.md`'s, which owns this store.
 
 **`marks.py`** — is a reading's character distribution plausible, before a human
 opens it. Three arms of unequal strength: `rare` (a form whose character the corpus

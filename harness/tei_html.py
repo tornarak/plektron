@@ -105,9 +105,12 @@ def _leads_a_block(el) -> bool:
         return False
     first = next(iter(nxt), None)
     if etree.QName(nxt).localname == "quote" and first is not None:
-        first = next(iter(first), None)      # <quote><p><label>
-    return (first is not None and etree.QName(first).localname == "label"
-            and not (nxt.text or "").strip())
+        first = next(iter(first), None)  # <quote><p><label>
+    return (
+        first is not None
+        and etree.QName(first).localname == "label"
+        and not (nxt.text or "").strip()
+    )
 
 
 def _is_tier1(el) -> bool:
@@ -184,7 +187,7 @@ def page_opens(body) -> str:
         t = " ".join((c.text or "").split())
         for key, mark in (("zone-opens:", "zones"), ("opens:", "reader")):
             if t.startswith(key) and mark not in seen:
-                seen[mark] = t[len(key):].split("(")[0].strip()
+                seen[mark] = t[len(key) :].split("(")[0].strip()
                 break
     # `seam.OPENS_MEANS`, not a second copy of it: `no witness` — a leaf opening
     # on a heading — is absent from it there and falls through here for the same
@@ -205,7 +208,6 @@ def strip_tags(html: str) -> str:
     return " ".join(_TAGS.sub("", html).split())
 
 
-
 #: Where the reading view is mounted. The four browser tools share one server,
 #: so a bare `/entity/…` here would resolve against whichever of them owned the
 #: root — the links in the page body would leave the edition. Kept beside
@@ -219,8 +221,11 @@ RANK_NOTE = {
     "#ed": ("ratified", "a human keyed or confirmed this against the page"),
     "#gt": ("adopted", "keyed at the raster in the ground-truth pass"),
     "#llm": ("proposed", "a model read this off the page; awaiting ratification"),
-    "#mz": ("mechanical", "applied by rule from a store a human keyed — the entity "
-                          "alias table, or the printed table of contents"),
+    "#mz": (
+        "mechanical",
+        "applied by rule from a store a human keyed — the entity "
+        "alias table, or the printed table of contents",
+    ),
 }
 UNSETTLED = ("#llm", "#mz")
 
@@ -304,12 +309,14 @@ def exempt(root: Path = Path(".")) -> list[str]:
     `leaf_kind` reports which. Nothing here derives the kind, and that boundary is
     the point: the edition used to sort these pages with four discriminators
     borrowed from other stores — figure boxes for a plate, `data/runs.json` for
-    the apparatus, `gt/page-img/` for a hand-worked leaf — under which a blank
+    the apparatus, `ed/page-img/` for a hand-worked leaf — under which a blank
     verso and the volume's folding map were the same page.
     """
     from .zones import LEAF_KINDS, load_splits
-    return _sorted_refs(r for r, split in load_splits(root).items()
-                        if split in LEAF_KINDS)
+
+    return _sorted_refs(
+        r for r, split in load_splits(root).items() if split in LEAF_KINDS
+    )
 
 
 def leaf_kind(ref: str, root: Path = Path(".")) -> str:
@@ -321,6 +328,7 @@ def leaf_kind(ref: str, root: Path = Path(".")) -> str:
     `unclassified`: an unmarked page is not a leaf at all.
     """
     from .zones import LEAF_KINDS, load_splits
+
     marked = load_splits(root).get(norm_ref(ref), "")
     return marked if marked in LEAF_KINDS else ""
 
@@ -373,8 +381,9 @@ class Renderer:
     page knows which cards it may be asked for without re-parsing itself.
     """
 
-    def __init__(self, ref: str, tabindex_offset: int = 2,
-                 titles: dict[str, dict] | None = None):
+    def __init__(
+        self, ref: str, tabindex_offset: int = 2, titles: dict[str, dict] | None = None
+    ):
         self.ref = ref
         self.tabindex = tabindex_offset
         #: `{toc id: {number, title}}`, what a `<milestone n>` is displayed as.
@@ -494,8 +503,10 @@ class Renderer:
             first = n not in self.noterefs
             self.noterefs.add(n)
             back = f' id="ref-{escape(n)}"' if first else ""
-            return (f'<a class="noteref"{back} href="#note-{escape(n)}" '
-                    f'data-note="{escape(n)}">{body}</a>')
+            return (
+                f'<a class="noteref"{back} href="#note-{escape(n)}" '
+                f'data-note="{escape(n)}">{body}</a>'
+            )
         handle = figrefs.unmark(el.get("type"), el.get("n"), el.get("cRef"))
         if handle is None or self.in_ref or self.in_figdesc:
             return body
@@ -507,14 +518,18 @@ class Renderer:
         # keeps the division `el_ref` opens with intact — nothing here is
         # invalidated by a box moving, because no box is involved.
         if handle["kind"] == "page":
-            return (f'<a class="pageref" href="{BASE}/folio/'
-                    f'{escape(handle["number"])}">{body}</a>')
+            return (
+                f'<a class="pageref" target="_blank" href="{BASE}/folio/'
+                f'{escape(handle["number"])}">{body}</a>'
+            )
         # A chapter, the same way and for the same reason — `/chapter/{roman}`
         # looks the id up in `data/toc.json` and locates its opening folio, so
         # nothing about the store's key scheme is written into the page.
         if handle["kind"] == "chapter":
-            return (f'<a class="chapref" href="{BASE}/chapter/'
-                    f'{quote(handle["number"], safe="")}">{body}</a>')
+            return (
+                f'<a class="chapref" target="_blank" href="{BASE}/chapter/'
+                f'{quote(handle["number"], safe="")}">{body}</a>'
+            )
         i = len(self.figrefs)
         self.figrefs.append(dict(handle, before=before))
         return f'<a class="figref" data-fr="{i}" tabindex="0">{body}</a>'
@@ -551,8 +566,15 @@ class Renderer:
 
     # -- inline elements ---------------------------------------------------
 
-    def _tier1(self, el, body: str, cls: str, why: str, extra: str = "",
-               base: str = "tier1 lex") -> str:
+    def _tier1(
+        self,
+        el,
+        body: str,
+        cls: str,
+        why: str,
+        extra: str = "",
+        base: str = "tier1 lex",
+    ) -> str:
         """A Tier-1 span as a link into the lexicon, or a plain span if it is not one.
 
         **The key is the bare form**, url-encoded on the way out, because that is
@@ -637,8 +659,14 @@ class Renderer:
             return self._referring(el, "name", el.get("type") or "")
         cls, why = _rank_marks(el)
         typ = el.get("type") or ""
-        return self._tier1(el, self.inline(el), cls, why,
-                           extra=f' data-type="{escape(typ)}"', base="name tier1 lex")
+        return self._tier1(
+            el,
+            self.inline(el),
+            cls,
+            why,
+            extra=f' data-type="{escape(typ)}"',
+            base="name tier1 lex",
+        )
 
     def el_rs(self, el) -> str:
         return self._referring(el, "rs", "")
@@ -752,13 +780,14 @@ class Renderer:
         desc = el.find(f"{{{TEI_NS}}}figDesc")
         outside, self.in_figdesc = self.in_figdesc, True
         try:
-            cap = ("" if desc is None else
-                   f'<figcaption>{self.inline(desc)}</figcaption>')
+            cap = (
+                "" if desc is None else f"<figcaption>{self.inline(desc)}</figcaption>"
+            )
         finally:
             self.in_figdesc = outside
         return (
             f'<figure class="figure" data-figure="{escape(n)}" data-i="{i}">'
-            f'{cap}</figure>'
+            f"{cap}</figure>"
         )
 
     # -- block elements ----------------------------------------------------
@@ -770,7 +799,7 @@ class Renderer:
         # set as the compositor set it, and one that carries over stays flush.
         # Any other paragraph is a break by construction and needs no mark.
         if el is self.page_first:
-            return (f'<p class="opens-{self.opens}">{self.inline(el)}</p>')
+            return f'<p class="opens-{self.opens}">{self.inline(el)}</p>'
         return f"<p>{self.inline(el)}</p>"
 
     def el_quote(self, el) -> str:
@@ -820,10 +849,15 @@ class Renderer:
             # fail, a plausible one built out of a slug being the failure this
             # project is arranged against.
             return f'<h2 class="milestone {escape(unit)}" id="{escape(n)}">{escape(n)}</h2>'
-        num = (f'<span class="milestone-n">{escape(label["number"])}</span>'
-               if label.get("number") else "")
-        return (f'<h2 class="milestone {escape(unit)}" id="{escape(n)}">{num}'
-                f'<span class="milestone-t">{escape(label["title"])}</span></h2>')
+        num = (
+            f'<span class="milestone-n">{escape(label["number"])}</span>'
+            if label.get("number")
+            else ""
+        )
+        return (
+            f'<h2 class="milestone {escape(unit)}" id="{escape(n)}">{num}'
+            f'<span class="milestone-t">{escape(label["title"])}</span></h2>'
+        )
 
     def el_list(self, el) -> str:
         kind = el.get("type") or ""
@@ -891,8 +925,7 @@ class Renderer:
                 rows.append(self.element(k))
             else:
                 after.append(self.element(k))
-        return (f"<table>{''.join(head)}{''.join(rows)}</table>"
-                f"{''.join(after)}")
+        return f"<table>{''.join(head)}{''.join(rows)}</table>" f"{''.join(after)}"
 
     def el_trailer(self, el) -> str:
         return f'<p class="trailer">{self.inline(el)}</p>'

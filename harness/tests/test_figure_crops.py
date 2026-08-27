@@ -221,7 +221,7 @@ def test_a_box_off_the_raster_is_a_row_not_a_crash(tmp_path):
 
 
 def test_a_human_touched_up_picture_survives_a_forced_rebuild(tmp_path):
-    """The property `gt/fig-img/` exists for.
+    """The property `ed/fig-img/` exists for.
 
     `scans/fig-crops/` is derived and gitignored: a picture enhanced in place
     there is destroyed by the next `--force` with no copy anywhere, which is this

@@ -5,7 +5,7 @@
 # ///
 """Split an editor's leaf into the two layers the reading view serves.
 
-`gt/page-img/chukchi-PP-NNN.png` is a **master**: one artefact a human made and
+`ed/page-img/chukchi-PP-NNN.png` is a **master**: one artefact a human made and
 vouches for, tracked because nothing here can rebuild it. `1-361`, part 1's
 foldout ethnographic map, was built in ChaiNNer — dejpeg, LAB, L divided by its
 own 40 px blur to isolate the linework, upscaled through `2_MangaScaleV3`,
@@ -67,7 +67,7 @@ from scipy.ndimage import grey_closing
 
 Image.MAX_IMAGE_PIXELS = None
 
-SRC = Path("gt/page-img")
+SRC = Path("ed/page-img")
 OUT = Path("mz/page-img")
 
 #: Isolating the linework: divide the LAB lightness by its own blur. A flat area

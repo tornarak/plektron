@@ -33,10 +33,12 @@ from __future__ import annotations
 
 import json
 import re
+import time
 import unicodedata
 from collections.abc import Collection
 from pathlib import Path
 
+from .atomic import tmp_for
 from .codepoints import non_ascii
 from .detectors import (
     INVENTORY_CHARS,
@@ -582,9 +584,12 @@ def set_field(path: Path, line: str, field: str, value: str,
     data = json.loads(_src)
     rec = data.setdefault("lines", {}).setdefault(line, {})
     text, typed = _expanded(_validated(field, value), field, root)
+    before = rec.get(field)
     rec[field] = unicodedata.normalize("NFD", text)
     _set_as_typed(rec, field, typed)
-    _write_json(path, data, _src)
+    _write_json(path, data, _src,
+                {"by": "proposal set", "field": field,
+                 "edits": [{"line": line, "from": before, "to": rec[field]}]})
     return {"path": str(path), "line": line, "field": field,
             "expanded": typed or ""}
 
@@ -641,23 +646,32 @@ def set_fields(path: Path, values: dict, field: str,
             resolved[str(line)] = _expanded(_validated(field, value), field, root)
         except ValueError as e:
             raise ValueError(f"line {line}: {e}") from e
+    edits = []
     for line in sorted(values, key=lambda k: (len(k), k)):
         rec = lines.setdefault(str(line), {})
         text, typed = resolved[str(line)]
         new = unicodedata.normalize("NFD", text)
-        (same if rec.get(field) == new else changed).append(str(line))
+        before = rec.get(field)
+        (same if before == new else changed).append(str(line))
+        if before != new:
+            edits.append({"line": str(line), "from": before, "to": new})
         rec[field] = new
         _set_as_typed(rec, field, typed)
         if typed is not None:
             expanded.append(str(line))
-    _write_json(path, data, _src)
+    # Only what actually moved. A bulk set is routinely a re-run over a page
+    # where two lines changed and forty-five did not, and a journal that recorded
+    # the forty-five would bury the two under its own noise.
+    _write_json(path, data, _src,
+                {"by": "proposal set (bulk)", "field": field, "edits": edits})
     return {"path": str(path), "field": field, "set": len(values),
             "changed": ",".join(changed), "unchanged": ",".join(same),
             "expanded": ",".join(expanded)}
 
 
-def _write_json(path: Path, data: dict, original: str) -> None:
-    """Serialize back in the indentation the file already used.
+def _write_json(path: Path, data: dict, original: str, act: dict,
+                stamp: str | None = None) -> None:
+    """Serialize back in the indentation the file already used, durably.
 
     These editors are aimed at `proposal.json`, which this module also authors
     at `indent=2` — but `--path` lets them target `decision.json`, which
@@ -669,6 +683,31 @@ def _write_json(path: Path, data: dict, original: str) -> None:
 
     Falls back to `indent=2` when the original has no indented line to measure
     (a fresh or single-line file), so an authored proposal keeps its own shape.
+
+    **The durability is `review.save_decisions`', and it is owed rather than
+    offered.** `VERBS.md`'s Conventions let these editors write without
+    `--commit` on the stated grounds that a proposal "is a working file of a live
+    pass, kept with a `.prev` and a journal" — the `.prev` and the journal being
+    the consideration for skipping the gate. They did not exist. A `proposal set`
+    interrupted mid-write truncated the live file of a pass in progress with
+    nothing beside it to recover from, and the file it truncated is a page a
+    reader had already been through.
+
+    So: copy to `.prev`, write a pid-named temp, `replace()`, then append to an
+    append-only journal. Two saves in a row destroy `.prev`; nothing destroys the
+    journal. All three are gitignored under `review/*/` already — they are
+    recovery data, `paths.py`'s third disposition, not a store.
+
+    **The journal records both sides of each edit**, which is where it departs
+    from `save_decisions` and does so deliberately. That journal replays *forward*
+    from a proposal it can always re-read; this one has no such base, since the
+    file it guards is the base. Recording `from` as well as `to` is what makes a
+    save reversible without one.
+
+    `act` is the caller's — which verb, which line, which field — because this
+    function sees a mutated dict and cannot tell what moved in it. `stamp` is
+    injectable for the same reason `save_zones`' is: a record with a wall-clock
+    time in it is a record no test can assert on.
     """
     indent = 2
     for ln in original.splitlines()[1:]:
@@ -677,8 +716,21 @@ def _write_json(path: Path, data: dict, original: str) -> None:
             indent = len(ln) - len(stripped)
             break
     trailing = "\n" if original.endswith("\n") else ""
-    path.write_text(json.dumps(data, ensure_ascii=False, indent=indent) + trailing,
-                    encoding="utf-8")
+    text = json.dumps(data, ensure_ascii=False, indent=indent) + trailing
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if path.exists():
+        # The pre-image is `original`, already in hand — but written from the
+        # file rather than from it, so a `.prev` is a copy of what was on disk
+        # and never of what this process believed was on disk.
+        path.with_name(path.name + ".prev").write_bytes(path.read_bytes())
+    tmp = tmp_for(path)
+    tmp.write_text(text, encoding="utf-8")
+    tmp.replace(path)
+
+    stamp = stamp or time.strftime("%Y-%m-%dT%H:%M:%S%z")
+    with path.with_name(path.stem + ".jsonl").open("a", encoding="utf-8") as fh:
+        fh.write(json.dumps({"saved_at": stamp, **act}, ensure_ascii=False) + "\n")
 
 
 def _parse_which(which: str, count: int) -> list[int]:
@@ -749,8 +801,11 @@ def replace_in_field(path: Path, line: str, field: str, old: str, new: str,
     for idx in sorted(selected, reverse=True):
         p = positions[idx]
         new_text = new_text[:p] + new_n + new_text[p + len(old_n):]
+    before = rec[field]
     rec[field] = unicodedata.normalize("NFD", new_text)
-    _write_json(path, data, _src)
+    _write_json(path, data, _src,
+                {"by": "proposal replace", "field": field, "which": which,
+                 "edits": [{"line": line, "from": before, "to": rec[field]}]})
     return {"path": str(path), "line": line, "field": field, "old": old,
             "new": new, "which": which, "occurrences": len(positions),
             "replaced": len(selected)}
@@ -1218,7 +1273,7 @@ def fix(path: Path, root: Path | None = None) -> dict:
     """
     _src = path.read_text(encoding="utf-8")
     data = json.loads(_src)
-    changed = []
+    changed, edits = [], []
     if "segmenter_missed" in data and not data["segmenter_missed"]:
         # Inert legacy: the field is illegal but an empty one carries no reading,
         # so it folds away silently rather than gating. A non-empty block is a
@@ -1245,8 +1300,10 @@ def fix(path: Path, root: Path | None = None) -> dict:
     for idx, rec in data.get("lines", {}).items():
         text, typed = _expanded(rec.get("text", ""), "text", root)
         if typed is not None:
+            before = rec.get("text", "")
             rec["text"] = unicodedata.normalize("NFD", text)
             _set_as_typed(rec, "text", typed)
+            edits.append({"line": idx, "from": before, "to": rec["text"]})
             changed.append({"line": idx, "replaced": typed, "with": rec["text"]})
 
     for idx, rec in data.get("lines", {}).items():
@@ -1272,9 +1329,11 @@ def fix(path: Path, root: Path | None = None) -> dict:
         # it raw writes NFC into an NFD corpus for `corpus normalize` to find
         # later — if anyone runs it.
         new_text = unicodedata.normalize("NFD", nfd.replace(wrong, right))
+        edits.append({"line": idx, "from": text, "to": new_text})
         rec["text"] = new_text
         changed.append({"line": idx,
                         "replaced": f"U+{ord(wrong):04X}", "with": f"U+{ord(right):04X}"})
     if changed:
-        _write_json(path, data, _src)
+        _write_json(path, data, _src,
+                    {"by": "proposal fix", "field": "text", "edits": edits})
     return {"path": str(path), "changed": changed}

@@ -23,10 +23,26 @@ which must *not* track the live store. That is why this is an explicit table and
 not a sweep, and it is the same blind spot `test_doc_refs.py`'s `PATH_RE` has
 from the other direction: what a pattern cannot see, a person has to declare.
 
+**Only a figure counting a CLOSED set belongs here at all**, and that rule was
+learned from the one entry that broke. `entities/` grows every time somebody
+writes an entity, so gating a prose count of it meant retyping a number into
+`docs/pipeline.md` on every pass — keeping a figure correct in a place CLAUDE.md
+says no figure belongs: *"counts deliberately absent — they go stale in a file
+nothing regenerates."* A gate that maintains a defect reads as diligence. The
+sentence lost its number and made the same argument; the claim was deleted, not
+repaired. What is left counts the book's own bibliography and sigla, the rasters
+the three PDFs hold, and the pages carrying figures — sets that move only when
+the artifact is re-read, which is when a human is looking at the sentence anyway.
+
+**And a figure belongs in ONE document**, the one the CLAUDE.md precedence table
+says owns the store. This gate held the works and sigla totals at three sites
+each and was thereby maintaining the triplication rather than surfacing it —
+*"a fact stated twice is a defect"* — so `harness/README.md` and
+`harness/VERBS.md` now argue without the numbers and name `docs/apparatus.md`,
+which owns them. Six claim sites went; no argument did.
+
 **`gt/ocr` is deliberately absent.** No doc states its size as a live claim, and
-this gate does not invent one — it records the asymmetry rather than fixing it,
-since which docs should carry which counts is an editorial question and not a
-gate's to decide.
+this gate does not invent one.
 """
 from __future__ import annotations
 
@@ -50,12 +66,6 @@ def _glob(rel: str) -> int:
     return len(list((REPO / rel).glob("chukchi-*.xml")))
 
 
-def _alias_rows(blank: bool) -> int:
-    from harness.entities import load
-    rows = [t for r in load(REPO).values() for t in r["aliases"]]
-    return sum(1 for t in rows if not t["lang"]) if blank else len(rows)
-
-
 def _authorities(kind: str) -> int:
     from harness import apparatus
     if kind == "printed":
@@ -76,8 +86,6 @@ COUNTS = {
     "zone_pages":     lambda: _glob("gt/zones"),
     "scans":          lambda: len(list((REPO / "scans").glob("chukchi-*.png"))),
     "entities":       lambda: len(list((REPO / "entities").glob("*/*.md"))),
-    "alias_rows":     lambda: _alias_rows(blank=False),
-    "alias_blank":    lambda: _alias_rows(blank=True),
     "works_printed":  lambda: _authorities("printed"),
     "works_records":  lambda: _authorities("records"),
     "sigla_rows":     lambda: _authorities("sigla_rows"),
@@ -101,12 +109,24 @@ CLAIMS = (
           r"scans/\s+the (\d+) rasters, 300 dpi", derived=True),
     Claim("docs/apparatus.md", "fig_pages",
           r"The (\d+) pages with figures have been segmented"),
-    Claim("docs/pipeline.md", "entities",
-          r"holds \*\*(\d+) entries against zero collated pages\*\*"),
-    Claim("docs/edition.md", "alias_blank",
-          r"most of the store is blank: (\d+) of \d+ rows are"),
-    Claim("docs/edition.md", "alias_rows",
-          r"most of the store is blank: \d+ of (\d+) rows are"),
+    # **`entities/` is deliberately absent, and its removal is the rule this
+    # table now states.** It was the one claim here counting a store under
+    # active growth, so it was also the only one that ever went stale — every
+    # entity written broke it, and the repair was always to retype a number
+    # into prose that CLAUDE.md says should not carry one: "counts deliberately
+    # absent — they go stale in a file nothing regenerates." The sentence it
+    # anchored argues that the encyclopedia runs ahead of collation, and
+    # "hundreds of entries against zero collated pages" argues it exactly as
+    # well while being true forever. A gate that keeps a number correct in a
+    # place the number does not belong is maintaining the defect.
+    #
+    # What stays below all counts a **closed set** — the book's own bibliography
+    # and sigla, the rasters the three PDFs hold, the pages that carry figures.
+    # Those move when the artifact is re-read, which is when a human should be
+    # looking at the sentence anyway. **The test for whether a figure belongs
+    # here is not "can a reader answer it" but "is the set it counts closed";
+    # for an open one, delete the figure rather than gate it.**
+    #
     # The two authorities quantities that are routinely confused: `source.count`
     # is the folios 3-9 list, the record count includes the unprinted
     # `jochelson1905`. Both are gated, at the sentence that distinguishes them.
@@ -118,18 +138,16 @@ CLAIMS = (
           r"one entry per volume — (\d+) printed\n?\s*sigla"),
     Claim("docs/apparatus.md", "sigla_rows",
           r"sigla, (\d+) `cited_as` entries"),
-    Claim("harness/README.md", "works_records",
-          r"the book's own (\d+)-work bibliography"),
-    Claim("harness/README.md", "sigla_rows",
-          r"resolves nothing: (\d+) sigla share \d+ names"),
-    Claim("harness/README.md", "sigla_names",
-          r"resolves nothing: \d+ sigla share (\d+) names"),
-    Claim("harness/VERBS.md", "sigla_rows",
-          r"which field caught it: (\d+) sigla share \d+ names"),
-    Claim("harness/VERBS.md", "works_records",
-          r"Bare, it lists all (\d+) records"),
-    Claim("harness/VERBS.md", "works_printed",
-          r"records — the (\d+) printed on folios 3–9"),
+    # **`harness/README.md` and `harness/VERBS.md` are absent, and that is the
+    # routing table being obeyed rather than a gap.** Those two documents each
+    # restated the works and sigla totals — the same four numbers written in
+    # three places, which CLAUDE.md calls a defect outright, and which this
+    # gate was quietly maintaining instead of exposing. `docs/apparatus.md`
+    # owns the apparatus stores; both now make their argument without the
+    # figures and name the owner, so the count exists once and is checked once.
+    # Six claim sites went with them, and nothing about the sentences' meaning
+    # did: "sigla outnumber the names they share" is the same argument as
+    # "67 sigla share 42 names" for every purpose a reader of a module map has.
 )
 
 

@@ -193,6 +193,75 @@ def test_load_toc_missing_is_empty(tmp_path: Path):
     assert state.load_toc(tmp_path) == []
 
 
+# ------------------------------------------------------- what contains a folio
+
+#: A printed list in miniature, with the two shapes that break a naive fold: front
+#: matter at level 0 ahead of the chapters, and a section that is the last thing
+#: before the next chapter opens.
+_TOC = [
+    {"level": 0, "title": "Introductory", "page_start": 1, "id": "front.intro"},
+    {"level": 0, "title": "Alphabet", "page_start": 10, "id": "front.alphabet"},
+    {"level": 1, "title": "Names", "page_start": 11, "id": "chI"},
+    {"level": 2, "title": "Names", "page_start": 11, "id": "chI.1"},
+    {"level": 3, "title": "Ai'wan", "page_start": 12, "id": "chI.1a"},
+    {"level": 2, "title": "Habitat", "page_start": 14, "id": "chI.2"},
+    {"level": 1, "title": "Neighbors", "page_start": 20, "id": "chII"},
+]
+
+
+def test_toc_containing_is_the_open_chain_shallowest_first():
+    assert state.toc_containing(_TOC, 13) == ["chI", "chI.1", "chI.1a"]
+    # The section changes and the subsection under the old one closes with it.
+    assert state.toc_containing(_TOC, 14) == ["chI", "chI.2"]
+    # On a heading's own first folio the heading is already open.
+    assert state.toc_containing(_TOC, 11) == ["chI", "chI.1"]
+    # Past the last entry the last chapter is still what contains you: the store
+    # records no `page_end`, and stopping at the final `page_start` would leave
+    # every page of the last chapter in no chapter at all.
+    assert state.toc_containing(_TOC, 900) == ["chII"]
+
+
+def test_a_chapter_closes_the_front_matter_before_it():
+    """Level 0 is folded as level 1. Left at its own depth the Alphabet would
+    stay open under every chapter that follows it, because a chapter clears only
+    what is deeper than itself."""
+    assert state.toc_containing(_TOC, 10) == ["front.alphabet"]
+    assert state.toc_containing(_TOC, 11) == ["chI", "chI.1"]
+
+
+def test_an_unwitnessed_folio_is_contained_by_nothing():
+    """The refusal `toc_starts` already makes. Most of the book has no witnessed
+    folio, and a locator that guessed the nearest chapter would be indistinguish-
+    able, on screen, from one that knew."""
+    assert state.toc_containing(_TOC, None) == []
+    # Before the first entry, too — nothing precedes page 1.
+    assert state.toc_containing(_TOC, 0) == []
+    assert state.toc_containing([], 13) == []
+
+
+def test_toc_containing_reads_the_real_store():
+    """Against `data/toc.json` itself, because the fold rests on that file being
+    ordered and its `page_start` monotonic, which no fixture can witness for it.
+
+    Two properties over every entry: the chain a heading's own first folio
+    produces ends with that heading, and the chain is monotonic in level.
+    """
+    toc = state.load_toc(Path(__file__).resolve().parents[2])
+    assert len(toc) > 300, "the real store, not a fixture"
+    levels = {e["id"]: max(e.get("level") or 0, 1) for e in toc if e.get("id")}
+    for e in toc:
+        chain = state.toc_containing(toc, e["page_start"])
+        assert chain, f"{e['id']} places nothing"
+        depths = [levels[i] for i in chain]
+        assert depths == sorted(set(depths)), f"{e['id']}: {chain} is not a chain"
+        # The last entry printed at this folio is the deepest one open here, and
+        # every entry is reached by its own page_start unless a later one shares
+        # it — which is exactly how the printed list nests.
+        assert e["id"] in chain or any(
+            o["page_start"] == e["page_start"] and toc.index(o) > toc.index(e)
+            for o in toc if o.get("id") in chain)
+
+
 # --------------------------------------------------------------- folio index
 
 
@@ -358,7 +427,7 @@ def test_span_disagreement_between_the_two_statements_fails(book: Path):
 def test_an_editors_leaf_for_a_non_exempt_page_fails(book: Path):
     """It would never be served — `leaf_source` refuses it — so a file sitting
     there is work that will silently do nothing until somebody says so."""
-    p = book / "gt" / "page-img" / "chukchi-1-037.png"
+    p = book / "ed" / "page-img" / "chukchi-1-037.png"
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_bytes(b"x")
     assert any(e["rule"] == "leaf-not-exempt" for e in A.check(book)["errors"])
@@ -370,7 +439,7 @@ def test_a_reshaped_editors_leaf_fails(book: Path, tmp_path: Path):
     from PIL import Image
     (book / "scans").mkdir(exist_ok=True)
     Image.new("L", (1000, 2000), 255).save(book / "scans" / "chukchi-1-014.png")
-    d = book / "gt" / "page-img"
+    d = book / "ed" / "page-img"
     d.mkdir(parents=True, exist_ok=True)
     Image.new("L", (2000, 4000), 255).save(d / "chukchi-1-014.png")
     assert not [e for e in A.check(book)["errors"] if e["rule"] == "leaf-reshaped"]
@@ -383,7 +452,7 @@ def test_a_reshaped_editors_leaf_fails(book: Path, tmp_path: Path):
 def test_a_vector_leaf_reports_unmeasured_rather_than_fine(book: Path):
     """An SVG has no pixel aspect to compare. `""` means unmeasured and must not
     be read as measured-and-clean — the `_ink_verdict` distinction, here too."""
-    d = book / "gt" / "page-img"
+    d = book / "ed" / "page-img"
     d.mkdir(parents=True, exist_ok=True)
     (d / "chukchi-1-014.svg").write_text("<svg/>", encoding="utf-8")
     rows = {r["ref"]: r for r in A.check(book)["editor_leaves"]}

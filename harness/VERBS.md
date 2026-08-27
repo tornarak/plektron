@@ -59,6 +59,18 @@ edit`, `ocr review`) save without `--commit` too: the save click in the
 browser is the human act the flag exists to demand, and a flag typed before the
 page was ever seen would attest nothing.
 
+**Every derived raster says what made it, in the file.** The blots, the line and
+figure crops, the numbered page and every contact sheet carry their producer in a
+PNG `tEXt` chunk — the same settings string an ALTO's `processingStepSettings`
+carries, written by `provenance.png_meta` and read back by `provenance.read_producers`,
+so `corpus provenance` counts a raster store exactly as it counts `mz/tei/`. The
+record names the master it was cut from **and its digest**, and the store it was
+painted from: `ocr blot` paints from `gt/lines/` *or the view*, and a composite
+of `#gt` and `#mz` lines that does not say which is a picture a human is asked to
+ratify against with no way to tell what it asserts. Not repeated per verb below.
+Link farms carry nothing of their own and need nothing — a symlink resolves to a
+master that is already stamped.
+
 **Exit codes.** `0` clean · `1` a documented gate failed · `2` usage error or a
 caught exception. Measurement never gates: `zones check --store mz`, `zones
 score`, `zones diff`, `zones paragraphs`, and everything under `find` and
@@ -953,7 +965,7 @@ The band is the **per-page** spread over ground-truth pages clearing `--min-type
 ### proposal fix [REF ...]
 **Does** expands every `{key}` handle in a `text` field to the ratified form, recording the line as typed in `as_typed`; then applies the one unambiguous correction — a single mark `resolved` names that `text` lacks, swapped for the single mark `text` has that `resolved` lacks.
 **Reads** the proposal, and `gt/ocr/` + `data/marks_config.json` when a line carries a handle.
-**Writes** the proposal, in place.
+**Writes** the proposal, in place — keeping one `.prev` and journalling both sides of every edit to `proposal.jsonl`.
 **Exit** always 0; raises on a handle that does not resolve, and writes nothing.
 **Note** nothing to clobber under `--all`: it repairs only what is already wrong, so a page with nothing to fix is untouched.
 **Note** **the expansion is here because this is the path a reader takes.** It lived only in `proposal set` for as long as the handle existed, and over one measured day of 63 readers it fired zero times — they author `proposal.json` with `Write` (63 whole-file writes against 16 `proposal set` calls, all of those later edits), so a handle typed per the contract would have reached the store as a literal brace. Four readers looked a form up, were handed its key, and retyped the glyphs by hand — the act the handle replaces, and the one that produced three `ᴇ` U+1D07 → `ᴀ` U+1D00 slips on a single name across three pages that day. `fix` runs on every page and already writes, so this costs no new step.
@@ -984,7 +996,7 @@ The band is the **per-page** spread over ground-truth pages clearing `--min-type
 ### proposal set REF [LINE]
 **Does** sets one line's field, or many lines' in one write when `LINE` is omitted. NFD-normalized on write, and `{key}` handles in a `text` value are expanded to the ratified forms `lexicon lookup` names.
 **Reads** the proposal, `gt/ocr/` when a value carries a handle, and stdin when `--value`/`--values` is absent.
-**Writes** the proposal, in place.
+**Writes** the proposal, in place — keeping one `.prev` and journalling both sides of every edit to `proposal.jsonl`.
 **Exit** 0; 2 if a handle does not resolve.
 **Note** **a handle is expanded here, on write, and that is the whole reason the field exists.** `text` gets the ratified glyphs and `as_typed` keeps the line as the reader wrote it, so the proposal and the decision go on comparing like with like. Expanding when the review server *serves* the line would do the same job for the adjudicator's eye and wreck the measurement behind it: every handled line would differ from what it is measured against, `save_decisions` would record a human edit nobody made, and `ocr corrections` would grow classes the tooling manufactured — `'` → `ˊ` and `^` → U+030C among them, which is not merely noise but noise shaped like the corpus's real error classes.
 **Note** **nothing half-expands, and a bulk write dry-runs every line before writing any.** One unresolvable handle refuses the whole call: a partly-expanded line records neither what was read nor what was meant, and a partly-authored page cannot be told from a finished one. Same rule as `tei expand` one stage later and as `ocr restore` across refs.
@@ -1005,7 +1017,7 @@ The band is the **per-page** spread over ground-truth pages clearing `--min-type
 ### proposal replace REF LINE
 **Does** replaces occurrences of `--old` with `--new` in one line's field — the surgical alternative to `set`, which retypes the whole field.
 **Reads** the proposal.
-**Writes** the proposal, in place.
+**Writes** the proposal, in place — keeping one `.prev` and journalling both sides of every edit to `proposal.jsonl`.
 **Exit** always 0.
 ```
 --old TEXT   text to find [required]
@@ -1522,7 +1534,7 @@ place.
 
 ### edition runs
 **Does** the page-runs the reading view serves as one document instead of a leaf at a time — the printed Contents, List of Illustrations and Authorities Quoted — plus a census of what every leaf outside the transcription tracks was ruled, one row per leaf and per editor's leaf, and everything wrong with the declarations. Six scans of List of Illustrations are one printed list, and serving them as six pages is serving the binding rather than the book. Reports the folio count too: every folio link a run renders goes through the index, and that number says how much of the book the locator can reach at all.
-**Reads** `data/runs.json` and each run's `source`, `gt/zones/` split lists, `tei/`, `gt/ocr/`, `gt/page-img/`, `scans/`. **Writes** — **Exit** 0 clean / 1 on a declaration that cannot be true.
+**Reads** `data/runs.json` and each run's `source`, `gt/zones/` split lists, `tei/`, `gt/ocr/`, `ed/page-img/`, `scans/`. **Writes** — **Exit** 0 clean / 1 on a declaration that cannot be true.
 **Note** the fatal set: a run over a leaf not ruled `apparatus` (`not-apparatus`), a leaf ruled `apparatus` that no run names (`apparatus-not-in-run`), a ref that is no scan, a span that is discontiguous or that two runs both claim, a `kind` with no renderer, a span its own store contradicts, a run leaf the store records no entry for (`unwitnessed-leaf`), two pages claiming one folio **at the same rank**, and an editor's leaf that is for a page still in the tracks or is a different shape from the scan (>0.5% aspect). A folio two witnesses of *different* rank disagree on is a **warning**: rank resolves it, and the disagreement is usually a misread running title worth seeing rather than a fault.
 **Note** **`apparatus` is checked in both directions, and only one of them used to be.** A run's leaves must be ruled `apparatus` rather than merely be out of the transcription tracks: a plate in a run would render as a list of entries it does not have, and the looser test could not say so, a plate having left the tracks exactly as the Contents did. The other direction is new — the kind promises the leaf's content is held parsed somewhere and the run is what names which store, so a leaf ruled `apparatus` with no run has a promise and no reading behind it, and falls back to a bare scan.
 **Note** `leaf_kinds` is the census — one row per `zones.LEAF_KINDS` member and how many leaves carry it. **Measurement, never a gate**, and it is the frame the rest of the report is read in: a run is a span of `apparatus` leaves, so how many of each kind exist is what says whether the runs cover what they should.
@@ -1556,8 +1568,8 @@ resolves anything, and no hit is a legitimate outcome.
 ```
 
 ### find authority [QUERY...]
-**Does** works matching a citation read in the body — siglum, bare name in prose, title, or a string off the printed entry. Every match returned and ranked by which field caught it: 67 sigla share 42 names, so a single answer would be manufactured. A footnote form (`Dall, I, p. 375.`) goes in whole; the lifted volume is echoed on stderr, because a silently rewritten query is an unexplainable miss.
-**Several queries pool into one table** with a leading `query` column, and a query that matched nothing gets a row saying so — dropping it would make "no such work" indistinguishable from "I forgot to ask". One query emits exactly what it always did. A page's footnotes name half a dozen works, and asking six times was six turns against a collator's budget. Bare, it lists all 95 records — the 73 printed on folios 3–9 plus the twenty-two `source.unprinted` ones (`jochelson1905`, and the twenty-one of the chapter XXIII footnote bibliography on `3-146`/`3-147`) — which is one small JSON file, not a corpus sweep.
+**Does** works matching a citation read in the body — siglum, bare name in prose, title, or a string off the printed entry. Every match returned and ranked by which field caught it: sigla outnumber the names they share (`docs/apparatus.md` counts them), so a single answer would be manufactured. A footnote form (`Dall, I, p. 375.`) goes in whole; the lifted volume is echoed on stderr, because a silently rewritten query is an unexplainable miss.
+**Several queries pool into one table** with a leading `query` column, and a query that matched nothing gets a row saying so — dropping it would make "no such work" indistinguishable from "I forgot to ask". One query emits exactly what it always did. A page's footnotes name half a dozen works, and asking six times was six turns against a collator's budget. Bare, it lists every record — those printed on folios 3–9 plus the `source.unprinted` ones (`jochelson1905`, and the chapter XXIII footnote bibliography on `3-146`/`3-147`) — which is one small JSON file, not a corpus sweep. The two totals are `docs/apparatus.md`'s, and are the pair most often confused.
 **Reads** `data/authorities.json`. **Writes** — **Exit** 0.
 ```
 --volume V    volume the citation names (II or 2); excludes on contradiction, not absence
@@ -1743,14 +1755,14 @@ PP-NNN...     which pages; several may be given
 
 ### fig crops [PP-NNN ...]
 **Does** cuts every declared picture out of its raster — one PNG per `GraphicZone`, named `chukchi-PP-NNN-KKK.png` after the zone's own id suffix.
-**Reads** `gt/fig/`, `scans/`, and `gt/fig-img/` to report which pictures a human has already replaced.
-**Writes** `scans/fig-crops/` (derived). **Never `gt/fig-img/`.**
+**Reads** `gt/fig/`, `scans/`, and `ed/fig-img/` to report which pictures a human has already replaced.
+**Writes** `scans/fig-crops/` (derived). **Never `ed/fig-img/`.**
 **Exit** always 0. A page whose box falls off the raster is a row saying so, not a crash — `fig check` is where that gates.
 **Note** **no `--commit`, because the tree is derived** — `--commit` gates the authored stores, and `zones blot` is the precedent for a raster tree that writes on invocation. Named pages get their per-page rows; `--all` reports totals only, since 252 rows of mostly zeroes bury the one number that answers "did the sweep run".
 **Note** **pad 0 — the declared box and not a pixel more.** The blot's rule and for its reason, which `docs/pipeline.md` records: the pad was "rejected precisely because body text sits hard against an inset figure on `1-283`". The opposite choice from `lines.line_box`, which pads `PAD_X = 56` on purpose, a line crop being for a human to read *in context*.
 **Note** **one crop per box, not one per printed figure.** A union was tried first — the book calls `1-276`'s fig. 140 one figure and letters its parts inside a single caption, and the worst union measured only 1.75× the area of its parts. The output refuted it: fig. 140's two boxes are stacked at different widths, so their bounding rectangle spans the text column beside the upper one and the crop came out carrying six lines of body prose. **1.75× of area was 1.75× of page, and the page there is text.** A bounding box over boxes a human drew separately is a region no human drew. Holding a figure's parts together is the reader's job, and `figures.figure_boxes` is what groups them; every crop carries its `group` so nothing has to re-derive that.
 **Note** **a crop newer than both its inputs is left alone**, `lines.write_line_crops`' rule verbatim: served as files, an unconditional re-save gives every crop a new mtime and a new `ETag` on every build, so nothing ever caches. `--force` overrides it. There is no mtime *skip* beyond that, for `zones blot`'s reason — skip policy belongs with the dependency graph, which is a sprint of its own.
-**Note** **enhancement is manual, and `gt/fig-img/` is where a manual one lives.** Nothing here sharpens, denoises or upscales: a crop is the raster's own pixels inside a box a human drew, asserted by a test against a gradient. A picture somebody touches up is a new artefact they vouch for, so it goes in a **tracked** store that this verb never writes to and `figures.crop_source` resolves *first*. Editing a file in `scans/fig-crops/` instead would lose it to the next `--force` with no copy anywhere, in a tree git does not carry — this repository's one catastrophic failure, re-enacted. The `human` count is reported on every run so a rebuild can never quietly shadow the work.
+**Note** **enhancement is manual, and `ed/fig-img/` is where a manual one lives.** Nothing here sharpens, denoises or upscales: a crop is the raster's own pixels inside a box a human drew, asserted by a test against a gradient. A picture somebody touches up is a new artefact they vouch for, so it goes in a **tracked** store that this verb never writes to and `figures.crop_source` resolves *first*. Editing a file in `scans/fig-crops/` instead would lose it to the next `--force` with no copy anywhere, in a tree git does not carry — this repository's one catastrophic failure, re-enacted. The `human` count is reported on every run so a rebuild can never quietly shadow the work.
 ```
 PP-NNN...     which pages; several may be given
 --all         every page the figure store holds
@@ -2083,7 +2095,7 @@ against itself. `audit` re-reads the PDFs and makes a fuss if one changed.
 **Note** **what "atomic" can honestly mean across six trees.** Not one syscall. Every translation is computed and digest-checked before anything is written, any refusal aborts the whole run with nothing moved, and the receipt records which manifest the stores are now in. That last is not ceremony: a zero shift leaves a page byte-identical, so "correctly untouched" and "not yet reached" cannot be told apart by looking. It is part 2's lesson — 2550x3525 before and after — generalised.
 **Note** **where the two spaces are the same size and the shift is not zero, the run aborts.** No page box can say which side of the shift a file is on, and both guesses are wrong: "already" leaves every coordinate stale, "source" may shift a page twice. The render→master migration never met this because every page that moved also changed size.
 **Note** **the dependents are composed from what already declares itself** — `migrate.STORES` for coordinates, and the farms whose own `reads` names `scans/` for pixels. That rule *excludes* the `select` leaf farms (`scans/plate/` and the rest), which are links by filename and unaffected by a shift; a filter on `kind` would have discarded them for nothing. And it names `review/*/crops` and its siblings rather than `review/*/`, which holds tracked adjudications.
-**Note** **`gt/page-img/` and `gt/fig-img/` are reported and never touched.** They are a human's touch-ups cut from a raster, so a geometry change makes them stale — but nothing mechanical may rewrite an authored image, and a tool that regenerated one would overwrite the only copy of work no script can reproduce. The report names them as work a human owes.
+**Note** **`ed/page-img/` and `ed/fig-img/` are reported and never touched.** They are a human's touch-ups cut from a raster, so a geometry change makes them stale — but nothing mechanical may rewrite an authored image, and a tool that regenerated one would overwrite the only copy of work no script can reproduce. The report names them as work a human owes.
 **Note** the tree must carry `pdf_images.json` or it is refused: a directory of PNGs with no geometry cannot be placed, and naming a space for it would be the guess this group exists to refuse.
 
 ### scans info [PP-NNN...]

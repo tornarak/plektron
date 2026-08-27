@@ -288,6 +288,55 @@ def decode(text: str) -> Producer | None:
 PNG_KEY = "harness"
 
 
+def png_meta(p: Producer):
+    """The producer as a PNG `tEXt` chunk: one encoded string under one keyword.
+
+    One chunk rather than one per field, so what a raster carries is byte-for-byte
+    what an ALTO's `processingStepSettings` carries and `decode` reads either. The
+    separator rule and the refusal of a value containing it are `Producer.settings`',
+    enforced there — this adds no escaping of its own, because two escapings of one
+    format is how a round trip stops being one.
+
+    **Here rather than in `harness/scans.py`, for `PNG_KEY`'s own reason.** This
+    was that module's private helper while `scans/` was the only stamped raster
+    store, which made it the only module that *could* stamp one — and the derived
+    farms a human actually ratifies against (`w-blotted/`, `w-figs-blotted/`,
+    `fig-crops/`, the review crops and sheets) went out unstamped for want of a
+    writer they could reach. The keyword, the encoder, the writer and the reader
+    are now one module, which is the arrangement that stops a fifth spelling.
+
+    PIL is imported here rather than at module scope: this module is a leaf that
+    `zones`, `figures`, `recognize` and `generate` all take at import time, and a
+    function nobody calls should not cost them an image library.
+    """
+    from PIL.PngImagePlugin import PngInfo
+
+    meta = PngInfo()
+    meta.add_text(PNG_KEY, encode(p))
+    return meta
+
+
+def digest(path: str | Path) -> str:
+    """SHA-256 of a file, read in blocks.
+
+    Public and here because the *input* side needs it in more than one place now:
+    `scans extract` digests the PDF a raster was cut from, and every derived farm
+    below it digests the master it was painted from. Both are answering the one
+    question this module exists for — what byte sequence did this come out of —
+    and answering it with two private helpers is how the answers stop matching.
+
+    Blocks rather than one read: the masters run to a few MB and there are 832 of
+    them, and a whole-file read of each is memory spent for nothing.
+    """
+    import hashlib
+
+    h = hashlib.sha256()
+    with Path(path).open("rb") as fh:
+        for block in iter(lambda: fh.read(1 << 20), b""):
+            h.update(block)
+    return h.hexdigest()
+
+
 def read_producers(path: str | Path) -> list[Producer]:
     """Every machine-readable producer in one file, in wire order.
 
@@ -344,11 +393,16 @@ def witnessed(path: str | Path) -> bool:
 
 # --------------------------------------------------------------- the census
 
-#: The `mz/` stores and the glob that enumerates each. Every store a model or a
-#: rule writes is here; the authored stores are not, because a human's own file
-#: is witnessed by `@resp` and by the fact that a human wrote it.
-MZ_STORES = (("mz/zones", "*.xml"), ("mz/ocr", "*.xml"),
-             ("mz/fig", "*.xml"), ("mz/tei", "*.xml"),
+#: Each `#mz` store as `(row, glob)` — the name the census reports it under, and
+#: one glob **relative to the repo root** that enumerates it. Every store a model
+#: or a rule writes is here; the authored stores are not, because a human's own
+#: file is witnessed by `@resp` and by the fact that a human wrote it.
+#:
+#: The glob carries its own directories rather than the row naming one, because
+#: four of these stores are a shape and not a directory — `review/1-048/crops/`
+#: is one of 718 — and a row per ref would bury the count this exists to show.
+MZ_STORES = (("mz/zones", "mz/zones/*.xml"), ("mz/ocr", "mz/ocr/*.xml"),
+             ("mz/fig", "mz/fig/*.xml"), ("mz/tei", "mz/tei/*.xml"),
              # **`scans/` is `#mz` and belongs in the count.** It is not under
              # `mz/` because it predates that split and every path in the repo
              # names it, but it is a rule's output like the rest: cut from the
@@ -356,7 +410,30 @@ MZ_STORES = (("mz/zones", "*.xml"), ("mz/ocr", "*.xml"),
              # would make the census answer "everything is witnessed" about a
              # corpus whose largest derived store says nothing. Top-level glob,
              # so the farms underneath it are not walked twice.
-             ("scans", "*.png"))
+             ("scans", "scans/*.png"),
+             # **The painted and cut farms, which is where a ratification is
+             # actually performed.** The link farms (`w-ocr/`, `w-figs/`, the
+             # leaf kinds) are deliberately absent: a symlink resolves to its
+             # master and would count that file a second time under another
+             # name, inflating the census with copies of one witness. These four
+             # hold real files that no master's chunk describes — a composite of
+             # several stores, or a cut from one — and are the population the
+             # `#gt` stores were minted against.
+             ("scans/w-blotted", "scans/w-blotted/*.png"),
+             ("scans/w-blotted-edit", "scans/w-blotted-edit/*.png"),
+             ("scans/w-figs-blotted", "scans/w-figs-blotted/*.png"),
+             ("scans/fig-crops", "scans/fig-crops/*.png"),
+             # The review images are swept by `ocr clean` and rebuilt on demand,
+             # so these rows read 0 for most of a corpus's life. Counted anyway:
+             # a store left out because it is usually empty is a store nobody
+             # notices is unwitnessed on the day it is full, and full is exactly
+             # when a human is looking at it.
+             ("review/*/crops", "review/*/crops/*.png"),
+             ("review/*/sheets", "review/*/sheets/*.png"),
+             ("review/*/zoom", "review/*/zoom/*.png"),
+             ("review/captions/zoom", "review/captions/zoom/*.png"),
+             ("review/*/numbered.png", "review/*/numbered.png"),
+             ("review/captions/sheets", "review/captions/sheets/*.png"))
 
 
 def census(root: str | Path = ".", stores=MZ_STORES) -> list[dict]:
@@ -369,12 +446,16 @@ def census(root: str | Path = ".", stores=MZ_STORES) -> list[dict]:
 
     `producers` is the distinct set seen, so a store part-written by two versions
     of one command says so instead of averaging into a single reassuring row.
+
+    **A symlink is followed, and that is why the link farms are not in
+    `MZ_STORES`.** `scans/w-ocr/` and its siblings point at the masters, so
+    counting them would count one witness several times under several names and
+    report a corpus better witnessed than it is.
     """
     root = Path(root)
     rows = []
     for store, pattern in stores:
-        d = root / store
-        files = sorted(d.glob(pattern)) if d.is_dir() else []
+        files = sorted(root.glob(pattern))
         seen: dict[str, int] = {}
         witnessed_n = 0
         for f in files:

@@ -43,7 +43,7 @@
 {% endmacro %}
 
 {% block main %}
-<aside id='secondary'><div id='stack'></div></aside>
+{% include "edition/_sidebar.html" %}
 <div id='primary'>
 {{ neighbours() }}
 
@@ -80,5 +80,6 @@ begins and links to itself; 🗗 shows the leaves themselves, in succession.</p>
 {% endblock %}
 
 {% block page_scripts %}
+<script src="/static/js/sidebar.js"></script>
 <script src="/static/js/edition.js"></script>
 {% endblock %}

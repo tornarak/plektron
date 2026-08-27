@@ -98,16 +98,18 @@ Layout, all at the repo root:
 
     scans/  the 832 rasters, 300 dpi, bitonal but for the 236 with a photograph. Derived; not in git. The farms over it (w-figs/, w-ocr/, w-figs-blotted/,
             fig-crops/, and one per leaf kind) are derived too and point into it: a clone gets dangling links.
-    gt/     what a human has been through: ocr/, fig/ (bounding boxes for the
-            pictures and their captions; no lines), zones/ (the segmentation, and
-            the split that says a leaf is a plate/blank/cover/map/apparatus rather
+    gt/     the artifact reproduced or annotated, human-checked **whatever share
+            a machine proposed first**: ocr/, fig/ (boxes for pictures and
+            captions; no lines), zones/ (the segmentation, and the split that
+            says a leaf is a plate/blank/cover/map/apparatus rather
             than a text page at all — **and such a leaf holds no zone file in
-            either store: the mark is the record**), lines/ (corrections),
-            fig-img/ and page-img/
-            (touch-ups, a crop and a whole leaf). Tracked — and page-img/ holds
-            work no script rebuilds. **The views are only views, and nothing
-            writes through a view**; the caller invariants are
-            `harness/README.md`'s.
+            either store: the mark is the record**), lines/ (corrections), and
+            every page exemption beside them. Tracked. **The views are only views,
+            and nothing writes through a view**; caller invariants in
+            `harness/README.md`.
+    ed/     a human's own act, reproducing nothing: fig-img/, page-img/ — the
+            touch-ups. Tracked; no rule writes here. An improvement on the page
+            is what `gt/` may not be (`docs/apparatus.md`).
     mz/     not-yet-human: zones/, ocr/ and fig/ as the models emitted them,
             tei/ as the rules built it, and page-img/ as a leaf is *served*: two
             layers built from the tracked master. Derived; ignored. No view over

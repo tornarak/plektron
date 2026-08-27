@@ -27,7 +27,7 @@
 {% endmacro %}
 
 {% block main %}
-<aside id='secondary'><div id='stack'></div></aside>
+{% include "edition/_sidebar.html" %}
 {# Wider than the reading measure, `entities.html`'s pattern. 44rem is a measure
    for *prose*, and every one of these 115 pages is something to look at rather
    than read — a plate, a foldout map, a photograph. Setting a text measure on a
@@ -73,7 +73,7 @@ the transcription tracks, so there is no prose here to read.{% endif %}
    changes is that a blank no longer takes the full measure as though there were
    something on it to read. #}
 {# An editor's own version of the leaf wins here and only here. It is a made
-   artefact, not evidence — `gt/fig-img/`'s rule one level up — so it is labelled
+   artefact, not evidence — `ed/fig-img/`'s rule one level up — so it is labelled
    as one and the raw scan keeps its own address beside it. Nothing in the
    pipeline resolves through this; `zones.scan_for` never consults it. #}
 {# Three addresses, and the reader gets all of them. What is shown is a *delivery
@@ -116,5 +116,6 @@ target='_blank' rel='noopener'>The raw scan</a> is unchanged.</p>
 {% endblock %}
 
 {% block page_scripts %}
+<script src="/static/js/sidebar.js"></script>
 <script src="/static/js/edition.js"></script>
 {% endblock %}

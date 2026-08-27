@@ -37,6 +37,7 @@ import re
 import time
 import unicodedata
 from collections.abc import Callable
+from dataclasses import replace
 from pathlib import Path
 from typing import NotRequired, TypedDict
 
@@ -71,6 +72,18 @@ FIGDIR = "gt/fig"
 # which asks, or not at all.
 MZFIGDIR = "mz/fig"
 READINGS = "data/readings.md"
+
+#: The version the **derived rasters** stamp into their provenance — the blots,
+#: the crops, the numbered page and the contact sheets, in this module and in
+#: `lines.py`. One constant for all of them because they are one act at four
+#: sizes: cover or cut what is accounted for, and hand the rest to a human to
+#: ratify against. Bump it when what any of them draws changes; a file written
+#: before the change is then detectable, and a constant nobody moves is the same
+#: as no constant at all.
+#:
+#: Here rather than in `lines.py` because `lines` imports this module and not the
+#: reverse, and both write these files.
+RASTER_VERSION = 1
 
 #: The version `fig propose` stamps into an `mz/fig/` page's provenance. Bump it
 #: when the rule that turns a manifest entry into a block changes — the point of
@@ -2637,24 +2650,34 @@ CROPDIR = "scans/fig-crops"
 #: catastrophic failure re-enacted — 17 of 20 hand-keyed pages were once
 #: replaced by export shells because a file's role lived only in the name of the
 #: directory holding it. The rule that came out of it holds here unchanged:
-#: **`gt/` is what a human has been through, and nothing writes through a view.**
+#: **a store's name is its role, and nothing writes through a view.**
 #:
-#: Named `fig-img/` and deliberately not `figs/`, which sits one character from
+#: **Under `ed/`, not `gt/`.** This lived in `gt/` on the argument that "`gt/` is
+#: what a human has been through", which is true of a retouched crop and is not
+#: what the rank means: `gt/` is the artifact reproduced or annotated, and an
+#: enhanced figure is an improvement on what the page shows — the one direction
+#: that rank excludes. The tracked-and-never-rebuilt property that made this a
+#: store in the first place is an argument about the store, not the rank, and
+#: survives the move unchanged.
+#:
+#: Named `fig-img/` and deliberately not `figs/`, which sat one character from
 #: the `gt/fig/` geometry store — the same near-miss `_exempt.lst` /
-#: `_exempt.json` was renamed to avoid.
+#: `_exempt.json` was renamed to avoid. Under `ed/` the collision is gone and the
+#: name is kept anyway: it still says what the files are, and renaming a store
+#: twice in one move is how a path in a doc goes stale.
 #:
 #: Enhancement is **manual by design**. Nothing in this module sharpens,
 #: denoises, upscales or otherwise improves a picture: a crop is the pixels the
 #: raster has inside a box a human drew. An enhanced figure is a new artefact
 #: somebody made and vouches for, so it arrives as a file in a tracked store,
 #: not as a filter in a pipeline.
-FIG_IMG = "gt/fig-img"
+FIG_IMG = "ed/fig-img"
 
 
 def crop_source(ref: str, key: str, root: Path = Path(".")) -> tuple[Path, str]:
     """Where one figure's picture comes from, and whose it is.
 
-    Returns `(path, rank)` — `"ed"` for a human's file in `gt/fig-img/`, `"mz"`
+    Returns `(path, rank)` — `"ed"` for a human's file in `ed/fig-img/`, `"mz"`
     for the machine crop. The human file wins, exactly as `ocr/` resolves over
     `gt/ocr/` and `mz/ocr/`, and for the same reason: a reader wants the best
     available version and every consumer must resolve it the same way.
@@ -2735,6 +2758,9 @@ def write_crops(ref: str, out_dir: Path, root: Path = Path("."),
 
     out_dir.mkdir(parents=True, exist_ok=True)
     img = None
+    # Lazily, beside the decode and for its reason: a page whose every crop is
+    # already fresh writes nothing and should read nothing either.
+    sha: str | None = None
     sx = sy = 1.0
     recs = []
     for f, z in parts:
@@ -2743,7 +2769,7 @@ def write_crops(ref: str, out_dir: Path, root: Path = Path("."),
         # `n` and `group` travel with every part, so a consumer can stack the
         # three crops of fig. 138 under its one caption without re-deriving the
         # grouping `figure_boxes` already did. `human` says a person's version of
-        # this picture exists in `gt/fig-img/` and is what readers will see —
+        # this picture exists in `ed/fig-img/` and is what readers will see —
         # reported on every run, because a rebuild that silently shadowed one
         # would make the manual work look lost.
         rec = {"ref": ref, "key": key, "n": f["n"], "group": f["key"],
@@ -2767,7 +2793,14 @@ def write_crops(ref: str, out_dir: Path, root: Path = Path("."),
             # corpus sweep.
             recs.append(rec | {"written": False, "why": "off-raster"})
             continue
-        img.crop(box).save(path)
+        if sha is None:
+            sha = provenance.digest(raster)
+        img.crop(box).save(path, pnginfo=provenance.png_meta(provenance.Producer(
+            step="harness fig crops", label="one figure's box cut from the page",
+            kind="rule", version=str(RASTER_VERSION),
+            inputs={"source": raster.name, "source_sha256": sha, "ref": ref,
+                    "store": "gt/fig", "key": key, "group": f["key"],
+                    "n": f["n"]})))
         recs.append(rec | {"written": True, "why": ""})
     return recs
 
@@ -2961,7 +2994,13 @@ def write_caption_sheets(out_dir: Path, root: Path = Path("."),
         return {"sheets": [], "captions": 0, "blocks": {}}
 
     sheets, index = compose_sheets(items, out_dir, per_sheet=per_sheet,
-                                   prefix="captions")
+                                   prefix="captions",
+                                   producer=_sheet_producer(
+                                       "harness fig sheets",
+                                       "caption strips tiled for reading",
+                                       {"store": "gt/fig", "scans": scans,
+                                        "pad": pad, "captions": len(recs),
+                                        "refs": len(refs)}))
     for entry in index:
         for i, key in enumerate(entry["items"]):
             recs[key]["sheet"] = entry["sheet"]
@@ -3021,7 +3060,12 @@ def write_caption_zoom(key: str, out_dir: Path, root: Path = Path("."),
 
     sheets, index = compose_sheets(strips, out_dir, per_sheet=len(strips),
                                    sheet_w=client_w, max_h=sheet_h,
-                                   name_for=sheet_namer(f"{ref}-zoom{zoom}"))
+                                   name_for=sheet_namer(f"{ref}-zoom{zoom}"),
+                                   producer=_sheet_producer(
+                                       "harness fig zoom",
+                                       "one caption block magnified in strips",
+                                       {"store": "gt/fig", "scans": scans,
+                                        "ref": ref, "key": key, "zoom": zoom}))
     return [{"sheet": str(out_dir / e["sheet"]), "key": key, "zoom": zoom,
              "strips": " ".join(e["items"])} for e in index]
 
@@ -3189,9 +3233,24 @@ def _chunk_sheets(items, per_sheet: int, max_h: int | None):
         yield run
 
 
+def _sheet_producer(step: str, label: str, inputs: dict) -> provenance.Producer:
+    """A contact sheet's producer, for the callers that build one.
+
+    **No `source_sha256`, and its absence is the honest report rather than an
+    omission.** A caption sheet tiles strips cut from *many* rasters — the whole
+    keyed corpus, on a full run — so there is no one master to digest, and a field
+    naming one of them would be a witness to the wrong file. What identifies the
+    picture is the store the strips were cut by and the labels on it, both of
+    which are here. The single-raster cutters use `lines._raster_producer`, which
+    does carry the digest because it has one to carry.
+    """
+    return provenance.Producer(step=step, label=label, kind="rule",
+                               version=str(RASTER_VERSION), inputs=inputs)
+
+
 def compose_sheets(items, out_dir: Path, per_sheet: int = 10, prefix: str = "sheet",
                    sheet_w: int = SHEET_W, max_h: int | None = None,
-                   name_for=None):
+                   name_for=None, producer: provenance.Producer | None = None):
     """Tile (label, image) pairs into indexed composite sheets.
 
     Each strip gets its index drawn in the left margin and a rule beneath it, so
@@ -3206,6 +3265,14 @@ def compose_sheets(items, out_dir: Path, per_sheet: int = 10, prefix: str = "she
     which sizes the sheet to the widest crop for exactly that reason.
 
     `max_h` caps a sheet's height as well as its strip count; see `_chunk_sheets`.
+
+    **`producer` is the caller's, because only the caller knows what was cut.**
+    This function tiles labelled pictures and has no idea whether they are caption
+    crops, body lines or magnified strips, nor which raster or store they came off
+    — so a record invented here would name the tiler and omit everything a reader
+    needs. Each sheet takes the caller's record with its own `n` and its first and
+    last label folded in, which is what joins a sheet back to the lines on it: the
+    returned index says the same thing and is thrown away with the process.
 
     `name_for(labels) -> str` names each sheet after **what is on it** instead of its
     position in this call. Sequential numbering is only safe when a directory has one
@@ -3251,7 +3318,13 @@ def compose_sheets(items, out_dir: Path, per_sheet: int = 10, prefix: str = "she
             if k:
                 stem = f"{stem}-{chr(ord('b') + k - 1)}"
         path = out_dir / f"{stem}.png"
-        sheet.save(path)
+        labels = [lab for lab, _ in chunk]
+        if producer is None:
+            sheet.save(path)
+        else:
+            sheet.save(path, pnginfo=provenance.png_meta(replace(
+                producer, inputs={**producer.inputs, "n": str(len(chunk)),
+                                  "first": labels[0], "last": labels[-1]})))
         sheets.append(path)
         index.append({"sheet": path.name,
                       "items": [lab for lab, _ in chunk]})

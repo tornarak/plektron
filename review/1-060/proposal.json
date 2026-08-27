@@ -1,6 +1,6 @@
 {
   "ref": "1-060",
-  "source": "claude-opus-5 reading of scans/chukchi-1-060.png via mz/ocr line crops and 2x/4x zoom",
+  "source": "claude-sonnet-5 reading of scans/chukchi-1-060.png via mz/ocr line crops and 2x/4x zoom — the model named on the editor's authority, not the reader's: this field said claude-opus-5, which was wrong, and a model's account of its own identity is not evidence of it",
   "status": "PROPOSAL — not ground truth. No glyph identity here is adopted; every",
   "status_cont": "non-English form awaits human ratification against the p. 10 key.",
   "keyed_by": "index into harness.lines.page_lines over mz/ocr/chukchi-1-060.xml",

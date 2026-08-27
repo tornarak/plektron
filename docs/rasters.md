@@ -83,7 +83,7 @@ dependency; what keeps a PDF out of the passes is that no pass calls the one ver
 that opens one. The group is `harness/VERBS.md`'s.
 
 `build_leaf_layers.py` is the live one now, and the only script here whose
-input is *tracked*: it splits an editor's leaf in `gt/page-img/` into the two
+input is *tracked*: it splits an editor's leaf in `ed/page-img/` into the two
 layers the reading view serves, into the derived `mz/page-img/`. Same PEP 723
 isolation and the same reason. It runs over every master by default and takes
 refs to scope it, so a leaf is a file drop plus one command rather than a

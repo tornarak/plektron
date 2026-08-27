@@ -1025,7 +1025,7 @@ geometry change invalidates is a list that goes stale the day a farm is added. I
 built from `migrate.STORES` and from the farms whose own `reads` names `scans/` — and
 that rule is doing work: it excludes the `select` leaf farms, which are links by
 filename and do not move under a shift, where a filter on `kind` would have thrown them
-away. The one thing it must *not* touch it also names: `gt/page-img/` and `gt/fig-img/`
+away. The one thing it must *not* touch it also names: `ed/page-img/` and `ed/fig-img/`
 are a human's touch-ups cut from a raster, so a shift makes them stale, and nothing
 mechanical may rewrite an authored image. They are reported as work a human owes.
 

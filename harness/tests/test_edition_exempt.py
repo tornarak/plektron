@@ -161,6 +161,12 @@ def test_the_page_says_the_kind_the_store_holds_and_no_other(tmp_path):
     text = _app(tmp_path).get("/edition/page/1-001").text
     # The prose only. Scoped rather than searched whole, because `target='_blank'`
     # on the link to the scan is markup and matched the naive version of this.
+    # **Script bodies are cut first**, for the same reason one step further in:
+    # what is between `<script>` and `</script>` sits between two tags and is not
+    # prose either. The head's anti-flash block is a dozen lines of commented
+    # JavaScript, and a comment there naming `map.js` is not this page calling a
+    # cover leaf a map.
+    text = re.sub(r"(?s)<script\b.*?</script>", "", text)
     prose = " ".join(re.findall(r">([^<>]+)<", text)).lower()
     assert "cover" in prose and "title or wrapper leaf" in prose
     for other in ("plate", "blank", "foldout", "map"):

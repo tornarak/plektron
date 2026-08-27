@@ -167,6 +167,52 @@ outright and has no member for an institution or a work. Those are exactly
 the entities an alias table finds reliably, and linking them says "this string
 refers to that entity", not "the page marked a proper noun".
 
+### `taxon:` — the binomial and the book's own word
+
+**The binomial where the vernacular maps to a modern taxon; the book's English word
+rides on it as an alias.** `taxon:gulo-gulo` is the entry and *wolverene* is the alias,
+because *wolverene* is what 1-252 prints and *Gulo gulo* is what the animal is. The
+identification is a judgement and lands at `status: proposed` like every other.
+
+**Where the vernacular maps to no modern taxon it is an alias, never an entry.** *Eagle*
+is polyphyletic within Accipitridae, *mice* is paraphyletic, *seaweed* spans three
+lineages that share no clade — so the form goes on the coarsest rank that is honest
+(`taxon:aves`, `taxon:mammalia`, `taxon:algae`) and the gloss says the English word
+names no clade. [[taxon:pisces]] and [[taxon:lichenes]] are the precedent: both are
+folk buckets, and both have always lived here.
+
+**Where the referent is undetermined the entry stops at the genus.** 1-252's "black
+bear" cannot be a black bear — none inhabits Chukotka — so the entry is `taxon:ursus`
+and the gloss says why, rather than asserting *U. arctos* on an inference about the
+fauna. Same for *fox* (red and arctic both occur, the page distinguishes neither) and
+*sweet-brier*. [[taxon:oedemagena-tarandi]] is the model: it refuses outright to
+reconcile the print against modern usage, and says so at length.
+
+**`animal:` is not the vernacular class and must not be used as one.** Its name-type is
+`zoonym`, which `validate.py` defines as *an individual animal's name* — the reindeer a
+herder calls by name, 1-101 being a whole paragraph on the practice. It is also the
+difference that matters at the TEI layer: `animal:` **has** a name-type, so a link to it
+emits `<name type="zoonym">` around what is usually an English common noun, and
+`validate.py` forbids exactly that — "a `<name>` around a common noun invents a whole
+entity that is not there". `taxon:` has no name-type and links through `<rs>`, which
+asserts only that this string refers to that entity. That is why the folk groups are
+here and not there.
+
+**Two rules about the alias table, both of which a taxon pass gets wrong first:**
+
+- **A binomial the book never prints gets no alias row.** An alias asserts that the
+  corpus prints a form; a row for a string appearing nowhere is a claim about the book
+  rather than a handle on it. [[taxon:animalia]] carries the case, and it is why the
+  ranks above genus mostly have an empty table.
+- **A vernacular English alias is `auto: no`.** Rule-linking *wolf* or *moss* would
+  link ordinary English prose across the whole corpus, and several of them are claimed
+  by two entries at once — *reindeer-fly* names either of 1-108's two flies, and the
+  page does not say which. `auto: no` is what keeps `entity check`'s collision gate
+  meaningful rather than merely loud.
+
+**A rank above genus earns an entry** only where it groups two or more genera the store
+holds, or the book names the group itself. [[taxon:animalia]] works the case list.
+
 ### `sky:` — stars, constellations, the Milky Way
 
 Bogoras names some fourteen, each with a Chukchee name beside the classical one,
@@ -366,9 +412,11 @@ place to put the fact was a free-text field nothing could read or check. Thirtee
 rows moved into the column. `people:chukchi` is the one worth looking at — it
 now says in a column that Чукча is Russian and oraˊwêʟ̣at is the autonym.
 
-- **Blank means unstated**, and most of the store is blank: 463 of 735 rows are
-  the book's own English, where saying so adds nothing. Requiring the column
-  would have made an editorial pass out of a schema change.
+- **Blank means unstated**, and most of the store is blank — the book's own
+  English, where saying so adds nothing. Requiring the column would have made an
+  editorial pass out of a schema change. The vernacular rows a taxon pass adds
+  are the one place `en` is worth stating outright, because there the column is
+  what separates the book's word from the binomial beside it.
 - **A code outside the vocabulary is an error.** That is a typo, not a gap, and
   the two want opposite treatment.
 - `entity check` reports `aliases_untagged`. A worklist, never a gate: "every
@@ -506,6 +554,17 @@ This is scoped to entity forms in English prose and does not reach Tier-1 (see
 "A form broken across a printed line has no handle, and so no link"): there the
 hyphens are the notation's own throughout, position separates nothing, and the
 firewall forbids a rule to originate the reading regardless.
+
+**The hyphen itself is now closed where the corpus can account for it**, which
+narrows what this section is about rather than replacing it. `Chuk-chee` reaches
+`match` spelled `Chukchee` and matches exactly, so the dehyphenated lookup and
+`_explained_by_break` are consulted only for what the counts could not settle —
+and for the mid-line hyphen, which was always the real question here. The rule and
+its measurement are `harness/VERBS.md`'s `tei generate` and `docs/decisions.md`,
+"The hyphen the corpus could account for all along"; the short of it is that the
+same move works twice. Both times the record already held the witness — first the
+position of the hyphen, then the spelling the book sets away from a line end — and
+both times it had been written off as something nothing could tell apart.
 
 ### `auto: once`, and the third state the column needed
 
@@ -1222,8 +1281,8 @@ sorts on.
 
 ### An editor's own leaf
 
-`gt/page-img/chukchi-PP-NNN.{svg,png,jpg}`, resolved by
-`edition_ui.leaf_source` — `gt/fig-img/`'s doctrine (`docs/apparatus.md`) one
+`ed/page-img/chukchi-PP-NNN.{svg,png,jpg}`, resolved by
+`edition_ui.leaf_source` — `ed/fig-img/`'s doctrine (`docs/apparatus.md`) one
 level up, for a whole leaf rather than a crop, with the rank travelling with the
 answer as `crop_source` and `page_source` both do. **Vector before raster**,
 because `1-361`, part 1's foldout map, is the leaf this exists for and may become
@@ -1273,10 +1332,121 @@ not mtime, because these stores are edited underneath the running server and a
 timestamp key is not fine-grained enough to notice; the measurements are in that
 module.
 
-**Two columns.** The text, and beside it a map pane over a **stack** of cards.
-Clicking an entity link or "consult the scan" pushes a card to the top; the stack
-keeps what you opened, in the order you opened it, and a pinned card stays above
-the rest.
+**Two columns, and the second one has two tabs.** The text, and beside it a
+sidebar holding **entities** — the map pane over the card stack described below —
+and **contents**, the printed table of contents as a locator. One partial,
+`harness/web/templates/edition/_sidebar.html`, because four views carry that
+column and an idle rule that has to agree with the stylesheet's is not a thing to
+write four times.
+
+### The contents tab answers *where am I*
+
+The printed Contents was a full-page run and nothing else, reached by a link that
+opened another tab. So a reader who wanted to know which chapter they were in left
+the book to find out, and came back to a page that had never said. The tab puts
+the same store in the column — **the whole outline, all five levels and all 316
+rows, served collapsed** as the tree its levels describe.
+
+Collapsed, because 316 rows in a 20rem column is a thing you have to read rather
+than a thing that tells you where you are. Whole, because a locator has to show
+what is *around* you: a panel holding only the divisions it could place would
+answer a different question on every page, and depth is what the sidebar's rows
+have instead of `.run .toc`'s four hand-set gutters — the markup nests, so one
+indent compounds.
+
+**The division you are in is unrolled whole**, not merely opened along the path
+down to the row that matched. A chapter opened to that one row shows you the row
+you already had and hides its neighbours, which is the opposite of a locator; so
+every `<details>` inside it opens, siblings included, and the divisions around it
+stay shut. It applies where the page has a position and not to an entity's
+mentions: those are spread over twenty chapters, and unrolling all of them would
+serve the outline open.
+
+**What is marked, and by which witness.** `state.toc_containing` folds
+`data/toc.json` over its own ordering: the list is ordered, `page_start` is
+monotonic across all 316 entries, so the divisions containing a folio are the
+open chain of the entries that start at or before it, an entry at level L closing
+everything at L and deeper. Level 0 is folded as level 1 — front matter emits no
+milestone and so is absent from `MILESTONE_UNITS`, but it is a top-level division
+all the same, and left at its own depth the Alphabet would stay open under every
+chapter after it.
+
+**A folio can be in two places at once, and both are marked.** The chain is where
+the page *is*; the entries whose `page_start` is this folio are the heads the page
+actually *prints*, and a page can print several — 1-249 sets both "Animal Food"
+and "Methods of Cooking". A chain holds one entry per level by construction, so on
+its own it named the second of them and said nothing about the first, which is a
+locator telling a reader they are in one section of two.
+
+This is **a different answer from `entry_state`'s `believed_open`**, and the two
+must not be run together. That one folds committed `<milestone>`s out of the TEI
+and says what the corpus witnesses; this one reads the book's own table of
+contents and says what the printed list implies. It is admissible here for the
+firewall's own reason — book-internal apparatus is evidence and it binds — and it
+is a navigation aid: it asserts nothing about any page and nothing writes it to a
+store.
+
+**An unwitnessed folio marks nothing, and says so.** 452 of the book's 732 folios
+have no witness, so the panel refuses more often than it answers, and an unmarked
+panel is indistinguishable on screen from one that could not place the page —
+which is why the refusal is a sentence and not a silence. Nothing interpolates a
+nearest chapter.
+
+**On an entity's page the same panel says where the entry is talked about**, by
+division and with a count, which is what forty page refs sorted by scan number
+could not say. The fold is over the *untruncated* mention list: `_mentions` keeps
+eight rows for the card, and a chapter is not reached by an entity's first eight
+pages — a chapter left unmarked for that reason would read exactly like a chapter
+the entity is absent from. `stores.folio_by_ref` inverts the folio index once for
+it, since `apparatus.folio_of` is a scan of the whole index per ref; `_by_folio`
+tallies a ref list onto folios, and a ref the index cannot place drops out, which
+is the rule the marks follow everywhere else.
+
+**A form's card is marked the same way, by attestation**, and it needs no further
+warrant than the entity's: the lexicon's identity *is* the form, so no alias table
+stands between the word and the pages. There is nothing to be wrong about, and the
+number moves only when a page it was read off is corrected.
+
+**Out of `gt/ocr/`, and `tei/` only in addition** — this card does not wait on
+collation and neither may its marks. Sourced from `attestations` alone, which
+sweeps committed TEI, every card in the lexicon carried "nothing places this form"
+because 0 pages are collated: the *store's* state reported as the Contents'
+failure, which is the one thing a locator must not do. The keyed corpus is the
+witness that exists — 1562 forms, each carrying the refs a human keyed it on — and
+the two are unioned rather than chosen between, because a collated page `gt/ocr/`
+has not reached is a page the form is on all the same. `keˊlet` lands in nine
+chapters, 24 of its 73 pages in *Religious Ideas* and 21 in *Shamanism*.
+
+**Pages, not occurrences.** Both stores record which leaves carry a form and
+neither records how often on one, so a folio contributes 1 and a division's number
+is the count of attested pages under it. `count` in the keyed store is per corpus,
+which is not a fact about any division.
+
+**The refusal is about placement, so it fires only where there was something to
+place.** A form no store attests has not failed to be placed in the printed
+Contents — it is not in the book, which the card's own rows say. Same guard on the
+entity card, and `_mentions`' own reasoning for it: a bare zero cannot be told from
+"never mentioned". The sentence itself is the caller's (`absent`), because a leaf
+has a position, an entry has mentions and a form has attestations, and one sentence
+covering all three would name none of them.
+
+**The tab is per sitting**, in `sessionStorage`, on the rule the map selection
+already follows: a Contents you opened to find your place is not a setting you
+chose. It is read in the head script before the stylesheet, because the contents
+tab holds the column open against the idle rule and reading it later would
+collapse the column and then shove the text sideways on every page load. The
+header's **ToC** link opens it and keeps its href, so the printed Contents is
+still what a click reaches with no JS.
+
+**The column still collapses when it is idle** — no cards, the pane shut, and the
+contents tab not asked for. A tab bar is furniture, and furniture is not a reason
+to hold a column open across a book nobody has clicked anything in. The atlas
+keeps its own column and gets no tab bar: that `#secondary` is the map paired
+with the location tree, never idle, and not this sidebar.
+
+**The stack, unchanged.** Clicking an entity link or "consult the scan" pushes a
+card to the top; the stack keeps what you opened, in the order you opened it, and
+a pinned card stays above the rest.
 It is what makes an annotated edition readable: what you consulted stays
 consulted, and a footnote never costs you your place. Pins persist per page in
 `localStorage`, because a pin is a deliberate act and losing it to a refresh
@@ -1291,6 +1461,39 @@ entity opens it. Dismissal is "not this one" rather than a setting — nothing i
 written down, and the next such click brings it back. An entity the atlas cannot
 draw leaves the pane alone: swapping a map you were reading for a sentence about
 an absence loses more than it says, and the card's own rows already say it.
+
+### A footnote read where it is cited
+
+**Nothing is fetched and nothing is re-rendered.** `page.html` already puts every
+note into `#foot`, server-side, from `doc.notes`; `notes.js` floats that note's own
+body beside the marker citing it. A popup with its own renderer would be a second
+spelling of text the server has already sent.
+
+**The marker is a switch, and the jump is in the note.** Hovering a `.noteref`
+gives a look, gone when the pointer leaves; clicking keeps it; clicking again
+closes it. That means the anchor's own jump — `.noteref` is an `<a
+href="#note-N">` and travels with no script at all, which is what this degrades
+to — is taken away, so it is offered back at the note's own foot as `jump ↓`,
+under a dashed rule. A marker that opened on one click and travelled on the next
+was two acts on one target, distinguished by nothing a reader can see.
+
+**One shape, hovered or kept.** `show` takes no is-it-kept flag. Rendering the
+jump row on the click alone made the popup grow under the pointer — the same note
+in two shapes, the second arriving as a jolt at the moment of clicking. And the
+row sits left, with the note's text: the popup is `width:max-content`, so a row
+set against its right edge lands somewhere different for every note.
+
+**Unlike the hover preview it is not `pointer-events:none`.** A preview answers
+"is this the one I mean?" before a click and must never eat the click; a kept note
+is something you *read*, and a note routinely holds an entity link of its own. So
+the popup is a place, and the price is the guard in the outside-click handler,
+which spares clicks landing inside it. `hover.js` publishes its `place` on
+`window.CARDS` so the two things that float beside a link in this text are put
+there by one piece of arithmetic.
+
+A kept note follows its marker as the page scrolls and goes when the marker
+leaves the window: it is `position:fixed`, and `place` would otherwise peg it to
+an edge, pointing at nothing.
 
 ### The map is a selection, and the tree is its legend
 

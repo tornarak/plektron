@@ -38,7 +38,7 @@
 :root[data-theme="light"] { color-scheme: light }
 * { box-sizing:border-box }
 body { margin:0; background:var(--bg); color:var(--fg);
-  font:16px/1.65 Charter,Georgia,"Times New Roman",serif; }
+  font:16px/1.6 Charter,Georgia,"Times New Roman",serif; }
 a { color:var(--accent) }
 #bar { z-index:9; display:flex; gap:.75rem;
   align-items:center; padding:.5rem .9rem; background:var(--bg);
@@ -49,7 +49,9 @@ a { color:var(--accent) }
    window rather than centred in whatever is left over — and the two ends are
    given the same basis so an unusually long identity cannot drag the middle off
    centre. */
-#bar .site, #bar .bar-right { flex:1 1 0; min-width:0 }
+#bar .site-title, #bar .bar-right { flex:1 1 0; min-width:0 }
+#bar .site-title a:first-of-type { font-weight: bold; }
+#bar .site-title a:not(:first-of-type)::before { content: "•"; margin: 0 0.4em; }
 #bar .bar-right { display:flex; align-items:center; gap:.75rem;
   justify-content:flex-end }
 #bar .bar-right input { min-width:0 }
@@ -84,13 +86,39 @@ main.cols { display:flex; align-items:flex-start; flex-direction: row-reverse;
 /* **Idle** is the state that used to be `:empty`, and could not stay so: the
    column now always holds a `#stack` and a `#map-pane`, either of which may have
    nothing in it. Idle means both — no cards and the pane shut — and it is what
-   collapses the column and re-centres the text. */
+   collapses the column and re-centres the text.
+   **And a third condition, since the tab bar arrived**: a bar is furniture, and
+   furniture is not a reason to hold a column open across a book nobody has
+   clicked anything in. `.side-contents` is the contents tab asked for, set on
+   `<html>` by the head script before first paint.
+   It is written as an ancestor guard on the same rule rather than as a rule of
+   its own, because a competing `.side-contents #secondary { display:block }`
+   would lose: `:not(:has(#map-pane…))` carries an id, so the selector below is
+   two ids to that one's one, and the override would be a no-op that reads like
+   a fix — the failure this stylesheet already documents at `#bar`. */
 #primary:first-child:last-child,
-#secondary:not(:has(.card)):not(:has(#map-pane:not([hidden]))) + #primary
+html:not(.side-contents) #secondary:not(:has(.card)):not(:has(#map-pane:not([hidden]))) + #primary
   { margin: auto; }
 #secondary { flex: 1; padding: 1em; position:sticky; top:3rem;
   max-height:calc(100vh - 4rem); overflow-y:auto; }
-#secondary:not(:has(.card)):not(:has(#map-pane:not([hidden]))) { display: none; }
+html:not(.side-contents) #secondary:not(:has(.card)):not(:has(#map-pane:not([hidden])))
+  { display: none; }
+
+/* --- the tab bar ---
+   Two panels over one scrolling column, so the bar is sticky to the column and
+   not to the window: it belongs to the thing that scrolls under it. The chip
+   shape is `worklist.css`'s, which is where this project already draws an
+   exclusive selector; the tokens are this stylesheet's, since that one is not
+   loaded here and names its rule `--line`. **Not `.pill`** — that class is
+   already the non-interactive status badges below. */
+#side-tabs { position:sticky; top:0; z-index:2; display:flex; gap:.3rem;
+  padding:.1rem 0 .5rem; margin:-.2rem 0 .4rem; background:var(--bg) }
+#side-tabs .tab { font-family:system-ui,sans-serif; font-size:.72rem;
+  letter-spacing:.02em; padding:.15rem .6rem; border-radius:.9rem;
+  color:var(--dim) }
+#side-tabs .tab.on { background:var(--fg); color:var(--bg); border-color:var(--fg) }
+#panel-contents[hidden], #panel-entities[hidden] { display:none }
+
 /* --- the map pane ---
    One map per sitting, above the stack rather than in it: there is only ever one
    *here*, and a map that could be pushed out of sight by the next three cards
@@ -546,7 +574,7 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
 #primary.leaf-width{max-width:72rem}
 #primary.search-width{max-width:70rem}
 .wide{width:100%}
-.hits{width:100%;font-size:.85rem}
+.hits{font-size:.85rem}
 .hits td.before{text-align:right}
 .note-small{font-family:system-ui,sans-serif;font-size:.8rem}
 /* --- the hover preview ---
@@ -567,12 +595,57 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
  * Above `#lightbox`, which is `z-index:10` — a preview under an open lightbox
  * would be a card you can see the edge of and nothing else.
  */
-.card.preview{position:fixed;z-index:11;width:24rem;max-width:calc(100vw - 2rem);
+.card.preview{position:fixed;z-index:12;width:24rem;max-width:calc(100vw - 2rem);
   max-height:60vh;overflow:hidden;pointer-events:none;
   box-shadow:0 2px 12px rgba(0,0,0,.18)}
 .card.preview .tools{display:none}
 .card.preview.pinned,.card.preview.selected{border-color:var(--rule);
   border-width:1px}
+/* --- the footnote popup ---
+ *
+ * `.card` for its skin, like the preview, and the same three things undone: no
+ * width from `#secondary`, no `.tools` to float, no pinned/selected border.
+ * What it does *not* share is `pointer-events:none` — a preview is a look and
+ * must never eat the click, a kept note is something you read and routinely
+ * holds an entity link of its own. So this is a place, and `notes.js` carries
+ * the outside-click guard that costs.
+ *
+ * Narrower than the preview (18rem against 24) because a note is prose set at
+ * the text's own size, not a card of labelled rows, and shrink-to-fit up to that
+ * width because notes here run from four words to a paragraph — the preview is
+ * fixed-width to stop it jumping about as the pointer crosses a line of names,
+ * and this one is summoned deliberately at one marker.
+ *
+ * `z-index` above the preview's 11: the two can be on screen together, since a
+ * note holds entity links, and the note is the one that was asked for. */
+.card.notepop{position:fixed;z-index:11;width:max-content;max-width:min(26rem,calc(100vw - 2rem));
+  max-height:60vh;overflow-y:auto;box-shadow:0 2px 12px rgba(0,0,0,.18);
+  font-size:.92rem}
+.card.notepop .tools{display:none}
+.card.notepop .body{padding:.1rem .2rem}
+/* The numeral that was the backlink in the foot. Superscript, as the marker in
+   the text is, so the popup opens with the same character the sentence carried. */
+.card.notepop .note-n{vertical-align:super;font-size:.7em;color:var(--dim);
+  margin-right:.25em}
+/* **The jump, at the note's own foot under a rule.** The marker above is a
+   switch now — it opens the note and closes it — so what it stopped doing has to
+   be on offer somewhere, and the place for it is the bottom of the thing you
+   have just finished reading. Dashed, because a solid rule here would read as
+   part of the note's text; this is the popup's own furniture.
+
+   **Left, with the note's own text.** The popup is `width:max-content`, so its
+   right edge moves with the length of the longest line in the note — a row set
+   against that edge lands somewhere different for every note, and the reader has
+   to look for it each time. The left margin is the one edge every note shares. */
+.card.notepop .note-jump{display:block;margin-top:.5rem;padding-top:.4rem;
+  border-top:1px dashed var(--rule);font-family:system-ui,sans-serif;
+  font-size:.72rem;text-decoration:none;color:var(--dim)}
+.card.notepop .note-jump:hover{color:var(--accent)}
+/* The marker while its note is up. Not a colour change — a `.noteref` is seven
+   pixels of superscript numeral and a recoloured one is invisible — so the
+   ground moves instead. */
+.noteref.open{background:var(--accent);color:var(--bg);border-radius:.2rem;
+  padding:0 .15em}
 #lightbox {width: 100%;height: 100%;background-color: rgba(1, 1, 1, 0.4);position: fixed;z-index: 10;top: 0;}
 /* Centred, which only started to matter once figures went in here. A page
    raster fills the viewport so left-aligned and centred look the same; a figure
@@ -685,6 +758,71 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
 .run .toc-l2 { margin-top:.35rem }
 .run .toc-l3 { font-size:.92rem }
 .run .toc-l4 { font-size:.88rem; color:var(--dim); font-style: italic; }
+
+/* --- the Contents in the sidebar ---
+   The same class vocabulary over a different question. `.run .toc` sets a
+   contents *page*: a numeral gutter at 2.9rem, titles at 6.9rem, four indents
+   out to 9.7rem. None of that survives a 20rem column — so this is its own
+   scope, not an override, and the two never meet in one document except on the
+   Contents run itself, where the page keeps the gutters and the panel does not.
+   Small, flush, and quiet: what a locator needs is to be scannable at a glance
+   and to stay out of the way of the text it sits beside.
+
+   **The depth is in the nesting, not in a per-level rule.** The panel renders
+   the outline as the tree its levels describe, so one indent on `details > ul`
+   compounds four times on its own; `.run .toc` needs four hand-set gutters
+   because it renders one flat list and has to say in a class what the markup is
+   not saying. `.toc-d{n}` is the depth a row is *at*, not the indent it takes —
+   the classes are here for weight and colour, and level 0 shares depth 1 with
+   the chapters because front matter is a top-level division too. */
+#panel-contents { font-family:system-ui,sans-serif; font-size:.78rem;
+  line-height:1.45 }
+#panel-contents ul { list-style:none; padding:0; margin:0 }
+#panel-contents li { display:block; padding:.05rem 0 }
+#panel-contents summary { display:flex; align-items:baseline; gap:.35rem;
+  cursor:pointer; padding:.15rem 0 }
+#panel-contents summary::marker { color:var(--dim); font-size:.8em }
+#panel-contents .toc-d1 > details > summary { font-weight:600 }
+/* Each rung indented under the triangle of the one above, and once: the markup
+   nests, so the step compounds without four rules to say so. */
+#panel-contents details > ul { padding-left:1.1rem }
+/* A row with no children is a plain `<li>` — a disclosure triangle over nothing
+   is a control that does nothing, and the deepest rung is most of the rows. It
+   takes the row shape a summary has, plus the indent the missing triangle would
+   have given it. */
+#panel-contents li:not(:has(> details)) { display:flex; align-items:baseline;
+  gap:.35rem; padding-left:1.1rem }
+/* **Depth reads as scale**, `.run .toc`'s rule and for its reason: borrowing the
+   printed page's caps and small caps would put four typefaces in one narrow
+   column. Here it is colour alone, the indent saying the rest. */
+#panel-contents .toc-d2 { color:var(--dim) }
+#panel-contents .toc-d3, #panel-contents .toc-d4 { color:var(--dim);
+  font-size:.95em }
+#panel-contents .toc-num { color:var(--dim); font-variant-numeric:tabular-nums }
+#panel-contents .toc-title { flex-grow: 1; }
+#panel-contents .page-no { margin-left:auto; font-variant-numeric:tabular-nums;
+  white-space:nowrap; color:var(--dim); font-size:.9em }
+#panel-contents a.plain, #panel-contents a.page-no { color: var(--dim); text-decoration:none; }
+#panel-contents .here a.plain, #panel-contents .here a.page-no { color: inherit; }
+#panel-contents a.plain:hover, #panel-contents a.page-no:hover
+  { text-decoration:underline }
+/* **Where you are.** The rule in the margin rather than a fill, so a marked
+   chapter reads as a mark and not as a selected row: this panel is not a list
+   you are choosing from. `--accent` is the link colour, which is what the rest
+   of the edition already uses to mean "the thing you are following".
+
+   **Several rows can carry it at once, and that is the point.** A page that
+   prints two section heads is in both of them — 1-249 sets "Animal Food" and
+   "Methods of Cooking" — and the containing chain names only the second, because
+   a chain holds one entry per level by construction. */
+#panel-contents .here { color:var(--fg); box-shadow:-.3rem 0 0 -.15rem var(--accent); padding-left: 0.5em; }
+#panel-contents .here > details > summary, #panel-contents .here > .toc-title
+  { font-weight:600 }
+/* A mention count. Beside the title and before the folio, because it belongs to
+   the heading and not to the page the heading starts on. */
+#panel-contents .hits { font-size:.85em;  background-color: var(--rule); color:var(--fg);
+                        font-variant-numeric:tabular-nums; border-radius: 3px; padding: 1px 3px; }
+#panel-contents .panel-note { margin:.6rem 0 0; font-size:.95em }
 
 /* The illustration numbers hang the same way, but as an indent rather than a
    fixed gutter: `Fig. 12.` and `Figs. 214, 215, 216.` are three times apart, so a

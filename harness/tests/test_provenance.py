@@ -207,3 +207,79 @@ def test_the_census_reports_every_mz_store_even_when_absent(tmp_path):
     rows = P.census(tmp_path)
     assert [r["store"] for r in rows] == [s for s, _ in P.MZ_STORES]
     assert all(r["files"] == 0 for r in rows)
+
+
+# --- the PNG carrier and the derived farms ----------------------------------
+#
+# `scans/` was the only stamped raster store while `png_meta` was private to
+# `harness/scans.py`, which made that module the only one that *could* stamp a
+# PNG — and the farms a human ratifies against went out unwitnessed for want of
+# a writer they could reach.
+
+
+def _png(path, meta=None):
+    from PIL import Image
+    Image.new("L", (4, 4), 255).save(path, pnginfo=meta)
+    return path
+
+
+def test_a_png_carries_the_same_settings_string_the_alto_does(tmp_path):
+    """One encoding, three carriers. A raster copied out of the tree leaves its
+    manifest behind, so the file has to say what made it on its own."""
+    p = P.Producer(step="harness ocr blot", label="painted", kind="rule",
+                   version="1", inputs={"ref": "1-048", "store": "ocr"})
+    got = P.read_producers(_png(tmp_path / "a.png", P.png_meta(p)))
+    assert got == [p]
+    settings = P.alto_processing(p).find(f"{{{ALTO_NS}}}processingStepSettings")
+    assert settings.text == P.encode(p)
+
+
+def test_an_unstamped_png_reads_as_unwitnessed_not_as_an_error(tmp_path):
+    """The census counts what can be *read*; a bare PNG is a legacy file."""
+    assert P.read_producers(_png(tmp_path / "b.png")) == []
+    assert not P.witnessed(tmp_path / "b.png")
+
+
+def test_a_file_that_is_not_a_png_at_all_is_unwitnessed_rather_than_a_crash(tmp_path):
+    """One unreadable file in a farm must not stop a corpus-wide census."""
+    (tmp_path / "c.png").write_bytes(b"not a png")
+    assert P.read_producers(tmp_path / "c.png") == []
+
+
+def test_the_census_covers_the_painted_farms_and_the_review_images(tmp_path):
+    """The population a `#gt` ratification is actually performed against.
+
+    A store left out of the census because it is usually empty is a store nobody
+    notices is unwitnessed on the day it is full — and full is exactly when a
+    human is looking at it.
+    """
+    rows = {r["store"] for r in P.census(tmp_path)}
+    assert {"scans/w-blotted", "scans/w-figs-blotted", "scans/fig-crops",
+            "review/*/crops", "review/captions/sheets"} <= rows
+
+
+def test_a_farm_row_counts_across_every_ref_rather_than_one_row_each(tmp_path):
+    """`review/<ref>/crops/` is one of 718 directories and one row.
+
+    A row per ref would bury the count the census exists to show.
+    """
+    p = P.Producer(step="harness ocr crops", label="cut", kind="rule",
+                   version="1", inputs={"ref": "1-048"})
+    for ref in ("1-048", "1-049"):
+        d = tmp_path / "review" / ref / "crops"
+        d.mkdir(parents=True)
+        _png(d / "000-001-x.png", P.png_meta(p))
+    bare = tmp_path / "review" / "1-050" / "crops"
+    bare.mkdir(parents=True)
+    _png(bare / "000-001-y.png")
+
+    row = next(r for r in P.census(tmp_path) if r["store"] == "review/*/crops")
+    assert (row["files"], row["witnessed"], row["unwitnessed"]) == (3, 2, 1)
+
+
+def test_the_digest_is_of_the_file_and_matches_hashlib(tmp_path):
+    """`scans extract` and every farm below it now answer with one function."""
+    import hashlib
+    p = tmp_path / "d.bin"
+    p.write_bytes(b"x" * (1 << 21))
+    assert P.digest(p) == hashlib.sha256(b"x" * (1 << 21)).hexdigest()

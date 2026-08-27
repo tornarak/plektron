@@ -12,6 +12,7 @@ import re
 import shutil
 import unicodedata
 from pathlib import Path
+from urllib.parse import quote
 
 import pytest
 from markupsafe import escape
@@ -22,6 +23,8 @@ from harness.entities import ENTITY_CLASSES
 
 TEI_NS = "http://www.tei-c.org/ns/1.0"
 CSS = Path(__file__).resolve().parent.parent / "web" / "static" / "css" / "edition.css"
+JS = Path(__file__).resolve().parent.parent / "web" / "static" / "js"
+JS = Path(__file__).resolve().parent.parent / "web" / "static" / "js"
 
 
 def page(root: Path, ref: str, body: str) -> Path:
@@ -746,6 +749,369 @@ def test_the_page_view_ships_the_pane_shut_and_the_stack_apart_from_it(server):
     body = get(base + "/page/1-021")
     assert "id='map-pane' hidden" in body
     assert "id='stack'" in body
+
+
+# ------------------------------------------------ the sidebar's two tabs
+
+#: A printed list small enough to reason about, over the folios the `server`
+#: fixture's pages actually witness. `page_start` is a printed folio, so these are
+#: the `<pb n>` values below and not scan refs.
+_PANEL_TOC = {"source": {"refs": ["1-007"], "printed_folios": ["v"]},
+              "entries": [
+    {"level": 0, "chapter": None, "number": None, "title": "Introductory",
+     "page_start": 1, "id": "front.intro", "ref": "1-007"},
+    {"level": 1, "chapter": "I", "number": "I", "title": "Names and Habitat",
+     "page_start": 2, "id": "chI", "ref": "1-007"},
+    {"level": 2, "chapter": "I", "number": None, "title": "Ancient Habitat",
+     "page_start": 4, "id": "chI.2", "ref": "1-007"},
+    # Two sections on one folio, which is the case a containing chain gets wrong:
+    # it holds one entry per level, so it names the second and says nothing about
+    # the first. `1-249` prints "Animal Food" and "Methods of Cooking" this way.
+    {"level": 2, "chapter": "I", "number": None, "title": "Present Habitat",
+     "page_start": 4, "id": "chI.3", "ref": "1-007"},
+    {"level": 3, "chapter": "I", "number": None, "title": "The Ai'wan",
+     "page_start": 5, "id": "chI.3a", "ref": "1-007"},
+    {"level": 1, "chapter": "II", "number": "II", "title": "Neighbors",
+     "page_start": 10, "id": "chII", "ref": "1-007"},
+    {"level": 2, "chapter": "II", "number": None, "title": "Appearance",
+     "page_start": 11, "id": "chII.1", "ref": "1-007"},
+]}
+
+
+def _toc(root: Path) -> None:
+    import json
+    (root / "data").mkdir(parents=True, exist_ok=True)
+    (root / "data/toc.json").write_text(json.dumps(_PANEL_TOC), encoding="utf-8")
+
+
+def _panel(body: str) -> str:
+    """The contents panel alone. Bounded at both ends on purpose: `class='here'`
+    is also the neighbours row's name for the page you are on, and a slice that
+    ran to the end of the document would count that as a mark."""
+    return body.split("id='panel-contents'")[1].split("</aside>")[0]
+
+
+def _row(panel: str, title: str) -> str:
+    """The `<li>` a title is in, opening tag onwards. A row's marks are on the
+    element and the title is inside it, so "is this row marked" is the text
+    between the last `<li` before the title and the title itself — and not a
+    slice of the panel down to the title, which would carry every enclosing row
+    with it."""
+    return "<li" + panel.split(title)[0].rsplit("<li", 1)[1]
+
+
+def test_the_sidebar_ships_two_tabs_with_the_contents_shut(server):
+    """Entities is the column as it was; contents is rendered and hidden, so the
+    switch costs no request and the panel is there for a reader with no JS."""
+    base, root = server
+    _toc(root)
+    body = get(base + "/page/1-021")
+    assert "data-panel='entities'" in body and "data-panel='contents'" in body
+    assert "id='panel-contents' hidden" in body
+    # The tab bar did not displace what the column already held.
+    assert "id='map-pane' hidden" in body and "id='stack'" in body
+
+
+def test_the_contents_panel_opens_the_division_holding_this_page(server):
+    """Folio 2 opens chapter I and marks it, and the front matter above it — which
+    contains no page of the chapter — is neither marked nor opened."""
+    base, root = server
+    _toc(root)
+    page(root, "1-034", '<pb n="2"/><p>The chapter opens.</p>')
+    panel = _panel(get(base + "/page/1-034"))
+    assert "toc-d1 here'" in panel and panel.count("<details open>") >= 1
+    assert " here'" not in _row(panel, "Introductory"), \
+        "the front matter is not where this page is"
+
+
+def test_a_deeper_division_marks_its_chapter_too(server):
+    """A section is contained by its chapter, so both are marked and the chapter
+    is what opens — a section marked inside a shut chapter would be a mark you
+    cannot see. Folio 5 is `chI.3a`, three rungs down."""
+    base, root = server
+    _toc(root)
+    page(root, "1-030", '<pb n="5"/><p>In the chapter.</p>')
+    panel = _panel(get(base + "/page/1-030"))
+    for depth in (1, 2, 3):
+        assert f"toc-d{depth} here'" in panel, f"depth {depth} unmarked"
+
+
+def test_both_heads_printed_on_one_page_are_marked(server):
+    """**A containing chain holds one entry per level**, so a page that prints two
+    section heads was told it was in the second of them and nothing about the
+    first. `1-249` sets "Animal Food" and "Methods of Cooking" this way. The
+    entries whose `page_start` is this folio are marked alongside the chain."""
+    base, root = server
+    _toc(root)
+    page(root, "1-032", '<pb n="4"/><p>Two heads open here.</p>')
+    panel = _panel(get(base + "/page/1-032"))
+    assert panel.count("toc-d2 here'") == 2
+    for title in ("Ancient Habitat", "Present Habitat"):
+        assert " here'" in _row(panel, title), f"{title} is not marked"
+
+
+def test_the_division_you_are_in_is_unrolled_whole(server):
+    """Not just the path down to the marked row. A chapter opened to the one row
+    that matched shows you the row you already had and hides its neighbours, which
+    is the opposite of a locator — so every `<details>` inside the division opens,
+    and the divisions around it stay shut."""
+    base, root = server
+    _toc(root)
+    page(root, "1-033", '<pb n="4"/><p>Inside chapter I.</p>')
+    panel = _panel(get(base + "/page/1-033"))
+    # chI and the sibling section carrying the subsection: both open, and
+    # chapter II — which holds a section of its own — stays closed.
+    assert panel.count("<details open>") == 2
+    shut = panel.split("Neighbors")[1]
+    assert "<details open>" not in shut
+
+
+def test_the_whole_outline_is_served_collapsed(server):
+    """All five levels, every division, and nothing open that is not marked. The
+    panel is the book's outline — a locator has to show you what is *around* you,
+    and one that held only the divisions it could place would answer a different
+    question on every page."""
+    base, root = server
+    _toc(root)
+    panel = _panel(get(base + "/page/1-021"))
+    for title in ("Introductory", "Names and Habitat", "Ancient Habitat",
+                  "Present Habitat", "The Ai&#39;wan", "Neighbors", "Appearance"):
+        assert title in panel, f"{title} is missing from the outline"
+    assert "toc-d3" in panel, "the deep rungs are rendered"
+    # Folio 1 is the front matter, which has nothing under it: one row is marked
+    # and no `<details>` anywhere is open.
+    assert panel.count(" here'") == 1
+    assert "<details open>" not in panel
+
+
+def test_a_page_whose_folio_nothing_witnesses_marks_nothing(server):
+    """The refusal said out loud. An unmarked panel and a panel that could not
+    place the page look identical, and most of the book is the second."""
+    base, root = server
+    _toc(root)
+    page(root, "1-031", "<p>No pb, so no folio.</p>")
+    panel = _panel(get(base + "/page/1-031"))
+    assert " here'" not in panel and "<details open>" not in panel
+    assert "Nothing places this leaf in the printed Contents." in panel
+
+
+def test_an_entity_marks_every_division_it_is_mentioned_in(server):
+    """**Past the eight rows the card shows.** `_mentions` truncates its list for
+    the card; the panel folds the untruncated one, because a chapter is not
+    reached by an entity's first eight pages and a chapter left unmarked reads,
+    on screen, exactly like a chapter the entity is absent from.
+    """
+    base, root = server
+    _toc(root)
+    # Eleven pages, folios 1–11: eight of them inside the card's cap and in the
+    # front matter and chapter I, three past it and in chapter II.
+    for i, folio in enumerate(range(1, 12)):
+        page(root, f"1-{100 + i}", f'<pb n="{folio}"/><p>At '
+             f'<rs ref="place:markova" resp="#mz">Markova</rs>.</p>')
+    body = get(base + "/entity/place:markova")
+    panel = _panel(body)
+    assert "Neighbors" in panel
+    # Every division holds mentions, so every one of them opens and counts.
+    for title in ("Introductory", "Names and Habitat", "Neighbors"):
+        assert title in panel
+    assert panel.count("<details open>") == 3
+    # The chapter's count is the sum of what lies under it, folded rather than
+    # rolled up: chapter I runs folios 2–9, which is eight of the twelve
+    # mentions (eleven pages plus the fixture's own 1-021 at folio 1).
+    hits = re.findall(r"class='hits' title='(\d+) mention", panel)
+    assert hits and sum(int(h) for h in hits) > 8
+
+
+def test_a_lexicon_card_marks_where_the_form_is_attested(server):
+    """The same mark an entity's mentions make, and on the same warrant: the
+    lexicon's identity *is* the form, so no alias table stands between the word
+    and the pages — there is nothing to be wrong about. `attestations` sweeps
+    committed `tei/` and is re-derived every run.
+
+    **A count of pages, not of occurrences.** `_attestations` dedupes on
+    `(form, lang)` per page, so the number on a division is how many attested
+    pages lie under it, which is the only thing the store recorded.
+    """
+    base, root = server
+    _toc(root)
+    # Folio 4 is chapter I's "Ancient Habitat"; folio 11 is chapter II's
+    # "Appearance". One attested page in each, and two divisions marked.
+    for ref, folio in (("1-040", 4), ("1-041", 11)):
+        page(root, ref, f'<pb n="{folio}"/><p>The form is '
+             f'<foreign xml:lang="ckt" resp="#ed">o\u02cara\u02c8w\u01ddʟ\u0323at</foreign>.</p>')
+    panel = _panel(get(base + f"/lexicon/{quote('ckt:oˊraˈwǝʟ̣at')}"))
+    hits = [int(n) for n in re.findall(r"class='hits' title='(\d+) mention", panel)]
+    assert hits, "the form is attested and nothing was marked"
+    # Two chapters, one page each, and the chapters' own numbers are that sum.
+    assert sorted(hits) == [1, 1, 1, 1], hits
+    assert " here'" not in panel, "a form has no position, only attestations"
+
+
+def test_a_form_the_corpus_does_not_attest_blames_no_contents(server):
+    """**The refusal is about placement, so it may only fire where there was
+    something to place.** A form no store attests has not failed to be placed in
+    the printed Contents — it is simply not in the book, which the card's own rows
+    say. Sourced from committed `tei/` alone, this note appeared on every card in
+    the lexicon, because 0 pages are collated: the corpus's state reported as the
+    Contents' failure, which is the one thing this panel must not do."""
+    base, root = server
+    _toc(root)
+    panel = _panel(get(base + "/lexicon/ckt%3AUwe%CB%8Alen"))
+    assert "printed Contents" not in panel
+    assert " here'" not in panel
+
+
+def test_a_form_placed_nowhere_says_so(server):
+    """Where the corpus *does* attest the form and the folio index can place none
+    of those pages, that is a placement failure and gets the sentence — in the
+    store's own terms, since a form is attested rather than mentioned."""
+    base, root = server
+    _toc(root)
+    # Attested, and on a page carrying no `<pb>`, so nothing witnesses its folio.
+    page(root, "1-050", '<p>Here is <foreign xml:lang="ckt" '
+         'resp="#ed">qoraˈŋy</foreign>.</p>')
+    panel = _panel(get(base + "/lexicon/" + quote("ckt:qoraˈŋy")))
+    assert "No attestation of this form is placed in the printed Contents." in panel
+
+
+def test_an_entity_with_no_map_still_has_a_sidebar(server):
+    """The column stopped being conditional on the geography. An entry that is not
+    a place still has somewhere in the book it is talked about, which was the one
+    question this page could not answer."""
+    base, root = server
+    _toc(root)
+    entry(root, "person:bogoras", status="proposed")
+    body = get(base + "/entity/person:bogoras")
+    assert "id='secondary'" in body and "id='panel-contents'" in body
+    assert "map-pane" not in body
+
+
+def test_the_atlas_keeps_its_own_column(server):
+    """Its `#secondary` is the map column paired with the location tree — never
+    idle, and not the reading sidebar. Folding it under an `entities` tab would
+    rename a thing that is not that thing."""
+    base, root = server
+    _toc(root)
+    body = get(base + "/atlas")
+    assert "id='secondary'" in body
+    assert "id='side-tabs'" not in body
+
+
+# --------------------------------------------------- the footnote popup
+
+
+def test_the_page_loads_the_note_popup_after_hover(server):
+    """`notes.js` places its popup with `hover.js`'s `place`, so it cannot be
+    loaded before the file that publishes it."""
+    base, _ = server
+    body = get(base + "/page/1-021")
+    assert "/static/js/notes.js" in body
+    assert body.index("/static/js/hover.js") < body.index("/static/js/notes.js")
+
+
+def test_hover_publishes_the_placement_it_shares(server):
+    """One piece of viewport arithmetic for the two things that float beside a
+    link in this text. It takes its target as an argument for that reason — a
+    version closing over its own box could not be shared."""
+    src = (JS / "hover.js").read_text(encoding="utf-8")
+    assert "window.CARDS = {get, place}" in src
+    assert "function place(a, el)" in src
+
+
+def test_the_note_popup_reads_the_foot_and_fetches_nothing(server):
+    """The notes are already on the page — `page.html` renders every one of them
+    into `#foot` from `doc.notes`. A popup that fetched them would be a second
+    renderer for text the server already sent."""
+    src = (JS / "notes.js").read_text(encoding="utf-8")
+    assert "getElementById('foot')" in src
+    assert "fetch(" not in src, "the note is in the DOM; nothing is fetched"
+
+
+def test_the_marker_is_a_switch_and_the_note_carries_the_jump(server):
+    """**Every click on the marker is swallowed, so the jump has to be elsewhere.**
+    `.noteref` is an `<a href="#note-N">` and jumps with no script at all, which is
+    what this degrades to; a marker that toggles has taken that away, and what it
+    took is offered again at the note's own foot. A marker that opened on one
+    click and travelled on the next would be two acts on one target,
+    distinguished by nothing the reader can see."""
+    src = (JS / "notes.js").read_text(encoding="utf-8")
+    assert "ev.preventDefault()" in src
+    assert 'class="note-jump"' in src
+    # The jump's href is the anchor's own, not rebuilt from `data-note`: one
+    # spelling of the address, and `tei_html` owns it.
+    assert "a.getAttribute('href')" in src
+    # Tested before the outside-click case *inside the click handler*, since the
+    # jump sits within the popup and that case would otherwise never reach it.
+    click = src.split("document.addEventListener('click'")[1]
+    assert click.index(".note-jump'") < click.index("closest('.notepop')")
+
+
+def test_the_note_is_one_shape_hovered_or_kept(server):
+    """**`show` takes no "is it kept" flag, and that is the property.** Rendering
+    the jump row on the click alone made the popup grow under the pointer — the
+    same note in two shapes, the second arriving as a jolt at the moment of
+    clicking. A reader is looking at a note, not at a widget that reconfigures
+    itself."""
+    src = (JS / "notes.js").read_text(encoding="utf-8")
+    assert "function show(a) {" in src
+    assert "kept" not in src.split("function show(a) {")[1].split("\n  }")[0]
+
+
+def test_the_jump_row_is_ruled_off_and_sits_left(server):
+    """Dashed, because a solid rule reads as part of the note's text and this is
+    the popup's own furniture. Left, because the popup is `width:max-content` — a
+    row set against the right edge lands somewhere different for every note, and
+    the left margin is the one edge they all share."""
+    css = CSS.read_text(encoding="utf-8")
+    row = css.split(".card.notepop .note-jump{")[1].split("}")[0]
+    assert "dashed" in row
+    assert "text-align" not in row, "the block's own left edge, not an alignment"
+
+
+def test_the_note_popup_is_a_place_and_the_preview_is_not(server):
+    """`pointer-events:none` is what keeps the preview a look. A kept note holds
+    entity links of its own and has to be clickable, which is why the popup
+    needs its own class rather than borrowing `.preview`."""
+    css = CSS.read_text(encoding="utf-8")
+    pop = css.split(".card.notepop{")[1].split("}")[0]
+    assert "pointer-events:none" not in pop
+    prev = css.split(".card.preview{")[1].split("}")[0]
+    assert "pointer-events:none" in prev
+
+
+def test_the_served_page_holds_what_the_popup_reaches_for(server):
+    """**`notes.js` reads the DOM, so the DOM's shape is its contract.** It finds
+    a note by `li[data-n]`, its numeral by `a[href^="#ref-"]`, and the marker's
+    address by the marker's own `href` — three selectors that would go quietly
+    dead if `page.html` or `tei_html` renamed anything, since a popup that finds
+    nothing looks exactly like a reader who has not hovered."""
+    base, root = server
+    page(root, "1-060", '<p>x<ref type="note" n="1" resp="#mz">¹</ref></p>'
+                        '<note n="1" place="bottom">See Boas.</note>')
+    body = get(base + "/page/1-060")
+    assert "id='foot'" in body
+    assert "data-n='1'" in body and "id='note-1'" in body
+    assert 'class="noteref"' in body and 'data-note="1"' in body
+    # Quote-agnostic: `tei_html` emits the marker with double quotes and
+    # `page.html` writes the backlink with single ones. The selector in
+    # `notes.js` is a CSS attribute match and does not care, but a test that
+    # spelled one style would fail the day the other changed for no reason.
+    assert re.search(r"""href=["']#note-1["']""", body)
+    assert re.search(r"""href=["']#ref-1["']""", body)
+
+    src = (JS / "notes.js").read_text(encoding="utf-8")
+    assert 'li[data-n=' in src
+    assert 'a[href^="#ref-"]' in src
+    assert "dataset.note" in src
+
+
+def test_a_page_with_no_notes_binds_nothing(server):
+    """The script leaves immediately where there is no foot. Most pages have no
+    notes, and a listener that ran on all of them to find nothing is a listener
+    on every pointer move in the book."""
+    src = (JS / "notes.js").read_text(encoding="utf-8")
+    head = src.split("addEventListener")[0]
+    assert "if (!FOOT) return;" in head
 
 
 def test_the_entity_panel_is_the_same_content_bare(server):

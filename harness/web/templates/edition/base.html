@@ -9,6 +9,14 @@
      document.documentElement.classList.add('reader');
 if(localStorage.getItem('edition-cols-reversed'))
      document.documentElement.classList.add('cols-reversed');
+/* The sidebar's open tab, and here for the same reason as the two above: the
+   contents tab holds the column open against the idle rule, so read after the
+   stylesheet it would collapse the column and then push the text sideways on
+   every page load. `sessionStorage` on purpose — an opened Contents is
+   per-sitting, the way `map.js` keeps a map selection, where a pin and the
+   reader view are deliberate enough to survive the browser closing. */
+if(sessionStorage.getItem('edition-side')==='contents')
+     document.documentElement.classList.add('side-contents');
 /* The theme belongs here for the same reason and more sharply: applied after
    the stylesheet, a stored choice would paint the system's theme first and
    flip it, which is a white flash on every page load for a dark reader. No
@@ -29,7 +37,17 @@ if(t==='dark'||t==='light') document.documentElement.dataset.theme=t;
    jump between, and until now every one of them was an anonymous div. #}
 {% block body %}
 <header id='bar'>
-  <a class='site' href='{{ base }}/'><b>The Chukchee</b></a>
+    <span class="site-title">
+        <a href='{{ base }}/'>The Chukchee</a>
+        {# **Opens the sidebar's contents tab, and keeps its href.** The printed
+           Contents as a document is still a real page and still at this URL —
+           reachable from the index listing, and what this link does where the
+           script has not run or the view has no sidebar. What it stops doing is
+           sending a reader to another tab to find out which chapter they are
+           already reading. #}
+        <a id='toc-link' target="_blank" href='{{ base }}/run/contents'>ToC</a>
+        <a target="_blank" href='{{ base }}/run/alphabet'>Key</a>
+    </span>
   <span class='page-specific-buttons'>
       <button id='cols-reverse-btn' title='Reverse Columns'>⇄</button>
       {% block btn_extra %}{% endblock %}
@@ -49,7 +67,7 @@ if(t==='dark'||t==='light') document.documentElement.dataset.theme=t;
        whatever it asks for, and the declaration's only real effect was to
        outrank the stylesheet on specificity — which made a mobile rule a no-op
        that looked like a fix. #}
-    <form action='{{ base }}/search'>
+    <form target="_blank" action='{{ base }}/search'>
       <input name='q' placeholder='search'>
     </form>
     <span class='location'>{{ here }}</span>

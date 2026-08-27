@@ -659,7 +659,13 @@ document.addEventListener('keydown', ev => {
         return;
     }
     if (ev.ctrlKey || ev.altKey || ev.shiftKey || ev.metaKey) return false;
-    if (ev.key == "Tab" && STACK.childNodes.length) { ev.preventDefault(); toggleStack(); }
+    /* **Not while focus is on the tab bar.** This binding takes Tab away from
+       the browser to put it into the stack, which is the right trade in the
+       text; on the two buttons above the stack it is a trap — you can reach them
+       and then not leave. `closest` and not an id test, because the bar is one
+       control and either button must behave the same. */
+    if (ev.key == "Tab" && STACK.childNodes.length
+        && !ev.target.closest('#side-tabs')) { ev.preventDefault(); toggleStack(); }
     if (ev.key == "ArrowLeft" && !selected_stack && prev && prev.href) { ev.preventDefault(); window.location = prev.href; }
     if (ev.key == "ArrowRight" && !selected_stack && next && next.href) { ev.preventDefault(); window.location = next.href; }
     if (selected_stack) {

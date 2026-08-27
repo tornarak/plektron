@@ -497,7 +497,7 @@ def test_swap_names_every_dependent_and_leaves_authored_images_alone(tmp_path, c
     # And `review/*/` is never named whole — it holds tracked adjudications.
     assert "review/*/" not in deps
     assert "review/*/crops" in deps
-    assert {t["path"] for t in doc["touched_up"]} == {"gt/page-img", "gt/fig-img"}
+    assert {t["path"] for t in doc["touched_up"]} == {"ed/page-img", "ed/fig-img"}
 
 
 def test_swap_commits_the_whole_transaction(tmp_path, capsys):

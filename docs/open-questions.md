@@ -82,7 +82,7 @@ in for an unread glyph.
   once the sheet is turned, so the corpus already contains evidence of rotation
   in its caption order. It is that the only witness is an inference and there is
   no store for a human to overrule it in. Crops are taken as the box sits and
-  nothing rotates them; `gt/fig-img/` will hold a corrected picture if somebody
+  nothing rotates them; `ed/fig-img/` will hold a corrected picture if somebody
   makes one, which is a workaround for the image and not an answer for the fact.
 
 - **Where the index lives is answered, and the answer is that there are two

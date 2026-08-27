@@ -9,10 +9,15 @@
    drawn, in the same column the atlas uses. Reaching an entry and then having to
    ask for its map made the geography an optional extra, and it is not: `within:`
    is half of what an entry says about a place. `map` is set only by the entity
-   route, so a lexicon or standalone-map page keeps its single column. #}
-{% if map %}
-<div id='secondary'>{% include "edition/_pane.html" %}</div>
-{% endif %}
+   route, so a lexicon or standalone-map page has no pane in its column.
+
+   **The column itself is no longer conditional on the map.** It carries the
+   contents tab now, and an entry that is not a place still has somewhere in the
+   book it is talked about — which was the one question this page could not
+   answer. Where there is neither a map nor a card nor a contents tab asked for,
+   the stylesheet's idle rule collapses it exactly as the `{% raw %}{% if map
+   %}{% endraw %}` guard used to. #}
+{% include "edition/_sidebar.html" %}
 <div id='primary'>
   <div class='card'><div class='body'>
   {% include partial %}
@@ -21,6 +26,7 @@
 {% endblock %}
 
 {% block page_scripts %}
+<script src="/static/js/sidebar.js"></script>
 <script src="/static/js/ratify.js"></script>
 <script src="/static/js/hover.js"></script>
 <script src="/static/js/map.js"></script>

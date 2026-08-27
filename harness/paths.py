@@ -19,6 +19,7 @@ One directory per page — `review/<ref>/` — holding both what was authored an
 was generated:
 
     review/1-074/proposal.json     a reading. Authored. Never truth.
+    review/1-074/proposal.jsonl    the append-only edit journal, both sides.
     review/1-074/decision.json     the adjudication. Authored.
     review/1-074/decision.jsonl    the append-only save journal.
     review/1-074/page.png          symlink to the raster. Ignored, never cleaned.

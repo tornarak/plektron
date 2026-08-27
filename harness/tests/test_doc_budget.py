@@ -92,7 +92,24 @@ REPO = Path(__file__).resolve().parent.parent.parent
 # `docs/decisions.md`, which the table already routes to and which owns settled
 # history; what stays is the rule the store layout obeys, folded into the `gt/`
 # line where it binds.
-CLAUDE_MD_MAX_BYTES = 16_800
+# **Raised a sixth time, 16_800 → 17_400, for `ed/`** — a genuinely new
+# top-level store, which is the same kind as all five above and not the accretion
+# this gate exists to stop. `gt/fig-img/` and `gt/page-img/` became
+# `ed/fig-img/` and `ed/page-img/`: they hold retouched crops and a hand-worked
+# leaf, which are new artefacts an editor vouches for rather than reproductions
+# of the page, and `gt/` is the latter. They sat under `gt/` on the reading that
+# it means "what a human has been through" — the same loose reading that makes a
+# page keyed without a prediction look less `#gt` than one keyed with it. It is
+# not what the rank means, and the rank is carried by the path, so the path was
+# wrong. `docs/apparatus.md` owns the argument; the two lines here are the
+# enumeration the layout block owes every top-level store.
+#
+# The `gt/` line also gained its definition, which is the part worth the bytes:
+# it read "what a human has been through", and an agent inheriting only this file
+# would draw exactly the conclusion this move corrects.
+#
+# Headroom deliberately left, on the fifth raise's argument.
+CLAUDE_MD_MAX_BYTES = 17_400
 
 CITE_RE = re.compile(r"CLAUDE\.md, [\"'“]([^\"'”)]{4,80})")
 
