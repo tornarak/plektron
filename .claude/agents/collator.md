@@ -1084,7 +1084,8 @@ resolves against the assembled document. One declaration cannot drift from itsel
 - Hand-edit a file under `edition/entities/`, ratify anything, or change an entry that
   already exists.
 - Emit `<lb/>`, or a `<div>`.
-- Edit anything under `scans/`, `gt/`, `mz/` or `data/`.
+- Edit anything under `scans/`, `gt/`, `mz/`, `edition/`, `config/` or `data/`.
+  You read the apparatus and the configuration; `tei/` is the only store you write.
 - Copy `expected_folio` into `<pb n=>` because it was supplied.
 - Copy a Tier-1 form or an `xml:id` out of `prev_tail` or `foreign_terms_nearby`.
 - Proceed past a FAILing validator. If you believe the gate itself is wrong, that is

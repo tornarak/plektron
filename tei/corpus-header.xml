@@ -130,7 +130,7 @@
         atlas draws shapes compiled from outside sources and a growing number of
         entity coordinates are derived from a gazetteer; two of those sources are
         CC BY, which obliges attribution wherever the data is published, and the
-        reading view publishes it. data/geo/SOURCES.md is the full provenance
+        reading view publishes it. edition/geo/SOURCES.md is the full provenance
         record and long said this citation was carried here — it was not, until
         now, which is a claim about a file with nothing behind it and precisely
         what that record exists to prevent.
@@ -147,8 +147,8 @@
         <licence target="https://creativecommons.org/licenses/by/4.0/">
           <p>Creative Commons Attribution 4.0 International. Applies to the
             editorial apparatus: the TEI encoding and structural decisions, the
-            provenance and adjudication notes, data/loi.json, data/toc.json,
-            data/authorities.json and their research, the entity records and
+            provenance and adjudication notes, edition/loi.json, edition/toc.json,
+            edition/authorities.json and their research, the entity records and
             trigger vocabulary in entities/, the indices, and the annotation
             layer.</p>
         </licence>
@@ -156,12 +156,12 @@
           reuse cannot separate them, treat it as CC BY: attribution costs the
           reuser nothing the CC0 grant was meant to save them.</p>
         <p>Third-party geodata, licensed by its own publishers and not by this
-          edition. The shapes in data/geo/ and the coordinates on the records in
+          edition. The shapes in edition/geo/ and the coordinates on the records in
           entities/ derive from the seven sources below. Two of them oblige
           attribution, one is share-alike, one is unsettled, and three ask for
           nothing — and the three are listed anyway, because a source list that
           named only what it was compelled to name would be an accounting of
-          obligations rather than of provenance. data/geo/SOURCES.md carries the
+          obligations rather than of provenance. edition/geo/SOURCES.md carries the
           detail and the one live question.</p>
         <p>
           <bibl><title>Atlas of the World's Languages</title>, 2nd edn., ed.
@@ -184,7 +184,7 @@
           <ref target="https://mghydro.com/">mghydro.com</ref>, over MERIT-Hydro and
           HydroSHEDS. Dual-licensed CC BY-NC 4.0 or ODbL 1.0. <hi rend="bold">Which
           branch this edition takes is unsettled</hi> and is recorded as open in
-          data/geo/SOURCES.md rather than answered here: the first forbids
+          edition/geo/SOURCES.md rather than answered here: the first forbids
           commercial reuse by anyone who clones this, the second is share-alike on
           the database. A rights statement quietly asserting one of them would be
           the overclaim this whole block exists to avoid. Drawn as the watershed:
@@ -368,7 +368,7 @@
           this record's description note rather than from a per-part entry.</note>
         <note>The record corroborates two apparatus stores independently of the
           pages they were read from: "Authorities quoted": p. 3-9 against
-          data/authorities.json's folios 3-9, and "35 pl." against data/loi.json's
+          edition/authorities.json's folios 3-9, and "35 pl." against edition/loi.json's
           plates I-XXXV. Neither was consulted when those files were built.</note>
         <note>832 pages. Each PDF carries a bitonal JBIG2 text master at
           approximately 300 dpi; figure photographs are separate embedded JPEGs at

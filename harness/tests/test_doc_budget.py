@@ -116,7 +116,22 @@ REPO = Path(__file__).resolve().parent.parent.parent
 # `marks_exempt.json` is `#ed` and is not in it.
 #
 # Headroom deliberately left, on the fifth raise's argument.
-CLAUDE_MD_MAX_BYTES = 17_400
+#
+# **Raised a seventh time, 17_400 → 18_000, for the store split**, and it is the
+# fifth raise's kind rather than the kind this gate stops. `data/` was a potpourri
+# and is now three stores — `edition/` (the layer a reader is served), `config/`
+# (what a pass is tuned by, and the editor's rulings over one) and `data/` (the
+# receipts and the vendored schema) — so the layout block owes three enumerations
+# where it owed one, and it says which of the three a new file belongs in, which
+# is the question the old single line could not answer.
+#
+# The block is *shorter* than it was per store: `entities/`, `lexicon/` and
+# `data/geo/` folded into `edition/` and stopped being top-level entries. It
+# still landed at 17,397 against a 17,400 cap — three bytes, which is exactly the
+# condition the fifth raise's paragraph says this gate must not create, and it
+# was reached by rewording a clause rather than by cutting anything. So the
+# number moves instead, and the headroom is the point of the size of the move.
+CLAUDE_MD_MAX_BYTES = 18_000
 
 CITE_RE = re.compile(r"CLAUDE\.md, [\"'“]([^\"'”)]{4,80})")
 
