@@ -220,6 +220,7 @@ every byte of this file on every page.
 | `docs/pipeline.md` | the pipeline stage by stage, and the design reasoning behind the built stages |
 | `docs/apparatus.md` | the figure track and its editor, the List of Illustrations and Authorities Quoted stores |
 | `docs/edition.md` | the entity and lexicon stores, the rule that links a form, `#mz`, and the reading view |
+| `.claude/skills/curate-entities/` | writing an entry: whether it is earned, its class, its alias modes, its gloss |
 | `docs/rasters.md` | the source rasters, the derived trees and the `tools/` scripts |
 | `docs/decisions.md` | what was settled the hard way, intact — the reasoning behind the rules |
 | `docs/open-questions.md` | what is deliberately unresolved |

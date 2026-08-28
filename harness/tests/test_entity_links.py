@@ -97,6 +97,52 @@ def test_an_rs_carries_no_type(tmp_path):
                                    'ref="place:markova">M</rs></p>'))
 
 
+def test_a_ruled_name_is_admitted_at_a_geographic_class(tmp_path):
+    """What a rule link is written as for the four classes whose aliases are
+    named things by construction. The `@type` is the store's, so it also has to
+    survive the comparison against the class two lines further down."""
+    seeded(tmp_path)
+    assert not gate(tmp_path, body='<p><name type="toponym" '
+                                   'ref="place:markova" resp="#mz">Markova'
+                                   "</name></p>")
+
+
+def test_a_ruled_name_is_refused_outside_the_geographic_classes(tmp_path):
+    """The whole scope of the promotion. `<name>` asserts the page marked a
+    proper noun; outside geography an alias can be a common noun — *the
+    Expedition*, *the Reindeer people* — and a rule stamping `<name>` on one
+    invents an entity the book does not have. `<rs>` is what a rule may say
+    there, and it says only that the string refers to the entity."""
+    entry(tmp_path, "people:chukchi", status="ratified",
+          aliases=[("Reindeer people", True)])
+    assert any("not a geographic class" in e for e in
+               gate(tmp_path, body='<p><name type="ethnonym" '
+                                   'ref="people:chukchi" resp="#mz">Reindeer '
+                                   "people</name></p>"))
+
+
+def test_a_human_may_still_mark_a_name_outside_geography(tmp_path):
+    """The refusal is about the *rank*, not the tag: a reader who saw a proper
+    noun on the page says so at `#llm`, in any class. Refusing that too would
+    have made the gate a rule about what the book may contain."""
+    entry(tmp_path, "people:chukchi", status="ratified",
+          aliases=[("Reindeer people", True)])
+    assert not gate(tmp_path, body='<p><name type="ethnonym" '
+                                   'ref="people:chukchi" resp="#llm">Reindeer '
+                                   "people</name></p>")
+
+
+def test_a_ruled_name_re_derives_like_any_other_ruled_link(tmp_path):
+    """The promotion must not carry the link out of the re-derivation loop —
+    that loop is `#mz`'s entire licence, and a rank checked in one tag but not
+    the other would be a stale stamp with a longer name."""
+    seeded(tmp_path, form="Markovo")
+    assert any("no longer derives" in e for e in
+               gate(tmp_path, body='<p><name type="toponym" '
+                                   'ref="place:markova" resp="#mz">Markova'
+                                   "</name></p>"))
+
+
 def test_a_link_to_a_proposed_entry_is_a_worklist_line_not_an_error(tmp_path):
     """Resolvable, but nobody has audited it — which is a queue, not a defect. This
     is what makes a collator's own proposal linkable on the page that proposed it."""

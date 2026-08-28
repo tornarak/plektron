@@ -689,23 +689,23 @@ def _entity_spans(full: str, taken: list[tuple], ents: dict, autos: dict,
     glyphs it is forbidden even to name" — holds for *reaching inside* a handle
     and not for *enclosing* one:
 
-        <rs ref="place:uelen" resp="#mz"
-          ><foreign index="7">Uweˊlen</foreign></rs>
+        <name type="toponym" ref="place:uelen" resp="#mz"
+          ><foreign index="7">Uweˊlen</foreign></name>
 
     Each `@resp` is a claim about its own element. The outer says which entity
     this string names, which is the alias table's judgement applied by rule;
     the inner says a ratified token sits here, and still carries no `xml:lang`,
     so the collator's question is untouched and `tei expand` still stamps `#gt`
-    on the element that holds the glyphs. `validate`'s rule that `#mz` "is
-    confined to `@ref` on `<rs>`, and never carries a glyph" is honoured
+    on the element that holds the glyphs. `validate`'s rule that `#mz` is
+    confined to entity reference "and never carries a glyph" is honoured
     literally: the element carrying `#mz` has no text of its own.
 
     **An alias that wholly contains a handle encloses it**, on the same argument
     one further step. `water:kolyuchin-bay` carries `Kuluˊči Bay`, which reaches
     over the handle `Kuluˊči` and two ASCII characters more:
 
-        <rs ref="water:kolyuchin-bay" resp="#mz"
-          ><foreign index="2">Kuluˊči</foreign> Bay</rs>
+        <name type="hydronym" ref="water:kolyuchin-bay" resp="#mz"
+          ><foreign index="2">Kuluˊči</foreign> Bay</name>
 
     Containment is decidable without an opinion — the handle's *both* ends are
     inside the alias — which is what a partial overlap is not, and it is the
@@ -732,7 +732,7 @@ def _entity_spans(full: str, taken: list[tuple], ents: dict, autos: dict,
     later occurrence that also straddles a handle asks nothing — the question
     was already put where the link is.
     """
-    from .entities import match, rule_links
+    from .entities import link_tags, match, rule_links
 
     by_bounds = {(s[0], s[1]): i for i, s in enumerate(taken)}
     tier1 = list(taken)
@@ -757,19 +757,17 @@ def _entity_spans(full: str, taken: list[tuple], ents: dict, autos: dict,
                 candidates.append(dict(h, straddles=True))
                 continue
             if owner:
-                links.append((h["start"], h["end"],
-                              f'<rs ref="{owner}" resp="#mz">', "</rs>"))
+                links.append((h["start"], h["end"], *link_tags(owner)))
                 continue
         if not owner:
             candidates.append(h)
             continue
         if at is None:
-            links.append((h["start"], h["end"],
-                          f'<rs ref="{owner}" resp="#mz">', "</rs>"))
+            links.append((h["start"], h["end"], *link_tags(owner)))
             continue
         start, end, open_, close = tier1[at]
-        tier1[at] = (start, end, f'<rs ref="{owner}" resp="#mz">{open_}',
-                     f"{close}</rs>")
+        outer, shut = link_tags(owner, over_name=open_.startswith("<name"))
+        tier1[at] = (start, end, f"{outer}{open_}", f"{close}{shut}")
     return tier1, links, candidates
 
 

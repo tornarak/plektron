@@ -33,7 +33,7 @@ from __future__ import annotations
 
 import re
 
-from .entities import alias_index, auto_forms, match
+from .entities import alias_index, auto_forms, link_tags, match
 
 #: A tag, a comment, or a run of text. Comments first, because one may hold a
 #: `>` — the generator writes prose in them — and a naive `<[^>]*>` would end the
@@ -41,13 +41,30 @@ from .entities import alias_index, auto_forms, match
 _SEG = re.compile(r"<!--.*?-->|<[^>]*>|[^<]+", re.S)
 
 #: Inside any of these, a form is not linked here. `rs` is already a reference;
-#: the other three hold glyphs a rule may not reach into.
+#: the other three hold glyphs a rule may not reach into. `name` is both,
+#: depending on its attributes — see `_is_ref`.
 _OPAQUE = ("rs", "name", "foreign", "term")
 
 _TAG = re.compile(r"<\s*(/?)\s*([A-Za-z][\w:.-]*)([^>]*?)(/?)\s*>", re.S)
 
 #: An existing reference and what it encloses, for the `once` count below.
-_LINKED = re.compile(r"<rs\b[^>]*>(.*?)</rs>", re.S)
+#: **Both tags a rule link is written as**, or the count is blind to exactly the
+#: geographic links this module now emits: a page whose first `Markova` is a
+#: `<name ref>` would read as unlinked, and `once` would spend a second link on
+#: the same page — the failure the count exists to prevent, one tag over.
+_LINKED = re.compile(r"<rs\b[^>]*>(.*?)</rs>|<name\b[^>]*\bref=[^>]*>(.*?)</name>",
+                     re.S)
+_REF_ATTR = re.compile(r"\bref\s*=")
+
+
+def _is_ref(tag: str, attrs: str) -> bool:
+    """Is this open tag an entity reference, rather than a handle to enclose?
+
+    `<rs>` always is. `<name>` is one only when it carries a `@ref` — a bare
+    `<name>` is a proper noun a collator marked and a rule may still enclose,
+    while `<name ref=…>` is already the link this module would be adding.
+    """
+    return tag == "rs" or (tag == "name" and bool(_REF_ATTR.search(attrs)))
 _INNER_TAGS = re.compile(r"<[^>]*>")
 
 
@@ -69,7 +86,7 @@ def relink(text: str, store: dict) -> tuple[str, list[dict], list[dict]]:
     # find the second occurrence with the first one hidden inside an `<rs>`,
     # read it as the first, and link it — turning "once per page" into twice on
     # exactly the pages this module exists to fix.
-    once = {" ".join(_INNER_TAGS.sub("", m.group(1)).split())
+    once = {" ".join(_INNER_TAGS.sub("", m.group(1) or m.group(2)).split())
             for m in _LINKED.finditer(text)}
 
     def spend(form: str) -> bool:
@@ -108,9 +125,9 @@ def relink(text: str, store: dict) -> tuple[str, list[dict], list[dict]]:
         pick where a span ends. A partial hit is reported instead.
         """
         inner = "".join(frame["text"])
-        if frame["tag"] == "rs" or frame["child"] or not inner.strip():
+        if frame["ref"] or frame["child"] or not inner.strip():
             return
-        if any(f["tag"] == "rs" for f in stack):
+        if any(f["ref"] for f in stack):
             return                                   # already inside a reference
         hits = [h for h in match(inner, idx)
                 if not h["hyphenated"] and autos.get(h["form"])]
@@ -133,8 +150,9 @@ def relink(text: str, store: dict) -> tuple[str, list[dict], list[dict]]:
         if not spend(whole[0]["form"]):
             return
         owner = autos[whole[0]["form"]]
-        out[frame["at"]] = f'<rs ref="{owner}" resp="#mz">' + out[frame["at"]]
-        out.append("</rs>")
+        outer, shut = link_tags(owner, over_name=frame["tag"] == "name")
+        out[frame["at"]] = outer + out[frame["at"]]
+        out.append(shut)
         applied.append({"form": whole[0]["form"], "id": owner})
 
     for m in _SEG.finditer(text):
@@ -146,7 +164,7 @@ def relink(text: str, store: dict) -> tuple[str, list[dict], list[dict]]:
             out.append(seg)
             t = _TAG.match(seg)
             if t:
-                closing, name, _attrs, selfclose = t.groups()
+                closing, name, attrs, selfclose = t.groups()
                 local = name.rpartition(":")[2]
                 if local == "body":
                     in_body = not closing
@@ -161,7 +179,8 @@ def relink(text: str, store: dict) -> tuple[str, list[dict], list[dict]]:
                         if stack:
                             stack[-1]["child"] = True
                         stack.append({"tag": local, "at": len(out) - 1,
-                                      "text": [], "child": False})
+                                      "text": [], "child": False,
+                                      "ref": _is_ref(local, attrs)})
             continue
         if not in_body:
             out.append(seg)
@@ -186,8 +205,8 @@ def relink(text: str, store: dict) -> tuple[str, list[dict], list[dict]]:
             if not owner or not spend(h["form"]):
                 continue
             pieces.append(seg[pos:h["start"]])
-            pieces.append(f'<rs ref="{owner}" resp="#mz">'
-                          f'{seg[h["start"]:h["end"]]}</rs>')
+            outer, shut = link_tags(owner)
+            pieces.append(f'{outer}{seg[h["start"]:h["end"]]}{shut}')
             pos = h["end"]
             applied.append({"form": h["form"], "id": owner})
         pieces.append(seg[pos:])

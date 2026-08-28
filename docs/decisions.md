@@ -1230,3 +1230,41 @@ What survived, in the open: the zones editor still opens an unkeyed page on its
 prediction and a keyed one on ground truth, because that is the editor's modal use.
 It reports the store it chose and that it was not pinned; there is no third name
 for the choice, and no reader anywhere else makes it.
+
+## A rule may type a geographic name, and the two-witness worry was misplaced
+
+Every rule link was an untyped `<rs>`, on the argument that `<name @type>` records
+what a reader saw on the page and generating it from the class would leave
+`validate`'s type-against-class check comparing the store with itself. That is the
+firewall's own reasoning applied one category too far.
+
+**A rule link is not a reading.** The check adjudicates a *collator's* `@type`
+against the store, and that pairing is untouched. What `#mz` writes is the store's
+ruling applied — re-derived from `edition/entities/` on every run, failing rather
+than going stale — and a rule links only a form exactly one entity claims, so the
+double-duty case that looked like the hazard (`river:anadyr` against
+`water:anadyr-bay`) cannot reach it: `entity check`'s collision gate refuses two
+claimants outright, and the alias table settled it before the generator ran.
+
+**What was really at stake was the common noun.** `<name>` asserts the page marked
+a proper noun; `<rs>` asserts only reference. The aliases that make the first claim
+false are *the Expedition*, *the Reindeer people*, `taxon:`'s vernaculars — none of
+them geographic. So the promotion is scoped to `GEO_CLASSES`, whose aliases are
+named things by construction, and `validate` errors on `#mz` at a `<name>` anywhere
+else. A human may still mark a `<name>` in any class: the refusal is about the rank,
+not the tag.
+
+**One exception, and it is the same argument.** Enclosing a span the page already
+marked `<name>` stays an `<rs>`. There the inner element *is* a reader's witness
+that a proper noun stands here, and a `#mz` `<name>` round it would state that a
+second time from the store — one span, two categories, nothing to say which was
+read. A `<foreign>` or `<term>` asserts nothing of the kind and takes the typed
+`<name>` like bare prose.
+
+`entities.link_tags` is the single writer, because `generate` and `relink` both emit
+rule links and a collated page that disagreed with its own regeneration is the drift
+the rank exists to prevent. Two guards in `relink` had known only the tag: the
+"already a reference" test and the `once` count, both of which would have read a
+`<name ref>` link as unlinked text and put a second reference on the page. 1,710 of
+5,395 links moved; the toponym index, which filters on `<name>`, could not see any
+of them before.

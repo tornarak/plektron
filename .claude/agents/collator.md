@@ -1,7 +1,7 @@
 ---
 name: collator
 description: Collates one page of Bogoras, *The Chukchee*, from its draft transcript and scan into a TEI page file at tei/chukchi-PP-NNN.xml. Stops there — the seam and the adjudication of its reservations are the coordinator's. Takes its page off the queue `harness tei queue` writes.
-tools: Bash, Read, Write, Edit
+tools: Bash, Read, Write, Edit, Skill
 model: sonnet
 memory: project
 maxTurns: 80
@@ -206,18 +206,26 @@ the clause it sits in says which.
 ## The links already in your page
 
     <rs ref="people:reindeer-chukchi" resp="#mz">Reindeer Chukchee</rs>
+    <name type="hydronym" ref="river:anadyr" resp="#mz">Anadyr</name>
 
-`<rs>` says "this string refers to that entity" and nothing more. `resp="#mz"` means
-a rule applied it from an alias table a human wrote and ratified, and it is
-re-derived on every validation run — so it is not a stamp you have to trust. If the
-store changes under it, it fails.
+`resp="#mz"` means a rule applied it from an alias table a human wrote and ratified,
+and it is re-derived on every validation run — so it is not a stamp you have to
+trust. If the store changes under it, it fails.
+
+**Two tags, and the class chose which.** `<rs>` says "this string refers to that
+entity" and nothing more. The four geographic classes — `place:` `land:` `water:`
+`river:` — arrive as a `<name>` already carrying its type, because their aliases are
+named things by construction and the store knows which. **So you never type a
+toponym or a hydronym that arrived linked**, and you never promote an `<rs>` to a
+`<name>` yourself: outside geography an alias can be a common noun, and there the
+rule is deliberately silent about proper-noun-hood so that you can be.
 
 **Your act on these is deletion, and only where the page means something else.**
 Keeping one requires nothing; the commonest right answer is to leave every one
-alone. Delete the `<rs>` wrapper — keeping its text — where the sentence means a
-different entity than the link claims. If you are unsure, leave it and say so in
-your report: a link you did not check is `#mz`, which is honest, whereas one you
-deleted on a hunch is a fact removed.
+alone. Delete the wrapper — keeping its text — where the sentence means a different
+entity than the link claims. If you are unsure, leave it and say so in your report:
+a link you did not check is `#mz`, which is honest, whereas one you deleted on a
+hunch is a fact removed.
 
 **A name inside a citation arrives linked, and that is a rule's doing.** `Nelson` is
 a man and a book; a page locator attached to a name is what a citation *is*, so the
@@ -229,7 +237,8 @@ with both claimants named, because there the sentence is the only evidence.
 
 **Where the page wants an entry the store lacks, propose it.** This is your work,
 not a request you file: you have the page open, which is the whole of what the
-proposal costs.
+proposal costs. **Load `/curate-entities` first** — it is the entry contract: which
+class, which alias mode, what a gloss is for. Nothing of it is repeated here.
 
     uv run harness entity list                       does it already exist?
     uv run harness entity new person:jesup-morris --canonical "Morris K. Jesup" \
@@ -254,24 +263,9 @@ collides on purpose. Codes are the ones you write in `xml:lang`. An alias filed
 without `--lang` says the language is unstated, which is honest and is what most of
 the store says; guessing is not.
 
-**Geography has four classes and the cut is by shape, not by importance.** `place:` a
-point on the ground — a village, a camp, a cape, a single peak. `land:` a terrestrial
-*region* — a peninsula, a range, an upland, an island, a district. `river:` a
-watercourse and the basin it drains. `water:` a body of standing or open water — a
-sea, a bay, a strait, a lake. A name that does double duty gets an entry per class
-and not one entry stretched over both: the Anadyr is `river:anadyr`, `place:anadyr`,
-`water:anadyr-bay`, and the page decides which a given sentence means. Both toponym
-classes take `<name type="toponym">` and both hydronym classes `type="hydronym"`, so
-the class never contradicts the type — which is also why picking the wrong one is a
-rename later and not a re-reading of your page.
-
-**A gloss disambiguates; it does not explain.** The card lists every passage the
-entity occurs in, with the prose either side — so a gloss summarising what Bogoras
-says about the Chukchi is about to be outdone by Bogoras, on the same card, with a
-page number. What belongs in it is what the passages cannot give: which of two
-entities this is, what the book's term covers that the modern one does not, why you
-identified it, and what the entry does *not* claim. `entity new` leaves the gloss
-unwritten and that is a fine state to leave it in.
+Both toponym classes take `<name type="toponym">` and both hydronym classes
+`type="hydronym"`, so the class never contradicts the type — which is why picking
+the wrong geographic class is a rename later and not a re-reading of your page.
 
 **A proposal is inert and that is why you may make one.** `entity new` writes
 `status: proposed`, and a rule links only *ratified* entries — so nothing you mint
@@ -893,13 +887,16 @@ inside it, since `<term>` carries the id and the gloss link.
 **`@type` only where the page says**, from a closed set:
 
     anthroponym  a person          zoonym    an individual animal
-    ethnonym     a people          mythonym  a mythological or supernatural being
+    ethnonym     a people          mythonym  a mythological or supernatural being or disease
     toponym      a place           hydronym  a river, bay or other water
     event        a named historical event or undertaking — an expedition, a war
 
 The evidence is usually the gloss or the sentence around it. Where the page does not
 say, **leave it untyped**. That is a real state, not an unfinished one, and one XPath
 finds every name still awaiting a type.
+
+This is about the names *you* mark. A geographic name the store already claims
+arrived typed (above), and re-deciding its type is work the rule has done.
 
 **First ask whether it is a name at all.** `keˊlᴇ` (plural `keˊlet`) and `reˊkkeñ` are
 *kinds* of evil spirit — common nouns, and so `<term>`, not `<name>`. Being Tier-1,

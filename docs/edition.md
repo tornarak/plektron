@@ -170,10 +170,12 @@ other. That cost two things a class is for.
   it. It deliberately does **not** flag `land:` inside `water:` — an island in a
   strait is exactly that, and has nowhere else to go.
 
-**A name that does double duty gets an entry per class**, not one entry stretched
-over both: `river:anadyr`, `place:anadyr`, `water:anadyr-bay`, `land:chukotka`.
-That is also what ended the shadowing in the reading view, where the town and the
-river had shared the head token `anadyr` and only one of them could be reached.
+**Which class a thing earns, its alias modes and its gloss are
+`.claude/skills/curate-entities/`'s** — the entry contract, loaded by whoever
+writes one. One consequence of its per-class rule is recorded here because it is
+the view's: an entry per class (`river:anadyr`, `place:anadyr`) is what ended the
+shadowing in the reading view, where the town and the river had shared the head
+token `anadyr` and only one of them could be reached.
 
 **Both toponym classes carry `type="toponym"` and both hydronym classes
 `type="hydronym"`**, which is not tidiness. What a page asserts is its `@type` —
@@ -190,58 +192,52 @@ outright and has no member for an institution or a work. Those are exactly
 the entities an alias table finds reliably, and linking them says "this string
 refers to that entity", not "the page marked a proper noun".
 
-### `taxon:` — the binomial and the book's own word
+### A geographic rule link is a `<name>`; every other one is an `<rs>`
 
-**The binomial where the vernacular maps to a modern taxon; the book's English word
-rides on it as an alias.** `taxon:gulo-gulo` is the entry and *wolverene* is the alias,
-because *wolverene* is what 1-252 prints and *Gulo gulo* is what the animal is. The
-identification is a judgement and lands at `status: proposed` like every other.
+`entities.link_tags` is the one place the tag is chosen, because two writers emit
+rule links — `generate._entity_spans` on a fresh page, `relink` on a collated one —
+and a page disagreeing with the generator about its own markup is the drift `#mz`
+exists to make impossible.
 
-**Where the vernacular maps to no modern taxon it is an alias, never an entry.** *Eagle*
-is polyphyletic within Accipitridae, *mice* is paraphyletic, *seaweed* spans three
-lineages that share no clade — so the form goes on the coarsest rank that is honest
-(`taxon:aves`, `taxon:mammalia`, `taxon:algae`) and the gloss says the English word
-names no clade. [[taxon:pisces]] and [[taxon:lichenes]] are the precedent: both are
-folk buckets, and both have always lived here.
+**The cut is what the element asserts, not confidence in the alias.** `<rs>` says
+only that this string refers to that entity, which is all a rule can say about *the
+Expedition* or *the Reindeer people*: those are common-noun aliases, and a `<name>`
+around a common noun invents an entity the book does not have. The four
+`GEO_CLASSES`' aliases are named things by construction — a settlement, a range, a
+bay, a river — so the stronger claim holds for exactly them, and `validate` errors
+on `#mz` at a `<name>` in any other class. A *human* may still mark a `<name>`
+anywhere the page shows a proper noun; the refusal is about the rank.
 
-**Where the referent is undetermined the entry stops at the genus.** 1-252's "black
-bear" cannot be a black bear — none inhabits Chukotka — so the entry is `taxon:ursus`
-and the gloss says why, rather than asserting *U. arctos* on an inference about the
-fauna. Same for *fox* (red and arctic both occur, the page distinguishes neither) and
-*sweet-brier*. [[taxon:oedemagena-tarandi]] is the model: it refuses outright to
-reconcile the print against modern usage, and says so at length.
+**It does not make one witness of two.** The worry that stalled this — that a
+generated `@type` would leave `validate`'s type-against-class check comparing the
+store with itself — mistakes what the two witnesses are. That check adjudicates a
+*reader's* `@type` against the store; a rule link is not a second reading but the
+store's own ruling applied, re-derived on every run like every other `#mz` claim.
+And the ambiguous case cannot arise: a rule links only a form one entity claims,
+so nothing chooses between `river:anadyr` and `water:anadyr-bay` — the alias table
+did, and `entity check`'s collision gate is what holds it to that.
 
-**`animal:` is not the vernacular class and must not be used as one.** Its name-type is
-`zoonym`, which `validate.py` defines as *an individual animal's name* — the reindeer a
-herder calls by name, 1-101 being a whole paragraph on the practice. It is also the
-difference that matters at the TEI layer: `animal:` **has** a name-type, so a link to it
-emits `<name type="zoonym">` around what is usually an English common noun, and
-`validate.py` forbids exactly that — "a `<name>` around a common noun invents a whole
+**Enclosing a span the page already marked `<name>` stays an `<rs>`**, whatever the
+class. Not to dodge a nesting the schema permits: the inner element is the page's
+own witness that a proper noun stands here, read by a human at `#llm` or above, and
+a `#mz` `<name>` around it would state that same thing a second time out of the
+store, where the two could then differ. A `<foreign>` or a `<term>` asserts no such
+thing, so those take the typed `<name>` like bare prose.
+
+What it buys the reader is a toponym index that sees the links: `ids.py` filters on
+`<name>`, so 1,710 geographic references that were invisible to it now are not.
+
+### `taxon:` — no name-type, so `<rs>`
+
+`animal:`'s name-type is `zoonym`, which `validate.py` defines as *an individual
+animal's name* — the reindeer a herder calls by name, 1-101 being a whole paragraph
+on the practice — so a link to it emits `<name type="zoonym">`, and `validate.py`
+forbids that around a common noun: "a `<name>` around a common noun invents a whole
 entity that is not there". `taxon:` has no name-type and links through `<rs>`, which
-asserts only that this string refers to that entity. That is why the folk groups are
-here and not there.
-
-**Two rules about the alias table, both of which a taxon pass gets wrong first:**
-
-- **A binomial the book never prints gets no alias row.** An alias asserts that the
-  corpus prints a form; a row for a string appearing nowhere is a claim about the book
-  rather than a handle on it. [[taxon:animalia]] carries the case, and it is why the
-  ranks above genus mostly have an empty table.
-- **A vernacular English alias is `auto: no`.** Rule-linking *wolf* or *moss* would
-  link ordinary English prose across the whole corpus, and several of them are claimed
-  by two entries at once — *reindeer-fly* names either of 1-108's two flies, and the
-  page does not say which. `auto: no` is what keeps `entity check`'s collision gate
-  meaningful rather than merely loud.
-
-**A rank above species earns an entry** only where it groups two or more entries the
-store holds, or the book names the group itself. [[taxon:animalia]] works the case
-list for the ranks above genus. **A genus with one species is the same case**: a
-genus printed only inside its binomial (`Anser albifrons`, `Strix nyctea`) is not a
-grouping the book gives, and the species hangs from the family or the kingdom
-directly. What keeps a one-species genus is the book printing the genus as a group of
-its own — `Gadi` ("various species of Gadi", 1-191) — or a vernacular that names the
-genus and not the species: *poplar* is [[taxon:populus]] and *aspen* is its one
-species, *toadstools* is [[taxon:fungi]] and fly-agaric its one entry.
+asserts only that this string refers to that entity. That is why the folk groups
+(*eagle*, *seaweed*, [[taxon:pisces]], [[taxon:lichenes]]) live here and not there;
+where on the tree they hang, and when a rank earns an entry at all, is the
+curate-entities skill's.
 
 ### `sky:` — stars, constellations, the Milky Way
 
@@ -658,11 +654,10 @@ those questions have the same answer — **a page locator attached to a name is
 what a citation is.** `Wrangell, p. 338` is the book. `In conversation with
 Wrangell` (1-036) is the man.
 
-**A `person:` entry is earned by the book narrating the man, not by the book
-citing him.** Travelled, collected, held office, conversed → `person:`;
-says, mentions, figures, describes, or governs a locator → `source:`. An
-author the book only ever quotes has no person entry, and the bare surname is
-then one entry's alone and links by the ordinary rule.
+A `person:` entry is earned by the book narrating the man, not by citing him
+(the curate-entities skill's rule), so an author the book only ever quotes has
+no person entry, and the bare surname is then one entry's alone and links by
+the ordinary rule.
 
 So `harness/citations.py` resolves that case and nothing else. Two human-keyed
 tables have to agree: `Authorities Quoted`'s printed sigla resolve
@@ -853,26 +848,13 @@ collators meeting the same man on two pages mint two slugs for him, and only the
 coordinator sees both. Merge before ratifying, never after — a ratified id is one
 other pages' `@ref` may already point at.
 
-### What a gloss is for, now that the card carries the mentions
+### The mentions took the explaining off the gloss
 
 Until the mentions block existed, a gloss was the only thing on the card that
 said anything, so the glosses grew to carry the explaining — which is how an
 apparatus store starts editorializing. The card now lists where the entity
-occurs, with the prose either side, out of the corpus itself. So:
-
-**A gloss disambiguates; the mentions explain.** What belongs in it is what a
-reader cannot get from the passages: which of two entities this is, what the
-book's term covers that the modern one does not, why an identification was made,
-and what the entry deliberately does *not* claim. `people:eskimo` is the model —
-it exists to say that the book's word is a grouping over three entries and which
-one usually stands behind it.
-
-What does not belong is a précis of the passages. If the gloss is telling you
-what Bogoras says about the Chukchi, the card is about to tell you in his own
-words, twice as well and with a page number.
-
-**A `<!-- entity note: … -->` is not a gloss.** A collator meeting a fact worth
-recording reports it; the coordinator decides whether it disambiguates anything.
+occurs, with the prose either side, out of the corpus itself, and what a gloss
+is for once that is true is the curate-entities skill's §3.
 
 ### Mentions on the card
 
@@ -1717,12 +1699,38 @@ two. The abstract family is deliberately not `--mark`: that is the apparatus
 colour, and an event link drawn in it would read as an editorial mark on the
 word.
 
-**The encyclopedia index is a tree over the class**, two levels and no deeper.
-`within:` exists and the atlas draws the forest over it, but that is the
-*geography* tree — nothing yet makes a people a child of a people — so this
-groups and stops rather than claiming a hierarchy the store does not hold. Every
-class appears, including the four nothing is filed under: a list of only the
-populated ones would show half the vocabulary while looking complete.
+**The encyclopedia index is a tree over the class**, and then over
+`entities.kin_parent` inside it — `part-of:` first, `within:` after, and only
+where the parent is in the same class. Following the field across classes would
+file the rivers under *place* and leave *water* a list of orphans; such an entry
+sits at the top of its own class and its card names the parent. Every class
+appears, including the ones nothing is filed under: a list of only the populated
+ones would show half the vocabulary while looking complete.
+
+**And a card carries the same tree, narrowed to one entry** —
+`edition_ui.kin_tree`, rendered by `_kin.html` between the property rows and the
+forms. The `part-of:` row above it names the parent and can say nothing about the
+grandparent or about one sibling, which is the question a bare parent row raises:
+a genus card said *Salmonidæ* and left a reader to guess whether the family sat
+under anything and what else was in the genus. It is a **spine, not a subtree** —
+every ancestor to the top of the class, each holding only the child on the path,
+then the entry, then its direct children and no deeper, with what a node holds
+below that said as a count. The map tree earns its breadth by being a legend for
+a picture; a card that opened onto the whole of *animalia* would bury the entry it
+is about, and a branch is one click away on the node that owns it. An entry that
+belongs to nothing and holds nothing gets no tree at all, rather than its own
+heading back in smaller type.
+
+**Two hierarchies, drawn as one shape.** The card's tree is the encyclopedia's
+edge and the pane's is the atlas's (`kin_parent` against `tree_parent`, kept
+apart for the reason at `part-of:` above), so a located entry can show both at
+once and they will disagree — `people:naukans` under a village on the map and
+under `people:yupik` on the card, each right about its own question. They share
+`.ent-tree` in `edition.css` and nothing else: the shape, the rails and the fold
+are one rule because a reader who has read one of these lists has read the other,
+while `.map-tree` in `geomap.css` holds only what a map means — the paint toggle
+and the struck-through hidden row. A card's node has no controls, so its name is
+the link rather than a toggle with `¶` beside it.
 
 **Two audiences, one renderer, one toggle.** The apparatus is visible by default
 — an unratified span is marked, an editorial comment is a flag that opens —

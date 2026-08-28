@@ -23,7 +23,7 @@ from lxml import etree
 
 from . import apparatus, citations, figrefs
 from .detectors import unlicensed_marks
-from .entities import ENTDIR, ENTITY_CLASSES, alias_index, auto_forms, load, split_id
+from .entities import ENTDIR, ENTITY_CLASSES, GEO_CLASSES, alias_index, auto_forms, load, split_id
 from .generate import NOTE_MARKERS
 from .langs import TIER1
 from .ns import TEI_NS, XML_ID, XML_LANG
@@ -1119,6 +1119,26 @@ def _rule_entities(root, q, ctx, r: Report, store=None):
                     f"<name type={kind!r} ref={ref!r}> — {ref} is class "
                     f"{rec['class']!r}, whose name-type is {says}. One of the "
                     f"two is about the wrong entity")
+        # **A rule may mark a proper noun only where the class guarantees one.**
+        # `#mz` on a `<name>` asserts two things — that this string names that
+        # entity, and that the page marked a proper noun of some category. The
+        # first is the alias table's and holds for every class; the second holds
+        # for the four geographic classes, whose aliases are named things by
+        # construction, and fails for the rest: `people:` carries *the Reindeer
+        # people*, `event:` carries *the Expedition*, and a `<name>` around a
+        # common noun invents an entity that is not in the book. Those stay
+        # `<rs>`, which asserts reference and nothing else. A human may still
+        # write `<name resp="#llm">` anywhere the page shows a proper noun; what
+        # is refused is a *rule* doing it on the store's word alone.
+        if local == "name" and el.get("resp") == RULED \
+                and rec["class"] not in GEO_CLASSES:
+            r.errors.append(
+                f"<name ref={ref!r} resp=\"{RULED}\"> — {rec['class']!r} is not a "
+                f"geographic class, so no rule may promote this link to a "
+                f"<name>. An alias outside {'/'.join(GEO_CLASSES)} can be a "
+                f"common noun, and a <name> around one invents an entity the "
+                f"book does not have. Use <rs>, or judge the span yourself and "
+                f"set resp=\"{PROPOSED}\"")
         if local == "rs" and kind is not None:
             r.errors.append(
                 f"<rs type={kind!r} ref={ref!r}> — an rs carries no @type here. "
@@ -1274,12 +1294,16 @@ def _rule_provenance(root, q, ctx, r: Report, ratified: bool = False) -> None:
             # have caught it; ratified, it would have been a worklist line — a
             # rank asserting a machine read a Tier-1 glyph, reported as work
             # pending rather than as the firewall breach it is. The rank is
-            # confined to entity reference, and a Tier-1 span is the one place
-            # nothing mechanical may speak at all.
+            # confined to entity reference — `<rs>`, or the geographic `<name>`
+            # a rule link is emitted as — and a Tier-1 span is the one place
+            # nothing mechanical may speak at all. A rule link *enclosing* a
+            # handle is untouched by this: the element carrying `#mz` holds no
+            # glyphs of its own, and the `<foreign>` inside keeps its own rank.
             r.errors.append(
                 f"PROVENANCE: <{name}> {span!r} claims resp={RULED!r}, which says "
                 f"a rule applied it. No rule may originate a Tier-1 reading — "
-                f"{RULED} is confined to @ref on <rs>, and never carries a glyph")
+                f"{RULED} is confined to @ref on an entity reference, and never "
+                f"carries a glyph")
         elif resp == ADOPTED:
             # Checked, not accepted. `adopted` holds the page's ratified token set;
             # empty means the page has no ground truth at all, so the claim cannot

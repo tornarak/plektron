@@ -358,7 +358,14 @@ occurrence, and `generate`, `validate`, `relink` and `relink.missing` all go
 through it, because a placer and a re-deriver that computed "first" separately
 would disagree as a stale-stamp error on a page nobody edited. The count is over
 the links a page *already has* — `relink` works on unlinked text, where the
-first occurrence is invisible inside its `<rs>` and the second reads as first. `children`/`relatives`/`roots` walk the tree — which is
+first occurrence is invisible inside its reference and the second reads as first.
+**`link_tags` is the third of that family**, and the one place a rule link's tag
+is chosen: a geographic class takes `<name>` carrying the type its class maps to,
+every other class takes a bare `<rs>`, and enclosing a span the page already
+marked `<name>` takes `<rs>` whatever the class. `generate` and `relink` both go
+through it, because a page that disagreed with the generator about its own markup
+is the drift `#mz` exists to make impossible; `validate` holds the other end,
+erroring on `#mz` at a `<name>` outside `GEO_CLASSES`. `children`/`relatives`/`roots` walk the tree — which is
 containment in general and not the geography's: they read no coordinate and no
 shape, and they lived in `geo.py` until a caller wanting a people inside a
 people had to import the atlas to get one. `geo` re-exports the first two.
@@ -366,7 +373,12 @@ people had to import the atlas to get one. `geo` re-exports the first two.
 `part-of:` otherwise, the fallback scoped to `people:`. One function because
 five callers must agree exactly — the three above plus `geo.extent_of` and
 `geo.unlocated` — and a tree disagreeing with the extent would draw a node in
-one place and frame it on another. `within:` is now held to the four
+one place and frame it on another. **`kin_parent` is the other edge, and `kin_children` inverts it** — `part-of:`
+first and same-class only, the encyclopedia's hierarchy against the atlas's. Two
+callers, the class index and a card's own tree (`edition_ui.kin_tree`), and one
+inversion for the same reason `tree_parent` is one function: they draw the same
+tree and two walks of the same field would eventually draw two different ones.
+`within:` is now held to the four
 geographical classes at both ends and `entity check` gates it: a people filed
 inside a village was borrowing an extent, which `geo:` says directly, and it hung
 from that village in the tree as the price. The parser refuses an unknown field

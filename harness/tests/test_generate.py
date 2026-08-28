@@ -784,6 +784,16 @@ def test_a_note_left_at_the_foot_is_conformant(tmp_path):
         ("MarginTextZone-Notes", lines_at(["¹ An orphan."], 245))]) == []
 
 
+def test_a_typed_geographic_link_is_conformant(tmp_path):
+    """The tag a geographic rule link is written as, against the grammar. A
+    shape the generator puts on 1,700 links is worth refusing here rather than
+    once per page after review."""
+    entry(tmp_path, "river:anadyr", canonical="Anadyr",
+          aliases=[("Anadyr", True)])
+    assert _conformance(tmp_path, [
+        ("MainZone-P", lines_at(["They went up the Anadyr."]))]) == []
+
+
 def test_the_figure_shape_is_conformant_on_a_real_figure_page(tmp_path):
     """`<figure n><figDesc>` against the committed grammar, on a page that has a
     figure — which the fixtures above cannot build, the geometry coming from
@@ -876,6 +886,46 @@ def test_a_figure_inside_the_last_paragraph_still_heads_it(tmp_path):
     assert blocks[i + 1:i + 2] == ["p"], f"got {blocks}"
 
 
+# --- which tag a rule link takes ----------------------------------------------
+#
+# The class decides, and only for the four geographic ones: their aliases are
+# named things by construction, so a rule may say `<name type=…>` and the
+# toponym index sees the link. Everywhere else an alias can be a common noun and
+# the rule may say only `<rs>` — "this string refers to that entity".
+
+
+def test_a_geographic_link_is_a_typed_name(tmp_path):
+    entry(tmp_path, "place:markova", canonical="Markova",
+          aliases=[("Markova", True)])
+    doc, _ = page(tmp_path, "1-021",
+                  [("MainZone-P", lines_at(["he left Markova in June"]))])
+    assert ('<name type="toponym" ref="place:markova" resp="#mz">Markova</name>'
+            in doc)
+
+
+def test_a_hydronym_class_takes_its_own_type(tmp_path):
+    """`water:` and `river:` are the other half of the split, and the type comes
+    off `ENTITY_CLASSES` rather than off anything read from the page."""
+    entry(tmp_path, "river:anadyr", canonical="Anadyr",
+          aliases=[("Anadyr", True)])
+    doc, _ = page(tmp_path, "1-021",
+                  [("MainZone-P", lines_at(["up the Anadyr to the camp"]))])
+    assert ('<name type="hydronym" ref="river:anadyr" resp="#mz">Anadyr</name>'
+            in doc)
+
+
+def test_a_non_geographic_link_stays_an_rs(tmp_path):
+    """The scope of the promotion, from the other side. *Reindeer people* is an
+    ethnonym alias and a common noun, and a `<name>` around one would invent an
+    entity the book does not have — so a rule says `<rs>` and nothing more."""
+    entry(tmp_path, "people:chukchi", canonical="Chukchee",
+          aliases=[("Reindeer people", True)])
+    doc, _ = page(tmp_path, "1-021",
+                  [("MainZone-P", lines_at(["the Reindeer people camp here"]))])
+    assert '<rs ref="people:chukchi" resp="#mz">Reindeer people</rs>' in doc
+    assert "<name" not in doc
+
+
 # --- a Tier-1 form that is also an entity alias -------------------------------
 #
 # The rule used to drop every alias hit touching a Tier-1 handle, on the ground
@@ -886,17 +936,19 @@ def test_a_figure_inside_the_last_paragraph_still_heads_it(tmp_path):
 
 
 def test_an_alias_coinciding_with_a_handle_is_wrapped_not_dropped(tmp_path):
-    """The `<rs>` encloses the `<foreign>`; neither element loses anything.
+    """The reference encloses the `<foreign>`; neither element loses anything.
 
     Each `@resp` stays a claim about its own element — the outer names the
     entity, the inner says a ratified token sits here — so the handle still
-    carries no `xml:lang` and the collator's question is untouched."""
+    carries no `xml:lang` and the collator's question is untouched. The outer is
+    a `<name>` here because the class is geographic; that it carries no glyph of
+    its own is what keeps the enclosure legal either way."""
     entry(tmp_path, "place:anadyr", canonical="Anadyr",
           aliases=[(nfd("Veᵋñ"), True)])
     blocks = [("MainZone-P", lines_at([nfd("they call it Veᵋñ there")]))]
     doc, rep = page(tmp_path, "1-021", blocks)
-    assert nfd('<rs ref="place:anadyr" resp="#mz"><foreign index="1">Veᵋñ'
-               "</foreign></rs>") in doc
+    assert nfd('<name type="toponym" ref="place:anadyr" resp="#mz">'
+               '<foreign index="1">Veᵋñ</foreign></name>') in doc
     assert rep["handles"] == 1
     assert "xml:lang" not in doc
 
@@ -912,8 +964,8 @@ def test_an_alias_that_contains_a_handle_encloses_it(tmp_path):
           aliases=[(nfd("Veᵋñ there"), True)])
     blocks = [("MainZone-P", lines_at([nfd("they call it Veᵋñ there")]))]
     doc, _ = page(tmp_path, "1-021", blocks)
-    assert ('<rs ref="place:anadyr" resp="#mz">'
-            f'<foreign index="1">{nfd("Veᵋñ")}</foreign> there</rs>') in doc
+    assert ('<name type="toponym" ref="place:anadyr" resp="#mz">'
+            f'<foreign index="1">{nfd("Veᵋñ")}</foreign> there</name>') in doc
 
 
 def test_the_wrapped_link_still_re_derives_at_the_gate(tmp_path):

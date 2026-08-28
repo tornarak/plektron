@@ -25,7 +25,8 @@ def store(tmp_path, *, status="ratified", auto=True, form="Markova"):
 def test_a_form_in_plain_prose_is_linked(tmp_path):
     s = store(tmp_path)
     got, applied, _ = relink.relink(f"{HEAD}<p>He left Markova in June.</p>{FOOT}", s)
-    assert '<rs ref="place:markovo" resp="#mz">Markova</rs>' in got
+    assert ('<name type="toponym" ref="place:markovo" resp="#mz">Markova</name>'
+            in got)
     assert applied == [{"form": "Markova", "id": "place:markovo"}]
 
 
@@ -38,8 +39,9 @@ def test_everything_the_rule_did_not_touch_comes_back_byte_identical(tmp_path):
     src = (f'{HEAD}\n  <p rend="odd"   n=\'3\'>He left Markova in June.</p>\n'
            f"  <!-- a note with a > in it, and the word Markova -->\n{FOOT}")
     got, _a, _sk = relink.relink(src, s)
-    assert got.replace('<rs ref="place:markovo" resp="#mz">', "").replace(
-        "</rs>", "") == src
+    assert got.replace(
+        '<name type="toponym" ref="place:markovo" resp="#mz">', "").replace(
+        "</name>", "") == src
 
 
 def test_a_comment_is_not_page_text(tmp_path):
@@ -73,8 +75,8 @@ def test_a_tier1_handle_is_enclosed_and_never_pierced(tmp_path):
     s = entities.load(tmp_path)
     src = f'{HEAD}<p><foreign index="1">Uelen</foreign></p>{FOOT}'
     got, applied, _ = relink.relink(src, s)
-    assert '<rs ref="place:uelen" resp="#mz"><foreign index="1">Uelen</foreign></rs>' \
-        in got
+    assert ('<name type="toponym" ref="place:uelen" resp="#mz">'
+            '<foreign index="1">Uelen</foreign></name>') in got
     assert [a["id"] for a in applied] == ["place:uelen"]
     # The handle's own text is untouched — enclosed, not pierced.
     assert '<foreign index="1">Uelen</foreign>' in got
@@ -83,7 +85,12 @@ def test_a_tier1_handle_is_enclosed_and_never_pierced(tmp_path):
 def test_the_innermost_handle_is_enclosed_and_not_its_wrapper(tmp_path):
     """`tei generate` writes `<term><rs><name>…</name></rs></term>`, and a page
     already collated has to end up with the same shape rather than a second,
-    outer wrapping of the `<term>`."""
+    outer wrapping of the `<term>`.
+
+    The reference stays an `<rs>` though the class is geographic: the span the
+    page already marked `<name>` carries its own witness that a proper noun
+    stands here, and a `#mz` `<name>` round it would restate that from the store
+    where the two could disagree."""
     entry(tmp_path, "place:uelen", status="ratified", canonical="Uelen",
           aliases=[("Uelen", True)])
     s = entities.load(tmp_path)
@@ -93,6 +100,44 @@ def test_the_innermost_handle_is_enclosed_and_not_its_wrapper(tmp_path):
     assert '<term xml:id="t1"><rs ref="place:uelen" resp="#mz">' \
         '<name xml:lang="ckt">Uelen</name></rs></term>' in got
     assert got.count("<rs ") == 1
+
+
+def test_a_form_already_inside_a_ruled_name_is_not_linked_again(tmp_path):
+    """The guard that had only ever needed to know about `<rs>`. Now that a
+    geographic rule link is a `<name ref>`, a module still testing the tag alone
+    would read this page as unlinked and wrap a second reference round the
+    first."""
+    s = store(tmp_path)
+    src = (f'{HEAD}<p><name type="toponym" ref="place:markovo" resp="#mz">'
+           f"Markova</name></p>{FOOT}")
+    got, applied, _ = relink.relink(src, s)
+    assert got == src and applied == []
+
+
+def test_a_once_form_first_linked_as_a_name_is_spent(tmp_path):
+    """The `once` count reads the links a page already has, and it has to see
+    both tags. Blind to `<name ref>`, it would find the second occurrence with
+    the first hidden inside one, read it as the first, and turn once per page
+    into twice — on exactly the pages this module exists to fix."""
+    s = store(tmp_path, auto="once")
+    src = (f'{HEAD}<p><name type="toponym" ref="place:markovo" resp="#mz">'
+           f"Markova</name> and then Markova again.</p>{FOOT}")
+    got, applied, _ = relink.relink(src, s)
+    assert got == src and applied == []
+
+
+def test_a_bare_name_is_still_a_handle_a_reference_may_enclose(tmp_path):
+    """A `<name>` *without* a `@ref` is a proper noun a collator marked, not a
+    link — so it is still enclosed. Treating every `<name>` as a reference would
+    have silently stopped relinking those pages."""
+    entry(tmp_path, "place:uelen", status="ratified", canonical="Uelen",
+          aliases=[("Uelen", True)])
+    s = entities.load(tmp_path)
+    src = f'{HEAD}<p><name xml:lang="ckt">Uelen</name></p>{FOOT}'
+    got, applied, _ = relink.relink(src, s)
+    assert '<rs ref="place:uelen" resp="#mz"><name xml:lang="ckt">Uelen' \
+        "</name></rs>" in got
+    assert [a["id"] for a in applied] == ["place:uelen"]
 
 
 def test_a_handle_that_is_only_part_of_its_element_is_refused_with_a_row(tmp_path):
@@ -129,7 +174,7 @@ def test_a_once_alias_takes_the_first_occurrence_and_leaves_the_rest(tmp_path):
     s = store(tmp_path, auto="once")
     got, applied, _ = relink.relink(
         f"{HEAD}<p>Markova, and again Markova, and Markova.</p>{FOOT}", s)
-    assert got.count("<rs ") == 1 and len(applied) == 1
+    assert got.count(' ref="place:markovo"') == 1 and len(applied) == 1
 
 
 def test_a_once_alias_counts_the_links_the_page_already_has(tmp_path):
@@ -209,7 +254,8 @@ def test_both_ways_of_ratifying_leave_the_corpus_in_one_state(tmp_path):
     assert edition_ui._ratify("place:markovo", web_root)["ok"]
     by_web = page.read_text(encoding="utf-8")
 
-    assert '<rs ref="place:markovo" resp="#mz">Markova</rs>' in by_cli
+    assert ('<name type="toponym" ref="place:markovo" resp="#mz">Markova</name>'
+            in by_cli)
     assert by_cli == by_web
 
 
@@ -340,8 +386,8 @@ def test_an_auto_alias_on_a_ratified_entry_links_the_pages_it_licenses(tmp_path)
           aliases=[("Markova", True)])
     page = _page(tmp_path, "1-021", "<p>He left Markovo in June.</p>")
     _alias(tmp_path, "place:markovo", "Markovo", commit=True)
-    assert '<rs ref="place:markovo" resp="#mz">Markovo</rs>' in page.read_text(
-        encoding="utf-8")
+    assert ('<name type="toponym" ref="place:markovo" resp="#mz">Markovo</name>'
+            in page.read_text(encoding="utf-8"))
 
 
 def test_a_report_only_alias_writes_neither_the_entry_nor_a_page(tmp_path):

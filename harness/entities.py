@@ -162,6 +162,47 @@ ENTITY_CLASSES = {
 #: nothing to do with whether a thing can contain another.
 GEO_CLASSES = ("place", "land", "water", "river")
 
+
+def link_tags(owner: str, over_name: bool = False) -> tuple[str, str]:
+    """The open and close tag a rule link takes — the entity's class decides.
+
+    **The one place the tag is chosen**, because two writers emit rule links —
+    `generate._entity_spans` on a fresh page and `relink` on a collated one —
+    and a page that disagrees with the generator about its own markup is the
+    drift `#mz` exists to make impossible.
+
+    **A geographic link is a `<name>` carrying its type; every other link is a
+    bare `<rs>`.** The cut is not confidence in the alias but what the element
+    *asserts*. `<rs>` says only "this string refers to that entity", which is all
+    a rule can say about *the Expedition* or *Reindeer Chukchee*: those are
+    common-noun aliases, and a `<name>` around a common noun invents an entity
+    the book does not have. The four `GEO_CLASSES`' aliases are named things by
+    construction — a settlement, a range, a bay, a river — so the stronger
+    assertion holds for exactly them, and `validate` refuses `#mz` on a `<name>`
+    anywhere else.
+
+    **The type is derived, never read off the page.** A human ratified the entry
+    under its class, `ENTITY_CLASSES` maps that class to its onomastic category,
+    and a rule links only a form *one* entity claims — so nothing here chooses
+    between `river:anadyr` and `water:anadyr-bay`; the alias table did. That is
+    the whole of what the rank licenses: re-derived from the store on every run,
+    failing rather than going stale.
+
+    **`over_name` is the enclosure of a span the page already marked `<name>`,
+    and it takes `<rs>` whatever the class.** Not to dodge a nesting the schema
+    permits, but because the inner element is the page's own witness that a
+    proper noun stands here — read by a human, at `#llm` or above. A `#mz`
+    `<name>` wrapped round it would state that same thing a second time from the
+    store, and the two could then differ: one span, two categories, and no way
+    to tell which was read. Enclosing a `<foreign>` or a `<term>` asserts no such
+    thing, so those take the typed `<name>` like bare prose.
+    """
+    cls = split_id(owner)[0]
+    if cls in GEO_CLASSES and not over_name:
+        return (f'<name type="{ENTITY_CLASSES[cls]}" ref="{owner}" resp="#mz">',
+                "</name>")
+    return f'<rs ref="{owner}" resp="#mz">', "</rs>"
+
 #: The alias column's three values → how widely a rule may apply the form.
 #:
 #: **`once` is what most of the store's ethnonyms want and neither of the other
@@ -718,6 +759,24 @@ def kin_parent(rec: dict, store: dict) -> str:
         if cand and store.get(cand, {}).get("class") == rec["class"]:
             return cand
     return ""
+
+
+def kin_children(store: dict) -> dict[str, list[str]]:
+    """`kin_parent` inverted — parent id to the ids directly under it.
+
+    The encyclopedia's counterpart to `children`, and one function for the same
+    reason: the class index and an entry's own card draw the same tree, and two
+    inversions of the same edge would eventually draw two different ones. Every
+    edge here is within a class, since `kin_parent` returns nothing across one.
+    """
+    kids: dict[str, list[str]] = {}
+    for rec in store.values():
+        up = kin_parent(rec, store)
+        if up:
+            kids.setdefault(up, []).append(rec["id"])
+    for v in kids.values():
+        v.sort()
+    return kids
 
 
 def children(store: dict) -> dict[str, list[str]]:
