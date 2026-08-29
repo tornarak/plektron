@@ -1,6 +1,6 @@
 # taxon:vaccinium-uliginosum — Vaccinium uliginosum
 
-- status: proposed
+- status: ratified
 - part-of: taxon:plantae
 - link: wikidata:Q146967
 - link: wikipedia:Vaccinium_uliginosum

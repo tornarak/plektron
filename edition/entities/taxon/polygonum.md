@@ -1,6 +1,6 @@
 # taxon:polygonum — Polygonum
 
-- status: proposed
+- status: ratified
 - part-of: taxon:plantae
 - link: wikidata:Q271400
 - link: wikipedia:Polygonum

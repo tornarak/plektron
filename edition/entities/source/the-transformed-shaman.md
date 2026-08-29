@@ -1,6 +1,6 @@
 # source:the-transformed-shaman — The Transformed Shaman
 
-- status: proposed
+- status: ratified
 - part-of: source:bogoras-1900
 
 ## aliases

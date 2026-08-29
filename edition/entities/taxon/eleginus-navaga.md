@@ -2,6 +2,8 @@
 
 - status: ratified
 - part-of: taxon:gadidae
+- link: wikidata:Q1068996
+- link: wikipedia:Navaga
 
 ## aliases
 

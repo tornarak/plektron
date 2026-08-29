@@ -1,6 +1,6 @@
-# people:zyrians — Zyrians
+# people:komi — Komi
 
-- status: proposed
+- status: ratified
 - link: wikidata:Q203319
 - link: wikipedia:Komi_peoples
 

@@ -1,6 +1,6 @@
 # taxon:claytonia-acutifolia — Claytonia acutifolia
 
-- status: proposed
+- status: ratified
 - part-of: taxon:plantae
 - link: wikidata:Q17248391
 

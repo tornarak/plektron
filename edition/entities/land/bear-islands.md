@@ -3,6 +3,8 @@
 - status: ratified
 - within: land:northeast-siberia
 - geo: region:bear-islands
+- link: wikidata:Q1325658
+- link: wikipedia:Medvezhyi_Islands
 
 ## aliases
 

@@ -1,6 +1,6 @@
 # taxon:betula — Betula
 
-- status: proposed
+- status: ratified
 - part-of: taxon:plantae
 - link: wikidata:Q25243
 - link: wikipedia:Birch
@@ -9,7 +9,9 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| birch | en | no | 1-260, snuff-boxes "made of birch wood or bark" |
+| birch | en | yes | 1-260, snuff-boxes "made of birch wood or bark" |
+| birch-wood | en | yes | |
+| birch-bark | en | yes | |
 
 ## gloss
 

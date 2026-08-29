@@ -1,6 +1,6 @@
 # taxon:populus-tremula — Populus tremula
 
-- status: proposed
+- status: ratified
 - part-of: taxon:populus
 - link: wikidata:Q146110
 - link: wikipedia:Populus_tremula
@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| aspen | en | no | 1-257, "dry poplar or aspen bark" mixed into smoking-tobacco |
+| aspen | en | yes | 1-257, "dry poplar or aspen bark" mixed into smoking-tobacco |
 
 ## gloss
 

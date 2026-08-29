@@ -1,6 +1,6 @@
 # people:samoyeds — Samoyeds
 
-- status: proposed
+- status: ratified
 - link: wikidata:Q941253
 - link: wikipedia:Samoyedic_peoples
 

@@ -3,6 +3,7 @@
 - status: ratified
 - within: land:kamchatka
 - frame: 161.9 58.9333 166.833 62.35
+- link: wikidata:Q1912239
 
 ## aliases
 

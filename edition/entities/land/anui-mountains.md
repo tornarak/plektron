@@ -4,6 +4,8 @@
 - within: land:chukotka
 - geo: 67.5 166
 - link: geonames:2127119
+- link: wikidata:Q359342
+- link: wikipedia:Anyuy_Mountains
 
 ## aliases
 

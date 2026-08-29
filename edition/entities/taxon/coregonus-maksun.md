@@ -2,6 +2,8 @@
 
 - status: ratified
 - part-of: taxon:coregonus
+- link: wikidata:Q197957
+- link: wikipedia:Muksun
 
 ## aliases
 

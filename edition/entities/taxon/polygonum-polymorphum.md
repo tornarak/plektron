@@ -1,6 +1,6 @@
 # taxon:polygonum-polymorphum — Polygonum polymorphum
 
-- status: proposed
+- status: ratified
 - part-of: taxon:polygonum
 - link: wikidata:Q29021202
 - link: wikipedia:Polygonum_polymorphum

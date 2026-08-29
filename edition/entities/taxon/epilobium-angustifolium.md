@@ -1,6 +1,6 @@
 # taxon:epilobium-angustifolium — Epilobium angustifolium
 
-- status: proposed
+- status: ratified
 - part-of: taxon:plantae
 - link: wikidata:Q12217056
 

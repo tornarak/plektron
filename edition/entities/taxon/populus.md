@@ -1,6 +1,6 @@
 # taxon:populus — Populus
 
-- status: proposed
+- status: ratified
 - part-of: taxon:plantae
 - link: wikidata:Q25356
 - link: wikipedia:Populus
@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| poplar | en | no | 1-257, mixed into smoking-tobacco; 1-260, poplar-wood ash added to snuff |
+| poplar | en | yes | 1-257, mixed into smoking-tobacco; 1-260, poplar-wood ash added to snuff |
 
 ## gloss
 

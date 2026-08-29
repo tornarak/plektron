@@ -1,6 +1,6 @@
 # taxon:potentilla-fragiformis — Potentilla fragiformis
 
-- status: proposed
+- status: ratified
 - part-of: taxon:plantae
 - link: wikidata:Q6083582
 

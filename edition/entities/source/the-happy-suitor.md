@@ -1,6 +1,6 @@
 # source:the-happy-suitor — The Happy Suitor
 
-- status: proposed
+- status: ratified
 - part-of: source:bogoras-1900
 
 ## aliases

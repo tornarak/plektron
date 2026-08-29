@@ -1,6 +1,6 @@
 # people:americans — Americans
 
-- status: proposed
+- status: ratified
 - link: wikidata:Q846570
 - link: wikipedia:Americans
 

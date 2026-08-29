@@ -1,6 +1,6 @@
 # source:talo-the-tannin-nursling — Taˊlo, the Taˊn˙ñɪn Nursling
 
-- status: proposed
+- status: ratified
 - part-of: source:bogoras-1900
 
 ## aliases

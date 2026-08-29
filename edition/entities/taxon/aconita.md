@@ -1,7 +1,9 @@
 # taxon:aconita — Aconita
 
-- status: proposed
+- status: ratified
 - part-of: taxon:plantae
+- link: wikidata:Q155904
+- link: wikipedia:Aconitum
 
 ## aliases
 
@@ -11,4 +13,5 @@
 
 ## gloss
 
-(unwritten)
+The monkshoods, *Aconitum*. The entry stops at the genus because the book does,
+and *Aconita* is the print's form of the name.

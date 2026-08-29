@@ -1,6 +1,6 @@
 # taxon:polygonum-viviparum — Polygonum viviparum
 
-- status: proposed
+- status: ratified
 - part-of: taxon:polygonum
 - link: wikidata:Q21877025
 

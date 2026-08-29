@@ -1,6 +1,6 @@
 # taxon:plantae — Plantae
 
-- status: proposed
+- status: ratified
 - link: wikidata:Q756
 - link: wikipedia:Plant
 

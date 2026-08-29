@@ -1,6 +1,6 @@
 # taxon:empetrum-nigrum — Empetrum nigrum
 
-- status: proposed
+- status: ratified
 - part-of: taxon:plantae
 - link: wikidata:Q202305
 - link: wikipedia:Empetrum_nigrum

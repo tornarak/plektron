@@ -1,6 +1,8 @@
 # being:arctic-hysteria — Arctic hysteria
 
 - status: ratified
+- link: wikipedia:Piblokto
+- link: wikidata:Q1779438
 
 ## aliases
 

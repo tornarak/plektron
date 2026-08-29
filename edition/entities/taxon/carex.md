@@ -1,6 +1,6 @@
 # taxon:carex — Carex
 
-- status: proposed
+- status: ratified
 - part-of: taxon:plantae
 - link: wikidata:Q158501
 - link: wikipedia:Carex

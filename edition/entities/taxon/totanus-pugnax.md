@@ -2,6 +2,8 @@
 
 - status: ratified
 - part-of: taxon:aves
+- link: wikidata:Q28122714
+- link: wikipedia:Ruff_(bird)
 
 ## aliases
 
@@ -11,4 +13,6 @@
 
 ## gloss
 
-(unwritten)
+The ruff, *Calidris pugnax*. The genus has moved twice since the book set it —
+*Totanus*, then *Philomachus*, now *Calidris* — and the link follows the bird
+rather than the printed combination.

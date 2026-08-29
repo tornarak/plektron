@@ -2,6 +2,8 @@
 
 - status: ratified
 - part-of: taxon:oncorhynchus
+- link: wikidata:Q673380
+- link: wikipedia:Pink_salmon
 
 ## aliases
 

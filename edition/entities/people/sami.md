@@ -1,6 +1,6 @@
-# people:laplanders — Laplanders
+# people:sami — Sámi
 
-- status: proposed
+- status: ratified
 - link: wikidata:Q48199
 - link: wikipedia:Sámi_people
 

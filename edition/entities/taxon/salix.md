@@ -1,6 +1,6 @@
 # taxon:salix — Salix
 
-- status: proposed
+- status: ratified
 - part-of: taxon:plantae
 - link: wikidata:Q36050
 - link: wikipedia:Willow
@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| willow | en | no | 1-253, leaves and the inner bark of the roots eaten; 1-257, young willow mixed into tobacco |
+| willow | en | yes | 1-253, leaves and the inner bark of the roots eaten; 1-257, young willow mixed into tobacco |
 
 ## gloss
 

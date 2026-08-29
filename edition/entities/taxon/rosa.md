@@ -1,6 +1,6 @@
 # taxon:rosa — Rosa
 
-- status: proposed
+- status: ratified
 - part-of: taxon:plantae
 - link: wikidata:Q34687
 - link: wikipedia:Rose
@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| sweet-brier | en | no | 1-256, its leaves used as a substitute for tea |
+| sweet-brier | en | yes | 1-256, its leaves used as a substitute for tea |
 
 ## gloss
 

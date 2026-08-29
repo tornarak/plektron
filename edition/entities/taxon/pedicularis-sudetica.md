@@ -1,6 +1,6 @@
 # taxon:pedicularis-sudetica — Pedicularis sudetica
 
-- status: proposed
+- status: ratified
 - part-of: taxon:plantae
 - link: wikidata:Q15349645
 - link: wikipedia:Pedicularis_sudetica

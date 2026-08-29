@@ -1,7 +1,8 @@
 # taxon:hedisarum-obscurum — Hedisarum obscurum
 
-- status: proposed
+- status: ratified
 - part-of: taxon:plantae
+- link: wikidata:Q87627400
 
 ## aliases
 

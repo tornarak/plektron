@@ -2,6 +2,8 @@
 
 - status: ratified
 - part-of: taxon:cottus
+- link: wikidata:Q402751
+- link: wikipedia:Fourhorn_sculpin
 
 ## aliases
 
@@ -11,4 +13,5 @@
 
 ## gloss
 
-(unwritten)
+The fourhorn sculpin, *Myoxocephalus quadricornis*. Same fish, a genus it left
+after 1904; the link goes to the species and not to the printed combination.

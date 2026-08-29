@@ -3,6 +3,8 @@
 - status: ratified
 - within: land:chukotka
 - geo: region:wrangel-island
+- link: wikidata:Q106594
+- link: wikipedia:Wrangel_Island
 
 ## aliases
 

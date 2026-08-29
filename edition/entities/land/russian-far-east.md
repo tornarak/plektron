@@ -2,6 +2,8 @@
 
 - status: ratified
 - frame: 108 45 190 75
+- link: wikidata:Q609176
+- link: wikipedia:Russian_Far_East
 
 ## aliases
 

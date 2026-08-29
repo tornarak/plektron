@@ -2,6 +2,8 @@
 
 - status: ratified
 - part-of: taxon:coregonus
+- link: wikidata:Q855485
+- link: wikipedia:Stenodus_leucichthys
 
 ## aliases
 
@@ -12,4 +14,6 @@
 
 ## gloss
 
-(unwritten)
+The nelma or inconnu, *Stenodus leucichthys* — the large predatory whitefish of
+the Siberian rivers. 1-190 sets it inside a run of *Coregonus* and it has since
+been given a genus of its own; the link follows the fish.

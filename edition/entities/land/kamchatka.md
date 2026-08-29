@@ -3,6 +3,8 @@
 - status: ratified
 - within: land:northeast-siberia
 - geo: region:kamchatka
+- link: wikidata:Q993
+- link: wikipedia:Kamchatka_Peninsula
 
 ## aliases
 

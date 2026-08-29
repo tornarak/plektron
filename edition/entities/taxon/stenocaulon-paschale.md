@@ -2,6 +2,8 @@
 
 - status: ratified
 - part-of: taxon:lichenes
+- link: wikidata:Q10647928
+- link: wikipedia:Stereocaulon_paschale
 
 ## aliases
 

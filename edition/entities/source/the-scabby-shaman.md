@@ -1,6 +1,6 @@
 # source:the-scabby-shaman — The Scabby Shaman
 
-- status: proposed
+- status: ratified
 - part-of: source:bogoras-1900
 
 ## aliases

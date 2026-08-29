@@ -3,6 +3,8 @@
 - status: ratified
 - within: water:karaginsky-gulf
 - geo: region:karagha-island
+- link: wikidata:Q1146381
+- link: wikipedia:Karaginsky_Island
 
 ## aliases
 
