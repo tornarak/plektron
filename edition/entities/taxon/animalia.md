@@ -1,6 +1,8 @@
 # taxon:animalia — Animalia
 
-- status: proposed
+- status: ratified
+- link: wikidata:Q729
+- link: wikipedia:Animal
 
 ## aliases
 

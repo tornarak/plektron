@@ -1,7 +1,8 @@
 # taxon:cottus-niger — Cottus niger
 
-- status: proposed
+- status: ratified
 - part-of: taxon:cottus
+- link: wikidata:Q106429254
 
 ## aliases
 

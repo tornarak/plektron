@@ -1,13 +1,15 @@
 # taxon:monodon-monoceros — Monodon monoceros
 
-- status: proposed
+- status: ratified
 - part-of: taxon:cetacea
+- link: wikidata:Q159426
+- link: wikipedia:Narwhal
 
 ## aliases
 
 | form | lang | auto | note |
 |---|---|---|---|
-| narwhal | en | no | 1-358, Kroeber's Fig. 53, a — an Eskimo drawing, not Chukchi fauna |
+| narwhal | en | once | 1-358, Kroeber's Fig. 53, a — an Eskimo drawing, not Chukchi fauna |
 
 ## gloss
 

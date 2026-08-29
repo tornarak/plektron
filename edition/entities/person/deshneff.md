@@ -1,6 +1,8 @@
 # person:deshneff — Deshneff
 
 - status: proposed
+- link: wikidata:Q333210
+- link: wikipedia:Semyon_Dezhnev
 
 ## aliases
 

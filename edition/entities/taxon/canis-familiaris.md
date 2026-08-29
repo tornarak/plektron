@@ -1,14 +1,16 @@
 # taxon:canis-familiaris — Canis familiaris
 
-- status: proposed
+- status: ratified
 - part-of: taxon:canis
+- link: wikidata:Q20717272
+- link: wikipedia:Canis_familiaris
 
 ## aliases
 
 | form | lang | auto | note |
 |---|---|---|---|
-| dog | en | no | |
-| dogs | en | no | |
+| dog | en | once | |
+| dogs | en | once | |
 
 ## gloss
 

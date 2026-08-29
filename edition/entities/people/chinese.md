@@ -1,6 +1,8 @@
 # people:chinese — Chinese
 
 - status: proposed
+- link: wikidata:Q6501380
+- link: wikipedia:Chinese_people
 
 ## aliases
 

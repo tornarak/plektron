@@ -1,4 +1,5 @@
 {% extends "edition/base.html" %}
+{% import "edition/_annotations.html" as ann %}
 {% block title %}{{ ref }} — The Chukchee{% endblock %}
 
 {% block btn_extra %}
@@ -61,6 +62,12 @@ guess, its foreign-language spans are unresolved <code>index</code> handles, and
 no <code>@resp</code> on it claims anything.</p>
 {% endif %}
 {{ neighbours() }}
+{# Notices sit here and **not** beside the draft banner above. The banner is
+   furniture about the page's *rank* and belongs with the navigation; a notice is
+   content about the *text*, so it belongs against the text, below the row a
+   reader arrives at. #}
+{{ ann.blocks(notices) }}
+{% if not placed and store_has_toc %}{{ ann.unplaced() }}{% endif %}
 {# `doc.html` is `tei_html`'s output, which escapes every text node and every
    attribute it emits. It is the one thing on this page that arrives as markup
    on purpose, so it is the one thing marked safe. #}
@@ -73,6 +80,7 @@ no <code>@resp</code> on it claims anything.</p>
 {% endfor %}
 </ol></div>
 {% endif %}
+{{ ann.blocks(supplements) }}
 {{ neighbours() }}
 {% endif %}
 </div>

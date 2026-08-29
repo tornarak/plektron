@@ -2,6 +2,8 @@
 
 - status: proposed
 - part-of: taxon:plantae
+- link: wikidata:Q602740
+- link: wikipedia:Rubus
 
 ## aliases
 

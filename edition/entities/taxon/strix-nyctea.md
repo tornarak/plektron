@@ -1,7 +1,8 @@
 # taxon:strix-nyctea — Strix nyctea
 
-- status: proposed
+- status: ratified
 - part-of: taxon:aves
+- link: wikidata:Q122583715
 
 ## aliases
 

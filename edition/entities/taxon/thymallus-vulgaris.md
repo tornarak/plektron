@@ -1,7 +1,8 @@
 # taxon:thymallus-vulgaris — Thymallus vulgaris
 
-- status: proposed
+- status: ratified
 - part-of: taxon:pisces
+- link: wikidata:Q106428989
 
 ## aliases
 

@@ -1,6 +1,8 @@
 # people:laplanders — Laplanders
 
 - status: proposed
+- link: wikidata:Q48199
+- link: wikipedia:Sámi_people
 
 ## aliases
 

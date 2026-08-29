@@ -1,6 +1,6 @@
 # taxon:cottus-quadricornus — Cottus quadricornus
 
-- status: proposed
+- status: ratified
 - part-of: taxon:cottus
 
 ## aliases

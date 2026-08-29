@@ -776,6 +776,25 @@ def run_rename(a) -> int:
         if t1 != t0:
             others.append((Path(other["path"]), t1, other["id"]))
 
+    # **The annotation store holds a fourth kind of pointer at an identity**, and
+    # it is in a different store, so the loop above cannot see it. An
+    # `- attaches: entity:person:bogoras` and a `[[…]]` in a summary both name an
+    # entry, and `annotation check` gates both — so a rename that missed them
+    # would leave a store failing its own gate on the strength of a move that
+    # `entity check` called clean. Same two substitutions, scoped to the one
+    # field that can carry an identity.
+    from .. import annotations as _ann
+
+    annotated = []
+    for arec in _ann.load(a.root).values():
+        p = Path(arec["path"])
+        t0 = p.read_text(encoding="utf-8")
+        t1 = t0.replace(f"[[{old}]]", f"[[{new}]]")
+        t1 = re.sub(rf"^(-[^\S\n]+attaches:[^\S\n]*entity:){re.escape(old)}"
+                    rf"[^\S\n]*$", rf"\g<1>{new}", t1, flags=re.M)
+        if t1 != t0:
+            annotated.append((p, t1, arec["id"]))
+
     from ..entities import parse
     parse(text, where=str(dst))
 
@@ -793,6 +812,8 @@ def run_rename(a) -> int:
             fh.write(text)
         src.unlink()
         for p, t1, _i in others:
+            p.write_text(t1, encoding="utf-8")
+        for p, t1, _i in annotated:
             p.write_text(t1, encoding="utf-8")
         for p, t1, _i in pages:
             p.write_text(t1, encoding="utf-8")
@@ -824,6 +845,7 @@ def run_rename(a) -> int:
 
     out(a, {"old": old, "new": new, "canonical": canonical,
             "filed_as_alias": filed, "repointed": len(others),
+            "annotations": len(annotated),
             "pages": sum(r["links"] for r in signed),
             "stale_refs": sum(r["links"] for r in stale),
             "regenerated": sum(1 for r in regenerated if r["regenerated"]),
@@ -835,6 +857,9 @@ def run_rename(a) -> int:
     if others:
         out(a, [{"id": i, "path": str(p)} for p, _t, i in others],
             "repointed", heading=True)
+    if annotated:
+        out(a, [{"id": i, "path": str(p)} for p, _t, i in annotated],
+            "annotations repointed", heading=True)
     # The heading has to read true in both modes: a report-only run regenerates
     # nothing, and the rows say per page whether the rebuild happened.
     if stale:

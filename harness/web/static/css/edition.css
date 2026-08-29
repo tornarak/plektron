@@ -1,7 +1,7 @@
 :root {
   color-scheme: light;
-  --bg:#fbfaf7; --fg:#1c1a17; --dim:#6b6560; --rule:#ddd8d0; --card:#fff;
-  --accent:#7a4b28; --mark:#b8860b; --pin:#1a6b5a;
+  --bg:#fbfaf7; --fg:#1c1a17; --dim:#6b6560; --rule:#ddd8d0; --card:#fff; --bg-warn:#fcc; --bg-info:#cce8ff;
+  --accent:#7a4b28; --mark:#b8860b; --pin:#1a6b5a; --warn:#aa1b18;
   --sea:#eef2f4; --land:#e7e2d8; --water:#5a86a8;
   --sel: #c15252;
   --flora:#3f7a35; --abstract:#7d6a10; --lex:#c2620c; --basin:#8c3a3a;
@@ -16,8 +16,8 @@
    CSS cannot union a media query with an attribute selector, so the block is
    written twice; the values are identical and belong to `:root` either way. */
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-  --bg:#161513; --fg:#e6e2db; --dim:#948d84; --rule:#332f2a; --card:#1e1c19;
-  --accent:#d99a63; --mark:#d4a63c; --pin:#5fbfa6;
+                                        --bg:#161513; --fg:#e6e2db; --dim:#948d84; --rule:#332f2a; --card:#1e1c19; --bg-warn:#2a1c19; --bg-info:#0e1c29;
+  --accent:#d99a63; --mark:#d4a63c; --pin:#5fbfa6; --warn:#da1b18; --info: #1c6c9e; 
   --sea:#14181b; --land:#2a2621; --water:#6f9cbd;
   --sel: #c15252;
   --flora:#8fbf7a; --abstract:#e0c97a; --lex:#e07b20; --basin:#997a72;
@@ -25,8 +25,8 @@
   color-scheme: dark;
 } }
 :root[data-theme="dark"] {
-  --bg:#161513; --fg:#e6e2db; --dim:#948d84; --rule:#332f2a; --card:#1e1c19;
-  --accent:#d99a63; --mark:#d4a63c; --pin:#5fbfa6;
+  --bg:#161513; --fg:#e6e2db; --dim:#948d84; --rule:#332f2a; --card:#1e1c19; --bg-warn:#2a1c19; --bg-info:#0e1c29;
+  --accent:#d99a63; --mark:#d4a63c; --pin:#5fbfa6; --warn:#da1b18; --info: #1c6c9e;
   --sea:#14181b; --land:#2a2621; --water:#6f9cbd;
   --sel: #c15252;
   --flora:#8fbf7a; --abstract:#e0c97a; --lex:#e07b20; --basin:#997a72;
@@ -437,6 +437,7 @@ html.reader .unsettled { background:none; border-bottom-style:solid }
 .card.selected { border-color:var(--sel) }
 #secondary.selected .card.selected { border-width: 3px;  }
 .card h4 { margin:0 0 .3rem; font-size:.9rem; font-family:inherit }
+.card h5 { margin:0 0 .3rem; font-size:.9rem; font-family:inherit }
 .card .meta { color:var(--dim); font-size:.75rem; margin-bottom:.4rem }
 .card .tools { float:right; display:flex; gap:.25rem }
 .card .tools button { padding:.05rem .35rem; font-size:.7rem; line-height:1.4 }
@@ -524,6 +525,41 @@ ul.tree { padding-left:0; font-family:system-ui,sans-serif; font-size:.85rem }
 ul.tree li { margin:.15rem 0; border-left:1px solid var(--rule);
   padding-left:.6rem }
 ul.tree > li { border-left:none; padding-left:0 }
+/* --- a tree of records ---
+ *
+ * The shape both drawn trees share: the map's legend under the picture
+ * (`.map-tree`, whose controls are geomap.css's) and an entry's place in its own
+ * class on its card (`.kin-tree`). **One block because they must look like one
+ * thing** — they are two hierarchies and a reader is told so by what they say,
+ * not by being made to learn two ways of reading a nested list.
+ *
+ * The node the tree is *about* is the one in full colour; the chain that holds
+ * it is dimmed, so what was asked for and what merely contains it read apart at
+ * a glance. */
+.ent-tree { font-size:.82rem; margin:.4rem 0 .1rem }
+.ent-tree ul { list-style:none; margin:0; padding:0 0 0 .85rem }
+.ent-tree > ul { padding-left:0 }
+/* The rail is what makes a three-deep chain readable in a narrow pane, where
+   indentation alone is a couple of characters. */
+.ent-tree ul ul { border-left:1px solid var(--rule) }
+.ent-tree li { padding:.08rem 0; line-height:1.5 }
+.ent-tree a.node:not([data-ref]) { color:var(--dim); text-decoration:none }
+.ent-tree a.node:hover { color:var(--fg); text-decoration:underline }
+.ent-tree li.sel > a.node { color:var(--fg); font-weight:bold }
+.ent-tree .dim { font-size:.72rem; margin-left:.25rem }
+/* The fold. A count and nothing else — "9 more" says what opening it costs,
+   where a bare ▸ makes a reader open it to find out. */
+.ent-tree li.more > details > summary { color:var(--dim); cursor:pointer;
+  font-size:.76rem; list-style:none }
+.ent-tree li.more > details > summary::-webkit-details-marker { display:none }
+.ent-tree li.more > details > summary::before { content:'▸ ' }
+.ent-tree li.more > details[open] > summary::before { content:'▾ ' }
+.ent-tree li.more > details > summary:hover { color:var(--fg) }
+.ent-tree li.more > details > ul { padding-left:0; border:0 }
+/* The card's tree sits between the fields and the forms, so it needs the rule a
+   pane's tree gets from the picture above it. */
+.kin-tree { border-top:1px solid var(--rule); padding-top:.35rem;
+  margin:.55rem 0 .5rem }
 /* A class heading in the encyclopedia tree. Not a link — there is no page for a
    class, and making one would be a filter pretending to be a place. A class
    nothing is filed under is dimmed rather than dropped. */
@@ -980,3 +1016,42 @@ a.pageref, a.chapref { color:inherit; text-decoration:none;
   border-bottom:1px dotted var(--dim); cursor:pointer }
 a.pageref:hover, a.pageref:focus,
 a.chapref:hover, a.chapref:focus { color:var(--link); border-bottom-color:var(--link) }
+
+/* The editor's own blocks. Two classes, and they are deliberately not
+   symmetrical: a notice interrupts and a supplement offers. The notice carries a
+   left rule and a tinted ground because it sits above the text and has to read
+   as *not* the text; the supplement is quieter, below the footnotes, where a
+   heavy block would compete with the page it follows.
+
+   `.unplaced` is the refusal, not an annotation — dashed rather than solid,
+   because what it says is that something is *missing* from this page. */
+aside.ann { margin:1.2rem 0; padding:.6rem .9rem; border-radius:3px;
+  font-size:.94em }
+aside.ann h5 { margin:0 0 .35rem; font-size:1.4em; font-weight:bold; text-align: center }
+aside.ann h5 a { color: var(--fg); text-decoration:none; border-bottom:1px solid var(--dim) }
+aside.ann h5 a:hover { border-bottom-color:var(--link); color:var(--link) }
+aside.ann .summary p:first-child { margin-top:0 }
+aside.ann .summary p:last-child { margin-bottom:0 }
+aside.ann.notice { border:2px solid var(--warn); background:var(--bg-warn) }
+aside.ann.notice h5 { color:var(--warn) }
+aside.ann.supplement { border:2px solid var(--info); background: var(--bg-info) }
+aside.ann.supplement h5 { color:var(--info) }
+aside.ann ul.shelf { margin:.5rem 0 0; padding-left:1.1rem }
+aside.ann ul.shelf .note { color:var(--dim) }
+aside.ann p.more { margin:.45rem 0 0; font-size:.92em }
+aside.ann.unplaced { border-left:3px dashed var(--dim); background:none;
+  color:var(--dim); font-style:italic }
+
+/* A YouTube link, and the card it opens. Marked like an outbound link because
+   that is what it is by `href` — the difference is only where it lands, and a
+   reader who middle-clicks still leaves for YouTube. */
+a.yt { color:var(--link); text-decoration:none;
+  border-bottom:1px dotted var(--link); cursor:pointer }
+a.yt::after { content:' ▸'; font-size:.85em; opacity:.7 }
+a.yt:hover, a.yt:focus { border-bottom-style:solid }
+/* 16:9, held by the padding trick so the player sizes to the card's width
+   whatever the stack is set to. */
+.card .embed { position:relative; width:100%; padding-bottom:56.25%;
+  margin:.4rem 0 0; background:#000; border-radius:3px; overflow:hidden }
+.card .embed iframe { position:absolute; inset:0; width:100%; height:100%;
+  border:0 }

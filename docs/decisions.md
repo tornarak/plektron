@@ -1268,3 +1268,41 @@ the rank exists to prevent. Two guards in `relink` had known only the tag: the
 `<name ref>` link as unlinked text and put a second reference on the page. 1,710 of
 5,395 links moved; the toponym index, which filters on `<name>`, could not see any
 of them before.
+
+## A prose rule applied to prose that was never reproducing anything
+
+`corpus normalize`'s lookalike census stood at 516 rows and was described, in
+`test_corpus_nfd.py`, as "a standing editorial backlog, not drift". It was
+neither. Nearly every row was in `edition/entities/`, and the premise the two
+prose arms rest on — §1's "English prose reproduces the print, curly quotes
+included" — has no purchase there. A page file reproduces an artifact and owes
+the artifact its quotation marks. An entry is the editor's own voice about that
+artifact and owes it nothing.
+
+The module had already drawn the line and then stopped halfway: `_quote_hits`
+skipped an entity file's `@note` lines and its alias table rows, on the reasoning
+that those "are editorial commentary *about* the corpus, not print-reproduction
+content, and can legitimately quote something verbatim that a curly conversion
+would misrepresent". A gloss is the same kind of text as the note directly above
+it. The exemption stopped at the line prefix rather than at the reason.
+
+What the census was actually hiding is that four classes of straight quote in
+that store are **correct and must not be folded**: a `link:` value
+(`wikipedia:Addison's_disease`), a romanization where U+0027 is the soft sign ь
+(`Medvezh'ya`), a possessive clinging to a backticked path or verb
+(`` `watershed:opuka`'s ``), and a nested quotation (`Krause made 'Marcus
+Bay'`, which wants the ‘ ’ pair and not two U+2019). None is distinguishable
+from a genuine defect by a codepoint rule, so the worklist could never have been
+cleared mechanically, and 600 rows of it were never going to be cleared by hand.
+
+The `link:` class had already cost something. The NFD arm — which is correct to
+sweep the store, and stays — rewrote a hand-added
+`wikipedia:Adolf_Erik_Nordenskiöld` into NFD, leaving a stored identifier that no
+longer matches the canonical article title. It still resolves, because MediaWiki
+normalizes titles on lookup, so this is a warning and not a loss.
+
+The two prose arms no longer read `edition/entities/` at all; `_is_entity` went
+with them, having no other caller. The codepoint table still sweeps the store,
+and what it now shows was invisible under the noise: 17 en-dashes where §2.11
+wants a hyphen, most of them date ranges (`1900–01`, `1897–1902`). The
+corpus-wide census is 20.

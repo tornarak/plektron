@@ -9,6 +9,8 @@
 - geo: place:tkachen
 - geo: place:nepekuten
 - geo: place:gambell
+- link: wikidata:Q2487243
+- link: wikipedia:Siberian_Yupik
 
 ## aliases
 

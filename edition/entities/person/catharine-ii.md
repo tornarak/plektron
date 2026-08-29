@@ -1,6 +1,8 @@
 # person:catharine-ii — Catharine the Second
 
-- status: proposed
+- status: ratified
+- link: wikidata:Q36450
+- link: wikipedia:Catherine_the_Great
 
 ## aliases
 

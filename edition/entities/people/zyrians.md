@@ -1,6 +1,8 @@
 # people:zyrians — Zyrians
 
 - status: proposed
+- link: wikidata:Q203319
+- link: wikipedia:Komi_peoples
 
 ## aliases
 

@@ -2,6 +2,8 @@
 
 - status: proposed
 - part-of: taxon:plantae
+- link: wikidata:Q34687
+- link: wikipedia:Rose
 
 ## aliases
 

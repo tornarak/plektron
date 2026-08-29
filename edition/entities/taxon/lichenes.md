@@ -1,12 +1,13 @@
 # taxon:lichenes — Lichenes
 
-- status: proposed
+- status: ratified
 
 ## aliases
 
 | form | lang | auto | note |
 |---|---|---|---|
-| moss | en | no | 1-251, 1-253, the half-digested moss of the paunch |
+| reindeer-moss | en | once | 1-251, 1-253, the half-digested moss of the paunch |
+| moss | en | once | 1-251, 1-253, the half-digested moss of the paunch |
 
 ## gloss
 

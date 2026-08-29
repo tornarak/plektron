@@ -1,6 +1,8 @@
 # person:laufer — Berthold Laufer
 
 - status: ratified
+- link: wikidata:Q71600
+- link: wikipedia:Berthold_Laufer
 
 ## aliases
 

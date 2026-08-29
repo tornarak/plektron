@@ -2,6 +2,7 @@
 
 - status: proposed
 - part-of: taxon:plantae
+- link: wikidata:Q17248391
 
 ## aliases
 

@@ -1,6 +1,6 @@
 # taxon:coregonus-omul — Coregonus omul
 
-- status: proposed
+- status: ratified
 - part-of: taxon:coregonus
 
 ## aliases

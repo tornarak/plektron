@@ -2,6 +2,8 @@
 
 - status: proposed
 - part-of: taxon:plantae
+- link: wikidata:Q25243
+- link: wikipedia:Birch
 
 ## aliases
 

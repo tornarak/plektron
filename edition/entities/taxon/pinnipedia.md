@@ -1,7 +1,9 @@
 # taxon:pinnipedia — Pinnipedia
 
-- status: proposed
+- status: ratified
 - part-of: taxon:carnivora
+- link: wikidata:Q30263
+- link: wikipedia:Pinniped
 
 ## aliases
 

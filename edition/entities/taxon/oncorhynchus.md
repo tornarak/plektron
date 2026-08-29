@@ -1,7 +1,9 @@
 # taxon:oncorhynchus — Oncorhynchus
 
-- status: proposed
+- status: ratified
 - part-of: taxon:salmonidae
+- link: wikidata:Q133325
+- link: wikipedia:Oncorhynchus
 
 ## aliases
 

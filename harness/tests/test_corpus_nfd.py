@@ -26,12 +26,19 @@ rest:
 **Three arms are deliberately not gated**, and saying why is the point of the
 distinction:
 
-  - `lookalikes` (516 today) is a standing editorial backlog, not drift. The
+  - `lookalikes` (20 today) is a standing editorial backlog, not drift. The
     trap is scoped — inside Tier-1 spans U+0027 and U+002D are the only
     apostrophe and hyphen, while English prose reproduces the print *including*
-    curly quotes — so an ASCII apostrophe in an editor's note is a judgement
-    about whether that note is quoting or writing. `test_lookalike_scope.py`
-    holds the two tables apart for the same reason.
+    curly quotes — so an ASCII apostrophe in a keyed page is a judgement about
+    whether that line is quoting or writing. `test_lookalike_scope.py` holds
+    the two tables apart for the same reason.
+
+    It was 516 while the quote and apostrophe arms also read
+    `edition/entities/`, and that was nearly the whole of it: an entry is the
+    editor's own voice, so "the book sets curly quotes" was never a premise
+    that held over it. Those two arms no longer read that store at all
+    (`normalize.scoped_files`); its NFD arm is untouched, which is the one the
+    breach above was actually about.
   - `footnote_markers` (6) is a bare ASCII digit where a superscript sort was
     meant, in three `gt/ocr` pages and their matching `review/` decisions. Each
     needs a reading against the raster.

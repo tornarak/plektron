@@ -2,6 +2,8 @@
 
 - status: proposed
 - part-of: taxon:polygonum
+- link: wikidata:Q29021202
+- link: wikipedia:Polygonum_polymorphum
 
 ## aliases
 

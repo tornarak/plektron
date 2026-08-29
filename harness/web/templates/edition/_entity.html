@@ -1,6 +1,7 @@
 {# One entity's card. Rendered alone into the stack (`?partial=1`) or wrapped in
    a page of its own — the same fragment either way, which is why it is a
    partial rather than two renderers that could drift. #}
+{% import "edition/_annotations.html" as ann %}
 {% if not rec %}
 <p>No entry for <code>{{ ident }}</code>.</p>
 {% else %}
@@ -17,8 +18,14 @@
    href='{{ base }}/entity/{{ c.id }}'>{{ c.canonical }}</a>
 {%- if not loop.last %}, {% endif %}{% endfor %}</div>
 {% endif %}
+{{ ann.blocks(notices) }}
 <div class='gloss'>{{ gloss | safe }}</div>
 {% include "edition/_props.html" %}
+{# The class hierarchy, under the fields that name its edge. The `part-of:` row
+   above says who the parent is; this says what that parent sits in and what else
+   is under this entry, which is the question a bare parent row raises and cannot
+   answer. Absent where there is neither, rather than drawn as one node. #}
+{% include "edition/_kin.html" %}
 {% for ln in links %}{{ ln | safe }}{% endfor %}
 {% if rec.aliases %}
 <table><tr><th>form</th><th></th><th></th><th></th></tr>
@@ -72,6 +79,7 @@ view is serving. Nothing is collated yet, so that is the whole corpus only under
 <code>edition serve --drafts</code>, and only where <code>mz/tei/</code> has been
 generated.</p>
 {% endif %}
+{{ ann.blocks(supplements) }}
 {% if rec.status != 'ratified' %}
 <div class='ratify-row'><button class='ratify' data-id='{{ ident }}'>ratify — a
 rule may then link its forms</button></div>

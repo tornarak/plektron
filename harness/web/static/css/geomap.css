@@ -129,20 +129,13 @@ svg.map circle.pin.hi { fill:var(--hi); stroke:var(--hi);
  * two villages are shown across half of Chukotka can read the answer directly
  * under the picture that raised the question.
  *
- * Selected places are the ones the reader put there; the rest of the nodes are
- * the chain that holds them, and they are dimmed so the two read apart at a
- * glance. `.off` is a hidden node — still present, still clickable, saying so.
+ * **Only what a map means is here.** The shape — the rails, the indentation, the
+ * dimmed node and the fold — is `.ent-tree` in edition.css, because the card's
+ * `.kin-tree` draws the other hierarchy and the two have to look like one thing
+ * for a reader who has learnt to read either. What is left below is the controls,
+ * which exist because a node on a map can be painted or not: `.off` is a hidden
+ * node — still present, still clickable, saying so.
  */
-.map-tree { font-size:.82rem; margin:.4rem 0 .1rem }
-.map-tree ul { list-style:none; margin:0; padding:0 0 0 .85rem }
-.map-tree > ul { padding-left:0 }
-/* The rail is what makes a three-deep chain readable in a narrow pane, where
-   indentation alone is a couple of characters. */
-.map-tree ul ul { border-left:1px solid var(--rule) }
-.map-tree li { padding:.08rem 0; line-height:1.5 }
-.map-tree a.node { color:var(--dim); text-decoration:none }
-.map-tree a.node:hover { color:var(--fg); text-decoration:underline }
-.map-tree li.sel > a.node { color:var(--fg); font-weight:600 }
 .map-tree li.off > a.node, .map-tree li.off > .pill { opacity:.4;
   text-decoration:line-through }
 .map-tree button { border:0; background:none; cursor:pointer; padding:0 .18rem;
@@ -159,12 +152,3 @@ svg.map circle.pin.hi { fill:var(--hi); stroke:var(--hi);
 .map-tree li:hover > button, .map-tree li:hover > a.entry,
 .map-tree button:focus-visible, .map-tree a.entry:focus-visible,
 .map-tree li.off > button.hide { visibility:visible }
-/* The fold. A count and nothing else — "9 more" says what opening it costs,
-   where a bare ▸ makes a reader open it to find out. */
-.map-tree li.more > details > summary { color:var(--dim); cursor:pointer;
-  font-size:.76rem; list-style:none }
-.map-tree li.more > details > summary::-webkit-details-marker { display:none }
-.map-tree li.more > details > summary::before { content:'▸ ' }
-.map-tree li.more > details[open] > summary::before { content:'▾ ' }
-.map-tree li.more > details > summary:hover { color:var(--fg) }
-.map-tree li.more > details > ul { padding-left:0; border:0 }

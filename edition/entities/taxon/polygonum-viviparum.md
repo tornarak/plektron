@@ -2,6 +2,7 @@
 
 - status: proposed
 - part-of: taxon:polygonum
+- link: wikidata:Q21877025
 
 ## aliases
 

@@ -1,7 +1,9 @@
 # taxon:orcinus-orca — Orcinus orca
 
-- status: proposed
+- status: ratified
 - part-of: taxon:cetacea
+- link: wikidata:Q26843
+- link: wikipedia:Orca
 
 ## aliases
 

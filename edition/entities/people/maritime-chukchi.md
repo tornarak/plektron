@@ -43,6 +43,7 @@
 - geo: place:enmaat-khyr
 - geo: place:uvargin
 - geo: place:cape-erri
+- link: wikidata:Q106991
 - link: wikipedia:Chukchi_people
 
 ## aliases

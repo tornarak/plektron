@@ -1,6 +1,7 @@
 # people:eskimo — Eskimo
 
 - status: ratified
+- link: wikidata:Q131242
 - link: wikipedia:Eskimo
 
 ## aliases

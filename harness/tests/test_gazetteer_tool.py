@@ -184,15 +184,20 @@ def test_the_sparql_values_block_tags_cyrillic_as_russian():
 
         def json(self): return {"results": {"bindings": []}}
 
-    def fake_get(url, params=None, **kw):
-        seen["q"] = params["query"]
+    # **POSTed, and the stub says so.** The query is sent as a form body rather
+    # than a query string because a `VALUES` block over the whole store passed
+    # Wikidata's URL limit and took a `414`; this stub reads `data` for the same
+    # reason. What the test is about — the language tag on each literal — is
+    # untouched by which verb carries it.
+    def fake_post(url, data=None, **kw):
+        seen["q"] = data["query"]
         return _Fake()
 
-    old, w.SESSION.get = w.SESSION.get, fake_get
+    old, w.SESSION.post = w.SESSION.post, fake_post
     try:
         w.sparql_names(["Хатырка", "Cape Navarin"])
     finally:
-        w.SESSION.get = old
+        w.SESSION.post = old
     values = re.search(r"VALUES \?name \{(.*?)\}", seen["q"], re.S).group(1)
     assert '"Хатырка"@ru' in values
     assert '"Cape Navarin"@en' in values

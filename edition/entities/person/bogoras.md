@@ -1,6 +1,7 @@
 # person:bogoras — Waldemar Bogoras
 
 - status: ratified
+- link: wikidata:Q113480
 - link: wikipedia:Vladimir_Bogoraz
 
 ## aliases

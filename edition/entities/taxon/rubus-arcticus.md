@@ -2,6 +2,8 @@
 
 - status: proposed
 - part-of: taxon:rubus
+- link: wikidata:Q210330
+- link: wikipedia:Rubus_arcticus
 
 ## aliases
 

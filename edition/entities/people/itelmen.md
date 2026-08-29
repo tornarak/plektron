@@ -2,6 +2,8 @@
 
 - status: ratified
 - geo: langarea:itel1242
+- link: wikidata:Q1147405
+- link: wikipedia:Itelmens
 
 ## aliases
 

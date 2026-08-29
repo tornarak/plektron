@@ -180,6 +180,28 @@ const openEntity = ref =>
    assumption that a stack exists. */
 window.EDITION = {openEntity: ref => openEntity(ref)};
 
+/* A recording, played where it is cited. **The one outbound address the stack
+   holds in place**: a supplement whose subject *is* the recording should not
+   send a reader out of the edition to hear it, and a card is already how this
+   view keeps what you consulted.
+
+   Built here rather than fetched: the embed is a fixed address made from an id
+   the server already validated against a YouTube URL, so there is nothing for a
+   round trip to add. `youtube-nocookie.com` for the same reason `a.out` carries
+   `noreferrer` — the edition does not hand a reader's visit to a third party
+   for free.
+
+   Titled with the link's own text, so the card says what the reader clicked and
+   not what the video calls itself. */
+const openYouTube = (embed, title) =>
+  push('yt:' + embed, () => card(
+    'yt:' + embed, title || 'Recording', '',
+    `<div class="embed"><iframe src="https://www.youtube-nocookie.com/embed/${embed}"
+       title="${title || 'Recording'}" loading="lazy" allowfullscreen
+       referrerpolicy="strict-origin-when-cross-origin"
+       allow="accelerometer; clipboard-write; encrypted-media; picture-in-picture"
+       frameborder="0"></iframe></div>`));
+
 const openLexicon = key =>
   fill('lex:' + key, B + '/lexicon/' + encodeURIComponent(key) + '?partial=1', key);
 
@@ -564,6 +586,15 @@ document.addEventListener('click', ev => {
     else openEntity(ref);
     return;
   }
+  /* Before the `a.out` guard would matter: a `yt` link is outbound by `href`
+     and inbound by intent. `preventDefault` keeps the navigation from happening
+     while leaving the href real for middle-click and no-JS. */
+  const y = ev.target.closest('a.yt');
+  if (y) {
+    ev.preventDefault();
+    openYouTube(y.dataset.embed, y.textContent.trim());
+    return;
+  }
   const x = ev.target.closest('a.lex');
   if (x) { ev.preventDefault(); openLexicon(x.dataset.key); return; }
   /* The List of Illustrations' own links — see `openFigure` for why a picture
@@ -676,11 +707,13 @@ document.addEventListener('keydown', ev => {
     if (ev.key == "Backspace" && selected_stack) { ev.preventDefault(); deleteSelection(); }
 })
 
-document.getElementById('scan-btn').addEventListener('click', () => openScan());
+let scan_bts = document.getElementById('scan-btn')
+if (scan_btn) scan_btn.addEventListener('click', () => openScan());
 
 // Reader view: applied to <html> so it can be set before first paint (see the
 // inline script in the head) and never flashes the apparatus on load.
-document.getElementById('reader-btn').addEventListener('click', () => {
+let reader_btn = document.getElementById('reader-btn');
+reader_btn.addEventListener('click', () => {
   const on = document.documentElement.classList.toggle('reader');
   localStorage.setItem('edition-reader', on ? '1' : '');
 });

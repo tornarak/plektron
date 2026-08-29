@@ -1,13 +1,16 @@
 # taxon:gulo-gulo — Gulo gulo
 
-- status: proposed
-- part-of: taxon:carnivora
+- status: ratified
+- part-of: taxon:mustelidae
+- link: wikidata:Q14334
+- link: wikipedia:Wolverine
 
 ## aliases
 
 | form | lang | auto | note |
 |---|---|---|---|
-| wolverene | en | no | 1-252, tabooed by the Reindeer Chukchee |
+| wolverine | en | yes | |
+| wolverene | en | yes | |
 
 ## gloss
 

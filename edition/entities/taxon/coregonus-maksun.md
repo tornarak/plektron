@@ -1,6 +1,6 @@
 # taxon:coregonus-maksun — Coregonus maksun
 
-- status: proposed
+- status: ratified
 - part-of: taxon:coregonus
 
 ## aliases
@@ -8,7 +8,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Coregonus maksun | la | yes | 1-190, printed C. maksun |
-| C. maksun | la | no | 1-190 as printed |
+| C. maksun | la | yes | 1-190 as printed |
 
 ## gloss
 

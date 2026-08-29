@@ -1,13 +1,15 @@
 # taxon:balaena-mysticetus — Balaena mysticetus
 
-- status: proposed
+- status: ratified
 - part-of: taxon:cetacea
+- link: wikidata:Q174652
+- link: wikipedia:Bowhead_whale
 
 ## aliases
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Bowhead | en | no | 1-041 "Bowhead [whale]", the bracket Bogoras's own; bare whale stays on taxon:cetacea |
+| Bowhead | en | yes | 1-041 "Bowhead [whale]", the bracket Bogoras's own; bare whale stays on taxon:cetacea |
 
 ## gloss
 

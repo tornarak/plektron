@@ -3,6 +3,8 @@
 - status: ratified
 - within: land:chukchi-peninsula
 - geo: 67.0375 -172.9632
+- link: wikidata:Q2310683
+- link: wikipedia:Neshkan,_Russia
 
 ## aliases
 

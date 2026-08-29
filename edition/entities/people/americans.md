@@ -1,6 +1,8 @@
 # people:americans — Americans
 
 - status: proposed
+- link: wikidata:Q846570
+- link: wikipedia:Americans
 
 ## aliases
 

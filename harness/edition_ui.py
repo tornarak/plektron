@@ -43,6 +43,8 @@ from .entities import (
     GEO_CLASSES,
     WIKILINK,
     check,
+    kin_children,
+    kin_parent,
     load,
     path_for,
     split_id,
@@ -242,6 +244,65 @@ _LINK = re.compile(r"\[([^\]\n]+)\]\(([^\s()<>]+)\)")
 LINK_SCHEMES = ("http://", "https://")
 #: A markdown bullet: `- ` or `* ` at the start of a line.
 _BULLET = re.compile(r"^[-*]\s+(.*)$")
+#: A subheading, `###` or deeper. Never `#` or `##`: both authored stores slice
+#: their files on `##`, so anything that shallow is a section boundary and
+#: cannot reach a renderer. Admitted on `gloss_html`'s standing argument — the
+#: records already use them, an annotation's `## full` being long enough to want
+#: them — and it widens nothing that matters for safety: the tag is fixed and
+#: its content still goes through `inline_html`, which escapes first.
+_HEADING = re.compile(r"^(#{3,6})\s+(.*)$")
+
+
+#: A YouTube address this view will hold in place. Host first, so nothing else
+#: can reach the embed builder at all.
+_YT_HOST = re.compile(
+    r"^https?://(?:www\.|m\.)?(?:youtube(?:-nocookie)?\.com|youtu\.be)/")
+#: A video id: 11 characters of the URL-safe alphabet, in any of the spellings a
+#: link arrives in — `watch?v=…`, `youtu.be/…`, `embed/…`.
+_YT_VIDEO = re.compile(
+    r"(?:[?&]v=|youtu\.be/|/embed/)([A-Za-z0-9_-]{11})(?:[&?#]|$)")
+#: A playlist id. Longer and more varied than a video's — `OLAK5uy_…` for an
+#: auto-generated album, `PL…` for a hand-made list — but the same alphabet.
+_YT_LIST = re.compile(r"[?&]list=([A-Za-z0-9_-]{12,64})(?:[&#]|$)")
+
+
+def youtube_embed(url: str) -> str | None:
+    """The `embed/` path a YouTube URL should be played at, or `None`.
+
+    **Built from ids this function matched, never from the URL as given.** A
+    `## links` row is authored text, and letting any part of it through to an
+    iframe `src` would make the store a way to frame arbitrary pages inside the
+    edition. Only two capture groups survive, both of a fixed alphabet that
+    cannot carry a quote, a slash or a space, so the result needs no re-escaping.
+
+    Three shapes, and an album link is the middle one:
+
+        j_GLEh8EYYk                     a video
+        j_GLEh8EYYk?list=OLAK5uy_…      a video, in its playlist
+        videoseries?list=OLAK5uy_…      a playlist with no video named
+
+    The middle shape is what the per-track links of an album are, and keeping the
+    `list` is the whole point: a reader who opens track 27 gets the record it
+    belongs to, and can play on rather than coming back for track 28.
+    """
+    # **`&amp;` first.** `_link_html` runs on already-escaped text — its own
+    # docstring says so — so a watch URL reaches here with every `&` as `&amp;`,
+    # and a `[?&]list=` pattern quietly matched nothing. The failure was silent
+    # and partial in the worst way: the video still embedded, so the card worked,
+    # and only the playlist was gone. Every per-track link on an album lost the
+    # album.
+    url = url.strip().replace("&amp;", "&")
+    if not _YT_HOST.match(url):
+        return None
+    v = _YT_VIDEO.search(url)
+    lst = _YT_LIST.search(url)
+    if v and lst:
+        return f"{v.group(1)}?list={lst.group(1)}"
+    if v:
+        return v.group(1)
+    if lst:
+        return f"videoseries?list={lst.group(1)}"
+    return None
 
 
 def _link_html(m: re.Match) -> str:
@@ -250,8 +311,19 @@ def _link_html(m: re.Match) -> str:
     Rendered as the source wrote it rather than dropped, because a gloss that
     silently loses an author's link is worse than one that shows its brackets:
     the second is visible and gets fixed.
+
+    **A YouTube link opens in the stack instead of leaving the edition.** It is
+    the one outbound address this view can hold in place — a card with the player
+    in it, titled with the link's own text — and a recording a supplement is
+    *about* is exactly what a reader should not have to leave the page to hear.
+    The `href` stays the real watch URL, so no-JS, middle-click and "open in new
+    tab" all still work; the card is the enhancement and not the mechanism, which
+    is `a.fig`'s arrangement.
     """
     label, href = m.group(1), m.group(2)
+    if (emb := youtube_embed(href)):
+        return (f'<a class="yt" data-embed="{emb}" href="{href}" '
+                f'title="play here">{label}</a>')
     if not href.lower().startswith(LINK_SCHEMES):
         return m.group(0)
     return (f'<a class="out" href="{href}" target="_blank" '
@@ -328,8 +400,31 @@ def gloss_html(text: str, store: dict) -> str:
                     items[-1] += " " + line.strip()
             out.append("<ul>" + "".join(
                 f"<li>{inline_html(i, store)}</li>" for i in items) + "</ul>")
+        elif m := _HEADING.match(lines[0].strip()):
+            # `###` and deeper. `#` and `##` cannot reach here — both stores
+            # slice their files on `##`, so a heading that shallow is a section
+            # boundary and never body text. Two levels are enough for a `## full`
+            # that wants subheadings, and they start at `h5` because the card
+            # itself has already spent `h4` on the title.
+            tag = "h5" if len(m.group(1)) == 3 else "h6"
+            body = " ".join(x.strip() for x in lines[1:] if x.strip())
+            out.append(f"<{tag}>{inline_html(m.group(2), store)}</{tag}>")
+            if body:
+                out.append(f"<p>{inline_html(body, store)}</p>")
         else:
-            out.append(f"<p>{inline_html(para, store)}</p>")
+            # **Joined into one logical line before the inline rules run**, which
+            # is markdown's own reading of a hard-wrapped paragraph — and the
+            # same thing the bullet branch above already does for a wrapped item.
+            #
+            # Not cosmetic. `_STRONG`, `_EM`, `_CODE` and `_LINK` all exclude
+            # `\n` from their character classes, so a span that happened to wrap
+            # simply did not match, and the asterisks were served to the reader
+            # as literal text. Silent, and invisible to whoever wrote the file,
+            # because it depends on nothing but where the line broke: measured
+            # over the store when this was found, **36 spans across 29 entity
+            # files** were failing this way.
+            out.append(f"<p>{inline_html(' '.join(
+                x.strip() for x in lines if x.strip()), store)}</p>")
     return "".join(out)
 
 
@@ -1173,6 +1268,83 @@ def _map_tree(sel: list[str], hidden: set, store: dict, order: list[str],
 
 
 
+#: How many children a card lists before they go behind a fold. The map's fold is
+#: sized against the thirty-four villages of the Chukchee Peninsula; this one is
+#: sized against a genus, where a dozen species is a list a reader reads and forty
+#: is a wall between the entry and everything under it.
+KIN_FOLD = 12
+
+
+def kin_tree(ident: str, store: dict) -> list[dict]:
+    """**The entry's place in its own class**: what holds it, and what it holds.
+
+    The card's counterpart to `_map_tree`, and the same picture drawn over the
+    other hierarchy — `kin_parent`, so `part-of:` leads. The two are deliberately
+    not one tree (`entities.kin_parent`), and a card is exactly where that shows:
+    a located entry already carries the atlas's answer in the map pane beside it,
+    while a genus, a source or a person has no geography at all and had, until
+    now, no way to say what it belongs to except a single `part-of:` row that
+    named the parent and neither the grandparent nor one sibling.
+
+    **A spine, not a subtree.** Every ancestor up to the top of the class, each
+    holding only the child on the path, then the entry, then its direct children
+    and no deeper. The map tree earns its breadth by being a legend for a picture;
+    here there is no picture, and a card that opened onto the whole of *animalia*
+    would bury the entry it is about. What a child holds is said as a count, which
+    is the offer: click it and its own card draws that branch.
+
+    The nodes are the same shape the map's macro renders, minus what only a map
+    means — nothing here is hidden, drawn, or framed on.
+    """
+    if ident not in store:
+        return []
+    kids_of = kin_children(store)
+    descendants: dict[str, int] = {}
+
+    def below(i: str, seen: frozenset) -> int:
+        # Cycle-safe by the same discipline as `entities.relatives`: `check`
+        # gates acyclicity, but this runs inside a page render.
+        if i in seen:
+            return 0
+        if i not in descendants:
+            here = frozenset(seen | {i})
+            descendants[i] = sum(1 + below(k, here) for k in kids_of.get(i, []))
+        return descendants[i]
+
+    def rank(i: str) -> tuple:
+        # Proposed first, as everywhere in the encyclopedia: nothing links an
+        # unaudited entry by rule, so it is what wants reading. Then by the name
+        # a reader sees, not by id.
+        rec = store[i]
+        return (rec["status"] != "proposed", rec["canonical"], i)
+
+    def node(i: str, selected: bool, children: list[dict]) -> dict:
+        rec = store[i]
+        return {"id": i, "canonical": rec["canonical"], "cls": rec["class"],
+                "status": rec["status"], "selected": selected,
+                "below": below(i, frozenset()), "children": children,
+                "folded": [], "summary": ""}
+
+    here = sorted(kids_of.get(ident, []), key=rank)
+    kids = [node(k, False, []) for k in here]
+    mine = node(ident, True, kids)
+    if len(kids) > KIN_FOLD:
+        mine["children"], mine["folded"] = [], kids
+        mine["summary"] = f"{len(kids)} in it"
+
+    out = mine
+    seen = {ident}
+    up = kin_parent(store[ident], store)
+    while up and up in store and up not in seen:
+        seen.add(up)
+        out = node(up, False, [out])
+        up = kin_parent(store[up], store)
+    # Nothing to draw for an entry that neither belongs to anything nor holds
+    # anything: a one-node tree is the card's own heading, said again in smaller
+    # type. The template asks for the list and gets an empty one.
+    return [out] if (out is not mine or kids) else []
+
+
 def _guarded(root: Path, write, report=None) -> dict:
     """Run a write, then refuse it if the store no longer checks out.
 
@@ -1281,3 +1453,86 @@ def _new(body: dict, root: Path) -> dict:
         return lambda: p.unlink(missing_ok=True)
 
     return _guarded(root, write)
+
+
+def annotation_blocks(recs: list[dict], store: dict) -> list[dict]:
+    """Annotation records → what a template prints.
+
+    **The link aliases are expanded before `gloss_html` sees the text**, which is
+    why this file needs no new markup rule. `inline_html` resolves
+    `entities.WIKILINK` through `_entity_link`, and that function's whole safety
+    argument is that its rule set is closed — it knows one store and renders
+    everything else as escaped text. Rewriting `[[melodiya-1974]]` into an
+    ordinary `[title](url)` first means the result goes through the `_LINK` rule
+    and the `LINK_SCHEMES` allowlist that were already here. No new path, and no
+    fourth thing marked safe: the two fields below are `gloss_html` output, which
+    is the same guarantee the gloss already carries.
+
+    `gloss_html` rather than `inline_html` because a summary may be a bullet
+    list — the music supplement is two albums and is literally that — and that
+    function already renders `- ` blocks, for the reason its docstring gives.
+    """
+    from . import annotations as ann
+
+    out = []
+    for rec in recs:
+        rows = rec.get("links", [])
+        body = {
+            "id": rec["id"],
+            "class": rec["class"],
+            "placement": rec["placement"],
+            "title": rec["title"],
+            "status": rec["status"],
+            "url": f"{BASE}/annotation/{rec['id']}",
+            "summary_html": gloss_html(
+                ann.expand_links(rec["summary"], rows), store),
+            # `video` where the row's URL names one, so the shelf opens a player
+            # in the stack on the same terms the prose links do.
+            "links": [r | {"embed": youtube_embed(r["url"])} for r in rows],
+            "has_full": bool(rec.get("full", "").strip()),
+            # The section ids this annotation is keyed to, so the route can put
+            # it after the one the page actually marks rather than above the
+            # whole text. See `insert_after_anchor`.
+            "toc": [t["value"] for t in rec.get("attaches", ())
+                    if t["kind"] == "toc"],
+        }
+        out.append(body)
+    return out
+
+
+def annotation_full_html(rec: dict, store: dict) -> str:
+    """The long text, by the same route as the summary."""
+    from . import annotations as ann
+    return gloss_html(ann.expand_links(rec.get("full", ""), rec.get("links", [])),
+                      store)
+
+
+def insert_after_anchor(html: str, anchor_id: str, block: str) -> str | None:
+    """Put `block` directly after the element carrying `id="anchor_id"`.
+
+    `None` where the page does not carry that anchor, which is the caller's cue
+    to leave the block where it was.
+
+    **Why a section's notice cannot simply sit above the text.** The contents
+    panel links to `#chII.1`, and `tei_html` emits that id *inside* `<article>`.
+    A block rendered above the article is therefore above the anchor, so a reader
+    arriving from the panel lands below it and the notice is scrolled off the
+    top — present on the page, and easy to miss at exactly the moment it was
+    written for.
+
+    Two anchor shapes, and the same rule reaches both: a printed head,
+    `<h2 class="milestone chapter" id="chII">…</h2>`, and the empty marker a
+    section gets when the page does not print its head,
+    `<span class="milestone anchor section" id="chII.1"></span>`. Closing at the
+    first matching end tag is right for both — an `h2` holds spans but never
+    another `h2`, and the marker span is empty.
+    """
+    m = re.search(rf'<(\w+)[^>]*\bid=["\']{re.escape(anchor_id)}["\'][^>]*>', html)
+    if not m:
+        return None
+    close = f"</{m.group(1)}>"
+    end = html.find(close, m.end())
+    if end == -1:
+        return None
+    cut = end + len(close)
+    return html[:cut] + block + html[cut:]

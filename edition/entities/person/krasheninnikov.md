@@ -1,6 +1,8 @@
 # person:krasheninnikov — Stepan Krasheninnikov
 
 - status: ratified
+- link: wikidata:Q469780
+- link: wikipedia:Stepan_Krasheninnikov
 
 ## aliases
 

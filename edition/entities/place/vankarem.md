@@ -3,6 +3,8 @@
 - status: ratified
 - within: land:chukotka
 - geo: 67.8408 -175.8382
+- link: wikidata:Q3536089
+- link: wikipedia:Vankarem
 
 ## aliases
 

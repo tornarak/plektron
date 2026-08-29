@@ -433,6 +433,171 @@ def test_a_wrapped_bullet_stays_one_item(tmp_path):
     assert "runs onto a second line" in got
 
 
+def test_inline_markup_survives_the_line_break_it_was_wrapped_on(tmp_path):
+    """**The records are hard-wrapped, and every inline rule refuses `\\n`.**
+
+    `_STRONG`, `_EM`, `_CODE` and `_LINK` all exclude the newline from their
+    character classes, so a span that happened to wrap did not match and its
+    asterisks were served to the reader as literal text. Silent, and invisible
+    to whoever wrote the file, because whether it worked depended on nothing but
+    where the line broke — the short bold rendered and the long one did not.
+
+    Found from a rendered annotation, but the entity store had it first: **36
+    spans across 29 files**. The fix is markdown's own reading of a hard-wrapped
+    paragraph — join it into one logical line before the inline rules run, which
+    is what the bullet branch had always done for a wrapped item.
+    """
+    got = edition_ui.gloss_html("is **clinal and\ncontinuous**, not typed", {})
+    assert "<strong>clinal and continuous</strong>" in got
+    assert "**" not in got
+
+    got = edition_ui.gloss_html("see [the\npaper](https://e.test/a) for it", {})
+    assert 'href="https://e.test/a"' in got and ">the paper</a>" in got
+
+    got = edition_ui.gloss_html("an *emphasis that\nwraps* here", {})
+    assert "<em>emphasis that wraps</em>" in got
+
+
+def test_no_gloss_in_the_store_shows_a_literal_asterisk_pair(tmp_path):
+    """The regression stated over the real records rather than a fixture.
+
+    A rule about hard-wrapping cannot be trusted against one hand-written
+    example: what broke it was the *distribution* of line lengths in files
+    nobody was checking.
+    """
+    from harness import entities as ents
+
+    store = ents.load(Path("."))
+    bad = [k for k, r in store.items()
+           if "**" in r["gloss"] and "**" in edition_ui.gloss_html(r["gloss"], store)]
+    assert not bad, f"literal ** left in {bad}"
+
+
+def _top_level_names(src: str) -> set[str]:
+    """`const`/`let`/`class`/`function` names declared at brace depth 0.
+
+    Depth-tracked rather than line-anchored, because the whole point is that a
+    declaration *inside* a wrapper is not a global — a regex on `^const` calls a
+    correctly-wrapped file a collision, which is the wrong answer in the one
+    direction that matters. Strings and comments are skipped so a brace inside
+    either cannot shift the depth.
+    """
+    names, depth, i = set(), 0, 0
+    while i < len(src):
+        c = src[i]
+        if c in "\"'`":
+            q, i = c, i + 1
+            while i < len(src) and src[i] != q:
+                i += 2 if src[i] == "\\" else 1
+        elif src.startswith("//", i):
+            i = src.find("\n", i)
+            if i == -1:
+                break
+        elif src.startswith("/*", i):
+            i = src.find("*/", i + 2) + 1
+        elif c == "{":
+            depth += 1
+        elif c == "}":
+            depth -= 1
+        elif depth == 0:
+            m = re.compile(r"(?:const|let|class|function)\s+([A-Za-z_$][\w$]*)").match(src, i)
+            if m and (i == 0 or not (src[i - 1].isalnum() or src[i - 1] in "_$.")):
+                names.add(m.group(1))
+                i = m.end()
+                continue
+        i += 1
+    return names
+
+
+def test_no_two_scripts_on_one_page_declare_the_same_global(tmp_path):
+    """**Classic scripts share one global scope, so a `const` is page-wide.**
+
+    `ratify.js` and `edition.js` both opened with `const B = STATE.base`, and for
+    a long time nothing noticed: `page.html` loaded the second without the first,
+    `card.html` the first without the second. The day a card page needed both,
+    the duplicate was a `SyntaxError` — which kills the *entire* file, so the
+    ratify button and every handler after it went dead, with nothing on the page
+    saying why.
+
+    The script list is read out of the templates rather than restated here, so
+    this keeps holding when somebody adds a `<script>` to one of them.
+    """
+    tpl_dir = REPO / "harness" / "web" / "templates" / "edition"
+    js_dir = REPO / "harness" / "web" / "static" / "js"
+    src = {p.stem: _top_level_names(p.read_text(encoding="utf-8"))
+           for p in js_dir.glob("*.js")}
+
+    problems = []
+    for tpl in sorted(tpl_dir.glob("*.html")):
+        loaded = re.findall(r'src="/static/js/([\w-]+)\.js"',
+                            tpl.read_text(encoding="utf-8"))
+        seen = {}
+        for f in loaded:
+            for name in src.get(f, ()):
+                if name in seen:
+                    problems.append(f"{tpl.name}: `{name}` declared by both "
+                                    f"{seen[name]}.js and {f}.js")
+                seen[name] = f
+    assert not problems, "\n".join(problems)
+
+
+def test_a_youtube_link_becomes_an_embed_and_keeps_its_playlist(tmp_path):
+    """Three shapes, and the middle one is what an album's per-track link is.
+
+    Keeping the `list` is the point of that shape: a reader who opens track 27
+    gets the record it belongs to and can play on, rather than coming back for
+    track 28.
+    """
+    e = edition_ui.youtube_embed
+    assert e("https://youtu.be/j_GLEh8EYYk") == "j_GLEh8EYYk"
+    assert e("https://www.youtube.com/playlist?list=OLAK5uy_k7wp4QTiM") \
+        == "videoseries?list=OLAK5uy_k7wp4QTiM"
+    assert e("https://www.youtube.com/watch?v=j_GLEh8EYYk&list=OLAK5uy_k7wp4QTiM"
+             "&index=1") == "j_GLEh8EYYk?list=OLAK5uy_k7wp4QTiM"
+
+
+def test_an_escaped_ampersand_does_not_lose_the_playlist(tmp_path):
+    """**`_link_html` runs on already-escaped text**, so a watch URL reaches the
+    matcher with every `&` as `&amp;`.
+
+    The failure this guards was silent and partial in the worst way: the video
+    still embedded, so the card worked and looked right, and only the album was
+    gone — from every per-track link on the record at once.
+    """
+    got = edition_ui.youtube_embed(
+        "https://www.youtube.com/watch?v=j_GLEh8EYYk&amp;list=OLAK5uy_k7wp4QTiM")
+    assert got == "j_GLEh8EYYk?list=OLAK5uy_k7wp4QTiM"
+
+
+def test_only_youtube_reaches_the_embed(tmp_path):
+    """The iframe `src` is built from ids this function matched, never from the
+    URL as given — otherwise a `## links` row would be a way to frame an
+    arbitrary page inside the edition."""
+    for url in ("https://archive.org/details/chukchi-eskimo/",
+                "https://evil.test/x?v=aaaaaaaaaaa&list=PLaaaaaaaaaaaa",
+                'https://www.youtube.com/watch?v=abc"onload=x',
+                "javascript:alert(1)"):
+        assert edition_ui.youtube_embed(url) is None, url
+
+    got = edition_ui.gloss_html(
+        "[hear it](https://www.youtube.com/watch?v=j_GLEh8EYYk)", {})
+    assert 'class="yt"' in got and 'data-embed="j_GLEh8EYYk"' in got
+    # The href stays the real watch URL, so middle-click and no-JS still work.
+    assert 'href="https://www.youtube.com/watch?v=j_GLEh8EYYk"' in got
+
+
+def test_a_subheading_renders_and_only_from_three_hashes(tmp_path):
+    """`###` and deeper only. `#` and `##` cannot reach a renderer — both
+    authored stores slice their files on `##` — so admitting them would be
+    rendering a section boundary as body text."""
+    got = edition_ui.gloss_html("### What replaced it\n\nBody.", {})
+    assert "<h5>What replaced it</h5>" in got and "###" not in got
+    assert "<h6>" in edition_ui.gloss_html("#### Deeper\n\nMore.", {})
+    # Escaping still applies inside a heading.
+    got = edition_ui.gloss_html("### <script>alert(1)</script>", {})
+    assert "<script>" not in got and "&lt;script&gt;" in got
+
+
 def test_a_gloss_may_link_out_and_only_over_http(tmp_path):
     """The allowlist is the point of escaping first: `escape()` fixes the *text*
     of an attribute and says nothing about its scheme, so `javascript:` in an
@@ -1208,6 +1373,125 @@ def test_several_mentions_on_one_page_are_one_row_with_a_count(server):
     assert "mentioned on 2 of 2 page(s), 4 time(s)" in body
     assert "3 unlinked" in body
     assert body.count(">1-030</a>") == 1
+
+
+# ------------------------------------------------- the card's own tree
+
+def _taxa(root: Path) -> dict:
+    """A four-rung `part-of:` chain with siblings on the bottom two, which is the
+    shape the taxon store actually has."""
+    entry(root, "taxon:animalia", canonical="Animalia")
+    entry(root, "taxon:salmonidae", canonical="Salmonidae",
+          extra="- part-of: taxon:animalia\n")
+    entry(root, "taxon:oncorhynchus", canonical="Oncorhynchus",
+          extra="- part-of: taxon:salmonidae\n")
+    entry(root, "taxon:thymallus", canonical="Thymallus", status="proposed",
+          extra="- part-of: taxon:salmonidae\n")
+    for sp in ("keta", "nerka"):
+        entry(root, f"taxon:oncorhynchus-{sp}", canonical=f"O. {sp}",
+              extra="- part-of: taxon:oncorhynchus\n")
+    from harness.web import stores
+    return stores.load(root)
+
+
+def test_the_card_tree_is_the_spine_from_the_top_of_the_class_down(tmp_path):
+    """Every ancestor, each holding only the child on the path — the entry's
+    place, not its class's whole subtree. `taxon:thymallus` is a sibling of the
+    node the tree runs through and must not appear: a card that opened onto the
+    branches either side of the chain would be the class index with the entry
+    lost in it."""
+    store = _taxa(tmp_path)
+    tree = edition_ui.kin_tree("taxon:oncorhynchus", store)
+
+    ids, node = [], tree[0]
+    while True:
+        ids.append(node["id"])
+        if not node["children"]:
+            break
+        node = node["children"][0]
+    assert ids[:3] == ["taxon:animalia", "taxon:salmonidae",
+                       "taxon:oncorhynchus"]
+    assert "taxon:thymallus" not in str(tree)
+
+
+def test_the_card_tree_marks_the_entry_and_lists_what_it_holds(tmp_path):
+    store = _taxa(tmp_path)
+    tree = edition_ui.kin_tree("taxon:oncorhynchus", store)
+    subject = tree[0]["children"][0]["children"][0]
+
+    assert subject["selected"] and subject["id"] == "taxon:oncorhynchus"
+    assert [k["id"] for k in subject["children"]] == [
+        "taxon:oncorhynchus-keta", "taxon:oncorhynchus-nerka"]
+    # What a node above holds, said as a count: the branch itself is that node's
+    # own card, which is what its name is a link to.
+    assert tree[0]["below"] == 5
+
+
+def test_the_card_tree_takes_part_of_where_the_atlas_takes_within(tmp_path):
+    """The two hierarchies, and the card is on the encyclopedia's. `people:naukans`
+    hangs from a village under the atlas's edge, which is right on a map and
+    leaves a page about peoples showing no subgroups at all."""
+    entry(tmp_path, "people:yupik", canonical="Yupik")
+    entry(tmp_path, "place:naukan", canonical="Naukan")
+    entry(tmp_path, "people:naukans", canonical="Naukans",
+          extra="- within: place:naukan\n- part-of: people:yupik\n")
+    from harness.web import stores
+
+    store = stores.load(tmp_path)
+    assert edition_ui.kin_tree("people:naukans", store)[0]["id"] == "people:yupik"
+    assert [n["id"] for n in edition_ui.kin_tree("place:naukan", store)] == []
+
+
+def test_a_card_tree_of_one_node_is_not_drawn(tmp_path):
+    """An entry that belongs to nothing and holds nothing would get its own
+    heading back in smaller type, which says nothing and looks like a finding."""
+    entry(tmp_path, "person:bogoras", canonical="Bogoras")
+    from harness.web import stores
+
+    assert edition_ui.kin_tree("person:bogoras", stores.load(tmp_path)) == []
+
+
+def test_a_long_child_list_goes_behind_a_fold_that_says_its_size(tmp_path):
+    entry(tmp_path, "taxon:aves", canonical="Aves")
+    for i in range(edition_ui.KIN_FOLD + 1):
+        entry(tmp_path, f"taxon:bird-{i:02}", canonical=f"Bird {i}",
+              extra="- part-of: taxon:aves\n")
+    from harness.web import stores
+
+    node = edition_ui.kin_tree("taxon:aves", stores.load(tmp_path))[0]
+    assert node["children"] == []
+    assert len(node["folded"]) == edition_ui.KIN_FOLD + 1
+    assert node["summary"] == f"{edition_ui.KIN_FOLD + 1} in it"
+
+
+def test_the_card_carries_its_tree_and_the_stack_fragment_carries_it_too(tmp_path):
+    """The fragment is the whole card wherever it is read, so the tree is in the
+    partial the stack injects and not only on the standalone page."""
+    _taxa(tmp_path)
+    from starlette.testclient import TestClient
+
+    from harness.web import Sessions, create_app
+
+    c = TestClient(create_app(tmp_path, Sessions(root=tmp_path), editor="edition"))
+    for url in ("/edition/entity/taxon:oncorhynchus",
+                "/edition/entity/taxon:oncorhynchus?partial=1"):
+        body = c.get(url).text
+        assert "kin-tree" in body
+        assert "/edition/entity/taxon:salmonidae" in body
+        assert "/edition/entity/taxon:oncorhynchus-keta" in body
+
+
+def test_both_trees_are_drawn_by_one_stylesheet_rule(tmp_path):
+    """`ent-tree` is the shape and `map-tree` is what only a map means. Two
+    hierarchies a reader is told apart by what they say, not by having to learn
+    two ways of reading a nested list."""
+    geomap = CSS.parent / "geomap.css"
+    css = CSS.read_text(encoding="utf-8")
+    assert ".ent-tree li.sel > a.node" in css and ".kin-tree {" in css
+    # The map's own rules are the controls, and nothing else: a layout rule left
+    # behind here would drift from the one above without either looking wrong.
+    for rule in ("li { padding", "ul ul { border-left", "a.node { color"):
+        assert rule not in geomap.read_text(encoding="utf-8")
 
 
 def test_the_encyclopedia_is_a_tree_over_the_whole_class_vocabulary(server):

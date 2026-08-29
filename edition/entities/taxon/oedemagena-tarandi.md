@@ -1,6 +1,6 @@
 # taxon:oedemagena-tarandi — Œdemagena tarandi
 
-- status: proposed
+- status: ratified
 - part-of: taxon:diptera
 
 ## aliases
@@ -8,7 +8,6 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Œdemagena tarandi | la | yes | 1-108 "Another fly, of smaller size and darker color (Œdemagena tarandi Slunin)" |
-| reindeer-fly | en | no | 1-250; which of 1-108's two flies is unstated, so oestrus-tarandi claims it too |
 
 ## gloss
 
@@ -18,8 +17,7 @@ its eggs in the reindeer's nostrils. The larvæ go up to the throat, and
 penetrate the cartilage. The next year, when the maggots are full-grown, they
 cause a constant cough, which continues until the last one drops to the ground."
 
-The first fly is [[taxon:oestrus-tarandi]] / [[taxon:tabanus-tarandinus]], one
-insect under two authorities' names, whose maggot burrows into the back.
+The first fly is [[taxon:oestrus-tarandi]], whose maggot burrows into the back.
 
 **Do not reconcile the two against modern usage here.** *Œdemagena tarandi* is
 today's reindeer warble fly (*Hypoderma tarandi*) — the one of the *back* — and

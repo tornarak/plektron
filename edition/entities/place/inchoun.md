@@ -3,6 +3,8 @@
 - status: ratified
 - within: land:chukchi-peninsula
 - geo: 66.2971 -170.2757
+- link: wikidata:Q2367259
+- link: wikipedia:Inchoun
 
 ## aliases
 

@@ -132,7 +132,9 @@
 </li>
 {% endmacro %}
 {% if tree %}
-<div class='map-tree' data-frames='{{ frames | tojson }}'>
+{# `ent-tree` is the shape it shares with the card's `kin-tree` (edition.css);
+   `map-tree` is what only a map means — the paint toggle and the hidden row. #}
+<div class='ent-tree map-tree' data-frames='{{ frames | tojson }}'>
   <ul>{% for n in tree %}{{ node(n) }}{% endfor %}</ul>
 </div>
 {% endif %}

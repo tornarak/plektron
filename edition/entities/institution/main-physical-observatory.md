@@ -1,6 +1,6 @@
 # institution:main-physical-observatory — Main Physical Observatory
 
-- status: proposed
+- status: ratified
 
 ## aliases
 

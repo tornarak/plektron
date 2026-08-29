@@ -1,0 +1,51 @@
+{# The editor's own blocks. A macro file rather than an include, because three
+   call sites render the same list — the page's top, the page's foot, and an
+   entity card — and a loop written three times is a loop that will diverge.
+
+   `summary_html` is `edition_ui.gloss_html` output: escaped first, then a closed
+   set of markup rules, with only http/https surviving into an `href`. It is the
+   same guarantee the entity gloss carries and it is why this is the one thing
+   here marked safe. Everything else — the title, the class, the link titles —
+   is a plain string through Jinja's autoescaping. #}
+{% macro blocks(items) %}
+{% for a in items %}
+<aside class='ann {{ a.class }}' id='ann-{{ a.id }}'>
+    <h5>{%- if a.class == 'notice' %}⚠{% else %}ℹ{% endif %}&nbsp;<a target="_blank" href='{{ a.url }}'>{{ a.title }}</a>
+    {%- if a.status != 'ratified' %}
+    <span class='pill {{ a.status }}'>{{ a.status }}</span>{% endif %}</h5>
+  <div class='summary'>{{ a.summary_html | safe }}</div>
+  {# **No shelf here, and that is the whole difference between the two blocks.**
+     This one sits over a page of the book, uninvited, and it is a *preview* —
+     what it owes the reader is the summary and a way through. The `## links`
+     table is the annotation's record of addresses, not a list to reprint on
+     every page it attaches to: `supplement:music` holds 45 rows, and rendering
+     them inline put 16 KB of links above the text on every attached leaf, which
+     is how this was found. The links the author actually wanted named are
+     already in the summary's own prose, resolved from the same table.
+
+     The full shelf is on the annotation's own page, which is what `more` is
+     for. #}
+  {% if a.has_full or a.links %}
+  <p class='more'><a target="_blank" href='{{ a.url }}'>{% if a.links and not a.has_full
+    %}All {{ a.links | length }} links{% else %}Read more{% endif %}</a></p>
+  {% endif %}
+</aside>
+{% endfor %}
+{% endmacro %}
+
+{# **The refusal is a sentence and not a silence.** A page whose printed folio
+   nothing witnesses cannot be placed in a section, so a notice attached to a
+   section of the book simply does not appear here — which on screen is
+   indistinguishable from there being no such notice at all. `docs/edition.md`
+   settles that case for the contents panel and this follows it.
+
+   Printed only where the store actually holds a section attachment
+   (`annotations.has_toc_attachments`), so a corpus with no such notice does not
+   grow a banner explaining why it cannot show one. #}
+{% macro unplaced() %}
+<aside class='ann notice unplaced'>
+  <p>This leaf's printed folio has no witness, so it cannot be placed in a
+  chapter — and any notice attached to a <em>section</em> of the book is
+  therefore not shown here. One attached to this page directly still is.</p>
+</aside>
+{% endmacro %}

@@ -33,12 +33,13 @@ continent as such, it wants its own entry and this alias moves to it.
 
 **Filed under nothing**, because the atlas's containment tree is the Russian Far
 East's and Alaska is not in it. It is a root, and it is framed by its members —
-Cape Prince of Wales, Cape Nome, St. Michael and King Island — which is a
-narrower box than the state and the right one for this book: the Alaska Bogoras
-writes about is the shore across the strait, not the interior. `geo verify`
-declines to write it a point of its own for that reason.
+the strait shore from Cape Nome to Cape Prince of Wales, with King Island,
+St. Michael and Port Clarence, and Point Barrow six degrees north of any of
+them — which is still a narrower box than the state and the right one for this
+book: the Alaska Bogoras writes about is the coast, not the interior.
+`geo verify` declines to write it a point of its own for that reason.
 
-Those four hung unparented until this entry existed, and briefly hung under
+The first four hung unparented until this entry existed, and briefly hung under
 [[water:bering-strait]], where `geo verify`'s nesting check called three of them
 what they were — dry ground filed inside open water. The fourth, King Island, it
 passed in silence, an island in a strait being exactly that.

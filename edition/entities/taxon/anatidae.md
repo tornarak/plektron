@@ -1,7 +1,9 @@
 # taxon:anatidae — Anatidae
 
-- status: proposed
+- status: ratified
 - part-of: taxon:aves
+- link: wikidata:Q7556
+- link: wikipedia:Anatidae
 
 ## aliases
 

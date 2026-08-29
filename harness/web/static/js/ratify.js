@@ -1,3 +1,15 @@
+/* **Wrapped, so this file declares nothing at the top level.** These are classic
+   scripts and share one global scope, so a `const` here is a `const` for every
+   other file on the page. `const B = STATE.base` sat at the top of this file and
+   at the top of `edition.js`, and the two never met: `page.html` loaded
+   `edition.js` without this one, `card.html` this one without `edition.js`. The
+   day a card page needed both, the second `const B` was a `SyntaxError` that
+   stopped the *whole* file — so the ratify button and everything after it went
+   dead, with nothing on the page to say why.
+
+   Nothing outside reads anything defined here, so the wrapper costs nothing and
+   removes the collision as a class rather than renaming one variable. */
+(() => {
 const B = STATE.base;
 
 // Delegated, like the speaker button, so it works on a card the stack injected
@@ -43,3 +55,5 @@ document.addEventListener('click', async ev => {
   ].filter(Boolean).join(' · ');
   setTimeout(() => location.reload(), d || n ? 2600 : 1600);
 });
+
+})();

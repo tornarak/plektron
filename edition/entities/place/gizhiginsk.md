@@ -4,6 +4,8 @@
 - within: river:gizhiga
 - geo: 61.9502 160.38
 - link: geonames:2125558
+- link: wikidata:Q1973987
+- link: wikipedia:Gizhiga
 
 ## aliases
 

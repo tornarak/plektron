@@ -1,6 +1,8 @@
 # institution:royal-geographical-society — Royal Geographical Society
 
-- status: proposed
+- status: ratified
+- link: wikidata:Q691152
+- link: wikipedia:Royal_Geographical_Society
 
 ## aliases
 

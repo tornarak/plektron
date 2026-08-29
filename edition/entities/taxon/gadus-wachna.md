@@ -1,7 +1,8 @@
 # taxon:gadus-wachna — Gadus wachna
 
-- status: proposed
+- status: ratified
 - part-of: taxon:gadus
+- link: wikidata:Q106390334
 
 ## aliases
 

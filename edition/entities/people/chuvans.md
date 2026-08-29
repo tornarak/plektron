@@ -2,6 +2,7 @@
 
 - status: ratified
 - part-of: people:yukaghir
+- link: wikidata:Q1945649
 - link: wikipedia:Chuvans
 
 ## aliases

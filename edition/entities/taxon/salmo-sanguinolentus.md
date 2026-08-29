@@ -1,6 +1,6 @@
 # taxon:salmo-sanguinolentus — Salmo sanguinolentus
 
-- status: proposed
+- status: ratified
 - part-of: taxon:salmonidae
 
 ## aliases

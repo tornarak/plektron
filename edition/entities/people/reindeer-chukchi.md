@@ -2,6 +2,7 @@
 
 - status: ratified
 - part-of: people:chukchi
+- link: wikidata:Q106991
 - link: wikipedia:Chukchi_people
 
 ## aliases

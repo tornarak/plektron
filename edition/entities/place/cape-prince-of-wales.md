@@ -4,6 +4,8 @@
 - within: land:alaska
 - geo: 65.5948 -168.092
 - link: geonames:5872091
+- link: wikidata:Q369193
+- link: wikipedia:Cape_Prince_of_Wales
 
 ## aliases
 

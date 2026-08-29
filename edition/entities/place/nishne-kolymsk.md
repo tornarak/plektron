@@ -4,6 +4,8 @@
 - within: river:kolyma
 - geo: 68.5313 160.923
 - link: geonames:2122822
+- link: wikidata:Q2856913
+- link: wikipedia:Nizhnekolymsk
 
 ## aliases
 

@@ -103,8 +103,9 @@ volume, reproduces this same map. The image processing and what it deliberately
 drops are `docs/apparatus.md`'s.
 `build_geo.py` compiles `edition/geo/` from three sources in `scratch/` and is
 `docs/edition.md`'s; `gazetteer.py` proposes identities for unlocated entities
-against a live API and derives `geo:` from the ones a human adopted, and is
-`docs/edition.md`'s too.
+against a live API and derives `geo:` from the ones a human adopted, and
+`identify.py` is its sibling for the classes with no geometry to check against —
+both `docs/edition.md`'s too.
 `migrate_to_master.py` is gone with it: it was the driver for `harness/migrate.py`
 and `harness scans swap` is that driver now — which is also the generalisation, from
 "the legacy render into the master" to any manifest into any other. The rule it was

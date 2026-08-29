@@ -3,6 +3,7 @@
 - status: ratified
 - geo: base:chukotka-east-of-meridian
 - geo: langarea:chuk1273
+- link: wikidata:Q106991
 - link: wikipedia:Chukchi_people
 
 ## aliases

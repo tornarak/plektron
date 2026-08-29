@@ -1,7 +1,9 @@
 # taxon:ovis-nivicola — Ovis nivicola
 
-- status: proposed
+- status: ratified
 - part-of: taxon:mammalia
+- link: wikidata:Q918400
+- link: wikipedia:Snow_sheep
 
 ## aliases
 

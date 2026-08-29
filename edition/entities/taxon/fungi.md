@@ -1,12 +1,17 @@
 # taxon:fungi — Fungi
 
-- status: proposed
+- status: ratified
+- link: wikidata:Q764
+- link: wikipedia:Fungus
 
 ## aliases
 
 | form | lang | auto | note |
 |---|---|---|---|
-| toadstools | en | no | 1-250, gathered in exceptional cases |
+| fungus | en | once | |
+| toadstools | en | once | |
+| mushrooms | en | once | |
+| mushroom | en | once | |
 
 ## gloss
 

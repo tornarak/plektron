@@ -1,7 +1,9 @@
 # taxon:gadidae — Gadidae
 
-- status: proposed
+- status: ratified
 - part-of: taxon:pisces
+- link: wikidata:Q208028
+- link: wikipedia:Gadidae
 
 ## aliases
 

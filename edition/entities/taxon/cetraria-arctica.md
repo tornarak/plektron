@@ -1,6 +1,6 @@
 # taxon:cetraria-arctica — Cetraria arctica
 
-- status: proposed
+- status: ratified
 - part-of: taxon:cetraria
 
 ## aliases

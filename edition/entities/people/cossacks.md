@@ -1,6 +1,8 @@
 # people:cossacks — Cossacks
 
 - status: ratified
+- link: wikidata:Q47805
+- link: wikipedia:Cossacks
 
 ## aliases
 

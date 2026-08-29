@@ -25,6 +25,10 @@ from fastapi import APIRouter, HTTPException, Query, Request
 from fastapi.responses import RedirectResponse, Response
 from pydantic import BaseModel
 
+# `annots`, not `annotations`: `from __future__ import annotations` above already
+# binds that name at module scope, and the shadowing would be silent until
+# something called a method on the feature object.
+from .. import annotations as annots
 from .. import apparatus, entities, figrefs, geo, ipa, langs, lexicon, speech, tei_html
 from .. import edition_ui as ui
 from .. import figures as F
@@ -852,6 +856,23 @@ def page(request: Request, ref: str):
     state = {"base": BASE, "ref": ref, "size": size,
              "figrefs": _figref_state(doc, root),
              **_figure_state(ref, root, doc, size)}
+    # **The folio is resolved here and handed down**, never looked up inside
+    # `annotations.for_page`. Placing a leaf in a section runs `ref → folio →
+    # toc ids` and the middle step can refuse; if the chain lived in the
+    # resolver, an empty list would mean both "nothing attaches here" and "we
+    # cannot say whether anything does". Only this frame holds the folio, so
+    # only this frame can tell the template which happened.
+    # `doc["folio"]` is the raw `<pb n>`, so it is a string and may be a roman
+    # numeral from the front matter. `_as_folio` is what says which of those are
+    # arabic folios this index can speak about — the same coercion `_toc_panel`
+    # makes, and the same refusal: a roman folio is not unplaced by accident, it
+    # is a leaf the arabic index has nothing to say about.
+    folio = apparatus._as_folio(doc.get("folio"))
+    ann_store = stores.annotations(root)
+    anns = annots.for_page(ann_store, ref, toc_containing(load_toc(root), folio))
+    store = stores.load(root)
+    doc, notices = _place_notices(
+        doc, ui.annotation_blocks(anns["top"], store))
     return templates.TemplateResponse(
         request,
         "edition/page.html",
@@ -863,6 +884,10 @@ def page(request: Request, ref: str):
             state=state,
             rank=rank,
             pane=True,
+            notices=notices,
+            supplements=ui.annotation_blocks(anns["bottom"], store),
+            placed=folio is not None,
+            store_has_toc=annots.has_toc_attachments(ann_store),
             toc_panel=_toc_panel(root, [doc.get("folio")]),
             prev=refs[i - 1] if i > 0 else "",
             next=refs[i + 1] if 0 <= i < len(refs) - 1 else "",
@@ -958,8 +983,20 @@ def _entity_ctx(ident: str, refs: list[str], root: Path) -> dict:
         "contested": [{"id": c, "canonical": store[c]["canonical"]} for c in contested],
         "located": bool(geo.located(ident, store, root)),
         "props": ui.property_rows(rec, store, root),
+        # Where the entry sits in its own class. Not the atlas's tree — a located
+        # entry has that in the map pane beside it, and the two hierarchies are
+        # kept apart on purpose (`entities.kin_parent`).
+        "kin_nodes": ui.kin_tree(ident, store),
         "mentions": _mentions(ident, refs, root),
+        # No folio is in play here, so there is no refusal to state: an entity
+        # attachment names the entry outright.
+        **_ann_ctx(annots.for_entity(stores.annotations(root), ident), store),
     }
+
+
+def _ann_ctx(anns: dict, store: dict) -> dict:
+    return {"notices": ui.annotation_blocks(anns["top"], store),
+            "supplements": ui.annotation_blocks(anns["bottom"], store)}
 
 
 @router.get("/entity/{ident:path}")
@@ -1010,6 +1047,134 @@ def entity(request: Request, ident: str, partial: str = ""):
             **ctx,
         ),
     )
+
+
+def _place_notices(doc: dict, blocks: list[dict]) -> tuple[dict, list[dict]]:
+    """Move a section's notice down to sit under the marker a reader lands on.
+
+    **A notice above `<article>` is above the anchor the contents panel links
+    to.** `tei_html` emits `id="chII.1"` inside the article, so following
+    "Appearance" from the panel scrolls past a notice rendered at the top of the
+    page and leaves it off-screen — present, and easy to miss at exactly the
+    moment it was written for. Where the page marks a section the notice is keyed
+    to, the block goes directly after that marker instead.
+
+    A page-attached notice, and a section-attached one on a page that does *not*
+    print the marker, both stay at the top: there is no better place, and the
+    reader arrived at the page rather than at a point inside it.
+
+    Returns a **copy** of `doc`. `stores.render` is `lru_cache`d, so writing the
+    spliced HTML back into the record it handed out would serve one page's
+    notices on every later render of it.
+    """
+    html, stay = doc["html"], []
+    for b in blocks:
+        for anchor_id in b["toc"]:
+            spliced = ui.insert_after_anchor(
+                html, anchor_id, str(_ann_macro().blocks([b])))
+            if spliced is not None:
+                html = spliced
+                break
+        else:
+            stay.append(b)
+    return ({**doc, "html": html}, stay) if html != doc["html"] else (doc, stay)
+
+
+def _ann_macro():
+    """The block macro, reached as a module so one renderer serves both places.
+
+    The template is the only definition of what an annotation looks like; a
+    second copy built as a Python string here would drift from it the first time
+    either changed.
+    """
+    return templates.env.get_template("edition/_annotations.html").module
+
+
+@router.get("/annotations")
+def annotations_index(request: Request):
+    """Every annotation, so the store is reachable without knowing a slug."""
+    root = _root(request)
+    store = stores.annotations(root)
+    rows = [{"id": k, "title": v["title"], "class": v["class"],
+             "status": v["status"], "placement": v["placement"],
+             "attaches": len(v["attaches"]),
+             "url": f"{BASE}/annotation/{k}"}
+            for k, v in sorted(store.items())]
+    return templates.TemplateResponse(
+        request, "edition/annotations.html",
+        _ctx(request, rows=rows, card_title="Notices and supplements"))
+
+
+def _attached_rows(rec: dict, root: Path) -> list[dict]:
+    """What this annotation is attached to, each as a link where one resolves.
+
+    A `toc:` target is the one that can refuse: `apparatus.locate` answers from
+    the folio index, and a section whose opening folio nothing witnesses has no
+    leaf to send a reader to. **Said as a sentence rather than rendered as dead
+    text** — the same ruling the contents panel makes.
+    """
+    store = stores.load(root)
+    toc = {e["id"]: e for e in load_toc(root)}
+    rows = []
+    for t in rec["attaches"]:
+        if t["kind"] == "page":
+            rows.append({"label": t["value"], "why": "page",
+                         "url": f"{BASE}/page/{t['value']}"})
+        elif t["kind"] == "entity":
+            ent = store.get(t["value"])
+            rows.append({"label": ent["canonical"] if ent else t["value"],
+                         "why": t["value"],
+                         "url": f"{BASE}/entity/{t['value']}"})
+        else:
+            entry = toc.get(t["value"])
+            label = entry["title"] if entry else t["value"]
+            try:
+                where = apparatus.locate(root, toc_id=t["value"])
+            except Exception:
+                where = None
+            ref = (where or {}).get("ref")
+            rows.append({
+                "label": f"{label} ({t['value']})",
+                "url": f"{BASE}/page/{ref}" if ref else "",
+                "why": "" if ref else
+                       "no leaf is witnessed at this section's opening folio",
+            })
+    return rows
+
+
+@router.get("/annotation/{ident:path}")
+def annotation_card(request: Request, ident: str, partial: str = ""):
+    """One annotation's own page.
+
+    **Served whatever its status**, unlike the blocks it puts on a page. A
+    `proposed` annotation attaches to nothing, and this is where a reviewer reads
+    it before ratifying — a store whose unratified entries were unreachable would
+    have no review step at all.
+    """
+    root = _root(request)
+    try:
+        annots.split_id(ident)
+    except ValueError as e:
+        raise HTTPException(400, str(e)) from None
+    rec = stores.annotations(root).get(ident)
+    if rec is not None:
+        # The raw parse record has no `video`; `annotation_blocks` is what adds
+        # it, and this page does not go through that. Same call, one place.
+        rec = rec | {"links": [r | {"embed": ui.youtube_embed(r["url"])}
+                               for r in rec["links"]]}
+    store = stores.load(root)
+    ctx = {"rec": rec, "ident": ident, "base": BASE,
+           "summary_html": ui.gloss_html(
+               annots.expand_links(rec["summary"], rec["links"]), store)
+           if rec else "",
+           "full_html": ui.annotation_full_html(rec, store) if rec else "",
+           "attached": _attached_rows(rec, root) if rec else []}
+    if partial:
+        return templates.TemplateResponse(request, "edition/_annotation.html", ctx)
+    return templates.TemplateResponse(
+        request, "edition/card.html",
+        _ctx(request, partial="edition/_annotation.html",
+             card_title=rec["title"] if rec else ident, **ctx))
 
 
 @router.get("/lexicon")
@@ -1428,11 +1593,7 @@ def entity_index(request: Request):
     # and `part-of: people:yupik`; under the atlas's edge it hangs from a
     # village, which is correct on a map and leaves `people:yupik` showing no
     # subgroups at all on a page about peoples.
-    kids: dict[str, list[str]] = {}
-    for r in store.values():
-        up = entities.kin_parent(r, store)
-        if up:
-            kids.setdefault(up, []).append(r["id"])
+    kids = entities.kin_children(store)
 
     def rank(ident: str) -> tuple:
         return (store[ident]["status"] != "proposed", ident)

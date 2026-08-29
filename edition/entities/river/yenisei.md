@@ -3,6 +3,7 @@
 - status: ratified
 - within: land:russian-far-east
 - geo: watershed:yenisei
+- link: wikidata:Q78707
 - link: wikipedia:Yenisei
 
 ## aliases

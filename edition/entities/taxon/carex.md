@@ -2,6 +2,8 @@
 
 - status: proposed
 - part-of: taxon:plantae
+- link: wikidata:Q158501
+- link: wikipedia:Carex
 
 ## aliases
 

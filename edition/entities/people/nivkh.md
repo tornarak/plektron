@@ -1,6 +1,8 @@
 # people:nivkh — Nivkh
 
 - status: ratified
+- link: wikidata:Q60046
+- link: wikipedia:Nivkh_people
 
 ## aliases
 

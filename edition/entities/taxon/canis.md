@@ -1,7 +1,9 @@
 # taxon:canis — Canis
 
-- status: proposed
+- status: ratified
 - part-of: taxon:carnivora
+- link: wikidata:Q149892
+- link: wikipedia:Canis
 
 ## aliases
 

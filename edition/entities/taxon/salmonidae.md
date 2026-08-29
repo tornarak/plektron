@@ -1,7 +1,9 @@
 # taxon:salmonidae — Salmonidæ
 
-- status: proposed
+- status: ratified
 - part-of: taxon:pisces
+- link: wikidata:Q184238
+- link: wikipedia:Salmonidae
 
 ## aliases
 

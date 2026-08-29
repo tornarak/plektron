@@ -1,6 +1,8 @@
 # people:ainu — Ainu
 
-- status: proposed
+- status: ratified
+- link: wikidata:Q101828
+- link: wikipedia:Ainu_people
 
 ## aliases
 

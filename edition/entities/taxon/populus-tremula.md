@@ -2,6 +2,8 @@
 
 - status: proposed
 - part-of: taxon:populus
+- link: wikidata:Q146110
+- link: wikipedia:Populus_tremula
 
 ## aliases
 

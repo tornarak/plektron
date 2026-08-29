@@ -1,6 +1,8 @@
 # institution:smithsonian-institution — Smithsonian Institution
 
-- status: proposed
+- status: ratified
+- link: wikidata:Q131626
+- link: wikipedia:Smithsonian_Institution
 
 ## aliases
 

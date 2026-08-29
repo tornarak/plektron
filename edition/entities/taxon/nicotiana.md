@@ -2,6 +2,8 @@
 
 - status: proposed
 - part-of: taxon:plantae
+- link: wikidata:Q851829
+- link: wikipedia:Nicotiana
 
 ## aliases
 

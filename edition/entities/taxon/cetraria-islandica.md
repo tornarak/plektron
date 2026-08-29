@@ -1,7 +1,9 @@
 # taxon:cetraria-islandica — Cetraria Islandica
 
-- status: proposed
+- status: ratified
 - part-of: taxon:cetraria
+- link: wikidata:Q582664
+- link: wikipedia:Cetraria_islandica
 
 ## aliases
 

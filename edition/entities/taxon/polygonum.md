@@ -2,6 +2,8 @@
 
 - status: proposed
 - part-of: taxon:plantae
+- link: wikidata:Q271400
+- link: wikipedia:Polygonum
 
 ## aliases
 

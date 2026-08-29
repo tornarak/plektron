@@ -1,7 +1,9 @@
 # taxon:carnivora — Carnivora
 
-- status: proposed
+- status: ratified
 - part-of: taxon:mammalia
+- link: wikidata:Q25306
+- link: wikipedia:Carnivora
 
 ## aliases
 

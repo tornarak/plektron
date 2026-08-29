@@ -1,6 +1,10 @@
 # place:point-barrow — Point Barrow
 
-- status: proposed
+- status: ratified
+- within: land:alaska
+- geo: 71.3919 -156.361
+- link: wikipedia:Point_Barrow
+- link: wikidata:Q1343019
 
 ## aliases
 

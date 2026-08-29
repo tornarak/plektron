@@ -1,6 +1,7 @@
 # institution:us-national-museum — United States National Museum
 
-- status: proposed
+- status: ratified
+- link: wikidata:Q123562561
 
 ## aliases
 

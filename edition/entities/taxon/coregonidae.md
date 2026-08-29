@@ -1,7 +1,9 @@
 # taxon:coregonidae — Coregonidæ
 
-- status: proposed
+- status: ratified
 - part-of: taxon:pisces
+- link: wikidata:Q782971
+- link: wikipedia:Freshwater_whitefish
 
 ## aliases
 

@@ -1,14 +1,16 @@
 # taxon:aves — Aves
 
-- status: proposed
+- status: ratified
 - part-of: taxon:animalia
+- link: wikidata:Q5113
+- link: wikipedia:Bird
 
 ## aliases
 
 | form | lang | auto | note |
 |---|---|---|---|
-| birds of prey | en | no | 1-252, tabooed by the Reindeer Chukchee; polyphyletic |
-| eagle | en | no | 1-253, with the raven; polyphyletic within Accipitridae, and the page names no species |
+| birds of prey | en | yes | 1-252, tabooed by the Reindeer Chukchee; polyphyletic |
+| eagle | en | yes | 1-253, with the raven; polyphyletic within Accipitridae, and the page names no species |
 
 ## gloss
 

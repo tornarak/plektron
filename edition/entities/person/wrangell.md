@@ -1,6 +1,8 @@
 # person:wrangell — Ferdinand von Wrangell
 
 - status: ratified
+- link: wikidata:Q135329
+- link: wikipedia:Ferdinand_von_Wrangel
 
 ## aliases
 

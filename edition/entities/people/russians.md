@@ -1,6 +1,8 @@
 # people:russians — Russians
 
 - status: ratified
+- link: wikidata:Q49542
+- link: wikipedia:Russians
 
 ## aliases
 

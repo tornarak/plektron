@@ -1,0 +1,37 @@
+{# One annotation on a page of its own: the summary, then the long text, then
+   what it is attached to. The same fragment serves `?partial=1`, so the stack
+   and the standalone page cannot drift apart. #}
+{% if not rec %}
+<p>No annotation at <code>{{ ident }}</code>.</p>
+{% else %}
+<h4>{{ rec.title }}<span class='pill {{ rec.status }}'>{{ rec.status }}</span></h4>
+<div class='meta'><code>{{ ident }}</code> · <span>{{ rec.class }}</span>,
+  rendered {{ rec.placement }} of what it attaches to</div>
+{% if rec.status != 'ratified' %}
+{# The status pill alone reads as bookkeeping. What a reader actually needs to
+   know is that this text appears nowhere else yet — an unratified notice
+   attaches to nothing, which is the whole of what ratification changes. #}
+<p class='meta'>Not yet ratified, so it appears on no page, card or section —
+only here.</p>
+{% endif %}
+<div class='gloss'>{{ summary_html | safe }}</div>
+{% if full_html %}<div class='gloss'>{{ full_html | safe }}</div>{% endif %}
+{% if rec.links %}
+<h5>Links</h5>
+<ul class='shelf'>
+{% for l in rec.links %}
+<li>{% if l.embed %}<a class='yt' data-embed='{{ l.embed }}' href='{{ l.url }}'
+  title='play here'>{{ l.title }}</a>{% else %}<a class='out' href='{{ l.url }}'
+  target='_blank' rel='noopener noreferrer'>{{ l.title }}</a>{% endif %}
+  {%- if l.note %} <span class='note'>{{ l.note }}</span>{% endif %}</li>
+{% endfor %}
+</ul>
+{% endif %}
+<h5>Attached to</h5>
+<ul class='lines'>
+{% for t in attached %}
+<li>{% if t.url %}<a href='{{ t.url }}'>{{ t.label }}</a>{% else %}{{ t.label }}
+  {%- endif %}{% if t.why %} <span class='dim'>{{ t.why }}</span>{% endif %}</li>
+{% endfor %}
+</ul>
+{% endif %}

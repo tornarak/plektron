@@ -1,7 +1,9 @@
 # taxon:lynx-lynx — Lynx lynx
 
-- status: proposed
+- status: ratified
 - part-of: taxon:carnivora
+- link: wikidata:Q43375
+- link: wikipedia:Eurasian_lynx
 
 ## aliases
 

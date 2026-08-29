@@ -1,20 +1,26 @@
 # taxon:vulpes — Vulpes
 
-- status: proposed
+- status: ratified
 - part-of: taxon:carnivora
+- link: wikidata:Q185194
+- link: wikipedia:Vulpes
 
 ## aliases
 
 | form | lang | auto | note |
 |---|---|---|---|
-| fox | en | no | 1-253, fox-meat in times of want; the page prints the plural "foxes" |
+| fox | en | once | 1-179, 1-181, 2-011, 2-026, 2-036, 2-137 and the compounds "fox-meat" (1-253), "fox-hunting" (1-179), "fox-skin" (1-079) |
+| foxes | en | once | 1-183, 1-253, 2-009, 2-013, 2-132, 2-137 |
 
 ## gloss
 
-1-253: "In times of want, meat of foxes and wolves is often eaten, and the popular
-saying for a man born of a poor family is that he has been raised on fox-meat."
+**The genus is where a fox the page does not colour belongs.** The book names two
+species and colours them in English — [[taxon:vulpes-lagopus]] the *white fox*,
+much the commoner and the staple of the fur trade, and [[taxon:vulpes-vulpes]]
+the *red fox* — and 1-179 is where it sets them side by side. But most of the
+book says only *fox*: the fox of 1-253's famine meat, of 2-137's carcass
+ceremonial, of the tales at 1-350. Those mentions name no species and this entry
+does not give them one.
 
-**Genus only.** Both the red fox and the arctic fox are common in the country the
-book describes, the arctic fox being the more important by far as a trade skin,
-and this page distinguishes neither — it says "foxes". Choosing one would be the
-store deciding what the sentence declines to.
+No binomial is printed anywhere in the corpus. The one Latin animal name in this
+neighbourhood is [[taxon:canis]], at 1-252.

@@ -2,6 +2,8 @@
 
 - status: ratified
 - geo: langarea:even1260
+- link: wikidata:Q1142851
+- link: wikipedia:Evens
 
 ## aliases
 

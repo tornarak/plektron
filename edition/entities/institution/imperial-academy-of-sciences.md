@@ -1,6 +1,6 @@
 # institution:imperial-academy-of-sciences — Imperial Academy of Sciences
 
-- status: proposed
+- status: ratified
 
 ## aliases
 

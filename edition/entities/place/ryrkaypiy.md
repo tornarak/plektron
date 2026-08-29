@@ -3,6 +3,8 @@
 - status: ratified
 - within: land:chukotka
 - geo: 68.9177 -179.4841
+- link: wikidata:Q1849898
+- link: wikipedia:Ryrkaypiy
 
 ## aliases
 

@@ -1,6 +1,8 @@
 # person:krause — Aurel Krause
 
 - status: ratified
+- link: wikidata:Q105262
+- link: wikipedia:Aurel_Krause
 
 ## aliases
 

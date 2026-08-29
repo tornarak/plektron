@@ -3,6 +3,7 @@
 - status: ratified
 - within: river:anadyr
 - geo: 64.68 170.42
+- link: wikidata:Q3849656
 - link: wikipedia:Markovo,_Chukotka_Autonomous_Okrug
 
 ## aliases

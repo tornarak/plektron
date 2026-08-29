@@ -2,6 +2,8 @@
 
 - status: proposed
 - part-of: taxon:plantae
+- link: wikidata:Q36050
+- link: wikipedia:Willow
 
 ## aliases
 

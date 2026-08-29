@@ -1,7 +1,9 @@
 # taxon:phocidae — Phocidae
 
-- status: proposed
+- status: ratified
 - part-of: taxon:pinnipedia
+- link: wikidata:Q25587
+- link: wikipedia:Earless_seal
 
 ## aliases
 

@@ -1,6 +1,8 @@
 # person:hooper-william — William Hulme Hooper
 
 - status: ratified
+- link: wikidata:Q8012655
+- link: wikipedia:William_Hulme_Hooper
 
 ## aliases
 

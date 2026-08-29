@@ -1,6 +1,6 @@
 # taxon:oncorhynchus-niarka — Oncorhynchus niarka
 
-- status: proposed
+- status: ratified
 - part-of: taxon:oncorhynchus
 
 ## aliases
@@ -8,7 +8,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Oncorhynchus niarka | la | yes | 1-190, the second name the page gives the red salmon |
-| O. niarka | la | no | 1-190 as printed |
+| O. niarka | la | yes | 1-190 as printed |
 
 ## gloss
 

@@ -1,6 +1,6 @@
 # taxon:totanus-pugnax — Totanus pugnax
 
-- status: proposed
+- status: ratified
 - part-of: taxon:aves
 
 ## aliases

@@ -4,6 +4,7 @@
 - within: land:kamchatka
 - geo: 59.8035 166.092
 - link: geonames:2125456
+- link: wikidata:Q7223363
 
 ## aliases
 

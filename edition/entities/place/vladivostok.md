@@ -1,6 +1,10 @@
 # place:vladivostok — Vladivostok
 
-- status: proposed
+- status: ratified
+- within: land:russian-far-east
+- geo: 43.115 131.885
+- link: wikipedia:Vladivostok
+- link: wikidata:Q959
 
 ## aliases
 

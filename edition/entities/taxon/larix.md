@@ -2,6 +2,8 @@
 
 - status: proposed
 - part-of: taxon:plantae
+- link: wikidata:Q25618
+- link: wikipedia:Larch
 
 ## aliases
 

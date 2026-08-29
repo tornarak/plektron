@@ -2013,6 +2013,112 @@ a card from `key` alone drew the upper picture and silently dropped the lower,
 the List of Illustrations' own links included. `figures.crop_keys` is the one
 rule now, and `by_number`, `by_plate` and `resolve` all go through it.
 
+## The editor's annotations: notices and supplements
+
+Everything above is either the book or a handle on the book. `edition/annotations/`
+is the one store where the editor speaks **as the editor**, and it has two classes
+because the two things an editor needs to say want opposite placement:
+
+    notice      retrospective context, or a correction. Renders **above** what it
+                attaches to, in front of the reader before they meet the text.
+    supplement  further material, mostly on the web. Renders **below**, offered
+                after the reader is done.
+
+**The class is the placement.** `annotations.ANNOTATION_CLASSES` maps one to the
+other once, so no file and no template can disagree with the directory a file
+sits in, and an author cannot put a block in the wrong half of the page by
+typing a field. There is deliberately no `placement:` — the same ruling `auto`
+makes for an alias, a closed vocabulary whose consequence is derived rather than
+restated.
+
+**Attachment is declared on the annotation and never on the target.** One file
+carries the whole join, so adding a notice touches no page, no entity and no
+`toc.json` entry, and the authored order of `attaches:` survives to become the
+"attached to" list on the annotation's own page. The alternative — a `notices:`
+field on each of fifteen pages — would state one fact fifteen times and give the
+gate fifteen places to find it stale.
+
+A target is namespaced, and there are three: `page:3-060`, `toc:chII.1`,
+`entity:people:mongoloids`. One ordered list rather than three fields, because
+`check`, `coverage` and every resolver want exactly that list; three fields
+would be merged back into it at parse time, which is three spellings of one
+structure. The entity form's second colon is harmless — the split is on the
+first.
+
+### `status:` gates attachment, not the annotation's own page
+
+A `proposed` annotation is served at its own URL, with its pill, and attaches to
+nothing. The asymmetry against the entity store is the point. An entity card is
+reached by a click; **a notice is the editor's voice inserted at the top of the
+artifact, unasked**, and rendering an unratified one there would be the edition
+asserting something no human signed. Reviewing it before ratifying is exactly
+what the standalone page is for, and a store whose unratified entries were
+unreachable would have no review step at all.
+
+### The prose points into the links table by alias
+
+A `## links` row is `alias | url | title | note`, and `[[melodiya-1974]]` in the
+summary or the long text resolves to it. This is the entity store's own
+arrangement — a table of forms, and prose that points into it — applied to URLs,
+and it beats both alternatives: a bare table asserts nothing about why a link is
+worth an hour, and bare prose links put one URL in two places with nothing
+holding them together.
+
+**An alias never holds a colon and `entities.WIKILINK` requires one**, so
+`[[people:mongoloids]]` is an entity and `[[melodiya-1974]]` is a link,
+decidable by shape with no rule having to guess.
+
+**`edition_ui` needed no change for this, and that is deliberate.**
+`inline_html` resolves wikilinks through `_entity_link`, whose whole safety
+argument is that its rule set is closed — it knows one store and escapes
+everything else. `annotations.expand_links` rewrites the alias into an ordinary
+`[title](url)` *before* `gloss_html` sees the text, so the result goes through
+the `_LINK` rule and the `LINK_SCHEMES` allowlist that were already there. No
+new markup path, and no fourth thing marked safe.
+
+The table earns its place by being checkable, which is what prose links could
+not answer. `check` refuses a non-`http(s)` URL, a duplicate alias, a duplicate
+URL, a `]` in a title, whitespace or parens in a URL — the last two because
+`_LINK` would then fail to match and leave raw brackets in a reader's prose —
+and an alias the prose reaches for that no row defines. A row nothing references
+is reported and never gated: a shelf may hold more than the summary discusses.
+
+**`[[notice:…]]` is refused**, with a markdown link to `/edition/annotation/<id>`
+named as the alternative. It looks exactly like an entity reference and
+`_entity_link` would render it as a dangling one, silently, in the reader's
+prose. Teaching that function a second store is a change of its own.
+
+### Reaching a section's pages, and the refusal that has to be spoken
+
+A notice on `chII.1` must surface on that section's pages, and there is no
+stored page→section map: `state.toc_containing` answers from a **folio**, and
+its docstring forbids writing that to a store. So the chain is
+`ref → folio → toc ids`, and the middle step can refuse.
+
+**`annotations.for_page` takes the chain and never computes it**, and never
+touches the filesystem. If the lookup lived there, an empty list would mean two
+things at once — *nothing attaches here*, and *we cannot say whether anything
+does*. Only the route holds the folio, so only the route can tell the template
+which happened; where it cannot, `page.html` prints a sentence saying so, on the
+same ruling the contents panel follows. Guarded by `has_toc_attachments`, so a
+corpus holding no section attachment does not grow a banner about a kind of
+annotation nobody has written.
+
+`annotation coverage` is the report, and its `unwitnessed` column is **a bound,
+not a miss**: without a witnessed folio a leaf cannot be shown to fall inside
+the attached section *or* outside it, so the set a section attachment misses is
+not computable at all — only its size is. Nothing interpolates a range between
+two `page_start`s, either; a notice appearing on a page nothing placed would be
+indistinguishable from one appearing on a page that was.
+
+The workflow this implies is the right one, and it matches the rest of the
+project: **the section attachment is enrichment over an explicit page list**, not
+the mechanism relied on. The author names the pages they care about, and
+`coverage` says what the section adds on top — for
+`notice:physical-anthropology` today, nothing, because both pages `chII.1`
+reaches are already named. That is the honest answer and the verb exists to give
+it.
+
 ## The lexicon, which does not wait on collation
 
 The card behind a Tier-1 form used to say, in as many words, that there was no
@@ -2322,9 +2428,77 @@ Chukchi Peninsula reads 45.2 km out while saying nothing about either source.
 So `fill` over a located entry is an audit rather than a no-op, and its rows are
 marked `+` would write, `~` would replace, `=` compared only.
 
+**`--pairs` states the acceptance rule instead of leaving it to whoever reads
+the report.** It prints the candidates the entry's own coordinate corroborates —
+within `--near` kilometres, and reading as the entry's class — spelled as the
+`ID=Q… # why` lines `identify.py set --from` takes. Two witnesses, neither of
+them the name that was searched. It lists nothing for an *unlocated* entry, and
+that is the point rather than a gap: an entry with no point of its own has no
+second witness by construction, so its one plausible candidate is worked from
+the report by a human and never from a worklist. The rule is still only as good
+as `class_match`, which over a Wikidata description is a grep over free text: it
+offered `place:st-michael` the village's **power station**, 0.1 km away and
+carrying "in Nome Borough, Alaska" in its description, and only a human opening
+the item caught it.
+
 It is a `tools/` script rather than a harness verb because Wikidata is live:
 the harness is offline and deterministic over what is committed, which is the
 same split `build_geo.py` sits on.
+
+### Identifying an entity: `tools/identify.py`
+
+The gazetteer's sibling, for the classes with no geometry to check against. It
+asks the other half of the question — *which item is this* rather than *where is
+it* — for `taxon:`, `person:`, `people:`, `institution:`, `source:`, `being:` and
+`event:`, and it is the same two-verb split for the same reason: `propose`
+reports, a human adopts, `set` writes the `link: wikidata:Q…` and derives the
+`link: wikipedia:…` beside it from that QID's `enwiki` sitelink. The article
+title is never searched for separately, because a second identification is
+exactly a thing that can disagree with the first.
+
+**Every class carries a type gate, because a name match is not an
+identification.** A bare label query for `Parry` returns six painters and a
+cricketer. So the query says what the answer has to *be* — `person:` an instance
+of human, `people:` an ethnic group or a people, `institution:` an organisation,
+`source:` a written work — and `taxon:` is not matched on a label at all but on
+`P225`, the scientific name, a field whose only purpose is to hold exactly that
+binomial. That is why the taxa answered almost entirely by rule where the people
+did not: 82 of 109 came back with one candidate each, obsolete binomials
+included, since Wikidata holds a synonym item for `Agaricus muscarius` and
+`Strix nyctea` and returns nothing where it does not.
+
+**The canonical is asked first and alone; the aliases only answer for an entry it
+left blank.** They were peers to begin with, and that was the same defect in
+miniature: an entry's canonical is the entity's name and its aliases are what the
+*page prints*, which for a `person:` is very often a bare surname. Asked
+together, `Franz Boas` and `Boas` came back as one list with a Danish zoologist
+in it. Fourteen of the first sweep's twenty-one ambiguous `person:` rows were
+that and nothing else. Rows reached through an alias print `[alias]`, and rows
+reached through the prefix-search fallback print `[search]`, because each
+corroborates less than an exact hit on the canonical.
+
+**A gate can say the answer is a written work; it cannot say the question was
+worth asking.** `source:` is the case that proved it. A source entry's canonical
+is the *siglum* — `Krause, I`, `Sauer 1802` — and its aliases are other spellings
+of the siglum; none of them names anything in the world, and the first sweep duly
+matched `Kyber, I` to a post-quantum key-encapsulation scheme and `Sauer` to a
+2004 video game, both of which cleared the written-work gate. The title is not in
+the entity file at all: it is in `edition/authorities.json`, behind the entry's
+`authority:` key, and that is where the terms now come from. The yield fell to
+almost nothing, which is the honest answer — most of this bibliography is a
+19th-century monograph nobody has made an item for.
+
+**`fill` is the third verb and makes no identification at all.** Where an entry
+already carries a `link: wikipedia:…` a human chose, the QID behind that article
+is not a second opinion about which item is meant — it is the same
+identification, read off the sitelink backwards. Ten `being:` entries are why it
+exists: `taˊɪrg̣ɪn` is filed at *Addison's disease* and `iteˊyun` at
+*Trichinellosis*, editorial readings no query would have made, and the QIDs
+follow from them mechanically.
+
+`animal:` is not searched — a reindeer its herder called by name is not in
+Wikidata and never will be — and the four geographical classes are not either,
+those being the gazetteer's, with a second witness this file cannot offer.
 
 **Two gazetteers, because neither has what the other has.** Wikidata is live,
 rich and uneven — it knows Khatyrka is both a village and a river, and it has

@@ -1,12 +1,12 @@
 # taxon:algae — Algae
 
-- status: proposed
+- status: ratified
 
 ## aliases
 
 | form | lang | auto | note |
 |---|---|---|---|
-| seaweed | en | no | 1-253, "several kinds of seaweed which are found on the seashore" |
+| seaweed | en | once | 1-253, "several kinds of seaweed which are found on the seashore" |
 
 ## gloss
 

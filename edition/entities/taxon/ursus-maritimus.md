@@ -1,7 +1,9 @@
 # taxon:ursus-maritimus — Ursus maritimus
 
-- status: proposed
+- status: ratified
 - part-of: taxon:ursus
+- link: wikidata:Q33609
+- link: wikipedia:Polar_bear
 
 ## aliases
 

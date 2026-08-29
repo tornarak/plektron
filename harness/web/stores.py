@@ -30,6 +30,10 @@ def _lexicon_files(root: Path) -> list[Path]:
     return sorted((Path(root) / "edition" / "lexicon").glob("*.md"))
 
 
+def _annotation_files(root: Path) -> list[Path]:
+    return sorted((Path(root) / "edition" / "annotations").glob("*/*.md"))
+
+
 def _gt_ocr_files(root: Path) -> list[Path]:
     return sorted((Path(root) / "gt" / "ocr").glob("chukchi-*.xml"))
 
@@ -54,6 +58,17 @@ def _load(root: str, _key: bytes) -> dict:
 def load(root: Path) -> dict:
     """The encyclopedia. Six call sites per page render, one parse per edit."""
     return _load(str(root), stamp(_entity_files(root)))
+
+
+@lru_cache(maxsize=MAXSIZE)
+def _annotations(root: str, _key: bytes) -> dict:
+    from .. import annotations as ann
+    return ann.load(Path(root))
+
+
+def annotations(root: Path) -> dict:
+    """The editor's notices and supplements. Asked for on every page render."""
+    return _annotations(str(root), stamp(_annotation_files(root)))
 
 
 @lru_cache(maxsize=MAXSIZE)

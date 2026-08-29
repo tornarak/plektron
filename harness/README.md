@@ -79,8 +79,8 @@ predicted polygon fails the fixed-measure width check by construction.
 ## Modules
 
 **`cli/`** — the two-tier command tree, **click**, one module per group: `_tei _ocr
-_proposal _zones _fig _lexicon _entity _geo _edition _find _corpus _scans _views
-_train _agents _verbs`, each exposing `register(cli)` and
+_proposal _zones _fig _lexicon _entity _annotation _geo _edition _find _corpus
+_scans _views _train _agents _verbs`, each exposing `register(cli)` and
 one `run_*` handler per action, which returns the exit code. `__init__.py` holds
 `main`, `build_parser` (separate so the surface test can walk the tree without
 running anything), and the rename trap. `_common.py` holds the declaration

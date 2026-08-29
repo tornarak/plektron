@@ -1,7 +1,9 @@
 # taxon:microgadus-proximus — Microgadus proximus
 
-- status: proposed
+- status: ratified
 - part-of: taxon:gadidae
+- link: wikidata:Q369995
+- link: wikipedia:Microgadus_proximus
 
 ## aliases
 

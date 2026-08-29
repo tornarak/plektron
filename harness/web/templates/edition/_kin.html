@@ -1,0 +1,43 @@
+{# The entry's place in its own class: what holds it, and what it holds.
+
+   The map tree's counterpart over the other hierarchy, and it is drawn the same
+   way on purpose — a nested list, a name, its class, the entry mark — because a
+   reader who has read one tree in this edition has read this one. What it does
+   not carry is everything that only a map means: nothing here is hidden, painted
+   or framed on, so there is no control column, and the name *is* the link rather
+   than a toggle with `¶` beside it for the entry.
+
+   It is a spine and not a subtree: ancestors each holding only the child on the
+   path, then this entry, then its direct children. What a child holds is a count
+   and not a branch — the branch is that child's own card, one click away. The
+   reasoning is `edition_ui.kin_tree`'s, in one copy. #}
+{% macro kin(n) %}
+<li class='{{ "sel" if n.selected }}'>
+  <a class='node' data-ref='{{ n.id }}'
+     href='{{ base }}/entity/{{ n.id }}'>{{ n.canonical }}</a>
+  <span class='pill cls' data-ref='{{ n.id }}'>{{ n.cls }}</span>
+  {#- An unaudited entry says so wherever it is named, as it does in the class
+      index and on its own heading: a tree is exactly where a reader would
+      otherwise take a proposal for a settled parent. -#}
+  {% if n.status == 'proposed' %}<span class='pill proposed'>proposed</span>{% endif %}
+  {#- What hangs below the child, said as a number. A leaf gets nothing: "0" in a
+      column of counts reads as a finding, and it is only the absence of one. -#}
+  {% if n.below and not n.selected %}<span class='dim'>{{ n.below }} below</span>{% endif %}
+  {%- if n.children or n.folded %}<ul>
+    {%- for k in n.children %}{{ kin(k) }}{% endfor %}
+    {%- if n.folded %}
+    {# `<details>`, like the map's fold: it opens with no JavaScript and is
+       keyboard-reachable and announced for free. #}
+    <li class='more'><details>
+      <summary>{{ n.summary or (n.folded | length ~ ' more') }}</summary>
+      <ul>{% for k in n.folded %}{{ kin(k) }}{% endfor %}</ul>
+    </details></li>
+    {%- endif %}
+  </ul>{% endif %}
+</li>
+{% endmacro %}
+{% if kin_nodes %}
+<div class='ent-tree kin-tree'>
+  <ul>{% for n in kin_nodes %}{{ kin(n) }}{% endfor %}</ul>
+</div>
+{% endif %}

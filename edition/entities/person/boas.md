@@ -1,6 +1,7 @@
 # person:boas — Franz Boas
 
 - status: ratified
+- link: wikidata:Q76857
 - link: wikipedia:Franz_Boas
 
 ## aliases

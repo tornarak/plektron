@@ -4,6 +4,8 @@
 - within: river:indigirka
 - geo: 67.45 142.617
 - link: geonames:2119377
+- link: wikidata:Q1973953
+- link: wikipedia:Zashiversk
 
 ## aliases
 

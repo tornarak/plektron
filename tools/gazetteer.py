@@ -195,9 +195,16 @@ def sparql_names(names: list[str]) -> dict[str, list[dict]]:
     values = " ".join(f'"{n}"@{lg}' for n, lg in
                       {(n, "ru" if any("Ѐ" <= c <= "ӿ" for c in n) else "en")
                        for n in names})
-    r = SESSION.get(SPARQL, params={"query": _SPARQL_Q % values},
-                    headers={"Accept": "application/sparql-results+json"},
-                    timeout=120)
+    # **POSTed, because the whole point of this query is that it is long.** A
+    # `VALUES` block is one round trip for the entire sweep — and at 139
+    # entities, with the transcriptions percent-encoding to a dozen bytes a
+    # character, the URL passed Wikidata's limit and the sweep died on a `414
+    # URI Too Long`. Sent as a form body there is no limit to pass. The GET
+    # worked for every run that had been made until one was made over the whole
+    # store, which is the size this query exists to handle.
+    r = SESSION.post(SPARQL, data={"query": _SPARQL_Q % values},
+                     headers={"Accept": "application/sparql-results+json"},
+                     timeout=120)
     r.raise_for_status()
     out: dict[str, list[dict]] = {}
     for b in r.json()["results"]["bindings"]:
@@ -612,7 +619,18 @@ def _tests(pt, store: dict, root: Path, ident: str, idx: dict,
     lat, lon = pt
     slon = geo._shifted(lon, idx)
     w, s, e, n = idx["window"]
-    own = (store.get(ident) or {}).get("geo")
+    # **`geo:`'s *point* members, through the accessor.** This read the field
+    # raw and treated it as one `(lat, lon)` pair, which it stopped being when
+    # `geo:` absorbed `area:` and became a list of typed members. Every entry
+    # whose location is a shape or a transcluded extent — a river with a
+    # watershed, a people with a language area — therefore handed a dict to
+    # `_km` and crashed the whole run on the first one. Nothing caught it
+    # because `propose` had only ever been pointed at *unlocated* entries,
+    # which have no members at all; the bug needed a sweep over located ones,
+    # which is exactly what asking "which of these has no wikidata link" first
+    # produced.
+    pts = geo.geo_points(store.get(ident) or {"geo": []})
+    own = pts[0] if pts else None
     got = {"in_window": bool(s <= lat <= n and w <= slon <= e),
            "parent": "", "parent_out": None, "inside": [],
            "own_km": round(_km(own, pt), 1) if own else None}
@@ -760,12 +778,14 @@ def run_propose(a) -> int:
                     rows[k] = got.get(k.partition(":")[2])
             rows = {k: v for k, v in rows.items() if v}
 
-        print(f"{ident} — {rec['canonical']}"
-              + (f"   within: {rec['within']}" if rec["within"] else ""))
+        if not a.pairs_only:
+            print(f"{ident} — {rec['canonical']}"
+                  + (f"   within: {rec['within']}" if rec["within"] else ""))
         cands = [(r, _tests(r["geo"], store, root, ident, idx, docs))
                  for r in rows.values() if r["geo"]]
         if not cands:
-            print("  (no candidate carries a coordinate)\n")
+            if not a.pairs_only:
+                print("  (no candidate carries a coordinate)\n")
             continue
         # In-window first, then agreeing with the entity's class, then nearest
         # to the parent the entry already claims, then whatever the store
@@ -814,6 +834,29 @@ def run_propose(a) -> int:
         shown = ([rt for rt in cands if rt[1]["in_window"]] or cands[:1]
                  if not a.all_candidates else cands)
         hidden = len(cands) - len(shown)
+
+        # **A worklist, and the rule that builds it is stated rather than
+        # implied.** A candidate qualifies when the entry's own point and the
+        # gazetteer's agree to within `--near` kilometres *and* the candidate
+        # reads as the entry's class — two independent witnesses, neither of
+        # them the name that was searched. That is the strongest evidence this
+        # tool can assemble, and it is still a proposal: these lines are for a
+        # human to read, edit and hand to `identify.py set`, which is why they
+        # carry the label and the distance as a comment.
+        #
+        # The bar is *only* for entries that already have a point. An unlocated
+        # entry has no second witness by construction — that is what makes it
+        # unlocated — so it is never listed here however good its one candidate
+        # looks, and the report above stays the way to work it.
+        if a.pairs_only:
+            for r, t in shown:
+                if (t["own_km"] is not None and t["own_km"] <= a.near
+                        and t["class_match"] and t["in_window"]
+                        and r.get("src", "wikidata") == "wikidata"):
+                    print(f"{ident}={r['qid']}  # {r['label'][:28]} — "
+                          f"{t['own_km']} km from the entry's own point")
+                    break
+            continue
         for r, t in shown:
             lat, lon = r["geo"]
             marks = []
@@ -1012,6 +1055,18 @@ def main() -> int:
                         "runs as well as the one SPARQL query (default 12). "
                         "Above it only SPARQL does: the prefix search is a "
                         "round trip per name and takes a hard 429 on a sweep")
+    p.add_argument("--pairs", dest="pairs_only", action="store_true",
+                   help="print only the candidates corroborated by the entry's "
+                        "own coordinate, as the `ID=Q… # why` lines "
+                        "identify.py set --from reads. A worklist to review, "
+                        "not an adoption; entries with no point of their own "
+                        "are never listed, having no second witness")
+    p.add_argument("--near", type=float, default=5.0, metavar="KM",
+                   help="how close the entry's own point and the candidate's "
+                        "must be for --pairs to list the row (default 5). Two "
+                        "sources with no common ancestor agreeing to a few "
+                        "kilometres is the corroboration; a hundred is a "
+                        "different place with the same name")
     p.add_argument("--all-candidates", action="store_true",
                    help="show the ones outside the edition's window too. They "
                         "are hidden by default because a common English name "

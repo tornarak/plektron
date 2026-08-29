@@ -1,6 +1,10 @@
 # place:irkutsk — Irkutsk
 
-- status: proposed
+- status: ratified
+- within: river:yenisei
+- geo: 52.2892 104.28
+- link: wikipedia:Irkutsk
+- link: wikidata:Q6576
 
 ## aliases
 

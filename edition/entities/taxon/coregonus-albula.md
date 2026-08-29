@@ -1,7 +1,9 @@
 # taxon:coregonus-albula — Coregonus albula
 
-- status: proposed
+- status: ratified
 - part-of: taxon:coregonus
+- link: wikidata:Q754061
+- link: wikipedia:Coregonus_albula
 
 ## aliases
 

@@ -1,7 +1,9 @@
 # taxon:canis-lupus — Canis lupus
 
-- status: proposed
+- status: ratified
 - part-of: taxon:canis
+- link: wikidata:Q18498
+- link: wikipedia:Wolf
 
 ## aliases
 

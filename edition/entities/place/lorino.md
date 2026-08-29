@@ -3,6 +3,8 @@
 - status: ratified
 - within: land:chukchi-peninsula
 - geo: 65.5036 -171.7014
+- link: wikidata:Q1010651
+- link: wikipedia:Lorino,_Chukotka_Autonomous_Okrug
 
 ## aliases
 

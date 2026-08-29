@@ -2,6 +2,8 @@
 
 - status: proposed
 - part-of: taxon:plantae
+- link: wikidata:Q202305
+- link: wikipedia:Empetrum_nigrum
 
 ## aliases
 

@@ -2,6 +2,7 @@
 
 - status: ratified
 - part-of: taxon:phoca
+- link: wikidata:Q23009697
 
 ## aliases
 

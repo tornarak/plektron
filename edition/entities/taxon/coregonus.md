@@ -1,7 +1,9 @@
 # taxon:coregonus — Coregonus
 
-- status: proposed
+- status: ratified
 - part-of: taxon:coregonidae
+- link: wikidata:Q311392
+- link: wikipedia:Coregonus
 
 ## aliases
 

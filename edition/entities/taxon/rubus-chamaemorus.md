@@ -2,6 +2,8 @@
 
 - status: proposed
 - part-of: taxon:rubus
+- link: wikidata:Q160092
+- link: wikipedia:Rubus_chamaemorus
 
 ## aliases
 

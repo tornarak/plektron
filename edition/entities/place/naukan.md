@@ -3,6 +3,8 @@
 - status: ratified
 - within: land:chukchi-peninsula
 - geo: 66.0267 -169.7019
+- link: wikidata:Q4314287
+- link: wikipedia:Naukan_(village)
 
 ## aliases
 

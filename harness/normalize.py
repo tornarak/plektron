@@ -246,14 +246,21 @@ def _spacing_hits(text: str, commentary: bool = False) -> list[dict]:
 # keeps every gt page in scope, since the view never held anything else.
 SCOPE_GLOBS = ("gt/ocr/*.xml", "gt/fig/*.xml", "tei/*.xml",
                # The entity store is hand-authored and holds two kinds of text
-               # at once: gloss prose, which is English and sets curly quotes,
-               # and alias forms, which may be Tier-1 and where a straight
-               # apostrophe is the licensed stress mark. Both need NFD — a
-               # alias the store spells precomposed silently fails to match a
-               # page that spells it decomposed, and a silent miss is the
-               # failure class the whole project is organised against — so the
-               # NFD arm sweeps the file whole and the two prose arms skip the
-               # table rows. See `_is_entity`.
+               # at once: gloss prose, which is English, and alias forms, which
+               # may be Tier-1 and where a straight apostrophe is the licensed
+               # stress mark. Both need NFD — an alias the store spells
+               # precomposed silently fails to match a page that spells it
+               # decomposed, and a silent miss is the failure class the whole
+               # project is organised against — so the NFD arm sweeps the file
+               # whole. **The two prose arms do not read this store at all.**
+               # An entry is the editor's own voice, not a reproduction of the
+               # print, so "the book sets curly quotes" is not a premise that
+               # holds over it; and the store's prose legitimately holds
+               # straight quotes a curly fold would corrupt — a `link:` value
+               # (`wikipedia:Addison's_disease`), a romanization whose U+0027
+               # is the soft sign (`Medvezh'ya`), a backticked path or verb, a
+               # nested quotation. The same reasoning already excused `@note`
+               # lines and table rows; it does not stop at their edge.
                "edition/entities/*/*.md",
                # **One level deep, each of them, and that is load-bearing.** These
                # were one `data/*.json` until the stores were split by layer; a
@@ -304,15 +311,6 @@ SCOPE_GLOBS = ("gt/ocr/*.xml", "gt/fig/*.xml", "tei/*.xml",
 # is run on the file currently being authored.
 PATH_ONLY_GLOBS = ("review/*/proposal.json",)
 
-
-def _is_entity(p: Path) -> bool:
-    """An `edition/entities/<class>/<slug>.md` record.
-
-    By position rather than by suffix: `.md` alone would also catch every
-    document in the repo if one were ever added to a glob, and the two prose
-    arms below scope themselves on this answer.
-    """
-    return p.suffix == ".md" and p.parent.parent.name == "entities"
 
 # Codepoints with no legitimate use in English prose *or* in the transcription system,
 # so their presence is a defect regardless of which one a given span is. The curly
@@ -493,15 +491,6 @@ def _quote_hits(p: Path, root: Path) -> list[dict]:
                     hits.append({"path": rel, "trap": STRAIGHT_QUOTE_TRAP,
                                 "line": i, "token": _token_at(content, pos)})
                     start = pos + 1
-    elif _is_entity(p):
-        for lineno, line in enumerate(p.read_text(encoding="utf-8").splitlines(), start=1):
-            if line.startswith("@note") or line.startswith("|"):
-                continue
-            start = 0
-            while (pos := line.find('"', start)) != -1:
-                hits.append({"path": rel, "trap": STRAIGHT_QUOTE_TRAP,
-                            "line": lineno, "token": _token_at(line, pos)})
-                start = pos + 1
     return hits
 
 
@@ -547,13 +536,6 @@ def _apostrophe_hits(p: Path, root: Path) -> list[dict]:
                 for h in apostrophe_flags(content):
                     hits.append({"path": rel, "trap": _APOSTROPHE_TRAPS[h["kind"]],
                                 "line": i, "token": h["token"]})
-    elif _is_entity(p):
-        for lineno, line in enumerate(p.read_text(encoding="utf-8").splitlines(), start=1):
-            if line.startswith("@note") or line.startswith("|"):
-                continue
-            for h in apostrophe_flags(line):
-                hits.append({"path": rel, "trap": _APOSTROPHE_TRAPS[h["kind"]],
-                            "line": lineno, "token": h["token"]})
     return hits
 
 

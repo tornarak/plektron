@@ -1,7 +1,9 @@
 # taxon:cetraria — Cetraria
 
-- status: proposed
+- status: ratified
 - part-of: taxon:lichenes
+- link: wikidata:Q134917
+- link: wikipedia:Cetraria
 
 ## aliases
 

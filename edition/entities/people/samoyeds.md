@@ -1,6 +1,8 @@
 # people:samoyeds — Samoyeds
 
 - status: proposed
+- link: wikidata:Q941253
+- link: wikipedia:Samoyedic_peoples
 
 ## aliases
 

@@ -2,6 +2,8 @@
 
 - status: proposed
 - part-of: taxon:plantae
+- link: wikidata:Q1424322
+- link: wikipedia:Oxytropis
 
 ## aliases
 

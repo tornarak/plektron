@@ -2,6 +2,8 @@
 
 - status: ratified
 - part-of: taxon:phocidae
+- link: wikidata:Q754895
+- link: wikipedia:Ribbon_seal
 
 ## aliases
 

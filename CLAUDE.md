@@ -126,6 +126,9 @@ Layout, all at the repo root:
             lexicon/  one file per Tier-1 form an editor has noted; the identity
               is the form, the rest of the card is derived. `lexicon check`
               gates it. Declared and still empty.
+            annotations/  the editor's own voice — notice/ renders above what it
+              attaches to, supplement/ below; each attaches to pages, ToC
+              sections or entities. `annotation check` gates it.
             fig-img/, page-img/  the touch-ups. An improvement on the page is
               what `gt/` may not be (`docs/apparatus.md`).
             geo/  the atlas — watersheds, language areas, named features,
@@ -169,9 +172,9 @@ modules are open.
 root — all paths resolve relative to the cwd unless `--root` says otherwise.
 
 **Two tiers: a group, then an action** — `tei`, `ocr`, `proposal`, `zones`, `fig`,
-`scans`, `views`, `train`, `lexicon`, `entity`, `geo`, `edition`, `find`,
-`corpus`, `agents`, `verbs`. The group names what it touches; the action what
-it does.
+`scans`, `views`, `train`, `lexicon`, `entity`, `annotation`, `geo`, `edition`,
+`find`, `corpus`, `agents`, `verbs`. The group names what it touches; the
+action what it does.
 
 **`harness/VERBS.md` is the reference** — one entry per action: what it does,
 what it reads, what it writes, what its exit code means, and every flag with
@@ -219,7 +222,7 @@ every byte of this file on every page.
 | `docs/segmentation.md` | the second segmentation attempt: the design and why each piece is shaped as it is |
 | `docs/pipeline.md` | the pipeline stage by stage, and the design reasoning behind the built stages |
 | `docs/apparatus.md` | the figure track and its editor, the List of Illustrations and Authorities Quoted stores |
-| `docs/edition.md` | the entity and lexicon stores, the rule that links a form, `#mz`, and the reading view |
+| `docs/edition.md` | the entity, lexicon and annotation stores, the rule that links a form, `#mz`, and the reading view |
 | `.claude/skills/curate-entities/` | writing an entry: whether it is earned, its class, its alias modes, its gloss |
 | `docs/rasters.md` | the source rasters, the derived trees and the `tools/` scripts |
 | `docs/decisions.md` | what was settled the hard way, intact — the reasoning behind the rules |

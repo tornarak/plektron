@@ -2,6 +2,8 @@
 
 - status: ratified
 - geo: langarea:yaku1245
+- link: wikidata:Q486316
+- link: wikipedia:Yakuts
 
 ## aliases
 

@@ -1526,6 +1526,116 @@ is one keystroke from an `area:` that resolves as an entity reference.
 
 ---
 
+## annotation
+
+The editor's own voice over the book: one markdown file per annotation at
+`edition/annotations/<class>/<slug>.md`, identified as `class:slug`. Everything
+else `edition/` serves is the book or a handle on the book; this is the one store
+where the editor speaks as the editor.
+
+**Two classes, and the class is the placement.** A `notice` renders *above* what
+it attaches to — retrospective context, or a correction, put in front of the
+reader before they meet the text. A `supplement` renders *below* — further
+material, mostly on the web, offered after the reader is done. Nothing authored
+says which: `annotations.ANNOTATION_CLASSES` maps the class to the placement
+once, so no file and no template can disagree with the directory a file sits in.
+
+**Attachment is declared on the annotation, never on the target.** One file
+carries the whole join, so adding a notice touches no page, no entity and no
+`toc.json` entry, and the authored order of `attaches:` survives to become the
+"attached to" list a reader sees. A target is namespaced — `page:PP-NNN`,
+`toc:ID`, `entity:class:slug` — because every resolver, the gate and `coverage`
+all want one ordered list of targets rather than three fields merged back into
+one at parse time.
+
+**`status:` gates attachment, not the annotation's own page.** A `proposed`
+annotation is served at its own URL, with its status pill, and attaches to
+nothing. The asymmetry is the point: an entity card is reached by a click, but a
+notice is the editor's voice inserted at the top of the artifact *unasked*, and
+rendering an unratified one there would be the edition asserting something no
+human signed. Reviewing it before ratifying is what the standalone page is for.
+
+**The prose points into the links table by alias.** A `## links` row carries
+`alias | url | title | note`, and `[[melodiya-1974]]` in the summary or the long
+text resolves to it. An alias never holds a colon and `entities.WIKILINK`
+requires one, so `[[people:mongoloids]]` is an entity and `[[melodiya-1974]]` is
+a link, decidable by shape and never by guess. The table is the record and the
+prose refers to it, which is the entity store's own arrangement applied to URLs.
+
+Human-authored and tracked, so `--commit` gates the three actions that write.
+
+### annotation new ID
+**Does** scaffold an annotation at `status: proposed`. Nothing mints one ratified, and until it is ratified it attaches to nothing. Parses the result before writing where any target was given, so a bad `--attach` fails as a message rather than as a file the next `check` has to explain.
+**Reads** — **Writes** `edition/annotations/<class>/<slug>.md` under `--commit`. **Exit** 0, or 1 if it already exists.
+```
+--title NAME  the display title, written into the heading. Required
+--attach TARGET  what this annotates: `page:PP-NNN`, `toc:ID` or `entity:class:slug`. Repeatable
+--commit  write it; without this the file is reported and not created
+--root --json --toon --pager
+```
+**Note** the scaffold writes `(unwritten)` into both prose sections, as `entity new` and `lexicon new` do. It attaches to nothing until a target is given, and `check` refuses that state — which is the worklist row, not a defect in the scaffold.
+
+### annotation attach ID TARGET
+**Does** add one target to an annotation that exists, or drop one with `--remove`. Re-parses the file before writing.
+**Reads** `edition/annotations/`. **Writes** the named file under `--commit`. **Exit** 0, or 1 if the annotation does not exist, or if `--remove` names a target that is not attached.
+```
+--remove  drop the target instead of adding it
+--commit  write it; without this the change is reported and not made
+--root --json --toon --pager
+```
+**Note** **one target per call, and this is the one place this group is deliberately more verbose than `entity locate`.** That verb's `--geo` replaces the whole member list, over two or three members. An annotation carries ten or fifteen attachments, and a flag that replaced the list would let a single typo drop fourteen of them with nothing but git to witness it. The `was`/`now` columns print both lists whole.
+**Note** singular ID and singular TARGET, because the call names one edit to one file — `proposal set`'s reason. Neither positional is a page ref, so the plural-ref rule does not reach them.
+
+### annotation check
+**Does** the store gate: every file parses, every heading agrees with its directory and its filename, no two files claim one identity, no `.md` sits outside a class directory, every `attaches:` resolves — an id in `edition/toc.json` for `toc:`, an entry the entity store holds for `entity:` — every annotation attaches to at least one thing, every `## summary` is present and non-empty, every `## links` row can render as a markdown link, and every `[[wikilink]]` resolves.
+**Reads** `edition/annotations/`, `edition/entities/`, `edition/toc.json`. **Writes** — **Exit** 0 clean, 1 on any defect.
+```
+--root --json --toon --pager
+```
+**Note** **a `page:` target is gated for shape and never for existence.** `norm_ref` refuses a bare integer and folds `1-55` and `1-055` into one attachment, so a ref cannot name two leaves or none. Whether the leaf *exists* is not asked here: there is no leaf universe a clone can read — `scans/` is derived and ignored — and the per-part maxima are a fact `seam.next_ref` declines to write down twice, on the ground that a number in two places is a number that will drift. `annotation coverage` reports an unknown ref, where the folio index is being read anyway.
+**Note** **a section attachment that reaches no page is not a defect.** It is the unwitnessed-folio problem, `coverage` measures it, and failing here would make an editor delete a correct attachment to quiet a gate.
+**Note** **`[[notice:…]]` is refused with its alternative named.** An annotation reference looks exactly like an entity reference, and `edition_ui._entity_link` knows one store — it would render as a dangling entity link in the reader's prose, silently. The message says to write a markdown link to `/edition/annotation/<id>` instead. Teaching that function a second store is a change of its own: its whole safety argument is that its rule set is closed.
+**Note** a `## links` row nothing in the prose references is reported and never gated. A shelf is allowed to hold more than the summary discusses.
+
+### annotation list
+**Does** every annotation with its class, placement, status, title, and how many things it attaches to.
+**Reads** `edition/annotations/`. **Writes** — **Exit** 0.
+```
+--class {notice,supplement}  one class only
+--root --json --toon --pager
+```
+
+### annotation show ID
+**Does** whole records, the summary and the long text included.
+**Reads** `edition/annotations/`. **Writes** — **Exit** 0, or an error naming an identity the store does not hold.
+```
+--root --json --toon --pager
+```
+
+### annotation ratify ID
+**Does** `proposed` -> `ratified`, and **this is the act that makes an annotation attach to anything**. It means the text has been read against what it will appear over.
+**Reads** `edition/annotations/`. **Writes** the named files under `--commit`. **Exit** 0.
+```
+--commit  write the change
+--root --json --toon --pager
+```
+**Note** through `annotations.set_status` and never a substring replace. `_FIELD` accepts `- status:proposed` with no space and fields are read only above the first `##`, so a literal search can land inside the long text — rewriting that prose, leaving the status alone, and reporting a ratification that did not happen. `lexicon ratify` carries the same note because the bug was found there first.
+
+### annotation coverage
+**Does** which leaves each annotation actually reaches, and by what route: `pages` are the leaves a `page:` target names directly, `via_section` the leaves a `toc:` target reaches through a witnessed folio. Reports; never gates.
+**Reads** `edition/annotations/`, `edition/toc.json`, the named universe store, and the folio index — committed `tei/`, the apparatus stores, and running titles over the OCR store. **Writes** — **Exit** 0.
+```
+--id ID  one annotation, `class:slug`. Repeatable; omitted means every one in the store
+--refs  list the refs each annotation reaches instead of counting them, so a row is a worklist rather than a notification
+--universe STORE  the store whose refs are the denominator [mz/ocr]
+--root --json --toon --pager
+```
+**Note** **`unwitnessed` is a bound and not a miss.** Placing a leaf in a section runs `ref -> folio -> toc ids`, and without a witnessed folio a leaf cannot be shown to fall inside the attached section *or* outside it. So the set a section attachment misses is not computable at all — only its size is. A column read as "pages this annotation misses" would be a confident guess wearing a count. It is `0` for an annotation carrying no `toc:` target, because the question does not arise there.
+**Note** **nothing interpolates a section's page range.** `page_start` is monotonic and scan refs are monotonic within a part, so a range between two ToC entries looks derivable; `state.toc_containing` refuses an unknown folio on purpose, and a notice appearing on a page nothing placed would be indistinguishable from one appearing on a page that was.
+**Note** the denominator is named rather than implied, because every count here is against one store's refs and a number whose denominator is unstated describes nothing.
+
+---
+
 ## edition
 
 The reading view. Its own group rather than an action under `tei` or `entity`,
@@ -1634,6 +1744,7 @@ single store can answer it.
 
 ### corpus normalize REF|PATH [REF|PATH ...]
 **Does** NFD conformance, §2.9 spacing, §2.10 marker spacing (a body reference sets tight, a note opener sets marker-space-text), and the lookalike census across every store. It prints the census **and** what a `--commit` would rewrite — two tables, because they are two code paths and a preview agreeing with itself is no preview.
+**Scope of the census** the codepoint table sweeps every store whole; the **straight-quote and straight-apostrophe arms skip `edition/entities/` entirely**, because an entry is the editor's own voice and not a reproduction of the print, so "the book sets curly quotes" is not a premise that holds over it. NFD, marks and spacing still sweep that store — an alias spelled precomposed silently fails to match a page that spells it decomposed, which is the miss the whole gate exists for.
 **Reads** every corpus store, deduped by real path (`ocr/` and `gt/ocr/` are two names over one inode).
 **Writes** corpus files in place under `--commit` — raw source, never a parsed tree, so element and attribute order cannot move.
 **Exit** 1 on NFD drift, an unlicensed mark, or spacing drift. The lookalike census does **not** gate: it is a worklist needing a human ruling on what the page prints. `--commit` always exits 0. Exit 2 for nothing named, for targets together with `--all`, or for a **named path that does not exist**. **Also printed, as a closing `verdict` section** — see `proposal check`; a clean scan and one whose findings do not block but which `--commit` would still rewrite are both exit 0 and are not the same result.

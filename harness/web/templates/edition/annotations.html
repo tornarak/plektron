@@ -1,0 +1,28 @@
+{% extends "edition/base.html" %}
+{% block title %}Notices and supplements — The Chukchee{% endblock %}
+
+{% block main %}
+{% include "edition/_sidebar.html" %}
+<div id='primary'>
+<h3>Notices and supplements</h3>
+<p class='meta'>The editor's own voice over the book. A <strong>notice</strong>
+renders above what it attaches to; a <strong>supplement</strong> below. Only a
+ratified one attaches to anything — until then it lives here and nowhere else.</p>
+{% if rows %}
+<table>
+<tr><th>title</th><th></th><th></th><th>attached to</th></tr>
+{% for r in rows %}
+<tr>
+  <td><a href='{{ r.url }}'>{{ r.title }}</a></td>
+  <td><span class='dim'>{{ r.class }}</span></td>
+  <td>{% if r.status != 'ratified' %}<span class='pill {{ r.status }}'
+    >{{ r.status }}</span>{% endif %}</td>
+  <td>{{ r.attaches }}</td>
+</tr>
+{% endfor %}
+</table>
+{% else %}
+<p>The store holds none yet.</p>
+{% endif %}
+</div>
+{% endblock %}

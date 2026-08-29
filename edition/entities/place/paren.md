@@ -4,6 +4,8 @@
 - within: land:kamchatka
 - geo: 62.4173 163.092
 - link: geonames:2122227
+- link: wikidata:Q4345090
+- link: wikipedia:Paren,_Kamchatka_Krai
 
 ## aliases
 

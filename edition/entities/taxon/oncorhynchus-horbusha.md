@@ -1,6 +1,6 @@
 # taxon:oncorhynchus-horbusha — Oncorhynchus horbusha
 
-- status: proposed
+- status: ratified
 - part-of: taxon:oncorhynchus
 
 ## aliases

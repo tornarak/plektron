@@ -1,7 +1,9 @@
 # taxon:castor-fiber — Castor fiber
 
-- status: proposed
-- part-of: taxon:mammalia
+- status: ratified
+- part-of: taxon:rodentia
+- link: wikidata:Q181191
+- link: wikipedia:Eurasian_beaver
 
 ## aliases
 
