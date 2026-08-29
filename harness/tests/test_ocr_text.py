@@ -69,12 +69,20 @@ def test_a_composed_pattern_finds_the_decomposed_text():
     assert all(FORM in row["text"] for row in got["matches"])
 
 
-def test_case_is_significant_unless_folded():
-    """Case carries information in a Tier-1 form, so the default is exact."""
-    lowered = payload("ocr", "grep", FORM.lower(), "1-042", "--store", "gt")
-    assert lowered["scope"][0]["hits"] == 0
-    folded = payload("ocr", "grep", FORM.lower(), "1-042", "--store", "gt", "-i")
+def test_case_is_folded_unless_the_case_is_the_question():
+    """The default is a fold, and `-s` is how a caller asks for the narrow search.
+
+    It was the other way round, on the argument that a Tier-1 form's case carries
+    information. The argument is true about the *form* and was the wrong default
+    for a *search*: what this verb is asked is whether the corpus prints a thing
+    at all, and the same word differs by case alone between a heading, the head
+    of a sentence and mid-line — so the exact default answered a narrower
+    question than the one put to it and returned a clean zero saying so.
+    """
+    folded = payload("ocr", "grep", FORM.lower(), "1-042", "--store", "gt")
     assert folded["scope"][0]["hits"] > 0
+    exact = payload("ocr", "grep", FORM.lower(), "1-042", "--store", "gt", "-s")
+    assert exact["scope"][0]["hits"] == 0
 
 
 def test_context_rows_are_marked_and_never_duplicated():
@@ -91,7 +99,10 @@ def test_context_rows_are_marked_and_never_duplicated():
     assert len(seen) == len(set(seen))
     hits = [r for r in got["matches"] if r["hit"]]
     assert len(hits) == got["scope"][0]["hits"]
-    assert all("reindeer" in r["text"] for r in hits)
+    # Lower-cased on both sides: the search folds case now, so "Reindeer" at the
+    # head of a sentence is a hit and a literal containment check would fail on
+    # it — which says nothing about the windowing this test is here for.
+    assert all("reindeer" in r["text"].lower() for r in hits)
     assert any(not r["hit"] for r in got["matches"])
 
 

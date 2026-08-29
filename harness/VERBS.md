@@ -561,7 +561,7 @@ proposal compared with its own restored text.
 **Exit** always 0, a search that found nothing included. Nothing here is a gate, and an absent form is not a defect.
 **Note** **the pattern is normalized to NFD before it compiles.** The store is NFD corpus-wide and a pattern typed or pasted anywhere else may not be: a composed `č` would match nothing and report a clean corpus-wide negative, which is the worst answer this verb could give. Never NFKC — it destroys two inventory glyphs.
 **Note** **the `scope` row prints on every run, empty result or not.** A search that found nothing has two readings — the corpus does not say this, or the pages searched do not hold it — and only `store` and `pages` separate them. An unkeyed page is not searched and cannot be, so `--store gt --all` is a search of the pages a human has been through and **not of the book**; the default, `mz`, is a search of what the recognizer read, at that reading's rank. The row names the store directory, never a bare rank.
-**Note** case is significant by default. This corpus sets Tier-1 forms with case that carries information, and a native form is more often sought exactly than approximately; `-i` folds it.
+**Note** **case is folded by default**, and `-s` stops it. What this verb is asked is whether the corpus prints a thing at all, and the same form differs by case alone between the head of a sentence, a heading and mid-line — so a case-sensitive default answered a narrower question than the one being put and did it silently, which for a search is the same defect as a false negative. Case is significant where it is *the question*, and that is what the flag is for.
 **Note** `--context N` adds the surrounding lines, carrying `hit: false`, on `lexicon lookup --context`'s reasoning — `Kuluˊči` alone is a string, "around Kuluˊči Bay" is a place. Rows are keyed by `(ref, index)`, so two hits whose windows overlap yield one row each rather than one per window, and a line that is both a hit and another hit's context stays a hit.
 **Note** **`grep` over `gt/ocr/*.xml` is not this, and it answers a clean false negative.** ALTO holds one word per `<String CONTENT=…>`, so a form the page prints is in the file as several attributes with markup between them and a literal search for it matches nothing — not an error, not an empty store, a *zero*, which reads as "the corpus does not print this". Four forms were ruled unattested that way and all four are in the gazetteer. This verb assembles the line before matching, which is the whole reason it exists; the same holds for `mz/ocr/`, and for the same reason `find`'s searches go through a verb rather than through a path.
 **Note** **`lexicon lookup` is the other search and is not this one.** That one is over *ratified native forms*, reached by a typeable ASCII key and folded across the axes this pass gets wrong; this one is over raw line text, reaches English prose, and knows nothing about spelling variants — a word the book sets two ways answers here twice and there not at all.
@@ -569,7 +569,7 @@ proposal compared with its own restored text.
 PATTERN          a Python regular expression, normalized to NFD before it compiles
 --store {gt,mz}  which store to read [mz]
 --all            every page the store read holds
---ignore-case, -i  fold case [off]
+--case-sensitive, -s  match case exactly [off — case is folded by default]
 --context N      lines of surrounding text per hit [0]
 --root --json --toon --pager
 ```

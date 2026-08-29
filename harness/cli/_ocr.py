@@ -219,10 +219,11 @@ def register(cli):
             "not print this*. This assembles the line before matching")
     arg(p, "pattern", metavar="PATTERN")
     _store(refs_arg(p, all_="every page the store read holds"))
-    opt(p, "-i", "--ignore-case", is_flag=True,
-        help="fold case. Not the default: this corpus sets Tier-1 forms with "
-             "case that carries information, and a native form is more often "
-             "sought exactly than approximately")
+    opt(p, "-s", "--case-sensitive", is_flag=True,
+        help="match case exactly. Folding is the default: a search is for "
+             "whether the corpus prints a thing at all, and a form sought at "
+             "the head of a sentence, in a heading, or mid-line differs by "
+             "case alone. Reach for this where the case itself is the question")
     opt(p, "--context", type=int, default=0, metavar="N",
         help="lines of surrounding text per hit, on `lexicon lookup --context`'s "
              "reasoning — a form alone is a string, a form in its line is a "
@@ -671,7 +672,7 @@ def run_grep(a) -> int:
     # Never NFKC — it destroys two inventory glyphs (see CLAUDE.md, "Encoding").
     pattern = unicodedata.normalize("NFD", a.pattern)
     try:
-        rx = re.compile(pattern, re.IGNORECASE if a.ignore_case else 0)
+        rx = re.compile(pattern, 0 if a.case_sensitive else re.IGNORECASE)
     except re.error as e:
         raise ValueError(f"{a.pattern!r}: not a regular expression — {e}") from None
     if a.context < 0:
