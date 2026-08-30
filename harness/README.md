@@ -652,14 +652,27 @@ reports what the page prints; `resolve` takes those spans plus `figures.by_numbe
 and `figures.by_plate` and says which crop each names. **The two halves never
 meet in one caller by accident** — `tei_html` calls only the first, because
 `stores.render` is cached on the TEI's bytes and a crop handle baked into that
-HTML would outlive the box it named. The join is `_figref_state`'s, in
-`harness/web/edition.py`, as `<figure>`'s is `_figure_state`'s.
+HTML would outlive the box it named. The join is `figref_rows`'s, in
+`harness/web/edition.py`, as `<figure>`'s is `_figures`'s; `_hang_pictures`
+renders both into the served page, so the cut is a cache boundary and not a
+no-script one.
 
-`foreign_citation` is the one guard: Bogoras cites Nelson's and Sauer's plates in
-the same words as his own, and `Sauer, Plate XIV` collides with this book's Plate
-XIV outright. The names come from `Authorities Quoted`, so telling them apart is
-a lookup in a store a human keyed. Measured over the corpus: 601 references link,
-114 are another author's, 58 refuse and each names the store that declined.
+**Two guards, and they are independent witnesses.** Bogoras cites Nelson's and
+Sauer's plates in the same words as his own, and `Sauer, Plate XIV` collides with
+this book's Plate XIV outright. `foreign_citation` reads the prose in front of
+the numeral and refuses where an authority's name governs it, stepping over
+`_FURNITURE` to reach the name; the names come from `Authorities Quoted`, so
+telling them apart is a lookup in a store a human keyed. `outside_the_book` asks
+a question with no judgement in it — does the book print a picture of that number
+at all — off the printed List of Illustrations, which carries plates I–XXXV and
+figures 1–302. One reads the sentence and one reads the number, and neither can
+be talked out of its answer by the other's blind spot: the first is silent on
+Boas's `Fig. 525`, which names its author *after* the numeral, and the second is
+silent on every foreign citation that happens to fall in range. Both must pass
+before a reference is treated as this book's. `docs/decisions.md` has what the
+sweep that found the second one turned up, and `edition figrefs` is that sweep as
+a verb — the census, through the join the view serves rather than a second
+reading of the same stores.
 
 **`figures.py`** — the figure track whole: `gt/fig/` geometry *and* caption text,
 checked by `reconcile()` (`corpus figures`); the

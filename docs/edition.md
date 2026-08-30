@@ -727,10 +727,53 @@ worklist line for the *store* rather than the sentence: `Hough, Armor` four time
 against the store's `Armour`, a `Boas, Indianische Sagen` in no authority entry,
 and a `Bogoras, American Anthropologist` whose siglum the list does not carry.
 
-Matching is whole-word, case-sensitive, NFD, longest-first, and
+Matching is whole-word, NFD, longest-first, **cased up the ladder**, and
 **whitespace-flexible across printed line breaks**: `1-021` sets "the Jesup
 North / Pacific Expedition" across two lines, and a matcher that stopped at a
 line end would miss exactly the multi-word aliases reliable enough to link.
+
+### The case ladder, applied to the store instead of to a handle
+
+A row is reached by its own case and by every case above it and by no case
+below — the rule `lookup._resolve_cased` climbs for a lexicon handle, turned
+around, and sharing its definition (`lookup.case_variants`) rather than agreeing
+with it by hand. `sables` reaches `Sables` at the head of a sentence and `SABLES`
+in a run-in heading; `Chukchee` reaches `CHUKCHEE` and never `chukchee`, because
+the corpus capitalizes a proper name for a reason.
+
+Strict case cost **122 links across 119 pages**, every one of them a form the
+store already held, and the store had begun to pay for it in vocabulary: rows
+like `Brown bears` and `Black bears` beside their lower-case twins, recording
+where a sentence happened to start as though it were something about the bear.
+That is the compositor's line breaks entering the encyclopedia, and it does not
+converge — every page a reader keys can start a sentence with any word in the
+book.
+
+Two things the ladder does not do. **It never descends**, so no lower-case page
+is reached from a capitalized row: doing so would edit a ratified identity by a
+keystroke nobody reviewed. And **a shape it cannot rank gets only itself** —
+`Brown Bear` is neither the capitalization of `brown bear` nor its uppercase, so
+`_case_rank` returns `None` and `taxon:ursus-arctos` can still say that the
+`Brown Bear` at 1-184 is the river Keiˊñu-weˊem and not the animal.
+
+**Sentence-initial is ambiguous, and the exact spelling does not resolve it.** A
+`being:raven` claiming `Raven` and `taxon:corvus-corax`'s `raven` both reach the
+`Raven` that opens a sentence, and the capital there is the compositor's: it
+says nothing about which word was meant. Preferring the row spelled at that case
+would be adjudicating at exactly the position where the evidence runs out. Both
+claims ride, the hit has two claimants — this store's word for ambiguous — and it
+arrives as a candidate. Mid-sentence the question never arises, because only one
+of the two spellings is on the page.
+
+`entity check`'s collision census climbs the ladder for the same reason, so a
+store whose two rows meet only one rung up is not reported coherent right until
+the page where it is not — and two `auto` claims meeting at a variant are the
+same error they are at a form. It reports **once, at the rung where the claimants
+first meet**: a variant re-spelling a collision the store already has is not a
+second collision, and 34 of those would bury the few the ladder makes. Where two
+rows of *one* entity meet, that is one claimant and no collision at all; the
+store's own spelling is ordered first so its `auto` and `scope` are the ones that
+hold.
 
 **One matcher, three callers.** `entities.match` is what `tei generate` links
 with, what `tei context` reports to the reviewer, and what `validate` re-derives
@@ -1810,7 +1853,7 @@ this. After collation it links like anything else.
 The book cross-references constantly — `(Plate XXVII, Fig. 3)`, `(see Plate
 XXIII, Fig. 2; also Fig. 177)`, `Fig. 87 represents a knife used for` — and every
 one of those names a picture the figure store already holds. `harness/figrefs.py`
-finds them and `web/edition._figref_state` says which. A resolved reference
+finds them and `web/edition.figref_rows` says which. A resolved reference
 becomes `a.fig`, which is the List of Illustrations' own class, so it opens a
 stack card through `openFigure` and the behaviour is not written twice.
 
@@ -1842,7 +1885,12 @@ can invalidate. Which picture each names is a join over `gt/fig/` that a moved
 box invalidates at once, and `stores.render` caches on the TEI's bytes alone — so
 a `ref/key` written into the page would go on being served after the box moved.
 The two halves of `figrefs` fall either side of that line, and the same cut
-already governs `<figure>` and `_figure_state`.
+already governs `<figure>` and `_figures`. **It is a cache boundary and not a
+no-script one**: `_hang_pictures` splices both joins into the served page per
+request, off `harness/web/templates/edition/_figure.html`. They were assembled
+on the client once, and
+the pictures were then the one part of the edition a reader without JavaScript
+never saw — an adjudicated caption over a blank space.
 
 The authority guard moved with the scan, for the same reason in the other
 direction: `tei generate` refuses to mark another author's plate at all, rather
@@ -1905,15 +1953,50 @@ for his own, and **`Sauer, Plate XIV` collides with this book's Plate XIV
 outright**. Nothing in the reference tells them apart; the name in front of it
 does, and `Authorities Quoted` is a store of exactly those names, keyed by a
 human. Between the name and the reference only citation furniture may stand — a
-comma, a short title, `in`, an opening bracket — so a sentence's worth of prose
-ends the citation and `Nordenskiöld wintered here. Fig. 88 shows the ship` links
-normally.
+comma, a short title, `in`, a page locator, an opening bracket, a reference the
+same citation already governs — so a sentence's worth of prose ends the citation
+and `Nordenskiöld wintered here. Fig. 88 shows the ship` links normally.
 
-Measured over the corpus: **601 references link, 114 are another author's, 58
-refuse.** The 114 are Nelson (62), Schrenck, Murdoch, Boas, Laufer, Ratzel, Sauer
-and Teit. Every refusal names the store that declined, and shows it on hover: a
-reader has to be able to tell a gap in `gt/fig/` from an edition that does not
-link.
+**A second guard stands beside it, and reads the number instead of the
+sentence.** `figrefs.outside_the_book` asks whether the book prints a picture of
+that number at all: the printed List of Illustrations carries plates I–XXXV and
+figures 1–302, each complete with no gap, so `Schrenck, Plate XXXVI` and Boas's
+`Fig. 525` are refused whatever the prose around them looks like. The numbers
+come from the book's own apparatus and not from `gt/fig/` — taking the range off
+the boxes would have made every unkeyed figure foreign. The two are independent
+witnesses and both must pass: the first is silent on `Fig. 525`, which names its
+author *after* the numeral, and the second is silent on every foreign citation
+whose number happens to fall in range. `docs/decisions.md` has the sweep that
+found the second one needed, and the seven fabricated links it turned up.
+
+The prose guard is asked in three places on the same terms — `tei generate`
+refuses to *mark* another author's plate, `tei validate` re-derives that refusal
+as an `#mz` claim, and the reading view refuses to *link* one a collator wrote by
+hand. **The range guard is the reading view's alone**, because what it asks is
+not a fact about the string the page prints: which numerals are set as a
+reference cannot be invalidated by any store, and whether the book prints a
+picture of that number is a join over an amendable List of Illustrations. It
+falls on the resolution side of the cut for the reason the whole of `figrefs` is
+cut that way.
+
+So the two guards are not measured in one place. Over the generated corpus
+after a regeneration: **779 of 794 marks link, 14 refuse because a store
+declined, and 1 is outside the book's numbers** — Boas's `Fig. 525`, which names
+its author after the numeral and so reaches the reading view for the range guard
+to catch. None refuses as another author's, and that is the generator working
+rather than the guard idling: the fourteen it would have caught are no longer
+marked. It stays because a mark a collator wrote by hand is not bound by what the
+generator would have done. Every refusal names what declined and shows it on
+hover: a reader has to be able to tell a gap in `gt/fig/` from an edition that
+does not link.
+
+**`edition figrefs` is the census**, one row per mark with what became of it, and
+`--refused` is the worklist. It goes through the same join the view serves rather
+than asking the stores again, because two answers to one question are free to
+disagree and to go on disagreeing unnoticed — which is the thing a census is for.
+It exists because the seven fabricated links above were found by hand, by five
+scripts that did not agree on what to count, after being servable for as long as
+the marks existed.
 
 ### A page reference proves itself in the scan, because the guard cannot save it
 
@@ -1962,7 +2045,7 @@ my “Chukchee Materials” (p. 52)*, which is Bogoras's other book.
 
 **Resolution is an address, not a join**, which is why the renderer links it
 directly to `/folio/{n}` — the route every other folio link in the edition goes
-through — instead of building a handle for `_figref_state`. Nothing about it is
+through — instead of building a handle for `figref_rows`. Nothing about it is
 invalidated by a moved box, because no box is involved. 70 of the 71 reach a
 witnessed folio today; the one that does not, `2-070`'s *Compare p. 339*, lands
 on the folio route's own refusal page, which names 337 and 344 as the nearest

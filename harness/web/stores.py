@@ -298,6 +298,37 @@ def authority_names(root: Path) -> frozenset:
                             stamp([Path(root) / src] if src else []))
 
 
+@lru_cache(maxsize=MAXSIZE)
+def _printed_numbers(root: str, run_id: str, _key: bytes) -> tuple:
+    ents = run_store(Path(root), loi_run(Path(root)))["entries"]
+    plates = frozenset(str(e["number"]) for e in ents
+                       if e.get("kind") == "plate" and e.get("number"))
+    figs = frozenset(str(n) for e in ents if e.get("kind") == "figure"
+                     for n in e.get("numbers") or ())
+    return (plates, figs)
+
+
+def printed_numbers(root: Path) -> tuple[frozenset, frozenset]:
+    """`(plates, figures)` — every picture number the book's own printed List of
+    Illustrations carries.
+
+    **The book saying what it contains**, which is what lets `outside_the_book`
+    refuse a reference on its number alone. Here that is plates I–XXXV and
+    figures 1–302, each complete with no gap. Keyed on `loi.json`, so amending
+    the list reaches the pages that cite into it.
+
+    **Not `by_number` and not `by_plate`.** Those are joins over `gt/fig/` and
+    answer "has anyone boxed this picture yet", which is a fact about the keying
+    and moves as the work proceeds. This answers "does the book print such a
+    picture at all", which is a fact about the book. Taking the range off the
+    boxes would have made every unkeyed figure foreign.
+    """
+    run = loi_run(root)
+    src = run.get("source")
+    return _printed_numbers(str(root), run.get("id") or "",
+                            stamp([Path(root) / src] if src else []))
+
+
 def in_reading_order(root: Path, drafts: bool) -> list[str]:
     """Every page the edition can show, in scan order — prose and plates alike.
 

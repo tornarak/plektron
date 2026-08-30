@@ -83,7 +83,7 @@ PATH_RE = re.compile(r"`((?:[\w.\-]+/)+[\w.\-]+)`")
 DIR_RE = re.compile(r"`((?:[\w.\-]+/){2,})`")
 
 #: Suffixes this repo actually stores things under. Used only to tell a file from
-#: a code citation: `web/edition._figref_state` names a module attribute, not a
+#: a code citation: `web/edition.figref_rows` names a module attribute, not a
 #: path, and nothing but the suffix distinguishes the two shapes.
 KNOWN_SUFFIXES = frozenset(
     ".py .md .json .xml .png .jpg .lst .rng .jsonl .txt .toml .lock .js .html "
@@ -253,7 +253,7 @@ def _looks_like_a_path(tok: str) -> bool:
     # lives inside ALTO. Nothing in this repo is a directory of CamelCase names.
     if all(re.fullmatch(r"[A-Z][a-zA-Z]*", p) for p in parts):
         return False
-    # A code citation: `web/edition._figref_state` names a module attribute the
+    # A code citation: `web/edition.figref_rows` names a module attribute the
     # way this repo cites code everywhere. A real file's last component either
     # carries a suffix the repo stores things under, or none at all.
     if "." in parts[-1] and not any(parts[-1].endswith(s) for s in KNOWN_SUFFIXES):

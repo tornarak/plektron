@@ -329,9 +329,10 @@ td,th { border:1px solid var(--rule); padding:.2rem .5rem; text-align:left }
 .ent:hover { border-bottom-color:var(--link);
   background:color-mix(in srgb,var(--link) 8%,transparent) }
 /* A figure sets as its own block, and floats only when the box it was cut from
-   left room beside it for a line of type. `[data-float]` is set by the script
-   off the server's `side`; without the script the figure stays a block and the
-   caption still reads. */
+   left room beside it for a line of type. `[data-float]` is written into the
+   served markup by `edition/_figure.html`, off the box's own `side` — it was set
+   by the script once, which meant the picture, its placement and its wrap all
+   arrived a frame late or not at all. */
 /* **`flow-root` contains the floats**, and it is the fix rather than a tidy-up.
    Without a block formatting context here, a floated figure taller than the
    prose beside it hangs out of the bottom of the article and lands on whatever

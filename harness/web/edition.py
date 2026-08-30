@@ -142,24 +142,23 @@ def figure_crop(request: Request, ref: str, key: str):
     )
 
 
-def _figure_state(ref: str, root, doc: dict, size) -> dict:
-    """`figs` and `crops` for one page: which pictures hang on which `<figure>`.
+def _figures(ref: str, root, doc: dict) -> list[dict]:
+    """Which pictures hang on which `<figure>`, one row per figure the page has.
 
     **This is the join the renderer refuses to do**, and it is here because here
     is where both keys are in hand — the page, which `stores.render` is cached on,
     and the three figure stores, which `stores.fig_layout` is cached on. A `<figure>` in the HTML says only what the page says; the boxes arrive
     beside it and are re-derived whenever their stores move.
 
-    `figs` drives the inline picture: the built crops out of `scans/fig-crops/`,
-    plus the float side and width the box implies. Several crops per figure is
-    the ordinary case, not an edge one — the store spells `1-276`'s fig. 140 in
-    two boxes, and they stack under its one caption.
+    A row carries the built crops out of `scans/fig-crops/` plus the float side
+    and width the box implies, and `_hang_pictures` renders it into the page.
+    Several crops per figure is the ordinary case, not an edge one — the store
+    spells `1-276`'s fig. 140 in two boxes, and they stack under its one caption.
 
     **A figure opens in the lightbox, not in the stack**, so nothing here builds
     a `crop_style` for one. The stack is for what a reader has to fetch and then
     read beside the text; a picture is already on the page and the only thing
-    wanted from it is size. `crops` stays in the payload for the scan card, which
-    is a different feature and still keys into it.
+    wanted from it is size.
     """
     lay = stores.fig_layout(ref, root)
     rows = F.resolve_figures(doc.get("figures") or [], lay["figures"])
@@ -182,18 +181,85 @@ def _figure_state(ref: str, root, doc: dict, size) -> dict:
             "side": f.get("side", "full"),
             "width": f.get("width_frac", 1.0),
         })
-    return {"figs": figs, "crops": {}}
+    return figs
 
 
-def _figref_state(doc: dict, root) -> list[dict]:
+#: What became of one cross-reference, in the order a reader meets the states:
+#: it points at a picture, or one of the three things that stopped it.
+FIGREF_STATES = ("link", "another author's", "outside the book's numbers",
+                 "a store declined")
+
+
+def figref_census(root, refs: list[str], tick=None) -> dict:
+    """Every cross-reference on the named pages, and what became of it.
+
+    **It goes through `figref_rows`, which is the point.** The join it censuses
+    is the one the reading view serves, over three stores and two guards, and a
+    census that re-implemented it would be a second answer to the same question —
+    free to disagree with the page and to go on disagreeing unnoticed, which is
+    what a census is supposed to prevent. So this walks pages and shapes rows;
+    every judgement in it is the view's own.
+
+    It was written after a hand sweep found seven references linking to this
+    book's pictures under Nelson's, Hough's and Teit's numbers. That sweep was
+    five throwaway scripts, none of which agreed on what to count, and the defect
+    had been servable for as long as the marks existed because nothing counted
+    them at all. `docs/decisions.md`.
+
+    Reports; never gates. A refused reference is the guard working, and the one
+    number here that could look like a defect — `a store declined` — is the
+    figure track's worklist rather than an error.
+    """
+    from .. import tei_html
+    from ..parallel import ptrack
+
+    # Serial rather than pooled, and ticked all the same: the work per page is a
+    # cached render plus a join, so a pool would buy little, and a corpus sweep
+    # is 800 pages of it and would otherwise sit silent.
+    rows, pages = [], 0
+    for ref in ptrack(refs, tick):
+        path, rank = tei_html.page_source(ref, root)
+        if path is None:
+            continue
+        doc = stores.render(path, root)
+        # `figref_rows` is positional to the page's handles and empty where it
+        # prints none, so it is the whole of what this needs — the handles are
+        # not read here at all, which is what keeps the two from drifting apart.
+        here = figref_rows(doc, root)
+        if not here:
+            continue
+        pages += 1
+        for r in here:
+            rows.append({
+                "ref": ref,
+                "rank": rank,
+                "prints": r["label"],
+                "state": ("link" if r["pairs"] else
+                          "another author's" if r["why"].endswith(
+                              "not this book's") else
+                          "outside the book's numbers" if r["why"].startswith(
+                              "this book prints no") else
+                          "a store declined"),
+                # The handle, not a URL: it is what `openFigure` is given and what
+                # `fig crops` writes, so a row can be chased into either store.
+                "points_at": " ".join(r["pairs"]),
+                "why": r["why"],
+            })
+    return {"rows": rows, "pages": pages,
+            "counts": [{"state": s,
+                        "marks": sum(1 for r in rows if r["state"] == s)}
+                       for s in FIGREF_STATES]}
+
+
+def figref_rows(doc: dict, root) -> list[dict]:
     """Where each cross-reference in the prose points — the join the renderer
     refuses to do, for `_figure_state`'s reason and in its manner.
 
-    One row per handle, positional to `doc["figrefs"]`, carrying what the client
-    needs to open a stack card: `pairs` (`ref/key`, the id a card is built from),
-    `url` (a real crop, so the anchor works without JS and middle-clicks), the
-    label the card is titled with, the `caption` it reads under, and `why` where
-    nothing resolved.
+    One row per handle, positional to `doc["figrefs"]`, carrying what the anchor
+    is built from: `pairs` (`ref/key`, the id a card is built from), `url` (a real
+    crop, so the anchor is a working link before any script and middle-clicks),
+    the label the card is titled with, the `caption` it reads under, and `why`
+    where nothing resolved.
 
     **An unresolved reference is left as text, and says so on hover.** 58 of the
     corpus's 659 refuse — a plate whose figure `gt/fig/` has not boxed, a bare
@@ -226,18 +292,43 @@ def _figref_state(doc: dict, root) -> list[dict]:
     plate_captions = {str(e.get("number")): e.get("caption") or ""
                       for e in stores.run_store(root, loi)["entries"]
                       if e.get("kind") == "plate"} if loi else {}
+    plates, figs = stores.printed_numbers(root)
     out = []
     for h in handles:
-        who = figrefs.foreign_citation(h.get("before") or "", names)
-        if who:
-            out.append({"pairs": [], "url": "", "label": "", "caption": "",
-                        "why": f"{who}'s plate, not this book's"})
-            continue
-        r = figrefs.resolve(h, by_number, by_plate,
-                            lambda leaf: stores.figure_boxes(leaf, root))
+        # **Computed before the guards, so every row carries it.** A refused row
+        # used to have an empty label, which the page could afford — its anchor
+        # shows the printed numeral and its reason, not a label — and a census
+        # cannot: `figrefs` has to be able to print what the page prints beside
+        # what became of it, and a blank there would name no reference at all.
         label = (f"Plate {h['number']}" if h["kind"] == "plate" else
                  f"Plate {h['plate']}, Fig. {h['number']}" if h["plate"] else
                  f"Fig. {h['number']}")
+        who = figrefs.foreign_citation(h.get("before") or "", names)
+        if who:
+            # **The reason names what the reader is looking at.** This said
+            # "plate" whatever the reference was, which was tolerable while the
+            # guard mostly caught plates and is not now that it catches a run of
+            # figures — `Teit's plate` under a sentence printing `Fig. 128` sends
+            # the reader looking for a plate that is not there. `Ibid.` stands
+            # where a name would and cannot take a possessive.
+            what = "plate" if h["kind"] == "plate" else "figure"
+            out.append({"pairs": [], "url": "", "label": label, "caption": "",
+                        "why": ("the work last cited, not this book's"
+                                if who == "Ibid." else
+                                f"{who}'s {what}, not this book's")})
+            continue
+        # **The second witness, and it is asked even where the first said
+        # nothing.** `foreign_citation` reads the prose in front of the numeral
+        # and can only refuse what its furniture has been taught; this asks
+        # whether the book prints such a picture at all, which no sentence can
+        # confuse. Both must pass before a reference is treated as this book's.
+        off = figrefs.outside_the_book(h, plates, figs)
+        if off:
+            out.append({"pairs": [], "url": "", "label": label, "caption": "",
+                        "why": off})
+            continue
+        r = figrefs.resolve(h, by_number, by_plate,
+                            lambda leaf: stores.figure_boxes(leaf, root))
         caption = r["caption"] or (plate_captions.get(h["number"], "")
                                    if h["kind"] == "plate" else "")
         first = r["pairs"][0].split("/") if r["pairs"] else None
@@ -317,7 +408,7 @@ def _exempt_page(request: Request, ref: str, root):
             editor_leaf=ui.leaf_source(ref, root)[1] == "ed",
             leaf_layers=ui.leaf_layers(ref, root) is not None,
             state={"base": BASE, "ref": ref,
-                   "size": ui._raster_size(ref, root), "figs": [], "crops": {}},
+                   "size": ui._raster_size(ref, root), "crops": {}},
             prev=refs[i - 1] if i > 0 else "",
             next=refs[i + 1] if 0 <= i < len(refs) - 1 else "",
         ),
@@ -699,7 +790,7 @@ def run_page(request: Request, run_id: str):
              # run is one document and its scans are several.
              state={"base": BASE, "ref": head,
                     "leaves": [leaf["ref"] for leaf in leaves],
-                    "size": ui._raster_size(head, root), "figs": [], "crops": {}},
+                    "size": ui._raster_size(head, root), "crops": {}},
              prev=prev, next=next_),
     )
 
@@ -853,9 +944,10 @@ def page(request: Request, ref: str):
     # make that look like missing data.
     here = ref + (f" ({doc['folio']})" if doc.get("folio") else "")
     size = ui._raster_size(ref, root)
-    state = {"base": BASE, "ref": ref, "size": size,
-             "figrefs": _figref_state(doc, root),
-             **_figure_state(ref, root, doc, size)}
+    # `crops` is the scan card's and stays; the figure join is no longer part of
+    # the payload at all, because nothing on the client reads it any more.
+    state = {"base": BASE, "ref": ref, "size": size, "crops": {}}
+    doc = _hang_pictures(doc, _figures(ref, root, doc), figref_rows(doc, root))
     # **The folio is resolved here and handed down**, never looked up inside
     # `annotations.for_page`. Placing a leaf in a section runs `ref → folio →
     # toc ids` and the middle step can refuse; if the chain lived in the
@@ -1078,6 +1170,54 @@ def _place_notices(doc: dict, blocks: list[dict]) -> tuple[dict, list[dict]]:
         else:
             stay.append(b)
     return ({**doc, "html": html}, stay) if html != doc["html"] else (doc, stay)
+
+
+def _hang_pictures(doc: dict, figs: list[dict], refs: list[dict]) -> dict:
+    """Put the figure join into the served HTML: the pictures, and the links.
+
+    **The join stays out of `stores.render`'s cache and reaches the reader
+    anyway.** `tei_html` emits a `<figure>` carrying only what the page says and
+    an inert `<a class="figref">`, for the cache reason `el_figure` sets out; this
+    runs per request, off `_figures` and `figref_rows`, whose own keys name the
+    stores that can move a box. What changes is where the markup is assembled:
+    it used to be `edition.js`, off a `STATE.figs`/`STATE.figrefs` payload, so a
+    reader with no script got an adjudicated caption over a blank space and a
+    cross-reference that was a dotted underline and nothing else.
+
+    A figure the join has no row for is left as the renderer wrote it, which is
+    `edition.js`'s old `if (!el) continue` read from the other end: the records
+    are positional to the renderer's handles, and a mismatch means one of the two
+    is stale, never that some other figure's picture will do.
+
+    Returns a **copy** of `doc`. `stores.render` is `lru_cache`d, and writing the
+    spliced HTML back into the record it handed out is exactly how the stale
+    placement this whole arrangement exists to prevent would get cached after all.
+    """
+    m = _fig_macro()
+    by_i = {f["i"]: f for f in figs}
+
+    def splice(html: str) -> str:
+        html = ui.hang_figures(
+            html, lambda i, n: str(m.head(by_i[i], n, i)) if i in by_i else "")
+        return ui.link_figrefs(
+            html, lambda i, body: str(m.ref(refs[i], body)) if i < len(refs) else "")
+
+    # **The notes are the page's other stream of rendered HTML, and they carry
+    # references.** `el_note` holds a footnote's words aside for the template to
+    # set at the foot, so a `(Plate XXXVI, Fig. 2)` inside one never appears in
+    # `doc["html"]` — `1-132` prints two and neither is in the body. The script
+    # this replaced queried the whole document and so reached them without ever
+    # having to know that; a splice over one string does not, and 36 references
+    # corpus-wide were left inert until this ran over both. The handle index runs
+    # across body and notes together, which is what lets one `refs` serve both.
+    out = {**doc, "html": splice(doc["html"]),
+           "notes": [{**n, "html": splice(n["html"])} for n in doc["notes"]]}
+    return doc if out["html"] == doc["html"] and out["notes"] == doc["notes"] else out
+
+
+def _fig_macro():
+    """The figure macros, reached as a module for `_ann_macro`'s reason."""
+    return templates.env.get_template("edition/_figure.html").module
 
 
 def _ann_macro():

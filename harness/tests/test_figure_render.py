@@ -1,6 +1,6 @@
 """Placing a figure in the reading view: the column, the match, and the caption.
 
-Three things are held here.
+Four things are held here.
 
 **The caption reaches the reader.** `el_figure` used to build a `[fig. N]` chip
 and never call `inline`, so the `<figDesc>` the generator had gone to
@@ -15,6 +15,11 @@ stores.
 **A figure that cannot be resolved shows as a gap, never as a picture.** Falling
 back to the next unused crop would put a wrong picture under a right caption,
 which reads as correct and is invisible.
+
+**And the join reaches the reader in the served bytes.** It was assembled by
+`edition.js` once, off a `STATE.figs` payload, which turned the cache argument
+above into a no-script one: the pictures were the single part of the edition a
+reader without JavaScript never saw.
 """
 from __future__ import annotations
 
@@ -312,3 +317,168 @@ def test_the_float_threshold_comes_from_the_book_config(tmp_path):
     # And one that wraps round almost anything sets it near 0.
     _config(tmp_path, float_min_residual=0.01)
     assert layout("1-086", tmp_path)["figures"][0]["side"] == "left"
+
+
+# -- the served page ----------------------------------------------------------
+#
+# **The join reaches the reader in the served bytes, not in a script.** The
+# pictures and the cross-reference links were once assembled by `edition.js` off
+# a `STATE.figs` / `STATE.figrefs` payload, which made them the one part of the
+# edition a reader with no script never saw: an adjudicated caption over a blank
+# space, and a reference that was a dotted underline pointing nowhere. The cache
+# argument the renderer's silence rests on is untouched — `stores.render` still
+# keys on the TEI bytes alone, and the splice below happens per request.
+
+def _serve(html: str, figs=(), refs=(), notes=()) -> dict:
+    from harness.web.edition import _hang_pictures
+    return _hang_pictures(
+        {"html": html, "notes": [{"n": str(i + 1), "i": i + 1, "html": h}
+                                 for i, h in enumerate(notes)]},
+        list(figs), list(refs))
+
+
+def _served(html: str, figs=(), refs=()) -> str:
+    return _serve(html, figs, refs)["html"]
+
+
+def _fig_row(i=0, n="2", crops=(("001", 1.0),), side="full", width=1.0):
+    return {"i": i, "n": n, "why": "",
+            "crops": [{"url": f"/edition/fig/1-086/{k}.png", "width": w}
+                      for k, w in crops],
+            "side": side, "width": width}
+
+
+def _rendered(n="2", i=0) -> str:
+    """What `el_figure` writes, which is what the splice has to find."""
+    return (f'<figure class="figure" data-figure="{n}" data-i="{i}">'
+            "<figcaption>Fig. 2. A thing.</figcaption></figure>")
+
+
+def test_the_picture_is_in_the_served_html(tmp_path):
+    got = _served(_rendered(), [_fig_row()])
+    assert 'src=\'/edition/fig/1-086/001.png\'' in got
+    assert "figure-plates" in got
+    # The caption is still the renderer's, and still after the picture.
+    assert got.index("001.png") < got.index("<figcaption>")
+
+
+def test_the_float_is_served_too(tmp_path):
+    """Placement is half the join. A picture that arrives full-width and is moved
+    by a script is a picture the no-script reader sees in the wrong place."""
+    got = _served(_rendered(), [_fig_row(side="left", width=0.32)])
+    assert "data-float='left'" in got
+    assert "data-float-basis='geometry'" in got
+    assert "width:32%" in got
+
+
+def test_each_picture_of_a_group_is_served_at_its_own_width(tmp_path):
+    """`2-085`'s fig. 253, through the renderer: the narrow part must not be
+    stretched to the union's width."""
+    got = _served(_rendered(), [
+        _fig_row(crops=(("001", 0.17), ("002", 0.56)), width=0.79)])
+    assert "width:22%" in got, "0.17/0.79 of the block"
+    assert "width:71%" in got, "0.56/0.79 of the block"
+
+
+def test_an_unresolved_figure_is_served_as_a_gap(tmp_path):
+    """Never the next unused crop: a wrong picture under a right caption reads as
+    correct and is the failure this edition is organised against."""
+    got = _served(_rendered(), [
+        {"i": 0, "n": "2", "why": "no box in gt/fig/", "crops": []}])
+    assert "figure-missing" in got and "no box in gt/fig/" in got
+    assert "<img" not in got
+
+
+def test_a_figure_the_join_has_no_row_for_is_left_alone(tmp_path):
+    """A mismatch means one of the two sides is stale, never that some other
+    figure's picture will do."""
+    assert _served(_rendered(), [_fig_row(i=7)]) == _rendered()
+
+
+def test_the_handles_are_re_emitted_off_the_tag(tmp_path):
+    """`data-figure` and `data-i` reach the page as the renderer set them, whatever
+    the join says — they are the page's own facts and this is not their source."""
+    got = _served(_rendered(n="87", i=3), [_fig_row(i=3, n="")])
+    assert 'data-figure=\'87\'' in got and 'data-i=\'3\'' in got
+
+
+def test_the_cached_record_is_not_written_through(tmp_path):
+    """`stores.render` is `lru_cache`d: writing the spliced HTML back into the
+    record it handed out is how the stale placement this arrangement exists to
+    prevent would get cached after all."""
+    from harness.web.edition import _hang_pictures
+    doc = {"html": _rendered(), "notes": [{"n": "1", "i": 1, "html": _figref()}]}
+    out = _hang_pictures(doc, [_fig_row()], [
+        {"pairs": ["1-207/001"], "url": "/edition/fig/1-207/001.png",
+         "label": "Fig. 87", "caption": "", "why": ""}])
+    assert doc["html"] == _rendered() and out["html"] != doc["html"]
+    assert doc["notes"][0]["html"] == _figref()
+    assert out["notes"][0]["html"] != doc["notes"][0]["html"]
+
+
+def _figref(body="3") -> str:
+    return _figref_at(0, body)
+
+
+def _figref_at(i: int, body: str) -> str:
+    """What `el_figref` writes. `i` is the page's own handle count, which runs
+    across the body and the notes together."""
+    return f'<a class="figref" data-fr="{i}" tabindex="0">{body}</a>'
+
+
+def test_a_resolved_reference_is_a_working_link_without_a_script(tmp_path):
+    got = _served(_figref(), [], [
+        {"pairs": ["1-207/001"], "url": "/edition/fig/1-207/001.png",
+         "label": "Fig. 87", "caption": "Fig. 87. A knife.", "why": ""}])
+    assert "href='/edition/fig/1-207/001.png'" in got
+    # `fig` is the List of Illustrations' own class, so one handler serves both.
+    assert "class='figref fig'" in got
+    assert "data-caption='Fig. 87. A knife.'" in got
+    assert ">3</a>" in got, "the words the printer set are passed through"
+
+
+def test_an_unresolved_reference_is_not_a_link_at_all(tmp_path):
+    got = _served(_figref(), [], [
+        {"pairs": [], "url": "", "label": "", "caption": "",
+         "why": "Sauer's plate, not this book's"}])
+    assert "figref unresolved" in got and "href=" not in got
+    assert "tabindex" not in got, "not a link, so not in the tab order"
+    assert "Sauer&#39;s plate, not this book&#39;s" in got
+
+
+def test_a_reference_inside_a_footnote_is_linked_too(tmp_path):
+    """**The notes are the page's other stream of rendered HTML.**
+
+    `el_note` holds a footnote's words aside for the template to set at the foot,
+    so a reference printed inside one never appears in `doc["html"]` — `1-132`
+    prints two and neither is in the body. The script this replaced queried the
+    whole document and reached them without having to know that; a splice over
+    one string does not, and 36 references corpus-wide were inert until the
+    server ran over both.
+    """
+    got = _serve(_rendered(), [_fig_row()],
+                 [{"pairs": [], "url": "", "label": "", "caption": "",
+                   "why": "no box in gt/fig/"},
+                  {"pairs": ["1-132/001"], "url": "/edition/fig/1-132/001.png",
+                   "label": "Plate XXXVI, Fig. 2", "caption": "A drum.",
+                   "why": ""}],
+                 notes=[_figref("XXXVI") + _figref_at(1, "2")])
+    note = got["notes"][0]["html"]
+    assert 'class="figref"' not in note, "no handle may be left inert"
+    assert "figref unresolved" in note and "no box in gt/fig/" in note
+    assert "href='/edition/fig/1-132/001.png'" in note
+
+
+def test_the_handle_index_runs_across_body_and_notes(tmp_path):
+    """One `refs` serves both streams because `el_figref` counts once for the
+    page. A per-stream index would point a note's reference at the body's crop —
+    a working link to the wrong picture, which reads as right."""
+    body = _figref("87")
+    got = _serve(body, [], [
+        {"pairs": ["1-207/001"], "url": "/edition/fig/1-207/001.png",
+         "label": "Fig. 87", "caption": "", "why": ""},
+        {"pairs": ["1-132/001"], "url": "/edition/fig/1-132/001.png",
+         "label": "Fig. 88", "caption": "", "why": ""},
+    ], notes=[_figref_at(1, "88")])
+    assert "1-207/001.png" in got["html"] and "1-132" not in got["html"]
+    assert "1-132/001.png" in got["notes"][0]["html"]

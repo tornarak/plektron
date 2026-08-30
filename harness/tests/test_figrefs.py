@@ -207,6 +207,52 @@ def test_a_run_s_later_members_are_the_same_author_s():
         NAMES | {"Murdoch"}) == "Murdoch"
 
 
+def test_the_five_furniture_shapes_that_leaked():
+    """Each read off the page it leaked on, when the reading view started serving
+    these as real links and a sweep could count them. All seven references these
+    cover were linking to this book's pictures under another author's number:
+    a working link with a plausible caption under it, which is the failure the
+    guard exists to prevent, surviving inside the guard. `docs/decisions.md`.
+    """
+    N = NAMES | {"Nelson", "Schrenck", "Teit", "Hough", "Lamp"}
+    # A run past its second member: `Figs. N` was furniture and the bare numeral
+    # after it was not, so 1-145's `Figs. 3, 4, 5` guarded 3 and 4 and let 5 out.
+    assert figrefs.foreign_citation(
+        "Schrenck, II, Plate XXXVI, Figs. 3, 4, ", N) == "Schrenck"
+    assert figrefs.foreign_citation(
+        "See Nelson, Plate LXXXVI, Figs. 5, 6, 20, ", N) == "Nelson"
+    # A bare numeral takes the locants a numbered one does (1-226).
+    assert figrefs.foreign_citation("Compare Nelson, Fig. 22, 1, ", N) == "Nelson"
+    # `and` joining a run, and `also` continuing it past a semicolon (1-259).
+    assert figrefs.foreign_citation(
+        "Nelson, Plates LXXXVIII and ", N) == "Nelson"
+    assert figrefs.foreign_citation(
+        "Nelson, Plates LXXXVIII and LXXXIX; also Fig. ", N) == "Nelson"
+    # The semicolon between two citations of one work (1-278).
+    assert figrefs.foreign_citation(
+        "Compare Teit, Fig. 127, p. 185; and Fig. ", N) == "Teit"
+    # An arabic plate number — Hough numbers his plates in arabic, and this
+    # book's own are roman, so it is a tell rather than an ambiguity (1-241).
+    assert figrefs.foreign_citation(
+        "Compare the illustration in Hough, Lamp, Plate 15, Fig. ", N) == "Hough"
+    # The dash of a numeral range, the guard being asked at the 164 (2-071).
+    assert figrefs.foreign_citation(
+        "Compare Nelson, p. 448, Figs. 162-", N) == "Nelson"
+
+
+def test_a_footnote_marker_after_a_name_ends_the_citation():
+    """`illustrated by Nelson.\u00b9 Fig. 22` (1-143) is Bogoras's own figure. The
+    superscript is not a decimal digit, so no numeral branch steps over it — which
+    is what keeps the widened furniture off the sentence that merely mentions a
+    source."""
+    N = NAMES | {"Nelson"}
+    assert figrefs.foreign_citation(
+        "which is illustrated by Nelson.\u00b9 Fig. ", N) == ""
+    assert figrefs.foreign_citation(
+        "as described by Nelson,\u00b9 except that the ribs are set closer (Fig. ",
+        N) == ""
+
+
 def test_a_sentence_ends_the_citation():
     """An authority named and then left behind does not make the next figure
     reference theirs — refusing there would cost a real link on every page that
@@ -453,3 +499,85 @@ def test_a_chapter_is_never_scoped_to_a_plate():
     assert figrefs.unmark("chapter", "XII", None) == {
         "kind": "chapter", "number": "XII", "plate": ""}
     assert figrefs.unmark("chapter", "XII", "Plate XXI") is None
+
+
+# -- the second witness: the numbers the book prints ---------------------------
+
+PLATES = frozenset({"I", "II", "XIV", "XXXV"})
+FIGURES = frozenset({"1", "2", "94", "302"})
+
+
+def _span(kind, number, plate=""):
+    return {"kind": kind, "number": number, "plate": plate}
+
+
+def test_a_plate_past_the_book_s_last_is_not_this_book_s():
+    """Schrenck's Plate XXXVI and Nelson's Plate LXXXIX. The printed List of
+    Illustrations stops at XXXV, so no sentence can make them this book's."""
+    assert figrefs.outside_the_book(_span("plate", "XXXVI"), PLATES, FIGURES) \
+        == "this book prints no Plate XXXVI"
+    assert figrefs.outside_the_book(_span("plate", "LXXXIX"), PLATES, FIGURES)
+    assert figrefs.outside_the_book(_span("plate", "XIV"), PLATES, FIGURES) == ""
+
+
+def test_a_figure_on_a_foreign_plate_is_judged_by_the_plate():
+    """`Nelson, Plate LXXXVI, Fig. 23` — nothing can be said about how many
+    figures another author put on his plate, but the plate itself is not here."""
+    assert figrefs.outside_the_book(_span("figure", "23", "LXXXVI"),
+                                    PLATES, FIGURES)
+    assert figrefs.outside_the_book(_span("figure", "23", "XIV"),
+                                    PLATES, FIGURES) == ""
+
+
+def test_a_bare_figure_past_the_book_s_last():
+    """Boas's Fig. 525, where the guard could not read back to the name because
+    the author is named *after* the numeral — `in Boas's Central Eskimo`."""
+    assert figrefs.outside_the_book(_span("figure", "525"), PLATES, FIGURES) \
+        == "this book prints no Fig. 525"
+    assert figrefs.outside_the_book(_span("figure", "302"), PLATES, FIGURES) == ""
+
+
+def test_it_is_a_set_and_not_a_ceiling():
+    """The printed list has no gap here, but a set says what a ceiling cannot and
+    cannot be fooled by one appearing later."""
+    assert figrefs.outside_the_book(_span("figure", "3"), PLATES, FIGURES)
+    assert figrefs.outside_the_book(_span("plate", "III"), PLATES, FIGURES)
+
+
+def test_knowing_nothing_is_not_an_answer():
+    """A caller with no List of Illustrations knows nothing about the book's
+    range. Treating that as "the book prints everything" would disarm the guard
+    silently; treating it as "the book prints nothing" would refuse the corpus.
+    It declines, and `foreign_citation` stands alone as it did before."""
+    assert figrefs.outside_the_book(_span("plate", "XXXVI"), frozenset(),
+                                    FIGURES) == ""
+    assert figrefs.outside_the_book(_span("figure", "525"), PLATES,
+                                    frozenset()) == ""
+
+
+def test_the_two_witnesses_are_independent():
+    """The prose guard reads the sentence and the range guard reads the number,
+    and neither can be talked out of its answer by the other's blind spot. Boas's
+    Fig. 525 is the case: no name precedes it, so the first says nothing."""
+    assert figrefs.foreign_citation("compare Fig. 199, a, with Fig. ",
+                                    NAMES | {"Boas"}) == ""
+    assert figrefs.outside_the_book(_span("figure", "525"), PLATES, FIGURES)
+
+
+def test_the_citation_s_head_is_the_name_returned():
+    """`Authorities Quoted` holds Hough under his name *and* under his short
+    title `Lamp`, so `Hough, Lamp, Plate 15, Fig. 3` (1-241) qualifies twice.
+
+    The answer is shown to a reader now — it is the hover text on a refused
+    reference — so it must not depend on which member of a set came first: on
+    some runs the page said `Lamp's figure, not this book's`, naming a short
+    title as though it were a person. The name that opens a citation governs it.
+    """
+    N = {"Hough", "Lamp"}
+    assert figrefs.foreign_citation(
+        "Compare the illustration in Hough, Lamp, Plate 15, Fig. ", N) == "Hough"
+    assert figrefs.foreign_citation(
+        "Compare the illustration in Hough, Lamp, Plate 15, Fig. ",
+        {"Lamp", "Hough"}) == "Hough"
+    # The short title alone still answers where the name is not printed.
+    assert figrefs.foreign_citation("Compare Lamp, Plate 15, Fig. ", N) == "Lamp"

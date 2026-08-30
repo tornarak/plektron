@@ -1536,3 +1536,51 @@ def insert_after_anchor(html: str, anchor_id: str, block: str) -> str | None:
         return None
     cut = end + len(close)
     return html[:cut] + block + html[cut:]
+
+
+#: The two handles `tei_html` leaves in the page for the figure join to find, as
+#: it writes them — `el_figure` and `el_figref` build these strings literally, so
+#: the patterns are exact rather than tolerant. A tolerant one would go on
+#: matching after the renderer changed shape and splice into markup it no longer
+#: understands; an exact one stops matching, and `test_figure_render.py` fails.
+_FIGURE_OPEN = re.compile(r'<figure class="figure" data-figure="([^"]*)" data-i="(\d+)">')
+_FIGREF = re.compile(r'<a class="figref" data-fr="(\d+)" tabindex="0">(.*?)</a>',
+                     re.S)
+
+
+def hang_figures(html: str, head) -> str:
+    """Replace each bare `<figure>` opening tag with `head(i, n)`.
+
+    **The join is served, not scripted.** The pictures used to be hung by
+    `edition.js` off a `STATE.figs` payload, which made them the one part of the
+    edition a reader with no script never saw — the caption read, out of an
+    adjudicated store, under a blank space. The reason for the client's half was
+    only ever the cache: `stores.render` is keyed on the TEI bytes and geometry
+    baked into that HTML would outlive a correction to `gt/fig/`. Splicing here,
+    per request, keeps that key honest and still puts the picture in the served
+    bytes.
+
+    `head` is handed the document-order index and the printed number **off the
+    tag**, not out of the caller's records, so the two handles reach the page
+    exactly as the renderer set them. Returning falsy leaves the tag alone, which
+    is what a figure the join has nothing to say about wants.
+    """
+    return _FIGURE_OPEN.sub(
+        lambda m: head(int(m.group(2)), m.group(1)) or m.group(0), html)
+
+
+def link_figrefs(html: str, ref) -> str:
+    """Replace each inert `<a class="figref">` with `ref(i, body)`.
+
+    `hang_figures`'s argument, for the same markup written by the same renderer:
+    a reference to a picture is a join over `gt/fig/` and the List of
+    Illustrations, and a reader with no script got a dotted underline that did
+    nothing at all. `body` is the renderer's own inline HTML for the words the
+    reference is set over and is passed through untouched — the numeral the
+    printer set, with whatever markup the page put on it.
+
+    Non-greedy to the first `</a>`, which is right because a figure reference
+    holds a number and never another anchor.
+    """
+    return _FIGREF.sub(
+        lambda m: ref(int(m.group(1)), m.group(2)) or m.group(0), html)

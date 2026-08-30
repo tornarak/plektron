@@ -7,7 +7,8 @@ three stores, and the whole point of the view is that they are in one place.
 from __future__ import annotations
 
 from .. import edition_ui
-from ._common import action, group, opt, out
+from ..render import progress
+from ._common import action, group, opt, out, page_refs, refs_arg
 
 
 def register(cli):
@@ -57,6 +58,55 @@ def register(cli):
                "of *different* rank disagree on is reported, not fatal: rank "
                "resolves it, and the disagreement is usually a misread running "
                "title worth seeing")
+
+
+    p = action(g, "figrefs", run_figrefs,
+               help="every cross-reference the pages print at a picture — "
+               "`(Plate XXVII, Fig. 3)`, `Fig. 87 represents a knife` — and what "
+               "became of each: the crop it points at, or which of the three "
+               "things stopped it. **The states are not equally interesting.** "
+               "`a store declined` is the figure track's worklist — a plate "
+               "`gt/fig/` has not boxed yet — and clears as the keying "
+               "proceeds. The other two are the guards working: `another "
+               "author's` is a plate of Nelson's or Schrenck's that "
+               "`Authorities Quoted` named, and `outside the book's numbers` is "
+               "a number the printed List of Illustrations does not carry, this "
+               "book stopping at Plate XXXV and Fig. 302. "
+               "**A refusal is the safe outcome and a link is the one to "
+               "doubt**: a reference pointed at the wrong picture reads as "
+               "correct, which is why this exists — seven of them were servable "
+               "until a sweep counted them. Goes through the same join the "
+               "reading view serves, so it cannot report one thing and show "
+               "another. Reads and writes nothing; reports, never gates")
+    refs_arg(p, all_="every page the reading view can show, collated and draft "
+             "alike")
+    opt(p, "--refused", is_flag=True,
+        help="only the marks that do not link. The counts are over everything "
+             "either way, so a filtered listing still says what it is a part of")
+    opt(p, "--limit", type=int, default=0, metavar="N",
+        help="stop the listing after N rows; the counts are unaffected [all]")
+
+
+def run_figrefs(a) -> int:
+    from ..web import stores
+    from ..web.edition import figref_census
+
+    refs = page_refs(a) or stores.in_reading_order(a.root, True)
+    with progress("censusing") as tick:
+        rep = figref_census(a.root, refs, tick=tick)
+    rows = rep["rows"]
+    shown = [r for r in rows if not a.refused or r["state"] != "link"]
+    if a.limit > 0:
+        shown = shown[:a.limit]
+    if shown:
+        out(a, shown, name="figrefs")
+    # **The counts are over every mark, not over what was listed.** A `--refused`
+    # listing is a worklist and a worklist that reported its own length as the
+    # census would say the corpus is nothing but its defects.
+    out(a, rep["counts"], name="counts", heading=True)
+    print(f"{len(rows)} mark(s) on {rep['pages']} page(s)"
+          + (f", {len(shown)} shown" if len(shown) != len(rows) else ""))
+    return 0
 
 
 def run_runs(a) -> int:

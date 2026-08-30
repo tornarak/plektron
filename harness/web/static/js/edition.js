@@ -707,13 +707,13 @@ document.addEventListener('keydown', ev => {
     if (ev.key == "Backspace" && selected_stack) { ev.preventDefault(); deleteSelection(); }
 })
 
-let scan_bts = document.getElementById('scan-btn')
+let scan_btn = document.getElementById('scan-btn')
 if (scan_btn) scan_btn.addEventListener('click', () => openScan());
 
 // Reader view: applied to <html> so it can be set before first paint (see the
 // inline script in the head) and never flashes the apparatus on load.
 let reader_btn = document.getElementById('reader-btn');
-reader_btn.addEventListener('click', () => {
+if (reader_btn) reader_btn.addEventListener('click', () => {
   const on = document.documentElement.classList.toggle('reader');
   localStorage.setItem('edition-reader', on ? '1' : '');
 });
@@ -735,95 +735,16 @@ for (const id of pins) {
 
 /* ---------------------------------------------------------------- figures
 
-   The server sends `STATE.figs`, one entry per <figure> in document order,
-   already matched to the store by printed number (or, for the ten figures whose
-   caption prints none, by that order). The markup carries no geometry — see
-   `stores.render`'s note — so the pictures are hung here.
+   **Nothing here builds a figure any more, and that is the point.** The pictures
+   and the cross-reference links used to be assembled on this side, off a
+   `STATE.figs` / `STATE.figrefs` payload, which made the join over `gt/fig/` the
+   one part of the edition a reader with no script never saw: an adjudicated
+   caption over a blank space, and a reference that was a dotted underline
+   pointing nowhere. The reason for it was only ever `stores.render`'s cache key,
+   and that is answered by splicing per request instead — `web/edition
+   ._hang_pictures`, off `edition/_figure.html`.
 
-   A figure can have several pictures: the store spells 1-276's fig. 140 in two
-   boxes and the book letters them a and b inside its one caption, so they stack
-   above the single <figcaption>.
-
-   Progressive enhancement, and not only as a courtesy: with no script the
-   caption still reads, which is the half that comes from an adjudicated store.
-   The float is marked `data-float-basis="geometry"` because it reproduces where
-   the box sat, which is evidence for how the print wrapped and not a record of
-   it — zones are always the full measure, so nothing witnesses the wrap. */
-for (const f of (STATE.figs || [])) {
-  const el = document.querySelector(`.figure[data-i="${f.i}"]`);
-  if (!el) continue;
-  if (!f.crops.length) {
-    /* Unresolved: say so, and never fall back to the next unused crop. A wrong
-       picture under a right caption reads as correct and is the failure this
-       edition is organised against. */
-    const p = document.createElement('p');
-    p.className = 'figure-missing';
-    p.textContent = f.why || 'no picture for this figure';
-    el.prepend(p);
-    continue;
-  }
-  const holder = document.createElement('div');
-  holder.className = 'figure-plates';
-  for (const c of f.crops) {
-    const img = document.createElement('img');
-    img.src = c.url;
-    img.alt = f.n ? 'Figure ' + f.n : 'Figure';
-    img.loading = 'lazy';
-    /* **Each picture at its own width, relative to the group's.** A lettered
-       figure is several boxes under one caption and each is cut separately, so
-       sizing them all by the group would stretch the narrow ones — 24 of 32
-       parts in this store, worst x3.95. `f.width` is the block's share of the
-       measure, so a part's share of the *block* is the ratio of the two. */
-    if (f.width > 0 && c.width < f.width) {
-      img.style.width = Math.round((c.width / f.width) * 100) + '%';
-    }
-    holder.append(img);
-  }
-  el.prepend(holder);
-  if (f.side && f.side != 'full') {
-    el.dataset.float = f.side;
-    el.dataset.floatBasis = 'geometry';
-    el.style.width = Math.round(f.width * 100) + '%';
-  }
-}
-
-/* ------------------------------------------------- figure cross-references
-
-   The prose points at pictures constantly — `(Plate XXVII, Fig. 3)`, `Fig. 87
-   represents a knife` — and every one of those is a picture the figure store
-   holds. `STATE.figrefs` is one entry per reference in document order, resolved
-   server-side against `gt/fig/` and the List of Illustrations; the markup
-   carries only the number the page prints, for the same reason `<figure>`
-   carries no geometry.
-
-   A resolved reference becomes `a.fig`, which is the List of Illustrations'
-   own class, so the existing click handler opens it in the stack and nothing
-   about the behaviour is written twice. **The stack and not the lightbox**, and
-   for `openFigure`'s reason inverted: the picture is *not* on this page — the
-   reader is being sent to it — so it wants a card that stays open beside the
-   sentence that sent for it.
-
-   An unresolved one is left as plain text with its reason on hover: a bare
-   `Fig. 1` that no text page carries, a plate figure `gt/fig/` has not boxed,
-   or another author's plate. Never a link to the nearest candidate — on a page
-   of near-identical harnesses a wrong picture reads as a right one. */
-for (const [i, r] of (STATE.figrefs || []).entries()) {
-  const el = document.querySelector(`a.figref[data-fr="${i}"]`);
-  if (!el) continue;
-  if (!r.pairs || !r.pairs.length) {
-    el.classList.add('unresolved');
-    el.removeAttribute('tabindex');
-    el.title = r.why || 'no picture for this reference';
-    continue;
-  }
-  el.classList.add('fig');
-  el.href = r.url;
-  el.dataset.fig = r.pairs.join(',');
-  el.dataset.label = r.label;
-  /* The caption, which the List of Illustrations' own links carry and these did
-     not — so a card opened from the prose was headed `Plate XIV` and said
-     nothing else, naming a number rather than a thing. Same attribute and same
-     handler as the list's, so both routes build the one card. */
-  el.dataset.caption = r.caption || '';
-  el.title = r.label + (r.pairs.length > 1 ? ` — ${r.pairs.length} pictures` : '');
-}
+   What is left on this side is what a script is actually for: `openFigure`
+   opening a picture in the lightbox, and `a.fig` opening a card in the stack.
+   Both bind to markup that is already on the page, so both are enrichment over
+   something a reader can already see and follow. */

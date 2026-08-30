@@ -1131,8 +1131,41 @@ def test_another_authors_plate_is_not_marked(tmp_path):
     blocks = [("MainZone-P", lines_at(["compare Sauer, Plate XIV, p. 321",
                                        "and Plate XIV of this book"], 200))]
     doc, rep = page(tmp_path, "1-021", blocks)
-    assert rep["figrefs"] == 1                      # the second one, not Sauer's
+    # **Neither is marked, and the second one is a cost taken knowingly.**
+    # `and` became furniture because `Nelson, Plates LXXXVIII and LXXXIX` and
+    # `Teit, Fig. 127, p. 185; and Fig. 128` were linking this book's pictures
+    # under those authors' numbers — three live fabrications, found by sweeping
+    # the corpus. The guard cannot tell that sentence from this one: both are a
+    # name, citation furniture, `and`, a plate numeral. What separates them is
+    # `of this book`, which is meaning and not furniture.
+    #
+    # So it refuses both, which is the direction this guard is built to fail in:
+    # a refused reference prints plain and a reader can see it, where a wrong
+    # link reads as a right one. No sentence of this shape occurs in the corpus —
+    # the widening withdrew eight links and seven were fabrications — so the cost
+    # here is a designed case rather than a page. `docs/decisions.md`.
+    assert rep["figrefs"] == 0
     assert 'Sauer, Plate XIV' in doc
+
+
+def test_a_sentence_break_restores_this_book_s_own_plate(tmp_path):
+    """The boundary of the case above, so the widening's reach is stated and not
+    assumed: what ends a citation is still a sentence, and a plate named after
+    one is this book's however recently an authority was cited."""
+    (tmp_path / "edition").mkdir(exist_ok=True)
+    (tmp_path / "edition" / "authorities.json").write_text(json.dumps({
+        "source": {"refs": ["1-023"]},
+        "authorities": [{"key": "sauer1802", "ref": "1-023", "folio": "3",
+                         "cited_as": [{"name": "Sauer"}],
+                         "printed": [{"ref": "1-023", "text": "SAUER."}]}]}),
+        encoding="utf-8")
+    (tmp_path / "edition" / "runs.json").write_text(json.dumps({"runs": [
+        {"id": "authorities", "kind": "authorities", "title": "Authorities Quoted",
+         "refs": ["1-023"], "source": "edition/authorities.json"}]}), encoding="utf-8")
+    blocks = [("MainZone-P", lines_at(["compare Sauer, Plate XIV, p. 321.",
+                                       "The drum is drawn in Plate XIV"], 200))]
+    doc, rep = page(tmp_path, "1-021", blocks)
+    assert rep["figrefs"] == 1                      # the second one, not Sauer's
 
 
 def test_prose_naming_no_picture_is_marked_nowhere(tmp_path):

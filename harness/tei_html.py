@@ -408,7 +408,7 @@ class Renderer:
         self.in_ref = False
         #: `{kind, number, plate}` per marked cross-reference in the prose, in
         #: document order. **Handles, not answers** — where each one points is
-        #: `web/edition._figref_state`'s, for `el_figure`'s reason. Read off the
+        #: `web/edition.figref_rows`'s, for `el_figure`'s reason. Read off the
         #: page's own `<ref>` marks by `el_ref`, never scanned out of the served
         #: text: a link nobody could review is the thing that arrangement fixed.
         self.figrefs: list[dict] = []
@@ -469,7 +469,7 @@ class Renderer:
         `figrefs.mark` wrote. Which picture that is depends on `gt/fig/`, which
         `stores.render`'s cache does not name, so resolving here would go on
         serving a link to a box somebody has since moved. Same division as
-        `<figure>`: the renderer emits the handle and `web/edition._figref_state`
+        `<figure>`: the renderer emits the handle and `web/edition.figref_rows`
         joins it, where both keys are in hand.
 
         **`before` rides along, and that is what keeps this store-free.** Some of

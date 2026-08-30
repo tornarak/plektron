@@ -1306,3 +1306,185 @@ with them, having no other caller. The codepoint table still sweeps the store,
 and what it now shows was invisible under the noise: 17 en-dashes where §2.11
 wants a hyphen, most of them date ranges (`1900–01`, `1897–1902`). The
 corpus-wide census is 20.
+
+## The guard against another author's plate was leaking through its furniture
+
+`figrefs.foreign_citation` exists because Bogoras cites Nelson, Schrenck, Murdoch
+and Sauer by plate number in the same words he uses for his own, and `Sauer,
+Plate XIV` collides with this book's Plate XIV outright. It reads the prose in
+front of a numeral and refuses the link where an authority's name governs it,
+stepping over `_FURNITURE` — citation punctuation, a short title, a page
+locator — on the way back to the name.
+
+It was found leaking after the reading view started serving figure references as
+real links rather than building them in the browser, which put every one of them
+somewhere a sweep could count. Two questions were asked of the corpus's 808
+marks. The first was mechanical: the printed List of Illustrations carries
+plates I–XXXV and figures 1–302, both complete with no gap, so any number past
+either cannot be this book's whatever the sentence says. Seven marks were
+outside, and every one of the seven was foreign — Schrenck ×3, Nelson ×3, Boas
+×1. That is a clean result and a harmless one: an out-of-range reference finds
+nothing to link to and prints plain either way. It is now
+`figrefs.outside_the_book`, asked beside the prose guard rather than instead of
+it, so the two witnesses are independent — one reads the sentence, one reads the
+number, and neither can be talked out of its answer by the other's blind spot.
+Its numbers come from the book's own apparatus and not from `gt/fig/`: taking
+the range off the boxes would have made every unkeyed figure foreign.
+
+The second question was the one that mattered. Where does a mark carry an
+authority's name that the guard did not act on, *and* a number this book does
+print? Seven, and all seven were linking:
+
+    1-226  Nelson, Fig. 22, 1, 2            -> this book's Fig. 2   (1-086)
+    1-241  Hough, Lamp, Plate 15, Fig. 3    -> this book's Fig. 3   (1-087)
+    1-242  Hough, Lamp, Plate 9, Fig. 4     -> this book's Fig. 4   (1-096)
+    1-259  Nelson, ... ; also Fig. 94, 95   -> this book's 94, 95
+    1-278  Teit, Fig. 127, p. 185; and 128  -> this book's Fig. 128 (1-267)
+    2-071  Nelson, p. 448, Figs. 162-164    -> this book's Fig. 164 (1-294)
+
+A working link, a caption that reads plausibly under it, and no error signal:
+the exact failure the guard was written to prevent, surviving inside it. Five
+shapes of furniture it had never been taught — a run past its second member, the
+words `and` and `also`, the semicolon, an arabic plate number, and the dash of a
+numeral range — are each recorded against the page that leaked, in `_FURNITURE`.
+
+**Widening furniture can only ever withdraw a link.** Furniture is what the
+guard steps over on its way to a name, so admitting more of it makes the guard
+refuse more and link less. That is what makes this list safe to grow on
+evidence, and it is why the growth is not hedged.
+
+**It cost one true link, and the cost was taken rather than special-cased.**
+`1-358` compares Bogoras's figures with Boas's and Kroeber's clause by clause,
+and one of its four references to his own Fig. 199 now prints plain, because
+`Boas’s Central Eskimo, p. 569;` stands between it and the numeral and every
+piece of that is furniture. Dropping the semicolon again would recover it and
+re-leak three of the seven, and a rule that admitted `;` only when `and` follows
+would be a sentence of special pleading fitted to one page. The other three
+references to Fig. 199 on that page still link, so the picture is a line away.
+A guard whose whole contract is that refusing is the safe direction has to be
+allowed to refuse where it genuinely cannot tell, and this sentence is the
+hardest in the corpus: it alternates authors clause by clause with no cue the
+furniture rule can see.
+
+The corpus went from 787 links to 779: eight withdrawn, seven of them
+fabrications, none added.
+
+**One stated contract changed with it.** `test_another_authors_plate_is_not_marked`
+had `compare Sauer, Plate XIV, p. 321 / and Plate XIV of this book` and expected
+the second to be marked. Admitting `and` refuses it too, and the guard cannot do
+otherwise: that sentence and `Nelson, Plates LXXXVIII and LXXXIX` are the same
+shape — a name, citation furniture, `and`, a plate numeral — and what separates
+them is `of this book`, which is meaning and not furniture. No sentence of that
+shape occurs in the corpus, so the cost is a designed case rather than a page,
+while the three references `and` catches are live. The test now records what the
+guard does and why, and a companion test fixes the boundary: a full stop still
+ends a citation, so `Sauer, Plate XIV, p. 321. The drum is drawn in Plate XIV`
+marks the second.
+
+**Regenerating moved the fix upstream.** The counts above are the reading view's,
+measured against drafts carrying the old marks. `tei generate` asks the same
+prose guard before it writes a `<ref>` at all, so a regeneration removes the
+fourteen foreign marks from `mz/tei/` outright — `Teit, Fig. 127, p. 185; and
+Fig. 128` is now plain text on 1-278, and the reading view has nothing left to
+refuse there. The corpus stands at 794 marks, 779 linking. What still reaches the
+view is Boas's `Fig. 525`, which no prose guard can catch and the range guard
+does.
+
+## A row per sentence-start is the compositor's line breaks in the encyclopedia
+
+The alias matcher was case-sensitive, on the reasoning that "these are proper
+nouns in running prose, and a case-insensitive match on a short form would fire
+on ordinary words". The premise is right and the conclusion did not follow: the
+choice was never between exact case and no case, because the lexicon had already
+built the third thing and written down why.
+
+`lookup._resolve_cased` holds a **case ladder** — an attestation enables its own
+case and every case above it, and never descends. `lookup.spellings` states the
+principle it rests on: *case is position, not spelling*. `keˊlet` in the body,
+`Keˊlet` opening a sentence and `KEˊLET` as a run-in heading are one word set
+three ways, and what the ambiguity refusal exists for is the book disagreeing
+about marks, not about where a sentence began.
+
+The alias store had no such rule and was paying for it in vocabulary.
+`taxon:ursus-arctos` carried `brown bears` and `Brown bears` as separate rows,
+`black bear` and `Black bears`, each capitalized twin noted "sentence-initial" —
+which is a fact about the compositor and not about the bear. That backlog does
+not converge: every page still to be keyed can start a sentence with any word in
+the book, so the store would have gone on accreting a row per position for as
+long as anyone kept reading. The first instinct on meeting the next instance
+(`Sables` at 3-152 n. 1) was to mint the row, which is what made the shape
+visible.
+
+`entities._matcher` now expands each row over `lookup.case_variants`, the same
+ladder the handles climb, imported rather than restated — `resolve` and `search`
+had already drifted once by each computing "case aside" for itself, and two
+definitions of one rule is the defect `spellings` exists to have fixed.
+
+**Measured before shipping, because the change is a licence to link and not a
+report.** Regenerating all 717 pages of `mz/tei/` either side of it: **+122
+links across 119 pages, and not one link lost** — no entity's count fell, no
+surface form appeared that was not a case-raise of a row the store already
+held. That last is the check that matters, since it is what distinguishes a
+ladder from a fold.
+
+Three things keep the licence narrow.
+
+**It never descends.** A capitalized row is a proper name, and reaching a
+lower-case page from it would edit a ratified identity by a keystroke nobody
+reviewed — `_resolve_cased`'s own reason, and refused here for it.
+
+**A shape the ladder cannot rank gets only itself.** `Brown Bear` is neither the
+capitalization of `brown bear` nor its uppercase; `_case_rank` returns `None`,
+and the entry's ruling that the `Brown Bear` at 1-184 is the river
+Keiˊñu-weˊem and not the animal survives the change without being restated as an
+exception. A rule that cannot rank a shape must not guess it into one.
+
+**A Tier-1 variant is dropped rather than approximated.** `_raise_case` already
+refused to uppercase `ɪ` U+026A, whose capital is a letter the keying spec does
+not contain, so `vaˊɪrgɪt` reaches `Vaˊɪrgɪt` and stops. The alias matcher
+inherits that refusal by inheriting the function.
+
+**What the measurement surfaced is the more interesting half.** 51 of the 122 are
+capitalized `Raven` and 14 are `Eagle`, and those are the creator Raven of the
+myths, the Raven of the children's game at 1-351, and the Eagle of the constellation
+and of the exchange-marriage tale at 3-071 — not the bird `taxon:corvus-corax`
+and not `taxon:aves`. The conflation was there before, latent; strict case was
+hiding it behind an accident of position rather than deciding anything. The
+first answer was that the exact spelling should win, so a `being:raven` claiming
+`Raven` would take the personage back the moment someone minted it.
+
+**That answer was wrong, and wrong in the project's signature way.** At the head
+of a sentence the capital is the compositor's; it is the one position where case
+carries no information at all. Letting the exact row win there does not resolve
+the ambiguity, it *conceals* it — a confident link with no error signal, chosen
+by a rule that had nothing to go on. `Raven first made the world` and `a raven
+flew over` are not the same evidence, and only the second is evidence.
+
+So the store's spelling does not evict the rows raised into it; it only goes
+first. Both claims ride and the hit is contested, which is already this store's
+word for ambiguous and already arrives as a candidate rather than a guess. Going
+first still does one job: **one entity** may reach a spelling through two of its
+own rows, and an entity is not in doubt about itself — one claimant, and the row
+spelled at the page's case carries the licence.
+
+`entity check`'s collision census had to climb too, or a store whose two rows
+meet only one rung up reports coherent right until the page where it is not, and
+the standing error — two entities cannot both own a form unconditionally — would
+go unsaid at the exact spelling where it bites. It reports **once, at the rung
+where the claimants first meet**: censusing every rung listed all 34 existing
+collisions a second time as their own uppercase, which is one collision spelled
+twice and would bury the few the ladder makes. On the live store the ladder adds
+none — no two entities hold case-twin rows today — so the guard costs nothing now
+and is in place for the entry that would need it.
+
+Until someone mints those entries the Raven links live only in `mz/tei/`, which
+is `#mz`, regenerated from the store on every run, and carries nothing a human
+has ratified.
+
+**The sweep is a verb now.** `edition figrefs` prints one row per mark and what
+became of it, `--refused` narrowing it to the worklist. It runs through
+`figref_rows` — the join the reading view serves — rather than reading the stores
+a second time, so it cannot report one thing while the page shows another; a test
+asserts that agreement page by page. What made the seven so long-lived was not
+that they were hard to see but that nothing counted them: a census that could
+only be had by writing a script is a census nobody runs.

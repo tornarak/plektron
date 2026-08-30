@@ -1,0 +1,95 @@
+{# The picture half of a figure, and the pointer half of a reference to one —
+   everything about a figure that is a **join over `gt/fig/`** rather than
+   something the page itself says.
+
+   `tei_html` emits the caption and two handles and no geometry, because
+   `stores.render` is keyed on the TEI bytes alone and a box baked into that HTML
+   would let a corrected `gt/fig/` serve stale placement out of the cache with
+   nothing to signal it. The route splices these macros in per request, off
+   `stores.fig_layout`, whose key names the three stores that can move a box. The
+   two facts stay keyed to the stores they came from, and the reader still gets
+   one element.
+
+   **This used to be `edition.js`, and that is the bug it fixes.** Building the
+   `<img>` on the client meant the pictures were the one part of the edition a
+   reader with no script never saw: the caption read, from an adjudicated store,
+   under a blank. Nothing here needs a script — the join is a server fact and it
+   is now served as one.
+
+   Every value is a plain string through Jinja's autoescaping; nothing in this
+   file is marked safe except `body`, which is `tei_html`'s own inline output for
+   the words the reference is set over. #}
+
+{# The opening tag and the pictures under it, in place of the bare
+   `<figure class="figure" data-figure=… data-i=…>` the renderer wrote. `n` and
+   `i` come back off that tag rather than out of the record, so the handles reach
+   the page exactly as the renderer set them whatever the join says.
+
+   A figure can have several pictures: the store spells 1-276's fig. 140 in two
+   boxes and the book letters them a and b inside its one caption, so they stack
+   above the single <figcaption>.
+
+   `data-float-basis='geometry'` because the float reproduces where the box sat,
+   which is evidence for how the print wrapped and not a record of it — zones are
+   always the full measure, so nothing witnesses the wrap. #}
+{% macro head(f, n, i) -%}
+<figure class='figure' data-figure='{{ n }}' data-i='{{ i }}'
+ {%- if f.side and f.side != 'full' %} data-float='{{ f.side }}'
+ data-float-basis='geometry' style='width:{{ (f.width * 100) | round | int }}%'
+ {%- endif %}>
+{%- if not f.crops %}
+{# Unresolved: say so, and never fall back to the next unused crop. A wrong
+   picture under a right caption reads as correct and is the failure this edition
+   is organised against. #}
+<p class='figure-missing'>{{ f.why or 'no picture for this figure' }}</p>
+{%- else %}
+<div class='figure-plates'>
+{%- for c in f.crops %}
+{# **Each picture at its own width, relative to the group's.** A lettered figure
+   is several boxes under one caption and each is cut separately, so sizing them
+   all by the group would stretch the narrow ones — 24 of 32 parts in this store,
+   worst x3.95. `f.width` is the block's share of the measure, so a part's share
+   of the *block* is the ratio of the two. #}
+<img src='{{ c.url }}' loading='lazy'
+ alt='{% if f.n %}Figure {{ f.n }}{% else %}Figure{% endif %}'
+ {%- if f.width > 0 and c.width < f.width %}
+ style='width:{{ ((c.width / f.width) * 100) | round | int }}%'{% endif %}>
+{%- endfor %}
+</div>
+{%- endif %}
+{%- endmacro %}
+
+{# A cross-reference in the prose — `(Plate XXVII, Fig. 3)`, `Fig. 87 represents
+   a knife` — in place of the renderer's inert `<a class="figref" data-fr=…>`.
+
+   A resolved one carries `fig`, which is the List of Illustrations' own class,
+   so the existing click handler opens it in the stack and nothing about the
+   behaviour is written twice. **The stack and not the lightbox**, and for
+   `openFigure`'s reason inverted: the picture is *not* on this page — the reader
+   is being sent to it — so it wants a card that stays open beside the sentence
+   that sent for it. The `href` is a real crop, so the reference is a working link
+   before any of that: it opens the picture with no script at all, and a
+   middle-click puts it in a tab.
+
+   `data-caption` is what the List of Illustrations' own links carry and these
+   once did not, so a card opened from the prose was headed `Plate XIV` and said
+   nothing else, naming a number rather than a thing. Same attribute and same
+   handler as the list's, so both routes build the one card.
+
+   An unresolved one is not a link and carries no `href` or `tabindex`: its
+   reason is on hover — a bare `Fig. 1` no text page carries, a plate figure
+   `gt/fig/` has not boxed, or another author's plate. Never a link to the
+   nearest candidate: on a page of near-identical harnesses a wrong picture reads
+   as a right one. #}
+{% macro ref(r, body) -%}
+{%- if not r.pairs -%}
+<a class='figref unresolved' title='{{ r.why or "no picture for this reference" }}'
+ >{{ body | safe }}</a>
+{%- else -%}
+<a class='figref fig' href='{{ r.url }}' tabindex='0'
+ data-fig='{{ r.pairs | join(",") }}' data-label='{{ r.label }}'
+ data-caption='{{ r.caption }}'
+ title='{{ r.label }}{% if r.pairs | length > 1 %} — {{ r.pairs | length }} pictures{% endif %}'
+ >{{ body | safe }}</a>
+{%- endif -%}
+{%- endmacro %}

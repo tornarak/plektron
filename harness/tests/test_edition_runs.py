@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import json
 import re
+from html import escape
 from pathlib import Path
 
 import pytest
@@ -421,12 +422,12 @@ def test_a_plate_referred_to_in_prose_carries_the_printed_lists_caption(
     set, and it is the same string the list's own links hand to the card. So
     clicking `Plate I` in a sentence and clicking it in the List of Illustrations
     now open the one card, which is what `openFigure`'s id already implied."""
-    from harness.web.edition import _figref_state
+    from harness.web.edition import figref_rows
     _fig(tmp_path, "1-049", "Fig. 1. Village Uñiˊsak.")
     _loi(tmp_path, [], [{"kind": "plate", "number": "I",
                          "caption": "Village Uñiˊsak", "opposite_folio": 29,
                          "ref": "1-014", "segments": ["Village Uñiˊsak"]}])
-    got = _figref_state(
+    got = figref_rows(
         {"figrefs": [{"kind": "plate", "number": "I", "plate": "",
                       "before": ""}]}, tmp_path)
     assert got[0]["pairs"] == ["1-049/001"]
@@ -438,12 +439,12 @@ def test_a_figure_referred_to_in_prose_carries_the_caption_under_it(
         tmp_path: Path):
     """A text figure's caption is the one the printer set under the picture, not
     the abbreviation the list carries — the leaf is the store that has it."""
-    from harness.web.edition import _figref_state
+    from harness.web.edition import figref_rows
     _fig(tmp_path, "1-086", "Fig. 1. Bundle of Leaf-Tobacco.")
     _loi(tmp_path, [{"kind": "figure", "numbers": [1],
                      "caption": "Bundle of Leaf-Tobacco", "folio": 60,
                      "ref": "1-014"}], [])
-    got = _figref_state(
+    got = figref_rows(
         {"figrefs": [{"kind": "figure", "number": "1", "plate": "",
                       "before": ""}]}, tmp_path)
     assert got[0]["pairs"] == ["1-086/001"]
@@ -453,7 +454,7 @@ def test_a_figure_referred_to_in_prose_carries_the_caption_under_it(
 def test_another_authors_plate_carries_no_caption_either(tmp_path: Path):
     """It is not this book's picture, so there is nothing of this book's to say
     about it — the refusal keeps every field empty and only `why` speaks."""
-    from harness.web.edition import _figref_state
+    from harness.web.edition import figref_rows
     _fig(tmp_path, "1-049", "Fig. 1. Village Uñiˊsak.")
     _loi(tmp_path, [], [{"kind": "plate", "number": "I",
                          "caption": "Village Uñiˊsak", "opposite_folio": 29,
@@ -465,7 +466,7 @@ def test_another_authors_plate_carries_no_caption_either(tmp_path: Path):
          "refs": ["1-014"], "source": "edition/loi.json"},
         {"id": "authorities", "kind": "authorities", "title": "Authorities",
          "refs": ["1-018"], "source": "edition/authorities.json"}]}))
-    got = _figref_state(
+    got = figref_rows(
         {"figrefs": [{"kind": "plate", "number": "I", "plate": "",
                       "before": "Sauer, "}]}, tmp_path)
     assert got[0]["pairs"] == [] and got[0]["caption"] == ""
@@ -653,3 +654,148 @@ def test_a_record_with_no_ref_at_all_stays_off_the_page(open_list: Path):
     _write(open_list, "edition/authorities.json", json.dumps(doc))
     assert "jochelson1905" not in _app(open_list).get(
         "/edition/run/authorities").text
+
+
+def test_the_refusal_names_what_the_reader_is_looking_at(tmp_path):
+    """`Teit's plate` under a sentence printing `Fig. 128` sends a reader looking
+    for a plate that is not there. The guard mostly caught plates until its
+    furniture was widened; it now catches runs of figures, so the reason has to
+    say which. `Ibid.` stands where a name would and takes no possessive."""
+    from harness.web import stores
+    from harness.web.edition import figref_rows
+    root = tmp_path
+    (root / "edition").mkdir(parents=True, exist_ok=True)
+    (root / "edition" / "authorities.json").write_text(json.dumps({
+        "source": {"refs": ["1-023"]},
+        "authorities": [{"key": "teit1900", "ref": "1-023", "folio": "3",
+                         "cited_as": [{"name": "Teit"}],
+                         "printed": [{"ref": "1-023", "text": "TEIT."}]}]}),
+        encoding="utf-8")
+    (root / "edition" / "runs.json").write_text(json.dumps({"runs": [
+        {"id": "authorities", "kind": "authorities", "title": "Authorities Quoted",
+         "refs": ["1-023"], "source": "edition/authorities.json"}]}),
+        encoding="utf-8")
+    stores.authority_names.cache_clear() if hasattr(
+        stores.authority_names, "cache_clear") else None
+    doc = {"figrefs": [
+        {"kind": "figure", "number": "128", "plate": "", "before": "Compare Teit, "},
+        {"kind": "plate", "number": "XIV", "plate": "", "before": "Compare Teit, "},
+        {"kind": "figure", "number": "33", "plate": "", "before": "Ibid., "},
+    ]}
+    got = figref_rows(doc, root)
+    assert got[0]["why"] == "Teit's figure, not this book's"
+    assert got[1]["why"] == "Teit's plate, not this book's"
+    assert got[2]["why"] == "the work last cited, not this book's"
+
+
+# -- the census ---------------------------------------------------------------
+
+def _authorities(root, name="Teit", key="teit1900"):
+    (root / "edition").mkdir(parents=True, exist_ok=True)
+    (root / "edition" / "authorities.json").write_text(json.dumps({
+        "source": {"refs": ["1-023"]},
+        "authorities": [{"key": key, "ref": "1-023", "folio": "3",
+                         "cited_as": [{"name": name}],
+                         "printed": [{"ref": "1-023", "text": name.upper() + "."}]}]}),
+        encoding="utf-8")
+    (root / "edition" / "runs.json").write_text(json.dumps({"runs": [
+        {"id": "authorities", "kind": "authorities", "title": "Authorities Quoted",
+         "refs": ["1-023"], "source": "edition/authorities.json"}]}),
+        encoding="utf-8")
+
+
+def test_a_refused_mark_still_says_what_the_page_prints(tmp_path):
+    """The census has to put what the page printed beside what became of it, and
+    a refused row used to carry an empty label — the page could afford that,
+    its anchor showing the numeral and the reason, and a census cannot: a blank
+    there names no reference at all."""
+    from harness.web.edition import figref_rows
+    _authorities(tmp_path)
+    got = figref_rows({"figrefs": [
+        {"kind": "figure", "number": "128", "plate": "", "before": "Compare Teit, "},
+        {"kind": "figure", "number": "3", "plate": "XXVII", "before": "Compare Teit, "},
+        {"kind": "plate", "number": "XIV", "plate": "", "before": "Compare Teit, "},
+    ]}, tmp_path)
+    assert [r["label"] for r in got] == [
+        "Fig. 128", "Plate XXVII, Fig. 3", "Plate XIV"]
+    assert all(not r["pairs"] for r in got)
+
+
+def test_the_census_states_are_the_four_and_nothing_else(tmp_path):
+    """One name per outcome, and the names are what a caller filters on. A fifth
+    state appearing silently would put rows in `a store declined` — the figure
+    track's worklist — that are not the figure track's to clear."""
+    from harness.web.edition import FIGREF_STATES, figref_census
+    assert FIGREF_STATES == ("link", "another author's",
+                             "outside the book's numbers", "a store declined")
+    rep = figref_census(tmp_path, [])
+    assert [c["state"] for c in rep["counts"]] == list(FIGREF_STATES)
+    assert rep["rows"] == [] and rep["pages"] == 0
+
+
+def test_the_census_skips_a_page_with_no_marks_and_one_that_is_not_there(tmp_path):
+    """`pages` counts pages that printed a reference, not pages walked — the
+    denominator a reader wants beside a mark count is where marks could be."""
+    from harness.web.edition import figref_census
+    _authorities(tmp_path)
+    rep = figref_census(tmp_path, ["1-001", "1-002"])
+    assert rep["pages"] == 0 and rep["rows"] == []
+
+
+def test_the_census_ticks_once_per_page_walked(tmp_path):
+    """A corpus sweep is 800 pages of render-and-join and would otherwise sit
+    silent. It ticks per page *walked*, not per page that had marks, or the bar
+    would stall over a run of pages printing no reference."""
+    from harness.web.edition import figref_census
+    _authorities(tmp_path)
+    seen = []
+    figref_census(tmp_path, ["1-001", "1-002", "1-003"],
+                  tick=lambda item, done, total: seen.append((item, done, total)))
+    assert seen == [("1-001", 1, 3), ("1-002", 2, 3), ("1-003", 3, 3)]
+
+
+def _figrefs_cli(*argv):
+    """The verb over the live corpus. It reads only tracked stores plus the
+    generated drafts, so it is a real invocation rather than a fixture."""
+    from click.testing import CliRunner
+
+    from harness.cli import build_parser
+    r = CliRunner().invoke(build_parser(), ["edition", "figrefs", *argv, "--json"])
+    assert r.exit_code == 0, r.output
+    return json.loads(r.output[r.output.index("{"):])
+
+
+def test_the_counts_are_over_every_mark_and_not_over_the_listing():
+    """A `--refused` listing is a worklist. One reporting its own length as the
+    census would say the corpus is nothing but its defects, which is the reading
+    a reader takes from a count printed under a table."""
+    whole = _figrefs_cli("--all")
+    refused = _figrefs_cli("--all", "--refused")
+    assert whole["counts"] == refused["counts"]
+    assert len(refused.get("figrefs", [])) < len(whole["figrefs"])
+    assert all(r["state"] != "link" for r in refused.get("figrefs", []))
+
+
+def test_limit_cuts_the_listing_and_leaves_the_counts():
+    one = _figrefs_cli("--all", "--limit", "1")
+    assert len(one["figrefs"]) == 1
+    assert one["counts"] == _figrefs_cli("--all")["counts"]
+
+
+def test_the_census_agrees_with_what_the_reading_view_serves():
+    """**The point of routing the census through `figref_rows`.** Two answers to
+    one question are free to disagree and to go on disagreeing unnoticed, which
+    is what a census exists to prevent — so this asserts they are one answer:
+    every mark the verb calls a link is a link on the served page, and every one
+    it refuses carries the same reason there.
+    """
+    from fastapi.testclient import TestClient
+
+    from harness.web import create_app
+    rows = _figrefs_cli("--all")["figrefs"]
+    refs = sorted({r["ref"] for r in rows if r["state"] != "link"})
+    c = TestClient(create_app(Path("."), drafts=True))
+    for ref in refs:
+        html = c.get(f"/edition/page/{ref}").text
+        for r in (x for x in rows if x["ref"] == ref and x["state"] != "link"):
+            assert escape(r["why"], quote=True) in html, (ref, r)

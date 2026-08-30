@@ -13,7 +13,9 @@ one points. Nothing calls the first and then the second in one place, because
 `stores.render`'s key names the page and the ToC, and not `gt/fig/`: a `ref/key`
 baked into that HTML would go on being served after the box moved, with nothing
 to signal it. Same division, and the same reason, as `<figure>` and
-`web/edition._figure_state`.
+`web/edition._figures`. The resolution still reaches the served bytes — the
+route splices it in per request, `web/edition._hang_pictures` — so what the cut
+keeps out of the cache is not kept from the reader.
 
 **The scan is written into the page; the resolution never is.** `tei generate`
 marks each reference it finds — `<ref type="figure" n="44" resp="#mz">44</ref>`,
@@ -364,6 +366,48 @@ def authority_names(authorities: Iterable[dict]) -> set[str]:
     return out
 
 
+def outside_the_book(span: dict, plates: set[str], figures: set[str]) -> str:
+    """Why this reference cannot be to a picture in this book, on the numbers alone.
+
+    **A second witness to `foreign_citation`, and a mechanical one.** That guard
+    reads the prose in front of a numeral and decides whether a name governs it,
+    which is a judgement over furniture and leaks wherever the furniture is
+    something it has not been taught. This one asks a question with no judgement
+    in it: does the book print a picture of that number at all? Schrenck's Plate
+    XXXVI and Boas's Fig. 525 are refused here whatever the sentence around them
+    looks like, because this book stops at Plate XXXV and Fig. 302.
+
+    **The numbers come from the book's own printed apparatus**, which is evidence
+    and binds (CLAUDE.md, Firewall) — the List of Illustrations carries plates
+    I–XXXV and figures 1–302, both complete with no gap, so a set of what is
+    printed is a stricter and more honest test than a ceiling. They are passed
+    in rather than read, for `authority_names`' reason: this module keeps its
+    back to the apparatus stores.
+
+    **An empty set is not an answer.** A caller with no List of Illustrations
+    knows nothing about the book's range, and a guard that treated "I was told
+    nothing" as "the book prints everything" would be silently disarmed; one that
+    treated it as "the book prints nothing" would refuse the whole corpus. Both
+    are wrong, so it declines to speak and `foreign_citation` stands alone —
+    which is what it did before this existed.
+
+    A figure *on* a plate is judged by its plate: `Nelson, Plate LXXXVI, Fig. 23`
+    is out because there is no Plate LXXXVI here, and nothing can be said about
+    how many figures another author put on it.
+    """
+    if span["kind"] == "plate":
+        n = span["number"]
+        return "" if not plates or n in plates else \
+            f"this book prints no Plate {n}"
+    if span["plate"]:
+        n = span["plate"]
+        return "" if not plates or n in plates else \
+            f"this book prints no Plate {n}"
+    n = span["number"]
+    return "" if not figures or n in figures else \
+        f"this book prints no Fig. {n}"
+
+
 def foreign_citation(before: str, names: set[str]) -> str:
     """The authority whose plate this is, if the reference is not to this book.
 
@@ -399,6 +443,15 @@ def foreign_citation(before: str, names: set[str]) -> str:
     # would, so it takes the same furniture the name does.
     if _IBID.search(tail):
         return "Ibid."
+    # **The leftmost qualifying name, which is the head of the citation.** More
+    # than one can qualify: `Authorities Quoted` holds Hough under his name and
+    # under his short title `Lamp`, so `Hough, Lamp, Plate 15, Fig. 3` (1-241)
+    # answers to both, everything between them being furniture. Returning
+    # whichever the set happened to yield first made the answer depend on the
+    # hash seed, and the answer is now shown to a reader — `Lamp's figure, not
+    # this book's` names a short title as though it were a person, and named it
+    # only on some runs. The name that opens a citation governs it.
+    best: tuple[int, int, str] | None = None
     for name in names:
         for m in re.finditer(rf"(?:^|[^\w]){re.escape(name)}\b", tail):
             rest = tail[m.end():]
@@ -409,8 +462,13 @@ def foreign_citation(before: str, names: set[str]) -> str:
             if rest[:2] in ("’s", "'s"):
                 rest = rest[2:]
             if re.fullmatch(_FURNITURE, rest):
-                return name
-    return ""
+                # Ties go to the longer name, so a store holding both `Nelson`
+                # and `Nelson, Eskimo` answers with the one it actually matched
+                # rather than with either.
+                here = (m.start(), -len(name), name)
+                if best is None or here < best:
+                    best = here
+    return best[2] if best else ""
 
 
 #: What may stand between a citing name and the reference it governs: citation
@@ -427,10 +485,45 @@ def foreign_citation(before: str, names: set[str]) -> str:
 #: name and the span is the plate and the figures before them. Without this
 #: the first member of every run printed plain and the rest linked to this
 #: book — the exact failure the guard exists for, one numeral later.
+#:
+#: **Every widening of this list narrows what may link.** Furniture is what the
+#: guard will step over on its way back to a name, so admitting more of it can
+#: only turn a link into plain text, never the reverse — which is why the list
+#: is allowed to grow on evidence and the safe direction is to grow it. Five
+#: shapes were found leaking seven references into this book's pictures, each
+#: read off the page that leaked:
+#:
+#: * **A run past its second member.** `Figs. N` was furniture, but the bare
+#:   numeral that follows it was not, so `Schrenck, II, Plate XXXVI, Figs. 3, 4,
+#:   5` (1-145) guarded the 3 and the 4 and let the 5 through, and `Nelson,
+#:   Plate LXXXVI, Figs. 5, 6, 20, 23` (1-261) let two through. The bare numeral
+#:   takes the locants a numbered one does: `Nelson, Fig. 22, 1, 2` (1-226).
+#: * **`and` and `also`.** `Nelson, Plates LXXXVIII and LXXXIX` (1-259) joins a
+#:   run with a word, and `; also Fig. 94` continues it with another.
+#: * **The semicolon**, which separates two citations of one work: `Teit, Fig.
+#:   127, p. 185; and Fig. 128` (1-278).
+#: * **An arabic plate number.** `Hough, Lamp, Plate 15, Fig. 3` (1-241, 1-242)
+#:   — Hough numbers his plates in arabic, and the roman-only pattern read the
+#:   whole citation as prose. This book's own plates are roman, so an arabic one
+#:   is a tell rather than an ambiguity.
+#: * **The dash of a numeral range.** `Nelson, p. 448, Figs. 162-164` (2-071),
+#:   where the guard is asked at the 164.
+#:
+#: What still ends a citation is what should: a lower-case word that is none of
+#: these, and the footnote marker Bogoras sets after a name he is done citing —
+#: `illustrated by Nelson.¹ Fig. 22` (1-143) is his own figure and stays one.
+
+#: What may close one piece of furniture and open the next. `.` and the dashes
+#: are here rather than in each branch so a range and a stop are the same fact
+#: written once.
+_GAP = r"[\s,;.\-–—]*"
+
 _FURNITURE = (
-    r"[\s,.]*(?:(?:in|op\.\s*cit\.|l\.\s*c\.|pp?\.\s*\d+)[\s,]*"
-    r"|Plates?\.?\s+[IVXLC]+[\s,;]*|Figs?\.\s*\d+" + _LOCANTS + r"[\s,;]*"
-    r"|[A-Z][\w’']*[\s,.]*|[(\[])*")
+    _GAP + r"(?:(?:in|and|also|op\.\s*cit\.|l\.\s*c\.|pp?\.\s*\d+)" + _GAP +
+    r"|Plates?\.?\s+(?:[IVXLC]+|\d+)" + _GAP +
+    r"|Figs?\.\s*\d+" + _LOCANTS + _GAP +
+    r"|\d+" + _LOCANTS + _GAP +
+    r"|[A-Z][\w’']*" + _GAP + r"|[(\[])*")
 
 #: `Ibid.` at the head of what precedes a reference, with only furniture
 #: between. `Ibid` and `Ibid.` both, since `2-004` prints it without the stop.
