@@ -303,9 +303,29 @@ BOXES = {"1-287": [{"n": "1", "key": "003", "caption": "Fig. 1. Ke´lE.",
                     "zone_ids": ["fig_1-123_001", "fig_1-123_002"]}]}
 
 
+# Every caption a leaf prints, whether or not the geometry paired it to a picture.
+# `2-068` is the case: the pairing folded both pictures under Fig. 239's caption,
+# so Fig. 240's is on the leaf and in no box record, and `figure_numbers.json`
+# names the zones by hand. `1-313` prints two of the same number.
+CAPTIONS = {ref: [b["caption"] for b in boxes if b.get("caption")]
+            for ref, boxes in BOXES.items()}
+CAPTIONS["2-068"] = ["Fig. 239 (??/???? a). Wooden Figure.",
+                     "Fig. 240 (??/????). Leather Ornament."]
+CAPTIONS["1-313"] = ["Fig. 177. One.", "Fig. 177. Other."]
+BY_NUMBER["9"] = [{"ref": "1-037", "key": "001", "keys": ["001"]}]
+BOXES["1-037"] = [{"n": None, "key": "001", "zone_ids": ["fig_1-037_001"],
+                   "caption": "Map, by W. Bogoras and W. Jochelson. Fig. 9."}]
+CAPTIONS["1-037"] = ["Map, by W. Bogoras and W. Jochelson. Fig. 9."]
+BY_NUMBER["239"] = [{"ref": "2-068", "key": "004", "keys": ["004"]}]
+BY_NUMBER["240"] = [{"ref": "2-068", "key": "002", "keys": ["002"]}]
+BOXES["2-068"] = [{"n": "239", "key": "002",
+                   "caption": "Fig. 239 (??/???? a). Wooden Figure.",
+                   "zone_ids": ["fig_2-068_002", "fig_2-068_004"]}]
+
+
 def _resolve(**span):
     span = {"kind": "figure", "number": "", "plate": "", **span}
-    return figrefs.resolve(span, BY_NUMBER, BY_PLATE, BOXES.get)
+    return figrefs.resolve(span, BY_NUMBER, BY_PLATE, BOXES.get, CAPTIONS.get)
 
 
 def test_a_plate_resolves_to_every_picture_on_its_leaf():
@@ -368,10 +388,32 @@ def test_a_whole_plate_takes_no_caption_from_its_leaf():
     assert _resolve(kind="plate", number="XXI")["caption"] == ""
 
 
+def test_a_hand_numbered_figure_takes_the_caption_that_prints_its_number():
+    """`2-068`: the pairing folded both pictures under Fig. 239's caption and left
+    Fig. 240's paired to nothing, and `edition/figure_numbers.json` names the
+    zones by hand. Matched on zone key, 240 got 239's caption and 239 got none —
+    a link with the wrong caption under it. The caption is the one on the leaf
+    that prints the number, which is the join the pairing cannot get wrong."""
+    assert _resolve(number="239")["caption"] == \
+        "Fig. 239 (??/???? a). Wooden Figure."
+    assert _resolve(number="240")["caption"] == \
+        "Fig. 240 (??/????). Leather Ornament."
+
+
+def test_a_caption_that_parses_no_number_is_still_its_hand_numbered_figures():
+    """The map on `1-037` sets its number after the title, so no caption on the
+    leaf prints it and the number cannot find it. The patched zone's own record
+    carries it, and its `n` is None — which is the one shape in which the record
+    and not the number is the witness. Numbered 9 here because the fixture's
+    `Fig. 1` is spoken for by the plate collision the tests above want."""
+    assert _resolve(number="9")["caption"] == \
+        "Map, by W. Bogoras and W. Jochelson. Fig. 9."
+
+
 def test_a_caption_is_absent_rather_than_a_neighbours():
-    """`1-313` is in `by_number` and not in the box fixture, which is the shape a
-    hand-keyed `edition/figure_numbers.json` entry has: it names a zone no folded
-    record keys. The picture still resolves and the caption is simply empty."""
+    """`1-313` prints Fig. 177 twice, so no single caption is the reference's. The
+    picture still resolves and the caption is simply empty — never whichever
+    came first."""
     out = _resolve(number="177")
     assert out["pairs"] == ["1-313/001"] and out["caption"] == ""
 

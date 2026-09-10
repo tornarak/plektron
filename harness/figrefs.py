@@ -44,9 +44,10 @@ collisions.
 from __future__ import annotations
 
 import re
-from collections.abc import Iterable
+from collections.abc import Callable, Iterable
 
 from .figures import zone_suffix
+from .refs import figure_number
 
 #: A printed figure reference: `Fig. 87`, `Figs. 214, 215, 216`, `Figs. 2-4`.
 #: The head is matched here and the numerals are consumed by `_numerals`, because
@@ -531,7 +532,7 @@ _IBID = re.compile(r"(?:^|[^\w])Ibid\.?" + _FURNITURE + r"\Z")
 
 
 def resolve(span: dict, by_number: dict, by_plate: dict,
-            figures_on: callable) -> dict:
+            figures_on: Callable, captions_on: Callable) -> dict:
     """Where one scanned reference points: `{pairs, why, caption}`.
 
     `pairs` is a list of `ref/key`, the same handle a stack card is built from
@@ -607,13 +608,29 @@ def resolve(span: dict, by_number: dict, by_plate: dict,
     # Every box, not the first: `1-276`'s Fig. 140 is two, lettered a and b under
     # its one caption. `figures.crop_keys` is the rule and the plate cases above
     # go through it too.
-    # The caption is read back off the leaf rather than carried in `by_number`,
-    # which indexes numbers to zones and holds no text. Matched on `key`, the
-    # store's own foreign key: a figure `edition/figure_numbers.json` numbered by
-    # hand may name a zone no folded record keys, and an absent caption is the
-    # right answer there rather than the neighbouring figure's.
-    caption = next((f.get("caption") or "" for f in figures_on(hits[0]["ref"]) or ()
-                    if f.get("key") == hits[0]["key"]), "")
+    # **The caption is the one on that leaf that prints this number**, read off
+    # `captions_on` — every caption block the leaf holds — and not off the folded
+    # record the picture's zone keys. The folding pairs captions to pictures by
+    # geometry, and where a printer set a leaf his own way that pairing is what
+    # `edition/figure_numbers.json` exists to overrule: on `2-068` it swallowed
+    # both pictures under Fig. 239's caption and left Fig. 240's paired to
+    # nothing, so a key match handed 240 the caption of 239 and 239 none. The
+    # number a caption prints is its own, and is the one join the pairing cannot
+    # get wrong. Exactly one or none — a leaf printing a number twice is telling
+    # the reader nothing this can settle.
+    printed = [c for c in captions_on(hits[0]["ref"]) or ()
+               if figure_number(c) == span["number"]]
+    caption = printed[0] if len(printed) == 1 else ""
+    # **One shape the number cannot find: a caption that parses no number at
+    # all.** The map on `1-037` sets its `Fig. 1` after the title, which is why
+    # a human numbered it in the first place; there the patched zone's own
+    # folded record is the caption, and only there — a record whose caption
+    # prints some *other* number is a neighbour's, and stays out.
+    if not printed:
+        own = next((f for f in figures_on(hits[0]["ref"]) or ()
+                    if f.get("key") == hits[0]["key"]), None)
+        if own is not None and own.get("n") is None:
+            caption = own.get("caption") or ""
     return {"pairs": [f"{hits[0]['ref']}/{k}"
                       for k in hits[0].get("keys") or [hits[0]["key"]]],
             "why": "", "caption": caption}

@@ -270,6 +270,20 @@ def figure_boxes(ref: str, root: Path) -> tuple:
         [Path(root) / "gt" / "fig" / f"chukchi-{norm_ref(ref)}.xml"]))
 
 
+@lru_cache(maxsize=MAXSIZE)
+def _captions_on(root: str, ref: str, _key: bytes) -> tuple:
+    return tuple(r["text"] for r in figures.readings_for(ref, Path(root)).values())
+
+
+def captions_on(ref: str, root: Path) -> tuple:
+    """Every caption one leaf prints, paired to nothing. `figure_boxes` folds
+    captions onto pictures by geometry and drops one the geometry pairs to no
+    picture; a reference wants the caption that prints its number whether or not
+    the pairing kept it. Keyed on the same file, for the same reason."""
+    return _captions_on(str(root), ref, stamp(
+        [Path(root) / "gt" / "fig" / f"chukchi-{norm_ref(ref)}.xml"]))
+
+
 def loi_run(root: Path) -> dict:
     """The List of Illustrations run, which is what locates the plates.
 

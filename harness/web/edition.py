@@ -328,7 +328,8 @@ def figref_rows(doc: dict, root) -> list[dict]:
                         "why": off})
             continue
         r = figrefs.resolve(h, by_number, by_plate,
-                            lambda leaf: stores.figure_boxes(leaf, root))
+                            lambda leaf: stores.figure_boxes(leaf, root),
+                            lambda leaf: stores.captions_on(leaf, root))
         caption = r["caption"] or (plate_captions.get(h["number"], "")
                                    if h["kind"] == "plate" else "")
         first = r["pairs"][0].split("/") if r["pairs"] else None
