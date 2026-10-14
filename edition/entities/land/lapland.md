@@ -2,7 +2,7 @@
 
 - status: proposed
 - link: wikidata:Q62132
-- link: wikipedia:Sápmi
+- link: wikipedia:Sápmi
 
 ## aliases
 

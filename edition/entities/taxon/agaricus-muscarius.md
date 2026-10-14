@@ -2,6 +2,7 @@
 
 - status: ratified
 - part-of: taxon:fungi
+- link: wikipedia:Amanita_muscaria
 - link: wikidata:Q21870095
 
 ## aliases

@@ -9,8 +9,8 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| wolf | en | no | 1-056, 1-109; Chapter VIII prints only the plural |
-| wolves | en | no | 1-251, 1-253, the form Chapter VIII prints |
+| wolf | en | once | 1-056, 1-109; Chapter VIII prints only the plural |
+| wolves | en | once | 1-251, 1-253, the form Chapter VIII prints |
 
 ## gloss
 

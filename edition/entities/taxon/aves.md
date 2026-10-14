@@ -11,6 +11,7 @@
 |---|---|---|---|
 | birds of prey | en | yes | 1-252, tabooed by the Reindeer Chukchee; polyphyletic |
 | eagle | en | yes | 1-253, with the raven; polyphyletic within Accipitridae, and the page names no species |
+| eagles | | yes | |
 
 ## gloss
 

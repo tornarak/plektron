@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Reindeer Chukchee | | yes | |
+| Reindeer Chukchee | | once | |
 | Reindeer people | | no | also used of the Koryak in places |
 
 ## gloss

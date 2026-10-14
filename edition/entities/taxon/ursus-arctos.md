@@ -9,11 +9,10 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| brown bear | en | yes | 1-184, 2-136. Never "Brown Bear", which at 1-184 is the river Keiˊñu-weˊem and not the animal — the matcher is case-sensitive, so the lower-case row cannot reach it |
-| brown bears | en | yes | 1-184 |
-| Brown bears | en | yes | 1-184, sentence-initial |
+| brown bear | en | yes | 1-184, 2-136. Never "Brown Bear", which at 1-184 is the river Keiˊñu-weˊem and not the animal — the ladder reaches `Brown bear` at the head of a sentence but never `Brown Bear`, which is no case of anything it can name |
+| brown bears | en | yes | 1-184, and "Brown bears" sentence-initial there, which the ladder reaches from this row |
 | black bear | en | yes | 1-109, 1-113, 2-051. 1-252 breaks it across the line-end ("wolverene and black / bear"), which the whitespace-flexible matcher joins |
-| Black bears | en | yes | 2-051, sentence-initial |
+| black bears | en | yes | 2-032, 2-070, 2-109, and "Black bears" sentence-initial at 2-051, which the ladder reaches from this row |
 
 ## gloss
 

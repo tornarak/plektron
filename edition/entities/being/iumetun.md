@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| iuˊmetun | ckt | no | 1-064 |
+| iuˊmetun | ckt | yes | 1-064 |
 
 ## gloss
 

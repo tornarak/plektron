@@ -325,3 +325,101 @@ def test_occurrences_reads_the_same_page_the_generator_did(tmp_path):
     assert p.exists()
     got = occurrences(["place:markova"], ["1-021"], load(tmp_path), tmp_path)
     assert [r["hyphenated"] for r in got["place:markova"]["unlinked"]] == [False]
+
+
+# ------------------------------------------------------------- the case ladder
+
+def test_a_row_is_reached_by_every_case_above_it(tmp_path):
+    """The point of the ladder. `sables` is what the store spells and `Sables` is
+    where a sentence happened to start, and before this the second was *present and
+    invisible* — the store's answer was a second row recording the compositor's
+    line breaks as though they were vocabulary."""
+    from harness.entities import match
+    seeded(tmp_path, form="sables")
+    idx = _idx(tmp_path)
+    for page_text in ("counted sables by doublescores",
+                      "Sables were counted by doublescores",
+                      "SABLES WERE COUNTED"):
+        hit, = match(page_text, idx)
+        assert (hit["form"], hit["auto"]) == ("sables", True), page_text
+
+
+def test_the_ladder_never_descends(tmp_path):
+    """A row spelled capitalized is a proper name, and reaching a lower-case page
+    from it would edit a ratified identity by a keystroke nobody reviewed —
+    `lookup._resolve_cased`'s reason, and the same rule."""
+    from harness.entities import match
+    seeded(tmp_path, form="Chukchee")
+    assert match("the chukchee of the coast", _idx(tmp_path)) == []
+
+
+def test_a_shape_the_ladder_cannot_rank_is_reached_only_as_itself(tmp_path):
+    """`Brown Bear` at 1-184 is the river Keiˊñu-weˊem and not the animal. It is
+    neither the capitalization of `brown bear` nor its uppercase, so `_case_rank`
+    returns None and the row cannot reach it — which is why `taxon:ursus-arctos`
+    can still say "never Brown Bear" and be right."""
+    from harness.entities import match
+    seeded(tmp_path, form="brown bear")
+    idx = _idx(tmp_path)
+    assert [h["text"] for h in match("a brown bear on the shore", idx)] == [
+        "brown bear"]
+    assert [h["text"] for h in match("Brown bear tracks", idx)] == ["Brown bear"]
+    assert match("up the Brown Bear to its head", idx) == []
+
+
+def test_sentence_initial_is_ambiguous_where_a_capitalized_row_exists(tmp_path):
+    """The bird `raven` and the personage `Raven` both reach the `Raven` that opens
+    a sentence, and the capital there is the compositor's — it says nothing about
+    which was meant. Letting the exact row win would adjudicate at exactly the
+    position where the evidence runs out, which is this project's failure mode
+    with the answer written in. Two claimants, no automatic link, and a reader
+    settles it."""
+    from harness.entities import match
+    entry(tmp_path, "taxon:corvus-corax", aliases=[("raven", True)])
+    entry(tmp_path, "being:raven", aliases=[("Raven", True)])
+    idx = _idx(tmp_path)
+
+    opening, = match("Raven first made the world", idx)
+    assert opening["auto"] is False
+    assert sorted(opening["ids"]) == ["being:raven", "taxon:corvus-corax"]
+
+    # Mid-sentence the question never arises: only one spelling is present.
+    medial, = match("a raven flew over", idx)
+    assert (medial["ids"], medial["auto"]) == (["taxon:corvus-corax"], True)
+
+
+def test_two_rows_raising_to_one_variant_leave_it_contested(tmp_path):
+    """The same rule where neither row is the page's spelling — an all-caps heading
+    over a store holding `sable` and `Sable` on different entities."""
+    from harness.entities import match
+    entry(tmp_path, "place:markova", aliases=[("sable", True)])
+    entry(tmp_path, "taxon:sable", aliases=[("Sable", True)])
+    hit, = match("SABLE was counted", _idx(tmp_path))
+    assert hit["auto"] is False
+    assert sorted(hit["ids"]) == ["place:markova", "taxon:sable"]
+
+
+def test_one_entity_reaching_a_spelling_twice_is_one_claimant(tmp_path):
+    """`brown bears` and `Brown bears` were two rows of one entity, and the union
+    that makes two *entities* ambiguous must not make this one so — an entity is
+    not in doubt about itself. The row spelled at the page's case carries the
+    licence, which is why the exact form is ordered first rather than dropped."""
+    from harness.entities import match
+    entry(tmp_path, "taxon:ursus-arctos",
+          aliases=[("brown bears", True), ("Brown bears", "once")])
+    hit, = match("Brown bears are met on the seashore", _idx(tmp_path))
+    assert (hit["ids"], hit["auto"], hit["form"]) == (
+        ["taxon:ursus-arctos"], True, "Brown bears")
+    assert hit["scope"] == "first"
+
+
+def test_a_tier1_form_is_not_raised_into_a_glyph_nobody_set(tmp_path):
+    """`_raise_case` refuses a non-ASCII letter because `ɪ` U+026A uppercases to a
+    letter the keying spec does not contain, and nothing here knows what the
+    compositor set for a small-cap inside an all-caps heading. The rung it can
+    reach it takes — capitalizing touches only the leading `v` — and the rung it
+    cannot is dropped rather than approximated, so no variant of this form exists
+    that the book was never asked about."""
+    from harness.lookup import case_variants
+    assert case_variants("vaˊɪrgɪt") == ["vaˊɪrgɪt", "Vaˊɪrgɪt"]
+    assert case_variants("markova") == ["markova", "Markova", "MARKOVA"]

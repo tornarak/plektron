@@ -1,4 +1,4 @@
-# people:sami — Sámi
+# people:sami — Sámi
 
 - status: ratified
 - link: wikidata:Q48199

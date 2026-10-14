@@ -21,7 +21,8 @@ like fly-agaric".
 
 Two reasons it stops here rather than at a genus. *Mice* in ordinary English is
 paraphyletic — it is a grade of small rodent, not a group. And the animal that
-caches roots on the tundra is a vole or a lemming rather than a mouse in any
+caches roots on the tundra is a vole or a lemming ([[taxon:arvicolinae]])
+rather than a mouse in any
 narrow sense, which the page neither says nor needs to: what it records is a
 practice and a belief about it. Naming *Microtus* would be a claim about
 Chukotkan rodents rather than a reading of the sentence.

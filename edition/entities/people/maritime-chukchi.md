@@ -50,7 +50,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Maritime Chukchee | | yes | |
+| Maritime Chukchee | | once | |
 
 ## gloss
 

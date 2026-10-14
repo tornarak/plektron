@@ -38,7 +38,7 @@
 :root[data-theme="light"] { color-scheme: light }
 * { box-sizing:border-box }
 body { margin:0; background:var(--bg); color:var(--fg);
-  font:16px/1.6 Charter,Georgia,"Times New Roman",serif; }
+  font:16px/1.5 Charter,Georgia,"Times New Roman",serif; }
 a { color:var(--accent) }
 #bar { z-index:9; display:flex; gap:.75rem;
   align-items:center; padding:.5rem .9rem; background:var(--bg);

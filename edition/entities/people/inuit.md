@@ -8,5 +8,5 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Central Eskimo | | yes | |
-| Netchillirmiut | | yes | hyponym |
+| Central Eskimo | en | yes | |
+| Netchillirmiut | en | yes | hyponym |

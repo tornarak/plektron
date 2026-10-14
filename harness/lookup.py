@@ -248,6 +248,38 @@ def _raise_case(form: str, rank: int) -> tuple[str | None, str]:
     return "".join(out), ""
 
 
+def case_variants(form: str) -> list[str]:
+    """`form` and every case above it on the ladder, the exact spelling first.
+
+    The same ladder `_resolve_cased` climbs, turned around for the other consumer.
+    There a reader's handle asks for a case above what the corpus attests; here a
+    store's alias has to reach the page that sets it above what the store spells.
+    Both are one rule — **an attestation enables its own case and every case above
+    it, and never descends** — and they share its definition rather than agreeing
+    by hand, which is how `resolve` and `search` drifted before `spellings`.
+
+    A shape the ladder cannot name gets only itself. That is not a gap to close:
+    `taxon:ursus-arctos` records that `Brown Bear` at 1-184 is the river
+    Keiˊñu-weˊem and not the animal, and `Brown Bear` ranks `None` precisely
+    because it is neither the capitalization of `brown bear` nor anything else the
+    ladder has a name for. A rule that cannot rank a shape must not guess it into
+    one.
+
+    A variant `_raise_case` refuses is dropped for that function's reason — the
+    capital of a Tier-1 letter is a different glyph, not a different case, and
+    nothing here knows what the compositor set.
+    """
+    rank = _case_rank(form)
+    if rank is None:
+        return [form]
+    out = [form]
+    for want in range(rank + 1, len(_CASES)):
+        raised, _ = _raise_case(form, want)
+        if raised is not None and raised not in out:
+            out.append(raised)
+    return out
+
+
 def _resolve_cased(key: str, root: Path, min_pages: int,
                    idx: dict) -> tuple[str | None, str]:
     """`resolve`, over the case ladder: an attestation enables its own case and every

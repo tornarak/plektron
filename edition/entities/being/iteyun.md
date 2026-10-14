@@ -8,8 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| iteˊyun | ckt | no | 1-064 |
-| Iteˊyun | ckt | no | 1-064, sentence-initial |
+| iteˊyun | ckt | yes | 1-064 |
 
 ## gloss
 

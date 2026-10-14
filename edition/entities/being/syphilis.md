@@ -8,8 +8,8 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| aˊtal-vaˊɪrg̣ɪn | ckt | no | 1-063, the Chukchee name |
-| syphilis | en | no | 1-063; the English name Bogoras uses for the same disease throughout |
+| aˊtal-vaˊɪrg̣ɪn | ckt | yes | 1-063, the Chukchee name |
+| syphilis | en | yes | 1-063; the English name Bogoras uses for the same disease throughout |
 | Chuvantzy disease | en | no | a rendering of the Chukchee name, not a form the book prints |
 
 ## gloss

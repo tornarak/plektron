@@ -268,6 +268,42 @@ def test_two_entities_may_not_both_claim_a_form_unconditionally(tmp_path):
     assert any("cannot both own a form" in e for e in rep["errors"])
 
 
+def test_the_census_climbs_the_ladder_to_find_where_two_rows_meet(tmp_path):
+    """`raven` and `Raven` are not two forms that merely look alike: they meet at
+    the `Raven` a sentence opens with, and the store is in contradiction there. A
+    census keyed on the spellings an editor typed would call this coherent right up
+    to the page it is not."""
+    entry(tmp_path, "taxon:corvus-corax", aliases=[("raven", True)])
+    entry(tmp_path, "being:raven", aliases=[("Raven", True)])
+    rep = E.check(tmp_path)
+    assert not rep["ok"]
+    hit, = rep["collisions"]                    # once, at `Raven` and not `RAVEN`
+    assert hit["form"] == "Raven"
+    assert hit["claimed_by"] == "being:raven taxon:corvus-corax"
+    assert hit["rows"] == "Raven raven"
+    assert any("case ladder brings them together" in e for e in rep["errors"])
+
+
+def test_a_collision_is_reported_once_and_not_at_every_rung(tmp_path):
+    """`Murdoch` claimed twice is one collision. Climbing reaches `MURDOCH` with
+    the same two claimants and nothing has been learned, so the census stays quiet
+    there — 34 such re-spellings would bury the few the ladder actually makes."""
+    entry(tmp_path, "person:murdoch", aliases=[("Murdoch", False)])
+    entry(tmp_path, "source:murdoch-1892", aliases=[("Murdoch", False)])
+    assert [c["form"] for c in E.check(tmp_path)["collisions"]] == ["Murdoch"]
+
+
+def test_an_entity_is_not_in_collision_with_itself_across_the_ladder(tmp_path):
+    """Two rows of one entity meeting at a variant is one claimant. The union that
+    makes two *entities* ambiguous must not fire here, or every entry carrying its
+    own sentence-initial row would read as self-contradictory."""
+    entry(tmp_path, "taxon:ursus-arctos",
+          aliases=[("brown bears", True), ("Brown bears", True)])
+    rep = E.check(tmp_path)
+    assert rep["ok"]
+    assert rep["collisions"] == []
+
+
 # -------------------------------------------------------------- the matcher
 
 def idx(*specs):

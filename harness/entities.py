@@ -81,6 +81,7 @@ from typing import TypedDict
 from . import pictures
 from .geo import index as geo_index
 from .langs import ALIAS_LANGS
+from .lookup import case_variants
 from .parallel import ptrack
 
 ENTDIR = "edition/entities"
@@ -960,6 +961,10 @@ def _pattern(forms) -> re.Pattern | None:
     "Jesup" that is inside it — Python's alternation takes the first branch that
     matches, not the longest, so the order *is* the rule.
 
+    The forms handed here are `_matcher`'s **variant** spellings, not the store's
+    rows: one branch per case the ladder reaches. Longest-first still holds, since
+    raising a case never changes a form's length.
+
     Whitespace in a form matches any run of whitespace, so a title broken across
     two printed lines still matches. The generated page keeps the printed line
     breaks, so without this the longest and most reliable aliases — the multi-word
@@ -984,8 +989,30 @@ def _pattern(forms) -> re.Pattern | None:
 
 
 @lru_cache(maxsize=4)
-def _matcher(forms: tuple[str, ...]) -> tuple[re.Pattern | None, dict[str, str]]:
-    """`match`'s two derived tables, built once per distinct form set.
+def _matcher(forms: tuple[str, ...]) -> tuple[
+        re.Pattern | None, dict[str, list[str]], dict[str, list[str]]]:
+    """`match`'s three derived tables, built once per distinct form set.
+
+    **`variants` is the case ladder, applied to the store instead of to a
+    handle.** A row spelled `sables` is reached by `Sables` at the head of a
+    sentence and by `SABLES` in a heading, because case is position and not
+    spelling (`lookup.spellings`), and a store that had to carry a row per
+    position would be recording the compositor's line breaks as vocabulary. The
+    ladder is `lookup.case_variants`, one definition for both consumers.
+
+    **The store's own spelling does not evict the rows raised into it**, it only
+    goes first. A row spelled `Raven` and another entity's `raven` both reach the
+    `Raven` that opens a sentence, and there is nothing at that position to choose
+    between them: sentence-initial case is the compositor's and carries no
+    information about which word was meant, so preferring the exact row would be
+    adjudicating precisely where the evidence runs out. Both claims ride, `match`
+    reports two claimants — this store's word for ambiguous — and the hit arrives
+    as a candidate a reader disposes of. Mid-sentence the question never arises,
+    because only one of the two spellings is there.
+
+    Ordering the exact form first is for the *other* collision: one entity
+    reaching a spelling through two of its own rows. That is one claimant, and the
+    row spelled at the page's case is the one whose `auto` and `scope` hold.
 
     **A memo on a pure function of its own argument, not a cache over a store.**
     The key *is* the whole input — the sorted form tuple — so this cannot answer
@@ -1005,7 +1032,19 @@ def _matcher(forms: tuple[str, ...]) -> tuple[re.Pattern | None, dict[str, str]]
     index at a time — the full one and a leave-one-out — and a single slot would
     thrash between them, which is the shape that turns a memo into a slowdown.
     """
-    return _pattern(forms), {f.replace("-", ""): f for f in forms}
+    variants: dict[str, list[str]] = {}
+    for f in forms:
+        for v in case_variants(f):
+            variants.setdefault(v, [])
+            if f not in variants[v]:
+                variants[v].append(f)
+    for f in forms:                       # the store's own spelling first, so a
+        if len(variants[f]) > 1:          # caller reading one form reads that one
+            variants[f] = [f] + [g for g in variants[f] if g != f]
+    dehyphenated: dict[str, list[str]] = {}
+    for v, fs in variants.items():
+        dehyphenated.setdefault(v.replace("-", ""), fs)
+    return _pattern(tuple(variants)), variants, dehyphenated
 
 
 def _explained_by_break(text: str, start: int, raw: str, form: str) -> bool:
@@ -1080,29 +1119,46 @@ def match(text: str, idx: dict[str, list[dict]]) -> list[dict]:
     six call sites read this field and agreeing with each other is not the same
     as being right.
 
-    Case-sensitive. These are proper nouns in running prose, and a
-    case-insensitive match on a short form would fire on ordinary words.
+    **Not case-insensitive: cased, up the ladder.** A row is reached by its own
+    case and by every case above it and by no case below — `lookup.case_variants`
+    holds the rule and `_matcher` applies it. A blanket fold would let a short
+    alias fire on an ordinary word; refusing case altogether, which this pass did
+    for a long time, made every sentence-initial occurrence *present and
+    invisible*, and the store paid for it in rows like `Brown bears` that record
+    where a sentence happened to start rather than anything about the entity.
     """
     text = unicodedata.normalize("NFD", text)
-    # Both tables are pure functions of the form set and were rebuilt on every
-    # call; `_matcher` memoises them on it. `dehyphenated` is only consulted when
-    # the exact spelling is not in the index, so an alias that legitimately
-    # carries a hyphen (`Sredne-Kolymsk`) still resolves as itself, not through
-    # this.
-    pat, dehyphenated = _matcher(tuple(sorted(idx)))
+    # All three tables are pure functions of the form set and were rebuilt on
+    # every call; `_matcher` memoises them on it. `dehyphenated` is only consulted
+    # when the spelling reaches no variant, so an alias that legitimately carries
+    # a hyphen (`Sredne-Kolymsk`) still resolves as itself, not through this.
+    pat, variants, dehyphenated = _matcher(tuple(sorted(idx)))
     if pat is None:
         return []
     out = []
     for m in pat.finditer(text):
         got = " ".join(m.group(0).split())
-        form, hyphenated, broken = got, False, False
-        if form not in idx:
-            form = dehyphenated.get(got.replace("-", ""), "")
-            broken = _explained_by_break(text, m.start(), m.group(0), form)
+        forms, hyphenated, broken = variants.get(got), False, False
+        if forms is None:
+            forms = dehyphenated.get(got.replace("-", ""), [])
+            # Case never changes a form's length, so any variant positions the
+            # hyphens the same way and the first is as good a witness as any.
+            broken = _explained_by_break(text, m.start(), m.group(0),
+                                         forms[0] if forms else "")
             hyphenated = not broken
-        claims = idx.get(form, [])
+        # One entity may reach a spelling by more than one row — its own case, and
+        # a lower row of its own raised into it. That is one claimant and not two,
+        # and the row the store spells at this very case is the one whose licence
+        # holds. Two *entities* here is the real thing and stays two.
+        claims, claimed = [], set()
+        for f in forms:
+            for c in idx.get(f, []):
+                if c["id"] not in claimed:
+                    claimed.add(c["id"])
+                    claims.append(c)
         if not claims:
             continue
+        form = forms[0]
         out.append({
             "start": m.start(), "end": m.end(), "text": m.group(0), "form": form,
             "ids": [c["id"] for c in claims],
@@ -1414,23 +1470,61 @@ def check(root: Path = Path("."), tick: Callable | None = None) -> dict:
     _cycles(geo_refs, "geo")
 
     idx = alias_index(store)
-    collisions = []
-    for form in sorted(idx):
-        claims = idx[form]
-        if len(claims) < 2:
+    # **Censused over the case ladder, because that is what `match` will do.**
+    # `raven` and `Raven` on two entities are not two forms that happen to look
+    # alike: they meet at the `Raven` a sentence opens with, where the capital is
+    # the compositor's and settles nothing. A census keyed on the store's own
+    # spellings reports such a store coherent right up to the page it is not, and
+    # the error below — two entities cannot both own a form unconditionally — is
+    # exactly as true one rung up. `rows` names the spellings that met, so a
+    # collision at a variant nobody typed can still be traced to the two files.
+    #
+    # **Once, at the lowest rung where the claimants meet.** One collision is one
+    # row however many cases it can be spelled in: `Murdoch` and `MURDOCH` are the
+    # same two entities disagreeing about the same word, and `Eagle` and `EAGLE`
+    # likewise. Grouping on (the rows that met, the entities that claim them) and
+    # keeping the lowest variant of each group says it once — 34 existing
+    # collisions re-listed as their own uppercase would bury the few new ones.
+    by_variant: dict[str, dict[str, tuple[str, dict]]] = {}
+    rung: dict[str, int] = {}
+    raised_from: dict[str, set[str]] = {}
+    for form, claims in idx.items():
+        for step, variant in enumerate(case_variants(form)):
+            met = by_variant.setdefault(variant, {})
+            rung[variant] = min(rung.get(variant, step), step)
+            raised_from.setdefault(variant, set()).add(form)
+            for c in claims:
+                met.setdefault(c["id"], (form, c))
+    lowest: dict[tuple, str] = {}
+    for variant, met in by_variant.items():
+        if len(met) < 2:
             continue
-        ids = sorted(c["id"] for c in claims)
-        autos = [c["id"] for c in claims if c["auto"]]
+        key = (frozenset(raised_from[variant]), frozenset(met))
+        held = lowest.get(key)
+        if held is None or (rung[variant], variant) < (rung[held], held):
+            lowest[key] = variant
+    collisions = []
+    for form in sorted(set(lowest.values())):
+        met = by_variant[form]
+        ids = sorted(met)
+        autos = [i for i in ids if met[i][1]["auto"]]
+        rows = sorted({met[i][0] for i in ids})
         collisions.append({"form": form, "claimed_by": " ".join(ids),
-                           "auto": len(autos)})
+                           "auto": len(autos),
+                           "rows": " ".join(rows) if rows != [form] else ""})
         if len(autos) > 1:
+            raised = ("" if rows == [form] else
+                      f" The store spells it {' and '.join(repr(r) for r in rows)}"
+                      "; the case ladder brings them together here, and a row is"
+                      " reached by every case above its own.")
             errors.append(
                 f"alias {form!r} is rule-linked for "
                 f"{' and '.join(sorted(autos))}. Two entities cannot both own a "
                 f"form unconditionally — set all but one to `auto: no` and let "
                 f"the reader choose, or narrow the forms until they no longer "
                 f"collide. `once` collides exactly as `yes` does: it narrows how "
-                f"many links a page gets, not which entity the form means")
+                f"many links a page gets, not which entity the form means."
+                + raised)
 
     # **A worklist, never a gate.** An alias whose language nobody has stated is
     # not a defect — most of the store's forms are the book's own English and

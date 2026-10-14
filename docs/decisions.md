@@ -1470,16 +1470,32 @@ spelled at the page's case carries the licence.
 `entity check`'s collision census had to climb too, or a store whose two rows
 meet only one rung up reports coherent right until the page where it is not, and
 the standing error — two entities cannot both own a form unconditionally — would
-go unsaid at the exact spelling where it bites. It reports **once, at the rung
-where the claimants first meet**: censusing every rung listed all 34 existing
-collisions a second time as their own uppercase, which is one collision spelled
-twice and would bury the few the ladder makes. On the live store the ladder adds
-none — no two entities hold case-twin rows today — so the guard costs nothing now
-and is in place for the entry that would need it.
+go unsaid at the exact spelling where it bites. It reports **once, at the lowest rung
+where the claimants meet**, grouped on the rows that met and the entities that
+claim them. Two earlier rules were not enough: censusing every rung listed all 34
+existing collisions a second time as their own uppercase, and suppressing only a
+variant whose claimants one source form already carried still printed `Eagle` and
+`EAGLE` as two findings once a genuine collision existed. One collision is one
+row however many cases it can be spelled in.
 
-Until someone mints those entries the Raven links live only in `mz/tei/`, which
-is `#mz`, regenerated from the store on every run, and carries nothing a human
-has ratified.
+**Minting the three entries settled it, and the arithmetic is the check.**
+`being:raven`, `sky:eagle` (Aquila, which 2-033 measures the Chukchee asterism
+out of) and `sky:lynx` (2-036's "the Elk-Hunter (Lynx)"), each claiming its
+capitalized form at `auto: no`. `taxon:corvus-corax` fell from 81 links to **30**
+and `taxon:lynx-lynx` from 6 to **3** — in both cases exactly the count they held
+before the ladder, so every capitalized occurrence of either was a conflation and
+none was the animal. `taxon:aves` went 14 → 28 → **15**, keeping one: 2-009's
+"Eagles have a separate country. One family of eagles has a slave called", where
+the sentence sets the same birds twice and only the capital had been invisible.
+That single retained link is the ladder's case in one line.
+
+`sky:lynx` was not asked for. It is the same defect the same measurement found,
+three links wide, and it is `proposed` like everything else — it asserts nothing
+until someone ratifies it.
+
+The corpus stands at **6142 links, +58 on the 6084 before the ladder**, with the
+store now saying out loud, in `entity check`'s census, that `Raven`, `Eagle` and
+`Lynx` are each claimed by two entities.
 
 **The sweep is a verb now.** `edition figrefs` prints one row per mark and what
 became of it, `--refused` narrowing it to the worklist. It runs through
