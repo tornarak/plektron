@@ -78,6 +78,7 @@ from functools import lru_cache
 from pathlib import Path
 from typing import TypedDict
 
+from . import pictures
 from .geo import index as geo_index
 from .langs import ALIAS_LANGS
 from .parallel import ptrack
@@ -257,7 +258,7 @@ ALIASES = "aliases"
 PARSE_FIELDS = (
     "id", "class", "slug", "canonical", "status",
     "within", "part_of", "geo", "frame", "links",
-    "authority", "aliases", "gloss",
+    "authority", "image", "aliases", "gloss",
 )
 
 #: What `load` adds on top: where the file was found, which is not in the file.
@@ -302,6 +303,7 @@ class ParsedEntity(TypedDict):
     frame: tuple | None
     links: list
     authority: str
+    image: str           # "", "none", or "commons:<file key>" (`pictures.py`)
     aliases: list[AliasRow]
     gloss: str
 
@@ -323,7 +325,7 @@ _FIELD = re.compile(r"^-\s+([a-z][a-z-]*):\s*(.*?)\s*$", re.M)
 #: makes the first unnecessary next time. A typo'd `- withn:` used to parse
 #: cleanly into nothing.
 KNOWN_FIELDS = frozenset({
-    "status", "within", "part-of", "geo", "frame", "link", "authority",
+    "status", "within", "part-of", "geo", "frame", "link", "authority", "image",
 })
 
 #: Fields this store used to have. **Tolerated and inert**, never an error: a
@@ -682,6 +684,12 @@ def parse(text: str, where: str = "") -> dict:
     # `extent_of` reads both. What the old rule was protecting — that a record
     # says where one thing is, once — is now protected by there being one field
     # to say it in.
+    image = one("image")
+    if image:
+        try:
+            image = pictures.image_value(image)
+        except ValueError as e:
+            raise Malformed(f"{at}{e}") from None
     return {
         "id": f"{cls}:{slug}",
         "class": cls,
@@ -694,6 +702,7 @@ def parse(text: str, where: str = "") -> dict:
         "frame": box,
         "links": fields.get("link", []),
         "authority": one("authority"),
+        "image": image,
         "aliases": aliases,
         "gloss": sections.get("gloss", "").strip(),
     }
@@ -1431,6 +1440,13 @@ def check(root: Path = Path("."), tick: Callable | None = None) -> dict:
     # never gates, and a gate here would be answered by deleting the alias.
     untagged = sum(1 for r in store.values() for t in r["aliases"] if not t["lang"])
 
+    # The picture ledger, against the store it serves. Its errors are this
+    # store's: an `image:` line is a field of an entry, and a ledger row nothing
+    # can attribute is a defect on a card.
+    ledger = pictures.load(root)
+    pic_errors, pic_rows = pictures.audit(store, ledger)
+    errors += pic_errors
+
     auto = auto_forms(idx)
     return {
         "entities": len(store),
@@ -1438,7 +1454,10 @@ def check(root: Path = Path("."), tick: Callable | None = None) -> dict:
         "aliases": len(idx),
         "auto_aliases": len(auto),
         "aliases_untagged": untagged,
+        "pictures": sum(1 for r in store.values()
+                        if pictures.resolve(r, ledger)),
         "collisions": collisions,
+        "picture_rows": pic_rows,
         "errors": errors,
         "ok": not errors,
     }

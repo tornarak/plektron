@@ -3,6 +3,7 @@
 - status: ratified
 - link: wikidata:Q71600
 - link: wikipedia:Berthold_Laufer
+- image: commons:Laufer1933PortraitCSGN7778.jpg
 
 ## aliases
 

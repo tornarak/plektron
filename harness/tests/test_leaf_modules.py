@@ -32,7 +32,7 @@ HARNESS = Path(__file__).resolve().parent.parent
 #: Adding one here is how a new leaf declares itself; the companion test below
 #: refuses an entry that does not actually make the claim, so the list and the
 #: prose cannot drift apart in either direction.
-LEAVES = ("refs.py", "ns.py", "atomic.py", "mets.py", "train.py")
+LEAVES = ("refs.py", "ns.py", "atomic.py", "mets.py", "train.py", "pictures.py")
 
 #: Modules that import **only leaves**, and so cannot join a cycle either — a
 #: leaf's guarantee holds one level up for free, because a leaf has no edges to

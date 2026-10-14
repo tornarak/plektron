@@ -420,6 +420,11 @@ row cannot be answered by writing a number in a file.
   not the address. `edition_ui.LINK_KINDS` maps the prefix to the address and to
   the site's mark, so a site that moves its paths costs one line there rather
   than an edit to every record. Repeatable.
+- **`image:`** is an editor's choice of picture: `commons:<file title>` — the
+  title, no `File:`, never a URL — or `none`. It overrides the picture the entry
+  would otherwise take from its item's Wikidata P18, and `none` refuses one.
+  Only on the classes `pictures.IMAGE_CLASSES` names; `entity check` errors
+  elsewhere. "Pictures" below has the rest.
 - No `canonical:` field — the heading carries it, so there is one place for it.
 
 ### An alias says what language it is a name in
@@ -2650,6 +2655,59 @@ Base layers are simplified an order harder — a coastline is context, always se
 at whole-region scale, and carrying it at subject resolution put 70 KB of
 Eurasia into a card showing a 2,800 km² basin.
 
+### Pictures: `tools/entity_images.py`
+
+A card for a `taxon:`, `person:`, `people:`, `place:`, `land:`, `water:` or
+`river:` entry shows a picture, **hotlinked from Wikimedia Commons**. The
+repository holds no image bytes. It holds `edition/entity-images.json`, the
+ledger of what the offline card cannot fetch: which file, its thumbnail
+address and size, its sha1, and what the reader is owed — author, licence and
+the file's page. Derived but tracked, beside `edition/geo/`, for `geo/`'s
+reason: the source is outside the repo. The scope, the licence pattern, the
+lookup and the gate are `harness/pictures.py`'s, and the tool imports them.
+
+**Which picture is a rule, and the card says so.** It is Wikidata's P18 for
+the item the entry's own `link: wikidata:` names — no search, so the
+identification is whatever a human already made. A preferred claim beats a
+normal one, a deprecated one is never taken, and among equals the first wins
+and the report says `of N`. Nobody has looked at the result, so it is `#mz`,
+and the figcaption reads "via Wikidata". An editor who has looked writes
+`image: commons:…` (an editor's pick, captioned without the mark) or
+`image: none`.
+
+**The ledger is keyed by QID and by file title, never by entity.** `entity
+rename` and a class move therefore touch nothing here, and the class is read at
+render, so an entry moved out of scope drops its picture by itself. Titles are
+stored NFD, since `edition/*.json` is under `corpus normalize`; they go to the
+API as NFC, and the answer is mapped back through the API's own `normalized`
+and `redirects` lists.
+
+**Five licence families and no others**: public domain, CC0, CC BY and
+CC BY-SA at any version or port, and "Copyrighted free use", which grants any
+use. Everything on Commons is free, so this is narrower than Commons on
+purpose. A caption naming the author and linking the licence is known to
+satisfy these five; it is not known to satisfy GFDL's full
+text or a bespoke attribution template. A refused file is reported and left
+off, together with its P18. `entity check` re-applies the pattern to every row,
+**but that is one witness, not two**: the tool refused by the same pattern, so
+the check catches a hand-edited row or a narrowed pattern and nothing else.
+
+**A failed lookup keeps the row it had.** This is the gazetteer's lesson
+again: an outage read as "no picture" deletes a true row on the strength of a
+timeout. Rows are `+` new, `~` changed (file, sha1 or licence moved), `-`
+dropped, `=` unchanged and `!` failed. `retrieved` moves only with its row, so
+a re-run over an unchanged Commons leaves the file unchanged.
+
+**What no check here can see** is Commons changing under the hotlink. A file
+overwritten after the fetch is served new, under the old attribution, until
+the tool re-runs and reports `~`. A hotlink cannot pin a version. That is the
+price of carrying no bytes, and it is stated rather than gated.
+
+The report also counts in-scope entries that have a Wikipedia article but no
+P18. That number is what would justify a second source: the article's page
+image. That is MediaWiki's heuristic pick and can land on a map or a logo, so
+it is a weaker witness than P18. It waits on the number.
+
 ### The antimeridian is a build problem before it is a rendering problem
 
 Chukotka spans 180°, where a ring stepping 179.9 → −179.9 is a self-crossing
@@ -2812,7 +2870,9 @@ class is retired.
 ### The map: server-rendered SVG, no tiles, ever
 
 The server is loopback and the edition is meant to be self-contained, so there is
-no map library and no tile fetch. One `<svg>`, shapes as `<path>`, every
+no map library and no tile fetch. (The one outside fetch anywhere in the reading
+view is an entity card's picture, for the reason "Pictures" gives; the map has
+no such reason.) One `<svg>`, shapes as `<path>`, every
 coordinate projected on the server. It suits the material: the polygons *are* the
 content and there is no imagery to want.
 

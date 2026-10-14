@@ -470,6 +470,7 @@ SHOWN_ELSEWHERE = {
     "canonical",
     "status",
     "links",
+    "image",  # the figure under the heading, `_entity.html`
     "aliases",
     "gloss",
     "dir_class",

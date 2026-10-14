@@ -209,7 +209,17 @@
           1.0</ref>; no attribution required. Named because it is the source of the
           geo: coordinate on every record carrying a link: wikidata: identifier,
           and a coordinate whose origin is not written down is what the provenance
-          ranks exist to prevent, whatever the licence permits.</bibl>
+          ranks exist to prevent, whatever the licence permits. Also the source of
+          each entity card's picture, as the item's P18.</bibl>
+        </p>
+        <p>
+          <bibl><title>Wikimedia Commons</title>,
+          <ref target="https://commons.wikimedia.org/">commons.wikimedia.org</ref>.
+          Entity pictures are shown from Commons and are not part of this edition.
+          Each carries its own licence (public domain, CC0, CC BY, CC BY-SA or
+          copyrighted free use),
+          recorded with its author in edition/entity-images.json and printed
+          beneath the picture.</bibl>
         </p>
         <p>
           <bibl><title>Operational Navigation Charts</title>, US Defense Mapping

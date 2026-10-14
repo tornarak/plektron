@@ -29,7 +29,7 @@ from pydantic import BaseModel
 # binds that name at module scope, and the shadowing would be silent until
 # something called a method on the feature object.
 from .. import annotations as annots
-from .. import apparatus, entities, figrefs, geo, ipa, langs, lexicon, speech, tei_html
+from .. import apparatus, entities, figrefs, geo, ipa, langs, lexicon, pictures, speech, tei_html
 from .. import edition_ui as ui
 from .. import figures as F
 from ..entities import ENTITY_CLASSES, alias_index, split_id
@@ -1073,6 +1073,7 @@ def _entity_ctx(ident: str, refs: list[str], root: Path) -> dict:
         "base": BASE,
         "gloss": ui.gloss_html(rec["gloss"], store),
         "links": [ui.link_html(ln) for ln in rec["links"]],
+        "image": pictures.resolve(rec, stores.picture_ledger(root)),
         "contested": [{"id": c, "canonical": store[c]["canonical"]} for c in contested],
         "located": bool(geo.located(ident, store, root)),
         "props": ui.property_rows(rec, store, root),

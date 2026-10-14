@@ -452,6 +452,13 @@ html.reader .unsettled { background:none; border-bottom-style:solid }
   background:var(--bg) }
 .crop img { position:absolute; max-width:none }
 html[data-theme="dark"] .crop img, .dark-raster .crop img { filter:none }
+/* An entity's picture. Floated so the gloss wraps it rather than waiting below
+   it; the width attribute is the thumbnail's own, capped here, and height:auto
+   keeps the ratio the attributes declare. */
+.entity-img { float:left; max-width:40%; margin:0 .6rem .4rem 0 }
+.entity-img img { display:block; max-width:100%; height:auto; }
+.entity-img figcaption { font-size:.65rem; line-height:1.3; color:var(--dim);
+  margin-top:.2rem }
 .card .gloss p { margin:0 0 .4rem }
 .card .gloss p:last-child { margin-bottom:0 }
 .card .meta a.out { display:inline-flex; align-items:center; gap:.3em;
@@ -560,7 +567,11 @@ ul.tree > li { border-left:none; padding-left:0 }
 /* The card's tree sits between the fields and the forms, so it needs the rule a
    pane's tree gets from the picture above it. */
 .kin-tree { border-top:1px solid var(--rule); padding-top:.35rem;
-  margin:.55rem 0 .5rem }
+  margin:.55rem 0 .5rem; clear:both }
+/* `clear`, because the card's picture floats: a tree beside a float keeps its
+   rule and its rails on boxes that run *under* the picture while its names are
+   pushed clear of it, and the two stop lining up. Below the picture it is one
+   tree again. */
 /* A class heading in the encyclopedia tree. Not a link — there is no page for a
    class, and making one would be a filter pretending to be a place. A class
    nothing is filed under is dimmed rather than dropped. */

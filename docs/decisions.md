@@ -1488,3 +1488,34 @@ a second time, so it cannot report one thing while the page shows another; a tes
 asserts that agreement page by page. What made the seven so long-lived was not
 that they were hard to see but that nothing counted them: a census that could
 only be had by writing a script is a census nobody runs.
+
+## A picture is hotlinked, taken by rule, and keyed by what does not move
+
+Entity cards gained pictures (`harness/pictures.py`, `tools/entity_images.py`,
+docs/edition.md "Pictures"). Three choices shaped them, and each had a
+plausible alternative.
+
+**Hotlinked, not vendored.** Copying thumbnails into a tracked store would
+have kept the edition self-contained and pinned each file's version. Instead
+the repository carries a ledger of titles and attribution and no bytes, and
+the cost is stated rather than hidden: a file overwritten on Commons is
+served before the next run reports it.
+
+**P18 by rule, shown at once, overridable.** The other design held every
+picture back until a human had picked it from a contact sheet. P18 off a QID a
+human already set is mechanical, so it renders straight away. It renders at
+its rank, though: the caption's "via Wikidata" is the `#mz` mark, and an
+`image:` line in the entry is the `#ed` act that overrides it or, as `none`,
+refuses it.
+
+**Seven classes.** `being:` is out because its entries are filed under
+editorial readings — `iteˊyun` at *Trichinellosis* — so the item's picture
+would illustrate the reading, not the being. `sky:`, `event:`, `institution:`,
+`source:` and `animal:` are out because no picture would add anything a name
+does not. `people:` is in, by the editor's decision, after the question of
+ethnographic photographs of identifiable individuals was raised.
+
+**Keyed by QID and file title, never by entity id.** An entity-keyed ledger
+would have been one more store for `entity rename` to rewrite, and it would
+orphan pictures silently the first time a rename missed it. The class is read
+at render instead, so a move out of scope needs no ledger edit either.

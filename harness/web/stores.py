@@ -16,7 +16,7 @@ from __future__ import annotations
 from functools import lru_cache
 from pathlib import Path
 
-from .. import alphabet, apparatus, entities, figures, geo, lexicon, lookup, tei_html
+from .. import alphabet, apparatus, entities, figures, geo, lexicon, lookup, pictures, tei_html
 from ..refs import norm_ref
 from ..state import load_toc
 from .cache import MAXSIZE, digest, stamp
@@ -71,6 +71,21 @@ def annotations(root: Path) -> dict:
     return _annotations(str(root), stamp(_annotation_files(root)))
 
 
+def _ledger_files(root: Path) -> list[Path]:
+    return [Path(root) / pictures.LEDGER]
+
+
+@lru_cache(maxsize=MAXSIZE)
+def _pictures(root: str, _key: bytes) -> dict:
+    return pictures.load(Path(root))
+
+
+def picture_ledger(root: Path) -> dict:
+    """The picture ledger. Read on every card, and a re-run of the tool must
+    show without a restart."""
+    return _pictures(str(root), stamp(_ledger_files(root)))
+
+
 @lru_cache(maxsize=MAXSIZE)
 def _check(root: str, _key: bytes) -> dict:
     return entities.check(Path(root))
@@ -78,8 +93,9 @@ def _check(root: str, _key: bytes) -> dict:
 
 def check(root: Path) -> dict:
     """`entity check`'s report. The encyclopedia index called this immediately
-    after `load`, so the store was walked and parsed twice per request."""
-    return _check(str(root), stamp(_entity_files(root)))
+    after `load`, so the store was walked and parsed twice per request. Keyed on
+    the ledger too, since the check reads it."""
+    return _check(str(root), stamp(_entity_files(root) + _ledger_files(root)))
 
 
 @lru_cache(maxsize=MAXSIZE)

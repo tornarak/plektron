@@ -487,9 +487,11 @@ def run_check(a) -> int:
         out(a, [{"error": str(e)}], "errors", heading=True)
         return verdict(a, 1, "the store does not parse")
     out(a, {k: v for k, v in r.items()
-            if k not in ("collisions", "errors", "ok")})
+            if k not in ("collisions", "picture_rows", "errors", "ok")})
     if r["collisions"]:
         out(a, r["collisions"], "collisions", heading=True)
+    if r["picture_rows"]:
+        out(a, r["picture_rows"], "pictures", heading=True)
     if r["errors"]:
         out(a, [{"error": e} for e in r["errors"]], "errors", heading=True)
     return verdict(a, 0 if r["ok"] else 1,

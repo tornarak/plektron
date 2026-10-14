@@ -138,8 +138,10 @@ SESSION.mount("https://", HTTPAdapter(max_retries=_RETRY))
 #: stay. The lasting fix is one file over: a failed fetch is now recorded as
 #: `failed` and printed as LOOKUP FAILED, so no outage can ever again be read as
 #: an absence.
-def _get(params: dict) -> dict:
-    r = SESSION.get(API, params={**params, "format": "json"}, timeout=30)
+def _get(params: dict, api: str = API) -> dict:
+    """One API call, paced. `api` is Wikidata's unless a caller names another
+    MediaWiki — `entity_images.py` asks Commons, under the same courtesy."""
+    r = SESSION.get(api, params={**params, "format": "json"}, timeout=30)
     r.raise_for_status()
     time.sleep(PAUSE)
     got = r.json()
@@ -471,7 +473,11 @@ def search(term: str, lang: str = "en", limit: int = 6) -> list[str]:
 
 
 def entities(qids: list[str]) -> dict:
-    """Label, description, coordinate and en-wiki title for each QID.
+    """Label, description, coordinate, en-wiki title and P18 images for each QID.
+
+    `p18` is every image claim as `(rank, file)`, unranked by this function:
+    choosing among them is `entity_images.py`'s rule, and the choice should be
+    made where it is reported.
 
     Batched fifty at a time, which is the API's own limit — one call per entity
     name would be several hundred round trips for this store.
@@ -490,7 +496,7 @@ def entities(qids: list[str]) -> dict:
             print(f"  ! fetch {chunk[0]}…: {e}", file=sys.stderr)
             for q in chunk:
                 out[q] = {"qid": q, "failed": str(e), "geo": None,
-                          "label": "", "desc": "", "enwiki": ""}
+                          "label": "", "desc": "", "enwiki": "", "p18": []}
             continue
         for qid, ent in (r.get("entities") or {}).items():
             if "missing" in ent:
@@ -509,6 +515,10 @@ def entities(qids: list[str]) -> dict:
                 "geo": coord,
                 "enwiki": ((ent.get("sitelinks") or {})
                            .get("enwiki") or {}).get("title", ""),
+                "p18": [(c.get("rank", "normal"),
+                         c["mainsnak"]["datavalue"]["value"])
+                        for c in (ent.get("claims") or {}).get("P18", [])
+                        if (c.get("mainsnak") or {}).get("datavalue")],
             }
     return out
 

@@ -117,7 +117,7 @@ Layout, all at the repo root:
             for the reason and the expiry in .gitignore.
     edition/  what is served to a reader, and nothing else — a **layer**, not a
             rank: `#ed` lives in `@resp` and also covers rulings no reader sees.
-            Tracked; no rule writes here. `docs/edition.md`.
+            Tracked; no rule writes here but the two tools below. `docs/edition.md`.
             toc/loi/authorities/alphabet/runs/figure_numbers.json — the book's
               apparatus, amended, which is why none of it is `gt/`.
             entities/  the encyclopedia, one file per entity under its class
@@ -132,10 +132,12 @@ Layout, all at the repo root:
             fig-img/, page-img/  the touch-ups. An improvement on the page is
               what `gt/` may not be (`docs/apparatus.md`).
             geo/  the atlas — watersheds, language areas, named features,
-              coastline. **Derived but tracked**, the one store that is: its
-              sources are outside the repo, so a clone cannot rebuild it.
+              coastline. **Derived but tracked**: its sources are outside
+              the repo, so a clone cannot rebuild it.
               tools/build_geo.py builds, SOURCES.md records provenance,
               `geo list` is the census.
+            entity-images.json  the picture ledger, derived but tracked for
+              geo/'s reason; tools/entity_images.py writes it.
     config/ what a pass is tuned by, validated at load — zones.json
             lines.json marks.json — and the editor's rulings over
             one: marks_exempt.json lexicon_extra.txt, `#ed` **rank** but no part
