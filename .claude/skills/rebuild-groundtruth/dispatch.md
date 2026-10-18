@@ -24,7 +24,9 @@ to remove. The reading is parallel; the batches are a queue.
 
 **Predict first, in the parent.** A page with nothing in `mz/ocr/` has no line
 indices, so an agent sent at it has nothing to key against and will either stall or
-invent a numbering. `harness ocr predict` also wants the GPU, and five agents racing
+invent a numbering — and so does a page whose prediction found no baseline, since
+`predict` writes the file either way; `queue` refuses both, and the second wants
+`ocr edit`, not another `predict`. `harness ocr predict` also wants the GPU, and five agents racing
 for it is slower than one loop. Survey the batch across four stores first —
 `gt/zones/`, `gt/fig/`, `gt/ocr/`, `mz/ocr/` — because each answers a different
 question about the dispatch:

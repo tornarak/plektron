@@ -170,6 +170,19 @@ def test_a_page_that_is_not_a_candidate_is_refused_with_its_remedy(
         build("3-063", make_page(tmp_path, **kw))
 
 
+def test_a_prediction_with_no_lines_is_refused(tmp_path):
+    """`ocr predict` writes the file whether or not it found a baseline, so the
+    `mz` test passed `2-100` with zones and no lines, and a reader was spent
+    finding that out."""
+    make_page(tmp_path)
+    (tmp_path / "mz/ocr/chukchi-3-063.xml").write_text(
+        '<alto xmlns="http://www.loc.gov/standards/alto/ns-v4#"><Layout>'
+        '<Page WIDTH="2550" HEIGHT="3525"><PrintSpace><TextBlock ID="b1"/>'
+        '</PrintSpace></Page></Layout></alto>', encoding="utf-8")
+    with pytest.raises(Unready, match="ocr edit 3-063"):
+        build("3-063", tmp_path)
+
+
 def test_both_surveys_ask_the_split_rather_than_the_list(tmp_path):
     """The exempt refusal must not be defeated by renaming the list it reads.
 

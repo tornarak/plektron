@@ -212,6 +212,17 @@ def build(ref: str, root: Path = Path("."), note: str | None = None) -> dict:
             f"key against and will stall or invent a numbering. Run "
             f"`uv run harness ocr predict {r}` first, in the parent: it wants the "
             "GPU, and several agents racing for it is slower than one loop.")
+    # **A file is not a prediction.** `ocr predict` writes the ALTO whether or not
+    # the segmenter found a baseline, so a page it failed on passes the test above
+    # holding zones and no lines — `2-100` did, and its reader claimed it, found
+    # an empty index and stopped, which is the right act paid for by an agent.
+    # Counted through `page_lines`, so lines a human adopted in `gt/lines/` count.
+    if not s["lines"]:
+        raise Unready(
+            f"{r}: mz/ocr/chukchi-{r}.xml holds no lines — the segmenter found no "
+            "baseline on this page, so a reader has nothing to key against. "
+            f"Re-predicting gives the same answer; draw them in `uv run harness "
+            f"ocr edit {r}`, which is a human's act, then queue it.")
     figs = (FIGURES_PRESENT if s["figures"] else FIGURES_ABSENT).format(ref=r)
     # Rendered as sentences, not as the table `ocr zoom` prints. The reader is
     # being handed this before it has a doubt to spend it on, so what it has to
