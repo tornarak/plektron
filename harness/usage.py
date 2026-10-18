@@ -418,6 +418,22 @@ def _requests(path: Path) -> list[dict]:
     return _read(path)[0]
 
 
+def _transcripts(d: Path) -> list[Path]:
+    """The agent transcripts in one directory, under either name they go by.
+
+    An Agent-tool dispatch leaves `tasks/<id>.output`, a symlink to
+    `subagents/agent-<id>.jsonl`; a Workflow run leaves only the latter, under
+    `subagents/workflows/<run>/`, with no link in `tasks/`. Same bytes, so the
+    one parser reads both — a glob for one name made a workflow batch read as
+    "no agents in scope", which is the empty table a measurement must not show.
+    """
+    return sorted([*d.glob("*.output"), *d.glob("agent-*.jsonl")])
+
+
+def _ident(path: Path) -> str:
+    return path.stem.removeprefix("agent-")
+
+
 def _agent(path: Path) -> dict | None:
     reqs, meta = _read(path)
     if not reqs:
@@ -425,7 +441,7 @@ def _agent(path: Path) -> dict | None:
     first = reqs[0]
     return {
         "session": meta.get("session", ""),
-        "agent": path.stem[:8],
+        "agent": _ident(path)[:8],
         "type": meta.get("type", ""),
         "task": meta.get("task", "")[:32],
         "pre": meta["pre"],
@@ -463,7 +479,7 @@ def _agent(path: Path) -> dict | None:
         # The decomposed requests, kept so a cohort's breakdown is the
         # concatenation of its members' rather than a second walk over the same
         # files with a second chance to disagree with the first.
-        "walk": _walk(reqs, path.stem[:8], meta.get("type", "")),
+        "walk": _walk(reqs, _ident(path)[:8], meta.get("type", "")),
         "first": min(r["at"] for r in reqs),
         "last": max(r["at"] for r in reqs),
     }
@@ -540,7 +556,7 @@ def batch(root: Path, tasks: Path | None = None, *, session: str | None = None,
     # Ordered by when each agent OPENED, not when it finished: launch order is
     # what decides which one wrote the shared prefix, and `last` sorted a reader
     # that opened first and ran long below one dispatched minutes later.
-    agents = sorted((a for d in dirs for f in sorted(d.glob("*.output"))
+    agents = sorted((a for d in dirs for f in _transcripts(d)
                      if (a := _agent(f))), key=lambda a: a["first"])
     if session:
         agents = [a for a in agents if a["session"].startswith(session)]
@@ -599,10 +615,10 @@ def find_transcripts(root: Path, idents: list[str],
     """
     found: dict[str, Path] = {}
     for d in find_tasks(root, tasks):
-        for f in d.glob("*.output"):
+        for f in _transcripts(d):
             for ident in idents:
-                if f.stem.startswith(ident):
-                    found[f.stem] = f
+                if _ident(f).startswith(ident):
+                    found[_ident(f)] = f
     if missing := [i for i in idents
                    if not any(s.startswith(i) for s in found)]:
         raise ValueError(f"no transcript for {', '.join(missing)} — "
@@ -625,7 +641,7 @@ def transcript(path: Path) -> list[dict]:
     in the record divides them.
     """
     reqs, meta = _read(path)
-    return _walk(reqs, path.stem[:8], meta.get("type", ""))
+    return _walk(reqs, _ident(path)[:8], meta.get("type", ""))
 
 
 def classes(walk: list[dict], scope: str = "") -> list[dict]:

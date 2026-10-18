@@ -2374,7 +2374,7 @@ transcripts, and writes one tracked file under `.claude/`. Nothing here gates.
 
 ### agents usage
 **Does** per-agent cache reads and writes for one session's dispatched agents, then groups them into cohorts. **The opening total is the diagnostic** — `read + write` on an agent's first request is what its context cost to establish, whatever the cache did with it, so siblings dispatched with identical prompts must open at the same number. Two agents join one cohort when they agree on model *and* opening, which is exactly the condition under which they could have shared a cached prefix. Six readers dispatched together should appear as one cohort of six; appearing as six singletons means a byte varies ahead of the shared block, and the openings say how much. A large `tail` write is ordinary by contrast: content behind the prefix was going to be written anyway.
-**Reads** `/tmp/claude-*/<project-slug>/*/tasks/*.output`. **Writes** — **Exit** always 0.
+**Reads** `/tmp/claude-*/<project-slug>/*/tasks/*.output`, or under `--tasks` any directory of `*.output` or `agent-*.jsonl` — the latter is all a Workflow run leaves, in `~/.claude/projects/<slug>/<session>/subagents/workflows/<run>/`, and the default discovery does not find it. **Writes** — **Exit** always 0.
 ```
 --session S  one session, by slug or id prefix — what tells two concurrent
              sessions apart when both are dispatching
@@ -2427,7 +2427,7 @@ transcripts, and writes one tracked file under `.claude/`. Nothing here gates.
 
 ### agents transcript [AGENT ...]
 **Does** one named agent's requests in order — or a whole cohort's under `--cohort` — with what each one added to its context and where that came from. **`added` is the column**: a request's whole context is `in + read + write`, so the difference between consecutive requests is what arrived between them. Reading down it catches a duplicated block, which no per-agent total can — a contract re-injected on resume showed up as +14,916 on request 2 of three separate readers, identical to the token, and was invisible in every summary. `note` and `detail` name the arrival from the tool the *previous* request called, since its result is what the growth is made of: `read raster moll-046.png`, `ran command … zoom moll-046:15,33`, `write file`. `via` says whether that growth was paid for — `read` is a context served whole from cache, `write` is the only kind that costs.
-**Reads** `/tmp/claude-*/<project-slug>/*/tasks/*.output`. **Writes** — **Exit** always 0; 2 if no transcript matches an AGENT, if no cohort matches `--cohort`, or if neither AGENT nor `--cohort` is given.
+**Reads** as `agents usage`. **Writes** — **Exit** always 0; 2 if no transcript matches an AGENT, if no cohort matches `--cohort`, or if neither AGENT nor `--cohort` is given.
 ```
 AGENT...     agent id, or its leading characters — what `usage` prints
 --cohort ID  every agent of one cohort — a batch, as `usage` groups it (c1, c2,

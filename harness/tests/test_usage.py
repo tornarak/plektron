@@ -103,6 +103,17 @@ def test_agent_of_an_empty_transcript_is_none(tmp_path):
     assert _agent(tmp_path / "c1.output") is None
 
 
+def test_a_workflow_run_directory_is_read_under_its_own_name(tmp_path):
+    """A Workflow leaves `agent-<id>.jsonl` and no `tasks/` link. Globbing only
+    `*.output` reported such a batch as no agents at all, and the id must lose
+    the prefix or every row would read `agent-ab`."""
+    (tmp_path / "agent-abcdef0123.jsonl").write_text(_line(0, 35798) + "\n")
+    _, agents = usage.batch(tmp_path, tmp_path)
+    assert [a["agent"] for a in agents] == ["abcdef01"]
+    assert find_transcripts(tmp_path, ["abcd"], tmp_path) == [
+        tmp_path / "agent-abcdef0123.jsonl"]
+
+
 # --- transcript -----------------------------------------------------------
 
 def _tool_line(read, write, tool, detail, out=5, rid="r"):
