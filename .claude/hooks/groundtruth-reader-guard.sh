@@ -375,6 +375,18 @@ if printf '%s' "$COMMAND" | grep -qE '^uv run harness (ocr (claim|calls|gaps|lin
     *--all*)
       echo "Blocked: no --all form of anything; you have exactly one page." >&2
       exit 2 ;;
+    # **The Read arm's `gt/ocr/` refusal, by the verb route.** Five verbs here take
+    # `--store gt`, and the allowlist names verbs, not stores, so `ocr lines 1-030
+    # --store gt` served a neighbour's adjudicated text that a Read of the same
+    # file is refused. The hook cannot tell which page is the reader's — but it
+    # does not need to: a reader is only sent to a page with no ground truth, so
+    # every `--store gt` it could run reads another page's. Scoped to `ocr`, the
+    # only group on this surface with a `--store`: a `case` cannot see quotes, so
+    # unscoped it refused a `proposal set` whose quoted note named the flag.
+    "uv run harness ocr "*" --store gt"|"uv run harness ocr "*" --store gt "*|\
+    "uv run harness ocr "*" --store=gt"|"uv run harness ocr "*" --store=gt "*)
+      echo "Blocked: --store gt is adjudicated ground truth for OTHER pages — your page has none, which is why you were sent, so this flag can only ever read a neighbour's answers. Deriving a convention from a neighbouring page is what the firewall forbids. Your store is mz, the default: drop the flag. If a spelling question needs the corpus, 'lexicon lookup' is the licensed reach, and it records that the corpus supplied the glyphs." >&2
+      exit 2 ;;
   esac
   allow "groundtruth-reader running a verb from its closed surface, on one page"
 fi

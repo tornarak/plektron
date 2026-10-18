@@ -145,6 +145,31 @@ def test_gt_everything_else_is_refused(cmd):
 
 
 @pytest.mark.parametrize("cmd", [
+    "uv run harness ocr lines 1-030 --store gt",
+    "uv run harness ocr lines 1-030 --store=gt",
+    "uv run harness ocr gaps 1-030 --store gt --json",
+    "uv run harness ocr numbered 1-030 --store gt",
+    "uv run harness ocr sheets 1-030 --store gt --only 4-6",
+    "uv run harness ocr zoom 1-030 --store gt --only 12@55-80",
+    "uv run harness ocr calls 1-031 && uv run harness ocr lines 1-030 --store gt",
+])
+def test_gt_the_ground_truth_store_is_refused_by_the_verb_route_too(cmd):
+    """**The Read arm refuses `gt/ocr/`; the verbs served it.** The allowlist
+    names verbs, not stores, so five of them read a neighbour's adjudicated text
+    on `--store gt`. A reader's own page has no ground truth by construction, so
+    the flag can only ever reach another page's, and refusing it outright needs
+    no knowledge of which page is whose."""
+    r = blocked(GT_GUARD, "Bash", command=cmd)
+    assert "OTHER pages" in r
+
+
+def test_gt_a_quoted_mention_of_the_flag_is_not_the_flag():
+    """Matched as a token: a reading that prints the phrase is not a store read."""
+    allowed(GT_GUARD, "Bash", command="uv run harness proposal set 1-031 12 "
+            "--field note --value 'the --store gt flag'")
+
+
+@pytest.mark.parametrize("cmd", [
     "uv run harness lexicon native",
     "uv run harness lexicon native --json",
 ])
