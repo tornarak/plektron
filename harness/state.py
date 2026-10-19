@@ -489,6 +489,11 @@ def toc_search(toc: list[dict], query: str, folio: int | None = None,
 #: the refusal rather than a hole to fill in.
 MILESTONE_UNITS = {1: "chapter", 2: "section", 3: "subsection", 4: "subsubsection"}
 
+#: The printed footnote markers. Superscript digits and nothing else: a census of
+#: the generated corpus finds ¹–⁶ and no `*`, `†`, `‡` or `§` anywhere, so a rule
+#: written for symbols would be a rule for a book other than this one.
+NOTE_MARKERS = "⁰¹²³⁴⁵⁶⁷⁸⁹"
+
 #: Where a printed head stops and the prose begins. The book sets a run-in head as
 #: `TITLE. — ` and a head standing alone on its line as `TITLE.`; both are the
 #: compositor's mark, which is why matching may lean on them. The period is
@@ -510,7 +515,14 @@ MILESTONE_UNITS = {1: "chapter", 2: "section", 3: "subsection", 4: "subsubsectio
 #: book sets `SEAL-HUNTING. — `, and a head marked without its period would be a
 #: heading this edition punctuates differently from the page it reproduces. The
 #: dash is the other side of it and is the separator, so it stays out.
-_SET_OFF = re.compile(r"([.,;:”’\"')\]]*)[^\S\n]*(?:[—–][ \t\n]+|\n|$)")
+#:
+#: A footnote marker may follow the punctuation — `3-146` prints `XXIII. — CONTACT
+#: OF THE CHUKCHEE WITH THE RUSSIANS.¹` — and is the second group. It belongs to
+#: neither side: not the head, which is the ToC's title as printed, and not the
+#: gap, because the note anchors on it and a match that consumed it would delete
+#: the only site `_mark_notes` can find. `printed_head` stops short of it.
+_SET_OFF = re.compile(rf"([.,;:”’\"')\]]*)([{NOTE_MARKERS}]*)"
+                      r"[^\S\n]*(?:[—–][ \t\n]+|\n|$)")
 
 #: `_WORD_RE` asked of text that has not been lowercased, so offsets into the page's
 #: own string stay usable and the head can be quoted back as the page prints it.
@@ -582,7 +594,9 @@ def printed_head(text: str, entry: dict) -> tuple[str, int] | None:
     """The head `text` prints for `entry` at its very front, and where it ends.
 
     Returns `(head, end)` — the printed head, and the offset past the mark that
-    sets it off, so a caller can look for the next head in what follows. `None`
+    sets it off, so a caller can look for the next head in what follows; a
+    footnote marker after the head stops `end` before it, so the marker stays in
+    what follows (`_SET_OFF`). `None`
     when this block does not open with this entry's title.
 
     **Anchored at the front, and set off by the printer's own mark.** Both halves
@@ -618,7 +632,8 @@ def printed_head(text: str, entry: dict) -> tuple[str, int] | None:
         mark = _SET_OFF.match(nfd, at)
         if mark is None:
             continue
-        return nfd[:at + len(mark.group(1))], mark.end()
+        return (nfd[:at + len(mark.group(1))],
+                mark.start(2) if mark.group(2) else mark.end())
     return None
 
 

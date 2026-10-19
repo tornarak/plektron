@@ -1450,6 +1450,25 @@ def test_the_entrys_printed_number_may_lead_its_title(tmp_path):
     assert '<milestone unit="chapter" n="chI" resp="#mz"/>' in doc
 
 
+def test_a_head_carrying_a_note_marker_keeps_the_marker(tmp_path):
+    """`3-146` prints `XXIII. — CONTACT OF THE CHUKCHEE WITH THE RUSSIANS.¹`, and
+    the note is about the whole chapter. The marker sat between the period and the
+    line end, so the head was not set off and the chapter got no milestone. It is
+    not the head's either: the title is the ToC's, and the marker is the one site
+    the note anchors on — so the block keeps its words, the head marked as
+    `<label>`, and the marker stays beside it rather than going with a dropped
+    heading-only block."""
+    doc, rep = _joined(
+        tmp_path,
+        [_entry("chXXIII", "Contact of the Chukchee with the Russians", 11,
+                level=1, number="XXIII")],
+        ["XXIII. — CONTACT OF THE CHUKCHEE WITH THE RUSSIANS.¹"],
+        label="MainZone-Other")
+    assert rep["milestones"] == 1 and rep["unresolved"] == 0
+    assert '<milestone unit="chapter" n="chXXIII" resp="#mz"/>' in doc
+    assert "RUSSIANS.</label>¹" in doc
+
+
 def test_a_chapter_and_its_first_section_are_two_heads_in_one_block(tmp_path):
     """`1-096` opens chapter IV and its first section in one band — `IV. —
     REINDEER-BREEDING.` alone on a line, then `GROUPS OF REINDEER-BREEDERS. — The

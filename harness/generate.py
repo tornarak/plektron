@@ -79,7 +79,8 @@ from .entities import alias_index, auto_forms, load
 from .lines import page_lines
 from .ns import TEI_NS
 from .refs import APPARATUS_ZONES, norm_ref
-from .state import MILESTONE_UNITS, heads_on, load_toc, printed_head, toc_starts
+from .state import (MILESTONE_UNITS, NOTE_MARKERS, heads_on, load_toc, printed_head,
+                    toc_starts)
 from .zones import read_zones
 
 #: Bumped when the emitted shape changes in a way that makes an older file a
@@ -153,11 +154,6 @@ PROSE = {"MainZone-P": "p", "MainZone-Continued": "p", "MainZone-Quote": "quote"
 NOTES_ZONE = "MarginTextZone-Notes"
 OTHER_ZONE = "MainZone-Other"
 
-
-#: The printed footnote markers. Superscript digits and nothing else: a census of
-#: the generated corpus finds ¹–⁶ and no `*`, `†`, `‡` or `§` anywhere, so a rule
-#: written for symbols would be a rule for a book other than this one.
-NOTE_MARKERS = "⁰¹²³⁴⁵⁶⁷⁸⁹"
 
 #: `@n` is the digit, not the raised glyph. Three reasons and they agree: the
 #: collator contract has always specified an integer, `.noteref` raises and shrinks
@@ -1405,6 +1401,18 @@ def build(ref: str, root: Path = Path("."),
                 # printed line is not lost either way, `gt/ocr/` being where the
                 # page's own words live.
                 body.extend(marks)
+                continue
+            if marks and not rest.strip(NOTE_MARKERS + " \t\n"):
+                # **A heading carrying a footnote marker keeps its words.** `3-146`
+                # prints `… WITH THE RUSSIANS.¹`, and the note is about the whole
+                # chapter. Dropping the block as above would drop the marker with
+                # it, and the marker is the only site `_mark_notes` can anchor the
+                # note on — so the head stays as `<label>`, which is the run-in
+                # shape `tei_html` already sets off its milestone, and the marker
+                # stays beside it in the print's own position. The block is still
+                # resolved: a heading and its note reference, and nothing else.
+                body.extend(marks)
+                body.append(f'      <p>{rendered(rows, heads=heads)}</p>')
                 continue
             rep["unresolved"] += 1
             body.append('      <!-- unresolved zone (MainZone-Other): a heading, a '
