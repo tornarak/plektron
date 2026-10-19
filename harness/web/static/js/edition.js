@@ -220,7 +220,7 @@ function openScan(key, label) {
                                                             : [STATE.ref];
   const body = refs.map(r =>
     `<div class="crop" style="${c ? c.outer : 'aspect-ratio:'+STATE.size[0]+'/'+STATE.size[1]}">
-        <a href="${B}/page/${r}.png" target="_blank">
+        <a class="pic" href="${B}/page/${r}.png" target="_blank" rel="noopener">
         <img src="${B}/page/${r}.png" style="${c ? c.inner : 'width:100%;left:0;top:0'}">
         </a>
      </div>`).join('');
@@ -247,8 +247,9 @@ function openFigure(pairs, label, caption) {
   if (!pairs.length) return;
   const id = 'fig:' + pairs.join(',');
   push(id, () => card(id, label || pairs.join(', '), caption || '',
-    pairs.map(p => `<div class="crop-fig"><img src="${B}/fig/${p}.png"
-      alt="${label || p}"></div>`).join('')));
+    pairs.map(p => `<div class="crop-fig"><a class="pic" href="${B}/fig/${p}.png"
+      target="_blank" rel="noopener"><img src="${B}/fig/${p}.png"
+      alt="${label || p}"></a></div>`).join('')));
 }
 
 /* The lightbox, which holds a *set* of pictures and not one.
@@ -407,6 +408,7 @@ function setLightbox(src, group) {
 
 function paintLightbox() {
     const it = lb_items[lb_i];
+    lightbox_img.referrerPolicy = it.referrer || '';
     lightbox_img.src = it.src;
     lightbox_img.alt = it.caption || '';
     /* A leaf delivered as a Mixed Raster pair is *one* picture in two files, so
@@ -544,13 +546,18 @@ function lbItems(imgs) {
         const mrc = i.closest('.leaf-mrc');
         const under = mrc?.querySelector('img:first-child');
         return {
-            src: i.src,
+            /* An entity's picture is a Commons thumbnail on the card and a
+               larger rendition here; `data-full` is that one's address. */
+            src: i.dataset.full || i.src,
             under: under && under !== i ? under.src : null,
-            /* Where "open the file" should go. For a layered leaf neither layer
-               is the artefact — the master is — so the caption links to it and
-               not to the half that happens to be on top. */
-            full: mrc?.dataset.master || null,
+            /* Where "open the file" should go: the picture's own anchor, so the
+               lightbox's link and the page's cannot disagree. That is the master
+               for a layered leaf, not the half on top, and a Commons picture's
+               file page, where the licence the caption names is stated. */
+            full: i.closest('a.pic')?.href || null,
             caption: captionOf(i),
+            /* The card hotlinks without a referrer, and so does this. */
+            referrer: i.referrerPolicy || '',
         };
     });
 }
@@ -620,11 +627,11 @@ document.addEventListener('click', ev => {
      *beside* the text. A figure is already on the page, and the only thing
      wanted from it is to see it bigger — which is what the lightbox is for.
 
-     Bound to the image and not to the <figure>, so a click on the caption
-     selects its text the way a click on any other text does. Covers the inline
-     figures, the plates on an exempt page, the whole leaf on one with no figure
-     boxes, and a figure already pulled into a card: the card got it out of a
-     catalogue, and the only thing left to want from it is size. */
+     Bound to the picture's `a.pic` and not to the <figure>, so a click on the
+     caption selects its text the way a click on any other text does. Every
+     picture has one — inline figures, plates, a whole leaf, a card's crop or
+     scan, an entity's photograph — and its href is the original, so a
+     modified click is left to the browser and opens that in a tab. */
   /* The lightbox closes on a click anywhere in it, image included: it is one
      surface showing one thing. The bar at the foot is the exception, and has to
      be — its buttons and its link are the only things in there to aim at. */
@@ -652,14 +659,10 @@ document.addEventListener('click', ev => {
     if (z_scale > 1 && ev.target.closest('#lightbox-stack')) return;
     ev.preventDefault(); closeLightbox(); return;
   }
-  const pic = ev.target.closest(
-    '.figure img, .plates img, .whole-scan img, .crop-fig img');
-  if (pic) { ev.preventDefault(); setLightbox(pic.src, lightboxGroup(pic)); return; }
-  const l = ev.target.closest('.crop a');
-  if (l) {
+  const pic = ev.target.closest('a.pic')?.querySelector('img:last-child');
+  if (pic && !(ev.ctrlKey || ev.metaKey || ev.shiftKey || ev.altKey)) {
     ev.preventDefault();
-    const i = l.querySelector("img");
-    if (i && i.src) setLightbox(i.src, lightboxGroup(i));
+    setLightbox(pic.dataset.full || pic.src, lightboxGroup(pic));
   }
 });
 

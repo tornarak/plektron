@@ -21,10 +21,13 @@
 {# The picture, hotlinked from Commons — the one thing on a card the edition
    does not serve itself (`pictures.py`). The caption is the licence's due and
    is not optional: author, licence, the file's page. "via Wikidata" marks the
-   rule's pick, which nobody here looked at; an editor's `image:` line drops it. #}
+   rule's pick, which nobody here looked at; an editor's `image:` line drops it.
+   A plain click opens the lightbox at `data-full`'s size; the anchor is the
+   file's Commons page, for every other way of following it. #}
 {% if image %}
-<figure class='entity-img'><a href='{{ image.page }}' target='_blank'
+<figure class='entity-img'><a class='pic' href='{{ image.page }}' target='_blank'
    rel='noopener noreferrer'><img src='{{ image.thumb }}' alt='{{ rec.canonical }}'
+   data-full='{{ image.full }}'
    width='{{ image.width }}' height='{{ image.height }}' loading='lazy'
    referrerpolicy='no-referrer'></a>
 <figcaption>{{ image.artist or 'unknown author' }} ·

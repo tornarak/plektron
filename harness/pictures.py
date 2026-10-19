@@ -29,6 +29,7 @@ import json
 import re
 import unicodedata
 from pathlib import Path
+from urllib.parse import quote
 
 LEDGER = "edition/entity-images.json"
 
@@ -58,6 +59,13 @@ LICENCE = re.compile(
 #: `entity check` names rather than a card that renders "None".
 FILE_FIELDS = ("page", "thumb", "width", "height", "sha1", "licence",
                "licence_url", "artist", "attribution_required", "retrieved")
+
+#: The width the lightbox asks for. **Through `Special:FilePath`, not a thumb
+#: URL**: the ledger holds the card's 330px rendition and not the original's
+#: size, and a thumb wider than its source is an error where `FilePath` serves
+#: the original instead. A standard step, for `tools/entity_images.py`'s reason.
+LIGHTBOX = 1920
+_FILEPATH = "https://commons.wikimedia.org/wiki/Special:FilePath/"
 
 #: `image:`'s two forms. A title, never a URL — `link:`'s rule, for its reason:
 #: the store holds the identifier and the card holds the address.
@@ -140,7 +148,8 @@ def resolve(rec: dict, ledger: dict) -> dict | None:
     row = ledger["files"].get(f)
     if not row:
         return None
-    return {**row, "file": f, "source": source}
+    full = f"{_FILEPATH}{quote(unicodedata.normalize('NFC', f))}?width={LIGHTBOX}"
+    return {**row, "file": f, "source": source, "full": full}
 
 
 def audit(store: dict, ledger: dict) -> tuple[list[str], list[dict]]:

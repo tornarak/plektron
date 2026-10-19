@@ -50,10 +50,10 @@
    all by the group would stretch the narrow ones — 24 of 32 parts in this store,
    worst x3.95. `f.width` is the block's share of the measure, so a part's share
    of the *block* is the ratio of the two. #}
-<img src='{{ c.url }}' loading='lazy'
+<a class='pic' href='{{ c.url }}' target='_blank' rel='noopener'><img src='{{ c.url }}' loading='lazy'
  alt='{% if f.n %}Figure {{ f.n }}{% else %}Figure{% endif %}'
  {%- if f.width > 0 and c.width < f.width %}
- style='width:{{ ((c.width / f.width) * 100) | round | int }}%'{% endif %}>
+ style='width:{{ ((c.width / f.width) * 100) | round | int }}%'{% endif %}></a>
 {%- endfor %}
 </div>
 {%- endif %}

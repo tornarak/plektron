@@ -51,14 +51,13 @@ the transcription tracks, so there is no prose here to read.{% endif %}
 <article class='plates'>
 {% for p in plates %}
   <figure class='figure plate'>
-    {# No anchor round the image: a click goes to the lightbox, which is what a
-       reader wants from a picture and what `edition.js` binds to `.plates img`.
-       A `target='_blank'` here would win the click and take them out of the
-       book instead. #}
+    {# An anchor to the file round every picture, as everywhere in the edition:
+       `edition.js` takes a plain click on `a.pic` to the lightbox, and the href
+       is what a middle-click, a modified click or no script at all gets. #}
     <div class='figure-plates'>
     {% for src in p.crops %}
-      <img src='{{ src }}' loading='lazy'
-       alt='{% if p.n %}Figure {{ p.n }}{% else %}Figure{% endif %}'>
+      <a class='pic' href='{{ src }}' target='_blank' rel='noopener'><img src='{{ src }}' loading='lazy'
+       alt='{% if p.n %}Figure {{ p.n }}{% else %}Figure{% endif %}'></a>
     {% endfor %}
     </div>
     {% if p.caption %}<figcaption>{{ p.caption }}</figcaption>{% endif %}
@@ -94,9 +93,11 @@ target='_blank' rel='noopener'>The raw scan</a> is unchanged.</p>
    Both halves or neither, which `edition_ui.leaf_layers` decides — half a pair
    renders without erroring and still looks like the map. #}
 {% if leaf_layers %}
-<article class='whole-scan leaf-mrc' data-master='{{ base }}/leaf/{{ ref }}'>
+{# One anchor for the pair, to the master: neither layer is the artefact. #}
+<article class='whole-scan leaf-mrc'><a class='pic' href='{{ base }}/leaf/{{ ref }}'
+   target='_blank' rel='noopener'>
   <img src='{{ base }}/leaf/{{ ref }}/colour' alt='' aria-hidden='true'>
-  <img src='{{ base }}/leaf/{{ ref }}/lines' alt='leaf {{ ref }}'>
+  <img src='{{ base }}/leaf/{{ ref }}/lines' alt='leaf {{ ref }}'></a>
 </article>
 {% else %}
 {# `blank-leaf` is a width, and nothing else — same element, same address, same
@@ -104,9 +105,11 @@ target='_blank' rel='noopener'>The raw scan</a> is unchanged.</p>
    nothing, and it sat between two plates a reader was paging through. Small
    enough to recognise as an empty leaf at a glance, large enough to see that it
    really is empty. #}
+{% set src = base ~ ("/leaf/" if editor_leaf else "/page/") ~ ref ~
+     ("" if editor_leaf else ".png") %}
 <article class='whole-scan{{ " blank-leaf" if kind == "blank" else "" }}'>
-  <img src='{{ base }}/{{ "leaf" if editor_leaf else "page" }}/{{ ref }}{{
-    "" if editor_leaf else ".png" }}' alt='scan {{ ref }}'>
+  <a class='pic' href='{{ src }}' target='_blank' rel='noopener'><img
+    src='{{ src }}' alt='scan {{ ref }}'></a>
 </article>
 {% endif %}
 {% endif %}
