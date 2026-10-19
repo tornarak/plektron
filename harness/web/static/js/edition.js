@@ -118,8 +118,11 @@ function selectIdx(idx = null, rel = 0) {
         selected_card_idx = -1;
         if (selected_card) { selected_card.classList.remove("selected"); }
         selected_card = null;
-        if (idx == -1) PANE.scroll(0, 0);
-        else PANE.scroll(0, 100_000);
+        /* The column's scrolling part, which is not the column: the TOC
+           switch is fixed beneath it. `PANE` where a view has no such part. */
+        const scroller = document.getElementById('side-body') || PANE;
+        if (idx == -1) scroller.scroll(0, 0);
+        else scroller.scroll(0, 100_000);
     } else {
         if (idx != selected_card_idx) {
             let clamped = clamped_idx(idx);
@@ -702,13 +705,12 @@ document.addEventListener('keydown', ev => {
         return;
     }
     if (ev.ctrlKey || ev.altKey || ev.shiftKey || ev.metaKey) return false;
-    /* **Not while focus is on the tab bar.** This binding takes Tab away from
-       the browser to put it into the stack, which is the right trade in the
-       text; on the two buttons above the stack it is a trap — you can reach them
-       and then not leave. `closest` and not an id test, because the bar is one
-       control and either button must behave the same. */
+    /* **Not while focus is on the sidebar's own controls.** This binding takes
+       Tab away from the browser to put it into the stack, which is the right
+       trade in the text; on the TOC switch and the fringe it is a trap — you can
+       reach them and then not leave. */
     if (ev.key == "Tab" && STACK.childNodes.length
-        && !ev.target.closest('#side-tabs')) { ev.preventDefault(); toggleStack(); }
+        && !ev.target.closest('#toc-toggle, #side-hide, #side-show')) { ev.preventDefault(); toggleStack(); }
     if (ev.key == "ArrowLeft" && !selected_stack && prev && prev.href) { ev.preventDefault(); window.location = prev.href; }
     if (ev.key == "ArrowRight" && !selected_stack && next && next.href) { ev.preventDefault(); window.location = next.href; }
     if (selected_stack) {

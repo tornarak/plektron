@@ -97,27 +97,92 @@ main.cols { display:flex; align-items:flex-start; flex-direction: row-reverse;
    two ids to that one's one, and the override would be a no-op that reads like
    a fix — the failure this stylesheet already documents at `#bar`. */
 #primary:first-child:last-child,
-html:not(.side-contents) #secondary:not(:has(.card)):not(:has(#map-pane:not([hidden]))) + #primary
+html:not(.side-contents):not(.side-open) #secondary:not(:has(.card)):not(:has(#map-pane:not([hidden]))) + #primary
   { margin: auto; }
 #secondary { flex: 1; padding: 1em; position:sticky; top:3rem;
   max-height:calc(100vh - 4rem); overflow-y:auto; }
-html:not(.side-contents) #secondary:not(:has(.card)):not(:has(#map-pane:not([hidden])))
+html:not(.side-contents):not(.side-open) #secondary:not(:has(.card)):not(:has(#map-pane:not([hidden])))
   { display: none; }
 
-/* --- the tab bar ---
-   Two panels over one scrolling column, so the bar is sticky to the column and
-   not to the window: it belongs to the thing that scrolls under it. The chip
-   shape is `worklist.css`'s, which is where this project already draws an
-   exclusive selector; the tokens are this stylesheet's, since that one is not
-   loaded here and names its rule `--line`. **Not `.pill`** — that class is
-   already the non-interactive status badges below. */
-#side-tabs { position:sticky; top:0; z-index:2; display:flex; gap:.3rem;
-  padding:.1rem 0 .5rem; margin:-.2rem 0 .4rem; background:var(--bg) }
-#side-tabs .tab { font-family:system-ui,sans-serif; font-size:.72rem;
-  letter-spacing:.02em; padding:.15rem .6rem; border-radius:.9rem;
-  color:var(--dim) }
-#side-tabs .tab.on { background:var(--fg); color:var(--bg); border-color:var(--fg) }
 #panel-contents[hidden], #panel-entities[hidden] { display:none }
+
+/* --- the column's edges ---
+   **The hide fringe on the inner edge, beside the text, and the scrollbar on the
+   outer one**, whichever side the column is on. A scrollbar goes where the
+   writing direction ends, and a grid starts where it begins, so the fringe —
+   first in the source — and the scrollbar always land on opposite edges: on the
+   right of the page the column runs left-to-right (fringe left, scrollbar
+   right); swapped to the left (⇄) it runs right-to-left (fringe right,
+   scrollbar left).
+   **Partitioned vertically**: the column is a fixed height and does not scroll;
+   inside it `#side-col` stacks the scrolling panels over the TOC switch, which
+   has the bottom to itself and covers nothing. The scrollbar is therefore
+   `#side-body`'s, and the direction that places it is set there; its children
+   go back to left-to-right, since their text is. */
+#secondary { direction:ltr; display:grid; grid-template-columns:auto 1fr;
+  grid-template-rows:minmax(0,1fr); column-gap:.4rem; padding-inline-start:0;
+  padding-bottom:0; height:calc(100dvh - 3rem); overflow:hidden }
+.cols-reversed #secondary { direction:rtl }
+#side-col { display:flex; flex-direction:column; min-width:0; min-height:0;
+  direction:ltr }
+/* Padded on both sides because a scroller clips: the contents' "here" bar is a
+   shadow drawn left of its row, and the page numbers would otherwise touch the
+   scrollbar. */
+#side-body { flex:1 1 auto; min-height:0; overflow-y:auto; padding:0 .4rem }
+.cols-reversed #side-body { direction:rtl }
+.cols-reversed #side-body > * { direction:ltr }
+
+/* The two fringes: a full-height strip with a rule and an arrow. The hide one
+   points away from the text, the show one toward it — `›`/`‹` set by the side
+   the column is on, in `content` so the arrow is never mirrored by an rtl
+   column the way a character in the markup would be. */
+#side-hide, #side-show { width:1.1rem; padding:0; border:0; border-radius:0;
+  background:transparent; color:var(--dim); font-size:1rem; opacity:.55;
+  cursor:pointer; direction:ltr }   /* an rtl column mirrors `content` too */
+#side-hide:hover, #side-show:hover { opacity:1; color:var(--fg);
+  background:color-mix(in srgb,var(--rule) 30%,transparent) }
+#side-hide { align-self:stretch; border-inline-end:1px solid var(--rule) }
+#side-hide::before { content:"›" }
+.cols-reversed #side-hide::before { content:"‹" }
+/* The show fringe is fixed to the window's edge on the column's side, and is
+   there exactly when the column is not: hidden by its fringe, or collapsed
+   because nothing is in it — the idle rule's own condition, read off the
+   sibling it stands before. */
+#side-show { display:none; position:fixed; top:3rem; bottom:0; right:0;
+  z-index:4; border-left:1px solid var(--rule) }
+#side-show::before { content:"‹" }
+.cols-reversed #side-show { right:auto; left:0; border-left:0;
+  border-right:1px solid var(--rule) }
+.cols-reversed #side-show::before { content:"›" }
+/* Two rules, not one list: `:has()` may not nest, so the idle condition is asked
+   of `main` rather than of the aside, and a selector list with one invalid
+   member drops the whole rule — which is how this first shipped, never shown. */
+html.side-dismissed #side-show { display:block }
+html:not(.side-contents):not(.side-open)
+  main:not(:has(#secondary .card)):not(:has(#map-pane:not([hidden]))) #side-show
+  { display:block }
+
+/* **Dismissed** is the hide fringe's state: the column gone and the text
+   re-centred, until the show fringe, a card, a map or the contents ask for it. */
+html.side-dismissed #secondary { display:none }
+html.side-dismissed #secondary + #primary { margin:auto }
+
+/* --- the TOC switch ---
+   The full width of the column at its foot, square, below the scrolling part
+   rather than over it. Solid while the contents are up, so the "cancel" reads
+   as the state it undoes. */
+#toc-toggle { flex:none; display:block; width:100%;
+  margin:0; padding:.45rem 0; border-radius:0; text-align:center;
+  font-family:system-ui,sans-serif; font-size:.75rem; letter-spacing:.04em;
+  color:var(--dim); background:var(--card) }
+html.side-contents #toc-toggle { background:var(--fg); color:var(--bg);
+  border-color:var(--fg) }
+/* Under the text on a narrow screen, the column is as tall as what it holds. */
+@media (max-width:880px) {
+  #side-hide, #side-show { display:none !important }
+  #secondary { height:auto; overflow:visible }
+  #side-body { overflow:visible }
+}
 
 /* --- the map pane ---
    One map per sitting, above the stack rather than in it: there is only ever one
@@ -639,16 +704,15 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
  * gloss and a one-line one float the same shape and the preview does not jump
  * about as the pointer crosses a paragraph.
  *
- * **`pointer-events:none` is load-bearing, not polish.** It is what keeps the
- * preview a look rather than a place: the click always lands on the link
- * underneath, so nothing about clicking changes, and `mouseover` never fires
- * inside a preview, so a preview cannot open a preview.
+ * It takes the pointer, because its own links are what a reader reaches for;
+ * `hover.js` keeps it open across the gap and opens no preview from inside one.
+ * It scrolls rather than clipping, for the same reason.
  *
  * Above `#lightbox`, which is `z-index:10` — a preview under an open lightbox
  * would be a card you can see the edge of and nothing else.
  */
 .card.preview{position:fixed;z-index:12;width:24rem;max-width:calc(100vw - 2rem);
-  max-height:60vh;overflow:hidden;pointer-events:none;
+  max-height:60vh;overflow-y:auto;
   box-shadow:0 2px 12px rgba(0,0,0,.18)}
 .card.preview .tools{display:none}
 .card.preview.pinned,.card.preview.selected{border-color:var(--rule);
@@ -657,10 +721,8 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
  *
  * `.card` for its skin, like the preview, and the same three things undone: no
  * width from `#secondary`, no `.tools` to float, no pinned/selected border.
- * What it does *not* share is `pointer-events:none` — a preview is a look and
- * must never eat the click, a kept note is something you read and routinely
- * holds an entity link of its own. So this is a place, and `notes.js` carries
- * the outside-click guard that costs.
+ * A kept note routinely holds an entity link of its own, so this is a place,
+ * and `notes.js` carries the outside-click guard that costs.
  *
  * Narrower than the preview (18rem against 24) because a note is prose set at
  * the text's own size, not a card of labelled rows, and shrink-to-fit up to that
@@ -776,16 +838,26 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
   font-family:system-ui,sans-serif; font-size:.7rem; color:var(--dim);
   text-decoration:none; opacity:.65 }
 .run .leaf-mark:hover { opacity:1; color:var(--fg) }
-.run .leaf-mark .run-tag { margin-left:.2em; font-size:.85em; opacity:.8 }
+.run .leaf-mark .run-tag { margin-left:.2em; font-size:.85em; opacity:.8; display: block; }
 /* --- a chapter: its leaves as one text --- */
 /* The page number, Project Gutenberg's way: the mark sits inline exactly where
    the leaf turns, often mid-sentence, and is drawn in the right margin. Absolute
    with no `top`, so it keeps the vertical position of the line it is on — the
    reader sees which line the page turned at without the text being broken. */
 .run-chapter { position:relative }
+/* The margin the marks hang in is the column's to reserve: with the sidebar open
+   beside it, a mark past `#primary`'s own padding is drawn over the sidebar. */
+#primary:has(.run-chapter) { padding-right:5rem }
 .run-chapter .leaf-mark { position:absolute; left:auto; right:-4.2rem;
   width:3.6rem; text-align:left; text-indent:0; font-style:normal;
   font-weight:normal; letter-spacing:0; font-variant:normal }
+/* On a phone that reserve was a fifth of the screen and more, for a mark a few
+   characters wide. The mark is `[732]` over `DRAFT` at most, and that is all the
+   margin needs to hold. */
+@media (max-width:600px) {
+  #primary:has(.run-chapter) { padding-right:2.9rem }
+  .run-chapter .leaf-mark { right:-2.6rem; width:2.3rem }
+}
 .leaf-exempt { margin:1rem 0 }
 .leaf-gap { font-family:system-ui,sans-serif; font-size:.85rem; color:var(--dim) }
 /* The pooled foot: a chapter's notes grouped under the page each was printed

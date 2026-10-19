@@ -965,15 +965,21 @@ def _row(panel: str, title: str) -> str:
     return "<li" + panel.split(title)[0].rsplit("<li", 1)[1]
 
 
-def test_the_sidebar_ships_two_tabs_with_the_contents_shut(server):
+def test_the_sidebar_ships_its_switch_with_the_contents_shut(server):
     """Entities is the column as it was; contents is rendered and hidden, so the
-    switch costs no request and the panel is there for a reader with no JS."""
+    switch costs no request and the panel is there for a reader with no JS. The
+    switch is at the foot of the column, and nothing comes between the column
+    and the text, because `#secondary + #primary` is the idle rule's selector."""
     base, root = server
     _toc(root)
     body = get(base + "/page/1-021")
-    assert "data-panel='entities'" in body and "data-panel='contents'" in body
-    assert "id='panel-contents' hidden" in body
-    # The tab bar did not displace what the column already held.
+    assert "id='toc-toggle'" in body and ">TOC</button>" in body
+    assert body.index("id='secondary'") < body.index("id='toc-toggle'") \
+        < body.index("</aside>")
+    assert re.search(r"</aside>\s*<div id='primary'", body)
+    assert "id='panel-contents' hidden" in body and "id='side-hide'" in body and "id='side-show'" in body
+    assert "id='side-tabs'" not in body
+    # The switch did not displace what the column already held.
     assert "id='map-pane' hidden" in body and "id='stack'" in body
 
 
@@ -1159,7 +1165,7 @@ def test_the_atlas_keeps_its_own_column(server):
     _toc(root)
     body = get(base + "/atlas")
     assert "id='secondary'" in body
-    assert "id='side-tabs'" not in body
+    assert "id='toc-toggle'" not in body and "id='side-hide'" not in body
 
 
 # --------------------------------------------------- the footnote popup
@@ -1177,10 +1183,12 @@ def test_the_page_loads_the_note_popup_after_hover(server):
 def test_hover_publishes_the_placement_it_shares(server):
     """One piece of viewport arithmetic for the two things that float beside a
     link in this text. It takes its target as an argument for that reason — a
-    version closing over its own box could not be shared."""
+    version closing over its own box could not be shared. And one grace period,
+    so a note and a preview wait the same time for the pointer to arrive."""
     src = (JS / "hover.js").read_text(encoding="utf-8")
-    assert "window.CARDS = {get, place}" in src
+    assert "window.CARDS = {get, place, GRACE_MS}" in src
     assert "function place(a, el)" in src
+    assert "window.CARDS.GRACE_MS" in (JS / "notes.js").read_text(encoding="utf-8")
 
 
 def test_the_note_popup_reads_the_foot_and_fetches_nothing(server):
@@ -1233,15 +1241,19 @@ def test_the_jump_row_is_ruled_off_and_sits_left(server):
     assert "text-align" not in row, "the block's own left edge, not an alignment"
 
 
-def test_the_note_popup_is_a_place_and_the_preview_is_not(server):
-    """`pointer-events:none` is what keeps the preview a look. A kept note holds
-    entity links of its own and has to be clickable, which is why the popup
-    needs its own class rather than borrowing `.preview`."""
+def test_the_note_popup_and_the_preview_can_both_be_reached(server):
+    """A kept note and a preview both hold links of their own, and a link the
+    pointer cannot reach is one offered and taken back. The preview also needs
+    `hover.js` to keep it open across the gap from its link."""
     css = CSS.read_text(encoding="utf-8")
-    pop = css.split(".card.notepop{")[1].split("}")[0]
-    assert "pointer-events:none" not in pop
-    prev = css.split(".card.preview{")[1].split("}")[0]
-    assert "pointer-events:none" in prev
+    for sel in (".card.notepop{", ".card.preview{"):
+        assert "pointer-events:none" not in css.split(sel)[1].split("}")[0], sel
+    src = (JS / "hover.js").read_text(encoding="utf-8")
+    assert "GRACE_MS" in src and "box.contains(ev.target)" in src
+    # On touch the first tap previews: it has to be held before every
+    # document-level click handler, which only a capture on `window` is.
+    assert "ev.pointerType === 'touch'" in src
+    assert "window.addEventListener('click'" in src and "stopPropagation" in src
 
 
 def test_the_served_page_holds_what_the_popup_reaches_for(server):

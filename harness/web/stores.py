@@ -232,6 +232,27 @@ def folio_index(root: Path) -> dict:
 
 
 @lru_cache(maxsize=MAXSIZE)
+def _heading_urls(root: str, _key: bytes) -> dict[str, str]:
+    r = Path(root)
+    among, marks = runs(r), heads(r)
+    out = {}
+    for toc_id, occ in marks.items():
+        if len(occ) != 1:
+            continue
+        place = apparatus.locate(r, toc_id=toc_id, index={}, among=among, heads=marks)
+        if place.get("url"):
+            out[toc_id] = place["url"] + (f"#{place['anchor']}" if place["anchor"] else "")
+    return out
+
+
+def heading_urls(root: Path) -> dict[str, str]:
+    """`{toc id: url#anchor}` for every heading the text opens exactly once —
+    where `apparatus.locate` would send a ToC link, resolved ahead of time
+    because the contents panel asks it of all 316 entries on every page."""
+    return _heading_urls(str(root), stamp(_runs_files(root)))
+
+
+@lru_cache(maxsize=MAXSIZE)
 def _midline(root: str, _key: bytes) -> dict:
     from ..detectors import midline_forms
     return midline_forms(Path(root))

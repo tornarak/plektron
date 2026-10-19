@@ -172,6 +172,24 @@ def client(tmp_path):
     return make
 
 
+def test_the_contents_links_a_heading_into_its_chapter(tmp_path, client):
+    """A ToC row links to the heading itself, inside the run that holds it, and
+    needs no folio witness to: neither page here prints a folio the index knows,
+    and before this the row was no link at all."""
+    root = tmp_path
+    root.joinpath("edition").mkdir(parents=True, exist_ok=True)
+    root.joinpath("edition", "toc.json").write_text(json.dumps({"entries": [
+        {"level": 1, "chapter": "I", "number": "I", "title": "One",
+         "page_start": 10, "id": "chI"},
+        {"level": 2, "chapter": "I", "title": "Names", "page_start": 11,
+         "id": "chI.1"}]}), encoding="utf-8")
+    page(root, "1-003", '<pb/><milestone unit="chapter" n="chI" resp="#mz"/><p>a</p>')
+    page(root, "1-004", '<pb/><milestone unit="section" n="chI.1" resp="#mz"/><p>b</p>')
+    body = client().get("/edition/run/chI").text
+    assert "href='/edition/run/chI#chI.1'" in body
+    assert "href='/edition/run/chI#chI'" in body
+
+
 def test_a_leaf_redirects_into_its_chapter(tmp_path, client):
     _toc(tmp_path, "chI")
     page(tmp_path, "1-003", _opens("chI"))

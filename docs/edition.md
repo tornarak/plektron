@@ -1610,13 +1610,15 @@ in two shapes, the second arriving as a jolt at the moment of clicking. And the
 row sits left, with the note's text: the popup is `width:max-content`, so a row
 set against its right edge lands somewhere different for every note.
 
-**Unlike the hover preview it is not `pointer-events:none`.** A preview answers
-"is this the one I mean?" before a click and must never eat the click; a kept note
-is something you *read*, and a note routinely holds an entity link of its own. So
-the popup is a place, and the price is the guard in the outside-click handler,
+**A kept note is a place.** It is something you *read*, and a note routinely
+holds an entity link of its own, so the price is the guard in the outside-click handler,
 which spares clicks landing inside it. `hover.js` publishes its `place` on
 `window.CARDS` so the two things that float beside a link in this text are put
 there by one piece of arithmetic.
+
+A hovered note can be reached the way the preview can: leaving the marker starts
+the same `GRACE_MS`, published on `window.CARDS`, and the pointer arriving in the
+note — or in a preview floated off one of its links — cancels it.
 
 A kept note follows its marker as the page scrolls and goes when the marker
 leaves the window: it is `position:fixed`, and `place` would otherwise peg it to
@@ -1764,12 +1766,18 @@ and this adds no second one.
 
 A floating preview used to be argued against here, and the argument was that a
 tooltip which vanishes is no substitute for a stack. It is not, and the preview
-does not try to be one: it never replaces the click, it holds nothing the card
-would not, and it is `pointer-events:none` — the click lands on the link
-underneath, and nothing can be *done* in a preview. It answers the question you
-have *before* clicking — is this the one I mean? — and the stack answers
-everything after. Being pointer-inert is also what stops a preview opening a
-preview, which is why it loads safely on a page that is itself a card.
+does not try to be one: it never replaces the click on the link, and it holds
+nothing the card would not. It answers the question you have *before* clicking —
+is this the one I mean? — and the stack answers everything after.
+
+**The preview can be reached**, because its own links are what a reader wants
+from it. Leaving the link starts a grace period (`GRACE_MS`), entering
+the preview cancels it, and a click inside lands on what was clicked. A link inside
+a preview opens no preview of its own — one float at a time — which is what keeps
+it safe on a page that is itself a card. **On touch the first tap is the hover**:
+it shows the preview and is swallowed, and a second tap on the same link is the
+click. Which it was is read off each tap's `pointerType`, not a media query, since
+a touch-screen laptop has a mouse too.
 
 **That fragment deliberately carries no map**, which is why an entity's page
 composes the entry and the pane rather than putting the map inside the card.

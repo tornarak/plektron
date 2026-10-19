@@ -17,6 +17,11 @@ if(localStorage.getItem('edition-cols-reversed'))
    reader view are deliberate enough to survive the browser closing. */
 if(sessionStorage.getItem('edition-side')==='contents')
      document.documentElement.classList.add('side-contents');
+/* The fringes' choice, for the same reason: a column put away and drawn
+   before this ran would flash open on every page. */
+var s=sessionStorage.getItem('edition-sidebar');
+if(s==='open'||s==='closed')
+     document.documentElement.classList.add(s==='open'?'side-open':'side-dismissed');
 /* The theme belongs here for the same reason and more sharply: applied after
    the stylesheet, a stored choice would paint the system's theme first and
    flip it, which is a white flash on every page load for a dark reader. No

@@ -1,9 +1,9 @@
-{# The reading sidebar, whole: two tabs over one scrolling column.
+{# The reading sidebar, whole: two panels over one scrolling column.
 
    **One partial because four views hold it.** The page, a run, an exempt leaf
    and a card page each used to write their own `<aside>`, which was survivable
-   while the column held one thing and is not now that it holds a tab bar, two
-   panels and an idle rule that has to agree with the stylesheet's.
+   while the column held one thing and is not now that it holds a switch, two
+   panels, a fringe and an idle rule that has to agree with the stylesheet's.
 
    **entities is a name for what the column already was**, not a rebuild of it:
    the map pane above, the card stack below, `edition.js` untouched. The pane
@@ -12,31 +12,49 @@
    surfaced, pinned and deleted like one.
 
    **The column still collapses when it is idle** — no cards, the pane shut, and
-   the contents tab not asked for. A tab bar is furniture and furniture is not a
-   reason to hold a column open across a book nobody has clicked anything in;
-   the third condition is `.side-contents` on `<html>`, set before first paint by
-   the head script so the column does not appear and jump on every page load.
-   The stylesheet's rule is the one that must agree with this comment.
+   the contents not asked for; the third condition is `.side-contents` on
+   `<html>`, set before first paint by the head script so the column does not
+   appear and jump on every page load. **The fringes override both ways**:
+   `.side-dismissed` hides the column whatever it holds, `.side-open` holds it
+   open however empty, each remembered for the sitting and set before first
+   paint by the same head script. The stylesheet's rule is the one that must
+   agree with this comment.
 
    `pane` and `map` are two routes' names for one fact — the page view sets the
    first and asks for an empty pane the first click fills, the entity route sets
    the second and arrives with the geography already drawn. #}
+{# **The fringes show and hide the column.** This one stands at the window's edge
+   while the column is away, collapsed or hidden, and brings it back. It comes
+   *before* the aside because the layout's idle rule is `#secondary + #primary`
+   and nothing may come between those two. #}
+<button id='side-show' type='button' title='Show the sidebar'
+        aria-label='Show the sidebar'></button>
 <aside id='secondary'>
-  {# Not `role='tablist'`. The panels are a stack of cards and a list of links,
-     both of which a reader tabs *into*; the widget role would take the arrow
-     keys off them and hand them to the two buttons, which is the wrong trade in
-     a column whose whole content is focusable. Two buttons and a live region
-     say what this is without claiming a keyboard contract it does not keep. #}
-  <nav id='side-tabs' aria-label='sidebar'>
-    <button class='tab on' data-panel='entities'>entities</button>
-    <button class='tab' data-panel='contents'>contents</button>
-  </nav>
-  <div id='panel-entities'>
-    {% if pane | default(false) or map | default(false) %}{%
-      include "edition/_pane.html" %}{% endif %}
-    <div id='stack'></div>
+  {# And this one puts the column away: a full-height strip on its inner edge,
+     beside the text. First in the source, and the column's writing direction is
+     what puts it on the inner edge and the scrollbar on the outer one, whichever
+     side the column is on — the stylesheet has the rule. #}
+  <button id='side-hide' type='button' title='Hide the sidebar'
+          aria-label='Hide the sidebar'></button>
+  {# **Partitioned vertically**: the panels scroll in the upper part and the
+     switch has the bottom to itself, so it never covers the last rows. #}
+  <div id='side-col'>
+    <div id='side-body'>
+      <div id='panel-entities'>
+        {% if pane | default(false) or map | default(false) %}{%
+          include "edition/_pane.html" %}{% endif %}
+        <div id='stack'></div>
+      </div>
+      {% if toc_panel %}
+      <div id='panel-contents' hidden>{% include "edition/_toc_panel.html" %}</div>
+      {% endif %}
+    </div>
+    {% if toc_panel %}
+    {# **The column's foot, the full width of it**: "TOC" lays the contents over
+       the cards, which stay in the stack beneath, and "cancel" takes them off
+       again. #}
+    <button id='toc-toggle' type='button' aria-controls='panel-contents'
+            aria-expanded='false'>TOC</button>
+    {% endif %}
   </div>
-  {% if toc_panel %}
-  <div id='panel-contents' hidden>{% include "edition/_toc_panel.html" %}</div>
-  {% endif %}
 </aside>

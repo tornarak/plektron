@@ -469,6 +469,7 @@ def _run_leaves(run: dict, root: Path) -> list[dict]:
     # own leaf — so it is computed once for the run and handed down, never
     # recomputed per entry in a template.
     by_plate = (stores.by_plate(root, run) if kind == "loi" else {})
+    headings = stores.heading_urls(root) if kind == "toc" else {}
     entries_by_ref: dict[str, list] = {}
     for e in store["entries"]:
         if e.get("ref"):
@@ -499,7 +500,7 @@ def _run_leaves(run: dict, root: Path) -> list[dict]:
             "printed_folio": by_ref.get(ref, ""),
             "folio_anchor": apparatus.anchor("folio", folio) if folio else "",
             "editor": ui.leaf_source(ref, root)[1] == "ed",
-            "entries": [_decorate(e, kind, root, index, by_authority, by_plate)
+            "entries": [_decorate(e, kind, root, index, by_authority, by_plate, headings)
                         for e in entries_by_ref.get(ref, [])],
         }
 
@@ -549,11 +550,14 @@ def _folio_url(folio, index: dict) -> str:
 
 
 def _decorate(entry: dict, kind: str, root: Path, index: dict,
-              by_authority: dict, by_plate: dict) -> dict:
+              by_authority: dict, by_plate: dict,
+              headings: dict | None = None) -> dict:
     """One apparatus entry, plus the links the other stores can supply for it.
 
     Every link here is a store answering a question the printed list poses, and
     each is omitted rather than guessed where the store cannot answer.
+    `headings` is `stores.heading_urls`, fetched once by a caller decorating a
+    whole list: its key reads every page, and a list is 316 entries.
     """
     e = dict(entry)
     # **A plate's number is not its folio and must not be drawn as one.** The
@@ -583,6 +587,15 @@ def _decorate(entry: dict, kind: str, root: Path, index: dict,
         # the head of the page, which is where the folio link went anyway.
         if e["folio_url"] and e.get("id") and (e.get("level") or 0) in MILESTONE_UNITS:
             e["folio_url"] += f"#{e['id']}"
+        # **The heading itself, where the text opens it**, ahead of the folio.
+        # The folio index places about a third of the book, so a chapter whose
+        # opening folio nothing witnesses had no link at all — and a witnessed
+        # one went through `/folio/{n}`, whose own `#folio-N` replaced this
+        # fragment on the redirect. The milestone is the heading, so the link
+        # lands on it inside whatever run holds it.
+        if headings is None:
+            headings = stores.heading_urls(root)
+        e["folio_url"] = headings.get(e.get("id") or "") or e["folio_url"]
     elif kind == "loi":
         # **One link per printed number, not per entry.** Two entries name
         # several figures at once ("Figs. 214, 215, 216"), and each numeral is a
@@ -648,13 +661,15 @@ def _toc_tree(toc: list[dict], root: Path, index: dict) -> list[dict]:
     the same, and at its own depth it would swallow every chapter after it.
 
     Rows come through `_decorate` like every other apparatus row, so the link rule
-    is written once: live only where the folio index places `page_start`, and
-    where it does not, the title is not a link either.
+    is written once: to the heading where the text opens it, else to the folio
+    where the folio index places `page_start`, and where neither does, the title
+    is not a link either.
     """
     roots: list[dict] = []
     stack: list[tuple[int, dict]] = []
+    headings = stores.heading_urls(root)
     for e in toc:
-        node = {**_decorate(e, "toc", root, index, {}, {}),
+        node = {**_decorate(e, "toc", root, index, {}, {}, headings),
                 "depth": max(e.get("level") or 0, 1), "children": []}
         while stack and stack[-1][0] >= node["depth"]:
             stack.pop()

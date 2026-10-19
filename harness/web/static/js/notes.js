@@ -30,11 +30,9 @@
  * it does, and it says the note continues down there even in the look that
  * cannot reach it.
  *
- * **Unlike the hover preview this is not `pointer-events:none`.** A preview
- * answers "is this the one I mean?" before a click and must never eat the click;
- * a kept note is something you read, and a note routinely holds an entity link
- * and a figure reference of its own. So the popup is a place, and the price of
- * that is the guard in the outside-click handler.
+ * **A kept note is a place.** It is something you read, and a note routinely
+ * holds an entity link and a figure reference of its own, so the price is the
+ * guard in the outside-click handler.
  */
 (function () {
   const FOOT = document.getElementById('foot');
@@ -42,10 +40,11 @@
 
   const DWELL_MS = 180;       // a marker is 7px wide; crossing one must not flash
 
-  let box = null, link = null, pinned = false, tShow = 0;
+  let box = null, link = null, pinned = false, tShow = 0, tHide = 0;
 
   function hide() {
-    clearTimeout(tShow);
+    clearTimeout(tShow); clearTimeout(tHide);
+    tHide = 0;
     if (box) { box.remove(); box = null; }
     if (link) link.classList.remove('open');
     link = null;
@@ -97,15 +96,28 @@
     return true;
   }
 
+  /* A hovered note can be reached, as the preview can and for its reason: it
+     holds links. Leaving the marker starts `hover.js`'s grace period, and the
+     pointer arriving in the note cancels it. */
+  function keep() { clearTimeout(tHide); tHide = 0; }
+  function linger() {
+    clearTimeout(tShow);
+    if (box && !tHide) tHide = setTimeout(hide, window.CARDS.GRACE_MS);
+  }
+
   document.addEventListener('mouseover', ev => {
-    const a = ev.target.closest('a.noteref');
     /* A kept note is not disturbed by the pointer. That is what keeping it
        means: hovering the next marker along must not throw away the note you
        clicked to hold on to. */
     if (pinned) return;
-    if (!a) { hide(); return; }   // `hide` clears the pending timer too
-    if (a.closest('.notepop')) return;    // a note citing a note
-    if (a === link) return;
+    /* A preview floated off one of the note's own links counts as the note:
+       reading it must not take away the thing it was opened from. */
+    if (box && (box.contains(ev.target) || ev.target.closest('.card.preview'))) {
+      keep(); clearTimeout(tShow); return;
+    }
+    const a = ev.target.closest('a.noteref');
+    if (!a) { linger(); return; }
+    if (a === link) { keep(); return; }
     hide();
     tShow = setTimeout(() => show(a), DWELL_MS);
   });
@@ -138,7 +150,8 @@
      `position:fixed` and the text moves out from under it. Once the marker has
      left the window there is nothing for it to be beside, and `place` would peg
      it to an edge pointing at nothing — so it goes then too. */
-  document.addEventListener('scroll', () => {
+  document.addEventListener('scroll', ev => {
+    if (box && box.contains(ev.target)) return;   // reading a long note
     if (!pinned) { hide(); return; }
     const r = link.getBoundingClientRect();
     if (r.bottom < 0 || r.top > innerHeight) hide();
