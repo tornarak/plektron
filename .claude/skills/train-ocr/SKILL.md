@@ -86,7 +86,7 @@ polygon that runs up against an inset figure — `1-283` is the standing case �
 dewarped with that figure's ink in it on the raw page and with white in it on
 the blot. `assemble` refuses a page with no blot rather than falling back.
 
-## The store is the target, and two spec sections decide what that means
+## The store is the target, and §2.14 decides what that means
 
 **§2.14 is load-bearing and must not be "fixed".** The store keys printer's
 errors as printed, so a broken sort, a turned letter and a wrong fount are each
@@ -95,15 +95,9 @@ make the text "correct" would hand the model a picture of one glyph labelled as
 another. This is the standing rule for the store anyway; here it also happens to
 be what makes the store trainable.
 
-**§2.15 is the one place the target deliberately differs from the ink**, and it
-is small enough to leave alone. Diacritics are stripped from naturalised English
-loanwords, so the model is shown `créole` and told `creole`. Measured over the
-store: 47 `creole`, 11 `seance`, 11 `role`, 4 `naive` — 73 occurrences against
-30 038 lines, under a quarter of one percent. Left as is, deliberately: §2.15
-*defines the target output*, so training to it is training to the spec, whereas
-a §2.14-style repair would contradict a rule the store is built on. If the first
-run shows the model dropping acutes it should keep, this is the first place to
-look — but do not pre-emptively carve it out.
+**No line's target may differ from its ink.** A pair that shows `créole` and
+says `creole` teaches the model to drop an acute, and acutes are what this book
+is read for.
 
 ## Two silent shrinks, and both have to be checked by hand
 

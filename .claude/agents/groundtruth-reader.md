@@ -325,7 +325,7 @@ telling where; `--out` is for a one-off outside the pass, and is not yours.
     it** — a god, a spirit class, a people, a place — before you key. Collect them
     off the composite and send them **in one call**; each call rebuilds the index,
     and shell operators (`;`, `|`) are refused. Query in the key alphabet
-    (§2.16) or in plain ASCII; the printed form works too. **A miss is a fact
+    (§2.15) or in plain ASCII; the printed form works too. **A miss is a fact
     about the query before it is one about the corpus** — do not carry one
     negative across a word's other occurrences, which is how `3-125` hand-keyed
     a form the store held ten times on six pages. Toponyms are almost always
@@ -821,8 +821,8 @@ ladder, the instruments, what a `note` may claim — is the reader's contract,
   a straight quote is never on the paper. `validate.FORBIDDEN_PROSE` and the
   scoped greps enforce it.
 - **Keying reproduces print**, the book's own errors included (§2.14), with
-  exactly two overrides: spacing (§2.9) and the press's diacritics on English
-  loanwords (§2.15). Pre-reform Russian is keyed as printed (§2.7). A species
+  exactly one override: spacing (§2.9). A diacritic on an English word is
+  keyed as set. Pre-reform Russian is keyed as printed (§2.7). A species
   epithet is keyed as set, never the modern binomial.
   *Attested:* `Oncorhynchus horbusha`, `niarka`.
 - **Two-tier settlement.** SETTLED rows are law, stated flat. PROPOSED rows are
@@ -1083,19 +1083,7 @@ licence and the base is not on it, so `corpus normalize` reports the line before
 any reader's flag has to.
 *Attested:* `1-099` L13 `Kuvár` → `Kuvaˊr`; `3-095` L16 `eˊrmĕčɪn` → `eˊrmečɪn`.
 
-### 2.15 Diacritics on English loanwords — strip them (SETTLED, editor ruling)
-
-**A mark on a common English word is not keyed**: `rôle` → `role`, `naïve` →
-`naive`, `vice versâ` → `vice versa`, `séance` → `seance`. Every such mark is a
-member of `INVENTORY_CHARS` under NFD, so kept it reads as Tier-1 to every
-detector and measurement, corpus-wide; stripped it costs one training pair.
-
-**The test is only whether the word is common or a name.** Whether English also
-sets the word accented does not enter it. A proper name keeps its marks
-(`Nordenskiöld`): the entity store keys on the spelling. Gate: none.
-*Attested:* `2-124` L7 `rôle`; `2-158` L5 `séance`.
-
-### 2.16 The lexicon key — how a ratified form is addressed (SETTLED, derived)
+### 2.15 The lexicon key — how a ratified form is addressed (SETTLED, derived)
 
 **A key is not a spelling and must never be read back as one.** `lexicon lookup`
 prints one beside every ratified form; `{key}` in a reading is replaced by the
