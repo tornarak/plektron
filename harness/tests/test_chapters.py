@@ -291,6 +291,56 @@ def test_a_plate_between_the_halves_moves_above_the_paragraph(tmp_path, client):
     assert _at(body, "leaf-1-004") < body.index("Half of a")
 
 
+def _turn(left: str, right: str, idx: dict) -> tuple[bool, str]:
+    """`_turn_word` over two paragraphs' markup: whether it acted, and the text."""
+    from lxml import html as LH
+
+    from harness.web.edition import _turn_word
+    a, b = LH.fragment_fromstring(left), LH.fragment_fromstring(right)
+    done = _turn_word(a, b, "1-004", idx)
+    return done, a.text_content() + "|" + b.text_content()
+
+
+#: The corpus the rule counts against: `form → (mid-line count, refs setting it)`.
+_IDX = {"considerable": (40, frozenset({"1-010", "1-011"})),
+        "birth-water": (3, frozenset({"1-020"})),
+        "springtime": (6, frozenset({"1-030"})),
+        "spring-time": (6, frozenset({"1-031"}))}
+
+
+def test_a_word_the_page_turn_cut_is_closed_by_the_line_end_rule():
+    """The corpus sets `considerable` mid-line and never `consider-able`."""
+    assert _turn("<p>a very consider-</p>", "<p>able distance.</p>", _IDX) == (
+        True, "a very considerable| distance.")
+
+
+def test_a_compound_the_corpus_sets_hyphenated_keeps_its_hyphen():
+    """`birth-water`: set whole, hyphen and all, with no space in the middle."""
+    assert _turn("<p>the birth-</p>", "<p>water is</p>", _IDX) == (
+        True, "the birth-water| is")
+
+
+def test_a_word_the_corpus_sets_both_ways_keeps_the_hyphen():
+    """The generator's `open` verdict: nothing left to compare, so nothing is
+    removed — the hyphen the print set stays."""
+    assert _turn("<p>in the spring-</p>", "<p>time they</p>", _IDX) == (
+        True, "in the spring-time| they")
+
+
+def test_a_form_bearing_the_notation_is_never_closed():
+    """The firewall's refusal, before any count: `taˊn-` is not English."""
+    idx = {"taˊnñɪtan": (9, frozenset({"1-050"}))}
+    done, text = _turn("<p>called taˊn-</p>", "<p>ñɪtan by</p>", idx)
+    assert "taˊn-ñɪtan" in text
+
+
+def test_a_half_inside_an_element_is_left_alone():
+    """Closing it would move text across an element boundary — a restructuring,
+    and no rule here has the standing to do it."""
+    done, _ = _turn('<p>the <a class="ent">Chuk-</a></p>', "<p>chee are</p>", _IDX)
+    assert not done
+
+
 def test_a_gap_is_never_joined_across(tmp_path, client):
     """Nothing says what an unread leaf's text did, so the paragraph before it
     stays closed."""

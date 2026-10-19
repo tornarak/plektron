@@ -45,6 +45,7 @@ from .. import (
 )
 from .. import edition_ui as ui
 from .. import figures as F
+from ..detectors import resolve_break_hyphens
 from ..entities import ENTITY_CLASSES, alias_index, split_id
 from ..state import MILESTONE_UNITS, load_toc, toc_containing
 from . import Editor, register, stores, templates
@@ -934,7 +935,48 @@ def _blocks(html: str) -> list:
     return list(root)
 
 
-def _chapter_body(leaves: list[dict]) -> str:
+#: The end of a leaf's last paragraph when its last word is cut, and the start of
+#: the next leaf's first, as plain text: the stem with its hyphen, and the rest.
+_CUT_END = re.compile(r"(\S+)-\s*$")
+_CUT_START = re.compile(r"\S+")
+
+
+def _turn_word(open_p, first, ref: str, idx: dict) -> bool:
+    """Close or keep a word the page turn cut, by the line-end rule; True if done.
+
+    **The same rule as a line end inside a page** (`resolve_break_hyphens`): the
+    joined word is offered to the corpus as it stands and with the cut closed, and
+    the spelling ground truth sets mid-line elsewhere wins — `consider-|able`
+    closes, `birth-|water` keeps its hyphen, and a word with both or neither keeps
+    it too, as the generator does before asking. A word bearing the notation is
+    refused outright, for the firewall's reason. Either way the word is set whole
+    and the page mark goes after it, so the mark never splits a word.
+
+    Only where both halves are plain text — the stem the tail of the paragraph's
+    last node, the rest the head of the next paragraph's text. A half inside an
+    element (an entity link) is left as it was, hyphen and space and all: moving
+    text across element boundaries to close a word is a restructuring no rule here
+    has the standing to do.
+    """
+    holder = open_p[-1] if len(open_p) else open_p
+    left = (holder.tail if len(open_p) else holder.text) or ""
+    lm, rm = _CUT_END.search(left), _CUT_START.match(first.text or "")
+    if lm is None or rm is None:
+        return False
+    stem, rest = lm.group(1), rm.group()
+    whole, verdicts = resolve_break_hyphens(f"{stem}-{rest}", [len(stem)], ref, idx)
+    if not verdicts:
+        return False
+    new = left[:lm.start()] + whole
+    if len(open_p):
+        holder.tail = new
+    else:
+        holder.text = new
+    first.text = first.text[rm.end():]
+    return True
+
+
+def _chapter_body(leaves: list[dict], idx: dict | None = None) -> str:
     """The chapter's text as one HTML string, with the leaf breaks closed.
 
     **A paragraph the leaf break cut is one paragraph again.** Whether the next
@@ -988,8 +1030,11 @@ def _chapter_body(leaves: list[dict]) -> str:
             del items[at:]
             items.extend(between)
             items.extend(blocks[:lead])
+            # A word the turn cut is set whole first, so the mark lands after it
+            # rather than between its halves; otherwise the turn is a space.
+            cut = idx is not None and _turn_word(open_p, first, leaf["ref"], idx)
             marked = LH.fragment_fromstring(mark)
-            marked.tail = " " + (first.text or "")
+            marked.tail = ("" if cut else " ") + (first.text or "")
             open_p.append(marked)
             for child in list(first):
                 open_p.append(child)
@@ -1055,7 +1100,7 @@ def _chapter_page(request: Request, run: dict, root: Path):
         request,
         "edition/chapter.html",
         _ctx(request, run=run, leaves=leaves, drafts=drafts, gaps=gaps,
-             body=_chapter_body(leaves),
+             body=_chapter_body(leaves, stores.midline(root)),
              notices=_pooled(leaf["notices"] for leaf in text),
              supplements=_pooled(leaf["supplements"] for leaf in text),
              notes=_pooled_notes(text),

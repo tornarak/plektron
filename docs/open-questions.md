@@ -139,6 +139,15 @@ in for an unread glyph.
   than a top-level body element, so `seam`'s two-sided-edge machinery does not
   reach it, and the pilot set has no attested instance — so it is deliberately
   unresolved rather than built for. The orphan-foot-text comment names no pass.
+- **A word cut by a page turn has no markup either, though this one is attested.**
+  The chapter view joins pages, so `consider-|able` across a leaf break became
+  something a reader meets. TEI's encoding is `<pb break="no"/>` on the second
+  page, and it is a seam fact, so `tei seam` should write it from both committed
+  pages. Until then the reading view decides each word at render time by the
+  line-end rule (`resolve_break_hyphens`). That is a frequency count, re-derived on
+  every render, and a recorded `@break` would outrank it. Waits on `tei seam`
+  gaining the flag and on the collation pass reaching these pages; the coordinator's
+  step that would write it is `/transcribe-page`'s seam step, which says so.
 - **Nothing is collated, and that is now the deliberate state.** `1-021` and
   `1-022` were authored from a plaintext draft under the contract this milestone
   replaced, and were deleted rather than carried forward — a page with no baseline

@@ -231,6 +231,19 @@ def folio_index(root: Path) -> dict:
         _tei_files(root) + _gt_ocr_files(root) + _runs_files(root)))
 
 
+@lru_cache(maxsize=MAXSIZE)
+def _midline(root: str, _key: bytes) -> dict:
+    from ..detectors import midline_forms
+    return midline_forms(Path(root))
+
+
+def midline(root: Path) -> dict:
+    """`detectors.midline_forms`: the spellings ground truth sets away from a line
+    end, which `resolve_break_hyphens` decides a broken word against. A chapter
+    asks it at every page turn that falls inside a word."""
+    return _midline(str(root), stamp(_gt_ocr_files(root)))
+
+
 def folio_by_ref(root: Path) -> dict[str, int]:
     """The folio index inverted — `{ref: folio}` — built once per index.
 

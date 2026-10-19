@@ -1285,7 +1285,13 @@ the paragraph before it is what that leaf already says — `tei_html.page_opens`
 label — and that is the whole test. Whatever stood between the halves, a figure, a
 flag or a plate on a leaf of its own, moves to the top of the joined paragraph:
 `tei generate`'s rule for a figure the prose runs past, one level up. A gap leaf
-never joins, since nothing says what its text did. **The page number is set where
+never joins, since nothing says what its text did. **A word the page turn cut is
+decided by the line-end rule**, `resolve_break_hyphens`, unchanged: offered to the
+corpus closed and as it stands, the spelling ground truth sets mid-line elsewhere
+wins, both-or-neither keeps the hyphen, and a form bearing the notation is refused
+outright. The word is then set whole and the page mark goes after it. A half
+inside an element (an entity link) is left as it was, since closing it would move
+text across an element boundary. **The page number is set where
 the leaf turns, inside the sentence if that is where it turned, and drawn in the
 right margin** — Project Gutenberg's convention — which is why the chapter body is
 assembled in `edition._chapter_body` rather than looped in the template.

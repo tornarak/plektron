@@ -126,6 +126,17 @@ The collating half parallelises; this half does not.
    one page and a `<list>` opening the next — which is precisely the failure a batch
    collated out of order can produce. Let it refuse and re-read that page; do not
    reach for a way around it.
+
+   **A word the page turn cut is not recorded here yet, and it belongs here.** Where
+   a page ends `consider-` and the next opens `able`, the TEI encoding is `<pb
+   break="no"/>` on the second page, and it is a seam fact: one gap, read with both
+   pages open. Both halves are already in the committed TEI, so it needs no witness
+   from the collator. `tei seam` has no flag for it, so until it does the reading
+   view decides each such word at render time by the line-end rule
+   (`resolve_break_hyphens`), closing it where the corpus sets the closed spelling
+   mid-line and keeping the hyphen otherwise. That is a frequency count. A recorded
+   `@break` would outrank it, as `@part` already outranks the zone label for
+   paragraphs. Waits on extending `tei seam`; `docs/open-questions.md` has it.
 5. **`harness tei ledger`** over the run: the folios should be consecutive.
 6. **`harness tei validate PP-NNN ... --all`** last, once the seams are written.
 7. **Commit the batch once**, after the seam sweep. A page committed mid-batch has
