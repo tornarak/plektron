@@ -532,13 +532,22 @@ function lightboxGroup(img) {
        one item carrying both. */
     const mrc = img.closest('.leaf-mrc');
     if (mrc) return lbItems([mrc.querySelector('img:last-child')]);
+    /* **A member is an `a.pic`, never a bare `img`.** A card's body holds the
+       Wikipedia and Wikidata marks beside its picture, and "every img in the
+       box" walked the reader through the logos. The anchor is what makes an
+       image a picture here, so it is what the group counts. */
     const box = img.closest('.card .body') || img.closest('.plates');
-    if (box) return lbItems([...box.querySelectorAll('img')]);
+    if (box) return lbItems(pics(box));
     if (img.closest('.figure')) {
         const page = img.closest('#primary') || document;
-        return lbItems([...page.querySelectorAll('.figure img')]);
+        return lbItems(pics(page, '.figure '));
     }
     return lbItems([img]);
+}
+
+function pics(root, within = '') {
+    return [...root.querySelectorAll(within + 'a.pic')]
+        .map(a => a.querySelector('img:last-child')).filter(Boolean);
 }
 
 function lbItems(imgs) {
