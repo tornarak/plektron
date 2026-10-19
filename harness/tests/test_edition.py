@@ -1246,10 +1246,11 @@ def test_the_note_popup_is_a_place_and_the_preview_is_not(server):
 
 def test_the_served_page_holds_what_the_popup_reaches_for(server):
     """**`notes.js` reads the DOM, so the DOM's shape is its contract.** It finds
-    a note by `li[data-n]`, its numeral by `a[href^="#ref-"]`, and the marker's
-    address by the marker's own `href` — three selectors that would go quietly
-    dead if `page.html` or `tei_html` renamed anything, since a popup that finds
-    nothing looks exactly like a reader who has not hovered."""
+    a note by the id its marker's own `href` names — not by `li[data-n]`, since a
+    chapter's foot holds every leaf's note 1 — and its numeral by
+    `a[href^="#ref-"]`: selectors that would go quietly dead if `page.html` or
+    `tei_html` renamed anything, since a popup that finds nothing looks exactly
+    like a reader who has not hovered."""
     base, root = server
     page(root, "1-060", '<p>x<ref type="note" n="1" resp="#mz">¹</ref></p>'
                         '<note n="1" place="bottom">See Boas.</note>')
@@ -1265,9 +1266,8 @@ def test_the_served_page_holds_what_the_popup_reaches_for(server):
     assert re.search(r"""href=["']#ref-1["']""", body)
 
     src = (JS / "notes.js").read_text(encoding="utf-8")
-    assert 'li[data-n=' in src
+    assert "li[id=" in src and "getAttribute('href')" in src
     assert 'a[href^="#ref-"]' in src
-    assert "dataset.note" in src
 
 
 def test_a_page_with_no_notes_binds_nothing(server):

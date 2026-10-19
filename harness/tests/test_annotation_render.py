@@ -145,14 +145,21 @@ def test_a_section_notice_sits_under_the_marker_a_reader_lands_on(client):
     written to be read.
     """
     root, make = client
+    # A *section*, not the chapter: a page carrying a chapter milestone opens a
+    # chapter run and is served inside it, where notices pool at the head. The
+    # rule here is the single page's.
+    (root / "edition" / "toc.json").write_text(
+        '{"entries": [{"level": 1, "chapter": "I", "title": "One", '
+        '"page_start": 1, "id": "chI"}, {"level": 2, "chapter": "I", '
+        '"title": "Names", "page_start": 3, "id": "chI.1"}]}', encoding="utf-8")
     # `<milestone>` is what `tei_html.el_milestone` turns into the anchor the
     # contents panel links to — a boundary, not a container, carrying no text.
     page(root, "1-023",
-         '<pb n="3"/><milestone unit="chapter" n="chI"/><p>Body.</p>')
-    annotation(root, "notice", "n", attaches=("toc:chI",))
+         '<pb n="3"/><milestone unit="section" n="chI.1"/><p>Body.</p>')
+    annotation(root, "notice", "n", attaches=("toc:chI.1",))
     html = make().get("/edition/page/1-023").text
 
-    marker = max(html.find("id='chI'"), html.find('id="chI"'))
+    marker = max(html.find("id='chI.1'"), html.find('id="chI.1"'))
     notice = html.find("class='ann notice")
     assert marker != -1, "this page must mark the section for the test to mean anything"
     assert notice > marker, "a section's notice belongs under the marker"

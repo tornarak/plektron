@@ -1232,8 +1232,8 @@ names it — so the leaf is one click away on 🗗, exactly as for the other run
 
 ### The anchors, and the chapter pages they are for
 
-A chapter page will be a run too, with its span derived from `toc.json` and the
-folio index rather than declared. **Nothing downstream may care which kind it
+A chapter page is a run too, with its span derived rather than declared (the next
+section). **Nothing downstream may care which kind it
 got**, which is why the addressing was settled before the three renderers were
 written. `apparatus.anchor(kind, key)` mints all of it, one function because the
 template that emits an id and the locator that builds a URL at it live in
@@ -1247,8 +1247,57 @@ different modules and only this stops them drifting:
 
 `apparatus.locate(ref=| folio=| toc_id=)` is the single resolver, and every
 redirect route goes through it: `/edition/page/{ref}`, `/edition/folio/{n}`,
-`/edition/toc/{id}`. So `/edition/toc/chI` works **today**, wherever a witness
-places folio 11, and will keep working unchanged the day chapter I becomes a run.
+`/edition/toc/{id}`. A heading link now resolves through the milestone first —
+the anchor is the heading's own id, inside whichever run holds it — and through
+its folio only where no page has opened it yet.
+
+### Chapter runs: the span is the milestones'
+
+`harness/chapters.py` derives one run per chapter, and **the witness is the
+milestone, not the folio index**. The milestone is already re-derived on every
+`tei generate` from the ToC's `page_start` and the folio the page prints, and it
+answers for all 23 chapters where the folio index answers for about a third of the
+book. A span is then arithmetic over scan indices: from the leaf a chapter's
+milestone stands on to the leaf before the next one's, so a plate or blank between
+them is in the chapter because the binding put it there. The last chapter of a part
+ends at the part's last text leaf, and no chapter crosses a part.
+
+**Read from the page the edition would render, whatever a sitting shows** — the
+signed page, else the draft. Where a chapter is, is a fact about the text; whether
+a reader may see a leaf of it is the view's question, and the view answers it
+leaf by leaf: a leaf it cannot show is a **gap**, said in place with its scan
+linked, never closed over and never a reason to refuse the chapter.
+
+**Nothing is derived past a hole.** An opener missing or found twice leaves that
+chapter underived and the one before it too, since its end is the missing start;
+`edition runs` reports both, and their leaves stay served one at a time. A span
+that guessed its end would put one chapter's text under another's title.
+
+**A leaf with text above the head belongs to both chapters.** Each shows it whole,
+the other chapter's part greyed under a link to it, and the leaf redirects into the
+chapter it opens, which is the one the listing stands it for — redirecting into the
+earlier one sent *next* straight back. Bogoras never does this: every chapter opens
+a fresh leaf, so here the case is held by tests alone.
+
+**A paragraph the leaf break cut is one paragraph again.** Whether a leaf continues
+the paragraph before it is what that leaf already says — `tei_html.page_opens`, off
+`@part` where the seam is written, else the collator's `opens:`, else the keyed zone
+label — and that is the whole test. Whatever stood between the halves, a figure, a
+flag or a plate on a leaf of its own, moves to the top of the joined paragraph:
+`tei generate`'s rule for a figure the prose runs past, one level up. A gap leaf
+never joins, since nothing says what its text did. **The page number is set where
+the leaf turns, inside the sentence if that is where it turned, and drawn in the
+right margin** — Project Gutenberg's convention — which is why the chapter body is
+assembled in `edition._chapter_body` rather than looped in the template.
+
+**Notices, footnotes and supplements are pooled per chapter**: notices once at the
+head, footnotes then supplements at the foot. A section's notice attaches to every
+leaf in the section and pools to one. **Footnotes are grouped by leaf and keep their
+printed numbers** under the page they were printed on. The marker in the text is the
+printed superscript, adjudicated inventory, and the book numbers from 1 on every
+page, so a running number would either rewrite the glyph or have the text say ¹
+where the list says 14. The leaf's ref is folded into each note's ids, which is
+what keeps two note 1s apart in one document.
 
 ### The folio index, and its three witnesses
 

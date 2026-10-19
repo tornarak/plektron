@@ -47,7 +47,8 @@ def register(cli):
     p = action(g, "runs", run_runs, pageable=False,
                help="the page-runs the reading view serves as one document "
                "instead of a leaf at a time — the printed Contents, List of "
-               "Illustrations and Authorities Quoted — plus a census of what "
+               "Illustrations and Authorities Quoted, and each chapter, its span "
+               "derived from the milestones — plus a census of what "
                "every leaf outside the transcription tracks was ruled, and "
                "everything wrong with the declarations. Reads and writes "
                "nothing; exit 1 on a declaration that cannot be true, which is a "

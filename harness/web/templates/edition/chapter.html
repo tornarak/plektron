@@ -1,0 +1,83 @@
+{% extends "edition/base.html" %}
+{% import "edition/_annotations.html" as ann %}
+{% block title %}{{ run.title }} — The Chukchee{% endblock %}
+
+{# `run.html`'s reason: `edition.js` looks both up at load and a missing one
+   throws, taking the arrow keys with it. #}
+{% block btn_extra %}
+    <button id='scan-btn' title='Open Scan in New Tab'>🗗</button>
+    <button id='reader-btn' title='Reader View'>📕</button>
+{% endblock %}
+
+{% macro neighbours() %}
+<nav class='neighbours' aria-label='page'>
+  <span>{% if prev %}<a class='page-prev'
+     href='{{ base }}/page/{{ prev }}'>← {{ prev }}</a>{% endif %}</span>
+  <span class='here'>{{ run.refs | first }} — {{ run.refs | last }}</span>
+  <span>{% if next %}<a class='page-next'
+     href='{{ base }}/page/{{ next }}'>{{ next }} →</a>{% endif %}</span>
+</nav>
+{% endmacro %}
+
+{% block main %}
+{% include "edition/_sidebar.html" %}
+<div id='primary'>
+{{ neighbours() }}
+
+{# Said on the page, for `page.html`'s draft-note reason. Counts rather than a
+   per-leaf banner: a chapter is twenty leaves, and twenty banners would bury the
+   text they are about; each draft leaf is still marked in the margin. #}
+{% if drafts or gaps %}
+<p class='draft-note'>{% if drafts %}<span class='draft-tag'>draft</span>
+{{ drafts }} of {{ leaves | length }} leaves are <code>mz/tei/</code>, built by
+<code>tei generate</code> and read by nobody against the scan; each is marked
+<span class='run-tag'>draft</span> in the margin.{% endif %}
+{% if gaps %}{{ gaps }} leaf/leaves hold no text this sitting can show, and say
+so where they fall.{% endif %}</p>
+{% endif %}
+
+{# Pooled: every notice any leaf of the chapter carries, once, above the text.
+   Below it, the footnotes and then the supplements, the same way. #}
+{{ ann.blocks(notices) }}
+{% if not placed and store_has_toc %}{{ ann.unplaced() }}{% endif %}
+
+{# One text, the leaf breaks closed where a paragraph runs across them and the
+   page marks set inline at the turn — `edition._chapter_body`, which says why
+   the body is assembled there and not looped over here. #}
+<article class='run run-chapter'>
+{{ body | safe }}
+</article>
+
+{# One foot, grouped by the leaf each note was printed on and numbered as
+   printed — `_pooled_notes` says why not renumbered. The group head is the page
+   a reader cites, and links back to where that leaf begins. #}
+{% if notes %}
+<div id='foot'>
+{% for g in notes %}
+<div class='foot-leaf'>
+  <a class='foot-page' href='#leaf-{{ g.ref }}'>{% if g.folio %}p. {{ g.folio
+    }}{% else %}{{ g.ref }}{% endif %}</a>
+  <ol>
+  {% for n in g.notes %}
+  <li id='note-{{ g.ref }}-{{ n.n }}' data-n='{{ n.n }}'><a
+      href='#ref-{{ g.ref }}-{{ n.n }}'>{{ n.n }}</a>
+  {{ n.html | safe }}</li>
+  {% endfor %}
+  </ol>
+</div>
+{% endfor %}
+</div>
+{% endif %}
+{{ ann.blocks(supplements) }}
+
+{{ neighbours() }}
+</div>
+{% endblock %}
+
+{% block page_scripts %}
+<script src="/static/js/sidebar.js"></script>
+<script src="/static/js/hover.js"></script>
+<script src="/static/js/map.js"></script>
+<script src="/static/js/notes.js"></script>
+<script src="/static/js/edition.js"></script>
+{% endblock %}

@@ -23,13 +23,26 @@ from typing import Annotated
 
 from fastapi import APIRouter, HTTPException, Query, Request
 from fastapi.responses import RedirectResponse, Response
+from lxml import html as LH
 from pydantic import BaseModel
 
 # `annots`, not `annotations`: `from __future__ import annotations` above already
 # binds that name at module scope, and the shadowing would be silent until
 # something called a method on the feature object.
 from .. import annotations as annots
-from .. import apparatus, entities, figrefs, geo, ipa, langs, lexicon, pictures, speech, tei_html
+from .. import (
+    apparatus,
+    chapters,
+    entities,
+    figrefs,
+    geo,
+    ipa,
+    langs,
+    lexicon,
+    pictures,
+    speech,
+    tei_html,
+)
 from .. import edition_ui as ui
 from .. import figures as F
 from ..entities import ENTITY_CLASSES, alias_index, split_id
@@ -361,6 +374,18 @@ LEAF_NOTES = {
 }
 
 
+def _plates(ref: str, root) -> list[dict]:
+    """The pictures `gt/fig/` boxes on an exempt leaf, in printed order."""
+    figs = [f for f in stores.fig_layout(ref, root)["figures"]
+            if f["box"] is not None]
+    return [{
+        "n": f["n"],
+        "caption": f["caption"],
+        "crops": [f"{BASE}/fig/{ref}/{F.zone_suffix(z)}.png"
+                  for z in f["zone_ids"]],
+    } for f in F.in_printed_order(figs)]
+
+
 def _exempt_page(request: Request, ref: str, root):
     """A page a human ruled not a text page, shown as what it actually is.
 
@@ -378,14 +403,7 @@ def _exempt_page(request: Request, ref: str, root):
     is looking at; it never manufactures content the stores do not hold.
     """
     kind = tei_html.leaf_kind(ref, root)
-    figs = [f for f in stores.fig_layout(ref, root)["figures"]
-            if f["box"] is not None]
-    plates = [{
-        "n": f["n"],
-        "caption": f["caption"],
-        "crops": [f"{BASE}/fig/{ref}/{F.zone_suffix(z)}.png"
-                  for z in f["zone_ids"]],
-    } for f in F.in_printed_order(figs)]
+    plates = _plates(ref, root)
 
     refs = _listing(request)
     i = refs.index(ref) if ref in refs else -1
@@ -769,7 +787,10 @@ def run_page(request: Request, run_id: str):
     root = _root(request)
     run = next((r for r in stores.runs(root) if r.get("id") == run_id), None)
     if run is None:
-        raise HTTPException(404, f"no run {run_id!r} in edition/runs.json")
+        raise HTTPException(404, f"no run {run_id!r} in edition/runs.json "
+                                 "or among the chapters the text opens")
+    if run.get("kind") == chapters.KIND:
+        return _chapter_page(request, run, root)
     head = ui.norm_ref((run.get("refs") or [""])[0])
     prev, next_ = _neighbours(request, head)
     leaves, tail = _run_leaves(run, root)
@@ -794,6 +815,265 @@ def run_page(request: Request, run_id: str):
                     "size": ui._raster_size(head, root), "crops": {}},
              prev=prev, next=next_),
     )
+
+
+#: A footnote marker as `tei_html` writes it: `<a class="noteref" id="ref-1"
+#: href="#note-1" …>` on a note's first reference, without the id on any later one.
+_NOTEREF = re.compile(r'<a class="noteref"(?: id="ref-([^"]*)")? href="#note-([^"]*)"')
+
+
+def _scope_notes(html: str, ref: str) -> str:
+    """Give one leaf's footnote ids the leaf's ref, so twenty leaves can share a
+    document. Every page numbers its notes from 1, and a chapter page holding two
+    `note-1`s sends every marker to the first. Rewritten on the markup the
+    renderer emitted rather than by teaching `tei_html` about chapters: the page
+    is the TEI's unit, and the chapter is this route's. `chapter.html` writes the
+    foot's ids to match."""
+    def sub(m: re.Match) -> str:
+        back = f' id="ref-{ref}-{m.group(1)}"' if m.group(1) is not None else ""
+        return f'<a class="noteref"{back} href="#note-{ref}-{m.group(2)}"'
+    return _NOTEREF.sub(sub, html)
+
+
+def _split_at(html: str, anchor_id: str) -> tuple[str, str] | None:
+    """`html` cut at the element carrying `id=anchor_id`, or None.
+
+    A milestone renders at the body's top level (`el_milestone`), so cutting
+    immediately before its opening tag leaves both halves balanced."""
+    m = re.search(rf'<\w+[^>]*\bid="{re.escape(anchor_id)}"', html)
+    return (html[:m.start()], html[m.start():]) if m else None
+
+
+def _chapter_leaves(request: Request, run: dict, root: Path) -> list[dict]:
+    """One record per leaf of a chapter, in binding order.
+
+    `kind` is one of three, and each is what the stores say and nothing more:
+
+        text     the leaf's TEI, rendered as `/page/{ref}` renders it
+        exempt   a leaf a human ruled not text — a plate, a blank — with its
+                 pictures, since the binding put it here
+        gap      a leaf the edition holds no readable text for in this sitting.
+                 Said in place, with the scan a click away: a chapter that
+                 refused to render over one missing leaf would hide a hundred
+                 good ones, and one that closed the gap silently would read as
+                 continuous text that is not.
+
+    On a leaf the chapter shares with a neighbour, `other` is the part that
+    belongs to the neighbour, kept to be greyed and linked rather than cut: the
+    reader sees where the page they are on came from or goes to.
+    """
+    refs = [ui.norm_ref(r) for r in run["refs"]]
+    every = stores.runs(root)
+    chs = [r for r in every if r.get("kind") == chapters.KIND]
+    at = next(i for i, r in enumerate(chs) if r["id"] == run["id"])
+    prev_ch = chs[at - 1] if run.get("head_shared") and at > 0 else None
+    next_ch = chs[at + 1] if run.get("tail_shared") and at + 1 < len(chs) else None
+    index = stores.folio_index(root)
+    exempt = set(stores.exempt(root))
+    out = []
+    for k, ref in enumerate(refs):
+        rec = {"ref": ref, "anchor": apparatus.anchor("leaf", ref),
+               "scan": f"{BASE}/page/{ref}.png", "page_url": f"{BASE}/page/{ref}",
+               "rank": ""}
+        path, rank = tei_html.page_source(ref, root)
+        if path is not None and (rank == "collated" or _drafts(request)):
+            leaf = _leaf_doc(path, ref, root, place=False)
+            doc = dict(leaf["doc"])
+            doc["html"] = _scope_notes(doc["html"], ref)
+            rec.update(kind="text", rank=rank, **{**leaf, "doc": doc})
+            folio = apparatus._as_folio(doc.get("folio")) or apparatus.folio_of(ref, index)
+            rec["before"] = rec["after"] = rec["other_url"] = rec["other_title"] = ""
+            if k == 0 and prev_ch is not None:
+                cut = _split_at(doc["html"], run["toc_id"])
+                if cut:
+                    rec["before"], doc["html"] = cut
+                    rec["other_url"] = f"{BASE}/run/{prev_ch['id']}#{rec['anchor']}"
+                    rec["other_title"] = prev_ch["title"]
+            if k == len(refs) - 1 and next_ch is not None:
+                cut = _split_at(doc["html"], next_ch["toc_id"])
+                if cut:
+                    doc["html"], rec["after"] = cut
+                    rec["other_url"] = f"{BASE}/run/{next_ch['id']}#{next_ch['toc_id']}"
+                    rec["other_title"] = next_ch["title"]
+        elif path is None and ref in exempt:
+            rec.update(kind="exempt", leaf_kind=tei_html.leaf_kind(ref, root),
+                       plates=_plates(ref, root))
+            folio = apparatus.folio_of(ref, index)
+        else:
+            rec.update(kind="gap", why=(
+                "a machine draft, which this sitting does not show — "
+                "`edition serve --drafts` does" if rank == "draft"
+                else "no transcription yet"))
+            folio = apparatus.folio_of(ref, index)
+        rec["folio"] = folio
+        rec["folio_anchor"] = apparatus.anchor("folio", folio) if folio else ""
+        out.append(rec)
+    return out
+
+
+def _chapter_macro():
+    """The chapter's piece macros, reached as a module for `_ann_macro`'s reason."""
+    return templates.env.get_template("edition/_chapter.html").module
+
+
+#: Top-level blocks that may stand between the two halves of a paragraph the leaf
+#: break cut: a figure, an editorial flag, an annotation. Anything else there — a
+#: heading, a quotation, a table — is a break of its own, and nothing is joined.
+_FLOAT_TAGS = {"figure", "aside"}
+
+
+def _is_float(el) -> bool:
+    return (el.tag in _FLOAT_TAGS
+            or (el.tag == "span" and "flag" in (el.get("class") or "").split()))
+
+
+def _blocks(html: str) -> list:
+    """A rendered leaf's top-level elements. Its leading whitespace goes; a page
+    never opens on bare text, `tei_html` wrapping everything it emits."""
+    root = LH.fragment_fromstring(html or "<div></div>", create_parent="div")
+    return list(root)
+
+
+def _chapter_body(leaves: list[dict]) -> str:
+    """The chapter's text as one HTML string, with the leaf breaks closed.
+
+    **A paragraph the leaf break cut is one paragraph again.** Whether the next
+    leaf continues it is what that leaf already says — `tei_html.page_opens`,
+    off `@part` where the seam is written, else the collator's `opens:`, else
+    the keyed zone label — and is carried as `opens-continued` on its first
+    paragraph. That is the whole test; nothing here judges a sentence end.
+
+    **Where the two halves are joined, the page mark goes inside the paragraph**,
+    exactly where the leaf turned, and the stylesheet draws it in the margin:
+    Project Gutenberg's convention, and the reason the body is built here rather
+    than looped over in the template.
+
+    **What stood between the halves moves to the top of the joined paragraph** —
+    a figure, a flag, a plate on a leaf of its own. That is `tei generate`'s rule
+    for a figure the prose runs past, for its reasons, applied one level up. A
+    gap leaf never joins: nothing says what its text would have done.
+    """
+    m = _chapter_macro()
+    items: list = []          # lxml elements, or strings for macro output
+    #: The previous text leaf's last paragraph, while it may still be continued:
+    #: only floats and plates have been appended since.
+    open_p = None
+    for leaf in leaves:
+        mark = str(m.leafmark(leaf))
+        if leaf["kind"] == "exempt":
+            items.append(str(m.exempt(leaf)))
+            continue
+        if leaf["kind"] == "gap":
+            items.append(str(m.gap(leaf)))
+            open_p = None
+            continue
+        if not leaf["doc"].get("ok"):
+            items.append(str(m.broken(leaf)))
+            open_p = None
+            continue
+        if leaf.get("before"):
+            items.append(str(m.other(leaf["before"], leaf, "before")))
+        blocks = _blocks(leaf["doc"]["html"])
+        lead = 0
+        while lead < len(blocks) and _is_float(blocks[lead]):
+            lead += 1
+        first = blocks[lead] if lead < len(blocks) else None
+        continues = (open_p is not None and first is not None and first.tag == "p"
+                     and "opens-continued" in (first.get("class") or "").split())
+        if continues:
+            # The floats at the head of this leaf join everything else that came
+            # between, above the paragraph: out of `items` and back in after it.
+            at = items.index(open_p)
+            between = items[at + 1:]
+            del items[at:]
+            items.extend(between)
+            items.extend(blocks[:lead])
+            marked = LH.fragment_fromstring(mark)
+            marked.tail = " " + (first.text or "")
+            open_p.append(marked)
+            for child in list(first):
+                open_p.append(child)
+            items.append(open_p)
+            rest = blocks[lead + 1:]
+        else:
+            items.append(mark)
+            rest = blocks
+        items.extend(rest)
+        last = next((i for i in range(len(items) - 1, -1, -1)
+                     if not (not isinstance(items[i], str) and _is_float(items[i]))),
+                    None)
+        open_p = (items[last] if last is not None and not isinstance(items[last], str)
+                  and items[last].tag == "p" else None)
+        if leaf.get("after"):
+            items.append(str(m.other(leaf["after"], leaf, "after")))
+            open_p = None
+    return "".join(i if isinstance(i, str) else LH.tostring(i, encoding="unicode")
+                   for i in items)
+
+
+def _pooled(per_leaf) -> list[dict]:
+    """One list of annotation blocks out of many leaves', each block once.
+
+    A notice attached to a ToC section attaches to every leaf in it, so twenty
+    leaves of one section hand over the same block twenty times; the chapter
+    shows it once, where the first leaf carrying it put it in the order."""
+    seen, out = set(), []
+    for blocks in per_leaf:
+        for b in blocks:
+            if b["id"] not in seen:
+                seen.add(b["id"])
+                out.append(b)
+    return out
+
+
+def _pooled_notes(leaves: list[dict]) -> list[dict]:
+    """The chapter's footnotes, one group per leaf that has any, in binding order.
+
+    **Grouped and not renumbered.** The marker in the text is the printed
+    superscript itself — inventory the ground-truth pass adjudicated — and the
+    book numbers its notes from 1 on every page. A running number would either
+    rewrite that glyph or have the text say ¹ while the list says 14. So the
+    group carries the page the reader cites, the printed folio where one is
+    known and the scan ref where not, and the note keeps the number it was
+    printed with; the leaf-scoped ids (`_scope_notes`) keep two note 1s apart.
+    """
+    return [{"ref": leaf["ref"], "folio": leaf["folio"], "notes": leaf["doc"]["notes"]}
+            for leaf in leaves if leaf["doc"].get("notes")]
+
+
+def _chapter_page(request: Request, run: dict, root: Path):
+    """A chapter, served whole: its leaves in binding order, each as it renders
+    alone, with the leaf break kept as a mark in the margin. The listing and the
+    neighbours treat it as the leaf it opens on, as they do every run."""
+    leaves = _chapter_leaves(request, run, root)
+    head = leaves[0]["ref"]
+    prev, next_ = _neighbours(request, head)
+    drafts = sum(1 for leaf in leaves if leaf.get("rank") == "draft")
+    gaps = sum(1 for leaf in leaves if leaf["kind"] == "gap")
+    text = [leaf for leaf in leaves if leaf["kind"] == "text" and leaf["doc"].get("ok")]
+    return templates.TemplateResponse(
+        request,
+        "edition/chapter.html",
+        _ctx(request, run=run, leaves=leaves, drafts=drafts, gaps=gaps,
+             body=_chapter_body(leaves),
+             notices=_pooled(leaf["notices"] for leaf in text),
+             supplements=_pooled(leaf["supplements"] for leaf in text),
+             notes=_pooled_notes(text),
+             placed=all(leaf["placed"] for leaf in text),
+             store_has_toc=any(leaf["store_has_toc"] for leaf in text),
+             here=run["title"], pane=True,
+             toc_panel=_toc_panel(root, [leaf["folio"] for leaf in leaves]),
+             state={"base": BASE, "ref": head,
+                    "leaves": [leaf["ref"] for leaf in leaves],
+                    "size": ui._raster_size(head, root), "crops": {}},
+             prev=prev, next=next_),
+    )
+
+
+def _located(root: Path) -> dict:
+    """The cached runs and heading index `apparatus.locate` would otherwise derive
+    per call — and a refusal places every row of its `nearest` list."""
+    return {"among": stores.runs(root), "heads": stores.heads(root)}
 
 
 def _resolved(out: dict) -> RedirectResponse | None:
@@ -826,7 +1106,8 @@ def _refusal(request: Request, out: dict, asked: str):
 def folio(request: Request, n: int):
     """A printed folio, resolved to wherever the corpus says it is."""
     root = _root(request)
-    out = apparatus.locate(root, folio=n, index=stores.folio_index(root))
+    out = apparatus.locate(root, folio=n, index=stores.folio_index(root),
+                           **_located(root))
     return _resolved(out) or _refusal(request, out, f"folio {n}")
 
 
@@ -850,7 +1131,7 @@ def chapter(request: Request, roman: str):
     if entry is None:
         return _refusal(request, {"nearest": []}, f"Chapter {roman}")
     out = apparatus.locate(root, toc_id=entry["id"],
-                           index=stores.folio_index(root))
+                           index=stores.folio_index(root), **_located(root))
     return _resolved(out) or _refusal(request, out, f"Chapter {roman}")
 
 
@@ -864,7 +1145,8 @@ def toc_entry(request: Request, toc_id: str):
     becomes a run with a page of its own.
     """
     root = _root(request)
-    out = apparatus.locate(root, toc_id=toc_id, index=stores.folio_index(root))
+    out = apparatus.locate(root, toc_id=toc_id, index=stores.folio_index(root),
+                           **_located(root))
     return _resolved(out) or _refusal(request, out, f"heading {toc_id}")
 
 
@@ -936,7 +1218,8 @@ def page(request: Request, ref: str):
             + ("; a generated draft exists — `edition serve --drafts` shows it."
                if rank == "draft" else "."),
         )
-    doc = stores.render(path, root)
+    leaf = _leaf_doc(path, ref, root)
+    doc = leaf["doc"]
     refs = _listing(request)
     i = refs.index(ref) if ref in refs else -1
     # `PP-NNN (folio)`, both systems at once, because neither is derivable from
@@ -948,6 +1231,38 @@ def page(request: Request, ref: str):
     # `crops` is the scan card's and stays; the figure join is no longer part of
     # the payload at all, because nothing on the client reads it any more.
     state = {"base": BASE, "ref": ref, "size": size, "crops": {}}
+    return templates.TemplateResponse(
+        request,
+        "edition/page.html",
+        _ctx(
+            request,
+            ref=ref,
+            doc=doc,
+            here=here,
+            state=state,
+            rank=rank,
+            pane=True,
+            notices=leaf["notices"],
+            supplements=leaf["supplements"],
+            placed=leaf["placed"],
+            store_has_toc=leaf["store_has_toc"],
+            toc_panel=_toc_panel(root, [doc.get("folio")]),
+            prev=refs[i - 1] if i > 0 else "",
+            next=refs[i + 1] if 0 <= i < len(refs) - 1 else "",
+        ),
+    )
+
+
+def _leaf_doc(path: Path, ref: str, root: Path, place: bool = True) -> dict:
+    """One text leaf, rendered and joined: what `/page/{ref}` shows, and what a
+    chapter shows for each of its text leaves — one function, so the two cannot
+    drift into showing one page two ways.
+
+    Returns `{doc, notices, supplements, placed, store_has_toc}`. `place=False`
+    leaves every notice in `notices` rather than splicing a section's under its
+    marker: a chapter pools them at its head instead.
+    """
+    doc = stores.render(path, root)
     doc = _hang_pictures(doc, _figures(ref, root, doc), figref_rows(doc, root))
     # **The folio is resolved here and handed down**, never looked up inside
     # `annotations.for_page`. Placing a leaf in a section runs `ref → folio →
@@ -964,28 +1279,13 @@ def page(request: Request, ref: str):
     ann_store = stores.annotations(root)
     anns = annots.for_page(ann_store, ref, toc_containing(load_toc(root), folio))
     store = stores.load(root)
-    doc, notices = _place_notices(
-        doc, ui.annotation_blocks(anns["top"], store))
-    return templates.TemplateResponse(
-        request,
-        "edition/page.html",
-        _ctx(
-            request,
-            ref=ref,
-            doc=doc,
-            here=here,
-            state=state,
-            rank=rank,
-            pane=True,
-            notices=notices,
-            supplements=ui.annotation_blocks(anns["bottom"], store),
-            placed=folio is not None,
-            store_has_toc=annots.has_toc_attachments(ann_store),
-            toc_panel=_toc_panel(root, [doc.get("folio")]),
-            prev=refs[i - 1] if i > 0 else "",
-            next=refs[i + 1] if 0 <= i < len(refs) - 1 else "",
-        ),
-    )
+    notices = ui.annotation_blocks(anns["top"], store)
+    if place:
+        doc, notices = _place_notices(doc, notices)
+    return {"doc": doc, "notices": notices,
+            "supplements": ui.annotation_blocks(anns["bottom"], store),
+            "placed": folio is not None,
+            "store_has_toc": annots.has_toc_attachments(ann_store)}
 
 
 # -------------------------------------------------------------- the entities
@@ -1271,7 +1571,7 @@ def _attached_rows(rec: dict, root: Path) -> list[dict]:
             entry = toc.get(t["value"])
             label = entry["title"] if entry else t["value"]
             try:
-                where = apparatus.locate(root, toc_id=t["value"])
+                where = apparatus.locate(root, toc_id=t["value"], **_located(root))
             except Exception:
                 where = None
             ref = (where or {}).get("ref")

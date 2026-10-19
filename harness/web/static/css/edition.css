@@ -777,6 +777,29 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
   text-decoration:none; opacity:.65 }
 .run .leaf-mark:hover { opacity:1; color:var(--fg) }
 .run .leaf-mark .run-tag { margin-left:.2em; font-size:.85em; opacity:.8 }
+/* --- a chapter: its leaves as one text --- */
+/* The page number, Project Gutenberg's way: the mark sits inline exactly where
+   the leaf turns, often mid-sentence, and is drawn in the right margin. Absolute
+   with no `top`, so it keeps the vertical position of the line it is on — the
+   reader sees which line the page turned at without the text being broken. */
+.run-chapter { position:relative }
+.run-chapter .leaf-mark { position:absolute; left:auto; right:-4.2rem;
+  width:3.6rem; text-align:left; text-indent:0; font-style:normal;
+  font-weight:normal; letter-spacing:0; font-variant:normal }
+.leaf-exempt { margin:1rem 0 }
+.leaf-gap { font-family:system-ui,sans-serif; font-size:.85rem; color:var(--dim) }
+/* The pooled foot: a chapter's notes grouped under the page each was printed
+   on, numbered as printed. The page is the group's head and a link back to it. */
+#foot .foot-leaf + .foot-leaf { margin-top:.5rem }
+#foot .foot-page { font-family:system-ui,sans-serif; font-size:.75rem;
+  color:var(--dim); text-decoration:none }
+/* The neighbouring chapter's part of a shared leaf: present, so the page is
+   whole, and visibly not this chapter's text. */
+.other-chapter { margin:.4rem 0 }
+.other-chapter .other-text { opacity:.4 }
+.other-chapter:hover .other-text { opacity:.6 }
+.other-chapter .other-label { display:block; font-family:system-ui,sans-serif;
+  font-size:.75rem; color:var(--dim) }
 /* A leaf the store records nothing on still gets its row, because the anchor
    has to exist for the redirect to land on. It holds the mark and nothing. */
 .run li.leaf-only { min-height:1rem }

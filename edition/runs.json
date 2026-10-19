@@ -7,7 +7,7 @@
     "refs": "the scans, in binding order, contiguous within one part.",
     "source": "the store the renderer reads. Its own `source.refs` must equal `refs` here, and so must the set of per-entry `ref` fields inside it — three statements of one span, checked against each other by `edition runs` rather than merged."
   },
-  "_note": "Chapter pages will be runs too, with their spans derived from edition/toc.json and the folio index rather than declared here. Nothing that consumes a run may care which of the two it got; see docs/edition.md.",
+  "_note": "Chapters are runs too, with their spans derived from edition/toc.json and the chapter milestones in the text (harness/chapters.py) rather than declared here. Nothing that consumes a run may care which of the two it got; see docs/edition.md.",
   "runs": [
     {
       "id": "contents",

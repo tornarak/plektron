@@ -16,7 +16,18 @@ from __future__ import annotations
 from functools import lru_cache
 from pathlib import Path
 
-from .. import alphabet, apparatus, entities, figures, geo, lexicon, lookup, pictures, tei_html
+from .. import (
+    alphabet,
+    apparatus,
+    chapters,
+    entities,
+    figures,
+    geo,
+    lexicon,
+    lookup,
+    pictures,
+    tei_html,
+)
 from ..refs import norm_ref
 from ..state import load_toc
 from .cache import MAXSIZE, digest, stamp
@@ -163,7 +174,8 @@ def _runs_files(root: Path) -> list[Path]:
     for r in apparatus.load_runs(Path(root)):
         if r.get("source"):
             out.append(Path(root) / r["source"])
-    return out
+    # And everything a chapter's span is derived from: the ToC and every page.
+    return out + chapters.watched(Path(root))
 
 
 @lru_cache(maxsize=MAXSIZE)
@@ -177,16 +189,23 @@ def runs(root: Path) -> list[dict]:
 
 
 def run_for(root: Path, ref: str) -> dict | None:
-    ref = norm_ref(ref)
-    for r in runs(root):
-        if ref in [norm_ref(x) for x in r.get("refs") or []]:
-            return r
-    return None
+    return apparatus.run_for(ref, root, among=runs(root))
+
+
+@lru_cache(maxsize=MAXSIZE)
+def _heads(root: str, _key: bytes) -> dict:
+    return chapters.milestones(Path(root))
+
+
+def heads(root: Path) -> dict:
+    """`{toc id: [{ref, shared}]}` — where each heading opens in the text. What
+    `apparatus.locate` places a ToC link by, keyed on the pages that hold them."""
+    return _heads(str(root), stamp(chapters.watched(Path(root))))
 
 
 @lru_cache(maxsize=MAXSIZE)
 def _run_store(root: str, rid: str, _key: bytes) -> dict:
-    run = next((r for r in apparatus.runs(Path(root)) if r.get("id") == rid), None)
+    run = next((r for r in apparatus.load_runs(Path(root)) if r.get("id") == rid), None)
     return apparatus.store_for(run or {}, Path(root))
 
 
@@ -247,7 +266,7 @@ def alphabet_chart(root: Path) -> dict:
 
 @lru_cache(maxsize=MAXSIZE)
 def _by_plate(root: str, rid: str, _key: bytes) -> dict:
-    run = next((r for r in apparatus.runs(Path(root)) if r.get("id") == rid), None)
+    run = next((r for r in apparatus.load_runs(Path(root)) if r.get("id") == rid), None)
     doc = apparatus.store_for(run or {}, Path(root))
     return figures.by_plate([e for e in doc["entries"]
                              if e.get("kind") == "plate"], Path(root))
@@ -306,7 +325,7 @@ def loi_run(root: Path) -> dict:
     Found by `kind` rather than by id, because the id is one book's word for it
     and the kind is the vocabulary every book shares — `apparatus.KINDS`.
     """
-    return next((r for r in apparatus.runs(root) if r.get("kind") == "loi"), {})
+    return next((r for r in apparatus.load_runs(root) if r.get("kind") == "loi"), {})
 
 
 @lru_cache(maxsize=MAXSIZE)
@@ -321,7 +340,7 @@ def authority_names(root: Path) -> frozenset:
     and `Authorities Quoted` is the store of exactly those names. Keyed on the
     store it comes from, so adding a work reaches the pages that cite it.
     """
-    run = next((r for r in apparatus.runs(root)
+    run = next((r for r in apparatus.load_runs(root)
                 if r.get("kind") == "authorities"), {})
     src = run.get("source")
     return _authority_names(str(root),
@@ -376,10 +395,19 @@ def in_reading_order(root: Path, drafts: bool) -> list[str]:
     list can now stand for several scans, and `run_for` is how a caller asks.
     """
     seen = readable(root) if drafts else collated(root)
-    refs = tei_html._sorted_refs([*seen, *exempt(root)])
-    interior = {norm_ref(r) for run in runs(root)
-                for r in (run.get("refs") or [])[1:]}
-    return [r for r in refs if r not in interior]
+    refs = set(tei_html._sorted_refs([*seen, *exempt(root)]))
+    every = runs(root)
+    # A run's head stands for it whenever *any* of its leaves can be shown: a
+    # chapter whose opening leaf is uncollated is still a chapter with collated
+    # pages in it, and dropping its interior while its head was absent would
+    # take the whole chapter out of the listing. And a head is never interior,
+    # because a leaf two chapters share is the second one's head and the first
+    # one's last leaf at once.
+    heads = {norm_ref(run["refs"][0]) for run in every if run.get("refs")
+             and any(norm_ref(r) in refs for r in run["refs"])}
+    interior = {norm_ref(r) for run in every
+                for r in (run.get("refs") or [])[1:]} - heads
+    return tei_html._sorted_refs([r for r in refs | heads if r not in interior])
 
 
 @lru_cache(maxsize=MAXSIZE)

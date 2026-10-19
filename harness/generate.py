@@ -79,8 +79,7 @@ from .entities import alias_index, auto_forms, load
 from .lines import page_lines
 from .ns import TEI_NS
 from .refs import APPARATUS_ZONES, norm_ref
-from .state import (MILESTONE_UNITS, NOTE_MARKERS, heads_on, load_toc, printed_head,
-                    toc_starts)
+from .state import MILESTONE_UNITS, NOTE_MARKERS, heads_on, load_toc, printed_head, toc_starts
 from .zones import read_zones
 
 #: Bumped when the emitted shape changes in a way that makes an older file a

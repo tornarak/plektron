@@ -58,8 +58,12 @@
    * is how a reader gets back to the sentence they left; in a popup anchored to
    * that very sentence it is a link to where you already are. The numeral stays,
    * because it is what says which note this is. */
-  function bodyOf(n) {
-    const li = FOOT.querySelector(`li[data-n="${CSS.escape(n)}"]`);
+  /* Found by the id the marker links to, not by `data-n`: a chapter's foot holds
+     every leaf's notes, each numbered from 1 as printed, and only the id —
+     scoped to the leaf by `_scope_notes` — says which note 1 this marker means. */
+  function bodyOf(a) {
+    const li = FOOT.querySelector(
+      `li[id="${CSS.escape(a.getAttribute('href').slice(1))}"]`);
     if (!li) return null;
     const frag = li.cloneNode(true);
     const back = frag.querySelector('a[href^="#ref-"]');
@@ -73,7 +77,7 @@
   }
 
   function show(a) {
-    const html = bodyOf(a.dataset.note);
+    const html = bodyOf(a);
     if (html == null) return false;
     if (!box) {
       box = document.createElement('div');

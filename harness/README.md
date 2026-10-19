@@ -468,8 +468,16 @@ that safe.
 (`edition/runs.json`), the anchor vocabulary, the folio index over three ranked
 witnesses, and `locate`, the single resolver every redirect route goes through.
 **The locator and the anchors are the load-bearing part, not the renderers**: a
-chapter page will be a run with a derived span, and nothing downstream may care
-which kind it got. `edition runs` is the gate. `docs/edition.md` has the model.
+chapter is a run with a derived span, and nothing downstream may care which kind
+it got. `edition runs` is the gate. `docs/edition.md` has the model.
+
+**`chapters.py`** — the chapter runs `apparatus.runs()` folds in: each span from
+the leaf its chapter milestone stands on to the leaf before the next one's, read
+off the signed page or else the draft. Refuses, rather than guesses an end, where
+an opener is missing or doubled. Uncached by design — it reads every page — so
+a caller holding `harness/web/stores.py`' copy passes it in (`run_for(among=)`,
+`locate(among=, heads=)`), and a caller wanting only store-backed runs reads
+`load_runs`.
 
 **`state.py`** — derived seam state. Folio comes from a committed TEI's `<pb n>` and
 propagates forward; `expected_folio` is null wherever the chain breaks, and null is

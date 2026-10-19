@@ -1,0 +1,63 @@
+{# The pieces of a chapter's body, as macros because `edition._chapter_body`
+   assembles the body in Python — a paragraph running across a leaf break is
+   joined there, with the page mark set inside it, which a template looping over
+   leaves cannot do. Reached as a module, `_ann_macro`'s reason: one definition of
+   what each piece looks like. #}
+
+{# The page mark, Project Gutenberg's: set inline exactly where the leaf turns —
+   mid-sentence, where it does — and drawn in the right margin. Every redirect
+   into the chapter lands on it, so it is emitted for every leaf, text or not.
+   The printed folio where one is known, else the scan ref; neither is derivable
+   from the other, so the title names both. #}
+{% macro leafmark(l) -%}
+<a class='leaf-mark' id='{{ l.anchor }}' href='#{{ l.anchor }}'
+   title='leaf {{ l.ref }}{% if l.folio %}, folio {{ l.folio }}{% endif %}{%
+     if l.rank == "draft" %} — machine draft{% endif %}'>{%
+   if l.folio_anchor %}<span id='{{ l.folio_anchor }}'></span>{% endif
+   %}[{{ l.folio or l.ref }}]{%
+   if l.rank == 'draft' %}<span class='run-tag'>draft</span>{% endif %}</a>
+{%- endmacro %}
+
+{# The part of a shared leaf that is the neighbouring chapter's: kept, greyed, and
+   a link there. The label is the link and not the block: the text holds links of
+   its own, and anchors do not nest. #}
+{% macro other(html, l, where) %}
+<div class='other-chapter {{ where }}'>
+  <a class='other-label' href='{{ l.other_url }}'>{{ "← from" if where == "before"
+    else "continues in" }} {{ l.other_title }}{{ "" if where == "before" else " →" }}</a>
+  <div class='other-text'>{{ html | safe }}</div>
+</div>
+{% endmacro %}
+
+{# A leaf a human ruled not text — a plate, a blank — with its pictures. #}
+{% macro exempt(l) %}
+<div class='leaf-exempt'>{{ leafmark(l) }}
+{% if l.plates %}
+  {% for p in l.plates %}
+  <figure class='figure plate'>
+    <div class='figure-plates'>
+    {% for src in p.crops %}
+      <a class='pic' href='{{ src }}' target='_blank' rel='noopener'><img src='{{ src }}' loading='lazy'
+       alt='{% if p.n %}Figure {{ p.n }}{% else %}Figure{% endif %}'></a>
+    {% endfor %}
+    </div>
+    {% if p.caption %}<figcaption>{{ p.caption }}</figcaption>{% endif %}
+  </figure>
+  {% endfor %}
+{% else %}
+  <p class='leaf-gap'><span class='leaf-tag'>{{ l.leaf_kind or 'not a text page' }}</span>
+  <a href='{{ l.page_url }}'>leaf {{ l.ref }}</a></p>
+{% endif %}
+</div>
+{% endmacro %}
+
+{# A leaf with no text this sitting can show, said where it falls. #}
+{% macro gap(l) %}
+<p class='leaf-gap'>{{ leafmark(l) }}<span class='leaf-tag'>gap</span> Leaf {{ l.ref }}:
+{{ l.why }}. <a href='{{ l.scan }}' target='_blank' rel='noopener'>The scan</a>
+is all there is of it here.</p>
+{% endmacro %}
+
+{% macro broken(l) %}
+<p class='leaf-gap'>{{ leafmark(l) }}Leaf {{ l.ref }} will not render: {{ l.doc.why }}</p>
+{% endmacro %}

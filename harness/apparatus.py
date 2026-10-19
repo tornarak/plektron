@@ -102,22 +102,34 @@ def load_runs(root: Path = Path(".")) -> list[dict]:
 
 
 def runs(root: Path = Path(".")) -> list[dict]:
-    """Every run the edition can serve, declared and (later) derived.
+    """Every run the edition can serve, declared and derived.
 
-    Today this is `load_runs` unchanged. It exists as its own name because chapter
-    runs will arrive here, computed rather than written down, and every caller
-    downstream is already pointed at the name that will carry both.
+    The declared runs first, then the chapters `chapters.derive` computes from the
+    milestones — nothing downstream cares which it got, which is why both arrive
+    through this one name. Deriving reads every page the edition could render, so
+    a caller that only wants a store-backed run (an apparatus entry, a folio the
+    Authorities store witnesses) asks `load_runs` instead.
     """
-    return load_runs(root)
+    from . import chapters
+    return load_runs(root) + chapters.runs(root)
 
 
-def run_for(ref: str, root: Path = Path(".")) -> dict | None:
-    """The run this scan belongs to, if any."""
+def run_for(ref: str, root: Path = Path("."),
+            among: list[dict] | None = None) -> dict | None:
+    """The run this scan is served in, if any.
+
+    **A leaf two chapters share is served by the one it opens**, which is the run
+    it stands for in the listing (`stores.in_reading_order`): prev/next walk the
+    listing through `/page/{ref}`, and a redirect into the earlier chapter would
+    send *next* straight back where it came from. Nothing is lost by it — that
+    chapter shows the earlier one's tail too, greyed above its head and linked.
+    `among` is a run list a caller already holds; the default derives it.
+    """
     ref = norm_ref(ref)
-    for r in runs(root):
-        if ref in [norm_ref(x) for x in r.get("refs") or []]:
-            return r
-    return None
+    holding = [r for r in (runs(root) if among is None else among)
+               if ref in [norm_ref(x) for x in r.get("refs") or []]]
+    return next((r for r in holding if norm_ref(r["refs"][0]) == ref),
+                holding[0] if holding else None)
 
 
 def store_for(run: dict, root: Path = Path(".")) -> dict:
@@ -152,7 +164,7 @@ def _authorities(root: Path) -> list[dict]:
     against whatever stores a tree holds, and a page generated where no
     bibliography exists should carry no citation links rather than fail to build.
     """
-    run = next((r for r in runs(root) if r.get("kind") == "authorities"), {})
+    run = next((r for r in load_runs(root) if r.get("kind") == "authorities"), {})
     return store_for(run, root)["entries"] if run else []
 
 
@@ -195,7 +207,7 @@ def entries_for(ref: str, root: Path = Path(".")) -> list[dict]:
     this corpus would never exercise is worse than the absence it papers over.
     """
     ref = norm_ref(ref)
-    run = run_for(ref, root)
+    run = run_for(ref, root, among=load_runs(root))
     if run is None:
         return []
     return [e for e in store_for(run, root)["entries"]
@@ -262,7 +274,7 @@ def folio_index(root: Path = Path(".")) -> dict[int, list[dict]]:
         if facts is not None:
             add(facts.get("folio"), p.stem.removeprefix("chukchi-"), "tei")
 
-    for run in runs(root):
+    for run in load_runs(root):
         if not (KINDS.get(run.get("kind")) or {}).get("folio_of_leaf"):
             continue
         for e in store_for(run, root)["entries"]:
@@ -293,11 +305,12 @@ def _page_url(ref: str) -> str:
     return f"/edition/page/{norm_ref(ref)}"
 
 
-def _place(ref: str, root: Path, witness: str = "") -> dict:
+def _place(ref: str, root: Path, witness: str = "",
+           among: list[dict] | None = None) -> dict:
     """Where a scan is served, and under what anchor: inside its run if it has
     one, else as its own page."""
     ref = norm_ref(ref)
-    run = run_for(ref, root)
+    run = run_for(ref, root, among=among)
     if run is None:
         return {"url": _page_url(ref), "anchor": "", "ref": ref, "run": "",
                 "witness": witness}
@@ -305,9 +318,36 @@ def _place(ref: str, root: Path, witness: str = "") -> dict:
             "ref": ref, "run": run["id"], "witness": witness}
 
 
+def _heading(toc_id: str, entry: dict, root: Path, among: list[dict],
+             heads: dict) -> dict | None:
+    """Where the milestone for this heading stands, or None if not exactly once.
+
+    The anchor is the heading's own id, which `tei_html.el_milestone` emits. On a
+    leaf two chapters share, the run is the one this heading's chapter is — the
+    ToC entry says which by its `chapter` — since the leaf shows in both and only
+    one shows this heading as its own text.
+    """
+    occ = heads.get(toc_id) or []
+    if len(occ) != 1:
+        return None
+    ref = occ[0]["ref"]
+    holding = [r for r in among if ref in [norm_ref(x) for x in r.get("refs") or []]]
+    by_id = {e.get("id"): e for e in load_toc(root)}
+    own = next((r for r in holding
+                if (by_id.get(r.get("toc_id")) or {}).get("chapter")
+                == entry.get("chapter")), None)
+    run = own or (holding[0] if holding else None)
+    if run is None:
+        return {"url": _page_url(ref), "anchor": toc_id, "ref": ref, "run": "",
+                "witness": "tei"}
+    return {"url": f"/edition/run/{run['id']}", "anchor": toc_id, "ref": ref,
+            "run": run["id"], "witness": "tei"}
+
+
 def locate(root: Path = Path("."), *, ref: str | None = None,
            folio: int | None = None, toc_id: str | None = None,
-           index: dict | None = None, span: int = 8) -> dict:
+           index: dict | None = None, span: int = 8,
+           among: list[dict] | None = None, heads: dict | None = None) -> dict:
     """Resolve one key to one place, or refuse and say what is nearby.
 
     Exactly one key. The three shapes it returns are the three honest answers:
@@ -316,8 +356,11 @@ def locate(root: Path = Path("."), *, ref: str | None = None,
         {"candidates": [ … ]}                        two same-rank witnesses
         {"nearest": [ … ]}                           nothing witnesses this key
 
-    `index` is the folio index, passed in by a caller that has one cached; it is
-    built here otherwise. `span` bounds how far the `nearest` list reaches.
+    `index` is the folio index, `among` the runs and `heads` the milestone index
+    (`chapters.milestones`), each passed in by a caller that has it cached and
+    built here otherwise — once per call, since a refusal places every row of
+    its `nearest` list and the chapter runs read the whole text. `span` bounds
+    how far the `nearest` list reaches.
     """
     given = [k for k, v in (("ref", ref), ("folio", folio), ("toc_id", toc_id))
              if v is not None]
@@ -325,14 +368,26 @@ def locate(root: Path = Path("."), *, ref: str | None = None,
         raise ValueError("locate takes exactly one of ref=, folio=, toc_id="
                          f" — got {given or 'none'}")
     root = Path(root)
+    among = runs(root) if among is None else among
 
     if ref is not None:
-        return _place(ref, root)
+        return _place(ref, root, among=among)
 
     if toc_id is not None:
         entry = next((e for e in load_toc(root) if e.get("id") == toc_id), None)
         if entry is None:
             return {"nearest": [], "why": f"no ToC entry has id {toc_id!r}"}
+        # **The milestone first, where the text has one.** It is the heading
+        # itself, so the reader lands on the head rather than at the top of its
+        # leaf, and it answers for every chapter where the folio index answers
+        # for a third of the book. The folio is the fallback for a heading no
+        # page has opened yet.
+        if heads is None:
+            from . import chapters
+            heads = chapters.milestones(root)
+        placed = _heading(toc_id, entry, root, among, heads)
+        if placed is not None:
+            return placed
         start = _as_folio(entry.get("page_start"))
         if start is None:
             return {"nearest": [],
@@ -343,16 +398,17 @@ def locate(root: Path = Path("."), *, ref: str | None = None,
     hits = idx.get(folio) or []
     if not hits:
         near = sorted(
-            ({"folio": f, **_place(ws[0]["ref"], root, ws[0]["witness"])}
+            ({"folio": f, **_place(ws[0]["ref"], root, ws[0]["witness"], among)}
              for f, ws in idx.items() if abs(f - folio) <= span),
             key=lambda r: (abs(r["folio"] - folio), r["folio"]))
         return {"nearest": near, "folio": folio}
 
     top = [w for w in hits if w["witness"] == hits[0]["witness"]]
     if len(top) > 1:
-        return {"candidates": [_place(w["ref"], root, w["witness"]) for w in top],
+        return {"candidates": [_place(w["ref"], root, w["witness"], among)
+                               for w in top],
                 "folio": folio}
-    place = _place(top[0]["ref"], root, top[0]["witness"])
+    place = _place(top[0]["ref"], root, top[0]["witness"], among)
     if place["run"]:
         place["anchor"] = anchor("folio", folio)
     return place
@@ -372,7 +428,9 @@ def check(root: Path = Path(".")) -> dict:
     from .zones import LEAF_KINDS, load_splits
 
     root = Path(root)
-    declared = runs(root)
+    # The declaration only: every rule in this loop is about a store a run
+    # renders, and a chapter has none. Chapters are checked after it.
+    declared = load_runs(root)
     errors: list[dict] = []
     warnings: list[dict] = []
     rows: list[dict] = []
@@ -472,7 +530,7 @@ def check(root: Path = Path(".")) -> dict:
             located = f"{len(by_plate(plates, root))}/{len(plates)}"
 
         rows.append({"run": rid, "kind": kind, "title": run.get("title") or "",
-                     "span": f"{refs[0]}-{refs[-1]}" if refs else "",
+                     "span": f"{refs[0]} — {refs[-1]}" if refs else "",
                      "leaves": len(refs), "entries": len(store["entries"]),
                      "plates_located": located})
         for r in refs:
@@ -508,6 +566,32 @@ def check(root: Path = Path(".")) -> dict:
             "why": "ruled `apparatus`, so its content is supposed to be held "
                    "parsed, but no run in edition/runs.json names it and nothing "
                    "says which store that would be"})
+
+    # **The chapters, derived and therefore checked differently.** Their span
+    # cannot contradict a declaration — there is none — so what can be wrong is
+    # that the text does not settle one: an opener missing or found twice, which
+    # leaves that chapter and the one before it served a leaf at a time. And a
+    # chapter may not claim a leaf a declared run already holds, nor take a
+    # declared run's id, since both are one URL answering for two documents.
+    from . import chapters
+    derived, problems = chapters.derive(root)
+    for p in problems:
+        errors.append({"run": p["chapter"], "rule": f"chapter-{p['rule']}",
+                       "detail": p["detail"]})
+    ids = {r.get("id") for r in declared}
+    for run in derived:
+        rid = run["id"]
+        if rid in ids:
+            errors.append({"run": rid, "rule": "duplicate-run-id",
+                           "detail": f"a declared run is also called {rid!r}"})
+        for r in run["refs"]:
+            if r in claimed:
+                errors.append({"run": rid, "rule": "overlapping-runs",
+                               "detail": f"{r} is also in {claimed[r]}"})
+        rows.append({"run": rid, "kind": run["kind"], "title": run["title"],
+                     "span": f"{run['refs'][0]} — {run['refs'][-1]}",
+                     "leaves": len(run["refs"]), "entries": 0,
+                     "plates_located": ""})
 
     # Every kind counted, whether or not it is one this report has anything else
     # to say about — a census beside the errors, so the vocabulary's shape is
