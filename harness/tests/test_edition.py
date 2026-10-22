@@ -1783,7 +1783,7 @@ def test_a_partial_imputation_is_shown_and_names_what_it_could_not_read(server):
                     reason="espeak-ng is not installed")
 def test_the_speaker_endpoint_returns_a_wav(server):
     base, _ = server
-    r = _client().get(base + "/tts/u%CB%90we%CB%90le%CB%90n")
+    r = _client().get(base + "/tts/u%CB%90we%CB%90le%CB%90n.wav")
     assert r.headers["content-type"] == "audio/wav"
     assert r.content[:4] == b"RIFF"
 
@@ -1822,7 +1822,7 @@ def test_a_string_with_nothing_speakable_in_it_is_a_400_not_a_crash(server):
     """The endpoint is a pure function of the URL and does not check that the
     IPA is one this edition imputed, so it has to answer for anything."""
     base, _ = server
-    assert _client().get(base + "/tts/%E2%96%A1%E2%96%A1").status_code == 400
+    assert _client().get(base + "/tts/%E2%96%A1%E2%96%A1.wav").status_code == 400
 
 
 def test_a_key_nothing_answers_to_is_refused(server):

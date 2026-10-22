@@ -22,6 +22,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
 from conftest import write_captions
 
 from harness import edition_ui as ui
@@ -145,10 +146,10 @@ def test_each_layer_serves_with_its_own_media_type(tmp_path):
     _layers(tmp_path, "1-361")
     c = _app(tmp_path)
 
-    colour = c.get("/edition/leaf/1-361/colour")
+    colour = c.get("/edition/leaf/1-361/colour.jpg")
     assert colour.status_code == 200
     assert colour.headers["content-type"].startswith("image/jpeg")
-    lines = c.get("/edition/leaf/1-361/lines")
+    lines = c.get("/edition/leaf/1-361/lines.png")
     assert lines.status_code == 200
     assert lines.headers["content-type"].startswith("image/png")
 
@@ -160,9 +161,26 @@ def test_the_master_keeps_its_own_address(tmp_path):
     _master(tmp_path, "1-361")
     _layers(tmp_path, "1-361")
 
-    r = _app(tmp_path).get("/edition/leaf/1-361")
+    r = _app(tmp_path).get("/edition/leaf/1-361.png")
     assert r.status_code == 200
     assert r.headers["content-type"].startswith("image/png")
+
+
+@pytest.mark.parametrize("url", ["/edition/leaf/1-361", "/edition/leaf/1-361.jpg",
+                                 "/edition/leaf/1-361/colour",
+                                 "/edition/leaf/1-361/colour.png"])
+def test_an_address_without_the_files_own_extension_names_the_right_one(
+        tmp_path, url):
+    """The extension is the file's, because a static host types a file by its
+    name — so any other spelling refuses, and says where the file is."""
+    _exempt_lst(tmp_path, "1-361")
+    _master(tmp_path, "1-361")
+    _layers(tmp_path, "1-361")
+
+    r = _app(tmp_path).get(url)
+    assert r.status_code == 404
+    assert ("/edition/leaf/1-361.png" in r.text
+            or "/edition/leaf/1-361/colour.jpg" in r.text)
 
 
 def test_an_unknown_layer_name_is_a_404_that_says_the_names(tmp_path):
@@ -170,7 +188,7 @@ def test_an_unknown_layer_name_is_a_404_that_says_the_names(tmp_path):
     _master(tmp_path, "1-361")
     _layers(tmp_path, "1-361")
 
-    r = _app(tmp_path).get("/edition/leaf/1-361/sepia")
+    r = _app(tmp_path).get("/edition/leaf/1-361/sepia.jpg")
     assert r.status_code == 404
     assert "colour" in r.text and "lines" in r.text
 
@@ -179,7 +197,7 @@ def test_missing_layers_point_at_the_command_that_builds_them(tmp_path):
     _exempt_lst(tmp_path, "1-361")
     _master(tmp_path, "1-361")
 
-    r = _app(tmp_path).get("/edition/leaf/1-361/colour")
+    r = _app(tmp_path).get("/edition/leaf/1-361/colour.jpg")
     assert r.status_code == 404
     assert "build_leaf_layers" in r.text
 
@@ -195,14 +213,14 @@ def test_the_exempt_page_stacks_the_pair_when_it_exists(tmp_path):
 
     text = _app(tmp_path).get("/edition/page/1-361").text
     assert "leaf-mrc" in text
-    assert "/edition/leaf/1-361/colour" in text
-    assert "/edition/leaf/1-361/lines" in text
+    assert "/edition/leaf/1-361/colour.jpg" in text
+    assert "/edition/leaf/1-361/lines.png" in text
     # The label is unchanged: the pair is the same made artefact, and the scan
     # is still the evidence beside it. All three addresses are on the page —
     # what is shown, what it was built from, and what neither may change.
     assert "editor's version" in text
     assert "/edition/page/1-361.png" in text
-    assert "/edition/leaf/1-361'" in text, "the master is reachable from the page"
+    assert "/edition/leaf/1-361.png'" in text, "the master is reachable from the page"
 
 
 def test_a_master_with_no_layers_still_shows_the_master(tmp_path):
@@ -215,7 +233,7 @@ def test_a_master_with_no_layers_still_shows_the_master(tmp_path):
 
     text = _app(tmp_path).get("/edition/page/1-361").text
     assert "leaf-mrc" not in text
-    assert "/edition/leaf/1-361'" in text or '/edition/leaf/1-361"' in text
+    assert "/edition/leaf/1-361.png'" in text
 
 
 def test_a_plain_exempt_page_is_untouched_by_any_of_this(tmp_path):

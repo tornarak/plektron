@@ -2492,7 +2492,7 @@ which `edition serve` probes once at startup and reports on its banner. Without
 it the speaker buttons disable themselves on the first press and everything else
 works; that is a supported state, not a broken one.
 
-`/tts/<ipa>` is a **pure function of the string in the URL** and deliberately does
+`/tts/<ipa>.wav` is a **pure function of the string in the URL** and deliberately does
 not check that the IPA is one this edition imputed, which is what makes it
 cacheable on the string alone. Nothing from the URL reaches a command line: the
 phoneme string handed to espeak is assembled only from table values.

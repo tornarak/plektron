@@ -59,7 +59,7 @@ if(t==='dark'||t==='light') document.documentElement.dataset.theme=t;
   </span>
   {# Search and the page's identity, hard right. Search is on top with the
      reading rather than below with the reference links: it is reached mid-page
-     and constantly, which is the opposite of the three section links, and a
+     and constantly, which is the opposite of the section links, and a
      control you need while reading does not belong at the end of the document.
 
      `here` is the ref and the printed folio on a page view and a count
@@ -72,14 +72,17 @@ if(t==='dark'||t==='light') document.documentElement.dataset.theme=t;
        whatever it asks for, and the declaration's only real effect was to
        outrank the stylesheet on specificity — which made a mobile rule a no-op
        that looked like a fix. #}
+    {# Not in a static build: a host serves files, and a query is not one. #}
+    {% if not static %}
     <form target="_blank" action='{{ base }}/search'>
       <input name='q' placeholder='search'>
     </form>
+    {% endif %}
     <span class='location'>{{ here }}</span>
   </span>
 </header>
 <main class='cols'>{% block main %}{% endblock %}</main>
-{# The apparatus of the site rather than of the page: the other three views, the
+{# The apparatus of the site rather than of the page: the other views, the
    search field, and the one control that belongs to the sitting rather than to
    anything on screen. None of it is wanted while reading, which is the argument
    for the foot — and it is why the theme button moved out of the header it was
@@ -89,6 +92,7 @@ if(t==='dark'||t==='light') document.documentElement.dataset.theme=t;
     <a href='{{ base }}/entities'>encyclopedia</a>
     <a href='{{ base }}/lexicon'>lexicon</a>
     <a href='{{ base }}/atlas'>atlas</a>
+    <a href='{{ base }}/annotations'>annotations</a>
   </nav>
   <button id='theme-btn' title='Light / dark'>◐</button>
 </footer>

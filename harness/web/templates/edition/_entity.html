@@ -100,7 +100,7 @@ view is serving. Nothing is collated yet, so that is the whole corpus only under
 generated.</p>
 {% endif %}
 {{ ann.blocks(supplements) }}
-{% if rec.status != 'ratified' %}
+{% if rec.status != 'ratified' and not static %}
 <div class='ratify-row'><button class='ratify' data-id='{{ ident }}'>ratify — a
 rule may then link its forms</button></div>
 {% endif %}

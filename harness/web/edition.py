@@ -70,6 +70,13 @@ def _assets(request: Request) -> str:
     return getattr(request.app.state, "assets", ui.ASSETS)
 
 
+def _static(request: Request) -> bool:
+    """Whether this app is rendering a static build. A page then leaves out what
+    only a live server answers — search, and the editor's writes — rather than
+    offering a control that would 404 on the host."""
+    return bool(getattr(request.app.state, "static", False))
+
+
 def _partial(request: Request) -> bool:
     """Whether the card was asked for bare, as the stack and a preview want it.
 
@@ -114,7 +121,8 @@ def _ctx(request: Request, **kw) -> dict:
     is merged over it, so no route has to restate the prefixes.
     """
     base, assets = _base(request), _assets(request)
-    out = {"base": base, "assets": assets, "here": "", **kw}
+    out = {"base": base, "assets": assets, "here": "", "static": _static(request),
+           **kw}
     out["state"] = {"base": base, "assets": assets, **(kw.get("state") or {})}
     return out
 
@@ -433,6 +441,7 @@ def _exempt_page(request: Request, ref: str, root):
     """
     kind = tei_html.leaf_kind(ref, root)
     plates = _plates(ref, root, _base(request))
+    leaf_url, layer_urls = _leaf_urls(ref, root, _base(request))
 
     refs = _listing(request)
     i = refs.index(ref) if ref in refs else -1
@@ -455,7 +464,7 @@ def _exempt_page(request: Request, ref: str, root):
             toc_panel=_toc_panel(root, [stores.folio_by_ref(root).get(ref)],
                                  base=_base(request)),
             editor_leaf=ui.leaf_source(ref, root)[1] == "ed",
-            leaf_layers=ui.leaf_layers(ref, root) is not None,
+            leaf_url=leaf_url, leaf_layers=layer_urls,
             state={"ref": ref,
                    "size": ui._raster_size(ref, root), "crops": {}},
             prev=refs[i - 1] if i > 0 else "",
@@ -1249,14 +1258,35 @@ def toc_entry(request: Request, toc_id: str):
     return _resolved(request, out) or _refusal(request, out, f"heading {toc_id}")
 
 
-@router.get("/leaf/{ref}")
-def leaf(request: Request, ref: str):
+def _leaf_urls(ref: str, root: Path, base: str) -> tuple[str, dict | None]:
+    """The editor's leaf and its two layers, each addressed with its file's own
+    extension — or `("", None)` where there is none.
+
+    **The extension is part of the address**, for `/partial/`'s reason: a static
+    host types a file by its name, so an image served at an extensionless path
+    could not be written to disk and served as one. It also keeps the master and
+    the directory holding its layers apart, `leaf/1-361.png` beside `leaf/1-361/`.
+    """
+    path, _rank = ui.leaf_source(ref, root)
+    if path is None:
+        return "", None
+    layers = ui.leaf_layers(ref, root)
+    return (f"{base}/leaf/{ref}{path.suffix}",
+            {name: f"{base}/leaf/{ref}/{name}{p.suffix}"
+             for name, p in layers.items()} if layers else None)
+
+
+@router.get("/leaf/{name}")
+def leaf(request: Request, name: str):
     """An editor's own version of a whole leaf, where one exists.
 
     A route of its own rather than an override on `/page/{ref}.png`, so the raw
     scan stays reachable at its own address: this is a made artefact and the
-    scan is the evidence, and a reader must be able to get at both.
+    scan is the evidence, and a reader must be able to get at both. The address
+    carries the master's own extension (`_leaf_urls`); any other refuses and
+    names the right one.
     """
+    ref, _, ext = name.partition(".")
     if not ui.REF_OK.match(ref):
         raise HTTPException(404, f"{ref!r} is not a PP-NNN ref")
     path, rank = ui.leaf_source(ref, _root(request))
@@ -1264,32 +1294,39 @@ def leaf(request: Request, ref: str):
         raise HTTPException(
             404, f"no editor's leaf for {ref} in {ui.PAGE_IMG}/ — the scan is at "
                  f"{_base(request)}/page/{ref}.png")
+    if f".{ext}" != path.suffix:
+        raise HTTPException(
+            404, f"the leaf is at {_leaf_urls(ref, _root(request), _base(request))[0]}")
     return send_file(request, path, media_type=ui.LEAF_MEDIA[path.suffix],
                      missing=f"no editor's leaf for {ref}")
 
 
-@router.get("/leaf/{ref}/{layer}")
-def leaf_layer(request: Request, ref: str, layer: str):
+@router.get("/leaf/{ref}/{name}")
+def leaf_layer(request: Request, ref: str, name: str):
     """One half of an editor's leaf, split for delivery.
 
     The master is 21 MB and the pair is under two, so this is what the page
-    actually loads; `/leaf/{ref}` above stays the authored file's own address,
-    reachable and unchanged. Both are the same artefact and the split is
-    `tools/build_leaf_layers.py`'s.
+    actually loads; `/leaf/{ref}.{ext}` above stays the authored file's own
+    address, reachable and unchanged. Both are the same artefact and the split
+    is `tools/build_leaf_layers.py`'s. Addressed with the layer file's own
+    extension, as the master is.
     """
+    layer, _, ext = name.partition(".")
     if not ui.REF_OK.match(ref):
         raise HTTPException(404, f"{ref!r} is not a PP-NNN ref")
     if layer not in ui.LEAF_LAYERS:
         raise HTTPException(
             404, f"{layer!r} is not a leaf layer — "
                  f"{', '.join(sorted(ui.LEAF_LAYERS))}")
-    layers = ui.leaf_layers(ref, _root(request))
-    if layers is None:
+    master, urls = _leaf_urls(ref, _root(request), _base(request))
+    if urls is None:
         raise HTTPException(
             404, f"no built layers for {ref} — the master is at "
-                 f"{_base(request)}/leaf/{ref}; `uv run --script "
+                 f"{master or 'nowhere'}; `uv run --script "
                  f"tools/build_leaf_layers.py {ref}` writes them")
-    path = layers[layer]
+    path = ui.leaf_layers(ref, _root(request))[layer]
+    if f".{ext}" != path.suffix:
+        raise HTTPException(404, f"the {layer} layer is at {urls[layer]}")
     return send_file(request, path, media_type=ui.LEAF_MEDIA[path.suffix],
                      missing=f"no {layer} layer for {ref}")
 
@@ -1508,7 +1545,7 @@ def entity(request: Request, ident: str):
     """
     root = _root(request)
     ctx = _entity_ctx(_ident(ident), _listing(request), root, _base(request),
-                      _assets(request))
+                      _assets(request)) | {"static": _static(request)}
     if _partial(request):
         return templates.TemplateResponse(request, "edition/_entity.html", ctx)
     rec = ctx.get("rec")
@@ -2228,12 +2265,15 @@ def search(request: Request, q: str = ""):
     )
 
 
-@router.get("/tts/{spoken:path}")
+@router.get("/tts/{spoken:path}.wav")
 def tts(spoken: str):
     """A pure function of the string in the URL, which is what makes it cacheable
     on the string alone. It deliberately does not check that the IPA is one this
     edition imputed — there is nothing to protect, since `to_espeak` builds the
-    command from its own table and nothing from here reaches a shell."""
+    command from its own table and nothing from here reaches a shell.
+
+    `.wav` on the address for `_leaf_urls`' reason: it is what lets a static
+    build write the sound to disk and a host serve it as one."""
     try:
         wav = speech.wav_for(spoken)
     except speech.Unspeakable as e:

@@ -555,8 +555,8 @@ def test_an_editors_leaf_is_served_only_for_an_exempt_page(tmp_path: Path):
     assert ui.leaf_source("1-100", tmp_path) == (None, "scan")
 
     c = _app(tmp_path)
-    assert c.get("/edition/leaf/1-361").status_code == 200
-    assert c.get("/edition/leaf/1-100").status_code == 404
+    assert c.get("/edition/leaf/1-361.svg").status_code == 200
+    assert c.get("/edition/leaf/1-100.svg").status_code == 404
 
 
 def test_the_editors_leaf_never_reaches_the_pipeline(tmp_path: Path):
