@@ -50,8 +50,10 @@ if(t==='dark'||t==='light') document.documentElement.dataset.theme=t;
            script has not run or the view has no sidebar. What it stops doing is
            sending a reader to another tab to find out which chapter they are
            already reading. #}
-        <a id='toc-link' target="_blank" href='{{ base }}/run/contents'>ToC</a>
-        <a target="_blank" href='{{ base }}/run/alphabet'>Key</a>
+        {% if 'contents' in run_ids %}<a id='toc-link' target="_blank"
+          href='{{ base }}/run/contents'>ToC</a>{% endif %}
+        {% if 'alphabet' in run_ids %}<a target="_blank"
+          href='{{ base }}/run/alphabet'>Key</a>{% endif %}
     </span>
   <span class='page-specific-buttons'>
       <button id='cols-reverse-btn' title='Reverse Columns'>⇄</button>

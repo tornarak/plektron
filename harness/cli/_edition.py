@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from .. import edition_ui
 from ..render import progress
-from ._common import action, group, opt, out, page_refs, refs_arg
+from ._common import action, arg, group, opt, out, page_refs, refs_arg
 
 
 def register(cli):
@@ -43,6 +43,25 @@ def register(cli):
              "page and in search results. Read-only: this is a window onto the "
              "generator's output while it is being fixed, not a way to collate")
 
+
+    p = action(g, "build", run_build,
+               help="write the reading view to OUT as a static site — every "
+               "page a reader can reach from the index, the bare fragments the "
+               "stack and the previews fetch, the scans, crops and speech they "
+               "load, and a stub that forwards for every redirect. Rendered by "
+               "the same routes `edition serve` mounts, so the site is the "
+               "served output and not a second rendering of it. Search and the "
+               "ratify button are left out: a host serves files. OUT is "
+               "cleared first. Exit 1 on a link that answers with no page, two "
+               "addresses landing on one file, or a store entry nothing links "
+               "to")
+    arg(p, "out", metavar="OUT")
+    opt(p, "--base", default="/", metavar="PATH",
+        help="the path the site will be served under, which every link "
+             "names [/]")
+    opt(p, "--drafts", is_flag=True,
+        help="also publish `mz/tei/`, marked as drafts as `edition serve "
+             "--drafts` marks them")
 
     p = action(g, "runs", run_runs, pageable=False,
                help="the page-runs the reading view serves as one document "
@@ -86,6 +105,29 @@ def register(cli):
              "either way, so a filtered listing still says what it is a part of")
     opt(p, "--limit", type=int, default=0, metavar="N",
         help="stop the listing after N rows; the counts are unaffected [all]")
+
+
+def run_build(a) -> int:
+    from pathlib import Path
+
+    from ..web.build import build
+
+    with progress("building") as tick:
+        site = build(a.root, Path(a.out), base=a.base, drafts=a.drafts, tick=tick)
+    sections: dict[str, int] = {}
+    for rel in site.files.values():
+        top = rel.split("/")[0] if "/" in rel else "/"
+        if top == "partial":
+            top = "/".join(rel.split("/")[:2])
+        sections[top] = sections.get(top, 0) + 1
+    out(a, [{"section": k, "files": n} for k, n in sorted(sections.items())],
+        name="written")
+    if site.rows:
+        out(a, [{"url": r["url"], "why": r["why"], "from": " ".join(r["from"])}
+                for r in site.rows], name="refused", heading=True)
+    print(f"{len(site.files)} file(s) written to {a.out} under "
+          f"{site.base or '/'}, {len(site.rows)} refused")
+    return 1 if site.rows else 0
 
 
 def run_figrefs(a) -> int:

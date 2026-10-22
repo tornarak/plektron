@@ -57,7 +57,13 @@
   const save = () => sessionStorage.setItem(
       KEY, JSON.stringify({sel, hidden: [...hidden], dropped: [...dropped]}));
 
-  const url = () => B + '/partial/map?' + [
+  /* **A static build has no server to compose a map**, only the one-place map
+     each located entry was written with — so there the pane holds one place at
+     a time, a click replacing rather than adding, and asks for that file. A
+     selection of several waits on composing the map in the page. */
+  const STATIC = !!STATE.static;
+  const url = () => STATIC ? B + '/partial/map/' + encodeURIComponent(sel[0])
+                           : B + '/partial/map?' + [
       ...sel.map(r => 'at=' + encodeURIComponent(r)),
       ...[...hidden].map(r => 'hide=' + encodeURIComponent(r)),
       ...[...dropped].map(r => 'drop=' + encodeURIComponent(r)),
@@ -232,6 +238,7 @@
      the whole subtree goes on — because a per-node toggle over a mixed subtree
      inverts it, which is never what anybody means by shift-clicking a heading. */
   async function clickMany(refs) {
+    if (STATIC) return click(refs[0]);
     if (!pane() || !refs.length) return 'card';
     const off = sel.includes(refs[0]);
     for (const r of refs) {
@@ -276,7 +283,8 @@
       if (sel.length) await paint(); else { pane().hidden = true; clearHidden(); }
       return 'map';
     }
-    sel.push(ref);
+    const before = sel;
+    sel = STATIC ? [ref] : [...sel, ref];
     hidden.delete(ref);
     dropped.delete(ref);
     save();
@@ -287,7 +295,7 @@
        descendant; swapping a map you were reading for a sentence about an
        absence loses more than it says, and the card's own `_props` rows say it
        anyway. */
-    sel.pop();
+    sel = before;
     save();
     if (sel.length) await paint(); else pane().hidden = true;
     return 'card';
@@ -399,7 +407,8 @@
        map would arrive in `data-sel` again and be adopted straight back. The
        filter is what makes the dismissal outlive a page turn; the comparison
        below then differs from `here.sel` and repaints without it. */
-    const want = [...new Set([...sel, ...here.sel.filter(r => !dropped.has(r))])];
+    const want = STATIC ? here.sel
+        : [...new Set([...sel, ...here.sel.filter(r => !dropped.has(r))])];
     if (want.length && (want.length != here.sel.length
                         || want.some((r, i) => r != here.sel[i]))) {
       sel = want;

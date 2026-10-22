@@ -1657,6 +1657,19 @@ place.
 --root --json --toon
 ```
 
+### edition build OUT
+**Does** write the reading view to `OUT` as a static site: every page a reader can reach from the index, the `/partial/` fragments the stack and the previews fetch, the scans, crops and speech those load, and for every redirect a stub that forwards with its fragment. Rendered through the routes `edition serve` mounts, so the site is the served output and not a second rendering of it. Search and the ratify button are left out — a host serves files — and the map pane holds one place at a time, since composing several is a server's job until it moves into the page.
+**Reads** what `edition serve` reads, `scans/fig-crops/` and `mz/page-img/` for the pictures, and `espeak-ng` on the host for the speech. **Writes** `OUT`, cleared first (derived: no `--commit`, `fig crops`'s precedent). **Exit** 0 clean / 1 on any refused row.
+**Note** **it crawls from the index; the stores do not seed it.** What a page links to, and what its scripts build out of `data-` attributes (`build._derived` states each rule), is what gets written. The stores are read afterwards, to name what exists and was **not** reached: an entity, annotation, run or lexicon form nothing links to is an orphan row, which a site seeded from the stores would publish and so hide.
+**Note** the refused rows: a link that answers with no page (a locator's refusal *is* a page, and is written as one), a query string a host ignores, a binary at an address with no extension, and two addresses landing on one file — compared case-folded **only where `OUT`'s own disk folds case**, since the lexicon's handle keys tell `Ke'let` from `KE'LET` on purpose and a folding disk would overwrite one with the other in silence.
+**Note** two builds of one tree are byte-identical — the crawl is breadth-first over sorted links and nothing written carries a time — which is what lets a refactor be checked by rebuilding and diffing.
+```
+OUT            the directory to write the site into
+--base PATH    the path the site will be served under, which every link names [/]
+--drafts       also publish `mz/tei/`, marked as drafts as `edition serve --drafts` marks them
+--root --json --toon --pager
+```
+
 ### edition runs
 **Does** the page-runs the reading view serves as one document instead of a leaf at a time — the printed Contents, List of Illustrations and Authorities Quoted, and each chapter — plus a census of what every leaf outside the transcription tracks was ruled, one row per leaf and per editor's leaf, and everything wrong with the declarations. Six scans of List of Illustrations are one printed list, and serving them as six pages is serving the binding rather than the book. Reports the folio count too: every folio link a run renders goes through the index, and that number says how much of the book the locator can reach at all.
 **Reads** `edition/runs.json` and each run's `source`, `edition/toc.json`, `gt/zones/` split lists, `tei/`, `mz/tei/`, `gt/ocr/`, `edition/page-img/`, `scans/`. **Writes** — **Exit** 0 clean / 1 on a declaration that cannot be true.

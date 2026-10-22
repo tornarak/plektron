@@ -122,8 +122,12 @@ def _ctx(request: Request, **kw) -> dict:
     """
     base, assets = _base(request), _assets(request)
     out = {"base": base, "assets": assets, "here": "", "static": _static(request),
+           # The header links two runs by id; a tree that declares neither
+           # should not carry two dead links on every page.
+           "run_ids": {r.get("id") for r in stores.runs(_root(request))},
            **kw}
-    out["state"] = {"base": base, "assets": assets, **(kw.get("state") or {})}
+    out["state"] = {"base": base, "assets": assets, "static": _static(request),
+                    **(kw.get("state") or {})}
     return out
 
 

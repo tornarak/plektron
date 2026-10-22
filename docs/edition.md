@@ -1917,6 +1917,44 @@ naming the joined form and its line, reads the page, and wraps the span across
 the break — `_emit` keeps printed line breaks *inside* an element for exactly
 this. After collation it links like anything else.
 
+### The static build is the served output, written down
+
+`harness edition build OUT --base /bogoras` writes the reading view as files a
+static host can serve (`harness/web/build.py`; flags in `VERBS.md`). **There is
+no second renderer.** The build mounts the same router `edition serve` does,
+asks it for each page through a `TestClient`, and writes the bytes it gets.
+
+Three changes to the live view are what make that possible, and all three hold
+for the live server too, so the two cannot drift into two URL schemes:
+
+- **One mount prefix, passed as a string.** `edition_ui.BASE` is the default and
+  the only definition. Every function that writes a link takes `base`, and the
+  routes read it off `app.state`. That is how an app mounted at `/bogoras` gets
+  links that agree with its routes. The static files' prefix, `assets`, follows
+  the same rule.
+- **An address is a file's address.** A card's bare fragment is `/partial/…`, not
+  `?partial=1`, because a host ignores the query. An image or a sound carries its
+  file's own extension (`/leaf/1-361.png`, `/leaf/1-361/colour.jpg`,
+  `/tts/….wav`), because a host types a file by its name.
+- **`app.state.static` drops what only a server answers**: the search form and
+  the ratify button. Search is a lacuna for now. On a static site the map pane
+  holds one place at a time and fetches the one-place map each located entry was
+  written with, because composing several places is a server's job until that
+  moves into the page.
+
+**It crawls from the index; the stores do not seed it.** A page's hrefs are
+followed, along with the URLs its scripts build out of `data-` attributes.
+`build._derived` restates each of those rules beside the script that owns it, so
+a script asking for a new URL fails the build until the rule is restated. The
+stores are read afterwards, to name what exists and was *not* reached. The
+annotations index had no link from anywhere for its whole life, and the first
+build is what said so.
+
+A redirect becomes a stub that forwards, keeping its fragment. A locator's
+refusal, such as a folio no witness places, is a page, and is written as one.
+Two builds of one tree are byte-identical, so a refactor can be checked by
+rebuilding and diffing.
+
 ## The prose points at itself, and now the pointing works
 
 The book cross-references constantly — `(Plate XXVII, Fig. 3)`, `(see Plate
