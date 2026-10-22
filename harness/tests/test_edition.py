@@ -907,7 +907,7 @@ def test_the_fragment_the_stack_and_the_preview_use_carries_no_map(server):
     nothing was asking, and cost a map render per hover."""
     base, root = server
     entry(root, "place:uelen", extra="- geo: 66.16 -169.8\n")
-    bare = get(base + "/entity/place:uelen?partial=1")
+    bare = get(base + "/partial/entity/place:uelen")
     assert "Uelen" in bare
     assert "<svg" not in bare and "map-pane" not in bare
 
@@ -1180,6 +1180,23 @@ def test_a_reference_view_carries_the_sidebar_fixed_open(server, path):
     assert "atlas?at=" not in body
 
 
+@pytest.mark.parametrize("path", ["/entity/person:bogoras", "/lexicon/notaform",
+                                  "/map/person%3Abogoras", "/map?at=person%3Abogoras"])
+def test_a_card_fragment_is_its_own_path(server, path):
+    """The bare card the stack and a preview fetch lives under `/partial/`, not
+    behind a query: a static host serves by path and drops the query, so a
+    fragment told apart only by `?partial=1` would collide with its page. The
+    old spelling is ignored rather than honoured, so nothing can lean on it."""
+    base, root = server
+    _toc(root)
+    entry(root, "person:bogoras", status="proposed")
+    page = get(base + path)
+    assert "<html" in page.lower()
+    assert "<html" not in get(base + "/partial" + path).lower()
+    sep = "&" if "?" in path else "?"
+    assert "<html" in get(base + path + sep + "partial=1").lower()
+
+
 # --------------------------------------------------- the footnote popup
 
 
@@ -1307,7 +1324,7 @@ def test_the_entity_panel_is_the_same_content_bare(server):
     """One template, wrapped or bare, so a permalink and a click land identically."""
     base, _ = server
     whole = get(base + "/entity/place:markova")
-    bare = get(base + "/entity/place:markova?partial=1")
+    bare = get(base + "/partial/entity/place:markova")
     assert "<main" in whole and "<main" not in bare
     assert "Markova" in bare
 
@@ -1498,7 +1515,7 @@ def test_the_card_carries_its_tree_and_the_stack_fragment_carries_it_too(tmp_pat
 
     c = TestClient(create_app(tmp_path, Sessions(root=tmp_path), editor="edition"))
     for url in ("/edition/entity/taxon:oncorhynchus",
-                "/edition/entity/taxon:oncorhynchus?partial=1"):
+                "/edition/partial/entity/taxon:oncorhynchus"):
         body = c.get(url).text
         assert "kin-tree" in body
         assert "/edition/entity/taxon:salmonidae" in body
@@ -1614,7 +1631,7 @@ def test_a_lexicon_card_says_that_nothing_stands_behind_it(server):
     and never was — the notation is phonetic, so the pronunciation follows by
     rule whether or not anybody has written a word."""
     base, _ = server
-    got = get(base + "/lexicon/ckt%3AUwe%CB%8Alen?partial=1")
+    got = get(base + "/partial/lexicon/ckt%3AUwe%CB%8Alen")
     assert "No editor's note" in got and "Chukchi" in got
 
 
@@ -1714,11 +1731,11 @@ def test_the_properties_block_shows_the_geography(tmp_path):
     from harness.web import Sessions, create_app
 
     c = TestClient(create_app(tmp_path, Sessions(root=tmp_path), editor="edition"))
-    got = c.get("/edition/entity/place:x?partial=1").text
+    got = c.get("/edition/partial/entity/place:x").text
     assert "within" in got and "66.0000, 170.0000" in got
     # The inverse too: a parent that could not list its own members would send
     # a reader to the atlas to find out what it holds.
-    assert "contains" in c.get("/edition/entity/place:y?partial=1").text
+    assert "contains" in c.get("/edition/partial/entity/place:y").text
 
 
 def test_a_geo_member_reads_both_ways(tmp_path):
@@ -1748,7 +1765,7 @@ def test_a_lexicon_card_carries_the_imputed_pronunciation(server):
     table's output and the audio is espeak with no Chukchi voice behind it, so
     the card is where a reader is told that rather than a doc nobody opens."""
     base, _ = server
-    got = get(base + "/lexicon/ckt%3AUwe%CB%8Alen?partial=1")
+    got = get(base + "/partial/lexicon/ckt%3AUwe%CB%8Alen")
     assert "/uːweːleːn/" in got
     assert "imputed" in got
     assert "class='speak'" in got
@@ -1758,7 +1775,7 @@ def test_a_partial_imputation_is_shown_and_names_what_it_could_not_read(server):
     """Withholding it would say the form is unpronounceable, when what is true
     is that no rule reaches one of its letters."""
     base, _ = server
-    got = get(base + "/lexicon/ckt%3APo%C5%A1a?partial=1")
+    got = get(base + "/partial/lexicon/ckt%3APo%C5%A1a")
     assert "partial" in got and "no rule reaches" in got
 
 
@@ -1791,14 +1808,14 @@ def test_a_node_with_no_boundary_says_its_frame_is_a_frame(server):
                  "- within: place:parent\n- geo: 66.0 170.0\n\n## aliases\n\n"
                  "| form | lang | auto | note |\n|---|---|---|---|\n\n## gloss\n\nx\n",
                  encoding="utf-8")
-    got = get(base + "/map/place%3Aparent?partial=1")
+    got = get(base + "/partial/map/place%3Aparent")
     assert "framed by what lies beneath it" in got and "<svg" in got
 
 
 def test_an_entity_with_nowhere_to_put_says_so_rather_than_drawing_nothing(server):
     base, root = server
     entry(root, "person:nobody2", aliases=[("N", False)])
-    assert "Nothing to draw" in get(base + "/map/person%3Anobody2?partial=1")
+    assert "Nothing to draw" in get(base + "/partial/map/person%3Anobody2")
 
 
 def test_a_string_with_nothing_speakable_in_it_is_a_400_not_a_crash(server):
@@ -1814,8 +1831,8 @@ def test_a_key_nothing_answers_to_is_refused(server):
     that rendered an arbitrary one as a headword, with an imputed pronunciation
     under it, would be inventing a word."""
     base, _ = server
-    assert "Nothing in the lexicon" in get(base + "/lexicon/xx%3Afoo?partial=1")
-    assert "Nothing in the lexicon" in get(base + "/lexicon/notaform?partial=1")
+    assert "Nothing in the lexicon" in get(base + "/partial/lexicon/xx%3Afoo")
+    assert "Nothing in the lexicon" in get(base + "/partial/lexicon/notaform")
 
 
 def test_the_site_marks_are_served(server):
@@ -1980,7 +1997,7 @@ def test_an_unwritten_unjudged_form_still_renders_a_card(server):
     printed on, because all three are derived from stores that already exist."""
     base, root = server
     _gt(root, "1-042", ["south of Kuluˊči Bay lies the", "second settlement"])
-    got = get(base + "/lexicon/Kulu'c^i?partial=1")
+    got = get(base + "/partial/lexicon/Kulu'c^i")
     assert "language unjudged" in got
     assert "south of" in got and "1-042" in got
     assert "No editor's note" in got
@@ -1995,7 +2012,7 @@ def test_all_three_key_forms_reach_the_same_card(server):
     from urllib.parse import quote
     form = unicodedata.normalize("NFD", "Kuluˊči")
     for key in ("Kulu'c^i", form, f"ckt:{form}"):
-        got = get(base + "/lexicon/" + quote(key, safe="") + "?partial=1")
+        got = get(base + "/partial/lexicon/" + quote(key, safe=""))
         assert "south of" in got, key
 
 
@@ -2009,7 +2026,7 @@ def test_an_ambiguous_handle_key_refuses_and_names_the_candidates(server):
     two words with one address."""
     base, root = server
     _gt(root, "1-042", ["the keᵋlin here", "and the keᵉlin there"])
-    got = get(base + "/lexicon/kee%5Elin?partial=1")
+    got = get(base + "/partial/lexicon/kee%5Elin")
     assert "more than one form" in got
     assert unicodedata.normalize("NFD", "keᵋlin") in got
     assert unicodedata.normalize("NFD", "keᵉlin") in got
@@ -2021,8 +2038,8 @@ def test_the_key_is_case_sensitive_where_a_filename_could_not_be(server):
     not, which is why the slug is authored and the key is only the address."""
     base, root = server
     _gt(root, "1-042", ["the Aiˊwan came", "and the aiˊwan went"])
-    upper = get(base + "/lexicon/Ai'wan?partial=1")
-    lower = get(base + "/lexicon/ai'wan?partial=1")
+    upper = get(base + "/partial/lexicon/Ai'wan")
+    lower = get(base + "/partial/lexicon/ai'wan")
     assert "more than one form" not in upper
     assert unicodedata.normalize("NFD", "Aiˊwan") in upper
     assert unicodedata.normalize("NFD", "aiˊwan") in lower
@@ -2051,6 +2068,6 @@ def test_an_editors_note_reaches_the_card(server):
         "# Kuluˊči\n\n- status: proposed\n- since: 1-042\n\n"
         "## editor's note\n\nA bay on the [[place:markova]] side.\n",
         encoding="utf-8")
-    got = get(base + "/lexicon/Kulu'c^i?partial=1")
+    got = get(base + "/partial/lexicon/Kulu'c^i")
     assert "A bay on the" in got
     assert "No editor's note" not in got

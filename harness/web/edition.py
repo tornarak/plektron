@@ -60,6 +60,22 @@ def _root(request: Request) -> Path:
     return Path(request.app.state.root)
 
 
+def _partial(request: Request) -> bool:
+    """Whether the card was asked for bare, as the stack and a preview want it.
+
+    **A path, not a query.** `/partial/entity/…` is a document of its own, and a
+    static host serves a file by its path and ignores the query — so a fragment
+    told apart only by `?partial=1` could not be written beside its page at all.
+    A prefix rather than a suffix because every card's own segment is `:path`
+    and would swallow a trailing `/partial`. Read off the route that matched, so
+    one handler serves both spellings and the two cannot drift. FastAPI puts
+    the router's own route there, unprefixed; the mount is stripped in case a
+    version hands over the included copy instead.
+    """
+    path = request.scope["route"].path
+    return path.removeprefix(BASE).startswith("/partial/")
+
+
 def _drafts(request: Request) -> bool:
     """Whether this sitting shows generated pages. `getattr` because an app built
     by a test or an older caller has no such attribute, and the safe reading of
@@ -1454,18 +1470,19 @@ def _ann_ctx(anns: dict, store: dict) -> dict:
 
 
 @router.get("/entity/{ident:path}")
-def entity(request: Request, ident: str, partial: str = ""):
+@router.get("/partial/entity/{ident:path}")
+def entity(request: Request, ident: str):
     """The entry, and — on a page of its own — its map beside it.
 
-    **`?partial=1` deliberately carries no map.** That fragment is what the stack
-    injects and what a hover preview floats, and both of those are read *while*
+    **The `/partial/` fragment deliberately carries no map.** It is what the
+    stack injects and what a hover preview floats, and both of those are read *while*
     the pane is showing the geography already; a second copy of it inside the
     card would answer a question nothing was asking and cost a map render per
     hover. The pane is the one place a map is.
     """
     root = _root(request)
     ctx = _entity_ctx(_ident(ident), _listing(request), root)
-    if partial:
+    if _partial(request):
         return templates.TemplateResponse(request, "edition/_entity.html", ctx)
     rec = ctx.get("rec")
     if ctx.get("located"):
@@ -1647,7 +1664,8 @@ def _attached_rows(rec: dict, root: Path) -> list[dict]:
 
 
 @router.get("/annotation/{ident:path}")
-def annotation_card(request: Request, ident: str, partial: str = ""):
+@router.get("/partial/annotation/{ident:path}")
+def annotation_card(request: Request, ident: str):
     """One annotation's own page.
 
     **Served whatever its status**, unlike the blocks it puts on a page. A
@@ -1673,7 +1691,7 @@ def annotation_card(request: Request, ident: str, partial: str = ""):
            if rec else "",
            "full_html": ui.annotation_full_html(rec, store) if rec else "",
            "attached": _attached_rows(rec, root) if rec else []}
-    if partial:
+    if _partial(request):
         return templates.TemplateResponse(request, "edition/_annotation.html", ctx)
     return templates.TemplateResponse(
         request, "edition/card.html",
@@ -1771,7 +1789,8 @@ def _attested_forms(native: dict) -> list[dict]:
 
 
 @router.get("/lexicon/{key:path}")
-def lexicon_card(request: Request, key: str, partial: str = ""):
+@router.get("/partial/lexicon/{key:path}")
+def lexicon_card(request: Request, key: str):
     """One form's card. The key arrives three ways and all three are real.
 
     The canonical one is the **handle key** — `/lexicon/Kulu'c^i` — because it is
@@ -1843,7 +1862,7 @@ def lexicon_card(request: Request, key: str, partial: str = ""):
         "note": ui.gloss_html(rec["note"], stores.load(root)) if rec else "",
         "seen_by": sorted(f for f, r in store.items() if r["see"] == form),
     }
-    if partial:
+    if _partial(request):
         return templates.TemplateResponse(request, "edition/_lexicon.html", ctx)
     # **Where the form shows up, by division** — the same mark an entity's
     # mentions make, and it needs no more warrant here than there: the lexicon's
@@ -1948,11 +1967,11 @@ def _map_ctx(idents, root: Path, store: dict | None = None, hidden=(),
 
 
 @router.get("/map")
+@router.get("/partial/map")
 def map_pane(request: Request,
              at: Annotated[list[str], Query()] = (),
              hide: Annotated[list[str], Query()] = (),
-             drop: Annotated[list[str], Query()] = (),
-             partial: str = ""):
+             drop: Annotated[list[str], Query()] = ()):
     """The map as a *selection*, which is the shape the pane actually has.
 
     Repeated `at` rather than one path segment, because adding a place to the
@@ -1974,7 +1993,7 @@ def map_pane(request: Request,
     ctx = _map_ctx(refs, _root(request),
                    hidden={_ident(h) for h in hide if h},
                    dropped={_ident(d) for d in drop if d})
-    if partial:
+    if _partial(request):
         return templates.TemplateResponse(request, "edition/_map.html", ctx)
     title = refs[0] if len(refs) == 1 else f"{len(refs)} place(s)"
     return templates.TemplateResponse(
@@ -1986,8 +2005,9 @@ def map_pane(request: Request,
 
 
 @router.get("/map/{ident:path}")
-def map_view(request: Request, ident: str, partial: str = ""):
-    return map_pane(request, at=[ident], hide=[], drop=[], partial=partial)
+@router.get("/partial/map/{ident:path}")
+def map_view(request: Request, ident: str):
+    return map_pane(request, at=[ident], hide=[], drop=[])
 
 
 @router.get("/atlas")

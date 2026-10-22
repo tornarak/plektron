@@ -169,7 +169,7 @@ let article = document.querySelector("#primary");
 let selected_tab_idx = -1;
 
 const openEntity = ref =>
-  fill('ent:' + ref, B + '/entity/' + encodeURIComponent(ref) + '?partial=1', ref);
+  fill('ent:' + ref, B + '/partial/entity/' + encodeURIComponent(ref), ref);
 
 /* The stack, for `map.js` to reach when a click turns out to want a card. That
    file owns the pane and this one owns the stack, and neither reaches into the
@@ -201,7 +201,7 @@ const openYouTube = (embed, title) =>
        frameborder="0"></iframe></div>`));
 
 const openLexicon = key =>
-  fill('lex:' + key, B + '/lexicon/' + encodeURIComponent(key) + '?partial=1', key);
+  fill('lex:' + key, B + '/partial/lexicon/' + encodeURIComponent(key), key);
 
 /* `key` names an entry in STATE.crops, or is falsy for the whole page. It used
    to be the box itself, joined into the id — which meant the server had to know

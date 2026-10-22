@@ -57,10 +57,11 @@
   const save = () => sessionStorage.setItem(
       KEY, JSON.stringify({sel, hidden: [...hidden], dropped: [...dropped]}));
 
-  const url = () => B + '/map?partial=1'
-      + sel.map(r => '&at=' + encodeURIComponent(r)).join('')
-      + [...hidden].map(r => '&hide=' + encodeURIComponent(r)).join('')
-      + [...dropped].map(r => '&drop=' + encodeURIComponent(r)).join('');
+  const url = () => B + '/partial/map?' + [
+      ...sel.map(r => 'at=' + encodeURIComponent(r)),
+      ...[...hidden].map(r => 'hide=' + encodeURIComponent(r)),
+      ...[...dropped].map(r => 'drop=' + encodeURIComponent(r)),
+  ].join('&');
 
   /* Prefetch is best-effort and silent: it is a saving, and a failed one is
      just the click paying what it would have paid anyway. */
@@ -78,7 +79,7 @@
       for (const id of el.dataset.warm.split(/\s+/)) ids.add(id);
     ids.delete('');
     for (const id of ids)
-      window.CARDS.get(B + '/entity/' + encodeURIComponent(id) + '?partial=1')
+      window.CARDS.get(B + '/partial/entity/' + encodeURIComponent(id))
                   .catch(() => {});
   }
 

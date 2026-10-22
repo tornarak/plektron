@@ -194,7 +194,7 @@ def test_placing_a_notice_does_not_poison_the_render_cache(client):
 def test_an_annotation_reaches_an_entity_card(client):
     root, make = client
     annotation(root, "notice", "n", attaches=("entity:place:markova",))
-    html = make().get("/edition/entity/place:markova?partial=1").text
+    html = make().get("/edition/partial/entity/place:markova").text
     assert html.find("class='ann notice") < html.find("class='gloss'")
 
 

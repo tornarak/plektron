@@ -2,7 +2,7 @@
  *
  * Two behaviours over one fetch. Resting on a link warms the card so the click
  * costs nothing; resting a little longer floats the card itself beside the
- * link. Both render the *same* `?partial=1` fragment the stack renders — there
+ * link. Both render the *same* `/partial/` fragment the stack renders — there
  * is one template per kind of card and this adds no second one.
  *
  * **Why this does not undo the stack.** The stack exists because a reader
@@ -35,7 +35,7 @@
      both already hold. Keying by the ref would mean two vocabularies for one
      identity — `place:markova` here and `ent:place:markova` there — and the
      memo would silently become two memos that never hit. It also makes
-     `?partial=1` part of the key rather than an assumption about it. */
+     `/partial/` part of the key rather than an assumption about it. */
   const MEMO = new Map();
 
   function get(url) {
@@ -54,10 +54,10 @@
   /* The same three URLs `edition.js` builds, character for character. */
   function urlFor(a) {
     if (a.classList.contains('lex'))
-      return B + '/lexicon/' + encodeURIComponent(a.dataset.key) + '?partial=1';
+      return B + '/partial/lexicon/' + encodeURIComponent(a.dataset.key);
     if (a.classList.contains('mapref'))
-      return B + '/map/' + encodeURIComponent(a.dataset.ref) + '?partial=1';
-    return B + '/entity/' + encodeURIComponent(a.dataset.ref) + '?partial=1';
+      return B + '/partial/map/' + encodeURIComponent(a.dataset.ref);
+    return B + '/partial/entity/' + encodeURIComponent(a.dataset.ref);
   }
 
   /* `link` is the one the pointer is asking about, `owner` the one the box on

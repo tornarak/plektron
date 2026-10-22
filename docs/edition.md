@@ -1762,7 +1762,7 @@ preloads its ancestors and descendants".
 (`static/js/hover.js`). Two behaviours over one fetch, memoised by URL — the one
 string this and the stack both already hold, so a card rested on before it was
 clicked opens with nothing to wait for. The preview renders the *same*
-`?partial=1` fragment the stack renders; there is one template per kind of card
+`/partial/` fragment the stack renders; there is one template per kind of card
 and this adds no second one.
 
 A floating preview used to be argued against here, and the argument was that a

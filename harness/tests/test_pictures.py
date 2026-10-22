@@ -194,7 +194,7 @@ def _client(root):
 def test_the_card_shows_the_picture_and_owes_it_a_caption(tmp_path):
     entry(tmp_path, "taxon:wolf", extra="- link: wikidata:Q1\n")
     _ledger(tmp_path, {"Q1": "W.jpg"}, {"W.jpg": _row()})
-    got = _client(tmp_path).get("/edition/entity/taxon:wolf?partial=1").text
+    got = _client(tmp_path).get("/edition/partial/entity/taxon:wolf").text
     assert "330px-W.jpg" in got
     assert "A. Photographer" in got and "CC BY-SA 4.0" in got
     assert "Wikimedia Commons" in got and "via Wikidata" in got
@@ -203,7 +203,7 @@ def test_the_card_shows_the_picture_and_owes_it_a_caption(tmp_path):
 def test_the_picture_links_its_file_page_and_carries_the_lightbox_size(tmp_path):
     entry(tmp_path, "taxon:wolf", extra="- link: wikidata:Q1\n")
     _ledger(tmp_path, {"Q1": "W.jpg"}, {"W.jpg": _row()})
-    got = _client(tmp_path).get("/edition/entity/taxon:wolf?partial=1").text
+    got = _client(tmp_path).get("/edition/partial/entity/taxon:wolf").text
     assert "data-full='https://commons.wikimedia.org/wiki/Special:FilePath/W.jpg" \
            "?width=1920'" in got
     head = got.split("<figure class='entity-img'>")[1].split("<img")[0]
@@ -213,7 +213,7 @@ def test_the_picture_links_its_file_page_and_carries_the_lightbox_size(tmp_path)
 def test_an_editors_pick_does_not_say_via_wikidata(tmp_path):
     entry(tmp_path, "taxon:wolf", extra="- image: commons:W.jpg\n")
     _ledger(tmp_path, {}, {"W.jpg": _row()})
-    got = _client(tmp_path).get("/edition/entity/taxon:wolf?partial=1").text
+    got = _client(tmp_path).get("/edition/partial/entity/taxon:wolf").text
     assert "330px-W.jpg" in got and "via Wikidata" not in got
 
 
@@ -223,7 +223,7 @@ def test_no_picture_out_of_scope_or_unresolved(tmp_path):
     _ledger(tmp_path, {"Q1": "W.jpg"}, {"W.jpg": _row()})
     c = _client(tmp_path)
     for ident in ("being:x", "taxon:y"):
-        assert "entity-img" not in c.get(f"/edition/entity/{ident}?partial=1").text
+        assert "entity-img" not in c.get(f"/edition/partial/entity/{ident}").text
 
 
 # ------------------------------------------------------------- the tool
