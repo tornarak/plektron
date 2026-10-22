@@ -18,7 +18,7 @@ import pytest
 from markupsafe import escape
 from test_entities import entry
 
-from harness import edition_ui, langs, speech, tei_html
+from harness import edition_ui, entities, langs, speech, tei_html
 from harness.entities import ENTITY_CLASSES
 
 TEI_NS = "http://www.tei-c.org/ns/1.0"
@@ -891,9 +891,14 @@ def test_a_map_link_leaves_the_edition_without_handing_it_the_referrer(server):
 def test_an_entry_with_nothing_to_draw_opens_no_pane(server):
     """Chuvan, Kerek, Siberian Yupik and Tundra Yukaghir are the live cases. An
     empty pane saying so would be a second statement of what the card's own
-    `contains`/`within` rows already do not claim."""
+    `contains`/`within` rows already do not claim.
+
+    **Shipped shut, not absent**: the page's other place links still put places
+    on a map, and with no pane in the column they had nowhere to go."""
     base, _ = server
-    assert "id='map-pane'" not in get(base + "/entity/place:markova")
+    body = get(base + "/entity/place:markova")
+    assert "<div id='map-pane' hidden>" in body
+    assert "class='drawn'" not in body
 
 
 def test_the_fragment_the_stack_and_the_preview_use_carries_no_map(server):
@@ -1154,18 +1159,25 @@ def test_an_entity_with_no_map_still_has_a_sidebar(server):
     entry(root, "person:bogoras", status="proposed")
     body = get(base + "/entity/person:bogoras")
     assert "id='secondary'" in body and "id='panel-contents'" in body
-    assert "map-pane" not in body
+    assert "<div id='map-pane' hidden>" in body
 
 
-def test_the_atlas_keeps_its_own_column(server):
-    """Its `#secondary` is the map column paired with the location tree — never
-    idle, and not the reading sidebar. Folding it under an `entities` tab would
-    rename a thing that is not that thing."""
+@pytest.mark.parametrize("path", ["/atlas", "/entities", "/entity/person:bogoras"])
+def test_a_reference_view_carries_the_sidebar_fixed_open(server, path):
+    """The entry, the atlas and the encyclopedia are lists of names whose click
+    is a request for the map or the card, so the column is their point: the
+    reading sidebar, with the pane and the stack, and neither fringe nor idle
+    rule able to put it away. The atlas once had a column of its own with no
+    stack, and its names reached the map by navigating to `/atlas?at=`."""
     base, root = server
     _toc(root)
-    body = get(base + "/atlas")
-    assert "id='secondary'" in body
-    assert "id='toc-toggle'" not in body and "id='side-hide'" not in body
+    entry(root, "person:bogoras", status="proposed")
+    body = get(base + path)
+    assert "<aside id='secondary' data-fixed>" in body
+    assert "id='stack'" in body and "id='map-pane'" in body
+    assert "id='side-hide'" not in body and "id='side-show'" not in body
+    assert "/static/js/edition.js" in body and "/static/js/map.js" in body
+    assert "atlas?at=" not in body
 
 
 # --------------------------------------------------- the footnote popup
@@ -1707,6 +1719,28 @@ def test_the_properties_block_shows_the_geography(tmp_path):
     # The inverse too: a parent that could not list its own members would send
     # a reader to the atlas to find out what it holds.
     assert "contains" in c.get("/edition/entity/place:y?partial=1").text
+
+
+def test_a_geo_member_reads_both_ways(tmp_path):
+    """A people's `geo:` names its villages and is written on its side only, so
+    each village's card has to find who names it — the inverse `contains` is to
+    `within:`. One row each way, however many members."""
+    entry(tmp_path, "place:y", aliases=[("Y", False)])
+    entry(tmp_path, "place:z", aliases=[("Z", False)])
+    p = tmp_path / "edition" / "entities" / "people" / "x.md"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text("# people:x — X\n\n- status: ratified\n- since: 1-021\n"
+                 "- geo: place:y\n- geo: place:z\n\n## aliases\n\n"
+                 "| form | lang | auto | note |\n|---|---|---|---|\n\n## gloss\n\nx\n",
+                 encoding="utf-8")
+    store = entities.load(tmp_path)
+    rows = edition_ui.property_rows(store["people:x"], store, tmp_path)
+    located = [r for r in rows if r["label"] == "located"]
+    assert len(located) == 1
+    assert [e["id"] for e in located[0]["entries"]] == ["place:y", "place:z"]
+    back = edition_ui.property_rows(store["place:y"], store, tmp_path)
+    assert [r["entries"] for r in back if r["label"] == "location of"] == [
+        [{"id": "people:x", "name": "X"}]]
 
 
 def test_a_lexicon_card_carries_the_imputed_pronunciation(server):

@@ -6,6 +6,7 @@
    this page's whole life, which meant `#primary` itself never matched either —
    so the index has been rendering with none of that rule's padding, flex or
    measure, and `#primary.index-width` has never applied at all. #}
+{% include "edition/_sidebar.html" %}
 <div id='primary' class='index-width'>
 {% if problems %}
 <div class='card'><h4>the store does not check out</h4>
@@ -55,8 +56,12 @@ one against the page it was proposed from.</p>
 </div>
 {% endblock %}
 
-{# `ratify.js` used to load here and had nothing to act on: it is delegated on
-   `button.ratify`, which lives on an entity card and never on this page. #}
+{# `card.html`'s set, in its order and for its reason. `ratify.js` once loaded
+   here with nothing to act on; it has the stack's entity cards to act on now. #}
 {% block page_scripts %}
+<script src="/static/js/sidebar.js"></script>
+<script src="/static/js/ratify.js"></script>
 <script src="/static/js/hover.js"></script>
+<script src="/static/js/map.js"></script>
+<script src="/static/js/edition.js"></script>
 {% endblock %}

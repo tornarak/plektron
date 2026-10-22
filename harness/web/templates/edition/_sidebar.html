@@ -22,20 +22,30 @@
 
    `pane` and `map` are two routes' names for one fact — the page view sets the
    first and asks for an empty pane the first click fills, the entity route sets
-   the second and arrives with the geography already drawn. #}
+   the second and arrives with the geography already drawn.
+
+   **`side_fixed` is a view whose column is its point** — an entry, the atlas,
+   the encyclopedia, where a click on a name is a request for the map or the card
+   and a column that could be put away or idle shut would swallow it. No fringes,
+   and `data-fixed` exempts the aside from both the idle rule and the dismissal. #}
+{% set fixed = side_fixed | default(false) %}
 {# **The fringes show and hide the column.** This one stands at the window's edge
    while the column is away, collapsed or hidden, and brings it back. It comes
    *before* the aside because the layout's idle rule is `#secondary + #primary`
    and nothing may come between those two. #}
+{% if not fixed %}
 <button id='side-show' type='button' title='Show the sidebar'
         aria-label='Show the sidebar'></button>
-<aside id='secondary'>
+{% endif %}
+<aside id='secondary'{% if fixed %} data-fixed{% endif %}>
   {# And this one puts the column away: a full-height strip on its inner edge,
      beside the text. First in the source, and the column's writing direction is
      what puts it on the inner edge and the scrollbar on the outer one, whichever
      side the column is on — the stylesheet has the rule. #}
+  {% if not fixed %}
   <button id='side-hide' type='button' title='Hide the sidebar'
           aria-label='Hide the sidebar'></button>
+  {% endif %}
   {# **Partitioned vertically**: the panels scroll in the upper part and the
      switch has the bottom to itself, so it never covers the last rows. #}
   <div id='side-col'>

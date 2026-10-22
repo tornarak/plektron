@@ -45,11 +45,6 @@ function card(id, title, meta, html, extra) {
     <div class="body"><h4>${title}</h4>${
       meta ? `<div class="meta">${meta}</div>` : ''}${html}</div>`;
   if (extra) extra(el);
-  /* Middle-click closes it, anywhere on the card. A stack five deep is read by
-     discarding, and reaching for a 12px × each time is the wrong gesture for
-     the commonest act. `mousedown` is where the autoscroll cursor would
-     otherwise appear, so it is refused there and acted on at `auxclick`. */
-  el.addEventListener('mousedown', ev => { if (ev.button === 1) ev.preventDefault(); });
   el.addEventListener('click', ev => {
     const b = ev.target.closest('button'); if (!b) return;
       if (b.dataset.act === 'close') { el.remove(); savePins(); clampIdx(); }
@@ -578,6 +573,11 @@ document.addEventListener('click', ev => {
   /* An outbound link is a real navigation and keeps it — the stack is for what
      this edition holds, not for the open web. */
   if (ev.target.closest('a.out')) return;
+  /* Whatever it opens lands in the entities panel, so that is the panel to show:
+     the contents laid over it would hide what the click produced. Not on a
+     ctrl/meta click, which is the browser's new tab and puts nothing here. */
+  if (ev.target.closest('a.ent, a.lex, a.yt, a.fig') && !ev.ctrlKey && !ev.metaKey
+      && window.SIDEBAR) window.SIDEBAR.show('entities');
   const a = ev.target.closest('a.ent');
   /* **The map first, and the card only when the map cannot take it.** A click
      used to do both, which meant every name in the text cost a card whether or

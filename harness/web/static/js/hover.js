@@ -85,14 +85,32 @@
      off either side. Takes its target as an argument rather than closing over
      `box`, because `notes.js` floats a second thing beside a link in this same
      text and a second copy of this arithmetic is a second thing to get wrong —
-     it is published on `window.CARDS` for that. */
+     it is published on `window.CARDS` for that.
+
+     **Never over the link.** Where neither side had room — a link mid-screen
+     and a tall card — "above" was clamped to the window's top and the card sat
+     on the very name being asked about. So the card takes the roomier side and
+     is capped to it, scrolling inside rather than spilling over. Above, it is
+     pinned by its *bottom* edge, so a picture loading late grows it upward and
+     away from the link instead of down onto it.
+
+     A link the line broke is two boxes: the card sits under the last of them or
+     over the first, starting where that fragment does. */
   function place(a, el) {
-    const r = a.getBoundingClientRect(), b = el.getBoundingClientRect();
-    let y = r.bottom + 8;
-    if (y + b.height > innerHeight - 8) y = Math.max(8, r.top - b.height - 8);
-    const x = Math.max(8, Math.min(r.left, innerWidth - b.width - 8));
-    el.style.left = x + 'px';
-    el.style.top = y + 'px';
+    const rs = a.getClientRects();
+    const first = rs[0] || a.getBoundingClientRect(), last = rs[rs.length - 1] || first;
+    el.style.maxHeight = '';
+    el.style.top = el.style.bottom = '';
+    const b = el.getBoundingClientRect();
+    const cap = getComputedStyle(el).maxHeight;   // the stylesheet's own limit
+    const below = innerHeight - last.bottom - 16, above = first.top - 16;
+    const down = b.height <= below || below >= above;
+    const r = down ? last : first;
+    const room = (down ? below : above) + 'px';
+    el.style.maxHeight = cap === 'none' ? room : `min(${cap}, ${room})`;
+    if (down) el.style.top = (r.bottom + 8) + 'px';
+    else el.style.bottom = (innerHeight - r.top + 8) + 'px';
+    el.style.left = Math.max(8, Math.min(r.left, innerWidth - b.width - 8)) + 'px';
   }
 
   function show(a, html) {

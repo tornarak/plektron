@@ -384,7 +384,7 @@
   });
 
   /* **The page's own subject joins the sitting's map; it does not replace it.**
-     Arriving at an entity's page, or at `/atlas?at=`, is the same act as
+     Arriving at an entity's page is the same act as
      clicking the name would have been, so it adds. If the stored selection is
      already exactly what the server drew there is nothing to do and no request
      to make — which is the ordinary case, and why paging through the book with a

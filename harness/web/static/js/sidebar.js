@@ -94,6 +94,11 @@ function showPanel(name) {
 
 const flip = () => showPanel(shown === 'contents' ? 'entities' : 'contents');
 
+/* For `edition.js`: a link that opens a card or puts a place on the map is
+   asking for the panel that shows it, and the contents laid over it would hide
+   the very thing the click produced. */
+window.SIDEBAR = {show: showPanel};
+
 if (TOGGLE) TOGGLE.addEventListener('click', flip);
 
 /* The header link toggles the same way. `preventDefault` only where there is a

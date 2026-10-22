@@ -1,13 +1,16 @@
 {% extends "edition/base.html" %}
 {% block title %}Atlas — The Chukchee{% endblock %}
 
-{# The node name carries `data-ref` as well as the `¶` beside it. It is the thing
-   a reader's pointer is actually on — the `¶` is a 6px target — and without it
-   the highlight, the preview and the family colour all keyed off the one link
-   nobody hovers. #}
+{# **The name is a place link like every other one** — `a.ent`, to the entry, and
+   a click on it is `edition.js`'s: onto the map first, and the entry in the
+   stack when the map already holds it or cannot draw it at all. The tree used
+   to be its own thing, an `a.node` to `/atlas?at=` that put one place on a
+   server-drawn map and a `¶` beside it for the entry, and it was the one list of
+   place names in the edition that a click did not treat as place names.
+   `node` stays on it for the colour and the hover target, nothing more. #}
 {% macro node(n) %}
-<li><a class='node {{ "sel" if n.selected }}' data-ref='{{ n.id }}'
-       href='{{ base }}/atlas?at={{ n.id }}'>{{ n.canonical }}</a>
+<li><a class='ent node' data-ref='{{ n.id }}'
+       href='{{ base }}/entity/{{ n.id }}'>{{ n.canonical }}</a>
 {# Two pills, because they answer two questions and one used to answer neither.
    `cls` is what the thing is — a point on the ground, a land region, a river
    and its basin, a body of open water — and it is the reason those four are
@@ -17,8 +20,6 @@
    family colour so the tree reads as a legend for the map beside it. #}
 <span class='pill cls' data-ref='{{ n.id }}'>{{ n.cls }}</span>
 <span class='pill'>{{ n.mark }}</span>
-<a class='ent' data-ref='{{ n.id }}' href='{{ base }}/entity/{{ n.id }}'
-   title='the entry'>&para;</a>
 {%- if n.children %}<ul>{% for k in n.children %}{{ node(k) }}{% endfor %}</ul>{% endif %}
 </li>
 {% endmacro %}
@@ -34,17 +35,7 @@
    ethnicity carried its sprachraum they all landed flat at the top, beside the
    one `place` root. The heading is what says those are overlays rather than
    another rung of the containment tree. #}
-<div id='secondary'>
-  {% if selected %}
-  {% include "edition/_pane.html" %}
-  {% else %}
-  <div class='card'><div class='body'>
-  <p class='meta'>Pick a location. The tree holds every entity with somewhere to
-  put on a map — a shape a source drew, a point a human keyed, or an extent
-  framed by what lies beneath it.</p>
-  </div></div>
-  {% endif %}
-</div>
+{% include "edition/_sidebar.html" %}
 <div id='primary'>
 <ul class='tree'>
 {% for g in groups %}
@@ -60,11 +51,12 @@
 </div>
 {% endblock %}
 
-{# The ¶ beside every node is an `a.ent`, so the tree previews its own entries —
-   which is the one place a reader is looking at a hundred entity names at once,
-   and the one place the highlight has most to say: everything drawn on the
-   selected node's map is a name somewhere in the list beside it. #}
+{# `card.html`'s set, in its order and for its reason: the sidebar's markup is the
+   same, so the scripts that answer it are. #}
 {% block page_scripts %}
+<script src="/static/js/sidebar.js"></script>
+<script src="/static/js/ratify.js"></script>
 <script src="/static/js/hover.js"></script>
 <script src="/static/js/map.js"></script>
+<script src="/static/js/edition.js"></script>
 {% endblock %}

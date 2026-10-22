@@ -573,16 +573,37 @@ def property_rows(rec: dict, store: dict, root: Path) -> list[dict]:
         )
 
     # An entity member is a location too, and it is the one kind a reader cannot
-    # check by looking at a number — so it says whose extent this record is
-    # borrowing, by name, and links there.
-    for m in geo.geo_refs(rec):
-        target = store.get(m)
+    # check by looking at a number — so it names where this record is, and links
+    # there. **One row, as `contains` is one row**: a people naming thirty-seven
+    # villages read as thirty-seven rows of "extent of", which said how the map
+    # is drawn rather than what the record claims.
+    refs = geo.geo_refs(rec)
+    if refs:
         rows.append(
             {
-                "kind": "entity",
-                "label": "extent of",
-                "id": m,
-                "name": target["canonical"] if target else m,
+                "kind": "entities",
+                "label": "located",
+                "entries": [
+                    {"id": m, "name": store[m]["canonical"] if m in store else m}
+                    for m in refs
+                ],
+            }
+        )
+
+    # **And its inverse, as `contains` is `within:`'s.** A `geo:` member is
+    # written on one side only, so the village a people names could not say who
+    # is located there — the card the question is asked on.
+    located_here = sorted(
+        r["id"] for r in store.values() if rec["id"] in geo.geo_refs(r)
+    )
+    if located_here:
+        rows.append(
+            {
+                "kind": "entities",
+                "label": "location of",
+                "entries": [
+                    {"id": r, "name": store[r]["canonical"]} for r in located_here
+                ],
             }
         )
 

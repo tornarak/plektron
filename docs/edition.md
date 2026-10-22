@@ -1582,9 +1582,10 @@ teaches you not to bother.
 **A map is not a card — it is a pane above the stack.** There is only ever one
 *here*, and a map that was a card like any other could sit in the stack twice
 saying different things about where you are, or be pushed out of sight by the
-next three. So: one pane, at the top. An entity's own page and `/atlas?at=`
-render it filled; the page view ships it shut and the first click on a located
-entity opens it. Dismissal is "not this one" rather than a setting — nothing is
+next three. So: one pane, at the top. An entity's own page renders it filled;
+the page view and the atlas ship it shut, and the sitting's selection or the
+first click on a located entity opens it. The atlas's tree links to the entries,
+as every place link does — the click is the map act, the href the fallback. Dismissal is "not this one" rather than a setting — nothing is
 written down, and the next such click brings it back. An entity the atlas cannot
 draw leaves the pane alone: swapping a map you were reading for a sentence about
 an absence loses more than it says, and the card's own rows already say it.

@@ -1487,6 +1487,8 @@ def entity(request: Request, ident: str, partial: str = ""):
             request,
             partial="edition/_entity.html",
             card_title=rec["canonical"] if rec else ident,
+            side_fixed=True,
+            pane=True,
             toc_panel=_toc_panel(
                 root, [], by_folio,
                 # Only where there were pages to place, on `_mentions`' own
@@ -1989,7 +1991,7 @@ def map_view(request: Request, ident: str, partial: str = ""):
 
 
 @router.get("/atlas")
-def atlas(request: Request, at: str = ""):
+def atlas(request: Request):
     root = _root(request)
     store = stores.load(root)
     kids = geo.children(store)
@@ -2019,7 +2021,6 @@ def atlas(request: Request, at: str = ""):
                      else "point" if geo.geo_points(rec)
                      else "transcluded" if geo.geo_refs(rec)
                      else "framed"),
-            "selected": ident == at,
             "children": [
                 node(k) for k in kids.get(ident, []) if geo.located(k, store, root)
             ],
@@ -2042,18 +2043,16 @@ def atlas(request: Request, at: str = ""):
     groups = [{"cls": cls,
                "tree": [node(r) for r in roots if store[r]["class"] == cls]}
               for cls in ENTITY_CLASSES]
-    ctx = _map_ctx(at, root, store=store) if at in store else {}
     return templates.TemplateResponse(
         request,
         "edition/atlas.html",
         _ctx(
             request,
             groups=[g for g in groups if g["tree"]],
-            selected=at in store,
-            map=at in store,
+            pane=True,
+            side_fixed=True,
             gaps=[v for _k, v in sorted(geo.index(root)["absent"].items())],
             here=f"{len(roots)} root(s) · {len(store)} entities",
-            **ctx,
         ),
     )
 
@@ -2119,6 +2118,8 @@ def entity_index(request: Request):
         _ctx(
             request,
             groups=groups,
+            pane=True,
+            side_fixed=True,
             problems=rep["errors"],
             here=f"{rep['entities']} entries · {rep['proposed']} awaiting audit",
         ),
