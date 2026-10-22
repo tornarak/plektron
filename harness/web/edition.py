@@ -52,12 +52,22 @@ from . import Editor, register, stores, templates
 from .errors import fetched
 from .files import send_file
 
-BASE = "/edition"
 router = APIRouter()
 
 
 def _root(request: Request) -> Path:
     return Path(request.app.state.root)
+
+
+def _base(request: Request) -> str:
+    """Where this app mounted the reading view. The shared server never says, and
+    mounts it at `ui.BASE`; `site_app` mounts it wherever a static build asks."""
+    return getattr(request.app.state, "base", ui.BASE)
+
+
+def _assets(request: Request) -> str:
+    """Where the static files are served from, by the same rule as `_base`."""
+    return getattr(request.app.state, "assets", ui.ASSETS)
 
 
 def _partial(request: Request) -> bool:
@@ -73,7 +83,7 @@ def _partial(request: Request) -> bool:
     version hands over the included copy instead.
     """
     path = request.scope["route"].path
-    return path.removeprefix(BASE).startswith("/partial/")
+    return path.removeprefix(_base(request)).startswith("/partial/")
 
 
 def _drafts(request: Request) -> bool:
@@ -100,11 +110,13 @@ def _ctx(request: Request, **kw) -> dict:
     """The keys `edition/base.html` needs on every page.
 
     `state` carries the mount prefix because the scripts are cached static files
-    served from one place and cannot hold it themselves.
+    served from one place and cannot hold it themselves. A route's own `state`
+    is merged over it, so no route has to restate the prefixes.
     """
-    base = {"base": BASE, "here": "", "state": {"base": BASE}}
-    base.update(kw)
-    return base
+    base, assets = _base(request), _assets(request)
+    out = {"base": base, "assets": assets, "here": "", **kw}
+    out["state"] = {"base": base, "assets": assets, **(kw.get("state") or {})}
+    return out
 
 
 # ------------------------------------------------------------------ the text
@@ -172,7 +184,7 @@ def figure_crop(request: Request, ref: str, key: str):
     )
 
 
-def _figures(ref: str, root, doc: dict) -> list[dict]:
+def _figures(ref: str, root, doc: dict, base: str = ui.BASE) -> list[dict]:
     """Which pictures hang on which `<figure>`, one row per figure the page has.
 
     **This is the join the renderer refuses to do**, and it is here because here
@@ -205,7 +217,7 @@ def _figures(ref: str, root, doc: dict) -> list[dict]:
         parts = {p["zone_id"]: p for p in f.get("parts") or []}
         figs.append({
             "i": r["i"], "n": r["n"], "why": "",
-            "crops": [{"url": f"{BASE}/fig/{ref}/{F.zone_suffix(z)}.png",
+            "crops": [{"url": f"{base}/fig/{ref}/{F.zone_suffix(z)}.png",
                        "width": (parts.get(z) or f).get("width_frac", 1.0)}
                       for z in f["zone_ids"]],
             "side": f.get("side", "full"),
@@ -281,7 +293,7 @@ def figref_census(root, refs: list[str], tick=None) -> dict:
                        for s in FIGREF_STATES]}
 
 
-def figref_rows(doc: dict, root) -> list[dict]:
+def figref_rows(doc: dict, root, base: str = ui.BASE) -> list[dict]:
     """Where each cross-reference in the prose points — the join the renderer
     refuses to do, for `_figure_state`'s reason and in its manner.
 
@@ -365,7 +377,7 @@ def figref_rows(doc: dict, root) -> list[dict]:
         first = r["pairs"][0].split("/") if r["pairs"] else None
         out.append({
             "pairs": r["pairs"],
-            "url": f"{BASE}/fig/{first[0]}/{first[1]}.png" if first else "",
+            "url": f"{base}/fig/{first[0]}/{first[1]}.png" if first else "",
             "label": label,
             "caption": caption,
             "why": r["why"],
@@ -391,14 +403,14 @@ LEAF_NOTES = {
 }
 
 
-def _plates(ref: str, root) -> list[dict]:
+def _plates(ref: str, root, base: str = ui.BASE) -> list[dict]:
     """The pictures `gt/fig/` boxes on an exempt leaf, in printed order."""
     figs = [f for f in stores.fig_layout(ref, root)["figures"]
             if f["box"] is not None]
     return [{
         "n": f["n"],
         "caption": f["caption"],
-        "crops": [f"{BASE}/fig/{ref}/{F.zone_suffix(z)}.png"
+        "crops": [f"{base}/fig/{ref}/{F.zone_suffix(z)}.png"
                   for z in f["zone_ids"]],
     } for f in F.in_printed_order(figs)]
 
@@ -420,7 +432,7 @@ def _exempt_page(request: Request, ref: str, root):
     is looking at; it never manufactures content the stores do not hold.
     """
     kind = tei_html.leaf_kind(ref, root)
-    plates = _plates(ref, root)
+    plates = _plates(ref, root, _base(request))
 
     refs = _listing(request)
     i = refs.index(ref) if ref in refs else -1
@@ -440,10 +452,11 @@ def _exempt_page(request: Request, ref: str, root):
             # An exempt leaf has no `<pb>` and prints no folio of its own, so the
             # panel is asked what the index says about the leaf and nothing else.
             # Usually that is nothing, and the Contents renders unmarked.
-            toc_panel=_toc_panel(root, [stores.folio_by_ref(root).get(ref)]),
+            toc_panel=_toc_panel(root, [stores.folio_by_ref(root).get(ref)],
+                                 base=_base(request)),
             editor_leaf=ui.leaf_source(ref, root)[1] == "ed",
             leaf_layers=ui.leaf_layers(ref, root) is not None,
-            state={"base": BASE, "ref": ref,
+            state={"ref": ref,
                    "size": ui._raster_size(ref, root), "crops": {}},
             prev=refs[i - 1] if i > 0 else "",
             next=refs[i + 1] if 0 <= i < len(refs) - 1 else "",
@@ -460,7 +473,7 @@ def _neighbours(request: Request, ref: str) -> tuple[str, str]:
             refs[i + 1] if 0 <= i < len(refs) - 1 else "")
 
 
-def _run_leaves(run: dict, root: Path) -> list[dict]:
+def _run_leaves(run: dict, root: Path, base: str = ui.BASE) -> list[dict]:
     """`(leaves, tail)` — one record per leaf of the run, then the entries the
     store records as printed on a leaf the run does not cover.
 
@@ -516,7 +529,8 @@ def _run_leaves(run: dict, root: Path) -> list[dict]:
             "printed_folio": by_ref.get(ref, ""),
             "folio_anchor": apparatus.anchor("folio", folio) if folio else "",
             "editor": ui.leaf_source(ref, root)[1] == "ed",
-            "entries": [_decorate(e, kind, root, index, by_authority, by_plate, headings)
+            "entries": [_decorate(e, kind, root, index, by_authority, by_plate,
+                                  headings, base)
                         for e in entries_by_ref.get(ref, [])],
         }
 
@@ -558,16 +572,16 @@ def _run_items(leaves: list[dict]) -> list[dict]:
     return items
 
 
-def _folio_url(folio, index: dict) -> str:
+def _folio_url(folio, index: dict, base: str = ui.BASE) -> str:
     """A link to a folio, but only where something witnesses it. A dead link to
     the refusal page would train a reader to stop following them."""
     f = apparatus._as_folio(folio)
-    return f"{BASE}/folio/{f}" if f is not None and f in index else ""
+    return f"{base}/folio/{f}" if f is not None and f in index else ""
 
 
 def _decorate(entry: dict, kind: str, root: Path, index: dict,
               by_authority: dict, by_plate: dict,
-              headings: dict | None = None) -> dict:
+              headings: dict | None = None, base: str = ui.BASE) -> dict:
     """One apparatus entry, plus the links the other stores can supply for it.
 
     Every link here is a store answering a question the printed list poses, and
@@ -585,11 +599,11 @@ def _decorate(entry: dict, kind: str, root: Path, index: dict,
     e["opposite"] = bool(e.get("opposite_folio") and not e.get("folio"))
     if e["opposite"]:
         e["folio"] = e["opposite_folio"]
-    e["folio_url"] = _folio_url(e.get("folio"), index)
+    e["folio_url"] = _folio_url(e.get("folio"), index, base)
 
     if kind == "toc":
         e["anchor"] = apparatus.anchor("toc", e["id"]) if e.get("id") else ""
-        e["folio_url"] = _folio_url(e.get("page_start"), index)
+        e["folio_url"] = _folio_url(e.get("page_start"), index, base)
         # **The heading's own anchor, appended to the folio link.** `tei_html`
         # gives every `<milestone>` the ToC id as its `@id`, so the fragment is
         # the id and nothing has to be looked up — the row already knows which
@@ -611,7 +625,8 @@ def _decorate(entry: dict, kind: str, root: Path, index: dict,
         # lands on it inside whatever run holds it.
         if headings is None:
             headings = stores.heading_urls(root)
-        e["folio_url"] = headings.get(e.get("id") or "") or e["folio_url"]
+        heading = headings.get(e.get("id") or "")
+        e["folio_url"] = base + heading if heading else e["folio_url"]
     elif kind == "loi":
         # **One link per printed number, not per entry.** Two entries name
         # several figures at once ("Figs. 214, 215, 216"), and each numeral is a
@@ -643,7 +658,7 @@ def _decorate(entry: dict, kind: str, root: Path, index: dict,
              "pair": (",".join(f"{hits[0]['ref']}/{k}" for k in hits[0]["keys"])
                       if len(hits := [h for h in idx.get(str(n)) or []
                                       if h["ref"] not in on_plates]) == 1 else ""),
-             "url": (f"{BASE}/fig/{hits[0]['ref']}/{hits[0]['keys'][0]}.png"
+             "url": (f"{base}/fig/{hits[0]['ref']}/{hits[0]['keys'][0]}.png"
                      if len(hits) == 1 else "")}
             for n in (e.get("numbers") or [])]
         # `pair` is `ref/key`, which is what a stack card's id is built from so
@@ -660,16 +675,17 @@ def _decorate(entry: dict, kind: str, root: Path, index: dict,
         if e.get("kind") == "plate":
             hit = by_plate.get(str(e.get("number"))) or {}
             e["pairs"] = [f"{hit['ref']}/{k}" for k in hit.get("keys", ())]
-            e["thumbs"] = [f"{BASE}/fig/{hit['ref']}/{k}.png"
+            e["thumbs"] = [f"{base}/fig/{hit['ref']}/{k}.png"
                            for k in hit.get("keys", ())]
             e["plate_ref"] = hit.get("ref", "")
     elif kind == "authorities":
         ident = by_authority.get(e.get("key"))
-        e["entity"] = f"{BASE}/entity/{ident}" if ident else ""
+        e["entity"] = f"{base}/entity/{ident}" if ident else ""
     return e
 
 
-def _toc_tree(toc: list[dict], root: Path, index: dict) -> list[dict]:
+def _toc_tree(toc: list[dict], root: Path, index: dict,
+              base: str = ui.BASE) -> list[dict]:
     """The printed list as the tree its levels describe, all five deep.
 
     Level 0 nests as level 1: front matter emits no milestone and so is absent
@@ -685,7 +701,7 @@ def _toc_tree(toc: list[dict], root: Path, index: dict) -> list[dict]:
     stack: list[tuple[int, dict]] = []
     headings = stores.heading_urls(root)
     for e in toc:
-        node = {**_decorate(e, "toc", root, index, {}, {}, headings),
+        node = {**_decorate(e, "toc", root, index, {}, {}, headings, base),
                 "depth": max(e.get("level") or 0, 1), "children": []}
         while stack and stack[-1][0] >= node["depth"]:
             stack.pop()
@@ -730,7 +746,8 @@ def _unroll(nodes: list[dict]) -> None:
 
 
 def _toc_panel(root: Path, folios: list,
-               hits: dict[int, int] | None = None, absent: str = "") -> dict:
+               hits: dict[int, int] | None = None, absent: str = "",
+               base: str = ui.BASE) -> dict:
     """The printed Contents as a locator: the whole outline, and what is marked.
 
     `folios` are the printed folios this view *is* — one for a page, several for
@@ -764,7 +781,7 @@ def _toc_panel(root: Path, folios: list,
         for tid in toc_containing(toc, folio):
             tally[tid] = tally.get(tid, 0) + n
 
-    tree = _toc_tree(toc, root, index)
+    tree = _toc_tree(toc, root, index, base)
     _mark_tree(tree, here, tally)
     # **The division you are in is unrolled whole.** Only where the page has a
     # position, and not for an entity's mentions: those are spread over twenty
@@ -825,7 +842,7 @@ def run_page(request: Request, run_id: str):
         return _chapter_page(request, run, root)
     head = ui.norm_ref((run.get("refs") or [""])[0])
     prev, next_ = _neighbours(request, head)
-    leaves, tail = _run_leaves(run, root)
+    leaves, tail = _run_leaves(run, root, _base(request))
     # The alphabet run is the one whose page is not a list. Its store holds
     # grids as well as entries, and the chart joins them to `ipa.RULES`,
     # `ipa.MODERN` and the corpus's own attestation counts — four witnesses
@@ -839,10 +856,11 @@ def run_page(request: Request, run_id: str):
              here=run["title"],
              # Every leaf of the run, since a run is one document over several
              # leaves and the reader is at all of them at once.
-             toc_panel=_toc_panel(root, [leaf["folio"] for leaf in leaves]),
+             toc_panel=_toc_panel(root, [leaf["folio"] for leaf in leaves],
+                                  base=_base(request)),
              # `leaves` is what makes the scan button show the whole span: the
              # run is one document and its scans are several.
-             state={"base": BASE, "ref": head,
+             state={"ref": head,
                     "leaves": [leaf["ref"] for leaf in leaves],
                     "size": ui._raster_size(head, root), "crops": {}},
              prev=prev, next=next_),
@@ -894,6 +912,7 @@ def _chapter_leaves(request: Request, run: dict, root: Path) -> list[dict]:
     belongs to the neighbour, kept to be greyed and linked rather than cut: the
     reader sees where the page they are on came from or goes to.
     """
+    base = _base(request)
     refs = [ui.norm_ref(r) for r in run["refs"]]
     every = stores.runs(root)
     chs = [r for r in every if r.get("kind") == chapters.KIND]
@@ -905,11 +924,11 @@ def _chapter_leaves(request: Request, run: dict, root: Path) -> list[dict]:
     out = []
     for k, ref in enumerate(refs):
         rec = {"ref": ref, "anchor": apparatus.anchor("leaf", ref),
-               "scan": f"{BASE}/page/{ref}.png", "page_url": f"{BASE}/page/{ref}",
+               "scan": f"{base}/page/{ref}.png", "page_url": f"{base}/page/{ref}",
                "rank": ""}
         path, rank = tei_html.page_source(ref, root)
         if path is not None and (rank == "collated" or _drafts(request)):
-            leaf = _leaf_doc(path, ref, root, place=False)
+            leaf = _leaf_doc(path, ref, root, place=False, base=base)
             doc = dict(leaf["doc"])
             doc["html"] = _scope_notes(doc["html"], ref)
             rec.update(kind="text", rank=rank, **{**leaf, "doc": doc})
@@ -919,17 +938,17 @@ def _chapter_leaves(request: Request, run: dict, root: Path) -> list[dict]:
                 cut = _split_at(doc["html"], run["toc_id"])
                 if cut:
                     rec["before"], doc["html"] = cut
-                    rec["other_url"] = f"{BASE}/run/{prev_ch['id']}#{rec['anchor']}"
+                    rec["other_url"] = f"{base}/run/{prev_ch['id']}#{rec['anchor']}"
                     rec["other_title"] = prev_ch["title"]
             if k == len(refs) - 1 and next_ch is not None:
                 cut = _split_at(doc["html"], next_ch["toc_id"])
                 if cut:
                     doc["html"], rec["after"] = cut
-                    rec["other_url"] = f"{BASE}/run/{next_ch['id']}#{next_ch['toc_id']}"
+                    rec["other_url"] = f"{base}/run/{next_ch['id']}#{next_ch['toc_id']}"
                     rec["other_title"] = next_ch["title"]
         elif path is None and ref in exempt:
             rec.update(kind="exempt", leaf_kind=tei_html.leaf_kind(ref, root),
-                       plates=_plates(ref, root))
+                       plates=_plates(ref, root, base))
             folio = apparatus.folio_of(ref, index)
         else:
             rec.update(kind="gap", why=(
@@ -1138,8 +1157,9 @@ def _chapter_page(request: Request, run: dict, root: Path):
              placed=all(leaf["placed"] for leaf in text),
              store_has_toc=any(leaf["store_has_toc"] for leaf in text),
              here=run["title"], pane=True,
-             toc_panel=_toc_panel(root, [leaf["folio"] for leaf in leaves]),
-             state={"base": BASE, "ref": head,
+             toc_panel=_toc_panel(root, [leaf["folio"] for leaf in leaves],
+                                  base=_base(request)),
+             state={"ref": head,
                     "leaves": [leaf["ref"] for leaf in leaves],
                     "size": ui._raster_size(head, root), "crops": {}},
              prev=prev, next=next_),
@@ -1152,11 +1172,14 @@ def _located(root: Path) -> dict:
     return {"among": stores.runs(root), "heads": stores.heads(root)}
 
 
-def _resolved(out: dict) -> RedirectResponse | None:
+def _resolved(request: Request, out: dict) -> RedirectResponse | None:
+    """The locator's place as a redirect. Its `url` is a path under the mount,
+    which is this app's to supply."""
     url = out.get("url")
     if not url:
         return None
-    return RedirectResponse(url + (f"#{out['anchor']}" if out["anchor"] else ""),
+    return RedirectResponse(_base(request) + url
+                            + (f"#{out['anchor']}" if out["anchor"] else ""),
                             status_code=302)
 
 
@@ -1184,7 +1207,7 @@ def folio(request: Request, n: int):
     root = _root(request)
     out = apparatus.locate(root, folio=n, index=stores.folio_index(root),
                            **_located(root))
-    return _resolved(out) or _refusal(request, out, f"folio {n}")
+    return _resolved(request, out) or _refusal(request, out, f"folio {n}")
 
 
 @router.get("/chapter/{roman}")
@@ -1208,7 +1231,7 @@ def chapter(request: Request, roman: str):
         return _refusal(request, {"nearest": []}, f"Chapter {roman}")
     out = apparatus.locate(root, toc_id=entry["id"],
                            index=stores.folio_index(root), **_located(root))
-    return _resolved(out) or _refusal(request, out, f"Chapter {roman}")
+    return _resolved(request, out) or _refusal(request, out, f"Chapter {roman}")
 
 
 @router.get("/toc/{toc_id}")
@@ -1223,7 +1246,7 @@ def toc_entry(request: Request, toc_id: str):
     root = _root(request)
     out = apparatus.locate(root, toc_id=toc_id, index=stores.folio_index(root),
                            **_located(root))
-    return _resolved(out) or _refusal(request, out, f"heading {toc_id}")
+    return _resolved(request, out) or _refusal(request, out, f"heading {toc_id}")
 
 
 @router.get("/leaf/{ref}")
@@ -1240,7 +1263,7 @@ def leaf(request: Request, ref: str):
     if path is None:
         raise HTTPException(
             404, f"no editor's leaf for {ref} in {ui.PAGE_IMG}/ — the scan is at "
-                 f"{BASE}/page/{ref}.png")
+                 f"{_base(request)}/page/{ref}.png")
     return send_file(request, path, media_type=ui.LEAF_MEDIA[path.suffix],
                      missing=f"no editor's leaf for {ref}")
 
@@ -1264,7 +1287,7 @@ def leaf_layer(request: Request, ref: str, layer: str):
     if layers is None:
         raise HTTPException(
             404, f"no built layers for {ref} — the master is at "
-                 f"{BASE}/leaf/{ref}; `uv run --script "
+                 f"{_base(request)}/leaf/{ref}; `uv run --script "
                  f"tools/build_leaf_layers.py {ref}` writes them")
     path = layers[layer]
     return send_file(request, path, media_type=ui.LEAF_MEDIA[path.suffix],
@@ -1282,7 +1305,7 @@ def page(request: Request, ref: str):
     run = stores.run_for(root, ref)
     if run is not None:
         return RedirectResponse(
-            f"{BASE}/run/{run['id']}#{apparatus.anchor('leaf', ref)}",
+            f"{_base(request)}/run/{run['id']}#{apparatus.anchor('leaf', ref)}",
             status_code=302)
     path, rank = tei_html.page_source(ref, root)
     if path is None and ref in stores.exempt(root):
@@ -1294,7 +1317,7 @@ def page(request: Request, ref: str):
             + ("; a generated draft exists — `edition serve --drafts` shows it."
                if rank == "draft" else "."),
         )
-    leaf = _leaf_doc(path, ref, root)
+    leaf = _leaf_doc(path, ref, root, base=_base(request))
     doc = leaf["doc"]
     refs = _listing(request)
     i = refs.index(ref) if ref in refs else -1
@@ -1306,7 +1329,7 @@ def page(request: Request, ref: str):
     size = ui._raster_size(ref, root)
     # `crops` is the scan card's and stays; the figure join is no longer part of
     # the payload at all, because nothing on the client reads it any more.
-    state = {"base": BASE, "ref": ref, "size": size, "crops": {}}
+    state = {"ref": ref, "size": size, "crops": {}}
     return templates.TemplateResponse(
         request,
         "edition/page.html",
@@ -1322,14 +1345,15 @@ def page(request: Request, ref: str):
             supplements=leaf["supplements"],
             placed=leaf["placed"],
             store_has_toc=leaf["store_has_toc"],
-            toc_panel=_toc_panel(root, [doc.get("folio")]),
+            toc_panel=_toc_panel(root, [doc.get("folio")], base=_base(request)),
             prev=refs[i - 1] if i > 0 else "",
             next=refs[i + 1] if 0 <= i < len(refs) - 1 else "",
         ),
     )
 
 
-def _leaf_doc(path: Path, ref: str, root: Path, place: bool = True) -> dict:
+def _leaf_doc(path: Path, ref: str, root: Path, place: bool = True,
+              base: str = ui.BASE) -> dict:
     """One text leaf, rendered and joined: what `/page/{ref}` shows, and what a
     chapter shows for each of its text leaves — one function, so the two cannot
     drift into showing one page two ways.
@@ -1338,8 +1362,9 @@ def _leaf_doc(path: Path, ref: str, root: Path, place: bool = True) -> dict:
     leaves every notice in `notices` rather than splicing a section's under its
     marker: a chapter pools them at its head instead.
     """
-    doc = stores.render(path, root)
-    doc = _hang_pictures(doc, _figures(ref, root, doc), figref_rows(doc, root))
+    doc = stores.render(path, root, base)
+    doc = _hang_pictures(doc, _figures(ref, root, doc, base),
+                         figref_rows(doc, root, base))
     # **The folio is resolved here and handed down**, never looked up inside
     # `annotations.for_page`. Placing a leaf in a section runs `ref → folio →
     # toc ids` and the middle step can refuse; if the chain lived in the
@@ -1355,11 +1380,11 @@ def _leaf_doc(path: Path, ref: str, root: Path, place: bool = True) -> dict:
     ann_store = stores.annotations(root)
     anns = annots.for_page(ann_store, ref, toc_containing(load_toc(root), folio))
     store = stores.load(root)
-    notices = ui.annotation_blocks(anns["top"], store)
+    notices = ui.annotation_blocks(anns["top"], store, base)
     if place:
         doc, notices = _place_notices(doc, notices)
     return {"doc": doc, "notices": notices,
-            "supplements": ui.annotation_blocks(anns["bottom"], store),
+            "supplements": ui.annotation_blocks(anns["bottom"], store, base),
             "placed": folio is not None,
             "store_has_toc": annots.has_toc_attachments(ann_store)}
 
@@ -1419,11 +1444,12 @@ def _mentions(ident: str, refs: list[str], root: Path) -> dict:
             "swept": len(refs)}
 
 
-def _entity_ctx(ident: str, refs: list[str], root: Path) -> dict:
+def _entity_ctx(ident: str, refs: list[str], root: Path, base: str = ui.BASE,
+                assets: str = ui.ASSETS) -> dict:
     store = stores.load(root)
     rec = store.get(ident)
     if rec is None:
-        return {"rec": None, "ident": ident, "base": BASE}
+        return {"rec": None, "ident": ident, "base": base}
     idx = alias_index(store)
     contested = sorted(
         {
@@ -1438,7 +1464,7 @@ def _entity_ctx(ident: str, refs: list[str], root: Path) -> dict:
     # where the form's own entry has to be reachable, and this row is the place:
     # it is the one spot that says "this entity is called that, in Chukchi".
     aliases = [
-        {**t, "note_html": ui.inline_html(t["note"], store),
+        {**t, "note_html": ui.inline_html(t["note"], store, base),
          "lang_name": langs.name(t["lang"]) if t["lang"] else "",
          "lex": t["form"] if t["lang"] in langs.TIER1 else ""}
         for t in rec["aliases"]
@@ -1446,9 +1472,9 @@ def _entity_ctx(ident: str, refs: list[str], root: Path) -> dict:
     return {
         "rec": {**rec, "aliases": aliases},
         "ident": ident,
-        "base": BASE,
-        "gloss": ui.gloss_html(rec["gloss"], store),
-        "links": [ui.link_html(ln) for ln in rec["links"]],
+        "base": base,
+        "gloss": ui.gloss_html(rec["gloss"], store, base),
+        "links": [ui.link_html(ln, assets) for ln in rec["links"]],
         "image": pictures.resolve(rec, stores.picture_ledger(root)),
         "contested": [{"id": c, "canonical": store[c]["canonical"]} for c in contested],
         "located": bool(geo.located(ident, store, root)),
@@ -1460,13 +1486,13 @@ def _entity_ctx(ident: str, refs: list[str], root: Path) -> dict:
         "mentions": _mentions(ident, refs, root),
         # No folio is in play here, so there is no refusal to state: an entity
         # attachment names the entry outright.
-        **_ann_ctx(annots.for_entity(stores.annotations(root), ident), store),
+        **_ann_ctx(annots.for_entity(stores.annotations(root), ident), store, base),
     }
 
 
-def _ann_ctx(anns: dict, store: dict) -> dict:
-    return {"notices": ui.annotation_blocks(anns["top"], store),
-            "supplements": ui.annotation_blocks(anns["bottom"], store)}
+def _ann_ctx(anns: dict, store: dict, base: str = ui.BASE) -> dict:
+    return {"notices": ui.annotation_blocks(anns["top"], store, base),
+            "supplements": ui.annotation_blocks(anns["bottom"], store, base)}
 
 
 @router.get("/entity/{ident:path}")
@@ -1481,12 +1507,13 @@ def entity(request: Request, ident: str):
     hover. The pane is the one place a map is.
     """
     root = _root(request)
-    ctx = _entity_ctx(_ident(ident), _listing(request), root)
+    ctx = _entity_ctx(_ident(ident), _listing(request), root, _base(request),
+                      _assets(request))
     if _partial(request):
         return templates.TemplateResponse(request, "edition/_entity.html", ctx)
     rec = ctx.get("rec")
     if ctx.get("located"):
-        ctx = {**_map_ctx(ident, root), **ctx, "map": True}
+        ctx = {**_map_ctx(ident, root, base=_base(request)), **ctx, "map": True}
     # Where the entry is mentioned, said in the book's own divisions rather than
     # as a page list: a reader sizing an entry up wants to know it is a chapter's
     # subject and a passing name in two others, and forty refs sorted by scan
@@ -1507,7 +1534,7 @@ def entity(request: Request, ident: str):
             side_fixed=True,
             pane=True,
             toc_panel=_toc_panel(
-                root, [], by_folio,
+                root, [], by_folio, base=_base(request),
                 # Only where there were pages to place, on `_mentions`' own
                 # reasoning: a bare zero cannot be told from "never mentioned",
                 # and an entry the corpus does not mention has not failed to be
@@ -1619,14 +1646,14 @@ def annotations_index(request: Request):
     rows = [{"id": k, "title": v["title"], "class": v["class"],
              "status": v["status"], "placement": v["placement"],
              "attaches": len(v["attaches"]),
-             "url": f"{BASE}/annotation/{k}"}
+             "url": f"{_base(request)}/annotation/{k}"}
             for k, v in sorted(store.items())]
     return templates.TemplateResponse(
         request, "edition/annotations.html",
         _ctx(request, rows=rows, card_title="Notices and supplements"))
 
 
-def _attached_rows(rec: dict, root: Path) -> list[dict]:
+def _attached_rows(rec: dict, root: Path, base: str = ui.BASE) -> list[dict]:
     """What this annotation is attached to, each as a link where one resolves.
 
     A `toc:` target is the one that can refuse: `apparatus.locate` answers from
@@ -1640,12 +1667,12 @@ def _attached_rows(rec: dict, root: Path) -> list[dict]:
     for t in rec["attaches"]:
         if t["kind"] == "page":
             rows.append({"label": t["value"], "why": "page",
-                         "url": f"{BASE}/page/{t['value']}"})
+                         "url": f"{base}/page/{t['value']}"})
         elif t["kind"] == "entity":
             ent = store.get(t["value"])
             rows.append({"label": ent["canonical"] if ent else t["value"],
                          "why": t["value"],
-                         "url": f"{BASE}/entity/{t['value']}"})
+                         "url": f"{base}/entity/{t['value']}"})
         else:
             entry = toc.get(t["value"])
             label = entry["title"] if entry else t["value"]
@@ -1656,7 +1683,7 @@ def _attached_rows(rec: dict, root: Path) -> list[dict]:
             ref = (where or {}).get("ref")
             rows.append({
                 "label": f"{label} ({t['value']})",
-                "url": f"{BASE}/page/{ref}" if ref else "",
+                "url": f"{base}/page/{ref}" if ref else "",
                 "why": "" if ref else
                        "no leaf is witnessed at this section's opening folio",
             })
@@ -1685,12 +1712,13 @@ def annotation_card(request: Request, ident: str):
         rec = rec | {"links": [r | {"embed": ui.youtube_embed(r["url"])}
                                for r in rec["links"]]}
     store = stores.load(root)
-    ctx = {"rec": rec, "ident": ident, "base": BASE,
+    base = _base(request)
+    ctx = {"rec": rec, "ident": ident, "base": base,
            "summary_html": ui.gloss_html(
-               annots.expand_links(rec["summary"], rec["links"]), store)
+               annots.expand_links(rec["summary"], rec["links"]), store, base)
            if rec else "",
-           "full_html": ui.annotation_full_html(rec, store) if rec else "",
-           "attached": _attached_rows(rec, root) if rec else []}
+           "full_html": ui.annotation_full_html(rec, store, base) if rec else "",
+           "attached": _attached_rows(rec, root, base) if rec else []}
     if _partial(request):
         return templates.TemplateResponse(request, "edition/_annotation.html", ctx)
     return templates.TemplateResponse(
@@ -1842,7 +1870,7 @@ def lexicon_card(request: Request, key: str):
     ctx: dict = {
         "key": key,
         "form": form,
-        "base": BASE,
+        "base": _base(request),
         "candidates": candidates,
         # **Known, and the two key shapes are known differently.** A
         # `lang:form` key carries an assertion with it — it is what a collated
@@ -1859,7 +1887,8 @@ def lexicon_card(request: Request, key: str):
         "lines": _printed_lines(native, form),
         "ipa": _ipa_ctx(form) if form else None,
         "rec": rec,
-        "note": ui.gloss_html(rec["note"], stores.load(root)) if rec else "",
+        "note": (ui.gloss_html(rec["note"], stores.load(root), _base(request))
+                 if rec else ""),
         "seen_by": sorted(f for f, r in store.items() if r["see"] == form),
     }
     if _partial(request):
@@ -1892,7 +1921,7 @@ def lexicon_card(request: Request, key: str):
         "edition/card.html",
         _ctx(request, partial="edition/_lexicon.html", card_title=form or key,
              toc_panel=_toc_panel(
-                 root, [], by_folio,
+                 root, [], by_folio, base=_base(request),
                  # Only where there were pages to place. A form the corpus does
                  # not attest has not failed to be placed in the Contents — it is
                  # simply not there, which the card's own rows already say, and
@@ -1946,7 +1975,7 @@ def _ipa_ctx(form: str) -> dict | None:
 
 
 def _map_ctx(idents, root: Path, store: dict | None = None, hidden=(),
-             dropped=()) -> dict:
+             dropped=(), base: str = ui.BASE) -> dict:
     """`map_context` with the server's cached readers handed in.
 
     One map resolves six or more shapes out of `edition/geo/`, and every one
@@ -1955,7 +1984,7 @@ def _map_ctx(idents, root: Path, store: dict | None = None, hidden=(),
     return ui.map_context(
         idents,
         root,
-        BASE,
+        base,
         store=store if store is not None else stores.load(root),
         shape=lambda i: stores.shape(i, root),
         hidden=hidden,
@@ -1992,7 +2021,8 @@ def map_pane(request: Request,
     refs = [_ident(i) for i in at if i]
     ctx = _map_ctx(refs, _root(request),
                    hidden={_ident(h) for h in hide if h},
-                   dropped={_ident(d) for d in drop if d})
+                   dropped={_ident(d) for d in drop if d},
+                   base=_base(request))
     if _partial(request):
         return templates.TemplateResponse(request, "edition/_map.html", ctx)
     title = refs[0] if len(refs) == 1 else f"{len(refs)} place(s)"
@@ -2000,7 +2030,7 @@ def map_pane(request: Request,
         request,
         "edition/card.html",
         _ctx(request, partial="edition/_map.html", card_title=f"{title} — map",
-             toc_panel=_toc_panel(_root(request), []), **ctx),
+             toc_panel=_toc_panel(_root(request), [], base=_base(request)), **ctx),
     )
 
 
@@ -2246,11 +2276,11 @@ def new_entity(request: Request, body: NewEntity):
 
 
 @router.get("/static/{name}")
-def site_mark(name: str):
+def site_mark(request: Request, name: str):
     """The site marks the old `/static/` route served. Kept as a redirect rather
     than dropped: `edition/entities/` records and any bookmark still name the old path,
     and a 404 here would show as a missing icon nobody would trace."""
-    return RedirectResponse(f"/static/site/{name}", status_code=308)
+    return RedirectResponse(f"{_assets(request)}/site/{name}", status_code=308)
 
 
 register(Editor(name="edition", port=ui.PORT, home="/", router=router))

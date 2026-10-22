@@ -35,9 +35,9 @@
    click left the edition. The scripts a template loads have to follow the markup
    its partials emit, not the route that happens to reach it. #}
 {% block page_scripts %}
-<script src="/static/js/sidebar.js"></script>
-<script src="/static/js/ratify.js"></script>
-<script src="/static/js/hover.js"></script>
-<script src="/static/js/map.js"></script>
-<script src="/static/js/edition.js"></script>
+<script src="{{ assets }}/js/sidebar.js"></script>
+<script src="{{ assets }}/js/ratify.js"></script>
+<script src="{{ assets }}/js/hover.js"></script>
+<script src="{{ assets }}/js/map.js"></script>
+<script src="{{ assets }}/js/edition.js"></script>
 {% endblock %}

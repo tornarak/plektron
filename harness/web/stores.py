@@ -28,6 +28,7 @@ from .. import (
     pictures,
     tei_html,
 )
+from ..edition_ui import BASE
 from ..refs import norm_ref
 from ..state import load_toc
 from .cache import MAXSIZE, digest, stamp
@@ -246,9 +247,11 @@ def _heading_urls(root: str, _key: bytes) -> dict[str, str]:
 
 
 def heading_urls(root: Path) -> dict[str, str]:
-    """`{toc id: url#anchor}` for every heading the text opens exactly once —
+    """`{toc id: path#anchor}` for every heading the text opens exactly once —
     where `apparatus.locate` would send a ToC link, resolved ahead of time
-    because the contents panel asks it of all 316 entries on every page."""
+    because the contents panel asks it of all 316 entries on every page. A path
+    under the reading view's mount, as `locate` gives it; the caller prefixes
+    the mount, so the cache does not have to know it."""
     return _heading_urls(str(root), stamp(_runs_files(root)))
 
 
@@ -555,11 +558,11 @@ def attestations(root: Path) -> dict:
 #: change the answer. Putting a box in the rendered HTML would let a corrected
 #: `gt/fig/` serve stale placement out of this cache with nothing to signal it.
 @lru_cache(maxsize=MAXSIZE)
-def _render(path: str, _page: bytes, _toc: bytes, root: str) -> dict:
-    return tei_html.render(Path(path), toc_titles(Path(root)))
+def _render(path: str, _page: bytes, _toc: bytes, root: str, base: str) -> dict:
+    return tei_html.render(Path(path), toc_titles(Path(root)), base)
 
 
-def render(path: Path, root: Path = Path(".")) -> dict:
+def render(path: Path, root: Path = Path("."), base: str = BASE) -> dict:
     """One page's HTML, memoised on the page **and the ToC**.
 
     **Two files in the key, because two files decide these bytes.** A
@@ -574,15 +577,18 @@ def render(path: Path, root: Path = Path(".")) -> dict:
     difference is not that the key may hold only one file; it is that the geometry
     join is per-figure over three stores and produces *placement*, where a page
     that placed a picture from a stale cache would look right and be wrong.
+
+    `base` is in the key too: every link in the body names the mount.
     """
     key = stamp([Path(root) / "edition" / "toc.json"])
     try:
-        return _render(str(path), digest(Path(path).read_bytes()), key, str(root))
+        return _render(str(path), digest(Path(path).read_bytes()), key, str(root),
+                       base)
     except OSError:
         # A missing file is not cached at all — absence is the ordinary state of a
         # derived tree here, and caching it would outlive the build that fixes it.
         # `cache.by_file`'s rule, kept because this is no longer using it.
-        return tei_html.render(Path(path), toc_titles(Path(root)))
+        return tei_html.render(Path(path), toc_titles(Path(root)), base)
 
 
 render.cache_clear = _render.cache_clear               # type: ignore[attr-defined]

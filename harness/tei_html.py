@@ -33,6 +33,7 @@ from urllib.parse import quote
 from lxml import etree
 
 from . import figrefs
+from .edition_ui import BASE
 from .ns import TEI_NS, XML_ID, XML_LANG
 from .refs import norm_ref
 from .seam import OPENS_MEANS
@@ -208,11 +209,6 @@ def strip_tags(html: str) -> str:
     return " ".join(_TAGS.sub("", html).split())
 
 
-#: Where the reading view is mounted. The four browser tools share one server,
-#: so a bare `/entity/…` here would resolve against whichever of them owned the
-#: root — the links in the page body would leave the edition. Kept beside
-#: `edition_ui.BASE`, which has to agree with it.
-BASE = "/edition"
 
 #: What each rank means to a reader, and how visible it should be. The three that
 #: mean "a human settled this" are quiet; the two that do not are marked, because
@@ -382,9 +378,14 @@ class Renderer:
     """
 
     def __init__(
-        self, ref: str, tabindex_offset: int = 2, titles: dict[str, dict] | None = None
+        self, ref: str, tabindex_offset: int = 2, titles: dict[str, dict] | None = None,
+        base: str = BASE,
     ):
         self.ref = ref
+        #: Where the reading view is mounted, which every link in the body names.
+        #: The four browser tools share one server, so a bare `/entity/…` would
+        #: resolve against whichever of them owned the root.
+        self.base = base
         self.tabindex = tabindex_offset
         #: `{toc id: {number, title}}`, what a `<milestone n>` is displayed as.
         #: Passed in rather than read here so the caller's cache can name
@@ -519,7 +520,7 @@ class Renderer:
         # invalidated by a box moving, because no box is involved.
         if handle["kind"] == "page":
             return (
-                f'<a class="pageref" target="_blank" href="{BASE}/folio/'
+                f'<a class="pageref" target="_blank" href="{self.base}/folio/'
                 f'{escape(handle["number"])}">{body}</a>'
             )
         # A chapter, the same way and for the same reason — `/chapter/{roman}`
@@ -527,7 +528,7 @@ class Renderer:
         # nothing about the store's key scheme is written into the page.
         if handle["kind"] == "chapter":
             return (
-                f'<a class="chapref" target="_blank" href="{BASE}/chapter/'
+                f'<a class="chapref" target="_blank" href="{self.base}/chapter/'
                 f'{quote(handle["number"], safe="")}">{body}</a>'
             )
         i = len(self.figrefs)
@@ -607,7 +608,7 @@ class Renderer:
             )
         return (
             f'<a class="{base}{cls}"{_lang_attr(lang)} '
-            f'href="{BASE}/lexicon/{quote(key, safe="")}" '
+            f'href="{self.base}/lexicon/{quote(key, safe="")}" '
             f'data-key="{escape(key)}" title="{escape(why)}"{extra}>'
             f"{body}</a>"
         )
@@ -698,7 +699,7 @@ class Renderer:
         # "open in new tab" keep working, which is what a reader expects of
         # something that looks like a link.
         return (
-            f'<a class="{kind} ent{cls}" tabindex="{tabindex}" href="{BASE}/entity/{escape(ref)}" '
+            f'<a class="{kind} ent{cls}" tabindex="{tabindex}" href="{self.base}/entity/{escape(ref)}" '
             f'data-ref="{escape(ref)}" data-type="{escape(typ)}" '
             f'title="{escape(why or ref)}">{body}</a>'
         )
@@ -982,7 +983,8 @@ class Renderer:
         return "\n".join(x for x in out if x)
 
 
-def render(path: Path, titles: dict[str, dict] | None = None) -> dict:
+def render(path: Path, titles: dict[str, dict] | None = None,
+           base: str = BASE) -> dict:
     """One committed page → `{html, notes, refs, figures, folio, ok}`.
 
     A page that will not parse returns `ok: False` and says why, rather than
@@ -1017,7 +1019,7 @@ def render(path: Path, titles: dict[str, dict] | None = None) -> dict:
             "folio": None,
         }
     ref = path.stem.replace("chukchi-", "")
-    r = Renderer(ref, titles=titles)
+    r = Renderer(ref, titles=titles, base=base)
     r.opens = page_opens(body)
     r.page_first = first_flow(body)
     html = r.blocks(body)

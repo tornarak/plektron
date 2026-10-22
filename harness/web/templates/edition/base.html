@@ -32,8 +32,8 @@ if(t==='dark'||t==='light') document.documentElement.dataset.theme=t;
 {% endblock %}
 
 {% block styles %}
-<link rel="stylesheet" href="/static/css/edition.css">
-<link rel="stylesheet" href="/static/css/geomap.css">
+<link rel="stylesheet" href="{{ assets }}/css/edition.css">
+<link rel="stylesheet" href="{{ assets }}/css/geomap.css">
 {% endblock %}
 
 {# `<header>`, `<main>` and `<footer>` rather than three divs, and the two link
@@ -97,7 +97,7 @@ if(t==='dark'||t==='light') document.documentElement.dataset.theme=t;
 {% block scripts %}
 <script>const STATE = {{ state | tojson }};</script>
 {% block page_scripts %}{% endblock %}
-<script src="/static/js/speak.js"></script>
+<script src="{{ assets }}/js/speak.js"></script>
 <script type="text/javascript">
  document.getElementById('cols-reverse-btn').addEventListener('click', () => {
      const on = document.documentElement.classList.toggle('cols-reversed');

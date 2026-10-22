@@ -20,7 +20,7 @@
 page records {{ asked }}, and at the same rank, so nothing here can say which is
 right. Both are below; the contradiction is what <code>harness edition runs</code>
 reports.</p>
-<ul>{% for c in candidates %}<li><a href='{{ c.url }}{% if c.anchor
+<ul>{% for c in candidates %}<li><a href='{{ base }}{{ c.url }}{% if c.anchor
   %}#{{ c.anchor }}{% endif %}'>{{ c.ref }}</a> — {{ c.witness }}</li>{% endfor %}</ul>
 
 {% elif nearest %}
@@ -29,7 +29,7 @@ folio are separate identifiers and neither is derivable from the other, so a
 folio is known only where a page said what page it is — from a collated
 <code>&lt;pb&gt;</code>, from an apparatus store, or from a running title in
 <code>gt/ocr/</code>. The nearest that are recorded:</p>
-<ul class='nearest'>{% for n in nearest %}<li><a href='{{ n.url }}{% if n.anchor
+<ul class='nearest'>{% for n in nearest %}<li><a href='{{ base }}{{ n.url }}{% if n.anchor
   %}#{{ n.anchor }}{% endif %}'>folio {{ n.folio }}</a> — {{ n.ref }}
   <span class='witness'>({{ n.witness }})</span></li>{% endfor %}</ul>
 

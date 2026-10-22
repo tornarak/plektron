@@ -88,10 +88,10 @@ no <code>@resp</code> on it claims anything.</p>
 
 {# hover.js first: `edition.js`'s `fill` reads the memo it publishes. #}
 {% block page_scripts %}
-<script src="/static/js/sidebar.js"></script>
-<script src="/static/js/hover.js"></script>
-<script src="/static/js/map.js"></script>
+<script src="{{ assets }}/js/sidebar.js"></script>
+<script src="{{ assets }}/js/hover.js"></script>
+<script src="{{ assets }}/js/map.js"></script>
 {# After `hover.js`: it floats a note beside a marker with that file's `place`. #}
-<script src="/static/js/notes.js"></script>
-<script src="/static/js/edition.js"></script>
+<script src="{{ assets }}/js/notes.js"></script>
+<script src="{{ assets }}/js/edition.js"></script>
 {% endblock %}

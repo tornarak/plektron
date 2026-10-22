@@ -59,12 +59,18 @@ from .refs import norm_ref
 PORT = 8734
 REF_OK = re.compile(r"^\d+-\d+$")
 
-#: Where the reading view is mounted. The four tools share one server, so a bare
-#: `/entity/…` in a link would resolve against whichever of them owned the root.
-#: A constant rather than a per-request value because the mount point is fixed
-#: at registration (`harness/web/edition.py`), and threading a request through
-#: `gloss_html` to reach it would put a web concern inside a text transform.
+#: Where the reading view is mounted by default, and the only place that says so.
+#: The four tools share one server, so a bare `/entity/…` in a link would resolve
+#: against whichever of them owned the root. **A default, not the mount**:
+#: `create_app(base=…)` mounts the router elsewhere, which is how `edition build`
+#: puts a site under a prefix. Every function that writes a link takes it as a
+#: plain string defaulting to this — never a request, because that would put a
+#: web concern inside a text transform.
 BASE = "/edition"
+
+#: Where the static files are served from, the second prefix a page needs. Not
+#: under `BASE` live: one server mounts `/static` for all four tools.
+ASSETS = "/static"
 
 
 
@@ -330,7 +336,7 @@ def _link_html(m: re.Match) -> str:
             f'rel="noopener noreferrer">{label}</a>')
 
 
-def inline_html(text: str, store: dict) -> str:
+def inline_html(text: str, store: dict, base: str = BASE) -> str:
     """One line of authored text: escaped, then the small markup a gloss may use.
 
     `[[…]]`, `[text](url)`, `**strong**`, `*em*` and `` `code` ``. No paragraph
@@ -343,23 +349,23 @@ def inline_html(text: str, store: dict) -> str:
     would eat the first asterisk of each pair.
     """
     out = escape(text)
-    out = WIKILINK.sub(lambda m: _entity_link(m.group(1), store), out)
+    out = WIKILINK.sub(lambda m: _entity_link(m.group(1), store, base), out)
     out = _LINK.sub(_link_html, out)
     out = _CODE.sub(r"<code>\1</code>", out)
     out = _STRONG.sub(r"<strong>\1</strong>", out)
     return _EM.sub(r"<em>\1</em>", out)
 
 
-def _entity_link(ident: str, store: dict) -> str:
+def _entity_link(ident: str, store: dict, base: str = BASE) -> str:
     rec = store.get(ident)
     return (
         f'<a class="ent{"" if rec else " dangling"}" data-ref="{ident}" '
-        f'href="{BASE}/entity/{ident}" title="{escape(ident)}">'
+        f'href="{base}/entity/{ident}" title="{escape(ident)}">'
         f'{escape(rec["canonical"] if rec else ident)}</a>'
     )
 
 
-def gloss_html(text: str, store: dict) -> str:
+def gloss_html(text: str, store: dict, base: str = BASE) -> str:
     """An entity's gloss as HTML: escaped first, then the little markup it may use.
 
     **`[[class:slug]]` is how one entry names another.** Bare `person:jochelson`
@@ -399,7 +405,7 @@ def gloss_html(text: str, store: dict) -> str:
                     # how markdown reads a wrapped bullet.
                     items[-1] += " " + line.strip()
             out.append("<ul>" + "".join(
-                f"<li>{inline_html(i, store)}</li>" for i in items) + "</ul>")
+                f"<li>{inline_html(i, store, base)}</li>" for i in items) + "</ul>")
         elif m := _HEADING.match(lines[0].strip()):
             # `###` and deeper. `#` and `##` cannot reach here — both stores
             # slice their files on `##`, so a heading that shallow is a section
@@ -408,9 +414,9 @@ def gloss_html(text: str, store: dict) -> str:
             # itself has already spent `h4` on the title.
             tag = "h5" if len(m.group(1)) == 3 else "h6"
             body = " ".join(x.strip() for x in lines[1:] if x.strip())
-            out.append(f"<{tag}>{inline_html(m.group(2), store)}</{tag}>")
+            out.append(f"<{tag}>{inline_html(m.group(2), store, base)}</{tag}>")
             if body:
-                out.append(f"<p>{inline_html(body, store)}</p>")
+                out.append(f"<p>{inline_html(body, store, base)}</p>")
         else:
             # **Joined into one logical line before the inline rules run**, which
             # is markdown's own reading of a hard-wrapped paragraph — and the
@@ -424,11 +430,11 @@ def gloss_html(text: str, store: dict) -> str:
             # over the store when this was found, **36 spans across 29 entity
             # files** were failing this way.
             out.append(f"<p>{inline_html(' '.join(
-                x.strip() for x in lines if x.strip()), store)}</p>")
+                x.strip() for x in lines if x.strip()), store, base)}</p>")
     return "".join(out)
 
 
-def link_html(row: str) -> str:
+def link_html(row: str, assets: str = ASSETS) -> str:
     """One `link:` row as an outbound link, with its site's mark where there is one.
 
     `target=_blank`: these leave the edition, and a reader who followed one out of
@@ -440,7 +446,7 @@ def link_html(row: str) -> str:
         return f"<div class='meta'>{escape(row)}</div>"
     href = fmt.format(rest)
     mark = (
-        f"<img class='site' src='/static/site/{icon}.svg' alt=''>"
+        f"<img class='site' src='{assets}/site/{icon}.svg' alt=''>"
         if icon
         else "<span class='site'>↗</span>"
     )
@@ -1477,7 +1483,8 @@ def _new(body: dict, root: Path) -> dict:
     return _guarded(root, write)
 
 
-def annotation_blocks(recs: list[dict], store: dict) -> list[dict]:
+def annotation_blocks(recs: list[dict], store: dict,
+                      base: str = BASE) -> list[dict]:
     """Annotation records → what a template prints.
 
     **The link aliases are expanded before `gloss_html` sees the text**, which is
@@ -1505,9 +1512,9 @@ def annotation_blocks(recs: list[dict], store: dict) -> list[dict]:
             "placement": rec["placement"],
             "title": rec["title"],
             "status": rec["status"],
-            "url": f"{BASE}/annotation/{rec['id']}",
+            "url": f"{base}/annotation/{rec['id']}",
             "summary_html": gloss_html(
-                ann.expand_links(rec["summary"], rows), store),
+                ann.expand_links(rec["summary"], rows), store, base),
             # `video` where the row's URL names one, so the shelf opens a player
             # in the stack on the same terms the prose links do.
             "links": [r | {"embed": youtube_embed(r["url"])} for r in rows],
@@ -1522,11 +1529,11 @@ def annotation_blocks(recs: list[dict], store: dict) -> list[dict]:
     return out
 
 
-def annotation_full_html(rec: dict, store: dict) -> str:
+def annotation_full_html(rec: dict, store: dict, base: str = BASE) -> str:
     """The long text, by the same route as the summary."""
     from . import annotations as ann
     return gloss_html(ann.expand_links(rec.get("full", ""), rec.get("links", [])),
-                      store)
+                      store, base)
 
 
 def insert_after_anchor(html: str, anchor_id: str, block: str) -> str | None:

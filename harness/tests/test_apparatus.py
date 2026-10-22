@@ -318,19 +318,19 @@ def test_same_rank_collision_refuses(book: Path):
 
 def test_locate_by_ref_lands_inside_its_run(book: Path):
     out = A.locate(book, ref="1-015")
-    assert out["url"] == "/edition/run/illustrations"
+    assert out["url"] == "/run/illustrations"
     assert out["anchor"] == "leaf-1-015"
 
 
 def test_locate_by_ref_outside_a_run_is_the_page(book: Path):
     out = A.locate(book, ref="1-037")
-    assert out["url"] == "/edition/page/1-037"
+    assert out["url"] == "/page/1-037"
     assert out["anchor"] == ""
 
 
 def test_locate_by_folio_inside_a_run_uses_the_folio_anchor(book: Path):
     out = A.locate(book, folio=3)
-    assert out["url"] == "/edition/run/authorities"
+    assert out["url"] == "/run/authorities"
     assert out["anchor"] == "folio-3"
 
 

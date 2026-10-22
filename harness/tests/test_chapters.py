@@ -152,9 +152,9 @@ def test_a_heading_link_lands_on_the_heading(tmp_path):
     page(tmp_path, "1-003", _opens("chI"))
     page(tmp_path, "1-004", '<pb n="2"/><p>x</p>')
     out = apparatus.locate(tmp_path, toc_id="chI", index={})
-    assert (out["url"], out["anchor"]) == ("/edition/run/chI", "chI")
+    assert (out["url"], out["anchor"]) == ("/run/chI", "chI")
     out = apparatus.locate(tmp_path, ref="1-004", index={})
-    assert (out["url"], out["anchor"]) == ("/edition/run/chI", "leaf-1-004")
+    assert (out["url"], out["anchor"]) == ("/run/chI", "leaf-1-004")
 
 
 # --------------------------------------------------------------- the view

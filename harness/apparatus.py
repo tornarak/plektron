@@ -302,7 +302,9 @@ def folio_index(root: Path = Path(".")) -> dict[int, list[dict]]:
 
 
 def _page_url(ref: str) -> str:
-    return f"/edition/page/{norm_ref(ref)}"
+    """**A path under the reading view's mount, not a URL**: where that is
+    mounted is the web layer's to say, and the caller prefixes it."""
+    return f"/page/{norm_ref(ref)}"
 
 
 def _place(ref: str, root: Path, witness: str = "",
@@ -314,7 +316,7 @@ def _place(ref: str, root: Path, witness: str = "",
     if run is None:
         return {"url": _page_url(ref), "anchor": "", "ref": ref, "run": "",
                 "witness": witness}
-    return {"url": f"/edition/run/{run['id']}", "anchor": anchor("leaf", ref),
+    return {"url": f"/run/{run['id']}", "anchor": anchor("leaf", ref),
             "ref": ref, "run": run["id"], "witness": witness}
 
 
@@ -340,7 +342,7 @@ def _heading(toc_id: str, entry: dict, root: Path, among: list[dict],
     if run is None:
         return {"url": _page_url(ref), "anchor": toc_id, "ref": ref, "run": "",
                 "witness": "tei"}
-    return {"url": f"/edition/run/{run['id']}", "anchor": toc_id, "ref": ref,
+    return {"url": f"/run/{run['id']}", "anchor": toc_id, "ref": ref,
             "run": run["id"], "witness": "tei"}
 
 
@@ -350,7 +352,8 @@ def locate(root: Path = Path("."), *, ref: str | None = None,
            among: list[dict] | None = None, heads: dict | None = None) -> dict:
     """Resolve one key to one place, or refuse and say what is nearby.
 
-    Exactly one key. The three shapes it returns are the three honest answers:
+    Exactly one key. The three shapes it returns are the three honest answers,
+    and every `url` in them is a path under the reading view's mount:
 
         {"url", "anchor", "ref", "run", "witness"}   resolved
         {"candidates": [ … ]}                        two same-rank witnesses
