@@ -29,6 +29,26 @@ const SHOWN_KEY = 'edition-sidebar';
 
 /* ---------------------------------------------------------- the column */
 
+/* **The column starts where the header ends, which moves.** The header scrolls
+   with the page and the column is sticky, so `--bar-gap` follows the header's
+   bottom edge down to 0 rather than holding a gap the header has left. Read on
+   the next frame, once per frame however many scroll events arrive. */
+const BAR = document.getElementById('bar');
+let gapQueued = false;
+function barGap() {
+  gapQueued = false;
+  const gap = BAR ? Math.max(0, BAR.getBoundingClientRect().bottom) : 0;
+  ROOT.style.setProperty('--bar-gap', gap + 'px');
+}
+function queueGap() {
+  if (gapQueued) return;
+  gapQueued = true;
+  requestAnimationFrame(barGap);
+}
+addEventListener('scroll', queueGap, {passive: true});
+addEventListener('resize', queueGap);
+barGap();
+
 /* `.side-open` holds the column open however empty it is; `.side-dismissed`
    hides it whatever it holds. Exactly one or neither: neither is the column
    deciding for itself, open with cards or a map in it and collapsed without. */
@@ -36,6 +56,13 @@ function setSidebar(open) {
   ROOT.classList.toggle('side-open', open);
   ROOT.classList.toggle('side-dismissed', !open);
   try { sessionStorage.setItem(SHOWN_KEY, open ? 'open' : 'closed'); } catch (e) {}
+}
+
+/* **Neither class, and nothing remembered**: the column back to deciding for
+   itself, which with nothing in it is collapsed. */
+function letSidebarIdle() {
+  ROOT.classList.remove('side-open', 'side-dismissed');
+  try { sessionStorage.removeItem(SHOWN_KEY); } catch (e) {}
 }
 
 const sidebarShowing = () =>
@@ -46,41 +73,62 @@ const sidebarShowing = () =>
   if (b) b.addEventListener('click', () => setSidebar(!sidebarShowing()));
 });
 
+/* **Empty** is the idle rule's own condition — no card, the pane shut — asked
+   of the DOM the way the stylesheet asks it, so the two cannot disagree about
+   when the switch is hidden and the contents are all there is to show. */
+const STACK_EL = document.getElementById('stack');
+const PANE_EL = document.getElementById('map-pane');
+const empty = () => !(STACK_EL && STACK_EL.querySelector('.card'))
+  && !(PANE_EL && !PANE_EL.hidden);
+
 /* A card or a map arriving shows the column again: a reader who clicks a name
-   wants the card they clicked, not a column they put away a page ago.
-   **Watched only from `load` on**, because `edition.js` restores the pinned
-   cards as it starts, and a column put away and remembered as away must not be
-   reopened by its own furniture coming back. */
-window.addEventListener('load', () => {
-  const wake = () => { if (ROOT.classList.contains('side-dismissed')) setSidebar(true); };
-  const stack = document.getElementById('stack');
-  if (stack) new MutationObserver(wake).observe(stack, {childList: true});
-  const pane = document.getElementById('map-pane');
-  if (pane) new MutationObserver(() => { if (!pane.hidden) wake(); })
-    .observe(pane, {attributes: true, attributeFilter: ['hidden']});
-});
+   wants the card they clicked, not a column they put away a page ago. **And the
+   last one leaving puts it away**: an emptied entities panel is not a thing
+   anyone asked to look at. Not when the contents were asked for — those stay,
+   and only their switch goes, there being nothing left to switch back to.
+   **Woken and emptied only from `load` on**, because `edition.js` restores the
+   pinned cards as it starts, and a column put away and remembered as away must
+   not be reopened by its own furniture coming back. The panel follows from the
+   start, so restored cards are what a remembered entities panel shows. */
+let loaded = false;
+let wasEmpty = empty();
+function onContentsChange() {
+  const now = empty();
+  if (loaded && !SECONDARY.hasAttribute('data-fixed')) {
+    if (wasEmpty && !now && ROOT.classList.contains('side-dismissed')) setSidebar(true);
+    if (!wasEmpty && now && wanted !== 'contents') letSidebarIdle();
+  }
+  wasEmpty = now;
+  render();
+}
+if (STACK_EL) new MutationObserver(onContentsChange).observe(STACK_EL, {childList: true});
+if (PANE_EL) new MutationObserver(onContentsChange)
+  .observe(PANE_EL, {attributes: true, attributeFilter: ['hidden']});
+window.addEventListener('load', () => { loaded = true; });
 
 /* ---------------------------------------------------------- the panels */
 
+/* `wanted` is the panel asked for; what shows is that, **unless the column is
+   empty, when it is the contents** — a column opened onto nothing opens onto
+   the book's outline, with no switch between it and a panel with nothing in
+   it. The switch itself is hidden by the stylesheet on the same condition. */
+let wanted = 'entities';
 let shown = null;
 
-function showPanel(name) {
-  if (!PANELS.contents) name = 'entities';   // no contents on this view
-  /* The contents asked for is the column asked for. */
-  if (name === 'contents' && ROOT.classList.contains('side-dismissed')) setSidebar(true);
+function render() {
+  const name = !PANELS.contents ? 'entities'   // no contents on this view
+    : empty() ? 'contents' : wanted;
   if (name === shown) return;
   shown = name;
   for (const [key, el] of Object.entries(PANELS)) {
     if (el) el.hidden = key !== name;
   }
-  ROOT.classList.toggle('side-contents', name === 'contents');
   /* "TOC" opens, "cancel" puts back: one control, and its label says what
      pressing it will do rather than what is showing. */
   if (TOGGLE) {
     TOGGLE.textContent = name === 'contents' ? 'cancel' : 'TOC';
     TOGGLE.setAttribute('aria-expanded', String(name === 'contents'));
   }
-  try { sessionStorage.setItem(SIDE_KEY, name); } catch (e) {}
   /* The mark, brought to where it can be seen. A chapter twenty rows down an
      unscrolled column is a chapter you have to go and find, which is the whole
      of what this panel exists to save you. `nearest` rather than `center`: it
@@ -92,7 +140,24 @@ function showPanel(name) {
   }
 }
 
-const flip = () => showPanel(shown === 'contents' ? 'entities' : 'contents');
+function showPanel(name) {
+  if (!PANELS.contents) name = 'entities';
+  /* The contents asked for is the column asked for. */
+  if (name === 'contents' && ROOT.classList.contains('side-dismissed')) setSidebar(true);
+  wanted = name;
+  ROOT.classList.toggle('side-contents', name === 'contents');
+  try { sessionStorage.setItem(SIDE_KEY, name); } catch (e) {}
+  render();
+}
+
+/* The header link and the switch. On an empty column the contents are all it
+   shows, so there is nothing to flip to: the link opens the column onto them,
+   or puts it away. */
+function flip() {
+  if (!sidebarShowing()) return showPanel('contents');
+  if (empty()) { showPanel('entities'); return letSidebarIdle(); }
+  showPanel(wanted === 'contents' ? 'entities' : 'contents');
+}
 
 /* For `edition.js`: a link that opens a card or puts a place on the map is
    asking for the panel that shows it, and the contents laid over it would hide

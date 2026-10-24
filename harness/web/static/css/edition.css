@@ -99,8 +99,14 @@ main.cols { display:flex; align-items:flex-start; flex-direction: row-reverse;
 #primary:first-child:last-child,
 html:not(.side-contents):not(.side-open) #secondary:not([data-fixed]):not(:has(.card)):not(:has(#map-pane:not([hidden]))) + #primary
   { margin: auto; }
-#secondary { flex: 1; padding: 1em; position:sticky; top:3rem;
-  max-height:calc(100vh - 4rem); overflow-y:auto; }
+/* `--bar-gap` is how much of the header is still on screen. The header scrolls
+   away and the column does not, so a fixed `top:3rem` left a strip of nothing
+   above the column for the whole of the book once you were past its first
+   screen. `sidebar.js` keeps it at the header's bottom edge, 3rem at the top of
+   the page and 0 below it; 3rem is the answer without the script. */
+:root { --bar-gap:3rem }
+#secondary { flex: 1; padding: 1em; position:sticky; top:var(--bar-gap);
+  max-height:calc(100vh - var(--bar-gap) - 1rem); overflow-y:auto; }
 html:not(.side-contents):not(.side-open) #secondary:not([data-fixed]):not(:has(.card)):not(:has(#map-pane:not([hidden])))
   { display: none; }
 
@@ -121,7 +127,7 @@ html:not(.side-contents):not(.side-open) #secondary:not([data-fixed]):not(:has(.
    go back to left-to-right, since their text is. */
 #secondary { direction:ltr; display:grid; grid-template-columns:auto 1fr;
   grid-template-rows:minmax(0,1fr); column-gap:.4rem; padding-inline-start:0;
-  padding-bottom:0; height:calc(100dvh - 3rem); overflow:hidden }
+  padding-bottom:0; height:calc(100dvh - var(--bar-gap)); overflow:hidden }
 .cols-reversed #secondary { direction:rtl }
 #side-col { display:flex; flex-direction:column; min-width:0; min-height:0;
   direction:ltr }
@@ -148,7 +154,7 @@ html:not(.side-contents):not(.side-open) #secondary:not([data-fixed]):not(:has(.
    there exactly when the column is not: hidden by its fringe, or collapsed
    because nothing is in it — the idle rule's own condition, read off the
    sibling it stands before. */
-#side-show { display:none; position:fixed; top:3rem; bottom:0; right:0;
+#side-show { display:none; position:fixed; top:var(--bar-gap); bottom:0; right:0;
   z-index:4; border-left:1px solid var(--rule) }
 #side-show::before { content:"‹" }
 .cols-reversed #side-show { right:auto; left:0; border-left:0;
