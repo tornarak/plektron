@@ -165,7 +165,9 @@ html:is(.side-contents, :has(#toc-switch:checked)) #side-body:has(#panel-content
    column the way a character in the markup would be. */
 #side-hide, #side-show { width:1.1rem; padding:0; border:0; border-radius:0;
   background:transparent; color:var(--dim); font-size:1rem; opacity:.55;
-  cursor:pointer; direction:ltr }   /* an rtl column mirrors `content` too */
+  cursor:pointer; direction:ltr;    /* an rtl column mirrors `content` too */
+  /* Labels, not buttons, so nothing centres the arrow unless this does. */
+  display:flex; align-items:center; justify-content:center }
 #side-hide:hover, #side-show:hover { opacity:1; color:var(--fg);
   background:color-mix(in srgb,var(--rule) 30%,transparent) }
 #side-hide { align-self:stretch; border-inline-end:1px solid var(--rule) }
@@ -184,10 +186,10 @@ html:is(.side-contents, :has(#toc-switch:checked)) #side-body:has(#panel-content
 /* Two rules, not one list: `:has()` may not nest, so the idle condition is asked
    of `main` rather than of the aside, and a selector list with one invalid
    member drops the whole rule — which is how this first shipped, never shown. */
-html:is(.side-dismissed, :has(#side-off:checked)) #side-show { display:block }
+html:is(.side-dismissed, :has(#side-off:checked)) #side-show { display:flex }
 html:not(.side-contents):not(:has(#toc-switch:checked)):not(.side-open):not(:has(#side-on:checked))
   main:not(:has(#secondary .card)):not(:has(#map-pane:not([hidden]))) #side-show
-  { display:block }
+  { display:flex }
 
 /* **Dismissed** is the hide fringe's state: the column gone and the text
    re-centred, until the show fringe, a card, a map or the contents ask for it. */
@@ -196,9 +198,13 @@ html:is(.side-dismissed, :has(#side-off:checked)) #secondary:not([data-fixed]) +
   { margin:auto }
 /* **The fringes are labels; the radios behind them are the state.** Out of
    sight but in the tab order, their focus drawn on the fringe they stand
-   before — the same arrangement as the TOC switch. */
-.side-state { position:absolute; width:1px; height:1px; margin:0; opacity:0;
-  pointer-events:none }
+   before — the same arrangement as the TOC switch. **Fixed, not absolute**:
+   clicking a label focuses its box, and the browser scrolls a focused control
+   into view. An absolute box with no offsets sits where it would have been in
+   flow, at the top of the page, so every click on a fringe jumped the reader
+   there; a fixed one is always in view, so focusing it moves nothing. */
+.side-state, #toc-switch { position:fixed; top:0; left:0; width:1px; height:1px;
+  margin:0; opacity:0; pointer-events:none }
 #side-on:focus-visible + #side-show, #side-off:focus-visible + #side-hide
   { outline:2px solid var(--accent); outline-offset:-2px; opacity:1 }
 
@@ -217,9 +223,8 @@ html:is(.side-contents, :has(#toc-switch:checked)) #toc-toggle
 html:is(.side-contents, :has(#toc-switch:checked)) #toc-toggle .when-off { display:none }
 html:is(.side-contents, :has(#toc-switch:checked)) #toc-toggle .when-on { display:inline }
 /* The box is the control and the label its face: out of sight but in the tab
-   order, and its focus drawn on the label, which is what a reader sees. */
-#toc-switch { position:absolute; width:1px; height:1px; margin:0; opacity:0;
-  pointer-events:none }
+   order (with the fringes' radios, above, and fixed for their reason), and its
+   focus drawn on the label, which is what a reader sees. */
 #toc-switch:focus-visible + #toc-toggle { outline:2px solid var(--accent);
   outline-offset:-2px }
 /* **Only over something.** An empty column shows the contents and nothing
