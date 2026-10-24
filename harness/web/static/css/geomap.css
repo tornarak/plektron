@@ -2,18 +2,28 @@ svg.map { width:100%; height:auto; display:block; background:var(--sea);
   border:1px solid var(--rule); border-radius:.3rem }
 svg.map .land { fill:var(--land); stroke:none }
 svg.map .lakes { fill:var(--sea); stroke:none }
-svg.map .kin { fill:none; stroke:var(--dim); stroke-width:.15%; opacity:.5 }
+/* The fade is on the paths, not the group: a group's opacity composites every
+   child, the lit one included, and no rule on the child can undo it. */
+svg.map .kin { fill:none; stroke:var(--dim); stroke-width:.15% }
+svg.map :where(.kin path) { opacity:.5 }
 /* **On the paths, not on the groups.** `--shape` is set per path from its
    `data-kind`, and a `fill:var(--shape)` on the enclosing `<g>` resolves the
    variable *once, at the group*, then paints every child by inheriting the
    computed colour — so every kind came out in the group's own fallback and the
    colour-coding was invisible. Custom properties inherit; the declaration that
-   reads one has to live where the value does. */
-svg.map .members path { fill:color-mix(in srgb,var(--shape) 8%,transparent);
+   reads one has to live where the value does.
+
+   **`:where()`, because these are on the paths too.** `svg.map .members path`
+   is (0,2,2) — `.map` is a class — and outranked `svg.map .hi` at (0,2,1), so a
+   member or a subject under the pointer never changed colour: every watershed on
+   every map, while pins, the parent outline and kin (styled on the group) lit
+   fine. Flattened to (0,1,1), the highlight wins on specificity and not on
+   where it happens to sit in the file. */
+svg.map :where(.members path) { fill:color-mix(in srgb,var(--shape) 8%,transparent);
   stroke:var(--shape); stroke-width:.18%; opacity:.75 }
 svg.map .parent { fill:none; stroke:var(--dim); stroke-width:.25%;
   stroke-dasharray:1%,.8% }
-svg.map .subject path { fill:color-mix(in srgb,var(--shape) 22%,transparent);
+svg.map :where(.subject path) { fill:color-mix(in srgb,var(--shape) 22%,transparent);
   stroke:var(--shape); stroke-width:.35% }
 
 /* --- one hue per shape kind ---
@@ -90,15 +100,17 @@ svg.map .pin-label { fill:var(--fg); font-family:system-ui,sans-serif;
  * one polygon outright.
  *
  * **Last in the file, and every layer rule kept below it in specificity.** A
- * highlight has to beat all of them, and it does so on class count: `.hi` sits
- * on the path, so `svg.map .hi` is two classes to `svg.map .members path`'s one.
+ * highlight has to beat all of them, and it does so on specificity: `svg.map
+ * .hi` is (0,2,1), and a layer rule that reaches the path itself is kept under
+ * it with `:where()` — `svg.map .members path` was (0,2,2) and won, which is
+ * why no watershed lit for as long as that rule stood.
  * It used to need `svg.map.basin .subject.hi` spelled out beside it, because a
  * `.basin` colour rule outweighed a bare `.hi` and kept the subject red under
  * the pointer — the one shape a reader hovers first. That rule is gone:
  * `data-kind` colours every watershed rather than only the subject, and it sets
  * a custom property instead of a paint, so it enters no contest at all. **A
- * paint rule with more than two class-level selectors above here breaks the
- * highlight silently.**
+ * paint rule that reaches a path at (0,2,1) or above breaks the highlight
+ * silently** — a tie goes to whichever comes last.
  *
  * `--hi` is its own colour rather than `--sel`. `--sel` is a *state* — the
  * selected card, the draft tag — and it is muted so it can sit beside text all

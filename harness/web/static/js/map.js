@@ -431,6 +431,10 @@ import {compose, paneHtml} from './geomap.js';
   /* Any anchor naming an entity, not `a.ent` alone: the tree's node links are
      `a.node`, and they are the thing a pointer is actually on there. */
   document.addEventListener('mouseover', ev => {
+    /* And a shape itself: it is as much a name for its entity as a link is,
+       and lighting it lights every other path and pin that entity owns. */
+    const s = ev.target.closest('svg.map [data-ent]');
+    if (s) { light(s.dataset.ent); return; }
     const a = ev.target.closest('a[data-ref]');
     light(a && !a.closest('.card.preview') ? a.dataset.ref : '');
   });
