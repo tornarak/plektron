@@ -56,18 +56,7 @@
         <div id='stack'></div>
       </div>
       {% if toc_panel %}
-      {# **The outline is fetched, and only the marks ship here**: it is the
-         same on every page and was most of each one (`/partial/toc` says why).
-         The note is the page's own, so it stays. Said out loud, because an
-         unmarked panel and a panel that could not place this page look
-         identical: most of the book's folios have no witness, and a locator
-         that quietly showed nothing would read as "this page is in no
-         chapter". The sentence is `_toc_panel`'s, because only the route knows
-         what was being placed. #}
-      <div id='panel-contents' hidden data-toc-src='{{ base }}/partial/toc'
-           data-marks='{{ toc_panel.marks | tojson }}'>{%
-        if toc_panel.note %}<p class='meta panel-note'>{{ toc_panel.note }}</p>{%
-        endif %}</div>
+      <div id='panel-contents' hidden>{% include "edition/_toc_panel.html" %}</div>
       {% endif %}
     </div>
     {% if toc_panel %}

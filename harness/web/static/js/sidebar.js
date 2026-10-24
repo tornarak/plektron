@@ -8,11 +8,10 @@
    `card.html` does not load it at all. Controls that only worked on three of
    the four pages carrying them would be worse than none.
 
-   Everything here degrades: the entities panel is server-rendered, the
-   `<details>` open themselves, and the header's ToC link keeps an href. What the
-   script adds is the two switches, the memory of them, the contents' outline
-   (fetched, see `loadContents`; the panel is `hidden` without the script
-   anyway), and putting the mark where you can see it. */
+   Everything here degrades: the panels are server-rendered, the `<details>`
+   open themselves, and the header's ToC link keeps an href. What the script
+   adds is the two switches, the memory of them, and putting the mark where you
+   can see it. */
 const ROOT = document.documentElement;
 const SECONDARY = document.getElementById('secondary');
 const PANELS = {
@@ -135,76 +134,11 @@ function render() {
      of what this panel exists to save you. `nearest` rather than `center`: it
      moves the column only when the mark is actually off it, so a panel that was
      already showing the right place does not jump. */
-  if (name === 'contents') loadContents().then(showMark);
-}
-
-function showMark() {
-  if (PANELS.contents.hidden) return;
-  const here = PANELS.contents.querySelector('.here');
-  if (here) here.scrollIntoView({block: 'nearest'});
-}
-
-/* ---------------------------------------------------------- the outline */
-
-/* **The outline is fetched; the page ships only its marks.** It is the same on
-   every page and was ~77 KB of each, so the route serves it once
-   (`/partial/toc`) and the page carries `data-marks`: the rows marked, the
-   disclosures open, the counts — all decided by `_toc_panel`, which is where
-   the rule lives. This only puts them where they name.
-
-   Fetched the first time the panel is shown, and otherwise once the browser is
-   idle after load, so the switch does not wait on the network; a host caches it
-   across pages. One request per page however often it is asked for, and a
-   failure is said in the panel and tried again on the next showing. */
-let outline = null;
-function loadContents() {
-  const panel = PANELS.contents;
-  if (!panel) return Promise.resolve();
-  if (outline) return outline;
-  outline = fetch(panel.dataset.tocSrc)
-    .then(r => r.ok ? r.text() : Promise.reject(new Error(`HTTP ${r.status}`)))
-    .then(html => {
-      const t = document.createElement('template');
-      t.innerHTML = html;
-      panel.querySelector('.load-failed')?.remove();
-      panel.prepend(t.content);
-      applyMarks(panel, JSON.parse(panel.dataset.marks || '{}'));
-      startTracking();
-    })
-    .catch(err => {
-      outline = null;
-      if (!panel.querySelector('.load-failed')) {
-        const p = document.createElement('p');
-        p.className = 'meta panel-note load-failed';
-        p.textContent = `The contents could not be loaded (${err.message}).`;
-        panel.prepend(p);
-      }
-    });
-  return outline;
-}
-
-function applyMarks(panel, {here = [], open = [], hits = {}}) {
-  const rows = new Map([...panel.querySelectorAll('li[data-toc]')]
-    .map(li => [li.dataset.toc, li]));
-  for (const id of here) rows.get(id)?.classList.add('here');
-  for (const id of open) {
-    const d = rows.get(id)?.querySelector(':scope > details');
-    if (d) d.open = true;
-  }
-  for (const [id, n] of Object.entries(hits)) {
-    const title = rows.get(id)?.querySelector('.toc-title');
-    if (!title) continue;
-    const s = document.createElement('span');
-    s.className = 'hits';
-    s.title = `${n} mention(s)`;
-    s.textContent = n;
-    title.after(' ', s);
+  if (name === 'contents') {
+    const here = PANELS.contents.querySelector('.here');
+    if (here) here.scrollIntoView({block: 'nearest'});
   }
 }
-
-window.addEventListener('load', () => {
-  if (PANELS.contents) (window.requestIdleCallback || setTimeout)(loadContents);
-});
 
 function showPanel(name) {
   if (!PANELS.contents) name = 'entities';
@@ -271,10 +205,14 @@ if (PRIMARY && PANELS.contents) {
 
    A heading counts once it has risen past the top third of the window: by
    then its section is what fills the screen. The row is marked with what holds
-   it, and only marks this added are ever taken off, so the server's own stay.
-   Started once the outline is in (`loadContents`), since the rows are its. */
+   it, and only marks this added are ever taken off, so the server's own stay. */
 const SIDE_BODY = document.getElementById('side-body');
-let TRACKED = [], SERVED = new Set();
+const TRACKED = PANELS.contents && PRIMARY
+  ? [...PANELS.contents.querySelectorAll('li[data-toc]')]
+      .map(li => [li, document.getElementById(li.dataset.toc)])
+      .filter(([, h]) => h && PRIMARY.contains(h))
+  : [];
+const SERVED = new Set(PANELS.contents ? PANELS.contents.querySelectorAll('.here') : []);
 let reading = [], trackQueued = false;
 
 function track() {
@@ -301,13 +239,7 @@ function track() {
   }
 }
 
-function startTracking() {
-  if (!PRIMARY) return;
-  TRACKED = [...PANELS.contents.querySelectorAll('li[data-toc]')]
-    .map(li => [li, document.getElementById(li.dataset.toc)])
-    .filter(([, h]) => h && PRIMARY.contains(h));
-  SERVED = new Set(PANELS.contents.querySelectorAll('.here'));
-  if (!TRACKED.length) return;
+if (TRACKED.length) {
   addEventListener('scroll', () => {
     if (trackQueued) return;
     trackQueued = true;

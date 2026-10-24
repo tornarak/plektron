@@ -959,7 +959,8 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
 #panel-contents summary { display:flex; align-items:baseline; gap:.35rem;
   cursor:pointer; padding:.15rem 0 }
 #panel-contents summary::marker { color:var(--dim); font-size:.8em }
-#panel-contents .toc-d1 > details > summary { font-weight:600 }
+#panel-contents .toc-d1 > details > summary,
+#panel-contents .toc-d1.shut { font-weight:600 }
 /* Each rung indented under the triangle of the one above, and once: the markup
    nests, so the step compounds without four rules to say so. */
 #panel-contents details > ul { padding-left:1.1rem }
