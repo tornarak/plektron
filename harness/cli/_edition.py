@@ -6,6 +6,8 @@ three stores, and the whole point of the view is that they are in one place.
 """
 from __future__ import annotations
 
+import sys
+
 from .. import edition_ui
 from ..render import progress
 from ._common import action, arg, group, opt, out, page_refs, refs_arg
@@ -125,8 +127,9 @@ def run_build(a) -> int:
     if site.rows:
         out(a, [{"url": r["url"], "why": r["why"], "from": " ".join(r["from"])}
                 for r in site.rows], name="refused", heading=True)
+    # stderr, so `--json` stays one document.
     print(f"{len(site.files)} file(s) written to {a.out} under "
-          f"{site.base or '/'}, {len(site.rows)} refused")
+          f"{site.base or '/'}, {len(site.rows)} refused", file=sys.stderr)
     return 1 if site.rows else 0
 
 
