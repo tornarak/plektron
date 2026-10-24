@@ -15,10 +15,10 @@
    the contents not asked for; the third condition is `#toc-switch` checked, or
    `.side-contents` on `<html>`, which the head script sets from the sitting's
    memory before first paint so the column does not appear and jump on every
-   page load. **The fringes override both ways**:
-   `.side-dismissed` hides the column whatever it holds, `.side-open` holds it
-   open however empty, each remembered for the sitting and set before first
-   paint by the same head script. The stylesheet's rule is the one that must
+   page load. **The fringes override both ways**: `#side-off` checked hides
+   the column whatever it holds, `#side-on` holds it open however empty — or
+   `.side-dismissed` and `.side-open`, which the same head script sets from the
+   sitting's memory before first paint. The stylesheet's rule is the one that must
    agree with this comment.
 
    `pane` asks for the map pane. It always ships empty and `map.js` composes
@@ -34,9 +34,16 @@
    while the column is away, collapsed or hidden, and brings it back. It comes
    *before* the aside because the layout's idle rule is `#secondary + #primary`
    and nothing may come between those two. #}
+{# **The fringes are labels for two radios, `#side-on` and `#side-off`**, so
+   showing and hiding the column is the stylesheet's, as the TOC switch is:
+   neither checked is the column deciding for itself, and one radio group means
+   one of the two can never contradict the other. `sidebar.js` remembers the
+   choice for the sitting and wakes the column for the contents and the cards;
+   the boxes are `autocomplete=off` so the browser keeps no second memory. #}
 {% if not fixed %}
-<button id='side-show' type='button' title='Show the sidebar'
-        aria-label='Show the sidebar'></button>
+<input type='radio' name='side' id='side-on' class='side-state' autocomplete='off'
+       aria-label='Show the sidebar'>
+<label for='side-on' id='side-show' title='Show the sidebar'></label>
 {% endif %}
 <aside id='secondary'{% if fixed %} data-fixed{% endif %}>
   {# And this one puts the column away: a full-height strip on its inner edge,
@@ -44,8 +51,9 @@
      what puts it on the inner edge and the scrollbar on the outer one, whichever
      side the column is on — the stylesheet has the rule. #}
   {% if not fixed %}
-  <button id='side-hide' type='button' title='Hide the sidebar'
-          aria-label='Hide the sidebar'></button>
+  <input type='radio' name='side' id='side-off' class='side-state' autocomplete='off'
+         aria-label='Hide the sidebar'>
+  <label for='side-off' id='side-hide' title='Hide the sidebar'></label>
   {% endif %}
   {# **Partitioned vertically**: the panels scroll in the upper part and the
      switch has the bottom to itself, so it never covers the last rows. #}

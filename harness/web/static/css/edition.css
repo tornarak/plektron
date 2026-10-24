@@ -98,7 +98,7 @@ main.cols { display:flex; align-items:flex-start; flex-direction: row-reverse;
    two ids to that one's one, and the override would be a no-op that reads like
    a fix — the failure this stylesheet already documents at `#bar`. */
 #primary:first-child:last-child,
-html:not(.side-contents):not(:has(#toc-switch:checked)):not(.side-open) #secondary:not([data-fixed]):not(:has(.card)):not(:has(#map-pane:not([hidden]))) + #primary
+html:not(.side-contents):not(:has(#toc-switch:checked)):not(.side-open):not(:has(#side-on:checked)) #secondary:not([data-fixed]):not(:has(.card)):not(:has(#map-pane:not([hidden]))) + #primary
   { margin: auto; }
 /* `--bar-gap` is how much of the header is still on screen. The header scrolls
    away and the column does not, so a fixed `top:3rem` left a strip of nothing
@@ -108,7 +108,7 @@ html:not(.side-contents):not(:has(#toc-switch:checked)):not(.side-open) #seconda
 :root { --bar-gap:3rem }
 #secondary { flex: 1; padding: 1em; position:sticky; top:var(--bar-gap);
   max-height:calc(100vh - var(--bar-gap) - 1rem); overflow-y:auto; }
-html:not(.side-contents):not(:has(#toc-switch:checked)):not(.side-open) #secondary:not([data-fixed]):not(:has(.card)):not(:has(#map-pane:not([hidden])))
+html:not(.side-contents):not(:has(#toc-switch:checked)):not(.side-open):not(:has(#side-on:checked)) #secondary:not([data-fixed]):not(:has(.card)):not(:has(#map-pane:not([hidden])))
   { display: none; }
 
 /* **Which panel shows is the stylesheet's**, off `#toc-switch`: no script
@@ -184,15 +184,23 @@ html:is(.side-contents, :has(#toc-switch:checked)) #side-body:has(#panel-content
 /* Two rules, not one list: `:has()` may not nest, so the idle condition is asked
    of `main` rather than of the aside, and a selector list with one invalid
    member drops the whole rule — which is how this first shipped, never shown. */
-html.side-dismissed #side-show { display:block }
-html:not(.side-contents):not(:has(#toc-switch:checked)):not(.side-open)
+html:is(.side-dismissed, :has(#side-off:checked)) #side-show { display:block }
+html:not(.side-contents):not(:has(#toc-switch:checked)):not(.side-open):not(:has(#side-on:checked))
   main:not(:has(#secondary .card)):not(:has(#map-pane:not([hidden]))) #side-show
   { display:block }
 
 /* **Dismissed** is the hide fringe's state: the column gone and the text
    re-centred, until the show fringe, a card, a map or the contents ask for it. */
-html.side-dismissed #secondary:not([data-fixed]) { display:none }
-html.side-dismissed #secondary:not([data-fixed]) + #primary { margin:auto }
+html:is(.side-dismissed, :has(#side-off:checked)) #secondary:not([data-fixed]) { display:none }
+html:is(.side-dismissed, :has(#side-off:checked)) #secondary:not([data-fixed]) + #primary
+  { margin:auto }
+/* **The fringes are labels; the radios behind them are the state.** Out of
+   sight but in the tab order, their focus drawn on the fringe they stand
+   before — the same arrangement as the TOC switch. */
+.side-state { position:absolute; width:1px; height:1px; margin:0; opacity:0;
+  pointer-events:none }
+#side-on:focus-visible + #side-show, #side-off:focus-visible + #side-hide
+  { outline:2px solid var(--accent); outline-offset:-2px; opacity:1 }
 
 /* --- the TOC switch ---
    The full width of the column at its foot, square, below the scrolling part

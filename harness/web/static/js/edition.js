@@ -710,7 +710,7 @@ document.addEventListener('keydown', ev => {
        trade in the text; on the TOC switch and the fringe it is a trap — you can
        reach them and then not leave. */
     if (ev.key == "Tab" && STACK.childNodes.length
-        && !ev.target.closest('#toc-switch, #toc-toggle, #side-hide, #side-show')) { ev.preventDefault(); toggleStack(); }
+        && !ev.target.closest('#toc-switch, #toc-toggle, .side-state, #side-hide, #side-show')) { ev.preventDefault(); toggleStack(); }
     if (ev.key == "ArrowLeft" && !selected_stack && prev && prev.href) { ev.preventDefault(); window.location = prev.href; }
     if (ev.key == "ArrowRight" && !selected_stack && next && next.href) { ev.preventDefault(); window.location = next.href; }
     if (selected_stack) {

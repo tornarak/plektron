@@ -992,7 +992,12 @@ def test_the_sidebar_ships_its_switch_with_the_contents_shut(server):
         < body.index("id='toc-toggle'") < body.index("</aside>")
     assert re.search(r"</aside>\s*<div id='primary'", body)
     assert "<div id='panel-contents'>" in body, "the panel is the stylesheet's to show"
-    assert "id='side-hide'" in body and "id='side-show'" in body
+    # The fringes are labels for one radio group, neither checked: the column
+    # deciding for itself, and the stylesheet's to show or put away.
+    for state, fringe in (("side-on", "side-show"), ("side-off", "side-hide")):
+        radio = re.search(rf"<input type='radio' name='side' id='{state}'[^>]*>", body)
+        assert radio and "checked" not in radio.group(0)
+        assert f"<label for='{state}' id='{fringe}'" in body
     assert "id='side-tabs'" not in body
     # The switch did not displace what the column already held.
     assert "id='map-pane' hidden" in body and "id='stack'" in body

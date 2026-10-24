@@ -8,11 +8,12 @@
    `card.html` does not load it at all. Controls that only worked on three of
    the four pages carrying them would be worse than none.
 
-   Everything here degrades: the panels are server-rendered, the TOC switch is
-   a checkbox the stylesheet reads, the `<details>` open themselves, and the
-   header's ToC link keeps an href. What the script adds is the fringes, the
-   memory of both, the header link and the margin as ways to the contents, and
-   putting the mark where you can see it. */
+   Everything here degrades: the panels are server-rendered, the TOC switch and
+   the fringes are a checkbox and two radios the stylesheet reads, the
+   `<details>` open themselves, and the header's ToC link keeps an href. What
+   the script adds is the memory of the switch and the fringes for the sitting,
+   the header link and the margin as ways to the contents, waking the column
+   when something arrives in it, and putting the mark where you can see it. */
 const ROOT = document.documentElement;
 const SECONDARY = document.getElementById('secondary');
 const PANELS = {
@@ -50,29 +51,46 @@ addEventListener('scroll', queueGap, {passive: true});
 addEventListener('resize', queueGap);
 barGap();
 
-/* `.side-open` holds the column open however empty it is; `.side-dismissed`
-   hides it whatever it holds. Exactly one or neither: neither is the column
-   deciding for itself, open with cards or a map in it and collapsed without. */
-function setSidebar(open) {
+/* `#side-on` holds the column open however empty it is; `#side-off` hides it
+   whatever it holds. One radio group, so exactly one or neither: neither is the
+   column deciding for itself, open with cards or a map in it and collapsed
+   without. The fringes are their labels, so a click on one is the stylesheet's
+   to answer; what is here is the memory, and waking the column for the
+   contents and the cards. The classes say the same thing for first paint,
+   before this script has set the radios from them. */
+const SIDE_ON = document.getElementById('side-on');
+const SIDE_OFF = document.getElementById('side-off');
+
+function rememberSidebar() {
+  const open = !!(SIDE_ON && SIDE_ON.checked), shut = !!(SIDE_OFF && SIDE_OFF.checked);
   ROOT.classList.toggle('side-open', open);
-  ROOT.classList.toggle('side-dismissed', !open);
-  try { sessionStorage.setItem(SHOWN_KEY, open ? 'open' : 'closed'); } catch (e) {}
+  ROOT.classList.toggle('side-dismissed', shut);
+  try {
+    if (open || shut) sessionStorage.setItem(SHOWN_KEY, open ? 'open' : 'closed');
+    else sessionStorage.removeItem(SHOWN_KEY);
+  } catch (e) {}
 }
 
-/* **Neither class, and nothing remembered**: the column back to deciding for
-   itself, which with nothing in it is collapsed. */
+function setSidebar(open) {
+  if (SIDE_ON) SIDE_ON.checked = open;
+  if (SIDE_OFF) SIDE_OFF.checked = !open;
+  rememberSidebar();
+}
+
+/* **Neither, and nothing remembered**: the column back to deciding for itself,
+   which with nothing in it is collapsed. */
 function letSidebarIdle() {
-  ROOT.classList.remove('side-open', 'side-dismissed');
-  try { sessionStorage.removeItem(SHOWN_KEY); } catch (e) {}
+  if (SIDE_ON) SIDE_ON.checked = false;
+  if (SIDE_OFF) SIDE_OFF.checked = false;
+  rememberSidebar();
 }
 
 const sidebarShowing = () =>
   SECONDARY && getComputedStyle(SECONDARY).display !== 'none';
 
-['side-hide', 'side-show'].forEach(fringe => {
-  const b = document.getElementById(fringe);
-  if (b) b.addEventListener('click', () => setSidebar(!sidebarShowing()));
-});
+if (SIDE_ON) SIDE_ON.checked = ROOT.classList.contains('side-open');
+if (SIDE_OFF) SIDE_OFF.checked = ROOT.classList.contains('side-dismissed');
+[SIDE_ON, SIDE_OFF].forEach(r => r && r.addEventListener('change', rememberSidebar));
 
 /* **Empty** is the idle rule's own condition — no card, the pane shut — asked
    of the DOM the way the stylesheet asks it, so the two cannot disagree about
