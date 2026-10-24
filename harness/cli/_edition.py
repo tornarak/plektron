@@ -10,7 +10,17 @@ import sys
 
 from .. import edition_ui
 from ..render import progress
-from ._common import action, arg, group, opt, out, page_refs, refs_arg
+from ._common import (
+    JOBS_HELP_CRAWL,
+    action,
+    add_jobs,
+    arg,
+    group,
+    opt,
+    out,
+    page_refs,
+    refs_arg,
+)
 
 
 def register(cli):
@@ -64,6 +74,7 @@ def register(cli):
     opt(p, "--drafts", is_flag=True,
         help="also publish `mz/tei/`, marked as drafts as `edition serve "
              "--drafts` marks them")
+    add_jobs(p, processes=True, help=JOBS_HELP_CRAWL)
 
     p = action(g, "runs", run_runs, pageable=False,
                help="the page-runs the reading view serves as one document "
@@ -115,7 +126,8 @@ def run_build(a) -> int:
     from ..web.build import build
 
     with progress("building") as tick:
-        site = build(a.root, Path(a.out), base=a.base, drafts=a.drafts, tick=tick)
+        site = build(a.root, Path(a.out), base=a.base, drafts=a.drafts,
+                     jobs=a.jobs, tick=tick)
     sections: dict[str, int] = {}
     for rel in site.files.values():
         top = rel.split("/")[0] if "/" in rel else "/"
@@ -130,6 +142,9 @@ def run_build(a) -> int:
     # stderr, so `--json` stays one document.
     print(f"{len(site.files)} file(s) written to {a.out} under "
           f"{site.base or '/'}, {len(site.rows)} refused", file=sys.stderr)
+    if site.worker_log.get("stderr_lines"):
+        print(f"the workers wrote {site.worker_log['stderr_lines']} line(s) to "
+              f"stderr: {site.worker_log['stderr_log']}", file=sys.stderr)
     return 1 if site.rows else 0
 
 

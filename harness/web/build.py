@@ -35,18 +35,25 @@ which is what lets a later refactor be checked by rebuilding and diffing.
 from __future__ import annotations
 
 import json
+import multiprocessing
 import re
 import shutil
+import tempfile
+import threading
 from collections import deque
+from concurrent.futures import ProcessPoolExecutor
 from dataclasses import dataclass, field
 from html import escape
+from itertools import chain
 from pathlib import Path
+from typing import NamedTuple
 from urllib.parse import quote, unquote, urlsplit
 
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from lxml import html as LH
 
+from .. import parallel
 from . import STATIC, cache, stores
 
 #: What `encodeURIComponent` leaves alone beyond what `quote` always does, so a
@@ -92,6 +99,9 @@ class Site:
     #: URL path → the pages that link to it, for a row to name its referrer.
     linked_from: dict[str, set[str]] = field(default_factory=dict)
     rows: list[dict] = field(default_factory=list)
+    #: `parallel.worker_output` of a pooled build: what its workers wrote to
+    #: stderr, which a pool must not let reach the terminal while it draws.
+    worker_log: dict = field(default_factory=dict)
 
     def refuse(self, url: str, why: str) -> None:
         self.rows.append({"url": url, "why": why,
@@ -226,11 +236,42 @@ def _expected(root: Path, base: str) -> set[str]:
     return {_canon(u) for u in out}
 
 
+class _Fetched(NamedTuple):
+    """One response, reduced to what the crawl acts on. Plain data, so a worker
+    process can hand it back."""
+
+    html: bool
+    ctype: str
+    body: bytes
+    links: list[str]
+    #: Why the crawl refuses this URL, or "" for a response it writes.
+    refused: str = ""
+
+
+def _fetch(client: TestClient, url: str, base: str) -> _Fetched:
+    """Ask the router for one URL. Everything here is a function of the URL and
+    the snapshot, which is what lets it run in any process in any order."""
+    r = client.get(url, follow_redirects=False)
+    ctype = r.headers.get("content-type", "")
+    html = ctype.startswith("text/html")
+    if r.is_redirect:
+        target = r.headers["location"]
+        return _Fetched(True, ctype, _stub(target).encode(), [target])
+    if r.status_code == 200 or (html and r.status_code in (300, 404)):
+        links = (_links(r.text, base) if html
+                 else _shapes(r.json(), base) if url == f"{base}/geo/atlas.json"
+                 else [])
+        return _Fetched(html, ctype, r.content, links)
+    return _Fetched(html, ctype, b"", [],
+                    f"HTTP {r.status_code}: {r.text.strip()[:160]}")
+
+
 def build(root: Path, out: Path, base: str = "", drafts: bool = False,
-          tick=None) -> Site:
+          jobs: int | None = 1, tick=None) -> Site:
     """Write the site under `out` and say what failed. `out` is cleared first:
     a file left over from an earlier build would be served as though this one
-    had written it."""
+    had written it. `jobs=None` sizes the pool to the cores, as `--jobs` does
+    when it is not given; the default here is the serial crawl."""
     base = norm_base(base)
     out = Path(out)
     if out.exists():
@@ -240,16 +281,105 @@ def build(root: Path, out: Path, base: str = "", drafts: bool = False,
     shutil.copytree(STATIC, out / "static")
     site = Site(out=out, base=base)
     # One snapshot of the stores for the whole crawl: `cache.frozen`'s contract.
-    with cache.frozen(), TestClient(site_app(root, base, drafts)) as client:
-        seen = _crawl(client, site, fold, tick)
+    with cache.frozen():
+        n = parallel.cpu_workers(jobs, MAX_LEVEL)
+        if n == 1:
+            # The control arm: no pool at all, one client, today's crawl.
+            with TestClient(site_app(root, base, drafts)) as client:
+                seen = _crawl(lambda urls: (_fetch(client, u, base) for u in urls),
+                              site, fold, tick)
+        else:
+            seen = _pooled(root, base, drafts, n, site, fold, tick)
         # Not reached, as distinct from reached and refused: that row is written.
         for url in sorted(_expected(root, base) - seen):
             site.refuse(url, "nothing links to it")
     return site
 
 
-def _crawl(client: TestClient, site: Site, fold, tick) -> set[str]:
+# ------------------------------------------------------------------ the pool
+#
+# **Processes, because the work is the renderer's own Python**: jinja, lxml and
+# the stores' joins, none of which lets go of the GIL for long. **Byte-identical
+# by construction**: the crawl goes a breadth-first level at a time, each level's
+# URLs go out in queue order, and the parent takes the answers back in that same
+# order and does everything that touches `seen` itself. A FIFO queue finishes
+# level L before it starts L+1 anyway, so the parent follows, refuses and writes
+# in exactly the serial crawl's sequence; only who rendered each page differs.
+#
+# **Forked after warming, so no worker pays the warm-up.** The corpus-wide joins
+# cost ~15 s on the first request that needs them (`occurrences` 4.7 s, `native`
+# 3.8 s, `midline` 3.6 s, …), per process. Built once in the parent and inherited
+# copy-on-write, they are paid once. Fork is only safe in a process with one
+# thread, so the parent warms through `stores` directly rather than through a
+# client — whose portal is a thread — and falls back to a cold `forkserver` pool
+# if anything else has started one.
+#
+# **The workers' client is unentered.** An entered `TestClient` keeps a portal
+# thread alive, and a pool worker joins its threads on the way out, which is a
+# shutdown that never comes; an unentered one opens a portal per request, which
+# measured as noise.
+
+#: `cpu_workers` sizes against the work, and a level's size is not known until
+#: the crawl reaches it; the cores and `MAX_WORKERS` are the real bound.
+MAX_LEVEL = 1 << 20
+
+_WORKER: tuple | None = None
+
+
+def _warm(root: Path) -> None:
+    """Build the corpus-wide caches in this process, before it forks.
+
+    Only an optimisation: every one of them is keyed on contents, so one left
+    off this list is built by the first worker that needs it, and one that fails
+    here fails again, with its own traceback, on the request that needs it."""
+    for fn in (stores.load, stores.annotations, stores.lexicon_store, stores.runs,
+               stores.heads, stores.folio_index, stores.folio_by_ref,
+               stores.heading_urls, stores.midline, stores.native,
+               stores.occurrences, stores.atlas, stores.readable,
+               stores.collated, stores.exempt, stores.leaf_kinds):
+        try:
+            fn(root)
+        except Exception:      # noqa: BLE001 — see the docstring; not swallowed
+            pass
+
+
+def _worker_init(root: str, base: str, drafts: bool, log_dir: str) -> None:
+    global _WORKER
+    parallel.capture_stderr(log_dir)
+    # Joins the snapshot a fork inherited; starts one in a `forkserver` worker.
+    snapshot = cache.frozen()
+    snapshot.__enter__()
+    _WORKER = (TestClient(site_app(Path(root), base, drafts)), base, snapshot)
+
+
+def _work(urls: list[str]) -> list[_Fetched]:
+    assert _WORKER is not None
+    client, base, _ = _WORKER
+    return [_fetch(client, u, base) for u in urls]
+
+
+def _pooled(root: Path, base: str, drafts: bool, n: int, site: Site, fold,
+            tick) -> set[str]:
+    _warm(Path(root))
+    method = "fork" if threading.active_count() == 1 else "forkserver"
+    log_dir = tempfile.mkdtemp(prefix="edition-build-")
+    with ProcessPoolExecutor(n, mp_context=multiprocessing.get_context(method),
+                             initializer=_worker_init,
+                             initargs=(str(root), base, drafts, log_dir)) as pool:
+        def fetch(urls: list[str]):
+            # Chunks several times the worker count, so a slow page does not
+            # own a level's tail; `buffersize` bounds the bodies held unread.
+            size = max(1, min(32, len(urls) // (n * 4)))
+            chunks = [urls[i:i + size] for i in range(0, len(urls), size)]
+            return chain.from_iterable(pool.map(_work, chunks, buffersize=2 * n))
+        seen = _crawl(fetch, site, fold, tick)
+    site.worker_log = parallel.worker_output(log_dir)
+    return seen
+
+
+def _crawl(fetch, site: Site, fold, tick) -> set[str]:
     """Breadth-first from the index over sorted links, writing as it goes.
+    `fetch` maps a level's URLs to their `_Fetched`, lazily and in order.
     Returns every URL it reached."""
     out, base = site.out, site.base
     assets = f"{base}/static/"
@@ -276,41 +406,36 @@ def _crawl(client: TestClient, site: Site, fold, tick) -> set[str]:
 
     done = 0
     while queue:
-        url = queue.popleft()
-        done += 1
-        if tick:
-            tick(url, done, len(seen))
-        if "?" in url:
-            site.refuse(url, "a query string, which a static host ignores")
-            continue
-        r = client.get(url, follow_redirects=False)
-        ctype = r.headers.get("content-type", "")
-        html = ctype.startswith("text/html")
-        if r.is_redirect:
-            target = r.headers["location"]
-            body = _stub(target).encode()
-            follow(url, [target])
-            html = True
-        elif r.status_code == 200 or (html and r.status_code in (300, 404)):
-            body = r.content
-            if html:
-                follow(url, _links(r.text, base))
-            elif url == f"{base}/geo/atlas.json":
-                follow(url, _shapes(r.json(), base))
-        else:
-            site.refuse(url, f"HTTP {r.status_code}: {r.text.strip()[:160]}")
-            continue
-        rel = _disk(url, base, html)
-        if not html and not Path(rel).suffix:
-            site.refuse(url, f"{ctype} at an address with no extension")
-            continue
-        clash = by_disk.get(fold(rel))
-        if clash is not None:
-            site.refuse(url, f"lands on {rel}, which {clash} already holds")
-            continue
-        by_disk[fold(rel)] = url
-        dest = out / rel
-        dest.parent.mkdir(parents=True, exist_ok=True)
-        dest.write_bytes(body)
-        site.files[url] = rel
+        level = list(queue)
+        queue.clear()
+        fetched = iter(fetch([u for u in level if "?" not in u]))
+        for url in level:
+            done += 1
+            if tick:
+                tick(url, done, len(seen))
+            if "?" in url:
+                site.refuse(url, "a query string, which a static host ignores")
+                continue
+            f = next(fetched)
+            if f.refused:
+                site.refuse(url, f.refused)
+                continue
+            follow(url, f.links)
+            _write(site, url, f, by_disk, fold)
     return seen
+
+
+def _write(site: Site, url: str, f: _Fetched, by_disk: dict[str, str], fold) -> None:
+    rel = _disk(url, site.base, f.html)
+    if not f.html and not Path(rel).suffix:
+        site.refuse(url, f"{f.ctype} at an address with no extension")
+        return
+    clash = by_disk.get(fold(rel))
+    if clash is not None:
+        site.refuse(url, f"lands on {rel}, which {clash} already holds")
+        return
+    by_disk[fold(rel)] = url
+    dest = site.out / rel
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    dest.write_bytes(f.body)
+    site.files[url] = rel

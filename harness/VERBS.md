@@ -145,9 +145,10 @@ Threads on the raster sweeps — `zones check`, `zones paragraphs`, `zones blot`
 `ocr gaps`, `ocr blot`, `fig crops`, `views build`, `scans info`, `scans census`,
 `scans audit`, `scans space` — where the per-page cost is a PNG decode and the
 inflate releases the GIL. **Processes** on the model sweeps — `ocr predict`,
-`train score`, `train install` — and on `scans extract`, where the work is
-single-core CPU-bound inside scipy, shapely or mupdf; the model sweeps cap on free
-VRAM as well as cores, `scans extract` on cores alone.
+`train score`, `train install` — and on `scans extract` and `edition build`,
+where the work is single-core CPU-bound inside scipy, shapely, mupdf or the
+renderer's own Python; the model sweeps cap on free VRAM as well as cores,
+`scans extract` and `edition build` on cores alone.
 On the two `train` actions the flag is **zones only**, since only that track
 segments a checkpoint in memory; naming it on another track exits 2.
 `ocr edit` takes it for the measuring pass `--unsettled` runs before it binds.
@@ -1658,15 +1659,16 @@ place.
 ```
 
 ### edition build OUT
-**Does** write the reading view to `OUT` as a static site: every page a reader can reach from the index, the `/partial/` fragments the stack and the previews fetch, the scans, crops and speech those load, and for every redirect a stub that forwards with its fragment. Rendered through the routes `edition serve` mounts, so the site is the served output and not a second rendering of it. Search and the ratify button are left out — a host serves files — and the map pane holds one place at a time, since composing several is a server's job until it moves into the page.
+**Does** write the reading view to `OUT` as a static site: every page a reader can reach from the index, the `/partial/` fragments the stack and the previews fetch, the scans, crops and speech those load, and for every redirect a stub that forwards with its fragment. Rendered through the routes `edition serve` mounts, so the site is the served output and not a second rendering of it. Search and the ratify button are left out — a host serves files.
 **Reads** what `edition serve` reads, `scans/fig-crops/` and `mz/page-img/` for the pictures, and `espeak-ng` on the host for the speech. **Writes** `OUT`, cleared first (derived: no `--commit`, `fig crops`'s precedent). **Exit** 0 clean / 1 on any refused row.
 **Note** **it crawls from the index; the stores do not seed it.** What a page links to, and what its scripts build out of `data-` attributes (`build._derived` states each rule), is what gets written. The stores are read afterwards, to name what exists and was **not** reached: an entity, annotation, run or lexicon form nothing links to is an orphan row, which a site seeded from the stores would publish and so hide.
 **Note** the refused rows: a link that answers with no page (a locator's refusal *is* a page, and is written as one), a query string a host ignores, a binary at an address with no extension, and two addresses landing on one file — compared case-folded **only where `OUT`'s own disk folds case**, since the lexicon's handle keys tell `Ke'let` from `KE'LET` on purpose and a folding disk would overwrite one with the other in silence.
-**Note** two builds of one tree are byte-identical — the crawl is breadth-first over sorted links and nothing written carries a time — which is what lets a refactor be checked by rebuilding and diffing.
+**Note** two builds of one tree are byte-identical, at any `--jobs` — the crawl is breadth-first over sorted links, a pooled one takes its workers' answers back in the order it handed them out, and nothing written carries a time — which is what lets a refactor be checked by rebuilding and diffing.
 ```
 OUT            the directory to write the site into
 --base PATH    the path the site will be served under, which every link names [/]
 --drafts       also publish `mz/tei/`, marked as drafts as `edition serve --drafts` marks them
+--jobs N       worker **processes** for the crawl; 1 crawls in this process and builds no pool [cores, capped]
 --root --json --toon --pager
 ```
 

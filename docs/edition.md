@@ -1976,6 +1976,16 @@ refusal, such as a folio no witness places, is a page, and is written as one.
 Two builds of one tree are byte-identical, so a refactor can be checked by
 rebuilding and diffing.
 
+**A build holds the stores still** (`cache.frozen`). The live view digests every
+file it reads on every request, which is right under an editor and was most of
+a build's time. A build is one snapshot whatever the cache does, so inside it
+each file is read and hashed once. **The crawl is pooled over processes**
+(`--jobs`): each breadth-first level fans out to forked workers, which inherit
+the parent's warmed corpus caches. The parent takes their results in the order
+it handed them out, so the crawl follows links, refuses and writes exactly as
+the serial one does. `--jobs 1` is that serial crawl, and the two build the
+same bytes.
+
 ## The prose points at itself, and now the pointing works
 
 The book cross-references constantly — `(Plate XXVII, Fig. 3)`, `(see Plate

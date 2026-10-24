@@ -67,8 +67,10 @@ def test_a_static_page_offers_no_search_and_no_ratify(tree, tmp_path):
 
 
 def test_two_builds_of_one_tree_are_the_same_bytes(tree, tmp_path):
-    build(tree, tmp_path / "a", base="/x")
-    build(tree, tmp_path / "b", base="/x")
+    """And one of them pooled: concurrency may move the wall clock and nothing
+    else, and the only way to say so is to build both and compare."""
+    build(tree, tmp_path / "a", base="/x", jobs=1)
+    build(tree, tmp_path / "b", base="/x", jobs=2)
     a, b = _files(tmp_path / "a"), _files(tmp_path / "b")
     assert a == b
     _match, mismatch, errors = filecmp.cmpfiles(

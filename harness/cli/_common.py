@@ -430,9 +430,12 @@ JOBS_HELP = ("worker threads for the per-page raster work; 1 runs serially and "
 # string there would make the flag say something untrue about what it spawns.
 JOBS_HELP_PROC = ("worker **processes** for the segmentation; 1 keeps the "
                   "single-process path [cores, capped by free VRAM]")
+# And the crawl's, which is processes on cores alone: there is no card in it.
+JOBS_HELP_CRAWL = ("worker **processes** for the crawl; 1 crawls in this process "
+                   "and builds no pool [cores, capped]")
 
 
-def add_jobs(p, processes: bool = False):
+def add_jobs(p, processes: bool = False, help: str = ""):  # noqa: A002 — click's name
     """`--jobs N`, on the actions whose per-page cost is a raster decode.
 
     **Declared per-action rather than alongside the globals**, because a flag that
@@ -448,7 +451,7 @@ def add_jobs(p, processes: bool = False):
     cap is free VRAM — one flag name, two honest descriptions of what it spawns.
     """
     return opt(p, "--jobs", type=int, default=None, metavar="N",
-               help=JOBS_HELP_PROC if processes else JOBS_HELP)
+               help=help or (JOBS_HELP_PROC if processes else JOBS_HELP))
 
 
 def refs_arg(p, *, all_: str | None = None, extra: str = ""):
