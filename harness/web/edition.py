@@ -835,7 +835,42 @@ def _toc_panel(root: Path, folios: list,
         note = absent
     elif not marked and folios:
         note = "Nothing places this leaf in the printed Contents."
-    return {"tree": tree, "marked": marked, "note": note}
+    marks: dict = {"here": [], "open": [], "hits": {}}
+    _collect_marks(tree, marks)
+    return {"marks": marks, "marked": marked, "note": note}
+
+
+def _collect_marks(nodes: list[dict], marks: dict) -> None:
+    """The marked tree, as the three lists a page ships: rows marked, disclosures
+    open, counts. `open` names only rows with children, the only rows that have
+    a `<details>` to open."""
+    for n in nodes:
+        if n["here"]:
+            marks["here"].append(n["id"])
+        if n["open"] and n["children"]:
+            marks["open"].append(n["id"])
+        if n["hits"]:
+            marks["hits"][n["id"]] = n["hits"]
+        _collect_marks(n["children"], marks)
+
+
+@router.get("/partial/toc")
+def toc_outline(request: Request):
+    """**The contents panel's outline, the same for every page, served once.**
+    It was rendered into each page, and at 316 rows it was ~77 KB of an ~80 KB
+    entity page and ~200 MB of the static site, all of it identical but for the
+    marks. So the outline is this one fragment, unmarked and shut, and a page
+    ships only its marks (`_toc_panel`); `sidebar.js` fetches this the first time
+    the panel is shown and applies them. **The rule for what is marked stays
+    here**: the page carries ids, and the script decides nothing.
+
+    No JS loses nothing by it: the panel is `hidden` until the script shows it,
+    and the header's ToC link still goes to the printed Contents."""
+    root, base = _root(request), _base(request)
+    tree = _toc_tree(load_toc(root), root, stores.folio_index(root), base)
+    _mark_tree(tree, set(), {})
+    return templates.TemplateResponse(request, "edition/_toc_panel.html",
+                                      {"tree": tree})
 
 
 def _by_folio(counts: dict[str, int], root: Path) -> dict[int, int]:

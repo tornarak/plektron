@@ -16,14 +16,19 @@
 
    **`<details>` and not a script**, for the map tree's reason: disclosure is what
    the element is, and a panel that needed JS to open a chapter would be a panel
-   that does not open when the JS fails. `sidebar.js` scrolls the mark into view
-   and does nothing else here.
+   that does not open when the JS fails.
+
+   **Served once, unmarked** (`/partial/toc`), because it is the same on every
+   page and was ~77 KB of each. Nothing here is open, marked or counted: a page
+   ships its marks as ids (`_toc_panel`, `data-marks` in `_sidebar.html`) and
+   `sidebar.js`, having fetched this, sets `.here`, `open` and the counts from
+   them. The rule for which rows those are is the route's, not the script's.
 
    **No ids.** `_toc.html` gives every row its `toc-{id}` anchor, and on the
    Contents run this panel renders beside it — a second copy of those ids on one
-   page, which is the one thing an id may not be. Nothing links into this panel;
-   the mark is found by its class. `data-toc` names the entry, which is how
-   `sidebar.js` finds the row for the heading being read.
+   page, which is the one thing an id may not be. Nothing links into this panel.
+   `data-toc` names the entry, which is how `sidebar.js` finds the row a mark
+   names and the row for the heading being read.
 
    Row classes are `_toc.html`'s — `.toc-title`, `.toc-num`, `.page-no` — so the
    two renderings of one store share their vocabulary and their link rule: live
@@ -31,15 +36,14 @@
    a link either. #}
 
 {# The row's own contents, which are the same whether or not it has children.
-   `hits` sits between the title and the folio because it belongs to the heading
-   and not to the page the heading starts on. #}
+   A count goes in after the title (`sidebar.js` `applyMarks`), between it and
+   the folio, because it belongs to the heading and not to the page the heading
+   starts on. #}
 {% macro label(n) %}
   {% if n.folio_url %}<a class='toc-title plain' href='{{ n.folio_url }}'>{%
     else %}<span class='toc-title'>{% endif
     %}{% if n.number %}<span class='toc-num'>{{ n.number }}.</span> {% endif
     %}{{ n.title }}{% if n.folio_url %}</a>{% else %}</span>{% endif %}
-  {% if n.hits %}<span class='hits' title='{{ n.hits }} mention(s)'>{{
-    n.hits }}</span>{% endif %}
   {% if n.folio_url %}<a class='page-no' href='{{ n.folio_url }}'>{{
     n.page_start }}</a>{% elif n.page_start %}<span
     class='page-no'>{{ n.page_start }}</span>{% endif %}
@@ -52,9 +56,9 @@
 {% macro rows(nodes) %}
 <ul>
 {% for n in nodes %}
-  <li class='toc-d{{ n.depth }}{{ ' here' if n.here }}'{% if n.id %} data-toc='{{ n.id }}'{% endif %}>
+  <li class='toc-d{{ n.depth }}'{% if n.id %} data-toc='{{ n.id }}'{% endif %}>
   {% if n.children %}
-    <details{{ ' open' if n.open }}>
+    <details>
       <summary>{{ label(n) }}</summary>
       {{ rows(n.children) }}
     </details>
@@ -66,13 +70,4 @@
 </ul>
 {% endmacro %}
 
-{{ rows(toc_panel.tree) }}
-{# Said out loud, because an unmarked panel and a panel that could not place this
-   page look identical: 452 of the book's 732 folios have no witness, and a
-   locator that quietly showed nothing would read as "this page is in no
-   chapter". Nothing is interpolated — `toc_containing` refuses an unknown folio
-   rather than naming the nearest heading. The sentence is `_toc_panel`'s,
-   because only the route knows what was being placed. #}
-{% if toc_panel.note %}
-<p class='meta panel-note'>{{ toc_panel.note }}</p>
-{% endif %}
+{{ rows(tree) }}

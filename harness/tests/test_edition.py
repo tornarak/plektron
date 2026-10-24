@@ -965,20 +965,21 @@ def _panel(body: str) -> str:
     return body.split("id='panel-contents'")[1].split("</aside>")[0]
 
 
-def _row(panel: str, title: str) -> str:
-    """The `<li>` a title is in, opening tag onwards. A row's marks are on the
-    element and the title is inside it, so "is this row marked" is the text
-    between the last `<li` before the title and the title itself — and not a
-    slice of the panel down to the title, which would carry every enclosing row
-    with it."""
-    return "<li" + panel.split(title)[0].rsplit("<li", 1)[1]
+def _marks(body: str) -> dict:
+    """What a page ships for its contents panel: the rows marked, the
+    disclosures open, the counts. The outline itself is `/partial/toc`, the same
+    for every page, and `sidebar.js` applies these to it."""
+    import html
+    import json
+    raw = re.search(r"data-marks='([^']*)'", _panel(body)).group(1)
+    return json.loads(html.unescape(raw))
 
 
 def test_the_sidebar_ships_its_switch_with_the_contents_shut(server):
-    """Entities is the column as it was; contents is rendered and hidden, so the
-    switch costs no request and the panel is there for a reader with no JS. The
-    switch is at the foot of the column, and nothing comes between the column
-    and the text, because `#secondary + #primary` is the idle rule's selector."""
+    """Entities is the column as it was; contents is hidden, and names the one
+    outline every page shares rather than carrying it. The switch is at the foot
+    of the column, and nothing comes between the column and the text, because
+    `#secondary + #primary` is the idle rule's selector."""
     base, root = server
     _toc(root)
     body = get(base + "/page/1-021")
@@ -987,6 +988,8 @@ def test_the_sidebar_ships_its_switch_with_the_contents_shut(server):
         < body.index("</aside>")
     assert re.search(r"</aside>\s*<div id='primary'", body)
     assert "id='panel-contents' hidden" in body and "id='side-hide'" in body and "id='side-show'" in body
+    assert re.search(r"data-toc-src='[^']*/partial/toc'", body)
+    assert "data-toc=" not in body, "the outline is fetched, not carried"
     assert "id='side-tabs'" not in body
     # The switch did not displace what the column already held.
     assert "id='map-pane' hidden" in body and "id='stack'" in body
@@ -998,9 +1001,9 @@ def test_the_contents_panel_opens_the_division_holding_this_page(server):
     base, root = server
     _toc(root)
     page(root, "1-034", '<pb n="2"/><p>The chapter opens.</p>')
-    panel = _panel(get(base + "/page/1-034"))
-    assert "toc-d1 here'" in panel and panel.count("<details open>") >= 1
-    assert " here'" not in _row(panel, "Introductory"), \
+    marks = _marks(get(base + "/page/1-034"))
+    assert "chI" in marks["here"] and "chI" in marks["open"]
+    assert "front.intro" not in marks["here"], \
         "the front matter is not where this page is"
 
 
@@ -1011,9 +1014,9 @@ def test_a_deeper_division_marks_its_chapter_too(server):
     base, root = server
     _toc(root)
     page(root, "1-030", '<pb n="5"/><p>In the chapter.</p>')
-    panel = _panel(get(base + "/page/1-030"))
-    for depth in (1, 2, 3):
-        assert f"toc-d{depth} here'" in panel, f"depth {depth} unmarked"
+    marks = _marks(get(base + "/page/1-030"))
+    for depth, ident in ((1, "chI"), (2, "chI.3"), (3, "chI.3a")):
+        assert ident in marks["here"], f"depth {depth} unmarked"
 
 
 def test_both_heads_printed_on_one_page_are_marked(server):
@@ -1024,10 +1027,8 @@ def test_both_heads_printed_on_one_page_are_marked(server):
     base, root = server
     _toc(root)
     page(root, "1-032", '<pb n="4"/><p>Two heads open here.</p>')
-    panel = _panel(get(base + "/page/1-032"))
-    assert panel.count("toc-d2 here'") == 2
-    for title in ("Ancient Habitat", "Present Habitat"):
-        assert " here'" in _row(panel, title), f"{title} is not marked"
+    marks = _marks(get(base + "/page/1-032"))
+    assert sorted(marks["here"]) == ["chI", "chI.2", "chI.3"]
 
 
 def test_the_division_you_are_in_is_unrolled_whole(server):
@@ -1038,12 +1039,10 @@ def test_the_division_you_are_in_is_unrolled_whole(server):
     base, root = server
     _toc(root)
     page(root, "1-033", '<pb n="4"/><p>Inside chapter I.</p>')
-    panel = _panel(get(base + "/page/1-033"))
+    marks = _marks(get(base + "/page/1-033"))
     # chI and the sibling section carrying the subsection: both open, and
     # chapter II — which holds a section of its own — stays closed.
-    assert panel.count("<details open>") == 2
-    shut = panel.split("Neighbors")[1]
-    assert "<details open>" not in shut
+    assert sorted(marks["open"]) == ["chI", "chI.3"]
 
 
 def test_the_whole_outline_is_served_collapsed(server):
@@ -1053,15 +1052,18 @@ def test_the_whole_outline_is_served_collapsed(server):
     question on every page."""
     base, root = server
     _toc(root)
-    panel = _panel(get(base + "/page/1-021"))
+    outline = get(base + "/partial/toc")
     for title in ("Introductory", "Names and Habitat", "Ancient Habitat",
                   "Present Habitat", "The Ai&#39;wan", "Neighbors", "Appearance"):
-        assert title in panel, f"{title} is missing from the outline"
-    assert "toc-d3" in panel, "the deep rungs are rendered"
+        assert title in outline, f"{title} is missing from the outline"
+    assert "toc-d3" in outline, "the deep rungs are rendered"
+    # The shared outline is the same for every page, so nothing in it is marked.
+    assert " here" not in outline and "<details open" not in outline
+    assert "class='hits'" not in outline
     # Folio 1 is the front matter, which has nothing under it: one row is marked
     # and no `<details>` anywhere is open.
-    assert panel.count(" here'") == 1
-    assert "<details open>" not in panel
+    marks = _marks(get(base + "/page/1-021"))
+    assert marks == {"here": ["front.intro"], "open": [], "hits": {}}
 
 
 def test_a_page_whose_folio_nothing_witnesses_marks_nothing(server):
@@ -1070,9 +1072,9 @@ def test_a_page_whose_folio_nothing_witnesses_marks_nothing(server):
     base, root = server
     _toc(root)
     page(root, "1-031", "<p>No pb, so no folio.</p>")
-    panel = _panel(get(base + "/page/1-031"))
-    assert " here'" not in panel and "<details open>" not in panel
-    assert "Nothing places this leaf in the printed Contents." in panel
+    body = get(base + "/page/1-031")
+    assert _marks(body) == {"here": [], "open": [], "hits": {}}
+    assert "Nothing places this leaf in the printed Contents." in _panel(body)
 
 
 def test_an_entity_marks_every_division_it_is_mentioned_in(server):
@@ -1088,18 +1090,16 @@ def test_an_entity_marks_every_division_it_is_mentioned_in(server):
     for i, folio in enumerate(range(1, 12)):
         page(root, f"1-{100 + i}", f'<pb n="{folio}"/><p>At '
              f'<rs ref="place:markova" resp="#mz">Markova</rs>.</p>')
-    body = get(base + "/entity/place:markova")
-    panel = _panel(body)
-    assert "Neighbors" in panel
-    # Every division holds mentions, so every one of them opens and counts.
-    for title in ("Introductory", "Names and Habitat", "Neighbors"):
-        assert title in panel
-    assert panel.count("<details open>") == 3
+    marks = _marks(get(base + "/entity/place:markova"))
+    # Every division holds mentions, so every one of them counts, and every one
+    # with a disclosure opens.
+    for ident in ("front.intro", "chI", "chII"):
+        assert marks["hits"].get(ident), f"{ident} is not counted"
+    assert sorted(marks["open"]) == ["chI", "chI.3", "chII"]
     # The chapter's count is the sum of what lies under it, folded rather than
     # rolled up: chapter I runs folios 2–9, which is eight of the twelve
     # mentions (eleven pages plus the fixture's own 1-021 at folio 1).
-    hits = re.findall(r"class='hits' title='(\d+) mention", panel)
-    assert hits and sum(int(h) for h in hits) > 8
+    assert sum(marks["hits"].values()) > 8
 
 
 def test_a_lexicon_card_marks_where_the_form_is_attested(server):
@@ -1119,12 +1119,12 @@ def test_a_lexicon_card_marks_where_the_form_is_attested(server):
     for ref, folio in (("1-040", 4), ("1-041", 11)):
         page(root, ref, f'<pb n="{folio}"/><p>The form is '
              f'<foreign xml:lang="ckt" resp="#ed">o\u02cara\u02c8w\u01ddʟ\u0323at</foreign>.</p>')
-    panel = _panel(get(base + f"/lexicon/{quote('ckt:oˊraˈwǝʟ̣at')}"))
-    hits = [int(n) for n in re.findall(r"class='hits' title='(\d+) mention", panel)]
+    marks = _marks(get(base + f"/lexicon/{quote('ckt:oˊraˈwǝʟ̣at')}"))
+    hits = sorted(marks["hits"].values())
     assert hits, "the form is attested and nothing was marked"
     # Two chapters, one page each, and the chapters' own numbers are that sum.
-    assert sorted(hits) == [1, 1, 1, 1], hits
-    assert " here'" not in panel, "a form has no position, only attestations"
+    assert hits == [1, 1, 1, 1], hits
+    assert marks["here"] == [], "a form has no position, only attestations"
 
 
 def test_a_form_the_corpus_does_not_attest_blames_no_contents(server):
@@ -1136,9 +1136,9 @@ def test_a_form_the_corpus_does_not_attest_blames_no_contents(server):
     Contents' failure, which is the one thing this panel must not do."""
     base, root = server
     _toc(root)
-    panel = _panel(get(base + "/lexicon/ckt%3AUwe%CB%8Alen"))
-    assert "printed Contents" not in panel
-    assert " here'" not in panel
+    body = get(base + "/lexicon/ckt%3AUwe%CB%8Alen")
+    assert "printed Contents" not in _panel(body)
+    assert _marks(body)["here"] == []
 
 
 def test_a_form_placed_nowhere_says_so(server):

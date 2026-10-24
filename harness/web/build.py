@@ -128,6 +128,8 @@ def _derived(tree, base: str) -> list[str]:
             out.append(f"{base}/partial/entity/{_enc(a['data-ref'])}")
         if "data-atlas" in a:                                   # `map.js` `paint`
             out.append(a["data-atlas"])
+        if "data-toc-src" in a:                                 # `sidebar.js` `loadContents`
+            out.append(a["data-toc-src"])
         if " lex " in cls and "data-key" in a:
             out.append(f"{base}/partial/lexicon/{_enc(a['data-key'])}")
         if "data-ent" in a and a["data-ent"]:

@@ -185,7 +185,8 @@ def test_the_contents_links_a_heading_into_its_chapter(tmp_path, client):
          "id": "chI.1"}]}), encoding="utf-8")
     page(root, "1-003", '<pb/><milestone unit="chapter" n="chI" resp="#mz"/><p>a</p>')
     page(root, "1-004", '<pb/><milestone unit="section" n="chI.1" resp="#mz"/><p>b</p>')
-    body = client().get("/edition/run/chI").text
+    # The contents panel's rows, which every page fetches from one outline.
+    body = client().get("/edition/partial/toc").text
     assert "href='/edition/run/chI#chI.1'" in body
     assert "href='/edition/run/chI#chI'" in body
 
