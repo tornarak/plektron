@@ -178,10 +178,17 @@ if (TOC_LINK && PANELS.contents) {
 /* **The page's left margin opens the contents** — the empty paper left of the
    text. Only a click that lands on nothing else: a link, a control, a picture
    or the column itself keeps its own meaning, and a click in the text is
-   reading. */
+   reading.
+
+   **And only a click on the page.** The test is a position, and an overlay
+   over the page has positions too: a click on the lightbox's backdrop closed
+   it and then, landing left of the text, opened the contents. Anything laid
+   over `<main>` is appended to the body, so asking for `main` excludes every
+   overlay there is and every one added later. */
 const PRIMARY = document.getElementById('primary');
 if (PRIMARY && PANELS.contents) {
   document.addEventListener('click', ev => {
+    if (!ev.target.closest('main')) return;
     if (ev.target.closest('a, button, input, select, textarea, label, img, '
                           + 'figure, #secondary, #bar, .card, .notepop')) return;
     const r = PRIMARY.getBoundingClientRect();
