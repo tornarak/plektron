@@ -177,6 +177,11 @@ html.side-dismissed #secondary:not([data-fixed]) + #primary { margin:auto }
   color:var(--dim); background:var(--card) }
 html.side-contents #toc-toggle { background:var(--fg); color:var(--bg);
   border-color:var(--fg) }
+/* **Only over something.** An empty column shows the contents and nothing
+   else — `sidebar.js` asks the same condition of the DOM — so a switch to a
+   panel with nothing in it would be a control that does nothing. */
+#secondary:not(:has(.card)):not(:has(#map-pane:not([hidden]))) #toc-toggle
+  { display:none }
 /* Under the text on a narrow screen, the column is as tall as what it holds. */
 @media (max-width:880px) {
   #side-hide, #side-show { display:none !important }
@@ -614,6 +619,9 @@ ul.tree > li { border-left:none; padding-left:0 }
  * it is dimmed, so what was asked for and what merely contains it read apart at
  * a glance. */
 .ent-tree { font-size:.82rem; margin:.4rem 0 .1rem }
+/* In the sidebar a tree scrolls in a box of its own, so a long one does not
+   push the next card, or the stack under the map, out of reach. */
+#secondary .ent-tree { max-height:20ch; overflow-y:auto }
 .ent-tree ul { list-style:none; margin:0; padding:0 0 0 .85rem }
 .ent-tree > ul { padding-left:0 }
 /* The rail is what makes a three-deep chain readable in a narrow pane, where
