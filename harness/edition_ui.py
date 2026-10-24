@@ -1156,6 +1156,64 @@ def _basis(ent_id: str, store: dict, root: Path) -> dict:
     return {"kind": "framed"}
 
 
+def atlas_data(root: Path, store: dict | None = None) -> dict:
+    """**Every fact a map is composed from, per entity, and nothing composed.**
+
+    The browser composes a map out of a selection (`static/js/geomap.js`), and
+    a static host has nobody to ask, so the store has to travel. What travels
+    is what the store's own rules answer — how big a thing is, what lies
+    beneath it with a shape, what holds it — each computed here, by the one
+    function that owns the rule, once per entity. What does not travel is any
+    of those rules: the walks differ in ways that matter (`ancestors` climbs
+    `within:` alone, `children` inverts `tree_parent`), and a second copy in
+    JavaScript would be a second place for them to drift apart.
+
+    `own` is what a container sizes itself on: real geometry first, a declared
+    `frame:` only when there is none, for the reason `member_extents` gives.
+    `points` are `(lon, lat)` with the longitude already in the store's window.
+    """
+    from .entities import ancestors
+
+    store = load(root) if store is None else store
+    idx = geo.index(root)
+    kids = geo.children(store)
+    absent = [geo.absent_row(k, v) for k, v in sorted(idx["absent"].items())]
+
+    def note(rec: dict) -> str:
+        head = (rec["canonical"].split() or [""])[0].lower()
+        for row in absent:
+            hay = f'{row["what"]} {row["sought"]} {row["why"]}'.lower()
+            if head and head in hay:
+                return row["why"]
+        return ""
+
+    def box(b):
+        return list(b) if b else None
+
+    out = {}
+    for i in sorted(store):
+        rec = store[i]
+        out[i] = {
+            "canonical": rec["canonical"],
+            "cls": rec["class"],
+            "parent": tree_parent(rec),
+            "ancestors": [a for a in ancestors(i, store) if a in store],
+            "children": [k for k in kids.get(i, []) if k in store],
+            "relatives": geo.relatives(i, store),
+            "own": box(geo.extent_of(i, store, root) or rec["frame"]),
+            "frame": box(rec["frame"]),
+            "shapes": geo.geo_shapes(rec),
+            "points": [[geo._shifted(lon, idx), lat]
+                       for lat, lon in geo.geo_points(rec)],
+            "refs": geo.geo_refs(rec),
+            "members": [list(p) for p in geo.member_shapes(i, store)],
+            "extents": [[e, list(b)] for e, b in geo.member_extents(i, store, root)],
+            "basis": _basis(i, store, root),
+            "absent": note(rec),
+        }
+    return {"geo_classes": list(GEO_CLASSES), "entities": out}
+
+
 def _map_tree(sel: list[str], hidden: set, store: dict, order: list[str],
               on_map: set) -> list[dict]:
     """**A legend for the map: every record it drew, and what holds them.**

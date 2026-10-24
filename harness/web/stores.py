@@ -28,6 +28,7 @@ from .. import (
     pictures,
     tei_html,
 )
+from .. import edition_ui as ui
 from ..edition_ui import BASE
 from ..refs import norm_ref
 from ..state import load_toc
@@ -634,6 +635,20 @@ def fig_layout(ref: str, root: Path) -> dict:
         root / "gt" / "fig" / f"chukchi-{ref}.xml",
         root / "gt" / "zones" / f"chukchi-{ref}.xml",
     ]))
+
+
+@lru_cache(maxsize=MAXSIZE)
+def _atlas(root: str, _key: bytes) -> dict:
+    return ui.atlas_data(Path(root), load(Path(root)))
+
+
+def atlas(root: Path) -> dict:
+    """What the browser composes a map from. Keyed on the entities and on every
+    file under `edition/geo/`, because an entity's extent is read off the
+    bounds of whatever shapes it and its descendants name."""
+    root = Path(root)
+    return _atlas(str(root), stamp(
+        _entity_files(root) + sorted(geo.geodir(root).rglob("*.json"))))
 
 
 @lru_cache(maxsize=MAXSIZE)

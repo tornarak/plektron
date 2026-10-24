@@ -17,6 +17,7 @@ and the gloss markup built by `edition_ui.gloss_html`.
 
 from __future__ import annotations
 
+import json
 import re
 from pathlib import Path
 from typing import Annotated
@@ -2034,6 +2035,30 @@ def _map_ctx(idents, root: Path, store: dict | None = None, hidden=(),
 
 
 # ------------------------------------------------------------------- the map
+
+
+@router.get("/geo/atlas.json")
+def atlas_json(request: Request):
+    """The store's facts about every entity, for the browser to compose maps
+    from (`edition_ui.atlas_data`). Serialised with sorted keys, so two builds
+    of one tree write the same bytes."""
+    body = json.dumps(stores.atlas(_root(request)), sort_keys=True,
+                      ensure_ascii=False, separators=(",", ":"))
+    return Response(body, media_type="application/json")
+
+
+@router.get("/geo/shape/{name}")
+def geo_shape(request: Request, name: str):
+    """One shape out of `edition/geo/`, as the file its build wrote — addressed
+    by the shape's id, which is what the atlas data names, and not by where
+    the build happened to put it."""
+    sid, dot, ext = name.rpartition(".")
+    root = _root(request)
+    row = geo.index(root)["shapes"].get(sid) if dot and ext == "json" else None
+    if not row or not row.get("file"):
+        raise HTTPException(404, f"no shape {name!r} in {geo.GEODIR}/index.json")
+    return send_file(request, geo.geodir(root) / row["file"],
+                     media_type="application/json")
 
 
 @router.get("/map")

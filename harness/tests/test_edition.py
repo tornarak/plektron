@@ -1818,6 +1818,33 @@ def test_an_entity_with_nowhere_to_put_says_so_rather_than_drawing_nothing(serve
     assert "Nothing to draw" in get(base + "/partial/map/person%3Anobody2")
 
 
+def test_the_atlas_travels_as_facts_the_store_already_answers(server):
+    """The browser composes maps, so the store's answers travel — each from
+    the function that owns the rule, never a rule for the browser to re-run."""
+    import json
+
+    base, root = server
+    entry(root, "place:parent", aliases=[("P", False)])
+    p = root / "edition" / "entities" / "place" / "kid.md"
+    p.write_text("# place:kid — Kid\n\n- status: ratified\n- since: 1-021\n"
+                 "- within: place:parent\n- geo: 66.0 170.0\n\n## aliases\n\n"
+                 "| form | lang | auto | note |\n|---|---|---|---|\n\n## gloss\n\nx\n",
+                 encoding="utf-8")
+    ents = json.loads(get(base + "/geo/atlas.json"))["entities"]
+    kid, parent = ents["place:kid"], ents["place:parent"]
+    assert kid["parent"] == "place:parent" and kid["ancestors"] == ["place:parent"]
+    assert parent["children"] == ["place:kid"]
+    assert kid["points"] == [[170.0, 66.0]]            # lon first, in the window
+    assert parent["own"] == kid["own"]                 # framed by what is beneath
+    assert parent["basis"] == {"kind": "framed"}
+
+
+def test_a_shape_is_addressed_by_its_id_and_an_unknown_one_is_a_404(server):
+    base, _ = server
+    with pytest.raises(HTTPError, match="404"):
+        get(base + "/geo/shape/watershed:nowhere.json")
+
+
 def test_a_string_with_nothing_speakable_in_it_is_a_400_not_a_crash(server):
     """The endpoint is a pure function of the URL and does not check that the
     IPA is one this edition imputed, so it has to answer for anything."""
