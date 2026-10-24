@@ -32,35 +32,54 @@ from .. import edition_ui as ui
 from ..edition_ui import BASE
 from ..refs import norm_ref
 from ..state import load_toc
-from .cache import MAXSIZE, digest, stamp
+from .cache import MAXSIZE, file_digest, listing, stamp
 
 
+@listing
 def _entity_files(root: Path) -> list[Path]:
     return sorted((Path(root) / "edition" / "entities").glob("*/*.md"))
 
 
+@listing
 def _lexicon_files(root: Path) -> list[Path]:
     return sorted((Path(root) / "edition" / "lexicon").glob("*.md"))
 
 
+@listing
 def _annotation_files(root: Path) -> list[Path]:
     return sorted((Path(root) / "edition" / "annotations").glob("*/*.md"))
 
 
+@listing
 def _gt_ocr_files(root: Path) -> list[Path]:
     return sorted((Path(root) / "gt" / "ocr").glob("chukchi-*.xml"))
 
 
+@listing
 def _tei_files(root: Path) -> list[Path]:
     return sorted((Path(root) / "tei").glob("chukchi-*.xml"))
 
 
+@listing
 def _readable_files(root: Path) -> list[Path]:
     """Both stores, because `readable` changes when either does — a page collated
     since the last look moves from one to the other without changing the union's
     length, so keying on `tei/` alone would serve a stale rank."""
     return _tei_files(root) + sorted(
         (Path(root) / "mz" / "tei").glob("chukchi-*.xml"))
+
+
+@listing
+def _fig_files(root: Path) -> list[Path]:
+    return sorted((Path(root) / "gt" / "fig").glob("chukchi-*.xml"))
+
+
+@listing
+def _geo_files(root: Path) -> list[Path]:
+    return sorted(geo.geodir(root).rglob("*.json"))
+
+
+_watched = listing(chapters.watched)
 
 
 @lru_cache(maxsize=MAXSIZE)
@@ -84,6 +103,7 @@ def annotations(root: Path) -> dict:
     return _annotations(str(root), stamp(_annotation_files(root)))
 
 
+@listing
 def _ledger_files(root: Path) -> list[Path]:
     return [Path(root) / pictures.LEDGER]
 
@@ -130,6 +150,7 @@ def readable(root: Path) -> list[str]:
     return _readable(str(root), stamp(_readable_files(root)))
 
 
+@listing
 def _split_files(root: Path) -> list[Path]:
     """Every list a leaf ruling can be written in.
 
@@ -167,6 +188,7 @@ def leaf_kinds(root: Path) -> dict[str, str]:
     return _leaf_kinds(str(root), stamp(_split_files(root)))
 
 
+@listing
 def _runs_files(root: Path) -> list[Path]:
     """`runs.json` and every store a declared run reads. A run's page changes when
     either does, and the second half is why this is a function rather than one
@@ -177,7 +199,7 @@ def _runs_files(root: Path) -> list[Path]:
         if r.get("source"):
             out.append(Path(root) / r["source"])
     # And everything a chapter's span is derived from: the ToC and every page.
-    return out + chapters.watched(Path(root))
+    return out + _watched(Path(root))
 
 
 @lru_cache(maxsize=MAXSIZE)
@@ -202,7 +224,7 @@ def _heads(root: str, _key: bytes) -> dict:
 def heads(root: Path) -> dict:
     """`{toc id: [{ref, shared}]}` — where each heading opens in the text. What
     `apparatus.locate` places a ToC link by, keyed on the pages that hold them."""
-    return _heads(str(root), stamp(chapters.watched(Path(root))))
+    return _heads(str(root), stamp(_watched(Path(root))))
 
 
 @lru_cache(maxsize=MAXSIZE)
@@ -316,7 +338,7 @@ def by_plate(root: Path, run: dict) -> dict:
     src = run.get("source")
     return _by_plate(str(root), run.get("id") or "", stamp(
         ([Path(root) / src] if src else [])
-        + sorted((Path(root) / "gt" / "fig").glob("chukchi-*.xml"))))
+        + _fig_files(root)))
 
 
 @lru_cache(maxsize=MAXSIZE)
@@ -328,7 +350,7 @@ def by_number(root: Path) -> dict:
     """Printed figure number -> the zones carrying it. The List of Illustrations
     links through this."""
     return _by_number(str(root), stamp(
-        sorted((Path(root) / "gt" / "fig").glob("chukchi-*.xml"))))
+        _fig_files(root)))
 
 
 @lru_cache(maxsize=MAXSIZE)
@@ -582,14 +604,13 @@ def render(path: Path, root: Path = Path("."), base: str = BASE) -> dict:
     `base` is in the key too: every link in the body names the mount.
     """
     key = stamp([Path(root) / "edition" / "toc.json"])
-    try:
-        return _render(str(path), digest(Path(path).read_bytes()), key, str(root),
-                       base)
-    except OSError:
+    page = file_digest(Path(path))
+    if page is None:
         # A missing file is not cached at all — absence is the ordinary state of a
         # derived tree here, and caching it would outlive the build that fixes it.
         # `cache.by_file`'s rule, kept because this is no longer using it.
         return tei_html.render(Path(path), toc_titles(Path(root)), base)
+    return _render(str(path), page, key, str(root), base)
 
 
 render.cache_clear = _render.cache_clear               # type: ignore[attr-defined]
@@ -648,7 +669,7 @@ def atlas(root: Path) -> dict:
     bounds of whatever shapes it and its descendants name."""
     root = Path(root)
     return _atlas(str(root), stamp(
-        _entity_files(root) + sorted(geo.geodir(root).rglob("*.json"))))
+        _entity_files(root) + _geo_files(root)))
 
 
 @lru_cache(maxsize=MAXSIZE)

@@ -47,7 +47,7 @@ from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from lxml import html as LH
 
-from . import STATIC, stores
+from . import STATIC, cache, stores
 
 #: What `encodeURIComponent` leaves alone beyond what `quote` always does, so a
 #: URL derived here is the one the script builds, character for character.
@@ -239,7 +239,19 @@ def build(root: Path, out: Path, base: str = "", drafts: bool = False,
     fold = str.casefold if _folds(out) else str
     shutil.copytree(STATIC, out / "static")
     site = Site(out=out, base=base)
-    client = TestClient(site_app(root, base, drafts))
+    # One snapshot of the stores for the whole crawl: `cache.frozen`'s contract.
+    with cache.frozen(), TestClient(site_app(root, base, drafts)) as client:
+        seen = _crawl(client, site, fold, tick)
+        # Not reached, as distinct from reached and refused: that row is written.
+        for url in sorted(_expected(root, base) - seen):
+            site.refuse(url, "nothing links to it")
+    return site
+
+
+def _crawl(client: TestClient, site: Site, fold, tick) -> set[str]:
+    """Breadth-first from the index over sorted links, writing as it goes.
+    Returns every URL it reached."""
+    out, base = site.out, site.base
     assets = f"{base}/static/"
 
     start = f"{base}/"
@@ -301,8 +313,4 @@ def build(root: Path, out: Path, base: str = "", drafts: bool = False,
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_bytes(body)
         site.files[url] = rel
-
-    # Not reached, as distinct from reached and refused: that row is written.
-    for url in sorted(_expected(root, base) - seen):
-        site.refuse(url, "nothing links to it")
-    return site
+    return seen

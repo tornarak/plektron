@@ -29,11 +29,23 @@ can be trusted is not worth the speed; this one can be checked in a sentence.
 Nothing here caches a write path, and nothing caches across processes. A cache
 that outlived the server would be a second store, and this project has opinions
 about stores that can disagree.
+
+**A build is the exception, and it is scoped to exactly the build.** The digest
+buys a server whose stores are edited under it; a static build is one snapshot by
+contract — an edit landing mid-crawl yields a site half of one state and half of
+the other whatever the cache does — so there the per-request re-read is pure
+cost. Measured, it was most of the build: ~80% of a full page re-read and hashed
+~5,000 files, and most of the rest re-globbed and re-sorted the same directories.
+`frozen()` holds the snapshot: inside it each file is digested once, each stamp
+folded once, and each `@listing` globbed once. Outside it nothing changes, and on
+exit it forgets everything, so the next build — or the next test — reads afresh.
 """
 from __future__ import annotations
 
+import functools
 import hashlib
-from collections.abc import Callable, Iterable
+from collections.abc import Callable, Iterable, Iterator
+from contextlib import contextmanager
 from functools import lru_cache
 from pathlib import Path
 from typing import Any
@@ -49,8 +61,57 @@ MAXSIZE = 1024
 _DIGEST = 16
 
 
+#: The snapshot's memo while `frozen()` holds one, else None.
+_snapshot: dict | None = None
+
+
+@contextmanager
+def frozen() -> Iterator[None]:
+    """Treat the stores as unchanging until the block exits. Re-entrant: an
+    inner block joins the outer snapshot rather than starting a second one."""
+    global _snapshot
+    outer = _snapshot is not None
+    if not outer:
+        _snapshot = {}
+    try:
+        yield
+    finally:
+        if not outer:
+            _snapshot = None
+
+
+def _memo(key, compute: Callable[[], Any]) -> Any:
+    if _snapshot is None:
+        return compute()
+    try:
+        return _snapshot[key]
+    except KeyError:
+        out = _snapshot[key] = compute()
+        return out
+
+
+def listing(fn: Callable[..., list]) -> Callable[..., list]:
+    """A file-set listing, globbed once per snapshot and every call outside one.
+    Returns a copy, since callers concatenate onto what they are given."""
+
+    @functools.wraps(fn)
+    def wrapper(*args):
+        return list(_memo((fn, *args), lambda: fn(*args)))
+    return wrapper
+
+
 def digest(data: bytes) -> bytes:
     return hashlib.blake2b(data, digest_size=_DIGEST).digest()
+
+
+def file_digest(path: Path) -> bytes | None:
+    """One file's digest, or None for a file that is not there."""
+    def read() -> bytes | None:
+        try:
+            return digest(Path(path).read_bytes())
+        except OSError:
+            return None
+    return _memo(("file", str(path)), read)
 
 
 def stamp(paths: Iterable[Path]) -> bytes:
@@ -64,14 +125,15 @@ def stamp(paths: Iterable[Path]) -> bytes:
     rather than raising: a half-written store is a state these tools pass
     through constantly, and the next call will see whatever it settles into.
     """
-    h = hashlib.blake2b(digest_size=_DIGEST)
-    for p in paths:
-        h.update(str(p).encode("utf-8"))
-        try:
-            h.update(p.read_bytes())
-        except OSError:
-            h.update(b"\0missing")
-    return h.digest()
+    paths = tuple(str(p) for p in paths)
+
+    def fold() -> bytes:
+        h = hashlib.blake2b(digest_size=_DIGEST)
+        for p in paths:
+            h.update(p.encode("utf-8"))
+            h.update(file_digest(Path(p)) or b"\0missing")
+        return h.digest()
+    return _memo(("stamp", paths), fold)
 
 
 class by_file:  # noqa: N801 — used as a decorator, so it reads as one
@@ -94,9 +156,8 @@ class by_file:  # noqa: N801 — used as a decorator, so it reads as one
 
     def __call__(self, path: Path) -> Any:
         p = Path(path)
-        try:
-            key = digest(p.read_bytes())
-        except OSError:
+        key = file_digest(p)
+        if key is None:
             return self.fn(p)
         return self._cached(str(p), key)
 

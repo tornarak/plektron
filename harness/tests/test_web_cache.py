@@ -159,3 +159,24 @@ def test_a_file_that_vanishes_mid_walk_is_folded_in_not_raised(tmp_path):
     assert cache.stamp([gone]) == cache.stamp([gone])
     gone.write_text("back")
     assert cache.stamp([gone]) != cache.stamp([tmp_path / "never.md"])
+
+
+def test_a_snapshot_holds_until_its_block_exits_and_no_longer(tmp_path):
+    """`frozen()` is the one place a stale answer is licensed, so its edge is
+    the thing to pin: inside, an edit is invisible by contract; one statement
+    after the block, it is seen again, and so is a file added meanwhile."""
+
+    @cache.listing
+    def files(d):
+        return sorted(d.glob("*.md"))
+
+    f = tmp_path / "a.md"
+    f.write_text("one")
+    with cache.frozen():
+        key, listed = cache.stamp([f]), files(tmp_path)
+        f.write_text("two")
+        (tmp_path / "b.md").write_text("new")
+        assert cache.stamp([f]) == key
+        assert files(tmp_path) == listed
+    assert cache.stamp([f]) != key
+    assert len(files(tmp_path)) == 2
