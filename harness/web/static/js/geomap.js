@@ -440,6 +440,7 @@ export function compose(atlas, shape, sel, hidden = new Set(), dropped = new Set
 
   const layers = {};
   for (const [name, id] of [['land', 'base:land'], ['lakes', 'base:lakes']]) {
+    if (!(atlas.base || []).includes(id)) continue;
     const doc = shape(id);
     if (hasDoc(doc)) layers[name] = own(frame.paths(doc));
   }

@@ -419,7 +419,7 @@ def member_extents(ent_id: str, store: dict,
     where a *boundary* would not be: it is computed from what lies beneath, it is
     a rectangle, and nothing mistakes a rectangle for a coastline. What makes it
     tolerable on the page is that the caller draws it invisible — see
-    `edition_ui.map_context`.
+    `compose` in `web/static/js/geomap.js`.
     """
     kids = children(store)
     out, seen = [], {ent_id}
@@ -629,7 +629,7 @@ def pins_under(ent_id: str, store: dict, root: Path = Path("."),
     **"Below" is the containment tree, and a `geo:` member is not below.** It is
     what the record *is* — `people:maritime-chukchi` does not contain its
     villages, it is the people of them — so following one here was tried and
-    taken out. `edition_ui.map_context` expands a member into the selection
+    taken out. `geomap.js`'s `compose` expands a member into the selection
     instead, which makes it a subject in its own right: it gets its own pin from
     its own turn through this walk, it is named in the tree as chosen, and a
     reader can take it off again. Followed from *here* it could not be taken off,
@@ -829,7 +829,7 @@ def meridian(root: Path = Path(".")) -> list[dict]:
     halves, and `build_geo.prepare` welds them — when they meet. Natural Earth's
     10m Wrangel Island left its halves 0.011° apart and its Bering Sea flush but
     unmerged, so the store held two rings where the world has one thing, and
-    `geomap.paths` emits one stroked path per ring: a line down the middle of
+    `geomap.js` draws one stroked path per ring: a line down the middle of
     every such shape, on every map that drew it. No gate said anything. It was
     found by a reader looking at the atlas, which is the one way a rendering
     defect gets found when nothing measures it.
@@ -1096,7 +1096,7 @@ def boxes(idents, root: Path = Path("."), margin: float = 0.0) -> dict:
     store's shifted window, which is what `frame:` and `--frame` also take, so
     the printed `frame` field is paste-ready.
 
-    **`margin` is content, not breathing room.** `geomap.Frame` already pads a
+    **`margin` is content, not breathing room.** `geomap.js`'s `Frame` already pads a
     map by `PAD` on every side; a margin here says *show this much more of the
     world*, which is a different question and the one a person asking for a
     frame is usually asking. Degrees, applied to all four sides — deliberately

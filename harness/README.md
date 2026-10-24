@@ -438,16 +438,17 @@ build time. `entity check` gates that a `geo:` member *resolves*; everything geo
 `geo verify` and **reports**, because a containment disagreement says one of two
 authored facts is wrong and cannot say which.
 
-**`geomap.py`** — shapes to an inline SVG map. Lambert azimuthal equal-area, centred
-per map: it goes through `sin`/`cos` of longitude, so the antimeridian closes for
-good rather than being handled. One 1000-unit `viewBox` for every map, which is what
-lets one decimal place be enough at every zoom and keeps a pixel dimension out of it.
-`render`'s `mark` is carried, never computed: it sees paths and cannot tell a drainage
-basin from a coastline, so `edition_ui.map_context` decides from the shape's *type* and
-this only puts it on the root element. Every path also carries the entity it belongs to
-(`owned`), because nothing about a path recovers it — a member is the nearest descendant
-*with* a shape, and two entities may share one polygon — and that is what a hover
-highlights on.
+**`harness/web/static/js/geomap.js`** — a selection of places composed into an inline SVG
+map, in the page, so a static host draws what a live one does. It is handed the
+store's per-entity facts (`edition_ui.atlas_data`, served as `/geo/atlas.json`) and
+the shapes by id, and owns only what depends on the selection: members joining it,
+the frame and sheet, the layers, pins, the tree, the projection. Equidistant
+cylindrical with a standard parallel per map, so a lat/lon box is a rectangle. One
+1000-unit `viewBox` on the longer side, which is what lets one decimal place be
+enough at every zoom and keeps a pixel dimension out of it. `render`'s `mark` is
+carried, never computed: `compose` decides `basin` from the shapes' *type*. Every
+path carries the entity it belongs to (`owned`), because nothing about a path
+recovers it — and that is what a hover highlights on. Tested under bun.
 
 **`edition_ui.py`** — the reading view's domain layer; its routes are
 `harness/web/edition.py`. Two columns, a stack of entity/lexicon/scan cards under one map pane, the encyclopedia as a tree over the class, and its audit queue. A footnote marker is not a card — it keeps its href and jumps to the note at the foot, which is already on the page. A map is not a card either: there is only ever one *here*, so it is the pane, and clicking a place moves it. A hover *is* a card, fetched early and floated pointer-inert, which is why it never competes with the stack. Serves committed
@@ -1191,7 +1192,7 @@ columns and neither has to say so. Four properties bind callers:
 
 `uv run pytest`, which also runs `ruff check` (`test_lint.py`), and **`bun test
 harness/tests/js`** for the one piece of logic that runs in the browser — the map
-composed from a selection (`web/static/js/geomap.js`). Separate runners on
+composed from a selection (`harness/web/static/js/geomap.js`). Separate runners on
 purpose: pytest says whether the atlas data is right, bun whether a map is
 composed from it correctly, and neither suite pays for the other's runtime.
 Fixtures live in `tmp_path`, not the live corpus — a test asserting

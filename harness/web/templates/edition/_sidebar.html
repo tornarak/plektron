@@ -20,9 +20,9 @@
    paint by the same head script. The stylesheet's rule is the one that must
    agree with this comment.
 
-   `pane` and `map` are two routes' names for one fact — the page view sets the
-   first and asks for an empty pane the first click fills, the entity route sets
-   the second and arrives with the geography already drawn.
+   `pane` asks for the map pane. It always ships empty and `map.js` composes
+   it; the entity route also names its subject (`map_subject`), which joins
+   the sitting's selection on load.
 
    **`side_fixed` is a view whose column is its point** — an entry, the atlas,
    the encyclopedia, where a click on a name is a request for the map or the card
@@ -51,7 +51,7 @@
   <div id='side-col'>
     <div id='side-body'>
       <div id='panel-entities'>
-        {% if pane | default(false) or map | default(false) %}{%
+        {% if pane | default(false) %}{%
           include "edition/_pane.html" %}{% endif %}
         <div id='stack'></div>
       </div>

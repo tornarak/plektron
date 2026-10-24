@@ -17,13 +17,18 @@
  * on the map and never will be, so its click opens the card at once; the server
  * says which is which (`data-drawn`), because only the store knows.
  *
- * **The frame moves without anything being re-drawn.** The server draws into a
- * *sheet* — the widest extent the tree can reach — and hands over the candidate
+ * **The map is composed here, in the page** (`geomap.js`), out of the facts the
+ * server states once for every entity (`atlas.json`) and the shapes it serves
+ * by id — so a static host draws the same maps a live one does, with nothing
+ * to ask. Both are fetched once per page and memoised.
+ *
+ * **The frame moves without anything being re-drawn.** The map is drawn into a
+ * *sheet* — the widest extent the tree can reach — with the candidate
  * rectangles already in sheet units (`data-frames`). Hiding a node is then
- * choosing one of them and writing it into the `viewBox`: no fetch, no
- * projection out here, and no second copy of the framing rule, which stays in
- * `edition_ui.map_context` where the store is. Adding and dismissing do go back
- * to the server, because they change what is drawn and not only what is seen.
+ * choosing one of them and writing it into the `viewBox`: no re-composition and
+ * no second copy of the framing rule, which is `geomap.compose`'s. Adding and
+ * dismissing do compose again, because they change what is drawn and not only
+ * what is seen.
  *
  * **Every path on that map says whose it is** (`geomap.owned`), which is what
  * lets a name anywhere on the page light up its shape: a `contains` row, a node
@@ -36,7 +41,9 @@
  * records are in play, and it already lists them: after it loads, every
  * `[data-ent]` on it has its card fetched into `hover.js`'s memo.
  */
-(function () {
+import {compose, paneHtml} from './geomap.js';
+
+{
   const B = STATE.base;
   const pane = () => document.getElementById('map-pane');
 
@@ -54,20 +61,47 @@
     hidden = new Set(got.hidden || []);
     dropped = new Set(got.dropped || []);
   } catch (e) {}
-  const save = () => sessionStorage.setItem(
-      KEY, JSON.stringify({sel, hidden: [...hidden], dropped: [...dropped]}));
+  /* Every change to the selection passes through here, which is why the
+     atlas's marks are redrawn here and not after each paint. */
+  const save = () => {
+    sessionStorage.setItem(
+        KEY, JSON.stringify({sel, hidden: [...hidden], dropped: [...dropped]}));
+    marks();
+  };
 
-  /* **A static build has no server to compose a map**, only the one-place map
-     each located entry was written with — so there the pane holds one place at
-     a time, a click replacing rather than adding, and asks for that file. A
-     selection of several waits on composing the map in the page. */
-  const STATIC = !!STATE.static;
-  const url = () => STATIC ? B + '/partial/map/' + encodeURIComponent(sel[0])
-                           : B + '/partial/map?' + [
-      ...sel.map(r => 'at=' + encodeURIComponent(r)),
-      ...[...hidden].map(r => 'hide=' + encodeURIComponent(r)),
-      ...[...dropped].map(r => 'drop=' + encodeURIComponent(r)),
-  ].join('&');
+  /* The facts and the shapes, each fetched once. A failed fetch is not
+     memoised, so the next paint tries again rather than drawing from a hole. */
+  let atlas = null;
+  const shapes = new Map();
+  async function facts() {
+    if (!atlas) {
+      const r = await fetch(pane().dataset.atlas);
+      if (!r.ok) throw new Error(`atlas: HTTP ${r.status}`);
+      atlas = await r.json();
+    }
+    return atlas;
+  }
+  async function fetchShape(sid) {
+    const r = await fetch(B + '/geo/shape/' + encodeURIComponent(sid) + '.json');
+    if (r.ok) shapes.set(sid, await r.json());
+  }
+
+  /* **Composed twice when it has to be, never walked twice.** The first pass
+     records every shape the map asks for, reading the missing ones as empty;
+     the second draws once they are in hand. Which shapes a selection needs is
+     then `compose`'s answer and not a second rule written out here. */
+  async function composed() {
+    const a = await facts();
+    const want = new Set();
+    const get = sid => { want.add(sid); return shapes.get(sid) || {}; };
+    let ctx = compose(a, get, sel, hidden, dropped);
+    const missing = [...want].filter(s => !shapes.has(s));
+    if (missing.length) {
+      await Promise.all(missing.map(fetchShape));
+      ctx = compose(a, get, sel, hidden, dropped);
+    }
+    return ctx;
+  }
 
   /* Prefetch is best-effort and silent: it is a saving, and a failed one is
      just the click paying what it would have paid anyway. */
@@ -181,14 +215,24 @@
   async function paint() {
     const p = pane();
     if (!p) return false;
-    const r = await fetch(url());
-    if (!r.ok) return false;
-    p.querySelector('.body').innerHTML = await r.text();
+    let ctx;
+    try { ctx = await composed(); } catch (e) { return false; }
+    p.querySelector('.body').innerHTML = paneHtml(ctx, B);
     p.hidden = false;
     keepFolds(p);
     warm(p);
     reframe();
     return true;
+  }
+
+  /* **The atlas's own tree says what is on the map.** Its names are place links
+     like any other, so the reader's selection is the only thing that can mark
+     one — it used to be a server-drawn `?at=` page, which knew. Nothing to do
+     on any page without that tree. */
+  function marks() {
+    const on = new Set(sel);
+    for (const a of document.querySelectorAll('.atlas-tree a.node[data-ref]'))
+      a.classList.toggle('sel', on.has(a.dataset.ref));
   }
 
   /* `toggle` fires after the element has settled, so this records what is open
@@ -238,7 +282,6 @@
      the whole subtree goes on — because a per-node toggle over a mixed subtree
      inverts it, which is never what anybody means by shift-clicking a heading. */
   async function clickMany(refs) {
-    if (STATIC) return click(refs[0]);
     if (!pane() || !refs.length) return 'card';
     const off = sel.includes(refs[0]);
     for (const r of refs) {
@@ -273,8 +316,8 @@
          would arrive unpainted, with the reason two interactions ago. */
       hidden.delete(ref);
       /* **Dismissal is recorded, because dropping out of `sel` is not a
-         signal.** A `geo:` member joins the selection server-side by rule, so
-         the next request would put it straight back: leaving it out of `at`
+         signal.** A `geo:` member joins the selection by rule, in `compose`,
+         so the next paint would put it straight back: leaving it out of `sel`
          says "not yet added", which is what the rule acts on. Saying `drop`
          is how a click outranks a rule. Harmless for everything else — an id
          nothing brings along is one nothing re-adds. */
@@ -284,7 +327,7 @@
       return 'map';
     }
     const before = sel;
-    sel = STATIC ? [ref] : [...sel, ref];
+    sel = [...sel, ref];
     hidden.delete(ref);
     dropped.delete(ref);
     save();
@@ -393,35 +436,20 @@
   });
 
   /* **The page's own subject joins the sitting's map; it does not replace it.**
-     Arriving at an entity's page is the same act as
-     clicking the name would have been, so it adds. If the stored selection is
-     already exactly what the server drew there is nothing to do and no request
-     to make — which is the ordinary case, and why paging through the book with a
-     map open costs nothing. */
+     Arriving at an entity's page is the same act as clicking the name would
+     have been, so it adds — unless the reader took it off the map in this
+     sitting: the server names the subject without knowing the sitting's
+     `dropped`, and adopting it anyway would undo the dismissal on every visit
+     to its page. */
   const p = pane();
   if (p) {
-    const here = served();
-    /* **What the reader dropped does not come back on the next page.** The
-       pane the server put in this page was rendered without the sitting's
-       `drop` — it cannot read `sessionStorage` — so a village taken off the
-       map would arrive in `data-sel` again and be adopted straight back. The
-       filter is what makes the dismissal outlive a page turn; the comparison
-       below then differs from `here.sel` and repaints without it. */
-    const want = STATIC ? here.sel
-        : [...new Set([...sel, ...here.sel.filter(r => !dropped.has(r))])];
-    if (want.length && (want.length != here.sel.length
-                        || want.some((r, i) => r != here.sel[i]))) {
-      sel = want;
-      save();
-      paint();
-    } else {
-      sel = want;
-      save();
-      if (!p.hidden) { warm(p); reframe(); }
-    }
+    const subject = p.dataset.sel || '';
+    if (subject && !dropped.has(subject) && !sel.includes(subject)) sel = [...sel, subject];
+    save();
+    if (sel.length) paint();
   }
 
   /* `edition.js` hands the click on an entity link over rather than reaching in,
      so this file owns the pane and that one owns the stack. */
   window.MAP = {click, paint};
-})();
+}

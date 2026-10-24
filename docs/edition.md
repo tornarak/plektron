@@ -1447,9 +1447,9 @@ tidiness one.** The page was built by concatenating f-strings, where a value was
 escaped if whoever wrote that line remembered: `entity_card` escaped `canonical`
 and `entity_index` interpolated the same field raw two functions later, so an
 apostrophe in a gloss broke the encyclopedia index — and the search query reached
-`<title>` unescaped. Exactly three things are marked safe, each a renderer that
-escapes its own inputs: `tei_html`'s page HTML, `geomap`'s SVG, and the gloss
-markup `edition_ui.gloss_html` builds.
+`<title>` unescaped. What is marked safe is a renderer's output that escapes its
+own inputs — `tei_html`'s page HTML and the gloss markup `edition_ui.gloss_html`
+builds among them.
 
 **The stores are read through a cache keyed on their contents**
 (`harness/web/cache.py`). Every request re-walked and re-parsed the whole
@@ -1635,7 +1635,20 @@ the entry is the expensive answer to "what is this". Reading the entry is the `�
 beside the name in the tree — the atlas's own spelling, and a separate mark for a
 separate act rather than a second meaning loaded onto the same click. An entity
 the atlas cannot draw has no map act to perform, so its click opens the card at
-once; the server says which is which (`drawn`), because only the store knows.
+once; the composed map says which is which (`drawn`), off the store's own
+answer to whether the entity has an extent.
+
+**The map is composed in the page** (`harness/web/static/js/geomap.js`), so a static host
+draws the same maps a live server does. What the store can answer about one
+entity on its own — how big it is, what lies beneath it with a shape, what holds
+it, how well founded its outline is — is computed in Python by the function that
+owns each rule and served once as `/geo/atlas.json` (`edition_ui.atlas_data`);
+the shapes are served by id. What depends on the selection — which members join
+it, the frame, the layers, the pins, the tree, the projection — is the script's,
+in one copy. The split is the line between a rule about the store and a
+composition over it, and no store-walking rule is written twice. The port was
+checked byte for byte against the Python it replaced over every entity and a set
+of multi-selections before that was deleted.
 
 **A second place joins the first rather than replacing it.** The question a
 reader has after looking up two villages is where they are with respect to each
@@ -1706,15 +1719,15 @@ outlive the page any more than a scroll position does.
 The one control left on a node is **hide** — do not paint this. It used to move
 the frame as well, which is the selection's job now.
 
-**Hiding costs no request, and that is what the sheet is for.** The server draws
-into the union of the per-entity boxes and opens the `viewBox` on the frame
-inside it, handing over each entity's rectangle already in the sheet's units.
-Choosing a frame is then writing one of them into the `viewBox`: nothing is
-re-projected, nothing is re-fetched, and the framing rule itself stays in
-`edition_ui.map_context` in one copy — what travels is its answer. Since the
-frame is a union of those same boxes, hiding can only tighten it, so a re-frame
-never wants a ring that was culled as off-sheet. Adding and removing do go back
-to the server, because they change what is drawn and not only what is seen.
+**Hiding re-composes nothing, and that is what the sheet is for.** The map is
+drawn into the union of the per-entity boxes with the `viewBox` opened on the
+frame inside it, and each entity's rectangle travels already in the sheet's
+units. Choosing a frame is then writing one of them into the `viewBox`: nothing
+is re-projected, and the framing rule stays in `compose` in one copy — what
+`map.js` reads is its answer. Since the frame is a union of those same boxes,
+hiding can only tighten it, so a re-frame never wants a ring that was culled as
+off-sheet. Adding and removing compose again, because they change what is drawn
+and not only what is seen.
 
 **Every path on that map carries the entity it belongs to**, so resting on a
 name anywhere — a `contains` row, a node in the atlas tree, a word in the
@@ -1725,7 +1738,7 @@ the child whose name you are on; and two entities may share one polygon outright
 — a people and a subgroup inside it may both name one Asher shape — so the
 shape could not name the member even in principle. `geo.member_shapes` and
 `geo.pins_under` return the entity beside the thing to draw for this reason, and
-`geomap.owned` is what attaches it. The coastline claims nothing, which is
+`geomap.js`'s `owned` is what attaches it. The coastline claims nothing, which is
 correct: no record owns it.
 
 **A descendant with nothing to draw is on the map anyway, unpainted.** A node
@@ -1754,7 +1767,7 @@ rather than the drawing implying it. Being on the map is a strong condition: the
 Omolon has a shape of its own and is still on no layer of the RFE's, because the
 descent stopped at the Kolyma above it, and Markova is a point three levels down
 past `pins_under`'s depth. Both are a click away. So `geo.relatives` — every
-ancestor and descendant at any depth — rides in `_map.html`, and the pane warms
+ancestor and descendant at any depth — rides in the pane (`.warm`), and it warms
 that union with its own `data-ent`s when it loads. That is the whole of "an entry
 preloads its ancestors and descendants".
 
@@ -1785,7 +1798,8 @@ composes the entry and the pane rather than putting the map inside the card.
 Both a preview and a card in the stack are read *while* the pane is showing the
 geography, and the same hover that floats the preview is lighting the shape up
 over there — a second copy inside the card would answer a question nothing was
-asking, at a map render per hover.
+asking, at a map render per hover. A `map` link floats no preview at all: its
+answer is the pane.
 
 None of it is apparatus: reader view hides `.flag` and flattens `.unsettled`,
 because those are the edition talking about itself, and a preview, a highlight
@@ -1937,10 +1951,9 @@ for the live server too, so the two cannot drift into two URL schemes:
   file's own extension (`/leaf/1-361.png`, `/leaf/1-361/colour.jpg`,
   `/tts/….wav`), because a host types a file by its name.
 - **`app.state.static` drops what only a server answers**: the search form and
-  the ratify button. Search is a lacuna for now. On a static site the map pane
-  holds one place at a time and fetches the one-place map each located entry was
-  written with, because composing several places is a server's job until that
-  moves into the page.
+  the ratify button. Search is a lacuna for now. The map is not among them: it
+  is composed in the page, so the build writes `/geo/atlas.json` and every shape
+  it names (found by reading that file), and no map at all.
 
 **It crawls from the index; the stores do not seed it.** A page's hrefs are
 followed, along with the URLs its scripts build out of `data-` attributes.

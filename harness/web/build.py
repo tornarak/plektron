@@ -116,8 +116,8 @@ def _derived(tree, base: str) -> list[str]:
         if "data-ref" in a:
             # `hover.js` `urlFor`, `edition.js` `openEntity`, `map.js` `click`.
             out.append(f"{base}/partial/entity/{_enc(a['data-ref'])}")
-            if " mapref " in cls:
-                out.append(f"{base}/partial/map/{_enc(a['data-ref'])}")
+        if "data-atlas" in a:                                   # `map.js` `paint`
+            out.append(a["data-atlas"])
         if " lex " in cls and "data-key" in a:
             out.append(f"{base}/partial/lexicon/{_enc(a['data-key'])}")
         if "data-ent" in a and a["data-ent"]:
@@ -141,6 +141,17 @@ def _scans(text: str, base: str) -> list[str]:
     state = json.loads(m.group(1))
     refs = state.get("leaves") or ([state["ref"]] if state.get("ref") else [])
     return [f"{base}/page/{r}.png" for r in refs]
+
+
+def _shapes(atlas: dict, base: str) -> list[str]:
+    """Every shape `geomap.js` can ask for: the coastline and lakes the store
+    has, and each shape an entity names or draws beneath it. Kin and a holder's
+    outline are some other entity's own shapes, so they are in here already."""
+    sids = set(atlas["base"])
+    for e in atlas["entities"].values():
+        sids.update(e["shapes"])
+        sids.update(sid for _ent, sid in e["members"])
+    return [f"{base}/geo/shape/{_enc(s)}.json" for s in sids]
 
 
 def _links(text: str, base: str) -> list[str]:
@@ -272,6 +283,8 @@ def build(root: Path, out: Path, base: str = "", drafts: bool = False,
             body = r.content
             if html:
                 follow(url, _links(r.text, base))
+            elif url == f"{base}/geo/atlas.json":
+                follow(url, _shapes(r.json(), base))
         else:
             site.refuse(url, f"HTTP {r.status_code}: {r.text.strip()[:160]}")
             continue

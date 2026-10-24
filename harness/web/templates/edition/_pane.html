@@ -5,7 +5,7 @@
    push both out of sight. There is only ever one *here*, so there is one pane
    and it stays at the top. What it holds is a *selection*: clicking a place adds
    it, and the tree beneath the map names what contains them all — see
-   `_map.html` and `map.js`.
+   `geomap.js` and `map.js`.
 
    **Dismissal is "not this one", not a setting.** Nothing is written down: the ×
    closes the pane for now and the next click on a located entity brings it back
@@ -13,11 +13,13 @@
    control to undo it, and a map you cannot see and cannot ask for is worse than
    one you have to close again.
 
-   Rendered filled where the page already has a subject — an entity's own page —
-   and empty and hidden in the page view and the atlas, where the sitting's
-   selection or the first click fills it. The markup is the same either way so `map.js` has one shape to
-   write into. #}
-<div id='map-pane'{% if not map %} hidden{% endif %}>
+   **Always shipped empty; the page composes it.** Where the page has a subject —
+   an entity's own page — `data-sel` names it and `map.js` adds it to the
+   sitting's selection on load. `data-atlas` is where the facts are, stated by
+   the server because the server knows its own base, and is how `edition build`
+   finds the file to write. #}
+<div id='map-pane' hidden data-atlas='{{ base }}/geo/atlas.json'
+     {%- if map_subject %} data-sel='{{ map_subject }}'{% endif %}>
   <button class='dismiss' title='close the map'>×</button>
-  <div class='body'>{% if map %}{% include "edition/_map.html" %}{% endif %}</div>
+  <div class='body'></div>
 </div>

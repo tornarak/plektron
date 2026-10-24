@@ -5,11 +5,11 @@
 {% block title %}{{ card_title }} — The Chukchee{% endblock %}
 
 {% block main %}
-{# An entity that has somewhere to put on a map arrives with the map already
-   drawn, in the same column the atlas uses. Reaching an entry and then having to
-   ask for its map made the geography an optional extra, and it is not: `within:`
-   is half of what an entry says about a place. `map` is set only by the entity
-   route, so a lexicon or standalone-map page has no pane in its column.
+{# An entity that has somewhere to put on a map arrives with its map, in the
+   same column the atlas uses. Reaching an entry and then having to ask for its
+   map made the geography an optional extra, and it is not: `within:` is half of
+   what an entry says about a place. `pane` is set only by the entity route, so
+   a lexicon page has no pane in its column.
 
    **The column itself is no longer conditional on the map.** It carries the
    contents tab now, and an entry that is not a place still has somewhere in the
@@ -38,6 +38,6 @@
 <script src="{{ assets }}/js/sidebar.js"></script>
 <script src="{{ assets }}/js/ratify.js"></script>
 <script src="{{ assets }}/js/hover.js"></script>
-<script src="{{ assets }}/js/map.js"></script>
+<script type="module" src="{{ assets }}/js/map.js"></script>
 <script src="{{ assets }}/js/edition.js"></script>
 {% endblock %}

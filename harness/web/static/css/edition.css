@@ -623,6 +623,8 @@ ul.tree > li { border-left:none; padding-left:0 }
 .ent-tree a.node:not([data-ref]) { color:var(--dim); text-decoration:none }
 .ent-tree a.node:hover { color:var(--fg); text-decoration:underline }
 .ent-tree li.sel > a.node { color:var(--fg); font-weight:bold }
+/* The atlas's own tree, marked from the sitting's selection by `map.js`. */
+.atlas-tree a.node.sel { color:var(--fg); font-weight:bold }
 .ent-tree .dim { font-size:.72rem; margin-left:.25rem }
 /* The fold. A count and nothing else — "9 more" says what opening it costs,
    where a bare ▸ makes a reader open it to find out. */

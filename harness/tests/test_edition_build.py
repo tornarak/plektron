@@ -42,8 +42,11 @@ def test_a_tree_with_nothing_missing_builds_clean(tree, tmp_path):
     for rel in ("index.html", "page/1-021/index.html", "page/1-021.png",
                 "entity/place:markova/index.html",
                 "partial/entity/place:markova/index.html",
-                "annotations/index.html", "static/js/edition.js"):
+                "annotations/index.html", "static/js/edition.js",
+                "static/js/geomap.js", "geo/atlas.json"):
         assert (out / rel).is_file(), rel
+    # The page composes every map, so none is written down.
+    assert not (out / "map").exists() and not (out / "partial" / "map").exists()
 
 
 def test_every_link_names_the_base_and_none_names_the_live_mount(tree, tmp_path):

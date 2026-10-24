@@ -11,7 +11,7 @@
    a plausible ref, as that field could. #}
 <div class='meta'><code>{{ ident }}</code>
   {%- if located %} · <a class='mapref' data-ref='{{ ident }}'
-     href='{{ base }}/map/{{ ident }}'>map</a>{% endif %}</div>
+     href='{{ base }}/entity/{{ ident }}'>map</a>{% endif %}</div>
 {% if contested %}
 <div class='meta'>shares a form with
 {% for c in contested %}<a class='ent' data-ref='{{ c.id }}'

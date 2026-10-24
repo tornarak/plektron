@@ -850,12 +850,16 @@ def test_an_entry_that_can_be_drawn_arrives_with_its_map(server):
     optional extra, and it is not — `within:` is half of what an entry says about
     a place. The pane is what carries it: there is only ever one *here*, and a map
     that could be pushed out of sight by the next three cards was answering a
-    question nobody had stopped asking."""
+    question nobody had stopped asking.
+
+    The page composes it (`geomap.js`): the pane names its subject and where
+    the facts are, and `map.js` puts the subject on the sitting's map."""
     base, root = server
     entry(root, "place:uelen", extra="- geo: 66.16 -169.8\n")
     body = get(base + "/entity/place:uelen")
-    assert "id='map-pane'" in body and "<svg class='map" in body
-    assert "data-ent='place:uelen'" in body   # the pin, for the highlight
+    assert "data-sel='place:uelen'" in body
+    assert f"data-atlas='{base}/geo/atlas.json'" in body
+    assert '<script type="module" src="/static/js/map.js">' in body
 
 
 def test_a_point_can_be_opened_on_a_map_that_is_not_ours(server):
@@ -897,8 +901,8 @@ def test_an_entry_with_nothing_to_draw_opens_no_pane(server):
     on a map, and with no pane in the column they had nowhere to go."""
     base, _ = server
     body = get(base + "/entity/place:markova")
-    assert "<div id='map-pane' hidden>" in body
-    assert "class='drawn'" not in body
+    assert "<div id='map-pane' hidden" in body
+    assert "data-sel=" not in body
 
 
 def test_the_fragment_the_stack_and_the_preview_use_carries_no_map(server):
@@ -1159,7 +1163,7 @@ def test_an_entity_with_no_map_still_has_a_sidebar(server):
     entry(root, "person:bogoras", status="proposed")
     body = get(base + "/entity/person:bogoras")
     assert "id='secondary'" in body and "id='panel-contents'" in body
-    assert "<div id='map-pane' hidden>" in body
+    assert "<div id='map-pane' hidden" in body
 
 
 @pytest.mark.parametrize("path", ["/atlas", "/entities", "/entity/person:bogoras"])
@@ -1180,8 +1184,7 @@ def test_a_reference_view_carries_the_sidebar_fixed_open(server, path):
     assert "atlas?at=" not in body
 
 
-@pytest.mark.parametrize("path", ["/entity/person:bogoras", "/lexicon/notaform",
-                                  "/map/person%3Abogoras", "/map?at=person%3Abogoras"])
+@pytest.mark.parametrize("path", ["/entity/person:bogoras", "/lexicon/notaform"])
 def test_a_card_fragment_is_its_own_path(server, path):
     """The bare card the stack and a preview fetch lives under `/partial/`, not
     behind a query: a static host serves by path and drops the query, so a
@@ -1795,27 +1798,6 @@ def test_the_atlas_lists_only_located_roots(server):
     entry(root, "person:nobody", aliases=[("Nobody", False)])
     got = get(base + "/atlas")
     assert "Nobody" not in got
-
-
-def test_a_node_with_no_boundary_says_its_frame_is_a_frame(server):
-    """No source draws Chukotka, and none should — it is tree structure. The
-    map is computed from its members and captioned as such, because a frame is
-    a viewport and not a claim."""
-    base, root = server
-    entry(root, "place:parent", aliases=[("P", False)])
-    p = root / "edition" / "entities" / "place" / "kid.md"
-    p.write_text("# place:kid — Kid\n\n- status: ratified\n- since: 1-021\n"
-                 "- within: place:parent\n- geo: 66.0 170.0\n\n## aliases\n\n"
-                 "| form | lang | auto | note |\n|---|---|---|---|\n\n## gloss\n\nx\n",
-                 encoding="utf-8")
-    got = get(base + "/partial/map/place%3Aparent")
-    assert "framed by what lies beneath it" in got and "<svg" in got
-
-
-def test_an_entity_with_nowhere_to_put_says_so_rather_than_drawing_nothing(server):
-    base, root = server
-    entry(root, "person:nobody2", aliases=[("N", False)])
-    assert "Nothing to draw" in get(base + "/partial/map/person%3Anobody2")
 
 
 def test_the_atlas_travels_as_facts_the_store_already_answers(server):

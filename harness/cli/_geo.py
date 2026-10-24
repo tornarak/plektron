@@ -79,7 +79,7 @@ def register(cli):
     arg(p, "idents", metavar="ID", nargs=-1, required=True)
     opt(p, "--margin", type=float, default=0.0, metavar="DEG",
         help="degrees added on all four sides of the union. **Content, not "
-             "breathing room** — `geomap.Frame` already pads a drawn map on "
+             "breathing room** — `geomap.js` already pads a drawn map on "
              "every side, so this is the different question of how much more "
              "of the world to show. Degrees rather than a percentage, because "
              "a percentage of a box 60° wide and 20° tall is two distances and "

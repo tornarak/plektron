@@ -10,9 +10,9 @@ this file is every piece of markup that used to be an f-string.
 value reaches the page as text unless something says otherwise — where before it
 was escaped if whoever wrote that line remembered. `entity_card` escaped
 `canonical`; `entity_index` interpolated the same field raw two functions later.
-Three things are marked `| safe` in the whole templates directory, each a
-renderer that escapes its own inputs: `tei_html`'s page HTML, `geomap`'s SVG,
-and the gloss markup built by `edition_ui.gloss_html`.
+What is marked `| safe` is a renderer's output that escapes its own inputs —
+`tei_html`'s page HTML and the gloss markup built by `edition_ui.gloss_html`
+among them. The map is no longer one: `geomap.js` composes it in the page.
 """
 
 from __future__ import annotations
@@ -20,9 +20,8 @@ from __future__ import annotations
 import json
 import re
 from pathlib import Path
-from typing import Annotated
 
-from fastapi import APIRouter, HTTPException, Query, Request
+from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import RedirectResponse, Response
 from lxml import html as LH
 from pydantic import BaseModel
@@ -1555,7 +1554,7 @@ def entity(request: Request, ident: str):
         return templates.TemplateResponse(request, "edition/_entity.html", ctx)
     rec = ctx.get("rec")
     if ctx.get("located"):
-        ctx = {**_map_ctx(ident, root, base=_base(request)), **ctx, "map": True}
+        ctx["map_subject"] = ident
     # Where the entry is mentioned, said in the book's own divisions rather than
     # as a page list: a reader sizing an entry up wants to know it is a chapter's
     # subject and a passing name in two others, and forty refs sorted by scan
@@ -2016,24 +2015,6 @@ def _ipa_ctx(form: str) -> dict | None:
     }
 
 
-def _map_ctx(idents, root: Path, store: dict | None = None, hidden=(),
-             dropped=(), base: str = ui.BASE) -> dict:
-    """`map_context` with the server's cached readers handed in.
-
-    One map resolves six or more shapes out of `edition/geo/`, and every one
-    of them was a fresh read and JSON decode of a file that had not changed.
-    """
-    return ui.map_context(
-        idents,
-        root,
-        base,
-        store=store if store is not None else stores.load(root),
-        shape=lambda i: stores.shape(i, root),
-        hidden=hidden,
-        dropped=dropped,
-    )
-
-
 # ------------------------------------------------------------------- the map
 
 
@@ -2059,51 +2040,6 @@ def geo_shape(request: Request, name: str):
         raise HTTPException(404, f"no shape {name!r} in {geo.GEODIR}/index.json")
     return send_file(request, geo.geodir(root) / row["file"],
                      media_type="application/json")
-
-
-@router.get("/map")
-@router.get("/partial/map")
-def map_pane(request: Request,
-             at: Annotated[list[str], Query()] = (),
-             hide: Annotated[list[str], Query()] = (),
-             drop: Annotated[list[str], Query()] = ()):
-    """The map as a *selection*, which is the shape the pane actually has.
-
-    Repeated `at` rather than one path segment, because adding a place to the
-    map is the ordinary act here and the request has to be able to say what is
-    already on it. `hide` is the reader's "not this one" — it changes what is
-    painted and what the frame may sit on, and it is deliberately not stored:
-    nothing about it is written down, so there is nothing to undo but a click.
-
-    `drop` is the reader's "not this one *either*", and it exists because this
-    request is answered afresh every time. A `geo:` member joins the selection
-    by rule, so leaving it out of `at` says only "it is not here yet" — which the
-    rule then acts on, putting a village back the instant somebody clicked it
-    away. Dismissal has to be said out loud, exactly as `hide` is.
-
-    `/map/{ident}` stays beside this as the one-place spelling — a permalink and
-    what `a.mapref` points at — and goes through the same context.
-    """
-    refs = [_ident(i) for i in at if i]
-    ctx = _map_ctx(refs, _root(request),
-                   hidden={_ident(h) for h in hide if h},
-                   dropped={_ident(d) for d in drop if d},
-                   base=_base(request))
-    if _partial(request):
-        return templates.TemplateResponse(request, "edition/_map.html", ctx)
-    title = refs[0] if len(refs) == 1 else f"{len(refs)} place(s)"
-    return templates.TemplateResponse(
-        request,
-        "edition/card.html",
-        _ctx(request, partial="edition/_map.html", card_title=f"{title} — map",
-             toc_panel=_toc_panel(_root(request), [], base=_base(request)), **ctx),
-    )
-
-
-@router.get("/map/{ident:path}")
-@router.get("/partial/map/{ident:path}")
-def map_view(request: Request, ident: str):
-    return map_pane(request, at=[ident], hide=[], drop=[])
 
 
 @router.get("/atlas")

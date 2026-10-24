@@ -37,7 +37,7 @@
    another rung of the containment tree. #}
 {% include "edition/_sidebar.html" %}
 <div id='primary'>
-<ul class='tree'>
+<ul class='tree atlas-tree'>
 {% for g in groups %}
 <li><code class='cls'>{{ g.cls }}</code> <span class='dim'>({{ g.tree | length }})</span>
 <ul>{% for r in g.tree %}{{ node(r) }}{% endfor %}</ul>
@@ -57,6 +57,6 @@
 <script src="{{ assets }}/js/sidebar.js"></script>
 <script src="{{ assets }}/js/ratify.js"></script>
 <script src="{{ assets }}/js/hover.js"></script>
-<script src="{{ assets }}/js/map.js"></script>
+<script type="module" src="{{ assets }}/js/map.js"></script>
 <script src="{{ assets }}/js/edition.js"></script>
 {% endblock %}

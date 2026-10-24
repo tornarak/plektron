@@ -51,13 +51,20 @@
   }
   window.CARDS = {get, place, GRACE_MS};
 
-  /* The same three URLs `edition.js` builds, character for character. */
+  /* The same URLs `edition.js` builds, character for character. */
   function urlFor(a) {
     if (a.classList.contains('lex'))
       return B + '/partial/lexicon/' + encodeURIComponent(a.dataset.key);
-    if (a.classList.contains('mapref'))
-      return B + '/partial/map/' + encodeURIComponent(a.dataset.ref);
     return B + '/partial/entity/' + encodeURIComponent(a.dataset.ref);
+  }
+
+  /* Not the map's own tree: those names sit directly under the map, so a
+     preview opens on top of the thing the hover was asking about — and the
+     hover already answers it, by lighting the shape. Not a `map` link either:
+     its answer is the pane, composed in the page, and there is no fragment of
+     it to fetch. */
+  function unpreviewed(a) {
+    return !!a.closest('.map-tree') || a.classList.contains('mapref');
   }
 
   /* `link` is the one the pointer is asking about, `owner` the one the box on
@@ -138,7 +145,7 @@
     if (!touch) return;
     if (box && box.contains(ev.target)) return;
     const a = ev.target.closest('a[data-ref], a.lex[data-key]');
-    if (!a || a.closest('.map-tree')) return;
+    if (!a || unpreviewed(a)) return;
     if (a === owner) return;   // previewed already: the tap is the click
     ev.preventDefault(); ev.stopPropagation();
     hide();
@@ -159,10 +166,7 @@
     /* `a[data-ref]` and not `a.ent` — the atlas tree's node links are `a.node`,
        and a hundred entity names in a column is where a preview earns most. */
     const a = ev.target.closest('a[data-ref], a.lex[data-key]');
-    /* Not in the map's own tree. Those names sit directly under the map, so a
-       preview opens on top of the thing the hover was asking about — and the
-       hover already answers it, by lighting the shape. */
-    if (!a || a.closest('.map-tree')) { linger(); return; }
+    if (!a || unpreviewed(a)) { linger(); return; }
     /* An entity link's body routinely holds an `<em>` or a `.flag`, and
        `mouseover` fires again on each. Restarting the timers there would mean
        the preview never appears on exactly the links most worth previewing. */
