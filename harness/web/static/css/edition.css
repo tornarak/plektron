@@ -89,15 +89,16 @@ main.cols { display:flex; align-items:flex-start; flex-direction: row-reverse;
    collapses the column and re-centres the text.
    **And a third condition, since the tab bar arrived**: a bar is furniture, and
    furniture is not a reason to hold a column open across a book nobody has
-   clicked anything in. `.side-contents` is the contents tab asked for, set on
-   `<html>` by the head script before first paint.
+   clicked anything in. The contents are asked for when `#toc-switch` is
+   checked, or — before the script has set the box from the sitting's memory —
+   when the head script has put `.side-contents` on `<html>` for first paint.
    It is written as an ancestor guard on the same rule rather than as a rule of
    its own, because a competing `.side-contents #secondary { display:block }`
    would lose: `:not(:has(#map-pane…))` carries an id, so the selector below is
    two ids to that one's one, and the override would be a no-op that reads like
    a fix — the failure this stylesheet already documents at `#bar`. */
 #primary:first-child:last-child,
-html:not(.side-contents):not(.side-open) #secondary:not([data-fixed]):not(:has(.card)):not(:has(#map-pane:not([hidden]))) + #primary
+html:not(.side-contents):not(:has(#toc-switch:checked)):not(.side-open) #secondary:not([data-fixed]):not(:has(.card)):not(:has(#map-pane:not([hidden]))) + #primary
   { margin: auto; }
 /* `--bar-gap` is how much of the header is still on screen. The header scrolls
    away and the column does not, so a fixed `top:3rem` left a strip of nothing
@@ -107,10 +108,21 @@ html:not(.side-contents):not(.side-open) #secondary:not([data-fixed]):not(:has(.
 :root { --bar-gap:3rem }
 #secondary { flex: 1; padding: 1em; position:sticky; top:var(--bar-gap);
   max-height:calc(100vh - var(--bar-gap) - 1rem); overflow-y:auto; }
-html:not(.side-contents):not(.side-open) #secondary:not([data-fixed]):not(:has(.card)):not(:has(#map-pane:not([hidden])))
+html:not(.side-contents):not(:has(#toc-switch:checked)):not(.side-open) #secondary:not([data-fixed]):not(:has(.card)):not(:has(#map-pane:not([hidden])))
   { display: none; }
 
-#panel-contents[hidden], #panel-entities[hidden] { display:none }
+/* **Which panel shows is the stylesheet's**, off `#toc-switch`: no script
+   between a reader and the contents. The contents when they are asked for, and
+   when the column is empty — a column opened onto nothing opens onto the book's
+   outline — and the entities otherwise. The `:has(#panel-contents)` guard is a
+   view that sends no contents, whose column is the entities whatever happens. */
+#panel-contents { display:none }
+html:is(.side-contents, :has(#toc-switch:checked)) #panel-contents,
+#secondary:not(:has(.card)):not(:has(#map-pane:not([hidden]))) #panel-contents
+  { display:block }
+html:is(.side-contents, :has(#toc-switch:checked)) #side-body:has(#panel-contents) #panel-entities,
+#secondary:not(:has(.card)):not(:has(#map-pane:not([hidden]))):has(#panel-contents) #panel-entities
+  { display:none }
 
 /* --- the column's edges ---
    **The hide fringe on the inner edge, beside the text, and the scrollbar on the
@@ -173,7 +185,7 @@ html:not(.side-contents):not(.side-open) #secondary:not([data-fixed]):not(:has(.
    of `main` rather than of the aside, and a selector list with one invalid
    member drops the whole rule — which is how this first shipped, never shown. */
 html.side-dismissed #side-show { display:block }
-html:not(.side-contents):not(.side-open)
+html:not(.side-contents):not(:has(#toc-switch:checked)):not(.side-open)
   main:not(:has(#secondary .card)):not(:has(#map-pane:not([hidden]))) #side-show
   { display:block }
 
@@ -190,12 +202,22 @@ html.side-dismissed #secondary:not([data-fixed]) + #primary { margin:auto }
   margin:0; padding:.45rem 0; border-radius:0; text-align:center;
   font-family:system-ui,sans-serif; font-size:.75rem; letter-spacing:.04em;
   color:var(--dim); background:var(--card) }
-html.side-contents #toc-toggle { background:var(--fg); color:var(--bg);
-  border-color:var(--fg) }
+html:is(.side-contents, :has(#toc-switch:checked)) #toc-toggle
+  { background:var(--fg); color:var(--bg); border-color:var(--fg) }
+/* The label says what pressing it will do, not what is showing. */
+#toc-toggle .when-on { display:none }
+html:is(.side-contents, :has(#toc-switch:checked)) #toc-toggle .when-off { display:none }
+html:is(.side-contents, :has(#toc-switch:checked)) #toc-toggle .when-on { display:inline }
+/* The box is the control and the label its face: out of sight but in the tab
+   order, and its focus drawn on the label, which is what a reader sees. */
+#toc-switch { position:absolute; width:1px; height:1px; margin:0; opacity:0;
+  pointer-events:none }
+#toc-switch:focus-visible + #toc-toggle { outline:2px solid var(--accent);
+  outline-offset:-2px }
 /* **Only over something.** An empty column shows the contents and nothing
-   else — `sidebar.js` asks the same condition of the DOM — so a switch to a
-   panel with nothing in it would be a control that does nothing. */
-#secondary:not(:has(.card)):not(:has(#map-pane:not([hidden]))) #toc-toggle
+   else — the panel rule above asks the same condition — so a switch to a panel
+   with nothing in it would be a control that does nothing. */
+#secondary:not(:has(.card)):not(:has(#map-pane:not([hidden]))) :is(#toc-toggle, #toc-switch)
   { display:none }
 /* Under the text on a narrow screen, the column is as tall as what it holds. */
 @media (max-width:880px) {

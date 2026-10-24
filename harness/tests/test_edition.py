@@ -975,18 +975,24 @@ def _row(panel: str, title: str) -> str:
 
 
 def test_the_sidebar_ships_its_switch_with_the_contents_shut(server):
-    """Entities is the column as it was; contents is rendered and hidden, so the
-    switch costs no request. The switch is at the foot of the column, and
+    """Entities is the column as it was; contents is rendered, so the switch
+    costs no request. **The switch is a checkbox, unchecked**, with the label as
+    its face — which panel shows is the stylesheet's reading of it, so the
+    contents open with no script at all. It is at the foot of the column, and
     nothing comes between the column and the text, because `#secondary +
     #primary` is the idle rule's selector."""
     base, root = server
     _toc(root)
     body = get(base + "/page/1-021")
-    assert "id='toc-toggle'" in body and ">TOC</button>" in body
-    assert body.index("id='secondary'") < body.index("id='toc-toggle'") \
-        < body.index("</aside>")
+    switch = re.search(r"<input type='checkbox' id='toc-switch'[^>]*>", body)
+    assert switch and "checked" not in switch.group(0)
+    assert re.search(r"<label for='toc-switch' id='toc-toggle'[^>]*>.*TOC.*</label>",
+                     body, re.S)
+    assert body.index("id='secondary'") < body.index("id='toc-switch'") \
+        < body.index("id='toc-toggle'") < body.index("</aside>")
     assert re.search(r"</aside>\s*<div id='primary'", body)
-    assert "id='panel-contents' hidden" in body and "id='side-hide'" in body and "id='side-show'" in body
+    assert "<div id='panel-contents'>" in body, "the panel is the stylesheet's to show"
+    assert "id='side-hide'" in body and "id='side-show'" in body
     assert "id='side-tabs'" not in body
     # The switch did not displace what the column already held.
     assert "id='map-pane' hidden" in body and "id='stack'" in body

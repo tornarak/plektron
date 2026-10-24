@@ -12,9 +12,10 @@
    surfaced, pinned and deleted like one.
 
    **The column still collapses when it is idle** — no cards, the pane shut, and
-   the contents not asked for; the third condition is `.side-contents` on
-   `<html>`, set before first paint by the head script so the column does not
-   appear and jump on every page load. **The fringes override both ways**:
+   the contents not asked for; the third condition is `#toc-switch` checked, or
+   `.side-contents` on `<html>`, which the head script sets from the sitting's
+   memory before first paint so the column does not appear and jump on every
+   page load. **The fringes override both ways**:
    `.side-dismissed` hides the column whatever it holds, `.side-open` holds it
    open however empty, each remembered for the sitting and set before first
    paint by the same head script. The stylesheet's rule is the one that must
@@ -56,15 +57,23 @@
         <div id='stack'></div>
       </div>
       {% if toc_panel %}
-      <div id='panel-contents' hidden>{% include "edition/_toc_panel.html" %}</div>
+      <div id='panel-contents'>{% include "edition/_toc_panel.html" %}</div>
       {% endif %}
     </div>
     {% if toc_panel %}
     {# **The column's foot, the full width of it**: "TOC" lays the contents over
        the cards, which stay in the stack beneath, and "cancel" takes them off
        again. #}
-    <button id='toc-toggle' type='button' aria-controls='panel-contents'
-            aria-expanded='false'>TOC</button>
+    {# **A checkbox, so the switch is the stylesheet's and needs no script.**
+       Which panel shows is `:has(#toc-switch:checked)` in `edition.css`; the
+       label is the control a reader sees, and says what pressing it will do.
+       `sidebar.js` only remembers the choice for the sitting, which is why the
+       box is `autocomplete=off`: a browser restoring it on reload would be a
+       second memory that could disagree with the first. #}
+    <input type='checkbox' id='toc-switch' autocomplete='off'
+           aria-controls='panel-contents'>
+    <label for='toc-switch' id='toc-toggle' class='btn'><span
+      class='when-off'>TOC</span><span class='when-on'>cancel</span></label>
     {% endif %}
   </div>
 </aside>

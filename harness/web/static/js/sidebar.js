@@ -8,17 +8,18 @@
    `card.html` does not load it at all. Controls that only worked on three of
    the four pages carrying them would be worse than none.
 
-   Everything here degrades: the panels are server-rendered, the `<details>`
-   open themselves, and the header's ToC link keeps an href. What the script
-   adds is the two switches, the memory of them, and putting the mark where you
-   can see it. */
+   Everything here degrades: the panels are server-rendered, the TOC switch is
+   a checkbox the stylesheet reads, the `<details>` open themselves, and the
+   header's ToC link keeps an href. What the script adds is the fringes, the
+   memory of both, the header link and the margin as ways to the contents, and
+   putting the mark where you can see it. */
 const ROOT = document.documentElement;
 const SECONDARY = document.getElementById('secondary');
 const PANELS = {
   entities: document.getElementById('panel-entities'),
   contents: document.getElementById('panel-contents'),
 };
-const TOGGLE = document.getElementById('toc-toggle');
+const SWITCH = document.getElementById('toc-switch');
 
 /* Per sitting, not remembered: `map.js`'s rule, and for its reason — a Contents
    you opened to find your place, or a column you put away to read, is not a
@@ -96,7 +97,7 @@ function onContentsChange() {
   const now = empty();
   if (loaded && !SECONDARY.hasAttribute('data-fixed')) {
     if (wasEmpty && !now && ROOT.classList.contains('side-dismissed')) setSidebar(true);
-    if (!wasEmpty && now && wanted !== 'contents') letSidebarIdle();
+    if (!wasEmpty && now && !asked()) letSidebarIdle();
   }
   wasEmpty = now;
   render();
@@ -108,55 +109,52 @@ window.addEventListener('load', () => { loaded = true; });
 
 /* ---------------------------------------------------------- the panels */
 
-/* `wanted` is the panel asked for; what shows is that, **unless the column is
-   empty, when it is the contents** — a column opened onto nothing opens onto
-   the book's outline, with no switch between it and a panel with nothing in
-   it. The switch itself is hidden by the stylesheet on the same condition. */
-let wanted = 'entities';
-let shown = null;
+/* **Which panel shows is the stylesheet's**, off `#toc-switch`: the contents
+   when the box is checked or the column is empty, the entities otherwise. What
+   is left here is what CSS cannot do — remember the choice for the sitting,
+   answer the header link and the margin, open a put-away column when the
+   contents are asked for, and bring the mark into view. */
+const asked = () => !!(SWITCH && SWITCH.checked);
+const contentsShowing = () =>
+  !!PANELS.contents && PANELS.contents.getClientRects().length > 0;
 
+/* The box and the head script's class say one thing, and the store remembers
+   it: the class is what first paint reads, before this script has set the box. */
+function remember() {
+  ROOT.classList.toggle('side-contents', asked());
+  try { sessionStorage.setItem(SIDE_KEY, asked() ? 'contents' : 'entities'); } catch (e) {}
+}
+
+/* The mark, brought to where it can be seen. A chapter twenty rows down an
+   unscrolled column is a chapter you have to go and find, which is the whole of
+   what this panel exists to save you. `nearest` rather than `center`: it moves
+   the column only when the mark is actually off it, so a panel that was already
+   showing the right place does not jump. Only on the panel coming into view. */
+let wasShowing = false;
 function render() {
-  const name = !PANELS.contents ? 'entities'   // no contents on this view
-    : empty() ? 'contents' : wanted;
-  if (name === shown) return;
-  shown = name;
-  for (const [key, el] of Object.entries(PANELS)) {
-    if (el) el.hidden = key !== name;
-  }
-  /* "TOC" opens, "cancel" puts back: one control, and its label says what
-     pressing it will do rather than what is showing. */
-  if (TOGGLE) {
-    TOGGLE.textContent = name === 'contents' ? 'cancel' : 'TOC';
-    TOGGLE.setAttribute('aria-expanded', String(name === 'contents'));
-  }
-  /* The mark, brought to where it can be seen. A chapter twenty rows down an
-     unscrolled column is a chapter you have to go and find, which is the whole
-     of what this panel exists to save you. `nearest` rather than `center`: it
-     moves the column only when the mark is actually off it, so a panel that was
-     already showing the right place does not jump. */
-  if (name === 'contents') {
+  const now = contentsShowing();
+  if (now && !wasShowing) {
     const here = PANELS.contents.querySelector('.here');
     if (here) here.scrollIntoView({block: 'nearest'});
   }
+  wasShowing = now;
 }
 
 function showPanel(name) {
-  if (!PANELS.contents) name = 'entities';
+  if (!SWITCH) return;
   /* The contents asked for is the column asked for. */
   if (name === 'contents' && ROOT.classList.contains('side-dismissed')) setSidebar(true);
-  wanted = name;
-  ROOT.classList.toggle('side-contents', name === 'contents');
-  try { sessionStorage.setItem(SIDE_KEY, name); } catch (e) {}
+  SWITCH.checked = name === 'contents';
+  remember();
   render();
 }
 
-/* The header link and the switch. On an empty column the contents are all it
-   shows, so there is nothing to flip to: the link opens the column onto them,
-   or puts it away. */
+/* The header link. On an empty column the contents are all it shows, so there
+   is nothing to flip to: the link opens the column onto them, or puts it away. */
 function flip() {
   if (!sidebarShowing()) return showPanel('contents');
   if (empty()) { showPanel('entities'); return letSidebarIdle(); }
-  showPanel(wanted === 'contents' ? 'entities' : 'contents');
+  showPanel(asked() ? 'entities' : 'contents');
 }
 
 /* For `edition.js`: a link that opens a card or puts a place on the map is
@@ -164,7 +162,7 @@ function flip() {
    the very thing the click produced. */
 window.SIDEBAR = {show: showPanel};
 
-if (TOGGLE) TOGGLE.addEventListener('click', flip);
+if (SWITCH) SWITCH.addEventListener('change', () => { remember(); render(); });
 
 /* The header link toggles the same way. `preventDefault` only where there is a
    panel to open — on a view with no sidebar, and on one whose route sent no
@@ -232,7 +230,7 @@ function track() {
   reading = path;
   /* Kept in view in the column, and the column alone: `scrollIntoView` would
      move the page too, under the reader's own scroll. */
-  if (cur && SIDE_BODY && !PANELS.contents.hidden) {
+  if (cur && SIDE_BODY && contentsShowing()) {
     const r = cur.getBoundingClientRect(), b = SIDE_BODY.getBoundingClientRect();
     if (r.top < b.top) SIDE_BODY.scrollTop -= b.top - r.top;
     else if (r.bottom > b.bottom) SIDE_BODY.scrollTop += r.bottom - b.bottom;
@@ -248,8 +246,9 @@ if (TRACKED.length) {
   track();
 }
 
-/* The head script has already put the classes on `<html>`, so the column is the
-   right width before anything painted; this is what makes the *panels* agree
-   with it. Reading the class rather than the store, so the two can never say
-   different things. */
-showPanel(ROOT.classList.contains('side-contents') ? 'contents' : 'entities');
+/* The head script has already put the class on `<html>`, so the column and its
+   panel were right before anything painted; this sets the box to agree, after
+   which the box is what the stylesheet reads. Reading the class rather than the
+   store, so the two can never say different things. */
+if (SWITCH) SWITCH.checked = ROOT.classList.contains('side-contents');
+render();
