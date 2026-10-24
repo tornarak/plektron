@@ -748,6 +748,16 @@ def _mark_tree(nodes: list[dict], here: set[str], tally: dict[str, int]) -> bool
     return any_marked
 
 
+def _path_to(nodes: list[dict], ident: str) -> list[str]:
+    """The ids from the top of the outline down to `ident`, or `[]`."""
+    for n in nodes:
+        if n.get("id") == ident:
+            return [ident]
+        if below := _path_to(n["children"], ident):
+            return ([n["id"]] if n.get("id") else []) + below
+    return []
+
+
 def _unroll(nodes: list[dict]) -> None:
     """Open every `<details>` under here. What "the division you are in" means:
     its sections, their subsections, and the siblings of the one you are at — a
@@ -760,7 +770,7 @@ def _unroll(nodes: list[dict]) -> None:
 
 def _toc_panel(root: Path, folios: list,
                hits: dict[int, int] | None = None, absent: str = "",
-               base: str = ui.BASE) -> dict:
+               base: str = ui.BASE, division: str = "") -> dict:
     """The printed Contents as a locator: the whole outline, and what is marked.
 
     `folios` are the printed folios this view *is* — one for a page, several for
@@ -782,19 +792,28 @@ def _toc_panel(root: Path, folios: list,
     **Marks nothing where nothing witnesses the folio.** `toc_containing` refuses
     an unknown folio, and most of the book has one; a panel that guessed the
     nearest chapter would be indistinguishable, on screen, from one that knew.
+
+    **`division` is a view that *is* one entry** — a chapter — and then that
+    entry and what holds it are the whole mark. Its folios span every section in
+    it, so marking by folio lit every subheading at once, which says "you are in
+    all of these" about a page you are reading one part of. Where in it you are
+    is the scroll's question, and `sidebar.js` answers it off the headings.
     """
     toc = load_toc(root)
     index = stores.folio_index(root)
+    tree = _toc_tree(toc, root, index, base)
     seen = [f for f in (apparatus._as_folio(f) for f in folios) if f is not None]
-    here = {tid for f in seen for tid in toc_containing(toc, f)}
-    here |= {e["id"] for e in toc
-             if e.get("id") and e.get("page_start") in seen}
+    if division:
+        here = set(_path_to(tree, division))
+    else:
+        here = {tid for f in seen for tid in toc_containing(toc, f)}
+        here |= {e["id"] for e in toc
+                 if e.get("id") and e.get("page_start") in seen}
     tally: dict[str, int] = {}
     for folio, n in (hits or {}).items():
         for tid in toc_containing(toc, folio):
             tally[tid] = tally.get(tid, 0) + n
 
-    tree = _toc_tree(toc, root, index, base)
     _mark_tree(tree, here, tally)
     # **The division you are in is unrolled whole.** Only where the page has a
     # position, and not for an entity's mentions: those are spread over twenty
@@ -1171,7 +1190,7 @@ def _chapter_page(request: Request, run: dict, root: Path):
              store_has_toc=any(leaf["store_has_toc"] for leaf in text),
              here=run["title"], pane=True,
              toc_panel=_toc_panel(root, [leaf["folio"] for leaf in leaves],
-                                  base=_base(request)),
+                                  base=_base(request), division=run["id"]),
              state={"ref": head,
                     "leaves": [leaf["ref"] for leaf in leaves],
                     "size": ui._raster_size(head, root), "crops": {}},

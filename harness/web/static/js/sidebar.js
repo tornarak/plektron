@@ -197,6 +197,57 @@ if (PRIMARY && PANELS.contents) {
   });
 }
 
+/* **The section being read is marked as it is read.** The server marks the
+   division a view *is* — a chapter — and stops there: every section of it is
+   on the page, and marking by folio lit all of them at once. Which one you are
+   in is a question about the scroll, so it is answered here, off the headings
+   the text carries (`id='chI.3'`) and the rows that name them (`data-toc`).
+
+   A heading counts once it has risen past the top third of the window: by
+   then its section is what fills the screen. The row is marked with what holds
+   it, and only marks this added are ever taken off, so the server's own stay. */
+const SIDE_BODY = document.getElementById('side-body');
+const TRACKED = PANELS.contents && PRIMARY
+  ? [...PANELS.contents.querySelectorAll('li[data-toc]')]
+      .map(li => [li, document.getElementById(li.dataset.toc)])
+      .filter(([, h]) => h && PRIMARY.contains(h))
+  : [];
+const SERVED = new Set(PANELS.contents ? PANELS.contents.querySelectorAll('.here') : []);
+let reading = [], trackQueued = false;
+
+function track() {
+  trackQueued = false;
+  const line = innerHeight / 3;
+  let cur = null, best = -Infinity;
+  for (const [li, h] of TRACKED) {
+    const top = h.getBoundingClientRect().top;
+    if (top <= line && top > best) { best = top; cur = li; }
+  }
+  const path = [];
+  for (let li = cur; li && PANELS.contents.contains(li); li = li.parentElement.closest('li'))
+    path.push(li);
+  if (path.length === reading.length && path.every((li, i) => li === reading[i])) return;
+  for (const li of reading) if (!SERVED.has(li)) li.classList.remove('here');
+  for (const li of path) li.classList.add('here');
+  reading = path;
+  /* Kept in view in the column, and the column alone: `scrollIntoView` would
+     move the page too, under the reader's own scroll. */
+  if (cur && SIDE_BODY && !PANELS.contents.hidden) {
+    const r = cur.getBoundingClientRect(), b = SIDE_BODY.getBoundingClientRect();
+    if (r.top < b.top) SIDE_BODY.scrollTop -= b.top - r.top;
+    else if (r.bottom > b.bottom) SIDE_BODY.scrollTop += r.bottom - b.bottom;
+  }
+}
+
+if (TRACKED.length) {
+  addEventListener('scroll', () => {
+    if (trackQueued) return;
+    trackQueued = true;
+    requestAnimationFrame(track);
+  }, {passive: true});
+  track();
+}
+
 /* The head script has already put the classes on `<html>`, so the column is the
    right width before anything painted; this is what makes the *panels* agree
    with it. Reading the class rather than the store, so the two can never say
