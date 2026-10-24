@@ -1189,7 +1189,12 @@ columns and neither has to say so. Four properties bind callers:
 
 ## Tests
 
-`uv run pytest`, which also runs `ruff check` (`test_lint.py`). Fixtures live in `tmp_path`, not the live corpus — a test asserting
+`uv run pytest`, which also runs `ruff check` (`test_lint.py`), and **`bun test
+harness/tests/js`** for the one piece of logic that runs in the browser — the map
+composed from a selection (`web/static/js/geomap.js`). Separate runners on
+purpose: pytest says whether the atlas data is right, bun whether a map is
+composed from it correctly, and neither suite pays for the other's runtime.
+Fixtures live in `tmp_path`, not the live corpus — a test asserting
 over `gt/ocr/` or `data/` fails the day the corpus legitimately changes, which trains
 everyone to ignore it. The exceptions are explicit and are facts about the printed
 book or about committed configuration rather than about any code: the
