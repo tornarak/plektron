@@ -3,6 +3,8 @@
 - status: ratified
 - within: land:kamchatka
 - geo: 59.823318 166.127115
+- link: geonames:2125456
+- link: wikidata:Q7223363
 
 ## aliases
 
@@ -11,6 +13,8 @@
 | Cape Olutorsky | | yes | |
 | Cape Alutorsky | | yes | |
 | Мыс Олюторский | ru | no | the modern chart's name, and by this edition's account it names [[place:cape-anannon]] rather than this cape. Kept because it is the Russian form of this entry's English name; not printed in the book |
+| Мыс Говена | ru | no | the modern chart's name for this cape; not printed in the book |
+| Cape Govensky | | yes | the Russian maps' name for it (1-032, 1-359) |
 
 ## gloss
 
@@ -27,6 +31,5 @@ The name is used the other way once, in the sentence just before the
 correction: Dall's 1879 Eskimo colony "at Cape Olutorsky" (1-032) is reported
 in the maps' sense, which is what prompts Bogoras to correct it.
 
-Modern charts put Мыс Говена within a few kilometres of this point, and
-[[place:cape-govensky]] is a separate entry there — see its gloss for why the
-store does not merge them.
+**Cape Govensky is this cape**, by the same sentence: the maps' name for it,
+which modern charts keep as Мыс Говена, a few kilometres from the point above.
