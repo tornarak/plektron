@@ -1754,6 +1754,14 @@ issue either — Kamchatka, Chaun Bay — which has no extent to draw and so lig
 up nowhere. That is the absence `geo verify` already reports, and there is no
 honest box to invent for it.
 
+**An inherited extent draws the outline it came from, dashed.** A subgroup with
+no shape and no village — the Reindeer Chukchi, the Kavraˊlɪt — is framed on its
+people's extent, reached by `part-of:`. The containing outline is the tree's
+root, which climbs `within:` alone and never reached it, so the map framed the
+right box and drew nothing inside it, under a caption naming an extent that was
+not there. The people's shapes are drawn in the context layer, not as the
+subject: they bound the subgroup without being a boundary anyone claimed for it.
+
 **A framed place is drawn to itself.** A map frames on its parent's extent —
 that is what makes a shape mean something, the Small Anui saying where it is
 only with the Kolyma around it. But a node that *is* its extent has nothing to

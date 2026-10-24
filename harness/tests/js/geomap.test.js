@@ -41,6 +41,11 @@ const ATLAS = {geo_classes: ['place', 'land', 'water', 'river'], entities: {
     basis: {kind: 'transcluded', id: 'place:v', more: 0}}),
   'place:lost': ent('place:lost', {absent: 'sought and not found'}),
   'land:framed': ent('land:framed', {own: [160, 60, 180, 70], frame: [150, 55, 190, 75]}),
+  /* A subgroup with nothing of its own, framed on its people's extent. */
+  'people:whole': ent('people:whole', {own: [170, 64, 175, 66], shapes: ['langarea:folk'],
+    children: ['people:sub']}),
+  'people:sub': ent('people:sub', {own: [170, 64, 175, 66], parent: 'people:whole',
+    basis: {kind: 'inherited', id: 'people:whole'}}),
 }};
 
 const vb = c => c.svg.match(/viewBox='([^']*)'/)[1].split(' ').map(Number);
@@ -167,6 +172,18 @@ describe('composition', () => {
   test('a people sorts above the ground and is never folded', () => {
     const c = compose(ATLAS, shape, ['people:folk', 'river:big']);
     expect(c.tree[0].id).toBe('people:folk');
+  });
+
+  test('an inherited extent draws the outline it was inherited from, as context', () => {
+    const c = compose(ATLAS, shape, ['people:sub']);
+    const parent = c.svg.match(/<g class='parent'>.*?<\/g>/);
+    expect(parent && parent[0]).toContain("data-ent='people:whole'");
+    expect(c.svg).not.toContain("<g class='subject'>");   // a bound, not its boundary
+    expect(c.tree.map(n => n.id)).toEqual(['people:whole']);
+    expect(c.tree[0].children.map(n => n.id)).toEqual(['people:sub']);
+    // Selected alongside, the people is a subject and is not drawn twice.
+    const both = compose(ATLAS, shape, ['people:sub', 'people:whole']);
+    expect(both.svg).not.toContain("<g class='parent'>");
   });
 
   test('a place with nowhere to put says so, and is still in the tree', () => {

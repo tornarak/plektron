@@ -455,6 +455,18 @@ export function compose(atlas, shape, sel, hidden = new Set(), dropped = new Set
     layers.parent = drawShapes(holder);
     out.parent = {id: holder, ...E[holder]};
   }
+  /* **An inherited extent is drawn as what it is: someone else's outline,
+     dashed.** A subgroup with no shape and no village — the Reindeer Chukchi,
+     the Kavraˊlɪt — is framed on its people's extent (`_basis` says
+     `inherited`), and that people is reached by `part-of:`, which the holder
+     above never sees: it climbs `within:`. So the map framed the right box and
+     drew nothing in it, under a caption naming an extent that was not there.
+     Context and not subject, because it bounds the subgroup without being a
+     boundary anybody claimed for it. */
+  const lent = new Set(live.map(i => E[i].basis).filter(b => b.kind === 'inherited')
+                           .map(b => b.id)
+                           .filter(id => id in E && id !== holder && !known.includes(id)));
+  for (const id of lent) layers.parent = [...(layers.parent || []), ...drawShapes(id)];
   /* A place drawn twice is drawn once, as the subject. */
   const drawn = new Set(), subject = [];
   for (const i of known)
