@@ -559,8 +559,6 @@ html.reader .unsettled { background:none; border-bottom-style:solid }
   border-radius:.4rem; padding:.6rem .75rem; margin-bottom:.6rem;
   font-family:system-ui,sans-serif; font-size:.85rem; line-height:1.5 }
 .card.pinned { border-color:var(--pin) }
-.card.selected { border-color:var(--sel) }
-#secondary.selected .card.selected { border-width: 3px;  }
 .card h4 { margin:0 0 .3rem; font-size:.9rem; font-family:inherit }
 .card h5 { margin:0 0 .3rem; font-size:.9rem; font-family:inherit }
 .card .meta { color:var(--dim); font-size:.75rem; margin-bottom:.4rem }
@@ -774,7 +772,7 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
   max-height:60vh;overflow-y:auto;
   box-shadow:0 2px 12px rgba(0,0,0,.18)}
 .card.preview .tools{display:none}
-.card.preview.pinned,.card.preview.selected{border-color:var(--rule);
+.card.preview.pinned{border-color:var(--rule);
   border-width:1px}
 /* --- the footnote popup ---
  *

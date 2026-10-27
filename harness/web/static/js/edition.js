@@ -1,9 +1,8 @@
 const B = STATE.base;
-// The scrolling column, and the cards inside it. They were the same element
-// until the map pane moved in above the stack: everything here indexes
-// `STACK.childNodes` as cards, and a pane among them would be selected,
-// surfaced, pinned and deleted like one.
-const PANE = document.getElementById('secondary');
+// The cards. The stack was the whole column until the map pane moved in above
+// it, and the pane stays outside it: everything here indexes
+// `STACK.children` as cards, and a pane among them would be pinned and closed
+// like one.
 const STACK = document.getElementById('stack');
 const KEY = 'edition-pins-' + STATE.ref;
 
@@ -47,11 +46,11 @@ function card(id, title, meta, html, extra) {
   if (extra) extra(el);
   el.addEventListener('click', ev => {
     const b = ev.target.closest('button'); if (!b) return;
-      if (b.dataset.act === 'close') { el.remove(); savePins(); clampIdx(); }
+    if (b.dataset.act === 'close') { el.remove(); savePins(); }
     if (b.dataset.act === 'pin') {
       el.classList.toggle('pinned');
       b.textContent = el.classList.contains('pinned') ? 'unpin' : 'pin';
-      if (el.classList.contains('pinned')) { STACK.prepend(el); clampIdx(); }
+      if (el.classList.contains('pinned')) STACK.prepend(el);
       savePins();
     }
   });
@@ -70,103 +69,12 @@ async function fill(id, url, title) {
   return c;
 }
 
-let selected_stack = false;
-let selected_card_idx = -1;
-let selected_card = null;
-
 function togglePin(c) {
   let pinned = c.classList.toggle('pinned');
   c.querySelector('[data-act=pin]').textContent = pinned ? 'unpin' : 'pin';
   savePins();
   return pinned;
 }
-
-function toggleStack() {
-    selected_stack = !selected_stack;
-    PANE.classList.toggle('selected');
-
-    if (selected_stack) {
-        if (selected_card_idx == -1) selectIdx(0);
-        else clampIdx();
-    }
-}
-
-function clamp(v, min, max) {
-    return Math.min(Math.max(min, v), max);
-}
-
-function clamped_idx(idx) {
-    return clamp(idx, -1, STACK.childNodes.length - 1);
-}
-
-function clampIdx() {
-    let clamped = clamped_idx(selected_card_idx);
-    if (!selectIdx(clamped) && selected_stack) toggleStack();
-}
-
-function selectIdx(idx = null, rel = 0) {
-    idx = (idx == null) ? selected_card_idx : idx;
-    if (rel) idx += rel;
-    if (idx == -2) idx = STACK.childNodes.length - 1;
-
-    if (idx == -1 || idx == STACK.childNodes.length) {
-        selected_card_idx = -1;
-        if (selected_card) { selected_card.classList.remove("selected"); }
-        selected_card = null;
-        /* The column's scrolling part, which is not the column: the TOC
-           switch is fixed beneath it. `PANE` where a view has no such part. */
-        const scroller = document.getElementById('side-body') || PANE;
-        if (idx == -1) scroller.scroll(0, 0);
-        else scroller.scroll(0, 100_000);
-    } else {
-        if (idx != selected_card_idx) {
-            let clamped = clamped_idx(idx);
-
-            if (clamped != idx) { return selectIdx(clamped); }
-            else { selected_card_idx = idx; }
-        }
-        let next_sel = STACK.childNodes[selected_card_idx];
-        if (selected_card && selected_card != next_sel) { selected_card.classList.remove("selected"); }
-        selected_card = next_sel;
-    }
-
-    if (selected_card) { selected_card.classList.add("selected"); selected_card.scrollIntoView({block:'nearest'}); }
-    return selected_card;
-}
-
-function countPins(lst = null) {
-    let first_non_pin = Array.from(lst || STACK.childNodes).findIndex((p) => !p.classList.contains("pinned"));
-    return (first_non_pin == -1) ? STACK.childNodes.length : first_non_pin;
-}
-
-function deleteSelection() {
-    STACK.removeChild(selected_card);
-    savePins();
-    clampIdx();
-}
-
-function surfaceSelection() {
-    let pin_count = countPins();
-    if (selected_card_idx <= pin_count) {
-        let pinned = togglePin(selected_card);
-        if (!pinned) {
-            let after = Array.from(STACK.childNodes).slice(selected_card_idx + 1);
-            let offset = countPins(after);
-            if (offset) STACK.insertBefore(selected_card, (offset < after.length) ? STACK.childNodes[selected_card_idx + offset + 1] : null);
-            selectIdx(null, offset);
-        }
-    } else {
-        STACK.insertBefore(selected_card, STACK.childNodes[pin_count]);
-        selectIdx(pin_count);
-    }
-}
-
-new MutationObserver((list, _) => {
-    for (const m of list) if (m.type == "childList") clampIdx();
-}).observe(STACK, { childList: true });
-
-let article = document.querySelector("#primary");
-let selected_tab_idx = -1;
 
 const openEntity = ref =>
   fill('ent:' + ref, B + '/partial/entity/' + encodeURIComponent(ref), ref);
@@ -705,20 +613,10 @@ document.addEventListener('keydown', ev => {
         return;
     }
     if (ev.ctrlKey || ev.altKey || ev.shiftKey || ev.metaKey) return false;
-    /* **Not while focus is on the sidebar's own controls.** This binding takes
-       Tab away from the browser to put it into the stack, which is the right
-       trade in the text; on the TOC switch and the fringe it is a trap — you can
-       reach them and then not leave. */
-    if (ev.key == "Tab" && STACK.childNodes.length
-        && !ev.target.closest('#toc-switch, #toc-toggle, .side-state, #side-hide, #side-show')) { ev.preventDefault(); toggleStack(); }
-    if (ev.key == "ArrowLeft" && !selected_stack && prev && prev.href) { ev.preventDefault(); window.location = prev.href; }
-    if (ev.key == "ArrowRight" && !selected_stack && next && next.href) { ev.preventDefault(); window.location = next.href; }
-    if (selected_stack) {
-        if (ev.key == "ArrowUp") { ev.preventDefault(); selectIdx(null, -1); }
-        if (ev.key == "ArrowDown") { ev.preventDefault(); selectIdx(null, 1); }
-    }
-    if (ev.key == "Enter" && selected_stack) { ev.preventDefault(); surfaceSelection(); }
-    if (ev.key == "Backspace" && selected_stack) { ev.preventDefault(); deleteSelection(); }
+    /* **Tab is the browser's**: taken for the stack, it trapped focus wherever
+       a card was open. The cards' own buttons pin and close them. */
+    if (ev.key == "ArrowLeft" && prev && prev.href) { ev.preventDefault(); window.location = prev.href; }
+    if (ev.key == "ArrowRight" && next && next.href) { ev.preventDefault(); window.location = next.href; }
 })
 
 let scan_btn = document.getElementById('scan-btn')

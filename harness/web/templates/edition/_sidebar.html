@@ -8,8 +8,8 @@
    **entities is a name for what the column already was**, not a rebuild of it:
    the map pane above, the card stack below, `edition.js` untouched. The pane
    stays *outside* `#stack` for its own reason — everything in that script
-   indexes `STACK.childNodes` as cards, and a pane among them would be selected,
-   surfaced, pinned and deleted like one.
+   indexes `STACK.children` as cards, and a pane among them would be pinned and
+   closed like one.
 
    **The column still collapses when it is idle** — no cards, the pane shut, and
    the contents not asked for; the third condition is `#toc-switch` checked, or
