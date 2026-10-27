@@ -62,8 +62,7 @@ REF_OK = re.compile(r"^\d+-\d+$")
 #: Where the reading view is mounted by default, and the only place that says so.
 #: The four tools share one server, so a bare `/entity/…` in a link would resolve
 #: against whichever of them owned the root. **A default, not the mount**:
-#: `create_app(base=…)` mounts the router elsewhere, which is how `edition build`
-#: puts a site under a prefix. Every function that writes a link takes it as a
+#: `edition build` mounts the router under its own prefix (`web.build.site_app`). Every function that writes a link takes it as a
 #: plain string defaulting to this — never a request, because that would put a
 #: web concern inside a text transform.
 BASE = "/edition"
