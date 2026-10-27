@@ -71,7 +71,8 @@
     {% if toc_panel %}
     {# **The column's foot, the full width of it**: "TOC" lays the contents over
        the cards, which stay in the stack beneath, and "cancel" takes them off
-       again. #}
+       again. **Only while there are cards or a map**: an empty column shows the
+       contents alone, and the last card closed puts the column away. #}
     {# **A checkbox, so the switch is the stylesheet's and needs no script.**
        Which panel shows is `:has(#toc-switch:checked)` in `edition.css`; the
        label is the control a reader sees, and says what pressing it will do.

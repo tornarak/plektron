@@ -1,5 +1,5 @@
 svg.map { width:100%; height:auto; display:block; background:var(--sea);
-  border:1px solid var(--rule); border-radius:.3rem }
+  border:1px solid var(--rule); border-radius:.3rem; max-height: 15rem; }
 svg.map .land { fill:var(--land); stroke:none }
 svg.map .lakes { fill:var(--sea); stroke:none }
 /* The fade is on the paths, not the group: a group's opacity composites every

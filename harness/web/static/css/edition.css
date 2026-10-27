@@ -79,10 +79,9 @@ button, .btn { font:inherit; font-family:system-ui,sans-serif; font-size:.8rem;
   padding:.25rem .6rem; border:1px solid var(--rule); border-radius:.3rem;
   background:var(--card); color:var(--fg); cursor:pointer; }
 button:hover { border-color:var(--accent) }
-main.cols { display:flex; align-items:flex-start; flex-direction: row-reverse;
-  max-width:80rem; margin:0 auto; }
+main.cols { display:flex; align-items:flex-start; flex-direction: row-reverse; }
 .cols-reversed main.cols { flex-direction: row; }
-#primary { flex:1 1 auto; padding: 1em; min-width:0; max-width:44rem }
+#primary { flex:1 1 auto; padding: 0 1rem; min-width:0; max-width:44rem; margin: auto; }
 /* **Idle** is the state that used to be `:empty`, and could not stay so: the
    column now always holds a `#stack` and a `#map-pane`, either of which may have
    nothing in it. Idle means both — no cards and the pane shut — and it is what
@@ -106,7 +105,7 @@ html:not(.side-contents):not(:has(#toc-switch:checked)):not(.side-open):not(:has
    screen. `sidebar.js` keeps it at the header's bottom edge, 3rem at the top of
    the page and 0 below it; 3rem is the answer without the script. */
 :root { --bar-gap:3rem }
-#secondary { flex: 1; padding: 1em; position:sticky; top:var(--bar-gap);
+#secondary { flex: 1; padding: 0.8rem 0.5rem; position:sticky; top:var(--bar-gap);
   max-height:calc(100vh - var(--bar-gap) - 1rem); overflow-y:auto; }
 html:not(.side-contents):not(:has(#toc-switch:checked)):not(.side-open):not(:has(#side-on:checked)) #secondary:not([data-fixed]):not(:has(.card)):not(:has(#map-pane:not([hidden])))
   { display: none; }
@@ -139,7 +138,7 @@ html:is(.side-contents, :has(#toc-switch:checked)) #side-body:has(#panel-content
    go back to left-to-right, since their text is. */
 #secondary { direction:ltr; display:grid; grid-template-columns:auto 1fr;
   grid-template-rows:minmax(0,1fr); column-gap:.4rem; padding-inline-start:0;
-  padding-bottom:0; height:calc(100dvh - var(--bar-gap)); overflow:hidden }
+  padding-bottom:0; height:calc(100dvh - var(--bar-gap)); overflow:hidden; max-width: 22rem; }
 .cols-reversed #secondary { direction:rtl }
 #side-col { display:flex; flex-direction:column; min-width:0; min-height:0;
   direction:ltr }
@@ -649,6 +648,7 @@ ul.lines { list-style:none; margin:.2rem 0 .4rem; padding-left:0;
 ul.lines li { margin:.1rem 0 }
 ul.lines a { font-family:ui-monospace,monospace; font-size:.8rem;
   margin-right:.4rem }
+ul.lines mark { margin: 0 .4rem; }
 .ipa { display:flex; align-items:center; gap:.45rem; margin:.5rem 0 .3rem }
 ul.tree, ul.tree ul { list-style:none; margin:0; padding-left:1.1rem }
 ul.tree { padding-left:0; font-family:system-ui,sans-serif; font-size:.85rem }
@@ -904,7 +904,7 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
 .run-chapter { position:relative }
 /* The margin the marks hang in is the column's to reserve: with the sidebar open
    beside it, a mark past `#primary`'s own padding is drawn over the sidebar. */
-#primary:has(.run-chapter) { padding-right:5rem }
+#primary:has(.run-chapter) { padding-right:3rem }
 .run-chapter .leaf-mark { position:absolute; left:auto; right:-4.2rem;
   width:3.6rem; text-align:left; text-indent:0; font-style:normal;
   font-weight:normal; letter-spacing:0; font-variant:normal }
