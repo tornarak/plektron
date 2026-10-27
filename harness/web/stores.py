@@ -256,6 +256,33 @@ def folio_index(root: Path) -> dict:
 
 
 @lru_cache(maxsize=MAXSIZE)
+def _served_folios(root: str, drafts: bool, _key: bytes) -> dict:
+    r = Path(root)
+    shown = set(readable(r) if drafts else collated(r)) | set(exempt(r))
+    among = runs(r)
+
+    def served(ref: str) -> bool:
+        return ref in shown or apparatus.run_for(ref, r, among=among) is not None
+
+    return {f: kept for f, ws in folio_index(r).items()
+            if (kept := [w for w in ws if served(w["ref"])])}
+
+
+def served_folios(root: Path, drafts: bool) -> dict:
+    """`folio_index` less every witness on a leaf this view would refuse.
+
+    **A run serves every leaf it holds**, a draft one as a gap that says why, so
+    only a leaf outside every run can dead-end: without `--drafts` its page 404s
+    unless it is collated or ruled exempt. A folio witnessed only there is a
+    link to a refusal — and, in a build, a page the crawl must refuse — so the
+    view links and resolves folios through this and never through the index.
+    """
+    return _served_folios(str(root), drafts, stamp(
+        _readable_files(root) + _gt_ocr_files(root) + _runs_files(root)
+        + _split_files(root)))
+
+
+@lru_cache(maxsize=MAXSIZE)
 def _heading_urls(root: str, _key: bytes) -> dict[str, str]:
     r = Path(root)
     among, marks = runs(r), heads(r)

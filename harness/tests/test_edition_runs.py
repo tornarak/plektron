@@ -520,6 +520,37 @@ def test_folio_resolves_through_the_apparatus_witness(tmp_path: Path):
     assert r.headers["location"] == "/edition/run/authorities#folio-3"
 
 
+def test_a_folio_on_a_page_this_view_refuses_is_neither_linked_nor_followed(
+        tmp_path: Path):
+    """Folio 20 is witnessed on `1-040`, a draft outside every run, and the
+    Contents opens a division there. Without `--drafts` that page 404s, so the
+    panel prints the folio plain and its route refuses rather than redirecting
+    into the 404 — a build would otherwise crawl the link and have to refuse the
+    page. With `--drafts` both work."""
+    from harness.tests.test_edition import draft
+    _write(tmp_path, "edition/toc.json", json.dumps({"entries": [
+        {"level": 0, "title": "Introductory", "page_start": 20,
+         "id": "front.introductory"}]}))
+    _write(tmp_path, "edition/authorities.json", json.dumps({
+        "source": {"refs": ["1-023"]},
+        "authorities": [{"key": "steller1774", "ref": "1-040", "folio": "20",
+                         "printed": [{"ref": "1-040", "text": "STELLER."}]}]}))
+    _write(tmp_path, "edition/runs.json", json.dumps({"runs": [{
+        "id": "authorities", "kind": "authorities", "title": "Authorities Quoted",
+        "refs": ["1-023"], "source": "edition/authorities.json"}]}))
+    _exempt(tmp_path, "1-023")
+    _scan(tmp_path, "1-023")
+    draft(tmp_path, "1-040", "<pb n='20'/><p>generated</p>")
+
+    shut = _app(tmp_path, follow=False)
+    assert "/edition/folio/20" not in shut.get("/edition/run/authorities").text
+    assert shut.get("/edition/folio/20").status_code == 404
+
+    open_ = _app(tmp_path, drafts=True, follow=False)
+    assert "/edition/folio/20" in open_.get("/edition/run/authorities").text
+    assert open_.get("/edition/folio/20").headers["location"] == "/edition/page/1-040"
+
+
 def test_an_unwitnessed_folio_refuses_rather_than_guessing(book: Path):
     r = _app(book, follow=False).get("/edition/folio/700")
     assert r.status_code == 404
@@ -639,7 +670,7 @@ def test_the_tail_does_not_join_the_runs_span(open_list: Path):
     from harness.web import edition as E
     run = {"id": "authorities", "kind": "authorities",
            "refs": ["1-023", "1-024"], "source": "edition/authorities.json"}
-    leaves, tail = E._run_leaves(run, open_list)
+    leaves, tail = E._run_leaves(run, open_list, drafts=False)
     assert [leaf["ref"] for leaf in leaves] == ["1-023", "1-024"]
     assert [leaf["ref"] for leaf in tail] == ["3-146"]
 

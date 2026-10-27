@@ -466,7 +466,7 @@ def _exempt_page(request: Request, ref: str, root):
             # panel is asked what the index says about the leaf and nothing else.
             # Usually that is nothing, and the Contents renders unmarked.
             toc_panel=_toc_panel(root, [stores.folio_by_ref(root).get(ref)],
-                                 base=_base(request)),
+                                 base=_base(request), drafts=_drafts(request)),
             editor_leaf=ui.leaf_source(ref, root)[1] == "ed",
             leaf_url=leaf_url, leaf_layers=layer_urls,
             state={"ref": ref,
@@ -486,7 +486,8 @@ def _neighbours(request: Request, ref: str) -> tuple[str, str]:
             refs[i + 1] if 0 <= i < len(refs) - 1 else "")
 
 
-def _run_leaves(run: dict, root: Path, base: str = ui.BASE) -> list[dict]:
+def _run_leaves(run: dict, root: Path, base: str = ui.BASE, *,
+                drafts: bool) -> list[dict]:
     """`(leaves, tail)` — one record per leaf of the run, then the entries the
     store records as printed on a leaf the run does not cover.
 
@@ -499,6 +500,7 @@ def _run_leaves(run: dict, root: Path, base: str = ui.BASE) -> list[dict]:
     sign of why.
     """
     index = stores.folio_index(root)
+    served = stores.served_folios(root, drafts)
     kind = run.get("kind")
     # One pass over the encyclopedia for the whole run rather than one per entry.
     # The link is the record's own `authority` field and never a match on the
@@ -542,7 +544,7 @@ def _run_leaves(run: dict, root: Path, base: str = ui.BASE) -> list[dict]:
             "printed_folio": by_ref.get(ref, ""),
             "folio_anchor": apparatus.anchor("folio", folio) if folio else "",
             "editor": ui.leaf_source(ref, root)[1] == "ed",
-            "entries": [_decorate(e, kind, root, index, by_authority, by_plate,
+            "entries": [_decorate(e, kind, root, served, by_authority, by_plate,
                                   headings, base)
                         for e in entries_by_ref.get(ref, [])],
         }
@@ -770,7 +772,7 @@ def _unroll(nodes: list[dict]) -> None:
 
 def _toc_panel(root: Path, folios: list,
                hits: dict[int, int] | None = None, absent: str = "",
-               base: str = ui.BASE, division: str = "") -> dict:
+               base: str = ui.BASE, division: str = "", *, drafts: bool) -> dict:
     """The printed Contents as a locator: the whole outline, and what is marked.
 
     `folios` are the printed folios this view *is* — one for a page, several for
@@ -800,8 +802,7 @@ def _toc_panel(root: Path, folios: list,
     is the scroll's question, and `sidebar.js` answers it off the headings.
     """
     toc = load_toc(root)
-    index = stores.folio_index(root)
-    tree = _toc_tree(toc, root, index, base)
+    tree = _toc_tree(toc, root, stores.served_folios(root, drafts), base)
     seen = [f for f in (apparatus._as_folio(f) for f in folios) if f is not None]
     if division:
         here = set(_path_to(tree, division))
@@ -874,7 +875,7 @@ def run_page(request: Request, run_id: str):
         return _chapter_page(request, run, root)
     head = ui.norm_ref((run.get("refs") or [""])[0])
     prev, next_ = _neighbours(request, head)
-    leaves, tail = _run_leaves(run, root, _base(request))
+    leaves, tail = _run_leaves(run, root, _base(request), drafts=_drafts(request))
     # The alphabet run is the one whose page is not a list. Its store holds
     # grids as well as entries, and the chart joins them to `ipa.RULES`,
     # `ipa.MODERN` and the corpus's own attestation counts — four witnesses
@@ -889,7 +890,7 @@ def run_page(request: Request, run_id: str):
              # Every leaf of the run, since a run is one document over several
              # leaves and the reader is at all of them at once.
              toc_panel=_toc_panel(root, [leaf["folio"] for leaf in leaves],
-                                  base=_base(request)),
+                                  base=_base(request), drafts=_drafts(request)),
              # `leaves` is what makes the scan button show the whole span: the
              # run is one document and its scans are several.
              state={"ref": head,
@@ -1190,7 +1191,8 @@ def _chapter_page(request: Request, run: dict, root: Path):
              store_has_toc=any(leaf["store_has_toc"] for leaf in text),
              here=run["title"], pane=True,
              toc_panel=_toc_panel(root, [leaf["folio"] for leaf in leaves],
-                                  base=_base(request), division=run["id"]),
+                                  base=_base(request), division=run["id"],
+                                  drafts=_drafts(request)),
              state={"ref": head,
                     "leaves": [leaf["ref"] for leaf in leaves],
                     "size": ui._raster_size(head, root), "crops": {}},
@@ -1198,10 +1200,14 @@ def _chapter_page(request: Request, run: dict, root: Path):
     )
 
 
-def _located(root: Path) -> dict:
+def _located(request: Request) -> dict:
     """The cached runs and heading index `apparatus.locate` would otherwise derive
-    per call — and a refusal places every row of its `nearest` list."""
-    return {"among": stores.runs(root), "heads": stores.heads(root)}
+    per call — and a refusal places every row of its `nearest` list. The folio
+    index is the served one, so a folio resolves, and a refusal suggests, only
+    where this view will show something."""
+    root = _root(request)
+    return {"index": stores.served_folios(root, _drafts(request)),
+            "among": stores.runs(root), "heads": stores.heads(root)}
 
 
 def _resolved(request: Request, out: dict) -> RedirectResponse | None:
@@ -1237,8 +1243,7 @@ def _refusal(request: Request, out: dict, asked: str):
 def folio(request: Request, n: int):
     """A printed folio, resolved to wherever the corpus says it is."""
     root = _root(request)
-    out = apparatus.locate(root, folio=n, index=stores.folio_index(root),
-                           **_located(root))
+    out = apparatus.locate(root, folio=n, **_located(request))
     return _resolved(request, out) or _refusal(request, out, f"folio {n}")
 
 
@@ -1261,8 +1266,7 @@ def chapter(request: Request, roman: str):
                   and e.get("id")), None)
     if entry is None:
         return _refusal(request, {"nearest": []}, f"Chapter {roman}")
-    out = apparatus.locate(root, toc_id=entry["id"],
-                           index=stores.folio_index(root), **_located(root))
+    out = apparatus.locate(root, toc_id=entry["id"], **_located(request))
     return _resolved(request, out) or _refusal(request, out, f"Chapter {roman}")
 
 
@@ -1276,8 +1280,7 @@ def toc_entry(request: Request, toc_id: str):
     becomes a run with a page of its own.
     """
     root = _root(request)
-    out = apparatus.locate(root, toc_id=toc_id, index=stores.folio_index(root),
-                           **_located(root))
+    out = apparatus.locate(root, toc_id=toc_id, **_located(request))
     return _resolved(request, out) or _refusal(request, out, f"heading {toc_id}")
 
 
@@ -1405,7 +1408,8 @@ def page(request: Request, ref: str):
             supplements=leaf["supplements"],
             placed=leaf["placed"],
             store_has_toc=leaf["store_has_toc"],
-            toc_panel=_toc_panel(root, [doc.get("folio")], base=_base(request)),
+            toc_panel=_toc_panel(root, [doc.get("folio")], base=_base(request),
+                                 drafts=_drafts(request)),
             prev=refs[i - 1] if i > 0 else "",
             next=refs[i + 1] if 0 <= i < len(refs) - 1 else "",
         ),
@@ -1594,7 +1598,7 @@ def entity(request: Request, ident: str):
             side_fixed=True,
             pane=True,
             toc_panel=_toc_panel(
-                root, [], by_folio, base=_base(request),
+                root, [], by_folio, base=_base(request), drafts=_drafts(request),
                 # Only where there were pages to place, on `_mentions`' own
                 # reasoning: a bare zero cannot be told from "never mentioned",
                 # and an entry the corpus does not mention has not failed to be
@@ -1713,7 +1717,8 @@ def annotations_index(request: Request):
         _ctx(request, rows=rows, card_title="Notices and supplements"))
 
 
-def _attached_rows(rec: dict, root: Path, base: str = ui.BASE) -> list[dict]:
+def _attached_rows(rec: dict, root: Path, located: dict,
+                   base: str = ui.BASE) -> list[dict]:
     """What this annotation is attached to, each as a link where one resolves.
 
     A `toc:` target is the one that can refuse: `apparatus.locate` answers from
@@ -1737,7 +1742,7 @@ def _attached_rows(rec: dict, root: Path, base: str = ui.BASE) -> list[dict]:
             entry = toc.get(t["value"])
             label = entry["title"] if entry else t["value"]
             try:
-                where = apparatus.locate(root, toc_id=t["value"], **_located(root))
+                where = apparatus.locate(root, toc_id=t["value"], **located)
             except Exception:
                 where = None
             ref = (where or {}).get("ref")
@@ -1778,7 +1783,8 @@ def annotation_card(request: Request, ident: str):
                annots.expand_links(rec["summary"], rec["links"]), store, base)
            if rec else "",
            "full_html": ui.annotation_full_html(rec, store, base) if rec else "",
-           "attached": _attached_rows(rec, root, base) if rec else []}
+           "attached": _attached_rows(rec, root, _located(request), base)
+           if rec else []}
     if _partial(request):
         return templates.TemplateResponse(request, "edition/_annotation.html", ctx)
     return templates.TemplateResponse(
@@ -1981,7 +1987,7 @@ def lexicon_card(request: Request, key: str):
         "edition/card.html",
         _ctx(request, partial="edition/_lexicon.html", card_title=form or key,
              toc_panel=_toc_panel(
-                 root, [], by_folio, base=_base(request),
+                 root, [], by_folio, base=_base(request), drafts=_drafts(request),
                  # Only where there were pages to place. A form the corpus does
                  # not attest has not failed to be placed in the Contents — it is
                  # simply not there, which the card's own rows already say, and
