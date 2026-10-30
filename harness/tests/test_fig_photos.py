@@ -31,7 +31,8 @@ from harness import figures as F
 from harness import zones_config as zc
 
 REPO = Path(__file__).resolve().parent.parent.parent
-CFG = zc.load_config(REPO)
+PROJECT = REPO / "jesup" / "bogoras-chukchi"
+CFG = zc.load_config(PROJECT)
 
 G, D = F.GRAPHIC, F.FIGDESC
 

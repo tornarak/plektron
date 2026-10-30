@@ -12,6 +12,7 @@ concealed it.
 from __future__ import annotations
 
 import pytest
+from conftest import REPO
 from lxml import etree
 
 from harness import provenance as P
@@ -165,7 +166,7 @@ def test_the_tei_appinfo_validates_against_the_projects_own_schema(tmp_path):
            "<sourceDesc><p>s</p></sourceDesc></fileDesc>"
            f"<encodingDesc>{info}</encodingDesc></teiHeader>"
            "<text><body><p>x</p></body></text></TEI>")
-    rng = etree.RelaxNG(etree.parse("data/tei_all.rng"))
+    rng = etree.RelaxNG(etree.parse(str(REPO / "data/tei_all.rng")))
     assert rng.validate(etree.fromstring(doc.encode())), rng.error_log
 
 

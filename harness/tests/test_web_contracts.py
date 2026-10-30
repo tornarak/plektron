@@ -157,7 +157,7 @@ def _app(root):
     from starlette.testclient import TestClient
 
     from harness.web import Sessions, create_app
-    repo = Path(__file__).resolve().parent.parent.parent
+    repo = Path(__file__).resolve().parent.parent.parent / "jesup" / "bogoras-chukchi"
     (root / "config").mkdir(parents=True, exist_ok=True)
     shutil.copy(repo / "config" / "zones.json", root / "config")
     return TestClient(create_app(root, Sessions(root=root), editor="zones"))

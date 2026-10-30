@@ -1703,7 +1703,7 @@ def test_every_field_of_a_transcluded_authority_reaches_the_card():
     would have been written without.
     """
     from harness import authorities
-    works = authorities.load(REPO)
+    works = authorities.load(PROJECT)
     assert works
     shown = {f for f, _ in edition_ui.AUTHORITY_FIELDS} | AUTHORITY_BY_NAME
     keys = {k for w in works for k in w}
@@ -1715,7 +1715,7 @@ def test_a_ranked_url_carries_its_rank_onto_the_card():
     the rank is shown. A card that printed the link bare would be the unmarked
     span failure in a second store: a scan a model found, rendered exactly like
     one somebody opened."""
-    rows = edition_ui._authority_rows("nelson1899", REPO)
+    rows = edition_ui._authority_rows("nelson1899", PROJECT)
     ranked = [r for r in rows if r["kind"] == "sourced"]
     assert ranked and all(r["resp"].startswith("#") for r in ranked)
     assert all(r["value"].startswith("http") for r in ranked)
@@ -1725,7 +1725,7 @@ def test_the_printed_block_is_on_the_card_and_the_siglum_with_it():
     """`printed` is the record — `find authority`'s rule, kept here. The parsed
     fields ride beneath it so the two can be read against each other, and the
     siglum sits at the top because it is what a reader arrives holding."""
-    rows = edition_ui._authority_rows("maydell1893", REPO)
+    rows = edition_ui._authority_rows("maydell1893", PROJECT)
     labels = [r["label"] for r in rows]
     assert "cited as" in labels and "printed" in labels
     assert labels.index("cited as") < labels.index("printed")
@@ -1989,6 +1989,7 @@ def test_attestations_never_come_from_a_draft(tmp_path):
 # anything, and what an entry adds is the one thing nothing derives.
 
 REPO = Path(__file__).resolve().parent.parent.parent
+PROJECT = REPO / "jesup" / "bogoras-chukchi"
 ALTO_NS = "http://www.loc.gov/standards/alto/ns-v4#"
 
 
@@ -2000,7 +2001,7 @@ def _gt(root: Path, ref: str, lines: list[str]) -> None:
     be asserting against a table nothing in the corpus uses.
     """
     (root / "config").mkdir(parents=True, exist_ok=True)
-    shutil.copy(REPO / "config" / "marks.json", root / "config")
+    shutil.copy(PROJECT / "config" / "marks.json", root / "config")
     p = root / "gt" / "ocr" / f"chukchi-{ref}.xml"
     p.parent.mkdir(parents=True, exist_ok=True)
     body = "".join(

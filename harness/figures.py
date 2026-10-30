@@ -2653,13 +2653,13 @@ def crop_source(ref: str, key: str, root: Path = Path(".")) -> tuple[Path, str]:
     machine crop as a build that has not run.
     """
     ref = norm_ref(ref)
-    human = root / FIG_IMG / crop_name(ref, key)
+    human = root / FIG_IMG / crop_name(ref, key, root)
     if human.exists():
         return human, "ed"
     return root / CROPDIR / crop_name(ref, key, root), "mz"
 
 
-def crop_name(ref: str, key: str, root: Path = Path(".")) -> str:
+def crop_name(ref: str, key: str, root: Path) -> str:
     """The filename one figure's crop takes. `1-151`, `001` -> `chukchi-1-151-001.png`.
 
     One function because three callers need to agree exactly — the writer, the

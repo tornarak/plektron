@@ -22,6 +22,7 @@ import pytest
 
 ALTO_NS = "http://www.loc.gov/standards/alto/ns-v4#"
 REPO = Path(__file__).resolve().parent.parent.parent
+PROJECT = REPO / "jesup" / "bogoras-chukchi"
 
 
 def _fig(root: Path, ref: str, caption: str) -> None:
@@ -343,8 +344,8 @@ def test_every_plate_resolves_to_exactly_one_leaf():
 
     from harness import figures as F
     plates = json.loads(
-        (REPO / "edition" / "loi.json").read_text(encoding="utf-8"))["plates"]
-    located = F.by_plate(plates, REPO)
+        (PROJECT / "edition" / "loi.json").read_text(encoding="utf-8"))["plates"]
+    located = F.by_plate(plates, PROJECT)
     assert len(located) == len(plates) == 35
     assert located["I"]["ref"] == "1-049"
 

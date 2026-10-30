@@ -240,7 +240,7 @@ def test_every_bound_action_has_a_row_and_a_handler(root):
     from harness.lines_ui import ACTION_NAMES
 
     html = client(root).get("/lines/?ref=1-048").text
-    js = P("harness/web/static/js/lines.js").read_text(encoding="utf-8")
+    js = (P(__file__).resolve().parent.parent / "web/static/js/lines.js").read_text(encoding="utf-8")
     # The dispatch table is an object literal, so an action is a bare key rather
     # than a quoted string — `rule_band: () => …`.
     dispatched = set(re.findall(r"^\s{2}(\w+):", js, re.M))

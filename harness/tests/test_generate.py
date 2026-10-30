@@ -36,6 +36,7 @@ ALTO_NS = "http://www.loc.gov/standards/alto/ns-v4#"
 #: is the committed schema and conformance is a claim about that file, not about a
 #: copy of it.
 REPO = Path(__file__).resolve().parent.parent.parent
+PROJECT = REPO / "jesup" / "bogoras-chukchi"
 
 # A page's worth of geometry, in the real store's pixel scale — the zone track is
 # fixed-width bands of a measured column, so x is constant and only y separates
@@ -96,7 +97,7 @@ def stores(tmp_path: Path, ref: str, blocks, bands=None) -> None:
     cfg = tmp_path / "config"
     cfg.mkdir(exist_ok=True)
     (cfg / "zones.json").write_bytes(
-        (REPO / "config" / "zones.json").read_bytes())
+        (PROJECT / "config" / "zones.json").read_bytes())
     write_scan(tmp_path, ref)
     alto(tmp_path, ref, blocks)
     save_zones(ref, bands if bands is not None else bands_for(blocks), tmp_path)
@@ -765,7 +766,7 @@ def _conformance(tmp_path, blocks) -> list[str]:
 
     from harness.schema import check
     doc, _ = page(tmp_path, "1-021", blocks)
-    return check(etree.ElementTree(etree.fromstring(doc.encode())), REPO)
+    return check(etree.ElementTree(etree.fromstring(doc.encode())), PROJECT)
 
 
 def test_an_anchored_note_is_conformant(tmp_path):
@@ -808,11 +809,11 @@ def test_the_figure_shape_is_conformant_on_a_real_figure_page(tmp_path):
     from lxml import etree
 
     from harness.schema import check
-    if not (REPO / "gt" / "fig" / "chukchi-1-151.xml").exists():
+    if not (PROJECT / "gt" / "fig" / "chukchi-1-151.xml").exists():
         pytest.skip("1-151 has no figure store in this checkout")
-    doc, rep = gen.build("1-151", REPO)
+    doc, rep = gen.build("1-151", PROJECT)
     assert rep["figures"] == 1
-    errs = [e for e in check(etree.ElementTree(etree.fromstring(doc.encode())), REPO)
+    errs = [e for e in check(etree.ElementTree(etree.fromstring(doc.encode())), PROJECT)
             if "attribute index for element foreign" not in e]
     assert errs == []
 
@@ -835,9 +836,9 @@ def test_a_figure_heads_the_paragraph_it_is_adjacent_to(tmp_path):
     Uses `1-151`, the one ordinary text-figure page in the OCR'd pilot set, so
     the geometry is the store's rather than a fixture's.
     """
-    if not (REPO / "gt" / "fig" / "chukchi-1-151.xml").exists():
+    if not (PROJECT / "gt" / "fig" / "chukchi-1-151.xml").exists():
         pytest.skip("1-151 has no figure store in this checkout")
-    doc, rep = gen.build("1-151", REPO)
+    doc, rep = gen.build("1-151", PROJECT)
     assert rep["figures"] == 1
 
     import re
@@ -873,10 +874,10 @@ def test_a_figure_inside_the_last_paragraph_still_heads_it(tmp_path):
     `1-157` is the page that reported it: fig. 36 sits at y 1602 inside a band
     running 1393–3249, the last prose on the page.
     """
-    if not (REPO / "gt" / "fig" / "chukchi-1-157.xml").exists():
+    if not (PROJECT / "gt" / "fig" / "chukchi-1-157.xml").exists():
         pytest.skip("1-157 has no figure store in this checkout")
     import re
-    doc, rep = gen.build("1-157", REPO)
+    doc, rep = gen.build("1-157", PROJECT)
     assert rep["figures"] == 1
     body = doc[doc.index("<body>"):]
     blocks = [m.group(1) for m in re.finditer(r"<(p|figure|quote|table|head)\b", body)]

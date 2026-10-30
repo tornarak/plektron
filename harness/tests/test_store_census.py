@@ -54,6 +54,7 @@ from pathlib import Path
 import pytest
 
 REPO = Path(__file__).resolve().parent.parent.parent
+PROJECT = REPO / "jesup" / "bogoras-chukchi"
 
 
 # --------------------------------------------------------------- the readers
@@ -63,17 +64,17 @@ REPO = Path(__file__).resolve().parent.parent.parent
 # a row with no form, and a regex over the markdown does not.
 
 def _glob(rel: str) -> int:
-    return len(list((REPO / rel).glob("chukchi-*.xml")))
+    return len(list((PROJECT / rel).glob("chukchi-*.xml")))
 
 
 def _authorities(kind: str) -> int:
     from harness import apparatus
     if kind == "printed":
-        doc = json.loads((REPO / "edition" / "authorities.json").read_text("utf-8"))
+        doc = json.loads((PROJECT / "edition" / "authorities.json").read_text("utf-8"))
         return doc["source"]["count"]
     if kind == "records":
-        return len(apparatus._authorities(REPO))
-    sigla = apparatus.sigla(REPO)
+        return len(apparatus._authorities(PROJECT))
+    sigla = apparatus.sigla(PROJECT)
     if kind == "sigla_rows":
         return len(sigla)
     if kind == "sigla_names":
@@ -84,8 +85,8 @@ def _authorities(kind: str) -> int:
 COUNTS = {
     "fig_pages":      lambda: _glob("gt/fig"),
     "zone_pages":     lambda: _glob("gt/zones"),
-    "scans":          lambda: len(list((REPO / "scans").glob("chukchi-*.png"))),
-    "entities":       lambda: len(list((REPO / "edition" / "entities").glob("*/*.md"))),
+    "scans":          lambda: len(list((PROJECT / "scans").glob("chukchi-*.png"))),
+    "entities":       lambda: len(list((PROJECT / "edition" / "entities").glob("*/*.md"))),
     "works_printed":  lambda: _authorities("printed"),
     "works_records":  lambda: _authorities("records"),
     "sigla_rows":     lambda: _authorities("sigla_rows"),
@@ -169,7 +170,7 @@ def test_the_claim_is_still_where_the_gate_looks(c: Claim):
 
 @pytest.mark.parametrize("c", CLAIMS, ids=lambda c: f"{c.doc}:{c.key}")
 def test_the_figure_matches_the_store(c: Claim):
-    if c.derived and not (REPO / "scans").exists():
+    if c.derived and not (PROJECT / "scans").exists():
         pytest.skip("scans/ is derived and absent from this clone")
     m = re.search(c.pattern, _text(c.doc))
     assert m, "covered by the companion test; skipping the arithmetic"
@@ -184,7 +185,7 @@ def test_every_reader_answers():
     checkable, so the readers are exercised on their own before anything leans
     on them. `scans` is exempt: derived, and legitimately absent."""
     for key, fn in COUNTS.items():
-        if key == "scans" and not (REPO / "scans").exists():
+        if key == "scans" and not (PROJECT / "scans").exists():
             continue
         assert fn() > 0, f"{key} reader returned nothing — the gate is hollow"
 
@@ -194,7 +195,7 @@ def test_the_two_authorities_quantities_are_not_the_same_number():
     that happened to pass because they were equal would be no gate at all. The
     difference is `source.unprinted` — `jochelson1905`, cited 36 times in parts
     2 and 3 and impossible in part 1's list."""
-    doc = json.loads((REPO / "edition" / "authorities.json").read_text("utf-8"))
+    doc = json.loads((PROJECT / "edition" / "authorities.json").read_text("utf-8"))
     assert COUNTS["works_records"]() == \
         COUNTS["works_printed"]() + len(doc["source"]["unprinted"])
     assert COUNTS["works_records"]() != COUNTS["works_printed"]()

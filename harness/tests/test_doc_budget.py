@@ -29,6 +29,7 @@ import re
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent.parent
+PROJECT = REPO / "jesup" / "bogoras-chukchi"
 
 # Headroom over the ~12 KB the router-plus-invariants rewrite landed at. Bytes,
 # not tokens: deterministic, no tokenizer dependency (this corpus measures

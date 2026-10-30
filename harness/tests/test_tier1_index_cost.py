@@ -21,7 +21,7 @@ from pathlib import Path
 import pytest
 
 ALTO_NS = "http://www.loc.gov/standards/alto/ns-v4#"
-REPO = Path(__file__).parent.parent.parent
+PROJECT = Path(__file__).parent.parent.parent / "jesup" / "bogoras-chukchi"
 
 
 @pytest.fixture
@@ -36,7 +36,7 @@ def page(tmp_path: Path) -> Path:
     """
     (tmp_path / "config").mkdir(parents=True, exist_ok=True)
     (tmp_path / "config" / "marks.json").write_text(
-        (REPO / "config" / "marks.json").read_text(encoding="utf-8"),
+        (PROJECT / "config" / "marks.json").read_text(encoding="utf-8"),
         encoding="utf-8")
     p = tmp_path / "gt" / "ocr" / "chukchi-1-151.xml"
     p.parent.mkdir(parents=True, exist_ok=True)

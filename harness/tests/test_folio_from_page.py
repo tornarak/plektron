@@ -198,7 +198,7 @@ def test_the_prediction_is_never_filled_from_the_page_itself():
     from pathlib import Path
 
     from harness.context import build_context
-    repo = Path(__file__).resolve().parent.parent.parent
+    repo = Path(__file__).resolve().parent.parent.parent / "jesup" / "bogoras-chukchi"
     if not (repo / "ocr" / "chukchi-1-075.xml").exists():
         pytest.skip("1-075 has no OCR in this checkout")
     ctx = build_context("1-075", repo)

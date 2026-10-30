@@ -245,7 +245,7 @@ def test_the_rank_is_declared_where_pages_point_at_it():
     to each other, because a page fragment never resolves `@resp` locally — so
     either could be renamed and every page would go on passing."""
     from harness.validate import ADOPTED, RESP_RANKS, check_corpus_header
-    root = Path(__file__).resolve().parents[2]
+    root = Path(__file__).resolve().parents[2] / "jesup" / "bogoras-chukchi"
     if not (root / "tei" / "corpus-header.xml").exists():
         pytest.skip("no corpus header")
     assert ADOPTED in RESP_RANKS

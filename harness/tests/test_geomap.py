@@ -20,8 +20,9 @@ import pytest
 from harness import edition_ui, entities, geo
 
 ROOT = Path(__file__).resolve().parent.parent.parent
+PROJECT = ROOT / "jesup" / "bogoras-chukchi"
 built = pytest.mark.skipif(
-    not (ROOT / "edition" / "geo" / "index.json").exists(),
+    not (PROJECT / "edition" / "geo" / "index.json").exists(),
     reason="edition/geo/ has not been built — see tools/build_geo.py")
 
 
@@ -43,7 +44,7 @@ def test_the_shape_kinds_are_disjoint_from_the_entity_classes():
     held apart. An entity file carries `within: land:chukotka` two lines from
     `geo: langarea:chuk1273`, and a kind that was also a class would make the
     second readable as the first."""
-    kinds = {i.split(":")[0] for i in geo.index(ROOT)["shapes"]}
+    kinds = {i.split(":")[0] for i in geo.index(PROJECT)["shapes"]}
     assert kinds and not (kinds & set(entities.ENTITY_CLASSES))
 
 
@@ -52,7 +53,7 @@ def test_the_absences_are_rows_and_not_silences():
     """A people the sources do not draw has to be *in* the census. An entity
     pointing at nothing and an entity nobody has got to yet look identical from
     outside, and only one of them is finished."""
-    absent = geo.index(ROOT)["absent"]
+    absent = geo.index(PROJECT)["absent"]
     assert {"ypk", "xcv"} <= set(absent)
     assert all(absent.values())
 
@@ -62,7 +63,7 @@ def test_longitudes_are_continuous_across_the_antimeridian():
     """Chukotka runs past 180 rather than wrapping to −180. This is what lets
     every planar operation downstream — containment, extents, culling — treat a
     shape spanning the meridian as an ordinary one."""
-    doc = geo.shape("watershed:anadyr", ROOT)
+    doc = geo.shape("watershed:anadyr", PROJECT)
     xs = [x for ring in geo.rings(doc) for x, _ in ring]
     assert max(xs) > 178
     assert min(xs) > 0
@@ -147,7 +148,7 @@ def test_a_union_is_not_a_row_in_the_store():
     while staying out of iteration, which took a dict subclass to arrange; the
     members are named separately now, so there is nothing to resolve and the
     index is a plain dict."""
-    idx = geo.index(ROOT)["shapes"]
+    idx = geo.index(PROJECT)["shapes"]
     spec = "base:chukotka-east-of-meridian,langarea:chuk1273"
     assert spec not in idx and idx.get(spec) is None
     for m in spec.split(","):
@@ -158,7 +159,7 @@ def test_a_union_is_not_a_row_in_the_store():
 def test_a_composite_naming_a_shape_that_does_not_exist_is_absent():
     """So `entity check` still refuses it, and can name the member that failed
     rather than the whole field."""
-    idx = geo.index(ROOT)["shapes"]
+    idx = geo.index(PROJECT)["shapes"]
     assert "langarea:chuk1273,watershed:nonesuch" not in idx
     assert idx.get("langarea:chuk1273,watershed:nonesuch") is None
 
@@ -173,10 +174,10 @@ def test_the_members_of_a_union_are_drawn_one_by_one():
     the antimeridian and the Natural Earth land east of it is what carries the
     drawing past, which is the whole of item 7."""
     members = ["base:chukotka-east-of-meridian", "langarea:chuk1273"]
-    docs = [geo.shape(m, ROOT) for m in members]
+    docs = [geo.shape(m, PROJECT) for m in members]
     assert all(d.get("features") for d in docs)
     assert max(x for d in docs for r in geo.rings(d) for x, _ in r) > 180.0
-    assert max(x for r in geo.rings(geo.shape("langarea:chuk1273", ROOT))
+    assert max(x for r in geo.rings(geo.shape("langarea:chuk1273", PROJECT))
                for x, _ in r) == 180.0
 
 
@@ -185,16 +186,16 @@ def test_the_asher_polygon_is_left_exactly_as_its_publisher_drew_it():
     """The join is a composite on an entity, never a redrawn `langarea:`.
     Extending a speaker area past where its publisher drew it would be
     inventing evidence in the one place a reader would never check."""
-    doc = geo.shape("langarea:chuk1273", ROOT)
+    doc = geo.shape("langarea:chuk1273", PROJECT)
     assert any(abs(x - 180.0) < 1e-9 for r in geo.rings(doc) for x, _ in r)
-    assert geo.index(ROOT)["shapes"]["langarea:chuk1273"]["source"] == "asher2007"
+    assert geo.index(PROJECT)["shapes"]["langarea:chuk1273"]["source"] == "asher2007"
 
 
 @built
 def test_the_land_east_of_the_meridian_is_land_and_claims_nothing_else():
     """`base:`, from Natural Earth, by a declared clip — it says nothing about
     who speaks what. The claim lives in the entity file that composes it."""
-    row = geo.index(ROOT)["shapes"]["base:chukotka-east-of-meridian"]
+    row = geo.index(PROJECT)["shapes"]["base:chukotka-east-of-meridian"]
     assert row["kind"] == "base" and row["source"] == "naturalearth-50m"
     w, s, e, n = row["bounds"]
     assert w >= 180.0                      # nothing west of the meridian
@@ -261,10 +262,10 @@ def test_containment_separates_a_true_relation_from_a_false_one():
     land at 0.68–0.82, and a river paired with a basin it has nothing to do
     with lands at 0.00–0.11. The floor sits in the gap, not near either.
     """
-    true = geo.contains(geo.shape("watershed:kolyma", ROOT),
-                        geo.shape("watershed:omolon", ROOT))
-    false = geo.contains(geo.shape("watershed:anadyr", ROOT),
-                         geo.shape("watershed:omolon", ROOT))
+    true = geo.contains(geo.shape("watershed:kolyma", PROJECT),
+                        geo.shape("watershed:omolon", PROJECT))
+    false = geo.contains(geo.shape("watershed:anadyr", PROJECT),
+                         geo.shape("watershed:omolon", PROJECT))
     assert true > geo.COARSE_FLOOR > false
 
 
@@ -280,7 +281,7 @@ def test_a_coarse_delineation_is_not_read_as_a_disagreement():
 
 @built
 def test_verify_reports_and_never_gates():
-    r = geo.verify(ROOT)
+    r = geo.verify(PROJECT)
     assert set(r) == {"scope", "nesting", "meridian", "containment", "shared",
                       "unclaimed", "unlocated"}
     assert all("reading" in row for row in r["containment"])
@@ -335,8 +336,8 @@ def test_a_shape_two_entities_claim_is_reported_and_not_refused():
     left the report empty. What `shared` guards now is the other direction — a
     duplicate claim reappearing unremarked — so the row is checked to exist and
     to be empty rather than deleted along with its examples."""
-    assert entities.check(ROOT)["ok"]
-    assert geo.verify(ROOT)["shared"] == []
+    assert entities.check(PROJECT)["ok"]
+    assert geo.verify(PROJECT)["shared"] == []
 
 
 # ------------------------------------------------------------ the extent
@@ -390,8 +391,8 @@ def test_a_framed_descendant_is_on_the_map_and_nothing_else_is():
     nothing. Its extent is what there is to offer. A descendant that has a shape
     or a point is already drawn and gets no box — a rectangle over every one of
     them at once is a field of rectangles over the thing you were reading."""
-    store = entities.load(ROOT)
-    got = dict(geo.member_extents("land:russian-far-east", store, ROOT))
+    store = entities.load(PROJECT)
+    got = dict(geo.member_extents("land:russian-far-east", store, PROJECT))
     assert "land:chukotka" in got
     assert not any(store[e]["geo"] for e in got)
 
@@ -401,7 +402,7 @@ def test_a_member_is_named_by_its_entity_and_not_by_its_shape():
     """Two entities may share one polygon — a people and a subgroup inside it
     may both point at one Asher shape — so the shape cannot identify the member
     even in principle."""
-    store = entities.load(ROOT)
+    store = entities.load(PROJECT)
     pairs = geo.member_shapes("river:kolyma", store)
     assert pairs and all(e in store and s.startswith("watershed:") for e, s in pairs)
 
@@ -483,7 +484,7 @@ def test_the_committed_store_nests_coherently():
     """The migration's own witness. Every `within:` in the store, not the twelve
     pairs both of whose members somebody drew — which is the whole reason this
     check needs no geometry."""
-    assert geo.nesting(entities.load(ROOT)) == []
+    assert geo.nesting(entities.load(PROJECT)) == []
 
 
 def test_a_declared_frame_counts_as_located_and_extent_of_still_ignores_it(tmp_path):
@@ -591,7 +592,7 @@ def test_a_framed_entity_with_nothing_else_still_draws():
     descendants states the case the frame was added for, and the live store then
     pins the other half of the same rule — that a derived extent wins where
     there is one."""
-    store = entities.load(ROOT)
+    store = entities.load(PROJECT)
     rec = store.get("land:parapolsky-dol")
     assert rec and rec["frame"] and not rec["geo"]
     # `own` is the box a map is composed on, and nothing is drawn without one.
@@ -600,7 +601,7 @@ def test_a_framed_entity_with_nothing_else_still_draws():
 
     leaf = {k: v for k, v in store.items()
             if v.get("within") != "land:parapolsky-dol"}
-    assert geo.extent_of("land:parapolsky-dol", leaf, ROOT) is None
+    assert geo.extent_of("land:parapolsky-dol", leaf, PROJECT) is None
     assert edition_ui.atlas_data(ROOT, leaf)["entities"]["land:parapolsky-dol"][
         "own"] == list(rec["frame"])
 
@@ -608,7 +609,7 @@ def test_a_framed_entity_with_nothing_else_still_draws():
     # supplies the boxes for nodes no other layer can identify. The frame is
     # the *fallback* there — `extent_of` first, wherever there is anything to
     # derive from.
-    boxes = dict(geo.member_extents(rec["within"], leaf, ROOT))
+    boxes = dict(geo.member_extents(rec["within"], leaf, PROJECT))
     assert boxes.get("land:parapolsky-dol") == rec["frame"]
 
     # The other half of the rule needs a framed entity that *has* something to
@@ -622,8 +623,8 @@ def test_a_framed_entity_with_nothing_else_still_draws():
     # densely populated, so the two halves stay two.
     framed_parent = store["land:chukotka"]
     assert framed_parent["frame"] and not geo.geo_shapes(framed_parent)
-    live = dict(geo.member_extents(framed_parent["within"], store, ROOT))
-    derived = geo.extent_of("land:chukotka", store, ROOT)
+    live = dict(geo.member_extents(framed_parent["within"], store, PROJECT))
+    derived = geo.extent_of("land:chukotka", store, PROJECT)
     assert derived is not None, "the fixture must have something to derive from"
     assert live.get("land:chukotka") == derived
 
@@ -686,7 +687,7 @@ def test_one_piece_stopping_at_the_meridian_is_not_a_seam(tmp_path):
 def test_the_committed_store_draws_no_seam():
     """The store's own witness, and the reason the check is worth having: it
     passes now and did not before `MERIDIAN_SNAP` and the Wrangel override."""
-    assert geo.meridian(ROOT) == []
+    assert geo.meridian(PROJECT) == []
 
 
 # ---------------------------------------------------- a selection, not a subject
@@ -720,12 +721,12 @@ def test_a_keyed_point_is_boxed_square_on_the_ground():
     same distance, not the same number of degrees. A degree of longitude is
     `cos(lat)` of one of latitude at the box's mid-latitude, which is what the
     map's projection scales by too."""
-    store = entities.load(ROOT)
+    store = entities.load(PROJECT)
     for ident in ("place:uelen", "place:markovo"):
         rec = store[ident]
         assert entities.geo_points(rec) and not entities.geo_shapes(rec), \
             f"{ident} is not a bare point"
-        w, s, e, n = geo.extent_of(ident, store, ROOT)
+        w, s, e, n = geo.extent_of(ident, store, PROJECT)
         wide = (e - w) * math.cos(math.radians((s + n) / 2))
         assert abs(wide / (n - s) - 1.0) < 0.01
 

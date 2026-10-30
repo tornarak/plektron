@@ -56,7 +56,6 @@ nested form — which is also why several actions print two tables rather than o
 from __future__ import annotations
 
 import sys
-from pathlib import Path
 
 import click
 import cloup
@@ -113,7 +112,7 @@ def build_parser() -> click.Group:
 
     cli = _Group("harness", help=__doc__, callback=root,
                       context_settings=CONTEXT,
-                      params=globals_params(root_default=Path(".")),
+                      params=globals_params(),
                       constraints=[exclusive("json", "toon")],
                       invoke_without_command=True, no_args_is_help=False)
     # **The three sections are the ones this repo's own docs already draw.** A

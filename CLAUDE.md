@@ -95,7 +95,7 @@ only where a transcribed page recorded one, and propagates via the seam ledger
 
 # Where things stand
 
-Layout, all at the repo root:
+Layout of a text, `jesup/bogoras-chukchi/` (`project.json` marks one):
 
     scans/  the 832 rasters, 300 dpi, bitonal but for the 236 with a photograph. Derived; not in git. The farms over it (w-figs/, w-ocr/, w-figs-blotted/,
             fig-crops/, and one per leaf kind) are derived too and point into it: a clone gets dangling links.
@@ -171,8 +171,8 @@ modules are open.
 
 # Harness
 
-`harness/` is a small package exposed as a console script, run from the repo
-root — all paths resolve relative to the cwd unless `--root` says otherwise.
+`harness/` is a console script; every path resolves against the text's
+directory: `--root`, else the one the cwd is in.
 
 **Two tiers: a group, then an action** — `tei`, `ocr`, `proposal`, `zones`, `fig`,
 `scans`, `views`, `train`, `lexicon`, `entity`, `annotation`, `geo`, `edition`,

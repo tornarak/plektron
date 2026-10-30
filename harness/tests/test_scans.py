@@ -175,19 +175,21 @@ def test_a_non_integral_paste_is_refused(tmp_path):
     assert "pastes at" in records[0]["refuse"]
 
 
-def test_a_masterless_page_that_has_a_master_is_refused(tmp_path, monkeypatch):
+def test_a_masterless_page_that_has_a_master_is_refused(tmp_path):
     """The half of the carve-out nothing checked.
 
-    `MASTERLESS` was asserted in two files and verified in neither, and it is
+    `masterless` was asserted in two files and verified in neither, and it is
     precisely the set of pages whose two coordinate spaces differ by a *scale* — so a
     wrong member is every coordinate on that page wrong by a factor, silently. The
     other direction needs no test of its own: a page outside the set with no
     scale-1.0 master is refused by the scale check above.
     """
-    monkeypatch.setattr(scans, "MASTERLESS", {"2-001"})
+    manifest = json.loads((tmp_path / "project.json").read_text(encoding="utf-8"))
+    (tmp_path / "project.json").write_text(
+        json.dumps({**manifest, "masterless": ["2-001"]}), encoding="utf-8")
     _one_page(tmp_path, master=(400, 600), box=(400, 600), at=(0, 0))
     _, records = scans.extract(tmp_path)
-    assert "named in MASTERLESS" in records[0]["refuse"]
+    assert "named in `masterless`" in records[0]["refuse"]
 
 
 def test_a_dangling_pdfs_link_is_named_rather_than_traced(tmp_path):

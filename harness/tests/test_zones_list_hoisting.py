@@ -25,13 +25,13 @@ import pytest
 from harness import zones as zn
 
 ALTO_NS = "http://www.loc.gov/standards/alto/ns-v4#"
-REPO = Path(__file__).parent.parent.parent
+PROJECT = Path(__file__).parent.parent.parent / "jesup" / "bogoras-chukchi"
 
 
 @pytest.fixture
 def cfg() -> dict:
     from harness import zones_config as zc
-    return zc.load_config(REPO)
+    return zc.load_config(PROJECT)
 
 
 @pytest.fixture
@@ -41,7 +41,7 @@ def repo(tmp_path: Path) -> Path:
     # tree lacking it would exercise the refusal rather than the hoist.
     (tmp_path / "config").mkdir(parents=True)
     (tmp_path / "config" / "zones.json").write_text(
-        (REPO / "config" / "zones.json").read_text(encoding="utf-8"),
+        (PROJECT / "config" / "zones.json").read_text(encoding="utf-8"),
         encoding="utf-8")
     d = tmp_path / "gt" / "zones"
     d.mkdir(parents=True)

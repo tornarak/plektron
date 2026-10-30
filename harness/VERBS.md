@@ -124,6 +124,11 @@ alongside `--root` and `--pager`; the four share the trailing
 `--root --json --toon --pager` line of each fence below rather than being
 restated per entry.
 
+**`--root` names one text's stores**, a directory holding a `project.json`, and
+one that holds none is a usage error. Left out, the nearest such directory above
+the cwd answers, and with none there the action exits 2 and names the texts it
+found. `verbs` and `agents` read the repo and need no text.
+
 **Long sweeps draw a progress bar on stderr, and `--all` is the rule.** Every
 action that takes `--all` reports the item it is on, how many are done and how
 long it has taken — that flag being exactly the statement that the work-list is

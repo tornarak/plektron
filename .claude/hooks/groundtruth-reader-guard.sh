@@ -58,7 +58,7 @@ readable() {
   case "$1" in
     # The working directory of some page: its images, its proposal, its symlink
     # to the raster. Everything the ladder writes lands here.
-    */review/*|review/*) return 0 ;;
+    */review/*) return 0 ;;
     # The normative text a reader does NOT already carry — what it legitimately
     # reaches for when a flag or an invariant is in doubt. `keying_spec.md` and
     # `harness/VERBS.md` are refused above and deliberately absent here: one is
@@ -83,10 +83,10 @@ case "$TOOL" in
   Read)
     P=$(printf '%s' "$INPUT" | jq -r '.tool_input.file_path // empty')
     case "$P" in
-      */gt/ocr/*|gt/ocr/*)
+      */gt/ocr/*)
         echo "Blocked: gt/ocr/ is adjudicated ground truth for OTHER pages — your own has none, which is why you were sent. Deriving a convention from a neighbouring page is what the firewall forbids: the settled answers are in keying_spec.md, and if one is missing from it, that is the finding. Say so in your report." >&2
         exit 2 ;;
-      */mz/ocr/*|mz/ocr/*)
+      */mz/ocr/*)
         echo "Blocked: read the CATMuS ALTO through 'uv run harness ocr lines PP-NNN --store mz', which gives you the line indices and the zone labels in the form this pass is meant to see them. The raw XML adds geometry you have no use for and a whole page of machine text you are forbidden to treat as a witness." >&2
         exit 2 ;;
       */decision.json|*/decision.jsonl)
@@ -101,7 +101,7 @@ case "$TOOL" in
       */harness/VERBS.md|harness/VERBS.md)
         echo "Blocked: ask the verb, don't read the reference — 'uv run harness verbs show ocr zoom' prints that one entry, and bare 'verbs show' lists every action name. Reading the whole file cost one page 33,251 tokens, a fifth of its context, for two lookups it could have made in a few hundred." >&2
         exit 2 ;;
-      */scans/*|scans/*)
+      */scans/*)
         echo "Blocked: the raster comes to you through the image ladder, not off the disk. 'ocr numbered' gives you the whole page with every line indexed, and it is the rung you are meant to start on; the full-resolution scan is the same pixels with nothing to key them against." >&2
         exit 2 ;;
     esac
@@ -113,7 +113,7 @@ case "$TOOL" in
     P=$(printf '%s' "$INPUT" | jq -r '.tool_input.file_path // empty')
     case "$P" in
       *..*) ;;
-      */review/*/"$PROPOSAL"|review/*/"$PROPOSAL") allow "groundtruth-reader authoring its page's proposal" ;;
+      */review/*/"$PROPOSAL") allow "groundtruth-reader authoring its page's proposal" ;;
       *"$MEMORY"*) allow "groundtruth-reader writing its own memory" ;;
     esac
     echo "Blocked: you write exactly two places — review/PP-NNN/proposal.json, and your own memory under $MEMORY. That is the whole deliverable: gt/ocr/ is off-limits by any route, decision.json is a human's, and nothing in your loop writes page geometry — a band you judge to be a dropped line is REPORTED IN YOUR REPORT, never repaired and never recorded in the proposal." >&2
@@ -255,7 +255,7 @@ case "$COMMAND" in
         # caller actually types `ls` — matched nothing and was refused on the
         # first batch after this arm was written. Both spellings, or the rule
         # allows only the form nobody uses.
-        */review/*|review/*|review|*"$MEMORY"*|*"${MEMORY%/}") hits=$((hits + 1)) ;;
+        */review/*|review|*"$MEMORY"*|*"${MEMORY%/}") hits=$((hits + 1)) ;;
         *) bad=1 ;;
       esac
     done
@@ -313,7 +313,7 @@ case "$COMMAND" in
       case "$arg" in
         -*) continue ;;
         *..*|*decision.json*) bad=1 ;;
-        */review/*|review/*|*"$MEMORY"*) hits=$((hits + 1)) ;;
+        */review/*|*"$MEMORY"*) hits=$((hits + 1)) ;;
         *) bad=1 ;;
       esac
     done

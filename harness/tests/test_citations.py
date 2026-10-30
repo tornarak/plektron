@@ -74,7 +74,7 @@ class TestParseCitation:
 
 @pytest.fixture(scope="module")
 def works():
-    return load(Path(__file__).resolve().parent.parent.parent)
+    return load(Path(__file__).resolve().parent.parent.parent / "jesup" / "bogoras-chukchi")
 
 
 class TestCitationResolution:

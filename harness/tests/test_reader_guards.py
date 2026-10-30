@@ -76,7 +76,7 @@ def blocked(guard, tool, **ti):
     "uv run harness verbs show ocr zoom",
     "uv run harness proposal fix 1-031",
     "uv run harness proposal check 1-031",
-    "uv run harness corpus normalize review/1-031/proposal.json",
+    "uv run harness corpus normalize jesup/bogoras-chukchi/review/1-031/proposal.json",
     "uv run harness lexicon misses",
     "uv run harness lexicon marks",
     "uv run harness lexicon conflicts",
@@ -123,14 +123,14 @@ def test_gt_the_whole_loop_runs_unprompted(cmd):
     "python3 -c 'print(1)'",
     "ls /etc",
     "ls gt/ocr",
-    "ls review/1-031 /etc",                       # one allowed argument is not enough
-    "ls review/1-031/../../gt/ocr",
+    "ls jesup/bogoras-chukchi/review/1-031 /etc",                       # one allowed argument is not enough
+    "ls jesup/bogoras-chukchi/review/1-031/../../gt/ocr",
     "cat keying_spec.md",
-    "cat review/1-031/decision.json",             # the adjudication, by any route
-    "cat review/1-031/proposal.json review/1-032/decision.json",   # one bad arg is enough
-    "cat review/1-031/../../gt/ocr/chukchi-1-030.xml",
-    "head -5 review/1-031/proposal.json",         # Read takes an offset and a limit
-    "cat review/1-031/proposal.json > /tmp/x",    # a redirect that is not stderr
+    "cat jesup/bogoras-chukchi/review/1-031/decision.json",             # the adjudication, by any route
+    "cat jesup/bogoras-chukchi/review/1-031/proposal.json jesup/bogoras-chukchi/review/1-032/decision.json",   # one bad arg is enough
+    "cat jesup/bogoras-chukchi/review/1-031/../../gt/ocr/chukchi-1-030.xml",
+    "head -5 jesup/bogoras-chukchi/review/1-031/proposal.json",         # Read takes an offset and a limit
+    "cat jesup/bogoras-chukchi/review/1-031/proposal.json > /tmp/x",    # a redirect that is not stderr
     "uv run harness proposal check --all",
     "uv run harness ocr lines 1-031 --store mz | head -5",
     "uv run harness ocr lines 1-031 --store mz > /tmp/x",
@@ -245,7 +245,7 @@ def test_gt_an_operator_outside_quotes_is_still_refused(cmd):
     # refused — the strip would have to run before the split, and a blind global
     # strip could reach inside `--reason "2>&1"`. Unobserved in any batch; a reader
     # who wants both can put the redirect last.
-    "uv run harness proposal check 1-031 && ls review/1-031 2>/dev/null",
+    "uv run harness proposal check 1-031 && ls jesup/bogoras-chukchi/review/1-031 2>/dev/null",
 ])
 def test_gt_a_chain_of_allowed_verbs_is_allowed(cmd):
     """Turns are the budget a reader can see, so joining two cheap verbs is the
@@ -281,9 +281,9 @@ def test_gt_a_separator_inside_quotes_does_not_split(cmd=None):
 
 
 @pytest.mark.parametrize("cmd", [
-    "ls review/1-031",
-    "ls review/1-031/",
-    "ls -la review/1-031/zoom",
+    "ls jesup/bogoras-chukchi/review/1-031",
+    "ls jesup/bogoras-chukchi/review/1-031/",
+    "ls -la jesup/bogoras-chukchi/review/1-031/zoom",
     "ls review",
     "ls .claude/agent-memory/groundtruth-reader/",
     # Without the trailing slash, which is how anyone actually types it — and
@@ -292,11 +292,11 @@ def test_gt_a_separator_inside_quotes_does_not_split(cmd=None):
     # uses is a rule that does not exist.
     "ls .claude/agent-memory/groundtruth-reader",
     "ls /home/x/plektron/.claude/agent-memory/groundtruth-reader",
-    "ls review/1-031 review/1-031/sheets",
+    "ls jesup/bogoras-chukchi/review/1-031 jesup/bogoras-chukchi/review/1-031/sheets",
     # A trailing stderr redirect, which is how readers actually type this — 25 of
     # one day's 116 refusals were an `ls` this arm already allowed, refused by the
     # operator scan for punctuation that reaches no second file.
-    "ls review/1-031 2>/dev/null",
+    "ls jesup/bogoras-chukchi/review/1-031 2>/dev/null",
     "ls .claude/agent-memory/groundtruth-reader/ 2>&1",
 ])
 def test_gt_ls_is_allowed_over_the_trees_it_may_already_read(cmd):
@@ -314,13 +314,13 @@ def test_gt_ls_is_allowed_over_the_trees_it_may_already_read(cmd):
 
 
 @pytest.mark.parametrize("cmd", [
-    "cat review/1-031/proposal.json",
+    "cat jesup/bogoras-chukchi/review/1-031/proposal.json",
     "cat .claude/agent-memory/groundtruth-reader/MEMORY.md",
     "cat /home/x/plektron/.claude/agent-memory/groundtruth-reader/MEMORY.md",
     # The reach with no `Read` spelling at all, and the reason this arm exists
     # rather than a better-worded refusal pointing at the tool.
     "cat .claude/agent-memory/groundtruth-reader/*.md",
-    "cat review/1-031/proposal.json 2>/dev/null",
+    "cat jesup/bogoras-chukchi/review/1-031/proposal.json 2>/dev/null",
 ])
 def test_gt_cat_is_allowed_over_those_same_two_trees(cmd):
     """Same finding as `ls`, larger: 24 of one day's 116 refusals were `cat`, and
@@ -365,7 +365,7 @@ def test_gt_edit_is_not_in_the_surface():
 
 
 @pytest.mark.parametrize("path", [
-    "review/1-031/proposal.json",
+    "jesup/bogoras-chukchi/review/1-031/proposal.json",
     "/home/x/plektron/review/1-031/proposal.json",
     ".claude/agent-memory/groundtruth-reader/some-finding.md",
 ])
@@ -375,11 +375,11 @@ def test_gt_writes_land_in_two_places(path):
 
 
 @pytest.mark.parametrize("path", [
-    "gt/ocr/chukchi-1-031.xml",                 # the store the pass may not write
-    "review/1-031/decision.json",               # a human's
+    "jesup/bogoras-chukchi/gt/ocr/chukchi-1-031.xml",                 # the store the pass may not write
+    "jesup/bogoras-chukchi/review/1-031/decision.json",               # a human's
     "gt/zones/chukchi-1-031.xml",               # page geometry — report, never repair
     "keying_spec.md",                           # normative text is read, not edited
-    "review/1-031/../../gt/ocr/chukchi-1-030.xml",
+    "jesup/bogoras-chukchi/review/1-031/../../gt/ocr/chukchi-1-030.xml",
     ".claude/agent-memory/moll-reader/x.md",    # another agent's memory
 ])
 def test_gt_no_other_write_target(path):
@@ -388,10 +388,10 @@ def test_gt_no_other_write_target(path):
 
 
 @pytest.mark.parametrize("path", [
-    "review/1-031/numbered.png",
-    "review/1-031/sheets/lines-04-06.png",
-    "review/1-031/zoom/line-12.png",
-    "review/1-031/proposal.json",
+    "jesup/bogoras-chukchi/review/1-031/numbered.png",
+    "jesup/bogoras-chukchi/review/1-031/sheets/lines-04-06.png",
+    "jesup/bogoras-chukchi/review/1-031/zoom/line-12.png",
+    "jesup/bogoras-chukchi/review/1-031/proposal.json",
     "concordance.md",
     "CLAUDE.md",
     "harness/README.md",
@@ -405,10 +405,10 @@ def test_gt_reads_the_page_and_the_spec_unprompted(path):
 
 
 @pytest.mark.parametrize("path,names", [
-    ("gt/ocr/chukchi-1-030.xml", "gt/ocr/"),
-    ("mz/ocr/chukchi-1-031.xml", "ocr lines"),
-    ("review/1-030/decision.json", "adjudication"),
-    ("scans/chukchi-1-031.png", "image ladder"),
+    ("jesup/bogoras-chukchi/gt/ocr/chukchi-1-030.xml", "gt/ocr/"),
+    ("jesup/bogoras-chukchi/mz/ocr/chukchi-1-031.xml", "ocr lines"),
+    ("jesup/bogoras-chukchi/review/1-030/decision.json", "adjudication"),
+    ("jesup/bogoras-chukchi/scans/chukchi-1-031.png", "image ladder"),
 ])
 def test_gt_the_evidence_stores_are_refused_by_name(path, names):
     """Each refusal says which rule it is — a generic block teaches nothing."""
@@ -446,7 +446,7 @@ def test_gt_the_normative_text_it_does_not_carry_stays_readable():
 
 
 def test_gt_a_traversal_does_not_reach_the_store():
-    blocked(GT_GUARD, "Read", file_path="review/1-031/../../gt/ocr/chukchi-1-030.xml")
+    blocked(GT_GUARD, "Read", file_path="jesup/bogoras-chukchi/review/1-031/../../gt/ocr/chukchi-1-030.xml")
 
 
 # --- moll-reader ------------------------------------------------------------
@@ -479,8 +479,8 @@ def test_moll_crops_but_does_not_enhance():
 
 
 def test_moll_may_not_write_into_the_corpus():
-    blocked(MOLL_GUARD, "Write", file_path="gt/ocr/chukchi-1-031.xml", content="x")
-    blocked(MOLL_GUARD, "Write", file_path="tei/1-031.xml", content="x")
+    blocked(MOLL_GUARD, "Write", file_path="jesup/bogoras-chukchi/gt/ocr/chukchi-1-031.xml", content="x")
+    blocked(MOLL_GUARD, "Write", file_path="jesup/bogoras-chukchi/tei/1-031.xml", content="x")
 
 
 # --- collator ---------------------------------------------------------------
@@ -543,12 +543,12 @@ def test_the_collator_reads_the_raster_directly():
     collation rules call the image the only witness that matters, and `tei context`
     hands over `page_image` pointing straight at it — a guard refusing `scans/` here
     would starve the pass of its primary evidence."""
-    allowed(COLLATOR_GUARD, "Read", file_path="scans/chukchi-1-075.png")
+    allowed(COLLATOR_GUARD, "Read", file_path="jesup/bogoras-chukchi/scans/chukchi-1-075.png")
 
 
 def test_the_collator_reads_and_writes_its_own_page():
-    allowed(COLLATOR_GUARD, "Read", file_path="tei/chukchi-1-075.xml")
-    allowed(COLLATOR_GUARD, "Write", file_path="tei/chukchi-1-075.xml")
+    allowed(COLLATOR_GUARD, "Read", file_path="jesup/bogoras-chukchi/tei/chukchi-1-075.xml")
+    allowed(COLLATOR_GUARD, "Write", file_path="jesup/bogoras-chukchi/tei/chukchi-1-075.xml")
 
 
 def test_the_generated_baseline_is_readable_and_not_writable():
@@ -560,8 +560,8 @@ def test_the_generated_baseline_is_readable_and_not_writable():
     and leave `tei diff` comparing the review against itself. Reading it stays
     allowed: it is the same page and there is nothing secret about it, the working
     copy `tei claim` made is simply the one that gets edited."""
-    allowed(COLLATOR_GUARD, "Read", file_path="mz/tei/chukchi-1-075.xml")
-    err = blocked(COLLATOR_GUARD, "Write", file_path="mz/tei/chukchi-1-075.xml")
+    allowed(COLLATOR_GUARD, "Read", file_path="jesup/bogoras-chukchi/mz/tei/chukchi-1-075.xml")
+    err = blocked(COLLATOR_GUARD, "Write", file_path="jesup/bogoras-chukchi/mz/tei/chukchi-1-075.xml")
     assert "tei diff" in err
 
 
@@ -603,8 +603,8 @@ def test_the_collator_may_propose_an_entry_and_not_ratify_one():
 
 
 @pytest.mark.parametrize("path", [
-    "gt/ocr/chukchi-1-075.xml",
-    "mz/ocr/chukchi-1-075.xml",
+    "jesup/bogoras-chukchi/gt/ocr/chukchi-1-075.xml",
+    "jesup/bogoras-chukchi/mz/ocr/chukchi-1-075.xml",
     "ocr/chukchi-1-075.xml",
     "zones/chukchi-1-075.xml",
 ])
@@ -625,9 +625,9 @@ def test_the_keying_spec_is_refused_by_name():
 
 
 @pytest.mark.parametrize("path", [
-    "gt/ocr/chukchi-1-075.xml",
+    "jesup/bogoras-chukchi/gt/ocr/chukchi-1-075.xml",
     "edition/authorities.json",
-    "tei/corpus-header.xml",
+    "jesup/bogoras-chukchi/tei/corpus-header.xml",
     "../elsewhere/tei/chukchi-1-075.xml",
 ])
 def test_the_collator_writes_nowhere_else(path):

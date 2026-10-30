@@ -52,12 +52,12 @@ readable() {
     # which meets the page through an indexed ladder, this pass reads the scan
     # directly — `tei context` hands over `page_image` for exactly that, and the
     # rules call it "the only witness that matters".
-    */scans/*|scans/*) return 0 ;;
+    */scans/*) return 0 ;;
     # Where `ocr zoom` puts its crops, and the page's working directory generally.
-    */review/*|review/*) return 0 ;;
+    */review/*) return 0 ;;
     # The collator's own output, re-read once against the image before it declares
     # done. The hook cannot tell its page from a sibling's — see the header.
-    */tei/*|tei/*) return 0 ;;
+    */tei/*) return 0 ;;
     # The normative text a collator does NOT already carry. `keying_spec.md` and
     # `harness/VERBS.md` are refused below and deliberately absent here: one is
     # transcluded into the system prompt and the other has a verb.
@@ -81,7 +81,7 @@ readable() {
     # asked to judge a candidate with the entries withheld would be guessing, and
     # a guess is what the candidate comment exists to prevent. Writing is the
     # verb's, not the editor's — see the Write arm.
-    */entities/*|entities/*) return 0 ;;
+    */entities/*) return 0 ;;
   esac
   return 1
 }
@@ -90,7 +90,7 @@ case "$TOOL" in
   Read)
     P=$(printf '%s' "$INPUT" | jq -r '.tool_input.file_path // empty')
     case "$P" in
-      */gt/ocr/*|gt/ocr/*|*/mz/ocr/*|mz/ocr/*|*/ocr/*|ocr/*|*/zones/*|zones/*)
+      */gt/ocr/*|*/mz/ocr/*|*/ocr/*|ocr/*|*/zones/*|zones/*)
         echo "Blocked: you do not read these stores — the generator already did. Your draft is the TEI 'tei claim' put at tei/chukchi-PP-NNN.xml, built from exactly these files, and 'uv run harness tei context PP-NNN' gives you the rest: ocr_lines with the indices @facs cites, and tier1_terms with the ratified forms already keyed. The raw ALTO adds geometry the TEI carries none of, and re-deriving the generator's own input by eye is how a reviewer talks itself out of a mechanical fact." >&2
         exit 2 ;;
       *keying_spec.md)
@@ -114,7 +114,7 @@ case "$TOOL" in
       # overwrite the generated baseline it is reviewing, and `tei diff` would then
       # compare the review against itself. The one comparison this pass has would
       # silently become no comparison at all.
-      */mz/tei/*|mz/tei/*)
+      */mz/tei/*)
         echo "Blocked: mz/tei/ is the generated baseline, and nothing you do touches it. 'harness tei claim' already copied it to tei/chukchi-PP-NNN.xml — that copy is your working file and the one you edit. The difference between the two IS the record of what you judged, so a write here would leave 'tei diff' comparing the review against itself. Regenerating is 'harness tei generate', and that is the coordinator's." >&2
         exit 2 ;;
       # **The file is refused; the verb is not.** `entity new` is on the Bash
@@ -128,10 +128,10 @@ case "$TOOL" in
       #   - an existing entry is shared. Adding an alias to a ratified entity
       #     changes what `tei generate` links on every other page in the corpus,
       #     and one page is the wrong vantage for that.
-      */entities/*|entities/*)
+      */entities/*)
         echo "Blocked: don't hand-edit the store — 'uv run harness entity new class:slug --canonical NAME --alias FORM --commit' is yours and does this properly. It parses before writing and mints at status: proposed, which no rule links until a human ratifies it, so proposing costs nothing and asserts nothing. What the verb will not do is change an entry that already exists, and neither may you: an alias added to a ratified entity changes what gets linked on every other page, which one page is the wrong vantage for. Put that in your report instead." >&2
         exit 2 ;;
-      */tei/*-[0-9]*.xml|tei/*-[0-9]*.xml) allow "collator authoring its page's TEI" ;;
+      */tei/*-[0-9]*.xml) allow "collator authoring its page's TEI" ;;
       *"$MEMORY"*) allow "collator writing its own memory" ;;
     esac
     echo "Blocked: you write exactly two places — tei/chukchi-PP-NNN.xml, and your own memory under $MEMORY. That is the whole deliverable. gt/, mz/, ocr/, zones/, scans/ and data/ are off-limits by any route; tei/corpus-header.xml is the corpus's and not one page's; and a reservation you cannot settle is a COMMENT IN YOUR PAGE plus a line in your report, never a change to something else." >&2

@@ -36,10 +36,11 @@ def render_list_html(*a, **kw):
         **ui.list_context(*a, **kw), request=None)
 
 REPO = Path(__file__).resolve().parent.parent.parent
+PROJECT = REPO / "jesup" / "bogoras-chukchi"
 
 
 def cfg():
-    return zc.load_config(REPO)
+    return zc.load_config(PROJECT)
 
 
 def make_scan(tmp_path: Path, ref: str, size=(2824, 3897)):

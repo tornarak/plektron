@@ -20,6 +20,7 @@ import pytest
 from harness import entities as E
 
 REPO = Path(__file__).resolve().parent.parent.parent
+PROJECT = REPO / "jesup" / "bogoras-chukchi"
 
 
 def entry(root: Path, ident: str, *, status: str = "ratified",
@@ -734,7 +735,7 @@ def test_a_reported_rename_writes_nothing(tmp_path):
 # ------------------------------------------------------------ the live store
 
 def test_the_committed_store_checks_out():
-    assert E.check(REPO)["ok"]
+    assert E.check(PROJECT)["ok"]
 
 
 # ------------------------------------------------------------- adding an alias

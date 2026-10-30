@@ -58,12 +58,13 @@ import pytest
 from harness.normalize import scan, scoped_files
 
 REPO = Path(__file__).resolve().parent.parent.parent
+PROJECT = REPO / "jesup" / "bogoras-chukchi"
 
 
 @pytest.fixture(scope="module")
 def report() -> dict:
     """One walk for both assertions — it reads ~2,000 files and costs ~4s."""
-    return scan(REPO)
+    return scan(PROJECT)
 
 
 def test_the_scan_actually_reached_the_corpus(report):
@@ -72,7 +73,7 @@ def test_the_scan_actually_reached_the_corpus(report):
     that stopped matching would turn the whole file green and silent, which is
     the failure it exists to prevent, one level up."""
     assert report["files"] > 0, "the corpus glob matched nothing"
-    scoped = {str(p.relative_to(REPO)) for p in scoped_files(REPO)}
+    scoped = {str(p.relative_to(PROJECT)) for p in scoped_files(PROJECT)}
     assert any(s.startswith("edition/entities/") for s in scoped), \
         "edition/entities/ is out of scope — the store where the last drift appeared"
     assert any(s.startswith("gt/ocr/") for s in scoped), \

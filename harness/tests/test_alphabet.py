@@ -24,6 +24,7 @@ import pytest
 from harness import alphabet
 
 REPO = Path(__file__).resolve().parent.parent.parent
+PROJECT = REPO / "jesup" / "bogoras-chukchi"
 
 
 def n(x):
@@ -43,7 +44,7 @@ def test_the_store_and_the_rule_table_cover_each_other():
     """Total in both directions. A rule row with no entry drops a sort off the
     chart; an entry claiming a value the table lacks prints one that is not
     there."""
-    rep = alphabet.check(REPO)
+    rep = alphabet.check(PROJECT)
     assert rep["errors"] == []
     assert rep["sorts"] == 64
 
@@ -53,7 +54,7 @@ def test_the_codepoints_agree_with_keying_spec():
     `keying_spec.md` owns the inventory (CLAUDE.md's precedence table) and this
     store has to be machine-readable; neither is derived from the other, so the
     only thing that keeps them honest is this comparison."""
-    rep = alphabet.check(REPO)
+    rep = alphabet.check(PROJECT)
     assert rep["spec_checked"] >= 18, "the spec parse found fewer sorts than it did"
     assert not [e for e in rep["errors"] if e["rule"] == "codepoint-disagreement"]
 
@@ -63,7 +64,7 @@ def test_the_spec_parse_reads_the_right_tables():
     the same shape and opposite meanings: §3's rows are a forbidden lookalike
     beside the codepoint that should have been keyed instead, and sniffing for
     something codepoint-shaped picks them up as if they were sorts."""
-    spec = alphabet.spec_codepoints(REPO)
+    spec = alphabet.spec_codepoints(PROJECT)
     assert spec[n("ä")] == "a + U+0308"    # §2.2, whose codepoint column is NFD
     assert spec["ʟ"] == "U+029F"           # §2.3, whose column is Codepoint
     assert "´" not in spec and "·" not in spec, "§3's lookalikes leaked in"
@@ -72,7 +73,7 @@ def test_the_spec_parse_reads_the_right_tables():
 def test_every_grid_cell_is_a_sort_the_store_lists():
     """A chart drawn from a grid naming a sort with no entry has a hole in it
     where a glyph should be, and nothing else would report that."""
-    store = alphabet.load(REPO)
+    store = alphabet.load(PROJECT)
     listed = {s["sort"] for s in store["sorts"]}
     for name, grid in store["grids"].items():
         cells = {c for row in grid["rows"] for c in row["cells"] if c}
@@ -83,7 +84,7 @@ def test_the_vowel_grid_is_the_arrangement_and_not_an_alphabet():
     """Mythology's rows are the analysis, which is the reason to reproduce them:
     ä sits over a as its long counterpart, and ŭ sits *under* u with the obscure
     short series rather than beside it. p. 10's flat list shows neither."""
-    rows = alphabet.load(REPO)["grids"]["vowels"]["rows"]
+    rows = alphabet.load(PROJECT)["grids"]["vowels"]["rows"]
     assert [r["cells"][2] for r in rows] == n(["ä", "a", "ᴀ"])
     assert rows[1]["cells"][4] == "u" and rows[2]["cells"][4] == n("ŭ")
 
@@ -94,7 +95,7 @@ def test_the_consonant_grid_records_his_place_names_not_ours():
     row label as a place claim is what made an earlier audit argue `g̣` was
     uvular, which the modern inventory does not support."""
     rows = {r["label"]: [c for c in r["cells"] if c]
-            for r in alphabet.load(REPO)["grids"]["consonants"]["rows"]}
+            for r in alphabet.load(PROJECT)["grids"]["consonants"]["rows"]}
     assert set(rows["Velar"]) == n({"g̣", "h", "q"})
     assert set(rows["Palatal"]) == n({"k", "ñ"})
 
@@ -103,7 +104,7 @@ def test_the_four_gaps_are_entries_and_not_omissions():
     """ë, ḷ, ṛ and š have a gloss in the key and no IPA value, because turning
     a gloss into a symbol is a judgement. They are on the chart *as* sorts with
     no value — an omission would read as the key not having them."""
-    chart = alphabet.chart(REPO)
+    chart = alphabet.chart(PROJECT)
     gaps = {r["sort"] for r in chart["sorts"] if not r["ipa"]}
     assert n({"ë", "ḷ", "ṛ", "š"}) <= gaps
     for r in chart["sorts"]:
@@ -115,7 +116,7 @@ def test_the_chart_carries_both_readings_side_by_side():
     """`ipa` is Bogoras's own account and `modern` is a current description's,
     and they part systematically. A row showing one of them has answered a
     question the reader did not ask."""
-    by = alphabet.chart(REPO)["by_sort"]
+    by = alphabet.chart(PROJECT)["by_sort"]
     assert by["a"]["ipa"] == "aː" and by["a"]["modern"] == "a"
     # length: his, not modern's
     assert by["a"]["ipa"].endswith("ː") and "ː" not in by["a"]["modern"]
@@ -128,7 +129,7 @@ def test_a_sorts_attestation_counts_forms_and_not_occurrences():
     """"How much of the book does this sort unlock" is a question about forms.
     Counted over the keyed corpus only, which is why a zero is not a claim that
     the book does not print it."""
-    chart = alphabet.chart(REPO)
+    chart = alphabet.chart(PROJECT)
     assert chart["attested_forms"] > 500
     assert chart["by_sort"]["g̣"]["forms"] > 50
     assert all(r["forms"] <= chart["attested_forms"] for r in chart["sorts"])
@@ -137,7 +138,7 @@ def test_a_sorts_attestation_counts_forms_and_not_occurrences():
 def test_anchors_are_positional_rather_than_the_sort_itself():
     """A fragment holding a combining sequence is legal and unusable, and `ʟ̣`
     and `ʟ` would differ in a URL by an invisible character."""
-    anchors = [r["anchor"] for r in alphabet.chart(REPO)["sorts"]]
+    anchors = [r["anchor"] for r in alphabet.chart(PROJECT)["sorts"]]
     assert len(set(anchors)) == len(anchors)
     assert all(a.isascii() for a in anchors)
 

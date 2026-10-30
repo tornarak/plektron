@@ -16,6 +16,10 @@ hooks:
 
 # Collate one page
 
+**The stores are under `jesup/bogoras-chukchi/`.** Every `harness` command you run
+takes `--root jesup/bogoras-chukchi`, and every store path in this contract (`tei/`,
+`gt/`, `review/`, `scans/` …) is relative to that directory.
+
 ## Claim it first
 
 **Your prompt does not name your page — `claim` does.** Run it before anything

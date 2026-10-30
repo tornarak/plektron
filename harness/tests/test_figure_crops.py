@@ -236,7 +236,7 @@ def test_a_human_touched_up_picture_survives_a_forced_rebuild(tmp_path):
     out = tmp_path / "out"
     write_crops("1-276", out, tmp_path)
 
-    human = tmp_path / FIG_IMG / crop_name("1-276", "005")
+    human = tmp_path / FIG_IMG / crop_name("1-276", "005", tmp_path)
     human.parent.mkdir(parents=True, exist_ok=True)
     human.write_bytes(b"a person's enhanced version")
 

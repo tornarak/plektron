@@ -37,6 +37,7 @@ from cloup._option_groups import get_option_group_of
 from cloup.constraints import mutually_exclusive, require_one
 from cloup.constraints._support import BoundConstraintSpec
 
+from ..layout import ProjectError, project_root, repo_root
 from ..render import collect, colour, flush, mode, render, rule
 from ..render import pager as paged
 
@@ -122,7 +123,7 @@ class _Group(cloup.Group):
     context_class = _Context
 
 
-def globals_params(root_default: Path | None = None) -> list[click.Parameter]:
+def globals_params() -> list[click.Parameter]:
     """`--root`/`--json`/`--toon`/`--pager`, for the top group and every action.
 
     **Declared at all three tiers** — root, group, action — so they may be typed
@@ -131,8 +132,7 @@ def globals_params(root_default: Path | None = None) -> list[click.Parameter]:
     --json` an error while `harness --json zones predict` worked, a distinction no
     user should have to hold.
 
-    Everything but the root's `--root` therefore defaults to **None rather than
-    False**, so "not given" is distinguishable from "given false" and `_namespace`
+    Everything therefore defaults to **None rather than False**, so "not given" is distinguishable from "given false" and `_namespace`
     can tell which tier actually spoke. That is the job `argparse.SUPPRESS` used to
     do; `None` already carries the distinction.
 
@@ -142,8 +142,9 @@ def globals_params(root_default: Path | None = None) -> list[click.Parameter]:
     """
     return [
         cloup.Option(["--root"], type=click.Path(path_type=Path),
-                     default=root_default, group=OUTPUT_GROUP,
-                     help="repo root; every path resolves against it (default .)"),
+                     group=OUTPUT_GROUP,
+                     help="the text's stores; every path resolves against it "
+                          "(default: the ones the cwd is in)"),
         cloup.Option(["--json"], is_flag=True, default=None, group=OUTPUT_GROUP,
                      help="indented JSON instead of TOON"),
         cloup.Option(["--toon"], is_flag=True, default=None, group=OUTPUT_GROUP,
@@ -189,6 +190,10 @@ def require_exactly_one(*names: str) -> BoundConstraintSpec:
 
 GLOBAL_NAMES = ("root", "json", "toon", "pager")
 
+#: The groups about the harness itself, which read no text's stores and answer
+#: from anywhere.
+REPO_GROUPS = frozenset({"agents", "verbs"})
+
 
 def _namespace(ctx, group_name: str, action_name: str, kw: dict):
     """The parsed arguments as one object, the shape every `run_*` already reads.
@@ -208,9 +213,7 @@ def _namespace(ctx, group_name: str, action_name: str, kw: dict):
                         **{k: v for k, v in kw.items() if k not in GLOBAL_NAMES})
     # **The whole context chain, innermost first**, because a global may be
     # declared at any of the three tiers and the one the user actually typed is
-    # whichever answered. Only the top tier carries a non-None default, so the
-    # first non-None walking outward is the value given — or, at the root, the
-    # default.
+    # whichever answered: the first non-None walking outward.
     chain = []
     c = ctx
     while c is not None:
@@ -220,7 +223,13 @@ def _namespace(ctx, group_name: str, action_name: str, kw: dict):
         setattr(a, name, next((p[name] for p in chain
                                if p.get(name) is not None), None))
     a.json, a.toon, a.pager = bool(a.json), bool(a.toon), bool(a.pager)
-    a.root = Path(a.root or ".")
+    if group_name in REPO_GROUPS:
+        a.root = Path(a.root) if a.root else repo_root()
+        return a
+    try:
+        a.root = project_root(Path(a.root) if a.root else None)
+    except ProjectError as e:
+        raise click.UsageError(str(e), ctx) from None
     return a
 
 

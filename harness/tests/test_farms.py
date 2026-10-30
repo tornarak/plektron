@@ -30,6 +30,7 @@ from harness import farms as F
 from harness.paths import all_refs
 
 REPO = Path(__file__).resolve().parent.parent.parent
+PROJECT = REPO / "jesup" / "bogoras-chukchi"
 
 
 # ------------------------------------------------------------- the mechanics
@@ -300,7 +301,7 @@ def test_every_farm_is_gitignored():
     for farm in F.FARMS:
         probe = f"{farm.path}/probe.png"
         r = subprocess.run(["git", "check-ignore", "-q", probe],
-                           cwd=REPO, capture_output=True)
+                           cwd=PROJECT, capture_output=True)
         assert r.returncode == 0, f"{farm.path} is a farm but is not gitignored"
 
 
@@ -340,7 +341,7 @@ def test_a_bare_build_is_a_usage_error_not_a_build_of_everything():
     that the refusal names the flag that would not have.
     """
     r = subprocess.run(["uv", "run", "harness", "views", "build"],
-                       cwd=REPO, capture_output=True, text=True)
+                       cwd=PROJECT, capture_output=True, text=True)
     assert r.returncode == 2
     assert "--all" in r.stderr
 

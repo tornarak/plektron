@@ -54,10 +54,11 @@ JS = (Path(__file__).parent.parent / "web" / "static" / "js"
       / "zones.js").read_text(encoding="utf-8")
 
 REPO = Path(__file__).resolve().parent.parent.parent
+PROJECT = REPO / "jesup" / "bogoras-chukchi"
 
 # The shipped config, so these tests bind the numbers actually in use —
 # `min_zone_h_px` above all, which is what separates a zone from a sliver.
-CFG = zc.load_config(REPO)
+CFG = zc.load_config(PROJECT)
 
 ALTO = """<?xml version="1.0" encoding="UTF-8"?>
 <alto xmlns="http://www.loc.gov/standards/alto/ns-v4#">
@@ -194,7 +195,7 @@ def test_a_split_marked_once_is_read_by_both_stores(tmp_path):
     write_page(tmp_path, "1-048", zn.MZDIR)
     zn.set_split("1-048", "plate", tmp_path)
     make_scan(tmp_path, "1-048")
-    cfg = zc.load_config(REPO)
+    cfg = zc.load_config(PROJECT)
     for store in (zn.ZONEDIR, zn.MZDIR):
         assert (
             zn.validate_page("1-048", tmp_path, cfg, ink=False, store=store)["split"]
@@ -212,7 +213,7 @@ def test_a_machine_sweep_never_writes_the_ink_cache(tmp_path):
     has — and the stamp design exists precisely to stop that."""
     write_page(tmp_path, "1-048", zn.MZDIR)
     make_scan(tmp_path, "1-048")
-    cfg = zc.load_config(REPO)
+    cfg = zc.load_config(PROJECT)
     zn.validate_corpus(tmp_path, cfg, ink=True, store=zn.MZDIR)
     assert not (tmp_path / zn.ZONEDIR / zn.INK_CACHE_JSON).exists()
     assert zn.load_ink_cache(tmp_path) == {}
@@ -223,7 +224,7 @@ def test_a_human_sweep_still_writes_it(tmp_path):
     simply stopped working."""
     write_page(tmp_path, "1-048", zn.ZONEDIR)
     make_scan(tmp_path, "1-048")
-    zn.validate_corpus(tmp_path, zc.load_config(REPO), ink=True)
+    zn.validate_corpus(tmp_path, zc.load_config(PROJECT), ink=True)
     assert zn.cached_ink("1-048", tmp_path) is not None
 
 
@@ -277,7 +278,7 @@ def test_a_page_with_no_ground_truth_opens_on_the_prediction(tmp_path):
     
     write_page(tmp_path, "1-102", zn.MZDIR, x0=812, y0=700, x1=2301, y1=980)
     make_scan(tmp_path, "1-102")
-    st = ui.page_state("1-102", tmp_path, zc.load_config(REPO))
+    st = ui.page_state("1-102", tmp_path, zc.load_config(PROJECT))
     assert st["keyed"] is False and st["proposal"] == "mz"
     z = st["zones"][0]
     assert (z["y0"], z["y1"]) == (700, 980)  # y is the model's
@@ -297,10 +298,10 @@ def test_ground_truth_wins_in_the_editor_too(tmp_path):
     write_page(tmp_path, "1-048", zn.ZONEDIR, label="MainZone-P")
     write_page(tmp_path, "1-048", zn.MZDIR, label="RunningTitleZone")
     make_scan(tmp_path, "1-048")
-    st = ui.page_state("1-048", tmp_path, zc.load_config(REPO))
+    st = ui.page_state("1-048", tmp_path, zc.load_config(PROJECT))
     assert st["proposal"] == "" and st["zones"][0]["label"] == "MainZone-P"
     assert (st["store"], st["shown"], st["pinned"]) == ("gt", "gt", False)
-    pinned = ui.page_state("1-048", tmp_path, zc.load_config(REPO), store="mz")
+    pinned = ui.page_state("1-048", tmp_path, zc.load_config(PROJECT), store="mz")
     assert (pinned["store"], pinned["shown"], pinned["pinned"]) == ("mz", "mz", True)
 
 
@@ -311,7 +312,7 @@ def test_the_selector_shows_each_store_on_a_page_that_has_both(tmp_path):
     at zones. There is no `zones` option any more — the view it named is gone —
     and no `view` key: what is shown is what was asked for."""
 
-    cfg = zc.load_config(REPO)
+    cfg = zc.load_config(PROJECT)
     write_page(tmp_path, "1-048", zn.ZONEDIR, label="MainZone-P", y0=600, y1=900)
     write_page(tmp_path, "1-048", zn.MZDIR, label="RunningTitleZone", y0=610, y1=880)
     make_scan(tmp_path, "1-048")
@@ -335,7 +336,7 @@ def test_an_empty_store_is_an_answer_not_an_error(tmp_path):
     to the other store — a selector that silently redirected would make the two
     indistinguishable, which is the whole thing these stores are kept apart for."""
     
-    cfg = zc.load_config(REPO)
+    cfg = zc.load_config(PROJECT)
     write_page(tmp_path, "1-102", zn.MZDIR)
     make_scan(tmp_path, "1-102")
     gt = ui.page_state("1-102", tmp_path, cfg, store="gt")
@@ -349,14 +350,14 @@ def test_an_unknown_store_is_refused(tmp_path):
     write_page(tmp_path, "1-048", zn.ZONEDIR)
     make_scan(tmp_path, "1-048")
     with pytest.raises(ValueError, match="store must be one of"):
-        ui.page_state("1-048", tmp_path, zc.load_config(REPO), store="gt/zones")
+        ui.page_state("1-048", tmp_path, zc.load_config(PROJECT), store="gt/zones")
 
 
 def test_the_selector_is_orthogonal_to_the_itinerary(tmp_path):
     """Two independent axes — the itinerary picks the pages, the store picks whose
     reading of them. Neighbours must not change when the store does."""
     
-    cfg = zc.load_config(REPO)
+    cfg = zc.load_config(PROJECT)
     for r in ("1-048", "1-102", "1-103"):
         write_page(tmp_path, r, zn.MZDIR)
         make_scan(tmp_path, r)
@@ -382,7 +383,7 @@ def test_an_undeclared_label_is_dropped_and_named(tmp_path):
     
     write_page(tmp_path, "1-102", zn.MZDIR, label="NoSuchZone")
     make_scan(tmp_path, "1-102")
-    st = ui.page_state("1-102", tmp_path, zc.load_config(REPO))
+    st = ui.page_state("1-102", tmp_path, zc.load_config(PROJECT))
     assert st["zones"] == [] and st["proposal_dropped"] == ["NoSuchZone"]
 
 
@@ -391,7 +392,7 @@ def test_the_banner_marks_a_proposal_and_only_a_proposal(tmp_path):
     already done — the one confusion the two stores exist to prevent, arriving
     through the single surface that reads from both."""
     
-    cfg = zc.load_config(REPO)
+    cfg = zc.load_config(PROJECT)
     write_page(tmp_path, "1-102", zn.MZDIR)
     write_page(tmp_path, "1-048", zn.ZONEDIR)
     make_scan(tmp_path, "1-102")
@@ -410,7 +411,7 @@ def test_the_page_list_separates_predicted_from_untouched(tmp_path):
     for r in ("1-048", "1-102", "1-103"):
         make_scan(tmp_path, r)
     html = render_list_html(
-        tmp_path, zc.load_config(REPO), itinerary=["1-048", "1-102", "1-103"]
+        tmp_path, zc.load_config(PROJECT), itinerary=["1-048", "1-102", "1-103"]
     )
     states = {
         ref: re.search(
@@ -434,7 +435,7 @@ def test_the_page_list_counts_both_stores_per_page(tmp_path):
     for r in ("1-048", "1-102", "1-103"):
         make_scan(tmp_path, r)
     html = render_list_html(
-        tmp_path, zc.load_config(REPO), itinerary=["1-048", "1-102", "1-103"]
+        tmp_path, zc.load_config(PROJECT), itinerary=["1-048", "1-102", "1-103"]
     )
     cells = {
         ref: re.search(
@@ -458,7 +459,7 @@ def test_the_list_can_widen_to_every_scan(tmp_path):
     write_page(tmp_path, "1-048", zn.ZONEDIR)
     for r in ("1-048", "1-102", "1-103"):
         make_scan(tmp_path, r)
-    cfg = zc.load_config(REPO)
+    cfg = zc.load_config(PROJECT)
     assert render_list_html(tmp_path, cfg).count("<tr ") == 1
     assert render_list_html(tmp_path, cfg, scope="all").count("<tr ") == 3
 
@@ -1030,7 +1031,7 @@ def test_a_train_merge_folds_the_training_copy_and_not_the_store(tmp_path):
     (tmp_path / "config").mkdir(parents=True, exist_ok=True)
     import json
 
-    cfg = json.loads((REPO / "config/zones.json").read_text(encoding="utf-8"))
+    cfg = json.loads((PROJECT / "config/zones.json").read_text(encoding="utf-8"))
     (tmp_path / "config/zones.json").write_text(json.dumps(cfg), encoding="utf-8")
 
     rep = zn.assemble(tmp_path)
@@ -1059,7 +1060,7 @@ def test_a_declared_fold_no_page_carries_still_links(tmp_path):
     (tmp_path / zn.BLOTDIR).mkdir(parents=True, exist_ok=True)
     (tmp_path / zn.BLOTDIR / "chukchi-1-048.png").write_bytes(b"x")
     (tmp_path / "config").mkdir(parents=True, exist_ok=True)
-    cfg = json.loads((REPO / "config/zones.json").read_text(encoding="utf-8"))
+    cfg = json.loads((PROJECT / "config/zones.json").read_text(encoding="utf-8"))
     (tmp_path / "config/zones.json").write_text(json.dumps(cfg), encoding="utf-8")
 
     rep = zn.assemble(tmp_path)
@@ -1077,7 +1078,7 @@ def test_no_merge_declared_keeps_assemble_on_symlinks(tmp_path):
     (tmp_path / zn.BLOTDIR).mkdir(parents=True, exist_ok=True)
     (tmp_path / zn.BLOTDIR / "chukchi-1-048.png").write_bytes(b"x")
     (tmp_path / "config").mkdir(parents=True, exist_ok=True)
-    cfg = json.loads((REPO / "config/zones.json").read_text(encoding="utf-8"))
+    cfg = json.loads((PROJECT / "config/zones.json").read_text(encoding="utf-8"))
     cfg.pop("train_merges", None)
     (tmp_path / "config/zones.json").write_text(json.dumps(cfg), encoding="utf-8")
     rep = zn.assemble(tmp_path)
@@ -1108,7 +1109,7 @@ def test_the_derived_stores_are_ignored_and_gt_is_not():
     def ignored(p):
         return (
             subprocess.run(
-                ["git", "check-ignore", "-q", p], cwd=REPO, capture_output=True
+                ["git", "check-ignore", "-q", p], cwd=PROJECT, capture_output=True
             ).returncode
             == 0
         )

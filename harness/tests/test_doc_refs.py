@@ -25,6 +25,7 @@ from pathlib import Path
 import pytest
 
 REPO = Path(__file__).resolve().parent.parent.parent
+PROJECT = REPO / "jesup" / "bogoras-chukchi"
 
 # Documents whose business is pointing at other files. Not every markdown file in
 # the repo: a page of prose that happens to mention a filename is not making a
@@ -271,7 +272,7 @@ def test_every_path_it_names_resolves(doc):
     missing = sorted(
         p
         for p in named_paths(doc)
-        if p not in EXPECTED_ABSENT and "PP-NNN" not in p and not (REPO / p).exists()
+        if p not in EXPECTED_ABSENT and "PP-NNN" not in p and not (REPO / p).exists() and not (PROJECT / p).exists()
     )
     assert not missing, (
         f"{doc} names paths that do not exist: {missing}. Either the file moved "
@@ -295,7 +296,7 @@ def test_the_corpus_header_names_a_real_skill():
     """Not markdown, but the same hazard and the worst instance of it: the header
     is a committed artifact asserting where the output contract is documented, and
     nothing else checks that string."""
-    text = (REPO / "tei" / "corpus-header.xml").read_text(encoding="utf-8")
+    text = (PROJECT / "tei" / "corpus-header.xml").read_text(encoding="utf-8")
     assert "transcriber_harness.md" not in text
     assert ".claude/skills/transcribe-page/SKILL.md" in text
     assert (REPO / ".claude/skills/transcribe-page/SKILL.md").exists()

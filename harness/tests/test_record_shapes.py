@@ -33,13 +33,14 @@ from harness.entities import (
 from harness.figures import BLOCK_FIELDS, RECT_FIELDS, read_blocks, to_rect
 
 REPO = Path(__file__).resolve().parent.parent.parent
+PROJECT = REPO / "jesup" / "bogoras-chukchi"
 
 
 # ------------------------------------------------------------------ entities
 
 @pytest.fixture(scope="module")
 def store() -> dict:
-    s = load(REPO)
+    s = load(PROJECT)
     if not s:
         pytest.skip("edition/entities/ is empty in this checkout")
     return s
@@ -116,7 +117,7 @@ def test_a_block_without_points_still_converts_when_asked():
 
 
 def test_read_blocks_returns_the_declared_shape():
-    src = sorted((REPO / "gt" / "fig").glob("chukchi-*.xml"))
+    src = sorted((PROJECT / "gt" / "fig").glob("chukchi-*.xml"))
     if not src:
         pytest.skip("gt/fig/ is empty in this checkout")
     blocks = read_blocks(src[0])
@@ -134,12 +135,12 @@ def test_read_zones_goes_through_the_one_conversion():
     # The first *keyed* page, not the first file: a plate or a blank is a real
     # leaf with no zones at all, and picking one would test nothing.
     ref = got = None
-    for p in sorted((REPO / "gt" / "zones").glob("chukchi-*.xml"))[:40]:
+    for p in sorted((PROJECT / "gt" / "zones").glob("chukchi-*.xml"))[:40]:
         ref = p.stem.replace("chukchi-", "")
-        if (got := zones.read_zones(ref, REPO)):
+        if (got := zones.read_zones(ref, PROJECT)):
             break
     if not got:
         pytest.skip("no keyed page among the first 40 in gt/zones/")
     assert tuple(got[0]) == RECT_FIELDS
-    assert tuple(zones.read_zones(ref, REPO, with_points=True)[0]) == \
+    assert tuple(zones.read_zones(ref, PROJECT, with_points=True)[0]) == \
         RECT_FIELDS + ("points",)

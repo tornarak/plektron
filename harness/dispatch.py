@@ -51,7 +51,7 @@ from datetime import datetime
 from pathlib import Path
 
 from .generate import GENDIR
-from .layout import stem_for
+from .layout import repo_root, stem_for
 from .lines import ZOOM
 from .marks import MarksConfigError
 from .refs import norm_ref
@@ -272,10 +272,10 @@ def build(ref: str, root: Path = Path("."), note: str | None = None) -> dict:
             "  - (none: no page in the preceding span holds a native form)"
     except (MarksConfigError, OSError) as e:
         near = f"  - (unavailable, so infer nothing from its silence: {e})"
-    text = template(root).format(
+    text = template(repo_root()).format(
         ref=r, lines=s["lines"], zones=s["blocks"], zoom=zoom, nearby=near,
         figures=figs, note=f" {note.strip()}" if note else "")
-    left = sorted(set(re.findall(r"\{(\w+)\}", template(root))))
+    left = sorted(set(re.findall(r"\{(\w+)\}", template(repo_root()))))
     return {**s, "page_block": text, "placeholders": " ".join(left)}
 
 
@@ -357,11 +357,11 @@ def collate_build(ref: str, root: Path = Path("."), note: str | None = None) -> 
             f"{r}: nothing at gt/zones/{stem_for(r, root)}.xml. The paragraph boundaries "
             "*are* the keyed zone labels, and a prediction is not a human's "
             f"assertion. Key the page: `uv run harness zones edit {r}`.")
-    text = template(root, (BEGIN, END), COLLATE_DOC).format(
+    text = template(repo_root(), (BEGIN, END), COLLATE_DOC).format(
         ref=r,
         note=f" {note.strip()}" if note else "")
     left = sorted(set(re.findall(r"\{(\w+)\}",
-                                 template(root, (BEGIN, END), COLLATE_DOC))))
+                                 template(repo_root(), (BEGIN, END), COLLATE_DOC))))
     return {**s, "page_block": text, "placeholders": " ".join(left)}
 
 
@@ -619,7 +619,7 @@ def queue_refs(refs: list[str], root: Path = Path("."),
     q.write_text(body, encoding="utf-8")
     # Last, so a batch that was going to be refused does not also rewrite a
     # tracked file on its way out.
-    synced = sync_transcludes(root, track.agent)
+    synced = sync_transcludes(repo_root(), track.agent)
     if not synced["exists"]:
         raise Unready(
             f"{track.agent} does not exist, and it is the {track.name} pass's whole "
@@ -627,7 +627,7 @@ def queue_refs(refs: list[str], root: Path = Path("."),
             "without it sends agents at pages with no rules and nothing would say "
             "so until the output came back wrong.")
     return {"queued": ordered,
-            "prompt": template(root, (CLAIM_BEGIN, CLAIM_END), track.doc),
+            "prompt": template(repo_root(), (CLAIM_BEGIN, CLAIM_END), track.doc),
             "resynced": synced["updated"]}
 
 
@@ -667,6 +667,14 @@ def claim_one(root: Path = Path("."),
     return None
 
 
+def _project_line(root: Path) -> str:
+    """Which text a claimed page is in. An agent's shell starts at the repo root, so
+    the cwd cannot say, and the template's commands are the text's own."""
+    at = Path(os.path.relpath(Path(root).resolve(), repo_root()))
+    return (f"Project: `{at}`. Add `--root {at}` to every `harness` command below, "
+            "and read every store path as relative to it.\n\n")
+
+
 def claim(root: Path = Path("."), track: Track = READING) -> dict | None:
     """`claim_one`, then the page block for whatever it took. None if the queue is out.
 
@@ -688,6 +696,7 @@ def claim(root: Path = Path("."), track: Track = READING) -> dict | None:
     ref, note = taken
     try:
         block = track.build(ref, root, note or None)
+        block["page_block"] = _project_line(root) + block["page_block"]
         return {**block, **(track.on_claim(ref, root) if track.on_claim else {})}
     except BaseException:
         (claims_dir(root, track) / ref).unlink(missing_ok=True)

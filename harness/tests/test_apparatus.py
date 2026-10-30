@@ -247,7 +247,7 @@ def test_toc_containing_reads_the_real_store():
     Two properties over every entry: the chain a heading's own first folio
     produces ends with that heading, and the chain is monotonic in level.
     """
-    toc = state.load_toc(Path(__file__).resolve().parents[2])
+    toc = state.load_toc(Path(__file__).resolve().parents[2] / "jesup" / "bogoras-chukchi")
     assert len(toc) > 300, "the real store, not a fixture"
     levels = {e["id"]: max(e.get("level") or 0, 1) for e in toc if e.get("id")}
     for e in toc:

@@ -22,6 +22,7 @@ import json
 from pathlib import Path
 
 import pytest
+from conftest import REPO
 
 from harness.review import decisions_path, page_context
 from harness.tests.conftest import write_scan
@@ -202,7 +203,7 @@ def test_the_page_carries_its_own_ref_for_every_write(two):
     server holding a 'current page' the browser could contradict."""
     html = render_queue_html("2-046", "mz/ocr", two)
     assert 'REF="2-046"' in html
-    js = Path("harness/web/static/js/review.js").read_text(encoding="utf-8")
+    js = (REPO / "harness/web/static/js/review.js").read_text(encoding="utf-8")
     assert "{ref:REF,lines:collect()}" in js
 
 
@@ -368,9 +369,9 @@ def test_an_emptied_note_folds_back_to_the_button(two):
     scoped to note fields (`data-note`), and reverting is conditional on the field
     being blank, so a note with content is never closed out from under the typist.
     """
-    js = Path("harness/web/static/js/review.js").read_text(encoding="utf-8")
+    js = (REPO / "harness/web/static/js/review.js").read_text(encoding="utf-8")
     assert "t.dataset.note!==undefined" in js, "blur handler not scoped to notes"
-    js = Path("harness/web/static/js/review.js").read_text(encoding="utf-8")
+    js = (REPO / "harness/web/static/js/review.js").read_text(encoding="utf-8")
     assert "addEventListener('blur'" in js
     assert "if(t.value.trim()) return;" in js
 
@@ -399,7 +400,7 @@ def test_notes_are_not_posted_as_line_readings(two):
     """The note boxes are textareas too. Every selector that means "a line's
     reading" is scoped to [data-line] for this reason — an unscoped one would
     collect them and post a note as if it were the text of some line."""
-    js = Path("harness/web/static/js/review.js").read_text(encoding="utf-8")
+    js = (REPO / "harness/web/static/js/review.js").read_text(encoding="utf-8")
     assert "querySelectorAll('textarea[data-line]')" in js
     assert "for(const t of document.querySelectorAll('textarea'))\n" not in js
 
@@ -419,7 +420,7 @@ def test_the_edit_jump_markup_is_the_same_on_both_sides():
     the label and the anchor shape. The empty case is a third literal and is the
     one most likely to be reworded on one side alone.
     """
-    js = Path("harness/web/static/js/review.js").read_text(encoding="utf-8")
+    js = (REPO / "harness/web/static/js/review.js").read_text(encoding="utf-8")
     from harness.review import _edit_jump_inner
 
     assert _edit_jump_inner([]) == "<b>Edited lines:</b> none yet"
@@ -547,7 +548,7 @@ def test_the_box_floor_does_not_cap_growth(tmp_path):
     # The rule lives in `review.css` now rather than in the page — a floor, not a
     # size, so the box autogrows past it and a reviewer who wants room to see a
     # wrapped line gets it without the box shrinking back on every keystroke.
-    css = Path("harness/web/static/css/review.css").read_text(encoding="utf-8")
+    css = (REPO / "harness/web/static/css/review.css").read_text(encoding="utf-8")
     assert "min-height:calc(var(--bl) * 1.45em" in css
     assert "resize:vertical" in css
 

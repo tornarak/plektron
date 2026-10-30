@@ -14,6 +14,7 @@ manifest, so everything that has to spell a file name comes here.
 from __future__ import annotations
 
 import json
+import os
 import re
 from functools import cache
 from pathlib import Path
@@ -22,6 +23,7 @@ from .refs import REF_RE, norm_ref, parse_ref
 
 #: The name of the manifest, and of what makes a directory a text's.
 PROJECT_JSON = "project.json"
+WORKSPACE_JSON = "workspace.json"
 
 STEM_RE = re.compile(r"^[a-z][a-z0-9]*(?:-[a-z][a-z0-9]*)*$")
 
@@ -46,22 +48,22 @@ def _project(path: str) -> dict:
     return rec
 
 
-def project(root: Path = Path(".")) -> dict:
+def project(root: Path) -> dict:
     """The manifest of the text whose stores sit at `root`."""
     return _project(str(Path(root).resolve()))
 
 
-def stem(root: Path = Path(".")) -> str:
+def stem(root: Path) -> str:
     """This text's file-name stem, without the joining hyphen."""
     return project(root)["stem"]
 
 
-def stem_for(ref: str, root: Path = Path(".")) -> str:
+def stem_for(ref: str, root: Path) -> str:
     """The file-name stem of one page: `1-48` -> `chukchi-1-048`."""
     return f"{stem(root)}-{norm_ref(ref)}"
 
 
-def ref_of(name: str, root: Path = Path(".")) -> str:
+def ref_of(name: str, root: Path) -> str:
     """The page ref a file stem names, in this text. `chukchi-1-048` -> `1-048`.
 
     **Another text's stem is refused, not stripped**: `koryak-1-048` is not this
@@ -78,7 +80,7 @@ def ref_of(name: str, root: Path = Path(".")) -> str:
                      f"{own}PP-NNN or a bare PP-NNN")
 
 
-def page_files(directory: Path, suffix: str, root: Path = Path(".")) -> list[Path]:
+def page_files(directory: Path, suffix: str, root: Path) -> list[Path]:
     """The page files under `directory`, in (part, scan index) order.
 
     The whole name must be `<stem>-<ref><suffix>`, which a glob cannot say: a
@@ -93,3 +95,40 @@ def page_files(directory: Path, suffix: str, root: Path = Path(".")) -> list[Pat
         if REF_RE.match(rest):
             found.append((parse_ref(rest), p))
     return [p for _, p in sorted(found, key=lambda t: t[0])]
+
+
+def repo_root() -> Path:
+    """Where the code and its documents are, whichever text is being worked on."""
+    return Path(__file__).resolve().parents[1]
+
+
+def project_root(given: Path | None) -> Path:
+    """The text's stores an invocation means.
+
+    A directory named with `--root` is that text's or it is an error, **never a
+    fallback to the cwd**: a mistyped root that quietly ran on whatever project the
+    shell was in would write to the wrong book. Named nothing, the nearest ancestor
+    of the cwd holding a manifest answers, spelled relative to the cwd, so what a
+    run records stays free of this machine's paths.
+    """
+    if given is not None:
+        if not (Path(given) / PROJECT_JSON).is_file():
+            raise ProjectError(f"--root {given}: no {PROJECT_JSON} there, so it is no "
+                               "text's stores")
+        return Path(given)
+    cwd = Path.cwd()
+    for d in (cwd, *cwd.parents):
+        if (d / PROJECT_JSON).is_file():
+            return Path(os.path.relpath(d, cwd))
+    found = sorted(str(p.parent.relative_to(repo_root()))
+                   for p in repo_root().glob(f"*/*/{PROJECT_JSON}"))
+    raise ProjectError(f"not inside a text's stores: name one with --root, or cd into "
+                       f"it. Found: {', '.join(found) or 'none'}")
+
+
+def workspace_root(root: Path = Path(".")) -> Path | None:
+    """The nearest ancestor holding a `workspace.json`, if the text is in one."""
+    for d in Path(root).resolve().parents:
+        if (d / WORKSPACE_JSON).is_file():
+            return d
+    return None

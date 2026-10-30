@@ -52,6 +52,7 @@ from pathlib import Path
 
 from lxml import etree
 
+from .layout import repo_root
 from .ns import TEI_NS
 
 # TEI P5 Version 4.12.0, revision 113e933e2, 2026-07-28, from
@@ -69,7 +70,7 @@ def load(root: Path = Path(".")) -> etree.RelaxNG:
     silently passes when its schema is missing is the fluent-nonsense shape —
     a PASS that means nothing was checked.
     """
-    path = (root / SCHEMA).resolve()
+    path = (repo_root() / SCHEMA).resolve()
     if path not in _cache:
         if not path.exists():
             raise FileNotFoundError(

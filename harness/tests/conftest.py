@@ -20,6 +20,8 @@ those thresholds were never written for.
 """
 from __future__ import annotations
 
+import json
+import os
 from functools import cache
 from io import BytesIO
 from pathlib import Path
@@ -59,10 +61,24 @@ def write_png(path: Path, size: tuple[int, int] = A4_300, mode: str = "L",
     return path
 
 
+#: The repo, and the one text in it the live-store tests read.
+REPO = Path(__file__).resolve().parent.parent.parent
+PROJECT = REPO / "jesup" / "bogoras-chukchi"
+
+# **Inside the text's stores, as a person runs the harness**, so that a library
+# call left at its default `root` and a test's bare `config/zones.json` mean this
+# text and not whatever directory pytest happened to start in.
+os.chdir(PROJECT)
+
+
 def write_project(root: Path, stem: str = "chukchi") -> Path:
     """`root` as a text's stores: the manifest every store read starts from."""
     root.mkdir(parents=True, exist_ok=True)
-    (root / "project.json").write_text(f'{{"stem": "{stem}"}}\n', encoding="utf-8")
+    (root / "project.json").write_text(json.dumps({
+        "stem": stem,
+        "parts": [{"n": 1, "pdf": " Part I "}, {"n": 2, "pdf": " Part II "},
+                  {"n": 3, "pdf": " Part III "}],
+    }) + "\n", encoding="utf-8")
     return root
 
 

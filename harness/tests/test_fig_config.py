@@ -18,10 +18,11 @@ from harness import zones_config as zc
 from harness.zones_config import ConfigError
 
 REPO = Path(__file__).resolve().parent.parent.parent
+PROJECT = REPO / "jesup" / "bogoras-chukchi"
 
 
 def _write(root: Path, mutate) -> Path:
-    cfg = json.loads((REPO / zc.CONFIG).read_text(encoding="utf-8"))
+    cfg = json.loads((PROJECT / zc.CONFIG).read_text(encoding="utf-8"))
     mutate(cfg)
     p = root / zc.CONFIG
     p.parent.mkdir(parents=True, exist_ok=True)
@@ -30,7 +31,7 @@ def _write(root: Path, mutate) -> Path:
 
 
 def test_the_shipped_config_declares_both_figure_types():
-    cfg = zc.load_config(REPO)
+    cfg = zc.load_config(PROJECT)
     assert [t["label"] for t in zc.fig_types(cfg)] == [
         "GraphicZone", "GraphicZone-FigDesc"]
 
@@ -85,7 +86,7 @@ def test_auto_place_carries_a_type_name_and_nothing_else(tmp_path):
     the box arrived with no handle, so correcting it meant deleting and redrawing.
     What it hands over now is one corner — the zone chain gives the next zone its
     top edge and asks for the bottom; this asks for the opposite corner."""
-    ap = zc.fig_types(zc.load_config(REPO))[1]["auto_place"]
+    ap = zc.fig_types(zc.load_config(PROJECT))[1]["auto_place"]
     assert set(ap) == {"after"}
 
 

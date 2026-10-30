@@ -362,6 +362,6 @@ def test_the_repositorys_own_patches_hold():
     """The live gate, over the real store: three entries, each naming zones
     `gt/fig/` still holds."""
     from harness import figures as F
-    root = Path(__file__).resolve().parent.parent.parent
+    root = Path(__file__).resolve().parent.parent.parent / "jesup" / "bogoras-chukchi"
     assert {p["n"] for p in F.number_patches(root)} == {"1", "239", "240"}
     assert F.check_number_patches(root) == []

@@ -27,15 +27,19 @@ from harness.paths import (
 )
 
 REPO = Path(__file__).resolve().parent.parent.parent
+PROJECT = REPO / "jesup" / "bogoras-chukchi"
+
+
+RULE = "/*/review/*/"
 
 
 def gitignored_review_names():
-    """The `review/*/…` entries `.gitignore` treats as derived."""
+    """The `review/*/…` entries the workspace's `.gitignore` treats as derived."""
     out = set()
-    for line in (REPO / ".gitignore").read_text(encoding="utf-8").splitlines():
+    for line in (REPO / "jesup/.gitignore").read_text(encoding="utf-8").splitlines():
         line = line.strip()
-        if line.startswith("review/*/") and not line.startswith("review/*/*"):
-            out.add(line[len("review/*/") :].rstrip("/"))
+        if line.startswith(RULE) and not line.startswith(RULE + "*"):
+            out.add(line[len(RULE) :].rstrip("/"))
     return out
 
 
@@ -112,8 +116,8 @@ def test_page_link_is_gitignored_by_a_star_shaped_rule():
     `review/*/*`-shaped pattern, or `gitignored_review_names()` would pick it up
     and `test_derived_matches_gitignore` would demand it join DERIVED, which is
     the one thing it must not do."""
-    text = (REPO / ".gitignore").read_text(encoding="utf-8")
-    assert "review/*/*.png" in text.split()
+    text = (REPO / "jesup/.gitignore").read_text(encoding="utf-8")
+    assert RULE + "*.png" in text.split()
     assert "page.png" not in gitignored_review_names()
 
 
@@ -137,7 +141,7 @@ def test_tei_is_a_store_and_never_a_farm():
     caller above cares. The edition UI reaches the generated store by naming it,
     not by following a link.
     """
-    store = REPO / "tei"
+    store = PROJECT / "tei"
     if not store.is_dir():
         pytest.skip("no tei store in this checkout")
     links = sorted(p.name for p in store.glob("*.xml") if p.is_symlink())

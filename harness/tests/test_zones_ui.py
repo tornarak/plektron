@@ -63,6 +63,7 @@ JS = (Path(__file__).parent.parent / "web" / "static" / "js"
       / "zones.js").read_text(encoding="utf-8")
 
 REPO = Path(__file__).resolve().parent.parent.parent
+PROJECT = REPO / "jesup" / "bogoras-chukchi"
 
 # The synthetic page's ink, and the column the anchor derives from it.
 INK0, INK1 = 739, 2489
@@ -72,7 +73,7 @@ BODY = [(y, y + 32) for y in range(600, 3300, 60)]
 
 
 def cfg():
-    return zc.load_config(REPO)
+    return zc.load_config(PROJECT)
 
 
 def make_scan(tmp_path: Path, ref: str = "1-048", size=(2824, 3897), shift=0):

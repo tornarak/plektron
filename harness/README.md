@@ -1,7 +1,9 @@
 # `harness/` — the tooling, module by module
 
-The console script (`harness`, `[project.scripts]`) run from the repo root; every
-path resolves against the cwd unless `--root` says otherwise. `uv run python -m
+The console script (`harness`, `[project.scripts]`). Every path resolves against
+one text's stores: `--root`, else the nearest directory above the cwd holding a
+`project.json`. Neither is an error only for `verbs` and `agents`, which read the
+repo. `uv run python -m
 harness <group> <action>` is the same thing.
 
 This file covers **structure**: what each module owns, which stores it touches, and

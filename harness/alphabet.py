@@ -32,6 +32,8 @@ import re
 import unicodedata
 from pathlib import Path
 
+from .layout import repo_root
+
 STORE = "edition/alphabet.json"
 SPEC = "keying_spec.md"
 
@@ -175,7 +177,7 @@ def spec_codepoints(root: Path = Path(".")) -> dict[str, str]:
     columns are found by their names, so a table that gains a column still
     reads and a table that means something else is not mistaken for this one.
     """
-    p = Path(root) / SPEC
+    p = repo_root() / SPEC
     if not p.exists():
         return {}
     text = p.read_text(encoding="utf-8")

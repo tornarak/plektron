@@ -37,6 +37,7 @@ from harness.marks import HANDLE_MARKERS, handle_key
 from harness.proposal_check import check, fix, set_field, set_fields
 
 REPO = Path(__file__).resolve().parent.parent.parent
+PROJECT = REPO / "jesup" / "bogoras-chukchi"
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -51,7 +52,7 @@ def _memoised_corpus_index():
 
     **Only the real corpus is memoised.** A tmp root is cheap and, more to the
     point, a test that builds one and queries it twice must see its own store —
-    so anything that is not `REPO` goes straight through. The real corpus does
+    so anything that is not `PROJECT` goes straight through. The real corpus does
     not change during a run, so one build is one answer.
 
     This is the test half of the finding. The production half — the same walk,
@@ -68,14 +69,14 @@ def _memoised_corpus_index():
         # `exclude=`, and an index built for one exclusion is a different answer
         # — returning the cached full one made two of those tests pass a set
         # that still contained the ref they had just excluded.
-        if a or k or Path(root).resolve() != REPO:
+        if a or k or Path(root).resolve() != PROJECT:
             return real(root, *a, **k)
         if "v" not in memo:
             memo["v"] = real(root, *a, **k)
         return memo["v"]
 
     L.index = index_
-    # This module imported `index` by name, so the bare `index(REPO)` calls in
+    # This module imported `index` by name, so the bare `index(PROJECT)` calls in
     # the tests below would otherwise reach past the patch to the original.
     globals()["index"] = index_
     try:
@@ -153,7 +154,7 @@ def test_no_two_attested_forms_share_a_key():
     """Corpus-wide, over every form in `gt/ocr/`. A collision is fixed by splitting
     the offending marker against the real instance, never by picking a side."""
     keys: dict[str, set[str]] = {}
-    for _, tok in native_corpus(REPO):
+    for _, tok in native_corpus(PROJECT):
         try:
             keys.setdefault(handle_key(tok), set()).add(tok)
         except ValueError:
@@ -169,7 +170,7 @@ def test_the_conflict_is_ambiguous_and_survives_the_floor():
     it. Counted per fold the word has two pages, clears the default, and is refused
     on the ground that matters.
     """
-    rows = search(["cewin"], REPO)["matches"]
+    rows = search(["cewin"], PROJECT)["matches"]
     forms = sorted(r["form"] for r in rows)
     assert forms == [nfd("Čeˊwin"), nfd("Čeˊwɪn")]
     assert all(r["ambiguous"] and not r["key"] for r in rows)
@@ -184,7 +185,7 @@ def test_the_precise_key_is_refused_too():
     """
     assert handle_key(nfd("Čeˊwɪn")) != handle_key(nfd("Čeˊwin"))
     for form in (nfd("Čeˊwɪn"), nfd("Čeˊwin")):
-        got, why = resolve(handle_key(form), REPO)
+        got, why = resolve(handle_key(form), PROJECT)
         assert got is None
         assert "more than one way" in why
 
@@ -202,19 +203,19 @@ class TestCaseLadder:
         for handle, want in (("{ke'let}", "keˊlet"),
                              ("{Ke'let}", "Keˊlet"),
                              ("{KE'LET}", "KEˊLET")):
-            out, refusals = expand(handle, REPO)
+            out, refusals = expand(handle, PROJECT)
             assert refusals == [] and out == nfd(want)
 
     def test_the_ladder_never_descends(self):
         """`Kuluˊči` is capitalized in the corpus because it is a place. A handle
         that lowered it would edit a ratified identity by a keystroke; the refusal
         names the ratified key so a reader who meant it can key it by hand."""
-        out, refusals = expand("{kulu'c^i}", REPO)
+        out, refusals = expand("{kulu'c^i}", PROJECT)
         assert out == "{kulu'c^i}"
         assert "never lower it" in refusals[0]
 
     def test_a_capitalized_attestation_still_climbs(self):
-        out, refusals = expand("{KULU'C^I}", REPO)
+        out, refusals = expand("{KULU'C^I}", PROJECT)
         assert refusals == [] and out == nfd("KULUˊČI")
 
     def test_raising_case_never_mints_a_glyph(self):
@@ -241,21 +242,21 @@ class TestCaseLadder:
         three `ambiguous` and offered no key, for a word `expand` resolved happily.
         A reader trusts the lookup, so that gap is a form keyed by hand for nothing.
         """
-        rows = [r for r in search(["Ke'let"], REPO)["matches"]
+        rows = [r for r in search(["Ke'let"], PROJECT)["matches"]
                 if r["form"].casefold() == nfd("keˊlet").casefold()]
         assert len(rows) == 3
         assert not any(r["ambiguous"] for r in rows)
         for r in rows:
             assert r["key"], f"{r['form']!r} offered no key"
-            assert expand(f"{{{r['key']}}}", REPO) == (r["form"], [])
+            assert expand(f"{{{r['key']}}}", PROJECT) == (r["form"], [])
 
     def test_case_variants_are_one_spelling_but_marks_still_conflict(self):
         """The ambiguity refusal exists for the book disagreeing about *marks*.
         Folding case must not blunt it: `Čeˊwɪn`/`Čeˊwin` differ by `ɪ` and stay
         refused, which `test_the_precise_key_is_refused_too` also asserts from the
         other side."""
-        assert resolve("ke'let", REPO)[0] == nfd("keˊlet")
-        assert resolve(handle_key(nfd("Čeˊwɪn")), REPO)[0] is None
+        assert resolve("ke'let", PROJECT)[0] == nfd("keˊlet")
+        assert resolve(handle_key(nfd("Čeˊwɪn")), PROJECT)[0] is None
 
 
 class TestQueryReduction:
@@ -269,7 +270,7 @@ class TestQueryReduction:
     @pytest.mark.parametrize("query", ["telqa'p", "telqap", "Telqäˊp", "Telqa:'p",
                                        "TELQAP", "telqä'p"])
     def test_every_spelling_of_one_form_reaches_it(self, query):
-        forms = [r["form"] for r in search([query], REPO)["matches"]]
+        forms = [r["form"] for r in search([query], PROJECT)["matches"]]
         assert nfd("Telqäˊp") in forms, f"{query!r} did not reach it"
 
     def test_the_query_is_decomposed_before_reduction(self):
@@ -293,7 +294,7 @@ class TestQueryReduction:
         corpus's commonest glyph, and the miss reads as a word the corpus lacks:
         `3-125` hand-keyed `Taˊn˙ñɪn` against ten occurrences on six pages.
         """
-        forms = [r["form"] for r in search([query], REPO)["matches"]]
+        forms = [r["form"] for r in search([query], PROJECT)["matches"]]
         assert nfd("Taˊn˙ñɪn") in forms, f"{query!r} did not reach it"
 
     def test_the_reduction_alone_would_still_miss_it(self):
@@ -306,32 +307,32 @@ class TestQueryReduction:
         """The reduction is a substring test like every other arm, so it must not
         become a wildcard: an empty reduction matches nothing rather than all."""
         assert bare("'''") == ""
-        assert search(["'''"], REPO)["matches"] == []
+        assert search(["'''"], PROJECT)["matches"] == []
 
 
 def test_a_form_the_corpus_barely_attests_gets_no_handle():
-    got, why = resolve("Kulu'c^i", REPO, min_pages=99)
+    got, why = resolve("Kulu'c^i", PROJECT, min_pages=99)
     assert got is None and "below the floor" in why
-    assert resolve("Kulu'c^i", REPO, min_pages=2)[0] == nfd("Kuluˊči")
+    assert resolve("Kulu'c^i", PROJECT, min_pages=2)[0] == nfd("Kuluˊči")
 
 
 def test_context_lines_carry_the_form_in_use():
     """The whole point of the lookup: a form's sense, without opening the page."""
-    r = search(["kulu"], REPO)
+    r = search(["kulu"], PROJECT)
     assert any(nfd("Kuluˊči Bay") in ln["text"] for ln in r["context"])
 
 
 def test_an_empty_result_is_not_a_corpus_wide_negative():
     """The floor is stated on every run, because the index cannot see an unmarked
     native token and a reader must not read silence as absence."""
-    r = search(["zzzznotaword"], REPO)
+    r = search(["zzzznotaword"], PROJECT)
     assert r["matches"] == []
     assert "not evidence the corpus lacks the word" in r["floor"]
 
 
 def test_unkeyable_forms_are_counted_and_not_silently_dropped():
-    assert index(REPO)["unkeyable"]
-    assert search(["kulu"], REPO)["unkeyable"] > 0
+    assert index(PROJECT)["unkeyable"]
+    assert search(["kulu"], PROJECT)["unkeyable"] > 0
 
 
 # --- the write path -------------------------------------------------------
@@ -346,7 +347,7 @@ def _proposal(tmp_path: Path, text: str) -> Path:
 def test_a_handle_expands_inline_inside_english_prose(tmp_path):
     """Real lines are mixed, so the substitution has to be inline, not whole-field."""
     p = _proposal(tmp_path, "x")
-    set_field(p, "1", "text", "The bay of {Kulu'c^i}, they say.", REPO)
+    set_field(p, "1", "text", "The bay of {Kulu'c^i}, they say.", PROJECT)
     rec = json.loads(p.read_text(encoding="utf-8"))["lines"]["1"]
     assert rec["text"] == nfd("The bay of Kuluˊči, they say.")
     assert rec["as_typed"] == "The bay of {Kulu'c^i}, they say."
@@ -369,7 +370,7 @@ def test_fix_expands_a_handle_written_straight_into_the_file(tmp_path):
     end up with ratified glyphs and a provenance record — not a literal brace in
     the store."""
     p = _proposal(tmp_path, "The bay of {Kulu'c^i}, they say.")
-    fix(p, REPO)
+    fix(p, PROJECT)
     rec = json.loads(p.read_text(encoding="utf-8"))["lines"]["1"]
     assert rec["text"] == nfd("The bay of Kuluˊči, they say.")
     assert rec["as_typed"] == "The bay of {Kulu'c^i}, they say."
@@ -379,7 +380,7 @@ def test_fix_leaves_an_unhandled_line_alone(tmp_path):
     """No `as_typed` on a line that claimed nothing — the badge is derived from the
     field's presence, so writing it empty would badge every hand-read line."""
     p = _proposal(tmp_path, nfd("Kuluˊči read off the page"))
-    fix(p, REPO)
+    fix(p, PROJECT)
     assert "as_typed" not in json.loads(p.read_text(encoding="utf-8"))["lines"]["1"]
 
 
@@ -388,7 +389,7 @@ def test_fix_refuses_the_whole_page_on_a_bad_handle(tmp_path):
     half-expanded page here would reach the adjudicator looking finished."""
     p = _proposal(tmp_path, "{C^e'win} is spelled two ways")
     with pytest.raises(ValueError, match="more than one way"):
-        fix(p, REPO)
+        fix(p, PROJECT)
     text = json.loads(p.read_text(encoding="utf-8"))["lines"]["1"]["text"]
     assert text == "{C^e'win} is spelled two ways"
 
@@ -413,9 +414,9 @@ def test_fix_refuses_a_handle_the_floor_declined(tmp_path):
     (root / "gt" / "ocr").mkdir(parents=True)
     (root / "config").mkdir()
     (root / "config" / "marks.json").write_text(
-        (REPO / "config" / "marks.json").read_text(encoding="utf-8"),
+        (PROJECT / "config" / "marks.json").read_text(encoding="utf-8"),
         encoding="utf-8")
-    src = next((REPO / "gt" / "ocr").glob("chukchi-1-051.xml"))
+    src = next((PROJECT / "gt" / "ocr").glob("chukchi-1-051.xml"))
     (root / "gt" / "ocr" / src.name).write_text(src.read_text(encoding="utf-8"),
                                                 encoding="utf-8")
     # The premise, not assumed: one page, and at the default that is now enough.
@@ -444,7 +445,7 @@ def test_nothing_half_expands(tmp_path):
     was read nor what was meant."""
     p = _proposal(tmp_path, "original")
     with pytest.raises(ValueError, match="more than one way"):
-        set_field(p, "1", "text", "{Kulu'c^i} and {C^e'win}", REPO)
+        set_field(p, "1", "text", "{Kulu'c^i} and {C^e'win}", PROJECT)
     assert json.loads(p.read_text(encoding="utf-8"))["lines"]["1"]["text"] == "original"
 
 
@@ -453,7 +454,7 @@ def test_a_bulk_write_refuses_whole(tmp_path):
     before writing anything, so no page is left half-authored."""
     p = _proposal(tmp_path, "original")
     with pytest.raises(ValueError, match="line 2"):
-        set_fields(p, {"1": "{Kulu'c^i}", "2": "{C^e'win}"}, "text", REPO)
+        set_fields(p, {"1": "{Kulu'c^i}", "2": "{C^e'win}"}, "text", PROJECT)
     assert json.loads(p.read_text(encoding="utf-8"))["lines"]["1"]["text"] == "original"
 
 
@@ -461,16 +462,16 @@ def test_hand_keying_the_line_withdraws_the_corpus_claim(tmp_path):
     """A provenance record that outlives its provenance is worse than none: the UI
     would badge a hand-read line as a corpus match forever after."""
     p = _proposal(tmp_path, "x")
-    set_field(p, "1", "text", "{Kulu'c^i}", REPO)
+    set_field(p, "1", "text", "{Kulu'c^i}", PROJECT)
     assert "as_typed" in json.loads(p.read_text(encoding="utf-8"))["lines"]["1"]
-    set_field(p, "1", "text", nfd("Kuluˊči"), REPO)
+    set_field(p, "1", "text", nfd("Kuluˊči"), PROJECT)
     assert "as_typed" not in json.loads(p.read_text(encoding="utf-8"))["lines"]["1"]
 
 
 def test_a_note_is_not_expanded(tmp_path):
     """A note may mention a handle without meaning it."""
     p = _proposal(tmp_path, "x")
-    set_field(p, "1", "note", "looks like {Kulu'c^i}", REPO)
+    set_field(p, "1", "note", "looks like {Kulu'c^i}", PROJECT)
     rec = json.loads(p.read_text(encoding="utf-8"))["lines"]["1"]
     assert rec["note"] == "looks like {Kulu'c^i}"
     assert "as_typed" not in rec
@@ -482,14 +483,14 @@ def test_a_stray_brace_is_refused(tmp_path):
     or a character that does not belong in a reading."""
     p = _proposal(tmp_path, "x")
     with pytest.raises(ValueError, match="brace"):
-        set_field(p, "1", "text", "a {stray brace", REPO)
+        set_field(p, "1", "text", "a {stray brace", PROJECT)
 
 
 def test_expand_is_a_round_trip(tmp_path):
     p = _proposal(tmp_path, "x")
-    set_field(p, "1", "text", "{Kulu'c^i} and {Kulu'sik}", REPO)
+    set_field(p, "1", "text", "{Kulu'c^i} and {Kulu'sik}", PROJECT)
     rec = json.loads(p.read_text(encoding="utf-8"))["lines"]["1"]
-    assert expand(rec["as_typed"], REPO)[0] == rec["text"]
+    assert expand(rec["as_typed"], PROJECT)[0] == rec["text"]
 
 
 # --- the check arms -------------------------------------------------------
@@ -498,7 +499,7 @@ def _issues(tmp_path: Path, rec: dict) -> list[str]:
     p = tmp_path / "proposal.json"
     p.write_text(json.dumps({"lines": {"1": rec}}, ensure_ascii=False, indent=2),
                  encoding="utf-8")
-    return [i["issue"] for i in check(p, root=REPO)]
+    return [i["issue"] for i in check(p, root=PROJECT)]
 
 
 def test_check_catches_a_record_that_disagrees_with_its_reading(tmp_path):
@@ -631,7 +632,7 @@ def test_a_clean_handled_line_gates_nothing(tmp_path):
     p.write_text(json.dumps(
         {"lines": {"1": {"text": nfd("Kuluˊči"), "as_typed": "{Kulu'c^i}"}}},
         ensure_ascii=False, indent=2), encoding="utf-8")
-    assert not [i for i in check(p, root=REPO) if i["severity"] == "defect"]
+    assert not [i for i in check(p, root=PROJECT) if i["severity"] == "defect"]
 
 
 # ---------------------------------- the neighbourhood a reader is shown up front
@@ -649,10 +650,10 @@ def _store(tmp_path: Path, *refs: str) -> Path:
     (root / "gt" / "ocr").mkdir(parents=True)
     (root / "config").mkdir()
     (root / "config" / "marks.json").write_text(
-        (REPO / "config" / "marks.json").read_text(encoding="utf-8"),
+        (PROJECT / "config" / "marks.json").read_text(encoding="utf-8"),
         encoding="utf-8")
     for ref in refs:
-        src = REPO / "gt" / "ocr" / f"chukchi-{ref}.xml"
+        src = PROJECT / "gt" / "ocr" / f"chukchi-{ref}.xml"
         if src.exists():
             (root / "gt" / "ocr" / src.name).write_text(
                 src.read_text(encoding="utf-8"), encoding="utf-8")
@@ -843,27 +844,27 @@ class TestCompoundFallback:
     ABSENT = "zzqx"
 
     def test_the_whole_misses_and_the_elements_answer(self):
-        res = search([nfd(f"{self.ABSENT}-Taˊn˙ñɪn")], REPO)
+        res = search([nfd(f"{self.ABSENT}-Taˊn˙ñɪn")], PROJECT)
         assert res["matches"], "the elements should have answered"
         assert nfd("Taˊn˙ñɪn") in [r["form"] for r in res["matches"]]
 
     def test_the_widening_is_named_rather_than_silent(self):
         """A reader that gets elements back asked about a compound. If nothing
         says so, it reads the rows as answers to the question it typed."""
-        res = search([nfd(f"{self.ABSENT}-Taˊn˙ñɪn")], REPO)
+        res = search([nfd(f"{self.ABSENT}-Taˊn˙ñɪn")], PROJECT)
         assert res["split"], "a widened search must say it widened"
         assert nfd("Taˊn˙ñɪn") in res["split"]
 
     def test_the_absent_element_really_is_absent(self):
         """Guards the guard: if `ABSENT` ever became a corpus token the two tests
         above would pass for the wrong reason, having stopped testing a miss."""
-        assert search([self.ABSENT], REPO)["matches"] == []
+        assert search([self.ABSENT], PROJECT)["matches"] == []
 
     def test_a_compound_the_corpus_holds_whole_is_not_split(self):
         """The fallback fires only on a miss: where the corpus has the compound,
         the compound is the answer, and splitting would bury it under every
         match for each element."""
-        res = search(["Ta'n.n~i_n-we^'thaw"], REPO)
+        res = search(["Ta'n.n~i_n-we^'thaw"], PROJECT)
         assert res["matches"]
         assert res["split"] == ""
 
@@ -901,21 +902,21 @@ class TestLeaveOneOut:
         raise AssertionError("the corpus index is empty")
 
     def test_excluding_every_page_a_form_is_on_removes_it(self):
-        idx = index(REPO)
+        idx = index(PROJECT)
         key, refs = self._a_form(idx)
-        assert key in index(REPO, exclude=refs)["by_key"] is False or True
-        assert key not in index(REPO, exclude=refs)["by_key"]
+        assert key in index(PROJECT, exclude=refs)["by_key"] is False or True
+        assert key not in index(PROJECT, exclude=refs)["by_key"]
 
     def test_a_string_is_taken_as_one_ref_not_a_set_of_characters(self):
         """`exclude="3-131"` must drop that ref, not every ref sharing a
         character with it — the trap in accepting either a string or a set."""
-        idx = index(REPO)
+        idx = index(PROJECT)
         key, refs = self._a_form(idx)
         one = sorted(refs)[0]
-        got = index(REPO, exclude=one)
+        got = index(PROJECT, exclude=one)
         assert got["buckets"], "excluding one ref must not empty the corpus"
         assert one not in {r for b in got["buckets"].values() for r in b["refs"]}
 
     def test_excluding_nothing_is_the_whole_corpus(self):
-        assert index(REPO, exclude=None)["by_key"] == index(REPO)["by_key"]
-        assert index(REPO, exclude=[])["by_key"] == index(REPO)["by_key"]
+        assert index(PROJECT, exclude=None)["by_key"] == index(PROJECT)["by_key"]
+        assert index(PROJECT, exclude=[])["by_key"] == index(PROJECT)["by_key"]

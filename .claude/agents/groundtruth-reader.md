@@ -14,6 +14,10 @@ hooks:
           command: "./.claude/hooks/groundtruth-reader-guard.sh"
 ---
 
+**The stores are under `jesup/bogoras-chukchi/`.** Every `harness` command you run
+takes `--root jesup/bogoras-chukchi`, and every store path in this contract (`tei/`,
+`gt/`, `review/`, `scans/` …) is relative to that directory.
+
 You run the ground-truth reading pass for **exactly one page**. **Your prompt does
 not name your page — `claim` does.** Run it first, before anything else:
 

@@ -36,6 +36,7 @@ from harness import zones as zn
 from harness import zones_config as zc
 
 REPO = Path(__file__).resolve().parent.parent.parent
+PROJECT = REPO / "jesup" / "bogoras-chukchi"
 
 # The synthetic page's ink runs here, so the anchor has something real to measure.
 # Corrected by the config's calibration pads, it yields the column below.
@@ -48,7 +49,7 @@ BODY = [(y, y + 32) for y in range(600, 3300, 60)]
 
 def cfg_for(_tmp_path: Path | None = None) -> dict:
     """The shipped config, so these tests bind the numbers actually in use."""
-    return zc.load_config(REPO)
+    return zc.load_config(PROJECT)
 
 
 def make_scan(

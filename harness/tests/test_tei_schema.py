@@ -57,8 +57,8 @@ CONSTRUCTS = [
 @pytest.fixture(scope="module")
 def real_root() -> Path:
     """The repo itself — the committed schema is the artifact under test."""
-    root = Path(__file__).resolve().parents[2]
-    if not (root / "data" / "tei_all.rng").exists():
+    root = Path(__file__).resolve().parents[2] / "jesup" / "bogoras-chukchi"
+    if not (root.parent.parent / "data" / "tei_all.rng").exists():
         pytest.skip("committed schema absent")
     return root
 
@@ -138,13 +138,21 @@ TINY = """<grammar xmlns="http://relaxng.org/ns/structure/1.0"
 </grammar>"""
 
 
+@pytest.fixture
+def schema_at_tmp(tmp_path, monkeypatch):
+    """The schema lives with the code, so a fixture's has to stand in for the repo."""
+    from harness import schema
+    monkeypatch.setattr(schema, "repo_root", lambda: tmp_path)
+    return tmp_path
+
+
 def _tiny_root(tmp_path: Path) -> Path:
     (tmp_path / "data").mkdir(parents=True, exist_ok=True)
     (tmp_path / "data" / "tei_all.rng").write_text(TINY, encoding="utf-8")
     return tmp_path
 
 
-def test_a_missing_schema_refuses_rather_than_passing(tmp_path):
+def test_a_missing_schema_refuses_rather_than_passing(tmp_path, schema_at_tmp):
     """A conformance gate that skips when its schema is absent reports a PASS
     meaning nothing was checked — the fluent-nonsense shape, in the one place
     whose entire job is to be a check."""
@@ -153,7 +161,7 @@ def test_a_missing_schema_refuses_rather_than_passing(tmp_path):
         check(etree.ElementTree(etree.Element("x")), tmp_path)
 
 
-def test_the_compiled_schema_is_cached_per_root(tmp_path):
+def test_the_compiled_schema_is_cached_per_root(tmp_path, schema_at_tmp):
     """The compile is ~17 s and the check is ~0.3 ms, so a corpus sweep must pay
     it once. Asserted by identity rather than by timing."""
     from harness import schema
@@ -168,7 +176,7 @@ def test_the_compiled_schema_is_cached_per_root(tmp_path):
     assert schema.load(root) is first
 
 
-def test_errors_name_the_line_and_say_what_kind_of_failure_it_is(tmp_path):
+def test_errors_name_the_line_and_say_what_kind_of_failure_it_is(tmp_path, schema_at_tmp):
     """Prefixed, because a conformance failure is a different statement from a
     project-rule failure and they land in one list."""
     from harness.schema import check

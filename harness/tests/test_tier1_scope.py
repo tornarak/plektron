@@ -33,9 +33,10 @@ from pathlib import Path
 from harness.validate import TIER1
 
 REPO = Path(__file__).resolve().parent.parent.parent
+PROJECT = REPO / "jesup" / "bogoras-chukchi"
 SPEC = REPO / "keying_spec.md"
 SKILL = REPO / ".claude" / "agents" / "collator.md"
-HEADER = REPO / "tei" / "corpus-header.xml"
+HEADER = PROJECT / "tei" / "corpus-header.xml"
 
 
 def declared_tier1() -> set[str]:

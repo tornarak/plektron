@@ -161,13 +161,14 @@ def test_a_ref_named_twice_is_refused(tmp_path):
         queue_refs(["1-075", "1-075"], tmp_path, track=COLLATION)
 
 
-def test_a_missing_agent_refuses_the_batch(tmp_path):
+def test_a_missing_agent_refuses_the_batch(tmp_path, monkeypatch):
     """The agent body *is* the system prompt, so a batch dispatched without one sends
     agents at pages with no rules and nothing would say so until the output came back
     wrong. `agents sync` reports this state; `queue` is where it bites, because that
     is the call about to spend agents on it."""
     make_page(tmp_path)
     (tmp_path / COLLATION.agent).unlink()
+    monkeypatch.setattr("harness.dispatch.repo_root", lambda: tmp_path)
     with pytest.raises(Unready, match="whole contract"):
         queue_refs(["1-075"], tmp_path, track=COLLATION)
 

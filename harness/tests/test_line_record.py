@@ -28,6 +28,7 @@ import pytest
 from harness.lines import LINE_FIELDS, LineRec, page_lines
 
 REPO = Path(__file__).resolve().parent.parent.parent
+PROJECT = REPO / "jesup" / "bogoras-chukchi"
 ALTO_NS = "http://www.loc.gov/standards/alto/ns-v4#"
 
 
@@ -35,7 +36,7 @@ ALTO_NS = "http://www.loc.gov/standards/alto/ns-v4#"
 def real_page() -> list[dict]:
     """A page out of `gt/ocr/`, because the invariant is about what the harness
     actually produces and a hand-built fixture would only test the fixture."""
-    src = sorted((REPO / "gt" / "ocr").glob("chukchi-*.xml"))
+    src = sorted((PROJECT / "gt" / "ocr").glob("chukchi-*.xml"))
     if not src:
         pytest.skip("gt/ocr/ is empty in this checkout")
     p = src[0]

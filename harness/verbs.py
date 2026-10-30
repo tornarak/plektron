@@ -22,6 +22,8 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
+from .layout import repo_root
+
 DOC = Path("harness/VERBS.md")
 
 #: `### group action`, and **both words are required**.
@@ -43,14 +45,14 @@ DOC = Path("harness/VERBS.md")
 HEAD = re.compile(r"^### (?P<name>[\w-]+ [\w-]+)", re.MULTILINE)
 
 
-def _text(root: Path = Path(".")) -> str:
-    p = root / DOC
+def _text(root: Path | None = None) -> str:
+    p = (root or repo_root()) / DOC
     if not p.exists():
         raise FileNotFoundError(f"{DOC} is missing; it is the CLI's reference")
     return p.read_text(encoding="utf-8")
 
 
-def entries(root: Path = Path(".")) -> dict[str, str]:
+def entries(root: Path | None = None) -> dict[str, str]:
     """Every `### group action` heading mapped to its body, heading included."""
     text = _text(root)
     hits = list(HEAD.finditer(text))
@@ -61,7 +63,7 @@ def entries(root: Path = Path(".")) -> dict[str, str]:
     return out
 
 
-def conventions(root: Path = Path(".")) -> str:
+def conventions(root: Path | None = None) -> str:
     """The `## Conventions` block — what holds across every action."""
     text = _text(root)
     i = text.find("## Conventions")
@@ -71,7 +73,7 @@ def conventions(root: Path = Path(".")) -> str:
     return text[i:j if j > 0 else len(text)].rstrip()
 
 
-def lookup(query: str, root: Path = Path(".")) -> dict:
+def lookup(query: str, root: Path | None = None) -> dict:
     """One action, or a whole group, or the list of what there is.
 
     `""` lists every action name and nothing else — the cheapest possible answer

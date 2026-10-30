@@ -1,0 +1,262 @@
+# Every project in this workspace, so a new one adds no lines. Each rule names
+# the project by `*`; the reasoning above each is unchanged from when these
+# sat at the repo root.
+
+
+# Downloaded model weights (675 MB), not authored here.
+#
+# `models/*` rather than `models/`, and that is not a style choice: git does not
+# descend into an excluded *directory*, so a `!models/bogoras-seg/` negation under
+# `models/` never fires. Excluding the contents instead leaves the directory
+# readable and the negation working.
+/*/models/*
+# — except the models this project trains, which are small, ours, and meaningless
+# without the corpus they were fitted to. Each carries the split it trained on as
+# `<model>.train.lst` / `.eval.lst` — verbatim copies of what `--assemble` wrote,
+# not a re-encoding — plus a small `<model>.json` for the few facts that are not
+# lists: a digest of `gt/zones/` at the time, the merges in force, and the score.
+# Paths in it are repo-relative, since a record of one machine's filesystem is no
+# record. `.bak` is `--remap-model`'s one-deep undo and stays out, like
+# `gt/zones/*.prev`.
+!/*/models/bogoras-seg/
+/*/models/bogoras-seg/*.bak
+# The figure segmenter, on the same terms. Its manifest's corpus digest is over
+# `gt/fig/` rather than `gt/zones/`, which is the whole reason the two are separate
+# models rather than one with more classes: they are fitted to different stores and
+# read different rasters — zones-seg trains on figure-blotted pages, and a figure
+# segmenter obviously cannot, since the blot paints out its target.
+!/*/models/bogoras-fig/
+/*/models/bogoras-fig/*.bak
+
+# `review/PP-NNN/` is one directory per page, holding both the authored files —
+# `proposal.json` (somebody's, or something's, reading) and `decision.json` (an
+# editorial act) — and the derived images, which are regenerable from the ALTO and
+# the rasters. Losing an authored one is the failure this repo already suffered once.
+#
+# So the derived names are listed and everything else is tracked, which is the
+# reverse of the earlier `review/*` + negate-two-directories rule, deliberately. Under
+# that rule a *new* authored file needed a matching negation or it was silently
+# ignored, i.e. untracked and losable — the exact failure mode. Under this one a
+# forgotten entry commits a few PNGs: noise, and visible. `harness/paths.py:DERIVED`
+# is the list these mirror; keep the two in step.
+#
+# The one directory under `review/` that is not a page is `review/captions/`, the
+# caption pass's flat store — and every rule below already covers it, `*` matching
+# one segment whatever that segment means. Its `sheets/` are derived like any
+# other's, its `.jsonl` journal is recovery data like any other's, and its
+# `proposal.json`/`decision.json` are authored and tracked like any other's. A
+# second rule naming it would say what these already say.
+/*/review/*/crops/
+/*/review/*/sheets/
+/*/review/*/zoom/
+/*/review/*/review.html
+# The whole page with its line indices drawn in a left gutter — the reading pass's
+# first image, and derived like the rest. `review/*/*.png` below would cover it, but
+# that pattern exists for the `page.png` symlink and is deliberately not read as a
+# DERIVED entry (see test_layout.py), so the name is listed here explicitly.
+/*/review/*/numbered.png
+# The save writes temp-then-rename and keeps one .prev alongside, as insurance
+# against an interrupted write, plus an append-only .jsonl journal of every
+# save for mid-session incident recovery (the Firefox session-restore bug
+# review.py's docstring describes). None of the three belongs in history —
+# they're forensic/recovery data for *before* a commit happens, not authored
+# content, and git already is the durable record once one does.
+/*/review/*/*.prev
+/*/review/*/*.tmp
+/*/review/*/*.jsonl
+# `page.png` is a symlink to the page's raster, put there so opening a page's own
+# directory shows the page. Same disposition as the three above — ignored, and NOT
+# in `DERIVED`, so `harness clean` leaves it once the images are gone. It cannot be
+# tracked: `scans/` is derived and ignored, so a committed link would dangle in
+# every clone, exactly as `scans/w-figs/` would.
+/*/review/*/*.png
+# The dispatch queue and the claims taken off it. Not `review/*/…` and so not
+# `DERIVED`'s business (test_layout.py holds that pair over the per-page names
+# alone): these are the batch's working state, live only while readers are out,
+# and cleared by the next `ocr queue`. A claim is a statement that one agent took
+# one page in one run — committing it would deal that page to nobody in the next
+# clone. `harness/paths.py:page_dirs` is what stops the sweeps reading them as
+# pages.
+/*/review/_queue.txt
+/*/review/_claims/
+# The collation pass's pair, same argument. They live beside `tei/` because that is
+# the store this batch deals out, exactly as the two above live beside `review/`.
+# These two used to be the only holes in an otherwise fully tracked `tei/`; the
+# temporary `/tei/chukchi-*.xml` entry below is a third and much larger one, and
+# unlike these it is meant to be removed.
+/*/tei/_queue.txt
+/*/tei/_claims/
+
+# Symlink farms pointing *into* `scans/`, which is ignored above — so committing
+# them yields 272 dangling links on a fresh clone. Regenerable from the `fig/` and
+# `ocr/` listings, i.e. derived by the same argument that keeps `scans/` out.
+#
+# `ocr/` is deliberately NOT here, and the reason is worth stating in full since
+# half of it used to be missing. Its symlinks resolve *inside* the repo, into
+# `gt/ocr/`, so a clone gets working links rather than dangling ones — that is the
+# half that was already written down. The other half is what `ocr/` is *for*: it is
+# the read view over every OCR store, the stable name by which a page's current OCR
+# is reached whatever produced it, and `harness`'s default `--from`
+# (`lines.DEFAULT_STORE`). Raw recognizer output, if any is produced again, links
+# in beside the ground truth from its own real store rather than displacing it — so
+# a file's rank stays readable from where its link points, which is precisely the
+# property whose absence caused the ground-truth loss.
+/*/scans/w-figs/
+/*/scans/w-ocr/
+# `gt/zones/` is tracked — the page ALTOs, the three split lists, `_rule_exempt.json`
+# and `_ink_exempt.json`
+# are the authored record. What is ignored is the recovery data beside them, the
+# same third disposition `review/*/` already carries: `.prev` is one save deep and
+# `_journal.jsonl` is the append-only log that survives the two saves which destroy
+# it. Both matter only before a commit exists, which is exactly when git cannot
+# help. Same reasoning as `review/*/*.prev` above; see harness/zones.py.
+/*/gt/zones/*.prev
+/*/gt/zones/*.tmp
+/*/gt/zones/_journal.jsonl
+# `gt/fig/` on exactly the same terms: the 252 page ALTOs, the two split lists and
+# `_rule_exempt.json` are the authored record; the recovery data beside them is not.
+# `METS.xml` joins them because it is *derived from the store it sits in* — the one
+# that used to be tracked here was an eScriptorium export artifact describing a
+# store that has since been rewritten under it, which is a second copy of the
+# store's shape with nothing keeping the two honest. `harness corpus mets gt/fig
+# --out DIR` builds one on demand, and requires the directory so it cannot land
+# back here.
+/*/gt/fig/*.prev
+/*/gt/fig/*.tmp
+/*/gt/fig/_journal.jsonl
+/*/gt/fig/METS.xml
+# **And `gt/ocr/METS.xml` on the same argument, which it took a second pass to
+# reach.** The rule above was written for `gt/fig/` and stopped there, so the
+# `gt/ocr/` manifest stayed tracked from the baseline commit and became the
+# predicted failure rather than a hypothetical one: it manifested **20 files
+# against a store of 663**, an export from when the store had twenty pages.
+#
+# The provenance case is the stronger one. A METS manifest is `#mz` — mechanical
+# output, which asserts nothing on its own and is re-derived from its store on
+# every run so that it fails rather than goes stale. Tracked inside `gt/`, it
+# takes the rank of something a human ratified against the artifact, and it was
+# the only file in `gt/` claiming a rank no human wrote. Nothing reads it:
+# `normalize.py` skips it by name, and `farms.py`'s glob is `chukchi-*.xml`,
+# which never matched it.
+/*/gt/ocr/METS.xml
+# `gt/lines/` is tracked on the same terms — the correction fragments and
+# `_ink_exempt.json` are the authored record, the recovery copy beside them is
+# not. Note what is *not* ignored: `gt/lines/*.xml` is a human's geometry over
+# ink the segmenter missed, and it exists nowhere else. There is no journal here
+# because the store has no history to keep that the file itself does not — the
+# fragment is the whole record of the act.
+/*/gt/lines/*.prev
+/*/gt/lines/*.tmp
+# Derived, and disposable in a stronger sense than the two above: the uncovered-ink
+# verdict per page, written by whatever last read the raster, stamped with the
+# mtimes it was true for. Deleting it costs one re-check; committing it would put a
+# claim about a page's ink in history with nothing to hold it accountable.
+/*/gt/zones/_ink_cache.json
+# `harness ocr blot PP-NNN`: each page with every line box and figure zone
+# painted out, so whatever is left is uncovered by construction. Derived from
+# `scans/` and the ALTO stores, regenerable, and one PNG per page across 832 pages
+# — nothing here belongs in history.
+#
+# **Both blot trees are under `scans/`, so both are already covered by `scans/` at
+# the top of this file.** They are spelled out anyway, for the reason the two farms
+# below them are: the entry is where the rationale lives, and a derived tree with no
+# line here reads as one nobody thought about. They moved under `scans/` from the
+# repo root because every other scan-derived tree was already there, and a rename
+# that left one of a pair behind would manufacture exactly the near-miss naming this
+# repo keeps paying for.
+/*/scans/w-blotted/
+# `harness zones blot`: the segmenter's training input — each page with its
+# figure zones painted **white**, so a paragraph wrapping around an illustration
+# cannot shape what the model learns about zone geometry. Distinct from
+# `scans/w-blotted/` above, which paints in conspicuous colours for a human to read;
+# this one has to look like blank paper. Derived and rebuilt in one command, and
+# the 580 figure-less pages here are symlinks into the already-ignored `scans/`,
+# so a tracked copy would dangle in every clone exactly as `scans/w-figs/` would.
+/*/scans/w-figs-blotted/
+# `harness fig crops`: one PNG per declared `GraphicZone`, cut out of `scans/` for
+# the edition and whatever eventually builds an epub. 414 files, every one of them
+# a rectangle already recorded in `gt/fig/` applied to a raster that is itself
+# derived — so there is nothing here a clone cannot rebuild in one command, and a
+# tracked copy would be 414 pictures of a book in a repo that deliberately carries
+# none. Covered by `scans/` above and spelled out for the reason its neighbours
+# are: the entry is where the rationale lives.
+#
+# **`edition/fig-img/` is the opposite and is deliberately absent from this file.** A
+# picture somebody touched up by hand is authored work that exists nowhere else,
+# so it is tracked. It lives under `edition/` rather than `gt/`: an enhanced figure is
+# a new artefact somebody vouches for, not a reproduction of the page, and `gt/`
+# is the latter. The split is the whole safety property: a rebuild rewrites
+# everything here and nothing there, and `figures.crop_source` resolves the human
+# file first. That property is about the store being tracked and never rebuilt,
+# which is why moving it out of `gt/` cost it nothing.
+/*/scans/fig-crops/
+# What the models emitted, one raw ALTO per page: `harness zones predict` writes the
+# first, `harness ocr predict` the second. Derived in the strong sense — regenerable
+# from the checkpoints in `models/` and the rasters, all of which are kept — and
+# neither is a record of anybody's judgement, which is the property that decides
+# this. A prediction a human has been through stops living here: it is corrected in
+# the editor and saved into the tracked `gt/`, so what is worth keeping is kept by
+# being promoted.
+/*/mz/zones/
+/*/mz/ocr/
+# `mz/fig/` too, and note there is deliberately **no `fig/` view** over it and
+# `gt/fig/` the way `zones/` covers the zone stores: every consumer of figure
+# geometry names `gt/fig` directly, and the one thing a view would buy is the one
+# thing that must not happen — `zones blot` painting the training rasters from
+# machine figure claims and the zone segmenter then learning them.
+/*/mz/fig/
+# `mz/tei/` is the fourth, and the odd one: not a model's output but a *rule's*.
+# `harness tei generate` reads `gt/zones/` and `gt/ocr/` — both human-adjudicated —
+# and folds them into a first-draft TEI page, so its content is derived in the
+# strongest sense available here: same inputs, same bytes, no checkpoint and no
+# sampling in between. Regenerating it costs a second.
+#
+# It is ignored anyway, and for the reason that decides all four: **it is nobody's
+# judgement.** What a human ruled is already in the two stores it reads, and what
+# the collator ruled is in `tei/`, which is tracked. A committed copy would be a
+# third place the same facts live, going stale against both.
+#
+# **There is deliberately no view over the tei pair**, as with `fig` and unlike
+# `ocr`/`zones`. A view exists to give one stable name to a page's current best
+# reading; here the two files mean *different things* — `mz/tei/` is what the rules
+# produced and `tei/` is what a reader signed — and `harness tei diff` is the whole
+# point of being able to name them apart. A view would make `tei/…` ambiguous
+# between them, which is the one property this pair must not have.
+#
+# Anchored, like its siblings: a bare `tei/` would swallow the tracked `tei/` at the
+# repo root, and a store silently untracked is the failure this repo has already
+# paid for once.
+/*/mz/tei/
+# **TEMPORARY, and the only entry in this file that is.** The collated pages are
+# out of history while the generator is being fixed: `tei generate` is going to be
+# rewritten repeatedly — figures anchored by default, footnote parsing, consecutive
+# `MainZone-Continued` — and every rewrite invalidates every page downstream of it,
+# so what is in `tei/` right now is a draft against a generator nobody trusts yet.
+# Committing that is committing churn, not judgement.
+#
+# **Delete this entry the moment the generator settles**, and re-add the store. A
+# collated page IS somebody's judgement — the one property that decides every other
+# line in this file — so this is a store that belongs in history and is being kept
+# out of it on purpose, for a stated and expiring reason. The longer this sits the
+# more it looks like a rule.
+#
+# Named by pattern rather than `/tei/*` with a negation for `corpus-header.xml`, for
+# the reason `review/` spells out above: under a negation rule a *new* authored file
+# in `tei/` is silently ignored unless somebody remembers to negate it too, which is
+# the losable-file failure in a different costume. This way a new authored name shows
+# up in `git status` and only the page files are dropped.
+/*/tei/*-[0-9]*-[0-9]*.xml
+
+# **`edition/page-img/` is tracked and is deliberately absent from this file**, on
+# `edition/fig-img/`'s terms one level up: an editor's own version of a whole leaf is
+# authored work that exists nowhere else. It was ignored for a while, pending the
+# format — a vectorization of `1-361` was being attempted and committing a 22 MB
+# raster about to be superseded would have put the wrong thing in git permanently.
+# The vector attempt is dead (`tools/build_leaf_layers.py` records why) and the
+# master is settled, so the entry came out. A vouched-for artefact a clone does not
+# get is not vouched for.
+#
+# What is derived from it is the two display layers, and they are ignored here for
+# `/mz/tei/`'s reason exactly: a rule's output over a tracked store, rebuilt in one
+# command, and nobody's judgement. `tools/build_leaf_layers.py` writes them.
+/*/mz/page-img/

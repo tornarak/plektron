@@ -20,6 +20,7 @@ from harness.entities import ENTITY_CLASSES
 from harness.validate import CORPUS_HEADER, RESP_RANKS, check_corpus_header
 
 REPO = Path(__file__).resolve().parent.parent.parent
+PROJECT = REPO / "jesup" / "bogoras-chukchi"
 TEI_NS = "http://www.tei-c.org/ns/1.0"
 
 # Derived, never spelled out. These fixtures held the three ranks literally, so
@@ -66,12 +67,12 @@ def header(tmp_path: Path, ranks=RANK_IDS, body=None) -> Path:
 
 
 def test_the_committed_header_passes_its_own_gate():
-    assert check_corpus_header(REPO).ok
+    assert check_corpus_header(PROJECT).ok
 
 
 def test_the_committed_header_declares_every_rank_validate_enforces():
     """The whole point. If someone renames a rank in either file, this fails."""
-    rep = check_corpus_header(REPO)
+    rep = check_corpus_header(PROJECT)
     assert rep.metrics["ranks"] == len(RESP_RANKS)
 
 
@@ -161,7 +162,7 @@ def test_the_committed_header_grants_both_licences():
     would fail a settled status with neither."""
     from lxml import etree
 
-    doc = etree.parse(str(REPO / CORPUS_HEADER))
+    doc = etree.parse(str(PROJECT / CORPUS_HEADER))
     targets = [c.get("target") for c in doc.getroot().iter(f"{{{TEI_NS}}}licence")]
     assert any("publicdomain/zero" in t for t in targets)
     assert any("licenses/by/4.0" in t for t in targets)

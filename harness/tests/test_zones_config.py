@@ -30,6 +30,7 @@ from harness.zones_config import (
 )
 
 REPO = Path(__file__).resolve().parent.parent.parent
+PROJECT = REPO / "jesup" / "bogoras-chukchi"
 
 
 def base_cfg() -> dict:
@@ -75,7 +76,7 @@ def write(tmp_path: Path, cfg: dict) -> Path:
 
 def test_shipped_config_loads():
     """The file actually in the repo passes every check the loader makes."""
-    cfg = load_config(REPO)
+    cfg = load_config(PROJECT)
     assert len(cfg["types"]) == 7
     assert {t["key"] for t in cfg["types"]} == set("rpcqfmo")
 
@@ -83,7 +84,7 @@ def test_shipped_config_loads():
 def test_shipped_config_covers_all_three_parts():
     """Each part declares a measure and a fallback; the position is measured off
     the page, so there is deliberately no per-part column position to check."""
-    cfg = load_config(REPO)
+    cfg = load_config(PROJECT)
     for part in ("1", "2", "3"):
         spec = cfg["columns"]["parts"][part]
         assert 1700 < spec["measure"] < 1850
@@ -214,7 +215,7 @@ def test_the_shipped_auto_select_chain_keys_an_ordinary_page():
     paragraph starts for as many as the page holds. A continuation can only be
     closed once, so it must not be sticky — the commonest page is keyed with
     three type keys pressed in total."""
-    a = load_config(REPO)["auto_select"]
+    a = load_config(PROJECT)["auto_select"]
     cur, seq = a["fresh_page"], []
     for _ in range(4):
         seq.append(cur)
@@ -232,7 +233,7 @@ def test_running_title_is_a_one_click_type():
     editor adjusted one would be a test everyone learns to ignore — the same
     reason fixtures here live in `tmp_path` rather than over the live corpus.
     """
-    t = types_by_label(load_config(REPO))["RunningTitleZone"]
+    t = types_by_label(load_config(PROJECT))["RunningTitleZone"]
     assert 40 <= t["default_height"] <= 200
     assert 0 <= t["gap_after"] <= 200
 
@@ -242,14 +243,14 @@ def test_the_chain_stops_after_the_types_that_end_a_column():
     `other` is a catch-all whose neighbours are unpredictable by definition.
     Carrying a top into any of them guesses wrong more often than right, and a
     wrong guess costs a right-click every single time."""
-    by = types_by_label(load_config(REPO))
+    by = types_by_label(load_config(PROJECT))
     for label in ("MarginTextZone-Notes", "QuireMarksZone", "MainZone-Other"):
         assert by[label]["chain_after"] is False, label
 
 
 def test_the_chain_continues_after_the_title_and_body_types():
     """Absent means true — the common case needs no declaration."""
-    by = types_by_label(load_config(REPO))
+    by = types_by_label(load_config(PROJECT))
     for label in (
         "RunningTitleZone",
         "MainZone-P",
@@ -270,7 +271,7 @@ def test_non_boolean_chain_after_refused(tmp_path):
 def test_body_types_declare_no_fixed_shape():
     """A default height on a paragraph would be a guess about the page, and the
     editor would place it on one click without anyone having judged it."""
-    by = types_by_label(load_config(REPO))
+    by = types_by_label(load_config(PROJECT))
     for label in (
         "MainZone-P",
         "MainZone-Continued",
@@ -313,7 +314,7 @@ def test_shape_fields_are_optional(tmp_path):
 
 
 def test_shipped_view_settings_are_sane():
-    v = load_config(REPO)["view"]
+    v = load_config(PROJECT)["view"]
     assert 0 < v["column_margin"] < 0.5
     assert v["edge_band_px"] > 0
     # The overlap has to leave a real jump behind it; an overlap at or above a
@@ -322,7 +323,7 @@ def test_shipped_view_settings_are_sane():
 
 
 def test_shipped_actions_do_not_collide_with_shipped_types():
-    cfg = load_config(REPO)
+    cfg = load_config(PROJECT)
     keys = {t["key"] for t in cfg["types"]}
     acts = {v for k, v in cfg["actions"].items() if not k.startswith("_")}
     assert keys.isdisjoint(acts)

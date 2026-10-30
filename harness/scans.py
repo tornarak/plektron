@@ -53,7 +53,7 @@ import shutil
 from pathlib import Path
 
 from . import farms, parallel, paths, provenance
-from .layout import page_files, ref_of, stem, stem_for
+from .layout import page_files, project, ref_of, stem, stem_for
 from .refs import norm_ref, parse_ref
 
 #: The source PDFs' own embedded-image geometry. **Derived but tracked**, on
@@ -69,20 +69,6 @@ TREE_MANIFEST = "pdf_images.json"
 
 DPI = 300
 PT = DPI / 72.0                      # device px per PostScript point at 300 dpi
-
-#: Named rather than detected: this says what the *source* holds, not what one
-#: rendering happened to produce. These three pages carry no JBIG2 master — they are
-#: RGB photographs of a cover and a foldout — so the scale-1.0 refusal below does not
-#: apply to them and would otherwise refuse its own corpus. **Checked in both
-#: directions** by `page_record`: the set was asserted here and in
-#: `tools/greyscale_scans.py` and verified in neither, and it is precisely the set of
-#: pages whose two coordinate spaces differ by a scale, so a wrong member is a silent
-#: scale error rather than a cosmetic one.
-MASTERLESS = {"1-001", "1-002", "1-361"}
-
-#: Part number by source filename fragment. The PDFs are symlinks whose names carry
-#: the part in Roman numerals; `PP-NNN` needs the arabic one.
-PARTS = ((" Part I ", 1), (" Part II ", 2), (" Part III ", 3))
 
 SCALE_TOL = 0.001      # a master's px-per-pt against 300/72
 PASTE_TOL = 0.02       # a photo's paste ratio against the nearest integer
@@ -151,7 +137,7 @@ def sources(root: Path = Path("."), pdfs: list[Path] | None = None) -> dict:
     for pdf in pdfs:
         with pymupdf.open(pdf) as doc:
             pages = doc.page_count
-        out[str(part_of(pdf))] = {"file": pdf.name, "sha256": _digest(pdf),
+        out[str(part_of(pdf, root))] = {"file": pdf.name, "sha256": _digest(pdf),
                                   "bytes": pdf.stat().st_size, "pages": pages}
     return out
 
@@ -325,16 +311,17 @@ def _out(v: float, up: bool) -> int:
     return math.ceil(v) if up else math.floor(v)
 
 
-def part_of(pdf: Path) -> int:
-    """Which part a source PDF is, from its filename.
+def part_of(pdf: Path, root: Path = Path(".")) -> int:
+    """Which part a source PDF is, from its filename and the manifest's `parts`.
 
-    Longest fragment first: `" Part I "` is a substring of neither `" Part II "` nor
-    `" Part III "` given the trailing space, but the ordering is made explicit rather
-    than left to depend on that.
+    The PDFs are symlinks whose names carry the part in Roman numerals; `PP-NNN`
+    needs the arabic one. Longest fragment first: `" Part I "` is a substring of
+    neither `" Part II "` nor `" Part III "` given the trailing space, but the
+    ordering is made explicit rather than left to depend on that.
     """
-    for frag, n in sorted(PARTS, key=lambda t: -len(t[0])):
-        if frag in pdf.name:
-            return n
+    for p in sorted(project(root)["parts"], key=lambda p: -len(p["pdf"])):
+        if p["pdf"] in pdf.name:
+            return p["n"]
     raise ValueError(f"cannot tell which part this is: {pdf.name}")
 
 
@@ -357,7 +344,7 @@ def page_images(page) -> list[dict]:
     return out
 
 
-def page_record(page, ref: str) -> dict:
+def page_record(page, ref: str, masterless: frozenset[str] = frozenset()) -> dict:
     """One page's manifest entry, or a refusal.
 
     The geometry is derived **per page**, never from a per-part table: `1-303`'s
@@ -380,7 +367,11 @@ def page_record(page, ref: str) -> dict:
     sy = m["h"] / (my1 - my0) if my1 > my0 else 0.0
     at_scale = abs(sx - PT) <= SCALE_TOL and abs(sy - PT) <= SCALE_TOL
 
-    if ref in MASTERLESS:
+    # `masterless` is the manifest's: named rather than detected, because it says
+    # what the *source* holds, not what one rendering happened to produce. Those
+    # pages carry no JBIG2 master, so the scale-1.0 refusal below does not apply to
+    # them and would otherwise refuse its own corpus.
+    if ref in masterless:
         # **The carve-out is checked, not trusted.** The set was asserted in two
         # files and verified in neither, and these are the only three pages whose two
         # coordinate spaces differ by a *scale* rather than a translation — so a page
@@ -388,7 +379,7 @@ def page_record(page, ref: str) -> dict:
         # be wrong by a factor. The converse direction needs no clause of its own: a
         # page outside the set with no scale-1.0 master already refuses below.
         if at_scale:
-            rec["refuse"] = ("named in MASTERLESS but carries a master at scale 1.0; "
+            rec["refuse"] = ("named in `masterless` but carries a master at scale 1.0; "
                              "the set and the source disagree")
             return rec
         # **Taken at its own size, not rendered.** These three are one RGB photograph
@@ -553,7 +544,7 @@ def _read_chunk(chunk: tuple) -> list[dict]:
     both. The `Document` is opened **here** — one per chunk, never handed across a
     process boundary and never shared, which is the library's actual constraint.
     """
-    pdf, part, pages, rasters, source, stem = chunk
+    pdf, part, pages, rasters, source, stem, masterless = chunk
     import pymupdf
 
     out = []
@@ -561,7 +552,7 @@ def _read_chunk(chunk: tuple) -> list[dict]:
     with pymupdf.open(pdf) as doc:
         for i in pages:
             ref = f"{part}-{i:03d}"
-            rec = page_record(doc[i - 1], ref)
+            rec = page_record(doc[i - 1], ref, masterless)
             if not rec["refuse"] and dest is not None:
                 cut = cut_page(doc, rec, dest, source, stem=stem)
                 rec["mode"] = cut.get("mode", "")
@@ -626,7 +617,7 @@ def extract(root: Path = Path("."), refs: list[str] | None = None,
     # opens no page.
     chunks: list[tuple] = []
     for pdf in pdfs:
-        part = part_of(pdf)
+        part = part_of(pdf, root)
         with pymupdf.open(pdf) as doc:
             n_pages = doc.page_count
         pages = [i for i in range(1, n_pages + 1)
@@ -634,7 +625,8 @@ def extract(root: Path = Path("."), refs: list[str] | None = None,
         for lo in range(0, len(pages), CHUNK):
             chunks.append((str(pdf), part, tuple(pages[lo:lo + CHUNK]),
                            str(rasters) if rasters else "", src.get(str(part), {}),
-                           stem(root)))
+                           stem(root),
+                           frozenset(project(root).get("masterless", ()))))
 
     # **The bar counts pages and names one, where the pool counts chunks and hands
     # back a tuple.** Ticking with the chunk itself printed the PDF's path, sixteen
