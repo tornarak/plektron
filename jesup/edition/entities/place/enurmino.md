@@ -1,6 +1,6 @@
 # place:enurmino — Enurmino
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 66.9537 -171.8627
 - link: wikidata:Q1938137

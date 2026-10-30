@@ -1,6 +1,6 @@
 # taxon:culicidae — Culicidae
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:insecta
 - link: wikidata:Q7367
 - link: wikipedia:Mosquito

@@ -1,6 +1,6 @@
 # people:inuit — Inuit
 
-- status: ratified
+- status: ratified chukchi
 - link: wikipedia:Inuit
 - link: wikidata:Q189975
 

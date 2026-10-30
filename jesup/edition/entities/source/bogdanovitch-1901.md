@@ -1,6 +1,6 @@
 # source:bogdanovitch-1901 — Bogdanovitch 1901
 
-- status: ratified
+- status: ratified chukchi
 - authority: bogdanovitch1901
 
 ## aliases

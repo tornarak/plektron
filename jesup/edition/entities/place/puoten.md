@@ -1,6 +1,6 @@
 # place:puoten — Puoˊten
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 65.8495 -170.5215
 

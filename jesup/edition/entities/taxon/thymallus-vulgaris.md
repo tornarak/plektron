@@ -1,6 +1,6 @@
 # taxon:thymallus-vulgaris — Thymallus vulgaris
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:pisces
 - link: wikidata:Q106428989
 

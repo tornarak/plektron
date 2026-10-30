@@ -1,6 +1,6 @@
 # institution:us-national-museum — United States National Museum
 
-- status: ratified
+- status: ratified chukchi
 - link: wikidata:Q123562561
 
 ## aliases

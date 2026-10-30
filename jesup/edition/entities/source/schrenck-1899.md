@@ -1,6 +1,6 @@
 # source:schrenck-1899 — Schrenck, II
 
-- status: ratified
+- status: ratified chukchi
 - authority: schrenck1899
 
 ## aliases

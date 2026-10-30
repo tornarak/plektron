@@ -1,6 +1,6 @@
 # people:inupiat — Iñupiat
 
-- status: ratified
+- status: ratified chukchi
 - geo: langarea:nort2943
 - geo: langarea:nort2945
 - geo: land:alaska

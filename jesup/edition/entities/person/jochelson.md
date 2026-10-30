@@ -1,6 +1,6 @@
 # person:jochelson — Waldemar Jochelson
 
-- status: ratified
+- status: ratified chukchi
 - link: wikidata:Q724258
 - link: wikipedia:Waldemar_Jochelson
 

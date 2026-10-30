@@ -1,6 +1,6 @@
 # place:misqan — Mɪˊs˙qᴀn
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 65.4777 -178.7466
 

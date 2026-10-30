@@ -1,6 +1,6 @@
 # taxon:martes-zibellina — Martes zibellina
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:mustelidae
 - link: wikidata:Q26423
 - link: wikipedia:Sable

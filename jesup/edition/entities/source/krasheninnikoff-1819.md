@@ -1,6 +1,6 @@
 # source:krasheninnikoff-1819 — Krasheninnikoff, I, II
 
-- status: ratified
+- status: ratified chukchi
 - authority: krasheninnikoff1819
 
 ## aliases

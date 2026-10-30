@@ -1,6 +1,6 @@
 # land:kamchatka — Kamchatka
 
-- status: ratified
+- status: ratified chukchi
 - within: land:northeast-siberia
 - geo: region:kamchatka
 - link: wikidata:Q993

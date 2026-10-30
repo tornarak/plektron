@@ -1,6 +1,6 @@
 # source:slunin-1900 — Slunin, I, II
 
-- status: ratified
+- status: ratified chukchi
 - authority: slunin1900
 
 ## aliases

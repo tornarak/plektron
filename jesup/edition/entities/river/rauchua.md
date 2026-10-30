@@ -1,6 +1,6 @@
 # river:rauchua — Rauchua
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukotka
 - geo: watershed:baranikha-or-rauchua
 

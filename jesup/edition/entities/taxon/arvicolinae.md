@@ -1,6 +1,6 @@
 # taxon:arvicolinae — Arvicolinae
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:rodentia
 - link: wikidata:Q840750
 - link: wikipedia:Arvicolinae

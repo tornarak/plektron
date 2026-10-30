@@ -1,6 +1,6 @@
 # place:cape-barykoff — Cape Barykoff
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukotka
 - geo: 63.063138 179.439430
 

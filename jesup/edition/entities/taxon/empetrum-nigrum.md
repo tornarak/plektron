@@ -1,6 +1,6 @@
 # taxon:empetrum-nigrum — Empetrum nigrum
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:plantae
 - link: wikidata:Q202305
 - link: wikipedia:Empetrum_nigrum

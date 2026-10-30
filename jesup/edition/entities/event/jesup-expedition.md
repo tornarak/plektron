@@ -1,6 +1,6 @@
 # event:jesup-expedition — Jesup North Pacific Expedition
 
-- status: ratified
+- status: ratified chukchi
 - link: wikidata:Q1688349
 - link: wikipedia:Jesup_North_Pacific_Expedition
 

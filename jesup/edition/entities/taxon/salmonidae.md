@@ -1,6 +1,6 @@
 # taxon:salmonidae — Salmonidæ
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:pisces
 - link: wikidata:Q184238
 - link: wikipedia:Salmonidae

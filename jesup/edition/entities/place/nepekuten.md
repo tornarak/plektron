@@ -1,6 +1,6 @@
 # place:nepekuten — Nepekuten
 
-- status: ratified
+- status: ratified chukchi
 - within: land:ipekut
 - geo: 64.6443 -172.5135
 

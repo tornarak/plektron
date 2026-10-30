@@ -1,6 +1,6 @@
 # place:memino — Memino
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 67.0031 -172.7833
 

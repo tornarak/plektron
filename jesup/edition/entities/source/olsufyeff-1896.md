@@ -1,6 +1,6 @@
 # source:olsufyeff-1896 — Olsufyeff 1896
 
-- status: ratified
+- status: ratified chukchi
 - authority: olsufyeff1896
 
 ## aliases

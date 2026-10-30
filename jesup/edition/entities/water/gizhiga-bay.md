@@ -1,6 +1,6 @@
 # water:gizhiga-bay — Gizhiga Bay
 
-- status: ratified
+- status: ratified chukchi
 - within: water:okhotsk-sea
 - geo: 61.367 158.152
 - link: geonames:2125556

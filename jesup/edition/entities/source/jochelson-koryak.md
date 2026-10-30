@@ -1,6 +1,6 @@
 # source:jochelson-koryak — Jochelson, The Koryak
 
-- status: ratified
+- status: ratified chukchi
 - authority: jochelson1905
 
 ## aliases

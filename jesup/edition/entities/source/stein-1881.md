@@ -1,6 +1,6 @@
 # source:stein-1881 — Stein 1881
 
-- status: ratified
+- status: ratified chukchi
 - authority: stein1881
 
 ## aliases

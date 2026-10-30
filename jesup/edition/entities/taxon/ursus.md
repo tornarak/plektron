@@ -1,6 +1,6 @@
 # taxon:ursus — Ursus
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:carnivora
 - link: wikidata:Q243359
 - link: wikipedia:Ursus_(mammal)

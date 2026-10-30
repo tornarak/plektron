@@ -1,6 +1,6 @@
 # place:st-michael — St. Michael
 
-- status: ratified
+- status: ratified chukchi
 - within: land:alaska
 - geo: 63.4781 -162.039
 - link: geonames:5873200

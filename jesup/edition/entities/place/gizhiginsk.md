@@ -1,6 +1,6 @@
 # place:gizhiginsk — Gizhiginsk
 
-- status: ratified
+- status: ratified chukchi
 - within: river:gizhiga
 - geo: 61.9502 160.38
 - link: geonames:2125558

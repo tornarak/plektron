@@ -1,6 +1,6 @@
 # taxon:gadus-wachna — Gadus wachna
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:gadus
 - link: wikidata:Q106390334
 

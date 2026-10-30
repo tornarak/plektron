@@ -1,6 +1,6 @@
 # source:adler-1902 — Adler, II
 
-- status: ratified
+- status: ratified chukchi
 - authority: adler1902
 
 ## aliases

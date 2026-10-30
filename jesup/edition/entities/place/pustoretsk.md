@@ -1,6 +1,6 @@
 # place:pustoretsk — Pustoretsk
 
-- status: ratified
+- status: ratified chukchi
 - within: land:kamchatka
 - geo: 60.2333 162.533
 - link: geonames:2121759

@@ -1,6 +1,6 @@
 # taxon:vaccinium-uliginosum — Vaccinium uliginosum
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:plantae
 - link: wikidata:Q146967
 - link: wikipedia:Vaccinium_uliginosum

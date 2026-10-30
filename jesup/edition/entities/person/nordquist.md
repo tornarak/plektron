@@ -1,6 +1,6 @@
 # person:nordquist — Oscar Nordquist
 
-- status: ratified
+- status: ratified chukchi
 
 ## aliases
 

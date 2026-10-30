@@ -1,6 +1,6 @@
 # taxon:spermophilus — Spermophilus
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:rodentia
 - link: wikidata:Q199251
 - link: wikipedia:Spermophilus

@@ -1,6 +1,6 @@
 # water:tkachen-bay — Tkachen Bay
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 64.474 -172.817
 - link: geonames:4031484

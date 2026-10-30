@@ -1,6 +1,6 @@
 # people:kerek — Kerek
 
-- status: ratified
+- status: ratified chukchi
 - link: wikipedia:Kereks
 - link: wikidata:Q1190792
 

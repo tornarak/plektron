@@ -1,6 +1,6 @@
 # people:even — Even
 
-- status: ratified
+- status: ratified chukchi
 - geo: langarea:even1260
 - link: wikidata:Q1142851
 - link: wikipedia:Evens

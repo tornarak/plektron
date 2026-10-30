@@ -1,6 +1,6 @@
 # people:eskimo — Eskimo
 
-- status: ratified
+- status: ratified chukchi
 - link: wikidata:Q131242
 - link: wikipedia:Eskimo
 

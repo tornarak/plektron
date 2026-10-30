@@ -1,6 +1,6 @@
 # taxon:algae — Algae
 
-- status: ratified
+- status: ratified chukchi
 
 ## aliases
 

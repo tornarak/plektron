@@ -1,6 +1,6 @@
 # river:gizhiga — Gizhiga
 
-- status: ratified
+- status: ratified chukchi
 - within: land:kamchatka
 - geo: watershed:gizhiga
 

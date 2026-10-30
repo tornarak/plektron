@@ -1,6 +1,6 @@
 # taxon:oncorhynchus-lagocephalus — Oncorhynchus lagocephalus
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:oncorhynchus
 - link: wikidata:Q106428279
 

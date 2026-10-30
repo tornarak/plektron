@@ -1,6 +1,6 @@
 # place:nishne-kolymsk — Nishne-Kolymsk
 
-- status: ratified
+- status: ratified chukchi
 - within: river:kolyma
 - geo: 68.5313 160.923
 - link: geonames:2122822

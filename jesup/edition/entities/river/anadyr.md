@@ -1,6 +1,6 @@
 # river:anadyr — Anadyr
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukotka
 - geo: watershed:anadyr
 - link: wikidata:Q26390

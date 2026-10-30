@@ -1,6 +1,6 @@
 # place:cape-anannon — Cape Anannon
 
-- status: ratified
+- status: ratified chukchi
 - within: land:kamchatka
 - geo: 59.935955 170.286554
 - link: geonames:2122521

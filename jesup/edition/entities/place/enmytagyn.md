@@ -1,6 +1,6 @@
 # place:enmytagyn — Enmytagyn
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 66.3508 -170.5969
 

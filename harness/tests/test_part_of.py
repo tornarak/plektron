@@ -33,7 +33,7 @@ def write(root: Path, ident: str, body: str = "", **fields) -> Path:
     rows = "".join(f"- {k.replace('_', '-')}: {v}\n"
                    for k, v in fields.items() if v)
     p.write_text(
-        f"# {ident} — {slug.title()}\n\n- status: ratified\n{rows}\n"
+        f"# {ident} — {slug.title()}\n\n- status: ratified chukchi\n{rows}\n"
         f"## aliases\n\n| form | lang | auto | note |\n|---|---|---|---|\n"
         f"| {slug.title()} | | yes | |\n\n## gloss\n\n{body or '(unwritten)'}\n",
         encoding="utf-8")
@@ -59,7 +59,7 @@ def test_an_unknown_field_is_refused_rather_than_ignored(tmp_path):
     nothing."""
     p = write(tmp_path, "place:x")
     p.write_text(p.read_text(encoding="utf-8").replace(
-        "- status: ratified\n", "- status: ratified\n- withn: land:y\n"),
+        "- status: ratified chukchi\n", "- status: ratified chukchi\n- withn: land:y\n"),
         encoding="utf-8")
     with pytest.raises(E.Malformed) as e:
         E.parse(p.read_text(encoding="utf-8"))
@@ -72,7 +72,7 @@ def test_a_retired_field_stays_inert(tmp_path):
     so the strictness above is bounded by a named list rather than by luck."""
     p = write(tmp_path, "place:markova")
     p.write_text(p.read_text(encoding="utf-8").replace(
-        "- status: ratified\n", "- status: ratified\n- since: 1-021\n"),
+        "- status: ratified chukchi\n", "- status: ratified chukchi\n- since: 1-021\n"),
         encoding="utf-8")
     assert "since" not in E.parse(p.read_text(encoding="utf-8"))
 

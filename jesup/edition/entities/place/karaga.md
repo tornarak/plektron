@@ -1,6 +1,6 @@
 # place:karaga — Karaga
 
-- status: ratified
+- status: ratified chukchi
 - within: land:kamchatka
 - geo: 59.1095 163.122
 - link: wikidata:Q27560792

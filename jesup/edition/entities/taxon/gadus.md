@@ -1,6 +1,6 @@
 # taxon:gadus — Gadus
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:gadidae
 - link: wikidata:Q248924
 - link: wikipedia:Gadus

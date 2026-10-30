@@ -1,6 +1,6 @@
 # source:hough-1895 — Hough, Armour
 
-- status: ratified
+- status: ratified chukchi
 - authority: hough1895
 
 ## aliases

@@ -38,7 +38,7 @@ def _ledger(root: Path, p18=None, files=None) -> None:
 
 
 def _parse(extra: str, ident: str = "taxon:x") -> dict:
-    return entities.parse(f"# {ident} — X\n\n- status: ratified\n{extra}"
+    return entities.parse(f"# {ident} — X\n\n- status: ratified chukchi\n{extra}"
                           "\n## gloss\n\nx\n")
 
 

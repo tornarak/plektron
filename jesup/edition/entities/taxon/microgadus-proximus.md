@@ -1,6 +1,6 @@
 # taxon:microgadus-proximus — Microgadus proximus
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:gadidae
 - link: wikidata:Q369995
 - link: wikipedia:Microgadus_proximus

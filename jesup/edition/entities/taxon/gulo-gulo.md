@@ -1,6 +1,6 @@
 # taxon:gulo-gulo — Gulo gulo
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:mustelidae
 - link: wikidata:Q14334
 - link: wikipedia:Wolverine

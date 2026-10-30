@@ -1,6 +1,6 @@
 # place:agritkin — Aˊg̣rɪtkɪn
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 65.4648 -172.1089
 

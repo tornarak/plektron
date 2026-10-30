@@ -1,6 +1,6 @@
 # river:maliy-anyuy — Maliy Anyuy
 
-- status: ratified
+- status: ratified chukchi
 - within: river:kolyma
 - geo: watershed:maliy-anyuy-or-dry
 

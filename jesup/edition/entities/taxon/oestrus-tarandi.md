@@ -1,6 +1,6 @@
 # taxon:oestrus-tarandi — Œstrus tarandi
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:diptera
 
 ## aliases

@@ -1,6 +1,6 @@
 # taxon:epilobium-angustifolium — Epilobium angustifolium
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:plantae
 - link: wikidata:Q12217056
 

@@ -1,6 +1,6 @@
 # person:dyachkov — Grigory Dyachkov
 
-- status: ratified
+- status: ratified chukchi
 
 ## aliases
 

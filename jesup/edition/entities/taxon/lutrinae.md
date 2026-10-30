@@ -1,6 +1,6 @@
 # taxon:lutrinae — Lutrinae
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:mustelidae
 - link: wikidata:Q200184
 - link: wikipedia:Otter

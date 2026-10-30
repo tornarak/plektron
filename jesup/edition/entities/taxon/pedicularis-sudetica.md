@@ -1,6 +1,6 @@
 # taxon:pedicularis-sudetica — Pedicularis sudetica
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:plantae
 - link: wikidata:Q15349645
 - link: wikipedia:Pedicularis_sudetica

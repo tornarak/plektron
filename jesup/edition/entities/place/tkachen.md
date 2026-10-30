@@ -1,6 +1,6 @@
 # place:tkachen — Tkachen
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 64.3621 -172.9362
 

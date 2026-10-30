@@ -1,6 +1,6 @@
 # being:tairgin — taˊɪrg̣ɪn
 
-- status: ratified
+- status: ratified chukchi
 - link: wikidata:Q8282
 - link: wikipedia:Addison's_disease
 

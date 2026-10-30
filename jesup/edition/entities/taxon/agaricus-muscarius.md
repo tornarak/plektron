@@ -1,6 +1,6 @@
 # taxon:agaricus-muscarius — Agaricus muscarius
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:fungi
 - link: wikipedia:Amanita_muscaria
 - link: wikidata:Q21870095

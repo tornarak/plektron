@@ -1,6 +1,6 @@
 # taxon:rangifer-tarandus — Rangifer tarandus
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:mammalia
 - link: wikidata:Q39624
 - link: wikipedia:Reindeer

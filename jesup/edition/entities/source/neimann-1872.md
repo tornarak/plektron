@@ -1,6 +1,6 @@
 # source:neimann-1872 — Neimann 1872
 
-- status: ratified
+- status: ratified chukchi
 - authority: neimann1872
 
 ## aliases

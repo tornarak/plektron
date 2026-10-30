@@ -1,6 +1,6 @@
 # source:kjellmann-1882 — Kjellmann 1882
 
-- status: ratified
+- status: ratified chukchi
 - authority: kjellmann1882
 
 ## aliases

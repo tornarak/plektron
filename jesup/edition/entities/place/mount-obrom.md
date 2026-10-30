@@ -1,6 +1,6 @@
 # place:mount-obrom — Mount Obrom
 
-- status: ratified
+- status: ratified chukchi
 - within: river:maliy-anyuy
 - geo: 68.0576 164.399
 - link: geonames:2122666

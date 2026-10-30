@@ -1,6 +1,6 @@
 # taxon:castor-fiber — Castor fiber
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:rodentia
 - link: wikidata:Q181191
 - link: wikipedia:Eurasian_beaver

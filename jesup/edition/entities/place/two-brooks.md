@@ -1,6 +1,6 @@
 # place:two-brooks — Two Brooks
 
-- status: ratified
+- status: ratified chukchi
 - within: river:kolyma
 - geo: 68.364978 160.750163
 

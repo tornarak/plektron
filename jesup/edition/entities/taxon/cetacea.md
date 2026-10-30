@@ -1,6 +1,6 @@
 # taxon:cetacea — Cetacea
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:mammalia
 - link: wikidata:Q160
 - link: wikipedia:Cetacean

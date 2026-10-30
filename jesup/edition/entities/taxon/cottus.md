@@ -1,6 +1,6 @@
 # taxon:cottus — Cottus
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:pisces
 - link: wikidata:Q134913
 - link: wikipedia:Cottus_(fish)

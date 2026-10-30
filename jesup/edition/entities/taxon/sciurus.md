@@ -1,6 +1,6 @@
 # taxon:sciurus — Sciurus
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:rodentia
 - link: wikidata:Q281124
 - link: wikipedia:Sciurus

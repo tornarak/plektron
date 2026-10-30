@@ -1,6 +1,6 @@
 # taxon:rubus-arcticus — Rubus arcticus
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:rubus
 - link: wikidata:Q210330
 - link: wikipedia:Rubus_arcticus

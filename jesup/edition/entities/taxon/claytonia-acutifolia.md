@@ -1,6 +1,6 @@
 # taxon:claytonia-acutifolia — Claytonia acutifolia
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:plantae
 - link: wikidata:Q17248391
 

@@ -1,6 +1,6 @@
 # person:nordenskiold — Adolf Erik Nordenskiöld
 
-- status: ratified
+- status: ratified chukchi
 - link: wikidata:Q156749
 - link: wikipedia:Adolf_Erik_Nordenskiöld
 

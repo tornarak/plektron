@@ -1,6 +1,6 @@
 # river:indigirka — Indigirka
 
-- status: ratified
+- status: ratified chukchi
 - within: land:northeast-siberia
 - geo: watershed:indigirka
 

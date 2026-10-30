@@ -1,6 +1,6 @@
 # people:caucasoids — Caucasoids
 
-- status: ratified
+- status: ratified chukchi
 - part-of: people:physical-anthropology
 - link: wikidata:Q7129609
 - link: wikipedia:Caucasian_race

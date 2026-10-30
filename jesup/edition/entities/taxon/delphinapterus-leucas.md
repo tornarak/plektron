@@ -1,6 +1,6 @@
 # taxon:delphinapterus-leucas — Delphinapterus leucas
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:cetacea
 - link: wikidata:Q132072
 - link: wikipedia:Beluga_whale

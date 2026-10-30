@@ -1,6 +1,6 @@
 # taxon:canis-lupus — Canis lupus
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:canis
 - link: wikidata:Q18498
 - link: wikipedia:Wolf

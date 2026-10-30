@@ -1,6 +1,6 @@
 # sky:eagle — Eagle
 
-- status: ratified
+- status: ratified chukchi
 - link: wikidata:Q10586
 - link: wikipedia:Aquila_(constellation)
 

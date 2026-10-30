@@ -1,6 +1,6 @@
 # place:khatyrka — Khatyrka
 
-- status: ratified
+- status: ratified chukchi
 - within: river:khatyrka
 - geo: 62.061 175.29
 - link: wikipedia:Khatyrka

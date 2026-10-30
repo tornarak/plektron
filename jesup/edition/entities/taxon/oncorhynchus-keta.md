@@ -1,6 +1,6 @@
 # taxon:oncorhynchus-keta — Oncorhynchus keta
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:oncorhynchus
 - link: wikidata:Q475211
 - link: wikipedia:Chum_salmon

@@ -1,6 +1,6 @@
 # place:forest-border — Forest Border
 
-- status: ratified
+- status: ratified chukchi
 - within: river:kolyma
 - geo: 69.1642 161.443
 - link: geonames:2124158

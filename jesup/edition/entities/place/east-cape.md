@@ -1,6 +1,6 @@
 # place:east-cape — East Cape
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 66.0809 -169.652
 - link: geonames:4031747

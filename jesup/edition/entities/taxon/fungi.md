@@ -1,6 +1,6 @@
 # taxon:fungi — Fungi
 
-- status: ratified
+- status: ratified chukchi
 - link: wikidata:Q764
 - link: wikipedia:Fungus
 

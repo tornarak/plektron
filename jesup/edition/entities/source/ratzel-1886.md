@@ -1,6 +1,6 @@
 # source:ratzel-1886 — Ratzel, Stäbchenpanzer
 
-- status: ratified
+- status: ratified chukchi
 - authority: ratzel1886
 
 ## aliases

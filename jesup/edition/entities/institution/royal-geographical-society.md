@@ -1,6 +1,6 @@
 # institution:royal-geographical-society — Royal Geographical Society
 
-- status: ratified
+- status: ratified chukchi
 - link: wikidata:Q691152
 - link: wikipedia:Royal_Geographical_Society
 

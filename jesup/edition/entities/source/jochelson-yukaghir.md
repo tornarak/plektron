@@ -1,6 +1,6 @@
 # source:jochelson-yukaghir — Jochelson, Yukaghir Materials
 
-- status: ratified
+- status: ratified chukchi
 - authority: jochelson1900
 
 ## aliases

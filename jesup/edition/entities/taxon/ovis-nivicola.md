@@ -1,6 +1,6 @@
 # taxon:ovis-nivicola — Ovis nivicola
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:mammalia
 - link: wikidata:Q918400
 - link: wikipedia:Snow_sheep

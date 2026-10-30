@@ -1,6 +1,6 @@
 # river:pakhacha — Pakhacha
 
-- status: ratified
+- status: ratified chukchi
 - within: land:kamchatka
 - geo: watershed:pakhacha-or-poqach
 

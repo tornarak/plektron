@@ -1,6 +1,6 @@
 # place:naukan — Naukan
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 66.0267 -169.7019
 - link: wikidata:Q4314287

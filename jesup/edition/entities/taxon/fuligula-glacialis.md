@@ -1,6 +1,6 @@
 # taxon:fuligula-glacialis — Fuligula glacialis
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:anatidae
 - link: wikidata:Q26597
 - link: wikipedia:Long-tailed_duck

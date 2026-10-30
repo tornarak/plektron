@@ -1,6 +1,6 @@
 # land:wrangel-island — Wrangel Island
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukotka
 - geo: region:wrangel-island
 - link: wikidata:Q106594

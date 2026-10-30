@@ -1,6 +1,6 @@
 # river:yenisei — Yenisei
 
-- status: ratified
+- status: ratified chukchi
 - within: land:russian-far-east
 - geo: watershed:yenisei
 - link: wikidata:Q78707

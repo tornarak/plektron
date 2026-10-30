@@ -254,7 +254,7 @@ def test_a_reference_inside_an_entity_link_renders_flat(tmp_path):
     the one that survives — `_referring`'s rule, unchanged."""
     (tmp_path / "edition" / "entities" / "place").mkdir(parents=True, exist_ok=True)
     (tmp_path / "edition" / "entities" / "place" / "markova.md").write_text(
-        "# place:markova — Markova\n\n- status: ratified\n\n## aliases\n\n"
+        "# place:markova — Markova\n\n- status: ratified chukchi\n\n## aliases\n\n"
         "| form | lang | auto | note |\n|---|---|---|---|\n"
         "| Markova | | yes | |\n\n## gloss\n\nA fair.\n", encoding="utf-8")
     got = render(tmp_path, '<p><rs ref="place:markova">Markova, Fig. '

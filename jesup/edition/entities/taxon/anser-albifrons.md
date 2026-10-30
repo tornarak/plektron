@@ -1,6 +1,6 @@
 # taxon:anser-albifrons — Anser albifrons
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:anatidae
 - link: wikidata:Q172093
 - link: wikipedia:Greater_white-fronted_goose

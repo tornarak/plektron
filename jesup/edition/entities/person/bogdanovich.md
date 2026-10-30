@@ -1,6 +1,6 @@
 # person:bogdanovich — Karl Bogdanovich
 
-- status: ratified
+- status: ratified chukchi
 
 ## aliases
 

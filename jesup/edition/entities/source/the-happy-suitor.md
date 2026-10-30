@@ -1,6 +1,6 @@
 # source:the-happy-suitor — The Happy Suitor
 
-- status: ratified
+- status: ratified chukchi
 - part-of: source:bogoras-1900
 
 ## aliases

@@ -1,6 +1,6 @@
 # river:krasnaya — Krasnaya
 
-- status: ratified
+- status: ratified chukchi
 - within: river:anadyr
 - geo: watershed:krasnaya-or-red-river
 

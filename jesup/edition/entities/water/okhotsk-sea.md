@@ -1,6 +1,6 @@
 # water:okhotsk-sea — Sea of Okhotsk
 
-- status: ratified
+- status: ratified chukchi
 - within: land:russian-far-east
 - geo: marine:okhotsk-sea
 - geo: marine:shelikhov-gulf

@@ -1,6 +1,6 @@
 # place:valkalen — Valkaˊʟ̣ên
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 65.0517 -175.7774
 

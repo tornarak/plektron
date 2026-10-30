@@ -1,6 +1,6 @@
 # river:anapka — Anapka
 
-- status: ratified
+- status: ratified chukchi
 - within: land:kamchatka
 - geo: watershed:anapka
 - link: geonames:2127185

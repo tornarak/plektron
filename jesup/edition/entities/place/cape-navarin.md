@@ -1,6 +1,6 @@
 # place:cape-navarin — Cape Navarin
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukotka
 - geo: 62.2753 179.099
 - link: wikidata:Q3562501

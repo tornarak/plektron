@@ -1,6 +1,6 @@
 # place:achchen — Achchen
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 64.8391 -174.5917
 

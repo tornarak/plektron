@@ -1,6 +1,6 @@
 # river:sugoy — Sugoy
 
-- status: ratified
+- status: ratified chukchi
 - within: river:kolyma
 - geo: watershed:sugoy-or-shoudon
 - link: wikipedia:Sugoy

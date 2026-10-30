@@ -1,6 +1,6 @@
 # person:bogoras — Waldemar Bogoras
 
-- status: ratified
+- status: ratified chukchi
 - link: wikidata:Q113480
 - link: wikipedia:Vladimir_Bogoraz
 

@@ -1,6 +1,6 @@
 # being:arctic-hysteria — Arctic hysteria
 
-- status: ratified
+- status: ratified chukchi
 - link: wikipedia:Piblokto
 - link: wikidata:Q1779438
 

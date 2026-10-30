@@ -1,6 +1,6 @@
 # taxon:mammalia — Mammalia
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:animalia
 - link: wikidata:Q7377
 - link: wikipedia:Mammal

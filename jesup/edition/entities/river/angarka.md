@@ -1,6 +1,6 @@
 # river:angarka — Angarka
 
-- status: ratified
+- status: ratified chukchi
 - within: river:bolshoy-anyuy
 - geo: watershed:angarka
 - link: geonames:2127158

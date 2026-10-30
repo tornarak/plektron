@@ -1,6 +1,6 @@
 # water:bering-strait — Bering Strait
 
-- status: ratified
+- status: ratified chukchi
 - within: water:bering-sea
 - frame: 180.0 60.0 200.0 70.0
 - link: wikipedia:Bering_Strait

@@ -1,6 +1,6 @@
 # source:wrangell-1840 — Wrangell 1840
 
-- status: ratified
+- status: ratified chukchi
 - authority: wrangell1840
 
 ## aliases

@@ -1,6 +1,6 @@
 # taxon:lepus — Lepus
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:mammalia
 - link: wikidata:Q46076
 - link: wikipedia:Hare

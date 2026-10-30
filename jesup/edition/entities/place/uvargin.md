@@ -1,6 +1,6 @@
 # place:uvargin — Uvargin
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukotka
 - geo: 69.7599 176.3612
 

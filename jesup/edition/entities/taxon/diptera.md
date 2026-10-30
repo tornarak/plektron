@@ -1,6 +1,6 @@
 # taxon:diptera — Diptera
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:insecta
 - link: wikidata:Q25312
 - link: wikipedia:Fly

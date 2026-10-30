@@ -1,6 +1,6 @@
 # source:bogoras-1901 — Bogoras, Chukchee Material Life
 
-- status: ratified
+- status: ratified chukchi
 - authority: bogoras1901
 
 ## aliases

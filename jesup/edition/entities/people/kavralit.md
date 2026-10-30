@@ -1,6 +1,6 @@
 # people:kavralit — Kavraˊlɪt
 
-- status: ratified
+- status: ratified chukchi
 - part-of: people:chukchi
 
 ## aliases

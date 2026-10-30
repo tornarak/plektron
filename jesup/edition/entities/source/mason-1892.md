@@ -1,6 +1,6 @@
 # source:mason-1892 — Mason, Woman’s Knife
 
-- status: ratified
+- status: ratified chukchi
 - authority: mason1892
 
 ## aliases

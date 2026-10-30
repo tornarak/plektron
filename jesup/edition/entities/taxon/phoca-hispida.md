@@ -1,6 +1,6 @@
 # taxon:phoca-hispida — Phoca hispida
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:phoca
 - link: wikidata:Q23009697
 

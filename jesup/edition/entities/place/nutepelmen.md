@@ -1,6 +1,6 @@
 # place:nutepelmen — Nutepelmen
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 67.4263 -174.9253
 

@@ -1,6 +1,6 @@
 # river:bolshoy-anyuy — Bolshoy Anyuy
 
-- status: ratified
+- status: ratified chukchi
 - within: river:kolyma
 - geo: watershed:bolshoy-anyuy-or-large
 

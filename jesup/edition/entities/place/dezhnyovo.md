@@ -1,6 +1,6 @@
 # place:dezhnyovo — Dezhnyovo
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 66.044 -169.9459
 

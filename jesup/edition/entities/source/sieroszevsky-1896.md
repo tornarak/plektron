@@ -1,6 +1,6 @@
 # source:sieroszevsky-1896 — Sieroszevsky 1896
 
-- status: ratified
+- status: ratified chukchi
 - authority: sieroszevsky1896
 
 ## aliases

@@ -1,6 +1,6 @@
 # person:hooper-william — William Hulme Hooper
 
-- status: ratified
+- status: ratified chukchi
 - link: wikidata:Q8012655
 - link: wikipedia:William_Hulme_Hooper
 

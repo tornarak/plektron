@@ -1,6 +1,6 @@
 # people:shelag — Shelag
 
-- status: ratified
+- status: ratified chukchi
 
 ## aliases
 

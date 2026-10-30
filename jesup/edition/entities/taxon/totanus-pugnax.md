@@ -1,6 +1,6 @@
 # taxon:totanus-pugnax — Totanus pugnax
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:aves
 - link: wikidata:Q28122714
 - link: wikipedia:Ruff_(bird)

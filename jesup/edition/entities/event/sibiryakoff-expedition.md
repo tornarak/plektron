@@ -1,6 +1,6 @@
 # event:sibiryakoff-expedition — Sibiryakoff Expedition
 
-- status: ratified
+- status: ratified chukchi
 
 ## aliases
 

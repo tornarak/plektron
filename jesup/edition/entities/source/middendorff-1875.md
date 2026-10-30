@@ -1,6 +1,6 @@
 # source:middendorff-1875 — Middendorff 1875
 
-- status: ratified
+- status: ratified chukchi
 - authority: middendorff1875
 
 ## aliases

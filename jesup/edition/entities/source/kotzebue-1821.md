@@ -1,6 +1,6 @@
 # source:kotzebue-1821 — Kotzebue 1821
 
-- status: ratified
+- status: ratified chukchi
 - authority: kotzebue1821
 
 ## aliases

@@ -1,6 +1,6 @@
 # place:yanrakenot — Yanřaˊkê-not
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 64.9105 -172.4979
 

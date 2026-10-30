@@ -1,6 +1,6 @@
 # taxon:hedisarum-obscurum — Hedisarum obscurum
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:plantae
 - link: wikidata:Q87627400
 

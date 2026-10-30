@@ -1,6 +1,6 @@
 # people:yupik — Yupik
 
-- status: ratified
+- status: ratified chukchi
 - geo: langarea:cent2127
 - geo: langarea:paci1278
 - link: wikipedia:Yupik_peoples

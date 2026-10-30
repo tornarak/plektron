@@ -1,6 +1,6 @@
 # taxon:eleginus-navaga — Eleginus navaga
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:gadidae
 - link: wikidata:Q1068996
 - link: wikipedia:Navaga

@@ -1,6 +1,6 @@
 # place:cape-olutorsky — Cape Olutorsky
 
-- status: ratified
+- status: ratified chukchi
 - within: land:kamchatka
 - geo: 59.823318 166.127115
 - link: geonames:2125456

@@ -1,6 +1,6 @@
 # taxon:cottus-quadricornus — Cottus quadricornus
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:cottus
 - link: wikidata:Q402751
 - link: wikipedia:Fourhorn_sculpin

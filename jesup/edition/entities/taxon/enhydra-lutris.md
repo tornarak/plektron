@@ -1,6 +1,6 @@
 # taxon:enhydra-lutris — Enhydra lutris
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:lutrinae
 - link: wikidata:Q41407
 - link: wikipedia:Sea_otter

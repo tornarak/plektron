@@ -1,6 +1,6 @@
 # river:opuka — Opuka
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukotka
 - geo: watershed:opuka
 

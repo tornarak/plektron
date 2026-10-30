@@ -1,6 +1,6 @@
 # taxon:orcinus-orca — Orcinus orca
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:cetacea
 - link: wikidata:Q26843
 - link: wikipedia:Orca

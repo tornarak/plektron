@@ -1,6 +1,6 @@
 # taxon:polygonum — Polygonum
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:plantae
 - link: wikidata:Q271400
 - link: wikipedia:Polygonum

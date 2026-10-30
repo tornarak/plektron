@@ -1,6 +1,6 @@
 # person:pallas — Pallas
 
-- status: ratified
+- status: ratified chukchi
 
 ## aliases
 

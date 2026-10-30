@@ -1,6 +1,6 @@
 # people:russians — Russians
 
-- status: ratified
+- status: ratified chukchi
 - link: wikidata:Q49542
 - link: wikipedia:Russians
 

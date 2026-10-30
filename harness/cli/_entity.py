@@ -31,6 +31,7 @@ from ..entities import (
     load,
     occurrences,
     path_for,
+    ratify_text,
     spell_geo,
     split_id,
 )
@@ -625,8 +626,8 @@ def run_alias(a) -> int:
                      if not _EMPTY_ROW.match(ln)).rstrip("\n")
     text = text[:start] + body + f"\n{row}\n\n" + text[end:]
 
-    from ..entities import alias_index, auto_forms, parse
-    after_rec = parse(text, where=str(p))
+    from ..entities import alias_index, auto_forms, for_text, parse
+    after_rec = for_text(parse(text, where=str(p)), a.root)
     if a.commit:
         p.write_text(text, encoding="utf-8")
 
@@ -1011,9 +1012,9 @@ def run_ratify(a) -> int:
             continue
         p = Path(r["path"])
         text = p.read_text(encoding="utf-8")
-        new = text.replace("- status: proposed", "- status: ratified", 1)
+        new = ratify_text(text, a.root)
         if new == text:
-            raise ValueError(f"{p}: no `- status: proposed` line to change")
+            raise ValueError(f"{p}: no `- status:` line to change")
         if a.commit:
             p.write_text(new, encoding="utf-8")
         rows.append({"id": i, "was": was, "now": "ratified",

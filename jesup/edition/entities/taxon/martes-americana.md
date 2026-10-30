@@ -1,6 +1,6 @@
 # taxon:martes-americana — Martes americana
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:mustelidae
 - link: wikidata:Q322145
 - link: wikipedia:American_marten

@@ -1,6 +1,6 @@
 # source:shklowsky-1892 — Shklowsky 1892
 
-- status: ratified
+- status: ratified chukchi
 - authority: shklowsky1892
 
 ## aliases

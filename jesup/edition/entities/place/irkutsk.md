@@ -1,6 +1,6 @@
 # place:irkutsk — Irkutsk
 
-- status: ratified
+- status: ratified chukchi
 - within: river:yenisei
 - geo: 52.2892 104.28
 - link: wikipedia:Irkutsk

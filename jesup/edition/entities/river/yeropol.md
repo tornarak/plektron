@@ -1,6 +1,6 @@
 # river:yeropol — Yeropol
 
-- status: ratified
+- status: ratified chukchi
 - within: river:anadyr
 - geo: watershed:yeropol
 

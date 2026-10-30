@@ -1,6 +1,6 @@
 # person:wrangell — Ferdinand von Wrangell
 
-- status: ratified
+- status: ratified chukchi
 - link: wikidata:Q135329
 - link: wikipedia:Ferdinand_von_Wrangel
 

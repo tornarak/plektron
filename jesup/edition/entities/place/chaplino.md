@@ -1,6 +1,6 @@
 # place:chaplino — Chaplino (town)
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 64.4051 -172.2409
 - link: wikipedia:Cape_Chaplino

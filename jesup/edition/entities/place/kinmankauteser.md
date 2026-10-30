@@ -1,6 +1,6 @@
 # place:kinmankauteser — Kinmankauteser
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukotka
 - geo: 69.5992 177.2827
 

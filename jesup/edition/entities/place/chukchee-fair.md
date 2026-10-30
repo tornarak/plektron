@@ -1,6 +1,6 @@
 # place:chukchee-fair — Chukchee Fair
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukotka
 - geo: 62.427460 169.460155
 

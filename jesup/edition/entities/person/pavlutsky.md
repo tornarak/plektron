@@ -1,6 +1,6 @@
 # person:pavlutsky — Pavlutsky
 
-- status: ratified
+- status: ratified chukchi
 
 ## aliases
 

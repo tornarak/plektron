@@ -1,6 +1,6 @@
 # source:bogoras-1900 — Bogoras, Chukchee Materials
 
-- status: ratified
+- status: ratified chukchi
 - authority: bogoras1900
 
 ## aliases

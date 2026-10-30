@@ -1,6 +1,6 @@
 # place:yavina — Yavina
 
-- status: ratified
+- status: ratified chukchi
 - within: land:kamchatka
 - geo: 51.7042 156.504
 - link: geonames:2119559

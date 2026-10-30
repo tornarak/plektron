@@ -1,6 +1,6 @@
 # source:mason-1902 — Mason, Traps
 
-- status: ratified
+- status: ratified chukchi
 - authority: mason1902
 
 ## aliases

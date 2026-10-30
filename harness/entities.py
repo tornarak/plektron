@@ -81,7 +81,7 @@ from typing import TypedDict
 from . import pictures
 from .geo import index as geo_index
 from .langs import ALIAS_LANGS
-from .layout import citation_errors, shared, workspace_stems
+from .layout import STEM_RE, citation_errors, shared, stem, workspace_stems
 from .lookup import case_variants
 from .parallel import ptrack
 
@@ -258,7 +258,7 @@ ALIASES = "aliases"
 # neither subscripts `path`. That is luck rather than design, and the split is
 # what turns it into something a checker can state.
 PARSE_FIELDS = (
-    "id", "class", "slug", "canonical", "status",
+    "id", "class", "slug", "canonical", "status", "ratified",
     "within", "part_of", "geo", "frame", "links",
     "authority", "image", "aliases", "gloss",
 )
@@ -299,6 +299,7 @@ class ParsedEntity(TypedDict):
     slug: str
     canonical: str
     status: str
+    ratified: tuple[str, ...]
     within: str
     part_of: str
     geo: list
@@ -508,6 +509,28 @@ def spell_geo(rec: dict) -> list[str]:
             for m in rec["geo"]]
 
 
+def for_text(rec: dict, root: Path) -> dict:
+    """`rec` as this text sees it: ratified only if ratified *for* this text.
+
+    So a new text starts with no licensed links, and every caller of `auto_forms` gets
+    that without changing: another book's ratification reads here as `proposed`, and
+    the generator asks a human about the form instead of linking it.
+    """
+    return {**rec, "status": "ratified" if stem(root) in rec["ratified"] else "proposed"}
+
+
+def ratify_text(text: str, root: Path) -> str:
+    """An entry's file with this text added to its ratifications. Unchanged if it
+    had this text already, or holds no status line to change."""
+    own = stem(root)
+
+    def add(m: re.Match) -> str:
+        have = m[1].split()[1:]
+        return m[0] if own in have else f"- status: ratified {' '.join([*have, own])}\n"
+    return re.sub(r"^- status: ((?:proposed|ratified)(?: \S+)*)\n", add, text, count=1,
+                  flags=re.M)
+
+
 def parse(text: str, where: str = "") -> dict:
     """One entity file's text → its record. Raises `Malformed` on anything unclear.
 
@@ -551,9 +574,15 @@ def parse(text: str, where: str = "") -> dict:
             raise Malformed(f"{at}`{key}:` given {len(v)} times; it takes one value")
         return v[0] if v else ""
 
-    status = one("status")
+    status, *ratified = (one("status") or "").split() or [None]
     if status not in STATUSES:
         raise Malformed(f"{at}status {status!r} — one of {', '.join(STATUSES)}")
+    # **A ratification names the texts it was made against**, because an alias says
+    # "this form, in this book, means this entity". `load` reads it for one text.
+    if (status == "ratified") != bool(ratified) or not all(
+            STEM_RE.match(s) for s in ratified):
+        raise Malformed(f"{at}status: `proposed`, or `ratified` and the text stems "
+                        f"it was made against, e.g. `ratified chukchi`")
     within = one("within")
     if within:
         split_id(within)          # raises with the same message as everywhere else
@@ -698,6 +727,7 @@ def parse(text: str, where: str = "") -> dict:
         "slug": slug,
         "canonical": canonical,
         "status": status,
+        "ratified": tuple(ratified),
         "within": within,
         "part_of": part_of,
         "geo": geo,
@@ -722,7 +752,7 @@ def load(root: Path = Path(".")) -> dict[str, dict]:
     if not d.is_dir():
         return out
     for p in sorted(d.glob("*/*.md")):
-        rec = parse(p.read_text(encoding="utf-8"), where=str(p))
+        rec = for_text(parse(p.read_text(encoding="utf-8"), where=str(p)), root)
         rec["dir_class"] = p.parent.name
         rec["stem"] = p.stem
         rec["path"] = str(p)
@@ -1331,7 +1361,8 @@ def check(root: Path = Path("."), tick: Callable | None = None) -> dict:
     if d.is_dir():
         for p in ptrack(sorted(d.glob("*/*.md")), tick):
             try:
-                rec = parse(p.read_text(encoding="utf-8"), where=str(p))
+                rec = for_text(parse(p.read_text(encoding="utf-8"), where=str(p)),
+                               root)
             except (Malformed, ValueError) as e:
                 errors.append(str(e))
                 continue
@@ -1437,6 +1468,8 @@ def check(root: Path = Path("."), tick: Callable | None = None) -> dict:
             for prose in (rec["gloss"], *(t["note"] for t in rec["aliases"])):
                 errors += [f"{rec['path']}: {e}" for e in citation_errors(prose, root)]
     stems = workspace_stems(root)
+    errors += [f"{r['path']}: ratified for `{s}`, which no text here declares"
+               for r in store.values() for s in r["ratified"] if s not in stems]
     errors += [f"two texts here declare the stem `{s}`, so `{s}-PP-NNN` names no one page"
                for s in sorted({s for s in stems if stems.count(s) > 1})]
     # Acyclic, so a containment chain terminates. A cycle would hang the

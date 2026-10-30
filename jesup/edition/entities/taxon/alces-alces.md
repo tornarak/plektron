@@ -1,6 +1,6 @@
 # taxon:alces-alces — Alces alces
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:mammalia
 - link: wikidata:Q35517
 - link: wikipedia:Moose

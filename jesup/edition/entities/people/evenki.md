@@ -1,6 +1,6 @@
 # people:evenki — Evenki
 
-- status: ratified
+- status: ratified chukchi
 - geo: langarea:even1259
 - link: wikidata:Q191730
 - link: wikipedia:Evenki_people

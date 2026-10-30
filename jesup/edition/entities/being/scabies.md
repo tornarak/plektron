@@ -1,6 +1,6 @@
 # being:scabies — Scabies
 
-- status: ratified
+- status: ratified chukchi
 - link: wikidata:Q167178
 - link: wikipedia:Scabies
 

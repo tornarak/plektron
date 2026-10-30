@@ -1,6 +1,6 @@
 # place:nigchien — Nigchien
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 65.0896 -172.0854
 

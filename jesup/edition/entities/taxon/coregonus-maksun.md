@@ -1,6 +1,6 @@
 # taxon:coregonus-maksun — Coregonus maksun
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:coregonus
 - link: wikidata:Q197957
 - link: wikipedia:Muksun

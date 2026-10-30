@@ -1,6 +1,6 @@
 # taxon:balaena-mysticetus — Balaena mysticetus
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:cetacea
 - link: wikidata:Q174652
 - link: wikipedia:Bowhead_whale

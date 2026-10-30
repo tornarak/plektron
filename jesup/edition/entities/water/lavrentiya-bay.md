@@ -1,6 +1,6 @@
 # water:lavrentiya-bay — Lavrentiya Bay
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 65.6642 -171.097
 - link: geonames:2119248

@@ -1,6 +1,6 @@
 # taxon:strix-nyctea — Strix nyctea
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:aves
 - link: wikidata:Q122583715
 

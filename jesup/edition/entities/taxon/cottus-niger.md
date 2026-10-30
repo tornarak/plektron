@@ -1,6 +1,6 @@
 # taxon:cottus-niger — Cottus niger
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:cottus
 - link: wikidata:Q106429254
 

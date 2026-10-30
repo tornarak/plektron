@@ -1,6 +1,6 @@
 # taxon:pinnipedia — Pinnipedia
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:carnivora
 - link: wikidata:Q30263
 - link: wikipedia:Pinniped

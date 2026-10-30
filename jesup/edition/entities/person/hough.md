@@ -1,6 +1,6 @@
 # person:hough — Walter Hough
 
-- status: ratified
+- status: ratified chukchi
 - link: wikidata:Q7965168
 - link: wikipedia:Walter_Hough
 

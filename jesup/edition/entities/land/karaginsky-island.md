@@ -1,6 +1,6 @@
 # land:karaginsky-island — Karaginsky Island
 
-- status: ratified
+- status: ratified chukchi
 - within: water:karaginsky-gulf
 - geo: region:karagha-island
 - link: wikidata:Q1146381

@@ -1,6 +1,6 @@
 # person:adler — Bruno Adler
 
-- status: ratified
+- status: ratified chukchi
 
 ## aliases
 

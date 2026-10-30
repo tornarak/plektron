@@ -1,6 +1,6 @@
 # river:large-chukchee-river — Large Chukchee River
 
-- status: ratified
+- status: ratified chukchi
 - within: land:northeast-siberia
 - geo: watershed:bolshaya-chukochka-or-large-chukchee
 - link: geonames:2126618

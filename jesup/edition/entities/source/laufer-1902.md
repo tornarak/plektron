@@ -1,6 +1,6 @@
 # source:laufer-1902 — Laufer 1902
 
-- status: ratified
+- status: ratified chukchi
 - authority: laufer1902
 
 ## aliases

@@ -1,6 +1,6 @@
 # source:nordenskiold-1882 — Nordenskiöld, I, II
 
-- status: ratified
+- status: ratified chukchi
 - authority: nordenskiold1882
 
 ## aliases

@@ -1,6 +1,6 @@
 # land:palpal — Palpal
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukotka
 - geo: 62.3618 171.5486
 - frame: 169.30 62.10 172.60 62.65

@@ -1,6 +1,6 @@
 # people:namollo — Namollo
 
-- status: ratified
+- status: ratified chukchi
 
 ## aliases
 

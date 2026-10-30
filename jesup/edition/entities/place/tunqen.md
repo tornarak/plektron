@@ -1,6 +1,6 @@
 # place:tunqen — Tunqen
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 66.2043 -170.1092
 

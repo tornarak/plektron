@@ -1,6 +1,6 @@
 # place:under-the-cliffs — Under the Cliffs
 
-- status: ratified
+- status: ratified chukchi
 - within: river:anadyr
 - geo: 65.409886 173.445792
 

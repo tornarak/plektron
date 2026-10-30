@@ -1,6 +1,6 @@
 # people:chukchi — Chukchi
 
-- status: ratified
+- status: ratified chukchi
 - geo: base:chukotka-east-of-meridian
 - geo: langarea:chuk1273
 - link: wikidata:Q106991

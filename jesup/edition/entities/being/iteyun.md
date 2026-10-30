@@ -1,6 +1,6 @@
 # being:iteyun — iteˊyun
 
-- status: ratified
+- status: ratified chukchi
 - link: wikidata:Q495146
 - link: wikipedia:Trichinellosis
 

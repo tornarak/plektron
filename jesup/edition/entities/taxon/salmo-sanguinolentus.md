@@ -1,6 +1,6 @@
 # taxon:salmo-sanguinolentus — Salmo sanguinolentus
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:salmonidae
 
 ## aliases

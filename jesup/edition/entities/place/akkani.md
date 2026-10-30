@@ -1,6 +1,6 @@
 # place:akkani — Akkani
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 65.4970 -171.1729
 

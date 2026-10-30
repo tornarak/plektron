@@ -1,6 +1,6 @@
 # land:kihini — Kihini
 
-- status: ratified
+- status: ratified chukchi
 - within: water:bering-strait
 - geo: region:kihini
 

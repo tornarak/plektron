@@ -1,6 +1,6 @@
 # land:chukchi-peninsula — Chukchi Peninsula
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukotka
 - geo: region:chukchi-peninsula
 - frame: 180.7 63.7 190.9 68.6

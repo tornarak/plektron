@@ -1,6 +1,6 @@
 # taxon:erignathus-barbatus — Erignathus barbatus
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:phocidae
 - link: wikidata:Q149405
 - link: wikipedia:Bearded_seal

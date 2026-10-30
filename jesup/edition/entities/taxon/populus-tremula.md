@@ -1,6 +1,6 @@
 # taxon:populus-tremula — Populus tremula
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:populus
 - link: wikidata:Q146110
 - link: wikipedia:Populus_tremula

@@ -1,6 +1,6 @@
 # river:kolyma — Kolyma
 
-- status: ratified
+- status: ratified chukchi
 - within: land:northeast-siberia
 - geo: watershed:kolyma
 - link: wikidata:Q78879

@@ -1,6 +1,6 @@
 # source:the-shaman-with-warts — The Shaman with Warts
 
-- status: ratified
+- status: ratified chukchi
 - part-of: source:bogoras-1900
 
 ## aliases

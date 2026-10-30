@@ -1,6 +1,6 @@
 # taxon:aves — Aves
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:animalia
 - link: wikidata:Q5113
 - link: wikipedia:Bird

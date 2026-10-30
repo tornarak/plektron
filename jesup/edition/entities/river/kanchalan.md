@@ -1,6 +1,6 @@
 # river:kanchalan — Kanchalan
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukotka
 - geo: watershed:kanchalan
 

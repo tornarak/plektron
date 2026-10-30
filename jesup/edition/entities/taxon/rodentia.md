@@ -1,6 +1,6 @@
 # taxon:rodentia — Rodentia
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:mammalia
 - link: wikidata:Q10850
 - link: wikipedia:Rodent

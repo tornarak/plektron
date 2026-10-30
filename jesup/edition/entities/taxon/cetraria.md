@@ -1,6 +1,6 @@
 # taxon:cetraria — Cetraria
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:lichenes
 - link: wikidata:Q134917
 - link: wikipedia:Cetraria

@@ -1,6 +1,6 @@
 # people:koryak — Koryak
 
-- status: ratified
+- status: ratified chukchi
 - geo: langarea:kory1246
 - link: wikipedia:Koryaks
 - link: wikidata:Q281117

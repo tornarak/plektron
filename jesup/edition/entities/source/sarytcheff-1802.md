@@ -1,6 +1,6 @@
 # source:sarytcheff-1802 — Sarytcheff 1802
 
-- status: ratified
+- status: ratified chukchi
 - authority: sarytcheff1802
 
 ## aliases

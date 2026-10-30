@@ -1,6 +1,6 @@
 # taxon:coregonus-omul — Coregonus omul
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:coregonus
 - link: wikidata:Q6714971
 - link: wikipedia:Arctic_cisco

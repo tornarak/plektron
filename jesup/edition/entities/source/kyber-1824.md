@@ -1,6 +1,6 @@
 # source:kyber-1824 — Kyber, II
 
-- status: ratified
+- status: ratified chukchi
 - authority: kyber1824
 
 ## aliases

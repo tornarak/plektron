@@ -1,6 +1,6 @@
 # taxon:ursus-arctos — Ursus arctos
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:ursus
 - link: wikidata:Q36341
 - link: wikipedia:Brown_bear

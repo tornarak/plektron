@@ -1,6 +1,6 @@
 # person:argentov — A. Argentov
 
-- status: ratified
+- status: ratified chukchi
 
 ## aliases
 

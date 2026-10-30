@@ -1,6 +1,6 @@
 # taxon:oxyria-digina — Oxyria digina
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:plantae
 - link: wikidata:Q1444183
 - link: wikipedia:Oxyria_digyna

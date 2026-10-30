@@ -1,6 +1,6 @@
 # water:chaunskaya-bay — Chaunskaya Bay
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukotka
 - geo: marine:chaun-bay
 - link: wikipedia:Chaunskaya_Bay

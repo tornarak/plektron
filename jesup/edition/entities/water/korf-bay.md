@@ -1,6 +1,6 @@
 # water:korf-bay — Korf Bay
 
-- status: ratified
+- status: ratified chukchi
 - within: land:kamchatka
 - geo: 60.0333 165.733
 - link: wikidata:Q1108019

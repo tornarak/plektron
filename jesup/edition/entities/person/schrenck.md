@@ -1,6 +1,6 @@
 # person:schrenck — Leopold von Schrenck
 
-- status: ratified
+- status: ratified chukchi
 - link: wikidata:Q55072449
 - link: wikipedia:Leopold_von_Schrenck
 

@@ -1,6 +1,6 @@
 # taxon:coregonus-nasutus — Coregonus nasutus
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:coregonus
 - link: wikidata:Q106428244
 

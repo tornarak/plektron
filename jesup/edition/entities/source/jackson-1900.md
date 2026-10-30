@@ -1,6 +1,6 @@
 # source:jackson-1900 — Jackson, I
 
-- status: ratified
+- status: ratified chukchi
 - authority: jackson1900
 
 ## aliases

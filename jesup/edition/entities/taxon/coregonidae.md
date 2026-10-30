@@ -1,6 +1,6 @@
 # taxon:coregonidae — Coregonidæ
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:pisces
 - link: wikidata:Q782971
 - link: wikipedia:Freshwater_whitefish

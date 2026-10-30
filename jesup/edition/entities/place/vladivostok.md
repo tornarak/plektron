@@ -1,6 +1,6 @@
 # place:vladivostok — Vladivostok
 
-- status: ratified
+- status: ratified chukchi
 - within: land:russian-far-east
 - geo: 43.115 131.885
 - link: wikipedia:Vladivostok

@@ -1,6 +1,6 @@
 # taxon:pisces — Pisces
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:animalia
 
 ## aliases

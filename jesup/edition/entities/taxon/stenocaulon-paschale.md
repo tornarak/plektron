@@ -1,6 +1,6 @@
 # taxon:stenocaulon-paschale — Stenocaulon paschale
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:lichenes
 - link: wikidata:Q10647928
 - link: wikipedia:Stereocaulon_paschale

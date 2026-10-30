@@ -1,6 +1,6 @@
 # place:uelen — Uelen
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 66.1607 -169.8183
 - link: wikidata:Q860712

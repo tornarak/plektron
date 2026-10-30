@@ -1,6 +1,6 @@
 # place:kukun — Kukun
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 65.5158 -171.2346
 

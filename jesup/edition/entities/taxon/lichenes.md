@@ -1,6 +1,6 @@
 # taxon:lichenes — Lichenes
 
-- status: ratified
+- status: ratified chukchi
 
 ## aliases
 

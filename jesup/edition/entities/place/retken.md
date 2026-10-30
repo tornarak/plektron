@@ -1,6 +1,6 @@
 # place:retken — Rêˊtkên
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 65.5304 -177.1762
 

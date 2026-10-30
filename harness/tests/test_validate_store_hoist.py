@@ -36,7 +36,7 @@ def repo(tmp_path: Path) -> Path:
     d.mkdir(parents=True)
     (d / "mariinsky-post.md").write_text(
         "# place:mariinsky-post — Mariinsky Post\n\n"
-        "- status: ratified\n\n"
+        "- status: ratified chukchi\n\n"
         "## aliases\n\n"
         "| form | lang | auto | note |\n"
         "|---|---|---|---|\n"
@@ -135,7 +135,7 @@ class TestValidateTakesASuppliedStore:
         ctx = {"page_ref": "1-151", "root": str(repo)}
         first = validate(page, ctx).metrics["entity_refs"]
         (repo / "edition" / "entities" / "place" / "anadyr.md").write_text(
-            "# place:anadyr — Anadyr\n\n- status: ratified\n\n## aliases\n\n"
+            "# place:anadyr — Anadyr\n\n- status: ratified chukchi\n\n## aliases\n\n"
             "| form | lang | auto | note |\n|---|---|---|---|\n"
             "| Anadyr | | yes | |\n", encoding="utf-8")
         assert validate(page, ctx).metrics["entity_refs"] == first

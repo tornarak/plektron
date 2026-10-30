@@ -1,6 +1,6 @@
 # taxon:polygonum-viviparum — Polygonum viviparum
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:polygonum
 - link: wikidata:Q21877025
 

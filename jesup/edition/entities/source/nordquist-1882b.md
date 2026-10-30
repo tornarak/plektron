@@ -1,6 +1,6 @@
 # source:nordquist-1882b — Nordquist 1882b
 
-- status: ratified
+- status: ratified chukchi
 - authority: nordquist1882b
 
 ## aliases

@@ -1,6 +1,6 @@
 # people:yakut — Yakut
 
-- status: ratified
+- status: ratified chukchi
 - geo: langarea:yaku1245
 - link: wikidata:Q486316
 - link: wikipedia:Yakuts

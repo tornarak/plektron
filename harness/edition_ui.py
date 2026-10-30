@@ -47,6 +47,7 @@ from .entities import (
     kin_parent,
     load,
     path_for,
+    ratify_text,
     split_id,
     tree_parent,
 )
@@ -475,6 +476,7 @@ SHOWN_ELSEWHERE = {
     "slug",  # the identity, in the heading and the code
     "canonical",
     "status",
+    "ratified",  # read into `status` by `load`, for the text being served
     "links",
     "image",  # the figure under the heading, `_entity.html`
     "aliases",
@@ -951,12 +953,13 @@ def _ratify(ent_id: str, root: Path) -> dict:
     if not p.exists():
         return {"error": f"no entry at {p}"}
     before = p.read_text(encoding="utf-8")
-    if "- status: proposed" not in before:
+    after = ratify_text(before, root)
+    if after == before:
         return {"error": "not a proposed entry"}
 
     def write():
         p.write_text(
-            before.replace("- status: proposed", "- status: ratified", 1),
+            after,
             encoding="utf-8",
         )
         # **The same second half as `harness entity ratify`**, because there are

@@ -1,6 +1,6 @@
 # people:physical-anthropology — Physical anthropology
 
-- status: ratified
+- status: ratified chukchi
 
 ## aliases
 

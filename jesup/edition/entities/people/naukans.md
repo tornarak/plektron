@@ -1,6 +1,6 @@
 # people:naukans — Naukans
 
-- status: ratified
+- status: ratified chukchi
 - part-of: people:siberian-yupik
 - geo: place:naukan
 - geo: place:dezhnyovo

@@ -1,6 +1,6 @@
 # river:keperveyem — Keperveyem
 
-- status: ratified
+- status: ratified chukchi
 - within: river:maliy-anyuy
 - geo: watershed:keperveyem-or-wolverine
 

@@ -1,6 +1,6 @@
 # taxon:aconita — Aconita
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:plantae
 - link: wikidata:Q155904
 - link: wikipedia:Aconitum

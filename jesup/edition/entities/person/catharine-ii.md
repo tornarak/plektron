@@ -1,6 +1,6 @@
 # person:catharine-ii — Catharine the Second
 
-- status: ratified
+- status: ratified chukchi
 - link: wikidata:Q36450
 - link: wikipedia:Catherine_the_Great
 

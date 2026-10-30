@@ -1,6 +1,6 @@
 # water:karaginsky-gulf — Karaginsky Gulf
 
-- status: ratified
+- status: ratified chukchi
 - within: land:kamchatka
 - geo: marine:karagha-bay
 

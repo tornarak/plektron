@@ -1,6 +1,6 @@
 # person:kyber — Dr. Kyber
 
-- status: ratified
+- status: ratified chukchi
 
 ## aliases
 

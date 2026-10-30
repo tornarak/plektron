@@ -1738,7 +1738,7 @@ def test_the_properties_block_shows_the_geography(tmp_path):
     against the map beside it."""
     entry(tmp_path, "place:y", aliases=[("Y", False)])
     p = tmp_path / "edition" / "entities" / "place" / "x.md"
-    p.write_text("# place:x — X\n\n- status: ratified\n- since: 1-021\n"
+    p.write_text("# place:x — X\n\n- status: ratified chukchi\n- since: 1-021\n"
                  "- within: place:y\n- geo: 66.0 170.0\n\n## aliases\n\n"
                  "| form | lang | auto | note |\n|---|---|---|---|\n\n## gloss\n\nx\n",
                  encoding="utf-8")
@@ -1762,7 +1762,7 @@ def test_a_geo_member_reads_both_ways(tmp_path):
     entry(tmp_path, "place:z", aliases=[("Z", False)])
     p = tmp_path / "edition" / "entities" / "people" / "x.md"
     p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text("# people:x — X\n\n- status: ratified\n- since: 1-021\n"
+    p.write_text("# people:x — X\n\n- status: ratified chukchi\n- since: 1-021\n"
                  "- geo: place:y\n- geo: place:z\n\n## aliases\n\n"
                  "| form | lang | auto | note |\n|---|---|---|---|\n\n## gloss\n\nx\n",
                  encoding="utf-8")
@@ -1821,7 +1821,7 @@ def test_the_atlas_travels_as_facts_the_store_already_answers(server):
     base, root = server
     entry(root, "place:parent", aliases=[("P", False)])
     p = root / "edition" / "entities" / "place" / "kid.md"
-    p.write_text("# place:kid — Kid\n\n- status: ratified\n- since: 1-021\n"
+    p.write_text("# place:kid — Kid\n\n- status: ratified chukchi\n- since: 1-021\n"
                  "- within: place:parent\n- geo: 66.0 170.0\n\n## aliases\n\n"
                  "| form | lang | auto | note |\n|---|---|---|---|\n\n## gloss\n\nx\n",
                  encoding="utf-8")

@@ -1,6 +1,6 @@
 # source:maydell-1893 — Maydell, I, II
 
-- status: ratified
+- status: ratified chukchi
 - authority: maydell1893
 
 ## aliases

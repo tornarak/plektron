@@ -1,6 +1,6 @@
 # source:argentoff-1857a — Argentoff, I
 
-- status: ratified
+- status: ratified chukchi
 - authority: argentoff1857a
 
 ## aliases

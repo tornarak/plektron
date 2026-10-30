@@ -1,6 +1,6 @@
 # place:uten — Uˊten
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 66.3757 -170.6167
 

@@ -1,6 +1,6 @@
 # place:anadyr — Anadyr (town)
 
-- status: ratified
+- status: ratified chukchi
 - within: river:anadyr
 - geo: 64.7337 177.5153
 - link: wikipedia:Anadyr_(town)

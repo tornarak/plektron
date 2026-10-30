@@ -1,6 +1,6 @@
 # being:small-pox — Small-pox
 
-- status: ratified
+- status: ratified chukchi
 - link: wikidata:Q12214
 - link: wikipedia:Smallpox
 

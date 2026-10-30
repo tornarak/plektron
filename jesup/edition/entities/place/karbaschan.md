@@ -1,6 +1,6 @@
 # place:karbaschan — Karbaschan
 
-- status: ratified
+- status: ratified chukchi
 - within: river:omolon
 - geo: 65.653364 159.398822
 

@@ -1,6 +1,6 @@
 # taxon:salix — Salix
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:plantae
 - link: wikidata:Q36050
 - link: wikipedia:Willow

@@ -1,6 +1,6 @@
 # place:chutpen — Chutpen
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 66.5218 -170.9582
 

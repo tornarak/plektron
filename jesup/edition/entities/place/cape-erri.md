@@ -1,6 +1,6 @@
 # place:cape-erri — Cape Erri
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukotka
 - geo: 70.1069 170.4873
 

@@ -1,6 +1,6 @@
 # place:paren — Paren
 
-- status: ratified
+- status: ratified chukchi
 - within: land:kamchatka
 - geo: 62.4173 163.092
 - link: geonames:2122227

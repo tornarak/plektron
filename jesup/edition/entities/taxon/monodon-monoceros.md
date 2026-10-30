@@ -1,6 +1,6 @@
 # taxon:monodon-monoceros — Monodon monoceros
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:cetacea
 - link: wikidata:Q159426
 - link: wikipedia:Narwhal

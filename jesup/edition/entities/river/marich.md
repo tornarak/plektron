@@ -1,6 +1,6 @@
 # river:marich — Marich
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: watershed:marich
 

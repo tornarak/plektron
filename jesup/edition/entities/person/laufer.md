@@ -1,6 +1,6 @@
 # person:laufer — Berthold Laufer
 
-- status: ratified
+- status: ratified chukchi
 - link: wikidata:Q71600
 - link: wikipedia:Berthold_Laufer
 - image: commons:Laufer1933PortraitCSGN7778.jpg

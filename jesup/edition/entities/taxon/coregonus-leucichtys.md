@@ -1,6 +1,6 @@
 # taxon:coregonus-leucichtys — Coregonus leucichtys
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:coregonus
 - link: wikidata:Q855485
 - link: wikipedia:Stenodus_leucichthys

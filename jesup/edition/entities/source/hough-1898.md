@@ -1,6 +1,6 @@
 # source:hough-1898 — Hough, Lamp
 
-- status: ratified
+- status: ratified chukchi
 - authority: hough1898
 
 ## aliases

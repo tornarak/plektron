@@ -1,6 +1,6 @@
 # place:sirenik — Sirenik
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 64.4072 -173.9428
 

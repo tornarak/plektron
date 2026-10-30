@@ -1,6 +1,6 @@
 # people:reindeer-chukchi — Reindeer Chukchi
 
-- status: ratified
+- status: ratified chukchi
 - part-of: people:chukchi
 - link: wikidata:Q106991
 - link: wikipedia:Chukchi_people

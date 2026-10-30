@@ -1,6 +1,6 @@
 # source:lutke-1834 — Lutke 1834
 
-- status: ratified
+- status: ratified chukchi
 - authority: lutke1834
 
 ## aliases

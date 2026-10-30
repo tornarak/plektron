@@ -1,6 +1,6 @@
 # person:slunin — N. V. Slunin
 
-- status: ratified
+- status: ratified chukchi
 
 ## aliases
 

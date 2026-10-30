@@ -1,6 +1,6 @@
 # place:lorino — Lorino
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 65.5036 -171.7014
 - link: wikidata:Q1010651

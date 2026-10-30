@@ -1,6 +1,6 @@
 # place:port-clarence — Port Clarence
 
-- status: ratified
+- status: ratified chukchi
 - within: land:alaska
 - geo: 65.2658 -166.852
 - link: wikipedia:Port_Clarence,_Alaska

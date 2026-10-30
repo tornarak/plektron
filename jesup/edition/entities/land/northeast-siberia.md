@@ -1,6 +1,6 @@
 # land:northeast-siberia — Northeast Siberia
 
-- status: ratified
+- status: ratified chukchi
 - within: land:russian-far-east
 - frame: 128.0 50.9 192.0 71.7
 

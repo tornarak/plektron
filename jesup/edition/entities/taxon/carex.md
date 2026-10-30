@@ -1,6 +1,6 @@
 # taxon:carex — Carex
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:plantae
 - link: wikidata:Q158501
 - link: wikipedia:Carex

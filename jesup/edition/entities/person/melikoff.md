@@ -1,6 +1,6 @@
 # person:melikoff — D. I. Melikoff
 
-- status: ratified
+- status: ratified chukchi
 
 ## aliases
 

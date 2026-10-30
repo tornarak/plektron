@@ -1,6 +1,6 @@
 # institution:imperial-academy-of-sciences — Imperial Academy of Sciences
 
-- status: ratified
+- status: ratified chukchi
 
 ## aliases
 

@@ -1,6 +1,6 @@
 # taxon:insecta — Insecta
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:animalia
 - link: wikidata:Q1390
 - link: wikipedia:Insect

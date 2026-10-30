@@ -1,6 +1,6 @@
 # water:penzhina-bay — Penzhina Bay
 
-- status: ratified
+- status: ratified chukchi
 - within: water:okhotsk-sea
 - geo: 61.25 163
 - link: wikipedia:Penzhina_Bay

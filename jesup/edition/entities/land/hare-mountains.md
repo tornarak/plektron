@@ -1,6 +1,6 @@
 # land:hare-mountains — Hare Mountains
 
-- status: ratified
+- status: ratified chukchi
 - within: river:kanchalan
 - geo: 65.33 177.76
 

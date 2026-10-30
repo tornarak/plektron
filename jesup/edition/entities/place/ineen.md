@@ -1,6 +1,6 @@
 # place:ineen — Ineen
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 66.3194 -170.4157
 

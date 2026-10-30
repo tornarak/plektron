@@ -348,7 +348,7 @@ def _store(tmp_path, *recs):
         cls, slug = ident.split(":")
         p = tmp_path / "edition" / "entities" / cls / f"{slug}.md"
         p.parent.mkdir(parents=True, exist_ok=True)
-        p.write_text(f"# {ident} — {slug}\n\n- status: ratified\n- since: 1-021\n"
+        p.write_text(f"# {ident} — {slug}\n\n- status: ratified chukchi\n- since: 1-021\n"
                      f"{extra}\n## aliases\n\n| form | lang | auto | note |\n|---|---|---|---|\n"
                      f"\n## gloss\n\nx\n", encoding="utf-8")
     return entities.load(tmp_path)

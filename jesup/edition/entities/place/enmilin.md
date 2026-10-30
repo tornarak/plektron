@@ -1,6 +1,6 @@
 # place:enmilin — ᴇˊnmɪlɪn
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 65.0125 -175.8414
 

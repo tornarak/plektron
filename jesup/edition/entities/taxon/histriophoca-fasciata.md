@@ -1,6 +1,6 @@
 # taxon:histriophoca-fasciata — Histriophoca fasciata
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:phocidae
 - link: wikidata:Q754895
 - link: wikipedia:Ribbon_seal

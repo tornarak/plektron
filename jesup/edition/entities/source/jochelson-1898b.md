@@ -1,6 +1,6 @@
 # source:jochelson-1898b — Jochelson 1898b
 
-- status: ratified
+- status: ratified chukchi
 - authority: jochelson1898b
 
 ## aliases

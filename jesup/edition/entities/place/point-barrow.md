@@ -1,6 +1,6 @@
 # place:point-barrow — Point Barrow
 
-- status: ratified
+- status: ratified chukchi
 - within: land:alaska
 - geo: 71.3919 -156.361
 - link: wikipedia:Point_Barrow

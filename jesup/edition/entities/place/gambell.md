@@ -1,6 +1,6 @@
 # place:gambell — Gambell
 
-- status: ratified
+- status: ratified chukchi
 - within: land:st-lawrence-island
 - geo: 63.7792 -171.7346
 - link: geonames:5862664

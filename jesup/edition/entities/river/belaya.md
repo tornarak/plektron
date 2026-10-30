@@ -1,6 +1,6 @@
 # river:belaya — Belaya
 
-- status: ratified
+- status: ratified chukchi
 - within: river:anadyr
 - geo: watershed:belaya-or-white
 

@@ -1,6 +1,6 @@
 # source:almquist-1882 — Almquist 1882
 
-- status: ratified
+- status: ratified chukchi
 - authority: almquist1882
 
 ## aliases

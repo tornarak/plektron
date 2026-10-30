@@ -1,6 +1,6 @@
 # taxon:boreogadus-polaris — Boreogadus polaris
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:gadidae
 - link: wikidata:Q106390226
 

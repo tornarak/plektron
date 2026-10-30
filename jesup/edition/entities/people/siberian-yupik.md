@@ -1,6 +1,6 @@
 # people:siberian-yupik — Siberian Yupik
 
-- status: ratified
+- status: ratified chukchi
 - part-of: people:yupik
 - geo: place:chaplino
 - geo: place:avan

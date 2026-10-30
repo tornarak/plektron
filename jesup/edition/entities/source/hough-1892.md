@@ -1,6 +1,6 @@
 # source:hough-1892 — Hough, Fire-Making
 
-- status: ratified
+- status: ratified chukchi
 - authority: hough1892
 
 ## aliases

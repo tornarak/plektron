@@ -1,6 +1,6 @@
 # place:megchigmen — Megchigmen
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 65.5571 -172.0368
 

@@ -1,6 +1,6 @@
 # person:boas — Franz Boas
 
-- status: ratified
+- status: ratified chukchi
 - link: wikidata:Q76857
 - link: wikipedia:Franz_Boas
 

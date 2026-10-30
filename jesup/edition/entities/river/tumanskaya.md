@@ -1,6 +1,6 @@
 # river:tumanskaya — Tumanskaya
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukotka
 - geo: watershed:tumanskaya-or-telqap
 

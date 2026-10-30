@@ -1,6 +1,6 @@
 # taxon:phoca — Phoca
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:phocidae
 - link: wikidata:Q878742
 - link: wikipedia:Phoca

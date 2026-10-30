@@ -1,6 +1,6 @@
 # source:hooper-1881 — Hooper 1881
 
-- status: ratified
+- status: ratified chukchi
 - authority: hooper1881
 
 ## aliases

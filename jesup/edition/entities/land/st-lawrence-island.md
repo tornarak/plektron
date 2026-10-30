@@ -1,6 +1,6 @@
 # land:st-lawrence-island — St. Lawrence Island
 
-- status: ratified
+- status: ratified chukchi
 - within: water:bering-strait
 - geo: region:st-lawrence-island
 - link: wikipedia:St._Lawrence_Island

@@ -1,6 +1,6 @@
 # taxon:vulpes — Vulpes
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:carnivora
 - link: wikidata:Q185194
 - link: wikipedia:Vulpes

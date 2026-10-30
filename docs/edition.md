@@ -297,7 +297,7 @@ paying 423 questions for it.
 
     # event:jesup-expedition — Jesup North Pacific Expedition
 
-    - status: ratified
+    - status: ratified chukchi
     - link: wikidata:Q1683389
     - geo: 66.05 -169.6
     - within: land:chukotka
@@ -884,6 +884,8 @@ run-in depths in small caps and italics.
 | amend an existing entry | a human | by hand, or the browser |
 | link a form by rule | `tei generate` | `resp="#mz"`, re-derived every run |
 | link one by reading | a collator | `resp="#llm"` |
+
+**A ratification names its texts.** `status: ratified chukchi` licenses the rule on that text's pages alone, because an alias says what a form means *in this book*. To any other text the entry reads as `proposed`: `entities.for_text` does that, so `auto_forms` and its callers do not change, a new text starts with no licensed links, and the generator asks a human about each form until `entity ratify` is run from that text.
 
 **Collators propose, and that is safe because a proposal is inert.** `entity new`
 writes `status: proposed`; `auto_forms` links only ratified entries; `ratify` is

@@ -1,6 +1,6 @@
 # taxon:cetraria-arctica — Cetraria arctica
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:cetraria
 
 ## aliases

@@ -1,6 +1,6 @@
 # water:bering-sea — Bering Sea
 
-- status: ratified
+- status: ratified chukchi
 - geo: marine:bering-sea
 
 ## aliases

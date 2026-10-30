@@ -1,6 +1,6 @@
 # people:itelmen — Itelmen
 
-- status: ratified
+- status: ratified chukchi
 - geo: langarea:itel1242
 - link: wikidata:Q1147405
 - link: wikipedia:Itelmens

@@ -1,6 +1,6 @@
 # land:kodiak-island — Kodiak Island
 
-- status: ratified
+- status: ratified chukchi
 - within: land:alaska
 - geo: 57.5 -153.5
 - link: wikipedia:Kodiak_Island

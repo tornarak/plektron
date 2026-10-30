@@ -1,6 +1,6 @@
 # place:imtun — Iˊmtun
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 64.4216 -173.7807
 

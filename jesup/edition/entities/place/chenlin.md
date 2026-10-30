@@ -1,6 +1,6 @@
 # place:chenlin — Čeˊnlin
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 64.6293 -174.3422
 

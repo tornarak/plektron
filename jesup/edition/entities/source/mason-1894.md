@@ -1,6 +1,6 @@
 # source:mason-1894 — Mason 1894
 
-- status: ratified
+- status: ratified chukchi
 - authority: mason1894
 
 ## aliases

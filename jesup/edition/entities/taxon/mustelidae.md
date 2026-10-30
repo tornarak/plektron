@@ -1,6 +1,6 @@
 # taxon:mustelidae — Mustelidae
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:carnivora
 - link: wikidata:Q25437
 - link: wikipedia:Mustelidae

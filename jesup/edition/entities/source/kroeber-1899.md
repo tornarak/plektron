@@ -1,6 +1,6 @@
 # source:kroeber-1899 — Kroeber 1899
 
-- status: ratified
+- status: ratified chukchi
 - authority: kroeber1899
 
 ## aliases

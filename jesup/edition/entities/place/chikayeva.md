@@ -1,6 +1,6 @@
 # place:chikayeva — Chikayeva
 
-- status: ratified
+- status: ratified chukchi
 - within: river:anadyr
 - geo: place:under-the-cliffs
 

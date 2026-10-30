@@ -1,6 +1,6 @@
 # taxon:rubus — Rubus
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:plantae
 - link: wikidata:Q602740
 - link: wikipedia:Rubus

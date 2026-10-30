@@ -1,6 +1,6 @@
 # source:bogoras-1902 — Bogoras, Anthropologist
 
-- status: ratified
+- status: ratified chukchi
 - authority: bogoras1902
 
 ## aliases

@@ -1,6 +1,6 @@
 # water:anadyr-bay — Anadyr Bay
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukotka
 - geo: marine:anadyr-bay
 

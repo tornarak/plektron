@@ -1,6 +1,6 @@
 # sky:lynx — Lynx
 
-- status: ratified
+- status: ratified chukchi
 - link: wikidata:Q10443
 - link: wikipedia:Lynx_(constellation)
 

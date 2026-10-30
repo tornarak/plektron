@@ -1,6 +1,6 @@
 # river:alaseya — Alaseya
 
-- status: ratified
+- status: ratified chukchi
 - within: land:northeast-siberia
 - geo: watershed:alazeya
 

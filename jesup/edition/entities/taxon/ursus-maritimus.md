@@ -1,6 +1,6 @@
 # taxon:ursus-maritimus — Ursus maritimus
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:ursus
 - link: wikidata:Q33609
 - link: wikipedia:Polar_bear

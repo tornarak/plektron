@@ -1,6 +1,6 @@
 # taxon:trichinella-nativa — Trichinella nativa
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:animalia
 - link: wikidata:Q3538968
 - link: wikipedia:Trichinella_nativa

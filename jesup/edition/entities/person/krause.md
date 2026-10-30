@@ -1,6 +1,6 @@
 # person:krause — Aurel Krause
 
-- status: ratified
+- status: ratified chukchi
 - link: wikidata:Q105262
 - link: wikipedia:Aurel_Krause
 

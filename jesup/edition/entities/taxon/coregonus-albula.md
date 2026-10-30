@@ -1,6 +1,6 @@
 # taxon:coregonus-albula — Coregonus albula
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:coregonus
 - link: wikidata:Q754061
 - link: wikipedia:Coregonus_albula

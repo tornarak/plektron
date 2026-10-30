@@ -1,6 +1,6 @@
 # source:gondatti-1898 — Gondatti 1898
 
-- status: ratified
+- status: ratified chukchi
 - authority: gondatti1898
 
 ## aliases

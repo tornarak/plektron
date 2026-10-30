@@ -1,6 +1,6 @@
 # water:kolyuchin-bay — Kolyuchin Bay
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 66.8333 -174.4
 - link: wikipedia:Kolyuchin_Bay

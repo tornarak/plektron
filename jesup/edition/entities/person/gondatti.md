@@ -1,6 +1,6 @@
 # person:gondatti — Nikolai Gondatti
 
-- status: ratified
+- status: ratified chukchi
 
 ## aliases
 

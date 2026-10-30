@@ -1,6 +1,6 @@
 # being:influenza — Influenza
 
-- status: ratified
+- status: ratified chukchi
 - link: wikidata:Q2840
 - link: wikipedia:Influenza
 

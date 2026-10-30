@@ -1,6 +1,6 @@
 # place:sredne-kolymsk — Sredne-Kolymsk
 
-- status: ratified
+- status: ratified chukchi
 - within: river:kolyma
 - geo: 67.4559 153.704
 - link: geonames:2121025

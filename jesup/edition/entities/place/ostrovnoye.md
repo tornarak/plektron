@@ -1,6 +1,6 @@
 # place:ostrovnoye — Ostrovnoye
 
-- status: ratified
+- status: ratified chukchi
 - within: river:maliy-anyuy
 - geo: 68.1104 164.175
 - link: geonames:2122356

@@ -1,6 +1,6 @@
 # source:murdoch-1892 — Murdoch 1892
 
-- status: ratified
+- status: ratified chukchi
 - authority: murdoch1892
 
 ## aliases

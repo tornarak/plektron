@@ -1,6 +1,6 @@
 # taxon:oxytropis — Oxytropis
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:plantae
 - link: wikidata:Q1424322
 - link: wikipedia:Oxytropis

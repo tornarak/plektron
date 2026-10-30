@@ -1,6 +1,6 @@
 # place:enmaat-khyr — Enmaat'khyr
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukotka
 - geo: 69.6517 176.8416
 

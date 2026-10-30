@@ -1,6 +1,6 @@
 # source:melikoff-1896 — Melikoff 1896
 
-- status: ratified
+- status: ratified chukchi
 - authority: melikoff1896
 
 ## aliases

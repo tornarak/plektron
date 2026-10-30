@@ -1,6 +1,6 @@
 # taxon:larix — Larix
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:plantae
 - link: wikidata:Q25618
 - link: wikipedia:Larch

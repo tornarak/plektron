@@ -1,6 +1,6 @@
 # taxon:vulpes-vulpes — Vulpes vulpes
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:vulpes
 - link: wikidata:Q8332
 - link: wikipedia:Red_fox

@@ -1,6 +1,6 @@
 # place:st-petersburg — St. Petersburg
 
-- status: ratified
+- status: ratified chukchi
 - geo: 59.95 30.3167
 - link: wikipedia:Saint_Petersburg
 - link: wikidata:Q656

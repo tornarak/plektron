@@ -1,6 +1,6 @@
 # taxon:corvus-corax — Corvus corax
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:aves
 - link: wikidata:Q25357
 - link: wikipedia:Common_raven

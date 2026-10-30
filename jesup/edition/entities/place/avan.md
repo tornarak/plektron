@@ -1,6 +1,6 @@
 # place:avan — Avan
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 64.2854 -173.2909
 

@@ -1,6 +1,6 @@
 # source:resin-1888 — Resin 1888
 
-- status: ratified
+- status: ratified chukchi
 - authority: resin1888
 
 ## aliases

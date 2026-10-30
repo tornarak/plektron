@@ -1,6 +1,6 @@
 # source:jackson-1902 — Jackson, II
 
-- status: ratified
+- status: ratified chukchi
 - authority: jackson1902
 
 ## aliases

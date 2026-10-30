@@ -1,6 +1,6 @@
 # place:yergin — Yergin
 
-- status: ratified
+- status: ratified chukchi
 - within: land:kihini
 - geo: 64.6885 -172.5181
 

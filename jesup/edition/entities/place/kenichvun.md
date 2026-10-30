@@ -1,6 +1,6 @@
 # place:kenichvun — Kenichvun
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 66.8683 -171.6976
 

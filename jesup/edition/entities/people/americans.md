@@ -1,6 +1,6 @@
 # people:americans — Americans
 
-- status: ratified
+- status: ratified chukchi
 - link: wikidata:Q846570
 - link: wikipedia:Americans
 

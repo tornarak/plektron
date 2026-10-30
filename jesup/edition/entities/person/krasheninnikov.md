@@ -1,6 +1,6 @@
 # person:krasheninnikov — Stepan Krasheninnikov
 
-- status: ratified
+- status: ratified chukchi
 - link: wikidata:Q469780
 - link: wikipedia:Stepan_Krasheninnikov
 

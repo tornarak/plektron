@@ -1,6 +1,6 @@
 # being:iumetun — iuˊmetun
 
-- status: ratified
+- status: ratified chukchi
 
 ## aliases
 

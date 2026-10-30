@@ -1,6 +1,6 @@
 # source:krause-1881 — Krause, I
 
-- status: ratified
+- status: ratified chukchi
 - authority: krause1881
 
 ## aliases

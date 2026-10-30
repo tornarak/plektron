@@ -1,6 +1,6 @@
 # place:kamenskoye — Kamenskoye
 
-- status: ratified
+- status: ratified chukchi
 - within: land:kamchatka
 - geo: 62.4687 166.207
 - link: wikipedia:Kamenskoye,_Kamchatka_Krai

@@ -1,6 +1,6 @@
 # place:vankarem — Vankarem
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukotka
 - geo: 67.8408 -175.8382
 - link: wikidata:Q3536089

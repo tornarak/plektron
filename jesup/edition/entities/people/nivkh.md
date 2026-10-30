@@ -1,6 +1,6 @@
 # people:nivkh — Nivkh
 
-- status: ratified
+- status: ratified chukchi
 - link: wikidata:Q60046
 - link: wikipedia:Nivkh_people
 

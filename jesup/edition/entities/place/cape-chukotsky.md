@@ -1,6 +1,6 @@
 # place:cape-chukotsky — Cape Chukotsky
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 64.2667 -173.067
 - link: wikipedia:Cape_Chukotsky

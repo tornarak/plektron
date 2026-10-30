@@ -41,7 +41,7 @@ def entry(root: Path, ident: str, *, status: str = "ratified",
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(
         f"# {ident} — {canonical or slug.title()}\n\n"
-        f"- status: {status}\n{extra}"
+        f"- status: {status}{' chukchi' if status == 'ratified' else ''}\n{extra}"
         f"\n## aliases\n\n| form | lang | auto | note |\n|---|---|---|---|\n"
         f"{rows}\n\n## gloss\n\n{gloss}\n", encoding="utf-8")
     return p
@@ -114,7 +114,7 @@ def test_there_is_no_since_field(tmp_path):
     no gate, nothing rendering it."""
     p = entry(tmp_path, "place:markova")
     p.write_text(p.read_text(encoding="utf-8").replace(
-        "- status: ratified\n", "- status: ratified\n- since: 1-021\n"),
+        "- status: ratified chukchi\n", "- status: ratified chukchi\n- since: 1-021\n"),
         encoding="utf-8")
     assert "since" not in E.load(tmp_path)["place:markova"]
 
@@ -494,7 +494,7 @@ def test_a_field_that_exists_is_replaced_where_it_stands():
     of an entity file a reordering with a change somewhere inside it."""
     from harness.cli._entity import _set_field
 
-    text = ("# place:x — X\n\n- status: ratified\n"
+    text = ("# place:x — X\n\n- status: ratified chukchi\n"
             "- within: place:y\n- geo: 1.0 2.0\n- link: wikidata:Q1\n\n"
             "## gloss\n\nx\n")
     got = _set_field(text, "geo", "3.0 4.0")
@@ -507,7 +507,7 @@ def test_a_field_that_is_missing_is_inserted_where_the_scaffold_puts_it():
     divided into what was typed and what a command set."""
     from harness.cli._entity import FIELD_ORDER, _set_field
 
-    text = ("# place:x — X\n\n- status: ratified\n"
+    text = ("# place:x — X\n\n- status: ratified chukchi\n"
             "- link: wikidata:Q1\n\n## gloss\n\nx\n")
     got = _set_field(text, "geo", "watershed:anadyr")
     fields = [line[2:].split(":")[0] for line in got.splitlines()
@@ -521,7 +521,7 @@ def test_a_field_is_never_written_into_the_gloss():
     line the same way."""
     from harness.cli._entity import _set_field
 
-    text = ("# place:x — X\n\n- status: ratified\n- since: 1-021\n\n"
+    text = ("# place:x — X\n\n- status: ratified chukchi\n- since: 1-021\n\n"
             "## gloss\n\n- authority: this is prose\n")
     got = _set_field(text, "authority", "k")
     head, _, gloss = got.partition("## gloss")

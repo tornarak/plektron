@@ -1,6 +1,6 @@
 # taxon:oedemagena-tarandi — Œdemagena tarandi
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:diptera
 
 ## aliases

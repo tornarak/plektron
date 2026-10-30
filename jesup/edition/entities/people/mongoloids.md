@@ -1,6 +1,6 @@
 # people:mongoloids — Mongoloids
 
-- status: ratified
+- status: ratified chukchi
 - part-of: people:physical-anthropology
 
 ## aliases

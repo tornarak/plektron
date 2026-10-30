@@ -1,6 +1,6 @@
 # people:yukaghir — Yukaghir
 
-- status: ratified
+- status: ratified chukchi
 - geo: langarea:sout2750
 - link: wikipedia:Yukaghir_people
 - link: wikidata:Q720386

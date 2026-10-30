@@ -1,6 +1,6 @@
 # place:cape-nome — Cape Nome
 
-- status: ratified
+- status: ratified chukchi
 - within: land:alaska
 - geo: 64.4349 -165.01
 - link: geonames:5870141

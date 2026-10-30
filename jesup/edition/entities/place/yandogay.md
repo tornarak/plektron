@@ -1,6 +1,6 @@
 # place:yandogay — Yandogay
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 65.4772 -171.0185
 

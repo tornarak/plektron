@@ -1,6 +1,6 @@
 # being:syphilis — Syphilis
 
-- status: ratified
+- status: ratified chukchi
 - link: wikidata:Q41083
 - link: wikipedia:Syphilis
 

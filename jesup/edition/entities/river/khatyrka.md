@@ -1,6 +1,6 @@
 # river:khatyrka — Khatyrka
 
-- status: ratified
+- status: ratified chukchi
 - within: land:kamchatka
 - geo: watershed:khatyrka-or-ilpi
 - link: wikipedia:Khatyrka_(river)

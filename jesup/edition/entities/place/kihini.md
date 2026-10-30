@@ -1,6 +1,6 @@
 # place:kihini — Kihini
 
-- status: ratified
+- status: ratified chukchi
 - within: land:kihini
 - geo: 64.7542 -172.1052
 

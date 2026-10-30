@@ -1,6 +1,6 @@
 # river:oloi — Oloi
 
-- status: ratified
+- status: ratified chukchi
 - within: river:kolyma
 - geo: watershed:oloi
 

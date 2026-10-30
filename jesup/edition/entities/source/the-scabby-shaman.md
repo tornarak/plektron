@@ -1,6 +1,6 @@
 # source:the-scabby-shaman — The Scabby Shaman
 
-- status: ratified
+- status: ratified chukchi
 - part-of: source:bogoras-1900
 
 ## aliases

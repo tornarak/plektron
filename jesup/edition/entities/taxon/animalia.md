@@ -1,6 +1,6 @@
 # taxon:animalia — Animalia
 
-- status: ratified
+- status: ratified chukchi
 - link: wikidata:Q729
 - link: wikipedia:Animal
 

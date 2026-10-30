@@ -1,6 +1,6 @@
 # place:ien — Iˊᵋen
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 64.3983 -173.3291
 

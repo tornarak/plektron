@@ -1,6 +1,6 @@
 # place:tumanskaya-fair — Tumanskaya Fair
 
-- status: ratified
+- status: ratified chukchi
 - within: river:krasnaya
 - geo: 63.901961 174.481993
 

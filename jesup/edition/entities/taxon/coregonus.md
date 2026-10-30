@@ -1,6 +1,6 @@
 # taxon:coregonus — Coregonus
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:coregonidae
 - link: wikidata:Q311392
 - link: wikipedia:Coregonus

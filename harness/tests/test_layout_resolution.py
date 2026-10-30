@@ -8,6 +8,7 @@ import pytest
 from conftest import write_project
 
 from harness import cli
+from harness.entities import alias_index, auto_forms, load, ratify_text
 from harness.layout import (
     ProjectError,
     bare_own_citations,
@@ -123,3 +124,22 @@ def test_a_reader_sees_the_served_texts_citations_bare_and_anothers_whole():
 def test_two_texts_sharing_a_stem_are_found(tmp_path):
     text, _ = _workspace_with(tmp_path, "chukchi", "chukchi")
     assert workspace_stems(text) == ["chukchi", "chukchi"]
+
+
+def test_a_ratification_licenses_the_rule_on_the_text_it_was_made_against(tmp_path):
+    """An alias says what a form means in *this* book, so the next book's pages must
+    not be linked on a judgement nobody made about them. It is asked about instead."""
+    chukchi, koryak = _workspace_with(tmp_path, "chukchi", "koryak")
+    f = tmp_path / "ws" / "edition" / "entities" / "place" / "markova.md"
+    f.parent.mkdir(parents=True)
+    f.write_text("# place:markova — Markova\n\n- status: ratified chukchi\n\n## aliases\n\n"
+                 "| form | lang | auto | note |\n|---|---|---|---|\n| Markova | | yes | |\n",
+                 encoding="utf-8")
+    assert auto_forms(alias_index(load(chukchi))) == {"Markova": "place:markova"}
+    assert load(koryak)["place:markova"]["status"] == "proposed"
+    assert auto_forms(alias_index(load(koryak))) == {}
+
+    f.write_text(ratify_text(f.read_text(encoding="utf-8"), koryak), encoding="utf-8")
+    assert "- status: ratified chukchi koryak\n" in f.read_text(encoding="utf-8")
+    assert auto_forms(alias_index(load(koryak))) == {"Markova": "place:markova"}
+    assert ratify_text(f.read_text(encoding="utf-8"), koryak) == f.read_text(encoding="utf-8")

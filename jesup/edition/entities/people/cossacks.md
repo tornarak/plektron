@@ -1,6 +1,6 @@
 # people:cossacks — Cossacks
 
-- status: ratified
+- status: ratified chukchi
 - link: wikidata:Q47805
 - link: wikipedia:Cossacks
 

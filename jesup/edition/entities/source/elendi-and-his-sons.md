@@ -1,6 +1,6 @@
 # source:elendi-and-his-sons — Elendi and his Sons
 
-- status: ratified
+- status: ratified chukchi
 - part-of: source:bogoras-1900
 
 ## aliases

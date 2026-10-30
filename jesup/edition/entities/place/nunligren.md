@@ -1,6 +1,6 @@
 # place:nunligren — Nuˊnlig̣ren
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 64.7978 -175.3788
 

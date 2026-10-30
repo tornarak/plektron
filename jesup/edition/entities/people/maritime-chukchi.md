@@ -1,6 +1,6 @@
 # people:maritime-chukchi — Maritime Chukchi
 
-- status: ratified
+- status: ratified chukchi
 - part-of: people:chukchi
 - geo: place:anadyr
 - geo: place:misqan

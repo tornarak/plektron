@@ -1,6 +1,6 @@
 # taxon:vulpes-lagopus — Vulpes lagopus
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:vulpes
 - link: wikidata:Q82738
 - link: wikipedia:Arctic_fox

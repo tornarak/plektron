@@ -1,6 +1,6 @@
 # river:mayn — Mayn
 
-- status: ratified
+- status: ratified chukchi
 - within: river:anadyr
 - geo: watershed:main
 

@@ -1,6 +1,6 @@
 # place:inchoun — Inchoun
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 66.2971 -170.2757
 - link: wikidata:Q2367259

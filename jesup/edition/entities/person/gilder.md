@@ -1,6 +1,6 @@
 # person:gilder — William Henry Gilder
 
-- status: ratified
+- status: ratified chukchi
 - link: wikidata:Q8011998
 - link: wikipedia:William_Henry_Gilder_(explorer)
 

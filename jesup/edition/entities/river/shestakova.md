@@ -1,6 +1,6 @@
 # river:shestakova — Shestakova
 
-- status: ratified
+- status: ratified chukchi
 - within: land:kamchatka
 - geo: watershed:shestakova-or-egach
 

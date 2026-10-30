@@ -1,6 +1,6 @@
 # source:maydell-1871 — Maydell 1871
 
-- status: ratified
+- status: ratified chukchi
 - authority: maydell1871
 
 ## aliases

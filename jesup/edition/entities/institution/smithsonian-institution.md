@@ -1,6 +1,6 @@
 # institution:smithsonian-institution — Smithsonian Institution
 
-- status: ratified
+- status: ratified chukchi
 - link: wikidata:Q131626
 - link: wikipedia:Smithsonian_Institution
 

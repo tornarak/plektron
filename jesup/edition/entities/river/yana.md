@@ -1,6 +1,6 @@
 # river:yana — Yana
 
-- status: ratified
+- status: ratified chukchi
 - within: land:northeast-siberia
 - geo: watershed:yana
 

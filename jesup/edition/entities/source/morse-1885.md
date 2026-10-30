@@ -1,6 +1,6 @@
 # source:morse-1885 — Morse 1885
 
-- status: ratified
+- status: ratified chukchi
 - authority: morse1885
 
 ## aliases

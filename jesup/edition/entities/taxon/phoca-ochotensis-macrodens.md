@@ -1,6 +1,6 @@
 # taxon:phoca-ochotensis-macrodens — Phoca ochotensis macrodens
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:phoca
 
 ## aliases

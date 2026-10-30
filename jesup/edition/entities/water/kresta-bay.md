@@ -1,6 +1,6 @@
 # water:kresta-bay — Kresta Bay
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 66 -179.25
 - link: wikipedia:Kresta_Bay

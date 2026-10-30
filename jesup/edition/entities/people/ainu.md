@@ -1,6 +1,6 @@
 # people:ainu — Ainu
 
-- status: ratified
+- status: ratified chukchi
 - link: wikidata:Q101828
 - link: wikipedia:Ainu_people
 

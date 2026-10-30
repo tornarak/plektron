@@ -1,6 +1,6 @@
 # land:chukotka-mountains — Chukotka Mountains
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukotka
 - geo: 67 176
 - link: geonames:2126097

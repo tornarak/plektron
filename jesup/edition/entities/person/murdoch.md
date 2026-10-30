@@ -1,6 +1,6 @@
 # person:murdoch — John Murdoch
 
-- status: ratified
+- status: ratified chukchi
 
 ## aliases
 

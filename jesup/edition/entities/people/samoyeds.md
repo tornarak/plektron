@@ -1,6 +1,6 @@
 # people:samoyeds — Samoyeds
 
-- status: ratified
+- status: ratified chukchi
 - link: wikidata:Q941253
 - link: wikipedia:Samoyedic_peoples
 

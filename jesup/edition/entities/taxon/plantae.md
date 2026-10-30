@@ -1,6 +1,6 @@
 # taxon:plantae — Plantae
 
-- status: ratified
+- status: ratified chukchi
 - link: wikidata:Q756
 - link: wikipedia:Plant
 

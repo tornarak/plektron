@@ -1,6 +1,6 @@
 # river:kichiga — Kichiga
 
-- status: ratified
+- status: ratified chukchi
 - within: land:kamchatka
 - geo: watershed:kichiga-or-kichin
 

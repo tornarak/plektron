@@ -1,6 +1,6 @@
 # people:sireniks — Sireniks
 
-- status: ratified
+- status: ratified chukchi
 - part-of: people:siberian-yupik
 - geo: place:sirenik
 - geo: place:chenlin

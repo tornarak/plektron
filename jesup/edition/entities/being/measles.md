@@ -1,6 +1,6 @@
 # being:measles — Measles
 
-- status: ratified
+- status: ratified chukchi
 - link: wikidata:Q79793
 - link: wikipedia:Measles
 

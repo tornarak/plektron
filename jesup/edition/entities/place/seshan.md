@@ -1,6 +1,6 @@
 # place:seshan — Seshan
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 66.7688 -171.4139
 

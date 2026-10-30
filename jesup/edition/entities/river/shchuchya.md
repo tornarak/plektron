@@ -1,6 +1,6 @@
 # river:shchuchya — Shchuchya
 
-- status: ratified
+- status: ratified chukchi
 - within: river:anadyr
 - geo: watershed:shchuchya-or-pike
 

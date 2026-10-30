@@ -1,6 +1,6 @@
 # taxon:anatidae — Anatidae
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:aves
 - link: wikidata:Q7556
 - link: wikipedia:Anatidae

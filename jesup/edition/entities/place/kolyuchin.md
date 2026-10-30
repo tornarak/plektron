@@ -1,6 +1,6 @@
 # place:kolyuchin — Kolyuchin
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 67.4633 -174.6155
 

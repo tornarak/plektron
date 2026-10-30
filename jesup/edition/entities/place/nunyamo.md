@@ -1,6 +1,6 @@
 # place:nunyamo — Nunyamo
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 65.6037 -170.6491
 

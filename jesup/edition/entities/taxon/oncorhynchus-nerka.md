@@ -1,6 +1,6 @@
 # taxon:oncorhynchus-nerka — Oncorhynchus nerka
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:oncorhynchus
 - link: wikidata:Q44064
 - link: wikipedia:Sockeye_salmon

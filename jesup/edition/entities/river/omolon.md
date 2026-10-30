@@ -1,6 +1,6 @@
 # river:omolon — Omolon
 
-- status: ratified
+- status: ratified chukchi
 - within: river:kolyma
 - geo: watershed:omolon
 

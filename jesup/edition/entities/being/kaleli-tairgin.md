@@ -1,6 +1,6 @@
 # being:kaleli-tairgin — Kalêˊlɪ-taˊɪrg̣ɪn
 
-- status: ratified
+- status: ratified chukchi
 - part-of: being:tairgin
 - link: wikidata:Q180152
 - link: wikipedia:Vitiligo

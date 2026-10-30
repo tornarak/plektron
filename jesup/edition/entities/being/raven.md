@@ -1,6 +1,6 @@
 # being:raven — Raven
 
-- status: ratified
+- status: ratified chukchi
 
 ## aliases
 

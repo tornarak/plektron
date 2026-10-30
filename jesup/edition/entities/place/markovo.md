@@ -1,6 +1,6 @@
 # place:markovo — Markovo
 
-- status: ratified
+- status: ratified chukchi
 - within: river:anadyr
 - geo: 64.68 170.42
 - link: wikidata:Q3849656

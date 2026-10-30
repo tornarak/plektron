@@ -1,6 +1,6 @@
 # people:chuvans — Chuvans
 
-- status: ratified
+- status: ratified chukchi
 - part-of: people:yukaghir
 - link: wikidata:Q1945649
 - link: wikipedia:Chuvans

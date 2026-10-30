@@ -1,6 +1,6 @@
 # taxon:mustela-erminea — Mustela erminea
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:mustelidae
 - link: wikidata:Q25345
 - link: wikipedia:Stoat

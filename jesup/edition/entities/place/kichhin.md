@@ -1,6 +1,6 @@
 # place:kichhin — Kiˊčhɪn
 
-- status: ratified
+- status: ratified chukchi
 - within: land:kamchatka
 - geo: 59.7653 163.336
 - link: geonames:2116590

@@ -1,6 +1,6 @@
 # taxon:gadidae — Gadidae
 
-- status: ratified
+- status: ratified chukchi
 - part-of: taxon:pisces
 - link: wikidata:Q208028
 - link: wikipedia:Gadidae

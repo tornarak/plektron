@@ -1,6 +1,6 @@
 # land:bear-islands — Bear Islands
 
-- status: ratified
+- status: ratified chukchi
 - within: land:northeast-siberia
 - geo: region:bear-islands
 - link: wikidata:Q1325658

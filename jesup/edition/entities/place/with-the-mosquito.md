@@ -1,6 +1,6 @@
 # place:with-the-mosquito — With the Mosquito
 
-- status: ratified
+- status: ratified chukchi
 - within: river:kolyma
 - geo: 68.751808 161.330452
 

@@ -1,6 +1,6 @@
 # place:neshkan — Neshkan
 
-- status: ratified
+- status: ratified chukchi
 - within: land:chukchi-peninsula
 - geo: 67.0375 -172.9632
 - link: wikidata:Q2310683
