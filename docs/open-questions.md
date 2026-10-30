@@ -324,7 +324,7 @@ in for an unread glyph.
 
   Closing it means either giving `figures.score` an in-memory path of its own,
   or giving `fig predict` a scratch destination so a checkpoint can be predicted
-  somewhere that is not the store. Neither is urgent: `models/bogoras-fig/` does
+  somewhere that is not the store. Neither is urgent: `models/fig-seg/` does
   not exist yet, so nothing has ever been scored on this track. **It waits on the
   first figure-segmenter run**, which is when the shape of the answer becomes
   arguable from evidence rather than from symmetry with the zone track.

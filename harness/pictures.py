@@ -20,8 +20,8 @@ identity changes under `entity rename`, and a class under a move between
 would be one more store `rename` had to rewrite, and the first rename that
 forgot would orphan a picture with nothing to say so.
 
-Imports nothing from this package: `entities.check` and the card both read it,
-and a leaf cannot join an import cycle (`atomic.py` has the argument).
+Imports only `layout`, which is above a leaf: `entities.check` and the card both
+read it, and that keeps it out of any import cycle (`atomic.py` has the argument).
 """
 from __future__ import annotations
 
@@ -30,6 +30,8 @@ import re
 import unicodedata
 from pathlib import Path
 from urllib.parse import quote
+
+from .layout import shared
 
 LEDGER = "edition/entity-images.json"
 
@@ -116,7 +118,7 @@ def qid(rec: dict) -> str:
 def load(root: Path = Path(".")) -> dict:
     """The ledger. **Absent is empty**: before the tool's first run there are no
     pictures, and the card showing none is that fact, not a hidden one."""
-    p = Path(root) / LEDGER
+    p = shared(root, LEDGER)
     if not p.exists():
         return {"p18": {}, "files": {}}
     got = json.loads(p.read_text(encoding="utf-8"))

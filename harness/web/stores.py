@@ -30,7 +30,7 @@ from .. import (
 )
 from .. import edition_ui as ui
 from ..edition_ui import BASE
-from ..layout import page_files, stem_for
+from ..layout import page_files, shared, stem_for
 from ..refs import norm_ref
 from ..state import load_toc
 from .cache import MAXSIZE, file_digest, listing, stamp
@@ -38,12 +38,12 @@ from .cache import MAXSIZE, file_digest, listing, stamp
 
 @listing
 def _entity_files(root: Path) -> list[Path]:
-    return sorted((Path(root) / "edition" / "entities").glob("*/*.md"))
+    return sorted(shared(root, entities.ENTDIR).glob("*/*.md"))
 
 
 @listing
 def _lexicon_files(root: Path) -> list[Path]:
-    return sorted((Path(root) / "edition" / "lexicon").glob("*.md"))
+    return sorted(shared(root, lexicon.LEXDIR).glob("*.md"))
 
 
 @listing
@@ -106,7 +106,7 @@ def annotations(root: Path) -> dict:
 
 @listing
 def _ledger_files(root: Path) -> list[Path]:
-    return [Path(root) / pictures.LEDGER]
+    return [shared(root, pictures.LEDGER)]
 
 
 @lru_cache(maxsize=MAXSIZE)

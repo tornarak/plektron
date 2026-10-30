@@ -1,6 +1,7 @@
 {
+  "text": "chukchi",
   "name": "zones-seg",
-  "model": "models/bogoras-seg/zones-seg.safetensors",
+  "model": "models/zones-seg/zones-seg.safetensors",
   "installed_from": "train/bogoras-seg/zones-seg/best_0.6443.safetensors",
   "sha256": "234fae9da9d2826abc4a8d9729d05622ff0a85ccb12842f2aeb19ad5a29f4b63",
   "train_merges": {

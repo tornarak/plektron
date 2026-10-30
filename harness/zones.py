@@ -68,7 +68,7 @@ from lxml import etree
 from . import corrections as _corr
 from . import farms, provenance, train
 from . import zones_config as zc
-from .layout import page_files, ref_of, stem_for
+from .layout import page_files, ref_of, refuse_another_texts, shared, shared_rel, stem, stem_for
 
 if TYPE_CHECKING:
     from kraken.lib.vgsl import TorchVGSLModel
@@ -2084,7 +2084,7 @@ def manifest_path(model_path: str | Path, root: Path = Path(".")) -> Path:
     """
     p = Path(model_path)
     if not p.is_absolute():
-        p = root / p
+        p = shared(root, p)
     return p.with_suffix(".json")
 
 
@@ -2151,7 +2151,7 @@ def load_segmenter(model_path: str | Path = DEFAULT_MODEL,
     from kraken.models.loaders import load_models
     p = Path(model_path)
     if not p.is_absolute():
-        p = root / p
+        p = shared(root, p)
     if not p.exists():
         raise FileNotFoundError(
             f"no segmentation model at {p} — train one with `harness zones "
@@ -3354,7 +3354,7 @@ def model_split_path(model_path: str | Path, split: str,
                      root: Path = Path(".")) -> Path:
     p = Path(model_path)
     if not p.is_absolute():
-        p = root / p
+        p = shared(root, p)
     return p.with_suffix(f".{split}.lst")
 
 
@@ -3367,12 +3367,13 @@ def model_splits(model_path: str | Path,
     representation of one fact, and two files holding one fact is what `harness
     header` exists to catch.
 
-    Why beside the model at all: `train/bogoras-seg/*.lst` is the *next* run's input
+    Why beside the model at all: `train/zones-seg/*.lst` is the *next* run's input
     and is rewritten by every `--assemble`, so reading it to interpret an existing
     model meant scoring model A against model B's split whenever anything had been
     prepared in between — silently, with a confident train/eval breakdown that was
     simply wrong. A model carrying its own split cannot be mis-attributed.
     """
+    refuse_another_texts(manifest_path(model_path, root), root, "score")
     out: dict[str, str] = {}
     for split in ("train", "eval"):
         p = model_split_path(model_path, split, root)
@@ -3387,7 +3388,7 @@ def model_splits(model_path: str | Path,
 
 
 def _frozen_splits(root: Path = Path(".")) -> dict[str, str] | None:
-    """The split the training run actually consumed, from `bogoras-seg/data/*.lst`.
+    """The split the training run actually consumed, from `train/zones-seg/data/*.lst`.
 
     **Not `load_splits`.** The live lists move — a page keyed after the run defaults
     into `train` — so asking them which pages the model trained on gives an answer
@@ -3448,7 +3449,7 @@ def pred_cache_dir(key: str, root: Path = Path(".")) -> Path:
     subdirectory keyed by the checkpoint's own sha256 rather than loose files:
     `zone_refs` globs `chukchi-*.xml`, so nothing that reads the store can see it.
 
-    Not `train/bogoras-seg/`, the other obvious home: that track's base holds
+    Not `train/zones-seg/`, the other obvious home: that track's base holds
     `data/` and `model/` and nothing else, which two tests assert.
     """
     return zone_dir(root, MZDIR) / PRED_CACHE / key
@@ -3648,7 +3649,7 @@ def predicted_zones(refs: list[str], root: Path = Path("."),
     # only on the path that actually segments in this process.
     src = Path(model_path)
     if not src.is_absolute():
-        src = root / src
+        src = shared(root, src)
     if not src.exists():
         raise FileNotFoundError(f"no segmentation model at {src}")
     sha = _model_sha256(src)
@@ -3751,7 +3752,7 @@ def score(root: Path = Path("."), cfg: dict | None = None,
 
     Two refusals, both about not manufacturing a number:
 
-    - the split comes from the **frozen** `bogoras-seg/*.lst` the run consumed, and
+    - the split comes from the **frozen** `train/zones-seg/*.lst` the run consumed, and
       if those are gone this refuses rather than falling back to the live lists,
       which move as pages are keyed;
     - the result is reported **per split and never blended**. The model trained on
@@ -4055,9 +4056,10 @@ def install_model(checkpoint: str | Path, root: Path = Path("."),
             "this checkpoint first. See the train-zones skill, 'Diagnosing a "
             "permuted class map'.")
 
-    dest_dir = root / MODELDIR
+    dest_dir = shared(root, MODELDIR)
+    refuse_another_texts(dest_dir / f"{name}.json", root)
     rel = f"{MODELDIR}/{name}.safetensors"
-    dest = root / rel
+    dest = shared(root, rel)
     kept = {f"{r['split']}/{r['counting']}":
             {"pages": r["pages"], "recall": r["recall"],
              "precision": r["precision"]}
@@ -4079,6 +4081,7 @@ def install_model(checkpoint: str | Path, root: Path = Path("."),
         "installed_from": Path(checkpoint).as_posix(),
         "sha256": _model_sha256(src),
         "train_merges": zc.train_merges(cfg),
+        "text": stem(root),
         "corpus_digest": corpus_digest(root),
         "kraken": _kraken_version(),
         # **Which decoder the score below was taken with**, because the two differ
@@ -4179,7 +4182,7 @@ def remap_model(root: Path = Path("."), model_path: str | Path = DEFAULT_MODEL,
 
     p = Path(model_path)
     if not p.is_absolute():
-        p = root / p
+        p = shared(root, p)
     models = load_models(p)
     old = dict(models[0].user_metadata["class_mapping"]["regions"])
 
@@ -4273,7 +4276,7 @@ def _write_merged(src: Path, dest: Path, merges: dict[str, str]) -> bool:
 
 def assemble(root: Path = Path("."), scratch: bool = False,
              tick: Callable | None = None) -> dict:
-    """Lay out `bogoras-seg/` for `ketos segtrain`, and report the invocation.
+    """Lay out `train/zones-seg/` for `ketos segtrain`, and report the invocation.
 
     ketos resolves a page's image through the ALTO's own
     `sourceImageInformation/fileName`, relative to the XML — so the zone file and
@@ -4319,9 +4322,9 @@ def assemble(root: Path = Path("."), scratch: bool = False,
       is the concrete case for the rule above the whole file: verify against the
       source, not the help, and never against a tutorial.
 
-    Output goes to `bogoras-seg/model/`, not `models/`: segtrain writes a checkpoint
+    Output goes to `train/zones-seg/model/`, not `models/`: segtrain writes a checkpoint
     per epoch, and this repo keeps only the trained model, in `models/`, by hand. The
-    training set it reads is `bogoras-seg/data/`, and the two never share a
+    training set it reads is `train/zones-seg/data/`, and the two never share a
     directory — a run's checkpoints and its input are cleared on different occasions.
     """
     import os
@@ -4444,7 +4447,7 @@ def assemble(root: Path = Path("."), scratch: bool = False,
                 work=DATADIR, out=f"{RUNDIR}/{train.next_run(train.ZONES, root)}",
                 device=_dev, workers=_wrk,
                 load=("" if not base else
-                      f" -i {base}" + (f" --resize {resize}" if resize else "")))}
+                      f" -i {shared_rel(root, base)}" + (f" --resize {resize}" if resize else "")))}
 
 
 def _base_and_resize(root: Path, classes: list[str]) -> tuple[str, str, str]:
@@ -4460,7 +4463,7 @@ def _base_and_resize(root: Path, classes: list[str]) -> tuple[str, str, str]:
     first run there is always something better to start from — and reads its class
     set from its manifest rather than opening the weights.
     """
-    installed = root / DEFAULT_MODEL
+    installed = shared(root, DEFAULT_MODEL)
     if installed.exists():
         # Read from the weights, not from a manifest field. The class map is
         # already in the model; recording it beside would be a second copy of one

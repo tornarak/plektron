@@ -47,7 +47,7 @@ ITIN_HELP = ("a work-list to walk instead of scan order: an .lst file "
              "`--itinerary gt/zones/_train.lst` walks one split. A work-list, "
              "not a filter — a page not on it still opens and still saves, it "
              "simply has no neighbours")
-MODEL_HELP = "the segmentation model (default models/bogoras-seg/zones-seg.safetensors)"
+MODEL_HELP = "the segmentation model (default models/zones-seg/zones-seg.safetensors)"
 DEVICE_HELP = "torch device — 'auto' takes cuda:0 when it is available, else cpu"
 DECODE_HELP = (
     "how a prediction becomes zones [dp]. 'dp' decodes the page as a chain of "

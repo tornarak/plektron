@@ -59,7 +59,7 @@ WATERSHEDS = REPO / "scratch" / "watersheds"
 LANGUAGES = REPO / "scratch" / "languages.geojson"
 NATURALEARTH = REPO / "scratch" / "naturalearth"
 TRACED = REPO / "scratch" / "geojson"
-OUT = REPO / "jesup" / "bogoras-chukchi" / "edition" / "geo"
+OUT = REPO / "jesup" / "edition" / "geo"
 
 #: Shapes **the editor drew**, and the only source here that is not a
 #: publisher's file.

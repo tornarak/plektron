@@ -3,10 +3,10 @@ name: train-ocr
 description: Fine-tune, evaluate and install the text recognizer from gt/ocr/, and judge what it produces. Use when training a Brill-specific OCR model for the first time or retraining it, reading its CER against the stock recognizer, or deciding whether a keyed store is ready to train on. Not the keying itself — that is /rebuild-groundtruth, and this track consumes what that one ratifies.
 ---
 
-# Train the recognizer (gt/ocr/ → a checkpoint → models/bogoras-ocr/)
+# Train the recognizer (gt/ocr/ → a checkpoint → models/text-rec/)
 
     uv run harness train remark-eval ocr --commit   mint or extend the split
-    uv run harness train assemble ocr               lay out train/bogoras-ocr/data/, report five commands
+    uv run harness train assemble ocr               lay out train/text-rec/data/, report five commands
     <the five reported invocations>                 compile ×2, train, test ×2; the user's terminal
     <copy the checkpoint into models/>              no `train install ocr` yet — see below
 
@@ -188,8 +188,8 @@ so there is no checkpoint to score and no evidence about what an install ought t
 refuse. The segmenters' own refusal — a permuted class map — cannot arise here,
 since a recognizer's codec maps codepoints rather than named channels.
 
-Until then: copy the checkpoint into `models/bogoras-ocr/` by hand, **copy
-`train/bogoras-ocr/data/*.lst` beside it** (or nothing can say later which pages
+Until then: copy the checkpoint into `models/text-rec/` by hand, **copy
+`train/text-rec/data/*.lst` beside it** (or nothing can say later which pages
 the model saw), and point `ocr predict --rec-model` at it. `train/` is pure
 scratch and `assemble` clears it on every run.
 
@@ -197,7 +197,7 @@ scratch and `assemble` clears it on every run.
 
 - Do not run the training commands yourself.
 - Do not split by line, and do not use `--partition`.
-- Do not link the raw `scans/` into `train/bogoras-ocr/data/` — that is the
+- Do not link the raw `scans/` into `train/text-rec/data/` — that is the
   figure track's raster, and this one reads the blot.
 - Do not repair a printer's error in `gt/ocr/` to improve the training text.
 - Do not use `--resize new`, `add` or `both`.

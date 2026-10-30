@@ -74,7 +74,7 @@ from . import paths as P
 from . import provenance, train
 from . import zones as Z
 from .atomic import tmp_for
-from .layout import page_files, ref_of, stem_for
+from .layout import page_files, ref_of, shared, shared_rel, stem_for
 from .parallel import capture_stderr as _capture_stderr
 from .parallel import gpu_workers, worker_output
 from .refs import norm_ref, parse_ref
@@ -226,7 +226,7 @@ def load_recognizer(model_path: str | Path = DEFAULT_REC_MODEL,
 def _model_path(model_path: str | Path, root: Path) -> Path:
     p = Path(model_path)
     if not p.is_absolute():
-        p = root / p
+        p = shared(root, p)
     if not p.exists():
         raise FileNotFoundError(
             f"no recognition model at {p}. `models/` carries stock CATMuS print "
@@ -864,7 +864,7 @@ TEST_CMD = (
 
 def assemble(root: Path = Path("."), scratch: bool = False,
              batch: int = 8, tick=None) -> dict:
-    """Lay out `train/bogoras-ocr/data/` for `ketos`, and report the invocations.
+    """Lay out `train/text-rec/data/` for `ketos`, and report the invocations.
 
     ketos resolves a line's image through the ALTO's own
     `sourceImageInformation/fileName`, relative to the XML — so each page's
@@ -973,14 +973,14 @@ def assemble(root: Path = Path("."), scratch: bool = False,
         load, base, why = "", "scratch (asked for)", (
             "random init on kraken's default recognition spec. Nothing is "
             "resized because there is no codec to reconcile")
-    elif (root / INSTALLED_MODEL).exists():
-        load, base, why = (f" -i {INSTALLED_MODEL} --resize union",
+    elif shared(root, INSTALLED_MODEL).exists():
+        load, base, why = (f" -i {shared_rel(root, INSTALLED_MODEL)} --resize union",
                            INSTALLED_MODEL,
                            "continuing this project's own recognizer; `union` "
                            "so a codepoint keyed since the last run is added "
                            "rather than the codec being refitted")
-    elif (root / DEFAULT_REC_MODEL).exists():
-        load, base, why = (f" -i {DEFAULT_REC_MODEL} --resize union",
+    elif shared(root, DEFAULT_REC_MODEL).exists():
+        load, base, why = (f" -i {shared_rel(root, DEFAULT_REC_MODEL)} --resize union",
                            DEFAULT_REC_MODEL,
                            "CATMuS print large: the ~91% ASCII competence is "
                            "kept and the inventory is appended to its codec")

@@ -1097,7 +1097,7 @@ opinion of which pages are held out.
 
 ### zones predict [REF ...]
 **Does** runs the trained segmenter into `mz/zones/`. Input is always the blotted raster, since that is what the model was trained on.
-**Reads** `models/bogoras-seg/`, `scans/w-figs-blotted/`, the split marks.
+**Reads** `models/zones-seg/`, `scans/w-figs-blotted/`, the split marks.
 **Writes** `mz/zones/` (derived) — never `gt/`.
 **Exit** 1 if any swept page lacked a blot. A single ref exits 0.
 **Note** an exempt mark does not stop a named ref — naming a page is the request — but an existing prediction does, unless `--force`: the mz file's sha256 is the store's only witness to which model wrote it. **Several named refs go through the sweep** so the model loads once, carrying that override with them; without it a named plate would be dropped in silence by the command that named it. Under `--all` the exempt ruling holds, which is what it is for.
@@ -1106,7 +1106,7 @@ opinion of which pages are held out.
 --all            every page with a blotted raster
 --force          re-run over pages that already have a prediction [off]
 --itinerary LST  predict over a work-list [every page with a blot, minus the ruled leaves]
---model PATH     the segmentation model [models/bogoras-seg/zones-seg.safetensors]
+--model PATH     the segmentation model [models/zones-seg/zones-seg.safetensors]
 --decode {raw,dp} the segmental DP over the page plus the paragraph split, or blob vectorisation [dp]
 --device DEV     torch device [auto]
 --root --json --toon --pager
@@ -2033,7 +2033,7 @@ PP-NNN...     which pages; several may be given
 --device D    torch device [auto]
 --root --json --toon --pager
 ```
-**Note** **`--all` is a corpus-wide inference sweep over 832 pages, and it draws a bar.** **Unmeasured**: `models/bogoras-fig/` does not exist yet, so this verb has never run and no honest per-page figure can be given. The zone segmenter, which is the same shape of model on the same rasters, runs ~1 s a page — so expect minutes rather than hours, and put the real number here once it has run. Contrast `train score fig` and `train install fig`, which are seconds: they read `mz/fig/` rather than segmenting, so the figure track predicts to a store first and scores the store afterwards. The zone track scores in memory instead, so that a checkpoint can be measured without touching a store — which is the whole reason `train install zones` is expensive and `train install fig` is not.
+**Note** **`--all` is a corpus-wide inference sweep over 832 pages, and it draws a bar.** **Unmeasured**: `models/fig-seg/` does not exist yet, so this verb has never run and no honest per-page figure can be given. The zone segmenter, which is the same shape of model on the same rasters, runs ~1 s a page — so expect minutes rather than hours, and put the real number here once it has run. Contrast `train score fig` and `train install fig`, which are seconds: they read `mz/fig/` rather than segmenting, so the figure track predicts to a store first and scores the store afterwards. The zone track scores in memory instead, so that a checkpoint can be measured without touching a store — which is the whole reason `train install zones` is expensive and `train install fig` is not.
 **Note** **no exempt skip.** Plates are exempt in the zone track and are exactly where figures live.
 **Note** `--force` is required to overwrite, because that file's processing step is the store's only witness to which model wrote it.
 **Note** there is **no `fig/` view** over `gt/fig/` and `mz/fig/`. A prediction reaches a human through the editor, which shows it as a proposal and asks, or not at all — see the group note above.
@@ -2050,7 +2050,7 @@ FARM...       which trees, space-separated: w-figs-blotted, w-figs, w-ocr,
 --root --json --toon --pager
 ```
 **Note** the selector is a **positional, not `--only`**, because `--only` already means "line indices" throughout `ocr` and the harness holds to one meaning per flag name. "Everything" must be *said* rather than implied, for symmetry with `build`, where the cost is real — a selector meaning "everything" on one action and needing to be spelled on the other is a difference the caller has to carry between two commands usually typed in sequence. It used to be spelled `all`, a *value* of the positional, which made this the one place in the CLI where everything was not `--all`; the old form is caught by the rename trap.
-**Note** four states, and the fourth is the point. `absent` is the directory not existing; `stale` is membership disagreeing with the criterion, or a link pointing nowhere; `ok` is neither; **`?` is no verdict available** — `scans/` and `train/bogoras-seg/data/` have no criterion the harness can compute, and reporting `ok` there would be a clean bill of health nobody issued. `?` does not gate: it describes the check's reach, not the tree.
+**Note** four states, and the fourth is the point. `absent` is the directory not existing; `stale` is membership disagreeing with the criterion, or a link pointing nowhere; `ok` is neither; **`?` is no verdict available** — `scans/` and `train/zones-seg/data/` have no criterion the harness can compute, and reporting `ok` there would be a clean bill of health nobody issued. `?` does not gate: it describes the check's reach, not the tree.
 **Note** `verified` says how deep the comparison went, and `membership` is not a hedge — but it is a statement about *this verb*, not about what is knowable. Nothing here opens pixel data or the timestamps behind it, so `state: ok` must not be read as "up to date". This entry used to justify the column by calling the blot tree's freshness *uncheckable*, which was false: see `zones blot`. What genuinely escapes any timestamp is a **deleted** figure ALTO, and that is a membership question anyway.
 **Note** `dangling` counts links whose target has gone. On a machine without `scans/` the two selection farms report their whole membership as dangling, which is correct and deliberate — see `views build`.
 
@@ -2070,7 +2070,7 @@ FARM...       which trees, space-separated: w-figs-blotted, w-figs, w-ocr,
 **Note** **the raster farms were always pooled here; what `--jobs` adds is the control arm.** `blot_all` and `crop_all` take a worker count and this verb passed none, which `parallel.workers` reads as "as many as the machine has" — so the sweep ran wide and there was no way to ask for the serial run a pooled one has to be diffable against. It draws a bar per farm now, too: one per farm rather than one across all of them, since each has its own denominator.
 **Note** **`--all` must be said, and this verb is why.** Rebuilding `scans/w-figs-blotted/` repaints 252 page composites and is by a wide margin the most expensive thing in the harness — a cost entirely invisible at the call site, since nothing about `harness views build` suggests a corpus-wide raster pass. The caller who wanted one small farm rebuilt was the one paying it. **Name the farm**; `views build --all` is for a deliberate corpus-level sweep, the way `corpus normalize --all` is against naming the page.
 **Note** **a farm whose builder must *read* an absent tree is skipped with a row**, never attempted and never silently dropped. The distinction is between what a builder opens and what its links merely point at: the blot builder reads pixels out of `scans/`, so with no `scans/` it cannot run; `w-figs` and `w-ocr` need only their tracked membership sources and build fine, leaving raster links that dangle — this repo's stated disposition for a link into an ignored tree. Hence exit 0 on a clone: building what can be built is the success case, and `views check` is what says what is still missing.
-**Note** `scans/` and `train/bogoras-seg/data/` are reported by `check` and built by neither. `scans/` is `pdftoppm` over `pdfs/`, whose entries are symlinks pointing outside the repo, so on a clone the rasters cannot be regenerated at all; `train/` is scratch that `train assemble zones` clobbers by design.
+**Note** `scans/` and `train/zones-seg/data/` are reported by `check` and built by neither. `scans/` is `pdftoppm` over `pdfs/`, whose entries are symlinks pointing outside the repo, so on a clone the rasters cannot be regenerated at all; `train/` is scratch that `train assemble zones` clobbers by design.
 
 
 ## train
@@ -2144,9 +2144,9 @@ TRACK         which model. One of: zones, fig, ocr
 **Reads** *zones* — `gt/zones/`, `scans/w-figs-blotted/`, the split lists.
 **Reads** *fig* — `gt/fig/`, its split lists, `scans/`.
 **Reads** *ocr* — `gt/ocr/`, the split lists, `scans/w-figs-blotted/`, `gt/lines/`.
-**Writes** *zones* — `train/bogoras-seg/data/` — the page links, the folded ALTOs and `train.lst`/`eval.lst` — and makes the empty `train/bogoras-seg/model/` the reported command writes its checkpoints into. Pure scratch, clobbered freely, because the split a model trained on travels in that model's own manifest.
-**Writes** *fig* — `train/bogoras-fig/data/` — symlinks, synthesized ALTOs for the negatives, and `train.lst`/`eval.lst` — and makes `train/bogoras-fig/model/`, where the run's checkpoints go. Pure scratch; clobbered on every run.
-**Writes** *ocr* — `train/bogoras-ocr/data/` (pure scratch, cleared on every run) and `train/bogoras-ocr/model/`, the latter empty so the reported `-o` runs as printed — kraken creates the output directory it is given but not its parents.
+**Writes** *zones* — `train/zones-seg/data/` — the page links, the folded ALTOs and `train.lst`/`eval.lst` — and makes the empty `train/zones-seg/model/` the reported command writes its checkpoints into. Pure scratch, clobbered freely, because the split a model trained on travels in that model's own manifest.
+**Writes** *fig* — `train/fig-seg/data/` — symlinks, synthesized ALTOs for the negatives, and `train.lst`/`eval.lst` — and makes `train/fig-seg/model/`, where the run's checkpoints go. Pure scratch; clobbered on every run.
+**Writes** *ocr* — `train/text-rec/data/` (pure scratch, cleared on every run) and `train/text-rec/model/`, the latter empty so the reported `-o` runs as printed — kraken creates the output directory it is given but not its parents.
 **Exit** *zones* — 1 if any listed page has no blotted raster.
 **Exit** *fig* — always 0.
 **Exit** *ocr* — 0 clean, 1 if any page's blot is missing.
@@ -2173,16 +2173,16 @@ TRACK      which model. One of: zones, fig, ocr
 ### train install TRACK CHECKPOINT
 **Does** scores a checkpoint, **refuses a permuted class map**, then installs it into `models/bogoras-*/` with a manifest and the split it consumed.
 **Reads** *zones* — the checkpoint, `gt/zones/`, the split lists.
-**Reads** *fig* — the checkpoint, both stores, `train/bogoras-fig/data/*.lst`.
-**Writes** *zones* — `models/bogoras-seg/` under `--commit`.
-**Writes** *fig* — with `--commit`: `models/bogoras-fig/` — the weights, a manifest, and verbatim copies of the two split lists.
+**Reads** *fig* — the checkpoint, both stores, `train/fig-seg/data/*.lst`.
+**Writes** *zones* — `models/zones-seg/` under `--commit`.
+**Writes** *fig* — with `--commit`: `models/fig-seg/` — the weights, a manifest, and verbatim copies of the two split lists.
 **Exit** *zones* — always 0; refuses a permuted map with an error.
 **Exit** *fig* — 0; refuses by reporting rather than by exit code.
 **Note** *zones* — **the preview costs what the commit costs — ~11 min — and that is not an oversight.** The score runs before the `--commit` check because it is a *precondition* of installing: the permutation refusal is derived from it and the manifest embeds it, so a preview is "run every check, print the numbers, stop before writing", not a cheaper mode. It cannot score `mz/zones/` instead, which holds a different model's output — a comparison whose two witnesses may be one. And there is no cheap subset: the permutation map is derived on the training pages, so the 580 cannot be skipped to reach the refusal. **The second run is free**: predictions are cached on the checkpoint's own sha256 (see `train score zones`), so the `--commit` that follows a preview replays in about five seconds.
 **Note** *zones* — **it scores with `dp`, the same decoder `train score zones` shows you, and the manifest records which.** It scored `raw` until 2026-08-22 — not by choice but because `score`'s *function* default disagreed with its CLI default, so installing a model measured it undecoded (61.3% precision against 90.8% on identical weights) and wrote that into the manifest, where it silently failed to match what `train score zones` printed for the same checkpoint. Both defaults are now `dp`, a test holds them equal, and the manifest carries a `decode` field: a figure with a 30-point twin has to say which one it is. **Manifests written before that date hold `raw` scores and no `decode` key.**
 **Note** *fig* — everything that makes a checkpoint trustworthy is a **precondition of installing it**, so the score runs first, the manifest is written before the weights, and the copy is last — `train install zones`'s shape and its reasoning.
 **Note** *fig* — with two classes the permutation test degenerates to a **swap test**, and it is still worth running: `--resize new` renumbers the output layer, and a model that learned "caption" on the channel it calls "picture" scores plausibly on counts while being wrong about every box.
-**Note** *fig* — **refuses if `train/bogoras-fig/data/*.lst` are gone.** The split a run consumed has to be frozen beside the model, or its scores belong to a division nobody kept. Manifest paths are relative to the repo root: it is committed, and a record of one machine's filesystem is no record.
+**Note** *fig* — **refuses if `train/fig-seg/data/*.lst` are gone.** The split a run consumed has to be frozen beside the model, or its scores belong to a division nobody kept. Manifest paths are relative to the repo root: it is committed, and a record of one machine's filesystem is no record.
 ```
 TRACK        which model. One of: zones, fig
 CHECKPOINT   the .safetensors a run wrote — `best_<score>.safetensors` in the
@@ -2380,7 +2380,7 @@ TRACK              which model. One of: zones, fig
 **Exit** *zones* — always 0.
 ```
 TRACK         which model. One of: zones
---model PATH  *zones only* — [models/bogoras-seg/zones-seg.safetensors]
+--model PATH  *zones only* — [models/zones-seg/zones-seg.safetensors]
 --commit      rewrite the class map [off — previews]
 --root --json --toon --pager
 ```

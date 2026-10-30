@@ -46,7 +46,7 @@ from lxml import etree
 
 from . import paths, provenance, train
 from .atomic import tmp_for, write_atomic
-from .layout import page_files, ref_of, stem_for
+from .layout import page_files, ref_of, refuse_another_texts, shared, shared_rel, stem, stem_for
 from .refs import figure_number, norm_ref, parse_ref
 from .scans import PDF_IMAGES, pdf_images, pdf_images_for
 from .scans import rects_in as _scans_rects_in
@@ -605,7 +605,7 @@ def remark_eval(root: Path = Path("."), fraction: float = 0.20,
 
 
 def assemble(root: Path = Path("."), scratch: bool = False) -> dict:
-    """Lay out `train/bogoras-fig/data/` for `ketos segtrain`, and report the command.
+    """Lay out `train/fig-seg/data/` for `ketos segtrain`, and report the command.
 
     ketos resolves a page's image through the ALTO's own
     `sourceImageInformation/fileName`, relative to the XML, so each page's file and
@@ -671,12 +671,13 @@ def assemble(root: Path = Path("."), scratch: bool = False) -> dict:
     base_note = ""
     if scratch:
         load, base = "", "scratch (asked for)"
-    elif (root / DEFAULT_MODEL).exists():
+    elif shared(root, DEFAULT_MODEL).exists():
         # Fine-tuning this project's own figure model: the class map is already
         # right, so no `--resize`, which is what permutes an output layer.
-        load, base = f" -i {DEFAULT_MODEL}", DEFAULT_MODEL
-    elif (root / "models" / "blla.mlmodel").exists():
-        load, base = " -i models/blla.mlmodel --resize new", "models/blla.mlmodel"
+        load, base = f" -i {shared_rel(root, DEFAULT_MODEL)}", DEFAULT_MODEL
+    elif shared(root, "models/blla.mlmodel").exists():
+        load, base = (f" -i {shared_rel(root, 'models/blla.mlmodel')} --resize new",
+                      "models/blla.mlmodel")
     else:
         # Says so rather than quietly emitting a from-scratch command. Fine-tuning
         # and training from random init are different experiments, and the one
@@ -1156,13 +1157,15 @@ def install_model(checkpoint: str | Path, root: Path = Path("."),
         out["note"] = "preview only — pass --commit to install"
         return out
 
-    dest_dir = root / MODELDIR
+    dest_dir = shared(root, MODELDIR)
+    refuse_another_texts(dest_dir / f"{name}.json", root)
     dest_dir.mkdir(parents=True, exist_ok=True)
     manifest = {
         "name": name,
         "model": f"{MODELDIR}/{name}{src.suffix}",
         "installed_from": str(checkpoint),
         "sha256": _model_sha256(src),
+        "text": stem(root),
         "corpus_digest": corpus_digest(root, store=FIGDIR),
         "kraken": _kraken_version(),
         "trained_on": "scans/ (raw) — the blot paints this model's target white",

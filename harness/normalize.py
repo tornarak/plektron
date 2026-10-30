@@ -66,11 +66,13 @@ prints, and that is firewalled — see `keying_spec.md` section 1.
 from __future__ import annotations
 
 import json
+import os
 import re
 import unicodedata
 from pathlib import Path
 
 from .detectors import apostrophe_flags, footnote_report, unlicensed_marks
+from .layout import workspace_root
 from .parallel import ptrack
 from .proposal_check import key_order
 
@@ -354,6 +356,11 @@ _LOOKALIKE_PROBES = list(LOOKALIKE_CHARS.items()) + list(LOOKALIKE_SEQS.items())
 _LOOKALIKE_PROBES_FLAT = tuple(p for p, _ in _LOOKALIKE_PROBES)
 
 
+def _rel(p: Path, root: Path) -> str:
+    """`p` as a report names it. A shared store's file sits above the text."""
+    return os.path.relpath(p, root)
+
+
 def scoped_files(root: Path = Path("."), include_path_only: bool = False) -> list[Path]:
     """Distinct corpus files, one entry per inode.
 
@@ -381,8 +388,12 @@ def scoped_files(root: Path = Path("."), include_path_only: bool = False) -> lis
     out: list[Path] = []
     seen: set = set()
     globs = SCOPE_GLOBS + PATH_ONLY_GLOBS if include_path_only else SCOPE_GLOBS
-    for pat in globs:
-        for p in sorted(root.glob(pat)):
+    # What a text shares with its workspace is still this text's to gate: moving a
+    # store up a level must not quietly take it out of the count.
+    ws = workspace_root(root)
+    for pat, base in [(pat, b) for pat in globs for b in (root, ws)
+                      if b == root or (b is not None and pat.startswith("edition/"))]:
+        for p in sorted(base.glob(pat)):
             # A directory can hold both `mets.xml` and `METS.xml`; neither is corpus,
             # and a manifest has no text to normalize.
             if not p.is_file() or p.name.lower() == "mets.xml":
@@ -463,7 +474,7 @@ def _quote_hits(p: Path, root: Path) -> list[dict]:
     nonsense. Only `text` (the keyed content) and non-`@note` prose are
     checked, where the "book sets curly quotes" premise actually holds.
     """
-    rel = str(p.relative_to(root))
+    rel = _rel(p, root)
     hits = []
     if p.suffix == ".json" and p.name in ("proposal.json", "decision.json"):
         try:
@@ -512,7 +523,7 @@ def _apostrophe_hits(p: Path, root: Path) -> list[dict]:
     found zero legitimate straight apostrophes anywhere in restored ground
     truth.
     """
-    rel = str(p.relative_to(root))
+    rel = _rel(p, root)
     hits = []
     if p.suffix == ".json" and p.name in ("proposal.json", "decision.json"):
         try:
@@ -559,7 +570,7 @@ def _footnote_hits(p: Path, root: Path) -> list[dict]:
     pairing breaks with nothing miskeyed — so a hit is a page to look at, not a
     proven defect. See `detectors.footnote_report` for the rule itself.
     """
-    rel = str(p.relative_to(root))
+    rel = _rel(p, root)
     texts: list[str] = []
     if p.suffix == ".json" and p.name in ("proposal.json", "decision.json"):
         try:
@@ -657,7 +668,7 @@ def scan(root: Path = Path("."), paths: list[Path] | None = None,
     if paths is not None:
         universe = _filter_scoped(universe, paths)
     for p in ptrack(universe, tick):
-        rel = str(p.relative_to(root))
+        rel = _rel(p, root)
         try:
             text = p.read_text(encoding="utf-8")
         except (OSError, UnicodeDecodeError) as e:
@@ -761,29 +772,29 @@ def convert(root: Path = Path("."), dry_run: bool = False,
         # what an ordinary store JSON answers. `_parses` is the narrow
         # question; see there.
         if shape_kind is not None and not _parses(p, shape_kind):
-            failed.append({"path": str(p.relative_to(root)),
+            failed.append({"path": _rel(p, root),
                            "note": f"REFUSED: {shape_kind} does not parse, so no "
                                    "shape check can witness the rewrite"})
             continue
         if dry_run:
-            changed.append({"path": str(p.relative_to(root)),
+            changed.append({"path": _rel(p, root),
                             "delta": len(after) - len(before)})
             continue
 
         p.write_text(after, encoding="utf-8")
 
         if p.read_text(encoding="utf-8") != after:
-            failed.append({"path": str(p.relative_to(root)),
+            failed.append({"path": _rel(p, root),
                            "note": "ABORTED: read-back does not match what was written"})
             continue
         if shape_before is not None:
             shape_after = _xml_shape(p) if shape_kind == "XML" else _json_shape(p)
             if shape_after != shape_before:
-                failed.append({"path": str(p.relative_to(root)),
+                failed.append({"path": _rel(p, root),
                                "note": f"ABORTED: {shape_kind} shape moved "
                                        f"{shape_before} -> {shape_after}"})
                 continue
-        changed.append({"path": str(p.relative_to(root)),
+        changed.append({"path": _rel(p, root),
                         "delta": len(after) - len(before)})
     return {"changed": changed, "failed": failed, "dry_run": dry_run}
 

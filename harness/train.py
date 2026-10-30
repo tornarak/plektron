@@ -81,16 +81,16 @@ class Track:
 
 
 ZONES = Track(
-    name="zones", workdir="train/bogoras-seg", modeldir="models/bogoras-seg",
+    name="zones", workdir="train/zones-seg", modeldir="models/zones-seg",
     model_name="zones-seg",
-    default_model="models/bogoras-seg/zones-seg.safetensors",
+    default_model="models/zones-seg/zones-seg.safetensors",
     split_store="gt/zones", mz_store="mz/zones", fraction=0.20,
     trainer="segtrain")
 
 FIG = Track(
-    name="fig", workdir="train/bogoras-fig", modeldir="models/bogoras-fig",
+    name="fig", workdir="train/fig-seg", modeldir="models/fig-seg",
     model_name="fig-seg",
-    default_model="models/bogoras-fig/fig-seg.safetensors",
+    default_model="models/fig-seg/fig-seg.safetensors",
     split_store="gt/fig", mz_store="mz/fig", fraction=0.20,
     trainer="segtrain")
 
@@ -100,9 +100,9 @@ FIG = Track(
 #: fifth would have cost the training set 3,000 more lines to measure something
 #: the smaller share measures just as well.
 OCR = Track(
-    name="ocr", workdir="train/bogoras-ocr", modeldir="models/bogoras-ocr",
+    name="ocr", workdir="train/text-rec", modeldir="models/text-rec",
     model_name="text-rec",
-    default_model="models/bogoras-ocr/text-rec.mlmodel",
+    default_model="models/text-rec/text-rec.mlmodel",
     split_store="gt/ocr", mz_store="mz/ocr", fraction=0.10,
     trainer="train")
 

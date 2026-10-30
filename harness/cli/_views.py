@@ -87,7 +87,7 @@ def run_check(a) -> int:
         rows = [r for r in F.survey(a.root, tick) if r["farm"] in wanted]
     out(a, rows)
     # A gate, not measurement — but **only over the farms `build` can actually
-    # fix**. `scans/` and `train/bogoras-seg/data/` are reported and never built here,
+    # fix**. `scans/` and `train/zones-seg/data/` are reported and never built here,
     # so gating on them would fail a fresh clone for lacking rasters that
     # `views build` has no way to produce: an exit code demanding a fix that the
     # named command does not perform, which teaches the reader to ignore it. Their

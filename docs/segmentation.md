@@ -218,15 +218,15 @@ line stage's editor.
 ### The model exists, and so does a second store
 
 `ketos segtrain` has run, three times. The installed model is
-`models/bogoras-seg/zones-seg.safetensors`; the accuracy stays out of the filename,
+`models/zones-seg/zones-seg.safetensors`; the accuracy stays out of the filename,
 since a default path that changes every retrain is a default nobody can use.
 `harness zones predict` runs it.
 
-**Two directories, and the split between them is the point.** `train/bogoras-seg/`
+**Two directories, and the split between them is the point.** `train/zones-seg/`
 is scratch — `data/` the symlink farm and the two `.lst` files, `model/` each run's
 checkpoints, nothing in the base — and **nothing reads it once training ends**, so
 `train assemble zones` may clobber it freely.
-`models/bogoras-seg/` is tracked and holds the artifacts: the weights, the split
+`models/zones-seg/` is tracked and holds the artifacts: the weights, the split
 they saw as `<model>.train.lst`/`.eval.lst`, and a small `<model>.json` for the few
 facts that are not lists. They used to be one directory, and the `.lst` files were
 both the *next* run's input and the only record of what a *past* run consumed —

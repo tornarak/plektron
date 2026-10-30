@@ -95,7 +95,9 @@ only where a transcribed page recorded one, and propagates via the seam ledger
 
 # Where things stand
 
-Layout of a text, `jesup/bogoras-chukchi/` (`project.json` marks one):
+Layout of a text, `jesup/bogoras-chukchi/` (`project.json` marks one). The
+workspace `jesup/` holds `edition/{entities,geo,lexicon,entity-images.json}` and
+`models/` by the same relative paths, read through `layout.shared`:
 
     scans/  the 832 rasters, 300 dpi, bitonal but for the 236 with a photograph. Derived; not in git. The farms over it (w-figs/, w-ocr/, w-figs-blotted/,
             fig-crops/, and one per leaf kind) are derived too and point into it: a clone gets dangling links.
@@ -143,17 +145,15 @@ Layout of a text, `jesup/bogoras-chukchi/` (`project.json` marks one):
             lines.json marks.json — and the editor's rulings over
             one: marks_exempt.json lexicon_extra.txt, `#ed` **rank** but no part
             of the edition, which is why they sit here and not in it.
-    data/   nothing authored: pdf_images.json _migrated.json are machine
-            receipts, tei_all.rng the vendored TEI schema.
+    data/   machine receipts: pdf_images.json _migrated.json.
     review/ one directory per page: proposal.json (a reading, not truth) and
             decision.json (adjudicated) are tracked; the images are derived and
             ignored. See harness/paths.py.
-    models/ the recognizers and segmenters, this project's zones-seg included.
-            fig-seg is declared but not yet trained.
+    models/ recognizers and segmenters; fig-seg is declared, not yet trained.
     pdfs/   symlinks to the three AMNH source PDFs, outside the repo.
-    train/  training working dirs, pure scratch. Ignored; artifacts go to models/.
-    harness/  tools/  docs/  concordance.md  keying_spec.md — the tests live in
-            harness/tests/, beside the package they cover.
+    train/  pure scratch, ignored; artifacts go to models/.
+    At the repo root: harness/ (tests in harness/tests/) tools/ docs/ concordance.md
+    keying_spec.md data/tei_all.rng, the vendored TEI schema.
 
 Counts deliberately absent — they go stale in a file nothing regenerates.
 **`harness corpus state` answers**, across every store at once as no store's own

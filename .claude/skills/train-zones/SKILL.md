@@ -3,12 +3,12 @@ name: train-zones
 description: Train, evaluate and install the page-segmentation model from gt/zones/, and run the diagnostics over it. Use when retraining the segmenter, judging whether a checkpoint is worth installing, reading a train/eval gap, deciding whether a class is too rare to keep, or auditing paragraph boundaries and line detection. Not the zone keying itself — a human does that in the browser editor.
 ---
 
-# Train the zone segmenter (gt/zones/ → a checkpoint → models/bogoras-seg/)
+# Train the zone segmenter (gt/zones/ → a checkpoint → models/zones-seg/)
 
 Four commands, in order. Everything that used to be a rule you had to remember is
 now a refusal, so this file is mostly about the judgement the tooling cannot make.
 
-    uv run harness train assemble zones         lay out train/bogoras-seg/data/, report the command
+    uv run harness train assemble zones         lay out train/zones-seg/data/, report the command
     <the reported ketos invocation>             the only slow step; runs in the user's terminal
     uv run harness train install zones CKPT     preview: scores it, refuses a permuted map
     uv run harness train install zones CKPT --commit
@@ -29,9 +29,9 @@ the same 100 s, because the sweep is single-core CPU with the card idle.
 
 `train assemble zones` computes the base model and whether `--resize` is needed, and
 reports the invocation to run. **Run what it prints.** It is not a fixed template:
-it picks `models/bogoras-seg/zones-seg.safetensors` over stock blla once one is
+it picks `models/zones-seg/zones-seg.safetensors` over stock blla once one is
 installed, it omits `--resize` when the class sets already match, it allocates a
-fresh `run-N` output directory under `train/bogoras-seg/model/`, and it fills in this machine's device and worker
+fresh `run-N` output directory under `train/zones-seg/model/`, and it fills in this machine's device and worker
 count so the command runs as printed. It once did not, and the run that followed
 used kraken's default **single** loader worker.
 
@@ -58,7 +58,7 @@ bare invocation that used to sweep is a usage error, so that a 832-page walk is
 never something you did by leaving an argument off.)
 
 The installed model trained on **578** pages and held out **138**. Its manifest
-(`models/bogoras-seg/zones-seg.json`) records, on eval:
+(`models/zones-seg/zones-seg.json`) records, on eval:
 
     as emitted    97.8% recall / 79.2% precision
     >=30px        97.8% recall / 91.2% precision
@@ -97,16 +97,16 @@ class set is exactly the six the installed model carries, so `assemble` reports
   region drawn on one is spurious and nothing can offset it. Seven plates ruled
   mid-session once took a split's precision from 79% to 53%, which reads as
   the model degrading when what changed was the denominator.
-- **`train/bogoras-seg/` is scratch**, `data/` the laid-out set and `model/` the
+- **`train/zones-seg/` is scratch**, `data/` the laid-out set and `model/` the
   run's checkpoints. Nothing reads it after training. Clobber freely.
-  `models/bogoras-seg/` is the tracked half and holds the artifacts.
+  `models/zones-seg/` is the tracked half and holds the artifacts.
 - **`train score zones` says when the corpus moved** under a model, rather than silently
   comparing against a reference that has changed.
 
 ## Read `split_from` before you read the numbers
 
 **A bare `train score zones` — no `--model` — takes its split from
-`train/bogoras-seg/data/*.lst`, and `assemble` rewrites those whenever the next run is
+`train/zones-seg/data/*.lst`, and `assemble` rewrites those whenever the next run is
 prepared.** So after an assemble, the splits it labels its rows with are the *next*
 run's, while `mz/zones/` still holds the *installed* model's predictions. Nothing
 refuses this; the report names its source in `split_from` and that is the whole
@@ -122,7 +122,7 @@ against an installed model that trained on 211 pages and held out 60. Roughly 36
 of those "trained-on" pages it never saw, and the "eval" row contains pages it did
 train on. The numbers are real measurements of nothing anyone asked about.
 
-**So: `train score zones --model models/bogoras-seg/zones-seg.safetensors` whenever you
+**So: `train score zones --model models/zones-seg/zones-seg.safetensors` whenever you
 want a figure about the installed model.** A manifest cannot be mis-attributed; a
 working directory can. The bare form is for scoring the store's predictions as a
 store, and its rows mean whatever `split_from` says they mean.

@@ -149,7 +149,7 @@ CLI settled on `--all` for every corpus form; the old spelling is trapped.)
                                  whatever builds an epub. `harness fig crops`
     scans/                       reported, never built here: harness scans extract
                                  over pdfs/ (symlinks outside the repo), then swap
-    train/bogoras-seg/data/      reported, never built here: assemble's scratch —
+    train/zones-seg/data/      reported, never built here: assemble's scratch —
                                  the laid-out set; the checkpoints go to model/
 
 **Two more trees under `scans/` are deliberately *not* farms**, and saying so is the

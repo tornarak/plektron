@@ -28,8 +28,9 @@ import pytest
 
 REPO = Path(__file__).resolve().parent.parent.parent
 PROJECT = REPO / "jesup" / "bogoras-chukchi"
+WORKSPACE = PROJECT.parent
 SKILL = REPO / ".claude" / "skills" / "train-zones" / "SKILL.md"
-MANIFEST = PROJECT / "models" / "bogoras-seg" / "zones-seg.json"
+MANIFEST = WORKSPACE / "models" / "zones-seg" / "zones-seg.json"
 
 #: The block of the skill that talks about the installed model. Scoped, because
 #: the file also discusses hypothetical runs and worked examples, and a

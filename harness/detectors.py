@@ -744,7 +744,9 @@ def _entities_stamp(root: Path) -> tuple:
     content hash over the store would be ~100 reads each time; the write path
     that matters here goes through `_guarded`, which rewrites whole files.
     """
-    d = root / "edition" / "entities"
+    from .entities import ent_dir
+
+    d = ent_dir(root)
     if not d.is_dir():
         return ()
     return tuple(sorted(

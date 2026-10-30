@@ -81,6 +81,7 @@ from typing import TypedDict
 from . import pictures
 from .geo import index as geo_index
 from .langs import ALIAS_LANGS
+from .layout import shared
 from .lookup import case_variants
 from .parallel import ptrack
 
@@ -391,7 +392,7 @@ class Malformed(ValueError):
 
 
 def ent_dir(root: Path = Path(".")) -> Path:
-    return root / ENTDIR
+    return shared(root, ENTDIR)
 
 
 def split_id(ent_id: str) -> tuple[str, str]:

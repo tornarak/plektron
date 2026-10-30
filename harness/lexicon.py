@@ -46,6 +46,7 @@ import re
 import unicodedata
 from pathlib import Path
 
+from .layout import shared
 from .marks import handle_key
 
 LEXDIR = "edition/lexicon"
@@ -73,7 +74,7 @@ class Malformed(ValueError):
 
 
 def lex_dir(root: Path = Path(".")) -> Path:
-    return root / LEXDIR
+    return shared(root, LEXDIR)
 
 
 def norm_form(form: str) -> str:

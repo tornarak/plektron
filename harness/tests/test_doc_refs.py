@@ -26,6 +26,7 @@ import pytest
 
 REPO = Path(__file__).resolve().parent.parent.parent
 PROJECT = REPO / "jesup" / "bogoras-chukchi"
+WORKSPACE = PROJECT.parent
 
 # Documents whose business is pointing at other files. Not every markdown file in
 # the repo: a page of prose that happens to mention a filename is not making a
@@ -115,7 +116,7 @@ EXPECTED_ABSENT = {
     # recognizer track is laid out and unrun: `train-ocr` names where a trained
     # model will be installed, and nothing has been trained, so there is nothing
     # to install. Remove this entry with the first run.
-    "models/bogoras-ocr",
+    "models/text-rec",
     # The same state one store over: `edition/fig-img/` is declared, documented
     # and empty, because no figure has been retouched yet. It has been dangling
     # here since it was written — under its old name for its whole life, and
@@ -174,7 +175,7 @@ EXPECTED_ABSENT = {
     # not yet trained". The distinction this list exists to draw: not there *yet*
     # is a different state from not there, and `train-figures/SKILL.md` is the
     # record of what would fill it.
-    "models/bogoras-fig",
+    "models/fig-seg",
     # Declared, derived, gitignored, and currently empty: no machine figure
     # predictions have been kept. `mz/fig` has no view over it either.
     "mz/fig",
@@ -272,7 +273,7 @@ def test_every_path_it_names_resolves(doc):
     missing = sorted(
         p
         for p in named_paths(doc)
-        if p not in EXPECTED_ABSENT and "PP-NNN" not in p and not (REPO / p).exists() and not (PROJECT / p).exists()
+        if p not in EXPECTED_ABSENT and "PP-NNN" not in p and not (REPO / p).exists() and not (PROJECT / p).exists() and not (WORKSPACE / p).exists()
     )
     assert not missing, (
         f"{doc} names paths that do not exist: {missing}. Either the file moved "

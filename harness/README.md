@@ -39,8 +39,8 @@ the project's rules, `CLAUDE.md` governs; for the character inventory,
 | `scans/w-figs-blotted/` | training rasters: figures painted **white**. Derived, ignored; the 580 figure-less pages are symlinks | `zones blot`, `views build w-figs-blotted` |
 | `scans/w-figs/` | the raster of every page carrying a `gt/fig/` ALTO — a selection, not a view. Derived, ignored | `views build w-figs` |
 | `scans/w-ocr/` | raster beside ALTO for every page a human has been through. Membership is `gt/ocr/`, and so is the ALTO the link names. Derived, ignored | `views build w-ocr` |
-| `train/bogoras-seg/` | training scratch, in two halves: `data/` is the symlink farm and its two `.lst` files, `model/` each run's checkpoints. Nothing sits in the base. Derived, ignored, **read by nothing once training ends** | `train assemble zones`, `ketos segtrain` |
-| `models/bogoras-seg/` | the models this project trains — **tracked**, each with the split it saw as `<model>.train.lst`/`.eval.lst` and a small `<model>.json` | `train install zones --commit` |
+| `train/zones-seg/` | training scratch, in two halves: `data/` is the symlink farm and its two `.lst` files, `model/` each run's checkpoints. Nothing sits in the base. Derived, ignored, **read by nothing once training ends** | `train assemble zones`, `ketos segtrain` |
+| `models/zones-seg/` | the models this project trains — **tracked**, each with the split it saw as `<model>.train.lst`/`.eval.lst` and a small `<model>.json` | `train install zones --commit` |
 | `models/` (rest) | downloaded third-party weights, 675 MB, ignored | not authored here |
 
 **`gt/seg/` and `gt/zones/` are two schemes, not one store in two states.** The label

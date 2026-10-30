@@ -3,13 +3,13 @@ name: train-figures
 description: Train, evaluate and install the figure/caption segmentation model from gt/fig/, and judge what it produces. Use when training the figure segmenter for the first time or retraining it, reading its per-class scores, deciding whether its negatives are trustworthy, or applying it to a book whose figures are only half annotated. Not the figure keying itself — a human does that in the browser editor's figure track.
 ---
 
-# Train the figure segmenter (gt/fig/ → a checkpoint → models/bogoras-fig/)
+# Train the figure segmenter (gt/fig/ → a checkpoint → models/fig-seg/)
 
 Five commands. `train-zones` is the sibling and most of its judgement carries;
 what follows is only what differs, and the differences are not cosmetic.
 
     uv run harness train remark-eval fig --commit   mint or extend the split
-    uv run harness train assemble fig               lay out train/bogoras-fig/data/, report the command
+    uv run harness train assemble fig               lay out train/fig-seg/data/, report the command
     <the reported ketos invocation>                 the only slow step; runs in the user's terminal
     uv run harness train install fig CKPT           preview: scores it, refuses a swapped map
     uv run harness train install fig CKPT --commit
@@ -90,7 +90,7 @@ then `remark-eval` again. Today it is 3.
   test degenerates to a swap test, and it is still worth running: `--resize new`
   renumbers the output layer, and a model that learned "caption" on the channel it
   calls "picture" scores plausibly on counts while being wrong about every box.
-- **`train install fig` refuses if `train/bogoras-fig/data/*.lst` are gone.** The split a run
+- **`train install fig` refuses if `train/fig-seg/data/*.lst` are gone.** The split a run
   consumed is frozen beside the model, or its scores belong to a division nobody
   kept.
 - **`train assemble fig` names its base model in the report.** With no blla and nothing
@@ -140,7 +140,7 @@ and `mz/fig/`, even while the zone and OCR pairs had one.
 ## Do not
 
 - Do not run the training command yourself.
-- Do not link the blotted rasters into `train/bogoras-fig/data/`.
+- Do not link the blotted rasters into `train/fig-seg/data/`.
 - Do not write an empty ALTO into `gt/fig/` to mean "no figures" — that is what
   `harness fig delete` is for, and what `assemble` synthesizes.
 - Do not treat a page with unaccounted or excused ink as a negative.

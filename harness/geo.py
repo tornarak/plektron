@@ -54,6 +54,7 @@ from collections.abc import Callable
 from functools import lru_cache
 from pathlib import Path
 
+from .layout import shared
 from .parallel import ptrack
 
 GEODIR = "edition/geo"
@@ -80,7 +81,7 @@ AREA_SEP = ","
 
 
 def geodir(root: Path = Path(".")) -> Path:
-    return root / GEODIR
+    return shared(root, GEODIR)
 
 
 # **The composite is gone, and it was a way of spelling.** `area:` held one

@@ -14,8 +14,9 @@ from harness import entities, geo
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 PROJECT = ROOT / "jesup" / "bogoras-chukchi"
+WORKSPACE = PROJECT.parent
 built = pytest.mark.skipif(
-    not (PROJECT / "edition" / "geo" / "index.json").exists(),
+    not (WORKSPACE / "edition" / "geo" / "index.json").exists(),
     reason="edition/geo/ is not built in this checkout")
 
 

@@ -55,6 +55,7 @@ import pytest
 
 REPO = Path(__file__).resolve().parent.parent.parent
 PROJECT = REPO / "jesup" / "bogoras-chukchi"
+WORKSPACE = PROJECT.parent
 
 
 # --------------------------------------------------------------- the readers
@@ -86,7 +87,7 @@ COUNTS = {
     "fig_pages":      lambda: _glob("gt/fig"),
     "zone_pages":     lambda: _glob("gt/zones"),
     "scans":          lambda: len(list((PROJECT / "scans").glob("chukchi-*.png"))),
-    "entities":       lambda: len(list((PROJECT / "edition" / "entities").glob("*/*.md"))),
+    "entities":       lambda: len(list((WORKSPACE / "edition" / "entities").glob("*/*.md"))),
     "works_printed":  lambda: _authorities("printed"),
     "works_records":  lambda: _authorities("records"),
     "sigla_rows":     lambda: _authorities("sigla_rows"),

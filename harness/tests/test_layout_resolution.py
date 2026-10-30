@@ -8,7 +8,14 @@ import pytest
 from conftest import write_project
 
 from harness import cli
-from harness.layout import ProjectError, project_root, repo_root, workspace_root
+from harness.layout import (
+    ProjectError,
+    project_root,
+    refuse_another_texts,
+    repo_root,
+    shared,
+    workspace_root,
+)
 
 
 def test_a_named_root_with_a_manifest_is_that_text(tmp_path):
@@ -61,3 +68,28 @@ def test_the_cli_exits_2_outside_a_text_and_the_repo_groups_still_answer(capsys)
         assert cli.main(["verbs", "show", "tei diff"]) == 0
     finally:
         os.chdir(repo_root() / "jesup" / "bogoras-chukchi")
+
+
+def test_a_text_composes_over_its_workspace_by_relative_path(tmp_path):
+    """Reads fall through; a write lands in the workspace unless the text holds the
+    store, so adding one entry cannot start shadowing all of them."""
+    (tmp_path / "ws" / "workspace.json").parent.mkdir(parents=True)
+    (tmp_path / "ws" / "workspace.json").write_text("{}", encoding="utf-8")
+    text = write_project(tmp_path / "ws" / "text")
+    ws = (tmp_path / "ws").resolve()
+    assert shared(text, "edition/entities") == ws / "edition/entities"
+    (text / "edition/entities").mkdir(parents=True)
+    assert shared(text, "edition/entities") == text / "edition/entities"
+    assert shared(tmp_path, "edition/entities") == tmp_path / "edition/entities"
+
+
+def test_a_model_fitted_to_another_text_is_read_but_not_overwritten_or_scored(tmp_path):
+    (tmp_path / "ws" / "models").mkdir(parents=True)
+    (tmp_path / "ws" / "workspace.json").write_text("{}", encoding="utf-8")
+    text = write_project(tmp_path / "ws" / "text", "koryak")
+    man = tmp_path / "ws" / "models" / "m.json"
+    man.write_text('{"text": "chukchi"}', encoding="utf-8")
+    with pytest.raises(ValueError, match="fitted to `chukchi`"):
+        refuse_another_texts(man, text)
+    man.write_text('{"text": "koryak"}', encoding="utf-8")
+    refuse_another_texts(man, text)

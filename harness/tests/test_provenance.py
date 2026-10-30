@@ -21,7 +21,7 @@ from harness.ns import ALTO_NS, TEI_NS
 MODEL = {"step": "harness zones predict --decode dp",
          "label": "region segmentation", "kind": "model",
          "version": "kraken 7.0.3",
-         "model": "models/bogoras-seg/zones-seg.safetensors",
+         "model": "models/zones-seg/zones-seg.safetensors",
          "sha256": "deadbeef", "device": "cuda:0"}
 
 
@@ -62,8 +62,8 @@ def test_a_legacy_free_text_block_reads_as_unwitnessed():
     """**The assertion the backfill rests on.** These are the exact strings the
     six writers used before the record existed; not one may reconstruct."""
     for legacy in (
-        "model: models/bogoras-seg/zones-seg.safetensors; sha256: ab; device: cpu",
-        "models/bogoras-fig/fig-seg.safetensors sha256:abcd device:cuda:0",
+        "model: models/zones-seg/zones-seg.safetensors; sha256: ab; device: cpu",
+        "models/fig-seg/fig-seg.safetensors sha256:abcd device:cuda:0",
         "data/pdf_images.json embedded-image placement",
         "region segmentation, harness zones predict --decode raw",
         "",

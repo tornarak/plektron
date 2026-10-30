@@ -63,7 +63,7 @@ def register(cli):
         help="write the split marks; without it, a preview")
 
     p = action(g, "assemble", run_assemble, pageable=False,
-               help="lay out a track's train/bogoras-*/data/ from its split "
+               help="lay out a track's train/<track>/data/ from its split "
                "marks and report the ketos invocation. **Runs nothing** — a run "
                "holds the GPU for hours and belongs in your own terminal. Pure "
                "scratch: the split a model trained on travels in that model's "
@@ -80,7 +80,7 @@ def register(cli):
 
     p = action(g, "install", run_install, pageable=False,
                help="score a checkpoint, **refuse a permuted class map**, then "
-               "install it into models/bogoras-*/ with a manifest and the split "
+               "install it into models/<track>/ with a manifest and the split "
                "it consumed. Everything that makes a checkpoint trustworthy is a "
                "precondition of the artifact existing, so the copy is last")
     _track_arg(p, T.INSTALLABLE)

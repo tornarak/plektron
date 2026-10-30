@@ -8,7 +8,7 @@ sha256 as its device, and the `ProcessingStep` — an `mz/` file's only witness 
 which model wrote it — recorded that sha as the device. All nine other
 `load_segmenter` call sites pass `root`.
 
-**There is no output to assert on.** `models/bogoras-fig/` does not exist, so
+**There is no output to assert on.** `models/fig-seg/` does not exist, so
 this verb has never run: no before-state, no golden file, and the failure it
 produced would have been a `FileNotFoundError` naming a path nobody asked for.
 So the assertions are on the *call*, which is where the fault is visible.
@@ -58,7 +58,7 @@ def test_the_segmenter_is_asked_for_the_root_and_not_the_device(root, calls):
     """The `root` slot must hold the repo root.
 
     Handed `"auto"`, `load_segmenter` does `p = root / p` and looks for the
-    weights under `auto/models/bogoras-fig/…`, then raises `FileNotFoundError`
+    weights under `auto/models/fig-seg/…`, then raises `FileNotFoundError`
     advising `harness train assemble zones` — naming neither the real path nor the
     real fault.
     """

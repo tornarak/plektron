@@ -535,7 +535,7 @@ def test_the_manifest_records_which_decoder_scored_the_model(tmp_path,
 
     zn.install_model(ckpt, tmp_path, cfg={"min_zone_h_px": 30}, commit=True)
     man = json.loads(
-        (tmp_path / "models/bogoras-seg/zones-seg.json").read_text(encoding="utf-8"))
+        (tmp_path / "models/zones-seg/zones-seg.json").read_text(encoding="utf-8"))
     assert man["decode"] == "dp"
 
 

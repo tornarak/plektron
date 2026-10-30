@@ -64,6 +64,7 @@ def write_png(path: Path, size: tuple[int, int] = A4_300, mode: str = "L",
 #: The repo, and the one text in it the live-store tests read.
 REPO = Path(__file__).resolve().parent.parent.parent
 PROJECT = REPO / "jesup" / "bogoras-chukchi"
+WORKSPACE = PROJECT.parent
 
 # **Inside the text's stores, as a person runs the harness**, so that a library
 # call left at its default `root` and a test's bare `config/zones.json` mean this

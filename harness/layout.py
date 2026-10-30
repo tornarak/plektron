@@ -7,7 +7,7 @@ derives it from the folder and nothing guesses it: a store with no manifest
 refuses, because a default stem would be one book's name wearing the clothes of a
 fact about every book.
 
-**Above `refs.py`, which imports nothing**, and this imports only that. `refs.py`
+**Imports nothing from this package but `refs.py`, a leaf**, so it cannot join a cycle. `refs.py`
 holds the readings that need nothing but their argument; a stem needs the
 manifest, so everything that has to spell a file name comes here.
 """
@@ -132,3 +132,42 @@ def workspace_root(root: Path = Path(".")) -> Path | None:
         if (d / WORKSPACE_JSON).is_file():
             return d
     return None
+
+
+def shared(root: Path, rel: str | Path) -> Path:
+    """Where a store a text shares with its workspace is, for reading and writing.
+
+    **The same relative path in both tiers**, so a text composes over its workspace
+    as an object over its prototype: `rel` under the text if it is there, else under
+    the workspace. A text with no workspace has only itself. Writing through this
+    lands in the workspace unless the text already holds the store, which is why a
+    text cannot start shadowing a whole store by adding one entry to it.
+    """
+    own = Path(root) / rel
+    if own.exists():
+        return own
+    ws = workspace_root(root)
+    return own if ws is None else ws / rel
+
+
+def shared_rel(root: Path, rel: str | Path) -> str:
+    """`shared`, spelled relative to the text, for a command printed to run there."""
+    return os.path.relpath(shared(root, rel), root)
+
+
+def refuse_another_texts(manifest: Path, root: Path, verb: str = "install over") -> None:
+    """A workspace's model belongs to the text it was fitted to, which the others read.
+
+    Reusing one needs nothing. **Installing over it, or scoring it, from another text
+    is refused**: the first would destroy the only record of what it was trained on,
+    and the second holds it to an eval list naming pages this text does not have, so
+    it would answer with a number about nothing. The way out is for this text to hold
+    its own `models/<track>/`, which `layout.shared` then finds first.
+    """
+    if not manifest.exists():
+        return
+    text = json.loads(manifest.read_text(encoding="utf-8")).get("text")
+    if text and text != stem(root):
+        raise ValueError(
+            f"{manifest} was fitted to `{text}`, and this is `{stem(root)}`: refusing to "
+            f"{verb} it. Give this text its own `models/<track>/` to train into.")

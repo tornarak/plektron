@@ -51,6 +51,7 @@ distinction:
 """
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 import pytest
@@ -73,8 +74,8 @@ def test_the_scan_actually_reached_the_corpus(report):
     that stopped matching would turn the whole file green and silent, which is
     the failure it exists to prevent, one level up."""
     assert report["files"] > 0, "the corpus glob matched nothing"
-    scoped = {str(p.relative_to(PROJECT)) for p in scoped_files(PROJECT)}
-    assert any(s.startswith("edition/entities/") for s in scoped), \
+    scoped = {os.path.relpath(p, PROJECT) for p in scoped_files(PROJECT)}
+    assert any(s.startswith("../edition/entities/") for s in scoped), \
         "edition/entities/ is out of scope — the store where the last drift appeared"
     assert any(s.startswith("gt/ocr/") for s in scoped), \
         "gt/ocr/ is out of scope — the store the NFD rule is chiefly about"

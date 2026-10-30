@@ -23,7 +23,16 @@ from lxml import etree
 
 from . import apparatus, citations, figrefs
 from .detectors import unlicensed_marks
-from .entities import ENTDIR, ENTITY_CLASSES, GEO_CLASSES, alias_index, auto_forms, load, split_id
+from .entities import (
+    ENTDIR,
+    ENTITY_CLASSES,
+    GEO_CLASSES,
+    alias_index,
+    auto_forms,
+    ent_dir,
+    load,
+    split_id,
+)
 from .generate import NOTE_MARKERS
 from .langs import TIER1
 from .ns import TEI_NS, XML_ID, XML_LANG
@@ -424,6 +433,12 @@ def check_corpus_header(root: Path, schema: bool = False) -> Report:
             continue                      # already reported as an unknown class
         want_pat = f"{ENTDIR}/{ident}/$1.md"
         got = p.get("replacementPattern")
+        # Read project first, then workspace: the pattern is relative to whichever
+        # holds the store, and a store in neither resolves every reference to nothing.
+        if ent_dir(root).is_dir() and not ent_dir(root).parent.joinpath(
+                got.split("/")[1] if got and "/" in got else "").is_dir():
+            r.errors.append(f"<prefixDef ident=\"{ident}\"> names {got!r}, which "
+                            f"neither the text nor its workspace holds")
         if got != want_pat:
             r.errors.append(
                 f"<prefixDef ident=\"{ident}\"> resolves to {got!r}, but the "

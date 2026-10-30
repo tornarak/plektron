@@ -18,15 +18,20 @@
 # Paths in it are repo-relative, since a record of one machine's filesystem is no
 # record. `.bak` is `--remap-model`'s one-deep undo and stays out, like
 # `gt/zones/*.prev`.
-!/*/models/bogoras-seg/
-/*/models/bogoras-seg/*.bak
+!/*/models/zones-seg/
+/models/*
+!/models/zones-seg/
+/models/zones-seg/*.bak
+/*/models/zones-seg/*.bak
 # The figure segmenter, on the same terms. Its manifest's corpus digest is over
 # `gt/fig/` rather than `gt/zones/`, which is the whole reason the two are separate
 # models rather than one with more classes: they are fitted to different stores and
 # read different rasters — zones-seg trains on figure-blotted pages, and a figure
 # segmenter obviously cannot, since the blot paints out its target.
-!/*/models/bogoras-fig/
-/*/models/bogoras-fig/*.bak
+!/*/models/fig-seg/
+!/models/fig-seg/
+/models/fig-seg/*.bak
+/*/models/fig-seg/*.bak
 
 # `review/PP-NNN/` is one directory per page, holding both the authored files —
 # `proposal.json` (somebody's, or something's, reading) and `decision.json` (an

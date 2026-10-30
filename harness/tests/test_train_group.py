@@ -33,26 +33,26 @@ def test_the_record_reproduces_every_constant_it_replaced():
     they now come from the record, and a difference here is a training set
     laid out somewhere else or a model installed under another name."""
     assert (Z.WORKDIR, Z.DATADIR, Z.RUNDIR) == (
-        "train/bogoras-seg", "train/bogoras-seg/data", "train/bogoras-seg/model")
-    assert Z.MODELDIR == "models/bogoras-seg"
-    assert Z.DEFAULT_MODEL == "models/bogoras-seg/zones-seg.safetensors"
+        "train/zones-seg", "train/zones-seg/data", "train/zones-seg/model")
+    assert Z.MODELDIR == "models/zones-seg"
+    assert Z.DEFAULT_MODEL == "models/zones-seg/zones-seg.safetensors"
 
     assert (F.WORKDIR, F.DATADIR, F.RUNDIR) == (
-        "train/bogoras-fig", "train/bogoras-fig/data", "train/bogoras-fig/model")
-    assert F.MODELDIR == "models/bogoras-fig"
+        "train/fig-seg", "train/fig-seg/data", "train/fig-seg/model")
+    assert F.MODELDIR == "models/fig-seg"
     assert F.MODEL_NAME == "fig-seg"
-    assert F.DEFAULT_MODEL == "models/bogoras-fig/fig-seg.safetensors"
+    assert F.DEFAULT_MODEL == "models/fig-seg/fig-seg.safetensors"
 
     assert (R.WORKDIR, R.DATADIR, R.RUNDIR) == (
-        "train/bogoras-ocr", "train/bogoras-ocr/data", "train/bogoras-ocr/model")
-    assert R.MODELDIR == "models/bogoras-ocr"
+        "train/text-rec", "train/text-rec/data", "train/text-rec/model")
+    assert R.MODELDIR == "models/text-rec"
     assert R.MODEL_NAME == "text-rec"
-    assert R.INSTALLED_MODEL == "models/bogoras-ocr/text-rec.mlmodel"
+    assert R.INSTALLED_MODEL == "models/text-rec/text-rec.mlmodel"
     assert R.SPLIT_STORE == "gt/ocr"
 
 
 def test_the_farm_registry_reads_its_train_path_from_the_record():
-    """One home for `train/bogoras-seg`. The path is a property of the zone
+    """One home for `train/zones-seg`. The path is a property of the zone
     track and the farm is only the half of it that has members, so `farms`
     imports from `train` and never the reverse — which is also why `train` can
     be a leaf."""

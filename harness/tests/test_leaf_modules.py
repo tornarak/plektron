@@ -32,7 +32,7 @@ HARNESS = Path(__file__).resolve().parent.parent
 #: Adding one here is how a new leaf declares itself; the companion test below
 #: refuses an entry that does not actually make the claim, so the list and the
 #: prose cannot drift apart in either direction.
-LEAVES = ("refs.py", "ns.py", "atomic.py", "mets.py", "train.py", "pictures.py")
+LEAVES = ("refs.py", "ns.py", "atomic.py", "mets.py", "train.py")
 
 #: Modules that import **only leaves**, and so cannot join a cycle either — a
 #: leaf's guarantee holds one level up for free, because a leaf has no edges to
@@ -43,7 +43,7 @@ LEAVES = ("refs.py", "ns.py", "atomic.py", "mets.py", "train.py", "pictures.py")
 #: own. A fact stated twice is the defect `CLAUDE.md` names; a second tier that
 #: is still provably acyclic is not. The gate below is what keeps the tier from
 #: becoming a place to put anything.
-CANOPY = ("provenance.py",)
+CANOPY = ("provenance.py", "layout.py")
 
 
 def _package_imports(path: Path) -> list[str]:
