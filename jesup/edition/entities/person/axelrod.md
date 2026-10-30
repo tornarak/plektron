@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Axelrod | | yes | 1-022 "Mr. Alexander Axelrod of Switzerland" |
+| Axelrod | | yes | chukchi-1-022 "Mr. Alexander Axelrod of Switzerland" |
 
 ## gloss
 

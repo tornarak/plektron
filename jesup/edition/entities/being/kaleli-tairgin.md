@@ -9,13 +9,13 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Kalêˊlɪ-taˊɪrg̣ɪn | ckt | no | 1-065 |
+| Kalêˊlɪ-taˊɪrg̣ɪn | ckt | no | chukchi-1-065 |
 
 ## gloss
 
 “Spotted taˊɪrg̣ɪn”: it “covers the skin with large spots of a light, ashen
 color, often over the whole body, including the face and the hair of the head.
-It does not seem to affect the health” (1-065). A man named Tuˊrkew who had it
+It does not seem to affect the health” (chukchi-1-065). A man named Tuˊrkew who had it
 was called Keliˊlɪ-Tuˊrkew, “Spotted Tuˊrkew”, and was well known in the Anui
 country for his piebald hair; at fifty he was “still active for his time of
 life”.

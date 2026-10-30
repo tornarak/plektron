@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Boreogadus polaris | la | yes | 1-191 note, the Arctic wachna |
+| Boreogadus polaris | la | yes | chukchi-1-191 note, the Arctic wachna |
 
 ## gloss
 

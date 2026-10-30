@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Polygonum | la | yes | 1-253, 1-254 |
+| Polygonum | la | yes | chukchi-1-253, chukchi-1-254 |
 
 ## gloss
 

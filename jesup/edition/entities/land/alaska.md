@@ -10,7 +10,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Alaska | en | yes | |
-| Kɪˊɪmɪn | ckt | yes | 1-041: “The American Continent is called Kɪˊɪmɪn” |
+| Kɪˊɪmɪn | ckt | yes | chukchi-1-041: “The American Continent is called Kɪˊɪmɪn” |
 
 ## gloss
 
@@ -18,7 +18,7 @@ The far shore. Bogoras names it thirty-odd times — “the purchase of Alaska�
 “northern Alaska”, the Alaskan Eskimo, the Alaskan miners — and it is where the
 Asiatic Eskimo are argued to have come from.
 
-**1-041 gives the Chukchee name for it: Kɪˊɪmɪn.** Its inhabitants are Kɪˊɪmɪlɪt,
+**chukchi-1-041 gives the Chukchee name for it: Kɪˊɪmɪn.** Its inhabitants are Kɪˊɪmɪlɪt,
 and also Yɪkɪrg̣aˊulɪt, and also Roˊčhɪlɪt — “opposite-shore people”. Footnote 2
 derives the word from the Asiatic Eskimo Kīˊxmi, an inhabitant of
 [[place:cape-prince-of-wales]], which those Eskimo call Kiˊhi: Kīˊxmi is “the

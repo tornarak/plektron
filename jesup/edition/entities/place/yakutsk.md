@@ -10,7 +10,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Yakutsk | | yes | 1-045; the government Treskin also ruled (1-079) |
+| Yakutsk | | yes | chukchi-1-045; the government Treskin also ruled (chukchi-1-079) |
 
 ## gloss
 

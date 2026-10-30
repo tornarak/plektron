@@ -6,12 +6,12 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| reindeer-moss | en | once | 1-251, 1-253, the half-digested moss of the paunch |
-| moss | en | once | 1-251, 1-253, the half-digested moss of the paunch |
+| reindeer-moss | en | once | chukchi-1-251, chukchi-1-253, the half-digested moss of the paunch |
+| moss | en | once | chukchi-1-251, chukchi-1-253, the half-digested moss of the paunch |
 
 ## gloss
 
-The reindeer-moss of 1-102, which is the single most important plant in the
+The reindeer-moss of chukchi-1-102, which is the single most important plant in the
 book — the whole winter fodder of the herds, and Bogoras lists seven Chukchee
 kinds of it with two Latin names attached ([[taxon:cetraria]],
 [[taxon:stenocaulon-paschale]]).

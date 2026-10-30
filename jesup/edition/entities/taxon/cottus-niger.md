@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Cottus niger | la | yes | 1-192 note, under Russian быкъ рыба / Chukchee qañaˊyolhin |
+| Cottus niger | la | yes | chukchi-1-192 note, under Russian быкъ рыба / Chukchee qañaˊyolhin |
 
 ## gloss
 

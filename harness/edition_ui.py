@@ -50,7 +50,7 @@ from .entities import (
     split_id,
     tree_parent,
 )
-from .layout import stem_for
+from .layout import bare_own_citations, stem_for
 
 # `scan_for` is re-exported: this module's callers name it here, and the
 # definition moved to `paths` because there were two byte-identical copies.
@@ -336,7 +336,7 @@ def _link_html(m: re.Match) -> str:
             f'rel="noopener noreferrer">{label}</a>')
 
 
-def inline_html(text: str, store: dict, base: str = BASE) -> str:
+def inline_html(text: str, store: dict, base: str = BASE, own: str = "") -> str:
     """One line of authored text: escaped, then the small markup a gloss may use.
 
     `[[…]]`, `[text](url)`, `**strong**`, `*em*` and `` `code` ``. No paragraph
@@ -348,7 +348,7 @@ def inline_html(text: str, store: dict, base: str = BASE) -> str:
     the element it names. `**strong**` is tried before `*em*` or the em rule
     would eat the first asterisk of each pair.
     """
-    out = escape(text)
+    out = escape(bare_own_citations(text, own) if own else text)
     out = WIKILINK.sub(lambda m: _entity_link(m.group(1), store, base), out)
     out = _LINK.sub(_link_html, out)
     out = _CODE.sub(r"<code>\1</code>", out)
@@ -365,7 +365,7 @@ def _entity_link(ident: str, store: dict, base: str = BASE) -> str:
     )
 
 
-def gloss_html(text: str, store: dict, base: str = BASE) -> str:
+def gloss_html(text: str, store: dict, base: str = BASE, own: str = "") -> str:
     """An entity's gloss as HTML: escaped first, then the little markup it may use.
 
     **`[[class:slug]]` is how one entry names another.** Bare `person:jochelson`
@@ -405,7 +405,7 @@ def gloss_html(text: str, store: dict, base: str = BASE) -> str:
                     # how markdown reads a wrapped bullet.
                     items[-1] += " " + line.strip()
             out.append("<ul>" + "".join(
-                f"<li>{inline_html(i, store, base)}</li>" for i in items) + "</ul>")
+                f"<li>{inline_html(i, store, base, own)}</li>" for i in items) + "</ul>")
         elif m := _HEADING.match(lines[0].strip()):
             # `###` and deeper. `#` and `##` cannot reach here — both stores
             # slice their files on `##`, so a heading that shallow is a section
@@ -414,9 +414,9 @@ def gloss_html(text: str, store: dict, base: str = BASE) -> str:
             # itself has already spent `h4` on the title.
             tag = "h5" if len(m.group(1)) == 3 else "h6"
             body = " ".join(x.strip() for x in lines[1:] if x.strip())
-            out.append(f"<{tag}>{inline_html(m.group(2), store, base)}</{tag}>")
+            out.append(f"<{tag}>{inline_html(m.group(2), store, base, own)}</{tag}>")
             if body:
-                out.append(f"<p>{inline_html(body, store, base)}</p>")
+                out.append(f"<p>{inline_html(body, store, base, own)}</p>")
         else:
             # **Joined into one logical line before the inline rules run**, which
             # is markdown's own reading of a hard-wrapped paragraph — and the
@@ -430,7 +430,7 @@ def gloss_html(text: str, store: dict, base: str = BASE) -> str:
             # over the store when this was found, **36 spans across 29 entity
             # files** were failing this way.
             out.append(f"<p>{inline_html(' '.join(
-                x.strip() for x in lines if x.strip()), store, base)}</p>")
+                x.strip() for x in lines if x.strip()), store, base, own)}</p>")
     return "".join(out)
 
 

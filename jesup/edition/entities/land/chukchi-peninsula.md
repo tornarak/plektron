@@ -16,7 +16,7 @@
 ## gloss
 
 The northeastern tip of Asia, between the Chukchi and Bering Seas.
-[[person:bogoras]] travels there in 1900–01 (1-021).
+[[person:bogoras]] travels there in 1900–01 (chukchi-1-021).
 
 The `area:` is Natural Earth's own `CHUKCHI PENINSULA` region polygon. It used
 to sit beside a `geo:` point that had stood in for the boundary before the

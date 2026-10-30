@@ -15,4 +15,4 @@
 
 Охотское море. [[water:penzhina-bay]] and [[water:gizhiga-bay]] are its
 northeastern corner; [[place:kamenskoye]] and [[place:paren]] are the Koryak
-villages on it (1-164).
+villages on it (chukchi-1-164).

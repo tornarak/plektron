@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Hedisarum obscurum | la | yes | 1-254 |
+| Hedisarum obscurum | la | yes | chukchi-1-254 |
 
 ## gloss
 

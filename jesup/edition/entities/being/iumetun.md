@@ -6,14 +6,14 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| iuˊmetun | ckt | yes | 1-064 |
+| iuˊmetun | ckt | yes | chukchi-1-064 |
 
 ## gloss
 
 “Another disease of a like character is iuˊmetun, a kind of violent nervous
 affection, which comes on at night like nightmare. During an attack the breath
 appears shortened, the blood rushes to the face, and sometimes the sufferer
-chokes on the spot” (1-064). Paired with [[being:iteyun]] as spirit-caused, its
+chokes on the spot” (chukchi-1-064). Paired with [[being:iteyun]] as spirit-caused, its
 name likewise not spoken, and shunned the same way.
 
 **Identification: unresolved.** Two candidates, and the account does not choose

@@ -7,7 +7,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| The Happy Suitor | | yes | 3-121 (set across a line break), 3-124 |
+| The Happy Suitor | | yes | chukchi-3-121 (set across a line break), chukchi-3-124 |
 
 ## gloss
 

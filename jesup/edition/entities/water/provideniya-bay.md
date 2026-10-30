@@ -10,10 +10,10 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Plover Bay | | yes | the whalers' name, and the book's ordinary one |
-| Providence Bay | | yes | 1-051 only, in the note correcting Gondatti |
+| Providence Bay | | yes | chukchi-1-051 only, in the note correcting Gondatti |
 
 ## gloss
 
-Бухта Провидения. The village [[place:ien]] stands on it (1-051, 1-088).
-Bogoras notes at 1-051 that Gondatti "has confounded Providence Bay with
+Бухта Провидения. The village [[place:ien]] stands on it (chukchi-1-051, chukchi-1-088).
+Bogoras notes at chukchi-1-051 that Gondatti "has confounded Providence Bay with
 [[place:tkachen]] Bay" — that is, with [[water:tkachen-bay]].

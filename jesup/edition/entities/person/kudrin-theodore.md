@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Theodore Kudrin | | yes | 1-085 "His brother, Theodore Kudrin" |
+| Theodore Kudrin | | yes | chukchi-1-085 "His brother, Theodore Kudrin" |
 
 ## gloss
 

@@ -17,11 +17,11 @@
 The island in the northern Bering Sea, off the mouth of the [[river:anadyr]]
 and about 60 km from the Chukotka coast. The book meets it as the other end of
 a trade route: Chukchee crews go over in boats for reindeer-skins, and kettles
-and other goods come back from it (1-051, 1-086, 1-104).
+and other goods come back from it (chukchi-1-051, chukchi-1-086, chukchi-1-104).
 
 `within: water:bering-strait` is an **editorial grouping, not a hydrographic
 claim** — strictly the island lies in the northern Bering Sea, south of the
 strait proper. It hangs there because the strait is this store's node for the
 crossing the book actually describes, and because the alternative parent would
 be Alaska, which has no entry here. Not to be confused with St. Lawrence Bay on
-the Chukotka coast (1-047), which is a different feature and has no entry yet.
+the Chukotka coast (chukchi-1-047), which is a different feature and has no entry yet.

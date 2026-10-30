@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Viligin | | yes | 1-037 "the hunter, Ivan Viligin" |
+| Viligin | | yes | chukchi-1-037 "the hunter, Ivan Viligin" |
 
 ## gloss
 

@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Anatovsky | | yes | 1-149 "Chief Officer Anatovsky, on the Lower Kolyma" |
+| Anatovsky | | yes | chukchi-1-149 "Chief Officer Anatovsky, on the Lower Kolyma" |
 
 ## gloss
 

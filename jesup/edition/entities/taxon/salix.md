@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| willow | en | yes | 1-253, leaves and the inner bark of the roots eaten; 1-257, young willow mixed into tobacco |
+| willow | en | yes | chukchi-1-253, leaves and the inner bark of the roots eaten; chukchi-1-257, young willow mixed into tobacco |
 
 ## gloss
 

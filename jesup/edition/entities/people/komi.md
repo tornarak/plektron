@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Zyrians | | yes | 1-096 |
+| Zyrians | | yes | chukchi-1-096 |
 
 ## gloss
 

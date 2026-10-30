@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Totanus pugnax | la | yes | 1-351, "The Song of the Fighting Sandpiper"; the Chukchee mñê-g̣aˊʟᴇ "ceremonial bird" |
+| Totanus pugnax | la | yes | chukchi-1-351, "The Song of the Fighting Sandpiper"; the Chukchee mñê-g̣aˊʟᴇ "ceremonial bird" |
 
 ## gloss
 

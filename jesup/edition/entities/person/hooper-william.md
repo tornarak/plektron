@@ -15,8 +15,8 @@
 Author of *Ten Months among the Tents of the Tuski* (1853), which
 `edition/authorities.json` records under the siglum *Hooper* and the store holds
 as [[source:hooper-1853]]. The book narrates him as well as citing him — "at
-the time of Hooper's visit in 1848" (1-233), the name *Tuski* he adopted
-(1-031) — which is what earns the person entry.
+the time of Hooper's visit in 1848" (chukchi-1-233), the name *Tuski* he adopted
+(chukchi-1-031) — which is what earns the person entry.
 
 **Every printed `Hooper` is this man.** Authorities Quoted also lists Calvin
 L. Hooper's *Corwin* report (1881, `hooper1881`), but it carries no siglum and

@@ -12,7 +12,7 @@
 
 ## gloss
 
-Located by the editor from Bogoras's gazetteer (1-048 to 1-053), traced in QGIS.
-Bogoras only. 1-053: 11 houses, the name signifying "curve" "with a slight
+Located by the editor from Bogoras's gazetteer (chukchi-1-048 to chukchi-1-053), traced in QGIS.
+Bogoras only. chukchi-1-053: 11 houses, the name signifying "curve" "with a slight
 modification of the last vowel". The gazetteer sets `Neˊte-keˊñičvun` on the
 same page, which is a different entry and not filed here.

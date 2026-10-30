@@ -9,8 +9,8 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Gadus | la | yes | 1-191 note, "various species of Gadi", and "Gadus wachna Pall." |
-| Gadi | la | yes | 1-191 note, "various species of Gadi" |
+| Gadus | la | yes | chukchi-1-191 note, "various species of Gadi", and "Gadus wachna Pall." |
+| Gadi | la | yes | chukchi-1-191 note, "various species of Gadi" |
 
 ## gloss
 

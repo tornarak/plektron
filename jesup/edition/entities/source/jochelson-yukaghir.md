@@ -14,7 +14,7 @@
 ## gloss
 
 [[person:jochelson]]’s *Матеріалы для изученія юкагирскаго языка и фольклора* (1900),
-listed in Authorities Quoted at printed folio 8 (scan 1-028) and cited in the
+listed in Authorities Quoted at printed folio 8 (scan chukchi-1-028) and cited in the
 text as “Jochelson, Yukaghir Materials”. `authority:` points at its key in
 edition/authorities.json; resolving a `<bibl>` to that key is still the annotation
 pass’s, and this field does not do it.

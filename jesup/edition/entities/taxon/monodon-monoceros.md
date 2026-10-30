@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| narwhal | en | once | 1-358, Kroeber's Fig. 53, a — an Eskimo drawing, not Chukchi fauna |
+| narwhal | en | once | chukchi-1-358, Kroeber's Fig. 53, a — an Eskimo drawing, not Chukchi fauna |
 
 ## gloss
 

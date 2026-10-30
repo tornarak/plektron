@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Kamakai | | yes | 1-036 "the Chukchee Kamakai on Cape Erri" |
+| Kamakai | | yes | chukchi-1-036 "the Chukchee Kamakai on Cape Erri" |
 
 ## gloss
 

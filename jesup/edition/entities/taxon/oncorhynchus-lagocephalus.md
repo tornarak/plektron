@@ -8,8 +8,8 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Oncorhynchus lagocephalus | la | yes | 1-190 "pink salmon (O. lagocephalus or keta)" |
-| O. lagocephalus | la | yes | 1-190 as printed |
+| Oncorhynchus lagocephalus | la | yes | chukchi-1-190 "pink salmon (O. lagocephalus or keta)" |
+| O. lagocephalus | la | yes | chukchi-1-190 as printed |
 
 ## gloss
 

@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| taˊɪrg̣ɪn | ckt | no | 1-064 |
+| taˊɪrg̣ɪn | ckt | no | chukchi-1-064 |
 
 ## gloss
 
@@ -16,7 +16,7 @@
 skin, so that the afflicted look like mulattoes. They do not complain of any
 pain, but lose in strength and agility; nor can they endure the hardships of
 their former pursuits, though their term of life does not seem to be shortened.
-I met with only five cases of this disease” (1-064).
+I met with only five cases of this disease” (chukchi-1-064).
 
 **Identification: Addison's disease**, adrenal insufficiency as a sequela of
 tuberculosis — which is what caused most of it in this period, and which the

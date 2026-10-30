@@ -13,7 +13,7 @@
 
 ## gloss
 
-Located by the editor from Bogoras's gazetteer (1-048 to 1-053), traced in QGIS.
-Bogoras + OSM, the latter attesting the spit as "nigchigen". 1-052: 2 houses,
+Located by the editor from Bogoras's gazetteer (chukchi-1-048 to chukchi-1-053), traced in QGIS.
+Bogoras + OSM, the latter attesting the spit as "nigchigen". chukchi-1-052: 2 houses,
 against the Register's 2 houses and 12 inhabitants; the Eskimo form is glossed
-there as "one with seals". Named again at 1-042.
+there as "one with seals". Named again at chukchi-1-042.

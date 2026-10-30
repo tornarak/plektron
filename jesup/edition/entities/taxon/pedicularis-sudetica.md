@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Pedicularis sudetica | la | yes | 1-254 |
+| Pedicularis sudetica | la | yes | chukchi-1-254 |
 
 ## gloss
 

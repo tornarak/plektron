@@ -15,4 +15,4 @@
 ## gloss
 
 Голыгино, southwestern [[land:kamchatka]]; named once, with
-[[place:yavina]], for its dogs (1-134).
+[[place:yavina]], for its dogs (chukchi-1-134).

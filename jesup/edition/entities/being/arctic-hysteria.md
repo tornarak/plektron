@@ -8,13 +8,13 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Arctic hysteria | en | no | 1-064 |
+| Arctic hysteria | en | no | chukchi-1-064 |
 
 ## gloss
 
 “The well-known form of Arctic hysteria, which is so widespread among the
 [[people:yukaghir]] and [[people:even]] women, is very rare among the Chukchee,
-especially among the Reindeer branch of the tribe” (1-064). What Bogoras
+especially among the Reindeer branch of the tribe” (chukchi-1-064). What Bogoras
 describes is the imitative form and only that: “an uncontrollable desire to
 repeat in a loud voice each word spoken by somebody else, and to imitate every
 sudden gesture or action”. Russianized native women and [[people:russians]] have

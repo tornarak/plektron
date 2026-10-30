@@ -9,8 +9,8 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Oncorhynchus keta | la | yes | 1-190, the second name the page gives the pink salmon |
-| O. keta | la | yes | 1-190 as printed |
+| Oncorhynchus keta | la | yes | chukchi-1-190, the second name the page gives the pink salmon |
+| O. keta | la | yes | chukchi-1-190 as printed |
 
 ## gloss
 

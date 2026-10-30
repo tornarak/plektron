@@ -9,7 +9,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Gilyak | | yes | |
-| Gilyaks | | yes | plural; 1-128 "the Gilyaks of the Amur" |
+| Gilyaks | | yes | plural; chukchi-1-128 "the Gilyaks of the Amur" |
 
 ## gloss
 

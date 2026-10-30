@@ -27,8 +27,8 @@ shape.
 
 **A ligature was invisible to every report this store was built from**, which is
 why five entries here came off the page rather than off a worklist: `Œstrus` and
-`Œdemagena` (1-108), `Salmonidæ`, `chamæmorus`, and [[taxon:coregonidae]],
-printed once at 1-188 and naming a fish family that changes where
+`Œdemagena` (chukchi-1-108), `Salmonidæ`, `chamæmorus`, and [[taxon:coregonidae]],
+printed once at chukchi-1-188 and naming a fish family that changes where
 [[taxon:coregonus]] sits. `lexicon misses` applied an ASCII shape floor to both
 its arms; `--common` now runs `admit_foreign=True` and widens on *carries no
 Tier-1 mark* instead. A Latin binomial is where this book keeps its ligatures,

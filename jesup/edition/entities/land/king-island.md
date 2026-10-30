@@ -15,5 +15,5 @@
 
 ## gloss
 
-Alaska, in [[water:bering-strait]]. Named once (1-272), as the reported source
+Alaska, in [[water:bering-strait]]. Named once (chukchi-1-272), as the reported source
 of a belt-knife found among the Koryak of western [[land:kamchatka]].

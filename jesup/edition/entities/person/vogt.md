@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Vogt | | yes | 1-097 note, on Mortillet's authority |
+| Vogt | | yes | chukchi-1-097 note, on Mortillet's authority |
 
 ## gloss
 

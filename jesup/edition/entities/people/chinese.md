@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Chinese | | yes | 1-089 "Chinese or southern Siberian ports" |
+| Chinese | | yes | chukchi-1-089 "Chinese or southern Siberian ports" |
 
 ## gloss
 

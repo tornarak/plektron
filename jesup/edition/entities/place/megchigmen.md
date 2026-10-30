@@ -13,4 +13,4 @@
 
 ## gloss
 
-Located by the editor from Bogoras's gazetteer (1-048 to 1-053), cross-referenced against Operational Navigation Charts and OpenStreetMap. Bogoras + ONC; ONC names two settlements "megchigmen", one "on the bay" (this one, as bogoras says) and the other on the spit.
+Located by the editor from Bogoras's gazetteer (chukchi-1-048 to chukchi-1-053), cross-referenced against Operational Navigation Charts and OpenStreetMap. Bogoras + ONC; ONC names two settlements "megchigmen", one "on the bay" (this one, as bogoras says) and the other on the spit.

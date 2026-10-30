@@ -9,8 +9,8 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| white whale | en | yes | 1-164, killed like the walrus |
-| white whales | en | yes | 1-163, 1-164 |
+| white whale | en | yes | chukchi-1-164, killed like the walrus |
+| white whales | en | yes | chukchi-1-163, chukchi-1-164 |
 
 ## gloss
 

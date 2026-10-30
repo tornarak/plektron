@@ -14,7 +14,7 @@
 
 ## gloss
 
-Гижигинская губа. The head of one of 1-359's gazetteer tables, and third of the
+Гижигинская губа. The head of one of chukchi-1-359's gazetteer tables, and third of the
 three things the book calls Gishiga: the river [[river:gizhiga]], the town
 [[place:gizhiginsk]] at its mouth, and this.
 

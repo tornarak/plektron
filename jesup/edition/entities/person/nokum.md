@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Nokum | | yes | 1-041 "a man of Plover Bay by the name of Nokum" |
+| Nokum | | yes | chukchi-1-041 "a man of Plover Bay by the name of Nokum" |
 
 ## gloss
 

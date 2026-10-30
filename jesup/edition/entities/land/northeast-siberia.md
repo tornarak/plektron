@@ -16,13 +16,13 @@
 
 **The book's own unit of comparison.** Bogoras reaches for it whenever a
 Chukchee practice is not only Chukchee — "all the tribes of northeastern
-Siberia" drink tea after the meal (1-255), share one cut of glove (1-308), one
-diaper of moss (1-324), one bow (1-194), one dog-sledge (1-136). It is also
-what he measures loss against: the decrease of the native tribes (1-057), the
-smallpox (1-062), the liquor trade (1-263).
+Siberia" drink tea after the meal (chukchi-1-255), share one cut of glove (chukchi-1-308), one
+diaper of moss (chukchi-1-324), one bow (chukchi-1-194), one dog-sledge (chukchi-1-136). It is also
+what he measures loss against: the decrease of the native tribes (chukchi-1-057), the
+smallpox (chukchi-1-062), the liquor trade (chukchi-1-263).
 
 He never draws it. The one edge he gives is administrative and eastward —
-Yakutsk province ran "as far as [[water:chaunskaya-bay]]" (1-079) — so the
+Yakutsk province ran "as far as [[water:chaunskaya-bay]]" (chukchi-1-079) — so the
 `frame:` here is the editor's, and the entry carries no `area:` because a
 boundary is exactly what is not being asserted. Its four sides are named rather
 than chosen: west at the western edge of the [[river:yana]] basin, south at the

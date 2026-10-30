@@ -16,7 +16,7 @@
 
 Waldemar Jochelson (1855–1937), ethnographer of the Yukaghir and Koryak and
 [[person:bogoras]]’s colleague on the [[event:jesup-expedition]]. Bogoras travels
-with him on 1-044, “with W. Jochelson between Gishiginsk…”. The book also cites
+with him on chukchi-1-044, “with W. Jochelson between Gishiginsk…”. The book also cites
 his publications by surname alone, which is why the bare form is not
 auto-linked: the man and the work are two entities and one string. See
 [[source:jochelson-yukaghir]].

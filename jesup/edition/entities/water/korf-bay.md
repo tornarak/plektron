@@ -15,5 +15,5 @@
 ## gloss
 
 Залив Корфа, on the Bering-Sea side of northern [[land:kamchatka]]. Bogoras
-places [[place:cape-olutorsky]] close to it (1-032) and uses it with
-[[water:penzhina-bay]] to bound the [[land:parapolsky-dol]] (1-035).
+places [[place:cape-olutorsky]] close to it (chukchi-1-032) and uses it with
+[[water:penzhina-bay]] to bound the [[land:parapolsky-dol]] (chukchi-1-035).

@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Potentilla fragiformis | la | yes | 1-254; broken fragi-formis across the line |
+| Potentilla fragiformis | la | yes | chukchi-1-254; broken fragi-formis across the line |
 
 ## gloss
 

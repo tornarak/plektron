@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Eleginus navaga | la | yes | 1-191 note, "Eleginus navaga (Gadus wachna Pall.)" |
+| Eleginus navaga | la | yes | chukchi-1-191 note, "Eleginus navaga (Gadus wachna Pall.)" |
 
 ## gloss
 

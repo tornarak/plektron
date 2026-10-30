@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Pokhotsk | | yes | 1-036; "the centre of the ancient Cossack population" (3-119) |
+| Pokhotsk | | yes | chukchi-1-036; "the centre of the ancient Cossack population" (chukchi-3-119) |
 
 ## gloss
 

@@ -11,7 +11,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Palpal Mountains | | yes | |
-| Palpal | | yes | the bare form is used too — "the high country of Palpal" (1-174) |
+| Palpal | | yes | the bare form is used too — "the high country of Palpal" (chukchi-1-174) |
 
 ## gloss
 
@@ -27,5 +27,5 @@ at the fair's longitude, off the line entirely.
 The upland between the [[river:anadyr]] and the Pacific watersheds — which is
 the same fact the position rests on, the range being the divide itself. Bogoras
 names it as country that had no inhabitants at all before the Chukchee took it
-(1-035), as the summering ground the reindeer leave in mid-March (1-175), and
-as one end of a migration route running to the Chaun tundra (1-174).
+(chukchi-1-035), as the summering ground the reindeer leave in mid-March (chukchi-1-175), and
+as one end of a migration route running to the Chaun tundra (chukchi-1-174).

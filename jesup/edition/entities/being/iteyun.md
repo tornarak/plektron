@@ -8,12 +8,12 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| iteˊyun | ckt | yes | 1-064 |
+| iteˊyun | ckt | yes | chukchi-1-064 |
 
 ## gloss
 
 “Of nervous diseases, which are also dreaded and considered ‘subject to
-shunning,’ I may make mention of iteˊyun, akin to epilepsy” (1-064). Sometimes
+shunning,’ I may make mention of iteˊyun, akin to epilepsy” (chukchi-1-064). Sometimes
 the usual fits; sometimes “convulsions or … contraction of the muscles,
 amounting almost to a temporary catalepsy”, lasting several hours with the
 patient unconscious throughout, passing off and returning within days in a more

@@ -171,3 +171,35 @@ def refuse_another_texts(manifest: Path, root: Path, verb: str = "install over")
         raise ValueError(
             f"{manifest} was fitted to `{text}`, and this is `{stem(root)}`: refusing to "
             f"{verb} it. Give this text its own `models/<track>/` to train into.")
+
+
+#: A page ref standing alone in prose, which is not one inside a word, a URL or a
+#: qualified citation.
+BARE_REF_RE = re.compile(r"(?<![\w/.:-])(\d+-\d{3})(?![\w-])")
+#: A page ref naming its book: `chukchi-1-044`, `chukchi-mythology-1-044`.
+CITED_REF_RE = re.compile(r"(?<![\w/.:-])([a-z][a-z0-9]*(?:-[a-z][a-z0-9]*)*)-(\d+-\d{3})(?![\w-])")
+
+
+def workspace_stems(root: Path) -> list[str]:
+    """Every text's stem in this text's workspace, one entry per text, so a stem two
+    texts declare shows up twice. A text with no workspace has only its own."""
+    ws = workspace_root(root)
+    if ws is None:
+        return [stem(root)]
+    return [stem(p.parent) for p in sorted(ws.glob(f"*/{PROJECT_JSON}"))]
+
+
+def citation_errors(text: str, root: Path) -> list[str]:
+    """What is wrong with the page citations in a shared store's prose."""
+    known = set(workspace_stems(root))
+    out = [f"{ref} is bare: in a shared store a citation names its book, as "
+           f"`{stem(root)}-{ref}`" for ref in BARE_REF_RE.findall(text)]
+    out += [f"{s}-{ref} names `{s}`, which no text here declares"
+            for s, ref in CITED_REF_RE.findall(text) if s not in known]
+    return out
+
+
+def bare_own_citations(text: str, own: str) -> str:
+    """The served text's citations as its reader knows them: `chukchi-1-044` -> `1-044`.
+    Another book's keep their stem, because to this reader they are the other book's."""
+    return CITED_REF_RE.sub(lambda m: m[2] if m[1] == own else m[0], text)

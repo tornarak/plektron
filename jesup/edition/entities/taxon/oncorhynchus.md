@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Oncorhynchus | la | yes | 1-190; 1-190 also breaks it Oncorhyn-chus |
+| Oncorhynchus | la | yes | chukchi-1-190; chukchi-1-190 also breaks it Oncorhyn-chus |
 
 ## gloss
 

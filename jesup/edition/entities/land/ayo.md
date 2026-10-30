@@ -12,5 +12,5 @@
 ## gloss
 
 "On the seashore, westward from the island of Ayo, some ruins similar to those
-on the [[land:bear-islands]] still exist" (1-038). Named nowhere else, and not
+on the [[land:bear-islands]] still exist" (chukchi-1-038). Named nowhere else, and not
 identified with any modern island here.

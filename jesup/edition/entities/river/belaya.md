@@ -9,7 +9,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | White River | | yes | |
-| Бѣла рѣка | ru | yes | 1-359's list pairs it with "White River" |
+| Бѣла рѣка | ru | yes | chukchi-1-359's list pairs it with "White River" |
 
 ## gloss
 

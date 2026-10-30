@@ -9,8 +9,8 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Kadiak | | yes | 2-065, 2-099: "the inhabitants of Kadiak", both citing Lisiansky |
-| Kadyak | | yes | 3-051, footnote: "among the inhabitants of Kadyak", citing Lisiansky |
+| Kadiak | | yes | chukchi-2-065, chukchi-2-099: "the inhabitants of Kadiak", both citing Lisiansky |
+| Kadyak | | yes | chukchi-3-051, footnote: "among the inhabitants of Kadyak", citing Lisiansky |
 
 ## gloss
 

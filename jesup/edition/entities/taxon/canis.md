@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Canis | la | yes | 1-252 "all the species of Canis" |
+| Canis | la | yes | chukchi-1-252 "all the species of Canis" |
 
 ## gloss
 

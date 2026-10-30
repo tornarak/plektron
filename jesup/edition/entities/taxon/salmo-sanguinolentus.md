@@ -7,7 +7,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Salmo sanguinolentus | la | yes | 1-250, tried out for fish-oil |
+| Salmo sanguinolentus | la | yes | chukchi-1-250, tried out for fish-oil |
 
 ## gloss
 

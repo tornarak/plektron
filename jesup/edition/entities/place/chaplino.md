@@ -14,8 +14,8 @@
 | Indian Point | | yes | |
 | Uñiˊin | ckt | yes | |
 | Uñiˊsak | ypk | yes | |
-| Мысъ Чаплинъ | ru | yes | 1-359's list pairs it with "Indian Point" |
-| Cape Chaplin | | yes | 1-051; the singular of the printed Cape Chaplino |
+| Мысъ Чаплинъ | ru | yes | chukchi-1-359's list pairs it with "Indian Point" |
+| Cape Chaplin | | yes | chukchi-1-051; the singular of the printed Cape Chaplino |
 
 ## gloss
 

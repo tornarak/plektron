@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Oncorhynchus horbusha | la | yes | 1-190, the humpback salmon; the page breaks the genus Oncorhyn-chus |
+| Oncorhynchus horbusha | la | yes | chukchi-1-190, the humpback salmon; the page breaks the genus Oncorhyn-chus |
 
 ## gloss
 

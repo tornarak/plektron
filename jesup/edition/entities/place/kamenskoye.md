@@ -19,7 +19,7 @@
 
 A Koryak village on the Penzhina above [[water:penzhina-bay]], at the head of
 the Sea of Okhotsk ([[water:okhotsk-sea]]); named with [[place:paren]] at
-1-164 and on the bay at 2-047. Bogoras gives it under its Chukchee name
+chukchi-1-164 and on the bay at chukchi-2-047. Bogoras gives it under its Chukchee name
 Vaiˊkenan and under the Russian Каменское, which is why this entry carries both
 — they were two entries until they were read against each other.
 

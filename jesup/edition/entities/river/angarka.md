@@ -14,4 +14,4 @@
 ## gloss
 
 Ангарка, an affluent of the Large Anui. The Anui fair met near its mouth before
-it settled at [[place:ostrovnoye]] (1-078).
+it settled at [[place:ostrovnoye]] (chukchi-1-078).

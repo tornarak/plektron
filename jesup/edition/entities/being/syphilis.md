@@ -8,16 +8,16 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| aˊtal-vaˊɪrg̣ɪn | ckt | yes | 1-063, the Chukchee name |
-| syphilis | en | yes | 1-063; the English name Bogoras uses for the same disease throughout |
+| aˊtal-vaˊɪrg̣ɪn | ckt | yes | chukchi-1-063, the Chukchee name |
+| syphilis | en | yes | chukchi-1-063; the English name Bogoras uses for the same disease throughout |
 | Chuvantzy disease | en | no | a rendering of the Chukchee name, not a form the book prints |
 
 ## gloss
 
 **The one disease in the section whose Chukchee name says in so many words that
-it is a Being.** Bogoras parses aˊtal-vaˊɪrg̣ɪn on 1-063 as aˊtal “Chuvantzy” +
-vaˊɪrg̣ɪn “substance” — vaˊɪrg̣ɪn being the word 2-040 heads a section with,
-“Other ‘Beings’” (vaˊɪrg̣ɪt), and that 1-073 glosses the other way in the same
+it is a Being.** Bogoras parses aˊtal-vaˊɪrg̣ɪn on chukchi-1-063 as aˊtal “Chuvantzy” +
+vaˊɪrg̣ɪn “substance” — vaˊɪrg̣ɪn being the word chukchi-2-040 heads a section with,
+“Other ‘Beings’” (vaˊɪrg̣ɪt), and that chukchi-1-073 glosses the other way in the same
 breath: qaˊa-vaˊɪrg̣ɪn, “literally, ‘reindeer substance’”. The name is *the
 Chuvan Being*, and it is what the class of every entry in this directory rests
 on.

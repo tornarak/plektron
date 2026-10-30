@@ -15,7 +15,7 @@
 
 (unwritten)
 
-**Filed under the region, not the Kolyma, and 1-359 is why the question came
+**Filed under the region, not the Kolyma, and chukchi-1-359 is why the question came
 up.** The page lists it under "The Lower Kolyma", which is a *country* — and
 this store's `river:kolyma` is a *basin*. Taking the heading literally put the
 Bolshaya Chukochya inside the Kolyma's watershed, where `geo verify` measured it

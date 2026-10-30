@@ -9,7 +9,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | American Indians | | yes | |
-| Indians | | yes | 1-096 "North American Indians"; 1-356 "the Mexican and Zuñi Indians" |
+| Indians | | yes | chukchi-1-096 "North American Indians"; chukchi-1-356 "the Mexican and Zuñi Indians" |
 
 ## gloss
 

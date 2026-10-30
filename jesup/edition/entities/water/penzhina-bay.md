@@ -20,5 +20,5 @@
 [[water:gizhiga-bay]] its western sibling and the Taygonos peninsula between
 them. The gulf itself has no entry: the book never names it. With
 [[water:korf-bay]] it bounds the
-[[land:parapolsky-dol]] (1-035). [[place:kamenskoye]] is on it (2-047). The
+[[land:parapolsky-dol]] (chukchi-1-035). [[place:kamenskoye]] is on it (chukchi-2-047). The
 river of the same name is not separately named in the book, so it has no entry.

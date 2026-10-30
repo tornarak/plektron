@@ -7,7 +7,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| fish | en | once | 1-249, and throughout; the English word names no clade |
+| fish | en | once | chukchi-1-249, and throughout; the English word names no clade |
 
 ## gloss
 

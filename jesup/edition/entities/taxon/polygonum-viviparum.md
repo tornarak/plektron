@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Polygonum viviparum | la | yes | 1-254 |
+| Polygonum viviparum | la | yes | chukchi-1-254 |
 
 ## gloss
 

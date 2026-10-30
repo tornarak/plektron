@@ -81,7 +81,7 @@ from typing import TypedDict
 from . import pictures
 from .geo import index as geo_index
 from .langs import ALIAS_LANGS
-from .layout import shared
+from .layout import citation_errors, shared, workspace_stems
 from .lookup import case_variants
 from .parallel import ptrack
 
@@ -1431,6 +1431,14 @@ def check(root: Path = Path("."), tick: Callable | None = None) -> dict:
                                 for m in WIKILINK.findall(t["note"])}):
             if target not in store:
                 errors.append(f"{rec['path']}: [[{target}]] resolves to nothing")
+        # A bare ref means nothing once a workspace has two texts. Only a store the
+        # workspace holds has that problem; a text's own may say what it likes.
+        if ent_dir(root) != Path(root) / ENTDIR:
+            for prose in (rec["gloss"], *(t["note"] for t in rec["aliases"])):
+                errors += [f"{rec['path']}: {e}" for e in citation_errors(prose, root)]
+    stems = workspace_stems(root)
+    errors += [f"two texts here declare the stem `{s}`, so `{s}-PP-NNN` names no one page"
+               for s in sorted({s for s in stems if stems.count(s) > 1})]
     # Acyclic, so a containment chain terminates. A cycle would hang the
     # geography sprint's tree walk rather than fail it, which is the worse
     # outcome of the two. **Three edge kinds, walked separately** — `extent_of`

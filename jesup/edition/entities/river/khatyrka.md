@@ -11,13 +11,13 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Vatɪˊrkan | ckt | yes | |
-| Хатырка | ru | no | ambiguous with [[place:khatyrka]], which the Russians also call this — 1-359 fn 1 |
+| Хатырка | ru | no | ambiguous with [[place:khatyrka]], which the Russians also call this — chukchi-1-359 fn 1 |
 | Hatɪˊykan | | yes | |
 | Hatɪˊrkan | | yes | |
 
 ## gloss
 
-The river 1-359’s footnote 1 calls the proper Хатырка, east of
+The river chukchi-1-359’s footnote 1 calls the proper Хатырка, east of
 [[place:khatyrka]]. Hatɪˊykan and Hatɪˊrkan are its Kerek names, filed without a
 language because the Tier-1 code set carries no Kerek.
 

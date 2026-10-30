@@ -9,9 +9,9 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Agaricus muscarius | la | yes | 1-254 "an intoxicant, like fly-agaric (Agaricus muscarius)" |
+| Agaricus muscarius | la | yes | chukchi-1-254 "an intoxicant, like fly-agaric (Agaricus muscarius)" |
 | waˊpak | ckt | yes | |
-| fly-agaric | en | yes | 1-254, 1-261 ff.; the book pairs them itself |
+| fly-agaric | en | yes | chukchi-1-254, chukchi-1-261 ff.; the book pairs them itself |
 | intoxicating mushroom | en | yes | |
 | intoxicating mushrooms | en | yes | |
 

@@ -8,11 +8,11 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Mongolian | | no | 1-197 only: "the Mongolian release" and "the Mongolian archers". Elsewhere the word is the racial type, [[people:mongoloids]], and only the sentence says which |
+| Mongolian | | no | chukchi-1-197 only: "the Mongolian release" and "the Mongolian archers". Elsewhere the word is the racial type, [[people:mongoloids]], and only the sentence says which |
 
 ## gloss
 
-The people, and the book reaches for them exactly once — over archery. 1-197
+The people, and the book reaches for them exactly once — over archery. chukchi-1-197
 finds thumb-guards among the Chukchee whose owners "could not exactly tell their
 use," and reads them as evidence for the **Mongolian release**, the draw that
 hooks the string on the thumb, "perhaps … used similarly to those of the

@@ -6,11 +6,11 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| seaweed | en | once | 1-253, "several kinds of seaweed which are found on the seashore" |
+| seaweed | en | once | chukchi-1-253, "several kinds of seaweed which are found on the seashore" |
 
 ## gloss
 
-1-253: the Maritime Chukchee "eat also several kinds of seaweed which are found on
+chukchi-1-253: the Maritime Chukchee "eat also several kinds of seaweed which are found on
 the seashore. This is gathered only when animal food is scarce, but children eat
 it raw while playing on the beach."
 

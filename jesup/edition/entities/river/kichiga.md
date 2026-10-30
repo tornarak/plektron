@@ -13,7 +13,7 @@
 ## gloss
 
 **The book does not name this river, and the entry exists so its basin has a
-referent.** 1-359’s “Northern and Adjacent Pacific Shore” list names the
+referent.** chukchi-1-359’s “Northern and Adjacent Pacific Shore” list names the
 settlement only — `Kiˊčhɪn` against `Кичиги` — and that is
 [[place:kichhin]], now the urochishche Старая Кичига. The river is what the
 village is named for: the settlement’s coordinate falls inside this basin,

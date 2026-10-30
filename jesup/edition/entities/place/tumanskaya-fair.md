@@ -14,7 +14,7 @@
 
 One of the three fairs opened in the Anadyr district in the fifteen years
 before the book, "on the west (Plate III, Fig. 1), near the mountain
-Iˊrg̣u-ñei ('pointed mountain'), chiefly for the Telqäˊp Chukchee" (1-080). In
+Iˊrg̣u-ñei ('pointed mountain'), chiefly for the Telqäˊp Chukchee" (chukchi-1-080). In
 1901 heavy snows brought only two Telqäˊp camps to it.
 
 **The exact placement is uncertain.** Bogoras's map puts it some way east of

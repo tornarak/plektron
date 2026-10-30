@@ -10,7 +10,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Point Barrow | | yes | 1-039 "the Point Barrow Eskimo", after Murdoch |
+| Point Barrow | | yes | chukchi-1-039 "the Point Barrow Eskimo", after Murdoch |
 
 ## gloss
 

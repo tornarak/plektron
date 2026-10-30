@@ -17,7 +17,7 @@
 **The entry is the region and the shape is the peninsula, and they are not the
 same size.** `area: region:kamchatka` is Natural Earth's `KAMCHATKA PENINSULA`,
 which stops at the isthmus; the book's Kamchatka reaches well north of it —
-1-359's own section heading is "Northern Kamchatka and Adjacent Pacific Shore",
+chukchi-1-359's own section heading is "Northern Kamchatka and Adjacent Pacific Shore",
 and Bogoras files Tiličiki, Olyutorka and the Olyutorsky capes under it.
 
 So a dozen children sit outside their parent's polygon and `geo verify` says so:

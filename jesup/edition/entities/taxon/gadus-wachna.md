@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Gadus wachna | la | yes | 1-191 note, given as the Pallas name for Eleginus navaga |
+| Gadus wachna | la | yes | chukchi-1-191 note, given as the Pallas name for Eleginus navaga |
 
 ## gloss
 

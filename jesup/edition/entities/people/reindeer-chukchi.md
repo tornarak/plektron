@@ -16,7 +16,7 @@
 
 The inland, reindeer-breeding division of the [[people:chukchi]], as against the
 coastal [[people:maritime-chukchi]]. Bogoras treats the division as the
-organising fact of Chukchee material life and states on 1-021 that their material
+organising fact of Chukchee material life and states on chukchi-1-021 that their material
 life “is quite uniform throughout” the whole inland range, from central Kamchatka
 and the Upper Omolon to the Arctic coast.
 

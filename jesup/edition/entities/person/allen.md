@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Allen | | yes | 1-151 note, "identified by Professor Allen as a new [species]" |
+| Allen | | yes | chukchi-1-151 note, "identified by Professor Allen as a new [species]" |
 
 ## gloss
 

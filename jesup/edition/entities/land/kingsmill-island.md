@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Kingsmill Island | | yes | 1-204 "the neck-fender of the Kingsmill Island armor" |
+| Kingsmill Island | | yes | chukchi-1-204 "the neck-fender of the Kingsmill Island armor" |
 
 ## gloss
 

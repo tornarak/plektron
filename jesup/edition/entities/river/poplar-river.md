@@ -11,6 +11,6 @@
 
 ## gloss
 
-"An affluent of the Small Anui" (1-067), named once. An English translation of
+"An affluent of the Small Anui" (chukchi-1-067), named once. An English translation of
 a native name, like [[river:keperveyem]] and [[river:belaya]]; the form behind
 it is not printed, and no modern river is identified with it here.

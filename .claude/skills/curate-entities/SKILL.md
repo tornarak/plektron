@@ -3,6 +3,8 @@ name: curate-entities
 description: Write or amend an entity — whether a thing earns an entry and in which class, its alias rows and their modes, and its gloss. Use before `entity new`, `entity alias`, or any edit under edition/entities/, or on /curate-entities. Not the link rule or the card — that is docs/edition.md.
 ---
 
+**Cite a page with its book: `chukchi-1-044`, never a bare `1-044`.** The store is shared across a workspace, and `entity check` refuses a bare ref.
+
 # Curate entities
 
 **This is the entry contract.** The file format, the rule that links a form, and the
@@ -26,7 +28,7 @@ sea, a bay, a strait, a lake. Picking the wrong one is a rename later
 
 **`taxon:` — the binomial is the entry; the book's own word rides on it as an alias.**
 `taxon:gulo-gulo` is the entry and *wolverene* is the alias, because *wolverene* is what
-1-252 prints and *Gulo gulo* is what the animal is. The identification is a judgement
+chukchi-1-252 prints and *Gulo gulo* is what the animal is. The identification is a judgement
 and lands at `status: proposed` like every other.
 
 - **Where the vernacular maps to no modern taxon it is an alias, never an entry.**
@@ -34,13 +36,13 @@ and lands at `status: proposed` like every other.
   three lineages sharing no clade — so the form goes on the coarsest rank that is honest
   (`taxon:aves`, `taxon:mammalia`, `taxon:algae`) and the gloss says the English word
   names no clade. `taxon:pisces` and `taxon:lichenes` are the precedent: folk buckets.
-- **Where the referent is undetermined the entry stops at the genus.** 1-252's "black
+- **Where the referent is undetermined the entry stops at the genus.** chukchi-1-252's "black
   bear" cannot be a black bear — none inhabits Chukotka — so the entry is `taxon:ursus`
   and the gloss says why, rather than asserting *U. arctos* on an inference about the
   fauna. Same for *fox* and *sweet-brier*. `taxon:oedemagena-tarandi` is the model: it
   refuses outright to reconcile the print against modern usage.
 - **`animal:` is not the vernacular class.** Its name-type is `zoonym`, *an individual
-  animal's name* — the reindeer a herder calls by name (1-101). A common noun linked to
+  animal's name* — the reindeer a herder calls by name (chukchi-1-101). A common noun linked to
   it would emit `<name type="zoonym">` around a common noun, which `validate.py` forbids;
   `taxon:` has no name-type and links through `<rs>`. Folk groups go to `taxon:`.
 - **A binomial the book never prints gets no alias row.** An alias asserts that the
@@ -52,14 +54,14 @@ and lands at `status: proposed` like every other.
   its binomial (`Anser albifrons`, `Strix nyctea`) is not a grouping the book gives, and
   the species hangs from the family or the kingdom directly. What keeps a one-species
   genus is the book printing the genus as a group of its own — `Gadi` ("various species
-  of Gadi", 1-191) — or a vernacular that names the genus and not the species: *poplar*
+  of Gadi", chukchi-1-191) — or a vernacular that names the genus and not the species: *poplar*
   is `taxon:populus` and *aspen* its one species; *toadstools* is `taxon:fungi` and
   fly-agaric its one entry.
 
 **A `person:` entry is earned by the book narrating the man, not by the book citing
 him.** Travelled, collected, held office, conversed → `person:`; says, mentions, figures,
 describes, or governs a page locator → `source:`. `Wrangell, p. 338` is the book; `In
-conversation with Wrangell` (1-036) is the man. An author the book only ever quotes has
+conversation with Wrangell` (chukchi-1-036) is the man. An author the book only ever quotes has
 no person entry.
 
 # 2. Alias modes, chosen mechanically
@@ -76,7 +78,7 @@ how much the entity matters. Decide in this order:
 **Prefer the parent to a conflict.** Where a hierarchy exists — `part-of:` in `taxon:`,
 `within:` in geography — a form that covers several entries goes on the *parent* as
 `yes` or `once`, and the parent's gloss names the children and the distinction.
-*reindeer-fly* names either of 1-108's two flies and the page does not say which: it
+*reindeer-fly* names either of chukchi-1-108's two flies and the page does not say which: it
 sits on `taxon:diptera`, whence both are one click away. Do not alias it to both species
 and kick the can to the collator — two claimants is `entity check`'s error, not a way to
 defer. Where there is no common parent (`person:maydell` / `source:maydell`), `no` is

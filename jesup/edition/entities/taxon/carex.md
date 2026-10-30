@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Carex | la | yes | 1-254 "various species of Carex" |
+| Carex | la | yes | chukchi-1-254 "various species of Carex" |
 
 ## gloss
 

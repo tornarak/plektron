@@ -14,4 +14,4 @@
 
 ## gloss
 
-Located by the editor from Bogoras's gazetteer (1-048 to 1-053), cross-referenced against Operational Navigation Charts and OpenStreetMap. Bogoras + ONC + OSM; attested in latter two as "Ryrkaypiy".
+Located by the editor from Bogoras's gazetteer (chukchi-1-048 to chukchi-1-053), cross-referenced against Operational Navigation Charts and OpenStreetMap. Bogoras + ONC + OSM; attested in latter two as "Ryrkaypiy".

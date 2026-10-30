@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Coregonus omul | la | yes | 1-190, set in full |
+| Coregonus omul | la | yes | chukchi-1-190, set in full |
 
 ## gloss
 

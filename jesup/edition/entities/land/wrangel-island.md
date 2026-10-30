@@ -15,6 +15,6 @@
 ## gloss
 
 Остров Врангеля. Bogoras identifies it with the land in the Chukchee account
-of a boat that drifted out into the open sea (1-042), and disbelieves the tale
+of a boat that drifted out into the open sea (chukchi-1-042), and disbelieves the tale
 of its inhabitants because "Wrangell’s Land is destitute of inhabitants"
-(1-043).
+(chukchi-1-043).

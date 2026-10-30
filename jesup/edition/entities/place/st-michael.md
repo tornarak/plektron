@@ -11,12 +11,12 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| St. Michaels | | yes | 1-090, the book's plural spelling |
-| St. Michael’s Fort | | yes | 1-042, in a note on the name Teˊsik |
+| St. Michaels | | yes | chukchi-1-090, the book's plural spelling |
+| St. Michael’s Fort | | yes | chukchi-1-042, in a note on the name Teˊsik |
 
 ## gloss
 
 Alaska, on Norton Sound. Reached by Chukchee from [[place:chaplino]] and
-[[place:east-cape]] aboard the whalers, with [[place:cape-nome]] (1-090). The
-note at 1-042 records that the fort bears the same native name, Teˊsik, as a
+[[place:east-cape]] aboard the whalers, with [[place:cape-nome]] (chukchi-1-090). The
+note at chukchi-1-042 records that the fort bears the same native name, Teˊsik, as a
 place on the Asiatic side.

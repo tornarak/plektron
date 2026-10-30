@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Yepischeff | | yes | 1-077 "The Cossack S. Yepischeff" |
+| Yepischeff | | yes | chukchi-1-077 "The Cossack S. Yepischeff" |
 
 ## gloss
 

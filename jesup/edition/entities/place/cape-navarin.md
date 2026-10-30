@@ -14,5 +14,5 @@
 
 ## gloss
 
-Мыс Наварин. Named only in the pair with [[place:cape-barykoff]], at 1-032 and
-1-093, as the far end of the Chukchee trading expeditions southward.
+Мыс Наварин. Named only in the pair with [[place:cape-barykoff]], at chukchi-1-032 and
+chukchi-1-093, as the far end of the Chukchee trading expeditions southward.

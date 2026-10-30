@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Mortillet | | yes | 1-097 note, "G. Mortillet, in his well-known work on prehistoric man in France" |
+| Mortillet | | yes | chukchi-1-097 note, "G. Mortillet, in his well-known work on prehistoric man in France" |
 
 ## gloss
 

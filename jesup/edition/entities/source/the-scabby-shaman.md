@@ -7,7 +7,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| The Scabby Shaman | | yes | 2-056, 2-059, 2-211, 2-213 |
+| The Scabby Shaman | | yes | chukchi-2-056, chukchi-2-059, chukchi-2-211, chukchi-2-213 |
 
 ## gloss
 

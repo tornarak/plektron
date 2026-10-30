@@ -13,7 +13,7 @@
 
 ## gloss
 
-Located by the editor from Bogoras's gazetteer (1-048 to 1-053), traced in QGIS.
-Bogoras only. 1-052: "on the southwestern end of the island Kihiˊni" — 3 houses,
+Located by the editor from Bogoras's gazetteer (chukchi-1-048 to chukchi-1-053), traced in QGIS.
+Bogoras only. chukchi-1-052: "on the southwestern end of the island Kihiˊni" — 3 houses,
 not in the Register — and the point does sit at the southwestern end of
-[[land:kihini]]'s traced shape. Named again at 1-160 beside [[place:kihini]].
+[[land:kihini]]'s traced shape. Named again at chukchi-1-160 beside [[place:kihini]].

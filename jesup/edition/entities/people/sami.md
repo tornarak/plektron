@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Laplanders | | yes | 1-096; 1-116 breaks it Lap-landers |
+| Laplanders | | yes | chukchi-1-096; chukchi-1-116 breaks it Lap-landers |
 
 ## gloss
 

@@ -38,6 +38,7 @@ from .. import (
     geo,
     ipa,
     langs,
+    layout,
     lexicon,
     pictures,
     speech,
@@ -1528,7 +1529,7 @@ def _entity_ctx(ident: str, refs: list[str], root: Path, base: str = ui.BASE,
     # where the form's own entry has to be reachable, and this row is the place:
     # it is the one spot that says "this entity is called that, in Chukchi".
     aliases = [
-        {**t, "note_html": ui.inline_html(t["note"], store, base),
+        {**t, "note_html": ui.inline_html(t["note"], store, base, layout.stem(root)),
          "lang_name": langs.name(t["lang"]) if t["lang"] else "",
          "lex": t["form"] if t["lang"] in langs.TIER1 else ""}
         for t in rec["aliases"]
@@ -1537,7 +1538,7 @@ def _entity_ctx(ident: str, refs: list[str], root: Path, base: str = ui.BASE,
         "rec": {**rec, "aliases": aliases},
         "ident": ident,
         "base": base,
-        "gloss": ui.gloss_html(rec["gloss"], store, base),
+        "gloss": ui.gloss_html(rec["gloss"], store, base, layout.stem(root)),
         "links": [ui.link_html(ln, assets) for ln in rec["links"]],
         "image": pictures.resolve(rec, stores.picture_ledger(root)),
         "contested": [{"id": c, "canonical": store[c]["canonical"]} for c in contested],

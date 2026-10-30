@@ -11,18 +11,18 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Peˊkul-ñei | ckt | yes | 1-175, "to the north of the Anadyr" |
-| Peˊqul-ñei | ckt | yes | 1-047, the reindeer-breeding group there |
+| Peˊkul-ñei | ckt | yes | chukchi-1-175, "to the north of the Anadyr" |
+| Peˊqul-ñei | ckt | yes | chukchi-1-047, the reindeer-breeding group there |
 | Чукотское нагорье | ru | no | the range's modern name; not printed in the book |
 
 ## gloss
 
 **Bogoras's name for the whole interior upland, which is what the map says.**
-The book prints it twice and spells it twice — `Peˊqul-ñei` at 1-047, `Peˊkul-ñei`
-at 1-175 — and both times places it north of the [[river:anadyr]]: a
+The book prints it twice and spells it twice — `Peˊqul-ñei` at chukchi-1-047, `Peˊkul-ñei`
+at chukchi-1-175 — and both times places it north of the [[river:anadyr]]: a
 reindeer-breeding group of about 25 camps, distinct from the one on the
-[[river:belaya]] (1-047), and the country a large number of wild reindeer stay
-in after crossing the river (1-175). Neither line fixes an extent. The map does:
+[[river:belaya]] (chukchi-1-047), and the country a large number of wild reindeer stay
+in after crossing the river (chukchi-1-175). Neither line fixes an extent. The map does:
 `PEQUL-ÑEI MOUNTAINS` is set across the middle of the peninsula, from the head
 of [[water:chaunskaya-bay]] eastward, which is the run modern geography calls
 the Chukotka Mountains — so the identification rests on book-internal evidence

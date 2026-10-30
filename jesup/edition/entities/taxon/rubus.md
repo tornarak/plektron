@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Rubus | la | yes | 1-254, 1-256 |
+| Rubus | la | yes | chukchi-1-254, chukchi-1-256 |
 
 ## gloss
 

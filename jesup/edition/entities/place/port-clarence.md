@@ -10,7 +10,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Port Clarence | | yes | 1-131 note, "the Eskimo of Port Clarence in Alaska" |
+| Port Clarence | | yes | chukchi-1-131 note, "the Eskimo of Port Clarence in Alaska" |
 
 ## gloss
 

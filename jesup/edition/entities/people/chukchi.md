@@ -27,7 +27,7 @@
 The people this book is about, in the book’s own spelling. Bogoras divides them
 throughout into the [[people:reindeer-chukchi]] of the interior and the
 [[people:maritime-chukchi]] of the coast, and treats the division as the
-organising fact of their material life (1-021). Those two carry their own
+organising fact of their material life (chukchi-1-021). Those two carry their own
 triggers; this entry is the people as a whole.
 
 The bare form is `once` rather than `yes`, and the reason is readability and not

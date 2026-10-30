@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| poplar | en | yes | 1-257, mixed into smoking-tobacco; 1-260, poplar-wood ash added to snuff |
+| poplar | en | yes | chukchi-1-257, mixed into smoking-tobacco; chukchi-1-260, poplar-wood ash added to snuff |
 
 ## gloss
 

@@ -10,7 +10,7 @@
 |---|---|---|---|
 | Maiˊn | | yes | |
 | Maïn | | yes | |
-| Big River | | no | the English name at 1-035; `no` because the phrase is not this river's alone |
+| Big River | | no | the English name at chukchi-1-035; `no` because the phrase is not this river's alone |
 | Большая рѣка | ru | no | the same, in Russian |
 
 ## gloss

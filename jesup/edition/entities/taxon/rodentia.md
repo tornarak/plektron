@@ -13,8 +13,8 @@
 
 ## gloss
 
-**`mice`** is 1-250, where the herdsmen of the Telqäˊp are "accused by their
-neighbors of catching mice and eating them raw", and 1-254, where "nests of mice
+**`mice`** is chukchi-1-250, where the herdsmen of the Telqäˊp are "accused by their
+neighbors of catching mice and eating them raw", and chukchi-1-254, where "nests of mice
 are also robbed" for the roots stored in them — the Chukchee holding that some of
 those roots are poisoned by the mice against robbers, "partly as an intoxicant,
 like fly-agaric".

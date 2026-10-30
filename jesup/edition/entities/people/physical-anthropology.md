@@ -20,7 +20,7 @@ they sound like now.
 **They describe nothing.** Human variation is clinal — it grades continuously
 across geography and does not partition into types — and the racial taxonomy
 these terms belong to was abandoned by the discipline that produced them. Where
-the book says a face is "strongly Mongolian in outline" (1-056) it is reaching
+the book says a face is "strongly Mongolian in outline" (chukchi-1-056) it is reaching
 for a type that was never there to reach for. Nothing in this store treats these
 as classifications of anybody; they are read as period vocabulary, on the same
 footing as an obsolete binomial.
@@ -38,7 +38,7 @@ its author's racial theory. It is not one.
 Bogoras's own use is comparative and, in the main, descriptive — eye shape, the
 bridge of the nose, the amount of body hair, always to say that the Chukchee are
 less distinguishable from Europeans than his readers would expect. It does not
-stay descriptive. 3-060 explains the childlessness of Russian–Chukchee marriages
+stay descriptive. chukchi-3-060 explains the childlessness of Russian–Chukchee marriages
 by "the exhaustion of vital force," with the scarcity of "blood really Russian
 and Caucasian" offered as the reason, and that is degeneration theory, not
 observation. The passage is worth reading as evidence about its author.

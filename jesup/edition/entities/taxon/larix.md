@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| larch | en | yes | 1-256, "pitch from the larch-tree is used as chewing-gum" |
+| larch | en | yes | chukchi-1-256, "pitch from the larch-tree is used as chewing-gum" |
 | larch-tree | en | yes | |
 | larch-wood | en | yes | |
 | larchwood | en | yes | |

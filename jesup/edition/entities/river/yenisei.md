@@ -10,7 +10,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Yenisei | | yes | 1-097 "Between the Yenisei and Indighirka Rivers" |
+| Yenisei | | yes | chukchi-1-097 "Between the Yenisei and Indighirka Rivers" |
 
 ## gloss
 

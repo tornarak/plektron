@@ -15,4 +15,4 @@
 ## gloss
 
 Greenland. Comparative only: the Eskimo of Smith Sound are
-[[source:kroeber-1899]]'s, cited at 1-358 against a Chukchee ivory carving.
+[[source:kroeber-1899]]'s, cited at chukchi-1-358 against a Chukchee ivory carving.

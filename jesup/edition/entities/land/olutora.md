@@ -13,5 +13,5 @@
 
 The district around [[place:cape-olutorsky]], northeastern
 [[land:kamchatka]]. Bogoras uses it chiefly to name a division of the Koryak
-(1-034, 1-152, 1-271); at 1-035 a Cossack tribute-collector from
+(chukchi-1-034, chukchi-1-152, chukchi-1-271); at chukchi-1-035 a Cossack tribute-collector from
 [[place:gizhiginsk]] passes through it.

@@ -14,7 +14,7 @@
 ## gloss
 
 Гора Обром, on the Dry Anui ([[river:maliy-anyuy]]) — one of the places the Anui
-fair was held before it settled at [[place:ostrovnoye]] (1-078).
+fair was held before it settled at [[place:ostrovnoye]] (chukchi-1-078).
 
 **This entry named the wrong river until the geometry was read.** It had the
 Dry Anui as [[river:bolshoy-anyuy]], and its own coordinate sat 0.347° *outside*

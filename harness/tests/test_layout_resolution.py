@@ -10,11 +10,14 @@ from conftest import write_project
 from harness import cli
 from harness.layout import (
     ProjectError,
+    bare_own_citations,
+    citation_errors,
     project_root,
     refuse_another_texts,
     repo_root,
     shared,
     workspace_root,
+    workspace_stems,
 )
 
 
@@ -93,3 +96,30 @@ def test_a_model_fitted_to_another_text_is_read_but_not_overwritten_or_scored(tm
         refuse_another_texts(man, text)
     man.write_text('{"text": "koryak"}', encoding="utf-8")
     refuse_another_texts(man, text)
+
+
+def _workspace_with(tmp_path, *stems):
+    ws = tmp_path / "ws"
+    ws.mkdir()
+    (ws / "workspace.json").write_text("{}", encoding="utf-8")
+    return [write_project(ws / f"t{i}", s) for i, s in enumerate(stems)]
+
+
+def test_a_citation_in_a_shared_store_names_a_book_a_text_declares(tmp_path):
+    text, _ = _workspace_with(tmp_path, "chukchi", "koryak")
+    assert citation_errors("see chukchi-1-044 and koryak-2-010", text) == []
+    assert "is bare" in citation_errors("see 1-044", text)[0]
+    assert "no text here declares" in citation_errors("see yukaghir-1-044", text)[0]
+    # Neither a URL's digits nor a printed date is a page.
+    assert citation_errors("https://x.org/a/1-044 in 1904-1907", text) == []
+
+
+def test_a_reader_sees_the_served_texts_citations_bare_and_anothers_whole():
+    got = bare_own_citations("chukchi-1-044 and chukchi-mythology-1-044, koryak-2-010",
+                             "chukchi")
+    assert got == "1-044 and chukchi-mythology-1-044, koryak-2-010"
+
+
+def test_two_texts_sharing_a_stem_are_found(tmp_path):
+    text, _ = _workspace_with(tmp_path, "chukchi", "chukchi")
+    assert workspace_stems(text) == ["chukchi", "chukchi"]

@@ -34,6 +34,9 @@ The corollary is the useful one: **a file belongs here if removing it would
 change what a reader sees.** An amended ToC entry does; a suppressed detector
 finding does not.
 
+
+**A citation in the shared store names its book.** Entities live in the workspace, so a page cited in a gloss or an alias note is `chukchi-1-044`, the text's stem and then the ref, and `entity check` refuses a bare one and a stem no text declares. The reader of that text sees `1-044`, since to them it is this book; a reader of another sees it whole. A text's own stores (`annotations/`, the apparatus) stay bare.
+
 ## Why an entity store at all
 
 `@ref` was refused outright until this milestone — `validate` errored on

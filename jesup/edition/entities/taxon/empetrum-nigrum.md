@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Empetrum nigrum | la | yes | 1-254 |
+| Empetrum nigrum | la | yes | chukchi-1-254 |
 
 ## gloss
 

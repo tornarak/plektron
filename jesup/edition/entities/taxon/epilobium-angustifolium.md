@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Epilobium angustifolium | la | yes | 1-256 "As substitutes for tea, leaves of the sweet-brier, of Epilobium angustifolium" |
+| Epilobium angustifolium | la | yes | chukchi-1-256 "As substitutes for tea, leaves of the sweet-brier, of Epilobium angustifolium" |
 
 ## gloss
 

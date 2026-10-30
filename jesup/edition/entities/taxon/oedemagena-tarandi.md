@@ -7,11 +7,11 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Œdemagena tarandi | la | yes | 1-108 "Another fly, of smaller size and darker color (Œdemagena tarandi Slunin)" |
+| Œdemagena tarandi | la | yes | chukchi-1-108 "Another fly, of smaller size and darker color (Œdemagena tarandi Slunin)" |
 
 ## gloss
 
-The **second** of 1-108's "two kinds of reindeer-flies", and the whole of what
+The **second** of chukchi-1-108's "two kinds of reindeer-flies", and the whole of what
 the page says about which it is: "of smaller size and darker color", it "lays
 its eggs in the reindeer's nostrils. The larvæ go up to the throat, and
 penetrate the cartilage. The next year, when the maggots are full-grown, they

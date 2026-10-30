@@ -9,14 +9,14 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| lemming | en | yes | 2-010, 2-013; the corpus prints no plural |
+| lemming | en | yes | chukchi-2-010, chukchi-2-013; the corpus prints no plural |
 
 ## gloss
 
-Both mentions are the same motif, and neither is natural history. 2-013: the
+Both mentions are the same motif, and neither is natural history. chukchi-2-013: the
 owner of game is a tiny being with a sledge of grass who "may drive a mouse or
 a small root of *Polygonum viviparum*" — and **"The lemming is his polar bear.
-He kills it, and loads it on his sledge."** 2-010 sets the inversion the other
+He kills it, and loads it on his sledge."** chukchi-2-010 sets the inversion the other
 way, an amulet-bear that loses "its former size, and the bear turns into a
 lemming", which Bogoras then notes is "the same in regard to the owner of
 game". The lemming is doing one job in this book: it is the smallest quadruped

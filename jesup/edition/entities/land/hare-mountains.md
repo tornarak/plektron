@@ -10,15 +10,15 @@
 |---|---|---|---|
 | Hare Mountains | | yes | |
 | Ушканій хребетъ | ru | yes | |
-| Kanchalan Hills | | yes | the book’s other name for the range, 1-158; longer than the bare `Kanchalan`, so it wins the match against [[river:kanchalan]] |
+| Kanchalan Hills | | yes | the book’s other name for the range, chukchi-1-158; longer than the bare `Kanchalan`, so it wins the match against [[river:kanchalan]] |
 
 ## gloss
 
 A low, broad range east of the middle and upper [[river:kanchalan]] — the
 editor’s identification, and it is what merged two entries into this one. The
 book names the same feature twice and never says so: “Hare Mountains” with
-Ушканій хребетъ beside it in 1-359’s Anadyr Country list, and “the Kanchalan
-Hills” at 1-158, where a rough-seal skin was taken far enough inland for
+Ушканій хребетъ beside it in chukchi-1-359’s Anadyr Country list, and “the Kanchalan
+Hills” at chukchi-1-158, where a rough-seal skin was taken far enough inland for
 Bogoras to remark on it. `land:kanchalan-hills` held the second name and is
 gone; both forms are aliases here.
 

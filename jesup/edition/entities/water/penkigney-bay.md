@@ -17,7 +17,7 @@
 ## gloss
 
 **Бухта Пенкигней**, on the south side of the Chukchi Peninsula. Named once, at
-1-044, where Bogdanovitch reports "good grass on the mountain-slopes around
+chukchi-1-044, where Bogdanovitch reports "good grass on the mountain-slopes around
 Konyam Bay".
 
 "Konyam Bay" is **[[person:nordenskiold]]'s own rendering**, given to the bay

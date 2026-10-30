@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Herendeen | | yes | 1-204 "Capt. E. P. Herendeen, quoted by Mr. Hough" |
+| Herendeen | | yes | chukchi-1-204 "Capt. E. P. Herendeen, quoted by Mr. Hough" |
 
 ## gloss
 

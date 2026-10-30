@@ -16,7 +16,7 @@
 ## gloss
 
 Остров Карагинский. "The Koryak village in [[water:karaginsky-gulf]] … lies on the
-mainland shore, opposite the large island Karagha" (1-048) — the village, the
+mainland shore, opposite the large island Karagha" (chukchi-1-048) — the village, the
 bay and the island share the name, and only the bay and the island are
-separately entered. Named again at 1-160, where the page break falls between
+separately entered. Named again at chukchi-1-160, where the page break falls between
 "Karagha" and "Island".

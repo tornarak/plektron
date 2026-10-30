@@ -10,7 +10,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Vladivostok | | yes | 1-062 |
+| Vladivostok | | yes | chukchi-1-062 |
 
 ## gloss
 

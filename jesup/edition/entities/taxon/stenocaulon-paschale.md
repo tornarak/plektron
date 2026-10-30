@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Stenocaulon paschale | la | yes | 1-102 no. 3, glossing Kaimaˊ-wattaˊp "bald moss" |
+| Stenocaulon paschale | la | yes | chukchi-1-102 no. 3, glossing Kaimaˊ-wattaˊp "bald moss" |
 
 ## gloss
 
