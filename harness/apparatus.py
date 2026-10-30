@@ -25,6 +25,7 @@ import json
 from pathlib import Path
 
 from . import authorities, figrefs
+from .layout import page_files, ref_of, stem, stem_for
 from .paths import all_scans
 from .refs import norm_ref, parse_ref
 from .state import _tei_facts, load_toc
@@ -269,10 +270,10 @@ def folio_index(root: Path = Path(".")) -> dict[int, list[dict]]:
     # `state.build_ledger`: the ledger folds heading state over `all_scans`, so it
     # requires the raster farm, and an index of what the corpus says about its own
     # page numbers has no business refusing on a clone with no `scans/`.
-    for p in sorted((Path(root) / "tei").glob("chukchi-*.xml")):
+    for p in sorted(page_files(Path(root) / "tei", ".xml", root)):
         facts = _tei_facts(p)
         if facts is not None:
-            add(facts.get("folio"), p.stem.removeprefix("chukchi-"), "tei")
+            add(facts.get("folio"), ref_of(p.stem, root), "tei")
 
     for run in load_runs(root):
         if not (KINDS.get(run.get("kind")) or {}).get("folio_of_leaf"):
@@ -282,7 +283,7 @@ def folio_index(root: Path = Path(".")) -> dict[int, list[dict]]:
                 add(e.get("folio"), e["ref"], "apparatus")
 
     for ref in all_refs(root, "gt/ocr"):
-        path = Path(root) / "gt/ocr" / f"chukchi-{norm_ref(ref)}.xml"
+        path = Path(root) / "gt/ocr" / f"{stem_for(ref, root)}.xml"
         try:
             rt = _running_title(page_lines(path, Path(root), ref=ref), ref, Path(root))
         except Exception:
@@ -639,10 +640,10 @@ def _check_leaves(root: Path, exempt: set[str]) -> tuple[dict, list]:
 
     rows, errors = {}, []
     d = Path(root) / PAGE_IMG
-    for p in sorted(d.glob("chukchi-*")) if d.is_dir() else []:
+    for p in sorted(d.glob(f"{stem(root)}-*")) if d.is_dir() else []:
         if p.suffix not in LEAF_EXTS:
             continue
-        ref = norm_ref(p.stem.removeprefix("chukchi-"))
+        ref = ref_of(p.stem, root)
         row = {"file": p.name, "scale": "", "aspect": ""}
         if ref not in exempt:
             errors.append({

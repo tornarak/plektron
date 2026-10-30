@@ -30,6 +30,7 @@ from .. import (
 )
 from .. import edition_ui as ui
 from ..edition_ui import BASE
+from ..layout import page_files, stem_for
 from ..refs import norm_ref
 from ..state import load_toc
 from .cache import MAXSIZE, file_digest, listing, stamp
@@ -52,12 +53,12 @@ def _annotation_files(root: Path) -> list[Path]:
 
 @listing
 def _gt_ocr_files(root: Path) -> list[Path]:
-    return sorted((Path(root) / "gt" / "ocr").glob("chukchi-*.xml"))
+    return sorted(page_files(Path(root) / "gt" / "ocr", ".xml", root))
 
 
 @listing
 def _tei_files(root: Path) -> list[Path]:
-    return sorted((Path(root) / "tei").glob("chukchi-*.xml"))
+    return sorted(page_files(Path(root) / "tei", ".xml", root))
 
 
 @listing
@@ -66,12 +67,12 @@ def _readable_files(root: Path) -> list[Path]:
     since the last look moves from one to the other without changing the union's
     length, so keying on `tei/` alone would serve a stale rank."""
     return _tei_files(root) + sorted(
-        (Path(root) / "mz" / "tei").glob("chukchi-*.xml"))
+        page_files(Path(root) / "mz" / "tei", ".xml", root))
 
 
 @listing
 def _fig_files(root: Path) -> list[Path]:
-    return sorted((Path(root) / "gt" / "fig").glob("chukchi-*.xml"))
+    return sorted(page_files(Path(root) / "gt" / "fig", ".xml", root))
 
 
 @listing
@@ -389,7 +390,7 @@ def figure_boxes(ref: str, root: Path) -> tuple:
     """One leaf's figures, with the numbers their captions print. Keyed on that
     leaf's own `gt/fig/` file, so a re-boxed plate moves only its own pages."""
     return _figure_boxes(str(root), ref, stamp(
-        [Path(root) / "gt" / "fig" / f"chukchi-{norm_ref(ref)}.xml"]))
+        [Path(root) / "gt" / "fig" / f"{stem_for(ref, root)}.xml"]))
 
 
 @lru_cache(maxsize=MAXSIZE)
@@ -403,7 +404,7 @@ def captions_on(ref: str, root: Path) -> tuple:
     picture; a reference wants the caption that prints its number whether or not
     the pairing kept it. Keyed on the same file, for the same reason."""
     return _captions_on(str(root), ref, stamp(
-        [Path(root) / "gt" / "fig" / f"chukchi-{norm_ref(ref)}.xml"]))
+        [Path(root) / "gt" / "fig" / f"{stem_for(ref, root)}.xml"]))
 
 
 def loi_run(root: Path) -> dict:
@@ -680,8 +681,8 @@ def fig_layout(ref: str, root: Path) -> dict:
     """
     root = Path(root)
     return _fig_layout(ref, str(root), stamp([
-        root / "gt" / "fig" / f"chukchi-{ref}.xml",
-        root / "gt" / "zones" / f"chukchi-{ref}.xml",
+        root / "gt" / "fig" / f"{stem_for(ref, root)}.xml",
+        root / "gt" / "zones" / f"{stem_for(ref, root)}.xml",
     ]))
 
 

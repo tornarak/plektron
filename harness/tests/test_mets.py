@@ -64,7 +64,7 @@ class TestWriteMets:
     def test_it_serves_a_store_that_is_not_gt_fig(self, tmp_path):
         """The whole point of the move. `gt/fig` was never special to the code."""
         _store(tmp_path, "gt/ocr", ["chukchi-1-002.xml", "chukchi-1-001.xml"])
-        rep = write_mets("gt/ocr", tmp_path / "out", tmp_path)
+        rep = write_mets("gt/ocr", tmp_path / "out", tmp_path, stem="chukchi")
         assert rep["store"] == "gt/ocr"
         assert rep["files"] == 2
         assert (tmp_path / "out" / "METS.xml").exists()
@@ -72,14 +72,14 @@ class TestWriteMets:
     def test_names_are_sorted_which_for_this_corpus_is_page_order(self, tmp_path):
         _store(tmp_path, "gt/ocr",
                ["chukchi-1-010.xml", "chukchi-1-002.xml", "chukchi-1-001.xml"])
-        rep = write_mets("gt/ocr", tmp_path / "out", tmp_path)
+        rep = write_mets("gt/ocr", tmp_path / "out", tmp_path, stem="chukchi")
         assert (rep["first"], rep["last"]) == ("chukchi-1-001.xml",
                                                "chukchi-1-010.xml")
 
     def test_it_writes_only_where_told_and_never_into_the_store(self, tmp_path):
         """The module's reason for existing in this shape."""
         _store(tmp_path, "gt/ocr", ["chukchi-1-001.xml"])
-        write_mets("gt/ocr", tmp_path / "out", tmp_path)
+        write_mets("gt/ocr", tmp_path / "out", tmp_path, stem="chukchi")
         assert not (tmp_path / "gt" / "ocr" / "METS.xml").exists()
 
     def test_a_non_page_file_beside_the_altos_is_not_manifested(self, tmp_path):
@@ -88,7 +88,7 @@ class TestWriteMets:
         _store(tmp_path, "gt/ocr", ["chukchi-1-001.xml"])
         (tmp_path / "gt" / "ocr" / "METS.xml").write_text("<mets/>")
         (tmp_path / "gt" / "ocr" / "notes.txt").write_text("x")
-        rep = write_mets("gt/ocr", tmp_path / "out", tmp_path)
+        rep = write_mets("gt/ocr", tmp_path / "out", tmp_path, stem="chukchi")
         assert rep["files"] == 1
 
     def test_an_empty_store_raises_rather_than_writing_an_empty_manifest(self, tmp_path):
@@ -96,14 +96,14 @@ class TestWriteMets:
         is a worse outcome than the usage error the CLI turns this into."""
         (tmp_path / "mz" / "fig").mkdir(parents=True)
         with pytest.raises(ValueError, match="no chukchi"):
-            write_mets("mz/fig", tmp_path / "out", tmp_path)
+            write_mets("mz/fig", tmp_path / "out", tmp_path, stem="chukchi")
         assert not (tmp_path / "out").exists()
 
     def test_an_absent_store_raises_too(self, tmp_path):
         """Every `mz/` tree is derived and gitignored, so naming one on a fresh
         clone is the ordinary case, not a corrupt tree."""
         with pytest.raises(ValueError, match="no chukchi"):
-            write_mets("mz/ocr", tmp_path / "out", tmp_path)
+            write_mets("mz/ocr", tmp_path / "out", tmp_path, stem="chukchi")
 
     def test_two_stores_into_one_directory_keep_the_second(self, tmp_path):
         """Documented rather than prevented — the name has to be `METS.xml` for
@@ -111,8 +111,8 @@ class TestWriteMets:
         and not a discovery."""
         _store(tmp_path, "gt/ocr", ["chukchi-1-001.xml"])
         _store(tmp_path, "gt/fig", ["chukchi-2-001.xml", "chukchi-2-002.xml"])
-        write_mets("gt/ocr", tmp_path / "out", tmp_path)
-        write_mets("gt/fig", tmp_path / "out", tmp_path)
+        write_mets("gt/ocr", tmp_path / "out", tmp_path, stem="chukchi")
+        write_mets("gt/fig", tmp_path / "out", tmp_path, stem="chukchi")
         t = ET.parse(tmp_path / "out" / "METS.xml").getroot()
         assert len(t.findall(f".//{{{METS_NS}}}file")) == 2
 
@@ -150,7 +150,7 @@ class TestStorePool:
             d.mkdir(parents=True)
             for n in names:
                 (d / n).write_text(f"<x store='{store}'/>")
-        rep = write_mets(("gt/ocr", "mz/ocr"), tmp_path / "out", tmp_path)
+        rep = write_mets(("gt/ocr", "mz/ocr"), tmp_path / "out", tmp_path, stem="chukchi")
         assert (rep["files"], rep["from gt/ocr"], rep["from mz/ocr"]) == (2, 1, 1)
         assert (tmp_path / "out" / "chukchi-1-001.xml").read_text() == "<x store='gt/ocr'/>"
         assert (tmp_path / "out" / "chukchi-1-002.xml").read_text() == "<x store='mz/ocr'/>"
@@ -159,10 +159,10 @@ class TestStorePool:
         # A second run into the same directory would manifest this run's copies
         # as its own, so it refuses rather than keeps them.
         with pytest.raises(ValueError, match="already holds"):
-            write_mets(("gt/ocr", "mz/ocr"), tmp_path / "out", tmp_path)
+            write_mets(("gt/ocr", "mz/ocr"), tmp_path / "out", tmp_path, stem="chukchi")
 
     def test_write_mets_does_not_enforce_the_pool(self, tmp_path):
         """The list is a CLI convenience. A caller with a store this module has
         not heard of must not be blocked by a tuple they cannot edit."""
         _store(tmp_path, "elsewhere", ["chukchi-1-001.xml"])
-        assert write_mets("elsewhere", tmp_path / "out", tmp_path)["files"] == 1
+        assert write_mets("elsewhere", tmp_path / "out", tmp_path, stem="chukchi")["files"] == 1

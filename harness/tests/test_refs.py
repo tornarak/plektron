@@ -8,14 +8,15 @@ derivable from each other (CLAUDE.md, "Source rasters"), so `"48"` names nothing
 from pathlib import Path
 
 import pytest
+from conftest import write_project
 
-from harness.refs import norm_ref, parse_ref, stem_for
+from harness.layout import ProjectError, page_files, project, ref_of, stem_for
+from harness.refs import norm_ref, parse_ref
 
 
 @pytest.mark.parametrize("given,expected", [
     ("1-048", (1, 48)),
     ("1-48", (1, 48)),          # lenient about zero-padding: it is typed by hand
-    ("chukchi-1-048", (1, 48)),  # a filename stem is a legal spelling
     ("  2-030  ", (2, 30)),     # trimmed
     ("3-202", (3, 202)),
 ])
@@ -49,7 +50,6 @@ def test_bare_integer_error_explains_why():
 @pytest.mark.parametrize("given,expected", [
     ("1-48", "1-048"),
     ("1-048", "1-048"),
-    ("chukchi-2-30", "2-030"),
     ("3-202", "3-202"),
 ])
 def test_norm_ref_canonicalizes(given, expected):
@@ -60,8 +60,38 @@ def test_norm_ref_is_idempotent():
     assert norm_ref(norm_ref("1-48")) == norm_ref("1-48")
 
 
-def test_stem_matches_the_filenames():
-    assert stem_for("1-48") == "chukchi-1-048"
+def test_stem_matches_the_filenames(tmp_path):
+    assert stem_for("1-48", tmp_path) == "chukchi-1-048"
+
+
+def test_another_texts_stem_is_not_this_texts_page(tmp_path):
+    """`koryak-1-048` must not read as this book's 1-048, and neither `parse_ref`,
+    which has no root to ask, nor `ref_of`, which does, lets it through."""
+    assert ref_of("chukchi-1-048", tmp_path) == "1-048"
+    assert ref_of("1-48", tmp_path) == "1-048"
+    with pytest.raises(ValueError):
+        parse_ref("chukchi-1-048")
+    with pytest.raises(ValueError):
+        ref_of("koryak-1-048", tmp_path)
+    with pytest.raises(ValueError):
+        ref_of("chukchi-mythology-1-048", tmp_path)
+
+
+def test_page_files_keeps_out_what_a_glob_lets_in(tmp_path):
+    """Crops and another text's pages both match `chukchi-*.png`."""
+    for name in ("chukchi-1-100.png", "chukchi-1-048.png",
+                 "chukchi-1-048-a.png", "chukchi-mythology-1-048.png"):
+        (tmp_path / name).touch()
+    assert [p.name for p in page_files(tmp_path, ".png", tmp_path)] == [
+        "chukchi-1-048.png", "chukchi-1-100.png"]
+    assert page_files(tmp_path / "absent", ".png", tmp_path) == []
+
+
+@pytest.mark.parametrize("stem", ["Chukchi", "chukchi_", "-x", "a--b", "1a", ""])
+def test_a_stem_that_is_not_kebab_case_is_refused(tmp_path, stem):
+    write_project(tmp_path, stem)
+    with pytest.raises(ProjectError):
+        project(tmp_path)
 
 
 @pytest.mark.parametrize("spec,expected", [

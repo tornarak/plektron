@@ -51,6 +51,7 @@ from datetime import datetime
 from pathlib import Path
 
 from .generate import GENDIR
+from .layout import stem_for
 from .lines import ZOOM
 from .marks import MarksConfigError
 from .refs import norm_ref
@@ -71,14 +72,14 @@ CLAIMS = Path("review/_claims")
 # say opposite things about what a `gaps` band means and an agent told the wrong one
 # will either read artwork as a dropped line or discount a real one as artwork.
 FIGURES_PRESENT = (
-    "gt/fig/chukchi-{ref}.xml exists, so the figures are masked out of the "
+    "gt/fig/{stem}.xml exists, so the figures are masked out of the "
     "detector and a band it reports is meaningful rather than artwork. **You "
     "will see them on the page image as grey blocks reading BLOTTED FIGURE / DO "
     "NOT TRANSCRIBE**, and the vertical jump between the line indices either "
     "side of one is that figure, not a dropped line: it is already adjudicated "
     "in the figure track and is nobody's to key. Do not spend an image on it.")
 FIGURES_ABSENT = (
-    "gt/fig/chukchi-{ref}.xml does NOT exist, which in this store means a human "
+    "gt/fig/{stem}.xml does NOT exist, which in this store means a human "
     "went through the page and found no figure on it — absence of the file is "
     "how the figure track records that. So nothing is being masked and **every "
     "band it reports is a genuine dropped-line candidate**, not something to "
@@ -141,7 +142,7 @@ def survey(ref: str, root: Path = Path(".")) -> dict:
     ref = norm_ref(ref)
     out = {
         "ref": ref,
-        "zones": (root / "gt/zones" / f"chukchi-{ref}.xml").exists(),
+        "zones": (root / "gt/zones" / f"{stem_for(ref, root)}.xml").exists(),
         # A human ruled this "not a text page" — a plate, map, foldout or blank.
         # Distinct from "keyed and holds nothing", which is the distinction the
         # zone store exists to keep, and the reason a dispatch can trust it.
@@ -151,9 +152,9 @@ def survey(ref: str, root: Path = Path(".")) -> dict:
         # file and the refusal below silently stops refusing, which sends readers
         # at plates with nothing raising. See `zones.is_exempt`.
         "exempt": is_exempt(ref, root),
-        "figures": (root / "gt/fig" / f"chukchi-{ref}.xml").exists(),
-        "gt": (root / "gt/ocr" / f"chukchi-{ref}.xml").exists(),
-        "mz": (root / "mz/ocr" / f"chukchi-{ref}.xml").exists(),
+        "figures": (root / "gt/fig" / f"{stem_for(ref, root)}.xml").exists(),
+        "gt": (root / "gt/ocr" / f"{stem_for(ref, root)}.xml").exists(),
+        "mz": (root / "mz/ocr" / f"{stem_for(ref, root)}.xml").exists(),
         "lines": 0,
         "blocks": 0,
     }
@@ -191,7 +192,7 @@ def build(ref: str, root: Path = Path("."), note: str | None = None) -> dict:
     r = s["ref"]
     if not s["zones"]:
         raise Unready(
-            f"{r}: no gt/zones/chukchi-{r}.xml — not a keyed text page, so there "
+            f"{r}: no gt/zones/{stem_for(r, root)}.xml — not a keyed text page, so there "
             "is nothing for `ocr predict` to have segmented. No zones, no dispatch.")
     if s["exempt"]:
         raise Unready(
@@ -201,7 +202,7 @@ def build(ref: str, root: Path = Path("."), note: str | None = None) -> dict:
             "is a refusal and not a warning.")
     if s["gt"]:
         raise Unready(
-            f"{r}: gt/ocr/chukchi-{r}.xml already exists, so this is a *revision*, "
+            f"{r}: gt/ocr/{stem_for(r, root)}.xml already exists, so this is a *revision*, "
             "not a restoration. A reader sent at it reads the keyed human text "
             "through every ALTO verb, and its proposal stops being an independent "
             "witness. Substitute a page with zones and no gt, and say in the "
@@ -219,11 +220,11 @@ def build(ref: str, root: Path = Path("."), note: str | None = None) -> dict:
     # Counted through `page_lines`, so lines a human adopted in `gt/lines/` count.
     if not s["lines"]:
         raise Unready(
-            f"{r}: mz/ocr/chukchi-{r}.xml holds no lines — the segmenter found no "
+            f"{r}: mz/ocr/{stem_for(r, root)}.xml holds no lines — the segmenter found no "
             "baseline on this page, so a reader has nothing to key against. "
             f"Re-predicting gives the same answer; draw them in `uv run harness "
             f"ocr edit {r}`, which is a human's act, then queue it.")
-    figs = (FIGURES_PRESENT if s["figures"] else FIGURES_ABSENT).format(ref=r)
+    figs = (FIGURES_PRESENT if s["figures"] else FIGURES_ABSENT).format(stem=stem_for(r, root))
     # Rendered as sentences, not as the table `ocr zoom` prints. The reader is
     # being handed this before it has a doubt to spend it on, so what it has to
     # carry is the consequence — "a whole line is N strips" — rather than a row of
@@ -306,7 +307,7 @@ def collate_survey(ref: str, root: Path = Path(".")) -> dict:
     """
     from .zones import is_exempt
     ref = norm_ref(ref)
-    stem = f"chukchi-{ref}"
+    stem = stem_for(ref, root)
     return {
         "ref": ref,
         # `survey`'s rule, and for its reason: asked of the split, never of the
@@ -339,21 +340,21 @@ def collate_build(ref: str, root: Path = Path("."), note: str | None = None) -> 
             "collate, and the ruling is a statement rather than an absence.")
     if s["tei"]:
         raise Unready(
-            f"{r}: tei/chukchi-{r}.xml already exists. Collating it again overwrites "
+            f"{r}: tei/{stem_for(r, root)}.xml already exists. Collating it again overwrites "
             "committed work, and the pass's own self-check — re-read your output "
             "once against the image — would read the *previous* run's file as though "
             "it were this one's. Revising a collated page is a decision somebody "
             "makes, not something a batch does on its way past.")
     if not s["gt"]:
         raise Unready(
-            f"{r}: nothing at gt/ocr/chukchi-{r}.xml. **Collation runs after the "
+            f"{r}: nothing at gt/ocr/{stem_for(r, root)}.xml. **Collation runs after the "
             "reading loop, not beside it** — the pass reviews a page built from "
             "adjudicated text, and a machine draft would put a reviewer in front of "
             "prose at ~91% and an inventory at 0% with nothing on the page saying "
             f"so. Restore it first: `/rebuild-groundtruth {r}`.")
     if not s["zones"]:
         raise Unready(
-            f"{r}: nothing at gt/zones/chukchi-{r}.xml. The paragraph boundaries "
+            f"{r}: nothing at gt/zones/{stem_for(r, root)}.xml. The paragraph boundaries "
             "*are* the keyed zone labels, and a prediction is not a human's "
             f"assertion. Key the page: `uv run harness zones edit {r}`.")
     text = template(root, (BEGIN, END), COLLATE_DOC).format(

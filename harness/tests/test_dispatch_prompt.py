@@ -21,6 +21,7 @@ import re
 from pathlib import Path
 
 import pytest
+from conftest import write_project
 
 from harness.dispatch import (
     AGENT,
@@ -46,6 +47,7 @@ REPO = Path(__file__).resolve().parent.parent.parent
 def make_page(root: Path, ref="3-063", *, zones=True, mz=True, gt=False,
               figs=False, exempt=False):
     """The smallest tree `survey` reads: four stores and the exempt list."""
+    write_project(root)
     alto = ('<alto xmlns="http://www.loc.gov/standards/alto/ns-v4#"><Layout>'
             '<Page WIDTH="2550" HEIGHT="3525"><PrintSpace>'
             '<TextBlock ID="b1"><TextLine ID="l1" HPOS="10" VPOS="10" '

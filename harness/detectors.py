@@ -34,6 +34,7 @@ from pathlib import Path
 
 from lxml import etree
 
+from .layout import stem_for
 from .parallel import ptrack
 
 # Marked inventory glyphs (keying spec §2), NFD bases + combiners + atomics.
@@ -598,7 +599,7 @@ def midline_forms(root: Path = Path("."), tick: Callable | None = None
         return _MIDLINE[key]
     idx: dict[str, tuple[int, frozenset[str]]] = {}
     for ref in ptrack(_restored_refs(root), tick):
-        p = root / "gt" / "ocr" / f"chukchi-{ref}.xml"
+        p = root / "gt" / "ocr" / f"{stem_for(ref, root)}.xml"
         texts, cuts = joined_words(page_lines(p, root, ref=ref))
         for text, cut in zip(texts, cuts, strict=True):
             for m in re.finditer(r"\S+", text):
@@ -1347,7 +1348,7 @@ def suggest_lexicon(root: Path = Path("."), common: int | None = None,
     """
     from .lines import page_lines
     from .paths import all_refs
-    from .refs import _draft_text, stem_for
+    from .refs import _draft_text
 
     base, full = _base_lexicon(root), _lexicon(root)
     counts: dict[str, int] = {}
@@ -1511,7 +1512,6 @@ def _restored_refs(root: Path = Path(".")) -> list[str]:
     export shells (CLAUDE.md, "The ground-truth loss").
     """
     from .paths import all_refs
-    from .refs import stem_for
 
     out = []
     for ref in all_refs(root, "gt/ocr"):
@@ -1677,7 +1677,7 @@ def native_corpus_context(root: Path = Path("."),
     # `suggest_native_forms`, `mark_base_frequency`, `lookup.index` — reports by
     # forwarding a `tick` rather than by growing a loop of its own.
     for ref in ptrack(_restored_refs(root), tick):
-        p = root / "gt" / "ocr" / f"chukchi-{ref}.xml"
+        p = root / "gt" / "ocr" / f"{stem_for(ref, root)}.xml"
         recs = page_lines(p, root, ref=ref)
         # Reading order is what `page_lines` returns, which is what the join
         # requires: a word broken at the foot of the left column continues at

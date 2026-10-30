@@ -52,7 +52,8 @@ from pathlib import Path
 from lxml import etree
 
 from .figures import PDF_IMAGES, pdf_images
-from .refs import norm_ref, parse_ref
+from .layout import page_files, ref_of
+from .refs import norm_ref, parse_ref, ref_in
 
 #: Stores holding raster-pixel coordinates. **`ocr/` and `zones/` are absent on
 #: purpose**: they are the read views, and migrating through a view writes through
@@ -290,7 +291,7 @@ def migrate_file(path: Path, step: dict, commit: bool) -> dict:
     and whether the two are related by a scale. Reports rather than raises; the
     caller decides what gates.
     """
-    ref = norm_ref(path.stem)
+    ref = ref_in(path.stem)
     rec = {"ref": ref, "path": str(path), "action": "", "clamped": 0, "why": ""}
     try:
         tree = etree.parse(str(path))
@@ -371,7 +372,7 @@ def _alto_files(root: Path, store: str) -> list[Path]:
     if not d.is_dir():
         return []
     out = []
-    for p in sorted(d.glob("chukchi-*.xml")):
+    for p in sorted(page_files(d, ".xml", root)):
         # The guard `migrate_coords.py` grew after a stray METS manifest in the
         # figure store nearly got rewritten.
         if b"alto" in p.read_bytes()[:2048].lower():
@@ -461,7 +462,7 @@ def run(root: Path = Path("."), stores: tuple[str, ...] = STORES,
     files, corr_pages = [], []
     for store in stores:
         for p in _alto_files(root, store):
-            ref = norm_ref(p.stem)
+            ref = ref_of(p.stem, root)
             if want is not None and ref not in want:
                 continue
             if ref not in steps:

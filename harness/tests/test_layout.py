@@ -88,7 +88,7 @@ def test_dir_builders_land_in_the_pages_own_directory(builder, expected, tmp_pat
 
 def test_builders_normalize_the_ref():
     """One directory per page, whichever spelling of the ref reached the CLI."""
-    assert review_dir("1-48", Path(".")) == review_dir("chukchi-1-048", Path("."))
+    assert review_dir("1-48", Path(".")) == review_dir("1-048", Path("."))
 
 
 def test_builders_reject_a_bare_integer():

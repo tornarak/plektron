@@ -109,7 +109,7 @@ case "$TOOL" in
     case "$P" in
       *..*) ;;
       # **`mz/tei/` first, and it must stay first.** The allow below is
-      # `*/tei/chukchi-*.xml`, which matches `mz/tei/chukchi-1-021.xml` exactly as
+      # `*/tei/*-[0-9]*.xml`, which matches `mz/tei/chukchi-1-021.xml` exactly as
       # well as `tei/chukchi-1-021.xml` — so without this case a collator could
       # overwrite the generated baseline it is reviewing, and `tei diff` would then
       # compare the review against itself. The one comparison this pass has would
@@ -131,7 +131,7 @@ case "$TOOL" in
       */entities/*|entities/*)
         echo "Blocked: don't hand-edit the store — 'uv run harness entity new class:slug --canonical NAME --alias FORM --commit' is yours and does this properly. It parses before writing and mints at status: proposed, which no rule links until a human ratifies it, so proposing costs nothing and asserts nothing. What the verb will not do is change an entry that already exists, and neither may you: an alias added to a ratified entity changes what gets linked on every other page, which one page is the wrong vantage for. Put that in your report instead." >&2
         exit 2 ;;
-      */tei/chukchi-*.xml|tei/chukchi-*.xml) allow "collator authoring its page's TEI" ;;
+      */tei/*-[0-9]*.xml|tei/*-[0-9]*.xml) allow "collator authoring its page's TEI" ;;
       *"$MEMORY"*) allow "collator writing its own memory" ;;
     esac
     echo "Blocked: you write exactly two places — tei/chukchi-PP-NNN.xml, and your own memory under $MEMORY. That is the whole deliverable. gt/, mz/, ocr/, zones/, scans/ and data/ are off-limits by any route; tei/corpus-header.xml is the corpus's and not one page's; and a reservation you cannot settle is a COMMENT IN YOUR PAGE plus a line in your report, never a change to something else." >&2

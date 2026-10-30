@@ -47,8 +47,6 @@ from pathlib import Path
 
 from lxml import etree
 
-# Aliased: this module already exposes a `corrections` verb (proposal->decision
-# character diffs), which is a different subject entirely.
 from . import corrections as _corr
 from .atomic import tmp_for
 from .detectors import (
@@ -58,6 +56,10 @@ from .detectors import (
     inventory_glyphs,
     unlicensed_marks,
 )
+
+# Aliased: this module already exposes a `corrections` verb (proposal->decision
+# character diffs), which is a different subject entirely.
+from .layout import stem_for
 from .lines import alto_for_lines, page_lines, raster_path
 from .lookup import HANDLE
 from .parallel import ptrack
@@ -578,7 +580,7 @@ def restore_skip(ref: str, root: Path = Path("."), force: bool = False) -> str:
         return "no decisions"
     if force:
         return ""
-    target = root / "gt" / "ocr" / f"chukchi-{norm_ref(ref)}.xml"
+    target = root / "gt" / "ocr" / f"{stem_for(ref, root)}.xml"
     if target.exists() and target.stat().st_mtime >= dec.stat().st_mtime:
         return "ground truth is already newer than the decision"
     return ""
@@ -696,7 +698,7 @@ def restore(ref: str, root: Path, store: str,
             "(keying spec 2.6), not readings to weigh, so re-key them in "
             f"harness ocr review {ref}:\n  " + "\n  ".join(bad))
 
-    target = root / "gt" / "ocr" / f"chukchi-{ref}.xml"
+    target = root / "gt" / "ocr" / f"{stem_for(ref, root)}.xml"
     # The same file under the name it was given is `revision`; any other source is
     # a `restoration` from a separate store. A name test suffices now that no
     # symlink view can make two names one file.

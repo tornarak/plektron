@@ -156,8 +156,9 @@ def build_ledger(root: Path = Path(".")) -> dict[str, dict]:
     Refs are folded in (part, scan index) order; the fold restarts at each part
     boundary, since heading state does not carry across a physical volume.
     """
+    from .layout import stem_for
     from .paths import all_scans
-    from .refs import parse_ref, stem_for
+    from .refs import parse_ref
 
     toc = load_toc(root)
     levels = {e["id"]: e.get("level", 0) for e in toc if e.get("id")}
@@ -258,8 +259,9 @@ def foreign_terms_nearby(ref: str, root: Path = Path("."),
     page's draft, and the firewall check in validate.py enforces that against
     the draft alone.
     """
+    from .layout import stem_for
     from .paths import all_scans
-    from .refs import parse_ref, stem_for
+    from .refs import parse_ref
 
     part, _ = parse_ref(ref)
     refs = [r for r in all_scans(root) if parse_ref(r)[0] == part]
@@ -336,8 +338,9 @@ def entry_state(ref: str, root: Path = Path(".")) -> dict:
     every row, including the boundary column, which is exactly why it is a
     different function rather than this one generalized.
     """
+    from .layout import stem_for
     from .paths import all_scans
-    from .refs import parse_ref, stem_for
+    from .refs import parse_ref
 
     part, _ = parse_ref(ref)
     refs = [r for r in all_scans(root) if parse_ref(r)[0] == part]

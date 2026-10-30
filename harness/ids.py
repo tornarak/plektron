@@ -46,6 +46,7 @@ from pathlib import Path
 
 from lxml import etree
 
+from .layout import page_files
 from .ns import TEI_NS, XML_ID
 from .parallel import ptrack
 from .refs import norm_ref
@@ -376,15 +377,15 @@ def page_glossary(root_el, ref: str, root: Path = Path("."),
 
 def glossary(root: Path = Path("."), tick: Callable | None = None) -> dict:
     """Every resolved term↔gloss pair in the committed TEI, corpus-wide."""
-    from .refs import norm_ref as _n
+    from .layout import ref_of as _n
 
     # One cache across the whole sweep, so a run-on list resolving its scope back
     # through @prev reuses the page this loop has already parsed rather than
     # reading it again per gloss.
     pairs, unlinked, pages, cache = [], 0, 0, {}
-    for p in ptrack(sorted((root / "tei").glob("chukchi-*.xml")), tick):
+    for p in ptrack(sorted(page_files(root / "tei", ".xml", root)), tick):
         try:
-            ref = _n(p.stem)
+            ref = _n(p.stem, root)
         except ValueError:
             continue
         try:

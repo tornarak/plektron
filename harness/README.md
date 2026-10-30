@@ -258,7 +258,11 @@ decode but baseline vectorization on one core, which is only partly GIL-free —
 threads plateau where processes do not. The measurements are `recognize.py`'s
 entry below, once.
 
-**`refs.py`** — the `PP-NNN` contract: `parse_ref`, `norm_ref`, `stem_for`,
+**`layout.py`** — which text a store belongs to: `project.json`'s kebab-case
+`stem`, and through it `stem_for`, `ref_of` (refuses another text's stem) and
+`page_files`, the listing a glob cannot express.
+
+**`refs.py`** — the `PP-NNN` contract: `parse_ref`, `norm_ref`, `ref_in`,
 `parse_context`, `figure_number`, the folio reader `_folio_in`, and the
 `FOLIO_ZONES`/`APPARATUS_ZONES` vocabularies. **A leaf**, and the most load-bearing
 one: `norm_ref` and `parse_ref` are the two most-imported names in the harness, and

@@ -68,6 +68,7 @@ from lxml import etree
 from . import corrections as _corr
 from . import farms, provenance, train
 from . import zones_config as zc
+from .layout import page_files, ref_of, stem_for
 
 if TYPE_CHECKING:
     from kraken.lib.vgsl import TorchVGSLModel
@@ -189,7 +190,7 @@ def zone_dir(root: Path = Path("."), store: str = ZONEDIR) -> Path:
 
 
 def alto_for(ref: str, root: Path = Path("."), store: str = ZONEDIR) -> Path:
-    return zone_dir(root, store) / f"chukchi-{norm_ref(ref)}.xml"
+    return zone_dir(root, store) / f"{stem_for(ref, root)}.xml"
 
 
 
@@ -233,14 +234,14 @@ def load_itinerary(path: str | Path, root: Path = Path(".")) -> list[str]:
         raise ValueError(f"no itinerary at {path}")
 
     if p.is_dir():
-        names = sorted(q.name for q in p.glob("chukchi-*.xml"))
+        names = sorted(q.name for q in page_files(p, ".xml", root))
     else:
         names = [ln.strip() for ln in p.read_text(encoding="utf-8").splitlines()
                  if ln.strip() and not ln.startswith("#")]
 
     out: list[str] = []
     for i, name in enumerate(names, start=1):
-        stem = Path(name).stem.replace("chukchi-", "")
+        stem = ref_of(Path(name).stem, root)
         try:
             ref = norm_ref(stem)
         except ValueError as e:
@@ -268,7 +269,7 @@ def zone_refs(root: Path = Path("."), store: str = ZONEDIR) -> list[str]:
     """
     out = []
     seen: set[Path] = set()
-    for p in zone_dir(root, store).glob("chukchi-*.xml"):
+    for p in page_files(zone_dir(root, store), ".xml", root):
         try:
             # `exists()` follows the link, so a dangling entry is skipped: a link
             # with no target is not a page, and counting one would put a ref in the
@@ -284,7 +285,7 @@ def zone_refs(root: Path = Path("."), store: str = ZONEDIR) -> list[str]:
             continue
         seen.add(real)
         try:
-            out.append(norm_ref(p.stem.replace("chukchi-", "")))
+            out.append(ref_of(p.stem, root))
         except ValueError:
             continue
     return sorted(set(out), key=parse_ref)
@@ -596,7 +597,7 @@ def load_splits(root: Path = Path(".")) -> dict[str, str]:
     for split in SPLITS:
         for name in _read_lst(_lst_path(root, split)):
             try:
-                ref = norm_ref(Path(name).stem.replace("chukchi-", ""))
+                ref = ref_of(Path(name).stem, root)
             except ValueError:
                 continue
             if ref not in out or rank[split] > rank[out[ref]]:
@@ -638,7 +639,7 @@ def set_split(ref: str, split: str, root: Path = Path(".")) -> dict:
     if split not in SPLITS:
         raise ValueError(f"split must be one of {', '.join(SPLITS)}, not {split!r}")
     ref = norm_ref(ref)
-    name = f"chukchi-{ref}.xml"
+    name = f"{stem_for(ref, root)}.xml"
     zone_dir(root).mkdir(parents=True, exist_ok=True)
     for which in SPLITS:
         p = _lst_path(root, which)
@@ -646,7 +647,7 @@ def set_split(ref: str, split: str, root: Path = Path(".")) -> dict:
         if which == split:
             entries.append(name)
         entries = sorted(set(entries),
-                         key=lambda e: parse_ref(Path(e).stem.replace("chukchi-", "")))
+                         key=lambda e: parse_ref(ref_of(Path(e).stem, root)))
         write_atomic(p, "".join(e + "\n" for e in entries))
     return {"ref": ref, "split": split}
 
@@ -851,7 +852,7 @@ def set_splits(mapping: dict[str, str], root: Path = Path(".")) -> dict:
         refs = sorted((r for r, s in current.items() if s == split), key=parse_ref)
         counts[split] = len(refs)
         write_atomic(_lst_path(root, split),
-                     "".join(f"chukchi-{r}.xml\n" for r in refs))
+                     "".join(f"{stem_for(r, root)}.xml\n" for r in refs))
     return counts
 
 
@@ -1182,7 +1183,8 @@ def _id_ordinal(block_id: str) -> int:
 
 
 def build_alto(ref: str, zones: list[dict], size: tuple[int, int],
-               id_prefix: str = ID_PREFIX) -> etree._ElementTree:
+               id_prefix: str = ID_PREFIX,
+               root: Path = Path(".")) -> etree._ElementTree:
     """One page's zones as an eScriptorium-shaped ALTO 4.2 tree.
 
     Written in the export dialect rather than a minimal valid one so the file can
@@ -1209,7 +1211,7 @@ def build_alto(ref: str, zones: list[dict], size: tuple[int, int],
     desc = etree.SubElement(alto, f"{{{ALTO_NS}}}Description")
     etree.SubElement(desc, f"{{{ALTO_NS}}}MeasurementUnit").text = "pixel"
     src = etree.SubElement(desc, f"{{{ALTO_NS}}}sourceImageInformation")
-    etree.SubElement(src, f"{{{ALTO_NS}}}fileName").text = f"chukchi-{ref}.png"
+    etree.SubElement(src, f"{{{ALTO_NS}}}fileName").text = f"{stem_for(ref, root)}.png"
 
     ordered = sorted(zones, key=lambda z: (z["y0"], z["x0"]))
     # Only the labels this page actually uses are declared. Exports carry the whole
@@ -1320,7 +1322,7 @@ def save_zones(ref: str, zones: list[dict], root: Path = Path("."),
         return clear_leaf(ref, root, effective, exempt=exempt, stamp=stamp)
     stamp = stamp or time.strftime("%Y-%m-%dT%H:%M:%S%z")
     size = raster_size(ref, root)
-    tree = build_alto(ref, zones, size)
+    tree = build_alto(ref, zones, size, root=root)
 
     p = alto_for(ref, root)
     p.parent.mkdir(parents=True, exist_ok=True)
@@ -1461,7 +1463,7 @@ def delete_zones(ref: str, root: Path = Path("."), commit: bool = False,
     # there is no "unset" — the removal is done by rewriting them without this ref.
     for which in SPLITS:
         q = _lst_path(root, which)
-        entries = [e for e in _read_lst(q) if e != f"chukchi-{ref}.xml"]
+        entries = [e for e in _read_lst(q) if e != f"{stem_for(ref, root)}.xml"]
         write_atomic(q, "".join(e + "\n" for e in entries))
     if rules:
         set_exempt(ref, [], root)
@@ -1995,8 +1997,8 @@ def blot_one(ref: str, root: Path = Path(".")) -> dict:
         return {"ref": ref, "path": "", "action": "no-raster", "painted": 0}
     out = blot_dir(root)
     out.mkdir(parents=True, exist_ok=True)
-    if not (root / "gt" / "fig" / f"chukchi-{ref}.xml").exists():
-        link = out / f"chukchi-{ref}.png"
+    if not (root / "gt" / "fig" / f"{stem_for(ref, root)}.xml").exists():
+        link = out / f"{stem_for(ref, root)}.png"
         farms.relink(link, src)
         return {"ref": ref, "path": str(link), "action": "linked", "painted": 0}
     rep = write_fig_blot(ref, out, root)
@@ -2040,7 +2042,7 @@ def blot_all(root: Path = Path("."), jobs: int | None = None, tick=None) -> dict
     from .paths import all_scans
     refs = all_scans(root)
     figs = root / "gt" / "fig"
-    has_fig = {r: (figs / f"chukchi-{r}.xml").exists() for r in refs}
+    has_fig = {r: (figs / f"{stem_for(r, root)}.xml").exists() for r in refs}
     links = [r for r in refs if not has_fig[r]]
     rasters = [r for r in refs if has_fig[r]]
 
@@ -2324,7 +2326,7 @@ def predict_dp(ref: str, root: Path = Path("."), net=None, sha: str = "",
 
     cfg = cfg or zc.load_config(root)
     ref = norm_ref(ref)
-    blot = blot_dir(root) / f"chukchi-{ref}.png"
+    blot = blot_dir(root) / f"{stem_for(ref, root)}.png"
     if not blot.exists():
         raise FileNotFoundError(
             f"no blotted raster for {ref} at {blot} — run `harness zones blot` "
@@ -2363,8 +2365,8 @@ def predict_dp(ref: str, root: Path = Path("."), net=None, sha: str = "",
         model=str(model_path), sha256=sha, device=device,
         inputs={"decoder": "segmental-dp + paragraph-split",
                 "paragraph_cuts": split_added,
-                "raster": f"{BLOTDIR}/chukchi-{ref}.png"})
-    tree = build_alto(ref, zones, size, id_prefix=DP_ID_PREFIX)
+                "raster": f"{BLOTDIR}/{stem_for(ref, root)}.png"})
+    tree = build_alto(ref, zones, size, id_prefix=DP_ID_PREFIX, root=root)
     # The provenance kraken would have written for us on the blob path; here the
     # writer is ours, so the step is spliced in by hand rather than dropped.
     desc = tree.getroot().find(f"{{{ALTO_NS}}}Description")
@@ -2412,7 +2414,7 @@ def predict(ref: str, root: Path = Path("."), net=None, sha: str = "",
     # Cheap-check-then-load rather than load-then-check is worth stating as a habit:
     # the check is what the caller most often hits.
     ref = norm_ref(ref)
-    blot = blot_dir(root) / f"chukchi-{ref}.png"
+    blot = blot_dir(root) / f"{stem_for(ref, root)}.png"
     if not blot.exists():
         raise FileNotFoundError(
             f"no blotted raster for {ref} at {blot} — run `harness zones blot` "
@@ -2444,7 +2446,7 @@ def predict(ref: str, root: Path = Path("."), net=None, sha: str = "",
     seg = blla.segment(page, model=net, device=device)
     # The gt store's own name for the raster (`build_alto`), not the blotted path
     # kraken defaults to: the two stores describe one page and should say so alike.
-    seg.imagename = f"chukchi-{ref}.png"
+    seg.imagename = f"{stem_for(ref, root)}.png"
     # **Names its decoder, as the dp path already did.** Only one of the two said
     # which it was, so a `raw` file was silent and a silent file is
     # indistinguishable from a dp one to anything that does not already know.
@@ -2458,7 +2460,7 @@ def predict(ref: str, root: Path = Path("."), net=None, sha: str = "",
         label="region segmentation",
         kind="model", version=provenance.kraken_version(),
         model=str(model_path), sha256=sha, device=device,
-        inputs={"raster": f"{BLOTDIR}/chukchi-{ref}.png"})
+        inputs={"raster": f"{BLOTDIR}/{stem_for(ref, root)}.png"})
     xml = serialization.serialize(
         seg, image_size=size, template="alto",
         processing_steps=[provenance.kraken_step(
@@ -2504,7 +2506,7 @@ def predict_skip(ref: str, root: Path = Path("."), force: bool = False,
         return "ruled not a text page"
     if not force and has_zones(ref, root, MZDIR):
         return "already predicted"
-    if not (blot_dir(root) / f"chukchi-{ref}.png").exists():
+    if not (blot_dir(root) / f"{stem_for(ref, root)}.png").exists():
         return "no blotted raster"
     return ""
 
@@ -2584,7 +2586,7 @@ def _para_ink(ref: str, root: Path = Path(".")):
     reading it here makes the check and the decoder see the same page.
     """
     from .lines import ink_mask
-    blot = blot_dir(root) / f"chukchi-{norm_ref(ref)}.png"
+    blot = blot_dir(root) / f"{stem_for(ref, root)}.png"
     return ink_mask(blot if blot.exists() else scan_for(ref, root))
 
 
@@ -3378,7 +3380,7 @@ def model_splits(model_path: str | Path,
             continue
         for name in _read_lst(p):
             try:
-                out[norm_ref(Path(name).stem.replace("chukchi-", ""))] = split
+                out[ref_of(Path(name).stem, root)] = split
             except ValueError:
                 continue
     return out or None
@@ -3400,7 +3402,7 @@ def _frozen_splits(root: Path = Path(".")) -> dict[str, str] | None:
             return None
         for name in _read_lst(p):
             try:
-                out[norm_ref(Path(name).stem.replace("chukchi-", ""))] = split
+                out[ref_of(Path(name).stem, root)] = split
             except ValueError:
                 continue
     return out or None
@@ -3680,7 +3682,7 @@ def predicted_zones(refs: list[str], root: Path = Path("."),
         # Written per page rather than as one file at the end, so an interrupted
         # sweep keeps the pages it finished — most of the value, on the run that is
         # actually likely to be killed.
-        (cdir / f"chukchi-{ref}.json").write_text(
+        (cdir / f"{stem_for(ref, root)}.json").write_text(
             json.dumps({"mtime_ns": st.st_mtime_ns, "size": st.st_size,
                         "zones": out[ref]}), encoding="utf-8")
 
@@ -3694,13 +3696,13 @@ def predicted_zones(refs: list[str], root: Path = Path("."),
     # named — `predict_all`'s rule — and a bar whose total shrinks as it goes is a
     # bar that cannot be read.
     for ref in refs:
-        blot = blot_dir(root) / f"chukchi-{ref}.png"
+        blot = blot_dir(root) / f"{stem_for(ref, root)}.png"
         if not blot.exists():
             out[ref] = []
             _report(ref)
             continue
         if cdir is not None:
-            got = _cached_pred(cdir / f"chukchi-{ref}.json", blot)
+            got = _cached_pred(cdir / f"{stem_for(ref, root)}.json", blot)
             if got is not None:
                 out[ref], hits = got, hits + 1
                 _report(ref)
@@ -4358,7 +4360,7 @@ def assemble(root: Path = Path("."), scratch: bool = False,
         if split in LEAF_KINDS:
             continue
         alto = alto_for(ref, root)
-        blot = blot_dir(root) / f"chukchi-{ref}.png"
+        blot = blot_dir(root) / f"{stem_for(ref, root)}.png"
         if not blot.exists():
             missing.append(ref)
             continue
@@ -4370,8 +4372,8 @@ def assemble(root: Path = Path("."), scratch: bool = False,
         # Every other page is a link, whether or not a fold is declared: a declared
         # fold that no page carries produced 717 copies of files identical to the
         # store, and an identical copy is not a safer one.
-        for target, name in ((alto, f"chukchi-{ref}.xml"),
-                             (blot, f"chukchi-{ref}.png")):
+        for target, name in ((alto, f"{stem_for(ref, root)}.xml"),
+                             (blot, f"{stem_for(ref, root)}.png")):
             link = work / name
             if link.is_symlink() or link.exists():
                 link.unlink()
@@ -4394,7 +4396,7 @@ def assemble(root: Path = Path("."), scratch: bool = False,
         # already assumes the repo root as cwd, and a path that only works on one
         # filesystem is not something to leave lying around on the strength of a
         # `.gitignore` line.
-        listed[split].append(f"{DATADIR}/chukchi-{ref}.xml")
+        listed[split].append(f"{DATADIR}/{stem_for(ref, root)}.xml")
         counts[split] += 1
 
     for split in ("train", "eval"):

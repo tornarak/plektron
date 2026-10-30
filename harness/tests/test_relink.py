@@ -8,6 +8,7 @@ printed the form.
 """
 from __future__ import annotations
 
+from conftest import write_project
 from test_entities import entry
 
 from harness import entities, relink
@@ -240,16 +241,14 @@ def test_both_ways_of_ratifying_leave_the_corpus_in_one_state(tmp_path):
               aliases=[("Markova", True)])
         return _page(root, "1-021", "<p>He left Markova in June.</p>")
 
-    cli_root = tmp_path / "cli"
-    cli_root.mkdir()
+    cli_root = write_project(tmp_path / "cli")
     page = fresh(cli_root)
     _entity.run_ratify(SimpleNamespace(
         root=cli_root, idents=["place:markovo"], all=False, commit=True,
         json=False, toon=False, pager=False))
     by_cli = page.read_text(encoding="utf-8")
 
-    web_root = tmp_path / "web"
-    web_root.mkdir()
+    web_root = write_project(tmp_path / "web")
     page = fresh(web_root)
     assert edition_ui._ratify("place:markovo", web_root)["ok"]
     by_web = page.read_text(encoding="utf-8")

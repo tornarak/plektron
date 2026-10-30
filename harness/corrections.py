@@ -48,6 +48,7 @@ from pathlib import Path
 from lxml import etree
 
 from .atomic import tmp_for, write_atomic
+from .layout import stem_for
 from .ns import ALTO_NS
 from .refs import norm_ref, parse_ref
 
@@ -78,7 +79,7 @@ def lines_dir(root: Path = Path(".")) -> Path:
 
 
 def lines_path(ref: str, root: Path = Path(".")) -> Path:
-    return lines_dir(root) / f"chukchi-{norm_ref(ref)}.xml"
+    return lines_dir(root) / f"{stem_for(ref, root)}.xml"
 
 
 # --------------------------------------------------------------- the fragment

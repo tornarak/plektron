@@ -14,6 +14,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from ..layout import stem, stem_for
 from ..mets import ALTO_STORES, write_mets
 from ..normalize import convert, scan
 from ..pipeline import EXEMPT_STAGE, STAGES
@@ -189,9 +190,9 @@ def _targets(a) -> list[Path] | None:
             paths.append(p)
             continue
         ref = norm_ref(t)
-        paths += [a.root / "gt" / d / f"chukchi-{ref}.xml"
+        paths += [a.root / "gt" / d / f"{stem_for(ref, a.root)}.xml"
                   for d in ("ocr", "fig")]
-        paths += [a.root / "tei" / f"chukchi-{ref}.xml",
+        paths += [a.root / "tei" / f"{stem_for(ref, a.root)}.xml",
                   a.root / "review" / ref / "decision.json",
                   a.root / "review" / ref / "proposal.json"]
     return paths
@@ -317,5 +318,5 @@ def run_mets(a) -> int:
     # error it is: naming a store this clone does not hold — every `mz/` tree is
     # derived — is a mistake about the invocation, not a corpus defect to gate on.
     from ..mets import parse_stores
-    out(a, write_mets(parse_stores(a.store), a.out, a.root))
+    out(a, write_mets(parse_stores(a.store), a.out, a.root, stem=stem(a.root)))
     return 0

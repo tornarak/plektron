@@ -58,6 +58,7 @@ from pathlib import Path
 
 from . import farms
 from .farms import SCANS
+from .layout import ref_of, stem, stem_for
 from .refs import norm_ref, parse_context, parse_ref
 
 
@@ -85,7 +86,7 @@ def _refs_under(root: Path, pattern: str) -> list[str]:
     refs = []
     for p in root.glob(pattern):
         try:
-            refs.append(norm_ref(p.stem))
+            refs.append(ref_of(p.stem, root))
         except ValueError:
             continue
     return sorted(set(refs), key=parse_ref)
@@ -102,7 +103,7 @@ def all_refs(root: Path, store: str) -> list[str]:
     read", `tei/` and `mz/tei/` for the collation pair. A number blended across
     ranks describes neither, and there is no longer a spelling for one.
     """
-    return _refs_under(root, f"{store}/chukchi-*.xml")
+    return _refs_under(root, f"{store}/{stem(root)}-*.xml")
 
 
 def all_scans(root: Path = Path(".")) -> list[str]:
@@ -113,7 +114,7 @@ def all_scans(root: Path = Path(".")) -> list[str]:
     through it would happily predict folio+1 across a four-scan gap. Physical
     adjacency is the only thing that licenses the prediction.
     """
-    return _refs_under(root, "scans/chukchi-*.png")
+    return _refs_under(root, f"scans/{stem(root)}-*.png")
 
 
 def with_context(refs: list[str], spec: str,
@@ -166,7 +167,7 @@ def scan_for(ref: str, root: Path = Path(".")) -> Path:
     function body for the ref primitives; moving those to `refs.py` is what
     retired the qualifier.
     """
-    return root / SCANS / f"chukchi-{norm_ref(ref)}.png"
+    return root / SCANS / f"{stem_for(ref, root)}.png"
 
 # Everything under `review/<ref>/` that any verb may recreate from the ALTO and the
 # rasters. The gitignore rules mirror this; so does `clean` below. `harness/tests/test_layout.py`
@@ -295,7 +296,7 @@ def ensure_page_link(ref: str, root: Path = Path(".")) -> Path | None:
     Returns the link path, or None if there was no raster to point at.
     """
     d = review_dir(ref, root)
-    target = root / "scans" / f"chukchi-{norm_ref(ref)}.png"
+    target = root / "scans" / f"{stem_for(ref, root)}.png"
     if not target.exists():
         return None
     link = page_link(ref, root)

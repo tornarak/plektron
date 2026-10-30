@@ -35,6 +35,7 @@ from ..entities import (
     split_id,
 )
 from ..geo import index as geo_index
+from ..layout import page_files, ref_of, stem_for
 from ..parallel import ptrack
 from ..render import progress
 from ._common import (
@@ -535,11 +536,11 @@ def _refs_to(ident: str, root: Path) -> list[dict]:
     """
     out_rows = []
     for store, d in (("tei", root / "tei"), ("mz/tei", root / "mz" / "tei")):
-        for p in sorted(d.glob("chukchi-*.xml")) if d.is_dir() else []:
+        for p in sorted(page_files(d, ".xml", root)) if d.is_dir() else []:
             n = p.read_text(encoding="utf-8").count(f'ref="{ident}"')
             if n:
                 out_rows.append({"store": store,
-                                 "ref": p.stem.replace("chukchi-", ""),
+                                 "ref": ref_of(p.stem, root),
                                  "links": n})
     return out_rows
 
@@ -804,7 +805,7 @@ def run_rename(a) -> int:
     # is never a prefix of another inside those quotes.
     pages = []
     for r in signed:
-        p = a.root / "tei" / f"chukchi-{r['ref']}.xml"
+        p = a.root / "tei" / f"{stem_for(r['ref'], a.root)}.xml"
         t0 = p.read_text(encoding="utf-8")
         pages.append((p, t0.replace(f'ref="{old}"', f'ref="{new}"'), r["ref"]))
 

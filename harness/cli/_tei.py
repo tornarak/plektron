@@ -19,6 +19,7 @@ from ..generate import Unready, generate
 from ..generate import diff as gen_diff
 from ..ids import fix_page as fix_ids
 from ..ids import pair_glosses
+from ..layout import stem_for
 from ..parallel import ptrack
 from ..render import mode, progress, report, rule
 from ..seam import set_seam
@@ -352,7 +353,7 @@ def run_validate(a) -> int:
             # to ride in the payload as `output_path`, which put a path the model
             # never needed into every collation prompt so that this one line could
             # avoid recomputing it.
-            page = a.root / "tei" / f"chukchi-{ctx['page_ref']}.xml"
+            page = a.root / "tei" / f"{stem_for(ctx['page_ref'], a.root)}.xml"
             reps.append((r if len(refs) > 1 else None,
                          validate(page, ctx, store=store, ratified=a.ratified,
                                   schema=a.schema)))

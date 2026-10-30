@@ -21,6 +21,7 @@ import unicodedata
 from pathlib import Path
 
 from .detectors import detect_all, join_broken_words
+from .layout import stem_for
 from .paths import scan_for
 from .refs import (
     _FOLIO_RE,
@@ -30,7 +31,6 @@ from .refs import (
     _window_folio,
     figure_number,
     norm_ref,
-    stem_for,
 )
 from .state import entry_state, foreign_terms_nearby, load_toc, toc_window
 
@@ -358,7 +358,7 @@ def tier1_terms(ref: str, root: Path = Path("."), keys: bool = True,
     from .detectors import EDGE_PUNCT, TOKEN, bears_inventory, cyrillic
     from .lines import page_lines
 
-    path = root / "gt" / "ocr" / f"chukchi-{norm_ref(ref)}.xml"
+    path = root / "gt" / "ocr" / f"{stem_for(ref, root)}.xml"
     if not path.exists():
         return []
     recs = page_lines(path, root, ref=ref)
@@ -510,7 +510,7 @@ def entity_hits(ref: str, root: Path = Path("."),
     from .entities import alias_index, auto_forms, load, match
     from .generate import page_blocks
 
-    path = root / "gt" / "ocr" / f"chukchi-{norm_ref(ref)}.xml"
+    path = root / "gt" / "ocr" / f"{stem_for(ref, root)}.xml"
     if not path.exists():
         return []
     store = load(root) if store is None else store

@@ -53,6 +53,7 @@ from __future__ import annotations
 from collections.abc import Callable
 from pathlib import Path
 
+from .layout import stem_for
 from .paths import decisions_path, proposal_path
 from .refs import norm_ref
 
@@ -104,7 +105,7 @@ def page_state(ref: str, root: Path = Path("."),
     zones = (splits[ref] if exempt else
              "gt" if zone_alto(ref, root, ZONES_GT).exists() else
              "mz" if zone_alto(ref, root, ZONES_MZ).exists() else "")
-    stem = f"chukchi-{ref}.xml"
+    stem = f"{stem_for(ref, root)}.xml"
     ocr_gt = (root / "gt" / "ocr" / stem).exists()
     ocr_mz = (root / "mz" / "ocr" / stem).exists()
     tei_mz = (root / "mz" / "tei" / stem).exists()

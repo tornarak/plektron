@@ -18,6 +18,7 @@ import click
 
 from .. import figures as F
 from .. import zones_config as zc
+from ..layout import page_files, ref_of
 from ..parallel import ptrack
 from ..render import progress
 from ._common import (
@@ -422,8 +423,8 @@ def run_assemble(a) -> int:
 
 def run_predict(a) -> int:
     refs = page_refs(a) or [
-        p.stem.replace("chukchi-", "")
-        for p in sorted((a.root / "scans").glob("chukchi-*.png"))]
+        ref_of(p.stem, a.root)
+        for p in sorted(page_files(a.root / "scans", ".png", a.root))]
     with progress("segmenting figures") as tick:
         rows = F.predict(refs, a.root, model_path=a.model, device=a.device,
                          force=a.force, tick=tick)

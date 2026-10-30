@@ -31,9 +31,11 @@ from __future__ import annotations
 
 import re
 import unicodedata
-from pathlib import Path
 
-REF_RE = re.compile(r"^(?:chukchi-)?(\d+)-(\d+)$")
+REF_RE = re.compile(r"^(\d+)-(\d+)$")
+
+#: The ref a page file's own name ends in, whatever text it belongs to.
+FILE_REF_RE = re.compile(r"(?:^|-)(\d+-\d+)$")
 
 # **Where a folio may be printed, in the order it is looked for.** Three places,
 # because the book puts the number in three, and the order is the order of
@@ -65,7 +67,9 @@ APPARATUS_ZONES = frozenset(FOLIO_ZONES)
 
 
 def parse_ref(ref: str) -> tuple[int, int]:
-    """'1-048' | '1-48' | 'chukchi-1-048' -> (1, 48). Anything else is an error.
+    """'1-048' | '1-48' -> (1, 48). Anything else is an error.
+
+    A file name is not a ref: `layout.ref_of` reads one, knowing whose it is.
 
     Deliberately strict about shape and deliberately lenient about zero-padding:
     the ref is typed by hand at a CLI, but a bare integer must never silently
@@ -86,16 +90,17 @@ def norm_ref(ref: str) -> str:
     return f"{part}-{idx:03d}"
 
 
-def stem_for(ref: str, root: Path = Path(".")) -> str:
-    """The filename stem for a ref.
+def ref_in(name: str) -> str:
+    """The page a file in hand names: `chukchi-1-048` -> `1-048`.
 
-    `root` is accepted and ignored — the stem is a function of the ref alone —
-    and 7 call sites pass one, so the parameter stays rather than becoming 7
-    edits that change no behaviour. Moved verbatim, signature included: a split
-    that quietly retyped an argument would be a refactor nobody could check by
-    reading the diff.
+    For a file a caller already holds, which can only name its own page. Anything
+    typed, or read off a list, goes through `layout.ref_of`, which refuses another
+    text's stem.
     """
-    return f"chukchi-{norm_ref(ref)}"
+    m = FILE_REF_RE.search(str(name).strip())
+    if not m:
+        raise ValueError(f"{name!r} ends in no PP-NNN ref")
+    return norm_ref(m.group(1))
 
 
 CONTEXT_RE = re.compile(r"^(?:(\d+)|(?:(?:-(\d+))?(?:\+(\d+))?))$")

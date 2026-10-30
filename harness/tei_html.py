@@ -34,8 +34,9 @@ from lxml import etree
 
 from . import figrefs
 from .edition_ui import BASE
+from .layout import page_files, ref_of, stem_for
 from .ns import TEI_NS, XML_ID, XML_LANG
-from .refs import norm_ref
+from .refs import norm_ref, ref_in
 from .seam import OPENS_MEANS
 from .validate import TIER1
 
@@ -227,24 +228,24 @@ UNSETTLED = ("#llm", "#mz")
 
 
 def page_path(ref: str, root: Path = Path(".")) -> Path:
-    return root / "tei" / f"chukchi-{norm_ref(ref)}.xml"
+    return root / "tei" / f"{stem_for(ref, root)}.xml"
 
 
 def draft_path(ref: str, root: Path = Path(".")) -> Path:
     """The generated page. Named, never linked: `tei/` is a store and not a view
     over this one, and `test_tei_is_a_store_and_never_a_farm` holds the pair apart.
     A caller that wants the generated file says so here."""
-    return root / "mz" / "tei" / f"chukchi-{norm_ref(ref)}.xml"
+    return root / "mz" / "tei" / f"{stem_for(ref, root)}.xml"
 
 
 def _sorted_refs(refs) -> list[str]:
     return sorted(set(refs), key=lambda r: tuple(int(x) for x in r.split("-")))
 
 
-def _refs_in(d: Path) -> list[str]:
+def _refs_in(d: Path, root: Path) -> list[str]:
     if not d.is_dir():
         return []
-    return [p.stem.replace("chukchi-", "") for p in d.glob("chukchi-*.xml")]
+    return [ref_of(p.stem, root) for p in page_files(d, ".xml", root)]
 
 
 def collated(root: Path = Path(".")) -> list[str]:
@@ -256,7 +257,7 @@ def collated(root: Path = Path(".")) -> list[str]:
     separate functions rather than one with a flag because every caller here means
     one or the other and none means "whichever".
     """
-    return _sorted_refs(_refs_in(root / "tei"))
+    return _sorted_refs(_refs_in(root / "tei", root))
 
 
 def page_source(ref: str, root: Path = Path(".")) -> tuple[Path | None, str]:
@@ -288,7 +289,7 @@ def readable(root: Path = Path(".")) -> list[str]:
     """Every page that can be rendered at all, signed or generated, in scan order.
     The union: a page collated from a draft appears once, under `collated`'s rank.
     """
-    return _sorted_refs(_refs_in(root / "tei") + _refs_in(root / "mz" / "tei"))
+    return _sorted_refs(_refs_in(root / "tei", root) + _refs_in(root / "mz" / "tei", root))
 
 
 def exempt(root: Path = Path(".")) -> list[str]:
@@ -1018,7 +1019,7 @@ def render(path: Path, titles: dict[str, dict] | None = None,
             "figrefs": [],
             "folio": None,
         }
-    ref = path.stem.replace("chukchi-", "")
+    ref = ref_in(path.stem)
     r = Renderer(ref, titles=titles, base=base)
     r.opens = page_opens(body)
     r.page_first = first_flow(body)

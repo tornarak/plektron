@@ -21,6 +21,7 @@ import unicodedata
 from pathlib import Path
 
 import pytest
+from conftest import write_project
 
 from harness.detectors import INVENTORY_CHARS, native_corpus
 from harness.lookup import (
@@ -408,7 +409,7 @@ def test_fix_refuses_a_handle_the_floor_declined(tmp_path):
     """
     # A store holding the form on exactly one page — the shape the floor exists for,
     # built rather than borrowed so it cannot drift as `gt/ocr/` grows.
-    root = tmp_path / "one-page"
+    root = write_project(tmp_path / "one-page")
     (root / "gt" / "ocr").mkdir(parents=True)
     (root / "config").mkdir()
     (root / "config" / "marks.json").write_text(
@@ -644,7 +645,7 @@ def _store(tmp_path: Path, *refs: str) -> Path:
     what pins that — `build` calls this on every dispatch, and a prompt that could
     not be rendered in a fresh clone would be a dependency nobody asked for.
     """
-    root = tmp_path / "store"
+    root = write_project(tmp_path / "store")
     (root / "gt" / "ocr").mkdir(parents=True)
     (root / "config").mkdir()
     (root / "config" / "marks.json").write_text(

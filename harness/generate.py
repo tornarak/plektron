@@ -76,6 +76,7 @@ from . import apparatus, citations, figrefs, provenance
 from .context import _running_title, tier1_terms
 from .detectors import EDGE_PUNCT, joined_words, midline_forms, resolve_break_hyphens
 from .entities import alias_index, auto_forms, load
+from .layout import stem_for
 from .lines import page_lines
 from .ns import TEI_NS
 from .refs import APPARATUS_ZONES, norm_ref
@@ -428,13 +429,13 @@ def _locant_spans(block: str) -> list[tuple[int, int]]:
 
 
 def gen_path(ref: str, root: Path = Path(".")) -> Path:
-    return gen_dir(root) / f"chukchi-{norm_ref(ref)}.xml"
+    return gen_dir(root) / f"{stem_for(ref, root)}.xml"
 
 
 def _inputs(ref: str, root: Path) -> tuple[Path, Path]:
     ref = norm_ref(ref)
-    return (root / "gt" / "ocr" / f"chukchi-{ref}.xml",
-            root / "gt" / "zones" / f"chukchi-{ref}.xml")
+    return (root / "gt" / "ocr" / f"{stem_for(ref, root)}.xml",
+            root / "gt" / "zones" / f"{stem_for(ref, root)}.xml")
 
 
 def _digest(ref: str, root: Path) -> str:
@@ -1676,7 +1677,7 @@ def diff(ref: str, root: Path = Path(".")) -> dict:
     reach zero there by a reviewer having disposed of every one.
     """
     ref = norm_ref(ref)
-    gen, rev = gen_path(ref, root), root / "tei" / f"chukchi-{ref}.xml"
+    gen, rev = gen_path(ref, root), root / "tei" / f"{stem_for(ref, root)}.xml"
     row = {"ref": ref, "baseline": gen.exists(), "reviewed": rev.exists(),
            "drifted": None, "text_same": False, "p": "", "note": "",
            "foreign": "", "name": "", "milestone": "", "gen_comments": 0,

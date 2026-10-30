@@ -46,6 +46,7 @@ from lxml import etree
 
 from . import paths, provenance, train
 from .atomic import tmp_for, write_atomic
+from .layout import page_files, ref_of, stem_for
 from .refs import figure_number, norm_ref, parse_ref
 from .scans import PDF_IMAGES, pdf_images, pdf_images_for
 from .scans import rects_in as _scans_rects_in
@@ -310,16 +311,16 @@ def zones(ref: str, root: Path = Path("."), store: str = FIGDIR,
 def fig_refs(root: Path = Path("."), store: str = FIGDIR) -> list[str]:
     """Every ref with a figure-track ALTO, in (part, scan index) order."""
     refs = []
-    for p in (root / store).glob("chukchi-*.xml"):
+    for p in page_files(root / store, ".xml", root):
         try:
-            refs.append(norm_ref(p.stem))
+            refs.append(ref_of(p.stem, root))
         except ValueError:
             continue
     return sorted(set(refs), key=parse_ref)
 
 
 def alto_for(ref: str, root: Path = Path("."), store: str = FIGDIR) -> Path:
-    return root / store / f"chukchi-{norm_ref(ref)}.xml"
+    return root / store / f"{stem_for(ref, root)}.xml"
 
 
 def fig_dir(root: Path = Path("."), store: str = FIGDIR) -> Path:
@@ -374,7 +375,7 @@ def load_splits(root: Path = Path("."), store: str = FIGDIR) -> dict[str, str]:
     for split in FIG_SPLITS:
         for name in _read_lst(_lst_path(root, split, store)):
             try:
-                ref = norm_ref(Path(name).stem.replace("chukchi-", ""))
+                ref = ref_of(Path(name).stem, root)
             except ValueError:
                 continue
             if ref not in out or rank[split] > rank[out[ref]]:
@@ -389,7 +390,7 @@ def set_split(ref: str, split: str, root: Path = Path("."),
         raise ValueError(
             f"split must be one of {', '.join(FIG_SPLITS)}, not {split!r}")
     ref = norm_ref(ref)
-    name = f"chukchi-{ref}.xml"
+    name = f"{stem_for(ref, root)}.xml"
     fig_dir(root, store).mkdir(parents=True, exist_ok=True)
     for which in FIG_SPLITS:
         p = _lst_path(root, which, store)
@@ -398,7 +399,7 @@ def set_split(ref: str, split: str, root: Path = Path("."),
             entries.append(name)
         entries = sorted(set(entries),
                          key=lambda e: parse_ref(
-                             Path(e).stem.replace("chukchi-", "")))
+                             ref_of(Path(e).stem, root)))
         write_atomic(p, "".join(e + "\n" for e in entries))
     return {"ref": ref, "split": split}
 
@@ -642,7 +643,7 @@ def assemble(root: Path = Path("."), scratch: bool = False) -> dict:
         if not scan.exists():
             missing.append(ref)
             continue
-        name = f"chukchi-{ref}"
+        name = f"{stem_for(ref, root)}"
         img = work / f"{name}.png"
         if not img.exists():
             img.symlink_to(scan.resolve())
@@ -653,7 +654,7 @@ def assemble(root: Path = Path("."), scratch: bool = False) -> dict:
                 xml.symlink_to(src.resolve())
             positives += 1
         else:
-            build_alto(ref, [], raster_size(ref, root), id_prefix="fig_").write(
+            build_alto(ref, [], raster_size(ref, root), id_prefix="fig_", root=root).write(
                 str(xml), xml_declaration=True, encoding="UTF-8",
                 standalone=None, pretty_print=True)
             synthesized += 1
@@ -764,7 +765,7 @@ def _predict_one(ref, root, net, dev, model_path, sha, dest) -> dict:
               for label, group in (seg.regions or {}).items()
               for g in group if label in (GRAPHIC, FIGDESC)]
     dest.parent.mkdir(parents=True, exist_ok=True)
-    tree = build_alto(ref, blocks, page.size, id_prefix="mzfig_")
+    tree = build_alto(ref, blocks, page.size, id_prefix="mzfig_", root=root)
     # The witness to which model wrote this. Without it an `mz/` file is a claim
     # with no provenance, and the store's whole value is that it is separable from
     # anybody's judgement.
@@ -785,7 +786,7 @@ def _predict_one(ref, root, net, dev, model_path, sha, dest) -> dict:
         # white; the two models read two rasters and neither can be folded into
         # the other. A file that records which one it was read off is a file that
         # can be told from one produced by the other track.
-        inputs={"raster": f"scans/chukchi-{ref}.png"})))
+        inputs={"raster": f"scans/{stem_for(ref, root)}.png"})))
     tmp = tmp_for(dest)
     tree.write(str(tmp), xml_declaration=True, encoding="UTF-8",
                standalone=None, pretty_print=True)
@@ -852,7 +853,7 @@ def propose_from_pdf(refs: list[str], root: Path = Path("."),
         blocks = [{"label": GRAPHIC, "x0": im["rect"][0], "y0": im["rect"][1],
                    "x1": im["rect"][2], "y1": im["rect"][3]} for im in images]
         dest.parent.mkdir(parents=True, exist_ok=True)
-        tree = build_alto(ref, blocks, (m["w"], m["h"]), id_prefix="mzfig_")
+        tree = build_alto(ref, blocks, (m["w"], m["h"]), id_prefix="mzfig_", root=root)
         desc = tree.getroot().find("{*}Description")
         # Names the manifest and not a model, so a reader can tell a scanner's
         # segmentation from a segmenter's guess without opening either — and now
@@ -1272,7 +1273,7 @@ def migrate_store(root: Path = Path("."), commit: bool = False) -> dict:
         return out
 
     for p in pages:
-        tree = build_alto(p["ref"], p["blocks"], p["size"], id_prefix="fig_")
+        tree = build_alto(p["ref"], p["blocks"], p["size"], id_prefix="fig_", root=root)
         tree.write(str(alto_for(p["ref"], root)), xml_declaration=True,
                    encoding="UTF-8", standalone=None, pretty_print=True)
     out["committed"] = True
@@ -1496,7 +1497,7 @@ def save_figs(ref: str, blocks: list[dict], root: Path = Path("."),
             f"`drop_text=True` if that is really meant.")
 
     stamp = stamp or time.strftime("%Y-%m-%dT%H:%M:%S%z")
-    tree = build_alto(ref, blocks, raster_size(ref, root), id_prefix="fig_")
+    tree = build_alto(ref, blocks, raster_size(ref, root), id_prefix="fig_", root=root)
     if held:
         labels = _labels(tree)
         for blk in tree.iter("{*}TextBlock"):
@@ -1571,7 +1572,7 @@ def delete_figs(ref: str, root: Path = Path("."), commit: bool = False,
     p.unlink()
     for which in FIG_SPLITS:
         lst = _lst_path(root, which)
-        entries = [e for e in _read_lst(lst) if e != f"chukchi-{ref}.xml"]
+        entries = [e for e in _read_lst(lst) if e != f"{stem_for(ref, root)}.xml"]
         if lst.exists():
             write_atomic(lst, "".join(e + "\n" for e in entries))
     if rules:
@@ -2655,10 +2656,10 @@ def crop_source(ref: str, key: str, root: Path = Path(".")) -> tuple[Path, str]:
     human = root / FIG_IMG / crop_name(ref, key)
     if human.exists():
         return human, "ed"
-    return root / CROPDIR / crop_name(ref, key), "mz"
+    return root / CROPDIR / crop_name(ref, key, root), "mz"
 
 
-def crop_name(ref: str, key: str) -> str:
+def crop_name(ref: str, key: str, root: Path = Path(".")) -> str:
     """The filename one figure's crop takes. `1-151`, `001` -> `chukchi-1-151-001.png`.
 
     One function because three callers need to agree exactly — the writer, the
@@ -2666,7 +2667,7 @@ def crop_name(ref: str, key: str) -> str:
     re-derived per caller is the drift this module's `read_blocks` docstring
     already records the cost of.
     """
-    return f"chukchi-{norm_ref(ref)}-{key}.png"
+    return f"{stem_for(ref, root)}-{key}.png"
 
 
 def write_crops(ref: str, out_dir: Path, root: Path = Path("."),
@@ -2731,7 +2732,7 @@ def write_crops(ref: str, out_dir: Path, root: Path = Path("."),
     recs = []
     for f, z in parts:
         key = zone_suffix(z["id"])
-        path = out_dir / crop_name(ref, key)
+        path = out_dir / crop_name(ref, key, root)
         # `n` and `group` travel with every part, so a consumer can stack the
         # three crops of fig. 138 under its one caption without re-deriving the
         # grouping `figure_boxes` already did. `human` says a person's version of
@@ -2740,7 +2741,7 @@ def write_crops(ref: str, out_dir: Path, root: Path = Path("."),
         # would make the manual work look lost.
         rec = {"ref": ref, "key": key, "n": f["n"], "group": f["key"],
                "name": path.name,
-               "human": (root / FIG_IMG / crop_name(ref, key)).exists()}
+               "human": (root / FIG_IMG / crop_name(ref, key, root)).exists()}
         if not force and path.exists() and path.stat().st_mtime >= src:
             recs.append(rec | {"written": False, "why": "fresh"})
             continue
@@ -2826,7 +2827,7 @@ def crops_wanted(root: Path = Path(".")) -> dict[str, str]:
     `figure_boxes`' grouping — the grouping is about captions and has no say in
     how many images exist.
     """
-    return {crop_name(ref, zone_suffix(b["id"])): ref
+    return {crop_name(ref, zone_suffix(b["id"]), root): ref
             for ref in fig_refs(root)
             for b in zones(ref, root) if b["label"] == GRAPHIC}
 

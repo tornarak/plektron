@@ -34,8 +34,9 @@ from pathlib import Path
 from lxml import etree
 
 from .atomic import write_atomic
+from .layout import stem_for
 from .ns import TEI_NS
-from .refs import parse_ref, stem_for
+from .refs import parse_ref
 
 
 def tei_path(ref: str, root: Path = Path(".")) -> Path:

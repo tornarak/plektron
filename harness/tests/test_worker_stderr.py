@@ -134,11 +134,13 @@ def test_worker_output_reports_what_a_worker_wrote(tmp_path):
 def test_a_quiet_run_reports_nothing_and_leaves_nothing(tmp_path):
     """An empty capture is removed, which is what makes a non-empty one worth
     reading — and it keeps the summary honest on the ordinary run."""
-    (tmp_path / "worker-1.log").write_text("", encoding="utf-8")
-    (tmp_path / "worker-2.log").write_text("\n  \n", encoding="utf-8")
-    assert recognize.worker_output(tmp_path) == {"stderr_lines": 0,
-                                                 "stderr_log": ""}
-    assert not tmp_path.exists()
+    logs = tmp_path / "logs"
+    logs.mkdir()
+    (logs / "worker-1.log").write_text("", encoding="utf-8")
+    (logs / "worker-2.log").write_text("\n  \n", encoding="utf-8")
+    assert recognize.worker_output(logs) == {"stderr_lines": 0,
+                                             "stderr_log": ""}
+    assert not logs.exists()
 
 
 def test_worker_output_survives_a_directory_that_never_existed(tmp_path):

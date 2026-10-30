@@ -50,6 +50,7 @@ from .entities import (
     split_id,
     tree_parent,
 )
+from .layout import stem_for
 
 # `scan_for` is re-exported: this module's callers name it here, and the
 # definition moved to `paths` because there were two byte-identical copies.
@@ -124,7 +125,7 @@ def leaf_source(ref: str, root: Path) -> tuple[Path | None, str]:
     if not is_exempt(ref, root):
         return None, "scan"
     for ext in LEAF_EXTS:
-        p = root / PAGE_IMG / f"chukchi-{ref}{ext}"
+        p = root / PAGE_IMG / f"{stem_for(ref, root)}{ext}"
         if p.exists():
             return p, "ed"
     return None, "scan"
@@ -155,7 +156,7 @@ def leaf_layers(ref: str, root: Path) -> dict[str, Path] | None:
     ref = norm_ref(ref)
     if leaf_source(ref, root)[0] is None:
         return None
-    out = {name: root / PAGE_IMG_LAYERS / f"chukchi-{ref}{ext}"
+    out = {name: root / PAGE_IMG_LAYERS / f"{stem_for(ref, root)}{ext}"
            for name, ext in LEAF_LAYERS.items()}
     return out if all(p.exists() for p in out.values()) else None
 

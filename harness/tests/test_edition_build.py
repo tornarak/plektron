@@ -12,6 +12,7 @@ import filecmp
 from pathlib import Path
 
 import pytest
+from conftest import write_project
 from test_edition import page
 from test_edition_runs import _scan
 from test_entities import entry
@@ -21,7 +22,7 @@ from harness.web.build import _canon, build, norm_base
 
 @pytest.fixture
 def tree(tmp_path: Path) -> Path:
-    root = tmp_path / "repo"
+    root = write_project(tmp_path / "repo")
     entry(root, "place:markova", status="proposed", aliases=[("Markova", True)])
     page(root, "1-021", '<pb n="1"/><p>At '
          '<rs ref="place:markova" resp="#mz">Markova</rs>.</p>')

@@ -99,7 +99,7 @@ def build_mets(names: list[str]) -> str:
 
 
 def write_mets(store: str | tuple[str, ...], out_dir: str | Path,
-               root: Path = Path(".")) -> dict:
+               root: Path = Path("."), *, stem: str) -> dict:
     """Write `METS.xml` for an ALTO store, or an ordered pair of them, into a
     directory the caller names.
 
@@ -125,18 +125,18 @@ def write_mets(store: str | tuple[str, ...], out_dir: str | Path,
     stores = (store,) if isinstance(store, str) else tuple(store)
     chosen: dict[str, Path] = {}
     for s in stores:                       # first store wins: later ones only fill
-        for p in (root / s).glob("chukchi-*.xml"):
+        for p in (root / s).glob(f"{stem}-*.xml"):
             chosen.setdefault(p.name, p)
     names = sorted(chosen)
     if not names:
-        raise ValueError(f"no chukchi-*.xml under {', '.join(str(root / s) for s in stores)}")
+        raise ValueError(f"no {stem}-*.xml under {', '.join(str(root / s) for s in stores)}")
     d = Path(out_dir)
     d.mkdir(parents=True, exist_ok=True)
     rep = {"store": ",".join(stores), "path": str(d / "METS.xml"),
            "files": len(names), "first": names[0], "last": names[-1]}
     if len(stores) > 1:
         import shutil
-        stale = sorted(p.name for p in d.glob("chukchi-*.xml"))
+        stale = sorted(p.name for p in d.glob(f"{stem}-*.xml"))
         if stale:
             raise ValueError(f"{d} already holds {len(stale)} page ALTO(s) "
                              f"({stale[0]} …); a combined export wants an empty "

@@ -53,6 +53,7 @@ import shutil
 from pathlib import Path
 
 from . import farms, parallel, paths, provenance
+from .layout import page_files, ref_of, stem, stem_for
 from .refs import norm_ref, parse_ref
 
 #: The source PDFs' own embedded-image geometry. **Derived but tracked**, on
@@ -469,7 +470,8 @@ def _pil(pix):
     return Image.frombytes(mode, (pix.width, pix.height), pix.samples)
 
 
-def cut_page(doc, rec: dict, out_dir: Path, source: dict | None = None) -> dict:
+def cut_page(doc, rec: dict, out_dir: Path, source: dict | None = None,
+             *, stem: str) -> dict:
     """Write one page's raster: the master, with its photographs pasted back.
 
     **Mode `1` where the page has no photograph**, which is 593 of 832 and is what
@@ -487,7 +489,7 @@ def cut_page(doc, rec: dict, out_dir: Path, source: dict | None = None) -> dict:
 
     ref = rec["ref"]
     m = rec["master"]
-    dest = out_dir / f"chukchi-{ref}.png"
+    dest = out_dir / f"{stem}-{ref}.png"
     # **The provenance travels in the file, not only in the manifest.** A raster
     # copied out of the tree — into a training directory, an issue, someone's
     # downloads — leaves the manifest behind, and the question "what is this and
@@ -551,7 +553,7 @@ def _read_chunk(chunk: tuple) -> list[dict]:
     both. The `Document` is opened **here** — one per chunk, never handed across a
     process boundary and never shared, which is the library's actual constraint.
     """
-    pdf, part, pages, rasters, source = chunk
+    pdf, part, pages, rasters, source, stem = chunk
     import pymupdf
 
     out = []
@@ -561,7 +563,7 @@ def _read_chunk(chunk: tuple) -> list[dict]:
             ref = f"{part}-{i:03d}"
             rec = page_record(doc[i - 1], ref)
             if not rec["refuse"] and dest is not None:
-                cut = cut_page(doc, rec, dest, source)
+                cut = cut_page(doc, rec, dest, source, stem=stem)
                 rec["mode"] = cut.get("mode", "")
                 if cut.get("refuse"):
                     rec["refuse"] = cut["refuse"]
@@ -631,7 +633,8 @@ def extract(root: Path = Path("."), refs: list[str] | None = None,
                  if want is None or f"{part}-{i:03d}" in want]
         for lo in range(0, len(pages), CHUNK):
             chunks.append((str(pdf), part, tuple(pages[lo:lo + CHUNK]),
-                           str(rasters) if rasters else "", src.get(str(part), {})))
+                           str(rasters) if rasters else "", src.get(str(part), {}),
+                           stem(root)))
 
     # **The bar counts pages and names one, where the pool counts chunks and hands
     # back a tuple.** Ticking with the chunk itself printed the PDF's path, sixteen
@@ -982,7 +985,7 @@ def audit(refs: list[str] | None = None, root: Path = Path("."),
         found: list[dict] = []
         ref, e = row
         m = e.get("master") or {}
-        facts = _raster_facts(tree / f"chukchi-{ref}.png")
+        facts = _raster_facts(tree / f"{stem_for(ref, root)}.png")
         if not facts["on_disk"]:
             found.append({"ref": ref, "finding": "missing", "gates": True,
                           "detail": f"manifest has {m.get('w')}x{m.get('h')}, "
@@ -1030,8 +1033,8 @@ def audit(refs: list[str] | None = None, root: Path = Path("."),
             unwitnessed.append(unwit)
 
     if tree.is_dir():
-        for p in sorted(tree.glob("chukchi-*.png")):
-            ref = norm_ref(p.stem)
+        for p in sorted(page_files(tree, ".png", root)):
+            ref = ref_of(p.stem, root)
             if want is not None and ref not in want:
                 continue
             if ref not in seen and ref not in manifest:
@@ -1066,11 +1069,11 @@ def space(refs: list[str] | None = None, root: Path = Path("."),
     # together and no one store knows it — `pmap`'s rule, hand-rolled.
     todo = [(store, p) for store in STORES
             if (root / store).is_dir()
-            for p in sorted((root / store).glob("chukchi-*.xml"))
-            if want is None or norm_ref(p.stem) in want]
+            for p in sorted(page_files(root / store, ".xml", root))
+            if want is None or ref_of(p.stem, root) in want]
     def one(item: tuple) -> dict:
         store, p = item
-        ref = norm_ref(p.stem)
+        ref = ref_of(p.stem, root)
         try:
             box = page_box(etree.parse(str(p)))
         except etree.XMLSyntaxError as e:
@@ -1084,7 +1087,7 @@ def space(refs: list[str] | None = None, root: Path = Path("."),
                 "detail": ""}
 
     return parallel.pmap(one, todo, jobs,
-                         _labelled(tick, lambda it: norm_ref(it[1].stem)))
+                         _labelled(tick, lambda it: ref_of(it[1].stem, root)))
 
 
 # --- the swap -----------------------------------------------------------------

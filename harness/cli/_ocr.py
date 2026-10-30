@@ -33,6 +33,7 @@ from pathlib import Path
 import click
 
 from ..calls import call_summary, log_call, read_calls
+from ..layout import stem_for
 from ..lines import (
     LINE_SHEET_H,
     NUMBER_FONT,
@@ -136,7 +137,7 @@ def _store_dir(a) -> str:
     return STORES[getattr(a, "store", None) or DEFAULT_STORE_NAME]
 
 
-CANON_REF = re.compile(r"^(?:chukchi-)?[1-3]-\d{3}$")
+CANON_REF = re.compile(r"^\d+-\d{3}$")
 
 
 def ref_and_spec(a) -> tuple[list[str], str | None]:
@@ -1184,7 +1185,7 @@ def run_blot(a) -> int:
         if not (getattr(a, "all", False) and not a.force):
             return True
         src = alto_for_lines(r, a.root, _store_dir(a))
-        painted = dest / f"chukchi-{r}.png"
+        painted = dest / f"{stem_for(r, a.root)}.png"
         return not (painted.exists() and src.exists()
                     and painted.stat().st_mtime >= src.stat().st_mtime)
 
@@ -1366,7 +1367,7 @@ def run_diff(a) -> int:
     with progress("checking witnesses") as tick:
         for r in ptrack(refs, tick):
             src = alto_for_lines(r, a.root, _store_dir(a))
-            gt = a.root / "gt" / "ocr" / f"chukchi-{norm_ref(r)}.xml"
+            gt = a.root / "gt" / "ocr" / f"{stem_for(r, a.root)}.xml"
             if src.exists() and gt.exists() and src.resolve() == gt.resolve():
                 collapsed.append((r, src, gt))
     if collapsed:

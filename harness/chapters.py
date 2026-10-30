@@ -34,6 +34,7 @@ from pathlib import Path
 
 from lxml import etree
 
+from .layout import page_files
 from .ns import TEI_NS
 from .refs import norm_ref, parse_ref
 from .state import load_toc
@@ -170,5 +171,5 @@ def watched(root: Path = Path(".")) -> list[Path]:
     every page the edition could render."""
     root = Path(root)
     return ([root / "edition" / "toc.json"]
-            + sorted((root / "tei").glob("chukchi-*.xml"))
-            + sorted((root / "mz" / "tei").glob("chukchi-*.xml")))
+            + sorted(page_files(root / "tei", ".xml", root))
+            + sorted(page_files(root / "mz" / "tei", ".xml", root)))

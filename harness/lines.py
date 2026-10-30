@@ -49,7 +49,8 @@ from lxml import etree
 
 from . import provenance
 from .figures import RASTER_VERSION, _bbox, _scale_for
-from .refs import norm_ref
+from .layout import stem_for
+from .refs import norm_ref, ref_in
 
 if TYPE_CHECKING:
     import numpy as np
@@ -316,7 +317,7 @@ def raster_path(ref: str, root: Path = Path("."), scans: str = "scans") -> Path:
     """
     from . import farms
     farms.require(root, scans)
-    p = root / scans / f"chukchi-{norm_ref(ref)}.png"
+    p = root / scans / f"{stem_for(ref, root)}.png"
     if not p.exists():
         raise FileNotFoundError(f"no raster for {norm_ref(ref)} at {p}")
     return p
@@ -343,7 +344,7 @@ def alto_for_lines(ref: str, root: Path, store: str) -> Path:
     """
     from . import farms
     farms.require(root, store)
-    return root / store / f"chukchi-{norm_ref(ref)}.xml"
+    return root / store / f"{stem_for(ref, root)}.xml"
 
 
 def _line_text(tl) -> str:
@@ -719,7 +720,7 @@ def page_lines(alto_path: Path, root: Path | None = None,
     # corrections".
     at = root if root is not None else alto_path.parent.parent
     try:
-        found = norm_ref(ref) if ref else norm_ref(alto_path.stem)
+        found = norm_ref(ref) if ref else ref_in(alto_path.stem)
         mark_figure_overlap(out, found, at)
     except ValueError:
         found = None
@@ -1472,7 +1473,7 @@ def write_blot(ref: str, out_dir: Path, root: Path,
                 n_exempt += 1
 
     out_dir.mkdir(parents=True, exist_ok=True)
-    path = out_dir / f"chukchi-{ref}.png"
+    path = out_dir / f"{stem_for(ref, root)}.png"
     img.save(path, pnginfo=provenance.png_meta(_raster_producer(
         "harness ocr blot" + ("" if exemptions else " --no-exemptions"),
         "line, zone and ruling coverage painted out",
@@ -1541,7 +1542,7 @@ def write_fig_blot(ref: str, out_dir: Path, root: Path = Path("."),
     from .figures import pdf_images_for
     from .figures import zones as _zones
     ref = norm_ref(ref)
-    src = root / scans / f"chukchi-{ref}.png"
+    src = root / scans / f"{stem_for(ref, root)}.png"
     zs = _zones(ref, root)
     img = Image.open(src)
     rects = []
@@ -1572,7 +1573,7 @@ def write_fig_blot(ref: str, out_dir: Path, root: Path = Path("."),
         if img.mode == "L" and len(img.getcolors(maxcolors=4) or [0] * 5) <= 2:
             img = img.convert("1")
     out_dir.mkdir(parents=True, exist_ok=True)
-    path = out_dir / f"chukchi-{ref}.png"
+    path = out_dir / f"{stem_for(ref, root)}.png"
     img.save(path, pnginfo=provenance.png_meta(_raster_producer(
         "harness zones blot", "figure boxes and photograph rects painted white",
         src, {"ref": ref, "boxes": len(zs), "rects": len(rects),

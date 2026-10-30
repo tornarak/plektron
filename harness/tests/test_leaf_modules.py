@@ -137,7 +137,7 @@ def test_refs_is_where_the_ref_primitives_actually_live():
     Rolling `norm_ref` back into `context.py` would pass every test above — they
     only constrain what a leaf imports, not what it contains."""
     from harness import refs
-    for name in ("REF_RE", "parse_ref", "norm_ref", "stem_for", "parse_context",
+    for name in ("REF_RE", "parse_ref", "norm_ref", "ref_in", "parse_context",
                  "figure_number", "FOLIO_ZONES", "APPARATUS_ZONES"):
         assert hasattr(refs, name), f"refs.{name} is gone"
     assert refs.norm_ref("1-48") == "1-048"

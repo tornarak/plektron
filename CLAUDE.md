@@ -83,8 +83,9 @@ PDFs' own layers, a bitonal master per page plus its photographs, never rendered
 `docs/rasters.md` has the geometry, the coordinate migration, and what a rebuild
 must swap whole.
 
-**Page refs are `PP-NNN`** — part, and scan index within that part (`1-048`) —
-everywhere: filenames, CLI, commit messages. NNN is a *scan
+**Page refs are `PP-NNN`** — part, and scan index within that part (`1-048`).
+A page file is `<stem>-PP-NNN.*`: one kebab-case stem per text (`chukchi`,
+`chukchi-mythology`, `koryak`), declared in `project.json`. NNN is a *scan
 index*, not a printed folio. Part 1 runs 001–362, part 2 001–268, part 3
 001–202; the printed folio runs continuously 1–732 across the volume, with
 plates and front matter unpaginated. **Neither is derivable from the other**, so

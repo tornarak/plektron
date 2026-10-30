@@ -46,6 +46,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from . import train as _train
+from .layout import page_files, ref_of, stem, stem_for
 from .parallel import ptrack
 
 # The one declaration of every derived path. `zones.py` aliases `SCANS` rather
@@ -288,7 +289,7 @@ def rebuild(dirpath: Path, wanted: dict[str, Path], pattern: str,
 def _w_figs_wanted(root: Path) -> dict[str, Path]:
     """The pages that have a figure ALTO, raster only."""
     from .figures import fig_refs
-    return {f"chukchi-{ref}.png": root / SCANS / f"chukchi-{ref}.png"
+    return {f"{stem_for(ref, root)}.png": root / SCANS / f"{stem_for(ref, root)}.png"
             for ref in fig_refs(root)}
 
 
@@ -309,31 +310,31 @@ def _w_ocr_wanted(root: Path) -> tuple[dict[str, Path], dict[str, Path]]:
     Two sweeps rather than one because the farm holds two kinds of file and a single
     prune pattern would have each kind deleting the other's entries.
     """
-    from .refs import norm_ref, parse_ref
+    from .refs import parse_ref
     refs = []
-    for p in (root / "gt" / "ocr").glob("chukchi-*.xml"):
+    for p in page_files(root / "gt" / "ocr", ".xml", root):
         try:
-            refs.append(norm_ref(p.stem))
+            refs.append(ref_of(p.stem, root))
         except ValueError:      # matched the glob but is not a ref
             continue
     refs = sorted(set(refs), key=parse_ref)
     return (
-        {f"chukchi-{r}.png": root / SCANS / f"chukchi-{r}.png" for r in refs},
-        {f"chukchi-{r}.xml": root / "gt" / "ocr" / f"chukchi-{r}.xml" for r in refs},
+        {f"{stem_for(r, root)}.png": root / SCANS / f"{stem_for(r, root)}.png" for r in refs},
+        {f"{stem_for(r, root)}.xml": root / "gt" / "ocr" / f"{stem_for(r, root)}.xml" for r in refs},
     )
 
 
 def build_w_figs(root: Path = Path(".")) -> dict:
     """`scans/w-figs/`: the raster of every page carrying a figure ALTO."""
-    rep = rebuild(root / W_FIGS, _w_figs_wanted(root), "chukchi-*.png")
+    rep = rebuild(root / W_FIGS, _w_figs_wanted(root), f"{stem(root)}-*.png")
     return {"farm": "w-figs", **rep}
 
 
 def build_w_ocr(root: Path = Path(".")) -> dict:
     """`scans/w-ocr/`: raster beside ALTO for every page a human has been through."""
     pngs, xmls = _w_ocr_wanted(root)
-    a = rebuild(root / W_OCR, pngs, "chukchi-*.png")
-    b = rebuild(root / W_OCR, xmls, "chukchi-*.xml")
+    a = rebuild(root / W_OCR, pngs, f"{stem(root)}-*.png")
+    b = rebuild(root / W_OCR, xmls, f"{stem(root)}-*.xml")
     return {"farm": "w-ocr", "dir": a["dir"], "linked": a["linked"] + b["linked"],
             "removed": a["removed"] + b["removed"]}
 
@@ -375,7 +376,7 @@ def build(name: str, root: Path = Path("."), jobs: int | None = None,
         # removes what it no longer does, which is what makes a re-ruled leaf move
         # between farms rather than appearing in both.
         rep = rebuild(root / SCANS / name, _wanted_for(name, root) or {},
-                      "chukchi-*.png")
+                      f"{stem(root)}-*.png")
         return {"farm": name, **{k: rep[k] for k in ("dir", "linked", "removed")},
                 "skipped": ""}
     rep = build_w_figs(root) if name == "w-figs" else build_w_ocr(root)
@@ -398,7 +399,7 @@ def _wanted_for(name: str, root: Path) -> dict[str, Path] | None:
         # directory is absent. The blot farm can outlive `scans/` (its 252 painted
         # pages are real files), and a survey that raised while describing that
         # situation would be the report failing on exactly the machine it is for.
-        return {p.name: p for p in (root / SCANS).glob("chukchi-*.png")}
+        return {p.name: p for p in page_files(root / SCANS, ".png", root)}
     if name == "w-figs":
         return _w_figs_wanted(root)
     if name == "w-ocr":
@@ -412,7 +413,7 @@ def _wanted_for(name: str, root: Path) -> dict[str, Path] | None:
         # since that is what `rebuild`'s callers use to explain a member; a crop
         # is cut from it rather than linked to it.
         from .figures import crops_wanted
-        return {name_: root / SCANS / f"chukchi-{ref}.png"
+        return {name_: root / SCANS / f"{stem_for(ref, root)}.png"
                 for name_, ref in crops_wanted(root).items()}
     if name in _LEAF_KINDS:
         # The leaves ruled this kind, each linking to its own raster. Computed
@@ -420,7 +421,7 @@ def _wanted_for(name: str, root: Path) -> dict[str, Path] | None:
         # re-ruled from `plate` to `blank` reports `stale` on both farms rather
         # than sitting in the wrong one indefinitely.
         from .zones import load_splits
-        return {f"chukchi-{r}.png": root / SCANS / f"chukchi-{r}.png"
+        return {f"{stem_for(r, root)}.png": root / SCANS / f"{stem_for(r, root)}.png"
                 for r, split in load_splits(root).items() if split == name}
     return None
 

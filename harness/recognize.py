@@ -74,6 +74,7 @@ from . import paths as P
 from . import provenance, train
 from . import zones as Z
 from .atomic import tmp_for
+from .layout import page_files, ref_of, stem_for
 from .parallel import capture_stderr as _capture_stderr
 from .parallel import gpu_workers, worker_output
 from .refs import norm_ref, parse_ref
@@ -142,7 +143,7 @@ def mz_dir(root: Path = Path(".")) -> Path:
 
 
 def alto_for(ref: str, root: Path = Path("."), store: str = MZDIR) -> Path:
-    return root / store / f"chukchi-{norm_ref(ref)}.xml"
+    return root / store / f"{stem_for(ref, root)}.xml"
 
 
 def recognized_by(ref: str, rec_sha: str, root: Path = Path(".")) -> bool:
@@ -178,7 +179,7 @@ def ocr_refs(root: Path = Path("."), store: str = MZDIR) -> list[str]:
     inode under two names would undercount silently.
     """
     out, seen = [], set()
-    for p in (root / store).glob("chukchi-*.xml"):
+    for p in page_files(root / store, ".xml", root):
         try:
             if not p.exists():          # follows the link: a dangling entry is not a page
                 continue
@@ -189,7 +190,7 @@ def ocr_refs(root: Path = Path("."), store: str = MZDIR) -> list[str]:
             continue
         seen.add(real)
         try:
-            out.append(norm_ref(p.stem.replace("chukchi-", "")))
+            out.append(ref_of(p.stem, root))
         except ValueError:
             continue
     return sorted(set(out), key=parse_ref)
@@ -371,7 +372,7 @@ def predict(ref: str, root: Path = Path("."), seg_net=None, seg_sha: str = "",
     # costs ~1.9 s, and a page without a blot never reaches a model.
     # `zones.predict` orders itself the same way and says why.
     ref = norm_ref(ref)
-    blot = Z.blot_dir(root) / f"chukchi-{ref}.png"
+    blot = Z.blot_dir(root) / f"{stem_for(ref, root)}.png"
     if not blot.exists():
         raise FileNotFoundError(
             f"no blotted raster for {ref} at {blot} — run `harness zones blot` "
@@ -412,7 +413,7 @@ def predict(ref: str, root: Path = Path("."), seg_net=None, seg_sha: str = "",
              for i, ln in enumerate(sorted(seg.lines or [], key=sort_key), 1)]
 
     bound = dataclasses.replace(seg, lines=lines, regions={},
-                                imagename=f"chukchi-{ref}.png")
+                                imagename=f"{stem_for(ref, root)}.png")
     # **The records are what gets serialized, not the lines with `text` set on
     # them.** `serialization.serialize` reads `record.prediction` and nothing else
     # — a `BaselineLine` carrying `text` serializes to `CONTENT=""`, which is the
@@ -447,7 +448,7 @@ def predict(ref: str, root: Path = Path("."), seg_net=None, seg_sha: str = "",
             step="harness ocr predict", label="baseline segmentation",
             kind="model", version=kv, model=str(seg_model), sha256=seg_sha,
             device=dev,
-            inputs={"raster": f"{Z.BLOTDIR}/chukchi-{ref}.png"}),
+            inputs={"raster": f"{Z.BLOTDIR}/{stem_for(ref, root)}.png"}),
             ident="harness-ocr-predict-lines"),
         provenance.kraken_step(provenance.Producer(
             step="harness ocr predict", label=REC_LABEL,
@@ -520,7 +521,7 @@ def predict_skip(ref: str, root: Path = Path("."), force: bool = False,
     """
     if not single and Z.is_exempt(ref, root):
         return "ruled not a text page"
-    if not (Z.blot_dir(root) / f"chukchi-{ref}.png").exists():
+    if not (Z.blot_dir(root) / f"{stem_for(ref, root)}.png").exists():
         return "no blot (run `harness zones blot`)"
     if not force and recognized_by(ref, rec_sha, root):
         return "already recognized by this model"
@@ -928,11 +929,11 @@ def assemble(root: Path = Path("."), scratch: bool = False,
         if split is None:
             unmarked.append(ref)
             continue
-        blot = blot_dir(root) / f"chukchi-{ref}.png"
+        blot = blot_dir(root) / f"{stem_for(ref, root)}.png"
         if not blot.exists():
             missing.append(ref)
             continue
-        name = f"chukchi-{ref}"
+        name = f"{stem_for(ref, root)}"
         img = work / f"{name}.png"
         if not img.exists():
             img.symlink_to(blot.resolve())

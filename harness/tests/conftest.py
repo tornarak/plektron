@@ -24,6 +24,8 @@ from functools import cache
 from io import BytesIO
 from pathlib import Path
 
+import pytest
+
 A4_300 = (2824, 3897)
 
 
@@ -57,10 +59,28 @@ def write_png(path: Path, size: tuple[int, int] = A4_300, mode: str = "L",
     return path
 
 
+def write_project(root: Path, stem: str = "chukchi") -> Path:
+    """`root` as a text's stores: the manifest every store read starts from."""
+    root.mkdir(parents=True, exist_ok=True)
+    (root / "project.json").write_text(f'{{"stem": "{stem}"}}\n', encoding="utf-8")
+    return root
+
+
+@pytest.fixture(autouse=True)
+def _a_text_at_tmp_path(request):
+    """Every `tmp_path` root is a text's stores, as the harness requires of a root.
+
+    `chukchi` because that is what the page files the fixtures spell are called.
+    A test with no use for `tmp_path` asks for nothing here.
+    """
+    if "tmp_path" in request.fixturenames:
+        write_project(request.getfixturevalue("tmp_path"))
+
+
 def write_scan(tmp_path: Path, ref: str, size: tuple[int, int] = A4_300,
                mode: str = "L",
                ink: tuple[tuple[int, int, int, int], ...] = ()) -> Path:
-    """`<tmp_path>/scans/chukchi-<ref>.png`, the layout every reader assumes."""
+    """`<tmp_path>/scans/<stem>-<ref>.png`, the layout every reader assumes."""
     return write_png(tmp_path / "scans" / f"chukchi-{ref}.png", size, mode, ink)
 
 

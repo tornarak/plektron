@@ -34,6 +34,7 @@ from __future__ import annotations
 import re
 
 from .entities import alias_index, auto_forms, link_tags, match
+from .layout import stem_for
 
 #: A tag, a comment, or a run of text. Comments first, because one may hold a
 #: `>` — the generator writes prose in them — and a naive `<[^>]*>` would end the
@@ -251,7 +252,7 @@ def apply_to_corpus(root, store: dict,
     skipped: list[dict] = []
     undo: list = []
     for ref in collated(root):
-        p = root / "tei" / f"chukchi-{ref}.xml"
+        p = root / "tei" / f"{stem_for(ref, root)}.xml"
         text = p.read_text(encoding="utf-8")
         new, got, left = relink(text, store)
         applied += [{"ref": ref, **r} for r in got]
