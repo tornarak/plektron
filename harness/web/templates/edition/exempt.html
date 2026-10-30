@@ -1,5 +1,5 @@
 {% extends "edition/base.html" %}
-{% block title %}{{ ref }} — The Chukchee{% endblock %}
+{% block title %}{{ ref }} — {{ work.title }}{% endblock %}
 
 {# Both buttons, and the empty aside below, exist because `edition.js` looks all
    of them up unconditionally at load — a missing one throws and takes the arrow

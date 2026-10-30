@@ -53,7 +53,7 @@ import {compose, paneHtml} from './geomap.js';
      with the tab rather than greeting you tomorrow with yesterday's map. Pins
      are `localStorage` for the opposite reason: a pinned card is a deliberate
      act you expect to find again. */
-  const KEY = 'edition-map';
+  const KEY = 'edition-map' + STATE.base;
   let sel = [], hidden = new Set(), dropped = new Set();
   try {
     const got = JSON.parse(sessionStorage.getItem(KEY) || '{}');

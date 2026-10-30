@@ -4,7 +4,7 @@ const B = STATE.base;
 // `STACK.children` as cards, and a pane among them would be pinned and closed
 // like one.
 const STACK = document.getElementById('stack');
-const KEY = 'edition-pins-' + STATE.ref;
+const KEY = 'edition-pins-' + STATE.base + '-' + STATE.ref;
 
 // Pins survive a reload because a pinned card is a deliberate act — you put it
 // there to keep it while you read — and losing it to a refresh would teach you

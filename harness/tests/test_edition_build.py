@@ -129,3 +129,16 @@ def test_two_spellings_of_one_path_are_one_url():
     """`quote` and `encodeURIComponent` disagree on `'`, and a host decodes both
     to the one file."""
     assert _canon("/lexicon/Ke%27let") == _canon("/lexicon/Ke'let")
+
+
+def test_the_title_is_the_books_own_and_a_text_with_no_header_shows_its_folder(tree, tmp_path):
+    (tree / "tei" / "corpus-header.xml").write_text(
+        '<teiHeader xmlns="http://www.tei-c.org/ns/1.0"><fileDesc><titleStmt>'
+        '<title type="main">The Koryak</title><title type="sub">an edition</title>'
+        '</titleStmt></fileDesc></teiHeader>', encoding="utf-8")
+    build(tree, tmp_path / "a", base="/x")
+    html = (tmp_path / "a" / "index.html").read_text(encoding="utf-8")
+    assert "<title>The Koryak" in html and "The Chukchee" not in html
+    (tree / "tei" / "corpus-header.xml").unlink()
+    build(tree, tmp_path / "b", base="/x")
+    assert f"<title>{tree.name}" in (tmp_path / "b" / "index.html").read_text(encoding="utf-8")

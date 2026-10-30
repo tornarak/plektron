@@ -17,6 +17,7 @@ from harness.layout import (
     refuse_another_texts,
     repo_root,
     shared,
+    site_base,
     workspace_root,
     workspace_stems,
 )
@@ -143,3 +144,9 @@ def test_a_ratification_licenses_the_rule_on_the_text_it_was_made_against(tmp_pa
     assert "- status: ratified chukchi koryak\n" in f.read_text(encoding="utf-8")
     assert auto_forms(alias_index(load(koryak))) == {"Markova": "place:markova"}
     assert ratify_text(f.read_text(encoding="utf-8"), koryak) == f.read_text(encoding="utf-8")
+
+
+def test_a_sites_prefix_comes_from_its_folders(tmp_path):
+    text, _ = _workspace_with(tmp_path, "chukchi", "koryak")
+    assert site_base(text) == "/ws/t0"
+    assert site_base(write_project(tmp_path / "alone")) == "/alone"

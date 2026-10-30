@@ -203,3 +203,10 @@ def bare_own_citations(text: str, own: str) -> str:
     """The served text's citations as its reader knows them: `chukchi-1-044` -> `1-044`.
     Another book's keep their stem, because to this reader they are the other book's."""
     return CITED_REF_RE.sub(lambda m: m[2] if m[1] == own else m[0], text)
+
+
+def site_base(root: Path) -> str:
+    """The path a text's site is served under, from its folders: `/jesup/bogoras-chukchi`."""
+    here = Path(root).resolve()
+    ws = workspace_root(root)
+    return f"/{ws.name}/{here.name}" if ws else f"/{here.name}"

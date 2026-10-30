@@ -43,7 +43,7 @@ if(t==='dark'||t==='light') document.documentElement.dataset.theme=t;
 {% block body %}
 <header id='bar'>
     <span class="site-title">
-        <a href='{{ base }}/'>The Chukchee</a>
+        <a href='{{ base }}/'>{{ work.title }}</a>
         {# **Opens the sidebar's contents tab, and keeps its href.** The printed
            Contents as a document is still a real page and still at this URL —
            reachable from the index listing, and what this link does where the

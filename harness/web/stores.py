@@ -16,6 +16,8 @@ from __future__ import annotations
 from functools import lru_cache
 from pathlib import Path
 
+from lxml import etree
+
 from .. import (
     alphabet,
     apparatus,
@@ -31,6 +33,7 @@ from .. import (
 from .. import edition_ui as ui
 from ..edition_ui import BASE
 from ..layout import page_files, shared, stem_for
+from ..ns import TEI_NS
 from ..refs import norm_ref
 from ..state import load_toc
 from .cache import MAXSIZE, file_digest, listing, stamp
@@ -81,6 +84,22 @@ def _geo_files(root: Path) -> list[Path]:
 
 
 _watched = listing(chapters.watched)
+
+
+@lru_cache(maxsize=MAXSIZE)
+def _work(root: str, _key: bytes) -> dict:
+    p = Path(root) / "tei" / "corpus-header.xml"
+    title = None
+    if p.exists():
+        title = etree.parse(str(p)).findtext(
+            f".//{{{TEI_NS}}}titleStmt/{{{TEI_NS}}}title[@type='main']")
+    return {"title": title or Path(root).resolve().name}
+
+
+def work(root: Path) -> dict:
+    """What the book is called, from its own header. The folder's name stands in where
+    a text has no header yet, rather than one book's title standing in for all of them."""
+    return _work(str(root), stamp([Path(root) / "tei" / "corpus-header.xml"]))
 
 
 @lru_cache(maxsize=MAXSIZE)

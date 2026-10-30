@@ -126,6 +126,7 @@ def _ctx(request: Request, **kw) -> dict:
            # The header links two runs by id; a tree that declares neither
            # should not carry two dead links on every page.
            "run_ids": {r.get("id") for r in stores.runs(_root(request))},
+           "work": stores.work(_root(request)),
            **kw}
     out["state"] = {"base": base, "assets": assets, "static": _static(request),
                     **(kw.get("state") or {})}

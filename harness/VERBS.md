@@ -1671,7 +1671,7 @@ place.
 **Note** two builds of one tree are byte-identical, at any `--jobs` — the crawl is breadth-first over sorted links, a pooled one takes its workers' answers back in the order it handed them out, and nothing written carries a time — which is what lets a refactor be checked by rebuilding and diffing.
 ```
 OUT            the directory to write the site into
---base PATH    the path the site will be served under, which every link names [/]
+--base PATH    the path the site will be served under, which every link names [/workspace/text, from the folders]
 --drafts       also publish `mz/tei/`, marked as drafts as `edition serve --drafts` marks them
 --jobs N       worker **processes** for the crawl; 1 crawls in this process and builds no pool [cores, capped]
 --root --json --toon --pager

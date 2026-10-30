@@ -1,5 +1,5 @@
 {% extends "edition/base.html" %}
-{% block title %}{{ run.title }} — The Chukchee{% endblock %}
+{% block title %}{{ run.title }} — {{ work.title }}{% endblock %}
 
 {# The same two buttons `exempt.html` carries, and for its reason: `edition.js`
    looks both up unconditionally at load and a missing one throws, taking the

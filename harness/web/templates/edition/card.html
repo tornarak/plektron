@@ -2,7 +2,7 @@
    opening it into the stack. The body is the same partial the stack injects, so
    there is one renderer and not two that could drift. #}
 {% extends "edition/base.html" %}
-{% block title %}{{ card_title }} — The Chukchee{% endblock %}
+{% block title %}{{ card_title }} — {{ work.title }}{% endblock %}
 
 {% block main %}
 {# An entity that has somewhere to put on a map arrives with its map, in the

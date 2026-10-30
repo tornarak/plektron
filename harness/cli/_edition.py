@@ -9,6 +9,7 @@ from __future__ import annotations
 import sys
 
 from .. import edition_ui
+from ..layout import site_base
 from ..render import progress
 from ._common import (
     JOBS_HELP_CRAWL,
@@ -68,9 +69,9 @@ def register(cli):
                "addresses landing on one file, or a store entry nothing links "
                "to")
     arg(p, "out", metavar="OUT")
-    opt(p, "--base", default="/", metavar="PATH",
+    opt(p, "--base", metavar="PATH",
         help="the path the site will be served under, which every link "
-             "names [/]")
+             "names [/workspace/text, from the folders]")
     opt(p, "--drafts", is_flag=True,
         help="also publish `mz/tei/`, marked as drafts as `edition serve "
              "--drafts` marks them")
@@ -126,7 +127,7 @@ def run_build(a) -> int:
     from ..web.build import build
 
     with progress("building") as tick:
-        site = build(a.root, Path(a.out), base=a.base, drafts=a.drafts,
+        site = build(a.root, Path(a.out), base=a.base or site_base(a.root), drafts=a.drafts,
                      jobs=a.jobs, tick=tick)
     sections: dict[str, int] = {}
     for rel in site.files.values():

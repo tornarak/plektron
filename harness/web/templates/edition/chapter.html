@@ -1,6 +1,6 @@
 {% extends "edition/base.html" %}
 {% import "edition/_annotations.html" as ann %}
-{% block title %}{{ run.title }} — The Chukchee{% endblock %}
+{% block title %}{{ run.title }} — {{ work.title }}{% endblock %}
 
 {# `run.html`'s reason: `edition.js` looks both up at load and a missing one
    throws, taking the arrow keys with it. #}

@@ -262,7 +262,9 @@ entry below, once.
 
 **`layout.py`** — which text a store belongs to: `project.json`'s kebab-case
 `stem`, and through it `stem_for`, `ref_of` (refuses another text's stem) and
-`page_files`, the listing a glob cannot express.
+`page_files`, the listing a glob cannot express. Above the text, `workspace_root`, `shared` (the
+composition: a store under the text if there, else under the workspace, by one
+relative path) and `site_base`, the static site's prefix from the folders.
 
 **`refs.py`** — the `PP-NNN` contract: `parse_ref`, `norm_ref`, `ref_in`,
 `parse_context`, `figure_number`, the folio reader `_folio_in`, and the

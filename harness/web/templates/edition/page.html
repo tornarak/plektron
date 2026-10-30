@@ -1,6 +1,6 @@
 {% extends "edition/base.html" %}
 {% import "edition/_annotations.html" as ann %}
-{% block title %}{{ ref }} — The Chukchee{% endblock %}
+{% block title %}{{ ref }} — {{ work.title }}{% endblock %}
 
 {% block btn_extra %}
     <button id='scan-btn' title='Open Scan in New Tab'>🗗</button>

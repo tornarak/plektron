@@ -1946,8 +1946,9 @@ this. After collation it links like anything else.
 
 ### The static build is the served output, written down
 
-`harness edition build OUT --base /bogoras` writes the reading view as files a
-static host can serve (`harness/web/build.py`; flags in `VERBS.md`). **There is
+`harness edition build OUT` writes the reading view as files a static host can
+serve under `/jesup/bogoras-chukchi`, the prefix its folders give it (`--base`
+overrides). `OUT` is that prefix's directory, so two texts can sit side by side (`harness/web/build.py`; flags in `VERBS.md`). **There is
 no second renderer.** The build mounts the same router `edition serve` does,
 asks it for each page through a `TestClient`, and writes the bytes it gets.
 

@@ -245,7 +245,7 @@ def _wkt(v: str):
 # Gizhiginsk and Zashiversk belong to and which no live encyclopedia bothers to
 # carry.
 
-GEONAMES = Path("scratch/geonames")
+GEONAMES = Path(__file__).resolve().parent.parent / "scratch" / "geonames"
 WINDOW_TSV = "window.tsv"
 
 #: GeoNames feature codes, grouped by the entity class each answers.

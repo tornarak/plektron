@@ -1,5 +1,5 @@
 {% extends "edition/base.html" %}
-{% block title %}Encyclopedia — The Chukchee{% endblock %}
+{% block title %}Encyclopedia — {{ work.title }}{% endblock %}
 
 {% block main %}
 {# `id` and `class`, not one id of "primary index-width". It was the latter for
@@ -47,7 +47,7 @@
 <p class='meta note-small'>Every class the store declares, including the four
 nothing has been filed under yet. Inside a class, an entry nests under its
 <code>within:</code> parent where that parent is in the same class — the
-Maritime and Reindeer Chukchi under the Chukchi. A parent in another class does
+a people's branches under the people. A parent in another class does
 not nest, because following the field across classes would file the rivers under
 <em>place</em> and leave <em>water</em> a list of orphans; those entries sit at
 the top of their own class and their card names the parent. At each level,
