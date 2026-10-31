@@ -733,3 +733,39 @@ def test_a_bare_citation_passes_and_is_counted(tmp_path):
                 '<bibl><name type="anthroponym">Steller</name>, p. 42.</bibl>')
     assert not rep.errors
     assert rep.metrics["bibls"] == 1 and rep.metrics["names"] == 1
+
+
+# -------------------------------------------------------- heads run together
+
+
+def _hd(ident: str, title: str) -> dict:
+    return {"id": ident, "title": title, "level": 2}
+
+
+def test_a_head_running_into_the_next_is_two_heads():
+    from harness.state import heads_on
+    a, b = _hd("a", "Wars"), _hd("b", "Seventeenth Century Wars")
+    text = "WARS. Seventeenth Century Wars. — Soon after the discovery"
+    hits, rest = heads_on(text, [a, b])
+    assert [(h[0]["id"], h[1]) for h in hits] == [
+        ("a", "WARS."), ("b", "Seventeenth Century Wars.")]
+    assert [text[h[2]:h[3]] for h in hits] == ["WARS.", "Seventeenth Century Wars."]
+    assert rest.startswith("Soon after")
+
+
+def test_a_period_alone_does_not_make_a_sentence_a_head():
+    """The weak mark needs another head behind it; "Wars. They were frequent."
+    is a sentence, whichever entries are on offer."""
+    from harness.state import heads_on
+    a, b = _hd("a", "Wars"), _hd("b", "Seventeenth Century Wars")
+    for text in ("Wars. They were frequent.", "Wars. Seventeenth Century Wars were long."):
+        hits, rest = heads_on(text, [a, b])
+        assert hits == [] and rest == text
+
+
+def test_a_chain_must_close_on_a_real_mark():
+    from harness.state import heads_on
+    a, b, c = _hd("a", "Wars"), _hd("b", "Peace"), _hd("c", "Trade")
+    assert [h[0]["id"] for h in heads_on("WARS. PEACE. TRADE. — Text", [a, b, c])[0]] \
+        == ["a", "b", "c"]
+    assert heads_on("WARS. PEACE. TRADE. Text", [a, b, c])[0] == []

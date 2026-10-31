@@ -527,6 +527,12 @@ NOTE_MARKERS = "⁰¹²³⁴⁵⁶⁷⁸⁹"
 _SET_OFF = re.compile(rf"([.,;:”’\"')\]]*)([{NOTE_MARKERS}]*)"
                       r"[^\S\n]*(?:[—–][ \t\n]+|\n|$)")
 
+#: A period and a space: the weaker mark, which ends every sentence in the book.
+#: `2-129` prints `CEREMONIALS OF ASIATIC ESKIMO. Ceremonial of Kaˊcak. — Among`, a
+#: section head running straight into its first subsection's. It sets a head off
+#: only where another head follows it, and `_next_head` is what asks.
+_RUN_ON = re.compile(r"(\.)()[ \t]+")
+
 #: `_WORD_RE` asked of text that has not been lowercased, so offsets into the page's
 #: own string stay usable and the head can be quoted back as the page prints it.
 _WORD_I = re.compile(_WORD_RE.pattern, re.IGNORECASE)
@@ -593,7 +599,8 @@ def toc_containing(toc: list[dict], folio: int | None) -> list[str]:
     return [open_h[k] for k in sorted(open_h)]
 
 
-def printed_head(text: str, entry: dict) -> tuple[str, int] | None:
+def printed_head(text: str, entry: dict,
+                 mark: re.Pattern = _SET_OFF) -> tuple[str, int] | None:
     """The head `text` prints for `entry` at its very front, and where it ends.
 
     Returns `(head, end)` — the printed head, and the offset past the mark that
@@ -632,11 +639,31 @@ def printed_head(text: str, entry: dict) -> tuple[str, int] | None:
         if [w for w, _ in words[:len(lead)]] != lead:
             continue
         at = words[len(lead) - 1][1]
-        mark = _SET_OFF.match(nfd, at)
-        if mark is None:
+        found = mark.match(nfd, at)
+        if found is None:
             continue
-        return (nfd[:at + len(mark.group(1))],
-                mark.start(2) if mark.group(2) else mark.end())
+        return (nfd[:at + len(found.group(1))],
+                found.start(2) if found.group(2) else found.end())
+    return None
+
+
+def _next_head(text: str, entries: list[dict]) -> tuple[dict, tuple[str, int]] | None:
+    """The entry `text` opens with, and its `printed_head`.
+
+    A head set off by the printer's own mark is taken at once. One set off only
+    by a period (`_RUN_ON`) is taken **only if another of `entries` follows it**,
+    and that one must in turn end in a mark or lead to one that does. So a chain
+    is anchored at the front and closed by a real mark, and the entry `Wars` does
+    not swallow a sentence that begins "Wars. They were frequent."
+    """
+    for e in entries:
+        hit = printed_head(text, e)
+        if hit is not None:
+            return e, hit
+    for e in entries:
+        hit = printed_head(text, e, _RUN_ON)
+        if hit is not None and _next_head(text[hit[1]:], [x for x in entries if x is not e]):
+            return e, hit
     return None
 
 
@@ -665,13 +692,10 @@ def heads_on(text: str,
     out, rest, left = [], unicodedata.normalize("NFD", text), list(entries)
     base = 0
     while True:
-        for e in left:
-            hit = printed_head(rest, e)
-            if hit is not None:
-                break
-        else:
+        found = _next_head(rest, left)
+        if found is None:
             return out, rest
-        head, end = hit
+        e, (head, end) = found
         out.append((e, head, base, base + len(head)))
         left.remove(e)
         rest = rest[end:]
