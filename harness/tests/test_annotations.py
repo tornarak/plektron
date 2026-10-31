@@ -228,6 +228,11 @@ A line that reads `- status:proposed` in prose.
     assert "A line that reads `- status:proposed` in prose." in out
 
 
+def test_set_status_as_the_heads_last_field_keeps_the_next_heading():
+    text = "# x\n\n- status: proposed\n\n## full\n\nbody\n"
+    assert ann.set_status(text, "ratified") == text.replace("proposed", "ratified")
+
+
 # --- resolvers -------------------------------------------------------------
 
 def _store(**over):

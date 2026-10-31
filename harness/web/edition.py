@@ -103,8 +103,14 @@ def _drafts(request: Request) -> bool:
 
 
 def _listing(request: Request) -> list[str]:
-    """Every page the edition shows, prose and plates in one scan-ordered run."""
+    """The collapsed listing prev/next walks, a run standing as its first leaf. A
+    sweep over the text wants `_leaves`, or it misses the inside of every chapter."""
     return stores.in_reading_order(_root(request), _drafts(request))
+
+
+def _leaves(request: Request) -> list[str]:
+    """Every leaf of text this sitting can show."""
+    return stores.text_leaves(_root(request), _drafts(request))
 
 
 def _ident(raw: str) -> str:
@@ -185,7 +191,7 @@ def _outline(request: Request) -> list[dict]:
     served = stores.served_folios(root, drafts)
     folios = stores.folio_by_ref(root)
     tree = _toc_tree(load_toc(root), root, served, base)
-    by_toc = {r["toc_id"]: r for r in every if r.get("toc_id")}
+    by_toc = {r["toc_id"]: r for r in every if r.get("toc_id") and r.get("refs")}
 
     def _stands_for(ref: str) -> str:
         """The listing entry a leaf is under: its run's head, else itself."""
@@ -245,15 +251,15 @@ def _outline(request: Request) -> list[dict]:
             part = p
         here = placed_at.get(ref, [])
         if here:
-            # The unplaced divisions the Contents puts before the first one that
-            # lands here go out first, so the outline keeps the book's order.
-            first = tree.index(here[0])
-            while k < first:
+            # The unplaced divisions the Contents puts before the last one that
+            # lands here go out first, so the outline keeps the book's order —
+            # including one between two divisions that share this leaf.
+            last = tree.index(here[-1])
+            while k <= last:
                 node = tree[k]
                 k += 1
                 if node.get("id") not in at:
                     rows.append({"kind": "toc", "nodes": [node]})
-            k = max(k, tree.index(here[-1]) + 1)
         run = heads_of.get(ref)
         if run is not None:
             rows.append({"kind": "run", "ref": ref, "run": run, "nodes": here,
@@ -277,13 +283,15 @@ def _outline(request: Request) -> list[dict]:
 def index(request: Request):
     root = _root(request)
     refs = _listing(request)
-    signed = set(stores.collated(root))
+    leaves = _leaves(request)
+    signed = stores.collated(root)
     # The count says both numbers when both are on show: "42 page(s)" over a list
     # that is nine-tenths unread would be a claim about the edition's progress
-    # that the edition cannot support.
-    here = (f"{len(refs)} page(s): {len(signed)} collated, "
-            f"{len(refs) - len(signed)} machine draft"
-            if _drafts(request) else f"{len(refs)} page(s) collated")
+    # that the edition cannot support. Leaves and not `refs`, which is the listing:
+    # a chapter is one entry there, and a cover or a plate is one that nobody collates.
+    here = (f"{len(leaves)} page(s): {len(signed)} collated, "
+            f"{len(leaves) - len(signed)} machine draft"
+            if _drafts(request) else f"{len(signed)} page(s) collated")
     return templates.TemplateResponse(
         request,
         "edition/index.html",
@@ -1079,11 +1087,12 @@ def _chapter_leaves(request: Request, run: dict, root: Path) -> list[dict]:
     """
     base = _base(request)
     refs = [ui.norm_ref(r) for r in run["refs"]]
-    every = stores.runs(root)
-    chs = [r for r in every if r.get("kind") == chapters.KIND]
-    at = next(i for i, r in enumerate(chs) if r["id"] == run["id"])
-    prev_ch = chs[at - 1] if run.get("head_shared") and at > 0 else None
-    next_ch = chs[at + 1] if run.get("tail_shared") and at + 1 < len(chs) else None
+    # The ToC's neighbours and not the next run along: a chapter left underived is
+    # still what stands next to this one, and its text is not this chapter's.
+    served = {r["id"] for r in stores.runs(root) if r.get("kind") == chapters.KIND}
+    before, after = chapters.neighbours(root, run["id"])
+    prev_ch = before if run.get("head_shared") else None
+    next_ch = after if run.get("tail_shared") else None
     index = stores.folio_index(root)
     exempt = set(stores.exempt(root))
     out = []
@@ -1103,13 +1112,15 @@ def _chapter_leaves(request: Request, run: dict, root: Path) -> list[dict]:
                 cut = _split_at(doc["html"], run["toc_id"])
                 if cut:
                     rec["before"], doc["html"] = cut
-                    rec["other_url"] = f"{base}/run/{prev_ch['id']}#{rec['anchor']}"
+                    rec["other_url"] = (f"{base}/run/{prev_ch['id']}#{rec['anchor']}"
+                                        if prev_ch["id"] in served else "")
                     rec["other_title"] = prev_ch["title"]
             if k == len(refs) - 1 and next_ch is not None:
-                cut = _split_at(doc["html"], next_ch["toc_id"])
+                cut = _split_at(doc["html"], next_ch["id"])
                 if cut:
                     doc["html"], rec["after"] = cut
-                    rec["other_url"] = f"{base}/run/{next_ch['id']}#{next_ch['toc_id']}"
+                    rec["other_url"] = (f"{base}/run/{next_ch['id']}#{next_ch['id']}"
+                                        if next_ch["id"] in served else "")
                     rec["other_title"] = next_ch["title"]
         elif path is None and ref in exempt:
             rec.update(kind="exempt", leaf_kind=tei_html.leaf_kind(ref, root),
@@ -1592,6 +1603,9 @@ def _leaf_doc(path: Path, ref: str, root: Path, place: bool = True,
 #: not for reading the corpus through; `entity occurrences` is the whole list.
 MENTIONS = 8
 
+#: How many hits in the text a search lists.
+SEARCH_HITS = 200
+
 
 def _mentions(ident: str, refs: list[str], root: Path) -> dict:
     """One entity's mentions, out of the cached whole-store sweep, **by page**.
@@ -1703,7 +1717,7 @@ def entity(request: Request, ident: str):
     hover. The pane is the one place a map is.
     """
     root = _root(request)
-    ctx = _entity_ctx(_ident(ident), _listing(request), root, _base(request),
+    ctx = _entity_ctx(_ident(ident), _leaves(request), root, _base(request),
                       _assets(request)) | {"static": _static(request)}
     if _partial(request):
         return templates.TemplateResponse(request, "edition/_entity.html", ctx)
@@ -2350,7 +2364,9 @@ def search(request: Request, q: str = ""):
         # Whatever this sitting can read, it can find: a page reachable at its own
         # URL and invisible to search is a worse lie than an unread page in the
         # results, and each hit carries its rank.
-        for ref in _listing(request):
+        for ref in _leaves(request):
+            if len(hits) > SEARCH_HITS:
+                break
             path, rank = tei_html.page_source(ref, root)
             if path is None:
                 continue
@@ -2372,8 +2388,10 @@ def search(request: Request, q: str = ""):
                         "after": text[m.end() : b],
                     }
                 )
-                if len(hits) > 200:
-                    break
+    # One past the cap is how a cut list is told from one that happens to fill it,
+    # and the header says so: a list that stops silently reads as all there is.
+    cut = "the first " if len(hits) > SEARCH_HITS else ""
+    hits = hits[:SEARCH_HITS]
     return templates.TemplateResponse(
         request,
         "edition/search.html",
@@ -2382,7 +2400,7 @@ def search(request: Request, q: str = ""):
             q=q,
             hits=hits,
             ents=ents,
-            here=f"{len(hits)} in the text, {len(ents)} in the encyclopedia",
+            here=f"{cut}{len(hits)} in the text, {len(ents)} in the encyclopedia",
         ),
     )
 

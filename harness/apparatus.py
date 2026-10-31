@@ -462,6 +462,9 @@ def check(root: Path = Path(".")) -> dict:
         refs = [norm_ref(r) for r in run.get("refs") or []]
         kind = run.get("kind")
 
+        if not refs:
+            errors.append({"run": rid, "rule": "empty-run",
+                           "detail": "names no leaves, so it has no page to serve"})
         if kind not in KINDS:
             errors.append({"run": rid, "rule": "unknown-kind",
                            "detail": f"{kind!r} is not one of {sorted(KINDS)}"})
@@ -667,7 +670,14 @@ def _check_leaves(root: Path, exempt: set[str]) -> tuple[dict, list]:
     for p in sorted(d.glob(f"{stem(root)}-*")) if d.is_dir() else []:
         if p.suffix not in LEAF_EXTS:
             continue
-        ref = ref_of(p.stem, root)
+        try:
+            ref = ref_of(p.stem, root)
+        except ValueError:
+            errors.append({
+                "run": "", "rule": "leaf-not-a-page", "detail": p.name,
+                "why": "`leaf_source` looks a leaf up by its page's own name, so "
+                       "this file is never served"})
+            continue
         row = {"file": p.name, "scale": "", "aspect": ""}
         if ref not in exempt:
             errors.append({

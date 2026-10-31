@@ -519,12 +519,20 @@ def foreign_citation(before: str, names: set[str]) -> str:
 #: written once.
 _GAP = r"[\s,;.\-–—]*"
 
+#: `_LOCANTS`, less the one reading `p. 5` and `l. c.` already have below.
+_FURNITURE_LOCANTS = r"(?:\s*,?\s*(?!p\.\s*\d|l\.\s*c\.)[a-z][¹²³⁴⁵⁶⁷⁸⁹0-9]?\b)*"
+
+#: **Each piece reads one way, because this is matched against text that fails.**
+#: A string with two readings per numeral doubles the work per numeral once the
+#: match has to give up: 12 numerals took 32 s. So a digit run and a capitalised
+#: word are possessive, and a locant steps aside for `p. 5` and `l. c.`. `Figs. 3`
+#: and `Plate XIV` have no branch of their own: a capitalised word and then a
+#: numeral are those already, and a second branch was only a second reading.
 _FURNITURE = (
-    _GAP + r"(?:(?:in|and|also|op\.\s*cit\.|l\.\s*c\.|pp?\.\s*\d+)" + _GAP +
-    r"|Plates?\.?\s+(?:[IVXLC]+|\d+)" + _GAP +
-    r"|Figs?\.\s*\d+" + _LOCANTS + _GAP +
-    r"|\d+" + _LOCANTS + _GAP +
-    r"|[A-Z][\w’']*" + _GAP + r"|[(\[])*")
+    _GAP + r"(?:(?:in|and|also|op\.\s*cit\.|l\.\s*c\.|pp?\.\s*\d++" + _FURNITURE_LOCANTS + r")"
+    + _GAP +
+    r"|\d++" + _FURNITURE_LOCANTS + _GAP +
+    r"|[A-Z][\w’']*+" + _GAP + r"|[(\[])*")
 
 #: `Ibid.` at the head of what precedes a reference, with only furniture
 #: between. `Ibid` and `Ibid.` both, since `2-004` prints it without the stop.

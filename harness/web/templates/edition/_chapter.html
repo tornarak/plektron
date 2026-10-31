@@ -20,11 +20,14 @@
 
 {# The part of a shared leaf that is the neighbouring chapter's: kept, greyed, and
    a link there. The label is the link and not the block: the text holds links of
-   its own, and anchors do not nest. #}
+   its own, and anchors do not nest. A neighbour served a leaf at a time has no page
+   to link to, so its label names it and goes nowhere. #}
 {% macro other(html, l, where) %}
 <div class='other-chapter {{ where }}'>
-  <a class='other-label' href='{{ l.other_url }}'>{{ "← from" if where == "before"
-    else "continues in" }} {{ l.other_title }}{{ "" if where == "before" else " →" }}</a>
+  {% set label %}{{ "← from" if where == "before"
+    else "continues in" }} {{ l.other_title }}{{ "" if where == "before" else " →" }}{% endset %}
+  {% if l.other_url %}<a class='other-label' href='{{ l.other_url }}'>{{ label }}</a>
+  {% else %}<span class='other-label'>{{ label }}</span>{% endif %}
   <div class='other-text'>{{ html | safe }}</div>
 </div>
 {% endmacro %}

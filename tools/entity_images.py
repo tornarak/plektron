@@ -54,6 +54,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from harness import pictures  # noqa: E402
 from harness.atomic import write_atomic  # noqa: E402
 from harness.entities import load  # noqa: E402
+from harness.layout import shared  # noqa: E402
 from tools.gazetteer import _get, entities  # noqa: E402
 
 COMMONS = "https://commons.wikimedia.org/w/api.php"
@@ -270,8 +271,9 @@ def main(argv: list[str] | None = None) -> int:
         print(f"{tally['!']} lookup(s) FAILED — their prior rows are kept, "
               f"nothing was dropped on their account", file=sys.stderr)
     if a.commit:
-        write_atomic(a.root / pictures.LEDGER, pictures.dump(new))
-        print(f"wrote {pictures.LEDGER}")
+        path = shared(a.root, pictures.LEDGER)
+        write_atomic(path, pictures.dump(new))
+        print(f"wrote {path}")
     else:
         print("report only; --commit writes")
     return 0

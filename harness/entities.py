@@ -521,14 +521,23 @@ def for_text(rec: dict, root: Path) -> dict:
 
 def ratify_text(text: str, root: Path) -> str:
     """An entry's file with this text added to its ratifications. Unchanged if it
-    had this text already, or holds no status line to change."""
-    own = stem(root)
+    had this text already, or holds no status line to change.
 
-    def add(m: re.Match) -> str:
-        have = m[1].split()[1:]
-        return m[0] if own in have else f"- status: ratified {' '.join([*have, own])}\n"
-    return re.sub(r"^- status: ((?:proposed|ratified)(?: \S+)*)\n", add, text, count=1,
-                  flags=re.M)
+    **Keyed off the line the parser reads**, `annotations.set_status`'s rule and for
+    its reason: `_FIELD` accepts `- status:proposed`, and fields are read only from
+    the head, so a pattern over the whole file could rewrite a line of the gloss and
+    report a ratification that did not happen.
+    """
+    own = stem(root)
+    first = _SECTION.search(text)
+    for f in _FIELD.finditer(text[:first.start()] if first else text):
+        if f[1] != "status":
+            continue
+        status, *have = f[2].split() or [""]
+        if status not in STATUSES or own in have:
+            return text
+        return f"{text[:f.start()]}- status: ratified {' '.join([*have, own])}{text[f.end(2):]}"
+    return text
 
 
 def parse(text: str, where: str = "") -> dict:
@@ -1536,7 +1545,11 @@ def check(root: Path = Path("."), tick: Callable | None = None) -> dict:
             rung[variant] = min(rung.get(variant, step), step)
             raised_from.setdefault(variant, set()).add(form)
             for c in claims:
-                met.setdefault(c["id"], (form, c))
+                # An entity holding this variant through two rows owns it if
+                # either links by rule, so the rule-linked row is the one kept.
+                held = met.get(c["id"])
+                if held is None or (c["auto"] and not held[1]["auto"]):
+                    met[c["id"]] = (form, c)
     lowest: dict[tuple, str] = {}
     for variant, met in by_variant.items():
         if len(met) < 2:

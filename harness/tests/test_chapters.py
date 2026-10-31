@@ -259,6 +259,70 @@ def test_a_shared_leaf_greys_the_other_chapters_part_and_links_to_it(tmp_path, c
     assert r.headers["location"] == "/edition/run/chII#leaf-1-004"
 
 
+def test_shared_text_is_titled_by_the_tocs_neighbour_across_a_gap(tmp_path, client):
+    """Chapter III has no opener, so neither it nor II derives. IV's first leaf carries
+    III's tail, and the nearest derived chapter, I, must not be credited with it."""
+    _toc(tmp_path, "chI", "chII", "chIII", "chIV")
+    page(tmp_path, "1-001", _opens("chI"))
+    page(tmp_path, "1-003", _opens("chII"))
+    page(tmp_path, "1-006", _opens("chIV", before="<p>Tail of three.</p>"))
+    body = client().get("/edition/run/chIV").text
+    # A label and no link: the neighbour has no run to send a reader to.
+    assert "<span class='other-label'>← from III. Chapter III</span>" in body
+    assert "← from I. Chapter I" not in body
+    grey = body[body.index("<div class='other-text'>"):body.index('id="chIV"')]
+    assert "Tail of three." in grey
+
+
+def test_a_chapter_with_no_text_of_its_own_derives_no_run(tmp_path):
+    """Its head and the next one's stand together, so there is nothing between them
+    and the arithmetic would give a run of no leaves, which every reader indexes."""
+    _toc(tmp_path, "chI", "chII")
+    page(tmp_path, "1-003", '<pb n="1"/><milestone unit="chapter" n="chI" resp="#mz"/>'
+                            '<milestone unit="chapter" n="chII" resp="#mz"/><p>Text.</p>')
+    runs, problems = chapters.derive(tmp_path)
+    assert [r["id"] for r in runs] == ["chII"]
+    assert [(p["chapter"], p["rule"]) for p in problems] == [("chI", "no-text")]
+
+
+def test_sweeps_over_the_text_reach_the_inside_of_a_chapter(tmp_path, client):
+    """A chapter is one entry in the listing and many leaves of text. Search and an
+    entity's mentions are about the text, so neither may walk the listing."""
+    from test_entities import entry
+
+    entry(tmp_path, "place:markova", aliases=[("Markova", True)])
+    _toc(tmp_path, "chI")
+    page(tmp_path, "1-003", _opens("chI"))
+    page(tmp_path, "1-004", '<pb n="2"/><p>walrus at '
+                            '<rs ref="place:markova" resp="#mz">Markova</rs>.</p>')
+    c = client()
+    assert "/edition/page/1-004" in c.get("/edition/search?q=walrus").text
+    assert "/page/1-004" in c.get("/edition/entity/place:markova").text
+
+
+def test_the_index_counts_leaves_and_not_the_listing(tmp_path, client):
+    _toc(tmp_path, "chI")
+    page(tmp_path, "1-003", _opens("chI"))
+    page(tmp_path, "1-004", '<pb n="2"/><p>More.</p>')
+    _exempt(tmp_path, "1-001", kind="cover")
+    assert "2 page(s) collated" in client().get("/edition/").text
+
+
+def test_a_division_between_two_on_one_leaf_keeps_its_row(tmp_path, client):
+    """I and III land on one leaf and II on none: the Contents still shows II."""
+    _toc(tmp_path, "chI", "chII", "chIII")
+    page(tmp_path, "1-003", '<pb n="1"/><milestone unit="chapter" n="chI" resp="#mz"/>'
+                            '<p>a</p><milestone unit="chapter" n="chIII" resp="#mz"/><p>b</p>')
+    assert "Chapter II<" in client().get("/edition/").text
+
+
+def test_the_search_cap_holds_across_pages_and_says_so(tmp_path, client):
+    for i in range(3, 8):
+        page(tmp_path, f"1-{i:03d}", f'<pb n="{i}"/><p>{"walrus " * 90}</p>')
+    body = client().get("/edition/search?q=walrus").text
+    assert body.count("<mark>") == 200 and "the first 200 in the text" in body
+
+
 def _paras(body: str) -> list[str]:
     """The article's paragraphs, as text with tags stripped."""
     art = body[body.index("run-chapter"):body.index("</article>")]

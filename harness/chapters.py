@@ -87,6 +87,29 @@ def milestones(root: Path = Path("."), sources: dict[str, Path] | None = None
     return out
 
 
+def _in_toc(root: Path) -> list[dict]:
+    """The ToC's chapters, in the ToC's order."""
+    return [e for e in load_toc(root) if e.get("level") == LEVEL and e.get("id")]
+
+
+def _title(e: dict) -> str:
+    number = e.get("number") or ""
+    return f"{number}. {e.get('title') or ''}" if number else e.get("title", "")
+
+
+def neighbours(root: Path, cid: str) -> tuple[dict | None, dict | None]:
+    """The chapters the ToC sets either side of this one, each `{id, title}`.
+
+    **The ToC's and not the next run's**, and a neighbour may have no run: the list
+    of derived chapters closes over a gap, so its neighbour would be a chapter
+    further off, and its title would go on text that is not its own.
+    """
+    order = [{"id": e["id"], "title": _title(e)} for e in _in_toc(Path(root))]
+    at = next(i for i, e in enumerate(order) if e["id"] == cid)
+    return (order[at - 1] if at > 0 else None,
+            order[at + 1] if at + 1 < len(order) else None)
+
+
 def derive(root: Path = Path(".")) -> tuple[list[dict], list[dict]]:
     """`(runs, problems)` — one run per chapter whose span the text settles.
 
@@ -101,7 +124,7 @@ def derive(root: Path = Path(".")) -> tuple[list[dict], list[dict]]:
     to report; the view serves those pages one at a time.
     """
     root = Path(root)
-    chapters = [e for e in load_toc(root) if e.get("level") == LEVEL and e.get("id")]
+    chapters = _in_toc(root)
     sources = _sources(root)
     found = milestones(root, sources)
     # The last leaf of each part that holds any text. The last chapter of a part
@@ -148,11 +171,16 @@ def derive(root: Path = Path(".")) -> tuple[list[dict], list[dict]]:
             if npart == part:
                 tail_shared = succ["shared"]
                 end = nidx if tail_shared else nidx - 1
-        number = e.get("number") or ""
+                if end < start:
+                    problems.append({
+                        "chapter": e["id"], "rule": "no-text",
+                        "detail": f"opens on {head['ref']} with {nxt['id']} straight "
+                                  "after it, so no text is this chapter's"})
+                    continue
         runs.append({
             "id": e["id"],
             "kind": KIND,
-            "title": f"{number}. {e.get('title') or ''}" if number else e.get("title", ""),
+            "title": _title(e),
             "refs": [f"{part}-{i:03d}" for i in range(start, end + 1)],
             "toc_id": e["id"],
             "head_shared": head["shared"],

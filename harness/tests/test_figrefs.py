@@ -623,3 +623,25 @@ def test_the_citation_s_head_is_the_name_returned():
         {"Lamp", "Hough"}) == "Hough"
     # The short title alone still answers where the name is not printed.
     assert figrefs.foreign_citation("Compare Lamp, Plate 15, Fig. ", N) == "Lamp"
+
+
+def test_furniture_fails_in_time_proportionate_to_its_length():
+    """Eleven numerals took eight seconds with two readings per numeral, and this is
+    asked per name per numeral on a page render."""
+    import re
+    import time
+
+    for text in ("Figs. " + "123, " * 11 + "whereas ", "Abc " * 24 + "whereas ",
+                 "Fig. 3 p. 5 " * 11 + "whereas "):
+        began = time.perf_counter()
+        assert re.fullmatch(figrefs._FURNITURE, text) is None
+        assert time.perf_counter() - began < 0.5, text
+
+
+def test_a_locant_stepping_aside_loses_no_citation():
+    import re
+
+    for text in ("Fig. 22, l. c., ", "Fig. 3 p. 185, ", "Plate 15, Fig. 3 a, b, ",
+                 "Plates I and II, ", "Plate 3a, ", "Fig. 3 p. Sauer, ", "pp. 12 a, ",
+                 "p. 53a, "):
+        assert re.fullmatch(figrefs._FURNITURE, text), text

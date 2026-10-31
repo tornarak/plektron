@@ -137,6 +137,17 @@ def test_check_is_keyed_on_the_same_store_as_load(tmp_path, monkeypatch):
           lambda: write(tmp_path / "edition" / "entities" / "place" / "anadyr.md", "# A\n")))
 
 
+def test_check_notices_the_geo_census(tmp_path, monkeypatch):
+    """An `area:` resolves against `edition/geo/index.json`, so a rebuilt atlas can
+    change what the check says."""
+    census = tmp_path / "edition" / "geo" / "index.json"
+    monkeypatch.setattr("harness.entities.check", Probe(lambda: [census]))
+    write(census, "{}")
+
+    pins(lambda: stores.check(tmp_path),
+         ("edition/geo/index.json", lambda: write(census, '{"shapes": {}}')))
+
+
 def test_lexicon_is_keyed_on_every_note(tmp_path, monkeypatch):
     files = lambda: sorted((tmp_path / "edition" / "lexicon").glob("*.md"))  # noqa: E731
     monkeypatch.setattr("harness.lexicon.load", Probe(files))
@@ -652,16 +663,10 @@ def test_the_native_memo_is_the_no_exclude_index_only(tmp_path, monkeypatch):
     assert "exclude" not in inspect.signature(stores.native).parameters
 
 
-@pytest.mark.xfail(strict=True, reason="the fold table is not in native's key")
 def test_native_notices_the_fold_table(tmp_path, monkeypatch):
     """`lookup.index` reads `config/marks.json` for the contrasts it folds
-    on, so the fold table decides the buckets — and it is not in the key.
-
-    Marked expected-to-fail rather than fixed here: this file is a gate, not a
-    repair. Editing the contrasts under a running `edition serve` serves the old
-    bucketing, which is the staleness the whole module is arranged against; the
-    fix is to add the config to `native`'s stamp, and this test then passes.
-    """
+    on, so the fold table decides the buckets. Editing the contrasts under a
+    running `edition serve` must not go on serving the old bucketing."""
     from harness.marks import CONFIG
 
     def files():

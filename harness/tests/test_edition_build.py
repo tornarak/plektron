@@ -142,3 +142,24 @@ def test_the_title_is_the_books_own_and_a_text_with_no_header_shows_its_folder(t
     (tree / "tei" / "corpus-header.xml").unlink()
     build(tree, tmp_path / "b", base="/x")
     assert f"<title>{tree.name}" in (tmp_path / "b" / "index.html").read_text(encoding="utf-8")
+
+
+@pytest.mark.parametrize("name", ["text", "ancestor", "store", "foreign"])
+def test_a_build_refuses_to_clear_what_it_did_not_write(tree, tmp_path, name):
+    (tree / "gt" / "ocr").mkdir(parents=True, exist_ok=True)
+    (tmp_path / "foreign").mkdir()
+    (tmp_path / "foreign" / "notes.txt").write_text("mine")
+    out = {"text": tree, "ancestor": tree.parent, "store": tree / "edition",
+           "foreign": tmp_path / "foreign"}[name]
+    before = _files(out)
+    with pytest.raises(ValueError, match="refusing to clear"):
+        build(tree, out)
+    assert _files(out) == before
+
+
+def test_a_build_clears_an_earlier_build(tree, tmp_path):
+    out = tmp_path / "site"
+    build(tree, out)
+    (out / "stale.html").write_text("left over")
+    build(tree, out)
+    assert not (out / "stale.html").exists()

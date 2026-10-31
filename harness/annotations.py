@@ -435,7 +435,9 @@ def set_status(text: str, status: str, where: str = "") -> str:
     head_end = first.start() if first else len(text)
     for f in _FIELD.finditer(text[:head_end]):
         if f.group(1) == "status":
-            return f"{text[:f.start()]}- status: {status}{text[f.end():]}"
+            # `end(2)`: the field's `\s*$` runs on through the blank line where
+            # this is the head's last field, and the next heading would join it.
+            return f"{text[:f.start()]}- status: {status}{text[f.end(2):]}"
     raise Malformed(f"{at}no `- status:` line to move")
 
 

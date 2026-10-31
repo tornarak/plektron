@@ -153,7 +153,7 @@ def run_figrefs(a) -> int:
     from ..web import stores
     from ..web.edition import figref_census
 
-    refs = page_refs(a) or stores.in_reading_order(a.root, True)
+    refs = page_refs(a) or stores.text_leaves(a.root, True)
     with progress("censusing") as tick:
         rep = figref_census(a.root, refs, tick=tick)
     rows = rep["rows"]

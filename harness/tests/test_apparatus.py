@@ -434,6 +434,19 @@ def test_an_editors_leaf_for_a_non_exempt_page_fails(book: Path):
     assert any(e["rule"] == "leaf-not-exempt" for e in A.check(book)["errors"])
 
 
+def test_a_file_that_names_no_page_is_reported_and_does_not_crash_the_gate(book: Path):
+    p = book / "edition" / "page-img" / "chukchi-1-361-old.png"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_bytes(b"x")
+    errs = [e for e in A.check(book)["errors"] if e["rule"] == "leaf-not-a-page"]
+    assert [e["detail"] for e in errs] == [p.name]
+
+
+def test_a_run_that_names_no_leaves_fails(tmp_path: Path):
+    _runs(tmp_path, {"id": "contents", "kind": "toc", "title": "Contents", "refs": []})
+    assert any(e["rule"] == "empty-run" for e in A.check(tmp_path)["errors"])
+
+
 def test_a_reshaped_editors_leaf_fails(book: Path, tmp_path: Path):
     """A rescale is a touch-up; a different aspect ratio is a crop or a stretch,
     which makes it a different leaf rather than a better one."""

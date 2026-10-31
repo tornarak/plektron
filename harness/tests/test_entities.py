@@ -16,6 +16,7 @@ import unicodedata
 from pathlib import Path
 
 import pytest
+from conftest import write_project
 
 from harness import entities as E
 
@@ -283,6 +284,24 @@ def test_the_census_climbs_the_ladder_to_find_where_two_rows_meet(tmp_path):
     assert hit["claimed_by"] == "being:raven taxon:corvus-corax"
     assert hit["rows"] == "Raven raven"
     assert any("case ladder brings them together" in e for e in rep["errors"])
+
+
+def test_a_collision_counts_the_row_that_links_by_rule(tmp_path):
+    """One entity holds the variant through two rows, the first in the sort `auto:
+    no`. It still owns the form, whichever row the census happened to meet first."""
+    entry(tmp_path, "being:raven", aliases=[("RAVEN", False), ("Raven", True)])
+    entry(tmp_path, "taxon:corvus-corax", aliases=[("RAVEN", True)])
+    rep = E.check(tmp_path)
+    hit, = rep["collisions"]
+    assert hit["auto"] == 2 and not rep["ok"]
+
+
+def test_ratifying_reads_the_head_and_leaves_the_gloss_alone(tmp_path):
+    root = write_project(tmp_path / "repo")
+    text = ("# place:markova — Markova\n\n- status:proposed\n\n## aliases\n\n"
+            "## gloss\n\n- status: proposed\nis how a draft says it.\n")
+    assert E.ratify_text(text, root) == text.replace(
+        "- status:proposed\n", "- status: ratified chukchi\n", 1)
 
 
 def test_a_collision_is_reported_once_and_not_at_every_rung(tmp_path):

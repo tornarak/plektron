@@ -56,6 +56,10 @@ from lxml import html as LH
 from .. import parallel
 from . import STATIC, cache, stores
 
+#: What marks a directory as a build's own to clear. Fixed text, so two builds of
+#: one tree are still the same bytes.
+OUT_MARK = ".edition-build"
+
 #: What `encodeURIComponent` leaves alone beyond what `quote` always does, so a
 #: URL derived here is the one the script builds, character for character.
 _JS_SAFE = "!~*'()"
@@ -266,17 +270,38 @@ def _fetch(client: TestClient, url: str, base: str) -> _Fetched:
                     f"HTTP {r.status_code}: {r.text.strip()[:160]}")
 
 
+def _clearable(root: Path, out: Path) -> None:
+    """Refuse an `out` this build did not write, before anything is deleted.
+
+    **The mark and not a guess at what a site looks like**: `static/` and an
+    `index.html` are what any web project holds, and `gt/` holds neither and is
+    just as lost. Absent or empty is fine, and so is an earlier build, however
+    far it got, since the mark goes down first.
+    """
+    if out.resolve() == Path(root).resolve() or out.resolve() in Path(root).resolve().parents:
+        raise ValueError(f"{out} holds the text's own stores: refusing to clear it. "
+                         "Name a directory of its own for the site")
+    if (out.exists() and any(out.iterdir()) and not (out / OUT_MARK).is_file()):
+        raise ValueError(f"{out} is not empty and holds no {OUT_MARK}, so no build "
+                         "wrote it: refusing to clear it. Name a directory of its "
+                         "own, or delete this one yourself if it is an older site")
+
+
 def build(root: Path, out: Path, base: str = "", drafts: bool = False,
           jobs: int | None = 1, tick=None) -> Site:
     """Write the site under `out` and say what failed. `out` is cleared first:
     a file left over from an earlier build would be served as though this one
-    had written it. `jobs=None` sizes the pool to the cores, as `--jobs` does
-    when it is not given; the default here is the serial crawl."""
+    had written it. `_clearable` says what may be cleared. `jobs=None` sizes the
+    pool to the cores, as `--jobs` does when it is not given; the default here is
+    the serial crawl."""
     base = norm_base(base)
     out = Path(out)
+    _clearable(root, out)
     if out.exists():
         shutil.rmtree(out)
     out.mkdir(parents=True)
+    (out / OUT_MARK).write_text("written by `harness edition build`, which clears "
+                                "this directory\n", encoding="utf-8")
     fold = str.casefold if _folds(out) else str
     shutil.copytree(STATIC, out / "static")
     site = Site(out=out, base=base)

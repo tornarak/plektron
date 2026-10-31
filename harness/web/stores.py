@@ -147,8 +147,9 @@ def _check(root: str, _key: bytes) -> dict:
 def check(root: Path) -> dict:
     """`entity check`'s report. The encyclopedia index called this immediately
     after `load`, so the store was walked and parsed twice per request. Keyed on
-    the ledger too, since the check reads it."""
-    return _check(str(root), stamp(_entity_files(root) + _ledger_files(root)))
+    the ledger and the geo census too, since the check reads both."""
+    return _check(str(root), stamp(
+        _entity_files(root) + _ledger_files(root) + [_index_path(Path(root))]))
 
 
 @lru_cache(maxsize=MAXSIZE)
@@ -485,8 +486,21 @@ def printed_numbers(root: Path) -> tuple[frozenset, frozenset]:
                             stamp([Path(root) / src] if src else []))
 
 
+def text_leaves(root: Path, drafts: bool) -> list[str]:
+    """Every leaf of text this sitting can show, one per scan, in scan order.
+
+    **What a sweep over the text walks**: search, an entity's mentions, a census.
+    `in_reading_order` is the wrong list for any of those, since it keeps only the
+    first leaf of a run and so skips the inside of every chapter.
+    """
+    return readable(root) if drafts else collated(root)
+
+
 def in_reading_order(root: Path, drafts: bool) -> list[str]:
-    """Every page the edition can show, in scan order — prose and plates alike.
+    """The listing prev/next walks, in scan order — prose and plates alike.
+
+    **Not a list of pages**: a run is one entry here, however many leaves it holds.
+    A sweep over the text wants `text_leaves`.
 
     **Prev/next has to cross a plate**, or a reader walking the book falls off it
     at every illustration and has no way back on. So the exempt pages are threaded
@@ -501,8 +515,7 @@ def in_reading_order(root: Path, drafts: bool) -> list[str]:
     arithmetic every caller does on it; what changes is that one member of the
     list can now stand for several scans, and `run_for` is how a caller asks.
     """
-    seen = readable(root) if drafts else collated(root)
-    refs = set(tei_html._sorted_refs([*seen, *exempt(root)]))
+    refs = set(tei_html._sorted_refs([*text_leaves(root, drafts), *exempt(root)]))
     every = runs(root)
     # A run's head stands for it whenever *any* of its leaves can be shown: a
     # chapter whose opening leaf is uncollated is still a chapter with collated
@@ -546,9 +559,11 @@ def native(root: Path) -> dict:
     **This is the lexicon's population**, and the reason the reading view does
     not wait on collation: 609 forms with the pages and printed lines they occur
     on, out of a store a human has already been through. A whole-corpus parse,
-    so it is read once per change to `gt/ocr/` rather than once per card.
+    so it is read once per change to `gt/ocr/` rather than once per card. Keyed
+    on the fold table too, since the buckets are drawn by it.
     """
-    return _native(str(root), stamp(_gt_ocr_files(root)))
+    from ..marks import CONFIG
+    return _native(str(root), stamp(_gt_ocr_files(root) + [Path(root) / CONFIG]))
 
 
 @lru_cache(maxsize=MAXSIZE)
