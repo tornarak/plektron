@@ -5,7 +5,8 @@
     "kind": "which renderer. From a closed vocabulary (apparatus.KINDS); an unknown one is a gate failure rather than a page that silently falls back.",
     "title": "what the listing calls it.",
     "refs": "the scans, in binding order, contiguous within one part.",
-    "source": "the store the renderer reads. Its own `source.refs` must equal `refs` here, and so must the set of per-entry `ref` fields inside it — three statements of one span, checked against each other by `edition runs` rather than merged."
+    "source": "the store the renderer reads. Its own `source.refs` must equal `refs` here, and so must the set of per-entry `ref` fields inside it — three statements of one span, checked against each other by `edition runs` rather than merged.",
+    "toc_id": "optional: the entry in edition/toc.json this run is, by id — the editor's own word, where the printed Contents lists the apparatus (Authorities Quoted, Alphabet). A chapter run carries the same field, derived from its milestone. The listing merges a division with the run that declares it, and nothing matches a run to an entry by title. Must name an entry; `edition runs` fails on one that does not."
   },
   "_note": "Chapters are runs too, with their spans derived from edition/toc.json and the chapter milestones in the text (harness/chapters.py) rather than declared here. Nothing that consumes a run may care which of the two it got; see docs/edition.md.",
   "runs": [
@@ -28,14 +29,16 @@
       "kind": "authorities",
       "title": "Authorities Quoted",
       "refs": ["1-023", "1-024", "1-025", "1-026", "1-027", "1-028", "1-029"],
-      "source": "edition/authorities.json"
+      "source": "edition/authorities.json",
+      "toc_id": "front.authorities-quoted"
     },
     {
       "id": "alphabet",
       "kind": "alphabet",
       "title": "Alphabet",
       "refs": ["1-030"],
-      "source": "edition/alphabet.json"
+      "source": "edition/alphabet.json",
+      "toc_id": "front.alphabet"
     }
   ]
 }

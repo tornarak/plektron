@@ -440,6 +440,11 @@ def check(root: Path = Path(".")) -> dict:
     rows: list[dict] = []
     leaf_rows: list[dict] = []
     idx = folio_index(root)
+    toc_ids = {e["id"] for e in load_toc(root) if e.get("id")}
+    # Which run each Contents entry is, declared or derived: two runs for one
+    # entry are two documents under one heading, and the listing could put the
+    # entry's sections under only one of them.
+    toc_claimed: dict[str, str] = {}
 
     try:
         scans = set(all_scans(root))
@@ -460,6 +465,20 @@ def check(root: Path = Path(".")) -> dict:
         if kind not in KINDS:
             errors.append({"run": rid, "rule": "unknown-kind",
                            "detail": f"{kind!r} is not one of {sorted(KINDS)}"})
+        # **`toc_id` is the editor saying which Contents entry this run is**, and
+        # it is the only way a declared run is ever matched to one: a title match
+        # would make "Alphabet" in the Contents and "Alphabet" in runs.json agree
+        # by coincidence of spelling. So the id must exist, and must be claimed
+        # once.
+        if tid := run.get("toc_id"):
+            if tid not in toc_ids:
+                errors.append({"run": rid, "rule": "unknown-toc-id",
+                               "detail": f"{tid!r} is not an entry id in "
+                                         "edition/toc.json"})
+            elif tid in toc_claimed:
+                errors.append({"run": rid, "rule": "duplicate-toc-id",
+                               "detail": f"{tid!r} is also {toc_claimed[tid]}'s"})
+            toc_claimed.setdefault(tid, rid)
         for r in refs:
             if scans and r not in scans:
                 errors.append({"run": rid, "rule": "no-such-scan", "detail": r})
@@ -592,6 +611,11 @@ def check(root: Path = Path(".")) -> dict:
             if r in claimed:
                 errors.append({"run": rid, "rule": "overlapping-runs",
                                "detail": f"{r} is also in {claimed[r]}"})
+        if run["toc_id"] in toc_claimed:
+            errors.append({"run": rid, "rule": "duplicate-toc-id",
+                           "detail": f"{run['toc_id']!r} is also "
+                                     f"{toc_claimed[run['toc_id']]}'s"})
+        toc_claimed.setdefault(run["toc_id"], rid)
         rows.append({"run": rid, "kind": run["kind"], "title": run["title"],
                      "span": f"{run['refs'][0]} — {run['refs'][-1]}",
                      "leaves": len(run["refs"]), "entries": 0,

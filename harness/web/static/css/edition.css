@@ -1051,6 +1051,54 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
 .run .parsed { margin:.1rem 0 0; font-size:.8rem; color:var(--dim) }
 .run-tag, .leaf-tag { font-family:system-ui,sans-serif; font-size:.7rem;
   text-transform:uppercase; letter-spacing:.04em; color:var(--dim) }
+
+/* --- the outline, on the index ---
+   The Contents' vocabulary (`.toc-title`, `.toc-num`, `.page-no`) over a third
+   question: what is in the book, in the binding's order. A division's row is
+   the weight `.run .toc-l1` gives a chapter; its sections nest under it and
+   indent once per rung, the panel's way, since the markup nests. The leaves
+   between chapters — covers, blanks, the map — are quiet rows: a scan number and
+   one word, because that is all the store says about them. */
+.outline { list-style:none; margin:0; padding:0 }
+.outline > li { margin:.3rem 0; line-height:1.5 }
+.outline .ol-part { margin-top:1.6rem }
+.outline .ol-part:first-child { margin-top:.4rem }
+.outline .ol-part h4 { margin:0 0 .3rem; font-size:.78rem; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--dim); border-bottom:1px solid var(--rule);
+  padding-bottom:.15rem }
+.outline .ol-run, .outline .ol-toc { margin-top:.9rem }
+.outline .ol-run > .toc-title, .outline .ol-toc > .toc-title,
+.outline .ol-page > .toc-title, .outline .ol-leaf > .toc-title {
+  font-size:1.05rem; font-weight:600; text-decoration:none; color:inherit }
+.outline > li > a.toc-title:hover { text-decoration:underline }
+.outline .toc-num { color:var(--dim); font-variant-numeric:tabular-nums }
+.outline .ref { font-family:system-ui,sans-serif; font-size:.75rem;
+  color:var(--dim); text-decoration:none; margin-left:.4rem;
+  font-variant-numeric:tabular-nums }
+.outline .ref:hover { color:var(--fg); text-decoration:underline }
+.outline .ol-leaf, .outline .ol-page { margin:.1rem 0 }
+.outline .ol-leaf > .ref:first-child, .outline .ol-page > .ref:first-child
+  { margin-left:0 }
+.outline .draft-tag { margin-left:.4rem }
+.outline .leaf-tag { margin-left:.4rem }
+/* **The folio floats right, on every row that has one**, set as the Contents
+   run sets it: dim, tabular, a dotted rule under the live ones. A row is a
+   block and not a flex line so the float works the same at every depth and
+   the nested list under a section row can follow it in the flow. */
+.outline .page-no { float:right; clear:right; margin-left:.6rem; color:var(--dim);
+  font-variant-numeric:tabular-nums; white-space:nowrap; font-size:.9em;
+  text-decoration:none }
+.outline a.page-no { border-bottom:1px dotted var(--rule) }
+.outline a.page-no:hover { color:var(--fg); border-bottom-color:currentColor }
+.outline .sections { list-style:none; margin:.15rem 0 0; padding-left:1.4rem;
+  font-size:.92rem; clear:right }
+.outline .sections .sections { padding-left:1.1rem }
+.outline .sections li { padding:.05rem 0 }
+.outline .sections .sections li { font-size:.95em }
+.outline .sections .toc-d3, .outline .sections .toc-d4 { color:var(--dim) }
+.outline .sections .toc-d4 { font-style:italic }
+.outline .sections a.plain { color:inherit; text-decoration:none }
+.outline .sections a.plain:hover { text-decoration:underline }
 .tier1-note { font-family:system-ui,sans-serif; font-size:.7rem;
   color:var(--dim); border-bottom:1px dotted currentColor; cursor:help }
 

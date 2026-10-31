@@ -393,3 +393,107 @@ def test_the_listing_keeps_a_chapter_whose_opener_is_unread(tmp_path, client):
     body = client().get("/edition/").text
     assert "1-003" in body
     assert "/edition/page/1-004" not in body
+
+
+# ------------------------------------------------------------- the outline
+
+
+def _toc_with_sections(root: Path) -> None:
+    """Chapter I with a section and a subsection under it, and chapter II."""
+    root.joinpath("edition").mkdir(parents=True, exist_ok=True)
+    root.joinpath("edition", "toc.json").write_text(json.dumps({"entries": [
+        {"level": 1, "chapter": "I", "number": "I", "title": "Names and Habitat",
+         "page_start": 10, "id": "chI"},
+        {"level": 2, "chapter": "I", "number": None, "title": "Names",
+         "page_start": 10, "id": "chI.1"},
+        {"level": 3, "chapter": "I", "number": None, "title": "Ancient Names",
+         "page_start": 11, "id": "chI.1.1"},
+        {"level": 1, "chapter": "II", "number": "II", "title": "Trade",
+         "page_start": 20, "id": "chII"},
+    ]}), encoding="utf-8")
+
+
+def _li(body: str, marker: str) -> str:
+    """The outline row that contains `marker`: from its `<li class='ol-…'>` to
+    the next row's, since a chapter's row holds its sections' `<li>`s."""
+    outline = body.split("<ul class='outline'>")[1].split("</div>")[0]
+    items = re.split(r"(?=<li class='ol-)", outline)[1:]
+    hits = [it for it in items if marker in it]
+    assert len(hits) == 1, f"{len(hits)} rows carry {marker!r}"
+    return hits[0]
+
+
+def test_the_index_nests_a_chapters_sections_under_its_row(tmp_path, client):
+    """The index is the printed Contents in the binding's order: a chapter's
+    row links to its run and carries its sections, nested as the Contents
+    nests them, rather than standing as a scan number with a title beside it."""
+    _toc_with_sections(tmp_path)
+    page(tmp_path, "1-003", _opens("chI"))
+    page(tmp_path, "1-005", _opens("chII"))
+    body = client().get("/edition/").text
+    row = _li(body, "Names and Habitat")
+    assert "href='/edition/run/chI'" in row
+    assert "<span class='toc-num'>I.</span>" in row
+    assert "toc-d2" in row and ">Names<" in row
+    assert "toc-d3" in row and "Ancient Names" in row
+    # And the sections are the chapter's, not the next chapter's.
+    assert "Trade" not in row
+    assert body.index("Names and Habitat") < body.index(" Trade</a>")
+
+
+def test_a_chapter_with_nothing_collated_still_stands_in_the_outline(tmp_path, client):
+    """The listing drops a chapter no leaf of which can be shown, so prev/next
+    never walk into it; the Contents still has it, so the outline shows it with
+    its count and sends a reader to the run, where every leaf is a gap."""
+    _toc(tmp_path, "chI", "chII")
+    draft(tmp_path, "1-003", _opens("chI"))
+    page(tmp_path, "1-004", '<pb n="2"/><p>x</p>')
+    draft(tmp_path, "1-005", _opens("chII"))
+    body = client().get("/edition/").text
+    row = _li(body, "Chapter II<")
+    assert "href='/edition/run/chII'" in row
+    assert "0 of 1 collated" in row
+    assert "1 of 2 collated" in _li(body, "Chapter I<")
+
+
+def test_a_division_nothing_places_keeps_its_place_and_says_so(tmp_path, client):
+    """Chapter III opens nowhere, so neither it nor chapter II derives a run.
+    Chapter II is still *placed* — its milestone opens it on 1-005, and the
+    row sits on that page. Chapter III is placed by nothing: it is listed where
+    the Contents puts it, after II, marked unlocated, with no leaf claimed."""
+    _toc(tmp_path, "chI", "chII", "chIII")
+    page(tmp_path, "1-003", _opens("chI"))
+    page(tmp_path, "1-005", _opens("chII"))
+    body = client().get("/edition/").text
+    assert "href='/edition/run/chI'" in body
+    two, three = _li(body, "Chapter II<"), _li(body, "Chapter III<")
+    assert two.startswith("<li class='ol-page'>")
+    assert "href='/edition/page/1-005'" in two and "not located" not in two
+    assert three.startswith("<li class='ol-toc'>")
+    assert "not located" in three and "href=" not in three
+    assert body.index("Chapter I<") < body.index("Chapter II<") < body.index("Chapter III<")
+
+
+def test_a_leaf_that_is_not_text_is_never_a_draft(tmp_path, client):
+    """A cover cannot be collated, and the Contents is a store; tagging either
+    `draft` said something false about them to say something true about the
+    pages. The tag belongs to a text page alone."""
+    _toc(tmp_path, "chI")
+    _exempt(tmp_path, "1-001", kind="cover")
+    draft(tmp_path, "1-003", _opens("chI"))
+    draft(tmp_path, "1-002", '<pb n="1"/><p>front matter</p>')
+    body = client(drafts=True).get("/edition/").text
+    cover = _li(body, ">1-001<")
+    assert "leaf-tag'>cover" in cover and "draft-tag" not in cover
+    assert "draft-tag'>draft" in _li(body, ">1-002<")
+    assert "0 of 1 collated" in _li(body, "Chapter I<")
+
+
+def test_the_outline_heads_each_part(tmp_path, client):
+    _toc(tmp_path, "chI", "chII")
+    page(tmp_path, "1-003", _opens("chI"))
+    page(tmp_path, "2-003", _opens("chII"))
+    body = client().get("/edition/").text
+    assert "<h4>Part 1</h4>" in body and "<h4>Part 2</h4>" in body
+    assert body.index("Part 1") < body.index("Chapter I<") \
+        < body.index("Part 2") < body.index("Chapter II")

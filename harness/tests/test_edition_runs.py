@@ -831,3 +831,51 @@ def test_the_census_agrees_with_what_the_reading_view_serves():
         html = c.get(f"/edition/page/{ref}").text
         for r in (x for x in rows if x["ref"] == ref and x["state"] != "link"):
             assert escape(r["why"], quote=True) in html, (ref, r)
+
+
+# ------------------------------------------------- a run that is a Contents entry
+
+
+def _contents_with_front_matter(root: Path, toc_id: str = "front.introductory",
+                                second: bool = False) -> None:
+    _write(root, "edition/toc.json", json.dumps({
+        "source": {"refs": ["1-007"]},
+        "entries": [
+            {"level": 0, "title": "Introductory", "page_start": 1,
+             "id": "front.introductory", "ref": "1-007"}]}))
+    runs = [{"id": "contents", "kind": "toc", "title": "Contents",
+             "refs": ["1-007"], "source": "edition/toc.json", "toc_id": toc_id}]
+    if second:
+        runs.append({"id": "contents-2", "kind": "toc", "title": "Contents again",
+                     "refs": ["1-008"], "source": "edition/toc.json",
+                     "toc_id": toc_id})
+    _write(root, "edition/runs.json", json.dumps({"runs": runs}))
+    _exempt(root, "1-007", "1-008")
+    _scan(root, "1-007")
+    _scan(root, "1-008")
+
+
+def test_a_run_that_declares_its_entry_is_one_row_in_the_outline(tmp_path: Path):
+    """`toc_id` is the editor's word that this run *is* that Contents entry, so
+    the index shows the entry once, as the run's row, rather than the run under
+    its own title and the entry again as unlocated."""
+    _contents_with_front_matter(tmp_path)
+    body = _app(tmp_path).get("/edition/").text
+    assert body.count("Introductory") == 1
+    assert "not located" not in body
+    row = re.search(r"<li class='ol-run'>.*?</li>", body, re.S).group(0)
+    assert "Introductory" in row and "href='/edition/run/contents'" in row
+
+
+def test_a_toc_id_must_name_an_entry(tmp_path: Path):
+    from harness import apparatus
+    _contents_with_front_matter(tmp_path, toc_id="front.nothing")
+    rules = {e["rule"] for e in apparatus.check(tmp_path)["errors"]}
+    assert "unknown-toc-id" in rules
+
+
+def test_one_entry_is_one_run(tmp_path: Path):
+    from harness import apparatus
+    _contents_with_front_matter(tmp_path, second=True)
+    rules = {e["rule"] for e in apparatus.check(tmp_path)["errors"]}
+    assert "duplicate-toc-id" in rules

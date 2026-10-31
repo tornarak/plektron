@@ -1,6 +1,51 @@
 {% extends "edition/base.html" %}
 {% block title %}{{ work.title }}{% endblock %}
 
+{# The book's outline, in the binding's order — `edition._outline` says how the
+   two orders are reconciled and what each row kind is. This is the printed
+   Contents with everything that is *not* in a chapter standing between the
+   chapters: the covers, the front matter, the blanks, the map, a plate bound
+   outside any run. The flat list this replaced was scan numbers with a word
+   beside each, and the book's own shape was invisible in it.
+
+   Row classes are `_toc.html`'s — `.toc-title`, `.toc-num`, `.page-no` — so
+   the three renderings of one store share their vocabulary and their link rule:
+   a section links to the heading where the text opens it, else to the folio
+   where a witness places it, and where neither does the title is not a link. #}
+
+{# One Contents entry's own label: numeral, title, folio. #}
+{% macro label(n) -%}
+  {% if n.folio_url %}<a class='toc-title plain' href='{{ n.folio_url }}'>{%
+    else %}<span class='toc-title'>{% endif
+    %}{% if n.number %}<span class='toc-num'>{{ n.number }}.</span> {% endif
+    %}{{ n.title }}{% if n.folio_url %}</a>{% else %}</span>{% endif %}
+  {% if n.folio_url %}<a class='page-no' href='{{ n.folio_url }}'>{{
+    n.page_start }}</a>{% elif n.page_start %}<span
+    class='page-no'>{{ n.page_start }}</span>{% endif %}
+{%- endmacro %}
+
+{# A division's sections, nested as the Contents nests them. All of them: this
+   is the contents page, and a contents page that folds its sections away is a
+   list of chapter titles. #}
+{% macro sections(nodes) %}
+{% if nodes %}
+<ul class='sections'>
+{% for n in nodes %}
+  <li class='toc-d{{ n.depth }}'>{{ label(n) }}{{ sections(n.children) }}</li>
+{% endfor %}
+</ul>
+{% endif %}
+{% endmacro %}
+
+{# A top-level division's heading row. `url` is where the row sends a reader —
+   the run, or the page the folio index opened the division on — and the
+   division's own folio link is dropped for it, since the two would be one
+   target twice. #}
+{% macro division(n, url) -%}
+  <a class='toc-title' href='{{ url }}'>{% if n.number
+    %}<span class='toc-num'>{{ n.number }}.</span> {% endif %}{{ n.title }}</a>
+{%- endmacro %}
+
 {% block main %}
 <div id='primary'>
 <h3>The edition</h3>
@@ -9,21 +54,50 @@
    nothing else must still not mistake the list for the edition. #}
 <p class='draft-note'>Showing <code>mz/tei/</code> as well. A <span
 class='draft-tag'>draft</span> is what <code>tei generate</code> built from the
-zone and OCR stores; nobody has read it against the page.</p>
+zone and OCR stores; nobody has read it against the page. A chapter says how
+many of its pages are collated.</p>
 {% endif %}
 {% if refs %}
-{# A run stands in the list as its first leaf, so it needs its title said — the
-   Contents would otherwise sit among the plates as a bare scan number, and the
-   span it covers would be invisible. #}
-{# A leaf says what it is, for the run tag's reason one step further down: the
-   other 94 stood here as bare scan numbers, so the map, 44 plates and 42 blanks
-   were indistinguishable from each other and from a page nobody had collated.
-   A run wins where a leaf is both, since the title is the more specific fact. #}
-<ul>{% for r in refs %}<li><a href='{{ base }}/page/{{ r }}'>{{ r }}</a>{%
- if r in run_titles %} <span class='run-tag'>{{ run_titles[r] }}</span>{%
- elif r in leaf_kinds %} <span class='leaf-tag'>{{ leaf_kinds[r] }}</span>{%
- endif %}{%
- if drafts and r not in signed %} <span class='draft-tag'>draft</span>{% endif %}</li>{% endfor %}</ul>
+<ul class='outline'>
+{% for row in rows %}
+{% if row.kind == 'part' %}
+  <li class='ol-part'><h4>Part {{ row.n }}</h4></li>
+{% elif row.kind == 'run' %}
+  <li class='ol-run'>
+    {% for n in row.nodes %}{{ division(n, row.url) }}{% else
+    %}<a class='toc-title' href='{{ row.url }}'>{{ row.run.title }}</a>
+    <span class='run-tag'>apparatus</span>{% endfor %}
+    <a class='ref' href='{{ row.url }}'>{{ row.ref }}</a>
+    {% if row.status %}<span class='draft-tag'>{{ row.status }}</span>{% endif %}
+    {% for n in row.nodes %}{{ sections(n.children) }}{% endfor %}
+  </li>
+{% elif row.kind == 'leaf' %}
+  <li class='ol-leaf'>
+    {% for n in row.nodes %}{{ division(n, row.url) }}{% endfor %}
+    <a class='ref' href='{{ row.url }}'>{{ row.ref }}</a>
+    <span class='leaf-tag'>{{ row.leaf_kind }}</span>
+    {% for n in row.nodes %}{{ sections(n.children) }}{% endfor %}
+  </li>
+{% elif row.kind == 'page' %}
+  <li class='ol-page'>
+    {% for n in row.nodes %}{{ division(n, row.url) }}{% endfor %}
+    <a class='ref' href='{{ row.url }}'>{{ row.ref }}</a>
+    {% if row.folio %}<span class='page-no'>{{ row.folio }}</span>{% endif %}
+    {% if row.draft %}<span class='draft-tag'>draft</span>{% endif %}
+    {% for n in row.nodes %}{{ sections(n.children) }}{% endfor %}
+  </li>
+{% elif row.kind == 'toc' %}
+  {# Nothing places it: no run opens it and no served leaf prints its folio. It
+     keeps its place in the Contents and says so, rather than being hung on the
+     nearest leaf. #}
+  <li class='ol-toc'>
+    {% for n in row.nodes %}{{ label(n) }}
+    <span class='leaf-tag'>not located</span>
+    {{ sections(n.children) }}{% endfor %}
+  </li>
+{% endif %}
+{% endfor %}
+</ul>
 {% else %}
 {# Committed `tei/` only unless `--drafts`. `mz/tei/` is a generated baseline
    nobody has read, and an end-user preview is the last place it belongs. #}

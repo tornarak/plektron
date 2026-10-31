@@ -1110,6 +1110,38 @@ cannot hold one without the other.
 in a language on a page; a generated page has read nothing, and this is not the
 server's call to make — `_attestations` sweeps `collated`, never `readable`.
 
+### The index is the Contents, with the rest of the binding between
+
+The listing at `/edition/` was scan numbers with a word beside each — `1-031
+I. Names and Habitat`, `1-361 map` — and the book's own shape was invisible in
+it. It is now the printed Contents in the binding's order, under a heading per
+part: a chapter's row links to its run and carries its sections nested as the
+Contents nests them, and every leaf outside a chapter — the covers, the blanks,
+the map, the front matter — stands between the chapters as a quiet row of its
+own. `edition._outline` builds it.
+
+**Two orders, and a division sits in both only where something places it.** The
+scan order is the binding's; the Contents' order is the book's. A division is
+placed by a run that declares it — a chapter run's `toc_id` is its milestone; a
+declared run's is the editor's own word in `edition/runs.json`, which is how
+*Authorities Quoted* and *Alphabet* merge with the stores that render them, and
+`edition runs` fails on a `toc_id` that names no entry or that two runs claim —
+or, where no run does, by the one leaf a milestone opens it on, or else by the
+folio index: the served leaf that prints its `page_start`, which is what puts
+*Introductory* on `1-021`. Nothing is matched
+by title. A division nothing places is listed where the Contents puts it, just
+before the next placed one, marked *not located* and linking nowhere: the nearest
+chapter would be a guess indistinguishable from knowledge.
+
+**A chapter the listing dropped is still in the outline.** Without `--drafts` a
+chapter with no collated page has no leaf for prev/next to stand it on and
+`in_reading_order` leaves it out; the Contents still has it, so its row stays,
+saying *0 of 22 collated* and sending a reader to the run, where every leaf is a
+gap that says why. The count is what replaced the draft tag on these rows:
+`draft` over twenty-four leaves of which twenty are signed is the wrong word,
+and the flat list had put it on covers and on the Contents itself, neither of
+which can be collated at all. The tag now belongs to a text page alone.
+
 ### Runs: a span of leaves served as one document
 
 Twenty-one of those leaves are ruled **`apparatus`**, and that kind is the one

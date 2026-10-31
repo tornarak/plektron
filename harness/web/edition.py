@@ -48,6 +48,7 @@ from .. import edition_ui as ui
 from .. import figures as F
 from ..detectors import resolve_break_hyphens
 from ..entities import ENTITY_CLASSES, alias_index, split_id
+from ..refs import parse_ref
 from ..state import MILESTONE_UNITS, load_toc, toc_containing
 from . import Editor, register, stores, templates
 from .errors import fetched
@@ -136,6 +137,142 @@ def _ctx(request: Request, **kw) -> dict:
 # ------------------------------------------------------------------ the text
 
 
+def _outline(request: Request) -> list[dict]:
+    """The listing as the book's own outline: the printed Contents, in the
+    binding's order, with every leaf outside a chapter standing between them.
+
+    **Two orders, one list.** The scan order is the binding's and is what
+    prev/next walk; the Contents' order is the book's and is what a reader
+    recognises. They agree wherever a division can be *placed* — and a division
+    is placed only by a witness:
+
+        a run that declares it     `toc_id` on a chapter run is the milestone that
+                                   opens it; on a declared run it is the editor's
+                                   own word in `edition/runs.json`
+        a milestone                where no run does, the one leaf the text opens
+                                   the heading on
+        the folio index            where neither, the leaf that prints the entry's
+                                   `page_start`, and only if this view serves it
+
+    A division nothing places is **listed where the Contents puts it** — just
+    before the next division that is placed — and marked as unlocated, so the
+    outline stays whole without the list claiming a leaf for it. The nearest
+    chapter would be a guess that looks exactly like knowledge.
+
+    One row per listing entry, each saying what it is:
+
+        part    a change of part, off the ref alone
+        run     a run's head leaf, carrying the division(s) it is and their
+                sections; or an apparatus run with no entry of its own
+        leaf    a leaf a human ruled not text — cover, blank, plate, map
+        page    a page served alone, with any division the folio index opens here
+        toc     a division nothing places
+
+    The draft tag belongs to text alone. A cover cannot be collated and the
+    Contents is a store, not a transcription; tagging either `draft`, as the
+    flat list did, said something false about 94 leaves to say something true
+    about the rest. A chapter says how much of it is collated, as a count,
+    because "draft" over 24 leaves of which 20 are signed is the wrong word.
+    """
+    root, base, drafts = _root(request), _base(request), _drafts(request)
+    refs = _listing(request)
+    listed = set(refs)
+    signed = set(stores.collated(root))
+    exempt = set(stores.exempt(root))
+    every = stores.runs(root)
+    heads_of = {ui.norm_ref(r["refs"][0]): r for r in every if r.get("refs")}
+    kinds = stores.leaf_kinds(root)
+    served = stores.served_folios(root, drafts)
+    folios = stores.folio_by_ref(root)
+    tree = _toc_tree(load_toc(root), root, served, base)
+    by_toc = {r["toc_id"]: r for r in every if r.get("toc_id")}
+
+    def _stands_for(ref: str) -> str:
+        """The listing entry a leaf is under: its run's head, else itself."""
+        run = apparatus.run_for(ref, root, among=every)
+        return ui.norm_ref(run["refs"][0]) if run else ref
+
+    opened = stores.heads(root)
+    at: dict[str, str] = {}
+    for node in tree:
+        if not node.get("id"):
+            continue
+        run = by_toc.get(node["id"])
+        if run is not None:
+            at[node["id"]] = ui.norm_ref(run["refs"][0])
+            continue
+        # A heading the text opens exactly once is placed on that leaf even
+        # where no run derives from it — the milestone is the same witness a
+        # chapter run rests on, and `heading_urls` already links the row there.
+        # Then the folio index, strongest witness first as it orders them. The
+        # first witness this listing carries wins, and none means unplaced.
+        occ = opened.get(node["id"]) or []
+        leaves = ([occ[0]["ref"]] if len(occ) == 1 else []) + [
+            w["ref"] for w in served.get(apparatus._as_folio(node.get("page_start"))) or []]
+        for leaf in leaves:
+            rep = _stands_for(ui.norm_ref(leaf))
+            if rep in listed:
+                at[node["id"]] = rep
+                break
+    placed_at: dict[str, list[dict]] = {}
+    for node in tree:
+        if node.get("id") in at:
+            placed_at.setdefault(at[node["id"]], []).append(node)
+
+    def _status(run: dict) -> str:
+        text = [ui.norm_ref(r) for r in run["refs"]
+                if ui.norm_ref(r) not in exempt]
+        if run.get("kind") != chapters.KIND or not text:
+            return ""
+        n = sum(1 for r in text if r in signed)
+        return "" if n == len(text) else f"{n} of {len(text)} collated"
+
+    # **A division the listing dropped is still in the Contents.** Without
+    # `--drafts` a chapter with no collated page has no leaf to stand for it and
+    # `in_reading_order` leaves it out, rightly — prev/next should not walk a
+    # reader into twenty leaves of nothing. The outline is a different question:
+    # the book has that chapter, and its row says how much of it is here, which
+    # for that chapter is none. Its run still renders, every leaf a gap that
+    # says why, so the row has somewhere to send a reader.
+    walk = tei_html._sorted_refs([*refs, *at.values()])
+    rows: list[dict] = []
+    part = None
+    k = 0           # the next top-level division not yet emitted, in ToC order
+    for ref in walk:
+        p = parse_ref(ref)[0]
+        if p != part:
+            rows.append({"kind": "part", "n": p})
+            part = p
+        here = placed_at.get(ref, [])
+        if here:
+            # The unplaced divisions the Contents puts before the first one that
+            # lands here go out first, so the outline keeps the book's order.
+            first = tree.index(here[0])
+            while k < first:
+                node = tree[k]
+                k += 1
+                if node.get("id") not in at:
+                    rows.append({"kind": "toc", "nodes": [node]})
+            k = max(k, tree.index(here[-1]) + 1)
+        run = heads_of.get(ref)
+        if run is not None:
+            rows.append({"kind": "run", "ref": ref, "run": run, "nodes": here,
+                         "url": f"{base}/run/{run['id']}", "status": _status(run)})
+        elif ref in kinds:
+            rows.append({"kind": "leaf", "ref": ref, "leaf_kind": kinds[ref],
+                         "nodes": here, "url": f"{base}/page/{ref}"})
+        else:
+            rows.append({"kind": "page", "ref": ref, "nodes": here,
+                         "url": f"{base}/page/{ref}", "folio": folios.get(ref),
+                         "draft": drafts and ref not in signed})
+    while k < len(tree):
+        node = tree[k]
+        k += 1
+        if node.get("id") not in at:
+            rows.append({"kind": "toc", "nodes": [node]})
+    return rows
+
+
 @router.get("/")
 def index(request: Request):
     root = _root(request)
@@ -150,15 +287,8 @@ def index(request: Request):
     return templates.TemplateResponse(
         request,
         "edition/index.html",
-        _ctx(request, refs=refs, signed=signed, drafts=_drafts(request), here=here,
-             run_titles={ui.norm_ref((r.get("refs") or [""])[0]): r.get("title", "")
-                         for r in stores.runs(root) if r.get("refs")},
-             # **The listing says what a leaf is.** A run already announced itself
-             # by title; the other 94 stood in this list as bare scan numbers, so
-             # the map, the plates and 42 blanks were indistinguishable from each
-             # other and from a page nobody had collated. One word each, off the
-             # ruling — nothing here derives a kind.
-             leaf_kinds=stores.leaf_kinds(root)),
+        _ctx(request, refs=refs, drafts=_drafts(request), here=here,
+             rows=_outline(request)),
     )
 
 
