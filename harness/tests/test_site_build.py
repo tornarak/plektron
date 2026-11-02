@@ -326,3 +326,100 @@ def test_the_marks_are_where_the_upload_rule_expects_them(repo, tmp_path):
     marks = {p.name for p in (tmp_path / "out").rglob(".*") if p.is_file()}
     assert marks == {SITE_MARK, OUT_MARK, STAMP}
     assert all(m.startswith(".edition-") for m in marks)
+
+
+def _declare_image(root: Path, stem: str, *, crop: bool = True) -> None:
+    from PIL import Image
+    p = root / layout.PROJECT_JSON
+    rec = json.loads(p.read_text(encoding="utf-8"))
+    rec["image"] = {"fig": "1-021/001", "caption": "A plate."}
+    p.write_text(json.dumps(rec), encoding="utf-8")
+    layout._project.cache_clear()
+    if crop:
+        out = root / "scans" / "fig-crops" / f"{stem}-1-021-001.png"
+        out.parent.mkdir(parents=True, exist_ok=True)
+        Image.new("L", (1000, 500), 200).save(out)
+
+
+def test_a_declared_image_stands_on_the_landing_page_and_links_to_its_text(repo, tmp_path):
+    _declare_image(repo / ONE, "one")
+    build_site(repo, tmp_path / "out", jobs=1)
+    html = (tmp_path / "out" / "index.html").read_text(encoding="utf-8")
+    assert 'src="/static/covers/ws-text-one.jpg"' in html and 'alt="A plate."' in html
+    assert (tmp_path / "out" / "static" / "covers" / "ws-text-one.jpg").is_file()
+    # And nothing for the text that declares none.
+    assert "ws-text-two.jpg" not in html
+
+
+def test_a_cover_comes_down_with_its_declaration(repo, tmp_path):
+    _declare_image(repo / ONE, "one")
+    build_site(repo, tmp_path / "out", jobs=1)
+    p = repo / ONE / layout.PROJECT_JSON
+    rec = json.loads(p.read_text(encoding="utf-8"))
+    del rec["image"]
+    p.write_text(json.dumps(rec), encoding="utf-8")
+    layout._project.cache_clear()
+    build_site(repo, tmp_path / "out", jobs=1)
+    assert not (tmp_path / "out" / "static" / "covers" / "ws-text-one.jpg").exists()
+
+
+def test_a_declared_image_with_no_crop_refuses_before_anything_builds(repo, tmp_path):
+    _declare_image(repo / ONE, "one", crop=False)
+    with pytest.raises(ValueError, match="fig crops"):
+        build_site(repo, tmp_path / "out", jobs=1)
+    assert not (tmp_path / "out" / ONE).exists()
+
+
+@pytest.mark.parametrize("image", ["1-021/001", {"fig": "1-021/001"}, {"fig": "21", "caption": "x"}])
+def test_a_malformed_image_is_a_manifest_error(repo, image):
+    p = repo / ONE / layout.PROJECT_JSON
+    rec = json.loads(p.read_text(encoding="utf-8"))
+    rec["image"] = image
+    p.write_text(json.dumps(rec), encoding="utf-8")
+    layout._project.cache_clear()
+    with pytest.raises(layout.ProjectError, match="image"):
+        layout.image(repo / ONE)
+    layout._project.cache_clear()
+
+
+def test_the_header_says_which_licence_words_are_bold(tmp_path):
+    from lxml import etree
+
+    from harness.ns import TEI_NS
+    from harness.web.stores import _header_html
+    el = etree.fromstring(f'<p xmlns="{TEI_NS}">Licensed <hi rend="bold"><ref target="u">'
+                          'CC BY</ref></hi>, <hi>not this</hi>.</p>')
+    assert _header_html(el) == 'Licensed <strong><a href="u">CC BY</a></strong>, not this.'
+
+
+def test_a_declared_turn_stands_a_sideways_picture_up(repo, tmp_path):
+    from PIL import Image
+    _declare_image(repo / ONE, "one")
+    p = repo / ONE / layout.PROJECT_JSON
+    rec = json.loads(p.read_text(encoding="utf-8"))
+    rec["image"]["turn"] = 90
+    p.write_text(json.dumps(rec), encoding="utf-8")
+    layout._project.cache_clear()
+    build_site(repo, tmp_path / "out", jobs=1)
+    with Image.open(tmp_path / "out" / "static" / "covers" / "ws-text-one.jpg") as im:
+        # 1000 x 500 on disk, so upright it is the taller way round.
+        assert im.size == (500, 1000)
+
+
+def test_a_cover_turns_clockwise():
+    """Pillow's own `rotate` runs the other way, and a picture upside down reads as a
+    bug only to whoever looks: the book's sideways plates turn clockwise."""
+    import tempfile
+    from io import BytesIO
+
+    from PIL import Image
+
+    from harness.edition_ui import _thumb
+    with tempfile.TemporaryDirectory() as d:
+        src = Path(d) / "x.png"
+        im = Image.new("L", (40, 20), 255)
+        im.paste(0, (0, 0, 20, 20))               # the left half dark
+        im.save(src)
+        out = Image.open(BytesIO(_thumb(str(src), 0, 40, 90)))
+    # Clockwise puts what was on the left at the top.
+    assert out.getpixel((10, 5)) < 60 and out.getpixel((10, 35)) > 200

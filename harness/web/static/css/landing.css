@@ -1,16 +1,22 @@
 /* The landing page above the texts. The tokens and the base type are
    `edition.css`'s; this is only the page's own layout. */
 body.landing main { max-width:38rem; margin:0 auto; padding:3rem 16px 4rem; display:block }
-body.landing .logo { display:block; margin:0 0 1rem }
-body.landing h1 { margin:0 0 1rem; font-size:2rem; font-weight:normal }
-body.landing h2 { margin:2.5rem 0 .75rem; padding-bottom:.25rem; font-size:1.1rem;
+body.landing .logo { display:block; margin:0 auto 1.25rem }
+body.landing h1 { margin:0 0 1rem; font-size:3rem; line-height:1.1; font-weight:normal }
+body.landing h2 { margin:2.5rem 0 1rem; padding-bottom:.25rem; font-size:1.75rem;
                   font-weight:normal; border-bottom:1px solid var(--rule) }
+body.landing h1, body.landing h2 { text-align: center }
 body.landing a { color:var(--accent) }
 .texts { list-style:none; margin:0; padding:0 }
-.texts li { margin:0 0 1rem }
-.text-title { display:block; font-size:1.25rem }
+.texts li { margin:0 0 1.5rem; display:flex; flex-wrap:wrap; gap:1rem 1.25rem; align-items:flex-start }
+.text-about { flex:1 1 14rem; min-width:0 }
+.text-cover { flex:0 1 20rem; margin:0; max-width:100% }
+.text-cover img { display:block; width:100%; height:auto; border:1px solid var(--rule) }
+.text-cover figcaption { margin-top:.3rem; color:var(--dim); font-size:.8rem }
+.text-title { display:block; font-size:1.75rem; line-height:1.2; margin-bottom:.35rem }
 .text-by, .text-state { display:block }
 .text-state { color:var(--dim); font-size:.9rem }
 .licences { margin-top:1.5rem; color:var(--dim); font-size:.85rem }
 .licences summary { cursor:pointer }
+.licences strong { color:var(--fg) }
 .licences a { overflow-wrap:anywhere }

@@ -110,13 +110,16 @@ def _work(root: str, _key: bytes) -> dict:
 
 def _header_html(el) -> str:
     """One paragraph of the header as HTML: its words verbatim, its `<ref>`s links,
-    every other element only the text it holds, and its comments gone."""
+    its `<hi rend="bold">`s bold, every other element only the text it holds, and its
+    comments gone."""
     def walk(node) -> str:
         if not isinstance(node.tag, str):      # a comment or a PI: its tail only
             return escape(node.tail or "")
         inner = escape(node.text or "") + "".join(walk(c) for c in node)
         if node.tag == f"{{{TEI_NS}}}ref" and node.get("target"):
             inner = f'<a href="{escape(node.get("target"))}">{inner}</a>'
+        elif node.tag == f"{{{TEI_NS}}}hi" and node.get("rend") == "bold":
+            inner = f"<strong>{inner}</strong>"
         return inner + (escape(node.tail) if node is not el and node.tail else "")
     return " ".join(walk(el).split())
 

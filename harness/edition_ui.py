@@ -170,11 +170,13 @@ THUMBS = {"cover": 100, "map": 720}
 
 
 @lru_cache(maxsize=32)
-def _thumb(path: str, _mtime_ns: int, width: int) -> bytes:
+def _thumb(path: str, _mtime_ns: int, width: int, turn: int = 0) -> bytes:
     from PIL import Image
 
     with Image.open(path) as im:
         im = im.convert("L" if im.mode in ("1", "L") else "RGB")
+        if turn:                          # `rotate` runs anticlockwise; `turn` does not
+            im = im.rotate(-turn, expand=True)
         w = min(width, im.width)
         small = im.resize((w, max(1, round(im.height * w / im.width))),
                           Image.Resampling.LANCZOS)
@@ -183,13 +185,14 @@ def _thumb(path: str, _mtime_ns: int, width: int) -> bytes:
     return buf.getvalue()
 
 
-def leaf_thumb(path: Path, width: int) -> bytes:
-    """A leaf downscaled for the index, and nothing else done to it. **Reading view
-    only**, as `leaf_source` is: it links to the leaf and is never read as evidence.
-    Made on request, because the eight the index asks for are worth no store, and
-    keyed on the mtime so a replaced file is seen. A master decodes slowly enough
-    to be worth holding on to."""
-    return _thumb(str(path), Path(path).stat().st_mtime_ns, width)
+def leaf_thumb(path: Path, width: int, turn: int = 0) -> bytes:
+    """A leaf downscaled for the index, and nothing else done to it but the quarter
+    turns `turn` asks for, clockwise, since a plate may print a picture sideways.
+    **Reading view only**, as `leaf_source` is: it links to the leaf and is never read
+    as evidence. Made on request, because the eight the index asks for are worth no
+    store, and keyed on the mtime so a replaced file is seen. A master decodes slowly
+    enough to be worth holding on to."""
+    return _thumb(str(path), Path(path).stat().st_mtime_ns, width, turn)
 
 
 # --------------------------------------------------------------- the page

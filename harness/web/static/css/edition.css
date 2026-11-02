@@ -98,7 +98,7 @@ main.cols { display:flex; align-items:flex-start; flex-direction: row-reverse; }
    a fix — the failure this stylesheet already documents at `#bar`. */
 #primary:first-child:last-child,
 html:not(.side-contents):not(:has(#toc-switch:checked)):not(.side-open):not(:has(#side-on:checked)) #secondary:not([data-fixed]):not(:has(.card)):not(:has(#map-pane:not([hidden]))) + #primary
-  { margin: auto; }
+  { margin:1rem auto }
 /* `--bar-gap` is how much of the header is still on screen. The header scrolls
    away and the column does not, so a fixed `top:3rem` left a strip of nothing
    above the column for the whole of the book once you were past its first
@@ -194,7 +194,7 @@ html:not(.side-contents):not(:has(#toc-switch:checked)):not(.side-open):not(:has
    re-centred, until the show fringe, a card, a map or the contents ask for it. */
 html:is(.side-dismissed, :has(#side-off:checked)) #secondary:not([data-fixed]) { display:none }
 html:is(.side-dismissed, :has(#side-off:checked)) #secondary:not([data-fixed]) + #primary
-  { margin:auto }
+  { margin:1rem auto }
 /* **The fringes are labels; the radios behind them are the state.** Out of
    sight but in the tab order, their focus drawn on the fringe they stand
    before — the same arrangement as the TOC switch. **Fixed, not absolute**:

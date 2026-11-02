@@ -30,6 +30,8 @@ STEM_RE = re.compile(r"^[a-z][a-z0-9]*(?:-[a-z][a-z0-9]*)*$")
 #: What a manifest may say about going public: `drafts` shows `mz/tei/` beside
 #: `tei/`, `collated` shows `tei/` alone, and absent keeps the text off the site.
 PUBLISH = frozenset({"drafts", "collated", None})
+#: A figure by its leaf and the zone's suffix, as `/fig/{ref}/{key}.png` names one.
+FIG_RE = re.compile(r"^\d+-\d+/\w+$")
 
 
 class ProjectError(ValueError):
@@ -53,6 +55,14 @@ def _project(path: str) -> dict:
         raise ProjectError(f"{p}: `publish` must be one of "
                            f"{sorted(k for k in PUBLISH if k)}, or absent; "
                            f"got {rec['publish']!r}")
+    image = rec.get("image")
+    if image is not None and not (
+            isinstance(image, dict) and isinstance(image.get("caption"), str)
+            and image["caption"] and FIG_RE.match(str(image.get("fig")))
+            and image.get("turn", 0) in (0, 90, 180, 270)):
+        raise ProjectError(f"{p}: `image` must be {{\"fig\": \"PP-NNN/key\", \"caption\": "
+                           f"…}} with an optional `turn` of 90, 180 or 270, or absent; "
+                           f"got {image!r}")
     return rec
 
 
@@ -222,6 +232,13 @@ def publish(root: Path) -> str | None:
     """What the manifest says about putting this text on the public site. A text
     that says nothing stays off it, so going public is always a declared act."""
     return project(root).get("publish")
+
+
+def image(root: Path) -> dict | None:
+    """The picture that stands for this text on the landing page, `{fig, caption}` and
+    `turn`, clockwise, for one the plate prints sideways: an editor's choice, so it is
+    declared, and nothing infers one."""
+    return project(root).get("image")
 
 
 def site_base(root: Path) -> str:

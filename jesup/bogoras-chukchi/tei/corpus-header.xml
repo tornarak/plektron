@@ -138,14 +138,14 @@
       <authority>(no distribution venue settled)</authority>
       <availability status="free">
         <licence target="https://creativecommons.org/publicdomain/zero/1.0/">
-          <p>CC0 1.0 Universal. Applies to the transcribed text of the source: the
+          <p><hi rend="bold">CC0 1.0 Universal</hi>. Applies to the transcribed text of the source: the
             contents of <gi>p</gi>, <gi>note</gi>, <gi>foreign</gi> and other
             text-bearing elements in the page files, and the caption readings in
             data/readings.md. The underlying work is in the public domain and this
             edition asserts no new right over its reproduction.</p>
         </licence>
         <licence target="https://creativecommons.org/licenses/by/4.0/">
-          <p>Creative Commons Attribution 4.0 International. Applies to the
+          <p><hi rend="bold">Creative Commons Attribution 4.0 International</hi>. Applies to the
             editorial apparatus: the TEI encoding and structural decisions, the
             provenance and adjudication notes, edition/loi.json, edition/toc.json,
             edition/authorities.json and their research, the entity records and
@@ -168,21 +168,21 @@
           <author>R. E. Asher</author> and <author>Christopher J. Moseley</author>,
           Routledge <date>2007</date>; traditional speaker areas via Glottography
           <ref target="https://github.com/Glottography/asher2007world">asher2007world</ref>. Licensed
-          <ref target="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</ref>,
+          <hi rend="bold"><ref target="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</ref></hi>,
           attribution required. Drawn as the langarea: shapes.</bibl>
         </p>
         <p>
           <bibl><title>GeoNames</title>,
           <ref target="https://www.geonames.org/">geonames.org</ref>, country dumps
           RU and US. Licensed
-          <ref target="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</ref>,
+          <hi rend="bold"><ref target="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</ref></hi>,
           attribution required. The source of the geo: coordinate on every entity
           record carrying a link: geonames: identifier beside it.</bibl>
         </p>
         <p>
           <bibl><title>Global Watersheds</title>,
           <ref target="https://mghydro.com/">mghydro.com</ref>, over MERIT-Hydro and
-          HydroSHEDS. Dual-licensed CC BY-NC 4.0 or ODbL 1.0. <hi rend="bold">Which
+          HydroSHEDS. Dual-licensed <hi rend="bold">CC BY-NC 4.0 or ODbL 1.0</hi>. <hi rend="bold">Which
           branch this edition takes is unsettled</hi> and is recorded as open in
           edition/geo/SOURCES.md rather than answered here: the first forbids
           commercial reuse by anyone who clones this, the second is share-alike on
@@ -194,7 +194,7 @@
           <bibl><title>OpenStreetMap</title>,
           <ref target="https://www.openstreetmap.org/">openstreetmap.org</ref>,
           © OpenStreetMap contributors. Licensed
-          <ref target="https://opendatacommons.org/licenses/odbl/">ODbL 1.0</ref>,
+          <hi rend="bold"><ref target="https://opendatacommons.org/licenses/odbl/">ODbL 1.0</ref></hi>,
           attribution required and share-alike on a derived database. Consulted as
           one of the two cross-references behind every hand-located geo: point —
           36 entity records name it, and each says so in its own gloss. Whether
@@ -205,8 +205,8 @@
         <p>
           <bibl><title>Wikidata</title>,
           <ref target="https://www.wikidata.org/">wikidata.org</ref>. Dedicated
-          <ref target="https://creativecommons.org/publicdomain/zero/1.0/">CC0
-          1.0</ref>; no attribution required. Named because it is the source of the
+          <hi rend="bold"><ref target="https://creativecommons.org/publicdomain/zero/1.0/">CC0
+          1.0</ref></hi>; no attribution required. Named because it is the source of the
           geo: coordinate on every record carrying a link: wikidata: identifier,
           and a coordinate whose origin is not written down is what the provenance
           ranks exist to prevent, whatever the licence permits. Also the source of
@@ -216,8 +216,8 @@
           <bibl><title>Wikimedia Commons</title>,
           <ref target="https://commons.wikimedia.org/">commons.wikimedia.org</ref>.
           Entity pictures are shown from Commons and are not part of this edition.
-          Each carries its own licence (public domain, CC0, CC BY, CC BY-SA or
-          copyrighted free use),
+          Each carries its own licence (<hi rend="bold">public domain, CC0, CC BY, CC BY-SA or
+          copyrighted free use</hi>),
           recorded with its author in edition/entity-images.json and printed
           beneath the picture.</bibl>
         </p>
@@ -226,7 +226,7 @@
           Agency / National Geospatial-Intelligence Agency; scanned sheets at the
           University of Texas Perry-Castañeda Library Map Collection,
           <ref target="https://maps.lib.utexas.edu/maps/onc/">maps.lib.utexas.edu/maps/onc/</ref>. A work of the United States
-          Government and so uncopyrighted; no attribution required. Named because
+          Government and so <hi rend="bold">uncopyrighted</hi>; no attribution required. Named because
           it is the largest single source of coordinates in this edition — the
           roughly thirty points a human read off it by hand, each recorded in the
           gloss of the record that carries it. The sheets consulted are C-7, C-8,
@@ -236,7 +236,7 @@
         <p>
           <bibl><title>Natural Earth</title>,
           <ref target="https://www.naturalearthdata.com/">naturalearthdata.com</ref>,
-          1:50m physical and 1:10m label vectors. Public domain; no attribution
+          1:50m physical and 1:10m label vectors. <hi rend="bold">Public domain</hi>; no attribution
           required. Drawn as the base:, region: and marine: shapes.</bibl>
         </p>
       </availability>

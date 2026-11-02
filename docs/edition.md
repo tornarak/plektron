@@ -2081,6 +2081,11 @@ and tracked, so a text can publish its drafts or only what is collated, and a te
 saying nothing stays off. `harness/web/site.py` holds the rule that decides what
 to rebuild, and `VERBS.md` the flags and marks.
 
+**A text's picture is an editor's choice**, so `project.json` declares it, as a
+figure and a caption, and nothing picks one by rule. The landing page shows a
+downscaled copy linking to the text. In the licence text, `<hi rend="bold">` in the
+header is what shows bold, so the header stays the one statement of it.
+
 **A rebuild is decided by timestamps, and the rule leans towards rebuilding.** A
 false rebuild costs a minute; a false skip publishes a stale page that nothing
 marks. So upstream is everything but what is shown to be unread, code included.

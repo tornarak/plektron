@@ -35,7 +35,8 @@ from collections.abc import Iterator
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from .. import layout, tei_html
+from .. import edition_ui as ui
+from .. import figures, layout, tei_html
 from . import STATIC, stores, templates
 from .build import OUT_MARK, build
 
@@ -46,6 +47,8 @@ SITE_MARK = ".edition-site"
 STAMP = ".edition-built"
 #: The authored prose above the generated list, relative to the repo.
 LANDING_PROSE = Path("site") / "landing.html"
+#: A text's picture on the landing page, in pixels: twice what the sheet displays.
+COVER_WIDTH = 640
 #: A text's own folders that a render never opens.
 _UNREAD = frozenset({"train", "pdfs"})
 
@@ -158,12 +161,22 @@ def _workspace_title(ws: Path) -> str:
     return rec.get("title") or ws.name
 
 
+def _cover_source(root: Path, declared: dict) -> Path:
+    """The file behind a text's declared image, the editor's crop over the machine's."""
+    ref, key = declared["fig"].split("/")
+    return figures.crop_source(ref, key, root)[0]
+
+
 def _landing(repo: Path, out: Path, published: list[Path]) -> None:
     """Rewritten every run: it is cheap, it holds no time, and the counts on it
     change without any text needing a rebuild."""
     prose = Path(repo) / LANDING_PROSE
     if not prose.is_file():
         raise ValueError(f"{prose}: the landing page's prose is not there")
+    covers = out / "static" / "covers"
+    # Whole each run, so a text that stops declaring one loses it.
+    shutil.rmtree(covers, ignore_errors=True)
+    covers.mkdir(parents=True)
     groups: dict[Path, dict] = {}
     for root in published:
         ws = layout.workspace_root(root)
@@ -171,7 +184,14 @@ def _landing(repo: Path, out: Path, published: list[Path]) -> None:
         read = tei_html.readable(root)
         collated = tei_html.collated(root)
         drafts = layout.publish(root) == "drafts"
+        image = None
+        if declared := layout.image(root):
+            name = layout.site_base(root).strip("/").replace("/", "-") + ".jpg"
+            (covers / name).write_bytes(ui.leaf_thumb(_cover_source(root, declared), COVER_WIDTH,
+                                                      declared.get("turn", 0)))
+            image = {"src": f"/static/covers/{name}", "caption": declared["caption"]}
         groups.setdefault(ws, {"title": _workspace_title(ws), "texts": []})["texts"].append({
+            "image": image,
             "url": layout.site_base(root) + "/",
             "work": stores.work(root),
             "collated": len(collated),
@@ -208,6 +228,11 @@ def build_site(repo: Path, out: Path, force: bool = False, jobs: int | None = No
     if not published:
         raise ValueError(f"no text under {repo} declares `publish` in its "
                          f"{layout.PROJECT_JSON}: nothing to build")
+    # Before any text builds: a minute's crawl should not end in this.
+    for root in published:
+        if (declared := layout.image(root)) and not _cover_source(root, declared).is_file():
+            raise ValueError(f"{root}: `image` names {declared['fig']}, which has no crop: "
+                             "`harness fig crops --all` builds them")
 
     out.mkdir(parents=True, exist_ok=True)
     (out / SITE_MARK).write_text("written by `harness site build`\n", encoding="utf-8")
