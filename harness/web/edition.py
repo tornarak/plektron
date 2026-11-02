@@ -2078,7 +2078,7 @@ def lexicon_index(request: Request):
     return templates.TemplateResponse(
         request,
         "edition/lexicon.html",
-        _ctx(request, groups=groups,
+        _ctx(request, groups=groups, pane=True, side_fixed=True,
              here=f"{len(forms)} forms · {written} with an editor's note"),
     )
 

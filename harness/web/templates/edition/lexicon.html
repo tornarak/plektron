@@ -2,7 +2,8 @@
 {% block title %}Lexicon — {{ work.title }}{% endblock %}
 
 {% block main %}
-<div id='primary' class='index-width'>
+{% include "edition/_sidebar.html" %}
+<div id='primary'>
 {# A tree over the language, on the class tree's pattern and sharing `ul.tree`
    with it. The last branch is the one that matters: a form's language is a
    judgement made during collation, and until a page is collated the form sits

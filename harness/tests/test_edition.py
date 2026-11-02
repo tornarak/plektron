@@ -2133,6 +2133,17 @@ def test_the_index_lists_every_language_and_the_unjudged(server):
     assert unicodedata.normalize("NFD", "Kuluˊči") in got
 
 
+def test_the_lexicon_index_has_the_encyclopedias_column_and_measure(server):
+    """A click on a form is a request for its card, so the column is always there
+    to take it, and the page reads at the default width."""
+    base, _ = server
+    for route in ("/lexicon", "/entities"):
+        got = get(base + route)
+        assert "<aside id='secondary' data-fixed>" in got
+        assert "<div id='stack'>" in got
+        assert "<div id='primary'>" in got
+
+
 def test_an_editors_note_reaches_the_card(server):
     base, root = server
     _gt(root, "1-042", ["south of Kuluˊči Bay lies the"])

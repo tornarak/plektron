@@ -742,11 +742,9 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
             font-family:system-ui,sans-serif;font-size:.8rem;margin-bottom:1rem}
 #primary > .neighbours:last-child{margin:1.5rem 0 0}
 .ratify-row{margin-top:.5rem}
-/* Two reading widths: the lexicon is a table of forms, the search
-   results carry a line of context either side of the hit and want the room. */
-#primary.index-width{max-width:60rem}
 /* An exempt page is a picture, not prose — see `exempt.html`. */
 #primary.leaf-width{max-width:72rem}
+/* Search results carry a line of context either side of the hit and want the room. */
 #primary.search-width{max-width:70rem}
 .wide{width:100%}
 .hits{font-size:.85rem}
