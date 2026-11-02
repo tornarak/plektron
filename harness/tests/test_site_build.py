@@ -390,6 +390,22 @@ def test_the_header_says_which_licence_words_are_bold(tmp_path):
     el = etree.fromstring(f'<p xmlns="{TEI_NS}">Licensed <hi rend="bold"><ref target="u">'
                           'CC BY</ref></hi>, <hi>not this</hi>.</p>')
     assert _header_html(el) == 'Licensed <strong><a href="u">CC BY</a></strong>, not this.'
+    # A source is named by its `<title>`, which is bold wherever one is cited.
+    el = etree.fromstring(f'<p xmlns="{TEI_NS}"><bibl><title>GeoNames</title>, a gazetteer.'
+                          '</bibl></p>')
+    assert _header_html(el) == '<strong>GeoNames</strong>, a gazetteer.'
+
+
+def test_the_index_is_headed_by_the_books_title(repo, tmp_path):
+    root = repo / ONE
+    (root / "tei").mkdir(exist_ok=True)
+    (root / "tei" / "corpus-header.xml").write_text(
+        '<teiHeader xmlns="http://www.tei-c.org/ns/1.0"><fileDesc><titleStmt>'
+        '<title type="main">A Book</title><author><persName><surname>Writer</surname>'
+        '</persName></author></titleStmt></fileDesc></teiHeader>', encoding="utf-8")
+    build_site(repo, tmp_path / "out", jobs=1)
+    html = (tmp_path / "out" / ONE / "index.html").read_text(encoding="utf-8")
+    assert "<h1>A Book</h1>" in html and "<p>Writer</p>" in html
 
 
 def test_a_declared_turn_stands_a_sideways_picture_up(repo, tmp_path):

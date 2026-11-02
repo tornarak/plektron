@@ -1069,6 +1069,9 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
    indent once per rung, the panel's way, since the markup nests. The leaves
    between chapters are pictures, since a store that only says `cover` has nothing
    else to show: the covers small and wrapping, the map larger. */
+.index-head { text-align:center; margin:1rem 0 1.5rem }
+.index-head h1 { margin:0; font-size:2.75rem; line-height:1.1; font-weight:normal }
+#primary .index-head p { margin:.5rem 0 0; text-indent:0; text-align:center; color:var(--dim) }
 .outline { list-style:none; margin:0; padding:0 }
 .outline > li { margin:.3rem 0; line-height:1.5; display:flow-root }
 .outline .ol-part { margin-top:1.6rem }
@@ -1076,7 +1079,7 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
 .outline .ol-part h4 { margin:0 0 .3rem; font-size:.78rem; letter-spacing:.08em;
   text-transform:uppercase; color:var(--dim); border-bottom:1px solid var(--rule);
   padding-bottom:.15rem }
-.outline .ol-run, .outline .ol-toc { margin-top:.9rem }
+.outline .ol-toc { margin-top:.9rem }
 .outline .ol-run > .toc-title, .outline .ol-toc > .toc-title,
 .outline .ol-page > .toc-title, .outline .ol-leaf > .toc-title {
   font-size:1.05rem; font-weight:600; text-decoration:none; color:inherit }

@@ -56,7 +56,11 @@
 
 {% block main %}
 <div id='primary'>
-<h3>The edition</h3>
+<div class='index-head'>
+  <h1>{{ work.title }}</h1>
+  {% if work.author or work.date %}<p>{{ work.author }}{%
+    if work.author and work.date %}, {% endif %}{{ work.date }}</p>{% endif %}
+</div>
 {% if drafts %}
 {# Said once, at the top, and then per row: a reader who takes in the banner and
    nothing else must still not mistake the list for the edition. #}
@@ -72,8 +76,7 @@ have been checked.</p>
 {% elif row.kind == 'run' %}
   <li class='ol-run'>
     {% for n in row.nodes %}{{ division(n, row.url) }}{% else
-    %}<a class='toc-title' href='{{ row.url }}'>{{ row.run.title }}</a>
-    <span class='run-tag'>apparatus</span>{% endfor %}
+    %}<a class='toc-title' href='{{ row.url }}'>{{ row.run.title }}</a>{% endfor %}
     {% if row.status %}<span class='draft-tag'>{{ row.status }}</span>{% endif %}
     {{ at(row.ref, row.url) }}
     {% for n in row.nodes %}{{ sections(n.children) }}{% endfor %}
