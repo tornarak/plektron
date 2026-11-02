@@ -48,7 +48,9 @@
     {% if p.caption %}<figcaption>{{ p.caption }}</figcaption>{% endif %}
   </figure>
   {% endfor %}
-{% else %}
+{# A blank says nothing, and a line saying so reads as text left in the chapter. Its
+   mark in the margin still reaches the scan. #}
+{% elif l.leaf_kind != 'blank' %}
   <p class='leaf-gap'><span class='leaf-tag'>{{ l.leaf_kind or 'not a text page' }}</span>
   <a href='{{ l.page_url }}'>leaf {{ l.ref }}</a></p>
 {% endif %}

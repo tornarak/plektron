@@ -11,6 +11,7 @@
     <OtherTag ID="BT2" LABEL="MainZone-Other" DESCRIPTION="block type MainZone-Other"/>
     <OtherTag ID="BT3" LABEL="MainZone-P" DESCRIPTION="block type MainZone-P"/>
     <OtherTag ID="BT4" LABEL="MarginTextZone-Notes" DESCRIPTION="block type MarginTextZone-Notes"/>
+    <OtherTag ID="BT5" LABEL="MainZone-Continued" DESCRIPTION="block type MainZone-Continued"/>
   </Tags>
   <Layout>
     <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
@@ -20,7 +21,7 @@
             <Polygon POINTS="333 446 2115 446 2115 539 333 539"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="333" VPOS="562" WIDTH="1782" HEIGHT="593" ID="mz_3-070_002" TAGREFS="BT2">
+        <TextBlock HPOS="333" VPOS="562" WIDTH="1782" HEIGHT="593" ID="mz_3-070_002" TAGREFS="BT5">
           <Shape>
             <Polygon POINTS="333 562 2115 562 2115 1155 333 1155"/>
           </Shape>

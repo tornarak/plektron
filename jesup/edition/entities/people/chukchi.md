@@ -16,7 +16,6 @@
 | Tjutzchi | la | yes | |
 | Чукча | ru | yes | |
 | Чукотскій | ru | yes | |
-| oraˊwêʟ̣at | ckt | yes | |
 | lɪˊê-oraˊwêʟ̣at | ckt | yes | |
 | Luoravetlan | | yes | |
 | Chukchee | | once | |

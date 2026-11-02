@@ -11,6 +11,7 @@
 |---|---|---|---|
 | Large Chukchee River | | yes | |
 | Большая Чукочья рѣка | ru | yes | |
+| Chukchee River | | no | bare, the book does not say which |
 
 ## gloss
 
