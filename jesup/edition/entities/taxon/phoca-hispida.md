@@ -8,10 +8,11 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Phoca hispida | | no | |
+| Phoca hispida | | yes | |
 | ringed seal | | yes | |
 | rough seal | | yes | |
 | rough-seal | | yes | |
+| акипка | ru | yes | |
 
 ## gloss
 

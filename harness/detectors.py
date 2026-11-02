@@ -620,13 +620,39 @@ def _attested(idx: dict, form: str, ref: str) -> int:
     return 0 if not n or refs <= {ref} else n
 
 
-def resolve_break_hyphens(text: str, cuts: list[int], ref: str, idx: dict
+def _closes_a_word(flat: str, rel: list[int], words) -> bool:
+    """Is what each cut closed a word, within whatever compound holds it?
+
+    `flat` has the cuts closed and `rel` says where they stood in the token. The
+    compound's own hyphens stay out of the question: `rein-deer-hunts` closes to the
+    word `reindeer`, and `reindeer-hunts` being in no dictionary is no objection.
+    """
+    if not words:
+        return False
+    for i, cut in enumerate(rel):
+        at = cut - i                     # the offset in `flat`, earlier cuts gone
+        start = flat.rfind("-", 0, at) + 1
+        stop = flat.find("-", at)
+        if _fold(flat[start:stop if stop >= 0 else len(flat)]) not in words:
+            return False
+    return True
+
+
+def resolve_break_hyphens(text: str, cuts: list[int], ref: str, idx: dict,
+                          words: set[str] | frozenset[str] = frozenset()
                           ) -> tuple[str, list[dict]]:
     """Drop the compositor's hyphens the corpus itself can account for.
 
     `text` and `cuts` are one `joined_words` line; `idx` is `midline_forms`.
     Returns the text to set and one verdict per cut token: `token`, `resolved`,
     `verdict`, and the two counts that decided it.
+
+    **`words`, the English lexicon, decides only where the corpus is silent.** Where
+    the book sets neither spelling away from a line end there is no witness for its
+    usage to overrule, and `com-plexion` was left in the middle of a sentence for a
+    question nobody needed to answer. The closed form must be a word, so
+    `Reindeer-Koryak` stays open. Against any corpus witness the lexicon has no
+    say, which is what `seal-skin` needs: `docs/decisions.md`.
 
     **The rule is a comparison of witnesses, not a reading.** A joined token is
     offered to the corpus twice — as it stands, and with the cut closed — and the
@@ -664,10 +690,12 @@ def resolve_break_hyphens(text: str, cuts: list[int], ref: str, idx: dict
             joined = _attested(idx, _fold(flat), ref)
             hyph = _attested(idx, _fold(tok), ref)
             verdict = ("joined" if joined and not hyph else
-                       "kept" if hyph and not joined else "open")
+                       "kept" if hyph and not joined else
+                       "lexicon" if not joined and _closes_a_word(flat, rel, words)
+                       else "open")
         verdicts.append({"token": tok, "resolved": flat, "verdict": verdict,
                          "joined": joined, "hyphenated": hyph})
-        if verdict == "joined":
+        if verdict in ("joined", "lexicon"):
             pieces.append(text[pos:m.start()])
             pieces.append(flat)
             pos = m.end()
@@ -708,7 +736,7 @@ def _base_lexicon(root: Path = Path(".")) -> set[str]:
     return words | load_extra_lexicon(root)
 
 
-def entity_forms(root: Path = Path(".")) -> set[str]:
+def entity_forms(root: Path = Path("."), store: dict | None = None) -> set[str]:
     """Every component of every entity canonical and alias form, lowercased.
 
     Split the way `lexicon_miss` splits, on whitespace *and* on the internal
@@ -726,7 +754,7 @@ def entity_forms(root: Path = Path(".")) -> set[str]:
     from .entities import load
 
     out: set[str] = set()
-    for rec in load(root).values():
+    for rec in (store if store is not None else load(root)).values():
         for form in [rec["canonical"], *(t["form"] for t in rec["aliases"])]:
             for part in re.split(r"[\s\-'’]+", form):
                 if part:
@@ -754,7 +782,7 @@ def _entities_stamp(root: Path) -> tuple:
         for p in d.glob("*/*.md") if (st := p.stat())))
 
 
-def _lexicon(root: Path = Path(".")) -> set[str]:
+def _lexicon(root: Path = Path("."), store: dict | None = None) -> set[str]:
     """System dictionary, the project's additions, and the entity store's names.
 
     `config/lexicon_extra.txt` holds what a general English dictionary cannot be
@@ -781,7 +809,7 @@ def _lexicon(root: Path = Path(".")) -> set[str]:
     """
     key = (str(root.resolve()), _entities_stamp(root))
     if key not in _WORDS:
-        _WORDS[key] = _base_lexicon(root) | entity_forms(root)
+        _WORDS[key] = _base_lexicon(root) | entity_forms(root, store)
     return _WORDS[key]
 
 

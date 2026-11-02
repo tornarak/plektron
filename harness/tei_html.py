@@ -101,18 +101,91 @@ def _leads_a_block(el) -> bool:
     and KETTLE was set twice — once as an `<h2>` off the ToC and once as the
     compositor's own run-in label. The evidence rule was right; it was being asked
     of the wrong element.
+
+    **Several milestones can stand before one block, and the labels answer from the
+    last one up.** `3-148` prints `WARS. Seventeenth Century Wars. — Soon after …`:
+    a section and its first subsection, two milestones and two labels. `2-129` does
+    the same. Asking only whether a label follows made the second milestone the
+    answer for the first, which set WARS as a centred head above its own run-in.
+    The reverse also occurs: `chVI.1` stands between the chapter's milestone and
+    `SEAL-HUNTING.`, one label for three milestones, and only the last is run-in.
     """
-    nxt = _block_after(el)
+    later, nxt = 0, None
+    for sib in el.itersiblings():
+        if not isinstance(sib.tag, str):
+            continue
+        name = etree.QName(sib).localname
+        if name in _FLOATS:
+            continue
+        if name == "milestone":
+            later += 1
+            continue
+        nxt = sib
+        break
     if nxt is None:
         return False
-    first = next(iter(nxt), None)
-    if etree.QName(nxt).localname == "quote" and first is not None:
-        first = next(iter(first), None)  # <quote><p><label>
-    return (
-        first is not None
-        and etree.QName(first).localname == "label"
-        and not (nxt.text or "").strip()
-    )
+    if etree.QName(nxt).localname == "quote":
+        nxt = next(iter(nxt), None)  # <quote><p><label>
+    return nxt is not None and _front_labels(nxt) > later
+
+
+def _front_labels(block) -> int:
+    """How many `<label>`s open this block, with nothing but space between them."""
+    if (block.text or "").strip():
+        return 0
+    n = 0
+    for kid in block:
+        if not isinstance(kid.tag, str):
+            continue
+        if etree.QName(kid).localname != "label":
+            break
+        n += 1
+        if (kid.tail or "").strip():
+            break
+    return n
+
+
+def _head_only(block):
+    """The milestone a paragraph of nothing but its printed head belongs to, or None.
+
+    `generate` keeps a head that carries a footnote marker as `<p><label>…</label>
+    <ref type="note">`, because the marker needs somewhere to stand. `3-146` and
+    `2-226` print these on a line of their own: they are block heads with a note,
+    not heads run into a paragraph, and a paragraph holding only a run-in label is
+    what `3-146`'s chapter title read as.
+    """
+    kids = [k for k in block if isinstance(k.tag, str)]
+    if _front_labels(block) != 1 or len(kids) < 2:
+        return None
+    for kid in kids[1:]:
+        if (etree.QName(kid).localname != "ref" or kid.get("type") != "note"
+                or (kid.tail or "").strip()):
+            return None
+    if (kids[0].tail or "").strip():
+        return None
+    for prev in block.itersiblings(preceding=True):
+        if isinstance(prev.tag, str):
+            return prev if etree.QName(prev).localname == "milestone" else None
+    return None
+
+
+def _set_in_title_case(label) -> bool:
+    """Does a run-in head carry lowercase of its own, outside any transcribed form?
+
+    The book sets a major head in small capitals, which the recognizer reads as
+    capitals, and a minor one in italic title case, which it reads as title case.
+    So the case in `gt/ocr/` says which the compositor used. The ToC level does not:
+    `Seventeenth Century Wars.` is a subsection and italic, and so are its siblings.
+    """
+    def own(el):
+        if (el.text or "").strip():
+            yield el.text
+        for kid in el:
+            if isinstance(kid.tag, str) and etree.QName(kid).localname != "foreign":
+                yield from own(kid)
+            if kid.tail:
+                yield kid.tail
+    return any(c.islower() for chunk in own(label) for c in chunk)
 
 
 def _is_tier1(el) -> bool:
@@ -756,9 +829,11 @@ class Renderer:
         of their own note bodies — the one arrangement that is wrong in both
         places at once.
         """
-        n = el.get("n") or str(len(self.notes) + 1)
+        # **A note with no `@n` is foot-text running over from the page before**, and
+        # the print gives it no number. Counting one up put a `1` on `3-045`'s
+        # overrun beside the page's real notes, so it read as a note of its own.
         i = len(self.notes) + 1
-        self.notes.append({"n": n, "i": i, "html": self.inline(el)})
+        self.notes.append({"n": el.get("n") or "", "i": i, "html": self.inline(el)})
         return ""
 
     def el_figure(self, el) -> str:
@@ -807,6 +882,11 @@ class Renderer:
         # decides what an indent looks like — so a page that opens a paragraph is
         # set as the compositor set it, and one that carries over stays flush.
         # Any other paragraph is a break by construction and needs no mark.
+        milestone = _head_only(el)
+        if milestone is not None:
+            marks = "".join(self.element(k) for k in el if isinstance(k.tag, str)
+                            and etree.QName(k).localname == "ref")
+            return self.milestone_heading(milestone, marks, anchored=True)
         if el is self.page_first:
             return f'<p class="opens-{self.opens}">{self.inline(el)}</p>'
         return f"<p>{self.inline(el)}</p>"
@@ -851,21 +931,30 @@ class Renderer:
             # the ToC. So this is an anchor: the boundary is still in the document
             # and still linkable, and the words stay the ones the compositor set.
             return f'<span class="milestone anchor {escape(unit)}" id="{escape(n)}"></span>'
+        return self.milestone_heading(el)
+
+    def milestone_heading(self, el, marks: str = "", anchored: bool = False) -> str:
+        """The block head a milestone names, off the ToC. `marks` is a footnote
+        marker the print sets on it; `anchored` says the milestone already emitted
+        the id, which is the case when the head is `_head_only`'s paragraph."""
+        n = el.get("n") or ""
+        unit = el.get("unit") or ""
+        id_attr = "" if anchored else f' id="{escape(n)}"'
         label = self.titles.get(n) or {}
         if not label:
             # The id, unstyled, when the ToC has no such entry. Visibly not a
             # heading — which is how a milestone whose entry went missing should
             # fail, a plausible one built out of a slug being the failure this
             # project is arranged against.
-            return f'<h2 class="milestone {escape(unit)}" id="{escape(n)}">{escape(n)}</h2>'
+            return f'<h2 class="milestone {escape(unit)}"{id_attr}>{escape(n)}{marks}</h2>'
         num = (
             f'<span class="milestone-n">{escape(label["number"])}</span>'
             if label.get("number")
             else ""
         )
         return (
-            f'<h2 class="milestone {escape(unit)}" id="{escape(n)}">{num}'
-            f'<span class="milestone-t">{escape(label["title"])}</span></h2>'
+            f'<h2 class="milestone {escape(unit)}"{id_attr}>{num}'
+            f'<span class="milestone-t">{escape(label["title"])}{marks}</span></h2>'
         )
 
     def el_list(self, el) -> str:
@@ -897,7 +986,8 @@ class Renderer:
         parent = el.getparent()
         if parent is not None and etree.QName(parent).localname == "list":
             return f'<li class="label">{self.inline(el)}</li>'
-        return f'<span class="runin">{self.inline(el)}</span>'
+        cls = "runin runin-title" if _set_in_title_case(el) else "runin"
+        return f'<span class="{cls}">{self.inline(el)}</span>'
 
     def el_table(self, el) -> str:
         """A table, and **its `<head>` as the caption**.

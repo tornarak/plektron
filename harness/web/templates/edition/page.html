@@ -73,7 +73,7 @@ guess, and the languages of its foreign words have not been identified.</p>
 {% if doc.notes %}
 <div id='foot'><ol>
 {% for n in doc.notes %}
-<li id='note-{{ n.n }}' data-n='{{ n.n }}'><a href='#ref-{{ n.n }}'>{{ n.n }}</a>
+<li{% if n.n %} id='note-{{ n.n }}' data-n='{{ n.n }}'{% endif %}>{% if n.n %}<a href='#ref-{{ n.n }}'>{{ n.n }}</a>{% endif %}
 {{ n.html | safe }}</li>
 {% endfor %}
 </ol></div>

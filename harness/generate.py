@@ -74,7 +74,7 @@ from xml.sax.saxutils import escape
 
 from . import apparatus, citations, figrefs, provenance
 from .context import _running_title, tier1_terms
-from .detectors import EDGE_PUNCT, joined_words, midline_forms, resolve_break_hyphens
+from .detectors import EDGE_PUNCT, _lexicon, joined_words, midline_forms, resolve_break_hyphens
 from .entities import alias_index, auto_forms, load
 from .layout import stem_for
 from .lines import page_lines
@@ -208,11 +208,12 @@ def _split_notes(rows: list[tuple[int, str]]) \
     **The interior cut carries a second witness the head cut does not need.** A
     marker at a line head is unambiguous; a superscript mid-line can be a
     figure's locant (`Fig. 155, d²`) or a numeral in the note's own prose. So an
-    interior marker opens a note only when it is set off by whitespace on both
-    sides *and* its digit is exactly one more than the note currently open. The
-    sequence is the printer's own, and it is what a locant can never satisfy: `d²`
-    is not preceded by a space, and a `²` that does not follow note 1 is not a
-    note opening. Measured over the corpus, this cuts on 3 pages and nowhere else.
+    interior marker opens a note only when it follows whitespace or a note's closing
+    punctuation, is followed by whitespace, *and* its digit is exactly one more than
+    the note currently open. The sequence is the printer's own, and it is what a
+    locant can never satisfy: `d²` follows a letter, and a `²` that does not follow
+    note 1 is not a note opening. `1-098` is why punctuation counts: its keyed line
+    is `… II, p. 204.² Bogoras … p. 352.³ Ibid., p. 342.`, with no space to find.
     """
     out: list[tuple[str, list[tuple[int, str]]]] = []
     for idx, text in rows:
@@ -230,9 +231,9 @@ def _split_notes(rows: list[tuple[int, str]]) \
     return out
 
 
-#: A note marker the printer set inside a line rather than at its head. Space on
-#: both sides, which is what a figure's locant never has.
-_RUN_ON = re.compile(rf"(?<=\s)([{NOTE_MARKERS}])(?=\s)")
+#: A note marker the printer set inside a line rather than at its head. After space
+#: or a closing mark and before space, which is what a figure's locant never has.
+_RUN_ON = re.compile(rf"(?<=[\s.,;:)”])([{NOTE_MARKERS}])(?=\s)")
 
 
 def _run_on_note(text: str, pos: int, open_marker: str) -> int | None:
@@ -844,7 +845,8 @@ def _emit(full: str, spans: list, indent: str) -> str:
     return render(ordered, 0, len(full))
 
 
-def page_blocks(ref: str, root: Path = Path("."), shared: Stores | None = None
+def page_blocks(ref: str, root: Path = Path("."), shared: Stores | None = None,
+                store: dict | None = None
                 ) -> tuple[list[tuple[dict | None, list[tuple[int, str]]]],
                            list[dict]]:
     """The page's text in the blocks the rules read it as, and its hyphen verdicts.
@@ -876,10 +878,11 @@ def page_blocks(ref: str, root: Path = Path("."), shared: Stores | None = None
     recs = page_lines(ocr, root, ref=ref)
     joined, cuts = joined_words(recs)
     idx = (shared.midline if shared is not None else midline_forms(root))
+    words = _lexicon(root, shared.store if shared is not None else store)
     verdicts: list[dict] = []
     text_of = {}
     for r, t, c in zip(recs, joined, cuts, strict=True):
-        t, vs = resolve_break_hyphens(t, c, ref, idx)
+        t, vs = resolve_break_hyphens(t, c, ref, idx, words)
         text_of[r["index"]] = t
         verdicts.extend(v | {"line": r["index"]} for v in vs)
     bands = _bands(ref, root)
@@ -1002,7 +1005,7 @@ def build(ref: str, root: Path = Path("."),
     # closing it, and a page reporting `0/0` has to be readable as "no word broke
     # here" rather than as "the rule did not run".
     for v in hyphens:
-        if v["verdict"] == "joined":
+        if v["verdict"] in ("joined", "lexicon"):
             rep["hyphens_closed"] += 1
         elif v["verdict"] == "open":
             rep["hyphens_open"] += 1

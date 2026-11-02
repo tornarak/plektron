@@ -523,7 +523,7 @@ def entity_hits(ref: str, root: Path = Path("."),
     # resolved exactly as the generator resolves it, so that a name the rules
     # linked as `Chukchee` is not offered here as an open question about
     # `Chuk-chee`. That is the whole reason this is one function and not two.
-    blocks, _ = page_blocks(ref, root)
+    blocks, _ = page_blocks(ref, root, store=store)
     out = []
     for band, rows in blocks:
         if band is not None and band["label"] in APPARATUS_ZONES:

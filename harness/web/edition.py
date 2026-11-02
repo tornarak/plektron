@@ -1168,7 +1168,7 @@ _CUT_END = re.compile(r"(\S+)-\s*$")
 _CUT_START = re.compile(r"\S+")
 
 
-def _turn_word(open_p, first, ref: str, idx: dict) -> bool:
+def _turn_word(open_p, first, ref: str, idx: dict, words=frozenset()) -> bool:
     """Close or keep a word the page turn cut, by the line-end rule; True if done.
 
     **The same rule as a line end inside a page** (`resolve_break_hyphens`): the
@@ -1191,7 +1191,7 @@ def _turn_word(open_p, first, ref: str, idx: dict) -> bool:
     if lm is None or rm is None:
         return False
     stem, rest = lm.group(1), rm.group()
-    whole, verdicts = resolve_break_hyphens(f"{stem}-{rest}", [len(stem)], ref, idx)
+    whole, verdicts = resolve_break_hyphens(f"{stem}-{rest}", [len(stem)], ref, idx, words)
     if not verdicts:
         return False
     new = left[:lm.start()] + whole
@@ -1203,7 +1203,7 @@ def _turn_word(open_p, first, ref: str, idx: dict) -> bool:
     return True
 
 
-def _chapter_body(leaves: list[dict], idx: dict | None = None) -> str:
+def _chapter_body(leaves: list[dict], idx: dict | None = None, words=frozenset()) -> str:
     """The chapter's text as one HTML string, with the leaf breaks closed.
 
     **A paragraph the leaf break cut is one paragraph again.** Whether the next
@@ -1259,7 +1259,7 @@ def _chapter_body(leaves: list[dict], idx: dict | None = None) -> str:
             items.extend(blocks[:lead])
             # A word the turn cut is set whole first, so the mark lands after it
             # rather than between its halves; otherwise the turn is a space.
-            cut = idx is not None and _turn_word(open_p, first, leaf["ref"], idx)
+            cut = idx is not None and _turn_word(open_p, first, leaf["ref"], idx, words)
             marked = LH.fragment_fromstring(mark)
             marked.tail = ("" if cut else " ") + (first.text or "")
             open_p.append(marked)
@@ -1308,9 +1308,24 @@ def _pooled_notes(leaves: list[dict]) -> list[dict]:
     group carries the page the reader cites, the printed folio where one is
     known and the scan ref where not, and the note keeps the number it was
     printed with; the leaf-scoped ids (`_scope_notes`) keep two note 1s apart.
+
+    **A note the page turn cut is one note again**, as `_chapter_body` does for a
+    paragraph. A note with no number is the rest of the last note on the leaf
+    before: `2-039`, `2-267`, `3-045` and `3-147` run one over.
     """
-    return [{"ref": leaf["ref"], "folio": leaf["folio"], "notes": leaf["doc"]["notes"]}
-            for leaf in leaves if leaf["doc"].get("notes")]
+    groups: list[dict] = []
+    for leaf in leaves:
+        notes: list[dict] = []
+        for note in leaf["doc"].get("notes") or []:
+            before = notes or (groups[-1]["notes"] if groups else [])
+            if note["n"] or not before:
+                notes.append(note)
+            else:
+                # A copy: the leaf's doc is shared with its own page, from the cache.
+                before[-1] = {**before[-1], "html": f'{before[-1]["html"]} {note["html"]}'}
+        if notes:
+            groups.append({"ref": leaf["ref"], "folio": leaf["folio"], "notes": notes})
+    return groups
 
 
 def _chapter_page(request: Request, run: dict, root: Path):
@@ -1327,7 +1342,7 @@ def _chapter_page(request: Request, run: dict, root: Path):
         request,
         "edition/chapter.html",
         _ctx(request, run=run, leaves=leaves, drafts=drafts, gaps=gaps,
-             body=_chapter_body(leaves, stores.midline(root)),
+             body=_chapter_body(leaves, stores.midline(root), stores.english(root)),
              notices=_pooled(leaf["notices"] for leaf in text),
              supplements=_pooled(leaf["supplements"] for leaf in text),
              notes=_pooled_notes(text),

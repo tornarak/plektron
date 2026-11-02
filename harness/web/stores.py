@@ -339,6 +339,18 @@ def midline(root: Path) -> dict:
     return _midline(str(root), stamp(_gt_ocr_files(root)))
 
 
+@lru_cache(maxsize=MAXSIZE)
+def _english(root: str, _key: bytes) -> set[str]:
+    from ..detectors import _lexicon
+    return _lexicon(Path(root))
+
+
+def english(root: Path) -> set[str]:
+    """`detectors._lexicon`, which decides a broken word the corpus is silent
+    on. Keyed on the one file of it that lives in the text."""
+    return _english(str(root), stamp([Path(root) / "config" / "lexicon_extra.txt"]))
+
+
 def folio_by_ref(root: Path) -> dict[str, int]:
     """The folio index inverted — `{ref: folio}` — built once per index.
 
@@ -415,7 +427,8 @@ def figure_boxes(ref: str, root: Path) -> tuple:
 
 @lru_cache(maxsize=MAXSIZE)
 def _captions_on(root: str, ref: str, _key: bytes) -> tuple:
-    return tuple(r["text"] for r in figures.readings_for(ref, Path(root)).values())
+    return tuple(figures.caption_as_set(r["text"], ref, Path(root))
+                 for r in figures.readings_for(ref, Path(root)).values())
 
 
 def captions_on(ref: str, root: Path) -> tuple:

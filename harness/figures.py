@@ -1880,6 +1880,40 @@ def _gap(g: dict, c: dict) -> float | None:
                g["hpos"] - (c["hpos"] + c["width"]))
 
 
+#: A word a caption's line end broke: the reading keeps the break as hyphen + space.
+_CAPTION_BREAK = re.compile(r"(?<=\w)-\s+(?=\w)")
+#: The lexicon per root, for the process, as `detectors.midline_forms` keeps its index.
+_CAPTION_WORDS: dict[str, set[str]] = {}
+
+
+def caption_as_set(text: str, ref: str, root: Path = Path(".")) -> str:
+    """A caption reading with the words its line ends broke made whole.
+
+    The reading keeps `re- presenting` and `Wood- Carvings`, and the store should:
+    it reproduces the lines. This is what a reader meets, and it takes the same rule
+    as a line end in the prose (`detectors.resolve_break_hyphens`), so `representing`
+    closes and `Wood-Carvings` keeps a hyphen with the space gone.
+    """
+    if not _CAPTION_BREAK.search(text):
+        return text
+    from .detectors import _lexicon, midline_forms, resolve_break_hyphens
+
+    pieces, cuts, pos, length = [], [], 0, 0
+    for m in _CAPTION_BREAK.finditer(text):
+        pieces.append(text[pos:m.start()])
+        length += m.start() - pos
+        cuts.append(length)
+        pieces.append("-")
+        length += 1
+        pos = m.end()
+    pieces.append(text[pos:])
+    key = str(Path(root).resolve())
+    if key not in _CAPTION_WORDS:
+        _CAPTION_WORDS[key] = _lexicon(root)
+    return resolve_break_hyphens("".join(pieces), cuts, ref, midline_forms(root),
+                                 _CAPTION_WORDS[key])[0]
+
+
 def paired(ref: str, root: Path = Path("."),
            all_readings: dict | None = None) -> dict:
     """One record per figure — the picture, its caption — in reading order.
@@ -1945,6 +1979,12 @@ def paired(ref: str, root: Path = Path("."),
     faults and were deleted — so a non-empty list is a new fault, which is
     exactly the signal it was supposed to be once noise stopped sharing the
     bucket. `reconcile` reports it; nothing here refuses.
+
+    **`edition/figure_numbers.json` outranks the geometry here too.** A patch names
+    which picture a printed number belongs to, and the caption printing that number
+    is then that picture's. `2-068` is the case: `by_number` honoured its patch, so
+    a reference to Fig. 240 resolved, while this kept pairing both pictures to
+    Fig. 239 and the page itself never set Fig. 240 at all.
     """
     ref = norm_ref(ref)
     blocks = zones(ref, root)
@@ -1954,12 +1994,22 @@ def paired(ref: str, root: Path = Path("."),
     except (ValueError, OSError):
         texts = {}
 
+    printing = {}
+    for c in caps:
+        reading = texts.get(zone_suffix(c["id"]))
+        if reading and (n := figure_number(reading["text"])):
+            printing[str(n)] = c
+    patched = {key: printing[str(p["n"])] for p in number_patches(root)
+               if norm_ref(p.get("ref", "")) == ref and str(p.get("n")) in printing
+               for key in p.get("keys") or []}
+
     claimed, figures = set(), []
     graphics = sorted((b for b in blocks if b["label"] == GRAPHIC),
                       key=lambda b: (b["vpos"], b["hpos"]))
     for i, g in enumerate(graphics, 1):
         reach = [(d, c) for c in caps if (d := _gap(g, c)) is not None]
-        cap = min(reach, key=lambda dc: dc[0], default=(None, None))[1]
+        cap = patched.get(zone_suffix(g["id"])) or min(
+            reach, key=lambda dc: dc[0], default=(None, None))[1]
         if cap is not None:
             claimed.add(cap["id"])
         suffix = zone_suffix(cap["id"]) if cap is not None else ""
@@ -1968,7 +2018,7 @@ def paired(ref: str, root: Path = Path("."),
             "index": i,
             "zone_id": g["id"],
             "caption_zone": cap["id"] if cap is not None else "",
-            "caption": reading["text"] if reading else "",
+            "caption": caption_as_set(reading["text"], ref, root) if reading else "",
         })
     return {
         "figures": figures,
@@ -2199,11 +2249,11 @@ def by_number(root: Path = Path(".")) -> dict[str, list[dict]]:
     his own way is not a rule to be widened.** Three figures in this corpus have
     no derivable number — the map on `1-037`, whose number is set after the title,
     and `2-068`'s 239 and 240, two pictures above two stacked captions that the
-    pairing read as one two-box figure. Bending either derivation to admit them
-    would mis-fire on every leaf that is ordinary; a human names them instead. A
-    patch **replaces** its number's derived entries rather than joining them, so a
-    number a rule already got half-right does not end up ambiguous by being
-    corrected — which is also what takes the swallowed picture back off 239.
+    pairing would read as one two-box figure. Bending either derivation to admit
+    them would mis-fire on every leaf that is ordinary; a human names them instead,
+    and `paired` honours the patch for the same reason this does. A patch
+    **replaces** its number's derived entries rather than joining them, so a number
+    a rule already got half-right does not end up ambiguous by being corrected.
     """
     out: dict[str, list[dict]] = {}
     for ref in fig_refs(root):

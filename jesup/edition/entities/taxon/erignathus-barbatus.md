@@ -9,9 +9,10 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Erignathus barbatus | | no | |
+| Erignathus barbatus | | yes | |
 | thong-seal | | yes | |
 | ground-seal | | yes | |
+| лахтакъ | ru | yes | |
 
 ## gloss
 

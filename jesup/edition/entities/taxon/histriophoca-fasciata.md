@@ -9,8 +9,9 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Histriophoca fasciata | | no | |
+| Histriophoca fasciata | | yes | |
 | ribbon-seal | | yes | |
+| крылатая нерпа | ru | yes | |
 
 ## gloss
 

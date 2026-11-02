@@ -351,9 +351,10 @@ span.milestone.anchor { display:inline; scroll-margin-top:4rem }
    print does not. All-small-caps loses the initial and keeps the colour of the
    line, which is the better of the two errors. */
 .runin { font-weight:700; font-variant-caps:all-small-caps; letter-spacing:.03em }
-/* Level 4 is the exception on both counts: the book sets it in italic title case,
-   and the recognizer reads title case, so there is nothing to approximate. */
-.milestone.subsubsection + p .runin { font-style:italic; font-weight:600;
+/* A minor head is the exception on both counts: the book sets it in italic title
+   case, and the recognizer reads title case, so there is nothing to approximate.
+   `tei_html._set_in_title_case` reads which it is off the case the page holds. */
+.runin-title { font-style:italic; font-weight:600;
   font-variant-caps:normal; letter-spacing:0 }
 h3 { font-size:1rem; margin:1.2rem 0 .4rem }
 table { border-collapse:collapse; margin:.8rem 0 }

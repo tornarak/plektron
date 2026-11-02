@@ -1175,6 +1175,18 @@ a reading a rule may originate. The refusal is `bears_inventory`, the project's 
 definition of a token carrying the notation, and the verdict records zero counts
 rather than a losing tally — refused, not outvoted.
 
+**The dictionary came back for the one case the corpus cannot speak to.** What it
+lost to above was the corpus: where the book sets a spelling, the book wins. That
+argument says nothing about the words the book sets neither way, and those were
+left standing as questions: `com-plexion`, `red-dened`, `in-vent`. So where the
+corpus is silent and the closed form is a word (`detectors._lexicon`, the entity
+store's names included), the hyphen closes, inside a compound too, `rein-deer-hunts`
+closing to the word `reindeer`. That took the questions from 173 to 106, of which
+nearly all are real compounds. **Its cost is the 2.6% class, in the small:** with no
+mid-line witness it has closed `to-night`, `home-made`, `foot-ball` and `wood-pecker`,
+which this book may well have hyphenated. An editor's ruling, 2026-11-02: a stray
+hyphen in the middle of a word costs a reader more than a modern spelling does.
+
 ## The views were a second name for one store, and a default was their last defender
 
 `ocr/` and `zones/` were symlink farms over the paired stores, the human file

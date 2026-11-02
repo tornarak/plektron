@@ -50,9 +50,9 @@ in for an unread glyph.
   state is worth keeping: of 302 LoI text-figures, 300 resolve to exactly one
   page and none to two, with no caption numbering outside the LoI. The two that
   do not are fig. 1 on `1-037`, whose number the printer set below the title, and
-  fig. 240 on `2-068`, the corpus's one unpaired caption. Both are correct as
-  recorded, so a flat gate on "unlocated is empty" would fail on the day it was
-  written.
+  figs. 239 and 240 on `2-068`, which `edition/figure_numbers.json` pairs by hand.
+  Both are correct as recorded, so a flat gate on "unlocated is empty" would fail
+  on the day it was written.
 
   **The LoI now has a reader, and it is not the cross-check.** `edition serve`
   renders `edition/loi.json` as a run (`docs/edition.md`), linking each printed

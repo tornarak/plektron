@@ -9,7 +9,6 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| reindeer | en | once | throughout; chukchi-1-249 opens the chapter on reindeer-meat |
 
 ## gloss
 

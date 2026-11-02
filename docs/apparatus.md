@@ -156,6 +156,10 @@ zones it is and recording in `why` what the rule saw.
   pictures: 004 is the carved wooden figure with the bead and fur tassel, 002 the
   long hatched strap with thongs and beads — the leather ornament.
 
+`figures.paired` honours the table too, so the page sets both figures. `2-068` also
+prints a bare `Fig. 239.` and `Fig. 240.` under the pictures, above the captions;
+they carry nothing the captions do not, and are in neither store.
+
 `figures.by_number` applies the table after the fold, and a patch **replaces** its
 number's derived entries rather than joining them; otherwise correcting 240 would
 have made 239 ambiguous by leaving the swallowed picture on it. `fig check` gates
@@ -548,8 +552,8 @@ the **caption's own shape**: a text figure sets its caption below the picture
 plate caption unclaimed, which is what it did — 19 over 14 pages. So landscape
 looks below, portrait looks right, each requiring overlap on the other axis, and
 the discriminator is `width >= height` rather than a prior classification of the
-page. Over the whole store **one caption is unpaired** and it is a real
-ambiguity: `2-068` stacks figs. 239 and 240 below two side-by-side pictures, both
+page. Geometry alone leaves **one caption unpaired** over the whole store, and it
+is a real ambiguity, which the patch table settles: `2-068` stacks figs. 239 and 240 below two side-by-side pictures, both
 spanning the full measure, so only caption reading order could decide and that is
 an inference. `harness corpus figures` reports it.
 

@@ -8,8 +8,10 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Americans | | yes | chukchi-1-039; the whalers and traders, opposed to the Russians |
+| Americans | | yes | the whalers and traders, opposed to the Russians |
 | American whalers | | yes | |
+| Leluˊᵋtvɪlɪt | ckt | yes | |
+| Pnauˊkulɪt | ckt | yes | |
 
 ## gloss
 

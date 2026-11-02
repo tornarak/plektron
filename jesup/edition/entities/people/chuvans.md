@@ -12,6 +12,7 @@
 | Čaˊačên | ckt | yes | |
 | Russianized natives | | no | |
 | Chuvantzy | | no | the book's spelling |
+| Aˊtal-taˊn˙ñɪtan | ckt | yes | |
 
 ## gloss
 

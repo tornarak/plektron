@@ -9,8 +9,9 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Cottus | la | yes | chukchi-1-192 note, "various species of Cotti" |
-| Cotti | la | yes | chukchi-1-192 note, "various species of Cotti" |
+| Cottus | la | yes | |
+| Cotti | la | yes | |
+| быкъ рыба | ru | yes | |
 
 ## gloss
 

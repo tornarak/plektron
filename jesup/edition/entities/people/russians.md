@@ -9,6 +9,10 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Russians | | yes | |
+| Mêˊlhɪ-taˊn˙ñɪtan | ckt | yes | |
+| Mêˊlhɪᵋ-t-taˊn˙ñɪtan | ckt | yes | |
+| Ruˊssilɪt | ckt | yes | |
+| Leˊlu-reˊmkɪn | ckt | yes | |
 
 ## gloss
 
