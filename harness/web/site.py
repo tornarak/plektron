@@ -19,6 +19,12 @@ the same size: a false rebuild costs a minute, and a false skip publishes a stal
 page that nothing marks. So it is the whole text, its workspace and the code that
 renders, less a short list.
 
+**`web/static/` is on that list, because a stylesheet's edit changes no page.** Its
+files are served as they are and no render reads them, so a fresh text just takes
+a new copy of them each run, as the landing page does. The exception is a file
+that has gone: a page may still link it, and only a crawl would say so, so that
+rebuilds.
+
 **Directories count as well as files.** A deleted entity changes no file that is
 left, only its parent directory's mtime.
 
@@ -79,8 +85,17 @@ def upstream(root: Path) -> Iterator[Path]:
         siblings = {p.parent.name for p in ws.glob(f"*/{layout.PROJECT_JSON}")}
         yield from _walk(ws, frozenset({"models"}) | siblings)
     code = layout.repo_root()
-    yield from _walk(code / "harness", frozenset({"tests"}))
+    yield from _walk(code / "harness", frozenset({"tests", STATIC.name}))
     yield code / "uv.lock"
+
+
+def _static_gone(dest: Path) -> Path | None:
+    """A static file this text's folder holds and the source no longer does."""
+    have = dest / "static"
+    for p in sorted(have.rglob("*")):
+        if p.is_file() and not (STATIC / p.relative_to(have)).exists():
+            return p.relative_to(dest)
+    return None
 
 
 def _stamp_text(base: str, drafts: bool) -> str:
@@ -96,6 +111,8 @@ def stale(root: Path, dest: Path, base: str, drafts: bool) -> str | None:
         return "its last build did not finish clean"
     if receipt.read_text(encoding="utf-8") != _stamp_text(base, drafts):
         return "built with a different base or drafts setting"
+    if (gone := _static_gone(dest)) is not None:
+        return f"{gone} is gone from the source"
     since = mark.stat().st_mtime_ns
     newest, when = None, since - 1
     root = Path(root).resolve()
@@ -256,6 +273,7 @@ def build_site(repo: Path, out: Path, force: bool = False, jobs: int | None = No
         drafts = layout.publish(root) == "drafts"
         why = "--force" if force else stale(root, dest, base, drafts)
         if why is None:
+            shutil.copytree(STATIC, dest / "static", dirs_exist_ok=True)
             rep.rows.append({"text": name, "state": "fresh", "why": ""})
             continue
         site = build(root, dest, base=base, drafts=drafts, jobs=jobs, tick=tick, home="/")

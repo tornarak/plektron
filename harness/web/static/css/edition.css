@@ -1,11 +1,32 @@
 :root {
   color-scheme: light;
-  --bg:#fbfaf7; --fg:#1c1a17; --dim:#6b6560; --rule:#ddd8d0; --card:#fff; --bg-warn:#fcc; --bg-info:#cce8ff;
-  --accent:#7a4b28; --mark:#b8860b; --pin:#1a6b5a; --warn:#aa1b18; --info:#15547a;
-  --sea:#eef2f4; --land:#e7e2d8; --water:#5a86a8;
-  --sel: #c15252;
-  --flora:#3f7a35; --abstract:#7d6a10; --lex:#c2620c; --basin:#8c3a3a;
-  --hi:#e0342a;
+  --bg:#e2dbc2; --fg:#16140f; --dim:#463b28; --rule:#8c7f5e; --card:#ebe5d0;
+  --board:#c4ae80; --on-board:#16140f; --block:#16140f; --on-block:#e2dbc2;
+  --accent:#084a1c; --mark:#5a3e00; --pin:#5c3500; --warn:#801c0a; --info:#0a4a4a;
+  --sea:#d3d5c4; --land:#d9d0b0; --water:#0c4468;
+  --sel: #801c0a;
+  --flora:#424500; --abstract:#6a1f66; --lex:#742b00; --basin:#6e2418;
+  --hi:#c8200a;
+  --print:multiply;
+  --text:Charter,Georgia,"Times New Roman",serif; --ui:var(--text);
+  /* The paper and the board: tiling PNGs of one colour under varying alpha,
+     declared here alone so that the two dark blocks below name a tile rather than
+     each holding a copy. ImageMagick 6, for each of light (seed 7, sigma .5, floor
+     60, cap 4, black), dark (11, .5, 60, 12, #7d5fb0, the purple in the ink) and
+     board (13, .55, 45, 6, black; text sits on this one too):
+       convert -seed S -size 96x96 xc:gray +noise Random -colorspace Gray
+         -virtual-pixel tile -blur 0xSIGMA -auto-level -level FLOOR%,95%
+         -posterize 3 +level 0,CAP% mask.png
+       convert -size 96x96 xc:INK mask.png -alpha off -compose CopyOpacity
+         -composite -define png:color-type=6 -define png:compression-level=9
+         -strip tile.png
+     **Mottling, and faint, because a Tier-1 form is read off this.** A dark speck
+     beside an `i` is a diacritic nobody printed. Weaken a tile before making it
+     louder; cards stay flat for the same reason. */
+  --grain-light:url(data:image/png;base64,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);
+  --grain-dark:url(data:image/png;base64,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);
+  --grain-board:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAL/UlEQVR42rVdy27rOgykUwMicBf5/8/sjgZc4G6SQmVIzlD2MVA0TWWZkvgcUbSIiAq+dPqRZnsF7fxn9hnRPVr0X41Hk/+zf2fPQmPRXUTMNbRmJ76tuT6q+7NnPUXkCP4fPUsaz4uera6/99/DtTNAw8plj4AoDb4z4kEKCNSCE/11NJ4R0YruM9C/FTRkjGNEu49rTxor0YEmi+c5c273LAZmyUCi757EBGnSp4IJsuCzNaTXEsYL/34sqAeG0Er3D8AUT6Db1aknTXS7kVxogZQrISWVSrNC2v/Q/Qh0nyWTPwhj4/Wn7/NIBq4LkyUF7bZgf1qqI2lfqeqIYf+oIEaXGZCGDuHZgh8ZsYQnZE0pvmpEGRU0qsX5ei3C+frZp7/9dRZc5e853eKe0+/tRci7zX+v7/bpnnN6zlkMeIjIz9Qfuk73jBNM6Dzmfbr/TOYgsjnbi8YzWvgtGdQ3oe86ngXSpyMxqsgxqNzVO+hj3e5OP3/afU0r/Sb4x3HjPADPPRGXI+nwHDlLxT49y3NfxOVbsEinU6/RfeqksuJ+JFFCSOrp5uNX8h+BAYkMSmUDKm9k5RrOE2INW9VXN1JlOfkKCnC8V0MbUW3lfipwwYxQDUa4qupU1kjUkCURLWuQtbEYK6jBrw14FhEoSxCSCGQzqsCFsRlMwMgwQFfvyx0Lpk7kV4ExBihTIHEUgJX0pYs0supSgXqN5hFeGynqDHbCqB+Gs7QItIQIsuwm7tXAnhwkFEFLxaMwnAhhnAfzdHpbF7gwm3AhJ2y8fhSMSRMVacVCzZNvJI2UndgIcM0CTo+4cQQYjRG2IpMCFrn0GNMBgDBbmaiLETOUBC04ktGb1XdC6M7MK2ElR8jPjE6P6HkK3rSRJr2hCop0LMJ9FPy9YrBXvC02VvAMNggX9RAMSTMORkvkWIueSYwCT4iVLpaTme9YqexOohI0aocLny4+6IgfO8Eq1yJmhhG0uVB30UJfDxQqJ0QxGy/sbtNlT8IZ4kiS/5Vh1au0bxd0KxsrrHoIWiz6G7FF8AFLXzeGyby1pQVm9a6Sqkgvcgj7XJYrGXoYWiOvqHvfx/82EPxUeE0X+9bEZ78CeDHA3ywBq7hQJGlVv6z/r1/yFxf3ewDzDtmM61c7Z+8H7wUw994lWp38996B302L6PyZxud3wfy+RrZvcAbzkvUb7UmcEu8x7CgrwoRPTdEEH6pw/bGgnixwFCqOZnKaqo38SIWh/KOonaFATBoTXg0s2siJ2oxGxBupgZVEgE4c4z0rJjeonOyoj0cjwLGJGG2qC7vZ55cC4xkElOJ1OXKVh+B8nyUY5UG6Xjr501bEAQq4Y/7um3RfmfxPI2CDzH1EaZAH0cYW8KrfHTGVGopVgutYLwXB3R0vBD3DCKZi21li35i2UsRYHxKgDWNsN/vZSGXoYqBT7WVUwZQWKolN18ns4e+cPgRvqDO2AamMjjfCAl9VX6M5jvZm+kK78Blfgb96Bn6wuFjhLDpHGWdRBp73o8X50ub87fl+DfrSl3p9tx3T356GSK3qdM8e+Ph7EA/52EeYOdkb+nglG4BJQbnKcZEE+wj1CMaA7FOG7WS6P8rug9KabcozJ1QY0R2Fp4EWkzXMiAE6Rpb5/jl5cR0mtEoCIteLmfRo1Y3AkxQEN0y2RcV5Gcd2jl+xC7USDP729TXprn3CWKps41kH/jhsxoK2MzYkAHvZA2zlP6e/1bXZnA4/Czwr080a9B/ZFpnswoxB7QkWJM5enO6z7hdWkdHplbRYgZvM9x/SSwOJIAttjKMrAaPh+XjJHnvh01dqwZrBDHPWSgkVhgKxldOSHXWihKo1EGfM17ELf7Yp0/fd87GrARmbXBtJXTc/CUXAnTkoNcveNDAMsQwSaDc9B10HkDADCyggGrYFtfhxSvJqtoAH5t7SMgpRzZK6rpza96mECAxEErZyiI9JPDMUiHXCe1sYhAZ4jIeG7QLXSxIQmXCH9FYTvirkNrUFu6xvNFw6oi/57lW08AwSqoWECVjYKruPHa82JEUYNFQ7xqTgMC24n1E3B7lQ1ZGqrhPg+2DS8+ffg5CKZcI6Opo9SFGlNkb9MJ+rfq54ZJ00FEXj3BYBuO6CiEMZj4IjRqHLEebDHoOK7rMCP5Ib5+EPbRs5cez/0JmA4UAsf9+TwJa6Pnobn0mwJhbtpXbCIjBOgygu42Irwv5qoo4CULuS4ohKKTBMhjZ4rJC0UUjdqBCErwA4q47hi8SHjrNNGgOg1NzHUTw/2hiSon1VUiAbV7Y4+6SuzYF4M5h3JGDkFny/F7SXhrFjhDMvqFPu61+ksnSM753toApaCfnZLICuf8x4GuxZsug+pEoRXdUehJJwy+8C3Fmyhbb+yQIaSQ9bCYu1UZ2KWLN3xlbNSudmA+ihktyKvCHkLdiFhWWhcf9/dtuV9QirccF5nKsV/otjO+i82JVAjwmcVkpKrgZrKNgrx/yU+478MxPdPQ7LDHyl5MLVOqcrx3N/saC5wbFgDCNVwCayGsCK2GOgd0AITFsPeSsRzZd5ozuIKAdBxOFgBgmiXSMH1d25igJHLWjN+sqMegVdHEDXI0/yA4ro1tdkOaVrrFHhj2xh7SJHo/sMGHoEe4dj20hi2QQoJbwQdkFXK6wwgCDCaKyBB6F4qPSEHslkv38GAb7NBvxqRLnKwQZ0/7iwwKMpSUaMX5lIWBL9viLKArjoWTgBnUpaWU7n9yIQh7L8qu+p+GknVECU8ZDlEaE94ZH0ewRGMnruICZnBWJgoBgFkfVM30E8wyI31EDIzhrbzE2tcjizirkIAqgmBelsawSGqFATmxWn3g0VuZZdpmChBrmgK206ujxjsK4bXD3vKNxuCEWg/dQryGU3fO9GvMwCIJgl23u+E475oGEjjMdq/v0czH0XbiPjawvBUavxQGRfjoaEdQqCfGiYjRQV1n3rVitZCWw6gVMUA6Bty6h2dnUyRohnpkyT1XNAhyI6mWsHGbygFEaGlui+0TDQzAnJbrBlRYyUli6uBjWaXNnxVqrXojATZ4t6OwL/jFxoplJwWhXm0bDU3RQPbXAQ2sazAjGtIvn34L+JsWlj8u+aL0V+K8pUy7wSb/E7GxZdD6rjgXUL9q1UQmxl4G2Ctw8RKFcVd2X8alR2oFsOU2W9BtGdF0XHI5n8QYjTk1ADDHiG2nd9cFvgYiOk4LaC3ZERRlGeJrBA92U7qDBSp8oJg06uOA5sBM6OuXQedpKjstrQKzqYzTfK8JcqkZd9i5KRnpAuSFzFMB8B3E52mu0NrJSsQVE3C3ppgKJm9slHuygoU1Iy0KIgjXI8GqvtfdmsZD2b8Nqt41mdAThIN/go4o3uwUEW46Kfx55uyYyPEkTc8faMzEA+5W89z1UQ7RlErp26dq0cpAcAqarQ+5v0PtgDdgxHGSmlg1An1Xsqv0lpjaL0DmSunRVFWc0rnMe8kPnKMSJWKjuLJMJXgYfXBvAUISRj5Y1C/yr7YTVgivAdJcefQRlUtvgudVneFT9YJS7aegVbWpn8brFBf8IRFReZ2zABXVovCAUpozFpTBGlDtjFekfWkFg0MUfgWWXVVxCTwkS0h+T1FKK9XVa32SJnVm+58AVgV+xFpyIAk/5SqRwjPErzWNAIXLAjiQME4CArL0U2wa8xFMlzVjsLv5Iaz7zWkZE2826okGKFXpbQ1cuVK1lJ4yHcafhu4aaob/ZQhoKJD1Xhnjz8jjeZst5Op8LV1UqLV8vgKKG6MqMdSog/pjrXjstqoIm7Z/4cvTV6PjIatRH5POqK6vlXE8Qcc1XniAjZ7+7ue9ezM/n7pnAB8/JesB9mpbvliHUhlI/e2qQNKOOKXkd9dXbsOvSpvNJSkIfSqaPQfQGo54iD6J/tl1F3qKxAduCkCyCmNH0R7qE/1X4maisqI5mprUjd/Ag+UV6pRVQyeVZ10Svb/USdL4aISmaq5Cf+/XcVw5wP0gdGmEonPx7B1gy4hVQgqpju6zd0duk6xV6NUEO07l8NgLo1evSGyUZtrryC6ioAR9up7ru7lEAh2QGutNVGnyxTXH0fArz+B7J8YQhS2ObtAAAAAElFTkSuQmCC);
+  --grain:var(--grain-light);
 }
 /* **Three states, and the two dark blocks are the same tokens on purpose.**
    No `data-theme` means follow the system, which is what a reader who has never
@@ -16,34 +37,67 @@
    CSS cannot union a media query with an attribute selector, so the block is
    written twice; the values are identical and belong to `:root` either way. */
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-                                        --bg:#161513; --fg:#e6e2db; --dim:#948d84; --rule:#332f2a; --card:#1e1c19; --bg-warn:#2a1c19; --bg-info:#0e1c29;
-  --accent:#d99a63; --mark:#d4a63c; --pin:#5fbfa6; --warn:#da1b18; --info: #1c6c9e; 
-  --sea:#14181b; --land:#2a2621; --water:#6f9cbd;
-  --sel: #c15252;
-  --flora:#8fbf7a; --abstract:#e0c97a; --lex:#e07b20; --basin:#997a72;
-  --hi:#ff5f4d;
+  --bg:#14111a; --fg:#f4eeda; --dim:#cfc09a; --rule:#5a5068; --card:#1f1a27;
+  --board:#2a2234; --on-board:#f4eeda; --block:#b89f70; --on-block:#14111a;
+  --accent:#6fe08a; --mark:#f2c23e; --pin:#eda75f; --warn:#ff8a6b; --info:#6fdcdc;
+  --sea:#161722; --land:#2b2633; --water:#6cc6f7;
+  --sel: #ff8a6b;
+  --flora:#d6dc4e; --abstract:#e3a0e6; --lex:#ffa04d; --basin:#e09a88;
+  --hi:#ff6a4d;
+  --print:normal;
+  --grain:var(--grain-dark);
   color-scheme: dark;
 } }
 :root[data-theme="dark"] {
-  --bg:#161513; --fg:#e6e2db; --dim:#948d84; --rule:#332f2a; --card:#1e1c19; --bg-warn:#2a1c19; --bg-info:#0e1c29;
-  --accent:#d99a63; --mark:#d4a63c; --pin:#5fbfa6; --warn:#da1b18; --info: #1c6c9e;
-  --sea:#14181b; --land:#2a2621; --water:#6f9cbd;
-  --sel: #c15252;
-  --flora:#8fbf7a; --abstract:#e0c97a; --lex:#e07b20; --basin:#997a72;
-  --hi:#ff5f4d;
+  --bg:#14111a; --fg:#f4eeda; --dim:#cfc09a; --rule:#5a5068; --card:#1f1a27;
+  --board:#2a2234; --on-board:#f4eeda; --block:#b89f70; --on-block:#14111a;
+  --accent:#6fe08a; --mark:#f2c23e; --pin:#eda75f; --warn:#ff8a6b; --info:#6fdcdc;
+  --sea:#161722; --land:#2b2633; --water:#6cc6f7;
+  --sel: #ff8a6b;
+  --flora:#d6dc4e; --abstract:#e3a0e6; --lex:#ffa04d; --basin:#e09a88;
+  --hi:#ff6a4d;
+  --print:normal;
+  --grain:var(--grain-dark);
   color-scheme: dark;
 }
 /* `color-scheme` so the browser's own furniture follows — the search field, the
    scrollbars, the focus ring. Without it a dark page carries a white input. */
 :root[data-theme="light"] { color-scheme: light }
 * { box-sizing:border-box }
-body { margin:0; background:var(--bg); color:var(--fg);
-  font:16px/1.5 Charter,Georgia,"Times New Roman",serif; }
+body { margin:0; background:var(--bg) var(--grain); color:var(--fg);
+  font:16px/1.5 var(--text); }
 a { color:var(--accent) }
+/* **Small capitals on the site's own words only.** Capital against small capital
+   is a distinction in the notation (`keying_spec.md`), so this class of rule must
+   never reach an element that can hold the book's text: not `.location`, not the
+   contents panel, not a card, a search hit or a tree row. */
+#bar .site-title a:not(:first-of-type), #site-foot .refs a, .draft-tag, .run-tag,
+.leaf-tag, .pill, .alpha-sorts .g-key, .outline .ol-part h4, .alpha-sorts th,
+.run .page-no .opp, ul.tree code.cls {
+  font-variant-caps:all-small-caps; letter-spacing:.05em }
+/* The board: the two bands the cream page sits between. Green on kraft is about
+   2.5:1, so nothing here wears a hue; `--on-board` is the whole of its colour. */
+#bar, #site-foot { background:var(--board) var(--grain-board); color:var(--on-board) }
+#bar a, #site-foot a, #bar .location { color:var(--on-board) }
+#bar button { font-size:1rem; color:var(--on-board);
+  border-color:var(--on-board); background:var(--card) }
+#bar button:hover { background:var(--bg) }
+/* The theme button shows where it goes: a moon in light, a sun in dark. Written
+   against both dark conditions for the reason the token blocks are. */
+#bar [data-theme-toggle] { font-size:1.35rem; font-weight:700; line-height:1.1;
+  padding:.1rem .5rem }
+[data-theme-toggle] .to-light { display:none }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) [data-theme-toggle] .to-light { display:inline }
+  :root:not([data-theme="light"]) [data-theme-toggle] .to-dark { display:none }
+}
+:root[data-theme="dark"] [data-theme-toggle] .to-light { display:inline }
+:root[data-theme="dark"] [data-theme-toggle] .to-dark { display:none }
+#bar a:hover, #site-foot a:hover { text-decoration:underline }
 #bar { z-index:9; display:flex; gap:.75rem;
-  align-items:center; padding:.5rem .9rem; background:var(--bg);
-  border-bottom:1px solid var(--rule); font-family:system-ui,sans-serif;
-  font-size:.85rem; }
+  align-items:center; padding:.5rem .9rem;
+  border-bottom:1px solid var(--on-board); font-family:var(--ui);
+  font-size:1rem; }
 /* Three zones: the site's name left, the controls centred, the page's identity
    hard right. The centre is the only one that grows, so it stays centred in the
    window rather than centred in whatever is left over — and the two ends are
@@ -51,11 +105,11 @@ a { color:var(--accent) }
    centre. */
 #bar .site-title, #bar .bar-right { flex:1 1 0; min-width:0 }
 #bar .site-title a:first-of-type { font-weight: bold; }
-#bar .site-title a:not(:first-of-type)::before { content: "•"; margin: 0 0.4em; }
+#bar .site-title a:not(:first-of-type) { margin-left:.9em; font-size:1.1em }
 #bar .bar-right { display:flex; align-items:center; gap:.75rem;
   justify-content:flex-end }
 #bar .bar-right input { min-width:0 }
-#bar .location { color:var(--dim); white-space:nowrap }
+#bar .location { white-space:nowrap }
 #bar .page-specific-buttons {
     display: flex;
     flex: 0 0 auto;
@@ -68,17 +122,20 @@ a { color:var(--accent) }
    window on purpose: none of it is wanted while reading, and the header is the
    one strip that is on screen the whole time. */
 #site-foot { display:flex; flex-direction:column; align-items:center; gap:.6rem;
-  max-width:80rem; margin:2rem auto 0; padding:1rem .9rem 2rem;
-  border-top:1px solid var(--rule);
-  font-family:system-ui,sans-serif; font-size:.85rem }
+  margin:2rem 0 0; padding:1rem .9rem 2rem;
+  border-top:1px solid var(--on-board);
+  font-family:var(--ui); font-size:1rem }
+#site-foot .refs a { font-size:1.1em }
 #site-foot .refs { display:flex; gap:.9rem; flex-wrap:wrap;
   justify-content:center }
 #site-foot a { text-decoration:none }
 #bar a { text-decoration:none }
-button, .btn { font:inherit; font-family:system-ui,sans-serif; font-size:.8rem;
-  padding:.25rem .6rem; border:1px solid var(--rule); border-radius:.3rem;
-  background:var(--card); color:var(--fg); cursor:pointer; }
+button, .btn { font:inherit; font-family:var(--ui); font-size:.8rem;
+  padding:.25rem .6rem; border:1px solid var(--dim); border-bottom-width:2px;
+  background:var(--bg); color:var(--fg); cursor:pointer; }
 button:hover { border-color:var(--accent) }
+/* Pressed: the heavier edge moves to the top, so the face seems to go in. */
+button:active { border-bottom-width:1px; border-top-width:2px }
 main.cols { display:flex; align-items:flex-start; flex-direction: row-reverse; }
 .cols-reversed main.cols { flex-direction: row; }
 #primary { flex:1 1 auto; padding: 0 1rem; min-width:0; max-width:44rem; margin: 1rem auto; }
@@ -162,8 +219,8 @@ html:is(.side-contents, :has(#toc-switch:checked)) #side-body:has(#panel-content
    points away from the text, the show one toward it — `›`/`‹` set by the side
    the column is on, in `content` so the arrow is never mirrored by an rtl
    column the way a character in the markup would be. */
-#side-hide, #side-show { width:1.1rem; padding:0; border:0; border-radius:0;
-  background:transparent; color:var(--dim); font-size:1rem; opacity:.55;
+#side-hide, #side-show { width:1.1rem; padding:0; border:0;
+  background:transparent; color:var(--dim); font-size:1rem;
   cursor:pointer; direction:ltr;    /* an rtl column mirrors `content` too */
   /* Labels, not buttons, so nothing centres the arrow unless this does. */
   display:flex; align-items:center; justify-content:center }
@@ -212,8 +269,8 @@ html:is(.side-dismissed, :has(#side-off:checked)) #secondary:not([data-fixed]) +
    rather than over it. Solid while the contents are up, so the "cancel" reads
    as the state it undoes. */
 #toc-toggle { flex:none; display:block; width:100%;
-  margin:0; padding:.45rem 0; border-radius:0; text-align:center;
-  font-family:system-ui,sans-serif; font-size:.75rem; letter-spacing:.04em;
+  margin:0; padding:.45rem 0; text-align:center;
+  font-family:var(--ui); font-size:.75rem; letter-spacing:.04em;
   color:var(--dim); background:var(--card) }
 html:is(.side-contents, :has(#toc-switch:checked)) #toc-toggle
   { background:var(--fg); color:var(--bg); border-color:var(--fg) }
@@ -243,8 +300,8 @@ html:is(.side-contents, :has(#toc-switch:checked)) #toc-toggle .when-on { displa
    *here*, and a map that could be pushed out of sight by the next three cards
    was answering a question you had not stopped asking. */
 #map-pane{position:relative;background:var(--card);border:1px solid var(--rule);
-  border-radius:.4rem;padding:.6rem .75rem;margin-bottom:.6rem;
-  font-family:system-ui,sans-serif;font-size:.85rem;line-height:1.5}
+  padding:.6rem .75rem;margin-bottom:.6rem;
+  font-family:var(--ui);font-size:.85rem;line-height:1.5}
 #map-pane[hidden]{display:none}
 #map-pane .dismiss{position:absolute;top:.4rem;right:.5rem;z-index:1;
   padding:.05rem .35rem;font-size:.7rem;line-height:1.4}
@@ -267,8 +324,13 @@ html:is(.side-contents, :has(#toc-switch:checked)) #toc-toggle .when-on { displa
 @media (max-width:600px) {
   #bar { flex-wrap:wrap; gap:.4rem .75rem }
   #bar .site { flex:0 0 auto }
-  #bar .bar-right { flex:1 1 100%; justify-content:space-between }
-  #bar .bar-right form { flex:1 1 auto; display:flex; max-width:14rem }
+  #bar .site-title { flex:1 1 100% }
+  /* Out of its wrapped row and into the corner, level with the title. */
+  #bar { position:relative }
+  #bar [data-theme-toggle] { position:absolute; top:.3rem; right:.9rem }
+  #bar .bar-right { flex:1 1 0; flex-wrap:wrap; gap:.4rem .75rem;
+    justify-content:flex-start }
+  #bar .bar-right form { flex:1 1 6rem; display:flex }
   #bar .bar-right input { width:100% }
 }
 /* --- the text --- */
@@ -445,7 +507,7 @@ td,th { border:1px solid var(--rule); padding:.2rem .5rem; text-align:left }
 [data-ref^="institution:"], [data-ref^="being:"],
 [data-ref^="sky:"]                                 { --link:var(--abstract) }
 .ent { color:var(--link); text-decoration:none;
-  border-bottom:1px solid color-mix(in srgb,var(--link) 40%,transparent) }
+  border-bottom:1px solid color-mix(in srgb,var(--link) 70%,transparent) }
 .ent:hover { border-bottom-color:var(--link);
   background:color-mix(in srgb,var(--link) 8%,transparent) }
 /* A figure sets as its own block, and floats only when the box it was cut from
@@ -514,6 +576,14 @@ article { display:flow-root }
    one changes no layout: the flex column, the percentage widths and the MRC
    pair's positioning all still see the image as their own child. */
 a.pic { display:contents }
+/* **A scan prints onto the paper** rather than sitting on it as a white rectangle.
+   `--print` is `multiply` in light and `normal` in dark, where multiplying would
+   black the leaf out. A Mixed Raster pair blends as one, from its container, so
+   its two layers go on composing with each other as above. The lightbox is out of
+   this on purpose: it is where a reader goes to see the leaf as it is. */
+.figure-plates img, .whole-scan:not(.leaf-mrc) img, .leaf-mrc,
+.outline .ol-thumb img, .crop img, .card .crop-fig img {
+  mix-blend-mode:var(--print) }
 a.pic img { cursor:pointer }
 .figure-anchor { color:var(--dim); font-size:.85em; cursor:pointer }
 #foot { margin-top:2rem; padding-top:.8rem; border-top:1px solid var(--rule);
@@ -525,39 +595,38 @@ a.pic img { cursor:pointer }
    Suppressing `@n` instead would have been the wrong half to drop: the counter is
    this list's position, `@n` is the page's own mark, and the two part company the
    moment a marker does not read or a note's text runs on from the page before. */
-#foot li:target { background-color: rgba(205, 50, 50, 0.2); border-radius: 5px; }
+#foot li:target { background-color:color-mix(in srgb,var(--sel) 20%,transparent) }
 #foot ol { list-style:none; padding-left:0; margin:0 }
 /* --- apparatus, hidden in reader view --- */
-.flag { font-family:system-ui,sans-serif; font-size:.7rem; color:var(--mark);
-  border:1px solid var(--mark); border-radius:.25rem; padding:0 .25em;
+.flag { font-family:var(--ui); font-size:.7rem; color:var(--mark);
+  border:1px solid var(--mark); padding:0 .25em;
   cursor:help; margin:0 .15em; vertical-align:super }
 .flag.question { background:color-mix(in srgb,var(--mark) 15%,transparent) }
 .unsettled { background:color-mix(in srgb,var(--mark) 12%,transparent);
   border-bottom:1px dashed var(--mark) }
 html.reader .flag { display:none }
 html.reader .unsettled { background:none; border-bottom-style:solid }
-/* --- a page nobody has read ---
-   `--sel`, the one warm red in the palette, and deliberately not `--mark`: an
-   inventory flag and an unsettled span are marks *within* a page somebody
-   collated, and this says the whole page is machine output. It has to not read as
-   one more of those.
+/* --- a page not yet collated ---
+   `--sel`, the red line, and deliberately not `--mark`: an inventory flag and an
+   unsettled span are marks *within* a collated page, and this says the whole page
+   has not had that review. It has to not read as one more of those.
    Reader view keeps it, unlike `.flag` and `.unsettled` above. Those hide because
    reader view is for reading a settled page without the apparatus; this one is
    the statement that the page is not settled at all, and a reader who has hidden
    the apparatus needs it more, not less. */
-.draft-tag { font-family:system-ui,sans-serif; font-size:.7rem;
-  text-transform:uppercase; letter-spacing:.04em; vertical-align:.15em;
-  color:var(--sel); border:1px solid var(--sel); border-radius:.25rem;
-  padding:0 .3em; white-space:nowrap }
-.draft-note { font-family:system-ui,sans-serif; font-size:.85rem;
-  color:var(--dim); border-left:3px solid var(--sel); margin:0 0 1rem;
-  padding:.4rem .75rem;
-  background:color-mix(in srgb,var(--sel) 7%,transparent) }
+.draft-tag { font-family:var(--ui); font-size:.85rem; color:var(--sel);
+  white-space:nowrap }
+.draft-note { font-family:var(--ui); font-size:.9rem; color:var(--dim);
+  border-top:1px solid var(--rule); border-bottom:1px solid var(--rule);
+  margin:0 0 1rem; padding:.4rem 0 }
+#primary p.draft-note { text-indent:0; text-align:left }
+/* One pair of rules around two notes in a row, as on a leaf an editor has worked. */
+#primary p.draft-note:has(+ p.draft-note) { border-bottom:0; margin-bottom:0 }
 .draft-note code { font-size:.9em }
 /* --- the stack --- */
 .card { background:var(--card); border:1px solid var(--rule);
-  border-radius:.4rem; padding:.6rem .75rem; margin-bottom:.6rem;
-  font-family:system-ui,sans-serif; font-size:.85rem; line-height:1.5 }
+  padding:.6rem .75rem; margin-bottom:.6rem;
+  font-family:var(--ui); font-size:.85rem; line-height:1.5 }
 .card.pinned { border-color:var(--pin) }
 .card h4 { margin:0 0 .3rem; font-size:.9rem; font-family:inherit }
 .card h5 { margin:0 0 .3rem; font-size:.9rem; font-family:inherit }
@@ -570,10 +639,9 @@ html.reader .unsettled { background:none; border-bottom-style:solid }
    completely different width. */
 .card table { font-size:.75rem; margin:.4rem 0 0 }
 .crop { position:relative; overflow:hidden; width:100%;
-  border:1px solid var(--rule); border-radius:.3rem; margin-top:.4rem;
-  background:var(--bg) }
+  border:1px solid var(--rule); margin-top:.4rem;
+  background:var(--card) }
 .crop img { position:absolute; max-width:none }
-html[data-theme="dark"] .crop img, .dark-raster .crop img { filter:none }
 /* An entity's picture. Floated so the gloss wraps it rather than waiting below
    it; the width attribute is the thumbnail's own, capped here, and height:auto
    keeps the ratio the attributes declare. */
@@ -631,15 +699,19 @@ a.maplink { font-size:.7rem; margin-left:.4rem; color:var(--dim);
   text-decoration:none; border-bottom:1px dotted var(--rule) }
 a.maplink:hover { color:var(--accent); border-bottom-color:var(--accent) }
 h4.tier1 { font-style:italic; font-size:1.1rem }
-#empty { color:var(--dim); font-size:.85rem; font-family:system-ui,sans-serif }
-.pill { display:inline-block; font-size:.7rem; padding:0 .35em; border-radius:.25rem;
-  border:1px solid var(--rule); color:var(--dim); margin-left:.3rem }
-.pill.proposed { border-color:var(--mark); color:var(--mark) }
-.pill.imputed { border-style:dashed }
+#empty { color:var(--dim); font-size:.85rem; font-family:var(--ui) }
+/* **A label recedes from what it labels, by more than hue.** Beside a name a type
+   is smaller, lighter in weight and in neutral ink, while the name is heavier and
+   in its family's full colour, so the two part at a glance. A status is the
+   exception, since it is news about the entry: it keeps a colour and takes weight. */
+.pill { display:inline-block; font-size:.78rem; font-weight:400; color:var(--dim);
+  margin-left:.45rem }
+.pill.proposed { color:var(--mark); font-weight:700 }
+.pill.imputed { font-style:italic }
 /* One form read as two languages on two collated pages. `--mark` is the
    apparatus colour and this is apparatus: it says the corpus disagrees with
    itself, which is a finding and not a defect in the card. */
-.pill.unsettled { border-color:var(--mark); color:var(--mark) }
+.pill.unsettled { color:var(--mark); font-weight:700 }
 /* The lines a Tier-1 form was printed on, from gt/ocr/. `lexicon lookup`'s
    reasoning: a form alone is a string, a form in its line is a sense. Kept
    small and unbulleted — it is evidence under a headword, not a list a reader
@@ -652,7 +724,9 @@ ul.lines a { font-family:ui-monospace,monospace; font-size:.8rem;
 ul.lines mark { margin: 0 .4rem; }
 .ipa { display:flex; align-items:center; gap:.45rem; margin:.5rem 0 .3rem }
 ul.tree, ul.tree ul { list-style:none; margin:0; padding-left:1.1rem }
-ul.tree { padding-left:0; font-family:system-ui,sans-serif; font-size:.85rem }
+ul.tree { padding-left:0; font-family:var(--ui); font-size:1rem }
+/* Not `a.lex`: a Tier-1 form stays at its own weight, where its marks read cleanest. */
+ul.tree a.ent, .ent-tree a.node { font-weight:600 }
 ul.tree li { margin:.15rem 0; border-left:1px solid var(--rule);
   padding-left:.6rem }
 ul.tree > li { border-left:none; padding-left:0 }
@@ -703,7 +777,7 @@ ul.tree > li { border-left:none; padding-left:0 }
 /* A class heading in the encyclopedia tree. Not a link — there is no page for a
    class, and making one would be a filter pretending to be a place. A class
    nothing is filed under is dimmed rather than dropped. */
-ul.tree code.cls { font-size:.85rem; color:var(--fg) }
+ul.tree code.cls { font-family:var(--ui); font-size:1.1rem; font-weight:700; color:var(--fg) }
 ul.tree code.cls.empty { color:var(--dim) }
 /* The atlas tree's node link. It carries `data-ref` like every other link to a
    record, so it takes its family colour the same way — the tree is the one place
@@ -731,15 +805,15 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
  * second page wanting the same treatment asks for it by name instead of copying
  * a declaration list.
  */
-#bar form input{font:inherit;padding:.2rem .4rem;border:1px solid var(--rule);
-                border-radius:.3rem;background:var(--card);color:var(--fg)}
+#bar form input{font:inherit;padding:.2rem .4rem;border:1px solid var(--on-board);
+                background:var(--card);color:var(--fg)}
 /* The scan/reader controls above the card stack. */
 #bar2{display:flex;gap:.4rem;margin-bottom:.6rem}
 /* Previous/next among *collated* pages — what the reader can actually reach.
    Rendered at both ends of the text; the second copy is the last thing in
    `#primary`, and wants its rule above rather than below. */
 .neighbours{display:flex;justify-content:space-between;
-            font-family:system-ui,sans-serif;font-size:.8rem;margin-bottom:1rem}
+            font-family:var(--ui);font-size:.8rem;margin-bottom:1rem}
 #primary > .neighbours:last-child{margin:1.5rem 0 0}
 .ratify-row{margin-top:.5rem}
 /* An exempt page is a picture, not prose — see `exempt.html`. */
@@ -749,7 +823,7 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
 .wide{width:100%}
 .hits{font-size:.85rem}
 .hits td.before{text-align:right}
-.note-small{font-family:system-ui,sans-serif;font-size:.8rem}
+.note-small{font-family:var(--ui);font-size:.8rem}
 /* --- the hover preview ---
  *
  * The same fragment the stack would show, floated for a moment beside the link.
@@ -768,10 +842,9 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
  * would be a card you can see the edge of and nothing else.
  */
 .card.preview{position:fixed;z-index:12;width:24rem;max-width:calc(100vw - 2rem);
-  max-height:60vh;overflow-y:auto;
-  box-shadow:0 2px 12px rgba(0,0,0,.18)}
+  max-height:60vh;overflow-y:auto;border-color:var(--fg)}
 .card.preview .tools{display:none}
-.card.preview.pinned{border-color:var(--rule);
+.card.preview.pinned{border-color:var(--fg);
   border-width:1px}
 /* --- the footnote popup ---
  *
@@ -789,7 +862,7 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
  * `z-index` above the preview's 11: the two can be on screen together, since a
  * note holds entity links, and the note is the one that was asked for. */
 .card.notepop{position:fixed;z-index:11;width:max-content;max-width:min(26rem,calc(100vw - 2rem));
-  max-height:60vh;overflow-y:auto;box-shadow:0 2px 12px rgba(0,0,0,.18);
+  max-height:60vh;overflow-y:auto;border-color:var(--fg);
   font-size:.92rem}
 .card.notepop .tools{display:none}
 .card.notepop .body{padding:.1rem .2rem}
@@ -808,13 +881,13 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
    against that edge lands somewhere different for every note, and the reader has
    to look for it each time. The left margin is the one edge every note shares. */
 .card.notepop .note-jump{display:block;margin-top:.5rem;padding-top:.4rem;
-  border-top:1px dashed var(--rule);font-family:system-ui,sans-serif;
+  border-top:1px dashed var(--rule);font-family:var(--ui);
   font-size:.72rem;text-decoration:none;color:var(--dim)}
 .card.notepop .note-jump:hover{color:var(--accent)}
 /* The marker while its note is up. Not a colour change — a `.noteref` is seven
    pixels of superscript numeral and a recoloured one is invisible — so the
    ground moves instead. */
-.noteref.open{background:var(--accent);color:var(--bg);border-radius:.2rem;
+.noteref.open{background:var(--accent);color:var(--bg);
   padding:0 .15em}
 /* A column: the picture's box takes whatever the bar leaves, so the picture
    centres in the space it can actually be seen in and the bar never covers it. */
@@ -891,13 +964,17 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
    this point in the run, which is what a reader wants from a page break. Its scan
    sits beside it, because a reader consulting a run is at one leaf of it. */
 .run .leaf-at { position:absolute; left:0; width:2.6rem; text-align:right;
-  font-family:system-ui,sans-serif; font-size:.7rem; color:var(--dim);
-  opacity:.65 }
-.run .leaf-at:hover { opacity:1 }
+  font-family:var(--ui); font-size:.75rem; color:var(--dim) }
 .run .leaf-mark, .run .leaf-scan { color:inherit; text-decoration:none }
 .run .leaf-mark:hover, .run .leaf-scan:hover { color:var(--fg) }
 .run .leaf-scan { margin-left:.25em; font-size:.9em }
-.run .leaf-at .run-tag { margin-left:.2em; font-size:.85em; opacity:.8; display: block; }
+.run .leaf-at .run-tag { margin-left:.2em; font-size:.95em; color:var(--sel); display: block; }
+/* **A selection runs straight through the marks**, so a passage copied across a
+   page turn comes out as the sentence, with no `[338] uncollated` inside it. They
+   stay links. The same for an inventory flag, which is apparatus and not text. */
+.leaf-at, .flag { user-select:none; -webkit-user-select:none }
+/* For the instant `edition.js` reads a selection, so a mark leaves no line break. */
+html.copying .leaf-at { display:none }
 /* --- a chapter: its leaves as one text --- */
 /* The page number, Project Gutenberg's way: the mark sits inline exactly where
    the leaf turns, often mid-sentence, and is drawn in the right margin. Absolute
@@ -911,26 +988,28 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
   width:3.6rem; text-align:left; text-indent:0; font-style:normal;
   font-weight:normal; letter-spacing:0; font-variant:normal }
 /* On a phone that reserve was a fifth of the screen and more, for a mark a few
-   characters wide. The mark is `[732]` over `DRAFT` at most, and that is all the
-   margin needs to hold. */
+   characters wide. The mark is `[732]` over `uncollated` at most, and that is all
+   the margin needs to hold. */
 @media (max-width:600px) {
   #primary:has(.run-chapter) { padding-right:2.9rem }
   .run-chapter .leaf-at { right:-2.6rem; width:2.3rem }
   .run-chapter .leaf-scan { display:block }
+  /* Set up the margin here, since across it the word is wider than the reserve. */
+  .run-chapter .leaf-at .run-tag { writing-mode:vertical-rl; margin:.2em 0 0 }
 }
 .leaf-exempt { margin:1rem 0 }
-.leaf-gap { font-family:system-ui,sans-serif; font-size:.85rem; color:var(--dim) }
+.leaf-gap { font-family:var(--ui); font-size:.85rem; color:var(--dim) }
 /* The pooled foot: a chapter's notes grouped under the page each was printed
    on, numbered as printed. The page is the group's head and a link back to it. */
 #foot .foot-leaf + .foot-leaf { margin-top:.5rem }
-#foot .foot-page { font-family:system-ui,sans-serif; font-size:.75rem;
+#foot .foot-page { font-family:var(--ui); font-size:.75rem;
   color:var(--dim); text-decoration:none }
 /* The neighbouring chapter's part of a shared leaf: present, so the page is
    whole, and visibly not this chapter's text. */
 .other-chapter { margin:.4rem 0 }
-.other-chapter .other-text { opacity:.4 }
-.other-chapter:hover .other-text { opacity:.6 }
-.other-chapter .other-label { display:block; font-family:system-ui,sans-serif;
+.other-chapter .other-text { opacity:.6 }
+.other-chapter:hover .other-text { opacity:.8 }
+.other-chapter .other-label { display:block; font-family:var(--ui);
   font-size:.75rem; color:var(--dim) }
 /* A leaf the store records nothing on still gets its row, because the anchor
    has to exist for the redirect to land on. It holds the mark and nothing. */
@@ -988,7 +1067,7 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
    not saying. `.toc-d{n}` is the depth a row is *at*, not the indent it takes —
    the classes are here for weight and colour, and level 0 shares depth 1 with
    the chapters because front matter is a top-level division too. */
-#panel-contents { font-family:system-ui,sans-serif; font-size:.78rem;
+#panel-contents { font-family:var(--ui); font-size:.78rem;
   line-height:1.45 }
 #panel-contents ul { list-style:none; padding:0; margin:0 }
 #panel-contents li { display:block; padding:.05rem 0 }
@@ -1040,7 +1119,7 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
 /* A mention count. Beside the title and before the folio, because it belongs to
    the heading and not to the page the heading starts on. */
 #panel-contents .hits { font-size:.85em;  background-color: var(--rule); color:var(--fg);
-                        font-variant-numeric:tabular-nums; border-radius: 3px; padding: 1px 3px; }
+                        font-variant-numeric:tabular-nums; padding: 1px 3px; }
 #panel-contents .panel-note { margin:.6rem 0 0; font-size:.95em }
 
 /* The illustration numbers hang the same way, but as an indent rather than a
@@ -1057,8 +1136,7 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
    printed block is the record and the parsed fields are a reading of it. */
 .run .printed { margin:0 }
 .run .parsed { margin:.1rem 0 0; font-size:.8rem; color:var(--dim) }
-.run-tag, .leaf-tag { font-family:system-ui,sans-serif; font-size:.7rem;
-  text-transform:uppercase; letter-spacing:.04em; color:var(--dim) }
+.run-tag, .leaf-tag { font-family:var(--ui); font-size:.85rem; color:var(--dim) }
 
 /* --- the outline, on the index ---
    The Contents' vocabulary (`.toc-title`, `.toc-num`, `.page-no`) over a third
@@ -1074,8 +1152,8 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
 .outline > li { margin:.3rem 0; line-height:1.5; display:flow-root }
 .outline .ol-part { margin-top:1.6rem }
 .outline .ol-part:first-child { margin-top:.4rem }
-.outline .ol-part h4 { margin:0 0 .3rem; font-size:.78rem; letter-spacing:.08em;
-  text-transform:uppercase; color:var(--dim); border-bottom:1px solid var(--rule);
+.outline .ol-part h4 { margin:0 0 .3rem; font-size:1rem; letter-spacing:.08em;
+  color:var(--dim); border-bottom:1px solid var(--rule);
   padding-bottom:.15rem }
 .outline .ol-toc { margin-top:.9rem }
 .outline .ol-run > .toc-title, .outline .ol-toc > .toc-title,
@@ -1083,7 +1161,7 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
   font-size:1.05rem; font-weight:600; text-decoration:none; color:inherit }
 .outline > li > a.toc-title:hover { text-decoration:underline }
 .outline .toc-num { color:var(--dim); font-variant-numeric:tabular-nums }
-.outline .ref { font-family:system-ui,sans-serif; font-size:.75rem;
+.outline .ref { font-family:var(--ui); font-size:.75rem;
   color:var(--dim); text-decoration:none; margin-left:.4rem;
   font-variant-numeric:tabular-nums }
 .outline .ref:hover { color:var(--fg); text-decoration:underline }
@@ -1108,7 +1186,7 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
   background:var(--bg) }
 /* --- the modal: whatever a `data-modal` link names --- */
 #modal { width:min(60rem, calc(100vw - 2rem)); max-height:calc(100dvh - 3rem);
-  padding:0; border:1px solid var(--rule); border-radius:4px; background:var(--bg);
+  padding:0; border:1px solid var(--fg); background:var(--bg);
   color:var(--fg) }
 #modal::backdrop { background:rgba(1,1,1,.4) }
 #modal .modal-close { position:sticky; top:.5rem; float:right; margin:.5rem .5rem 0 0;
@@ -1136,7 +1214,7 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
 .outline .sections .toc-d4 { font-style:italic }
 .outline .sections a.plain { color:inherit; text-decoration:none }
 .outline .sections a.plain:hover { text-decoration:underline }
-.tier1-note { font-family:system-ui,sans-serif; font-size:.7rem;
+.tier1-note { font-family:var(--ui); font-size:.7rem;
   color:var(--dim); border-bottom:1px dotted currentColor; cursor:help }
 
 /* --- the alphabet chart --- */
@@ -1148,7 +1226,7 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
 .alpha-grid { border-collapse:collapse; margin:.4rem 0 .6rem;
   table-layout:fixed }
 .alpha-grid th { text-align:right; font-weight:400; color:var(--dim);
-  font-family:system-ui,sans-serif; font-size:.8rem; padding-right:.6rem;
+  font-family:var(--ui); font-size:.8rem; padding-right:.6rem;
   white-space:nowrap }
 .alpha-grid td { padding:.15rem .5rem; text-align:center; min-width:2.6rem }
 .alpha-grid .sort { font-size:1.15rem; text-decoration:none; color:inherit }
@@ -1161,8 +1239,8 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
 
 .alpha-sorts { border-collapse:collapse; width:100%; font-size:.9rem }
 .alpha-sorts th { text-align:left; font-weight:400; color:var(--dim);
-  font-family:system-ui,sans-serif; font-size:.75rem; text-transform:uppercase;
-  letter-spacing:.04em; border-bottom:1px solid var(--rule); padding:.2rem .5rem }
+  font-family:var(--ui); font-size:.9rem;
+  border-bottom:1px solid var(--rule); padding:.2rem .5rem }
 .alpha-sorts td { padding:.3rem .5rem; vertical-align:top;
   border-bottom:1px solid var(--rule) }
 /* Sort over codepoint: one identity, read as one, and the codepoint one line
@@ -1192,9 +1270,7 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
 /* Which printed key a gloss comes from, on every gloss. The two accounts are
    not one notation — p. 10 has nine sorts Mythology lacks — so an unattributed
    gloss would be a claim about both. */
-.alpha-sorts .g-key { font-family:system-ui,sans-serif; font-size:.65rem;
-  text-transform:uppercase; letter-spacing:.04em; color:var(--dim);
-  border:1px solid var(--rule); border-radius:.2rem; padding:0 .25em;
+.alpha-sorts .g-key { font-family:var(--ui); font-size:.8rem; color:var(--dim);
   margin-right:.3em }
 .alpha-sorts .g-shared, .alpha-sorts .g-note, .alpha-sorts .m-note {
   color:var(--dim); font-size:.8em }
@@ -1218,8 +1294,7 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
   background:var(--card) }
 /* "Opp." on a plate's page number: the print's own word for it, and the whole
    difference between the page a plate is on and the page it faces. */
-.run .page-no .opp { font-family:system-ui,sans-serif; font-size:.7em;
-  text-transform:uppercase; letter-spacing:.03em }
+.run .page-no .opp { font-family:var(--ui) }
 /* The lightbox's own foot: what this picture is, a way to the file itself, and
    the arrows when there is more than one. **In the column, under the picture,
    never over it**: laid over the backdrop it cost no height but sat on the
@@ -1229,7 +1304,7 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
    line and compete for the middle of it. */
 #lightbox-bar { flex:none; position:relative; z-index:11;
   display:flex; flex-direction:column; gap:.35rem; align-items:center;
-  padding:.5rem .9rem; font-family:system-ui,sans-serif; font-size:.85rem;
+  padding:.5rem .9rem; font-family:var(--ui); font-size:.85rem;
   background:color-mix(in srgb, #000 55%, transparent); color:#f2efe9 }
 #lightbox-bar .nav { display:flex; gap:.6rem; align-items:center }
 #lightbox-bar a { color:inherit; text-decoration:none;
@@ -1279,28 +1354,28 @@ a.pageref:hover, a.pageref:focus,
 a.chapref:hover, a.chapref:focus { color:var(--link); border-bottom-color:var(--link) }
 
 /* The editor's own blocks. Two classes, and they are deliberately not
-   symmetrical: a notice interrupts and a supplement offers. The notice carries a
-   left rule and a tinted ground because it sits above the text and has to read
-   as *not* the text; the supplement is quieter, below the footnotes, where a
-   heavy block would compete with the page it follows.
+   symmetrical: a notice interrupts and a supplement offers. Both are set between
+   rules, a heavy one above and a hairline below, in their own colour with the
+   heading to match: enough to read as *not* the text without a filled box
+   competing with the page.
 
    `.unplaced` is the refusal, not an annotation — dashed rather than solid,
    because what it says is that something is *missing* from this page. */
-aside.ann { margin:1.2rem 0; padding:.6rem .9rem; border-radius:3px;
+aside.ann { margin:1.2rem 0; padding:.6rem 0;
   font-size:.94em }
 aside.ann h5 { margin:0 0 .35rem; font-size:1.4em; font-weight:bold; text-align: center }
 aside.ann h5 a { color: var(--fg); text-decoration:none; border-bottom:1px solid var(--dim) }
 aside.ann h5 a:hover { border-bottom-color:var(--link); color:var(--link) }
 aside.ann .summary p:first-child { margin-top:0 }
 aside.ann .summary p:last-child { margin-bottom:0 }
-aside.ann.notice { border:2px solid var(--warn); background:var(--bg-warn) }
-aside.ann.notice h5 { color:var(--warn) }
-aside.ann.supplement { border:2px solid var(--info); background: var(--bg-info) }
-aside.ann.supplement h5 { color:var(--info) }
+aside.ann.notice { border-top:3px solid var(--warn); border-bottom:1px solid var(--warn) }
+aside.ann.notice h5, aside.ann.notice h5 a { color:var(--warn) }
+aside.ann.supplement { border-top:3px solid var(--info); border-bottom:1px solid var(--info) }
+aside.ann.supplement h5, aside.ann.supplement h5 a { color:var(--info) }
 aside.ann ul.shelf { margin:.5rem 0 0; padding-left:1.1rem }
 aside.ann ul.shelf .note { color:var(--dim) }
 aside.ann p.more { margin:.45rem 0 0; font-size:.92em }
-aside.ann.unplaced { border-left:3px dashed var(--dim); background:none;
+aside.ann.unplaced { border-left:3px dashed var(--dim); padding-left:.9rem;
   color:var(--dim); font-style:italic }
 
 /* A YouTube link, and the card it opens. Marked like an outbound link because
@@ -1313,6 +1388,6 @@ a.yt:hover, a.yt:focus { border-bottom-style:solid }
 /* 16:9, held by the padding trick so the player sizes to the card's width
    whatever the stack is set to. */
 .card .embed { position:relative; width:100%; padding-bottom:56.25%;
-  margin:.4rem 0 0; background:#000; border-radius:3px; overflow:hidden }
+  margin:.4rem 0 0; background:#000; overflow:hidden }
 .card .embed iframe { position:absolute; inset:0; width:100%; height:100%;
   border:0 }

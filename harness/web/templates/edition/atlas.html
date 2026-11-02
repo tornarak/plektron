@@ -16,8 +16,9 @@
    and its basin, a body of open water — and it is the reason those four are
    separate classes at all. `mark` is how the atlas can draw it. A node reading
    `land · framed` has no shape of its own and is boxed by what lies beneath;
-   `place · point` is a keyed coordinate. The class pill takes the node's own
-   family colour so the tree reads as a legend for the map beside it. #}
+   `place · point` is a keyed coordinate. The node's name carries its family's
+   colour, so the tree reads as a legend for the map, and the pills stay neutral
+   so a label never competes with the name it labels. #}
 <span class='pill cls' data-ref='{{ n.id }}'>{{ n.cls }}</span>
 <span class='pill'>{{ n.mark }}</span>
 {%- if n.children %}<ul>{% for k in n.children %}{{ node(k) }}{% endfor %}</ul>{% endif %}

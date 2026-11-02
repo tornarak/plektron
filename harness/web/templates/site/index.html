@@ -14,6 +14,7 @@ if(t==='dark'||t==='light') document.documentElement.dataset.theme=t;}catch(e){}
 </head>
 <body class="landing">
 <main>
+{% include "site/_print.html" %}
 {# Decorative beside the `<h1>` the prose opens with, which says the name. #}
 <img class="logo" src="/static/site/plektron.svg" alt="" width="180" height="180">
 {{ prose | safe }}
@@ -29,8 +30,9 @@ if(t==='dark'||t==='light') document.documentElement.dataset.theme=t;}catch(e){}
       <a class="text-title" href="{{ t.url }}">{{ t.work.title }}</a>
       {% if t.work.author or t.work.date %}<span class="text-by">{{ t.work.author }}{%
         if t.work.author and t.work.date %}, {% endif %}{{ t.work.date }}</span>{% endif %}
-      <span class="text-state">{{ t.collated }} page{{ '' if t.collated == 1 else 's' }} checked against the scan{% if t.drafts
-        %}, {{ t.drafts }} machine-generated draft{{ '' if t.drafts == 1 else 's' }}, each marked as one{% endif %}</span>
+      {% set read = t.collated + t.drafts %}
+      <span class="text-state">{% if t.drafts %}{{ read }} page{{ '' if read == 1 else 's' }} transcribed, {{ t.collated }} fully collated{%
+        else %}{{ t.collated }} page{{ '' if t.collated == 1 else 's' }} collated{% endif %}</span>
       </div>
     </li>
   {% endfor %}

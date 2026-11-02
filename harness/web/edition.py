@@ -255,14 +255,14 @@ def _outline(request: Request) -> list[dict]:
         if node.get("id") in at:
             placed_at.setdefault(at[node["id"]], []).append(node)
 
-    def _checked(text: list[str]) -> str:
+    def _collated(text: list[str]) -> str:
         n = sum(1 for r in text if r in signed)
-        return "" if n == len(text) else f"{n} of {len(text)} checked"
+        return "" if n == len(text) else f"{n} of {len(text)} collated"
 
     def _status(run: dict) -> str:
         text = [ui.norm_ref(r) for r in run["refs"]
                 if ui.norm_ref(r) not in exempt]
-        return _checked(text) if run.get("kind") == chapters.KIND and text else ""
+        return _collated(text) if run.get("kind") == chapters.KIND and text else ""
 
     # **A division the listing dropped is still in the Contents.** Without
     # `--drafts` a chapter with no collated page has no leaf to stand for it and
@@ -318,7 +318,7 @@ def _outline(request: Request) -> list[dict]:
                     and (k >= len(tree) or tree[k].get("id") in at)):
                 prev["leaves"].append(leaf)
                 prev["draft"] = False
-                prev["status"] = _checked([x["ref"] for x in prev["leaves"]])
+                prev["status"] = _collated([x["ref"] for x in prev["leaves"]])
                 continue
             rows.append({"kind": "page", "leaves": [leaf], "nodes": here,
                          "url": leaf["url"], "status": "",
@@ -341,9 +341,10 @@ def index(request: Request):
     # that is nine-tenths unread would be a claim about the edition's progress
     # that the edition cannot support. Leaves and not `refs`, which is the listing:
     # a chapter is one entry there, and a cover or a plate is one that nobody collates.
-    here = (f"{len(leaves)} page(s): {len(signed)} checked, "
-            f"{len(leaves) - len(signed)} machine draft"
-            if _drafts(request) else f"{len(signed)} page(s) checked")
+    def pages(n: int) -> str:
+        return f"{n} page{'' if n == 1 else 's'}"
+    here = (f"{pages(len(leaves))} transcribed, {len(signed)} fully collated"
+            if _drafts(request) else f"{pages(len(signed))} collated")
     return templates.TemplateResponse(
         request,
         "edition/index.html",
@@ -1225,7 +1226,7 @@ def _chapter_leaves(request: Request, run: dict, root: Path) -> list[dict]:
             folio = apparatus.folio_of(ref, index)
         else:
             rec.update(kind="gap", why=(
-                "a machine draft, not shown here" if rank == "draft"
+                "not yet collated, so not shown here" if rank == "draft"
                 else "no transcription yet"))
             folio = apparatus.folio_of(ref, index)
         rec["folio"] = folio
@@ -1628,7 +1629,7 @@ def page(request: Request, ref: str):
     if path is None or (rank == "draft" and not _drafts(request)):
         raise HTTPException(
             404,
-            f"{ref} has not been checked yet, so it is not shown here."
+            f"{ref} has not been collated yet, so it is not shown here."
             # For whoever is running the server: the page does exist.
             + (" A generated draft exists — `edition serve --drafts` shows it."
                if rank == "draft" and not _static(request) else ""),

@@ -558,11 +558,13 @@ export function paneHtml(ctx, base) {
   const node = n => {
     const id = esc(n.id), href = esc(ref(n.id));
     let li = `<li class='${n.selected ? 'sel' : ''} ${n.hidden ? 'off' : ''}'>`
-        + `<a class='node' data-ref='${id}' href='${href}'>${esc(n.canonical)}</a> `
-        + `<span class='pill cls' data-ref='${id}'>${esc(n.cls)}</span> `
-        + `<a class='entry' data-ref='${id}' href='${href}' title='the entry'>&para;</a> `
+        + `<a class='entry' data-ref='${id}' href='${href}' title='the entry'
+            aria-label='the entry'>&para;</a>`
         + `<button class='hide' data-ref='${id}' title='${n.hidden ? 'paint this again'
-            : 'do not paint this'}'>${n.hidden ? '◌' : '●'}</button>`;
+            : 'do not paint this'}' aria-label='${n.hidden ? 'paint this again'
+            : 'do not paint this'}'>${n.hidden ? '◌' : '●'}</button>`
+        + `<a class='node' data-ref='${id}' href='${href}'>${esc(n.canonical)}</a> `
+        + `<span class='pill cls' data-ref='${id}'>${esc(n.cls)}</span>`;
     if (n.children.length || n.folded.length) {
       li += '<ul>' + n.children.map(node).join('');
       if (n.folded.length)

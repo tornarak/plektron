@@ -211,7 +211,7 @@ def test_a_page_nobody_ruled_on_still_says_it_is_not_collated(tmp_path):
 
     r = _app(tmp_path).get("/edition/page/2-100")
     assert r.status_code == 404
-    assert "not been checked" in r.text
+    assert "not been collated" in r.text
 
 
 # -- succession ---------------------------------------------------------------

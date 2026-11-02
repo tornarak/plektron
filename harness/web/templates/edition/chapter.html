@@ -25,10 +25,11 @@
    per-leaf banner: a chapter is twenty leaves, and twenty banners would bury the
    text they are about; each draft leaf is still marked in the margin. #}
 {% if drafts or gaps %}
-<p class='draft-note'>{% if drafts %}<span class='draft-tag'>draft</span>
-{{ drafts }} of {{ leaves | length }} leaves are machine-generated and not yet
-checked against the scan; each is marked
-<span class='run-tag'>draft</span> in the margin.{% endif %}
+<p class='draft-note'>{% if drafts %}<span class='draft-tag'>uncollated</span>
+{{ drafts }} of {{ leaves | length }} leaves are transcribed and checked against
+the scan but still await final review: headings, tables and notes may be misplaced,
+and foreign forms aren't yet identified by language. Each is marked
+<span class='run-tag'>uncollated</span> in the margin.{% endif %}
 {% if gaps %}{{ gaps }} leaf/leaves hold no text that can be shown here, and say
 so where they fall.{% endif %}</p>
 {% endif %}

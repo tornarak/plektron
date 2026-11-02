@@ -1994,11 +1994,23 @@ def test_a_signed_page_is_never_marked_a_draft(tmp_path):
     assert "draft-tag" not in r.text
 
 
+def test_a_draft_is_described_as_uncollated_and_not_as_unchecked(tmp_path):
+    """Generation refuses a page without `gt/ocr/`, so its text *has* been checked
+    against the scan. What it lacks is the review, and that is what it must say."""
+    draft(tmp_path, "1-022", "<p>generated</p>")
+    client = _app(tmp_path, drafts=True)
+    for route in ("/edition/", "/edition/page/1-022"):
+        text = client.get(route).text
+        assert "uncollated" in text
+        for wrong in ("not yet checked", "machine-generated", "machine draft"):
+            assert wrong not in text
+
+
 def test_the_listing_marks_the_drafts_and_counts_the_two_apart(tmp_path):
     page(tmp_path, "1-021", "<p>signed</p>")
     draft(tmp_path, "1-022", "<p>generated</p>")
     body = _app(tmp_path, drafts=True).get("/edition/").text
-    assert "1 checked" in body and "1 machine draft" in body
+    assert "2 pages transcribed, 1 fully collated" in body
     assert body.count("draft-tag") >= 2      # the legend, and the one row
 
 

@@ -28,7 +28,7 @@
 <table class='hits'>
 {% for h in hits %}
 <tr><td><a href='{{ base }}/page/{{ h.ref }}'>{{ h.ref }}</a>{%
- if h.rank == 'draft' %} <span class='draft-tag'>draft</span>{% endif %}</td>
+ if h.rank == 'draft' %} <span class='draft-tag'>uncollated</span>{% endif %}</td>
     <td class='before'>…{{ h.before }}</td>
     <td><mark>{{ h.match }}</mark></td>
     <td>{{ h.after }}…</td></tr>

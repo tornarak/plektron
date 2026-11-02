@@ -1,0 +1,9 @@
+{# The landing and 404 pages' printed marks. `#rough-edge` is what `landing.css`
+   puts on the block behind the name: turbulence displacing its edge by a pixel or
+   two, as a hand-cut block prints. The line is drawn in a box the sheet positions. #}
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="rough-edge">
+  <feTurbulence type="fractalNoise" baseFrequency=".04 .09" numOctaves="3" seed="4"/>
+  <feDisplacementMap in="SourceGraphic" scale="7"/>
+</filter></svg>
+<svg class="red-line" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><line
+  x1="0" y1="0" x2="100" y2="100" vector-effect="non-scaling-stroke"/></svg>

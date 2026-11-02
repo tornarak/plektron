@@ -119,7 +119,7 @@ def test_collated_publishes_no_drafts_and_says_so_on_the_landing_page(repo, tmp_
     rep = build_site(repo, tmp_path / "out", jobs=1)
     assert rep.refused == []
     html = (tmp_path / "out" / "index.html").read_text("utf-8")
-    assert html.count("1 machine-generated draft,") == 1
+    assert html.count("transcribed,") == 1      # the text showing a draft, alone
     assert not (tmp_path / "out" / ONE / "page" / "1-023").exists()
     assert (tmp_path / "out" / TWO / "page" / "1-024" / "index.html").is_file()
 
@@ -187,6 +187,31 @@ def test_the_code_that_renders_is_upstream(repo):
     assert code / "uv.lock" in paths
     assert not any("__pycache__" in p.parts for p in paths)
     assert code / "harness" / "tests" / "test_site_build.py" not in paths
+
+
+def test_a_stylesheet_edit_is_copied_over_a_fresh_text_and_rebuilds_nothing(repo, tmp_path):
+    out = tmp_path / "out"
+    build_site(repo, out, jobs=1)
+    canary = out / ONE / "canary.txt"
+    canary.write_text("this build's folder was not cleared")
+    sheet = out / ONE / "static" / "css" / "edition.css"
+    source = sheet.read_text("utf-8")
+    sheet.write_text("/* the last build's sheet */")
+    assert _states(build_site(repo, out, jobs=1)) == {ONE: "fresh", TWO: "fresh"}
+    assert canary.exists()
+    assert sheet.read_text("utf-8") == source
+
+
+def test_a_static_file_gone_from_the_source_rebuilds(repo, tmp_path):
+    """A page may still link it, and only a crawl would refuse that."""
+    out = tmp_path / "out"
+    build_site(repo, out, jobs=1)
+    gone = out / ONE / "static" / "css" / "retired.css"
+    gone.write_text("/* since deleted from the source */")
+    rep = build_site(repo, out, jobs=1)
+    assert _states(rep) == {ONE: "built", TWO: "fresh"}
+    assert "retired.css is gone" in next(r["why"] for r in rep.rows if r["text"] == ONE)
+    assert not gone.exists()
 
 
 def test_a_sibling_text_is_not_upstream(repo):

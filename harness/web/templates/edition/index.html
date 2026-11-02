@@ -64,9 +64,11 @@
 {% if drafts %}
 {# Said once, at the top, and then per row: a reader who takes in the banner and
    nothing else must still not mistake the list for the edition. #}
-<p class='draft-note'>A <span class='draft-tag'>draft</span> is machine-generated
-from the scan and not yet checked against it. A chapter says how many of its pages
-have been checked.</p>
+<p class='draft-note'>An <span class='draft-tag'>uncollated</span> page is
+transcribed and checked against the scan, but its final review is still to come:
+headings, tables and notes may be misplaced, and foreign forms aren't yet
+identified by language. Each chapter gives the number of its pages that have been
+collated.</p>
 {% endif %}
 {% if refs %}
 <ul class='outline'>
@@ -101,7 +103,7 @@ have been checked.</p>
 {% elif row.kind == 'page' %}
   <li class='ol-page'>
     {% for n in row.nodes %}{{ division(n, row.url) }}{% endfor %}
-    {% if row.draft %}<span class='draft-tag'>draft</span>{% endif %}
+    {% if row.draft %}<span class='draft-tag'>uncollated</span>{% endif %}
     {% if row.status %}<span class='draft-tag'>{{ row.status }}</span>{% endif %}
     {% for l in row.leaves %}{{ at(l.ref, l.url, l.folio) }}{% endfor %}
     {% for n in row.nodes %}{{ sections(n.children) }}{% endfor %}
@@ -119,9 +121,8 @@ have been checked.</p>
 {% endfor %}
 </ul>
 {% else %}
-{# Committed `tei/` only unless `--drafts`. `mz/tei/` is a generated baseline
-   nobody has read, and an end-user preview is the last place it belongs. #}
-<p>No page has been checked yet, so there is nothing to read here.</p>
+{# Committed `tei/` only unless `--drafts`. #}
+<p>No page has been collated yet, so there is nothing to read here.</p>
 {% endif %}
 </div>
 {% endblock %}

@@ -1,5 +1,5 @@
 svg.map { width:100%; height:auto; display:block; background:var(--sea);
-  border:1px solid var(--rule); border-radius:.3rem; max-height: 15rem; }
+  border:1px solid var(--rule); max-height: 15rem; }
 svg.map .land { fill:var(--land); stroke:none }
 svg.map .lakes { fill:var(--sea); stroke:none }
 /* The fade is on the paths, not the group: a group's opacity composites every
@@ -64,7 +64,7 @@ svg.map [data-kind="langarea"]  { --shape:var(--abstract) }
 svg.map [data-kind="region"]    { --shape:var(--accent) }
 /* The `basin` mark on the root — set by `edition_ui.map_context` when the
    subject's `area:` names a watershed — used to carry a colour rule here: a
-   drainage divide drawn in the accent brown against the blue trunk inside it
+   drainage divide drawn in the accent against the blue trunk inside it
    read as two unrelated things. `data-kind="watershed"` now says the same thing
    about *every* watershed on the map rather than only the one being looked at,
    so the rule is gone and the mark is left to the class list, where `map.js` and
@@ -81,12 +81,12 @@ svg.map .extents { fill:none; stroke:none }
 svg.map .rivers { fill:none; stroke:var(--water); stroke-width:.22%;
   stroke-linecap:round; opacity:.85 }
 /* **A settlement is not a region and must not share its colour.** A pin sits on
-   top of whatever boundary contains it, and in the accent brown it read as one
+   top of whatever boundary contains it, and in the accent it read as one
    more mark in the same family — on the Chukchee Peninsula that is 34 dots over
-   a brown outline. `--pin` was declared in the theme and used nowhere; this is
+   an outline of the same colour. `--pin` was declared in the theme and used nowhere; this is
    what it was for. */
 svg.map .pin { fill:var(--pin); stroke:var(--card); stroke-width:.15% }
-svg.map .pin-label { fill:var(--fg); font-family:system-ui,sans-serif;
+svg.map .pin-label { fill:var(--fg); font-family:var(--ui);
   paint-order:stroke; stroke:var(--sea); stroke-width:.4%;
   stroke-linejoin:round }
 
@@ -148,19 +148,30 @@ svg.map circle.pin.hi { fill:var(--hi); stroke:var(--hi);
  * which exist because a node on a map can be painted or not: `.off` is a hidden
  * node — still present, still clickable, saying so.
  */
-.map-tree li.off > a.node, .map-tree li.off > .pill { opacity:.4;
+.map-tree li.off > a.node, .map-tree li.off > .pill { opacity:.6;
   text-decoration:line-through }
-.map-tree button { border:0; background:none; cursor:pointer; padding:0 .18rem;
-  color:var(--dim); font-size:.72rem; line-height:1 }
-.map-tree button:hover { color:var(--fg) }
-/* The controls appear on the row under the pointer, and on the row a keyboard
-   has reached. A column of marks down the side of the tree reads as a toolbar
-   rather than as a list of places — and the names are the content here.
-   A hidden row keeps its `◌` showing, or the only way back would be to guess
-   that hovering a struck-through name reveals one. */
-.map-tree a.entry { color:var(--dim); text-decoration:none; font-size:.72rem }
-.map-tree a.entry:hover { color:var(--fg) }
-.map-tree button, .map-tree a.entry { visibility:hidden }
-.map-tree li:hover > button, .map-tree li:hover > a.entry,
-.map-tree button:focus-visible, .map-tree a.entry:focus-visible,
-.map-tree li.off > button.hide { visibility:visible }
+/* **At the front of the row and always the same size**, so each is in the same
+   place on every row at that depth and names line up whether it shows or not. */
+.map-tree button, .map-tree a.entry { display:inline-flex; align-items:center;
+  justify-content:center; width:1.3rem; height:1.25rem; margin:.05rem .15rem .05rem 0;
+  padding:0; border:1px solid var(--dim); background:var(--bg); color:var(--fg);
+  font-size:1rem; line-height:1; text-decoration:none; vertical-align:middle;
+  cursor:pointer }
+.map-tree button:hover, .map-tree a.entry:hover { background:var(--fg); color:var(--bg) }
+/* **Always there on anything selected or hidden**: a selected row is the one a
+   reader is working on, and the only way back from a hidden one is its `◌`. On any
+   other row they wait for the pointer or the keyboard, or a column of marks beside
+   every name reads as a toolbar rather than as a list of places.
+   Opacity and not `visibility`, which would keep them out of the tab order. The
+   innermost row only: every ancestor of a hovered row is hovered too, which lit
+   the controls of the whole chain. A screen with no pointer has no hover to wait
+   for, so there they always show. */
+.map-tree li > button, .map-tree li > a.entry { opacity:0 }
+.map-tree li.sel > button, .map-tree li.sel > a.entry,
+.map-tree li.off > button, .map-tree li.off > a.entry,
+.map-tree li:hover:not(:has(li:hover)) > button,
+.map-tree li:hover:not(:has(li:hover)) > a.entry,
+.map-tree li > button:focus-visible, .map-tree li > a.entry:focus-visible { opacity:1 }
+@media (hover:none) { .map-tree li > button, .map-tree li > a.entry { opacity:1 } }
+/* The rows are taller now, so the box holds about as many of them as it did. */
+#secondary .map-tree { max-height:28ch }

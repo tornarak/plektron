@@ -58,7 +58,7 @@ data-key='{{ f }}' href='{{ base }}/lexicon/{{ f | urlencode }}'>{{ f }}</a>
 {% endif %}
 
 {% if pages %}
-<div class='meta'>checked on {% for r in pages %}<a
+<div class='meta'>collated on {% for r in pages %}<a
 href='{{ base }}/page/{{ r }}'>{{ r }}</a>{% if not loop.last %}, {% endif %}
 {%- endfor %}</div>
 {% endif %}

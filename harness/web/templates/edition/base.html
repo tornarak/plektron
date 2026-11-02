@@ -54,7 +54,7 @@ if(t==='dark'||t==='light') document.documentElement.dataset.theme=t;
            sending a reader to another tab to find out which chapter they are
            already reading. #}
         {% if 'contents' in run_ids %}<a id='toc-link' target="_blank"
-          href='{{ base }}/run/contents'>ToC</a>{% endif %}
+          href='{{ base }}/run/contents'>Contents</a>{% endif %}
         {# Over the page, except on the Key's own page, where the same ids would be
            in the document twice and its links would land behind the modal. #}
         {% if 'alphabet' in run_ids %}<a target="_blank"{%
@@ -91,14 +91,15 @@ if(t==='dark'||t==='light') document.documentElement.dataset.theme=t;
     </form>
     {% endif %}
     <span class='location'>{{ here }}</span>
+    {# Shows what pressing it will do; which glyph is the stylesheet's, since with
+       no stored choice only the system's preference knows the theme. #}
+    <button data-theme-toggle title='Light / dark' aria-label='Light / dark'><span
+      class='to-dark'>&#x263E;&#xFE0E;</span><span class='to-light'>&#x2600;&#xFE0E;</span></button>
   </span>
 </header>
 <main class='cols'>{% block main %}{% endblock %}</main>
-{# The apparatus of the site rather than of the page: the other views, the
-   search field, and the one control that belongs to the sitting rather than to
-   anything on screen. None of it is wanted while reading, which is the argument
-   for the foot — and it is why the theme button moved out of the header it was
-   in for all of ten minutes. #}
+{# The apparatus of the site rather than of the page: the other views. None of it
+   is wanted while reading, which is the argument for the foot. #}
 <footer id='site-foot'>
   <nav class='refs' aria-label='sections'>
     <a href='{{ base }}/entities'>encyclopedia</a>
@@ -107,7 +108,6 @@ if(t==='dark'||t==='light') document.documentElement.dataset.theme=t;
     <a href='{{ base }}/annotations'>annotations</a>{% if home %}
     <a href='{{ home }}'>all editions</a>{% endif %}
   </nav>
-  <button data-theme-toggle title='Light / dark'>◐</button>
 </footer>
 {% endblock %}
 

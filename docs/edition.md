@@ -1022,8 +1022,8 @@ from the same rectangle, which is the property that was missing.
 
 ## The reading view
 
-`harness edition serve` (port 8734). Committed `tei/` only: `mz/tei/` is a draft
-nobody has read, and an end-user preview is the last place it belongs.
+`harness edition serve` (port 8734). Committed `tei/` only: `mz/tei/` has not had
+its collation, so by default it stays out of an end-user preview.
 
 **`--drafts` shows it anyway, and turns the same server into a workstation over
 the generator's output.** The flag exists because `tei generate` is being fixed
@@ -1036,8 +1036,11 @@ adjudication story this does not have.
 
 **What a reader is shown says nothing about how it was made.** No path, verb, field
 or rank name reaches a reader's page, on either mode; the draft and proposed marks
-stay, since unfinished work must look unfinished, and say so in plain words. A
-static site (`app.state.static`) also leaves out the working furniture `edition
+stay, since unfinished work must look unfinished, and say so in plain words.
+**The one process word a reader sees is *uncollated*, with *collated* its opposite.**
+It is the ordinary word for this stage of a scholarly edition, and the page's note
+says in plain words what the stage still has to do: the text of such a page is
+ground truth, so calling it unchecked would understate it. A static site (`app.state.static`) also leaves out the working furniture `edition
 serve` keeps: the comment flags on a page, an alias's mode, the linked/unlinked
 split on a mention, the `class:slug` and shape and authority keys, and an authority's
 `note`. The ratified pill is gone from both, a settled entry being the quiet state.

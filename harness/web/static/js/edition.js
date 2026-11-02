@@ -1401,3 +1401,23 @@ document.addEventListener('click', ev => {
     localStorage.setItem('edition-theme', root.dataset.theme);
   }
 });
+
+/* **A passage copied across a page turn comes out as the sentence.** `user-select`
+   keeps the mark's words out of the clipboard, but a mark is positioned out of the
+   line, and a browser still writes a line break for one, mid-sentence. So only a
+   selection that crosses a mark has its text read with the marks out of layout for
+   that instant. Anything else copies as the browser would, formatting included. */
+document.addEventListener('copy', ev => {
+  const sel = getSelection();
+  if (!sel.rangeCount) return;
+  const range = sel.getRangeAt(0);
+  const crosses = [...document.querySelectorAll('.leaf-at')]
+    .some(m => range.intersectsNode(m));
+  if (!crosses) return;
+  const root = document.documentElement;
+  root.classList.add('copying');
+  const text = sel.toString();
+  root.classList.remove('copying');
+  ev.clipboardData.setData('text/plain', text);
+  ev.preventDefault();
+});

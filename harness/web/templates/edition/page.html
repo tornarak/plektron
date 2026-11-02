@@ -54,10 +54,13 @@
 {% if rank == 'draft' %}
 {# On the page itself, not only in the listing that led here: a link shared or a
    URL typed straight in skips the listing entirely, and the whole point of the
-   mark is that unread text is never mistaken for collated text. #}
-<p class='draft-note'><span class='draft-tag'>draft</span> — machine-generated
-from the scan and not yet checked against it. Its paragraph breaks are a rule's
-guess, and the languages of its foreign words have not been identified.</p>
+   mark is that an uncollated page is never mistaken for a collated one. The text
+   is ground truth and the structure is the keyed zones'; what it lacks is the
+   review, so that is what it says it lacks. #}
+<p class='draft-note'><span class='draft-tag'>uncollated</span> — Transcribed line
+by line and checked against the scan. Final review is still to come: headings,
+tables and notes may be misplaced, and foreign forms aren't yet identified by
+language.</p>
 {% endif %}
 {{ neighbours() }}
 {# Notices sit here and **not** beside the draft banner above. The banner is

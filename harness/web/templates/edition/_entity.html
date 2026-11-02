@@ -86,7 +86,7 @@
 <div class='meta'>mentioned on {{ mentions.pages }} of {{ mentions.swept }} page(s), {{ mentions.total }} time(s):</div>
 <ul class='lines'>{% for m in mentions.rows %}
 <li><a href='{{ base }}/page/{{ m.ref }}'>{{ m.ref }}</a>
-    {%- if m.rank == 'draft' %} <span class='pill proposed'>draft</span>{% endif %}
+    {%- if m.rank == 'draft' %} <span class='pill proposed'>uncollated</span>{% endif %}
     {%- if not static %}
     {%- if m.linked %} <span class='dim'>{{ m.linked }} linked</span>{% endif %}
     {%- if m.unlinked %} <span class='dim'>{{ m.unlinked }} unlinked</span>{% endif %}

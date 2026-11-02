@@ -305,7 +305,7 @@ def test_the_index_counts_leaves_and_not_the_listing(tmp_path, client):
     page(tmp_path, "1-003", _opens("chI"))
     page(tmp_path, "1-004", '<pb n="2"/><p>More.</p>')
     _exempt(tmp_path, "1-001", kind="cover")
-    assert "2 page(s) checked" in client().get("/edition/").text
+    assert "2 pages collated" in client().get("/edition/").text
 
 
 def test_a_division_between_two_on_one_leaf_keeps_its_row(tmp_path, client):
@@ -517,8 +517,8 @@ def test_a_chapter_with_nothing_collated_still_stands_in_the_outline(tmp_path, c
     body = client().get("/edition/").text
     row = _li(body, "Chapter II<")
     assert "href='/edition/run/chII'" in row
-    assert "0 of 1 checked" in row
-    assert "1 of 2 checked" in _li(body, "Chapter I<")
+    assert "0 of 1 collated" in row
+    assert "1 of 2 collated" in _li(body, "Chapter I<")
 
 
 def test_a_division_nothing_places_keeps_its_place_and_says_so(tmp_path, client):
@@ -550,8 +550,8 @@ def test_a_leaf_that_is_not_text_is_never_a_draft(tmp_path, client):
     body = client(drafts=True).get("/edition/").text
     cover = _li(body, ">1-001<")
     assert "alt='cover, scan 1-001'" in cover and "draft-tag" not in cover
-    assert "draft-tag'>draft" in _li(body, ">1-002<")
-    assert "0 of 1 checked" in _li(body, "Chapter I<")
+    assert "draft-tag'>uncollated" in _li(body, ">1-002<")
+    assert "0 of 1 collated" in _li(body, "Chapter I<")
 
 
 def test_the_outline_heads_each_part(tmp_path, client):
@@ -716,7 +716,7 @@ def test_a_page_joins_the_division_before_it(tmp_path, client):
     body = client(drafts=True).get("/edition/").text
     row = _li(body, "Intro<")
     assert "href='/edition/page/1-021'" in row and "href='/edition/page/1-022'" in row
-    assert "1 of 2 checked" in row and "draft-tag'>draft" not in row
+    assert "1 of 2 collated" in row and "draft-tag'>uncollated" not in row
     assert body.count("<li class='ol-page'>") == 2
 
 
