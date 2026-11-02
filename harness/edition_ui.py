@@ -697,10 +697,13 @@ def _authority_rows(key: str, root: Path) -> list[dict]:
             # **Printed wins, and here it is a range the parsed int flattens.**
             # `1834, 1835, 1836` became `1834`, which is right for sorting and
             # wrong as a statement about the book.
-            v = f"{got['year_printed']} — printed; {v} as the store sorts it"
+            v = f"{got['year_printed']} — as printed"
         if field == "ref" and got.get("folio"):
             v = f"{v} (folio {got['folio']})"
-        rows.append({"kind": "plain", "label": label, "value": str(v)})
+        # A record's `note` is the bibliography's working notebook, adjudication
+        # and all: `edition serve` shows it and a static site does not.
+        rows.append({"kind": "plain", "label": label, "value": str(v),
+                     "working": field == "note"})
     for field, label in AUTHORITY_SOURCED:
         v = got.get(field)
         if not v:
@@ -757,6 +760,7 @@ def _basis(ent_id: str, store: dict, root: Path) -> dict:
         return {
             "kind": "shape",
             "id": shapes[0],
+            "name": row.get("name", ""),
             "km2": f"{int(km2):,}" if km2 else "",
             "source": row.get("source", ""),
             "more": len(shapes) - 1,
@@ -767,7 +771,9 @@ def _basis(ent_id: str, store: dict, root: Path) -> dict:
                 "lat": f"{points[0][0]:.3f}", "lon": f"{points[0][1]:.3f}"}
     refs = geo.geo_refs(rec)
     if refs:
-        return {"kind": "transcluded", "id": refs[0], "more": len(refs) - 1}
+        return {"kind": "transcluded", "id": refs[0],
+                "name": store[refs[0]]["canonical"] if refs[0] in store else refs[0],
+                "more": len(refs) - 1}
     if rec["class"] == "people" and not geo.children(store).get(ent_id):
         # A people with no sprachraum of its own is shown at its parent's, and
         # the card has to say so: a subgroup lives inside its ethnicity's area
@@ -776,7 +782,8 @@ def _basis(ent_id: str, store: dict, root: Path) -> dict:
         # the same order — where it is, then what it belongs to.
         up = tree_parent(rec)
         if up:
-            return {"kind": "inherited", "id": up}
+            return {"kind": "inherited", "id": up,
+                    "name": store[up]["canonical"] if up in store else up}
     return {"kind": "framed"}
 
 

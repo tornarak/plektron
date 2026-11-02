@@ -9,12 +9,10 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Gilder | | no | |
+| Hilder | | yes | a misprint for Gilder |
 
 ## gloss
 
-**Open: `Hilder`.** chukchi-1-048 prints "Hooper, and Hilder, have also been taken into
-consideration", in a list of travellers — checked against the raster, so it is
-the book's spelling and not a keying error. No Hilder is otherwise named in the
-corpus or in `edition/authorities.json`, and this man is; whether the compositor
-set an *H* for a *G* is a reading of the page nobody has made, so no alias is
-filed here.
+**`Hilder` at chukchi-1-048 is read as this man**, with an *H* set for the *G*. The page
+names "Krause, Bogdanovitch, Hooper, and Hilder" as sources of its data. Authorities
+Quoted lists Gilder and no Hilder, and the name appears nowhere else in the book.

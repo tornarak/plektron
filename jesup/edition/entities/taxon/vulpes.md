@@ -9,8 +9,8 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| fox | en | once | chukchi-1-179, chukchi-1-181, chukchi-2-011, chukchi-2-026, chukchi-2-036, chukchi-2-137 and the compounds "fox-meat" (chukchi-1-253), "fox-hunting" (chukchi-1-179), "fox-skin" (chukchi-1-079) |
-| foxes | en | once | chukchi-1-183, chukchi-1-253, chukchi-2-009, chukchi-2-013, chukchi-2-132, chukchi-2-137 |
+| fox | en | once | |
+| foxes | en | once | |
 
 ## gloss
 

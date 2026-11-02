@@ -9,8 +9,8 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| sea-otters | en | yes | chukchi-3-156 "marine beavers (sea-otters)"; the book pairs the two names itself |
-| marine beavers | en | yes | chukchi-3-156, glossed sea-otters on the page |
+| sea-otters | en | yes | |
+| marine beavers | en | yes | glossed sea-otters on the page |
 
 ## gloss
 

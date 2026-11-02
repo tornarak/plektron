@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Treskin | | yes | chukchi-1-079 "Gen. Treskin, the governor of Irkutsk" |
+| Treskin | | yes | |
 
 ## gloss
 

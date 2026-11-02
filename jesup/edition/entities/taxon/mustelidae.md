@@ -22,6 +22,5 @@ reached the Anyui fair from the American shore and from nowhere in Asia;
 [[taxon:gulo-gulo]] the *wolverene*; and [[taxon:lutrinae]] the *otter*, which the
 page never resolves to river or sea.
 
-No form links here. The book has no word for the family, and nothing in it stands
-above *sable* and *marten* as one animal — a reader who arrives at this entry came
-down from [[taxon:carnivora]] or across from a child, not off a page.
+The book has no word for the family, and nothing in it stands above *sable* and
+*marten* as one animal.

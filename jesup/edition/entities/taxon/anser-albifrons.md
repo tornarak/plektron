@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Anser albifrons | la | yes | chukchi-1-351, the white-fronted goose of the goose-dance |
+| Anser albifrons | la | yes | the white-fronted goose |
 
 ## gloss
 

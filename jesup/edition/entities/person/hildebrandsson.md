@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Hildebrandsson | | yes | chukchi-1-045 note, "réduites par H. Hildebrand Hildebrandsson" |
+| Hildebrandsson | | yes | |
 
 ## gloss
 

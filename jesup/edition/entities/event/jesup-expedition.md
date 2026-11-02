@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Jesup North Pacific Expedition | | yes | the full printed title; chukchi-1-021 breaks it across a line |
+| Jesup North Pacific Expedition | | yes | |
 | Jesup Expedition | | yes | |
 | Jesup | | no | also Morris K. Jesup the man, whom it is named after |
 

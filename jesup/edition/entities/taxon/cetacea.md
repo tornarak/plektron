@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| whale | en | once | chukchi-1-252, "whenever a whale drifts ashore"; the page names no species |
+| whale | en | once | the page names no species |
 
 ## gloss
 

@@ -11,7 +11,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Iˊlpi | ckt | yes | |
-| Хатырка | ru | no | the Russians apply it here too, per chukchi-1-359 fn 1 — ambiguous with [[river:khatyrka]] |
+| Хатырка | ru | no | also [[river:khatyrka]]; the Russians apply it here too, per chukchi-1-359 fn 1 |
 
 ## gloss
 

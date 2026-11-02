@@ -13,11 +13,11 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | American Eskimo | | yes | |
-| Kɪˊɪmɪlɪt | ckt | yes | chukchi-1-041: the inhabitants of Kɪˊɪmɪn, the American Continent |
-| Yɪkɪrg̣aˊulɪt | ckt | yes | chukchi-1-041: “the [large] mouthed”, from yɪkɪˊrg̣ɪn “mouth”, for the labrets |
-| Roˊčhɪlɪt | ckt | yes | chukchi-1-041: “opposite-shore people” |
+| Kɪˊɪmɪlɪt | ckt | yes | the inhabitants of Kɪˊɪmɪn, the American Continent |
+| Yɪkɪrg̣aˊulɪt | ckt | yes | “the [large] mouthed”, from yɪkɪˊrg̣ɪn “mouth”, for the labrets |
+| Roˊčhɪlɪt | ckt | yes | “opposite-shore people” |
 | Eskimo | | no | |
-| Inupiat | en | no | the ASCII spelling; the title carries the ñ and the slug cannot |
+| Inupiat | en | no | |
 | Alaskan Eskimo | en | yes | |
 
 ## gloss
@@ -33,5 +33,4 @@ Diomede Islanders in one sentence and to the inhabitants of the American
 continent in the next, which reads like two peoples until the ornament is
 noticed: labret-wearing is the Bering Strait Iñupiat's, and the Chukchee are
 naming one people by the thing that distinguishes them from the Eskimo on their
-own shore. So these are exonyms filed here rather than three entries of their
-own.
+own shore.

@@ -275,6 +275,7 @@ def test_every_parsed_key_is_rendered_or_declared(client):
     shown_elsewhere = {
         "slug", "class", "id",        # in the ident line, as `notice:n`
         "attaches",                   # rendered as the "attached to" list
+        "status",                     # a pill when proposed; settled is quiet
         "used_links",                 # the parse-time cross-check, not a field
         "dir_class", "stem", "path",  # filesystem facts `load` adds
         "summary", "full", "links",   # rendered as HTML, not as raw text

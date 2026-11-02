@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Karagha Bay | | yes | the bare form belongs to [[land:karaginsky-island]] and stays unlinked |
+| Karagha Bay | | yes | |
 
 ## gloss
 

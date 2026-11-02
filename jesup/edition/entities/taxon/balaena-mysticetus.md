@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Bowhead | en | yes | chukchi-1-041 "Bowhead [whale]", the bracket Bogoras's own; bare whale stays on taxon:cetacea |
+| Bowhead | en | yes | |
 
 ## gloss
 

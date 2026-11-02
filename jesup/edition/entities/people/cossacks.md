@@ -9,7 +9,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Cossacks | | yes | |
-| Cossack | | yes | singular; chukchi-1-035 "a Cossack officer from Gishiginsk" |
+| Cossack | | yes | |
 
 ## gloss
 

@@ -87,6 +87,36 @@ from .parallel import ptrack
 
 ENTDIR = "edition/entities"
 
+#: What a gloss holds until somebody writes one. A state of the file, and no
+#: reader is told about it: a card with this gloss prints no gloss at all.
+UNWRITTEN = "(unwritten)"
+
+#: Words about the tooling, in prose a reader is shown: a path, a verb, a field.
+#: Deliberately narrow, since a worklist that cries wolf is one nobody reads, and
+#: so a floor: it cannot see a sentence about the project in plain English.
+APPARATUS_WORDS = re.compile(
+    r"\b(?:gt|mz|tei|config)/|\bedition/|\bharness\b|\.json\b|\bcollator\b"
+    r"|\b(?:this|the) store\b|\bauto: "
+    r"|`(?:entity|geo|tei|lexicon|corpus) [a-z]"
+    r"|`(?:within|area|geo|frame|link|part-of|authority|auto):?")
+
+#: How a paragraph says a decision is outstanding, which is what may keep it.
+OPEN_ITEM = "**Open:"
+
+
+def apparatus_mentions(store: dict) -> list[dict]:
+    """Where a gloss or an alias note talks about the tooling. A worklist: an
+    `**Open:` paragraph is a question for an editor in whatever words it needs,
+    and is not reported."""
+    rows = []
+    for ident, rec in sorted(store.items()):
+        for para in rec["gloss"].split("\n\n"):
+            if not para.startswith(OPEN_ITEM) and (m := APPARATUS_WORDS.search(para)):
+                rows.append({"id": ident, "where": "gloss", "hit": m.group(0)})
+        rows += [{"id": ident, "where": t["form"], "hit": m.group(0)}
+                 for t in rec["aliases"] if (m := APPARATUS_WORDS.search(t["note"]))]
+    return rows
+
 #: The classes an entity may have, mapped to the `<name @type>` each corresponds
 #: to — or to None where the class has no name-type at all.
 #:
@@ -1588,6 +1618,7 @@ def check(root: Path = Path("."), tick: Callable | None = None) -> dict:
     # does. Counted here, reported by `entity check`, gating nothing: measurement
     # never gates, and a gate here would be answered by deleting the alias.
     untagged = sum(1 for r in store.values() for t in r["aliases"] if not t["lang"])
+    mentions = apparatus_mentions(store)
 
     # The picture ledger, against the store it serves. Its errors are this
     # store's: an `image:` line is a field of an entry, and a ledger row nothing
@@ -1603,6 +1634,7 @@ def check(root: Path = Path("."), tick: Callable | None = None) -> dict:
         "aliases": len(idx),
         "auto_aliases": len(auto),
         "aliases_untagged": untagged,
+        "apparatus_mentions": mentions,
         "pictures": sum(1 for r in store.values()
                         if pictures.resolve(r, ledger)),
         "collisions": collisions,

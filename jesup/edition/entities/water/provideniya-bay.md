@@ -10,7 +10,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Plover Bay | | yes | the whalers' name, and the book's ordinary one |
-| Providence Bay | | yes | chukchi-1-051 only, in the note correcting Gondatti |
+| Providence Bay | | yes | |
 
 ## gloss
 

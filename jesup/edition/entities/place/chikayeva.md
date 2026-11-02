@@ -9,8 +9,8 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Chikayeva | | yes | |
-| Chikayevo | | yes | sic. (on the same page) |
-| Chikaˊyeva | ckt | yes | chukchi-2-124. the borrowed name given back in Bogoras's notation |
+| Chikayevo | | yes | |
+| Chikaˊyeva | ckt | yes | the borrowed name given back in Bogoras's notation |
 
 ## gloss
 

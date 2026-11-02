@@ -39,10 +39,11 @@ LEDGER = "edition/entity-images.json"
 #: class**, so moving an entry out of scope takes its picture with it and no
 #: ledger edit is needed. `being:` is a spirit or a disease filed under an
 #: editorial reading — `iteˊyun` at *Trichinellosis* — so its item's picture
-#: would illustrate the reading, not the being; `sky:`, `event:`, `institution:` and
+#: would illustrate the reading, not the being; `event:`, `institution:` and
 #: `source:` have no picture that would say more than the name, and `animal:`
 #: is a reindeer with a name and no item.
-IMAGE_CLASSES = ("taxon", "person", "people", "place", "land", "water", "river")
+IMAGE_CLASSES = ("taxon", "person", "people", "place", "land", "water", "river",
+                 "sky")
 
 #: The licences a picture may carry, as Commons spells `LicenseShortName`.
 #: Public domain, CC0, CC BY / CC BY-SA at any version and port, and Commons'

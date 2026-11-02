@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Kalêˊlɪ-taˊɪrg̣ɪn | ckt | no | chukchi-1-065 |
+| Kalêˊlɪ-taˊɪrg̣ɪn | ckt | no | |
 
 ## gloss
 
@@ -31,5 +31,5 @@ taˊɪrg̣ɪn is dominant, so the stem surfaces raised when compounded with it;
 Tuˊrkew is recessive and leaves it alone. One word, harmonising to what it is
 attached to.
 
-Filed `part-of` [[being:tairgin]] because the book names it so, though the two
-are opposite processes; see that entry.
+The book names it under [[being:tairgin]], though the two are opposite processes;
+see that entry.

@@ -17,24 +17,21 @@
 
 {% if candidates %}
 <p class='draft-note'><span class='draft-tag'>disagreement</span> — more than one
-page records {{ asked }}, and at the same rank, so nothing here can say which is
-right. Both are below; the contradiction is what <code>harness edition runs</code>
-reports.</p>
+page records {{ asked }}, and nothing here can say which is right. Both are
+below.</p>
 <ul>{% for c in candidates %}<li><a href='{{ base }}{{ c.url }}{% if c.anchor
-  %}#{{ c.anchor }}{% endif %}'>{{ c.ref }}</a> — {{ c.witness }}</li>{% endfor %}</ul>
+  %}#{{ c.anchor }}{% endif %}'>{{ c.ref }}</a>{% if not static %} — {{ c.witness }}{% endif %}</li>{% endfor %}</ul>
 
 {% elif nearest %}
-<p>No page in the corpus records {{ asked }}. A scan's index and the printed
-folio are separate identifiers and neither is derivable from the other, so a
-folio is known only where a page said what page it is — from a collated
-<code>&lt;pb&gt;</code>, from an apparatus store, or from a running title in
-<code>gt/ocr/</code>. The nearest that are recorded:</p>
+<p>No page records {{ asked }}. A scan's number and the printed folio are
+separate, and neither can be worked out from the other, so a folio is known only
+where a page says what page it is. The nearest that are recorded:</p>
 <ul class='nearest'>{% for n in nearest %}<li><a href='{{ base }}{{ n.url }}{% if n.anchor
   %}#{{ n.anchor }}{% endif %}'>folio {{ n.folio }}</a> — {{ n.ref }}
-  <span class='witness'>({{ n.witness }})</span></li>{% endfor %}</ul>
+  {% if not static %}<span class='witness'>({{ n.witness }})</span>{% endif %}</li>{% endfor %}</ul>
 
 {% else %}
-<p>{{ why or "Nothing in the corpus records " ~ asked ~ ", and no recorded folio
+<p>{{ why or "No page records " ~ asked ~ ", and no recorded folio
 is near enough to be worth naming." }}</p>
 {% endif %}
 

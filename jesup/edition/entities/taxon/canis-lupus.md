@@ -9,8 +9,8 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| wolf | en | once | chukchi-1-056, chukchi-1-109; Chapter VIII prints only the plural |
-| wolves | en | once | chukchi-1-251, chukchi-1-253, the form Chapter VIII prints |
+| wolf | en | once | |
+| wolves | en | once | |
 
 ## gloss
 

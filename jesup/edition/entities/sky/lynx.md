@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Lynx | en | no | chukchi-2-013, chukchi-2-035, chukchi-2-036 — every capitalized occurrence in the corpus, and not one of them the animal. `no` because the case ladder makes this the spelling [[taxon:lynx-lynx]] reaches from `lynx` at the head of a sentence |
+| Lynx | en | no | every capitalized occurrence in the book, and not one of them the animal |
 
 ## gloss
 
@@ -19,8 +19,5 @@ as the cat's-cradle figure "Mouse-Driver". The Chukchee constellation is the
 Elk-Hunter and this is the parenthesis Bogoras glosses it with, the same
 arrangement as [[sky:eagle]].
 
-**Minted because the case ladder found it, not because a reader asked.** All
-three capitalized `Lynx` in the corpus are this, and none is the animal;
-[[taxon:lynx-lynx]]'s `lynx` had been reaching them the moment case stopped
-hiding the fact. Lowercase `lynx` is the animal in both its occurrences — a skin
-traded for tobacco at chukchi-1-085, and a line in the price table at chukchi-3-171.
+All three capitalized `Lynx` in the book are this, and none is the animal;
+lowercase `lynx` is the animal, [[taxon:lynx-lynx]].

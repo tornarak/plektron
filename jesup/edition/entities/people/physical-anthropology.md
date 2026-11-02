@@ -21,7 +21,7 @@ they sound like now.
 across geography and does not partition into types — and the racial taxonomy
 these terms belong to was abandoned by the discipline that produced them. Where
 the book says a face is "strongly Mongolian in outline" (chukchi-1-056) it is reaching
-for a type that was never there to reach for. Nothing in this store treats these
+for a type that was never there to reach for. Nothing in this edition treats these
 as classifications of anybody; they are read as period vocabulary, on the same
 footing as an obsolete binomial.
 

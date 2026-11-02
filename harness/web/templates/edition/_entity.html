@@ -5,13 +5,15 @@
 {% if not rec %}
 <p>No entry for <code>{{ ident }}</code>.</p>
 {% else %}
-<h4>{{ rec.canonical }}<span class='pill {{ rec.status }}'>{{ rec.status }}</span></h4>
+<h4>{{ rec.canonical }}{% if rec.status != 'ratified' %}<span class='pill {{ rec.status }}'>{{ rec.status }}</span>{% endif %}</h4>
 {# No "first read on" line: it was `since:`, an authored field, and the mentions
    block below derives every page instead — which cannot be satisfied by typing
    a plausible ref, as that field could. #}
-<div class='meta'><code>{{ ident }}</code>
-  {%- if located %} · <a class='mapref' data-ref='{{ ident }}'
+{% if located or not static %}
+<div class='meta'>{% if not static %}<code>{{ ident }}</code>{% endif %}
+  {%- if located %}{% if not static %} · {% endif %}<a class='mapref' data-ref='{{ ident }}'
      href='{{ base }}/entity/{{ ident }}'>map</a>{% endif %}</div>
+{% endif %}
 {% if contested %}
 <div class='meta'>shares a form with
 {% for c in contested %}<a class='ent' data-ref='{{ c.id }}'
@@ -39,7 +41,9 @@
 </figure>
 {% endif %}
 {{ ann.blocks(notices) }}
-<div class='gloss'>{{ gloss | safe }}</div>
+{# `gloss` is empty for an entry nobody has written one for (`(unwritten)` in the
+   file), and an empty block prints nothing rather than saying so. #}
+{% if gloss %}<div class='gloss'>{{ gloss | safe }}</div>{% endif %}
 {% include "edition/_props.html" %}
 {# The class hierarchy, under the fields that name its edge. The `part-of:` row
    above says who the parent is; this says what that parent sits in and what else
@@ -48,7 +52,7 @@
 {% include "edition/_kin.html" %}
 {% for ln in links %}{{ ln | safe }}{% endfor %}
 {% if rec.aliases %}
-<table><tr><th>form</th><th></th><th></th><th></th></tr>
+<table><tr><th>form</th><th></th>{% if not static %}<th></th>{% endif %}<th></th></tr>
 {% for t in rec.aliases %}
 {# A Tier-1 alias is a lexicon headword too, and the card is where that link
    lives: in the page text the entity reference is the anchor, because an
@@ -64,8 +68,9 @@
        links the first occurrence on a page and leaves the rest bare, which is
        what a name set thousands of times wants. Spelt out rather than folded
        into `auto`, since a reader looking at the text wants to know why one
-       "Chukchee" is a link and the next is not. #}
-    <td>{{ {'all': 'auto', 'first': 'once a page'}.get(t.scope, 'suggest') }}</td>
+       "Chukchee" is a link and the next is not. A working column: `edition serve`
+       only. #}
+    {% if not static %}<td>{{ {'all': 'auto', 'first': 'once a page'}.get(t.scope, 'suggest') }}</td>{% endif %}
     {# The notes carry `[[…]]` too — they are where an author explains *why* a
        form is suggest-only, and the explanation is almost always "it is also
        that other entity", which wants to be clickable. #}
@@ -82,22 +87,22 @@
 <ul class='lines'>{% for m in mentions.rows %}
 <li><a href='{{ base }}/page/{{ m.ref }}'>{{ m.ref }}</a>
     {%- if m.rank == 'draft' %} <span class='pill proposed'>draft</span>{% endif %}
+    {%- if not static %}
     {%- if m.linked %} <span class='dim'>{{ m.linked }} linked</span>{% endif %}
     {%- if m.unlinked %} <span class='dim'>{{ m.unlinked }} unlinked</span>{% endif %}
+    {%- endif %}
     {%- if m.before or m.match %}
     <span>{{ m.before }}<mark>{{ m.match }}</mark>{{ m.after }}</span>
     {%- else %} <span>{{ m.text }}</span>{% endif %}</li>
 {% endfor %}</ul>
 {% if mentions.pages > mentions.rows | length %}
-<div class='meta'>and {{ mentions.pages - (mentions.rows | length) }} more page(s) — <code>harness entity occurrences {{ ident }}</code> for all of them</div>
+<div class='meta'>and {{ mentions.pages - (mentions.rows | length) }} more page(s)</div>
 {% endif %}
 {% else %}
 {# A bare zero cannot be told from "never mentioned", and today it means one of
    two other things entirely. #}
-<p class='meta'>No mention found across the {{ mentions.swept }} page(s) this
-view is serving. Nothing is collated yet, so that is the whole corpus only under
-<code>edition serve --drafts</code>, and only where <code>mz/tei/</code> has been
-generated.</p>
+<p class='meta'>Not mentioned on any of the {{ mentions.swept }} page(s) available
+here.</p>
 {% endif %}
 {{ ann.blocks(supplements) }}
 {% if rec.status != 'ratified' and not static %}

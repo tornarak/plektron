@@ -7,7 +7,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Ayo | | no | three letters and named once; too short to link by rule |
+| Ayo | | no | |
 
 ## gloss
 

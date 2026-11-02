@@ -542,10 +542,9 @@ export function paneHtml(ctx, base) {
   h += rec ? `<h4>${esc(rec.canonical)}</h4>` : `<h4>${ctx.subjects.length} places</h4>`;
   if (!ctx.svg) {
     h += "<p class='meta'>" + (rec
-        ? 'Nothing to draw. It carries no <code>area:</code> and no <code>geo:</code>, '
-          + 'and nothing beneath it does either.' + (ctx.absent_note ? ' ' + esc(ctx.absent_note) : '')
-        : 'Nothing to draw: everything on this map is hidden, or carries no '
-          + '<code>area:</code>, no <code>geo:</code> and nothing located beneath it.')
+        ? 'Nothing to draw: no location is recorded for this or for anything beneath it.'
+          + (ctx.absent_note ? ' ' + esc(ctx.absent_note) : '')
+        : 'Nothing to draw: everything on this map is hidden, or has no location recorded.')
         + '</p>';
   } else {
     if (rec) h += `<div class='meta'>${basisHtml(ctx.basis)}${ctx.parent
@@ -588,21 +587,19 @@ function basisHtml(b) {
   const more = b.more ? ` and ${b.more} more` : '';
   switch (b.kind) {
     case 'shape':
-      return `<code>${esc(b.id)}</code>${b.km2 ? ` · ${esc(b.km2)} km²` : ''} · `
+      return `${esc(b.name || 'outline')}${b.km2 ? ` · ${esc(b.km2)} km²` : ''} · `
           + `${esc(b.source)}${b.more ? ` · and ${b.more} more` : ''}`;
     case 'point':
-      return `a keyed point at ${esc(b.lat)}, ${esc(b.lon)} — no source draws a boundary for it`;
+      return `a point at ${esc(b.lat)}, ${esc(b.lon)} — no source draws a boundary for it`;
     case 'transcluded':
-      return `shown at the extent of <code>${esc(b.id)}</code>${more} — this entry names `
-          + 'where it is rather than carrying a coordinate, so the boundary drawn is '
-          + 'theirs and not one claimed for it';
+      return `shown at the extent of ${esc(b.name)}${more} — the boundary drawn is `
+          + 'theirs and not one claimed for this';
     case 'inherited':
-      return `shown at the extent of <code>${esc(b.id)}</code> — a subgroup lives inside `
-          + "its people's area by what the word means, so this bounds it without drawing "
-          + 'a boundary anybody has claimed';
+      return `shown at the extent of ${esc(b.name)} — a subgroup lives inside `
+          + "its people's area, so this bounds it without drawing a boundary anybody "
+          + 'has claimed';
     case 'framed':
-      return 'framed by what lies beneath it — no source draws a boundary for this, '
-          + 'and the frame is a viewport, not one';
+      return 'framed by what lies beneath it — no source draws a boundary for this';
     default:
       return '';
   }

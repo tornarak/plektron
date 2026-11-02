@@ -12,9 +12,9 @@
 |---|---|---|---|
 | Cape Olutorsky | | yes | |
 | Cape Alutorsky | | yes | |
-| Мыс Олюторский | ru | no | the modern chart's name, and by this edition's account it names [[place:cape-anannon]] rather than this cape. Kept because it is the Russian form of this entry's English name; not printed in the book |
+| Мыс Олюторский | ru | no | the modern chart's name, and by this edition's account it names [[place:cape-anannon]] rather than this cape; not printed in the book |
 | Мыс Говена | ru | no | the modern chart's name for this cape; not printed in the book |
-| Cape Govensky | | yes | the Russian maps' name for it (chukchi-1-032, chukchi-1-359) |
+| Cape Govensky | | yes | the Russian maps' name for it |
 
 ## gloss
 
@@ -24,8 +24,7 @@ reality Cape Anannon […] while the real Cape Olutorsky lies close to Baron
 Korff's Bay (on the Russian maps, Cape Govensky)" (chukchi-1-032, repeated in chukchi-1-359's
 note 2), and the book's own map draws ALUTORSKY CAPE on the eastern headland of
 [[water:korf-bay]], with ANANNON CAPE some 230 km east of it. The coordinate
-above is that headland, read off the map — prose and plate agreeing, which is
-why the point moved off the GeoNames feature it used to carry.
+above is that headland, read off the map — prose and plate agreeing.
 
 The name is used the other way once, in the sentence just before the
 correction: Dall's 1879 Eskimo colony "at Cape Olutorsky" (chukchi-1-032) is reported

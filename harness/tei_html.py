@@ -215,13 +215,13 @@ def strip_tags(html: str) -> str:
 #: mean "a human settled this" are quiet; the two that do not are marked, because
 #: the whole point of showing provenance is that unfinished work looks unfinished.
 RANK_NOTE = {
-    "#ed": ("ratified", "a human keyed or confirmed this against the page"),
-    "#gt": ("adopted", "keyed at the raster in the ground-truth pass"),
-    "#llm": ("proposed", "a model read this off the page; awaiting ratification"),
+    "#ed": ("checked", "a person confirmed this against the page"),
+    "#gt": ("checked", "a person transcribed this from the scan"),
+    "#llm": ("proposed", "a model read this off the page; not yet checked"),
     "#mz": (
-        "mechanical",
-        "applied by rule from a store a human keyed — the entity "
-        "alias table, or the printed table of contents",
+        "by rule",
+        "applied by rule from a list a person checked — the edition's list of "
+        "names, or the printed table of contents",
     ),
 }
 UNSETTLED = ("#llm", "#mz")
@@ -394,6 +394,8 @@ class Renderer:
         #: render would otherwise serve a stale heading with nothing to signal it,
         #: which is `stores.render`'s standing rule about the figure geometry.
         self.titles = titles or {}
+        #: Whether a comment renders as a flag. `render` sets it.
+        self.flags = True
         self.notes: list[dict] = []
         #: Note numbers already referenced on this page, so the first
         #: reference to each can carry the id the foot links back to.
@@ -543,9 +545,14 @@ class Renderer:
         of the page; hiding it in the rendering would make an unfinished page
         look finished, which is the one thing this edition is organised against.
         Reader view hides them; the audit view does not.
+
+        **A static site does not get them at all.** They are questions to whoever
+        works on the page, in that work's vocabulary, and hiding one with a
+        stylesheet would still publish it. What a site's reader is owed is that the
+        page says it is a draft, and it does.
         """
         text = " ".join((node.text or "").split())
-        if not text:
+        if not text or not self.flags:
             return ""
         kind = (
             "question"
@@ -985,8 +992,11 @@ class Renderer:
 
 
 def render(path: Path, titles: dict[str, dict] | None = None,
-           base: str = BASE) -> dict:
+           base: str = BASE, flags: bool = True) -> dict:
     """One committed page → `{html, notes, refs, figures, folio, ok}`.
+
+    `flags=False` leaves out the comments `Renderer.comment` shows, which is what
+    a static site asks for.
 
     A page that will not parse returns `ok: False` and says why, rather than
     raising: the reader is a view over a store that is still being written, and
@@ -1021,6 +1031,7 @@ def render(path: Path, titles: dict[str, dict] | None = None,
         }
     ref = ref_in(path.stem)
     r = Renderer(ref, titles=titles, base=base)
+    r.flags = flags
     r.opens = page_opens(body)
     r.page_first = first_flow(body)
     html = r.blocks(body)

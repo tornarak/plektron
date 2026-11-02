@@ -170,6 +170,22 @@ def test_a_language_outside_the_vocabulary_is_an_error(tmp_path):
         E.load(tmp_path)
 
 
+def test_apparatus_mentions_are_listed_and_an_open_item_is_not(tmp_path):
+    store = {
+        "place:a": {"gloss": "Fine.\n\nSee `geo verify` for it.\n\n"
+                             "**Open: `geo verify` has not run.**",
+                    "aliases": [{"form": "A", "note": "unattested in gt/ocr/"},
+                                {"form": "B", "note": "the book's spelling"}]},
+        "place:b": {"gloss": "A village the store of the fair sold to.",
+                    "aliases": []},
+    }
+    assert E.apparatus_mentions(store) == [
+        {"id": "place:a", "where": "gloss", "hit": "`geo v"},
+        {"id": "place:a", "where": "A", "hit": "gt/"},
+        {"id": "place:b", "where": "gloss", "hit": "the store"},
+    ]
+
+
 def test_untagged_aliases_are_counted_and_never_gate(tmp_path):
     """A worklist. "Every foreign name is in the table, tagged" is a standing
     editorial job, and a gate on it would be answered by deleting the alias."""

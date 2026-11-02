@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| carrion-flies | en | yes | chukchi-1-251; a habit, not a clade |
+| carrion-flies | en | yes | a habit, not a clade |
 | reindeer-fly | en | yes | |
 | reindeer-flies | en | yes | |
 

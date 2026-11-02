@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Rubus arcticus | la | yes | chukchi-1-256 |
+| Rubus arcticus | la | yes | |
 
 ## gloss
 

@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Oxyria digina | la | yes | chukchi-1-253 |
+| Oxyria digina | la | yes | |
 
 ## gloss
 

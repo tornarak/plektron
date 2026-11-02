@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| aspen | en | yes | chukchi-1-257, "dry poplar or aspen bark" mixed into smoking-tobacco |
+| aspen | en | yes | |
 
 ## gloss
 

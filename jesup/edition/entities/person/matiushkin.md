@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Matiushkin | | yes | chukchi-1-077 "the report of Midshipman Matiushkin" |
+| Matiushkin | | yes | |
 
 ## gloss
 

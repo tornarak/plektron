@@ -22,13 +22,4 @@ Konyam Bay".
 
 "Konyam Bay" is **[[person:nordenskiold]]'s own rendering**, given to the bay
 during the *Vega*'s passage and carried into English from there — which is why
-it appears on no Russian map and why the gazetteers were silent on it. The entry
-stood unresolved with a guess at Конергино beside a question mark until that
-was found out; the guess was wrong, and its being marked as one is the only
-reason it cost nothing.
-
-**The residue of unlocated toponyms in this store is largely of this kind**, and
-that is a lead rather than an obstacle: `place:pitlekai` is the *Vega*'s own
-wintering station, and [[source:nordenskiold-1882]] is already in the
-authorities. A name one expedition coined is not missing from the gazetteers —
-it was never in them.
+it appears on no Russian map and why the gazetteers are silent on it.

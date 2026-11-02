@@ -7,7 +7,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Œstrus tarandi | la | yes | chukchi-1-108, Nordenskiöld's name for the same fly Slunin calls Tabanus tarandinus |
+| Œstrus tarandi | la | yes | Nordenskiöld's name for the same fly Slunin calls Tabanus tarandinus |
 | Tabanus tarandinus | la | yes | |
 
 ## gloss

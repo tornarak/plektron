@@ -11,8 +11,8 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Peˊkul-ñei | ckt | yes | chukchi-1-175, "to the north of the Anadyr" |
-| Peˊqul-ñei | ckt | yes | chukchi-1-047, the reindeer-breeding group there |
+| Peˊkul-ñei | ckt | yes | |
+| Peˊqul-ñei | ckt | yes | |
 | Чукотское нагорье | ru | no | the range's modern name; not printed in the book |
 
 ## gloss
@@ -33,8 +33,7 @@ the same upland — the divide between the Belaya and the Tanyurer, about 300 km
 against the upland's 450 — and both of Bogoras's sentences would fit it just as
 well, since it too lies north of the Anadyr between the White River country and
 the sea. The map is the only witness that separates the two, and it puts the
-label over the whole. Recorded here so the coordinate is not later "corrected"
-onto the smaller range: that would be a narrowing no page in the book supports.
+label over the whole.
 
 The point is Wikidata's centroid rather than a frame, as with
 [[land:anui-mountains]]; nothing in the book measures the range.

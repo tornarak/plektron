@@ -9,7 +9,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Kuluˊči | ckt | yes | |
-| Колючинъ | ru | yes | chukchi-1-359's list |
+| Колючинъ | ru | yes | |
 
 ## gloss
 

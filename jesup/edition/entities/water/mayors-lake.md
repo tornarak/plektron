@@ -1,6 +1,6 @@
 # water:mayors-lake — Mayor’s Lake
 
-- status: proposed
+- status: ratified chukchi
 - within: river:anadyr
 
 ## aliases

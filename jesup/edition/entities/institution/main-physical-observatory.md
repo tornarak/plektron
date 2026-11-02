@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Main Physical Observatory | | yes | chukchi-1-045 note, "Annual Report of the Main Physical Observatory, St. Petersburg, 1900" |
+| Main Physical Observatory | | yes | |
 
 ## gloss
 

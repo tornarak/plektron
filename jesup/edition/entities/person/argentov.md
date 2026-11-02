@@ -7,7 +7,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Argentoff | | no | the running text's spelling |
-| Argentov | | no | `edition/authorities.json`'s spelling; unattested in `gt/ocr/` |
+| Argentov | | no | the bibliography's spelling |
 
 ## gloss
 

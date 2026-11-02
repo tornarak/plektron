@@ -944,8 +944,8 @@ said nothing.
 **An empty list names how many pages it looked at.** A bare zero cannot be told
 from "never mentioned", and today it means one of two other things: nothing is
 collated, or `mz/tei/` was never generated in this clone. The cap is eight pages,
-with the page count, the occurrence count and the verb that prints the rest all
-beside it — a silent truncation reads as coverage.
+with the page count and the occurrence count beside it — a silent truncation reads
+as coverage. `entity occurrences` prints the rest.
 
 ### The store is also the corpus's proper-noun dictionary
 
@@ -1033,6 +1033,17 @@ the page itself and beside every search hit — on the page because a URL typed
 straight in skips the listing that would otherwise carry the warning — and it is
 read-only, since a store that can be edited here is a store that needs an
 adjudication story this does not have.
+
+**What a reader is shown says nothing about how it was made.** No path, verb, field
+or rank name reaches a reader's page, on either mode; the draft and proposed marks
+stay, since unfinished work must look unfinished, and say so in plain words. A
+static site (`app.state.static`) also leaves out the working furniture `edition
+serve` keeps: the comment flags on a page, an alias's mode, the linked/unlinked
+split on a mention, the `class:slug` and shape and authority keys, and an authority's
+`note`. The ratified pill is gone from both, a settled entry being the quiet state.
+**`entity check`'s `apparatus_mentions` is the store's half of this**, a worklist that
+never gates, and an `**Open:` paragraph is the one place a gloss may name the tooling:
+it is a question for an editor that has not been answered.
 
 ### Pages that will never be prose
 

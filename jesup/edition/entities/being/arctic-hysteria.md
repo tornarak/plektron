@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Arctic hysteria | en | no | chukchi-1-064 |
+| Arctic hysteria | en | no | |
 
 ## gloss
 

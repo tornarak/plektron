@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| seal | en | no | chukchi-1-252, seal-blood and seal-meat |
+| seal | en | no | |
 
 ## gloss
 

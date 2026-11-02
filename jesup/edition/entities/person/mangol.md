@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Mangol | | yes | chukchi-1-037 "Peter Mangol" |
+| Mangol | | yes | |
 
 ## gloss
 

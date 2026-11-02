@@ -10,7 +10,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Chaun | | no | Can be the river, the bay, or the surrounding plain |
+| Chaun | | no | can be the river, the bay, or the surrounding plain |
 
 ## gloss
 

@@ -8,7 +8,7 @@
    measure, and `#primary.index-width` has never applied at all. #}
 {% include "edition/_sidebar.html" %}
 <div id='primary' class='index-width'>
-{% if problems %}
+{% if problems and not static %}
 <div class='card'><h4>the store does not check out</h4>
 {# Escaped like everything else. These strings carry file paths and file
    content, and they were interpolated raw — an apostrophe in a gloss was enough
@@ -27,8 +27,8 @@
 {% macro node(n) %}
 <li><a class='ent' data-ref='{{ n.rec.id }}'
        href='{{ base }}/entity/{{ n.rec.id }}'>{{ n.rec.canonical }}</a>
-    <span class='pill {{ n.rec.status }}'>{{ n.rec.status }}</span>
-    <span class='dim'>{{ n.rec.aliases | length }} alias(es)</span>
+    {% if n.rec.status != 'ratified' %}<span class='pill {{ n.rec.status }}'>{{ n.rec.status }}</span>{% endif %}
+    {% if not static %}<span class='dim'>{{ n.rec.aliases | length }} alias(es)</span>{% endif %}
 {%- if n.kids %}
 <ul>{% for k in n.kids %}{{ node(k) }}{% endfor %}</ul>
 {%- endif %}
@@ -44,15 +44,12 @@
 </li>
 {% endfor %}
 </ul>
-<p class='meta note-small'>Every class the store declares, including the four
-nothing has been filed under yet. Inside a class, an entry nests under its
-<code>within:</code> parent where that parent is in the same class — the
-a people's branches under the people. A parent in another class does
-not nest, because following the field across classes would file the rivers under
-<em>place</em> and leave <em>water</em> a list of orphans; those entries sit at
-the top of their own class and their card names the parent. At each level,
-proposed entries come first: nothing links them by rule until a human has read
-one against the page it was proposed from.</p>
+<p class='meta note-small'>Inside a class, an entry nests under what it sits
+within where that parent is in the same class — a people's branches under the
+people. An entry whose parent is in another class sits at the top of its own, and
+its card names the parent. At each level, proposed entries come first: they have
+not yet been read against the pages they came from, and are not linked from the
+text until they have.</p>
 </div>
 {% endblock %}
 

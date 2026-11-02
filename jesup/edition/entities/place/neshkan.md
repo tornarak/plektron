@@ -11,7 +11,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Neˊs˙qᴀn | ckt | yes | |
-| Neˊᵋs˙qᴀn | ckt | yes | variant spelling used on chukchi-1-042 |
+| Neˊᵋs˙qᴀn | ckt | yes | |
 | Naˊs˙kok | ypk | yes | |
 
 ## gloss

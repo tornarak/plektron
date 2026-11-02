@@ -9,8 +9,8 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| birds of prey | en | yes | chukchi-1-252, tabooed by the Reindeer Chukchee; polyphyletic |
-| eagle | en | yes | chukchi-1-253, with the raven; polyphyletic within Accipitridae, and the page names no species |
+| birds of prey | en | yes | polyphyletic |
+| eagle | en | yes | polyphyletic within Accipitridae, and the page names no species |
 | eagles | | yes | |
 
 ## gloss
@@ -29,6 +29,5 @@ dense fog") is polyphyletic within Accipitridae, and the page names no species.
 The white-tailed eagle and the golden eagle both occur in the country; nothing
 here says which, or whether the distinction is one Bogoras's informants drew.
 
-Both sit at this rank because the coarsest honest placement is the rule
-`docs/edition.md` sets for a folk group. [[taxon:corvus-corax]], the raven of the
+Both sit at this rank as the coarsest honest placement. [[taxon:corvus-corax]], the raven of the
 same sentence, needs no such treatment — it is one bird.

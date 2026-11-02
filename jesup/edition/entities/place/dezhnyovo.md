@@ -8,8 +8,8 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| ᴇnmɪtaˊhɪn | ckt | no | chukchi-1-052. auto: no — a bare match also fires inside Ot-ᴇnmɪtaˊhɪn, which is [[place:enmytagyn]] on the Arctic coast; the alias boundary treats the hyphen as a break |
-| Дежнёво | ru | yes | the Soviet-era village name this entry is titled from |
+| ᴇnmɪtaˊhɪn | ckt | no | |
+| Дежнёво | ru | yes | the Soviet-era village name |
 
 ## gloss
 
@@ -25,4 +25,4 @@ Uˊten".** Bogoras gives the same gloss to both and they are some 45 km apart on
 opposite coasts: this one stands on the Pacific side south of East Cape among
 Naukan people, and that one on the Arctic shore west of [[place:uelen]], in the
 stretch where "all the villages belong to the Chukchee tribe." Two cliffs, two
-peoples, one printed gloss — which is why the bare form here is `auto: no`.
+peoples, one printed gloss.

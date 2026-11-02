@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Mongolian | | no | chukchi-1-197 only: "the Mongolian release" and "the Mongolian archers". Elsewhere the word is the racial type, [[people:mongoloids]], and only the sentence says which |
+| Mongolian | | no | this only at chukchi-1-197; elsewhere the word is the racial type, [[people:mongoloids]] |
 
 ## gloss
 
@@ -19,5 +19,4 @@ hooks the string on the thumb, "perhaps … used similarly to those of the
 Mongolian archers." Nothing else in the corpus is about Mongols.
 
 The book never spells the noun *Mongols*; only the adjective is printed, and it
-does double duty. The bare canonical is here to title the entry, not as a claim
-that the corpus prints it.
+does double duty.

@@ -14,7 +14,5 @@
 ## gloss
 
 Named at chukchi-1-051, where [[place:nepekuten]] is put "on the island called Ipeˊkut in
-Chukchee (Eskimo, Ciˊṛluk)". No gazetteer in hand draws it, so `region:ipekut` is
-the editor's own tracing rather than a sourced shape — `edition/geo/SOURCES.md` sets
-out what that rank means and why it is marked `source: editor` wherever the shape
-travels.
+Chukchee (Eskimo, Ciˊṛluk)". No gazetteer in hand draws it, so the area on
+the map is the editor's own tracing.

@@ -3,7 +3,9 @@
    The rule this exists to keep is that **an entity file has no invisible
    fields**. A store a human hand-maintains whose values never reach the page is
    one where a wrong value is never noticed — the same failure as an unratified
-   span rendered like a ratified one, one store over.
+   span rendered like a ratified one, one store over. That holds where the fields
+   are maintained, under `edition serve`; a static site leaves out the identifiers
+   and the working notes a reader has no use for.
 
    Rows arrive typed (`row.kind`) rather than as pre-built markup, so the
    escaping stays the template's and a new field cannot smuggle raw HTML in
@@ -15,7 +17,7 @@
    as `row['items']`, because the next person to add a row would hit it again. #}
 {% if props %}
 <table class='props'>
-{% for row in props %}
+{% for row in props if not (static and row.working) %}
 <tr><th>{{ row.label }}</th><td>
 {%- if row.kind == 'entity' -%}
   <a class='ent' data-ref='{{ row.id }}' href='{{ base }}/entity/{{ row.id }}'>{{ row.name }}</a>
@@ -24,16 +26,15 @@
      href='{{ base }}/entity/{{ it.id }}'>{{ it.name }}</a>
   {%- if not loop.last %}, {% endif %}{% endfor %}
 {%- elif row.kind == 'area' -%}
-  <code>{{ row.id }}</code>{% if row.detail %} — {{ row.detail }}{% endif %}
+  {% if not static %}<code>{{ row.id }}</code>{% if row.detail %} — {% endif %}{% endif %}{{ row.detail }}
 {%- elif row.kind == 'point' -%}
   {{ row.lat }}, {{ row.lon }} <span class='dim'>(WGS84)</span>
   {%- for m in row.maps %} <a class='maplink' href='{{ m.url }}'
      rel='noreferrer' target='_blank'>{{ m.name }}</a>{% endfor %}
 {%- elif row.kind == 'authority' -%}
-  <code>{{ row.id }}</code>
-  {%- if row.title %} — {{ row.title }}
-  {%- else %} — <span class='dangling'>no such key in
-  edition/authorities.json</span>{% endif %}
+  {% if not static %}<code>{{ row.id }}</code> — {% endif %}
+  {%- if row.title %}{{ row.title }}
+  {%- else %}<span class='dangling'>no such work in the bibliography</span>{% endif %}
 {%- elif row.kind == 'printed' -%}
   {# `printed` is the record — the block a human keyed off the page, set apart
      from the parsed fields so the two can be read against each other. #}
@@ -45,7 +46,8 @@
      found and nobody opened is a proposal, and a card that printed it bare
      would be the unmarked-span failure in a second store. #}
   <a href='{{ row.value }}' rel='noreferrer'>{{ row.value }}</a>
-  {%- if row.resp %} <span class='resp'>{{ row.resp }}</span>{% endif %}
+  {%- if row.resp %} <span class='resp'>{% if not static %}{{ row.resp }}{%
+    elif row.resp != '#ed' %}unchecked{% endif %}</span>{% endif %}
 {%- elif row.kind == 'plain' -%}
   {{ row.value }}
 {%- else -%}

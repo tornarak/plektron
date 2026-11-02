@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Benedict | | yes | chukchi-1-066 "the Russian priest Benedict" |
+| Benedict | | yes | |
 
 ## gloss
 

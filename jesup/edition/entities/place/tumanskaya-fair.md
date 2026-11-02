@@ -22,7 +22,7 @@ the eastern affluent of Red Lake; the coordinate above is the editor's reading
 of that map, and the mountain the text names is not identified here.
 
 **Filed under [[river:krasnaya]] and not [[river:tumanskaya]], though it
-carries that river's name.** The point falls inside `watershed:krasnaya-or-red-river`
-and about 1.4° west of `watershed:tumanskaya-or-telqap`, and the text agrees:
+carries that river's name.** The point falls inside the Krasnaya's basin
+and about 1.4° west of the Tumanskaya's, and the text agrees:
 the fair is "on the west," *chiefly for* the Telqäˊp Chukchee, who came to it
 from their own river. The name says whose fair it was, not where it stood.

@@ -47,7 +47,7 @@ from .. import (
 from .. import edition_ui as ui
 from .. import figures as F
 from ..detectors import resolve_break_hyphens
-from ..entities import ENTITY_CLASSES, alias_index, split_id
+from ..entities import ENTITY_CLASSES, UNWRITTEN, alias_index, split_id
 from ..refs import parse_ref
 from ..state import MILESTONE_UNITS, load_toc, toc_containing
 from . import Editor, register, stores, templates
@@ -225,13 +225,14 @@ def _outline(request: Request) -> list[dict]:
         if node.get("id") in at:
             placed_at.setdefault(at[node["id"]], []).append(node)
 
+    def _checked(text: list[str]) -> str:
+        n = sum(1 for r in text if r in signed)
+        return "" if n == len(text) else f"{n} of {len(text)} checked"
+
     def _status(run: dict) -> str:
         text = [ui.norm_ref(r) for r in run["refs"]
                 if ui.norm_ref(r) not in exempt]
-        if run.get("kind") != chapters.KIND or not text:
-            return ""
-        n = sum(1 for r in text if r in signed)
-        return "" if n == len(text) else f"{n} of {len(text)} collated"
+        return _checked(text) if run.get("kind") == chapters.KIND and text else ""
 
     # **A division the listing dropped is still in the Contents.** Without
     # `--drafts` a chapter with no collated page has no leaf to stand for it and
@@ -289,9 +290,9 @@ def index(request: Request):
     # that is nine-tenths unread would be a claim about the edition's progress
     # that the edition cannot support. Leaves and not `refs`, which is the listing:
     # a chapter is one entry there, and a cover or a plate is one that nobody collates.
-    here = (f"{len(leaves)} page(s): {len(signed)} collated, "
+    here = (f"{len(leaves)} page(s): {len(signed)} checked, "
             f"{len(leaves) - len(signed)} machine draft"
-            if _drafts(request) else f"{len(signed)} page(s) collated")
+            if _drafts(request) else f"{len(signed)} page(s) checked")
     return templates.TemplateResponse(
         request,
         "edition/index.html",
@@ -1102,7 +1103,8 @@ def _chapter_leaves(request: Request, run: dict, root: Path) -> list[dict]:
                "rank": ""}
         path, rank = tei_html.page_source(ref, root)
         if path is not None and (rank == "collated" or _drafts(request)):
-            leaf = _leaf_doc(path, ref, root, place=False, base=base)
+            leaf = _leaf_doc(path, ref, root, place=False, base=base,
+                             flags=not _static(request))
             doc = dict(leaf["doc"])
             doc["html"] = _scope_notes(doc["html"], ref)
             rec.update(kind="text", rank=rank, **{**leaf, "doc": doc})
@@ -1128,8 +1130,7 @@ def _chapter_leaves(request: Request, run: dict, root: Path) -> list[dict]:
             folio = apparatus.folio_of(ref, index)
         else:
             rec.update(kind="gap", why=(
-                "a machine draft, which this sitting does not show — "
-                "`edition serve --drafts` does" if rank == "draft"
+                "a machine draft, not shown here" if rank == "draft"
                 else "no transcription yet"))
             folio = apparatus.folio_of(ref, index)
         rec["folio"] = folio
@@ -1519,11 +1520,13 @@ def page(request: Request, ref: str):
     if path is None or (rank == "draft" and not _drafts(request)):
         raise HTTPException(
             404,
-            f"{ref} is not collated. The reading view shows committed tei/ only"
-            + ("; a generated draft exists — `edition serve --drafts` shows it."
-               if rank == "draft" else "."),
+            f"{ref} has not been checked yet, so it is not shown here."
+            # For whoever is running the server: the page does exist.
+            + (" A generated draft exists — `edition serve --drafts` shows it."
+               if rank == "draft" and not _static(request) else ""),
         )
-    leaf = _leaf_doc(path, ref, root, base=_base(request))
+    leaf = _leaf_doc(path, ref, root, base=_base(request),
+                     flags=not _static(request))
     doc = leaf["doc"]
     refs = _listing(request)
     i = refs.index(ref) if ref in refs else -1
@@ -1560,7 +1563,7 @@ def page(request: Request, ref: str):
 
 
 def _leaf_doc(path: Path, ref: str, root: Path, place: bool = True,
-              base: str = ui.BASE) -> dict:
+              base: str = ui.BASE, flags: bool = True) -> dict:
     """One text leaf, rendered and joined: what `/page/{ref}` shows, and what a
     chapter shows for each of its text leaves — one function, so the two cannot
     drift into showing one page two ways.
@@ -1569,7 +1572,7 @@ def _leaf_doc(path: Path, ref: str, root: Path, place: bool = True,
     leaves every notice in `notices` rather than splicing a section's under its
     marker: a chapter pools them at its head instead.
     """
-    doc = stores.render(path, root, base)
+    doc = stores.render(path, root, base, flags=flags)
     doc = _hang_pictures(doc, _figures(ref, root, doc, base),
                          figref_rows(doc, root, base))
     # **The folio is resolved here and handed down**, never looked up inside
@@ -1683,7 +1686,8 @@ def _entity_ctx(ident: str, refs: list[str], root: Path, base: str = ui.BASE,
         "rec": {**rec, "aliases": aliases},
         "ident": ident,
         "base": base,
-        "gloss": ui.gloss_html(rec["gloss"], store, base, layout.stem(root)),
+        "gloss": ("" if rec["gloss"] == UNWRITTEN else
+                  ui.gloss_html(rec["gloss"], store, base, layout.stem(root))),
         "links": [ui.link_html(ln, assets) for ln in rec["links"]],
         "image": pictures.resolve(rec, stores.picture_ledger(root)),
         "contested": [{"id": c, "canonical": store[c]["canonical"]} for c in contested],
@@ -2344,7 +2348,7 @@ def entity_index(request: Request):
             pane=True,
             side_fixed=True,
             problems=rep["errors"],
-            here=f"{rep['entities']} entries · {rep['proposed']} awaiting audit",
+            here=f"{rep['entities']} entries · {rep['proposed']} awaiting review",
         ),
     )
 

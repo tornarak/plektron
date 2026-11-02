@@ -11,8 +11,8 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| St. Michaels | | yes | chukchi-1-090, the book's plural spelling |
-| St. Michael’s Fort | | yes | chukchi-1-042, in a note on the name Teˊsik |
+| St. Michaels | | yes | |
+| St. Michael’s Fort | | yes | |
 
 ## gloss
 

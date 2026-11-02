@@ -9,17 +9,14 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| brown bear | en | yes | chukchi-1-184, chukchi-2-136. Never "Brown Bear", which at chukchi-1-184 is the river Keiˊñu-weˊem and not the animal — the ladder reaches `Brown bear` at the head of a sentence but never `Brown Bear`, which is no case of anything it can name |
-| brown bears | en | yes | chukchi-1-184, and "Brown bears" sentence-initial there, which the ladder reaches from this row |
-| black bear | en | yes | chukchi-1-109, chukchi-1-113, chukchi-2-051. chukchi-1-252 breaks it across the line-end ("wolverene and black / bear"), which the whitespace-flexible matcher joins |
-| black bears | en | yes | chukchi-2-032, chukchi-2-070, chukchi-2-109, and "Black bears" sentence-initial at chukchi-2-051, which the ladder reaches from this row |
+| brown bear | en | yes | never "Brown Bear", which at chukchi-1-184 is the river Keiˊñu-weˊem |
+| brown bears | en | yes | |
+| black bear | en | yes | |
+| black bears | en | yes | |
 
 ## gloss
 
-The bear of the forest border — the one that kills a stray reindeer (chukchi-1-109), that
-the Reindeer Chukchee take in its den or with the spiked block laid on its path
-(chukchi-1-184, chukchi-1-113), that hibernates on the banks of the Lower Kolyma and was met
-feeding on seaweed in Holy Cross Bay in June, 1901.
+The bear of the forest border.
 
 **The book calls this animal both *brown bear* and *black bear*, and they are one
 species here.** It never sets the two words on the same page, never contrasts

@@ -12,7 +12,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Cape Prince of Wales | | yes | |
-| Kiˊhi | ypk | yes | chukchi-1-041 fn 2: what the Asiatic Eskimo call the cape and its village |
+| Kiˊhi | ypk | yes | what the Asiatic Eskimo call the cape and its village |
 
 ## gloss
 

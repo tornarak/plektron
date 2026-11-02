@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Trifonoff | | yes | chukchi-1-044 note, "the merchant Trifonoff" |
+| Trifonoff | | yes | |
 
 ## gloss
 

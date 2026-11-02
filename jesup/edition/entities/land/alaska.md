@@ -10,13 +10,11 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Alaska | en | yes | |
-| Kɪˊɪmɪn | ckt | yes | chukchi-1-041: “The American Continent is called Kɪˊɪmɪn” |
+| Kɪˊɪmɪn | ckt | yes | |
 
 ## gloss
 
-The far shore. Bogoras names it thirty-odd times — “the purchase of Alaska”,
-“northern Alaska”, the Alaskan Eskimo, the Alaskan miners — and it is where the
-Asiatic Eskimo are argued to have come from.
+The far shore, and where the Asiatic Eskimo are argued to have come from.
 
 **chukchi-1-041 gives the Chukchee name for it: Kɪˊɪmɪn.** Its inhabitants are Kɪˊɪmɪlɪt,
 and also Yɪkɪrg̣aˊulɪt, and also Roˊčhɪlɪt — “opposite-shore people”. Footnote 2
@@ -25,21 +23,11 @@ derives the word from the Asiatic Eskimo Kīˊxmi, an inhabitant of
 inhabitant of Kiˊhi”. So the Chukchee name for a continent is built out of the
 name of the one cape of it they can see.
 
-**The alias is wider than the entry and is filed here anyway.** The page says
-*American Continent*, not Alaska, and this store has no entity for the former —
-but everything the book does with the word is Alaskan, and every Kɪˊɪmɪn in the
-corpus is across the strait rather than in Nebraska. If a reader ever needs the
-continent as such, it wants its own entry and this alias moves to it.
+**The name is wider than the entry.** The page says *American Continent*, not
+Alaska, but everything the book does with the word is Alaskan, and every Kɪˊɪmɪn in
+the book is across the strait.
 
-**Filed under nothing**, because the atlas's containment tree is the Russian Far
-East's and Alaska is not in it. It is a root, and it is framed by its members —
-the strait shore from Cape Nome to Cape Prince of Wales, with King Island,
-St. Michael and Port Clarence, and Point Barrow six degrees north of any of
-them — which is still a narrower box than the state and the right one for this
-book: the Alaska Bogoras writes about is the coast, not the interior.
-`geo verify` declines to write it a point of its own for that reason.
-
-The first four hung unparented until this entry existed, and briefly hung under
-[[water:bering-strait]], where `geo verify`'s nesting check called three of them
-what they were — dry ground filed inside open water. The fourth, King Island, it
-passed in silence, an island in a strait being exactly that.
+**The map frames it on what the book names**: the strait shore from Cape Nome to
+Cape Prince of Wales, with King Island, St. Michael and Port Clarence, and Point
+Barrow six degrees north of any of them. The Alaska Bogoras writes about is the
+coast, not the interior.

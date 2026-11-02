@@ -10,7 +10,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Tungus | | once | |
-| Tungus language | | no | the language, which in this book is the people |
+| Tungus language | | no | |
 
 ## gloss
 

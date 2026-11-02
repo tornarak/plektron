@@ -555,7 +555,7 @@ def test_a_folio_on_a_page_this_view_refuses_is_neither_linked_nor_followed(
 def test_an_unwitnessed_folio_refuses_rather_than_guessing(book: Path):
     r = _app(book, follow=False).get("/edition/folio/700")
     assert r.status_code == 404
-    assert "Nothing in the corpus records folio 700" in r.text
+    assert "No page records folio 700" in r.text
 
 
 def test_a_toc_id_resolves_through_its_page_start(tmp_path: Path):

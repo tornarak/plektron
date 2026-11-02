@@ -148,7 +148,8 @@ def register(cli):
              "collated pages relinked, drafts regenerated, exactly as `entity "
              "ratify` does")
     opt(p, "--note", metavar="TEXT",
-        help="the note cell — where the form is attested, or why it is `no`")
+        help="the note cell, shown to a reader — what else the form means, or what "
+             "kind of spelling it is. Attestation is the card's")
     opt(p, "--commit", is_flag=True,
         help="write it. Without this the row is reported and not added")
 
@@ -962,7 +963,7 @@ def run_sigla(a) -> int:
                 claimed = (any(c["id"] != ident for c in idx.get(f, []))
                            or added.get(f, ident) != ident)
                 auto = "no" if claimed else "yes"
-                note = "" if auto == "yes" else "auto: no — another entry claims it"
+                note = "" if auto == "yes" else "also names another entry"
                 added.setdefault(f, ident)
                 new.append(f"| {f} | | {auto} | {note} |".replace("|  |", "| |"))
                 rows.append({"id": ident, "form": f, "auto": auto == "yes",

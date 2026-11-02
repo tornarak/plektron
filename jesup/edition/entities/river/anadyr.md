@@ -11,11 +11,11 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Anadyr River | | yes | |
-| Anadyr | | no | also the region, the bay and the town; chukchi-1-021 has "the mouth of the Anadyr" |
+| Anadyr | | no | also the region, the bay and the town |
 
 ## gloss
 
 The river draining the Anadyr basin into the Bering Sea. [[person:bogoras]]
 places [[people:maritime-chukchi]] settlements “between the mouth of the Anadyr
-and Indian Point” (chukchi-1-021). The bare form is not auto-linked because the book uses
-it for the region and the bay as freely as for the river.
+and Indian Point” (chukchi-1-021). The book uses the bare name for the region
+and the bay as freely as for the river.

@@ -9,11 +9,11 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| white fox | en | once | chukchi-1-150, chukchi-1-180, chukchi-2-118, chukchi-2-139, chukchi-3-170, chukchi-3-196; also inside "white fox-skin" (chukchi-1-071, chukchi-1-180) |
-| white foxes | en | once | chukchi-1-078, chukchi-1-089, chukchi-1-093, chukchi-1-182, chukchi-3-075, chukchi-3-171 |
-| white-fox | en | once | the compound the trade passages set: "white-fox skins" (chukchi-1-076, chukchi-1-089, chukchi-1-134), "white-fox skin" (chukchi-1-094, chukchi-1-180) |
-| blue fox | en | yes | chukchi-2-109 |
-| blue foxes | en | yes | chukchi-1-078, "8 blue foxes" in the Anui fair returns |
+| white fox | en | once | |
+| white foxes | en | once | |
+| white-fox | en | once | |
+| blue fox | en | yes | |
+| blue foxes | en | yes | |
 
 ## gloss
 

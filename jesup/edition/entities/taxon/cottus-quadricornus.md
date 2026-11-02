@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Cottus quadricornus | la | yes | chukchi-1-192 note |
+| Cottus quadricornus | la | yes | |
 
 ## gloss
 

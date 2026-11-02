@@ -54,9 +54,9 @@
    `page.html`'s draft-note reason, one level over. #}
 <p class='draft-note'><span class='draft-tag'>apparatus</span> — the printed
 {{ run.title | lower }}, over {{ run.refs | length }} leaves
-({{ run.refs | first }} — {{ run.refs | last }}), served as one document from
-<code>{{ run.source }}</code>. The folio in the margin marks where each leaf
-begins and links to itself; 🗗 shows the leaves themselves, in succession.</p>
+({{ run.refs | first }} — {{ run.refs | last }}), given here as one document.
+The folio in the margin marks where each leaf
+begins and links to itself; the 🗗 beside it shows that leaf's scan.</p>
 
 {# **One list, not one per leaf.** The seven scans of the Contents carry a single
    printed list, and closing and reopening a `<ul>` at each of them would break

@@ -9,6 +9,7 @@ build usable as a regression net.
 from __future__ import annotations
 
 import filecmp
+import re
 from pathlib import Path
 
 import pytest
@@ -17,7 +18,13 @@ from test_edition import page
 from test_edition_runs import _scan
 from test_entities import entry
 
+from harness import web
 from harness.web.build import _canon, build, norm_base
+
+#: The tooling's words, none of which a reader's page has a use for.
+READER_FORBIDDEN = re.compile(
+    r"\b(?:mz|gt)/|[^/\w]tei/|\bharness |tei generate|edition serve|--drafts"
+    r"|authorities\.json")
 
 
 @pytest.fixture
@@ -65,6 +72,31 @@ def test_a_static_page_offers_no_search_and_no_ratify(tree, tmp_path):
     card = (tmp_path / "site" / "entity" / "place:markova" / "index.html").read_text()
     assert "/search" not in card
     assert "class='ratify'" not in card
+
+
+def test_a_static_page_speaks_to_a_reader(tree, tmp_path):
+    """The working furniture stays on `edition serve`. What a site's reader gets
+    says a page is a draft in words, and shows no question put to its editors."""
+    p = tree / "tei" / "chukchi-1-021.xml"
+    p.write_text(p.read_text(encoding="utf-8").replace(
+        "</p>", "<!-- entity candidate: 'Markova' --></p>", 1), encoding="utf-8")
+    build(tree, tmp_path / "site")
+    site = tmp_path / "site"
+    leaf = (site / "page" / "1-021" / "index.html").read_text(encoding="utf-8")
+    assert "entity candidate" not in leaf and 'class="flag' not in leaf
+    card = (site / "entity" / "place:markova" / "index.html").read_text(encoding="utf-8")
+    assert "<code>place:markova</code>" not in card
+    assert ">auto<" not in card and "linked</span>" not in card
+    for f in site.rglob("*.html"):
+        assert not READER_FORBIDDEN.search(f.read_text(encoding="utf-8")), f
+
+
+def test_no_edition_template_says_the_tooling_to_a_reader():
+    """The fixture site cannot reach every branch, so the words are also held
+    against the templates themselves, tags and comments stripped."""
+    tags = re.compile(r"\{#.*?#\}|\{%.*?%\}|\{\{.*?\}\}", re.S)
+    for f in (Path(web.__file__).parent / "templates" / "edition").glob("*.html"):
+        assert not READER_FORBIDDEN.search(tags.sub("", f.read_text(encoding="utf-8"))), f
 
 
 def test_two_builds_of_one_tree_are_the_same_bytes(tree, tmp_path):

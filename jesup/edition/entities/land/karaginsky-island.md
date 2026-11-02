@@ -10,7 +10,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Karagha | | no | bare, it is as often the bay — [[water:karaginsky-gulf]]; the book never writes "Karagha Island" on one line |
+| Karagha | | no | bare, it is as often the bay — [[water:karaginsky-gulf]] |
 | Karagha Island | | yes | the book's spelling |
 
 ## gloss

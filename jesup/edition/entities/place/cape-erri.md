@@ -9,7 +9,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Cape Erri | | yes | |
-| Cape Shelagskoy | | yes | Bogoras equates them outright: "Cape Shelagskoy (Cape Erri)" (chukchi-1-041), "the name of Cape Shelagskoy (Cape Erri)" (chukchi-1-036) |
+| Cape Shelagskoy | | yes | Bogoras equates them outright, chukchi-1-041 |
 
 ## gloss
 

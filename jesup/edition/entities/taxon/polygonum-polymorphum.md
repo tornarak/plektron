@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Polygonum polymorphum | la | yes | chukchi-1-253 leaves eaten; chukchi-1-254 roots |
+| Polygonum polymorphum | la | yes | |
 
 ## gloss
 

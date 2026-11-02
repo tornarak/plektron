@@ -42,8 +42,8 @@
    this build does not know still says "not a text page", which is what every one
    of these pages said before the kinds existed. #}
 <p class='draft-note'><span class='draft-tag'>{{ kind or 'not a text page' }}</span>
-— {% if kind_note %}{{ kind_note }}{% else %}a human ruled scan {{ ref }} out of
-the transcription tracks, so there is no prose here to read.{% endif %}
+— {% if kind_note %}{{ kind_note }}{% else %}scan {{ ref }} is not a page of text,
+so there is no prose here to read.{% endif %}
 {% if plates %}Its {{ plates | length }} figure(s) are below.{% elif kind !=
 'blank' %}The whole leaf is shown.{% endif %}</p>
 

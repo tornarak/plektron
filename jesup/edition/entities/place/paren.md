@@ -13,7 +13,7 @@
 |---|---|---|---|
 | Poiˊtɪn | ckt | yes | |
 | Парень | ru | yes | |
-| Paren | | yes | the romanized Russian name, chukchi-1-044, chukchi-1-076, chukchi-1-164 |
+| Paren | | yes | the romanized Russian name |
 
 ## gloss
 

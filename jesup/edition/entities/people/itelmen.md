@@ -10,7 +10,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Kamchadal | | once | |
-| Kamchadal language | | no | the language, which in this book is the people |
+| Kamchadal language | | no | |
 
 ## gloss
 

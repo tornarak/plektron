@@ -9,12 +9,9 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| sweet-brier | en | yes | chukchi-1-256, its leaves used as a substitute for tea |
+| sweet-brier | en | yes | |
 
 ## gloss
-
-chukchi-1-256, among the substitutes for tea: "leaves of the sweet-brier, of
-[[taxon:epilobium-angustifolium]] and of various berries."
 
 **Genus only.** *Sweet-brier* names *R. rubiginosa* in British usage, a plant of
 no Siberian occurrence; in accounts of northeastern Asia the word is the ordinary

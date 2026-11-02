@@ -10,7 +10,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Cape Navarin | | yes | as with [[place:cape-barykoff]], the plural "Capes Barykoff and Navarin" goes unlinked |
+| Cape Navarin | | yes | |
 
 ## gloss
 

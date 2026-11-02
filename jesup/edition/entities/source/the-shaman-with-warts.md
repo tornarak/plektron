@@ -7,7 +7,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| The Shaman with Warts | | yes | chukchi-2-056 (set across a line break), chukchi-3-072 |
+| The Shaman with Warts | | yes | |
 
 ## gloss
 

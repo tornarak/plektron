@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Ainu | | yes | chukchi-1-340 "an Ainu man driving a reindeer" |
+| Ainu | | yes | |
 
 ## gloss
 

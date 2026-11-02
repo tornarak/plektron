@@ -9,10 +9,10 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Oncorhynchus niarka | la | yes | chukchi-1-190, the second name the page gives the red salmon |
-| O. niarka | la | yes | chukchi-1-190 as printed |
-| Oncorhynchus lycaodon | la | yes | chukchi-1-190 "red salmon (O. lycaodon or niarka)" |
-| O. lycaodon | la | yes | chukchi-1-190 as printed; the initial is ambiguous, so no rule links it |
+| Oncorhynchus niarka | la | yes | the second name chukchi-1-190 gives the red salmon |
+| O. niarka | la | yes | |
+| Oncorhynchus lycaodon | la | yes | |
+| O. lycaodon | la | yes | |
 
 ## gloss
 

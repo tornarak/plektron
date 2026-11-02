@@ -10,7 +10,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Kuluˊči Bay | | yes | longer than the bare form, so it wins the match against [[place:kolyuchin]] |
+| Kuluˊči Bay | | yes | |
 
 ## gloss
 

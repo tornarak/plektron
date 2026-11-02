@@ -643,11 +643,13 @@ def attestations(root: Path) -> dict:
 #: change the answer. Putting a box in the rendered HTML would let a corrected
 #: `gt/fig/` serve stale placement out of this cache with nothing to signal it.
 @lru_cache(maxsize=MAXSIZE)
-def _render(path: str, _page: bytes, _toc: bytes, root: str, base: str) -> dict:
-    return tei_html.render(Path(path), toc_titles(Path(root)), base)
+def _render(path: str, _page: bytes, _toc: bytes, root: str, base: str,
+            flags: bool) -> dict:
+    return tei_html.render(Path(path), toc_titles(Path(root)), base, flags)
 
 
-def render(path: Path, root: Path = Path("."), base: str = BASE) -> dict:
+def render(path: Path, root: Path = Path("."), base: str = BASE,
+           flags: bool = True) -> dict:
     """One page's HTML, memoised on the page **and the ToC**.
 
     **Two files in the key, because two files decide these bytes.** A
@@ -671,8 +673,8 @@ def render(path: Path, root: Path = Path("."), base: str = BASE) -> dict:
         # A missing file is not cached at all — absence is the ordinary state of a
         # derived tree here, and caching it would outlive the build that fixes it.
         # `cache.by_file`'s rule, kept because this is no longer using it.
-        return tei_html.render(Path(path), toc_titles(Path(root)), base)
-    return _render(str(path), page, key, str(root), base)
+        return tei_html.render(Path(path), toc_titles(Path(root)), base, flags)
+    return _render(str(path), page, key, str(root), base, flags)
 
 
 render.cache_clear = _render.cache_clear               # type: ignore[attr-defined]

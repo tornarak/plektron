@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Smithsonian Institution | | yes | chukchi-1-128 note, "in Washington" |
+| Smithsonian Institution | | yes | |
 
 ## gloss
 

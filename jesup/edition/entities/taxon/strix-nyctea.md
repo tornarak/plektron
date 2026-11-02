@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Strix nyctea | la | yes | chukchi-1-252 "The large owl of the tundra (Strix nyctea) and its large eggs are eaten" |
+| Strix nyctea | la | yes | |
 
 ## gloss
 

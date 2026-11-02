@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Kopai | | yes | chukchi-1-038 "the name of Kopai, who claimed to belong to the Shelag tribe" |
+| Kopai | | yes | |
 
 ## gloss
 

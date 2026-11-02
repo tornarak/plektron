@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Microgadus proximus | la | yes | chukchi-1-191 note, a Pacific wachna |
+| Microgadus proximus | la | yes | a Pacific wachna |
 
 ## gloss
 

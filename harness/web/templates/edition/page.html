@@ -55,11 +55,9 @@
 {# On the page itself, not only in the listing that led here: a link shared or a
    URL typed straight in skips the listing entirely, and the whole point of the
    mark is that unread text is never mistaken for collated text. #}
-<p class='draft-note'><span class='draft-tag'>draft</span> — this is
-<code>mz/tei/</code>, built by <code>tei generate</code> from the zone and OCR
-stores. Nobody has read it against the scan: its paragraph shape is a rule's
-guess, its foreign-language spans are unresolved <code>index</code> handles, and
-no <code>@resp</code> on it claims anything.</p>
+<p class='draft-note'><span class='draft-tag'>draft</span> — machine-generated
+from the scan and not yet checked against it. Its paragraph breaks are a rule's
+guess, and the languages of its foreign words have not been identified.</p>
 {% endif %}
 {{ neighbours() }}
 {# Notices sit here and **not** beside the draft banner above. The banner is

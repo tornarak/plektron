@@ -11,7 +11,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Sashiversk | | yes | the book's spelling, once, at chukchi-1-078 |
+| Sashiversk | | yes | the book's spelling |
 
 ## gloss
 

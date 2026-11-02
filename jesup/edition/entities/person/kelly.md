@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Kelly | | yes | chukchi-1-072 "Mr. J. Kelly, the American agent for buying reindeer" |
+| Kelly | | yes | |
 
 ## gloss
 

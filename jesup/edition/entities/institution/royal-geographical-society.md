@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Royal Geographical Society | | yes | chukchi-1-032 note. Bare "Geographical Society" is deliberately not a form here — chukchi-1-203 means the one at St. Petersburg |
+| Royal Geographical Society | | yes | not the "Geographical Society" of chukchi-1-203, which is the one at St. Petersburg |
 
 ## gloss
 

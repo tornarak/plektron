@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Claytonia acutifolia | la | yes | chukchi-1-253, chukchi-1-254, both set "Claytonia acutifolia Willd" |
+| Claytonia acutifolia | la | yes | |
 
 ## gloss
 

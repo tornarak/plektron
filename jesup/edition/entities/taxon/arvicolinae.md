@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| lemming | en | yes | chukchi-2-010, chukchi-2-013; the corpus prints no plural |
+| lemming | en | yes | |
 
 ## gloss
 
@@ -21,8 +21,7 @@ way, an amulet-bear that loses "its former size, and the bear turns into a
 lemming", which Bogoras then notes is "the same in regard to the owner of
 game". The lemming is doing one job in this book: it is the smallest quadruped
 a Chukchee reader would picture, and it is there to measure how small its owner
-is. His name is left unspelled here because the store has no entry for him yet
-and the transcription is not this entry's to fix.
+is.
 
 **Why the entry stops at a subfamily.** *Lemming* names no clade. It is a grade
 spread across three tribes of Arvicolinae — Lemmini (*Lemmus*, *Myopus*,

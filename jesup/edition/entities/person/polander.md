@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Polander | | yes | chukchi-1-122 "Lieut. Polander, as an eye-witness" |
+| Polander | | yes | |
 
 ## gloss
 

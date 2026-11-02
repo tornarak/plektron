@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Oxytropis | la | yes | chukchi-1-254; named bare, with no species |
+| Oxytropis | la | yes | |
 
 ## gloss
 

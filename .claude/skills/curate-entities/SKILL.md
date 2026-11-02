@@ -108,9 +108,20 @@ fine state to leave it in.
 **Reader-facing only.** No provenance history ("it had no entry until"), no seeding
 story, no `entity check`, `auto_forms` or any harness mechanism, no rationale for a
 ruling the reader never sees. The one exception is a **fact of filing a reader would
-trip on**: `taxon:lichenes` standing parentless between two centuries of botany, a
+trip on**: `taxon:lichenes` filed among the pseudo-taxa rather than under a kingdom, a
 genus entry where the reader expected a species. Say the fact and what it means for
 navigating; not how it came to be decided.
+
+**A paragraph opening `**Open:` is the other exception**: a decision an editor still
+owes, in whatever words it needs, until it is ruled on. Only that; a mention of a tool
+is not a decision.
+
+**An alias note is held to the same rule, and is usually empty.** The card derives
+where a form occurs, so no page list and no quotation. A note says what else the form
+means ("also the character in it") or what kind of spelling it is ("the running text's
+spelling"), never why the row has its mode. One exception: a `no` row on a `source:`
+entry for one of that work's cited surnames keeps a note, because `entity sigla` reads
+an empty one as nobody having ruled and raises the row.
 
 The anti-pattern, as it stood on `taxon:rangifer-tarandus`:
 

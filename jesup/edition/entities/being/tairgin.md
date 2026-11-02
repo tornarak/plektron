@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| taˊɪrg̣ɪn | ckt | no | chukchi-1-064 |
+| taˊɪrg̣ɪn | ckt | no | |
 
 ## gloss
 

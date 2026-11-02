@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| birch | en | yes | chukchi-1-260, snuff-boxes "made of birch wood or bark" |
+| birch | en | yes | |
 | birch-wood | en | yes | |
 | birch-bark | en | yes | |
 

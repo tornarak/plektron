@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Shestakoff | | yes | chukchi-1-035 "the Cossack captain, A. Shestakoff" |
+| Shestakoff | | yes | |
 
 ## gloss
 

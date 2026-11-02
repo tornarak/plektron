@@ -13,7 +13,7 @@
 |---|---|---|---|
 | Diomede Islands | | yes | |
 | Diomede Island | | yes | |
-| Diomedes | | yes | chukchi-1-041 "the Islands to the northeast (the Diomedes)" |
+| Diomedes | | yes | |
 
 ## gloss
 

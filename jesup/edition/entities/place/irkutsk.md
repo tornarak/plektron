@@ -10,7 +10,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Irkutsk | | yes | chukchi-1-079 "Gen. Treskin, the governor of Irkutsk" |
+| Irkutsk | | yes | |
 
 ## gloss
 

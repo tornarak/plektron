@@ -19,7 +19,7 @@ are also robbed" for the roots stored in them — the Chukchee holding that some
 those roots are poisoned by the mice against robbers, "partly as an intoxicant,
 like fly-agaric".
 
-Two reasons it stops here rather than at a genus. *Mice* in ordinary English is
+The book's *mice* stop here rather than at a genus, for two reasons. *Mice* in ordinary English is
 paraphyletic — it is a grade of small rodent, not a group. And the animal that
 caches roots on the tundra is a vole or a lemming ([[taxon:arvicolinae]])
 rather than a mouse in any

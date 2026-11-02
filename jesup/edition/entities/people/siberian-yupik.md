@@ -28,11 +28,11 @@ chukchi-1-051 and chukchi-1-052 into three, and each division is a child or a me
 Aiˊwan of the Pacific coast, whose villages this entry names directly; the
 [[people:naukans]] of East Cape; and the [[people:sireniks]] of Wuteˊen.
 
-**Its extent is its villages, because no source draws it.** `edition/geo/` records
-the absence under `ypk`: Asher 2007 carries the Alaskan Yupik varieties and no
+**Its extent is its villages, because no source draws it.** Asher 2007 carries the
+Alaskan Yupik varieties and no
 Asian one, "they are its comparanda, not substitutes for it". So this entry
 names the settlements Bogoras assigns to it and the atlas frames on their union,
-which claims a set of points somebody keyed rather than a boundary nobody drew.
+which claims a set of points rather than a boundary nobody drew.
 
 **Membership is read off the ethnic blocks of chukchi-1-051, not off the names.** The
 `ESKIMO.` heading opens at Wuteˊen and the Aiˊwan stretch closes at Nepeˊkuten,

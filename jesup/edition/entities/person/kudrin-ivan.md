@@ -6,9 +6,9 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Kudrin | | yes | chukchi-1-080, chukchi-1-085; bare, the book means this brother — Theodore is always named in full |
-| Ivan Kudrin | | yes | chukchi-1-080 "the Cossack, Ivan Kudrin" |
-| Vanker | ckt | yes | chukchi-1-080 "Mr. Gilder names him Vanker, a corruption of his two [names]" |
+| Kudrin | | yes | bare, the book means this brother — Theodore is always named in full |
+| Ivan Kudrin | | yes | |
+| Vanker | ckt | yes | Gilder's name for him, “a corruption of his two [names]” |
 
 ## gloss
 

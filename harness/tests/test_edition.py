@@ -1384,7 +1384,7 @@ def test_no_mention_says_how_many_pages_it_looked_at(server):
     base, root = server
     entry(root, "person:ghost", aliases=[("Nobody", True)])
     body = get(base + "/entity/person:ghost")
-    assert "No mention found across the 1 page(s)" in body
+    assert "Not mentioned on any of the 1 page(s)" in body
 
 
 def test_a_linked_mention_is_not_also_counted_unlinked(server):
@@ -1416,7 +1416,7 @@ def test_the_mention_list_is_capped_and_says_what_it_left_out(server):
     assert body.count("<mark>Markova</mark>") == MENTIONS - 1
     assert f"mentioned on {MENTIONS + 4} of {MENTIONS + 4} page(s)" in body
     assert f"and {4} more page(s)" in body
-    assert "harness entity occurrences place:markova" in body
+    assert "harness entity" not in body
 
 
 def test_several_mentions_on_one_page_are_one_row_with_a_count(server):
@@ -1573,7 +1573,7 @@ def test_the_encyclopedia_puts_proposed_entries_first(server):
     entry(root, "place:anadyrsk", status="ratified", aliases=[("Anadyrsk", True)])
     body = get(base + "/entities")
     assert body.index("place:markova") < body.index("place:anadyrsk")
-    assert "awaiting audit" in body
+    assert "awaiting review" in body
 
 
 def test_the_encyclopedia_nests_a_people_inside_a_people(server):
@@ -1942,7 +1942,7 @@ def test_the_listing_marks_the_drafts_and_counts_the_two_apart(tmp_path):
     page(tmp_path, "1-021", "<p>signed</p>")
     draft(tmp_path, "1-022", "<p>generated</p>")
     body = _app(tmp_path, drafts=True).get("/edition/").text
-    assert "1 collated" in body and "1 machine draft" in body
+    assert "1 checked" in body and "1 machine draft" in body
     assert body.count("draft-tag") >= 2      # the legend, and the one row
 
 
@@ -2021,7 +2021,7 @@ def test_an_unwritten_unjudged_form_still_renders_a_card(server):
     base, root = server
     _gt(root, "1-042", ["south of Kuluˊči Bay lies the", "second settlement"])
     got = get(base + "/partial/lexicon/Kulu'c^i")
-    assert "language unjudged" in got
+    assert "language not yet identified" in got
     assert "south of" in got and "1-042" in got
     assert "No editor's note" in got
 

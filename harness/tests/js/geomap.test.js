@@ -191,7 +191,7 @@ describe('composition', () => {
     expect(c.svg).toBe('');
     expect(c.drawn).toEqual([]);
     expect(c.tree.map(n => n.id)).toEqual(['place:lost']);
-    expect(paneHtml(c, '/b')).toContain('Nothing to draw. ');
+    expect(paneHtml(c, '/b')).toContain('Nothing to draw: no location is recorded');
     expect(paneHtml(c, '/b')).toContain('sought and not found');
     expect(paneHtml(compose(ATLAS, shape, ['place:nobody']), '/b')).toContain('No entry for');
   });

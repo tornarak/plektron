@@ -29,10 +29,10 @@
    text they are about; each draft leaf is still marked in the margin. #}
 {% if drafts or gaps %}
 <p class='draft-note'>{% if drafts %}<span class='draft-tag'>draft</span>
-{{ drafts }} of {{ leaves | length }} leaves are <code>mz/tei/</code>, built by
-<code>tei generate</code> and read by nobody against the scan; each is marked
+{{ drafts }} of {{ leaves | length }} leaves are machine-generated and not yet
+checked against the scan; each is marked
 <span class='run-tag'>draft</span> in the margin.{% endif %}
-{% if gaps %}{{ gaps }} leaf/leaves hold no text this sitting can show, and say
+{% if gaps %}{{ gaps }} leaf/leaves hold no text that can be shown here, and say
 so where they fall.{% endif %}</p>
 {% endif %}
 

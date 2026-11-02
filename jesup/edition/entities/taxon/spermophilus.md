@@ -9,9 +9,9 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Spermophilus | la | yes | chukchi-2-235 Spermophilus-Woman; chukchi-2-207 prints Spermophius |
-| spermophiles | en | yes | chukchi-1-135, with mice, as food |
-| ground-squirrels | en | yes | chukchi-1-184, with marmots, caught in traps |
+| Spermophilus | la | yes | |
+| spermophiles | en | yes | |
+| ground-squirrels | en | yes | |
 
 ## gloss
 

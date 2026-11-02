@@ -15,4 +15,4 @@
 ## gloss
 
 A Russian settlement on the middle [[river:anadyr]], one of the trading points
-[[person:bogoras]] works from. First read on chukchi-1-035.
+[[person:bogoras]] works from.

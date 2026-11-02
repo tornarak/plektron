@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Rubus chamæmorus | la | yes | chukchi-1-254, chukchi-1-256 |
+| Rubus chamæmorus | la | yes | |
 
 ## gloss
 

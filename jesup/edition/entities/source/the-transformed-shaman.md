@@ -7,7 +7,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| The Transformed Shaman | | yes | chukchi-3-126 |
+| The Transformed Shaman | | yes | |
 
 ## gloss
 

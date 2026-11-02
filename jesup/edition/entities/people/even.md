@@ -10,7 +10,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Lamut | | once | |
-| Lamut language | | no | the language, which in this book is the people |
+| Lamut language | | no | |
 
 ## gloss
 

@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| tobacco | en | once | chukchi-1-257 ff., the whole tobacco section; "Turkish", Manchurian and American are trade grades, not taxa |
+| tobacco | en | once | "Turkish", Manchurian and American are trade grades, not taxa |
 
 ## gloss
 

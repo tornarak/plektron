@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| iteˊyun | ckt | yes | chukchi-1-064 |
+| iteˊyun | ckt | yes | |
 
 ## gloss
 

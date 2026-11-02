@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Baron Korff’s Bay | | yes | the book's only form, curly apostrophe as printed |
+| Baron Korff’s Bay | | yes | the book's only form |
 | Залив Корфа | ru | no | |
 
 ## gloss

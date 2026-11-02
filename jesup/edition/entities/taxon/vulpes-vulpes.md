@@ -9,14 +9,14 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| red fox | en | once | chukchi-1-079, chukchi-3-170, chukchi-3-171, chukchi-3-175, chukchi-3-176; also inside "red fox-skin" (chukchi-3-179) |
-| red foxes | en | once | chukchi-1-078, chukchi-1-079, chukchi-1-132, chukchi-3-155, chukchi-3-156, chukchi-3-162, chukchi-3-163, chukchi-3-170 |
-| red-fox | en | once | the compound chukchi-1-079 sets: "red-fox units", "red-fox skins" |
-| black fox | en | yes | chukchi-1-079, chukchi-3-171 |
-| black foxes | en | yes | chukchi-1-078, chukchi-2-018, chukchi-3-166, chukchi-3-170 |
-| cross foxes | en | yes | chukchi-1-089, "red and cross foxes"; the singular is never set |
-| gray fox | en | yes | chukchi-1-079, chukchi-2-034, chukchi-3-171 |
-| gray foxes | en | yes | chukchi-1-078 |
+| red fox | en | once | |
+| red foxes | en | once | |
+| red-fox | en | once | |
+| black fox | en | yes | |
+| black foxes | en | yes | |
+| cross foxes | en | yes | |
+| gray fox | en | yes | |
+| gray foxes | en | yes | |
 
 ## gloss
 

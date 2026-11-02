@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| iuˊmetun | ckt | yes | chukchi-1-064 |
+| iuˊmetun | ckt | yes | |
 
 ## gloss
 
@@ -21,5 +21,4 @@ between them or exclude a combination. Sleep apnoea covers the nocturnal onset,
 the shortened breath and the choking. Carbon-monoxide poisoning covers the
 flushed face and the sudden death, and the sleeping-room is the setting for it —
 a small closed skin chamber warmed and lit by a blubber lamp through the night.
-Neither is written into `link:` until something beyond this paragraph supports
-one.
+Neither is adopted here.

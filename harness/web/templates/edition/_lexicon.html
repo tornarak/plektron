@@ -20,7 +20,7 @@ href='{{ base }}/lexicon/{{ f | urlencode }}'>{{ f }}</a>{% if not loop.last %},
 {# Refused on what the corpus knows, not on the key's shape: any string could be
    a form, so there is nothing here to validate. Rendering one as a headword with
    an imputed pronunciation under it would be inventing a word. #}
-<p>Nothing in the lexicon answers to <code>{{ key }}</code>. A key is a Tier-1
+<p>Nothing in the lexicon answers to <code>{{ key }}</code>. A key is a native
 form as the page sets it, its typeable key — <code>Kulu'c^i</code> — or
 <code>lang:form</code>. <a href='{{ base }}/lexicon'>Every attested form</a> is
 one list.</p>
@@ -33,14 +33,14 @@ one list.</p>
 <div class='meta'>
 {%- if langs %}{% for l in langs %}{{ l.name }} · <code>{{ l.code }}</code>
 {%- if not loop.last %} + {% endif %}{% endfor %}
-{%- else %}language unjudged — no collated page names one{% endif %}</div>
+{%- else %}language not yet identified{% endif %}</div>
 {% include "edition/_ipa.html" %}
 
 {% if note %}
 <div class='gloss'>{{ note | safe }}</div>
 {# No "first read on": the printed-lines list below names every page the form
    occurs on, derived from `gt/ocr/` on every load. #}
-<div class='meta'>an editor's note{% if rec %} · <span
+<div class='meta'>an editor's note{% if rec and rec.status != 'ratified' %} · <span
 class='pill {{ rec.status }}'>{{ rec.status }}</span>{% endif %}</div>
 {% endif %}
 
@@ -58,7 +58,7 @@ data-key='{{ f }}' href='{{ base }}/lexicon/{{ f | urlencode }}'>{{ f }}</a>
 {% endif %}
 
 {% if pages %}
-<div class='meta'>collated on {% for r in pages %}<a
+<div class='meta'>checked on {% for r in pages %}<a
 href='{{ base }}/page/{{ r }}'>{{ r }}</a>{% if not loop.last %}, {% endif %}
 {%- endfor %}</div>
 {% endif %}
@@ -75,9 +75,7 @@ href='{{ base }}/page/{{ r }}'>{{ r }}</a>{% if not loop.last %}, {% endif %}
 {% endif %}
 
 {% if not note %}
-<p class='meta'>No editor's note stands behind this form yet. Everything above is
-derived — the pronunciation by rule from the notation, the lines from
-<code>gt/ocr/</code> — and <code>harness lexicon lookup</code> is what reads the
-corpus for its other spellings.</p>
+<p class='meta'>No editor's note on this form yet. The pronunciation above follows
+by rule from the notation, and the lines are the book's.</p>
 {% endif %}
 {% endif %}

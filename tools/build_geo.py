@@ -141,9 +141,8 @@ NE_GAZETTEER = {
 #: Pacific Ocean` are both in the marine layer and both would build, but a
 #: world-spanning polygon clipped to this edition's window is a rectangle: it
 #: tells a reader nothing they did not already know from the frame, and it costs
-#: the store its two largest shapes to say it. `water:arctic-ocean` and
-#: `water:pacific-ocean` stay unlocated, which is the honest state — the book
-#: uses both as directions rather than as places.
+#: the store its two largest shapes to say it. The book uses both as directions
+#: rather than as places, and neither has an entry.
 
 #: The name field differs between the two layers — the regions layer capitalizes
 #: its keys, the marine layer does not — so both are tried rather than one being
@@ -320,9 +319,8 @@ ABSENT = {
         "why": "Neither layer carries it: the marine gazetteer names 32 "
                "straits worldwide and not this one, and hydrographic sources "
                "generally draw a strait as a line between two capes rather "
-               "than as an extent. `water:bering-strait` therefore carries a "
-               "`geo:` point and no `area:`, which locates it without "
-               "claiming a boundary nothing in hand draws.",
+               "than as an extent. The map therefore frames the strait, "
+               "without claiming a boundary nothing in hand draws.",
     },
 }
 

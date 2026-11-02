@@ -11,7 +11,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Čibuˊkak | ypk | yes | chukchi-1-164, the book's only mention |
+| Čibuˊkak | ypk | yes | |
 | Gambell | | yes | the modern name; Bogoras never uses it |
 | Čibukak | | yes | GeoNames 5862664 heads the village under this spelling |
 
@@ -29,7 +29,5 @@ One mention: at chukchi-1-164 its inhabitants are named with the Eskimo of
 still whaling on the Pacific, "all use explosive harpoons" — the only place in
 the whaling passage where the book crosses to the American side.
 
-The village is also called Sivuqaq, which is the Yupik name of the **island** as
-well; it is deliberately not an alias here, since a rule linking it could not
-tell the village from [[land:st-lawrence-island]] and this store has no page
-attesting either use.
+The village is also called Sivuqaq, which is the Yupik name of the **island**,
+[[land:st-lawrence-island]], as well.

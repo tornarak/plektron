@@ -9,7 +9,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Krasheninnikoff | | no | the running text's spelling |
-| Krasheninnikov | | no | `edition/authorities.json`'s spelling; unattested in `gt/ocr/` |
+| Krasheninnikov | | no | the bibliography's spelling |
 
 ## gloss
 

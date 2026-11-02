@@ -8,8 +8,8 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Coregonus nasutus | la | yes | chukchi-1-190, printed C. nasutus |
-| C. nasutus | la | yes | chukchi-1-190 as printed |
+| Coregonus nasutus | la | yes | |
+| C. nasutus | la | yes | |
 
 ## gloss
 

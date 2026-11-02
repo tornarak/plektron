@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Okhotsk Sea | | yes | the book's word order |
+| Okhotsk Sea | | yes | |
 
 ## gloss
 

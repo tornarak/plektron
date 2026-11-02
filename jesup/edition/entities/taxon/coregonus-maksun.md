@@ -9,8 +9,8 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Coregonus maksun | la | yes | chukchi-1-190, printed C. maksun |
-| C. maksun | la | yes | chukchi-1-190 as printed |
+| Coregonus maksun | la | yes | |
+| C. maksun | la | yes | |
 
 ## gloss
 

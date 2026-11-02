@@ -52,10 +52,9 @@
 {% if drafts %}
 {# Said once, at the top, and then per row: a reader who takes in the banner and
    nothing else must still not mistake the list for the edition. #}
-<p class='draft-note'>Showing <code>mz/tei/</code> as well. A <span
-class='draft-tag'>draft</span> is what <code>tei generate</code> built from the
-zone and OCR stores; nobody has read it against the page. A chapter says how
-many of its pages are collated.</p>
+<p class='draft-note'>A <span class='draft-tag'>draft</span> is machine-generated
+from the scan and not yet checked against it. A chapter says how many of its pages
+have been checked.</p>
 {% endif %}
 {% if refs %}
 <ul class='outline'>
@@ -101,10 +100,7 @@ many of its pages are collated.</p>
 {% else %}
 {# Committed `tei/` only unless `--drafts`. `mz/tei/` is a generated baseline
    nobody has read, and an end-user preview is the last place it belongs. #}
-<p>No page is collated yet. The reading view shows committed <code>tei/</code>
-only — a generated baseline in <code>mz/tei/</code> is a draft nobody has read,
-and this is the one place it must not appear unasked. Start the server with
-<code>--drafts</code> to read the generator's output anyway.</p>
+<p>No page has been checked yet, so there is nothing to read here.</p>
 {% endif %}
 </div>
 {% endblock %}

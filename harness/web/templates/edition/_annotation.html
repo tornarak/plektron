@@ -4,15 +4,14 @@
 {% if not rec %}
 <p>No annotation at <code>{{ ident }}</code>.</p>
 {% else %}
-<h4>{{ rec.title }}<span class='pill {{ rec.status }}'>{{ rec.status }}</span></h4>
-<div class='meta'><code>{{ ident }}</code> · <span>{{ rec.class }}</span>,
-  rendered {{ rec.placement }} of what it attaches to</div>
+<h4>{{ rec.title }}{% if rec.status != 'ratified' %}<span class='pill {{ rec.status }}'>{{ rec.status }}</span>{% endif %}</h4>
+<div class='meta'>{% if not static %}<code>{{ ident }}</code> · {% endif %}<span>{{ rec.class }}</span>,
+  shown {{ rec.placement }} of what it attaches to</div>
 {% if rec.status != 'ratified' %}
 {# The status pill alone reads as bookkeeping. What a reader actually needs to
    know is that this text appears nowhere else yet — an unratified notice
    attaches to nothing, which is the whole of what ratification changes. #}
-<p class='meta'>Not yet ratified, so it appears on no page, card or section —
-only here.</p>
+<p class='meta'>Proposed, so it appears on no page, card or section — only here.</p>
 {% endif %}
 <div class='gloss'>{{ summary_html | safe }}</div>
 {% if full_html %}<div class='gloss'>{{ full_html | safe }}</div>{% endif %}

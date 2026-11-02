@@ -21,14 +21,9 @@ only one the book puts on the Opuka, though the two sentences do not name each
 other.
 
 **Filed under [[land:chukotka]] and not [[land:parapolsky-dol]], though chukchi-1-080
-says "on the Parapolsky Dol".** The Dol carries no geometry of its own — no
-`geo:`, no `area:`, only a `frame:` — and this was its only child, so its
-computed extent *was* this point and the containment tested nothing. Its one
-independent statement about itself is that frame, 161.9–166.833 E, and this
-point is 169.46, some 2.6° east of it. Against that the head of the
-[[river:opuka]] is 172.437, about the same distance the other way: the fair sits
-between the two and demonstrably inside neither, so it hangs from the region
-that does contain it. Bogoras's sentence is kept above rather than encoded.
+says "on the Parapolsky Dol".** The point is some 2.6° east of the Dol and about the
+same distance west of the head of the [[river:opuka]]: the fair sits between the
+two and inside neither, so it hangs from the region that does contain it.
 
 **What is uncertain is the identity, not the position.** The coordinate above
 is the editor's reading of Bogoras's own map, between
@@ -37,6 +32,6 @@ both for the sentence above to describe it. What the map's label names is the
 open question — this entry reads it as the Opuka fair, and no page says so in
 those words.
 
-**"Chukchee fair" is not a safe form and its alias is `auto: no`.** chukchi-1-078 uses
+**"Chukchee fair" is not always this.** chukchi-1-078 uses
 the phrase of the Anui fair — "The Chukchee fair was held at Fort Anuisk" —
 which is [[place:ostrovnoye]], not this.

@@ -7,7 +7,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Œdemagena tarandi | la | yes | chukchi-1-108 "Another fly, of smaller size and darker color (Œdemagena tarandi Slunin)" |
+| Œdemagena tarandi | la | yes | |
 
 ## gloss
 

@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Baramigin | | yes | chukchi-1-149 "the merchant Baramigin" |
+| Baramigin | | yes | |
 
 ## gloss
 

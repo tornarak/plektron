@@ -61,28 +61,11 @@ Pacific coast “between the mouth of the [[river:anadyr]] and Indian Point”
 same page that the material life of the two coastal peoples is largely one
 subject, which is why his account treats them together.
 
-**The villages above are the ones the gazetteer's Chukchee blocks name and the
-store already holds.** chukchi-1-048 opens under a `CHUKCHEE.` heading; chukchi-1-051 runs to
-Aˊčon, "the last Chukchee village", before the `ESKIMO.` heading; chukchi-1-052 resumes
-at Kihiˊni, "the people from here northward are Chukchee", and again at Tuˊñqen,
-"from here westward all the villages belong to the Chukchee tribe"; chukchi-1-053 is that
-stretch to the end. The blocks are the witness, and a name is not: several of the
-villages here carry Eskimo names in a stretch Bogoras assigns to the Chukchee,
-and [[place:enmilin]] carries one above the heading.
+**Membership is read off the gazetteer's Chukchee blocks, chukchi-1-048 to chukchi-1-053, not off
+the names**: several of the villages here carry Eskimo names in a stretch Bogoras
+assigns to the Chukchee.
 
 **Two are named here and by a Yupik division both**, because Bogoras says so:
 [[place:tkachen]] is "Chukchee and Aiˊwan, half and half", and of
 [[place:uelen]] "half of the people are Chukchee, and half Nɵˊɵkalɪt Eskimo".
-Filing each once would have made the store pick a side the page does not.
-
-**The gazetteer is read whole, and chukchi-1-049 and chukchi-1-050 are not a gap in it.**
-They carry no folio and are the plate leaves inserted between folios 28 and
-29 — chukchi-1-048 and chukchi-1-051 — so the Chukchee block runs straight from Cape Wuˊkwên
-to Valkaˊʟ̣ên with nothing between. What is missing from the list above is
-therefore only what has no entry in the store yet: Alaˊyon, Ilhiˊnin,
-Čeˊwin, Iˊᵋčen, Čeiˊtun, Iqäˊlurun, Neˊten, Imɪˊlᴇ, Teˊpqän, Paloˊnnan,
-Yaˊqan and others.
-
-[[place:anadyr]] is here for its Chukchee alias Veᵋñ, the village chukchi-1-048 names
-"in Anadyr Bay, near the mouth of the [[river:anadyr]]", beside which the
-Russians later founded Mariinsky Post.
+**Open: villages with no entry yet.** Alaˊyon, Ilhiˊnin, Čeˊwin, Iˊᵋčen, Čeiˊtun, Iqäˊlurun, Neˊten, Imɪˊlᴇ, Teˊpqän, Paloˊnnan, Yaˊqan and others.

@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Cape Barykoff | | yes | the book also writes "Capes Barykoff and Navarin" (chukchi-1-032, chukchi-1-093), which no single-name alias can catch |
+| Cape Barykoff | | yes | |
 
 ## gloss
 

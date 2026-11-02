@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Aconita | la | yes | chukchi-1-199 "some kind of Aconita, numerous species of which are found in Kamchatka" |
+| Aconita | la | yes | |
 
 ## gloss
 

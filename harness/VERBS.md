@@ -1342,6 +1342,11 @@ because that is a typo rather than a gap. The column records the fact and nothin
 infers from it — in particular an alias suppresses `lexicon_miss` whatever its
 language, exactly as before.
 
+**`check` also lists `apparatus_mentions`**: a gloss or an alias note naming a
+path, a verb or a field, which a reader would be shown. A worklist that never
+gates. A paragraph opening `**Open:` is an outstanding question for an editor and
+is not listed; `grep '\*\*Open:'` over the store is the list of those.
+
 **An identity is always class-prefixed.** `person:jochelson` is the man and
 `source:jochelson-yukaghir` is the book he wrote; the same string names both on
 the same page, and a scheme without the class could not hold them apart. The
@@ -1357,7 +1362,7 @@ Human-authored and tracked, so `--commit` gates the two actions that write.
 ```
 --lang CODE  the language the form is a name in, from `harness/langs.py`. Omitted means unstated, which most of the store says and which is a different claim from a wrong code
 --auto {yes,once,no}  how widely a rule may link the form: `yes` every occurrence, `once` the first on each page and the rest bare, `no` never and a reader is asked on every hit [no]. On a ratified entry `yes` and `once` license a link, so the corpus pass runs
---note TEXT  the note cell — where the form is attested, or why it is `no`
+--note TEXT  the note cell, shown to a reader — what else the form means, or what kind of spelling it is. Attestation is the card's
 --commit  write it; without this the row is reported and not added
 --root --json --toon --pager
 ```

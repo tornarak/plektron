@@ -9,8 +9,8 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Caucasians | | yes | chukchi-1-056, twice: eyes "as large as those of Caucasians," a body "scarcely distinguishable from that of Caucasians" |
-| Caucasian | | yes | chukchi-3-060, "blood really Russian and Caucasian" |
+| Caucasians | | yes | |
+| Caucasian | | yes | |
 
 ## gloss
 
@@ -25,5 +25,5 @@ it to a different use, reaching for the scarcity of "blood really Russian and
 Caucasian" to explain why marriages between Russians and Chukchee on the Kolyma
 are childless.
 
-What the category is worth, and what this store does and does not claim by
+What the category is worth, and what this edition does and does not claim by
 recording it, is [[people:physical-anthropology]].

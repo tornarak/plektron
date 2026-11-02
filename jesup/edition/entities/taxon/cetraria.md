@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Cetraria | la | yes | chukchi-1-102, the reindeer-moss list |
+| Cetraria | la | yes | |
 
 ## gloss
 

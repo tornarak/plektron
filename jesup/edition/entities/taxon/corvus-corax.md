@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| raven | en | yes | chukchi-1-253, with the eagle among the birds the Maritime Chukchee will not eat |
+| raven | en | yes | |
 
 ## gloss
 

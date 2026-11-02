@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Fuligula glacialis | la | yes | chukchi-1-351, the long-tailed duck |
+| Fuligula glacialis | la | yes | the long-tailed duck |
 
 ## gloss
 
