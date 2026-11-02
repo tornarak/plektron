@@ -46,3 +46,6 @@ train/
 
 # Agent worktrees — real git worktrees of this repo, never content of it.
 .claude/worktrees/
+
+# cf
+.cloudflare/
