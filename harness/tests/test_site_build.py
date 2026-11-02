@@ -308,7 +308,8 @@ def test_the_licence_text_is_the_headers_own_words_with_its_links(repo, tmp_path
         '<forename>Waldemar</forename> <surname>Jochelson</surname></persName></author>'
         '</titleStmt><publicationStmt><availability><licence target="https://x.example/">'
         '<p>Applies to <gi>p</gi> &amp; more.<!-- not for readers --> See '
-        '<ref target="https://y.example/">here</ref>.</p></licence></availability>'
+        '<ref target="https://y.example/">here</ref>.</p></licence>'
+        '<p><bibl><title>A Gazetteer</title>, taken from elsewhere.</bibl></p></availability>'
         '</publicationStmt><sourceDesc><biblStruct><monogr><imprint><date>1908</date>'
         '</imprint></monogr></biblStruct></sourceDesc></fileDesc></teiHeader>',
         encoding="utf-8")
@@ -318,14 +319,29 @@ def test_the_licence_text_is_the_headers_own_words_with_its_links(repo, tmp_path
     assert "The Koryak" in html and "Waldemar Jochelson, 1908" in html
     assert 'Applies to p &amp; more. See <a href="https://y.example/">here</a>.' in html
     assert "not for readers" not in html
+    # Two blocks, sources first, whatever order the header states them in.
+    sources, licences = html.index("Sources: The Koryak"), html.index("Licences: The Koryak")
+    assert sources < html.index("A Gazetteer") < licences < html.index("Applies to p")
 
 
 def test_the_marks_are_where_the_upload_rule_expects_them(repo, tmp_path):
-    """`.edition-*` is what `docs/edition.md` tells an upload to leave behind."""
+    """`.assetsignore` leaves `.edition-*` behind, so every mark has to match it."""
     build_site(repo, tmp_path / "out", jobs=1)
     marks = {p.name for p in (tmp_path / "out").rglob(".*") if p.is_file()}
-    assert marks == {SITE_MARK, OUT_MARK, STAMP}
-    assert all(m.startswith(".edition-") for m in marks)
+    assert marks == {SITE_MARK, OUT_MARK, STAMP, ".assetsignore"}
+    assert all(m.startswith(".edition-") for m in marks - {".assetsignore"})
+    assert (tmp_path / "out" / ".assetsignore").read_text(encoding="utf-8") == site.ASSETS_IGNORE
+    assert ".edition-*" in site.ASSETS_IGNORE.splitlines()
+
+
+def test_the_site_has_a_not_found_page_at_its_root(repo, tmp_path):
+    """Where a host looks for one, styled by sheets the site itself holds."""
+    out = tmp_path / "out"
+    build_site(repo, out, jobs=1)
+    html = (out / "404.html").read_text(encoding="utf-8")
+    assert "Not found" in html and "href=\"/\"" in html
+    for sheet in ("edition.css", "landing.css"):
+        assert f"/static/css/{sheet}" in html and (out / "static" / "css" / sheet).is_file()
 
 
 def _declare_image(root: Path, stem: str, *, crop: bool = True) -> None:

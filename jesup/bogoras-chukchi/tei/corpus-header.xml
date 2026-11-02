@@ -151,10 +151,15 @@
             edition/authorities.json and their research, the entity records and
             trigger vocabulary in entities/, the indices, and the annotation
             layer.</p>
+          <p>The two are separable in principle and interleaved in practice. Where a
+            reuse cannot separate them, treat it as CC BY: attribution costs the
+            reuser nothing the CC0 grant was meant to save them.</p>
         </licence>
-        <p>The two are separable in principle and interleaved in practice. Where a
-          reuse cannot separate them, treat it as CC BY: attribution costs the
-          reuser nothing the CC0 grant was meant to save them.</p>
+        <p>
+          <bibl><title>The Chukchee</title>, read from the scans in the American
+          Museum of Natural History Digital Library,
+          <ref target="https://digitallibrary.amnh.org/items/91a87fd0-5989-4f79-b2ff-a939ef5533aa">digitallibrary.amnh.org/items/91a87fd0-5989-4f79-b2ff-a939ef5533aa</ref>.</bibl>
+        </p>
         <p>Third-party geodata, licensed by its own publishers and not by this
           edition. The shapes in edition/geo/ and the coordinates on the records in
           entities/ derive from the seven sources below. Two of them oblige

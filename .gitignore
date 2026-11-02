@@ -4,6 +4,7 @@ __pycache__/
 build/
 dist/
 wheels/
+node_modules/
 *.egg-info
 
 # Tool caches. Here rather than only in a personal global ignore file, which is

@@ -92,7 +92,7 @@ def _work(root: str, _key: bytes) -> dict:
     p = Path(root) / "tei" / "corpus-header.xml"
     if not p.exists():
         return {"title": Path(root).resolve().name, "author": "", "date": "",
-                "licences": []}
+                "sources": [], "licences": []}
     doc = etree.parse(str(p))
     tei = f"{{{TEI_NS}}}"
     title = doc.findtext(f".//{tei}titleStmt/{tei}title[@type='main']")
@@ -104,8 +104,12 @@ def _work(root: str, _key: bytes) -> dict:
             "author": "" if author is None else " ".join(
                 "".join(el.itertext()).strip() for el in author),
             "date": (date or "").strip(),
+            # What this edition grants sits in a `<licence>`; a paragraph of
+            # `<availability>` itself is what the edition took from someone else.
+            "sources": [_header_html(el) for el in doc.iterfind(
+                f".//{tei}availability/{tei}p")],
             "licences": [_header_html(el) for el in doc.iterfind(
-                f".//{tei}availability//{tei}p")]}
+                f".//{tei}availability/{tei}licence//{tei}p")]}
 
 
 def _header_html(el) -> str:

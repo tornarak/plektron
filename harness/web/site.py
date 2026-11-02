@@ -49,6 +49,9 @@ STAMP = ".edition-built"
 LANDING_PROSE = Path("site") / "landing.html"
 #: A text's picture on the landing page, in pixels: twice what the sheet displays.
 COVER_WIDTH = 640
+#: What a host leaves out of an upload, in gitignore syntax: the verb's own marks,
+#: and the note on the third-party logos, which is for this repo's reader.
+ASSETS_IGNORE = ".edition-*\nREADME.md\n"
 #: A text's own folders that a render never opens.
 _UNREAD = frozenset({"train", "pdfs"})
 
@@ -201,6 +204,9 @@ def _landing(repo: Path, out: Path, published: list[Path]) -> None:
         prose=prose.read_text(encoding="utf-8"),
         workspaces=[groups[ws] for ws in sorted(groups)])
     (out / "index.html").write_text(html, encoding="utf-8")
+    (out / "404.html").write_text(templates.env.get_template("site/404.html").render(),
+                                  encoding="utf-8")
+    (out / ".assetsignore").write_text(ASSETS_IGNORE, encoding="utf-8")
     css = out / "static" / "css"
     css.mkdir(parents=True, exist_ok=True)
     # The reading view's own sheet, so the theme's tokens are stated once.

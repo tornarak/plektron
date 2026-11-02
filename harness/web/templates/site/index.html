@@ -35,9 +35,15 @@ if(t==='dark'||t==='light') document.documentElement.dataset.theme=t;}catch(e){}
     </li>
   {% endfor %}
   </ul>
-  {% for t in ws.texts %}{% if t.work.licences %}
-  <details class="licences">
-    <summary>Licences and sources: {{ t.work.title }}</summary>
+  {% for t in ws.texts %}{% if t.work.sources %}
+  <details class="text-notes">
+    <summary>Sources: {{ t.work.title }}</summary>
+    {% for p in t.work.sources %}<p>{{ p | safe }}</p>
+    {% endfor %}
+  </details>
+  {% endif %}{% if t.work.licences %}
+  <details class="text-notes">
+    <summary>Licences: {{ t.work.title }}</summary>
     {% for p in t.work.licences %}<p>{{ p | safe }}</p>
     {% endfor %}
   </details>
