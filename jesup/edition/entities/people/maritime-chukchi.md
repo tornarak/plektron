@@ -68,4 +68,7 @@ assigns to the Chukchee.
 **Two are named here and by a Yupik division both**, because Bogoras says so:
 [[place:tkachen]] is "Chukchee and Aiˊwan, half and half", and of
 [[place:uelen]] "half of the people are Chukchee, and half Nɵˊɵkalɪt Eskimo".
-**Open: villages with no entry yet.** Alaˊyon, Ilhiˊnin, Čeˊwin, Iˊᵋčen, Čeiˊtun, Iqäˊlurun, Neˊten, Imɪˊlᴇ, Teˊpqän, Paloˊnnan, Yaˊqan and others.
+
+**Villages with no entry yet:** Alaˊyon, Ilhiˊnin, Čeˊwin, Iˊᵋčen, Čeiˊtun, Iqäˊlurun, Neˊte-keˊñičvun, Neˊten, Nat-ᴇnmɪtaˊhɪn, Imɪˊlᴇ, Mäˊᵋmi-piˊlhɪn, Teˊpqän, Paloˊnnan, Velkäˊl-tɪnuˊp, Neˊs˙qᴀqäi, Irg̣uᵋnnuˊp, Yɪˊnřɪlɪn, Piˊlhɪn, Notaˊ-tɪˊmlɪn, Reᵋn, Yaˊqan.
+
+**Two names are printed twice, once on each coast, and only one village of each pair has an entry.** Nuteˊ-pɪˊnmɪn has 2 houses in the Pacific list (chukchi-1-052) and 4 in the Arctic list (chukchi-1-053); both are linked to [[place:nutepelmen]], which is located on the Arctic coast, so the link on chukchi-1-052 goes to the wrong village. ᴇnmɪtaˊhɪn has 6 houses in the Pacific list, which is [[place:dezhnyovo]], and 3 in the Arctic list (chukchi-1-053), which is not.

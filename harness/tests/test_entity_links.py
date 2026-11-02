@@ -225,8 +225,10 @@ def test_an_already_linked_span_is_not_also_counted_as_unlinked():
     from harness.entities import _unlinked_text
     body = etree.fromstring(
         '<body><p>At <rs ref="place:markova">Markova</rs> and at Markova.</p></body>')
-    assert "Markova" in _unlinked_text(body)
-    assert _unlinked_text(body).count("Markova") == 1
+    sought, shown = _unlinked_text(body)
+    assert sought.count("Markova") == 1
+    assert shown == "At Markova and at Markova."
+    assert len(sought) == len(shown)
 
 
 @pytest.mark.parametrize("ratified", [False, True])
@@ -325,6 +327,30 @@ def test_occurrences_reads_the_same_page_the_generator_did(tmp_path):
     assert p.exists()
     got = occurrences(["place:markova"], ["1-021"], load(tmp_path), tmp_path)
     assert [r["hyphenated"] for r in got["place:markova"]["unlinked"]] == [False]
+
+
+def test_a_mention_keeps_the_links_in_the_prose_around_it(tmp_path):
+    """The window is the page's words. It read "The name of the is derived from"
+    while a link is still not counted again, nor a phrase made across one."""
+    from harness.entities import load, occurrences
+    seeded(tmp_path, form="Markova")
+    page(tmp_path, "1-021",
+         '<pb n="1"/><p>The name of the <rs ref="people:x">Oˊmok</rs> is derived '
+         'from Markova, and <rs ref="place:markova">Markova</rs> again.</p>')
+    got = occurrences(["place:markova"], ["1-021"], load(tmp_path), tmp_path)
+    rows = got["place:markova"]["unlinked"]
+    assert len(rows) == 1 and len(got["place:markova"]["linked"]) == 1
+    assert rows[0]["before"] == "The name of the Oˊmok is derived from"
+    assert rows[0]["match"] == "Markova"
+    assert rows[0]["after"] == ", and Markova again."
+
+
+def test_a_form_is_not_found_across_a_link(tmp_path):
+    from harness.entities import load, occurrences
+    seeded(tmp_path, form="Large River")
+    page(tmp_path, "1-021", '<pb n="1"/><p>Large <rs ref="people:x">Anui</rs> River</p>')
+    got = occurrences(["place:markova"], ["1-021"], load(tmp_path), tmp_path)
+    assert got["place:markova"]["unlinked"] == []
 
 
 # ------------------------------------------------------------- the case ladder

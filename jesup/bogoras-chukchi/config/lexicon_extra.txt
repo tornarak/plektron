@@ -1,10 +1,14 @@
 # Terms a general English dictionary cannot be expected to carry, added so the
 # lexicon_miss detector reports transcription candidates rather than vocabulary.
 #
-# Scope: this file suppresses `lexicon_miss` and NOTHING ELSE. The inventory,
-# apostrophe-adjacency, dot-above-g and smart-quote detectors never consult it.
-# A term listed here is still flagged if it carries a marked glyph, which is
-# what keeps a whitelist from becoming a hole in the firewall.
+# Scope: among the detectors this file suppresses `lexicon_miss` and NOTHING ELSE.
+# The inventory, apostrophe-adjacency, dot-above-g and smart-quote detectors never
+# consult it. A term listed here is still flagged if it carries a marked glyph,
+# which is what keeps a whitelist from becoming a hole in the firewall.
+#
+# It also closes a line-end hyphen the corpus is silent on, through
+# `detectors.resolve_break_hyphens`, which refuses any token with a marked glyph
+# before it asks.
 #
 # Do NOT add Chukchi, Koryak or Yupik forms. Those are the signal.
 # Matching is case-folded, on hyphen/apostrophe-split components of a token.
@@ -80,3 +84,13 @@ shunners
 Exped
 # "Lieut. Nordquist" et al.
 Lieut
+
+### --- Plain English the system dictionary lacks, each broken across a line end
+# 1-111 "unen-cumbered"
+unencumbered
+# "un-wholesomeness"
+unwholesomeness
+# 2-151 "scepti-cally"
+sceptically
+# 3-199 "uncon-strained"
+unconstrained

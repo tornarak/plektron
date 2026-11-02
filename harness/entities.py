@@ -1291,21 +1291,40 @@ def window(text: str, start: int, end: int) -> tuple[str, str, str]:
             text[end:end + WINDOW])
 
 
-def _unlinked_text(el) -> str:
-    """An element's text with every already-referring subtree elided.
+#: Stands in for each letter of a link in the text an unlinked hit is sought in. Not
+#: a word character and not a space, so nothing matches it and nothing matches across
+#: it: the words either side of a link are not a phrase the page sets.
+_LINKED = "￼"
 
-    A tail is kept where its element's body is dropped: the words on either side
-    of a link are still adjacent prose, and joining them would be inventing a
-    phrase the page does not set.
-    """
-    out = [el.text or ""]
+
+def _pieces(el, linked: bool = False):
+    """`(text, inside a link?)` for an element's text in order, comments left out."""
+    yield el.text or "", linked
     for kid in el:
-        if not isinstance(kid.tag, str):
-            out.append(kid.tail or "")
-            continue
-        out.append(" " if kid.get("ref") else _unlinked_text(kid))
-        out.append(kid.tail or "")
-    return "".join(out)
+        if isinstance(kid.tag, str):
+            yield from _pieces(kid, linked or bool(kid.get("ref")))
+        yield kid.tail or "", linked
+
+
+def _unlinked_text(el) -> tuple[str, str]:
+    """`(sought, shown)`: an element's text with its links blanked, and as printed.
+
+    **Offsets into one are offsets into the other**, which is the point. A hit is
+    sought in the first, where a link already written cannot be counted again, and
+    its window of prose is cut from the second. Cutting it from the first read "The
+    name of the is derived from", with the native form the sentence is about gone.
+    """
+    sought, shown = [], []
+    for text, linked in _pieces(el):
+        text = unicodedata.normalize("NFD", text)
+        shown.append(text)
+        sought.append(re.sub(r"\S", _LINKED, text) if linked else text)
+    return "".join(sought), "".join(shown)
+
+
+def _by_line(text: str) -> str:
+    """Runs of space collapsed within each line, the line breaks kept."""
+    return "\n".join(" ".join(ln.split()) for ln in text.splitlines())
 
 
 def occurrences(ids, refs, store: dict, root: Path = Path("."),
@@ -1369,10 +1388,9 @@ def occurrences(ids, refs, store: dict, root: Path = Path("."),
         # generator answered `broken` on the same words — the two rules agreeing
         # on a page nobody could see was wrong. Only runs *within* a line collapse
         # here; the windows are flattened at the row, for display.
-        text = "\n".join(" ".join(ln.split())
-                         for ln in _unlinked_text(body).splitlines())
-        for h in match(text, wanted):
-            before, got, after = window(text, h["start"], h["end"])
+        sought, shown = map(_by_line, _unlinked_text(body))
+        for h in match(sought, wanted):
+            before, got, after = window(shown, h["start"], h["end"])
             for i in h["ids"]:
                 if i in out:
                     out[i]["unlinked"].append({

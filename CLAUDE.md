@@ -271,7 +271,7 @@ miss**. A **floor**: unmarked ASCII inventory members (`c` = English *sh*, plain
 `j`, `x`) are undetectable by construction, and a hit is never a verdict — an
 inventory mark fires on ordinary German too. A floor is not licence for noise above
 it: the entity store's names and `config/lexicon_extra.txt`'s coinages both
-**suppress `lexicon_miss` and nothing else**.
+**suppress no detector but `lexicon_miss`**.
 
 **Density, measured** on the two densest pages: inventory glyphs are **3.3% of
 characters** but fall in **43.8% of lines** — the expensive act is re-orienting to a

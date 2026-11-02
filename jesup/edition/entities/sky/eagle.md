@@ -26,6 +26,3 @@ So the entry is the Western constellation Bogoras measures from, the same divisi
 
 The capitalized `Eagle` of chukchi-3-071's tale, who takes the Raven's wife, appears
 only there; this constellation stands for him.
-
-**Open: the Chukchee asterism.** Cut out of this constellation, it is a different
-object that wants its own entry; its name is given at chukchi-2-033 and chukchi-2-036.

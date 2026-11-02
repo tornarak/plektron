@@ -787,11 +787,12 @@ def _lexicon(root: Path = Path("."), store: dict | None = None) -> set[str]:
 
     `config/lexicon_extra.txt` holds what a general English dictionary cannot be
     expected to carry — Latin binomials, Bogoras's recurring coinages, the
-    abbreviations his running heads repeat. It suppresses `lexicon_miss` and
-    nothing else: the inventory, apostrophe, dot-above-g and smart-quote
-    detectors never consult it. A whitelist able to blind a Tier-1 detector
-    would be a hole in the firewall, so it is denied the opportunity
-    structurally rather than by discipline.
+    abbreviations his running heads repeat. Among the detectors it suppresses
+    `lexicon_miss` and nothing else: the inventory, apostrophe, dot-above-g and
+    smart-quote detectors never consult it. A whitelist able to blind a Tier-1
+    detector would be a hole in the firewall, so it is denied the opportunity
+    structurally rather than by discipline. `resolve_break_hyphens` reads it too,
+    and refuses a token bearing the notation before it does.
 
     **The entity store is the second source, and the proper nouns moved there.**
     They used to be listed in both places — 20 of the whitelist's terms were
