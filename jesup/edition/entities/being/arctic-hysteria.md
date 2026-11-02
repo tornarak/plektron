@@ -1,8 +1,8 @@
 # being:arctic-hysteria — Arctic hysteria
 
 - status: ratified chukchi
-- link: wikipedia:Piblokto
-- link: wikidata:Q1779438
+- link: wikipedia-ru:Мерячение
+- link: wikidata:Q4309845
 
 ## aliases
 

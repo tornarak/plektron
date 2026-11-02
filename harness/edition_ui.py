@@ -206,6 +206,7 @@ def leaf_thumb(path: Path, width: int, turn: int = 0) -> bytes:
 #: costs one line here rather than an edit to every record.
 LINK_KINDS = {
     "wikipedia": ("https://en.wikipedia.org/wiki/{}", "Wikipedia", "wikipedia"),
+    "wikipedia-ru": ("https://ru.wikipedia.org/wiki/{}", "Wikipedia (Russian)", "wikipedia"),
     "wikidata": ("https://www.wikidata.org/wiki/{}", "Wikidata", "wikidata"),
     # The gazetteer that carries the small Siberian features Wikidata does not —
     # abandoned settlements, unnamed bays — and the identity a `geo:` derived by

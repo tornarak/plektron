@@ -641,6 +641,12 @@ def test_a_link_row_holds_an_identifier_and_not_a_url(tmp_path):
     assert "/static/site/wikipedia.svg" in got and 'target="_blank"' in got.replace("'", '"')
 
 
+def test_a_russian_wikipedia_link_says_so():
+    got = edition_ui.link_html("wikipedia-ru:Мерячение")
+    assert "https://ru.wikipedia.org/wiki/Мерячение" in got
+    assert "Wikipedia (Russian)" in got
+
+
 def test_an_unknown_link_kind_is_shown_rather_than_dropped(tmp_path):
     got = edition_ui.link_html("doi:10.1234/x")
     assert "doi:10.1234/x" in got
