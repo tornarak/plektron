@@ -39,7 +39,7 @@
  *
  * **What is drawn is what gets prefetched.** The pane is the authority on which
  * records are in play, and it already lists them: after it loads, every
- * `[data-ent]` on it has its card fetched into `hover.js`'s memo.
+ * `[data-ent]` on it has its card fetched into the preview section's memo.
  */
 import {compose, paneHtml} from './geomap.js';
 
@@ -445,15 +445,17 @@ import {compose, paneHtml} from './geomap.js';
      sitting: the server names the subject without knowing the sitting's
      `dropped`, and adopting it anyway would undo the dismissal on every visit
      to its page. */
+  let restored = Promise.resolve();
   const p = pane();
   if (p) {
     const subject = p.dataset.sel || '';
     if (subject && !dropped.has(subject) && !sel.includes(subject)) sel = [...sel, subject];
     save();
-    if (sel.length) paint();
+    if (sel.length) restored = paint();
   }
 
   /* `edition.js` hands the click on an entity link over rather than reaching in,
-     so this file owns the pane and that one owns the stack. */
-  window.MAP = {click, paint};
+     so this file owns the pane and that one owns the stack. `restored` settles when
+     the sitting's map is back, which is not the reader asking for anything. */
+  window.MAP = {click, paint, restored};
 }

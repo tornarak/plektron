@@ -255,8 +255,6 @@ def test_a_card_page_loads_the_script_that_makes_its_links_work(client):
         html = c.get(url).text
         assert "class='yt'" in html or 'class="yt"' in html, f"no yt anchor on {url}"
         assert "edition.js" in html, f"{url} shows yt links and loads no handler"
-        # `hover.js` first: `edition.js`'s `fill` reads the memo it publishes.
-        assert html.find("hover.js") < html.find("edition.js")
 
 
 def test_every_parsed_key_is_rendered_or_declared(client):

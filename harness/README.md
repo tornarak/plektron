@@ -81,7 +81,7 @@ predicted polygon fails the fixed-measure width check by construction.
 ## Modules
 
 **`cli/`** — the two-tier command tree, **click**, one module per group: `_tei _ocr
-_proposal _zones _fig _lexicon _entity _annotation _geo _edition _find _corpus
+_proposal _zones _fig _lexicon _entity _annotation _geo _edition _site _find _corpus
 _scans _views _train _agents _verbs`, each exposing `register(cli)` and
 one `run_*` handler per action, which returns the exit code. `__init__.py` holds
 `main`, `build_parser` (separate so the surface test can walk the tree without
@@ -886,6 +886,13 @@ request bodies. Four things in it are load-bearing:
     nothing — and the tempting fix is to re-inline the script, which undoes the
     change. `test_zones_ui.py` and `test_review_session.py` both read
     `harness/web/static/js/` directly for this reason.
+
+**`harness/web/site.py`** — `site build`: every text whose `project.json` declares
+`publish` (`layout.publish`), built by `harness/web/build.py` at its own prefix, under
+a landing page from `harness/web/templates/site/index.html` and the prose in
+`site/landing.html`.
+It rebuilds a text only if something upstream is newer than the last clean build.
+The rule and what it cannot see are in its docstring.
 
 **`harness/web/cache.py`** — store reads memoised on a **digest of the file's contents**,
 not on its mtime. Measured on this filesystem: 190 of 200 immediate rewrites

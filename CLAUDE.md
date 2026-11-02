@@ -152,7 +152,7 @@ workspace `jesup/` holds `edition/{entities,geo,lexicon,entity-images.json}` and
     models/ recognizers and segmenters; fig-seg is declared, not yet trained.
     pdfs/   symlinks to the three AMNH source PDFs, outside the repo.
     train/  pure scratch, ignored; artifacts go to models/.
-    At the repo root: harness/ (tests in harness/tests/) tools/ docs/ concordance.md
+    At the repo root: harness/ (tests in harness/tests/) tools/ docs/ site/ concordance.md
     keying_spec.md data/tei_all.rng, the vendored TEI schema.
 
 Counts deliberately absent — they go stale in a file nothing regenerates.
@@ -176,7 +176,7 @@ directory: `--root`, else the one the cwd is in.
 
 **Two tiers: a group, then an action** — `tei`, `ocr`, `proposal`, `zones`, `fig`,
 `scans`, `views`, `train`, `lexicon`, `entity`, `annotation`, `geo`, `edition`,
-`find`, `corpus`, `agents`, `verbs`. The group names what it touches; the
+`site`, `find`, `corpus`, `agents`, `verbs`. The group names what it touches; the
 action what it does.
 
 **`harness/VERBS.md` is the reference** — one entry per action: what it does,

@@ -34,7 +34,9 @@ rather than about HTTP.
 from __future__ import annotations
 
 import re
+from functools import lru_cache
 from html import escape
+from io import BytesIO
 from pathlib import Path
 
 from . import geo
@@ -55,7 +57,7 @@ from .layout import bare_own_citations, stem_for
 
 # `scan_for` is re-exported: this module's callers name it here, and the
 # definition moved to `paths` because there were two byte-identical copies.
-from .paths import scan_for
+from .paths import scan_for  # noqa: F401
 from .refs import norm_ref
 
 PORT = 8734
@@ -162,23 +164,35 @@ def leaf_layers(ref: str, root: Path) -> dict[str, Path] | None:
     return out if all(p.exists() for p in out.values()) else None
 
 
+#: The leaf kinds the index shows as a picture, and how many pixels wide: about
+#: twice what the stylesheet displays. A kind absent here has no thumbnail.
+THUMBS = {"cover": 100, "map": 720}
+
+
+@lru_cache(maxsize=32)
+def _thumb(path: str, _mtime_ns: int, width: int) -> bytes:
+    from PIL import Image
+
+    with Image.open(path) as im:
+        im = im.convert("L" if im.mode in ("1", "L") else "RGB")
+        w = min(width, im.width)
+        small = im.resize((w, max(1, round(im.height * w / im.width))),
+                          Image.Resampling.LANCZOS)
+    buf = BytesIO()
+    small.save(buf, "JPEG", quality=80)
+    return buf.getvalue()
+
+
+def leaf_thumb(path: Path, width: int) -> bytes:
+    """A leaf downscaled for the index, and nothing else done to it. **Reading view
+    only**, as `leaf_source` is: it links to the leaf and is never read as evidence.
+    Made on request, because the eight the index asks for are worth no store, and
+    keyed on the mtime so a replaced file is seen. A master decodes slowly enough
+    to be worth holding on to."""
+    return _thumb(str(path), Path(path).stat().st_mtime_ns, width)
+
+
 # --------------------------------------------------------------- the page
-
-
-def _raster_size(ref: str, root: Path) -> tuple[int, int]:
-    """The scan's pixel size, or a plausible default if it is not on disk.
-
-    `scans/` is derived and absent in a fresh clone, and the reading view should
-    still render the text — the scan card simply has nothing to show. A default
-    keeps the aspect ratio sane instead of collapsing the frame to zero.
-    """
-    try:
-        from PIL import Image
-
-        with Image.open(scan_for(ref, root)) as im:
-            return im.size
-    except Exception:
-        return (2550, 3300)
 
 
 # ------------------------------------------------------------- the entities

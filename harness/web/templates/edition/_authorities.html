@@ -18,7 +18,7 @@
     <div class='authority-body'>
       {% for b in e.printed %}<p class='printed'
         lang='{{ b.lang or "en" }}'>{{ b.text }}</p>{% endfor %}
-      <p class='parsed'>{% if e.entity %}<a
+      <p class='parsed'>{% if e.entity %}<a class='ent' data-ref='{{ e.entity_id }}'
         href='{{ e.entity }}'>{{ e.key }}</a>{% else %}{{ e.key }}{% endif %}{%
         if e.author %} · {{ e.author }}{% endif %}{%
         if e.year %} · {{ e.year }}{% endif %}{%

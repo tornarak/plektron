@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "edition/_lightbox.html" import lightbox %}
 
 {% block head %}
 {# Before the stylesheet, so a reader-view session does not flash its apparatus
@@ -32,6 +33,8 @@ if(t==='dark'||t==='light') document.documentElement.dataset.theme=t;
 {% endblock %}
 
 {% block styles %}
+<link rel="icon" href="{{ assets }}/site/favicon.ico" sizes="32x32">
+<link rel="icon" href="{{ assets }}/site/plektron.svg" type="image/svg+xml">
 <link rel="stylesheet" href="{{ assets }}/css/edition.css">
 <link rel="stylesheet" href="{{ assets }}/css/geomap.css">
 {% endblock %}
@@ -52,11 +55,18 @@ if(t==='dark'||t==='light') document.documentElement.dataset.theme=t;
            already reading. #}
         {% if 'contents' in run_ids %}<a id='toc-link' target="_blank"
           href='{{ base }}/run/contents'>ToC</a>{% endif %}
-        {% if 'alphabet' in run_ids %}<a target="_blank"
+        {# Over the page, except on the Key's own page, where the same ids would be
+           in the document twice and its links would land behind the modal. #}
+        {% if 'alphabet' in run_ids %}<a target="_blank"{%
+          if not (run is defined and run.kind == 'alphabet')
+          %} data-modal='{{ base }}/partial/alphabet'{% endif %}
           href='{{ base }}/run/alphabet'>Key</a>{% endif %}
+        {% if map_leaf %}<a target="_blank" {{ lightbox(map_leaf) }}
+          href='{{ map_leaf.url }}'>Map</a>{% endif %}
     </span>
   <span class='page-specific-buttons'>
-      <button id='cols-reverse-btn' title='Reverse Columns'>⇄</button>
+      <button data-toggle-class='cols-reversed' data-toggle-store='edition-cols-reversed'
+              title='Reverse Columns'>⇄</button>
       {% block btn_extra %}{% endblock %}
   </span>
   {# Search and the page's identity, hard right. Search is on top with the
@@ -94,34 +104,15 @@ if(t==='dark'||t==='light') document.documentElement.dataset.theme=t;
     <a href='{{ base }}/entities'>encyclopedia</a>
     <a href='{{ base }}/lexicon'>lexicon</a>
     <a href='{{ base }}/atlas'>atlas</a>
-    <a href='{{ base }}/annotations'>annotations</a>
+    <a href='{{ base }}/annotations'>annotations</a>{% if home %}
+    <a href='{{ home }}'>all editions</a>{% endif %}
   </nav>
-  <button id='theme-btn' title='Light / dark'>◐</button>
+  <button data-theme-toggle title='Light / dark'>◐</button>
 </footer>
 {% endblock %}
 
 {% block scripts %}
 <script>const STATE = {{ state | tojson }};</script>
 {% block page_scripts %}{% endblock %}
-<script src="{{ assets }}/js/speak.js"></script>
-<script type="text/javascript">
- document.getElementById('cols-reverse-btn').addEventListener('click', () => {
-     const on = document.documentElement.classList.toggle('cols-reversed');
-     localStorage.setItem('edition-cols-reversed', on ? '1' : '');
- });
- /* Flips whatever is on screen, which is not the same as flipping a stored
-    value: until the toggle is first pressed there is no stored value and the
-    page is showing the system's theme, so the current state has to be *read*
-    rather than assumed. Reading it from the attribute when there is one and
-    from `matchMedia` when there is not means the first press always does the
-    visible thing. */
- document.getElementById('theme-btn').addEventListener('click', () => {
-     const root = document.documentElement;
-     const dark = root.dataset.theme
-         ? root.dataset.theme === 'dark'
-         : matchMedia('(prefers-color-scheme: dark)').matches;
-     root.dataset.theme = dark ? 'light' : 'dark';
-     localStorage.setItem('edition-theme', root.dataset.theme);
- });
-</script>
+<script src="{{ assets }}/js/edition.js"></script>
 {% endblock %}

@@ -1,0 +1,6 @@
+{# The attributes that make a link open a leaf in the lightbox: see the click
+   handler in `edition.js`. `m` is `edition._lightbox`'s. #}
+{% macro lightbox(m) -%}
+  data-lightbox='{{ m.src }}'{% if m.under %} data-lightbox-under='{{ m.under }}'{% endif
+  %} data-full='{{ m.full }}' data-caption='{{ m.caption }}'
+{%- endmacro %}

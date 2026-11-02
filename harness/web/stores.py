@@ -14,6 +14,7 @@ the measurement that made that the only safe choice.
 from __future__ import annotations
 
 from functools import lru_cache
+from html import escape
 from pathlib import Path
 
 from lxml import etree
@@ -89,11 +90,35 @@ _watched = listing(chapters.watched)
 @lru_cache(maxsize=MAXSIZE)
 def _work(root: str, _key: bytes) -> dict:
     p = Path(root) / "tei" / "corpus-header.xml"
-    title = None
-    if p.exists():
-        title = etree.parse(str(p)).findtext(
-            f".//{{{TEI_NS}}}titleStmt/{{{TEI_NS}}}title[@type='main']")
-    return {"title": title or Path(root).resolve().name}
+    if not p.exists():
+        return {"title": Path(root).resolve().name, "author": "", "date": "",
+                "licences": []}
+    doc = etree.parse(str(p))
+    tei = f"{{{TEI_NS}}}"
+    title = doc.findtext(f".//{tei}titleStmt/{tei}title[@type='main']")
+    # Each name part is its own element and the header's indentation is not
+    # spacing, so the parts are joined rather than the text taken whole.
+    author = doc.find(f".//{tei}titleStmt/{tei}author/{tei}persName")
+    date = doc.findtext(f".//{tei}sourceDesc//{tei}imprint/{tei}date")
+    return {"title": title or Path(root).resolve().name,
+            "author": "" if author is None else " ".join(
+                "".join(el.itertext()).strip() for el in author),
+            "date": (date or "").strip(),
+            "licences": [_header_html(el) for el in doc.iterfind(
+                f".//{tei}availability//{tei}p")]}
+
+
+def _header_html(el) -> str:
+    """One paragraph of the header as HTML: its words verbatim, its `<ref>`s links,
+    every other element only the text it holds, and its comments gone."""
+    def walk(node) -> str:
+        if not isinstance(node.tag, str):      # a comment or a PI: its tail only
+            return escape(node.tail or "")
+        inner = escape(node.text or "") + "".join(walk(c) for c in node)
+        if node.tag == f"{{{TEI_NS}}}ref" and node.get("target"):
+            inner = f'<a href="{escape(node.get("target"))}">{inner}</a>'
+        return inner + (escape(node.tail) if node is not el and node.tail else "")
+    return " ".join(walk(el).split())
 
 
 def work(root: Path) -> dict:

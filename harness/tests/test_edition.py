@@ -27,6 +27,14 @@ JS = Path(__file__).resolve().parent.parent / "web" / "static" / "js"
 JS = Path(__file__).resolve().parent.parent / "web" / "static" / "js"
 
 
+def _section(title: str) -> str:
+    """One section of the merged script, so a claim about the notes is tested on the
+    notes and not on whatever else the file holds."""
+    src = (JS / "edition.js").read_text(encoding="utf-8")
+    parts = re.split(r"(?m)^/\* -{10,} ", src)
+    return next(p for p in parts if p.startswith(title))
+
+
 def page(root: Path, ref: str, body: str) -> Path:
     p = root / "tei" / f"chukchi-{ref}.xml"
     p.parent.mkdir(parents=True, exist_ok=True)
@@ -859,7 +867,10 @@ def test_an_entry_that_can_be_drawn_arrives_with_its_map(server):
     body = get(base + "/entity/place:uelen")
     assert "data-sel='place:uelen'" in body
     assert f"data-atlas='{base}/geo/atlas.json'" in body
-    assert '<script type="module" src="/static/js/map.js">' in body
+    # The attribute is what loads the map; the page has no tag for it.
+    assert "/static/js/map.js" not in body
+    src = (JS / "edition.js").read_text(encoding="utf-8")
+    assert "document.querySelector('[data-atlas]')" in src and "new URL('map.js'" in src
 
 
 def test_a_point_can_be_opened_on_a_map_that_is_not_ours(server):
@@ -1140,6 +1151,45 @@ def test_a_lexicon_card_marks_where_the_form_is_attested(server):
     assert " here'" not in panel, "a form has no position, only attestations"
 
 
+FORM = 'ckt:oˊraˈwǝʟ̣at'
+_FOREIGN = ('<p>The form is <foreign xml:lang="ckt" resp="#ed">oˊraˈwǝ'
+            'ʟ̣at</foreign>.</p>')
+
+
+def test_a_mention_tree_holds_only_the_rows_with_a_count_and_what_holds_them(server):
+    """Sparse, in the printed order: the section, its chapter, and nothing around
+    them. A row with no count answers nothing about where this is talked about."""
+    base, root = server
+    _toc(root)
+    page(root, "1-040", f'<pb n="11"/>{_FOREIGN}')
+    panel = _panel(get(base + f"/lexicon/{quote(FORM)}"))
+    assert "Neighbors" in panel and "Appearance" in panel
+    for elsewhere in ("Introductory", "Names and Habitat", "Ancient Habitat"):
+        assert elsewhere not in panel, elsewhere
+    assert "not placed" not in panel, "everything was placed, so nothing is said"
+
+
+def test_a_mention_tree_counts_what_it_could_not_place(server):
+    """A row gone reads as "not in this chapter", so a page the index cannot place
+    has to be said or it is indistinguishable from a page that does not exist."""
+    base, root = server
+    _toc(root)
+    page(root, "1-040", f'<pb n="11"/>{_FOREIGN}')
+    page(root, "1-042", _FOREIGN)
+    panel = _panel(get(base + f"/lexicon/{quote(FORM)}"))
+    assert "Appearance" in panel
+    assert "1 page of 2 not placed in the printed Contents." in panel
+
+
+def test_a_leaf_keeps_the_whole_outline(server):
+    """Only an entry's or a form's panel thins: a page is asking where it is."""
+    base, root = server
+    _toc(root)
+    page(root, "1-040", '<pb n="4"/><p>x</p>')
+    panel = _panel(get(base + "/page/1-040"))
+    assert "Names and Habitat" in panel and "Neighbors" in panel
+
+
 def test_a_form_the_corpus_does_not_attest_blames_no_contents(server):
     """**The refusal is about placement, so it may only fire where there was
     something to place.** A form no store attests has not failed to be placed in
@@ -1193,7 +1243,7 @@ def test_a_reference_view_carries_the_sidebar_fixed_open(server, path):
     assert "<aside id='secondary' data-fixed>" in body
     assert "id='stack'" in body and "id='map-pane'" in body
     assert "id='side-hide'" not in body and "id='side-show'" not in body
-    assert "/static/js/edition.js" in body and "/static/js/map.js" in body
+    assert "/static/js/edition.js" in body and "data-atlas=" in body
     assert "atlas?at=" not in body
 
 
@@ -1216,13 +1266,13 @@ def test_a_card_fragment_is_its_own_path(server, path):
 # --------------------------------------------------- the footnote popup
 
 
-def test_the_page_loads_the_note_popup_after_hover(server):
-    """`notes.js` places its popup with `hover.js`'s `place`, so it cannot be
-    loaded before the file that publishes it."""
+def test_the_note_popup_runs_after_the_preview(server):
+    """The notes place their popup with the preview's `place`, so that section has
+    to run first, in the one file every page loads."""
     base, _ = server
-    body = get(base + "/page/1-021")
-    assert "/static/js/notes.js" in body
-    assert body.index("/static/js/hover.js") < body.index("/static/js/notes.js")
+    assert "/static/js/edition.js" in get(base + "/page/1-021")
+    src = (JS / "edition.js").read_text(encoding="utf-8")
+    assert src.index("window.CARDS = {get") < src.index("const FOOT = ")
 
 
 def test_hover_publishes_the_placement_it_shares(server):
@@ -1230,17 +1280,17 @@ def test_hover_publishes_the_placement_it_shares(server):
     link in this text. It takes its target as an argument for that reason — a
     version closing over its own box could not be shared. And one grace period,
     so a note and a preview wait the same time for the pointer to arrive."""
-    src = (JS / "hover.js").read_text(encoding="utf-8")
+    src = _section("the preview")
     assert "window.CARDS = {get, place, GRACE_MS}" in src
     assert "function place(a, el)" in src
-    assert "window.CARDS.GRACE_MS" in (JS / "notes.js").read_text(encoding="utf-8")
+    assert "window.CARDS.GRACE_MS" in _section("the notes")
 
 
 def test_the_note_popup_reads_the_foot_and_fetches_nothing(server):
     """The notes are already on the page — `page.html` renders every one of them
     into `#foot` from `doc.notes`. A popup that fetched them would be a second
     renderer for text the server already sent."""
-    src = (JS / "notes.js").read_text(encoding="utf-8")
+    src = _section("the notes")
     assert "getElementById('foot')" in src
     assert "fetch(" not in src, "the note is in the DOM; nothing is fetched"
 
@@ -1252,7 +1302,7 @@ def test_the_marker_is_a_switch_and_the_note_carries_the_jump(server):
     took is offered again at the note's own foot. A marker that opened on one
     click and travelled on the next would be two acts on one target,
     distinguished by nothing the reader can see."""
-    src = (JS / "notes.js").read_text(encoding="utf-8")
+    src = _section("the notes")
     assert "ev.preventDefault()" in src
     assert 'class="note-jump"' in src
     # The jump's href is the anchor's own, not rebuilt from `data-note`: one
@@ -1270,7 +1320,7 @@ def test_the_note_is_one_shape_hovered_or_kept(server):
     same note in two shapes, the second arriving as a jolt at the moment of
     clicking. A reader is looking at a note, not at a widget that reconfigures
     itself."""
-    src = (JS / "notes.js").read_text(encoding="utf-8")
+    src = _section("the notes")
     assert "function show(a) {" in src
     assert "kept" not in src.split("function show(a) {")[1].split("\n  }")[0]
 
@@ -1293,7 +1343,7 @@ def test_the_note_popup_and_the_preview_can_both_be_reached(server):
     css = CSS.read_text(encoding="utf-8")
     for sel in (".card.notepop{", ".card.preview{"):
         assert "pointer-events:none" not in css.split(sel)[1].split("}")[0], sel
-    src = (JS / "hover.js").read_text(encoding="utf-8")
+    src = _section("the preview")
     assert "GRACE_MS" in src and "box.contains(ev.target)" in src
     # On touch the first tap previews: it has to be held before every
     # document-level click handler, which only a capture on `window` is.
@@ -1322,7 +1372,7 @@ def test_the_served_page_holds_what_the_popup_reaches_for(server):
     assert re.search(r"""href=["']#note-1["']""", body)
     assert re.search(r"""href=["']#ref-1["']""", body)
 
-    src = (JS / "notes.js").read_text(encoding="utf-8")
+    src = _section("the notes")
     assert "li[id=" in src and "getAttribute('href')" in src
     assert 'a[href^="#ref-"]' in src
 
@@ -1331,7 +1381,7 @@ def test_a_page_with_no_notes_binds_nothing(server):
     """The script leaves immediately where there is no foot. Most pages have no
     notes, and a listener that ran on all of them to find nothing is a listener
     on every pointer move in the book."""
-    src = (JS / "notes.js").read_text(encoding="utf-8")
+    src = _section("the notes")
     head = src.split("addEventListener")[0]
     assert "if (!FOOT) return;" in head
 
@@ -2094,3 +2144,11 @@ def test_an_editors_note_reaches_the_card(server):
     got = get(base + "/partial/lexicon/Kulu'c^i")
     assert "A bay on the" in got
     assert "No editor's note" not in got
+
+
+def test_the_column_does_not_wake_for_a_map_coming_back():
+    """The sitting's selection repaints after a fetch, so after `load`. Reading that
+    as a place arriving reopened a column the reader had put away, on every page."""
+    src = (JS / "edition.js").read_text(encoding="utf-8")
+    assert "window.MAP?.restored" in src
+    assert "restored = paint()" in (JS / "map.js").read_text(encoding="utf-8")

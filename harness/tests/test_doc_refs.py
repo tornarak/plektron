@@ -205,9 +205,9 @@ EXPECTED_ABSENT = {
     "scans/w-blotted",
     "scans/w-blotted-edit",
     # Named relative to the web root rather than the repo: the file is really at
-    # `harness/web/static/js/hover.js`, and `docs/edition.md` is describing the
+    # `harness/web/static/js/edition.js`, and `docs/edition.md` is describing the
     # served tree, where that *is* its path.
-    "static/js/hover.js",
+    "static/js/edition.js",
     # Prose, not a path: "a `ref/key` written into the page" means one or the
     # other. Indistinguishable by pattern from `gt/seg` — two lowercase words
     # around a slash — which is why it is exempted rather than filtered.

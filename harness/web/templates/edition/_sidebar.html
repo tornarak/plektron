@@ -37,7 +37,7 @@
 {# **The fringes are labels for two radios, `#side-on` and `#side-off`**, so
    showing and hiding the column is the stylesheet's, as the TOC switch is:
    neither checked is the column deciding for itself, and one radio group means
-   one of the two can never contradict the other. `sidebar.js` remembers the
+   one of the two can never contradict the other. `edition.js` remembers the
    choice for the sitting and wakes the column for the contents and the cards;
    the boxes are `autocomplete=off` so the browser keeps no second memory. #}
 {% if not fixed %}
@@ -76,7 +76,7 @@
     {# **A checkbox, so the switch is the stylesheet's and needs no script.**
        Which panel shows is `:has(#toc-switch:checked)` in `edition.css`; the
        label is the control a reader sees, and says what pressing it will do.
-       `sidebar.js` only remembers the choice for the sitting, which is why the
+       `edition.js` only remembers the choice for the sitting, which is why the
        box is `autocomplete=off`: a browser restoring it on reload would be a
        second memory that could disagree with the first. #}
     <input type='checkbox' id='toc-switch' autocomplete='off'

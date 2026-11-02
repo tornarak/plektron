@@ -121,6 +121,18 @@ def _ident(raw: str) -> str:
     return raw
 
 
+def _lightbox(ref: str, kind: str, root: Path, base: str) -> dict:
+    """What a link needs to open this leaf in the lightbox, as `exempt.html` shows
+    it: the editor's leaf where there is one, as its two layers where they are
+    built, else the scan. `url` is the leaf's page, for a reader with no script."""
+    master, layers = _leaf_urls(ref, root, base)
+    full = master or f"{base}/page/{ref}.png"
+    return {"url": f"{base}/page/{ref}", "full": full,
+            "src": layers["lines"] if layers else full,
+            "under": layers["colour"] if layers else "",
+            "caption": f"{kind}, scan {ref}"}
+
+
 def _ctx(request: Request, **kw) -> dict:
     """The keys `edition/base.html` needs on every page.
 
@@ -133,7 +145,13 @@ def _ctx(request: Request, **kw) -> dict:
            # The header links two runs by id; a tree that declares neither
            # should not carry two dead links on every page.
            "run_ids": {r.get("id") for r in stores.runs(_root(request))},
+           # The book's own map, for the bar: the first leaf a human ruled one.
+           "map_leaf": next((_lightbox(r, "map", _root(request), base)
+                             for r in tei_html._sorted_refs(
+               [r for r, k in stores.leaf_kinds(_root(request)).items() if k == "map"])), None),
            "work": stores.work(_root(request)),
+           # The landing page above this text, on a site that has one.
+           "home": getattr(request.app.state, "home", None),
            **kw}
     out["state"] = {"base": base, "assets": assets, "static": _static(request),
                     **(kw.get("state") or {})}
@@ -170,9 +188,21 @@ def _outline(request: Request) -> list[dict]:
         part    a change of part, off the ref alone
         run     a run's head leaf, carrying the division(s) it is and their
                 sections; or an apparatus run with no entry of its own
-        leaf    a leaf a human ruled not text — cover, blank, plate, map
-        page    a page served alone, with any division the folio index opens here
+        leaf    a leaf a human ruled not text — plate, map, or a blank or cover
+                with a division on it
+        covers  the covers in a row with no division on any of them
+        page    pages served alone, with any division the folio index opens here
         toc     a division nothing places
+
+    **A blank with no division has no row.** It is still in the listing, so
+    prev/next walk it and the build reaches it; a reader looking for where to go
+    has no use for it.
+
+    **A page with no division of its own joins the division before it**, by
+    `chapters.py`'s arithmetic and under its rule: the leaf must be the next one
+    after that row's last, and the next Contents entry must be placed or absent,
+    because an unplaced one might open on this very leaf and nothing is derived
+    past a gap.
 
     The draft tag belongs to text alone. A cover cannot be collated and the
     Contents is a store, not a transcription; tagging either `draft`, as the
@@ -266,11 +296,32 @@ def _outline(request: Request) -> list[dict]:
             rows.append({"kind": "run", "ref": ref, "run": run, "nodes": here,
                          "url": f"{base}/run/{run['id']}", "status": _status(run)})
         elif ref in kinds:
-            rows.append({"kind": "leaf", "ref": ref, "leaf_kind": kinds[ref],
-                         "nodes": here, "url": f"{base}/page/{ref}"})
+            kind, url = kinds[ref], f"{base}/page/{ref}"
+            if kind == "blank" and not here:
+                continue
+            thumb = f"{base}/thumb/{ref}.jpg" if kind in ui.THUMBS else ""
+            shown = _lightbox(ref, kind, root, base) if thumb else None
+            if kind == "cover" and not here:
+                if rows[-1]["kind"] != "covers":
+                    rows.append({"kind": "covers", "leaves": []})
+                rows[-1]["leaves"].append({"ref": ref, "url": url, "thumb": thumb,
+                                           "lightbox": shown})
+                continue
+            rows.append({"kind": "leaf", "ref": ref, "leaf_kind": kind,
+                         "nodes": here, "url": url, "thumb": thumb,
+                         "lightbox": shown})
         else:
-            rows.append({"kind": "page", "ref": ref, "nodes": here,
-                         "url": f"{base}/page/{ref}", "folio": folios.get(ref),
+            leaf = {"ref": ref, "url": f"{base}/page/{ref}", "folio": folios.get(ref)}
+            prev = rows[-1]
+            if (not here and prev["kind"] == "page" and prev["nodes"]
+                    and parse_ref(prev["leaves"][-1]["ref"])[1] + 1 == parse_ref(ref)[1]
+                    and (k >= len(tree) or tree[k].get("id") in at)):
+                prev["leaves"].append(leaf)
+                prev["draft"] = False
+                prev["status"] = _checked([x["ref"] for x in prev["leaves"]])
+                continue
+            rows.append({"kind": "page", "leaves": [leaf], "nodes": here,
+                         "url": leaf["url"], "status": "",
                          "draft": drafts and ref not in signed})
     while k < len(tree):
         node = tree[k]
@@ -310,6 +361,28 @@ def raster(request: Request, ref: str):
         ui.scan_for(ref, _root(request)),
         missing=f"no raster for {ref} — scans/ is derived and not " "in git",
     )
+
+
+@router.get("/thumb/{ref}.jpg")
+def thumb(request: Request, ref: str):
+    """A cover or the map, small, for the index: the editor's leaf where there is
+    one, else the scan, as the leaf's own page chooses. An SVG master has no raster
+    to shrink, so its scan stands in."""
+    if not ui.REF_OK.match(ref):
+        raise HTTPException(404, f"{ref!r} is not a PP-NNN ref")
+    root = _root(request)
+    kind = stores.leaf_kinds(root).get(ref)
+    if kind not in ui.THUMBS:
+        raise HTTPException(404, f"{ref} is not a leaf kind the index shows small: "
+                                 f"{', '.join(sorted(ui.THUMBS))}")
+    master, _rank = ui.leaf_source(ref, root)
+    path = master if master is not None and master.suffix != ".svg" else ui.scan_for(ref, root)
+    try:
+        data = ui.leaf_thumb(path, ui.THUMBS[kind])
+    except OSError:
+        raise HTTPException(404, f"no raster for {ref} — scans/ is derived and "
+                                 "not in git") from None
+    return Response(data, media_type="image/jpeg")
 
 
 @router.get("/fig/{ref}/{key}.png")
@@ -610,8 +683,7 @@ def _exempt_page(request: Request, ref: str, root):
                                  base=_base(request), drafts=_drafts(request)),
             editor_leaf=ui.leaf_source(ref, root)[1] == "ed",
             leaf_url=leaf_url, leaf_layers=layer_urls,
-            state={"ref": ref,
-                   "size": ui._raster_size(ref, root), "crops": {}},
+            state={"ref": ref},
             prev=refs[i - 1] if i > 0 else "",
             next=refs[i + 1] if 0 <= i < len(refs) - 1 else "",
         ),
@@ -836,6 +908,7 @@ def _decorate(entry: dict, kind: str, root: Path, index: dict,
             e["plate_ref"] = hit.get("ref", "")
     elif kind == "authorities":
         ident = by_authority.get(e.get("key"))
+        e["entity_id"] = ident or ""
         e["entity"] = f"{base}/entity/{ident}" if ident else ""
     return e
 
@@ -891,6 +964,12 @@ def _mark_tree(nodes: list[dict], here: set[str], tally: dict[str, int]) -> bool
     return any_marked
 
 
+def _sparse(nodes: list[dict]) -> list[dict]:
+    """The rows with a count, and those that hold one. `_mark_tree` has run, so `open`
+    says exactly that: a count, or a mark below."""
+    return [{**n, "children": _sparse(n["children"])} for n in nodes if n["open"]]
+
+
 def _path_to(nodes: list[dict], ident: str) -> list[str]:
     """The ids from the top of the outline down to `ident`, or `[]`."""
     for n in nodes:
@@ -913,7 +992,8 @@ def _unroll(nodes: list[dict]) -> None:
 
 def _toc_panel(root: Path, folios: list,
                hits: dict[int, int] | None = None, absent: str = "",
-               base: str = ui.BASE, division: str = "", *, drafts: bool) -> dict:
+               base: str = ui.BASE, division: str = "", *, drafts: bool,
+               total: int = 0, unit: str = "") -> dict:
     """The printed Contents as a locator: the whole outline, and what is marked.
 
     `folios` are the printed folios this view *is* — one for a page, several for
@@ -940,7 +1020,10 @@ def _toc_panel(root: Path, folios: list,
     entry and what holds it are the whole mark. Its folios span every section in
     it, so marking by folio lit every subheading at once, which says "you are in
     all of these" about a page you are reading one part of. Where in it you are
-    is the scroll's question, and `sidebar.js` answers it off the headings.
+    is the scroll's question, and `edition.js` answers it off the headings.
+
+    **`total` is everything `hits` was tallied from, in `unit`s**, counted before
+    anything dropped out, so the panel can say how much it could not place.
     """
     toc = load_toc(root)
     tree = _toc_tree(toc, root, stores.served_folios(root, drafts), base)
@@ -952,11 +1035,21 @@ def _toc_panel(root: Path, folios: list,
         here |= {e["id"] for e in toc
                  if e.get("id") and e.get("page_start") in seen}
     tally: dict[str, int] = {}
+    placed = 0
     for folio, n in (hits or {}).items():
-        for tid in toc_containing(toc, folio):
+        chain = toc_containing(toc, folio)
+        placed += n if chain else 0
+        for tid in chain:
             tally[tid] = tally.get(tid, 0) + n
 
     _mark_tree(tree, here, tally)
+    # **Where an entry is talked about, it is only those rows.** The question is not
+    # "where am I", so a row with no count answers nothing, and a passing name's panel
+    # was twenty-five chapter titles around the one that holds it. The printed order
+    # and the folios stay, and so does the path down to each count. With no count at
+    # all there is nothing to thin, and the outline stands as the locator it is.
+    if tally:
+        tree = _sparse(tree)
     # **The division you are in is unrolled whole.** Only where the page has a
     # position, and not for an entity's mentions: those are spread over twenty
     # chapters, and unrolling all of them would serve the outline open, which is
@@ -977,6 +1070,12 @@ def _toc_panel(root: Path, folios: list,
         note = absent
     elif not marked and folios:
         note = "Nothing places this leaf in the printed Contents."
+    # **What a thinned panel left out, said.** A row gone reads as "not in this
+    # chapter", so a mention that could not be placed has to be counted somewhere.
+    elif tally and total > placed:
+        left = total - placed
+        note = (f"{left} {unit}{'' if left == 1 else 's'} of {total} not placed in "
+                "the printed Contents.")
     return {"tree": tree, "marked": marked, "note": note}
 
 
@@ -1032,11 +1131,7 @@ def run_page(request: Request, run_id: str):
              # leaves and the reader is at all of them at once.
              toc_panel=_toc_panel(root, [leaf["folio"] for leaf in leaves],
                                   base=_base(request), drafts=_drafts(request)),
-             # `leaves` is what makes the scan button show the whole span: the
-             # run is one document and its scans are several.
-             state={"ref": head,
-                    "leaves": [leaf["ref"] for leaf in leaves],
-                    "size": ui._raster_size(head, root), "crops": {}},
+             state={"ref": head},
              prev=prev, next=next_),
     )
 
@@ -1352,9 +1447,7 @@ def _chapter_page(request: Request, run: dict, root: Path):
              toc_panel=_toc_panel(root, [leaf["folio"] for leaf in leaves],
                                   base=_base(request), division=run["id"],
                                   drafts=_drafts(request)),
-             state={"ref": head,
-                    "leaves": [leaf["ref"] for leaf in leaves],
-                    "size": ui._raster_size(head, root), "crops": {}},
+             state={"ref": head},
              prev=prev, next=next_),
     )
 
@@ -1550,10 +1643,7 @@ def page(request: Request, ref: str):
     # plates and front matter genuinely print none, and this is not the place to
     # make that look like missing data.
     here = ref + (f" ({doc['folio']})" if doc.get("folio") else "")
-    size = ui._raster_size(ref, root)
-    # `crops` is the scan card's and stays; the figure join is no longer part of
-    # the payload at all, because nothing on the client reads it any more.
-    state = {"ref": ref, "size": size, "crops": {}}
+    state = {"ref": ref}
     return templates.TemplateResponse(
         request,
         "edition/page.html",
@@ -1764,6 +1854,8 @@ def entity(request: Request, ident: str):
             pane=True,
             toc_panel=_toc_panel(
                 root, [], by_folio, base=_base(request), drafts=_drafts(request),
+                total=sum(ctx["mentions"]["by_ref"].values()) if rec else 0,
+                unit="mention",
                 # Only where there were pages to place, on `_mentions`' own
                 # reasoning: a bare zero cannot be told from "never mentioned",
                 # and an entry the corpus does not mention has not failed to be
@@ -2047,6 +2139,19 @@ def _attested_forms(native: dict) -> list[dict]:
         + list(native["unkeyable"].values())
 
 
+@router.get("/partial/alphabet")
+def alphabet_fragment(request: Request):
+    """The Key, bare, for the modal the bar opens. By the run's kind, which is the
+    vocabulary every book shares, and a book with no such run has none to show."""
+    root = _root(request)
+    run = next((r for r in stores.runs(root) if r.get("kind") == "alphabet"), None)
+    if run is None:
+        raise HTTPException(404, "no alphabet run in edition/runs.json")
+    return templates.TemplateResponse(
+        request, "edition/_alphabet_modal.html",
+        _ctx(request, run=run, chart=stores.alphabet_chart(root)))
+
+
 @router.get("/lexicon/{key:path}")
 @router.get("/partial/lexicon/{key:path}")
 def lexicon_card(request: Request, key: str):
@@ -2153,6 +2258,7 @@ def lexicon_card(request: Request, key: str):
         _ctx(request, partial="edition/_lexicon.html", card_title=form or key,
              toc_panel=_toc_panel(
                  root, [], by_folio, base=_base(request), drafts=_drafts(request),
+                 total=len(refs), unit="page",
                  # Only where there were pages to place. A form the corpus does
                  # not attest has not failed to be placed in the Contents — it is
                  # simply not there, which the card's own rows already say, and

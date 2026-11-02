@@ -2,11 +2,8 @@
 {% import "edition/_annotations.html" as ann %}
 {% block title %}{{ run.title }} — {{ work.title }}{% endblock %}
 
-{# `run.html`'s reason: `edition.js` looks both up at load and a missing one
-   throws, taking the arrow keys with it. #}
 {% block btn_extra %}
-    <button id='scan-btn' title='Open Scan in New Tab'>🗗</button>
-    <button id='reader-btn' title='Reader View'>📕</button>
+    <button data-toggle-class='reader' data-toggle-store='edition-reader' title='Reader View'>📕</button>
 {% endblock %}
 
 {% macro neighbours() %}
@@ -75,9 +72,4 @@ so where they fall.{% endif %}</p>
 {% endblock %}
 
 {% block page_scripts %}
-<script src="{{ assets }}/js/sidebar.js"></script>
-<script src="{{ assets }}/js/hover.js"></script>
-<script type="module" src="{{ assets }}/js/map.js"></script>
-<script src="{{ assets }}/js/notes.js"></script>
-<script src="{{ assets }}/js/edition.js"></script>
 {% endblock %}

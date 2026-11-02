@@ -192,7 +192,7 @@ GLOBAL_NAMES = ("root", "json", "toon", "pager")
 
 #: The groups about the harness itself, which read no text's stores and answer
 #: from anywhere.
-REPO_GROUPS = frozenset({"agents", "verbs"})
+REPO_GROUPS = frozenset({"agents", "site", "verbs"})
 
 
 def _namespace(ctx, group_name: str, action_name: str, kw: dict):

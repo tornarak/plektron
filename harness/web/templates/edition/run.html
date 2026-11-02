@@ -1,12 +1,8 @@
 {% extends "edition/base.html" %}
 {% block title %}{{ run.title }} — {{ work.title }}{% endblock %}
 
-{# The same two buttons `exempt.html` carries, and for its reason: `edition.js`
-   looks both up unconditionally at load and a missing one throws, taking the
-   arrow keys with it — which are how a reader crosses a run. #}
 {% block btn_extra %}
-    <button id='scan-btn' title='Open Scan in New Tab'>🗗</button>
-    <button id='reader-btn' title='Reader View'>📕</button>
+    <button data-toggle-class='reader' data-toggle-store='edition-reader' title='Reader View'>📕</button>
 {% endblock %}
 
 {% macro neighbours() %}
@@ -30,16 +26,18 @@
    since neither is derivable from the other.
 
    **It links to itself.** The mark is a permalink to this point in the run,
-   which is what a reader wants from a page break; the scans are the scan
-   button's, which on a run shows the whole span in succession. #}
+   which is what a reader wants from a page break. Its scan is the link beside it:
+   a reader consulting a run is at one leaf of it, not at all of them. #}
 {% macro leafmark(l) %}
-<a class='leaf-mark' id='{{ l.anchor }}' href='#{{ l.anchor }}'
+<span class='leaf-at'><a class='leaf-mark' id='{{ l.anchor }}' href='#{{ l.anchor }}'
    title='leaf {{ l.ref }}{% if l.printed_folio or l.folio %}, folio {{
      l.printed_folio or l.folio }}{% endif %}{%
      if l.editor %} — an editor has worked on this leaf{% endif %}'>{%
    if l.folio_anchor %}<span id='{{ l.folio_anchor }}'></span>{% endif
-   %}{{ l.printed_folio or l.folio or l.ref }}{%
-   if l.editor %}<span class='run-tag'>ed</span>{% endif %}</a>
+   %}{{ l.printed_folio or l.folio or l.ref }}</a><a class='leaf-scan' data-scan='{{ l.ref }}'
+   href='{{ base }}/page/{{ l.ref }}.png' target='_blank' rel='noopener'
+   title='scan of leaf {{ l.ref }}'>🗗</a>{%
+   if l.editor %}<span class='run-tag'>ed</span>{% endif %}</span>
 {% endmacro %}
 
 {% block main %}
@@ -80,6 +78,4 @@ begins and links to itself; the 🗗 beside it shows that leaf's scan.</p>
 {% endblock %}
 
 {% block page_scripts %}
-<script src="{{ assets }}/js/sidebar.js"></script>
-<script src="{{ assets }}/js/edition.js"></script>
 {% endblock %}

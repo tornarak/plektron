@@ -3,8 +3,8 @@
 {% block title %}{{ ref }} — {{ work.title }}{% endblock %}
 
 {% block btn_extra %}
-    <button id='scan-btn' title='Open Scan in New Tab'>🗗</button>
-    <button id='reader-btn' title='Reader View'>📕</button>
+    <button data-scan='{{ state.ref }}' title='Scan of this leaf'>🗗</button>
+    <button data-toggle-class='reader' data-toggle-store='edition-reader' title='Reader View'>📕</button>
 {% endblock %}
 
 {# Prev/next among the pages this sitting can read, at both ends of the text: a
@@ -84,12 +84,3 @@ guess, and the languages of its foreign words have not been identified.</p>
 </div>
 {% endblock %}
 
-{# hover.js first: `edition.js`'s `fill` reads the memo it publishes. #}
-{% block page_scripts %}
-<script src="{{ assets }}/js/sidebar.js"></script>
-<script src="{{ assets }}/js/hover.js"></script>
-<script type="module" src="{{ assets }}/js/map.js"></script>
-{# After `hover.js`: it floats a note beside a marker with that file's `place`. #}
-<script src="{{ assets }}/js/notes.js"></script>
-<script src="{{ assets }}/js/edition.js"></script>
-{% endblock %}

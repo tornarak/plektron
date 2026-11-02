@@ -27,6 +27,10 @@ WORKSPACE_JSON = "workspace.json"
 
 STEM_RE = re.compile(r"^[a-z][a-z0-9]*(?:-[a-z][a-z0-9]*)*$")
 
+#: What a manifest may say about going public: `drafts` shows `mz/tei/` beside
+#: `tei/`, `collated` shows `tei/` alone, and absent keeps the text off the site.
+PUBLISH = frozenset({"drafts", "collated", None})
+
 
 class ProjectError(ValueError):
     """A manifest that is missing or says something it may not."""
@@ -45,6 +49,10 @@ def _project(path: str) -> dict:
     if not isinstance(stem, str) or not STEM_RE.match(stem):
         raise ProjectError(f"{p}: `stem` must be kebab-case, e.g. `chukchi-mythology`; "
                            f"got {stem!r}")
+    if rec.get("publish") not in PUBLISH:
+        raise ProjectError(f"{p}: `publish` must be one of "
+                           f"{sorted(k for k in PUBLISH if k)}, or absent; "
+                           f"got {rec['publish']!r}")
     return rec
 
 
@@ -203,6 +211,17 @@ def bare_own_citations(text: str, own: str) -> str:
     """The served text's citations as its reader knows them: `chukchi-1-044` -> `1-044`.
     Another book's keep their stem, because to this reader they are the other book's."""
     return CITED_REF_RE.sub(lambda m: m[2] if m[1] == own else m[0], text)
+
+
+def texts(repo: Path) -> list[Path]:
+    """Every text's stores under `repo`, in path order."""
+    return sorted(p.parent for p in Path(repo).glob(f"*/*/{PROJECT_JSON}"))
+
+
+def publish(root: Path) -> str | None:
+    """What the manifest says about putting this text on the public site. A text
+    that says nothing stays off it, so going public is always a declared act."""
+    return project(root).get("publish")
 
 
 def site_base(root: Path) -> str:

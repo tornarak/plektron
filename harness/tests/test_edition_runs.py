@@ -152,19 +152,19 @@ def test_the_redirect_and_the_anchor_are_minted_together(book: Path):
 
 def test_a_leaf_mark_links_to_itself(book: Path):
     """A permalink to this point in the run, which is what a reader wants from a
-    page break. Not to the raster: the scans are the scan button's."""
+    page break."""
     t = _app(book).get("/edition/run/illustrations").text
     for ref in ("1-014", "1-015", "1-016"):
         assert f"id='leaf-{ref}' href='#leaf-{ref}'" in t
-    assert "/edition/page/1-014.png" not in t
 
 
-def test_the_scan_button_gets_the_whole_span(book: Path):
-    """The run is one document and its scans are several, so "consult the scan"
-    has to mean all of them — a card showing only the head leaf would answer
-    about a page the reader may be nowhere near."""
+def test_each_leaf_mark_carries_its_own_scan_and_the_bar_has_none(book: Path):
+    """A reader consulting a run is at one leaf of it. The link's href is the raster,
+    so it works with no script and a modified click opens it in a tab."""
     t = _app(book).get("/edition/run/illustrations").text
-    assert '"leaves": ["1-014", "1-015", "1-016"]' in t
+    for ref in ("1-014", "1-015", "1-016"):
+        assert f"data-scan='{ref}'" in t and f"href='/edition/page/{ref}.png'" in t
+    assert "<button data-scan" not in t
 
 
 def test_the_span_is_one_list_across_its_leaves(book: Path):
@@ -879,3 +879,16 @@ def test_one_entry_is_one_run(tmp_path: Path):
     _contents_with_front_matter(tmp_path, second=True)
     rules = {e["rule"] for e in apparatus.check(tmp_path)["errors"]}
     assert "duplicate-toc-id" in rules
+
+
+def test_an_authority_with_an_entry_links_as_an_entity(tmp_path: Path):
+    """A link like every other entity link: it opens the card in the sidebar and
+    previews on hover, where a bare href left the page."""
+    from harness.web.edition import _decorate
+    e = _decorate({"key": "bogoras1904"}, "authorities", tmp_path, {},
+                  {"bogoras1904": "source:bogoras1904"}, {}, base="/site")
+    assert e["entity_id"] == "source:bogoras1904"
+    assert e["entity"] == "/site/entity/source:bogoras1904"
+    assert "class='ent' data-ref='{{ e.entity_id }}'" in (
+        Path(__file__).parent.parent / "web" / "templates" / "edition"
+        / "_authorities.html").read_text(encoding="utf-8")

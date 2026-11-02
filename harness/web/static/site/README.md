@@ -1,7 +1,10 @@
 # Site marks
 
-Third-party logos, used as link marks on outbound references in the reading
-view. Not this project's work and not under its licence.
+`plektron.svg` and `favicon.ico` are this project's own: the logo on the landing
+page and the icon of every reading page.
+
+The rest are third-party logos, used as link marks on outbound references in the
+reading view. Not this project's work and not under its licence.
 
 Both were downloaded from Wikimedia Commons rather than drawn here, and the
 distinction matters: a hand-approximated logo is a wrong logo, and these are

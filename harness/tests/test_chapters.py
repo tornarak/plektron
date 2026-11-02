@@ -327,7 +327,8 @@ def _paras(body: str) -> list[str]:
     """The article's paragraphs, as text with tags stripped."""
     art = body[body.index("run-chapter"):body.index("</article>")]
     # The page mark is drawn in the margin, not read as part of the sentence.
-    art = re.sub(r"""<a class=["']leaf-mark["'].*?</a>""", "", art, flags=re.S)
+    art = re.sub(r"""<span class=["']leaf-at["'].*?</a>(<span class=["']run-tag["']>[^<]*</span>)?</span>""",
+                 "", art, flags=re.S)
     return [re.sub(r"<[^>]+>", "", p).split() for p in
             re.findall(r"<p\b[^>]*>(.*?)</p>", art, re.S)]
 
@@ -548,7 +549,7 @@ def test_a_leaf_that_is_not_text_is_never_a_draft(tmp_path, client):
     draft(tmp_path, "1-002", '<pb n="1"/><p>front matter</p>')
     body = client(drafts=True).get("/edition/").text
     cover = _li(body, ">1-001<")
-    assert "leaf-tag'>cover" in cover and "draft-tag" not in cover
+    assert "alt='cover, scan 1-001'" in cover and "draft-tag" not in cover
     assert "draft-tag'>draft" in _li(body, ">1-002<")
     assert "0 of 1 checked" in _li(body, "Chapter I<")
 
@@ -561,3 +562,236 @@ def test_the_outline_heads_each_part(tmp_path, client):
     assert "<h4>Part 1</h4>" in body and "<h4>Part 2</h4>" in body
     assert body.index("Part 1") < body.index("Chapter I<") \
         < body.index("Part 2") < body.index("Chapter II")
+
+
+# ---------------------------------------------------------- the outline's rows
+
+
+def _front(root: Path, *entries: tuple[str, int]) -> None:
+    """A ToC of level-0 divisions, which the folio index places: no run derives
+    from one, so each stands on a page row."""
+    root.joinpath("edition").mkdir(parents=True, exist_ok=True)
+    root.joinpath("edition", "toc.json").write_text(json.dumps({"entries": [
+        {"level": 0, "chapter": None, "number": None, "title": title,
+         "page_start": at, "id": f"front.{title.lower()}"}
+        for title, at in entries]}), encoding="utf-8")
+
+
+def _raster(root: Path, ref: str, size: tuple[int, int] = (1000, 1400)) -> None:
+    from PIL import Image
+    p = root / "scans" / f"chukchi-{ref}.png"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    Image.new("L", size, 255).save(p)
+
+
+def test_a_blank_leaves_the_outline_and_stays_in_the_walk(tmp_path, client):
+    _toc(tmp_path, "chI")
+    page(tmp_path, "1-001", '<pb n="1"/><p>x</p>')
+    _exempt(tmp_path, "1-002", kind="blank")
+    page(tmp_path, "1-003", _opens("chI"))
+    c = client()
+    outline = c.get("/edition/").text.split("<ul class='outline'>")[1]
+    assert "1-002" not in outline
+    assert c.get("/edition/page/1-002").status_code == 200
+    assert "/edition/page/1-002" in c.get("/edition/page/1-001").text
+
+
+def test_a_blank_with_a_division_on_it_keeps_its_row(tmp_path, client):
+    """Dropping it would drop a Contents entry with it."""
+    _front(tmp_path, ("Intro", 1))
+    page(tmp_path, "1-021", '<pb n="1"/><p>x</p>')
+    _exempt(tmp_path, "1-021", kind="blank")
+    row = _li(client().get("/edition/").text, "Intro<")
+    assert row.startswith("<li class='ol-leaf'>") and "1-021" in row
+
+
+def test_covers_share_a_row_across_a_blank_and_not_across_a_part(tmp_path, client):
+    _toc(tmp_path, "chI")
+    _exempt(tmp_path, "1-001", "1-003", "2-001", kind="cover")
+    _exempt(tmp_path, "1-002", kind="blank")
+    page(tmp_path, "1-004", _opens("chI"))
+    body = client().get("/edition/").text
+    first = _li(body, ">1-001<")
+    assert first.startswith("<li class='ol-covers'") and ">1-003<" in first
+    assert ">2-001<" in _li(body, "/thumb/2-001.jpg") and ">2-001<" not in first
+    assert "src='/edition/thumb/1-003.jpg'" in first
+    # Each opens its scan over the page, and the row is one set to walk.
+    assert "data-lightbox-group" in first
+    assert "data-lightbox='/edition/page/1-003.png'" in first
+
+
+def test_a_cover_with_a_division_on_it_is_a_row_of_its_own(tmp_path, client):
+    _front(tmp_path, ("Intro", 1))
+    page(tmp_path, "1-021", '<pb n="1"/><p>x</p>')
+    _exempt(tmp_path, "1-021", kind="cover")
+    row = _li(client().get("/edition/").text, "Intro<")
+    assert row.startswith("<li class='ol-leaf'>")
+    assert "ol-thumb-cover" in row and "/edition/thumb/1-021.jpg" in row
+
+
+def test_the_map_is_a_picture_on_its_row(tmp_path, client):
+    _toc(tmp_path, "chI")
+    page(tmp_path, "1-003", _opens("chI"))
+    _exempt(tmp_path, "1-005", kind="map")
+    row = _li(client().get("/edition/").text, ">1-005<")
+    assert "ol-thumb-map" in row and "/edition/thumb/1-005.jpg" in row
+
+
+def test_the_bar_links_the_books_map_where_it_has_one(tmp_path, client):
+    _toc(tmp_path, "chI")
+    page(tmp_path, "1-003", _opens("chI"))
+    assert ">Map</a>" not in client().get("/edition/").text
+    _exempt(tmp_path, "1-005", kind="map")
+    body = client().get("/edition/").text
+    assert "href='/edition/page/1-005'>Map</a>" in body
+    # The bar and the thumbnail both open it over the page, as the scan here.
+    assert body.count("data-lightbox='/edition/page/1-005.png'") == 2
+
+
+def test_the_map_opens_as_its_two_layers_where_they_are_built(tmp_path, client):
+    """Half a pair looks like the map and is not it, so the lightbox gets both."""
+    from PIL import Image
+    _exempt(tmp_path, "1-005", kind="map")
+    master = tmp_path / "edition" / "page-img" / "chukchi-1-005.png"
+    layers = tmp_path / "mz" / "page-img"
+    master.parent.mkdir(parents=True)
+    layers.mkdir(parents=True)
+    Image.new("RGB", (8, 8)).save(master)
+    Image.new("RGB", (8, 8)).save(layers / "chukchi-1-005.colour.jpg")
+    Image.new("L", (8, 8)).save(layers / "chukchi-1-005.lines.png")
+    body = client().get("/edition/").text
+    assert "data-lightbox='/edition/leaf/1-005/lines.png'" in body
+    assert "data-lightbox-under='/edition/leaf/1-005/colour.jpg'" in body
+    assert "data-full='/edition/leaf/1-005.png'" in body
+
+
+def test_every_page_loads_the_one_script_and_no_other_of_the_readers(tmp_path, client):
+    _toc(tmp_path, "chI")
+    page(tmp_path, "1-003", _opens("chI"))
+    page(tmp_path, "1-050", '<pb n="1"/><p>x</p>')
+    c = client()
+    for url in ("/edition/", "/edition/lexicon", "/edition/entities",
+                "/edition/annotations", "/edition/page/1-050", "/edition/run/chI"):
+        body = c.get(url).text
+        assert body.count("js/edition.js") == 1, url
+        scripts = set(re.findall(r"js/(\w+)\.js", body))
+        assert scripts <= {"edition", "ratify"}, (url, scripts)
+
+
+def _alphabet_run(root: Path) -> None:
+    (root / "edition").mkdir(parents=True, exist_ok=True)
+    (root / "edition" / "alphabet.json").write_text(json.dumps({"sorts": []}), encoding="utf-8")
+    (root / "edition" / "runs.json").write_text(json.dumps({"runs": [
+        {"id": "alphabet", "kind": "alphabet", "title": "Alphabet", "refs": ["1-030"],
+         "source": "edition/alphabet.json"}]}), encoding="utf-8")
+
+
+def test_the_key_opens_over_the_page_except_on_its_own(tmp_path, client):
+    _alphabet_run(tmp_path)
+    page(tmp_path, "1-003", '<pb n="1"/><p>x</p>')
+    c = client()
+    assert "data-modal='/edition/partial/alphabet'" in c.get("/edition/").text
+    own = c.get("/edition/run/alphabet")
+    assert own.status_code == 200 and "data-modal" not in own.text
+    bare = c.get("/edition/partial/alphabet")
+    assert bare.status_code == 200 and "<html" not in bare.text
+    assert "run-alphabet" in bare.text
+
+
+def test_a_book_with_no_key_has_no_fragment_of_one(tmp_path, client):
+    page(tmp_path, "1-003", '<pb n="1"/><p>x</p>')
+    c = client()
+    assert c.get("/edition/partial/alphabet").status_code == 404
+    assert "data-modal" not in c.get("/edition/").text
+
+
+def test_a_page_joins_the_division_before_it(tmp_path, client):
+    """`1-022` under *Introductory*. The row says a count as a chapter's does, since
+    `draft` is a word about one page."""
+    _front(tmp_path, ("Intro", 1), ("Auth", 3))
+    # Signed where a division opens: a draft's `<pb>` is no folio witness.
+    page(tmp_path, "1-021", '<pb n="1"/><p>x</p>')
+    draft(tmp_path, "1-022", '<pb n="2"/><p>x</p>')
+    page(tmp_path, "1-023", '<pb n="3"/><p>x</p>')
+    body = client(drafts=True).get("/edition/").text
+    row = _li(body, "Intro<")
+    assert "href='/edition/page/1-021'" in row and "href='/edition/page/1-022'" in row
+    assert "1 of 2 checked" in row and "draft-tag'>draft" not in row
+    assert body.count("<li class='ol-page'>") == 2
+
+
+def test_a_joined_row_of_signed_pages_says_no_count(tmp_path, client):
+    _front(tmp_path, ("Intro", 1), ("Auth", 3))
+    for ref, n in (("1-021", 1), ("1-022", 2), ("1-023", 3)):
+        page(tmp_path, ref, f'<pb n="{n}"/><p>x</p>')
+    row = _li(client().get("/edition/").text, "Intro<")
+    assert "href='/edition/page/1-022'" in row and "checked" not in row
+
+
+@pytest.mark.parametrize("hole", ["gap", "leaf"])
+def test_a_page_does_not_join_across_a_hole(tmp_path, client, hole):
+    _front(tmp_path, ("Intro", 1), ("Auth", 3))
+    page(tmp_path, "1-021", '<pb n="1"/><p>x</p>')
+    if hole == "leaf":
+        _exempt(tmp_path, "1-022")
+    page(tmp_path, "1-023", '<pb n="2"/><p>x</p>')
+    page(tmp_path, "1-024", '<pb n="3"/><p>x</p>')
+    body = client().get("/edition/").text
+    assert ">1-023<" not in _li(body, "Intro<")
+    assert _li(body, ">1-023<").startswith("<li class='ol-page'>")
+
+
+def test_a_page_does_not_join_when_the_next_entry_is_unplaced(tmp_path, client):
+    """"Lost" might open on this very leaf, so the span has no known end."""
+    _front(tmp_path, ("Intro", 1), ("Lost", 99))
+    page(tmp_path, "1-021", '<pb n="1"/><p>x</p>')
+    page(tmp_path, "1-022", '<pb n="2"/><p>x</p>')
+    assert ">1-022<" not in _li(client().get("/edition/").text, "Intro<")
+
+
+def test_a_rows_tags_come_before_its_number(tmp_path, client):
+    _toc(tmp_path, "chI")
+    draft(tmp_path, "1-001", '<pb n="1"/><p>x</p>')
+    draft(tmp_path, "1-003", _opens("chI"))
+    body = client(drafts=True).get("/edition/").text
+    for row in (_li(body, ">1-001<"), _li(body, "Chapter I<")):
+        assert row.index("draft-tag") < row.index("class='ol-at'")
+
+
+def _jpeg(resp):
+    from io import BytesIO
+
+    from PIL import Image
+    assert resp.status_code == 200 and resp.headers["content-type"] == "image/jpeg"
+    with Image.open(BytesIO(resp.content)) as im:
+        return im.format, im.size
+
+
+def test_a_thumbnail_is_a_jpeg_of_its_kinds_width(tmp_path, client):
+    _exempt(tmp_path, "1-001", kind="cover")
+    _exempt(tmp_path, "1-005", kind="map")
+    _raster(tmp_path, "1-001")
+    _raster(tmp_path, "1-005")
+    c = client()
+    assert _jpeg(c.get("/edition/thumb/1-001.jpg")) == ("JPEG", (100, 140))
+    assert _jpeg(c.get("/edition/thumb/1-005.jpg")) == ("JPEG", (720, 1008))
+
+
+def test_a_thumbnail_prefers_the_editors_leaf(tmp_path, client):
+    from PIL import Image
+    _exempt(tmp_path, "1-005", kind="map")
+    _raster(tmp_path, "1-005")
+    master = tmp_path / "edition" / "page-img" / "chukchi-1-005.png"
+    master.parent.mkdir(parents=True)
+    Image.new("RGB", (2000, 1000), "red").save(master)
+    assert _jpeg(client().get("/edition/thumb/1-005.jpg"))[1] == (720, 360)
+
+
+def test_only_the_kinds_the_index_shows_small_have_a_thumbnail(tmp_path, client):
+    _exempt(tmp_path, "1-002", kind="blank")
+    page(tmp_path, "1-003", '<pb n="1"/><p>x</p>')
+    _exempt(tmp_path, "1-009", kind="cover")      # ruled, and no raster to shrink
+    _raster(tmp_path, "1-002")
+    _raster(tmp_path, "1-003")
+    for ref in ("1-002", "1-003", "1-009"):
+        assert client().get(f"/edition/thumb/{ref}.jpg").status_code == 404, ref

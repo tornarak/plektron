@@ -6,7 +6,8 @@
    and what is around me. So every top-level division is shown, and what stands
    open is the division you are in, unrolled whole — whole because a chapter
    opened to the one row that matched shows you the row you already had and hides
-   its neighbours, which is the opposite of a locator.
+   its neighbours, which is the opposite of a locator. An entry or a form asks a
+   third question, where it is talked about, and `_toc_panel` sends only those rows.
 
    **Only what stands open is rendered.** A shut division's sections used to be
    served too, folded away, on every page: 316 rows, ~77 KB of an ~80 KB entity
@@ -21,13 +22,13 @@
 
    **`<details>` and not a script**, for the map tree's reason: disclosure is what
    the element is, and folding an open division back up needs nothing more.
-   `sidebar.js` scrolls the mark into view and follows the reading in a chapter.
+   `edition.js` scrolls the mark into view and follows the reading in a chapter.
 
    **No ids.** `_toc.html` gives every row its `toc-{id}` anchor, and on the
    Contents run this panel renders beside it — a second copy of those ids on one
    page, which is the one thing an id may not be. Nothing links into this panel;
    the mark is found by its class. `data-toc` names the entry, which is how
-   `sidebar.js` finds the row for the heading being read.
+   `edition.js` finds the row for the heading being read.
 
    Row classes are `_toc.html`'s — `.toc-title`, `.toc-num`, `.page-no` — so the
    two renderings of one store share their vocabulary and their link rule: live

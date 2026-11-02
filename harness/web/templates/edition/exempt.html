@@ -1,13 +1,9 @@
 {% extends "edition/base.html" %}
 {% block title %}{{ ref }} — {{ work.title }}{% endblock %}
 
-{# Both buttons, and the empty aside below, exist because `edition.js` looks all
-   of them up unconditionally at load — a missing one throws and takes the arrow
-   keys with it, which are how a reader crosses a plate. Cheaper and steadier
-   than making the script defensive about a page shape it will meet 115 times. #}
 {% block btn_extra %}
-    <button id='scan-btn' title='Open Scan in New Tab'>🗗</button>
-    <button id='reader-btn' title='Reader View'>📕</button>
+    <button data-scan='{{ state.ref }}' title='Scan of this leaf'>🗗</button>
+    <button data-toggle-class='reader' data-toggle-store='edition-reader' title='Reader View'>📕</button>
 {% endblock %}
 
 {# The same neighbours macro as `page.html`, and it has to be: a reader walking
@@ -119,6 +115,4 @@ target='_blank' rel='noopener'>The raw scan</a> is unchanged.</p>
 {% endblock %}
 
 {% block page_scripts %}
-<script src="{{ assets }}/js/sidebar.js"></script>
-<script src="{{ assets }}/js/edition.js"></script>
 {% endblock %}

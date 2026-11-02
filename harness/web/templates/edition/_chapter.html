@@ -10,12 +10,13 @@
    The printed folio where one is known, else the scan ref; neither is derivable
    from the other, so the title names both. #}
 {% macro leafmark(l) -%}
-<a class='leaf-mark' id='{{ l.anchor }}' href='#{{ l.anchor }}'
+<span class='leaf-at'><a class='leaf-mark' id='{{ l.anchor }}' href='#{{ l.anchor }}'
    title='leaf {{ l.ref }}{% if l.folio %}, folio {{ l.folio }}{% endif %}{%
      if l.rank == "draft" %} — machine draft{% endif %}'>{%
    if l.folio_anchor %}<span id='{{ l.folio_anchor }}'></span>{% endif
-   %}[{{ l.folio or l.ref }}]{%
-   if l.rank == 'draft' %}<span class='run-tag'>draft</span>{% endif %}</a>
+   %}[{{ l.folio or l.ref }}]</a><a class='leaf-scan' data-scan='{{ l.ref }}' href='{{ l.scan }}'
+   target='_blank' rel='noopener' title='scan of leaf {{ l.ref }}'>🗗</a>{%
+   if l.rank == 'draft' %}<span class='run-tag'>draft</span>{% endif %}</span>
 {%- endmacro %}
 
 {# The part of a shared leaf that is the neighbouring chapter's: kept, greyed, and

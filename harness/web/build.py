@@ -36,7 +36,6 @@ from __future__ import annotations
 
 import json
 import multiprocessing
-import re
 import shutil
 import tempfile
 import threading
@@ -64,7 +63,6 @@ OUT_MARK = ".edition-build"
 #: URL derived here is the one the script builds, character for character.
 _JS_SAFE = "!~*'()"
 
-_STATE = re.compile(r"const STATE = (\{.*?\});</script>", re.S)
 
 
 def norm_base(base: str) -> str:
@@ -73,12 +71,14 @@ def norm_base(base: str) -> str:
     return "" if b == "/" else b
 
 
-def site_app(root: Path, base: str, drafts: bool = False) -> FastAPI:
+def site_app(root: Path, base: str, drafts: bool = False,
+             home: str | None = None) -> FastAPI:
     """The reading view alone, mounted at `base`, rendering for a static host.
 
     Not `create_app`: that is one server for four tools, and its port middleware
     reads the first path segment as an editor's name. A site has one tool and
-    may sit at the host's root.
+    may sit at the host's root. `home` is the landing page above this text, where
+    there is one (`web/site.py`); a site built alone has nothing above it to link.
     """
     from . import edition
 
@@ -88,6 +88,7 @@ def site_app(root: Path, base: str, drafts: bool = False) -> FastAPI:
     app.state.assets = f"{base}/static"
     app.state.static = True
     app.state.drafts = drafts
+    app.state.home = home
     app.include_router(edition.router, prefix=base)
     return app
 
@@ -128,7 +129,7 @@ def _derived(tree, base: str) -> list[str]:
         a = el.attrib
         cls = f" {a.get('class', '')} "
         if "data-ref" in a:
-            # `hover.js` `urlFor`, `edition.js` `openEntity`, `map.js` `click`.
+            # `edition.js` `urlFor`, `edition.js` `openEntity`, `map.js` `click`.
             out.append(f"{base}/partial/entity/{_enc(a['data-ref'])}")
         if "data-atlas" in a:                                   # `map.js` `paint`
             out.append(a["data-atlas"])
@@ -140,21 +141,19 @@ def _derived(tree, base: str) -> list[str]:
             out += [f"{base}/partial/entity/{_enc(i)}" for i in a["data-warm"].split()]
         if "data-fig" in a:                                     # `edition.js` `openFigure`
             out += [f"{base}/fig/{p}.png" for p in a["data-fig"].split(",") if p]
-        if "data-ipa" in a:                                     # `speak.js`
+        if "data-ipa" in a:                                     # `edition.js`
             out.append(f"{base}/tts/{_enc(a['data-ipa'])}.wav")
         if "data-full" in a:                                    # the lightbox
             out.append(a["data-full"])
+        if "data-lightbox" in a:                                # `edition.js`, the same
+            out.append(a["data-lightbox"])
+        if "data-lightbox-under" in a:
+            out.append(a["data-lightbox-under"])
+        if "data-modal" in a:                                   # `edition.js` `openModal`
+            out.append(a["data-modal"])
+        if "data-scan" in a:                                    # `edition.js` `openScan`
+            out.append(f"{base}/page/{a['data-scan']}.png")
     return out
-
-
-def _scans(text: str, base: str) -> list[str]:
-    """The rasters the scan card asks for: `STATE.ref`, or a run's `leaves`."""
-    m = _STATE.search(text)
-    if not m:
-        return []
-    state = json.loads(m.group(1))
-    refs = state.get("leaves") or ([state["ref"]] if state.get("ref") else [])
-    return [f"{base}/page/{r}.png" for r in refs]
 
 
 def _shapes(atlas: dict, base: str) -> list[str]:
@@ -171,7 +170,7 @@ def _shapes(atlas: dict, base: str) -> list[str]:
 def _links(text: str, base: str) -> list[str]:
     tree = LH.fromstring(text)
     found = [link for _el, _attr, link, _pos in tree.iterlinks()]
-    return found + _derived(tree, base) + _scans(text, base)
+    return found + _derived(tree, base)
 
 
 def _canon(path: str) -> str:
@@ -288,7 +287,7 @@ def _clearable(root: Path, out: Path) -> None:
 
 
 def build(root: Path, out: Path, base: str = "", drafts: bool = False,
-          jobs: int | None = 1, tick=None) -> Site:
+          jobs: int | None = 1, tick=None, home: str | None = None) -> Site:
     """Write the site under `out` and say what failed. `out` is cleared first:
     a file left over from an earlier build would be served as though this one
     had written it. `_clearable` says what may be cleared. `jobs=None` sizes the
@@ -310,11 +309,11 @@ def build(root: Path, out: Path, base: str = "", drafts: bool = False,
         n = parallel.cpu_workers(jobs, MAX_LEVEL)
         if n == 1:
             # The control arm: no pool at all, one client, today's crawl.
-            with TestClient(site_app(root, base, drafts)) as client:
+            with TestClient(site_app(root, base, drafts, home)) as client:
                 seen = _crawl(lambda urls: (_fetch(client, u, base) for u in urls),
                               site, fold, tick)
         else:
-            seen = _pooled(root, base, drafts, n, site, fold, tick)
+            seen = _pooled(root, base, drafts, home, n, site, fold, tick)
         # Not reached, as distinct from reached and refused: that row is written.
         for url in sorted(_expected(root, base) - seen):
             site.refuse(url, "nothing links to it")
@@ -368,13 +367,14 @@ def _warm(root: Path) -> None:
             pass
 
 
-def _worker_init(root: str, base: str, drafts: bool, log_dir: str) -> None:
+def _worker_init(root: str, base: str, drafts: bool, home: str | None,
+                 log_dir: str) -> None:
     global _WORKER
     parallel.capture_stderr(log_dir)
     # Joins the snapshot a fork inherited; starts one in a `forkserver` worker.
     snapshot = cache.frozen()
     snapshot.__enter__()
-    _WORKER = (TestClient(site_app(Path(root), base, drafts)), base, snapshot)
+    _WORKER = (TestClient(site_app(Path(root), base, drafts, home)), base, snapshot)
 
 
 def _work(urls: list[str]) -> list[_Fetched]:
@@ -383,14 +383,14 @@ def _work(urls: list[str]) -> list[_Fetched]:
     return [_fetch(client, u, base) for u in urls]
 
 
-def _pooled(root: Path, base: str, drafts: bool, n: int, site: Site, fold,
-            tick) -> set[str]:
+def _pooled(root: Path, base: str, drafts: bool, home: str | None, n: int, site: Site,
+            fold, tick) -> set[str]:
     _warm(Path(root))
     method = "fork" if threading.active_count() == 1 else "forkserver"
     log_dir = tempfile.mkdtemp(prefix="edition-build-")
     with ProcessPoolExecutor(n, mp_context=multiprocessing.get_context(method),
                              initializer=_worker_init,
-                             initargs=(str(root), base, drafts, log_dir)) as pool:
+                             initargs=(str(root), base, drafts, home, log_dir)) as pool:
         def fetch(urls: list[str]):
             # Chunks several times the worker count, so a slow page does not
             # own a level's tail; `buffersize` bounds the bodies held unread.

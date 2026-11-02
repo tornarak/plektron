@@ -1,4 +1,5 @@
 {% extends "edition/base.html" %}
+{% from "edition/_lightbox.html" import lightbox %}
 {% block title %}{{ work.title }}{% endblock %}
 
 {# The book's outline, in the binding's order — `edition._outline` says how the
@@ -22,6 +23,13 @@
   {% if n.folio_url %}<a class='page-no' href='{{ n.folio_url }}'>{{
     n.page_start }}</a>{% elif n.page_start %}<span
     class='page-no'>{{ n.page_start }}</span>{% endif %}
+{%- endmacro %}
+
+{# Where a row is: the scan, and the folio where one is known. Floated right as a
+   unit, after the title and the tags, so a row reads title, tags, number. #}
+{% macro at(ref, url, folio=None) -%}
+  <span class='ol-at'><a class='ref' href='{{ url }}'>{{ ref }}</a>{% if folio
+    %}<span class='page-no'>{{ folio }}</span>{% endif %}</span>
 {%- endmacro %}
 
 {# A division's sections, nested as the Contents nests them. All of them: this
@@ -66,23 +74,33 @@ have been checked.</p>
     {% for n in row.nodes %}{{ division(n, row.url) }}{% else
     %}<a class='toc-title' href='{{ row.url }}'>{{ row.run.title }}</a>
     <span class='run-tag'>apparatus</span>{% endfor %}
-    <a class='ref' href='{{ row.url }}'>{{ row.ref }}</a>
     {% if row.status %}<span class='draft-tag'>{{ row.status }}</span>{% endif %}
+    {{ at(row.ref, row.url) }}
     {% for n in row.nodes %}{{ sections(n.children) }}{% endfor %}
+  </li>
+{% elif row.kind == 'covers' %}
+  <li class='ol-covers' data-lightbox-group>
+    {% for c in row.leaves %}<a class='ol-thumb ol-thumb-cover' {{ lightbox(c.lightbox) }} href='{{ c.url }}'><img
+      src='{{ c.thumb }}' loading='lazy' alt='cover, scan {{ c.ref }}'><span
+      class='ref'>{{ c.ref }}</span></a>
+    {% endfor %}
   </li>
 {% elif row.kind == 'leaf' %}
   <li class='ol-leaf'>
     {% for n in row.nodes %}{{ division(n, row.url) }}{% endfor %}
-    <a class='ref' href='{{ row.url }}'>{{ row.ref }}</a>
     <span class='leaf-tag'>{{ row.leaf_kind }}</span>
+    {{ at(row.ref, row.url) }}
     {% for n in row.nodes %}{{ sections(n.children) }}{% endfor %}
+    {% if row.thumb %}<a class='ol-thumb ol-thumb-{{ row.leaf_kind }}'{% if row.lightbox
+      %} {{ lightbox(row.lightbox) }}{% endif %} href='{{ row.url }}'><img
+      src='{{ row.thumb }}' loading='lazy' alt='{{ row.leaf_kind }}, scan {{ row.ref }}'></a>{% endif %}
   </li>
 {% elif row.kind == 'page' %}
   <li class='ol-page'>
     {% for n in row.nodes %}{{ division(n, row.url) }}{% endfor %}
-    <a class='ref' href='{{ row.url }}'>{{ row.ref }}</a>
-    {% if row.folio %}<span class='page-no'>{{ row.folio }}</span>{% endif %}
     {% if row.draft %}<span class='draft-tag'>draft</span>{% endif %}
+    {% if row.status %}<span class='draft-tag'>{{ row.status }}</span>{% endif %}
+    {% for l in row.leaves %}{{ at(l.ref, l.url, l.folio) }}{% endfor %}
     {% for n in row.nodes %}{{ sections(n.children) }}{% endfor %}
   </li>
 {% elif row.kind == 'toc' %}

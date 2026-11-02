@@ -25,19 +25,7 @@
 </div>
 {% endblock %}
 
-{# `edition.js` last, and after `hover.js` for that file's reason — its `fill`
-   reads the memo hover publishes.
-
-   **It belongs here and not only on `page.html`.** This template carries the
-   same sidebar, so it has the same stack, and the same partials render into it —
-   which means the same links. Without this file a card page showed an `a.yt`
-   or an `a.ent` that nothing was listening for: the anchor looked live, and the
-   click left the edition. The scripts a template loads have to follow the markup
-   its partials emit, not the route that happens to reach it. #}
+{# `base.html` loads `edition.js` after these. #}
 {% block page_scripts %}
-<script src="{{ assets }}/js/sidebar.js"></script>
 <script src="{{ assets }}/js/ratify.js"></script>
-<script src="{{ assets }}/js/hover.js"></script>
-<script type="module" src="{{ assets }}/js/map.js"></script>
-<script src="{{ assets }}/js/edition.js"></script>
 {% endblock %}

@@ -1127,9 +1127,39 @@ The listing at `/edition/` was scan numbers with a word beside each — `1-031
 I. Names and Habitat`, `1-361 map` — and the book's own shape was invisible in
 it. It is now the printed Contents in the binding's order, under a heading per
 part: a chapter's row links to its run and carries its sections nested as the
-Contents nests them, and every leaf outside a chapter — the covers, the blanks,
-the map, the front matter — stands between the chapters as a quiet row of its
-own. `edition._outline` builds it.
+Contents nests them, and every leaf outside a chapter stands between the chapters:
+the front matter as rows, the covers as a wrapping row of small pictures, the map
+as a larger one. `edition._outline` builds it. Scan numbers float right, as folios
+do, with a row's tags before them.
+
+**A blank has no row, and nothing else changes for it.** It stays in the listing,
+so prev/next walk it and the build reaches it. A blank with a division placed on it
+keeps its row, so no Contents entry is lost.
+
+**A page with no division of its own joins the division before it**, which is how
+`1-022` sits under *Introductory*. It is `chapters.py`'s arithmetic and carries its
+limit: the leaf must follow directly, and the next Contents entry must be placed or
+absent, since an unplaced one might open on that leaf. This groups the row and does
+not make a run: each page is still its own document.
+
+**A thumbnail is made on request, at `/thumb/{ref}.jpg`**, because the leaves
+themselves would put about 7 MB on the index. `edition_ui.THUMBS` says which kinds
+have one and how wide. It is downscaled and nothing else, from the editor's leaf
+where there is one, and it is never read as evidence.
+
+**Two overlays, each declared on an ordinary link whose `href` still works with no
+script.** `data-lightbox` names a picture (with `data-lightbox-under`, `data-full`
+and `data-caption`) and `data-modal` a fragment to show in a `<dialog>`. The bar's
+*Map* and the map's thumbnail open the leaf a human ruled `map`, which is the book's
+own map and not the footer's *atlas*. The bar's *Key* opens `/partial/alphabet`, on
+every page but the Key's own. `build._derived` restates both attributes.
+
+**One script, for every page of every edition.** `base.html` loads `edition.js` and
+a page adds nothing of the reader's own: the head of that file lists the attributes
+it acts on, which is the contract a later edition follows. A page with no stack
+leaves the links that would open a card to their hrefs. The map is the one thing kept
+out, since it is about as large again and most pages have none: `data-atlas` on the
+pane is what imports `map.js`. `ratify.js` is the editor's and stays its own file.
 
 **Two orders, and a division sits in both only where something places it.** The
 scan order is the binding's; the Contents' order is the book's. A division is
@@ -1200,9 +1230,9 @@ what the leaf carries and what a reader recognises, while the index and every
 `source.refs` and is read only where the two agree in length — pairing them off
 anyway when they disagree would attach a folio to the wrong leaf.
 
-**The scans are the scan button's.** A run is one document whose scans are
-several, so 🗗 shows the whole span in succession in one card; the leaf mark does
-not link to a raster. Page numbers are set hard right, as the book sets them, and
+**Each leaf mark carries its own scan.** A run is one document whose scans are
+several, and a reader consulting one is at one leaf of it, so the 🗗 beside each
+mark opens that leaf's scan in a card, and the bar has no button for the span. Page numbers are set hard right, as the book sets them, and
 **without dot leaders**: those are typesetting rather than text — the printer
 carrying the eye across a gap this layout does not have — and reproducing them
 would put marks on the page that are in no store.
@@ -1577,6 +1607,14 @@ it, since `apparatus.folio_of` is a scan of the whole index per ref; `_by_folio`
 tallies a ref list onto folios, and a ref the index cannot place drops out, which
 is the rule the marks follow everywhere else.
 
+**And it holds only those rows** (`edition._sparse`): each one with a count, and
+what holds it, in the printed order with its folio. The question here is not "where
+am I", and a passing name's panel was twenty-five chapter titles around the one that
+held it. A row gone now reads as "not in this chapter", so what could not be placed
+is counted under the tree: *2 mentions of 380 not placed in the printed Contents*.
+An entry with no placed mention keeps the whole outline, since there is nothing to
+thin. A form's card does the same in pages.
+
 **A form's card is marked the same way, by attestation**, and it needs no further
 warrant than the entity's: the lexicon's identity *is* the form, so no alias table
 stands between the word and the pages. There is nothing to be wrong about, and the
@@ -1641,7 +1679,7 @@ an absence loses more than it says, and the card's own rows already say it.
 ### A footnote read where it is cited
 
 **Nothing is fetched and nothing is re-rendered.** `page.html` already puts every
-note into `#foot`, server-side, from `doc.notes`; `notes.js` floats that note's own
+note into `#foot`, server-side, from `doc.notes`; `edition.js` floats that note's own
 body beside the marker citing it. A popup with its own renderer would be a second
 spelling of text the server has already sent.
 
@@ -1661,7 +1699,7 @@ set against its right edge lands somewhere different for every note.
 
 **A kept note is a place.** It is something you *read*, and a note routinely
 holds an entity link of its own, so the price is the guard in the outside-click handler,
-which spares clicks landing inside it. `hover.js` publishes its `place` on
+which spares clicks landing inside it. `edition.js` publishes its `place` on
 `window.CARDS` so the two things that float beside a link in this text are put
 there by one piece of arithmetic.
 
@@ -1828,7 +1866,7 @@ that union with its own `data-ent`s when it loads. That is the whole of "an entr
 preloads its ancestors and descendants".
 
 **Resting on a link fetches its card, and resting longer floats it**
-(`static/js/hover.js`). Two behaviours over one fetch, memoised by URL — the one
+(`static/js/edition.js`). Two behaviours over one fetch, memoised by URL — the one
 string this and the stack both already hold, so a card rested on before it was
 clicked opens with nothing to wait for. The preview renders the *same*
 `/partial/` fragment the stack renders; there is one template per kind of card
@@ -2034,6 +2072,25 @@ the parent's warmed corpus caches. The parent takes their results in the order
 it handed them out, so the crawl follows links, refuses and writes exactly as
 the serial one does. `--jobs 1` is that serial crawl, and the two build the
 same bytes.
+
+### The public site is those builds under one page
+
+`harness site build OUT` writes `OUT/index.html` and runs that build for each text
+whose `project.json` declares `publish`. Going public is a declared act, per text
+and tracked, so a text can publish its drafts or only what is collated, and a text
+saying nothing stays off. `harness/web/site.py` holds the rule that decides what
+to rebuild, and `VERBS.md` the flags and marks.
+
+**A rebuild is decided by timestamps, and the rule leans towards rebuilding.** A
+false rebuild costs a minute; a false skip publishes a stale page that nothing
+marks. So upstream is everything but what is shown to be unread, code included.
+`test_every_store_a_build_reads_is_upstream` holds the set against what a build
+reads through the cache. `cache.py` rejects mtimes as a cache key because a stale
+hit there is silent; here they are tolerable only because a tie rebuilds and
+`--force` exists, and the rule's blind spots are listed in `harness/web/site.py`.
+
+**A withdrawn text comes down.** A folder this verb built that no text publishes
+now is deleted, since leaving it would keep serving what the manifest took back.
 
 ## The prose points at itself, and now the pointing works
 

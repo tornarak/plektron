@@ -113,8 +113,8 @@ def test_two_builds_of_one_tree_are_the_same_bytes(tree, tmp_path):
 
 def test_a_link_with_no_file_behind_it_is_refused_and_names_who_links_it(
         tree, tmp_path):
-    """The scan is asked for by the scan card's script, off `STATE.ref` — no
-    href names it, which is exactly the URL a crawl of hrefs alone would miss."""
+    """The scan is asked for by the bar's button, off `data-scan` — no href names
+    it, which is exactly the URL a crawl of hrefs alone would miss."""
     (tree / "scans" / "chukchi-1-021.png").unlink()
     site = build(tree, tmp_path / "site")
     assert [(r["url"], r["from"]) for r in site.rows] == [
@@ -195,3 +195,13 @@ def test_a_build_clears_an_earlier_build(tree, tmp_path):
     (out / "stale.html").write_text("left over")
     build(tree, out)
     assert not (out / "stale.html").exists()
+
+
+def test_a_build_writes_the_thumbnails_the_index_asks_for(tree, tmp_path):
+    zones = tree / "gt" / "zones"
+    zones.mkdir(parents=True, exist_ok=True)
+    (zones / "_cover.lst").write_text("chukchi-1-001.xml\n", encoding="utf-8")
+    _scan(tree, "1-001")
+    site = build(tree, tmp_path / "site", base="/bogoras")
+    assert site.rows == []
+    assert (tmp_path / "site" / "thumb" / "1-001.jpg").is_file()

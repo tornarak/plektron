@@ -150,10 +150,10 @@ Threads on the raster sweeps — `zones check`, `zones paragraphs`, `zones blot`
 `ocr gaps`, `ocr blot`, `fig crops`, `views build`, `scans info`, `scans census`,
 `scans audit`, `scans space` — where the per-page cost is a PNG decode and the
 inflate releases the GIL. **Processes** on the model sweeps — `ocr predict`,
-`train score`, `train install` — and on `scans extract` and `edition build`,
-where the work is single-core CPU-bound inside scipy, shapely, mupdf or the
-renderer's own Python; the model sweeps cap on free VRAM as well as cores,
-`scans extract` and `edition build` on cores alone.
+`train score`, `train install` — and on `scans extract`, `edition build` and
+`site build`, where the work is single-core CPU-bound inside scipy, shapely, mupdf
+or the renderer's own Python; the model sweeps cap on free VRAM as well as cores,
+`scans extract`, `edition build` and `site build` on cores alone.
 On the two `train` actions the flag is **zones only**, since only that track
 segments a checkpoint in memory; naming it on another track exits 2.
 `ocr edit` takes it for the measuring pass `--unsettled` runs before it binds.
@@ -1712,6 +1712,25 @@ PP-NNN         a page; several are several pages
 **Emits** `figrefs` (one row per mark: `ref`, `rank`, `prints`, `state`, `points_at`, `why`) and `counts` (one row per state). `points_at` is the `ref/key` handle rather than a URL, so a row can be chased into `gt/fig/` or into `scans/fig-crops/`.
 
 ---
+
+## site
+
+The public site: every published text, under one landing page. A repo-level group,
+because it has no single text to be run inside; `--root` names the repo.
+
+### site build OUT
+**Does** write the public site to `OUT`: `index.html`, the landing page (the prose in `site/landing.html`, then each workspace and its texts, with each text's page counts and the licence text of its header), and each text whose `project.json` says `publish` at `OUT/<workspace>/<text>/`, as `edition build` writes it. `"publish": "drafts"` shows `mz/tei/` beside `tei/`; `"collated"` shows `tei/` alone; absent keeps the text off the site.
+**Reads** what `edition build` reads for each stale text, `project.json` and `workspace.json`, `site/landing.html`, and the mtime of everything upstream. **Writes** `OUT`, derived: no `--commit`. **Exit** 0 clean / 1 if any text's build refused anything, which means do not upload this.
+**Note** **`OUT` is never cleared.** It refuses a non-empty `OUT` without `.edition-site`, the mark a site build leaves, and an `OUT` inside a text, a workspace or `harness/`. Each stale text clears only its own folder. A folder holding `.edition-build` that no text publishes now is removed and reported `withdrawn`; a folder without that mark is left alone.
+**Note** **a text is fresh** only with a `.edition-built` stamp, which only a build with no refused row leaves, recording this run's base and drafts, and with every upstream path strictly older than its `.edition-build` mark, which goes down before the build reads anything. A tie rebuilds. **Upstream** is the whole text less `train/` and `pdfs/`, its workspace less `models/` and the other texts, and `harness/` less `tests/`, plus `uv.lock`; `__pycache__` never counts. Directories count, so a deletion is seen. `harness/web/site.py` says why the set is that wide.
+**Note** what the rule cannot see, for which `--force` is the answer: a file put back with an old mtime (`cp -p`, `rsync -t`), a site directory copied without its mtimes, and `espeak-ng` on the host. `git checkout` stamps the present, so it is seen.
+**Note** the rows are `built` (with why), `fresh`, `refused`, `unpublished` and `withdrawn`. The landing page is rewritten every run. `.edition-site`, `.edition-build` and `.edition-built` are the verb's own: leave `.edition-*` out of an upload.
+```
+OUT       the directory to write the site into
+--force   rebuild every published text, whatever the timestamps say
+--jobs N  worker **processes** for the crawl; 1 crawls in this process and builds no pool [cores, capped]
+--root --json --toon --pager
+```
 
 ## find
 

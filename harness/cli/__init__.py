@@ -73,6 +73,7 @@ from . import (
     _ocr,
     _proposal,
     _scans,
+    _site,
     _tei,
     _train,
     _verbs,
@@ -92,7 +93,7 @@ from ._common import (
 )
 
 GROUPS = (_tei, _ocr, _proposal, _zones, _fig, _lexicon, _entity, _annotation,
-          _geo, _edition, _find, _corpus, _scans, _views, _train, _agents,
+          _geo, _edition, _site, _find, _corpus, _scans, _views, _train, _agents,
           _verbs)
 
 

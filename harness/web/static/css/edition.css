@@ -81,7 +81,7 @@ button, .btn { font:inherit; font-family:system-ui,sans-serif; font-size:.8rem;
 button:hover { border-color:var(--accent) }
 main.cols { display:flex; align-items:flex-start; flex-direction: row-reverse; }
 .cols-reversed main.cols { flex-direction: row; }
-#primary { flex:1 1 auto; padding: 0 1rem; min-width:0; max-width:44rem; margin: auto; }
+#primary { flex:1 1 auto; padding: 0 1rem; min-width:0; max-width:44rem; margin: 1rem auto; }
 /* **Idle** is the state that used to be `:empty`, and could not stay so: the
    column now always holds a `#stack` and a `#map-pane`, either of which may have
    nothing in it. Idle means both — no cards and the pane shut — and it is what
@@ -102,7 +102,7 @@ html:not(.side-contents):not(:has(#toc-switch:checked)):not(.side-open):not(:has
 /* `--bar-gap` is how much of the header is still on screen. The header scrolls
    away and the column does not, so a fixed `top:3rem` left a strip of nothing
    above the column for the whole of the book once you were past its first
-   screen. `sidebar.js` keeps it at the header's bottom edge, 3rem at the top of
+   screen. `edition.js` keeps it at the header's bottom edge, 3rem at the top of
    the page and 0 below it; 3rem is the answer without the script. */
 :root { --bar-gap:3rem }
 #secondary { flex: 1; padding: 0.8rem 0.5rem; position:sticky; top:var(--bar-gap);
@@ -742,7 +742,7 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
             font-family:system-ui,sans-serif;font-size:.8rem;margin-bottom:1rem}
 #primary > .neighbours:last-child{margin:1.5rem 0 0}
 .ratify-row{margin-top:.5rem}
-/* Two reading widths: the encyclopedia index is a table of names, the search
+/* Two reading widths: the lexicon is a table of forms, the search
    results carry a line of context either side of the hit and want the room. */
 #primary.index-width{max-width:60rem}
 /* An exempt page is a picture, not prose — see `exempt.html`. */
@@ -763,7 +763,7 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
  * about as the pointer crosses a paragraph.
  *
  * It takes the pointer, because its own links are what a reader reaches for;
- * `hover.js` keeps it open across the gap and opens no preview from inside one.
+ * `edition.js` keeps it open across the gap and opens no preview from inside one.
  * It scrolls rather than clipping, for the same reason.
  *
  * Above `#lightbox`, which is `z-index:10` — a preview under an open lightbox
@@ -780,7 +780,7 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
  * `.card` for its skin, like the preview, and the same three things undone: no
  * width from `#secondary`, no `.tools` to float, no pinned/selected border.
  * A kept note routinely holds an entity link of its own, so this is a place,
- * and `notes.js` carries the outside-click guard that costs.
+ * and `edition.js` carries the outside-click guard that costs.
  *
  * Narrower than the preview (18rem against 24) because a note is prose set at
  * the text's own size, not a card of labelled rows, and shrink-to-fit up to that
@@ -890,13 +890,16 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
 
 /* The leaf mark: where the printed page turned, out in the left margin so it
    never interrupts the list. Grey, small, and a **self-link** — a permalink to
-   this point in the run, which is what a reader wants from a page break. The
-   scans belong to the scan button, which on a run shows the whole span. */
-.run .leaf-mark { position:absolute; left:0; width:2.6rem; text-align:right;
+   this point in the run, which is what a reader wants from a page break. Its scan
+   sits beside it, because a reader consulting a run is at one leaf of it. */
+.run .leaf-at { position:absolute; left:0; width:2.6rem; text-align:right;
   font-family:system-ui,sans-serif; font-size:.7rem; color:var(--dim);
-  text-decoration:none; opacity:.65 }
-.run .leaf-mark:hover { opacity:1; color:var(--fg) }
-.run .leaf-mark .run-tag { margin-left:.2em; font-size:.85em; opacity:.8; display: block; }
+  opacity:.65 }
+.run .leaf-at:hover { opacity:1 }
+.run .leaf-mark, .run .leaf-scan { color:inherit; text-decoration:none }
+.run .leaf-mark:hover, .run .leaf-scan:hover { color:var(--fg) }
+.run .leaf-scan { margin-left:.25em; font-size:.9em }
+.run .leaf-at .run-tag { margin-left:.2em; font-size:.85em; opacity:.8; display: block; }
 /* --- a chapter: its leaves as one text --- */
 /* The page number, Project Gutenberg's way: the mark sits inline exactly where
    the leaf turns, often mid-sentence, and is drawn in the right margin. Absolute
@@ -906,7 +909,7 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
 /* The margin the marks hang in is the column's to reserve: with the sidebar open
    beside it, a mark past `#primary`'s own padding is drawn over the sidebar. */
 #primary:has(.run-chapter) { padding-right:3rem }
-.run-chapter .leaf-mark { position:absolute; left:auto; right:-4.2rem;
+.run-chapter .leaf-at { position:absolute; left:auto; right:-4.2rem;
   width:3.6rem; text-align:left; text-indent:0; font-style:normal;
   font-weight:normal; letter-spacing:0; font-variant:normal }
 /* On a phone that reserve was a fifth of the screen and more, for a mark a few
@@ -914,7 +917,8 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
    margin needs to hold. */
 @media (max-width:600px) {
   #primary:has(.run-chapter) { padding-right:2.9rem }
-  .run-chapter .leaf-mark { right:-2.6rem; width:2.3rem }
+  .run-chapter .leaf-at { right:-2.6rem; width:2.3rem }
+  .run-chapter .leaf-scan { display:block }
 }
 .leaf-exempt { margin:1rem 0 }
 .leaf-gap { font-family:system-ui,sans-serif; font-size:.85rem; color:var(--dim) }
@@ -1026,8 +1030,13 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
    **Several rows can carry it at once, and that is the point.** A page that
    prints two section heads is in both of them — 1-249 sets "Animal Food" and
    "Methods of Cooking" — and the containing chain names only the second, because
-   a chain holds one entry per level by construction. */
-#panel-contents .here { color:var(--fg); box-shadow:-.3rem 0 0 -.15rem var(--accent); padding-left: 0.5em; }
+   a chain holds one entry per level by construction.
+
+   **The rule is the division's alone.** Marks nest, so on every row they stacked a
+   fringe per level and pushed each one further in. Below the division, colour and
+   weight say it. */
+#panel-contents .here { color:var(--fg) }
+#panel-contents .toc-d1.here { box-shadow:-.3rem 0 0 -.15rem var(--accent); padding-left:.5em }
 #panel-contents .here > details > summary, #panel-contents .here > .toc-title
   { font-weight:600 }
 /* A mention count. Beside the title and before the folio, because it belongs to
@@ -1058,10 +1067,10 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
    question: what is in the book, in the binding's order. A division's row is
    the weight `.run .toc-l1` gives a chapter; its sections nest under it and
    indent once per rung, the panel's way, since the markup nests. The leaves
-   between chapters — covers, blanks, the map — are quiet rows: a scan number and
-   one word, because that is all the store says about them. */
+   between chapters are pictures, since a store that only says `cover` has nothing
+   else to show: the covers small and wrapping, the map larger. */
 .outline { list-style:none; margin:0; padding:0 }
-.outline > li { margin:.3rem 0; line-height:1.5 }
+.outline > li { margin:.3rem 0; line-height:1.5; display:flow-root }
 .outline .ol-part { margin-top:1.6rem }
 .outline .ol-part:first-child { margin-top:.4rem }
 .outline .ol-part h4 { margin:0 0 .3rem; font-size:.78rem; letter-spacing:.08em;
@@ -1078,10 +1087,36 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
   font-variant-numeric:tabular-nums }
 .outline .ref:hover { color:var(--fg); text-decoration:underline }
 .outline .ol-leaf, .outline .ol-page { margin:.1rem 0 }
-.outline .ol-leaf > .ref:first-child, .outline .ol-page > .ref:first-child
-  { margin-left:0 }
+/* The scan and any folio float as one, so a row reads title, tags, number; a row
+   of two pages stacks two of them. */
+.outline .ol-at { float:right; clear:right; margin-left:.6rem; white-space:nowrap }
+.outline .ol-at .page-no { float:none; display:inline-block; min-width:2em;
+  margin-left:.4rem; text-align:right }
+.outline .ol-covers { display:flex; flex-wrap:wrap; align-items:flex-end;
+  gap:.4rem; margin:.5rem 0 }
+.outline .ol-thumb { display:block; position:relative; text-decoration:none }
+.outline .ol-thumb img { display:block; border:1px solid var(--rule) }
+.outline .ol-thumb-cover { width:fit-content }
+.outline .ol-thumb-cover img { width:50px; height:auto }
+.outline .ol-thumb-map { width:min(22rem,100%); margin:.4rem auto .8rem; clear:both }
+.outline .ol-thumb-map img { width:100%; height:auto }
+/* The scan number sits on the picture: a strip of the page's own background, so it
+   reads over a printed title as over a blank. */
+.outline .ol-covers .ref { position:absolute; top:1px; left:1px; margin:0;
+  padding:0 .15em; font-size:.6rem; line-height:1.3; color:var(--fg);
+  background:var(--bg) }
+/* --- the modal: whatever a `data-modal` link names --- */
+#modal { width:min(60rem, calc(100vw - 2rem)); max-height:calc(100dvh - 3rem);
+  padding:0; border:1px solid var(--rule); border-radius:4px; background:var(--bg);
+  color:var(--fg) }
+#modal::backdrop { background:rgba(1,1,1,.4) }
+#modal .modal-close { position:sticky; top:.5rem; float:right; margin:.5rem .5rem 0 0;
+  font-size:1.1rem; line-height:1; padding:.2rem .45rem; cursor:pointer }
+#modal .modal-body { padding:.8rem 1.2rem 1.2rem }
+#modal .modal-body h3 { margin-top:0 }
 .outline .draft-tag { margin-left:.4rem }
 .outline .leaf-tag { margin-left:.4rem }
+.outline .ol-leaf > .leaf-tag:first-child { margin-left:0 }
 /* **The folio floats right, on every row that has one**, set as the Contents
    run sets it: dim, tabular, a dotted rule under the live ones. A row is a
    block and not a flex line so the float works the same at every depth and
