@@ -379,7 +379,7 @@ return {show(name) {
     if (!a.classList.contains('fig')) return get(urlFor(a));
     const pairs = (a.dataset.fig || '').split(',').filter(Boolean);
     return Promise.resolve(
-      figureCard(pairs, a.dataset.label, a.dataset.caption || '')
+      window.EDITION.figureCard(pairs, a.dataset.label, a.dataset.caption || '')
         .querySelector('.body').innerHTML);
   }
 
@@ -771,8 +771,11 @@ const openEntity = ref =>
 
 /* The stack, for `map.js` to reach when a click turns out to want a card. That
    file owns the pane and this one owns the stack, and neither reaches into the
-   other's DOM, which is why the hand-off is a named function. */
-window.EDITION = {openEntity: ref => openEntity(ref)};
+   other's DOM, which is why the hand-off is a named function. `figureCard` is
+   for the preview section above, which floats a figure's card before it is
+   pushed — looked up at hover time, so it is published here after the fact. */
+window.EDITION = {openEntity: ref => openEntity(ref),
+                  figureCard: (p, l, c) => figureCard(p, l, c)};
 
 /* A recording, played where it is cited. **The one outbound address the stack
    holds in place**: a supplement whose subject *is* the recording should not
