@@ -462,8 +462,19 @@ return {show(name) {
       box.className = 'card preview';
       document.body.append(box);
     }
+    /* `.figure` is the stylesheet's cue to size the box to the picture rather
+       than cap it and scroll — a figure preview *is* its picture. */
+    box.classList.toggle('figure', a.classList.contains('fig'));
     box.innerHTML = '<div class="body">' + html + '</div>';
     place(a, box);
+    /* A crop that arrives after placement changes the box's height, and with
+       it which side of the link had the room. So the box is placed again as
+       each one lands, for as long as it is still this link's. */
+    box.querySelectorAll('img').forEach(i => {
+      if (!i.complete) i.addEventListener('load', () => {
+        if (box && owner === a) place(a, box);
+      }, {once: true});
+    });
   }
 
   /* **On a touch screen the first tap is the hover.** There is no resting on a

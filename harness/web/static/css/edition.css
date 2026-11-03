@@ -846,6 +846,18 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
 .card.preview .tools{display:none}
 .card.preview.pinned{border-color:var(--fg);
   border-width:1px}
+/* A figure's preview is the picture, and a picture that scrolls inside its box
+   is a picture you cannot see. So this one drops the 60vh cap and the stack
+   card's 24rem crop limit: the box takes whatever room `place` found, and the
+   crops scale into what the heading leaves of it, a plate's several sharing it.
+   Flex columns down to the image, with `min-height:0` at each step, is what lets
+   the crop shrink below its natural height; `object-fit:contain` keeps its
+   shape while it does. A picture that fits is at its natural size, since a
+   column grows no larger than its content. */
+.card.preview.figure{max-height:none;overflow:hidden;display:flex;flex-direction:column}
+.card.preview.figure .body{display:flex;flex-direction:column;min-height:0}
+.card.preview.figure .crop-fig{flex:1 1 auto;min-height:0;display:flex}
+.card.preview.figure .crop-fig img{max-height:none;min-height:0;width:100%}
 /* --- the footnote popup ---
  *
  * `.card` for its skin, like the preview, and the same three things undone: no
