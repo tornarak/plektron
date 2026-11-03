@@ -74,7 +74,10 @@
    `data-caption` is what the List of Illustrations' own links carry and these
    once did not, so a card opened from the prose was headed `Plate XIV` and said
    nothing else, naming a number rather than a thing. Same attribute and same
-   handler as the list's, so both routes build the one card.
+   handler as the list's, so both routes build the one card. Resting on it
+   floats that card's body as a preview — the crop — before any click, through
+   the same selector that previews an entity name; `figureCard` in `edition.js`
+   is the one builder behind both.
 
    An unresolved one is not a link and carries no `href` or `tabindex`: its
    reason is on hover — a bare `Fig. 1` no text page carries, a plate figure

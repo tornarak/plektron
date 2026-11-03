@@ -314,7 +314,10 @@ return {show(name) {
  * Two behaviours over one fetch. Resting on a link warms the card so the click
  * costs nothing; resting a little longer floats the card itself beside the
  * link. Both render the *same* `/partial/` fragment the stack renders — there
- * is one template per kind of card and this adds no second one.
+ * is one template per kind of card and this adds no second one. A figure link
+ * has no fragment: its card is `figureCard`'s, built from the link's own
+ * attributes, and the preview floats that card's body — the crop itself, which
+ * is the one thing a reader resting on `Fig. 87` wants to know before clicking.
  *
  * **Why this does not undo the stack.** The stack exists because a reader
  * consulting an entity should not lose their place, and a tooltip that vanishes
@@ -366,6 +369,27 @@ return {show(name) {
       return B + '/partial/lexicon/' + encodeURIComponent(a.dataset.key);
     return B + '/partial/entity/' + encodeURIComponent(a.dataset.ref);
   }
+
+  /* What the preview shows for a link: the fetched fragment, or for a figure
+     link the body of the card `openFigure` would push. Building that card sets
+     the crops' `src`, which starts them loading — so on the prefetch timer this
+     warms the pictures the way `get` warms a fragment, and the preview that
+     follows paints with no wait. */
+  function htmlFor(a) {
+    if (!a.classList.contains('fig')) return get(urlFor(a));
+    const pairs = (a.dataset.fig || '').split(',').filter(Boolean);
+    return Promise.resolve(
+      figureCard(pairs, a.dataset.label, a.dataset.caption || '')
+        .querySelector('.body').innerHTML);
+  }
+
+  /* What floats a preview. `a[data-ref]` and not `a.ent` — the atlas tree's
+     node links are `a.node`, and a hundred entity names in a column is where a
+     preview earns most. `a.fig[data-fig]` is a figure link that resolved —
+     in the prose, or on the List of Illustrations — and its preview is the
+     picture; a `figref.unresolved` carries no `data-fig` and its reason is
+     already on its `title`. */
+  const PREVIEWED = 'a[data-ref], a.lex[data-key], a.fig[data-fig]';
 
   /* Not the map's own tree: those names sit directly under the map, so a
      preview opens on top of the thing the hover was asking about — and the
@@ -453,13 +477,13 @@ return {show(name) {
   window.addEventListener('click', ev => {
     if (!touch) return;
     if (box && box.contains(ev.target)) return;
-    const a = ev.target.closest('a[data-ref], a.lex[data-key]');
+    const a = ev.target.closest(PREVIEWED);
     if (!a || unpreviewed(a)) return;
     if (a === owner) return;   // previewed already: the tap is the click
     ev.preventDefault(); ev.stopPropagation();
     hide();
     link = a;
-    get(urlFor(a)).then(h => show(a, h)).catch(() => {});
+    htmlFor(a).then(h => show(a, h)).catch(() => {});
   }, true);
 
   document.addEventListener('mouseover', ev => {
@@ -472,9 +496,7 @@ return {show(name) {
       link = owner;
       return;
     }
-    /* `a[data-ref]` and not `a.ent` — the atlas tree's node links are `a.node`,
-       and a hundred entity names in a column is where a preview earns most. */
-    const a = ev.target.closest('a[data-ref], a.lex[data-key]');
+    const a = ev.target.closest(PREVIEWED);
     if (!a || unpreviewed(a)) { linger(); return; }
     /* An entity link's body routinely holds an `<em>` or a `.flag`, and
        `mouseover` fires again on each. Restarting the timers there would mean
@@ -485,9 +507,8 @@ return {show(name) {
        name, and the next preview replaces this one when it arrives. */
     linger();
     link = a;
-    const url = urlFor(a);
-    tFetch = setTimeout(() => get(url).catch(() => {}), FETCH_MS);
-    tShow = setTimeout(() => get(url).then(h => show(a, h)).catch(() => {}), DWELL_MS);
+    tFetch = setTimeout(() => htmlFor(a).catch(() => {}), FETCH_MS);
+    tShow = setTimeout(() => htmlFor(a).then(h => show(a, h)).catch(() => {}), DWELL_MS);
   });
 
   /* Capture, because a scroll inside `#secondary` does not bubble to the
@@ -805,11 +826,21 @@ function openScan(ref) {
 function openFigure(pairs, label, caption) {
   pairs = pairs.filter(Boolean);
   if (!pairs.length) return;
+  push('fig:' + pairs.join(','), () => figureCard(pairs, label, caption));
+}
+
+/* The card itself, apart from the stack, because the preview floats the same
+   one beside a figure link while the reader decides. An entity's card is a
+   `/partial/` fragment and the preview fetches it; a figure's is built here
+   from the link's own attributes, and the preview has nothing to fetch — so the
+   one builder is the figure's "one template per kind of card", and a look and
+   a card cannot show two different pictures for one reference. */
+function figureCard(pairs, label, caption) {
   const id = 'fig:' + pairs.join(',');
-  push(id, () => card(id, label || pairs.join(', '), caption || '',
+  return card(id, label || pairs.join(', '), caption || '',
     pairs.map(p => `<div class="crop-fig"><a class="pic" href="${B}/fig/${p}.png"
       target="_blank" rel="noopener"><img src="${B}/fig/${p}.png"
-      alt="${label || p}"></a></div>`).join('')));
+      alt="${label || p}"></a></div>`).join(''));
 }
 
 /* The lightbox, which holds a *set* of pictures and not one.

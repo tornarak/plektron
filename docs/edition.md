@@ -1880,7 +1880,12 @@ preloads its ancestors and descendants".
 string this and the stack both already hold, so a card rested on before it was
 clicked opens with nothing to wait for. The preview renders the *same*
 `/partial/` fragment the stack renders; there is one template per kind of card
-and this adds no second one.
+and this adds no second one. A figure link — `a.fig`, in the prose or on the
+List of Illustrations — has no fragment to fetch: its card is built in the script
+from the link's own attributes (`figureCard`), and the preview floats that card's
+body, so resting on `Fig. 87` shows the crop before any click and the look and
+the card cannot name two different pictures. Building the card sets the crops'
+`src`, which is what the prefetch timer warms there in place of a fetch.
 
 A floating preview used to be argued against here, and the argument was that a
 tooltip which vanishes is no substitute for a stack. It is not, and the preview
