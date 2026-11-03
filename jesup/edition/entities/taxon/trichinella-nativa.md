@@ -16,8 +16,8 @@
 The freeze-resistant arctic *Trichinella*, carried by walrus, seal, bear and dog
 and taken by people from their meat.
 
-**The book never names it; it is the identification offered for
-[[being:iteyun]]** — the nervous disease of chukchi-1-064 that Bogoras calls “akin to
-epilepsy” and that kills every sufferer. Described as a species in 1972, long
+**The book never names it; it is one candidate for [[being:iteyun]]** — the
+nervous disease of chukchi-1-064 that Bogoras calls “akin to epilepsy”, an
+identification left unresolved there. Described as a species in 1972, long
 after Bogoras.
 

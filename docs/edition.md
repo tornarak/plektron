@@ -58,6 +58,13 @@ Always, and the class is half the name rather than a prefix on it.
 the same string names both, on the same page, and the book cites him by surname
 alone. A scheme without the class resolves one to the other silently.
 
+**The slug is an opaque label, never a spelling.** `being:kaleli-tairgin` drops
+the `ɪ` and `ˊ` of Kalêˊlɪ-taˊɪrg̣ɪn on purpose, and nothing may read it back as
+the form. Unlike a lexicon entry, whose identity *is* its form and whose URL
+therefore carries that form whole, an entity has many aliases and no one
+spelling to encode; the slug stays put while the canonical name in the heading
+is corrected under it.
+
 The class lives twice, deliberately. On disk it is the directory —
 `edition/entities/person/jochelson.md`, because a colon in a filename is a portability
 trap. Inside the file it is the first half of the `#` heading. `entity check`
@@ -2826,10 +2833,10 @@ almost nothing, which is the honest answer — most of this bibliography is a
 **`fill` is the third verb and makes no identification at all.** Where an entry
 already carries a `link: wikipedia:…` a human chose, the QID behind that article
 is not a second opinion about which item is meant — it is the same
-identification, read off the sitelink backwards. Ten `being:` entries are why it
-exists: `taˊɪrg̣ɪn` is filed at *Addison's disease* and `iteˊyun` at
-*Trichinellosis*, editorial readings no query would have made, and the QIDs
-follow from them mechanically.
+identification, read off the sitelink backwards. The `being:` entries are why it
+exists: `taˊɪrg̣ɪn` is filed at *Addison's disease* and `Kalêˊlɪ-taˊɪrg̣ɪn` at
+*Vitiligo*, editorial readings no query would have made, and the QIDs follow
+from them mechanically.
 
 `animal:` is not searched — a reindeer its herder called by name is not in
 Wikidata and never will be — and the four geographical classes are not either,
