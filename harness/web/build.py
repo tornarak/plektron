@@ -11,7 +11,9 @@ URLs the scripts build out of `data-` attributes, which this file states rule by
 rule in `_derived`. The stores are read only afterwards, to ask what was *not*
 reached: an entity, an annotation or a run that exists and that nothing links to
 is an orphan, and a site seeded from the stores would publish it and hide that
-nobody can find it.
+nobody can find it. **The one thing the stores add is the retired addresses**
+(`_retired`), and they are not pages: each is fetched only to be written as the
+stub that forwards from it, and refused if it answers with anything else.
 
 What gates — exit 1, one row each:
 
@@ -40,6 +42,7 @@ import shutil
 import tempfile
 import threading
 from collections import deque
+from collections.abc import Set as AbstractSet
 from concurrent.futures import ProcessPoolExecutor
 from dataclasses import dataclass, field
 from html import escape
@@ -52,7 +55,8 @@ from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from lxml import html as LH
 
-from .. import parallel
+from .. import apparatus, chapters, parallel
+from ..state import load_toc
 from . import STATIC, cache, stores
 
 #: What marks a directory as a build's own to clear. Fixed text, so two builds of
@@ -230,12 +234,44 @@ def _expected(root: Path, base: str) -> set[str]:
 
     out = {f"{base}/", f"{base}/atlas", f"{base}/entities",
            f"{base}/annotations", f"{base}/lexicon"}
-    out |= {f"{base}/run/{r['id']}" for r in stores.runs(root) if r.get("id")}
+    out |= {base + apparatus.run_url(r) for r in stores.runs(root) if r.get("id")}
     out |= {f"{base}/entity/{_enc(i)}" for i in stores.load(root)}
     out |= {f"{base}/annotation/{_enc(i)}" for i in stores.annotations(root)}
     # Addressed as the lexicon index addresses them: the key, else the form.
     out |= {f"{base}/lexicon/{_enc(r['key'] or r['form'])}"
             for r in edition._forms(root)}
+    return {_canon(u) for u in out}
+
+
+def _retired(root: Path, base: str) -> set[str]:
+    """Addresses a page was once served at and now forwards from, each of which
+    the build must write as a stub — **must**, because nothing links to them any
+    more, so the crawl alone would never reach them and a published link would
+    404.
+
+    This is not the stores seeding the crawl. That rule is against publishing a
+    *page* nobody can reach, which would hide that it is an orphan; a retired
+    address is not a page, and is fetched only to be refused unless it forwards.
+
+    A chapter's: `/run/{id}`, its address before it had a name, and
+    `/chapter/{ROMAN}`, which forwarded there. And `/chapter/{roman}`, the
+    chapter by number, which no page links either. Only a derived chapter's,
+    since those are the ones that were pages; an underived chapter's roman
+    answers as it always did, and the chaprefs still reach it.
+
+    **A disk that folds case cannot hold both romans**, and the build refuses
+    the second as it refuses any two addresses landing on one file. The hosts
+    a site goes to are case-sensitive.
+    """
+    by_id = {e.get("id"): e for e in load_toc(root)}
+    out = set()
+    for r in stores.runs(root):
+        if r.get("kind") != chapters.KIND:
+            continue
+        out.add(f"{base}/run/{r['id']}")
+        roman = (by_id.get(r.get("toc_id")) or {}).get("chapter")
+        if roman:
+            out |= {f"{base}/chapter/{roman}", f"{base}/chapter/{roman.lower()}"}
     return {_canon(u) for u in out}
 
 
@@ -249,6 +285,8 @@ class _Fetched(NamedTuple):
     links: list[str]
     #: Why the crawl refuses this URL, or "" for a response it writes.
     refused: str = ""
+    #: The response was a 3xx, and `body` is the stub that forwards.
+    redirect: bool = False
 
 
 def _fetch(client: TestClient, url: str, base: str) -> _Fetched:
@@ -259,7 +297,7 @@ def _fetch(client: TestClient, url: str, base: str) -> _Fetched:
     html = ctype.startswith("text/html")
     if r.is_redirect:
         target = r.headers["location"]
-        return _Fetched(True, ctype, _stub(target).encode(), [target])
+        return _Fetched(True, ctype, _stub(target).encode(), [target], redirect=True)
     if r.status_code == 200 or (html and r.status_code in (300, 404)):
         links = (_links(r.text, base) if html
                  else _shapes(r.json(), base) if url == f"{base}/geo/atlas.json"
@@ -307,13 +345,14 @@ def build(root: Path, out: Path, base: str = "", drafts: bool = False,
     # One snapshot of the stores for the whole crawl: `cache.frozen`'s contract.
     with cache.frozen():
         n = parallel.cpu_workers(jobs, MAX_LEVEL)
+        retired = _retired(root, base)
         if n == 1:
             # The control arm: no pool at all, one client, today's crawl.
             with TestClient(site_app(root, base, drafts, home)) as client:
                 seen = _crawl(lambda urls: (_fetch(client, u, base) for u in urls),
-                              site, fold, tick)
+                              site, fold, tick, retired)
         else:
-            seen = _pooled(root, base, drafts, home, n, site, fold, tick)
+            seen = _pooled(root, base, drafts, home, n, site, fold, tick, retired)
         # Not reached, as distinct from reached and refused: that row is written.
         for url in sorted(_expected(root, base) - seen):
             site.refuse(url, "nothing links to it")
@@ -384,7 +423,7 @@ def _work(urls: list[str]) -> list[_Fetched]:
 
 
 def _pooled(root: Path, base: str, drafts: bool, home: str | None, n: int, site: Site,
-            fold, tick) -> set[str]:
+            fold, tick, retired: AbstractSet[str] = frozenset()) -> set[str]:
     _warm(Path(root))
     method = "fork" if threading.active_count() == 1 else "forkserver"
     log_dir = tempfile.mkdtemp(prefix="edition-build-")
@@ -397,15 +436,20 @@ def _pooled(root: Path, base: str, drafts: bool, home: str | None, n: int, site:
             size = max(1, min(32, len(urls) // (n * 4)))
             chunks = [urls[i:i + size] for i in range(0, len(urls), size)]
             return chain.from_iterable(pool.map(_work, chunks, buffersize=2 * n))
-        seen = _crawl(fetch, site, fold, tick)
+        seen = _crawl(fetch, site, fold, tick, retired)
     site.worker_log = parallel.worker_output(log_dir)
     return seen
 
 
-def _crawl(fetch, site: Site, fold, tick) -> set[str]:
+def _crawl(fetch, site: Site, fold, tick,
+           retired: AbstractSet[str] = frozenset()) -> set[str]:
     """Breadth-first from the index over sorted links, writing as it goes.
     `fetch` maps a level's URLs to their `_Fetched`, lazily and in order.
-    Returns every URL it reached."""
+    Returns every URL it reached.
+
+    `retired` (`_retired`) is fetched once the links run out, those the crawl
+    did not already reach, as one more level; each, reached or not, must
+    forward, and one that answers with a page is refused."""
     out, base = site.out, site.base
     assets = f"{base}/static/"
 
@@ -430,24 +474,35 @@ def _crawl(fetch, site: Site, fold, tick) -> set[str]:
                 queue.append(path)
 
     done = 0
-    while queue:
-        level = list(queue)
-        queue.clear()
-        fetched = iter(fetch([u for u in level if "?" not in u]))
-        for url in level:
-            done += 1
-            if tick:
-                tick(url, done, len(seen))
-            if "?" in url:
-                site.refuse(url, "a query string, which a static host ignores")
-                continue
-            f = next(fetched)
-            if f.refused:
-                site.refuse(url, f.refused)
-                continue
-            follow(url, f.links)
-            _write(site, url, f, by_disk, fold)
-    return seen
+    late = sorted(retired)
+    while True:
+        while queue:
+            level = list(queue)
+            queue.clear()
+            fetched = iter(fetch([u for u in level if "?" not in u]))
+            for url in level:
+                done += 1
+                if tick:
+                    tick(url, done, len(seen))
+                if "?" in url:
+                    site.refuse(url, "a query string, which a static host ignores")
+                    continue
+                f = next(fetched)
+                if f.refused:
+                    site.refuse(url, f.refused)
+                    continue
+                if url in retired and not f.redirect:
+                    site.refuse(url, "a retired address, which must forward, "
+                                     "answers with a page")
+                    continue
+                follow(url, f.links)
+                _write(site, url, f, by_disk, fold)
+        unreached = [u for u in late if u not in seen]
+        late = []
+        if not unreached:
+            return seen
+        seen.update(unreached)
+        queue.extend(unreached)
 
 
 def _write(site: Site, url: str, f: _Fetched, by_disk: dict[str, str], fold) -> None:

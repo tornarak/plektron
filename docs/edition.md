@@ -1336,8 +1336,50 @@ different modules and only this stops them drifting:
 `apparatus.locate(ref=| folio=| toc_id=)` is the single resolver, and every
 redirect route goes through it: `/edition/page/{ref}`, `/edition/folio/{n}`,
 `/edition/toc/{id}`. A heading link now resolves through the milestone first —
-the anchor is the heading's own id, inside whichever run holds it — and through
-its folio only where no page has opened it yet.
+the anchor is the heading's own fragment (below), inside whichever run holds it —
+and through its folio only where no page has opened it yet.
+
+### A chapter's address is its name
+
+A chapter is served at `/chapter/xii/religious-ideas`: `chapters.slug`, the roman
+and then the title as two segments, so `/chapter/xii` is the chapter by number.
+`apparatus.run_url` is the one place a run's URL is built. A heading carries a
+fragment by the same rule, `#animals-as-men` (`chapters.fragments`), and a
+chapter's heading fragment is the two segments hyphenated, `#xii-religious-ideas`
+(`chapters.heading`). **One rule
+for both**, `chapters.slugify`: NFD, lowercase, combining marks, spacing modifiers
+and apostrophes deleted, every other run of non-letters one `-`, and a base letter
+outside ASCII kept — `Taˊn˙ñɪn Wars` is `tannɪn-wars`. **An address, not a
+reading:** a Tier-1 form stripped of its marks is not a form, so a slug is never
+displayed.
+
+**The roman is the segment that does not move.** `toc.json` is amended, so a title
+can change under a link. `/chapter/{roman}/{title}` matches the roman
+case-insensitively and renders only the derived chapter's own slug; every other
+spelling — the number alone, `XII` as the prose prints it, a title from before an
+amendment — goes through `locate`, which answers with the slug, or the head's leaf
+for a chapter whose span is underived. It cannot loop: `locate` names a slug only
+for a chapter that renders at it. `/run/{id}`, a chapter's address before it had a
+name, redirects with no fragment of its own, so the reader's survives.
+`edition build` writes `/run/{id}`, `/chapter/XII` and `/chapter/xii` as stubs
+(`build._retired`), since nothing links to them and the crawl alone would never
+reach them. A disk that folds case cannot hold both romans and refuses the second;
+the hosts are case-sensitive.
+
+**A section title twice in the Contents is told apart by what holds it, never by
+order.** Uniqueness is over the whole ToC, because a chapter page renders its
+neighbour's tail and `/page/` renders whatever heads a leaf holds. A colliding
+group climbs one ancestor together, prefixing its title slug — `reindeer-races`
+and `maritime-races` — and a chapter's slug carries its roman, so twins in two
+chapters always part: `iii-trade-anui-fair` and `trade-anui-fair`, whose parents
+are both titled *Trade*. What no ancestor parts keeps its toc id and is an
+`edition runs` error, `fragment-collision`. The real ToC has none.
+
+**An old fragment still lands.** A fragment never reaches the server, so no
+redirect can carry it; instead each heading is preceded by an empty
+`<span class="milestone legacy" id="chXII.3">`. The chapter split and the contents
+tracker in `edition.js` still find a heading by that toc id. Amending a section
+title moves its fragment, and old links still land, on the toc id.
 
 ### Chapter runs: the span is the milestones'
 
@@ -2340,7 +2382,8 @@ reference is a fact about the printed page and where it points is a fact about a
 store that can be incomplete, which is the division `figrefs` is built on
 throughout. It inherits the locator's precursor property with it: the link
 resolves today wherever a witness places the chapter's first folio, and keeps
-resolving unchanged the day that chapter becomes a run with a page of its own.
+resolving unchanged the day that chapter becomes a run with a page of its own —
+which is the chapter's name, `/chapter/xii/religious-ideas`.
 
 **A chapter named by its title is deliberately not matched.** `See chapter on
 shamanism.` would resolve — `Shamanism` is a level-1 title and nothing else — but

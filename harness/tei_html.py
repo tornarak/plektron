@@ -930,8 +930,26 @@ class Renderer:
             # would set the same heading twice, once from the page and once from
             # the ToC. So this is an anchor: the boundary is still in the document
             # and still linkable, and the words stay the ones the compositor set.
-            return f'<span class="milestone anchor {escape(unit)}" id="{escape(n)}"></span>'
+            frag = self._fragment(n)
+            return (self._legacy(n, frag)
+                    + f'<span class="milestone anchor {escape(unit)}" id="{escape(frag)}"></span>')
         return self.milestone_heading(el)
+
+    def _fragment(self, n: str) -> str:
+        """The id a heading carries: its readable fragment where the ToC gives one
+        (`chapters.fragments`), else the toc id, which is also how a collision
+        the gate reports degrades."""
+        return (self.titles.get(n) or {}).get("fragment") or n
+
+    @staticmethod
+    def _legacy(n: str, frag: str) -> str:
+        """**The toc id, kept as an empty anchor before the heading.** `#chXII.3`
+        links already out in the world land here without a script, and the chapter
+        split (`_split_at`) and the contents tracker in `edition.js` still find the
+        heading by the id they always read. Nothing where the two are one id."""
+        if not n or frag == n:
+            return ""
+        return f'<span class="milestone legacy" id="{escape(n)}"></span>'
 
     def milestone_heading(self, el, marks: str = "", anchored: bool = False) -> str:
         """The block head a milestone names, off the ToC. `marks` is a footnote
@@ -939,7 +957,9 @@ class Renderer:
         the id, which is the case when the head is `_head_only`'s paragraph."""
         n = el.get("n") or ""
         unit = el.get("unit") or ""
-        id_attr = "" if anchored else f' id="{escape(n)}"'
+        frag = self._fragment(n)
+        id_attr = "" if anchored else f' id="{escape(frag)}"'
+        legacy = "" if anchored else self._legacy(n, frag)
         label = self.titles.get(n) or {}
         if not label:
             # The id, unstyled, when the ToC has no such entry. Visibly not a
@@ -953,7 +973,7 @@ class Renderer:
             else ""
         )
         return (
-            f'<h2 class="milestone {escape(unit)}"{id_attr}>{num}'
+            f'{legacy}<h2 class="milestone {escape(unit)}"{id_attr}>{num}'
             f'<span class="milestone-t">{escape(label["title"])}{marks}</span></h2>'
         )
 

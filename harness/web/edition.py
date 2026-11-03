@@ -294,7 +294,7 @@ def _outline(request: Request) -> list[dict]:
         run = heads_of.get(ref)
         if run is not None:
             rows.append({"kind": "run", "ref": ref, "run": run, "nodes": here,
-                         "url": f"{base}/run/{run['id']}", "status": _status(run)})
+                         "url": base + apparatus.run_url(run), "status": _status(run)})
         elif ref in kinds:
             kind, url = kinds[ref], f"{base}/page/{ref}"
             if kind == "blank" and not here:
@@ -834,10 +834,10 @@ def _decorate(entry: dict, kind: str, root: Path, index: dict,
         e["anchor"] = apparatus.anchor("toc", e["id"]) if e.get("id") else ""
         e["folio_url"] = _folio_url(e.get("page_start"), index, base)
         # **The heading's own anchor, appended to the folio link.** `tei_html`
-        # gives every `<milestone>` the ToC id as its `@id`, so the fragment is
-        # the id and nothing has to be looked up — the row already knows which
-        # folio opens it and which entry it is. A fragment survives the
-        # `/folio/{n}` redirect, the target carrying none of its own.
+        # gives every `<milestone>` its fragment (`stores.fragments`) as its
+        # `@id`, so the row needs only its entry — it already knows which folio
+        # opens it. A fragment survives the `/folio/{n}` redirect, the target
+        # carrying none of its own.
         #
         # Level 0 is skipped because it is skipped everywhere: front matter never
         # produces a milestone, so there would be no such anchor to land on, and a
@@ -845,7 +845,7 @@ def _decorate(entry: dict, kind: str, root: Path, index: dict,
         # A page that has one but is not collated yet degrades the same way — to
         # the head of the page, which is where the folio link went anyway.
         if e["folio_url"] and e.get("id") and (e.get("level") or 0) in MILESTONE_UNITS:
-            e["folio_url"] += f"#{e['id']}"
+            e["folio_url"] += f"#{stores.fragments(root).get(e['id']) or e['id']}"
         # **The heading itself, where the text opens it**, ahead of the folio.
         # The folio index places about a third of the book, so a chapter whose
         # opening folio nothing witnesses had no link at all — and a witnessed
@@ -1113,7 +1113,12 @@ def run_page(request: Request, run_id: str):
         raise HTTPException(404, f"no run {run_id!r} in edition/runs.json "
                                  "or among the chapters the text opens")
     if run.get("kind") == chapters.KIND:
-        return _chapter_page(request, run, root)
+        # **A chapter's address is its name** (`/chapter/{slug}`), and this was
+        # its address before it had one. The `Location` names no fragment, so
+        # the browser keeps the reader's own — `#chXII.3`, which the page still
+        # carries. The static build writes this as a stub that does the same.
+        return RedirectResponse(_base(request) + apparatus.run_url(run),
+                                status_code=302)
     head = ui.norm_ref((run.get("refs") or [""])[0])
     prev, next_ = _neighbours(request, head)
     leaves, tail = _run_leaves(run, root, _base(request), drafts=_drafts(request))
@@ -1210,14 +1215,14 @@ def _chapter_leaves(request: Request, run: dict, root: Path) -> list[dict]:
                 cut = _split_at(doc["html"], run["toc_id"])
                 if cut:
                     rec["before"], doc["html"] = cut
-                    rec["other_url"] = (f"{base}/run/{prev_ch['id']}#{rec['anchor']}"
+                    rec["other_url"] = (f"{base}{prev_ch['url']}#{rec['anchor']}"
                                         if prev_ch["id"] in served else "")
                     rec["other_title"] = prev_ch["title"]
             if k == len(refs) - 1 and next_ch is not None:
                 cut = _split_at(doc["html"], next_ch["id"])
                 if cut:
                     doc["html"], rec["after"] = cut
-                    rec["other_url"] = (f"{base}/run/{next_ch['id']}#{next_ch['id']}"
+                    rec["other_url"] = (f"{base}{next_ch['url']}#{next_ch['heading']}"
                                         if next_ch["id"] in served else "")
                     rec["other_title"] = next_ch["title"]
         elif path is None and ref in exempt:
@@ -1460,7 +1465,8 @@ def _located(request: Request) -> dict:
     where this view will show something."""
     root = _root(request)
     return {"index": stores.served_folios(root, _drafts(request)),
-            "among": stores.runs(root), "heads": stores.heads(root)}
+            "among": stores.runs(root), "heads": stores.heads(root),
+            "frags": stores.fragments(root)}
 
 
 def _resolved(request: Request, out: dict) -> RedirectResponse | None:
@@ -1501,8 +1507,31 @@ def folio(request: Request, n: int):
 
 
 @router.get("/chapter/{roman}")
-def chapter(request: Request, roman: str):
-    """A chapter, by the roman the prose prints — `See Chapter XII.`
+def chapter_by_number(request: Request, roman: str):
+    """A chapter by its number alone, `/chapter/xii` or `/chapter/XII` as the
+    prose prints it in `See Chapter XII.` Always a redirect: see `chapter`."""
+    return chapter(request, roman, "")
+
+
+@router.get("/chapter/{roman}/{title}")
+def chapter(request: Request, roman: str, title: str):
+    """A chapter: served at `/chapter/xii/religious-ideas`, and found by its
+    roman under any other spelling.
+
+    **The roman is what is read**, matched against the ToC's `chapter` without
+    regard to case. It is the segment that does not move: the title is
+    `toc.json`'s, which is amended, so a link made before a title was corrected
+    still names its chapter.
+
+      * The path is the chapter's `chapters.slug` and the text settles its span:
+        the chapter, rendered.
+      * Any other spelling — the number alone, a roman in capitals, a title from
+        before an amendment — goes through `locate`, as the bare roman always
+        did. It answers with the canonical path, or with the leaf the head
+        stands on for a chapter whose span is underived, or refuses.
+
+    **This cannot loop.** A path reaches `locate` only when it is not a served
+    chapter's slug, and `locate` names a slug only for a served chapter.
 
     **The id is looked up, never built.** `chXII` is `edition/toc.json`'s own
     spelling and concatenating `ch` with the roman would be this route asserting
@@ -1515,10 +1544,15 @@ def chapter(request: Request, roman: str):
     """
     root = _root(request)
     entry = next((e for e in load_toc(root)
-                  if e.get("chapter") == roman and e.get("level") == 1
-                  and e.get("id")), None)
+                  if (e.get("chapter") or "").lower() == roman.lower()
+                  and e.get("level") == chapters.LEVEL and e.get("id")), None)
     if entry is None:
         return _refusal(request, {"nearest": []}, f"Chapter {roman}")
+    run = next((r for r in stores.runs(root)
+                if r.get("kind") == chapters.KIND and r.get("toc_id") == entry["id"]),
+               None)
+    if run is not None and title and f"{roman}/{title}" == run["slug"]:
+        return _chapter_page(request, run, root)
     out = apparatus.locate(root, toc_id=entry["id"], **_located(request))
     return _resolved(request, out) or _refusal(request, out, f"Chapter {roman}")
 
@@ -1621,7 +1655,7 @@ def page(request: Request, ref: str):
     run = stores.run_for(root, ref)
     if run is not None:
         return RedirectResponse(
-            f"{_base(request)}/run/{run['id']}#{apparatus.anchor('leaf', ref)}",
+            f"{_base(request)}{apparatus.run_url(run)}#{apparatus.anchor('leaf', ref)}",
             status_code=302)
     path, rank = tei_html.page_source(ref, root)
     if path is None and ref in stores.exempt(root):

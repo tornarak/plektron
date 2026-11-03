@@ -30,6 +30,8 @@ under another's title, and look exactly like one that had not.
 """
 from __future__ import annotations
 
+import re
+import unicodedata
 from pathlib import Path
 
 from lxml import etree
@@ -97,14 +99,141 @@ def _title(e: dict) -> str:
     return f"{number}. {e.get('title') or ''}" if number else e.get("title", "")
 
 
+# ------------------------------------------------------------ readable addresses
+
+#: Deleted outright rather than turned into a separator: combining marks, spacing
+#: modifiers, and the two apostrophes. `Ke'let` is one word, and `Taˊn˙ñɪn` too.
+_DROP_CATS = frozenset({"Mn", "Lm", "Sk"})
+_DROP_CHARS = frozenset({"'", "’"})
+_WORD = re.compile(r"[^\W_]+")
+
+
+def slugify(text: str) -> str:
+    """A title as an address: `Taˊn˙ñɪn Wars` -> `tannɪn-wars`.
+
+    NFD and lowercase, the marks and apostrophes deleted, and every run of what is
+    not a letter or a digit one `-`. A base letter outside ASCII survives.
+
+    **An address, not a reading.** It asserts no glyph, and a Tier-1 form with its
+    marks stripped is not a form, so a slug is never displayed as text. It is one
+    rule for every readable address, the chapter's path and a heading's fragment
+    alike, so the two cannot drift apart.
+    """
+    s = unicodedata.normalize("NFD", text).lower()
+    s = "".join(c for c in s
+                if c not in _DROP_CHARS and unicodedata.category(c) not in _DROP_CATS)
+    return "-".join(_WORD.findall(s))
+
+
+def _parts(entry: dict) -> tuple[str, ...]:
+    return tuple(p for p in ((entry.get("chapter") or "").lower(),
+                             slugify(entry.get("title") or "")) if p)
+
+
+def slug(entry: dict) -> str:
+    """A chapter's path under `/chapter/`, `xii/religious-ideas`: its roman, then
+    its title.
+
+    **The roman is a segment of its own**, so `/chapter/xii` is the chapter by
+    number, and the half that does not move: `toc.json` is amended apparatus, so
+    the title can change under a link, and the route resolves on the roman and
+    sends any other spelling to this one.
+    """
+    return "/".join(_parts(entry))
+
+
+def heading(entry: dict) -> str:
+    """A chapter heading's fragment, `xii-religious-ideas`: the path's two
+    segments, joined as a fragment joins them. The roman keeps it apart from
+    every section's."""
+    return "-".join(_parts(entry))
+
+
+def url(entry: dict) -> str:
+    """Where a chapter is served, under the reading view's mount. A path, as
+    `apparatus.locate`'s are; the caller prefixes the mount."""
+    return f"/chapter/{slug(entry)}"
+
+
+def _parents(toc: list[dict]) -> dict[str, str]:
+    """`{id: parent id}`: the nearest preceding entry at a lower level, with level
+    0 folded as 1 — the outline's own fold, as `_toc_tree` and `toc_containing`
+    do it. Top-level entries have no row."""
+    out: dict[str, str] = {}
+    stack: list[tuple[int, str]] = []
+    for e in toc:
+        if not e.get("id"):
+            continue
+        depth = max(e.get("level") or 0, 1)
+        while stack and stack[-1][0] >= depth:
+            stack.pop()
+        if stack:
+            out[e["id"]] = stack[-1][1]
+        stack.append((depth, e["id"]))
+    return out
+
+
+def fragments(toc: list[dict]) -> tuple[dict[str, str], list[dict]]:
+    """`({toc id: fragment}, collisions)` — the id each heading carries in the HTML.
+
+    A chapter's fragment is its `heading`, and anything else's is its title's. **Unique
+    across the whole ToC**, because a chapter page renders its neighbour's tail and
+    `/page/` renders whatever heads a leaf holds, so any two of them can share a
+    document.
+
+    **A collision is resolved by structure, never by order.** Every entry of a
+    colliding group climbs one ancestor together, prefixing that ancestor's own
+    title slug — and a chapter's carries its roman, so twins in two chapters always
+    part. The rounds repeat over the whole map, so a qualified fragment that lands
+    on another entry's is a collision too. What still collides once it has no
+    ancestor left keeps its toc id, which no slug can equal, and is reported: two
+    headings given one address by a tie-break would look exactly like one that
+    had a single home.
+    """
+    entries = [e for e in toc if e.get("id")]
+    parents = _parents(entries)
+    base = {e["id"]: (heading(e) if e.get("level") == LEVEL
+                      else slugify(e.get("title") or "")) for e in entries}
+    climbed = {i: i for i in base}     # the furthest ancestor prefixed so far
+    frag = {i: b for i, b in base.items() if b}
+    stuck: set[str] = set(base) - set(frag)
+    # Terminates: every round that goes on moves at least one entry one level up.
+    while True:
+        groups: dict[str, list[str]] = {}
+        for i, f in frag.items():
+            groups.setdefault(f, []).append(i)
+        clash = [ids for ids in groups.values() if len(ids) > 1]
+        moved = False
+        for ids in clash:
+            for i in ids:
+                up = parents.get(climbed[i])
+                if up is not None:
+                    climbed[i] = up
+                    frag[i] = "-".join(p for p in (base[up], frag[i]) if p)
+                    moved = True
+        if not moved:
+            stuck |= {i for ids in clash for i in ids}
+            break
+    collisions = []
+    for i in sorted(stuck, key=list(base).index):
+        frag[i] = i
+        collisions.append({
+            "toc_id": i,
+            "detail": (f"title {base[i]!r} is also another heading's, with every "
+                       "ancestor prefixed" if base[i] else "no title to slug")})
+    return frag, collisions
+
+
 def neighbours(root: Path, cid: str) -> tuple[dict | None, dict | None]:
-    """The chapters the ToC sets either side of this one, each `{id, title}`.
+    """The chapters the ToC sets either side of this one, each `{id, title, url,
+    heading}`, the last its heading's fragment.
 
     **The ToC's and not the next run's**, and a neighbour may have no run: the list
     of derived chapters closes over a gap, so its neighbour would be a chapter
     further off, and its title would go on text that is not its own.
     """
-    order = [{"id": e["id"], "title": _title(e)} for e in _in_toc(Path(root))]
+    order = [{"id": e["id"], "title": _title(e), "url": url(e), "heading": heading(e)}
+             for e in _in_toc(Path(root))]
     at = next(i for i, e in enumerate(order) if e["id"] == cid)
     return (order[at - 1] if at > 0 else None,
             order[at + 1] if at + 1 < len(order) else None)
@@ -117,6 +246,7 @@ def derive(root: Path = Path(".")) -> tuple[list[dict], list[dict]]:
     carries what only a chapter has:
 
         toc_id        the ToC entry it is, which is also its id
+        slug          its path under `/chapter/` (`slug`), `xii/religious-ideas`
         head_shared   its first leaf opens with the previous chapter's tail
         tail_shared   its last leaf goes on into the next chapter
 
@@ -183,6 +313,7 @@ def derive(root: Path = Path(".")) -> tuple[list[dict], list[dict]]:
             "title": _title(e),
             "refs": [f"{part}-{i:03d}" for i in range(start, end + 1)],
             "toc_id": e["id"],
+            "slug": slug(e),
             "head_shared": head["shared"],
             "tail_shared": tail_shared,
         })

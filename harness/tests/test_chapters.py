@@ -152,9 +152,9 @@ def test_a_heading_link_lands_on_the_heading(tmp_path):
     page(tmp_path, "1-003", _opens("chI"))
     page(tmp_path, "1-004", '<pb n="2"/><p>x</p>')
     out = apparatus.locate(tmp_path, toc_id="chI", index={})
-    assert (out["url"], out["anchor"]) == ("/run/chI", "chI")
+    assert (out["url"], out["anchor"]) == ("/chapter/i/chapter-i", "i-chapter-i")
     out = apparatus.locate(tmp_path, ref="1-004", index={})
-    assert (out["url"], out["anchor"]) == ("/run/chI", "leaf-1-004")
+    assert (out["url"], out["anchor"]) == ("/chapter/i/chapter-i", "leaf-1-004")
 
 
 # --------------------------------------------------------------- the view
@@ -185,9 +185,9 @@ def test_the_contents_links_a_heading_into_its_chapter(tmp_path, client):
          "id": "chI.1"}]}), encoding="utf-8")
     page(root, "1-003", '<pb/><milestone unit="chapter" n="chI" resp="#mz"/><p>a</p>')
     page(root, "1-004", '<pb/><milestone unit="section" n="chI.1" resp="#mz"/><p>b</p>')
-    body = client().get("/edition/run/chI").text
-    assert "href='/edition/run/chI#chI.1'" in body
-    assert "href='/edition/run/chI#chI'" in body
+    body = client().get("/edition/chapter/i/one").text
+    assert "href='/edition/chapter/i/one#names'" in body
+    assert "href='/edition/chapter/i/one#i-one'" in body
 
 
 def test_a_leaf_redirects_into_its_chapter(tmp_path, client):
@@ -195,7 +195,7 @@ def test_a_leaf_redirects_into_its_chapter(tmp_path, client):
     page(tmp_path, "1-003", _opens("chI"))
     page(tmp_path, "1-004", '<pb n="2"/><p>x</p>')
     r = client().get("/edition/page/1-004", follow_redirects=False)
-    assert r.headers["location"] == "/edition/run/chI#leaf-1-004"
+    assert r.headers["location"] == "/edition/chapter/i/chapter-i#leaf-1-004"
 
 
 def test_notes_are_scoped_to_their_leaf(tmp_path, client):
@@ -208,7 +208,7 @@ def test_notes_are_scoped_to_their_leaf(tmp_path, client):
               else "")
              + '<pb n="1"/><p>A<ref type="note" n="1">¹</ref>.</p>'
                '<note n="1" place="bottom">The note.</note>')
-    body = client().get("/edition/run/chI").text
+    body = client().get("/edition/chapter/i/chapter-i").text
     for ref in ("1-003", "1-004"):
         assert f'id="ref-{ref}-1" href="#note-{ref}-1"' in body
         assert f"id='note-{ref}-1'" in body
@@ -232,7 +232,7 @@ def test_notices_and_supplements_are_pooled_once(tmp_path, client):
                title="Careful", links="", summary="Mind this.")
     annotation(tmp_path, "supplement", "more", attaches=("page:1-004",),
                title="Further", links="", summary="And this.")
-    body = client().get("/edition/run/chI").text
+    body = client().get("/edition/chapter/i/chapter-i").text
     assert body.count("id='ann-notice:warn'") == 1
     assert body.count("id='ann-supplement:more'") == 1
     assert body.index("ann-notice:warn") < _at(body, "leaf-1-003")
@@ -244,19 +244,129 @@ def test_a_shared_leaf_greys_the_other_chapters_part_and_links_to_it(tmp_path, c
     page(tmp_path, "1-003", _opens("chI"))
     page(tmp_path, "1-004", _opens("chII", before="<p>Tail of one.</p>"))
     c = client()
-    one, two = c.get("/edition/run/chI").text, c.get("/edition/run/chII").text
+    one, two = c.get("/edition/chapter/i/chapter-i").text, c.get("/edition/chapter/ii/chapter-ii").text
     # In chapter I the leaf's own text is the tail; chapter II's opening is grey.
     assert "continues in II. Chapter II" in one
-    assert "/edition/run/chII#chII" in one
+    assert "/edition/chapter/ii/chapter-ii#ii-chapter-ii" in one
     # In chapter II the tail is grey, and links back to the leaf in chapter I.
     assert "← from I. Chapter I" in two
-    assert "/edition/run/chI#leaf-1-004" in two
+    assert "/edition/chapter/i/chapter-i#leaf-1-004" in two
     grey = two[two.index("<div class='other-text'>"):two.index('id="chII"')]
     assert "Tail of one." in grey
     # And the leaf opens chapter II, so *next* from chapter I goes there rather
     # than redirecting back into the chapter it left.
     r = c.get("/edition/page/1-004", follow_redirects=False)
-    assert r.headers["location"] == "/edition/run/chII#leaf-1-004"
+    assert r.headers["location"] == "/edition/chapter/ii/chapter-ii#leaf-1-004"
+
+
+# -------------------------------------------------------- readable addresses
+
+
+@pytest.mark.parametrize("title,want", [
+    ("Hunting and Fishing; War", "hunting-and-fishing-war"),
+    ("Family, Marriage", "family-marriage"),
+    ("Taˊn˙ñɪn Wars", "tannɪn-wars"),          # marks gone, a base letter kept
+    ("Ke'let", "kelet"),                          # an apostrophe joins, not splits
+    ("Other “Beings”", "other-beings"),
+])
+def test_a_title_slugs_by_one_rule(title, want):
+    assert chapters.slugify(title) == want
+
+
+def test_a_chapters_slug_leads_with_its_roman():
+    entry = {"level": 1, "chapter": "VI", "number": "VI",
+             "title": "Hunting and Fishing; War", "id": "chVI"}
+    assert chapters.slug(entry) == "vi/hunting-and-fishing-war"
+    assert chapters.url(entry) == "/chapter/vi/hunting-and-fishing-war"
+    assert chapters.heading(entry) == "vi-hunting-and-fishing-war"
+
+
+def _sectioned(root: Path, *entries: tuple[int, str, str, str]) -> list[dict]:
+    """A ToC of `(level, chapter, title, id)` rows, written and returned."""
+    toc = [{"level": lv, "chapter": ch, "number": ch if lv == 1 else None,
+            "title": t, "page_start": 10, "id": i} for lv, ch, t, i in entries]
+    root.joinpath("edition").mkdir(parents=True, exist_ok=True)
+    root.joinpath("edition", "toc.json").write_text(json.dumps({"entries": toc}),
+                                                    encoding="utf-8")
+    return toc
+
+
+def test_a_title_twice_is_told_apart_by_what_holds_it(tmp_path):
+    """Twins under two parents take their parents' slugs; twins in two chapters
+    part on the roman, even where the parents' titles are one word too."""
+    toc = _sectioned(
+        tmp_path,
+        (1, "I", "Trade", "chI"), (2, "I", "Anui Fair", "chI.1"),
+        (2, "I", "Reindeer", "chI.2"), (3, "I", "Races", "chI.2.1"),
+        (2, "I", "Maritime", "chI.3"), (3, "I", "Races", "chI.3.1"),
+        (1, "II", "Wars", "chII"), (2, "II", "Trade", "chII.1"),
+        (3, "II", "Anui Fair", "chII.1.1"))
+    frags, collisions = chapters.fragments(toc)
+    assert collisions == []
+    assert frags["chI.2.1"] == "reindeer-races"
+    assert frags["chI.3.1"] == "maritime-races"
+    assert frags["chI.1"] == "i-trade-anui-fair"
+    assert frags["chII.1.1"] == "trade-anui-fair"
+    assert frags["chI"] == "i-trade" and frags["chI.2"] == "reindeer"
+
+
+def test_twins_nothing_tells_apart_keep_their_ids_and_are_reported(tmp_path):
+    """Two `Names` in one section: no ancestor parts them, and neither may have
+    the address by being first."""
+    toc = _sectioned(tmp_path, (1, "I", "One", "chI"),
+                     (2, "I", "Names", "chI.1"), (2, "I", "Names", "chI.2"))
+    frags, collisions = chapters.fragments(toc)
+    assert (frags["chI.1"], frags["chI.2"]) == ("chI.1", "chI.2")
+    assert [c["toc_id"] for c in collisions] == ["chI.1", "chI.2"]
+    errors = apparatus.check(tmp_path)["errors"]
+    assert {e["run"] for e in errors if e["rule"] == "fragment-collision"} == {
+        "chI.1", "chI.2"}
+
+
+def test_a_heading_carries_its_fragment_and_its_old_id(tmp_path, client):
+    """The old id stands just before the heading, so a `#chI.1` already out in the
+    world still lands on it."""
+    _toc_with_sections(tmp_path)
+    page(tmp_path, "1-003", _opens("chI") + '<milestone unit="section" n="chI.1" '
+                                            'resp="#mz"/><p>Text.</p>')
+    body = client().get("/edition/chapter/i/names-and-habitat").text
+    assert ('<span class="milestone legacy" id="chI.1"></span>'
+            '<h2 class="milestone section" id="names">') in body
+    assert '<span class="milestone legacy" id="chI"></span>' in body
+    assert 'id="i-names-and-habitat"' in body
+
+
+def test_a_chapters_old_addresses_forward_to_its_name(tmp_path, client):
+    _toc(tmp_path, "chI")
+    page(tmp_path, "1-003", _opens("chI"))
+    c = client()
+    r = c.get("/edition/run/chI", follow_redirects=False)
+    assert (r.status_code, r.headers["location"]) == (302, "/edition/chapter/i/chapter-i")
+    for name in ("I", "i", "i/a-title-since-amended", "I/chapter-i", "i/CHAPTER-I"):
+        r = c.get(f"/edition/chapter/{name}", follow_redirects=False)
+        assert (r.status_code, r.headers["location"]) == (
+            302, "/edition/chapter/i/chapter-i#i-chapter-i"), name
+    r = c.get("/edition/chapter/i/chapter-i", follow_redirects=False)
+    assert r.status_code == 200 and "Text." in r.text
+
+
+def test_an_underived_chapters_name_does_not_forward_to_itself(tmp_path, client):
+    """Chapter II never opens, so chapter I has no end and no run: its name is
+    not a page, and resolves as its roman does — to the leaf its head is on."""
+    _toc(tmp_path, "chI", "chII")
+    page(tmp_path, "1-003", _opens("chI"))
+    c = client()
+    for name in ("i/chapter-i", "I"):
+        r = c.get(f"/edition/chapter/{name}", follow_redirects=False)
+        assert r.headers["location"] == "/edition/page/1-003#i-chapter-i", name
+
+
+@pytest.mark.parametrize("name", ["IX", "ix/chapter-ix", "zz/nothing", "i-chapter-i", ""])
+def test_a_name_the_contents_does_not_hold_is_refused(tmp_path, client, name):
+    _toc(tmp_path, "chI")
+    page(tmp_path, "1-003", _opens("chI"))
+    r = client().get(f"/edition/chapter/{name}", follow_redirects=False)
+    assert r.status_code == 404
 
 
 def test_shared_text_is_titled_by_the_tocs_neighbour_across_a_gap(tmp_path, client):
@@ -266,7 +376,7 @@ def test_shared_text_is_titled_by_the_tocs_neighbour_across_a_gap(tmp_path, clie
     page(tmp_path, "1-001", _opens("chI"))
     page(tmp_path, "1-003", _opens("chII"))
     page(tmp_path, "1-006", _opens("chIV", before="<p>Tail of three.</p>"))
-    body = client().get("/edition/run/chIV").text
+    body = client().get("/edition/chapter/iv/chapter-iv").text
     # A label and no link: the neighbour has no run to send a reader to.
     assert "<span class='other-label'>← from III. Chapter III</span>" in body
     assert "← from I. Chapter I" not in body
@@ -341,7 +451,7 @@ def test_a_paragraph_the_leaf_break_cut_is_one_paragraph(tmp_path, client):
     page(tmp_path, "1-003", _opens("chI") + "<p>The reindeer of the</p>")
     page(tmp_path, "1-004", '<pb n="2"/><!-- zone-opens: continued (z) -->'
                             "<p>tundra are small.</p><p>A new one.</p>")
-    body = client().get("/edition/run/chI").text
+    body = client().get("/edition/chapter/i/chapter-i").text
     paras = _paras(body)
     assert ["The", "reindeer", "of", "the", "tundra", "are", "small."] in paras
     assert ["A", "new", "one."] in paras
@@ -356,7 +466,7 @@ def test_a_fresh_paragraph_is_not_joined(tmp_path, client):
     page(tmp_path, "1-003", _opens("chI") + "<p>Ends here.</p>")
     page(tmp_path, "1-004", '<pb n="2"/><!-- zone-opens: fresh (z) -->'
                             "<p>Begins here.</p>")
-    paras = _paras(client().get("/edition/run/chI").text)
+    paras = _paras(client().get("/edition/chapter/i/chapter-i").text)
     assert ["Ends", "here."] in paras
     assert not any("Ends" in p and "Begins" in p for p in paras)
 
@@ -369,7 +479,7 @@ def test_a_plate_between_the_halves_moves_above_the_paragraph(tmp_path, client):
     _exempt(tmp_path, "1-004")
     page(tmp_path, "1-005", '<pb n="2"/><!-- zone-opens: continued (z) -->'
                             "<p>sentence.</p>")
-    body = client().get("/edition/run/chI").text
+    body = client().get("/edition/chapter/i/chapter-i").text
     assert any(p[:3] == ["Half", "of", "a"] and "sentence." in p for p in _paras(body))
     assert _at(body, "leaf-1-004") < body.index("Half of a")
 
@@ -432,7 +542,7 @@ def test_a_gap_is_never_joined_across(tmp_path, client):
     draft(tmp_path, "1-004", '<pb n="2"/><p>hidden</p>')
     page(tmp_path, "1-005", '<pb n="3"/><!-- zone-opens: continued (z) -->'
                             "<p>sentence.</p>")
-    paras = _paras(client().get("/edition/run/chI").text)
+    paras = _paras(client().get("/edition/chapter/i/chapter-i").text)
     assert not any("Half" in p and "sentence." in p for p in paras)
 
 
@@ -443,10 +553,10 @@ def test_an_unreadable_leaf_is_a_gap_said_in_place(tmp_path, client):
     page(tmp_path, "1-003", _opens("chI"))
     draft(tmp_path, "1-004", '<pb n="2"/><p>Unread.</p>')
     page(tmp_path, "1-005", '<pb n="3"/><p>Read.</p>')
-    body = client().get("/edition/run/chI").text
+    body = client().get("/edition/chapter/i/chapter-i").text
     assert "Unread." not in body and "Read." in body
     assert "leaf-tag'>gap" in body and "/edition/page/1-004.png" in body
-    assert "Unread." in client(drafts=True).get("/edition/run/chI").text
+    assert "Unread." in client(drafts=True).get("/edition/chapter/i/chapter-i").text
 
 
 def test_the_listing_keeps_a_chapter_whose_opener_is_unread(tmp_path, client):
@@ -497,7 +607,7 @@ def test_the_index_nests_a_chapters_sections_under_its_row(tmp_path, client):
     page(tmp_path, "1-005", _opens("chII"))
     body = client().get("/edition/").text
     row = _li(body, "Names and Habitat")
-    assert "href='/edition/run/chI'" in row
+    assert "href='/edition/chapter/i/names-and-habitat'" in row
     assert "<span class='toc-num'>I.</span>" in row
     assert "toc-d2" in row and ">Names<" in row
     assert "toc-d3" in row and "Ancient Names" in row
@@ -516,7 +626,7 @@ def test_a_chapter_with_nothing_collated_still_stands_in_the_outline(tmp_path, c
     draft(tmp_path, "1-005", _opens("chII"))
     body = client().get("/edition/").text
     row = _li(body, "Chapter II<")
-    assert "href='/edition/run/chII'" in row
+    assert "href='/edition/chapter/ii/chapter-ii'" in row
     assert "0 of 1 collated" in row
     assert "1 of 2 collated" in _li(body, "Chapter I<")
 
@@ -530,7 +640,7 @@ def test_a_division_nothing_places_keeps_its_place_and_says_so(tmp_path, client)
     page(tmp_path, "1-003", _opens("chI"))
     page(tmp_path, "1-005", _opens("chII"))
     body = client().get("/edition/").text
-    assert "href='/edition/run/chI'" in body
+    assert "href='/edition/chapter/i/chapter-i'" in body
     two, three = _li(body, "Chapter II<"), _li(body, "Chapter III<")
     assert two.startswith("<li class='ol-page'>")
     assert "href='/edition/page/1-005'" in two and "not located" not in two
@@ -671,7 +781,7 @@ def test_every_page_loads_the_one_script_and_no_other_of_the_readers(tmp_path, c
     page(tmp_path, "1-050", '<pb n="1"/><p>x</p>')
     c = client()
     for url in ("/edition/", "/edition/lexicon", "/edition/entities",
-                "/edition/annotations", "/edition/page/1-050", "/edition/run/chI"):
+                "/edition/annotations", "/edition/page/1-050", "/edition/chapter/i/chapter-i"):
         body = c.get(url).text
         assert body.count("js/edition.js") == 1, url
         scripts = set(re.findall(r"js/(\w+)\.js", body))

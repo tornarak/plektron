@@ -341,10 +341,12 @@ def _heading_urls(root: str, _key: bytes) -> dict[str, str]:
     r = Path(root)
     among, marks = runs(r), heads(r)
     out = {}
+    frags = fragments(r)
     for toc_id, occ in marks.items():
         if len(occ) != 1:
             continue
-        place = apparatus.locate(r, toc_id=toc_id, index={}, among=among, heads=marks)
+        place = apparatus.locate(r, toc_id=toc_id, index={}, among=among, heads=marks,
+                                 frags=frags)
         if place.get("url"):
             out[toc_id] = place["url"] + (f"#{place['anchor']}" if place["anchor"] else "")
     return out
@@ -729,12 +731,15 @@ render.cache_info = _render.cache_info                 # type: ignore[attr-defin
 
 @lru_cache(maxsize=MAXSIZE)
 def _toc_titles(root: str, _key: bytes) -> dict[str, dict]:
-    return {e["id"]: {"number": e.get("number") or "", "title": e.get("title") or ""}
+    frags = fragments(Path(root))
+    return {e["id"]: {"number": e.get("number") or "", "title": e.get("title") or "",
+                      "fragment": frags.get(e["id"], "")}
             for e in load_toc(Path(root)) if e.get("id")}
 
 
 def toc_titles(root: Path) -> dict[str, dict]:
-    """`{toc id: {number, title}}` — what a `<milestone n>` is displayed as.
+    """`{toc id: {number, title, fragment}}` — what a `<milestone n>` is displayed
+    as, and the id it carries (`chapters.fragments`).
 
     The number is carried because the book prints one on every chapter head and
     on nothing else, and a heading that dropped it would be citing a chapter the
@@ -742,6 +747,17 @@ def toc_titles(root: Path) -> dict[str, dict]:
     and the other 293 print none.
     """
     return _toc_titles(str(root), stamp([Path(root) / "edition" / "toc.json"]))
+
+
+@lru_cache(maxsize=MAXSIZE)
+def _fragments(root: str, _key: bytes) -> dict[str, str]:
+    return chapters.fragments(load_toc(Path(root)))[0]
+
+
+def fragments(root: Path) -> dict[str, str]:
+    """`{toc id: fragment}` — the id each heading carries, and every link to one
+    goes through. The collisions are `edition runs`'s to report."""
+    return _fragments(str(root), stamp([Path(root) / "edition" / "toc.json"]))
 
 
 @lru_cache(maxsize=MAXSIZE)

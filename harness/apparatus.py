@@ -308,6 +308,16 @@ def _page_url(ref: str) -> str:
     return f"/page/{norm_ref(ref)}"
 
 
+def run_url(run: dict) -> str:
+    """Where a run is served, under the reading view's mount. A chapter carries
+    its readable name (`chapters.slug`, set by `chapters.derive` and by nothing
+    else), and a declared run is addressed by its id. **The one place a run's
+    URL is built**, so a link and the route it points at cannot disagree."""
+    if run.get("slug"):
+        return f"/chapter/{run['slug']}"
+    return f"/run/{run['id']}"
+
+
 def _place(ref: str, root: Path, witness: str = "",
            among: list[dict] | None = None) -> dict:
     """Where a scan is served, and under what anchor: inside its run if it has
@@ -317,19 +327,21 @@ def _place(ref: str, root: Path, witness: str = "",
     if run is None:
         return {"url": _page_url(ref), "anchor": "", "ref": ref, "run": "",
                 "witness": witness}
-    return {"url": f"/run/{run['id']}", "anchor": anchor("leaf", ref),
+    return {"url": run_url(run), "anchor": anchor("leaf", ref),
             "ref": ref, "run": run["id"], "witness": witness}
 
 
 def _heading(toc_id: str, entry: dict, root: Path, among: list[dict],
-             heads: dict) -> dict | None:
+             heads: dict, frags: dict[str, str]) -> dict | None:
     """Where the milestone for this heading stands, or None if not exactly once.
 
-    The anchor is the heading's own id, which `tei_html.el_milestone` emits. On a
+    The anchor is the heading's own fragment (`chapters.fragments`), which
+    `tei_html.el_milestone` emits. On a
     leaf two chapters share, the run is the one this heading's chapter is — the
     ToC entry says which by its `chapter` — since the leaf shows in both and only
     one shows this heading as its own text.
     """
+    frag = frags.get(toc_id) or toc_id
     occ = heads.get(toc_id) or []
     if len(occ) != 1:
         return None
@@ -341,16 +353,17 @@ def _heading(toc_id: str, entry: dict, root: Path, among: list[dict],
                 == entry.get("chapter")), None)
     run = own or (holding[0] if holding else None)
     if run is None:
-        return {"url": _page_url(ref), "anchor": toc_id, "ref": ref, "run": "",
+        return {"url": _page_url(ref), "anchor": frag, "ref": ref, "run": "",
                 "witness": "tei"}
-    return {"url": f"/run/{run['id']}", "anchor": toc_id, "ref": ref,
+    return {"url": run_url(run), "anchor": frag, "ref": ref,
             "run": run["id"], "witness": "tei"}
 
 
 def locate(root: Path = Path("."), *, ref: str | None = None,
            folio: int | None = None, toc_id: str | None = None,
            index: dict | None = None, span: int = 8,
-           among: list[dict] | None = None, heads: dict | None = None) -> dict:
+           among: list[dict] | None = None, heads: dict | None = None,
+           frags: dict[str, str] | None = None) -> dict:
     """Resolve one key to one place, or refuse and say what is nearby.
 
     Exactly one key. The three shapes it returns are the three honest answers,
@@ -360,8 +373,9 @@ def locate(root: Path = Path("."), *, ref: str | None = None,
         {"candidates": [ … ]}                        two same-rank witnesses
         {"nearest": [ … ]}                           nothing witnesses this key
 
-    `index` is the folio index, `among` the runs and `heads` the milestone index
-    (`chapters.milestones`), each passed in by a caller that has it cached and
+    `index` is the folio index, `among` the runs, `heads` the milestone index
+    (`chapters.milestones`) and `frags` the heading fragments
+    (`chapters.fragments`), each passed in by a caller that has it cached and
     built here otherwise — once per call, since a refusal places every row of
     its `nearest` list and the chapter runs read the whole text. `span` bounds
     how far the `nearest` list reaches.
@@ -378,7 +392,8 @@ def locate(root: Path = Path("."), *, ref: str | None = None,
         return _place(ref, root, among=among)
 
     if toc_id is not None:
-        entry = next((e for e in load_toc(root) if e.get("id") == toc_id), None)
+        toc = load_toc(root)
+        entry = next((e for e in toc if e.get("id") == toc_id), None)
         if entry is None:
             return {"nearest": [], "why": f"no ToC entry has id {toc_id!r}"}
         # **The milestone first, where the text has one.** It is the heading
@@ -386,10 +401,12 @@ def locate(root: Path = Path("."), *, ref: str | None = None,
         # leaf, and it answers for every chapter where the folio index answers
         # for a third of the book. The folio is the fallback for a heading no
         # page has opened yet.
+        from . import chapters
         if heads is None:
-            from . import chapters
             heads = chapters.milestones(root)
-        placed = _heading(toc_id, entry, root, among, heads)
+        if frags is None:
+            frags = chapters.fragments(toc)[0]
+        placed = _heading(toc_id, entry, root, among, heads, frags)
         if placed is not None:
             return placed
         start = _as_folio(entry.get("page_start"))
@@ -623,6 +640,13 @@ def check(root: Path = Path(".")) -> dict:
                      "span": f"{run['refs'][0]} — {run['refs'][-1]}",
                      "leaves": len(run["refs"]), "entries": 0,
                      "plates_located": ""})
+
+    # **Every heading one address.** A fragment two headings share would land a
+    # link on whichever the page sets first; `chapters.fragments` refuses to pick
+    # and leaves both on their toc id, which still works, and says so here.
+    for c in chapters.fragments(load_toc(root))[1]:
+        errors.append({"run": c["toc_id"], "rule": "fragment-collision",
+                       "detail": c["detail"]})
 
     # Every kind counted, whether or not it is one this report has anything else
     # to say about — a census beside the errors, so the vocabulary's shape is

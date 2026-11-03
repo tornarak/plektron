@@ -9,6 +9,7 @@ build usable as a regression net.
 from __future__ import annotations
 
 import filecmp
+import json
 import re
 from pathlib import Path
 
@@ -149,6 +150,33 @@ def test_a_redirect_is_a_stub_that_keeps_the_fragment(tmp_path):
     from harness.web.build import _stub
     stub = _stub("/x/run/chI#leaf-1-004")
     assert "location.replace" in stub and "url=/x/run/chI#leaf-1-004" in stub
+
+
+def test_a_chapters_old_addresses_are_written_as_stubs(tree, tmp_path):
+    """Nothing links to them any more, so the crawl alone would never reach them,
+    and a link already out in the world would 404 on the published site."""
+    (tree / "edition").mkdir(exist_ok=True)
+    (tree / "edition" / "toc.json").write_text(json.dumps({"entries": [
+        {"level": 1, "chapter": "I", "number": "I", "title": "The Land",
+         "page_start": 1, "id": "chI"}]}), encoding="utf-8")
+    page(tree, "1-021", '<pb n="1"/><milestone unit="chapter" n="chI" resp="#mz"/>'
+         '<p>At <rs ref="place:markova" resp="#mz">Markova</rs>.</p>')
+    site = build(tree, tmp_path / "site", base="/x")
+    assert site.rows == []
+    out = tmp_path / "site"
+    full = (out / "chapter" / "i" / "the-land" / "index.html").read_text(encoding="utf-8")
+    assert "location.replace" not in full and 'id="i-the-land"' in full
+    for rel in ("run/chI", "chapter/I", "chapter/i"):
+        stub = (out / rel / "index.html").read_text(encoding="utf-8")
+        assert "url=/x/chapter/i/the-land" in stub, rel
+
+
+def test_a_retired_address_that_answers_with_a_page_is_refused(tree, tmp_path, monkeypatch):
+    from harness.web import build as B
+    monkeypatch.setattr(B, "_retired", lambda root, base: {f"{base}/annotations"})
+    site = build(tree, tmp_path / "site")
+    assert [(r["url"], r["why"]) for r in site.rows] == [
+        ("/annotations", "a retired address, which must forward, answers with a page")]
 
 
 @pytest.mark.parametrize("given,want", [("/", ""), ("", ""), ("/bogoras/", "/bogoras"),

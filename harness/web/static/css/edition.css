@@ -397,6 +397,9 @@ h2.milestone.chapter .milestone-n::after { content:"" }
 /* The anchor is the boundary with the words left on the page: no box, no space,
    just something for a link to land on. */
 span.milestone.anchor { display:inline; scroll-margin-top:4rem }
+/* The toc id an old link names, set just before the heading it now reaches by
+   its readable fragment. Empty and boxless, like the anchor. */
+span.milestone.legacy { display:inline; scroll-margin-top:4rem }
 /* --- the run-in head itself ---
    Styled by being run-in first and by depth second, because the page decides
    which it is: `chV.1` is a level-2 section and `1-128` prints its head run into
