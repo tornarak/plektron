@@ -294,6 +294,7 @@ def _outline(request: Request) -> list[dict]:
         run = heads_of.get(ref)
         if run is not None:
             rows.append({"kind": "run", "ref": ref, "run": run, "nodes": here,
+                         "folio": folios.get(ref),
                          "url": base + apparatus.run_url(run), "status": _status(run)})
         elif ref in kinds:
             kind, url = kinds[ref], f"{base}/page/{ref}"
@@ -308,6 +309,7 @@ def _outline(request: Request) -> list[dict]:
                                            "lightbox": shown})
                 continue
             rows.append({"kind": "leaf", "ref": ref, "leaf_kind": kind,
+                         "folio": folios.get(ref),
                          "nodes": here, "url": url, "thumb": thumb,
                          "lightbox": shown})
         else:

@@ -25,11 +25,18 @@
     class='page-no'>{{ n.page_start }}</span>{% endif %}
 {%- endmacro %}
 
-{# Where a row is: the scan, and the folio where one is known. Floated right as a
-   unit, after the title and the tags, so a row reads title, tags, number. #}
+{# Where a row is: **the folio where one is known, else the scan.** A reader
+   locates a division by the page the book prints, as the Contents does; the
+   scan index is the binding's, and is shown only where the leaf prints no folio
+   anyone has witnessed — the covers, the Contents, a plate. It stays on the
+   folio as its title. A row is located by its first leaf, as a Contents entry
+   is: a page joined to the division before it does not add a second number.
+   Floated right, after the title and the tags, so a row reads title, tags,
+   number. #}
 {% macro at(ref, url, folio=None) -%}
-  <span class='ol-at'><a class='ref' href='{{ url }}'>{{ ref }}</a>{% if folio
-    %}<span class='page-no'>{{ folio }}</span>{% endif %}</span>
+  <span class='ol-at'>{% if folio %}<a class='page-no' href='{{ url }}'
+    title='scan {{ ref }}'>{{ folio }}</a>{% else %}<a class='ref'
+    href='{{ url }}'>{{ ref }}</a>{% endif %}</span>
 {%- endmacro %}
 
 {# A division's sections, nested as the Contents nests them. All of them: this
@@ -80,7 +87,7 @@ collated.</p>
     {% for n in row.nodes %}{{ division(n, row.url) }}{% else
     %}<a class='toc-title' href='{{ row.url }}'>{{ row.run.title }}</a>{% endfor %}
     {% if row.status %}<span class='draft-tag'>{{ row.status }}</span>{% endif %}
-    {{ at(row.ref, row.url) }}
+    {{ at(row.ref, row.url, row.folio) }}
     {% for n in row.nodes %}{{ sections(n.children) }}{% endfor %}
   </li>
 {% elif row.kind == 'covers' %}
@@ -94,7 +101,7 @@ collated.</p>
   <li class='ol-leaf'>
     {% for n in row.nodes %}{{ division(n, row.url) }}{% endfor %}
     <span class='leaf-tag'>{{ row.leaf_kind }}</span>
-    {{ at(row.ref, row.url) }}
+    {{ at(row.ref, row.url, row.folio) }}
     {% for n in row.nodes %}{{ sections(n.children) }}{% endfor %}
     {% if row.thumb %}<a class='ol-thumb ol-thumb-{{ row.leaf_kind }}'{% if row.lightbox
       %} {{ lightbox(row.lightbox) }}{% endif %} href='{{ row.url }}'><img
@@ -105,7 +112,7 @@ collated.</p>
     {% for n in row.nodes %}{{ division(n, row.url) }}{% endfor %}
     {% if row.draft %}<span class='draft-tag'>uncollated</span>{% endif %}
     {% if row.status %}<span class='draft-tag'>{{ row.status }}</span>{% endif %}
-    {% for l in row.leaves %}{{ at(l.ref, l.url, l.folio) }}{% endfor %}
+    {% with l = row.leaves[0] %}{{ at(l.ref, l.url, l.folio) }}{% endwith %}
     {% for n in row.nodes %}{{ sections(n.children) }}{% endfor %}
   </li>
 {% elif row.kind == 'toc' %}

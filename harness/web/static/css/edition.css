@@ -1181,8 +1181,8 @@ html.copying .leaf-at { display:none }
   font-variant-numeric:tabular-nums }
 .outline .ref:hover { color:var(--fg); text-decoration:underline }
 .outline .ol-leaf, .outline .ol-page { margin:.1rem 0 }
-/* The scan and any folio float as one, so a row reads title, tags, number; a row
-   of two pages stacks two of them. */
+/* The row's folio, or its scan where no folio is known, floats right so a row
+   reads title, tags, number. */
 .outline .ol-at { float:right; clear:right; margin-left:.6rem; white-space:nowrap }
 .outline .ol-at .page-no { float:none; display:inline-block; min-width:2em;
   margin-left:.4rem; text-align:right }

@@ -825,17 +825,20 @@ def test_a_page_joins_the_division_before_it(tmp_path, client):
     page(tmp_path, "1-023", '<pb n="3"/><p>x</p>')
     body = client(drafts=True).get("/edition/").text
     row = _li(body, "Intro<")
-    assert "href='/edition/page/1-021'" in row and "href='/edition/page/1-022'" in row
+    assert "href='/edition/page/1-021'" in row
     assert "1 of 2 collated" in row and "draft-tag'>uncollated" not in row
     assert body.count("<li class='ol-page'>") == 2
+    # Located by its first leaf, as a Contents entry is: one number, not two.
+    assert row.count("class='ol-at'") == 1 and "scan 1-022" not in body
 
 
 def test_a_joined_row_of_signed_pages_says_no_count(tmp_path, client):
     _front(tmp_path, ("Intro", 1), ("Auth", 3))
     for ref, n in (("1-021", 1), ("1-022", 2), ("1-023", 3)):
         page(tmp_path, ref, f'<pb n="{n}"/><p>x</p>')
-    row = _li(client().get("/edition/").text, "Intro<")
-    assert "href='/edition/page/1-022'" in row and "checked" not in row
+    body = client().get("/edition/").text
+    row = _li(body, "Intro<")
+    assert "scan 1-022" not in body and "collated" not in row
 
 
 @pytest.mark.parametrize("hole", ["gap", "leaf"])
@@ -847,8 +850,8 @@ def test_a_page_does_not_join_across_a_hole(tmp_path, client, hole):
     page(tmp_path, "1-023", '<pb n="2"/><p>x</p>')
     page(tmp_path, "1-024", '<pb n="3"/><p>x</p>')
     body = client().get("/edition/").text
-    assert ">1-023<" not in _li(body, "Intro<")
-    assert _li(body, ">1-023<").startswith("<li class='ol-page'>")
+    assert "scan 1-023" not in _li(body, "Intro<")
+    assert _li(body, "scan 1-023").startswith("<li class='ol-page'>")
 
 
 def test_a_page_does_not_join_when_the_next_entry_is_unplaced(tmp_path, client):
@@ -856,7 +859,21 @@ def test_a_page_does_not_join_when_the_next_entry_is_unplaced(tmp_path, client):
     _front(tmp_path, ("Intro", 1), ("Lost", 99))
     page(tmp_path, "1-021", '<pb n="1"/><p>x</p>')
     page(tmp_path, "1-022", '<pb n="2"/><p>x</p>')
-    assert ">1-022<" not in _li(client().get("/edition/").text, "Intro<")
+    body = client().get("/edition/").text
+    assert "scan 1-022" not in _li(body, "Intro<")
+    assert _li(body, "scan 1-022").startswith("<li class='ol-page'>")
+
+
+def test_a_row_shows_its_folio_and_the_scan_only_where_none_is_known(tmp_path, client):
+    """The scan index is the binding's; a reader locates a division by the page
+    the book prints. A leaf no witness gives a folio keeps its scan."""
+    _toc(tmp_path, "chI")
+    page(tmp_path, "1-003", _opens("chI"))
+    page(tmp_path, "1-002", "<p>no folio printed</p>")
+    body = client().get("/edition/").text
+    row = _li(body, "Chapter I<")
+    assert "title='scan 1-003'>1</a>" in row and ">1-003<" not in row
+    assert ">1-002</a>" in _li(body, "/edition/page/1-002")
 
 
 def test_a_rows_tags_come_before_its_number(tmp_path, client):
