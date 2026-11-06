@@ -400,6 +400,20 @@ span.milestone.anchor { display:inline; scroll-margin-top:4rem }
 /* The toc id an old link names, set just before the heading it now reaches by
    its readable fragment. Empty and boxless, like the anchor. */
 span.milestone.legacy { display:inline; scroll-margin-top:4rem }
+/* The heading's own address, flush with the column's left edge — inside the
+   1.4rem a paragraph indents, so it moves no text. Absolute, and in a run-in head
+   left at its *static* position: it stands between blocks, just before the
+   paragraph the head opens, so that position is already the left edge of that
+   paragraph's first line. A block head is centred, so there it is pinned. */
+.head-link { position:absolute; color:var(--dim); text-decoration:none;
+  font-weight:normal; font-style:normal; font-variant:normal;
+  text-transform:none; letter-spacing:0; text-indent:0; opacity:.45;
+  user-select:none; -webkit-user-select:none }
+h2.milestone { position:relative }
+h2.milestone > .head-link { left:0; top:0 }
+.head-link:hover, .head-link:focus-visible, h2.milestone:hover > .head-link,
+.head-link:has(+ .milestone + p:hover) { opacity:1; color:var(--link) }
+html.copying .head-link { display:none }
 /* --- the run-in head itself ---
    Styled by being run-in first and by depth second, because the page decides
    which it is: `chV.1` is a level-2 section and `1-128` prints its head run into
@@ -1379,11 +1393,11 @@ a.chapref:hover, a.chapref:focus { color:var(--link); border-bottom-color:var(--
 aside.ann { margin:1.2rem 0; padding:.6rem 0;
   font-size:.94em }
 aside.ann h5 { margin:0 0 .35rem; font-size:1.4em; font-weight:bold; text-align: center }
-aside.ann h5 a { color: var(--fg); text-decoration:none; border-bottom:1px solid var(--dim) }
+aside.ann h5 a { color: var(--fg); text-decoration:none }
 aside.ann h5 a:hover { border-bottom-color:var(--link); color:var(--link) }
 aside.ann .summary p:first-child { margin-top:0 }
 aside.ann .summary p:last-child { margin-bottom:0 }
-aside.ann.notice { border-top:3px solid var(--warn); border-bottom:1px solid var(--warn) }
+aside.ann.notice { border-top:3px solid var(--warn) }
 aside.ann.notice h5, aside.ann.notice h5 a { color:var(--warn) }
 aside.ann.supplement { border-top:3px solid var(--info); border-bottom:1px solid var(--info) }
 aside.ann.supplement h5, aside.ann.supplement h5 a { color:var(--info) }
