@@ -8,10 +8,14 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from conftest import jesup_rules
+
 from harness import tei_html
 from harness.detectors import resolve_break_hyphens
 from harness.generate import _split_notes
 from harness.web.edition import _pooled_notes
+
+R = jesup_rules()
 
 TITLES = {
     "chXXIII": {"number": "XXIII", "title": "Contact"},
@@ -88,7 +92,7 @@ def test_a_figure_locant_is_not_a_note():
 def test_the_lexicon_decides_only_where_the_corpus_is_silent():
     def closed(tok, cuts, idx):
         return resolve_break_hyphens(tok, cuts, "1-001", idx, {"complexion", "sealskin",
-                                                                "reindeer"})
+                                                                "reindeer"}, rules=R)
     assert closed("com-plexion", [3], {})[0] == "complexion"
     assert closed("com-plexion", [3], {})[1][0]["verdict"] == "lexicon"
     witnessed = {"seal-skin": (81, frozenset({"1-002", "1-003"}))}

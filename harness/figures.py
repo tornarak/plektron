@@ -44,7 +44,7 @@ from typing import NotRequired, TypedDict
 import numpy as np
 from lxml import etree
 
-from . import paths, provenance, train
+from . import keying, paths, provenance, train
 from .atomic import tmp_for, write_atomic
 from .layout import page_files, ref_of, refuse_another_texts, shared, shared_rel, stem, stem_for
 from .refs import figure_number, norm_ref, parse_ref
@@ -1911,7 +1911,7 @@ def caption_as_set(text: str, ref: str, root: Path = Path(".")) -> str:
     if key not in _CAPTION_WORDS:
         _CAPTION_WORDS[key] = _lexicon(root)
     return resolve_break_hyphens("".join(pieces), cuts, ref, midline_forms(root),
-                                 _CAPTION_WORDS[key])[0]
+                                 _CAPTION_WORDS[key], rules=keying.rules(root))[0]
 
 
 def paired(ref: str, root: Path = Path("."),

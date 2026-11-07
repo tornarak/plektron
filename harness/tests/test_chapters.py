@@ -12,9 +12,12 @@ import re
 from pathlib import Path
 
 import pytest
+from conftest import jesup_rules
 from test_edition import draft, page
 
 from harness import apparatus, chapters
+
+R = jesup_rules()
 
 
 def _toc(root: Path, *ids: str) -> None:
@@ -490,7 +493,7 @@ def _turn(left: str, right: str, idx: dict) -> tuple[bool, str]:
 
     from harness.web.edition import _turn_word
     a, b = LH.fragment_fromstring(left), LH.fragment_fromstring(right)
-    done = _turn_word(a, b, "1-004", idx)
+    done = _turn_word(a, b, "1-004", idx, rules=R)
     return done, a.text_content() + "|" + b.text_content()
 
 

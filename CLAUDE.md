@@ -17,12 +17,14 @@ auditable rules over judgement; prefer "unresolved" over a confident guess; pref
 two independent witnesses to one confident one wherever a second is cheap.
 
 **Firewall.** A rule about **hierarchies of provenance**, not about agreement with any
-upstream file. No non-English glyph identity may be *adopted* on a model's authority: a
+upstream file. No Tier-1 glyph identity may be *adopted* on a model's authority: a
 model may read a scan and propose, but the reading carries its rank with it and rank rises
 only by a human act. Nothing may promote a proposal, and nothing may infer a glyph from
 what Bogoras's system "should" contain, from a neighbouring page, or from any corpus-wide
 pattern. Book-internal apparatus (the p. 10 key, the List of Illustrations, the printed
-TOC) is *not* subject to this — it is evidence, and it binds.
+TOC) is *not* subject to this — it is evidence, and it binds. A text's prose language is
+outside it too: English, and the 1900 *Materials*' Russian, which a model reading
+against the scan may promote (`docs/decisions.md`).
 
 In the TEI this is `@resp`, naming one of the four provenance levels README.md
 defines, on every Tier-1 `xml:lang` and every entity reference: `#ed` a human's
@@ -65,7 +67,7 @@ proposal until ratified; no index entry is minted unreviewed.
 # Encoding
 
 **NFD, corpus-wide** (`keying_spec.md` §1). `harness corpus normalize` is the
-gate; `--convert` writes the fixes.
+gate; `--commit` writes the fixes.
 
 **Never NFKC.** It has compatibility decompositions for two inventory glyphs and
 destroys them: `ᵋ` U+1D4B → plain U+025B, `˙` U+02D9 → space + combining dot.
@@ -144,7 +146,9 @@ workspace `jesup/` holds `edition/{entities,geo,lexicon,entity-images.json}` and
     config/ what a pass is tuned by, validated at load — zones.json
             lines.json marks.json — and the editor's rulings over
             one: marks_exempt.json lexicon_extra.txt, `#ed` **rank** but no part
-            of the edition, which is why they sit here and not in it.
+            of the edition, which is why they sit here and not in it. keying.json
+            is the notation's tables: the workspace's, with a text's attested
+            overrides laid over key by key (`docs/multitext.md`).
     data/   machine receipts: pdf_images.json _migrated.json.
     review/ one directory per page: proposal.json (a reading, not truth) and
             decision.json (adjudicated) are tracked; the images are derived and
@@ -224,7 +228,7 @@ every byte of this file on every page.
 | `concordance.md` | the evidence set behind the spec — aligned pairs, flag register, per-glyph attestation |
 | `docs/segmentation.md` | the second segmentation attempt: the design and why each piece is shaped as it is |
 | `docs/pipeline.md` | the pipeline stage by stage, and the design reasoning behind the built stages |
-| `docs/apparatus.md` | the figure track and its editor, the List of Illustrations and Authorities Quoted stores |
+| `docs/apparatus.md` | the figure track and its editor, the List of Illustrations, Authorities Quoted and informant stores |
 | `docs/edition.md` | the entity, lexicon and annotation stores, the rule that links a form, `#mz`, and the reading view |
 | `.claude/skills/curate-entities/` | writing an entry: whether it is earned, its class, its alias modes, its gloss |
 | `docs/rasters.md` | the source rasters, the derived trees and the `tools/` scripts |
@@ -232,6 +236,7 @@ every byte of this file on every page.
 | `docs/decisions.md` | what was settled the hard way, intact — the reasoning behind the rules |
 | `docs/open-questions.md` | what is deliberately unresolved |
 | `README.md` | the four provenance levels, and the edition for a reader |
+| `.claude/skills/read-materials-page/` | the 1900 *Materials* reading pass: two text-layer copies, the scan, the Russian; native forms listed for the editor |
 | `.claude/skills/read-moll-page/` | the Moll & Inenlikej 1957 pass, whole. Not a Bogoras corpus track; nothing it produces enters `gt/` or `tei/` |
 
 Two passes: the ground-truth loop (raster → ALTO, `gt/ocr/`) and collation

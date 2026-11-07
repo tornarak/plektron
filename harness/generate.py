@@ -72,7 +72,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from xml.sax.saxutils import escape
 
-from . import apparatus, citations, figrefs, provenance
+from . import apparatus, citations, figrefs, keying, provenance
 from .context import _running_title, tier1_terms
 from .detectors import EDGE_PUNCT, _lexicon, joined_words, midline_forms, resolve_break_hyphens
 from .entities import alias_index, auto_forms, load
@@ -881,8 +881,9 @@ def page_blocks(ref: str, root: Path = Path("."), shared: Stores | None = None,
     words = _lexicon(root, shared.store if shared is not None else store)
     verdicts: list[dict] = []
     text_of = {}
+    rules = keying.rules(root)
     for r, t, c in zip(recs, joined, cuts, strict=True):
-        t, vs = resolve_break_hyphens(t, c, ref, idx, words)
+        t, vs = resolve_break_hyphens(t, c, ref, idx, words, rules=rules)
         text_of[r["index"]] = t
         verdicts.extend(v | {"line": r["index"]} for v in vs)
     bands = _bands(ref, root)

@@ -40,7 +40,7 @@ def _page(tmp_path: Path, ref: str = "1-048", *, mark: tuple | None = None) -> P
     (tmp_path / "scans").mkdir()
     (tmp_path / "gt" / "fig").mkdir(parents=True)
     import shutil
-    (tmp_path / "config").mkdir()
+    (tmp_path / "config").mkdir(exist_ok=True)
     shutil.copy(Path("config") / "zones.json", tmp_path / "config")
 
     w, h = 1200, 800

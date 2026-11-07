@@ -16,7 +16,6 @@ from harness.layout import (
     citation_errors,
     dpi,
     lang,
-    notation,
     page_files,
     project,
     project_root,
@@ -175,7 +174,7 @@ def _manifest(root: Path, **fields) -> Path:
 
 
 def test_a_manifest_that_says_nothing_means_what_the_first_text_always_meant(tmp_path):
-    assert (lang(tmp_path), notation(tmp_path), dpi(tmp_path)) == ("en", "jesup", 300)
+    assert (lang(tmp_path), dpi(tmp_path)) == ("en", 300)
     assert witnesses(tmp_path) == []
     assert px(tmp_path, 20) == 20
 
@@ -193,10 +192,11 @@ def test_a_books_prose_is_never_in_a_tier1_language(tmp_path):
         lang(_manifest(tmp_path, lang="ckt"))
 
 
-def test_a_notation_is_one_the_harness_has_tables_for(tmp_path):
-    assert notation(_manifest(tmp_path / "k", notation="kolyma-1900")) == "kolyma-1900"
-    with pytest.raises(ProjectError, match="notation"):
-        notation(_manifest(tmp_path / "x", notation="boas"))
+def test_a_manifest_naming_a_notation_is_refused_and_told_where_the_rules_are(tmp_path):
+    """The rules are the text's `config/keying.json` over its workspace's; a name
+    for them beside that would be the same fact stated twice."""
+    with pytest.raises(ProjectError, match="config/keying.json"):
+        project(_manifest(tmp_path / "k", notation="kolyma-1900"))
 
 
 @pytest.mark.parametrize("bad", [0, -300, 600.0, "600", True])

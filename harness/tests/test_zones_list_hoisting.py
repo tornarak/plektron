@@ -39,7 +39,7 @@ def repo(tmp_path: Path) -> Path:
     # The real zone config, copied the way `test_lookup.py` copies the marks
     # config: `validate_page` and `list_context` both refuse without one, and a
     # tree lacking it would exercise the refusal rather than the hoist.
-    (tmp_path / "config").mkdir(parents=True)
+    (tmp_path / "config").mkdir(parents=True, exist_ok=True)
     (tmp_path / "config" / "zones.json").write_text(
         (PROJECT / "config" / "zones.json").read_text(encoding="utf-8"),
         encoding="utf-8")

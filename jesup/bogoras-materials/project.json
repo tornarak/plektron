@@ -1,8 +1,8 @@
 {
   "stem": "chukchi-materials",
   "lang": "ru",
-  "notation": "kolyma-1900",
   "dpi": 600,
+  "prose_stands": "The editor's ruling, 2026-11-07: \"normal prosaic text in tier-2 languages without interspersed native forms can stand on your reading\". A line with a native form or a doubt still waits on the editor.",
   "parts": [
     {
       "n": 1,
@@ -13,7 +13,13 @@
     {
       "id": "b",
       "pdf": "pdfs/witness/bogoras-1900-chukchee-materials-2.pdf",
-      "label": "Google Books, UC Berkeley copy"
+      "label": "Google Books, UC Berkeley copy",
+      "map": {
+        "1-009": 9,
+        "1-013": 13,
+        "1-058": 60,
+        "1-059": 61
+      }
     }
   ],
   "omit": [

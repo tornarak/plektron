@@ -20,6 +20,7 @@ from __future__ import annotations
 import unicodedata
 from pathlib import Path
 
+from . import keying
 from .detectors import detect_all, join_broken_words
 from .layout import stem_for
 from .paths import scan_for
@@ -355,7 +356,7 @@ def tier1_terms(ref: str, root: Path = Path("."), keys: bool = True,
     `idx` is a prebuilt `lookup.index`, for a caller looping over pages; it
     changes nothing about the answer.
     """
-    from .detectors import EDGE_PUNCT, TOKEN, bears_inventory, cyrillic
+    from .detectors import EDGE_PUNCT, TOKEN, bears_inventory, tier2
     from .lines import page_lines
 
     path = root / "gt" / "ocr" / f"{stem_for(ref, root)}.xml"
@@ -381,13 +382,14 @@ def tier1_terms(ref: str, root: Path = Path("."), keys: bool = True,
                  for m in TOKEN.finditer(unicodedata.normalize("NFD", t))}
                 for t in join_broken_words(recs)]
     out = []
+    rules = keying.rules(root)
     for rec, whole in zip(recs, survives, strict=True):
         if rec["zone"] in APPARATUS_ZONES:
             continue
         text = unicodedata.normalize("NFD", rec.get("text") or "")
         for m in TOKEN.finditer(text):
             tok = m.group().strip(EDGE_PUNCT)
-            # `cyrillic` is `native_corpus`'s exclusion, shared rather than
+            # `tier2` is `native_corpus`'s exclusion, shared rather than
             # restated. Pre-1918 Russian sets `й`, which is и + U+0306 under
             # NFD, and U+0306 is an inventory member — so `Чукотскій` on 1-031
             # trips this selection exactly as a Chukchee form does. The two arms
@@ -398,13 +400,17 @@ def tier1_terms(ref: str, root: Path = Path("."), keys: bool = True,
             # not reach it and no Cyrillic string is evidence about Bogoras's
             # notation.
             # `bears_inventory` rather than a bare `INVENTORY_CHARS` scan, for the
-            # same reason `cyrillic` is here: U+0308 is an inventory member and
+            # same reason `tier2` is here: U+0308 is an inventory member and
             # also German's commonest diacritic, so `Müller` was wrapped as a
             # Tier-1 handle and linked to a lexicon correctly holding nothing —
             # the identical failure this comment describes for `Чукотскій`, one
             # script over. One rule, four callers: see `detectors.inventory_glyphs`.
-            if (tok and tok in whole and not cyrillic(tok)
-                    and (bears_inventory(tok) or "'" in tok)):
+            # A straight apostrophe makes a token Tier-1 only where the notation
+            # reads it as a mistyped stress (`apostrophe_unlicensed`); a book that
+            # prints the apostrophe holds it to be a slip for `’`, nothing more.
+            if (tok and tok in whole and not tier2(tok, rules)
+                    and (bears_inventory(tok, rules)
+                         or ("'" in tok and rules.on("apostrophe_unlicensed")))):
                 out.append({"index": len(out) + 1, "line": rec["index"],
                             "text": tok})
     return _with_keys(out, root, idx) if keys else out

@@ -350,7 +350,7 @@ def test_normalize_takes_refs_and_paths_in_one_list(tmp_path, capsys):
     """A `PP-NNN` ref or a path, and the two never collide: a ref's shape is
     closed, so anything that will not parse as one is taken as given."""
     _alto(tmp_path, "gt/ocr", "1-048")
-    (tmp_path / "config").mkdir()
+    (tmp_path / "config").mkdir(exist_ok=True)
     (tmp_path / "config" / "lexicon_extra.txt").write_text("plain\n", encoding="utf-8")
     code, out, _err = _run(capsys, "corpus", "normalize", "1-048",
                      "config/lexicon_extra.txt", "--root", str(tmp_path))
@@ -368,6 +368,10 @@ def test_normalize_scopes_a_named_ref_to_its_own_proposal(tmp_path, capsys):
     a proposal being authored survives the change. Pinned in both directions,
     since either read alone looks like an inconsistency worth tidying.
     """
+    # The sweep is counted before and after the proposal exists, not against a
+    # literal: the fixture text holds other scoped files (its config/keying.json),
+    # and what is pinned is that the proposal adds nothing to the sweep.
+    _, out_before, _ = _run(capsys, "corpus", "normalize", "--all", "--root", str(tmp_path))
     _proposal(tmp_path, "1-048")
     named, out_named, _en = _run(capsys, "corpus", "normalize", "1-048",
                             "--root", str(tmp_path))
@@ -375,4 +379,5 @@ def test_normalize_scopes_a_named_ref_to_its_own_proposal(tmp_path, capsys):
                             "--root", str(tmp_path))
     assert (named, swept) == (0, 0)
     assert "files: 1" in out_named
-    assert "files: 0" in out_swept
+    count = lambda out: next(ln for ln in out.splitlines() if ln.startswith("files:"))  # noqa: E731
+    assert count(out_swept) == count(out_before)

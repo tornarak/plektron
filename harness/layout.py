@@ -15,9 +15,10 @@ comes here.
 **What else a manifest declares, and why each is declared rather than found.**
 `lang` is the language the book's prose is in, which nothing on a page states
 and every reader of a page needs (`<html lang>`, the lexicon a detector asks).
-`notation` names the transcription system its native forms are printed in, so
-the inventory tables a gate applies are the ones that book's key licenses.
-`dpi` is the resolution the source PDFs place their masters at, which `scans`
+There is no `notation`: the keying rules a text is held to are its workspace's
+`config/keying.json` with the text's own overrides laid over it (`layered`,
+`keying.py`), so the rules *are* the notation and a name for them would be the
+same fact stated twice. `dpi` is the resolution the source PDFs place their masters at, which `scans`
 refuses a page against and every raster-pixel threshold is scaled by.
 `witnesses` are second copies of the book, never cut into `scans/`, read only
 as a second reading. `omit` names the leaves the *digitizer* added — a QR code,
@@ -52,13 +53,7 @@ FIG_RE = re.compile(r"^\d+-\d+/\w+$")
 #: What a manifest that says nothing about these means: what *The Chukchee* has
 #: always been, so the first text's manifest needs no edit to keep its meaning.
 DEFAULT_LANG = "en"
-DEFAULT_NOTATION = "jesup"
 DEFAULT_DPI = 300
-
-#: The notations a text may name. A literal here until `notation.py` holds their
-#: tables, and then derived from it — a name with no tables behind it would be a
-#: manifest choosing rules that do not exist.
-NOTATIONS = frozenset({"jesup", "kolyma-1900"})
 
 #: A witness's id: one lowercase letter, as `--witness b` spells it.
 WITNESS_ID_RE = re.compile(r"^[a-z]$")
@@ -86,9 +81,10 @@ def _check_texts_fields(p: Path, rec: dict) -> None:
         _refuse(p, f"`lang` {lang!r} is Tier-1: the base language of a book's "
                    "prose is never a transcribed language, and a Tier-1 base "
                    "would exempt every unmarked span from the firewall")
-    if rec.get("notation", DEFAULT_NOTATION) not in NOTATIONS:
-        _refuse(p, f"`notation` must be one of {sorted(NOTATIONS)}; "
-                   f"got {rec.get('notation')!r}")
+    if "notation" in rec:
+        _refuse(p, "`notation` is retired: a text's keying rules are its "
+                   "config/keying.json laid over its workspace's, and a name for "
+                   "them would say the same thing twice")
     dpi = rec.get("dpi", DEFAULT_DPI)
     if not isinstance(dpi, int) or isinstance(dpi, bool) or dpi <= 0:
         _refuse(p, f"`dpi` must be a positive integer; got {dpi!r}")
@@ -103,6 +99,19 @@ def _check_texts_fields(p: Path, rec: dict) -> None:
         if w["id"] in seen:
             _refuse(p, f"witness id {w['id']!r} is declared twice")
         seen.add(w["id"])
+        # The editor's pairings for pages the text alone cannot settle (`ocr pair`):
+        # a copy-A ref to the 1-based page of the witness PDF that is its reading.
+        wmap = w.get("map", {})
+        if not (isinstance(wmap, dict) and all(
+                isinstance(k, str) and REF_RE.match(k) and isinstance(v, int)
+                and not isinstance(v, bool) and v > 0 for k, v in wmap.items())):
+            _refuse(p, f"witness {w['id']!r}: `map` is {{\"PP-NNN\": witness page}}; "
+                       f"got {wmap!r}")
+    stands = rec.get("prose_stands")
+    if stands is not None and not (isinstance(stands, str) and stands.strip()):
+        _refuse(p, "`prose_stands` is the editor's ruling that this text's prose may "
+                   "stand on a model's reading, in words, or absent; got "
+                   f"{stands!r}")
     for field_ in ("masterless", "omit"):
         for ref in rec.get(field_, ()):
             if not (isinstance(ref, str) and REF_RE.match(ref)):
@@ -161,9 +170,11 @@ def lang(root: Path) -> str:
     return project(root).get("lang", DEFAULT_LANG)
 
 
-def notation(root: Path) -> str:
-    """The name of the transcription system this text's native forms are in."""
-    return project(root).get("notation", DEFAULT_NOTATION)
+def prose_stands(root: Path) -> str | None:
+    """The editor's ruling that this text's prose lines may reach `gt/ocr/` on a
+    model's reading, without a decision of their own — or None. Which lines are
+    prose is `detectors.prose_only`'s, under the text's keying rules."""
+    return project(root).get("prose_stands")
 
 
 def dpi(root: Path) -> int:
@@ -286,6 +297,92 @@ def shared(root: Path, rel: str | Path) -> Path:
         return own
     ws = workspace_root(root)
     return own if ws is None else ws / rel
+
+
+#: The value that, in a text's layer, deletes a key the workspace's layer holds.
+#: An object rather than JSON `null` so the deletion carries its reason like any
+#: other override does: `{"_delete": "ө is a letter of this book's notation"}`.
+DELETE = "_delete"
+
+
+class LayerError(ValueError):
+    """A layered store whose layers cannot be composed."""
+
+
+def _merge(base: dict, over: dict, path: tuple, origin: dict, tier: str) -> dict:
+    out = dict(base)
+    for k, v in over.items():
+        if k.startswith("_"):
+            continue                    # each layer's own metadata, never inherited
+        here = path + (k,)
+        if isinstance(v, dict) and set(v) == {DELETE}:
+            if not (isinstance(v[DELETE], str) and v[DELETE].strip()):
+                raise LayerError(f"{'.'.join(here)}: a deletion carries its reason")
+            out.pop(k, None)
+            for p in [p for p in origin if p[:len(here)] == here]:
+                del origin[p]
+            origin[here] = f"{tier} (deleted)"
+        elif isinstance(v, dict) and isinstance(out.get(k), dict):
+            out[k] = _merge(out[k], v, here, origin, tier)
+        else:
+            out[k] = v
+            for p in [p for p in origin if p[:len(here)] == here]:
+                del origin[p]
+            _mark(v, here, origin, tier)
+    return out
+
+
+def _mark(v, path: tuple, origin: dict, tier: str) -> None:
+    if isinstance(v, dict):
+        for k, x in v.items():
+            if not k.startswith("_"):
+                _mark(x, path + (k,), origin, tier)
+    else:
+        origin[path] = tier
+
+
+def layered(root: Path, rel: str | Path, own: bool = True) -> tuple[dict, dict, dict]:
+    """A store composed **key by key** over its workspace: `(merged, origin, why)`.
+
+    `shared` composes a store whole — the text's file, else the workspace's. This
+    composes its *contents*, as an object over its prototype: the text's layer
+    names only what it changes, and every key it does not name is the
+    workspace's. Objects merge recursively; a leaf the text names replaces the
+    workspace's whole, so licensing one more base restates the list it belongs to
+    rather than appending to it unseen; `{"_delete": why}` removes an inherited
+    key. Keys beginning `_` are a layer's own metadata and are never inherited.
+
+    `origin` maps each leaf's key path to the tier that set it, which is what lets
+    a report say *why* a text holds a rule its workspace does not. `why` is the
+    text layer's `_why` map — `{"dotted.key.path": attestation}` — returned for
+    the caller to hold to completeness, since only the caller knows which of its
+    leaves are rulings.
+
+    `own=False` leaves the text's layer out: what the workspace alone says, which
+    is what a store the workspace shares — `edition/entities/` — is held to, since
+    a file every text reads cannot be judged by whichever text happened to ask.
+    """
+    ws = workspace_root(root)
+    layers = []
+    if ws is not None and (ws / rel).exists():
+        layers.append(("workspace", ws / rel))
+    mine = Path(root) / rel
+    if own and mine.exists() and (ws is None or mine.resolve() != (ws / rel).resolve()):
+        layers.append(("text", mine))
+    merged: dict = {}
+    origin: dict = {}
+    why: dict = {}
+    for tier, p in layers:
+        try:
+            doc = json.loads(p.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as e:
+            raise LayerError(f"{p}: not JSON: {e}") from None
+        if not isinstance(doc, dict):
+            raise LayerError(f"{p}: a layered store is a JSON object")
+        merged = _merge(merged, doc, (), origin, tier)
+        if tier == "text":
+            why = doc.get("_why") or {}
+    return merged, origin, why
 
 
 def shared_rel(root: Path, rel: str | Path) -> str:

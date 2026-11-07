@@ -21,7 +21,7 @@ from pathlib import Path
 
 from lxml import etree
 
-from . import apparatus, citations, figrefs
+from . import apparatus, citations, figrefs, keying
 from .detectors import unlicensed_marks
 from .entities import (
     ENTDIR,
@@ -287,21 +287,14 @@ OPENS = {
 # forbidding them here would reject correct text. What remains is the set with no
 # legitimate use in English at all, each an error wherever it appears.
 FORBIDDEN_PROSE = set("\u00B4\u02BC\u02BB\u2010\u2013")
-LOOKALIKE_GREPS = {  # keying spec §3 — reported over Tier-1 spans as worklist
-    "\u00B4": "U+00B4 traps U+02CA", "\u2019": "U+2019 traps U+02CA",
-    "\u02BC": "U+02BC traps U+02CA", "\u02BB": "U+02BB traps U+02CA",
-    "\u2018": "U+2018 traps U+02CA",
-    "\u00B7": "U+00B7 traps U+02D9",
-    "\u02E2": "U+02E2 traps U+1D4B/U+1D49", "\u2091": "U+2091 traps U+1D49",
-    "\u04E9": "U+04E9 traps U+0275", "\u2010": "U+2010 traps U+002D",
-    "\u2013": "U+2013 traps U+002D",
-}
+# keying spec §3 — reported over Tier-1 spans as worklist: the text's
+# `rules.lookalike_greps`.
 # Traps that are a *sequence* rather than a codepoint, and so cannot live in the dict
 # above, which is consulted one character at a time. U+0121 used to sit there and was
 # unreachable: `own_text` is NFD-normalized before the check, which decomposes U+0121
 # to exactly this pair, so the single-codepoint key could never match. The canonical
 # glyph is g+U+0323, dot *below*; dot above is the lookalike.
-LOOKALIKE_SEQ_GREPS = {"g\u0307": "g+U+0307 (or U+0121) traps g+U+0323"}
+# The table is `rules.lookalike_seq_greps`.
 NOTE_CONT_COMMENT = "footnote continuation, no marker on this page"
 
 
@@ -1370,6 +1363,7 @@ def _rule_lang_and_glyphs(root, q, ctx, r: Report) -> tuple[int, int]:
     """
     tier1_spans = 0
     tier1_adopted = 0
+    rules = keying.rules(Path(ctx["root"]) if ctx and ctx.get("root") else Path("."))
     for el in root.iter():
         if not isinstance(el.tag, str):
             continue
@@ -1381,11 +1375,11 @@ def _rule_lang_and_glyphs(root, q, ctx, r: Report) -> tuple[int, int]:
                 tier1_spans += 1
                 tier1_adopted += 1 if el.get("resp") == ADOPTED else 0
             for ch_ in own_text:
-                if ch_ in LOOKALIKE_GREPS:
+                if ch_ in rules.lookalike_greps:
                     r.worklist.append(
                         f"[{lang}] <{etree.QName(el).localname}> "
-                        f"{LOOKALIKE_GREPS[ch_]} in {own_text.strip()[:40]!r}")
-            for seq, msg in LOOKALIKE_SEQ_GREPS.items():
+                        f"{rules.lookalike_greps[ch_]} in {own_text.strip()[:40]!r}")
+            for seq, msg in rules.lookalike_seq_greps.items():
                 if seq in own_text:
                     r.worklist.append(
                         f"[{lang}] <{etree.QName(el).localname}> "
@@ -1395,7 +1389,7 @@ def _rule_lang_and_glyphs(root, q, ctx, r: Report) -> tuple[int, int]:
         # Latin binomial and in Russian prose for the same reason it is wrong in a
         # Chukchee form — and an ERROR, not a worklist line, since there is no reading
         # for a human to choose between.
-        for h in unlicensed_marks(own_text):
+        for h in unlicensed_marks(own_text, rules):
             r.errors.append(
                 f"MARK LICENCE: {h['mark']} on {h['base']} — licensed only on "
                 f"{h['licensed_on']} (keying spec 2.6) in {h['context']!r}")

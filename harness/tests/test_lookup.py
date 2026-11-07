@@ -21,9 +21,9 @@ import unicodedata
 from pathlib import Path
 
 import pytest
-from conftest import write_project
+from conftest import jesup_rules, write_project
 
-from harness.detectors import INVENTORY_CHARS, native_corpus
+from harness.detectors import native_corpus
 from harness.lookup import (
     _case_rank,
     _raise_case,
@@ -35,6 +35,8 @@ from harness.lookup import (
 )
 from harness.marks import HANDLE_MARKERS, handle_key
 from harness.proposal_check import check, fix, set_field, set_fields
+
+R = jesup_rules()
 
 REPO = Path(__file__).resolve().parent.parent.parent
 PROJECT = REPO / "jesup" / "bogoras-chukchi"
@@ -146,7 +148,7 @@ def test_an_unmapped_character_raises_rather_than_being_dropped():
 
 def test_the_marker_table_reaches_every_inventory_member():
     """Totality against `detectors.INVENTORY_CHARS`, which is the definition."""
-    missing = sorted(c for c in INVENTORY_CHARS if c not in HANDLE_MARKERS)
+    missing = sorted(c for c in R.inventory if c not in HANDLE_MARKERS)
     assert not missing, f"inventory members with no marker: {missing!r}"
 
 
@@ -412,7 +414,7 @@ def test_fix_refuses_a_handle_the_floor_declined(tmp_path):
     # built rather than borrowed so it cannot drift as `gt/ocr/` grows.
     root = write_project(tmp_path / "one-page")
     (root / "gt" / "ocr").mkdir(parents=True)
-    (root / "config").mkdir()
+    (root / "config").mkdir(exist_ok=True)
     (root / "config" / "marks.json").write_text(
         (PROJECT / "config" / "marks.json").read_text(encoding="utf-8"),
         encoding="utf-8")
@@ -648,7 +650,7 @@ def _store(tmp_path: Path, *refs: str) -> Path:
     """
     root = write_project(tmp_path / "store")
     (root / "gt" / "ocr").mkdir(parents=True)
-    (root / "config").mkdir()
+    (root / "config").mkdir(exist_ok=True)
     (root / "config" / "marks.json").write_text(
         (PROJECT / "config" / "marks.json").read_text(encoding="utf-8"),
         encoding="utf-8")

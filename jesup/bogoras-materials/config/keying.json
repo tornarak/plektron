@@ -1,0 +1,140 @@
+{
+ "_about": "The 1900 Materials' own keying rules, laid over the Jesup workspace's (jesup/config/keying.json) by harness/keying.py. Only what this book prints differently is here; every leaf carries its attestation in _why.",
+ "_glyphs": "Ruled by the editor off the scan, 2026-11-07: the hooked K and N, the backwards ye, the tall l, the forked d (\u00f0) and \u00e4 (Cyrillic \u0430 with diaeresis) are folds; \u0452 \u04bb \u0475 \u0441\u0327 \u0142 and the grave are letters of the notation. The \u0495-like letter is \u0452. Not ruled: the \u0454 with a hook below that is not a diacritic (1-252 l7, 1-298 l25 \u041a\u044d\u0301l\u2026; the layers read \u0119), distinct from plain \u0454 (1-152 l4 \u0402\u0430\u0301\u00f0\u0454). There is no barred \u0442: what looked like one is the barred l, \u0142, which the layers read as plain \u0442 (the editor, 2026-11-07: 1-102 l4 \u0454\u0142\u0430\u0301, 1-101 l15, 1-075 l11, 1-096 l13, 1-100 l19, 1-076 l6). A plain \u0442 is printed in the same word elsewhere (1-077 l12 \u0454\u0442\u043e\u0301\u043d), so no fold can tell them apart: a \u0442 in a native form is a place to zoom. Unruled forms still reach review: prose_alphabet selects every token that carries anything outside the Russian alphabet.",
+ "inventory": {
+  "\u0301": "COMBINING ACUTE ACCENT",
+  "\u0300": "COMBINING GRAVE ACCENT",
+  "\u0327": "COMBINING CEDILLA",
+  "\u04c4": "CYRILLIC SMALL LETTER KA WITH HOOK",
+  "\u04c3": "CYRILLIC CAPITAL LETTER KA WITH HOOK",
+  "\u04c8": "CYRILLIC SMALL LETTER EN WITH HOOK",
+  "\u04c7": "CYRILLIC CAPITAL LETTER EN WITH HOOK",
+  "\u0452": "CYRILLIC SMALL LETTER DJE",
+  "\u0402": "CYRILLIC CAPITAL LETTER DJE",
+  "\u04bb": "CYRILLIC SMALL LETTER SHHA",
+  "\u04ba": "CYRILLIC CAPITAL LETTER SHHA",
+  "\u0475": "CYRILLIC SMALL LETTER IZHITSA",
+  "\u0474": "CYRILLIC CAPITAL LETTER IZHITSA",
+  "\u00f0": "LATIN SMALL LETTER ETH",
+  "\u00d0": "LATIN CAPITAL LETTER ETH",
+  "\u0142": "LATIN SMALL LETTER L WITH STROKE",
+  "\u0141": "LATIN CAPITAL LETTER L WITH STROKE"
+ },
+ "lookalikes": {
+  "\u04e9": {
+   "_delete": "a letter of this notation"
+  },
+  "\u2019": {
+   "_delete": "the apostrophe this book prints"
+  }
+ },
+ "tier1_traps": {
+  "\u04e9": {
+   "_delete": "a letter of this notation"
+  },
+  "\u2019": {
+   "_delete": "the apostrophe this book prints"
+  },
+  "'": "\u2019"
+ },
+ "lookalike_chars": {
+  "\u04e9": {
+   "_delete": "a letter of this notation"
+  }
+ },
+ "lookalike_greps": {
+  "\u04e9": {
+   "_delete": "a letter of this notation"
+  },
+  "\u2019": {
+   "_delete": "the apostrophe this book prints"
+  }
+ },
+ "mark_license": {
+  "\u0306": {
+   "\u0443": "\u045e, a sort of this book's notation"
+  }
+ },
+ "detectors": {
+  "word_medial_caps": {
+   "_delete": "this book prints no small capitals"
+  },
+  "dot_above_g": {
+   "_delete": "this notation has no g\u0323"
+  },
+  "suffix_mark_drop": {
+   "_delete": "this notation has no g\u0323"
+  },
+  "apostrophe_unlicensed": {
+   "_delete": "the apostrophe is printed, as a stem-ending boundary"
+  }
+ },
+ "tier2_scripts": {
+  "Cyrl": {
+   "_delete": "this book prints its Chukchi in Cyrillic"
+  }
+ },
+ "prose_alphabet": {
+  "Cyrl": "\u0430\u0431\u0432\u0433\u0434\u0435\u0436\u0437\u0438\u043a\u043b\u043c\u043d\u043e\u043f\u0440\u0441\u0442\u0443\u0444\u0445\u0446\u0447\u0448\u0449\u044a\u044b\u044c\u044d\u044e\u044f\u0456\u0463\u0473\u0410\u0411\u0412\u0413\u0414\u0415\u0416\u0417\u0418\u041a\u041b\u041c\u041d\u041e\u041f\u0420\u0421\u0422\u0423\u0424\u0425\u0426\u0427\u0428\u0429\u042a\u042b\u042c\u042d\u042e\u042f\u0406\u0462\u0472"
+ },
+ "folds": {
+  "\u049b": "\u04c4",
+  "\u049a": "\u04c3",
+  "\u04a3": "\u04c8",
+  "\u04a2": "\u04c7",
+  "\u04d9": "\u044d",
+  "\u04d8": "\u042d",
+  "\u04cf": "l",
+  "\u04c0": "l",
+  "d\u030c": "\u00f0",
+  "D\u030c": "\u00d0",
+  "a\u0308": "\u0430\u0308",
+  "A\u0308": "\u0410\u0308"
+ },
+ "_why": {
+  "folds.\u049b": "The hooked K this book prints is \u04c4, as in the modern Chukchi alphabet: ruled by the editor, 2026-11-07. Both Google Books copies read it as \u049b, a codepoint the print does not use (1-128 l10 \u049b\u0456\u043d\u049b\u00e4\u0452\u0442\u0456; 1-175 \u04a2\u044d\u0301\u045e\u0441\u0327\u049b\u00e4\u0442). Crib: the Jesup q (Qora\u02cawg\u0323\u00ea) and modern \u04c4.",
+  "folds.\u049a": "The capital of folds.\u049b, by the same ruling (2026-11-07): the OCR's \u049a is the printed hooked K, \u04c3.",
+  "folds.\u04a3": "The hooked N is \u04c8, the modern Chukchi letter: ruled by the editor off the scan, 2026-11-07 (1-020 l22, 1-055 l19, 1-082 l3, 1-133 l2, 1-108 l5). The layers read it \u04a3. Crib: Jesup \u00f1 (\u04a2\u044b\u0440\u043e\u0301\u043d = \u00d1\u012dro\u02can).",
+  "folds.\u04a2": "The capital of folds.\u04a3, by the same ruling (2026-11-07).",
+  "folds.\u04d9": "What the layers read as \u04d9 is printed as a backwards ye, \u044d: ruled by the editor off the scan, 2026-11-07 (1-034 l2, 1-086 l36, 1-147 l16, 1-178 l14; 1-128 l10).",
+  "folds.\u04d8": "The capital of folds.\u04d9, by the same ruling (2026-11-07).",
+  "folds.\u04cf": "The tall l is one letter however the layers read it (l, \u04c0, \u043b, \u04bb): the editor found no visual distinction, 2026-11-07 (1-038 l37, 1-151 l12, 1-027 l8, 1-077 l15, 1-136 l13, 1-323 l25, 1-054 l3, 1-110 l4). The palochka never occurs in Russian prose, so it folds to l whole.",
+  "folds.\u04c0": "The capital of folds.\u04cf: the layers' palochka is the tall l (2026-11-07).",
+  "folds.d\u030c": "The forked d (a serif D with two spurs from the top centre, like an aquila) is keyed eth, \u00f0: the editor's choice of codepoint, 2026-11-07, its sound unknown. Copy A reads it d\u030c (1-022 l29 -\u043e\u0440\u0430\u0301w\u0435d\u030c\u0430\u0442, 1-142 l16, 1-080 l10, 1-100 l27, 1-174 l25), sometimes \u00f0 already (1-169 l14). Crib: Jesup \u029f\u0323 (ora\u02caw\u00ea\u029f\u0323at). Where a layer reads it \u0452 no fold can reach it; the scan decides.",
+  "folds.D\u030c": "The capital of folds.d\u030c, by the same ruling (2026-11-07).",
+  "folds.a\u0308": "\u00e4 is Cyrillic \u0430 with a diaeresis, by the rule that a shape both scripts share is keyed Cyrillic: the editor's ruling, 2026-11-07 (1-025 l7, 1-070 l4, 1-080 l2, 1-118 l3). The layers key it Latin; every Latin-only token carrying it is a native form read in Latin letters (l\u00fdlk\u00e4l, tit\u00e4), none German.",
+  "folds.A\u0308": "The capital of folds.a\u0308, by the same ruling (2026-11-07).",
+  "inventory.\u00f0": "The forked d (folds.d\u030c), ruled 2026-11-07.",
+  "inventory.\u00d0": "The forked d (folds.D\u030c), ruled 2026-11-07.",
+  "inventory.\u0142": "The barred l, a horizontal serifed stroke through the centre, keyed \u0142 as the layers have it: the editor's choice, 2026-11-07, as the Polish letter is the nearer sound (1-070 l13, 1-115 l14, 1-175 l5, 1-287 l2). The layers also read it as т (1-102 l4 єта́ for єłа́; _glyphs).",
+  "inventory.\u0141": "The capital of inventory.\u0142 (2026-11-07).",
+  "inventory.\u0327": "\u0441\u0327, ruled a letter of the notation by the editor, 2026-11-07 (1-060 l11, 1-129 l2, 1-231 l16, 1-175). The book names it a consonant: note 1 to no. 25 (1-175 l29) says women's pronunciation sets ч, с̧, and р before soft vowels as ц, and рк, чһ as a double ц; the text layer reads that с̧ as plain с. Crib: Jesup s˙ (Neˊᵋs˙qᴀn).",
+  "inventory.\u04c4": "The hooked K (folds.\u049b), ruled 2026-11-07.",
+  "inventory.\u04c3": "The hooked K (folds.\u049a), ruled 2026-11-07.",
+  "inventory.\u04c8": "The hooked N (folds.\u04a3), ruled 2026-11-07.",
+  "inventory.\u04c7": "The hooked N (folds.\u04a2), ruled 2026-11-07.",
+  "inventory.\u0452": "Dje, ruled a letter of the notation by the editor, 2026-11-07 (1-028 l3, 1-070 l3, 1-095 l1, 1-120 l2, 1-170 l1). Crib: Jesup g\u0323 (-w\u0452\u0435 = -wg\u0323\u00ea).",
+  "inventory.\u0402": "The capital of inventory.\u0452 (2026-11-07; \u0402\u0430\u0301\u010f\u0435, informant lines).",
+  "inventory.\u04bb": "Shha, ruled a letter of the notation by the editor, 2026-11-07 (1-038 l20, 1-132 l2, 1-104 l39, 1-074 l7, 1-128 l3). Shared with Latin h in this face, so keyed Cyrillic. The layers also misread the tall l as \u04bb (1-038 l37, 1-128 l8).",
+  "inventory.\u04ba": "The capital of inventory.\u04bb (2026-11-07).",
+  "inventory.\u0475": "Izhitsa, ruled a letter of the notation by the editor, 2026-11-07 (1-058 l4, 1-092 l13, 1-122 l3, 1-206 l19).",
+  "inventory.\u0474": "The capital of inventory.\u0475 (2026-11-07).",
+  "mark_license.\u0306.\u0443": "\u045e is printed throughout the informant lines and the Contents: 1-178 \u041a\u0443\u0442\u0458\u044d\u0301\u045e\u0442, 1-161 \u041a\u0430\u0301\u045e\u043d\u043e, 1-175 \u04a2\u044d\u0301\u045e\u0441\u0327\u049b\u00e4\u0442, 1-019 (Contents, no. 80) \u0420\u044b\u0301\u043d\u0442\u0435\u045e. Licensed by the editor for this text, 2026-11-06.",
+  "lookalikes.\u04e9": "Barred o is a letter of the 1900 notation, printed in the Chukchi forms (1-024 l20 \u0442\u043e\u0442-\u0442\u04e9\u043cwat\u2026, 1-076 l11). The trap is the Jesup one, U+04E9 for U+0275, which this book cannot commit. Unflagged by the editor, 2026-11-06.",
+  "tier1_traps.\u04e9": "As lookalikes.\u04e9: the same ruling, in the trap table.",
+  "lookalike_chars.\u04e9": "As lookalikes.\u04e9: the same ruling, in the file gate.",
+  "lookalike_greps.\u04e9": "As lookalikes.\u04e9: the same ruling, in the Tier-1 worklist.",
+  "lookalikes.\u2019": "The book prints a curly apostrophe between a native stem and its Russian case ending: 1-022 l19 \u0410\u0458\u04a3\u0430\u0438\u0300\u0432\u0430\u0301\u0442\u2019\u043e\u043c\u044a, l37 \u0410\u0458\u04a3\u0430\u0438\u0300\u0432\u0430\u0301\u0442\u2019\u0430 (read at 2x). It displaces no stress mark, so it is no trap here.",
+  "tier1_traps.\u2019": "As lookalikes.\u2019.",
+  "lookalike_greps.\u2019": "As lookalikes.\u2019.",
+  "tier1_traps.'": "Where the text layer has U+0027 the print has the curly \u2019 (1-022 l19, l37), so that is what a straight apostrophe displaces here, not \u02ca.",
+  "inventory.\u0301": "Stress is printed as an acute over the vowel of a native form: 1-024 l20 \u2026wa\u0301\u0442\u043a\u0435\u043d \u043f\u044b\u0301\u04a3\u044bl\u0442\u0435, 1-024 l15 \u041a\u0443\u0442\u0458\u044d\u0301\u045e\u0442. Russian prose prints none. The book says so itself: note 7 to no. 3 (1-098 l46) cites \u0430\u043c-\u0458\u0430\u0301\u0440\u0430-w\u0443\u0301\u0440\u0440\u0430 as printed in the text with the acute moved, \u0430\u043c-\u0458\u0430\u0440\u0430-w\u0443\u0440\u0440\u0430\u0301!, '\u0443\u0434\u0430\u0440\u0435\u043d\u0456\u0435 \u0432\u044a \u043a\u043e\u043d\u0446\u0463 \u0434\u043b\u044f \u0431\u043e\u043b\u044c\u0448\u0435\u0439 \u0432\u044b\u0440\u0430\u0437\u0438\u0442\u0435\u043b\u044c\u043d\u043e\u0441\u0442\u0438' (stress at the end, for expressiveness). Book-internal apparatus: the acute is stress.",
+  "inventory.\u0300": "A grave is printed in native forms: 1-026 l28 \u042dl\u044d\u0301\u043d\u0434\u0456\u0300 (grave on the final \u0456), 1-022 l19 \u0410\u0458\u04a3\u0430\u0438\u0300\u0432\u0430\u0301\u0442\u2019\u043e\u043c\u044a. Confirmed a grave by the editor off the scan, 2026-11-07 (1-037 l24, 1-104 l4, 1-192 l21, 1-260 l41); what it marks is open.",
+  "detectors.word_medial_caps": "The rule catches \u026a \u1d07 \u029f \u1d00 keyed as capitals; no small capital appears on 1-022, 1-024, 1-026, 1-058, 1-063, 1-070, 1-076 or 1-101 read at 2x, and the text layer holds none in 480 pages.",
+  "detectors.dot_above_g": "No g\u0323 on the leaves read for detectors.word_medial_caps; the notation's back consonants are Cyrillic letters, not a marked g.",
+  "detectors.suffix_mark_drop": "As detectors.dot_above_g: its one table row is g\u0323 before -\u026a.",
+  "detectors.apostrophe_unlicensed": "As lookalikes.\u2019: the apostrophe is printed, so a straight one is a slip for \u2019, not for a stress mark, and it does not make a token Tier-1.",
+  "tier2_scripts.Cyrl": "This book prints its Chukchi in Cyrillic (1-024 l15 \u0442\u044d\u0301\u2026\u044b\u043d, \u041a\u0443\u0442\u0458\u044d\u0301\u045e\u0442), so a Cyrillic token is judged by its glyphs, never excluded by its script.",
+  "prose_alphabet.Cyrl": "The pre-1918 Russian alphabet the prose is set in (1-022 throughout: \u0463 \u0456 \u044a), in NFD, so \u0439 is \u0438 with the breve orthographic_bases already discounts. Left out on purpose: \u0475, a letter of the native forms (1-101 l3 \u0442\u0475\u043c\u04a3-) and all but absent from Russian prose, so a Russian \u0475 is a loud question rather than a silent skip; and \u0451, which NFD splits."
+ }
+}

@@ -30,6 +30,7 @@ import json
 import unicodedata
 
 import pytest
+from conftest import jesup_rules
 
 from harness.marks import (
     MarksConfigError,
@@ -39,6 +40,8 @@ from harness.marks import (
     marks,
     sites,
 )
+
+R = jesup_rules()
 
 DOT = "̣"          # U+0323 combining dot below
 G_DOT = "g" + DOT
@@ -93,20 +96,20 @@ def _gt(root, ref, lines):
 def test_a_dotted_g_is_not_also_a_bare_g():
     """The trap that disabled the `rare` arm. See the module docstring."""
     c = CFG["contrasts"][0]
-    exp, bare = sites(nfd("vaˊɪrg̣ɪt"), c)
+    exp, bare = sites(nfd("vaˊɪrg̣ɪt"), c, R)
     assert len(exp) == 1
     assert bare == []
 
 
 def test_a_bare_g_is_counted_bare():
-    exp, bare = sites(nfd("vaˊɪrgɪt"), CFG["contrasts"][0])
+    exp, bare = sites(nfd("vaˊɪrgɪt"), CFG["contrasts"][0], R)
     assert exp == []
     assert len(bare) == 1
 
 
 def test_disjoint_contrasts_are_unaffected_by_the_subtraction():
     """`ɪ`/`i` share no prefix, so nothing is covered and both sides count."""
-    exp, bare = sites(nfd("miluteˊmkɪn"), CFG["contrasts"][1])
+    exp, bare = sites(nfd("miluteˊmkɪn"), CFG["contrasts"][1], R)
     assert len(exp) == 1 and len(bare) == 1
 
 
@@ -129,13 +132,13 @@ def test_the_position_predicate_agrees_with_medial_caps():
     for tok in ("Iluˊkälin", "ᵉIᵋñɪt-qeˊñu", "Eleˊ-yiˊᵋlhɪn", "ČêˊLo-maˊᵋqɪm",
                 "Hɪtoˊ-Lap", "Baffin-Land"):
         t = nfd(tok)
-        mine = {i for i, ch in enumerate(t) if ch in "AEIL" and is_medial(t, i)}
-        assert mine == set(medial_cap_positions(t)), tok
+        mine = {i for i, ch in enumerate(t) if ch in "AEIL" and is_medial(t, i, R)}
+        assert mine == set(medial_cap_positions(t, R)), tok
 
 
 def test_an_initial_scoped_contrast_ignores_a_medial_confusable():
     c = CFG["contrasts"][2]          # smallcap-I, position: initial
-    assert sites(nfd("ČêˊLo"), {**c, "confusable": "L"})[1] == []
+    assert sites(nfd("ČêˊLo"), {**c, "confusable": "L"}, R)[1] == []
 
 
 def test_an_initial_scoped_contrast_counts_a_word_initial_confusable(tmp_path):
@@ -144,7 +147,7 @@ def test_an_initial_scoped_contrast_counts_a_word_initial_confusable(tmp_path):
     Word-medial uppercase belongs to MEDIAL_CAPS, whose claim is sharper; this
     arm exists for the position MEDIAL_CAPS is blind to by construction.
     """
-    assert len(sites(nfd("Iᵋplɪˊlɪ"), CFG["contrasts"][2])[1]) == 1
+    assert len(sites(nfd("Iᵋplɪˊlɪ"), CFG["contrasts"][2], R)[1]) == 1
 
 
 # --- the fold -----------------------------------------------------------------

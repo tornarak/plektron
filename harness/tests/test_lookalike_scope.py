@@ -23,9 +23,11 @@ that previously existed only as a comment.
 """
 import unicodedata
 
-from harness.detectors import LOOKALIKES
-from harness.normalize import LOOKALIKE_CHARS, LOOKALIKE_SEQS
-from harness.validate import FORBIDDEN_PROSE, LOOKALIKE_GREPS, LOOKALIKE_SEQ_GREPS
+from conftest import jesup_rules
+
+from harness.validate import FORBIDDEN_PROSE
+
+R = jesup_rules()
 
 
 def nfd(s):
@@ -43,7 +45,7 @@ UNIVERSAL = "´ʼʻ‐–"
 def test_normalize_excludes_curly_quotes():
     """Corpus-wide and whole-file, so it meets English prose, which prints them."""
     for ch in CURLY:
-        assert ch not in LOOKALIKE_CHARS, (
+        assert ch not in R.lookalike_chars, (
             f"{ch!r} (U+{ord(ch):04X}) must stay out of the corpus-wide gate: the "
             "book sets curly quotes and English prose reproduces them")
 
@@ -51,7 +53,7 @@ def test_normalize_excludes_curly_quotes():
 def test_validate_traps_the_turned_and_raised_comma_in_tier1():
     """Inside Tier-1, U+2018/U+2019 trap stress U+02CA (keying_spec §3)."""
     for ch in "‘’":
-        assert ch in LOOKALIKE_GREPS
+        assert ch in R.lookalike_greps
 
 
 def test_forbidden_prose_excludes_curly_quotes_too():
@@ -63,46 +65,46 @@ def test_forbidden_prose_excludes_curly_quotes_too():
 def test_the_universally_illegitimate_marks_are_trapped_everywhere():
     """Nothing scope-dependent here: these have no reading in either register."""
     for ch in UNIVERSAL:
-        assert ch in LOOKALIKE_CHARS
-        assert ch in LOOKALIKE_GREPS
+        assert ch in R.lookalike_chars
+        assert ch in R.lookalike_greps
         assert ch in FORBIDDEN_PROSE
 
 
 def test_tables_are_not_the_same_object():
     """A merge would most likely arrive as an alias. Fail loudly if it does."""
-    assert LOOKALIKE_CHARS is not LOOKALIKE_GREPS
-    assert set(LOOKALIKE_CHARS) != set(LOOKALIKE_GREPS)
+    assert R.lookalike_chars is not R.lookalike_greps
+    assert set(R.lookalike_chars) != set(R.lookalike_greps)
 
 
 def test_triage_table_is_a_bare_set_of_characters():
     """`detectors.LOOKALIKES` carries no messages by design — it produces a flag,
     not a ruling, and a message would imply it had adjudicated something."""
-    assert isinstance(LOOKALIKES, set)
-    assert all(isinstance(c, str) and len(c) == 1 for c in LOOKALIKES)
+    assert isinstance(R.lookalikes, frozenset)
+    assert all(isinstance(c, str) and len(c) == 1 for c in R.lookalikes)
 
 
 def test_dotless_i_is_a_corpus_wide_trap():
     """U+0131 has no legitimate reading anywhere here; the only licensed dotless
     small-cap sort is U+026A (§2.3)."""
-    assert "ı" in LOOKALIKE_CHARS
-    assert "ɪ" not in LOOKALIKE_CHARS
+    assert "ı" in R.lookalike_chars
+    assert "ɪ" not in R.lookalike_chars
 
 
 def test_nbsp_is_trapped_corpus_wide_only():
     """A tokenization hazard in a file, not a glyph confusion inside a span."""
-    assert " " in LOOKALIKE_CHARS
+    assert " " in R.lookalike_chars
 
 
 def test_sequence_traps_agree_on_the_message():
     """Two spellings of one key — `ġ` precomposed vs `g` + U+0307 — carrying the
     same ruling. The message is the part that must not drift."""
-    assert list(LOOKALIKE_SEQS.values()) == list(LOOKALIKE_SEQ_GREPS.values())
+    assert list(R.lookalike_seqs.values()) == list(R.lookalike_seq_greps.values())
 
 
 def test_dot_above_g_is_the_trap_not_the_glyph():
     """The inventory glyph is `g` + U+0323, dot *below*. Dot above is the lookalike,
     and the naming used to say the opposite."""
-    assert all("U+0323" in m for m in LOOKALIKE_SEQS.values())
+    assert all("U+0323" in m for m in R.lookalike_seqs.values())
 
 
 # --- MEDIAL_CAPS: the small-cap slip, without the English --------------------
@@ -121,7 +123,7 @@ def test_medial_caps_does_not_fire_on_all_caps_english():
     firing on ordinary English buries the real hits, and here a hit also used to
     suppress the lexicon check, so it masked them outright.
     """
-    from harness.detectors import MEDIAL_CAPS as M
+    M = R.medial_caps
     for s in ("BOGORAS, THE CHUKCHEE.", "THE SENSES.", "AFFINITY.",
               "VI. — HUNTING AND FISHING; WAR."):
         assert not M.search(s), f"fires on all-caps English: {s!r}"
@@ -136,7 +138,7 @@ def test_medial_caps_still_catches_a_capital_after_a_stress_mark():
     lowercase letter**, because it occurs nowhere but inside a Tier-1 form. So
     the narrow rule reaches this case without reaching English.
     """
-    from harness.detectors import MEDIAL_CAPS as M
+    M = R.medial_caps
     assert M.search("kaˊLo"), "capital after a stress mark must still fire"
     assert M.search("vaˊgLɪñɪn")
     assert M.search("ᴇʟɪAn"), "capital after a small-cap must still fire"
@@ -151,7 +153,7 @@ def test_medial_caps_leaves_ordinary_english_alone():
     on it — `medial_cap_positions` is what reaches the Tier-1 compound, gated
     on the token, and the two tests below hold the halves apart.
     """
-    from harness.detectors import MEDIAL_CAPS as M
+    M = R.medial_caps
     for s in ("English Iron Later Above", "(In fact", "Reindeer-Eater",
               "Qɪˊmɪqäi"):
         assert not M.search(s), f"fires on ordinary text: {s!r}"
@@ -167,10 +169,10 @@ def test_a_hyphen_inside_a_tier1_token_is_word_internal():
     `marks`' prior (7 ASCII `L` against 0 `ʟ`) says a capital is normal.
     """
     from harness.detectors import medial_cap_positions
-    assert medial_cap_positions(nfd("Hɪtoˊ-Lap")) == [6]
-    assert medial_cap_positions(nfd("keˊlᴇ-Ap")) == [6]
+    assert medial_cap_positions(nfd("Hɪtoˊ-Lap"), R) == [6]
+    assert medial_cap_positions(nfd("keˊlᴇ-Ap"), R) == [6]
     # The corrected form must not fire: ʟ is U+029F, outside [AEIL].
-    assert medial_cap_positions(nfd("Hɪtoˊ-ʟap")) == []
+    assert medial_cap_positions(nfd("Hɪtoˊ-ʟap"), R) == []
 
 
 def test_the_hyphen_rule_spares_english_compounds():
@@ -182,7 +184,7 @@ def test_the_hyphen_rule_spares_english_compounds():
     from harness.detectors import medial_cap_positions
     for s in ("Baffin-Land Eskimo", "Chukchee-Eskimo trade", "Large-Anui River",
               "Amur-Lande", "Young-Lamut-Reindeer", "room-Eater"):
-        assert medial_cap_positions(nfd(s)) == [], f"fires on English: {s!r}"
+        assert medial_cap_positions(nfd(s), R) == [], f"fires on English: {s!r}"
 
 
 def test_the_hyphen_rule_keeps_its_one_known_false_positive_visible():
@@ -193,7 +195,7 @@ def test_the_hyphen_rule_keeps_its_one_known_false_positive_visible():
     from being quietly forgotten.
     """
     from harness.detectors import medial_cap_positions
-    assert medial_cap_positions(nfd("Êˊnnɪčhɪ-Latuˊᵋwg̣ê")) != []
+    assert medial_cap_positions(nfd("Êˊnnɪčhɪ-Latuˊᵋwg̣ê"), R) != []
 
 
 def test_the_trap_map_agrees_with_the_tier1_worklist():
@@ -204,23 +206,20 @@ def test_the_trap_map_agrees_with_the_tier1_worklist():
     the same target; U+02E2 is exempt, trapping two glyphs and so affording no
     reconstruction."""
     import re
-
-    from harness.detectors import TIER1_TRAPS
-    for ch, msg in LOOKALIKE_GREPS.items():
+    for ch, msg in R.lookalike_greps.items():
         targets = re.findall(r"traps ((?:U\+[0-9A-F]{4})(?:/U\+[0-9A-F]{4})*)", msg)
         assert targets, f"{msg!r} does not state what {ch!r} traps"
         if "/" in targets[0]:
-            assert ch not in TIER1_TRAPS, (
+            assert ch not in R.tier1_traps, (
                 f"{ch!r} traps two glyphs; a fold needs one target")
             continue
-        assert ch in TIER1_TRAPS, f"{ch!r} is a Tier-1 trap with no fold target"
-        assert ord(TIER1_TRAPS[ch]) == int(targets[0][2:], 16), (
-            f"{ch!r}: map says U+{ord(TIER1_TRAPS[ch]):04X}, worklist says {targets[0]}")
+        assert ch in R.tier1_traps, f"{ch!r} is a Tier-1 trap with no fold target"
+        assert ord(R.tier1_traps[ch]) == int(targets[0][2:], 16), (
+            f"{ch!r}: map says U+{ord(R.tier1_traps[ch]):04X}, worklist says {targets[0]}")
 
 
 def test_the_trap_map_is_not_a_lookalike_table():
     """It answers a different question — not "is this suspicious" but "what was
     meant" — and holds entries the worklist does not (U+0027, U+0131)."""
-    from harness.detectors import LOOKALIKES, TIER1_TRAPS
-    assert set(TIER1_TRAPS) != LOOKALIKES
-    assert "'" in TIER1_TRAPS and "'" not in LOOKALIKES
+    assert set(R.tier1_traps) != R.lookalikes
+    assert "'" in R.tier1_traps and "'" not in R.lookalikes

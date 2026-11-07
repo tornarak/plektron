@@ -12,6 +12,7 @@ what left "which pages are ready to collate" with no command behind it.
 """
 from __future__ import annotations
 
+import sys
 from pathlib import Path
 
 from ..layout import stem, stem_for
@@ -109,6 +110,18 @@ def register(cli):
            "as unwitnessed, because provenance that cannot be read back is "
            "indistinguishable from none to everything except a human squinting "
            "at prose")
+
+    # A `corpus` action because the rules are what every gate in the corpus reads;
+    # the layering is the point of showing them, so each row says which tier set it.
+    p = action(g, "rules", run_rules, pageable=False,
+               help="the keying rules this text is held to — its workspace's "
+               "config/keying.json with its own laid over key by key — one row "
+               "per entry, with the tier that set it and, for a text's own "
+               "ruling, its attestation. Reads and writes nothing; exit 1 when "
+               "the layers cannot be composed (a missing table, an unattested "
+               "override, an orthographic base the mark is not licensed on)")
+    opt(p, "--overrides", is_flag=True,
+        help="only the entries this text sets or deletes, not those it inherits")
 
     # Here rather than under `fig`, where it began, because it was never about
     # figures: `build_mets` takes filenames and returns markup, and every ALTO
@@ -278,11 +291,14 @@ def run_normalize(a) -> int:
     # error with no reading to adjudicate. The lookalike census does not — it is
     # a to-key worklist needing a human ruling on what the page prints, which is
     # firewalled, same contract as validate's WORKLIST.
+    # A ruled fold blocks too: the editor has identified the sort, so the OCR's
+    # codepoint left in a store is drift, not a reading.
     blocking = (rep["nfd_offenders"] or rep["unlicensed_marks"]
-                or rep["spacing_offenders"])
+                or rep["spacing_offenders"] or rep["fold_offenders"])
     if blocking:
-        means = ("NFD drift, an unlicensed mark or §2.9 spacing — each an error "
-                 "with no reading to adjudicate. --commit rewrites what it can")
+        means = ("NFD drift, an unlicensed mark, §2.9 spacing or an unwritten fold — "
+                 "each an error with no reading to adjudicate. --commit rewrites "
+                 "what it can")
     elif would["changed"]:
         means = (f"no blocking drift; --commit would rewrite "
                  f"{len(would['changed'])} file(s)")
@@ -310,6 +326,22 @@ def run_provenance(a) -> int:
     """
     from ..provenance import census
     out(a, census(a.root))
+    return 0
+
+
+def run_rules(a) -> int:
+    from ..keying import KeyingError, table_rows
+
+    try:
+        rows = table_rows(a.root)
+    except KeyingError as e:
+        print(f"keying rules: {e}", file=sys.stderr)
+        return 1
+    if a.overrides:
+        rows = [r for r in rows if r["tier"] != "workspace"]
+    out(a, rows, name="rules")
+    print(f"{len(rows)} entr{'y' if len(rows) == 1 else 'ies'}, "
+          f"{sum(r['tier'] != 'workspace' for r in rows)} set by this text")
     return 0
 
 

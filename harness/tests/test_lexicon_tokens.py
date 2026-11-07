@@ -26,6 +26,8 @@ from __future__ import annotations
 import unicodedata
 from pathlib import Path
 
+from conftest import jesup_rules
+
 from harness.detectors import (
     EDGE_PUNCT,
     _lexicon,
@@ -40,6 +42,8 @@ from harness.detectors import (
     suggest_lexicon,
 )
 from harness.tests.test_entities import entry
+
+R = jesup_rules()
 
 ALTO_NS = "http://www.loc.gov/standards/alto/ns-v4#"
 
@@ -214,7 +218,7 @@ def test_native_forms_are_joined_dequoted_and_keep_their_line(tmp_path):
 def test_broken_english_words_leave_the_miss_list(tmp_path):
     """`suggest_lexicon` end to end. `config/lexicon_extra.txt` supplies the
     lexicon, so the assertion does not depend on the machine's dictionary."""
-    (tmp_path / "config").mkdir()
+    (tmp_path / "config").mkdir(exist_ok=True)
     (tmp_path / "config" / "lexicon_extra.txt").write_text(
         "Chukchee\nreindeer\nherds\n", encoding="utf-8")
     _gt_page(tmp_path, "1-002", [
@@ -403,8 +407,8 @@ def test_the_two_tier1_selections_agree_on_russian():
     correctly held nothing for it. Russian is Tier-2; the ASCII policy does not
     reach it and no Cyrillic string is evidence about Bogoras's notation.
     """
-    from harness.detectors import cyrillic
-    assert cyrillic(nfd("Чукотскій")) and not cyrillic(nfd("kełiˊlın"))
+    from harness.detectors import tier2
+    assert tier2(nfd("Чукотскій"), R) and not tier2(nfd("kełiˊlın"), R)
 
 
 def test_a_russian_word_gets_no_tier1_handle(tmp_path):
@@ -688,9 +692,9 @@ def test_the_detector_still_declines_a_ligature(tmp_path):
 def test_the_worklist_floor_admits_a_ligature(tmp_path):
     """`Coregonidæ` is printed once, at 1-188, and names a fish family. Under
     the shared floor it reached no report at all."""
-    assert lexicon_miss("Œstrus", frozenset(), admit_foreign=True)
-    assert lexicon_miss("Coregonidæ", frozenset(), admit_foreign=True)
-    assert lexicon_miss("Grønland", frozenset(), admit_foreign=True)
+    assert lexicon_miss("Œstrus", frozenset(), admit_foreign=True, rules=R)
+    assert lexicon_miss("Coregonidæ", frozenset(), admit_foreign=True, rules=R)
+    assert lexicon_miss("Grønland", frozenset(), admit_foreign=True, rules=R)
 
 
 def test_the_worklist_floor_still_refuses_a_romanization(tmp_path):
@@ -699,15 +703,15 @@ def test_the_worklist_floor_still_refuses_a_romanization(tmp_path):
     hundred of them the corpus's own Tier-1 forms, which are not English words
     and are what the floor exists to keep out."""
     for form in ("Pehiˊttin", "Uñiˊin", "Kavraˊlɪn", "mêˊmêl"):
-        assert not lexicon_miss(form, frozenset(), admit_foreign=True), form
+        assert not lexicon_miss(form, frozenset(), admit_foreign=True, rules=R), form
 
 
 def test_the_worklist_floor_admits_russian(tmp_path):
     """Cyrillic passes, and should: this list feeds the entity and lexicon
     stores and both hold Russian. `нерпа` and `ларга` are 1-151's seal glosses,
     beside the `акипка` the store already carries as an alias."""
-    assert lexicon_miss("нерпа", frozenset(), admit_foreign=True)
-    assert lexicon_miss("Вахня", frozenset(), admit_foreign=True)
+    assert lexicon_miss("нерпа", frozenset(), admit_foreign=True, rules=R)
+    assert lexicon_miss("Вахня", frozenset(), admit_foreign=True, rules=R)
 
 
 def test_a_ligature_row_is_not_reported_as_suppressed(tmp_path):
@@ -770,7 +774,7 @@ def test_the_corpus_closes_a_hyphen_it_accounts_for(tmp_path):
     could not have answered this one — no wordlist of English carries it — and
     the corpus answers it 2,931 times."""
     idx = {"chukchee": (2931, frozenset({"1-002", "1-003"}))}
-    text, verdicts = resolve_break_hyphens("of the Chuk-chee", [11], "1-001", idx)
+    text, verdicts = resolve_break_hyphens("of the Chuk-chee", [11], "1-001", idx, rules=R)
     assert text == "of the Chukchee"
     assert verdicts == [{"token": "Chuk-chee", "resolved": "Chukchee",
                          "verdict": "joined", "joined": 2931, "hyphenated": 0}]
@@ -781,7 +785,7 @@ def test_the_corpus_keeps_a_hyphen_the_book_sets(tmp_path):
     of modern English and not one of this book's, which sets the hyphen 10 times
     away from any line end. Nothing is written, and that is the point."""
     idx = {"new-born": (10, frozenset({"1-002", "1-003"}))}
-    text, verdicts = resolve_break_hyphens("a new-born calf", [5], "1-001", idx)
+    text, verdicts = resolve_break_hyphens("a new-born calf", [5], "1-001", idx, rules=R)
     assert text == "a new-born calf"
     assert verdicts[0]["verdict"] == "kept"
     assert (verdicts[0]["hyphenated"], verdicts[0]["joined"]) == (10, 0)
@@ -793,9 +797,9 @@ def test_a_tie_and_a_silence_are_both_left_open(tmp_path):
     has no witness at all. Both keep the hyphen and both get a comment."""
     tie = {"spring-time": (6, frozenset({"1-002", "1-003"})),
            "springtime": (6, frozenset({"1-004", "1-005"}))}
-    text, vs = resolve_break_hyphens("in spring-time here", [9], "1-001", tie)
+    text, vs = resolve_break_hyphens("in spring-time here", [9], "1-001", tie, rules=R)
     assert text == "in spring-time here" and vs[0]["verdict"] == "open"
-    text, vs = resolve_break_hyphens("a nose-plumage", [6], "1-001", {})
+    text, vs = resolve_break_hyphens("a nose-plumage", [6], "1-001", {}, rules=R)
     assert text == "a nose-plumage" and vs[0]["verdict"] == "open"
 
 
@@ -804,11 +808,11 @@ def test_the_page_being_resolved_is_not_its_own_witness(tmp_path):
     nothing. `_attested` is the guard, and two refs are kept per form because two
     is what answers *some other page*."""
     only_here = {"chukchee": (40, frozenset({"1-001"}))}
-    text, vs = resolve_break_hyphens("the Chuk-chee", [8], "1-001", only_here)
+    text, vs = resolve_break_hyphens("the Chuk-chee", [8], "1-001", only_here, rules=R)
     assert text == "the Chuk-chee", "40 hits, all of them this page, decide nothing"
     assert vs[0]["verdict"] == "open"
     elsewhere = {"chukchee": (40, frozenset({"1-001", "1-002"}))}
-    text, _ = resolve_break_hyphens("the Chuk-chee", [8], "1-001", elsewhere)
+    text, _ = resolve_break_hyphens("the Chuk-chee", [8], "1-001", elsewhere, rules=R)
     assert text == "the Chukchee"
 
 
@@ -819,7 +823,7 @@ def test_a_tier1_form_is_refused_before_any_count_is_consulted(tmp_path):
     reading a rule may originate."""
     idx = {"torwaˊwaq": (90, frozenset({"1-002", "1-003"}))}
     form = nfd("(Tor-waˊwaq)")
-    text, vs = resolve_break_hyphens(form, [4], "1-001", idx)
+    text, vs = resolve_break_hyphens(form, [4], "1-001", idx, rules=R)
     assert text == form
     assert vs[0]["verdict"] == "tier1"
     assert (vs[0]["joined"], vs[0]["hyphenated"]) == (0, 0), \

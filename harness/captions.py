@@ -338,6 +338,8 @@ def restore(root: Path = Path("."), refs: list[str] | None = None,
 
     from .detectors import unlicensed_marks as _um
     from .figures import FIGDESC, alto_for, block_text, fig_refs, zone_suffix, zones
+    from .keying import rules as _rules
+    rules = _rules(root)
     from .figures import save_caption_text as _write
 
     text_for = {**load_proposal(root), **load_decisions(root)}
@@ -364,7 +366,7 @@ def restore(root: Path = Path("."), refs: list[str] | None = None,
             occupied.append(ref)
             continue
         for suffix, lines in have.items():
-            for m in _um("\n".join(lines)):
+            for m in _um("\n".join(lines), rules):
                 marks.append(f"{ref}|{suffix}: {m}")
         rows.append((ref, {s: have[s] for s in
                            (zone_suffix(b["id"]) for b in blocks)}))

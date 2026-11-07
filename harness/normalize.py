@@ -71,7 +71,9 @@ import re
 import unicodedata
 from pathlib import Path
 
+from . import keying
 from .detectors import apostrophe_flags, footnote_report, unlicensed_marks
+from .keying import Rules
 from .layout import workspace_root
 from .parallel import ptrack
 from .proposal_check import key_order
@@ -318,42 +320,20 @@ PATH_ONLY_GLOBS = ("review/*/proposal.json",)
 # so their presence is a defect regardless of which one a given span is. The curly
 # quotes are deliberately absent: the book prints them and English prose reproduces
 # them. Keep the messages in `validate.LOOKALIKE_GREPS`'s idiom — "X traps Y" reads as
-# "X is what gets typed when Y was meant".
-LOOKALIKE_CHARS = {
-    "´": "U+00B4 traps U+02CA",
-    "ʼ": "U+02BC traps U+02CA",
-    "ʻ": "U+02BB traps U+02CA",
-    "·": "U+00B7 traps U+02D9",
-    "ˢ": "U+02E2 traps U+1D4B/U+1D49",
-    "ₑ": "U+2091 traps U+1D49",
-    "ө": "U+04E9 traps U+0275",
-    "‐": "U+2010 traps U+002D",
-    # §2.11 is categorical — "the book sets one dash, U+2014, no en dash" — and the
-    # store agrees: 1041 U+2014 against 0 U+2013 over 476 keyed pages. It traps the
-    # HYPHEN rather than the em dash, because what actually gets typed as U+2013 is a
-    # numeric range (`1820–24`), and a range is a compound joiner, not one of §2.11's
-    # three dash settings. `3-188` keyed one and was first "corrected" to em, which
-    # was the same error one sort over; the corpus sets ranges 38 hyphen to 0 dash.
-    "–": "U+2013 traps U+002D",
-    # Not in keying_spec.md §2.3 at all — the only licensed dotless small-cap
-    # sort is ɪ (U+026A). Plain Turkish dotless-ı is the ASCII-keyboard-adjacent
-    # slip for it: `1-100`'s proposal keyed it ~20 times this way, of which
-    # `proposal-check --fix` only caught the ones that happened to be a clean
-    # 1-for-1 swap against `resolved` — the rest needed a hand-rolled script.
-    "ı": "U+0131 traps U+026A",
-    " ": "U+00A0 traps U+0020 (breaks word tokenization)",
-}
-# Traps that are a sequence, not a codepoint. U+0121 decomposes to exactly this pair,
-# so post-NFD there is nothing else to look for; the canonical glyph is g+U+0323.
-LOOKALIKE_SEQS = {"ġ": "g+U+0307 (or U+0121) traps g+U+0323"}
-
-
-# The two tables flattened once, in the order `_lookalikes` reports them — chars then
-# sequences — because that order is the report's row order, and a worklist that
-# reshuffled itself would show as churn in every diff. Built here rather than inside
-# the line loop, which was rebuilding it 67k times over a corpus run.
-_LOOKALIKE_PROBES = list(LOOKALIKE_CHARS.items()) + list(LOOKALIKE_SEQS.items())
-_LOOKALIKE_PROBES_FLAT = tuple(p for p, _ in _LOOKALIKE_PROBES)
+# "X is what gets typed when Y was meant". The table is the text's
+# `rules.lookalike_chars`, sequences `rules.lookalike_seqs`, and the probe order is
+# `rules.lookalike_probes` — chars then sequences, the report's row order, which a
+# worklist must keep or show as churn in every diff.
+#
+# Two of its entries carry measurements. U+2013: §2.11 is categorical — "the book
+# sets one dash, U+2014, no en dash" — and the store agrees, 1041 U+2014 against 0
+# U+2013 over 476 keyed pages. It traps the HYPHEN rather than the em dash, because
+# what gets typed as U+2013 is a numeric range (`1820–24`), a compound joiner and not
+# one of §2.11's three dash settings; `3-188` keyed one and was first "corrected" to
+# em, the same error one sort over. U+0131: not in §2.3 at all, the only licensed
+# dotless small-cap sort being ɪ (U+026A), and the ASCII-keyboard-adjacent slip for
+# it — `1-100`'s proposal keyed it ~20 times this way. The sequence U+0121 decomposes
+# to, g+U+0307, traps g+U+0323, the canonical glyph.
 
 
 def _rel(p: Path, root: Path) -> str:
@@ -409,7 +389,7 @@ def scoped_files(root: Path = Path("."), include_path_only: bool = False) -> lis
     return out
 
 
-def _lookalikes(text: str) -> list[dict]:
+def _lookalikes(text: str, rules: Rules) -> list[dict]:
     """Every lookalike occurrence, located. Assumes NFD input.
 
     One record per occurrence with the line and the containing token, not a per-file
@@ -424,11 +404,12 @@ def _lookalikes(text: str) -> list[dict]:
     # a per-line pass. Ordering is preserved deliberately: hits come out grouped by
     # probe within a line, as they did, because the report is a worklist a human
     # reads down and reshuffling it would show as churn in every diff.
-    if not any(probe in text for probe in _LOOKALIKE_PROBES_FLAT):
+    probes = rules.lookalike_probes
+    if not any(probe in text for probe, _ in probes):
         return []
     hits = []
     for lineno, line in enumerate(text.splitlines(), start=1):
-        for probe, msg in _LOOKALIKE_PROBES:
+        for probe, msg in probes:
             start = 0
             while (pos := line.find(probe, start)) != -1:
                 hits.append({"trap": msg, "line": lineno,
@@ -510,10 +491,12 @@ _APOSTROPHE_TRAPS = {
               "too (§1), same rule as the quote pair",
     "unlicensed": "U+0027 inside a Tier-1 form (§2.1: no licensed position) "
                  "— a mistyped stress mark U+02CA",
+    "prose": "U+0027 traps curly ’ — this book prints the apostrophe, so a "
+             "straight one is a slip for it (the text's keying rules)",
 }
 
 
-def _apostrophe_hits(p: Path, root: Path) -> list[dict]:
+def _apostrophe_hits(p: Path, root: Path, rules: Rules) -> list[dict]:
     """Every straight U+0027 in *authored content*, same content-scoping as
     `_quote_hits` (JSON `text` fields, `ocr`/`gt/ocr` `CONTENT` attributes,
     non-`@note` entity lines) but the per-occurrence judgement is
@@ -532,7 +515,7 @@ def _apostrophe_hits(p: Path, root: Path) -> list[dict]:
             return hits
         for idx, rec in sorted(data.get("lines", {}).items(), key=key_order):
             val = rec.get("text", "")
-            for h in apostrophe_flags(val):
+            for h in apostrophe_flags(val, rules):
                 hits.append({"path": rel, "trap": _APOSTROPHE_TRAPS[h["kind"]],
                             "line": idx, "token": f"text: {h['token']}"})
     elif p.suffix == ".xml" and p.parent.name == "ocr":
@@ -544,7 +527,7 @@ def _apostrophe_hits(p: Path, root: Path) -> list[dict]:
         for i, tl in enumerate(root_el.iter("{*}TextLine")):
             for s in tl.findall("{*}String"):
                 content = s.get("CONTENT") or ""
-                for h in apostrophe_flags(content):
+                for h in apostrophe_flags(content, rules):
                     hits.append({"path": rel, "trap": _APOSTROPHE_TRAPS[h["kind"]],
                                 "line": i, "token": h["token"]})
     return hits
@@ -664,6 +647,7 @@ def scan(root: Path = Path("."), paths: list[Path] | None = None,
     does not widen.
     """
     files, offenders, worklist, unlicensed, spacing, footnotes = 0, [], [], [], [], []
+    folds: list[dict] = []
     universe = scoped_files(root, include_path_only=paths is not None)
     if paths is not None:
         universe = _filter_scoped(universe, paths)
@@ -682,21 +666,48 @@ def scan(root: Path = Path("."), paths: list[Path] | None = None,
         # Checked against the NFD form so a precomposed lookalike and its decomposed
         # twin report identically — otherwise the answer would depend on the very
         # drift this verb exists to remove.
-        for h in _lookalikes(nfd):
+        rules = keying.rules_for(p, root)
+        if _folds_apply(p, root):
+            folds += _fold_hits(nfd, rel, rules)
+        for h in _lookalikes(nfd, rules):
             worklist.append({"path": rel, **h})
         worklist += _quote_hits(p, root)
-        worklist += _apostrophe_hits(p, root)
+        worklist += _apostrophe_hits(p, root, rules)
         # Reported per line, since a path plus a context string is not enough to find
         # one occurrence in a 54 KB store.
         for lineno, line in enumerate(nfd.splitlines(), start=1):
-            for h in unlicensed_marks(line):
+            for h in unlicensed_marks(line, rules):
                 unlicensed.append({"path": rel, "line": lineno, **h})
         for h in _spacing_hits(text, commentary=p.suffix == ".json"):
             spacing.append({"path": rel, **h})
         footnotes += _footnote_hits(p, root)
     return {"files": files, "nfd_offenders": offenders,
             "unlicensed_marks": unlicensed, "lookalikes": worklist,
-            "spacing_offenders": spacing, "footnote_markers": footnotes}
+            "spacing_offenders": spacing, "footnote_markers": footnotes,
+            "fold_offenders": folds}
+
+
+def _folds_apply(p: Path, root: Path) -> bool:
+    """Not under `config/`: the rulings name the very codepoints they fold, and
+    folding `keying.json` would rewrite a fold's own key into its target."""
+    try:
+        return Path(p).resolve().relative_to(Path(root).resolve()).parts[0] != "config"
+    except ValueError:
+        return True
+
+
+def _fold_hits(nfd: str, rel: str, rules: Rules) -> list[dict]:
+    """Each codepoint the text's `folds` rewrite, located by line and token.
+
+    A fold is a sort the editor has identified, so a hit has no reading left to
+    adjudicate and blocks like NFD drift; `--commit` writes the sort.
+    """
+    if not rules.fold_spans(nfd):
+        return []
+    return [{"path": rel, "line": n, "token": _token_at(line, i),
+             "from": k, "to": rules.folds[k]}
+            for n, line in enumerate(nfd.splitlines(), start=1)
+            for i, k in rules.fold_spans(line)]
 
 
 def convert(root: Path = Path("."), dry_run: bool = False,
@@ -752,8 +763,10 @@ def convert(root: Path = Path("."), dry_run: bool = False,
             before = p.read_text(encoding="utf-8")
         except (OSError, UnicodeDecodeError):
             continue
-        after = _fix_spacing(unicodedata.normalize("NFD", before),
-                             commentary=p.suffix == ".json")
+        nfd = unicodedata.normalize("NFD", before)
+        if _folds_apply(p, root):
+            nfd = keying.rules_for(p, root).fold(nfd)
+        after = _fix_spacing(nfd, commentary=p.suffix == ".json")
         if after == before:
             continue
 

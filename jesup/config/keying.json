@@ -1,0 +1,112 @@
+{
+ "_about": "The keying rules of the Jesup workspace: the Americanist notation The Chukchee prints, as keying_spec.md \u00a72-3 state it, which remains their owner. Read by harness/keying.py, which lays a text's own config/keying.json over this one key by key. Moved byte for byte from the module constants that held them (detectors, normalize, validate); `harness corpus rules` shows the effective table for a text and which tier set each entry.",
+ "_shape": "Every table maps a key to what it is. inventory and lookalikes: a codepoint to its name. tier1_traps: a trap to the glyph it displaces. lookalike_*: a trap to its message, in 'X traps Y' idiom. mark_license and orthographic_bases: a mark to {base: why}. detectors: a switch (keying.DETECTORS) to what it catches; present is on. tier2_scripts: an ISO 15924 code to why no token in it is Tier-1. prose_alphabet: a script to the letters of its prose, against which any other letter or mark in a token of that script is notation (or an error) — an exclusion list, so a novel glyph stays loud. folds: what an OCR emits for a sort (a letter, or a letter and its marks, in NFD) to what the editor identified it as, applied wherever text enters a store; an identity, so only ever the editor's.",
+ "inventory": {
+  "\u026a": "LATIN LETTER SMALL CAPITAL I",
+  "\u0275": "LATIN SMALL LETTER BARRED O",
+  "\u029f": "LATIN LETTER SMALL CAPITAL L",
+  "\u02ca": "MODIFIER LETTER ACUTE ACCENT",
+  "\u02d9": "DOT ABOVE",
+  "\u0302": "COMBINING CIRCUMFLEX ACCENT",
+  "\u0303": "COMBINING TILDE",
+  "\u0304": "COMBINING MACRON",
+  "\u0306": "COMBINING BREVE",
+  "\u0308": "COMBINING DIAERESIS",
+  "\u030c": "COMBINING CARON",
+  "\u0323": "COMBINING DOT BELOW",
+  "\u1d00": "LATIN LETTER SMALL CAPITAL A",
+  "\u1d07": "LATIN LETTER SMALL CAPITAL E",
+  "\u1d49": "MODIFIER LETTER SMALL E",
+  "\u1d4b": "MODIFIER LETTER SMALL OPEN E"
+ },
+ "lookalikes": {
+  "\u00b4": "ACUTE ACCENT",
+  "\u00b7": "MIDDLE DOT",
+  "\u02bb": "MODIFIER LETTER TURNED COMMA",
+  "\u02bc": "MODIFIER LETTER APOSTROPHE",
+  "\u02e2": "MODIFIER LETTER SMALL S",
+  "\u04e9": "CYRILLIC SMALL LETTER BARRED O",
+  "\u2010": "HYPHEN",
+  "\u2019": "RIGHT SINGLE QUOTATION MARK",
+  "\u2091": "LATIN SUBSCRIPT SMALL LETTER E"
+ },
+ "tier1_traps": {
+  "\u2019": "\u02ca",
+  "\u2018": "\u02ca",
+  "'": "\u02ca",
+  "\u00b4": "\u02ca",
+  "\u02bc": "\u02ca",
+  "\u02bb": "\u02ca",
+  "\u00b7": "\u02d9",
+  "\u2091": "\u1d49",
+  "\u04e9": "\u0275",
+  "\u2010": "-",
+  "\u2013": "-",
+  "\u0131": "\u026a"
+ },
+ "lookalike_chars": {
+  "\u00b4": "U+00B4 traps U+02CA",
+  "\u02bc": "U+02BC traps U+02CA",
+  "\u02bb": "U+02BB traps U+02CA",
+  "\u00b7": "U+00B7 traps U+02D9",
+  "\u02e2": "U+02E2 traps U+1D4B/U+1D49",
+  "\u2091": "U+2091 traps U+1D49",
+  "\u04e9": "U+04E9 traps U+0275",
+  "\u2010": "U+2010 traps U+002D",
+  "\u2013": "U+2013 traps U+002D",
+  "\u0131": "U+0131 traps U+026A",
+  "\u00a0": "U+00A0 traps U+0020 (breaks word tokenization)"
+ },
+ "lookalike_seqs": {
+  "g\u0307": "g+U+0307 (or U+0121) traps g+U+0323"
+ },
+ "lookalike_greps": {
+  "\u00b4": "U+00B4 traps U+02CA",
+  "\u2019": "U+2019 traps U+02CA",
+  "\u02bc": "U+02BC traps U+02CA",
+  "\u02bb": "U+02BB traps U+02CA",
+  "\u2018": "U+2018 traps U+02CA",
+  "\u00b7": "U+00B7 traps U+02D9",
+  "\u02e2": "U+02E2 traps U+1D4B/U+1D49",
+  "\u2091": "U+2091 traps U+1D49",
+  "\u04e9": "U+04E9 traps U+0275",
+  "\u2010": "U+2010 traps U+002D",
+  "\u2013": "U+2013 traps U+002D"
+ },
+ "lookalike_seq_greps": {
+  "g\u0307": "g+U+0307 (or U+0121) traps g+U+0323"
+ },
+ "mark_license": {
+  "\u0306": {
+   "i": "\u012d (\u00a72.6)",
+   "u": "\u016d (\u00a72.2)",
+   "\u0418": "\u0419, Cyrillic short I",
+   "\u0438": "\u0439, Cyrillic short i"
+  }
+ },
+ "orthographic_bases": {
+  "\u0306": {
+   "\u0438": "Cyrillic short i, ordinary Russian orthography",
+   "\u0418": "Cyrillic short i, ordinary Russian orthography"
+  },
+  "\u0308": {
+   "o": "\u00f6 \u00fc \u00ef in European names, never a Tier-1 sort here",
+   "O": "\u00f6 \u00fc \u00ef in European names, never a Tier-1 sort here",
+   "u": "\u00f6 \u00fc \u00ef in European names, never a Tier-1 sort here",
+   "U": "\u00f6 \u00fc \u00ef in European names, never a Tier-1 sort here",
+   "i": "\u00f6 \u00fc \u00ef in European names, never a Tier-1 sort here",
+   "I": "\u00f6 \u00fc \u00ef in European names, never a Tier-1 sort here"
+  }
+ },
+ "detectors": {
+  "word_medial_caps": "a full-height A E I L inside a word: the small capitals \u026a \u1d07 \u029f \u1d00 keyed as capitals",
+  "dot_above_g": "g+U+0307 or U+0121 where the notation prints g\u0323, dot below",
+  "suffix_mark_drop": "a bare g before -\u026a/-\u026an/-\u026at, where g\u0323 is the measured reading (\u00a75.1)",
+  "apostrophe_unlicensed": "U+0027 inside a token bearing notation: a mistyped stress \u02ca (\u00a72.1), so the token is Tier-1"
+ },
+ "tier2_scripts": {
+  "Cyrl": "Russian is Tier-2 prose in a Jesup volume (\u00a72.7): no Cyrillic token is evidence about the notation"
+ },
+ "prose_alphabet": {},
+ "folds": {}
+}

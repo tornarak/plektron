@@ -570,6 +570,25 @@ def register(cli):
     opt(p, "--force", is_flag=True,
         help="re-import over a page already in mz/ocr/, whatever produced it")
 
+    p = add("pair", help="pair each master page with its page in a witness copy, "
+            "by the two text layers' words, never by index. A page matching two "
+            "equally is named, never chosen: rule it in the witness's `map` in "
+            "project.json")
+    refs_arg(p, all_="every scan of the text")
+    opt(p, "--witness", "wid", metavar="ID", required=True,
+        help="the witness's id in project.json")
+    opt(p, "--commit", is_flag=True,
+        help="write the pairing to data/witness-ID.json — bare form only reports")
+
+    p = add("witness", help="the master's lines beside a witness copy's, aligned "
+            "by text, each marked same / spacing / differ / alone, with the native "
+            "forms either copy reads under the text's keying rules")
+    refs_arg(p)
+    opt(p, "--witness", "wid", metavar="ID", required=True,
+        help="the witness's id in project.json")
+    opt(p, "--differ", is_flag=True,
+        help="only the lines the copies disagree on, or that carry a native form")
+
 
 def run_import(a) -> int:
     """No model loads, so one loop serves a page and a sweep alike."""
@@ -602,6 +621,54 @@ def run_import(a) -> int:
         out(a, pages, "pages")
     if skips:
         out(a, skips, "skips")
+    return 0
+
+
+def run_pair(a) -> int:
+    """Measurement unless --commit; a named or unmatched page is not a failure."""
+    from ..witness import WitnessError, pair, write
+
+    try:
+        with progress("pairing") as tick:
+            res = pair(a.root, a.wid, page_refs(a) or None, tick)
+    except WitnessError as e:
+        print(f"ERROR: {e}", file=sys.stderr)
+        return 2
+    out(a, {"paired": len(res["map"]), "ruled": len(res["ruled"]),
+            "ambiguous": len(res["ambiguous"]), "unmatched": len(res["unmatched"]),
+            "empty": len(res["empty"]),
+            "low": min(res["score"].values(), default=None)})
+    if res["ambiguous"]:
+        out(a, [{"ref": r, "candidates": " ".join(f"{c['page']}@{c['score']}" for c in cs)}
+                for r, cs in res["ambiguous"].items()], "ambiguous")
+    if res["unmatched"]:
+        out(a, [{"ref": r} for r in res["unmatched"]], "unmatched")
+    if a.commit:
+        if page_refs(a):
+            print("ERROR: --commit writes the whole pairing; run it with --all",
+                  file=sys.stderr)
+            return 2
+        out(a, {"wrote": str(write(a.root, a.wid, res))})
+    return 0
+
+
+def run_witness(a) -> int:
+    from ..witness import WitnessError, compare
+
+    for ref in page_refs(a):
+        try:
+            rec = compare(ref, a.root, a.wid)
+        except WitnessError as e:
+            print(f"ERROR: {e}", file=sys.stderr)
+            return 2
+        lines = rec.pop("lines")
+        b_lines = rec.pop("b_lines")
+        out(a, rec)
+        rows = [{**x, "native": " ".join(x["native"])} for x in lines
+                if not a.differ or x["agree"] in ("differ", "alone") or x["native"]]
+        out(a, rows, "lines")
+        if b_lines:
+            out(a, [{**x, "native": " ".join(x["native"])} for x in b_lines], "b_only")
     return 0
 
 
@@ -1438,14 +1505,16 @@ def run_diff(a) -> int:
 
 
 def run_restore(a) -> int:
-    from ..review import restore_skip
+    from ..review import restore_skip, standing
 
     refs = page_refs(a)
     sweep = getattr(a, "all", False)
     if sweep:
         from ..paths import decisions_path, page_refs_under
+        # A page with no decision is still a candidate where its prose stands on
+        # the reading (`prose_stands`); `restore_skip` says whether all of it does.
         refs = [r for r in page_refs_under(a.root)
-                if decisions_path(r, a.root).exists()]
+                if decisions_path(r, a.root).exists() or standing(r, a.root)]
     # **Every page is checked before any page is written.** `restore` with
     # `commit=False` runs the whole of its refusal set and touches nothing, so a
     # dry pass over the list is exactly the up-front validation a multi-ref write

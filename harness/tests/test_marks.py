@@ -13,8 +13,11 @@ every character in the corpus. The fix was an allow-list entry, and nothing test
 import unicodedata
 
 import pytest
+from conftest import jesup_rules
 
-from harness.detectors import MARK_LICENSE, unlicensed_marks
+from harness.detectors import unlicensed_marks
+
+R = jesup_rules()
 
 BREVE = "̆"
 
@@ -25,18 +28,18 @@ def nfd(s):
 
 @pytest.mark.parametrize("base", ["u", "i"])
 def test_breve_licensed_on_the_latin_bases(base):
-    assert unlicensed_marks(base + BREVE) == []
+    assert unlicensed_marks(base + BREVE, R) == []
 
 
 @pytest.mark.parametrize("base", ["и", "И"])
 def test_breve_licensed_on_cyrillic_short_i(base):
     """`й`/`Й` — NFD-decomposed Russian, not notation. Regression: see module docstring."""
-    assert unlicensed_marks(base + BREVE) == []
+    assert unlicensed_marks(base + BREVE, R) == []
 
 
 def test_real_russian_word_is_clean_under_nfd():
     """`Русскаго` … `й` in situ. The whole-corpus case that broke."""
-    assert unlicensed_marks(nfd("Императорскій")) == []
+    assert unlicensed_marks(nfd("Императорскій"), R) == []
 
 
 @pytest.mark.parametrize("base", ["ɪ", "ᴀ", "ᴇ", "ä", "a", "e"])
@@ -47,19 +50,19 @@ def test_breve_unlicensed_on_the_obscure_vowel_series_and_others(base):
     drops its dot under an above-diacritic, so printed `ĭ` and a hypothetical `ɪ̆`
     are the same letterform and only the licence separates them.
     """
-    hits = unlicensed_marks(base + BREVE)
+    hits = unlicensed_marks(base + BREVE, R)
     assert len(hits) == 1
     assert "U+0306" in hits[0]["mark"]
 
 
 def test_mark_in_initial_position_has_no_base():
-    hits = unlicensed_marks(BREVE + "u")
+    hits = unlicensed_marks(BREVE + "u", R)
     assert len(hits) == 1
     assert "initial position" in hits[0]["base"]
 
 
 def test_hit_carries_what_a_human_needs_to_adjudicate():
-    (hit,) = unlicensed_marks("x" + BREVE)
+    (hit,) = unlicensed_marks("x" + BREVE, R)
     assert set(hit) == {"mark", "base", "licensed_on", "context"}
     assert "u" in hit["licensed_on"] and "i" in hit["licensed_on"]
 
@@ -67,14 +70,14 @@ def test_hit_carries_what_a_human_needs_to_adjudicate():
 def test_licence_is_a_closed_allow_list_per_mark():
     """Closed, not a deny-list: a deny-list silently admits every base nobody
     thought of, and the spec says licensing is by attestation only."""
-    for mark, allowed in MARK_LICENSE.items():
-        assert isinstance(allowed, set) and allowed
+    for mark, allowed in R.mark_license.items():
+        assert isinstance(allowed, frozenset) and allowed
 
 
 def test_input_need_not_be_pre_normalized():
     """Precomposed `ĭ` (U+012D) decomposes to a licensed pair; the caller should
     not have to know that."""
-    assert unlicensed_marks("ĭ") == []
+    assert unlicensed_marks("ĭ", R) == []
 
 
 # ------------------------------------------- selecting Tier-1 tokens
@@ -89,7 +92,7 @@ def test_a_european_name_is_not_a_native_token(token):
     43 occurrences over 12 types in gt/ocr, entering the frequency tables
     keying_spec.md §5.1 cites."""
     from harness.detectors import bears_inventory
-    assert not bears_inventory(nfd(token))
+    assert not bears_inventory(nfd(token), R)
 
 
 @pytest.mark.parametrize("token", ["Черкасскій", "Чукотскій", "Край", "Ушканій"])
@@ -97,7 +100,7 @@ def test_pre_reform_russian_is_not_a_native_token(token):
     """й is и + U+0306, an inventory member meant as a length mark. Same class
     as the diaeresis above and the reason `cyrillic` exists."""
     from harness.detectors import bears_inventory
-    assert not bears_inventory(nfd(token))
+    assert not bears_inventory(nfd(token), R)
 
 
 @pytest.mark.parametrize("token", ["vaˊɪrg̣ɪt", "ačaiˊkᴇlat", "kŭmɪˊñɪn",
@@ -107,14 +110,14 @@ def test_the_inventory_itself_still_selects(token):
     `ŭ`/`ĭ` are §2.2/§2.6 sorts — an exception keyed on the mark alone would
     have taken the inventory with it."""
     from harness.detectors import bears_inventory
-    assert bears_inventory(nfd(token))
+    assert bears_inventory(nfd(token), R)
 
 
 def test_a_mark_on_an_unnamed_base_still_selects():
     """`ORTHOGRAPHIC_BASES` is an exclusion list, so a base nobody has ruled on
     stays loud rather than being skipped."""
     from harness.detectors import bears_inventory
-    assert bears_inventory(nfd("ÿ"))
+    assert bears_inventory(nfd("ÿ"), R)
 
 
 def test_both_halves_of_the_comparison_select_the_same_way():
@@ -128,8 +131,8 @@ def test_both_halves_of_the_comparison_select_the_same_way():
     prior = inspect.getsource(detectors.native_corpus_context)
     batch = inspect.getsource(marks.page_tokens)
     for src in (prior, batch):
-        assert "bears_inventory(tok)" in src
-        assert "cyrillic(tok)" in src
+        assert "bears_inventory(tok, rules)" in src
+        assert "tier2(tok, rules)" in src
 
 
 # ------------------------------------ the arm that looks outside the inventory
@@ -154,7 +157,7 @@ def test_a_tier1_name_keyed_with_a_curly_apostrophe_is_found(tmp_path):
     they judge. Folding the trap and asking the store closes that exit."""
     from harness.marks import trap_hits
     p = _proposal(tmp_path, ["the Ke’rek people", "plain English here"])
-    hits = trap_hits(p, {nfd("Keˊrek").casefold(): ["1-039", "2-025"]})
+    hits = trap_hits(p, {nfd("Keˊrek").casefold(): ["1-039", "2-025"]}, R)
     assert len(hits) == 1
     assert hits[0]["token"] == nfd("Ke’rek")
     assert hits[0]["candidate"] == nfd("Keˊrek")
@@ -167,14 +170,14 @@ def test_an_english_apostrophe_is_not_a_hit(tmp_path):
     every possessive; what makes a hit is the *store* holding the folded form."""
     from harness.marks import trap_hits
     p = _proposal(tmp_path, ["the chief’s tent", "don’t"])
-    assert trap_hits(p, {nfd("Keˊrek").casefold(): ["1-039"]}) == []
+    assert trap_hits(p, {nfd("Keˊrek").casefold(): ["1-039"]}, R) == []
 
 
 def test_a_correctly_keyed_form_is_not_a_hit(tmp_path):
     """No trap character, nothing to reconstruct."""
     from harness.marks import trap_hits
     p = _proposal(tmp_path, [nfd("the Keˊrek people")])
-    assert trap_hits(p, {nfd("Keˊrek").casefold(): ["1-039"]}) == []
+    assert trap_hits(p, {nfd("Keˊrek").casefold(): ["1-039"]}, R) == []
 
 
 def test_the_match_is_case_insensitive(tmp_path):
@@ -182,7 +185,7 @@ def test_the_match_is_case_insensitive(tmp_path):
     question is whether the store knows the word, not how it was capitalised."""
     from harness.marks import trap_hits
     p = _proposal(tmp_path, ["said ke’rek to him"])
-    assert len(trap_hits(p, {nfd("Keˊrek").casefold(): ["1-039"]})) == 1
+    assert len(trap_hits(p, {nfd("Keˊrek").casefold(): ["1-039"]}, R)) == 1
 
 
 def test_an_unknown_folded_form_is_not_invented(tmp_path):
@@ -191,4 +194,4 @@ def test_an_unknown_folded_form_is_not_invented(tmp_path):
     than becoming a proposal nobody witnessed."""
     from harness.marks import trap_hits
     p = _proposal(tmp_path, ["the Qa’wak person"])
-    assert trap_hits(p, {nfd("Keˊrek").casefold(): ["1-039"]}) == []
+    assert trap_hits(p, {nfd("Keˊrek").casefold(): ["1-039"]}, R) == []

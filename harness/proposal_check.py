@@ -38,10 +38,10 @@ import unicodedata
 from collections.abc import Collection
 from pathlib import Path
 
+from . import keying
 from .atomic import tmp_for
 from .codepoints import non_ascii
 from .detectors import (
-    INVENTORY_CHARS,
     apostrophe_flags,
     footnote_report,
     medial_cap_positions,
@@ -49,13 +49,12 @@ from .detectors import (
 )
 
 HEX_RE = re.compile(r"U\+([0-9A-Fa-f]{4,6})")
-# The trigger set is `detectors.INVENTORY_CHARS` itself, not a re-derived Unicode
+# The trigger set is the text's `rules.inventory` itself, not a re-derived Unicode
 # category — the small caps ᴀᴇɪ and ᵋ are ordinary letter categories (Ll/Lm) and a
 # category-based heuristic would miss them entirely, silently exempting exactly
 # the glyphs most worth cross-checking. Dotless ı is inventory-adjacent (§2.6's
-# ĭ = dotless-i + breve) but absent from INVENTORY_CHARS, so it is added here.
+# ĭ = dotless-i + breve) but absent from the inventory, so it is added here.
 DOTLESS_I = "ı"
-NOTATION_CHARS = INVENTORY_CHARS | {DOTLESS_I}
 
 # The one issue-record shape, and the only constructor for it.
 #
@@ -166,7 +165,7 @@ def _cps(codepoints) -> str:
     return " ".join(sorted(f"U+{c:04X}" for c in codepoints))
 
 
-def _notation_codepoints(text: str) -> list[int]:
+def _notation_codepoints(text: str, rules: keying.Rules) -> list[int]:
     """Codepoints a `resolved` field is expected to name.
 
     Any combining mark at all (Unicode category Mn), not only the ones
@@ -211,13 +210,12 @@ def _notation_codepoints(text: str) -> list[int]:
     — either it now matches `resolved` correctly, or `fix()` sees two dangling
     items and correctly refuses to guess instead of pairing them wrong.
     """
-    from .detectors import ORTHOGRAPHIC_BASES
-
     nfd = unicodedata.normalize("NFD", text)
+    notation = rules.inventory | {DOTLESS_I}
     codepoints = [ord(ch) for i, ch in enumerate(nfd)
-                 if (ch in NOTATION_CHARS or unicodedata.category(ch) == "Mn")
-                 and not (i and nfd[i - 1] in ORTHOGRAPHIC_BASES.get(ch, ""))]
-    codepoints += [ord(nfd[i]) for i in medial_cap_positions(nfd)]
+                 if (ch in notation or unicodedata.category(ch) == "Mn")
+                 and not (i and nfd[i - 1] in rules.orthographic_bases.get(ch, ""))]
+    codepoints += [ord(nfd[i]) for i in medial_cap_positions(nfd, rules)]
     return codepoints
 
 
@@ -871,12 +869,16 @@ def check(path: Path, ref: str | None = None, root: Path = Path("."),
     codepoint `resolved` never mentions (the field is incomplete, or the
     character is the wrong one).
     """
+    rules = keying.rules(root)
     apostrophe_issues = {
         "english": "straight apostrophe on an English token (§1: the book "
                    "sets curly ’ in English prose too — same rule as the "
                    "quote pair; not Tier-1, so no licensing exception applies)",
         "unlicensed": "apostrophe inside a Tier-1 form (§2.1: no licensed "
                       "position — a mistyped stress mark U+02CA)",
+        "prose": "straight apostrophe where the book prints curly ’ (the "
+                 "text's keying rules: the apostrophe is printed, not a "
+                 "mistyped stress)",
     }
     data = json.loads(path.read_text(encoding="utf-8"))
     out = []
@@ -939,11 +941,11 @@ def check(path: Path, ref: str | None = None, root: Path = Path("."),
                              severity=ADVISORY))
         out += _handle_issues(idx, rec, text, root, lex_all)
         out += _named_key_issues(idx, rec, text, root, lex)
-        for hit in apostrophe_flags(text):
+        for hit in apostrophe_flags(text, rules):
             out.append(issue(idx, apostrophe_issues[hit["kind"]],
                              token=hit["token"],
                              context=hit.get("context", hit["token"])))
-        for hit in suffix_mark_flags(text):
+        for hit in suffix_mark_flags(text, rules):
             out.append(issue(idx, f"bare suffix, expected "
                              f"{hit['expected']!r} (§5.1: strong corpus-wide "
                              "bare-vs-marked skew for this shape) — check for a "
@@ -956,7 +958,7 @@ def check(path: Path, ref: str | None = None, root: Path = Path("."),
         # narrate a reading that is not its own — and an invented account of how a
         # mark was decided is worse than no account, since it is indistinguishable
         # from a real one. The hand-keyed remainder still answers for itself.
-        present = set(_notation_codepoints(_keyed_by_hand(rec, text)))
+        present = set(_notation_codepoints(_keyed_by_hand(rec, text), rules))
         if not present:
             continue
         stated = _stated_codepoints(resolved)
@@ -1228,6 +1230,14 @@ def fix(path: Path, root: Path | None = None) -> dict:
     _src = path.read_text(encoding="utf-8")
     data = json.loads(_src)
     changed, edits = [], []
+    # With no root given, the text is the nearest ancestor holding a manifest —
+    # whose rules judge the proposal. None found is `keying.rules`' refusal.
+    text_root = root
+    if text_root is None:
+        here = Path(path).resolve()
+        text_root = next((d for d in here.parents if (d / "project.json").exists()),
+                         here.parent)
+    rules = keying.rules(text_root)
     if "segmenter_missed" in data and not data["segmenter_missed"]:
         # Inert legacy: the field is illegal but an empty one carries no reading,
         # so it folds away silently rather than gating. A non-empty block is a
@@ -1265,7 +1275,7 @@ def fix(path: Path, root: Path | None = None) -> dict:
         resolved = rec.get("resolved", "")
         if not resolved:
             continue
-        present = set(_notation_codepoints(text))
+        present = set(_notation_codepoints(text, rules))
         stated = _stated_codepoints(resolved)
         extra_in_text = present - stated
         extra_in_resolved = _stated_but_absent(stated, text)

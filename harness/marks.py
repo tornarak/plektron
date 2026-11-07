@@ -84,16 +84,16 @@ import unicodedata
 from collections.abc import Callable, Collection
 from pathlib import Path
 
+from . import keying
 from .detectors import (
     EDGE_PUNCT,
-    INVENTORY_CHARS,
-    TIER1_TRAPS,
     TOKEN,
     bears_inventory,
-    cyrillic,
     native_corpus,
     native_corpus_lines,
+    tier2,
 )
+from .keying import Rules
 from .refs import norm_ref
 
 CONFIG = "config/marks.json"
@@ -132,8 +132,15 @@ def load_config(root: Path = Path(".")) -> dict:
         raise MarksConfigError(f"{p}: {e}") from e
 
     contrasts = cfg.get("contrasts")
-    if not isinstance(contrasts, list) or not contrasts:
-        raise MarksConfigError(f"{p}: 'contrasts' must be a non-empty list")
+    # **Empty only when the file says why.** A silently empty list would make every
+    # arm that needs a contrast report nothing, indistinguishable from a clean
+    # batch; a notation nobody has measured a contrast for yet (the 1900
+    # *Materials*, with no ground truth to measure on) declares that in `_none`.
+    none = cfg.get("_none")
+    if not isinstance(contrasts, list) or not (
+            contrasts or (isinstance(none, str) and none.strip())):
+        raise MarksConfigError(f"{p}: 'contrasts' must be a non-empty list, or "
+                               "empty with `_none` saying why")
     seen = set()
     for c in contrasts:
         for field in ("name", "expected", "confusable", "position"):
@@ -220,7 +227,7 @@ def _nfd(s: str) -> str:
     return unicodedata.normalize("NFD", s)
 
 
-def is_medial(token: str, i: int) -> bool:
+def is_medial(token: str, i: int, rules: Rules) -> bool:
     """Is position `i` word-medial — preceded by a letter or a mark?
 
     **Generalises `detectors.MEDIAL_CAPS` rather than competing with it**, and
@@ -253,20 +260,20 @@ def is_medial(token: str, i: int) -> bool:
     prev = token[i - 1]
     if prev.isalpha() or unicodedata.combining(prev) != 0:
         return True
-    return prev == "-" and any(c in INVENTORY_CHARS for c in token)
+    return prev == "-" and any(c in rules.inventory for c in token)
 
 
-def _find(token: str, needle: str, position: str) -> list[int]:
+def _find(token: str, needle: str, position: str, rules: Rules) -> list[int]:
     """Indices where `needle` occurs, filtered by the contrast's position scope."""
     out, start = [], 0
     while (i := token.find(needle, start)) != -1:
-        if position == "any" or not is_medial(token, i):
+        if position == "any" or not is_medial(token, i, rules):
             out.append(i)
         start = i + 1
     return out
 
 
-def sites(token: str, c: dict) -> tuple[list[int], list[int]]:
+def sites(token: str, c: dict, rules: Rules) -> tuple[list[int], list[int]]:
     """(expected sites, *bare* confusable sites) for one contrast in one token.
 
     The second list is the load-bearing one, and getting it wrong is silent. Where
@@ -281,9 +288,9 @@ def sites(token: str, c: dict) -> tuple[list[int], list[int]]:
     Contrasts whose two sides are disjoint (`ɪ`/`i`) are unaffected by the
     subtraction, which is why it is done here once rather than per contrast kind.
     """
-    exp = _find(token, c["expected"], c["position"])
+    exp = _find(token, c["expected"], c["position"], rules)
     covered = set(exp) if c["expected"].startswith(c["confusable"]) else set()
-    conf = [i for i in _find(token, c["confusable"], c["position"]) if i not in covered]
+    conf = [i for i in _find(token, c["confusable"], c["position"], rules) if i not in covered]
     return exp, conf
 
 
@@ -381,7 +388,7 @@ def handle_key(token: str) -> str:
     return "".join(out)
 
 
-def trap_hits(path: Path, known: dict[str, list[str]]) -> list[dict]:
+def trap_hits(path: Path, known: dict[str, list[str]], rules: Rules) -> list[dict]:
     """Tokens keyed with a trap glyph that become a known native form once folded.
 
     **The arm that looks where the others cannot.** Every other check here selects
@@ -412,9 +419,9 @@ def trap_hits(path: Path, known: dict[str, list[str]]) -> list[dict]:
         text = _nfd(rec.get("text", ""))
         for m in TOKEN.finditer(text):
             tok = m.group().strip(EDGE_PUNCT)
-            if not tok or not any(c in TIER1_TRAPS for c in tok):
+            if not tok or not any(c in rules.tier1_traps for c in tok):
                 continue
-            folded = _nfd("".join(TIER1_TRAPS.get(c, c) for c in tok))
+            folded = _nfd("".join(rules.tier1_traps.get(c, c) for c in tok))
             if folded == tok:
                 continue
             refs = known.get(folded.casefold())
@@ -424,7 +431,7 @@ def trap_hits(path: Path, known: dict[str, list[str]]) -> list[dict]:
     return out
 
 
-def page_tokens(path: Path) -> list[tuple[str, str]]:
+def page_tokens(path: Path, rules: Rules) -> list[tuple[str, str]]:
     """(line index, NFD token) for the Tier-1 tokens in a proposal or decision.
 
     Selection is `detectors.native_corpus`'s, verbatim — NFD, `TOKEN`,
@@ -449,16 +456,16 @@ def page_tokens(path: Path) -> list[tuple[str, str]]:
             # the other half of; the two were selected by different rules until
             # now — only the prior excluded Cyrillic — so a Russian token was
             # counted here and not there. See `detectors.bears_inventory`.
-            if tok and not cyrillic(tok) and bears_inventory(tok):
+            if tok and not tier2(tok, rules) and bears_inventory(tok, rules):
                 out.append((idx, tok))
     return out
 
 
-def _axis_counts(tokens, contrast) -> tuple[int, int]:
+def _axis_counts(tokens, contrast, rules: Rules) -> tuple[int, int]:
     """(expected occurrences, confusable occurrences) under the position scope."""
     exp = conf = 0
     for tok in tokens:
-        e, f = sites(tok, contrast)
+        e, f = sites(tok, contrast, rules)
         exp += len(e)
         conf += len(f)
     return exp, conf
@@ -574,7 +581,7 @@ def _stale_exemptions(rows: list[dict], exemptions: list[dict],
 
 
 def _rare(batch: dict, prior_tokens: list[str], contrasts: list[dict],
-          rare_max: float) -> list[dict]:
+          rare_max: float, rules: Rules) -> list[dict]:
     """Occurrences of a form whose confusable the corpus almost never sets.
 
     **Which contrasts this arm can reach is derived, never declared**: exactly
@@ -602,7 +609,7 @@ def _rare(batch: dict, prior_tokens: list[str], contrasts: list[dict],
     """
     out = []
     for c in contrasts:
-        exp_n, conf_n = _axis_counts(prior_tokens, c)
+        exp_n, conf_n = _axis_counts(prior_tokens, c, rules)
         axis_n = exp_n + conf_n
         if not axis_n:
             continue
@@ -612,7 +619,7 @@ def _rare(batch: dict, prior_tokens: list[str], contrasts: list[dict],
         for ref, toks in batch.items():
             forms: dict[str, list[str]] = {}
             for line, tok in toks:
-                if sites(tok, c)[1]:
+                if sites(tok, c, rules)[1]:
                     forms.setdefault(tok, []).append(line)
             for tok, lines in sorted(forms.items()):
                 out.append({
@@ -623,7 +630,8 @@ def _rare(batch: dict, prior_tokens: list[str], contrasts: list[dict],
     return out
 
 
-def _ratio_rows(c: dict, batch: dict, prior: dict, min_types: int) -> list[dict]:
+def _ratio_rows(c: dict, batch: dict, prior: dict, min_types: int,
+                rules: Rules) -> list[dict]:
     """Expected-form share, in **types**, against the leave-one-out prior.
 
     Types rather than tokens because the marks are lexical, not independent: a
@@ -670,8 +678,8 @@ def _ratio_rows(c: dict, batch: dict, prior: dict, min_types: int) -> list[dict]
     """
     def share(tokens) -> tuple[int, int]:
         types = set(tokens)
-        exp = sum(1 for t in types if sites(t, c)[0])
-        conf = sum(1 for t in types if sites(t, c)[1])
+        exp = sum(1 for t in types if sites(t, c, rules)[0])
+        conf = sum(1 for t in types if sites(t, c, rules)[1])
         return exp, conf
 
     def pct(tokens) -> tuple[float, int]:
@@ -730,6 +738,7 @@ def marks(refs: list[str], root: Path = Path("."), decisions: bool = False,
     contrasts = cfg["contrasts"]
     rare_max = cfg["rare_max_pct"] if rare_max is None else rare_max
     min_types = cfg["min_types"] if min_types is None else min_types
+    rules = keying.rules(root)
 
     refs = [norm_ref(r) for r in refs]
     under_test = set(refs)
@@ -741,7 +750,7 @@ def marks(refs: list[str], root: Path = Path("."), decisions: bool = False,
         if not p.exists():
             raise FileNotFoundError(
                 f"no {'decision' if decisions else 'proposal'} for {ref} at {p}")
-        toks = page_tokens(p)
+        toks = page_tokens(p, rules)
         batch[ref] = toks
         pages.append({"ref": ref, "source": str(p.relative_to(root))
                       if p.is_relative_to(root) else str(p),
@@ -763,8 +772,8 @@ def marks(refs: list[str], root: Path = Path("."), decisions: bool = False,
             prior.setdefault(ref, []).append(_nfd(tok))
     prior_tokens = [t for toks in prior.values() for t in toks]
 
-    rare = _rare(batch, prior_tokens, contrasts, rare_max)
-    ratio = [r for c in contrasts for r in _ratio_rows(c, batch, prior, min_types)]
+    rare = _rare(batch, prior_tokens, contrasts, rare_max, rules)
+    ratio = [r for c in contrasts for r in _ratio_rows(c, batch, prior, min_types, rules)]
 
     # **Not leave-one-out, and that is the difference.** Every other arm compares the
     # batch against a prior the batch is held out of, because it is asking whether
@@ -779,7 +788,7 @@ def marks(refs: list[str], root: Path = Path("."), decisions: bool = False,
             known.setdefault(tok.casefold(), []).append(ref)
     traps = [{"ref": ref, **hit}
              for ref in refs
-             for hit in trap_hits(_source_path(ref, root, decisions), known)]
+             for hit in trap_hits(_source_path(ref, root, decisions), known, rules)]
 
     # No exemptions on this side, deliberately. A proposal is a **record of what a
     # reader wrote**, not a store to be corrected — rewriting one is forbidden
@@ -892,7 +901,8 @@ def page_issues(path: Path, ref: str, root: Path = Path("."),
     except MarksConfigError:
         return []
     ref = norm_ref(ref)
-    batch = {ref: page_tokens(path)}
+    rules = keying.rules(root)
+    batch = {ref: page_tokens(path, rules)}
     drop = frozenset(cohort) if cohort else {ref}
     prior: dict[str, list[str]] = {}
     for r, tok in (native_corpus(root) if corpus is None else corpus):
@@ -912,7 +922,7 @@ def page_issues(path: Path, ref: str, root: Path = Path("."),
     # who could settle it is the one who is not allowed to. See `proposal_check`'s
     # DEFECT/ADVISORY note.
     out = []
-    for hit in _rare(batch, prior_tokens, cfg["contrasts"], cfg["rare_max_pct"]):
+    for hit in _rare(batch, prior_tokens, cfg["contrasts"], cfg["rare_max_pct"], rules):
         lines = hit["lines"].split()
         where = f" (and lines {' '.join(lines[1:])})" if len(lines) > 1 else ""
         out.append(issue(

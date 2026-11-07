@@ -37,6 +37,7 @@ from .. import (
     figrefs,
     geo,
     ipa,
+    keying,
     langs,
     layout,
     lexicon,
@@ -1271,7 +1272,7 @@ _CUT_END = re.compile(r"(\S+)-\s*$")
 _CUT_START = re.compile(r"\S+")
 
 
-def _turn_word(open_p, first, ref: str, idx: dict, words=frozenset()) -> bool:
+def _turn_word(open_p, first, ref: str, idx: dict, words=frozenset(), *, rules) -> bool:
     """Close or keep a word the page turn cut, by the line-end rule; True if done.
 
     **The same rule as a line end inside a page** (`resolve_break_hyphens`): the
@@ -1294,7 +1295,8 @@ def _turn_word(open_p, first, ref: str, idx: dict, words=frozenset()) -> bool:
     if lm is None or rm is None:
         return False
     stem, rest = lm.group(1), rm.group()
-    whole, verdicts = resolve_break_hyphens(f"{stem}-{rest}", [len(stem)], ref, idx, words)
+    whole, verdicts = resolve_break_hyphens(f"{stem}-{rest}", [len(stem)], ref, idx, words,
+                                            rules=rules)
     if not verdicts:
         return False
     new = left[:lm.start()] + whole
@@ -1306,7 +1308,8 @@ def _turn_word(open_p, first, ref: str, idx: dict, words=frozenset()) -> bool:
     return True
 
 
-def _chapter_body(leaves: list[dict], idx: dict | None = None, words=frozenset()) -> str:
+def _chapter_body(leaves: list[dict], idx: dict | None = None, words=frozenset(),
+                  rules=None) -> str:
     """The chapter's text as one HTML string, with the leaf breaks closed.
 
     **A paragraph the leaf break cut is one paragraph again.** Whether the next
@@ -1362,7 +1365,8 @@ def _chapter_body(leaves: list[dict], idx: dict | None = None, words=frozenset()
             items.extend(blocks[:lead])
             # A word the turn cut is set whole first, so the mark lands after it
             # rather than between its halves; otherwise the turn is a space.
-            cut = idx is not None and _turn_word(open_p, first, leaf["ref"], idx, words)
+            cut = idx is not None and _turn_word(open_p, first, leaf["ref"], idx, words,
+                                                 rules=rules)
             marked = LH.fragment_fromstring(mark)
             marked.tail = ("" if cut else " ") + (first.text or "")
             open_p.append(marked)
@@ -1445,7 +1449,8 @@ def _chapter_page(request: Request, run: dict, root: Path):
         request,
         "edition/chapter.html",
         _ctx(request, run=run, leaves=leaves, drafts=drafts, gaps=gaps,
-             body=_chapter_body(leaves, stores.midline(root), stores.english(root)),
+             body=_chapter_body(leaves, stores.midline(root), stores.english(root),
+                                keying.rules(root)),
              notices=_pooled(leaf["notices"] for leaf in text),
              supplements=_pooled(leaf["supplements"] for leaf in text),
              notes=_pooled_notes(text),

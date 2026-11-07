@@ -36,7 +36,7 @@ def root(tmp_path: Path) -> Path:
     (tmp_path / "scans").mkdir()
     Image.new("RGB", (600, 800), "white").save(
         tmp_path / "scans" / "chukchi-1-048.png")
-    (tmp_path / "config").mkdir()
+    (tmp_path / "config").mkdir(exist_ok=True)
     shutil.copy(Path("config") / "zones.json", tmp_path / "config")
     return tmp_path
 

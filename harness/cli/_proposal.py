@@ -49,7 +49,15 @@ FIELD_HELP = ("which field of the line to act on (default text). Applies to "
               "codepoints, set and replace alike. `class` is the note's class and "
               "takes a closed vocabulary — doubt, semantic, print, draft, layout, "
               "artifact — refused at the write rather than reported afterwards, "
-              "since an unknown class reads downstream as no class at all")
+              "since an unknown class reads downstream as no class at all. "
+              "`native` lists the line's native forms as read off the scan, space "
+              "separated — every one, including those no glyph marks, since "
+              "those are the ones no rule can find")
+
+#: A proposal line's fields. `native` is the reader's list of the line's native
+#: forms: a rule finds the ones that carry notation, and only a reader finds an
+#: unmarked one (`терк-арм`, 1-022), so the list is the reader's to write.
+FIELDS = ("text", "resolved", "note", "class", "native")
 
 
 def _which(v: str) -> str:
@@ -132,7 +140,7 @@ def register(cli):
                        "Omit it for every line on the page."),
                 all_="every review/ page with a proposal")
     opt(p, "--field", default="text",
-        type=click.Choice(("text", "resolved", "note", "class")), help=FIELD_HELP)
+        type=click.Choice(FIELDS), help=FIELD_HELP)
 
     p = _target(action(g, "set", run_set, section="Editing one field",
                        help="set one line's field, or many lines' in one write. "
@@ -145,7 +153,7 @@ def register(cli):
                        "afford two turns per line."))
     arg(p, "line", metavar="[LINE]", required=False, default=None)
     opt(p, "--field", default="text",
-        type=click.Choice(("text", "resolved", "note", "class")), help=FIELD_HELP)
+        type=click.Choice(FIELDS), help=FIELD_HELP)
     opt(p, "--value", default=None, help="the replacement text; omit to read stdin")
     opt(p, "--values", default=None,
         help='the bulk form: a {"line": "text"} object setting many lines in one '
@@ -163,7 +171,7 @@ def register(cli):
     opt(p, "--old", required=True, help="text to find")
     opt(p, "--new", required=True, help="text to substitute")
     opt(p, "--field", default="text",
-        type=click.Choice(("text", "resolved", "note", "class")), help=FIELD_HELP)
+        type=click.Choice(FIELDS), help=FIELD_HELP)
     opt(p, "--which", default="all", callback=lambda c, prm, v: _which(v),
         help="which occurrence(s) of --old to replace — \"all\" "
              "(default), \"first\", \"last\", an occurrence number "

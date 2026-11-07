@@ -36,7 +36,7 @@ from __future__ import annotations
 import unicodedata
 from pathlib import Path
 
-from . import provenance
+from . import keying, provenance
 from .atomic import tmp_for
 from .layout import dpi as text_dpi
 from .layout import stem_for
@@ -153,8 +153,14 @@ def page_rows(page, dpi: int, overlap: float = ROW_OVERLAP) -> tuple[list[dict],
 
 
 def producer(pdf: Path, pdf_page: int, copy: str, overlap: float = ROW_OVERLAP,
-             root: Path = Path(".")) -> provenance.Producer:
-    """The record every imported page carries. The PDF is the model's checkpoint."""
+             root: Path = Path("."), folds: dict[str, str] | None = None
+             ) -> provenance.Producer:
+    """The record every imported page carries. The PDF is the model's checkpoint.
+
+    `folds` are the editor's identified sorts the import wrote in place of the
+    layer's codepoints (`keying.Rules.folds`); recorded, so a reading says it
+    is not the layer verbatim.
+    """
     import os
 
     import pymupdf
@@ -166,7 +172,9 @@ def producer(pdf: Path, pdf_page: int, copy: str, overlap: float = ROW_OVERLAP,
         model=os.path.relpath(pdf, root), sha256=provenance.digest(pdf),
         inputs={"engine": "the OCR that made the text layer", "copy": copy,
                 "pdf_page": pdf_page, "text_layer_producer": made_by.replace("; ", ", "),
-                "row_overlap": overlap})
+                "row_overlap": overlap,
+                **({"folds": " ".join(f"{a}>{b}" for a, b in sorted(folds.items()))}
+                   if folds else {})})
 
 
 def alto(ref: str, root: Path, row_px: list[dict], size: tuple[int, int],
@@ -230,7 +238,10 @@ def import_page(ref: str, root: Path = Path("."), force: bool = False,
     pdf, index = master_pdf(ref, root)
     with pymupdf.open(pdf) as doc:
         row_px, size = page_rows(doc[index - 1], text_dpi(root), overlap)
-    tree = alto(ref, root, row_px, size, producer(pdf, index, "master", overlap, root))
+    rules = keying.rules(root)
+    row_px = [{**r, "text": rules.fold(r["text"])} for r in row_px]
+    tree = alto(ref, root, row_px, size,
+                producer(pdf, index, "master", overlap, root, folds=rules.folds))
     mz_dir(root).mkdir(parents=True, exist_ok=True)
     tmp = tmp_for(dest)
     tmp.write_bytes(etree.tostring(tree, xml_declaration=True, encoding="UTF-8",

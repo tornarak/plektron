@@ -918,12 +918,20 @@ separates them; only the licence does.
 |---|---|---|
 | breve **U+0306** | `u` (ŭ); `i` (ĭ) | everything else — the obscure-vowel series **ᴀ ᴇ ɪ ä** already encodes length (§2.3), and `j` because the marked sort is **ǰ**, j+U+030C |
 
-**The list is closed and enforced as such.** `detectors.MARK_LICENSE` holds it;
-`harness corpus normalize` exits 1, `tei validate` raises an ERROR and `ocr
-restore` refuses to write on a violation. No tool rewrites one — choosing the
-intended glyph is the editor's act. So a breve above a dotless i-form is **ĭ**,
-never ɪ̆; further bases are licensed only on attestation the editor has stamped.
-*Attested:* `1-074` `Am-g̣roˊkĭ`; `1-073` `Neǰ-` ×3 (caron, not breve).
+**The list is closed and enforced as such.** The workspace's `config/keying.json`
+holds it as `mark_license`; `harness corpus normalize` exits 1, `tei validate`
+raises an ERROR and `ocr restore` refuses to write on a violation. No tool
+rewrites one — choosing the intended glyph is the editor's act. So a breve above a
+dotless i-form is **ĭ**, never ɪ̆; further bases are licensed only on attestation
+the editor has stamped. *Attested:* `1-074` `Am-g̣roˊkĭ`; `1-073` `Neǰ-` ×3
+(caron, not breve).
+
+**A stamp is scoped to the book that prints the sort.** It is written in that
+text's own `config/keying.json`, with its attestation in `_why`, and widens the
+licence for that text alone; the workspace's list, and every other text's, is
+unchanged. The 1900 *Materials* license the breve on Cyrillic `у` (`ў`, a sort of
+that book's notation): *Attested:* `1-178` Кутјэ́ўт, `1-161` Кáўно. *The
+Chukchee* still refuses it, where a `ў` could only be a misread `ŭ`.
 
 ### 2.7 Pre-reform Russian sorts (SETTLED)
 

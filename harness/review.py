@@ -48,10 +48,10 @@ from pathlib import Path
 from lxml import etree
 
 from . import corrections as _corr
+from . import keying
 from .atomic import tmp_for
 from .detectors import (
     DOT_ABOVE_G,
-    LOOKALIKES,
     bears_inventory,
     inventory_glyphs,
     unlicensed_marks,
@@ -96,7 +96,7 @@ def codepoints(s: str) -> str:
     return ", ".join(out)
 
 
-def classify(catmus: str, claude: str) -> str:
+def classify(catmus: str, claude: str, rules: keying.Rules) -> str:
     """Space-separated class tags for one differing span. Flat, for TOON."""
     tags = []
     both = catmus + claude
@@ -104,11 +104,11 @@ def classify(catmus: str, claude: str) -> str:
         tags.append("non_ascii")
     else:
         tags.append("ascii_only")
-    if bears_inventory(claude):
+    if bears_inventory(claude, rules):
         tags.append("inventory")
-    if any(c in LOOKALIKES for c in claude):
+    if any(c in rules.lookalikes for c in claude):
         tags.append("lookalike_in_proposal")
-    if DOT_ABOVE_G.search(claude):
+    if rules.on("dot_above_g") and DOT_ABOVE_G.search(claude):
         tags.append("dot_above_g_in_proposal")
     if not catmus:
         tags.append("insertion")
@@ -117,7 +117,7 @@ def classify(catmus: str, claude: str) -> str:
     return " ".join(tags)
 
 
-def tier1_glyphs(text: str) -> str:
+def tier1_glyphs(text: str, rules: keying.Rules) -> str:
     """The distinct inventory glyphs in a line, in order of first appearance.
 
     Used to flag a line as *probably* carrying transcribed notation, which is the
@@ -139,7 +139,7 @@ def tier1_glyphs(text: str) -> str:
     never there — `3-149`'s `служилый` / `приказный` were reported exactly so.
     The floor above is about what this *misses*; this is about what it invents.
     """
-    return "".join(dict.fromkeys(inventory_glyphs(text)))
+    return "".join(dict.fromkeys(inventory_glyphs(text, rules)))
 
 
 def load_proposal(ref: str, root: Path = Path(".")) -> dict[int, dict]:
@@ -167,7 +167,7 @@ def load_proposal(ref: str, root: Path = Path(".")) -> dict[int, dict]:
     return {int(k): v for k, v in doc["lines"].items()}
 
 
-def line_spans(catmus: str, claude: str) -> list[dict]:
+def line_spans(catmus: str, claude: str, rules: keying.Rules) -> list[dict]:
     """Differing spans between two readings of one line, with local context."""
     a, b = _nfd(catmus), _nfd(claude)
     sm = difflib.SequenceMatcher(None, a, b, autojunk=False)
@@ -180,7 +180,7 @@ def line_spans(catmus: str, claude: str) -> list[dict]:
             "claude": b[j1:j2],
             "at": j1,
             "context": b[max(0, j1 - CONTEXT_CHARS):j2 + CONTEXT_CHARS],
-            "classes": classify(a[i1:i2], b[j1:j2]),
+            "classes": classify(a[i1:i2], b[j1:j2], rules),
         })
     return out
 
@@ -188,13 +188,14 @@ def line_spans(catmus: str, claude: str) -> list[dict]:
 def page_spans(ref: str, root: Path, store: str) -> list[dict]:
     """Every differing span on one page, one flat record each."""
     ref = norm_ref(ref)
+    rules = keying.rules(root)
     prop = load_proposal(ref, root)
     out = []
     for rec in page_lines(alto_for_lines(ref, root, store), root, ref=ref):
         mine = prop.get(rec["index"])
         if mine is None:
             continue
-        for sp in line_spans(rec["text"], mine["text"]):
+        for sp in line_spans(rec["text"], mine["text"], rules):
             out.append({"ref": ref, "index": rec["index"],
                         "line_id": rec["line_id"], **sp})
     return out
@@ -551,6 +552,34 @@ def corrections(root: Path = Path("."), refs: list[str] | None = None,
             "changes": changes, "by_page": by_page}
 
 
+def standing(ref: str, root: Path = Path(".")) -> dict[int, dict]:
+    """The proposal lines that reach `gt/ocr/` on the model's reading, `{index: record}`.
+
+    Only under the text's `prose_stands` ruling (`layout.prose_stands`), and only a
+    line that is plainly prose: no `native` form listed, no `doubt` note, and every
+    letter in the prose alphabet (`detectors.prose_only`). A decision on the line
+    always wins, so the editor can overrule any of them in `ocr review`.
+
+    **Derived, never stored.** Which lines stood is a function of two tracked
+    files, the proposal and the keying rules, re-derived on every call, so no
+    record of it can go stale and nothing writes a model's line into
+    `decision.json`, which is a human's.
+    """
+    from .detectors import prose_only
+    from .layout import prose_stands
+    if not prose_stands(root) or not proposal_path(ref, root).exists():
+        return {}
+    rules = keying.rules(root)
+    out = {}
+    for i, v in load_proposal(ref, root).items():
+        if v.get("native") or v.get("class") == "doubt":
+            continue
+        if not prose_only(v["text"], rules):
+            continue
+        out[i] = {k: v[k] for k in ("text", "note", "class") if k in v}
+    return out
+
+
 def restore_skip(ref: str, root: Path = Path("."), force: bool = False) -> str:
     """Why this page should not be restored in a sweep, or `""` to go ahead.
 
@@ -576,12 +605,22 @@ def restore_skip(ref: str, root: Path = Path("."), force: bool = False) -> str:
     not an adjudication, and re-authoring one does not license a write.
     """
     dec = decisions_path(ref, root)
-    if not dec.exists():
-        return "no decisions"
+    # Under `prose_stands` the proposal is a licence for the lines that stand, so
+    # a page whose every line stands needs no decision.json, and its proposal's
+    # mtime is the act the sweep compares against.
+    basis = dec if dec.exists() else None
+    if basis is None:
+        stood = standing(ref, root)
+        if not stood:
+            return "no decisions"
+        waiting = len(load_proposal(ref, root)) - len(stood)
+        if waiting:
+            return f"no decisions, and {waiting} line(s) do not stand on the reading"
+        basis = proposal_path(ref, root)
     if force:
         return ""
     target = root / "gt" / "ocr" / f"{stem_for(ref, root)}.xml"
-    if target.exists() and target.stat().st_mtime >= dec.stat().st_mtime:
+    if target.exists() and target.stat().st_mtime >= basis.stat().st_mtime:
         return "ground truth is already newer than the decision"
     return ""
 
@@ -638,7 +677,9 @@ def restore(ref: str, root: Path, store: str,
         a deliberate `revision` from an accidental overwrite — `force` is how a
         caller says which it meant, and it is required for every revision.
       * any line lacks a decision. A partial restore yields ground truth with
-        invisible holes, which is worse than no ground truth.
+        invisible holes, which is worse than no ground truth. Under a text's
+        `prose_stands` ruling a plain prose line needs none (`standing`), and
+        `stood` names each line that went in on the model's reading.
       * a line does not have exactly one `String`. Unexpected shape, so it stops.
       * any adjudicated line carries a mark on a base its licence does not cover
         (`detectors.MARK_LICENSE`, keying spec §2.6). This one catches what a human
@@ -648,6 +689,10 @@ def restore(ref: str, root: Path, store: str,
     """
     ref = norm_ref(ref)
     dec = load_decisions(ref, root)
+    # Prose that stands on the reading fills what the human left undecided, and
+    # nothing they decided: their record is laid over it, never under.
+    stood = {i: v for i, v in standing(ref, root).items() if i not in dec}
+    dec = {**stood, **dec}
     if not dec:
         raise ValueError(f"no decisions for {ref}: adjudicate it first "
                          f"(harness ocr review {ref})")
@@ -688,9 +733,10 @@ def restore(ref: str, root: Path, store: str,
             "matter the segmenter missed, give the band a box in `harness ocr edit` "
             "and adjudicate it there, otherwise drop the key")
 
+    rules = keying.rules(root)
     bad = [f"line {i}: {h['mark']} on {h['base']} (licensed on "
            f"{h['licensed_on']}) in {h['context']!r}"
-           for i in sorted(dec) for h in unlicensed_marks(dec[i]["text"])]
+           for i in sorted(dec) for h in unlicensed_marks(dec[i]["text"], rules)]
     if bad:
         raise ValueError(
             f"{ref}: {len(bad)} unlicensed mark(s) in the adjudicated text; "
@@ -811,7 +857,8 @@ def restore(ref: str, root: Path, store: str,
                 "chars": sum(len(_nfd(v["text"])) for v in dec.values()),
                 "geometry_drift": drift, "text_mismatch": wrong,
                 "edited_by_human": len(edits), "edits": edits,
-                "noted": len(notes), "notes": notes, "commit": False}
+                "noted": len(notes), "notes": notes, "stood": sorted(stood),
+                "commit": False}
     tmp.replace(target)
     # The fragment second, and verified by reading it back rather than trusting the
     # write — the same rule the ALTO side follows above. `save_lines` rebuilds the
@@ -827,7 +874,8 @@ def restore(ref: str, root: Path, store: str,
             "chars": sum(len(_nfd(v["text"])) for v in dec.values()),
             "geometry_drift": drift, "text_mismatch": wrong,
             "edited_by_human": len(edits), "edits": edits,
-            "noted": len(notes), "notes": notes, "commit": True}
+            "noted": len(notes), "notes": notes, "stood": sorted(stood),
+            "commit": True}
 
 
 def _esc(s: str) -> str:
@@ -994,7 +1042,8 @@ def page_context(ref: str, root: Path,
 
     # Computed over the text on screen — saved edits included — not over the
     # proposal alone, so a glyph the reviewer has just typed flags its line at once.
-    t1 = {idx: tier1_glyphs(_nfd((saved.get(idx) or prop[idx])["text"]))
+    rules = keying.rules(root)
+    t1 = {idx: tier1_glyphs(_nfd((saved.get(idx) or prop[idx])["text"]), rules)
           for idx in order if idx in prop}
     t1 = {k: v for k, v in t1.items() if v}
 

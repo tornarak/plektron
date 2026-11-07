@@ -72,15 +72,33 @@ WORKSPACE = PROJECT.parent
 os.chdir(PROJECT)
 
 
+#: The Jesup workspace's keying rules, which every fixture text is keyed against:
+#: a fixture is a page of *The Chukchee* unless it says otherwise, and a text with
+#: no rules written down is refused by `keying.rules`, rightly.
+JESUP_KEYING = Path(__file__).resolve().parents[2] / "jesup" / "config" / "keying.json"
+
+
 def write_project(root: Path, stem: str = "chukchi") -> Path:
-    """`root` as a text's stores: the manifest every store read starts from."""
+    """`root` as a text's stores: the manifest every store read starts from, and
+    the keying rules its gates read. A fixture text has no workspace, so the
+    rules sit in its own `config/` as its base."""
     root.mkdir(parents=True, exist_ok=True)
     (root / "project.json").write_text(json.dumps({
         "stem": stem,
         "parts": [{"n": 1, "pdf": " Part I "}, {"n": 2, "pdf": " Part II "},
                   {"n": 3, "pdf": " Part III "}],
     }) + "\n", encoding="utf-8")
+    (root / "config").mkdir(exist_ok=True)
+    (root / "config" / "keying.json").write_text(
+        JESUP_KEYING.read_text(encoding="utf-8"), encoding="utf-8")
     return root
+
+
+def jesup_rules():
+    """The Jesup rules as `keying.Rules`, for a test of a pure function that is
+    handed rules rather than a root."""
+    from harness import keying
+    return keying.rules(Path(__file__).resolve().parents[2] / "jesup" / "bogoras-chukchi")
 
 
 @pytest.fixture(autouse=True)

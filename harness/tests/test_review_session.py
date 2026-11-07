@@ -22,10 +22,12 @@ import json
 from pathlib import Path
 
 import pytest
-from conftest import REPO
+from conftest import REPO, jesup_rules
 
 from harness.review import decisions_path, page_context
 from harness.tests.conftest import write_scan
+
+R = jesup_rules()
 
 ALTO_NS = "http://www.loc.gov/standards/alto/ns-v4#"
 
@@ -748,21 +750,21 @@ def test_pre_reform_russian_does_not_flag_a_line_as_tier1():
     members are unmarked ASCII). Inventing notation is a different fault and a
     worse one: a floor that a reviewer learns to distrust upward is no floor."""
     from harness.review import tier1_glyphs
-    assert tier1_glyphs(nfd("(служилый приказный человѣкъ)")) == ""
+    assert tier1_glyphs(nfd("(служилый приказный человѣкъ)"), R) == ""
 
 
 def test_a_german_name_does_not_flag_a_line_as_tier1():
     """U+0308 is an inventory member and German's commonest diacritic."""
     from harness.review import tier1_glyphs
-    assert tier1_glyphs(nfd("Müller, Nordenskiöld and Lütke")) == ""
+    assert tier1_glyphs(nfd("Müller, Nordenskiöld and Lütke"), R) == ""
 
 
 def test_a_real_tier1_line_still_flags():
     """The floor still has to catch what it was built for. `ä`/`ë` are §2.3
     sorts and are not discounted with the German diaereses."""
     from harness.review import tier1_glyphs
-    assert tier1_glyphs(nfd("vaˊɪrg̣ɪt")) != ""
-    assert tier1_glyphs(nfd("Geëk Land")) != ""
+    assert tier1_glyphs(nfd("vaˊɪrg̣ɪt"), R) != ""
+    assert tier1_glyphs(nfd("Geëk Land"), R) != ""
 
 
 def test_the_flag_and_the_frequency_tables_agree():
@@ -771,4 +773,4 @@ def test_the_flag_and_the_frequency_tables_agree():
     from harness.detectors import bears_inventory
     from harness.review import tier1_glyphs
     for s in ("служилый", "Müller", "vaˊɪrg̣ɪt", "Geëk", "kŭmɪˊñɪn", "ÿ"):
-        assert bool(tier1_glyphs(nfd(s))) == bears_inventory(nfd(s)), s
+        assert bool(tier1_glyphs(nfd(s), R)) == bears_inventory(nfd(s), R), s

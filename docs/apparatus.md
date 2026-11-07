@@ -1,4 +1,4 @@
-# Apparatus stores: figures, List of Illustrations, Authorities
+# Apparatus stores: figures, List of Illustrations, Authorities, Informants
 
 Moved out of `CLAUDE.md` whole; headings kept verbatim so citations resolve.
 The pass-facing rules (figure anchoring, `tier1_terms`, `#gt`) are the
@@ -826,10 +826,52 @@ region of a page outside the pilot 20.
 
 **Cyrillic `й` is `и` + U+0306 by canonical decomposition**, so corpus-wide NFD turns
 every Russian word into base+mark sequences and `unlicensed_marks` once reported all
-72 as errors — `MARK_LICENSE` is written for the Tier-1 Latin notation but runs over
+72 as errors — the licence (`mark_license`) is written for the Tier-1 Latin notation but runs over
 every character in the corpus. `и`/`И` are licensed breve bases, as allow-list
 entries and deliberately **not** as a "consult the table only for Latin bases" script
 test: that states the scope more honestly but decides it by inference, and each
 unbounded corner case would be a silent skip in place of a loud error. Note `ё` =
 `е` + U+0308 needs no entry only because U+0308 has no licensing table yet; give it
 one and this recurs. Regression test: `harness/tests/test_marks.py`.
+
+# Informants
+
+`edition/informants.json` — for a text of recorded folklore, the line that closes
+each item saying whom it was taken down from, where and when. Bogoras 1900 prints
+one under almost every item of Sections I–II («Записано отъ чукчанки Кутјэ́ўт на
+р. Молондѣ въ 1895 г.»): 138 lines, 27 narrators. The gate is `edition
+informants`; a text without the ledger simply has none.
+
+**One record per printed line, on the leaf it is printed on.** `ref` and `folio`
+describe the same leaf, so a record is a folio witness — the `authorities` case,
+not `loi`'s. `on_leaf` is the line's place among the leaf's informant lines,
+because the text does not identify it: two items can close on one leaf with the
+same narrator and place, and two of no. 46's songs print the same line.
+
+**`printed` is the record, and the gate holds the parse to it.** `form`, the
+place as printed and the year must each occur in `printed`. A parsed field that
+could drift from its line would be a second witness nobody checks.
+
+**`form` is per record, because the book is not consistent and the firewall
+forbids making it so.** Ајңа̀нвáт is printed with its grave and without it, once
+with `қ` for `ң` and once with `н`; Áйван is also Áјван. Each record keeps what its
+own leaf prints. Carrying one leaf's reading to another would be inferring a glyph
+from a neighbouring page.
+
+**The grouping is editorial.** `narrator` joins records under one person, and the
+heading `name` is mostly a nominative the book never prints. Both, the `jesup`
+correspondence to *The Chukchee*'s form (Aiñanwaˊt), and every `where.entity` are
+`#llm` until a human raises them. Every `form`, `name` and Chukchi toponym is a
+Tier-1 reading awaiting glyph-by-glyph ratification; the Russian around them is
+outside the firewall (`docs/decisions.md`).
+
+**`where.entity` links only what the encyclopedia already has, and never borrows.**
+The Anyui fair stays unlinked because `place:chukchee-fair` sits on the Anadyr; a
+bare «р. Анюй» stays unlinked because it is either Anyui.
+
+**Silence is declared.** `unattributed` names the items that print no informant
+line, and whole sections with a stated reason: Section III's footnote to no. 145
+says its retellings came from "various interpreters", unnamed. An item with
+neither a record nor a declaration is a worklist line, and a record outside its
+item's ToC span is reported rather than fatal — that is how no. 121's misprinted
+Contents folio (319 for 317) was found.

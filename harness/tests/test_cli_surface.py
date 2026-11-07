@@ -390,6 +390,9 @@ NO_ALL_OK = {
         "the same as crops — one composite per page, written by the pass reading "
         "that page. 832 of them is a gigabyte nobody asked for",
     ("ocr", "zoom"): "magnifies selected lines *of* a page",
+    ("ocr", "witness"):
+        "sets the lines of a page side by side for the reader working on that "
+        "page; every line of the book at once is a reading nobody is doing",
     ("zones", "delete"):
         "un-keying the whole ground-truth store must not be one flag away from a "
         "command someone types. `ocr clean` has --all because it deletes only "

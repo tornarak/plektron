@@ -34,19 +34,25 @@ from pathlib import Path
 
 from lxml import etree
 
+from . import keying
+from .keying import Rules
 from .layout import stem_for
 from .parallel import ptrack
 
-# Marked inventory glyphs (keying spec §2), NFD bases + combiners + atomics.
-INVENTORY_CHARS = set("ᴀᴇɪʟᵋᵉɵˊ˙") | {"\u0323", "\u030C", "\u0303", "\u0302",
-                                        "\u0308", "\u0306", "\u0304"}
+# **The tables this module reads are data, not constants**: a text's `keying.Rules`,
+# composed from its workspace's `config/keying.json` and its own (`keying.py`). The
+# notes below say why each table is shaped as it is; the keys they name are
+# `rules.inventory`, `rules.lookalikes`, `rules.tier1_traps`, `rules.mark_license`
+# and `rules.orthographic_bases`.
+#
+# Marked inventory glyphs (keying spec §2), NFD bases + combiners + atomics: `inventory`.
 # U+0121 is deliberately absent, and the absence is the fix rather than an oversight.
 # It decomposes canonically to g+U+0307, and `detect_all` NFD-normalizes every line
 # *before* consulting this set, so a single-codepoint member could never match; it sat
 # here reporting coverage it did not have. DOT_ABOVE_G tests the sequence instead,
 # which is where that trap belongs anyway, since U+0121 is not an apostrophe
 # lookalike and flagging it here would duplicate the hit under a misleading name.
-LOOKALIKES = set("\u00B4\u2019\u02BC\u02BB\u00B7\u02E2\u2091\u04E9\u2010")
+# The triage set itself is `lookalikes`.
 
 # What a trap glyph *displaces*, inside a Tier-1 form. `LOOKALIKES` says a character
 # is suspicious; this says what was meant, which is what lets a check reconstruct the
@@ -67,21 +73,10 @@ LOOKALIKES = set("\u00B4\u2019\u02BC\u02BB\u00B7\u02E2\u2091\u04E9\u2010")
 # it forbids is two copies with a comment between them.
 #
 # U+02E2 is deliberately absent: it traps U+1D4B *or* U+1D49, and a reconstruction
-# needs one target. A two-way trap stays a worklist line.
-TIER1_TRAPS = {
-    "\u2019": "\u02CA",   # U+2019, and the one that has actually cost pages twice
-    "\u2018": "\u02CA",   # U+2018
-    "'": "\u02CA",   # U+0027 \u2014 \u00A72.1/\u00A73: no straight apostrophe in a Tier-1 span, ever
-    "\u00B4": "\u02CA",   # U+00B4
-    "\u02BC": "\u02CA",   # U+02BC
-    "\u02BB": "\u02CA",   # U+02BB
-    "\u00B7": "\u02D9",   # U+00B7 traps the palatalization mark
-    "\u2091": "\u1D49",   # U+2091
-    "\u04E9": "\u0275",   # U+04E9
-    "\u2010": "-",   # U+2010
-    "\u2013": "-",   # U+2013 \u2014 a numeric range is a compound joiner, not a \u00a72.11 dash
-    "\u0131": "\u026A",   # U+0131 \u2014 normalize's table carries this one; \u00A72.3 licenses only \u026A
-}
+# needs one target. A two-way trap stays a worklist line. The table is `tier1_traps`:
+# U+2019 is the one that has actually cost pages twice; U+0027 because \u00A72.1/\u00A73 allow
+# no straight apostrophe in a Tier-1 span, ever; U+2013 because a numeric range is a
+# compound joiner, not a \u00A72.11 dash; U+0131 because \u00A72.3 licenses only \u026A.
 
 # Mark\u2013base licensing (keying spec \u00A72.6), as a **closed allow-list per mark**: the
 # mark may sit on these bases and nowhere else. Closed rather than a deny-list because
@@ -139,15 +134,12 @@ TIER1_TRAPS = {
 # and the alphabet key on `1-030` sets no other base); \u00F6 34, \u00FC 6, \u00DC 1 are
 # Nordenski\u00F6ld, M\u00FCller and L\u00FCtke, and \u00EF 2 is `Ma\u00EFn` on `1-175`, hiatus in a Russian
 # river name. The one \u00EB is `Ge\u00EBk Land` on `1-048`, beside `Ve\u1D4B\u00F1` on the same line \u2014
-# Tier-1, which is why `e` is absent here and `a` with it.
-ORTHOGRAPHIC_BASES = {
-    "\u0306": "\u0438\u0418",        # \u0439/\u0419 Cyrillic short i. NOT u/i: \u016D (\u00A72.2) and \u012D (\u00A72.6) are sorts
-    "\u0308": "oOuUiI",    # \u00F6 \u00FC \u00EF in European names. NOT a/e: \u00E4 and \u00EB are sorts (\u00A72.3)
-}
-
-MARK_LICENSE = {
-    "\u0306": set("ui") | set(ORTHOGRAPHIC_BASES["\u0306"]),  # breve: \u016D (\u00A72.2), \u012D (\u00A72.6); \u0439/\u0419 Cyrillic short i
-}
+# Tier-1, which is why `e` is absent here and `a` with it. The table is
+# `orthographic_bases`: the breve on \u0438/\u0418 (\u0439/\u0419), never u/i, which are sorts (\u016D \u00A72.2,
+# \u012D \u00A72.6); the diaeresis on o O u U i I, never a/e, which are sorts (\u00A72.3).
+#
+# The licence is `mark_license`, and its breve row holds the orthographic bases too
+# \u2014 `keying._check` refuses an orthographic base the mark is not licensed on.
 # U+0308 deliberately has **no** `MARK_LICENSE` row, and adding one would be a
 # defect rather than the next tidy step. `MARK_LICENSE` is a hard gate \u2014 `corpus
 # normalize` exits 1, `tei validate` raises, `ocr restore` refuses to write \u2014 and
@@ -164,11 +156,10 @@ MARK_LICENSE = {
 # the table has **one** entry — so it was making 5.7 M `dict.get` calls to locate
 # occurrences of a single codepoint, and accounted for 57% of the gate's runtime.
 # Derived from the table rather than written out beside it, so adding a mark cannot
-# leave the two disagreeing.
-_LICENSED_MARKS = re.compile(f"[{''.join(re.escape(c) for c in MARK_LICENSE)}]")
+# leave the two disagreeing: `rules.licensed_marks`.
 
 
-def unlicensed_marks(text: str) -> list[dict]:
+def unlicensed_marks(text: str, rules: Rules) -> list[dict]:
     """Every combining mark sitting on a base its licence does not cover.
 
     Assumes NFD, so a base is simply the character before the mark. A mark in
@@ -177,10 +168,10 @@ def unlicensed_marks(text: str) -> list[dict]:
     """
     text = unicodedata.normalize("NFD", text)
     out = []
-    for m in _LICENSED_MARKS.finditer(text):
+    for m in rules.licensed_marks.finditer(text):
         i = m.start()
         ch = m.group()
-        allowed = MARK_LICENSE[ch]
+        allowed = rules.mark_license[ch]
         base = text[i - 1] if i else ""
         if base in allowed:
             continue
@@ -241,10 +232,8 @@ def apostrophe_licensing(text: str) -> list[dict]:
 # a detector firing on ordinary English buries the real hits. An all-caps token
 # cannot fire here again, because neither branch admits an uppercase ASCII
 # neighbour on the deciding side — and no Tier-1 form in the restored corpus is
-# fully uppercase, so nothing is given up.
-_T1 = "".join(sorted(INVENTORY_CHARS))
-MEDIAL_CAPS = re.compile(
-    rf"(?<=[a-z{_T1}])[AEIL]|(?<=[A-Za-z{_T1}])[AEIL](?=[a-z{_T1}])")
+# fully uppercase, so nothing is given up. Compiled per rule set as
+# `rules.medial_caps`, its Tier-1 class being the text's inventory.
 # **Inside a Tier-1 token a hyphen is not a word boundary**, and the branches
 # above cannot say so: both want the capital preceded by a letter or a Tier-1
 # glyph, and a hyphen is neither. `H\u026ato\u02ca-Lap` (2-040 l5, 2-058 l9) therefore
@@ -270,12 +259,12 @@ MEDIAL_CAPS = re.compile(
 # (2-040 l5 and 2-058 l9 both fail it now, where they passed clean at the
 # time), and equally what a reader keying `-Latu\u02ca\u1d4bwg\u0323\u00ea` will have to answer by
 # naming U+004C. One page in the corpus pays that; two got through without it.
-HYPHEN_MEDIAL_CAPS = re.compile(rf"(?<=-)[AEIL](?=[a-z{_T1}])")
+# `rules.hyphen_medial_caps`.
 DOT_ABOVE_G = re.compile(r"\u0121|g\u0307")
 TOKEN = re.compile(r"[^\s]+")
 
 
-def medial_cap_positions(text: str) -> list[int]:
+def medial_cap_positions(text: str, rules: Rules) -> list[int]:
     """Offsets of every word-medial ASCII A/E/I/L in `text`, hyphen rule included.
 
     **The one definition**, because the rule is asserted in three places that
@@ -286,11 +275,13 @@ def medial_cap_positions(text: str) -> list[int]:
     Tier-1 gate on the hyphen branch is a property of the token, not the line.
     """
     out: list[int] = []
+    if not rules.on("word_medial_caps"):
+        return out
     for m in TOKEN.finditer(text):
         tok, base = m.group(), m.start()
-        out += [base + h.start() for h in MEDIAL_CAPS.finditer(tok)]
-        if any(c in INVENTORY_CHARS for c in tok):
-            out += [base + h.start() for h in HYPHEN_MEDIAL_CAPS.finditer(tok)]
+        out += [base + h.start() for h in rules.medial_caps.finditer(tok)]
+        if any(c in rules.inventory for c in tok):
+            out += [base + h.start() for h in rules.hyphen_medial_caps.finditer(tok)]
     return sorted(set(out))
 # keying_spec.md section 5.1: base letter + combining mark pairs known,
 # corpus-wide (`harness lexicon marks`), to have a strong bare-vs-marked
@@ -639,7 +630,8 @@ def _closes_a_word(flat: str, rel: list[int], words) -> bool:
 
 
 def resolve_break_hyphens(text: str, cuts: list[int], ref: str, idx: dict,
-                          words: set[str] | frozenset[str] = frozenset()
+                          words: set[str] | frozenset[str] = frozenset(),
+                          *, rules: Rules
                           ) -> tuple[str, list[dict]]:
     """Drop the compositor's hyphens the corpus itself can account for.
 
@@ -684,7 +676,7 @@ def resolve_break_hyphens(text: str, cuts: list[int], ref: str, idx: dict,
             continue
         tok = m.group()
         flat = "".join(c for i, c in enumerate(tok) if i not in set(rel))
-        if bears_inventory(tok):
+        if bears_inventory(tok, rules):
             verdict, joined, hyph = "tier1", 0, 0
         else:
             joined = _attested(idx, _fold(flat), ref)
@@ -827,7 +819,8 @@ def load_extra_lexicon(root: Path = Path(".")) -> set[str]:
     return out
 
 
-def lexicon_miss(tok: str, lex: set[str], admit_foreign: bool = False) -> bool:
+def lexicon_miss(tok: str, lex: set[str], admit_foreign: bool = False,
+                 rules: Rules | None = None) -> bool:
     """Is `tok` a word no English lexicon knows?
 
     Edge punctuation is stripped, then the core is split on internal hyphens
@@ -883,12 +876,12 @@ def lexicon_miss(tok: str, lex: set[str], admit_foreign: bool = False) -> bool:
     parts = [p for p in re.split(r"[-'\u2019]", core) if p]
     if not parts:
         return False
-    if not any(_unknown_word(p, lex, admit_foreign) for p in parts):
+    if not any(_unknown_word(p, lex, admit_foreign, rules) for p in parts):
         return False
     return not (len(parts) > 1 and "".join(parts).lower() in lex)
 
 
-def _unmarked_word(p: str) -> bool:
+def _unmarked_word(p: str, rules: Rules) -> bool:
     """A word carrying no Tier-1 mark: `Œstrus`, `Salmonidæ`, `Grønland`, `нерпа`.
 
     The widened shape floor, and **it is defined by what it refuses, not by a
@@ -910,11 +903,12 @@ def _unmarked_word(p: str) -> bool:
     combining character to find. `normalize` is cheap next to the dictionary
     lookup this stands in front of.
     """
-    return not any(c in INVENTORY_CHARS
+    return not any(c in rules.inventory
                    for c in unicodedata.normalize("NFD", p))
 
 
-def _unknown_word(p: str, lex: set[str], admit_foreign: bool = False) -> bool:
+def _unknown_word(p: str, lex: set[str], admit_foreign: bool = False,
+                  rules: Rules | None = None) -> bool:
     """One component against the lexicon. Short and non-alphabetic components
     are never a miss, and by default non-ASCII ones are not either — as a
     detector this tests English and nothing else, which is also why a Tier-1
@@ -928,7 +922,11 @@ def _unknown_word(p: str, lex: set[str], admit_foreign: bool = False) -> bool:
     """
     if not (len(p) > 3 and p.isalpha() and p.lower() not in lex):
         return False
-    return p.isascii() or (admit_foreign and _unmarked_word(p))
+    if p.isascii() or not admit_foreign:
+        return p.isascii()
+    if rules is None:
+        raise TypeError("admit_foreign asks what the inventory is: pass the text's rules")
+    return _unmarked_word(p, rules)
 
 
 # U+2019 in the position an English possessive puts it: before a final `s`, or
@@ -971,7 +969,7 @@ def english_genitive(tok: str, lex: set[str]) -> bool:
         p.isascii() and p.isalpha() and p.lower() in lex for p in parts)
 
 
-def apostrophe_flags(text: str) -> list[dict]:
+def apostrophe_flags(text: str, rules: Rules) -> list[dict]:
     """Every straight U+0027 in `text`, always flagged — nothing invisible.
 
     An earlier version of this function only fired on a token that already
@@ -996,13 +994,22 @@ def apostrophe_flags(text: str) -> list[dict]:
     applies. Otherwise 'unlicensed', from `apostrophe_licensing`: inside a
     Tier-1 token the codepoint has no licensed position at all (§2.1), so the
     mark is a mistyped stress U+02CA.
+
+    A third, 'prose', where the text's rules switch `apostrophe_unlicensed` off:
+    its book prints the apostrophe (the 1900 *Materials* sets `’` between a native
+    stem and a Russian ending), so every straight one is a slip for that, Tier-1
+    token or not, and is said so without claiming a stress mark.
     """
     out = []
+    jesup = rules.on("apostrophe_unlicensed")
     for m in TOKEN.finditer(text):
         tok = m.group()
         if "'" not in tok:
             continue
-        if not any(c in INVENTORY_CHARS for c in tok):
+        if not jesup:
+            out.append({"token": tok, "kind": "prose"})
+            continue
+        if not any(c in rules.inventory for c in tok):
             out.append({"token": tok, "kind": "english"})
             continue
         for hit in apostrophe_licensing(tok):
@@ -1035,7 +1042,7 @@ def _suffix_mark_drop(core: str) -> str | None:
     return None
 
 
-def suffix_mark_flags(text: str) -> list[dict]:
+def suffix_mark_flags(text: str, rules: Rules) -> list[dict]:
     """Every token matching a `SUFFIX_MARK_DROPS` entry, unmarked.
 
     NFD-normalized first, so the mark and its base are adjacent codepoints
@@ -1046,6 +1053,8 @@ def suffix_mark_flags(text: str) -> list[dict]:
     """
     nfd = unicodedata.normalize("NFD", text)
     out = []
+    if not rules.on("suffix_mark_drop"):
+        return out
     for m in TOKEN.finditer(nfd):
         tok = m.group()
         expected = _suffix_mark_drop(tok.strip(EDGE_PUNCT))
@@ -1216,6 +1225,7 @@ def detect_all(lines: list[str], root: Path = Path("."),
     balance: list[dict] = []
     if lex is None:
         lex = _lexicon(root)
+    rules = keying.rules(root)
     para, para_no = [], 1
     for i, line in enumerate(lines, start=1):
         idx = indices[i - 1] if indices else None
@@ -1244,23 +1254,26 @@ def detect_all(lines: list[str], root: Path = Path("."),
             if not tok:
                 continue
             hits = []  # union semantics: a token may carry several types
-            if any(c in INVENTORY_CHARS for c in tok):
+            if any(c in rules.inventory for c in tok) or prose_outliers(tok, rules):
                 hits.append("inventory_glyph")
-            seen = set(tok) & LOOKALIKES
+            seen = set(tok) & rules.lookalikes
             # An English possessive is the one lookalike with an innocent
             # explanation the token itself can supply, and only when U+2019 is
             # the *only* lookalike present: another one in the same token means
             # the form is not ordinary English whatever the apostrophe is doing.
             if seen and not (seen == {"’"} and english_genitive(tok, lex)):
                 hits.append("apostrophe_adjacency")
-            if DOT_ABOVE_G.search(tok):
+            # The four switches are one notation's facts (`keying.DETECTORS`); a
+            # text whose book prints none of them deletes them in its rules.
+            if rules.on("dot_above_g") and DOT_ABOVE_G.search(tok):
                 hits.append("dot_above_g")
-            if _suffix_mark_drop(tok):
+            if rules.on("suffix_mark_drop") and _suffix_mark_drop(tok):
                 hits.append("suffix_mark_drop")
-            if MEDIAL_CAPS.search(tok) or (
-                    "inventory_glyph" in hits and HYPHEN_MEDIAL_CAPS.search(tok)):
+            if rules.on("word_medial_caps") and (rules.medial_caps.search(tok) or (
+                    "inventory_glyph" in hits and rules.hyphen_medial_caps.search(tok))):
                 hits.append("word_medial_caps")
-            if "'" in tok and "inventory_glyph" in hits:
+            if (rules.on("apostrophe_unlicensed") and "'" in tok
+                    and "inventory_glyph" in hits):
                 hits.append("apostrophe_unlicensed")
             for h in hits:
                 flags.append({"type": h, "index": idx, "token": tok})
@@ -1377,6 +1390,7 @@ def suggest_lexicon(root: Path = Path("."), common: int | None = None,
     The report gains a `scope` row and the boundary window; `tokens` and
     `suppressed` keep their meaning, with the entity store as the only suppressor.
     """
+    rules = keying.rules(root)
     from .lines import page_lines
     from .paths import all_refs
     from .refs import _draft_text
@@ -1441,7 +1455,7 @@ def suggest_lexicon(root: Path = Path("."), common: int | None = None,
             # 1-188, where it names a fish family the store did not hold.
             # Nothing else about the floor moves, so the two arms still differ
             # on one axis and a new row can be attributed to it.
-            if not lexicon_miss(tok, frozenset(), admit_foreign=True):
+            if not lexicon_miss(tok, frozenset(), admit_foreign=True, rules=rules):
                 continue
             counts[tok] = counts.get(tok, 0) + 1
             folded[tok.lower()] = folded.get(tok.lower(), 0) + 1
@@ -1512,10 +1526,10 @@ def suggest_lexicon(root: Path = Path("."), common: int | None = None,
             # the rows were gathered under or the two halves are asking
             # different questions of the same list.
             "tokens": [r for r in rest
-                       if lexicon_miss(r["token"], ents, admit_foreign=True)],
+                       if lexicon_miss(r["token"], ents, admit_foreign=True, rules=rules)],
             "suppressed": [r for r in rest
                            if not lexicon_miss(r["token"], ents,
-                                               admit_foreign=True)],
+                                               admit_foreign=True, rules=rules)],
             "sentence_heads": [r for r in kept if r["token"] in heads]}
 
 
@@ -1588,8 +1602,15 @@ def native_corpus(root: Path = Path("."),
     return [(ref, tok) for ref, _, tok in native_corpus_lines(root, tick)]
 
 
-def cyrillic(token: str) -> bool:
-    """Is this Russian rather than Tier-1?
+def tier2(token: str, rules: Rules) -> bool:
+    """Is this token in a script its text never transcribes as Tier-1?
+
+    It was `cyrillic(token)`, a fixed test for one script, and it is now
+    `rules.tier2` — `tier2_scripts` in the text's keying rules — because the
+    exclusion is a fact about a notation, not about Cyrillic: *The Chukchee* sets
+    its Russian as Tier-2 prose, and the 1900 *Materials* prints its Chukchi in
+    the same script and deletes the entry. What follows is why the exclusion
+    exists where it applies.
 
     **Public because two arms select Tier-1 tokens and both must apply it.**
     `native_corpus` builds the frequency tables; `context.tier1_terms` builds
@@ -1610,10 +1631,77 @@ def cyrillic(token: str) -> bool:
     notation at all. Every table `native_corpus` feeds is cited by `keying_spec.md`
     §5.1, so this was five wrong rows inside published numbers.
     """
-    return any("Ѐ" <= c <= "ӿ" for c in token)
+    return rules.tier2(token)
 
 
-def bears_inventory(token: str) -> bool:
+def prose_outliers(token: str, rules: Rules) -> list[tuple[int, str]]:
+    """(offset, char) of every letter or mark in `token` that its script's prose
+    alphabet does not hold — the notation of a book that prints its native forms
+    in the prose script, or an OCR slip into another script.
+
+    Empty unless the text's rules declare a `prose_alphabet` for a script the token
+    is written in, so *The Chukchee*, which declares none, is untouched. **An
+    exclusion list, deliberately**, as `orthographic_bases` is: a glyph nobody
+    listed is counted, so a hooked or barred letter the census never met is a
+    loud question rather than a silent skip, and no letter's identity has to be
+    ruled before the forms that carry it can reach review. A mark is discounted
+    only on a base `orthographic_bases` names for it (`й` under NFD).
+    """
+    if not rules.prose_alphabet:
+        return []
+    nfd = unicodedata.normalize("NFD", token)
+    out = []
+    for script, letters in rules.prose_alphabet.items():
+        if not any(keying.in_script(c, script) for c in nfd):
+            continue
+        for i, c in enumerate(nfd):
+            cat = unicodedata.category(c)
+            if cat.startswith("L") and c not in letters:
+                out.append((i, c))
+            elif cat == "Mn" and not (
+                    i and nfd[i - 1] in rules.orthographic_bases.get(c, "")):
+                out.append((i, c))
+    return sorted(set(out))
+
+
+_ROMAN = re.compile(r"[IVXLCDM]+")
+
+
+def prose_only(text: str, rules: Rules) -> bool:
+    """Is every letter on this line a letter of the text's prose alphabet?
+
+    The test a line passes to stand on a model's reading (`layout.prose_stands`).
+    **It admits, it does not select**: `prose_outliers` asks which tokens carry
+    notation, and a token in no declared script — Latin inside Russian, French on
+    a title page, a native form the layer read in Latin letters — escapes it. Here
+    every letter must be in the alphabet, so anything else keeps the line for the
+    editor. Marks count only on a base `orthographic_bases` names. The one
+    allowance is a token whose letters are all capital roman numerals (`II`,
+    `I,1.`), which the Russian sets in Latin capitals. False when the text declares
+    no prose alphabet, so *The Chukchee* has no prose that stands.
+    """
+    if not rules.prose_alphabet:
+        return False
+    letters = frozenset().union(*rules.prose_alphabet.values())
+    for tok in TOKEN.findall(unicodedata.normalize("NFD", text)):
+        lets = "".join(c for c in tok if unicodedata.category(c).startswith("L"))
+        if lets and _ROMAN.fullmatch(lets):
+            continue
+        # A capital after a small letter is no spelling of the prose: Russian
+        # sets no capital mid-word, so it is an OCR slip (`коммиссіонеровЪ`) or a
+        # letter of the notation misread as one (`Ӏ` for the tall l).
+        if any(a.islower() and b.isupper() for a, b in zip(lets, lets[1:], strict=False)):
+            return False
+        for i, c in enumerate(tok):
+            cat = unicodedata.category(c)
+            if cat.startswith("L") and c not in letters:
+                return False
+            if cat == "Mn" and not (i and tok[i - 1] in rules.orthographic_bases.get(c, "")):
+                return False
+    return True
+
+
+def bears_inventory(token: str, rules: Rules) -> bool:
     """Does this token carry an inventory glyph *as notation*?
 
     `any(c in INVENTORY_CHARS for c in tok)` is the test this replaces, and it
@@ -1639,10 +1727,10 @@ def bears_inventory(token: str) -> bool:
     populations selected by different rules. A before/after is not a measurement
     unless both sides were made the same way.
     """
-    return bool(inventory_glyphs(token))
+    return bool(inventory_glyphs(token, rules))
 
 
-def inventory_glyphs(text: str) -> list[str]:
+def inventory_glyphs(text: str, rules: Rules) -> list[str]:
     """Every inventory character in `text` that is there *as notation*, in order.
 
     The primitive `bears_inventory` is the boolean of, and the one selection rule
@@ -1663,9 +1751,17 @@ def inventory_glyphs(text: str) -> list[str]:
     notation it does not.
     """
     nfd = unicodedata.normalize("NFD", text)
-    return [c for i, c in enumerate(nfd)
-            if c in INVENTORY_CHARS
-            and not (i and nfd[i - 1] in ORTHOGRAPHIC_BASES.get(c, ""))]
+    hits = {i: c for i, c in enumerate(nfd)
+            if c in rules.inventory
+            and not (i and nfd[i - 1] in rules.orthographic_bases.get(c, ""))}
+    # A book that prints its native forms in the prose script: the letters its
+    # prose alphabet lacks are notation too (`prose_outliers`). Empty for a text
+    # that declares no prose alphabet, so the order above is untouched there.
+    if rules.prose_alphabet:
+        for m in TOKEN.finditer(nfd):
+            for j, c in prose_outliers(m.group(), rules):
+                hits[m.start() + j] = c
+    return [hits[i] for i in sorted(hits)]
 
 
 def native_corpus_lines(root: Path = Path("."), tick: Callable | None = None
@@ -1703,6 +1799,7 @@ def native_corpus_context(root: Path = Path("."),
     from .lines import page_lines
 
     out = []
+    rules = keying.rules(root)
     # **The one walk of `gt/ocr/` the whole native-corpus family shares**, so the
     # bar goes here and every arm above it — `native_corpus`, its `_lines` form,
     # `suggest_native_forms`, `mark_base_frequency`, `lookup.index` — reports by
@@ -1720,7 +1817,7 @@ def native_corpus_context(root: Path = Path("."),
         for rec, line in zip(recs, texts, strict=True):
             for m in TOKEN.finditer(line):
                 tok = m.group().strip(EDGE_PUNCT)
-                if tok and not cyrillic(tok) and bears_inventory(tok):
+                if tok and not tier2(tok, rules) and bears_inventory(tok, rules):
                     out.append({"ref": ref, "line": str(rec["index"]),
                                 "token": tok, "text": line})
     return out

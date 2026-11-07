@@ -315,7 +315,7 @@ genuinely carry none. There was nothing to notice. It was caught by reading the
 reader's own account of what it had done.
 
 So the check is now mechanical, and it is `proposal marks`' fourth arm. **`traps`
-runs over every token rather than the Tier-1 ones**, folds `detectors.TIER1_TRAPS`
+runs over every token rather than the Tier-1 ones**, folds the text's `tier1_traps`
 — the curly and straight apostrophes to U+02CA, `·` to U+02D9, `ı` to U+026A, the
 en dash and U+2010 to the hyphen — and reports where the folded form is one
 `gt/ocr/` already holds. `Ke’rek` folds to `Keˊrek`, sixteen attestations, and the

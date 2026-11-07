@@ -94,6 +94,17 @@ def register(cli):
                "title worth seeing")
 
 
+    action(g, "informants", run_informants, pageable=False,
+           help="the informant ledger `edition/informants.json` — who each "
+           "item was taken down from, where and when — as a census by "
+           "narrator, and its gate. Exit 1 when a record names an undeclared "
+           "narrator, a field does not occur in the printed line it was "
+           "parsed from, an item, page or entity does not exist, or a "
+           "narrator has no record. A record outside its item's printed span, "
+           "and an item with neither a record nor an `unattributed` "
+           "declaration, are reported, not fatal. Reads and writes nothing; a "
+           "text with no ledger reports an empty census and exits 0")
+
     p = action(g, "figrefs", run_figrefs,
                help="every cross-reference the pages print at a picture — "
                "`(Plate XXVII, Fig. 3)`, `Fig. 87 represents a knife` — and what "
@@ -169,6 +180,20 @@ def run_figrefs(a) -> int:
     print(f"{len(rows)} mark(s) on {rep['pages']} page(s)"
           + (f", {len(shown)} shown" if len(shown) != len(rows) else ""))
     return 0
+
+
+def run_informants(a) -> int:
+    from .. import informants
+
+    rep = informants.check(a.root)
+    out(a, rep["census"], name="narrators")
+    if rep["warnings"]:
+        out(a, rep["warnings"], name="warnings", heading=True)
+    if rep["errors"]:
+        out(a, rep["errors"], name="errors", heading=True)
+    print(f"{rep['records']} record(s), {rep['narrators']} narrator(s), "
+          f"{len(rep['errors'])} error(s), {len(rep['warnings'])} warning(s)")
+    return 1 if rep["errors"] else 0
 
 
 def run_runs(a) -> int:

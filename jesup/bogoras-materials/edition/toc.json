@@ -1,0 +1,2160 @@
+{
+ "source": {
+  "what": "Оглавленіе (Contents), Bogoras 1900, «Матеріалы по изученію чукотскаго языка и фольклора», Часть I",
+  "read_from": "scans at 600 dpi, directly, every row; the PDF text layer consulted only as a second reading",
+  "covers": "the whole of Part I: Введеніе I-XXXVI and folios 1-417",
+  "refs": [
+   "1-017",
+   "1-018",
+   "1-019",
+   "1-020"
+  ],
+  "printed_folios": [
+   "VII",
+   "VIII",
+   "IX",
+   "X"
+  ],
+  "caveats": [
+   "The printed Contents does not list Salemann's foreword (V-VI, 1-015-1-016); it is not added here, being no entry of the book's.",
+   "A row the book prints over several numbers is one entry per number, each taking its folio from that row in printed order. \"50—61\" prints ten folios for twelve numbers: the running heads and the item headings in the body show it omits 165 (no. 54) and 171 (no. 59), and those two carry page_from saying so. row_folios keeps the row as printed.",
+   "notes is the folio in parentheses after a Section I entry: where that text's «Примѣчанія» begin. Sections II and III print none; their notes are footnotes.",
+   "title is keyed as printed, pre-reform orthography and the book's misprints included (sic marks them). title_en is a translation at #llm.",
+   "tier1 lists the Chukchi forms inside a title. They are model readings awaiting a human's ratification glyph by glyph, as the firewall requires; the Russian around them is outside it. Notation glyphs not yet in the inventory are keyed with the codepoint the text layer uses for them and flagged in glyph_unsettled."
+  ],
+  "resp": {
+   "title": "#llm",
+   "title_en": "#llm",
+   "tier1": "#llm"
+  },
+  "glyph_unsettled": [
+   "ђ: a hooked g-like sort (Нарђынен'а, Аттыђыткыновы, Кэlílђу); the text layer's codepoint, not a reading of the inventory",
+   "ӄ: k with a hook below (Куӄálђон); likewise",
+   "ę: e with a hook below (Кэlę); likewise",
+   "ṫ: t with a dot above (Муṫу́wђі); likewise"
+  ]
+ },
+ "entries": [
+  {
+   "level": 0,
+   "chapter": null,
+   "number": null,
+   "title": "Введеніе",
+   "title_en": "Introduction",
+   "page_start": "I",
+   "page_end": "XXXVI",
+   "id": "front.introduction",
+   "ref": "1-017"
+  },
+  {
+   "level": 1,
+   "chapter": "I",
+   "number": "I",
+   "title": "Чукотскіе тексты съ переводомъ и примѣчаніями",
+   "title_en": "Chukchi texts with translation and notes",
+   "page_start": 1,
+   "page_end": 155,
+   "id": "secI",
+   "ref": "1-017"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "1",
+   "title": "Заговоръ о дѣланіи дикихъ оленей домашними. Бычачій заговоръ.",
+   "title_en": "Spell for making wild reindeer tame. A bull spell.",
+   "page_start": 2,
+   "notes": 5,
+   "id": "n1",
+   "ref": "1-017"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "2",
+   "title": "Сказка. Два двоюродныхъ брата.",
+   "title_en": "Tale. Two cousins.",
+   "page_start": 7,
+   "notes": 11,
+   "id": "n2",
+   "ref": "1-017"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "3",
+   "title": "Сказка. Молодой шаманъ и его невѣста.",
+   "title_en": "Tale. The young shaman and his bride.",
+   "page_start": 12,
+   "notes": 16,
+   "id": "n3",
+   "ref": "1-017"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "4",
+   "title": "Разсказъ.",
+   "title_en": "Story.",
+   "page_start": 19,
+   "notes": 26,
+   "id": "n4",
+   "ref": "1-017"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "5",
+   "title": "Разсказъ.",
+   "title_en": "Story.",
+   "page_start": 30,
+   "notes": 33,
+   "id": "n5",
+   "ref": "1-017"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "6",
+   "title": "Худой годъ.",
+   "title_en": "A bad year.",
+   "page_start": 36,
+   "notes": 41,
+   "id": "n6",
+   "ref": "1-017"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "7",
+   "title": "Моя жизнь.",
+   "title_en": "My life.",
+   "page_start": 44,
+   "notes": 47,
+   "id": "n7",
+   "ref": "1-017"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "8",
+   "title": "Добровольная смерть.",
+   "title_en": "Voluntary death.",
+   "page_start": 49,
+   "notes": 50,
+   "id": "n8",
+   "ref": "1-017"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "9",
+   "title": "Ложная добровольная смерть.",
+   "title_en": "A feigned voluntary death.",
+   "page_start": 52,
+   "notes": 57,
+   "id": "n9",
+   "ref": "1-017"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "10",
+   "title": "Моя жизнь вся.",
+   "title_en": "My whole life.",
+   "page_start": 59,
+   "notes": 66,
+   "id": "n10",
+   "ref": "1-017"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "11",
+   "title": "Сказка объ Упэнкэ.",
+   "title_en": "Tale of Upenke.",
+   "page_start": 71,
+   "notes": 74,
+   "id": "n11",
+   "ref": "1-017",
+   "tier1": [
+    "Упэнкэ"
+   ]
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "12",
+   "title": "Русская сказка.",
+   "title_en": "A Russian tale.",
+   "page_start": 75,
+   "notes": 77,
+   "id": "n12",
+   "ref": "1-017"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "13",
+   "title": "При состязаніи ружьемъ.",
+   "title_en": "At a shooting match.",
+   "page_start": 79,
+   "notes": 80,
+   "id": "n13",
+   "ref": "1-017"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "14",
+   "title": "Обрядъ надъ покойникомъ. Похороны.",
+   "title_en": "The rite over the dead. Funeral.",
+   "page_start": 81,
+   "notes": 88,
+   "id": "n14",
+   "ref": "1-017"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "15",
+   "title": "Сказка о Якуннинѣ.",
+   "title_en": "Tale of Yakunnin.",
+   "page_start": 91,
+   "notes": 93,
+   "id": "n15",
+   "ref": "1-017",
+   "tier1": [
+    "Якуннин"
+   ]
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "16",
+   "title": "Временъ войны разсказъ.",
+   "title_en": "A story of the times of war.",
+   "page_start": 94,
+   "notes": 95,
+   "id": "n16",
+   "ref": "1-017"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "17",
+   "title": "Временъ великой болѣзни разсказъ.",
+   "title_en": "A story of the time of the great sickness.",
+   "page_start": 95,
+   "notes": 96,
+   "id": "n17",
+   "ref": "1-017"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "18",
+   "title": "Сказка.",
+   "title_en": "Tale.",
+   "page_start": 96,
+   "notes": 97,
+   "id": "n18",
+   "ref": "1-017"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "19",
+   "title": "Заячья сказка.",
+   "title_en": "Hare tale.",
+   "page_start": 98,
+   "notes": 98,
+   "id": "n19",
+   "ref": "1-017"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "20",
+   "title": "Медвѣжье Ухо богатырь.",
+   "title_en": "Bear's Ear the hero.",
+   "page_start": 99,
+   "notes": 100,
+   "id": "n20",
+   "ref": "1-017"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "21",
+   "title": "Обрядъ при убиваніи дикихъ оленей.",
+   "title_en": "The rite at the killing of wild reindeer.",
+   "page_start": 101,
+   "notes": 105,
+   "id": "n21",
+   "ref": "1-017"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "22",
+   "title": "Мой промыселъ дичи.",
+   "title_en": "My hunting of game.",
+   "page_start": 108,
+   "notes": 109,
+   "id": "n22",
+   "ref": "1-017"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "23",
+   "title": "Волчій промыселъ.",
+   "title_en": "Wolf hunting.",
+   "page_start": 110,
+   "notes": 112,
+   "id": "n23",
+   "ref": "1-017"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "24",
+   "title": "Промыселъ тюленя.",
+   "title_en": "Seal hunting.",
+   "page_start": 113,
+   "notes": 115,
+   "id": "n24",
+   "ref": "1-017"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "25",
+   "title": "Сказка о сиротѣ.",
+   "title_en": "Tale of the orphan.",
+   "page_start": 116,
+   "notes": 119,
+   "id": "n25",
+   "ref": "1-017",
+   "remark": "Въ женскомъ и мужскомъ произношеніяхъ.",
+   "remark_en": "In women's and men's pronunciation."
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "26",
+   "title": "Устроители скачекъ.",
+   "title_en": "The organizers of the races.",
+   "page_start": 121,
+   "notes": 122,
+   "id": "n26",
+   "ref": "1-018",
+   "remark": "Также въ обоихъ произношеніяхъ.",
+   "remark_en": "Also in both pronunciations."
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "27",
+   "title": "Справляющій служеніе комаръ.",
+   "title_en": "The mosquito who holds a ceremony.",
+   "page_start": 122,
+   "notes": 123,
+   "id": "n27",
+   "ref": "1-018",
+   "remark": "Тоже.",
+   "remark_en": "Likewise."
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "28",
+   "title": "Воронья сказка.",
+   "title_en": "Raven tale.",
+   "page_start": 124,
+   "notes": 125,
+   "id": "n28",
+   "ref": "1-018",
+   "remark": "Тоже.",
+   "remark_en": "Likewise."
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "29",
+   "title": "Отъ начала творенія разсказы.",
+   "title_en": "Stories from the beginning of creation.",
+   "page_start": 126,
+   "notes": 128,
+   "id": "n29",
+   "ref": "1-018"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "30",
+   "title": "Сказка.",
+   "title_en": "Tale.",
+   "page_start": 129,
+   "notes": 129,
+   "id": "n30",
+   "ref": "1-018"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "31",
+   "title": "Сказка о (рыбѣ) Туйкетуй.",
+   "title_en": "Tale of the (fish) Tuiketui.",
+   "page_start": 129,
+   "notes": 130,
+   "id": "n31",
+   "ref": "1-018",
+   "tier1": [
+    "Туйкетуй"
+   ]
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "32",
+   "title": "Сказка.",
+   "title_en": "Tale.",
+   "page_start": 131,
+   "notes": 132,
+   "id": "n32",
+   "ref": "1-018"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "33",
+   "title": "Лечебный заговоръ.",
+   "title_en": "Healing spell.",
+   "page_start": 132,
+   "notes": 134,
+   "id": "n33",
+   "ref": "1-018"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "34",
+   "title": "Тоже.",
+   "title_en": "The same.",
+   "page_start": 135,
+   "notes": 135,
+   "id": "n34",
+   "ref": "1-018"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "35",
+   "title": "Тоже",
+   "title_en": "The same.",
+   "page_start": 135,
+   "notes": null,
+   "id": "n35",
+   "ref": "1-018"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "36",
+   "title": "Тоже",
+   "title_en": "The same.",
+   "page_start": 136,
+   "notes": null,
+   "id": "n36",
+   "ref": "1-018"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "37",
+   "title": "Тоже.",
+   "title_en": "The same.",
+   "page_start": 137,
+   "notes": 137,
+   "id": "n37",
+   "ref": "1-018"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "38",
+   "title": "Заговоръ.",
+   "title_en": "Spell.",
+   "page_start": 137,
+   "notes": 138,
+   "id": "n38",
+   "ref": "1-018"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "39",
+   "title": "Охраняющій младенцевъ заговоръ.",
+   "title_en": "Spell protecting infants.",
+   "page_start": 139,
+   "notes": 140,
+   "id": "n39",
+   "ref": "1-018"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "40",
+   "title": "Заговоръ гнѣва.",
+   "title_en": "Spell of anger.",
+   "page_start": 140,
+   "notes": 141,
+   "id": "n40",
+   "ref": "1-018"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "41",
+   "title": "Заговоръ для порчи.",
+   "title_en": "Spell for doing harm.",
+   "page_start": 142,
+   "notes": 142,
+   "id": "n41",
+   "ref": "1-018"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "42",
+   "title": "Состязательный заговоръ.",
+   "title_en": "Contest spell.",
+   "page_start": 142,
+   "notes": 143,
+   "id": "n42",
+   "ref": "1-018"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "43",
+   "title": "Заговоръ о прирученіи дикаго оленя.",
+   "title_en": "Spell for taming a wild reindeer.",
+   "page_start": 143,
+   "notes": 144,
+   "id": "n43",
+   "ref": "1-018"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "44",
+   "title": "Пословицы.",
+   "title_en": "Proverbs.",
+   "page_start": 144,
+   "notes": 144,
+   "id": "n44",
+   "ref": "1-018"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "45",
+   "title": "Скороговорки 1—5.",
+   "title_en": "Tongue-twisters 1–5.",
+   "page_start": 145,
+   "notes": 145,
+   "id": "n45",
+   "ref": "1-018"
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "46",
+   "title": "Пѣсни 1—4.",
+   "title_en": "Songs 1–4.",
+   "page_start": 146,
+   "notes": 147,
+   "id": "n46",
+   "ref": "1-018",
+   "remark": "Въ женскомъ и мужскомъ произношеніяхъ.",
+   "remark_en": "In women's and men's pronunciation."
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "47",
+   "title": "Присяга на подданство.",
+   "title_en": "Oath of allegiance.",
+   "page_start": 147,
+   "notes": 149,
+   "id": "n47",
+   "ref": "1-018",
+   "remark": "Оригиналъ и исправленный текстъ.",
+   "remark_en": "The original and a corrected text."
+  },
+  {
+   "level": 2,
+   "chapter": "I",
+   "number": "48",
+   "title": "Исправленные образчики чукотскихъ фразъ, приведенныхъ у L. Radloff.",
+   "title_en": "Corrected specimens of the Chukchi phrases cited by L. Radloff.",
+   "page_start": 149,
+   "notes": 155,
+   "id": "n48",
+   "ref": "1-018"
+  },
+  {
+   "level": 1,
+   "chapter": "II",
+   "number": "II",
+   "title": "Пересказы безъ текстовъ съ примѣчаніями",
+   "title_en": "Retellings without texts, with notes",
+   "page_start": 157,
+   "page_end": 386,
+   "id": "secII",
+   "ref": "1-018"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "49",
+   "title": "О началѣ творенія вѣсть",
+   "title_en": "Tidings of the beginning of creation",
+   "page_start": 158,
+   "id": "n49",
+   "ref": "1-018"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "50",
+   "title": "Тоже",
+   "title_en": "The same",
+   "page_start": 160,
+   "id": "n50",
+   "ref": "1-018",
+   "printed_row": "50—61",
+   "row_folios": [
+    160,
+    162,
+    163,
+    164,
+    166,
+    166,
+    167,
+    169,
+    174,
+    175
+   ],
+   "page_from": "contents"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "51",
+   "title": "Тоже",
+   "title_en": "The same",
+   "page_start": 162,
+   "id": "n51",
+   "ref": "1-018",
+   "printed_row": "50—61",
+   "row_folios": [
+    160,
+    162,
+    163,
+    164,
+    166,
+    166,
+    167,
+    169,
+    174,
+    175
+   ],
+   "page_from": "contents"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "52",
+   "title": "Тоже",
+   "title_en": "The same",
+   "page_start": 163,
+   "id": "n52",
+   "ref": "1-018",
+   "printed_row": "50—61",
+   "row_folios": [
+    160,
+    162,
+    163,
+    164,
+    166,
+    166,
+    167,
+    169,
+    174,
+    175
+   ],
+   "page_from": "contents"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "53",
+   "title": "Тоже",
+   "title_en": "The same",
+   "page_start": 164,
+   "id": "n53",
+   "ref": "1-018",
+   "printed_row": "50—61",
+   "row_folios": [
+    160,
+    162,
+    163,
+    164,
+    166,
+    166,
+    167,
+    169,
+    174,
+    175
+   ],
+   "page_from": "contents"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "54",
+   "title": "Тоже",
+   "title_en": "The same",
+   "page_start": 165,
+   "id": "n54",
+   "ref": "1-018",
+   "printed_row": "50—61",
+   "row_folios": [
+    160,
+    162,
+    163,
+    164,
+    166,
+    166,
+    167,
+    169,
+    174,
+    175
+   ],
+   "page_from": "body heading (the contents row omits this folio)"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "55",
+   "title": "Тоже",
+   "title_en": "The same",
+   "page_start": 166,
+   "id": "n55",
+   "ref": "1-018",
+   "printed_row": "50—61",
+   "row_folios": [
+    160,
+    162,
+    163,
+    164,
+    166,
+    166,
+    167,
+    169,
+    174,
+    175
+   ],
+   "page_from": "contents"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "56",
+   "title": "Тоже",
+   "title_en": "The same",
+   "page_start": 166,
+   "id": "n56",
+   "ref": "1-018",
+   "printed_row": "50—61",
+   "row_folios": [
+    160,
+    162,
+    163,
+    164,
+    166,
+    166,
+    167,
+    169,
+    174,
+    175
+   ],
+   "page_from": "contents"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "57",
+   "title": "Тоже",
+   "title_en": "The same",
+   "page_start": 167,
+   "id": "n57",
+   "ref": "1-018",
+   "printed_row": "50—61",
+   "row_folios": [
+    160,
+    162,
+    163,
+    164,
+    166,
+    166,
+    167,
+    169,
+    174,
+    175
+   ],
+   "page_from": "contents"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "58",
+   "title": "Тоже",
+   "title_en": "The same",
+   "page_start": 169,
+   "id": "n58",
+   "ref": "1-018",
+   "printed_row": "50—61",
+   "row_folios": [
+    160,
+    162,
+    163,
+    164,
+    166,
+    166,
+    167,
+    169,
+    174,
+    175
+   ],
+   "page_from": "contents"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "59",
+   "title": "Тоже",
+   "title_en": "The same",
+   "page_start": 171,
+   "id": "n59",
+   "ref": "1-018",
+   "printed_row": "50—61",
+   "row_folios": [
+    160,
+    162,
+    163,
+    164,
+    166,
+    166,
+    167,
+    169,
+    174,
+    175
+   ],
+   "page_from": "body heading (the contents row omits this folio)"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "60",
+   "title": "Тоже",
+   "title_en": "The same",
+   "page_start": 174,
+   "id": "n60",
+   "ref": "1-018",
+   "printed_row": "50—61",
+   "row_folios": [
+    160,
+    162,
+    163,
+    164,
+    166,
+    166,
+    167,
+    169,
+    174,
+    175
+   ],
+   "page_from": "contents"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "61",
+   "title": "Тоже",
+   "title_en": "The same",
+   "page_start": 175,
+   "id": "n61",
+   "ref": "1-018",
+   "printed_row": "50—61",
+   "row_folios": [
+    160,
+    162,
+    163,
+    164,
+    166,
+    166,
+    167,
+    169,
+    174,
+    175
+   ],
+   "page_from": "contents"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "62",
+   "title": "О Lólђыlын'ѣ сказка",
+   "title_en": "Tale of Lólђыlын",
+   "page_start": 176,
+   "id": "n62",
+   "ref": "1-018",
+   "tier1": [
+    "Lólђыlын"
+   ]
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "63",
+   "title": "Солнца жены сказка",
+   "title_en": "Tale of the Sun's wife",
+   "page_start": 176,
+   "id": "n63",
+   "ref": "1-018"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "64",
+   "title": "О мѣсяцѣ сказка",
+   "title_en": "Tale of the Moon",
+   "page_start": 178,
+   "id": "n64",
+   "ref": "1-018"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "65",
+   "title": "Передней Головы дочь",
+   "title_en": "Front Head's daughter",
+   "page_start": 180,
+   "id": "n65",
+   "ref": "1-018"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "66",
+   "title": "О Китылькутѣ сказка",
+   "title_en": "Tale of Kitylkut",
+   "page_start": 181,
+   "id": "n66",
+   "ref": "1-018",
+   "tier1": [
+    "Китылькут"
+   ]
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "67",
+   "title": "О мертвой головѣ сказка",
+   "title_en": "Tale of the dead head",
+   "page_start": 182,
+   "id": "n67",
+   "ref": "1-018"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "68",
+   "title": "Верхній человѣкъ",
+   "title_en": "The Upper Man",
+   "page_start": 183,
+   "id": "n68",
+   "ref": "1-018"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "69",
+   "title": "Куӄálђон",
+   "title_en": "Kukálђon",
+   "page_start": 184,
+   "id": "n69",
+   "ref": "1-018",
+   "tier1": [
+    "Куӄálђон"
+   ]
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "70",
+   "title": "О Кэlę сказка",
+   "title_en": "Tale of Kэlę",
+   "page_start": 188,
+   "id": "n70",
+   "ref": "1-018",
+   "tier1": [
+    "Кэlę"
+   ]
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "71",
+   "title": "Варіантъ предыдущей",
+   "title_en": "Variant of the preceding",
+   "page_start": 189,
+   "id": "n71",
+   "ref": "1-018"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "72",
+   "title": "О Мéтыӈо сказка",
+   "title_en": "Tale of Métyӈo",
+   "page_start": 190,
+   "id": "n72",
+   "ref": "1-018",
+   "tier1": [
+    "Мéтыӈо"
+   ]
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "73",
+   "title": "О Кэlę сказка",
+   "title_en": "Tale of Kэlę",
+   "page_start": 192,
+   "id": "n73",
+   "ref": "1-018",
+   "tier1": [
+    "Кэlę"
+   ]
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "74",
+   "title": "Тоже",
+   "title_en": "The same",
+   "page_start": 194,
+   "id": "n74",
+   "ref": "1-018",
+   "printed_row": "74. 75."
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "75",
+   "title": "Тоже",
+   "title_en": "The same",
+   "page_start": 196,
+   "id": "n75",
+   "ref": "1-018",
+   "printed_row": "74. 75."
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "76",
+   "title": "О малюткѣ Кэlę сказка",
+   "title_en": "Tale of little Kэlę",
+   "page_start": 199,
+   "id": "n76",
+   "ref": "1-018",
+   "tier1": [
+    "Кэlę"
+   ]
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "77",
+   "title": "Сказка о бубнѣ",
+   "title_en": "Tale of the drum",
+   "page_start": 200,
+   "id": "n77",
+   "ref": "1-019"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "78",
+   "title": "Сказка о Чесоточномъ шаманѣ",
+   "title_en": "Tale of the Scabby Shaman",
+   "page_start": 201,
+   "parts": [
+    {
+     "n": "I",
+     "page": 201
+    },
+    {
+     "n": "II",
+     "page": 207
+    }
+   ],
+   "id": "n78",
+   "ref": "1-019"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "79",
+   "title": "О Кýніӈӓ сказка",
+   "title_en": "Tale of Kúniӈӓ",
+   "page_start": 212,
+   "id": "n79",
+   "ref": "1-019",
+   "tier1": [
+    "Кýніӈӓ"
+   ]
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "80",
+   "title": "О Ры́нтеў сказка",
+   "title_en": "Tale of Rýnteў",
+   "page_start": 215,
+   "id": "n80",
+   "ref": "1-019",
+   "tier1": [
+    "Ры́нтеў"
+   ]
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "81",
+   "title": "О состязаніи шамановъ сказка",
+   "title_en": "Tale of a contest of shamans",
+   "page_start": 216,
+   "id": "n81",
+   "ref": "1-019"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "82",
+   "title": "Сказка о бородавчатомъ шаманѣ",
+   "title_en": "Tale of the warty shaman",
+   "page_start": 220,
+   "id": "n82",
+   "ref": "1-019"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "83",
+   "title": "Малютка",
+   "title_en": "The little one",
+   "page_start": 224,
+   "id": "n83",
+   "ref": "1-019"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "84",
+   "title": "Муṫу́wђі сынъ",
+   "title_en": "Muṫúwђi's son",
+   "page_start": 227,
+   "id": "n84",
+   "ref": "1-019",
+   "tier1": [
+    "Муṫу́wђі"
+   ]
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "85",
+   "title": "Сказка о спроткѣ",
+   "title_en": "Tale of the orphan girl",
+   "page_start": 232,
+   "id": "n85",
+   "ref": "1-019",
+   "sic": "спроткѣ: the book's misprint for сироткѣ, \"orphan girl\"; keyed as printed"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "86",
+   "title": "Аттыђыткыновы люди",
+   "title_en": "Attyђytkyn's people",
+   "page_start": 235,
+   "id": "n86",
+   "ref": "1-019",
+   "tier1": [
+    "Аттыђыткын"
+   ]
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "87",
+   "title": "Шаманка",
+   "title_en": "The shamaness",
+   "page_start": 238,
+   "id": "n87",
+   "ref": "1-019"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "88",
+   "title": "О женоподобномъ шаманѣ сказка",
+   "title_en": "Tale of the woman-like shaman",
+   "page_start": 240,
+   "id": "n88",
+   "ref": "1-019"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "89",
+   "title": "Жена Аӈӄálө",
+   "title_en": "Aӈӄálө's wife",
+   "page_start": 241,
+   "id": "n89",
+   "ref": "1-019",
+   "tier1": [
+    "Аӈӄálө"
+   ]
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "90",
+   "title": "Двое съ двоюроднымъ братомъ",
+   "title_en": "Two men and their cousin",
+   "page_start": 244,
+   "id": "n90",
+   "ref": "1-019"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "91",
+   "title": "Приморскій сиротка",
+   "title_en": "The orphan of the coast",
+   "page_start": 247,
+   "id": "n91",
+   "ref": "1-019"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "92",
+   "title": "Житель Ванкарема",
+   "title_en": "The man of Vankarem",
+   "page_start": 249,
+   "id": "n92",
+   "ref": "1-019"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "93",
+   "title": "Сватающійся",
+   "title_en": "The suitor",
+   "page_start": 250,
+   "id": "n93",
+   "ref": "1-019"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "94",
+   "title": "О двоеженцѣ сказка",
+   "title_en": "Tale of the man with two wives",
+   "page_start": 255,
+   "id": "n94",
+   "ref": "1-019"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "95",
+   "title": "Варіантъ предыдущей",
+   "title_en": "Variant of the preceding",
+   "page_start": 256,
+   "id": "n95",
+   "ref": "1-019"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "96",
+   "title": "Горное эхо женщина",
+   "title_en": "The mountain-echo woman",
+   "page_start": 258,
+   "id": "n96",
+   "ref": "1-019"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "97",
+   "title": "Соперники на скачкахъ",
+   "title_en": "Rivals at the races",
+   "page_start": 259,
+   "id": "n97",
+   "ref": "1-019"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "98",
+   "title": "Объ А́йђынто сказка",
+   "title_en": "Tale of Áiђynto",
+   "page_start": 260,
+   "id": "n98",
+   "ref": "1-019",
+   "tier1": [
+    "А́йђынто"
+   ]
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "99",
+   "title": "Старушка съ порчею",
+   "title_en": "The old woman with the evil eye",
+   "page_start": 266,
+   "id": "n99",
+   "ref": "1-019"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "100",
+   "title": "[Пять братьевъ]",
+   "title_en": "[Five brothers]",
+   "page_start": 271,
+   "id": "n100",
+   "ref": "1-019",
+   "sic": "братьевъ: the ь is a damaged sort on this copy, read from what remains of it"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "101",
+   "title": "Лисица и собака",
+   "title_en": "The fox and the dog",
+   "page_start": 275,
+   "id": "n101",
+   "ref": "1-019"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "102",
+   "title": "На состязаніи скользящихъ внизъ",
+   "title_en": "At a contest of sliding downhill",
+   "page_start": 276,
+   "id": "n102",
+   "ref": "1-019"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "103",
+   "title": "Лисья сказка",
+   "title_en": "Fox tale",
+   "page_start": 276,
+   "id": "n103",
+   "ref": "1-019"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "104",
+   "title": "Тоже",
+   "title_en": "The same",
+   "page_start": 277,
+   "id": "n104",
+   "ref": "1-019"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "105",
+   "title": "О медвѣдѣ сказка",
+   "title_en": "Tale of the bear",
+   "page_start": 279,
+   "id": "n105",
+   "ref": "1-019"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "106",
+   "title": "Кэlílђу",
+   "title_en": "Kэlílђu",
+   "page_start": 280,
+   "id": "n106",
+   "ref": "1-019",
+   "tier1": [
+    "Кэlílђу"
+   ]
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "107",
+   "title": "Сказка о большомъ горностаѣ",
+   "title_en": "Tale of the great ermine",
+   "page_start": 281,
+   "id": "n107",
+   "ref": "1-019"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "108",
+   "title": "Песъ сватающійся",
+   "title_en": "The dog who went wooing",
+   "page_start": 281,
+   "id": "n108",
+   "ref": "1-019"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "109",
+   "title": "Куркыля сынъ",
+   "title_en": "Kurkyl's son",
+   "page_start": 283,
+   "id": "n109",
+   "ref": "1-019",
+   "tier1": [
+    "Куркыль"
+   ]
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "110",
+   "title": "О пращникѣ сказка",
+   "title_en": "Tale of the slinger",
+   "page_start": 285,
+   "id": "n110",
+   "ref": "1-019"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "111",
+   "title": "Воронъ и Орелъ въ перемѣнномъ бракѣ",
+   "title_en": "Raven and Eagle in exchange marriage",
+   "page_start": 288,
+   "id": "n111",
+   "ref": "1-019"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "112",
+   "title": "О птичьей женщинѣ сказка",
+   "title_en": "Tale of the bird woman",
+   "page_start": 290,
+   "id": "n112",
+   "ref": "1-019"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "113",
+   "title": "Варіантъ предыдущей",
+   "title_en": "Variant of the preceding",
+   "page_start": 292,
+   "id": "n113",
+   "ref": "1-019"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "114",
+   "title": "Обиженный",
+   "title_en": "The wronged man",
+   "page_start": 294,
+   "id": "n114",
+   "ref": "1-019"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "115",
+   "title": "[Старая дѣвка]",
+   "title_en": "[The old maid]",
+   "page_start": 297,
+   "id": "n115",
+   "ref": "1-019"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "116",
+   "title": "Заяцъ богатырь",
+   "title_en": "The hare hero",
+   "page_start": 299,
+   "id": "n116",
+   "ref": "1-019"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "117",
+   "title": "О бѣлой медвѣдицѣ сказка",
+   "title_en": "Tale of the white she-bear",
+   "page_start": 301,
+   "id": "n117",
+   "ref": "1-019"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "118",
+   "title": "Объ Эмэмку́тѣ сказка",
+   "title_en": "Tale of Ememkút",
+   "page_start": 304,
+   "id": "n118",
+   "ref": "1-019",
+   "tier1": [
+    "Эмэмку́т"
+   ]
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "119",
+   "title": "О служеніи обрядовомъ",
+   "title_en": "On the ceremonial service",
+   "page_start": 305,
+   "id": "n119",
+   "ref": "1-019"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "120",
+   "title": "Два товарища",
+   "title_en": "Two comrades",
+   "page_start": 311,
+   "id": "n120",
+   "ref": "1-019"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "121",
+   "title": "Живой корень",
+   "title_en": "The living root",
+   "page_start": 317,
+   "id": "n121",
+   "ref": "1-019",
+   "page_printed": 319,
+   "page_from": "body heading on 1-373, folio 317 (the contents prints 319, the folio of no. 122)"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "122",
+   "title": "Русская сказка",
+   "title_en": "A Russian tale",
+   "page_start": 319,
+   "id": "n122",
+   "ref": "1-019"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "123",
+   "title": "Тоже",
+   "title_en": "The same",
+   "page_start": 323,
+   "id": "n123",
+   "ref": "1-020",
+   "printed_row": "123. 124."
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "124",
+   "title": "Тоже",
+   "title_en": "The same",
+   "page_start": 324,
+   "id": "n124",
+   "ref": "1-020",
+   "printed_row": "123. 124."
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "125",
+   "title": "Слово Ӈáрђынен'а",
+   "title_en": "The word of Ӈárђynen",
+   "page_start": 327,
+   "id": "n125",
+   "ref": "1-020",
+   "tier1": [
+    "Ӈáрђынен"
+   ]
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "126",
+   "title": "Судно Ӈáрђынен'а",
+   "title_en": "Ӈárђynen's boat",
+   "page_start": 329,
+   "id": "n126",
+   "ref": "1-020",
+   "tier1": [
+    "Ӈáрђынен"
+   ]
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "127",
+   "title": "О Јӓку́ннін'ѣ сказка",
+   "title_en": "Tale of Jӓkúnnin",
+   "page_start": 330,
+   "id": "n127",
+   "ref": "1-020",
+   "tier1": [
+    "Јӓку́ннін"
+   ]
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "128",
+   "title": "Тоже",
+   "title_en": "The same",
+   "page_start": 332,
+   "id": "n128",
+   "ref": "1-020",
+   "printed_row": "128. 129."
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "129",
+   "title": "Тоже",
+   "title_en": "The same",
+   "page_start": 333,
+   "id": "n129",
+   "ref": "1-020",
+   "printed_row": "128. 129."
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "130",
+   "title": "Временъ войны вѣсть",
+   "title_en": "Tidings of the times of war",
+   "page_start": 334,
+   "id": "n130",
+   "ref": "1-020"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "131",
+   "title": "",
+   "title_en": "",
+   "page_start": 335,
+   "id": "n131",
+   "ref": "1-020"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "132",
+   "title": "Тоже",
+   "title_en": "The same",
+   "page_start": 336,
+   "id": "n132",
+   "ref": "1-020",
+   "printed_row": "132. 133."
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "133",
+   "title": "Тоже",
+   "title_en": "The same",
+   "page_start": 338,
+   "id": "n133",
+   "ref": "1-020",
+   "printed_row": "132. 133."
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "134",
+   "title": "Разсказъ объ Элэ́нді и его сыновьяхъ",
+   "title_en": "Story of Elеndi and his sons",
+   "page_start": 339,
+   "parts": [
+    {
+     "n": "I",
+     "page": 339
+    },
+    {
+     "n": "II",
+     "page": 343
+    },
+    {
+     "n": "III",
+     "page": 350
+    },
+    {
+     "n": "IV",
+     "page": 353
+    }
+   ],
+   "id": "n134",
+   "ref": "1-020",
+   "tier1": [
+    "Элэ́нді"
+   ]
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "135",
+   "title": "Tálo, таньгинскій воспитанникъ",
+   "title_en": "Tálo, the foster-son of the strangers",
+   "page_start": 359,
+   "id": "n135",
+   "ref": "1-020",
+   "tier1": [
+    "Tálo",
+    "таньгинскій"
+   ]
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "136",
+   "title": "Сказка объ А́ттымlў",
+   "title_en": "Tale of Áttymlў",
+   "page_start": 365,
+   "id": "n136",
+   "ref": "1-020",
+   "tier1": [
+    "А́ттымlў"
+   ]
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "137",
+   "title": "Тэмээрэ́чэђӓј",
+   "title_en": "Temeeréčeђӓj",
+   "page_start": 366,
+   "id": "n137",
+   "ref": "1-020",
+   "tier1": [
+    "Тэмээрэ́чэђӓј"
+   ]
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "138",
+   "title": "Мы́ткакай и Кáэлькай",
+   "title_en": "Mýtkakai and Káelkai",
+   "page_start": 369,
+   "id": "n138",
+   "ref": "1-020",
+   "tier1": [
+    "Мы́ткакай",
+    "Кáэлькай"
+   ]
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "139",
+   "title": "Одѣтый въ цѣльно сшитое платье",
+   "title_en": "The one dressed in a garment sewn in one piece",
+   "page_start": 371,
+   "id": "n139",
+   "ref": "1-020"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "140",
+   "title": "Насильникъ убитый",
+   "title_en": "The violent man slain",
+   "page_start": 373,
+   "id": "n140",
+   "ref": "1-020"
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "141",
+   "title": "Обычай Ӈыро́н'а",
+   "title_en": "Ӈyrón's custom",
+   "page_start": 377,
+   "id": "n141",
+   "ref": "1-020",
+   "tier1": [
+    "Ӈыро́н"
+   ]
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "142",
+   "title": "Видѣніе Тэльпы́нги",
+   "title_en": "Telpýnga's vision",
+   "page_start": 379,
+   "id": "n142",
+   "ref": "1-020",
+   "tier1": [
+    "Тэльпы́нга"
+   ]
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "143",
+   "title": "Видѣніе Ајӈанвáт'а",
+   "title_en": "Ajӈanvát's vision",
+   "page_start": 383,
+   "id": "n143",
+   "ref": "1-020",
+   "tier1": [
+    "Ајӈанвáт"
+   ]
+  },
+  {
+   "level": 2,
+   "chapter": "II",
+   "number": "144",
+   "title": "Видѣніе Корáwђе",
+   "title_en": "Koráwђe's vision",
+   "page_start": 385,
+   "id": "n144",
+   "ref": "1-020",
+   "tier1": [
+    "Корáwђе"
+   ]
+  },
+  {
+   "level": 1,
+   "chapter": "III",
+   "number": "III",
+   "title": "Пересказы безъ текстовъ (записанные со словъ переводчиковъ)",
+   "title_en": "Retellings without texts (taken down from interpreters' words)",
+   "page_start": 387,
+   "page_end": 417,
+   "id": "secIII",
+   "ref": "1-020"
+  },
+  {
+   "level": 2,
+   "chapter": "III",
+   "number": "145",
+   "title": "",
+   "title_en": "",
+   "page_start": 388,
+   "id": "n145",
+   "ref": "1-020",
+   "printed_row": "145—152"
+  },
+  {
+   "level": 2,
+   "chapter": "III",
+   "number": "146",
+   "title": "",
+   "title_en": "",
+   "page_start": 389,
+   "id": "n146",
+   "ref": "1-020",
+   "printed_row": "145—152"
+  },
+  {
+   "level": 2,
+   "chapter": "III",
+   "number": "147",
+   "title": "",
+   "title_en": "",
+   "page_start": 390,
+   "id": "n147",
+   "ref": "1-020",
+   "printed_row": "145—152"
+  },
+  {
+   "level": 2,
+   "chapter": "III",
+   "number": "148",
+   "title": "",
+   "title_en": "",
+   "page_start": 391,
+   "id": "n148",
+   "ref": "1-020",
+   "printed_row": "145—152"
+  },
+  {
+   "level": 2,
+   "chapter": "III",
+   "number": "149",
+   "title": "",
+   "title_en": "",
+   "page_start": 392,
+   "id": "n149",
+   "ref": "1-020",
+   "printed_row": "145—152"
+  },
+  {
+   "level": 2,
+   "chapter": "III",
+   "number": "150",
+   "title": "",
+   "title_en": "",
+   "page_start": 392,
+   "id": "n150",
+   "ref": "1-020",
+   "printed_row": "145—152"
+  },
+  {
+   "level": 2,
+   "chapter": "III",
+   "number": "151",
+   "title": "",
+   "title_en": "",
+   "page_start": 393,
+   "id": "n151",
+   "ref": "1-020",
+   "printed_row": "145—152"
+  },
+  {
+   "level": 2,
+   "chapter": "III",
+   "number": "152",
+   "title": "",
+   "title_en": "",
+   "page_start": 394,
+   "id": "n152",
+   "ref": "1-020",
+   "printed_row": "145—152"
+  },
+  {
+   "level": 2,
+   "chapter": "III",
+   "number": "153",
+   "title": "О женитьбѣ сиротки",
+   "title_en": "Of the orphan's marriage",
+   "page_start": 394,
+   "id": "n153",
+   "ref": "1-020"
+  },
+  {
+   "level": 2,
+   "chapter": "III",
+   "number": "154",
+   "title": "Житель и Кэlę",
+   "title_en": "The settler and Kэlę",
+   "page_start": 396,
+   "id": "n154",
+   "ref": "1-020",
+   "tier1": [
+    "Кэlę"
+   ]
+  },
+  {
+   "level": 2,
+   "chapter": "III",
+   "number": "155",
+   "title": "О Кэlę, сосватавшемъ женщину (варіантъ предыдущей)",
+   "title_en": "Of the Kэlę who wooed a woman (variant of the preceding)",
+   "page_start": 398,
+   "id": "n155",
+   "ref": "1-020",
+   "tier1": [
+    "Кэlę"
+   ]
+  },
+  {
+   "level": 2,
+   "chapter": "III",
+   "number": "156",
+   "title": "Киріáнво и Ярынáутъ",
+   "title_en": "Kiriánvo and Yarynáut",
+   "page_start": 399,
+   "id": "n156",
+   "ref": "1-020",
+   "tier1": [
+    "Киріáнво",
+    "Ярынáутъ"
+   ]
+  },
+  {
+   "level": 2,
+   "chapter": "III",
+   "number": "157",
+   "title": "[Басни]",
+   "title_en": "[Fables]",
+   "page_start": 401,
+   "id": "n157",
+   "ref": "1-020",
+   "printed_row": "157—161"
+  },
+  {
+   "level": 2,
+   "chapter": "III",
+   "number": "158",
+   "title": "[Басни]",
+   "title_en": "[Fables]",
+   "page_start": 402,
+   "id": "n158",
+   "ref": "1-020",
+   "printed_row": "157—161"
+  },
+  {
+   "level": 2,
+   "chapter": "III",
+   "number": "159",
+   "title": "[Басни]",
+   "title_en": "[Fables]",
+   "page_start": 402,
+   "id": "n159",
+   "ref": "1-020",
+   "printed_row": "157—161"
+  },
+  {
+   "level": 2,
+   "chapter": "III",
+   "number": "160",
+   "title": "[Басни]",
+   "title_en": "[Fables]",
+   "page_start": 404,
+   "id": "n160",
+   "ref": "1-020",
+   "printed_row": "157—161"
+  },
+  {
+   "level": 2,
+   "chapter": "III",
+   "number": "161",
+   "title": "[Басни]",
+   "title_en": "[Fables]",
+   "page_start": 404,
+   "id": "n161",
+   "ref": "1-020",
+   "printed_row": "157—161"
+  },
+  {
+   "level": 2,
+   "chapter": "III",
+   "number": "162",
+   "title": "Сказка объ оспѣ",
+   "title_en": "Tale of the smallpox",
+   "page_start": 404,
+   "id": "n162",
+   "ref": "1-020"
+  },
+  {
+   "level": 2,
+   "chapter": "III",
+   "number": "163",
+   "title": "",
+   "title_en": "",
+   "page_start": 406,
+   "id": "n163",
+   "ref": "1-020",
+   "printed_row": "163. 164."
+  },
+  {
+   "level": 2,
+   "chapter": "III",
+   "number": "164",
+   "title": "",
+   "title_en": "",
+   "page_start": 408,
+   "id": "n164",
+   "ref": "1-020",
+   "printed_row": "163. 164."
+  },
+  {
+   "level": 2,
+   "chapter": "III",
+   "number": "165",
+   "title": "О шаманѣ Айваналинѣ",
+   "title_en": "Of the shaman Aivanalin",
+   "page_start": 409,
+   "id": "n165",
+   "ref": "1-020",
+   "tier1": [
+    "Айваналин"
+   ]
+  },
+  {
+   "level": 2,
+   "chapter": "III",
+   "number": "166",
+   "title": "Странствованіе Ранáургина",
+   "title_en": "Ranáurgin's wanderings",
+   "page_start": 411,
+   "id": "n166",
+   "ref": "1-020",
+   "tier1": [
+    "Ранáургин"
+   ]
+  },
+  {
+   "level": 2,
+   "chapter": "III",
+   "number": "167",
+   "title": "О шаманѣ Роровальгинѣ",
+   "title_en": "Of the shaman Rorovalgin",
+   "page_start": 415,
+   "id": "n167",
+   "ref": "1-020",
+   "tier1": [
+    "Роровальгин"
+   ]
+  },
+  {
+   "level": 2,
+   "chapter": "III",
+   "number": "168",
+   "title": "",
+   "title_en": "",
+   "page_start": 416,
+   "id": "n168",
+   "ref": "1-020"
+  }
+ ]
+}

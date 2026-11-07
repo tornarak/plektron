@@ -27,6 +27,10 @@ import pytest
 REPO = Path(__file__).resolve().parent.parent.parent
 PROJECT = REPO / "jesup" / "bogoras-chukchi"
 WORKSPACE = PROJECT.parent
+#: Every text in the workspace. A text-relative path is a claim about *a* text's
+#: layout, not The Chukchee's: `edition/informants.json` exists only under a text
+#: of recorded folklore, and checking it against one text would call it missing.
+TEXTS = sorted(p.parent for p in WORKSPACE.glob("*/project.json"))
 
 # Documents whose business is pointing at other files. Not every markdown file in
 # the repo: a page of prose that happens to mention a filename is not making a
@@ -273,7 +277,8 @@ def test_every_path_it_names_resolves(doc):
     missing = sorted(
         p
         for p in named_paths(doc)
-        if p not in EXPECTED_ABSENT and "PP-NNN" not in p and not (REPO / p).exists() and not (PROJECT / p).exists() and not (WORKSPACE / p).exists()
+        if p not in EXPECTED_ABSENT and "PP-NNN" not in p and not (REPO / p).exists()
+        and not any((t / p).exists() for t in TEXTS) and not (WORKSPACE / p).exists()
     )
     assert not missing, (
         f"{doc} names paths that do not exist: {missing}. Either the file moved "

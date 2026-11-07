@@ -1547,3 +1547,99 @@ ethnographic photographs of identifiable individuals was raised.
 would have been one more store for `entity rename` to rewrite, and it would
 orphan pictures silently the first time a rename missed it. The class is read
 at render instead, so a move out of scope needs no ledger edit either.
+
+## Russian prose is on English's tier, and the firewall is Tier-1's
+
+The firewall read "no non-English glyph identity may be adopted on a model's
+authority". It was written when the only prose was English and every other
+script on the page was a Tier-1 transcription, so "non-English" and "Tier-1"
+named the same spans. The 1900 *Materials* split them: ninety-odd percent of
+the book is Russian prose.
+
+**The editor's ruling: Russian is on English's tier.** It is a global language
+with a documented grammar and a training corpus no Tier-1 code approaches, so a
+model's errors in it are evident to the model, and with the scan in hand a
+reading checked against it may be promoted. The editor does not read Russian,
+which is the other half of the argument: a human Save over a Russian line would
+be a stamp, not a check, and a rank that claims a check nobody made is the
+thing this project is arranged against. The firewall now names Tier-1.
+
+**What it does not license.** The Chukchi forms inside that prose stay Tier-1,
+under the firewall whole: a model proposes, a human ratifies glyph by glyph.
+And mapping a 1900 Cyrillic form onto *The Chukchee*'s Americanist one is an
+inference about what Bogoras's other system "would" write. It is offered as a
+`#llm` correspondence between two attested forms, and never as a glyph of
+either page.
+
+## Keying rules are a prototype chain, and a named notation was the wrong shape
+
+The first plan for a second notation was `notation.py`: a registry of named rule
+sets, one per transcription system, each text naming one in its manifest. The
+1900 book's first real question — may `ў` carry its breve? — showed why that is
+the wrong shape. The answer is "yes, in this book", and a named notation can
+only say "yes, in every book of notation X", which is a claim nobody has the
+evidence for: a second Kolyma-1900 text would inherit a licence attested on the
+first one's leaves. The editor's direction was the prototype pattern instead,
+**workspace → text**: the workspace holds the rules its texts share, and a text
+overrides only what its own book prints, key by key.
+
+**What the shape buys.** A licence is scoped to the leaves that attest it; the
+other texts' gates do not move; and `corpus rules` can say, per entry, which tier
+set it. The `notation` field was retired rather than kept as a label, because
+the override file is the notation and a name beside it would be one fact stated
+twice.
+
+**Three choices inside it, each with a plausible alternative.**
+
+- **No code layer under the workspace.** Keeping the Jesup tables as built-in
+  defaults would have been fewer moving parts, and it would have handed the
+  Americanist notation to every future workspace silently. A workspace with no
+  rules is refused instead.
+- **Objects merge; a leaf replaces.** Every table is an object keyed by what it
+  rules on, so licensing `у` names one key under the breve and inherits the four
+  beside it, and nothing is appended to a value the reader cannot see. Deletion
+  is `{"_delete": why}`, not `null`, so it carries its reason like every other
+  ruling.
+- **A shared file takes the workspace's rules.** `corpus normalize` reaches
+  `../edition/entities/` from inside a text. Judging those files by the scanning
+  text's rules would make the entity store's validity depend on which text ran
+  the check.
+
+The move was held to identity on *The Chukchee*: the workspace file was
+generated from the constants and checked equal to them before the constants
+were deleted, and `corpus normalize` over the whole text and `validate` over
+its 717 drafts gave the same findings before and after.
+
+## Two copies, one engine: what their agreement may settle
+
+The 1900 *Materials* arrived as two Google Books copies, each with an OCR text
+layer, and the cheap reading of that is two witnesses. They are one: the same
+engine read both scans. **A comparison whose witnesses may be one witness must say
+so**, and here it showed on the first page compared. On `1-022` both copies set a
+space before every comma, where the print sets none, and both read `Ајңанват`
+where the print sets `Ајңан̀ва́т`: a hooked `н`, a grave, an acute, all dropped
+identically.
+
+So the copies are a pointer, not a vote. Where they part, a reader looks at the
+scan. Where they agree, a line of Russian prose may stand, because a second check
+sits behind it — the sense of the sentence, which the engine does not supply —
+and Russian is outside the firewall. A native form never stands on agreement: it
+is read off the scan, listed in the line's `native` field, and ruled by the
+editor, since the agreement the copies offer is exactly the engine's habit the
+form was most likely to suffer from.
+
+The pages are paired by their text for the same reason a line is: copy B
+scanned two of its pages twice, and a fixed offset would compare a page with its
+neighbour and report nothing. `ocr pair` names a page that matches two (`1-058`,
+`1-059`, and the title page the book prints twice) and leaves the choice to the
+editor's `map`.
+
+**The rules had to move first.** Before the keying rules were layered,
+`detectors.cyrillic` excluded every Cyrillic token from Tier-1 selection, which
+was right for *The Chukchee*'s Russian and would have hidden every native form in
+this book. It is now `tier2_scripts`, a table the 1900 text deletes, and the
+text's `prose_alphabet` (the pre-1918 Russian letters) selects instead any token
+carrying a letter or mark outside them. That is an exclusion list on purpose: the
+print's hooked and barred letters have no settled identity yet, and an exclusion
+list sends every form carrying one to review without anyone ruling first which
+letter it is.

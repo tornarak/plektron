@@ -9,6 +9,7 @@ import json
 import unicodedata
 
 import pytest
+from conftest import jesup_rules
 
 from harness.normalize import (
     _fix_spacing,
@@ -16,6 +17,8 @@ from harness.normalize import (
     _lookalikes,
     _spacing_hits,
 )
+
+R = jesup_rules()
 
 
 class TestSpacing:
@@ -212,18 +215,18 @@ class TestNFD:
 
 class TestLookalikeCensus:
     def test_reports_one_record_per_occurrence(self):
-        hits = _lookalikes("a´b and another ´ here")
+        hits = _lookalikes("a´b and another ´ here", R)
         assert len(hits) == 2
 
     def test_clean_text_yields_nothing(self):
-        assert _lookalikes("ordinary English prose, with a semicolon; fine") == []
+        assert _lookalikes("ordinary English prose, with a semicolon; fine", R) == []
 
     def test_curly_quotes_are_not_flagged_corpus_wide(self):
         """English prose reproduces the print. See tests/test_lookalike_scope.py."""
-        assert _lookalikes("he said “yes” and ‘no’") == []
+        assert _lookalikes("he said “yes” and ‘no’", R) == []
 
     def test_hit_names_what_it_traps(self):
-        (hit,) = _lookalikes("x´y")
+        (hit,) = _lookalikes("x´y", R)
         assert "U+02CA" in hit["trap"]
         assert hit["token"] == "x´y"  # located to a token, not just a line
 
