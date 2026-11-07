@@ -85,6 +85,15 @@ def _block_after(el):
     return None
 
 
+def _head_link(frag: str) -> str:
+    """The `#` a reader copies a heading's address from. Hung in the left margin
+    of the column by the stylesheet, so it sits in the indent and moves no text.
+    A run-in head's link stands *before* its anchor span, which keeps the span
+    the paragraph's immediate predecessor for `.milestone + p`."""
+    return (f'<a class="head-link" href="#{escape(frag)}" '
+            f'aria-label="Link to this section">#</a>')
+
+
 def _leads_a_block(el) -> bool:
     """Does the block after this milestone open with the printed head?
 
@@ -933,7 +942,12 @@ class Renderer:
             # the ToC. So this is an anchor: the boundary is still in the document
             # and still linkable, and the words stay the ones the compositor set.
             frag = self._fragment(n)
-            return (self._legacy(n, frag)
+            # A head the page prints on a line of its own with a note marker is
+            # set as an `<h2>` by `el_p`, which carries the link itself.
+            nxt = _block_after(el)
+            link = ("" if nxt is not None and _head_only(nxt) is el
+                    else _head_link(frag))
+            return (self._legacy(n, frag) + link
                     + f'<span class="milestone anchor {escape(unit)}" id="{escape(frag)}"></span>')
         return self.milestone_heading(el)
 
@@ -962,20 +976,22 @@ class Renderer:
         frag = self._fragment(n)
         id_attr = "" if anchored else f' id="{escape(frag)}"'
         legacy = "" if anchored else self._legacy(n, frag)
+        link = _head_link(frag)
         label = self.titles.get(n) or {}
         if not label:
             # The id, unstyled, when the ToC has no such entry. Visibly not a
             # heading — which is how a milestone whose entry went missing should
             # fail, a plausible one built out of a slug being the failure this
             # project is arranged against.
-            return f'<h2 class="milestone {escape(unit)}"{id_attr}>{escape(n)}{marks}</h2>'
+            return (f'<h2 class="milestone {escape(unit)}"{id_attr}>{link}'
+                    f'{escape(n)}{marks}</h2>')
         num = (
             f'<span class="milestone-n">{escape(label["number"])}</span>'
             if label.get("number")
             else ""
         )
         return (
-            f'{legacy}<h2 class="milestone {escape(unit)}"{id_attr}>{num}'
+            f'{legacy}<h2 class="milestone {escape(unit)}"{id_attr}>{link}{num}'
             f'<span class="milestone-t">{escape(label["title"])}{marks}</span></h2>'
         )
 

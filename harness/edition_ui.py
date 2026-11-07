@@ -1124,8 +1124,9 @@ def insert_after_anchor(html: str, anchor_id: str, block: str) -> str | None:
     `<h2 class="milestone chapter" id="chII">…</h2>`, and the empty marker a
     section gets when the page does not print its head,
     `<span class="milestone anchor section" id="chII.1"></span>`. Closing at the
-    first matching end tag is right for both — an `h2` holds spans but never
-    another `h2`, and the marker span is empty.
+    first matching end tag is right for both — an `h2` holds spans and its
+    `head-link` but never another `h2`, and the marker span is empty (its link
+    stands before it).
     """
     m = re.search(rf'<(\w+)[^>]*\bid=["\']{re.escape(anchor_id)}["\'][^>]*>', html)
     if not m:

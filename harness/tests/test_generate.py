@@ -1633,10 +1633,12 @@ def test_the_reading_view_titles_a_milestone_from_the_toc(tmp_path):
                  '<pb n="11"/><milestone unit="chapter" n="chXI"/>'
                  '</body></text></TEI>', encoding="utf-8")
     plain = tei_html.render(p)["html"]
-    assert '<h2 class="milestone chapter" id="chXI">chXI</h2>' in plain
+    link = ('<a class="head-link" href="#chXI" '
+            'aria-label="Link to this section">#</a>')
+    assert f'<h2 class="milestone chapter" id="chXI">{link}chXI</h2>' in plain
 
     got = tei_html.render(p, {"chXI": {"number": "XI", "title": "Games"}})["html"]
-    assert ('<h2 class="milestone chapter" id="chXI">'
+    assert (f'<h2 class="milestone chapter" id="chXI">{link}'
             '<span class="milestone-n">XI</span>'
             '<span class="milestone-t">Games</span></h2>') in got
 
