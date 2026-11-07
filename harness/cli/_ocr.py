@@ -562,6 +562,48 @@ def register(cli):
     # each worker holds ~1.4 GB of CUDA context.
     add_jobs(p)
 
+    p = add("import", help="the source PDF's own text layer into mz/ocr/, as "
+            "ALTO shaped like predict's — for a text whose PDFs carry a usable "
+            "OCR layer. Rows rebuilt from the layer's fragments by rule; boxes in "
+            "master pixels. Never gt/ocr/")
+    refs_arg(p, all_="every page in scans/ not ruled exempt")
+    opt(p, "--force", is_flag=True,
+        help="re-import over a page already in mz/ocr/, whatever produced it")
+
+
+def run_import(a) -> int:
+    """No model loads, so one loop serves a page and a sweep alike."""
+    from ..paths import all_scans
+    from ..textlayer import TextLayerError, import_page
+    from ..zones import is_exempt
+
+    named = page_refs(a)
+    refs = named or all_scans(a.root)
+    pages, skips = [], []
+    with progress("importing") as tick:
+        for i, ref in enumerate(refs, 1):
+            if tick:
+                tick(ref, i, len(refs))
+            if not named and is_exempt(ref, a.root):
+                skips.append({"ref": ref, "why": "ruled not a text page"})
+                continue
+            try:
+                rec = import_page(ref, a.root, force=a.force)
+            except TextLayerError as e:
+                skips.append({"ref": ref, "why": str(e)})
+                continue
+            if "skipped" in rec:
+                skips.append({"ref": ref, "why": rec["skipped"]})
+            else:
+                pages.append(rec)
+    out(a, {"imported": len(pages), "skipped": len(skips),
+             "lines": sum(p["lines"] for p in pages)})
+    if pages:
+        out(a, pages, "pages")
+    if skips:
+        out(a, skips, "skips")
+    return 0
+
 
 def run_remark_eval(a) -> int:
     from ..recognize import remark_eval

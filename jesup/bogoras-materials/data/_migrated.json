@@ -1,0 +1,3 @@
+{
+ "_about": "Which manifest's space each page's stored coordinates are in, and the shift that put them there. A page whose shift is [0, 0] is recorded rather than omitted \u2014 the whole point is that 'correctly untouched' and 'not yet reached' must be distinguishable, and page dimensions cannot tell them apart."
+}

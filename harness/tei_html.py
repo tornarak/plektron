@@ -34,6 +34,7 @@ from lxml import etree
 
 from . import figrefs
 from .edition_ui import BASE
+from .langs import is_tier1
 from .layout import page_files, ref_of, stem_for
 from .ns import TEI_NS, XML_ID, XML_LANG
 from .refs import norm_ref, ref_in
@@ -42,7 +43,8 @@ from .validate import TIER1
 
 #: The languages a lexicon key may name. `validate.TIER1` and nothing else — the
 #: forms this edition keys character by character are the ones worth an entry,
-#: and a `lang:form` key over English would be a link to a dictionary.
+#: and a `lang:form` key over English would be a link to a dictionary. Asked of
+#: a tag through `langs.is_tier1`, so `ckt-Cyrl` is Chukchi here as everywhere.
 LEXICON_LANGS = TIER1
 
 _TAGS = re.compile(r"<[^>]+>")
@@ -207,7 +209,7 @@ def _is_tier1(el) -> bool:
     """
     lang = el.get(XML_LANG)
     if lang is not None:
-        return lang in LEXICON_LANGS
+        return is_tier1(lang)
     return el.get("index") is not None
 
 

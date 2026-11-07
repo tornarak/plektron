@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  The corpus teiHeader of the second text: Bogoras's 1900 Kolyma materials.
+
+  What a page file defers, it defers here, exactly as the first text's do to
+  jesup/bogoras-chukchi/tei/corpus-header.xml. The four ranks and the thirteen
+  prefix definitions are the same closed sets, restated because a header is a
+  text's and `harness tei header` holds each one to the code. That restatement
+  is the one place the two headers must agree, and the gate is what makes them.
+
+  Bibliographic detail is read off the raster of copy A's title page (scan
+  1-013), by a model, and carries #llm until a human has checked it there. The
+  title page sets no series statement and nothing here supplies one: a series
+  recalled rather than read is the detail this header exists not to invent.
+-->
+<teiHeader xmlns="http://www.tei-c.org/ns/1.0" xml:lang="en">
+  <fileDesc>
+    <titleStmt>
+      <title type="main" xml:lang="ru" resp="#llm">Матеріалы по изученію чукотскаго языка и фольклора, собранные въ Колымскомъ округѣ</title>
+      <title type="sub">an annotated digital edition, with a translation into English</title>
+      <author>
+        <persName>
+          <forename>Waldemar</forename>
+          <surname>Bogoras</surname>
+        </persName>
+      </author>
+      <respStmt xml:id="ed">
+        <resp>a human's own act — keyed, confirmed against the page, or promoted
+          from a model's proposal, by a human editor</resp>
+        <name type="role">human editor</name>
+      </respStmt>
+      <respStmt xml:id="gt">
+        <resp>machine-read, human-ratified — transcluded whole out of adjudicated
+          ground truth, where a human settled every mark at the raster. Verified on
+          every run against the ground truth it came from, so it fails rather than
+          going stale if that is later corrected.</resp>
+        <name type="role">human editor, at the raster</name>
+      </respStmt>
+      <respStmt xml:id="llm">
+        <resp>a model's work — read off the page image, or translated, by a
+          language model. Carries no authority over glyph identity; a reading
+          awaiting ratification.</resp>
+        <name type="role">language model</name>
+      </respStmt>
+      <respStmt xml:id="mz">
+        <resp>mechanical — derived by rule from a store a human keyed, re-derived
+          against that store on every validation run, so it fails rather than
+          going stale. Asserts nothing of its own.</resp>
+        <name type="role">a rule, applied over a keyed store</name>
+      </respStmt>
+    </titleStmt>
+    <publicationStmt>
+      <!--
+        The same two licences as the first text, for the same reason: the
+        transcription of a public-domain book attracts no fresh right, and the
+        apparatus is editorial work. The translation is apparatus — authored
+        English, not a reproduction of anything — and is licensed with it.
+      -->
+      <authority>Plectrum Press</authority>
+      <ptr target="https://plectrum.press/"/>
+      <availability status="free">
+        <licence target="https://creativecommons.org/publicdomain/zero/1.0/">
+          <p><hi rend="bold">CC0 1.0 Universal</hi>. Applies to the transcribed text of the source: the
+            contents of <gi>p</gi>, <gi>note</gi>, <gi>foreign</gi> and other
+            text-bearing elements in the page files. The underlying work is in the
+            public domain and this edition asserts no new right over its
+            reproduction.</p>
+        </licence>
+        <licence target="https://creativecommons.org/licenses/by/4.0/">
+          <p><hi rend="bold">Creative Commons Attribution 4.0 International</hi>. Applies to the
+            editorial apparatus: the TEI encoding and structural decisions, the
+            English translation in edition/translations/, the entity records in
+            entities/, the indices, and the annotation layer.</p>
+          <p>Where a reuse cannot separate the two, treat it as CC BY.</p>
+        </licence>
+        <p>Third-party geodata is licensed by its own publishers and not by this
+          edition. The full list, and what each source obliges, is in the first
+          text's header and in edition/geo/SOURCES.md; the three below oblige
+          attribution wherever the data is shown, and this text's reading view
+          shows it.</p>
+        <p>
+          <bibl><title>Atlas of the World's Languages</title>, 2nd edn., ed.
+          <author>R. E. Asher</author> and <author>Christopher J. Moseley</author>,
+          Routledge <date>2007</date>, via Glottography
+          <ref target="https://github.com/Glottography/asher2007world">asher2007world</ref>.
+          <hi rend="bold"><ref target="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</ref></hi>.</bibl>
+        </p>
+        <p>
+          <bibl><title>GeoNames</title>,
+          <ref target="https://www.geonames.org/">geonames.org</ref>.
+          <hi rend="bold"><ref target="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</ref></hi>.</bibl>
+        </p>
+        <p>
+          <bibl><title>OpenStreetMap</title>,
+          <ref target="https://www.openstreetmap.org/">openstreetmap.org</ref>,
+          © OpenStreetMap contributors.
+          <hi rend="bold"><ref target="https://opendatacommons.org/licenses/odbl/">ODbL 1.0</ref></hi>.</bibl>
+        </p>
+      </availability>
+    </publicationStmt>
+    <sourceDesc>
+      <!--
+        The book, as copy A's title page sets it (scan 1-013), read at #llm. The
+        imprint is the Imperial Academy of Sciences, St Petersburg, 1900; the
+        "Доложено" line dates the report to the Historical-Philological Section,
+        7 April 1899. Part I only: both Google copies hold it alone.
+      -->
+      <biblStruct>
+        <monogr>
+          <title level="m" xml:lang="ru" resp="#llm">Матеріалы по изученію чукотскаго языка и фольклора, собранные въ Колымскомъ округѣ</title>
+          <author>
+            <persName xml:lang="ru" resp="#llm">В. Г. Богоразъ</persName>
+          </author>
+          <imprint>
+            <pubPlace xml:lang="ru" resp="#llm">С.-Петербургъ</pubPlace>
+            <publisher xml:lang="ru" resp="#llm">Императорская Академія Наукъ</publisher>
+            <date when="1900" resp="#llm">1900</date>
+          </imprint>
+          <biblScope unit="part" n="1" xml:lang="ru" resp="#llm">Часть I-ая. Образцы народной словесности чукочъ (тексты съ переводомъ и пересказы)</biblScope>
+        </monogr>
+        <note xml:lang="ru" resp="#llm">Доложено въ засѣданіи Историко-филологическаго отдѣленія 7 апрѣля 1899 г.</note>
+      </biblStruct>
+      <!--
+        The two surrogates. A is the master: it is what scans/ is cut from. B is a
+        second copy, never cut, read only as a second witness to A's text — and a
+        weaker one than it looks, because both text layers come from one OCR
+        engine. Two scans, one reader; the proposals that carry B say so.
+      -->
+      <bibl type="surrogate" xml:id="copy-a">
+        <title>Materialî po izucheniyu chukotskago yazîka i folklora, sobrannîe V.G. Bogorazom. Chast I.</title>
+        <publisher>Google Books, from the Bodleian Library, University of Oxford</publisher>
+        <idno type="shelfmark">Tur 185 / Misc. Asiat. C. 12</idno>
+        <extent>482 PDF pages; a bitonal JBIG2 master per page at 600 dpi and an OCR
+          text layer.</extent>
+        <note>The title is the PDF's own metadata, transliterated by the digitizer.
+          The shelfmark is read off the text layer of PDF page 4, the library's own
+          leaf, and has not been checked against its raster.</note>
+      </bibl>
+      <bibl type="surrogate" xml:id="copy-b">
+        <publisher>Google Books, from the University of California, Berkeley, library</publisher>
+        <idno type="local">C005409003</idno>
+        <extent>484 PDF pages; printed pp. 2-3 scanned twice.</extent>
+        <note>The barcode is read off the text layer of PDF page 483, and has not
+          been checked against its raster.</note>
+      </bibl>
+    </sourceDesc>
+  </fileDesc>
+  <encodingDesc>
+    <listPrefixDef>
+      <prefixDef ident="person" matchPattern="(.+)" replacementPattern="edition/entities/person/$1.md"/>
+      <prefixDef ident="people" matchPattern="(.+)" replacementPattern="edition/entities/people/$1.md"/>
+      <prefixDef ident="place" matchPattern="(.+)" replacementPattern="edition/entities/place/$1.md"/>
+      <prefixDef ident="land" matchPattern="(.+)" replacementPattern="edition/entities/land/$1.md"/>
+      <prefixDef ident="water" matchPattern="(.+)" replacementPattern="edition/entities/water/$1.md"/>
+      <prefixDef ident="river" matchPattern="(.+)" replacementPattern="edition/entities/river/$1.md"/>
+      <prefixDef ident="animal" matchPattern="(.+)" replacementPattern="edition/entities/animal/$1.md"/>
+      <prefixDef ident="being" matchPattern="(.+)" replacementPattern="edition/entities/being/$1.md"/>
+      <prefixDef ident="event" matchPattern="(.+)" replacementPattern="edition/entities/event/$1.md"/>
+      <prefixDef ident="sky" matchPattern="(.+)" replacementPattern="edition/entities/sky/$1.md"/>
+      <prefixDef ident="taxon" matchPattern="(.+)" replacementPattern="edition/entities/taxon/$1.md"/>
+      <prefixDef ident="institution" matchPattern="(.+)" replacementPattern="edition/entities/institution/$1.md"/>
+      <prefixDef ident="source" matchPattern="(.+)" replacementPattern="edition/entities/source/$1.md"/>
+    </listPrefixDef>
+    <editorialDecl>
+      <normalization method="markup">
+        <p>Unicode Normalization Form D (NFD), corpus-wide. Never NFKC.</p>
+      </normalization>
+      <correction>
+        <p>The Russian is reproduced in its pre-1918 orthography, as printed.</p>
+        <p>The parallel Chukchi text of each tale is not transcribed. It is shown as
+          a facsimile of its band of the page, and its place in the text is marked
+          by <gi>gap</gi>. Chukchi forms inside the Russian are keyed as printed,
+          in the book's own 1900 notation, and never corrected.</p>
+      </correction>
+    </editorialDecl>
+  </encodingDesc>
+  <profileDesc>
+    <langUsage>
+      <language ident="ru" usage="90">Russian, in pre-1918 orthography — the text
+        as printed.</language>
+      <language ident="ckt-Cyrl">Chukchi, in Bogoras's 1900 Cyrillic notation.
+        Tier-1: keyed character by character, never normalized, always carrying a
+        rank in @resp.</language>
+      <language ident="en">English — the translation, authored by this
+        edition.</language>
+    </langUsage>
+  </profileDesc>
+  <revisionDesc>
+    <change when="2026-11-06" who="#llm">Corpus header written. Bibliographic detail
+      read off copy A's title page, scan 1-013, by a model; awaiting a human's
+      check against the raster.</change>
+  </revisionDesc>
+</teiHeader>

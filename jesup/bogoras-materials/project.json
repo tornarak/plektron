@@ -1,0 +1,31 @@
+{
+  "stem": "chukchi-materials",
+  "lang": "ru",
+  "notation": "kolyma-1900",
+  "dpi": 600,
+  "parts": [
+    {
+      "n": 1,
+      "pdf": "bogoras-1900-chukchee-materials"
+    }
+  ],
+  "witnesses": [
+    {
+      "id": "b",
+      "pdf": "pdfs/witness/bogoras-1900-chukchee-materials-2.pdf",
+      "label": "Google Books, UC Berkeley copy"
+    }
+  ],
+  "omit": [
+    "1-001",
+    "1-002"
+  ],
+  "masterless": [
+    "1-003",
+    "1-009",
+    "1-010",
+    "1-475",
+    "1-476",
+    "1-482"
+  ]
+}

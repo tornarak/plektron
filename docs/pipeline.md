@@ -2,7 +2,9 @@
 
 Moved out of `CLAUDE.md` whole. The per-pass rules live in the skills; this
 is the shape of the whole, stage by stage, and the design reasoning behind
-the stages that are built.
+the stages that are built. A text whose PDFs carry their own OCR layer enters at
+`ocr-mz` by `harness ocr import` instead; that, and everything else a second
+text added, is `docs/multitext.md`'s.
 
 ## Pages
 

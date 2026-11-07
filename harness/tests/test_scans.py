@@ -192,6 +192,64 @@ def test_a_masterless_page_that_has_a_master_is_refused(tmp_path):
     assert "named in `masterless`" in records[0]["refuse"]
 
 
+def _say(root: Path, **fields) -> None:
+    """Lay `fields` over the fixture's manifest."""
+    from harness.layout import _project
+    p = root / "project.json"
+    p.write_text(json.dumps({**json.loads(p.read_text(encoding="utf-8")), **fields}),
+                 encoding="utf-8")
+    _project.cache_clear()   # read once per process, which a test is not
+
+
+def test_the_master_scale_is_the_manifests_dpi_not_a_constant(tmp_path):
+    """The page the 300-dpi text refuses as half-scale is a 600-dpi text's master."""
+    _corpus(tmp_path, [{"box": (400, 600),
+                        "images": [("bitonal", (800, 1200, 0, 0, 0.5))]}])
+    assert "not at scale 1.0" in scans.extract(tmp_path)[1][0]["refuse"]
+    _say(tmp_path, dpi=600)
+    manifest, records = scans.extract(tmp_path)
+    assert records[0]["refuse"] == ""
+    assert records[0]["master"]["w"] == 800 and manifest["_dpi"] == 600
+
+
+def test_an_omitted_leaf_is_counted_not_refused(tmp_path):
+    """A digitizer's leaf is not the book's: never read, so it cannot be refused."""
+    _corpus(tmp_path, [{"box": (400, 600),
+                        "images": [("bitonal", (400, 600, 0, 0, 1.0)),
+                                   ("grey", (400, 600, 0, 0, 1.0))]},
+                       {"box": (400, 600),
+                        "images": [("bitonal", (400, 600, 0, 0, 1.0))]}])
+    _say(tmp_path, omit=["2-001"])
+    _, records = scans.extract(tmp_path)
+    assert [(r["ref"], r["refuse"]) for r in records] == [("2-002", "")]
+
+
+def test_a_grey_leaf_taken_at_its_own_size_is_cut_and_audited_grey(tmp_path):
+    """*The Chukchee*'s own-size leaves are RGB; a library flyleaf is grey, and a
+    mode asserted by kind would refuse the second for being what it is."""
+    _corpus(tmp_path, [{"box": (400, 600),
+                        "images": [("grey", (200, 300, 0, 0, 2.0))]}])
+    _say(tmp_path, masterless=["2-001"])
+    manifest, records = scans.extract(tmp_path, rasters=tmp_path / "cut")
+    assert records[0]["mode"] == "L"
+    (tmp_path / "cut" / scans.TREE_MANIFEST).write_text(json.dumps(manifest),
+                                                         encoding="utf-8")
+    found = scans.audit(None, tmp_path, tree=tmp_path / "cut",
+                        manifest=scans.read_manifest(tmp_path / "cut" / scans.TREE_MANIFEST))
+    assert not [f for f in found if f["finding"] == "mode"], found
+
+
+def test_a_tree_cut_at_another_dpi_is_refused_by_swap(tmp_path, capsys):
+    """A shift plan cannot express a factor of two; a 300-dpi tree under a 600-dpi
+    text would put every stored box at half its distance, and nothing else says so."""
+    _swap_corpus(tmp_path)
+    _say(tmp_path, dpi=600)
+    code, doc = _run(capsys, "--root", str(tmp_path), "scans", "swap",
+                     str(tmp_path / "cut"))
+    assert code == 1
+    assert any("cut at 300 dpi" in r["why"] for r in doc["refusals"])
+
+
 def test_a_dangling_pdfs_link_is_named_rather_than_traced(tmp_path):
     """Every git worktree has one: the links are relative to the primary checkout."""
     d = tmp_path / "pdfs"

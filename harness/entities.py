@@ -80,7 +80,7 @@ from typing import TypedDict
 
 from . import pictures
 from .geo import index as geo_index
-from .langs import ALIAS_LANGS
+from .langs import ALIAS_LANGS, is_known
 from .layout import STEM_RE, citation_errors, shared, stem, workspace_stems
 from .lookup import case_variants
 from .parallel import ptrack
@@ -676,7 +676,7 @@ def parse(text: str, where: str = "") -> dict:
         # code that is not in the vocabulary is a typo, and the message names
         # what is on offer rather than leaving the author to find the table.
         lang = cells[1].strip()
-        if lang and lang not in ALIAS_LANGS:
+        if lang and not is_known(lang):
             raise Malformed(
                 f"{at}alias {form!r}: unknown language {lang!r}. One of: "
                 f"{', '.join(sorted(ALIAS_LANGS))} — or blank, which says the "

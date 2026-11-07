@@ -7,9 +7,24 @@ derives it from the folder and nothing guesses it: a store with no manifest
 refuses, because a default stem would be one book's name wearing the clothes of a
 fact about every book.
 
-**Imports nothing from this package but `refs.py`, a leaf**, so it cannot join a cycle. `refs.py`
-holds the readings that need nothing but their argument; a stem needs the
-manifest, so everything that has to spell a file name comes here.
+**Imports nothing from this package but `refs.py` and `langs.py`, leaves**, so it
+cannot join a cycle. `refs.py` holds the readings that need nothing but their
+argument; a stem needs the manifest, so everything that has to spell a file name
+comes here.
+
+**What else a manifest declares, and why each is declared rather than found.**
+`lang` is the language the book's prose is in, which nothing on a page states
+and every reader of a page needs (`<html lang>`, the lexicon a detector asks).
+`notation` names the transcription system its native forms are printed in, so
+the inventory tables a gate applies are the ones that book's key licenses.
+`dpi` is the resolution the source PDFs place their masters at, which `scans`
+refuses a page against and every raster-pixel threshold is scaled by.
+`witnesses` are second copies of the book, never cut into `scans/`, read only
+as a second reading. `omit` names the leaves the *digitizer* added — a QR code,
+a usage notice — which are no part of the book or the copy, so they are never
+cut and the extract counts them instead of refusing them on every run. A
+library's own cover or flyleaf is the copy's, and is `masterless` instead. Each has a default that is what *The Chukchee* has always
+meant, so a manifest that says nothing about them means what it meant before.
 """
 from __future__ import annotations
 
@@ -19,6 +34,7 @@ import re
 from functools import cache
 from pathlib import Path
 
+from .langs import is_known, is_tier1
 from .refs import REF_RE, norm_ref, parse_ref
 
 #: The name of the manifest, and of what makes a directory a text's.
@@ -32,6 +48,69 @@ STEM_RE = re.compile(r"^[a-z][a-z0-9]*(?:-[a-z][a-z0-9]*)*$")
 PUBLISH = frozenset({"drafts", "collated", None})
 #: A figure by its leaf and the zone's suffix, as `/fig/{ref}/{key}.png` names one.
 FIG_RE = re.compile(r"^\d+-\d+/\w+$")
+
+#: What a manifest that says nothing about these means: what *The Chukchee* has
+#: always been, so the first text's manifest needs no edit to keep its meaning.
+DEFAULT_LANG = "en"
+DEFAULT_NOTATION = "jesup"
+DEFAULT_DPI = 300
+
+#: The notations a text may name. A literal here until `notation.py` holds their
+#: tables, and then derived from it — a name with no tables behind it would be a
+#: manifest choosing rules that do not exist.
+NOTATIONS = frozenset({"jesup", "kolyma-1900"})
+
+#: A witness's id: one lowercase letter, as `--witness b` spells it.
+WITNESS_ID_RE = re.compile(r"^[a-z]$")
+#: Where a witness's PDF lives: under `pdfs/witness/`, so `scans`' non-recursive
+#: glob of `pdfs/*.pdf` can never cut it into `scans/` by a substring match.
+WITNESS_DIR = "pdfs/witness/"
+
+
+def _refuse(p: Path, msg: str) -> None:
+    raise ProjectError(f"{p}: {msg}")
+
+
+def _check_texts_fields(p: Path, rec: dict) -> None:
+    """The fields a second text added: each optional, each checked when present.
+
+    Checked here rather than at the reader because a manifest is read once and
+    trusted everywhere after; a bad `dpi` found by `scans` would be found after
+    the manifest had already been believed by everything that ran before it.
+    """
+    lang = rec.get("lang", DEFAULT_LANG)
+    if not is_known(lang):
+        _refuse(p, f"`lang` {lang!r} is not in langs.LANGS — add it there, with "
+                   "the evidence, before a text may be written in it")
+    if is_tier1(lang):
+        _refuse(p, f"`lang` {lang!r} is Tier-1: the base language of a book's "
+                   "prose is never a transcribed language, and a Tier-1 base "
+                   "would exempt every unmarked span from the firewall")
+    if rec.get("notation", DEFAULT_NOTATION) not in NOTATIONS:
+        _refuse(p, f"`notation` must be one of {sorted(NOTATIONS)}; "
+                   f"got {rec.get('notation')!r}")
+    dpi = rec.get("dpi", DEFAULT_DPI)
+    if not isinstance(dpi, int) or isinstance(dpi, bool) or dpi <= 0:
+        _refuse(p, f"`dpi` must be a positive integer; got {dpi!r}")
+    seen = set()
+    for w in rec.get("witnesses", ()):
+        if not (isinstance(w, dict) and isinstance(w.get("id"), str)
+                and WITNESS_ID_RE.match(w["id"]) and isinstance(w.get("pdf"), str)
+                and w["pdf"].startswith(WITNESS_DIR) and w["pdf"].endswith(".pdf")
+                and isinstance(w.get("label"), str) and w["label"]):
+            _refuse(p, f"a witness is {{\"id\": one letter, \"pdf\": "
+                       f"\"{WITNESS_DIR}….pdf\", \"label\": …}}; got {w!r}")
+        if w["id"] in seen:
+            _refuse(p, f"witness id {w['id']!r} is declared twice")
+        seen.add(w["id"])
+    for field_ in ("masterless", "omit"):
+        for ref in rec.get(field_, ()):
+            if not (isinstance(ref, str) and REF_RE.match(ref)):
+                _refuse(p, f"`{field_}` holds page refs, PP-NNN; got {ref!r}")
+    both = set(rec.get("masterless", ())) & set(rec.get("omit", ()))
+    if both:
+        _refuse(p, f"{sorted(both)} in both `masterless` and `omit`: a leaf is either "
+                   "the book's, taken at its own size, or the digitizer's, never cut")
 
 
 class ProjectError(ValueError):
@@ -63,6 +142,7 @@ def _project(path: str) -> dict:
         raise ProjectError(f"{p}: `image` must be {{\"fig\": \"PP-NNN/key\", \"caption\": "
                            f"…}} with an optional `turn` of 90, 180 or 270, or absent; "
                            f"got {image!r}")
+    _check_texts_fields(p, rec)
     return rec
 
 
@@ -74,6 +154,46 @@ def project(root: Path) -> dict:
 def stem(root: Path) -> str:
     """This text's file-name stem, without the joining hyphen."""
     return project(root)["stem"]
+
+
+def lang(root: Path) -> str:
+    """The language this text's prose is in, as `xml:lang` spells it."""
+    return project(root).get("lang", DEFAULT_LANG)
+
+
+def notation(root: Path) -> str:
+    """The name of the transcription system this text's native forms are in."""
+    return project(root).get("notation", DEFAULT_NOTATION)
+
+
+def dpi(root: Path) -> int:
+    """The resolution this text's masters are placed at in its PDFs."""
+    return project(root).get("dpi", DEFAULT_DPI)
+
+
+def px(root: Path, n: int) -> int:
+    """A raster-pixel threshold calibrated at 300 dpi, at this text's resolution.
+
+    Every such constant was measured on *The Chukchee*'s 300-dpi masters and says
+    nothing in its name about it, so at 600 dpi each would silently be half the
+    physical size it was tuned to — a speck reads as a band. Spelled through
+    here at the use site, the constant keeps its measured value and its meaning.
+    """
+    return round(n * dpi(root) / DEFAULT_DPI)
+
+
+def witnesses(root: Path) -> list[dict]:
+    """This text's second copies, `[{id, pdf, label}]`, in manifest order."""
+    return list(project(root).get("witnesses", ()))
+
+
+def witness(root: Path, wid: str) -> dict:
+    """One witness by its id, or an error naming the ones there are."""
+    for w in witnesses(root):
+        if w["id"] == wid:
+            return w
+    have = ", ".join(w["id"] for w in witnesses(root)) or "none"
+    raise ProjectError(f"no witness {wid!r} in {PROJECT_JSON}; declared: {have}")
 
 
 def stem_for(ref: str, root: Path) -> str:

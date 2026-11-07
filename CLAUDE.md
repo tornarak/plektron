@@ -228,6 +228,7 @@ every byte of this file on every page.
 | `docs/edition.md` | the entity, lexicon and annotation stores, the rule that links a form, `#mz`, and the reading view |
 | `.claude/skills/curate-entities/` | writing an entry: whether it is earned, its class, its alias modes, its gloss |
 | `docs/rasters.md` | the source rasters, the derived trees and the `tools/` scripts |
+| `docs/multitext.md` | what a second text added: manifest fields, resolution, the text-layer import, language tags |
 | `docs/decisions.md` | what was settled the hard way, intact — the reasoning behind the rules |
 | `docs/open-questions.md` | what is deliberately unresolved |
 | `README.md` | the four provenance levels, and the edition for a reader |

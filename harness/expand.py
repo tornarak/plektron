@@ -50,9 +50,10 @@ from pathlib import Path
 from lxml import etree
 
 from .context import tier1_terms
+from .langs import is_tier1
 from .ns import XML_LANG
 from .refs import norm_ref
-from .validate import ADOPTED, TIER1
+from .validate import ADOPTED
 
 
 def expand_page(ref: str, root: Path = Path("."), commit: bool = False) -> dict:
@@ -91,7 +92,7 @@ def expand_page(ref: str, root: Path = Path("."), commit: bool = False) -> dict:
         name = etree.QName(el).localname
         got = terms.get(idx.strip())
         held = "".join(el.itertext()).strip()
-        if el.get(XML_LANG) not in TIER1:
+        if not is_tier1(el.get(XML_LANG)):
             reason = f"<{name}> carries no Tier-1 xml:lang"
         elif got is None:
             reason = (f"no term {idx} on this page — "

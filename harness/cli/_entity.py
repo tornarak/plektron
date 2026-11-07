@@ -569,7 +569,7 @@ def run_alias(a) -> int:
     Cyrillic and English aliases have no handle to resolve and refusing them
     would leave the verb useless for most of the store.
     """
-    from ..langs import ALIAS_LANGS
+    from ..langs import ALIAS_LANGS, is_known
     from ..lookup import expand
 
     store = _store(a)
@@ -592,7 +592,7 @@ def run_alias(a) -> int:
         raise ValueError(f"{ident}: the form is empty")
 
     lang = (a.lang or "").strip()
-    if lang and lang not in ALIAS_LANGS:
+    if lang and not is_known(lang):
         raise ValueError(
             f"{ident}: `{lang}` is not in the alias vocabulary. One of: "
             f"{', '.join(sorted(ALIAS_LANGS))}. A blank language is legal and "

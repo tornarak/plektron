@@ -912,6 +912,19 @@ Opcodes come from difflib over **NFD** text, so a dropped combining mark ranks a
 --root --json --toon --pager
 ```
 
+### ocr import [REF ...]
+**Does** carries the master PDF's own OCR text layer into `mz/ocr/`, for a text whose PDFs carry a usable one, in `ocr predict`'s page shape: one bare block, lines in geometric order, one `<String CONTENT>` per `TextLine`. The layer's fragments are rebuilt into **rows by rule** — fragments whose vertical centres lie within `textlayer.ROW_OVERLAP` of each other's height and whose extents do not overlap are one row — and boxes are the layer's points, less the master's placement origin, times `dpi / 72`. A rotated page is refused. `--all` skips a page ruled exempt; a named ref is imported regardless.
+**Reads** `pdfs/` (the part's PDF, page = scan index), the master's placement on that page, `project.json`'s `dpi`.
+**Writes** `mz/ocr/` (derived). **Never `gt/ocr/`.** A page already in the store, from either verb, is kept unless `--force`.
+**Exit** always 0 — a skipped or refused page is reported, not a failure.
+**Note** **`kind: model`, and the PDF is the model.** The glyphs were inferred from a raster by the digitizer's OCR; this verb only carries them. So the file names the PDF as the model, by path and sha256, and the layer's own producer string in `in.text_layer_producer`. Nothing here ranks above a guess: the page reaches `gt/ocr/` through `ocr review` and `ocr restore` like any other.
+**Note** **the boxes are font metrics, not ink.** The layer is set in `GlyphLessFont`, so a box is the engine's word box stretched to a nominal size. A consistently tall or short box is harmless, since zones and the generator place a line by its vertical centre; an offset one is not. Overlay a sample with `ocr sheets` before importing a whole text.
+```
+--all      every page in scans/ not ruled exempt
+--force    re-import over a page already in mz/ocr/, whatever produced it [off]
+--root --json --toon --pager
+```
+
 ### proposal marks REF [REF ...]
 **Does** asks whether a batch's character distribution is plausible, before a human opens it — three arms over the Tier-1 tokens of each page's proposal, plus a fourth that runs over *every* token because the other three cannot see outside their own population.
 **Reads** `review/PP-NNN/proposal.json` (or `decision.json` under `--decisions`), `gt/ocr/` for the prior, `config/marks.json`.

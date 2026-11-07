@@ -9,7 +9,9 @@ project is organised against, so the set lives here and everything else derives.
 
 It also has to live *low*: `validate` imports `entities`, so `entities` cannot
 import `validate`, and the alias vocabulary has to be reachable from both.
-Nothing here imports anything, which is what makes that possible.
+**It imports nothing from this package**, which is what makes that possible,
+and it is a declared leaf (`test_leaf_modules`) so that `layout` may check a
+manifest's `lang` against the table without joining a cycle.
 
 **Codes are BCP-47 shortest.** `ru`, not `rus`; `la`, not `lat`; `ckt`, because
 no two-letter code exists for Chukchi. The reason is not tidiness — this is the
@@ -78,6 +80,44 @@ ALIAS_LANGS = frozenset(LANGS)
 #: not in another.
 TIER1 = frozenset(c for c, (_, t) in LANGS.items() if t)
 
+
+# --- a tag is a language and, sometimes, a script ---------------------------
+#
+# **A tag may carry a script subtag, and the language is what the firewall asks
+# about.** The second text prints its Chukchi in Cyrillic, in a notation of its
+# own, and `ckt-Cyrl` is how BCP-47 says so. Bare membership — `tag in TIER1` —
+# answers *no* for it, and that answer is the dangerous one: every rule that
+# gates a Tier-1 span would fall silent over exactly the forms it exists for,
+# with no error anywhere, `@resp` unrequired and the lookalike greps skipped. So
+# no caller tests the set directly; they ask `is_tier1`, which reads the base,
+# and `test_leaf_modules` refuses a bare membership test outside this file.
+
+def base(tag: str | None) -> str:
+    """The language of a tag: `ckt-Cyrl` → `ckt`; `` and `None` → ``."""
+    return (tag or "").split("-", 1)[0]
+
+
+def script(tag: str | None) -> str | None:
+    """The script subtag, if the tag names one: `ckt-Cyrl` → `Cyrl`, `ckt` → `None`.
+
+    BCP-47 sets it second and spells it four letters, title-cased; anything else
+    in that position (a region, a private-use `x-…`) is not a script.
+    """
+    parts = (tag or "").split("-")
+    if len(parts) > 1 and len(parts[1]) == 4 and parts[1].isalpha():
+        return parts[1].title()
+    return None
+
+
+def is_tier1(tag: str | None) -> bool:
+    """Is a span in this tag one the firewall covers — whatever script it is in."""
+    return base(tag) in TIER1
+
+
+def is_known(tag: str | None) -> bool:
+    """Is this a language the edition can name, with any subtags it carries."""
+    return base(tag) in LANGS
+
 #: Reader-facing names, all of them.
 NAMES = {c: n for c, (n, _) in LANGS.items()}
 
@@ -90,6 +130,16 @@ def name(code: str) -> str:
     """A code as a reader should see it, falling back to the code itself.
 
     Never raises: this is display, and a card that 500s because a store holds a
-    code the table forgot is worse than one that shows the code.
+    code the table forgot is worse than one that shows the code. A script subtag
+    is named after the language, so `ckt-Cyrl` reads "Chukchi (Cyrillic)".
     """
+    if code in NAMES:
+        return NAMES[code]
+    sc = script(code)
+    if base(code) in NAMES and sc:
+        return f"{NAMES[base(code)]} ({SCRIPT_NAMES.get(sc, sc)})"
     return NAMES.get(code, code)
+
+
+#: The scripts a tag here may name, as a reader sees them. Only what a text uses.
+SCRIPT_NAMES = {"Cyrl": "Cyrillic", "Latn": "Latin"}

@@ -34,7 +34,8 @@ from .entities import (
     split_id,
 )
 from .generate import NOTE_MARKERS
-from .langs import TIER1
+from .langs import TIER1 as TIER1  # re-exported: see the comment below
+from .langs import base, is_tier1
 from .ns import TEI_NS, XML_ID, XML_LANG
 from .state import load_toc, toc_starts
 
@@ -999,7 +1000,7 @@ def _rule_unexpanded_handle(root, q, ctx, r: Report) -> None:
     """
     for el in root.iter():
         if (isinstance(el.tag, str) and el.get("index") is not None
-                and el.get(XML_LANG) in TIER1):
+                and is_tier1(el.get(XML_LANG))):
             r.errors.append(
                 f"<{etree.QName(el).localname} index='{el.get('index')}'> was "
                 "never expanded — run `harness tei expand` to write the "
@@ -1290,7 +1291,7 @@ def _rule_provenance(root, q, ctx, r: Report, ratified: bool = False) -> None:
         adopted = {t["text"] for t in tier1_terms(ctx["page_ref"],
                                                   Path(ctx["root"]), keys=False)}
     for el in root.iter():
-        if not isinstance(el.tag, str) or el.get(XML_LANG) not in TIER1:
+        if not isinstance(el.tag, str) or not is_tier1(el.get(XML_LANG)):
             continue
         name = etree.QName(el).localname
         span = " ".join("".join(el.itertext()).split())[:40]
@@ -1375,8 +1376,8 @@ def _rule_lang_and_glyphs(root, q, ctx, r: Report) -> tuple[int, int]:
         lang = _lang_of(el)
         own_text = (el.text or "") + "".join(ch.tail or "" for ch in el)
         own_text = unicodedata.normalize("NFD", own_text)
-        if lang in TIER1:
-            if el.get(XML_LANG) in TIER1:
+        if is_tier1(lang):
+            if is_tier1(el.get(XML_LANG)):
                 tier1_spans += 1
                 tier1_adopted += 1 if el.get("resp") == ADOPTED else 0
             for ch_ in own_text:
@@ -1398,14 +1399,16 @@ def _rule_lang_and_glyphs(root, q, ctx, r: Report) -> tuple[int, int]:
             r.errors.append(
                 f"MARK LICENCE: {h['mark']} on {h['base']} — licensed only on "
                 f"{h['licensed_on']} (keying spec 2.6) in {h['context']!r}")
-        if lang not in TIER1:
+        if not is_tier1(lang):
             bad = sorted({c for c in own_text if c in FORBIDDEN_PROSE})
             if bad:
                 r.errors.append(
                     f"non-ASCII quote/apostrophe {[f'U+{ord(c):04X}' for c in bad]} "
                     f"in {lang!r} prose: {own_text.strip()[:60]!r}")
         v = el.get(XML_LANG)
-        if v and v not in TIER1 and len(v) not in (2, 3):
+        # The language is the base; a script subtag (`ckt-Cyrl`) is not what is
+        # being questioned, so it is measured without one.
+        if v and not is_tier1(v) and len(base(v)) not in (2, 3):
             r.warnings.append(f"suspicious xml:lang '{v}'")
     return tier1_spans, tier1_adopted
 
@@ -1454,7 +1457,7 @@ def _rule_tier1_unglossed(root, q, ctx, r: Report) -> int:
     glossed_text = {_span(by_id[i]) for i in glossed if i in by_id}
     tier1_unglossed = 0
     for el in root.iter():
-        if not isinstance(el.tag, str) or el.get(XML_LANG) not in TIER1:
+        if not isinstance(el.tag, str) or not is_tier1(el.get(XML_LANG)):
             continue
         parent = el.getparent()
         if (el.get(XML_ID_ATTR) in glossed
@@ -1777,7 +1780,7 @@ def _rule_tier1_facs(root, q, ctx, r: Report) -> None:
         return
     line_ids = {str(ln["index"]) for ln in ctx.get("ocr_lines", [])}
     for el in root.iter():
-        if not isinstance(el.tag, str) or el.get(XML_LANG) not in TIER1:
+        if not isinstance(el.tag, str) or not is_tier1(el.get(XML_LANG)):
             continue
         facs = el.get("facs")
         if facs is None:

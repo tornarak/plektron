@@ -521,6 +521,12 @@ def predict_skip(ref: str, root: Path = Path("."), force: bool = False,
     """
     if not single and Z.is_exempt(ref, root):
         return "ruled not a text page"
+    # A page read off the PDF's own text layer is a different witness, not an
+    # older reading of this one; a recognizer passing over it would replace the
+    # better reading with the worse in silence. `--force` still can, on purpose.
+    from .textlayer import imported
+    if not force and imported(ref, root):
+        return "imported from the PDF's text layer (`ocr import`)"
     if not (Z.blot_dir(root) / f"{stem_for(ref, root)}.png").exists():
         return "no blot (run `harness zones blot`)"
     if not force and recognized_by(ref, rec_sha, root):

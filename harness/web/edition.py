@@ -1821,7 +1821,7 @@ def _entity_ctx(ident: str, refs: list[str], root: Path, base: str = ui.BASE,
     aliases = [
         {**t, "note_html": ui.inline_html(t["note"], store, base, layout.stem(root)),
          "lang_name": langs.name(t["lang"]) if t["lang"] else "",
-         "lex": t["form"] if t["lang"] in langs.TIER1 else ""}
+         "lex": t["form"] if langs.is_tier1(t["lang"]) else ""}
         for t in rec["aliases"]
     ]
     return {
@@ -2211,8 +2211,8 @@ def lexicon_card(request: Request, key: str):
     store = stores.lexicon_store(root)
 
     lang, sep, rest = key.partition(":")
-    form = lexicon.norm_form(rest if sep and lang in langs.TIER1 else key)
-    if not sep or lang not in langs.TIER1:
+    form = lexicon.norm_form(rest if sep and langs.is_tier1(lang) else key)
+    if not sep or not langs.is_tier1(lang):
         lang = ""
 
     candidates: list[str] = []

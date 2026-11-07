@@ -1,6 +1,7 @@
 """Which text an invocation means: the four outcomes, and the two groups that need none."""
 from __future__ import annotations
 
+import json
 import os
 from pathlib import Path
 
@@ -13,11 +14,20 @@ from harness.layout import (
     ProjectError,
     bare_own_citations,
     citation_errors,
+    dpi,
+    lang,
+    notation,
+    page_files,
+    project,
     project_root,
+    px,
+    ref_of,
     refuse_another_texts,
     repo_root,
     shared,
     site_base,
+    witness,
+    witnesses,
     workspace_root,
     workspace_stems,
 )
@@ -150,3 +160,93 @@ def test_a_sites_prefix_comes_from_its_folders(tmp_path):
     text, _ = _workspace_with(tmp_path, "chukchi", "koryak")
     assert site_base(text) == "/ws/t0"
     assert site_base(write_project(tmp_path / "alone")) == "/alone"
+
+
+# --- what a second text declares -------------------------------------------
+
+
+def _manifest(root: Path, **fields) -> Path:
+    """`root`'s manifest with `fields` laid over the fixture's."""
+    write_project(root)
+    p = root / "project.json"
+    rec = json.loads(p.read_text(encoding="utf-8"))
+    p.write_text(json.dumps({**rec, **fields}) + "\n", encoding="utf-8")
+    return root
+
+
+def test_a_manifest_that_says_nothing_means_what_the_first_text_always_meant(tmp_path):
+    assert (lang(tmp_path), notation(tmp_path), dpi(tmp_path)) == ("en", "jesup", 300)
+    assert witnesses(tmp_path) == []
+    assert px(tmp_path, 20) == 20
+
+
+def test_a_manifest_declares_its_prose_language_from_the_table(tmp_path):
+    assert lang(_manifest(tmp_path / "ru", lang="ru")) == "ru"
+    with pytest.raises(ProjectError, match="not in langs.LANGS"):
+        lang(_manifest(tmp_path / "xx", lang="xx"))
+
+
+def test_a_books_prose_is_never_in_a_tier1_language(tmp_path):
+    """A Tier-1 base would make every unmarked span a native form, which is the
+    firewall's whole question answered by a manifest default."""
+    with pytest.raises(ProjectError, match="Tier-1"):
+        lang(_manifest(tmp_path, lang="ckt"))
+
+
+def test_a_notation_is_one_the_harness_has_tables_for(tmp_path):
+    assert notation(_manifest(tmp_path / "k", notation="kolyma-1900")) == "kolyma-1900"
+    with pytest.raises(ProjectError, match="notation"):
+        notation(_manifest(tmp_path / "x", notation="boas"))
+
+
+@pytest.mark.parametrize("bad", [0, -300, 600.0, "600", True])
+def test_dpi_is_a_positive_integer(tmp_path, bad):
+    with pytest.raises(ProjectError, match="dpi"):
+        dpi(_manifest(tmp_path, dpi=bad))
+
+
+def test_a_threshold_keeps_its_physical_size_at_another_resolution(tmp_path):
+    root = _manifest(tmp_path, dpi=600)
+    assert px(root, 20) == 40
+    assert px(root, 6) == 12
+
+
+def test_a_witness_pdf_is_declared_under_its_own_folder_and_is_not_a_part(tmp_path):
+    """Under `pdfs/witness/`, because `scans` substring-matches part names over
+    `pdfs/*.pdf`, and a witness named like the master would be cut into `scans/`."""
+    w = {"id": "b", "pdf": "pdfs/witness/copy-2.pdf", "label": "Berkeley copy"}
+    root = _manifest(tmp_path / "ok", witnesses=[w])
+    assert witness(root, "b") == w
+    with pytest.raises(ProjectError, match="declared: b"):
+        witness(root, "c")
+    with pytest.raises(ProjectError, match="witness"):
+        project(_manifest(tmp_path / "flat", witnesses=[{**w, "pdf": "pdfs/copy-2.pdf"}]))
+    with pytest.raises(ProjectError, match="twice"):
+        project(_manifest(tmp_path / "dup", witnesses=[w, w]))
+
+
+def test_masterless_entries_are_refs(tmp_path):
+    with pytest.raises(ProjectError, match="masterless"):
+        project(_manifest(tmp_path, masterless=["1"]))
+
+
+def test_a_stem_that_prefixes_another_is_not_that_other(tmp_path):
+    """`chukchi` is a prefix of `chukchi-materials`, and both live in one workspace.
+    A page file, a ref and a ratification must each match the stem whole."""
+    chukchi, materials = _workspace_with(tmp_path, "chukchi", "chukchi-materials")
+    scans = materials / "scans"
+    scans.mkdir()
+    (scans / "chukchi-materials-1-058.png").write_bytes(b"")
+    assert page_files(scans, ".png", chukchi) == []
+    assert [p.name for p in page_files(scans, ".png", materials)] == [
+        "chukchi-materials-1-058.png"]
+    with pytest.raises(ValueError):
+        ref_of("chukchi-materials-1-058", chukchi)
+    assert ref_of("chukchi-materials-1-058", materials) == "1-058"
+
+    f = tmp_path / "ws" / "edition" / "entities" / "place" / "markova.md"
+    f.parent.mkdir(parents=True)
+    f.write_text("# place:markova — Markova\n\n- status: ratified chukchi-materials\n",
+                 encoding="utf-8")
+    assert load(chukchi)["place:markova"]["status"] == "proposed"
+    assert load(materials)["place:markova"]["status"] == "ratified"

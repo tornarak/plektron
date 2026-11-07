@@ -654,7 +654,8 @@ def _attestations(root: str, _key: bytes) -> dict:
     """
     from lxml import etree
 
-    from ..validate import TIER1, XML_LANG
+    from ..langs import is_tier1
+    from ..validate import XML_LANG
 
     out: dict[str, list[tuple[str, str]]] = {}
     for ref in tei_html.collated(Path(root)):
@@ -667,7 +668,7 @@ def _attestations(root: str, _key: bytes) -> dict:
             if not isinstance(el.tag, str):
                 continue
             lang = el.get(XML_LANG)
-            if lang not in TIER1:
+            if not is_tier1(lang):
                 continue
             text = lexicon.norm_form("".join(el.itertext()))
             if (text, lang) in seen or not text:

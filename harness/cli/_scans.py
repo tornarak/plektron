@@ -167,6 +167,9 @@ def run_extract(a) -> int:
         "rendered": sum(1 for r in ok if (r["master"] or {}).get("rendered")),
         "photographs": photos,
         "refused": len(bad),
+        # Counted, so a leaf the manifest declares the digitizer's is visibly
+        # passed over rather than silently missing from `pages`.
+        "omitted": len(scans.project(a.root).get("omit", ())),
         "manifest": "", "rasters": str(rasters) if rasters else "",
     }
     if a.commit:

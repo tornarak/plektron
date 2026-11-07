@@ -132,7 +132,13 @@ PROJECT = REPO / "jesup" / "bogoras-chukchi"
 # condition the fifth raise's paragraph says this gate must not create, and it
 # was reached by rewording a clause rather than by cutting anything. So the
 # number moves instead, and the headroom is the point of the size of the move.
-CLAUDE_MD_MAX_BYTES = 18_000
+#
+# **Raised an eighth time, 18_000 → 20_000, for the second text**, at the
+# user's word. `docs/multitext.md` owns what a second text added, and the
+# routing table owes it a row; the file stood at 17,999 before that row, so the
+# row could be paid for only by the raise or by cutting a paragraph, and the
+# choice was the user's. Headroom deliberately left, on the fifth raise's argument.
+CLAUDE_MD_MAX_BYTES = 20_000
 
 CITE_RE = re.compile(r"CLAUDE\.md, [\"'“]([^\"'”)]{4,80})")
 

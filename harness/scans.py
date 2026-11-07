@@ -53,6 +53,7 @@ import shutil
 from pathlib import Path
 
 from . import farms, parallel, paths, provenance
+from .layout import dpi as text_dpi
 from .layout import page_files, project, ref_of, stem, stem_for
 from .refs import norm_ref, parse_ref
 
@@ -67,10 +68,14 @@ PDF_IMAGES = "data/pdf_images.json"
 #: of PNGs is in, which is exactly the question that went unasked for twenty months.
 TREE_MANIFEST = "pdf_images.json"
 
+#: *The Chukchee*'s resolution, and the default for a text whose manifest names
+#: none. A text's own is `layout.dpi(root)`: the Google Books copies of the 1900
+#: *Materials* place every master at exactly 600, and a module constant would
+#: refuse all 474 of them as "not at scale 1.0" for being twice as fine.
 DPI = 300
 PT = DPI / 72.0                      # device px per PostScript point at 300 dpi
 
-SCALE_TOL = 0.001      # a master's px-per-pt against 300/72
+SCALE_TOL = 0.001      # a master's px-per-pt against dpi/72
 PASTE_TOL = 0.02       # a photo's paste ratio against the nearest integer
 #: Tolerance for treating a rect edge as landing on an integer. **Sized against the
 #: input's precision, not against float64's.** PyMuPDF parses PDF numbers at float32
@@ -344,8 +349,9 @@ def page_images(page) -> list[dict]:
     return out
 
 
-def page_record(page, ref: str, masterless: frozenset[str] = frozenset()) -> dict:
-    """One page's manifest entry, or a refusal.
+def page_record(page, ref: str, masterless: frozenset[str] = frozenset(),
+                dpi: int = DPI) -> dict:
+    """One page's manifest entry, or a refusal, for masters placed at `dpi`.
 
     The geometry is derived **per page**, never from a per-part table: `1-303`'s
     master is 2824x3897 at (0, 0) among 357 neighbours at 2781x3866 placed at
@@ -363,6 +369,7 @@ def page_record(page, ref: str, masterless: frozenset[str] = frozenset()) -> dic
 
     m = imgs[0]
     mx0, my0, mx1, my1 = m["pt"]
+    PT = dpi / 72.0  # noqa: N806 — the module's name, at this text's resolution
     sx = m["w"] / (mx1 - mx0) if mx1 > mx0 else 0.0
     sy = m["h"] / (my1 - my0) if my1 > my0 else 0.0
     at_scale = abs(sx - PT) <= SCALE_TOL and abs(sy - PT) <= SCALE_TOL
@@ -403,8 +410,8 @@ def page_record(page, ref: str, masterless: frozenset[str] = frozenset()) -> dic
         return rec
 
     if not at_scale:
-        rec["refuse"] = (f"master not at scale 1.0 "
-                         f"({sx * 72 / DPI:.5f}, {sy * 72 / DPI:.5f})")
+        rec["refuse"] = (f"master not at scale 1.0 at {dpi} dpi "
+                         f"({sx * 72 / dpi:.5f}, {sy * 72 / dpi:.5f})")
         return rec
 
     rec["master"] = {"w": m["w"], "h": m["h"], "bpc": m["bpc"], "cs": m["cs"],
@@ -490,11 +497,15 @@ def cut_page(doc, rec: dict, out_dir: Path, source: dict | None = None,
     meta = _png_meta(_producer(source or {}, rec))
     pix = pymupdf.Pixmap(doc, m["xref"])
     if m.get("rendered"):
-        # A whole-leaf RGB photograph and nothing to composite onto it. Written at
+        # A whole-leaf photograph and nothing to composite onto it. Written at
         # its own size: doubling it to the page's 300 dpi added no detail and cost
-        # 26.5 MB across the three.
-        _pil(pix).save(dest, pnginfo=meta)
-        return {"ref": ref, "mode": "RGB", "photos": 0}
+        # 26.5 MB across the three. **In its own mode**, which the report says
+        # rather than assumes: *The Chukchee*'s three are RGB, but a library's
+        # flyleaf in the 1900 *Materials* is 8-bit grey, and a mode reported as
+        # RGB for a grey file is a record of a different file.
+        img = _pil(pix)
+        img.save(dest, pnginfo=meta)
+        return {"ref": ref, "mode": img.mode, "photos": 0}
 
     img = _pil(pix)
     if img.mode != "L":
@@ -544,7 +555,7 @@ def _read_chunk(chunk: tuple) -> list[dict]:
     both. The `Document` is opened **here** — one per chunk, never handed across a
     process boundary and never shared, which is the library's actual constraint.
     """
-    pdf, part, pages, rasters, source, stem, masterless = chunk
+    pdf, part, pages, rasters, source, stem, masterless, dpi = chunk
     import pymupdf
 
     out = []
@@ -552,7 +563,7 @@ def _read_chunk(chunk: tuple) -> list[dict]:
     with pymupdf.open(pdf) as doc:
         for i in pages:
             ref = f"{part}-{i:03d}"
-            rec = page_record(doc[i - 1], ref, masterless)
+            rec = page_record(doc[i - 1], ref, masterless, dpi)
             if not rec["refuse"] and dest is not None:
                 cut = cut_page(doc, rec, dest, source, stem=stem)
                 rec["mode"] = cut.get("mode", "")
@@ -590,6 +601,9 @@ def extract(root: Path = Path("."), refs: list[str] | None = None,
     pdfs = sorted(pdf_dir.glob("*.pdf"))
     if not pdfs:
         raise FileNotFoundError(f"no PDFs in {pdf_dir}")
+    # The digitizer's leaves, declared in the manifest: never read, never cut,
+    # never a refusal. Absence is their record, and the report counts them.
+    omit = frozenset(norm_ref(r) for r in project(root).get("omit", ()))
     # **A dangling symlink is named here rather than inside the parser.** `pdfs/`
     # holds relative links to a library outside the repository, and they resolve
     # from the primary checkout only — in a git worktree every one of them dangles.
@@ -607,7 +621,11 @@ def extract(root: Path = Path("."), refs: list[str] | None = None,
     # Digested before a page is read, so that what every raster records as its
     # source is the file this run actually opened.
     src = sources(root, pdfs)
-    manifest: dict = {"_about": ABOUT, "_sources": src}
+    dpi = text_dpi(root)
+    # **The resolution travels with the tree**, so `swap` can refuse a tree cut at
+    # another one: every coordinate in every store is in this space, and a tree
+    # at half the resolution would put each of them twice as far out.
+    manifest: dict = {"_about": ABOUT, "_sources": src, "_dpi": dpi}
     records: list[dict] = []
     if rasters is not None:
         rasters.mkdir(parents=True, exist_ok=True)
@@ -621,12 +639,13 @@ def extract(root: Path = Path("."), refs: list[str] | None = None,
         with pymupdf.open(pdf) as doc:
             n_pages = doc.page_count
         pages = [i for i in range(1, n_pages + 1)
-                 if want is None or f"{part}-{i:03d}" in want]
+                 if (want is None or f"{part}-{i:03d}" in want)
+                 and f"{part}-{i:03d}" not in omit]
         for lo in range(0, len(pages), CHUNK):
             chunks.append((str(pdf), part, tuple(pages[lo:lo + CHUNK]),
                            str(rasters) if rasters else "", src.get(str(part), {}),
                            stem(root),
-                           frozenset(project(root).get("masterless", ()))))
+                           frozenset(project(root).get("masterless", ())), dpi))
 
     # **The bar counts pages and names one, where the pool counts chunks and hands
     # back a tuple.** Ticking with the chunk itself printed the PDF's path, sixteen
@@ -994,7 +1013,11 @@ def audit(refs: list[str] | None = None, root: Path = Path("."),
         # **Mode is checked against what the source is, not against a list of modes
         # seen.** A bitonal page that came back `L` means something resampled it,
         # which is the entire failure this tree was rebuilt to undo.
-        expect = ("RGB" if m.get("rendered")
+        # A leaf taken at its own size keeps its source's colour space, which
+        # the manifest records; it is not RGB by kind. A grey space is spelled
+        # `DeviceGray` or `ICCBased(Gray,…)`, so it is found by its family.
+        own = "L" if "Gray" in (m.get("cs") or "") else "RGB"
+        expect = (own if m.get("rendered")
                   else "L" if e.get("images") else "1")
         if facts["mode"] != expect:
             found.append({"ref": ref, "finding": "mode", "gates": True,
@@ -1202,6 +1225,17 @@ def swap(tree: Path, root: Path = Path("."), commit: bool = False) -> dict:
                                 "why": "no manifest; a tree of rasters with no "
                                        "geometry cannot be placed"})
         return rep
+    # **A tree cut at another resolution is refused before anything is planned.**
+    # Every coordinate store is in this text's pixel space; a shift plan between
+    # two placements cannot express a factor of two, and would place every box
+    # wrong by exactly that. A tree with no `_dpi` predates the field and was cut
+    # at the only resolution there was.
+    tree_dpi = manifest_meta(tree / TREE_MANIFEST).get("_dpi", DPI)
+    if tree_dpi != text_dpi(root):
+        rep["refusals"].append({"what": str(tree / TREE_MANIFEST),
+                                "why": f"cut at {tree_dpi} dpi, and this text's "
+                                       f"manifest says {text_dpi(root)}"})
+        return rep
 
     old = pdf_images(root)
     plan = migrate.plan(old, new)
@@ -1270,7 +1304,8 @@ def swap(tree: Path, root: Path = Path("."), commit: bool = False) -> dict:
     # about having lost it. Carried from the tree's own metadata rather than
     # recomputed, because the digests belong to the run that cut those pixels.
     meta = manifest_meta(tree / TREE_MANIFEST)
-    write_manifest({"_about": ABOUT, "_sources": meta.get("_sources", {}), **new},
+    write_manifest({"_about": ABOUT, "_sources": meta.get("_sources", {}),
+                    **({"_dpi": meta["_dpi"]} if "_dpi" in meta else {}), **new},
                    root / PDF_IMAGES)
 
     # **The old tree is moved aside, not deleted, until the new one is in place.**
