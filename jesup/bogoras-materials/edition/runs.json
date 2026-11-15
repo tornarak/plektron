@@ -1,0 +1,8 @@
+{
+  "_about": "Page-runs of the 1900 «Матеріалы»: spans of scans the edition serves as one document rather than one leaf at a time. The shape is The Chukchee's (its runs.json carries `_shape`; harness/apparatus.py reads both). This book prints one piece of apparatus, the Оглавленіе over four leaves; it has no List of Illustrations, no Authorities Quoted and no alphabet. Chapters are runs too, derived from edition/toc.json and the milestones in the text (harness/chapters.py) rather than declared here.",
+  "runs": [
+    {"id": "contents", "kind": "toc", "title": "Оглавленіе",
+     "refs": ["1-017", "1-018", "1-019", "1-020"],
+     "source": "edition/toc.json"}
+  ]
+}

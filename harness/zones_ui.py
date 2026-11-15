@@ -93,7 +93,7 @@ def _snap_column(z: dict, windows: list[dict]) -> int:
 # It was called `split` until the name was read back cold and meant nothing: the
 # topbar already carries a `split` pill two places to its left, and that one is the
 # train/eval/exempt mark. Two unrelated things under one word in one strip of UI.
-STORES = ("gt", "mz", "paras")
+STORES = ("gt", "mz", "llm", "paras")
 
 # What the selector is offering, in the pill's tooltip. The store names are short
 # enough to be cryptic, and one of the three is not a directory.
@@ -104,7 +104,10 @@ STORES = ("gt", "mz", "paras")
 # and `present` says what the other holds before they switch.
 STORE_HELP = {
     "gt": "gt/zones/ — what a human has been through. A save always lands here",
-    "mz": "mz/zones/ — what the segmenter emitted, shown as an unsaved proposal",
+    "mz": "mz/zones/ — what the segmenter or the rule emitted, shown as an unsaved "
+          "proposal",
+    "llm": "mz with the review agent's edits applied (review/PP-NNN/zones.json) — "
+           "an #llm proposal, unratified, computed live and stored nowhere",
     "paras": "gt with the paragraph rule applied — a proposal, computed live and "
              "stored nowhere",
 }
@@ -123,6 +126,11 @@ def effective_store(ref: str, root: Path, store: str) -> str:
     """
     if store == "paras":
         return "paras" if zn.has_zones(ref, root, zn.ZONEDIR) else ""
+    if store == "llm":
+        # A verdict against a file since rewritten shows nothing: its band numbers
+        # name bands that no longer exist. `page_state` reports it as stale.
+        from . import zones_review as zr
+        return "llm" if zr.fresh(ref, root) else ""
     return store if zn.has_zones(ref, root, STORE_DIR[store]) else ""
 
 
@@ -291,8 +299,13 @@ def page_state(ref: str, root: Path, cfg: dict, nudge: int = 0,
     windows = [{"x0": w["x0"] + nudge, "x1": w["x1"] + nudge} for w in m["columns"]]
     tol = cfg["width_tolerance_px"]
     pinned = store is not None
+    # The review agent's verdict, where the page has one. Read once: the view, the
+    # opening choice and the HUD all answer from it.
+    from . import zones_review as zr
+    llm = zr.applied(ref, root, cfg) if zr.verdict_path(ref, root).exists() else None
     if store is None:
-        store = "gt" if zn.has_zones(ref, root, zn.ZONEDIR) else "mz"
+        store = ("gt" if zn.has_zones(ref, root, zn.ZONEDIR)
+                 else "llm" if llm and llm["zones"] is not None else "mz")
     if store not in STORES:
         raise ValueError(f"store must be one of {', '.join(STORES)}, not {store!r}")
     # A ruled leaf is settled without holding a zone file, so this is `keyed`
@@ -317,6 +330,16 @@ def page_state(ref: str, root: Path, cfg: dict, nudge: int = 0,
         zones, dropped, short = _machine_proposal(
             ref, root, windows, set(zc.types_by_label(cfg)),
             int(cfg["min_zone_h_px"]))
+    elif shown == "llm":
+        # A verdict that fails its gate is shown as nothing, never half-applied;
+        # `llm_errors` says why. Snapped like the machine proposal it edits.
+        for z in (llm or {}).get("zones") or []:
+            col = _snap_column(z, windows)
+            zones.append({"label": z["label"], "y0": z["y0"], "y1": z["y1"],
+                          "column": col, "x0": windows[col]["x0"],
+                          "x1": windows[col]["x1"], "why": z.get("why", [])})
+        if not zones:
+            shown = ""
     elif shown == "paras":
         # gt with the paragraph rule applied, computed here and stored nowhere.
         for z in zn.split_at_paragraphs(zn.read_zones(ref, root), ref, root, cfg):
@@ -368,7 +391,17 @@ def page_state(ref: str, root: Path, cfg: dict, nudge: int = 0,
         "paras_zones": (len(zn.split_at_paragraphs(
             zn.read_zones(ref, root), ref, root, cfg))
             if zn.has_zones(ref, root) else "—"),
-        "proposal": "mz" if shown == "mz" else "",
+        "proposal": shown if shown in ("mz", "llm") else "",
+        # The review pass's half: the agent's ops with their reasons and its notes,
+        # whichever store is shown, so a human sees there is a verdict before
+        # switching to it. `llm_count` is `None` where no verdict applies.
+        "llm_count": (len(llm["zones"]) if llm and llm["zones"] is not None
+                      else None),
+        "llm_edits": llm["edits"] if llm else [],
+        "llm_notes": llm["notes"] if llm else [],
+        "llm_stale": bool(llm and llm["stale"]),
+        "llm_errors": [e for e in (llm["errors"] if llm else [])
+                       if e["rule"] != "stale"],
         "proposal_dropped": dropped,
         "proposal_short": short,
         "split": _splits.get(ref, zn.DEFAULT_SPLIT),
@@ -598,6 +631,10 @@ def page_context(ref: str, root: Path, cfg: dict, nudge: int = 0,
     for name in STORES:
         if name == "paras":
             n = str(st.get("paras_zones", "\u2014"))
+        elif name == "llm":
+            c = st.get("llm_count")
+            n = ("stale" if st.get("llm_stale") else
+                 "\u2014" if c is None else str(c))
         else:
             c = (st.get("present") or {}).get(name)
             n = "\u2014" if c is None else str(c)

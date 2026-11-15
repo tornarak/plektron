@@ -390,6 +390,10 @@ NO_ALL_OK = {
         "the same as crops — one composite per page, written by the pass reading "
         "that page. 832 of them is a gigabyte nobody asked for",
     ("ocr", "zoom"): "magnifies selected lines *of* a page",
+    ("zones", "bands"):
+        "one page's rule file, numbered for the agent about to edit it; every "
+        "band of the book at once is a table no reviewer reads, and `propose` "
+        "already reports the corpus",
     ("ocr", "witness"):
         "sets the lines of a page side by side for the reader working on that "
         "page; every line of the book at once is a reading nobody is doing",
@@ -397,6 +401,9 @@ NO_ALL_OK = {
         "un-keying the whole ground-truth store must not be one flag away from a "
         "command someone types. `ocr clean` has --all because it deletes only "
         "derived output; this deletes authored work",
+    ("zones", "mark"):
+        "one kind for the whole book is not a ruling anyone means, and a leaf "
+        "kind clears every keyed page it names — `zones delete`'s reason",
     ("fig", "delete"):
         "`zones delete`'s reason, and one more: withdrawing a figure page takes "
         "the ratified captions on its blocks with it, so a corpus form would "
@@ -419,6 +426,7 @@ NO_ALL_OK = {
         "distinguish a page this batch lost from one never sent",
     ("tei", "queue"): "the same as `ocr queue`, and for the same reason",
     ("tei", "reconcile"): "the same as `ocr reconcile`",
+    ("zones", "reconcile"): "the same as `ocr reconcile`",
 }
 
 

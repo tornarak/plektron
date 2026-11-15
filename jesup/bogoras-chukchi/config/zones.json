@@ -1,5 +1,5 @@
 {
-  "_about": "Page-zone segmentation: the seven types, their keys, and the text-column geometry the UI draws against. Read by harness/zones_config.py; consumed by both `harness zones` (validation) and the browser UI (drawing + client-side order warnings). Editing this file changes both, which is the point — none of it is hardcoded.",
+  "_about": "Page-zone segmentation, *The Chukchee*'s tier: the text-column geometry the UI draws against and the tolerances measured on this book's 300-dpi scans, laid key by key over the workspace's ../config/zones.json, which holds the types, keys, actions and figure track every text shares. Read by harness/zones_config.py; consumed by both `harness zones` (validation) and the browser UI (drawing + client-side order warnings). Editing this file changes both, which is the point — none of it is hardcoded.",
 
   "_provenance": {
     "measure": "The text measure is a property of the book and is stable: over the 20 pages with line-precise ground truth in gt/ocr, the body column runs 1774-1797 px wide, median ~1780, across all three parts. So a fixed-width column is a real constraint rather than an approximation imposed on the page.",
@@ -9,54 +9,6 @@
     "overrides": "Pages the anchor cannot serve — two-column settings above all, and near-blank plates where there is not enough ink to measure. 1-330 is the worked example of the second kind: its widest ink run is 80 px, so detection is refused and the fallback applies."
   },
 
-  "_shape_fields": "Three optional fields on a type, all about saving keystrokes on a shape the book repeats. `default_height` makes the zone one click instead of two — the height is known, so only the top is in question. `gap_after` is the dead space the chain skips once that type is committed, for the predictable whitespace the page leaves below it. `chain_after` (default true) says whether the chain should carry on at all: a type that ends the column, or whose neighbours are unpredictable, leaves the next top unset rather than guessing it. The first two are editor-measured and are off (null / 0) wherever the shape genuinely varies, which is every body type.",
-
-  "types": [
-    {"label": "RunningTitleZone", "key": "r", "color": "#d1495b", "rank": 0, "max_per_page": 1,
-     "default_height": 90, "gap_after": 25,
-     "name": "running title / page number",
-     "description": "The head line, printed folio included. The old SegmOnto scheme split the folio out as NumberingZone; a fixed-width vertical partition cannot express that split, and the two are always on one line here, so they are one zone. Height and the gap below it are editor-measured: the head is a single line of a fixed size, and the drop to the text proper is the same on every ordinary page, so this zone costs one click and leaves the chain sitting where the body starts."},
-    {"label": "MainZone-P", "key": "p", "color": "#2e86ab", "rank": 10, "max_per_page": null,
-     "name": "paragraph start",
-     "description": "A paragraph that begins on this page — its first line is indented."},
-    {"label": "MainZone-Continued", "key": "c", "color": "#ee11ee", "rank": 10, "max_per_page": null,
-     "name": "paragraph continuation",
-     "description": "Body text continuing a paragraph opened earlier — no opening indent. The commonest type at the top of a page, which is why it is what auto-select falls to after the running title."},
-    {"label": "MainZone-Quote", "key": "q", "color": "#8f5fd1", "rank": 10, "max_per_page": null,
-     "name": "block quote",
-     "description": "Quoted matter set as its own block, normally in smaller type and inset from the measure. New label — the rest of this vocabulary is SegmOnto and already appears in gt/seg, this one follows its MainZone-<subtype> pattern."},
-    {"label": "MarginTextZone-Notes", "key": "f", "color": "#e07a1f", "rank": 20, "max_per_page": 1,
-     "chain_after": false,
-     "name": "footnotes section",
-     "description": "The whole footnote apparatus below the rule, as one zone rather than one per note. max_per_page 1 accordingly."},
-    {"label": "QuireMarksZone", "key": "m", "color": "#3f8f5f", "rank": 30, "max_per_page": 2,
-     "chain_after": false,
-     "name": "publisher mark",
-     "description": "Matter printed at the very foot of the page by the printer rather than the author, below the footnotes — hence rank 30. Two kinds occur and a page can carry both, which is why max_per_page is 2: the centred signature indicator on a gathering's first page (\"9-JESUP NORTH PACIFIC EXPED., VOL. VII.\") and the running volume count. They are one type because they are one act of the printer and share a position; splitting them would add a class the segmenter would have to tell apart on interior text alone."},
-    {"label": "MainZone-Other", "key": "o", "color": "#777777", "rank": null, "max_per_page": null,
-     "chain_after": false,
-     "name": "other",
-     "description": "Anything the six above do not cover: tables, verse, headings, captions on a text page. rank null means it takes part in no ordering rule — a catch-all that warned about its own position would warn constantly."}
-  ],
-
-  "order_rules": [
-    {"id": "title-first", "severity": "warn",
-     "description": "If a RunningTitleZone is present it is the topmost zone on the page."},
-    {"id": "rank-monotone", "severity": "warn",
-     "description": "Read top to bottom, the ranks of the zones that have one never decrease: running title, then body, then footnotes, then the signature line. Types with rank null are skipped entirely."},
-    {"id": "max-per-page", "severity": "warn",
-     "description": "No type occurs more often than its own max_per_page, where it declares one."}
-  ],
-
-  "auto_select": {
-    "_about": "What the editor selects next, with no keystroke. A page opens with its running title; below that the first block is almost always the paragraph carried over from the previous page, so the title hands off to `continuation`; and a continuation can only be closed once, so it hands off to `paragraph start`, which then repeats for as many paragraphs as the page holds. The commonest page is therefore keyed with three type keys pressed in total, most of them never pressed at all.",
-    "fresh_page": "RunningTitleZone",
-    "after": {
-      "RunningTitleZone": "MainZone-Continued",
-      "MainZone-Continued": "MainZone-P"
-    }
-  },
-
   "view": {
     "_about": "The editor's default framing. `column_margin` is the share of the text-column width left as breathing room either side when the page is first sized — the column is what is being judged, so it gets the viewport, not the leaf. The view is also cropped vertically to the page's own inked band plus `content_pad_px`, which is what takes an ordinary leaf from three screens to two: the top and bottom of a scan are blank paper and scrolling through them is time spent on nothing. That pad is not only cosmetic — it is the strip a pointer overshoots into, and overshooting the top or bottom of the view is how a zone is run to the first or last line of the page without pixel-hunting the boundary, so it has to be wide enough to aim at. `content_ink_fraction` is the share of the page width a row must be dark to count as printed, taken from the width rather than from the densest row so that one black photograph cannot raise the bar above the type beside it. Hovering within `edge_band_px` of the top or bottom of the view jumps a whole screen, instantly, keeping `edge_overlap_px` of what was already showing. It fires once per entry into the band — the cursor has to leave and come back — so a jump can never run away.",
     "column_margin": 0.15,
@@ -64,38 +16,6 @@
     "edge_overlap_px": 140,
     "content_pad_px": 55,
     "content_ink_fraction": 0.004
-  },
-
-  "actions": {
-    "_about": "Every common action is bound here, alongside the type keys above, and the loader refuses a config where the two collide — a keystroke bound twice would silently do only one of its jobs. Values are KeyboardEvent.key: one character for a letter, or the browser's own name for a special key. Navigation and cycling deliberately sit on non-letter keys so the letter space stays free for types. A named key may carry a `Shift+` prefix — `Shift+ArrowUp` is to `ArrowUp` what `X` is to `x`, and it is only permitted there, since for a printable character the shift is already in the character and `Shift+a` would never fire.",
-    "cancel": "Escape",
-    "undo": "u",
-    "delete": "x",
-    "merge_down": "j",
-    "sel_up": "ArrowUp",
-    "sel_down": "ArrowDown",
-    "anchor_left": ",",
-    "anchor_right": ".",
-    "anchor_reset": "v",
-    "cycle_column": "Tab",
-    "cycle_store": "/",
-    "cycle_store_back": "?",
-    "delete_page": "X",
-    "segment_page": "S",
-    "toggle_split": "t",
-    "leaf_kind": "K",
-    "toggle_chain": "\\",
-    "rule_exempt": "e",
-    "ink_exempt": "i",
-    "page_list": "l",
-    "save": "Enter",
-    "done": "D",
-    "prev_page": "ArrowLeft",
-    "next_page": "ArrowRight",
-    "nudge_back": "Shift+ArrowUp",
-    "nudge_forward": "Shift+ArrowDown",
-    "zoom_in": "+",
-    "zoom_out": "-"
   },
 
   "columns": {
@@ -141,70 +61,6 @@
     "MainZone-Quote": {
       "into": "MainZone-Other",
       "why": "Block quote and 'other' are set at the same size with the same measure, and the model cannot separate them: of 31 MainZone-Quote regions it drew over the held-out pages, 6 were right and 23 were really MainZone-Other, while 15 of MainZone-Other's misses were really Quote — 38 zones swapped, the largest single error in the matrix. Folding them for training raises held-out precision 61.3% -> 78.2% and recall 93.9% -> 94.9%. Quote was also the class this design was already unsure of: zero instances at 75 pages, 25 at 181, joint-smallest either way."
-    }
-  },
-
-  "figures": {
-    "_about": "The figure track, which runs parallel to the zone track and not inside it. Its store is `gt/fig/`, its geometry is **freely-placed rectangles** rather than fixed-width bands of the measure, and that difference is the reason it is a separate store rather than two more labels here: a zone's x comes from the page's column and a hand-drawn width would be a small lie the trainer learns, while a picture's x is exactly what a human saw and nothing else can supply it. The two tracks share one editor, one keyboard and one config file; they share no geometry and no split lists.",
-    "_shape_fields": "`auto_place.after` names the type whose commit arms this one. It is the zone chain's `resume()` in two dimensions and it hands over exactly as much: the chain gives the next zone its *top edge* and the human supplies the bottom, so this gives the next box its *first corner* and the human supplies the opposite one. Nothing is imputed — an assumed height was tried first and was wrong more often than not, and worse, could not be adjusted without deleting the box and drawing it again. A caption's corner is the picture's bottom-left, which is where the reading continues; `caption_beside` re-arms at the top-right instead, for the ~19 plate captions this book sets vertically beside their picture.",
-    "types": [
-      {
-        "label": "GraphicZone",
-        "name": "figure",
-        "key": "g",
-        "color": "#b8860b"
-      },
-      {
-        "label": "GraphicZone-FigDesc",
-        "name": "caption",
-        "key": "d",
-        "color": "#2aa5a0",
-        "auto_place": {
-          "after": "GraphicZone"
-        }
-      }
-    ],
-    "min_size_px": 24,
-    "max_overlap_px": 8,
-    "handle_px": 14,
-    "_about_float_min_residual": "How much of the measure must be left beside a picture before the reading view floats it and wraps prose round it; below this the figure sets full-measure. A presentation default and **a knob, not a measurement** — over this book the figure-width distribution is flat with no natural gap, so nothing in the data picks a number and another book may want a different one. It lives in config rather than in Python for exactly that reason. Note what it is not: a rule for placing any individual figure. Where a figure belongs is a reading, and a reading is the collator's.",
-    "float_min_residual": 0.33,
-    "view": {
-      "_about": "How far the track you are not editing recedes. Two numbers and not one, because the layers are not equally in the way: a keyed page carries eight or ten body zones against two or three figure boxes, so the zone layer has to go much quieter under the figure track than the figure layer does under the zone track. Neither goes to zero — where the text sits is how you judge where a picture ends, and a figure you cannot see is a figure you will draw a zone over. The unaccounted-ink hatching is exempt from both and stays at full strength: on the figure track a band no zone accounts for is very often the undeclared picture you are about to draw, which is exactly how 1-191 surfaced.",
-      "dim_zones": 0.14,
-      "dim_figs": 0.45
-    },
-    "rules": [
-      {
-        "id": "captions-lte-figures",
-        "severity": "warn",
-        "description": "A page never carries more captions than pictures. True of this book and not of printing in general, which is why it is here and not compiled in: 414 graphics against 395 captions over 252 pages, and every caption-heavy page that ever existed in this store was a segmentation fault — clipped body-text slivers, an unlabelled graphic, and on 2-094 the cheek line-work of fig. 260 read as a line of type. Those boxes and their readings were deleted, so the class is empty and a new member means a new fault. Exemptable per page in gt/fig/_rule_exempt.json; an exempted rule still reports, flagged."
-      },
-      {
-        "id": "tiny-picture",
-        "severity": "warn",
-        "description": "A GraphicZone smaller than min_size_px on either side. A warning and not an error, because nothing forbids a small picture — it is just that at this size the likelier explanation is dirt the segmenter boxed. One live instance: 2-085's 14x38 px block, which the eScriptorium pass left behind and nobody has ruled on."
-      },
-      {
-        "id": "picture-overlap",
-        "severity": "warn",
-        "description": "Two GraphicZones overlapping by more than max_overlap_px on both axes. A warning, and this one was briefly written as an error by importing the zone track's rule — wrongly. Zones partition the page and form a chain, so an overlap there is unrepresentable and can be refused; figures are freely placed, an inset legitimately sits inside the frame it insets, and two pictures on a plate may abut. Two live instances, both marginal grazes over a long shared edge: 1-189 (1244x14 px) and 1-334 (12x782 px)."
-      },
-      {
-        "id": "unaccounted-picture",
-        "severity": "error",
-        "description": "A photograph the source PDF separated out that no keyed GraphicZone overlaps. The scans are MRC-layered — a bitonal master plus embedded JPEGs — so the scanner's own segmentation is an independent witness to where the pictures are, read from data/pdf_images.json and compared **by overlap, never by containment**: the rect sits proud of a hand-drawn box by 1-3 px at the median, and a containment rule reports 131 findings on a store that is in fact complete. An error where the geometry rules beside it are warnings, because this is not a judgement about layout but a picture in the book the store does not mention — and because it is honestly clearable rather than a gate that gets widened until it says nothing: 0 over all 371 rects today. Exemptable per page in gt/fig/_rule_exempt.json; an exempted rule still reports, flagged."
-      },
-      {
-        "id": "picture-outside-boxes",
-        "severity": "warn",
-        "description": "More than 5% of a photograph's rect lies outside every keyed GraphicZone, padded by 20 px. Reported and never gated, because a large share means one of two things and neither is a fault in the keying: a figure the book letters a, b, c, whose one photograph spans several part-boxes with gutters belonging to no box; or a rect that is not the picture's extent at all, because the scanner's own segmentation swept something else into the photo layer. Both are reasons to look rather than to fix, and the per-page ruling in gt/fig/_rule_exempt.json is where the looking gets recorded."
-      }
-    ],
-    "actions": {
-      "_about": "Bound in the same keyboard as the zone track's, and the loader refuses a collision across all three namespaces — zone types, figure types, actions — because one keystroke doing two jobs silently does only one of them. `toggle_track` is the mode switch: with it off the pointer places bands, with it on it drags rectangles.",
-      "toggle_track": "b",
-      "caption_beside": "B"
     }
   }
 }

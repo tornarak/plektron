@@ -140,6 +140,9 @@ EXPECTED_ABSENT = {
     # Written by `ocr queue` and cleared by the next one, so it exists only while
     # a batch is out. A checkout that has it is mid-dispatch, not complete.
     "review/_queue.txt",
+    # The zone review pass's pair, on the same terms: `zones queue` writes both.
+    "review/_zones_queue.txt",
+    "review/_zones_claims",
     # The caption pass's derived images, `paths.DERIVED` under the `captions`
     # pseudo-ref: built by `fig sheets`/`fig zoom` when the pass runs and removed
     # with it. Absent between passes, which is the ordinary state.

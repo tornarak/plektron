@@ -20,7 +20,6 @@ store carries it forward itself.
 """
 from __future__ import annotations
 
-import shutil
 from pathlib import Path
 
 import pytest
@@ -37,7 +36,8 @@ def root(tmp_path: Path) -> Path:
     Image.new("RGB", (600, 800), "white").save(
         tmp_path / "scans" / "chukchi-1-048.png")
     (tmp_path / "config").mkdir(exist_ok=True)
-    shutil.copy(Path("config") / "zones.json", tmp_path / "config")
+    from conftest import write_zone_config
+    write_zone_config(tmp_path)
     return tmp_path
 
 

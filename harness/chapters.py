@@ -192,8 +192,15 @@ def fragments(toc: list[dict]) -> tuple[dict[str, str], list[dict]]:
     """
     entries = [e for e in toc if e.get("id")]
     parents = _parents(entries)
+    # **A printed number is part of the address**, as a chapter's roman is: the
+    # 1900 Materials prints 168 numbered items, dozens of them titled only
+    # «Сказка.», and the number is the one thing the book itself tells them
+    # apart by. One item prints no title at all (no. 168). The Chukchee numbers
+    # only its chapters, which take `heading` above, so none of its addresses move.
     base = {e["id"]: (heading(e) if e.get("level") == LEVEL
-                      else slugify(e.get("title") or "")) for e in entries}
+                      else "-".join(p for p in (str(e.get("number") or "").lower(),
+                                                slugify(e.get("title") or "")) if p))
+            for e in entries}
     climbed = {i: i for i in base}     # the furthest ancestor prefixed so far
     frag = {i: b for i, b in base.items() if b}
     stuck: set[str] = set(base) - set(frag)

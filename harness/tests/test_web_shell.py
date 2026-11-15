@@ -344,6 +344,41 @@ def test_the_shared_routes_answer_whatever_the_port(tmp_path, monkeypatch):
     assert c.post("/stop").status_code == 200
 
 
+def test_every_response_is_revalidated(client):
+    """Found by running it: page URLs name a ref and never a text, so with no
+    `Cache-Control` a browser served one text's cached scans under another
+    text's refs. A 304 must say it too, or the copy it re-validates loses the
+    header and the browser goes back to guessing."""
+    r = client.get("/static/css/editor.css")
+    assert r.headers["cache-control"] == "no-cache"
+    again = client.get("/static/css/editor.css",
+                       headers={"If-None-Match": r.headers["etag"]})
+    assert again.status_code == 304
+    assert again.headers["cache-control"] == "no-cache"
+
+
+def test_a_session_for_another_root_is_refused(tmp_path, monkeypatch):
+    """Found by running it: a `zones edit --root` for one text joined a server
+    started for another and walked that text's store under its own refs, where
+    a save would have landed in the wrong `gt/`. The refusal names the root the
+    server does serve, and the session already held is left alone."""
+    _two_editors(monkeypatch)
+    mine, other = tmp_path / "a", tmp_path / "b"
+    mine.mkdir()
+    other.mkdir()
+    app = create_app(mine, Sessions(root=mine), editor="alpha")
+    app.state.ports = {"alpha": 8801, "beta": 8802}
+    c = TestClient(app)
+
+    r = c.post("/session/beta", json={"session": {"q": 1}, "root": str(other)})
+    assert r.status_code == 409
+    assert str(mine.resolve()) in r.json()["detail"]
+    assert app.state.sessions.get("beta") == {}
+    same = c.post("/session/beta", json={"session": {"q": 2}, "root": str(mine)})
+    assert same.status_code == 200
+    assert app.state.sessions.get("beta") == {"q": 2}
+
+
 def test_an_app_that_can_name_no_editor_lets_everything_through(tmp_path,
                                                                 monkeypatch):
     """Falls open rather than closed when there is no port *and* no editor. The

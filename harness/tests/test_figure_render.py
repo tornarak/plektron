@@ -25,7 +25,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from conftest import write_captions
+from conftest import chukchi_zone_config, write_captions
 
 ALTO_NS = "http://www.loc.gov/standards/alto/ns-v4#"
 TEI_NS = "http://www.tei-c.org/ns/1.0"
@@ -287,7 +287,7 @@ def _config(tmp_path: Path, **figures) -> None:
     swallowed by the fallback and the test would pass while proving nothing.
     """
     import json
-    real = json.loads(Path("config/zones.json").read_text(encoding="utf-8"))
+    real = chukchi_zone_config()
     real["figures"] = {**real["figures"], **figures}
     d = tmp_path / "config"
     d.mkdir(parents=True, exist_ok=True)

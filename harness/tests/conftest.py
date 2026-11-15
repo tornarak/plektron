@@ -94,6 +94,26 @@ def write_project(root: Path, stem: str = "chukchi") -> Path:
     return root
 
 
+def chukchi_zone_config() -> dict:
+    """*The Chukchee*'s zone config as the loader sees it: its own tier composed
+    over the workspace's. Neither file alone is a whole config any more, so a
+    fixture copying the text's file would hand the loader a column with no
+    types."""
+    from harness.zones_config import raw_config
+
+    return raw_config(PROJECT)
+
+
+def write_zone_config(root: Path, cfg: dict | None = None) -> Path:
+    """`root`'s `config/zones.json`, composed whole. A fixture text has no
+    workspace, so the config sits in its own `config/` as its base."""
+    (root / "config").mkdir(parents=True, exist_ok=True)
+    p = root / "config" / "zones.json"
+    p.write_text(json.dumps(chukchi_zone_config() if cfg is None else cfg),
+                 encoding="utf-8")
+    return p
+
+
 def jesup_rules():
     """The Jesup rules as `keying.Rules`, for a test of a pure function that is
     handed rules rather than a root."""

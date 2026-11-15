@@ -22,7 +22,7 @@ import re
 from pathlib import Path
 
 import pytest
-from conftest import write_scan
+from conftest import write_scan, write_zone_config
 
 from harness import generate as gen
 from harness.detectors import join_broken_words
@@ -94,10 +94,7 @@ def stores(tmp_path: Path, ref: str, blocks, bands=None) -> None:
     the no-raster path, which passed for the wrong reason and would have passed
     with the raster present.
     """
-    cfg = tmp_path / "config"
-    cfg.mkdir(exist_ok=True)
-    (cfg / "zones.json").write_bytes(
-        (PROJECT / "config" / "zones.json").read_bytes())
+    write_zone_config(tmp_path)
     write_scan(tmp_path, ref)
     alto(tmp_path, ref, blocks)
     save_zones(ref, bands if bands is not None else bands_for(blocks), tmp_path)

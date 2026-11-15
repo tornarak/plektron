@@ -22,7 +22,7 @@ from itertools import pairwise
 from pathlib import Path
 
 import pytest
-from conftest import write_scan
+from conftest import chukchi_zone_config, write_scan
 
 from harness import zones as zn
 from harness import zones_config as zc
@@ -317,7 +317,7 @@ def test_the_selector_shows_each_store_on_a_page_that_has_both(tmp_path):
     write_page(tmp_path, "1-048", zn.MZDIR, label="RunningTitleZone", y0=610, y1=880)
     make_scan(tmp_path, "1-048")
     seen = {s: ui.page_state("1-048", tmp_path, cfg, store=s) for s in ui.STORES}
-    assert set(seen) == {"gt", "mz", "paras"}
+    assert set(seen) == {"gt", "mz", "llm", "paras"}
     assert seen["gt"]["shown"] == "gt"
     assert seen["mz"]["shown"] == "mz"
     assert seen["gt"]["zones"][0]["label"] == "MainZone-P"
@@ -1031,7 +1031,7 @@ def test_a_train_merge_folds_the_training_copy_and_not_the_store(tmp_path):
     (tmp_path / "config").mkdir(parents=True, exist_ok=True)
     import json
 
-    cfg = json.loads((PROJECT / "config/zones.json").read_text(encoding="utf-8"))
+    cfg = chukchi_zone_config()
     (tmp_path / "config/zones.json").write_text(json.dumps(cfg), encoding="utf-8")
 
     rep = zn.assemble(tmp_path)
@@ -1060,7 +1060,7 @@ def test_a_declared_fold_no_page_carries_still_links(tmp_path):
     (tmp_path / zn.BLOTDIR).mkdir(parents=True, exist_ok=True)
     (tmp_path / zn.BLOTDIR / "chukchi-1-048.png").write_bytes(b"x")
     (tmp_path / "config").mkdir(parents=True, exist_ok=True)
-    cfg = json.loads((PROJECT / "config/zones.json").read_text(encoding="utf-8"))
+    cfg = chukchi_zone_config()
     (tmp_path / "config/zones.json").write_text(json.dumps(cfg), encoding="utf-8")
 
     rep = zn.assemble(tmp_path)
@@ -1078,7 +1078,7 @@ def test_no_merge_declared_keeps_assemble_on_symlinks(tmp_path):
     (tmp_path / zn.BLOTDIR).mkdir(parents=True, exist_ok=True)
     (tmp_path / zn.BLOTDIR / "chukchi-1-048.png").write_bytes(b"x")
     (tmp_path / "config").mkdir(parents=True, exist_ok=True)
-    cfg = json.loads((PROJECT / "config/zones.json").read_text(encoding="utf-8"))
+    cfg = chukchi_zone_config()
     cfg.pop("train_merges", None)
     (tmp_path / "config/zones.json").write_text(json.dumps(cfg), encoding="utf-8")
     rep = zn.assemble(tmp_path)

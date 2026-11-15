@@ -326,6 +326,20 @@ def test_twins_nothing_tells_apart_keep_their_ids_and_are_reported(tmp_path):
         "chI.1", "chI.2"}
 
 
+def test_a_printed_number_parts_twins_and_names_an_untitled_item():
+    """The 1900 Materials numbers its items and titles dozens of them «Сказка.»:
+    the number is what the book tells them apart by, so it leads the address. An
+    item printed with a number and no title still has one."""
+    toc = [{"level": 1, "chapter": "I", "number": "I", "title": "Тексты", "id": "secI"},
+           {"level": 2, "chapter": "I", "number": "18", "title": "Сказка.", "id": "n18"},
+           {"level": 2, "chapter": "I", "number": "30", "title": "Сказка.", "id": "n30"},
+           {"level": 2, "chapter": "I", "number": "168", "title": "", "id": "n168"}]
+    frags, collisions = chapters.fragments(toc)
+    assert collisions == []
+    assert (frags["n18"], frags["n30"], frags["n168"]) == (
+        "18-сказка", "30-сказка", "168")
+
+
 def test_a_heading_carries_its_fragment_and_its_old_id(tmp_path, client):
     """The old id stands just before the heading, so a `#chI.1` already out in the
     world still lands on it."""

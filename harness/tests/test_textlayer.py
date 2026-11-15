@@ -139,3 +139,67 @@ def test_a_page_already_in_the_store_is_kept_without_force(tmp_path):
     textlayer.import_page("1-001", tmp_path)
     assert "skipped" in textlayer.import_page("1-001", tmp_path)
     assert "skipped" not in textlayer.import_page("1-001", tmp_path, force=True)
+
+
+# ---------------------------------------------------------------- alignment
+#
+# Synthetic ink: each printed line a dense x-height band ending at its baseline,
+# and the layer's rows placed where a drifting OCR would put them: its baseline
+# `ALIGN_BASELINE_DROP` below the ink's, plus a drift.
+
+import numpy as np  # noqa: E402
+
+DROP = textlayer.ALIGN_BASELINE_DROP
+
+
+def _page_ink(baselines, x0=600, x1=3586, h=7000):
+    ink = np.zeros((h, 4800), dtype=bool)
+    for b in baselines:
+        ink[b - 44:b + 1, x0:x1] = True          # its last inked row is b
+    return ink
+
+
+def _layer_rows(baselines, drift, x0=600, x1=3586):
+    out = []
+    for b in baselines:
+        lb = b + DROP + drift(b)
+        out.append({"text": "строка", "box": (x0, lb - 100, x1, lb + 5), "baseline": lb})
+    return out
+
+
+def test_a_drift_down_the_page_is_fitted_and_taken_off():
+    ink_b = [800 + 125 * i for i in range(36)]
+    rows = _layer_rows(ink_b, lambda b: round(-0.015 * (b - 800)))
+    out, fit = textlayer.align(rows, _page_ink(ink_b))
+    assert fit["applied"]
+    assert all(abs(r["baseline"] - DROP - b) <= 2 for r, b in zip(out, ink_b, strict=True))
+    # Only y moves.
+    assert [r["box"][0] for r in out] == [r["box"][0] for r in rows]
+
+
+def test_an_undrifted_page_is_left_where_it_is():
+    ink_b = [800 + 125 * i for i in range(36)]
+    rows = _layer_rows(ink_b, lambda b: 0)
+    out, fit = textlayer.align(rows, _page_ink(ink_b))
+    assert [r["box"] for r in out] == [r["box"] for r in rows]
+
+
+def test_a_block_placed_on_its_own_keeps_its_own_position():
+    # `1-243`: the body drifts 70 px by its foot, its footnotes not at all.
+    body = [800 + 125 * i for i in range(36)]
+    notes_ink = [body[-1] + 220, body[-1] + 320]
+    rows = _layer_rows(body, lambda b: round(-0.015 * (b - 800)))
+    rows += _layer_rows(notes_ink, lambda b: 0, x0=810)
+    ink = _page_ink(body)
+    for b in notes_ink:
+        ink[b - 39:b + 1, 810:3586] = True
+    out, fit = textlayer.align(rows, ink)
+    assert fit["applied"] and fit["own_shift"] >= 1
+    assert [r["baseline"] - DROP for r in out[-2:]] == notes_ink
+
+
+def test_a_page_with_too_few_rows_is_left_as_the_layer_gave_it():
+    ink_b = [800, 925, 1050]
+    rows = _layer_rows(ink_b, lambda b: 40)
+    out, fit = textlayer.align(rows, _page_ink(ink_b))
+    assert not fit["applied"] and out == rows

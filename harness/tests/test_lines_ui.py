@@ -68,7 +68,8 @@ def root(tmp_path: Path) -> Path:
     Image.new("RGB", (1200, 1600), "white").save(
         tmp_path / "scans" / "chukchi-1-048.png")
     (tmp_path / "config").mkdir(exist_ok=True)
-    shutil.copy(Path("config") / "zones.json", tmp_path / "config")
+    from conftest import write_zone_config
+    write_zone_config(tmp_path)
     shutil.copy(Path("config") / "lines.json", tmp_path / "config")
     alto = tmp_path / "gt" / "ocr" / "chukchi-1-048.xml"
     alto.parent.mkdir(parents=True)

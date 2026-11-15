@@ -312,6 +312,10 @@ def register(cli):
                         "so this is about 1.5x the size you want to read")
     opt(p, "--out", type=click.Path(path_type=Path), default=None,
                    help="output file (default review/PP-NNN/numbered.png)")
+    opt(p, "--zones", type=click.Choice(("gt", "mz")), default=None,
+        help="also bracket each zone of this store in a right-hand gutter, "
+             "labelled with its number and its type's editor key, as `zones "
+             "bands` numbers them. --store still names the line store")
 
     # A contact sheet shows whole lines, so it has nowhere to honour `@LO-HI`.
     # Refused rather than ignored: a caller who asked for a quarter of a line and
@@ -1021,6 +1025,16 @@ def run_reconcile(a) -> int:
     return 1
 
 
+def _zone_brackets(ref: str, root: Path, store: str) -> list[dict]:
+    """The store's zones numbered as `zones bands` numbers them, each with its key."""
+    from ..zones import MZDIR, ZONEDIR, read_zones
+    from ..zones_config import load_config, types_by_label
+    keys = {k: t.get("key", "?") for k, t in types_by_label(load_config(root)).items()}
+    zs = read_zones(ref, root, store=MZDIR if store == "mz" else ZONEDIR)
+    return [{"band": i, "key": keys.get(z["label"], "?"), "y0": z["y0"], "y1": z["y1"]}
+            for i, z in enumerate(zs, 1)]
+
+
 def run_numbered(a) -> int:
     refs = page_refs(a)
     one_page_only(a, {"out": "--out"}, refs)
@@ -1030,7 +1044,9 @@ def run_numbered(a) -> int:
             _page_link(a, r)
             rows.append(write_numbered_page(
                 r, a.out or numbered_path(r, a.root), a.root, _store_dir(a),
-                gutter=a.gutter, font_size=a.font_size))
+                gutter=a.gutter, font_size=a.font_size,
+                zones=_zone_brackets(r, a.root, a.zones) if a.zones else None,
+                zone_store=a.zones or ""))
             log_call(r, "numbered", a.root, images=1)
     out(a, rows)
     return 0
@@ -1255,7 +1271,7 @@ def run_edit(a) -> int:
     # and opens a tab rather than dying on a held port — which is what they did
     # when each had a server to itself.
     joined = web.handoff("lines", session, open_at=f"/?ref={start}",
-                         port=a.port)
+                         port=a.port, root=a.root)
     if joined:
         import webbrowser
 
@@ -1399,7 +1415,7 @@ def run_review(a) -> int:
         def _home(url: str) -> str:
             return f"{url.rstrip('/')}/issues" if items else url
 
-        joined = web.handoff("review", session, port=a.port)
+        joined = web.handoff("review", session, port=a.port, root=a.root)
         if joined:
             import webbrowser
 

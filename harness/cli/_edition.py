@@ -231,7 +231,7 @@ def run_serve(a) -> int:
 
     # The four tools share a process, so if one is already up this hands it the
     # session and opens a tab rather than failing on a held port.
-    joined = web.handoff("edition", {}, port=a.port)
+    joined = web.handoff("edition", {}, port=a.port, root=a.root)
     if joined:
         print(f"edition -> {joined}   (joined the running server)")
         if not a.no_open:

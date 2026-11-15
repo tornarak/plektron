@@ -1,0 +1,8 @@
+{"ref": "1-205",
+ "reviewed": {"file": "mz/zones/chukchi-materials-1-205.xml", "sha256": "1d77f71647334fe352b806c6a5ac6bd1b684153294a0f91f1abcfb98192c6016"},
+ "bands": 9,
+ "edits": [
+   {"op": "relabel", "band": 2, "label": "MainZone-Other", "why": "lines 1-2 are the end of no. 47's oath set in two columns, Chukchi | Russian, line against line (the Russian ends 'Поцѣ-/лую Евангеліе'); the ruling makes parallel columns one MainZone-Other band, and the rule misses a two-line block."},
+   {"op": "relabel", "band": 6, "label": "MainZone-Other", "why": "line 11 is the first line of the letterspaced title of no. 48, a heading under the '48' numeral, not a paragraph continuation; headings are MainZone-Other."},
+   {"op": "merge", "band": 7, "why": "line 12 ('L. Radloff, Ueber die Sprache ...') is the second line of the same letterspaced heading, centred rather than a paragraph indent; it joins band 6, which becomes MainZone-Other."}],
+ "notes": [{"line": 29, "text": "Russian rendering of the 48 phrases, indented at its start and numbered from 1; kept as MainZone-P, not part of the parallel block."}]}

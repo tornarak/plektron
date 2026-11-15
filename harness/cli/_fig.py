@@ -342,7 +342,7 @@ def run_review(a) -> int:
         "(Save all, then ctrl-c)",
         f"  blind read: {rep['blind']}   agree {rep['agree']}/{rep['compared']}",
     ]
-    joined = web.handoff("review", session, port=a.port)
+    joined = web.handoff("review", session, port=a.port, root=a.root)
     if joined:
         import webbrowser
 

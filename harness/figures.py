@@ -2175,7 +2175,7 @@ def layout(ref: str, root: Path = Path(".")) -> dict:
     # missing key falls back; a *malformed* one does not, and says so.
     residual = FLOAT_MIN_RESIDUAL
     try:
-        raw = json.loads(zc.config_path(root).read_text(encoding="utf-8"))
+        raw = zc.raw_config(root)
         val = (raw.get("figures") or {}).get("float_min_residual")
     except (OSError, ValueError):
         val = None

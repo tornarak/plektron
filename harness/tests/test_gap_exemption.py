@@ -43,7 +43,6 @@ single uncovered band is contrived to be found by the detector.
 from __future__ import annotations
 
 import json
-import shutil
 from pathlib import Path
 
 import pytest
@@ -70,7 +69,8 @@ def _page(tmp_path: Path, ref: str = "1-048") -> Path:
     # zone config — the real one, so the fixture measures the page the way the
     # corpus does rather than against a contrived set of pads.
     (tmp_path / "config").mkdir(exist_ok=True)
-    shutil.copy(Path("config") / "zones.json", tmp_path / "config")
+    from conftest import write_zone_config
+    write_zone_config(tmp_path)
 
     w, h = 600, 800
     img = Image.new("RGB", (w, h), "white")

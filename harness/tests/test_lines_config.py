@@ -39,7 +39,6 @@ def _page(tmp_path: Path, cfg: dict, ref: str = "1-048") -> str:
     renderer needed anyway — a config, a zones config, and a raster to size the
     stage against.
     """
-    import shutil
 
     from PIL import Image
     from starlette.testclient import TestClient
@@ -47,7 +46,8 @@ def _page(tmp_path: Path, cfg: dict, ref: str = "1-048") -> str:
     from harness.web import Sessions, create_app
 
     root = _write(tmp_path, cfg)
-    shutil.copy(Path("config") / "zones.json", root / "config")
+    from conftest import write_zone_config
+    write_zone_config(root)
     (root / "scans").mkdir(exist_ok=True)
     Image.new("RGB", (600, 800), "white").save(
         root / "scans" / f"chukchi-{ref}.png")

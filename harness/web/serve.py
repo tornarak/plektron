@@ -51,7 +51,7 @@ def url_for(editor: str, path: str = "", port: int | None = None) -> str:
 
 
 def handoff(editor: str, session: dict, open_at: str = "",
-            port: int | None = None) -> str | None:
+            port: int | None = None, root: Path | None = None) -> str | None:
     """Give a running server this invocation's work; return the URL, or None.
 
     Returns None when nothing is listening, which is the caller's signal to start
@@ -59,6 +59,10 @@ def handoff(editor: str, session: dict, open_at: str = "",
     answer, an answer that is not ours — returns None too and lets the bind
     fail with a real error, because a port held by something unknown is not a
     server we should be handing sessions to.
+
+    **A server for another text exits 2 here**, naming both roots. Returning
+    None would fall through to a bind that fails on the held port with a message
+    about ports, when what is wrong is which text the running server is for.
     """
     ed = load_editors().get(editor)
     if ed is None:
@@ -67,13 +71,26 @@ def handoff(editor: str, session: dict, open_at: str = "",
     # moved the bind but not the probe would look for the running server in the
     # wrong place and always conclude there wasn't one.
     at = port or ed.port
-    body = json.dumps({"session": session, "open_at": open_at}).encode("utf-8")
+    body = json.dumps({"session": session, "open_at": open_at,
+                       "root": str(Path(root).resolve()) if root else ""}
+                      ).encode("utf-8")
     req = urllib.request.Request(
         f"http://{HOST}:{at}/session/{editor}", data=body,
         headers={"Content-Type": "application/json"}, method="POST")
     try:
         with urllib.request.urlopen(req, timeout=2) as r:
             got = json.load(r)
+    except urllib.error.HTTPError as e:
+        if e.code == 409:
+            try:
+                detail = json.load(e).get("detail", "")
+            except ValueError:
+                detail = ""
+            print(f"a server for another text holds port {at}: {detail}. "
+                  "Stop it (Done on its page, or ctrl-c) and run this again",
+                  file=sys.stderr)
+            raise SystemExit(2) from None
+        return None
     except (urllib.error.URLError, OSError, ValueError):
         return None
     if not got.get("ok"):

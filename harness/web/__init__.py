@@ -200,8 +200,30 @@ def create_app(root: Path = Path("."), sessions: Sessions | None = None,
             app.include_router(ed.router, prefix=f"/{ed.name}")
 
     _install_port_scope(app)
+    _install_revalidate(app)
     errors.install(app, editor)
     return app
+
+
+def _install_revalidate(app: FastAPI) -> None:
+    """`Cache-Control: no-cache` on every response that does not set its own.
+
+    **A URL here names a page, never the text it belongs to.** `/zones/page/
+    1-003.png` is one URL whichever root the process serves, and every editor
+    shares the one origin, `127.0.0.1` on a registered port. With no
+    `Cache-Control`, a browser is free to guess a freshness lifetime off
+    `Last-Modified` and serve its copy without asking. So after a server for
+    *The Chukchee* had shown `1-003`–`1-008`, a server for the 1900 *Materials*
+    on the same port showed *The Chukchee*'s scans under the *Materials*' refs,
+    and the editor was asked to rule leaves it was not looking at. `no-cache`
+    keeps the copy but checks it every time, and the check is cheap:
+    `files.send_file` answers an unchanged file with a bodiless 304.
+    """
+    @app.middleware("http")
+    async def _revalidate(request, call_next):
+        resp = await call_next(request)
+        resp.headers.setdefault("cache-control", "no-cache")
+        return resp
 
 
 def _install_port_scope(app: FastAPI) -> None:

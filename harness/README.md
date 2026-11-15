@@ -764,6 +764,21 @@ exemptions, `validate_page`/`validate_corpus`, the blot sweep, the segtrain
 assembly, the predictor and the view. **Errors are mechanical and set the exit code;
 the ordering assumptions are warnings.**
 
+**`zones_rule.py`** — `zones propose`: a page's zones by rule off its text
+layer's rows and the scan, for a text whose config carries a `text_rule` block.
+`derive` is pure (rows and a mask in, bands out); `propose` refuses a ruled leaf,
+an unmarked page and rows a recognizer wrote, and stamps `kind: rule` with every
+threshold it read, and the page's `flags`. The rule itself is `docs/multitext.md`'s.
+
+**`zones_review.py`** — the zone review pass: `review/PP-NNN/zones.json`, an
+agent's edits against a page's `mz/zones/` file (`#llm`). `baseline` reads the file
+numbered, never re-derived; `apply` is pure, and every op names an original band
+or line, so no edit's meaning depends on another's; `issues` is the gate `zones
+verdict` runs, through `zones.zone_list_errors`, the same zone errors a save is
+checked by. Nothing here writes a zone file: the editor's `llm` view shows the
+edits applied, and a human save is what reaches `gt/zones/`. `dispatch.ZONING` is
+its track.
+
 **`exempt => no zones`, and three predicates keep that honest.** Ruling a leaf a
 `plate`/`blank`/`cover`/`map`/`apparatus` calls `clear_leaf`: `.prev` on both
 stores, delete both, keep the mark, journal it — the kind in the split lists is

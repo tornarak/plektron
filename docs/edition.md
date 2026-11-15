@@ -1373,7 +1373,13 @@ group climbs one ancestor together, prefixing its title slug — `reindeer-races
 and `maritime-races` — and a chapter's slug carries its roman, so twins in two
 chapters always part: `iii-trade-anui-fair` and `trade-anui-fair`, whose parents
 are both titled *Trade*. What no ancestor parts keeps its toc id and is an
-`edition runs` error, `fragment-collision`. The real ToC has none.
+`edition runs` error, `fragment-collision`. Neither text's ToC has one.
+
+**A printed number leads the address**, as a chapter's roman does. The 1900
+*Materials* numbers its 168 items and titles dozens of them only «Сказка.» or
+«Разсказъ.», so `18-сказка` and `30-сказка` part on the number the book itself
+tells them apart by, and no. 168, printed with no title, is `168`. *The Chukchee*
+numbers only its chapters, so none of its addresses carry a second number.
 
 **An old fragment still lands.** A fragment never reaches the server, so no
 redirect can carry it; instead each heading is preceded by an empty

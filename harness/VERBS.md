@@ -487,7 +487,10 @@ line:
     held port. It hands over its session — the itinerary, the queue, the walk —
     prints `(joined the running server)` and opens a tab. Which is what the four
     separate processes used to give for free, and what one process binding all
-    four ports would otherwise have taken away.
+    four ports would otherwise have taken away. **Only for the same text**: a
+    session carries its `--root`, and a server for another text refuses it, so
+    the invocation exits 2 naming both roots instead of serving one text's store
+    under the other's refs.
   * **A leftover process holds every port, not just its own.** A `zones edit`
     nobody stopped will refuse an `edition serve`, and says which port and which
     editor is holding it. Exit 2, the usage-error code.
@@ -690,6 +693,8 @@ Every page is checked before any is queued, and its block is rendered and thrown
 --gutter N    px added left of the page for the labels [160]
 --font N      label px in the written image [64]
 --out PATH    write elsewhere [review/PP-NNN/numbered.png]
+--zones {gt,mz}  also bracket that store's zones in a right-hand gutter, each
+              labelled with its number and its type's editor key [off]
 --root --json --toon --pager
 ```
 
@@ -915,11 +920,12 @@ Opcodes come from difflib over **NFD** text, so a dropped combining mark ranks a
 
 ### ocr import [REF ...]
 **Does** carries the master PDF's own OCR text layer into `mz/ocr/`, for a text whose PDFs carry a usable one, in `ocr predict`'s page shape: one bare block, lines in geometric order, one `<String CONTENT>` per `TextLine`. The layer's fragments are rebuilt into **rows by rule** — fragments whose vertical centres lie within `textlayer.ROW_OVERLAP` of each other's height and whose extents do not overlap are one row — and boxes are the layer's points, less the master's placement origin, times `dpi / 72`. A rotated page is refused. `--all` skips a page ruled exempt; a named ref is imported regardless.
-**Reads** `pdfs/` (the part's PDF, page = scan index), the master's placement on that page, `project.json`'s `dpi`.
+**Reads** `pdfs/` (the part's PDF, page = scan index), the master's placement on that page, `project.json`'s `dpi`, and `scans/` for the alignment.
 **Writes** `mz/ocr/` (derived). **Never `gt/ocr/`.** A page already in the store, from either verb, is kept unless `--force`.
 **Exit** always 0 — a skipped or refused page is reported, not a failure.
 **Note** **`kind: model`, and the PDF is the model.** The glyphs were inferred from a raster by the digitizer's OCR; this verb only carries them. So the file names the PDF as the model, by path and sha256, and the layer's own producer string in `in.text_layer_producer`. Nothing here ranks above a guess: the page reaches `gt/ocr/` through `ocr review` and `ocr restore` like any other.
 **Note** **the boxes are font metrics, not ink.** The layer is set in `GlyphLessFont`, so a box is the engine's word box stretched to a nominal size. A consistently tall or short box is harmless, since zones and the generator place a line by its vertical centre; an offset one is not. Overlay a sample with `ocr sheets` before importing a whole text.
+**Note** **the boxes are moved vertically onto the scan's ink** (`textlayer.align`), because the layer's own drift against the raster runs to ±100 px by a page's foot on the 1900 *Materials*, though the master is placed exactly. Each full row votes how far its baseline sits from the nearest ink baseline; a line down the page is fitted through the votes, less the font metric's own 25 px drop; and each block of rows between gaps takes that drift, none, or a shift of its own, whichever lands most of its rows on their own line (ink starting and ending where their boxes do), since the layer places some blocks, footnotes most often, apart from the body. Only y moves: text, x and line indices are unchanged. A page whose fit is loose, or whose raster is not the master's size or missing, keeps the layer's geometry. The fit is recorded in `in.align`. Over the 451 text pages, rows sitting on another line's ink fell from 770 to 161.
 ```
 --all      every page in scans/ not ruled exempt
 --force    re-import over a page already in mz/ocr/, whatever produced it [off]
@@ -1151,6 +1157,81 @@ opinion of which pages are held out.
 --root --json --toon --pager
 ```
 
+### zones propose [REF ...]
+**Does** derives a page's zones by rule off its text layer's rows (`mz/ocr/`, as `ocr import` wrote it) and the scan, for a text calibrated for it. The rule and its measurements are `docs/multitext.md`, "Zoning by rule".
+**Reads** `mz/ocr/`, `scans/`, `config/zones.json` (its `text_rule` block), the split marks.
+**Writes** `mz/zones/` (derived) under `--commit` — never `gt/`. The file says `kind: rule`, and its inputs carry the rows' digest and every threshold used.
+**Exit** always 0: a measurement. 2 when the text's config has no `text_rule` block.
+**Emits** `pages` (ref, zones, labels, unzoned, numbers, offset, gutter, flags, skipped) and `unzoned` (ref, index, text, reason): a speck, or a line too wide to be one line. `numbers` counts the margin line numbers taken off lines, `offset` is the row column's left edge less the ink window's, and `gutter` is each parallel-column band as `width@offset-from-centre×lines`. `flags` are the page-level reasons a band may be wrong, the ones `zones queue --all` deals out: `unzoned` (a too-wide line, not a speck), `parallel`, `notes`, `continued` (a `MainZone-Continued` below the first body band and not under a full-width rule), `fallback` (the ink window fell back), `uncovered` (ink no zone covers that looks like a printed line, at least `missing_min_h` tall, holding no printed rule and clear of the leaf's edge: most often a line the text layer has no row for). The file records them too, empty where none fired.
+**Note** **a ruled leaf is skipped even when named**, unlike `predict`: a leaf holds no zone file in either store (`zones check`'s `exempt-holds-zones`), and a rule has no "I mean this page" to excuse. So is a page marked neither train nor eval, and a page whose `mz/ocr/` a recognizer wrote rather than `ocr import` — the rule reads a text layer's rows and nothing else.
+**Note** **`predict` and `propose` share `mz/zones/`.** Each keeps the other's file unless `--force`, and the skip names the producer it found.
+**Note** **two column measures.** Zones span the ink-anchored window `check` holds them to; the indent, centring, margin numbers and the gutter search are read against the rows' own column. They differ by the font-metric-to-ink offset, which is reported and gates nothing.
+```
+--all      every page marked train or eval
+--commit   write mz/zones/ [off]
+--force    replace a page's existing mz/zones/ file, whichever producer wrote it [off]
+--root --json --toon --pager
+```
+
+### zones bands REF [REF ...]
+**Does** one page's `mz/zones/` file as the review pass edits it: the file, its sha256, producer and flags; each band numbered from 1 in `read_zones` order with the line indices whose vertical centre it holds (`lines.line_band`, the rule every reader of a zone label uses); the lines no band holds; and the declared types with their editor keys and descriptions.
+**Reads** `mz/zones/`, `mz/ocr/`, `config/zones.json`.
+**Writes** —
+**Exit** 0: a measurement. 2 for a page with no `mz/zones/` or no `mz/ocr/` file.
+**Emits** `files`, `bands` (ref, band, label, y0, y1, lines), `unbanded` (ref, index, y0, y1, text) where any, `uncovered` (ref, y0, y1, x0, x1) where any — ink no band covers that looks like a printed line, the `uncovered` flag's bands, for a text with a `text_rule` block — and `types` (label, key, name, description).
+**Note** **read off the file, never re-derived**, so it describes exactly the file a verdict names by digest. A hand-edited file is what it prints.
+```
+--root --json --toon --pager
+```
+
+### zones verdict [REF ...]
+**Does** the gate on `review/PP-NNN/zones.json`, the review agent's edits against the rule's file. The verdict must name the file and its current sha256 and its band count; each op (`relabel`, `merge`, `split`, `absorb`) must name a band or line the file has, carry only its own fields and a non-empty `why`; no two ops may conflict; and the bands it yields must pass the zone errors `check` raises (`zones.zone_list_errors`).
+**Reads** `review/PP-NNN/zones.json`, `mz/zones/`, `mz/ocr/`, `scans/`, `config/zones.json`.
+**Writes** —
+**Exit** 0 when every named verdict passes; 1 when any fails or is missing.
+**Emits** `pages` (ref, edits, notes, errors, labels — the applied labels in order), `errors` (ref, rule, detail) where any, `inherited` where any, and the `verdict` row.
+**Note** **ops apply in a fixed order, each to the original numbering**: relabel, merge (into the band above, taking its label), split (at a line, the upper part keeping its label, the cut midway between the line and the one before it), absorb (a line in no band, into the band above or below). Relabel and split on one band is legal; refused are two relabels of a band, a relabel of a merged band, a merge of band 1, two splits at a line or one at a band's first line, a split of a line in no band, and an absorb of a line a band holds.
+**Note** **`inherited`** are zone errors the rule's own file already carries. An edit did not introduce them, so they fail nothing; they are the rule's to fix. **A stale verdict** — the file's digest moved — is refused before anything else, since its band numbers name bands it never read.
+```
+--all      every page holding a review/PP-NNN/zones.json
+--root --json --toon --pager
+```
+
+### zones queue [REF ...]
+**Does** validates a batch for the zone review pass, writes it to `review/_zones_queue.txt`, and prints **the one prompt every reviewer of the batch gets**, the `claim:begin`/`claim:end` block of `.claude/skills/review-zones/dispatch.md`. It names no page: each agent takes its own with `zones claim`.
+**Reads** `dispatch.md`, `.claude/agents/zones-reviewer.md`, `mz/zones/`, `mz/ocr/`, `gt/zones/`, `review/`, the split marks.
+**Writes** `review/_zones_queue.txt`, and clears `review/_zones_claims/`. Rewrites the agent's transcluded rulings when they are stale. Prompt to stdout, everything operational to stderr.
+**Exit** 0 with a prompt; 1 when a named page is not a candidate, or `--all` leaves nothing; 2 for refs and `--all` together, neither, or `--sample` with refs.
+**Note** refuses a ruled leaf, a page keyed in `gt/zones/` (a human's, so the rule's file under it is nobody's to review), a page with no rule file or one predating the flags (naming `propose --commit --force`), and a page already holding a fresh verdict. **Under `--all` a refused page is left out and listed** in `left_out`, since the selection is the tool's; a named page refuses the batch.
+**Note** **`--all` is the flagged pages, not the book**, unlike `ocr queue`, which has no corpus form: a flag is the rule's own statement that a band may be wrong, so the set is the pass's worklist rather than every page someone might send an agent at. **`--sample` is the measurement.** The flags say where the rule may be wrong; only pages it did not flag can say what the flags miss.
+```
+--all        every page whose rule file carries a flag, less those refused, which are listed
+--sample N   with --all, add N unflagged pages drawn by --seed [0]
+--seed S     the --sample draw's seed [0]
+--note TEXT  a sentence appended to every page block in this batch
+--root --json --toon --pager
+```
+
+### zones claim
+**Does** takes the next unclaimed ref off `review/_zones_queue.txt` and prints that page's block: the ref, its band count, its unbanded lines, its flags, and the `zones bands` command.
+**Reads** `review/_zones_queue.txt`, `review/_zones_claims/`, `dispatch.md`, `mz/zones/`, `mz/ocr/`.
+**Writes** `review/_zones_claims/PP-NNN`, stamped with the local time.
+**Exit** 0 with a block; 1 when the queue is empty or every ref on it is taken.
+**Note** the lock is `ocr claim`'s, shared through `dispatch.Track` rather than reimplemented. A reviewer claims again after each page, up to its contract's limit.
+```
+--root --json --toon --pager
+```
+
+### zones reconcile REF [REF ...]
+**Does** what the batch came back with — each named ref `reviewed`, `CLAIMED, no verdict` (an agent took it and did not come back), or `unclaimed`.
+**Reads** `review/_zones_claims/`, `review/PP-NNN/zones.json`.
+**Writes** —
+**Exit** 0 when every named ref has a verdict; 1 naming those that do not.
+**Note** presence only: whether a verdict is sound is `zones verdict`'s question.
+```
+--root --json --toon --pager
+```
+
 ### zones delete REF [REF ...]
 **Does** un-keys a page — removes its file and every mark that referred to it. The one thing the store could not express, `save_zones` refusing an empty save.
 **Reads** `gt/zones/` and its sidecars.
@@ -1159,6 +1240,20 @@ opinion of which pages are held out.
 **Note** **no `--all`, and here the absence is a safety property rather than a cost.** "Un-key the whole ground-truth store" must not be one flag away from a command someone types. `ocr clean` has `--all` precisely because it deletes only derived output; this deletes authored work.
 ```
 --commit  actually remove [off — previews]
+--root --json --toon --pager
+```
+
+### zones mark SPLIT REF [REF ...]
+**Does** puts each named page in `SPLIT`: a text page's split (`train`, `eval`) or a leaf kind (`plate`, `blank`, `cover`, `map`, `apparatus`). The editor's ruling for many leaves at once, as off a `scans sheet` contact sheet.
+**Reads** `gt/zones/` split lists, and the zone files of a page being ruled a leaf kind.
+**Writes** `gt/zones/` under `--commit`. A leaf kind goes through `clear_leaf`, the editor's own act: both stores' zone files dropped with `.prev`, the journal written. A text split rewrites each list once.
+**Exit** always 0.
+**Emits** `marks` — `ref`, `was` (the mark it held, or empty), `now`, `dropped` (gt zones a leaf ruling removes).
+**Note** **no `--all`**, for `zones delete`'s reason: one kind for the whole book is not a ruling anyone means, and it would clear every keyed page.
+**Note** a text split may name a page nobody has keyed yet. Saving the page later keeps the mark it holds, so a held-out set drawn before keying stays held out.
+```
+SPLIT     what the leaf is. One of: train, eval, plate, blank, cover, map, apparatus
+--commit  actually write the marks [off — previews]
 --root --json --toon --pager
 ```
 
@@ -2399,6 +2494,19 @@ against itself. `audit` re-reads the PDFs and makes a fuss if one changed.
 **Note** **this gates, where measurement usually does not.** The migration into master space is complete and has a receipt, so a page still declaring the old box will silently mis-place every coordinate on it. Reporting that at exit 0 would file a fault as a fact.
 **Note** it walks `migrate.STORES` — the six real stores.
 **Note** three answers and no fourth. `master` when the box is the master's own size, `render` when it is the recorded legacy size, and neither otherwise — a guess here would be a comparison between two coordinate systems presented as a fact.
+
+### scans sheet [PP-NNN...]
+**Does** whole leaves, downscaled and tiled 6×4 onto contact sheets, each tile labelled with its ref and the leaf kind `gt/zones/` rules it, if any.
+**Reads** `scans/`, `gt/zones/`'s split lists. **Writes** `review/leaves/sheets/` (derived), or `--out`. **Exit** 0.
+```
+--all       every page the manifest holds
+--out PATH  write elsewhere [review/leaves/sheets]
+--root --json --toon --pager
+```
+**Emits** `sheets` (`sheet`, `first`, `last`, `leaves`, `ruled`).
+**Note** **for what a leaf is, never for what it says.** Blank, cover, title, contents and prose differ in shape and are told apart at a glance; nothing on a sheet is legible at type size, and `ocr sheets`/`ocr zoom` are the rungs for type. Sorting a new text's front matter cost one image per leaf before this; twenty-four leaves are one image now.
+**Note** **the label is the ruling, so one sheet does two jobs**: sorting leaves nobody has ruled, and auditing ones somebody has. A tile is what a reader reports against, and its label says what the store already claims.
+**Note** **6×4 at 300×430** comes to ~1870×1890 px, inside the size `ocr sheets` measured as the largest image delivered unresampled. A sheet is named for its first and last ref, so two selections cannot overwrite each other. A raster missing from `scans/` is a tile saying so, never a gap, which would shift every later leaf one tile along.
 
 ---
 

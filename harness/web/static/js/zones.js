@@ -354,6 +354,17 @@ function render() {
     parts.push(`<text x="${g.x0 + 10}" y="${z.y0 + 42}" font-size="34"
        fill="${c}" font-family="ui-sans-serif,sans-serif">${i + 1}. ${
        t ? t.name : z.label}${bad ? ' [off-measure]' : ''}</text>`);
+    // **A band the review agent changed says so, and says why.** The `llm` view is
+    // the rule's bands with an agent's edits applied; an edited band unmarked would
+    // read as the rule's own, which is the provenance this badge keeps visible.
+    // `why` never reaches a save: the payload is built from geometry alone.
+    if (z.why && z.why.length) {
+      const why = z.why.join(' · ').replace(/&/g, '&amp;').replace(/</g, '&lt;');
+      parts.push(`<g><title>${why}</title><rect x="${g.x1 - 150}" y="${z.y0 + 8}"
+         width="140" height="44" rx="8" fill="var(--fg)" opacity=".85"/>
+         <text x="${g.x1 - 80}" y="${z.y0 + 40}" font-size="30" text-anchor="middle"
+         fill="var(--bg)" font-family="ui-sans-serif,sans-serif">llm</text></g>`);
+    }
     // Grab handles on the zone under the cursor. Shift-drag was already here and
     // was invisible, which is the same as not being here.
     if (on) {
@@ -1053,7 +1064,8 @@ async function post(path, body) {
 // keep apart. Once adopted the page has gt of its own, so it never asks again.
 function confirmAdoption() {
   if (!ST.proposal && ST.shown !== 'paras') return true;
-  const src = ST.proposal ? 'the segmenter' : 'the paragraph rule';
+  const src = ST.proposal === 'llm' ? 'the review agent, over the machine store'
+    : ST.proposal ? 'the machine store' : 'the paragraph rule';
   return confirm(
     `Adopt ${S.zones.length} zones proposed by ${src} as ground truth for `
     + `${ST.ref}?\n\nThis writes gt/zones/, which is the tracked record of what a `
@@ -1182,6 +1194,7 @@ function renderStores() {
   const n = {
     gt: ST.present && ST.present.gt != null ? String(ST.present.gt) : '—',
     mz: ST.present && ST.present.mz != null ? String(ST.present.mz) : '—',
+    llm: ST.llm_count == null ? '—' : String(ST.llm_count),
     zones: ST.keyed ? '→gt' : (ST.present && ST.present.mz != null ? '→mz' : '—'),
     paras: ST.paras_zones == null ? '—' : String(ST.paras_zones),
   };
@@ -1453,7 +1466,9 @@ window.addEventListener('keydown', async e => {
     // third every time you wanted the previous one back.
     case 'cycle_store':
     case 'cycle_store_back': {
-      const order = ['gt', 'mz', 'paras'];
+      // The order the server lists them in, so a store added there is reachable.
+      const order = Array.from(document.querySelectorAll('.pill.store'),
+                               el => el.dataset.store);
       const i = order.indexOf(ST.store);
       const step = a === 'cycle_store' ? 1 : order.length - 1;
       await navStore(order[(i + step) % order.length]);

@@ -139,6 +139,19 @@ def register(cli):
     refs_arg(p, all_="every page of every coordinate store")
     add_jobs(p)
 
+    p = action(g, "sheet", run_sheet, section="What the rasters are",
+               help="whole leaves, downscaled and tiled 6x4 onto contact "
+               "sheets, each labelled with its ref and **the kind it is "
+               "ruled**, if `gt/zones/` rules one. For sorting what a leaf "
+               "*is* — blank, cover, title, contents, prose — which is a "
+               "question about its shape and is answered at a glance; never "
+               "for reading type, which `ocr sheets` and `ocr zoom` are for. "
+               "The same sheet audits leaves already ruled. Named for the "
+               "first and last ref on it. Reports; never gates")
+    refs_arg(p, all_="every page the manifest holds")
+    opt(p, "--out", metavar="PATH",
+        help="write elsewhere [review/leaves/sheets]")
+
 
 # --- Building the tree --------------------------------------------------------
 
@@ -229,6 +242,15 @@ def run_info(a) -> int:
     ph = scans.photos(refs, a.root)
     if ph:
         out(a, ph, name="photos", heading=True)
+    return 0
+
+
+def run_sheet(a) -> int:
+    refs = _scope(a)
+    with render.progress("sheets") as tick:
+        rows = scans.leaf_sheets(refs, a.root, Path(a.out) if a.out else None,
+                                 tick)
+    out(a, rows, name="sheets")
     return 0
 
 

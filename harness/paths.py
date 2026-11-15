@@ -179,7 +179,8 @@ def scan_for(ref: str, root: Path = Path(".")) -> Path:
 DERIVED = ("crops", "sheets", "zoom", "review.html", "numbered.png")
 
 
-#: The one working directory under `review/` that is not a page.
+#: The one *working* directory under `review/` that is not a page (`LEAVES`, below,
+#: holds derived images only).
 #:
 #: The caption pass reads all 395 captions in one session off contact sheets, so it
 #: has one proposal and one adjudication for the whole corpus rather than a pair per
@@ -244,6 +245,11 @@ def decisions_path(ref: str, root: Path = Path(".")) -> Path:
     return review_dir(ref, root) / "decision.json"
 
 
+def verdict_path(ref: str, root: Path = Path(".")) -> Path:
+    """The zone review pass's verdict: an agent's edits against `mz/zones/`, `#llm`."""
+    return review_dir(ref, root) / "zones.json"
+
+
 # The caption sheets. Derived, and covered by `.gitignore`'s existing
 # `review/*/sheets/` without a rule of their own — `*` matches one segment whatever
 # that segment means, so the caption directory inherits every disposition a page
@@ -251,6 +257,17 @@ def decisions_path(ref: str, root: Path = Path(".")) -> Path:
 # two together. `harness fig sheets` rebuilds them.
 def caption_sheets_dir(root: Path = Path(".")) -> Path:
     return review_dir(CAPTIONS, root) / "sheets"
+
+
+#: Whole-leaf contact sheets, `harness scans sheet`. A sheet spans many pages, so
+#: it has no page directory to live in, and like `review/captions/` it takes a
+#: word. Only images live here, under `sheets/`, which the per-directory ignore
+#: rule already covers.
+LEAVES = "leaves"
+
+
+def leaf_sheets_dir(root: Path = Path(".")) -> Path:
+    return root / "review" / LEAVES / "sheets"
 
 
 def crops_dir(ref: str, root: Path = Path(".")) -> Path:

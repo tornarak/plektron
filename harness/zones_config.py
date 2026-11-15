@@ -22,13 +22,23 @@ it as a fact rather than a starting guess would be inventing evidence.
 """
 from __future__ import annotations
 
-import json
 from itertools import pairwise
 from pathlib import Path
 
 from .refs import norm_ref, parse_ref
 
 CONFIG = "config/zones.json"
+
+#: The thresholds `zones_rule` reads, all of them, so a block missing one is
+#: refused at load rather than met as a KeyError halfway through a sweep. Only a
+#: text whose zones are derived off its text layer carries the block at all; its
+#: absence is how `zones propose` knows a text was never calibrated for it.
+TEXT_RULE_KEYS = ("head_max_y", "foot_max_w", "number_pad", "gap_min_px",
+                  "indent_px", "indent_tol", "heading_max_w", "centre_tol",
+                  "notes_pitch_ratio", "gutter_min_px", "gutter_min_rows",
+                  "gutter_max_offset", "rule_bridge_px", "footrule_min_px",
+                  "footrule_max_start", "footrule_max_end", "stream_rule_min_px",
+                  "speck_max_chars", "speck_max_px", "missing_min_h", "missing_edge_px")
 
 
 class ConfigError(ValueError):
@@ -44,6 +54,31 @@ def config_path(root: Path = Path(".")) -> Path:
     return root / CONFIG
 
 
+def raw_config(root: Path = Path(".")) -> dict:
+    """The config composed **key by key over the workspace's**, unvalidated.
+
+    Two tiers, as `config/keying.json` has (`layout.layered`). What every text in
+    a workspace shares (the types, their keys, the actions, the order rules, the
+    figure track) sits in the workspace's `config/zones.json`. What one book's
+    scans measure (its column, its pixel tolerances, the paragraph split
+    calibrated on its pages) sits in the text's. A second text adds its own
+    geometry without restating a vocabulary it shares. Raises `ConfigError` when
+    neither tier holds one.
+    """
+    from .layout import LayerError, layered, workspace_root
+
+    root = Path(root)
+    ws = workspace_root(root)
+    if not config_path(root).exists() and not (ws and (ws / CONFIG).exists()):
+        raise ConfigError(f"no zone config at {config_path(root)} or its "
+                          f"workspace — expected {CONFIG}")
+    try:
+        merged, _, _ = layered(root, CONFIG)
+    except LayerError as e:
+        raise ConfigError(str(e)) from e
+    return merged
+
+
 def load_config(root: Path = Path(".")) -> dict:
     """Read and check `config/zones.json`.
 
@@ -55,12 +90,7 @@ def load_config(root: Path = Path(".")) -> dict:
     from the page.
     """
     p = config_path(root)
-    if not p.exists():
-        raise ConfigError(f"no zone config at {p} — expected {CONFIG}")
-    try:
-        cfg = json.loads(p.read_text(encoding="utf-8"))
-    except json.JSONDecodeError as e:
-        raise ConfigError(f"{p}: {e}") from e
+    cfg = raw_config(root)
 
     types = cfg.get("types")
     if not isinstance(types, list) or not types:
@@ -216,6 +246,24 @@ def load_config(root: Path = Path(".")) -> dict:
         v = cfg.get(field)
         if not isinstance(v, (int, float)) or v < 0:
             raise ConfigError(f"{p}: {field} must be a non-negative number")
+
+    rule = cfg.get("text_rule")
+    if rule is not None:
+        if not isinstance(rule, dict):
+            raise ConfigError(f"{p}: text_rule must be an object")
+        missing = [k for k in TEXT_RULE_KEYS if k not in rule]
+        if missing:
+            raise ConfigError(f"{p}: text_rule lacks {', '.join(missing)}")
+        unknown = [k for k in rule if not k.startswith("_") and k not in TEXT_RULE_KEYS]
+        if unknown:
+            raise ConfigError(
+                f"{p}: text_rule names {', '.join(unknown)}, which the rule does not "
+                "read — a mistyped threshold would sit here looking set while the "
+                "rule ran without it")
+        for k in TEXT_RULE_KEYS:
+            v = rule[k]
+            if isinstance(v, bool) or not isinstance(v, (int, float)) or v < 0:
+                raise ConfigError(f"{p}: text_rule.{k} must be a non-negative number")
     return cfg
 
 

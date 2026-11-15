@@ -34,7 +34,14 @@
   data-store='{{ s.name }}' title="press / to cycle · {{ s.help }}">{{ s.name }}
   <span class='n'>{{ s.count }}</span></span>
 {% endfor %}
-{% if st.proposal %}
+{% if st.proposal == 'llm' %}
+{# The review agent's edits over the machine store — #llm, a rank below a human.
+   Labelled apart from the machine proposal, since it is a different witness. #}
+<span class='pill on' id='proposal' title='the machine store with the review
+agent&#39;s edits applied, not yet ruled on — correct it and save, and it becomes
+ground truth'>agent proposal · {{ st.llm_edits | length }} edit(s)
+{%- if st.llm_notes %} · {{ st.llm_notes | length }} note(s){% endif %}</span>
+{% elif st.proposal %}
 {# Only ever set when the machine store is what answered. An unlabelled proposal
    would look exactly like a page someone had already keyed, which is the one
    confusion the two stores exist to prevent. #}
@@ -61,7 +68,29 @@ dropped: {{ st.proposal_dropped | join(', ') }}{% endif %}</span>
 <div id='ov'></div>
 </div></div>
 
-<div id='panel'><h4>types</h4>
+<div id='panel'>
+{% if st.llm_edits or st.llm_notes or st.llm_stale or st.llm_errors %}
+{# The verdict's whole content, on every store: the reasons are what a human
+   rules on, and seeing them only in the llm view would hide a stale or failing
+   verdict behind the one view that cannot show it. #}
+<h4>review agent</h4>
+{% if st.llm_stale %}<div class='key'><span>stale: the rule's file changed after
+the review, so these edits are not applied anywhere</span></div>{% endif %}
+{% for e in st.llm_errors %}<div class='key'><span>verdict refused: {{ e.rule }} —
+{{ e.detail }}</span></div>{% endfor %}
+{% for e in st.llm_edits %}
+<div class='key'><span>{{ e.op }}
+{%- if e.band %} band {{ e.band }}{% endif %}
+{%- if e.line is defined %} at line {{ e.line }}{% endif %}
+{%- if e.label %} → {{ e.label }}{% endif %}
+{%- if e.into %} into {{ e.into }}{% endif %}: {{ e.why }}</span></div>
+{% endfor %}
+{% for n in st.llm_notes %}
+<div class='key'><span>note{% if n.line is defined %} (line {{ n.line }}){% endif %}:
+{{ n.text }}</span></div>
+{% endfor %}
+{% endif %}
+<h4>types</h4>
 {% for t in types %}
 <div class='tk' data-track='zone' data-label="{{ t.label }}">
 <i style="background:{{ t.color }}"></i><span>{{ t.name }}</span>

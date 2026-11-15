@@ -45,12 +45,13 @@
 # forgotten entry commits a few PNGs: noise, and visible. `harness/paths.py:DERIVED`
 # is the list these mirror; keep the two in step.
 #
-# The one directory under `review/` that is not a page is `review/captions/`, the
-# caption pass's flat store — and every rule below already covers it, `*` matching
-# one segment whatever that segment means. Its `sheets/` are derived like any
-# other's, its `.jsonl` journal is recovery data like any other's, and its
-# `proposal.json`/`decision.json` are authored and tracked like any other's. A
-# second rule naming it would say what these already say.
+# Two directories under `review/` are not pages: `review/captions/`, the caption
+# pass's flat store, and `review/leaves/`, the whole-leaf contact sheets — and every
+# rule below already covers them, `*` matching one segment whatever that segment
+# means. Their `sheets/` are derived like any other's; captions' `.jsonl` journal is
+# recovery data like any other's, and its `proposal.json`/`decision.json` are
+# authored and tracked like any other's. A rule naming either would say what these
+# already say.
 /*/review/*/crops/
 /*/review/*/sheets/
 /*/review/*/zoom/
@@ -84,6 +85,10 @@
 # pages.
 /*/review/_queue.txt
 /*/review/_claims/
+# The zone review pass's pair, same argument. Its verdicts, `review/PP-NNN/
+# zones.json`, are authored (`#llm`) and tracked by the rule above this block.
+/*/review/_zones_queue.txt
+/*/review/_zones_claims/
 # The collation pass's pair, same argument. They live beside `tei/` because that is
 # the store this batch deals out, exactly as the two above live beside `review/`.
 # These two used to be the only holes in an otherwise fully tracked `tei/`; the

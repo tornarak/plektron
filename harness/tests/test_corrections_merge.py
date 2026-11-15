@@ -22,7 +22,6 @@ lines" on every corrected page.
 """
 from __future__ import annotations
 
-import shutil
 from pathlib import Path
 
 import pytest
@@ -71,7 +70,8 @@ def page(tmp_path: Path):
     Image.new("RGB", (1200, 1600), "white").save(
         tmp_path / "scans" / "chukchi-1-048.png")
     (tmp_path / "config").mkdir(exist_ok=True)
-    shutil.copy(Path("config") / "zones.json", tmp_path / "config")
+    from conftest import write_zone_config
+    write_zone_config(tmp_path)
     alto = _ocr_alto(tmp_path, "1-048", 4, 1200, 1600)
     return tmp_path, alto
 

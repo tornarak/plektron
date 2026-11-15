@@ -856,6 +856,37 @@ def set_splits(mapping: dict[str, str], root: Path = Path(".")) -> dict:
     return counts
 
 
+def mark(refs: list[str], split: str, root: Path = Path("."),
+         commit: bool = False) -> list[dict]:
+    """Put each named page in `split`: a text-page split or a leaf kind.
+
+    The editor's ruling, for a caller that has looked at many leaves at once (a
+    contact sheet) and would otherwise rule them one keystroke at a time. A leaf
+    kind goes through `clear_leaf`, so it is the editor's act exactly: both zone
+    files dropped with `.prev`, the journal written. A text split goes through
+    `set_splits`, every list rewritten once.
+
+    **`was` is in every row**, so a preview says which marks the act would move.
+    Nothing here refuses a move: the refs are named one by one, which is the
+    deliberate act `remark_eval`'s additivity protects.
+    """
+    if split not in SPLITS:
+        raise ValueError(f"split must be one of {', '.join(SPLITS)}, not {split!r}")
+    refs = [norm_ref(r) for r in refs]
+    before = load_splits(root)
+    rows = [{"ref": r, "was": before.get(r, ""), "now": split,
+             "dropped": len(read_zones(r, root)) if split in LEAF_KINDS
+                        and alto_for(r, root).exists() else 0}
+            for r in refs]
+    if commit:
+        if split in LEAF_KINDS:
+            for r in refs:
+                clear_leaf(r, root, split=split)
+        else:
+            set_splits(dict.fromkeys(refs, split), root)
+    return rows
+
+
 def remark_eval(root: Path = Path("."), fraction: float = 0.20,
                 commit: bool = False, tick: Callable | None = None) -> dict:
     """Move a fraction of `train` into `eval`, per part, independent pages first.
@@ -1636,6 +1667,68 @@ def _merge_bands(bands: list[dict]) -> list[dict]:
     return out
 
 
+def zone_list_errors(zones: list[dict], cfg: dict, measure: int,
+                     over: list[dict] | None, windows: list[dict] | None,
+                     page_h: int | None) -> list[dict]:
+    """The errors a list of zones can carry whatever store it came from.
+
+    `validate_page` reads a store's file and calls this; `zones_review` calls it on
+    a list no store holds — the rule's bands with an agent's edits applied — so the
+    gate on a verdict and the gate on a save are one rule rather than two copies.
+    `over` is the page's override windows, which waive the width check; `windows`
+    the measured or overridden columns, `None` to skip the position check; `page_h`
+    the raster's height, `None` to skip the off-page check.
+    """
+    labels = set(zc.types_by_label(cfg))
+    tol = cfg["width_tolerance_px"]
+    min_h = cfg["min_zone_h_px"]
+    max_ov = cfg["max_overlap_px"]
+    errors: list[dict] = []
+
+    def err(rule: str, detail: str):
+        errors.append({"rule": rule, "detail": detail})
+
+    for z in zones:
+        where = f"{z['label']} at y={z['y0']}"
+        if z["label"] not in labels:
+            err("unknown-label",
+                f"{z['label']!r} at y={z['y0']} is not a type declared in the config")
+        if z["y1"] - z["y0"] < min_h:
+            err("min-height",
+                f"{where} is {z['y1'] - z['y0']} px tall, minimum is {min_h}")
+        if z["x1"] <= z["x0"] or z["y1"] <= z["y0"]:
+            err("degenerate", f"{where} has a non-positive extent")
+        if over is None:
+            msg = _width_error(z, measure, tol)
+            if msg:
+                err("column-width", f"{where} {msg}")
+        if windows is not None:
+            msg = _position_error(z, windows, tol)
+            if msg:
+                err("column-position", f"{where}: {msg}")
+        if z.get("points") and not _is_rectangle(z["points"], z["x0"], z["y0"],
+                                                 z["x1"], z["y1"]):
+            err("not-a-rectangle",
+                f"{where} has a polygon that is not its bounding box — the "
+                "fixed-measure claim does not hold for this zone")
+
+    for i, a in enumerate(zones):
+        for b in zones[i + 1:]:
+            ov = _overlap(a, b)
+            if ov > max_ov:
+                err("overlap",
+                    f"{a['label']} at y={a['y0']} and {b['label']} at y={b['y0']} "
+                    f"overlap by {ov} px, maximum is {max_ov}")
+
+    if page_h is not None:
+        for z in zones:
+            if z["y1"] > page_h:
+                err("off-page",
+                    f"{z['label']} at y={z['y0']} ends at {z['y1']}, past the "
+                    f"page's {page_h} px")
+    return errors
+
+
 def validate_page(ref: str, root: Path = Path("."), cfg: dict | None = None,
                   ink: bool = True, store: str = ZONEDIR,
                   splits: dict[str, str] | None = None) -> dict:
@@ -1691,10 +1784,6 @@ def validate_page(ref: str, root: Path = Path("."), cfg: dict | None = None,
     splits = load_splits(root) if splits is None else splits
     ref = norm_ref(ref)
     zones = read_zones(ref, root, with_points=True, store=store)
-    labels = set(zc.types_by_label(cfg))
-    tol = cfg["width_tolerance_px"]
-    min_h = cfg["min_zone_h_px"]
-    max_ov = cfg["max_overlap_px"]
 
     errors: list[dict] = []
 
@@ -1752,48 +1841,15 @@ def validate_page(ref: str, root: Path = Path("."), cfg: dict | None = None,
     windows = over if over is not None else (
         page_windows(ref, root, cfg, page_ink) if page_ink is not None else None)
 
-    for z in zones:
-        where = f"{z['label']} at y={z['y0']}"
-        if z["label"] not in labels:
-            err("unknown-label",
-                f"{z['label']!r} at y={z['y0']} is not a type declared in the config")
-        if z["y1"] - z["y0"] < min_h:
-            err("min-height",
-                f"{where} is {z['y1'] - z['y0']} px tall, minimum is {min_h}")
-        if z["x1"] <= z["x0"] or z["y1"] <= z["y0"]:
-            err("degenerate", f"{where} has a non-positive extent")
-        if over is None:
-            msg = _width_error(z, measure, tol)
-            if msg:
-                err("column-width", f"{where} {msg}")
-        if windows is not None:
-            msg = _position_error(z, windows, tol)
-            if msg:
-                err("column-position", f"{where}: {msg}")
-        if z.get("points") and not _is_rectangle(z["points"], z["x0"], z["y0"],
-                                                 z["x1"], z["y1"]):
-            err("not-a-rectangle",
-                f"{where} has a polygon that is not its bounding box — the "
-                "fixed-measure claim does not hold for this zone")
-
-    for i, a in enumerate(zones):
-        for b in zones[i + 1:]:
-            ov = _overlap(a, b)
-            if ov > max_ov:
-                err("overlap",
-                    f"{a['label']} at y={a['y0']} and {b['label']} at y={b['y0']} "
-                    f"overlap by {ov} px, maximum is {max_ov}")
-
+    page_h = None
     if zones:
         try:
             _, page_h = raster_size(ref, root)
-            for z in zones:
-                if z["y1"] > page_h:
-                    err("off-page",
-                        f"{z['label']} at y={z['y0']} ends at {z['y1']}, past the "
-                        f"page's {page_h} px")
         except FileNotFoundError:
-            err("no-raster", f"no scan for {ref}; geometry cannot be checked")
+            pass
+    errors.extend(zone_list_errors(zones, cfg, measure, over, windows, page_h))
+    if zones and page_h is None:
+        err("no-raster", f"no scan for {ref}; geometry cannot be checked")
 
     split = splits.get(ref)
     # A page marked with a leaf kind is a plate, a map, a cover or a blank — a human

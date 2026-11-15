@@ -1,0 +1,95 @@
+{
+  "_about": "Page-zone segmentation, the 1900 Materials' tier: this book's column and pixel tolerances, laid key by key over the workspace's ../config/zones.json (types, keys, actions, figure track). The scans are 600 dpi, so every pixel figure here is this book's and none is The Chukchee's. Its zones are to be derived by rule off the text layer (docs/multitext.md, \"Zoning by rule\"), which is why nothing here is calibrated against keyed ground truth yet: there is none.",
+
+  "_provenance": {
+    "measure": "2986 px: the median width of the text layer's full lines over all 480 pages of mz/ocr/ (15,709 rows between 2700 and 3200 px wide; p10 2974, p90 2996). A font-metric width, not an ink one — the layer's boxes are font metrics (docs/multitext.md, \"The text layer\") — so the offset to the ink edge is unmeasured.",
+    "fallback_x0": "The left edge of full lines falls in two populations, ~550-650 px and ~1150-1200 px (scan-index parity: recto against verso), so no single fallback is right for both. 600 is the commoner; the anchor measures each page and the fallback serves only a page too blank to measure.",
+    "scaled": "The anchor's pixel fields and the three tolerances are The Chukchee's 300-dpi values doubled (layout.px's ratio), not calibrated on this book. ink_pad_left/right in particular are The Chukchee's line-box-to-ink offsets, measured on its gt/ocr, and stand here only because the loader requires a number. The shares (band_top, band_bottom, ink_row_share, min_run_share) carry over unscaled.",
+    "not_overridden": "The workspace's RunningTitleZone default_height (90) and gap_after (25) are 300-dpi values and set too short a head here. Overriding them would restate the whole types list, so they are left until the rule-derived zones make the editor's chain matter."
+  },
+
+  "view": {
+    "column_margin": 0.15,
+    "edge_band_px": 80,
+    "edge_overlap_px": 140,
+    "content_pad_px": 110,
+    "content_ink_fraction": 0.004
+  },
+
+  "columns": {
+    "parts": {
+      "1": {"measure": 2986, "fallback_x0": 600}
+    },
+    "anchor": {
+      "band_top": 0.12,
+      "band_bottom": 0.88,
+      "ink_row_share": 0.02,
+      "_max_run_gap_px": "20, not The Chukchee's 30 doubled for 600 dpi. The white between a margin line number or bracket and the type is 21-43 px (1-058, 1-060, 1-078, 1-092, 1-100, 1-192), so 60 bridged it and the run took the number for the column's edge: 62 pages placed 60-171 px out, 1-100's saved zones refused as off the column. At 20 every mark splits off and the type stays one run of 2986-3017 px (2026-11-07).",
+      "max_run_gap_px": 20,
+      "_min_run_px": "100: a margin number split off is a run of 23-94 px (1-080, 1-120, 1-142, 1-144 are 89-94), and the type is never narrower than its measure's share.",
+      "min_run_px": 100,
+      "min_run_share": 0.6,
+      "ink_pad_left": 34,
+      "ink_pad_right": 22
+    },
+    "overrides": {
+      "_about": "Per-ref column windows for pages the anchor cannot serve. A ref listed here replaces the measured column for that page entirely.",
+      "1-016": {
+        "_why": "The preface's last page: its five lines sit above the anchor's band, which reads the signature and the date, so the column measured 266 px out. Ruled by the editor (2026-11-07) from the page's own rows, whose left edges are 1145-1149: x0 is the rows' edge less the book's usual 34 px row-to-ink offset.",
+        "columns": [{"x0": 1111, "x1": 4097}]
+      }
+    }
+  },
+
+  "text_rule": {
+    "_about": "What `harness zones propose` reads (harness/zones_rule.py): the thresholds of the rule that zones this book off its text layer's rows. Measured with `ocr lines` over the 451 text pages of mz/ocr/ (2026-11-07). A row's box is a font-metric one, not ink.",
+    "_provenance": {
+      "head_max_y": "The first row's top lies in 400-699 on 449 of the 451 text pages; the two others are chapter openers (1-015, 1-021), first row 2156+. The first body row is never above 745.",
+      "foot_max_w": "The signature (`16`, 1-177) and the chapter-foot folio (`I`, 1-021) are 46-91 px wide; a heading number (`26.`, `44.`) is 141-145 px but is never a page's last row.",
+      "number_pad": "A margin line number puts a row's left edge 60-104 px left of the column (1-100, 1-200), or its right edge ~120 px past it (1-177); ordinary rows wander about 15 px. The same overhang marks any margin mark the layer joined to a row, its token at most three characters: of the 14 rows too wide to be one line under rule version 2, 13 were a mark (`зо` for 30, `5.`, `-70`, `/`, `}`, `L`, `T`, `•`); the fourteenth fuses its number into the word (`30јанөт`, 1-088).",
+      "gap_min_px": "Leading between rows of one stream is mostly under 45 px, and reaches 61-63 px in the front matter and dialogue (1-291, 1-341). The breaks a heading or indent does not mark (Chukchi to Russian, a source note to its text) run 87-300 px (1-181 at 87). Gaps are counted between non-speck rows.",
+      "indent_px": "A paragraph's first row sits 204-219 px in (1-021, 1-022, 1-100, 1-205).",
+      "indent_tol": "Covers Radloff's column openers at 179 px (1-205) and the 219 px end.",
+      "heading_max_w": "Headings measured 141-1279 px; the column-label row is 2483. At 2000, a short unindented line cannot be centred, and an indented one would have to be 2566 px wide to be.",
+      "centre_tol": "Every heading on the six calibration pages sits within 20 px of the column's centre.",
+      "notes_pitch_ratio": "Footnotes are set smaller: their row pitch is ~95-110 px against ~120-130 px for the body (1-021, 1-216), while the numbered proverbs of 1-200, which open `1)` like a footnote, run at the body's pitch.",
+      "gutter_min_px": "The parallel blocks' gutters measure 63-113 px wide where they share a run of three or more lines (1-172-181, 1-202-211, and the two-column billet on 1-048), as `zones propose` reports them.",
+      "gutter_min_rows": "Three. Four loses real three-line blocks (1-178, 1-207, 1-211); the river three allows (1-351) is caught by gutter_max_offset instead.",
+      "gutter_max_offset": "Every gutter in the parallel texts sits within 18 px of the column's centre, and the 1-048 billet's unequal columns at +216. The one false gutter at three lines, a river of word spaces on 1-351, sits at +443.",
+      "rule_bridge_px": "A printed rule is found as the longest horizontal ink run in a structural gap, searched from the line above's centre, since a rule can sit inside that line's font-metric box (1-397). Several footnote rules are broken on the scan (1-047, 1-339 read 513 px unbridged); breaks of up to 10 px are closed. A line of type never makes a run anywhere near the lengths below.",
+      "footrule_min_px": "The footnote rule. Over every gap above a block opening `N)` (2026-11-07): 179 of 194 carry a run of 750-999 px starting within 60 px of the column's left edge, and the rest are fainter rules of 513-722 px starting at most 213 px in (1-214, 1-245, 1-437). The six with no such run are not footnotes: the proverbs of 1-200 and the numbered texts of 1-201 and 1-202. So: at least 450 px.",
+      "footrule_max_start": "Starting within 400 px of the column's left edge. The short centred rules under a heading start ~1280 px in (1-157, 1-200, 1-204).",
+      "footrule_max_end": "Ending within 1000 px of the column's left edge, which no full-width rule does. Of the 1138 gaps above a block that does not open `N)`, one has a run this shape (1-049, a document in the front matter), and the rule asks only of blocks that open `N)`.",
+      "stream_rule_min_px": "A full-width rule separates the Chukchi from its Russian on a Section I page, each continuing from the page before; the runs measure ~2940-2985 px against the 2986 px column. A Continued band under one is expected, so it raises no `continued` flag.",
+      "speck_max_chars": "A row of at most two characters, under speck_max_px both ways and not foot matter, is a mark the layer read as text even when it holds a letter or digit. Of the 39 such rows under 60 px tall in the book (2026-11-07), the rest are a running head's split-out `В.`/`Г.`, which joins the head, and the foot's signatures (`II`, `III`, `7`), which the foot takes first; these are stray `A`/`C`/`e`, superscript calls `1`-`4` on rows of their own, and glyphs from other scripts. Two of them, `C` on 1-288 and `1` on 1-335, made zero-height bands.",
+      "speck_max_px": "60, the store's min_zone_h_px. 1-049's centred `CI` (62 x 56 px) is wider and stays: it may be a heading.",
+      "missing_min_h": "Uncovered ink this tall or taller, holding no printed rule, raises the `uncovered` flag: a line of type with no row in the text layer (1-092's title). 60, the store's min_zone_h_px; a margin mark, a speck or the edge of a rule is shorter. Not tuned to a page count: it is a report for the reviewer, and judges nothing.",
+      "missing_edge_px": "Ink within this of the raster's top or bottom is the leaf's edge, not type: 123 pages carry a dark border in the scan's last rows (1-278, 46 px)."
+    },
+    "head_max_y": 700,
+    "foot_max_w": 200,
+    "number_pad": 40,
+    "gap_min_px": 80,
+    "indent_px": 210,
+    "indent_tol": 50,
+    "heading_max_w": 2000,
+    "centre_tol": 60,
+    "notes_pitch_ratio": 0.9,
+    "gutter_min_px": 60,
+    "gutter_min_rows": 3,
+    "gutter_max_offset": 300,
+    "rule_bridge_px": 10,
+    "footrule_min_px": 450,
+    "footrule_max_start": 400,
+    "footrule_max_end": 1000,
+    "stream_rule_min_px": 2700,
+    "speck_max_chars": 2,
+    "speck_max_px": 60,
+    "missing_min_h": 60,
+    "missing_edge_px": 5
+  },
+
+  "width_tolerance_px": 80,
+  "min_zone_h_px": 60,
+  "max_overlap_px": 16
+}

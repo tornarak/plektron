@@ -762,14 +762,25 @@ def _line_zone(rec: dict, zones: list[dict]) -> str:
     construction, and so is every OCR ALTO's since `migrate_coords`. The same
     assumption `generate._assign` and `context.head_lines` already make.
     """
+    i = line_band(rec, zones)
+    return zones[i]["label"] if i is not None else ""
+
+
+def line_band(rec: dict, zones: list[dict]) -> int | None:
+    """`_line_zone`'s rule, answering with the band's position in `zones`.
+
+    The zone review pass names bands by number, so it needs *which* band rather
+    than its label: two bands of one label are two answers there. One rule, so a
+    line belongs to the same band in `zones bands` as in every reader of the label.
+    """
     v, h = rec.get("vpos"), rec.get("height")
     if v is None or h is None:
-        return ""
+        return None
     mid = float(v) + float(h) / 2
-    for z in zones:
+    for i, z in enumerate(zones):
         if z["y0"] <= mid <= z["y1"]:
-            return z["label"]
-    return ""
+            return i
+    return None
 
 
 def _poly_bounds(points: str) -> tuple[int, int, int, int] | None:
@@ -1660,27 +1671,37 @@ FIG_TITLE, FIG_SUB = "BLOTTED FIGURE", "DO NOT TRANSCRIBE"
 FIG_TITLE_MIN, FIG_TITLE_MAX = 16, 220
 FIG_SUB_RATIO = 0.55
 
+# The right-hand gutter `--zones` adds: two bracket columns and a `12 c` label.
+ZONE_GUTTER = 230
+
 
 def _numbered_producer(ref: str, root: Path, store: str, scans: str,
                        lines: int, bands: int,
-                       dropped: int) -> provenance.Producer:
+                       dropped: int, zone_store: str = "") -> provenance.Producer:
     """`write_numbered_page`'s producer, built at either of its two exits.
 
     Separate because the early exit — a page whose ALTO has no drawable line —
     writes a *different* image from the same act, and an image that says nothing
     is exactly the one a reader would most want to ask about.
+
+    `--zones` is in the step, since it changes what the image shows.
     """
+    step = "harness ocr numbered" + (f" --zones {zone_store}" if zone_store else "")
+    inputs = {"ref": ref, "store": store, "lines": lines, "bands": bands,
+              "in_figures": dropped}
+    if zone_store:
+        inputs["zones"] = zone_store
     return _raster_producer(
-        "harness ocr numbered", "line indices drawn in a gutter, figures voided",
-        raster_path(ref, root, scans),
-        {"ref": ref, "store": store, "lines": lines, "bands": bands,
-         "in_figures": dropped})
+        step, "line indices drawn in a gutter, figures voided", raster_path(ref, root, scans),
+        inputs)
 
 
 def write_numbered_page(ref: str, out_path: Path, root: Path,
                         store: str, scans: str = "scans",
                         gutter: int = NUMBER_GUTTER,
-                        font_size: int = NUMBER_FONT) -> dict:
+                        font_size: int = NUMBER_FONT,
+                        zones: list[dict] | None = None,
+                        zone_store: str = "") -> dict:
     """The page raster with every line's ALTO `index` drawn in a left gutter.
 
     The label is the `page_lines` **index**, the same identity `ocr sheets`,
@@ -1710,8 +1731,10 @@ def write_numbered_page(ref: str, out_path: Path, root: Path,
     src = Image.open(raster_path(ref, root, scans)).convert("L")
     sx, sy = _scale_for(page, src.size)
 
-    canvas = Image.new("L", (src.width + gutter, src.height), 255)
+    right = ZONE_GUTTER if zones else 0
+    canvas = Image.new("L", (src.width + gutter + right, src.height), 255)
     canvas.paste(src, (gutter, 0))
+    page_right = gutter + src.width
     size = src.size
     src.close()
     draw = ImageDraw.Draw(canvas)
@@ -1769,6 +1792,26 @@ def write_numbered_page(ref: str, out_path: Path, root: Path,
                       fill=FIG_INK, font=sf)
             break
 
+    # **The zones go in a gutter of their own, on the right**, so the left one
+    # keeps meaning line indices and nothing is drawn over the type. Each band is a
+    # bracket over its extent, labelled with its number and its type's editor key;
+    # consecutive brackets alternate between two x positions, so two abutting bands
+    # read as two. A line beside no bracket is in no band. Zone geometry is raster
+    # geometry by construction, so no scale applies.
+    for k, z in enumerate(zones or []):
+        bx = page_right + (24 if k % 2 == 0 else 52)
+        y0, y1 = z["y0"] + 3, z["y1"] - 3
+        draw.line([(bx, y0), (bx, y1)], fill=0, width=5)
+        draw.line([(bx - 14, y0), (bx, y0)], fill=0, width=5)
+        draw.line([(bx - 14, y1), (bx, y1)], fill=0, width=5)
+        label = f"{z['band']} {z['key']}"
+        # Half again the index size: a band label is read once per band, against
+        # a page delivered at ~0.64x, and nothing beside it competes for the room.
+        zs = int(font_size * 1.5)
+        f = at(zs)
+        draw.text((page_right + 74, (z["y0"] + z["y1"]) / 2 - zs * 0.68),
+                  label, fill=0, font=f)
+
     rows, dropped = [], 0
     for rec in page_lines(alto, root):
         if rec.get("vpos") is None or rec.get("height") is None:
@@ -1792,7 +1835,7 @@ def write_numbered_page(ref: str, out_path: Path, root: Path,
     if not rows:
         out_path.parent.mkdir(parents=True, exist_ok=True)
         canvas.save(out_path, pnginfo=provenance.png_meta(_numbered_producer(
-            ref, root, store, scans, 0, 0, dropped)))
+            ref, root, store, scans, 0, 0, dropped, zone_store)))
         return {"ref": ref, "path": str(out_path), "lines": 0, "bands": 0,
                 "in_figures": dropped, "size": f"{canvas.width}x{canvas.height}"}
 
@@ -1880,7 +1923,7 @@ def write_numbered_page(ref: str, out_path: Path, root: Path,
         # lands in the leading; a descender it clips is still legible under it,
         # where a dark rule would take the glyph.
         if i:
-            draw.line([(0, top), (canvas.width, top)], fill=185, width=2)
+            draw.line([(0, top), (page_right, top)], fill=185, width=2)
         # Between the columns where they actually part, not at a share of the
         # gutter: a divider at an arbitrary x rules through type and asserts a
         # boundary the page does not have. Its *extent* is the lines' own, not the
@@ -1895,7 +1938,7 @@ def write_numbered_page(ref: str, out_path: Path, root: Path,
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
     canvas.save(out_path, pnginfo=provenance.png_meta(_numbered_producer(
-        ref, root, store, scans, n, len(bands), dropped)))
+        ref, root, store, scans, n, len(bands), dropped, zone_store)))
     return {"ref": ref, "path": str(out_path), "lines": n, "bands": len(bands),
             "in_figures": dropped, "size": f"{canvas.width}x{canvas.height}"}
 

@@ -19,6 +19,12 @@ known-false noise and would let a machine store block a build.
 Writes name `gt/zones/` through `save_zones`, which takes no store argument at
 all: there is no parameter in which a caller could name somewhere else. The only
 route from `mz/` to `gt/` is a human in the editor.
+
+**The review pass** sits between the two. An agent reads the rule's `mz/zones/`
+file and writes `review/PP-NNN/zones.json`, edits against it (`#llm`); the editor
+shows them applied, and a save still writes `gt/zones/`. `bands` is what the agent
+reads, `verdict` the gate on what it wrote, and `queue`/`claim`/`reconcile` the
+dispatch, the reading pass's machinery over a third track.
 """
 from __future__ import annotations
 
@@ -31,6 +37,7 @@ from ..render import progress
 from ._common import (
     action,
     add_jobs,
+    arg,
     group,
     one_page_only,
     opt,
@@ -70,7 +77,8 @@ def register(cli):
               "gt/zones/ — a vertical partition of the text column, two "
               "clicks per zone, x taken from config/zones.json and "
               "never from the pointer — plus the segmenter trained on it",
-              sections=("The store", "The segmenter"), section="The passes")
+              sections=("The store", "The segmenter", "The review pass"),
+              section="The passes")
 
     def store_flag(p):
         return opt(p, "--store", type=click.Choice(("gt", "mz")), default="gt",
@@ -144,6 +152,64 @@ def register(cli):
                    help=DECODE_HELP)
     opt(p, "--device", default="auto", help=DEVICE_HELP)
 
+    p = action(g, "propose", run_propose, section="The segmenter", help="derive zones by rule off the text layer's rows "
+            "(mz/ocr/, as `ocr import` wrote it) into mz/zones/ — the machine "
+            "store, never gt/. A rule, not a model: its file says `kind: rule` "
+            "and carries every threshold it used. Only a text whose "
+            "config/zones.json holds a `text_rule` block can be proposed")
+    refs_arg(p, all_="every page marked train or eval",
+             extra=". A ruled leaf is skipped even when named: it holds no zone "
+                   "file in either store, and a rule has no case to excuse")
+    opt(p, "--commit", is_flag=True,
+                   help="write mz/zones/; report only otherwise")
+    opt(p, "--force", is_flag=True,
+                   help="replace a page's existing mz/zones/ file, whichever "
+                        "producer wrote it")
+
+    p = action(g, "bands", run_bands, section="The review pass",
+               help="one page's mz/zones/ file as the review pass edits it: its "
+               "digest and flags, each band numbered with the line indices whose "
+               "vertical centre it holds, the lines no band holds, and the declared "
+               "types. Read off the file, never re-derived, so it describes the "
+               "file a verdict is against. Measurement — exit 0; exit 2 for a page "
+               "with no mz/zones/ or mz/ocr/ file")
+    refs_arg(p)
+
+    p = action(g, "verdict", run_verdict, section="The review pass",
+               help="the gate on review/PP-NNN/zones.json: it must name the rule's "
+               "file as it now is, every op must refer to a band or line the file "
+               "has, no two ops may conflict, every op says why, and the bands it "
+               "yields must pass the zone errors `check` raises. Errors the rule's "
+               "own file already carries are reported as inherited and fail "
+               "nothing. Exit 1 when any named verdict fails or is missing")
+    refs_arg(p, all_="every page holding a review/PP-NNN/zones.json")
+
+    p = action(g, "queue", run_queue, section="The review pass",
+               help="validate a batch for the zone review pass, write it to "
+               "review/_zones_queue.txt, and print the one prompt every reviewer "
+               "gets. Refuses a ruled leaf, a page keyed in gt/zones/, a page with "
+               "no rule file or one predating the flags, and a page already holding "
+               "a fresh verdict, naming the remedy. Exit 1 on a refusal")
+    refs_arg(p, all_="every page whose rule file carries a flag, less those "
+                     "refused, which are listed")
+    opt(p, "--sample", type=int, default=0,
+        help="with --all, add N unflagged pages drawn by --seed: what measures "
+             "what the flags miss")
+    opt(p, "--seed", type=int, default=0, help="the --sample draw's seed")
+    opt(p, "--note", type=str, default=None,
+        help="a sentence appended to every page block in this batch")
+
+    action(g, "claim", run_claim, section="The review pass",
+           help="take the next unclaimed ref off review/_zones_queue.txt and print "
+           "that page's block. Takes no ref, which is the point. Exit 1 when the "
+           "queue is out")
+
+    p = action(g, "reconcile", run_reconcile, section="The review pass",
+               help="what the batch came back with — each ref reviewed, CLAIMED "
+               "but with no verdict, or unclaimed. Exit 1 naming those that "
+               "produced nothing")
+    refs_arg(p)
+
     p = action(g, "delete", run_delete, section="The store", help="un-key a page — remove its file from gt/zones/ and "
             "every mark that referred to it (split, rule and ink exemptions). The "
             "one thing the store could not express: `save_zones` refuses an empty "
@@ -156,6 +222,20 @@ def register(cli):
     refs_arg(p)
     opt(p, "--commit", is_flag=True,
                    help="actually remove; preview otherwise")
+
+    p = action(g, "mark", run_mark, section="The store", help="say what each named leaf is — "
+            "a text page's split (train, eval) or a leaf kind (plate, blank, "
+            "cover, map, apparatus) — the editor's ruling for many leaves at "
+            "once, as off a `scans sheet` contact sheet. A leaf kind drops the "
+            "page's zone files in both stores, with `.prev` and the journal, "
+            "as the editor does")
+    from ..zones import SPLITS
+    arg(p, "split", type=click.Choice(SPLITS), metavar="SPLIT")
+    # No `--all`, for `delete`'s reason: ruling the whole book one kind is not a
+    # thing anyone means, and it would clear every keyed page in the store.
+    refs_arg(p)
+    opt(p, "--commit", is_flag=True,
+                   help="actually write the marks; preview otherwise")
 
     p = action(g, "diff", run_diff, section="The store", help="what differs between gt/zones/ and mz/zones/ — paired "
             "by vertical overlap, reported as only_in_gt (a missed region), "
@@ -272,7 +352,8 @@ def run_edit(a) -> int:
 
     session = {"start": start, "itinerary": itin,
                "itinerary_name": a.itinerary or ""}
-    joined = web.handoff("zones", session, open_at=f"/?ref={start}", port=a.port)
+    joined = web.handoff("zones", session, open_at=f"/?ref={start}", port=a.port,
+                         root=a.root)
     if joined:
         import webbrowser
 
@@ -329,6 +410,186 @@ def run_predict(a) -> int:
     # Same contract as `assemble`'s missing_blot: a page the model was asked
     # about and could not be shown is a gap in the run, not a quiet omission.
     return 1 if rep["skipped_no_blot"] else 0
+
+
+def run_propose(a) -> int:
+    from .. import zones_rule
+    from ..zones_config import ConfigError
+
+    zmod, _ = _mod()
+    refs = page_refs(a)
+    if not refs:
+        splits = zmod.load_splits(a.root)
+        refs = sorted((r for r, s in splits.items() if s in zmod.TEXT_SPLITS),
+                      key=zmod.parse_ref)
+    try:
+        with progress("proposing") as tick:
+            rows, unzoned = zones_rule.propose_many(refs, a.root, commit=a.commit,
+                                                    force=a.force, tick=tick)
+    except ConfigError as e:
+        raise click.UsageError(str(e)) from None
+    out(a, rows, name="pages")
+    if unzoned:
+        out(a, unzoned, name="unzoned", heading=True)
+    return 0
+
+
+def run_bands(a) -> int:
+    from .. import zones as zmod
+    from .. import zones_review as zr
+    from .. import zones_rule
+    from ..lines import ink_mask
+    from ..zones_config import load_config
+
+    cfg = load_config(a.root)
+    heads, bands, unbanded, uncovered = [], [], [], []
+    for ref in page_refs(a):
+        try:
+            b = zr.baseline(ref, a.root)
+        except zr.Missing as e:
+            raise click.UsageError(str(e)) from None
+        # Ink no band covers that looks like a line: what the review pass must
+        # be shown, since no line index can point at a line the layer lacks.
+        if "text_rule" in cfg:
+            ink = ink_mask(zmod.scan_for(b["ref"], a.root))
+            uncovered += [{"ref": b["ref"], **m} for m in zones_rule.missing_lines(
+                b["ref"], b["zones"], a.root, cfg,
+                zmod.page_windows(b["ref"], a.root, cfg, ink), ink)]
+        heads.append({"ref": b["ref"], "file": b["file"], "sha256": b["sha256"],
+                      "bands": len(b["bands"]), "producer": b["producer"],
+                      "version": b["version"],
+                      "flags": "(predates flags)" if b["flags"] is None
+                      else b["flags"] or "none"})
+        bands += [{"ref": b["ref"], **r} for r in b["bands"]]
+        unbanded += [{"ref": b["ref"], **r} for r in b["unbanded"]]
+    out(a, heads, name="files")
+    out(a, bands, name="bands", heading=True)
+    if unbanded:
+        out(a, unbanded, name="unbanded", heading=True)
+    if uncovered:
+        out(a, uncovered, name="uncovered", heading=True)
+    out(a, zr.types_table(cfg), name="types", heading=True)
+    return 0
+
+
+def run_verdict(a) -> int:
+    from .. import zones_review as zr
+    from ..paths import page_refs_under, verdict_path
+    from ..zones_config import load_config
+    from ._common import verdict
+
+    refs = page_refs(a)
+    if not refs:
+        refs = [r for r in page_refs_under(a.root) if verdict_path(r, a.root).exists()]
+    cfg = load_config(a.root)
+    pages, errors, inherited = [], [], []
+    with progress("judging") as tick:
+        recs = [zr.issues(ref, a.root, cfg) for ref in ptrack(refs, tick)]
+    for rec in recs:
+        v = rec["verdict"] or {}
+        got = rec["zones"]
+        pages.append({"ref": rec["ref"], "edits": len(v.get("edits") or []),
+                      "notes": len(v.get("notes") or []),
+                      "errors": len(rec["errors"]),
+                      "labels": " ".join(z["label"] for z in got) if got else ""})
+        errors += [{"ref": rec["ref"], **e} for e in rec["errors"]]
+        inherited += [{"ref": rec["ref"], **e} for e in rec["inherited"]]
+    out(a, pages, name="pages")
+    if errors:
+        out(a, errors, name="errors", heading=True)
+    if inherited:
+        out(a, inherited, name="inherited", heading=True)
+    bad = sorted({e["ref"] for e in errors})
+    if bad:
+        return verdict(a, 1, f"{len(bad)} of {len(refs)} verdicts fail: "
+                             f"{', '.join(bad)}")
+    return verdict(a, 0, f"{len(refs)} verdicts pass")
+
+
+def _flagged(a) -> list[str]:
+    """`queue --all`: the flagged pages, plus `--sample` unflagged ones by seed."""
+    import random
+
+    from .. import provenance
+    zmod, _ = _mod()
+    flagged, plain = [], []
+    for ref in zmod.zone_refs(a.root, zmod.MZDIR):
+        p = provenance.read_producer(zmod.alto_for(ref, a.root, zmod.MZDIR))
+        f = p.inputs.get("flags") if p else None
+        if f is None:
+            continue           # predates the flags, or not the rule's file
+        (flagged if f else plain).append(ref)
+    rng = random.Random(a.seed)
+    extra = rng.sample(plain, min(a.sample, len(plain)))
+    return sorted(flagged + extra, key=zmod.parse_ref)
+
+
+def run_queue(a) -> int:
+    from ..dispatch import ZONING, Unready, queue_refs, zoning_build
+
+    refs = page_refs(a)
+    if a.sample and refs:
+        raise click.UsageError("--sample draws beside --all and means nothing alone")
+    if not refs:
+        # A refused page is left out of an --all batch rather than failing it:
+        # the selection is the tool's, so the refusal is too. Named refs refuse.
+        refs, left = [], []
+        with progress("selecting") as tick:
+            for r in ptrack(_flagged(a), tick):
+                try:
+                    zoning_build(r, a.root)
+                    refs.append(r)
+                except Unready as e:
+                    left.append({"ref": r, "why": str(e)})
+        if left:
+            out(a, left, name="left_out", heading=True)
+        if not refs:
+            raise click.ClickException("nothing to queue: every flagged page was "
+                                       "refused")
+    try:
+        rec = queue_refs(refs, a.root, note=a.note, track=ZONING)
+    except Unready as e:
+        raise click.ClickException(str(e)) from None
+    if getattr(a, "json", False):
+        out(a, [rec])
+        return 0
+    click.echo(rec["prompt"])
+    if rec["resynced"]:
+        click.echo(f"\nthe reviewer's transcluded contract was out of date and has "
+                   f"been rewritten from {', '.join(rec['resynced'])}. The agent "
+                   "file is tracked; commit it.", err=True)
+    n = len(rec["queued"])
+    click.echo(f"\n{n} queued: {', '.join(rec['queued'])}. Send that prompt "
+               f"unedited and identical to each of {-(-n // 8)} reviewers, "
+               "staggering the first launch about ten seconds.", err=True)
+    return 0
+
+
+def run_claim(a) -> int:
+    from ..dispatch import ZONING, claim
+    rec = claim(a.root, ZONING)
+    if rec is None:
+        click.echo("nothing left to claim — the queue is empty or every ref on it "
+                   "is taken. Stop and say so; do not pick a page yourself.",
+                   err=True)
+        return 1
+    if getattr(a, "json", False):
+        out(a, [rec])
+    else:
+        click.echo(rec["page_block"])
+    return 0
+
+
+def run_reconcile(a) -> int:
+    from ..dispatch import ZONING, reconcile
+    rows = reconcile(page_refs(a), a.root, ZONING)
+    out(a, rows, name="refs")
+    missing = [r["ref"] for r in rows if r["state"] != ZONING.done]
+    if missing:
+        click.echo(f"{len(missing)} of {len(rows)} came back with no verdict: "
+                   f"{', '.join(missing)}. `zones verdict` judges the rest.", err=True)
+        return 1
+    return 0
 
 
 def run_score(a) -> int:
@@ -408,6 +669,13 @@ def run_delete(a) -> int:
         rows = [(r, zmod.delete_zones(r, a.root, commit=a.commit))
                 for r in ptrack(page_refs(a), tick)]
     out_per_ref(a, rows)
+    return 0
+
+
+def run_mark(a) -> int:
+    zmod, _ = _mod()
+    rows = zmod.mark(page_refs(a), a.split, a.root, commit=a.commit)
+    out(a, rows, name="marks")
     return 0
 
 

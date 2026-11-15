@@ -151,15 +151,11 @@ def _app(root):
     themselves. Copying the real file rather than writing a stub keeps this
     honest: the shapes under test are the ones the editor is configured with.
     """
-    import shutil
-    from pathlib import Path
-
+    from conftest import write_zone_config
     from starlette.testclient import TestClient
 
     from harness.web import Sessions, create_app
-    repo = Path(__file__).resolve().parent.parent.parent / "jesup" / "bogoras-chukchi"
-    (root / "config").mkdir(parents=True, exist_ok=True)
-    shutil.copy(repo / "config" / "zones.json", root / "config")
+    write_zone_config(root)
     return TestClient(create_app(root, Sessions(root=root), editor="zones"))
 
 

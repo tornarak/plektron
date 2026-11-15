@@ -6,6 +6,8 @@ its work to the server already running, and how the page says it is finished.
 """
 from __future__ import annotations
 
+from pathlib import Path
+
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import RedirectResponse
 from pydantic import BaseModel, Field
@@ -27,6 +29,7 @@ class Session(BaseModel):
 
     session: dict = Field(default_factory=dict)
     open_at: str = ""
+    root: str = ""
 
 
 @router.post("/session/{editor}")
@@ -46,6 +49,15 @@ def set_session(editor: str, body: Session, request: Request) -> dict:
         # list.
         raise HTTPException(404, f"no editor {editor!r} — have "
                                  f"{', '.join(sorted(EDITORS)) or '(none)'}")
+    # **A session for another text is refused, never adopted.** One process
+    # serves one root, and a session carries no stores of its own: joined, a
+    # `zones edit` for one text walked the other text's pages under its own
+    # refs, and a save would have written into the wrong `gt/`. Nothing on the
+    # page says which root is behind it, so this is the only place it can fail.
+    mine = Path(request.app.state.root).resolve()
+    if body.root and Path(body.root).resolve() != mine:
+        raise HTTPException(409, f"this server serves {mine}, not "
+                                 f"{Path(body.root).resolve()}")
     request.app.state.sessions.set(editor, body.session)
     ed = EDITORS[editor]
     # `open_at` is editor-relative, as it is in `url_for` — the prefix is added

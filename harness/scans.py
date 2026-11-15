@@ -1349,3 +1349,83 @@ def swap(tree: Path, root: Path = Path("."), commit: bool = False) -> dict:
     rep["swap"]["discarded"] = len(discarded)
     rep["swap"]["committed"] = True
     return rep
+
+
+# --- whole-leaf contact sheets ------------------------------------------------
+
+#: A tile's box. 6 x 4 of these, with their label strips and gutters, come to
+#: ~1870 x 1890 — inside the ~1900 x 1960 that `ocr sheets` measured as the
+#: largest image delivered without being resampled (VERBS.md, `--height`).
+SHEET_COLS, SHEET_ROWS = 6, 4
+TILE_W, TILE_H = 300, 430
+TILE_LABEL_H, TILE_GAP = 28, 10
+
+
+def leaf_sheets(refs: list[str], root: Path = Path("."), out_dir: Path | None = None,
+                tick=None) -> list[dict]:
+    """Tile whole leaves, downscaled, into labelled contact sheets.
+
+    **The question a whole leaf answers is what it is**: blank, a cover, a title,
+    a list of contents, prose. That is a question about the page's shape, not
+    its letters, and it is answered at a glance. Twenty-four leaves on a sheet is
+    one image where twenty-four `Read`s were, which is what the front matter of a
+    new text costs to sort. It is not a reading instrument: nothing here is
+    legible at type size, and `ocr sheets` and `ocr zoom` are the rungs for that.
+
+    Each tile is labelled with its ref and **the kind the page is ruled**, where
+    `gt/zones/`'s split lists rule one, so the same sheet that sorts unruled
+    leaves audits ruled ones. The labels are the record a reader reports
+    against. A sheet is named for its first and last ref, so two selections
+    cannot overwrite each other and a repeated one rewrites its own file.
+
+    A raster missing from `scans/` is a tile saying so rather than a gap, since
+    a gap would silently move every later leaf one tile along.
+    """
+    from PIL import Image, ImageDraw, ImageFont
+
+    from .figures import FONT_PATH, _sheet_producer
+
+    out_dir = Path(out_dir) if out_dir else paths.leaf_sheets_dir(root)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    try:
+        font = ImageFont.truetype(FONT_PATH, 20)
+    except OSError:
+        font = ImageFont.load_default()
+    kinds = _leaf_kinds(root)
+    per = SHEET_COLS * SHEET_ROWS
+    cell_w, cell_h = TILE_W + TILE_GAP, TILE_H + TILE_LABEL_H + TILE_GAP
+    rows = []
+    for start in range(0, len(refs), per):
+        chunk = refs[start:start + per]
+        n_rows = -(-len(chunk) // SHEET_COLS)
+        sheet = Image.new("RGB", (SHEET_COLS * cell_w + TILE_GAP,
+                                  n_rows * cell_h + TILE_GAP), (204, 204, 204))
+        draw = ImageDraw.Draw(sheet)
+        for i, ref in enumerate(chunk):
+            x = TILE_GAP + (i % SHEET_COLS) * cell_w
+            y = TILE_GAP + (i // SHEET_COLS) * cell_h
+            p = paths.scan_for(ref, root)
+            try:
+                with Image.open(p) as im:
+                    im.draft("RGB", (TILE_W * 2, TILE_H * 2))
+                    im = im.convert("RGB")
+                    im.thumbnail((TILE_W, TILE_H), Image.Resampling.LANCZOS)
+                sheet.paste(im, (x + (TILE_W - im.width) // 2, y))
+            except OSError:
+                draw.rectangle([x, y, x + TILE_W, y + TILE_H], fill=(255, 255, 255))
+                draw.text((x + 10, y + 10), "no raster", fill=(160, 0, 0), font=font)
+            kind = kinds.get(ref, "")
+            draw.text((x + 2, y + TILE_H + 3), f"{ref}  {kind}".rstrip(),
+                      fill=(0, 0, 0), font=font)
+            if tick:
+                tick()
+        name = f"leaves-{chunk[0]}_{chunk[-1]}.png"
+        path = out_dir / name
+        sheet.save(path, pnginfo=provenance.png_meta(_sheet_producer(
+            "harness scans sheet", "whole leaves tiled for sorting",
+            {"scans": str(farms.SCANS), "kinds": "gt/zones split lists",
+             "n": len(chunk), "first": chunk[0], "last": chunk[-1]})))
+        rows.append({"sheet": str(path), "first": chunk[0], "last": chunk[-1],
+                     "leaves": len(chunk),
+                     "ruled": sum(1 for r in chunk if r in kinds)})
+    return rows

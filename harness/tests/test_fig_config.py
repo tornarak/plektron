@@ -22,7 +22,9 @@ PROJECT = REPO / "jesup" / "bogoras-chukchi"
 
 
 def _write(root: Path, mutate) -> Path:
-    cfg = json.loads((PROJECT / zc.CONFIG).read_text(encoding="utf-8"))
+    # The composed config, not the text's own file: the figure track is the
+    # workspace tier's, and the text's tier holds only its geometry.
+    cfg = zc.raw_config(PROJECT)
     mutate(cfg)
     p = root / zc.CONFIG
     p.parent.mkdir(parents=True, exist_ok=True)

@@ -23,6 +23,7 @@ import pytest
 
 from harness.dispatch import AGENT, TRANSCLUDE, Unready, sync_transcludes
 from harness.dispatch import COLLATE_AGENT as COLLATOR
+from harness.dispatch import ZONE_AGENT as REVIEWER
 
 REPO = Path(__file__).resolve().parent.parent.parent
 
@@ -48,6 +49,10 @@ CARRIES = {
     # still keeps it: it reads glyphs off the raster, which is what the spec is
     # for.
     COLLATOR: set(),
+    # The zone reviewer carries the editor's rulings for the 1900 book, which
+    # are what its every edit must cite; the types' descriptions reach it from
+    # `zones bands`, out of the config that is their one home.
+    REVIEWER: {".claude/skills/review-zones/rulings.md"},
 }
 
 

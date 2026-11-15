@@ -423,6 +423,58 @@ def collate_untouched(ref: str, root: Path = Path(".")) -> bool:
             and src.read_bytes() == dst.read_bytes())
 
 
+# ---------------------------------------------------------------------------
+# The zoning track: an agent reviews the rule's zones (`zones propose`) and writes
+# a verdict, `review/PP-NNN/zones.json`, against them (`harness/zones_review.py`).
+#
+# **Its refusals are about rank.** A page keyed in `gt/zones/` is a human's, and an
+# agent's opinion of the rule's file there would be a review of a file nobody will
+# open again; a fresh verdict is a page already reviewed against these bytes.
+
+ZONE_DOC = Path(".claude/skills/review-zones/dispatch.md")
+ZONE_QUEUE = Path("review/_zones_queue.txt")
+ZONE_CLAIMS = Path("review/_zones_claims")
+ZONE_AGENT = Path(".claude/agents/zones-reviewer.md")
+
+
+def zoning_build(ref: str, root: Path = Path("."), note: str | None = None) -> dict:
+    """The page block for one zone review, or `Unready` naming the remedy."""
+    from . import zones as zmod
+    from . import zones_review as zr
+    r = norm_ref(ref)
+    if zmod.is_exempt(r, root):
+        raise Unready(
+            f"{r}: ruled `{_kind(r, root)}` in gt/zones/ — not a text page, so it "
+            "holds no zones in either store and there is nothing to review.")
+    if zmod.has_zones(r, root, zmod.ZONEDIR):
+        raise Unready(
+            f"{r}: gt/zones/{stem_for(r, root)}.xml exists — a human has keyed this "
+            "page, and the rule's file under it is nobody's to review any more.")
+    try:
+        base = zr.baseline(r, root)
+    except zr.Missing as e:
+        raise Unready(str(e)) from None
+    if base["flags"] is None:
+        raise Unready(
+            f"{r}: {base['file']} predates the review flags (rule version "
+            f"{base['version'] or 'unrecorded'}). `harness zones propose {r} "
+            "--commit --force` rewrites it.")
+    if zr.fresh(r, root):
+        raise Unready(
+            f"{r}: review/{r}/zones.json already holds a verdict against this "
+            "file. Delete it to review the page again.")
+    text = template(repo_root(), doc_path=ZONE_DOC).format(
+        ref=r, flags=base["flags"] or "none", bands=len(base["bands"]),
+        unbanded=len(base["unbanded"]), note=f" {note.strip()}" if note else "")
+    return {"ref": r, "flags": base["flags"], "bands": len(base["bands"]),
+            "page_block": text}
+
+
+def _verdict(ref: str, root: Path) -> Path:
+    from .paths import verdict_path
+    return verdict_path(ref, root)
+
+
 AGENT = Path(".claude/agents/groundtruth-reader.md")
 TRANSCLUDE = re.compile(
     r"^<!-- transclude: (?P<src>\S+) -->$.*?^<!-- /transclude -->$",
@@ -568,7 +620,11 @@ COLLATION = Track("collation", COLLATE_DOC, COLLATE_AGENT, COLLATE_QUEUE,
                   done="collated", missing="CLAIMED, no TEI",
                   on_queue=collate_prepare, on_claim=collate_open,
                   untouched=collate_untouched)
-TRACKS = {t.name: t for t in (READING, COLLATION)}
+# No hooks: `claim` writes nothing, so the verdict's presence means the agent came
+# back. Whether what it came back with is sound is `zones verdict`'s question.
+ZONING = Track("zoning", ZONE_DOC, ZONE_AGENT, ZONE_QUEUE, ZONE_CLAIMS,
+               zoning_build, _verdict, done="reviewed", missing="CLAIMED, no verdict")
+TRACKS = {t.name: t for t in (READING, COLLATION, ZONING)}
 
 
 def queue_path(root: Path = Path("."), track: Track = READING) -> Path:

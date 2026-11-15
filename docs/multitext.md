@@ -39,8 +39,9 @@ resolution, because a shift plan cannot express a factor of two. Rasters are
 kept at 600 dpi rather than decimated: a 2:1 resample of a bitonal master is a
 render, and `scans/` is cut, never rendered. `layout.px(root, n)` scales a
 300-dpi-calibrated pixel threshold to the text. **No caller uses it yet**: the
-thresholds in `lines.py` and `zones.py` still assume 300 dpi, and moving each
-through it is the step before the zone track runs on this text.
+thresholds in `lines.py` and `zones.py` still assume 300 dpi. The 1900 text's
+zones are not meant to wait on that move ("Zoning by rule", below), but any
+raster-reading check run on it does.
 
 ## The text layer
 
@@ -59,6 +60,20 @@ the PDF; a glyph in its text layer is a guess.
 with `ocr sheets`: every crop holds its whole line. The running head splits —
 "В." falls out of its row, being set in another size — and the layer's own
 space before punctuation comes through as the OCR read it.
+
+**But the boxes drift against the scan, and the import corrects it.** The
+master is placed at exactly `dpi / 72` on every page, yet the layer's boxes sit
+up to ~100 px off the ink by a page's foot, by an amount that differs page to
+page, runs both ways, and can differ between the body and its footnotes: the
+digitizer's OCR placed its words with a drift of its own. A zone's edge drawn
+from a drifted box cut off the ink of the line it held (`1-440`), and a page's
+source note looked like a line with no row (`1-243`). `ocr import` moves each
+box vertically onto the ink (`textlayer.align`: a line fitted down the page
+through each full row's baseline-to-ink offset, then a shift per block of rows),
+recording the fit; `VERBS.md` has the method. Over the 451 text pages, rows
+sitting on another line's ink fell from 770 to 161, and the zones' uncovered
+wide bands from 65 to 48. The residue is mostly footnotes that follow the body
+with no gap (`1-299`), which the `uncovered` flag sends to the review pass.
 
 **The layer is unreliable exactly where the firewall says it will be.** The
 printed Chukchi mixes scripts inside a word — a hooked `Ӄ`, Latin `a l w j`,
@@ -136,6 +151,124 @@ proposal on each run and stored nowhere, so `decision.json` stays a record of
 human acts. `prose_only` admits a line, it does not select tokens, so a native
 form no glyph marks (`терк-арм`) passes it. Only the reader's `native` list
 keeps such a form for the editor.
+
+## Zoning by rule, off the text layer
+
+The editor's call (2026-11-07): the 1900 book is set formulaically enough that
+its zones can be derived from `mz/ocr/` (the text layer's rows, `ocr import`)
+and the scan, so no segmenter is trained on it and none is keyed from scratch.
+**`harness zones propose`** is that derivation (`harness/zones_rule.py`). It is
+a **rule**, so its output goes to `mz/zones/`, `#mz`, with `kind: rule` and
+every threshold it used in its provenance, and it reaches `gt/zones/` only
+through `zones edit`, where the editor ratifies or corrects each page. The
+thresholds are this book's, in its `config/zones.json` `text_rule` block, each
+beside what it was measured on: `ocr lines` over all 451 text pages, the rule's
+own report, and six pages read band by band (`1-021`, `1-022`, `1-100`,
+`1-177`, `1-200`, `1-205`).
+
+What the rows show (600 dpi), and what the rule does with it:
+
+- **Two column measures.** The column is ~2980–2995 px wide on every full row,
+  and its left edge moves with the scan. Zones span the ink-anchored window
+  `zones check` holds them to; the indent, centring, a margin number and the
+  gutter search are read against the rows' own column, the median left edge of
+  the full rows. The two differ by the font-metric-to-ink offset, 33–38 px on
+  five of the six pages, which is reported and gates nothing.
+- **A line, not a row, is the unit.** The layer can leave two rows on one
+  printed line (the head's `В.`, set in another size; a broken row), and rows
+  whose centres coincide are one line. Neighbouring full lines overlap often and
+  harmlessly: a quote mark or an accent makes a box ~150 px tall against ~100,
+  and 852 adjacent pairs overlap by more than 16 px. So overlap refuses nothing,
+  and where two bands' lines overlap they meet at the midpoint.
+- **A speck** (a row with no letter or digit: `/`, `.`, `-`) is left unzoned, so
+  it cuts no gap.
+- **The running head** is the first line when it starts above y = 700 (449 of
+  451 pages); the chapter openers have none.
+- **A paragraph's first line** is indented ~210 px. The line before one is often
+  short, but a full line can end a paragraph too, so only the indent is evidence.
+- **A heading** is a short line centred in the column (`7.`, `Бумнін ваырӄын.`,
+  `Примѣчанія къ №43.`, all within 20 px of centre). No gap is required: `44.`
+  sits 86 px over its title.
+- **A gap of 80 px or more ends a band.** It is the break that nothing else
+  marks: on a **Section I** page the Chukchi runs first, then its Russian
+  translation full-width, each continuing from the page before, and the
+  Russian often resumes unindented under a rule the layer does not read (87–300
+  px). Leading within a stream reaches 61–63 px in the front matter and
+  dialogue.
+- **The footnotes** open `N)` under the footnote rule: a short printed rule
+  from the column's left edge, found as the longest horizontal ink run in the
+  gap above (a line of type never makes one). Every one of the 188 blocks
+  opening `N)` under a gap carries one, 513–999 px from within 213 px of the
+  edge, and none of the six that are not footnotes does (the proverbs of
+  `1-200`, the numbered texts of `1-201`, `1-202`). The block and everything
+  below it is the apparatus: on `1-048` the two documents a footnote introduces
+  are printed in it. Where no rule is found, the last block opening `N)` is
+  still footnotes if it is set smaller (a pitch of ~95–110 px against the
+  body's ~120–130). Pitch alone missed `1-278`, whose two notes run at the
+  body's pitch. The in-text call is no witness: the layer drops its digit
+  (`зимушку )`, `1-216`).
+- **A full-width rule** separates the Chukchi from its Russian on a Section I
+  page (~2940–2985 px). A `MainZone-Continued` band under one is expected and
+  raises no `continued` flag.
+The editor's rulings on what each of this book's structures is zoned as — margin
+line numbers, the *Примѣчанія* notes, parallel columns, foot matter — are
+`.claude/skills/review-zones/rulings.md`, their one home, since the review agent
+carries that file whole. What the rule does to follow them:
+
+- **Foot matter**: walking up from the last line, up to two lines that are a lone
+  number or numeral, at most 200 px wide and inside the column.
+- **Margin numbers**: a number leading a row that starts 40 px or more left of
+  the column, or trailing one that ends as far right (`5 чашчушачһын…`, 60–104 px
+  left; `… нумэкэт- 5`, a row 3102 px wide against the 2990 px measure, on a
+  recto), or a row of its own outside the column (`15`, `1-177` l34). The line is
+  measured as if the number were off it.
+- **The notes**: the page is in them from a «Примѣчанія къ №» heading, or from
+  its top when its first marker is an opener (a note carried over), until a
+  heading that is not a notes heading. In them, only an opener or an indented
+  fresh line starts a band. **The rule reads one page at a time**, so a page
+  wholly inside one long note shows neither sign and falls to the indent rule.
+- **Parallel columns**: the text layer reads each row across both columns
+  (`1-177` l8: `Эпээ - цэмкын нумэкэткін, ъмыló Энээ-рэмкын нумэкэткін, ъмыó`), so
+  the band is found by the gutter, a vertical white run through the band's middle
+  on the scan, which the rows cannot show: three or more lines sharing one at
+  least 60 px wide, with ink on both sides of it in each line, within 300 px of
+  the column's centre. The parallel texts' gutters measure 63–113 px and sit
+  within 18 px of centre (`1-172`–`181`, `1-202`–`211`), and the two-column billet
+  on `1-048` at +216; the one river of word spaces that lines up over three lines
+  (`1-351`) sits at +443. **Two lines are not enough**, so the oath's two-line
+  tail on `1-205` is not found.
+
+The text layer joins margin marks to rows: `1-100` l13 spans 4220 px from
+x = −6 because a `}` in the margin opens it. A row that overhangs the column on
+one side by more than 40 px, with a token of at most three characters at that
+end, carries a margin mark, and is measured as if the mark were off it: 13 of
+the 14 rows rule version 2 found too wide were one (`зо` for 30, `5.`, `-70`,
+`/`, `}`, `L`, `T`, `•`). A line still wider than the column is reported and
+left unzoned, and the band it falls in ends there; the one left is `1-088` l8,
+whose number the layer fused into the word (`30јанөт`). It is not split by
+guesswork.
+
+**The review pass, between the rule and the editor.** The editor read the rule's
+output on six pages and found it sound, with rough edges an agent could smooth.
+An agent's edit is `#llm`, so it cannot live in `mz/`, which the next `propose
+--force` regenerates: it lives in `review/PP-NNN/zones.json`, tracked, as edits
+against the rule's numbered bands (relabel, merge, split at a line, absorb an
+unzoned line), each with its reason, and naming the rule file's digest so it goes
+stale visibly. `zones verdict` gates it; `zones edit` shows it applied in the
+`llm` view, and a human save is still what writes `gt/zones/`. The rule records
+`flags`, its page-level reasons a band may be wrong (`unzoned`, `parallel`,
+`notes`, `continued`, `fallback`), and `zones queue --all --sample N` deals
+those pages out with N unflagged ones beside them. The agent reviewed the rule's
+output, so its agreement is not a second witness. Dispatch is
+`.claude/skills/review-zones/`, the contract `.claude/agents/zones-reviewer.md`.
+
+**Open for the generator, not the zones:** two streams on one page means a
+page-top `MainZone-Continued` can continue either of them. `tei generate` joins
+a continuation to the page before's last paragraph, which on a Section I page is
+the Russian, while the page's first band is the Chukchi. Nothing in the zones
+says which band is which stream: both are `MainZone-Continued`. Whether the
+stream becomes a label, a field, or something the generator reads off the
+order is undecided, and it is not the rule's to decide.
 
 ## Waits on the editor
 
