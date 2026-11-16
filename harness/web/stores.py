@@ -608,10 +608,14 @@ def native(root: Path) -> dict:
     not wait on collation: 609 forms with the pages and printed lines they occur
     on, out of a store a human has already been through. A whole-corpus parse,
     so it is read once per change to `gt/ocr/` rather than once per card. Keyed
-    on the fold table too, since the buckets are drawn by it.
+    on the fold table too, since the buckets are drawn by it, and on the key
+    table (`config/handle.json`, the text's or its workspace's), since the keys
+    are spelled by it.
     """
-    from ..marks import CONFIG
-    return _native(str(root), stamp(_gt_ocr_files(root) + [Path(root) / CONFIG]))
+    from ..layout import shared
+    from ..marks import CONFIG, HANDLE
+    return _native(str(root), stamp(_gt_ocr_files(root) + [Path(root) / CONFIG,
+                                                          shared(Path(root), HANDLE)]))
 
 
 @lru_cache(maxsize=MAXSIZE)

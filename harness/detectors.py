@@ -331,7 +331,13 @@ SUFFIX_MARK_DROPS: tuple[tuple[str, str, tuple[str, ...]], ...] = (
 # period behind it — and entered every native frequency table as a form distinct
 # from the `Keliˊlhu` that seven other lines spell. 14 such tokens across the
 # store, each splitting a real form's count.
-EDGE_PUNCT = "\"()[]{}.,;:!?—\u2013-*\u2020\u2021\u00A7\u00B6“”‘’¹²³⁴⁵⁶⁷⁸⁹"
+#
+# **The guillemets and the low-9 quote are the Russian print's quotes**, the 1900
+# *Materials*' `«…»` and `„…“`, and they are here for the curly quotes' reason:
+# that book's machine-read native candidates carried 340 `«` and 154 `»` stuck
+# to an edge, each making its token unkeyable for `lexicon lookup`. *The Chukchee* sets none but
+# one `„` in English (`3-158`), so its native tokens are unchanged.
+EDGE_PUNCT = "\"()[]{}.,;:!?—\u2013-*\u2020\u2021\u00A7\u00B6“”‘’„«»¹²³⁴⁵⁶⁷⁸⁹"
 
 #: An English possessive, straight or curly. `EDGE_PUNCT` cannot reach it: the
 #: token ends in `s`, so the strip stops before the apostrophe and `Orion’s`
@@ -1795,11 +1801,25 @@ def native_corpus_context(root: Path = Path("."),
     a line that actually contains it.
 
     Fields: `ref`, `line` (the `page_lines` index), `token`, `text`.
+
+    **A token is its stem** (`marks.stem`): where the text marks off a prose ending
+    (the *Materials*' `Ајӈан̀ва́т’омъ`), the native form is what precedes it.
+
+    **Under `prose_stands`, a line's `native` list selects too.** The 1900 notation
+    leaves many forms unmarked (`терк-арм` is all Russian letters), so the glyph
+    test alone cannot see them; the reading pass lists every native form it read,
+    and a token that list names is kept. Its glyphs are a human's: a line listing a
+    native form never stands, so it reached `gt/ocr/` through a decision. Its
+    *native-ness* is the reader's claim, which the editor saw as the NATIVE badge.
+    *The Chukchee* carries no such ruling, so its population is unchanged.
     """
     from .lines import page_lines
+    from .marks import stemmer
 
     out = []
     rules = keying.rules(root)
+    cut = stemmer(root)
+    listed = native_listed(root, cut)
     # **The one walk of `gt/ocr/` the whole native-corpus family shares**, so the
     # bar goes here and every arm above it — `native_corpus`, its `_lines` form,
     # `suggest_native_forms`, `mark_base_frequency`, `lookup.index` — reports by
@@ -1814,12 +1834,65 @@ def native_corpus_context(root: Path = Path("."),
         # cites the line it was printed on.
         texts = [unicodedata.normalize("NFD", t)
                  for t in join_broken_words(recs)]
+        page_listed = listed.get(ref, {})
         for rec, line in zip(recs, texts, strict=True):
+            named = page_listed.get(rec["index"], ())
             for m in TOKEN.finditer(line):
-                tok = m.group().strip(EDGE_PUNCT)
-                if tok and not tier2(tok, rules) and bears_inventory(tok, rules):
+                tok = cut(m.group().strip(EDGE_PUNCT))
+                if tok and not tier2(tok, rules) and (
+                        bears_inventory(tok, rules) or tok in named):
                     out.append({"ref": ref, "line": str(rec["index"]),
                                 "token": tok, "text": line})
+    return out
+
+
+def native_listed(root: Path = Path("."),
+                  cut: Callable[[str], str] | None = None) -> dict[str, dict[int, set]]:
+    """`{ref: {line index: {stem, …}}}`: the forms each restored page's reading
+    listed in `native`, stemmed. Empty for a text without `prose_stands`.
+
+    The proposal is the reader's and stays a proposal; what this contributes is a
+    *selection* over ratified text, never a spelling. A listed form the restored
+    line no longer contains (the editor corrected it) selects nothing, and
+    `native_unmatched` says so.
+    """
+    from .layout import prose_stands
+    if not prose_stands(root):
+        return {}
+    from .marks import stemmer
+    from .review import load_proposal, proposal_path
+    cut = cut or stemmer(root)
+    out: dict[str, dict[int, set]] = {}
+    for ref in _restored_refs(root):
+        if not proposal_path(ref, root).exists():
+            continue
+        for i, v in load_proposal(ref, root).items():
+            forms = {cut(unicodedata.normalize("NFD", f).strip(EDGE_PUNCT))
+                     for f in (v.get("native") or "").split()}
+            if forms - {""}:
+                out.setdefault(ref, {})[i] = forms - {""}
+    return out
+
+
+def native_unmatched(root: Path = Path(".")) -> list[dict]:
+    """Listed native forms that no token of their restored line spells.
+
+    The editor corrected the form, or the reader listed one the text never set.
+    Either way the list selected nothing for it, which a caller has to be able to
+    say rather than let read as the form being absent from the corpus.
+    """
+    from .lines import page_lines
+    from .marks import stemmer
+    cut = stemmer(root)
+    out = []
+    for ref, by_line in native_listed(root, cut).items():
+        p = root / "gt" / "ocr" / f"{stem_for(ref, root)}.xml"
+        recs = {r["index"]: r for r in page_lines(p, root, ref=ref)}
+        for i, forms in sorted(by_line.items()):
+            text = unicodedata.normalize("NFD", (recs.get(i) or {}).get("text") or "")
+            have = {cut(m.group().strip(EDGE_PUNCT)) for m in TOKEN.finditer(text)}
+            out += [{"ref": ref, "line": str(i), "form": f}
+                    for f in sorted(forms - have)]
     return out
 
 

@@ -1,0 +1,45 @@
+{
+ "_about": "The 1900 Materials' lexicon key, replacing the workspace's (jesup/config/handle.json, The Chukchee's) whole. A key is the form in ASCII, one token per codepoint after NFD, and the table is injective: no two forms share a key and every key decodes to exactly one form (harness/marks.py, `form_from_key`). The grammar: a letter token is an ASCII letter, or one followed by `_` and one digit; a mark token is one character of marks.MARK_TOKENS; the hyphen and the digits stand for themselves. The common Cyrillic letters take a bare letter roughly by sound, the rest a `_1`, `_2` or `_3`, the Latin letters `_0`, so a Latin l (the tall l) and a Cyrillic л never share a key, and a capital is its lowercase token in upper case. The key says nothing about which letters look alike: that is `reduce`'s.",
+ "injective": true,
+ "passthrough": "-0123456789",
+ "_passthrough": "The hyphen joins compounds (терк-арм), and digits are printed inside some forms (500-ӈаӄ-тынӄоӄ in the text layer); neither is a token character, so both stand for themselves.",
+ "tokens": {
+  "\u0430": "a", "\u0431": "b", "\u0432": "v", "\u0433": "g", "\u0434": "d", "\u0435": "e", "\u0436": "z_1", "\u0437": "z",
+  "\u0438": "i", "\u043a": "k", "\u043b": "l", "\u043c": "m", "\u043d": "n", "\u043e": "o", "\u043f": "p", "\u0440": "r",
+  "\u0441": "s", "\u0442": "t", "\u0443": "u", "\u0444": "f", "\u0445": "x", "\u0446": "c", "\u0447": "c_1", "\u0448": "s_1",
+  "\u0449": "s_2", "\u044a": "q", "\u044b": "y", "\u044c": "q_1", "\u044d": "e_1", "\u044e": "u_1", "\u044f": "a_1", "\u0456": "i_1",
+  "\u0463": "e_3", "\u0473": "f_1", "\u0475": "v_1", "\u0454": "e_2", "\u0458": "j", "\u04e9": "o_1", "\u04c4": "k_1", "\u04c8": "n_1",
+  "\u0452": "g_1", "\u04bb": "h", "\u00f0": "d_1", "\u0142": "l_1",
+  "\u0410": "A", "\u0411": "B", "\u0412": "V", "\u0413": "G", "\u0414": "D", "\u0415": "E", "\u0416": "Z_1", "\u0417": "Z",
+  "\u0418": "I", "\u041a": "K", "\u041b": "L", "\u041c": "M", "\u041d": "N", "\u041e": "O", "\u041f": "P", "\u0420": "R",
+  "\u0421": "S", "\u0422": "T", "\u0423": "U", "\u0424": "F", "\u0425": "X", "\u0426": "C", "\u0427": "C_1", "\u0428": "S_1",
+  "\u0429": "S_2", "\u042a": "Q", "\u042b": "Y", "\u042c": "Q_1", "\u042d": "E_1", "\u042e": "U_1", "\u042f": "A_1", "\u0406": "I_1",
+  "\u0462": "E_3", "\u0472": "F_1", "\u0474": "V_1", "\u0404": "E_2", "\u0408": "J", "\u04e8": "O_1", "\u04c3": "K_1", "\u04c7": "N_1",
+  "\u0402": "G_1", "\u04ba": "H", "\u00d0": "D_1", "\u0141": "L_1",
+  "a": "a_0", "b": "b_0", "c": "c_0", "d": "d_0", "e": "e_0", "f": "f_0", "g": "g_0", "h": "h_0", "i": "i_0", "j": "j_0", "k": "k_0", "l": "l_0", "m": "m_0",
+  "n": "n_0", "o": "o_0", "p": "p_0", "q": "q_0", "r": "r_0", "s": "s_0", "t": "t_0", "u": "u_0", "v": "v_0", "w": "w_0", "x": "x_0", "y": "y_0", "z": "z_0",
+  "A": "A_0", "B": "B_0", "C": "C_0", "D": "D_0", "E": "E_0", "F": "F_0", "G": "G_0", "H": "H_0", "I": "I_0", "J": "J_0", "K": "K_0", "L": "L_0", "M": "M_0",
+  "N": "N_0", "O": "O_0", "P": "P_0", "Q": "Q_0", "R": "R_0", "S": "S_0", "T": "T_0", "U": "U_0", "V": "V_0", "W": "W_0", "X": "X_0", "Y": "Y_0", "Z": "Z_0",
+  "\u0301": "'", "\u0300": ".", "\u0308": ":", "\u0306": "~", "\u0327": ")", "\u0328": "=", "\u0302": "^"
+ },
+ "reduce": {
+  "_about": "The near-miss check (lookup.near): a form is compared casefolded, its combining marks dropped, and each letter mapped to its confusion class. The classes are what readers and the text layers have been seen to confuse, each with its attestation; they are closed transitively at load (ł joins the tall-l and barred-l classes).",
+  "classes": [
+   {"letters": "кӄ", "why": "the hooked К, ruled ӄ (2026-11-07), which the layers read as plain к"},
+   {"letters": "нӈ", "why": "the hooked Н, ruled ӈ (2026-11-07), which the layers read as plain н"},
+   {"letters": "дð", "why": "the forked d, ruled ð (2026-11-07), against the plain д it resembles"},
+   {"letters": "ђð", "why": "the forked d, which the layers read as ђ (keying.json _glyphs)"},
+   {"letters": "лlł", "why": "the tall l, one letter however the layers read it, л among them (read-materials-page §4; 1-038 l37)"},
+   {"letters": "łт", "why": "the barred l, which the layers read as plain т (the editor, 2026-11-07: 1-102 l4 єłа́ for єта́)"},
+   {"letters": "aа", "why": "a shape both scripts share, keyed Cyrillic (read-materials-page §4)"},
+   {"letters": "oо", "why": "a shape both scripts share, keyed Cyrillic (read-materials-page §4)"},
+   {"letters": "eе", "why": "a shape both scripts share, keyed Cyrillic (read-materials-page §4)"},
+   {"letters": "pр", "why": "a shape both scripts share, keyed Cyrillic (read-materials-page §4)"},
+   {"letters": "cс", "why": "a shape both scripts share, keyed Cyrillic (read-materials-page §4)"},
+   {"letters": "yу", "why": "a shape both scripts share, keyed Cyrillic (read-materials-page §4)"},
+   {"letters": "xх", "why": "a shape both scripts share, keyed Cyrillic (read-materials-page §4)"},
+   {"letters": "jј", "why": "a shape both scripts share, keyed Cyrillic (read-materials-page §4)"},
+   {"letters": "iі", "why": "a shape both scripts share, keyed Cyrillic (read-materials-page §4)"}
+  ]
+ }
+}

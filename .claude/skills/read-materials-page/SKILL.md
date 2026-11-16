@@ -45,6 +45,25 @@ a Russian line stand. It never settles a native form or a space.
    one, including those no glyph marks (`терк-арм` on `1-022`), since no rule can
    find those. Spell each form's codepoints in `resolved`, which `proposal check`
    holds the text to.
+   - **Look the page's forms up first, in one call**: `harness lexicon lookup Q …`,
+     every native candidate the witness lists and every name the page uses
+     without introducing it. A Cyrillic query works as printed. It is the one
+     licensed reach into the corpus: never read another page's proposal,
+     decision or `gt/ocr/`.
+   - **If it gives a key, type the key**, in braces: `{Ajn_1an.va't}`. `proposal
+     set` substitutes the ratified glyphs and records `as_typed`, and the editor
+     sees the line as the corpus's. A key names a stem, so an inflected form is
+     the key, then `’` and the printed ending, by hand: `{Ajn_1an.va't}’омъ`. A
+     key is not a spelling: never read one back into a form. Never type a key for
+     a form the scan leaves in doubt.
+   - **A miss is a fact about the query** before it is one about the corpus: key
+     the form by hand and say what the lookup returned. A form returned with no
+     key (spelled two ways, or below the floor) is the tool declining; key what
+     you see.
+   - **A near miss is never corrected silently.** Where your reading differs from
+     a ratified spelling only by a hook, an accent or a lookalike, `proposal check`
+     says so. Look again at the scan; if the scan is what you keyed, keep it and
+     put a `doubt` on the line naming both spellings.
 4. **The provisional keying conventions**, until the editor rules
    (`config/keying.json` `_glyphs` names the open questions):
    - A letter whose Latin and Cyrillic shapes are one shape in this face (`о р а
@@ -119,4 +138,7 @@ where the prose gives one — say so in a `semantic` note (`«людей сол�
 queue to those lines, the `doubt` lines and any line outside the prose alphabet;
 the standing prose is shown dimmed and never saved as the editor's. Its keyboard
 is this text's `config/keyboard.json`, phonetic Cyrillic with the notation's
-letters.
+letters. Each native form carries its standing against the forms other pages
+ratified: ✓ *seen*, ≠ a near miss with the ratified spelling beside it (where to
+look on the scan), or *new*. A page is in the index once restored (`ocr restore
+--all --commit`), so restoring after each review session is what grows it.

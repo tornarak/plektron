@@ -231,7 +231,7 @@ def run_new(a) -> int:
     form = lex.norm_form(str(a.form))
     if not form:
         raise ValueError("the form is empty")
-    slug = a.slug or lex.suggest_slug(form)
+    slug = a.slug or lex.suggest_slug(form, a.root)
     p = lex.path_for(slug, a.root)
     if p.exists():
         out(a, {"form": form, "path": str(p), "wrote": False,

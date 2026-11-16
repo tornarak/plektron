@@ -47,7 +47,7 @@ import unicodedata
 from pathlib import Path
 
 from .layout import shared
-from .marks import handle_key
+from .marks import handle_key, handle_table
 
 LEXDIR = "edition/lexicon"
 
@@ -88,7 +88,7 @@ def norm_form(form: str) -> str:
     return unicodedata.normalize("NFD", " ".join(form.split()))
 
 
-def suggest_slug(form: str) -> str:
+def suggest_slug(form: str, root: Path = Path(".")) -> str:
     """What `lexicon new` prints for a human to accept or override.
 
     The typeable key, reduced to what a filesystem is safe with. Reduced and not
@@ -96,7 +96,7 @@ def suggest_slug(form: str) -> str:
     both are exactly what a filename must not depend on.
     """
     try:
-        key = handle_key(form)
+        key = handle_key(form, handle_table(root))
     except ValueError:
         key = unicodedata.normalize("NFKD", form)
     slug = re.sub(r"[^a-z0-9]+", "-", key.lower()).strip("-")
@@ -236,7 +236,7 @@ def check(root: Path = Path(".")) -> dict:
                 f"filesystem holds one of these two files, silently")
         by_lower[p.stem.lower()] = str(p)
         try:
-            handle_key(rec["form"])
+            handle_key(rec["form"], handle_table(root))
         except ValueError as e:
             # Reported, never fatal and never dropped. The form is real and the
             # entry is fine; what it has not got is a canonical URL, and a

@@ -959,6 +959,39 @@ def kbd_context(root: Path) -> dict:
     return {"palette": palette, "kbd_keys": kb["keys"]}
 
 
+def _native_status(ref: str, prop: dict, root: Path) -> dict[int, list[dict]]:
+    """Each listed native form's standing against the ratified corpus, per line:
+    `{line: [{form, status, pages, near}]}`. `status` is `seen`, `near` or `new`
+    (`lookup.standing_of`).
+
+    **Never this page's own say-so.** Once a page is restored its forms are in the
+    index, so a form ratified only here would read *seen*. It is *new* unless some
+    other page sets it, and a near miss counts only another page's spelling. The
+    index is the server's cached one (`web.stores.native`), so a page render does
+    not walk the corpus.
+    """
+    from .lookup import standing_of
+    from .marks import HandleTableError, MarksConfigError
+    from .web.stores import native
+    try:
+        idx = native(root)
+    except (HandleTableError, MarksConfigError):
+        return {}
+    out: dict[int, list[dict]] = {}
+    for i, v in prop.items():
+        forms = unicodedata.normalize("NFD", v.get("native") or "").split()
+        for f in forms:
+            s = standing_of(f, root, idx)
+            others = [r for r in s["refs"] if r != ref]
+            near = [n for n in s["near"] if any(r != ref for r in n["refs"])]
+            status = ("seen" if s["status"] == "seen" and others
+                      else "near" if near else "new")
+            out.setdefault(i, []).append({
+                "form": f, "status": status, "pages": len(others),
+                "near": "; ".join(f"{n['form']} ({n['pages']} p.)" for n in near)})
+    return out
+
+
 def page_context(ref: str, root: Path,
                  store: str, crops: Path | None = None,
                  queue: list[dict] | None = None,
@@ -1041,6 +1074,7 @@ def page_context(ref: str, root: Path,
             t1[idx] = (mine.get("native")
                        or ("doubt" if mine.get("class") == "doubt" else "")
                        or ("decided" if idx in saved else "not plain prose"))
+    native_status = _native_status(ref, prop, root) if stands_on else {}
 
     # Default is the on-disk relative path, computed rather than spelled, so the
     # `--html` file works opened straight off the filesystem; the server overrides
@@ -1092,6 +1126,7 @@ def page_context(ref: str, root: Path,
                     + (" noted" if nclass or typed else "")
                     + (" stands" if stood else "")),
             "stands": stood, "native": mine.get("native", ""),
+            "native_status": native_status.get(idx, []),
             "line_id": rec["line_id"], "glyphs": glyphs, "typed": typed,
             "typed_html": HANDLE.sub(lambda m: f"<b>{_esc(m.group(0))}</b>",
                                      _esc(typed)) if typed else "",

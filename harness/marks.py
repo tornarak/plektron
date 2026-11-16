@@ -80,8 +80,12 @@ Two properties of the prior a reader must carry:
 from __future__ import annotations
 
 import json
+import re
 import unicodedata
 from collections.abc import Callable, Collection
+from dataclasses import dataclass
+from dataclasses import field as dc_field
+from functools import lru_cache
 from pathlib import Path
 
 from . import keying
@@ -164,7 +168,47 @@ def load_config(root: Path = Path(".")) -> dict:
         v = cfg.get(field)
         if not isinstance(v, kind) or isinstance(v, bool) or v <= 0:
             raise MarksConfigError(f"{p}: '{field}' must be a positive {kind.__name__}")
+    sb = cfg.get("stem_boundary")
+    if sb is not None and not (isinstance(sb, str) and len(sb) == 1):
+        raise MarksConfigError(f"{p}: 'stem_boundary' is one character, or absent")
     return cfg
+
+
+def stem(token: str, root: Path = Path(".")) -> str:
+    """`token` without the prose ending its text's `stem_boundary` marks off.
+
+    The 1900 *Materials* print `’` between a native stem and its Russian case
+    ending (`Ајӈан̀ва́т’омъ`, `Ајӈан̀ва́т’а`), so one word would otherwise be as many
+    forms as it has cases. The stem is what is native, and what the lexicon keys.
+
+    **Only a prose ending is cut**: everything after the boundary must be letters of
+    the text's prose alphabet, so a boundary inside a native form, or one followed
+    by notation, leaves the token whole. A text with no `stem_boundary` (*The
+    Chukchee*) gets its token back untouched, and so does a token with none. The
+    one function every reader of a native form goes through: the corpus walk, a
+    proposal's `native` list, the near-miss check and the review statuses.
+    """
+    return stemmer(root)(token)
+
+
+def stemmer(root: Path = Path(".")) -> Callable[[str], str]:
+    """`stem`, with the text's boundary and prose alphabet read once, for a caller
+    stemming every token of a corpus."""
+    try:
+        sb = load_config(root).get("stem_boundary")
+    except MarksConfigError:
+        sb = None
+    if not sb:
+        return lambda token: token
+    letters = frozenset().union(*keying.rules(root).prose_alphabet.values())
+
+    def cut(token: str) -> str:
+        if sb not in token:
+            return token
+        head, _, tail = token.rpartition(sb)
+        base = "".join(c for c in tail if not unicodedata.category(c).startswith("M"))
+        return head if head and base and all(c in letters for c in base) else token
+    return cut
 
 
 EXEMPT = "config/marks_exempt.json"
@@ -320,25 +364,229 @@ def fold(token: str, contrasts: list[dict]) -> str:
     return t.casefold()
 
 
-# **One marker per mark class, and the classes collide on purpose.** `^` serves the
-# superscripts and the caron/circumflex, `.` both dots. A collision yields two
-# distinct forms with one key, which `lookup` already refuses as a key collision, so
-# inventing a marker against a case the corpus does not attest would be guesswork
-# ahead of an instance — the rule `tier1_terms` states for ranges.
-#
-# A combining mark contributes **only** its marker: after NFD its base is already an
-# ASCII letter and has passed through. An atomic letter contributes an ASCII base
-# and a marker; `ˊ` and `˙` are marks that stand alone and so contribute no base.
-HANDLE_MARKERS = {
-    "ˊ": "'", "˙": ".",
-    "ɪ": "i_", "ᴇ": "e_", "ᴀ": "a_", "ʟ": "l_", "ɵ": "o_",
-    "ᵋ": "e^", "ᵉ": "e^",
-    "̣": ".", "̌": "^", "̂": "^", "̃": "~",
-    "̈": ":", "̆": ")", "̄": "=",
-}
+#: The key table, a text's or else its workspace's, read whole (`layout.shared`).
+HANDLE = "config/handle.json"
+
+#: An injective table's grammar (`docs/multitext.md`, the key table). A letter token
+#: is an ASCII letter, or one followed by `_` and exactly one digit; a mark token is
+#: one of these characters. The two sets and the passthrough are disjoint, which is
+#: what makes a key parse one way only.
+MARK_TOKENS = "'.:~)=^"
+_LETTER_TOKEN = re.compile(r"[A-Za-z](?:_[0-9])?")
 
 
-def handle_key(token: str) -> str:
+@dataclass(frozen=True)
+class HandleTable:
+    """How a text's native forms are addressed in ASCII: `{codepoint: token}`.
+
+    `passthrough` is the characters that stand for themselves: `"ascii"` for every
+    ASCII character (*The Chukchee*, whose bases are ASCII after NFD), else an
+    explicit string (the *Materials*, which mark their Latin letters so a Latin `l`
+    and a Cyrillic `л` never share a key). `inverse` is filled only for an
+    injective table, and is derived from `tokens`, never written by hand.
+    """
+
+    tokens: dict[str, str]
+    passthrough: str
+    injective: bool
+    path: str = ""
+    inverse: dict[str, str] = dc_field(default_factory=dict)
+    #: `{letter: its class's representative}`, casefolded, for the near-miss
+    #: reduction (`reduction`). Empty for a table that declares no `reduce`.
+    classes: dict[str, str] = dc_field(default_factory=dict)
+    reduces: bool = False
+
+    def passes(self, ch: str) -> bool:
+        return ch.isascii() if self.passthrough == "ascii" else ch in self.passthrough
+
+
+class HandleTableError(ValueError):
+    """A key table that cannot be read, or claims an injectivity it lacks."""
+
+
+def _check_injective(tokens: dict[str, str], passthrough: str, where: str,
+                     own_inventory: frozenset[str]) -> dict[str, str]:
+    """The checks an injective table must pass; returns the inverse.
+
+    Each entry is one token of the grammar of its kind, no two codepoints share a
+    token, a cased letter and its case pair key to the same token in the other
+    case, and every letter of the text's own inventory has a token. Together these
+    make `handle_key` one-to-one and `form_from_key` its exact inverse.
+    """
+    if passthrough == "ascii":
+        raise HandleTableError(f"{where}: an injective table cannot pass every ASCII "
+                               "character through: a Latin letter would then share "
+                               "its key with whatever token spells it")
+    bad = [c for c in passthrough
+           if c.isalpha() or c == "_" or c in MARK_TOKENS or not c.isascii()]
+    if bad:
+        raise HandleTableError(f"{where}: passthrough holds {bad}, which the token "
+                               "grammar uses or cannot spell")
+    inverse: dict[str, str] = {}
+    for ch, tok in tokens.items():
+        mark = unicodedata.category(ch).startswith("M")
+        ok = (tok in MARK_TOKENS and len(tok) == 1) if mark \
+            else bool(_LETTER_TOKEN.fullmatch(tok))
+        if not ok:
+            kind = "a mark token" if mark else "a letter token"
+            raise HandleTableError(f"{where}: U+{ord(ch):04X} keys to {tok!r}, which "
+                                   f"is not {kind} of the grammar")
+        if tok in inverse:
+            raise HandleTableError(
+                f"{where}: U+{ord(inverse[tok]):04X} and U+{ord(ch):04X} both key to "
+                f"{tok!r}; an injective table names each codepoint once")
+        inverse[tok] = ch
+    for ch, tok in tokens.items():
+        for other in {ch.upper(), ch.lower()} - {ch}:
+            if len(other) != 1 or other not in tokens:
+                continue
+            want = tok[0].upper() + tok[1:] if other == ch.upper() \
+                else tok[0].lower() + tok[1:]
+            if tokens[other] != want:
+                raise HandleTableError(
+                    f"{where}: {ch!r} keys to {tok!r} but its case pair {other!r} to "
+                    f"{tokens[other]!r}; a case pair differs in the token's case alone")
+    missing = sorted(c for c in own_inventory if c not in tokens)
+    if missing:
+        raise HandleTableError(f"{where}: the text's inventory holds "
+                               f"{[f'U+{ord(c):04X}' for c in missing]} with no token")
+    return inverse
+
+
+def handle_table(root: Path = Path(".")) -> HandleTable:
+    """The key table for the text at `root`. Cached per file state."""
+    from .layout import shared
+    p = shared(Path(root), HANDLE)
+    if not p.exists():
+        raise HandleTableError(f"no {HANDLE} at {root} or its workspace: a form is "
+                               "addressed by a declared table, never a default")
+    own = _own_inventory(Path(root).resolve())
+    return _handle_table(str(p), p.stat().st_mtime_ns, own)
+
+
+def _own_inventory(root: Path) -> frozenset[str]:
+    """The inventory members this text's own keying layer adds, not its workspace's."""
+    rules = keying.rules(root)
+    return frozenset(p[1] for p, tier in rules.origin.items()
+                     if p[0] == "inventory" and tier.startswith("text"))
+
+
+@lru_cache(maxsize=16)
+def _handle_table(path: str, _mtime: int, own_inventory: frozenset[str]) -> HandleTable:
+    try:
+        doc = json.loads(Path(path).read_text(encoding="utf-8"))
+    except json.JSONDecodeError as e:
+        raise HandleTableError(f"{path}: not JSON: {e}") from None
+    tokens = doc.get("tokens")
+    if not isinstance(tokens, dict) or not tokens:
+        raise HandleTableError(f"{path}: no `tokens`")
+    for ch, tok in tokens.items():
+        if len(ch) != 1 or not (isinstance(tok, str) and tok and tok.isascii()):
+            raise HandleTableError(f"{path}: tokens[{ch!r}] = {tok!r}; a token maps one "
+                                   "codepoint to a non-empty ASCII string")
+    passthrough = doc.get("passthrough")
+    if not isinstance(passthrough, str):
+        raise HandleTableError(f"{path}: `passthrough` is \"ascii\" or the characters "
+                               "that stand for themselves")
+    injective = doc.get("injective")
+    if not isinstance(injective, bool):
+        raise HandleTableError(f"{path}: `injective` must be stated, true or false")
+    inverse = (_check_injective(tokens, passthrough, path, own_inventory)
+               if injective else {})
+    classes = _reduce_classes(doc.get("reduce"), path)
+    return HandleTable(tokens=dict(tokens), passthrough=passthrough,
+                       injective=injective, path=path, inverse=inverse,
+                       classes=classes, reduces=doc.get("reduce") is not None)
+
+
+def _reduce_classes(spec, path: str) -> dict[str, str]:
+    """The confusion classes, closed transitively: `{letter: representative}`.
+
+    Each class names letters a reader or a layer has been seen to confuse, with its
+    attestation. Two classes sharing a letter are one class (`ł` is in the tall-`l`
+    class and the barred-`l` one), so the closure is computed here rather than left
+    to whoever writes the file to notice.
+    """
+    if spec is None:
+        return {}
+    groups = spec.get("classes") if isinstance(spec, dict) else None
+    if not isinstance(groups, list) or not groups:
+        raise HandleTableError(f"{path}: `reduce` holds `classes`, a non-empty list")
+    parent: dict[str, str] = {}
+
+    def find(c: str) -> str:
+        while parent.setdefault(c, c) != c:
+            c = parent[c]
+        return c
+    for g in groups:
+        letters = g.get("letters") if isinstance(g, dict) else None
+        if not (isinstance(letters, str) and len(letters) >= 2
+                and str(g.get("why", "")).strip()):
+            raise HandleTableError(f"{path}: a reduce class is `letters` (two or "
+                                   "more) and a `why`, its attestation")
+        norm = [unicodedata.normalize("NFD", c).casefold() for c in letters]
+        if any(len(c) != 1 for c in norm):
+            raise HandleTableError(f"{path}: reduce class {letters!r} holds a letter "
+                                   "that is not one codepoint after NFD")
+        for c in norm[1:]:
+            parent[find(c)] = find(norm[0])
+    return {c: min((d for d in parent if find(d) == find(c)), key=ord)
+            for c in parent}
+
+
+def reduction(form: str, table: HandleTable) -> str:
+    """`form` as the near-miss check compares it: casefolded, every combining mark
+    dropped, every letter mapped to its confusion class.
+
+    **Independent of the key's spelling.** The key's letters follow sound, and say
+    nothing about what a reader confuses; dropping the `_N` of a token would put
+    `с`, `ш` and `щ` together, which no reader confuses. So the classes are
+    declared, each with what attests it, and the accents are dropped because an
+    accent dropped is the commonest slip there is.
+    """
+    out = []
+    for c in unicodedata.normalize("NFD", form).casefold():
+        if unicodedata.category(c).startswith("M"):
+            continue
+        out.append(table.classes.get(c, c))
+    return "".join(out)
+
+
+def form_from_key(key: str, table: HandleTable) -> str:
+    """The form an injective table's key spells: `handle_key`'s exact inverse.
+
+    **For validation, never for expanding a reader's handle.** `lookup.expand`
+    resolves a key only against ratified forms; decoding one here proves nothing
+    about the corpus, and a reader who could expand any key would type unratified
+    glyphs under the CORPUS badge. Refuses a token the table does not hold, a bare
+    or trailing `_`, and any table that is not injective.
+    """
+    if not table.injective:
+        raise HandleTableError(f"{table.path}: not injective, so a key has no single "
+                               "form to decode to")
+    out, i = [], 0
+    while i < len(key):
+        c = key[i]
+        if "a" <= c.lower() <= "z":
+            tok = key[i:i + 3] if key[i + 1:i + 2] == "_" else c
+            if tok != c and not (len(tok) == 3 and tok[2].isdigit()):
+                raise ValueError(f"{key!r}: `_` at {i + 1} is not followed by a digit")
+        elif c in MARK_TOKENS:
+            tok = c
+        elif table.passes(c):
+            out.append(c)
+            i += 1
+            continue
+        else:
+            raise ValueError(f"{key!r}: {c!r} at {i} is no token of {table.path}")
+        if tok not in table.inverse:
+            raise ValueError(f"{key!r}: {tok!r} names no character in {table.path}")
+        out.append(table.inverse[tok])
+        i += len(tok)
+    return "".join(out)
+
+
+def handle_key(token: str, table: HandleTable) -> str:
     """The typed handle for one form: ASCII through, every other character marked.
 
     **A plain-ASCII key would teach the reader the wrong glyph.** `fold` collapses
@@ -377,14 +625,14 @@ def handle_key(token: str) -> str:
     """
     out = []
     for ch in unicodedata.normalize("NFD", token):
-        if ch.isascii():
+        if ch in table.tokens:
+            out.append(table.tokens[ch])
+        elif table.passes(ch):
             out.append(ch)
-        elif ch in HANDLE_MARKERS:
-            out.append(HANDLE_MARKERS[ch])
         else:
             raise ValueError(
                 f"no handle marker for U+{ord(ch):04X} in {token!r} — add it to "
-                "HANDLE_MARKERS beside the inventory member it belongs to")
+                f"{table.path or HANDLE} beside the inventory member it belongs to")
     return "".join(out)
 
 

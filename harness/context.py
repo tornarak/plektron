@@ -469,17 +469,18 @@ def _with_keys(rows: list[dict], root: Path,
     if not rows:
         return rows
     from .lookup import index, resolve
-    from .marks import MarksConfigError, handle_key
+    from .marks import MarksConfigError, handle_key, handle_table
 
     try:
         idx = index(root) if idx is None else idx
     except MarksConfigError:
         return [{**r, "key": ""} for r in rows]
+    table = handle_table(root)
     out = []
     for r in rows:
         key = ""
         try:
-            cand = handle_key(r["text"])
+            cand = handle_key(r["text"], table)
         except ValueError:
             cand = ""
         if cand:

@@ -23,6 +23,7 @@ from pathlib import Path
 import pytest
 from conftest import jesup_rules, write_project
 
+from harness import marks
 from harness.detectors import native_corpus
 from harness.lookup import (
     _case_rank,
@@ -33,10 +34,13 @@ from harness.lookup import (
     resolve,
     search,
 )
-from harness.marks import HANDLE_MARKERS, handle_key
 from harness.proposal_check import check, fix, set_field, set_fields
 
 R = jesup_rules()
+#: *The Chukchee*'s key table, read from its file. Every test below asserted the
+#: keys before the table moved out of the code, unchanged since.
+def handle_key(token: str) -> str:
+    return marks.handle_key(token, marks.handle_table(PROJECT))
 
 REPO = Path(__file__).resolve().parent.parent.parent
 PROJECT = REPO / "jesup" / "bogoras-chukchi"
@@ -148,7 +152,8 @@ def test_an_unmapped_character_raises_rather_than_being_dropped():
 
 def test_the_marker_table_reaches_every_inventory_member():
     """Totality against `detectors.INVENTORY_CHARS`, which is the definition."""
-    missing = sorted(c for c in R.inventory if c not in HANDLE_MARKERS)
+    missing = sorted(c for c in R.inventory
+                     if c not in marks.handle_table(PROJECT).tokens)
     assert not missing, f"inventory members with no marker: {missing!r}"
 
 

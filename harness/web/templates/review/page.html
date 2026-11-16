@@ -85,7 +85,17 @@ line is English.</div>{% endif %}
 <div class="{{ ln.cls }}" id="l{{ ln.idx }}"{% if ln.glyphs %} data-t1=1{% endif %}>
 <div class=tags>
 {%- if ln.typed %}<span class='nb nb-corpus'>CORPUS</span>{% endif %}
-{%- if ln.glyphs and stands_on %}<span class=badge>{{ 'NATIVE' if ln.native else 'RULE' }}</span><span class=t1glyphs>{{ ln.glyphs }}</span> · {% endif %}
+{%- if ln.glyphs and stands_on and ln.native_status %}<span class=badge>NATIVE</span>
+{#- Each form against the ratified corpus, other pages only (`review._native_status`):
+    seen is a spelling another page ratified; ≠ is one that nearly matches a ratified
+    spelling, which is where to look on the scan; new is neither. #}
+{%- for s in ln.native_status %}<span class="ns ns-{{ s.status }}" title="
+{%- if s.status == 'seen' %}ratified on {{ s.pages }} other page{{ 's' if s.pages != 1 }}
+{%- elif s.status == 'near' %}not a ratified spelling; ratified: {{ s.near }}
+{%- else %}no other page has ratified this form or one like it{% endif %}">
+<span class=t1glyphs>{{ s.form }}</span>
+{%- if s.status == 'seen' %} ✓{{ s.pages }}{% elif s.status == 'near' %} ≠ {{ s.near }}{% else %} new{% endif %}</span> {% endfor %}· {% endif %}
+{%- if ln.glyphs and stands_on and not ln.native_status %}<span class=badge>RULE</span><span class=t1glyphs>{{ ln.glyphs }}</span> · {% endif %}
 {%- if ln.glyphs and not stands_on %}<span class=badge>TIER 1</span><span class=t1glyphs>{{ ln.glyphs }}</span> · {% endif %}
 {%- if ln.stands %}<button type=button class=ovr data-line="{{ ln.idx }}"
   title="make this line yours to decide: it is then saved as your ruling">overrule</button> stands as prose · {% endif %}

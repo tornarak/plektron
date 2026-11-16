@@ -366,6 +366,51 @@ def could_name_key(note: str) -> bool:
             or bool(_KEY_MARK.search(note)))
 
 
+def _native_issues(idx, rec: dict, text: str, root: Path, lex) -> list[dict]:
+    """Two advisories about a line's `native` list, the reading pass's own field.
+
+    **A listed form the text does not contain** was mistyped in one of the two
+    places, and the list is what the editor's queue and the lexicon read, so a
+    disagreement between them is a reading that says two things.
+
+    **A listed form that nearly matches a ratified one**: not that spelling, but
+    one differing only within the text's confusion classes and accents
+    (`lookup.standing_of`). This is the check a reader who knows neither language
+    most needs, since it catches a dropped hook or accent against the corpus's own
+    spelling. It warns and never decides: the corpus may be what is wrong, and the
+    scan settles it. Leave-one-out, so a page is never told it has seen its own
+    forms. A text whose key table declares no `reduce` gets only the first check.
+    """
+    forms = unicodedata.normalize("NFD", rec.get("native") or "").split()
+    if not forms:
+        return []
+    from .detectors import EDGE_PUNCT, TOKEN
+    from .lookup import standing_of
+    from .marks import HandleTableError, MarksConfigError
+    tokens = {m.group().strip(EDGE_PUNCT)
+              for m in TOKEN.finditer(unicodedata.normalize("NFD", text))}
+    out = []
+    for f in forms:
+        if f.strip(EDGE_PUNCT) not in tokens:
+            out.append(issue(idx, "native form not in the line's text", token=f,
+                             detail="`native` lists it, `text` does not set it",
+                             severity=ADVISORY))
+    # A text with no marks config or key table has no corpus to compare against:
+    # that is the absence of the second check, not a fault in the page.
+    try:
+        corpus = lex()
+        found = [(f, standing_of(f, root, corpus)) for f in forms]
+    except (HandleTableError, MarksConfigError):
+        return out
+    for f, s in found:
+        if s["status"] == "near":
+            seen = "; ".join(f"{n['form']} ({n['pages']} p.)" for n in s["near"])
+            out.append(issue(idx, "native form differs from a ratified spelling",
+                             token=f, detail=f"ratified: {seen} — look at the scan",
+                             severity=ADVISORY))
+    return out
+
+
 def _lexicon_loader(root: Path, exclude: Collection[str]):
     """A zero-argument callable that builds the lexicon index once, on first call.
 
@@ -941,6 +986,7 @@ def check(path: Path, ref: str | None = None, root: Path = Path("."),
                              severity=ADVISORY))
         out += _handle_issues(idx, rec, text, root, lex_all)
         out += _named_key_issues(idx, rec, text, root, lex)
+        out += _native_issues(idx, rec, text, root, lex or lex_all)
         for hit in apostrophe_flags(text, rules):
             out.append(issue(idx, apostrophe_issues[hit["kind"]],
                              token=hit["token"],

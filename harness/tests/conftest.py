@@ -81,8 +81,8 @@ JESUP_KEYBOARD = JESUP_KEYING.with_name("keyboard.json")
 
 def write_project(root: Path, stem: str = "chukchi") -> Path:
     """`root` as a text's stores: the manifest every store read starts from, and
-    the keying rules its gates read, and the review keyboard. A fixture text has
-    no workspace, so both sit in its own `config/` as its base."""
+    the keying rules its gates read, the review keyboard and the lexicon key table.
+    A fixture text has no workspace, so they sit in its own `config/` as its base."""
     root.mkdir(parents=True, exist_ok=True)
     (root / "project.json").write_text(json.dumps({
         "stem": stem,
@@ -92,8 +92,9 @@ def write_project(root: Path, stem: str = "chukchi") -> Path:
     (root / "config").mkdir(exist_ok=True)
     (root / "config" / "keying.json").write_text(
         JESUP_KEYING.read_text(encoding="utf-8"), encoding="utf-8")
-    (root / "config" / "keyboard.json").write_text(
-        JESUP_KEYBOARD.read_text(encoding="utf-8"), encoding="utf-8")
+    for name in ("keyboard.json", "handle.json"):
+        (root / "config" / name).write_text(
+            JESUP_KEYING.with_name(name).read_text(encoding="utf-8"), encoding="utf-8")
     return root
 
 

@@ -112,6 +112,47 @@ rulings of whichever text happened to run the scan. `keying.rules_for` decides.
 The manifest's `notation` field is retired and refused: the rules *are* the
 notation, and a name beside them would be the same fact stated twice.
 
+### The lexicon key, a table of its own
+
+`lexicon lookup` addresses a ratified form by an ASCII key, and the key scheme is
+`config/handle.json`, read **whole**, the text's else its workspace's, like
+`config/keyboard.json`. Not key by key as `keying.json` is: the two books' schemes
+spend the same ASCII characters on different things (`.` is a dot below in one and
+a grave in the other), so neither can inherit from the other.
+
+- **The workspace's is *The Chukchee*'s**, moved out of the code verbatim
+  (2026-11-16). ASCII passes through, each non-ASCII character leaves a marker,
+  and the markers collide on purpose (`ᵋ` and `ᵉ` both `e^`). It declares itself
+  not injective, and a key naming two forms is refused at resolution.
+- **The *Materials*' is one-to-one**, and its loader proves it
+  (`marks.handle_table`):
+  - **A letter token** is an ASCII letter, or one followed by `_` and one digit:
+    the common Cyrillic letters take a bare letter, the rest `_1`–`_3`, the
+    Latin letters `_0`. So the tall `l` (Latin) and `л` never share a key.
+  - **A mark token** is one character.
+  - **The hyphen and the digits** stand for themselves.
+
+  `_` occurs only after a letter, so a key parses one way. No two codepoints share
+  a token, and a capital is its lowercase token in upper case. So no two forms
+  share a key, and `marks.form_from_key` is the exact inverse. It validates and
+  never expands a reader's handle, which resolves only against ratified forms. A
+  census over the 12,019 machine-read native candidates in `mz/ocr/` (2026-11-16)
+  found no key shared and no failed round trip. 11,665 key. Of the 354 that do
+  not, most carry the straight `'` that keyed text writes `’` (85), Latin schwa
+  for the printed `э` (94), or other OCR noise (`ү`, `ҫ`, a caron, `ŋ`). An
+  unkeyable form is reported, never keyed approximately. 816 were unkeyable before
+  the corpus walk stripped `«` and `»` from a token's edges (340 and 154 of them
+  stuck there) and before the stem boundary took `’` and its ending off.
+- **The near-miss reduction is the same file's `reduce`**, and is deliberately
+  not derived from the key. The key's letters follow sound; a reader's confusions
+  follow shape. So the classes are declared, each with its attestation: the hooks,
+  the forked `d`, the tall and barred `l`, and the shapes both scripts share.
+  `lookup.standing_of` reports a form *seen*, *near* (with the ratified spelling)
+  or *new*, and `proposal check` and `ocr review` show it.
+- **The *Materials*' `config/marks.json` sets `stem_boundary: "’"`**: the book
+  prints `’` between a native stem and its Russian ending, so the stem is the form
+  (`marks.stem`) wherever a native form is read.
+
 ## Language tags
 
 A tag may carry a script subtag: the 1900 book prints Chukchi in Cyrillic, and

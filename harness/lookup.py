@@ -56,8 +56,9 @@ import unicodedata
 from collections.abc import Callable, Collection
 from pathlib import Path
 
-from .detectors import native_corpus_context
-from .marks import fold, handle_key, load_config
+from .detectors import native_corpus_context, native_unmatched
+from .layout import prose_stands
+from .marks import fold, handle_key, handle_table, load_config
 
 # A handle is a key in braces. The character class is `handle_key`'s output
 # alphabet — ASCII alphanumerics, the two load-bearing ASCII marks the key passes
@@ -102,6 +103,7 @@ def index(root: Path = Path("."),
     drop = ({exclude} if isinstance(exclude, str)
             else frozenset(exclude or ()))
     contrasts = load_config(root)["contrasts"]
+    table = handle_table(root)
     buckets: dict[str, dict] = {}
     unkeyable: dict[str, dict] = {}
     for r in native_corpus_context(root, tick):
@@ -109,7 +111,7 @@ def index(root: Path = Path("."),
             continue
         tok = r["token"]
         try:
-            key = handle_key(tok)
+            key = handle_key(tok, table)
         except ValueError as e:
             u = unkeyable.setdefault(tok, {
                 "form": tok, "key": None, "count": 0, "refs": set(),
@@ -216,7 +218,7 @@ def _case_rank(s: str) -> int | None:
     return None
 
 
-def _raise_case(form: str, rank: int) -> tuple[str | None, str]:
+def _raise_case(form: str, rank: int, table=None) -> tuple[str | None, str]:
     """`form` re-cased to `rank`, or `(None, why)`.
 
     **Only ASCII letters are raised, and a form containing anything else refuses
@@ -229,7 +231,15 @@ def _raise_case(form: str, rank: int) -> tuple[str | None, str]:
 
     Characters with no case are passed through untouched, so a combining mark keeps
     its base: `g̣enɪˊmlinet` capitalizes to `G̣enɪˊmlinet` with its dot below intact.
+
+    **An injective key table widens what may be raised** (`table`, the *Materials*'):
+    its loader proved every letter it holds and that letter's capital key to one
+    token in two cases, so for those letters the capital *is* the same glyph in
+    another case, by a check rather than by `str.upper()`'s say-so.
     """
+    paired = (frozenset(c for c in table.tokens if c.upper() in table.tokens
+                        and len(c.upper()) == 1)
+              if table is not None and table.injective else frozenset())
     if rank == 0:
         return form, ""
     out, raised = [], False
@@ -240,7 +250,7 @@ def _raise_case(form: str, rank: int) -> tuple[str | None, str]:
         if rank == 1 and raised:
             out.append(c)
             continue
-        if not ("a" <= c <= "z" or "A" <= c <= "Z"):
+        if not ("a" <= c <= "z" or "A" <= c <= "Z" or c in paired):
             return None, (f"{c!r} is not an ASCII letter, and raising its case would "
                           "change the glyph rather than the case")
         out.append(c.upper())
@@ -320,7 +330,7 @@ def _resolve_cased(key: str, root: Path, min_pages: int,
                     f"({src_form!r}) — a handle may raise a form's case but never "
                     "lower it. If the page really sets it lower, key it by hand and "
                     "say so in a note")
-            out, bad = _raise_case(src_form, want)
+            out, bad = _raise_case(src_form, want, handle_table(root))
             if out is None:
                 return None, (f"{key!r} asks for the {_CASES[want]} of {src_form!r}, "
                               f"and {bad}. Key the form by hand")
@@ -391,6 +401,47 @@ def bare(s: str) -> str:
     """
     s = unicodedata.normalize("NFD", s)
     return "".join(c for c in s if c.isalnum() and c.isascii()).casefold()
+
+
+def _ratified_forms(idx: dict) -> dict[str, dict]:
+    """`{form: record}` over every bucket, the exact ratified spellings."""
+    return {f["form"]: f for b in idx["buckets"].values() for f in b["forms"].values()}
+
+
+def standing_of(form: str, root: Path = Path("."), idx: dict | None = None) -> dict:
+    """Whether a native form is one the corpus has ratified, and if not, what it
+    nearly is: `{status, form, pages, near: [{form, key, pages}]}`.
+
+    `status` is **seen** (this exact spelling is ratified), **near** (it is not, but
+    a ratified form differs from it only within the text's confusion classes and
+    accents, `marks.reduction`), or **new**. A text whose key table declares no
+    `reduce` (*The Chukchee*) never reports near; that check is the *Materials*'.
+
+    The form is stemmed first (`marks.stem`), so `Ајӈан̀ва́т’омъ` asks about
+    `Ајӈан̀ва́т`. It answers about the corpus and decides nothing: a near miss is a
+    place to look on the scan, and the reading may be right where the corpus is.
+    """
+    from .marks import reduction, stem
+    idx = idx if idx is not None else index(root)
+    form = stem(unicodedata.normalize("NFD", form), root)
+    forms = _ratified_forms(idx)
+    table = handle_table(root)
+    near = []
+    if table.reduces:
+        want = reduction(form, table)
+        near = sorted(({"form": f["form"], "key": f["key"], "pages": len(f["refs"]),
+                        "refs": sorted(f["refs"])}
+                       for f in forms.values()
+                       if f["form"] != form and reduction(f["form"], table) == want),
+                      key=lambda n: (-n["pages"], n["form"]))
+    # `near` is reported beside an exact match too: a caller discounting its own
+    # page's attestation (the review page) needs the other spellings to fall back on.
+    if form in forms:
+        f = forms[form]
+        return {"status": "seen", "form": form, "key": f["key"],
+                "pages": len(f["refs"]), "refs": sorted(f["refs"]), "near": near}
+    return {"status": "near" if near else "new", "form": form, "key": None,
+            "pages": 0, "refs": [], "near": near}
 
 
 NEARBY_SPAN = 12
@@ -480,7 +531,7 @@ def nearby(ref: str, root: Path = Path("."), span: int = NEARBY_SPAN,
     return [r for g in groups[:most] for r in g]
 
 
-def _terms(queries: list[str]) -> list[tuple[str, str]]:
+def _terms(queries: list[str], table) -> list[tuple[str, str]]:
     """Each query as `(casefolded, bare)`, plus its key form where it has one.
 
     **`bare` alone does not reduce the two sides alike, and the gap is the corpus's
@@ -501,7 +552,7 @@ def _terms(queries: list[str]) -> list[tuple[str, str]]:
         forms = [q]
         if not q.isascii():
             try:
-                forms.append(handle_key(q))
+                forms.append(handle_key(q, table))
             except ValueError:
                 pass
         out += [(f.casefold(), bare(f)) for f in forms]
@@ -562,7 +613,8 @@ def search(queries: list[str], root: Path = Path("."), min_pages: int = 1,
     """
     idx = idx if idx is not None else index(root, tick=tick)
     rows, seen = [], set()
-    terms = _terms(queries)
+    table = handle_table(root)
+    terms = _terms(queries, table)
     split = []
     # **The elements of a compound, but only once the whole has missed.** The corpus
     # indexes tokens, so a hyphenated form it holds only as its parts returns nothing
@@ -575,7 +627,7 @@ def search(queries: list[str], root: Path = Path("."), min_pages: int = 1,
         split = [p for q in queries for p in q.split("-")
                  if len(bare(p)) >= 2 and p != q]
         if split:
-            _scan(idx, _terms(split), rows, seen, min_pages)
+            _scan(idx, _terms(split, table), rows, seen, min_pages)
     lines = [ln for bucket in sorted(seen)
              for f in idx["buckets"][bucket]["forms"].values()
              for ln in f["lines"][:context]]
@@ -590,12 +642,21 @@ def search(queries: list[str], root: Path = Path("."), min_pages: int = 1,
         # negative.** The selection requires an inventory glyph, so a native token
         # carrying no mark at all — a bare `c`, `s`, `j`, `x`, `h` — is invisible
         # here by construction. "Not found" means not found *by this instrument*.
-        "floor": "forms carrying no inventory glyph are invisible to this index; "
-                 "an empty result is not evidence the corpus lacks the word",
+        # Under `prose_stands` the reading pass's `native` list selects too
+        # (`detectors.native_corpus_context`), so the floor is lower and says so.
+        "floor": ("forms carrying no inventory glyph are indexed only where a "
+                  "restored page's reading listed them as native; an empty result "
+                  "is not evidence the corpus lacks the word"
+                  if prose_stands(root) else
+                  "forms carrying no inventory glyph are invisible to this index; "
+                  "an empty result is not evidence the corpus lacks the word"),
         # Distinct forms, not occurrences: the number is read as "how much of
         # the corpus this instrument cannot offer", and a form set twenty times
         # is one word missing from the index rather than twenty.
         "unkeyable": len(idx["unkeyable"]),
+        # Listed native forms no restored line spells: the editor corrected them,
+        # or the reader listed a form the text never set. Selected nothing.
+        "native_unmatched": len(native_unmatched(root)),
         "matches": rows,
         "context": lines,
     }

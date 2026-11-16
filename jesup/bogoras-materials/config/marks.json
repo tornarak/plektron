@@ -2,5 +2,7 @@
  "_none": "No contrast is measured for the 1900 notation: the contrasts are corpus shares off gt/ocr/, and this text has none yet. The Jesup pairs (g-dot, the small capitals, caron-c) are that notation's and do not occur here. A pair earns a row once ratified pages show both members in quantity.",
  "contrasts": [],
  "rare_max_pct": 10.0,
- "min_types": 5
+ "min_types": 5,
+ "stem_boundary": "’",
+ "_stem_boundary": "The book prints ’ between a native stem and its Russian case ending (Ајӈан̀ва́т’омъ, Ајӈан̀ва́т’а, 1-022), so the stem is the native form and the lexicon keys it once, not once per case (marks.stem)."
 }
