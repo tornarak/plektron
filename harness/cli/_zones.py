@@ -178,6 +178,11 @@ def register(cli):
     opt(p, "--commit", is_flag=True,
                    help="save the relabelled pages to gt/zones/ (with .prev and a "
                         "journal line); report only otherwise")
+    opt(p, "--parallel", is_flag=True,
+                   help="also take a parallel-column block on the rule as stream: "
+                        "for pages whose two columns are both Chukchi, named from "
+                        "the ToC, since a Chukchi-beside-Russian block (the oath, "
+                        "no. 47) has the same shape")
 
     p = action(g, "bands", run_bands, section="The review pass",
                help="one page's mz/zones/ file as the review pass edits it: its "
@@ -460,7 +465,8 @@ def run_discard(a) -> int:
                       key=zmod.parse_ref)
     try:
         with progress("measuring") as tick:
-            rows = zones_rule.discard_many(refs, a.root, commit=a.commit, tick=tick)
+            rows = zones_rule.discard_many(refs, a.root, commit=a.commit, tick=tick,
+                                           parallel=a.parallel)
     except ConfigError as e:
         raise click.UsageError(str(e)) from None
     out(a, [r for r in rows if r["relabelled"]], name="relabelled")

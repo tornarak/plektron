@@ -230,7 +230,8 @@ def _band(label: str, lines: list[Line]) -> dict:
 STREAM_BODY = (P, CONT, "MainZone-Quote")
 
 
-def chukchi_bands(bands: list[dict], stream_ys: list[int]) -> list[int]:
+def chukchi_bands(bands: list[dict], stream_ys: list[int],
+                  native_parallel: frozenset[int] = frozenset()) -> list[int]:
     """The bands of a Section I page's Chukchi stream, which is not transcribed
     (the editor, 2026-11-16), as indices into `bands` (sorted by top).
 
@@ -245,6 +246,12 @@ def chukchi_bands(bands: list[dict], stream_ys: list[int]) -> list[int]:
     number, the running head). A stream broken by a heading of its own ends early,
     which leaves Chukchi kept rather than Russian discarded; the reviewer finishes it.
     Each rule is walked from, and no walk crosses the rule above it.
+
+    `native_parallel` names the parallel-column blocks known to be Chukchi in
+    both columns (women's and men's pronunciation, Radloff's spelling beside
+    Bogoras's): those are stream too. Which they are is read off the ToC, not the
+    page, since the oath's block (no. 47) sets Russian beside the Chukchi in the
+    same shape.
     """
     out: list[int] = []
     for k, y in enumerate(stream_ys):
@@ -255,7 +262,7 @@ def chukchi_bands(bands: list[dict], stream_ys: list[int]) -> list[int]:
         passed = False
         for i in reversed(above):
             lab = bands[i]["label"]
-            if lab in STREAM_BODY:
+            if lab in STREAM_BODY or i in native_parallel:
                 run.append(i)
             elif lab == OTHER and not run and not passed:
                 passed = True
@@ -448,7 +455,7 @@ def derive(recs: list[dict], x0: int, measure: int, ink, cfg: dict) -> Derived:
         kind = kinds[k]
         if kind != "parallel" and run:
             flush()
-            out.bands.append(_band(OTHER, run))
+            out.bands.append({**_band(OTHER, run), "parallel": True})
             run = []
         if kind == "parallel":
             if not run:
@@ -482,7 +489,7 @@ def derive(recs: list[dict], x0: int, measure: int, ink, cfg: dict) -> Derived:
             cur.append(ln)
     flush()
     if run:
-        out.bands.append(_band(OTHER, run))
+        out.bands.append({**_band(OTHER, run), "parallel": True})
 
     if notes:
         out.bands.append(_band(NOTES, notes))
@@ -671,7 +678,8 @@ def propose(ref: str, root: Path = Path("."), cfg: dict | None = None,
 
 
 def discard(ref: str, root: Path = Path("."), cfg: dict | None = None,
-            commit: bool = False, splits: dict | None = None) -> dict:
+            commit: bool = False, splits: dict | None = None,
+            parallel: bool = False) -> dict:
     """Relabel a saved `gt/zones/` page's Chukchi body bands as DiscardZone.
 
     The same measurement `derive` applies to `mz/zones/` (`chukchi_bands`), brought
@@ -709,8 +717,15 @@ def discard(ref: str, root: Path = Path("."), cfg: dict | None = None,
     row["stream_y"] = " ".join(str(y) for y in got.stream_ys)
 
     zones = zmod.read_zones(ref, root)
+    # A saved Other band is a parallel block where the rule found one in it:
+    # most of its height inside one of the rule's parallel bands.
+    blocks = [b for b in got.bands if b.get("parallel")]
+    native = frozenset(
+        i for i, z in enumerate(zones) if parallel and z["label"] == OTHER
+        and any(min(z["y1"], b["y1"]) - max(z["y0"], b["y0"])
+                > (z["y1"] - z["y0"]) / 2 for b in blocks))
     hit = []
-    for i in chukchi_bands(zones, got.stream_ys):
+    for i in chukchi_bands(zones, got.stream_ys, native):
         hit.append(f"{i + 1}:{zones[i]['label']}")
         zones[i]["label"] = DISCARD
     row["relabelled"] = " ".join(hit)
@@ -721,7 +736,7 @@ def discard(ref: str, root: Path = Path("."), cfg: dict | None = None,
 
 
 def discard_many(refs: list[str], root: Path = Path("."), commit: bool = False,
-                 tick=None) -> list[dict]:
+                 tick=None, parallel: bool = False) -> list[dict]:
     cfg = zc.load_config(root)
     if "text_rule" not in cfg:
         raise zc.ConfigError(
@@ -730,7 +745,8 @@ def discard_many(refs: list[str], root: Path = Path("."), commit: bool = False,
     splits = zmod.load_splits(root)
     rows = []
     for ref in refs:
-        rows.append(discard(ref, root, cfg, commit=commit, splits=splits))
+        rows.append(discard(ref, root, cfg, commit=commit, splits=splits,
+                            parallel=parallel))
         if tick:
             tick()
     return rows

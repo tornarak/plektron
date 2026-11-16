@@ -100,6 +100,11 @@ finish.
   empty. Write no key for them. A Chukchi row in `b_only` is the other copy's
   reading of one; leave it. Every line outside the zone is read as on any
   page, native forms in it included.
+- **A parallel block that sets Chukchi beside Russian is keyed Russian column
+  only** (the editor, 2026-11-16; the oath, no. 47). The layers read each row
+  across both columns: key the Russian half and drop the Chukchi, with a
+  `layout` note on the first such line. The margin line number stays where the
+  print sets it.
 - **Roman numerals are Latin** (the editor, 2026-11-16): `Группа I`, `т. X`, the
   folio `V`. The copies set Cyrillic `І` and `Х` in them.
 

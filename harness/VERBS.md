@@ -1191,6 +1191,7 @@ opinion of which pages are held out.
 ```
 --all      every page marked train or eval
 --commit   save the relabelled pages to gt/zones/ [off]
+--parallel also take a parallel-column block on the rule as stream: a saved Other band most of whose height lies in a block the rule found by its gutter. For pages whose two columns are both Chukchi, named from the ToC — the oath's block (no. 47) sets Russian beside the Chukchi in the same shape [off]
 --root --json --toon --pager
 ```
 

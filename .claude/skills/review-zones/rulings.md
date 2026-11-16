@@ -38,9 +38,13 @@ the ruling holds.
   transcribe. The «Записано…» line is Russian and keeps its label, and so does
   a Russian note that ends the previous text above the rule. The rule labels the
   run of body bands walking up from each stream rule; a band the walk stopped
-  short of, or an attribution keyed P that it took, is yours. Whether the text's
-  Chukchi title, set above the rule as a heading, is discarded too waits on the
-  editor; until then it keeps its label.
+  short of, or an attribution keyed P that it took, is yours. The text's Chukchi
+  title, set above the rule as a heading, is not discarded (the editor,
+  2026-11-16): it keeps its label and is read. A parallel block whose two
+  columns are both Chukchi (women's and men's pronunciation, nos. 25–28 and 46;
+  Radloff's spelling beside Bogoras's, no. 48) is `DiscardZone` whole; the
+  oath's (no. 47), Chukchi beside Russian, stays `MainZone-Other`, and its
+  reader keys the Russian column.
 - **Foot matter is `QuireMarksZone`**, as in *The Chukchee*: the gathering's
   signature (`16`, `1-177`) and a chapter's folio (`I`, `1-021`), a lone number
   or numeral as the page's last line.

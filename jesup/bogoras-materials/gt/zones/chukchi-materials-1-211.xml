@@ -8,9 +8,10 @@
   </Description>
   <Tags>
     <OtherTag ID="BT1" LABEL="RunningTitleZone" DESCRIPTION="block type RunningTitleZone"/>
-    <OtherTag ID="BT2" LABEL="MainZone-Other" DESCRIPTION="block type MainZone-Other"/>
+    <OtherTag ID="BT2" LABEL="DiscardZone" DESCRIPTION="block type DiscardZone"/>
     <OtherTag ID="BT3" LABEL="MainZone-Continued" DESCRIPTION="block type MainZone-Continued"/>
-    <OtherTag ID="BT4" LABEL="MainZone-P" DESCRIPTION="block type MainZone-P"/>
+    <OtherTag ID="BT4" LABEL="MainZone-Other" DESCRIPTION="block type MainZone-Other"/>
+    <OtherTag ID="BT5" LABEL="MainZone-P" DESCRIPTION="block type MainZone-P"/>
   </Tags>
   <Layout>
     <Page WIDTH="4880" HEIGHT="6896" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
@@ -30,17 +31,17 @@
             <Polygon POINTS="678 1284 3713 1284 3713 1500 678 1500"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="678" VPOS="1704" WIDTH="3035" HEIGHT="127" ID="mz_1-211_004" TAGREFS="BT2">
+        <TextBlock HPOS="678" VPOS="1704" WIDTH="3035" HEIGHT="127" ID="mz_1-211_004" TAGREFS="BT4">
           <Shape>
             <Polygon POINTS="678 1704 3713 1704 3713 1831 678 1831"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="678" VPOS="1920" WIDTH="3035" HEIGHT="412" ID="mz_1-211_005" TAGREFS="BT4">
+        <TextBlock HPOS="678" VPOS="1920" WIDTH="3035" HEIGHT="412" ID="mz_1-211_005" TAGREFS="BT5">
           <Shape>
             <Polygon POINTS="678 1920 3713 1920 3713 2332 678 2332"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="678" VPOS="2360" WIDTH="3035" HEIGHT="634" ID="mz_1-211_006" TAGREFS="BT4">
+        <TextBlock HPOS="678" VPOS="2360" WIDTH="3035" HEIGHT="634" ID="mz_1-211_006" TAGREFS="BT5">
           <Shape>
             <Polygon POINTS="678 2360 3713 2360 3713 2994 678 2994"/>
           </Shape>

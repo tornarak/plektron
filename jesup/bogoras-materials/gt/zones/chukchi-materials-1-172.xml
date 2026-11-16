@@ -10,6 +10,7 @@
     <OtherTag ID="BT1" LABEL="RunningTitleZone" DESCRIPTION="block type RunningTitleZone"/>
     <OtherTag ID="BT2" LABEL="MainZone-P" DESCRIPTION="block type MainZone-P"/>
     <OtherTag ID="BT3" LABEL="MainZone-Other" DESCRIPTION="block type MainZone-Other"/>
+    <OtherTag ID="BT4" LABEL="DiscardZone" DESCRIPTION="block type DiscardZone"/>
   </Tags>
   <Layout>
     <Page WIDTH="4816" HEIGHT="7008" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
@@ -54,7 +55,7 @@
             <Polygon POINTS="1168 3383 4203 3383 4203 3487 1168 3487"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="1168" VPOS="3549" WIDTH="3035" HEIGHT="1249" ID="mz_1-172_009" TAGREFS="BT3">
+        <TextBlock HPOS="1168" VPOS="3549" WIDTH="3035" HEIGHT="1249" ID="mz_1-172_009" TAGREFS="BT4">
           <Shape>
             <Polygon POINTS="1168 3549 4203 3549 4203 4798 1168 4798"/>
           </Shape>

@@ -10,8 +10,9 @@
     <OtherTag ID="BT1" LABEL="RunningTitleZone" DESCRIPTION="block type RunningTitleZone"/>
     <OtherTag ID="BT2" LABEL="MainZone-Continued" DESCRIPTION="block type MainZone-Continued"/>
     <OtherTag ID="BT3" LABEL="MainZone-Other" DESCRIPTION="block type MainZone-Other"/>
-    <OtherTag ID="BT4" LABEL="MainZone-P" DESCRIPTION="block type MainZone-P"/>
-    <OtherTag ID="BT5" LABEL="QuireMarksZone" DESCRIPTION="block type QuireMarksZone"/>
+    <OtherTag ID="BT4" LABEL="DiscardZone" DESCRIPTION="block type DiscardZone"/>
+    <OtherTag ID="BT5" LABEL="MainZone-P" DESCRIPTION="block type MainZone-P"/>
+    <OtherTag ID="BT6" LABEL="QuireMarksZone" DESCRIPTION="block type QuireMarksZone"/>
   </Tags>
   <Layout>
     <Page WIDTH="4784" HEIGHT="6960" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
@@ -36,7 +37,7 @@
             <Polygon POINTS="642 1617 3677 1617 3677 1719 642 1719"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="642" VPOS="1807" WIDTH="3035" HEIGHT="2403" ID="mz_1-177_005" TAGREFS="BT3">
+        <TextBlock HPOS="642" VPOS="1807" WIDTH="3035" HEIGHT="2403" ID="mz_1-177_005" TAGREFS="BT4">
           <Shape>
             <Polygon POINTS="642 1807 3677 1807 3677 4210 642 4210"/>
           </Shape>
@@ -46,12 +47,12 @@
             <Polygon POINTS="642 4452 3677 4452 3677 4551 642 4551"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="642" VPOS="4656" WIDTH="3035" HEIGHT="1109" ID="mz_1-177_007" TAGREFS="BT4">
+        <TextBlock HPOS="642" VPOS="4656" WIDTH="3035" HEIGHT="1109" ID="mz_1-177_007" TAGREFS="BT5">
           <Shape>
             <Polygon POINTS="642 4656 3677 4656 3677 5765 642 5765"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="642" VPOS="5768" WIDTH="3035" HEIGHT="62" ID="mz_1-177_008" TAGREFS="BT5">
+        <TextBlock HPOS="642" VPOS="5768" WIDTH="3035" HEIGHT="62" ID="mz_1-177_008" TAGREFS="BT6">
           <Shape>
             <Polygon POINTS="642 5768 3677 5768 3677 5830 642 5830"/>
           </Shape>

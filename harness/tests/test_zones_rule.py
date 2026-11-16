@@ -372,6 +372,11 @@ def test_one_other_band_on_the_rule_is_passed_over_and_no_more():
     page = [band("MainZone-Continued", 800), band("MainZone-P", 1200),
             band("MainZone-Other", 1400), band("MainZone-P", 1600)]
     assert chukchi_bands(page, [1000, 1800]) == [0, 3]
+    # `1-178`: a Chukchi parallel block's tail, its «Записано…», the rule. Named
+    # as native, the block is stream; unnamed (the oath's shape), it is not.
+    page = [band("MainZone-Other", 800), band("MainZone-Other", 1000)]
+    assert chukchi_bands(page, [1200]) == []
+    assert chukchi_bands(page, [1200], frozenset({0})) == [0]
 
 
 def test_a_text_adds_a_type_without_restating_the_vocabulary(tmp_path):
