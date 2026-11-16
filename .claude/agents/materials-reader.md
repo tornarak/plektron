@@ -61,7 +61,10 @@ finish.
 2. **`uv run harness lexicon lookup Q …`, once, with every native candidate the
    witness lists** and every name the page uses without introducing it. It is
    the one licensed reach into the corpus: never read another page's proposal,
-   decision or `gt/ocr/` (the guard refuses them).
+   decision or `gt/ocr/` (the guard refuses them). Then **`uv run harness lexicon
+   counterpart REF FORM …`, once, with the same forms**: their spellings in *The
+   Chukchee* and the English lines they sit in (below, "Native forms"). A form
+   whose counterpart carries a mark yours lacks is a place to zoom.
 3. **`uv run harness ocr zoom REF N@P … --reason "…"`, one call** naming every
    line that holds a native form, every `differ` and `alone` line, and every
    Russian word whose sense does not hold. Name points (`N@60`), not ranges;
@@ -96,9 +99,12 @@ finish.
 
 ## Native forms
 
-**Every native form is read off the scan, never off a layer.** List each line's
-forms in `native`, space separated — every one, including those no glyph marks
-(`терк-арм`), since no rule can find those. Spell each form's codepoints in
+**Every native form is read off the scan, never off a layer** — zoomed, even one
+that looks unmarked: `еты́нвыт` (1-035) carries an acute both copies dropped. List
+each line's forms in `native`, space separated — every one, including those no
+glyph marks (`терк-арм`), since no rule can find those, and a Chukchi word another
+author is cited spelling in Latin type (`Melutankin`, Cassiopeia, 1-033), with a
+note saying whose spelling it is. Spell each form's codepoints in
 `resolved`, which `proposal check` holds the text to.
 
 - **If the lookup gives a key, type the key in braces in `text`**: `{Ajn_1an.va't}`.

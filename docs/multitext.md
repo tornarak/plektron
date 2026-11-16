@@ -217,8 +217,14 @@ translation and both books' attestations without anyone retyping them.
 
 **A correspondence table**, in the text's config, maps a Materials sequence to
 the Americanist sequences it stands for, each pair with its attestation: в *v*,
-ы *ɪ*, ӈ *ñ*, ӄ *q*, ө *ɵ*, ł *ʟ*, the acute *ˊ*, `н̀` *n˙* (`та́н̀ӈыт`,
-*taˊn˙ñɪt*: the first evidence of what the grave marks), and ђ *g̣*. It is a
+ы *ɪ*, ӈ *ñ*, ӄ *q*, ө *ɵ*, ł *ʟ*, the acute *ˊ*, and ђ *g̣*. The grave is two
+marks (`keying.json`, `inventory.̀`): on a vowel it is secondary stress in a
+compound, which *The Chukchee* writes *ˊ* like the primary (`Аӈа̀ӈ-ва́ырђын`,
+*añaˊñ-vaˊɪrg̣ɪn*; the editor, 2026-11-16), so it maps to *ˊ*. On a consonant it
+stands where *The Chukchee* sometimes writes its palatalization dot (`та́н̀ӈыт`,
+*taˊn˙ñɪt*), but it is printed inconsistently (`Эlэ́нд̀і` in the introduction,
+`Эlэ́нді` six times in the tale and in *The Chukchee*), so it maps to *˙* and a
+disagreement on it is near, never more. It is a
 table and not a transliteration function because some pairs are one to many: э
 is *e* in `Кэ́lэт` (*Keˊlet*) and *ê* elsewhere; є is *ᴇ* in `Кэ́lє` (*Keˊlᴇ*); ђ
 is *g̣* in `рђ` (*rg̣*) and stands where *The Chukchee* has *h* in three forms
