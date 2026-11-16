@@ -1,0 +1,15 @@
+{
+ "ref": "1-189",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-189.xml",
+  "bands_sha256": "774136808514be912ac74d514e47ce15c047521d8aa9b9d4c47ebaf6d8eeaa42"
+ },
+ "bands": 4,
+ "edits": [],
+ "notes": [
+  {
+   "line": 19,
+   "text": "Line 19 is the colophon 'Записано отъ чукчи ... въ Анюйской крѣпости.' in smaller type, indented; left as MainZone-P (indented, not centred), but the editor may prefer MainZone-Other."
+  }
+ ]
+}

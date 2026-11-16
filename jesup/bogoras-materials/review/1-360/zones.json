@@ -1,0 +1,15 @@
+{
+ "ref": "1-360",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-360.xml",
+  "bands_sha256": "8025edae9ee4d23416ca73cb1f68ab5a517c112b40eff04d80ec5b36c2c53454"
+ },
+ "bands": 6,
+ "edits": [],
+ "notes": [
+  {
+   "line": 9,
+   "text": "Indented colophon (Записано отъ чукчи ... въ Нижнеколымскѣ) closing the previous text; band 3 is MainZone-P by indent. A source note rather than a paragraph; no ruling forces a change."
+  }
+ ]
+}

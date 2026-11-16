@@ -1,0 +1,22 @@
+{
+ "ref": "1-272",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-272.xml",
+  "bands_sha256": "9c3505001f5adb152040e8ad6acf1deaa8520d57ce7f12dee993921db98da02a"
+ },
+ "bands": 7,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 5,
+   "label": "MainZone-Other",
+   "why": "line 29 is the title 'Аңан-рачвұңкен 1ұмңы1. О состязаніи шамановъ сказка.', a short line centred in the column under the number 81: a heading, MainZone-Other, not a paragraph start."
+  }
+ ],
+ "notes": [
+  {
+   "line": 27,
+   "text": "Colophon 'Записано отъ чукчи Ваа1 на р. Омолонѣ въ 1895 г.' is indented and stands alone as MainZone-P; it is a source attribution rather than a paragraph, so the editor may prefer MainZone-Other. No ruling covers it, so no edit."
+  }
+ ]
+}

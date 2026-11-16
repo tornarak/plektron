@@ -1,0 +1,15 @@
+{
+ "ref": "1-149",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-149.xml",
+  "bands_sha256": "afaf4af089be241bc7a2766629ff8a993976c02eb325b52bdc6b6ac568c02a48"
+ },
+ "bands": 10,
+ "edits": [],
+ "notes": [
+  {
+   "line": 6,
+   "text": "Colophon 'Записано отъ чукчи ... 1897 г.' is a one-line indented MainZone-P band; a source note, not a paragraph, but no ruling requires Other."
+  }
+ ]
+}

@@ -1,0 +1,22 @@
+{
+ "ref": "1-355",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-355.xml",
+  "bands_sha256": "96fcc490aebde598a1102b356a74ec4860d5aaad249f272185f2abda47154559"
+ },
+ "bands": 7,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 5,
+   "label": "MainZone-Other",
+   "why": "line 17 is the centred title 'Melotáchyn armáchychyn. Заяцъ богатырь.' under the number 116, a heading: MainZone-Other, not a continuation of prose (the 'continued' flag fires on it)."
+  }
+ ],
+ "notes": [
+  {
+   "line": 15,
+   "text": "Indented colophon 'Записано отъ чукчанки Кутjэут на р. Молондѣ.' sits as MainZone-P; it closes the previous text rather than opening a paragraph. Left as the rule drew it."
+  }
+ ]
+}

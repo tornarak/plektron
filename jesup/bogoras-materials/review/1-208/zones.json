@@ -1,0 +1,26 @@
+{
+ "ref": "1-208",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-208.xml",
+  "bands_sha256": "2cad2855cd9e63ffea1e97861c37f5ee734bc9a0418296a6ef2f2fedaee2079c"
+ },
+ "bands": 5,
+ "edits": [
+  {
+   "op": "merge",
+   "band": 3,
+   "why": "line 19 is a row of the same two-column block as lines 1-18 (Latin transcription | Cyrillic transcription, numbered 91-113 on both sides); the ruling makes parallel columns one MainZone-Other band, not a Continued band."
+  },
+  {
+   "op": "merge",
+   "band": 4,
+   "why": "lines 20-27 continue the same parallel block (Latin | Cyrillic, sentences 114-120, line against line); one MainZone-Other band per the parallel-columns ruling."
+  }
+ ],
+ "notes": [
+  {
+   "line": 28,
+   "text": "Below the full-width rule the Russian translation continues from sentence 93; MainZone-Continued stands."
+  }
+ ]
+}

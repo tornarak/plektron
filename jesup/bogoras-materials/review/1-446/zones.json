@@ -1,0 +1,15 @@
+{
+ "ref": "1-446",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-446.xml",
+  "bands_sha256": "a7a75a710137b5ee0e2cbc42ae6b7dd92f51dfe9dcd81a9d311bfa595dcc5d2b"
+ },
+ "bands": 5,
+ "edits": [],
+ "notes": [
+  {
+   "line": 28,
+   "text": "Indented one-line source note 'То-же, что и предыдущая.' labelled MainZone-P by geometry; it is a colophon-like note, not a paragraph."
+  }
+ ]
+}

@@ -1,0 +1,15 @@
+{
+ "ref": "1-118",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-118.xml",
+  "bands_sha256": "307ed773a0d4aa18aa33ed7111b8c864fa54a8e3562339895bd10fd9302ba2c7"
+ },
+ "bands": 3,
+ "edits": [],
+ "notes": [
+  {
+   "line": 24,
+   "text": "Row order in band 3 reads 22 24 23; line 24's number sits in the margin beside the line printed as 23. Order only, not zoning."
+  }
+ ]
+}

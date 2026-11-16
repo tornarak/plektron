@@ -1,0 +1,15 @@
+{
+ "ref": "1-140",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-140.xml",
+  "bands_sha256": "1a442ee641ea03cc20f634c3539fa8e9b25a77c11ec5a7fb06c10d18d98e01a3"
+ },
+ "bands": 3,
+ "edits": [],
+ "notes": [
+  {
+   "line": 23,
+   "text": "A `*` follows `полдень.` in line 23, but no footnote text or rule is printed on the page; nothing to zone."
+  }
+ ]
+}

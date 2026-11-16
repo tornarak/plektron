@@ -1,0 +1,15 @@
+{
+ "ref": "1-305",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-305.xml",
+  "bands_sha256": "ee962ebea6882bce27fc66ef4a1694c2a35aff4c961429b6888464c937d5f911"
+ },
+ "bands": 8,
+ "edits": [],
+ "notes": [
+  {
+   "line": 22,
+   "text": "Colophon «Записано отъ чукчанки Кутjэўт.», indented, set as its own MainZone-P band. No ruling covers colophons; left as drawn."
+  }
+ ]
+}

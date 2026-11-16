@@ -1,0 +1,22 @@
+{
+ "ref": "1-332",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-332.xml",
+  "bands_sha256": "c6fdfd4dd6afe10c4ee6c2c9b92cca0e8886eb8b0b221a99219726ceeaf45674"
+ },
+ "bands": 11,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 5,
+   "label": "MainZone-Other",
+   "why": "line 15 is the title of no. 102 ('Рале-рачвункы. На состязании скользящихъ внизъ.'), a short line centred in the column under the number: a heading, MainZone-Other, not a continuation."
+  }
+ ],
+ "notes": [
+  {
+   "line": 13,
+   "text": "Bands 3 and 7 are one-line colophons ('Записано отъ чукчанки Кутjэут.'), indented, so MainZone-P; attributions rather than paragraphs, the editor may prefer MainZone-Other."
+  }
+ ]
+}

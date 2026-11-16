@@ -1,0 +1,26 @@
+{
+ "ref": "1-449",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-449.xml",
+  "bands_sha256": "fc900366c1f5d5ba322049d69df876e41e22b0f4c99ccb075f38dee8fd318b0b"
+ },
+ "bands": 6,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 3,
+   "label": "MainZone-Other",
+   "why": "line 17 «То-же, что и предыдущая.» is a one-line editorial remark (the source note of text no. 150) in small type under the text, not a paragraph start; MainZone-Other."
+  }
+ ],
+ "notes": [
+  {
+   "line": 17,
+   "text": "Small-type remark under text no. 150, indented like a colophon; if the editor treats these as MainZone-P, leave band 3 as drawn."
+  },
+  {
+   "line": 38,
+   "text": "Signature numeral «50» at the foot is QuireMarksZone as the rule drew it; no change."
+  }
+ ]
+}

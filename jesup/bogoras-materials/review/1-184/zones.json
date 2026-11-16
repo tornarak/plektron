@@ -1,0 +1,19 @@
+{
+ "ref": "1-184",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-184.xml",
+  "bands_sha256": "92a4e362d76c2bff9fe1cb65cf0b27d41a07450585412dcff36f2785ce70790a"
+ },
+ "bands": 10,
+ "edits": [],
+ "notes": [
+  {
+   "line": 4,
+   "text": "Colophon 'Записано на урочищѣ Акониайке отъ чукчи Вателя.' is a one-line indented, left-set line closing no. 29, labelled MainZone-P by the rule. It is not centred (right inset ~300 px), so no ruling or description clearly puts it elsewhere; left as P. Editor may prefer MainZone-Other for colophons."
+  },
+  {
+   "line": 24,
+   "text": "Notes in the second group open 'b) 1 (стр. 6).' and '2 (стр. 6).'; bands 9 and 10 start at those openers, as the ruling wants."
+  }
+ ]
+}

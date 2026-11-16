@@ -1,0 +1,15 @@
+{
+ "ref": "1-172",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-172.xml",
+  "bands_sha256": "ec3fc236a02149e24b5a9db1ce6aa2a40fa2746f5a71f722a99f34a647ccfde4"
+ },
+ "bands": 11,
+ "edits": [],
+ "notes": [
+  {
+   "line": 24,
+   "text": "Band 8 holds lines 23 and 24 but only one heading row (Jajbalqaj-lumcyl) is visible in the composite; line 24 (and line 1 in band 1) show no printed row of their own, likely text-layer specks."
+  }
+ ]
+}

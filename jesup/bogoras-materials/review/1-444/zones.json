@@ -1,0 +1,15 @@
+{
+ "ref": "1-444",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-444.xml",
+  "bands_sha256": "396c169a371405191bc53a3b55974d2d25b3f88eb9d677b3bf51f37a2c94c7a5"
+ },
+ "bands": 4,
+ "edits": [],
+ "notes": [
+  {
+   "line": 1,
+   "text": "Band 1 holds lines 0 and 1, but only one head line is visible on the composite; line 1 shows no ink of its own."
+  }
+ ]
+}

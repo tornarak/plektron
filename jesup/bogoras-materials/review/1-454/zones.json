@@ -1,0 +1,22 @@
+{
+ "ref": "1-454",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-454.xml",
+  "bands_sha256": "0f5f1905493856f9a93f5241753d44871083537f1dddeb0ab29d2681714b0372"
+ },
+ "bands": 4,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 3,
+   "label": "MainZone-Other",
+   "why": "line 3 «О Кэlɛ, сосватавшемъ женщину (варiантъ предыдущей.)» is a short line centred in the column under the number 155, a heading: MainZone-Other, not a paragraph start."
+  }
+ ],
+ "notes": [
+  {
+   "line": 4,
+   "text": "Line 4 is indented on the scan and opens band 4 as MainZone-P; checked, stands."
+  }
+ ]
+}

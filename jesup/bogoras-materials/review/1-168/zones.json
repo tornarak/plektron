@@ -1,0 +1,15 @@
+{
+ "ref": "1-168",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-168.xml",
+  "bands_sha256": "54bb5cf6c7ae5f69bb3ccfe5ccd06545dfb2464d57ab968297bc2285563e0fba"
+ },
+ "bands": 10,
+ "edits": [],
+ "notes": [
+  {
+   "line": 8,
+   "text": "Colophon 'Записано на верховьяхъ р. Каменной отъ чукчи Нувата.' is a one-line indented MainZone-P band; a source note, no ruling requires Other."
+  }
+ ]
+}

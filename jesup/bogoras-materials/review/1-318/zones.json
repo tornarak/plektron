@@ -1,0 +1,15 @@
+{
+ "ref": "1-318",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-318.xml",
+  "bands_sha256": "607627996790f0285f0c650b18d1fbd4edb205feec81e4d2942ac0c4bfa2d192"
+ },
+ "bands": 3,
+ "edits": [],
+ "notes": [
+  {
+   "line": 1,
+   "text": "Line 1 sits in the running-title band but no text row is visible in the composite beside it (likely a speck row); line 0 is the head. Lines 9/10 and 20/21 are listed out of order in band 2 by the text layer."
+  }
+ ]
+}

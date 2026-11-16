@@ -1,0 +1,17 @@
+{
+ "ref": "1-300",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-300.xml",
+  "bands_sha256": "07d82ab193d57ba517b08df760963783b6365c60d8a7aef4ade5e1bdcb6d4ddf"
+ },
+ "bands": 7,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 5,
+   "label": "MainZone-Other",
+   "why": "line 9 is a centred title line under the text number 90 (Chukchi title with Russian gloss), a heading, not body text continuing a paragraph."
+  }
+ ],
+ "notes": []
+}

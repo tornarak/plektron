@@ -1,0 +1,26 @@
+{
+ "ref": "1-427",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-427.xml",
+  "bands_sha256": "ddf804affe850f4ac48f0cdd024cfbb9862783511f638c7e9cd11a427b858769"
+ },
+ "bands": 7,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 5,
+   "label": "MainZone-Other",
+   "why": "line 28 is the centred title of text 139 (Kalђé-këdân. Одѣтый въ цѣльно сшитое платье.), directly under the number heading; a heading is MainZone-Other, not a continuation."
+  }
+ ],
+ "notes": [
+  {
+   "line": 26,
+   "text": "Indented colophon (Записано отъ чукчи Чόцо ...) is band 3, MainZone-P; indented so P stands, but an editor may prefer Other."
+  },
+  {
+   "line": 13,
+   "text": "Line order 11 13 12 and 35 34 in the bands is the text layer's row order; the ink is ordinary consecutive lines."
+  }
+ ]
+}

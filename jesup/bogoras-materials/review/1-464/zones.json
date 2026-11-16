@@ -1,0 +1,22 @@
+{
+ "ref": "1-464",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-464.xml",
+  "bands_sha256": "843346121c52fe079721250e79ed5d8adb4a11156b131abf1bfaa8439c212751"
+ },
+ "bands": 5,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 4,
+   "label": "MainZone-Other",
+   "why": "line 34 «То-же, что и предыдущая.» is a one-line editorial remark in small type under text no. 164, not a paragraph start; MainZone-Other."
+  }
+ ],
+ "notes": [
+  {
+   "line": 34,
+   "text": "Small-type remark, indented like a colophon; if the editor treats these as MainZone-P, leave band 4 as drawn."
+  }
+ ]
+}

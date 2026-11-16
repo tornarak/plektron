@@ -1,0 +1,15 @@
+{
+ "ref": "1-270",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-270.xml",
+  "bands_sha256": "ba402277d4f5dba5f30ff29f9005028b35e20e7b290a4df09fedfaae2ea62069"
+ },
+ "bands": 3,
+ "edits": [],
+ "notes": [
+  {
+   "line": 36,
+   "text": "Indented colophon line (Записано от чукчи ... въ Нижнеколымскѣ) after a gap; kept MainZone-P as the rule drew it."
+  }
+ ]
+}

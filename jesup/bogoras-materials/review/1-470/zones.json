@@ -1,0 +1,15 @@
+{
+ "ref": "1-470",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-470.xml",
+  "bands_sha256": "968f3ad1e1f49a17cd438801a009926b33a4a3dbaf41a7a5aa174b6c2dc0f06f"
+ },
+ "bands": 2,
+ "edits": [],
+ "notes": [
+  {
+   "line": 1,
+   "text": "Line 1 sits in the running-title band but no text line shows on the scan between the head (line 0) and the first body line (line 2); likely a text-layer speck. Harmless."
+  }
+ ]
+}

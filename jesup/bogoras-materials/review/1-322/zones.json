@@ -1,0 +1,15 @@
+{
+ "ref": "1-322",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-322.xml",
+  "bands_sha256": "23a0c373c8018e816a67cab3cbd1c205f78438dd1846ef03565410b86490017e"
+ },
+ "bands": 6,
+ "edits": [],
+ "notes": [
+  {
+   "line": 27,
+   "text": "Colophon «Записано отъ чукчи кривого Кэутэӈын'а ... въ 1896 г.», indented, set as its own MainZone-P band. No ruling covers colophons; left as drawn."
+  }
+ ]
+}

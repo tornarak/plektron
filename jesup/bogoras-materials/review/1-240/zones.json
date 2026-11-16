@@ -1,0 +1,15 @@
+{
+ "ref": "1-240",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-240.xml",
+  "bands_sha256": "f528b2cf038825583e44747ac91662bb4cfe7e35bc7d1c0a806d9330530aa315"
+ },
+ "bands": 7,
+ "edits": [],
+ "notes": [
+  {
+   "line": 25,
+   "text": "Band 3 is the one-line colophon 'Записано отъ чукчанки Кутjэут.', indented, so MainZone-P; an attribution rather than a paragraph, the editor may prefer MainZone-Other."
+  }
+ ]
+}

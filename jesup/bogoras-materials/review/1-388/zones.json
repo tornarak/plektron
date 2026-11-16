@@ -1,0 +1,15 @@
+{
+ "ref": "1-388",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-388.xml",
+  "bands_sha256": "42dc52e645c057d2d8636bbdafdd1ab730bb1c14783b390d3abe5a08b03de4f4"
+ },
+ "bands": 7,
+ "edits": [],
+ "notes": [
+  {
+   "line": 27,
+   "text": "Indented colophon line (Записано отъ чукчи ... 1897 г.) closing text 127, a one-line MainZone-P."
+  }
+ ]
+}

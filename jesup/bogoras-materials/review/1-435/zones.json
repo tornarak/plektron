@@ -1,0 +1,22 @@
+{
+ "ref": "1-435",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-435.xml",
+  "bands_sha256": "84228a326e34bed717670f70ed8f09f485109d5d5c051c9c45af693ec0dad9ce"
+ },
+ "bands": 6,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 3,
+   "label": "MainZone-Other",
+   "why": "lines 20-25 open «Записано отъ чукчи … въ 1896 г.», the recording colophon of text no. 141, set in smaller type; it is an editor's note on the text, not a paragraph start, so MainZone-Other."
+  }
+ ],
+ "notes": [
+  {
+   "line": 20,
+   "text": "Colophon with ethnographic remark in small type; if the editor prefers colophons as MainZone-P, leave band 3 as the rule drew it."
+  }
+ ]
+}

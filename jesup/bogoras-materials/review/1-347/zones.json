@@ -1,0 +1,15 @@
+{
+ "ref": "1-347",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-347.xml",
+  "bands_sha256": "41d25f4461cbdbd3b25b3db58b8a65cee56413da7c2320e79a13d3db9339b9c2"
+ },
+ "bands": 3,
+ "edits": [],
+ "notes": [
+  {
+   "line": 40,
+   "text": "Line 40 is a stray margin speck (a '40' read beside the last line's right end); the last printed body line is 39. Harmless inside band 2."
+  }
+ ]
+}

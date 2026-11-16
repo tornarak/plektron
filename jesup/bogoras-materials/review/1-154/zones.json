@@ -1,0 +1,15 @@
+{
+ "ref": "1-154",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-154.xml",
+  "bands_sha256": "faa69f2ce7bc44e7857b509f572143418e7fead54dadd88b0e940b56ce0aa1f7"
+ },
+ "bands": 11,
+ "edits": [],
+ "notes": [
+  {
+   "line": 12,
+   "text": "Colophon 'Записано отъ чукчи ... 1897 г.' is set at the paragraph indent (left edge ~484 like lines 4 and 14), not centred, so MainZone-P is kept; the editor may prefer MainZone-Other for a colophon."
+  }
+ ]
+}

@@ -1,0 +1,22 @@
+{
+ "ref": "1-298",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-298.xml",
+  "bands_sha256": "883826b3e13fd9ed1ce7b950b1673278f89ea78c5a4b684ce65699108f3cc7f8"
+ },
+ "bands": 3,
+ "edits": [
+  {
+   "op": "absorb",
+   "line": 42,
+   "into": "above",
+   "why": "line 42 (y 5197-5241) is the last printed body line, flush with the column, directly under line 41 and above the footnote rule: it is MainZone-Continued body text, not matter outside any band."
+  }
+ ],
+ "notes": [
+  {
+   "line": 42,
+   "text": "Text layer reads this row as '- -' and splits the last body line into rows 41/42; the scan shows one printed line beginning 'Принесъ.» — «Домашніе что?»'."
+  }
+ ]
+}

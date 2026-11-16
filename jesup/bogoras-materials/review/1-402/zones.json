@@ -1,0 +1,15 @@
+{
+ "ref": "1-402",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-402.xml",
+  "bands_sha256": "d312d40c1d67c874526febb4c9cf8d28fdc76d4642bcf1a89a046082d36a9266"
+ },
+ "bands": 2,
+ "edits": [],
+ "notes": [
+  {
+   "line": 1,
+   "text": "Line 1 sits in the running-title band but no printed line is visible for it on the composite (the head is line 0, text starts at line 2); likely a speck row, harmless."
+  }
+ ]
+}

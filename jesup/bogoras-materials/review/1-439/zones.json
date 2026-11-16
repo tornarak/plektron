@@ -1,0 +1,15 @@
+{
+ "ref": "1-439",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-439.xml",
+  "bands_sha256": "5c6ad3e452677f28836a1ef98f6b220237af5f21a796cc0e2a915aa3a29792c4"
+ },
+ "bands": 7,
+ "edits": [],
+ "notes": [
+  {
+   "line": 23,
+   "text": "Lines 23-25 are a small-type indented note about the informant (Тэlпыӈэ, чукчанка...), printed after text 142 and before heading 143; kept as MainZone-P (indented opener), could equally be read as a Quote-like aside."
+  }
+ ]
+}

@@ -1,0 +1,19 @@
+{
+ "ref": "1-286",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-286.xml",
+  "bands_sha256": "b7310e40918c602cf9a36d3327a9573e0f4b1c523465870863978f1ab2df14cb"
+ },
+ "bands": 5,
+ "edits": [],
+ "notes": [
+  {
+   "line": 1,
+   "text": "Band 1 holds lines 0 and 1; only line 0 is a printed head line on the composite, line 1 shows no body text of its own (a speck at the head, or the text layer's split of the head row). Harmless to the zoning."
+  },
+  {
+   "line": 35,
+   "text": "Centred heading «Варіантъ второй половины сказки.» is band 3 MainZone-Other, as ruled; line 36 opens indented as a paragraph, band 4 MainZone-P. Band 5 holds footnote 1 under the short rule."
+  }
+ ]
+}

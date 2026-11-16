@@ -1,0 +1,15 @@
+{
+ "ref": "1-447",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-447.xml",
+  "bands_sha256": "a5167fa62c6c7acc7a557c9040b22de57bb71618e64ef3505f4c761c5d0921fe"
+ },
+ "bands": 6,
+ "edits": [],
+ "notes": [
+  {
+   "line": 23,
+   "text": "Indented line 'То-же, что и предыдущая.' is a short closing note to no. 147 (a source remark), banded MainZone-P by indent; the editor may prefer it with the colophon-type lines elsewhere."
+  }
+ ]
+}

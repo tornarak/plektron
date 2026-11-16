@@ -1,0 +1,22 @@
+{
+ "ref": "1-425",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-425.xml",
+  "bands_sha256": "ece6a24ff08d251b6940ca67da61bf671e28532e4504066e292e20be19ba04be"
+ },
+ "bands": 8,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 5,
+   "label": "MainZone-Other",
+   "why": "line 10 (Мыткакай и Каэлькай title) is a short line centred in the column under the centred number 138: a heading, MainZone-Other, not a continuation."
+  }
+ ],
+ "notes": [
+  {
+   "line": 8,
+   "text": "Indented colophon (Записано отъ чукчи Чоцо ...) stands as MainZone-P; it is a signature line, left as the rule drew it."
+  }
+ ]
+}

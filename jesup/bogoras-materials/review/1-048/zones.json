@@ -1,0 +1,15 @@
+{
+ "ref": "1-048",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-048.xml",
+  "bands_sha256": "90fdc272992bdb47e19ece571d417301f38eadf3342eb3b5ae5eb177df18f854"
+ },
+ "bands": 3,
+ "edits": [],
+ "notes": [
+  {
+   "line": 8,
+   "text": "Lines 6-22 are a two-column facsimile of the document (ticket text left, continuation right) with a margin brace and no. 37; all sits under the short footnote rule and so stays in the one Notes band per the footnote ruling. The text layer reads rows across both columns."
+  }
+ ]
+}

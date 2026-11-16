@@ -1,0 +1,15 @@
+{
+ "ref": "1-231",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-231.xml",
+  "bands_sha256": "113d92f5650b15c17837e03f0e92a20e6c0b55084240c27160dda4be85f1117e"
+ },
+ "bands": 6,
+ "edits": [],
+ "notes": [
+  {
+   "line": 16,
+   "text": "Indented colophon line (Записано отъ чукчанки ...) is labelled MainZone-P; indented on the scan, so left as the rule has it."
+  }
+ ]
+}

@@ -1,0 +1,15 @@
+{
+ "ref": "1-396",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-396.xml",
+  "bands_sha256": "7163034ac40aa109ad2c8e244599bab65319e4981c2fa76e9bbb00b3d5a65f6a"
+ },
+ "bands": 2,
+ "edits": [],
+ "notes": [
+  {
+   "line": 42,
+   "text": "Unbanded line 42 (text 'e', y 5816-5852) is a speck below the last text line, no printed line; left in no band."
+  }
+ ]
+}

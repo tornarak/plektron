@@ -1,0 +1,25 @@
+{
+ "ref": "1-361",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-361.xml",
+  "bands_sha256": "a00bdb2338842f35e311d5b33f0b49b116a244cb5ac66eeab1d0f31f05f65d4f"
+ },
+ "bands": 8,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 3,
+   "label": "MainZone-Other",
+   "why": "line 21 'Записано отъ чукчанки Кутjэут на р. Молондѣ.' is a one-line colophon closing text no. 118, not a paragraph start; MainZone-Other (anything the other types do not cover)."
+  }
+ ],
+ "notes": [
+  {
+   "text": "Uncovered ink y 3183-3273 (x 527-1746) is the last printed line of band 2, 'жить; другой шатеръ разбили.' (the text layer has no row for it; the text layer's line 20 appears to hold two printed lines, 'хворать станутъ ... Они стали' and this one). It belongs with band 2 (MainZone-Continued)."
+  },
+  {
+   "line": 1,
+   "text": "Line 1 is a speck/empty row at the top of band 2; no printed text."
+  }
+ ]
+}

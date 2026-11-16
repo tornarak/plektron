@@ -1,0 +1,17 @@
+{
+ "ref": "1-137",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-137.xml",
+  "bands_sha256": "ed81b69de302b921d9facad166b977aa88045eda683ebc5c906cb314385abbee"
+ },
+ "bands": 7,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 3,
+   "label": "MainZone-Other",
+   "why": "line 2 is the centred title line of text 14 (Chukchi title, em dash, second title) directly under the heading '14.'; a heading is MainZone-Other, not a continuation of earlier prose."
+  }
+ ],
+ "notes": []
+}

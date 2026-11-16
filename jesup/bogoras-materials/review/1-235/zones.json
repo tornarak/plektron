@@ -1,0 +1,15 @@
+{
+ "ref": "1-235",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-235.xml",
+  "bands_sha256": "601f7e73f50ea7a83ff8ecf4b03ff4062b452f52ca7b0c06292a0de525882e47"
+ },
+ "bands": 4,
+ "edits": [],
+ "notes": [
+  {
+   "line": 37,
+   "text": "Colophon 'Записано отъ чукчи Ајнайват'а на р. Колымѣ въ 1896 г.' is indented and stands alone as MainZone-P; it is a source attribution rather than a paragraph, so the editor may prefer MainZone-Other. No ruling covers it, so no edit."
+  }
+ ]
+}

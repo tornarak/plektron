@@ -1,0 +1,15 @@
+{
+ "ref": "1-248",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-248.xml",
+  "bands_sha256": "532928c744a2f009aa5bc4ac4a18e4cc8f5f0d9f97da7b087da024ea6aa21a0b"
+ },
+ "bands": 7,
+ "edits": [],
+ "notes": [
+  {
+   "line": 19,
+   "text": "Indented colophon line (Записано от чукчи ... 1896 г.) standing alone under a gap; kept MainZone-P as the rule drew it, though an editor may prefer Other."
+  }
+ ]
+}

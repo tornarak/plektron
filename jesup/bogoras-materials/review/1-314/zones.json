@@ -1,0 +1,15 @@
+{
+ "ref": "1-314",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-314.xml",
+  "bands_sha256": "740a66d0cb85a1b20c1e04361948824888b9aadc1e5d94be98183defa916f79a"
+ },
+ "bands": 7,
+ "edits": [],
+ "notes": [
+  {
+   "line": 11,
+   "text": "Indented colophon line (Записано от чукчанки Кутjэут.) is MainZone-P by indent; it is an attribution closing text 95, not a prose paragraph. Left as drawn, since no ruling names colophons."
+  }
+ ]
+}

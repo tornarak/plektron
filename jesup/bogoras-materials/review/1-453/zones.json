@@ -1,0 +1,22 @@
+{
+ "ref": "1-453",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-453.xml",
+  "bands_sha256": "76bc4951a24a21404baf3e57e0db508599ae1a539d339a2dfa6b89b780c41af6"
+ },
+ "bands": 3,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 3,
+   "label": "MainZone-Other",
+   "why": "line 39 is the one-line source remark 'То-же, что и предыдущая.' set apart in smaller type after the text, the same kind of line as a colophon; it opens no paragraph, so MainZone-Other (what the other types do not cover)."
+  }
+ ],
+ "notes": [
+  {
+   "line": 39,
+   "text": "The line is indented like a paragraph start; I read it as an end-of-text remark by its content and type size. If the editor reads it as a paragraph, leave band 3 as MainZone-P."
+  }
+ ]
+}

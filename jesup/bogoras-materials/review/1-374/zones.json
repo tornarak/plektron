@@ -1,0 +1,17 @@
+{
+ "ref": "1-374",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-374.xml",
+  "bands_sha256": "8e7811100a471bcca8d22c9888f1e79c2e2445e4f7fdb1a9fdb9c70573d12465"
+ },
+ "bands": 3,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 3,
+   "label": "MainZone-Other",
+   "why": "line 33 is a short centred colophon line (Записано от чукчанки ... въ 1897 г.), inset ~70 px left and ~165 px right of the column, not a paragraph start; MainZone-Other covers what the other types do not."
+  }
+ ],
+ "notes": []
+}

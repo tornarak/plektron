@@ -1,0 +1,17 @@
+{
+ "ref": "1-060",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-060.xml",
+  "bands_sha256": "b15f961c9282c604d5fcfa36d6b3d783e06c0069c0c4b771c9ec6058c2df45c0"
+ },
+ "bands": 4,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 3,
+   "label": "MainZone-Other",
+   "why": "line 20 is the centred colophon 'Записано весной 1897 г. отъ чукчи ... на урочищѣ Сухарномъ', set centred between margins and followed by a full-width rule; it is not an indented paragraph start (MainZone-P) but a centred short line, MainZone-Other."
+  }
+ ],
+ "notes": []
+}

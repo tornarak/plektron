@@ -1,0 +1,15 @@
+{
+ "ref": "1-448",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-448.xml",
+  "bands_sha256": "fe7ccd5271d5135ece21042638abf598748097a8ea69ae045107ff1ceeb5168f"
+ },
+ "bands": 9,
+ "edits": [],
+ "notes": [
+  {
+   "line": 10,
+   "text": "Indented «То-же, что и предыдущая.» is banded MainZone-P; a one-line text entry, left as the geometry says. Same at line 22."
+  }
+ ]
+}

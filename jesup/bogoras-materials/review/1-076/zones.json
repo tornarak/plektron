@@ -1,0 +1,14 @@
+{
+ "ref": "1-076",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-076.xml",
+  "bands_sha256": "394b4fa22530dbd1b360b561aa10f36aaa1d3d29c60b7d101ab4506b9cf17431"
+ },
+ "bands": 3,
+ "edits": [],
+ "notes": [
+  {
+   "text": "Gutter indices on the composite run one off the bands listing (header printed as 1, bands lists it as lines 0 1); the break between the Chukchi (band 2) and Russian (band 3) sits under the full-width rule either way."
+  }
+ ]
+}

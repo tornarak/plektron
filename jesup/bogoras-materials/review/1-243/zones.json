@@ -1,0 +1,18 @@
+{
+ "ref": "1-243",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-243.xml",
+  "bands_sha256": "010b080e7cc73f0d493fca939d84e98ecae298d13017de6aab1102ca5786da0e"
+ },
+ "bands": 4,
+ "edits": [],
+ "notes": [
+  {
+   "line": 37,
+   "text": "Colophon line (Записано от чукчи Каyно ... въ 1895 году), indented, band 3 MainZone-P; no ruling makes a colophon another type, left as is."
+  },
+  {
+   "text": "Uncovered ink at the very foot (y about 6900-6990 px): a heavy printed rule/smear across the full width at the scan edge, not a text line; no row for it."
+  }
+ ]
+}

@@ -1,0 +1,15 @@
+{
+ "ref": "1-279",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-279.xml",
+  "bands_sha256": "0a103433e6d0d19a8e5d19385410f3474fa478e0aafaca6cb60534b9c41a0d7a"
+ },
+ "bands": 3,
+ "edits": [],
+ "notes": [
+  {
+   "line": 2,
+   "text": "Band 2 lists lines in the order 1 3 2; the text layer's row order for lines 2-3 is swapped, though the ink is in reading order."
+  }
+ ]
+}

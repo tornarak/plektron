@@ -1,0 +1,15 @@
+{
+ "ref": "1-204",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-204.xml",
+  "bands_sha256": "8af2729386a807395d710ddc2eedbd59aee75872655cbaf8f5e85cc796699cbf"
+ },
+ "bands": 4,
+ "edits": [],
+ "notes": [
+  {
+   "line": 7,
+   "text": "Lines 7-15 are the Chukchi column alone (the Russian column ends at line 6), a continuation of the parallel block in band 2 in the same two-column setting; left as MainZone-Continued, editor may prefer Other."
+  }
+ ]
+}

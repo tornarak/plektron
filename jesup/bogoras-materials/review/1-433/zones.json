@@ -1,0 +1,15 @@
+{
+ "ref": "1-433",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-433.xml",
+  "bands_sha256": "73514c5fe48c2b720d20fba31b00df990208de971fd80652446b074d11cc181c"
+ },
+ "bands": 8,
+ "edits": [],
+ "notes": [
+  {
+   "line": 10,
+   "text": "Indented colophon (Записано отъ чукчи ...) is banded MainZone-P; it is a closing line, not a paragraph of text. Left as the geometry says."
+  }
+ ]
+}

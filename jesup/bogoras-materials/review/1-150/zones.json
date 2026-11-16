@@ -1,0 +1,22 @@
+{
+ "ref": "1-150",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-150.xml",
+  "bands_sha256": "9dd905134ed81ec54f547f2ac6e8f0c5d0624ef7648d4be496078b5fd6c9fa51"
+ },
+ "bands": 10,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 8,
+   "label": "MainZone-Other",
+   "why": "line 29 (Записано от чукчи ... 1897 года.) is a short colophon line centred in the column, inset about 70 px left and 95 px right at display scale, not a paragraph-start indent; it is not running prose, so MainZone-Other, not MainZone-P."
+  }
+ ],
+ "notes": [
+  {
+   "line": 29,
+   "text": "Colophon; the editor may prefer another reading, but it opens no paragraph."
+  }
+ ]
+}

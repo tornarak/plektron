@@ -1,0 +1,19 @@
+{
+ "ref": "1-294",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-294.xml",
+  "bands_sha256": "13cf7ca64b65f6c5affc41e2b8cef621f0458a8d18169e1cb25b5098bc9aa31d"
+ },
+ "bands": 7,
+ "edits": [],
+ "notes": [
+  {
+   "line": 1,
+   "text": "Line 1 is in the running-title band but no printed row shows beside it in the composite; likely a speck or the vertical mark near the head. Harmless to the band."
+  },
+  {
+   "line": 7,
+   "text": "Indented colophon (Записано отъ чукчи...) is banded MainZone-P as drawn by the rule; a source note rather than a paragraph, left as is."
+  }
+ ]
+}

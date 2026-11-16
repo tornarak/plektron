@@ -1,0 +1,22 @@
+{
+ "ref": "1-072",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-072.xml",
+  "bands_sha256": "6ad0a9b2d66061b42b4e699faa07c207613178935cb9389cf95d5a92a0116cf9"
+ },
+ "bands": 6,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 3,
+   "label": "MainZone-Other",
+   "why": "line 14 is the colophon 'Записано от чукчи Кытэӄына весной 1897 г. на урочищѣ Сухарномъ', a one-line attribution set off in a gap on both sides, not a paragraph start; MainZone-Other covers what the other types do not (headings, captions)."
+  }
+ ],
+ "notes": [
+  {
+   "line": 1,
+   "text": "Line 1 is absent from every band and from the composite; the running-title band lists lines 0 and 1, so the head's text layer may be split across two rows."
+  }
+ ]
+}

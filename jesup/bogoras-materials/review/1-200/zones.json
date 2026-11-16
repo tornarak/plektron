@@ -1,0 +1,19 @@
+{
+ "ref": "1-200",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-200.xml",
+  "bands_sha256": "3f1fbff06b357d90d2eec974daf49f31c77c3deb91568e974776f7031ae5b0a4"
+ },
+ "bands": 16,
+ "edits": [],
+ "notes": [
+  {
+   "line": 4,
+   "text": "Colophon 'Записано отъ чукчи ... на р. Молондѣ' is indented like a paragraph start, so MainZone-P is kept; the editor may prefer MainZone-Other for a colophon."
+  },
+  {
+   "line": 21,
+   "text": "'Отъ разныхъ лицъ.' is an indented one-line source attribution kept as MainZone-P; the editor may prefer MainZone-Other."
+  }
+ ]
+}

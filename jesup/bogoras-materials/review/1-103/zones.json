@@ -1,0 +1,15 @@
+{
+ "ref": "1-103",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-103.xml",
+  "bands_sha256": "5442402487098c2ce7bdd762f58fcb9f45953192ae10329a1ef1c5f83e49121f"
+ },
+ "bands": 10,
+ "edits": [],
+ "notes": [
+  {
+   "line": 7,
+   "text": "Indented one-line attribution (Записано отъ чукчи Ајнайвата ... 1897 г.) closing the text; banded MainZone-P by its indent. It could be read as a colophon (Other); no ruling decides it."
+  }
+ ]
+}

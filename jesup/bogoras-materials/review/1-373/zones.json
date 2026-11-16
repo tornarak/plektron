@@ -1,0 +1,15 @@
+{
+ "ref": "1-373",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-373.xml",
+  "bands_sha256": "a4026db297f89c60e933e818c7cb9a71f87e77f3af4f9f38915791350e29bc56"
+ },
+ "bands": 7,
+ "edits": [],
+ "notes": [
+  {
+   "line": 20,
+   "text": "Indented colophon line (Записано отъ чукчи Айвана на урочищѣ Аконайке.) is MainZone-P by indent; it is an attribution closing text 120, not a prose paragraph. Left as drawn."
+  }
+ ]
+}

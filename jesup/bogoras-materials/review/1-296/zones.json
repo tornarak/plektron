@@ -1,0 +1,17 @@
+{
+ "ref": "1-296",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-296.xml",
+  "bands_sha256": "61bf02f8feee256a72e75708febcfd4030d0f2029d1845e57e60935f4ecc9429"
+ },
+ "bands": 5,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 3,
+   "label": "MainZone-Other",
+   "why": "line 3 (Jырка-лаул-лумныл. О женоподобномъ шаманѣ сказка.) is a short line centred in the column under the numeral 88, a heading: MainZone-Other, not a paragraph start."
+  }
+ ],
+ "notes": []
+}

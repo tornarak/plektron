@@ -1,0 +1,19 @@
+{
+ "ref": "1-152",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-152.xml",
+  "bands_sha256": "88a48f78097f4ae8be5ad1af7d8f8fb203b48653e5eb33f8165347e4813b41b8"
+ },
+ "bands": 11,
+ "edits": [],
+ "notes": [
+  {
+   "line": 4,
+   "text": "Indented one-line colophon 'Записано от чукчи ... 1897 г.' is banded MainZone-P; it is a source attribution rather than a paragraph, so MainZone-Other is arguable. Left as the rule drew it since no ruling covers colophons."
+  },
+  {
+   "line": 23,
+   "text": "Band 9 lists lines 21 23 22 24: the text layer's row order for 22/23 is swapped, though the ink is in sequence."
+  }
+ ]
+}

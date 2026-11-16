@@ -1,0 +1,15 @@
+{
+ "ref": "1-429",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-429.xml",
+  "bands_sha256": "64122d301046ec320a5d3bbaab18782ed693dda74a6854065eaa06e10ea447ae"
+ },
+ "bands": 7,
+ "edits": [],
+ "notes": [
+  {
+   "line": 16,
+   "text": "Line 16 is the colophon 'Записано отъ чукчи Айван'а на урочищѣ Акопайке.', indented and set apart after text 139; kept as MainZone-P (indented line). The editor may prefer MainZone-Other for a colophon."
+  }
+ ]
+}

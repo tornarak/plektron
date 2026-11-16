@@ -1,0 +1,15 @@
+{
+ "ref": "1-064",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-064.xml",
+  "bands_sha256": "8366e877d70c7f02b8a4a30c9cedbde6d8cc6f7d5a64dee802ece81a1584cc2e"
+ },
+ "bands": 3,
+ "edits": [],
+ "notes": [
+  {
+   "line": 1,
+   "text": "Band 1 holds lines 0 and 1, but only one running-title row is visible on the scan; line 1 is not visible as a separate printed line. No edit."
+  }
+ ]
+}

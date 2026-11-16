@@ -1,0 +1,14 @@
+{
+ "ref": "1-452",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-452.xml",
+  "bands_sha256": "21746ac44c0d5cb92fa6906e09d6b04af8f830ec8e0e10e2cdfa43d1bac520db"
+ },
+ "bands": 5,
+ "edits": [],
+ "notes": [
+  {
+   "text": "Uncovered ink y 5715-5780 is the last printed line of footnote 2 ('полуразложившееся мясо ... запасовъ'); the text layer has no row for it. It belongs with band 5 (MarginTextZone-Notes), whose lines 37-38 sit a line off their ink."
+  }
+ ]
+}

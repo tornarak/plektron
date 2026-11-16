@@ -1,0 +1,17 @@
+{
+ "ref": "1-058",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-058.xml",
+  "bands_sha256": "b2e755611e14045a6ac6d7870adfad582e3b7de55be438f778e92c37109155ab"
+ },
+ "bands": 7,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 5,
+   "label": "MainZone-Other",
+   "why": "line 16 «Заговоръ о дѣланіи дикихъ оленей домашними.» is a short line centred in the column, directly under the full-width rule and above the centred subtitle band 6: a heading, MainZone-Other, not a continuation."
+  }
+ ],
+ "notes": []
+}

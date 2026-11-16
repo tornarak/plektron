@@ -1,0 +1,15 @@
+{
+ "ref": "1-350",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-350.xml",
+  "bands_sha256": "68be06c15fb5a5d884391fd44b440d62ad2b73d31cb6250fd72b18ae457aaa90"
+ },
+ "bands": 7,
+ "edits": [],
+ "notes": [
+  {
+   "line": 8,
+   "text": "Band 3 is the one-line colophon 'Записано отъ чукчи ... въ Нижнеколымскѣ.', indented, so MainZone-P; an attribution rather than a paragraph, the editor may prefer MainZone-Other."
+  }
+ ]
+}

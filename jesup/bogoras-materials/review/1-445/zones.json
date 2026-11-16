@@ -1,0 +1,15 @@
+{
+ "ref": "1-445",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-445.xml",
+  "bands_sha256": "ac9521810775ebd0854509c7f11e16e1719b85c90b6c18c74237964f6b05eeca"
+ },
+ "bands": 7,
+ "edits": [],
+ "notes": [
+  {
+   "line": 3,
+   "text": "Indented colophon (Разсказано чукчей ...) is band 3, MainZone-P; indented so P stands, but an editor may prefer Other."
+  }
+ ]
+}

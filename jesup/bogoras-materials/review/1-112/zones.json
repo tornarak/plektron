@@ -1,0 +1,19 @@
+{
+ "ref": "1-112",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-112.xml",
+  "bands_sha256": "efbc2a812e7d67314855804e9cc044906085545e68fd84ee2a00f754fae84a1f"
+ },
+ "bands": 4,
+ "edits": [],
+ "notes": [
+  {
+   "line": 19,
+   "text": "Centred colophon line (Zapisano ot chukchi Ajchaivata osenyu 1897 g. v Nizhnekolymske) is a one-line MainZone-P; could equally be MainZone-Other. No ruling decides it, so left to the editor."
+  },
+  {
+   "line": 1,
+   "text": "Line 1 is in band 1 with the head line (line 0) but is not visible in the composite; no printed row of its own is apparent."
+  }
+ ]
+}

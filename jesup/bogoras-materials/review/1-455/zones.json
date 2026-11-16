@@ -1,0 +1,15 @@
+{
+ "ref": "1-455",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-455.xml",
+  "bands_sha256": "047bcae040cfb57452160cb43bdd802bcef6cb7f12fededc553a3d4093b85c40"
+ },
+ "bands": 6,
+ "edits": [],
+ "notes": [
+  {
+   "line": 16,
+   "text": "Attribution 'Разсказано отъ чукчанки ...' is one indented line, band 3 MainZone-P; not a heading, left as the rule drew it."
+  }
+ ]
+}

@@ -1,0 +1,19 @@
+{
+ "ref": "1-312",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-312.xml",
+  "bands_sha256": "1c2623ff7df56bf772eab17a4ef7c13f48201037902279542b696e1a5f8191aa"
+ },
+ "bands": 6,
+ "edits": [],
+ "notes": [
+  {
+   "line": 16,
+   "text": "Unbanded line 16 (text «7») is a speck in the left margin, not a printed line; nothing to absorb."
+  },
+  {
+   "line": 14,
+   "text": "Indented colophon line, kept as MainZone-P by indent; the editor may prefer Other."
+  }
+ ]
+}

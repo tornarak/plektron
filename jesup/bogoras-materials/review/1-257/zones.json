@@ -1,0 +1,22 @@
+{
+ "ref": "1-257",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-257.xml",
+  "bands_sha256": "1ae8bf30ae304aebe57f014e6b21801157c8b1788ea66fa167a59b2b8e3d0c28"
+ },
+ "bands": 9,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 5,
+   "label": "MainZone-Other",
+   "why": "line 24 is the text's title (Wапыc̣ка́-lа̀ӯl-lѵ́мцыl. Сказка о Чесоточномъ шаманѣ.), a short line centred in the column beneath the number 78: a heading, MainZone-Other, not a paragraph start."
+  }
+ ],
+ "notes": [
+  {
+   "line": 22,
+   "text": "Indented colophon 'Записано отъ чукчи Пађанто...' sits as MainZone-P; left as the rule drew it."
+  }
+ ]
+}

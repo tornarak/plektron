@@ -1,0 +1,15 @@
+{
+ "ref": "1-383",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-383.xml",
+  "bands_sha256": "2a0093415eccbbcda1c6d1bc26fabbd3c7ad643f00d7fc2f222d408e511ebaae"
+ },
+ "bands": 7,
+ "edits": [],
+ "notes": [
+  {
+   "line": 12,
+   "text": "Indented colophon (Записано отъ чукчи ...) stands as MainZone-P; it is a signature line, not a paragraph. Left as the rule drew it."
+  }
+ ]
+}

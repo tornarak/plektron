@@ -1,0 +1,19 @@
+{
+ "ref": "1-187",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-187.xml",
+  "bands_sha256": "84b68babc358e448344564e45b1f8d9be629aec266e4299a86005667277094b4"
+ },
+ "bands": 8,
+ "edits": [],
+ "notes": [
+  {
+   "line": 35,
+   "text": "Band 8 (QuireMarksZone) holds only a speck, a ~10 px blob in the foot margin; no folio, numeral or signature is printed there (zoomed). The band should probably be deleted, but no edit op removes a band, so left for the editor."
+  },
+  {
+   "line": 17,
+   "text": "Indented one-line colophon 'Записано на р. Молондѣ отъ чукчи ...' banded MainZone-P; a source attribution, MainZone-Other arguable. Left as drawn; no ruling covers colophons."
+  }
+ ]
+}

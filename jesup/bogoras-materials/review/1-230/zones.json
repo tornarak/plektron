@@ -1,0 +1,22 @@
+{
+ "ref": "1-230",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-230.xml",
+  "bands_sha256": "e370bc419cc497b04dae655c9d401b8323e587d7e8c9a90e7da7875fa47ae34c"
+ },
+ "bands": 6,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 3,
+   "label": "MainZone-Other",
+   "why": "line 15 reads 'Записано отъ чукчанки Кутjэут на р. Молондѣ въ 1896 г.', a one-line colophon closing the text, set off by gaps above and below; it opens no paragraph, so it is not MainZone-P but falls under MainZone-Other (anything the other types do not cover)."
+  }
+ ],
+ "notes": [
+  {
+   "line": 17,
+   "text": "Title line 'Тот-тюмwаткен пыцы' carries a stray footnote-mark glyph at its end; heading kept as Other."
+  }
+ ]
+}

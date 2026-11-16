@@ -1,0 +1,28 @@
+{
+ "ref": "1-202",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-202.xml",
+  "bands_sha256": "18e37e78cbb8c10a67be203e8fc1483027bbd5927b958a1999e877af4a8b4815"
+ },
+ "bands": 15,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 7,
+   "label": "MainZone-Other",
+   "why": "lines 17-18 are a two-line women's | men's pronunciation parallel block (3) ... 3) side by side, which the rule cannot find under three lines; rulings make parallel columns one MainZone-Other band."
+  },
+  {
+   "op": "relabel",
+   "band": 9,
+   "label": "MainZone-Other",
+   "why": "lines 20-21 are a two-line women's | men's pronunciation parallel block (4) ... 4) side by side; rulings make parallel columns one MainZone-Other band, not Continued."
+  }
+ ],
+ "notes": [
+  {
+   "line": 11,
+   "text": "Attribution lines 11, 16, 19, 22 (Записано ...) are indented single lines labelled P, between parallel blocks; left as the rule drew them."
+  }
+ ]
+}

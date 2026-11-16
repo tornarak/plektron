@@ -1,0 +1,15 @@
+{
+ "ref": "1-404",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-404.xml",
+  "bands_sha256": "da1036ca7f19a063d7f8fbefb8c2288195d7c19aa2d5bce32bab049c4b34a47f"
+ },
+ "bands": 2,
+ "edits": [],
+ "notes": [
+  {
+   "line": 1,
+   "text": "Band 1 holds lines 0 and 1, but the composite shows only one head line (348 / В. Г. Богоразъ / II,134); line 1 sits at the head and is not visible as separate text. Probably a speck or split of the head row; the head band covers the head line either way."
+  }
+ ]
+}

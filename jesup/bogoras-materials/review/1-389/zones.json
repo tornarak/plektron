@@ -1,0 +1,15 @@
+{
+ "ref": "1-389",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-389.xml",
+  "bands_sha256": "084c87854eb6fabf615cb1989162c5f4576bb20eedd9eddbc5fe279baba70845"
+ },
+ "bands": 7,
+ "edits": [],
+ "notes": [
+  {
+   "line": 23,
+   "text": "Indented colophon 'Записано отъ чукчи ... Аконайке.' labelled MainZone-P by geometry; it is a colophon, not a paragraph."
+  }
+ ]
+}

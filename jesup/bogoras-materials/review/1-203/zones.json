@@ -1,0 +1,31 @@
+{
+ "ref": "1-203",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-203.xml",
+  "bands_sha256": "4623b4cc239f62b4fdc4cba9687c2b5b127c577901b3c9305bacc73ce8eea460"
+ },
+ "bands": 8,
+ "edits": [
+  {
+   "op": "merge",
+   "band": 4,
+   "why": "Примѣчанія к № 46 is a single note with no printed 'N (стр. M).' opener (opens at the indented line 2 under the heading); line 4 'Въ № 1 ...' is indented but prints no opener, so by the Примѣчанія ruling it belongs to the note above."
+  },
+  {
+   "op": "merge",
+   "band": 5,
+   "why": "line 9 '№ 2 принадлежитъ ...' is indented but prints no 'N (стр. M).' opener: it continues the one note above (Примѣчанія ruling)."
+  },
+  {
+   "op": "merge",
+   "band": 6,
+   "why": "line 11 'Въ № 4 ...' is indented but prints no 'N (стр. M).' opener: it continues the one note above (Примѣчанія ruling)."
+  }
+ ],
+ "notes": [
+  {
+   "line": 18,
+   "text": "Lines 16-36 are the parallel oath (Chukchi | Russian) as one MainZone-Other band 8, per ruling; the text layer fuses rows across the gutter, and line order 19/18 is swapped in the band list. The page ends mid-text at line 36; nothing below it."
+  }
+ ]
+}

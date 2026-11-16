@@ -1,0 +1,19 @@
+{
+ "ref": "1-198",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-198.xml",
+  "bands_sha256": "4f76e93e8d55dc7e68533e763adf6c4320baec33e6e3f066d1e90b17d36d393a"
+ },
+ "bands": 17,
+ "edits": [],
+ "notes": [
+  {
+   "line": 2,
+   "text": "Unbanded line 2 (y 715-773) is a speck far out in the left margin, not printed text; nothing to absorb."
+  },
+  {
+   "line": 9,
+   "text": "Colophon 'Записано отъ чукчи Рэмкыlын'а на р. Молондѣ' is indented and left-aligned, not centred, so left as MainZone-P; same for line 29. The editor may prefer MainZone-Other for these non-prose informant lines."
+  }
+ ]
+}

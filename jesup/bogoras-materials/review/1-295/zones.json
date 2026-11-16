@@ -1,0 +1,17 @@
+{
+ "ref": "1-295",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-295.xml",
+  "bands_sha256": "80a0681665a1268d26435f1b5008f985c42a0a2a794b06562090426c943f285e"
+ },
+ "bands": 4,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 3,
+   "label": "MainZone-Other",
+   "why": "line 29 'Записано отъ чукчи Ҕáсе на Анюйской ярмаркѣ.' is a one-line colophon closing the text, not a paragraph start; MainZone-Other (anything the other types do not cover)."
+  }
+ ],
+ "notes": []
+}

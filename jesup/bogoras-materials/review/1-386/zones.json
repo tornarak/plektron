@@ -1,0 +1,17 @@
+{
+ "ref": "1-386",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-386.xml",
+  "bands_sha256": "323f8a630d3cfe4171c33080691d102a39cb854d05e922d9db6dee0c8e8a6ccb"
+ },
+ "bands": 7,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 3,
+   "label": "MainZone-Other",
+   "why": "line 16 is the colophon 'Записано от чукчи Чэӈэ на Анюйской ярмаркѣ', a short bold line set apart under the text and inset from both margins, not an opening paragraph; MainZone-Other covers what the other types do not."
+  }
+ ],
+ "notes": []
+}

@@ -1,0 +1,15 @@
+{
+ "ref": "1-186",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-186.xml",
+  "bands_sha256": "6e03ea386cbc2579cc27b7f13f3b7674c8aada64e618ca21959ceda147fb10b0"
+ },
+ "bands": 7,
+ "edits": [],
+ "notes": [
+  {
+   "line": 10,
+   "text": "Indented one-line attribution (Записано на р. Молондѣ отъ чукчи Рэмкыlын'а) closing the text; banded MainZone-P by its indent. It could be read as a colophon (Other); no ruling decides it."
+  }
+ ]
+}

@@ -1,0 +1,15 @@
+{
+ "ref": "1-067",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-067.xml",
+  "bands_sha256": "97f8a962a6fef97b7dff78802e2540c8960a2a1e29ef736d181a0bdee449221f"
+ },
+ "bands": 16,
+ "edits": [],
+ "notes": [
+  {
+   "line": 4,
+   "text": "Colophon 'Записано отъ чукчи ... Сухарномъ.' is a one-line band labelled MainZone-P (indented ~70 px); it is a source note rather than a paragraph, but no ruling or type description requires Other, so left."
+  }
+ ]
+}

@@ -1,0 +1,15 @@
+{
+ "ref": "1-165",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-165.xml",
+  "bands_sha256": "746527de1f2cfac6d238d34edb1623ed930262a5184d07a22bf315e49b32c850"
+ },
+ "bands": 8,
+ "edits": [],
+ "notes": [
+  {
+   "line": 13,
+   "text": "Line 13 is the colophon 'Записано на р. Молондѣ отъ чукчи Атка-Ваалирӄын', indented, one line, MainZone-P in band 3. No ruling covers colophons; left as is. Editor may prefer MainZone-Other."
+  }
+ ]
+}

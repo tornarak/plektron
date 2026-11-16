@@ -1,0 +1,18 @@
+{
+ "ref": "1-215",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-215.xml",
+  "bands_sha256": "1db61ec06603b4dd117c77f0b4d090b93bfc57fcea3f9e0ee7900b8defcddb67"
+ },
+ "bands": 2,
+ "edits": [],
+ "notes": [
+  {
+   "text": "Uncovered ink y 763-846 (x 602-3561) is the printed first body line 'хребетъ. Изъ четырехъ каменьковъ ...' just under the head; band 2 starts at y 852, so its line 1 sits a line off its ink. It belongs with band 2 (MainZone-Continued), which it continues from the previous page."
+  },
+  {
+   "line": 27,
+   "text": "Lines 26-27 end in and consist of dot leaders (an omission mark in the text); kept inside the continuing prose band."
+  }
+ ]
+}

@@ -1,0 +1,15 @@
+{
+ "ref": "1-467",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-467.xml",
+  "bands_sha256": "47bbf0225278ec45c002ceccf394cfedc2ef1dbb2438b236d143c2acde5daa3d"
+ },
+ "bands": 6,
+ "edits": [],
+ "notes": [
+  {
+   "line": 25,
+   "text": "Indented colophon line (Разсказано чукчей Ваal на р. Омолонѣ) closing text 165, a one-line MainZone-P."
+  }
+ ]
+}

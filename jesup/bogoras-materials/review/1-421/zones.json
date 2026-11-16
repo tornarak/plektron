@@ -1,0 +1,15 @@
+{
+ "ref": "1-421",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-421.xml",
+  "bands_sha256": "c39d0d2f5a1324e2ec78ecd682044a9a1fd1cb87aef6bf33a2f35ea64fecd47e"
+ },
+ "bands": 8,
+ "edits": [],
+ "notes": [
+  {
+   "line": 8,
+   "text": "Unbanded row 'A' (y 2191-2242) is the stress accent printed over the first Á of line 9, not a printed line; belongs with band 6."
+  }
+ ]
+}

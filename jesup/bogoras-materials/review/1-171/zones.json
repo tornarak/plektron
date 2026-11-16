@@ -1,0 +1,17 @@
+{
+ "ref": "1-171",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-171.xml",
+  "bands_sha256": "a50c3a11cba3d238db792ede9de6aa052cd0c1d2e064936d1cc3b77199a71416"
+ },
+ "bands": 7,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 3,
+   "label": "MainZone-Other",
+   "why": "line 15 is the colophon 'Записано въ Анюйской крѣпости отъ чукчи ...', a one-line attribution closing the Chukchi text above the rule, not a paragraph start; MainZone-Other covers what the other types do not (headings, captions)."
+  }
+ ],
+ "notes": []
+}

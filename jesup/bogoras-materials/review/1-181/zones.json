@@ -1,0 +1,21 @@
+{
+ "ref": "1-181",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-181.xml",
+  "bands_sha256": "9ff5e9a0d92a629331b1e12eb1c006dd35300734d5682a54f2a2e1143747c0bc"
+ },
+ "bands": 7,
+ "edits": [
+  {
+   "op": "merge",
+   "band": 3,
+   "why": "Lines 19-20 are the last two rows of the same two-column parallel block as lines 1-18 (both columns still set side by side, 'цын! Імтінін ...' | 'hын! Імтінін ...'); the rulings make the block one MainZone-Other band, so band 3 joins band 2."
+  }
+ ],
+ "notes": [
+  {
+   "line": 21,
+   "text": "Line 21 is a colophon ('Записано на р. Острокаменной отъ чукчанки Кутjэўт.'), indented, labelled MainZone-P by the rule. No ruling covers colophons; editor may prefer Other."
+  }
+ ]
+}

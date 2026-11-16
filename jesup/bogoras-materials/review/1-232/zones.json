@@ -1,0 +1,22 @@
+{
+ "ref": "1-232",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-232.xml",
+  "bands_sha256": "1160815b72f37f41cf85eeae02d67b218b661cb6d82fc6c9d5323e0abca2bd45"
+ },
+ "bands": 11,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 9,
+   "label": "MainZone-Other",
+   "why": "line 23 is the centred title of no. 63 (Chukchi title and Russian rendering), a heading like line 5 in band 5, so MainZone-Other, not Continued."
+  }
+ ],
+ "notes": [
+  {
+   "line": 3,
+   "text": "Indented one-line attribution (Записано от ...), labelled P; same for line 21. No ruling covers it, left as the rule drew it."
+  }
+ ]
+}

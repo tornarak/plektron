@@ -1,0 +1,18 @@
+{
+ "ref": "1-457",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-457.xml",
+  "bands_sha256": "de42fe8ef31420acef6d2e9d5c9ec20904810a7640216976fdc3f197c31d0a1d"
+ },
+ "bands": 6,
+ "edits": [],
+ "notes": [
+  {
+   "line": 28,
+   "text": "Indented colophon (Разсказано отъ чукчанки ...) is band 3, MainZone-P; indented so P stands, but an editor may prefer Other."
+  },
+  {
+   "text": "Uncovered ink at the very top-left corner of the scan (y about 0-10 px) is a scan-edge fragment, not a printed line."
+  }
+ ]
+}

@@ -1,0 +1,14 @@
+{
+ "ref": "1-299",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-299.xml",
+  "bands_sha256": "9d3de21c8b67645b32d4e4a5af7987ffd949928cedacaf5775cd9f93b1cf7815"
+ },
+ "bands": 3,
+ "edits": [],
+ "notes": [
+  {
+   "text": "Uncovered ink y 5683-5758 (x 844-2839) is the last printed footnote line, '4) Выражаетъ отказъ; равносильно русскому «не дамъ!»'. The text layer has no row for it (the numbered composite shows lines 37-41 one line off their ink); it belongs with band 3, the footnotes."
+  }
+ ]
+}

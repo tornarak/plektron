@@ -1,0 +1,19 @@
+{
+ "ref": "1-333",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-333.xml",
+  "bands_sha256": "a0f73f136aee7937d0f1db2167c917bacb3891c7a7990d632e1b48ca355f15b8"
+ },
+ "bands": 8,
+ "edits": [],
+ "notes": [
+  {
+   "line": 20,
+   "text": "Band 7 is Continued after a gap; line 20 is flush and follows a printed row of dots (the ellipsis closing line 19's sentence), so the same paragraph carries on. The dotted row at y~3600 has no row of its own in the text layer (a note, not an edit); it belongs with band 6."
+  },
+  {
+   "line": 10,
+   "text": "Indented colophon line (Записано отъ чукчи ...) labelled MainZone-P; indented on the scan, left as the rule has it."
+  }
+ ]
+}

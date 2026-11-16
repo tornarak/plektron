@@ -1,0 +1,17 @@
+{
+ "ref": "1-214",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-214.xml",
+  "bands_sha256": "f946817d65fb0ab07619a329ddbeacfd21f96a636e6742bb9eecef8e707aeb67"
+ },
+ "bands": 5,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 3,
+   "label": "MainZone-Other",
+   "why": "line 3 is the title 'Тот-томwаткен пыцы1. О началѣ творенія вѣсть.', a short line centred in the column under the number 49: a heading, MainZone-Other, not a continuation."
+  }
+ ],
+ "notes": []
+}

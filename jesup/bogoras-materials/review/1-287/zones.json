@@ -1,0 +1,15 @@
+{
+ "ref": "1-287",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-287.xml",
+  "bands_sha256": "0c0ca34170cc5e89c709de47d68aa3ef21c66bc8dfc46d44f387f94dd05f3f35"
+ },
+ "bands": 4,
+ "edits": [],
+ "notes": [
+  {
+   "line": 37,
+   "text": "Band 3 is the one-line colophon 'Записано отъ чукчи ... на Анюйской ярмаркѣ.', indented, so MainZone-P; an attribution rather than a paragraph, the editor may prefer MainZone-Other."
+  }
+ ]
+}

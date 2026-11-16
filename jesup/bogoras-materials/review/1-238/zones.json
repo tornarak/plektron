@@ -1,0 +1,22 @@
+{
+ "ref": "1-238",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-238.xml",
+  "bands_sha256": "907b7791760eba5ba2933225f9902de5135f950cfeeb415a7584b13fac7d1c09"
+ },
+ "bands": 7,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 5,
+   "label": "MainZone-Other",
+   "why": "line 9 is the text's title (Вélы-lа́wты-lѵ́мцыl. О мертвой головѣ сказка.), a short line centred in the column under the number 67: a heading, MainZone-Other, not a continuation."
+  }
+ ],
+ "notes": [
+  {
+   "line": 7,
+   "text": "Indented colophon 'Записано отъ чукчи ...' sits as MainZone-P; left as the rule drew it."
+  }
+ ]
+}

@@ -1,0 +1,15 @@
+{
+ "ref": "1-461",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-461.xml",
+  "bands_sha256": "66a1d2d283037eae6c74b1087395eadbdae9a2d97d5e29108b262152451fd9c5"
+ },
+ "bands": 3,
+ "edits": [],
+ "notes": [
+  {
+   "line": 39,
+   "text": "Line 39 is the indented attribution «Разсказано чукчей ... на р. Омолонѣ», small type; the rule has it MainZone-P. Left as is; a colophon-like line the editor may prefer as Other."
+  }
+ ]
+}

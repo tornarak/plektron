@@ -1,0 +1,22 @@
+{
+ "ref": "1-016",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-016.xml",
+  "bands_sha256": "65face5591ee81e2ccb1d09c01de5027c000138fec9430862830db691b1988b1"
+ },
+ "bands": 4,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 3,
+   "label": "MainZone-Other",
+   "why": "line 6 is the right-set signature 'Академикъ К. Залеманъ.', a closing line after the paragraph ended flush at line 5, not body text continuing a paragraph opened earlier (MainZone-Continued); it falls to the catch-all type."
+  }
+ ],
+ "notes": [
+  {
+   "line": 7,
+   "text": "Band 4 is the dateline 'Сентябрь 1900 г.', indented and kept as MainZone-P by the rule; it is a dateline rather than a paragraph, so the editor may prefer MainZone-Other like the signature."
+  }
+ ]
+}

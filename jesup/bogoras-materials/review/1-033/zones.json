@@ -1,0 +1,14 @@
+{
+ "ref": "1-033",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-033.xml",
+  "bands_sha256": "e54e5b05c9a6a4afea462b1552821f266d1d25f4abec070442b304c3f2c3597a"
+ },
+ "bands": 6,
+ "edits": [],
+ "notes": [
+  {
+   "text": "Faint ink at the very foot of the scan (printed text cut by the page edge, y about 6900+) is not a line in the text layer; possibly a signature line, not zoned."
+  }
+ ]
+}

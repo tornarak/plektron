@@ -1,0 +1,19 @@
+{
+ "ref": "1-460",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-460.xml",
+  "bands_sha256": "ee054387dab371694f9b07c8e148c122a915d3e606b80aec326b45b02b7d0e03"
+ },
+ "bands": 12,
+ "edits": [],
+ "notes": [
+  {
+   "line": 1,
+   "text": "Line 1 sits in the running-title band but shows no printed text on the composite (a speck); the head is line 0."
+  },
+  {
+   "line": 12,
+   "text": "Indented 'То-же, что и предыдущая.' is a source remark closing no. 160, banded MainZone-P by indent; likewise line 23 (colophon of no. 161)."
+  }
+ ]
+}

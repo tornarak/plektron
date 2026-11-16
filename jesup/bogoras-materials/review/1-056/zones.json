@@ -1,0 +1,14 @@
+{
+ "ref": "1-056",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-056.xml",
+  "bands_sha256": "64e522f2b38c8ad4ebd18d156621d4c615f657ad7e3d6f086c383920c1da9e1e"
+ },
+ "bands": 3,
+ "edits": [],
+ "notes": [
+  {
+   "text": "Band 2 lists lines '12 11' in that order and the gutter shows no line 12; the text layer's row order looks off by one there, harmless to the band."
+  }
+ ]
+}

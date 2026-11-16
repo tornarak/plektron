@@ -1,0 +1,15 @@
+{
+ "ref": "1-252",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-252.xml",
+  "bands_sha256": "16c830da43aee4ea624118d0c4ddf6baaeea513c70150ad3261c8fd80c0267ae"
+ },
+ "bands": 7,
+ "edits": [],
+ "notes": [
+  {
+   "line": 10,
+   "text": "Indented colophon line (Записано от чукчанки ... 1895 г.) is labelled MainZone-P by indent; it closes text 74 and is not a paragraph of prose. Left as the rule drew it, since no ruling names colophons."
+  }
+ ]
+}

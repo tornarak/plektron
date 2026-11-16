@@ -1,0 +1,32 @@
+{
+ "ref": "1-337",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-337.xml",
+  "bands_sha256": "277b0d110334ef3ed5bd719b6f1b4186ded3ea6bf4fa8eb976cfa8d1254abc32"
+ },
+ "bands": 12,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 5,
+   "label": "MainZone-Other",
+   "why": "line 6 is the centred title «Мајң-амчечока-lумңыl. Сказка о большомъ горностаѣ.» under the number 107: a heading, MainZone-Other, not a paragraph start."
+  },
+  {
+   "op": "relabel",
+   "band": 9,
+   "label": "MainZone-Other",
+   "why": "line 30 is the centred title «Аттычѣын цаwтыңыlын. Песъ сватающійся.» under the number 108: a heading, MainZone-Other, not a continuation."
+  }
+ ],
+ "notes": [
+  {
+   "line": 4,
+   "text": "Colophon «Записано отъ чукчи Рэмкыlын'а на р. Олоѣ.», indented, own MainZone-P band; no ruling covers colophons, left as drawn."
+  },
+  {
+   "line": 28,
+   "text": "Colophon «Записано отъ чукчи Ӈáдѣ въ Анюйской крѣпости.», same case as line 4."
+  }
+ ]
+}

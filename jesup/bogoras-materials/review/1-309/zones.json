@@ -1,0 +1,14 @@
+{
+ "ref": "1-309",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-309.xml",
+  "bands_sha256": "41d1fca7faa469a933411e2e0659f4bdb9637600eb77b8a95f0cbd6dbddc48f6"
+ },
+ "bands": 3,
+ "edits": [],
+ "notes": [
+  {
+   "text": "Uncovered ink y 5681-5749 (x 633-2162) is the last printed footnote line ('никомъ пасти стадо недалеко отъ стойбища.'), which the text layer has no row for (line 40 sits a line above its ink). It belongs with band 3, the footnotes."
+  }
+ ]
+}

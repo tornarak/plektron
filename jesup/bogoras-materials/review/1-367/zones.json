@@ -1,0 +1,15 @@
+{
+ "ref": "1-367",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-367.xml",
+  "bands_sha256": "c1aaa42b9f527afb63c5085fa3afc249272b48c862323d3f06281dc2350a5fff"
+ },
+ "bands": 7,
+ "edits": [],
+ "notes": [
+  {
+   "line": 21,
+   "text": "Indented colophon 'Записано отъ чукчи ... на урочищѣ Аконайке.' labelled MainZone-P; it is an indented line after a gap, so P fits the geometry rule, but it is a colophon rather than a paragraph."
+  }
+ ]
+}

@@ -1,0 +1,22 @@
+{
+ "ref": "1-346",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-346.xml",
+  "bands_sha256": "0fab795f0d1a158ada835f4ab7ff64da4f2e8f01d0adf5debe036e59d500e1d0"
+ },
+ "bands": 7,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 5,
+   "label": "MainZone-Other",
+   "why": "line 25 (title of text 112, Галга-лаw-лумныл. О птичьей женщинѣ сказка.) is a short line centred in the column under the numeral 112, a heading: MainZone-Other, not Continued."
+  }
+ ],
+ "notes": [
+  {
+   "line": 23,
+   "text": "Indented colophon line (Записано отъ чукчи Чэнэ ...) is MainZone-P by indent; it is an attribution closing text 111, not a prose paragraph. Left as drawn."
+  }
+ ]
+}

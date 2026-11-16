@@ -1,0 +1,19 @@
+{
+ "ref": "1-288",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-288.xml",
+  "bands_sha256": "b763eb065084456cbe60705195ef5afa20a363155f968bfc3007d01bbdce03f0"
+ },
+ "bands": 5,
+ "edits": [],
+ "notes": [
+  {
+   "line": 4,
+   "text": "Line 4 is a speck beside the heading (a stray mark right of line 3), not a printed line; it sits in the heading band harmlessly."
+  },
+  {
+   "line": 17,
+   "text": "Band 4 lists lines 17 before 16 (vertical-centre order); both are body text, no zoning consequence."
+  }
+ ]
+}

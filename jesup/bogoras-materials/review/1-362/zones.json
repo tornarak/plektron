@@ -1,0 +1,17 @@
+{
+ "ref": "1-362",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-362.xml",
+  "bands_sha256": "19d23239ac3c9660d15ea7128e36611a746cf909d13ad096dbd3dfe895d1bfbb"
+ },
+ "bands": 4,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 2,
+   "label": "MainZone-Quote",
+   "why": "lines 1-4 are a song set off from the prose, inset ~240 px from the margin and broken into short verse lines; the editor's ruling makes verse printed as its own block MainZone-Quote (naming 1-362 lines 1-4)."
+  }
+ ],
+ "notes": []
+}

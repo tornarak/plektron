@@ -1,0 +1,22 @@
+{
+ "ref": "1-088",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-088.xml",
+  "bands_sha256": "d617d5e85edff3e545a2cfe4e6a9076c9e31ff98226f61303ca42e2c4e46e1b1"
+ },
+ "bands": 4,
+ "edits": [
+  {
+   "op": "absorb",
+   "line": 8,
+   "into": "above",
+   "why": "line 8 is an ordinary full-width Chukchi text line (margin number 30 read into it), flush left, in the same run as lines 1-7 and 9-18; it is in no band only because of the unzoned flag, and belongs with the continuing text above."
+  }
+ ],
+ "notes": [
+  {
+   "line": 8,
+   "text": "Unzoned/uncovered flag (y 1643-1737) is this one line; no separate printed line missed. Could equally be seen as bridging bands 2 and 3, since line 9 is also flush; no paragraph opens here."
+  }
+ ]
+}

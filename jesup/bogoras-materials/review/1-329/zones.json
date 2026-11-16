@@ -1,0 +1,15 @@
+{
+ "ref": "1-329",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-329.xml",
+  "bands_sha256": "fc88593f5602506f2ad8e56fc41687c4187ce95e478bd30422a80c0a15b91c33"
+ },
+ "bands": 4,
+ "edits": [],
+ "notes": [
+  {
+   "line": 42,
+   "text": "Lone numeral 35 as the page's last line is band 4 QuireMarksZone, as the foot-matter ruling says. Line 1 is flush so Continued is right; footnotes 1) and 2) under the short rule are one Notes band."
+  }
+ ]
+}

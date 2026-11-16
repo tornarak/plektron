@@ -1,0 +1,15 @@
+{
+ "ref": "1-441",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-441.xml",
+  "bands_sha256": "2ac7533727141b3a34642217259d3b921576c15e35aaa6d82897e17f34f2b0a7"
+ },
+ "bands": 9,
+ "edits": [],
+ "notes": [
+  {
+   "line": 4,
+   "text": "Lines 4-5 are an editorial note («Разсказано чукчей ...») in smaller type, indented on line 4; the rule has it MainZone-P. Left as is: it opens indented like a paragraph, but the editor may prefer Other."
+  }
+ ]
+}

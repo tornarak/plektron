@@ -1,0 +1,15 @@
+{
+ "ref": "1-082",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-082.xml",
+  "bands_sha256": "6b665c19ee49b4d2f2bad6d65b22ad050036a11334a81c79e7a5d6551ac1fda8"
+ },
+ "bands": 9,
+ "edits": [],
+ "notes": [
+  {
+   "line": 5,
+   "text": "Band 3 is the one-line colophon 'Записано отъ чукчи Аjцанвата весною 1897 года…', indented and so MainZone-P by the rule; it is a colophon rather than a paragraph, so the editor may prefer MainZone-Other."
+  }
+ ]
+}

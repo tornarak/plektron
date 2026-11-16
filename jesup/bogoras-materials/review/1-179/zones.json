@@ -1,0 +1,15 @@
+{
+ "ref": "1-179",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-179.xml",
+  "bands_sha256": "78d3be09cf14af3abddcff45879db355951120939e519d52377904dc4263a43a"
+ },
+ "bands": 7,
+ "edits": [],
+ "notes": [
+  {
+   "line": 20,
+   "text": "Indented colophon line «Записано на р. Острокаменной отъ чукчанки Кутjэўт.» is a one-line MainZone-P; it is a provenance note, not a paragraph, but no ruling or type description says to label it otherwise, so left as the rule drew it."
+  }
+ ]
+}

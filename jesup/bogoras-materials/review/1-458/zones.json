@@ -1,0 +1,15 @@
+{
+ "ref": "1-458",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-458.xml",
+  "bands_sha256": "ba0bd2fd8612f5144f1c42a0152b2f482ed8bd1d1536d1b64cc2062c924e04b9"
+ },
+ "bands": 8,
+ "edits": [],
+ "notes": [
+  {
+   "line": 8,
+   "text": "Band 2 lists lines in the order 7 9 8, and line 32 is absent between 31 and 33; the text-layer row order/indices look disturbed around lines 8-9 and 31-33 but each sits in the right band by position."
+  }
+ ]
+}

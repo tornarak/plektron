@@ -1,0 +1,15 @@
+{
+ "ref": "1-075",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-075.xml",
+  "bands_sha256": "ea49b4ee0127e4d4756b0a8ef2abf50512912c846ff8586dce876f6eb91ff578"
+ },
+ "bands": 6,
+ "edits": [],
+ "notes": [
+  {
+   "line": 3,
+   "text": "Unbanded row 'A' (y 1471-1527) sits just above the indented first Chukchi line (4); on the scan it is a stray speck, not a printed line, so left out of band 4."
+  }
+ ]
+}

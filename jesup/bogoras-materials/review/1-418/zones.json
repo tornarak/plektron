@@ -1,0 +1,15 @@
+{
+ "ref": "1-418",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-418.xml",
+  "bands_sha256": "5541cea61656acb278398bb65109d9b6d8ba34fb07d191488c54c560ab50a1ae"
+ },
+ "bands": 3,
+ "edits": [],
+ "notes": [
+  {
+   "line": 40,
+   "text": "Band 3 lists lines 37 38 40 39 41 (40 before 39); line 40 is not visible as a separate row on the composite. Possibly a speck or the fused gutter mark near line 39; no effect on the band."
+  }
+ ]
+}

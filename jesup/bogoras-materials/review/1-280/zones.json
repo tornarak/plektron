@@ -1,0 +1,15 @@
+{
+ "ref": "1-280",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-280.xml",
+  "bands_sha256": "f32ccbadcedda5845db1649452d53b148388133a0461dc051ff3da37dc0a18e3"
+ },
+ "bands": 7,
+ "edits": [],
+ "notes": [
+  {
+   "line": 21,
+   "text": "'Записано отъ чукчи Чэ̂цэ на р. Россомашьей.' is an indented informant line closing text no. 82, in smaller type; left as MainZone-P (indented), but it is a colophon rather than a paragraph."
+  }
+ ]
+}

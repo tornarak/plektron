@@ -1,0 +1,15 @@
+{
+ "ref": "1-222",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-222.xml",
+  "bands_sha256": "3ba99d732fb1b0298e0bfa7116271983544e42d6c2d49a8452c5b07936c95478"
+ },
+ "bands": 8,
+ "edits": [],
+ "notes": [
+  {
+   "line": 19,
+   "text": "Band 5 is the one-line colophon 'Записано отъ чукчи ... въ 1896 г.', indented, so MainZone-P; an attribution rather than a paragraph, the editor may prefer MainZone-Other."
+  }
+ ]
+}

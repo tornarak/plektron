@@ -1,0 +1,19 @@
+{
+ "ref": "1-291",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-291.xml",
+  "bands_sha256": "4ec7f84cc759cd7c86b248b4d6aad50b0caf674eefb16a3f453244b745d75b94"
+ },
+ "bands": 7,
+ "edits": [],
+ "notes": [
+  {
+   "line": 4,
+   "text": "Indented colophon line, kept as MainZone-P by indent; the editor may prefer Other."
+  },
+  {
+   "line": 19,
+   "text": "Band 6 lists lines 19 18 21 20 out of order; lines 18-21 look transposed in the text layer on this region. Membership is right."
+  }
+ ]
+}

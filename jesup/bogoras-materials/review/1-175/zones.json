@@ -1,0 +1,15 @@
+{
+ "ref": "1-175",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-175.xml",
+  "bands_sha256": "24fa8602f4ac02107fb9728a271b166c142913538c63171d87a350ca825778df"
+ },
+ "bands": 8,
+ "edits": [],
+ "notes": [
+  {
+   "line": 17,
+   "text": "Indented one-line colophon 'Записано на р. Молондѣ отъ чукчанки ...' is banded MainZone-P; a source attribution, so MainZone-Other is arguable. Left as the rule drew it; no ruling covers colophons."
+  }
+ ]
+}

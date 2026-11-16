@@ -1,0 +1,15 @@
+{
+ "ref": "1-297",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-297.xml",
+  "bands_sha256": "59052a2fc298357072b6554cf33d70cea8452d5d987964d094954da01a7abe50"
+ },
+ "bands": 8,
+ "edits": [],
+ "notes": [
+  {
+   "line": 22,
+   "text": "Indented colophon 'Записано отъ чукчи Ваа1...' sits as MainZone-P; left as the rule drew it."
+  }
+ ]
+}

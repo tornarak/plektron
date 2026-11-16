@@ -1,0 +1,19 @@
+{
+ "ref": "1-336",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-336.xml",
+  "bands_sha256": "a00b1d6a788e4c36e8ced2a5c1094a2d7ef3a53d7d2de6d31ab4a7260362a91d"
+ },
+ "bands": 7,
+ "edits": [],
+ "notes": [
+  {
+   "line": 21,
+   "text": "Indented colophon 'Записано отъ чукчи ... Аконайке.' sits as MainZone-P; it closes the previous text rather than opening a paragraph. Left as the rule drew it."
+  },
+  {
+   "line": 1,
+   "text": "Line 1 is in the running-title band but shows no visible row in the composite; probably a speck row, harmless."
+  }
+ ]
+}

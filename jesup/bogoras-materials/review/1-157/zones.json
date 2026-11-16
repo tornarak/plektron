@@ -1,0 +1,17 @@
+{
+ "ref": "1-157",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-157.xml",
+  "bands_sha256": "43c3315522a52499b84a4444949adb1bb990fbeb738487a503fc68d9358f56ad"
+ },
+ "bands": 11,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 8,
+   "label": "MainZone-Other",
+   "why": "line 27 is the centred Chukchi title of text 21, directly under the heading '21.'; a heading is MainZone-Other, not a continuation of prose."
+  }
+ ],
+ "notes": []
+}

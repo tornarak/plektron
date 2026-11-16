@@ -1,0 +1,15 @@
+{
+ "ref": "1-122",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-122.xml",
+  "bands_sha256": "14f0b7d1899bac6ac3f4d8d2e2aa260a6fadcb38109975b1608fcbb55bd9d3c3"
+ },
+ "bands": 10,
+ "edits": [],
+ "notes": [
+  {
+   "line": 9,
+   "text": "Line 9 is the colophon 'Записано отъ чукчи Тыннуурӄын'а осенью 1897 года на Походской вискѣ', indented, in band 3 as MainZone-P. It is a one-line indented paragraph by geometry; no ruling says a colophon is MainZone-Other, so left as is. Editor may prefer Other."
+  }
+ ]
+}

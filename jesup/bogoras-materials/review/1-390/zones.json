@@ -1,0 +1,22 @@
+{
+ "ref": "1-390",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-390.xml",
+  "bands_sha256": "556d35f3d129b5db8c1f080ad2a99dedbf72814d1d824fde3104b1e277a3e629"
+ },
+ "bands": 7,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 3,
+   "label": "MainZone-Other",
+   "why": "line 15 is the colophon «Записано отъ чукчи … въ 1896 г.», a one-line recording note closing text no. 129, not a paragraph start; its indent is the colophon's own, and MainZone-Other takes what the other types do not cover."
+  }
+ ],
+ "notes": [
+  {
+   "line": 15,
+   "text": "Colophon under a short-line indent; if the editor prefers colophons as MainZone-P, leave band 3 as the rule drew it."
+  }
+ ]
+}

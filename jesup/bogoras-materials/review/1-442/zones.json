@@ -1,0 +1,15 @@
+{
+ "ref": "1-442",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-442.xml",
+  "bands_sha256": "fbec026ea14921da1832a741726af8352c39c578b768dc666571ec7be725f792"
+ },
+ "bands": 4,
+ "edits": [],
+ "notes": [
+  {
+   "line": 14,
+   "text": "Line 14 is the colophon 'Разсказано шаманомъ ... въ 1896 году.', indented like a paragraph start; kept as MainZone-P. The editor may prefer MainZone-Other."
+  }
+ ]
+}

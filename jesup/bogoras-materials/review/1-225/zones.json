@@ -1,0 +1,15 @@
+{
+ "ref": "1-225",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-225.xml",
+  "bands_sha256": "89037b847a7c2b49c0679e5da18e969e5d462003d7e5a56ccb7237a5acc40e03"
+ },
+ "bands": 7,
+ "edits": [],
+ "notes": [
+  {
+   "line": 24,
+   "text": "Indented colophon line («Записано отъ чукчанки ... въ 1895 г.») set off from the tale; the rule labels it MainZone-P. No ruling covers colophons, so left as is."
+  }
+ ]
+}

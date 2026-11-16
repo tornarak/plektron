@@ -1,0 +1,15 @@
+{
+ "ref": "1-426",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-426.xml",
+  "bands_sha256": "ba401021562b5e27c7dd32b4839a4275a3bfe5b9dc7ab344790180a1fe0fc23e"
+ },
+ "bands": 3,
+ "edits": [],
+ "notes": [
+  {
+   "line": 1,
+   "text": "Band 1 holds lines 0 and 1, but the composite shows only one printed head line (370 / В. Г. Богоразъ, / II,138); line 1 has no visible ink of its own. Likely a stray row; no edit."
+  }
+ ]
+}

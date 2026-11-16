@@ -1,0 +1,15 @@
+{
+ "ref": "1-379",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-379.xml",
+  "bands_sha256": "636c0fbea08d6ffc9743715eb6a4bcf6d14ddd05a1283d3ad0d7dd491602d44b"
+ },
+ "bands": 7,
+ "edits": [],
+ "notes": [
+  {
+   "line": 6,
+   "text": "Indented colophon line (Записано отъ чукчи ... въ Нижнеколымскѣ) is a one-line MainZone-P; it is an attribution closing text 122, not a paragraph of prose."
+  }
+ ]
+}

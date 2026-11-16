@@ -1,0 +1,14 @@
+{
+ "ref": "1-155",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-155.xml",
+  "bands_sha256": "e8ef5bb01e00be750152c204590a419bc404a35259af9a5afc2887eb633da663"
+ },
+ "bands": 9,
+ "edits": [],
+ "notes": [
+  {
+   "text": "Ink at the very bottom edge (about y 6900-6960 of 6976) looks like a partly cropped foot line or scan edge; no text-layer row, not flagged uncovered, no edit."
+  }
+ ]
+}

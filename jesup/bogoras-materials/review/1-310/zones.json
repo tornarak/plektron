@@ -1,0 +1,15 @@
+{
+ "ref": "1-310",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-310.xml",
+  "bands_sha256": "bb50babc086ded5d33e1de34f1ff9a9749a4f95403617f76d8834e46df8ff3da"
+ },
+ "bands": 3,
+ "edits": [],
+ "notes": [
+  {
+   "line": 38,
+   "text": "Footnote line gutter labels 38-41 sit slightly above their ink (the printed rule falls beside 38); the four footnote rows are all inside band 3, so no edit."
+  }
+ ]
+}

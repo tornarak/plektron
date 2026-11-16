@@ -1,0 +1,14 @@
+{
+ "ref": "1-092",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-092.xml",
+  "bands_sha256": "85dcec631b51ad0b74d12fd1c76e194942dc3d96d592db4ca5bfd375f44db8ac"
+ },
+ "bands": 5,
+ "edits": [],
+ "notes": [
+  {
+   "text": "Uncovered y 1290-1398 (x 2368-2929) is the centred Chukchi title line under the heading '6.' (the text's title, a heading); the text layer has no row for it. It belongs with band 2 (MainZone-Other)."
+  }
+ ]
+}

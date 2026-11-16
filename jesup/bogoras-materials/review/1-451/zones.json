@@ -1,0 +1,22 @@
+{
+ "ref": "1-451",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-451.xml",
+  "bands_sha256": "3a2125a90b58671dcc29826fd70bbf8c6dc1f497dad03ce30c94af9dba0879c7"
+ },
+ "bands": 3,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 3,
+   "label": "MainZone-Other",
+   "why": "line 37 reads 'Разсказано чукчанкой Jэтji на р. Омолонъ.' (told by the Chukchi woman Jэтji on the Omolon): a one-line attribution colophon set apart below the story, not the start of a paragraph; MainZone-P is a paragraph that begins on this page, and MainZone-Other takes what the other types do not cover."
+  }
+ ],
+ "notes": [
+  {
+   "line": 37,
+   "text": "The uncovered flag (y 5231-5302, x 815-2346) is this same colophon line: band 3's y range (5132-5225) sits just above its ink, so the band is a line off its ink. No edit can move it; the line is named correctly."
+  }
+ ]
+}

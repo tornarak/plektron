@@ -1,0 +1,29 @@
+{
+ "ref": "1-341",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-341.xml",
+  "bands_sha256": "63e62f99d633c681919dcabde80b20a91d9ddac0f1a2fe60d8e6065ec744991f"
+ },
+ "bands": 7,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 5,
+   "label": "MainZone-Other",
+   "why": "line 24 is the centred title 'Wыjоткыцáу1ы-1ʏмцы1. О пращникѣ сказка.' under the number 110, a heading: MainZone-Other, as band 4 and as the sibling title lines are."
+  },
+  {
+   "op": "split",
+   "line": 8,
+   "label": "MainZone-Quote",
+   "why": "lines 8-9 are a song ('За женой я ѣду; ...') set off as its own indented block of two lines after 'въ пѣснѣ:': verse set off from the prose is MainZone-Quote."
+  },
+  {
+   "op": "split",
+   "line": 10,
+   "label": "MainZone-Continued",
+   "why": "line 10 returns flush to the margin: prose resumes after the song, a continuation."
+  }
+ ],
+ "notes": []
+}

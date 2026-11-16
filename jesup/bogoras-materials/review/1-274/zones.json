@@ -1,0 +1,15 @@
+{
+ "ref": "1-274",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-274.xml",
+  "bands_sha256": "e1b93e0d0c9d34352e589804fe876893f38d7639987a1a182d58dd107ab4b78a"
+ },
+ "bands": 3,
+ "edits": [],
+ "notes": [
+  {
+   "line": 27,
+   "text": "Band 2 lists lines in the order 25 27 26; line 27 is a stray row that is not visible on the composite (printed line 26 carries the whole row). Order only, no edit."
+  }
+ ]
+}

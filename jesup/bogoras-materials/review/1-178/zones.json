@@ -1,0 +1,26 @@
+{
+ "ref": "1-178",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-178.xml",
+  "bands_sha256": "fa5296c8ac570ec940a08241f46c132e90d2c2ce4fb08ab40d0368acfeee6cf8"
+ },
+ "bands": 14,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 11,
+   "label": "MainZone-Other",
+   "why": "line 28 is the pair of centred titles of no. 27 (Мцѐ-мцанlыцын | Мцѐ-мранlыцын), one per column: a heading of the parallel women's/men's block, not a paragraph continuation; the ruling makes parallel columns MainZone-Other and a heading is Other."
+  }
+ ],
+ "notes": [
+  {
+   "line": 28,
+   "text": "Band 11 (line 28), band 12 (lines 29-32, the 'Въ женскомъ | Въ мужскомъ произношеніи' captions and parallel text) are now adjacent Other bands; the editor may want them as one band, and may fold in the '27.' heading band 10."
+  },
+  {
+   "line": 5,
+   "text": "Colophon 'Записано на р. Острокаменной отъ чукчанки Кутјэут', indented and left-aligned, not centred; left as MainZone-P (the rule's reading of the indent); editor may prefer Other."
+  }
+ ]
+}

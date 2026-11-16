@@ -1,0 +1,18 @@
+{
+ "ref": "1-432",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-432.xml",
+  "bands_sha256": "5141681699101e324824c16e1ee1b81fb7650ac8bfc185c508610e9d4f092d1a"
+ },
+ "bands": 3,
+ "edits": [],
+ "notes": [
+  {
+   "text": "Uncovered ink y 5431-5522 is the last body line («ходилъ.» Говоритъ: «Ну-ка, пойдемъ!... А»), directly above the footnote rule; the text layer has no row for it. It belongs with band 2 (Continued), whose y1 stops just above it."
+  },
+  {
+   "line": 1,
+   "text": "Line 1 is an empty row beside the running title (no ink); harmless, sits between band 1 and band 2."
+  }
+ ]
+}

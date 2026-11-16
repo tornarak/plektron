@@ -1,0 +1,26 @@
+{
+ "ref": "1-357",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-357.xml",
+  "bands_sha256": "fffcc39a537df511d82c074318eb7d32d00dd41a34f80ab2a39e1c62813c6787"
+ },
+ "bands": 7,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 5,
+   "label": "MainZone-Other",
+   "why": "line 24 is the text's title line (Chukchi title and «О бѣлой медвѣдицѣ сказка»), short and centred in the column, a heading and so MainZone-Other; it sits after the heading «117.» and is not continuing body text, so Continued contradicts it."
+  }
+ ],
+ "notes": [
+  {
+   "line": 22,
+   "text": "Indented colophon «Записано отъ чукчи ... въ Нижнеколымскѣ», band 3 MainZone-P; left as is."
+  },
+  {
+   "line": 23,
+   "text": "Heading «117.» in band 4 MainZone-Other is right; bands 4 and 5 are both headings of the new text and could be one band, but separate Other bands hold every line they should."
+  }
+ ]
+}

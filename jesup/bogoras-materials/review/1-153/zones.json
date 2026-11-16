@@ -1,0 +1,15 @@
+{
+ "ref": "1-153",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-153.xml",
+  "bands_sha256": "b642916d72787e606c30df66723bc710ae007a5ad2b64bcb785a81731de432e2"
+ },
+ "bands": 8,
+ "edits": [],
+ "notes": [
+  {
+   "line": 14,
+   "text": "Band 3 is the colophon line 'Zapisano ot chukchi ... osenyu 1897 g. na urochishche Sukharnom.', indented about like a paragraph start and ending short, directly under the text's last line. It opens no paragraph, so MainZone-Other may fit better; I left it because its indent matches an opener and no ruling names a colophon label."
+  }
+ ]
+}

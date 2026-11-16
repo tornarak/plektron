@@ -1,0 +1,15 @@
+{
+ "ref": "1-226",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-226.xml",
+  "bands_sha256": "cd7ce7d70ec4c0c5e3022e4e5d660b56fa08f7ad920da7e76dbed886164cd594"
+ },
+ "bands": 4,
+ "edits": [],
+ "notes": [
+  {
+   "line": 40,
+   "text": "Colophon line (Записано от чукчанки ... въ 1895 г.), indented, band 3 MainZone-P; no ruling makes a colophon another type, left as is."
+  }
+ ]
+}

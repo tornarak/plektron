@@ -1,0 +1,15 @@
+{
+ "ref": "1-086",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-086.xml",
+  "bands_sha256": "a8f9fa697178c60578d296d16710ac3b10b756ef9ccbe7be13f1c1c4164cb184"
+ },
+ "bands": 16,
+ "edits": [],
+ "notes": [
+  {
+   "line": 1,
+   "text": "Band 2 (MainZone-Continued, y 608-668) holds no line, and line 1 is in the running-title band with line 0. On the scan the head line is the only ink there (30 / В. Г. БОГОРАЗЪ, / I,5.), so band 2 looks like an empty remnant, not a zone. Not edited: no edit can name a band without lines."
+  }
+ ]
+}

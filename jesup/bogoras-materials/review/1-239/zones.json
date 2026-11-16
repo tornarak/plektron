@@ -1,0 +1,15 @@
+{
+ "ref": "1-239",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-239.xml",
+  "bands_sha256": "ab2c5e575874b71526aa49fa25a5e8454be3aec0fed59b878ea28b54c83e5c93"
+ },
+ "bands": 7,
+ "edits": [],
+ "notes": [
+  {
+   "line": 22,
+   "text": "Indented colophon 'Записано отъ чукчанки ... въ 1895 году.' sits as MainZone-P; it closes text no. 67 rather than opening a paragraph. Left as the rule drew it."
+  }
+ ]
+}

@@ -1,0 +1,22 @@
+{
+ "ref": "1-144",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-144.xml",
+  "bands_sha256": "635d2b00c7a2aa8c0958b0b8208749788e5453450b8a61d908c6563592260b0c"
+ },
+ "bands": 8,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 3,
+   "label": "MainZone-Other",
+   "why": "line 12 is the colophon 'Записано отъ чукчи Аӈанвата осенью 1897 г. на урочищѣ Сухарномъ.', a short single line inset about equally on both sides (centred), closing no. 14; it opens no paragraph, so MainZone-P does not describe it and MainZone-Other (anything the other types do not cover) does."
+  }
+ ],
+ "notes": [
+  {
+   "line": 25,
+   "text": "Heading 'Примѣчанія къ № 14.' is already MainZone-Other; notes 1, 2, 3 (lines 26, 30, 36) each open with 'N (стр. M).' and are bands 6-8 as the ruling wants."
+  }
+ ]
+}

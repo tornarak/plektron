@@ -1,0 +1,15 @@
+{
+ "ref": "1-161",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-161.xml",
+  "bands_sha256": "53ef7322c859628849e176b297b230b2e53fe24c0e07c7a917e5f49552a3314b"
+ },
+ "bands": 7,
+ "edits": [],
+ "notes": [
+  {
+   "line": 16,
+   "text": "Bold colophon (Записано на р. Молондѣ отъ чукчи Кауно), indented ~70 px displayed and left-aligned, not centred (ends well short of the right margin), so no ruling moves it off MainZone-P; the editor may prefer MainZone-Other as a non-prose colophon."
+  }
+ ]
+}

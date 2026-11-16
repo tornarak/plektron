@@ -1,0 +1,15 @@
+{
+ "ref": "1-134",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-134.xml",
+  "bands_sha256": "b40cf9c738226dfc2a5e089285725d87a55b578da570f537663c0f680b5d2b27"
+ },
+ "bands": 10,
+ "edits": [],
+ "notes": [
+  {
+   "line": 39,
+   "text": "Band 10 (MainZone-Continued, the 'continued' flag) holds only line 39 at y 6481-6541, a speck-sized mark at the page foot, not a printed line; the editor may want to delete the band. Bands 2-9 are the Primechaniya notes 3-10, each opening on an indented 'N (str. M).' opener, so each is rightly MainZone-P."
+  }
+ ]
+}

@@ -1,0 +1,15 @@
+{
+ "ref": "1-265",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-265.xml",
+  "bands_sha256": "54870caf4a75e91f98b5c47dcc1059574d100301e0add9e8d37974b10ea7de45"
+ },
+ "bands": 3,
+ "edits": [],
+ "notes": [
+  {
+   "line": 16,
+   "text": "Band 2 lists line indices 17 before 16; the ink is in order (the text layer swaps two rows), no edit."
+  }
+ ]
+}

@@ -1,0 +1,15 @@
+{
+ "ref": "1-089",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-089.xml",
+  "bands_sha256": "a48ec7bc9c3e357ca2ef4bb1bcae551fed8348ded85c4cf8af2b41ba9502c6bc"
+ },
+ "bands": 8,
+ "edits": [],
+ "notes": [
+  {
+   "line": 13,
+   "text": "Indented colophon line (Zapisano ot chukchi ... 1897 goda na urochishche Akonaike) is a one-line MainZone-P; it could equally be read as MainZone-Other. No ruling decides it, so left to the editor."
+  }
+ ]
+}

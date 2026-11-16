@@ -1,0 +1,22 @@
+{
+ "ref": "1-415",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-415.xml",
+  "bands_sha256": "3d4abc7a6f451a7dc6a95ac370afc40ebbfd2739ab74277ebf8a70b247c47f01"
+ },
+ "bands": 7,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 5,
+   "label": "MainZone-Other",
+   "why": "line 22 (Talo, таӈцен рымаjӈáwго. Talo, таньгинскій воспитанникъ.) is the title of text 135 under the number heading, inset equally ~50 px each side of the column, i.e. centred: a heading, MainZone-Other, not a continuation."
+  }
+ ],
+ "notes": [
+  {
+   "line": 20,
+   "text": "Indented colophon line (Записано отъ чукчи Айвана ... 1896 г.) closing text 134, a one-line MainZone-P."
+  }
+ ]
+}

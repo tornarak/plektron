@@ -1,0 +1,18 @@
+{
+ "ref": "1-473",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-473.xml",
+  "bands_sha256": "169915d0a1b1e65b151cae3422a3319f6313a10b2ec925e471230d4d5baa176a"
+ },
+ "bands": 4,
+ "edits": [],
+ "notes": [
+  {
+   "line": 17,
+   "text": "Indented colophon (Разсказано чукчей ... на р. Каменной) stands as MainZone-P; left as the rule drew it."
+  },
+  {
+   "text": "A printed tail-ornament (centred rule with a flourish, y about 3450 px at full size) sits below the colophon in no band; it is not text."
+  }
+ ]
+}

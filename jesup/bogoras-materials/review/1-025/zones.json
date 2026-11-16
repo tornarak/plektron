@@ -1,0 +1,15 @@
+{
+ "ref": "1-025",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-025.xml",
+  "bands_sha256": "5bffb91986ea93a7157a904447db05b84d92dd734c17a771de51ef2afc84b721"
+ },
+ "bands": 5,
+ "edits": [],
+ "notes": [
+  {
+   "line": 25,
+   "text": "Line 25 is a margin line number (25) read as its own row; it sits among band 4's lines, so band 4 lists it as 24 then 25 out of order. No edit."
+  }
+ ]
+}

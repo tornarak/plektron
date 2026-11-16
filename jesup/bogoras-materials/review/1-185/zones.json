@@ -1,0 +1,22 @@
+{
+ "ref": "1-185",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-185.xml",
+  "bands_sha256": "c11d14d12d9940477670a1db3013511b8df67054ccf9fd346db8084d13a261da"
+ },
+ "bands": 16,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 5,
+   "label": "MainZone-Other",
+   "why": "line 9 is the colophon 'Записано на р. Молондѣ отъ чукчи Рэмкыlын'а', a one-line attribution closing the Chukchi text above the rule, not a paragraph start; MainZone-Other covers what the other types do not."
+  }
+ ],
+ "notes": [
+  {
+   "line": 4,
+   "text": "Band 4 lists its lines as 4 5 7 6 8 (text layer order); the ink is one paragraph of four lines, so no edit."
+  }
+ ]
+}

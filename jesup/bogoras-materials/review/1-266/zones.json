@@ -1,0 +1,14 @@
+{
+ "ref": "1-266",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-266.xml",
+  "bands_sha256": "61c89aec0eda27789a944b91faea26f06a56513763876fb02988dee177f13260"
+ },
+ "bands": 3,
+ "edits": [],
+ "notes": [
+  {
+   "text": "Band 2 stops at the last body line (37) mid-sentence, which runs onto the next page; band 3 holds the three footnotes under the short rule. No indent opens the page, so Continued is right."
+  }
+ ]
+}

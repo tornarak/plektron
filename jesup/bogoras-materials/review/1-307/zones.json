@@ -1,0 +1,14 @@
+{
+ "ref": "1-307",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-307.xml",
+  "bands_sha256": "2656051bc2c6fe4546e1fd1ee06a32559955edbb577d4c80e3094c7640c4b9b7"
+ },
+ "bands": 3,
+ "edits": [],
+ "notes": [
+  {
+   "text": "Checked: line 1 is flush (no indent), so Continued is right; footnotes 1) and 2) (lines 38-40) sit under the short rule in one Notes band. The heavy smear at the scan foot is not text."
+  }
+ ]
+}

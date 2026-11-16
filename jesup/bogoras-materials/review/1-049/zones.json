@@ -1,0 +1,15 @@
+{
+ "ref": "1-049",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-049.xml",
+  "bands_sha256": "638cbc93f2c7b49703121254503d392a07017af1f7e76b0853724df2e68acade"
+ },
+ "bands": 4,
+ "edits": [],
+ "notes": [
+  {
+   "line": 42,
+   "text": "Uncovered y 5521-5591 is the printed flourish under the document number № 8712 and the lower edge of the М. П. seal circle, not a text line; belongs with band 4 (the footnote-printed document, kept as one Notes zone per ruling)."
+  }
+ ]
+}

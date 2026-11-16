@@ -1,0 +1,14 @@
+{
+ "ref": "1-387",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-387.xml",
+  "bands_sha256": "de1fed744865fc806fbcc74e950f8d41d0f696866d013d0fc74106ec4344bec7"
+ },
+ "bands": 3,
+ "edits": [],
+ "notes": [
+  {
+   "text": "Uncovered ink y 5736-5799 (x 627-1530) is the last printed line of footnote 3, 'измѣнникѣ для Якунниина.'; the text layer has no row for it. It belongs with band 3 (MarginTextZone-Notes), whose lines sit a line off their ink here (rows 38-42 for five printed lines counting the rule)."
+  }
+ ]
+}

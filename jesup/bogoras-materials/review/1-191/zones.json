@@ -1,0 +1,15 @@
+{
+ "ref": "1-191",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-191.xml",
+  "bands_sha256": "2e41f483be498c50278b3e21c10aefa35cb8704c9ae4684b41eeabe15431e57b"
+ },
+ "bands": 14,
+ "edits": [],
+ "notes": [
+  {
+   "line": 8,
+   "text": "Band 5 is the attribution line 'Zapisano ot chukchi Ajnaivat'a v Anyuiskoi krepdsti.', a short indented line in smaller type under the text. It opens no paragraph, so MainZone-Other may fit; left as the rule drew it since its indent matches an opener and no ruling names a colophon label."
+  }
+ ]
+}

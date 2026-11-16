@@ -1,0 +1,15 @@
+{
+ "ref": "1-133",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-133.xml",
+  "bands_sha256": "a59d6d841bdfdf49af4b8c79f1daf96b17698fe7e81480acf6efada0ff4cdefe"
+ },
+ "bands": 7,
+ "edits": [],
+ "notes": [
+  {
+   "line": 14,
+   "text": "Indented two-line colophon (Zapisano ot chukchi ... 1897 goda na urochishche Kamennom) is MainZone-P; could equally be MainZone-Other. No ruling decides it, so left to the editor."
+  }
+ ]
+}

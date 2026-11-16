@@ -1,0 +1,22 @@
+{
+ "ref": "1-201",
+ "reviewed": {
+  "file": "mz/zones/chukchi-materials-1-201.xml",
+  "bands_sha256": "3d7ccf8e3c1bad107766577900e10a8995e189d6b5a228f19651b0a67e77f84e"
+ },
+ "bands": 13,
+ "edits": [
+  {
+   "op": "relabel",
+   "band": 7,
+   "label": "MainZone-Other",
+   "why": "line 16 'Скороговорки (торопливо-язычно-состязательныя слова).' is a section title centred in the column (insets ~65 px left, ~55 px right), under a printed rule: a heading, MainZone-Other, not a paragraph start."
+  }
+ ],
+ "notes": [
+  {
+   "line": 15,
+   "text": "'Отъ разныхъ лицъ.' is an indented attribution line under the text of no. 45; left as MainZone-P, but it could be read as a subheading."
+  }
+ ]
+}
