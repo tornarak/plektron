@@ -254,7 +254,7 @@ page's current best reading; they were retired for the same reason this pair
 never had one.)
 
 ### tei generate [REF ...]
-**Does** builds a first-draft TEI page into `mz/tei/`, by rule. Paragraph boundaries from the keyed `MainZone-P`/`MainZone-Continued` labels and from nothing else; `<pb n>` from the running title's folio; each ToC heading the printed folio opens here, and whose title a block prints at its front, marked `<milestone unit n resp="#mz">`; apparatus zones and caption lines dropped; `MarginTextZone-Notes` split at its printed markers, each note emitted at the foot with its `@n` and each printed marker in the prose wrapped in `<ref type="note" n resp="#mz">`; figures emitted as `<figure n><figDesc>` where their boxes sit; `MainZone-Quote` → `<quote>`; every ratified `tier1_terms` hit wrapped in place as `<foreign index="N">…</foreign>`, the adjudicated glyphs present and the language absent; every printed cross-reference marked as `<ref type n cRef resp="#mz">` over the numeral alone.
+**Does** builds a first-draft TEI page into `mz/tei/`, by rule. Paragraph boundaries from the keyed `MainZone-P`/`MainZone-Continued` labels and from nothing else; `<pb n>` from the running title's folio; each ToC heading the printed folio opens here, and whose title a block prints at its front, marked `<milestone unit n resp="#mz">`; apparatus zones and caption lines dropped; a `DiscardZone` (printed, not transcribed) as `<gap reason="not transcribed" unit="line" quantity="N"/>`, closing the paragraph; `MarginTextZone-Notes` split at its printed markers, each note emitted at the foot with its `@n` and each printed marker in the prose wrapped in `<ref type="note" n resp="#mz">`; figures emitted as `<figure n><figDesc>` where their boxes sit; `MainZone-Quote` → `<quote>`; every ratified `tier1_terms` hit wrapped in place as `<foreign index="N">…</foreign>`, the adjudicated glyphs present and the language absent; every printed cross-reference marked as `<ref type n cRef resp="#mz">` over the numeral alone.
 **Reads** `gt/ocr/`, `gt/zones/`, `gt/fig/` (geometry and captions both), `edition/toc.json`, `edition/authorities.json`, the entity and lexicon stores — every one of them tracked, and no raster.
 **Writes** `mz/tei/chukchi-PP-NNN.xml` — derived, gitignored.
 **Exit** always 0. A page it cannot build reports `written: false` with the verb that fixes it; that is a worklist line, not a failure of the run.
@@ -732,7 +732,7 @@ Every page is checked before any is queued, and its block is rendered and thrown
 **Does** magnified lines — overlapping strips at an integer scale, packed into as few sheets as the height budget allows.
 **Reads** the `--store` store, `scans/`.
 **Writes** `review/PP-NNN/zoom/` (derived), or `--out`.
-**Exit** always 0; exit 2 for a second ref, for `--out` with more than one ref, for `--zoom` other than 2 or 4, for a missing `--reason`, and for any place naming a line in an apparatus zone.
+**Exit** always 0; exit 2 for a second ref, for `--out` with more than one ref, for `--zoom` other than 2 or 4, for a missing `--reason`, for any place naming a line in an apparatus zone, and for any place naming a line in a `DiscardZone`, which is not transcribed.
 
 **A line in `FOLIO_ZONES` may not be zoomed at all.** The running title, the folio and a signature mark are plain type in a labelled zone, and nothing a crop says about them was not already legible on `ocr numbered` — every other zoom on a page is a question about a letterform and this one never is. It has still been the pass's steadiest drain: four pages across two batches spent **42,620 tokens** hunting a folio at the ceiling (`1-051` 13,140 · `1-045` 11,261 · `1-054` 10,505 · `1-047` 7,714), one of them because a crop cut the number in half. The brief has told readers not to since the second batch and they kept doing it, which is the difference between a rule and a suggestion. **Zone-scoped, not line-scoped**: which of the three zones a page's folio landed in is exactly what a reader cannot know in advance, so a rule keyed to "line 1" would miss the pages where it is not. One apparatus place refuses the whole call rather than dropping it silently — the call is one image, so a partly-served request returns a crop nobody asked for. It does **not** claim to prevent a misread folio: `1-063` keyed `141` for a folio reading `41` without zooming at all.
 **Note** no `--all`. **The places are the argument**: `ocr zoom 1-048 11@70 13@40 23@60` is one ref then the places on it, comma- or space-separated. It was `--only`, and a flag invited the plural positional beside it, where the same indices name unrelated lines on the next page — a line index is an *identity*, not a position. A second token spelled like a canonical ref is refused rather than read as a line range.
@@ -840,6 +840,7 @@ The header links to the **full page scan**, new tab — the crops say what a lin
 **Does** writes adjudicated decisions into `gt/ocr/`, keeping the source geometry. Reports `mode=restoration` or `mode=revision`.
 **Reads** `review/PP-NNN/decision.json`, the `--store` store, `gt/lines/`; under a text's `prose_stands`, `review/PP-NNN/proposal.json` and `config/keying.json` too.
 **Writes** `gt/ocr/` under `--commit`. Also `gt/lines/` for a page carrying corrections, which `corrections` counts.
+**Note** **a line in a `DiscardZone` is written empty and needs no decision**: the edition does not transcribe it, and the zone is the record of why. A decision giving one text is refused (exit 2), since either the zone or the text is wrong.
 **Note** **under `prose_stands` in `project.json`, plain prose needs no decision.** That field is the editor's ruling, in words, that the text's prose may reach ground truth on a model's reading; only the 1900 *Materials* carries it. A proposal line stands when it lists no `native` form, carries no `doubt` note, and has only letters of the text's `prose_alphabet` (capital roman numerals excepted). Every other line still needs a decision, and a decision always overrides a standing line. `stood` lists the lines that went in on the reading. It is derived from the proposal and the rules on every run and stored nowhere, so `decision.json` stays a record of human acts alone. Under `--all`, a page with no decision is restored once every one of its lines stands, and its proposal's mtime is the one the skip test compares.
 **Note** **each line's text goes to the store that line came from.** A page's lines are the ALTO's plus `gt/lines/`'s, so this — still the only writer of ground-truth *text* — has two files to write: the ALTO's own lines by position, a correction by its `corr_` id, since the fragment is ordered by geometry and a box may have been nudged since. `gt/ocr/` never gains the corrected line; a second copy would be two records of one line, free to disagree. A correction with no decision is a partial restore exactly as an unadjudicated ALTO line is.
 **Exit** 0 when it runs — `geometry_drift` and `text_mismatch` are reported, not gated. It **refuses** (exit 2) in five cases, none of them a judgement to weigh: no decisions at all; **any line without one**; **any decision without a line** — a key past the page's last index is text with no box, which the write loop and the correction join used to drop in silence, and which `proposal check` used to flag at the reader, whose remedy it never was; a line without exactly one `String`; an unlicensed mark in the adjudicated text (§2.6).
@@ -954,6 +955,7 @@ Opcodes come from difflib over **NFD** text, so a dropped combining mark ranks a
 **Writes** —
 **Exit** 0; 2 for a page not paired (unpaired, ambiguous or empty in the receipt) or with no master reading.
 **Note** **one engine read both copies**, so `same` lets a line of Russian prose stand and never settles a native form: on `1-022` both read `Ајңанват` where the print sets `Ајңаѝва́т`. The native forms go to the editor by rule.
+**Note** **a line in a `DiscardZone` is no line of the page's reading** — the Chukchi stream, which is not transcribed. It is aligned with the rest and then left out, with the other copy's reading of it, so its index is absent from `lines` and the proposal; `discarded` counts them. A witness row the master has no row for cannot be tied to a zone, and still shows in `b_only`.
 ```
 --witness ID   the witness's id in project.json (required)
 --differ       only lines the copies disagree on or that carry a native form [off]
@@ -1176,6 +1178,19 @@ opinion of which pages are held out.
 --all      every page marked train or eval
 --commit   write mz/zones/ [off]
 --force    replace a page's existing mz/zones/ file, whichever producer wrote it [off]
+--root --json --toon --pager
+```
+
+### zones discard [REF ...]
+**Does** relabels a saved `gt/zones/` page's Chukchi stream as `DiscardZone`, the type a text declares for printed matter the edition does not transcribe. The bands are `zones_rule.chukchi_bands`, the same walk `propose` makes in `mz/zones/`: up from each full-width stream rule, past at most one Other band (the «Записано…» line), then the run of `MainZone-P`/`-Continued`/`-Quote` bands until a band that is none of them. Every other band is left as saved.
+**Reads** `gt/zones/`, `mz/ocr/`, `scans/`, `config/zones.json`, the split marks.
+**Writes** `gt/zones/` under `--commit`, through `save_zones`: `.prev` and a journal line, as any save.
+**Exit** always 0. 2 when the text's config has no `text_rule` block.
+**Emits** `relabelled` (ref, stream_y, relabelled, skipped) — `stream_y` each rule's y, `relabelled` each band as `N:old-label`, N counted from 1 in reading order — and `left`, the pages with nothing to relabel and why (`no stream rule`, a leaf, no `gt/zones/` file, a text declaring no `DiscardZone`).
+**Note** **a judgement the walk cannot make is left, never guessed.** A parallel-column block on the rule is Other, so the walk stops there; an attribution line saved as `MainZone-P` is taken for Chukchi. Name the pages to commit, and settle the rest in `zones edit`.
+```
+--all      every page marked train or eval
+--commit   save the relabelled pages to gt/zones/ [off]
 --root --json --toon --pager
 ```
 

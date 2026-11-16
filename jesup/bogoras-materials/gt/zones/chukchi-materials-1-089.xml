@@ -8,10 +8,11 @@
   </Description>
   <Tags>
     <OtherTag ID="BT1" LABEL="RunningTitleZone" DESCRIPTION="block type RunningTitleZone"/>
-    <OtherTag ID="BT2" LABEL="MainZone-Continued" DESCRIPTION="block type MainZone-Continued"/>
+    <OtherTag ID="BT2" LABEL="DiscardZone" DESCRIPTION="block type DiscardZone"/>
     <OtherTag ID="BT3" LABEL="MainZone-Other" DESCRIPTION="block type MainZone-Other"/>
-    <OtherTag ID="BT4" LABEL="MainZone-P" DESCRIPTION="block type MainZone-P"/>
-    <OtherTag ID="BT5" LABEL="QuireMarksZone" DESCRIPTION="block type QuireMarksZone"/>
+    <OtherTag ID="BT4" LABEL="MainZone-Continued" DESCRIPTION="block type MainZone-Continued"/>
+    <OtherTag ID="BT5" LABEL="MainZone-P" DESCRIPTION="block type MainZone-P"/>
+    <OtherTag ID="BT6" LABEL="QuireMarksZone" DESCRIPTION="block type QuireMarksZone"/>
   </Tags>
   <Layout>
     <Page WIDTH="4688" HEIGHT="6960" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
@@ -31,7 +32,7 @@
             <Polygon POINTS="507 2301 3542 2301 3542 2401 507 2401"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="507" VPOS="2561" WIDTH="3035" HEIGHT="1708" ID="mz_1-089_004" TAGREFS="BT2">
+        <TextBlock HPOS="507" VPOS="2561" WIDTH="3035" HEIGHT="1708" ID="mz_1-089_004" TAGREFS="BT4">
           <Shape>
             <Polygon POINTS="507 2561 3542 2561 3542 4269 507 4269"/>
           </Shape>
@@ -41,17 +42,17 @@
             <Polygon POINTS="507 4469 3542 4469 3542 4593 507 4593"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="507" VPOS="4670" WIDTH="3035" HEIGHT="215" ID="mz_1-089_006" TAGREFS="BT4">
+        <TextBlock HPOS="507" VPOS="4670" WIDTH="3035" HEIGHT="215" ID="mz_1-089_006" TAGREFS="BT5">
           <Shape>
             <Polygon POINTS="507 4670 3542 4670 3542 4885 507 4885"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="507" VPOS="4885" WIDTH="3035" HEIGHT="859" ID="mz_1-089_007" TAGREFS="BT4">
+        <TextBlock HPOS="507" VPOS="4885" WIDTH="3035" HEIGHT="859" ID="mz_1-089_007" TAGREFS="BT5">
           <Shape>
             <Polygon POINTS="507 4885 3542 4885 3542 5744 507 5744"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="507" VPOS="5752" WIDTH="3035" HEIGHT="71" ID="mz_1-089_008" TAGREFS="BT5">
+        <TextBlock HPOS="507" VPOS="5752" WIDTH="3035" HEIGHT="71" ID="mz_1-089_008" TAGREFS="BT6">
           <Shape>
             <Polygon POINTS="507 5752 3542 5752 3542 5823 507 5823"/>
           </Shape>

@@ -157,3 +157,26 @@ def test_the_report_has_one_key_set_either_way(page):
     committed = _restore(tmp_path, commit=True)
     assert set(preview) == set(committed)
     assert "corrections" in preview
+
+
+def test_a_discarded_line_is_keyed_empty_without_a_decision(page):
+    """A DiscardZone line is not transcribed: no reading is asked of it, and
+    `restore` writes it empty, the zone being the record of why."""
+    tmp_path, alto = page
+    from conftest import write_zones
+    write_zones(tmp_path, "1-048", [("DiscardZone", 980, 1070),
+                                    ("MainZone-P", 1080, 1170)])
+    _decisions(tmp_path, "1-048", {1: "second", 2: "17"})
+    _restore(tmp_path, commit=True)
+    got = [s.get("CONTENT")
+           for s in etree.parse(str(alto)).getroot().iter("{*}String")]
+    assert got == ["", "second"]
+
+
+def test_text_on_a_discarded_line_is_refused(page):
+    tmp_path, _ = page
+    from conftest import write_zones
+    write_zones(tmp_path, "1-048", [("DiscardZone", 980, 1070)])
+    _decisions(tmp_path, "1-048", {0: "Ъна́нкен", 1: "second", 2: "17"})
+    with pytest.raises(ValueError, match="DiscardZone"):
+        _restore(tmp_path, commit=True)

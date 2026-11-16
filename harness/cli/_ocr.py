@@ -1091,6 +1091,15 @@ def apparatus_hits(recs, asked) -> list[int]:
     return [i for i in sorted(asked) if zoned.get(i) in FOLIO_ZONES]
 
 
+def discard_hits(recs, asked) -> list[int]:
+    """Which of the asked-for line indices sit in a DiscardZone, in order: lines
+    the edition does not transcribe, so a zoom on one has nothing to read."""
+    from ..refs import DISCARD_ZONES
+    zoned = {int(r["index"]): r.get("zone")
+             for r in recs if r.get("index") is not None}
+    return [i for i in sorted(asked) if zoned.get(i) in DISCARD_ZONES]
+
+
 def _refuse_apparatus(ref: str, spec: str | None, a) -> None:
     """Refuse a zoom aimed at the head line, the folio, or a signature mark.
 
@@ -1119,7 +1128,16 @@ def _refuse_apparatus(ref: str, spec: str | None, a) -> None:
         recs = page_lines(alto_for_lines(ref, a.root, _store_dir(a)), a.root, ref=ref)
     except Exception:
         return          # a page whose lines will not load has a louder problem
-    hit = apparatus_hits(recs, parse_spans(spec))
+    asked = parse_spans(spec)
+    gone = discard_hits(recs, asked)
+    if gone:
+        raise ValueError(
+            f"line{'s' if len(gone) > 1 else ''} {', '.join(map(str, sorted(gone)))} "
+            f"of {ref} {'lie' if len(gone) > 1 else 'lies'} in a DiscardZone, "
+            "which this edition does not "
+            "transcribe: there is nothing to read there, and the line is keyed "
+            "empty at restore")
+    hit = apparatus_hits(recs, asked)
     if not hit:
         return
     which = ", ".join(str(i) for i in hit)

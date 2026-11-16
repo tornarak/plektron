@@ -16,6 +16,12 @@
     "content_ink_fraction": 0.004
   },
 
+  "extra_types": [
+    {"label": "DiscardZone", "key": "n", "color": "#b5b5b5", "rank": null, "max_per_page": null,
+     "name": "not transcribed",
+     "description": "Printed matter this edition deliberately does not transcribe: the Chukchi stream of a Section I page, above the full-width rule (the editor, 2026-11-16). Its lines leave the reading pass and reach gt/ocr/ empty, the zone being the record of why; the TEI carries a <gap>. `zones propose` labels the Chukchi body bands so; a title or heading in the stream is the reviewer's."}
+  ],
+
   "columns": {
     "parts": {
       "1": {"measure": 2986, "window": 3035, "fallback_x0": 600,
@@ -63,6 +69,8 @@
       "footrule_min_px": "The footnote rule. Over every gap above a block opening `N)` (2026-11-07): 179 of 194 carry a run of 750-999 px starting within 60 px of the column's left edge, and the rest are fainter rules of 513-722 px starting at most 213 px in (1-214, 1-245, 1-437). The six with no such run are not footnotes: the proverbs of 1-200 and the numbered texts of 1-201 and 1-202. So: at least 450 px.",
       "footrule_max_start": "Starting within 400 px of the column's left edge. The short centred rules under a heading start ~1280 px in (1-157, 1-200, 1-204).",
       "footrule_max_end": "Ending within 1000 px of the column's left edge, which no full-width rule does. Of the 1138 gaps above a block that does not open `N)`, one has a run this shape: 1-049, whose block under it is apparatus too, a document a footnote introduces. So the rule alone starts the footnotes, and what the block's first line says is not asked (2026-11-15).",
+      "stream_rule_band_px": "The stream rule is searched in bands of this many pixel rows taken together, where the footnote rule is searched one row at a time: on 1-058 and 1-059 the rule is skewed, so no single row carries it in one run (2725 and 2832 inked px in its best row), and over 7 rows it is solid, 2980 px with no break wider than 8 (2026-11-16). A row of type stays white between its words over the same band, which rule_fill_min holds apart.",
+      "stream_rule_bridge_px": "The stream rule's own bridge, wider than rule_bridge_px: 1-109 and 1-174 break theirs once, 14 and 13 px (2026-11-16). 20 closes those and no word space, which at 600 dpi is wider. 1-176's rule is broken five times, 45-88 px, and is left to the reviewer rather than bridged.",
       "stream_rule_min_px": "A full-width rule separates the Chukchi from its Russian on a Section I page, each continuing from the page before; the runs measure ~2940-2985 px against the 2986 px column. A Continued band under one is expected, so it raises no `continued` flag.",
       "speck_max_chars": "A row of at most two characters, under speck_max_px both ways and not foot matter, is a mark the layer read as text even when it holds a letter or digit. Of the 39 such rows under 60 px tall in the book (2026-11-07), the rest are a running head's split-out `В.`/`Г.`, which joins the head, and the foot's signatures (`II`, `III`, `7`), which the foot takes first; these are stray `A`/`C`/`e`, superscript calls `1`-`4` on rows of their own, and glyphs from other scripts. Two of them, `C` on 1-288 and `1` on 1-335, made zero-height bands.",
       "speck_max_px": "60, the store's min_zone_h_px. 1-049's centred `CI` (62 x 56 px) is wider and stays: it may be a heading.",
@@ -86,6 +94,8 @@
     "footrule_max_start": 400,
     "footrule_max_end": 1000,
     "stream_rule_min_px": 2700,
+    "stream_rule_band_px": 7,
+    "stream_rule_bridge_px": 20,
     "speck_max_chars": 2,
     "speck_max_px": 60,
     "missing_min_h": 60,

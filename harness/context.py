@@ -27,6 +27,7 @@ from .paths import scan_for
 from .refs import (
     _FOLIO_RE,
     APPARATUS_ZONES,
+    DISCARD_ZONES,
     FOLIO_ZONES,
     _folio_in,
     _window_folio,
@@ -533,7 +534,7 @@ def entity_hits(ref: str, root: Path = Path("."),
     blocks, _ = page_blocks(ref, root, store=store)
     out = []
     for band, rows in blocks:
-        if band is not None and band["label"] in APPARATUS_ZONES:
+        if band is not None and band["label"] in APPARATUS_ZONES | DISCARD_ZONES:
             continue
         if not rows:
             continue

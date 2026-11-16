@@ -27,7 +27,7 @@ from collections.abc import Callable
 from pathlib import Path
 
 from .layout import witness
-from .refs import norm_ref, parse_ref
+from .refs import DISCARD_ZONES, norm_ref, parse_ref
 
 #: A copy-B page is a copy-A page's reading when their word sequences agree this
 #: well (`SequenceMatcher.ratio`)…
@@ -268,8 +268,14 @@ def compare(ref: str, root: Path, wid: str) -> dict:
                     seen.append(tok)
         return seen
 
+    # A line in a DiscardZone is not transcribed, so it is no line of the
+    # proposal: its index is absent here and `restore` keys it empty. It is
+    # dropped after the alignment, not before, so the other copy's reading of it
+    # pairs with it and goes too, rather than surfacing in `b_only`.
     lines, b_only = [], []
     for i, j, _ in align(a, b):
+        if i is not None and recs[i]["zone"] in DISCARD_ZONES:
+            continue
         if i is None:
             b_only.append({"b": b[j], "native": native(b[j])})
             continue
@@ -281,6 +287,7 @@ def compare(ref: str, root: Path, wid: str) -> dict:
     counts = {k: sum(1 for x in lines if x["agree"] == k)
               for k in ("same", "spacing", "differ", "alone")}
     return {"ref": ref, "witness_page": page_of(ref, root, wid), **counts,
+            "discarded": sum(1 for r in recs if r["zone"] in DISCARD_ZONES),
             "b_only": len(b_only), "lines": lines, "b_lines": b_only}
 
 

@@ -23,7 +23,7 @@ RULE = {"head_max_y": 700, "foot_max_w": 200, "number_pad": 40, "gap_min_px": 80
         "gutter_min_px": 60, "gutter_min_rows": 3,
         "gutter_max_offset": 300, "rule_bridge_px": 10, "rule_fill_min": 0.9, "footrule_min_px": 450,
         "footrule_max_start": 400, "footrule_max_end": 1000,
-        "stream_rule_min_px": 2700, "speck_max_chars": 2, "speck_max_px": 60,
+        "stream_rule_min_px": 2700, "stream_rule_band_px": 7, "stream_rule_bridge_px": 20, "speck_max_chars": 2, "speck_max_px": 60,
         "missing_min_h": 60, "missing_edge_px": 5}
 CFG = {"text_rule": RULE, "width_tolerance_px": 80}
 BLANK = np.zeros((7000, 4800), dtype=bool)
@@ -305,6 +305,86 @@ def test_a_continued_band_under_a_stream_rule_raises_no_flag():
     rule_y = p.rows[3]["vpos"] - 90
     assert flags(p) == ["continued"]
     assert flags(p, _rule_ink(rule_y, X0 + 5, 2970)) == []
+
+
+DISCARDING = {**CFG, "types": [{"label": "DiscardZone"}]}
+
+
+def _bands(p: Page, ink, cfg=DISCARDING) -> list[str]:
+    return [b["label"] for b in zones_rule.derive(p.rows, X0, M, ink, cfg).bands]
+
+
+def test_the_chukchi_stream_above_a_stream_rule_is_discarded():
+    p = Page()
+    p.para(3, indent=False)
+    p.gap(150)
+    p.para(3, indent=False)
+    ink = _rule_ink(p.rows[3]["vpos"] - 90, X0 + 5, 2970)
+    assert _bands(p, ink) == ["DiscardZone", "MainZone-Continued"]
+    # Only where the text declares the type.
+    assert _bands(p, ink, CFG) == ["MainZone-Continued", "MainZone-Continued"]
+
+
+def test_a_skewed_or_once_broken_stream_rule_is_still_found():
+    # `1-058`: no single pixel row holds the rule; `1-109`: one 14 px break.
+    p = Page()
+    p.para(3, indent=False)
+    p.gap(150)
+    p.para(3, indent=False)
+    y = p.rows[3]["vpos"] - 90
+    ink = BLANK.copy()
+    for k, x in enumerate(range(X0 + 5, X0 + 2975, 500)):
+        ink[y + k, x:x + 500] = True
+    ink[y:y + 8, X0 + 1500:X0 + 1514] = False
+    assert zones_rule.derive(p.rows, X0, M, ink, DISCARDING).stream_ys
+
+
+def test_the_previous_texts_notes_above_the_rule_are_kept():
+    # `1-100`: a text's notes end, the next text's number and title, its
+    # Chukchi, then the rule. Only the Chukchi goes.
+    p = Page()
+    p.para(2)
+    p.para(2)
+    p.gap(150)
+    centred(p, "7.", w=150)
+    centred(p, "Бумнін ваырӄын.")
+    p.para(3)
+    p.gap(150)
+    p.para(3, indent=False)
+    ink = _rule_ink(p.rows[-3]["vpos"] - 90, X0 + 5, 2970)
+    assert _bands(p, ink) == ["MainZone-P", "MainZone-P", "MainZone-Other",
+                              "MainZone-Other", "DiscardZone", "MainZone-Continued"]
+
+
+def test_one_other_band_on_the_rule_is_passed_over_and_no_more():
+    from harness.zones_rule import chukchi_bands
+
+    def band(label, y):
+        return {"label": label, "y0": y, "y1": y + 100}
+    # `1-060`: the «Записано…» line sits on the rule, the Chukchi above it.
+    page = [band("MainZone-Continued", 800), band("MainZone-Other", 1000)]
+    assert chukchi_bands(page, [1200]) == [0]
+    # `1-172`: a parallel block on the rule, its heading, the notes before it.
+    page = [band("MainZone-P", 800), band("MainZone-Other", 1000),
+            band("MainZone-Other", 1200)]
+    assert chukchi_bands(page, [1400]) == []
+    # `1-200`: two rules, each walked from, neither walk crossing the other.
+    page = [band("MainZone-Continued", 800), band("MainZone-P", 1200),
+            band("MainZone-Other", 1400), band("MainZone-P", 1600)]
+    assert chukchi_bands(page, [1000, 1800]) == [0, 3]
+
+
+def test_a_text_adds_a_type_without_restating_the_vocabulary(tmp_path):
+    from harness.zones_config import raw_config
+    write_zone_config(tmp_path)
+    p = tmp_path / "config" / "zones.json"
+    cfg = json.loads(p.read_text())
+    n = len(cfg["types"])
+    cfg["extra_types"] = [{"label": "DiscardZone", "key": "n"}]
+    p.write_text(json.dumps(cfg))
+    got = raw_config(tmp_path)
+    assert [t["label"] for t in got["types"]][-1] == "DiscardZone"
+    assert len(got["types"]) == n + 1 and "extra_types" not in got
 
 
 def test_numbered_proverbs_at_the_bodys_size_are_not_footnotes():

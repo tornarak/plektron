@@ -79,7 +79,7 @@ from .entities import alias_index, auto_forms, load
 from .layout import stem_for
 from .lines import page_lines
 from .ns import TEI_NS
-from .refs import APPARATUS_ZONES, norm_ref
+from .refs import APPARATUS_ZONES, DISCARD_ZONES, norm_ref
 from .state import MILESTONE_UNITS, NOTE_MARKERS, heads_on, load_toc, printed_head, toc_starts
 from .zones import read_zones
 
@@ -889,19 +889,21 @@ def page_blocks(ref: str, root: Path = Path("."), shared: Stores | None = None,
     bands = _bands(ref, root)
     buckets = _assign(recs, bands)
 
-    def rows_of(bucket: list[dict]) -> list[tuple[int, str]]:
+    def rows_of(bucket: list[dict], empties: bool = False) -> list[tuple[int, str]]:
         out = []
         for r in bucket:
             if r.get("in_figdesc"):
                 continue          # the project holds a human reading in gt/fig/
             text = text_of.get(r["index"], r.get("text") or "")
-            if not text.strip():
+            if not text.strip() and not empties:
                 continue
             out.append((r["index"], text))
         return out
 
+    # A DiscardZone's lines are empty by design and are what its <gap> counts.
     out: list[tuple[dict | None, list[tuple[int, str]]]] = [
-        (b, rows_of(k)) for b, k in zip(bands, buckets[:-1], strict=True)]
+        (b, rows_of(k, b["label"] in DISCARD_ZONES))
+        for b, k in zip(bands, buckets[:-1], strict=True)]
     out.append((None, rows_of(buckets[-1])))
     # **A verdict about a line this page does not set is not a question.** The
     # caption lines go out with `in_figdesc` — the project holds a human reading
@@ -1354,6 +1356,16 @@ def build(ref: str, root: Path = Path("."),
             # not have its paragraph broken by it.
             continue
         rows = bucket
+        if label in DISCARD_ZONES:
+            # **Printed, and deliberately not transcribed** (the 1900
+            # *Materials*' Chukchi stream): a <gap> saying so, so a reader of
+            # the page knows text stands there. It closes the paragraph, and it
+            # is no prose band, so the stream the page continues — the `zone-opens`
+            # comment's question — is the one below it.
+            close_paragraph()
+            body.append(f'      <gap reason="not transcribed" unit="line" '
+                        f'quantity="{len(rows)}"/>')
+            continue
         if not rows:
             continue
         if label == NOTES_ZONE:

@@ -65,6 +65,12 @@ FOLIO_ZONES = ("RunningTitleZone", "QuireMarksZone", "NumberingZone")
 # the exclusion for why there and not at the point the page is recognized.
 APPARATUS_ZONES = frozenset(FOLIO_ZONES)
 
+# Zones whose lines this edition deliberately does not transcribe (the 1900
+# *Materials*' Chukchi stream): out of the reading pass, empty in `gt/ocr/`, a
+# `<gap>` in the TEI. Declared only by a text that has one (`extra_types`).
+DISCARD_ZONE = "DiscardZone"
+DISCARD_ZONES = frozenset({DISCARD_ZONE})
+
 
 def parse_ref(ref: str) -> tuple[int, int]:
     """'1-048' | '1-48' -> (1, 48). Anything else is an error.

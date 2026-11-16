@@ -9,7 +9,8 @@
   <Tags>
     <OtherTag ID="BT1" LABEL="RunningTitleZone" DESCRIPTION="block type RunningTitleZone"/>
     <OtherTag ID="BT2" LABEL="MainZone-Other" DESCRIPTION="block type MainZone-Other"/>
-    <OtherTag ID="BT3" LABEL="MainZone-P" DESCRIPTION="block type MainZone-P"/>
+    <OtherTag ID="BT3" LABEL="DiscardZone" DESCRIPTION="block type DiscardZone"/>
+    <OtherTag ID="BT4" LABEL="MainZone-P" DESCRIPTION="block type MainZone-P"/>
   </Tags>
   <Layout>
     <Page WIDTH="4864" HEIGHT="6992" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
@@ -44,7 +45,7 @@
             <Polygon POINTS="1183 2798 4218 2798 4218 2888 1183 2888"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="1183" VPOS="2975" WIDTH="3035" HEIGHT="989" ID="mz_1-154_007" TAGREFS="BT3">
+        <TextBlock HPOS="1183" VPOS="2975" WIDTH="3035" HEIGHT="989" ID="mz_1-154_007" TAGREFS="BT4">
           <Shape>
             <Polygon POINTS="1183 2975 4218 2975 4218 3964 1183 3964"/>
           </Shape>
@@ -54,17 +55,17 @@
             <Polygon POINTS="1183 4153 4218 4153 4218 4283 1183 4283"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="1183" VPOS="4360" WIDTH="3035" HEIGHT="426" ID="mz_1-154_009" TAGREFS="BT3">
+        <TextBlock HPOS="1183" VPOS="4360" WIDTH="3035" HEIGHT="426" ID="mz_1-154_009" TAGREFS="BT4">
           <Shape>
             <Polygon POINTS="1183 4360 4218 4360 4218 4786 1183 4786"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="1183" VPOS="4788" WIDTH="3035" HEIGHT="530" ID="mz_1-154_010" TAGREFS="BT3">
+        <TextBlock HPOS="1183" VPOS="4788" WIDTH="3035" HEIGHT="530" ID="mz_1-154_010" TAGREFS="BT4">
           <Shape>
             <Polygon POINTS="1183 4788 4218 4788 4218 5318 1183 5318"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="1183" VPOS="5329" WIDTH="3035" HEIGHT="430" ID="mz_1-154_011" TAGREFS="BT3">
+        <TextBlock HPOS="1183" VPOS="5329" WIDTH="3035" HEIGHT="430" ID="mz_1-154_011" TAGREFS="BT4">
           <Shape>
             <Polygon POINTS="1183 5329 4218 5329 4218 5759 1183 5759"/>
           </Shape>

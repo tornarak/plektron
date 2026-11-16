@@ -57,6 +57,15 @@ def test_one_apparatus_line_in_a_batch_refuses_the_whole_call():
     assert apparatus_hits(ORDINARY, parse_spans("1@50,2@40")) == [1]
 
 
+def test_a_discarded_line_is_refused_and_the_prose_beside_it_is_not():
+    """The 1900 *Materials*' Chukchi stream is not transcribed, so a zoom on it
+    reads nothing anyone keys."""
+    from harness.cli._ocr import discard_hits
+    p = page("RunningTitleZone", "DiscardZone", "DiscardZone", "MainZone-Continued")
+    assert discard_hits(p, parse_spans("1@50,3@20")) == [1]
+    assert discard_hits(p, parse_spans("3@20")) == []
+
+
 def test_every_folio_zone_counts_not_just_the_running_title():
     """Which zone the folio landed in is what a reader cannot know in advance —
     it sits in the head line on an ordinary page and in the signature line at the

@@ -38,11 +38,11 @@ from . import provenance
 from . import zones as zmod
 from . import zones_config as zc
 from .lines import alto_for_lines
-from .refs import norm_ref
+from .refs import DISCARD_ZONE, norm_ref
 
 #: Bumped whenever the derivation changes what it writes. A file records it, so
 #: two proposals of one page can be told apart without re-running either.
-RULE_VERSION = "5"
+RULE_VERSION = "6"
 
 #: Page-level reasons a band may be wrong, each named where `derive` meets it.
 #: Hints in the reviewer's page block, not a worklist: every page is reviewed, so
@@ -69,6 +69,7 @@ CONT = "MainZone-Continued"
 OTHER = "MainZone-Other"
 NOTES = "MarginTextZone-Notes"
 QUIRE = "QuireMarksZone"
+DISCARD = DISCARD_ZONE
 
 _ALNUM = re.compile(r"[^\W_]")
 _LONE_NUMBER = re.compile(r"^\s*\d+\s*$")
@@ -114,6 +115,10 @@ class Derived:
     numbers: int = 0
     gutters: list[str] = field(default_factory=list)
     flags: list[str] = field(default_factory=list)
+    #: Where the page's full-width stream rules fall, each midway between the
+    #: line above it and the line below, top to bottom; empty on a page with none.
+    #: A page can carry two, closing one text and the next (`1-200`).
+    stream_ys: list[int] = field(default_factory=list)
 
 
 def _rows(recs: list[dict]) -> list[Line]:
@@ -175,7 +180,7 @@ def _gutter(lines: list[Line], ink, lo: int, hi: int,
 
 
 def _rule(ink, y0: int, y1: int, lo: int, hi: int, bridge: int,
-          fill: float) -> tuple[int, int]:
+          fill: float, band: int = 1) -> tuple[int, int]:
     """The longest horizontal ink run in rows `y0..y1` between `lo` and `hi`, as
     `(length, start x)`, breaks of at most `bridge` px closed and at least `fill`
     of it inked. `(0, 0)` if none.
@@ -185,12 +190,20 @@ def _rule(ink, y0: int, y1: int, lo: int, hi: int, bridge: int,
     word in close bold type bridges into a run as long as a footnote rule
     (`1-179`); the fill is what parts them. A rule is solid but for its breaks,
     and a row of type is white between its letters.
+
+    `band` takes that many pixel rows together, inked where any is: a skewed rule
+    is solid over a few rows and in pieces on every one (`1-058`).
     """
     import numpy as np
 
     lo, y0 = max(lo, 0), max(y0, 0)
     best = (0, 0)
-    for row in ink[y0:max(y0, y1), lo:hi]:
+    region = ink[y0:max(y0, y1) + band - 1, lo:hi]
+    if band > 1:
+        region = np.stack([region[k:k + band].any(axis=0)
+                           for k in range(max(len(region) - band + 1, 0))]) \
+            if len(region) >= band else region[:0]
+    for row in region:
         xs = np.flatnonzero(row)
         if not len(xs):
             continue
@@ -211,6 +224,46 @@ def _band(label: str, lines: list[Line]) -> dict:
     return {"label": label, "y0": min(ln.y0 for ln in lines),
             "y1": max(ln.y1 for ln in lines),
             "rows": sorted(i for ln in lines for i in ln.idx)}
+
+
+#: The body labels a Chukchi stream is keyed in before it is discarded.
+STREAM_BODY = (P, CONT, "MainZone-Quote")
+
+
+def chukchi_bands(bands: list[dict], stream_ys: list[int]) -> list[int]:
+    """The bands of a Section I page's Chukchi stream, which is not transcribed
+    (the editor, 2026-11-16), as indices into `bands` (sorted by top).
+
+    **Walked up from the stream rule, by label and position alone.** Everything
+    above the rule is not Chukchi: a page that finishes one text's Russian notes
+    and opens the next sets the notes above it too (`1-100`). So, from the
+    rule upward: one Other band directly on it is passed over, since the
+    «Записано…» line sits there (`1-060`), and no more than one, since a parallel
+    block on the rule is Other too and above it lie its heading and the previous
+    text's Russian notes (`1-172`, `1-178`); then the run of body bands is
+    the stream, ending at the next band that is not one (the text's title, its
+    number, the running head). A stream broken by a heading of its own ends early,
+    which leaves Chukchi kept rather than Russian discarded; the reviewer finishes it.
+    Each rule is walked from, and no walk crosses the rule above it.
+    """
+    out: list[int] = []
+    for k, y in enumerate(stream_ys):
+        floor = stream_ys[k - 1] if k else float("-inf")
+        above = [i for i, b in enumerate(bands)
+                 if floor < (b["y0"] + b["y1"]) / 2 < y]
+        run: list[int] = []
+        passed = False
+        for i in reversed(above):
+            lab = bands[i]["label"]
+            if lab in STREAM_BODY:
+                run.append(i)
+            elif lab == OTHER and not run and not passed:
+                passed = True
+                continue
+            else:
+                break
+        out.extend(run)
+    return sorted(out)
 
 
 def derive(recs: list[dict], x0: int, measure: int, ink, cfg: dict) -> Derived:
@@ -436,7 +489,19 @@ def derive(recs: list[dict], x0: int, measure: int, ink, cfg: dict) -> Derived:
     for ln in foot:
         out.bands.append(_band(QUIRE, [ln]))
 
+    # Where the page's full-width stream rules fall, searched between every two
+    # lines and not only at a segment break: the white around the rule can fall
+    # under the gap threshold (`1-058`, `1-059`).
+    sband, sbridge = int(t["stream_rule_band_px"]), int(t["stream_rule_bridge_px"])
+    out.stream_ys = [(a.y1 + b.y0) // 2
+                     for a, b in zip(lines, lines[1:], strict=False)
+                     if _rule(ink, int(a.cy), int(b.cy), x0 - pad, x1 + pad, sbridge,
+                              fill, sband)[0] >= t["stream_rule_min_px"]]
+
     out.bands.sort(key=lambda b: b["y0"])
+    if out.stream_ys and DISCARD in {x["label"] for x in cfg.get("types", [])}:
+        for i in chukchi_bands(out.bands, out.stream_ys):
+            out.bands[i]["label"] = DISCARD
     if any(u["reason"] != "speck" for u in out.unzoned):
         flagged.add("unzoned")
     if out.gutters:
@@ -603,6 +668,72 @@ def propose(ref: str, root: Path = Path("."), cfg: dict | None = None,
         tree.write(str(tmp), xml_declaration=True, encoding="UTF-8", pretty_print=True)
         tmp.replace(dest)
     return row, unzoned
+
+
+def discard(ref: str, root: Path = Path("."), cfg: dict | None = None,
+            commit: bool = False, splits: dict | None = None) -> dict:
+    """Relabel a saved `gt/zones/` page's Chukchi body bands as DiscardZone.
+
+    The same measurement `derive` applies to `mz/zones/` (`chukchi_bands`), brought
+    to a page the editor saved before the type existed. Every other band is left
+    as saved. Under
+    `commit` the page goes through `save_zones`, so it gets `.prev` and a journal
+    line like any save.
+    """
+    from .lines import ink_mask, page_lines
+
+    ref = norm_ref(ref)
+    cfg = cfg or zc.load_config(root)
+    splits = zmod.load_splits(root) if splits is None else splits
+    row = {"ref": ref, "stream_y": "", "relabelled": "", "skipped": ""}
+    if DISCARD not in {x["label"] for x in cfg["types"]}:
+        row["skipped"] = f"this text declares no {DISCARD}"
+        return row
+    if not zmod.has_zones(ref, root):
+        row["skipped"] = "no gt/zones file"
+        return row
+    why = skip_reason(ref, root, splits, force=True)
+    if why:
+        row["skipped"] = why
+        return row
+    recs = page_lines(alto_for_lines(ref, root, OCR_STORE), root, ref=ref)
+    measure = int(zc.part_spec(cfg, ref)["measure"])
+    x0 = row_column(recs, measure, float(cfg["width_tolerance_px"]))
+    if x0 is None:
+        row["skipped"] = "no full-width row to measure the column off"
+        return row
+    got = derive(recs, x0, measure, ink_mask(zmod.scan_for(ref, root)), cfg)
+    if not got.stream_ys:
+        row["skipped"] = "no stream rule"
+        return row
+    row["stream_y"] = " ".join(str(y) for y in got.stream_ys)
+
+    zones = zmod.read_zones(ref, root)
+    hit = []
+    for i in chukchi_bands(zones, got.stream_ys):
+        hit.append(f"{i + 1}:{zones[i]['label']}")
+        zones[i]["label"] = DISCARD
+    row["relabelled"] = " ".join(hit)
+    if commit and hit:
+        zmod.save_zones(ref, [{k: z[k] for k in ("label", "x0", "y0", "x1", "y1", "id")
+                               if k in z} for z in zones], root)
+    return row
+
+
+def discard_many(refs: list[str], root: Path = Path("."), commit: bool = False,
+                 tick=None) -> list[dict]:
+    cfg = zc.load_config(root)
+    if "text_rule" not in cfg:
+        raise zc.ConfigError(
+            f"{zc.config_path(root)} has no text_rule block: this text's zones "
+            "were never calibrated to be derived off a text layer")
+    splits = zmod.load_splits(root)
+    rows = []
+    for ref in refs:
+        rows.append(discard(ref, root, cfg, commit=commit, splits=splits))
+        if tick:
+            tick()
+    return rows
 
 
 def propose_many(refs: list[str], root: Path = Path("."), commit: bool = False,

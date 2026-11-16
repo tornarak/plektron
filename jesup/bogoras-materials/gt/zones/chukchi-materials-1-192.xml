@@ -8,9 +8,10 @@
   </Description>
   <Tags>
     <OtherTag ID="BT1" LABEL="RunningTitleZone" DESCRIPTION="block type RunningTitleZone"/>
-    <OtherTag ID="BT2" LABEL="MainZone-Continued" DESCRIPTION="block type MainZone-Continued"/>
+    <OtherTag ID="BT2" LABEL="DiscardZone" DESCRIPTION="block type DiscardZone"/>
     <OtherTag ID="BT3" LABEL="MainZone-Other" DESCRIPTION="block type MainZone-Other"/>
-    <OtherTag ID="BT4" LABEL="MainZone-P" DESCRIPTION="block type MainZone-P"/>
+    <OtherTag ID="BT4" LABEL="MainZone-Continued" DESCRIPTION="block type MainZone-Continued"/>
+    <OtherTag ID="BT5" LABEL="MainZone-P" DESCRIPTION="block type MainZone-P"/>
   </Tags>
   <Layout>
     <Page WIDTH="4752" HEIGHT="6976" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
@@ -30,7 +31,7 @@
             <Polygon POINTS="1127 1704 4162 1704 4162 1797 1127 1797"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="1127" VPOS="1953" WIDTH="3035" HEIGHT="850" ID="mz_1-192_004" TAGREFS="BT2">
+        <TextBlock HPOS="1127" VPOS="1953" WIDTH="3035" HEIGHT="850" ID="mz_1-192_004" TAGREFS="BT4">
           <Shape>
             <Polygon POINTS="1127 1953 4162 1953 4162 2803 1127 2803"/>
           </Shape>
@@ -45,7 +46,7 @@
             <Polygon POINTS="1127 3476 4162 3476 4162 3583 1127 3583"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="1127" VPOS="3699" WIDTH="3035" HEIGHT="612" ID="mz_1-192_007" TAGREFS="BT4">
+        <TextBlock HPOS="1127" VPOS="3699" WIDTH="3035" HEIGHT="612" ID="mz_1-192_007" TAGREFS="BT2">
           <Shape>
             <Polygon POINTS="1127 3699 4162 3699 4162 4311 1127 4311"/>
           </Shape>
@@ -60,7 +61,7 @@
             <Polygon POINTS="1127 4735 4162 4735 4162 4837 1127 4837"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="1127" VPOS="4955" WIDTH="3035" HEIGHT="608" ID="mz_1-192_010" TAGREFS="BT4">
+        <TextBlock HPOS="1127" VPOS="4955" WIDTH="3035" HEIGHT="608" ID="mz_1-192_010" TAGREFS="BT5">
           <Shape>
             <Polygon POINTS="1127 4955 4162 4955 4162 5563 1127 5563"/>
           </Shape>

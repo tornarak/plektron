@@ -353,7 +353,18 @@ What the rows show (600 dpi), and what the rule does with it:
   (`1-179`).
 - **A full-width rule** separates the Chukchi from its Russian on a Section I
   page (~2940–2985 px). A `MainZone-Continued` band under one is expected and
-  raises no `continued` flag.
+  raises no `continued` flag. It is searched between every two lines, over
+  `stream_rule_band_px` rows at once with its own bridge, since on some scans it
+  is skewed or broken once (`1-058`, `1-109`); a page can carry two (`1-200`).
+- **The Chukchi stream is `DiscardZone`** (the editor, 2026-11-16: the Chukchi
+  is not read). Not everything above a rule is Chukchi: a page that ends one
+  text's Russian notes and opens the next sets the notes there too (`1-100`).
+  So `chukchi_bands` walks up from each rule: past at most one Other band (the
+  «Записано…» line; a second would be a parallel block's heading, `1-172`),
+  then the run of body bands until one that is not. `zones discard` brought the
+  same walk to the saved `gt/zones/`, 107 pages (2026-11-16); the
+  parallel-column pages (`1-173`–`181`, `1-202`–`211`), whose Chukchi is one
+  Other band, were left alone.
 The editor's rulings on what each of this book's structures is zoned as — margin
 line numbers, the *Примѣчанія* notes, parallel columns, foot matter — are
 `.claude/skills/review-zones/rulings.md`, their one home, since the review agent
@@ -415,13 +426,11 @@ footnote's `N)`, a colophon or a title are judged by the reviewer against
 output, so its agreement is not a second witness. Dispatch is
 `.claude/skills/review-zones/`, the contract `.claude/agents/zones-reviewer.md`.
 
-**Open for the generator, not the zones:** two streams on one page means a
-page-top `MainZone-Continued` can continue either of them. `tei generate` joins
-a continuation to the page before's last paragraph, which on a Section I page is
-the Russian, while the page's first band is the Chukchi. Nothing in the zones
-says which band is which stream: both are `MainZone-Continued`. Whether the
-stream becomes a label, a field, or something the generator reads off the
-order is undecided, and it is not the rule's to decide.
+**Two streams on one page, settled by the discard.** A page-top
+`MainZone-Continued` could continue either stream while both were prose. With
+the Chukchi a `DiscardZone`, `tei generate` writes a `<gap>` for it and the
+page's first prose band is the Russian, which is what the page before's last
+paragraph continues.
 
 ## Waits on the editor
 

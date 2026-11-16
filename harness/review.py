@@ -65,7 +65,7 @@ from .lookup import HANDLE
 from .parallel import ptrack
 from .paths import crops_dir, decisions_path, html_path, page_dirs, proposal_path
 from .proposal_check import NOTE_CLASSES
-from .refs import norm_ref
+from .refs import DISCARD_ZONES, norm_ref
 from .usage import since_stamp
 
 CONTEXT_CHARS = 24
@@ -735,6 +735,20 @@ def restore(ref: str, root: Path, store: str,
     recs = page_lines(src, root, ref=ref)
     corrected = [r for r in recs if r["src"] == "corr"]
 
+    # **A line in a DiscardZone is keyed empty, and the zone is the record of
+    # why.** The edition does not transcribe it (the 1900 *Materials*' Chukchi
+    # stream), so no reading or decision is asked for; one that carries text
+    # there is refused, since ground truth would then hold a reading nobody
+    # was meant to make.
+    discarded = {r["index"] for r in recs if r["zone"] in DISCARD_ZONES}
+    keyed = sorted(i for i in discarded if i in dec and dec[i]["text"].strip())
+    if keyed:
+        raise ValueError(
+            f"{ref}: lines {keyed[:12]} lie in a DiscardZone, which is not "
+            "transcribed, yet carry text. Either the zone is wrong — relabel it in "
+            f"`harness zones edit {ref}` — or the text is, and comes out")
+    dec = {**{i: {"text": ""} for i in discarded}, **dec}
+
     missing = [i for i in range(len(recs)) if i not in dec]
     if missing:
         raise ValueError(f"{ref}: {len(missing)} of {len(recs)} lines have no "
@@ -1126,7 +1140,10 @@ def page_context(ref: str, root: Path,
     from .lines import write_line_crops
     ref = norm_ref(ref)
     crops = crops or crops_dir(ref, root)
-    recs = {r["index"]: r for r in write_line_crops(ref, crops, root, store)}
+    # A DiscardZone line is not transcribed: not shown, never posted, and keyed
+    # empty by `restore`.
+    recs = {r["index"]: r for r in write_line_crops(ref, crops, root, store)
+            if r.get("zone") not in DISCARD_ZONES}
     # Reading order, not index order. `recs` is keyed by `index` because that is the
     # identity the client submits and `save_decisions` stores under; but iterating
     # `sorted(recs)` would walk the *segmenter's* order, which is not reading order on

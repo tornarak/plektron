@@ -94,6 +94,12 @@ finish.
   says so. That is Russian, which is yours; a native form never gets this.
 - A line that is a speck (a box a few pixels wide that a copy read as `1`) is
   keyed empty, with an `artifact` note.
+- **The Chukchi stream of a Section I page is not read** (the editor,
+  2026-11-16). It is a `DiscardZone`: the witness leaves its lines out
+  (`discarded` counts them), `ocr zoom` refuses them, and `restore` keys them
+  empty. Write no key for them. A Chukchi row in `b_only` is the other copy's
+  reading of one; leave it. Every line outside the zone is read as on any
+  page, native forms in it included.
 - **Roman numerals are Latin** (the editor, 2026-11-16): `Группа I`, `т. X`, the
   folio `V`. The copies set Cyrillic `І` and `Х` in them.
 

@@ -166,6 +166,19 @@ def register(cli):
                    help="replace a page's existing mz/zones/ file, whichever "
                         "producer wrote it")
 
+    p = action(g, "discard", run_discard, section="The segmenter",
+               help="relabel a saved gt/zones/ page's Chukchi body bands as "
+               "DiscardZone: a MainZone-P or -Continued band whose text-layer rows "
+               "all sit above the page's first full-width stream rule, measured as "
+               "`zones propose` measures it. Headings and every other band are left "
+               "as saved. Only a text declaring DiscardZone is relabelled")
+    refs_arg(p, all_="every page marked train or eval",
+             extra=". A page with no stream rule, or none to relabel, is reported "
+                   "and left")
+    opt(p, "--commit", is_flag=True,
+                   help="save the relabelled pages to gt/zones/ (with .prev and a "
+                        "journal line); report only otherwise")
+
     p = action(g, "bands", run_bands, section="The review pass",
                help="one page's mz/zones/ file as the review pass edits it: its "
                "digest and flags, each band numbered with the line indices whose "
@@ -432,6 +445,28 @@ def run_propose(a) -> int:
     out(a, rows, name="pages")
     if unzoned:
         out(a, unzoned, name="unzoned", heading=True)
+    return 0
+
+
+def run_discard(a) -> int:
+    from .. import zones_rule
+    from ..zones_config import ConfigError
+
+    zmod, _ = _mod()
+    refs = page_refs(a)
+    if not refs:
+        splits = zmod.load_splits(a.root)
+        refs = sorted((r for r, s in splits.items() if s in zmod.TEXT_SPLITS),
+                      key=zmod.parse_ref)
+    try:
+        with progress("measuring") as tick:
+            rows = zones_rule.discard_many(refs, a.root, commit=a.commit, tick=tick)
+    except ConfigError as e:
+        raise click.UsageError(str(e)) from None
+    out(a, [r for r in rows if r["relabelled"]], name="relabelled")
+    left = [r for r in rows if not r["relabelled"]]
+    if left:
+        out(a, left, name="left", heading=True)
     return 0
 
 

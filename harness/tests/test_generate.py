@@ -519,6 +519,18 @@ def test_an_unknown_label_is_named_rather_than_silently_prose(tmp_path):
     assert "unknown zone label 'MainZone-Verse'" in doc
 
 
+def test_a_discarded_stream_is_a_gap_and_the_prose_below_continues(tmp_path):
+    """The 1900 *Materials*' Chukchi stream is printed and not transcribed: a
+    <gap> stands for it, and the Russian under the rule is the page's first
+    prose, so it is what continues the page before."""
+    blocks = [("DiscardZone", lines_at(["", ""])),
+              ("MainZone-Continued", lines_at(["продолженіе перевода."], 290))]
+    doc, rep = page(tmp_path, "1-021", blocks)
+    assert '<gap reason="not transcribed" unit="line" quantity="2"/>' in doc
+    assert "zone-opens: continued" in doc
+    assert rep["unknown_labels"] == ""
+
+
 # -------------------------------------------------------------- honest refusals
 
 def test_a_page_without_ground_truth_is_refused_with_the_verb_that_fixes_it(tmp_path):

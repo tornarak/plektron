@@ -38,6 +38,7 @@ TEXT_RULE_KEYS = ("head_max_y", "foot_max_w", "number_pad", "gap_min_px",
                   "gutter_min_px", "gutter_min_rows",
                   "gutter_max_offset", "rule_bridge_px", "rule_fill_min", "footrule_min_px",
                   "footrule_max_start", "footrule_max_end", "stream_rule_min_px",
+                  "stream_rule_band_px", "stream_rule_bridge_px",
                   "speck_max_chars", "speck_max_px", "missing_min_h", "missing_edge_px")
 
 
@@ -76,6 +77,15 @@ def raw_config(root: Path = Path(".")) -> dict:
         merged, _, _ = layered(root, CONFIG)
     except LayerError as e:
         raise ConfigError(str(e)) from e
+    # **A text adds a type without restating the vocabulary.** `layered` replaces a
+    # list whole, so a text's `types` would be a second copy of the workspace's
+    # seven, drifting from it on the next edit. `extra_types` is appended instead,
+    # and `load_config` holds the union to the same uniqueness checks.
+    extra = merged.pop("extra_types", None)
+    if extra is not None:
+        if not isinstance(extra, list):
+            raise ConfigError(f"{config_path(root)}: extra_types must be a list")
+        merged["types"] = list(merged.get("types") or []) + extra
     return merged
 
 

@@ -8,8 +8,9 @@
   </Description>
   <Tags>
     <OtherTag ID="BT1" LABEL="RunningTitleZone" DESCRIPTION="block type RunningTitleZone"/>
-    <OtherTag ID="BT2" LABEL="MainZone-Continued" DESCRIPTION="block type MainZone-Continued"/>
-    <OtherTag ID="BT3" LABEL="MainZone-P" DESCRIPTION="block type MainZone-P"/>
+    <OtherTag ID="BT2" LABEL="DiscardZone" DESCRIPTION="block type DiscardZone"/>
+    <OtherTag ID="BT3" LABEL="MainZone-Continued" DESCRIPTION="block type MainZone-Continued"/>
+    <OtherTag ID="BT4" LABEL="MainZone-P" DESCRIPTION="block type MainZone-P"/>
   </Tags>
   <Layout>
     <Page WIDTH="4752" HEIGHT="6944" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
@@ -24,17 +25,17 @@
             <Polygon POINTS="631 749 3666 749 3666 2356 631 2356"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="631" VPOS="2499" WIDTH="3035" HEIGHT="614" ID="mz_1-183_003" TAGREFS="BT3">
+        <TextBlock HPOS="631" VPOS="2499" WIDTH="3035" HEIGHT="614" ID="mz_1-183_003" TAGREFS="BT2">
           <Shape>
             <Polygon POINTS="631 2499 3666 2499 3666 3113 631 3113"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="631" VPOS="3236" WIDTH="3035" HEIGHT="1737" ID="mz_1-183_004" TAGREFS="BT2">
+        <TextBlock HPOS="631" VPOS="3236" WIDTH="3035" HEIGHT="1737" ID="mz_1-183_004" TAGREFS="BT3">
           <Shape>
             <Polygon POINTS="631 3236 3666 3236 3666 4973 631 4973"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="631" VPOS="5136" WIDTH="3035" HEIGHT="612" ID="mz_1-183_005" TAGREFS="BT3">
+        <TextBlock HPOS="631" VPOS="5136" WIDTH="3035" HEIGHT="612" ID="mz_1-183_005" TAGREFS="BT4">
           <Shape>
             <Polygon POINTS="631 5136 3666 5136 3666 5748 631 5748"/>
           </Shape>

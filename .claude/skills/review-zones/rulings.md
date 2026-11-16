@@ -33,6 +33,14 @@ the ruling holds.
   предыдущая.» ("the same as the preceding"). *The Chukchee*'s "Told by…" lines
   are Other; this book sets the same line at the paragraph indent, which is no
   paragraph start.
+- **The Chukchi stream is `DiscardZone`** (2026-11-16): on a Section I page,
+  the native text above the full-width rule, which this edition does not
+  transcribe. The «Записано…» line is Russian and keeps its label, and so does
+  a Russian note that ends the previous text above the rule. The rule labels the
+  run of body bands walking up from each stream rule; a band the walk stopped
+  short of, or an attribution keyed P that it took, is yours. Whether the text's
+  Chukchi title, set above the rule as a heading, is discarded too waits on the
+  editor; until then it keeps its label.
 - **Foot matter is `QuireMarksZone`**, as in *The Chukchee*: the gathering's
   signature (`16`, `1-177`) and a chapter's folio (`I`, `1-021`), a lone number
   or numeral as the page's last line.
