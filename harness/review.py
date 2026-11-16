@@ -869,6 +869,8 @@ def restore(ref: str, root: Path, store: str,
     # adjudicator retyped identically carried the flag and appeared as an edit
     # whose two sides were the same string.
     def _changed(i, v) -> bool:
+        if i in discarded:
+            return False         # keyed empty by the zone, not by anyone's hand
         if i not in prop:
             return True          # arrived from somewhere the proposal has no line for
         return _nfd(prop[i]["text"]) != _nfd(v["text"])

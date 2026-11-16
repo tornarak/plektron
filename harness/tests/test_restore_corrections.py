@@ -173,6 +173,17 @@ def test_a_discarded_line_is_keyed_empty_without_a_decision(page):
     assert got == ["", "second"]
 
 
+def test_a_discarded_line_is_no_human_edit(page):
+    """The zone keys it empty; the edits table is the adjudicator's error profile,
+    and a line nobody read is no part of it (1-192 reported 12)."""
+    tmp_path, _ = page
+    from conftest import write_zones
+    write_zones(tmp_path, "1-048", [("DiscardZone", 980, 1070)])
+    _decisions(tmp_path, "1-048", {1: "second", 2: "17"})
+    rep = _restore(tmp_path, commit=False)
+    assert rep["edited_by_human"] == 0
+
+
 def test_text_on_a_discarded_line_is_refused(page):
     tmp_path, _ = page
     from conftest import write_zones

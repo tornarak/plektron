@@ -579,14 +579,21 @@ def _scan(idx: dict, terms: list[tuple[str, str]], rows: list, seen: set,
     `near` is the last pass's: the queries as `marks.reduction` reduces them,
     matched as a substring of each form reduced alike. A row it finds says so.
     """
-    from .marks import reduction
+    from .marks import dropped_reduction, reduction
     found = False
     for bucket, b in sorted(idx["buckets"].items()):
         ambiguous = len(spellings(b)) > 1
         pages = len(b["refs"])
         for key, f in sorted(b["forms"].items()):
             if near is not None:
-                if not any(q in reduction(f["form"], table) for q in near):
+                # The form as reduced, and as a layer that dropped one of the
+                # text's droppable letters reads it (`Кэє` for `Кэ́lє`, 1-380).
+                # A substring of the first at four letters or more; the whole of
+                # the second at three, since a dropped letter shortens the query.
+                red = reduction(f["form"], table)
+                dro = dropped_reduction(f["form"], table)
+                if not any((len(q) >= 4 and q in red) or (dro and q == dro)
+                           for q in near):
                     continue
             else:
                 reduced = bare(key)
@@ -663,7 +670,7 @@ def search(queries: list[str], root: Path = Path("."), min_pages: int = 1,
     if not rows:
         from .marks import reduction
         near = [r for q in (list(queries) + split)
-                if len(r := reduction(q, table)) >= 4]
+                if len(r := reduction(q, table)) >= 3]
         if near:
             _scan(idx, terms, rows, seen, min_pages, near=near, table=table)
     lines = [ln for bucket in sorted(seen)

@@ -287,6 +287,15 @@ def register(cli):
                         "a sparse page, so the gap check matters more than usual "
                         "here\". Per-page notes want separate queue calls")
 
+    p = refs_arg(add("order", help="the unread pages in the order that front-loads "
+              "the lexicon: each step the page whose native forms not yet seen "
+              "recur most on the other unread pages. Re-derived from the stores "
+              "on every call, forms on pages in gt/ocr/ counting as seen, so the "
+              "next batch is the next rows after each restore. Measurement — exit 0"),
+                 all_="every text page with a text layer and no ground truth")
+    opt(p, "--limit", type=int, default=None,
+                   help="print only the first N pages [all]")
+
     add("claim", help="take the next unclaimed ref off the queue and print that "
         "page's block — the ref, and what the four-store survey found. Takes no "
         "ref: that is the point, the page arriving from a tool call rather than "
@@ -982,6 +991,17 @@ def run_queue(a) -> int:
         "is what lets them share a cached context. Each takes its own ref off "
         "the queue. Stagger the first launch about ten seconds so it writes the "
         "context the rest read; `ocr reconcile` checks what came back.", err=True)
+    return 0
+
+
+def run_order(a) -> int:
+    from ..reading_order import order
+    refs = page_refs(a)
+    with progress("measuring"):
+        rep = order(a.root, refs or None)
+    out(a, [rep["summary"]], name="summary")
+    rows = rep["pages"][:a.limit] if a.limit else rep["pages"]
+    out(a, rows, name="pages", heading=True)
     return 0
 
 

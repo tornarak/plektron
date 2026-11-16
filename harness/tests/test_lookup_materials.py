@@ -204,3 +204,24 @@ def test_a_page_whose_every_line_stands_is_adjudicated_without_a_decision(text):
         "0": {"text": nfd("простая строка")}}}, ensure_ascii=False), encoding="utf-8")
     assert adjudicated("1-025", text)
     assert not adjudicated(REF, text), "a page with a native form still wants a ruling"
+
+
+def test_a_layer_that_dropped_the_tall_l_still_reaches_the_form(text):
+    """Copy A read `Кэє` for `Кэ́lє` (1-380 l4): no confusion class merges a letter
+    that is not there, so the ratified side is also compared with its tall l
+    taken out — and only that side, and only as a whole word."""
+    t = marks.handle_table(text)
+    assert marks.dropped_reduction(nfd("Кэ́lє"), t) == marks.reduction(nfd("Кэє"), t)
+    assert marks.dropped_reduction(nfd("Ајӈан̀ва́т"), t) == ""   # no l to drop
+    lines = LINES + [nfd("съ Кэ́lє, а также")]
+    (text / "gt" / "ocr" / f"chukchi-materials-{REF}.xml").write_text(
+        _alto(lines), encoding="utf-8")
+    p = text / "review" / REF / "proposal.json"
+    doc = json.loads(p.read_text(encoding="utf-8"))
+    doc["lines"]["3"] = {"text": lines[3], "native": nfd("Кэ́lє")}
+    p.write_text(json.dumps(doc, ensure_ascii=False), encoding="utf-8")
+    rows = search([nfd("Кэє")], text)["matches"]
+    assert [x["form"] for x in rows] == [nfd("Кэ́lє")] and rows[0]["near"] is True
+    # A three-letter query reaches a form only whole, never as a substring: `оwе`
+    # sits inside терк-арм-ора́wеðат's reduction and must not near-match it.
+    assert not any(x["near"] for x in search([nfd("оwе")], text)["matches"])

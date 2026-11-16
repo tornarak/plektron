@@ -40,7 +40,12 @@
    {"letters": "yу", "why": "a shape both scripts share, keyed Cyrillic (read-materials-page §4)"},
    {"letters": "xх", "why": "a shape both scripts share, keyed Cyrillic (read-materials-page §4)"},
    {"letters": "jј", "why": "a shape both scripts share, keyed Cyrillic (read-materials-page §4)"},
-   {"letters": "iі", "why": "a shape both scripts share, keyed Cyrillic (read-materials-page §4)"}
+   {"letters": "iі", "why": "a shape both scripts share, keyed Cyrillic (read-materials-page §4)"},
+   {"letters": "lі", "why": "the tall l, which a layer reads as і (1-380 l4: copy B Кэіє for Кэ́lє, 2026-11-16)"},
+   {"letters": "tт", "why": "the T-shaped т of this face, which the layers read as Latin t (1-419: Tálo for Та́lо, 2026-11-16)"}
+  ],
+  "dropped": [
+   {"letters": "l", "why": "the tall l, which the layers drop outright (1-380 l4: copy A Кэє for Кэ́lє, 2026-11-16; read-materials-page §4 lists dropped among its misreadings)"}
   ]
  }
 }

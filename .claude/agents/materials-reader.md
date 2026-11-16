@@ -83,6 +83,11 @@ finish.
 - `same`, and the Russian reads as sound pre-1918 prose: it stands as it is.
 - `spacing`: the print's. No space before `; : , ! ?`, nor before `.` or `)`.
   The copies' spaces are the engine's, whichever copy has them.
+- **A dash is keyed spaced, ` — `, whatever the line sets** (the editor,
+  2026-11-16): a tight `»—«` is the compositor justifying the line, and the
+  convention is *The Chukchee*'s, English spacing. Not a hyphen: `что-нибудь`,
+  `чего-же` stay joined; nor a dash between numbers, which is a range:
+  `1894—97`, `стр. 1—51`, `№№ 49—61`.
 - `differ`, `alone`, or Russian whose sense does not hold (a wrong ending, a
   non-word, a Latin letter inside a Cyrillic word — `Tоже`, `ОГЛАВЛЕНIE`,
   `миөологическаго` for `миѳологическаго`): read it at the scan.

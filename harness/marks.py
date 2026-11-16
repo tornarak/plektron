@@ -395,6 +395,10 @@ class HandleTable:
     #: reduction (`reduction`). Empty for a table that declares no `reduce`.
     classes: dict[str, str] = dc_field(default_factory=dict)
     reduces: bool = False
+    #: Letters a layer has been seen to drop outright, casefolded (`reduce`'s
+    #: `dropped`). A confusion class cannot merge a letter that is not there, so
+    #: `dropped_reduction` takes these out of a ratified form instead.
+    dropped: frozenset[str] = frozenset()
 
     def passes(self, ch: str) -> bool:
         return ch.isascii() if self.passthrough == "ascii" else ch in self.passthrough
@@ -496,7 +500,25 @@ def _handle_table(path: str, _mtime: int, own_inventory: frozenset[str]) -> Hand
     classes = _reduce_classes(doc.get("reduce"), path)
     return HandleTable(tokens=dict(tokens), passthrough=passthrough,
                        injective=injective, path=path, inverse=inverse,
-                       classes=classes, reduces=doc.get("reduce") is not None)
+                       classes=classes, reduces=doc.get("reduce") is not None,
+                       dropped=_dropped(doc.get("reduce"), path))
+
+
+def _dropped(spec, path: str) -> frozenset[str]:
+    """`reduce.dropped`: `[{letters, why}]`, each letter one a layer omits."""
+    groups = spec.get("dropped") if isinstance(spec, dict) else None
+    if groups is None:
+        return frozenset()
+    if not isinstance(groups, list):
+        raise HandleTableError(f"{path}: `reduce.dropped` is a list")
+    out: set[str] = set()
+    for g in groups:
+        letters = g.get("letters") if isinstance(g, dict) else None
+        if not (isinstance(letters, str) and letters and str(g.get("why", "")).strip()):
+            raise HandleTableError(f"{path}: a dropped entry is `letters` and a "
+                                   "`why`, its attestation")
+        out.update(unicodedata.normalize("NFD", c).casefold() for c in letters)
+    return frozenset(out)
 
 
 def _reduce_classes(spec, path: str) -> dict[str, str]:
@@ -550,6 +572,19 @@ def reduction(form: str, table: HandleTable) -> str:
             continue
         out.append(table.classes.get(c, c))
     return "".join(out)
+
+
+def dropped_reduction(form: str, table: HandleTable) -> str:
+    """`reduction(form)` with every `table.dropped` letter taken out first: what a
+    layer that dropped them reads, reduced. Applied to the *ratified* side only,
+    so a query is compared against the form as a layer would have lost it, and a
+    letter the query does have is never removed from it. `""` for a form holding
+    none of them, which then has no dropped variant to match."""
+    nfd = unicodedata.normalize("NFD", form)
+    if not table.dropped or not any(c.casefold() in table.dropped for c in nfd):
+        return ""
+    return reduction("".join(c for c in nfd if c.casefold() not in table.dropped),
+                     table)
 
 
 def form_from_key(key: str, table: HandleTable) -> str:
