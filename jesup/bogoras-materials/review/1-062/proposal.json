@@ -1,0 +1,202 @@
+{
+ "ref": "1-062",
+ "contamination": {
+  "blind": false,
+  "why": "this pass reads both text-layer copies (ocr witness) by design, and one lexicon lookup; no other page's proposal, decision or gt/ocr/ was read"
+ },
+ "lines": {
+  "0": {
+   "text": "6 Г. БОГОРАЗЪ, I,1."
+  },
+  "1": {
+   "text": "В.",
+   "class": "layout",
+   "note": "the running head is split across two boxes: line 0 holds 6, Г. БОГОРАЗЪ, I,1.; this box holds the initial В. (letterspaced head keyed unspaced; Roman numeral I Latin)"
+  },
+  "2": {
+   "text": "13 (стр. 20). Обращаетъ на себя вниманіе преимущественное употребленіе"
+  },
+  "3": {
+   "text": "лѣвой руки при исполненіи подобнаго рода обрядовъ. Въ данномъ случаѣ говорящій"
+  },
+  "4": {
+   "text": "дѣлаетъ движеніе рукой, какъ будто принимаетъ камень сверху."
+  },
+  "5": {
+   "text": "14 (стр. 23). э́јвэј «толстый развилокъ дерева», который вѣшаютъ на шею",
+   "native": "э́јвэј",
+   "resolved": "э́јвэј: U+0301 acute on first э, U+0458 ј",
+   "class": "semantic",
+   "note": "«толстый развилокъ дерева», thick forked piece of wood (put on a reindeer neck)"
+  },
+  "6": {
+   "text": "оленю, отпущенному на пастбище, если не хотять, чтобы онъ ушелъ далеко. Этотъ"
+  },
+  "7": {
+   "text": "развилокъ подвязанъ на ремнѣ настолько длинномъ, что олень на ходу постоянно"
+  },
+  "8": {
+   "text": "наступаетъ на его конецъ. Заговоръ предполагаетъ, что, такъ какъ въ данномъ"
+  },
+  "9": {
+   "text": "случаѣ дикій быкъ находится среди стада, то сосѣдніе олени будуть постоянно на-"
+  },
+  "10": {
+   "text": "ступать на воображаемый развилокъ и задержать быка. На словѣ тэ́нтіlын (стр.",
+   "native": "тэ́нтіlын",
+   "resolved": "тэ́нтіlын: U+0301 acute on э, U+006C tall l",
+   "class": "semantic",
+   "note": "тэ́нтіlын, a word marking the end of the first part of the incantation (p. 24)"
+  },
+  "11": {
+   "text": "24) первая часть заговора кончается и идетъ описаніе всей послѣдующей процедуры"
+  },
+  "12": {
+   "text": "при убоѣ оленя."
+  },
+  "13": {
+   "text": "15 (стр. 25). ӈычва́ј «запахъ дыма», употребляется только въ заговорахъ.",
+   "native": "ӈычва́ј",
+   "resolved": "ӈычва́ј: U+04C8 ӈ (hooked н), U+0301 acute on а, U+0458 ј",
+   "class": "semantic",
+   "note": "ӈычва́ј «запахъ дыма», smell of smoke"
+  },
+  "14": {
+   "text": "16 (стр. 26). Соломинку, вынутую изъ слѣда, сжигаютъ только послѣ того,"
+  },
+  "15": {
+   "text": "какъ дикій быкъ убитъ и съѣденъ. Чукчи заботливо сжигаютъ кости и всѣ остатки"
+  },
+  "16": {
+   "text": "отъ ѣды."
+  },
+  "17": {
+   "text": "17 (стр. 27). ђы́рыӈок «передъ бросаніемъ аркана». Дикаго быка стара-",
+   "native": "ђы́рыӈок",
+   "resolved": "ђы́рыӈок: U+0452 ђ, U+0301 acute on ы, U+04C8 ӈ",
+   "class": "doubt",
+   "note": "first letter read ђ (top bar, hook), layers ӄ; acute placed over ы (between ь and і of it); the н carries a hook below, keyed ӈ (layers plain н); «передъ бросаніемъ аркана», before lassoing"
+  },
+  "18": {
+   "text": "ются поймать арканомъ и заколоть съ описанными здѣсь пріемами; только если быкъ"
+  },
+  "19": {
+   "text": "не дается и обнаруживаетъ стремленіе убѣжать, пускаютъ въ дѣло лукъ или ружье."
+  },
+  "20": {
+   "text": "18 (стр. 28). рэ́ттэм (ратта́мычһын) «наружная оболочка шатра», у рус-",
+   "native": "рэ́ттэм ратта́мычһын",
+   "resolved": "рэ́ттэм: U+0301 acute on э; ратта́мычһын: U+0301 acute on second а, U+04BB һ",
+   "class": "semantic",
+   "note": "рэ́ттэм (ратта́мычһын) «наружная оболочка шатра», outer covering of the tent"
+  },
+  "21": {
+   "text": "скихъ на Колымѣ «чумъ». — Всѣ жертвоприношенія совершаются сзади шатра."
+  },
+  "22": {
+   "text": "19 (стр. 29). Въ жертвенныя жены дикому быку выбирають молодую самку,"
+  },
+  "23": {
+   "text": "годовалую или двухгодовалую, которая еще не знала случки."
+  },
+  "24": {
+   "text": "20 (стр. 31). Каменныя и костяныя орудія съ введеніемъ желѣза и стали"
+  },
+  "25": {
+   "text": "отступили въ область обрядового употребленія. Въ данномъ случаѣ ӄа́твінӓ дѣлается",
+   "native": "ӄа́твінӓ",
+   "resolved": "ӄа́твінӓ: U+04C4 ӄ, U+0301 acute on first а, U+0308 diaeresis on final а (ӓ)",
+   "class": "doubt",
+   "note": "final letter keyed ӓ (two dots above); a separate comma-like mark sits below the word end, after the а, unruled, not keyed; layers have plain а; н/п before it unreadable at hairline, keyed н"
+  },
+  "26": {
+   "text": "съ лопаткообразнымъ расширеніемъ на тупой сторонѣ, нѣсколько углубленнымъ, по"
+  },
+  "27": {
+   "text": "образцу чукотской ложечки для подхватыванія кровяной каши."
+  },
+  "28": {
+   "text": "21 (стр. 33). пу́рір «ремень, обходящій вокругъ шатра на высотѣ человѣ-",
+   "native": "пу́рір",
+   "resolved": "пу́рір: U+0301 acute on у",
+   "class": "semantic",
+   "note": "пу́рір «ремень, обходящій вокругъ шатра», strap running round the tent at shoulder height"
+  },
+  "29": {
+   "text": "ческаго плеча»; къ нему часто привязываютъ упряжку. Въ данномъ случаѣ есть"
+  },
+  "30": {
+   "text": "стремленіе подчеркнуть укрощеніе дикаго быка, котораго даже привязываютъ на"
+  },
+  "31": {
+   "text": "обычномъ мѣстѣ упряжныхъ оленей."
+  },
+  "32": {
+   "text": "22 (стр. 34). ныӄамlе́lојпѵӄен отъ ӄэмlі́lуп «женскій балахонъ», украшен-",
+   "native": "ныӄамlе́lојпѵӄен ӄэмlі́lуп",
+   "resolved": "ныӄамlе́lојпѵӄен: U+04C4 ӄ, U+006C tall l, U+0301 acute on е, U+006C tall l, U+0458 ј, U+0475 ѵ, U+04C4 ӄ; ӄэмlі́lуп: U+04C4 ӄ, U+006C tall l, U+0301 acute on і, U+006C tall l",
+   "class": "doubt",
+   "note": "ӄэмlі́lуп «женскій балахонъ», woman ceremonial smock. Doubt: the final letter shows no crossbar (п as seen; layer A has н), and likewise ныӄамlе́lојпѵӄен (letter before ѵ: п); letter after ѵ is ӄ-shaped (k with hook), layer A has ђ, B и"
+  },
+  "33": {
+   "text": "ный кистями различной формы, который женщина, участвуя въ обрядахъ, обязательно"
+  },
+  "34": {
+   "text": "должна надѣвать."
+  },
+  "35": {
+   "text": "23 (стр. 37). ӄор-ачо́оlђын «оленій мочепріемникъ», небольшой невзрач-",
+   "native": "ӄор-ачо́оlђын",
+   "resolved": "ӄор-ачо́оlђын: U+04C4 ӄ, U+0301 acute on first о, U+006C tall l, U+0452 ђ",
+   "class": "doubt",
+   "note": "ӄор-ачо́оlђын «оленій мочепріемникъ», reindeer urine receptacle; letter after tall l has top bar, read ђ (layers ӄ)"
+  },
+  "36": {
+   "text": "наго вида кожаный сосудъ, который каждый ѣздокъ на оленяхъ постоянно имѣетъ"
+  },
+  "37": {
+   "text": "при себѣ. Чукчи основали дрессировку упряжныхъ оленей въ значительной степени"
+  },
+  "38": {
+   "text": "на пристрастіи оленя къ мочѣ."
+  },
+  "39": {
+   "text": "24 (стр. 39). Для того, чтобы прекратить дѣйствіе заговора, нужно снять"
+  },
+  "40": {
+   "text": "его съ убитаго оленя; если этого не сдѣлать немедленно, заговоръ потеряетъ силу"
+  },
+  "41": {
+   "text": "на будущее время."
+  },
+  "42": {
+   "text": "25 (стр. 40). вэріwрі́lӄӓіl «листокваша», тальничные листья, заквашенные",
+   "native": "вэріwрі́lӄӓіl",
+   "resolved": "вэріwрі́lӄӓіl: U+0077 w, U+0301 acute on і, U+006C tall l, U+04C4 ӄ, U+0308 diaeresis on ӓ, U+006C tall l",
+   "class": "semantic",
+   "note": "вэріwрі́lӄӓіl «листокваша», leaf-sour (willow leaves fermented with moss)"
+  },
+  "43": {
+   "text": "вмѣстѣ съ полуперевареннымъ мхомъ, вынутымъ изъ оленьяго желудка. — попо́каl-",
+   "native": "попо́каl-",
+   "resolved": "попо́каl-: U+0301 acute on second о, U+006C tall l",
+   "class": "semantic",
+   "note": "попо́каl- continues on the next line as ђын (layer A has д): the root of an edible plant, «сладкій корень»"
+  },
+  "44": {
+   "text": "ђын — одинъ изъ съѣдобныхъ корней, употребляемыхъ чукчами; у русскихъ колым-",
+   "native": "ђын",
+   "resolved": "ђын: U+0452 ђ",
+   "class": "print",
+   "note": "first letter ђ (layers ӄ/д); the line ends with a raised dot after колым, keyed as hyphen; line 45 чанъ completes колымчанъ"
+  },
+  "45": {
+   "text": "чанъ «сладкій корень» (Claytonia acutifolia по опредѣленію Kjellmann’a, см. Vega-",
+   "class": "artifact",
+   "note": "Kjellmann’a: Swedish botanist cited, his name not Chukchi; a speck follows the a"
+  },
+  "46": {
+   "text": "Expeditionens vetenskapliga iakttagelser I, 353 сл.)."
+  }
+ }
+}

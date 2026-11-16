@@ -1,0 +1,212 @@
+{
+ "ref": "1-061",
+ "contamination": {
+  "blind": false,
+  "why": "this pass reads both text-layer copies (ocr witness) by design, and one lexicon lookup; no other page's proposal, decision or gt/ocr/ was read"
+ },
+ "lines": {
+  "0": {
+   "text": "I,1. МАТЕРІАЛЫ ПО ИЗУЧЕНІЮ ЧУКОТСКАГО ЯЗЫКА И ФОЛЬКЛОРА. 5",
+   "class": "layout",
+   "note": "running head set in small caps, keyed in capitals; Roman I Latin"
+  },
+  "1": {
+   "text": "Примѣчанія къ № 1."
+  },
+  "2": {
+   "text": "1 (къ общему содержанію). Во время течки осенью дикіе оленьи быки часто"
+  },
+  "3": {
+   "text": "приходятъ въ прирученныя стада. Чукчи очень цѣнятъ примѣсь крови дикаго оленя,"
+  },
+  "4": {
+   "text": "и отличаютъ ее до третьяго и четвертаго колѣна. Поэтому, дикаго быка, пришедшаго"
+  },
+  "5": {
+   "text": "въ стадо, стараются удержать въ теченіе нѣсколькихъ дней различными заговорами"
+  },
+  "6": {
+   "text": "и заклинаніями. Заговоръ имѣетъ силу на 5—8 дней, по истеченіи которыхъ быка",
+   "class": "layout",
+   "note": "print has a long dash (5—8), not a hyphen; layers read hyphen"
+  },
+  "7": {
+   "text": "необходимо убить съ различными обрядами, часть которыхъ описана здѣсь. Заговоръ"
+  },
+  "8": {
+   "text": "считается имѣющимъ силу укрощать дикаго оленя и дѣлать его подобнымъ приру-"
+  },
+  "9": {
+   "text": "ченному."
+  },
+  "10": {
+   "text": "2 (къ строкѣ 2). тэткэ́јуӈ «жизненная животная сила»; это слово старинное",
+   "native": "тэткэ́јуӈ",
+   "resolved": "тэткэ́јуӈ: U+0301 acute on э, U+0458 ј, U+04C8 ӈ",
+   "class": "semantic",
+   "note": "«жизненная животная сила», life force (cf. Chukchee tetkeˊyuñ, vital force)"
+  },
+  "11": {
+   "text": "и употребляется только въ заклинаніяхъ."
+  },
+  "12": {
+   "text": "3 (стр. 4). Выниманіе слѣда играетъ видную роль въ чукотскихъ заклина-"
+  },
+  "13": {
+   "text": "ніяхъ; при этомъ требуется отыскать слѣдъ совершенно свѣжій, отпечатокъ котораго"
+  },
+  "14": {
+   "text": "еще не успѣлъ отвердѣть."
+  },
+  "15": {
+   "text": "4 (стр. 7). кэlі́lы «книжка» (третій желудокъ оленя).",
+   "native": "кэlі́lы",
+   "resolved": "кэlі́lы: U+006C tall l (twice), U+0456 і with U+0301 acute, U+044B ы",
+   "class": "doubt",
+   "note": "ы bears a curl below (key ы̨-like, no ruled codepoint), keyed plain ы; copy A read ų, copy B ə for э. Which key letter the mark is: unresolved. Gloss «книжка», third stomach of the reindeer"
+  },
+  "16": {
+   "text": "5 (стр. 8). а́таl-ве́н-ӄор собственно «чуванская выученная важенка»; чуван-",
+   "native": "а́таl-ве́н-ӄор",
+   "resolved": "а́таl-ве́н-ӄор: U+0301 acute on а, U+006C tall l, U+0301 acute on е, U+04C4 ӄ",
+   "class": "semantic",
+   "note": "«чуванская выученная важенка», Chuvan trained doe"
+  },
+  "17": {
+   "text": "скіе олени гораздо смирнѣе чукотскихъ. Здѣсь въ смыслѣ: «совершенно усмиренная"
+  },
+  "18": {
+   "text": "и выученная оленья самка». Заговоръ обращается къ одной изъ оленьихъ самокъ,"
+  },
+  "19": {
+   "text": "которыя будутъ оплодотворены дикимъ. быкомъ.",
+   "class": "print",
+   "note": "print shows a round dot after дикимъ where sense wants a comma (A read comma, B none); keyed as a period, as set"
+  },
+  "20": {
+   "text": "6 (стр. 9). тӈа́ырђы-ра́мкын «народъ разсвѣта». По представленію чукочъ",
+   "native": "тӈа́ырђы-ра́мкын",
+   "resolved": "тӈа́ырђы-ра́мкын: U+04C8 ӈ, U+0301 acute on а, U+0452 ђ, U+0301 acute on second а",
+   "class": "semantic",
+   "note": "«народъ разсвѣта», dawn people; ђ (barred top) in scan, copy A read ӄ"
+  },
+  "21": {
+   "text": "область разсвѣта является особой вселенной, населенной многочисленнымъ народомъ,"
+  },
+  "22": {
+   "text": "который называется также ђырђо̀р-ра́мкын «верхній народъ». тӈа́ырђын «раз-",
+   "native": "ђырђо̀р-ра́мкын тӈа́ырђын",
+   "resolved": "ђырђо̀р-ра́мкын тӈа́ырђын: U+0452 ђ twice, U+0300 grave on о, U+0301 acute on а, U+04C8 ӈ, U+0452 ђ",
+   "class": "semantic",
+   "note": "«верхній народъ», upper people; first letter ђ with top bar, A read ӄ; тӈа́ырђын «разсвѣтъ», dawn"
+  },
+  "23": {
+   "text": "свѣтъ» является однимъ изъ главныхъ божествъ. Въ данномъ случаѣ дикій быкъ"
+  },
+  "24": {
+   "text": "представленъ пришедшимъ изъ страны разсвѣта."
+  },
+  "25": {
+   "text": "7 (стр. 10). је̂-чыӈа́тірђын «расщелина небесной тверди», чрезъ которую",
+   "native": "је̂-чыӈа́тірђын",
+   "resolved": "је̂-чыӈа́тірђын: U+0458 ј, U+0302 circumflex on е, U+04C8 ӈ, U+0301 acute on а, U+0456 і, U+0452 ђ",
+   "class": "semantic",
+   "note": "«расщелина небесной тверди», crack of the heavenly firmament; one ј only (A doubled it); circumflex on е"
+  },
+  "26": {
+   "text": "можно проникнуть во вселенную, находящуюся надъ нашимъ небомъ; расщелина эта"
+  },
+  "27": {
+   "text": "находится около Полярной Звѣзды, въ самомъ зенитѣ."
+  },
+  "28": {
+   "text": "8 (стр. 11). тӈэ́с̧ӄӓн «верхняя часть разсвѣта»; это слово употребляется",
+   "native": "тӈэ́с̧ӄӓн",
+   "resolved": "тӈэ́с̧ӄӓн: U+04C8 ӈ, U+0301 acute on э, U+0441 с with U+0327 cedilla, U+04C4 ӄ, U+04D3 ӓ",
+   "class": "semantic",
+   "note": "«верхняя часть разсвѣта», upper part of dawn; с with cedilla (с̧), ӄ with hook, diaeresis ӓ"
+  },
+  "29": {
+   "text": "только въ заговорахъ и обрядовыхъ формулахъ."
+  },
+  "30": {
+   "text": "9 (стр. 12). ја́нра-је̂́н «нижній слой тучъ», единственно видимый намъ.",
+   "native": "ја́нра-је̂́н",
+   "resolved": "ја́нра-је̂́н: U+0458 ј, U+0301 acute on а, U+0302 circumflex and U+0301 acute on е",
+   "class": "doubt",
+   "note": "«нижній слой тучъ», lowest layer of clouds. р carries a caron above it in the scan (looks like key р̌), keyed plain р per the layers. е shows circumflex with acute above (ế)"
+  },
+  "31": {
+   "text": "10 (стр. 13). Слово тыны́lӄоӄ употребляется исключительно въ заговорахъ,",
+   "native": "тыны́lӄоӄ",
+   "resolved": "тыны́lӄоӄ: U+0301 acute on ы, U+006C tall l, U+04C4 ӄ twice",
+   "class": "doubt",
+   "note": "layers read тыныӄоӄ, dropping tall l; scan shows ы́ then tall l then ӄоӄ. Acute on second ы. Letter before ӄ checked against 41 (ӄ both times)"
+  },
+  "32": {
+   "text": "но значенія его мнѣ никто не могъ объяснить; по формѣ это супинъ первый гла-",
+   "class": "draft",
+   "note": "copy B read по, copy A но; sense decides (но)"
+  },
+  "33": {
+   "text": "гола. — Заговоръ снова обращается къ дикому быку.",
+   "class": "layout",
+   "note": "em dash with spaces in print; layers read hyphen"
+  },
+  "34": {
+   "text": "11 (стр. 18). эвічуу́ррыкӓ собственно «съ невидящими ушами». Всѣ эти",
+   "native": "эвічуу́ррыкӓ",
+   "resolved": "эвічуу́ррыкӓ: U+0456 і, U+0301 acute on у, U+04D3 ӓ",
+   "note": "«съ невидящими ушами», with unseeing ears; acute on second у, diaeresis ӓ",
+   "class": "semantic"
+  },
+  "35": {
+   "text": "заклинанія имѣютъ цѣлью сдѣлать быка слѣпымъ и глухимъ, чтобы онъ не замѣчалъ",
+   "class": "draft",
+   "note": "copy B read слѣнымъ; sense and scan: слѣпымъ"
+  },
+  "36": {
+   "text": "приближенія пастуха."
+  },
+  "37": {
+   "text": "12 (стр. 19). ђынө̀н-капо́урђын «средина макушки неба». Въ этомъ",
+   "native": "ђынө̀н-капо́урђын",
+   "resolved": "ђынө̀н-капо́урђын: U+0452 ђ, U+04E9 ө with U+0300 grave, U+0301 acute on о, U+0452 ђ",
+   "class": "doubt",
+   "note": "«средина макушки неба», middle of the crown of the sky; scan shows о́ followed by у (капо́урђын), layers read б (A капбурђын, B канбурђын); ө with grave"
+  },
+  "38": {
+   "text": "пунктѣ находится вѣчно неподвижная Звѣзда съ воткнутымъ коломъ (унп-э́ӈэр) т. е.",
+   "native": "унп-э́ӈэр",
+   "resolved": "унп-э́ӈэр: U+0301 acute on э, U+04C8 ӈ",
+   "class": "doubt",
+   "note": "third letter of унп- is two stems with no visible top bar: п (hairline lost?) or и (A read уни, B унп); ӈ with hook. Pole-star stake. Lexicon ratifies у́нп-э́ӈэр with acute on у (another page); no acute on у seen here at 4x"
+  },
+  "39": {
+   "text": "Полярная Звѣзда, которая считается мѣстопребываніемъ творца міра (тенантө́мӈы).",
+   "native": "тенантө́мӈы",
+   "resolved": "тенантө́мӈы: U+04E9 ө with U+0301 acute, U+04C8 ӈ",
+   "class": "doubt",
+   "note": "тенантө́мӈы: creator of the world; final ы carries a curl below (as in line 15), keyed plain ы; lexicon has Тенантө́мӈы without it"
+  },
+  "40": {
+   "text": "Но самый зенитъ считается духомъ женскаго пола. Поэтому заговоръ проситъ у"
+  },
+  "41": {
+   "text": "зенита таlа́ӄун «ударяющій камень», составляющій принадлежность женскаго хозяй-",
+   "native": "таlа́ӄун",
+   "resolved": "таlа́ӄун: U+006C tall l, U+0301 acute on а, U+04C4 ӄ",
+   "note": "«ударяющій камень», striking stone; layers dropped the tall l: scan таlа́ӄун",
+   "class": "semantic"
+  },
+  "42": {
+   "text": "ства и употребляемый для расколачиванія иголъ. Круглыя стальныя иглы мало при-"
+  },
+  "43": {
+   "text": "годны для сшиванія твердыхъ кожъ; поэтому чукчанки расколачиваютъ ихъ особымъ"
+  },
+  "44": {
+   "text": "камнемъ, придавая имъ острыя грани."
+  }
+ }
+}

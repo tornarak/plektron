@@ -7,10 +7,14 @@ same machinery (`rebuild-groundtruth/dispatch.md` says why the prompt names no
 page). What differs is the contract, `.claude/agents/materials-reader.md`, and
 the page block below.
 
-From `jesup/bogoras-materials/`:
+**From the repo root, with `--root jesup/bogoras-materials` on every verb.** The
+readers inherit the coordinator's working directory, and their contract's
+`--root jesup/bogoras-materials` resolves only from the root: a batch dispatched
+from inside the text's directory had every reader fail its first call and fall
+back to `--root .` (1-058–062).
 
-1. `uv run harness ocr queue 1-026 1-027 …` validates the batch and prints the
-   one prompt.
+1. `uv run harness ocr queue 1-026 1-027 … --root jesup/bogoras-materials`
+   validates the batch and prints the one prompt.
 2. Spawn one `materials-reader` per page with that prompt, unedited and
    identical; stagger the first by about ten seconds so it writes the cache the
    rest read.
