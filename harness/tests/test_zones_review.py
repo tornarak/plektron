@@ -63,7 +63,8 @@ def root(tmp_path):
 
 def _verdict(root, edits, notes=(), **over):
     base = zones_review.baseline(REF, root)
-    v = {"ref": REF, "reviewed": {"file": base["file"], "sha256": base["sha256"]},
+    v = {"ref": REF, "reviewed": {"file": base["file"],
+                                  "bands_sha256": base["bands_sha256"]},
          "bands": len(base["bands"]), "edits": list(edits), "notes": list(notes)}
     v.update(over)
     p = verdict_path(REF, root)
@@ -101,6 +102,59 @@ def test_the_baseline_is_read_off_the_file_never_re_derived(root):
     p.write_text(p.read_text(encoding="utf-8").replace(
         "MainZone-P", "MainZone-Other"), encoding="utf-8")
     assert zones_review.baseline(REF, root)["bands"][1]["label"] == "MainZone-Other"
+
+
+def _rewrite_zones(root, old: str, new: str) -> None:
+    p = zones.alto_for(REF, root, zones.MZDIR)
+    text = p.read_text(encoding="utf-8")
+    assert old in text
+    p.write_text(text.replace(old, new), encoding="utf-8")
+
+
+def test_moving_the_column_keeps_a_verdict_fresh(root):
+    # The window moved 22 px left of the ink on every Materials page: the zones'
+    # x changed and no band did, so no verdict's band numbers changed meaning.
+    _verdict(root, [])
+    z = zones.read_zones(REF, root, store=zones.MZDIR)[0]
+    _rewrite_zones(root, f'HPOS="{z["x0"]}"', f'HPOS="{z["x0"] - 22}"')
+    assert rules(root) == [] and zones_review.fresh(REF, root)
+
+
+def test_moving_a_band_edge_stales_a_verdict(root):
+    _verdict(root, [])
+    z = zones.read_zones(REF, root, store=zones.MZDIR)[1]
+    _rewrite_zones(root, f'VPOS="{z["y0"]}"', f'VPOS="{z["y0"] - 3}"')
+    assert rules(root) == ["stale"] and not zones_review.fresh(REF, root)
+
+
+def test_a_whole_file_digest_is_stale_until_restamped_on_its_witness(root):
+    base = zones_review.baseline(REF, root)
+    _verdict(root, [], reviewed={"file": base["file"], "sha256": base["sha256"]})
+    assert rules(root) == ["stale"]
+    assert zones_review.restamp(REF, root) == "restamped"      # a report
+    assert rules(root) == ["stale"]
+    assert zones_review.restamp(REF, root, commit=True) == "restamped"
+    assert rules(root) == [] and zones_review.restamp(REF, root) == "already"
+    # A digest the file no longer has is no witness to these bands.
+    _verdict(root, [], reviewed={"file": base["file"], "sha256": "0" * 64})
+    assert zones_review.restamp(REF, root, commit=True) == "stale"
+    assert rules(root) == ["stale"]
+
+
+def test_a_parts_window_widens_the_zone_and_not_the_rows_measure(root):
+    from harness.zones_config import load_config
+    cfg = chukchi_zone_config()
+    cfg["text_rule"] = FX_RULE
+    cfg["columns"]["parts"]["1"]["window"] = FX_M + 30
+    write_zone_config(root, cfg)
+    cfg = load_config(root)
+    w = zones.page_windows(REF, root, cfg)[0]
+    assert w["x1"] - w["x0"] == FX_M + 30
+    assert cfg["columns"]["parts"]["1"]["measure"] == FX_M
+    cfg["columns"]["parts"]["1"]["window"] = FX_M - 1
+    write_zone_config(root, cfg)
+    with pytest.raises(ValueError, match="no narrower than its measure"):
+        load_config(root)
 
 
 def test_a_page_with_no_rule_file_is_missing(root):

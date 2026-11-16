@@ -18,7 +18,8 @@
 
   "columns": {
     "parts": {
-      "1": {"measure": 2986, "fallback_x0": 600}
+      "1": {"measure": 2986, "window": 3035, "fallback_x0": 600,
+            "_window": "measure is the type's width, as the text layer's full rows give it, and is what zones_rule measures rows against. window is a zone's width: the ink's span plus air. The anchor's detected ink span over 450 pages (2026-11-15): p5 2982, median 2991, p95 3007, and 3011-3020 on 9 pages; 1-263 (3044) and 1-143 (3137) carry a margin mark the run joined, their rows ending 45+ px short of it. 3035 less the 12 px left pad holds a 3020 px span with 3 px to spare."}
     },
     "anchor": {
       "band_top": 0.12,
@@ -29,14 +30,16 @@
       "_min_run_px": "100: a margin number split off is a run of 23-94 px (1-080, 1-120, 1-142, 1-144 are 89-94), and the type is never narrower than its measure's share.",
       "min_run_px": 100,
       "min_run_share": 0.6,
-      "ink_pad_left": 34,
+      "_ink_pad_left": "12 px of air left of the ink, under the 21 px that is the least white between a margin line number and the type (max_run_gap_px). It was 34, The Chukchee's 17 doubled for 600 dpi; but that 17 is the air a line box carries beyond its ink, and this measure was taken off rows that carry none (row left edge against ink, median +1 px over 450 pages), so every window sat 34 px left of the type and cut its line ends (2026-11-15).",
+      "ink_pad_left": 12,
+      "_ink_pad_right": "Validated, not read: the window's right edge is ink_pad_left and the part's window from the left edge, the width being the invariant.",
       "ink_pad_right": 22
     },
     "overrides": {
       "_about": "Per-ref column windows for pages the anchor cannot serve. A ref listed here replaces the measured column for that page entirely.",
       "1-016": {
-        "_why": "The preface's last page: its five lines sit above the anchor's band, which reads the signature and the date, so the column measured 266 px out. Ruled by the editor (2026-11-07) from the page's own rows, whose left edges are 1145-1149: x0 is the rows' edge less the book's usual 34 px row-to-ink offset.",
-        "columns": [{"x0": 1111, "x1": 4097}]
+        "_why": "The preface's last page: its five lines sit above the anchor's band, which reads the signature and the date, so the column measured 266 px out. Ruled by the editor (2026-11-07) from the page's own rows, whose left edges are 1145-1149: x0 is the rows' edge less the 12 px ink_pad_left, since rows sit on the ink, and x1 is x0 plus the part's 3035 px window (2026-11-15; it was 1111..4097, off a row-to-ink offset that measured to be the pad's own).",
+        "columns": [{"x0": 1133, "x1": 4168}]
       }
     }
   },

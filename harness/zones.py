@@ -488,7 +488,7 @@ def measure_frame(ref: str, root: Path = Path("."),
     ref = norm_ref(ref)
     spec = zc.part_spec(cfg, ref)
     a = cfg["columns"]["anchor"]
-    measure = int(spec["measure"])
+    measure = zc.window_width(spec)
     pad = int(cfg["view"]["content_pad_px"])
 
     # `mask` lets a caller that has already decoded the page hand it over. The
@@ -1826,7 +1826,7 @@ def validate_page(ref: str, root: Path = Path("."), cfg: dict | None = None,
             "weaker spelling of it. Re-save the ruling in the editor, which clears "
             "both stores, or key it as a text page if the ruling is wrong.")
 
-    measure = int(zc.part_spec(cfg, ref)["measure"])
+    measure = zc.window_width(zc.part_spec(cfg, ref))
     over = zc.override_windows(cfg, ref)
     # The measured column needs the raster, so it is only consulted when the ink
     # pass is running anyway. An override is free and always applies.

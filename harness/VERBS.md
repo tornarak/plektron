@@ -1165,7 +1165,7 @@ opinion of which pages are held out.
 **Emits** `pages` (ref, zones, labels, unzoned, numbers, offset, gutter, flags, skipped) and `unzoned` (ref, index, text, reason): a speck, or a line too wide to be one line. `numbers` counts the margin line numbers taken off lines, `offset` is the row column's left edge less the ink window's, and `gutter` is each parallel-column band as `width@offset-from-centre×lines`. `flags` are the page-level reasons a band may be wrong, hints in the reviewer's page block: `unzoned` (a too-wide line, not a speck), `parallel`, `continued` (a `MainZone-Continued` below the first body band and not under a full-width rule), `fallback` (the ink window fell back), `uncovered` (ink no zone covers that looks like a printed line, at least `missing_min_h` tall, holding no printed rule and clear of the leaf's edge: most often a line the text layer has no row for). The file records them too, empty where none fired.
 **Note** **a ruled leaf is skipped even when named**, unlike `predict`: a leaf holds no zone file in either store (`zones check`'s `exempt-holds-zones`), and a rule has no "I mean this page" to excuse. So is a page marked neither train nor eval, and a page whose `mz/ocr/` a recognizer wrote rather than `ocr import` — the rule reads a text layer's rows and nothing else.
 **Note** **`predict` and `propose` share `mz/zones/`.** Each keeps the other's file unless `--force`, and the skip names the producer it found.
-**Note** **two column measures.** Zones span the ink-anchored window `check` holds them to; the indent, centring, margin numbers and the gutter search are read against the rows' own column. They differ by the font-metric-to-ink offset, which is reported and gates nothing.
+**Note** **two column measures.** Zones span the ink-anchored window `check` holds them to, `ink_pad_left` left of the ink and the part's `window` wide; the indent, centring, margin numbers and the gutter search are read against the rows' own column and the part's `measure`. The rows sit on the ink (median +1 px over 450 pages), so `offset` is the pad, and gates nothing.
 ```
 --all      every page marked train or eval
 --commit   write mz/zones/ [off]
@@ -1174,7 +1174,7 @@ opinion of which pages are held out.
 ```
 
 ### zones bands REF [REF ...]
-**Does** one page's `mz/zones/` file as the review pass edits it: the file, its sha256, producer and flags; each band numbered from 1 in `read_zones` order with the line indices whose vertical centre it holds (`lines.line_band`, the rule every reader of a zone label uses); the lines no band holds; and the declared types with their editor keys and descriptions.
+**Does** one page's `mz/zones/` file as the review pass edits it: the file, its bands' digest (`bands_sha256`, what a verdict names), producer and flags; each band numbered from 1 in `read_zones` order with the line indices whose vertical centre it holds (`lines.line_band`, the rule every reader of a zone label uses); the lines no band holds; and the declared types with their editor keys and descriptions.
 **Reads** `mz/zones/`, `mz/ocr/`, `config/zones.json`.
 **Writes** —
 **Exit** 0: a measurement. 2 for a page with no `mz/zones/` or no `mz/ocr/` file.
@@ -1185,15 +1185,18 @@ opinion of which pages are held out.
 ```
 
 ### zones verdict [REF ...]
-**Does** the gate on `review/PP-NNN/zones.json`, the review agent's edits against the rule's file. The verdict must name the file and its current sha256 and its band count; each op (`relabel`, `merge`, `split`, `absorb`) must name a band or line the file has, carry only its own fields and a non-empty `why`; no two ops may conflict; and the bands it yields must pass the zone errors `check` raises (`zones.zone_list_errors`).
+**Does** the gate on `review/PP-NNN/zones.json`, the review agent's edits against the rule's file. The verdict must name the file, its bands' current digest (`bands_sha256`) and its band count; each op (`relabel`, `merge`, `split`, `absorb`) must name a band or line the file has, carry only its own fields and a non-empty `why`; no two ops may conflict; and the bands it yields must pass the zone errors `check` raises (`zones.zone_list_errors`).
 **Reads** `review/PP-NNN/zones.json`, `mz/zones/`, `mz/ocr/`, `scans/`, `config/zones.json`.
 **Writes** —
 **Exit** 0 when every named verdict passes; 1 when any fails or is missing.
 **Emits** `pages` (ref, edits, notes, errors, labels — the applied labels in order), `errors` (ref, rule, detail) where any, `inherited` where any, and the `verdict` row.
 **Note** **ops apply in a fixed order, each to the original numbering**: relabel, merge (into the band above, taking its label), split (at a line, the upper part keeping its label, the cut midway between the line and the one before it), absorb (a line in no band, into the band above or below). Relabel and split on one band is legal; refused are two relabels of a band, a relabel of a merged band, a merge of band 1, two splits at a line or one at a band's first line, a split of a line in no band, and an absorb of a line a band holds.
-**Note** **`inherited`** are zone errors the rule's own file already carries. An edit did not introduce them, so they fail nothing; they are the rule's to fix. **A stale verdict** — the file's digest moved — is refused before anything else, since its band numbers name bands it never read.
+**Note** **`inherited`** are zone errors the rule's own file already carries. An edit did not introduce them, so they fail nothing; they are the rule's to fix. **A stale verdict** — the bands' digest moved — is refused before anything else, since its band numbers name bands it never read.
+**Note** **the digest is of the bands, not the file** (2026-11-15): each band's label, y-range and lines, and the lines no band holds, which is all an edit's meaning depends on. The whole-file digest also covered the zones' x, so correcting the column window staled 448 verdicts with every band unchanged. **`--restamp`** migrates a verdict that names the old whole-file `sha256`, and only where that is the rule file's current digest, so the verdict was checked against exactly these bands; any other is left stale. A report by default; `--commit` writes.
 ```
 --all      every page holding a review/PP-NNN/zones.json
+--restamp  migrate whole-file-digest verdicts to the bands digest, on their witness [off]
+--commit   with --restamp, write the verdicts [off]
 --root --json --toon --pager
 ```
 

@@ -172,8 +172,14 @@ What the rows show (600 dpi), and what the rule does with it:
   and its left edge moves with the scan. Zones span the ink-anchored window
   `zones check` holds them to; the indent, centring, a margin number and the
   gutter search are read against the rows' own column, the median left edge of
-  the full rows. The two differ by the font-metric-to-ink offset, 33–38 px on
-  five of the six pages, which is reported and gates nothing.
+  the full rows. **The rows sit on the ink** (row edge against ink, median +1 px
+  left and −2 px right over 450 pages), so the type's width (`measure`) and a
+  zone's (`window`, the ink's span plus air) are two numbers here, where *The
+  Chukchee*'s line boxes, carrying their own air, made them one. The 33–38 px
+  this passage once called a font-metric offset was the window's own pad, *The
+  Chukchee*'s 17 doubled: every window sat 34 px left of the type and cut its line
+  ends, until the editor saw it (2026-11-15). The pad is now 12 px and the window
+  3035, from the anchor's measured spans.
 - **A line, not a row, is the unit.** The layer can leave two rows on one
   printed line (the head's `В.`, set in another size; a broken row), and rows
   whose centres coincide are one line. Neighbouring full lines overlap often and

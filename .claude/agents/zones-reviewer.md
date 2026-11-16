@@ -35,7 +35,7 @@ exits 1 (the queue is out): say so and stop, never pick a page yourself.
 ## One page
 
 1. **`uv run harness zones bands REF --root jesup/bogoras-materials`.** The rule's
-   file as you edit it: its path, its `sha256`, its `flags`, each band numbered
+   file as you edit it: its path, its bands' digest `bands_sha256`, its `flags`, each band numbered
    with the line indices whose vertical centre it holds, the lines **no band**
    holds, any **uncovered** ink that looks like a printed line, and the declared
    types with their descriptions. Band numbers and line indices are the only names
@@ -58,7 +58,7 @@ exits 1 (the queue is out): say so and stop, never pick a page yourself.
 
 ```json
 {"ref": "1-177",
- "reviewed": {"file": "mz/zones/chukchi-materials-1-177.xml", "sha256": "…"},
+ "reviewed": {"file": "mz/zones/chukchi-materials-1-177.xml", "bands_sha256": "…"},
  "bands": 8,
  "edits": [
    {"op": "relabel", "band": 4, "label": "MainZone-Other", "why": "…"},
@@ -68,8 +68,8 @@ exits 1 (the queue is out): say so and stop, never pick a page yourself.
  "notes": [{"line": 21, "text": "…"}]}
 ```
 
-- **`reviewed` and `bands` are copied from `zones bands`**: the file, its sha256,
-  and how many bands it holds. They are the witness that you read this file and
+- **`reviewed` and `bands` are copied from `zones bands`**: the file, its
+  `bands_sha256`, and how many bands it holds. They are the witness that you read this file and
   all of it; a verdict naming another digest is stale and applies to nothing.
 - **`edits` is empty where every band stands.** That is a verdict too, and the
   commonest one: write it.
@@ -134,7 +134,7 @@ What the rule does, so you do not undo it:
   (`1-048`). A footnote block with no rule found over it comes to you as body
   bands.
 - **In the Примѣчанія every indent starts a band**, since the opener is not
-  read. An indented line that opens no note belongs to the note above it.
+  read. Which of those bands start a note is the ruling's, below.
 - **A margin mark joined to a row** (a line number, often misread as `зо` or
   `5.`, or a speck like `}`) is taken off the row before it is measured.
 - **A two-line parallel block is not found** (the rule needs three lines).

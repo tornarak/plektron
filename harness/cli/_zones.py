@@ -177,12 +177,17 @@ def register(cli):
 
     p = action(g, "verdict", run_verdict, section="The review pass",
                help="the gate on review/PP-NNN/zones.json: it must name the rule's "
-               "file as it now is, every op must refer to a band or line the file "
+               "bands as they now are, every op must refer to a band or line the file "
                "has, no two ops may conflict, every op says why, and the bands it "
                "yields must pass the zone errors `check` raises. Errors the rule's "
                "own file already carries are reported as inherited and fail "
                "nothing. Exit 1 when any named verdict fails or is missing")
     refs_arg(p, all_="every page holding a review/PP-NNN/zones.json")
+    opt(p, "--restamp", is_flag=True,
+        help="migrate verdicts that name the rule file's whole-file sha256 to the "
+             "bands digest, only where that sha256 is the file's current one; "
+             "reports what each would become, and writes under --commit")
+    opt(p, "--commit", is_flag=True, help="with --restamp, write the verdicts")
 
     p = action(g, "queue", run_queue, section="The review pass",
                help="validate a batch for the zone review pass, write it to "
@@ -451,7 +456,8 @@ def run_bands(a) -> int:
             uncovered += [{"ref": b["ref"], **m} for m in zones_rule.missing_lines(
                 b["ref"], b["zones"], a.root, cfg,
                 zmod.page_windows(b["ref"], a.root, cfg, ink), ink)]
-        heads.append({"ref": b["ref"], "file": b["file"], "sha256": b["sha256"],
+        heads.append({"ref": b["ref"], "file": b["file"],
+                      "bands_sha256": b["bands_sha256"],
                       "bands": len(b["bands"]), "producer": b["producer"],
                       "version": b["version"],
                       "flags": "(predates flags)" if b["flags"] is None
@@ -477,6 +483,16 @@ def run_verdict(a) -> int:
     refs = page_refs(a)
     if not refs:
         refs = [r for r in page_refs_under(a.root) if verdict_path(r, a.root).exists()]
+    if a.commit and not a.restamp:
+        raise click.UsageError("--commit writes only with --restamp; the gate "
+                               "writes nothing")
+    if a.restamp:
+        rows = [{"ref": r, "result": zr.restamp(r, a.root, commit=a.commit)}
+                for r in refs]
+        out(a, rows, name="restamp")
+        n = sum(1 for r in rows if r["result"] == "restamped")
+        return verdict(a, 0, f"{n} of {len(refs)} verdicts "
+                             f"{'restamped' if a.commit else 'would be restamped'}")
     cfg = load_config(a.root)
     pages, errors, inherited = [], [], []
     with progress("judging") as tick:

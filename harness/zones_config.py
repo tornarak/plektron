@@ -222,6 +222,10 @@ def load_config(root: Path = Path(".")) -> dict:
             v = spec.get(field)
             if not isinstance(v, (int, float)) or v <= 0:
                 raise ConfigError(f"{p}: part {part} needs a positive {field}")
+        if "window" in spec and (not isinstance(spec["window"], (int, float))
+                                 or spec["window"] < spec["measure"]):
+            raise ConfigError(f"{p}: part {part}'s window must be a number no "
+                              "narrower than its measure")
     anchor = (cfg.get("columns") or {}).get("anchor") or {}
     for field in ("band_top", "band_bottom", "ink_row_share", "max_run_gap_px",
                   "min_run_px", "min_run_share", "ink_pad_left", "ink_pad_right"):
@@ -299,6 +303,19 @@ def part_spec(cfg: dict, ref: str) -> dict:
     if spec is None:
         raise ValueError(f"no column config for part {part} (ref {norm_ref(ref)})")
     return spec
+
+
+def window_width(spec: dict) -> int:
+    """How wide a zone's column window is: the part's `window`, else its `measure`.
+
+    Two quantities that *The Chukchee* never had to tell apart, since its measure
+    was taken off line boxes, which carry their own air. The 1900 *Materials*'
+    measure was taken off the text layer's rows, which sit on the ink with none
+    (median 1 px left, -2 px right, over 450 pages), so the type's width and the
+    window's are different numbers there. `zones_rule` measures rows against
+    `measure`; everything that places or checks a zone uses this.
+    """
+    return int(spec.get("window", spec["measure"]))
 
 
 def override_windows(cfg: dict, ref: str) -> list[dict] | None:

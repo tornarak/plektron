@@ -11,8 +11,15 @@ Nothing here writes a zone file.
 `zones.read_zones` order; a line is its `page_lines` index; a line belongs to the
 band holding its vertical centre (`lines.line_band`, the rule every reader of a
 zone label already uses). So an edit means one thing on every reread, and the
-verdict names the file's digest, so it goes stale visibly when the rule's file is
-rewritten rather than applying to bands it never saw.
+verdict names the **bands' digest** (`bands_digest`), so it goes stale visibly
+when the bands it numbers change rather than applying to bands it never saw.
+
+**The digest is of the bands, not the file** (the editor, 2026-11-15). An edit's
+meaning depends on each band's label, its y-range and the lines it holds, and on
+the lines no band holds — nothing else. The whole file's digest also covered the
+zones' x, so moving the column window (the 34 px it sat left of the ink) staled
+448 verdicts whose every band was unchanged. A witness to more than its claim is
+not stricter; it is a witness to the wrong thing.
 
 **Ops apply in a fixed order and always to the original numbering**: relabel,
 then merge, then split, then absorb. Each refers to the bands and lines `zones
@@ -42,6 +49,16 @@ OCR_STORE = "mz/ocr"
 
 class Missing(ValueError):
     """A store the pass reads holds nothing for this page."""
+
+
+def bands_digest(bands: list[dict], unbanded: list[int]) -> str:
+    """sha256 over what a verdict's band numbers mean: each band's label, y-range
+    and lines in `read_zones` order, and the lines no band holds."""
+    import hashlib
+    doc = {"bands": [[b["label"], int(b["y0"]), int(b["y1"]), b["lines"]] for b in bands],
+           "unbanded": sorted(int(i) for i in unbanded)}
+    blob = json.dumps(doc, ensure_ascii=False, separators=(",", ":"))
+    return hashlib.sha256(blob.encode("utf-8")).hexdigest()
 
 
 def _rel(p: Path, root: Path) -> str:
@@ -78,17 +95,19 @@ def baseline(ref: str, root: Path = Path(".")) -> dict:
         else:
             members[i].append(int(r["index"]))
     p = provenance.read_producer(src)
+    bands = [{"band": i + 1, "label": z["label"], "y0": z["y0"], "y1": z["y1"],
+              "lines": " ".join(str(k) for k in members[i])}
+             for i, z in enumerate(zones)]
     return {
         "ref": ref,
         "file": _rel(src, root),
         "sha256": provenance.digest(src),
+        "bands_sha256": bands_digest(bands, [int(r["index"]) for r in unbanded]),
         "producer": p.step if p else "",
         "version": p.version if p else "",
         # None, not "", where the file predates the flags: "" means none fired.
         "flags": p.inputs.get("flags") if p else None,
-        "bands": [{"band": i + 1, "label": z["label"], "y0": z["y0"], "y1": z["y1"],
-                   "lines": " ".join(str(k) for k in members[i])}
-                  for i, z in enumerate(zones)],
+        "bands": bands,
         "unbanded": [{"index": int(r["index"]), "y0": r["vpos"],
                       "y1": r["vpos"] + r["height"], "text": r.get("text") or ""}
                      for r in unbanded],
@@ -221,10 +240,14 @@ def _edit_errors(v: dict, base: dict, cfg: dict) -> list[dict]:
     rev = v.get("reviewed") or {}
     if rev.get("file") != base["file"]:
         err("wrong-file", f"reviewed {rev.get('file')!r}, not {base['file']}")
-    if rev.get("sha256") != base["sha256"]:
-        err("stale", f"reviewed a file with sha256 {str(rev.get('sha256'))[:12]}…; "
-                     f"{base['file']} is now {base['sha256'][:12]}… — the rule's file "
-                     "changed under the verdict, so its band numbers mean nothing")
+    if "bands_sha256" not in rev:
+        err("stale", "names no bands_sha256: it predates the bands digest, and "
+                     "`zones verdict --restamp` migrates a verdict that was fresh")
+        return errors
+    if rev.get("bands_sha256") != base["bands_sha256"]:
+        err("stale", f"reviewed bands with digest {str(rev.get('bands_sha256'))[:12]}…; "
+                     f"{base['file']}'s are now {base['bands_sha256'][:12]}… — the "
+                     "bands changed under the verdict, so its band numbers mean nothing")
         return errors
     n = len(base["zones"])
     if v.get("bands") != n:
@@ -332,7 +355,7 @@ def _edit_errors(v: dict, base: dict, cfg: dict) -> list[dict]:
 
 def _geometry(ref: str, root: Path, cfg: dict) -> tuple[int, list | None, list, int]:
     from .lines import ink_mask
-    measure = int(zc.part_spec(cfg, ref)["measure"])
+    measure = zc.window_width(zc.part_spec(cfg, ref))
     over = zc.override_windows(cfg, ref)
     windows = over if over is not None else zmod.page_windows(
         ref, root, cfg, ink_mask(zmod.scan_for(ref, root)))
@@ -402,12 +425,45 @@ def applied(ref: str, root: Path = Path("."), cfg: dict | None = None) -> dict:
 
 
 def fresh(ref: str, root: Path = Path(".")) -> bool:
-    """Whether a verdict exists and names the rule's file as it now is."""
+    """Whether a verdict exists and names the rule's bands as they now are."""
     try:
         v = load(ref, root)
-    except ValueError:
+        base = baseline(ref, root)
+    except (ValueError, Missing):
         return False
     if not isinstance(v, dict):
         return False
-    src = zmod.alto_for(norm_ref(ref), root, zmod.MZDIR)
-    return src.exists() and (v.get("reviewed") or {}).get("sha256") == provenance.digest(src)
+    return (v.get("reviewed") or {}).get("bands_sha256") == base["bands_sha256"]
+
+
+def restamp(ref: str, root: Path = Path("."), commit: bool = False) -> str:
+    """Migrate one verdict to the bands digest, where it is fresh by the old one.
+
+    Mechanical, and only on its witness: a verdict naming the rule file's current
+    whole-file sha256 was checked against exactly these bands, so it is given their
+    digest. Anything else is left as it is. Returns what happened.
+    """
+    ref = norm_ref(ref)
+    try:
+        v = load(ref, root)
+    except ValueError:
+        return "unreadable"
+    if not isinstance(v, dict):
+        return "no verdict"
+    rev = v.get("reviewed") or {}
+    if "bands_sha256" in rev:
+        return "already"
+    try:
+        base = baseline(ref, root)
+    except Missing:
+        return "no rule file"
+    if rev.get("sha256") != base["sha256"]:
+        return "stale"
+    if commit:
+        v["reviewed"] = {"file": rev.get("file"), "bands_sha256": base["bands_sha256"]}
+        p = verdict_path(ref, root)
+        tmp = p.with_suffix(".json.tmp")
+        tmp.write_text(json.dumps(v, ensure_ascii=False, indent=1) + "\n",
+                       encoding="utf-8")
+        tmp.replace(p)
+    return "restamped"

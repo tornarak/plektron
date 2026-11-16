@@ -11,8 +11,8 @@ own left edges and is the reference for everything that is a fact about the rows
 a margin number, the indent, centring, a row too wide to be one line, the gutter
 search. The *zone x* is `zones.page_windows`, the ink-anchored window `zones
 check` holds every zone to, so the check judges this output by its own standard.
-The two differ by the font-metric-to-ink offset, which is unmeasured; the report
-gives it and nothing gates on it.
+The rows sit on the ink, so the two differ by the window's own `ink_pad_left`;
+the report gives it as `offset` and nothing gates on it.
 
 **A line, not a row, is the unit.** The layer sometimes leaves two rows on one
 printed line: the running head's `В.` set in another size, a line number, a row
