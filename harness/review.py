@@ -583,6 +583,26 @@ def standing(ref: str, root: Path = Path(".")) -> dict[int, dict]:
     return out
 
 
+def adjudicated(ref: str, root: Path = Path(".")) -> bool:
+    """Whether the review queue is finished with this page — read off the disk.
+
+    **A decision newer than its proposal**, or, under `prose_stands`, a page whose
+    every line stands (`standing`), which by design has no `decision.json`: the
+    page posts nothing and `restore` takes it on its reading. Testing the file
+    alone left such a page forever undone, and the next-page picker kept handing
+    it back (1-052, 2026-11-16).
+
+    A proposal revised after its decision — a doubt the coordinator added to an
+    already-reviewed line — is not finished: the picker skipped 1-029 with its
+    new doubt unseen. The test is the two files' mtimes, which a checkout can
+    disturb; the cost of that is a page offered again, never a write.
+    """
+    dec, prop = decisions_path(ref, root), proposal_path(ref, root)
+    if dec.exists():
+        return not prop.exists() or dec.stat().st_mtime >= prop.stat().st_mtime
+    return prop.exists() and len(standing(ref, root)) == len(load_proposal(ref, root))
+
+
 def restore_skip(ref: str, root: Path = Path("."), force: bool = False) -> str:
     """Why this page should not be restored in a sweep, or `""` to go ahead.
 

@@ -192,3 +192,15 @@ def test_a_form_listed_as_its_stem_is_in_the_text(text):
         ensure_ascii=False), encoding="utf-8")
     assert not any(i["issue"] == "native form not in the line's text"
                    for i in check(p, "1-024", text))
+
+
+def test_a_page_whose_every_line_stands_is_adjudicated_without_a_decision(text):
+    """It posts nothing, by design, so the file never appears; counting only the
+    file sent the next-page picker back to 1-052 forever."""
+    from harness.review import adjudicated
+    rv = text / "review" / "1-025"
+    rv.mkdir(parents=True)
+    (rv / "proposal.json").write_text(json.dumps({"ref": "1-025", "lines": {
+        "0": {"text": nfd("простая строка")}}}, ensure_ascii=False), encoding="utf-8")
+    assert adjudicated("1-025", text)
+    assert not adjudicated(REF, text), "a page with a native form still wants a ruling"

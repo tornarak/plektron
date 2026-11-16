@@ -64,8 +64,7 @@ def _state(request: Request) -> list[dict]:
     another page's file.
     """
     root = _root(request)
-    return [{"ref": r, "done": decisions_path(r, root).exists()}
-            for r in _queue(request)]
+    return [{"ref": r, "done": rv.adjudicated(r, root)} for r in _queue(request)]
 
 
 def _in_queue(request: Request, ref: str) -> str:

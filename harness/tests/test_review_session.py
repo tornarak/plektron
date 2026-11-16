@@ -821,3 +821,18 @@ def test_without_the_ruling_every_line_is_posted(tmp_path):
     _page(tmp_path, "2-046")
     html = render_queue_html("2-046", "mz/ocr", tmp_path)
     assert "data-sline" not in html and "standing as prose" not in html
+
+
+def test_a_proposal_revised_after_its_decision_is_offered_again(two):
+    """A doubt added to an already-reviewed page must reach the reviewer: the
+    picker skipped 1-029 with its new doubt unseen while the file alone counted."""
+    import os
+
+    from harness.review import adjudicated, proposal_path
+    decisions_path("2-046", two).write_text(json.dumps({"lines": {}}), encoding="utf-8")
+    prop = proposal_path("2-046", two)
+    t = decisions_path("2-046", two).stat().st_mtime
+    os.utime(prop, (t - 10, t - 10))
+    assert adjudicated("2-046", two)
+    os.utime(prop, (t + 10, t + 10))
+    assert not adjudicated("2-046", two)
