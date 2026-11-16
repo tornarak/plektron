@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns="http://www.loc.gov/standards/alto/ns-v4#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-2.xsd">
+  <Description>
+    <MeasurementUnit>pixel</MeasurementUnit>
+    <sourceImageInformation>
+      <fileName>chukchi-materials-1-061.png</fileName>
+    </sourceImageInformation>
+  </Description>
+  <Tags>
+    <OtherTag ID="BT1" LABEL="RunningTitleZone" DESCRIPTION="block type RunningTitleZone"/>
+    <OtherTag ID="BT2" LABEL="MainZone-Other" DESCRIPTION="block type MainZone-Other"/>
+    <OtherTag ID="BT3" LABEL="MainZone-P" DESCRIPTION="block type MainZone-P"/>
+  </Tags>
+  <Layout>
+    <Page WIDTH="4656" HEIGHT="6944" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="4656" HEIGHT="6944">
+        <TextBlock HPOS="445" VPOS="532" WIDTH="3035" HEIGHT="116" ID="mz_1-061_001" TAGREFS="BT1">
+          <Shape>
+            <Polygon POINTS="445 532 3480 532 3480 648 445 648"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="445" VPOS="924" WIDTH="3035" HEIGHT="95" ID="mz_1-061_002" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="445 924 3480 924 3480 1019 445 1019"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="445" VPOS="1145" WIDTH="3035" HEIGHT="843" ID="mz_1-061_003" TAGREFS="BT3">
+          <Shape>
+            <Polygon POINTS="445 1145 3480 1145 3480 1988 445 1988"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="445" VPOS="1990" WIDTH="3035" HEIGHT="215" ID="mz_1-061_004" TAGREFS="BT3">
+          <Shape>
+            <Polygon POINTS="445 1990 3480 1990 3480 2205 445 2205"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="445" VPOS="2209" WIDTH="3035" HEIGHT="315" ID="mz_1-061_005" TAGREFS="BT3">
+          <Shape>
+            <Polygon POINTS="445 2209 3480 2209 3480 2524 445 2524"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="445" VPOS="2536" WIDTH="3035" HEIGHT="105" ID="mz_1-061_006" TAGREFS="BT3">
+          <Shape>
+            <Polygon POINTS="445 2536 3480 2536 3480 2641 445 2641"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="445" VPOS="2641" WIDTH="3035" HEIGHT="427" ID="mz_1-061_007" TAGREFS="BT3">
+          <Shape>
+            <Polygon POINTS="445 2641 3480 2641 3480 3068 445 3068"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="445" VPOS="3079" WIDTH="3035" HEIGHT="527" ID="mz_1-061_008" TAGREFS="BT3">
+          <Shape>
+            <Polygon POINTS="445 3079 3480 3079 3480 3606 445 3606"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="445" VPOS="3612" WIDTH="3035" HEIGHT="316" ID="mz_1-061_009" TAGREFS="BT3">
+          <Shape>
+            <Polygon POINTS="445 3612 3480 3612 3480 3928 445 3928"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="445" VPOS="3931" WIDTH="3035" HEIGHT="210" ID="mz_1-061_010" TAGREFS="BT3">
+          <Shape>
+            <Polygon POINTS="445 3931 3480 3931 3480 4141 445 4141"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="445" VPOS="4141" WIDTH="3035" HEIGHT="108" ID="mz_1-061_011" TAGREFS="BT3">
+          <Shape>
+            <Polygon POINTS="445 4141 3480 4141 3480 4249 445 4249"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="445" VPOS="4256" WIDTH="3035" HEIGHT="314" ID="mz_1-061_012" TAGREFS="BT3">
+          <Shape>
+            <Polygon POINTS="445 4256 3480 4256 3480 4570 445 4570"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="445" VPOS="4576" WIDTH="3035" HEIGHT="316" ID="mz_1-061_013" TAGREFS="BT3">
+          <Shape>
+            <Polygon POINTS="445 4576 3480 4576 3480 4892 445 4892"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="445" VPOS="4894" WIDTH="3035" HEIGHT="852" ID="mz_1-061_014" TAGREFS="BT3">
+          <Shape>
+            <Polygon POINTS="445 4894 3480 4894 3480 5746 445 5746"/>
+          </Shape>
+        </TextBlock>
+      </PrintSpace>
+    </Page>
+  </Layout>
+</alto>

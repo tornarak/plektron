@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns="http://www.loc.gov/standards/alto/ns-v4#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-2.xsd">
+  <Description>
+    <MeasurementUnit>pixel</MeasurementUnit>
+    <sourceImageInformation>
+      <fileName>chukchi-materials-1-062.png</fileName>
+    </sourceImageInformation>
+  </Description>
+  <Tags>
+    <OtherTag ID="BT1" LABEL="RunningTitleZone" DESCRIPTION="block type RunningTitleZone"/>
+    <OtherTag ID="BT2" LABEL="MainZone-P" DESCRIPTION="block type MainZone-P"/>
+  </Tags>
+  <Layout>
+    <Page WIDTH="4784" HEIGHT="6960" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="4784" HEIGHT="6960">
+        <TextBlock HPOS="1206" VPOS="523" WIDTH="3035" HEIGHT="109" ID="mz_1-062_001" TAGREFS="BT1">
+          <Shape>
+            <Polygon POINTS="1206 523 4241 523 4241 632 1206 632"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="1206" VPOS="746" WIDTH="3035" HEIGHT="312" ID="mz_1-062_002" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="1206 746 4241 746 4241 1058 1206 1058"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="1206" VPOS="1085" WIDTH="3035" HEIGHT="851" ID="mz_1-062_003" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="1206 1085 4241 1085 4241 1936 1206 1936"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="1206" VPOS="1961" WIDTH="3035" HEIGHT="106" ID="mz_1-062_004" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="1206 1961 4241 1961 4241 2067 1206 2067"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="1206" VPOS="2077" WIDTH="3035" HEIGHT="301" ID="mz_1-062_005" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="1206 2077 4241 2077 4241 2378 1206 2378"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="1206" VPOS="2422" WIDTH="3035" HEIGHT="317" ID="mz_1-062_006" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="1206 2422 4241 2422 4241 2739 1206 2739"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="1206" VPOS="2754" WIDTH="3035" HEIGHT="211" ID="mz_1-062_007" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="1206 2754 4241 2754 4241 2965 1206 2965"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="1206" VPOS="2990" WIDTH="3035" HEIGHT="210" ID="mz_1-062_008" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="1206 2990 4241 2990 4241 3200 1206 3200"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="1206" VPOS="3224" WIDTH="3035" HEIGHT="429" ID="mz_1-062_009" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="1206 3224 4241 3224 4241 3653 1206 3653"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="1206" VPOS="3676" WIDTH="3035" HEIGHT="419" ID="mz_1-062_010" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="1206 3676 4241 3676 4241 4095 1206 4095"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="1206" VPOS="4114" WIDTH="3035" HEIGHT="310" ID="mz_1-062_011" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="1206 4114 4241 4114 4241 4424 1206 4424"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="1206" VPOS="4444" WIDTH="3035" HEIGHT="426" ID="mz_1-062_012" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="1206 4444 4241 4444 4241 4870 1206 4870"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="1206" VPOS="4885" WIDTH="3035" HEIGHT="315" ID="mz_1-062_013" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="1206 4885 4241 4885 4241 5200 1206 5200"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="1206" VPOS="5214" WIDTH="3035" HEIGHT="538" ID="mz_1-062_014" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="1206 5214 4241 5214 4241 5752 1206 5752"/>
+          </Shape>
+        </TextBlock>
+      </PrintSpace>
+    </Page>
+  </Layout>
+</alto>

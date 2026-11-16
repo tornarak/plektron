@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns="http://www.loc.gov/standards/alto/ns-v4#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-2.xsd">
+  <Description>
+    <MeasurementUnit>pixel</MeasurementUnit>
+    <sourceImageInformation>
+      <fileName>chukchi-materials-1-203.png</fileName>
+    </sourceImageInformation>
+  </Description>
+  <Tags>
+    <OtherTag ID="BT1" LABEL="RunningTitleZone" DESCRIPTION="block type RunningTitleZone"/>
+    <OtherTag ID="BT2" LABEL="MainZone-Other" DESCRIPTION="block type MainZone-Other"/>
+    <OtherTag ID="BT3" LABEL="MainZone-P" DESCRIPTION="block type MainZone-P"/>
+  </Tags>
+  <Layout>
+    <Page WIDTH="4816" HEIGHT="6960" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="4816" HEIGHT="6960">
+        <TextBlock HPOS="660" VPOS="565" WIDTH="3035" HEIGHT="110" ID="mz_1-203_001" TAGREFS="BT1">
+          <Shape>
+            <Polygon POINTS="660 565 3695 565 3695 675 660 675"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="660" VPOS="1061" WIDTH="3035" HEIGHT="123" ID="mz_1-203_002" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="660 1061 3695 1061 3695 1184 660 1184"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="660" VPOS="1292" WIDTH="3035" HEIGHT="1449" ID="mz_1-203_003" TAGREFS="BT3">
+          <Shape>
+            <Polygon POINTS="660 1292 3695 1292 3695 2741 660 2741"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="660" VPOS="2961" WIDTH="3035" HEIGHT="158" ID="mz_1-203_004" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="660 2961 3695 2961 3695 3119 660 3119"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="660" VPOS="3218" WIDTH="3035" HEIGHT="2554" ID="mz_1-203_005" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="660 3218 3695 3218 3695 5772 660 5772"/>
+          </Shape>
+        </TextBlock>
+      </PrintSpace>
+    </Page>
+  </Layout>
+</alto>

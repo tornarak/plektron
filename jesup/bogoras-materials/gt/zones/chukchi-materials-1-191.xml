@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns="http://www.loc.gov/standards/alto/ns-v4#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-2.xsd">
+  <Description>
+    <MeasurementUnit>pixel</MeasurementUnit>
+    <sourceImageInformation>
+      <fileName>chukchi-materials-1-191.png</fileName>
+    </sourceImageInformation>
+  </Description>
+  <Tags>
+    <OtherTag ID="BT1" LABEL="RunningTitleZone" DESCRIPTION="block type RunningTitleZone"/>
+    <OtherTag ID="BT2" LABEL="MainZone-Other" DESCRIPTION="block type MainZone-Other"/>
+    <OtherTag ID="BT3" LABEL="MainZone-P" DESCRIPTION="block type MainZone-P"/>
+  </Tags>
+  <Layout>
+    <Page WIDTH="4816" HEIGHT="6976" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="4816" HEIGHT="6976">
+        <TextBlock HPOS="663" VPOS="553" WIDTH="3035" HEIGHT="118" ID="mz_1-191_001" TAGREFS="BT1">
+          <Shape>
+            <Polygon POINTS="663 553 3698 553 3698 671 663 671"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="663" VPOS="1085" WIDTH="3035" HEIGHT="171" ID="mz_1-191_002" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="663 1085 3698 1085 3698 1256 663 1256"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="663" VPOS="1290" WIDTH="3035" HEIGHT="111" ID="mz_1-191_003" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="663 1290 3698 1290 3698 1401 663 1401"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="663" VPOS="1486" WIDTH="3035" HEIGHT="617" ID="mz_1-191_004" TAGREFS="BT3">
+          <Shape>
+            <Polygon POINTS="663 1486 3698 1486 3698 2103 663 2103"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="663" VPOS="2160" WIDTH="3035" HEIGHT="99" ID="mz_1-191_005" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="663 2160 3698 2160 3698 2259 663 2259"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="663" VPOS="2514" WIDTH="3035" HEIGHT="104" ID="mz_1-191_006" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="663 2514 3698 2514 3698 2618 663 2618"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="663" VPOS="2715" WIDTH="3035" HEIGHT="719" ID="mz_1-191_007" TAGREFS="BT3">
+          <Shape>
+            <Polygon POINTS="663 2715 3698 2715 3698 3434 663 3434"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="663" VPOS="3638" WIDTH="3035" HEIGHT="124" ID="mz_1-191_008" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="663 3638 3698 3638 3698 3762 663 3762"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="663" VPOS="3856" WIDTH="3035" HEIGHT="323" ID="mz_1-191_009" TAGREFS="BT3">
+          <Shape>
+            <Polygon POINTS="663 3856 3698 3856 3698 4179 663 4179"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="663" VPOS="4380" WIDTH="3035" HEIGHT="168" ID="mz_1-191_010" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="663 4380 3698 4380 3698 4548 663 4548"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="663" VPOS="4625" WIDTH="3035" HEIGHT="106" ID="mz_1-191_011" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="663 4625 3698 4625 3698 4731 663 4731"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="663" VPOS="4826" WIDTH="3035" HEIGHT="235" ID="mz_1-191_012" TAGREFS="BT3">
+          <Shape>
+            <Polygon POINTS="663 4826 3698 4826 3698 5061 663 5061"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="663" VPOS="5325" WIDTH="3035" HEIGHT="97" ID="mz_1-191_013" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="663 5325 3698 5325 3698 5422 663 5422"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="663" VPOS="5525" WIDTH="3035" HEIGHT="231" ID="mz_1-191_014" TAGREFS="BT3">
+          <Shape>
+            <Polygon POINTS="663 5525 3698 5525 3698 5756 663 5756"/>
+          </Shape>
+        </TextBlock>
+      </PrintSpace>
+    </Page>
+  </Layout>
+</alto>

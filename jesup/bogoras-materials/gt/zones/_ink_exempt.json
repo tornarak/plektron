@@ -1,3 +1,473 @@
 {
- "_about": "Bands of ink the **zoning** legitimately does not cover — smudges, gutter blobs, offset from the facing page. Each carries the reason it was ruled so, and each is scoped to its own band: exempting a whole page's ink check would hide the next dropped zone on it. A matched band still reports, flagged `exempted` and carrying its note. This is the *zone* layer; ink inside a zone that no line covers is `ocr gaps`'s question and lives in gt/lines/_ink_exempt.json. Keyed PP-NNN."
+ "_about": "Bands of ink the **zoning** legitimately does not cover — smudges, gutter blobs, offset from the facing page. Each carries the reason it was ruled so, and each is scoped to its own band: exempting a whole page's ink check would hide the next dropped zone on it. A matched band still reports, flagged `exempted` and carrying its note. This is the *zone* layer; ink inside a zone that no line covers is `ocr gaps`'s question and lives in gt/lines/_ink_exempt.json. Keyed PP-NNN.",
+ "1-015": [
+  {
+   "y0": 5706,
+   "y1": 5770,
+   "note": "blot"
+  },
+  {
+   "y0": 6618,
+   "y1": 6658,
+   "note": "blot"
+  }
+ ],
+ "1-016": [
+  {
+   "y0": 1798,
+   "y1": 1824,
+   "note": "blat"
+  },
+  {
+   "y0": 2673,
+   "y1": 2694,
+   "note": "blot"
+  }
+ ],
+ "1-021": [
+  {
+   "y0": 6890,
+   "y1": 6919,
+   "note": "blot"
+  }
+ ],
+ "1-022": [
+  {
+   "y0": 6920,
+   "y1": 6943,
+   "note": "blot"
+  }
+ ],
+ "1-027": [
+  {
+   "y0": 6946,
+   "y1": 6982,
+   "note": "blot"
+  }
+ ],
+ "1-031": [
+  {
+   "y0": 6901,
+   "y1": 6924,
+   "note": "blot"
+  }
+ ],
+ "1-033": [
+  {
+   "y0": 6929,
+   "y1": 6953,
+   "note": "blot"
+  }
+ ],
+ "1-049": [
+  {
+   "y0": 6924,
+   "y1": 6992,
+   "note": "blot"
+  }
+ ],
+ "1-056": [
+  {
+   "y0": 3227,
+   "y1": 3272,
+   "note": "divider"
+  }
+ ],
+ "1-060": [
+  {
+   "y0": 212,
+   "y1": 237,
+   "note": "blot"
+  }
+ ],
+ "1-070": [
+  {
+   "y0": 695,
+   "y1": 719,
+   "note": "blot"
+  }
+ ],
+ "1-075": [
+  {
+   "y0": 996,
+   "y1": 1018,
+   "note": "blot"
+  }
+ ],
+ "1-103": [
+  {
+   "y0": 97,
+   "y1": 139,
+   "note": "blot"
+  }
+ ],
+ "1-104": [
+  {
+   "y0": 67,
+   "y1": 101,
+   "note": "blot"
+  }
+ ],
+ "1-124": [
+  {
+   "y0": 329,
+   "y1": 349,
+   "note": "blot"
+  }
+ ],
+ "1-127": [
+  {
+   "y0": 250,
+   "y1": 271,
+   "note": "blot"
+  }
+ ],
+ "1-129": [
+  {
+   "y0": 6934,
+   "y1": 7024,
+   "note": "blot"
+  }
+ ],
+ "1-136": [
+  {
+   "y0": 143,
+   "y1": 169,
+   "note": "blot"
+  }
+ ],
+ "1-137": [
+  {
+   "y0": 6503,
+   "y1": 6531,
+   "note": "blot"
+  }
+ ],
+ "1-144": [
+  {
+   "y0": 472,
+   "y1": 500,
+   "note": "blot"
+  }
+ ],
+ "1-163": [
+  {
+   "y0": 5748,
+   "y1": 5771,
+   "note": "blot"
+  }
+ ],
+ "1-183": [
+  {
+   "y0": 5963,
+   "y1": 5987,
+   "note": "blot"
+  }
+ ],
+ "1-194": [
+  {
+   "y0": 6411,
+   "y1": 6436,
+   "note": "blot"
+  }
+ ],
+ "1-196": [
+  {
+   "y0": 2264,
+   "y1": 2286,
+   "note": "blot"
+  }
+ ],
+ "1-203": [
+  {
+   "y0": 5941,
+   "y1": 5963,
+   "note": "blot"
+  }
+ ],
+ "1-211": [
+  {
+   "y0": 3689,
+   "y1": 3742,
+   "note": "divider"
+  }
+ ],
+ "1-217": [
+  {
+   "y0": 5020,
+   "y1": 5045,
+   "note": "blot"
+  }
+ ],
+ "1-230": [
+  {
+   "y0": 2718,
+   "y1": 2743,
+   "note": "blot"
+  }
+ ],
+ "1-238": [
+  {
+   "y0": 6365,
+   "y1": 6390,
+   "note": "blot"
+  }
+ ],
+ "1-244": [
+  {
+   "y0": 477,
+   "y1": 499,
+   "note": "blot"
+  }
+ ],
+ "1-245": [
+  {
+   "y0": 514,
+   "y1": 537,
+   "note": "blot"
+  }
+ ],
+ "1-253": [
+  {
+   "y0": 6234,
+   "y1": 6264,
+   "note": "blot"
+  }
+ ],
+ "1-254": [
+  {
+   "y0": 6238,
+   "y1": 6266,
+   "note": "blot"
+  }
+ ],
+ "1-257": [
+  {
+   "y0": 6931,
+   "y1": 6960,
+   "note": "blot"
+  }
+ ],
+ "1-262": [
+  {
+   "y0": 6678,
+   "y1": 6700,
+   "note": "blot"
+  }
+ ],
+ "1-263": [
+  {
+   "y0": 0,
+   "y1": 20,
+   "note": "blot"
+  },
+  {
+   "y0": 6946,
+   "y1": 7008,
+   "note": "blot"
+  }
+ ],
+ "1-268": [
+  {
+   "y0": 284,
+   "y1": 317,
+   "note": "blot"
+  }
+ ],
+ "1-269": [
+  {
+   "y0": 0,
+   "y1": 20,
+   "note": "blot"
+  }
+ ],
+ "1-283": [
+  {
+   "y0": 6924,
+   "y1": 6947,
+   "note": "blot"
+  }
+ ],
+ "1-286": [
+  {
+   "y0": 6914,
+   "y1": 6940,
+   "note": "blot"
+  }
+ ],
+ "1-290": [
+  {
+   "y0": 5148,
+   "y1": 5168,
+   "note": "divider"
+  }
+ ],
+ "1-291": [
+  {
+   "y0": 6964,
+   "y1": 7040,
+   "note": "blot"
+  }
+ ],
+ "1-293": [
+  {
+   "y0": 6192,
+   "y1": 6220,
+   "note": "blot"
+  }
+ ],
+ "1-294": [
+  {
+   "y0": 6178,
+   "y1": 6202,
+   "note": "blot"
+  }
+ ],
+ "1-317": [
+  {
+   "y0": 453,
+   "y1": 473,
+   "note": "blot"
+  }
+ ],
+ "1-318": [
+  {
+   "y0": 6544,
+   "y1": 6588,
+   "note": "blot"
+  }
+ ],
+ "1-323": [
+  {
+   "y0": 6944,
+   "y1": 7040,
+   "note": "blot"
+  }
+ ],
+ "1-333": [
+  {
+   "y0": 5554,
+   "y1": 5577,
+   "note": "divider"
+  }
+ ],
+ "1-338": [
+  {
+   "y0": 5111,
+   "y1": 5137,
+   "note": "blot"
+  }
+ ],
+ "1-350": [
+  {
+   "y0": 6435,
+   "y1": 6459,
+   "note": "blot"
+  }
+ ],
+ "1-371": [
+  {
+   "y0": 6965,
+   "y1": 7021,
+   "note": "blot"
+  }
+ ],
+ "1-379": [
+  {
+   "y0": 6972,
+   "y1": 6997,
+   "note": "blot"
+  }
+ ],
+ "1-396": [
+  {
+   "y0": 5886,
+   "y1": 5915,
+   "note": "blot"
+  }
+ ],
+ "1-402": [
+  {
+   "y0": 6958,
+   "y1": 6997,
+   "note": "blot"
+  }
+ ],
+ "1-404": [
+  {
+   "y0": 6941,
+   "y1": 7056,
+   "note": "blot"
+  }
+ ],
+ "1-406": [
+  {
+   "y0": 6962,
+   "y1": 6991,
+   "note": "blot"
+  }
+ ],
+ "1-414": [
+  {
+   "y0": 6631,
+   "y1": 6651,
+   "note": "blot"
+  }
+ ],
+ "1-432": [
+  {
+   "y0": 5593,
+   "y1": 5613,
+   "note": "divider"
+  }
+ ],
+ "1-442": [
+  {
+   "y0": 3144,
+   "y1": 3198,
+   "note": "divider"
+  }
+ ],
+ "1-449": [
+  {
+   "y0": 290,
+   "y1": 324,
+   "note": "blot"
+  }
+ ],
+ "1-450": [
+  {
+   "y0": 262,
+   "y1": 300,
+   "note": "blot"
+  }
+ ],
+ "1-458": [
+  {
+   "y0": 0,
+   "y1": 34,
+   "note": "blot"
+  }
+ ],
+ "1-470": [
+  {
+   "y0": 0,
+   "y1": 29,
+   "note": "blot"
+  }
+ ],
+ "1-472": [
+  {
+   "y0": 0,
+   "y1": 24,
+   "note": "blot"
+  }
+ ],
+ "1-473": [
+  {
+   "y0": 3448,
+   "y1": 3495,
+   "note": "divider"
+  }
+ ]
 }

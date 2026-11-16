@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns="http://www.loc.gov/standards/alto/ns-v4#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-2.xsd">
+  <Description>
+    <MeasurementUnit>pixel</MeasurementUnit>
+    <sourceImageInformation>
+      <fileName>chukchi-materials-1-181.png</fileName>
+    </sourceImageInformation>
+  </Description>
+  <Tags>
+    <OtherTag ID="BT1" LABEL="RunningTitleZone" DESCRIPTION="block type RunningTitleZone"/>
+    <OtherTag ID="BT2" LABEL="MainZone-Other" DESCRIPTION="block type MainZone-Other"/>
+    <OtherTag ID="BT3" LABEL="MainZone-Continued" DESCRIPTION="block type MainZone-Continued"/>
+    <OtherTag ID="BT4" LABEL="MainZone-P" DESCRIPTION="block type MainZone-P"/>
+  </Tags>
+  <Layout>
+    <Page WIDTH="4784" HEIGHT="6960" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="4784" HEIGHT="6960">
+        <TextBlock HPOS="635" VPOS="562" WIDTH="3035" HEIGHT="110" ID="mz_1-181_001" TAGREFS="BT1">
+          <Shape>
+            <Polygon POINTS="635 562 3670 562 3670 672 635 672"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="635" VPOS="712" WIDTH="3035" HEIGHT="2547" ID="mz_1-181_002" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="635 712 3670 712 3670 3259 635 3259"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="635" VPOS="3307" WIDTH="3035" HEIGHT="96" ID="mz_1-181_003" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="635 3307 3670 3307 3670 3403 635 3403"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="635" VPOS="3509" WIDTH="3035" HEIGHT="1401" ID="mz_1-181_004" TAGREFS="BT3">
+          <Shape>
+            <Polygon POINTS="635 3509 3670 3509 3670 4910 635 4910"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="635" VPOS="5044" WIDTH="3035" HEIGHT="132" ID="mz_1-181_005" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="635 5044 3670 5044 3670 5176 635 5176"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="635" VPOS="5237" WIDTH="3035" HEIGHT="525" ID="mz_1-181_006" TAGREFS="BT4">
+          <Shape>
+            <Polygon POINTS="635 5237 3670 5237 3670 5762 635 5762"/>
+          </Shape>
+        </TextBlock>
+      </PrintSpace>
+    </Page>
+  </Layout>
+</alto>

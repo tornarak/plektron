@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns="http://www.loc.gov/standards/alto/ns-v4#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-2.xsd">
+  <Description>
+    <MeasurementUnit>pixel</MeasurementUnit>
+    <sourceImageInformation>
+      <fileName>chukchi-materials-1-459.png</fileName>
+    </sourceImageInformation>
+  </Description>
+  <Tags>
+    <OtherTag ID="BT1" LABEL="RunningTitleZone" DESCRIPTION="block type RunningTitleZone"/>
+    <OtherTag ID="BT2" LABEL="MainZone-Continued" DESCRIPTION="block type MainZone-Continued"/>
+    <OtherTag ID="BT3" LABEL="MainZone-Other" DESCRIPTION="block type MainZone-Other"/>
+  </Tags>
+  <Layout>
+    <Page WIDTH="4736" HEIGHT="6960" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="4736" HEIGHT="6960">
+        <TextBlock HPOS="631" VPOS="515" WIDTH="3035" HEIGHT="115" ID="mz_1-459_001" TAGREFS="BT1">
+          <Shape>
+            <Polygon POINTS="631 515 3666 515 3666 630 631 630"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="631" VPOS="745" WIDTH="3035" HEIGHT="4349" ID="mz_1-459_002" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="631 745 3666 745 3666 5094 631 5094"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="631" VPOS="5172" WIDTH="3035" HEIGHT="95" ID="mz_1-459_003" TAGREFS="BT3">
+          <Shape>
+            <Polygon POINTS="631 5172 3666 5172 3666 5267 631 5267"/>
+          </Shape>
+        </TextBlock>
+      </PrintSpace>
+    </Page>
+  </Layout>
+</alto>

@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns="http://www.loc.gov/standards/alto/ns-v4#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-2.xsd">
+  <Description>
+    <MeasurementUnit>pixel</MeasurementUnit>
+    <sourceImageInformation>
+      <fileName>chukchi-materials-1-035.png</fileName>
+    </sourceImageInformation>
+  </Description>
+  <Tags>
+    <OtherTag ID="BT1" LABEL="RunningTitleZone" DESCRIPTION="block type RunningTitleZone"/>
+    <OtherTag ID="BT2" LABEL="MainZone-P" DESCRIPTION="block type MainZone-P"/>
+  </Tags>
+  <Layout>
+    <Page WIDTH="4640" HEIGHT="6992" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="4640" HEIGHT="6992">
+        <TextBlock HPOS="428" VPOS="600" WIDTH="3035" HEIGHT="74" ID="mz_1-035_001" TAGREFS="BT1">
+          <Shape>
+            <Polygon POINTS="428 600 3463 600 3463 674 428 674"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="428" VPOS="787" WIDTH="3035" HEIGHT="1490" ID="mz_1-035_002" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="428 787 3463 787 3463 2277 428 2277"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="428" VPOS="2293" WIDTH="3035" HEIGHT="1226" ID="mz_1-035_003" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="428 2293 3463 2293 3463 3519 428 3519"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="428" VPOS="3519" WIDTH="3035" HEIGHT="751" ID="mz_1-035_004" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="428 3519 3463 3519 3463 4270 428 4270"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="428" VPOS="4298" WIDTH="3035" HEIGHT="1483" ID="mz_1-035_005" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="428 4298 3463 4298 3463 5781 428 5781"/>
+          </Shape>
+        </TextBlock>
+      </PrintSpace>
+    </Page>
+  </Layout>
+</alto>

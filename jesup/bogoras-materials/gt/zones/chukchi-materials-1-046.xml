@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns="http://www.loc.gov/standards/alto/ns-v4#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-2.xsd">
+  <Description>
+    <MeasurementUnit>pixel</MeasurementUnit>
+    <sourceImageInformation>
+      <fileName>chukchi-materials-1-046.png</fileName>
+    </sourceImageInformation>
+  </Description>
+  <Tags>
+    <OtherTag ID="BT1" LABEL="RunningTitleZone" DESCRIPTION="block type RunningTitleZone"/>
+    <OtherTag ID="BT2" LABEL="MainZone-Continued" DESCRIPTION="block type MainZone-Continued"/>
+    <OtherTag ID="BT3" LABEL="MainZone-P" DESCRIPTION="block type MainZone-P"/>
+  </Tags>
+  <Layout>
+    <Page WIDTH="4640" HEIGHT="7024" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="4640" HEIGHT="7024">
+        <TextBlock HPOS="1168" VPOS="578" WIDTH="3035" HEIGHT="87" ID="mz_1-046_001" TAGREFS="BT1">
+          <Shape>
+            <Polygon POINTS="1168 578 4203 578 4203 665 1168 665"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="1168" VPOS="782" WIDTH="3035" HEIGHT="1474" ID="mz_1-046_002" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="1168 782 4203 782 4203 2256 1168 2256"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="1168" VPOS="2286" WIDTH="3035" HEIGHT="345" ID="mz_1-046_003" TAGREFS="BT3">
+          <Shape>
+            <Polygon POINTS="1168 2286 4203 2286 4203 2631 1168 2631"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="1168" VPOS="2661" WIDTH="3035" HEIGHT="2212" ID="mz_1-046_004" TAGREFS="BT3">
+          <Shape>
+            <Polygon POINTS="1168 2661 4203 2661 4203 4873 1168 4873"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="1168" VPOS="4916" WIDTH="3035" HEIGHT="857" ID="mz_1-046_005" TAGREFS="BT3">
+          <Shape>
+            <Polygon POINTS="1168 4916 4203 4916 4203 5773 1168 5773"/>
+          </Shape>
+        </TextBlock>
+      </PrintSpace>
+    </Page>
+  </Layout>
+</alto>
