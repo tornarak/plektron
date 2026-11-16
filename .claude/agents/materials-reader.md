@@ -171,9 +171,13 @@ note saying whose spelling it is. Spell each form's codepoints in
 - **A hook below `є` or `һ` is ignored** (the editor, 2026-11-16: printed
   inconsistently, with no discernible phonetic or semantic content). Key plain
   `є` (`Кэ́lє`, 1-024 l34; the layers' `ę` folds to it) and plain `һ`
-  (`Мырһ-у́мӄы`, 1-041 l12), with no `doubt`. The hooked `К` and `Н` are not
-  this: they are `ӄ` and `ӈ`. **Never invent a codepoint**, nor a sequence: a
-  cedilla, ogonek or comma below for a mark nobody ruled.
+  (`Мырһ-у́мӄы`, 1-041 l12), with no `doubt`. **The same mark under a `к` is
+  ignored too** (the editor, 2026-11-16): a separate reverse-cedilla curl beneath
+  a plain `к` is `к` (`та́јӈыкут`, 1-029 l16). `ӄ` is the `К` whose own stroke
+  runs down into the hook (`тыкы́ђаӄ`, 1-042 l26). Zoom every hooked `К` and key
+  by which it is; the layers' `қ` folds to `ӄ` either way, so the fold is no
+  witness. **Never invent a codepoint**, nor a sequence: a cedilla, ogonek or
+  comma below for a mark nobody ruled.
 - **The 1899 key** (`scratch/chukchi/bogoraz-1899-phonetics-key.md`) says what a
   letter may be, not what this print sets. Where the scan shows a key letter the
   rules lack (`ҕ` beside `ђ`, `к̧`, `h̦`, `р̌`, a mark below `w` or `ы`), key it as
