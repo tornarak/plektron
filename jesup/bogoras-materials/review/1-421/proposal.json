@@ -1,0 +1,178 @@
+{
+ "ref": "1-421",
+ "contamination": {
+  "blind": false,
+  "why": "this pass reads both text-layer copies (ocr witness) by design, and one lexicon lookup; no other page's proposal, decision or gt/ocr/ was read"
+ },
+ "lines": {
+  "0": {
+   "text": "II,135. МАТЕРІАЛЫ ПО ИЗУЧЕНІЮ ЧУКОТСКАГО ЯЗЫКА И ФОЛЬКЛОРА. 365",
+   "note": "Running head cannot be zoomed; read off the copies: copy B dropped the folio II,135 (kept in its b_only); spacing before the periods is the engine's.",
+   "class": "layout"
+  },
+  "1": {
+   "text": "стадо мимо чукотскихъ шатровъ, не останавливаясь ни на минуту; отъ"
+  },
+  "2": {
+   "text": "стука копытъ не было слышно человѣческаго слова. Только на пятый день"
+  },
+  "3": {
+   "text": "къ вечеру показались задніе олени. Такъ велико было стадо. Такъ стали"
+  },
+  "4": {
+   "text": "Та́lо и братья его богаты и сильны, и зажили¹) на жительствѣ. Только.",
+   "native": "Та́lо",
+   "resolved": "Та́lо: U+0301 acute on а, U+006C tall l",
+   "note": "Та́lо: acute on а read at 2x; counterpart Taˊlo. Footnote ref ¹) raised digit with full-size paren.",
+   "class": "semantic"
+  },
+  "5": {
+   "text": "Записано отъ чукчи кривого Кэўтэ́ђын’а въ Нижнеколымскѣ.",
+   "native": "Кэўтэ́ђын’а",
+   "resolved": "Кэўтэ́ђын’а: U+045E ў (у + U+0306 breve), U+0301 acute on э, U+0452 ђ, U+2019 curly apostrophe",
+   "note": "Кэўтэ́ђын’а: acute sits on the second э (counterpart Keuteˊhɪn); the ђ is the ҕ-like shape. Told by a one-eyed Chukchi.",
+   "class": "semantic"
+  },
+  "6": {
+   "text": "136."
+  },
+  "7": {
+   "text": "А̂ттымlө̂́-lѵ́мӈыl. Сказка объ А̂́ттымlу̂.",
+   "native": "А̂ттымlө̂́-lѵ́мӈыl А̂́ттымlу̂",
+   "resolved": "А̂ттымlө̂́-lѵ́мӈыl А̂́ттымlу̂: U+0302 circumflex on first А, U+006C tall l, U+04E9 ө with U+0302 circumflex and U+0301 acute, U+0475 ѵ with U+0301 acute, U+04C8 ӈ, U+0302 + U+0301 stacked on second А, U+0302 on у",
+   "note": "Title of tale 136. Marks read off scan: first А circumflex only; ө carries circumflex with acute above it; ѵ (izhitsa, copy A had ѵ) carries acute; ӈ is the hooked Н; second А carries circumflex with acute stacked over it; у carries circumflex. Stacked order circumflex then acute is my reading of two marks one over the other. Compare 1-044 ratified А́мlу̂, differing in the stack on А.",
+   "class": "doubt"
+  },
+  "8": {
+   "text": "",
+   "note": "A band holding only the acute that stands over the А of line 9 (the А's circumflex sits in line 9's own box); a mark, not a word.",
+   "class": "artifact"
+  },
+  "9": {
+   "text": "Нѣкогда А̂́ттымlу̂²) настоящій силачъ, прозвище дали ему таньги,",
+   "native": "А̂́ттымlу̂",
+   "resolved": "А̂́ттымlу̂: U+0302 circumflex and U+0301 acute stacked on А, U+006C tall l, U+0302 circumflex on у",
+   "note": "Footnote ref ²) is a raised digit with a full-size paren, no space. Name carries circumflex+acute stacked on А and circumflex on у; acute lies in line 8 band.",
+   "class": "layout"
+  },
+  "10": {
+   "text": "ибо у него словно костяное лицо: какъ ни стрѣляютъ, не могутъ ранить."
+  },
+  "11": {
+   "text": "Постоянно ходитъ въ панцырѣ. Съ нимъ вмѣстѣ живетъ Эlэ́ннут, смѣнный",
+   "as_typed": "Постоянно ходитъ въ панцырѣ. Съ нимъ вмѣстѣ живетъ {E_1l_0e_1'nnut}, смѣнный",
+   "native": "Эlэ́ннут",
+   "resolved": "Эlэ́ннут: U+006C tall l, U+0301 acute on э"
+  },
+  "12": {
+   "text": "его товарищъ по женѣ. Онъ поссорился съ силачемъ Кивающимъ головою³),",
+   "note": "Footnote ref ³) raised digit (copy B dropped it). Кивающимъ головою is the Russian rendering of the name in fn 3.",
+   "class": "layout"
+  },
+  "13": {
+   "text": "и ударилъ его ладонью по головѣ; тотъ хворалъ цѣлое лѣто. Потомъ онъ"
+  },
+  "14": {
+   "text": "поправился, сталъ упражняться: бѣгаетъ, фехтуетъ копьемъ, таскаетъ"
+  },
+  "15": {
+   "text": "тяжести. Два года упражнялся. Потомъ съ братомъ поѣхали они къ"
+  },
+  "16": {
+   "text": "силачу. Пріѣхали къ нему, вошли, пообѣдали. «Какъ дорога?» говоритъ."
+  },
+  "17": {
+   "text": "«Ничего себѣ.» Потомъ говорятъ: «А знаешь-ли, зачѣмъ мы пріѣхали?» —"
+  },
+  "18": {
+   "text": "«Да. Ну чтожъ, хотите, я вамъ дамъ два лахтака⁴)?» — «Зачѣмъ, развѣ"
+  },
+  "19": {
+   "text": "мы пріѣхали за имуществомъ?» — «Ну, дамъ два бобра!» — «Развѣ"
+  },
+  "20": {
+   "text": "ты безуменъ? Мы пріѣхали не для того.» — «Для чего-же вы прі-"
+  },
+  "21": {
+   "text": "ѣхали?» — «Подумай! Собери свои мысли (угадай, для чего мы прі-"
+  },
+  "22": {
+   "text": "ѣхали)!» — «А, ну ладно, выйдемъ!» Lаwтыlыwа́lын силачъ, другой Јыр-",
+   "native": "Lаwтыlыwа́lын Јыр-",
+   "resolved": "Lаwтыlыwа́lын Јыр-: U+004C Latin L, U+006C tall l, U+0077 w, U+0301 acute on а, U+0408 Ј",
+   "note": "Lаwтыlыwа́lын (the Nodding-head strongman, Russian Кивающій головою, fn 3): Latin L, tall l, w. Јыр- ends the line; the word continues on line 23 as Јыр-кытоwа́łа̂н.",
+   "class": "semantic"
+  },
+  "23": {
+   "text": "кытоwа́łа̂н⁵) вышли. Эlэ́ннут сѣлъ на санки и смотритъ. Засучилъ ру-",
+   "as_typed": "кытоwа́łа̂н⁵) вышли. {E_1l_0e_1'nnut} сѣлъ на санки и смотритъ. Засучилъ ру-",
+   "native": "кытоwа́łа̂н Эlэ́ннут",
+   "resolved": "кытоwа́łа̂н Эlэ́ннут: U+0077 w, U+0301 acute on а, U+0142 ł barred l, U+0302 circumflex on а, U+006C tall l, U+0301 acute on э",
+   "note": "Letter after а́ is a stem with a crossbar: read as ł (barred l). The ratified Јыркытоwа́ðа̂н on 1-044 has ð here (forked d); same name (fn 5 glosses it Мягко-задый); the crossbar shape here is not a forked d at 2x, but look at it. Footnote ref ⁵) raised digit.",
+   "class": "doubt"
+  },
+  "24": {
+   "text": "кава Костянолицый. Налетѣлъ на его одинъ, протянулъ только руку,"
+  },
+  "25": {
+   "text": "смотритъ — сзади другой. «Какъ?» говоритъ. «Двое?» — «Да, вдвоемъ!» —"
+  },
+  "26": {
+   "text": "«Ну ладно, пусть!» Схватилъ ихъ за шивороты, тряхнулъ, стукнулъ"
+  },
+  "27": {
+   "text": "разъ-другой лицами и бросилъ на землю. На землѣ кровь, какъ отъ"
+  },
+  "28": {
+   "text": "убоя оленя. Тогда вошелъ А̂́ттымlу̂ въ пологъ и сѣлъ тамъ, не глядя",
+   "native": "А̂́ттымlу̂",
+   "resolved": "А̂́ттымlу̂: U+0302 and U+0301 stacked on А, U+006C tall l, U+0302 circumflex on у",
+   "note": "Name: acute+circumflex stacked on А (acute in line 27/ ink above), circumflex on у, as line 9.",
+   "class": "layout"
+  },
+  "29": {
+   "text": "на побѣжденныхъ."
+  },
+  "30": {
+   "text": "Записано отъ чукчи Айвана на урочищѣ Акона́јке.",
+   "native": "Акона́јке",
+   "resolved": "Акона́јке: U+0301 acute on а, U+0458 ј"
+  },
+  "31": {
+   "text": "1) Нымытва́ӈӈоат.",
+   "native": "Нымытва́ӈӈоат",
+   "resolved": "Нымытва́ӈӈоат: U+0301 acute on а, U+04C8 ӈ twice",
+   "note": "Нымытва́ӈӈоат (both copies read нн): scan shows two hooked н (ӈ ӈ) with a curl beneath each, and an acute on the а before them (both copies dropped it). Footnote 1 glosses a verb for the preceding «зажили», they lived.",
+   "class": "doubt"
+  },
+  "32": {
+   "text": "",
+   "note": "Band holding only the acute+circumflex marks that stand over the А of А̂́мlу in line 33; a mark, not a word.",
+   "class": "artifact"
+  },
+  "33": {
+   "text": "2) Аттымlу̂ или А̂́мlу — Костяное лицо.",
+   "native": "Аттымlу̂ А̂́мlу",
+   "resolved": "Аттымlу̂ А̂́мlу: U+006C tall l, U+0302 circumflex on first у; U+0302 and U+0301 stacked on second А, U+006C tall l",
+   "note": "Fn 2: Аттымlу̂ or А̂́мlу — «Костяное лицо», Bone-face. First А: no mark in its own box, and the only accent band (line 32) holds one acute+circumflex pair whose position I could not tie to the first or second А; I gave it to А̂́мlу (where the strip showed it). 1-044 ratifies А̂́ттымlу̂ for the first form and А́мlу̂ for the second; I keyed what I saw: first plain А, second stacked marks on А and plain у. Look at where the line-32 marks sit. Damaged л in лицо.",
+   "class": "doubt"
+  },
+  "34": {
+   "text": "3) Lаwтыlыwа́lын см. № 16, прим. 2.",
+   "native": "Lаwтыlыwа́lын",
+   "resolved": "Lаwтыlыwа́lын: U+004C Latin L, U+0077 w, U+006C tall l, U+0301 acute on а",
+   "note": "Fn 3: Lаwтыlыwа́lын, see No. 16, note 2. The remaining tail after прим. read from copies.",
+   "class": "layout"
+  },
+  "35": {
+   "text": "4) На выкупъ.",
+   "note": "Fn 4 on лахтака: «На выкупъ», as ransom.",
+   "class": "semantic"
+  },
+  "36": {
+   "text": "5) «Имѣющій мягкій задъ».",
+   "note": "Fn 5, on the name Јыр-кытоwа́łа̂н: «Имѣющій мягкій задъ», having a soft backside.",
+   "class": "semantic"
+  }
+ }
+}

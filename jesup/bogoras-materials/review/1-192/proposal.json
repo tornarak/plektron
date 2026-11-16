@@ -1,0 +1,78 @@
+{
+ "ref": "1-192",
+ "contamination": {
+  "blind": false,
+  "why": "this pass reads both text-layer copies (ocr witness) by design, and one lexicon lookup; no other page's proposal, decision or gt/ocr/ was read"
+ },
+ "lines": {
+  "0": {
+   "text": "136 Г. БОГОРАЗЪ, I,36.",
+   "note": "Running head letterspaced БОГОРАЗЪ, keyed unspaced; I is a Roman numeral, Latin.",
+   "class": "layout"
+  },
+  "1": {
+   "text": "В.",
+   "note": "the running head is split across two boxes: this one holds the initial В. of В. Г. БОГОРАЗЪ, line 0 the rest (keyed as on 1-058–062)",
+   "class": "layout"
+  },
+  "9": {
+   "text": "Записано отъ чукчи Ајӈанва́т’а въ Анюйской крѣпости.",
+   "native": "Ајӈанва́т’а",
+   "resolved": "Ајӈанва́т’а: U+04C8 ӈ with hook, U+0301 acute on а, U+2019 curly apostrophe",
+   "note": "Scan shows no grave on н, unlike the ratified Ајӈан̀ва́т (1-022); keyed as printed. Name of the informant Ajnanvat; cf. Aiñanwaˊt in The Chukchee.",
+   "class": "doubt"
+  },
+  "10": {
+   "text": "крови наружу выливается, какъ будто течетъ (струя) мочи, предметъ вели-"
+  },
+  "11": {
+   "text": "5 каго страха. Если не залечено, умретъ. Такой заговоръ опять-таки есть."
+  },
+  "12": {
+   "text": "У макушки зенита проситъ, говоритъ: «Летающій паукъ, приди, временъ"
+  },
+  "13": {
+   "text": "начала творенія паукъ!» Лѣвой рукой берутъ какъ будто. «Вотъ, вотъ!"
+  },
+  "14": {
+   "text": "сшей это!» Собственной рукой какъ будто зашиваетъ и чѣмъ-нибудь какъ"
+  },
+  "15": {
+   "text": "будто завязываетъ. Если немного спустя развязываетъ, совсѣмъ вылечено,"
+  },
+  "16": {
+   "text": "10 какъ прежнее стало, (какъ) старый (зажившій) порѣзъ, такого (вида)."
+  },
+  "17": {
+   "text": "36."
+  },
+  "18": {
+   "text": "Енанмаlа̀w-е́wђан.",
+   "native": "Енанмаlа̀w-е́wђан",
+   "resolved": "Енанмаlа̀w-е́wђан: U+006C tall l, U+0300 grave on а, U+0077 w twice, U+0301 acute on е, U+0452 ђ",
+   "note": "Title of the text; ђ vs ӄ checked, the glyph is the ђ shape. Counterpart none in The Chukchee.",
+   "class": "doubt"
+  },
+  "24": {
+   "text": "Записано отъ чукчи Вателя на урочищѣ Аконайке."
+  },
+  "25": {
+   "text": "Лечебный заговоръ."
+  },
+  "26": {
+   "text": "Если кто хвораетъ, опухло очень, но еще не пробилось, опять есть"
+  },
+  "27": {
+   "text": "заговоръ у меня. Я говорю: «Тюленчикъ временъ начала творенія, тюлен-"
+  },
+  "28": {
+   "text": "чикомъ я сталъ. Тюленчикъ временъ творенія, толстый ледъ пробилъ. На"
+  },
+  "29": {
+   "text": "5 опухоль трижды я дышу, какъ будто дую, потомъ я кончаю. Скоро, не-"
+  },
+  "30": {
+   "text": "много спустя, или даже завтра, вскрывается (опухоль)."
+  }
+ }
+}
