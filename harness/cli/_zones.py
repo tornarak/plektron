@@ -190,12 +190,8 @@ def register(cli):
                "gets. Refuses a ruled leaf, a page keyed in gt/zones/, a page with "
                "no rule file or one predating the flags, and a page already holding "
                "a fresh verdict, naming the remedy. Exit 1 on a refusal")
-    refs_arg(p, all_="every page whose rule file carries a flag, less those "
-                     "refused, which are listed")
-    opt(p, "--sample", type=int, default=0,
-        help="with --all, add N unflagged pages drawn by --seed: what measures "
-             "what the flags miss")
-    opt(p, "--seed", type=int, default=0, help="the --sample draw's seed")
+    refs_arg(p, all_="every page with a rule file, less those refused, which "
+                     "are listed")
     opt(p, "--note", type=str, default=None,
         help="a sentence appended to every page block in this batch")
 
@@ -506,36 +502,24 @@ def run_verdict(a) -> int:
     return verdict(a, 0, f"{len(refs)} verdicts pass")
 
 
-def _flagged(a) -> list[str]:
-    """`queue --all`: the flagged pages, plus `--sample` unflagged ones by seed."""
-    import random
-
-    from .. import provenance
+def _candidates(a) -> list[str]:
+    """`queue --all`: every page with a rule file. The flags no longer select:
+    the editor's ruling (2026-11-15) is that a reviewer looks at every page, so
+    a flag is a hint in the page's block and an unflagged page is not exempt."""
     zmod, _ = _mod()
-    flagged, plain = [], []
-    for ref in zmod.zone_refs(a.root, zmod.MZDIR):
-        p = provenance.read_producer(zmod.alto_for(ref, a.root, zmod.MZDIR))
-        f = p.inputs.get("flags") if p else None
-        if f is None:
-            continue           # predates the flags, or not the rule's file
-        (flagged if f else plain).append(ref)
-    rng = random.Random(a.seed)
-    extra = rng.sample(plain, min(a.sample, len(plain)))
-    return sorted(flagged + extra, key=zmod.parse_ref)
+    return sorted(zmod.zone_refs(a.root, zmod.MZDIR), key=zmod.parse_ref)
 
 
 def run_queue(a) -> int:
     from ..dispatch import ZONING, Unready, queue_refs, zoning_build
 
     refs = page_refs(a)
-    if a.sample and refs:
-        raise click.UsageError("--sample draws beside --all and means nothing alone")
     if not refs:
         # A refused page is left out of an --all batch rather than failing it:
         # the selection is the tool's, so the refusal is too. Named refs refuse.
         refs, left = [], []
         with progress("selecting") as tick:
-            for r in ptrack(_flagged(a), tick):
+            for r in ptrack(_candidates(a), tick):
                 try:
                     zoning_build(r, a.root)
                     refs.append(r)
@@ -544,8 +528,7 @@ def run_queue(a) -> int:
         if left:
             out(a, left, name="left_out", heading=True)
         if not refs:
-            raise click.ClickException("nothing to queue: every flagged page was "
-                                       "refused")
+            raise click.ClickException("nothing to queue: every page was refused")
     try:
         rec = queue_refs(refs, a.root, note=a.note, track=ZONING)
     except Unready as e:

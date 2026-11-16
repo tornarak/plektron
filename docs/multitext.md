@@ -195,18 +195,21 @@ What the rows show (600 dpi), and what the rule does with it:
   Russian often resumes unindented under a rule the layer does not read (87–300
   px). Leading within a stream reaches 61–63 px in the front matter and
   dialogue.
-- **The footnotes** open `N)` under the footnote rule: a short printed rule
-  from the column's left edge, found as the longest horizontal ink run in the
-  gap above (a line of type never makes one). Every one of the 188 blocks
-  opening `N)` under a gap carries one, 513–999 px from within 213 px of the
-  edge, and none of the six that are not footnotes does (the proverbs of
-  `1-200`, the numbered texts of `1-201`, `1-202`). The block and everything
-  below it is the apparatus: on `1-048` the two documents a footnote introduces
-  are printed in it. Where no rule is found, the last block opening `N)` is
-  still footnotes if it is set smaller (a pitch of ~95–110 px against the
-  body's ~120–130). Pitch alone missed `1-278`, whose two notes run at the
-  body's pitch. The in-text call is no witness: the layer drops its digit
-  (`зимушку )`, `1-216`).
+- **The footnotes** sit under the footnote rule: a short printed rule from the
+  column's left edge, found as the longest horizontal ink run between two
+  lines, centre to centre, breaks of up to 10 px bridged and the run at least
+  `rule_fill_min` inked. Every one of the 188 blocks opening `N)` under a gap
+  carries one, 513–999 px from within 213 px of the edge, and none of the six
+  that are not footnotes does (the proverbs of `1-200`, the numbered texts of
+  `1-201`, `1-202`). The block and everything below it is the apparatus: on
+  `1-048` the two documents a footnote introduces are printed in it. **The rule
+  is the only evidence** (2026-11-15): the block's first line is not read, since
+  the layer misreads `1)` and `1-049`'s document opens with none, and a block
+  with no rule over it is the reviewer's. The search runs between every two
+  lines, not only in a gap, because the boxes' drift can close the white the
+  rule sits in (`1-387`, 10 px), and the fill is what keeps the bridge from
+  joining a long word in close bold type into a run of the same length
+  (`1-179`).
 - **A full-width rule** separates the Chukchi from its Russian on a Section I
   page (~2940–2985 px). A `MainZone-Continued` band under one is expected and
   raises no `continued` flag.
@@ -257,8 +260,17 @@ unzoned line), each with its reason, and naming the rule file's digest so it goe
 stale visibly. `zones verdict` gates it; `zones edit` shows it applied in the
 `llm` view, and a human save is still what writes `gt/zones/`. The rule records
 `flags`, its page-level reasons a band may be wrong (`unzoned`, `parallel`,
-`notes`, `continued`, `fallback`), and `zones queue --all --sample N` deals
-those pages out with N unflagged ones beside them. The agent reviewed the rule's
+`continued`, `fallback`, `uncovered`), as hints in the reviewer's page block.
+
+**Every page is reviewed, and the rule is measurement** (the editor, 2026-11-15).
+The first batch dealt out the flagged pages and a sample of 20 unflagged ones,
+and 4 of the 20 needed edits, so the flags could not stand in for a look. And a
+rule extended to catch what reviewers corrected would be fitted to their edits,
+after which its agreement with them is one witness counted twice. So `zones
+queue --all` is every page, and the rule measures — rows, gaps, indents, centring,
+gutters, printed rules — and reads no words: a Примѣчанія note's opener, a
+footnote's `N)`, a colophon or a title are judged by the reviewer against
+`rulings.md`. The agent reviewed the rule's
 output, so its agreement is not a second witness. Dispatch is
 `.claude/skills/review-zones/`, the contract `.claude/agents/zones-reviewer.md`.
 

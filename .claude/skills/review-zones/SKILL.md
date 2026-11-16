@@ -22,9 +22,9 @@ render. In short, with `--root jesup/bogoras-materials` on each:
 
     uv run harness zones propose --all --commit --force   only if the rule changed:
                                                           it stales every verdict
-    uv run harness zones queue --all --sample 20          the flagged pages and 20
-                                                          others; validates, writes the
-                                                          queue, prints THE prompt
+    uv run harness zones queue --all                      every unkeyed page; validates,
+                                                          writes the queue, prints
+                                                          THE prompt
     …spawn ceil(n/8) zones-reviewer agents with that prompt, unedited and
       identical, staggering the first launch about ten seconds…
     uv run harness zones reconcile PP-NNN ...             what came back
@@ -35,9 +35,11 @@ render. In short, with `--root jesup/bogoras-materials` on each:
 missing or predates the flags, and a page already holding a fresh verdict. Under
 `--all` a refused page is left out and listed; a named page refuses the batch.
 
-**The sample is the measurement.** `--sample N` adds N unflagged pages by seed. Read
-what the reviewers did there: edits on unflagged pages are what the flags miss, and
-without them the pass cannot say the unflagged pages are fine.
+**Every page is reviewed** (the editor, 2026-11-15): 4 of 20 unflagged pages
+needed edits in the first batch, so a flag is a hint, not a selection. **Do not
+extend the rule to catch what reviewers correct**: it measures and reads no words,
+and a rule fitted to their edits makes its agreement with them one witness. A
+fault is the rule's only where it breaks its own measurement (`docs/multitext.md`).
 
 ## After the batch
 

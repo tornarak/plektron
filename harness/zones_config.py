@@ -35,8 +35,8 @@ CONFIG = "config/zones.json"
 #: absence is how `zones propose` knows a text was never calibrated for it.
 TEXT_RULE_KEYS = ("head_max_y", "foot_max_w", "number_pad", "gap_min_px",
                   "indent_px", "indent_tol", "heading_max_w", "centre_tol",
-                  "notes_pitch_ratio", "gutter_min_px", "gutter_min_rows",
-                  "gutter_max_offset", "rule_bridge_px", "footrule_min_px",
+                  "gutter_min_px", "gutter_min_rows",
+                  "gutter_max_offset", "rule_bridge_px", "rule_fill_min", "footrule_min_px",
                   "footrule_max_start", "footrule_max_end", "stream_rule_min_px",
                   "speck_max_chars", "speck_max_px", "missing_min_h", "missing_edge_px")
 

@@ -20,8 +20,8 @@ from harness.zones_config import TEXT_RULE_KEYS, ConfigError, load_config
 X0, M = 600, 2986
 RULE = {"head_max_y": 700, "foot_max_w": 200, "number_pad": 40, "gap_min_px": 80,
         "indent_px": 210, "indent_tol": 50, "heading_max_w": 2000, "centre_tol": 60,
-        "notes_pitch_ratio": 0.9, "gutter_min_px": 60, "gutter_min_rows": 3,
-        "gutter_max_offset": 300, "rule_bridge_px": 10, "footrule_min_px": 450,
+        "gutter_min_px": 60, "gutter_min_rows": 3,
+        "gutter_max_offset": 300, "rule_bridge_px": 10, "rule_fill_min": 0.9, "footrule_min_px": 450,
         "footrule_max_start": 400, "footrule_max_end": 1000,
         "stream_rule_min_px": 2700, "speck_max_chars": 2, "speck_max_px": 60,
         "missing_min_h": 60, "missing_edge_px": 5}
@@ -206,13 +206,15 @@ def test_a_heading_number_with_text_below_is_no_quire_mark():
     assert "QuireMarksZone" not in labels(p)
 
 
-def test_footnotes_are_set_smaller_than_the_body():
+def test_footnotes_with_no_rule_over_them_are_the_reviewers():
+    # Set smaller and opening `1)`, but neither is measured as a footnote: only
+    # the printed rule is (2026-11-15, rules are measurement).
     p = Page()
     p.para(6, indent=False)
     p.gap(100)
     p.add("1) В. Г. Богоразъ, Краткій отчетъ", x=X0 + 210, w=M - 210, pitch=100)
     p.add("(съ картою маршрутовъ)", pitch=100)
-    assert labels(p) == ["MainZone-Continued", "MarginTextZone-Notes"]
+    assert labels(p) == ["MainZone-Continued", "MainZone-P"]
 
 
 def _rule_ink(y: int, x: int, w: int) -> np.ndarray:
@@ -237,6 +239,44 @@ def test_footnotes_at_the_bodys_pitch_are_known_by_their_rule():
     broken[:, X0 + 400:X0 + 406] = False
     assert labels(p, broken)[-1] == "MarginTextZone-Notes"
     assert labels(p, _rule_ink(rule_y, X0 + 1280, 420))[-1] == "MainZone-P"
+
+
+def test_the_rule_alone_starts_the_footnotes():
+    # `1-049`: a document a footnote introduces, under the rule, opening with no
+    # `N)`. What a line says is not read.
+    p = Page()
+    p.para(6, indent=False)
+    p.gap(100)
+    p.add("Копія. № 8712.", x=X0 + 210, w=M - 900)
+    p.add("Объявленіе")
+    rule_y = p.rows[-2]["vpos"] - 80
+    assert labels(p, _rule_ink(rule_y, X0 + 10, 840)) == \
+        ["MainZone-Continued", "MarginTextZone-Notes"]
+
+
+def test_a_rule_is_found_where_the_boxes_close_the_gap_over_it():
+    # `1-387`: the layer's boxes drift, and leave 10 px between the last body
+    # line and the first note, with the footnote rule printed in between.
+    p = Page()
+    p.para(6, indent=False)
+    p.add("1) Мећы-танӈытан т. е. русскій", x=X0 + 210, w=M - 1700, y=p.y - 115)
+    p.add("2) Ораwеђа пераркын", x=X0 + 210, w=M - 210)
+    rule_y = p.rows[-2]["vpos"] - 30
+    assert labels(p, _rule_ink(rule_y, X0 + 10, 840)) == \
+        ["MainZone-Continued", "MarginTextZone-Notes"]
+
+
+def test_letters_bridged_into_a_long_run_are_no_rule():
+    # `1-179`: a long word in close bold type, its letters under rule_bridge_px
+    # apart, bridges into a run a footnote rule's length. A rule is solid.
+    p = Page()
+    p.para(6, indent=False)
+    p.para(3)
+    ink = BLANK.copy()
+    y = p.rows[6]["vpos"] - 30
+    for x in range(X0 + 10, X0 + 850, 14):          # 6 px of ink, 8 px of white
+        ink[y:y + 6, x:x + 6] = True
+    assert labels(p, ink) == ["MainZone-Continued", "MainZone-P"]
 
 
 def test_a_margin_mark_joined_to_a_row_is_taken_off_it():
@@ -276,41 +316,28 @@ def test_numbered_proverbs_at_the_bodys_size_are_not_footnotes():
     assert "MarginTextZone-Notes" not in labels(p)
 
 
-# ---------------------------------------------------------------- the notes
+# ---------------------------------------------------------------- the text is not read
 
 
-def test_each_note_is_one_paragraph_whatever_its_indents():
-    p = Page()
-    p.para(2, indent=False)               # a note carried over
-    p.add("21 (стр . 81). Єлыӄыкына", x=X0 + 215, w=M - 215)
-    p.add("продолженіе примѣчанія")
-    p.add("Сравнить №5 , прим . 26 .", w=883)
-    p.add("и еще одна строка", x=X0 + 215, w=M - 215)   # indented, not an opener
-    p.add("22 (стр. 84). вачһааркын", x=X0 + 215, w=M - 215)
-    assert labels(p) == ["MainZone-Continued", "MainZone-P", "MainZone-P"]
+def test_in_the_notes_every_indent_is_a_band_and_the_opener_is_not_read():
+    # A note's printed opener is the reviewer's to read against the ruling, so
+    # an indented line that opens none is a band like any other, and the same
+    # geometry under other words gives the same bands.
+    def page(words: list[str]) -> Page:
+        p = Page()
+        p.para(2, indent=False)               # a note carried over
+        p.add(words[0], x=X0 + 215, w=M - 215)
+        p.add("продолженіе примѣчанія")
+        p.add("Сравнить №5 , прим . 26 .", w=883)
+        p.add(words[1], x=X0 + 215, w=M - 215)
+        p.add(words[2], x=X0 + 215, w=M - 215)
+        return p
 
-
-def test_the_only_note_under_its_heading_needs_no_opener():
-    p = Page()
-    p.para(2, indent=False)
-    p.gap(200)
-    centred(p, "Примѣчанія къ №44 .", w=881)
-    p.add("Ваырђу-wéthaw буквально", x=X0 + 200, w=M - 200)
-    p.add("требительны у чукочъ")
-    assert labels(p) == ["MainZone-Continued", "MainZone-Other", "MainZone-P"]
-
-
-def test_a_new_texts_heading_ends_the_notes():
-    p = Page()
-    p.add("21 (стр . 81). Єлыӄыкына", x=X0 + 215, w=M - 215)
-    p.add("продолженіе")
-    p.gap(200)
-    centred(p, "7.", w=84)
-    p.gap(100)
-    p.add("Амен ѵм", x=X0 + 215, w=M - 215)
-    p.add("Ђепу ӈірӑ-мурі")
-    p.add("второй абзацъ", x=X0 + 215, w=M - 215)
-    assert labels(p) == ["MainZone-P", "MainZone-Other", "MainZone-P", "MainZone-P"]
+    notes = page(["21 (стр . 81). Єлыӄыкына", "и еще одна строка",
+                  "22 (стр. 84). вачһааркын"])
+    plain = page(["Первая строка", "вторая строка", "третья строка"])
+    assert labels(notes) == labels(plain) == \
+        ["MainZone-Continued", "MainZone-P", "MainZone-P", "MainZone-P"]
 
 
 # ---------------------------------------------------------------- refusals
@@ -414,7 +441,7 @@ def test_a_continued_band_below_the_first_is_flagged():
     assert flags(p) == ["continued"]
 
 
-def test_a_parallel_block_and_the_notes_are_flagged():
+def test_a_parallel_block_is_flagged_and_the_notes_are_not_read():
     p = Page()
     p.para(2, indent=False)
     p.gap(150)
@@ -422,7 +449,7 @@ def test_a_parallel_block_and_the_notes_are_flagged():
     q = Page()
     q.add("21 (стр . 81). Єлыӄыкына", x=X0 + 215, w=M - 215)
     q.add("продолженіе")
-    assert flags(q) == ["notes"]
+    assert flags(q) == []
 
 
 # ---------------------------------------------------------------- the store
@@ -430,7 +457,7 @@ def test_a_parallel_block_and_the_notes_are_flagged():
 FX_M = 1778          # the fixture text's part-1 measure, at 300 dpi
 FX_X0 = 479
 #: The Materials' thresholds at the fixture's 300 dpi: every pixel figure halved.
-FX_RULE = {k: (v if k in ("notes_pitch_ratio", "gutter_min_rows") else v // 2)
+FX_RULE = {k: (v if k in ("gutter_min_rows", "rule_fill_min") else v // 2)
            for k, v in RULE.items()}
 
 

@@ -25,6 +25,8 @@ the ruling holds.
   phrases against Bogoras's correction (no. 48). The text layer reads each row
   across both columns, so as prose the block would interleave two texts line by
   line. Splitting a row at the gutter is the OCR stage's work, not the zone's.
+- **Verse set off from the prose is `MainZone-Quote`** (2026-11-15): a song or
+  couplet printed as its own block of lines (`1-362`, lines 1–4).
 - **Foot matter is `QuireMarksZone`**, as in *The Chukchee*: the gathering's
   signature (`16`, `1-177`) and a chapter's folio (`I`, `1-021`), a lone number
   or numeral as the page's last line.

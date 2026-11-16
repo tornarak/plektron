@@ -271,18 +271,13 @@ def test_claims_are_distinct_and_reconcile_sees_who_came_back(root):
     assert states == {REF: "reviewed", "1-003": "CLAIMED, no verdict"}
 
 
-def test_the_sample_draws_unflagged_pages_only_and_by_seed(root):
-    from harness.cli._zones import _flagged
+def test_queue_all_is_every_page_flagged_or_not(root):
+    # Every page is reviewed (2026-11-15): a flag is a hint, not a selection.
+    from harness.cli._zones import _candidates
     for k in range(3, 9):
         _page(root, ref=f"1-{k:03d}", fused=False)
-    plain = {f"1-{k:03d}" for k in range(3, 9)}
-
-    def draw(seed):
-        return _flagged(SimpleNamespace(root=root, seed=seed, sample=2))
-
-    got = draw(1)
-    assert REF in got and len(got) == 3 and set(got) - {REF} <= plain
-    assert draw(1) == got
+    got = _candidates(SimpleNamespace(root=root))
+    assert got == sorted([REF] + [f"1-{k:03d}" for k in range(3, 9)])
 
 
 # ---------------------------------------------------------------- the editor

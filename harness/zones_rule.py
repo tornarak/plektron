@@ -42,20 +42,19 @@ from .refs import norm_ref
 
 #: Bumped whenever the derivation changes what it writes. A file records it, so
 #: two proposals of one page can be told apart without re-running either.
-RULE_VERSION = "4"
+RULE_VERSION = "5"
 
 #: Page-level reasons a band may be wrong, each named where `derive` meets it.
-#: They are what `zones queue --all` deals out to the review pass, so a page
-#: carrying none is the rule's confident case, and `--sample` is what measures it.
+#: Hints in the reviewer's page block, not a worklist: every page is reviewed, so
+#: a page carrying none is not thereby the rule's confident case.
 #:   unzoned    a line too wide to be one line ended a band (a speck does not count)
 #:   parallel   a parallel block was found by its gutter
-#:   notes      the page is in the Примѣчанія, where only an opener starts a note
 #:   continued  a MainZone-Continued below the first body band, not under a
 #:              full-width rule (the Section I streams' separator)
 #:   fallback   the ink window could not be measured (`propose` adds it)
 #:   uncovered  ink no zone covers that looks like a printed line, most often
 #:              one the text layer has no row for (`missing_lines`; `propose`)
-FLAGS = ("unzoned", "parallel", "notes", "continued", "fallback", "uncovered")
+FLAGS = ("unzoned", "parallel", "continued", "fallback", "uncovered")
 
 STEP = "harness zones propose"
 LABEL = "region segmentation by rule, off the text layer"
@@ -84,10 +83,6 @@ _DIGIT = re.compile(r"\d")
 # A folio or a signature: arabic, or roman in either script's letters, since the
 # layer reads a roman `I` as Cyrillic `І` as often as not.
 _FOLIO = re.compile(r"^\s*(\d+|[IVXLCІХ]+)\s*\.?\s*$")
-_FOOTNOTE = re.compile(r"^\s*(\d+|\*+)\s*\)")
-# `21 (стр . 81).` — the layer's spaces before punctuation are the engine's.
-_NOTE_OPENER = re.compile(r"^\s*\d+\s*\(\s*стр\s*\.\s*\d+\s*\)\s*\.")
-_NOTES_HEAD = re.compile(r"^\s*Примѣчанія\s+къ\s+№")
 
 
 @dataclass
@@ -179,13 +174,17 @@ def _gutter(lines: list[Line], ink, lo: int, hi: int,
     return None
 
 
-def _rule(ink, y0: int, y1: int, lo: int, hi: int, bridge: int) -> tuple[int, int]:
+def _rule(ink, y0: int, y1: int, lo: int, hi: int, bridge: int,
+          fill: float) -> tuple[int, int]:
     """The longest horizontal ink run in rows `y0..y1` between `lo` and `hi`, as
-    `(length, start x)`, breaks of at most `bridge` px closed. `(0, 0)` if none.
+    `(length, start x)`, breaks of at most `bridge` px closed and at least `fill`
+    of it inked. `(0, 0)` if none.
 
-    A printed rule is the only thing on these pages that inks a long unbroken
-    run: a line of type breaks at every letter. The bridge is for a rule the scan
-    broke, which the measurement found on several footnote rules.
+    The bridge is for a rule the scan broke, which the measurement found on
+    several footnote rules. It closes the white between letters too, so a long
+    word in close bold type bridges into a run as long as a footnote rule
+    (`1-179`); the fill is what parts them. A rule is solid but for its breaks,
+    and a row of type is white between its letters.
     """
     import numpy as np
 
@@ -198,10 +197,13 @@ def _rule(ink, y0: int, y1: int, lo: int, hi: int, bridge: int) -> tuple[int, in
         cut = np.flatnonzero(np.diff(xs) > bridge + 1)
         starts = np.concatenate(([xs[0]], xs[cut + 1]))
         ends = np.concatenate((xs[cut], [xs[-1]]))
-        i = int((ends - starts).argmax())
-        w = int(ends[i] - starts[i] + 1)
-        if w > best[0]:
-            best = (w, lo + int(starts[i]))
+        for i in np.argsort(starts - ends):          # longest first
+            w = int(ends[i] - starts[i] + 1)
+            if w <= best[0]:
+                break
+            if row[starts[i]:ends[i] + 1].mean() >= fill:
+                best = (w, lo + int(starts[i]))
+                break
     return best
 
 
@@ -281,48 +283,46 @@ def derive(recs: list[dict], x0: int, measure: int, ink, cfg: dict) -> Derived:
             kept.append(ln)
     lines = kept
 
-    # Segments: runs of lines with no structural gap inside them.
-    segs: list[list[Line]] = []
-    for ln in lines:
-        if segs and ln.y0 - segs[-1][-1].y1 < t["gap_min_px"]:
-            segs[-1].append(ln)
-        else:
-            segs.append([ln])
+    # The printed rule between each two lines, if any: the longest horizontal ink
+    # run from the upper line's centre to the lower's, breaks bridged. Centre to
+    # centre, because the layer's boxes drift against the ink and can close the
+    # white a rule sits in (`1-387`: 10 px between the boxes either side of the
+    # footnote rule), and half a line of type never makes a run this long.
+    bridge, fill = int(t["rule_bridge_px"]), float(t["rule_fill_min"])
+    between = [_rule(ink, int(a.cy), int(b.cy), x0 - pad, x1 + pad, bridge, fill)
+               for a, b in zip(lines, lines[1:], strict=False)]
 
-    pitches = [b.y0 - a.y0 for s in segs for a, b in zip(s, s[1:], strict=False)]
-    body_pitch = statistics.median(pitches) if pitches else None
-
-    # The printed rule in the gap above each segment, if any: the longest
-    # horizontal ink run there, from the line above's centre (a rule can sit inside
-    # that line's font-metric box) to the segment's top, breaks bridged.
-    bridge = int(t["rule_bridge_px"])
-    rules = [(0, 0)] + [_rule(ink, int(s[-1].cy), n[0].y0, x0 - pad, x1 + pad, bridge)
-                        for s, n in zip(segs, segs[1:], strict=False)]
-
-    def footrule(k: int) -> bool:
+    def footshape(run: tuple[int, int]) -> bool:
         """A footnote rule: a short run from the column's left edge."""
-        w, at = rules[k]
+        w, at = run
         at -= x0                       # from the row column's left edge
         return (w >= t["footrule_min_px"] and at <= t["footrule_max_start"]
                 and at + w <= t["footrule_max_end"])
 
-    # Footnotes: a segment opening `N)` under a footnote rule, and all after it.
-    # Without a rule, the last segment, opening `N)`, set smaller than the body.
+    # Segments: runs of lines with no structural gap and no footnote rule inside
+    # them. `rules[k]` is the run above segment k.
+    segs: list[list[Line]] = []
+    rules: list[tuple[int, int]] = []
+    for i, ln in enumerate(lines):
+        run = between[i - 1] if i else (0, 0)
+        if segs and ln.y0 - segs[-1][-1].y1 < t["gap_min_px"] and not footshape(run):
+            segs[-1].append(ln)
+        else:
+            segs.append([ln])
+            rules.append(run)
+
+    def footrule(k: int) -> bool:
+        return footshape(rules[k])
+
+    # Footnotes: the segment under a footnote rule, and all after it. The rule is
+    # the measurement and the only one: what the first line says is not asked
+    # (the layer misreads `1)`, and a document a note introduces opens with none,
+    # `1-049`), and a footnote block with no rule over it is the reviewer's.
     notes: list[Line] = []
-    ruled = next((k for k in range(1, len(segs))
-                  if _FOOTNOTE.match(segs[k][0].text) and footrule(k)), None)
+    ruled = next((k for k in range(1, len(segs)) if footrule(k)), None)
     if ruled is not None:
         notes = [ln for s in segs[ruled:] for ln in s]
         del segs[ruled:]
-    elif len(segs) > 1 and _FOOTNOTE.match(segs[-1][0].text):
-        last = segs[-1]
-        own = [b.y0 - a.y0 for a, b in zip(last, last[1:], strict=False)]
-        rest = [p for s in segs[:-1] for p in
-                (b.y0 - a.y0 for a, b in zip(s, s[1:], strict=False))]
-        ref_pitch = statistics.median(rest) if rest else body_pitch
-        if not own or ref_pitch is None or \
-                statistics.median(own) <= t["notes_pitch_ratio"] * ref_pitch:
-            notes = segs.pop()
 
     # What is left, in order, each line tagged with the segment it opens, and the
     # segment openers that sit under a full-width rule: on a Section I page, the
@@ -372,13 +372,9 @@ def derive(recs: list[dict], x0: int, measure: int, ink, cfg: dict) -> Derived:
                 and abs((a + b) / 2 - centre) <= t["centre_tol"]:
             kinds[k] = "heading"
 
-    # The Примѣчанія: once the page is in them, only an opener starts a note. The
-    # page opens in them when the first marker on it is an opener rather than a
-    # heading — a note carried over from the page before.
-    markers = [(kinds[k], bool(_NOTE_OPENER.match(ln.text)), bool(_NOTES_HEAD.match(ln.text)))
-               for k, (ln, _) in enumerate(work)]
-    first = next((m for m in markers if m[0] == "heading" or m[1]), None)
-    in_notes = bool(first and first[1] and first[0] != "heading")
+    # A band starts at an indent and nowhere else in a run. What the text says is
+    # not read: a Примѣчанія note's printed opener, a colophon, a title are the
+    # reviewer's to judge against the rulings (2026-11-15, rules are measurement).
     flagged: set[str] = set()
     body_seen = False
 
@@ -412,22 +408,11 @@ def derive(recs: list[dict], x0: int, measure: int, ink, cfg: dict) -> Derived:
         if kind == "heading":
             flush()
             out.bands.append(_band(OTHER, [ln]))
-            in_notes = bool(_NOTES_HEAD.match(ln.text))
             continue
-        if _NOTE_OPENER.match(ln.text):
-            in_notes = True
-        if in_notes:
-            flagged.add("notes")
         # Fresh: nothing is open, because a gap, a heading, a parallel block or an
         # unzoned line has just closed it.
         fresh = opens or not cur
-        # In the notes an opener starts a note, and so does an indented fresh
-        # line: the one note under its heading prints no opener (`1-200`,
-        # «Примѣчанія къ №44.»). An indented line *inside* a run is what the
-        # editor ruled geometry cannot separate, so it does not count.
-        starts = (bool(_NOTE_OPENER.match(ln.text)) or (fresh and indented(ln))) \
-            if in_notes else indented(ln)
-        if starts:
+        if indented(ln):
             flush()
             cur, cur_label = [ln], P
             body_seen = True
@@ -499,7 +484,7 @@ def missing_lines(ref: str, zones: list[dict], root: Path, cfg: dict,
         if y1 - y0 < t["missing_min_h"] or y0 <= edge or y1 >= h - edge:
             continue
         w, _ = _rule(ink, y0, y1, int(b["hpos"]), int(b["hpos"]) + int(b["width"]),
-                     int(t["rule_bridge_px"]))
+                     int(t["rule_bridge_px"]), float(t["rule_fill_min"]))
         if w >= t["footrule_min_px"]:
             continue
         out.append({"y0": y0, "y1": y1, "x0": int(b["hpos"]),

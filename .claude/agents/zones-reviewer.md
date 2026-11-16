@@ -109,7 +109,7 @@ What the rule does, so you do not undo it:
   to be one line ended a band and is in no band, even with a margin mark taken off
   it; it may be two printed lines the text layer fused, and belongs in the band
   above or below, or straddles both (a note). `parallel`: a parallel block was
-  found. `notes`: the page is in the Примѣчанія. `continued`: a
+  found. `continued`: a
   `MainZone-Continued` band follows a gap, a heading or an unzoned line, with no
   full-width rule above it. `fallback`: the column window could not be measured.
   `uncovered`: ink no band covers that looks like a printed line, listed by its
@@ -125,14 +125,18 @@ What the rule does, so you do not undo it:
 - **A heading is `MainZone-Other`**: a short line centred in the column. A wide
   centred title line (`L. Radloff, Ueber die Sprache…`) is not caught, since its
   insets match an indent's.
-- **Footnotes are one `MarginTextZone-Notes`**: the block opening `N)` under the
-  short footnote rule, and everything below it, which is the apparatus even when
-  a footnote prints a document (`1-048`). Without a rule, the last block opening
-  `N)` if it is set smaller than the body.
+- **The rule reads no words.** It measures rows, gaps, indents, centring,
+  gutters and printed rules, and every page comes to you whether it flagged one
+  or not. What the text says is yours to judge against the rulings: a note's
+  opener, a footnote's `N)`, a colophon, a title.
+- **Footnotes are one `MarginTextZone-Notes`**: everything under the short
+  footnote rule, which is the apparatus even when a footnote prints a document
+  (`1-048`). A footnote block with no rule found over it comes to you as body
+  bands.
+- **In the Примѣчанія every indent starts a band**, since the opener is not
+  read. An indented line that opens no note belongs to the note above it.
 - **A margin mark joined to a row** (a line number, often misread as `зо` or
   `5.`, or a speck like `}`) is taken off the row before it is measured.
-- **A page wholly inside one long note** shows no opener and no heading, so the
-  rule falls back to the indent rule there; the ruling below decides it.
 - **A two-line parallel block is not found** (the rule needs three lines).
 
 ## What to report back
@@ -173,6 +177,8 @@ the ruling holds.
   phrases against Bogoras's correction (no. 48). The text layer reads each row
   across both columns, so as prose the block would interleave two texts line by
   line. Splitting a row at the gutter is the OCR stage's work, not the zone's.
+- **Verse set off from the prose is `MainZone-Quote`** (2026-11-15): a song or
+  couplet printed as its own block of lines (`1-362`, lines 1–4).
 - **Foot matter is `QuireMarksZone`**, as in *The Chukchee*: the gathering's
   signature (`16`, `1-177`) and a chapter's folio (`I`, `1-021`), a lone number
   or numeral as the page's last line.
