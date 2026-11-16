@@ -337,6 +337,30 @@ def test_queue_all_is_every_page_flagged_or_not(root):
 # ---------------------------------------------------------------- the editor
 
 
+def test_a_carried_pin_yields_to_gt_and_to_a_store_the_page_lacks(root):
+    # The editor's ruling (2026-11-15): a pin on a proposal never covers a keyed
+    # page, and a pin on a store the page has nothing in falls back to the highest
+    # provenance it holds. The pin travels on either way.
+    from harness.zones_config import load_config
+    cfg = load_config(root)
+    st = ui.page_state(REF, root, cfg, pin="llm")        # no verdict yet
+    assert (st["store"], st["pin"], st["pinned"]) == ("mz", "llm", True)
+    _verdict(root, [])
+    st = ui.page_state(REF, root, cfg, pin="llm")
+    assert (st["store"], st["shown"], st["pin"]) == ("llm", "llm", "llm")
+    ui.save_payload({"ref": REF, "split": "train", "exempt": [], "zones": st["zones"]},
+                    root, cfg)
+    for pin in ("llm", "mz"):
+        st = ui.page_state(REF, root, cfg, pin=pin)
+        assert (st["store"], st["pin"]) == ("gt", pin)
+    # A store chosen on this page is shown as asked, keyed or not.
+    st = ui.page_state(REF, root, cfg, store="llm")
+    assert (st["store"], st["pin"]) == ("llm", "llm")
+    # Nothing pinned: the opening choice, and nothing travels.
+    st = ui.page_state(REF, root, cfg)
+    assert (st["store"], st["pin"], st["pinned"]) == ("gt", "", False)
+
+
 def test_the_llm_view_applies_a_fresh_verdict_and_saves_no_reason(root):
     from harness.zones_config import load_config
     cfg = load_config(root)

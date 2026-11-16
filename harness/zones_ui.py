@@ -255,9 +255,22 @@ def _fig_state(ref: str, root: Path, cfg: dict) -> dict:
     }
 
 
+#: The proposal stores: a pin on one of them never covers a human's work.
+PROPOSALS = ("mz", "llm")
+
+
+def opening_store(ref: str, root: Path, llm_usable: bool) -> str:
+    """The highest-provenance store the page holds: `gt`, else a usable `llm`
+    verdict, else `mz`. The editor's opening choice, and where a pin lands when
+    the store it names has nothing for this page."""
+    if zn.has_zones(ref, root, zn.ZONEDIR):
+        return "gt"
+    return "llm" if llm_usable else "mz"
+
+
 def page_state(ref: str, root: Path, cfg: dict, nudge: int = 0,
                itinerary: list[str] | None = None,
-               store: str | None = None) -> dict:
+               store: str | None = None, pin: str | None = None) -> dict:
     """Everything the editor needs for one page, resolved server-side.
 
     The columns come from `zones.measure_frame` — read off this page's own ink
@@ -281,6 +294,14 @@ def page_state(ref: str, root: Path, cfg: dict, nudge: int = 0,
     silently, through a symlink; here it is one surface's opening state, drawn in
     the HUD beside what the other store holds.
 
+    **`pin` is a store carried from the page before, and it yields** (the editor,
+    2026-11-15). `store` is a choice made on this page and is shown as asked. A
+    carried pin on a proposal store (`mz`, `llm`) never covers a keyed page, which
+    opens on `gt`; and a pin naming a store this page has nothing in falls back to
+    `opening_store`. Either way the pin keeps travelling, so the next unkeyed page
+    shows it again. A pinned `llm` used to ride onto keyed pages and hide the work
+    done behind the proposal it had already replaced.
+
     Whatever is selected, **a save writes `gt/zones/`**. Showing `mz` shows it as a
     *proposal* — snapped to the configured column, opening clean — so the only route
     from a prediction to ground truth is a human editing or explicitly saving it.
@@ -298,14 +319,24 @@ def page_state(ref: str, root: Path, cfg: dict, nudge: int = 0,
     m = zn.measure_frame(ref, root, cfg)
     windows = [{"x0": w["x0"] + nudge, "x1": w["x1"] + nudge} for w in m["columns"]]
     tol = cfg["width_tolerance_px"]
-    pinned = store is not None
+    if pin is not None and pin not in STORES:
+        raise ValueError(f"pin must be one of {', '.join(STORES)}, not {pin!r}")
+    # The store that travels on: one chosen here, else the one carried in.
+    carried = store if store is not None else pin
+    pinned = carried is not None
     # The review agent's verdict, where the page has one. Read once: the view, the
     # opening choice and the HUD all answer from it.
     from . import zones_review as zr
     llm = zr.applied(ref, root, cfg) if zr.verdict_path(ref, root).exists() else None
+    llm_usable = bool(llm and llm["zones"] is not None)
+    if store is None and pin is not None:
+        keyed_gt = zn.has_zones(ref, root, zn.ZONEDIR)
+        if (pin in PROPOSALS and keyed_gt) or not effective_store(ref, root, pin):
+            store = opening_store(ref, root, llm_usable)
+        else:
+            store = pin
     if store is None:
-        store = ("gt" if zn.has_zones(ref, root, zn.ZONEDIR)
-                 else "llm" if llm and llm["zones"] is not None else "mz")
+        store = opening_store(ref, root, llm_usable)
     if store not in STORES:
         raise ValueError(f"store must be one of {', '.join(STORES)}, not {store!r}")
     # A ruled leaf is settled without holding a zone file, so this is `keyed`
@@ -370,6 +401,9 @@ def page_state(ref: str, root: Path, cfg: dict, nudge: int = 0,
         # re-chosen per page, so a session that opened on a prediction does not
         # arrive at the next, keyed, page showing its prediction instead.
         "pinned": pinned,
+        # The store that travels to the next page, which a yielding pin keeps
+        # even where this page showed another: `""` where nothing is pinned.
+        "pin": carried or "",
         # **`has_zones`, not `keyed`, and the difference is the whole point of
         # there being two.** This column says what each store *holds*, so `None`
         # has to mean "no file" — and a ruled leaf is settled while holding
@@ -566,14 +600,14 @@ def _save_figs(payload: dict, ref: str, root: Path, cfg: dict) -> dict:
 def page_context(ref: str, root: Path, cfg: dict, nudge: int = 0,
                  itinerary: list[str] | None = None,
                  itinerary_name: str = "", store: str | None = None,
-                 base: str = "/zones") -> dict:
+                 base: str = "/zones", pin: str | None = None) -> dict:
     """Everything the editor page needs, as data.
 
     The markup is `harness/web/templates/zones/page.html` and the behaviour is
     `static/js/zones.js` — 68 KB that used to be interpolated into every page, on
     the one editor here that is navigated page-to-page with the arrow keys.
     """
-    st = page_state(ref, root, cfg, nudge, itinerary, store)
+    st = page_state(ref, root, cfg, nudge, itinerary, store, pin)
     st["itinerary"] = itinerary_name
     acts = {k: v for k, v in (cfg.get("actions") or {}).items()
             if not k.startswith("_")}
@@ -639,6 +673,7 @@ def page_context(ref: str, root: Path, cfg: dict, nudge: int = 0,
             c = (st.get("present") or {}).get(name)
             n = "\u2014" if c is None else str(c)
         stores.append({"name": name, "count": n, "on": name == sel,
+                       "pinned": name == st.get("pin"),
                        "help": STORE_HELP[name]})
 
     st["base"] = base

@@ -57,12 +57,12 @@ def _ref(raw: str) -> str:
 
 @router.get("/")
 def page(request: Request, ref: str = "", nudge: int = 0,
-         store: str | None = None):
+         store: str | None = None, pin: str | None = None):
     s = _session(request)
     ctx = ui.page_context(_ref(ref or s.get("start", "")), _root(request),
                           _cfg(request), nudge,
                           s.get("itinerary") or [], s.get("itinerary_name") or "",
-                          store, base=BASE)
+                          store, base=BASE, pin=pin)
     return templates.TemplateResponse(request, "zones/page.html", ctx)
 
 

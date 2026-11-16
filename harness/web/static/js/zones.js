@@ -1216,11 +1216,12 @@ async function nav(ref) {
   // `${B}`, not a bare `/`. The four editors share one app and this one is mounted
   // at `/zones`, so a bare root is the shell's front door — the arrow keys landed
   // there and looked like dead keys.
-  // A *pinned* store travels; an unpinned one is the editor's opening choice and
-  // is re-made per page, so a session that opened on a prediction does not reach
-  // the next, keyed, page showing its prediction instead of the work done.
+  // A *pinned* store travels as `pin`, which the server lets yield: a pin on a
+  // proposal never covers a keyed page, and one naming a store the next page has
+  // nothing in falls back to the highest-provenance store it holds. An unpinned
+  // store is the editor's opening choice and is re-made per page.
   location = `${B}/?ref=${ref}` + (S.nudge ? `&nudge=${S.nudge}` : '') +
-    (ST.pinned ? `&store=${ST.store}` : '');
+    (ST.pin ? `&pin=${ST.pin}` : '');
 }
 
 // Switching store is a navigation, not a client-side toggle: the zones, the
@@ -1228,11 +1229,14 @@ async function nav(ref) {
 // re-deriving any of them here would be a second implementation of the store rule.
 // It saves first for the same reason `nav` does — and a proposal is never dirty on
 // arrival, so cycling away from one still writes nothing.
+// **Choosing the pinned store again unpins it**: the page reloads on the editor's
+// opening choice and nothing travels.
 async function navStore(name) {
   if (S.dirty || S.figsDirty) { try { await save(); } catch (err) {
     say('not saved: ' + err.message, 'bad'); return; } }
+  const unpin = ST.pin && name === ST.pin;
   location = `${B}/?ref=${ST.ref}` + (S.nudge ? `&nudge=${S.nudge}` : '') +
-    `&store=${name}`;
+    (unpin ? '' : `&store=${name}`);
 }
 
 // ---- keys

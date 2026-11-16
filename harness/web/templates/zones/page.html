@@ -31,7 +31,7 @@
    discovered by switching. `/` cycles. #}
 {% for s in stores %}
 <span class="pill store{{ ' on' if s.on }}" id='store-{{ s.name }}'
-  data-store='{{ s.name }}' title="press / to cycle · {{ s.help }}">{{ s.name }}
+  data-store='{{ s.name }}' title="press / to cycle · {{ s.help }}{{ ' · pinned: it travels to the next page unless that page is keyed or has none; click again to unpin' if s.pinned }}">{{ s.name }}{{ ' (pinned)' if s.pinned }}
   <span class='n'>{{ s.count }}</span></span>
 {% endfor %}
 {% if st.proposal == 'llm' %}
