@@ -134,6 +134,24 @@ def register(cli):
         help="lines of surrounding text per matched form, which is what makes a "
              "form's sense readable without opening the page [2]")
 
+    p = action(g, "counterpart", run_counterpart,
+               help="each FORM's counterpart in the text the manifest's "
+               "config/counterpart.json names (the 1900 Materials' in The "
+               "Chukchee): `exact` where a spelling the table derives is a ratified "
+               "form there, `near` where the letters agree once marks, an obscure "
+               "vowel, a hyphen or a short ending are set aside, else `none`, with "
+               "the other text's pages and the first line it is printed on. **A "
+               "witness against a misreading, never a source**: a reading is "
+               "keyed off the scan, and agreement with a counterpart raises no "
+               "rank. What it shows is appended to review/PP-NNN/counterparts.jsonl, "
+               "so the review page marks every form keyed after seeing one (the "
+               "editor's ruling, 2026-11-16). Exit 2 for a text with no table"
+               "\n\nPP-NNN: the page the forms are for, whose record this "
+               "appends to\n\nFORM: a native form as printed; several are several "
+               "rows, and a page's forms belong in one call")
+    arg(p, "ref", metavar="PP-NNN")
+    arg(p, "forms", nargs=-1, required=True, metavar="FORM [FORM ...]")
+
     p = action(g, "ipa", run_ipa,
                help="imputed IPA for a keyed native form. **The table is a rule "
                "table and nothing here is evidence** — it reads no scan, settles "
@@ -318,6 +336,32 @@ def run_lookup(a) -> int:
         name="scope")
     out(a, r["matches"], name="matches", heading=True)
     out(a, r["context"], name="context", heading=True)
+    return 0
+
+
+def run_counterpart(a) -> int:
+    from ..counterpart import match, other_index, record_shown, table
+    from ..refs import norm_ref
+    ref = norm_ref(a.ref)
+    t = table(a.root)
+    if t is None:
+        raise click.UsageError(
+            "this text declares no counterpart (config/counterpart.json): there is "
+            "no other notation to match its forms against")
+    with progress("indexing the other text"):
+        oidx = other_index(a.root, t)
+    rows = [match(f, a.root, t, oidx) for f in a.forms]
+    record_shown(ref, a.root, rows)
+    flat = [{"form": r["form"], "status": r["status"],
+             **({"counterpart": m["form"], "part": m["part"], "pages": m["pages"],
+                 "line": m["line"]} if (m := (r["matches"] or [None])[0]) else
+                {"counterpart": "", "part": False, "pages": 0, "line": ""})}
+            for r in rows]
+    out(a, flat, name="forms")
+    more = [{"form": r["form"], "counterpart": m["form"], "pages": m["pages"],
+             "line": m["line"]} for r in rows for m in r["matches"][1:]]
+    if more:
+        out(a, more, name="also", heading=True)
     return 0
 
 

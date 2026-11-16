@@ -44,12 +44,13 @@ TOOL=$(printf '%s' "$INPUT" | jq -r '.tool_name // empty')
 
 PROPOSAL='proposal.json'
 # Which reader this is: its agent file passes its own name. The two differ in
-# their memory, their pass doc, and one verb (`ocr witness`, the Materials'
-# second copy); every refusal below is the same for both.
+# their memory, their pass doc, and two verbs (`ocr witness`, the Materials'
+# second copy, and `lexicon counterpart`, its matches in The Chukchee); every
+# refusal below is the same for both.
 AGENT="${1:-groundtruth-reader}"
 case "$AGENT" in
-  groundtruth-reader) SKILL='rebuild-groundtruth'; EXTRA='' ;;
-  materials-reader) SKILL='read-materials-page'; EXTRA='|witness' ;;
+  groundtruth-reader) SKILL='rebuild-groundtruth'; EXTRA=''; LEXTRA='' ;;
+  materials-reader) SKILL='read-materials-page'; EXTRA='|witness'; LEXTRA='|counterpart' ;;
   *) echo "Blocked: the reader guard knows no agent '$AGENT'." >&2; exit 2 ;;
 esac
 MEMORY=".claude/agent-memory/$AGENT/"
@@ -383,7 +384,7 @@ if printf '%s' "$COMMAND" | grep -qE '^echo( |$)'; then
   allow "$AGENT labelling its own output"
 fi
 
-if printf '%s' "$COMMAND" | grep -qE "^uv run harness (ocr (claim|calls|gaps|lines|numbered|sheets|zoom$EXTRA)|proposal (fix|check|codepoints|set|replace|marks)|corpus normalize|lexicon (conflicts|digraphs|glosses|lookup|marks|misses|suffixes)|find [a-z]+|verbs show)( |\$)"; then
+if printf '%s' "$COMMAND" | grep -qE "^uv run harness (ocr (claim|calls|gaps|lines|numbered|sheets|zoom$EXTRA)|proposal (fix|check|codepoints|set|replace|marks)|corpus normalize|lexicon (conflicts|digraphs|glosses|lookup|marks|misses|suffixes$LEXTRA)|find [a-z]+|verbs show)( |\$)"; then
   case "$COMMAND" in
     *--all*)
       echo "Blocked: no --all form of anything; you have exactly one page." >&2

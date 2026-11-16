@@ -1409,6 +1409,17 @@ QUERY...       any substring; several are an OR, and one call is one index
 **Note** **the floor counts pages per fold, over all a word's spellings together, and ambiguity is judged before it applies.** Per-form would delete that same instance rather than refuse it — one page each, both below the default — so a floor could hide a conflict. It may withhold a handle from a form the corpus barely attests; it may never do the other thing.
 **Note** the `floor` row is printed on every run because **an empty result is not a corpus-wide negative**: selection requires an inventory glyph, so a native token carrying no mark at all (a bare `c`, `s`, `j`, `x`, `h`) is invisible here by construction. `unkeyable` counts forms carrying something the marker table does not reach — two today, both English possessives on a native name.
 
+### lexicon counterpart REF FORM...
+**Does** each native FORM's counterpart in the other text by the same author that the text's `config/counterpart.json` names — for the 1900 *Materials*, *The Chukchee* — with that text's pages and the first line it is printed on. `exact` where a spelling the table derives is a ratified form there; `near` where the letters agree once marks, an obscure vowel (*ᴀ ᴇ ɪ*), a hyphen or an ending of up to two letters are set aside, or where only a part of a compound matches; else `none`.
+**Reads** `config/counterpart.json`, the other text's `gt/ocr/` through its ratified index. **Writes** appends what it showed to `review/PP-NNN/counterparts.jsonl`. **Exit** 0; 2 for a text with no table.
+**Note** **a witness against a misreading, never a source.** One author made both books from one set of notes, so a disagreement is where to look on the scan; a reading is still keyed off the scan, and agreement raises no rank. The editor allowed readers to see a counterpart before keying (2026-11-16) on condition that it is recorded, so the log is written by the verb, never by the reader, and `ocr review` marks every form whose counterpart the page's reader was shown: its agreement is no check. The design is `docs/multitext.md`, "Counterparts in *The Chukchee*".
+```
+REF       the page the forms are for; its record is appended to
+FORM...   native forms as printed; a page's forms belong in one call
+--root --json --toon --pager
+```
+**Emits** `forms` (each form, its status, its best counterpart, whether that is part of a compound, its pages and its line), and `also` (the other counterparts, when there are several).
+
 ### lexicon ipa [FORM...]
 **Does** imputes IPA for a keyed native form, by rule. Feeds the pronunciation line and the speaker on a lexicon card in `edition serve`.
 **Reads** `gt/ocr/` (with `--all`). **Writes** — **Exit** 0.

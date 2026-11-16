@@ -366,6 +366,9 @@ def test_write_enable_is_commit_everywhere(parser_surface):
 # singular verb fails the suite rather than passing on the reviewer noticing.
 # Every other ref-taking action takes as many as you like.
 SINGLE_REF_OK = {
+    ("lexicon", "counterpart"):
+        "the ref says whose record the counterparts shown are appended to, and "
+        "a reader holds one page; the forms after it are the plural",
     ("tei", "context"):
         "the payload is one page's collation prompt, built to hand to one model "
         "for one page; a merged stream is not consumable by what it exists for",

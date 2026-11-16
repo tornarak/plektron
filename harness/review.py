@@ -1009,6 +1009,7 @@ def _native_status(ref: str, prop: dict, root: Path) -> dict[int, list[dict]]:
         idx = native(root)
     except (HandleTableError, MarksConfigError):
         return {}
+    cp = _counterparts(ref, root)
     out: dict[int, list[dict]] = {}
     for i, v in prop.items():
         forms = unicodedata.normalize("NFD", v.get("native") or "").split()
@@ -1020,8 +1021,44 @@ def _native_status(ref: str, prop: dict, root: Path) -> dict[int, list[dict]]:
                       else "near" if near else "new")
             out.setdefault(i, []).append({
                 "form": f, "status": status, "pages": len(others),
-                "near": "; ".join(f"{n['form']} ({n['pages']} p.)" for n in near)})
+                "near": "; ".join(f"{n['form']} ({n['pages']} p.)" for n in near),
+                **cp(f)})
     return out
+
+
+def _counterparts(ref: str, root: Path):
+    """A function from a native form to its counterpart fields for the review
+    page (`counterpart.match`): `cp` is `exact`, `near` or empty, with the other
+    text's form, its pages and its line, and `cp_seen` when this page's reader
+    was shown that form before keying (`counterpart.shown`, the verb's own log).
+
+    **Seen is not evidence.** The editor allowed readers the counterpart before
+    keying (2026-11-16) on condition that it is recorded: a reading that agrees
+    with a counterpart its reader saw agrees by construction, so the page says so
+    instead of showing the agreement as a check that passed.
+    """
+    from . import counterpart as cpm
+    try:
+        t = cpm.table(root)
+    except cpm.CounterpartError:
+        t = None
+    if t is None:
+        return lambda f: {}
+    try:
+        oidx = cpm.other_index(root, t)
+    except (OSError, ValueError):
+        return lambda f: {}
+    seen = cpm.shown(ref, root)
+
+    def fields(f: str) -> dict:
+        m = cpm.match(f, root, t, oidx)
+        if m["status"] == "none":
+            return {"cp": ""}
+        top = m["matches"][0]
+        return {"cp": m["status"], "cp_form": top["form"], "cp_pages": top["pages"],
+                "cp_line": top["line"], "cp_part": top["part"],
+                "cp_seen": any(x["form"] in seen for x in m["matches"])}
+    return fields
 
 
 def page_context(ref: str, root: Path,

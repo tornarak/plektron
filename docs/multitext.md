@@ -195,6 +195,92 @@ human acts. `prose_only` admits a line, it does not select tokens, so a native
 form no glyph marks (`терк-арм`) passes it. Only the reader's `native` list
 keeps such a form for the editor.
 
+## Counterparts in *The Chukchee*
+
+**Built:** the table (`config/counterpart.json`), the match
+(`harness/counterpart.py`), the reader's verb (`lexicon counterpart`, logged per
+page), and the flag and context in `ocr review`. **Not built:** the confirmed
+link in the lexicon, which waits on its relation (below).
+
+The 1900 *Materials* and *The Chukchee* are one author's transcriptions, set from
+the same field notes, so a native word in one is very often in the other:
+`ва́ырђын` is *vaˊɪrg̣ɪn*, `та́н̀ӈыт` is *taˊn˙ñɪt*, `Ку́ркыl` is *Kuˊrkɪl*. A reading
+of the 1900 pilot batch (1-026 to 1-030) found a ratified *Chukchee* form for
+most of its native forms. Because one person made both, the correspondence can be
+expected to be regular, and where a pair disagrees (`кама́к` against *kaˊmak*), a
+misreading is the likelier cause.
+
+What the link is for: the edition shows each inlined Materials term in Bogoras's
+own Americanist spelling, and the *Chukchee* card behind it brings its English
+gloss, its pronunciation and its pages, so the Russian book's terms gain a
+translation and both books' attestations without anyone retyping them.
+
+**A correspondence table**, in the text's config, maps a Materials sequence to
+the Americanist sequences it stands for, each pair with its attestation: в *v*,
+ы *ɪ*, ӈ *ñ*, ӄ *q*, ө *ɵ*, ł *ʟ*, the acute *ˊ*, `н̀` *n˙* (`та́н̀ӈыт`,
+*taˊn˙ñɪt*: the first evidence of what the grave marks), and ђ *g̣*. It is a
+table and not a transliteration function because some pairs are one to many: э
+is *e* in `Кэ́lэт` (*Keˊlet*) and *ê* elsewhere; є is *ᴇ* in `Кэ́lє` (*Keˊlᴇ*); ђ
+is *g̣* in `рђ` (*rg̣*) and stands where *The Chukchee* has *h* in three forms
+three readers keyed independently (`еlђ` *êlh*, `кајтака́lђын` *Kaitakaˊlhɪn*,
+`Мээ́мђына` *Meeˊmhɪn*). The editor's reading (2026-11-16, not a ruling): one
+Materials letter where the Jesup notation tells a continuum or positional
+allophones apart, which the 1900 print's paring-down of the 1899 key makes
+likely. So ђ maps to both, and the match tries each. That the three are ђ in the
+print and not a misread `һ` is still the scan's to say.
+
+**The obscure vowels are a near miss, never an exact match.** The key's *ᴀ ᴇ ɪ*
+are "obscure vowels (short)" (keying_spec §2), and *ɪ* is usually `ы` in the
+Materials (`пы́ӈыlте`, *pɪˊñɪltê*). But `та́н̀ӈен wе́т̀һаw` is *Taˊn˙ñɪn-wêˊthaw*, `е`
+for *ɪ* in an ending, where a vowel each book wrote its own way and an ending
+that differs (vowel harmony, a compound against two words) are both open. So an
+obscure vowel matches any vowel as a near miss (≠, look), and the editor decides
+with both books' lines in view.
+
+**What this witness is.** Unlike the two text-layer copies, which one engine read,
+*The Chukchee* is independent where reading goes wrong: another print, another
+notation, other compositors, and a human's ratified keying. What it shares is
+the author and his notes, so it witnesses against a misreading of the scan and
+not against Bogoras's own hearing, which both books inherit. A pilot-batch check
+(2026-11-16, a crude skeleton match, not this design) found a counterpart for 42
+of the Materials' 69 ratified forms, 35 whole and 7 as part of a compound; three
+of the batch's corrections were disagreements with one (`wét̀haw`, the stress of
+`кама́к` against *kaˊmak*, the grave of `Эlэ́нд̀і` against *Eleˊndi*).
+
+So it does three things and never a fourth. A disagreement beyond the table is a
+**flag** on the line, as a near miss against a ratified Materials form is. Its
+line is **context** beside the reading in review. A confirmed **link** carries the
+gloss and the pages into the edition. It is **never a source**: a counterpart may
+send the editor back to the scan, but a reading corrected to match it is a glyph
+inferred from another corpus, which the firewall forbids, and agreement raises no
+rank.
+
+**Candidates are rule output.** A native form is expanded through the table and
+matched against *The Chukchee*'s ratified index, exactly or by the lookup's near
+miss. A candidate is `#mz`, re-derived on every run and stored nowhere. It is
+shown in `ocr review` beside the reading, with the other text's line, and a
+disagreement (≈) is a flag. It is never a key and never enters a proposal.
+
+**A reader may see it before keying, recorded** (the editor, 2026-11-16): the
+English line is the best context a `semantic` note can have. `lexicon counterpart`
+appends what it showed to `review/PP-NNN/counterparts.jsonl`, written by the verb
+and never by the reader, and `ocr review` marks each form whose counterpart that
+page's reader saw ("reader saw it"). Its agreement is then no check, since a
+reading made with the other spelling in view agrees by construction: two
+witnesses collapsed into one, and the page says so. The reader's contract keeps
+the scan as the source and forbids respelling a form to match.
+
+**The editor confirms a link** in review, against the scan. The confirmed link is
+`#ed` and lives in the Cyrillic form's entry in the shared `edition/lexicon/`,
+whose identity is the exact surface form with no language, so a Materials form
+has its entry beside *The Chukchee*'s. It is a new relation, "the same word in
+another notation". `see:` points between entries without claiming they are one
+word, and widening it would make one field mean two things on the card. The
+*Chukchee* card derives the inverse, as it does for `see:`.
+
+**Open:** whether a form with no counterpart shows a rule-made Americanist
+transliteration in the edition, marked as machine output, or shows none.
+
 ## Zoning by rule, off the text layer
 
 The editor's call (2026-11-07): the 1900 book is set formulaically enough that

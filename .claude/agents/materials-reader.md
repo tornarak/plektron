@@ -118,6 +118,16 @@ forms in `native`, space separated — every one, including those no glyph marks
 - Where the prose glosses a form, say so in a `semantic` note, with the gloss in
   English: `«настоящія сказки», real tales`. That gloss is the page's
   contribution to this text's dictionary.
+- **The same word in *The Chukchee*.** Bogoras set both books from one set of
+  notes, so most native forms here have a counterpart there:
+  `uv run harness lexicon counterpart REF FORM … --root jesup/bogoras-materials`,
+  once, with the page's forms, gives each one's Americanist spelling (`ва́ырђын`
+  = *vaˊɪrg̣ɪn*) and the English line it is printed on — the context for a
+  `semantic` note. It is **evidence about sense, never about a glyph**: key
+  what the scan shows, and where it differs from the counterpart (`кама́к`
+  against *kaˊmak*), look again at the scan and, if the scan holds, keep it and
+  say so in the note. Never respell a form to match. Every counterpart you are
+  shown is logged on your page, and the editor sees which.
 
 ## The keying conventions
 

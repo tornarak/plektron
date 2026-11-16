@@ -94,7 +94,13 @@ line is English.</div>{% endif %}
 {%- elif s.status == 'near' %}not a ratified spelling; ratified: {{ s.near }}
 {%- else %}no other page has ratified this form or one like it{% endif %}">
 <span class=t1glyphs>{{ s.form }}</span>
-{%- if s.status == 'seen' %} ✓{{ s.pages }}{% elif s.status == 'near' %} ≠ {{ s.near }}{% else %} new{% endif %}</span> {% endfor %}· {% endif %}
+{%- if s.status == 'seen' %} ✓{{ s.pages }}{% elif s.status == 'near' %} ≠ {{ s.near }}{% else %} new{% endif %}</span>
+{#- Its counterpart in the other text by this author (`review._counterparts`): = a
+    spelling the table derives is ratified there; ≈ the letters agree but a mark,
+    a vowel or an ending does not, which is where to look on the scan. A witness
+    against a misreading, never a source; one the reader was shown is no check. #}
+{%- if s.cp %}<span class="cpx cpx-{{ s.cp }}{{ ' cpx-seen' if s.cp_seen }}" title="{{ s.cp_line }} ({{ s.cp_pages }} p.{{ ', part of a compound' if s.cp_part }}{{ '; the reader was shown this before keying, so agreement is not a check' if s.cp_seen }})">
+{{- '=' if s.cp == 'exact' else '≈' }} {{ s.cp_form }}{{ ' · reader saw it' if s.cp_seen }}</span>{% endif %} {% endfor %}· {% endif %}
 {%- if ln.glyphs and stands_on and not ln.native_status %}<span class=badge>RULE</span><span class=t1glyphs>{{ ln.glyphs }}</span> · {% endif %}
 {%- if ln.glyphs and not stands_on %}<span class=badge>TIER 1</span><span class=t1glyphs>{{ ln.glyphs }}</span> · {% endif %}
 {%- if ln.stands %}<button type=button class=ovr data-line="{{ ln.idx }}"
@@ -105,6 +111,9 @@ line {{ ln.idx }} · {{ ln.line_id }}
 {%- if not ln.agree %} · differs from catmus{% endif %}
 <span class=editflag id="ef{{ ln.idx }}"
   style="display:{{ 'inline' if ln.edited else 'none' }}"> · <b>edited</b></span></div>
+{#- The other text's line for each counterpart, so a disagreement is judged with
+    both books' sentences in view. #}
+{%- for s in ln.native_status if s.cp %}<div class=cpctx><span class=t1glyphs>{{ s.form }}</span> ↔ <i>{{ s.cp_form }}</i> — {{ s.cp_line }}</div>{% endfor %}
 {# The crop is an `<img>` off disk, not a base64 background. `loading=lazy` so a
    400-line page does not fetch every crop before showing anything, and the
    dimensions are attributes so the box reserves its height before the image

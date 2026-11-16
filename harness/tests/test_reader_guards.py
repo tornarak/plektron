@@ -695,3 +695,8 @@ def test_every_agent_hook_is_anchored_at_the_project_root():
         for cmd in re.findall(r'command: "(.*)"', agent.read_text(encoding="utf-8")):
             assert cmd.startswith('\\"$CLAUDE_PROJECT_DIR\\"/'), (agent.name, cmd)
 
+
+def test_only_the_materials_reader_asks_for_counterparts():
+    cmd = "uv run harness lexicon counterpart 1-031 кама́к --root jesup/bogoras-materials"
+    allowed(MAT_GUARD, "Bash", command=cmd)
+    blocked(GT_GUARD, "Bash", command=cmd)
