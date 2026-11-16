@@ -27,6 +27,12 @@ the ruling holds.
   line. Splitting a row at the gutter is the OCR stage's work, not the zone's.
 - **Verse set off from the prose is `MainZone-Quote`** (2026-11-15): a song or
   couplet printed as its own block of lines (`1-362`, lines 1–4).
+- **An attribution line is `MainZone-Other`** (2026-11-15), whatever its indent:
+  a line crediting where or from whom a text was recorded («Записано отъ…»,
+  «Разсказано…»), or a closing remark on the text such as «То-же, что и
+  предыдущая.» ("the same as the preceding"). *The Chukchee*'s "Told by…" lines
+  are Other; this book sets the same line at the paragraph indent, which is no
+  paragraph start.
 - **Foot matter is `QuireMarksZone`**, as in *The Chukchee*: the gathering's
   signature (`16`, `1-177`) and a chapter's folio (`I`, `1-021`), a lone number
   or numeral as the page's last line.
