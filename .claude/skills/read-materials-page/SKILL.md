@@ -86,7 +86,18 @@ a Russian line stand. It never settles a native form or a space.
      consonant they sit on, as printed. The curly `’` between a native stem and
      its Russian ending is printed and kept.
    - Letterspacing (разрядка, the Russian emphasis, and the running head) is
-     keyed unspaced, with a `layout` note on a body line.
+     keyed unspaced, with a `layout` note on a body line, until
+     `docs/rendition.md` is ruled.
+   - **Footnote marks are keyed as printed** (the editor, 2026-11-16): the
+     reference in the text is a raised digit and a full-size paren, `отчетѣ¹)`
+     (superscripts U+00B9 U+00B2 U+00B3, U+2070–2079); the note's opener is
+     full-size, `1) В. Г. Богоразъ…`. They are two glyphs on the page, so they
+     are two in the keying. The layers read both as `1)`; the scan decides which.
+   - **A line number in the margin is kept** (the editor, 2026-11-16), keyed in
+     the line where the print sets it: before the text on a verso, after it on a
+     recto, a space between (`5 Ајӈан…`, `…ва́т 10`). A number the segmenter cut
+     as a line of its own is keyed alone on that line. Lifting it out of the
+     text is the generator's work, by rule, not the reader's.
 5. **A line still baffling after the scan carries a `note` of class `doubt`** —
    the only class that asks the editor for a ruling. Say what the two readings
    are, never which one "should" be right.
