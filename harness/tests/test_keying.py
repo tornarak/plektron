@@ -10,6 +10,7 @@ from __future__ import annotations
 import json
 import re
 from pathlib import Path
+from unicodedata import normalize as nfd
 
 import pytest
 from conftest import JESUP_KEYING, write_project
@@ -221,8 +222,9 @@ def test_the_1900_text_folds_its_ruled_sorts_and_the_chukchee_folds_nothing():
     nfd = __import__("unicodedata").normalize
     # A sequence is taken whole: ď is d + U+030C, and folds to one eth.
     assert b.fold(nfd("NFD", "-ора́wеďат")) == nfd("NFD", "-ора́wеðат")
-    # The Latin ä a layer keys becomes Cyrillic а with its diaeresis.
-    assert b.fold(nfd("NFD", "аӄälilэткін")) == "аӄӓlilэткін"
+    # The Latin ä a layer keys becomes Cyrillic а with its diaeresis, and the
+    # Latin i inside the Cyrillic word is і (script_folds).
+    assert b.fold(nfd("NFD", "аӄälilэткін")) == nfd("NFD", "аӄӓlіlэткін")
     assert b.fold("dа d") == "dа d"            # a bare d is no forked d
 
 
@@ -284,3 +286,44 @@ def test_a_fold_leaves_the_alto_provenance_that_records_it(tmp_path):
     text = p.read_text(encoding="utf-8")
     assert "in.folds: қ&gt;ӄ" in text and 'CONTENT="ешӄан"' in text
     assert scan(t)["fold_offenders"] == []
+
+
+def _word_folds(tmp_path):
+    pairs = {"a": "а", "e": "е", "o": "о", "K": "К", "I": "І"}
+    rules = {"script_folds": {"Cyrl": {"pairs": pairs, "keep": "l w ę"}},
+             "numeral_folds": {"І": "I", "Х": "X"}}
+    why = {f"script_folds.Cyrl.pairs.{k}": "x" for k in pairs}
+    why |= {"script_folds.Cyrl.keep": "x", "numeral_folds.І": "x", "numeral_folds.Х": "x"}
+    return keying.rules(_ws(tmp_path, {**rules, "_why": why}))
+
+
+@pytest.mark.parametrize("given, expected", [
+    ("ӄol", "ӄоl"),                       # a lookalike in a Cyrillic word, l kept
+    ("Kalє", "Каlє"),
+    ("Kэlę", "Кэlę"),                     # the unruled hooked e is kept whole
+    ("IІІ", "III"), ("І", "I"), ("ХІ", "XI"),   # a numeral is Latin
+    ("Talo", "Talo"),                     # no Cyrillic letter: never touched
+    ("Kjellmannа", "Kjellmannа"),         # m and n would be left: kept whole
+    ("тот-төмwаткен", "тот-төмwаткен"),
+])
+def test_word_folds(tmp_path, given, expected):
+    r = _word_folds(tmp_path)
+    assert r.fold(nfd("NFD", given)) == nfd("NFD", expected)
+
+
+def test_word_folds_are_reported_as_whole_words(tmp_path):
+    r = _word_folds(tmp_path)
+    assert r.fold_spans("и ӄol IІІ") == [(2, "ӄol", "ӄоl"), (6, "IІІ", "III")]
+
+
+def test_a_keep_that_the_pairs_fold_is_refused(tmp_path):
+    t = _ws(tmp_path, {"script_folds": {"Cyrl": {"pairs": {"a": "а"}, "keep": "a"}},
+                       "_why": {"script_folds.Cyrl.pairs.a": "x",
+                                "script_folds.Cyrl.keep": "x"}})
+    with pytest.raises(keying.KeyingError, match="keep"):
+        keying.rules(t)
+
+
+def test_the_chukchee_has_no_word_folds():
+    r = keying.rules(JESUP / "bogoras-chukchi")
+    assert r.fold("Tоже IІІ") == "Tоже IІІ" and r.word_folds_record == ""

@@ -7,7 +7,7 @@
    "A record is one printed line, on the leaf it is printed on; `folio` is that leaf's printed folio, read from its running head (null where the head was unreadable). The record is a folio witness for its leaf.",
    "`on_leaf` is the record's place among the informant lines printed on its leaf, counted down the page: two items can close on one leaf with identical lines (nos. 41 and 42 on 1-198), and two songs of no. 46 print the same line, so the line's text does not identify it.",
    "`printed` is the line as set, pre-reform orthography and all, and is the record; every other field is parsed from it and loses to it.",
-   "`form` is the narrator's name as this line prints it, case ending included. It is read on this leaf and on no other: the same narrator is printed several ways (Ајӈа̀нвáт with and without its grave, once with ӄ, once with н), and carrying one leaf's reading to another would be inferring a glyph from a neighbouring page.",
+   "`form` is the narrator's name as this line prints it, case ending included. It is read on this leaf and on no other: the same narrator is printed several ways (Ајӈа̀нва́т with and without its grave, once with ӄ, once with н), and carrying one leaf's reading to another would be inferring a glyph from a neighbouring page.",
    "`narrator` groups records under one person. The grouping, the heading `name` (a nominative the book mostly does not print) and every `jesup` correspondence are editorial, at #llm.",
    "`where.place` is an English label; `where.entity` links the shared encyclopedia where an entry exists and is null otherwise, never minted here. The Anyui fair is left unlinked: place:chukchee-fair sits on the Anadyr, not the Anyui.",
    "Items of Sections I-II with no informant line are listed under `unattributed`; whether they name a source some other way is unchecked."
@@ -23,13 +23,13 @@
   "tier1": "Every `form` and `name`, and the Chukchi toponyms inside `printed` (Аконајке and its variants), are Tier-1 readings awaiting a human's ratification glyph by glyph. The Russian around them is outside the firewall.",
   "glyph_unsettled": [
    "ę",
-   "the grave on Ајӈа̀нвáт"
+   "the grave on Ајӈа̀нва́т"
   ]
  },
  "narrators": [
   {
    "id": "ajnanvat",
-   "name": "Ајӈа̀нвáт",
+   "name": "Ајӈа̀нва́т",
    "sex": "m",
    "people": "чукча",
    "jesup": {
@@ -52,16 +52,16 @@
   },
   {
    "id": "gade",
-   "name": "Ђáðе",
+   "name": "Ђа́ðе",
    "sex": "m",
    "people": "чукча"
   },
   {
    "id": "ajvan",
-   "name": "Áйван",
+   "name": "А́йван",
    "sex": "m",
    "people": "чукча",
-   "note": "printed both Áйван and Áјван; merged as one man, all nine records being at the Akonaike tract — a judgement, #llm"
+   "note": "printed both А́йван and А́јван; merged as one man, all nine records being at the Akonaike tract — a judgement, #llm"
   },
   {
    "id": "chenge",
@@ -71,7 +71,7 @@
   },
   {
    "id": "nyron",
-   "name": "Ӈырóн",
+   "name": "Ӈыро́н",
    "sex": "m",
    "people": "чукча",
    "jesup": {
@@ -83,7 +83,7 @@
   },
   {
    "id": "vaal",
-   "name": "Вáаl",
+   "name": "Ва́аl",
    "sex": "m",
    "people": "чукча"
   },
@@ -95,14 +95,14 @@
   },
   {
    "id": "vatel",
-   "name": "Вáтеl",
+   "name": "Ва́теl",
    "sex": "m",
    "people": "чукча",
-   "note": "printed Вáтеля (Cyrillic л) three times and Вáтеl'я (Latin l) once; the heading takes the Latin-l form, and no nominative is printed"
+   "note": "printed Ва́теля (Cyrillic л) three times and Ва́теl'я (Latin l) once; the heading takes the Latin-l form, and no nominative is printed"
   },
   {
    "id": "kawno",
-   "name": "Кáўно",
+   "name": "Ка́ўно",
    "sex": "m",
    "people": "чукча"
   },
@@ -120,7 +120,7 @@
   },
   {
    "id": "parkal",
-   "name": "Пáркаl",
+   "name": "Па́ркаl",
    "sex": "f",
    "people": "чукчанка"
   },
@@ -138,13 +138,13 @@
   },
   {
    "id": "paganto",
-   "name": "Пађáнто",
+   "name": "Пађа́нто",
    "sex": "m",
    "people": "чукча"
   },
   {
    "id": "chongo",
-   "name": "Чóӈо",
+   "name": "Чо́ӈо",
    "sex": "m",
    "people": "чукча"
   },
@@ -156,45 +156,45 @@
   },
   {
    "id": "jaqak",
-   "name": "Јӓӄáк",
+   "name": "Јӓӄа́к",
    "sex": "m",
    "people": "чукча"
   },
   {
    "id": "aneqaj",
-   "name": "Анéӄај",
+   "name": "Ане́ӄај",
    "sex": "f",
    "people": "чукчанка"
   },
   {
    "id": "atka-vaalirgyn",
-   "name": "Аткà-Ваálірђын",
+   "name": "Атка̀-Ваа́lірђын",
    "sex": "m",
    "people": "чукча",
-   "note": "Ваálірђын and Аткà-Ваálірђын may be one man; kept apart, nothing printed settling it"
+   "note": "Ваа́lірђын and Атка̀-Ваа́lірђын may be one man; kept apart, nothing printed settling it"
   },
   {
    "id": "vaalirgyn",
-   "name": "Ваálірђын",
+   "name": "Ваа́lірђын",
    "sex": "m",
    "people": "чукча",
-   "note": "Ваálірђын and Аткà-Ваálірђын may be one man; kept apart, nothing printed settling it"
+   "note": "Ваа́lірђын and Атка̀-Ваа́lірђын may be one man; kept apart, nothing printed settling it"
   },
   {
    "id": "nuvat",
-   "name": "Нувáт",
+   "name": "Нува́т",
    "sex": "m",
    "people": "чукча"
   },
   {
    "id": "plakkyngo",
-   "name": "Пláккыӈо",
+   "name": "Пlа́ккыӈо",
    "sex": "m",
    "people": "чукча"
   },
   {
    "id": "pelawge",
-   "name": "Пеláwђе",
+   "name": "Пеlа́wђе",
    "sex": "m",
    "people": "чукча"
   },
@@ -211,9 +211,9 @@
    "ref": "1-060",
    "on_leaf": 1,
    "folio": 4,
-   "printed": "Записано весной 1897 г. отъ чукчи Ајӈа̀нвáта на урочищѣ Сухарномъ.",
+   "printed": "Записано весной 1897 г. отъ чукчи Ајӈа̀нва́та на урочищѣ Сухарномъ.",
    "narrator": "ajnanvat",
-   "form": "Ајӈа̀нвáта",
+   "form": "Ајӈа̀нва́та",
    "where": {
     "printed": "на урочищѣ Сухарномъ",
     "place": "the Sukharnoe tract",
@@ -260,9 +260,9 @@
    "ref": "1-082",
    "on_leaf": 1,
    "folio": 26,
-   "printed": "Записано отъ чукчи Ајӈа̀нвáта весною 1897 года на урочищѣ Сухарномъ.",
+   "printed": "Записано отъ чукчи Ајӈа̀нва́та весною 1897 года на урочищѣ Сухарномъ.",
    "narrator": "ajnanvat",
-   "form": "Ајӈа̀нвáта",
+   "form": "Ајӈа̀нва́та",
    "where": {
     "printed": "на урочищѣ Сухарномъ",
     "place": "the Sukharnoe tract",
@@ -276,11 +276,11 @@
    "ref": "1-089",
    "on_leaf": 1,
    "folio": 33,
-   "printed": "Записано отъ чукчи Ваálірђына весною 1897 года на урочищѣ Аконáйке.",
+   "printed": "Записано отъ чукчи Ваа́lірђына весною 1897 года на урочищѣ Акона́йке.",
    "narrator": "vaalirgyn",
-   "form": "Ваálірђына",
+   "form": "Ваа́lірђына",
    "where": {
-    "printed": "на урочищѣ Аконáйке",
+    "printed": "на урочищѣ Акона́йке",
     "place": "the Akonaike tract",
     "entity": null
    },
@@ -292,9 +292,9 @@
    "ref": "1-097",
    "on_leaf": 1,
    "folio": 41,
-   "printed": "Записано отъ чукчи Ајӈа̀нвáта лѣтомъ 1897 года на урочищѣ Каменномъ.",
+   "printed": "Записано отъ чукчи Ајӈа̀нва́та лѣтомъ 1897 года на урочищѣ Каменномъ.",
    "narrator": "ajnanvat",
-   "form": "Ајӈа̀нвáта",
+   "form": "Ајӈа̀нва́та",
    "where": {
     "printed": "на урочищѣ Каменномъ",
     "place": "the Kamennoe tract",
@@ -308,9 +308,9 @@
    "ref": "1-103",
    "on_leaf": 1,
    "folio": 47,
-   "printed": "Записано отъ чукчи Ајӈа̀нвáта лѣтомъ 1897 г. въ Нижнеколымскѣ.",
+   "printed": "Записано отъ чукчи Ајӈа̀нва́та лѣтомъ 1897 г. въ Нижнеколымскѣ.",
    "narrator": "ajnanvat",
-   "form": "Ајӈа̀нвáта",
+   "form": "Ајӈа̀нва́та",
    "where": {
     "printed": "въ Нижнеколымскѣ",
     "place": "Nizhnekolymsk",
@@ -324,9 +324,9 @@
    "ref": "1-106",
    "on_leaf": 1,
    "folio": 50,
-   "printed": "Записано отъ чукчи Ајӈа̀нвáта осенью 1897 г. въ Нижнеколымскѣ.",
+   "printed": "Записано отъ чукчи Ајӈа̀нва́та осенью 1897 г. въ Нижнеколымскѣ.",
    "narrator": "ajnanvat",
-   "form": "Ајӈа̀нвáта",
+   "form": "Ајӈа̀нва́та",
    "where": {
     "printed": "въ Нижнеколымскѣ",
     "place": "Nizhnekolymsk",
@@ -340,9 +340,9 @@
    "ref": "1-112",
    "on_leaf": 1,
    "folio": 56,
-   "printed": "Записано отъ чукчи Ајӈа̀нвáта осенью 1897 г. въ Нижнеколымскѣ.",
+   "printed": "Записано отъ чукчи Ајӈа̀нва́та осенью 1897 г. въ Нижнеколымскѣ.",
    "narrator": "ajnanvat",
-   "form": "Ајӈа̀нвáта",
+   "form": "Ајӈа̀нва́та",
    "where": {
     "printed": "въ Нижнеколымскѣ",
     "place": "Nizhnekolymsk",
@@ -404,9 +404,9 @@
    "ref": "1-144",
    "on_leaf": 1,
    "folio": 88,
-   "printed": "Записано отъ чукчи Ајӈа̀нвáта осенью 1897 г. на урочищѣ Сухарномъ.",
+   "printed": "Записано отъ чукчи Ајӈа̀нва́та осенью 1897 г. на урочищѣ Сухарномъ.",
    "narrator": "ajnanvat",
-   "form": "Ајӈа̀нвáта",
+   "form": "Ајӈа̀нва́та",
    "where": {
     "printed": "на урочищѣ Сухарномъ",
     "place": "the Sukharnoe tract",
@@ -420,9 +420,9 @@
    "ref": "1-149",
    "on_leaf": 1,
    "folio": 93,
-   "printed": "Записано отъ чукчи Ђáðе на урочищѣ Сухарномъ осенью 1897 г.",
+   "printed": "Записано отъ чукчи Ђа́ðе на урочищѣ Сухарномъ осенью 1897 г.",
    "narrator": "gade",
-   "form": "Ђáðе",
+   "form": "Ђа́ðе",
    "where": {
     "printed": "на урочищѣ Сухарномъ",
     "place": "the Sukharnoe tract",
@@ -436,9 +436,9 @@
    "ref": "1-150",
    "on_leaf": 1,
    "folio": 94,
-   "printed": "Записано отъ чукчи Ђáðе на урочищѣ Сухарномъ осенью 1897 года.",
+   "printed": "Записано отъ чукчи Ђа́ðе на урочищѣ Сухарномъ осенью 1897 года.",
    "narrator": "gade",
-   "form": "Ђáðе",
+   "form": "Ђа́ðе",
    "where": {
     "printed": "на урочищѣ Сухарномъ",
     "place": "the Sukharnoe tract",
@@ -452,9 +452,9 @@
    "ref": "1-152",
    "on_leaf": 1,
    "folio": 96,
-   "printed": "Записано отъ чукчи Ђáðе на урочищѣ Сухарномъ осенью 1897 г.",
+   "printed": "Записано отъ чукчи Ђа́ðе на урочищѣ Сухарномъ осенью 1897 г.",
    "narrator": "gade",
-   "form": "Ђáðе",
+   "form": "Ђа́ðе",
    "where": {
     "printed": "на урочищѣ Сухарномъ",
     "place": "the Sukharnoe tract",
@@ -462,16 +462,16 @@
    },
    "season": "autumn",
    "year": 1897,
-   "doubt": "a mark over the final е of Ђáðе that the other records lack; damage or a sort, unsettled"
+   "doubt": "a mark over the final е of Ђа́ðе that the other records lack; damage or a sort, unsettled"
   },
   {
    "item": "n18",
    "ref": "1-153",
    "on_leaf": 1,
    "folio": 97,
-   "printed": "Записано отъ чукчи Ђáðе осенью 1897 г. на урочищѣ Сухарномъ.",
+   "printed": "Записано отъ чукчи Ђа́ðе осенью 1897 г. на урочищѣ Сухарномъ.",
    "narrator": "gade",
-   "form": "Ђáðе",
+   "form": "Ђа́ðе",
    "where": {
     "printed": "на урочищѣ Сухарномъ",
     "place": "the Sukharnoe tract",
@@ -485,9 +485,9 @@
    "ref": "1-154",
    "on_leaf": 1,
    "folio": 98,
-   "printed": "Записано отъ чукчи Ђáðе на урочищѣ Сухарномъ осенью 1897 г.",
+   "printed": "Записано отъ чукчи Ђа́ðе на урочищѣ Сухарномъ осенью 1897 г.",
    "narrator": "gade",
-   "form": "Ђáðе",
+   "form": "Ђа́ðе",
    "where": {
     "printed": "на урочищѣ Сухарномъ",
     "place": "the Sukharnoe tract",
@@ -501,9 +501,9 @@
    "ref": "1-156",
    "on_leaf": 1,
    "folio": 100,
-   "printed": "Записано отъ чукчи Ђáðе на урочищѣ Сухарномъ осенью 1897 г.",
+   "printed": "Записано отъ чукчи Ђа́ðе на урочищѣ Сухарномъ осенью 1897 г.",
    "narrator": "gade",
-   "form": "Ђáðе",
+   "form": "Ђа́ðе",
    "where": {
     "printed": "на урочищѣ Сухарномъ",
     "place": "the Sukharnoe tract",
@@ -517,9 +517,9 @@
    "ref": "1-161",
    "on_leaf": 1,
    "folio": 105,
-   "printed": "Записано на р. Молондѣ отъ чукчи Кáўно.",
+   "printed": "Записано на р. Молондѣ отъ чукчи Ка́ўно.",
    "narrator": "kawno",
-   "form": "Кáўно",
+   "form": "Ка́ўно",
    "where": {
     "printed": "на р. Молондѣ",
     "place": "the Molonda",
@@ -533,9 +533,9 @@
    "ref": "1-165",
    "on_leaf": 1,
    "folio": 109,
-   "printed": "Записано на р. Молондѣ отъ чукчи Аткà-Ваálірђын.",
+   "printed": "Записано на р. Молондѣ отъ чукчи Атка̀-Ваа́lірђын.",
    "narrator": "atka-vaalirgyn",
-   "form": "Аткà-Ваálірђын",
+   "form": "Атка̀-Ваа́lірђын",
    "where": {
     "printed": "на р. Молондѣ",
     "place": "the Molonda",
@@ -549,9 +549,9 @@
    "ref": "1-168",
    "on_leaf": 1,
    "folio": 112,
-   "printed": "Записано на верховьяхъ р. Каменной отъ чукчи Нувáт'а.",
+   "printed": "Записано на верховьяхъ р. Каменной отъ чукчи Нува́т'а.",
    "narrator": "nuvat",
-   "form": "Нувáт'а",
+   "form": "Нува́т'а",
    "where": {
     "printed": "на верховьяхъ р. Каменной",
     "place": "the upper Kamennaya",
@@ -559,16 +559,16 @@
    },
    "season": null,
    "year": null,
-   "doubt": "a dot under the á of Нувáт'а, possibly a sort, possibly a speck"
+   "doubt": "a dot under the á of Нува́т'а, possibly a sort, possibly a speck"
   },
   {
    "item": "n24",
    "ref": "1-171",
    "on_leaf": 1,
    "folio": 115,
-   "printed": "Записано въ Анюйской крѣпости отъ чукчи Ђáðе.",
+   "printed": "Записано въ Анюйской крѣпости отъ чукчи Ђа́ðе.",
    "narrator": "gade",
-   "form": "Ђáðе",
+   "form": "Ђа́ðе",
    "where": {
     "printed": "въ Анюйской крѣпости",
     "place": "the Anyui fortress",
@@ -646,9 +646,9 @@
    "ref": "1-184",
    "on_leaf": 1,
    "folio": 128,
-   "printed": "Записано на урочищѣ Аконайке отъ чукчи Вáтеля.",
+   "printed": "Записано на урочищѣ Аконайке отъ чукчи Ва́теля.",
    "narrator": "vatel",
-   "form": "Вáтеля",
+   "form": "Ва́теля",
    "where": {
     "printed": "на урочищѣ Аконайке",
     "place": "the Akonaike tract",
@@ -710,9 +710,9 @@
    "ref": "1-189",
    "on_leaf": 1,
    "folio": 133,
-   "printed": "Записано отъ чукчи Ајӈа̀нвáт'а въ Анюйской крѣпости.",
+   "printed": "Записано отъ чукчи Ајӈа̀нва́т'а въ Анюйской крѣпости.",
    "narrator": "ajnanvat",
-   "form": "Ајӈа̀нвáт'а",
+   "form": "Ајӈа̀нва́т'а",
    "where": {
     "printed": "въ Анюйской крѣпости",
     "place": "the Anyui fortress",
@@ -726,9 +726,9 @@
    "ref": "1-191",
    "on_leaf": 1,
    "folio": 135,
-   "printed": "Записано отъ чукчи Ајӈа̀нвáт'а въ Анюйской крѣпости.",
+   "printed": "Записано отъ чукчи Ајӈа̀нва́т'а въ Анюйской крѣпости.",
    "narrator": "ajnanvat",
-   "form": "Ајӈа̀нвáт'а",
+   "form": "Ајӈа̀нва́т'а",
    "where": {
     "printed": "въ Анюйской крѣпости",
     "place": "the Anyui fortress",
@@ -742,9 +742,9 @@
    "ref": "1-192",
    "on_leaf": 1,
    "folio": 136,
-   "printed": "Записано отъ чукчи Ајӈанвáт'а въ Анюйской крѣпости.",
+   "printed": "Записано отъ чукчи Ајӈанва́т'а въ Анюйской крѣпости.",
    "narrator": "ajnanvat",
-   "form": "Ајӈанвáт'а",
+   "form": "Ајӈанва́т'а",
    "where": {
     "printed": "въ Анюйской крѣпости",
     "place": "the Anyui fortress",
@@ -758,11 +758,11 @@
    "ref": "1-192",
    "on_leaf": 2,
    "folio": 136,
-   "printed": "Записано отъ чукчи Вáтеля на урочищѣ Аконáйке.",
+   "printed": "Записано отъ чукчи Ва́теля на урочищѣ Акона́йке.",
    "narrator": "vatel",
-   "form": "Вáтеля",
+   "form": "Ва́теля",
    "where": {
-    "printed": "на урочищѣ Аконáйке",
+    "printed": "на урочищѣ Акона́йке",
     "place": "the Akonaike tract",
     "entity": null
    },
@@ -774,11 +774,11 @@
    "ref": "1-193",
    "on_leaf": 1,
    "folio": 137,
-   "printed": "Записано отъ чукчи Вáтеля на урочищѣ Аконáйке.",
+   "printed": "Записано отъ чукчи Ва́теля на урочищѣ Акона́йке.",
    "narrator": "vatel",
-   "form": "Вáтеля",
+   "form": "Ва́теля",
    "where": {
-    "printed": "на урочищѣ Аконáйке",
+    "printed": "на урочищѣ Акона́йке",
     "place": "the Akonaike tract",
     "entity": null
    },
@@ -806,9 +806,9 @@
    "ref": "1-195",
    "on_leaf": 1,
    "folio": 139,
-   "printed": "Записано отъ чукчи Ајӈанвáт'а на урочищѣ Каменномъ.",
+   "printed": "Записано отъ чукчи Ајӈанва́т'а на урочищѣ Каменномъ.",
    "narrator": "ajnanvat",
-   "form": "Ајӈанвáт'а",
+   "form": "Ајӈанва́т'а",
    "where": {
     "printed": "на урочищѣ Каменномъ",
     "place": "the Kamennoe tract",
@@ -822,9 +822,9 @@
    "ref": "1-197",
    "on_leaf": 1,
    "folio": 141,
-   "printed": "Записано отъ чукчи Ајӈанвáт'а на урочищѣ Каменномъ.",
+   "printed": "Записано отъ чукчи Ајӈанва́т'а на урочищѣ Каменномъ.",
    "narrator": "ajnanvat",
-   "form": "Ајӈанвáт'а",
+   "form": "Ајӈанва́т'а",
    "where": {
     "printed": "на урочищѣ Каменномъ",
     "place": "the Kamennoe tract",
@@ -903,9 +903,9 @@
    "ref": "1-202",
    "on_leaf": 2,
    "folio": 146,
-   "printed": "Записано на р. Молондѣ отъ чукчанки Пáркаl.",
+   "printed": "Записано на р. Молондѣ отъ чукчанки Па́ркаl.",
    "narrator": "parkal",
-   "form": "Пáркаl",
+   "form": "Па́ркаl",
    "where": {
     "printed": "на р. Молондѣ",
     "place": "the Molonda",
@@ -919,11 +919,11 @@
    "ref": "1-202",
    "on_leaf": 3,
    "folio": 146,
-   "printed": "Записано отъ чукчанки Кутјэ́ўт на урочищѣ Аконáјке.",
+   "printed": "Записано отъ чукчанки Кутјэ́ўт на урочищѣ Акона́јке.",
    "narrator": "kutjeut",
    "form": "Кутјэ́ўт",
    "where": {
-    "printed": "на урочищѣ Аконáјке",
+    "printed": "на урочищѣ Акона́јке",
     "place": "the Akonaike tract",
     "entity": null
    },
@@ -935,11 +935,11 @@
    "ref": "1-202",
    "on_leaf": 4,
    "folio": 146,
-   "printed": "Записано отъ чукчанки Кутјэ́ўт на урочищѣ Аконáјке.",
+   "printed": "Записано отъ чукчанки Кутјэ́ўт на урочищѣ Акона́јке.",
    "narrator": "kutjeut",
    "form": "Кутјэ́ўт",
    "where": {
-    "printed": "на урочищѣ Аконáјке",
+    "printed": "на урочищѣ Акона́јке",
     "place": "the Akonaike tract",
     "entity": null
    },
@@ -967,9 +967,9 @@
    "ref": "1-218",
    "on_leaf": 1,
    "folio": 162,
-   "printed": "Записано отъ чукчи Кáўно на р. Олоѣ въ 1895 году.",
+   "printed": "Записано отъ чукчи Ка́ўно на р. Олоѣ въ 1895 году.",
    "narrator": "kawno",
-   "form": "Кáўно",
+   "form": "Ка́ўно",
    "where": {
     "printed": "на р. Олоѣ",
     "place": "the Oloi",
@@ -983,9 +983,9 @@
    "ref": "1-219",
    "on_leaf": 1,
    "folio": 163,
-   "printed": "Записано отъ чукчи Вáтеl'я на р. Анюѣ въ 1896 г.",
+   "printed": "Записано отъ чукчи Ва́теl'я на р. Анюѣ въ 1896 г.",
    "narrator": "vatel",
-   "form": "Вáтеl'я",
+   "form": "Ва́теl'я",
    "where": {
     "printed": "на р. Анюѣ",
     "place": "the Anyui (Big or Small)",
@@ -1139,9 +1139,9 @@
    "ref": "1-232",
    "on_leaf": 2,
    "folio": 176,
-   "printed": "Записано отъ чукчи Вáаl на р. Омолонѣ.",
+   "printed": "Записано отъ чукчи Ва́аl на р. Омолонѣ.",
    "narrator": "vaal",
-   "form": "Вáаl",
+   "form": "Ва́аl",
    "where": {
     "printed": "на р. Омолонѣ",
     "place": "the Omolon",
@@ -1155,9 +1155,9 @@
    "ref": "1-234",
    "on_leaf": 1,
    "folio": 178,
-   "printed": "Записано отъ чукчи Вáаl на р. Омолонѣ въ 1896 г.",
+   "printed": "Записано отъ чукчи Ва́аl на р. Омолонѣ въ 1896 г.",
    "narrator": "vaal",
-   "form": "Вáаl",
+   "form": "Ва́аl",
    "where": {
     "printed": "на р. Омолонѣ",
     "place": "the Omolon",
@@ -1171,9 +1171,9 @@
    "ref": "1-235",
    "on_leaf": 1,
    "folio": 179,
-   "printed": "Записано отъ чукчи Ајӈа̀нвáт'а на р. Колымѣ въ 1896 г.",
+   "printed": "Записано отъ чукчи Ајӈа̀нва́т'а на р. Колымѣ въ 1896 г.",
    "narrator": "ajnanvat",
-   "form": "Ајӈа̀нвáт'а",
+   "form": "Ајӈа̀нва́т'а",
    "where": {
     "printed": "на р. Колымѣ",
     "place": "the Kolyma",
@@ -1203,11 +1203,11 @@
    "ref": "1-238",
    "on_leaf": 1,
    "folio": 182,
-   "printed": "Записано отъ чукчи Ӓму́lін'а на урочищѣ Аконáйке въ 1896 г.",
+   "printed": "Записано отъ чукчи Ӓму́lін'а на урочищѣ Акона́йке въ 1896 г.",
    "narrator": "amulin",
    "form": "Ӓму́lін'а",
    "where": {
-    "printed": "на урочищѣ Аконáйке",
+    "printed": "на урочищѣ Акона́йке",
     "place": "the Akonaike tract",
     "entity": null
    },
@@ -1243,9 +1243,9 @@
    "ref": "1-243",
    "on_leaf": 1,
    "folio": 187,
-   "printed": "Записано отъ чукчи Кáўно на р. Олоѣ въ 1895 году.",
+   "printed": "Записано отъ чукчи Ка́ўно на р. Олоѣ въ 1895 году.",
    "narrator": "kawno",
-   "form": "Кáўно",
+   "form": "Ка́ўно",
    "where": {
     "printed": "на р. Олоѣ",
     "place": "the Oloi",
@@ -1275,9 +1275,9 @@
    "ref": "1-245",
    "on_leaf": 1,
    "folio": 189,
-   "printed": "Записано отъ чукчи Ђáðе въ 1897 году.",
+   "printed": "Записано отъ чукчи Ђа́ðе въ 1897 году.",
    "narrator": "gade",
-   "form": "Ђáðе",
+   "form": "Ђа́ðе",
    "where": null,
    "season": null,
    "year": 1897
@@ -1287,9 +1287,9 @@
    "ref": "1-248",
    "on_leaf": 1,
    "folio": 192,
-   "printed": "Записано отъ чукчи Пађáнто въ Анюйской крѣпости въ 1896 г.",
+   "printed": "Записано отъ чукчи Пађа́нто въ Анюйской крѣпости въ 1896 г.",
    "narrator": "paganto",
-   "form": "Пађáнто",
+   "form": "Пађа́нто",
    "where": {
     "printed": "въ Анюйской крѣпости",
     "place": "the Anyui fortress",
@@ -1327,9 +1327,9 @@
    "ref": "1-255",
    "on_leaf": 1,
    "folio": 199,
-   "printed": "Записано отъ чукчи Вáаl въ 1895 г.",
+   "printed": "Записано отъ чукчи Ва́аl въ 1895 г.",
    "narrator": "vaal",
-   "form": "Вáаl",
+   "form": "Ва́аl",
    "where": null,
    "season": null,
    "year": 1895
@@ -1351,9 +1351,9 @@
    "ref": "1-257",
    "on_leaf": 1,
    "folio": 201,
-   "printed": "Записано отъ чукчи Пађáнто въ Анюйской крѣпости.",
+   "printed": "Записано отъ чукчи Пађа́нто въ Анюйской крѣпости.",
    "narrator": "paganto",
-   "form": "Пађáнто",
+   "form": "Пађа́нто",
    "where": {
     "printed": "въ Анюйской крѣпости",
     "place": "the Anyui fortress",
@@ -1367,9 +1367,9 @@
    "ref": "1-270",
    "on_leaf": 1,
    "folio": 214,
-   "printed": "Записано отъ чукчи Пеláwђе въ Нижнеколымскѣ.",
+   "printed": "Записано отъ чукчи Пеlа́wђе въ Нижнеколымскѣ.",
    "narrator": "pelawge",
-   "form": "Пеláwђе",
+   "form": "Пеlа́wђе",
    "where": {
     "printed": "въ Нижнеколымскѣ",
     "place": "Nizhnekolymsk",
@@ -1383,9 +1383,9 @@
    "ref": "1-272",
    "on_leaf": 1,
    "folio": 216,
-   "printed": "Записано отъ чукчи Вáаl на р. Омолонѣ въ 1895 г.",
+   "printed": "Записано отъ чукчи Ва́аl на р. Омолонѣ въ 1895 г.",
    "narrator": "vaal",
-   "form": "Вáаl",
+   "form": "Ва́аl",
    "where": {
     "printed": "на р. Омолонѣ",
     "place": "the Omolon",
@@ -1447,9 +1447,9 @@
    "ref": "1-287",
    "on_leaf": 1,
    "folio": 231,
-   "printed": "Записано отъ чукчи Ђáðе на Анюйской ярмаркѣ.",
+   "printed": "Записано отъ чукчи Ђа́ðе на Анюйской ярмаркѣ.",
    "narrator": "gade",
-   "form": "Ђáðе",
+   "form": "Ђа́ðе",
    "where": {
     "printed": "на Анюйской ярмаркѣ",
     "place": "the Anyui fair",
@@ -1463,11 +1463,11 @@
    "ref": "1-291",
    "on_leaf": 1,
    "folio": 235,
-   "printed": "Записано отъ чукчи Айвана на урочищѣ Аконáјке.",
+   "printed": "Записано отъ чукчи Айвана на урочищѣ Акона́јке.",
    "narrator": "ajvan",
    "form": "Айвана",
    "where": {
-    "printed": "на урочищѣ Аконáјке",
+    "printed": "на урочищѣ Акона́јке",
     "place": "the Akonaike tract",
     "entity": null
    },
@@ -1496,9 +1496,9 @@
    "ref": "1-295",
    "on_leaf": 1,
    "folio": 239,
-   "printed": "Записано отъ чукчи Ђáðе на Анюйской ярмаркѣ.",
+   "printed": "Записано отъ чукчи Ђа́ðе на Анюйской ярмаркѣ.",
    "narrator": "gade",
-   "form": "Ђáðе",
+   "form": "Ђа́ðе",
    "where": {
     "printed": "на Анюйской ярмаркѣ",
     "place": "the Anyui fair",
@@ -1512,9 +1512,9 @@
    "ref": "1-297",
    "on_leaf": 1,
    "folio": 241,
-   "printed": "Записано отъ чукчи Вáаl на р. Омолонѣ въ 1895 г.",
+   "printed": "Записано отъ чукчи Ва́аl на р. Омолонѣ въ 1895 г.",
    "narrator": "vaal",
-   "form": "Вáаl",
+   "form": "Ва́аl",
    "where": {
     "printed": "на р. Омолонѣ",
     "place": "the Omolon",
@@ -1572,11 +1572,11 @@
    "ref": "1-306",
    "on_leaf": 1,
    "folio": 250,
-   "printed": "Записано отъ чукчи Ӈырóн'а въ 1897 г. на урочищѣ Аконáјке.",
+   "printed": "Записано отъ чукчи Ӈыро́н'а въ 1897 г. на урочищѣ Акона́јке.",
    "narrator": "nyron",
-   "form": "Ӈырóн'а",
+   "form": "Ӈыро́н'а",
    "where": {
-    "printed": "на урочищѣ Аконáјке",
+    "printed": "на урочищѣ Акона́јке",
     "place": "the Akonaike tract",
     "entity": null
    },
@@ -1604,9 +1604,9 @@
    "ref": "1-312",
    "on_leaf": 1,
    "folio": 256,
-   "printed": "Записано отъ чукчи Ајӈа̀нвáт'а въ Нижнеколымскѣ въ 1896 г.",
+   "printed": "Записано отъ чукчи Ајӈа̀нва́т'а въ Нижнеколымскѣ въ 1896 г.",
    "narrator": "ajnanvat",
-   "form": "Ајӈа̀нвáт'а",
+   "form": "Ајӈа̀нва́т'а",
    "where": {
     "printed": "въ Нижнеколымскѣ",
     "place": "Nizhnekolymsk",
@@ -1632,9 +1632,9 @@
    "ref": "1-315",
    "on_leaf": 1,
    "folio": 259,
-   "printed": "Записано отъ чукчанки Пáркаl на р. Молондѣ.",
+   "printed": "Записано отъ чукчанки Па́ркаl на р. Молондѣ.",
    "narrator": "parkal",
-   "form": "Пáркаl",
+   "form": "Па́ркаl",
    "where": {
     "printed": "на р. Молондѣ",
     "place": "the Molonda",
@@ -1648,11 +1648,11 @@
    "ref": "1-316",
    "on_leaf": 1,
    "folio": 260,
-   "printed": "Записано отъ чукчи Ӈырóн'а на урочищѣ Аконáјке.",
+   "printed": "Записано отъ чукчи Ӈыро́н'а на урочищѣ Акона́јке.",
    "narrator": "nyron",
-   "form": "Ӈырóн'а",
+   "form": "Ӈыро́н'а",
    "where": {
-    "printed": "на урочищѣ Аконáјке",
+    "printed": "на урочищѣ Акона́јке",
     "place": "the Akonaike tract",
     "entity": null
    },
@@ -1692,11 +1692,11 @@
    "ref": "1-331",
    "on_leaf": 1,
    "folio": 275,
-   "printed": "Записано отъ чукчи Áйвана на урочищѣ Аконáјке въ 1896 г.",
+   "printed": "Записано отъ чукчи А́йвана на урочищѣ Акона́јке въ 1896 г.",
    "narrator": "ajvan",
-   "form": "Áйвана",
+   "form": "А́йвана",
    "where": {
-    "printed": "на урочищѣ Аконáјке",
+    "printed": "на урочищѣ Акона́јке",
     "place": "the Akonaike tract",
     "entity": null
    },
@@ -1764,11 +1764,11 @@
    "ref": "1-336",
    "on_leaf": 1,
    "folio": 280,
-   "printed": "Записано отъ чукчи Ӈырóн'а на урочищѣ Аконáјке.",
+   "printed": "Записано отъ чукчи Ӈыро́н'а на урочищѣ Акона́јке.",
    "narrator": "nyron",
-   "form": "Ӈырóн'а",
+   "form": "Ӈыро́н'а",
    "where": {
-    "printed": "на урочищѣ Аконáјке",
+    "printed": "на урочищѣ Акона́јке",
     "place": "the Akonaike tract",
     "entity": null
    },
@@ -1796,9 +1796,9 @@
    "ref": "1-337",
    "on_leaf": 2,
    "folio": 281,
-   "printed": "Записано отъ чукчи Ђáðе въ Анюйской крѣпости.",
+   "printed": "Записано отъ чукчи Ђа́ðе въ Анюйской крѣпости.",
    "narrator": "gade",
-   "form": "Ђáðе",
+   "form": "Ђа́ðе",
    "where": {
     "printed": "въ Анюйской крѣпости",
     "place": "the Anyui fortress",
@@ -1812,9 +1812,9 @@
    "ref": "1-338",
    "on_leaf": 1,
    "folio": 282,
-   "printed": "Записано отъ чукчанки Пáркаl на р. Молондѣ.",
+   "printed": "Записано отъ чукчанки Па́ркаl на р. Молондѣ.",
    "narrator": "parkal",
-   "form": "Пáркаl",
+   "form": "Па́ркаl",
    "where": {
     "printed": "на р. Молондѣ",
     "place": "the Molonda",
@@ -1844,9 +1844,9 @@
    "ref": "1-344",
    "on_leaf": 1,
    "folio": 288,
-   "printed": "Записано отъ чукчи Ајӈа̀нвáт'а въ Нижнеколымскѣ въ 1896 г.",
+   "printed": "Записано отъ чукчи Ајӈа̀нва́т'а въ Нижнеколымскѣ въ 1896 г.",
    "narrator": "ajnanvat",
-   "form": "Ајӈа̀нвáт'а",
+   "form": "Ајӈа̀нва́т'а",
    "where": {
     "printed": "въ Нижнеколымскѣ",
     "place": "Nizhnekolymsk",
@@ -1876,9 +1876,9 @@
    "ref": "1-348",
    "on_leaf": 1,
    "folio": 292,
-   "printed": "Записано отъ чукчи Кáўно на р. Олоѣ въ 1895 г.",
+   "printed": "Записано отъ чукчи Ка́ўно на р. Олоѣ въ 1895 г.",
    "narrator": "kawno",
-   "form": "Кáўно",
+   "form": "Ка́ўно",
    "where": {
     "printed": "на р. Олоѣ",
     "place": "the Oloi",
@@ -1892,9 +1892,9 @@
    "ref": "1-350",
    "on_leaf": 1,
    "folio": 294,
-   "printed": "Записано отъ чукчи Ајӄа̀нвáт'а въ Нижнеколымскѣ.",
+   "printed": "Записано отъ чукчи Ајӄа̀нва́т'а въ Нижнеколымскѣ.",
    "narrator": "ajnanvat",
-   "form": "Ајӄа̀нвáт'а",
+   "form": "Ајӄа̀нва́т'а",
    "where": {
     "printed": "въ Нижнеколымскѣ",
     "place": "Nizhnekolymsk",
@@ -1909,11 +1909,11 @@
    "ref": "1-353",
    "on_leaf": 1,
    "folio": 297,
-   "printed": "Записано отъ чукчи Áйван'а на урочищѣ Аконáјке.",
+   "printed": "Записано отъ чукчи А́йван'а на урочищѣ Акона́јке.",
    "narrator": "ajvan",
-   "form": "Áйван'а",
+   "form": "А́йван'а",
    "where": {
-    "printed": "на урочищѣ Аконáјке",
+    "printed": "на урочищѣ Акона́јке",
     "place": "the Akonaike tract",
     "entity": null
    },
@@ -1941,9 +1941,9 @@
    "ref": "1-357",
    "on_leaf": 1,
    "folio": 301,
-   "printed": "Записано отъ чукчи Ајӈанвáт'а въ Нижнеколымскѣ.",
+   "printed": "Записано отъ чукчи Ајӈанва́т'а въ Нижнеколымскѣ.",
    "narrator": "ajnanvat",
-   "form": "Ајӈанвáт'а",
+   "form": "Ајӈанва́т'а",
    "where": {
     "printed": "въ Нижнеколымскѣ",
     "place": "Nizhnekolymsk",
@@ -1957,9 +1957,9 @@
    "ref": "1-360",
    "on_leaf": 1,
    "folio": 304,
-   "printed": "Записано отъ чукчи Ајна̀нвáт'а въ Нижнеколымскѣ.",
+   "printed": "Записано отъ чукчи Ајна̀нва́т'а въ Нижнеколымскѣ.",
    "narrator": "ajnanvat",
-   "form": "Ајна̀нвáт'а",
+   "form": "Ајна̀нва́т'а",
    "where": {
     "printed": "въ Нижнеколымскѣ",
     "place": "Nizhnekolymsk",
@@ -1990,11 +1990,11 @@
    "ref": "1-367",
    "on_leaf": 1,
    "folio": 311,
-   "printed": "Записано отъ чукчи Ӈырóн'а на урочищѣ Аконáјке.",
+   "printed": "Записано отъ чукчи Ӈыро́н'а на урочищѣ Акона́јке.",
    "narrator": "nyron",
-   "form": "Ӈырóн'а",
+   "form": "Ӈыро́н'а",
    "where": {
-    "printed": "на урочищѣ Аконáјке",
+    "printed": "на урочищѣ Акона́јке",
     "place": "the Akonaike tract",
     "entity": null
    },
@@ -2006,11 +2006,11 @@
    "ref": "1-373",
    "on_leaf": 1,
    "folio": 317,
-   "printed": "Записано отъ чукчи Áйвана на урочищѣ Аконáјке.",
+   "printed": "Записано отъ чукчи А́йвана на урочищѣ Акона́јке.",
    "narrator": "ajvan",
-   "form": "Áйвана",
+   "form": "А́йвана",
    "where": {
-    "printed": "на урочищѣ Аконáјке",
+    "printed": "на урочищѣ Акона́јке",
     "place": "the Akonaike tract",
     "entity": null
    },
@@ -2022,9 +2022,9 @@
    "ref": "1-374",
    "on_leaf": 1,
    "folio": 318,
-   "printed": "Записано отъ чукчанки Анéӄај на р. Россомашьей въ 1897 г.",
+   "printed": "Записано отъ чукчанки Ане́ӄај на р. Россомашьей въ 1897 г.",
    "narrator": "aneqaj",
-   "form": "Анéӄај",
+   "form": "Ане́ӄај",
    "where": {
     "printed": "на р. Россомашьей",
     "place": "the Rossomashya",
@@ -2038,9 +2038,9 @@
    "ref": "1-379",
    "on_leaf": 1,
    "folio": 323,
-   "printed": "Записано отъ чукчи Ајӈа̀нвáт'а въ Нижнеколымскѣ.",
+   "printed": "Записано отъ чукчи Ајӈа̀нва́т'а въ Нижнеколымскѣ.",
    "narrator": "ajnanvat",
-   "form": "Ајӈа̀нвáт'а",
+   "form": "Ајӈа̀нва́т'а",
    "where": {
     "printed": "въ Нижнеколымскѣ",
     "place": "Nizhnekolymsk",
@@ -2054,11 +2054,11 @@
    "ref": "1-380",
    "on_leaf": 1,
    "folio": 324,
-   "printed": "Записано отъ чукчи Ӈырóн'а на урочищѣ Аконáјке.",
+   "printed": "Записано отъ чукчи Ӈыро́н'а на урочищѣ Акона́јке.",
    "narrator": "nyron",
-   "form": "Ӈырóн'а",
+   "form": "Ӈыро́н'а",
    "where": {
-    "printed": "на урочищѣ Аконáјке",
+    "printed": "на урочищѣ Акона́јке",
     "place": "the Akonaike tract",
     "entity": null
    },
@@ -2070,9 +2070,9 @@
    "ref": "1-383",
    "on_leaf": 1,
    "folio": 327,
-   "printed": "Записано отъ чукчи Ајӈа̀нвáт'а въ г. Среднеколымскѣ.",
+   "printed": "Записано отъ чукчи Ајӈа̀нва́т'а въ г. Среднеколымскѣ.",
    "narrator": "ajnanvat",
-   "form": "Ајӈа̀нвáт'а",
+   "form": "Ајӈа̀нва́т'а",
    "where": {
     "printed": "въ г. Среднеколымскѣ",
     "place": "Srednekolymsk",
@@ -2114,11 +2114,11 @@
    "ref": "1-388",
    "on_leaf": 1,
    "folio": 332,
-   "printed": "Записано отъ чукчи Јӓӄáк на урочищѣ Аконáјке въ 1897 г.",
+   "printed": "Записано отъ чукчи Јӓӄа́к на урочищѣ Акона́јке въ 1897 г.",
    "narrator": "jaqak",
-   "form": "Јӓӄáк",
+   "form": "Јӓӄа́к",
    "where": {
-    "printed": "на урочищѣ Аконáјке",
+    "printed": "на урочищѣ Акона́јке",
     "place": "the Akonaike tract",
     "entity": null
    },
@@ -2130,11 +2130,11 @@
    "ref": "1-389",
    "on_leaf": 1,
    "folio": 333,
-   "printed": "Записано отъ чукчи Ӈырóн'а на урочищѣ Аконáјке.",
+   "printed": "Записано отъ чукчи Ӈыро́н'а на урочищѣ Акона́јке.",
    "narrator": "nyron",
-   "form": "Ӈырóн'а",
+   "form": "Ӈыро́н'а",
    "where": {
-    "printed": "на урочищѣ Аконáјке",
+    "printed": "на урочищѣ Акона́јке",
     "place": "the Akonaike tract",
     "entity": null
    },
@@ -2146,9 +2146,9 @@
    "ref": "1-390",
    "on_leaf": 1,
    "folio": 334,
-   "printed": "Записано отъ чукчи Ђáðе въ Анюйской крѣпости въ 1896 г.",
+   "printed": "Записано отъ чукчи Ђа́ðе въ Анюйской крѣпости въ 1896 г.",
    "narrator": "gade",
-   "form": "Ђáðе",
+   "form": "Ђа́ðе",
    "where": {
     "printed": "въ Анюйской крѣпости",
     "place": "the Anyui fortress",
@@ -2178,11 +2178,11 @@
    "ref": "1-392",
    "on_leaf": 1,
    "folio": 336,
-   "printed": "Записано отъ чукчи Áйван'а на урочищѣ Аконáјке въ 1896 г.",
+   "printed": "Записано отъ чукчи А́йван'а на урочищѣ Акона́јке въ 1896 г.",
    "narrator": "ajvan",
-   "form": "Áйван'а",
+   "form": "А́йван'а",
    "where": {
-    "printed": "на урочищѣ Аконáјке",
+    "printed": "на урочищѣ Акона́јке",
     "place": "the Akonaike tract",
     "entity": null
    },
@@ -2194,9 +2194,9 @@
    "ref": "1-394",
    "on_leaf": 1,
    "folio": 338,
-   "printed": "Записано отъ чукчи Пláккыӈо въ Анюйской крѣпости въ 1897 г.",
+   "printed": "Записано отъ чукчи Пlа́ккыӈо въ Анюйской крѣпости въ 1897 г.",
    "narrator": "plakkyngo",
-   "form": "Пláккыӈо",
+   "form": "Пlа́ккыӈо",
    "where": {
     "printed": "въ Анюйской крѣпости",
     "place": "the Anyui fortress",
@@ -2226,11 +2226,11 @@
    "ref": "1-415",
    "on_leaf": 1,
    "folio": 359,
-   "printed": "Записано отъ чукчи Áйван'а на урочищѣ Аконáјке въ 1896 г.",
+   "printed": "Записано отъ чукчи А́йван'а на урочищѣ Акона́јке въ 1896 г.",
    "narrator": "ajvan",
-   "form": "Áйван'а",
+   "form": "А́йван'а",
    "where": {
-    "printed": "на урочищѣ Аконáјке",
+    "printed": "на урочищѣ Акона́јке",
     "place": "the Akonaike tract",
     "entity": null
    },
@@ -2258,11 +2258,11 @@
    "ref": "1-421",
    "on_leaf": 2,
    "folio": 365,
-   "printed": "Записано отъ чукчи Áйвана на урочищѣ Аконáјке.",
+   "printed": "Записано отъ чукчи А́йвана на урочищѣ Акона́јке.",
    "narrator": "ajvan",
-   "form": "Áйвана",
+   "form": "А́йвана",
    "where": {
-    "printed": "на урочищѣ Аконáјке",
+    "printed": "на урочищѣ Акона́јке",
     "place": "the Akonaike tract",
     "entity": null
    },
@@ -2274,9 +2274,9 @@
    "ref": "1-425",
    "on_leaf": 1,
    "folio": 369,
-   "printed": "Записано отъ чукчи Чóӈо въ Анюйской крѣпости въ 1897 г.",
+   "printed": "Записано отъ чукчи Чо́ӈо въ Анюйской крѣпости въ 1897 г.",
    "narrator": "chongo",
-   "form": "Чóӈо",
+   "form": "Чо́ӈо",
    "where": {
     "printed": "въ Анюйской крѣпости",
     "place": "the Anyui fortress",
@@ -2290,9 +2290,9 @@
    "ref": "1-427",
    "on_leaf": 1,
    "folio": 371,
-   "printed": "Записано отъ чукчи Чóӈо въ Анюйской крѣпости.",
+   "printed": "Записано отъ чукчи Чо́ӈо въ Анюйской крѣпости.",
    "narrator": "chongo",
-   "form": "Чóӈо",
+   "form": "Чо́ӈо",
    "where": {
     "printed": "въ Анюйской крѣпости",
     "place": "the Anyui fortress",
@@ -2306,11 +2306,11 @@
    "ref": "1-429",
    "on_leaf": 1,
    "folio": 373,
-   "printed": "Записано отъ чукчи Áјван'а на урочищѣ Аконáјке.",
+   "printed": "Записано отъ чукчи А́јван'а на урочищѣ Акона́јке.",
    "narrator": "ajvan",
-   "form": "Áјван'а",
+   "form": "А́јван'а",
    "where": {
-    "printed": "на урочищѣ Аконáјке",
+    "printed": "на урочищѣ Акона́јке",
     "place": "the Akonaike tract",
     "entity": null
    },
@@ -2322,11 +2322,11 @@
    "ref": "1-433",
    "on_leaf": 1,
    "folio": 377,
-   "printed": "Записано отъ чукчи Áјван'а на урочищѣ Аконáјке.",
+   "printed": "Записано отъ чукчи А́јван'а на урочищѣ Акона́јке.",
    "narrator": "ajvan",
-   "form": "Áјван'а",
+   "form": "А́јван'а",
    "where": {
-    "printed": "на урочищѣ Аконáјке",
+    "printed": "на урочищѣ Акона́јке",
     "place": "the Akonaike tract",
     "entity": null
    },
@@ -2338,9 +2338,9 @@
    "ref": "1-435",
    "on_leaf": 1,
    "folio": 379,
-   "printed": "Записано отъ чукчи Ӈырóн'а въ 1896 г. Ӈырóн по происхожденію áнӄаlын т. е. приморскій, жилъ на одномъ стойбищѣ съ Олькой Казановымъ, русскимъ мѣщаниномъ, который выросъ среди чукочъ. Здѣсь Олька названъ Тáйӈа-аáчек. Въ лѣто 1892 года они упустили стадо благодаря своей небрежности и все лѣто отыскивали его. Ӈырóн во время этого отыскиванія имѣлъ рядъ откровеній изъ внѣшняго міра (нарһынеwáјпу), которыя сдѣлали его шаманомъ.",
+   "printed": "Записано отъ чукчи Ӈыро́н'а въ 1896 г. Ӈыро́н по происхожденію а́нӄаlын т. е. приморскій, жилъ на одномъ стойбищѣ съ Олькой Казановымъ, русскимъ мѣщаниномъ, который выросъ среди чукочъ. Здѣсь Олька названъ Та́йӈа-аа́чек. Въ лѣто 1892 года они упустили стадо благодаря своей небрежности и все лѣто отыскивали его. Ӈыро́н во время этого отыскиванія имѣлъ рядъ откровеній изъ внѣшняго міра (нарһынеwа́јпу), которыя сдѣлали его шаманомъ.",
    "narrator": "nyron",
-   "form": "Ӈырóн'а",
+   "form": "Ӈыро́н'а",
    "where": null,
    "season": "summer",
    "year": 1896

@@ -92,7 +92,46 @@
   "a\u0308": "\u0430\u0308",
   "A\u0308": "\u0410\u0308"
  },
+ "script_folds": {
+  "Cyrl": {
+   "pairs": {
+    "a": "\u0430", "e": "\u0435", "o": "\u043e", "p": "\u0440", "c": "\u0441", "x": "\u0445", "y": "\u0443", "i": "\u0456", "j": "\u0458",
+    "A": "\u0410", "B": "\u0412", "C": "\u0421", "E": "\u0415", "H": "\u041d", "K": "\u041a", "M": "\u041c", "O": "\u041e",
+    "P": "\u0420", "T": "\u0422", "X": "\u0425", "I": "\u0406", "J": "\u0408"
+   },
+   "keep": "l L w W e\u0328 E\u0328"
+  }
+ },
+ "numeral_folds": {
+  "\u0406": "I",
+  "\u0425": "X"
+ },
  "_why": {
+  "script_folds.Cyrl.keep": "The notation's two Latin letters, which no Cyrillic letter shares a shape with in this face: the tall l (1-024 l20 \u043f\u044b\u0301\u04c8\u044bl\u0442\u0435) and w (1-024 l20 \u0422\u043e\u0442-\u0442\u04e9\u043cw\u0430\u0301\u0442\u043a\u0435\u043d). And the e with a hook below, e + U+0328, which is not ruled and is keyed as the layers have it (1-252 l7; 1-024 l34): a lookalike fold would make it Cyrillic е with an ogonek, a letter nobody identified. A word whose other Latin letters are all lookalikes keeps these.",
+  "numeral_folds.\u0406": "Roman numerals are keyed Latin, ruled by the editor 2026-11-16. The layers set Cyrillic \u0406 in them, alone and mixed (1-024 l32 I\u0406\u0406 for II; 1-023 l23 \u0406): 5 words \u0406 and 5 \u0406\u0406 in mz/ocr.",
+  "numeral_folds.\u0425": "As numeral_folds.\u0406: the layers set Cyrillic \u0425 for the numeral (1-024 l38 \u0442. \u0425; \u0425\u0406 once in mz/ocr).",
+  "script_folds.Cyrl.pairs.a": "A Latin letter inside a Cyrillic word is the layer misreading the Cyrillic letter of the same shape, which is how this book is keyed (read-materials-page: a shape both scripts share is Cyrillic). The two copies set 2,015 such words in mz/ocr (ӄol, liэн, аттool, ewђан, Kalє). Ruled by the editor, 2026-11-16, with the condition that nothing Latin is left but keep, so a Latin name with a Russian ending stays whole.",
+  "script_folds.Cyrl.pairs.e": "As script_folds.Cyrl.pairs.a.",
+  "script_folds.Cyrl.pairs.o": "As script_folds.Cyrl.pairs.a.",
+  "script_folds.Cyrl.pairs.p": "As script_folds.Cyrl.pairs.a.",
+  "script_folds.Cyrl.pairs.c": "As script_folds.Cyrl.pairs.a.",
+  "script_folds.Cyrl.pairs.x": "As script_folds.Cyrl.pairs.a.",
+  "script_folds.Cyrl.pairs.y": "As script_folds.Cyrl.pairs.a.",
+  "script_folds.Cyrl.pairs.i": "As script_folds.Cyrl.pairs.a.",
+  "script_folds.Cyrl.pairs.j": "As script_folds.Cyrl.pairs.a.",
+  "script_folds.Cyrl.pairs.A": "As script_folds.Cyrl.pairs.a.",
+  "script_folds.Cyrl.pairs.B": "As script_folds.Cyrl.pairs.a.",
+  "script_folds.Cyrl.pairs.C": "As script_folds.Cyrl.pairs.a.",
+  "script_folds.Cyrl.pairs.E": "As script_folds.Cyrl.pairs.a.",
+  "script_folds.Cyrl.pairs.H": "As script_folds.Cyrl.pairs.a.",
+  "script_folds.Cyrl.pairs.K": "As script_folds.Cyrl.pairs.a.",
+  "script_folds.Cyrl.pairs.M": "As script_folds.Cyrl.pairs.a.",
+  "script_folds.Cyrl.pairs.O": "As script_folds.Cyrl.pairs.a.",
+  "script_folds.Cyrl.pairs.P": "As script_folds.Cyrl.pairs.a.",
+  "script_folds.Cyrl.pairs.T": "As script_folds.Cyrl.pairs.a.",
+  "script_folds.Cyrl.pairs.X": "As script_folds.Cyrl.pairs.a.",
+  "script_folds.Cyrl.pairs.I": "As script_folds.Cyrl.pairs.a.",
+  "script_folds.Cyrl.pairs.J": "As script_folds.Cyrl.pairs.a.",
   "detectors.footnote_paren_opener": "Footnote marks are keyed as printed, ruled by the editor 2026-11-16: the reference in the text is a raised digit and a full-size paren (1-024 l2 языка¹)), and the note opens with a full-size digit and paren (1-024 l38 1) Извѣстія…). The Chukchee raises both.",
   "folds.\u049b": "The hooked K this book prints is \u04c4, as in the modern Chukchi alphabet: ruled by the editor, 2026-11-07. Both Google Books copies read it as \u049b, a codepoint the print does not use (1-128 l10 \u049b\u0456\u043d\u049b\u00e4\u0452\u0442\u0456; 1-175 \u04a2\u044d\u0301\u045e\u0441\u0327\u049b\u00e4\u0442). Crib: the Jesup q (Qora\u02cawg\u0323\u00ea) and modern \u04c4.",
   "folds.\u049a": "The capital of folds.\u049b, by the same ruling (2026-11-07): the OCR's \u049a is the printed hooked K, \u04c3.",

@@ -53,7 +53,7 @@ from pathlib import Path
 from .generate import GENDIR
 from .layout import repo_root, stem_for
 from .lines import ZOOM
-from .marks import MarksConfigError
+from .marks import HandleTableError, MarksConfigError
 from .refs import norm_ref
 
 DOC = Path(".claude/skills/rebuild-groundtruth/dispatch.md")
@@ -181,56 +181,14 @@ def survey(ref: str, root: Path = Path(".")) -> dict:
     return out
 
 
-def build(ref: str, root: Path = Path("."), note: str | None = None) -> dict:
-    """The prompt for one page, or `Unready` naming the command that fixes it.
-
-    Refuses rather than warns, and each refusal names its remedy. A prompt is a
-    thing somebody is about to spend an agent on; "probably fine" is not a state it
-    should be possible to dispatch from.
-    """
-    s = survey(ref, root)
-    r = s["ref"]
-    if not s["zones"]:
-        raise Unready(
-            f"{r}: no gt/zones/{stem_for(r, root)}.xml — not a keyed text page, so there "
-            "is nothing for `ocr predict` to have segmented. No zones, no dispatch.")
-    if s["exempt"]:
-        raise Unready(
-            f"{r}: ruled `{_kind(r, root)}` in gt/zones/ — a human looked at this "
-            "leaf and recorded that it is not a text page. There is nothing to "
-            "read, and the ruling is a statement rather than an absence, so this "
-            "is a refusal and not a warning.")
-    if s["gt"]:
-        raise Unready(
-            f"{r}: gt/ocr/{stem_for(r, root)}.xml already exists, so this is a *revision*, "
-            "not a restoration. A reader sent at it reads the keyed human text "
-            "through every ALTO verb, and its proposal stops being an independent "
-            "witness. Substitute a page with zones and no gt, and say in the "
-            "report that you did and why.")
-    if not s["mz"]:
-        raise Unready(
-            f"{r}: nothing in mz/ocr/ — an agent sent at it has no line indices to "
-            f"key against and will stall or invent a numbering. Run "
-            f"`uv run harness ocr predict {r}` first, in the parent: it wants the "
-            "GPU, and several agents racing for it is slower than one loop.")
-    # **A file is not a prediction.** `ocr predict` writes the ALTO whether or not
-    # the segmenter found a baseline, so a page it failed on passes the test above
-    # holding zones and no lines — `2-100` did, and its reader claimed it, found
-    # an empty index and stopped, which is the right act paid for by an agent.
-    # Counted through `page_lines`, so lines a human adopted in `gt/lines/` count.
-    if not s["lines"]:
-        raise Unready(
-            f"{r}: mz/ocr/{stem_for(r, root)}.xml holds no lines — the segmenter found no "
-            "baseline on this page, so a reader has nothing to key against. "
-            f"Re-predicting gives the same answer; draw them in `uv run harness "
-            f"ocr edit {r}`, which is a human's act, then queue it.")
-    figs = (FIGURES_PRESENT if s["figures"] else FIGURES_ABSENT).format(stem=stem_for(r, root))
+def _zoom_lines(s: dict) -> str:
+    """What a crop of the page shows, as sentences (`survey`'s `zoom`)."""
     # Rendered as sentences, not as the table `ocr zoom` prints. The reader is
     # being handed this before it has a doubt to spend it on, so what it has to
     # carry is the consequence — "a whole line is N strips" — rather than a row of
     # figures it would have to do arithmetic on later, at the moment it is least
     # inclined to.
-    zoom = "\n".join(
+    return "\n".join(
         f"  - at {c['zoom']}x one crop shows ~{c['covers_pct']}% of a line "
         f"however you aim it, {c['points_per_sheet']} fit one sheet, and a whole "
         f"line is {c['full_strips']} strips — "
@@ -238,6 +196,10 @@ def build(ref: str, root: Path = Path("."), note: str | None = None) -> dict:
            if c["zoom"] == ZOOM else
            "so a long word does NOT fit and comes back in pieces. One mark only.")
         for c in s.get("zoom") or [])
+
+
+def _nearby_lines(r: str, root: Path) -> str:
+    """The forms keyed on the pages before `r`, as handle lines for a prompt."""
     # Braces in the *substituted* value are safe: `format` does not rescan what it
     # interpolates, so a handle renders as `{ke'let}` and reaches the reader as the
     # thing it would actually type.
@@ -270,13 +232,96 @@ def build(ref: str, root: Path = Path("."), note: str | None = None) -> dict:
                              f"({w['count']} on {w['pages']} pp)")
         near = "\n".join(lines) or \
             "  - (none: no page in the preceding span holds a native form)"
-    except (MarksConfigError, OSError) as e:
+    except (MarksConfigError, HandleTableError, OSError) as e:
         near = f"  - (unavailable, so infer nothing from its silence: {e})"
+    return near
+
+
+def _refuse_unreadable(s: dict, r: str, root: Path,
+                       remedy: str | None = None) -> None:
+    """`Unready` for a page no reader can be sent at, naming the remedy:
+    shared by both reading tracks, since a reading needs the same stores
+    whichever pass makes it. `remedy` replaces the no-`mz/ocr/` advice for a
+    text whose `mz/ocr/` is not a prediction."""
+    if not s["zones"]:
+        raise Unready(
+            f"{r}: no gt/zones/{stem_for(r, root)}.xml — not a keyed text page, so there "
+            "is nothing for `ocr predict` to have segmented. No zones, no dispatch.")
+    if s["exempt"]:
+        raise Unready(
+            f"{r}: ruled `{_kind(r, root)}` in gt/zones/ — a human looked at this "
+            "leaf and recorded that it is not a text page. There is nothing to "
+            "read, and the ruling is a statement rather than an absence, so this "
+            "is a refusal and not a warning.")
+    if s["gt"]:
+        raise Unready(
+            f"{r}: gt/ocr/{stem_for(r, root)}.xml already exists, so this is a *revision*, "
+            "not a restoration. A reader sent at it reads the keyed human text "
+            "through every ALTO verb, and its proposal stops being an independent "
+            "witness. Substitute a page with zones and no gt, and say in the "
+            "report that you did and why.")
+    if not s["mz"]:
+        raise Unready(
+            f"{r}: nothing in mz/ocr/ — an agent sent at it has no line indices to "
+            f"key against and will stall or invent a numbering. "
+            + (remedy or f"Run `uv run harness ocr predict {r}` first, in the "
+               "parent: it wants the GPU, and several agents racing for it is "
+               "slower than one loop."))
+    # **A file is not a prediction.** `ocr predict` writes the ALTO whether or not
+    # the segmenter found a baseline, so a page it failed on passes the test above
+    # holding zones and no lines — `2-100` did, and its reader claimed it, found
+    # an empty index and stopped, which is the right act paid for by an agent.
+    # Counted through `page_lines`, so lines a human adopted in `gt/lines/` count.
+    if not s["lines"]:
+        raise Unready(
+            f"{r}: mz/ocr/{stem_for(r, root)}.xml holds no lines — the segmenter found no "
+            "baseline on this page, so a reader has nothing to key against. "
+            f"Re-predicting gives the same answer; draw them in `uv run harness "
+            f"ocr edit {r}`, which is a human's act, then queue it.")
+
+
+def build(ref: str, root: Path = Path("."), note: str | None = None) -> dict:
+    """The prompt for one page, or `Unready` naming the command that fixes it.
+
+    Refuses rather than warns, and each refusal names its remedy. A prompt is a
+    thing somebody is about to spend an agent on; "probably fine" is not a state it
+    should be possible to dispatch from.
+    """
+    s = survey(ref, root)
+    r = s["ref"]
+    _refuse_unreadable(s, r, root)
+    figs = (FIGURES_PRESENT if s["figures"] else FIGURES_ABSENT).format(stem=stem_for(r, root))
+    zoom = _zoom_lines(s)
+    near = _nearby_lines(r, root)
     text = template(repo_root()).format(
         ref=r, lines=s["lines"], zones=s["blocks"], zoom=zoom, nearby=near,
         figures=figs, note=f" {note.strip()}" if note else "")
     left = sorted(set(re.findall(r"\{(\w+)\}", template(repo_root()))))
     return {**s, "page_block": text, "placeholders": " ".join(left)}
+
+
+# ---------------------------------------------------------------------------
+# The 1900 *Materials*' reading track: the same queue and claim, the same
+# refusals, a different contract. Its `mz/ocr/` is the master copy's text layer
+# (`ocr import`), not a prediction, and its reader sets that copy beside a second
+# one (`ocr witness`), so the page block says what both copies hold and not what
+# a segmenter found.
+
+MATERIALS_DOC = Path(".claude/skills/read-materials-page/dispatch.md")
+MATERIALS_AGENT = Path(".claude/agents/materials-reader.md")
+
+
+def materials_build(ref: str, root: Path = Path("."), note: str | None = None) -> dict:
+    """The page block for a *Materials* reader, or `Unready` naming the remedy."""
+    s = survey(ref, root)
+    r = s["ref"]
+    _refuse_unreadable(s, r, root, remedy=(
+        f"Run `uv run harness ocr import {r}` first: the master copy's text layer "
+        "is this text's `mz/ocr/`."))
+    text = template(repo_root(), doc_path=MATERIALS_DOC).format(
+        ref=r, stem=stem_for(r, root), lines=s["lines"], zoom=_zoom_lines(s),
+        nearby=_nearby_lines(r, root), note=f" {note.strip()}" if note else "")
+    return {**s, "page_block": text}
 
 
 # ---------------------------------------------------------------------------
@@ -624,7 +669,21 @@ COLLATION = Track("collation", COLLATE_DOC, COLLATE_AGENT, COLLATE_QUEUE,
 # back. Whether what it came back with is sound is `zones verdict`'s question.
 ZONING = Track("zoning", ZONE_DOC, ZONE_AGENT, ZONE_QUEUE, ZONE_CLAIMS,
                zoning_build, _verdict, done="reviewed", missing="CLAIMED, no verdict")
-TRACKS = {t.name: t for t in (READING, COLLATION, ZONING)}
+MATERIALS_READING = Track("materials-reading", MATERIALS_DOC, MATERIALS_AGENT, QUEUE,
+                          CLAIMS, materials_build, _proposal,
+                          done="keyed", missing="CLAIMED, no proposal")
+TRACKS = {t.name: t for t in (READING, COLLATION, ZONING, MATERIALS_READING)}
+#: The reading track for each reader a text may name (`layout.READERS`).
+READING_TRACKS = {"groundtruth-reader": READING, "materials-reader": MATERIALS_READING}
+
+
+def reading_track(root: Path = Path(".")) -> Track:
+    """The reading pass the text at `root` dispatches: its manifest's `reader`.
+
+    One queue path serves both, because a queue lives under its text's own
+    `review/`; what the text decides is the contract and the page block."""
+    from .layout import reader
+    return READING_TRACKS[reader(root)]
 
 
 def queue_path(root: Path = Path("."), track: Track = READING) -> Path:

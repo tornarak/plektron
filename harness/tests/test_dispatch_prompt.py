@@ -428,3 +428,64 @@ def test_a_claim_is_stamped_for_diagnosis(tmp_path):
     claim_one(tmp_path)
     row = reconcile(["3-063"], tmp_path)[0]
     assert row["claimed_at"].startswith("20")
+
+
+# --- the text names its reading track ----------------------------------------
+
+def _materials(root: Path, ref="1-026", **kw) -> Path:
+    """`make_page`, for a text whose manifest names the Materials reader."""
+    import json
+
+    from harness.dispatch import MATERIALS_AGENT
+    make_page(root, ref, **kw)
+    pj = root / "project.json"
+    pj.write_text(json.dumps({**json.loads(pj.read_text(encoding="utf-8")),
+                              "reader": "materials-reader"}), encoding="utf-8")
+    from harness.layout import _project
+    _project.cache_clear()
+    agent = root / MATERIALS_AGENT
+    agent.parent.mkdir(parents=True, exist_ok=True)
+    agent.write_text("stub\n", encoding="utf-8")
+    return root
+
+
+def test_the_live_materials_prompt_names_its_reader_and_no_page():
+    from harness.dispatch import MATERIALS_DOC
+    prompt = template(REPO, (CLAIM_BEGIN, CLAIM_END), MATERIALS_DOC)
+    assert "materials-reader" in prompt and "{" not in prompt
+    assert not re.search(r"\b\d-\d{3}\b", prompt)
+
+
+def test_the_manifest_chooses_the_track(tmp_path):
+    from harness.dispatch import MATERIALS_READING, READING, reading_track
+    assert reading_track(make_page(tmp_path / "a")) is READING
+    assert reading_track(_materials(tmp_path / "b")) is MATERIALS_READING
+
+
+def test_a_reader_the_harness_has_no_track_for_is_refused(tmp_path):
+    import json
+
+    from harness.layout import ProjectError, _project, project
+    root = make_page(tmp_path)
+    pj = root / "project.json"
+    pj.write_text(json.dumps({**json.loads(pj.read_text(encoding="utf-8")),
+                              "reader": "nobody"}), encoding="utf-8")
+    _project.cache_clear()
+    with pytest.raises(ProjectError, match="reader"):
+        project(root)
+
+
+def test_a_materials_claim_renders_the_materials_block(tmp_path):
+    from harness.dispatch import MATERIALS_READING
+    root = _materials(tmp_path)
+    rec = queue_refs(["1-026"], root, track=MATERIALS_READING)
+    assert "materials-reader" in rec["prompt"]
+    block = claim(root, MATERIALS_READING)["page_block"]
+    assert "**1-026**" in block and "copy A's text layer" in block
+    assert "{" not in block.replace("{Ajn", "")
+
+
+def test_a_materials_page_with_ground_truth_is_refused(tmp_path):
+    from harness.dispatch import materials_build
+    with pytest.raises(Unready, match="already exists"):
+        materials_build("1-026", _materials(tmp_path, gt=True))

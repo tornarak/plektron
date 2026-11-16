@@ -1,134 +1,41 @@
 ---
 name: read-materials-page
-description: Read pages of Bogoras's 1900 «Матеріалы» (jesup/bogoras-materials) into review/PP-NNN/proposal.json — two text-layer copies set side by side, the scan where they part, the Russian settled on its sense, and every native form read off the scan and listed for the editor. Use when reading, proposing or "doing" a page of the 1900 Materials, or on /read-materials-page PP-NNN. Not The Chukchee's pass — that is rebuild-groundtruth.
+description: Read pages of Bogoras's 1900 «Матеріалы» (jesup/bogoras-materials) into review/PP-NNN/proposal.json — dispatch a batch of materials-reader agents off the queue, check what comes back, and hand it to the editor; or do one page yourself. Use when reading, proposing or "doing" pages of the 1900 Materials, or on /read-materials-page PP-NNN. Not The Chukchee's pass — that is rebuild-groundtruth.
 ---
 
-# Read a page of the 1900 *Materials*
+# Read pages of the 1900 *Materials*
 
 The stores are under `jesup/bogoras-materials/`; run every command from there or
 with `--root jesup/bogoras-materials`.
 
-**The division of labour.** The book is ~95% Russian prose, set clean and read
-near-clean by two OCR passes over two copies. Russian is outside the firewall
-(CLAUDE.md): a model reading against the scan settles it. The native forms are
-inside it: the reader keys them as read and lists them, and the editor rules on
-every one. So the page's human cost is its native forms and its `doubt` lines,
-nothing else.
+**The reading contract is `.claude/agents/materials-reader.md`, whole**: the pass,
+the keying conventions and the editor's rulings. It is not repeated here. To do
+a page yourself, follow it as written, skipping only `ocr claim`.
 
-**Why two copies are not two witnesses.** One engine read both, so the copies
-share its habits. On `1-022` both set a space before every comma, where the print
-has none, and both read `Ајңанват` where the print sets `Ајңан̀ва́т`. Agreement lets
-a Russian line stand. It never settles a native form or a space.
+**Dispatching a batch** is `dispatch.md` beside this file: `ocr queue`, one
+`materials-reader` per page with the one prompt it prints, `ocr reconcile`. The
+text's manifest names its reader (`project.json` `reader`), which is how those
+verbs know this track from *The Chukchee*'s.
 
-## The pass, one page
+## Checking a batch, before the editor sees it
 
-1. **`harness ocr witness REF --witness b`** sets copy A's lines (`mz/ocr/`) beside
-   copy B's, each `same`, `spacing`, `differ` or `alone`, with `native`: the
-   tokens either copy reads as Tier-1 under this text's keying rules. A page the
-   pairing could not settle (`ocr pair`) says so; leave it for the editor.
-2. **Settle every line, and write every line** — the proposal holds the page,
-   not its differences.
-   - `same` and the Russian reads as sound pre-1918 prose: it stands.
-   - `spacing`: the print's. §2.9 holds here: no space before `; : , ! ?`, and
-     the print sets none before `.` or `)` either. The copies' spaces are the
-     engine's, whichever copy has them.
-   - `differ`, `alone`, or Russian whose sense does not hold (a wrong case, a
-     non-word, a Latin letter inside a Cyrillic word — `Tоже`, `ОГЛАВЛЕНIE`,
-     `миөологическаго` for `миѳологическаго`): read it at the scan with
-     `harness ocr zoom REF N@P …`, all doubts in one call, 2× first.
-   - Pre-1918 orthography as printed: `ѣ і ѳ ъ`, `-аго`, `по русски`. Never
-     modernise, never correct the author. A compositor's slip is keyed as set,
-     with a `print` note.
-   - A speck the layer read as text is keyed empty, with an `artifact` note.
-3. **Every native form is read off the scan, never off a layer.** Zoom each line
-   that holds one. List the line's forms in `native`, space separated — every
-   one, including those no glyph marks (`терк-арм` on `1-022`), since no rule can
-   find those. Spell each form's codepoints in `resolved`, which `proposal check`
-   holds the text to.
-   - **Look the page's forms up first, in one call**: `harness lexicon lookup Q …`,
-     every native candidate the witness lists and every name the page uses
-     without introducing it. A Cyrillic query works as printed. It is the one
-     licensed reach into the corpus: never read another page's proposal,
-     decision or `gt/ocr/`.
-   - **If it gives a key, type the key**, in braces: `{Ajn_1an.va't}`. `proposal
-     set` substitutes the ratified glyphs and records `as_typed`, and the editor
-     sees the line as the corpus's. A key names a stem, so an inflected form is
-     the key, then `’` and the printed ending, by hand: `{Ajn_1an.va't}’омъ`. A
-     key is not a spelling: never read one back into a form. Never type a key for
-     a form the scan leaves in doubt.
-   - **A miss is a fact about the query** before it is one about the corpus: key
-     the form by hand and say what the lookup returned. A form returned with no
-     key (spelled two ways, or below the floor) is the tool declining; key what
-     you see.
-   - **A near miss is never corrected silently.** Where your reading differs from
-     a ratified spelling only by a hook, an accent or a lookalike, `proposal check`
-     says so. Look again at the scan; if the scan is what you keyed, keep it and
-     put a `doubt` on the line naming both spellings.
-4. **The provisional keying conventions**, until the editor rules
-   (`config/keying.json` `_glyphs` names the open questions):
-   - A letter whose Latin and Cyrillic shapes are one shape in this face (`о р а
-     е с у х`, `ј`) is keyed **Cyrillic**; Latin only for a shape Cyrillic lacks
-     (`w`, `l`).
-   - **Ruled by the editor off the scan (2026-11-07)**, so no `doubt` is needed
-     for the letter itself:
-     - folds in `config/keying.json`, which `ocr import`, `ocr witness` and
-       `corpus normalize` write: hooked `К` is `ӄ`, hooked `Н` is `ӈ`, the
-       layers' `ә` is a printed `э`, the palochka `Ӏ` is the tall `l`, the
-       forked `d` (a serif D with two spurs, like an aquila) is `ð`, and `ä` is
-       Cyrillic `ӓ`;
-     - letters of the notation, keyed as the layers have them: `ђ` (a `ҕ`-like
-       shape is `ђ` too), `һ`, `ѵ`, `с̧`, `ł` (the barred `l`), and the grave;
-     - the circumflex, U+0302, over a vowel (`а̂тто́оl`, `1-024` l22; the editor,
-       2026-11-16), which both layers drop, so every vowel opening a native form
-       is a place to look.
-     A layer can still read a letter as another one, and a fold cannot reach
-     that. Two cases are known so far: the forked `d` read as `ђ`, and the barred
-     `l` read as plain `т` (`єта́` is `єłа́`, `1-102` l4). A plain `т` is printed
-     in the same word elsewhere (`1-077` l12), so every `т` in a native form
-     is a place to zoom.
-   - **Not ruled:** an `є` with a hook below that is not a diacritic (`Кэ́lę`,
-     `1-252` l7; the layers' `ę`), which is not the plain `є` of `Ђáðє`
-     (`1-152` l4). Each is
-     noted `doubt` where it occurs. **Never invent a codepoint**: an unknown
-     letter is keyed as the nearer layer has it, and noted.
-   - **The 1899 key** (`scratch/chukchi/bogoraz-1899-phonetics-key.md`; see
-     `docs/multitext.md`, "Waits on the editor") says what a letter may be. It
-     is not what the 1900 print sets, since that print pares the key's
-     distinctions down. Where the scan shows a key letter the rules lack (`ҕ`
-     beside `ђ`, `к̧`, `h̦`, `р̌`, a mark below `w` or `ы`), key it as the
-     nearer layer has it and say in a `doubt` which key letter it looks like.
-     Never key it from the key alone.
-   - **The tall `l` is one letter however the layers read it**: `l`, `Ӏ`, `л`,
-     `һ` or `I`. The editor found no visual distinction. One word can come out
-     two ways: `эӈэӈыһын` and `эӈэӈылын` (`1-038` l37) are the same word set with
-     `l`, and so are `-мэјӈэтыһыт` and `-мэјӈэтылыт` (`1-128` l8, l10). A `л` or
-     `һ` inside a native form is a place to zoom. `һ` is also a real letter
-     (`-чһын`), so the scan decides each one.
-   - Accents are combining: acute U+0301 and grave U+0300 over the vowel or the
-     consonant they sit on, as printed. The curly `’` between a native stem and
-     its Russian ending is printed and kept.
-   - Letterspacing (разрядка, the Russian emphasis, and the running head) is
-     keyed unspaced, with a `layout` note on a body line, until
-     `docs/rendition.md` is ruled.
-   - **Footnote marks are keyed as printed** (the editor, 2026-11-16): the
-     reference in the text is a raised digit and a full-size paren, `отчетѣ¹)`
-     (superscripts U+00B9 U+00B2 U+00B3, U+2070–2079); the note's opener is
-     full-size, `1) В. Г. Богоразъ…`. They are two glyphs on the page, so they
-     are two in the keying. The layers read both as `1)`; the scan decides which.
-     `proposal check` pairs a raised `¹)` with a line opening `1)` after it
-     (`config/keying.json`, `detectors.footnote_paren_opener`).
-   - **A line number in the margin is kept** (the editor, 2026-11-16), keyed in
-     the line where the print sets it: before the text on a verso, after it on a
-     recto, a space between (`5 Ајӈан…`, `…ва́т 10`). A number the segmenter cut
-     as a line of its own is keyed alone on that line. Lifting it out of the
-     text is the generator's work, by rule, not the reader's.
-5. **A line still baffling after the scan carries a `note` of class `doubt`** —
-   the only class that asks the editor for a ruling. Say what the two readings
-   are, never which one "should" be right.
-6. Write with `Write`, then send every field back through `harness proposal set`
-   (`--values`) so it is NFD; `harness proposal check REF` must exit 0. The
-   `contamination` block says `blind: false` and why: this pass reads both
-   layers by design.
+The readers cannot see each other, and the editor reads no Russian, so this is
+the last look a Russian line gets. Per page:
+
+- `proposal check REF` exits 0, and `corpus normalize` is clean on the batch.
+- Every `doubt` is one the contract allows: a mark or letter the rules do not
+  cover, or a native form the scan leaves open. A `doubt` on a ruled letter, or
+  on Russian, is the reader handing its work on: settle it at the scan.
+- Every line whose text departs from both copies has a reason a reader of the
+  note could check. A native form that both copies agree on and the reader
+  changed is the place to zoom yourself.
+- The same name across the batch's pages is spelled one way, or the difference
+  is in a `doubt`. Readers in one batch do not see each other's forms, so this is
+  the only place two spellings meet before the editor's queue.
+
+Then one review server for the batch (`ocr review …`), and `ocr restore … --commit`
+once the editor has saved. **Restore before dispatching the next batch**: the
+next lookup sees only restored pages.
 
 ## What the editor does with it
 
@@ -136,14 +43,13 @@ The editor's queue on a page is its `doubt` lines and the forms in `native`,
 nothing else. Each native form is a model's reading until the editor ratifies it
 against the scan (`#llm` until then, whatever both copies say). What a page
 contributes to this text's own dictionary is its `native` list, with the gloss
-where the prose gives one — say so in a `semantic` note (`«людей солнечнаго
-владыки»`).
+where the prose gives one, in a `semantic` note.
 
 `harness ocr review` shows each line's `native` forms and confines the page's
 queue to those lines, the `doubt` lines and any line outside the prose alphabet;
 the standing prose is shown dimmed and never saved as the editor's. Its keyboard
 is this text's `config/keyboard.json`, phonetic Cyrillic with the notation's
-letters. Each native form carries its standing against the forms other pages
-ratified: ✓ *seen*, ≠ a near miss with the ratified spelling beside it (where to
-look on the scan), or *new*. A page is in the index once restored (`ocr restore
---all --commit`), so restoring after each review session is what grows it.
+letters (`>` types the circumflex). Each native form carries its standing against
+the forms other pages ratified: ✓ *seen*, ≠ a near miss with the ratified
+spelling beside it (where to look on the scan), or *new*. A page is in the index
+once restored, so restoring after each review session is what grows it.

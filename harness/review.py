@@ -75,6 +75,38 @@ def _nfd(s: str) -> str:
     return unicodedata.normalize("NFD", s)
 
 
+def notable(text: str, rules) -> list[str]:
+    """The characters of a line worth spelling out under its entry box.
+
+    *The Chukchee*'s prose is ASCII, so everything else on a line is notation and
+    all of it is shown. A text with a prose alphabet (the 1900 *Materials*' Russian)
+    would list every letter it prints that way, so there what is shown is what is
+    outside that alphabet: a letter it does not hold, and a mark not on one of its
+    `orthographic_bases` (the breve of an ordinary й is not shown; that of ў is),
+    and a Latin letter outside a Roman numeral (the tall l, w). Printed
+    punctuation and digits are not shown: «, —, № are no reading's question.
+    """
+    text = unicodedata.normalize("NFD", text)
+    if not rules.prose_alphabet:
+        return [c for c in text if ord(c) > 127]
+    from .keying import ROMAN, WORD
+    letters = frozenset().union(*rules.prose_alphabet.values())
+    # A Latin letter in such a text is the notation's (the tall l, w) or a slip,
+    # either way the editor's question; a Roman numeral is neither.
+    roman = {i for m in WORD.finditer(text) if set(m.group()) <= ROMAN
+             for i in range(m.start(), m.end())}
+    out = []
+    for i, c in enumerate(text):
+        cat = unicodedata.category(c)
+        if (cat[0] in "PSZN" or (cat.startswith("L") and c in letters)
+                or i in roman or (ord(c) < 128 and not c.isalpha())):
+            continue
+        if cat == "Mn" and i and text[i - 1] in rules.orthographic_bases.get(c, ""):
+            continue
+        out.append(c)
+    return out
+
+
 def codepoints(s: str) -> str:
     """`g̣ro` -> `g, U+0323 DOT BELOW, r, o`.
 
@@ -1138,8 +1170,7 @@ def page_context(ref: str, root: Path,
             "crop": f"{crop_base}/{path.name}",
             "w": round(w * scale), "h": round(ht * scale),
             "full": full, "proposed": proposed,
-            "marks": codepoints("".join(
-                dict.fromkeys(c for c in full if ord(c) > 127))),
+            "marks": codepoints("".join(dict.fromkeys(notable(full, rules)))),
             "catmus": rec["text"], "note": mine.get("note", ""), "nclass": nclass,
             "extra": [(k, mine[k]) for k in ("resolved", "corrected")
                       if mine.get(k)],
@@ -1323,7 +1354,7 @@ def issues_context(items: list[dict], root: Path,
             "nclass": (prop.get(idx) or {}).get("class", ""),
             "hnote": (saved.get(idx) or {}).get("note", ""),
             "marks": codepoints("".join(
-                dict.fromkeys(c for c in text if ord(c) > 127))),
+                dict.fromkeys(notable(text, keying.rules(root))))),
         })
     return {"blocks": blocks, "missing": missing, **kbd_context(root),
             "refs": list(dict.fromkeys(b["ref"] for b in blocks)),

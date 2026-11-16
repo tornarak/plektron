@@ -1711,9 +1711,18 @@ def prose_only(text: str, rules: Rules) -> bool:
             continue
         # A capital after a small letter is no spelling of the prose: Russian
         # sets no capital mid-word, so it is an OCR slip (`коммиссіонеровЪ`) or a
-        # letter of the notation misread as one (`Ӏ` for the tall l).
-        if any(a.islower() and b.isupper() for a, b in zip(lets, lets[1:], strict=False)):
-            return False
+        # letter of the notation misread as one (`Ӏ` for the tall l). "After" is
+        # within a run of letters and their marks: a hyphen ends one, so the
+        # second half of `Сѣверо-Тихоокеанской` may open with its own capital.
+        prev = ""
+        for c in tok:
+            cat = unicodedata.category(c)
+            if cat.startswith("L"):
+                if prev.islower() and c.isupper():
+                    return False
+                prev = c
+            elif cat != "Mn":
+                prev = ""
         for i, c in enumerate(tok):
             cat = unicodedata.category(c)
             if cat.startswith("L") and c not in letters:

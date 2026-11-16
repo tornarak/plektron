@@ -117,6 +117,8 @@ def test_the_1900_text_carries_the_ruling_and_the_chukchee_does_not():
     ("I,1. МАТЕРІАЛЫ ПО ИЗУЧЕНІЮ ЧУКОТСКАГО ЯЗЫКА", True),
     ("Чукотскій миѳологическаго", True),         # й is и + an orthographic breve
     ("Продается у коммиссіонеровЪ", False),      # a capital mid-word is a slip
+    ("изъ частей Сѣверо-Тихоокеанской", True),   # a hyphen starts a new word half
+    ("Сѣверо-ТихоокеанскоЙ", False),
     ("Нагорный, Анадырь", True),
     ("терк-арм", True),           # no glyph marks it: why `native` is listed by hand
     ("Ӄаават-ешӄан, кырңат-ешӄан", False),
@@ -128,3 +130,14 @@ def test_prose_only_admits_the_alphabet_and_nothing_else(line, prose):
     b = keying.rules(JESUP / "bogoras-materials")
     assert prose_only(unicodedata.normalize("NFD", line), b) is prose
     assert prose_only(line, keying.rules(JESUP / "bogoras-chukchi")) is False
+
+
+def test_the_review_row_spells_out_only_what_the_prose_alphabet_lacks():
+    from harness.review import notable
+    b = keying.rules(JESUP / "bogoras-materials")
+    nfd = lambda s: unicodedata.normalize("NFD", s)  # noqa: E731
+    assert notable(nfd("Группа II: составляющей «одну» — № 5"), b) == []
+    assert notable(nfd("Кутјэ́ўт пы́ӈыlте"), b) == \
+        ["ј", "́", "̆", "́", "ӈ", "l"]
+    # The Chukchee's prose is ASCII, so all its non-ASCII is shown, as before.
+    assert notable("Kuvár", keying.rules(JESUP / "bogoras-chukchi")) == ["́"]

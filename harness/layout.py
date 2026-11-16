@@ -47,6 +47,11 @@ STEM_RE = re.compile(r"^[a-z][a-z0-9]*(?:-[a-z][a-z0-9]*)*$")
 #: What a manifest may say about going public: `drafts` shows `mz/tei/` beside
 #: `tei/`, `collated` shows `tei/` alone, and absent keeps the text off the site.
 PUBLISH = frozenset({"drafts", "collated", None})
+#: The agents a text's reading pass may dispatch, by their file under
+#: `.claude/agents/`: The Chukchee's raster reader, and the 1900 Materials' pass over
+#: two text-layer copies. Closed, because `dispatch` holds one track for each.
+READERS = frozenset({"groundtruth-reader", "materials-reader"})
+DEFAULT_READER = "groundtruth-reader"
 #: A figure by its leaf and the zone's suffix, as `/fig/{ref}/{key}.png` names one.
 FIG_RE = re.compile(r"^\d+-\d+/\w+$")
 
@@ -112,6 +117,10 @@ def _check_texts_fields(p: Path, rec: dict) -> None:
         _refuse(p, "`prose_stands` is the editor's ruling that this text's prose may "
                    "stand on a model's reading, in words, or absent; got "
                    f"{stands!r}")
+    if rec.get("reader", DEFAULT_READER) not in READERS:
+        _refuse(p, f"`reader` names the agent this text's reading pass dispatches, "
+                   f"one of {sorted(READERS)}, or absent for {DEFAULT_READER}; "
+                   f"got {rec['reader']!r}")
     for field_ in ("masterless", "omit"):
         for ref in rec.get(field_, ()):
             if not (isinstance(ref, str) and REF_RE.match(ref)):
@@ -168,6 +177,11 @@ def stem(root: Path) -> str:
 def lang(root: Path) -> str:
     """The language this text's prose is in, as `xml:lang` spells it."""
     return project(root).get("lang", DEFAULT_LANG)
+
+
+def reader(root: Path) -> str:
+    """The agent this text's reading pass dispatches (`READERS`)."""
+    return project(root).get("reader", DEFAULT_READER)
 
 
 def prose_stands(root: Path) -> str | None:

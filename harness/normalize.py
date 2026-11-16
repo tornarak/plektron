@@ -722,17 +722,19 @@ def _mask_description(text: str, p: Path) -> str:
 
 
 def _fold_hits(nfd: str, rel: str, rules: Rules) -> list[dict]:
-    """Each codepoint the text's `folds` rewrite, located by line and token.
+    """Each codepoint the text's `folds` rewrite, and each word its word-level
+    folds rewrite, located by line and token.
 
-    A fold is a sort the editor has identified, so a hit has no reading left to
-    adjudicate and blocks like NFD drift; `--commit` writes the sort.
+    A fold is a sort the editor has identified, or a lookalike the editor's rule
+    names, so a hit has no reading left to adjudicate and blocks like NFD drift;
+    `--commit` writes it.
     """
     if not rules.fold_spans(nfd):
         return []
     return [{"path": rel, "line": n, "token": _token_at(line, i),
-             "from": k, "to": rules.folds[k]}
+             "from": a, "to": b}
             for n, line in enumerate(nfd.splitlines(), start=1)
-            for i, k in rules.fold_spans(line)]
+            for i, a, b in rules.fold_spans(line)]
 
 
 def convert(root: Path = Path("."), dry_run: bool = False,

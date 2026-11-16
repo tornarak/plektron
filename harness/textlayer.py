@@ -346,12 +346,14 @@ def page_rows(page, dpi: int, overlap: float = ROW_OVERLAP) -> tuple[list[dict],
 
 def producer(pdf: Path, pdf_page: int, copy: str, overlap: float = ROW_OVERLAP,
              root: Path = Path("."), folds: dict[str, str] | None = None,
-             align: str = "") -> provenance.Producer:
+             align: str = "", word_folds: str = "") -> provenance.Producer:
     """The record every imported page carries. The PDF is the model's checkpoint.
 
     `folds` are the editor's identified sorts the import wrote in place of the
     layer's codepoints (`keying.Rules.folds`); recorded, so a reading says it
-    is not the layer verbatim.
+    is not the layer verbatim. `word_folds` says the same of the word-level
+    folds (`keying.Rules.script_folds`, `numeral_folds`), which rewrite whole
+    words and so are recorded as the rule, not as a list of pairs.
     """
     import os
 
@@ -367,7 +369,8 @@ def producer(pdf: Path, pdf_page: int, copy: str, overlap: float = ROW_OVERLAP,
                 "row_overlap": overlap,
                 **({"align": align} if align else {}),
                 **({"folds": " ".join(f"{a}>{b}" for a, b in sorted(folds.items()))}
-                   if folds else {})})
+                   if folds else {}),
+                **({"word_folds": word_folds} if word_folds else {})})
 
 
 def alto(ref: str, root: Path, row_px: list[dict], size: tuple[int, int],
@@ -436,7 +439,7 @@ def import_page(ref: str, root: Path = Path("."), force: bool = False,
     row_px = [{**r, "text": rules.fold(r["text"])} for r in row_px]
     tree = alto(ref, root, row_px, size,
                 producer(pdf, index, "master", overlap, root, folds=rules.folds,
-                         align=fit))
+                         align=fit, word_folds=rules.word_folds_record))
     mz_dir(root).mkdir(parents=True, exist_ok=True)
     tmp = tmp_for(dest)
     tmp.write_bytes(etree.tostring(tree, xml_declaration=True, encoding="UTF-8",

@@ -30,6 +30,8 @@ import pytest
 REPO = Path(__file__).resolve().parent.parent.parent
 GT_GUARD = REPO / ".claude/hooks/groundtruth-reader-guard.sh"
 MOLL_GUARD = REPO / ".claude/hooks/moll-reader-guard.sh"
+#: The same script, told which reader it guards (the agent file passes its name).
+MAT_GUARD = (GT_GUARD, "materials-reader")
 
 
 def run(guard: Path, tool: str, **tool_input):
@@ -40,7 +42,8 @@ def run(guard: Path, tool: str, **tool_input):
     have to be able to tell it apart from an allow.
     """
     payload = {"tool_name": tool, "tool_input": tool_input}
-    p = subprocess.run([str(guard)], input=json.dumps(payload), text=True,
+    argv = [str(g) for g in guard] if isinstance(guard, tuple) else [str(guard)]
+    p = subprocess.run(argv, input=json.dumps(payload), text=True,
                        capture_output=True, cwd=REPO)
     decision = None
     if p.stdout.strip():
@@ -650,3 +653,45 @@ def test_a_citation_with_punctuation_is_not_chaining():
     it — a guard corrupting the data it exists to protect."""
     allowed(COLLATOR_GUARD, "Bash",
             command="uv run harness find authority 'Krause; see also Nordquist, II'")
+
+
+# --- materials-reader: the same guard, one verb and one file wider ----------
+
+def test_the_materials_reader_may_set_its_two_copies_side_by_side():
+    allowed(MAT_GUARD, "Bash",
+            command="uv run harness ocr witness 1-026 --witness b --root jesup/bogoras-materials")
+    blocked(GT_GUARD, "Bash", command="uv run harness ocr witness 1-026 --witness b")
+
+
+def test_only_the_materials_reader_reads_the_1899_key():
+    key = str(REPO / "scratch/chukchi/bogoraz-1899-phonetics-key.md")
+    allowed(MAT_GUARD, "Read", file_path=key)
+    blocked(GT_GUARD, "Read", file_path=key)
+
+
+def test_the_materials_reader_keeps_every_refusal():
+    blocked(MAT_GUARD, "Read",
+            file_path=str(REPO / "jesup/bogoras-materials/gt/ocr/chukchi-materials-1-024.xml"))
+    blocked(MAT_GUARD, "Read",
+            file_path=str(REPO / "jesup/bogoras-materials/review/1-024/decision.json"))
+    blocked(MAT_GUARD, "Bash", command="uv run harness ocr restore 1-026 --commit")
+    blocked(MAT_GUARD, "Bash", command="uv run harness ocr witness --all")
+    allowed(MAT_GUARD, "Write",
+            file_path=str(REPO / "jesup/bogoras-materials/review/1-026/proposal.json"))
+    allowed(MAT_GUARD, "Bash", command="uv run harness ocr claim && uv run harness ocr witness 1-026 --witness b")
+
+
+def test_an_unknown_reader_is_refused():
+    blocked((GT_GUARD, "nobody"), "Bash", command="uv run harness ocr claim")
+
+
+def test_every_agent_hook_is_anchored_at_the_project_root():
+    """A hook command runs in the agent's working directory, which is wherever the
+    parent's shell stood when it spawned it. `./.claude/hooks/…` resolved only from
+    the repo root, so a batch launched from `jesup/bogoras-materials/` ran with every
+    guard failing as "non-blocking", i.e. with no guard at all (2026-11-16)."""
+    import re
+    for agent in sorted((REPO / ".claude/agents").glob("*.md")):
+        for cmd in re.findall(r'command: "(.*)"', agent.read_text(encoding="utf-8")):
+            assert cmd.startswith('\\"$CLAUDE_PROJECT_DIR\\"/'), (agent.name, cmd)
+

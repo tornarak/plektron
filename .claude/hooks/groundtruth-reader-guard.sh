@@ -1,5 +1,6 @@
 #!/bin/bash
-# PreToolUse guard for the groundtruth-reader subagent: the standing rules made
+# PreToolUse guard for the two page readers, groundtruth-reader (The Chukchee)
+# and materials-reader (the 1900 Materials), named by $1: the standing rules made
 # mechanical. A checkable rule beats a prohibition — it does not depend on the
 # pass behaving. Frontmatter hook, so nothing here constrains the main session
 # or any other agent.
@@ -42,7 +43,16 @@ INPUT=$(cat)
 TOOL=$(printf '%s' "$INPUT" | jq -r '.tool_name // empty')
 
 PROPOSAL='proposal.json'
-MEMORY='.claude/agent-memory/groundtruth-reader/'
+# Which reader this is: its agent file passes its own name. The two differ in
+# their memory, their pass doc, and one verb (`ocr witness`, the Materials'
+# second copy); every refusal below is the same for both.
+AGENT="${1:-groundtruth-reader}"
+case "$AGENT" in
+  groundtruth-reader) SKILL='rebuild-groundtruth'; EXTRA='' ;;
+  materials-reader) SKILL='read-materials-page'; EXTRA='|witness' ;;
+  *) echo "Blocked: the reader guard knows no agent '$AGENT'." >&2; exit 2 ;;
+esac
+MEMORY=".claude/agent-memory/$AGENT/"
 
 # $1 is the reason, and it is shown to the human as the ground of the decision.
 allow() {
@@ -66,7 +76,10 @@ readable() {
     *concordance.md|*CLAUDE.md) return 0 ;;
     */harness/README.md|harness/README.md) return 0 ;;
     */docs/*|docs/*) return 0 ;;
-    *.claude/skills/rebuild-groundtruth/*) return 0 ;;
+    *.claude/skills/"$SKILL"/*) return 0 ;;
+    # The 1899 key the Materials' contract cites for what a letter may be.
+    *scratch/chukchi/bogoraz-1899-phonetics-key.md)
+      [ "$AGENT" = materials-reader ] && return 0 ;;
     *"$MEMORY"*) return 0 ;;
     # `config/` holds the pass configuration and the editor's rulings —
     # lexicon_extra.txt, marks.json — which used to sit in `data/`. The
@@ -105,7 +118,7 @@ case "$TOOL" in
         echo "Blocked: the raster comes to you through the image ladder, not off the disk. 'ocr numbered' gives you the whole page with every line indexed, and it is the rung you are meant to start on; the full-resolution scan is the same pixels with nothing to key them against." >&2
         exit 2 ;;
     esac
-    readable "$P" && allow "groundtruth-reader reading its working directory, the spec, or its own memory"
+    readable "$P" && allow "$AGENT reading its working directory, the spec, or its own memory"
     echo "Blocked: you read your page's working directory under review/, the normative text (keying_spec.md, concordance.md, CLAUDE.md, harness/VERBS.md, harness/README.md, docs/, your pass doc), config/ and data/, and your own memory under $MEMORY. Nothing else on this machine is evidence about your page. If something you genuinely need is outside that list, say so in your report rather than reaching around the rule." >&2
     exit 2 ;;
 
@@ -113,8 +126,8 @@ case "$TOOL" in
     P=$(printf '%s' "$INPUT" | jq -r '.tool_input.file_path // empty')
     case "$P" in
       *..*) ;;
-      */review/*/"$PROPOSAL") allow "groundtruth-reader authoring its page's proposal" ;;
-      *"$MEMORY"*) allow "groundtruth-reader writing its own memory" ;;
+      */review/*/"$PROPOSAL") allow "$AGENT authoring its page's proposal" ;;
+      *"$MEMORY"*) allow "$AGENT writing its own memory" ;;
     esac
     echo "Blocked: you write exactly two places — review/PP-NNN/proposal.json, and your own memory under $MEMORY. That is the whole deliverable: gt/ocr/ is off-limits by any route, decision.json is a human's, and nothing in your loop writes page geometry — a band you judge to be a dropped line is REPORTED IN YOUR REPORT, never repaired and never recorded in the proposal." >&2
     exit 2 ;;
@@ -217,9 +230,9 @@ case "$SCAN" in
       seg=$(printf '%s' "$seg" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
       [ -z "$seg" ] && continue
       printf '{"tool_name":"Bash","tool_input":{"command":%s}}' \
-        "$(printf '%s' "$seg" | jq -Rs .)" | "$0" >/dev/null || exit 2
+        "$(printf '%s' "$seg" | jq -Rs .)" | "$0" "$AGENT" >/dev/null || exit 2
     done
-    allow "groundtruth-reader chaining allowed commands — every segment checked separately"
+    allow "$AGENT chaining allowed commands — every segment checked separately"
     ;;
 esac
 
@@ -260,7 +273,7 @@ case "$COMMAND" in
       esac
     done
     if [ -z "$bad" ] && [ "$hits" -gt 0 ]; then
-      allow "groundtruth-reader listing its working directory or its own memory"
+      allow "$AGENT listing its working directory or its own memory"
     fi
     echo "Blocked: 'ls' is yours over review/ — your page's working directory, where your images and your proposal land — and over your own memory under $MEMORY. Nothing else on this machine is evidence about your page, and a listing of it is not either. Glob answers existence anywhere you can read." >&2
     exit 2 ;;
@@ -318,7 +331,7 @@ case "$COMMAND" in
       esac
     done
     if [ -z "$bad" ] && [ "$hits" -gt 0 ]; then
-      allow "groundtruth-reader reading its working directory or its own memory"
+      allow "$AGENT reading its working directory or its own memory"
     fi
     case "$COMMAND" in
       *decision.json*)
@@ -367,10 +380,10 @@ esac
 # pipe or expand a substitution is refused before a segment is ever tested, so what
 # is allowed here is literally printing a string back to the reader that wrote it.
 if printf '%s' "$COMMAND" | grep -qE '^echo( |$)'; then
-  allow "groundtruth-reader labelling its own output"
+  allow "$AGENT labelling its own output"
 fi
 
-if printf '%s' "$COMMAND" | grep -qE '^uv run harness (ocr (claim|calls|gaps|lines|numbered|sheets|zoom)|proposal (fix|check|codepoints|set|replace|marks)|corpus normalize|lexicon (conflicts|digraphs|glosses|lookup|marks|misses|suffixes)|find [a-z]+|verbs show)( |$)'; then
+if printf '%s' "$COMMAND" | grep -qE "^uv run harness (ocr (claim|calls|gaps|lines|numbered|sheets|zoom$EXTRA)|proposal (fix|check|codepoints|set|replace|marks)|corpus normalize|lexicon (conflicts|digraphs|glosses|lookup|marks|misses|suffixes)|find [a-z]+|verbs show)( |\$)"; then
   case "$COMMAND" in
     *--all*)
       echo "Blocked: no --all form of anything; you have exactly one page." >&2
@@ -388,7 +401,7 @@ if printf '%s' "$COMMAND" | grep -qE '^uv run harness (ocr (claim|calls|gaps|lin
       echo "Blocked: --store gt is adjudicated ground truth for OTHER pages — your page has none, which is why you were sent, so this flag can only ever read a neighbour's answers. Deriving a convention from a neighbouring page is what the firewall forbids. Your store is mz, the default: drop the flag. If a spelling question needs the corpus, 'lexicon lookup' is the licensed reach, and it records that the corpus supplied the glyphs." >&2
       exit 2 ;;
   esac
-  allow "groundtruth-reader running a verb from its closed surface, on one page"
+  allow "$AGENT running a verb from its closed surface, on one page"
 fi
 
 echo "Blocked: Glob answers existence, Read answers content, and the verbs answer everything else — reach for those three before the shell. Your Bash surface is exactly: uv run harness {ocr calls|gaps|lines|numbered|sheets|zoom, proposal fix|check|codepoints|set|replace|marks, corpus normalize, lexicon *, find *, verbs show}, plus 'ls'/'cat' over review/ and your own memory, and 'echo'. Chain them with '&&' or ';' as much as you like — each segment is checked on its own — but no pipes, redirection or substitution, and no --all. If you want to know what a command does, that is 'verbs show ocr zoom', not a Read of the reference. Everything else (restore, review, clean, views, git, python3) is not yours. If a tool you genuinely need is missing from this list, say so in your report rather than working around it." >&2

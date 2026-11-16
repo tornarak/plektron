@@ -959,9 +959,10 @@ def run_queue(a) -> int:
     Everything operational goes to stderr, so `queue … | pbcopy` carries the
     prompt and nothing else.
     """
-    from ..dispatch import Unready, queue_refs
+    from ..dispatch import Unready, queue_refs, reading_track
     try:
-        rec = queue_refs(page_refs(a), a.root, note=a.note)
+        rec = queue_refs(page_refs(a), a.root, note=a.note,
+                         track=reading_track(a.root))
     except Unready as e:
         raise click.ClickException(str(e)) from None
     if getattr(a, "json", False):
@@ -991,8 +992,8 @@ def run_claim(a) -> int:
     exit 0 has been told nothing, and the failure it must not commit — picking a
     page for itself — is exactly what a silence invites.
     """
-    from ..dispatch import claim
-    rec = claim(a.root)
+    from ..dispatch import claim, reading_track
+    rec = claim(a.root, reading_track(a.root))
     if rec is None:
         click.echo(
             "nothing left to claim — the queue is empty or every ref on it is "
@@ -1006,8 +1007,8 @@ def run_claim(a) -> int:
 
 
 def run_reconcile(a) -> int:
-    from ..dispatch import reconcile
-    rows = reconcile(page_refs(a), a.root)
+    from ..dispatch import reading_track, reconcile
+    rows = reconcile(page_refs(a), a.root, reading_track(a.root))
     out(a, rows, name="refs")
     missing = [r for r in rows if r["state"] != "keyed"]
     if not missing:

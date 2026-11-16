@@ -641,7 +641,7 @@ PATTERN          a Python regular expression, normalized to NFD before it compil
 ```
 
 ### ocr queue REF [REF ...]
-**Does** validates a batch of pages, writes it to the claim queue, and prints the **one prompt every reader of the batch gets** — the block between `<!-- claim:begin -->` and `<!-- claim:end -->` in `.claude/skills/rebuild-groundtruth/dispatch.md`. That prompt names no page and carries no substitution: each reader takes its own ref with `ocr claim`.
+**Does** validates a batch of pages, writes it to the claim queue, and prints the **one prompt every reader of the batch gets** — the block between `<!-- claim:begin -->` and `<!-- claim:end -->` in the text's reading track's `dispatch.md`: `.claude/skills/rebuild-groundtruth/dispatch.md`, or `.claude/skills/read-materials-page/dispatch.md` for a text whose manifest names `"reader": "materials-reader"`. That prompt names no page and carries no substitution: each reader takes its own ref with `ocr claim`. All three dispatch verbs (`queue`, `claim`, `reconcile`) take the track from the manifest's `reader`, so a text's batch is never dealt against another pass's contract.
 **Reads** `dispatch.md`, `gt/zones/` (and its split lists), `gt/fig/`, `gt/ocr/`, `mz/ocr/`.
 **Writes** `review/_queue.txt`, and clears `review/_claims/`. Prompt to stdout as plain text, everything operational to stderr, so a pipe carries the prompt and nothing else.
 **Exit** 0 with a prompt; 1 when any page in the batch is not a dispatch candidate, and the message names the remedy.
@@ -657,7 +657,7 @@ Every page is checked before any is queued, and its block is rendered and thrown
 ```
 
 ### ocr claim
-**Does** takes the next unclaimed ref off `review/_queue.txt` and prints that page's block — the ref, what the four-store survey found (line and zone counts, and which of the two things a `gaps` band means on this page), this page's own crop geometry, and the forms the pages just before it were adjudicated to hold, from between `<!-- prompt:begin -->` and `<!-- prompt:end -->`.
+**Does** takes the next unclaimed ref off `review/_queue.txt` and prints that page's block — the ref, what the four-store survey found (line and zone counts, and which of the two things a `gaps` band means on this page), this page's own crop geometry, and the forms the pages just before it were adjudicated to hold, from between `<!-- prompt:begin -->` and `<!-- prompt:end -->`. The *Materials* track's block says what copy A's text layer holds instead of what a segmenter found, and offers the same nearby forms.
 **Reads** `review/_queue.txt`, `review/_claims/`, `dispatch.md`, the four stores, `gt/ocr/` for the nearby forms.
 **Writes** `review/_claims/PP-NNN`, stamped with the local time. Block to stdout as plain text.
 **Exit** 0 with a block; 1 when the queue is empty or every ref on it is taken.

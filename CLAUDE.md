@@ -237,7 +237,8 @@ every byte of this file on every page.
 | `docs/decisions.md` | what was settled the hard way, intact — the reasoning behind the rules |
 | `docs/open-questions.md` | what is deliberately unresolved |
 | `README.md` | the four provenance levels, and the edition for a reader |
-| `.claude/skills/read-materials-page/` | the 1900 *Materials* reading pass: two text-layer copies, the scan, the Russian; native forms listed for the editor |
+| `.claude/agents/materials-reader.md` | the 1900 *Materials* reading contract, whole: two text-layer copies, the scan, the Russian; native forms listed for the editor |
+| `.claude/skills/read-materials-page/` | dispatching and checking a batch of Materials readers |
 | `.claude/agents/zones-reviewer.md` | the 1900 *Materials* zone review contract, whole: edits against the rule's `mz/zones/`, rulings transcluded |
 | `.claude/skills/review-zones/` | dispatching zone reviewers, and the editor's zoning rulings for that book (`rulings.md`) |
 | `.claude/skills/read-moll-page/` | the Moll & Inenlikej 1957 pass, whole. Not a Bogoras corpus track; nothing it produces enters `gt/` or `tei/` |

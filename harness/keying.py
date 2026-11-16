@@ -48,8 +48,16 @@ MARK_TABLES = ("mark_license", "orthographic_bases")
 #: Tables of rules rather than of glyphs: which detectors a notation runs, which
 #: scripts are never Tier-1, and the prose alphabet a token's notation is measured
 #: against. Keyed by name or by ISO 15924 code, from the closed sets below.
-RULE_TABLES = ("detectors", "tier2_scripts", "prose_alphabet", "folds")
+RULE_TABLES = ("detectors", "tier2_scripts", "prose_alphabet", "folds",
+               "script_folds", "numeral_folds")
 TABLES = CHAR_TABLES + SEQ_TABLES + MARK_TABLES + RULE_TABLES
+
+#: The Roman numeral letters, Unicode's Latin: a fact, not a ruling.
+ROMAN = frozenset("IVXLCDM")
+#: A word, for the word-level folds: a run of letters and the marks on them. A
+#: hyphen, an apostrophe or a quote ends one, so each half of `тот-төмwа́ткен` is
+#: judged alone, and so is each side of `CONTENT="`.
+WORD = re.compile(r"(?:[^\W\d_]|[̀-ͯ])+")
 
 #: The detectors a notation may switch. Each is written for one notation's facts —
 #: the Jesup small capitals, its g̣, its stress mark — so a text whose book prints
@@ -93,6 +101,17 @@ class Rules:
     #: OCR emits for it, in NFD: a letter, or a letter and its mark (`ď` is
     #: d + U+030C). Applied wherever text enters a store.
     folds: dict[str, str] = field(default_factory=dict)
+    #: `{script: {"pairs": {latin: letter}, "keep": latin}}` — the Latin lookalikes
+    #: a layer sets inside a word of `script`, each with the letter it stands for.
+    #: A word holding a letter of the script has its lookalikes folded, but only
+    #: if nothing Latin is left afterwards outside `keep` (the notation's own
+    #: Latin letters): a Latin name with a Russian ending keeps its `m` or `n`,
+    #: so it is left whole. A word with no letter of the script is never touched,
+    #: which is what spares a numeral and a Latin or French quotation.
+    script_folds: dict[str, dict] = field(default_factory=dict)
+    #: `{letter: roman}` — the other scripts' lookalikes of a Roman numeral letter.
+    #: A word that is all numeral letters once folded is a numeral, keyed Latin.
+    numeral_folds: dict[str, str] = field(default_factory=dict)
     #: `{key path: tier}` — which layer set each leaf. For reports, never logic.
     origin: dict = field(default_factory=dict, compare=False, repr=False)
 
@@ -112,17 +131,64 @@ class Rules:
         return any(in_script(c, s) for s in self.tier2_scripts for c in token)
 
     def fold(self, text: str) -> str:
-        """`text` (NFD) with every ruled sort in its codepoints, longest key first."""
-        if not self.folds:
-            return text
-        return _fold_pattern(tuple(self.folds)).sub(lambda m: self.folds[m.group()], text)
+        """`text` (NFD) with every ruled sort in its codepoints, longest key first,
+        then each word the word-level folds reach."""
+        if self.folds:
+            text = _fold_pattern(tuple(self.folds)).sub(
+                lambda m: self.folds[m.group()], text)
+        if self.script_folds or self.numeral_folds:
+            text = WORD.sub(lambda m: self.fold_word(m.group()), text)
+        return text
 
-    def fold_spans(self, text: str) -> list[tuple[int, str]]:
-        """(offset, key) of every fold `fold` would make in `text`, in order."""
-        if not self.folds:
-            return []
-        return [(m.start(), m.group())
-                for m in _fold_pattern(tuple(self.folds)).finditer(text)]
+    def fold_word(self, word: str) -> str:
+        """One word under the word-level folds: a numeral to Latin, else a word of
+        a folded script with its Latin lookalikes in that script, else itself."""
+        if self.numeral_folds:
+            roman = "".join(self.numeral_folds.get(c, c) for c in word)
+            if roman != word and set(roman) <= ROMAN:
+                return roman
+        for script, rule in self.script_folds.items():
+            if not any(in_script(c, script) for c in word):
+                continue
+            pairs, keep = rule["pairs"], _keep(rule["keep"])
+            out, left, i = [], False, 0
+            while i < len(word):
+                kept = next((k for k in keep if word.startswith(k, i)), None)
+                if kept:
+                    out.append(kept)
+                    i += len(kept)
+                    continue
+                c = pairs.get(word[i], word[i])
+                left = left or (c.isascii() and c.isalpha())
+                out.append(c)
+                i += 1
+            if not left and "".join(out) != word:
+                return "".join(out)
+        return word
+
+    @property
+    def word_folds_record(self) -> str:
+        """The word-level folds as one provenance value; empty when there are none.
+
+        Free of `; ` and `: `, which separate a processing step's settings."""
+        parts = [f"{s} {' '.join(f'{a}>{b}' for a, b in sorted(r['pairs'].items()))}"
+                 f" keep {r['keep']}" for s, r in sorted(self.script_folds.items())]
+        if self.numeral_folds:
+            parts.append("numerals " + " ".join(
+                f"{a}>{b}" for a, b in sorted(self.numeral_folds.items())))
+        return ", ".join(parts)
+
+    def fold_spans(self, text: str) -> list[tuple[int, str, str]]:
+        """(offset, from, to) of every fold `fold` would make in `text`, in order:
+        a ruled sort, or a whole word the word-level folds rewrite."""
+        out = []
+        if self.folds:
+            out += [(m.start(), m.group(), self.folds[m.group()])
+                    for m in _fold_pattern(tuple(self.folds)).finditer(text)]
+        if self.script_folds or self.numeral_folds:
+            out += [(m.start(), m.group(), w) for m in WORD.finditer(text)
+                    if (w := self.fold_word(m.group())) != m.group()]
+        return sorted(out)
 
     @property
     def t1(self) -> str:
@@ -145,6 +211,13 @@ class Rules:
     def lookalike_probes(self) -> tuple[tuple[str, str], ...]:
         """Chars then sequences, in table order — the report's row order."""
         return tuple(self.lookalike_chars.items()) + tuple(self.lookalike_seqs.items())
+
+
+@lru_cache(maxsize=64)
+def _keep(keep: str) -> tuple[str, ...]:
+    """A `script_folds` keep list: space-separated sequences, longest first, so
+    `ę` (e + U+0328) is kept whole before a bare `e` could be folded."""
+    return tuple(sorted(keep.split(), key=len, reverse=True))
 
 
 @lru_cache(maxsize=64)
@@ -226,6 +299,34 @@ def _check(merged: dict, origin: dict, why: dict, where: str) -> None:
         if any(c in merged["lookalike_chars"] for c in dst):
             raise KeyingError(f"{where}: folds[{src!r}] lands on {dst!r}, which "
                               "lookalike_chars refuses")
+    for code, rule in merged["script_folds"].items():
+        if code not in SCRIPTS:
+            raise KeyingError(f"{where}: script_folds names script {code!r}; known: "
+                              f"{sorted(SCRIPTS)}")
+        pairs, keep = (rule.get("pairs"), rule.get("keep")) if isinstance(rule, dict) \
+            else (None, None)
+        if not isinstance(pairs, dict) or not isinstance(keep, str):
+            raise KeyingError(f"{where}: script_folds[{code!r}] is "
+                              "{\"pairs\": {latin: letter}, \"keep\": latin}")
+        for src, dst in pairs.items():
+            if not (len(src) == len(dst) == 1 and src.isascii() and src.isalpha()
+                    and in_script(dst, code) and dst.isalpha()):
+                raise KeyingError(f"{where}: script_folds[{code!r}] pairs {src!r} with "
+                                  f"{dst!r}; a pair is one Latin letter and one "
+                                  f"letter of {code}")
+        bad = [k for k in keep.split()
+               if not (_sort(k) and k[0].isascii() and k[0].isalpha())
+               or k in pairs]
+        if bad or not keep.split():
+            raise KeyingError(f"{where}: script_folds[{code!r}] keep {bad or keep!r}: "
+                              "keep is the Latin sorts left as they are, space-"
+                              "separated, each a letter and its marks in NFD and "
+                              "none a bare letter the pairs fold")
+    for src, dst in merged["numeral_folds"].items():
+        if not (len(src) == 1 and not src.isascii() and dst in ROMAN):
+            raise KeyingError(f"{where}: numeral_folds[{src!r}] = {dst!r}; a fold maps "
+                              f"one non-Latin letter to a Roman numeral letter "
+                              f"({''.join(sorted(ROMAN))})")
     for m, bases in merged["orthographic_bases"].items():
         lic = merged["mark_license"].get(m)
         if lic is not None and not set(bases) <= set(lic):
@@ -300,6 +401,9 @@ def _rules(root: str, _stamp: tuple, own: bool) -> Rules:
         tier2_scripts=frozenset(merged["tier2_scripts"]),
         prose_alphabet={k: frozenset(v) for k, v in merged["prose_alphabet"].items()},
         folds=dict(merged["folds"]),
+        script_folds={k: {"pairs": dict(v["pairs"]), "keep": v["keep"]}
+                      for k, v in merged["script_folds"].items()},
+        numeral_folds=dict(merged["numeral_folds"]),
         origin=dict(origin),
     )
 

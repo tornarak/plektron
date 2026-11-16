@@ -20,6 +20,7 @@ so the first text's manifest needed no edit. `layout._project` checks them all.
 | `omit` | none | leaves the *digitizer* added, never cut |
 | `masterless` | none | leaves taken at their own size; the copy's, not the digitizer's |
 | `prose_stands` | nothing stands | the editor's ruling, in words, that plain prose may reach `gt/ocr/` on a model's reading |
+| `reader` | `groundtruth-reader` | the agent `ocr queue`, `ocr claim` and `ocr reconcile` dispatch for this text, one of `layout.READERS`; each has its track in `dispatch.READING_TRACKS` |
 
 `omit` and `masterless` are two rules, not one with two names. A QR code or a
 Google usage notice is no part of the book or of the copy, so it is never read.
@@ -176,7 +177,8 @@ line stands; where they differ, or the sense does not hold, the reader settles i
 at the scan; a line still baffling after that carries a `note` of class `doubt`.
 The native forms on every line go to the editor, whatever the reader thought of
 them: the reader lists them in the line's `native` field, including the ones no
-glyph marks, which no rule can find. The pass is `/read-materials-page`.
+glyph marks, which no rule can find. The contract is the `materials-reader`
+agent, dispatched by `/read-materials-page`.
 `1-022` is the first page read this way. One engine read both copies, so their agreement is weaker than
 it looks (`docs/decisions.md`) — which is why agreement lets a Russian line stand
 and never a native form.
