@@ -1,0 +1,28 @@
+{
+ "_about": "The review editor's keyboard (ocr review, and the caption pass that shares its page): `keys` binds a key to what it types while kbd mode is on (ctrl-space), and `palette` is the panel of buttons, grouped. Read by harness/review.py `keyboard`, whole, through layout.shared: a text holding its own config/keyboard.json replaces this one rather than composing over it, since a layout is one design and half of two is neither. This one is the Jesup Americanist notation's, for The Chukchee. Kbd mode is off by default, so the English apostrophe and quotes stay typeable in prose; that is why it is a mode and not a remap. Every glyph is NFD at load, so a precomposed literal here (č, ñ, ṛ, ř, ǰ, Č, Ñ) types its decomposition, which is the corpus's encoding.",
+ "_keys": "The first block is the editor's bindings from before this keyboard, reproduced key for key so muscle memory survives; r/R is deliberately asymmetric (ṛ vs ř) and left as found. The o key and the semicolon key are atomics the editor's list flagged as having no key; the capitals were unreachable before. The postfix combining marks (on the period, caret, tilde, colon, double quote, hyphen and equals keys) attach to whatever precedes the caret, so one key each reaches every marked sort in keying spec 2.2 — ä ë ê ḷ ʟ̣ š ŭ x˙ and both length marks — instead of a binding per glyph.",
+ "keys": {
+  "a": "ᴀ", "e": "ᴇ", "i": "ɪ", "c": "č", "g": "g̣", "j": "ǰ",
+  "l": "ʟ", "n": "ñ", "r": "ṛ", "R": "ř",
+  "'": "ˊ", "<": "ᵋ", ">": "˙", "?": "(??/????)",
+  "o": "ɵ", ";": "ᵉ",
+  "C": "Č", "G": "G̣", "N": "Ñ", "L": "ʟ̣",
+  ".": "\u0323", "^": "\u0302", "~": "\u0303",
+  ":": "\u0308", "\"": "\u030c", "-": "\u0304", "=": "\u0306"
+ },
+ "_palette": "The whole keying-spec inventory, not just what has a binding, grouped as the spec groups it so the panel reads as the inventory rather than as a pile of characters. Bindings are a shortcut for the frequent ones; the button is the guarantee that nothing is unreachable.",
+ "palette": [
+  {"label": "small caps (2.3)", "glyphs": ["ᴀ", "ᴇ", "ɪ", "ʟ", "ʟ̣"]},
+  {"label": "modifiers (2.1)", "glyphs": ["ˊ", "ᵋ", "ᵉ", "˙"]},
+  {"label": "combining marks", "glyphs": ["\u0323", "\u0302", "\u0303", "\u0308", "\u030c", "\u0304", "\u0306"]},
+  {"label": "marked sorts (2.2)",
+   "glyphs": ["ñ", "č", "š", "ř", "ǰ", "ê", "ë", "ä", "ŭ", "ṛ", "ḷ", "ɵ", "x˙", "g̣"]},
+  {"label": "capitals (composed, not spec rows)", "glyphs": ["Ñ", "Č", "Š", "Ř", "J̌", "G̣"],
+   "_note": "Convenience only, and labelled so it cannot be mistaken for inventory: the spec lists no capital rows. G̣ is attested (1-074's G̣ɪthaˊk) and Č occurs in the corpus; Š Ř J̌ are here because a base plus a mark key produces them anyway, not because anything has licensed them."},
+  {"label": "ascii, special function", "glyphs": ["-", "!"],
+   "_note": "Earns its place despite being typeable: U+002D is the connector hyphen and U+0021 increased articulation (2.1). They look like ordinary punctuation and are not, and clicking them works even with the mode on. U+0027 is deliberately absent: it has no use inside a Tier-1 span (2.1, §3) — the p. 10 key's spirant and pause marks have never been seen in the corpus — so a raised comma-shaped mark is the stress key, U+02CA, in the modifiers row."},
+  {"label": "catalogue placeholder", "glyphs": ["(??/????)"]},
+  {"label": "curly quotes (English prose)", "glyphs": ["“", "”", "’"],
+   "_note": "Not Tier-1 notation — English prose reproduces the print, curly quotes included (keying spec section 1). Straight U+0022 has no legitimate reading anywhere in this corpus (normalize.py's quote check), and a bare keyboard makes it the path of least resistance: shift-' is one keystroke, a curly quote is not on any physical key at all. 1-048 and 2-030, both hand-keyed before this button existed, carry the straight-quote slip throughout. U+2019 belongs here and not in the ASCII row: it is the English possessive/elision apostrophe the book sets (\"cliff's end,\" \"don't\"), and inside a Tier-1 span it is instead a lookalike trap for stress U+02CA — never something to type there. A corpus-wide check turned up several restored English glosses carrying a straight U+0027 where the print sets ’; this button is the easy key to reach for instead."}
+ ]
+}

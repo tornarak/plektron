@@ -463,10 +463,8 @@ def review_context(root: Path = Path("."), verdict: str = "differ",
         DEFAULT_BOX_LINES,
         DEFAULT_FONT,
         DEFAULT_FONT_SIZE,
-        KBD_GLYPHS,
-        KBD_MARKS,
-        _palette,
         codepoints,
+        kbd_context,
     )
 
     rows = [r for r in witness(root)["rows"]
@@ -508,8 +506,7 @@ def review_context(root: Path = Path("."), verdict: str = "differ",
             "marks": codepoints("".join(
                 dict.fromkeys(c for c in text if ord(c) > 127))),
         })
-    return {"blocks": blocks, "missing": [], "palette": _palette(),
-            "kbd_glyphs": KBD_GLYPHS, "kbd_marks": KBD_MARKS,
+    return {"blocks": blocks, "missing": [], **kbd_context(root),
             "refs": list(dict.fromkeys(b["ref"] for b in blocks)),
             "count": len(blocks),
             "font": font or DEFAULT_FONT,

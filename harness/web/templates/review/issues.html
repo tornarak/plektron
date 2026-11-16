@@ -136,7 +136,7 @@ ctrl-space toggles kbd · off = plain typing</div>
 {% endblock %}
 
 {% block scripts %}
-<script>const GL={{ kbd_glyphs | tojson }},MK={{ kbd_marks | tojson }},
+<script>const KEYS={{ kbd_keys | tojson }},
 REF_BASE={{ base | tojson }};</script>
 <script src="{{ static }}/js/review-kbd.js"></script>
 <script src="{{ static }}/js/review-issues.js"></script>

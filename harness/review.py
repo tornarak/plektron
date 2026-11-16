@@ -226,87 +226,58 @@ def group_spans(spans: list[dict]) -> list[dict]:
     return out
 
 
-# The notation keyboard, as a toggled mode. Off by default, so the English
-# apostrophe and quotes stay typeable in prose. That is why this is a mode and
-# not a remap.
-#
-# The first block is the editor's existing bindings, reproduced key for key so
-# muscle memory survives. Note `r`/`R` is deliberately asymmetric (ṛ vs ř) and is
-# left as found rather than regularised.
-KBD_GLYPHS = {
-    "a": "ᴀ", "e": "ᴇ", "i": "ɪ", "c": "č", "g": "g̣", "j": "ǰ",
-    "l": "ʟ", "n": "ñ", "r": "ṛ", "R": "ř",
-    "'": "ˊ", "<": "ᵋ", ">": "˙", "?": "(??/????)",
-    # Atomics the editor's list flagged as having no key.
-    "o": "ɵ", ";": "ᵉ",
-    # Capitals, likewise unreachable before. Composed, so they are NFD by
-    # construction rather than by remembering to normalize.
-    "C": "Č", "G": "G̣", "N": "Ñ", "L": "ʟ̣",
-}
+#: The review keyboard, a text's or else its workspace's, whole (`layout.shared`).
+KEYBOARD = "config/keyboard.json"
 
-# Postfix combining marks: they attach to whatever precedes the caret, so one key
-# each reaches every marked sort in keying spec 2.2 — ä ë ê ḷ ʟ̣ š ŭ x˙ and both
-# length marks — instead of a binding per glyph. This is also exactly the corpus's
-# own encoding, so what is typed is what is stored.
-KBD_MARKS = {
-    ".": "̣", "^": "̂", "~": "̃",
-    ":": "̈", '"': "̌", "-": "̄", "=": "̆",
-}
 
-# Decomposed at the source, not left to the save to fix. Seven of the literals above
-# are precomposed if written naively (č U+010D, ñ U+00F1, ṛ U+1E5B, ř U+0159, ǰ, Č,
-# Ñ), so typing them would put precomposed characters on screen and in the palette's
-# codepoint tooltips while the entire corpus is NFD. `save_decisions` would still
-# normalize the file, which is exactly what makes the discrepancy easy to miss.
-KBD_GLYPHS = {k: unicodedata.normalize("NFD", v) for k, v in KBD_GLYPHS.items()}
+class KeyboardError(ValueError):
+    """A keyboard file that cannot be read or trusted."""
 
-# The palette is the whole keying-spec inventory, not just what has a binding —
-# grouped as the spec groups it so the panel reads as the inventory rather than as a
-# pile of characters. Bindings are a shortcut for the frequent ones; the button is
-# the guarantee that nothing is unreachable.
-#
-# The ASCII row earns its place despite being typeable: U+002D is the connector
-# hyphen and U+0021 increased articulation (2.1). They look like ordinary
-# punctuation and are not, and clicking them works even with the mode on. U+0027
-# is deliberately absent: it has no use inside a Tier-1 span (2.1, §3) — the p.
-# 10 key's spirant and pause marks have never been seen in the corpus — so a
-# raised comma-shaped mark is the stress key, U+02CA, in the modifiers row.
-PALETTE = [
-    ("small caps (2.3)", ["ᴀ", "ᴇ", "ɪ", "ʟ", "ʟ̣"]),
-    ("modifiers (2.1)", ["ˊ", "ᵋ", "ᵉ", "˙"]),
-    ("combining marks", list(KBD_MARKS.values())),
-    ("marked sorts (2.2)",
-     ["ñ", "č", "š", "ř", "ǰ", "ê", "ë", "ä", "ŭ", "ṛ", "ḷ", "ɵ", "x˙", "g̣"]),
-    # Convenience only, and labelled so it cannot be mistaken for inventory: the
-    # spec lists no capital rows. G̣ is attested (1-074's G̣ɪthaˊk) and Č occurs in the
-    # corpus; Š Ř J̌ are here because a base plus a mark key produces them anyway, not
-    # because anything has licensed them.
-    ("capitals (composed, not spec rows)", ["Ñ", "Č", "Š", "Ř", "J̌", "G̣"]),
-    ("ascii, special function", ["-", "!"]),
-    ("catalogue placeholder", ["(??/????)"]),
-    # Not Tier-1 notation — English prose reproduces the print, curly quotes
-    # included (keying spec section 1). Straight U+0022 has no legitimate
-    # reading anywhere in this corpus (normalize.py's quote check), and a bare
-    # keyboard makes it the path of least resistance: shift-' is one keystroke,
-    # a curly quote is not on any physical key at all. `1-048` and `2-030` —
-    # both hand-keyed before this button existed — carry the straight-quote
-    # slip throughout, which is the button's whole reason for being here.
-    #
-    # U+2019 belongs in this row for the identical reason, not in the ASCII
-    # row above: it is the *English* possessive/elision apostrophe the book
-    # sets ("cliff's end," "don't"), and inside a Tier-1 span it is instead
-    # a lookalike trap for stress U+02CA (validate.py's LOOKALIKE_GREPS,
-    # "U+2019 traps U+02CA") — never something to type there.
-    # A corpus-wide check turned up several already-restored English glosses
-    # ("cliff's end," "man's name," "Kihiˊni' Island") carrying a straight
-    # U+0027 where the print sets curly ’, the same slip 1-048/2-030 made
-    # with the double-quote pair — this button exists so the fix, and every
-    # future gloss, has an easy key to reach for instead of the bare
-    # apostrophe already under the fingers.
-    ("curly quotes (English prose)", ["“", "”", "’"]),
-]
-PALETTE = [(label, [unicodedata.normalize("NFD", g) for g in glyphs])
-           for label, glyphs in PALETTE]
+
+def keyboard(root: Path) -> dict:
+    """The text's review keyboard: `{"keys": {key: glyph}, "palette": [(label, [glyph])]}`.
+
+    **Data, not code**: the layout is a text's, since the notation is. The Chukchee
+    types small capitals off a Latin keyboard and the 1900 *Materials* types
+    Cyrillic off the same keys, and a constant here would hand one book's layout
+    to every other. Composed **whole**, not key by key: a text's file replaces its
+    workspace's, since half of one layout over half of another is neither.
+
+    Every glyph is NFD at load, so a precomposed literal in the file (`č`) types its
+    decomposition, which is the corpus's encoding; written once here rather than
+    left to the save to fix, where the screen would disagree with the file.
+    A bound glyph missing from the palette is refused: the button is the guarantee
+    that a glyph is reachable without knowing its key.
+    """
+    from .layout import shared
+    p = shared(root, KEYBOARD)
+    if not p.exists():
+        raise KeyboardError(f"no {KEYBOARD} at {root} or its workspace: the review "
+                            "page types through a declared layout, never a default")
+    try:
+        doc = json.loads(p.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as e:
+        raise KeyboardError(f"{p}: not JSON: {e}") from None
+    nfd = lambda s: unicodedata.normalize("NFD", s)  # noqa: E731
+    keys = {}
+    for k, g in (doc.get("keys") or {}).items():
+        if len(k) != 1 or not k.isascii() or not k.isprintable() or k == " ":
+            raise KeyboardError(f"{p}: keys[{k!r}]: a key is one printable ASCII "
+                                "character, as the browser names it")
+        if not (isinstance(g, str) and g):
+            raise KeyboardError(f"{p}: keys[{k!r}] types nothing")
+        keys[k] = nfd(g)
+    palette = []
+    for grp in doc.get("palette") or []:
+        glyphs = grp.get("glyphs") or []
+        if not (grp.get("label") and glyphs and all(isinstance(g, str) and g for g in glyphs)):
+            raise KeyboardError(f"{p}: every palette group has a label and its glyphs")
+        palette.append((grp["label"], [nfd(g) for g in glyphs]))
+    shown = {g for _, gs in palette for g in gs}
+    hidden = sorted(k for k, g in keys.items() if g not in shown)
+    if hidden:
+        raise KeyboardError(f"{p}: keys {hidden} type glyphs no palette button shows")
+    return {"keys": keys, "palette": palette, "path": p}
 
 
 def load_decisions(ref: str, root: Path = Path(".")) -> dict[int, dict]:
@@ -954,17 +925,21 @@ def font_stack(font: str | None = None) -> str:
     return ", ".join([quoted, *rest])
 
 
-def _palette() -> list[dict]:
-    """The insertion palette, shared by every page that offers one.
+def kbd_context(root: Path) -> dict:
+    """The insertion palette and the key bindings, shared by every page that offers
+    them: `{"palette": [...], "kbd_keys": {key: glyph}}`, from the text's `keyboard`.
 
     Factored when the issue list became a second such page: the two pages differ
     in what they show *about* a line, and not at all in what a keyboard can put
     into one, so a second copy would have been a second inventory to keep true.
     """
-    binding = {g: k for k, g in KBD_GLYPHS.items()}
-    binding.update({m: k for k, m in KBD_MARKS.items()})
+    kb = keyboard(root)
+    # First binding wins, so a glyph bound twice shows the key the file names first.
+    binding: dict[str, str] = {}
+    for k, g in kb["keys"].items():
+        binding.setdefault(g, k)
     palette = []
-    for label, glyphs in PALETTE:
+    for label, glyphs in kb["palette"]:
         keys = []
         for g in glyphs:
             combining = len(g) == 1 and unicodedata.category(g) == "Mn"
@@ -981,7 +956,7 @@ def _palette() -> list[dict]:
         # named around rather than worked around, because the next person adding
         # a group would hit it too.
         palette.append({"label": label, "glyphs": keys})
-    return palette
+    return {"palette": palette, "kbd_keys": kb["keys"]}
 
 
 def page_context(ref: str, root: Path,
@@ -1113,15 +1088,13 @@ def page_context(ref: str, root: Path,
             "hnote": (saved.get(idx) or {}).get("note", ""),
         })
 
-    palette = _palette()
-
     # Is there another page waiting after this one? Only pages *other* than this
     # one count: re-opening a page already marked done and pressing Done again
     # must not claim there is somewhere to go when this was the last of them.
     pending = [q["ref"] for q in (queue or [])
                if q["ref"] != ref and not q["done"]]
     return {
-        "ref": ref, "summ": summ, "t1": t1, "lines": lines, "palette": palette,
+        "ref": ref, "summ": summ, "t1": t1, "lines": lines,
         "queue": queue or [], "done_n": sum(1 for q in (queue or []) if q["done"]),
         "scan_href": scan_href,
         "edit_jump": _edit_jump_inner(edited_now),
@@ -1131,7 +1104,7 @@ def page_context(ref: str, root: Path,
         "type": {"font": font_stack(font),
                  "size": int(font_size or DEFAULT_FONT_SIZE),
                  "box_lines": max(1, int(box_lines or DEFAULT_BOX_LINES))},
-        "kbd_glyphs": KBD_GLYPHS, "kbd_marks": KBD_MARKS,
+        **kbd_context(root),
     }
 
 
@@ -1293,8 +1266,7 @@ def issues_context(items: list[dict], root: Path,
             "marks": codepoints("".join(
                 dict.fromkeys(c for c in text if ord(c) > 127))),
         })
-    return {"blocks": blocks, "missing": missing, "palette": _palette(),
-            "kbd_glyphs": KBD_GLYPHS, "kbd_marks": KBD_MARKS,
+    return {"blocks": blocks, "missing": missing, **kbd_context(root),
             "refs": list(dict.fromkeys(b["ref"] for b in blocks)),
             "count": len(blocks),
             "font": font or DEFAULT_FONT,

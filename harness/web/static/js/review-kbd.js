@@ -59,6 +59,11 @@ const syncPal=()=>document.body.classList.toggle(
 // alone — the server renders no `palopen` — so a restored override needs
 // applying here or it would be remembered and never shown.
 syncPal();
+// The page's bottom padding follows the panel's real height (review.css --palh),
+// since a text's keyboard decides how tall the panel is.
+{const pal=document.getElementById('pal');
+ if(pal&&window.ResizeObserver) new ResizeObserver(()=>document.documentElement
+   .style.setProperty('--palh',pal.offsetHeight+'px')).observe(pal);}
 document.addEventListener('focusin',e=>{
   if(e.target.tagName!=='TEXTAREA') return;
   // **`last` is tracked here because it is this file's variable.** It used to be
@@ -92,9 +97,10 @@ addEventListener('keydown',e=>{
   if(e.ctrlKey&&e.code==='Space'){e.preventDefault();setKbd(!kbdOn);return}
   if(!kbdOn||!last||document.activeElement!==last) return;
   if(e.ctrlKey||e.altKey||e.metaKey) return;
-  const g=Object.prototype.hasOwnProperty.call(GL,e.key)?GL[e.key]
-        :(Object.prototype.hasOwnProperty.call(MK,e.key)?MK[e.key]:null);
-  if(g===null) return;
+  // KEYS is the text's config/keyboard.json: a letter and a postfix mark are both
+  // just what the key inserts, so one table serves both.
+  if(!Object.prototype.hasOwnProperty.call(KEYS,e.key)) return;
+  const g=KEYS[e.key];
   e.preventDefault(); insert(last,g);
 });
 let dirty=false, timer=null;

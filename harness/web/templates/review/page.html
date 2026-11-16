@@ -146,7 +146,7 @@ ctrl-space toggles kbd · off = plain typing · alt-j / alt-k walk tier-1 lines<
    page" instead, but that is state the browser can contradict — a second tab, a
    back button, a reload after navigating — and the failure it would produce is
    one page's adjudicated text written into another page's decision.json. #}
-<script>const GL={{ kbd_glyphs | tojson }},MK={{ kbd_marks | tojson }},
+<script>const KEYS={{ kbd_keys | tojson }},
 REF={{ ref | tojson }},REF_BASE={{ base | tojson }};</script>
 {% if inline %}<script>{{ inline.js | safe }}</script>
 {% else %}<script src="{{ static }}/js/review-kbd.js"></script>
