@@ -31,6 +31,19 @@
 <span class=qlab>&nbsp;{{ done_n }}/{{ queue | length }} adjudicated</span></div>
 {% endif %}
 
+{% if stands_on %}
+{# Under the text's `prose_stands` ruling the page's queue is what does not stand;
+   the prose that does is shown for context and posted with nothing. #}
+<h1>{{ ref }} — {{ summ.lines }} lines, {{ t1 | length }} to rule,
+{{ n_stand }} standing as prose
+<a class=scan href="{{ scan_href }}" target=_blank rel=noopener>full scan ↗</a></h1>
+<div class=sum>A line is yours when it lists a native form, carries a
+<b>doubt</b>, or holds a letter outside the prose alphabet; each says which. Every
+native form is a model's reading of the scan until you ratify it. The Russian
+prose stands on the reading (the text's <code>prose_stands</code> ruling): it is
+shown dimmed, is not saved as yours, and <b>overrule</b> makes a line yours to
+decide.</div>
+{% else %}
 <h1>{{ ref }} — {{ summ.lines }} lines, {{ summ.lines - summ.lines_identical }}
 differing from catmus, {{ t1 | length }} carrying notation
 <a class=scan href="{{ scan_href }}" target=_blank rel=noopener>full scan ↗</a></h1>
@@ -42,6 +55,7 @@ Every line is listed, in reading order. CATMuS is shown for reference only: it i
 a witness to geometry and English, and produced no inventory glyph anywhere in
 this book, so on a glyph the image is the sole witness — and a line the two agree
 on can still have both of them wrong.</div>
+{% endif %}
 
 {# **Type controls, live.** The flags decide where the page starts; these decide
    where it ends up, because the right size for a face is a thing you find by
@@ -56,22 +70,25 @@ on can still have both of them wrong.</div>
 <button class=tb id=treset>reset</button></div>
 
 {% if t1 %}
-<div class=jump><b>Tier-1 lines:</b>
+<div class=jump><b>{{ 'Lines to rule:' if stands_on else 'Tier-1 lines:' }}</b>
 {% for i in t1 %}<a href='#l{{ i }}'>{{ i }}</a> {% endfor %}</div>
 {% endif %}
 <div class='jump edit' id=editjump>{{ edit_jump | safe }}</div>
 
-<div class=floor>Notation flags are a <b>floor, not a census</b>: four inventory
+{% if not stands_on %}<div class=floor>Notation flags are a <b>floor, not a census</b>: four inventory
 members are unmarked ASCII (<code>c</code> for English <i>sh</i>, plain
 <code>s</code>, <code>j</code>, <code>x</code>), so a Tier-1 form spelled only in
 those raises no flag. An unflagged line means nothing was detected, not that the
-line is English.</div>
+line is English.</div>{% endif %}
 
 {% for ln in lines %}
 <div class="{{ ln.cls }}" id="l{{ ln.idx }}"{% if ln.glyphs %} data-t1=1{% endif %}>
 <div class=tags>
 {%- if ln.typed %}<span class='nb nb-corpus'>CORPUS</span>{% endif %}
-{%- if ln.glyphs %}<span class=badge>TIER 1</span><span class=t1glyphs>{{ ln.glyphs }}</span> · {% endif %}
+{%- if ln.glyphs and stands_on %}<span class=badge>{{ 'NATIVE' if ln.native else 'RULE' }}</span><span class=t1glyphs>{{ ln.glyphs }}</span> · {% endif %}
+{%- if ln.glyphs and not stands_on %}<span class=badge>TIER 1</span><span class=t1glyphs>{{ ln.glyphs }}</span> · {% endif %}
+{%- if ln.stands %}<button type=button class=ovr data-line="{{ ln.idx }}"
+  title="make this line yours to decide: it is then saved as your ruling">overrule</button> stands as prose · {% endif %}
 line {{ ln.idx }} · {{ ln.line_id }}
 {%- if not ln.has_proposal %} · <b>NO PROPOSAL — key from the scan</b>{% endif %}
 {%- if ln.recovered %} · recovered line (segmenter missed it){% endif %}
@@ -87,7 +104,11 @@ line {{ ln.idx }} · {{ ln.line_id }}
 {# The value is carried in `data-text` and assigned by script on load, not
    written as element content. `autocomplete=off` asks the browser not to restore
    it; the JS assignment is what guarantees it. #}
-<textarea data-line="{{ ln.idx }}" rows=1 spellcheck=false autocomplete=off
+{# A line that stands carries `data-sline`, not `data-line`, and is read-only:
+   `collect()` posts `[data-line]` alone, so it reaches no `decision.json` until
+   overrule renames the attribute. #}
+<textarea {{ 'data-sline' if ln.stands else 'data-line' }}="{{ ln.idx }}" rows=1
+  spellcheck=false autocomplete=off{% if ln.stands %} readonly{% endif %}
   data-text="{{ ln.full }}" data-proposed="{{ ln.proposed }}"></textarea>
 {# Everything under the reading is one row: the machine's account of the line on
    the left, the human's on the right. They are read at different moments — the

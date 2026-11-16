@@ -104,5 +104,8 @@ contributes to this text's own dictionary is its `native` list, with the gloss
 where the prose gives one — say so in a `semantic` note (`«людей солнечнаго
 владыки»`).
 
-**Still to build, and named so nobody assumes it exists:** the review UI does not
-yet show `native` or confine the editor's queue to it.
+`harness ocr review` shows each line's `native` forms and confines the page's
+queue to those lines, the `doubt` lines and any line outside the prose alphabet;
+the standing prose is shown dimmed and never saved as the editor's. Its keyboard
+is this text's `config/keyboard.json`, phonetic Cyrillic with the notation's
+letters.

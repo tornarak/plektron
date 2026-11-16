@@ -26,6 +26,12 @@ function rebuildEditJump(){
     : '<b>Edited lines:</b> none yet';
 }
 async function save(){
+  // A page whose every line stands as prose has nothing to post, and an empty
+  // payload is the server's refusal (it would wipe the page's adjudication). So
+  // there is nothing to save, which is not a failure: restore takes such a page
+  // on its reading alone.
+  if(!document.querySelector('textarea[data-line]')){
+    dirty=false; st.textContent='nothing to rule: every line stands'; return;}
   st.textContent='saving…';
   try{
     const r=await fetch(B+'/save',{method:'POST',
@@ -129,6 +135,22 @@ for(const b of document.querySelectorAll('button.hnb:not(.qn)')){
     const t=document.querySelector(`textarea[data-note='${b.dataset.line}']`);
     if(!t) return;
     t.hidden=false; b.hidden=true; grow(t); t.focus();});
+}
+// OVERRULE. A line that stands as prose (`prose_stands`) is posted with nothing;
+// this makes it a line to decide, from here on saved as the editor's ruling. The
+// rename is the whole act: `collect()` posts `[data-line]`, and the server then
+// renders it as decided. Marked dirty, since taking the line is itself a ruling
+// even if its text is left as read.
+for(const b of document.querySelectorAll('button.ovr')){
+  b.addEventListener('click',()=>{
+    const ln=document.getElementById('l'+b.dataset.line);
+    const t=ln&&ln.querySelector('textarea[data-sline]');
+    if(!t) return;
+    t.dataset.line=t.dataset.sline; delete t.dataset.sline;
+    t.readOnly=false; ln.classList.remove('stands');
+    b.remove(); dirty=true; st.className=''; st.textContent='unsaved…';
+    clearTimeout(timer); timer=setTimeout(save,1200); t.focus();
+  });
 }
 sv.addEventListener('click',save);
 dn.addEventListener('click',done);

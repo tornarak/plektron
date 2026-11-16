@@ -1,0 +1,276 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns="http://www.loc.gov/standards/alto/ns-v4#">
+  <Description>
+    <MeasurementUnit>pixel</MeasurementUnit>
+    <sourceImageInformation>
+      <fileName>chukchi-materials-1-022.png</fileName>
+    </sourceImageInformation>
+    <Processing ID="OCR_harness-ocr-import">
+      <processingStepDescription>text layer of the source PDF, harness ocr import</processingStepDescription>
+      <processingStepSettings>harness: 1; kind: model; step: harness ocr import; label: text layer of the source PDF; version: pymupdf 1.28.2; model: pdfs/bogoras-1900-chukchee-materials.pdf; sha256: a8e4f046eb19336b0fe1e72b3215701a76da30de62a68481646223855374e32d; in.engine: the OCR that made the text layer; in.copy: master; in.pdf_page: 22; in.text_layer_producer: Google Books PDF Converter (rel 3 12/12/14); in.row_overlap: 0.5; in.align: drift 2.4 px at y=0, -0.71 px per 1000 px, 39 rows, median residual 2.3 px, less a 25 px baseline drop; in.folds: Ä&gt;Ӓ Ď&gt;Ð ä&gt;ӓ ď&gt;ð Қ&gt;Ӄ қ&gt;ӄ Ң&gt;Ӈ ң&gt;ӈ Ӏ&gt;l ӏ&gt;l Ә&gt;Э ә&gt;э</processingStepSettings>
+      <processingSoftware>
+        <softwareName>harness</softwareName>
+      </processingSoftware>
+    </Processing>
+  </Description>
+  <Layout>
+    <Page WIDTH="4688" HEIGHT="6992" PHYSICAL_IMG_NR="0" ID="page_0">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="4688" HEIGHT="6992">
+        <TextBlock ID="text_1-022" HPOS="1187" VPOS="561" WIDTH="3003" HEIGHT="5191">
+          <TextLine ID="mz_1-022_l1" HPOS="1191" VPOS="561" WIDTH="1853" HEIGHT="85" BASELINE="1191 646 3044 646">
+            <Shape>
+              <Polygon POINTS="1191 561 3044 561 3044 646 1191 646"/>
+            </Shape>
+            <String CONTENT="II В. Г. БОГОРАЗЪ," HPOS="1191" VPOS="561" WIDTH="1853" HEIGHT="85"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l2" HPOS="3361" VPOS="665" WIDTH="31" HEIGHT="51" BASELINE="3361 716 3392 716">
+            <Shape>
+              <Polygon POINTS="3361 665 3392 665 3392 716 3361 716"/>
+            </Shape>
+            <String CONTENT="" HPOS="3361" VPOS="665" WIDTH="31" HEIGHT="51"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l3" HPOS="1198" VPOS="771" WIDTH="2989" HEIGHT="94" BASELINE="1198 864 4187 864">
+            <Shape>
+              <Polygon POINTS="1198 771 4187 771 4187 865 1198 865"/>
+            </Shape>
+            <String CONTENT="простоты эти разговоры ведутся на особомъ чукотско-русскомъ жаргонѣ," HPOS="1198" VPOS="771" WIDTH="2989" HEIGHT="94"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l4" HPOS="1196" VPOS="886" WIDTH="2994" HEIGHT="103" BASELINE="1196 988 4190 988">
+            <Shape>
+              <Polygon POINTS="1196 886 4190 886 4190 989 1196 989"/>
+            </Shape>
+            <String CONTENT="упрощающемъ въ искаженной формѣ сложныя правила чукотской фонетики" HPOS="1196" VPOS="886" WIDTH="2994" HEIGHT="103"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l5" HPOS="1201" VPOS="1019" WIDTH="2986" HEIGHT="94" BASELINE="1201 1112 4187 1112">
+            <Shape>
+              <Polygon POINTS="1201 1019 4187 1019 4187 1113 1201 1113"/>
+            </Shape>
+            <String CONTENT="и синтаксиса, а также вводящемъ въ обращеніе нѣкоторое количество" HPOS="1201" VPOS="1019" WIDTH="2986" HEIGHT="94"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l6" HPOS="1204" VPOS="1147" WIDTH="2977" HEIGHT="94" BASELINE="1204 1241 4181 1241">
+            <Shape>
+              <Polygon POINTS="1204 1147 4181 1147 4181 1241 1204 1241"/>
+            </Shape>
+            <String CONTENT="русскихъ и другихъ словъ чужого происхожденія. Поэтому русскіе пере-" HPOS="1204" VPOS="1147" WIDTH="2977" HEIGHT="94"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l7" HPOS="1198" VPOS="1260" WIDTH="2990" HEIGHT="106" BASELINE="1198 1366 4188 1366">
+            <Shape>
+              <Polygon POINTS="1198 1260 4188 1260 4188 1366 1198 1366"/>
+            </Shape>
+            <String CONTENT="водчики Василій Дауровъ и Сафронъ Налетовъ, помощью которыхъ я" HPOS="1198" VPOS="1260" WIDTH="2990" HEIGHT="106"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l8" HPOS="1197" VPOS="1404" WIDTH="2993" HEIGHT="84" BASELINE="1197 1487 4190 1487">
+            <Shape>
+              <Polygon POINTS="1197 1404 4190 1404 4190 1488 1197 1488"/>
+            </Shape>
+            <String CONTENT="пользовался первое время, оказались для меня мало пригодными; они почти" HPOS="1197" VPOS="1404" WIDTH="2993" HEIGHT="84"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l9" HPOS="1201" VPOS="1520" WIDTH="2985" HEIGHT="98" BASELINE="1201 1617 4186 1617">
+            <Shape>
+              <Polygon POINTS="1201 1520 4186 1520 4186 1618 1201 1618"/>
+            </Shape>
+            <String CONTENT="не умѣли переводить сказокъ, и многія области жизни, напр. вѣрованія и" HPOS="1201" VPOS="1520" WIDTH="2985" HEIGHT="98"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l10" HPOS="1203" VPOS="1640" WIDTH="2983" HEIGHT="102" BASELINE="1203 1741 4186 1741">
+            <Shape>
+              <Polygon POINTS="1203 1640 4186 1640 4186 1742 1203 1742"/>
+            </Shape>
+            <String CONTENT="обряды, совершенно выходили за предѣлы ихъ познаній. Кромѣ этихъ" HPOS="1203" VPOS="1640" WIDTH="2983" HEIGHT="102"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l11" HPOS="1200" VPOS="1768" WIDTH="2985" HEIGHT="98" BASELINE="1200 1866 4185 1866">
+            <Shape>
+              <Polygon POINTS="1200 1768 4185 1768 4185 1866 1200 1866"/>
+            </Shape>
+            <String CONTENT="переводчиковъ въ первые десять мѣсяцевъ для разговора съ чукчами я" HPOS="1200" VPOS="1768" WIDTH="2985" HEIGHT="98"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l12" HPOS="1199" VPOS="1892" WIDTH="2984" HEIGHT="104" BASELINE="1199 1996 4183 1996">
+            <Shape>
+              <Polygon POINTS="1199 1892 4183 1892 4183 1996 1199 1996"/>
+            </Shape>
+            <String CONTENT="старался пользоваться посредничествомъ тунгусовъ (Прокопія Ункуула," HPOS="1199" VPOS="1892" WIDTH="2984" HEIGHT="104"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l13" HPOS="1194" VPOS="2004" WIDTH="2987" HEIGHT="112" BASELINE="1194 2116 4181 2116">
+            <Shape>
+              <Polygon POINTS="1194 2004 4181 2004 4181 2116 1194 2116"/>
+            </Shape>
+            <String CONTENT="Егора Шамона, Антона Атласова) и ламутовъ (Тимофея Дьячкова и Гри-" HPOS="1194" VPOS="2004" WIDTH="2987" HEIGHT="112"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l14" HPOS="1198" VPOS="2136" WIDTH="2988" HEIGHT="106" BASELINE="1198 2241 4186 2241">
+            <Shape>
+              <Polygon POINTS="1198 2136 4186 2136 4186 2242 1198 2242"/>
+            </Shape>
+            <String CONTENT="горія Чаина), которые, говоря по чукотски съ полной бѣглостью, въ то-же" HPOS="1198" VPOS="2136" WIDTH="2988" HEIGHT="106"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l15" HPOS="1201" VPOS="2265" WIDTH="2981" HEIGHT="97" BASELINE="1201 2361 4182 2361">
+            <Shape>
+              <Polygon POINTS="1201 2265 4182 2265 4182 2362 1201 2362"/>
+            </Shape>
+            <String CONTENT="время могли кое-какъ объясняться по русски. Провѣряя съ ихъ помощью" HPOS="1201" VPOS="2265" WIDTH="2981" HEIGHT="97"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l16" HPOS="1199" VPOS="2399" WIDTH="2988" HEIGHT="97" BASELINE="1199 2496 4187 2496">
+            <Shape>
+              <Polygon POINTS="1199 2399 4187 2399 4187 2496 1199 2496"/>
+            </Shape>
+            <String CONTENT="переводъ русскаго переводчика и дѣлая лексикологическія записи, гдѣ" HPOS="1199" VPOS="2399" WIDTH="2988" HEIGHT="97"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l17" HPOS="1200" VPOS="2528" WIDTH="2980" HEIGHT="92" BASELINE="1200 2620 4180 2620">
+            <Shape>
+              <Polygon POINTS="1200 2528 4180 2528 4180 2620 1200 2620"/>
+            </Shape>
+            <String CONTENT="представлялась возможность, я достигъ въ эти десять мѣсяцевъ только" HPOS="1200" VPOS="2528" WIDTH="2980" HEIGHT="92"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l18" HPOS="1191" VPOS="2647" WIDTH="2994" HEIGHT="98" BASELINE="1191 2745 4185 2745">
+            <Shape>
+              <Polygon POINTS="1191 2647 4185 2647 4185 2745 1191 2745"/>
+            </Shape>
+            <String CONTENT="умѣнья кое-какъ объясняться на чукотско-русскомъ жаргонѣ, который я" HPOS="1191" VPOS="2647" WIDTH="2994" HEIGHT="98"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l19" HPOS="1195" VPOS="2781" WIDTH="2391" HEIGHT="80" BASELINE="1195 2860 3586 2860">
+            <Shape>
+              <Polygon POINTS="1195 2781 3586 2781 3586 2861 1195 2861"/>
+            </Shape>
+            <String CONTENT="въ то время не отличалъ отъ настоящаго чукотскаго языка." HPOS="1195" VPOS="2781" WIDTH="2391" HEIGHT="80"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l20" HPOS="1405" VPOS="2890" WIDTH="2778" HEIGHT="104" BASELINE="1405 2994 4183 2994">
+            <Shape>
+              <Polygon POINTS="1405 2890 4183 2890 4183 2994 1405 2994"/>
+            </Shape>
+            <String CONTENT="Съ января 1896 г., послѣ встрѣчи съ чукчей Ајӈан̀ва́т’омъ и при" HPOS="1405" VPOS="2890" WIDTH="2778" HEIGHT="104"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l21" HPOS="1192" VPOS="3016" WIDTH="2990" HEIGHT="100" BASELINE="1192 3115 4182 3115">
+            <Shape>
+              <Polygon POINTS="1192 3016 4182 3016 4182 3116 1192 3116"/>
+            </Shape>
+            <String CONTENT="его помощи, я сталъ постепенно пріобрѣтать знакомство съ чистой чукотской" HPOS="1192" VPOS="3016" WIDTH="2990" HEIGHT="100"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l22" HPOS="1187" VPOS="3144" WIDTH="3000" HEIGHT="100" BASELINE="1187 3243 4187 3243">
+            <Shape>
+              <Polygon POINTS="1187 3144 4187 3144 4187 3244 1187 3244"/>
+            </Shape>
+            <String CONTENT="рѣчью. Этому много способствовало то, что Ајӈан̀ва́т, говорившій по русски" HPOS="1187" VPOS="3144" WIDTH="3000" HEIGHT="100"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l23" HPOS="1192" VPOS="3269" WIDTH="2989" HEIGHT="95" BASELINE="1192 3363 4181 3363">
+            <Shape>
+              <Polygon POINTS="1192 3269 4181 3269 4181 3364 1192 3364"/>
+            </Shape>
+            <String CONTENT="очень плохо и объяснявшійся со мной на обычномъ чукотско-русскомъ" HPOS="1192" VPOS="3269" WIDTH="2989" HEIGHT="95"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l24" HPOS="1188" VPOS="3398" WIDTH="2995" HEIGHT="96" BASELINE="1188 3493 4183 3493">
+            <Shape>
+              <Polygon POINTS="1188 3398 4183 3398 4183 3494 1188 3494"/>
+            </Shape>
+            <String CONTENT="жаргонѣ, тѣмъ не менѣе скоро уяснилъ себѣ сущность моихъ вопросовъ и" HPOS="1188" VPOS="3398" WIDTH="2995" HEIGHT="96"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l25" HPOS="1189" VPOS="3518" WIDTH="2993" HEIGHT="103" BASELINE="1189 3620 4182 3620">
+            <Shape>
+              <Polygon POINTS="1189 3518 4182 3518 4182 3621 1189 3621"/>
+            </Shape>
+            <String CONTENT="черезъ два или три мѣсяца уже самъ сталъ указывать мнѣ тѣ или иныя" HPOS="1189" VPOS="3518" WIDTH="2993" HEIGHT="103"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l26" HPOS="1189" VPOS="3642" WIDTH="1754" HEIGHT="99" BASELINE="1189 3740 2943 3740">
+            <Shape>
+              <Polygon POINTS="1189 3642 2943 3642 2943 3741 1189 3741"/>
+            </Shape>
+            <String CONTENT="неизвѣстныя грамматическія формы и слова." HPOS="1189" VPOS="3642" WIDTH="1754" HEIGHT="99"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l27" HPOS="1401" VPOS="3764" WIDTH="2777" HEIGHT="107" BASELINE="1401 3870 4178 3870">
+            <Shape>
+              <Polygon POINTS="1401 3764 4178 3764 4178 3871 1401 3871"/>
+            </Shape>
+            <String CONTENT="Къ моему желанію, познакомиться съ бытомъ и языкомъ чукотскаго" HPOS="1401" VPOS="3764" WIDTH="2777" HEIGHT="107"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l28" HPOS="1195" VPOS="3902" WIDTH="2986" HEIGHT="98" BASELINE="1195 4000 4181 4000">
+            <Shape>
+              <Polygon POINTS="1195 3902 4181 3902 4181 4000 1195 4000"/>
+            </Shape>
+            <String CONTENT="племени, для того, чтобы впослѣдствіи познакомить съ ними моихъ соотече-" HPOS="1195" VPOS="3902" WIDTH="2986" HEIGHT="98"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l29" HPOS="1192" VPOS="4028" WIDTH="2992" HEIGHT="96" BASELINE="1192 4124 4184 4124">
+            <Shape>
+              <Polygon POINTS="1192 4028 4184 4028 4184 4124 1192 4124"/>
+            </Shape>
+            <String CONTENT="ственниковъ, по его опредѣленію «людей солнечнаго владыки», терк-арм" HPOS="1192" VPOS="4028" WIDTH="2992" HEIGHT="96"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l30" HPOS="1195" VPOS="4154" WIDTH="2991" HEIGHT="97" BASELINE="1195 4250 4186 4250">
+            <Shape>
+              <Polygon POINTS="1195 4154 4186 4154 4186 4251 1195 4251"/>
+            </Shape>
+            <String CONTENT="-ора́wеðат, онъ отнесся вполнѣ серьезно и считалъ своей обязанностью" HPOS="1195" VPOS="4154" WIDTH="2991" HEIGHT="97"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l31" HPOS="1194" VPOS="4281" WIDTH="2989" HEIGHT="95" BASELINE="1194 4375 4183 4375">
+            <Shape>
+              <Polygon POINTS="1194 4281 4183 4281 4183 4376 1194 4376"/>
+            </Shape>
+            <String CONTENT="содѣйствовать этому, насколько для него было возможно. Такимъ образомъ" HPOS="1194" VPOS="4281" WIDTH="2989" HEIGHT="95"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l32" HPOS="1194" VPOS="4406" WIDTH="2988" HEIGHT="97" BASELINE="1194 4502 4182 4502">
+            <Shape>
+              <Polygon POINTS="1194 4406 4182 4406 4182 4503 1194 4503"/>
+            </Shape>
+            <String CONTENT="при его помощи, какъ во время поѣздокъ, такъ и въ промежуточное время," HPOS="1194" VPOS="4406" WIDTH="2988" HEIGHT="97"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l33" HPOS="1197" VPOS="4533" WIDTH="2986" HEIGHT="99" BASELINE="1197 4631 4183 4631">
+            <Shape>
+              <Polygon POINTS="1197 4533 4183 4533 4183 4632 1197 4632"/>
+            </Shape>
+            <String CONTENT="я постепенно расширялъ и провѣрялъ лексикографическія записи, которыя" HPOS="1197" VPOS="4533" WIDTH="2986" HEIGHT="99"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l34" HPOS="1196" VPOS="4660" WIDTH="2993" HEIGHT="98" BASELINE="1196 4758 4189 4758">
+            <Shape>
+              <Polygon POINTS="1196 4660 4189 4660 4189 4758 1196 4758"/>
+            </Shape>
+            <String CONTENT="впослѣдствіи по карточной системѣ были переработаны въ чукотско-русскій" HPOS="1196" VPOS="4660" WIDTH="2993" HEIGHT="98"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l35" HPOS="1200" VPOS="4794" WIDTH="317" HEIGHT="81" BASELINE="1200 4874 1517 4874">
+            <Shape>
+              <Polygon POINTS="1200 4794 1517 4794 1517 4875 1200 4875"/>
+            </Shape>
+            <String CONTENT="словарь." HPOS="1200" VPOS="4794" WIDTH="317" HEIGHT="81"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l36" HPOS="1409" VPOS="4902" WIDTH="2777" HEIGHT="96" BASELINE="1409 4997 4186 4997">
+            <Shape>
+              <Polygon POINTS="1409 4902 4186 4902 4186 4998 1409 4998"/>
+            </Shape>
+            <String CONTENT="Грамматическія правила и образованіе грамматическихъ формъ я" HPOS="1409" VPOS="4902" WIDTH="2777" HEIGHT="96"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l37" HPOS="1187" VPOS="5014" WIDTH="2993" HEIGHT="108" BASELINE="1187 5121 4180 5121">
+            <Shape>
+              <Polygon POINTS="1187 5014 4180 5014 4180 5122 1187 5122"/>
+            </Shape>
+            <String CONTENT="уяснялъ себѣ преимущественно путемъ письменныхъ работъ. Я записывалъ" HPOS="1187" VPOS="5014" WIDTH="2993" HEIGHT="108"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l38" HPOS="1193" VPOS="5150" WIDTH="2983" HEIGHT="102" BASELINE="1193 5251 4176 5251">
+            <Shape>
+              <Polygon POINTS="1193 5150 4176 5150 4176 5252 1193 5252"/>
+            </Shape>
+            <String CONTENT="подъ диктовку Ајӈан̀ва́т’а и другихъ чукочъ отрывки разсказовъ, потомъ" HPOS="1193" VPOS="5150" WIDTH="2983" HEIGHT="102"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l39" HPOS="1197" VPOS="5279" WIDTH="2982" HEIGHT="93" BASELINE="1197 5371 4179 5371">
+            <Shape>
+              <Polygon POINTS="1197 5279 4179 5279 4179 5372 1197 5372"/>
+            </Shape>
+            <String CONTENT="составилъ приблизительный переводъ, подвергалъ каждое слово подроб-" HPOS="1197" VPOS="5279" WIDTH="2982" HEIGHT="93"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l40" HPOS="1195" VPOS="5406" WIDTH="2991" HEIGHT="93" BASELINE="1195 5498 4186 5498">
+            <Shape>
+              <Polygon POINTS="1195 5406 4186 5406 4186 5499 1195 5499"/>
+            </Shape>
+            <String CONTENT="ному грамматическому разбору, уясняя себѣ соотношеніе словъ и вмѣстѣ" HPOS="1195" VPOS="5406" WIDTH="2991" HEIGHT="93"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l41" HPOS="1195" VPOS="5525" WIDTH="2985" HEIGHT="101" BASELINE="1195 5625 4180 5625">
+            <Shape>
+              <Polygon POINTS="1195 5525 4180 5525 4180 5626 1195 5626"/>
+            </Shape>
+            <String CONTENT="съ тѣмъ придавая своему переводу точность. Эту работу я продолжалъ съ" HPOS="1195" VPOS="5525" WIDTH="2985" HEIGHT="101"/>
+          </TextLine>
+          <TextLine ID="mz_1-022_l42" HPOS="1193" VPOS="5659" WIDTH="2989" HEIGHT="93" BASELINE="1193 5752 4182 5752">
+            <Shape>
+              <Polygon POINTS="1193 5659 4182 5659 4182 5752 1193 5752"/>
+            </Shape>
+            <String CONTENT="перерывами въ продолженіе полуторыхъ лѣтъ, пока не достигъ того, что" HPOS="1193" VPOS="5659" WIDTH="2989" HEIGHT="93"/>
+          </TextLine>
+        </TextBlock>
+      </PrintSpace>
+    </Page>
+  </Layout>
+</alto>

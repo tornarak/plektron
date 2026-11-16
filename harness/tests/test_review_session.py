@@ -774,3 +774,50 @@ def test_the_flag_and_the_frequency_tables_agree():
     from harness.review import tier1_glyphs
     for s in ("служилый", "Müller", "vaˊɪrg̣ɪt", "Geëk", "kŭmɪˊñɪn", "ÿ"):
         assert bool(tier1_glyphs(nfd(s), R)) == bears_inventory(nfd(s), R), s
+
+
+def _prose_stands(root: Path, ref: str) -> None:
+    """`_page`, on a text carrying the `prose_stands` ruling: line 0 plain Russian,
+    line 1 listing a native form."""
+    _page(root, ref)
+    pj = root / "project.json"
+    pj.write_text(json.dumps({**json.loads(pj.read_text()),
+                              "prose_stands": "the editor's ruling"}))
+    # A fixture text has no workspace, so its keying file is its base: give it the
+    # Materials' prose alphabet, which is what lets a Russian line stand.
+    kj = root / "config" / "keying.json"
+    mat = json.loads((REPO / "jesup" / "bogoras-materials" / "config" / "keying.json")
+                     .read_text(encoding="utf-8"))
+    kj.write_text(json.dumps({**json.loads(kj.read_text(encoding="utf-8")),
+                              "prose_alphabet": mat["prose_alphabet"]}))
+    (root / "review" / ref / "proposal.json").write_text(json.dumps({
+        "ref": ref, "lines": {"0": {"text": "простое слово"},
+                              "1": {"text": "слово ӄора", "native": "ӄора"}}}))
+
+
+def test_under_prose_stands_only_the_queue_is_posted(tmp_path):
+    """A standing line is shown but carries no `data-line`, so `collect()` cannot
+    post it into `decision.json`, which records human acts alone."""
+    _prose_stands(tmp_path, "2-046")
+    html = render_queue_html("2-046", "mz/ocr", tmp_path)
+    assert 'data-sline="0"' in html and 'data-line="0"' not in html.split(
+        "<textarea", 1)[1].split(">", 1)[0]
+    assert 'textarea data-line="1"' in html
+    assert ">NATIVE<" in html and "ӄора" in html
+    assert "1 to rule" in html and "1 standing as prose" in html
+    assert 'class=ovr data-line="0"' in html
+
+
+def test_a_decided_line_no_longer_stands(tmp_path):
+    from harness.review import save_decisions
+    _prose_stands(tmp_path, "2-046")
+    save_decisions("2-046", {"0": {"text": "простое слово"},
+                             "1": {"text": "слово ӄора"}}, tmp_path)
+    html = render_queue_html("2-046", "mz/ocr", tmp_path)
+    assert "data-sline" not in html and "0 standing as prose" in html
+
+
+def test_without_the_ruling_every_line_is_posted(tmp_path):
+    _page(tmp_path, "2-046")
+    html = render_queue_html("2-046", "mz/ocr", tmp_path)
+    assert "data-sline" not in html and "standing as prose" not in html

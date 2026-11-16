@@ -34,6 +34,13 @@ textarea.hnt:focus{outline-color:#b59b2e;border-color:#b59b2e}
 .agree:focus-within{opacity:1}
 .t1{border-left:5px solid #b8860b;padding-left:.7rem;background:linear-gradient(90deg,#fdf6e3,transparent 45%)}
 .t1.agree{opacity:1}
+/* Prose that stands on the reading: context, not queue. Its crop and its note
+   controls are withheld because neither is posted until overrule makes it a line
+   to decide (review.js), and a note typed there would be lost in silence. */
+.ln.stands{opacity:.5;padding:.25rem 0}
+.ln.stands .crop,.ln.stands .hn,.ln.stands .meta{display:none}
+.ln.stands textarea{border-style:dashed}
+button.ovr{font:11px ui-monospace,monospace;border:1px solid #bbb;border-radius:3px;background:none;color:inherit;cursor:pointer;padding:0 .3rem;margin-right:.3rem}
 .noted.agree{opacity:1}
 .badge{display:inline-block;font:11px ui-monospace,monospace;background:#b8860b;color:#fff;border-radius:3px;padding:.05rem .35rem;margin-right:.4rem;letter-spacing:.04em}
 .t1glyphs{font-size:1.05rem;color:#7a4a00;letter-spacing:.12em}

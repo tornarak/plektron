@@ -1022,6 +1022,26 @@ def page_context(ref: str, root: Path,
           for idx in order if idx in prop}
     t1 = {k: v for k, v in t1.items() if v}
 
+    # **Under `prose_stands` the editor's queue is what does not stand**, and the
+    # rest is shown but never posted: a save writes what the page sends into
+    # `decision.json`, which is a record of human acts, so a prose line sent with
+    # it would claim a ruling nobody made. Each queued line says why it is queued —
+    # its native forms, its doubt, or letters outside the prose alphabet — and the
+    # tier-1 walk walks exactly these. A line already decided is the editor's, and
+    # shows as theirs. `standing` is `{}` for a text without the ruling.
+    from .layout import prose_stands
+    stands_on = prose_stands(root)
+    stands = standing(ref, root)
+    if stands_on:
+        t1 = {}
+        for idx in order:
+            if idx not in prop or (idx in stands and idx not in saved):
+                continue
+            mine = prop[idx]
+            t1[idx] = (mine.get("native")
+                       or ("doubt" if mine.get("class") == "doubt" else "")
+                       or ("decided" if idx in saved else "not plain prose"))
+
     # Default is the on-disk relative path, computed rather than spelled, so the
     # `--html` file works opened straight off the filesystem; the server overrides
     # it with a route, since a browser will not follow file:// from an http origin.
@@ -1048,6 +1068,7 @@ def page_context(ref: str, root: Path,
         full = _nfd(saved[idx]["text"]) if idx in saved else proposed
         agree = idx not in differing
         glyphs = t1.get(idx, "")
+        stood = idx in stands and idx not in saved
         # An unclassed note still counts as noted — the undimming is the reader's
         # to earn by writing anything at all, and the class only decides which
         # badge it wears.
@@ -1068,7 +1089,9 @@ def page_context(ref: str, root: Path,
         lines.append({
             "idx": idx,
             "cls": ("ln" + (" agree" if agree else "") + (" t1" if glyphs else "")
-                    + (" noted" if nclass or typed else "")),
+                    + (" noted" if nclass or typed else "")
+                    + (" stands" if stood else "")),
+            "stands": stood, "native": mine.get("native", ""),
             "line_id": rec["line_id"], "glyphs": glyphs, "typed": typed,
             "typed_html": HANDLE.sub(lambda m: f"<b>{_esc(m.group(0))}</b>",
                                      _esc(typed)) if typed else "",
@@ -1104,9 +1127,10 @@ def page_context(ref: str, root: Path,
         "type": {"font": font_stack(font),
                  "size": int(font_size or DEFAULT_FONT_SIZE),
                  "box_lines": max(1, int(box_lines or DEFAULT_BOX_LINES))},
+        "stands_on": stands_on,
+        "n_stand": sum(1 for ln in lines if ln["stands"]),
         **kbd_context(root),
     }
-
 
 
 def summary(spans: list[dict], n_lines: int) -> dict:
