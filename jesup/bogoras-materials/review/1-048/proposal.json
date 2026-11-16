@@ -1,0 +1,158 @@
+{
+  "ref": "1-048",
+  "contamination": {
+    "blind": false,
+    "why": "this pass reads both text-layer copies (ocr witness) by design; no lexicon lookup was needed (no native forms on the page); no other page's proposal, decision or gt/ocr/ was read"
+  },
+  "lines": {
+    "0": {
+      "text": "XXVIII В. Г. БОГОРАЗЪ,",
+      "note": "folio and running head; the head is letterspaced in the print, keyed unspaced",
+      "class": "layout"
+    },
+    "1": {
+      "text": "еще указъ и медаль, тоже пріобрѣтенные мною. Они помѣчены 1791 годомъ¹)."
+    },
+    "2": {
+      "text": "1) Считаю нелишнимъ отпечатать здѣсь эти два документа дипломатически"
+    },
+    "3": {
+      "text": "точно; подробности о ихъ пріобрѣтеніи я намѣренъ сообщить въ «Русской Старинѣ»."
+    },
+    "4": {
+      "text": "I."
+    },
+    "5": {
+      "text": "Билетъ."
+    },
+    "6": {
+      "text": "Объявителю сего Чукотскои чау- снадъписаниемъ напортупеяхъ",
+      "note": "снадъписаниемъ: the ъ is raised, a superscript between д and п; keyed inline",
+      "class": "layout"
+    },
+    "7": {
+      "text": "нской тоенъ Хамахеи вступилъ россіискои верноподданнои?—."
+    },
+    "8": {
+      "text": "вроссіиское подъданство прошлаго 1788-го Господъ Командуимеющихъ",
+      "note": "a tall brace, set in the margin across lines 8-20, opens this line; not keyed",
+      "class": "layout"
+    },
+    "9": {
+      "text": "года. вчемъ во уверение учинилъ присягу прошу чтоб онаго тоена",
+      "note": "the б of чтоб is raised and underlined in the print; keyed чтоб",
+      "class": "layout"
+    },
+    "10": {
+      "text": "сообезателствомъ сродомъ ево плати̂ Хамахая принимать и почи",
+      "note": "final и carries a circumflex-like cap in the scan (the layers read ӣ with a macron); keyed и + U+0302, the ruled circumflex; Russian abbreviation notation, uncertain",
+      "class": "doubt",
+      "resolved": "плати̂: U+0302 circumflex on final и"
+    },
+    "11": {
+      "text": "взашиверскую округу каждогодно когда — [на оборотѣ]"
+    },
+    "12": {
+      "text": "спрошенъ быть имеетъ ясакъ скаждаго тать заверноподданнаго —"
+    },
+    "13": {
+      "text": "№ человека лукомъ владеющимъ пооднои ЕЯ ИМПЕРАТОРСКАГО ВБЛИ-",
+      "note": "№ is the rotated margin number, with 37. on lines 14 and 15; ВБЛИ- is the compositor setting Б for Е in ВЕЛИ-, keyed as set",
+      "class": "print"
+    },
+    "14": {
+      "text": "37"
+    },
+    "15": {
+      "text": "."
+    },
+    "16": {
+      "text": "лисице. икогда онои потребуетца — ЧЕСТВА раба. для чего сеи —",
+      "note": "ЧЕСТВА continues ВЕЛИ- of line 13 in the right column; the dash before it is the print",
+      "class": "layout"
+    },
+    "17": {
+      "text": "то о̂тдавать ему безо̂тговорочно - билеть ему заподписаниемъ",
+      "note": "circumflex over the о of отдавать and безотговорочно; the mark after безотговорочно is a dot over a short rule, keyed as the layers have it (a hyphen); the shape is not a hyphen",
+      "class": "doubt",
+      "resolved": "о̂тдавать безо̂тговорочно: U+0302 circumflex on о in each"
+    },
+    "18": {
+      "text": "закоторое усерд[ие] исказны Ея — моеи руки исприложениемъ —"
+    },
+    "19": {
+      "text": "ИМПЕРАТОРСКАГО ВЕЛИЧЕСТВА — Герба моего печати, данъ февраля"
+    },
+    "20": {
+      "text": "пожалованы алыя кавтаны схо васьмаго дня 1789-го Года —"
+    },
+    "21": {
+      "text": "дныя сыркутскимъ наместни Земъскои исъправникъ Бергъ"
+    },
+    "22": {
+      "text": "ческимъ мундиромъ, икортики гешворенъ Іванъ Фишеръ"
+    },
+    "23": {
+      "text": "М. П. Казачей сотникъ Іванъ Зеленыхъ.",
+      "note": "М. П. (место печати) is Cyrillic, inside a drawn circle (the seal); the layers read Greek Μ Π",
+      "class": "draft"
+    },
+    "24": {
+      "text": "II."
+    },
+    "25": {
+      "text": "УКАЗЪ ЕЯ ИМПЕРАТОРСКАГО ВЕЛИЧЕСТВА САМОДЕРЖИЦЫ ВСЕРОССІИСКОИ =",
+      "note": "the whole line is small caps with capital initials (Указъ, Ея, Императорскаго ...); keyed as capitals",
+      "class": "layout"
+    },
+    "26": {
+      "text": "изъ Иркутскаго Наместническаго Правлен[и]я Чюкотскаго Народа Тоену Хамахаю"
+    },
+    "27": {
+      "text": "Поуказу"
+    },
+    "28": {
+      "text": "ЕЯ ИМПЕРАТОРСКАГО ВЕЛИЧЕСТВА Иркутское Наместническое Правленіе ОПРЕДЕЛИЛО",
+      "note": "small caps, keyed as capitals",
+      "class": "layout"
+    },
+    "29": {
+      "text": "Дать Вамъ Тоену Хамахаю Сеи ЕЯ ИМПЕРАТОРСКАГО ВЕЛИЧЕСТВА указъ Стемъ",
+      "note": "Ея is capital Е with a small-cap я; keyed ЕЯ as in lines 13 and 28; ИМПЕРАТОРСКАГО ВЕЛИЧЕСТВА small caps",
+      "class": "layout"
+    },
+    "30": {
+      "text": "Чтобы Вы Подоброи Вашеи Воле Сродными Своими Вошедшіе Под-Высоко-Славное"
+    },
+    "31": {
+      "text": "ЕЯ ИМПЕРАТОРСКАГО ВЕЛИЧЕСТВА ВСЕРОСІИСКОЕ ИМПЕРАТОРСКОЕ поддан-"
+    },
+    "32": {
+      "text": "ство Противъ Продчихъ были Отличены Симъ Главнымъ Тоена Названиемъ Ичто"
+    },
+    "33": {
+      "text": "Таковое Ваше Ивсехъ Вашихъ Родниковъ Усерднейшее Желаніе быть Воономъ"
+    },
+    "34": {
+      "text": "Приемлется"
+    },
+    "35": {
+      "text": "Соособливымъ Уваженіемъ, А Дабы Вы Ивс[е] Ваши Родники Отъ всехъ почитаемы"
+    },
+    "36": {
+      "text": "Ипризнава"
+    },
+    "37": {
+      "text": "Емы были Все Росіискими Верно-подданными Ичтобы Вамъ ивсемъ Родникамъ Ни-"
+    },
+    "38": {
+      "text": "кто немогъ ="
+    },
+    "39": {
+      "text": "Учинить Каковаго Либо Вреда Или Утесненія; То Предписывается Чрезъ Сіе Всемъ"
+    },
+    "40": {
+      "text": "Россіискимъ под"
+    }
+  }
+}

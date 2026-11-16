@@ -1,0 +1,17 @@
+{
+ "ref": "1-048",
+ "proposal": "review/1-048/proposal.json",
+ "saved_at": "2026-11-16T05:22:04-0500",
+ "lines": {
+  "10": {
+   "text": "сообезателствомъ сродомъ ево плати̂ Хамахая принимать и почи",
+   "edited": false,
+   "note": "that looks like a latin 'u'. i do not know what to make of this. whatever one is more plausible in context guess"
+  },
+  "17": {
+   "text": "то о̂тдавать ему безо̂тговорочно - билеть ему заподписаниемъ",
+   "edited": false,
+   "note": "dot over a short rule. probably not worth encoding as something bespoke"
+  }
+ }
+}
