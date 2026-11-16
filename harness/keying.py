@@ -205,9 +205,14 @@ class Rules:
         if self.folds:
             out += [(m.start(), m.group(), self.folds[m.group()])
                     for m in _fold_pattern(tuple(self.folds)).finditer(text)]
+        # A word is judged as `fold` judges it: after the ruled sorts. Judged raw,
+        # `Кэlę` (Latin ę, which folds to є) reported a word fold to `Кэlе̨` that
+        # `fold` never makes.
         if self.script_folds or self.numeral_folds:
+            sorts = (lambda w: _fold_pattern(tuple(self.folds)).sub(
+                lambda m: self.folds[m.group()], w)) if self.folds else (lambda w: w)
             out += [(m.start(), m.group(), w) for m in WORD.finditer(text)
-                    if (w := self.fold_word(m.group())) != m.group()]
+                    if (w := self.fold_word(s := sorts(m.group()))) != s]
         return sorted(out)
 
     @property

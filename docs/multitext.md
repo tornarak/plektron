@@ -457,8 +457,9 @@ order is undecided, and it is not the rule's to decide.
     and `ä` is Cyrillic `ӓ`.
   - Letters of the notation: `ђ` (the `ҕ`-like letter is `ђ` too), `һ`, `ѵ`, `с̧`,
     `ł` (the barred `l`, Polish for its sound) and the grave.
-  - Still open: an `є` with a hook below that is not a diacritic (the layer's `ę`;
-    plain `є` is a separate letter). The "barred `т`" was the barred `l`, which
+  - Ignored (2026-11-16): a hook below `є` or `һ`, printed inconsistently and
+    with no discernible phonetic or semantic content; the layer's `ę` folds to
+    `є`. The "barred `т`" was the barred `l`, which
     the layer reads as plain `т` (`єта́` for `єłа́`, 1-102 l4). A real `т` is
     printed in the same word elsewhere, so no fold can separate them. None needs to be ruled before
     review: `prose_alphabet` (below) sends every form carrying one to it.

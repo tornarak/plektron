@@ -168,13 +168,12 @@ note saying whose spelling it is. Spell each form's codepoints in
   l1), both corrected by the editor. Zoom every one.
 - **The tall `l` is one letter however the layers read it.** `һ` is also a real
   letter (`-чһын`), so the scan decides each one.
-- **Not ruled:** the `є` with a hook below (`Кэ́lę`, 1-024 l34; the layers' `є`
-  or `ę`). Key it as the nearer layer has it, with a `doubt`. **Never invent a
-  codepoint**, nor a sequence: a cedilla or an ogonek added under `є` to stand for
-  the hook is a letter nobody ruled.
-- **Not ruled:** the hook below `һ` (`Мырһ-у́мӄы`, 1-041 l12). The editor keyed
-  the bare `һ`: a comma below taken from the 1899 key's `h̦` is the same invented
-  sequence. Key `һ`, with a `doubt` that describes the mark.
+- **A hook below `є` or `һ` is ignored** (the editor, 2026-11-16: printed
+  inconsistently, with no discernible phonetic or semantic content). Key plain
+  `є` (`Кэ́lє`, 1-024 l34; the layers' `ę` folds to it) and plain `һ`
+  (`Мырһ-у́мӄы`, 1-041 l12), with no `doubt`. The hooked `К` and `Н` are not
+  this: they are `ӄ` and `ӈ`. **Never invent a codepoint**, nor a sequence: a
+  cedilla, ogonek or comma below for a mark nobody ruled.
 - **The 1899 key** (`scratch/chukchi/bogoraz-1899-phonetics-key.md`) says what a
   letter may be, not what this print sets. Where the scan shows a key letter the
   rules lack (`ҕ` beside `ђ`, `к̧`, `h̦`, `р̌`, a mark below `w` or `ы`), key it as
