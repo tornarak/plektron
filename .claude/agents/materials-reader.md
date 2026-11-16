@@ -172,6 +172,9 @@ note saying whose spelling it is. Spell each form's codepoints in
   or `ę`). Key it as the nearer layer has it, with a `doubt`. **Never invent a
   codepoint**, nor a sequence: a cedilla or an ogonek added under `є` to stand for
   the hook is a letter nobody ruled.
+- **Not ruled:** the hook below `һ` (`Мырһ-у́мӄы`, 1-041 l12). The editor keyed
+  the bare `һ`: a comma below taken from the 1899 key's `h̦` is the same invented
+  sequence. Key `һ`, with a `doubt` that describes the mark.
 - **The 1899 key** (`scratch/chukchi/bogoraz-1899-phonetics-key.md`) says what a
   letter may be, not what this print sets. Where the scan shows a key letter the
   rules lack (`ҕ` beside `ђ`, `к̧`, `h̦`, `р̌`, a mark below `w` or `ы`), key it as
