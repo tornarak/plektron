@@ -71,7 +71,12 @@ body{margin:0;background:var(--bg);color:var(--fg);
 /* One scroll container for both axes: the edge-hover autoscroll needs a single
    element whose scrollTop it can drive, and the page is now sized to the text
    column rather than to the leaf, so it is routinely taller than the view. */
-#wrap{position:fixed;top:38px;left:0;right:250px;bottom:0;overflow:auto;padding:10px}
+/* Its foot stops above the two strips fixed there, the message bar (`--msgh`) and
+   the issue strip (`--issh`), each set to its measured height when it changes:
+   with `bottom:0` they lay over the page's last lines, which could not be
+   scrolled out from under them (the editor, 2026-11-15). */
+#wrap{position:fixed;top:38px;left:0;right:250px;
+      bottom:calc(var(--msgh,0px) + var(--issh,0px));overflow:auto;padding:10px}
 /* The stage is a window onto the page's inked band, not the whole leaf: the top
    and bottom of a scan are blank paper, and scrolling through them is time spent
    on nothing. The image is positioned inside it and clipped. */

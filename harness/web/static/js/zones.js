@@ -598,6 +598,9 @@ function issues() {
   document.getElementById('issues').innerHTML = all.map(w =>
     `<div class="iss ${w.kind === 'e' ? 'e' : 'w'}${w.exempted ? ' x' : ''}">` +
     `${w.rule}: ${w.detail}${w.exempted ? ' — exempted' : ''}</div>`).join('');
+  // `#wrap` ends above the strip, so the page's foot scrolls clear of it.
+  document.body.style.setProperty('--issh',
+    document.getElementById('issues').offsetHeight + 'px');
 }
 
 /* The message bar at the foot. `textContent = ''` removes the child node rather
