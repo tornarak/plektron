@@ -1,0 +1,198 @@
+{
+ "ref": "1-033",
+ "contamination": {
+  "blind": false,
+  "why": "this pass reads both text-layer copies (ocr witness) by design, and one lexicon lookup; no other page's proposal, decision or gt/ocr/ was read"
+ },
+ "lines": {
+  "0": {
+   "text": "МАТЕРІАЛЫ ПО ИЗУЧЕНІЮ ЧУКОТСКАГО ЯЗЫКА И ФОЛЬКЛОРА. XIII"
+  },
+  "1": {
+   "text": "ныхъ оленей съ собою вверхъ. Черные и коричневые олени считаются"
+  },
+  "2": {
+   "text": "имѣющими земное и даже подземное происхожденіе. Поэтому напр. при"
+  },
+  "3": {
+   "text": "жертвахъ вечеру и тьмѣ (Wу́с̧ ӄуус̧) выбираются олени потемнѣе. Солнце",
+   "native": "Wу́с̧ ӄуус̧",
+   "resolved": "Wу́с̧: U+0057 Latin W, U+0443 у with U+0301 acute, U+0441 с with U+0327 cedilla; ӄуус̧: U+04C4 ӄ, U+0441 с with U+0327",
+   "note": "«вечеру и тьмѣ (Wу́с̧ ӄуус̧)», evening and darkness, offered to",
+   "class": "semantic"
+  },
+  "4": {
+   "text": "живеть со своей женой въ шатрѣ, носить одежду изъ шкуръ и т. п."
+  },
+  "5": {
+   "text": "Въ сказкѣ объ Аттыђы́ткы (№ 86) оно шаманить въ пологѣ съ цѣлью",
+   "native": "Аттыђы́ткы",
+   "resolved": "Аттыђы́ткы: U+0452 ђ, U+0301 acute on the ы after ђ"
+  },
+  "6": {
+   "text": "соисканія невѣсты, но шаманъ Аттыђы́ткы побѣждаетъ его, какъ и всѣхъ",
+   "native": "Аттыђы́ткы",
+   "resolved": "Аттыђы́ткы: U+0452 ђ, U+0301 acute on the ы after ђ"
+  },
+  "7": {
+   "text": "другихъ претендентовъ."
+  },
+  "8": {
+   "text": "Мѣсяцъ составляетъ солнцу нѣкоторую противоположность. Покушеніе"
+  },
+  "9": {
+   "text": "его похитить дѣвушку кончается неудачно. Лежать въ шатрѣ ему душно,"
+  },
+  "10": {
+   "text": "его тянетъ наружу и онъ просить отпустить его на волю, такъ какъ онъ"
+  },
+  "11": {
+   "text": "не привыкъ къ кровлѣ. Чукчи иногда называютъ мѣсяцъ также солнцемъ"
+  },
+  "12": {
+   "text": "Кэ́lє (кэ́lє-ті́ркіір) и говорять, что въ подземной вселенной свѣтитъ именно",
+   "as_typed": "{Ke_1'l_0e_2} (кэ́lє-ті́ркіір) и говорять, что въ подземной вселенной свѣтитъ именно",
+   "native": "Кэ́lє кэ́lє-ті́ркіір",
+   "resolved": "Кэ́lє: U+041A К, U+044D э with U+0301 acute, U+006C tall l, U+0454 є (hook below not encoded); кэ́lє-ті́ркіір: U+044D э with U+0301, U+006C, U+0454, U+0456 і with U+0301 on the second і",
+   "note": "Hook below є (as in the ratified Кэ́lє) is the shape on the scan; lowercase кэ́lє-ті́ркіір keyed by hand with the same є. The Russian gloss: the moon is also called the sun, kéle (кэ́lє-ті́ркіір), shining in the underground universe.",
+   "class": "doubt"
+  },
+  "13": {
+   "text": "мѣсяцъ, или солнце, подобное мѣсяцу. Въ сказкахъ кромѣ того дефилируютъ"
+  },
+  "14": {
+   "text": "звѣзды Передняя Голова и Задняя Голова (ја́нөт-lа́ўт и ја́аl-lа́ўт). Первая",
+   "native": "ја́нөт-lа́ўт ја́аl-lа́ўт",
+   "resolved": "ја́нөт-lа́ўт: U+0458 ј, U+0301 acute on а, U+04E9 ө, U+006C tall l, U+0443 у with U+0306 breve; ја́аl-lа́ўт: U+0458, U+0301 on first а, U+006C, U+0306",
+   "note": "«Передняя Голова и Задняя Голова», Front Head and Back Head (Arcturus and Vega)",
+   "class": "semantic"
+  },
+  "15": {
+   "text": "есть Arcturus, вторая Вега. Обѣ эти звѣзды считаются братьями и началь-"
+  },
+  "16": {
+   "text": "никами другихъ звѣздъ (аӈа̀р-очо́тте). Оріонъ есть стрѣлокъ Руlтэ́ннін,",
+   "native": "аӈа̀р-очо́тте Руlтэ́ннін",
+   "resolved": "аӈа̀р-очо́тте: U+04C8 ӈ, U+0300 grave on second а, U+0301 acute on о; Руlтэ́ннін: U+006C tall l, U+0301 acute on э, U+0456 і",
+   "note": "«анар-очотте», glossed as other stars; Руlтэ́ннін is the Orion archer (stрѣлокъ), Orion as hunter",
+   "class": "semantic"
+  },
+  "17": {
+   "text": "который поссорился съ своей женой (созвѣздіемъ Льва) и получилъ отъ нея"
+  },
+  "18": {
+   "text": "ударъ скобельной доской по спинѣ. Спина его отъ этого искривилась (поясъ"
+  },
+  "19": {
+   "text": "Оріона), но за то онъ отвергъ свою жену, которая теперь спить на небѣ,"
+  },
+  "20": {
+   "text": "подложивъ руку подъ голову. Руlтэ́ннін же сталъ свататься на «Группѣ",
+   "native": "Руlтэ́ннін",
+   "resolved": "Руlтэ́ннін: U+006C tall l, U+0301 acute on э, U+0456 і"
+  },
+  "21": {
+   "text": "женщинъ, ожидающихъ жениха» (ӈаўс̧ ӄађо́мкын т. е. Плеяды). Но они от-",
+   "native": "ӈаўс̧ ӄађо́мкын",
+   "resolved": "ӈаўс̧ ӄађо́мкын: U+04C8 ӈ, U+0443 у with U+0306 breve, U+0441 с with U+0327, U+04C4 ӄ, U+0452 ђ, U+0301 acute on о",
+   "note": "«Группа женщинъ, ожидающихъ жениха», Group of women awaiting a bridegroom (the Pleiades)",
+   "class": "semantic"
+  },
+  "22": {
+   "text": "вергли его искательство, такъ какъ онъ слишкомъ великъ для нихъ. Тогда"
+  },
+  "23": {
+   "text": "раздраженный претендентъ сталъ стрѣлять въ нихъ изъ лука и его Стрѣла"
+  },
+  "24": {
+   "text": "съ мѣднымъ оконечникомъ (че́lђө-ма́ӄом т. е. Альдебаран) вонзилась въ почву",
+   "native": "че́lђө-ма́ӄом",
+   "resolved": "че́lђө-ма́ӄом: U+0301 acute on е and on а, U+006C tall l, U+0452 ђ, U+04E9 ө, U+04C4 ӄ",
+   "note": "«Стрѣла съ мѣднымъ оконечникомъ», arrow with a copper tip (Aldebaran)",
+   "class": "semantic"
+  },
+  "25": {
+   "text": "моховища, истоптаннаго оленями, гдѣ и торчитъ до сихъ поръ. Поперекъ"
+  },
+  "26": {
+   "text": "неба тянется Песчаная рѣка (чіђэ̀ј-вэ́эм), со многими островами, на одномъ",
+   "native": "чіђэ̀ј-вэ́эм",
+   "resolved": "чіђэ̀ј-вэ́эм: U+0456 і, U+0452 ђ, U+0300 grave on first э, U+0458 ј, U+0301 acute on э after в",
+   "note": "«Песчаная рѣка», Sand River (Milky Way), чіђэ̀ј-вэ́эм",
+   "class": "semantic"
+  },
+  "27": {
+   "text": "изъ которыхъ пасется группа оленей (ыlвэ́мкын т. е. Кассіопея¹). Имена",
+   "native": "ыlвэ́мкын",
+   "resolved": "ыlвэ́мкын: U+006C tall l, U+0301 acute on э",
+   "note": "ыlвэ́мкын, a herd of reindeer (Cassiopeia); footnote mark ¹) is a raised digit and full-size paren",
+   "class": "semantic"
+  },
+  "28": {
+   "text": "другихъ созвѣздій я не упоминаю, ибо они въ преданіяхъ не встрѣчаются."
+  },
+  "29": {
+   "text": "Кромѣ настоящихъ звѣздъ есть еще «звѣзды, катающіяся съ горы» (ра́lе",
+   "native": "ра́lе",
+   "resolved": "ра́lе: U+0301 acute on а, U+006C tall l",
+   "note": "«звѣзды, катающіяся съ горы», stars rolling down the mountain; ра́lе continues on the next line as ра́lе-ана́тте, falling stars",
+   "class": "semantic"
+  },
+  "30": {
+   "text": "-ана́тте т. е. падающія звѣзды), «звѣзды, ходящія въ сторону» (руlт-эӈэ́тті",
+   "native": "-ана́тте руlт-эӈэ́тті",
+   "resolved": "-ана́тте: U+0301 acute on second а; руlт-эӈэ́тті: U+006C tall l, U+04C8 ӈ, U+0301 acute on second э, U+0456 і",
+   "note": "«звѣзды, ходящія въ сторону», stars walking sideways (planets): руlт-эӈэ́тті (continues to next line)",
+   "class": "semantic"
+  },
+  "31": {
+   "text": "т. е. планеты) и «звѣзды дымящіяся» (ӈыł-аӈа́тте т. е. кометы). Изъ звѣздъ,",
+   "native": "ӈыł-аӈа́тте",
+   "resolved": "ӈыł-аӈа́тте: U+04C8 ӈ, U+0142 barred l, U+0301 acute on а",
+   "note": "«звѣзды дымящіяся», smoking stars (comets); the letter after ы is a barred l ł, which both copies read as т",
+   "class": "semantic"
+  },
+  "32": {
+   "text": "ходящихъ въ сторону, Венера называется Ђыто́łап (прозрачныя ребра).",
+   "native": "Ђыто́łап",
+   "resolved": "Ђыто́łап: U+0402 Ђ, U+0301 acute on о, U+0142 barred l",
+   "note": "Ђыто́łап, glossed «прозрачныя ребра», transparent ribs (Venus); capital Ђ read Б by both copies; the letter before ап is a barred l ł, read т by both copies",
+   "class": "semantic"
+  },
+  "33": {
+   "text": "Разсвѣтъ и Вечерній свѣтъ, играющіе важную роль при жертвопри-"
+  },
+  "34": {
+   "text": "1) Нордквистъ, довольно вѣрно передающій имена многихъ чукотскихъ со-"
+  },
+  "35": {
+   "text": "звѣздій, хотя и безъ объясненія значенія именъ, называетъ Кассіопею Melutankin",
+   "native": "Melutankin",
+   "note": "Melutankin is set in Latin type: the Chukchi name of Cassiopeia as another author cites it, in his own Latin spelling (the line says he gives the names without their meanings). A native form, listed in the batch check; the reader had passed it over as Swedish. Its spelling is that author's, not this book's notation",
+   "class": "semantic"
+  },
+  "36": {
+   "text": "очевидно міlутэ́мкын — «группа зайцевъ». Поясъ Оріона онъ называетъ раў, т. е.",
+   "native": "міlутэ́мкын раў",
+   "resolved": "міlутэ́мкын: U+0456 і, U+006C tall l, U+0301 acute on э; раў: U+0443 у with U+0306 breve",
+   "note": "міlутэ́мкын — «группа зайцевъ», group of hares",
+   "class": "semantic"
+  },
+  "37": {
+   "text": "рэ́ў— «китъ». Разница въ звукахъ происходить оттого, что онъ вездѣ беретъ слабую",
+   "native": "рэ́ў",
+   "resolved": "рэ́ў: U+0301 acute on э, U+0443 у with U+0306 breve",
+   "note": "рэ́ў — «китъ», whale (Nordquist forms for Orion belt)",
+   "class": "semantic"
+  },
+  "38": {
+   "text": "основу косвенныхъ падежей, а не сильную основу именительнаго падежа. Остальныя"
+  },
+  "39": {
+   "text": "названія, приведенныя у него, совпадаютъ съ моими, см. Nordquist Tschuktschisk"
+  },
+  "40": {
+   "text": "ordlista стр. 397 въ собраніи Vegaexpeditionens Iakttagelser. Bd. I."
+  }
+ }
+}
