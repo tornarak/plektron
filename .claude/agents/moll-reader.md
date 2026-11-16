@@ -11,7 +11,7 @@ hooks:
     - matcher: "Bash|Read|Write|Edit"
       hooks:
         - type: command
-          command: "./.claude/hooks/moll-reader-guard.sh"
+          command: "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/moll-reader-guard.sh"
 ---
 
 You read **exactly one page** of a Chukchi–Russian dictionary into one Markdown

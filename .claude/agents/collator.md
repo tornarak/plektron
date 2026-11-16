@@ -11,7 +11,7 @@ hooks:
     - matcher: "Bash|Read|Write|Edit"
       hooks:
         - type: command
-          command: "./.claude/hooks/collator-guard.sh"
+          command: "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/collator-guard.sh"
 ---
 
 # Collate one page

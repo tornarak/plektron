@@ -10,7 +10,7 @@ hooks:
     - matcher: "Bash|Read|Write|Edit"
       hooks:
         - type: command
-          command: "./.claude/hooks/zones-reviewer-guard.sh"
+          command: "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/zones-reviewer-guard.sh"
 ---
 
 **The stores are under `jesup/bogoras-materials/`.** Every `harness` command you

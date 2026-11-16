@@ -11,7 +11,7 @@ hooks:
     - matcher: "Bash|Read|Write|Edit"
       hooks:
         - type: command
-          command: "./.claude/hooks/groundtruth-reader-guard.sh"
+          command: "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/groundtruth-reader-guard.sh"
 ---
 
 **The stores are under `jesup/bogoras-chukchi/`.** Every `harness` command you run
