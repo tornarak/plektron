@@ -20,8 +20,16 @@ the sufferer”, though it may take years. With [[being:iumetun]] it is attribut
 to special spirits whose names are not spoken, and a man taken ill with either
 while travelling can expect no house, no fire and no warm food.
 
-**Identification: unresolved.** Three candidates, and the account fits none of
-them whole. Trichinellosis, from [[taxon:trichinella-nativa]] in walrus, seal and
+**Identification: unresolved.** Four candidates, and the account fits none of
+them whole. Tuberculosis of the brain fits the outcome best: tuberculous
+meningitis, untreated, is fatal in practically every case, and within weeks,
+with fits, rigid spasms and long unconsciousness as it advances; a tuberculoma,
+a tuberculous mass in the brain, can instead give recurring fits over years.
+Between them they cover both the rapid course and the slow one, and the book
+records consumption in the region (the underground houses of St. Lawrence
+Island, chukchi-1-234). But meningitis worsens without the clean recoveries
+between attacks the account describes, and the account names none of its
+other signs, fever, headache or a stiff neck. Trichinellosis, from [[taxon:trichinella-nativa]] in walrus, seal and
 bear meat, gives seizures in heavy infections, and a shared meal would make
 clusters within a camp; but it runs its course in weeks to months and most
 sufferers recover, which is neither the invariable death nor the years.

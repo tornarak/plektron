@@ -26,8 +26,8 @@ health untouched, and white hair in the patches — the piebald head is the tell
 **The modifier is spelled twice and differently — Kalêˊlɪ- in the disease
 name, Keliˊlɪ- in the man's — and that is vowel harmony, not an
 inconsistency.** Chukchee harmony is dominant–recessive: a dominant morpheme
-raises every recessive vowel in its word, i to e and e to a. The head noun
-taˊɪrg̣ɪn is dominant, so the stem surfaces raised when compounded with it;
+lowers every recessive vowel in its word, i to e and e to a. The head noun
+taˊɪrg̣ɪn is dominant, so the stem surfaces lowered when compounded with it;
 Tuˊrkew is recessive and leaves it alone. One word, harmonising to what it is
 attached to.
 
