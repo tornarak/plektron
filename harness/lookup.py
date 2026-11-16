@@ -546,6 +546,13 @@ def _terms(queries: list[str], table) -> list[tuple[str, str]]:
     rather than dropping it, and that is left to fall through to the raw query:
     an uncatalogued character is a finding for `keying_spec.md` §2.16, not a
     reason for the search to fail.
+
+    **A reduction that dropped a letter is no reduction of the query.** `bare` keeps
+    ASCII only, so a Cyrillic query reduces to its Latin letters — `Кэ́lє` to `l` —
+    and that matched every form in the *Materials* with a tall `l`. A form's `bare`
+    is kept only where what fell out was marks and modifier letters (`ˊ`); otherwise
+    the term carries none, and the key form, which spells every letter, does the
+    reducing.
     """
     out = []
     for q in queries:
@@ -555,8 +562,14 @@ def _terms(queries: list[str], table) -> list[tuple[str, str]]:
                 forms.append(handle_key(q, table))
             except ValueError:
                 pass
-        out += [(f.casefold(), bare(f)) for f in forms]
+        out += [(f.casefold(), bare(f) if _loses_no_letter(f) else "") for f in forms]
     return out
+
+
+def _loses_no_letter(s: str) -> bool:
+    """True if `bare` drops nothing from `s` but marks, modifiers and punctuation."""
+    return all(c.isascii() or not c.isalpha() or unicodedata.category(c) == "Lm"
+               for c in unicodedata.normalize("NFD", s))
 
 
 def _scan(idx: dict, terms: list[tuple[str, str]], rows: list, seen: set,

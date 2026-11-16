@@ -172,3 +172,9 @@ def test_a_misread_query_finds_the_ratified_form_as_near(text):
     assert rows[0]["near"] is True and "near spelling" in rows[0]["why"]
     exact = search([nfd("Ајӈан")], text)["matches"]
     assert exact and exact[0]["near"] is False
+
+
+def test_a_cyrillic_querys_latin_letters_are_not_its_reduction(text):
+    """`bare` keeps ASCII only, so `ку́ркыw` once reduced to `w` and reached every
+    form with a Latin `w` — here `терк-арм-ора́wеðат`, which shares nothing else."""
+    assert search([nfd("ку́ркыw")], text)["matches"] == []
