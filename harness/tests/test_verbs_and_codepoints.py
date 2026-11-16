@@ -317,3 +317,15 @@ def test_an_astral_codepoint_is_one_record():
     out = non_ascii("\U0001D50A")
     assert len(out) == 1
     assert out[0]["codepoint"] == "U+1D50A"
+
+
+def test_spot_check_names_a_latin_letter_inside_a_cyrillic_word():
+    """The tall l and w are keyed Latin inside Cyrillic words, and a Latin
+    lookalike slips into Russian; dropping ASCII hid both (two readers, 1-032 and
+    1-034, took the missing rows for lost letters)."""
+    from harness.codepoints import spot_check
+    chars = [r["char"] for r in spot_check("пыӈыlте Tоже")]
+    assert "l" in chars and "T" in chars
+    # A word wholly in Latin script is listed as before: The Chukchee's lines
+    # do not change.
+    assert spot_check("the keˊti line") == non_ascii("the keˊti line")

@@ -11,6 +11,7 @@ think it does"), just with names instead of a resolved-field cross-check.
 """
 from __future__ import annotations
 
+import re
 import unicodedata
 
 
@@ -26,3 +27,32 @@ def non_ascii(s: str) -> list[dict]:
          "name": unicodedata.name(ch, "<unnamed>")}
         for ch in s if ord(ch) > 127
     ]
+
+
+def _foreign_letter(ch: str) -> bool:
+    """A letter of a script other than Latin (Cyrillic, Greek …). Not a modifier
+    letter: The Chukchee's stress `ˊ` (U+02CA) and `ᵋ` are letters to Unicode,
+    named outside LATIN, and are marks in the notation."""
+    return (ch.isalpha() and unicodedata.category(ch) != "Lm"
+            and not unicodedata.name(ch, "").startswith("LATIN"))
+
+
+def spot_check(s: str) -> list[dict]:
+    """`non_ascii`, plus each ASCII letter inside a word that holds a letter of
+    another script — the line as `proposal codepoints` spells it out.
+
+    **An ASCII letter is the thing in doubt there.** The 1900 *Materials* key the
+    tall l and w as Latin inside Cyrillic words (`пы́ӈыlте`), and a Latin lookalike
+    slipped into a Russian word (`Tоже`) is the commonest typing slip; a listing
+    that drops ASCII hides both, which two readers mistook for the letters having
+    been lost. A word wholly in Latin script, *The Chukchee*'s notation included,
+    is listed as `non_ascii` lists it, so that text's output does not change.
+    """
+    out = []
+    for word in re.split(r"(\s+)", s):
+        mixed = any(_foreign_letter(c) for c in word)
+        for ch in word:
+            if ord(ch) > 127 or (mixed and ch.isascii() and ch.isalpha()):
+                out.append({"char": ch, "codepoint": f"U+{ord(ch):04X}",
+                            "name": unicodedata.name(ch, "<unnamed>")})
+    return out

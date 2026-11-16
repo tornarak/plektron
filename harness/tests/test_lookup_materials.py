@@ -161,3 +161,14 @@ def test_the_review_page_shows_seen_near_and_new_from_other_pages_only(text):
 
 def test_the_floor_line_says_the_reading_selects(text):
     assert "listed them as native" in search(["x"], text)["floor"]
+
+
+def test_a_misread_query_finds_the_ratified_form_as_near(text):
+    """The copies read Ӈ as Н and the ђ-like д as д; a reader looking up the copy's
+    spelling missed a ratified form until the near pass (1-032, 1-034)."""
+    r = search([nfd("Ајнанват")], text)
+    rows = r["matches"]
+    assert [x["form"] for x in rows] == [nfd("Ајӈан̀ва́т")]
+    assert rows[0]["near"] is True and "near spelling" in rows[0]["why"]
+    exact = search([nfd("Ајӈан")], text)["matches"]
+    assert exact and exact[0]["near"] is False

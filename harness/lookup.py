@@ -560,18 +560,27 @@ def _terms(queries: list[str], table) -> list[tuple[str, str]]:
 
 
 def _scan(idx: dict, terms: list[tuple[str, str]], rows: list, seen: set,
-          min_pages: int) -> bool:
-    """Append every form any term reaches. True if this pass found anything."""
+          min_pages: int, near: list[str] | None = None, table=None) -> bool:
+    """Append every form any term reaches. True if this pass found anything.
+
+    `near` is the last pass's: the queries as `marks.reduction` reduces them,
+    matched as a substring of each form reduced alike. A row it finds says so.
+    """
+    from .marks import reduction
     found = False
     for bucket, b in sorted(idx["buckets"].items()):
         ambiguous = len(spellings(b)) > 1
         pages = len(b["refs"])
         for key, f in sorted(b["forms"].items()):
-            reduced = bare(key)
-            hay = (key.casefold(), bucket.casefold(), f["form"].casefold(), reduced)
-            if not (any(q in h for q, _ in terms for h in hay)
-                    or any(qb and qb in reduced for _, qb in terms)):
-                continue
+            if near is not None:
+                if not any(q in reduction(f["form"], table) for q in near):
+                    continue
+            else:
+                reduced = bare(key)
+                hay = (key.casefold(), bucket.casefold(), f["form"].casefold(), reduced)
+                if not (any(q in h for q, _ in terms for h in hay)
+                        or any(qb and qb in reduced for _, qb in terms)):
+                    continue
             found = True
             usable = not ambiguous and pages >= min_pages
             seen.add(bucket)
@@ -582,10 +591,14 @@ def _scan(idx: dict, terms: list[tuple[str, str]], rows: list, seen: set,
                 "pages": pages,
                 "refs": " ".join(sorted(f["refs"])),
                 "ambiguous": ambiguous,
-                "why": ("" if usable else
-                        "the book sets this word more than one way" if ambiguous
+                "near": near is not None,
+                "why": ("the book sets this word more than one way" if ambiguous
                         else f"attested on {pages} page(s), below the floor "
-                             f"of {min_pages}"),
+                             f"of {min_pages}" if not usable
+                        else "a near spelling of the query, not the query: it "
+                             "differs by a hook, an accent or a lookalike. Look at "
+                             "the scan before you type its key" if near is not None
+                        else ""),
             })
     return found
 
@@ -628,6 +641,18 @@ def search(queries: list[str], root: Path = Path("."), min_pages: int = 1,
                  if len(bare(p)) >= 2 and p != q]
         if split:
             _scan(idx, _terms(split, table), rows, seen, min_pages)
+    # **A near spelling, last of all.** The copies misread exactly the letters a
+    # reader looks a form up for — `Нардынен` for `Ӈа́рђынен`, `Кэлє` for `Кэ́lє` —
+    # and a substring match then misses a form the corpus ratified, so the reader
+    # keys by hand what it could have typed as a key. Only once both passes above
+    # found nothing, through the near-miss check's own reduction (marks dropped,
+    # the text's confusion classes folded), and every row it finds says it is near.
+    if not rows:
+        from .marks import reduction
+        near = [r for q in (list(queries) + split)
+                if len(r := reduction(q, table)) >= 4]
+        if near:
+            _scan(idx, terms, rows, seen, min_pages, near=near, table=table)
     lines = [ln for bucket in sorted(seen)
              for f in idx["buckets"][bucket]["forms"].values()
              for ln in f["lines"][:context]]

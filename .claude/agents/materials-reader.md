@@ -116,7 +116,10 @@ note saying whose spelling it is. Spell each form's codepoints in
   into a form, and **never add a mark to a key's expansion**: a key is the
   ratified spelling or it is not your reading, and then you key by hand.
 - **A miss is a fact about the query**: key the form by hand. A form returned with
-  no key is the tool declining; key what you see.
+  no key is the tool declining; key what you see. A row marked `near` is the
+  lookup trying the copies' misreadings for you (`Нардынен` finds `Ӈа́рђынен`):
+  the ratified spelling, not your query. Read the scan; type its key only if
+  the scan shows that spelling.
 - **A near miss is never corrected silently.** Where your reading differs from a
   ratified spelling only by a hook, an accent or a lookalike, `proposal check`
   says so. Look again; if the scan is what you keyed, keep it and put a `doubt`

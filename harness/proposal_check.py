@@ -40,7 +40,7 @@ from pathlib import Path
 
 from . import keying
 from .atomic import tmp_for
-from .codepoints import non_ascii
+from .codepoints import spot_check
 from .detectors import (
     apostrophe_flags,
     footnote_report,
@@ -856,7 +856,8 @@ def replace_in_field(path: Path, line: str, field: str, old: str, new: str,
 
 def line_codepoints(path: Path, line: str | None = None,
                     field: str = "text") -> list[dict]:
-    """Non-ASCII characters in a line's field, named — a typed-mark spot check.
+    """Non-ASCII characters in a line's field, named, and any ASCII letter inside
+    a word of another script (`codepoints.spot_check`) — a typed-mark spot check.
 
     Not a substitute for `check()`/`resolved`: this names what is actually in
     the text (e.g. "U+0131 LATIN SMALL LETTER DOTLESS I" where U+026A ɪ was
@@ -874,9 +875,9 @@ def line_codepoints(path: Path, line: str | None = None,
         rec = lines.get(line)
         if rec is None:
             raise KeyError(f"no line {line!r} in {path}")
-        return [{"line": line, **r} for r in non_ascii(rec.get(field, ""))]
+        return [{"line": line, **r} for r in spot_check(rec.get(field, ""))]
     return [{"line": k, **r} for k, rec in lines.items()
-            for r in non_ascii(rec.get(field, ""))]
+            for r in spot_check(rec.get(field, ""))]
 
 
 def check(path: Path, ref: str | None = None, root: Path = Path("."),
