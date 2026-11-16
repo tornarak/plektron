@@ -385,16 +385,25 @@ function render() {
      <rect width="18" height="18" fill="var(--warn)" fill-opacity=".12"/>
      <line x1="0" y1="0" x2="0" y2="18" stroke="var(--warn)" stroke-width="6"
        stroke-opacity=".5"/></pattern></defs>`);
+  // A `mark` is ink the check measured not to be type (a blot, a divider, the
+  // leaf's edge) and raises nothing: drawn faint, like a ruling, with its reason.
+  // A live band is drawn at least INK_MIN_H tall about its centre, since a 20 px
+  // strip at column-fit zoom is a sliver sitting on the very ink it marks.
+  const INK_MIN_H = 60;
   S.ink.forEach(b => {
     const ex = inkExcuse(b);
-    parts.push(`<rect x="${w.x0 - 40}" y="${b.vpos}" width="${w.x1 - w.x0 + 80}"
-       height="${b.height}" fill="url(#hatch)" stroke="var(--warn)"
-       stroke-width="${ex ? 2 : 4}" stroke-dasharray="${ex ? '10 8' : ''}"
-       opacity="${ex ? .5 : 1}"/>`);
+    const mk = !ex && b.mark;
+    const faint = ex || mk;
+    const h = faint ? b.height : Math.max(b.height, INK_MIN_H);
+    const y = b.vpos + b.height / 2 - h / 2;
+    parts.push(`<rect x="${w.x0 - 40}" y="${y}" width="${w.x1 - w.x0 + 80}"
+       height="${h}" fill="url(#hatch)" stroke="var(--warn)"
+       stroke-width="${faint ? 2 : 4}" stroke-dasharray="${faint ? '10 8' : ''}"
+       opacity="${faint ? (mk ? .3 : .5) : 1}"/>`);
     parts.push(`<text x="${w.x1 + 50}" y="${b.vpos + b.height / 2 + 12}"
        font-size="32" fill="var(--warn)" font-family="ui-sans-serif,sans-serif"
-       opacity="${ex ? .6 : 1}">${ex ? '✓ ' + esc(ex.note)
-       : 'unaccounted ink — i'}</text>`);
+       opacity="${faint ? .6 : 1}">${ex ? '✓ ' + esc(ex.note)
+       : mk ? 'mark: ' + esc(b.mark) : 'unaccounted ink — i'}</text>`);
   });
 
   // ---- the figure layer ---------------------------------------------------

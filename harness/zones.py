@@ -1067,18 +1067,26 @@ def _ink_verdict(ref: str, report: dict, root: Path) -> dict:
         # Not keyed, or ruled not a text page. Uncovered ink is a statement about
         # nothing here, and caching "clean" would be a claim.
         rec: dict[str, object] = {
-            "state": "skip", "bands": 0, "ruled": 0, "stale": 0, "note": ""}
+            "state": "skip", "bands": 0, "ruled": 0, "marks": 0, "stale": 0,
+            "note": ""}
     else:
-        live = [b for b in report["uncovered"] if not b.get("exempted")]
+        # A `mark` is measured not to be type (`validate_page`): counted, never
+        # live, and kept apart from `ruled`, which is a human's call.
+        marks = [b for b in report["uncovered"] if b.get("mark")]
+        live = [b for b in report["uncovered"]
+                if not b.get("exempted") and not b.get("mark")]
         ruled = [b for b in report["uncovered"] if b.get("exempted")]
         stale = [w for w in report["warnings"]
                  if w["rule"] == "stale-ink-exemption"]
         rec = {"state": "ink" if live else ("ruled" if ruled else "clean"),
-               "bands": len(live), "ruled": len(ruled), "stale": len(stale),
+               "bands": len(live), "ruled": len(ruled), "marks": len(marks),
+               "stale": len(stale),
                "note": "; ".join(
                    [f"y={b['vpos']}..{b['vpos'] + b['height']}" for b in live]
                    + [f"y={b['vpos']}..{b['vpos'] + b['height']} ruled: {b['note']}"
-                      for b in ruled] + [w["detail"] for w in stale])}
+                      for b in ruled]
+                   + [f"y={b['vpos']}..{b['vpos'] + b['height']} mark: {b['mark']}"
+                      for b in marks] + [w["detail"] for w in stale])}
     rec["stamp"] = ink_stamp(ref, root)
     return rec
 
@@ -1893,10 +1901,20 @@ def validate_page(ref: str, root: Path = Path("."), cfg: dict | None = None,
     if ink and zones:
         bands = uncovered_ink(ref, zones, root, cfg, windows, page_ink)
         regions = load_ink_exempt(root).get(ref, [])
+        # A text zoned by rule off its text layer can tell a printed line from a
+        # blot, a divider or the leaf's edge (`zones_rule.mark_reason`). Such a
+        # band stays in `uncovered`, carrying `mark`, and raises no warning — and
+        # is never folded into `exempted`, which is a human's ruling.
+        if "text_rule" in cfg:
+            from .zones_rule import mark_reason
         for b in bands:
             excuse = _ink_excuse(b, regions)
             b["exempted"] = bool(excuse)
             b["note"] = excuse["note"] if excuse else ""
+            b["mark"] = ("" if excuse or "text_rule" not in cfg
+                         else mark_reason(b, page_ink, cfg))
+            if b["mark"]:
+                continue
             rows = (f"{b['bands']} rows of ink" if b.get("bands", 1) > 1
                     else f"{b['height']} px of ink")
             warnings.append({

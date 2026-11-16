@@ -573,3 +573,23 @@ def test_a_printed_line_with_no_row_is_flagged_uncovered(tmp_path):
     write_scan(root, "1-002", ink=((FX_X0, 3897 - 40, FX_X0 + FX_M, 3897),))
     rows, _ = zones_rule.propose_many(["1-002"], root)
     assert "uncovered" not in rows[0]["flags"]
+
+
+def test_the_check_sets_aside_ink_measured_not_to_be_a_line(tmp_path):
+    # The editor's ruling (2026-11-15): on a text zoned by rule, uncovered ink
+    # that is not line-shaped is a `mark`, kept in `uncovered` with its reason and
+    # raising no warning; it is never folded into `exempted`, a human's ruling.
+    root = _store(tmp_path)
+    zones_rule.propose_many(["1-002"], root, commit=True)
+    zs = zones.read_zones("1-002", root, store=zones.MZDIR)
+    zones.save_zones("1-002", zs, root=root)        # keyed, so the check reads gt
+    glyphs = tuple((x, 1000, x + 24, 1045) for x in range(FX_X0 + 600, FX_X0 + 1200, 40))
+    edge = ((FX_X0, 3897 - 40, FX_X0 + FX_M, 3897),)
+    speck = ((FX_X0 + 900, 2000, FX_X0 + 1200, 2020),)   # 20 px: under a line
+    write_scan(root, "1-002", ink=glyphs + edge + speck)
+    rep = zones.validate_page("1-002", root, ink=True)
+    by_y = {b["vpos"] // 100: b for b in rep["uncovered"]}
+    assert by_y[10]["mark"] == ""                                 # a line: raised
+    assert "edge" in by_y[38]["mark"] and "shorter" in by_y[20]["mark"]
+    assert not any(b["exempted"] for b in rep["uncovered"])
+    assert [w["rule"] for w in rep["warnings"]] == ["uncovered-ink"]

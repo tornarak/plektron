@@ -475,21 +475,39 @@ def missing_lines(ref: str, zones: list[dict], root: Path, cfg: dict,
     note). So: a band at least `missing_min_h` tall, touching neither end of the
     raster, and holding no run a printed rule makes.
     """
-    t = cfg["text_rule"]
-    h = ink.shape[0]
-    edge = int(t["missing_edge_px"])
     out = []
     for b in zmod.uncovered_ink(ref, zones, root, cfg, windows, ink):
+        if mark_reason(b, ink, cfg):
+            continue
         y0, y1 = int(b["vpos"]), int(b["vpos"]) + int(b["height"])
-        if y1 - y0 < t["missing_min_h"] or y0 <= edge or y1 >= h - edge:
-            continue
-        w, _ = _rule(ink, y0, y1, int(b["hpos"]), int(b["hpos"]) + int(b["width"]),
-                     int(t["rule_bridge_px"]), float(t["rule_fill_min"]))
-        if w >= t["footrule_min_px"]:
-            continue
         out.append({"y0": y0, "y1": y1, "x0": int(b["hpos"]),
                     "x1": int(b["hpos"]) + int(b["width"])})
     return out
+
+
+def mark_reason(b: dict, ink, cfg: dict) -> str:
+    """Why a band of uncovered ink is not a printed line, or `""` if it may be one.
+
+    A measurement, the same three `missing_lines` makes: shorter than a line
+    (`missing_min_h`), touching the raster's top or bottom (`missing_edge_px`,
+    the leaf's edge), or holding a printed rule. `zones check` sets such a band
+    aside as a `mark` rather than raising it (the editor, 2026-11-15): over the
+    Materials' 169 keyed pages with uncovered ink, 188 of 189 bands were blots,
+    dividers or scan edges, and the one left was a smudge.
+    """
+    t = cfg["text_rule"]
+    h = ink.shape[0]
+    edge = int(t["missing_edge_px"])
+    y0, y1 = int(b["vpos"]), int(b["vpos"]) + int(b["height"])
+    if y0 <= edge or y1 >= h - edge:
+        return "at the leaf's edge"
+    if y1 - y0 < t["missing_min_h"]:
+        return f"{y1 - y0} px, shorter than a line ({t['missing_min_h']})"
+    w, _ = _rule(ink, y0, y1, int(b["hpos"]), int(b["hpos"]) + int(b["width"]),
+                 int(t["rule_bridge_px"]), float(t["rule_fill_min"]))
+    if w >= t["footrule_min_px"]:
+        return "a printed rule"
+    return ""
 
 
 # ---------------------------------------------------------------- the store
