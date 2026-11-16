@@ -1,0 +1,139 @@
+{
+ "ref": "1-068",
+ "contamination": {
+  "blind": false,
+  "why": "this pass reads both text-layer copies (ocr witness) by design, and one lexicon lookup; no other page's proposal, decision or gt/ocr/ was read"
+ },
+ "lines": {
+  "0": {
+   "text": "12 Г. БОГОРАЗЪ, I,3."
+  },
+  "1": {
+   "text": "В.",
+   "note": "the running head is split across two boxes: this one holds one initial of В. Г. БОГОРАЗЪ, line 0 the rest (keyed as on 1-058–062)",
+   "class": "layout"
+  },
+  "2": {
+   "text": "р. Колымы до мыса Дежнева встрѣчаются цѣлыя груды сосноваго бурелому, прине-"
+  },
+  "3": {
+   "text": "сеннаго морскими теченіями."
+  },
+  "4": {
+   "text": "12 (стр. 48). ђата́ронlен ѵм, ђата́ранlен «сдѣлалъ пологъ и сдѣлалъ",
+   "native": "ђата́ронlен ђата́ранlен",
+   "resolved": "ђата́ронlен, ђата́ранlен: U+0452 ђ, U+0301 acute on а (second), U+006C tall l, U+0475 ѵ in ѵм",
+   "note": "both copies read the initial glyph as ӄ; the scan shows ђ (Ђ-shape, bar at top left) in both words, unlike the К-shaped ӄ of ӈэ́ђчӓӄӓн. First word: copy A has ӄатаронен, scan has ronlen with tall l and no accent on the first а; accent on second а in both. «сдѣлалъ пологъ», made a tent-bed (sleeping room) — gloss of ђата́ранlен",
+   "class": "doubt"
+  },
+  "5": {
+   "text": "шатеръ». јоро́ӈы «внутренняя спальная палатка», у русскихъ колымчанъ «пологъ»;",
+   "native": "јоро́ӈы",
+   "resolved": "јоро́ӈы: U+0458 ј, U+0301 acute on о, U+04C8 ӈ",
+   "note": "«внутренняя спальная палатка», the inner sleeping tent (jorońы); hook under ӈ read as ӈ",
+   "class": "semantic"
+  },
+  "6": {
+   "text": "јара́ӈы «наружный шатеръ», у русскихъ колымчанъ «руйта» (юрта).",
+   "native": "јара́ӈы",
+   "resolved": "јара́ӈы: U+0458 ј, U+0301 acute on second а, U+04C8 ӈ",
+   "note": "«наружный шатеръ», the outer tent (jaraӈы)",
+   "class": "semantic"
+  },
+  "7": {
+   "text": "13 (стр. 49). ӈэ́ђчӓӄӓн «верхняя часть, верхняя площадка скалы».",
+   "native": "ӈэ́ђчӓӄӓн",
+   "resolved": "ӈэ́ђчӓӄӓн: U+04C8 ӈ, U+0301 acute on э, U+0452 ђ, U+0308 diaeresis on а twice, U+04C4 ӄ",
+   "note": "«верхняя часть, верхняя площадка скалы», upper part / top ledge of a rock; ђ (top-bar shape) and ӄ (К with hook) distinct on the scan",
+   "class": "semantic"
+  },
+  "8": {
+   "text": "14 (стр. 54). кы́ткыт «первая часть лѣта», отъ вскрытія рѣкъ до появленія",
+   "native": "кы́ткыт",
+   "resolved": "кы́ткыт: U+0301 acute on ы",
+   "note": "«первая часть лѣта», first part of summer; \"появленія\" keyed by sense: the scan loses the hairline of н (reads as ии-like)",
+   "class": "draft"
+  },
+  "9": {
+   "text": "большого множества комаровъ; а́нон «вторая часть лѣта», отъ размноженія комаровъ",
+   "native": "а́нон",
+   "resolved": "а́нон: U+0301 acute on а",
+   "note": "«вторая часть лѣта», second part of summer",
+   "class": "semantic"
+  },
+  "10": {
+   "text": "до первой прохлады. а́нон дольше, чѣмъ кы́ткыт; послѣдній продолжается первые",
+   "native": "а́нон кы́ткыт",
+   "resolved": "а́нон, кы́ткыт: U+0301 acute on а, U+0301 acute on ы"
+  },
+  "11": {
+   "text": "двадцать дней іюня, а́нон — конецъ іюня и весь іюль. э́lээl — все лѣто вообще.",
+   "native": "а́нон э́lээl",
+   "resolved": "а́нон, э́lээl: U+0301 acute on а, U+0301 acute on э, U+006C tall l",
+   "note": "copies read Эээl / ləəl; scan shows э́ with acute, tall l, э, э, tall l, all unhooked. Print has a spaced dash before конецъ and after э́lээl; copy A omitted the first",
+   "class": "doubt"
+  },
+  "12": {
+   "text": "ђыну̀н-эlэ́к «въ срединѣ лѣта», приблизительно тоже что а́нок.",
+   "native": "ђыну̀н-эlэ́к а́нок",
+   "resolved": "ђыну̀н-эlэ́к, а́нок: U+0452 ђ, U+0300 grave on у, U+006C tall l, U+0301 acute on second э, U+0301 acute on а",
+   "note": "copies drop the tall l and the acute: ђынун-ээк; scan shows -эlэ́к with acute on second э, grave on у. Prose: «въ срединѣ лѣта», mid-summer",
+   "class": "doubt"
+  },
+  "13": {
+   "text": "3."
+  },
+  "14": {
+   "text": "Lѵ́мӈыl. Аӈа̀ӈ-аа́чек ђаӈа́ўlӄӓlма.",
+   "native": "Lѵ́мӈыl Аӈа̀ӈ-аа́чек ђаӈа́ўlӄӓlма",
+   "resolved": "Lѵ́мӈыl: U+004C L, U+0475 ѵ, U+0301 acute on ѵ, U+04C8 ӈ, U+006C tall l; Аӈа̀ӈ-аа́чек: U+04C8 ӈ twice, U+0300 grave on а, U+0301 acute on second а; ђаӈа́ўlӄӓlма: U+0452 ђ, U+04C8 ӈ, U+0301 acute on а, U+0306 breve on у, U+006C tall l twice, U+04C4 ӄ, U+0308 diaeresis on а",
+   "note": "heading of tale 3. Copies read Анаӈ - аачек / ӄанаўlkӓlма; scan shows hooked ӈ in first Аӈа̀ӈ, acute on second а of аа́чек, ђ (not ӄ) initial, ӄ after tall l. Initial is capital L (sentence capital) before ѵ́; ratified lѵ́мӈыl is lowercase, so only case differs. A dot sits after the acute on ѵ; taken as a speck",
+   "class": "doubt"
+  },
+  "26": {
+   "text": "Сказка. Молодой шаманъ и его невѣста."
+  },
+  "27": {
+   "text": "Пятеро ихъ братьевъ. Самый младшій шаманъ, отвергающій женщинъ."
+  },
+  "28": {
+   "text": "Другіе старшіе братья вотъ берутъ женъ; при женопомазаніи, куда по-",
+   "note": "print sets ъ in third-person verb endings throughout (берутъ, уходитъ, покидаетъ, говорятъ, находятъ); copies read ь",
+   "class": "draft"
+  },
+  "29": {
+   "text": "пало на поле, уходитъ самый младшій, только изъ за отверганія женщинъ,"
+  },
+  "30": {
+   "text": "5 женопомазывающихъ покидаетъ братьевъ. Говорятъ старшіе братья: «по-",
+   "note": "margin line number 5",
+   "class": "layout"
+  },
+  "31": {
+   "text": "ищите-ка!» Но ищущіе не въ состояніи, а между тѣмъ уже дома шаманящимъ"
+  },
+  "32": {
+   "text": "находятъ. Потомъ братья всѣ привезли женъ, а онъ совсѣмъ нѣтъ. Однако"
+  },
+  "33": {
+   "text": "по прежнему шаманящій, старшей невѣсткой попрежнему хорошо откликами"
+  },
+  "34": {
+   "text": "поддерживаемый. Наконецъ сказалъ шаманящій юноша старшимъ братьямъ:"
+  },
+  "35": {
+   "text": "«Ну что же! также и я возьму жену!» — «Откуда же жену найдешь?» —"
+  },
+  "36": {
+   "text": "10 «Могу, найду!» — «Давай Богъ!» Изъ внутренней страны тамошній далекій съ",
+   "note": "margin line number 10",
+   "class": "layout"
+  },
+  "37": {
+   "text": "одной дочерью, богатый оленями, только одна дочь; нѣтъ сына, единственная"
+  },
+  "38": {
+   "text": "дочь. Но притомъ сосѣдъ бездѣтный, тоже только съ женой. Всѣ съ сосѣ-"
+  }
+ }
+}

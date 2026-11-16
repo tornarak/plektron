@@ -1,0 +1,160 @@
+{
+ "ref": "1-252",
+ "contamination": {
+  "blind": false,
+  "why": "this pass reads both text-layer copies (ocr witness) by design, and one lexicon lookup; no other page's proposal, decision or gt/ocr/ was read"
+ },
+ "lines": {
+  "0": {
+   "text": "196 Г. БОГОРАЗЪ, II,75."
+  },
+  "1": {
+   "text": "В."
+  },
+  "2": {
+   "text": "свѣжему слѣду ушелъ (Кэ́lє). Увидѣлъ по дорогѣ собакъ, говоритъ: «По-",
+   "native": "Кэ́lє",
+   "resolved": "Кэ́lє: U+0301 acute on э, U+006C tall l, U+0454 є",
+   "note": "Both copies read final ъ as ь in 3rd-person verbs (говоритъ); the scan sets ъ, keyed so on every line. Copy B reads Кэє for (Кэ́lє); scan has acute on э, tall l, hooked є (hook ignored).",
+   "class": "draft"
+  },
+  "3": {
+   "text": "чему же такъ скоро издыхаютъ; не нужно ихъ» (отбросилъ въ сторону)."
+  },
+  "4": {
+   "text": "«Ну, ну, погонюсь по дорогѣ; стану вмѣсто собаки! Ну-ка, что будетъ"
+  },
+  "5": {
+   "text": "между нами!» Подходя, сталъ чувствовать страхъ. Влѣзъ въ пологъ. «Эй!»"
+  },
+  "6": {
+   "text": "Другой, пока еще только голова его была всунута, ткнулъ его талинкой"
+  },
+  "7": {
+   "text": "въ грудь, говоритъ также грубо: «Wуј¹)?» — «Умираю!» говоритъ Кэ́lє.",
+   "native": "Wуј Кэ́lє",
+   "resolved": "Wуј: U+0057 capital W; Кэ́lє: U+0301 acute on э, U+006C tall l, U+0454 є",
+   "note": "Capital W of «Wуј» is the scan's: a serifed capital W, keyed Latin W (only w and l are listed as Latin in native forms); the check may object. Layers read it so too.",
+   "class": "doubt"
+  },
+  "8": {
+   "text": "«Како́, како́, талинкою убитъ²)!»... Умеръ. Ибо человѣкъ былъ шаманъ.",
+   "native": "Како́ како́",
+   "resolved": "Како́ како́: U+0301 acute on о (both)"
+  },
+  "9": {
+   "text": "Вѣтеръ тогда пересталъ. Погода настала тихая и ясная."
+  },
+  "10": {
+   "text": "Записано отъ чукчанки Ӈэ́ўс̧ӄӓт въ 1895 г.",
+   "native": "Ӈэ́ўс̧ӄӓт",
+   "resolved": "Ӈэ́ўс̧ӄӓт: U+04C7 Ӈ hooked Н, U+0301 acute on э, U+0443 у with U+0306 breve, U+0441 с with U+0327 cedilla, U+04C4 ӄ, U+04D3 ӓ",
+   "note": "Narrator name. Scan shows dieresis on the final а (ӓ, zoomed), ratified spelling elsewhere is Ӈэ́ўс̧ӄат without it: kept as the scan shows. First letter hooked Н keyed Ӈ; the к after с̧ has its hook curling down from the stem, keyed ӄ (a separate curl would make it plain к). No space between с̧ and ӄ (layers inserted one).",
+   "class": "doubt"
+  },
+  "11": {
+   "text": "75."
+  },
+  "12": {
+   "text": "Ка́lа-lѵ́мӈыl. О Кэ́lє сказка.",
+   "native": "Ка́lа-lѵ́мӈыl Кэ́lє",
+   "resolved": "Ка́lа-lѵ́мӈыl: U+0301 acute on а, U+006C tall l (x2 plus final), U+0475 ѵ, U+0301 acute on ѵ, U+04C8 ӈ; Кэ́lє: U+0301 acute on э, U+006C tall l, U+0454 є",
+   "note": "«О Кэ́lє сказка», tale of Kele (Кэ́lє, the name of the tale's hero); title word Ка́lа-lѵ́мӈыl. Copy A read Колє; scan has э with acute.",
+   "class": "semantic"
+  },
+  "13": {
+   "text": "Былъ на землѣ великій голодъ, остался одинъ мальчикъ съ сестрой."
+  },
+  "14": {
+   "text": "Ѣсть у нихъ нечего. Сдѣлалъ маленькій лучекъ, сестра сдѣлала бубенъ",
+   "note": "Opening letter is capital Ѣ (yat), read Ђ by both layers; Russian word Ѣсть.",
+   "class": "draft"
+  },
+  "15": {
+   "text": "маленькій, онъ все стрѣляетъ и стрѣляетъ. Въ первый день убилъ комара."
+  },
+  "16": {
+   "text": "Сестра шаманитъ и шаманитъ надъ комаромъ. На другой день убилъ овода,"
+  },
+  "17": {
+   "text": "она все шаманитъ и шаманитъ. На третій день убилъ маленькую зимушку,"
+  },
+  "18": {
+   "text": "она еще шаманитъ да шаманитъ. Испекли и съѣли. Потомъ убилъ по-"
+  },
+  "19": {
+   "text": "больше птицу, опять испекли и съѣли. Потомъ убилъ зайца, потомъ лисицу."
+  },
+  "20": {
+   "text": "Черезъ нѣсколько лѣтъ пріобрѣлъ полное тѣло, убилъ дикаго оленя, на-",
+   "note": "Hairline lost: п/н ambiguous in the bitonal scan; the word is на-/конецъ (наконецъ, cf. line 23), so keyed на-.",
+   "class": "draft"
+  },
+  "21": {
+   "text": "конецъ убилъ большого лося, убивалъ все, что есть на морѣ и на сушѣ,"
+  },
+  "22": {
+   "text": "моржей, медвѣдей, тюленей и лисицъ. Ничего не оставляетъ въ живыхъ."
+  },
+  "23": {
+   "text": "Наконецъ сталъ большой, выросли я..... у него. Надо искать жену. По-"
+  },
+  "24": {
+   "text": "шелъ, шелъ, нашелъ въ застругѣ³) жилище, въ немъ женщина. Вошелъ къ"
+  },
+  "25": {
+   "text": "ней, сосваталъ, привелъ домой. И она полеходящая⁴), и онъ полеходящій;"
+  },
+  "26": {
+   "text": "онъ ходитъ, убиваетъ всякую живность, она ходитъ, ищетъ корни и травы,"
+  },
+  "27": {
+   "text": "приноситъ домой большіе запасы. Дѣйствительно, какъ женщина, хотя и"
+  },
+  "28": {
+   "text": "полеходящая — не можетъ приносить крупную дичь. Сестра сидитъ дома,"
+  },
+  "29": {
+   "text": "дѣлаетъ всякую женскую работу, шьетъ, скоблитъ. Однажды пришелъ"
+  },
+  "30": {
+   "text": "домой поздно ночью, принесъ дикаго оленя. «Гдѣ моя жена?» — «Не знаю,"
+  },
+  "31": {
+   "text": "за тобой скоро ушла, такъ и не приходила!» Ночевали — нѣту, еще ноче-"
+  },
+  "32": {
+   "text": "1) Междометіе отвѣтнаго отклика."
+  },
+  "33": {
+   "text": "2) Како́, како́, кӓкучу́тӓ на́нмы-ѵм. Аллитерація. Какочо́lђын — разновид-",
+   "native": "Како́ како́ кӓкучу́тӓ на́нмы-ѵм Какочо́lђын",
+   "resolved": "Како́ како́: U+0301 acute on о; кӓкучу́тӓ: U+04D3 ӓ x2, U+0301 acute on у; на́нмы-ѵм: U+0301 acute on а, U+0475 ѵ; Какочо́lђын: U+0301 acute on о, U+006C tall l, U+0452 ђ",
+   "note": "Native forms: «Како́, како́» a cry; «кӓкучу́тӓ на́нмы-ѵм» alliteration; the hook-bearing letter in Какочо́lђын looks like ђ (copy B read ӄ-less, copy A л-ӄ); the ѵ with no accent after the hyphen. Look at ђ vs ӄ first, and at нанмы (н/п hairline).",
+   "class": "doubt"
+  },
+  "34": {
+   "text": "ность голубики."
+  },
+  "35": {
+   "text": "3) wерка́wер, на мѣстномъ русскомъ нарѣчіи «заструга». Сугробъ снѣга,",
+   "native": "wерка́wер",
+   "resolved": "wерка́wер: U+0077 w (x2), U+0301 acute on а",
+   "note": "«wерка́wер» is glossed «заструга» in local Russian dialect: a snowdrift, wind-packed on the windward side, overhanging, and gently sloping on the lee side (English: sastruga).",
+   "class": "semantic"
+  },
+  "36": {
+   "text": "наметенный вѣтромъ, съ навѣтренной стороны затвердѣвшій и нависшій надъ почвой,"
+  },
+  "37": {
+   "text": "а съ подвѣтренной стороны пологій."
+  },
+  "38": {
+   "text": "4) Ну̀тэ-lэ́јwуlын.",
+   "native": "Ну̀тэ-lэ́јwуlын",
+   "resolved": "Ну̀тэ-lэ́јwуlын: U+0300 grave on у, U+006C tall l (x2), U+0301 acute on э, U+0458 ј, U+0077 w",
+   "note": "Footnote 4: Ну̀тэ-lэ́јwуlын, grave (not acute) on у per scan; the lexicon has Ну́тэ-ӈэ́ўт with acute elsewhere. Keyed by hand.",
+   "class": "doubt"
+  }
+ }
+}
