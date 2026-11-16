@@ -678,14 +678,27 @@ def search(queries: list[str], root: Path = Path("."), min_pages: int = 1,
     # a reader batching a page's forms, as the verb asks, got `Јӓку́ннін` and lost
     # `Ӈа́рђынен` for `На́рђынен` beside it (1-386, 2026-11-16).
     rows, seen, split, keys = [], set(), [], set()
-    for q in queries:
-        r = _search_one(q, idx, table, min_pages)
-        split += [p for p in r["split"] if p not in split]
-        seen |= r["seen"]
+
+    def merge(r: dict, why: str = "") -> None:
+        seen.update(r["seen"])
         for row in r["rows"]:
             if (row.get("key"), row.get("form")) not in keys:
                 keys.add((row.get("key"), row.get("form")))
-                rows.append(row)
+                rows.append({**row, "near": True, "why": why} if why else row)
+
+    for q in queries:
+        r = _search_one(q, idx, table, min_pages)
+        split += [p for p in r["split"] if p not in split]
+        merge(r)
+        # **A word the compositor broke across a line end** reaches a reader
+        # rejoined with the break's hyphen in it (`А́й-ђынто`, 1-322 l11–12),
+        # where the corpus sets it mid-line without one (`А́јђынто`). So a hyphened
+        # query is also asked without its hyphens, and what that finds is near: a
+        # real compound hyphen (`терк-арм`) looks the same, and the scan decides.
+        if "-" in q.strip("-") and (bare_q := q.replace("-", "")):
+            merge(_search_one(bare_q, idx, table, min_pages),
+                  why="the query with its hyphen dropped: a word broken across a "
+                      "line end, or a compound — the scan decides")
     lines = [ln for bucket in sorted(seen)
              for f in idx["buckets"][bucket]["forms"].values()
              for ln in f["lines"][:context]]

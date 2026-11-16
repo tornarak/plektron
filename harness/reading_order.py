@@ -40,11 +40,18 @@ def page_forms(path: Path, ref: str, root: Path, rules, table,
     form as a layer that lost a droppable letter reads it too (`Кэє` for
     `Кэ́lє`): what a ratified page makes seen, since the layers' reading of a later
     page may be that one."""
+    from .detectors import joined_words
     out: Counter = Counter()
-    for r in page_lines(path, root, ref=ref):
-        if r["zone"] in DISCARD_ZONES or r["zone"] in APPARATUS_ZONES:
-            continue
-        text = rules.fold(unicodedata.normalize("NFD", r["text"] or ""))
+    recs = [r for r in page_lines(path, root, ref=ref)
+            if r["zone"] not in DISCARD_ZONES and r["zone"] not in APPARATUS_ZONES]
+    folded = [{"text": rules.fold(unicodedata.normalize("NFD", r["text"] or "")),
+               "zone": r["zone"]} for r in recs]
+    # A word broken across a line end is one form, counted once and without the
+    # compositor's hyphen (`joined_words` marks where it cut), so `А́й-` and
+    # `ђынто` are not two forms and the whole meets its mid-line spelling.
+    texts, cuts = joined_words(folded)
+    for text, cut in zip(texts, cuts, strict=True):
+        text = "".join(c for k, c in enumerate(text) if k not in set(cut))
         for m in TOKEN.finditer(text):
             tok = m.group().strip(EDGE_PUNCT)
             if tok and not tier2(tok, rules) and bears_inventory(tok, rules):

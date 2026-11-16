@@ -77,7 +77,11 @@ finish.
    first lookup asks with the copies' misreadings, and a misreading outside the
    lookup's confusion classes reaches nothing (`Колє` for `Кэ́lє`, `Lólgulын`
    for `Lо́lђыlын`). A form this one finds is typed as its key; one it finds
-   `near` is the scan's to settle, as below.
+   `near` is the scan's to settle, as below. **A word broken across a line end
+   is one query, rejoined with its hyphen** (`А́й-ђынто` for `А́й-` / `ђынто`):
+   the lookup also tries it without the hyphen, which is how the word is
+   ratified where it sits mid-line. Its halves are still keyed and listed on
+   their own lines.
 5. **Write the proposal**, then fill it through `proposal set` (below).
 6. **`uv run harness corpus normalize --commit review/REF/proposal.json`**, then
    **`uv run harness proposal check REF`**, which must exit 0.

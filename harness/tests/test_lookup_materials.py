@@ -248,3 +248,11 @@ def test_one_querys_hit_does_not_suppress_anothers_near_spelling(text):
     assert [x["form"] for x in alone] == [nfd("Ајӈан̀ва́т")]
     assert nfd("Ајӈан̀ва́т") in [x["form"] for x in both]
     assert any(x["form"] == nfd("Ајӈан̀ва́т") and x["near"] for x in both)
+
+
+def test_a_word_rejoined_across_a_line_end_meets_its_mid_line_spelling(text):
+    """`Ајӈан̀-` / `ва́т` reaches the reader as `Ајӈан̀-ва́т`; the corpus sets it
+    mid-line without the hyphen. Whichever pass reaches it — its elements, or
+    the query without its hyphen — the ratified form comes back."""
+    rows = search([nfd("Ајӈан̀-ва́т")], text)["matches"]
+    assert nfd("Ајӈан̀ва́т") in [x["form"] for x in rows]

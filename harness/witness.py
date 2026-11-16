@@ -272,6 +272,12 @@ def compare(ref: str, root: Path, wid: str) -> dict:
     # proposal: its index is absent here and `restore` keys it empty. It is
     # dropped after the alignment, not before, so the other copy's reading of it
     # pairs with it and goes too, rather than surfacing in `b_only`.
+    # A word broken across a line end is a candidate whole, on the line it
+    # starts on, beside its halves: a reader looking up `А́й-` and `ђынто` finds
+    # neither (1-322 l11–12). `joined_words` is the corpus's own rejoiner.
+    from .detectors import joined_words
+    joined, _ = joined_words([{"text": t, "zone": r["zone"]} for t, r in zip(a, recs,
+                                                                              strict=True)])
     lines, b_only = [], []
     for i, j, _ in align(a, b):
         if i is not None and recs[i]["zone"] in DISCARD_ZONES:
@@ -282,8 +288,9 @@ def compare(ref: str, root: Path, wid: str) -> dict:
         bt = b[j] if j is not None else None
         agree = ("alone" if bt is None else "same" if bt == a[i]
                  else "spacing" if _squash(bt) == _squash(a[i]) else "differ")
+        whole = [t for t in native(joined[i]) if t not in native(a[i])]
         lines.append({"index": recs[i]["index"], "a": a[i], "b": bt, "agree": agree,
-                      "native": native(a[i], bt or "")})
+                      "native": native(a[i], bt or "") + whole})
     counts = {k: sum(1 for x in lines if x["agree"] == k)
               for k in ("same", "spacing", "differ", "alone")}
     return {"ref": ref, "witness_page": page_of(ref, root, wid), **counts,
