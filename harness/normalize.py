@@ -533,7 +533,7 @@ def _apostrophe_hits(p: Path, root: Path, rules: Rules) -> list[dict]:
     return hits
 
 
-def _footnote_hits(p: Path, root: Path) -> list[dict]:
+def _footnote_hits(p: Path, root: Path, paren_opener: bool = False) -> list[dict]:
     """Page-level footnote-marker consistency, per file. Report-only.
 
     Scoped to OCR ALTO and adjudicated proposals — the stores that hold a
@@ -573,7 +573,7 @@ def _footnote_hits(p: Path, root: Path) -> list[dict]:
     else:
         return []
 
-    rep = footnote_report(texts)
+    rep = footnote_report(texts, paren_opener)
     hits = []
     if rep["gaps"]:
         hits.append({"path": rel, "trap": "marker run has gaps",
@@ -668,7 +668,7 @@ def scan(root: Path = Path("."), paths: list[Path] | None = None,
         # drift this verb exists to remove.
         rules = keying.rules_for(p, root)
         if _folds_apply(p, root):
-            folds += _fold_hits(nfd, rel, rules)
+            folds += _fold_hits(_mask_description(nfd, p), rel, rules)
         for h in _lookalikes(nfd, rules):
             worklist.append({"path": rel, **h})
         worklist += _quote_hits(p, root)
@@ -680,7 +680,7 @@ def scan(root: Path = Path("."), paths: list[Path] | None = None,
                 unlicensed.append({"path": rel, "line": lineno, **h})
         for h in _spacing_hits(text, commentary=p.suffix == ".json"):
             spacing.append({"path": rel, **h})
-        footnotes += _footnote_hits(p, root)
+        footnotes += _footnote_hits(p, root, rules.on("footnote_paren_opener"))
     return {"files": files, "nfd_offenders": offenders,
             "unlicensed_marks": unlicensed, "lookalikes": worklist,
             "spacing_offenders": spacing, "footnote_markers": footnotes,
@@ -694,6 +694,31 @@ def _folds_apply(p: Path, root: Path) -> bool:
         return Path(p).resolve().relative_to(Path(root).resolve()).parts[0] != "config"
     except ValueError:
         return True
+
+
+#: An ALTO file's `<Description>` is provenance: `ocr import` records there the
+#: folds it applied, from and to, so a fold run over it would rewrite the record
+#: of what was done into a claim that nothing was. Folds stop at its edges.
+_ALTO_DESCRIPTION = re.compile(r"<Description>.*?</Description>", re.S)
+
+
+def _fold_outside_description(text: str, p: Path, rules: Rules) -> str:
+    """`rules.fold(text)`, except inside an ALTO file's `<Description>`."""
+    if p.suffix != ".xml":
+        return rules.fold(text)
+    out, at = [], 0
+    for m in _ALTO_DESCRIPTION.finditer(text):
+        out += [rules.fold(text[at:m.start()]), m.group()]
+        at = m.end()
+    return "".join(out) + rules.fold(text[at:])
+
+
+def _mask_description(text: str, p: Path) -> str:
+    """`text` with an ALTO `<Description>` blanked, its newlines kept so that
+    line numbers still point into the file."""
+    if p.suffix != ".xml":
+        return text
+    return _ALTO_DESCRIPTION.sub(lambda m: re.sub(r"[^\n]", " ", m.group()), text)
 
 
 def _fold_hits(nfd: str, rel: str, rules: Rules) -> list[dict]:
@@ -765,7 +790,7 @@ def convert(root: Path = Path("."), dry_run: bool = False,
             continue
         nfd = unicodedata.normalize("NFD", before)
         if _folds_apply(p, root):
-            nfd = keying.rules_for(p, root).fold(nfd)
+            nfd = _fold_outside_description(nfd, p, keying.rules_for(p, root))
         after = _fix_spacing(nfd, commentary=p.suffix == ".json")
         if after == before:
             continue

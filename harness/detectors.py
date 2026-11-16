@@ -1085,6 +1085,11 @@ SUPERSCRIPT_DIGITS = {"¹": 1, "²": 2, "³": 3,
 # book sets those as digit + PERIOD (27 in the same corpus, e.g. "2. Cacanlorgin"),
 # which this deliberately does not match. Report-only, like everything here.
 ASCII_FOOTNOTE_OPENER = re.compile(r"^([1-9])\s+(?=\S)")
+# The 1900 *Materials*' note opener: a full-size digit and paren, `1) В. Г. …`,
+# against a raised reference `¹)` in the text (the editor, 2026-11-16). Two glyphs
+# on the page, so two in the keying, and only the text whose rules turn on
+# `footnote_paren_opener` counts it as a marker.
+PAREN_FOOTNOTE_OPENER = re.compile(r"^([1-9])\)\s")
 # A figure citation's sub-part locant: `(Fig. 17, f¹)`, a raised numeral picking
 # out one labelled detail of a plate. Typographically identical to a footnote
 # marker and not one — it anchors nothing, so it is printed once and can only
@@ -1104,7 +1109,7 @@ ASCII_FOOTNOTE_OPENER = re.compile(r"^([1-9])\s+(?=\S)")
 FIGURE_LOCANT = re.compile(r"(?<![^\s(])[a-z]([¹²³⁴⁵⁶⁷⁸⁹])\)")
 
 
-def footnote_report(texts: list[str]) -> dict:
+def footnote_report(texts: list[str], paren_opener: bool = False) -> dict:
     """Page-level footnote-marker consistency. Counting, never judgement.
 
     A page's footnote markers are printed twice — once at the reference in the
@@ -1152,6 +1157,12 @@ def footnote_report(texts: list[str]) -> dict:
     the page does not set, which is the one outcome this whole module exists to
     prevent. The pairing invariants stay a gate for everything else.
 
+    `paren_opener` is for a text whose notes open with a full-size `1)` under a
+    raised `¹)` reference (`PAREN_FOOTNOTE_OPENER`). Such a line counts as marker
+    1, on the same condition as `ascii_openers`: only after a superscript earlier
+    on the page, since the book also sets numbered lists as `1) …`, and a list
+    item wrapped to the head of a line is not a note.
+
     `texts` must be in **reading order**; "earlier" is meaningless otherwise.
 
     Returns counts and offenders; the caller decides what is an issue.
@@ -1172,11 +1183,16 @@ def footnote_report(texts: list[str]) -> dict:
                for i, t in enumerate(printed) for m in FIGURE_LOCANT.finditer(t)]
 
     counts: dict[int, int] = {}
+    raised = False
     for text in texts:
+        if paren_opener and raised and (m := PAREN_FOOTNOTE_OPENER.match(text)):
+            n = int(m.group(1))
+            counts[n] = counts.get(n, 0) + 1
         for ch in text:
             n = SUPERSCRIPT_DIGITS.get(ch)
             if n is not None:
                 counts[n] = counts.get(n, 0) + 1
+                raised = True
     gaps = sorted(set(range(1, max(counts) + 1)) - set(counts)) if counts else []
     singletons = sorted(n for n, c in counts.items() if c < 2)
 

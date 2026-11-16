@@ -77,7 +77,10 @@ a Russian line stand. It never settles a native form or a space.
        forked `d` (a serif D with two spurs, like an aquila) is `ð`, and `ä` is
        Cyrillic `ӓ`;
      - letters of the notation, keyed as the layers have them: `ђ` (a `ҕ`-like
-       shape is `ђ` too), `һ`, `ѵ`, `с̧`, `ł` (the barred `l`), and the grave.
+       shape is `ђ` too), `һ`, `ѵ`, `с̧`, `ł` (the barred `l`), and the grave;
+     - the circumflex, U+0302, over a vowel (`а̂тто́оl`, `1-024` l22; the editor,
+       2026-11-16), which both layers drop, so every vowel opening a native form
+       is a place to look.
      A layer can still read a letter as another one, and a fold cannot reach
      that. Two cases are known so far: the forked `d` read as `ђ`, and the barred
      `l` read as plain `т` (`єта́` is `єłа́`, `1-102` l4). A plain `т` is printed
@@ -92,7 +95,7 @@ a Russian line stand. It never settles a native form or a space.
      `docs/multitext.md`, "Waits on the editor") says what a letter may be. It
      is not what the 1900 print sets, since that print pares the key's
      distinctions down. Where the scan shows a key letter the rules lack (`ҕ`
-     beside `ђ`, `к̧`, `h̦`, `р̌`, a mark below `w` or `ы`, `^`), key it as the
+     beside `ђ`, `к̧`, `h̦`, `р̌`, a mark below `w` or `ы`), key it as the
      nearer layer has it and say in a `doubt` which key letter it looks like.
      Never key it from the key alone.
    - **The tall `l` is one letter however the layers read it**: `l`, `Ӏ`, `л`,
@@ -112,6 +115,8 @@ a Russian line stand. It never settles a native form or a space.
      (superscripts U+00B9 U+00B2 U+00B3, U+2070–2079); the note's opener is
      full-size, `1) В. Г. Богоразъ…`. They are two glyphs on the page, so they
      are two in the keying. The layers read both as `1)`; the scan decides which.
+     `proposal check` pairs a raised `¹)` with a line opening `1)` after it
+     (`config/keying.json`, `detectors.footnote_paren_opener`).
    - **A line number in the margin is kept** (the editor, 2026-11-16), keyed in
      the line where the print sets it: before the text on a verso, after it on a
      recto, a space between (`5 Ајӈан…`, `…ва́т 10`). A number the segmenter cut

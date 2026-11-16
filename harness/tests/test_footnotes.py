@@ -335,3 +335,19 @@ def test_replace_preserves_the_files_own_indentation(tmp_path):
         body = [ln for ln in after.splitlines()[1:] if ln.strip()]
         assert body[0].startswith(" " * indent), f"indent={indent} not preserved"
         assert not body[0].startswith(" " * (indent + 1)), f"indent={indent} widened"
+
+
+def test_a_full_size_paren_opener_pairs_with_a_raised_reference():
+    """The 1900 *Materials*: `языка¹).` in the text, `1) Извѣстія…` at the foot
+    (the editor, 2026-11-16). Counted only for a text whose rules say so."""
+    page = ["о строѣ языка¹).", "prose", "1) Извѣстія Императорской Академіи"]
+    assert footnote_report(page, paren_opener=True)["singletons"] == []
+    assert footnote_report(page)["singletons"] == [1]
+
+
+def test_a_numbered_list_at_a_line_head_is_not_an_opener():
+    """The book sets lists as `1) 48 текстовъ…`; with no raised reference before
+    it on the page, such a line is prose."""
+    rep = footnote_report(["отдѣловъ:", "1) 48 текстовъ", "2) 96 пересказовъ"],
+                          paren_opener=True)
+    assert rep["counts"] == {}

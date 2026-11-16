@@ -56,7 +56,7 @@ TABLES = CHAR_TABLES + SEQ_TABLES + MARK_TABLES + RULE_TABLES
 #: none of them deletes the switch rather than living with the noise. Closed: a
 #: name the code does not know would be a switch that switches nothing.
 DETECTORS = frozenset({"word_medial_caps", "dot_above_g", "suffix_mark_drop",
-                       "apostrophe_unlicensed"})
+                       "apostrophe_unlicensed", "footnote_paren_opener"})
 
 #: Scripts by ISO 15924 code, as codepoint ranges. Unicode's facts, not a
 #: notation's, which is why they are code: what the rules say *about* a script is

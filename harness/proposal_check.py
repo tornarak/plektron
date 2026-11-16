@@ -939,7 +939,7 @@ def check(path: Path, ref: str | None = None, root: Path = Path("."),
         out += _orphan_caption_issues(data, root)
     else:
         out += _segmenter_missed_issues(data)
-        out += _footnote_issues(data)
+        out += _footnote_issues(data, rules.on("footnote_paren_opener"))
         if ref is not None:
             from .marks import page_issues
 
@@ -1199,7 +1199,7 @@ def _orphan_caption_issues(data: dict, root: Path) -> list[dict]:
     return out
 
 
-def _footnote_issues(data: dict) -> list[dict]:
+def _footnote_issues(data: dict, paren_opener: bool = False) -> list[dict]:
     """`detectors.footnote_report` turned into proposal-check's issue records.
 
     The contract the editor set: markers may pass **unexplained** so long as
@@ -1221,7 +1221,7 @@ def _footnote_issues(data: dict) -> list[dict]:
     """
     texts = [rec.get("text", "") for _, rec in
              sorted(data.get("lines", {}).items(), key=key_order)]
-    rep = footnote_report(texts)
+    rep = footnote_report(texts, paren_opener)
     problems = []
     if rep["gaps"]:
         problems.append(f"marker run has gaps: missing {rep['gaps']} from 1..{max(rep['counts'])}")

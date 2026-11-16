@@ -67,7 +67,8 @@
   },
   "apostrophe_unlicensed": {
    "_delete": "the apostrophe is printed, as a stem-ending boundary"
-  }
+  },
+  "footnote_paren_opener": "a line opening with a full-size digit and paren, 1) …, after a raised reference on the page: the note's opener, counted as its marker"
  },
  "tier2_scripts": {
   "Cyrl": {
@@ -92,6 +93,7 @@
   "A\u0308": "\u0410\u0308"
  },
  "_why": {
+  "detectors.footnote_paren_opener": "Footnote marks are keyed as printed, ruled by the editor 2026-11-16: the reference in the text is a raised digit and a full-size paren (1-024 l2 языка¹)), and the note opens with a full-size digit and paren (1-024 l38 1) Извѣстія…). The Chukchee raises both.",
   "folds.\u049b": "The hooked K this book prints is \u04c4, as in the modern Chukchi alphabet: ruled by the editor, 2026-11-07. Both Google Books copies read it as \u049b, a codepoint the print does not use (1-128 l10 \u049b\u0456\u043d\u049b\u00e4\u0452\u0442\u0456; 1-175 \u04a2\u044d\u0301\u045e\u0441\u0327\u049b\u00e4\u0442). Crib: the Jesup q (Qora\u02cawg\u0323\u00ea) and modern \u04c4.",
   "folds.\u049a": "The capital of folds.\u049b, by the same ruling (2026-11-07): the OCR's \u049a is the printed hooked K, \u04c3.",
   "folds.\u04a3": "The hooked N is \u04c8, the modern Chukchi letter: ruled by the editor off the scan, 2026-11-07 (1-020 l22, 1-055 l19, 1-082 l3, 1-133 l2, 1-108 l5). The layers read it \u04a3. Crib: Jesup \u00f1 (\u04a2\u044b\u0440\u043e\u0301\u043d = \u00d1\u012dro\u02can).",

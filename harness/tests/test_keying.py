@@ -134,7 +134,8 @@ JESUP = Path(__file__).resolve().parents[2] / "jesup"
 def test_the_chukchee_holds_the_workspace_rules_alone():
     a = keying.rules(JESUP / "bogoras-chukchi")
     assert set(a.origin.values()) == {"workspace"}
-    assert a.detectors == keying.DETECTORS and a.tier2_scripts == {"Cyrl"}
+    assert a.detectors == keying.DETECTORS - {"footnote_paren_opener"}
+    assert a.tier2_scripts == {"Cyrl"}
     assert not a.prose_alphabet
 
 
@@ -144,7 +145,7 @@ def test_the_1900_books_rulings_are_the_ones_it_attests():
     assert ("mark_license", BREVE, "у") in ruled
     for t in ("lookalikes", "tier1_traps", "lookalike_chars", "lookalike_greps"):
         assert "ө" not in getattr(b, t), t          # the barred o is unflagged
-    assert not b.detectors and not b.tier2_scripts
+    assert b.detectors == {"footnote_paren_opener"} and not b.tier2_scripts
     assert "Cyrl" in b.prose_alphabet
 
 
@@ -265,3 +266,21 @@ def test_no_module_holds_a_notation_table_as_a_constant():
     hits = [f"{p.relative_to(pkg)}: {m.group(1)}" for p in pkg.rglob("*.py")
             if "tests" not in p.parts for m in pat.finditer(p.read_text(encoding="utf-8"))]
     assert not hits, hits
+
+
+def test_a_fold_leaves_the_alto_provenance_that_records_it(tmp_path):
+    """`ocr import` writes the folds it applied into the ALTO `<Description>`;
+    restored to `gt/ocr/`, that record must neither report nor be rewritten."""
+    from harness.normalize import convert, scan
+    t = _ws(tmp_path, {"folds": {"қ": "ӄ"}, "_why": {"folds.қ": "the editor, 2026-11-07"}})
+    p = t / "gt" / "ocr" / "x-1-001.xml"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text('<alto xmlns="http://www.loc.gov/standards/alto/ns-v4#">\n'
+                 '<Description><Processing><processingStepSettings>in.folds: қ&gt;ӄ'
+                 '</processingStepSettings></Processing></Description>\n'
+                 '<Layout><String CONTENT="ешқан"/></Layout></alto>\n', encoding="utf-8")
+    assert [h["line"] for h in scan(t)["fold_offenders"]] == [3]
+    convert(t)
+    text = p.read_text(encoding="utf-8")
+    assert "in.folds: қ&gt;ӄ" in text and 'CONTENT="ешӄан"' in text
+    assert scan(t)["fold_offenders"] == []
