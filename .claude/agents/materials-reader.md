@@ -163,6 +163,9 @@ note saying whose spelling it is. Spell each form's codepoints in
   (`нымту́мђын`, 1-024 l11, l15); `w` as `ш`; `ӈ` as `н` or `ц`; the tall `l` as
   `л`, `һ`, `I` or the digit `1`, or dropped. A `т`, `л`, `һ`, `б` or `н` inside
   a native form is a place to zoom.
+- **Readers, not only layers, take `ђ` and the hooked `ӄ` for each other**, both
+  ways: `Мырђ-у́мӄы` keyed `Мырӄ` (1-036 l21), `Ӄӓрэ́w-` keyed `Ђӓрэ́w-` (1-039
+  l1), both corrected by the editor. Zoom every one.
 - **The tall `l` is one letter however the layers read it.** `һ` is also a real
   letter (`-чһын`), so the scan decides each one.
 - **Not ruled:** the `є` with a hook below (`Кэ́lę`, 1-024 l34; the layers' `є`
