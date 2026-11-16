@@ -386,9 +386,13 @@ def _native_issues(idx, rec: dict, text: str, root: Path, lex) -> list[dict]:
         return []
     from .detectors import EDGE_PUNCT, TOKEN
     from .lookup import standing_of
-    from .marks import HandleTableError, MarksConfigError
-    tokens = {m.group().strip(EDGE_PUNCT)
-              for m in TOKEN.finditer(unicodedata.normalize("NFD", text))}
+    from .marks import HandleTableError, MarksConfigError, stemmer
+    cut = stemmer(root)
+    # A reader may list a form as its stem (`э́рмэчын` for `э́рмэчын’омъ`): the stem
+    # is what is native, so the text's tokens count stemmed as well as whole.
+    whole = {m.group().strip(EDGE_PUNCT)
+             for m in TOKEN.finditer(unicodedata.normalize("NFD", text))}
+    tokens = whole | {cut(t) for t in whole}
     out = []
     for f in forms:
         if f.strip(EDGE_PUNCT) not in tokens:

@@ -178,3 +178,17 @@ def test_a_cyrillic_querys_latin_letters_are_not_its_reduction(text):
     """`bare` keeps ASCII only, so `ку́ркыw` once reduced to `w` and reached every
     form with a Latin `w` — here `терк-арм-ора́wеðат`, which shares nothing else."""
     assert search([nfd("ку́ркыw")], text)["matches"] == []
+
+
+def test_a_form_listed_as_its_stem_is_in_the_text(text):
+    """`э́рмэчын` listed for a line that sets `э́рмэчын’омъ` (1-044 l20): the stem
+    is what is native, so the text sets it."""
+    from harness.proposal_check import check
+    rv = text / "review" / "1-024"
+    rv.mkdir(parents=True)
+    p = rv / "proposal.json"
+    p.write_text(json.dumps({"ref": "1-024", "lines": {
+        "0": {"text": nfd("главнымъ э́рмэчын’омъ т. е."), "native": nfd("э́рмэчын")}}},
+        ensure_ascii=False), encoding="utf-8")
+    assert not any(i["issue"] == "native form not in the line's text"
+                   for i in check(p, "1-024", text))
