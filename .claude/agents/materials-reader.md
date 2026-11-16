@@ -58,7 +58,7 @@ finish.
    copy B's, each `same`, `spacing`, `differ` or `alone`, with `native`: the
    tokens either copy reads as notation. Its line indices are your proposal's
    keys. A page the pairing could not settle says so: stop and report it.
-2. **`uv run harness lexicon lookup Q …`, once, with every native candidate the
+2. **`uv run harness lexicon lookup --for REF Q …`, once, with every native candidate the
    witness lists** and every name the page uses without introducing it. It is
    the one licensed reach into the corpus: never read another page's proposal,
    decision or `gt/ocr/` (the guard refuses them). Then **`uv run harness lexicon
@@ -72,8 +72,14 @@ finish.
    on one word, after 2× left it open.
    - **The running head, folio and signature cannot be zoomed** (the verb refuses
      apparatus). Read them off `uv run harness ocr numbered REF`.
-4. **Write the proposal**, then fill it through `proposal set` (below).
-5. **`uv run harness corpus normalize --commit review/REF/proposal.json`**, then
+4. **`uv run harness lexicon lookup --for REF Q …` again, once, with every
+   native form as you read it off the scan** — not as the copies spell it. The
+   first lookup asks with the copies' misreadings, and a misreading outside the
+   lookup's confusion classes reaches nothing (`Колє` for `Кэ́lє`, `Lólgulын`
+   for `Lо́lђыlын`). A form this one finds is typed as its key; one it finds
+   `near` is the scan's to settle, as below.
+5. **Write the proposal**, then fill it through `proposal set` (below).
+6. **`uv run harness corpus normalize --commit review/REF/proposal.json`**, then
    **`uv run harness proposal check REF`**, which must exit 0.
 
 ## Settling a line
@@ -222,7 +228,7 @@ one.
 
     {"ref": "PP-NNN",
      "contamination": {"blind": false, "why": "this pass reads both text-layer
-       copies (ocr witness) by design, and one lexicon lookup; no other page's
+       copies (ocr witness) by design, and two lexicon lookups (the copies' spellings, then the scan's); no other page's
        proposal, decision or gt/ocr/ was read"},
      "lines": {"0": {"text": ""}, "1": {"text": ""}, …}}
 

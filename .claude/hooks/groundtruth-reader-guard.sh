@@ -303,6 +303,20 @@ case "$COMMAND" in
     exit 2 ;;
 esac
 
+# **A lookup leaves a record or it does not run.** `counterpart` always logged
+# what it showed; `lookup` logged nothing, so three readers' "the lookup found
+# no key" (1-225, 1-252, 1-426, 2026-11-16) could be neither checked nor
+# disproved. `--for` names the page, and the verb appends what was asked and
+# what came back to review/PP-NNN/lookups.jsonl.
+case "$COMMAND" in
+  uv\ run\ harness\ lexicon\ lookup\ *)
+    case " $COMMAND " in
+      *" --for "*) ;;
+      *) echo "Blocked: name your page — 'uv run harness lexicon lookup --for PP-NNN QUERY ...'. Every lookup is recorded on the page it was for (review/PP-NNN/lookups.jsonl), so what you asked and what you were told can be read back." >&2
+         exit 2 ;;
+    esac ;;
+esac
+
 # **`cat` over the two trees the reader may already read.** The single largest
 # refusal family measured — 24 of 116 in one day, and 22 of those the same reach:
 # `cat` of this agent's own memory directory, which the contract tells it to

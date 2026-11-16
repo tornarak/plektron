@@ -623,6 +623,32 @@ def _scan(idx: dict, terms: list[tuple[str, str]], rows: list, seen: set,
     return found
 
 
+#: What `lexicon lookup --for PP-NNN` asked and was told, one record per call,
+#: beside `counterparts.jsonl`. A reader's "the lookup found nothing" was
+#: unverifiable until this existed (1-225, 1-252, 1-426, 2026-11-16).
+ASKED = "lookups.jsonl"
+
+
+def record_lookup(ref: str, root: Path, queries: list[str], result: dict) -> Path:
+    """Append one lookup call to review/`ref`/lookups.jsonl: the queries, and each
+    form reached with its key (null where the lookup withholds one), whether it
+    was near, and why a key was withheld."""
+    import json
+    import time
+
+    from .paths import review_dir
+    p = review_dir(ref, root) / ASKED
+    p.parent.mkdir(parents=True, exist_ok=True)
+    rec = {"at": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "queries": queries,
+           "split": result.get("split", ""),
+           "reached": [{"form": m.get("form"), "key": m.get("key"),
+                        "near": bool(m.get("near")), "why": m.get("why", "")}
+                       for m in result.get("matches", [])]}
+    with p.open("a", encoding="utf-8") as fh:
+        fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
+    return p
+
+
 def search(queries: list[str], root: Path = Path("."), min_pages: int = 1,
            context: int = 2, idx: dict | None = None,
            tick: Callable | None = None) -> dict:

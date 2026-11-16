@@ -319,7 +319,7 @@ telling where; `--out` is for a one-off outside the pass, and is not yours.
   it was the shape of the page arriving one line per turn. Collect the corrections
   as you read and write them together. The reply names which lines changed and
   which were already right, so re-sending a line you were unsure about is free.
-- **`uv run harness lexicon lookup QUERY [QUERY ...]` finds a form a human has already
+- **`uv run harness lexicon lookup --for PP-NNN QUERY [QUERY ...]` finds a form a human has already
   adjudicated**, with the pages and lines it was printed on, and prints a **key**
   beside each form: `Kulu'c^i`. Write the key in braces in your reading — `The bay
   of {Kulu'c^i}` — and the ratified glyphs are substituted, by `proposal fix` for a

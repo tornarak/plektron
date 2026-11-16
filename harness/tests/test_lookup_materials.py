@@ -206,6 +206,18 @@ def test_a_page_whose_every_line_stands_is_adjudicated_without_a_decision(text):
     assert not adjudicated(REF, text), "a page with a native form still wants a ruling"
 
 
+def test_a_lookup_for_a_page_is_recorded_on_it(text):
+    """What a reader asked and was told can be read back, misses included."""
+    from harness.lookup import ASKED, record_lookup
+    r = search([nfd("Ајнанват"), nfd("нетъ-такого")], text)
+    p = record_lookup("1-024", text, [nfd("Ајнанват"), nfd("нетъ-такого")], r)
+    assert p.name == ASKED and p.parent.name == "1-024"
+    rec = json.loads(p.read_text(encoding="utf-8").splitlines()[-1])
+    assert rec["queries"] == [nfd("Ајнанват"), nfd("нетъ-такого")]
+    assert [x["form"] for x in rec["reached"]] == [nfd("Ајӈан̀ва́т")]
+    assert rec["reached"][0]["near"] is True
+
+
 def test_a_layer_that_dropped_the_tall_l_still_reaches_the_form(text):
     """Copy A read `Кэє` for `Кэ́lє` (1-380 l4): no confusion class merges a letter
     that is not there, so the ratified side is also compared with its tall l

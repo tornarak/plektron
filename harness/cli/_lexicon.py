@@ -133,6 +133,11 @@ def register(cli):
     opt(p, "--context", type=int, default=2,
         help="lines of surrounding text per matched form, which is what makes a "
              "form's sense readable without opening the page [2]")
+    opt(p, "--for", "for_ref", metavar="PP-NNN", default=None,
+        help="the page these queries are for: each query and the forms it reached "
+             "are appended to review/PP-NNN/lookups.jsonl, so what a reader asked "
+             "and was told can be read back. A reader's guard refuses a lookup "
+             "without it [none]")
 
     p = action(g, "counterpart", run_counterpart,
                help="each FORM's counterpart in the text the manifest's "
@@ -332,6 +337,10 @@ def run_lookup(a) -> int:
     with progress("indexing the corpus") as tick:
         r = search(list(a.queries), a.root, min_pages=a.min_pages,
                    context=a.context, tick=tick)
+    if a.for_ref:
+        from ..lookup import record_lookup
+        from ..refs import norm_ref
+        record_lookup(norm_ref(a.for_ref), a.root, list(a.queries), r)
     out(a, [{k: v for k, v in r.items() if k not in ("matches", "context")}],
         name="scope")
     out(a, r["matches"], name="matches", heading=True)

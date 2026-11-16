@@ -1432,8 +1432,12 @@ QUERY...       any substring; several are an OR, and one call is one index
                Counted per fold, so it can never hide a conflict [1] — a hapax
                still gets a key
 --context N    lines of surrounding text per matched form [2]
+--for PP-NNN   append the queries and every form they reached (form, key, near,
+               why) to review/PP-NNN/lookups.jsonl [none]. The readers' guard
+               refuses a lookup without it
 --root --json --toon --pager
 ```
+**Note** **a lookup is recorded on the page it was for.** `counterpart` always logged what it showed; this logged nothing, so a reader's "the lookup found no key" could be neither checked nor disproved (three readers said it in one batch, 2026-11-16). `--for` is the record, and the guard makes it the only way a reader can call the verb.
 **Emits** `scope` (the queries, the floor, `forms_indexed`, the standing `floor` caveat, how many forms could not be keyed, and `native_unmatched`), `matches` (one row per form: `key`, `form`, `count`, `pages`, `refs`, `ambiguous`, `why`), and `context`.
 **Note** **the key is marked ASCII and deliberately not pretty** — `Kuluˊči` is `Kulu'c^i`, `Kavraˊlɪt` is `Kavra'li_t`. A plain-ASCII key would spell the second `kavralit` and teach an `i` that is not there, to a reader who will key it from memory on a later page: `fold` collapses exactly the axes this pass gets wrong most often, dropped U+0323 being the largest single correction class and `i`/`ɪ`/`I` the largest family. So every non-ASCII character leaves a visible marker and the key cannot be read back as a spelling. Case passes through — it is legible at any zoom, unlike the dot-below, and lowercasing collided on 11 of the 499 forms.
 **Note** **a word the book spells more than one way yields no key at all**, and a ruling in `config/marks_exempt.json` does not restore it. That ruling says the ambiguity is *real* — the book setting one word two ways rather than a keyer slipping — which is the strongest possible reason to refuse to pick a side. `Čeˊwɪn` (1-042) and `Čeˊwin` (1-052) are the live instance, and 1-042's reader flagged the disagreement rather than harmonizing to the older page's ground truth; a lookup answering with one spelling is a machine for erasing that.
