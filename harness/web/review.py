@@ -20,7 +20,7 @@ from pydantic import BaseModel, Field
 
 from .. import review as rv
 from ..lines import raster_path
-from ..paths import crops_dir, decisions_path
+from ..paths import crops_dir
 from ..refs import norm_ref
 from . import Editor, register, templates
 from .errors import fetched
