@@ -327,3 +327,14 @@ def test_a_keep_that_the_pairs_fold_is_refused(tmp_path):
 def test_the_chukchee_has_no_word_folds():
     r = keying.rules(JESUP / "bogoras-chukchi")
     assert r.fold("Tоже IІІ") == "Tоже IІІ" and r.word_folds_record == ""
+
+
+@pytest.mark.parametrize("given, left", [
+    ("Lawtыl", "Lat"),      # a t has no pair, so the word is left whole: all reported
+    ("Kjellmannа", "Kjemann"),     # a Cyrillic а in a Latin word is as undecided; l kept
+    ("ӄol", ""),            # folded clean
+    ("Kэlę", ""),           # kept sequences are not leftovers
+    ("Talo", ""),           # no Cyrillic letter: a transclusion, not mixed
+])
+def test_what_the_word_fold_declines_is_named(tmp_path, given, left):
+    assert _word_folds(tmp_path).unfolded_latin(nfd("NFD", given)) == left

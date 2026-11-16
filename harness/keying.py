@@ -166,6 +166,26 @@ class Rules:
                 return "".join(out)
         return word
 
+    def unfolded_latin(self, word: str) -> str:
+        """The Latin letters `fold_word` leaves in a word that also holds a letter of
+        a folded script, outside that script's keep list; empty if none.
+
+        Such a word is what the fold declines: a Latin letter with no pair
+        (`Lawtыlыwа́lын`, a `t` keyed for `т`) leaves it undecided between a
+        transclusion and a slip, so it is left whole. Whole, it must be reported,
+        because a word holding Cyrillic is a transclusion of nothing."""
+        word = self.fold_word(word)
+        for script, rule in self.script_folds.items():
+            if not any(in_script(c, script) for c in word):
+                continue
+            rest = word
+            for k in _keep(rule["keep"]):
+                rest = rest.replace(k, "")
+            left = "".join(c for c in rest if c.isascii() and c.isalpha())
+            if left:
+                return left
+        return ""
+
     @property
     def word_folds_record(self) -> str:
         """The word-level folds as one provenance value; empty when there are none.

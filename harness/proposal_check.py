@@ -989,6 +989,13 @@ def check(path: Path, ref: str | None = None, root: Path = Path("."),
             out.append(issue(idx, "note with no class (which of "
                              + "/".join(NOTE_CLASSES) + " is it?)",
                              severity=ADVISORY))
+        for m in keying.WORD.finditer(text):
+            if left := rules.unfolded_latin(m.group()):
+                out.append(issue(idx, "word mixes Cyrillic with unfolded Latin",
+                                 token=m.group(),
+                                 detail=f"{left!r}: a Latin letter the word fold "
+                                        "has no Cyrillic pair for leaves the whole "
+                                        "word unfolded; key what the scan shows"))
         out += _handle_issues(idx, rec, text, root, lex_all)
         out += _named_key_issues(idx, rec, text, root, lex)
         out += _native_issues(idx, rec, text, root, lex or lex_all)
