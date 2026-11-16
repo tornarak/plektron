@@ -1,0 +1,234 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns="http://www.loc.gov/standards/alto/ns-v4#">
+  <Description>
+    <MeasurementUnit>pixel</MeasurementUnit>
+    <sourceImageInformation>
+      <fileName>chukchi-materials-1-198.png</fileName>
+    </sourceImageInformation>
+    <Processing ID="OCR_harness-ocr-import">
+      <processingStepDescription>text layer of the source PDF, harness ocr import</processingStepDescription>
+      <processingStepSettings>harness: 1; kind: model; step: harness ocr import; label: text layer of the source PDF; version: pymupdf 1.28.2; model: pdfs/bogoras-1900-chukchee-materials.pdf; sha256: a8e4f046eb19336b0fe1e72b3215701a76da30de62a68481646223855374e32d; in.engine: the OCR that made the text layer; in.copy: master; in.pdf_page: 198; in.text_layer_producer: Google Books PDF Converter (rel 3 12/12/14); in.row_overlap: 0.5; in.align: drift -6.5 px at y=0, 0.55 px per 1000 px, 20 rows, median residual 3.5 px, less a 25 px baseline drop; in.folds: Ä&gt;Ӓ Ď&gt;Ð ä&gt;ӓ ď&gt;ð Қ&gt;Ӄ қ&gt;ӄ Ң&gt;Ӈ ң&gt;ӈ Ӏ&gt;l ӏ&gt;l Ә&gt;Э ә&gt;э</processingStepSettings>
+      <processingSoftware>
+        <softwareName>harness</softwareName>
+      </processingSoftware>
+    </Processing>
+  </Description>
+  <Layout>
+    <Page WIDTH="4768" HEIGHT="6960" PHYSICAL_IMG_NR="0" ID="page_0">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="4768" HEIGHT="6960">
+        <TextBlock ID="text_1-198" HPOS="-5" VPOS="543" WIDTH="4190" HEIGHT="5204">
+          <TextLine ID="mz_1-198_l1" HPOS="1178" VPOS="543" WIDTH="2983" HEIGHT="110" BASELINE="1178 650 4161 650">
+            <Shape>
+              <Polygon POINTS="1178 543 4161 543 4161 653 1178 653"/>
+            </Shape>
+            <String CONTENT="142 Г. БОГОРАЗЪ, I,41—42." HPOS="1178" VPOS="543" WIDTH="2983" HEIGHT="110"/>
+          </TextLine>
+          <TextLine ID="mz_1-198_l2" HPOS="2319" VPOS="588" WIDTH="57" HEIGHT="62" BASELINE="2319 650 2376 650">
+            <Shape>
+              <Polygon POINTS="2319 588 2376 588 2376 650 2319 650"/>
+            </Shape>
+            <String CONTENT="В." HPOS="2319" VPOS="588" WIDTH="57" HEIGHT="62"/>
+          </TextLine>
+          <TextLine ID="mz_1-198_l3" HPOS="-5" VPOS="715" WIDTH="33" HEIGHT="58" BASELINE="-5 772 28 772">
+            <Shape>
+              <Polygon POINTS="-5 715 28 715 28 773 -5 773"/>
+            </Shape>
+            <String CONTENT="" HPOS="-5" VPOS="715" WIDTH="33" HEIGHT="58"/>
+          </TextLine>
+          <TextLine ID="mz_1-198_l4" HPOS="2611" VPOS="972" WIDTH="115" HEIGHT="94" BASELINE="2611 1066 2726 1066">
+            <Shape>
+              <Polygon POINTS="2611 972 2726 972 2726 1066 2611 1066"/>
+            </Shape>
+            <String CONTENT="41." HPOS="2611" VPOS="972" WIDTH="115" HEIGHT="94"/>
+          </TextLine>
+          <TextLine ID="mz_1-198_l5" HPOS="2278" VPOS="1135" WIDTH="784" HEIGHT="106" BASELINE="2278 1240 3062 1240">
+            <Shape>
+              <Polygon POINTS="2278 1135 3062 1135 3062 1241 2278 1241"/>
+            </Shape>
+            <String CONTENT="Ојва́чырђ-е́wђан." HPOS="2278" VPOS="1135" WIDTH="784" HEIGHT="106"/>
+          </TextLine>
+          <TextLine ID="mz_1-198_l6" HPOS="1384" VPOS="1304" WIDTH="2792" HEIGHT="105" BASELINE="1384 1408 4176 1408">
+            <Shape>
+              <Polygon POINTS="1384 1304 4176 1304 4176 1409 1384 1409"/>
+            </Shape>
+            <String CONTENT="" HPOS="1384" VPOS="1304" WIDTH="2792" HEIGHT="105"/>
+          </TextLine>
+          <TextLine ID="mz_1-198_l7" HPOS="1175" VPOS="1419" WIDTH="2987" HEIGHT="112" BASELINE="1175 1530 4162 1530">
+            <Shape>
+              <Polygon POINTS="1175 1419 4162 1419 4162 1531 1175 1531"/>
+            </Shape>
+            <String CONTENT="" HPOS="1175" VPOS="1419" WIDTH="2987" HEIGHT="112"/>
+          </TextLine>
+          <TextLine ID="mz_1-198_l8" HPOS="1174" VPOS="1548" WIDTH="2994" HEIGHT="111" BASELINE="1174 1658 4168 1658">
+            <Shape>
+              <Polygon POINTS="1174 1548 4168 1548 4168 1659 1174 1659"/>
+            </Shape>
+            <String CONTENT="" HPOS="1174" VPOS="1548" WIDTH="2994" HEIGHT="111"/>
+          </TextLine>
+          <TextLine ID="mz_1-198_l9" HPOS="1109" VPOS="1670" WIDTH="2903" HEIGHT="107" BASELINE="1109 1777 4012 1777">
+            <Shape>
+              <Polygon POINTS="1109 1670 4012 1670 4012 1777 1109 1777"/>
+            </Shape>
+            <String CONTENT="" HPOS="1109" VPOS="1670" WIDTH="2903" HEIGHT="107"/>
+          </TextLine>
+          <TextLine ID="mz_1-198_l10" HPOS="1389" VPOS="1821" WIDTH="1741" HEIGHT="97" BASELINE="1389 1918 3130 1918">
+            <Shape>
+              <Polygon POINTS="1389 1821 3130 1821 3130 1918 1389 1918"/>
+            </Shape>
+            <String CONTENT="Записано отъ чукчи Рэ́мкыlын’а на р. Молондѣ." HPOS="1389" VPOS="1821" WIDTH="1741" HEIGHT="97"/>
+          </TextLine>
+          <TextLine ID="mz_1-198_l11" HPOS="2214" VPOS="2101" WIDTH="917" HEIGHT="99" BASELINE="2214 2199 3131 2199">
+            <Shape>
+              <Polygon POINTS="2214 2101 3131 2101 3131 2200 2214 2200"/>
+            </Shape>
+            <String CONTENT="Заговоръ для порчи." HPOS="2214" VPOS="2101" WIDTH="917" HEIGHT="99"/>
+          </TextLine>
+          <TextLine ID="mz_1-198_l12" HPOS="1390" VPOS="2260" WIDTH="2778" HEIGHT="106" BASELINE="1390 2365 4168 2365">
+            <Shape>
+              <Polygon POINTS="1390 2260 4168 2260 4168 2366 1390 2366"/>
+            </Shape>
+            <String CONTENT="Кто подвергнутъ моему гнѣву, я говорю: «Ты не человѣкъ, ты тю-" HPOS="1390" VPOS="2260" WIDTH="2778" HEIGHT="106"/>
+          </TextLine>
+          <TextLine ID="mz_1-198_l13" HPOS="1180" VPOS="2393" WIDTH="2984" HEIGHT="102" BASELINE="1180 2494 4164 2494">
+            <Shape>
+              <Polygon POINTS="1180 2393 4164 2393 4164 2495 1180 2495"/>
+            </Shape>
+            <String CONTENT="ленья шкура!» Каӈера́lђын привожу: «Постоянно царапай его и пробей." HPOS="1180" VPOS="2393" WIDTH="2984" HEIGHT="102"/>
+          </TextLine>
+          <TextLine ID="mz_1-198_l14" HPOS="1179" VPOS="2519" WIDTH="2988" HEIGHT="97" BASELINE="1179 2615 4167 2615">
+            <Shape>
+              <Polygon POINTS="1179 2519 4167 2519 4167 2616 1179 2616"/>
+            </Shape>
+            <String CONTENT="Сколь великъ мой гнѣвъ, столь великъ твой гнѣвъ; скоро покончивъ, скоро" HPOS="1179" VPOS="2519" WIDTH="2988" HEIGHT="97"/>
+          </TextLine>
+          <TextLine ID="mz_1-198_l15" HPOS="1178" VPOS="2642" WIDTH="2988" HEIGHT="100" BASELINE="1178 2742 4166 2742">
+            <Shape>
+              <Polygon POINTS="1178 2642 4166 2642 4166 2742 1178 2742"/>
+            </Shape>
+            <String CONTENT="истреби, еще до наступленія прохладнаго времени!» Сколько нибудь дней" HPOS="1178" VPOS="2642" WIDTH="2988" HEIGHT="100"/>
+          </TextLine>
+          <TextLine ID="mz_1-198_l16" HPOS="1107" VPOS="2784" WIDTH="964" HEIGHT="85" BASELINE="1107 2868 2071 2868">
+            <Shape>
+              <Polygon POINTS="1107 2784 2071 2784 2071 2869 1107 2869"/>
+            </Shape>
+            <String CONTENT="5 минетъ, и онъ умретъ." HPOS="1107" VPOS="2784" WIDTH="964" HEIGHT="85"/>
+          </TextLine>
+          <TextLine ID="mz_1-198_l17" HPOS="2231" VPOS="2930" WIDTH="875" HEIGHT="124" BASELINE="2231 3053 3106 3053">
+            <Shape>
+              <Polygon POINTS="2231 2930 3106 2930 3106 3054 2231 3054"/>
+            </Shape>
+            <String CONTENT="Примѣчанія къ № 41." HPOS="2231" VPOS="2930" WIDTH="875" HEIGHT="124"/>
+          </TextLine>
+          <TextLine ID="mz_1-198_l18" HPOS="1398" VPOS="3106" WIDTH="2043" HEIGHT="121" BASELINE="1398 3227 3441 3227">
+            <Shape>
+              <Polygon POINTS="1398 3106 3441 3106 3441 3227 1398 3227"/>
+            </Shape>
+            <String CONTENT="1 (стр. 1). Ојва́чырђ-е́wђан сравнить № 4, прим. 3." HPOS="1398" VPOS="3106" WIDTH="2043" HEIGHT="121"/>
+          </TextLine>
+          <TextLine ID="mz_1-198_l19" HPOS="1391" VPOS="3224" WIDTH="2778" HEIGHT="103" BASELINE="1391 3327 4169 3327">
+            <Shape>
+              <Polygon POINTS="1391 3224 4169 3224 4169 3327 1391 3327"/>
+            </Shape>
+            <String CONTENT="2 (стр. 3). тэну́јђын — тюленья шкура, большей частью содранная въ видѣ" HPOS="1391" VPOS="3224" WIDTH="2778" HEIGHT="103"/>
+          </TextLine>
+          <TextLine ID="mz_1-198_l20" HPOS="1180" VPOS="3321" WIDTH="2991" HEIGHT="96" BASELINE="1180 3416 4171 3416">
+            <Shape>
+              <Polygon POINTS="1180 3321 4171 3321 4171 3417 1180 3417"/>
+            </Shape>
+            <String CONTENT="неразрѣзаннаго мѣшка; у русскихъ на Колымѣ «чемоданъ». каӈера́lђын — мелкое" HPOS="1180" VPOS="3321" WIDTH="2991" HEIGHT="96"/>
+          </TextLine>
+          <TextLine ID="mz_1-198_l21" HPOS="1178" VPOS="3421" WIDTH="1592" HEIGHT="122" BASELINE="1178 3543 2770 3543">
+            <Shape>
+              <Polygon POINTS="1178 3421 2770 3421 2770 3543 1178 3543"/>
+            </Shape>
+            <String CONTENT="ракообразное животное; см. №11, прим. 8." HPOS="1178" VPOS="3421" WIDTH="1592" HEIGHT="122"/>
+          </TextLine>
+          <TextLine ID="mz_1-198_l22" HPOS="1398" VPOS="3548" WIDTH="2773" HEIGHT="113" BASELINE="1398 3660 4171 3660">
+            <Shape>
+              <Polygon POINTS="1398 3548 4171 3548 4171 3661 1398 3661"/>
+            </Shape>
+            <String CONTENT="3 (стр. 5). јэ́н еђы́нтока «еще до наступленія прохладнаго времени» (ср." HPOS="1398" VPOS="3548" WIDTH="2773" HEIGHT="113"/>
+          </TextLine>
+          <TextLine ID="mz_1-198_l23" HPOS="1194" VPOS="3639" WIDTH="564" HEIGHT="121" BASELINE="1194 3759 1758 3759">
+            <Shape>
+              <Polygon POINTS="1194 3639 1758 3639 1758 3760 1194 3760"/>
+            </Shape>
+            <String CONTENT="№6, прим. 4)." HPOS="1194" VPOS="3639" WIDTH="564" HEIGHT="121"/>
+          </TextLine>
+          <TextLine ID="mz_1-198_l24" HPOS="2604" VPOS="3956" WIDTH="140" HEIGHT="107" BASELINE="2604 4062 2744 4062">
+            <Shape>
+              <Polygon POINTS="2604 3956 2744 3956 2744 4063 2604 4063"/>
+            </Shape>
+            <String CONTENT="42." HPOS="2604" VPOS="3956" WIDTH="140" HEIGHT="107"/>
+          </TextLine>
+          <TextLine ID="mz_1-198_l25" HPOS="2318" VPOS="4142" WIDTH="721" HEIGHT="101" BASELINE="2318 4242 3039 4242">
+            <Shape>
+              <Polygon POINTS="2318 4142 3039 4142 3039 4243 2318 4243"/>
+            </Shape>
+            <String CONTENT="Ра́чвуӈк-е́wђан." HPOS="2318" VPOS="4142" WIDTH="721" HEIGHT="101"/>
+          </TextLine>
+          <TextLine ID="mz_1-198_l26" HPOS="1388" VPOS="4297" WIDTH="2779" HEIGHT="111" BASELINE="1388 4408 4167 4408">
+            <Shape>
+              <Polygon POINTS="1388 4297 4167 4297 4167 4408 1388 4408"/>
+            </Shape>
+            <String CONTENT="" HPOS="1388" VPOS="4297" WIDTH="2779" HEIGHT="111"/>
+          </TextLine>
+          <TextLine ID="mz_1-198_l27" HPOS="1179" VPOS="4415" WIDTH="2991" HEIGHT="118" BASELINE="1179 4532 4170 4532">
+            <Shape>
+              <Polygon POINTS="1179 4415 4170 4415 4170 4533 1179 4533"/>
+            </Shape>
+            <String CONTENT="" HPOS="1179" VPOS="4415" WIDTH="2991" HEIGHT="118"/>
+          </TextLine>
+          <TextLine ID="mz_1-198_l28" HPOS="1179" VPOS="4553" WIDTH="2995" HEIGHT="108" BASELINE="1179 4660 4174 4660">
+            <Shape>
+              <Polygon POINTS="1179 4553 4174 4553 4174 4661 1179 4661"/>
+            </Shape>
+            <String CONTENT="" HPOS="1179" VPOS="4553" WIDTH="2995" HEIGHT="108"/>
+          </TextLine>
+          <TextLine ID="mz_1-198_l29" HPOS="1121" VPOS="4675" WIDTH="2041" HEIGHT="100" BASELINE="1121 4774 3162 4774">
+            <Shape>
+              <Polygon POINTS="1121 4675 3162 4675 3162 4775 1121 4775"/>
+            </Shape>
+            <String CONTENT="" HPOS="1121" VPOS="4675" WIDTH="2041" HEIGHT="100"/>
+          </TextLine>
+          <TextLine ID="mz_1-198_l30" HPOS="1395" VPOS="4818" WIDTH="1759" HEIGHT="97" BASELINE="1395 4914 3154 4914">
+            <Shape>
+              <Polygon POINTS="1395 4818 3154 4818 3154 4915 1395 4915"/>
+            </Shape>
+            <String CONTENT="Записано отъ чукчи Рэ́мкыlын’а на р. Молондѣ." HPOS="1395" VPOS="4818" WIDTH="1759" HEIGHT="97"/>
+          </TextLine>
+          <TextLine ID="mz_1-198_l31" HPOS="2071" VPOS="5095" WIDTH="1217" HEIGHT="101" BASELINE="2071 5194 3288 5194">
+            <Shape>
+              <Polygon POINTS="2071 5095 3288 5095 3288 5196 2071 5196"/>
+            </Shape>
+            <String CONTENT="Состязательный заговоръ." HPOS="2071" VPOS="5095" WIDTH="1217" HEIGHT="101"/>
+          </TextLine>
+          <TextLine ID="mz_1-198_l32" HPOS="1395" VPOS="5260" WIDTH="2783" HEIGHT="105" BASELINE="1395 5364 4178 5364">
+            <Shape>
+              <Polygon POINTS="1395 5260 4178 5260 4178 5365 1395 5365"/>
+            </Shape>
+            <String CONTENT="Паучьей женщины ремень достаю, арканомъ дѣлаю, (на подвергну-" HPOS="1395" VPOS="5260" WIDTH="2783" HEIGHT="105"/>
+          </TextLine>
+          <TextLine ID="mz_1-198_l33" HPOS="1179" VPOS="5399" WIDTH="2998" HEIGHT="100" BASELINE="1179 5498 4177 5498">
+            <Shape>
+              <Polygon POINTS="1179 5399 4177 5399 4177 5499 1179 5499"/>
+            </Shape>
+            <String CONTENT="таго гнѣву, вотъ этого) бросаю, все тѣло опутываю, скоро устанетъ, обез-" HPOS="1179" VPOS="5399" WIDTH="2998" HEIGHT="100"/>
+          </TextLine>
+          <TextLine ID="mz_1-198_l34" HPOS="1184" VPOS="5519" WIDTH="3001" HEIGHT="106" BASELINE="1184 5624 4185 5624">
+            <Shape>
+              <Polygon POINTS="1184 5519 4185 5519 4185 5625 1184 5625"/>
+            </Shape>
+            <String CONTENT="силѣетъ, сядетъ. Если же не сядетъ, разогрѣется, вспотѣетъ, изо рта" HPOS="1184" VPOS="5519" WIDTH="3001" HEIGHT="106"/>
+          </TextLine>
+          <TextLine ID="mz_1-198_l35" HPOS="1120" VPOS="5655" WIDTH="2611" HEIGHT="92" BASELINE="1120 5746 3731 5746">
+            <Shape>
+              <Polygon POINTS="1120 5655 3731 5655 3731 5747 1120 5747"/>
+            </Shape>
+            <String CONTENT="5 кровь пойдетъ, кровью плевать станетъ, сзади будетъ покинутъ." HPOS="1120" VPOS="5655" WIDTH="2611" HEIGHT="92"/>
+          </TextLine>
+        </TextBlock>
+      </PrintSpace>
+    </Page>
+  </Layout>
+</alto>

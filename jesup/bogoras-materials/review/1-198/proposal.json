@@ -1,0 +1,124 @@
+{
+ "ref": "1-198",
+ "contamination": {
+  "blind": false,
+  "why": "this pass reads both text-layer copies (ocr witness) by design, and two lexicon lookups (the copies' spellings, then the scan's); no other page's proposal, decision or gt/ocr/ was read"
+ },
+ "lines": {
+  "0": {
+   "text": "142 Г. БОГОРАЗЪ, I,41—42.",
+   "class": "layout",
+   "note": "Running head letterspaced, keyed unspaced; the В. is copy A line 1, a fragment of this line, so line 1 is keyed empty."
+  },
+  "1": {
+   "text": "В.",
+   "class": "layout",
+   "note": "the running head is split across two boxes: this one holds the initial В. of В. Г. БОГОРАЗЪ, line 0 the rest"
+  },
+  "2": {
+   "text": "",
+   "class": "artifact",
+   "note": "Speck in the left margin, read as 1 by the copies."
+  },
+  "3": {
+   "text": "41."
+  },
+  "4": {
+   "text": "Ојва́чырђ-е́wђан.",
+   "native": "Ојва́чырђ-е́wђан",
+   "resolved": "Ојва́чырђ-е́wђан: U+0301 acute on а and on е, U+0452 ђ twice, U+0077 w"
+  },
+  "9": {
+   "text": "Записано отъ чукчи Рэ́мкыlын’а на р. Молондѣ.",
+   "as_typed": "Записано отъ чукчи {Re_1'mkyl_0yn}’а на р. Молондѣ.",
+   "native": "Рэ́мкыlын’а",
+   "resolved": "Рэ́мкыlын: U+0301 acute on э, U+006C tall l",
+   "class": "semantic",
+   "note": "Informant Рэ́мкыlын (Remkylin), as in 1-222; lookup key. Print apostrophe is curly."
+  },
+  "10": {
+   "text": "Заговоръ для порчи."
+  },
+  "11": {
+   "text": "Кто подвергнутъ моему гнѣву, я говорю: «Ты не человѣкъ, ты тю-"
+  },
+  "12": {
+   "text": "ленья шкура!» Каӈера́lђын привожу: «Постоянно царапай его и пробей.",
+   "native": "Каӈера́lђын",
+   "resolved": "Каӈера́lђын: U+04C8 ӈ, U+0301 acute on а, U+006C tall l, U+0452 ђ"
+  },
+  "13": {
+   "text": "Сколь великъ мой гнѣвъ, столь великъ твой гнѣвъ; скоро покончивъ, скоро"
+  },
+  "14": {
+   "text": "истреби, еще до наступленія прохладнаго времени!» Сколько нибудь дней"
+  },
+  "15": {
+   "text": "5 минетъ, и онъ умретъ."
+  },
+  "16": {
+   "text": "Примѣчанія къ № 41."
+  },
+  "17": {
+   "text": "1 (стр. 1). Ојва́чырђ-е́wђан сравнить № 4, прим. 3.",
+   "native": "Ојва́чырђ-е́wђан",
+   "resolved": "Ојва́чырђ-е́wђан: U+0301 acute on а and on е, U+0452 ђ twice, U+0077 w"
+  },
+  "18": {
+   "text": "2 (стр. 3). тэну́јђын — тюленья шкура, большей частью содранная въ видѣ",
+   "native": "тэну́јђын",
+   "resolved": "тэну́јђын: U+0301 acute on у, U+0458 ј, U+0452 ђ",
+   "class": "semantic",
+   "note": "тэну́јђын, seal skin, mostly flayed in the form of an uncut bag; Russians on the Kolyma call it a trunk (чемоданъ)."
+  },
+  "19": {
+   "text": "неразрѣзаннаго мѣшка; у русскихъ на Колымѣ «чемоданъ». каӈера́lђын — мелкое",
+   "native": "каӈера́lђын",
+   "resolved": "каӈера́lђын: U+04C8 ӈ, U+0301 acute on а, U+006C tall l, U+0452 ђ",
+   "class": "semantic",
+   "note": "каӈера́lђын, a small crustacean (cf. no. 11, note 8). Copy B has ђ; copy A has лӄ."
+  },
+  "20": {
+   "text": "ракообразное животное; см. №11, прим. 8."
+  },
+  "21": {
+   "text": "3 (стр. 5). јэ́н еђы́lтока «еще до наступленія прохладнаго времени» (ср.",
+   "native": "јэ́н еђы́lтока",
+   "resolved": "јэ́н еђы́lтока: U+0458 ј, U+0301 acute on э, U+0452 ђ, U+0301 acute on ы, U+006C tall l",
+   "class": "doubt",
+   "note": "јэ́н еђы́lтока «еще до наступленія прохладнаго времени», yet before the cool season. Doubt: the final letter of јэ́н (copies read п) is н at the scan with thin bar; the acute is keyed on ы of еђы́lтока (it sits right of ы); no counterpart or lookup match."
+  },
+  "22": {
+   "text": "№6, прим. 4)."
+  },
+  "23": {
+   "text": "42."
+  },
+  "24": {
+   "text": "Ра́чвуӈк-е́wђан.",
+   "native": "Ра́чвуӈк-е́wђан",
+   "resolved": "Ра́чвуӈк-е́wђан: U+0301 acute on а and on е, U+04C8 ӈ, U+0077 w, U+0452 ђ"
+  },
+  "29": {
+   "text": "Записано отъ чукчи Рэ́мкыlын’а на р. Молондѣ.",
+   "as_typed": "Записано отъ чукчи {Re_1'mkyl_0yn}’а на р. Молондѣ.",
+   "native": "Рэ́мкыlын’а",
+   "resolved": "Рэ́мкыlын: U+0301 acute on э, U+006C tall l"
+  },
+  "30": {
+   "text": "Состязательный заговоръ."
+  },
+  "31": {
+   "text": "Паучьей женщины ремень достаю, арканомъ дѣлаю, (на подвергну-"
+  },
+  "32": {
+   "text": "таго гнѣву, вотъ этого) бросаю, все тѣло опутываю, скоро устанетъ, обез-"
+  },
+  "33": {
+   "text": "силѣетъ, сядетъ. Если же не сядетъ, разогрѣется, вспотѣетъ, изо рта"
+  },
+  "34": {
+   "text": "5 кровь пойдетъ, кровью плевать станетъ, сзади будетъ покинутъ."
+  }
+ }
+}

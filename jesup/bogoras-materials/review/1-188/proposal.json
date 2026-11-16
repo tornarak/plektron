@@ -1,0 +1,110 @@
+{
+ "ref": "1-188",
+ "contamination": {
+  "blind": false,
+  "why": "this pass reads both text-layer copies (ocr witness) by design, and two lexicon lookups (the copies' spellings, then the scan's); no other page's proposal, decision or gt/ocr/ was read"
+ },
+ "lines": {
+  "0": {
+   "text": "132 Г. БОГОРАЗЪ, I,33.",
+   "class": "layout",
+   "note": "Running head letterspaced, keyed unspaced; copy A split В. onto its own box (line 1), keyed here whole and line 1 left empty."
+  },
+  "1": {
+   "text": "В.",
+   "class": "layout",
+   "note": "the running head is split across two boxes: this one holds the initial В. of В. Г. БОГОРАЗЪ, line 0 the rest"
+  },
+  "2": {
+   "text": "Примѣчанія къ № 32."
+  },
+  "3": {
+   "text": "1 (стр. 5). міӈ̀кэ́міl ђыні́н Lымкы́ырђын? «въ какомъ положеніи твое",
+   "native": "міӈ̀кэ́міl ђыні́н Lымкы́ырђын",
+   "resolved": "міӈ̀кэ́міl: U+04C8 ӈ with grave U+0300, U+044D э with acute U+0301, U+006C tall l; ђыні́н: U+0452 ђ, acute U+0301 on і; Lымкы́ырђын: U+004C tall l capital, acute U+0301 on ы, U+0452 ђ",
+   "class": "doubt",
+   "note": "Last letter of ђыні́н is a squared н-like glyph (closed top and bottom, bar between), unlike the plain н earlier in the word; keyed н. Hook under ӈ ignored per ruling; copies read ӄ for the ђ, scan shows the ђ shape. міӈ̀кэ́міl: copies read міӈкэміл, no accents."
+  },
+  "4": {
+   "text": "спокойствіе?» Этотъ вопросъ имѣетъ спеціальное отношеніе къ безопасности стада"
+  },
+  "5": {
+   "text": "отъ волковъ и составляетъ одну изъ формулъ вѣжливости при встрѣчахъ."
+  },
+  "6": {
+   "text": "2 (стр. 10). ђыны́wміч буквально «соотвѣтственное тебѣ» употребляется для",
+   "native": "ђыны́wміч",
+   "resolved": "ђыны́wміч: U+0452 ђ, acute U+0301 on ы, U+0077 w",
+   "class": "semantic",
+   "note": "«соотвѣтственное тебѣ», literally; the Chukchi form meaning corresponding to you. Copies read ӄ and ш; scan shows ђ and w."
+  },
+  "7": {
+   "text": "выраженія подчиненія, также для выраженія зависти."
+  },
+  "8": {
+   "text": "33."
+  },
+  "9": {
+   "text": "Енанмаlа̀w-е́wђан.",
+   "as_typed": "{Enanmal_0a.w_0-e'w_0g_1an}.",
+   "native": "Енанмаlа̀w-е́wђан",
+   "resolved": "Енанмаlа̀w е́wђан: U+006C tall l, grave U+0300 on а, U+0077 w, acute U+0301 on е, U+0452 ђ",
+   "class": "doubt",
+   "note": "Fourth letter of Енанмаlа̀w shows no crossbar (н elsewhere in the word has one): н with lost hairline or п; keyed as the ratified Енанмаlа̀w-е́wђан (1-192) via key."
+  },
+  "22": {
+   "text": "Лечебный заговоръ."
+  },
+  "23": {
+   "text": "Наружу немного подальше пошелъ я, кочки есть тамъ, двѣ кочки."
+  },
+  "24": {
+   "text": "Впереди виднѣется одна (изъ нихъ), пусть совсѣмъ близко (къ ней). Тамъ,"
+  },
+  "25": {
+   "text": "какъ бы по эту сторону неба дальше отправился я. Къ кочкѣ придя, къ"
+  },
+  "26": {
+   "text": "ближайшей, говорю я: «Эй!» Самъ кричу я, какъ будто кочка говоритъ."
+  },
+  "27": {
+   "text": "5 Потомъ я: «Нѣтъ! (это) я!» — «Вотъ диво! откуда?» — «Нѣтъ! отъ ниж-"
+  },
+  "28": {
+   "text": "няго народа я пришелъ!» — «Вотъ диво! зачѣмъ ты пришелъ? Издали сюда,"
+  },
+  "29": {
+   "text": "",
+   "class": "artifact",
+   "note": "Box holding only »—« already keyed in line 28; keyed empty."
+  },
+  "30": {
+   "text": "зачѣмъ пришелъ?» Старушка какъ будто, старая, первозданная старушка"
+  },
+  "31": {
+   "text": "въ пологу есть, Куча-женщина имя. Сосѣдка же, главная жительница,"
+  },
+  "32": {
+   "text": "дальнѣйшая кочка, имя Ра́ўчһа-женщина. «Ну-ка! что скажетъ Ра́ўчһа-",
+   "native": "Ра́ўчһа Ра́ўчһа",
+   "resolved": "Ра́ўчһа: acute U+0301 on а, U+045E ў, U+04BB һ"
+  },
+  "33": {
+   "text": "10 женщина, заговоровъ старушка? Туда иди!» Ушелъ я туда въ передній"
+  },
+  "34": {
+   "text": "домъ. Снова, какъ прежде. «Эй, эй!» — «Кто?» — «Нѣтъ, я!» — «Вотъ диво!"
+  },
+  "35": {
+   "text": "откуда?» — «Нижній житель я!» — «Вотъ диво! зачѣмъ ты?» — «Слушай,"
+  },
+  "36": {
+   "text": "",
+   "class": "artifact",
+   "note": "Box holding only »—« already keyed in line 35; keyed empty."
+  },
+  "37": {
+   "text": "вотъ! человѣкъ хвораетъ изъ моего народа, хвораетъ сильно. Вотъ я и"
+  }
+ }
+}

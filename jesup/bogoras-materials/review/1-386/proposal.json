@@ -1,0 +1,179 @@
+{
+ "ref": "1-386",
+ "contamination": {
+  "blind": false,
+  "why": "this pass reads both text-layer copies (ocr witness) by design, and two lexicon lookups (the copies' spellings, then the scan's); no other page's proposal, decision or gt/ocr/ was read"
+ },
+ "lines": {
+  "0": {
+   "text": "330 В. Г. БОГОРАЗЪ, II,126.",
+   "note": "running head letterspaced БОГОРАЗЪ, keyed unspaced",
+   "class": "layout"
+  },
+  "1": {
+   "text": "сказалъ ей: «Прильни къ небу!» Она прильнула къ небу. По ниткѣ поднялся"
+  },
+  "2": {
+   "text": "вверхъ, дошелъ до передняго жительства. Говорятъ: «Ты зачѣмъ?» — «За"
+  },
+  "3": {
+   "text": "судномъ На́рђынен’а.» — «Ну, такъ иди дальше!» Пошелъ дальше. Дошелъ",
+   "native": "На́рђынен’а",
+   "resolved": "На́рђынен’а: U+0301 acute on а, U+0452 ђ, U+2019 curly apostrophe",
+   "note": "На́рђынен’а: scan shows plain Н with no hook (crop 3, and 9, 10); ratified spelling is Ӈа́рђынен (counterpart Ñaˊrg̣ɪnên); keyed as printed",
+   "class": "doubt"
+  },
+  "4": {
+   "text": "до второй межи. Тамъ жилъ духъ, поглощавшій путниковъ, его миновалъ"
+  },
+  "5": {
+   "text": "ночью. Пошелъ дальше. Лежитъ поперекъ дороги пестробокая¹); хотѣлъ",
+   "note": "footnote mark 1 raised, set with a small gap before it; keyed attached",
+   "class": "layout"
+  },
+  "6": {
+   "text": "обойти, а она удлиняется; онъ разбѣжался и перескочилъ черезъ нее."
+  },
+  "7": {
+   "text": "Пошелъ дальше. Поперекъ дороги лежитъ мохнатка²). Хотѣлъ обойти и не"
+  },
+  "8": {
+   "text": "могъ, ибо она удлинилась. Тогда разбѣжалси и перескочилъ черезъ нее.",
+   "note": "разбѣжалси: print has -си for -ся; keyed as set",
+   "class": "print"
+  },
+  "9": {
+   "text": "Пришелъ къ На́рђынен’у. «Кто ты?» — «Я нижней земли человѣкъ.» —",
+   "native": "На́рђынен’у",
+   "resolved": "На́рђынен’у: U+0301 acute on а, U+0452 ђ, U+2019 curly apostrophe",
+   "note": "На́рђынен’у: plain Н on the scan, see line 3; ratified Ӈа́рђынен",
+   "class": "doubt"
+  },
+  "10": {
+   "text": "«Зачѣмъ ты?» — «За твоимъ судномъ.» На́рђынен живетъ въ шатрѣ изъ",
+   "native": "На́рђынен",
+   "resolved": "На́рђынен: U+0301 acute on а, U+0452 ђ",
+   "note": "На́рђынен: plain Н on the scan, see line 3; ratified Ӈа́рђынен",
+   "class": "doubt"
+  },
+  "11": {
+   "text": "краснаго сукна, а пологъ у него стеклянный, — сквозь его стѣны онъ"
+  },
+  "12": {
+   "text": "смотритъ на все, что дѣлается на свѣтѣ. Онъ далъ ему судно, нагрузилъ"
+  },
+  "13": {
+   "text": "его ѣдой и всякими припасами: ремни свитками, лахтаки десятками, табакъ"
+  },
+  "14": {
+   "text": "сумами, чай побочнями³). На этомъ суднѣ скользнулъ внизъ, пришелъ въ"
+  },
+  "15": {
+   "text": "домъ отца невѣсты, женился на ней. Остальныхъ жениховъ прогнали."
+  },
+  "16": {
+   "text": "Записано отъ чукчи Чэ́ӈэ на Анюйской ярмаркѣ.",
+   "native": "Чэ́ӈэ",
+   "resolved": "Чэ́ӈэ: U+0301 acute on first э, U+04C8 ӈ",
+   "note": "Chukchi informant name Чэ́ӈэ, Che-ne; copies read Чэнэ, scan has acute on э and hooked ӈ",
+   "class": "semantic"
+  },
+  "17": {
+   "text": "127."
+  },
+  "18": {
+   "text": "Јако́нне-lѵ́мӈыl. О Јӓку́ннін’ѣ сказка.",
+   "as_typed": "{Jako'nne-l_0v_1'mn_1yl_0}. О {Ja:ku'nni_1n}’ѣ сказка.",
+   "native": "Јако́нне-lѵ́мӈыl Јӓку́ннін’ѣ",
+   "resolved": "Јако́нне-lѵ́мӈыl: U+0301 acute on о, U+0301 acute on ѵ, U+04C8 ӈ, U+006C tall l; Јӓку́ннін’ѣ: U+04D3 ӓ, U+0301 acute on у, U+2019"
+  },
+  "19": {
+   "text": "Была дѣвочка, имя Ђы́нкы-ӈэ́ўт. Собрались въ шатрѣ совершающіе",
+   "native": "Ђы́нкы-ӈэ́ўт",
+   "resolved": "Ђы́нкы-ӈэ́ўт: U+0402 Ђ, U+0301 acute on ы, U+04C8 ӈ, U+0301 acute on э, U+045E ў (у with breve)",
+   "note": "Ђ capital with the loop-hook of ђ; copy B read Б; ў with breve over у",
+   "class": "doubt"
+  },
+  "20": {
+   "text": "служеніе, закрыли дымовое отверстіе, поютъ, а между тѣмъ это собаки."
+  },
+  "21": {
+   "text": "Одни поютъ: «кооо, кооо!» воютъ дружечки, другіе: «коон, коон, коон!»",
+   "note": "first «коон» in the run, К has a small hook beneath and the last letter looks hooked: reading ӄооӈ vs plain коон; copies and lexicon give коон; keyed plain Coordinator, zoomed: only the first коон carries the hooks (on К and the final н); the second and third are plain.",
+   "class": "doubt"
+  },
+  "22": {
+   "text": "третьи, стоящіе: «ооо, нооо⁴)!» Наконецъ хозяйка говоритъ дѣвушкѣ: «По-",
+   "note": "mark before the paren is a raised 4, copies read *; matches footnote 4 on line 32",
+   "class": "draft"
+  },
+  "23": {
+   "text": "смотри-ка что за поющіе, зачѣмъ они закрыли дверь и дымовое отвер-"
+  },
+  "24": {
+   "text": "стіе?» Нашла щель, заглянула. Все собаки воютъ. Люди прибѣжали и"
+  },
+  "25": {
+   "text": "стали колотить. Убѣжали собаки на западную сторону, стали русскимъ"
+  },
+  "26": {
+   "text": "народомъ. Часть осталась собаками, сдѣлалась ихъ упряжкой. Прежніе"
+  },
+  "27": {
+   "text": "битые стали гнѣваться за удары, начали войну. «Ђу́к! Мы не знали! Наши",
+   "native": "Ђу́к",
+   "resolved": "Ђу́к: U+0402 Ђ, U+0301 acute on у",
+   "note": "Ђу́к: exclamation, copies read Бук; scan shows Ђ with loop below and acute on у; compare Ђы́нкы on line 19",
+   "class": "doubt"
+  },
+  "28": {
+   "text": "били собакъ, а онѣ стали народомъ!» Стали воевать. Пошелъ Јӓку́ннін,",
+   "as_typed": "били собакъ, а онѣ стали народомъ!» Стали воевать. Пошелъ {Ja:ku'nni_1n},",
+   "native": "Јӓку́ннін",
+   "resolved": "Јӓку́ннін: U+04D3 ӓ, U+0301 acute on у"
+  },
+  "29": {
+   "text": "1) Ђыто̀-каlе́lы — насѣкомое вродѣ Божьей коровки.",
+   "native": "Ђыто̀-каlе́lы",
+   "resolved": "Ђыто̀-каlе́lы: U+0402 Ђ, U+0300 grave on о, U+006C tall l twice, U+0301 acute on е",
+   "note": "print gloss: Ђыто̀-каlе́lы, an insect like a ladybird (божья коровка)",
+   "class": "semantic"
+  },
+  "30": {
+   "text": "2) Ке́рђыlын — насѣкомое.",
+   "native": "Ке́рђыlын",
+   "resolved": "Ке́рђыlын: U+0301 acute on е, U+0452 ђ, U+006C tall l",
+   "note": "semantic: Ке́рђыlын, an insect",
+   "class": "semantic"
+  },
+  "31": {
+   "text": "3) Емте́-ӄаl т. е. побочень (парный вьюкъ) вѣситъ три пуда.",
+   "native": "Емте́-ӄаl",
+   "resolved": "Емте́-ӄаl: U+0301 acute on е, U+04C4 ӄ, U+006C tall l",
+   "note": "Емте́-ӄаl, a pack of two bundles (побочень) weighing three poods",
+   "class": "semantic"
+  },
+  "32": {
+   "text": "4) Здѣсь изображается праздникъ мӈе́ырђын, который будто-бы справляли",
+   "native": "мӈе́ырђын",
+   "resolved": "мӈе́ырђын: U+04C8 ӈ, U+0301 acute on е, U+0452 ђ",
+   "note": "semantic: праздникъ мӈе́ырђын, a festival of the hunt-offering that the dogs supposedly celebrated",
+   "class": "semantic"
+  },
+  "33": {
+   "text": "собаки. При этомъ праздникѣ совершается торжественное служеніе надъ добычею"
+  },
+  "34": {
+   "text": "охоты, причемъ мужчины шаманятъ, стуча въ бубенъ, а женщины становясь передъ"
+  },
+  "35": {
+   "text": "ними выражаютъ свой религіозный экстазъ различными странными тѣлодвиженіями"
+  },
+  "36": {
+   "text": "и пляской. Между прочимъ собакамъ, волкамъ и другимъ хищнымъ животнымъ при-"
+  },
+  "37": {
+   "text": "писывается также совершеніе такихъ служеній послѣ удачной охоты."
+  }
+ }
+}

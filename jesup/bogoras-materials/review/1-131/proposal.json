@@ -1,0 +1,139 @@
+{
+ "ref": "1-131",
+ "contamination": {
+  "blind": false,
+  "why": "this pass reads both text-layer copies (ocr witness) by design, and two lexicon lookups (the copies' spellings, then the scan's); no other page's proposal, decision or gt/ocr/ was read"
+ },
+ "lines": {
+  "0": {
+   "text": "I,12. МАТЕРІАЛЫ ПО ИЗУЧЕНІЮ ЧУКОТСКАГО ЯЗЫКА И ФОЛЬКЛОРА. 75"
+  },
+  "1": {
+   "text": "изъ китоваго уса) является обыкновеннымъ оружіемъ сказочныхъ героевъ въ руко-"
+  },
+  "2": {
+   "text": "пашной борьбѣ."
+  },
+  "3": {
+   "text": "4 (стр. 14). мынонто́ркын «печенки поѣлъ». Кэ́lэ обнаруживаетъ вообще",
+   "native": "мынонто́ркын Кэ́lэ",
+   "resolved": "мынонто́ркын: U+0301 acute on о; Кэ́lэ: U+0301 acute on э, U+006C tall l, U+044D э",
+   "note": "Кэ́lэ: the final letter is э (bowl open to the left, as the э before it) with a separate hook below — not the є of the ratified Кэ́lє, whose bowl opens right (1-024 l34, compared at 4x by the coordinator). A hook below э is not ruled, so the plain э is a reading, not a fold. Gloss: «печенки поѣлъ», he ate livers (мынонто́ркын); Кэ́lэ = the cannibal Kele.",
+   "class": "doubt"
+  },
+  "4": {
+   "text": "любовь къ печени. Чукчи называютъ его понта́ырынкен «любитель печени».",
+   "as_typed": "любовь къ печени. Чукчи называютъ его {ponta'yrynken} «любитель печени».",
+   "native": "понта́ырынкен",
+   "resolved": "понта́ырынкен: U+0301 acute on а",
+   "note": "«любитель печени», liver-lover (понта́ырынкен, epithet of Kele; Chukchee counterpart pontaˊɪrɪnkên).",
+   "class": "semantic"
+  },
+  "5": {
+   "text": "5 (стр. 28). о́нмычыку нутэ́рђычыку ва́ркыт «они внутри въ погребѣ».",
+   "native": "о́нмычыку нутэ́рђычыку ва́ркыт",
+   "resolved": "о́нмычыку: U+0301 acute on о; нутэ́рђычыку: U+0301 acute on э, U+0452 ђ; ва́ркыт: U+0301 acute on а",
+   "note": "«они внутри въ погребѣ», they are inside in the cellar (нутэ́рђычыку ... ва́ркыт).",
+   "class": "semantic"
+  },
+  "6": {
+   "text": "Въ чукотскихъ жилищахъ бываютъ ямы для храненія запасовъ во время лѣта, но ямы"
+  },
+  "7": {
+   "text": "эти не такъ глубоки, чтобы люди могли туда прятаться. Только полевой нутэ́рђын",
+   "native": "нутэ́рђын",
+   "resolved": "нутэ́рђын: U+0301 acute on э, U+0452 ђ"
+  },
+  "8": {
+   "text": "для храненія охотничьей добычи бываетъ глубиной въ человѣческій рость. Здѣсь"
+  },
+  "9": {
+   "text": "такимъ образомъ взяты черты иной, не чукотской обстановки."
+  },
+  "10": {
+   "text": "6 (стр. 34). рэ́ӄу lѵ́мӈа — буквально «зачѣмъ опять». Выраженіе это упо-",
+   "as_typed": "6 (стр. 34). рэ́ӄу {l_0v_1'mn_1a} — буквально «зачѣмъ опять». Выраженіе это упо-",
+   "native": "рэ́ӄу lѵ́мӈа",
+   "resolved": "рэ́ӄу: U+0301 acute on э, U+04C4 ӄ; lѵ́мӈа: U+006C tall l, U+0475 ѵ, U+0301 acute on ѵ, U+04C8 ӈ",
+   "note": "«зачѣмъ опять», why again (lѵ́мӈа); tight dash in print keyed spaced.",
+   "class": "semantic"
+  },
+  "11": {
+   "text": "требляется въ смыслѣ «слава Богу! отлично!»"
+  },
+  "12": {
+   "text": "7 (стр. 37). уwара́чын — крюкъ для подвѣшиванія котла надъ огнемъ.",
+   "native": "уwара́чын",
+   "resolved": "уwара́чын: U+0077 w, U+0301 acute on а",
+   "note": "Gloss: ушарачын, hook for hanging a kettle over the fire (print spells it with Latin-form w).",
+   "class": "semantic"
+  },
+  "13": {
+   "text": "8 (стр. 54). пеwра - ме́мыl «прыгающая нерпа». Ср. № 4, стр. 8.",
+   "native": "пеwра ме́мыl",
+   "resolved": "пеwра: U+0077 w; ме́мыl: U+0301 acute on е, U+006C tall l",
+   "note": "«прыгающая нерпа», jumping ringed seal (пеwра ме́мыl). The dash between the forms is short, like a hyphen; keyed as spaced hyphen as the copies read it.",
+   "class": "semantic"
+  },
+  "14": {
+   "text": "каӈера́lђын — мелкое ракообразное животное; чукчи даютъ это имя безразлично",
+   "native": "каӈера́lђын",
+   "resolved": "каӈера́lђын: U+04C8 ӈ, U+0301 acute on а, U+006C tall l, U+0452 ђ",
+   "note": "каӈера́lђын, a small crustacean; dash after it is printed though both copies dropped it.",
+   "class": "semantic"
+  },
+  "15": {
+   "text": "многимъ породамъ мелкихъ crustacea, которыя водятся въ морской водѣ у берега."
+  },
+  "16": {
+   "text": "ӄана́јоlђын — небольшая морская рыба изъ породы бычковъ.",
+   "native": "ӄана́јоlђын",
+   "resolved": "ӄана́јоlђын: U+04C4 ӄ, U+0301 acute on а, U+0458 ј, U+006C tall l, U+0452 ђ",
+   "note": "ӄана́јоlђын, a small sea fish of the sculpin kind; dash printed though copy A dropped it. A tiny speck sits under н on the scan, taken as an artifact.",
+   "class": "semantic"
+  },
+  "17": {
+   "text": "12."
+  },
+  "18": {
+   "text": "Та́н̀ӈен lѵ́мӈыl.",
+   "as_typed": "{Ta'n.n_1en} {l_0v_1'mn_1yl_0}.",
+   "native": "Та́н̀ӈен lѵ́мӈыl",
+   "resolved": "Та́н̀ӈен: U+0301 acute on а, U+0300 grave on н, U+04C8 ӈ; lѵ́мӈыl: U+006C tall l, U+0475 ѵ, U+0301 acute on ѵ, U+04C8 ӈ, U+006C tall l"
+  },
+  "28": {
+   "text": "Русская сказка."
+  },
+  "29": {
+   "text": "Старикъ съ двумя сыновьями, сыновьямъ говоритъ: «Поищите дикихъ",
+   "note": "Both copies read final ъ as ь (говорить, брать); scan sets ъ (говоритъ, братъ). Same in 31, 32, 34.",
+   "class": "draft"
+  },
+  "30": {
+   "text": "оленей!» Стали искать дикихъ оленей, двухъ дикихъ оленей нашли. Только"
+  },
+  "31": {
+   "text": "дикими оленями обогатились. Говоритъ старикъ: «Ну-ка, поищите песцовъ!»"
+  },
+  "32": {
+   "text": "Потомъ говоритъ: «Ну! поищите лисицъ!» Старшій братъ говоритъ: «Ухъ! 5"
+  },
+  "33": {
+   "text": "я началъ ослабѣвать! Пусть на собачьемъ корытѣ стану ѣздить!» Гово-"
+  },
+  "34": {
+   "text": "ритъ младшій братъ: «Согласенъ! ѣзди на корытѣ!» Сѣдло и все сдѣлалъ",
+   "note": "Copy B read корыть; scan sets корытѣ.",
+   "class": "draft"
+  },
+  "35": {
+   "text": "на корытѣ, ротъ сдѣлалъ, какъ бы конскій, желѣзомъ обвязалъ по рту. На"
+  },
+  "36": {
+   "text": "корытѣ сѣлъ. Желѣзнымъ посохомъ по задницѣ ударилъ, быстро унеслось"
+  },
+  "37": {
+   "text": "(корыто), брата покинулъ. Попрежнему мчится. Въ дорогѣ совсѣмъ конемъ 10"
+  }
+ }
+}
