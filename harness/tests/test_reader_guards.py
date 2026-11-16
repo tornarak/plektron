@@ -83,8 +83,8 @@ def blocked(guard, tool, **ti):
     "uv run harness lexicon misses",
     "uv run harness lexicon marks",
     "uv run harness lexicon conflicts",
-    "uv run harness lexicon lookup kulu",
-    "uv run harness lexicon lookup kulu --min-pages 3",
+    "uv run harness lexicon lookup --for 1-075 kulu",
+    "uv run harness lexicon lookup --for 1-075 kulu --min-pages 3",
     "uv run harness find glyph",
 ])
 def test_gt_the_whole_loop_runs_unprompted(cmd):
@@ -700,3 +700,11 @@ def test_only_the_materials_reader_asks_for_counterparts():
     cmd = "uv run harness lexicon counterpart 1-031 кама́к --root jesup/bogoras-materials"
     allowed(MAT_GUARD, "Bash", command=cmd)
     blocked(GT_GUARD, "Bash", command=cmd)
+
+
+def test_a_lookup_that_names_no_page_is_refused():
+    """A lookup leaves a record on its page or it does not run: three readers'
+    "the lookup found no key" were unverifiable before (2026-11-16)."""
+    for guard in (GT_GUARD, MAT_GUARD):
+        err = blocked(guard, "Bash", command="uv run harness lexicon lookup kulu")
+        assert "--for" in err

@@ -671,8 +671,31 @@ def search(queries: list[str], root: Path = Path("."), min_pages: int = 1,
     for a walk apiece. Same contract as `expand`'s.
     """
     idx = idx if idx is not None else index(root, tick=tick)
-    rows, seen = [], set()
     table = handle_table(root)
+    # **Each query runs the whole cascade on its own** — whole, then its elements,
+    # then a near spelling — and the rows are merged. The cascade used to run once
+    # per call, so one query's exact hit suppressed every other query's near pass:
+    # a reader batching a page's forms, as the verb asks, got `Јӓку́ннін` and lost
+    # `Ӈа́рђынен` for `На́рђынен` beside it (1-386, 2026-11-16).
+    rows, seen, split, keys = [], set(), [], set()
+    for q in queries:
+        r = _search_one(q, idx, table, min_pages)
+        split += [p for p in r["split"] if p not in split]
+        seen |= r["seen"]
+        for row in r["rows"]:
+            if (row.get("key"), row.get("form")) not in keys:
+                keys.add((row.get("key"), row.get("form")))
+                rows.append(row)
+    lines = [ln for bucket in sorted(seen)
+             for f in idx["buckets"][bucket]["forms"].values()
+             for ln in f["lines"][:context]]
+    return _result(queries, split, min_pages, idx, rows, lines, root)
+
+
+def _search_one(q: str, idx: dict, table, min_pages: int) -> dict:
+    """One query's cascade: `{rows, seen, split}` (`search` merges them)."""
+    queries = [q]
+    rows, seen = [], set()
     terms = _terms(queries, table)
     split = []
     # **The elements of a compound, but only once the whole has missed.** The corpus
@@ -699,9 +722,11 @@ def search(queries: list[str], root: Path = Path("."), min_pages: int = 1,
                 if len(r := reduction(q, table)) >= 3]
         if near:
             _scan(idx, terms, rows, seen, min_pages, near=near, table=table)
-    lines = [ln for bucket in sorted(seen)
-             for f in idx["buckets"][bucket]["forms"].values()
-             for ln in f["lines"][:context]]
+    return {"rows": rows, "seen": seen, "split": split}
+
+
+def _result(queries: list[str], split: list[str], min_pages: int, idx: dict,
+            rows: list[dict], lines: list[dict], root: Path) -> dict:
     return {
         "queries": " ".join(queries),
         # Empty unless the whole query missed and its elements answered. A reader

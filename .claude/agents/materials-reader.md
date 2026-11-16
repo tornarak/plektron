@@ -105,6 +105,13 @@ finish.
   says so. That is Russian, which is yours; a native form never gets this.
 - A line that is a speck (a box a few pixels wide that a copy read as `1`) is
   keyed empty, with an `artifact` note.
+- **Each box holds what is printed under it.** The copies often box one initial
+  of the running head on its own (`В.` or `Г.` of «В. Г. БОГОРАЗЪ»), beside line
+  0: key that box `В.` (or `Г.`) with a `layout` note, and line 0 without it.
+  A small box lying *inside* a full line's box, over ink that line already holds
+  (a dash, the tail of a heading), is a second box over the same print: key the
+  line whole and the small box empty, with an `artifact` note (1-380 l17, 1-188
+  l29).
 - **The Chukchi stream of a Section I page is not read** (the editor,
   2026-11-16). It is a `DiscardZone`: the witness leaves its lines out
   (`discarded` counts them), `ocr zoom` refuses them, and `restore` keys them

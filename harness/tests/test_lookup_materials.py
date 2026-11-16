@@ -237,3 +237,14 @@ def test_a_layer_that_dropped_the_tall_l_still_reaches_the_form(text):
     # A three-letter query reaches a form only whole, never as a substring: `оwе`
     # sits inside терк-арм-ора́wеðат's reduction and must not near-match it.
     assert not any(x["near"] for x in search([nfd("оwе")], text)["matches"])
+
+
+def test_one_querys_hit_does_not_suppress_anothers_near_spelling(text):
+    """The cascade runs per query: batching a page's forms, as the verb asks, lost
+    every near match the moment any query hit exactly (1-386, `На́рђынен` beside
+    `Јӓку́ннін`)."""
+    alone = search([nfd("Ајнанват")], text)["matches"]
+    both = search([nfd("Ајнанват"), nfd("терк-арм")], text)["matches"]
+    assert [x["form"] for x in alone] == [nfd("Ајӈан̀ва́т")]
+    assert nfd("Ајӈан̀ва́т") in [x["form"] for x in both]
+    assert any(x["form"] == nfd("Ајӈан̀ва́т") and x["near"] for x in both)
