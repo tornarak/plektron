@@ -1,0 +1,187 @@
+{
+ "ref": "1-038",
+ "contamination": {
+  "blind": false,
+  "why": "this pass reads both text-layer copies (ocr witness) by design, and one lexicon lookup; no other page's proposal, decision or gt/ocr/ was read"
+ },
+ "lines": {
+  "0": {
+   "text": "XVIII В. Г. БОГОРАЗЪ,"
+  },
+  "1": {
+   "text": "и замужество, были настоящими высокими и сильными мужчинами, и злые"
+  },
+  "2": {
+   "text": "языки говорили, что они имѣли тайно собственныхъ любовницъ между жен-"
+  },
+  "3": {
+   "text": "щинами; въ одномъ случаѣ женоподобный жилъ со второй женой своего"
+  },
+  "4": {
+   "text": "собственнаго мужа, которая была настоящей женщиной."
+  },
+  "5": {
+   "text": "Шаманская сила јырка̀-lа́ўl’а совершенно исключительна. Несмотря",
+   "native": "јырка̀-lа́ўl’а",
+   "resolved": "јырка̀-lа́ўl’а: U+0458 ј, U+0300 grave on а, U+006C tall l, U+0301 acute on а, U+045E ў (у with breve, U+0443 U+0306), U+2019 curly apostrophe before Russian ending",
+   "note": "The gloss is in the book (2-177): a man transformed into a softer sex. Copy A reads ğ for ў; copy B has ў; scan shows breve over у. Curly ’ as printed, taken as the stem/Russian-ending join.",
+   "class": "semantic"
+  },
+  "6": {
+   "text": "на свою женскую одежду, онъ въ совершенствѣ владѣетъ особыми духами"
+  },
+  "7": {
+   "text": "и ихъ голосами (ја́нр̌а - коlе́коl). Онъ имѣетъ также пестрое шаманское",
+   "native": "ја́нр̌а коlе́коl",
+   "resolved": "ја́нр̌а коlе́коl: U+0458 ј, U+0301 acute on а, U+030C caron on р, U+006C tall l (twice), U+0301 acute on е",
+   "note": "Copies drop the acute on а, the caron on р, and the acute on е; the scan shows all three. Spaces around the hyphen are printed. Copies read р̌ as plain р.",
+   "class": "layout"
+  },
+  "8": {
+   "text": "платье, похожее на женское по обилію украшеній и бахромы. Надѣвъ это"
+  },
+  "9": {
+   "text": "платье, онъ стрѣляетъ въ своихъ противниковъ стержнемъ деревяннаго"
+  },
+  "10": {
+   "text": "огнива, замѣняя лукъ лучкомъ того-же огнива, и стержень превращается"
+  },
+  "11": {
+   "text": "въ огненное копье, умерщвляющее всѣхъ противниковъ. Но даже вся его"
+  },
+  "12": {
+   "text": "шаманская сила и страхъ, ею внушаемый, не спасаютъ его отъ насмѣшекъ,"
+  },
+  "13": {
+   "text": "особенно женскихъ; смотрѣть № 88. Про јырка̀-lа́ўl’ей сложено много на-",
+   "native": "јырка̀-lа́ўl’ей",
+   "resolved": "јырка̀-lа́ўl’ей: U+0458 ј, U+0300 grave on а, U+006C tall l, U+0301 acute on а, U+0306 breve on у, U+2019 curly apostrophe before ending",
+   "note": "One numero sign and a space, № 88, as the scan shows (checked at the zoom in the batch check); copy A has №№88, copy B №88.",
+   "class": "layout"
+  },
+  "14": {
+   "text": "смѣшливыхъ разсказовъ, которые передаются изъ устъ въ уста правда"
+  },
+  "15": {
+   "text": "шопотомъ, но за то постоянно обновляются."
+  },
+  "16": {
+   "text": "Ја́нр̌а-ка́lат вызываемые шаманами и шаманками при помощи чрево-",
+   "native": "Ја́нр̌а-ка́lат",
+   "resolved": "Ја́нр̌а-ка́lат: U+0408 Ј, U+0301 acute on а, U+030C caron on р, U+0301 acute on а, U+006C tall l",
+   "note": "Copies drop the acute on а and caron on р; word-initial Ј is Cyrillic Je.",
+   "class": "draft"
+  },
+  "17": {
+   "text": "вѣщанія, и просто кэ́lэт, вызываемые помимо чревовѣщанія, отличаются",
+   "native": "кэ́lэт",
+   "resolved": "кэ́lэт: U+0301 acute on э, U+006C tall l",
+   "note": "The reader keyed this as plain prose кэлэт; the scan shows кэ́lэт, acute on the first э and the tall l (batch check). Plural of кэ́lє; ratified capitalized Кэ́lэт on 1-030.",
+   "class": "semantic"
+  },
+  "18": {
+   "text": "безконечнымъ разнообразіемъ. Чаще всего это птичьи и звѣриные духи,"
+  },
+  "19": {
+   "text": "дикій олень (ыlвыlу̀-кэ́lє), которому даютъ обыкновенно имя А́јђынто (Чутье",
+   "native": "ыlвыlу̀-кэ́lє А́јђынто",
+   "resolved": "ыlвыlу̀-кэ́lє А́јђынто: U+006C tall l (twice), U+0300 grave on у, U+0301 acute on э, U+006C tall l, U+0454 є, U+0301 acute on А, U+0458 ј, U+0452 ђ",
+   "note": "The є carries a hook below on the scan; no codepoint is ruled for it, keyed as plain є per the rule. Copy A reads ślę, B reads кэє.",
+   "class": "doubt"
+  },
+  "20": {
+   "text": "духа вышло), птица-мышеловка (рэ́ўlын), сказочное имя медвѣдя (мэwэ́т-",
+   "native": "рэ́ўlын мэwэ́т-",
+   "resolved": "рэ́ўlын мэwэ́т-чын: U+0301 acute on э, U+0306 breve on у, U+006C tall l, U+0077 Latin w, U+0301 acute on э",
+   "note": "Native form split across lines (-чын on 21). Final letter of рэ́ўlын is read н; the crossbar is a hairline nearly lost in the scan, copies read л/н/п. мэwэ́т: w is Latin w, copy A read ш.",
+   "class": "doubt"
+  },
+  "21": {
+   "text": "чын), морская птица (перру́пер), и т. п. Въ соотвѣтствіе этому шаманство",
+   "native": "перру́пер",
+   "resolved": "перру́пер: U+0301 acute on у"
+  },
+  "22": {
+   "text": "признается также и свойственнымъ звѣрямъ. Такъ, волкъ при помощи"
+  },
+  "23": {
+   "text": "шаманства наводить порчу на дикихъ оленей, чтобы потомъ догонять ихъ,"
+  },
+  "24": {
+   "text": "и сонъ на пастуха, прирученнаго стада. Смотрѣть также № 119, гдѣ дѣй-"
+  },
+  "25": {
+   "text": "ствительными лицами во время служенія (мӈі́кін) являются исключительно",
+   "native": "мӈі́кін",
+   "resolved": "мӈі́кін: U+04C8 ӈ, U+0301 acute on і, U+0456 і",
+   "note": "Final н has a hairline crossbar; copies read н.",
+   "class": "semantic"
+  },
+  "26": {
+   "text": "животныя. Служебные духи считаются совершенно подчиненными волѣ"
+  },
+  "27": {
+   "text": "шамана, ихъ хозяина; они даже являются по первому требованію и ис-"
+  },
+  "28": {
+   "text": "полнять всякія порученія, какъ бы трудно это не было. Рядомъ съ звѣри-"
+  },
+  "29": {
+   "text": "ными духами (ја́нр̌а - ка́lат) бываютъ выдѣляемые изъ неодушевленныхъ",
+   "native": "ја́нр̌а ка́lат",
+   "resolved": "ја́нр̌а ка́lат: U+0458 ј, U+0301 acute on а, U+030C caron on р, U+0301 acute on а, U+006C tall l",
+   "note": "Spaces around the hyphen are printed.",
+   "class": "layout"
+  },
+  "30": {
+   "text": "предметовъ, включая и предметы домашняго обихода. Напр. вынималка для"
+  },
+  "31": {
+   "text": "мяса (рырампако́јӈын) является въ видѣ старика съ очень вольными рѣчами",
+   "native": "рырампако́јӈын",
+   "resolved": "рырампако́јӈын: U+0301 acute on о, U+0458 ј, U+04C8 ӈ"
+  },
+  "32": {
+   "text": "и говорить, что женщины любятъ его. Игла является въ мужскомъ видѣ"
+  },
+  "33": {
+   "text": "подъ именемъ еwчу́wђі «долгій»; швейный мѣшокъ является напротивъ",
+   "native": "еwчу́wђі",
+   "resolved": "еwчу́wђі: U+0077 Latin w (twice), U+0301 acute on у, U+0452 ђ, U+0456 і",
+   "note": "Copies read this as емчужні; the scan shows е w ч у́ w ђ і. ђ is the ҕ-like hooked letter (ruled ђ).",
+   "class": "doubt"
+  },
+  "34": {
+   "text": "женщиной, привычной сидѣть дома и т. п."
+  },
+  "35": {
+   "text": "Сказки много занимаются шаманствомъ, говорять о происхожденіи"
+  },
+  "36": {
+   "text": "бубна, о внезапномъ дарованіи шаманской силы, о добрыхъ шаманахъ и"
+  },
+  "37": {
+   "text": "злыхъ шаманахъ (ку́рђу эӈэ́ӈыlын или lэwlэ́у-эӈэ́ӈыlын, буквально «на-",
+   "native": "ку́рђу эӈэ́ӈыlын lэwlэ́у-эӈэ́ӈыlын",
+   "resolved": "ку́рђу эӈэ́ӈыlын lэwlэ́у-эӈэ́ӈыlын: U+0301 acute on у, U+0452 ђ, U+04C8 ӈ (four), U+0301 acute on э (three), U+006C tall l (four), U+0077 Latin w",
+   "note": "Gloss: курђу эӈэӈыһын or lэwlэ́у-эӈэ́ӈыlын, literally «насмѣхающійся шаманъ» (laughing shaman), the book translates; copy A read һ/л at the end of the forms, the scan shows tall l; final н has a hairline crossbar.",
+   "class": "semantic"
+  },
+  "38": {
+   "text": "смѣхающійся шаманъ»). Таковъ напр. Ры́нтеў въ сказкѣ о Чесоточномъ",
+   "as_typed": "смѣхающійся шаманъ»). Таковъ напр. {Ry'nteu~} въ сказкѣ о Чесоточномъ",
+   "native": "Ры́нтеў",
+   "resolved": "Ры́нтеў: U+0301 acute on ы, U+0306 breve on у"
+  },
+  "39": {
+   "text": "шаманѣ. Среди женщинъ «насмѣхающемуся шаману» соотвѣтствуеть «ста-"
+  },
+  "40": {
+   "text": "рушка съ порчей» (у́јwэl-ынпыӈэ́wӄӓј). Таковы въ № 78 старушка изъ пле",
+   "native": "у́јwэl-ынпыӈэ́wӄӓј",
+   "resolved": "у́јwэl-ынпыӈэ́wӄӓј: U+0301 acute on у, U+0458 ј, U+0077 Latin w, U+006C tall l, U+0301 acute on э, U+04C8 ӈ, U+04C4 ӄ, U+04D3 ӓ",
+   "note": "Gloss: «старушка съ порчей» (old woman with the spoilage/evil), ýjwəl-... Copies read ынныӈэшӄај / ынпыӈэшӄај. Scan: ы н п ы ӈ э́ w ӄ ӓ j; the third letter has no visible crossbar (п) where copy A has н; the strip overlap repeats the ы.",
+   "class": "doubt"
+  }
+ }
+}

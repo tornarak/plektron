@@ -1,0 +1,194 @@
+{
+ "ref": "1-036",
+ "contamination": {
+  "blind": false,
+  "why": "this pass reads both text-layer copies (ocr witness) by design, and one lexicon lookup; no other page's proposal, decision or gt/ocr/ was read"
+ },
+ "lines": {
+  "0": {
+   "text": "XVI В. Г. БОГОРАЗЪ,",
+   "class": "layout",
+   "note": "Running head letterspaced (БОГОРАЗЪ) keyed unspaced; folio XVI is Roman, Latin letters."
+  },
+  "1": {
+   "text": "мысломъ, дающимъ Кэ́lє средства къ существованію, является, какъ и у всѣхъ",
+   "as_typed": "мысломъ, дающимъ {Ke_1'l_0e_2} средства къ существованію, является, какъ и у всѣхъ",
+   "native": "Кэ́lє",
+   "resolved": "Кэ́lє: U+041A К, U+044D э, U+0301 acute on э, U+006C tall l, U+0454 є"
+  },
+  "2": {
+   "text": "приморскихъ жителей, ловля тюленей, но часто рядомъ съ тюленями онъ"
+  },
+  "3": {
+   "text": "ловитъ также людей тѣми-же самими сѣтями, и называются поэтому «тюлен-",
+   "class": "print",
+   "note": "самими: print reads самими (not самыми); keyed as the copies and scan have it, possible compositor slip. Also ъ restored in ловитъ and similar verb endings (copies read ь)."
+  },
+  "4": {
+   "text": "чиками» (ме́мыlӄај). Такое представленіе составляетъ уже переходъ къ дру-",
+   "native": "ме́мыlӄај",
+   "resolved": "ме́мыlӄај: U+0301 acute on е, U+006C tall l, U+04C4 ӄ, U+0458 ј",
+   "class": "semantic",
+   "note": "ме́мыlӄај «тюленчики», little seals (gloss from the prose); the tall l between ы and ӄ is dropped by both copies. No counterpart in The Chukchee."
+  },
+  "5": {
+   "text": "гому роду Кэ́lє, невидимымъ злымъ духамъ, которые странствуютъ по землѣ,",
+   "as_typed": "гому роду {Ke_1'l_0e_2}, невидимымъ злымъ духамъ, которые странствуютъ по землѣ,",
+   "native": "Кэ́lє",
+   "resolved": "Кэ́lє: U+041A К, U+044D э, U+0301 acute on э, U+006C tall l, U+0454 є"
+  },
+  "6": {
+   "text": "чтобы подъ видомъ болѣзни убивать людей и причинять имъ вредъ. Въ сказкѣ"
+  },
+  "7": {
+   "text": "о шаманѣ Роровальгинѣ № 167 прямо разсказывается, что Кэ́lє, прежде",
+   "as_typed": "о шаманѣ Роровальгинѣ № 167 прямо разсказывается, что {Ke_1'l_0e_2}, прежде",
+   "native": "Кэ́lє",
+   "resolved": "Кэ́lє: U+041A К, U+044D э, U+0301 acute on э, U+006C tall l, U+0454 є"
+  },
+  "8": {
+   "text": "жившіе на землѣ открыто въ видѣ враждебнаго племени, послѣ крово-"
+  },
+  "9": {
+   "text": "пролитныхъ сраженій съ людьми перестали приходить открыто и стали не-"
+  },
+  "10": {
+   "text": "видимыми. Чукчи вообще мало склонны признавать естественную смерть и"
+  },
+  "11": {
+   "text": "каждый смертный случай приписываютъ или шаманскому воздѣйствію"
+  },
+  "12": {
+   "text": "(у́јwеl) или дѣйствію Кэ́lє. Кэ́lє живутъ за рубежемъ земли, населенной",
+   "as_typed": "(у́јwеl) или дѣйствію {Ke_1'l_0e_2}. {Ke_1'l_0e_2} живутъ за рубежемъ земли, населенной",
+   "native": "у́јwеl Кэ́lє Кэ́lє",
+   "resolved": "у́јwеl: U+0301 acute on у, U+0458 ј, U+0077 w, U+006C tall l; Кэ́lє x2: U+0301 acute on э, U+006C tall l, U+0454 є",
+   "class": "doubt",
+   "note": "у́јwеl, the evil influence the sentence names. The print sets plain е here (checked at the zoom in the batch check), where 1-038 l40 and 1-039 l2–6 set у́јwэl with э: two spellings of one word, both keyed as printed. Кэ́lє is typed by its key; its є carries the hook below here, as on the ratified pages."
+  },
+  "13": {
+   "text": "чукчами, также въ другихъ вселенныхъ. Описаніе именно такихъ Кэ́lє",
+   "as_typed": "чукчами, также въ другихъ вселенныхъ. Описаніе именно такихъ {Ke_1'l_0e_2}",
+   "native": "Кэ́lє",
+   "resolved": "Кэ́lє: U+041A К, U+044D э, U+0301 acute on э, U+006C tall l, U+0454 є"
+  },
+  "14": {
+   "text": "смотрѣть въ № 143."
+  },
+  "15": {
+   "text": "Кромѣ Кэ́lє, видимыхъ и невидимыхъ, въ сказкахъ встрѣчаются многія",
+   "as_typed": "Кромѣ {Ke_1'l_0e_2}, видимыхъ и невидимыхъ, въ сказкахъ встрѣчаются многія",
+   "native": "Кэ́lє",
+   "resolved": "Кэ́lє: U+041A К, U+044D э, U+0301 acute on э, U+006C tall l, U+0454 є"
+  },
+  "16": {
+   "text": "баснословныя чудовища. Таковы дельфины (іӈыпчі́ӄыт), морскіе оборотни,",
+   "native": "іӈыпчі́ӄыт",
+   "resolved": "іӈыпчі́ӄыт: U+04C8 ӈ, U+0301 acute on second і, U+04C4 ӄ",
+   "class": "doubt",
+   "note": "Keyed іӈыпчі́ӄыт (hooked ӄ, acute on the second і) as the scan shows; ratified spelling elsewhere is іӈыпчі́кыт with plain к. Gloss «дельфины», dolphins."
+  },
+  "17": {
+   "text": "которые лѣтомъ плаваютъ въ морѣ, то въ видѣ дельфиновъ, то въ видѣ"
+  },
+  "18": {
+   "text": "морскихъ разбойниковъ на восьмивесельныхъ лодкахъ, а зимой выходятъ"
+  },
+  "19": {
+   "text": "на сушу, оборачиваются волками и наносятъ ущербъ стадамъ; Коча́ткө,",
+   "native": "Коча́ткө",
+   "resolved": "Коча́ткө: U+0301 acute on а, U+04E9 ө",
+   "class": "artifact",
+   "note": "A tiny speck at the left margin, which copy A read as 6; keyed out. Also Коча́ткө keyed by hand (lookup gave Коча́ткө; matches scan)."
+  },
+  "20": {
+   "text": "родъ бѣлаго медвѣдя съ костянымъ туловищемъ и шестью лапами, и другой"
+  },
+  "21": {
+   "text": "бѣлый медвѣдь Мырӄ-у́мӄы, заманивающій въ бурю своими жалобными",
+   "native": "Мырӄ-у́мӄы",
+   "resolved": "Мырӄ-у́мӄы: U+04C4 ӄ x2, U+0301 acute on у",
+   "class": "semantic",
+   "note": "Мырӄ-у́мӄы, name of the white bear who lures travellers in a storm; acute on у, both copies dropped it."
+  },
+  "22": {
+   "text": "призывами неосторожнаго путника; Рэ́ккэ съ огромной головой и листо-",
+   "native": "Рэ́ккэ",
+   "resolved": "Рэ́ккэ: U+0301 acute on э",
+   "class": "doubt",
+   "note": "Рэ́ккэ: acute on э read off the scan; copies show none. No lookup match or counterpart; no gloss given."
+  },
+  "23": {
+   "text": "видными ушами, способными уловить шорохъ крыльевъ овода, Огромный"
+  },
+  "24": {
+   "text": "червь-ремень (№ 74) и т. п.",
+   "class": "draft",
+   "note": "Copies read №№74 doubling the sign; scan shows single № and a space before the number. Same on lines 25-28."
+  },
+  "25": {
+   "text": "Огромный Орелъ - шаманъ и его мать сказки объ А́јђынто (№ 98)",
+   "native": "А́јђынто",
+   "resolved": "А́јђынто: U+0301 acute on А, U+0458 ј, U+0452 ђ"
+  },
+  "26": {
+   "text": "вѣроятно заимствованы, какъ и пятиголовый крылатый Кэ́lє сказки № 75",
+   "as_typed": "вѣроятно заимствованы, какъ и пятиголовый крылатый {Ke_1'l_0e_2} сказки № 75",
+   "native": "Кэ́lє",
+   "resolved": "Кэ́lє: U+041A К, U+044D э, U+0301 acute on э, U+006C tall l, U+0454 є"
+  },
+  "27": {
+   "text": "и Тюлень сказки № 90. Можно еще упомянуть вѣчно голоднаго безлицаго"
+  },
+  "28": {
+   "text": "Кэ́lє (№ 89) и Горное Эхо женщину (Енмы-та́аӈ № 96). Эта послѣдняя",
+   "as_typed": "{Ke_1'l_0e_2} (№ 89) и Горное Эхо женщину (Енмы-та́аӈ № 96). Эта послѣдняя",
+   "native": "Кэ́lє Енмы-та́аӈ",
+   "resolved": "Кэ́lє: U+0301 acute on э, U+006C tall l, U+0454 є; Енмы-та́аӈ: U+0301 acute on first а, U+04C8 ӈ"
+  },
+  "29": {
+   "text": "впрочемъ изображена обыкновенной женщиной безъ фантастическихъ эле-"
+  },
+  "30": {
+   "text": "ментовъ. Она выходитъ замужъ за охотника, покинувшаго свою прежнюю"
+  },
+  "31": {
+   "text": "жену, и эта убиваетъ соперницу, вливая ей въ ухо во время сна кипящій"
+  },
+  "32": {
+   "text": "жиръ оленьихъ кишекъ."
+  },
+  "33": {
+   "text": "Особый разрядъ Кэ́lє составляютъ служебные шаманскіе духи,",
+   "as_typed": "Особый разрядъ {Ke_1'l_0e_2} составляютъ служебные шаманскіе духи,",
+   "native": "Кэ́lє",
+   "resolved": "Кэ́lє: U+041A К, U+044D э, U+0301 acute on э, U+006C tall l, U+0454 є"
+  },
+  "34": {
+   "text": "которые называются также ја́нр̌а-ка́lат «особые Кэ́lє», если они заявляютъ",
+   "as_typed": "которые называются также ја́нр̌а-ка́lат «особые {Ke_1'l_0e_2}», если они заявляютъ",
+   "native": "ја́нр̌а-ка́lат Кэ́lє",
+   "resolved": "ја́нр̌а-ка́lат: U+0458 ј, U+0301 acute on а (x2), U+0440 р, U+030C caron on р, U+006C tall l; Кэ́lє: U+0301 acute on э, U+006C tall l, U+0454 є",
+   "class": "doubt",
+   "note": "ја́нр̌а-ка́lат: the р carries a caron-like mark (the key letter р̌ of the 1899 key; counterpart yaˊnřa-kaˊlat); keyed as р + U+030C. Copies read ја́нра. Gloss in prose: «особые Кэlє», special Kele."
+  },
+  "35": {
+   "text": "себя (при посредствѣ чревовѣщанія) независимо отъ мѣста, гдѣ шаманъ"
+  },
+  "36": {
+   "text": "сидитъ."
+  },
+  "37": {
+   "text": "Шаманство занимаетъ очень видное мѣсто и въ сказкахъ, и въ рели-"
+  },
+  "38": {
+   "text": "гіозныхъ обрядахъ. Въ сущности говоря, каждый чукча, мужчина или"
+  },
+  "39": {
+   "text": "женщина, является прикосновеннымъ къ шаманскому служенію. Каждая"
+  },
+  "40": {
+   "text": "семья имѣетъ особый бубенъ, составляющій часть домашней святыни, и во"
+  }
+ }
+}
