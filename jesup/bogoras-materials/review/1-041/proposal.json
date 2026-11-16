@@ -1,0 +1,209 @@
+{
+ "ref": "1-041",
+ "contamination": {
+  "blind": false,
+  "why": "this pass reads both text-layer copies (ocr witness) by design, and one lexicon lookup; no other page's proposal, decision or gt/ocr/ was read"
+ },
+ "lines": {
+  "0": {
+   "text": "МАТЕРІАЛЫ ПО ИЗУЧЕНІЮ ЧУКОТСКАГО ЯЗЫКА И ФОЛЬКЛОРА. XXI",
+   "note": "Running head is letterspaced in the print; keyed unspaced. XXI is Latin numerals.",
+   "class": "layout"
+  },
+  "1": {
+   "text": "всѣми подробностями заимствованъ — у юкагировъ или ламутовъ, трудно",
+   "note": "Copy B opens with a stray `)`: a speck at the line head, not in the print.",
+   "class": "artifact"
+  },
+  "2": {
+   "text": "сказать, ибо и у тѣхъ и другихъ существуетъ культъ медвѣдя и сходные",
+   "note": "существуетъ: the scan has final ъ, both copies read ь (the engine habit).",
+   "class": "draft"
+  },
+  "3": {
+   "text": "разсказы.",
+   "note": "Copy B opens with a stray `i`: a speck, not in the print.",
+   "class": "artifact"
+  },
+  "4": {
+   "text": "Бѣлый медвѣдь изображается въ сказкахъ съ значительной примѣсью"
+  },
+  "5": {
+   "text": "фантастическихъ элементовъ. На открытомъ морѣ далеко отъ предѣловъ"
+  },
+  "6": {
+   "text": "твердой земли есть страна бѣлыхъ медвѣдей, расположенная среди ледя-",
+   "note": "расположенная: the bitonal scan loses the hairline so the final glyph reads like н/п; the Russian sense decides (both copies read -нан).",
+   "class": "draft"
+  },
+  "7": {
+   "text": "ныхъ горъ. Бѣлые медвѣди живутъ тамъ поселянами, какъ люди; они зани-",
+   "note": "ледяныхъ continues from line 6 (ледя-/ныхъ): the initial glyph reads п in the scan, sense decides н. живутъ: the scan has ъ, copy B read ь.",
+   "class": "draft"
+  },
+  "8": {
+   "text": "маются промыслами тюленя и моржа. Пеструшка (іw-піпы́кыlђын) является",
+   "native": "іw-піпы́кыlђын",
+   "resolved": "іw-піпы́кыlђын: U+0456 і, U+0077 w, U+0301 acute on ы, U+006C tall l, U+0452 ђ",
+   "note": "іw-піпы́кыlђын (пеструшка, lemming): acute on ы; the scan sets a tall l then ђ where the copies read ы; read as seen. Same group as line 19.",
+   "class": "doubt"
+  },
+  "9": {
+   "text": "для нихъ такимъ-же предметомъ страха, какъ куропатка для чернаго мед-",
+   "note": "нихъ: the scan loses the hairline and the glyph reads пихъ; sense decides (both copies read пихъ).",
+   "class": "draft"
+  },
+  "10": {
+   "text": "вѣдя. Они организуютъ походы противъ пеструшекъ съ копьями и луками."
+  },
+  "11": {
+   "text": "Кромѣ обыкновенныхъ бѣлыхъ медвѣдей тамъ-же живутъ Коча́тко и",
+   "native": "Коча́тко",
+   "resolved": "Коча́тко: U+0301 acute on а",
+   "note": "Коча́тко: the scan has an acute on а, which both copies drop. The final letter is a plain о here; 1-036 l19 sets Коча́ткө with the barred ө (both checked at the zoom in the batch check): two spellings of one name, each keyed as printed.",
+   "class": "doubt"
+  },
+  "12": {
+   "text": "Мырһ̦-у́мӄы, о которыхъ уже говорилось выше. Люди съ прибрежья иногда",
+   "native": "Мырһ̦-у́мӄы",
+   "resolved": "Мырһ̦-у́мӄы: U+04BB һ, U+0326 comma below on һ, U+0301 acute on у, U+04C4 ӄ",
+   "note": "Hook below һ is keyed U+0326 comma below, after the 1899 key h̦; the mark is not ruled for һ and both copies drop it. Look at the shape of the hook first.",
+   "class": "doubt"
+  },
+  "13": {
+   "text": "уходятъ къ бѣлымъ медвѣдямъ свататься и поселяются у нихъ, но въ ка-"
+  },
+  "14": {
+   "text": "чествѣ чужестранцевъ бываютъ подвергаемы болѣе или менѣе опаснымъ"
+  },
+  "15": {
+   "text": "испытаніямъ, изъ которыхъ постоянно выходятъ съ честью. Весь этотъ"
+  },
+  "16": {
+   "text": "разсказъ имѣетъ такія же черты этнографическаго описанія, какъ и упомя-"
+  },
+  "17": {
+   "text": "нутые выше разсказы о Кэ́lє.",
+   "as_typed": "нутые выше разсказы о {Ke_1'l_0e_2}.",
+   "native": "Кэ́lє",
+   "resolved": "Кэ́lє: U+0301 acute on э, U+006C tall l, U+0454 є",
+   "note": "Кэ́lє is keyed from the ratified spelling, but the scan sets a hook below the є (unruled; the copies read plain є). Same mark as 1-024 l34.",
+   "class": "doubt"
+  },
+  "18": {
+   "text": "Мышь подъ именемъ Ӄу́јмэ-ӈэ́ўт — «огузье-женщина», евражка подъ",
+   "native": "Ӄу́јмэ-ӈэ́ўт",
+   "resolved": "Ӄу́јмэ-ӈэ́ўт: U+04C3 Ӄ, U+0301 acute on у, U+0458 ј, U+04C8 ӈ, U+0301 acute on э, U+0306 breve on у",
+   "note": "Ӄу́јмэ-ӈэ́ўт: the capital К carries a clear hook below (ruled: hooked К is Ӄ). Glossed «огузье-женщина», ‹rump-woman› (mouse).",
+   "class": "semantic"
+  },
+  "19": {
+   "text": "именемъ Јі́lэ-ӈэ́ўт — «евражка-женщина», мелкій паучокъ (ко́рђыlђын) подъ",
+   "native": "Јі́lэ-ӈэ́ўт ко́рђыlђын",
+   "resolved": "Јі́lэ-ӈэ́ўт ко́рђыlђын: U+0408 Ј, U+0456 і, U+0301 acute on і, U+006C tall l, U+04C8 ӈ, U+0301 acute on э, U+0306 breve on у, U+0301 acute on о, U+0452 ђ, U+006C tall l, U+0452 ђ",
+   "note": "ко́рђыlђын (small spider): the scan shows tall l then ђ where copy A reads ӄ and copy B reads н; keyed as seen, same as line 8. Look at the l+ђ pair first. Јі́lэ-ӈэ́ўт, glossed «евражка-женщина», ground-squirrel woman.",
+   "class": "doubt"
+  },
+  "20": {
+   "text": "именемъ Ку́рђы-ӈэ́ўт, всѣ выводятся въ сказкахъ въ образѣ женщинъ,",
+   "native": "Ку́рђы-ӈэ́ўт",
+   "resolved": "Ку́рђы-ӈэ́ўт: U+0301 acute on у, U+0452 ђ, U+04C8 ӈ, U+0301 acute on э, U+0306 breve on у",
+   "note": "Ку́рђы-ӈэ́ўт: copy B reads ђ as б. Initial К is read plain; line 18 has a clearly hooked Ӄ.",
+   "class": "doubt"
+  },
+  "21": {
+   "text": "какъ и лисица. Маленькій черный жучокъ, носящій и въ обыденной рѣчи и"
+  },
+  "22": {
+   "text": "въ сказкахъ имя Тӓ́ӄі-ӈэ́ўт¹) — «блестящая черная женщина» изображается",
+   "native": "Тӓ́ӄі-ӈэ́ўт",
+   "resolved": "Тӓ́ӄі-ӈэ́ўт: U+0308 diaeresis on а, U+0301 acute on а, U+04C4 ӄ, U+0456 і, U+04C8 ӈ, U+0301 acute on э, U+0306 breve on у",
+   "note": "Тӓ́ӄі-ӈэ́ўт, glossed «блестящая черная женщина», shining black woman (a beetle): two dots and an acute over the first а, read at 4x, both dropped by the copies. Footnote ref ¹ attached before the paren. I set a space between `)` and the dash because the gap equals the word gaps around the other dashes on the page; both copies have none.",
+   "class": "doubt"
+  },
+  "23": {
+   "text": "довольно странными чертами. Онъ называется та́нӈы-ӈа́ўт — «таньгинской",
+   "native": "та́нӈы-ӈа́ўт",
+   "resolved": "та́нӈы-ӈа́ўт: U+0301 acute on а, U+04C8 ӈ, U+04C8 ӈ, U+0301 acute on а, U+0306 breve on у",
+   "note": "та́нӈы-ӈа́ўт, glossed «таньгинской женщиной». No grave over the н here, where l24 sets та́н̀ӈы with one (both checked at the zoom in the batch check): keyed as printed. Copy B reads ӈ as ц.",
+   "class": "doubt"
+  },
+  "24": {
+   "text": "женщиной» и даже а́таl-та́н̀ӈы ӈа́ўт «чуванской женщиной». Эта женщина",
+   "native": "а́таl-та́н̀ӈы ӈа́ўт",
+   "resolved": "а́таl-та́н̀ӈы ӈа́ўт: U+0301 acute on а, U+006C tall l, U+0301 acute on а, U+0300 grave on н, U+04C8 ӈ, U+04C8 ӈ, U+0301 acute on а, U+0306 breve on у",
+   "note": "а́таl-та́н̀ӈы ӈа́ўт, glossed «чуванской женщиной», Chuvan woman: grave on н, acute on both а; the ratified 1-028 form а́таl-та́н̀ӈыт has final т, here none. женщиной: hairline loss, sense decides.",
+   "class": "semantic"
+  },
+  "25": {
+   "text": "вступаетъ въ замужество съ «человѣкомъ», т. е. членомъ чукотскаго пле-"
+  },
+  "26": {
+   "text": "мени, но потомъ мужъ убиваетъ жену, сожигая ее на кострѣ. Чуванка",
+   "note": "но: the scan reads по (hairline loss); the Russian sense decides.",
+   "class": "draft"
+  },
+  "27": {
+   "text": "передъ смертью проклинаетъ его родъ и сулитъ ему въ будущемъ всякія",
+   "note": "сулитъ: the scan has final ъ, both copies read ь.",
+   "class": "draft"
+  },
+  "28": {
+   "text": "болѣзни; въ особенности же сифилисъ. Въ связи съ этимъ сифилисъ назы-",
+   "note": "сифилисъ both times: the scan glyph reads сифплисъ (hairline loss), sense decides; copies have сифились in the second.",
+   "class": "draft"
+  },
+  "29": {
+   "text": "вается именемъ э́тэl, т. е. національнымъ именемъ чуванцевъ. Если при-",
+   "native": "э́тэl",
+   "resolved": "э́тэl: U+0301 acute on э, U+006C tall l",
+   "note": "э́тэl: acute on the first э and a tall l; the copies read plain этэ. Glossed «национальнымъ именемъ чуванцевъ», the national name of the Chuvans (and so the name of syphilis).",
+   "class": "semantic"
+  },
+  "30": {
+   "text": "помнить, что чуванцы были первыми посредниками въ сношеніяхъ между"
+  },
+  "31": {
+   "text": "русскими и чуванцами, то поводъ съ сближенію между чуванцами и сифи-",
+   "note": "съ сближенію: the print sets съ where the sense wants къ; keyed as set.",
+   "class": "print"
+  },
+  "32": {
+   "text": "лисомъ станетъ болѣе понятнымъ."
+  },
+  "33": {
+   "text": "Тюленчикъ (ме́мыlӄај) и песъ (а̂́ттын) выступаютъ въ одинаковой роли",
+   "native": "ме́мыlӄај а̂́ттын",
+   "resolved": "ме́мыlӄај а̂́ттын: U+0301 acute on е, U+006C tall l, U+04C4 ӄ, U+0458 ј, U+0302 circumflex on а, U+0301 acute on а",
+   "note": "ме́мыlӄај (little seal, тюленчикъ): acute on е, tall l, hooked ӄ. а̂́ттын (песъ, dog): circumflex and acute over the first а, read at 4x, both dropped by the copies. одинаковой: н printed as п-like (hairline), sense decides.",
+   "class": "semantic"
+  },
+  "34": {
+   "text": "жениховъ на человѣческихъ стойбищахъ; однѣ дѣвушки ихъ отвергаютъ,",
+   "note": "однѣ: the scan reads one-stem glyphs (hairline loss), sense decides н. отвергаютъ: the scan has ъ, copies read ь.",
+   "class": "draft"
+  },
+  "35": {
+   "text": "другихъ они отвергаютъ сами, какъ слишкомъ строптивыхъ, но въ концѣ",
+   "note": "отвергаютъ: the scan has final ъ, both copies read ь.",
+   "class": "draft"
+  },
+  "36": {
+   "text": "концовъ поступаютъ въ пріемные зятья въ семью богатаго жителя, обык-",
+   "note": "семью: the scan has ю; copy A reads семьо.",
+   "class": "draft"
+  },
+  "37": {
+   "text": "новенно къ его младшей дочери. Послѣ свадьбы презрѣнный звѣрь оказы-"
+  },
+  "38": {
+   "text": "вается красивымъ молодцомъ, возбуждающимъ зависть и вожделѣніе всѣхъ"
+  },
+  "39": {
+   "text": "1) Alla coloeoptera по Kjellmann’y.",
+   "native": "",
+   "note": "Footnote text in Latin type: «Alla coloeoptera по Kjellmann’y»: Latin y after a curly apostrophe, curly as printed.",
+   "class": "layout"
+  }
+ }
+}
