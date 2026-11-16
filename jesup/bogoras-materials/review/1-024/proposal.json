@@ -1,0 +1,162 @@
+{
+  "ref": "1-024",
+  "contamination": {
+    "blind": false,
+    "why": "this pass reads both text-layer copies (ocr witness) by design, and one lexicon lookup; no other page's proposal, decision or gt/ocr/ was read"
+  },
+  "lines": {
+    "0": {
+      "text": "IV В. Г. БОГОРАЗЪ,",
+      "note": "the name БОГОРАЗЪ is letterspaced in the running head; keyed unspaced",
+      "class": "layout"
+    },
+    "1": {
+      "text": "ріаловъ напечатанъ одинъ текстъ съ соотвѣтственнымъ грамматическимъ"
+    },
+    "2": {
+      "text": "разборомъ и объясненіями, дающими нѣкоторое понятіе о строѣ языка¹)."
+    },
+    "3": {
+      "text": "Настоящій томъ заключаетъ въ себѣ всѣ записи по фольклору съ текстами"
+    },
+    "4": {
+      "text": "и безъ текстовъ, съ примѣчаніями, необходимыми для объясненія сущности"
+    },
+    "5": {
+      "text": "содержанія. Объясненій, относящихся къ языку, я избѣгалъ, такъ какъ"
+    },
+    "6": {
+      "text": "эта работа должна быть издана особо."
+    },
+    "7": {
+      "text": "Сказочниками являются одинаково мужчины и женщины, и молодые"
+    },
+    "8": {
+      "text": "наравнѣ со стариками. Хорошій сказочникъ можетъ не прерывать разсказы"
+    },
+    "9": {
+      "text": "много часовъ подрядъ и нанизывать одинъ за другимъ различные эпизоды"
+    },
+    "10": {
+      "text": "такъ искусно, что слушатели не замѣчаютъ спайки. Но вообще чукчи"
+    },
+    "11": {
+      "text": "говорятъ, что самый послѣдній нымту́мђын имѣетъ также свои собственныя",
+      "native": "нымту́мђын",
+      "note": "both copies read the letter after м as б; the print sets the ҕ-like shape keyed ђ, and an acute on у. The prose gives no gloss here (the very last нымту́мђын has his own tales too)",
+      "class": "draft",
+      "resolved": "нымту́мђын: U+0301 acute on у; U+0452 ђ, the ҕ-like shape, after м"
+    },
+    "12": {
+      "text": "сказки, болѣе или менѣе отличныя отъ сказокъ другихъ людей. Дѣйстви-"
+    },
+    "13": {
+      "text": "тельно мнѣ приходилось записывать тексты у цѣлаго множества людей въ"
+    },
+    "14": {
+      "text": "разное время и на разныхъ мѣстахъ, а у настоящихъ сказочниковъ (Кыі-",
+      "native": "Кыі-",
+      "note": "the name runs over the line end, Кыі- then тэ́ђын on line 15; whether the hyphen is the name's own or the line break's is not shown by this page",
+      "class": "layout"
+    },
+    "15": {
+      "text": "тэ́ђын, Кутјэ́ўт) сравнительно меньше.",
+      "native": "тэ́ђын Кутјэ́ўт",
+      "note": "both copies read ђ (the ҕ-like shape) as һ, and lost both acutes",
+      "class": "draft",
+      "resolved": "тэ́ђын: U+0301 acute on э, U+0452 ђ. Кутјэ́ўт: U+0458 ј, U+0301 acute on э, U+0306 breve on у (ў)"
+    },
+    "16": {
+      "text": "Если выдѣлить среди моихъ записей всѣ баснословные и полубасно-"
+    },
+    "17": {
+      "text": "словные разсказы, которые составляютъ около двухъ третей всего мате-"
+    },
+    "18": {
+      "text": "ріала, то ихъ въ свою очередь можно будетъ разбить на три группы, со-"
+    },
+    "19": {
+      "text": "отвѣтственно дѣленію, принятому также чукотскими сказочниками."
+    },
+    "20": {
+      "text": "Группа I: Тот-төмwа́ткен пы́ӈыlте или тот-төмwатта́ђныкен пы́ӈыlте",
+      "native": "Тот-төмwа́ткен пы́ӈыlте тот-төмwатта́ђныкен",
+      "note": "glossed on line 21: «начала творенія вѣсти», news of (the times of) the beginning of creation. In the second form both copies read w as ш and ђ as н; both lost the tall l in пы́ӈыlте (set twice on this line)",
+      "class": "semantic",
+      "resolved": "Тот-төмwа́ткен: U+04E9 ө, U+0077 w, U+0301 acute on а. пы́ӈыlте: U+0301 acute on ы, U+04C8 ӈ, U+006C tall l. тот-төмwатта́ђныкен: U+04E9 ө, U+0077 w, U+0301 acute on the second а, U+0452 ђ"
+    },
+    "21": {
+      "text": "(временъ) «начала творенія вѣсти». Сказочники часто прибавляютъ еще па́-",
+      "native": "па́-",
+      "resolved": "па́-: U+0301 acute on а"
+    },
+    "22": {
+      "text": "нена атто́оl, т. е. «еще раньше (того)». Сюда относятся разсказы космого-",
+      "native": "нена атто́оl",
+      "note": "a circumflex sits over the first а of атто́оl (а with ^), a mark the 1899 key has and this text's rules do not; keyed without it, as both copies have it. With па́- on line 21 the phrase is glossed «еще раньше (того)», even earlier (than that)",
+      "class": "doubt",
+      "resolved": "атто́оl: U+0301 acute on the first о, U+006C tall l; a circumflex over the first а not keyed (see the note)"
+    },
+    "23": {
+      "text": "ническаго и миѳологическаго содержанія о сотворенія міра, солнца, луны,",
+      "note": "the print sets о сотворенія where the case wants о сотвореніи (about the creation); keyed as set. миѳологическаго is spelled with fita, which both copies read as ө",
+      "class": "print"
+    },
+    "24": {
+      "text": "звѣздъ, человѣка, различныхъ животныхъ и въ частности оленей, о раз-"
+    },
+    "25": {
+      "text": "множеніи человѣческаго рода и другія тому подобныя (№№ 49—61)."
+    },
+    "26": {
+      "text": "Въ сущности говоря къ этой-же группѣ примыкаютъ записи, добытыя"
+    },
+    "27": {
+      "text": "разспроснымъ путемъ о количествѣ и устройствѣ вселенныхъ, о различныхъ"
+    },
+    "28": {
+      "text": "божествахъ, о звѣздной системѣ и т. д. Но разсмотрѣніе этихъ данныхъ"
+    },
+    "29": {
+      "text": "увлекло-бы меня слишкомъ далеко за предѣлы предлагаемаго очерка,"
+    },
+    "30": {
+      "text": "который будетъ ограниченъ преимущественно разсмотрѣніемъ содержанія"
+    },
+    "31": {
+      "text": "записей, помѣщенныхъ въ этомъ выпускѣ моихъ матеріаловъ."
+    },
+    "32": {
+      "text": "Группа II: по опредѣленію чукотскихъ сказочниковъ lы́l-lѵ́мӈыlте",
+      "native": "lы́l-lѵ́мӈыlте",
+      "note": "glossed on line 33: «настоящія сказки», real tales. Copy A read II as IІІ and B lost ӈ; the round dot after ѵ is the letter's own ball terminal (4x), not a mark",
+      "class": "semantic",
+      "resolved": "lы́l-lѵ́мӈыlте: U+006C tall l four times, U+0301 acute on ы and on ѵ, U+0475 ѵ, U+04C8 ӈ"
+    },
+    "33": {
+      "text": "«настоящія сказки», обнимаетъ разсказы о подвигахъ шамановъ, о различ-"
+    },
+    "34": {
+      "text": "ныхъ столкновеніяхъ съ Кэ́lє, а также нѣкоторые разсказы бытоваго со-",
+      "native": "Кэ́lє",
+      "note": "the last letter is є with a hook below, the unruled letter of Кэ́lę (1-252 l7), not a plain є; keyed є as both copies have it. Copy A dropped the tall l, copy B read it as л",
+      "class": "doubt",
+      "resolved": "Кэ́lє: U+0301 acute on э, U+006C tall l, U+0454 є (printed with a hook below, see the note)"
+    },
+    "35": {
+      "text": "держанія, гдѣ фантастическій элементъ играетъ второстепенную роль. Сюда"
+    },
+    "36": {
+      "text": "относятся №№ 2, 3, 11, 13, 18—20, 25—32, №№ 63—120 и №№ 153—"
+    },
+    "37": {
+      "text": "168. Чукотскіе сказочники придаютъ всѣмъ этимъ сказкамъ меньше зна-"
+    },
+    "38": {
+      "text": "1) Извѣстія Императорской Академіи Наукъ, т. X, № 3, Мартъ 1899 г.,"
+    },
+    "39": {
+      "text": "стр. 269–318."
+    }
+  }
+}

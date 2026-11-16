@@ -1,0 +1,179 @@
+{
+  "ref": "1-025",
+  "contamination": {
+    "blind": false,
+    "why": "this pass reads both text-layer copies (ocr witness) by design, and one lexicon lookup; no other page's proposal, decision or gt/ocr/ was read"
+  },
+  "lines": {
+    "0": {
+      "text": "МАТЕРІАЛЫ ПО ИЗУЧЕНІЮ ЧУКОТСКАГО ЯЗЫКА И ФОЛЬКЛОРА. V"
+    },
+    "1": {
+      "text": "ченія, чѣмъ миѳологическимъ разсказамъ. Относительно реальности ихъ"
+    },
+    "2": {
+      "text": "содержанія существуетъ представленіе, что онѣ могли имѣть мѣсто не"
+    },
+    "3": {
+      "text": "теперь, а «въ такъ называемыя сказочныя времена» lѵ́мӈыl тађне́пу, пред-",
+      "native": "lѵ́мӈыl тађне́пу",
+      "note": "glossed by the prose before it: «въ такъ называемыя сказочныя времена», in the so-called fairy-tale times. Both copies lost the ӈ and the final tall l of lѵ́мӈыl, and read its first letter as the digit 1",
+      "class": "semantic",
+      "resolved": "lѵ́мӈыl: U+006C tall l twice, U+0475 ѵ, U+0301 acute on ѵ, U+04C8 ӈ. тађне́пу: U+0452 ђ, U+0301 acute on е"
+    },
+    "4": {
+      "text": "ставленіе о которыхъ до извѣстной степени отдѣлено отъ представленія о"
+    },
+    "5": {
+      "text": "«временахъ начала творенія». Къ этой группѣ примыкаютъ конечно и"
+    },
+    "6": {
+      "text": "сказки, заимствованныя у русскихъ, та́н̀ӈен lѵ́мӈыl (№№ 12 и 122—126).",
+      "native": "та́н̀ӈен lѵ́мӈыl",
+      "note": "the prose glosses the phrase: сказки, заимствованныя у русскихъ, tales borrowed from the Russians. Both copies read ӈ in та́н̀ӈен as н or ц, and lost the grave over н",
+      "class": "semantic",
+      "resolved": "та́н̀ӈен: U+0301 acute on а, U+0300 grave over н, U+04C8 ӈ. lѵ́мӈыl: U+006C tall l twice, U+0475 ѵ, U+0301 acute on ѵ, U+04C8 ӈ"
+    },
+    "7": {
+      "text": "Группа III: по опредѣленію чукочъ а̂ӄӓlыlэ́ткін пы́ӈыlте «временъ",
+      "native": "а̂ӄӓlыlэ́ткін пы́ӈыlте",
+      "note": "the first а carries a circumflex (а̂), printed as on атто́оl, 1-024 l22, which the editor confirmed off the scan, 2026-11-16; both copies lost it. The prose glosses the phrase «временъ раздоровъ вѣсти», news of the times of strife",
+      "class": "semantic",
+      "resolved": "а̂ӄӓlыlэ́ткін: U+0302 circumflex on the first а, U+04C4 ӄ, U+0308 diaeresis on the second а (ӓ), U+006C tall l twice, U+0301 acute on э. пы́ӈыlте: U+0301 acute on ы, U+04C8 ӈ, U+006C tall l"
+    },
+    "8": {
+      "text": "раздоровъ вѣсти». Этотъ отдѣлъ охватываетъ рядъ преданій о борьбѣ"
+    },
+    "9": {
+      "text": "чукочъ съ различными сосѣдними племенами, главнымъ образомъ таньгами"
+    },
+    "10": {
+      "text": "и айванами (та́н̀ӈыт и а́јванат). Таньги есть собирательное имя для коря-",
+      "native": "та́н̀ӈыт а́јванат",
+      "note": "the prose gives the Russian names first: таньги is та́н̀ӈыт, айваны is а́јванат",
+      "class": "semantic",
+      "resolved": "та́н̀ӈыт: U+0301 acute on а, U+0300 grave over н, U+04C8 ӈ. а́јванат: U+0301 acute on the first а, U+0458 ј"
+    },
+    "11": {
+      "text": "ковъ, чуванцевъ и русскихъ, которые въ борьбѣ съ чукчами явились союз-"
+    },
+    "12": {
+      "text": "никами, айваны — такое-же собирательное имя для народовъ эскимосскаго"
+    },
+    "13": {
+      "text": "происхожденія на азіатскомъ и американскихъ материкахъ и между-лежа-"
+    },
+    "14": {
+      "text": "щихъ островахъ. Сюда относятся №№ 15, 16 и 127—140 и 145—152."
+    },
+    "15": {
+      "text": "Эти преданія заключаютъ въ себѣ очень мало фантастическаго элемента, а"
+    },
+    "16": {
+      "text": "иныя изъ нихъ по ширинѣ описанія и всему складу повѣстиванія, могутъ",
+      "note": "the print sets повѣстиванія, a slip for повѣствованія (narration); keyed as set",
+      "class": "print"
+    },
+    "17": {
+      "text": "считаться уже зачатками эпоса, которые не могли получить дальнѣйшаго"
+    },
+    "18": {
+      "text": "развитія. Таковы напр. №№ 134 и 135, сказаніе объ «Эlэ́нді и его сыно-",
+      "native": "Эlэ́нді",
+      "note": "both copies read the tall l of Эlэ́нді as л and lost the acute",
+      "class": "draft",
+      "resolved": "Эlэ́нді: U+006C tall l, U+0301 acute on э"
+    },
+    "19": {
+      "text": "вьяхъ» и Та́lо, таньгинскомъ воспитанникѣ».",
+      "native": "Та́lо",
+      "note": "the print opens no quotation mark before Та́lо but closes one after воспитанникѣ; keyed as set",
+      "class": "print",
+      "resolved": "Та́lо: Cyrillic Т а о, U+0301 acute on а, U+006C tall l"
+    },
+    "20": {
+      "text": "Чукчи обыкновенно сближаютъ первый и третій отдѣлы подъ общимъ"
+    },
+    "21": {
+      "text": "именемъ пы́ӈыlте, такъ какъ они считаютъ ихъ одинаково достовѣрными",
+      "native": "пы́ӈыlте",
+      "resolved": "пы́ӈыlте: U+0301 acute on ы, U+04C8 ӈ, U+006C tall l"
+    },
+    "22": {
+      "text": "въ отличіе отъ «настоящихъ сказокъ». Я же, напротивъ, считаю болѣе"
+    },
+    "23": {
+      "text": "удобнымъ совершенно разъединить ихъ, такъ какъ тонъ и содержаніе тѣхъ"
+    },
+    "24": {
+      "text": "и другихъ разсказовъ совершенно различны."
+    },
+    "25": {
+      "text": "",
+      "note": "copy A read a speck at the page's left edge (a 19-pixel box) as the digit 1; no type",
+      "class": "artifact"
+    },
+    "26": {
+      "text": "Составные элементы чукотскаго сказочнаго фольклора явственно от-"
+    },
+    "27": {
+      "text": "личаются отъ соотвѣтственныхъ разсказовъ урало-алтайскаго сказочнаго"
+    },
+    "28": {
+      "text": "круга и указываютъ на совершенно иную область возникновенія и распро-"
+    },
+    "29": {
+      "text": "страненія. Демонологія и вообще фантастическій элементъ играютъ сравни-"
+    },
+    "30": {
+      "text": "тельно подчиненную роль и являются въ очертаніяхъ совершенно непо-"
+    },
+    "31": {
+      "text": "хожихъ. Вмѣсто одноглазыхъ, однорукихъ и т. п. духовъ, которые разъ-"
+    },
+    "32": {
+      "text": "ѣзжаютъ на шестиногихъ и крылатыхъ желѣзныхъ коняхъ и ведутъ борьбу"
+    },
+    "33": {
+      "text": "съ такими-же конными богатырями, закованными въ желѣзо или тоже на-",
+      "note": "the bitonal scan lost the hairline that joins the two stems, so the ink cannot tell н from п; the sense is на-/сквозь (through and through). Copy A read па-",
+      "class": "draft"
+    },
+    "34": {
+      "text": "сквозь желѣзными, у чукочъ являются чудовища морскаго, вѣрнѣе при-"
+    },
+    "35": {
+      "text": "морскаго характера, іӈыпчі́кыт, — морскіе оборотни, которые лѣтомъ",
+      "native": "іӈыпчі́кыт",
+      "note": "glossed after the dash: морскіе оборотни, sea werewolves",
+      "class": "semantic",
+      "resolved": "іӈыпчі́кыт: U+04C8 ӈ, U+0301 acute on the second і"
+    },
+    "36": {
+      "text": "являются въ видѣ дельфиновъ, а зимою выходятъ на берегъ и превра-"
+    },
+    "37": {
+      "text": "щаются въ волковъ, свирѣпый бѣлый медвѣдь Коча́ткө съ туловищемъ",
+      "native": "Коча́ткө",
+      "note": "glossed: свирѣпый бѣлый медвѣдь, the fierce white bear. Both copies read свирѣный; the hairline that joins the stems is lost here as on line 33, and the sense is свирѣпый, fierce",
+      "class": "semantic",
+      "resolved": "Коча́ткө: U+0301 acute on а, U+04E9 ө"
+    },
+    "38": {
+      "text": "изъ бѣлой мамонтовой кости, шаманъ-китъ, заморскіе великаны людоѣды"
+    },
+    "39": {
+      "text": "и т. п. Въ значительной части разсказовъ о злыхъ духахъ Кэ́lє фантасти-",
+      "native": "Кэ́lє",
+      "note": "the last letter is є with a hook below, the unruled letter of 1-024 l34 and 1-252 l7, not a plain є; keyed є as both copies have it",
+      "class": "doubt",
+      "resolved": "Кэ́lє: U+0301 acute on э, U+006C tall l, U+0454 є (printed with a hook below, see the note)"
+    },
+    "40": {
+      "text": "ческій элементъ настолько несложенъ, что почти не замаскировываетъ"
+    },
+    "41": {
+      "text": "первоначальную основу реальныхъ этнографическихъ представленій о враж-"
+    }
+  }
+}

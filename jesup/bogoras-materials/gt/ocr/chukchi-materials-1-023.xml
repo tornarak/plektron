@@ -1,0 +1,270 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns="http://www.loc.gov/standards/alto/ns-v4#">
+  <Description>
+    <MeasurementUnit>pixel</MeasurementUnit>
+    <sourceImageInformation>
+      <fileName>chukchi-materials-1-023.png</fileName>
+    </sourceImageInformation>
+    <Processing ID="OCR_harness-ocr-import">
+      <processingStepDescription>text layer of the source PDF, harness ocr import</processingStepDescription>
+      <processingStepSettings>harness: 1; kind: model; step: harness ocr import; label: text layer of the source PDF; version: pymupdf 1.28.2; model: pdfs/bogoras-1900-chukchee-materials.pdf; sha256: a8e4f046eb19336b0fe1e72b3215701a76da30de62a68481646223855374e32d; in.engine: the OCR that made the text layer; in.copy: master; in.pdf_page: 23; in.text_layer_producer: Google Books PDF Converter (rel 3 12/12/14); in.row_overlap: 0.5; in.align: drift 5.6 px at y=0, -3.05 px per 1000 px, 38 rows, median residual 2.5 px, less a 25 px baseline drop; in.folds: Ä&gt;Ӓ Ď&gt;Ð ä&gt;ӓ ď&gt;ð Қ&gt;Ӄ қ&gt;ӄ Ң&gt;Ӈ ң&gt;ӈ Ӏ&gt;l ӏ&gt;l Ә&gt;Э ә&gt;э</processingStepSettings>
+      <processingSoftware>
+        <softwareName>harness</softwareName>
+      </processingSoftware>
+    </Processing>
+  </Description>
+  <Layout>
+    <Page WIDTH="4656" HEIGHT="6976" PHYSICAL_IMG_NR="0" ID="page_0">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="4656" HEIGHT="6976">
+        <TextBlock ID="text_1-023" HPOS="497" VPOS="558" WIDTH="3003" HEIGHT="5163">
+          <TextLine ID="mz_1-023_l1" HPOS="1018" VPOS="558" WIDTH="2482" HEIGHT="74" BASELINE="1018 631 3500 631">
+            <Shape>
+              <Polygon POINTS="1018 558 3500 558 3500 632 1018 632"/>
+            </Shape>
+            <String CONTENT="МАТЕРІАЛЫ ПО ИЗУЧЕНІЮ ЧУКОТСКАГО ЯЗЫКА И ФОЛЬКЛОРА. III" HPOS="1018" VPOS="558" WIDTH="2482" HEIGHT="74"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l2" HPOS="515" VPOS="751" WIDTH="2982" HEIGHT="97" BASELINE="515 847 3497 847">
+            <Shape>
+              <Polygon POINTS="515 751 3497 751 3497 848 515 848"/>
+            </Shape>
+            <String CONTENT="Формы незнакомаго образованія стали встрѣчаться сравнительно рѣдко." HPOS="515" VPOS="751" WIDTH="2982" HEIGHT="97"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l3" HPOS="510" VPOS="874" WIDTH="2990" HEIGHT="102" BASELINE="510 976 3500 976">
+            <Shape>
+              <Polygon POINTS="510 874 3500 874 3500 976 510 976"/>
+            </Shape>
+            <String CONTENT="Точно также, при разговорахъ съ чукчами, встрѣчая новыя формы, я" HPOS="510" VPOS="874" WIDTH="2990" HEIGHT="102"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l4" HPOS="510" VPOS="1003" WIDTH="2988" HEIGHT="99" BASELINE="510 1101 3498 1101">
+            <Shape>
+              <Polygon POINTS="510 1003 3498 1003 3498 1102 510 1102"/>
+            </Shape>
+            <String CONTENT="вносилъ ихъ въ общую памятную книжку, чтобы потомъ разсмотрѣть ихъ" HPOS="510" VPOS="1003" WIDTH="2988" HEIGHT="99"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l5" HPOS="510" VPOS="1129" WIDTH="472" HEIGHT="87" BASELINE="510 1216 982 1216">
+            <Shape>
+              <Polygon POINTS="510 1129 982 1129 982 1216 510 1216"/>
+            </Shape>
+            <String CONTENT="образованіе." HPOS="510" VPOS="1129" WIDTH="472" HEIGHT="87"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l6" HPOS="724" VPOS="1251" WIDTH="2774" HEIGHT="98" BASELINE="724 1349 3498 1349">
+            <Shape>
+              <Polygon POINTS="724 1251 3498 1251 3498 1349 724 1349"/>
+            </Shape>
+            <String CONTENT="Такимъ образомъ я постепенно изучилъ главныя основы чукотской" HPOS="724" VPOS="1251" WIDTH="2774" HEIGHT="98"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l7" HPOS="507" VPOS="1379" WIDTH="2987" HEIGHT="93" BASELINE="507 1471 3494 1471">
+            <Shape>
+              <Polygon POINTS="507 1379 3494 1379 3494 1472 507 1472"/>
+            </Shape>
+            <String CONTENT="этимологіи и отчасти синтаксиса и впослѣдствіи сдѣлалъ сводку своихъ" HPOS="507" VPOS="1379" WIDTH="2987" HEIGHT="93"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l8" HPOS="505" VPOS="1503" WIDTH="2991" HEIGHT="95" BASELINE="505 1597 3496 1597">
+            <Shape>
+              <Polygon POINTS="505 1503 3496 1503 3496 1598 505 1598"/>
+            </Shape>
+            <String CONTENT="матеріаловъ въ видѣ очерка грамматики, также собралъ лексикологическій" HPOS="505" VPOS="1503" WIDTH="2991" HEIGHT="95"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l9" HPOS="505" VPOS="1625" WIDTH="2990" HEIGHT="98" BASELINE="505 1722 3495 1722">
+            <Shape>
+              <Polygon POINTS="505 1625 3495 1625 3495 1723 505 1723"/>
+            </Shape>
+            <String CONTENT="матеріалъ и переработалъ его по карточной системѣ въ чукотско-русскій" HPOS="505" VPOS="1625" WIDTH="2990" HEIGHT="98"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l10" HPOS="510" VPOS="1751" WIDTH="2978" HEIGHT="102" BASELINE="510 1852 3488 1852">
+            <Shape>
+              <Polygon POINTS="510 1751 3488 1751 3488 1853 510 1853"/>
+            </Shape>
+            <String CONTENT="словарь, содержащій до 6000 словъ и соотвѣтственную фразеологію," HPOS="510" VPOS="1751" WIDTH="2978" HEIGHT="102"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l11" HPOS="507" VPOS="1872" WIDTH="2982" HEIGHT="105" BASELINE="507 1976 3489 1976">
+            <Shape>
+              <Polygon POINTS="507 1872 3489 1872 3489 1977 507 1977"/>
+            </Shape>
+            <String CONTENT="которая потомъ была провѣрена при помощи Ајӈан̀ва́т’а и другихъ чукочъ." HPOS="507" VPOS="1872" WIDTH="2982" HEIGHT="105"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l12" HPOS="718" VPOS="2004" WIDTH="2767" HEIGHT="100" BASELINE="718 2103 3485 2103">
+            <Shape>
+              <Polygon POINTS="718 2004 3485 2004 3485 2104 718 2104"/>
+            </Shape>
+            <String CONTENT="Всѣ эти матеріалы были собраны среди Колымскихъ оленныхъ чукочъ," HPOS="718" VPOS="2004" WIDTH="2767" HEIGHT="100"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l13" HPOS="501" VPOS="2125" WIDTH="2991" HEIGHT="98" BASELINE="501 2223 3492 2223">
+            <Shape>
+              <Polygon POINTS="501 2125 3492 2125 3492 2223 501 2223"/>
+            </Shape>
+            <String CONTENT="хотя по отношенію къ языку это не имѣетъ большого значенія, ибо различія" HPOS="501" VPOS="2125" WIDTH="2991" HEIGHT="98"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l14" HPOS="503" VPOS="2267" WIDTH="2855" HEIGHT="82" BASELINE="503 2348 3358 2348">
+            <Shape>
+              <Polygon POINTS="503 2267 3358 2267 3358 2349 503 2349"/>
+            </Shape>
+            <String CONTENT="между говоромъ оленныхъ и приморскихъ чукочъ очень незначительны." HPOS="503" VPOS="2267" WIDTH="2855" HEIGHT="82"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l15" HPOS="718" VPOS="2370" WIDTH="2776" HEIGHT="101" BASELINE="718 2470 3494 2470">
+            <Shape>
+              <Polygon POINTS="718 2370 3494 2370 3494 2471 718 2471"/>
+            </Shape>
+            <String CONTENT="При установленіи правописанія я старался возможно точнѣе выразить" HPOS="718" VPOS="2370" WIDTH="2776" HEIGHT="101"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l16" HPOS="505" VPOS="2507" WIDTH="2987" HEIGHT="94" BASELINE="505 2600 3492 2600">
+            <Shape>
+              <Polygon POINTS="505 2507 3492 2507 3492 2601 505 2601"/>
+            </Shape>
+            <String CONTENT="оттѣнки живого произношенія, но окончательная транскрипція многихъ" HPOS="505" VPOS="2507" WIDTH="2987" HEIGHT="94"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l17" HPOS="501" VPOS="2626" WIDTH="2990" HEIGHT="99" BASELINE="501 2724 3491 2724">
+            <Shape>
+              <Polygon POINTS="501 2626 3491 2626 3491 2725 501 2725"/>
+            </Shape>
+            <String CONTENT="звуковъ была измѣнена и упрощена по указаніямъ академика К. Г. Зале-" HPOS="501" VPOS="2626" WIDTH="2990" HEIGHT="99"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l18" HPOS="505" VPOS="2757" WIDTH="2987" HEIGHT="98" BASELINE="505 2854 3492 2854">
+            <Shape>
+              <Polygon POINTS="505 2757 3492 2757 3492 2855 505 2855"/>
+            </Shape>
+            <String CONTENT="мана, который потомъ взялъ на себя представить мои матеріалы Историко-" HPOS="505" VPOS="2757" WIDTH="2987" HEIGHT="98"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l19" HPOS="501" VPOS="2877" WIDTH="2462" HEIGHT="103" BASELINE="501 2980 2963 2980">
+            <Shape>
+              <Polygon POINTS="501 2877 2963 2877 2963 2980 501 2980"/>
+            </Shape>
+            <String CONTENT="Филологическому Отдѣленію Императорской Академіи Наукъ." HPOS="501" VPOS="2877" WIDTH="2462" HEIGHT="103"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l20" HPOS="711" VPOS="2999" WIDTH="2777" HEIGHT="102" BASELINE="711 3100 3488 3100">
+            <Shape>
+              <Polygon POINTS="711 2999 3488 2999 3488 3101 711 3101"/>
+            </Shape>
+            <String CONTENT="Записи по чукотскому фольклору, сдѣланныя мною, состоятъ изъ 3-хъ" HPOS="711" VPOS="2999" WIDTH="2777" HEIGHT="102"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l21" HPOS="501" VPOS="3122" WIDTH="2986" HEIGHT="104" BASELINE="501 3225 3487 3225">
+            <Shape>
+              <Polygon POINTS="501 3122 3487 3122 3487 3226 501 3226"/>
+            </Shape>
+            <String CONTENT="отдѣловъ: 1) 48 текстовъ съ подстрочнымъ переводомъ, 2) 96 пересказовъ" HPOS="501" VPOS="3122" WIDTH="2986" HEIGHT="104"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l22" HPOS="503" VPOS="3248" WIDTH="2983" HEIGHT="102" BASELINE="503 3349 3486 3349">
+            <Shape>
+              <Polygon POINTS="503 3248 3486 3248 3486 3350 503 3350"/>
+            </Shape>
+            <String CONTENT="безъ чукотскаго текста, но по возможности дословныхъ, и 3) 24 пере-" HPOS="503" VPOS="3248" WIDTH="2983" HEIGHT="102"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l23" HPOS="503" VPOS="3375" WIDTH="2983" HEIGHT="99" BASELINE="503 3473 3486 3473">
+            <Shape>
+              <Polygon POINTS="503 3375 3486 3375 3486 3474 503 3474"/>
+            </Shape>
+            <String CONTENT="сказовъ, записанныхъ въ 1895 году при помощи переводчика. Изъ нихъ" HPOS="503" VPOS="3375" WIDTH="2983" HEIGHT="99"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l24" HPOS="503" VPOS="3480" WIDTH="2979" HEIGHT="121" BASELINE="503 3600 3482 3600">
+            <Shape>
+              <Polygon POINTS="503 3480 3482 3480 3482 3601 503 3601"/>
+            </Shape>
+            <String CONTENT="20 №№ отдѣла I расположены въ порядкѣ времени произведенія записей," HPOS="503" VPOS="3480" WIDTH="2979" HEIGHT="121"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l25" HPOS="504" VPOS="3620" WIDTH="2980" HEIGHT="103" BASELINE="504 3722 3484 3722">
+            <Shape>
+              <Polygon POINTS="504 3620 3484 3620 3484 3723 504 3723"/>
+            </Shape>
+            <String CONTENT="а остальныя въ систематическомъ порядкѣ соотвѣтственно содержанію. Съ" HPOS="504" VPOS="3620" WIDTH="2980" HEIGHT="103"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l26" HPOS="498" VPOS="3756" WIDTH="2985" HEIGHT="93" BASELINE="498 3848 3483 3848">
+            <Shape>
+              <Polygon POINTS="498 3756 3483 3756 3483 3849 498 3849"/>
+            </Shape>
+            <String CONTENT="чукотскимъ текстомъ записаны всѣ заговоры, автобіографіи и разсказы" HPOS="498" VPOS="3756" WIDTH="2985" HEIGHT="93"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l27" HPOS="503" VPOS="3870" WIDTH="2981" HEIGHT="107" BASELINE="503 3976 3484 3976">
+            <Shape>
+              <Polygon POINTS="503 3870 3484 3870 3484 3977 503 3977"/>
+            </Shape>
+            <String CONTENT="изъ дѣйствительной жизни, а также часть сказокъ. Въ пересказѣ безъ" HPOS="503" VPOS="3870" WIDTH="2981" HEIGHT="107"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l28" HPOS="504" VPOS="4004" WIDTH="2981" HEIGHT="98" BASELINE="504 4101 3485 4101">
+            <Shape>
+              <Polygon POINTS="504 4004 3485 4004 3485 4102 504 4102"/>
+            </Shape>
+            <String CONTENT="текста всѣ остальныя сказки, легенды, преданія, а также описанія шаман-" HPOS="504" VPOS="4004" WIDTH="2981" HEIGHT="98"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l29" HPOS="500" VPOS="4132" WIDTH="2980" HEIGHT="101" BASELINE="500 4232 3480 4232">
+            <Shape>
+              <Polygon POINTS="500 4132 3480 4132 3480 4233 500 4233"/>
+            </Shape>
+            <String CONTENT="скихъ видѣній, такъ называемыхъ эӈэ́ӈэlыӈӓ lо́о или ан̀а́ӈыlы-ва́ырђын." HPOS="500" VPOS="4132" WIDTH="2980" HEIGHT="101"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l30" HPOS="504" VPOS="4261" WIDTH="2979" HEIGHT="93" BASELINE="504 4353 3483 4353">
+            <Shape>
+              <Polygon POINTS="504 4261 3483 4261 3483 4354 504 4354"/>
+            </Shape>
+            <String CONTENT="Сдѣлать всѣ записи вмѣстѣ съ текстами не представлялось возможности," HPOS="504" VPOS="4261" WIDTH="2979" HEIGHT="93"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l31" HPOS="500" VPOS="4389" WIDTH="2990" HEIGHT="92" BASELINE="500 4480 3490 4480">
+            <Shape>
+              <Polygon POINTS="500 4389 3490 4389 3490 4481 500 4481"/>
+            </Shape>
+            <String CONTENT="такъ какъ чукотскаго разсказчика очень трудно заставить диктовать свой" HPOS="500" VPOS="4389" WIDTH="2990" HEIGHT="92"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l32" HPOS="497" VPOS="4509" WIDTH="2990" HEIGHT="99" BASELINE="497 4607 3487 4607">
+            <Shape>
+              <Polygon POINTS="497 4509 3487 4509 3487 4608 497 4608"/>
+            </Shape>
+            <String CONTENT="разсказъ слово за словомъ, а постоянная жизнь на открытомъ воздухѣ не" HPOS="497" VPOS="4509" WIDTH="2990" HEIGHT="99"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l33" HPOS="499" VPOS="4633" WIDTH="2985" HEIGHT="99" BASELINE="499 4731 3484 4731">
+            <Shape>
+              <Polygon POINTS="499 4633 3484 4633 3484 4732 499 4732"/>
+            </Shape>
+            <String CONTENT="даетъ къ тому-же для этого достаточнаго времени; ибо записи можно" HPOS="499" VPOS="4633" WIDTH="2985" HEIGHT="99"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l34" HPOS="499" VPOS="4760" WIDTH="2989" HEIGHT="99" BASELINE="499 4859 3488 4859">
+            <Shape>
+              <Polygon POINTS="499 4760 3488 4760 3488 4859 499 4859"/>
+            </Shape>
+            <String CONTENT="производить въ продолженіи семи холодныхъ мѣсяцевъ только въ короткій" HPOS="499" VPOS="4760" WIDTH="2989" HEIGHT="99"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l35" HPOS="504" VPOS="4882" WIDTH="2985" HEIGHT="102" BASELINE="504 4983 3489 4983">
+            <Shape>
+              <Polygon POINTS="504 4882 3489 4882 3489 4984 504 4984"/>
+            </Shape>
+            <String CONTENT="промежутокъ между ужиномъ и сномъ, а въ болѣе теплое лѣтнее время" HPOS="504" VPOS="4882" WIDTH="2985" HEIGHT="102"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l36" HPOS="504" VPOS="5010" WIDTH="2977" HEIGHT="96" BASELINE="504 5105 3481 5105">
+            <Shape>
+              <Polygon POINTS="504 5010 3481 5010 3481 5106 504 5106"/>
+            </Shape>
+            <String CONTENT="приходится жить почти неподвлежно на какомъ-нибудь уединенномъ стой-" HPOS="504" VPOS="5010" WIDTH="2977" HEIGHT="96"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l37" HPOS="503" VPOS="5134" WIDTH="2983" HEIGHT="102" BASELINE="503 5235 3486 5235">
+            <Shape>
+              <Polygon POINTS="503 5134 3486 5134 3486 5236 503 5236"/>
+            </Shape>
+            <String CONTENT="бищѣ, такъ какъ путешествовать можно только пѣшкомъ и съ очень боль-" HPOS="503" VPOS="5134" WIDTH="2983" HEIGHT="102"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l38" HPOS="504" VPOS="5268" WIDTH="2981" HEIGHT="101" BASELINE="504 5368 3485 5368">
+            <Shape>
+              <Polygon POINTS="504 5268 3485 5268 3485 5369 504 5369"/>
+            </Shape>
+            <String CONTENT="шими затрудненіями. Это относится преимущественно къ оленнымъ чукчамъ," HPOS="504" VPOS="5268" WIDTH="2981" HEIGHT="101"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l39" HPOS="509" VPOS="5393" WIDTH="2978" HEIGHT="95" BASELINE="509 5487 3487 5487">
+            <Shape>
+              <Polygon POINTS="509 5393 3487 5393 3487 5488 509 5488"/>
+            </Shape>
+            <String CONTENT="среди которыхъ сдѣланы мои записи, а между приморскими поселками путе-" HPOS="509" VPOS="5393" WIDTH="2978" HEIGHT="95"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l40" HPOS="508" VPOS="5517" WIDTH="1791" HEIGHT="98" BASELINE="508 5614 2299 5614">
+            <Shape>
+              <Polygon POINTS="508 5517 2299 5517 2299 5615 508 5615"/>
+            </Shape>
+            <String CONTENT="шествовать лѣтомъ конечно гораздо удобнѣе." HPOS="508" VPOS="5517" WIDTH="1791" HEIGHT="98"/>
+          </TextLine>
+          <TextLine ID="mz_1-023_l41" HPOS="709" VPOS="5613" WIDTH="2777" HEIGHT="108" BASELINE="709 5720 3486 5720">
+            <Shape>
+              <Polygon POINTS="709 5613 3486 5613 3486 5721 709 5721"/>
+            </Shape>
+            <String CONTENT="Въ Извѣстіяхъ Императорской Академіи Наукъ изъ моихъ мате-" HPOS="709" VPOS="5613" WIDTH="2777" HEIGHT="108"/>
+          </TextLine>
+        </TextBlock>
+      </PrintSpace>
+    </Page>
+  </Layout>
+</alto>
