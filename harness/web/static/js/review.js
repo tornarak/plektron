@@ -162,8 +162,11 @@ function goT1(d){
   if(!T1.length) return;
   t1i=(t1i+d+T1.length*2)%T1.length;
   const el=T1[t1i];
-  el.scrollIntoView({block:'center',behavior:'smooth'});
-  const t=el.querySelector('textarea[data-line]'); if(t) t.focus();
+  // To the top, not the centre: the keyboard panel covers the lower part of the
+  // window, and a large one hid the centred entry. Focus first: the keyboard's
+  // focus handler scrolls to 'nearest', and a scroll issued after it wins.
+  const t=el.querySelector('textarea[data-line]'); if(t) t.focus({preventScroll:true});
+  el.scrollIntoView({block:'start',behavior:'smooth'});
 }
 document.getElementById('t1n').addEventListener('click',()=>goT1(1));
 document.getElementById('t1p').addEventListener('click',()=>goT1(-1));

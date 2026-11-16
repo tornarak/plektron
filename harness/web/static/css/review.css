@@ -29,7 +29,7 @@ button.hnb:hover{color:#333;border-color:#888}
 textarea.hnt{font:12px/1.4 var(--f);background:#fffdf0;border-color:#ded4a4;padding:.15rem .3rem}
 textarea.hnt:focus{outline-color:#b59b2e;border-color:#b59b2e}
 .sum{color:#555;font-size:.85rem;margin-bottom:1.4rem}
-.ln{border-top:1px solid #ddd;padding:.7rem 0}
+.ln{border-top:1px solid #ddd;padding:.7rem 0;scroll-margin-top:.5rem}
 .agree{opacity:.62}
 .agree:focus-within{opacity:1}
 .t1{border-left:5px solid #b8860b;padding-left:.7rem;background:linear-gradient(90deg,#fdf6e3,transparent 45%)}
