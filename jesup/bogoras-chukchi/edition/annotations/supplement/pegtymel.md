@@ -1,6 +1,6 @@
 # supplement:pegtymel — Pegtymel (Golovnev, 2000)
 
-- status: proposed
+- status: ratified
 - attaches: toc:chXV.8
 - attaches: toc:chXV
 - attaches: toc:chXIV.14
