@@ -12,13 +12,15 @@
 | alias | url | title | note |
 |---|---|---|---|
 | film | https://www.cultureunplugged.com/documentary/watch-online/play/2443/Pegtymel | Pegtymel | Andrei Golovnev, 2000; 32 min; streamed on Culture Unplugged from the director's own account |
+| seance | https://www.youtube.com/watch?v=3JJw5bTfUL8 | Chukchi Shamanic Ritual from Siberia | an excerpt of the séance; uploaded to YouTube by Kovács Nándor, not by the director |
 
 ## summary
 
 Bogoras describes the shamanic séance in the inner room at length and could film
 none of it. [[film]] — Andrei Golovnev's 32-minute documentary on
 [[people:reindeer-chukchi]] herders of the Pegtymel River — includes a séance,
-and is perhaps the only good footage of one there is.
+and is perhaps the only good footage of one there is. The séance alone is
+[[seance]].
 
 ## full
 
