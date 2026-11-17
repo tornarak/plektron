@@ -719,8 +719,11 @@ def _search_one(q: str, idx: dict, table, min_pages: int) -> dict:
     # answer about the compound where the corpus has one, and widening unconditionally
     # would bury that row under every match for each element.
     if not _scan(idx, terms, rows, seen, min_pages):
+        # Letters counted as letters, not through `bare`, which keeps ASCII only
+        # and so read every Cyrillic element as empty: the *Materials* never got
+        # this pass (`Куча-ӈэ́ўт` missed with `ӈэ́ўт` ratified, 2026-11-16).
         split = [p for q in queries for p in q.split("-")
-                 if len(bare(p)) >= 2 and p != q]
+                 if sum(ch.isalpha() for ch in p) >= 2 and p != q]
         if split:
             _scan(idx, _terms(split, table), rows, seen, min_pages)
     # **A near spelling, last of all.** The copies misread exactly the letters a

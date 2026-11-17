@@ -300,6 +300,21 @@ def test_a_reduce_class_member_is_a_letter_or_a_letter_and_one_mark(tmp_path):
     assert ok[nfd("й")] == ok["ј"]
 
 
+def test_a_cyrillic_compounds_ratified_element_is_found_when_the_whole_misses(text):
+    """`Куча-ӈэ́ўт` missed with `ӈэ́ўт` ratified: the element pass counted letters
+    through `bare`, which keeps ASCII only, so no Cyrillic element ever qualified."""
+    r = search([nfd("новый-Ајӈан̀ва́т")], text)
+    assert [x["form"] for x in r["matches"]] == [nfd("Ајӈан̀ва́т")]
+    assert nfd("Ајӈан̀ва́т") in r["split"].split()
+
+
+def test_the_layers_ш_for_w_is_a_near_spelling(text):
+    """Copy A reads this notation's Latin `w` as `ш` (`ӈэшан` for `ӈэwан`)."""
+    rows = search([nfd("ора́шеðат")], text)["matches"]
+    assert [x["form"] for x in rows] == [nfd("терк-арм-ора́wеðат")]
+    assert rows[0]["near"] is True
+
+
 def test_one_querys_hit_does_not_suppress_anothers_near_spelling(text):
     """The cascade runs per query: batching a page's forms, as the verb asks, lost
     every near match the moment any query hit exactly (1-386, `На́рђынен` beside
