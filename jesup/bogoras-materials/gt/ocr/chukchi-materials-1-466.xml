@@ -1,0 +1,276 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns="http://www.loc.gov/standards/alto/ns-v4#">
+  <Description>
+    <MeasurementUnit>pixel</MeasurementUnit>
+    <sourceImageInformation>
+      <fileName>chukchi-materials-1-466.png</fileName>
+    </sourceImageInformation>
+    <Processing ID="OCR_harness-ocr-import">
+      <processingStepDescription>text layer of the source PDF, harness ocr import</processingStepDescription>
+      <processingStepSettings>harness: 1; kind: model; step: harness ocr import; label: text layer of the source PDF; version: pymupdf 1.28.2; model: pdfs/bogoras-1900-chukchee-materials.pdf; sha256: a8e4f046eb19336b0fe1e72b3215701a76da30de62a68481646223855374e32d; in.engine: the OCR that made the text layer; in.copy: master; in.pdf_page: 466; in.text_layer_producer: Google Books PDF Converter (rel 3 12/12/14); in.row_overlap: 0.5; in.align: drift -10.2 px at y=0, 12.41 px per 1000 px, 40 rows, median residual 1.8 px, less a 25 px baseline drop; in.folds: Ä&gt;Ӓ Ď&gt;Ð ä&gt;ӓ ď&gt;ð Қ&gt;Ӄ қ&gt;ӄ Ң&gt;Ӈ ң&gt;ӈ Ӏ&gt;l ӏ&gt;l Ә&gt;Э ә&gt;э</processingStepSettings>
+      <processingSoftware>
+        <softwareName>harness</softwareName>
+      </processingSoftware>
+    </Processing>
+  </Description>
+  <Layout>
+    <Page WIDTH="4704" HEIGHT="6976" PHYSICAL_IMG_NR="0" ID="page_0">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="4704" HEIGHT="6976">
+        <TextBlock ID="text_1-466" HPOS="1149" VPOS="572" WIDTH="3006" HEIGHT="5220">
+          <TextLine ID="mz_1-466_l1" HPOS="1159" VPOS="572" WIDTH="2985" HEIGHT="113" BASELINE="1159 682 4144 682">
+            <Shape>
+              <Polygon POINTS="1159 572 4144 572 4144 685 1159 685"/>
+            </Shape>
+            <String CONTENT="410 В. Г. БОГОРАЗЪ, III,165" HPOS="1159" VPOS="572" WIDTH="2985" HEIGHT="113"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l2" HPOS="1161" VPOS="809" WIDTH="2991" HEIGHT="97" BASELINE="1161 905 4152 905">
+            <Shape>
+              <Polygon POINTS="1161 809 4152 809 4152 906 1161 906"/>
+            </Shape>
+            <String CONTENT="бороться, поборолъ Кэ́lє кавралина и ткнулъ его головой въ отверстіе" HPOS="1161" VPOS="809" WIDTH="2991" HEIGHT="97"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l3" HPOS="1161" VPOS="940" WIDTH="2983" HEIGHT="95" BASELINE="1161 1034 4144 1034">
+            <Shape>
+              <Polygon POINTS="1161 940 4144 940 4144 1035 1161 1035"/>
+            </Shape>
+            <String CONTENT="кости, голова отлетѣла прочь и упала отдѣльно, а тѣло упало подъ кость." HPOS="1161" VPOS="940" WIDTH="2983" HEIGHT="95"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l4" HPOS="1164" VPOS="1046" WIDTH="2984" HEIGHT="110" BASELINE="1164 1155 4148 1155">
+            <Shape>
+              <Polygon POINTS="1164 1046 4148 1046 4148 1156 1164 1156"/>
+            </Shape>
+            <String CONTENT="Вышелъ другой кавралинъ и поборолъ Кэ́lє кавралина и ткнулъ его головой" HPOS="1164" VPOS="1046" WIDTH="2984" HEIGHT="110"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l5" HPOS="1161" VPOS="1182" WIDTH="2985" HEIGHT="100" BASELINE="1161 1281 4146 1281">
+            <Shape>
+              <Polygon POINTS="1161 1182 4146 1182 4146 1282 1161 1282"/>
+            </Shape>
+            <String CONTENT="въ кость, голова отлетѣла прочь. Такъ отсѣкъ Кэ́lє головы шести кавра-" HPOS="1161" VPOS="1182" WIDTH="2985" HEIGHT="100"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l6" HPOS="1153" VPOS="1301" WIDTH="2995" HEIGHT="103" BASELINE="1153 1403 4148 1403">
+            <Shape>
+              <Polygon POINTS="1153 1301 4148 1301 4148 1404 1153 1404"/>
+            </Shape>
+            <String CONTENT="линамъ и бросилъ ихъ тѣла подъ китовую кость. Тогда вышелъ бороться" HPOS="1153" VPOS="1301" WIDTH="2995" HEIGHT="103"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l7" HPOS="1165" VPOS="1432" WIDTH="2983" HEIGHT="100" BASELINE="1165 1532 4148 1532">
+            <Shape>
+              <Polygon POINTS="1165 1432 4148 1432 4148 1532 1165 1532"/>
+            </Shape>
+            <String CONTENT="шаманъ Айваналинъ и поборолъ онъ Кэ́lє и ткнулъ его головой въ отверстіе" HPOS="1165" VPOS="1432" WIDTH="2983" HEIGHT="100"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l8" HPOS="1167" VPOS="1559" WIDTH="2982" HEIGHT="97" BASELINE="1167 1655 4149 1655">
+            <Shape>
+              <Polygon POINTS="1167 1559 4149 1559 4149 1656 1167 1656"/>
+            </Shape>
+            <String CONTENT="кости, отвернулъ ему голову, а тѣло бросилъ въ сторону. Одного за" HPOS="1167" VPOS="1559" WIDTH="2982" HEIGHT="97"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l9" HPOS="1154" VPOS="1676" WIDTH="2985" HEIGHT="109" BASELINE="1154 1784 4139 1784">
+            <Shape>
+              <Polygon POINTS="1154 1676 4139 1676 4139 1785 1154 1785"/>
+            </Shape>
+            <String CONTENT="другимъ поборолъ Айваналинъ всѣхъ Кэ́lє и отвернулъ имъ всѣмъ головы," HPOS="1154" VPOS="1676" WIDTH="2985" HEIGHT="109"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l10" HPOS="1166" VPOS="1810" WIDTH="2980" HEIGHT="94" BASELINE="1166 1903 4146 1903">
+            <Shape>
+              <Polygon POINTS="1166 1810 4146 1810 4146 1904 1166 1904"/>
+            </Shape>
+            <String CONTENT="а было ихъ больше двухсотъ человѣкъ. Тогда собралъ Айваналинъ тѣла" HPOS="1166" VPOS="1810" WIDTH="2980" HEIGHT="94"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l11" HPOS="1163" VPOS="1934" WIDTH="2978" HEIGHT="99" BASELINE="1163 2032 4141 2032">
+            <Shape>
+              <Polygon POINTS="1163 1934 4141 1934 4141 2033 1163 2033"/>
+            </Shape>
+            <String CONTENT="своихъ товарищей, приставилъ головы къ туловищамъ, ударилъ въ шаман-" HPOS="1163" VPOS="1934" WIDTH="2978" HEIGHT="99"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l12" HPOS="1159" VPOS="2058" WIDTH="2981" HEIGHT="102" BASELINE="1159 2160 4140 2160">
+            <Shape>
+              <Polygon POINTS="1159 2058 4140 2058 4140 2160 1159 2160"/>
+            </Shape>
+            <String CONTENT="скій бубенъ, и стали они живые какъ прежде. Вошли они въ большой домъ" HPOS="1159" VPOS="2058" WIDTH="2981" HEIGHT="102"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l13" HPOS="1153" VPOS="2188" WIDTH="2991" HEIGHT="98" BASELINE="1153 2286 4144 2286">
+            <Shape>
+              <Polygon POINTS="1153 2188 4144 2188 4144 2286 1153 2286"/>
+            </Shape>
+            <String CONTENT="и сѣли тамъ. Айваналинъ сѣлъ на самомъ высокомъ мѣстѣ, товарищи сѣли" HPOS="1153" VPOS="2188" WIDTH="2991" HEIGHT="98"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l14" HPOS="1164" VPOS="2303" WIDTH="2980" HEIGHT="110" BASELINE="1164 2412 4144 2412">
+            <Shape>
+              <Polygon POINTS="1164 2303 4144 2303 4144 2413 1164 2413"/>
+            </Shape>
+            <String CONTENT="пониже его, а женщина встала и стала служить имъ всѣмъ. На утро" HPOS="1164" VPOS="2303" WIDTH="2980" HEIGHT="110"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l15" HPOS="1160" VPOS="2426" WIDTH="2981" HEIGHT="110" BASELINE="1160 2535 4141 2535">
+            <Shape>
+              <Polygon POINTS="1160 2426 4141 2426 4141 2536 1160 2536"/>
+            </Shape>
+            <String CONTENT="пришли другіе Кэ́lє, все старики. Вошли въ домъ и сѣли на противо-" HPOS="1160" VPOS="2426" WIDTH="2981" HEIGHT="110"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l16" HPOS="1158" VPOS="2552" WIDTH="2992" HEIGHT="110" BASELINE="1158 2662 4150 2662">
+            <Shape>
+              <Polygon POINTS="1158 2552 4150 2552 4150 2662 1158 2662"/>
+            </Shape>
+            <String CONTENT="положной сторонѣ. И сказали Кэ́lє: «Вотъ вы убили нашихъ воиновъ, теперь" HPOS="1158" VPOS="2552" WIDTH="2992" HEIGHT="110"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l17" HPOS="1160" VPOS="2684" WIDTH="2987" HEIGHT="93" BASELINE="1160 2777 4147 2777">
+            <Shape>
+              <Polygon POINTS="1160 2684 4147 2684 4147 2777 1160 2777"/>
+            </Shape>
+            <String CONTENT="давайте биться съ нами!» — «Давайте!» сказалъ Айваналинъ; «сперва по-" HPOS="1160" VPOS="2684" WIDTH="2987" HEIGHT="93"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l18" HPOS="1156" VPOS="2808" WIDTH="2985" HEIGHT="104" BASELINE="1156 2911 4141 2911">
+            <Shape>
+              <Polygon POINTS="1156 2808 4141 2808 4141 2912 1156 2912"/>
+            </Shape>
+            <String CONTENT="пробуйте вы!» Онъ велѣлъ товарищамъ принести древесной коры и обло-" HPOS="1156" VPOS="2808" WIDTH="2985" HEIGHT="104"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l19" HPOS="1160" VPOS="2943" WIDTH="2981" HEIGHT="92" BASELINE="1160 3035 4141 3035">
+            <Shape>
+              <Polygon POINTS="1160 2943 4141 2943 4141 3035 1160 3035"/>
+            </Shape>
+            <String CONTENT="жился древесной корой. Тогда погасили свѣтъ и въ темнотѣ началась битва." HPOS="1160" VPOS="2943" WIDTH="2981" HEIGHT="92"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l20" HPOS="1154" VPOS="3065" WIDTH="2989" HEIGHT="99" BASELINE="1154 3163 4143 3163">
+            <Shape>
+              <Polygon POINTS="1154 3065 4143 3065 4143 3164 1154 3164"/>
+            </Shape>
+            <String CONTENT="Кэ́lє колотили Айваналина своими длинными ножами и копьями и потекла" HPOS="1154" VPOS="3065" WIDTH="2989" HEIGHT="99"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l21" HPOS="1162" VPOS="3193" WIDTH="2978" HEIGHT="93" BASELINE="1162 3285 4140 3285">
+            <Shape>
+              <Polygon POINTS="1162 3193 4140 3193 4140 3286 1162 3286"/>
+            </Shape>
+            <String CONTENT="изъ дерева кровь и залила весь домъ, такъ что всѣмъ стало крови по ко-" HPOS="1162" VPOS="3193" WIDTH="2978" HEIGHT="93"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l22" HPOS="1151" VPOS="3304" WIDTH="2990" HEIGHT="108" BASELINE="1151 3411 4141 3411">
+            <Shape>
+              <Polygon POINTS="1151 3304 4141 3304 4141 3412 1151 3412"/>
+            </Shape>
+            <String CONTENT="лѣно. Кэ́lє стали жадно ѣсть эту кровь, думая что это кровь врага. Но" HPOS="1151" VPOS="3304" WIDTH="2990" HEIGHT="108"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l23" HPOS="1159" VPOS="3442" WIDTH="2989" HEIGHT="98" BASELINE="1159 3539 4148 3539">
+            <Shape>
+              <Polygon POINTS="1159 3442 4148 3442 4148 3540 1159 3540"/>
+            </Shape>
+            <String CONTENT="когда зажгли огонь, оказалось, что всѣ кавралины невредимы и сидятъ на" HPOS="1159" VPOS="3442" WIDTH="2989" HEIGHT="98"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l24" HPOS="1163" VPOS="3547" WIDTH="2981" HEIGHT="117" BASELINE="1163 3664 4144 3664">
+            <Shape>
+              <Polygon POINTS="1163 3547 4144 3547 4144 3664 1163 3664"/>
+            </Shape>
+            <String CONTENT="своихъ мѣстахъ, а на полу кровь по колѣно, не извѣстно откуда. И даже" HPOS="1163" VPOS="3547" WIDTH="2981" HEIGHT="117"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l25" HPOS="1159" VPOS="3690" WIDTH="2983" HEIGHT="98" BASELINE="1159 3787 4142 3787">
+            <Shape>
+              <Polygon POINTS="1159 3690 4142 3690 4142 3788 1159 3788"/>
+            </Shape>
+            <String CONTENT="броня Айваналина цѣла. Тогда Айваналинъ сказалъ: «Теперь я попробую!»" HPOS="1159" VPOS="3690" WIDTH="2983" HEIGHT="98"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l26" HPOS="1163" VPOS="3816" WIDTH="2980" HEIGHT="100" BASELINE="1163 3916 4143 3916">
+            <Shape>
+              <Polygon POINTS="1163 3816 4143 3816 4143 3916 1163 3916"/>
+            </Shape>
+            <String CONTENT="Опять погасили огонь. Одинъ изъ Кэ́lє былъ великій шаманъ и обернулся" HPOS="1163" VPOS="3816" WIDTH="2980" HEIGHT="100"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l27" HPOS="1159" VPOS="3939" WIDTH="2984" HEIGHT="101" BASELINE="1159 4039 4143 4039">
+            <Shape>
+              <Polygon POINTS="1159 3939 4143 3939 4143 4040 1159 4040"/>
+            </Shape>
+            <String CONTENT="онъ мелкимъ бѣлымъ гусемъ и полетѣлъ на небо. Айвиналинъ обернулся" HPOS="1159" VPOS="3939" WIDTH="2984" HEIGHT="101"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l28" HPOS="1162" VPOS="4061" WIDTH="2977" HEIGHT="103" BASELINE="1162 4164 4139 4164">
+            <Shape>
+              <Polygon POINTS="1162 4061 4139 4061 4139 4164 1162 4164"/>
+            </Shape>
+            <String CONTENT="кречетомъ и полетѣлъ за нимъ вслѣдъ и взлетѣлъ выше его и убилъ Айва-" HPOS="1162" VPOS="4061" WIDTH="2977" HEIGHT="103"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l29" HPOS="1158" VPOS="4192" WIDTH="2976" HEIGHT="97" BASELINE="1158 4288 4134 4288">
+            <Shape>
+              <Polygon POINTS="1158 4192 4134 4192 4134 4289 1158 4289"/>
+            </Shape>
+            <String CONTENT="налинъ Кэ́lє, и упало тѣло его внизъ. Тогда Айваналинъ спустился на землю," HPOS="1158" VPOS="4192" WIDTH="2976" HEIGHT="97"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l30" HPOS="1161" VPOS="4320" WIDTH="2979" HEIGHT="94" BASELINE="1161 4413 4140 4413">
+            <Shape>
+              <Polygon POINTS="1161 4320 4140 4320 4140 4414 1161 4414"/>
+            </Shape>
+            <String CONTENT="обернулся легкимъ горностаемъ, пробрался въ домъ, въ темнотѣ прогрызъ" HPOS="1161" VPOS="4320" WIDTH="2979" HEIGHT="94"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l31" HPOS="1154" VPOS="4438" WIDTH="2790" HEIGHT="105" BASELINE="1154 4542 3944 4542">
+            <Shape>
+              <Polygon POINTS="1154 4438 3944 4438 3944 4543 1154 4543"/>
+            </Shape>
+            <String CONTENT="утробы у всѣхъ Кэ́lє и съѣлъ у нихъ сердце у однаго за другимъ, — а" HPOS="1154" VPOS="4438" WIDTH="2790" HEIGHT="105"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l32" HPOS="4100" VPOS="4493" WIDTH="55" HEIGHT="68" BASELINE="4100 4560 4155 4560">
+            <Shape>
+              <Polygon POINTS="4100 4493 4155 4493 4155 4561 4100 4561"/>
+            </Shape>
+            <String CONTENT="" HPOS="4100" VPOS="4493" WIDTH="55" HEIGHT="68"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l33" HPOS="1160" VPOS="4557" WIDTH="2981" HEIGHT="91" BASELINE="1160 4647 4141 4647">
+            <Shape>
+              <Polygon POINTS="1160 4557 4141 4557 4141 4648 1160 4648"/>
+            </Shape>
+            <String CONTENT="было ихъ больше ста человѣкъ. Опять зажгли огонь и они сѣли на свои" HPOS="1160" VPOS="4557" WIDTH="2981" HEIGHT="91"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l34" HPOS="1149" VPOS="4681" WIDTH="2988" HEIGHT="110" BASELINE="1149 4790 4137 4790">
+            <Shape>
+              <Polygon POINTS="1149 4681 4137 4681 4137 4791 1149 4791"/>
+            </Shape>
+            <String CONTENT="мѣста, а Айваналинъ сѣлъ выше всѣхъ. На утро снова пришло великое" HPOS="1149" VPOS="4681" WIDTH="2988" HEIGHT="110"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l35" HPOS="1155" VPOS="4762" WIDTH="2985" HEIGHT="156" BASELINE="1155 4918 4140 4918">
+            <Shape>
+              <Polygon POINTS="1155 4762 4140 4762 4140 4918 1155 4918"/>
+            </Shape>
+            <String CONTENT="множество Кэ́lє — всѣ они были женщины, молодыя и старыя; одна самая" HPOS="1155" VPOS="4762" WIDTH="2985" HEIGHT="156"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l36" HPOS="1157" VPOS="4929" WIDTH="2983" HEIGHT="110" BASELINE="1157 5038 4140 5038">
+            <Shape>
+              <Polygon POINTS="1157 4929 4140 4929 4140 5039 1157 5039"/>
+            </Shape>
+            <String CONTENT="немощная старуха, шла опираясь на посохъ. И сказали женщины: «Вы" HPOS="1157" VPOS="4929" WIDTH="2983" HEIGHT="110"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l37" HPOS="1154" VPOS="5066" WIDTH="2986" HEIGHT="100" BASELINE="1154 5166 4140 5166">
+            <Shape>
+              <Polygon POINTS="1154 5066 4140 5066 4140 5166 1154 5166"/>
+            </Shape>
+            <String CONTENT="убили нашихъ мужчинъ, давайте биться съ нами!» Тогда старуха съ посо-" HPOS="1154" VPOS="5066" WIDTH="2986" HEIGHT="100"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l38" HPOS="1159" VPOS="5184" WIDTH="2984" HEIGHT="105" BASELINE="1159 5289 4143 5289">
+            <Shape>
+              <Polygon POINTS="1159 5184 4143 5184 4143 5289 1159 5289"/>
+            </Shape>
+            <String CONTENT="хомъ отрѣзала восемь мизинцевъ отъ лѣвой руки у восьми убитыхъ Кэ́lє" HPOS="1159" VPOS="5184" WIDTH="2984" HEIGHT="105"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l39" HPOS="1156" VPOS="5310" WIDTH="2982" HEIGHT="104" BASELINE="1156 5414 4138 5414">
+            <Shape>
+              <Polygon POINTS="1156 5310 4138 5310 4138 5414 1156 5414"/>
+            </Shape>
+            <String CONTENT="и бросила по мизинцу на каждаго кавралина и всѣ они тотчасъ-же умерли." HPOS="1156" VPOS="5310" WIDTH="2982" HEIGHT="104"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l40" HPOS="1149" VPOS="5427" WIDTH="2989" HEIGHT="109" BASELINE="1149 5536 4138 5536">
+            <Shape>
+              <Polygon POINTS="1149 5427 4138 5427 4138 5536 1149 5536"/>
+            </Shape>
+            <String CONTENT="Но Айваналинъ остался живъ и отрѣзалъ Айваналинъ по толстому пальцу" HPOS="1149" VPOS="5427" WIDTH="2989" HEIGHT="109"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l41" HPOS="1159" VPOS="5565" WIDTH="2979" HEIGHT="101" BASELINE="1159 5665 4138 5665">
+            <Shape>
+              <Polygon POINTS="1159 5565 4138 5565 4138 5666 1159 5666"/>
+            </Shape>
+            <String CONTENT="отъ лѣвой руки у каждаго убитаго Кэ́lє, бросилъ по пальцу на каждую" HPOS="1159" VPOS="5565" WIDTH="2979" HEIGHT="101"/>
+          </TextLine>
+          <TextLine ID="mz_1-466_l42" HPOS="1153" VPOS="5689" WIDTH="2987" HEIGHT="103" BASELINE="1153 5791 4140 5791">
+            <Shape>
+              <Polygon POINTS="1153 5689 4140 5689 4140 5792 1153 5792"/>
+            </Shape>
+            <String CONTENT="женщину и всѣ онѣ умерли. Только одну самую молодую и красивую онъ" HPOS="1153" VPOS="5689" WIDTH="2987" HEIGHT="103"/>
+          </TextLine>
+        </TextBlock>
+      </PrintSpace>
+    </Page>
+  </Layout>
+</alto>

@@ -1,0 +1,190 @@
+{
+ "ref": "1-182",
+ "contamination": {
+  "blind": false,
+  "why": "this pass reads both text-layer copies (ocr witness) by design, and two lexicon lookups (the copies' spellings, then the scan's); no other page's proposal, decision or gt/ocr/ was read"
+ },
+ "lines": {
+  "0": {
+   "text": "126 Г. БОГОРАЗЪ, I,29.",
+   "note": "Folio 126, running head with the boxed initial В. in line 1, and the volume and number I,29 (Roman numeral keyed Latin I).",
+   "class": "layout"
+  },
+  "1": {
+   "text": "В.",
+   "note": "Initial В. of the running head «В. Г. БОГОРАЗЪ» boxed on its own; line 0 holds the rest.",
+   "class": "layout"
+  },
+  "2": {
+   "text": "лисицѣ дѣлятся на двѣ категорій; первая описываетъ хитрость лисицы, а вторая на-"
+  },
+  "3": {
+   "text": "противъ содержитъ насмѣшки надъ ея жадностью и дерзостью."
+  },
+  "4": {
+   "text": "2 (стр. 4). ро̂ра́аркын «собираться вмѣстѣ», — у русскихъ на Колымѣ «гру-",
+   "native": "ро̂ра́аркын",
+   "resolved": "ро̂ра́аркын: U+0302 circumflex on о (2nd letter), U+0301 acute on first а",
+   "note": "«собираться вмѣстѣ», to gather together (of reindeer, driven into a heap by gadflies); Colyma Russian «грудиться». Circumflex on о and acute on first а read off scan.",
+   "class": "semantic"
+  },
+  "5": {
+   "text": "диться». Это слово происходитъ отъ Sb. ро́ӄыр «оленій оводъ» и имѣетъ спеціальное",
+   "native": "ро́ӄыр",
+   "resolved": "ро́ӄыр: U+0301 acute on о, U+04C4 ӄ hooked К",
+   "note": "Sb. ро́ӄыр «оленій оводъ», reindeer botfly (Sb. as printed). ӄ is the К whose stroke runs into the hook.",
+   "class": "semantic"
+  },
+  "6": {
+   "text": "употребленіе по отношенію къ тому времени, когда оленье стадо, побуждаемое пре-"
+  },
+  "7": {
+   "text": "слѣдованіемъ насѣкомыхъ, сбивается въ кучу и перебѣгаетъ съ мѣста на мѣсто. Не"
+  },
+  "8": {
+   "text": "лишне отмѣтить, что чукотское стадо все это время проводитъ на открытомъ воздухѣ"
+  },
+  "9": {
+   "text": "въ противность разсказу, гдѣ стадо собрано въ шатрѣ. Между тѣмъ юкагиры на"
+  },
+  "10": {
+   "text": "р. Омолонѣ, дѣйствительно, устраиваютъ для своихъ оленей на это время родъ шатра,"
+  },
+  "11": {
+   "text": "защищеннаго дымокурами отъ насѣкомыхъ. Такимъ образомъ сюжетъ сказки должецъ",
+   "note": "Scan sets должецъ (final letter ц, no tail) where the sense wants долженъ; keyed as set.",
+   "class": "print"
+  },
+  "12": {
+   "text": "считаться заимствованнымъ."
+  },
+  "13": {
+   "text": "3 (стр. 5). пэ́нвэl — олень одногодокъ, у русскихъ на Колымѣ «лончакъ».",
+   "native": "пэ́нвэl",
+   "resolved": "пэ́нвэl: U+0301 acute on э, U+006C tall l",
+   "note": "пэ́нвэl «лончакъ», yearling reindeer (one year old). Counterpart in The Chukchee: Peˊnvel.",
+   "class": "semantic"
+  },
+  "14": {
+   "text": "Степени оленьяго возраста, различаемыя чукчами, таковы: Отъ рожденія весной до"
+  },
+  "15": {
+   "text": "средины лѣта — ӄа́јӯ, у русскихъ «теленокъ», также «выпоротокъ». Отъ средины лѣта",
+   "native": "ӄа́јӯ",
+   "resolved": "ӄа́јӯ: U+04C4 ӄ, U+0301 acute on а, U+0304 macron on у (ӯ)",
+   "note": "ӄа́јӯ «теленокъ», calf, also «выпоротокъ». Counterpart Qӓyūˊ has diaeresis on а and acute on ū; scan shows only an acute over а (the dot to its right is the tittle of ј) and a macron on у, no acute on ӯ.",
+   "class": "doubt"
+  },
+  "16": {
+   "text": "до конца зимы — пе́ечвак, у русскихъ «пыжикъ; комлякъ». Отъ начала зимы до двух-",
+   "native": "пе́ечвак",
+   "resolved": "пе́ечвак: U+0301 acute on first е",
+   "note": "пе́ечвак «пыжикъ; комлякъ», fawn in first winter coat. Counterpart Pêˊêčvak has circumflex; scan shows an acute over the first е only.",
+   "class": "semantic"
+  },
+  "17": {
+   "text": "лѣтняго возраста — пэ́нвэl «лончакъ». Отъ двухлѣтняго до трехлѣтняго возраста —",
+   "native": "пэ́нвэl",
+   "resolved": "пэ́нвэl: U+0301 acute on э, U+006C tall l",
+   "note": "пэ́нвэl «лончакъ», yearling (as line 13).",
+   "class": "semantic"
+  },
+  "18": {
+   "text": "крымы́шты «третякъ». Отъ трехлѣтняго до четырехлѣтняго возраста — таачымы́нты",
+   "native": "крымы́шты таачымы́нты",
+   "resolved": "крымы́шты: U+0301 acute on second ы; таачымы́нты: U+0301 acute on second ы after м",
+   "note": "крымы́шты «третякъ», three-year-old; таачымы́нты «четвертакъ», four-year-old. Final ы of крымы́шты has a hook below its right stem, not keyed (see doubt note on line 19). Acute over the second ы in both words, read at 2x.",
+   "class": "semantic"
+  },
+  "19": {
+   "text": "«четвертакъ». Отъ четырехлѣтняго возраста и выше — чу́мӈы «быкъ» или кы́ры̆ӈы",
+   "native": "чу́мӈы кы́ры̆ӈы",
+   "resolved": "чу́мӈы: U+0301 acute on у, U+04C8 ӈ; кы́ры̆ӈы: U+0301 acute on first ы, U+0306 breve on second ы, U+04C8 ӈ",
+   "note": "чу́мӈы «быкъ», bull; кы́ры̆ӈы «матерой быкъ», full-grown bull. DOUBT: a hook curls below the right stem of the final ы in both чу́мӈы and кы́ры̆ӈы (as in крымы́шты, line 18), like the 1899 key ы with a mark below; keyed plain ы. Also a breve over the second ы of кы́ры̆ӈы, keyed U+0306 as read; both copies drop it. The Chukchee counterpart Čŭˊmñɪñ differs.",
+   "class": "doubt"
+  },
+  "20": {
+   "text": "«матерой быкъ». Для важенокъ существуютъ особые термины."
+  },
+  "21": {
+   "text": "4 (стр. 31). ӄы̀тһ-е́тын «озерный хозяинъ», имѣющій ребенка, который",
+   "as_typed": "4 (стр. 31). ӄы̀тһ-{e'tyn} «озерный хозяинъ», имѣющій ребенка, который",
+   "native": "ӄы̀тһ-е́тын",
+   "resolved": "ӄы̀тһ-е́тын: U+04C4 ӄ, U+0300 grave on ы, U+04BB һ, U+0301 acute on е",
+   "note": "ӄы̀тһ-е́тын «озерный хозяинъ», lake owner. Hooked К is ӄ; grave over ы. е́тын is the ratified key.",
+   "class": "semantic"
+  },
+  "22": {
+   "text": "попадаетъ въ сѣти промышленниковъ или на ихъ удочки; представленіе это во всѣхъ"
+  },
+  "23": {
+   "text": "подробностяхъ чисто-юкагирское. У русскихъ колымчанъ существуетъ много разска-"
+  },
+  "24": {
+   "text": "зовъ о водяномъ хозяинѣ и о «водяненкѣ», который иногда попадается въ сѣти."
+  },
+  "25": {
+   "text": "ті́нтінык а̂неlө́е̂ «на льду сталъ удить». Въ нижнеколымскомъ округѣ на быстрыхъ",
+   "native": "ті́нтінык а̂неlө́е̂",
+   "resolved": "ті́нтінык: U+0301 acute on first і; а̂неlө́е̂: U+0302 circumflex on а, U+006C tall l, U+04E9 ө barred o, U+0301 acute on ө, U+0302 circumflex on final е",
+   "note": "ті́нтінык а̂неlө́е̂ «на льду сталъ удить», began to fish on the ice. DOUBT: the vowel after tall l is a closed round letter with a bar (ө) carrying an acute; this face also sets Russian е with a bar (Послѣднее, l32), so е́ is possible. Keyed ө́; the copies read е́.",
+   "class": "doubt"
+  },
+  "26": {
+   "text": "мѣстахъ рѣкъ къ востоку отъ р. Колымы чукчи, ламуты и юкагиры въ апрѣлѣ за-"
+  },
+  "27": {
+   "text": "нимаются промысломъ рыбы посредствомъ очень простыхъ удочекъ. Въ это время"
+  },
+  "28": {
+   "text": "въ разныхъ мѣстахъ образуются полыньи, куда охотно собирается вся рѣчная рыба,"
+  },
+  "29": {
+   "text": "навстрѣчу притоку свѣжаго воздуха. Ловится преимущественно мелкій харіусъ, ленокъ"
+  },
+  "30": {
+   "text": "и конекъ, всѣ три вида изъ рода Salmo."
+  },
+  "31": {
+   "text": "5 (стр. 32). єннэ́н «рыба», јӓӄа́к «носъ» имѣютъ долгую гласную вмѣсто",
+   "native": "єннэ́н јӓӄа́к",
+   "resolved": "єннэ́н: U+0454 є, U+0301 acute on э; јӓӄа́к: U+0308 diaeresis on а, U+04C4 ӄ, U+0301 acute on second а",
+   "note": "єннэ́н «рыба», fish; јӓӄа́к «носъ», nose. Counterpart ᴇnneˊn is small-cap ᴇ; scan has є.",
+   "class": "semantic"
+  },
+  "32": {
+   "text": "двойной. Въ Nom. Sing. основа Sb. удваивается єнне-єн јӓӄа-(ј)ак. Послѣднее",
+   "native": "єнне-єн јӓӄа-(ј)ак",
+   "resolved": "єнне-єн: U+0454 є twice; јӓӄа-(ј)ак: U+0458 ј twice, U+0308 diaeresis on first а, U+04C4 ӄ",
+   "note": "Sb. stem doubled in Nom. Sing.: єнне-єн, јӓӄа-(ј)ак. The bracketed j is the same glyph as the initial ј, keyed Cyrillic.",
+   "class": "semantic"
+  },
+  "33": {
+   "text": "слово произносится впрочемъ также и јӓӄа́ак.",
+   "native": "јӓӄа́ак",
+   "resolved": "јӓӄа́ак: U+0308 diaeresis on first а, U+04C4 ӄ, U+0301 acute on second а",
+   "note": "јӓӄа́ак, the second pronunciation of «носъ» with long vowel.",
+   "class": "semantic"
+  },
+  "34": {
+   "text": "29."
+  },
+  "35": {
+   "text": "Тот-томwа́ткен пы́ӈыlте.",
+   "as_typed": "Тот-томwа́ткен {py'n_1yl_0te}.",
+   "native": "Тот-томwа́ткен пы́ӈыlте",
+   "resolved": "Тот-томwа́ткен: U+0077 Latin w, U+0301 acute on а; пы́ӈыlте: U+0301 acute on first ы, U+04C8 ӈ, U+006C tall l",
+   "note": "DOUBT: the lexicon key for Тот-төмwа́ткен has ө; the scan at 4x shows plain о in both syllables of -томwа́-, so keyed by hand. Heading «Тот-томwа́ткен пы́ӈыlте». пы́ӈыlте is the ratified key and matches the scan.",
+   "class": "doubt"
+  },
+  "38": {
+   "text": "Отъ начала творенія разсказы."
+  },
+  "39": {
+   "text": "а) Однажды юноша съ сестрой жилъ, весьма богатый оленями. Гово-"
+  },
+  "40": {
+   "text": "ритъ сестра: «Э! ну! жену поищи!» Говоритъ: «Нѣтъ! какже я свое стадо"
+  }
+ }
+}

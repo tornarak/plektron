@@ -1,0 +1,103 @@
+{
+ "ref": "1-193",
+ "contamination": {
+  "blind": false,
+  "why": "this pass reads both text-layer copies (ocr witness) by design, and two lexicon lookups (the copies' spellings, then the scan's); no other page's proposal, decision or gt/ocr/ was read"
+ },
+ "lines": {
+  "0": {
+   "text": "I,37—38. МАТЕРІАЛЫ ПО ИЗУЧЕНІЮ ЧУКОТСКАГО ЯЗЫКА И ФОЛЬКЛОРА. 137",
+   "class": "layout",
+   "note": "Running head: Roman numeral I keyed Latin (copies read 1); dash between numbers is a range, keyed tight."
+  },
+  "1": {
+   "text": "37."
+  },
+  "2": {
+   "text": "Енанмаlа̀w-е́wђан.",
+   "as_typed": "{Enanmal_0a.w_0-e'w_0g_1an}.",
+   "native": "Енанмаlа̀w-е́wђан",
+   "resolved": "Енанмаlа̀w-е́wђан: U+006C tall l, U+0300 grave on а, U+0077 w, U+0301 acute on е, U+0077 w, U+0452 ђ",
+   "class": "semantic",
+   "note": "Heading «Енанмаlа̀w-е́wђан», a spell-type name (-е́wђан = incantation); matches ratified key."
+  },
+  "9": {
+   "text": "Записано отъ чукчи Ва́теля на урочищѣ Акона́йке.",
+   "native": "Ва́теля Акона́йке",
+   "resolved": "Ва́теля: U+0301 acute on а; Акона́йке: U+0301 acute on а",
+   "class": "semantic",
+   "note": "Informant name Ва́теля and place Акона́йке, both with an acute on а, keyed as printed."
+  },
+  "10": {
+   "text": "Лечебный заговоръ."
+  },
+  "11": {
+   "text": "Птица Карпа́јӈын, приходитъ Карпа́јӈын, съ желѣзными маховыми",
+   "native": "Карпа́јӈын Карпа́јӈын",
+   "resolved": "Карпа́јӈын x2: U+0301 acute on а, U+0458 ј, U+04C8 ӈ",
+   "class": "semantic",
+   "note": "Карпа́јӈын, name of the iron-feathered bird spirit invoked in the healing charm; scan shows ӈ (н with hooked right stem) in both occurrences; copy B read the second as н. No counterpart in The Chukchee."
+  },
+  "12": {
+   "text": "перьями, съ острыми перьями, больному человѣку въ ротъ вошелъ, вну-"
+  },
+  "13": {
+   "text": "треннюю утробу жилищемъ (себѣ) сдѣлалъ. «Печень разсмотри, сердце хо-"
+  },
+  "14": {
+   "text": "рошо осмотри, желѣзными лапами обскреби, желѣзными маховыми перьями 5"
+  },
+  "15": {
+   "text": "исколи, пусть выйдетъ болѣзнь, изъ шеи, изъ груди, изъ брюха, изъ всего"
+  },
+  "16": {
+   "text": "тѣла!» Послѣ того больной человѣкъ сажей намазывается, какъ будто"
+  },
+  "17": {
+   "text": "желѣзной птицы перья. Только."
+  },
+  "18": {
+   "text": "Примѣчанія къ № 37."
+  },
+  "19": {
+   "text": "1 (стр. 1). Птица Карпа́јӈын встрѣчается только въ заговорахъ. Она имѣетъ",
+   "native": "Карпа́јӈын",
+   "resolved": "Карпа́јӈын: U+0301 acute on а, U+0458 ј, U+04C8 ӈ",
+   "class": "semantic",
+   "note": "Карпа́јӈын: both copies read ц; the scan shows ӈ as on line 11. Prose: the bird occurs only in incantations, has iron wing feathers and iron claws."
+  },
+  "20": {
+   "text": "желѣзныя маховыя перья и желѣзныя лапы. Этотъ заговоръ кажется мнѣ заимство-"
+  },
+  "21": {
+   "text": "ваннымъ; быть можетъ, даже у русскихъ."
+  },
+  "22": {
+   "text": "38."
+  },
+  "23": {
+   "text": "Е́wђан.",
+   "native": "Е́wђан",
+   "resolved": "Е́wђан: U+0301 acute on Е, U+0077 w, U+0452 ђ",
+   "class": "semantic",
+   "note": "Е́wђан, «incantation», heading of no. 38; acute on the capital Е. Copy A read е́шӄан. Counterpart in The Chukchee: e^wg̣an."
+  },
+  "24": {
+   "text": "",
+   "class": "artifact",
+   "note": "Stray vertical stroke through the descender of ђ in line 23 (second box over the same print); keyed empty."
+  },
+  "27": {
+   "text": "Заговоръ."
+  },
+  "28": {
+   "text": "Боленъ я, отъ правой стороны разсвѣта прошу: «Помоги мнѣ, духовъ"
+  },
+  "29": {
+   "text": "бытіемъ посмотри на меня!» Говоритъ правая сторона разсвѣта: «Не"
+  },
+  "30": {
+   "text": "18"
+  }
+ }
+}

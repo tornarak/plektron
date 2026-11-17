@@ -1,0 +1,172 @@
+{
+ "ref": "1-147",
+ "contamination": {
+  "blind": false,
+  "why": "this pass reads both text-layer copies (ocr witness) by design, and two lexicon lookups (the copies' spellings, then the scan's); no other page's proposal, decision or gt/ocr/ was read"
+ },
+ "lines": {
+  "0": {
+   "text": "I,15. МАТЕРІАЛЫ ПО ИЗУЧЕНІЮ ЧУКОТСКАГО ЯЗЫКА И ФОЛЬКЛОРА. 91"
+  },
+  "1": {
+   "text": "24 (стр. 97). Всѣ желѣзныя вещи, оставленныя при покойникѣ, замѣняютъ"
+  },
+  "2": {
+   "text": "черезъ нѣсколько дней символическими деревянными изображеніями. По объясненію"
+  },
+  "3": {
+   "text": "чукочъ «жаль оставлять желѣзо на полѣ»."
+  },
+  "4": {
+   "text": "25 (стр. 98). а̂lђа́тты »топоръ« изъ а̂́lып-ђа́тты — «тесло для долбленія».",
+   "native": "а̂lђа́тты а̂́lып-ђа́тты",
+   "resolved": "а̂lђа́тты: U+0302 circumflex on а, U+006C tall l, U+0452 ђ, U+0301 acute on а; а̂́lып-ђа́тты: U+0302 circumflex and U+0301 acute on а, U+006C tall l, U+0452 ђ, U+0301 acute on а",
+   "note": "Scan shows ђ (round, descending curl) in both -ђа́тты, where copy A has ӄ; the first word carries only a circumflex over the first а, the second word a circumflex with an acute above it (copy A: а́ on the first word). Quote marks of «топоръ» printed as »…«. Gloss: «топоръ» axe; алып-ђа́тты «тесло для долбленія», adze for hollowing.",
+   "class": "doubt"
+  },
+  "5": {
+   "text": "Почему именно обыкновенный плоскій топоръ считается назначеннымъ для долбленія,"
+  },
+  "6": {
+   "text": "сказать трудно. Топоръ по его малой употребительности не входитъ даже въ число"
+  },
+  "7": {
+   "text": "орудій, оставляемыхъ при покойникѣ."
+  },
+  "8": {
+   "text": "26 (стр. 104). кука̀т-а̂lа́ђђеӄај, пану́wђеӄај, lы́е-кука́төlӄај «двѣнад-",
+   "native": "кука̀т-а̂lа́ђђеӄај пану́wђеӄај lы́е-кука́төlӄај",
+   "resolved": "кука̀т-а̂lа́ђђеӄај: U+0300 grave on а, U+0302 circumflex on а, U+006C tall l, U+0301 acute on а, U+0452 ђ twice, U+04C4 ӄ, U+0458 ј; пану́wђеӄај: U+0301 acute on у, U+0077 w, U+0452 ђ, U+04C4 ӄ, U+0458 ј; lы́е-кука́төlӄај: U+006C tall l, U+0301 acute on ы, U+0301 acute on а, U+04E9 ө, U+006C tall l, U+04C4 ӄ, U+0458 ј",
+   "note": "Gloss: «двѣнадцатиперстную кишку, прямую кишку, настоящее сушеное мясо», duodenum, rectum, real dried meat. Scan shows two ђ before е (copy B one); first letter of пану́wђеӄај has no crossbar (п; copy B н); к with an attached curl is ӄ (final -ӄај, -lӄај), a detached curl under к in кука̀т, кука́ is plain к.",
+   "class": "doubt"
+  },
+  "9": {
+   "text": "цатиперстную кишку, прямую кишку, настоящее сушеное мясо». Оленьи кишки чукчи"
+  },
+  "10": {
+   "text": "сушатъ на солнцѣ; мясо они начинаютъ вялить съ марта большими кусками и на"
+  },
+  "11": {
+   "text": "припекѣ, смѣняющемся вечернимъ морозомъ, оно снаружи просыхаетъ, оставаясь"
+  },
+  "12": {
+   "text": "внутри мягкимъ и довольно сочнымъ."
+  },
+  "13": {
+   "text": "27 (стр. 111). копкаче́пу највара́wка̂н «вмѣстѣ съ основною костью вы-",
+   "native": "копкаче́пу највара́wка̂н",
+   "resolved": "копкаче́пу: U+0301 acute on е; највара́wка̂н: U+0458 ј, U+0301 acute on а, U+0077 w, U+0302 circumflex on а",
+   "note": "Gloss: «вмѣстѣ съ основною костью выламываютъ темя», the crown is broken out together with the base bone. к under а in највара́wка̂н has a detached curl, keyed plain к.",
+   "class": "semantic"
+  },
+  "14": {
+   "text": "ламываютъ темя». Для того, чтобы класть на могилу, рога выламываютъ со всей"
+  },
+  "15": {
+   "text": "задней частью черепа."
+  },
+  "16": {
+   "text": "28 (стр. 114). јэ́ђіlђын «сухожилія ногъ». Ихъ употребляютъ въ сыромъ",
+   "native": "јэ́ђіlђын",
+   "resolved": "јэ́ђіlђын: U+0458 ј, U+0301 acute on э, U+0452 ђ, U+0456 і, U+006C tall l, U+0452 ђ",
+   "note": "Gloss: «сухожилія ногъ», leg sinews. Scan shows round ђ-shapes in both places where the copies read д and ӄ (јэділӄын); keyed ђ twice, between э́ and і and after l.",
+   "class": "doubt"
+  },
+  "17": {
+   "text": "видѣ, чрезвычайно ловко отдирая отъ кости при помощи зубовъ и ножа и не оставляя"
+  },
+  "18": {
+   "text": "ни одного волокна."
+  },
+  "19": {
+   "text": "29 (стр. 130). аўнра́lын ныкіlвэ́јӄін «хозяинъ дѣлаетъ праздникъ роговъ.",
+   "native": "аўнра́lын ныкіlвэ́јӄін",
+   "resolved": "аўнра́lын: U+045E ў, U+0301 acute on а, U+006C tall l; ныкіlвэ́јӄін: U+0456 і, U+006C tall l, U+0301 acute on э, U+0458 ј, U+04C4 ӄ, U+0456 і",
+   "note": "Gloss: «хозяинъ дѣлаетъ праздникъ роговъ», the master makes the antler festival. ў carries a breve; the р after н also carries a breve-like mark that no ruled codepoint covers, keyed plain р (аўнра́lын). Final ӄ in -вэ́јӄін has its stroke running into the hook.",
+   "class": "doubt"
+  },
+  "20": {
+   "text": "кі́lвэј «праздникъ роговъ» устраивается весной, когда у оленей падаютъ рога. Чукчи",
+   "native": "кі́lвэј",
+   "resolved": "кі́lвэј: U+0456 і, U+0301 acute on і, U+006C tall l, U+0458 ј",
+   "note": "Gloss: кі́lвэј «праздникъ роговъ», antler festival (Chukchee Kílvei).",
+   "class": "semantic"
+  },
+  "21": {
+   "text": "собираютъ всѣ упавшіе рога, а также рога убитыхъ оленей и возятъ ихъ съ собой."
+  },
+  "22": {
+   "text": "Когда у всѣхъ быковъ уцадутъ рога, устраивается чѵмӈа̀-ке́lвај «бычачій празд-",
+   "native": "чѵмӈа̀-ке́lвај",
+   "resolved": "чѵмӈа̀-ке́lвај: U+0475 ѵ, U+04C8 ӈ, U+0300 grave on а, U+0301 acute on е, U+006C tall l, U+0458 ј",
+   "note": "Print: уцадутъ as set (for упадутъ; ц is clear at 2x). Gloss: чѵмӈа̀-ке́lвај «бычачій праздникъ роговъ», bulls antler festival; second letter is ѵ-shaped, as in lѵ́мӈыl on l29.",
+   "class": "print"
+  },
+  "23": {
+   "text": "никъ роговъ» (въ половинѣ марта). Рога собираютъ въ кучу, покрываютъ ихъ хво-"
+  },
+  "24": {
+   "text": "ростомъ, разводятъ огонь и совершаютъ жертвоприношеніе. Въ концѣ апрѣля или въ"
+  },
+  "25": {
+   "text": "началѣ мая, когда у важенокъ упадутъ рога, устраивается второй праздникъ рэ́wкут",
+   "native": "рэ́wкут",
+   "resolved": "рэ́wкут: U+0301 acute on э, U+0077 w",
+   "note": "Gloss of the dialect word: рэ́wкут-кі́lвэј «важеночій праздникъ» (the line break splits it), does-antler festival, in the Russian of the Kolyma; hook under к is detached, keyed к.",
+   "class": "semantic"
+  },
+  "26": {
+   "text": "-кі́lвэј «важеночій праздникъ» — на русскомъ колымскомъ нарѣчіи. Упавшіе оленьи",
+   "native": "кі́lвэј",
+   "resolved": "кі́lвэј: U+0456 і, U+0301 acute on і, U+006C tall l, U+0458 ј"
+  },
+  "27": {
+   "text": "рога называются тан̀ӈа́прытын.",
+   "native": "тан̀ӈа́прытын",
+   "resolved": "тан̀ӈа́прытын: U+0300 grave on н, U+04C8 ӈ, U+0301 acute on а",
+   "note": "Gloss: тан̀ӈа́прытын, fallen antlers (рога). Grave sits over н, acute over а after ӈ.",
+   "class": "semantic"
+  },
+  "28": {
+   "text": "15."
+  },
+  "29": {
+   "text": "Јакө́нне-lѵ́мӈыl.",
+   "native": "Јакө́нне-lѵ́мӈыl",
+   "resolved": "Јакө́нне-lѵ́мӈыl: U+0408 Ј, U+04E9 ө, U+0301 acute on ө, U+006C tall l, U+0475 ѵ, U+0301 acute on ѵ, U+04C8 ӈ, U+006C tall l",
+   "note": "Scan shows barred ө with the acute (Јакө́нне), where lexicon has Јако́нне-lѵ́мӈыl (1-386 1-389) with plain о; the bar is plain at 4x. The two н following ө have their crossbars mostly lost; keyed нн. Title: Yakunnin tale, Јакө́нне-lѵ́мӈыl.",
+   "class": "doubt"
+  },
+  "30": {
+   "text": "",
+   "note": "Second small box over the final «l.» of line 29 ink; keyed empty.",
+   "class": "artifact"
+  },
+  "35": {
+   "text": "Сказка о Якуннинѣ."
+  },
+  "36": {
+   "text": "Јӓку́ннін, худо убивающій, съ таньгами, начальникомъ сдѣланный, съ",
+   "as_typed": "{Ja:ku'nni_1n}, худо убивающій, съ таньгами, начальникомъ сдѣланный, съ",
+   "native": "Јӓку́ннін",
+   "resolved": "Јӓку́ннін: U+0408 Ј, U+0308 diaeresis on а, U+0301 acute on у, U+0456 і",
+   "note": "Name matches lexicon Јӓку́ннін; bars of the нн are faint in the bitonal scan.",
+   "class": "semantic"
+  },
+  "37": {
+   "text": "нашимъ народомъ захотѣли воевать. Худо воевали. Истребилъ народъ."
+  },
+  "38": {
+   "text": "Только троихъ въ живыхъ оставилъ, два брата Lаwтыlыwа́lын и Чукэ́ђређ,",
+   "as_typed": "Только троихъ въ живыхъ оставилъ, два брата {L_0aw_0tyl_0yw_0a'l_0yn} и Чукэ́ђређ,",
+   "native": "Lаwтыlыwа́lын Чукэ́ђређ",
+   "resolved": "Lаwтыlыwа́lын: U+004C L, U+0077 w, U+006C tall l, U+0077 w, U+0301 acute on а, U+006C tall l; Чукэ́ђређ: U+0301 acute on э, U+0452 ђ twice"
+  },
+  "39": {
+   "text": "Чы́мкыl третій, двоюродный братъ. Только съ двумя стрѣлами, съ костя-",
+   "as_typed": "{C_1y'mkyl_0} третій, двоюродный братъ. Только съ двумя стрѣлами, съ костя-",
+   "native": "Чы́мкыl",
+   "resolved": "Чы́мкыl: U+0301 acute on ы, U+006C tall l"
+  }
+ }
+}

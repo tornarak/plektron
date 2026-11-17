@@ -1,0 +1,160 @@
+{
+ "ref": "1-232",
+ "contamination": {
+  "blind": false,
+  "why": "this pass reads both text-layer copies (ocr witness) by design, and two lexicon lookups (the copies' spellings, then the scan's); no other page's proposal, decision or gt/ocr/ was read"
+ },
+ "lines": {
+  "0": {
+   "text": "176 В. Г. БОГОРАЗЪ, II,62—63.",
+   "class": "layout",
+   "note": "Running head is one box (folio, letterspaced name, volume ref); letterspacing keyed unspaced. Printed II,62—63 range with no space after comma."
+  },
+  "1": {
+   "text": "домой стадо. Отъ того стада расплодились на землѣ дикіе олени, а отъ"
+  },
+  "2": {
+   "text": "тѣхъ людей размножились люди."
+  },
+  "3": {
+   "text": "Записано отъ чукчанки Кутјэ́ўт.",
+   "as_typed": "Записано отъ чукчанки {Kutje_1'u~t}.",
+   "native": "Кутјэ́ўт",
+   "resolved": "Кутјэ́ўт: U+0301 acute on э, U+0306 breve on у (ў)"
+  },
+  "4": {
+   "text": "62."
+  },
+  "5": {
+   "text": "Lо́lђыlын lѵ́мӈыl. О Lо́lђыlын’ѣ сказка.",
+   "as_typed": "{L_0o'l_0g_1yl_0yn} {l_0v_1'mn_1yl_0}. О {L_0o'l_0g_1yl_0yn}’ѣ сказка.",
+   "native": "Lо́lђыlын lѵ́мӈыl Lо́lђыlын",
+   "resolved": "Lо́lђыlын: U+004C L, U+0301 acute on о, U+006C tall l, U+0452 ђ; lѵ́мӈыl: U+006C tall l, U+0475 ѵ, U+0301 acute on ѵ, U+04C8 ӈ",
+   "class": "doubt",
+   "note": "lѵ́мӈыl: the right arm of ѵ carries a curl (here) or a round dot (l23) beside the acute; keyed as ѵ with acute only, no extra codepoint. Copies read 1ѵмныl."
+  },
+  "6": {
+   "text": "Пошли приморскіе люди по морю, шесть человѣкъ; унесло ихъ на"
+  },
+  "7": {
+   "text": "море вмѣстѣ со льдомъ, попали за море. Пришли за море, потомъ увидѣли"
+  },
+  "8": {
+   "text": "человѣка, великаго, какъ большой утесъ; имя ему Lо́lђыlын; носъ и глаза",
+   "as_typed": "человѣка, великаго, какъ большой утесъ; имя ему {L_0o'l_0g_1yl_0yn}; носъ и глаза",
+   "native": "Lо́lђыlын",
+   "resolved": "Lо́lђыlын: U+004C L, U+0301 acute on о, U+006C tall l, U+0452 ђ"
+  },
+  "9": {
+   "text": "и все, какъ у человѣка, волосы большіе, какъ лѣсъ. «Откуда вы?» — «Такъ"
+  },
+  "10": {
+   "text": "и такъ, унесло насъ льдомъ на море, пришли сюда на твою землю». — «А"
+  },
+  "11": {
+   "text": "вы кто такіе, тоже люди?» — «Люди!» — «Хотите, я васъ увезу домой?» —"
+  },
+  "12": {
+   "text": "«Хорошо». Посадилъ онъ ихъ въ напа́локъ¹) рукавицы, понесъ, идетъ ти-",
+   "class": "layout",
+   "note": "Acute on напа́локъ (Kolyma Russian dialect, glossed in note 1) kept as printed; copies dropped it.",
+   "resolved": "напа́локъ: U+0301 acute on а (Russian dialect word, printed accent)"
+  },
+  "13": {
+   "text": "хонько, шагаетъ по морю, какъ будто мелкое болото, по дорогѣ кита под-"
+  },
+  "14": {
+   "text": "хватилъ, проглотилъ его, пошелъ дальше. Дошелъ до того берега, отпу-"
+  },
+  "15": {
+   "text": "стилъ людей, говоритъ: «Давай, сосну!» Легъ, заснулъ на всю осень."
+  },
+  "16": {
+   "text": "Пришла осень, пришли вѣтры, стала вода бить черезъ его тѣло, замерзла"
+  },
+  "17": {
+   "text": "вода на немъ и онъ примерзъ; проспалъ всю зиму. Медвѣди пришли, отъ-"
+  },
+  "18": {
+   "text": "ѣли у него щеку. Пришла весна, оттаяла вода, онъ проснулся, всталъ."
+  },
+  "19": {
+   "text": "Пощупалъ лицо, потомъ щеку. «Ого!» говоритъ, «на этой землѣ поспалъ,"
+  },
+  "20": {
+   "text": "лицо себѣ отлежалъ!»"
+  },
+  "21": {
+   "text": "Записано отъ чукчи Ва́аl на р. Омолонѣ.",
+   "native": "Ва́аl",
+   "resolved": "Ва́аl: U+0301 acute on first а, U+006C tall l"
+  },
+  "22": {
+   "text": "63."
+  },
+  "23": {
+   "text": "Ті́ркы-ӈэ́wӓпін lѵ́мӈыl. Солнца жены сказка.",
+   "as_typed": "Ті́ркы-ӈэ́wӓпін {l_0v_1'mn_1yl_0}. Солнца жены сказка.",
+   "native": "Ті́ркы-ӈэ́wӓпін lѵ́мӈыl",
+   "resolved": "Ті́ркы-ӈэ́wӓпін: U+0301 acute on і, U+04C8 ӈ, U+0301 acute on э, U+0077 w, U+0308 diaeresis on а; lѵ́мӈыl: U+006C tall l, U+0475 ѵ, U+0301 acute on ѵ, U+04C8 ӈ",
+   "class": "doubt",
+   "note": "Heading form read: п before і has no visible crossbar (the 4x crop shows н elsewhere with a faint bar, п without), keyed п; copies read н (A: ӈэшӑнін, B: ӈэшанін). Also ѵ mark as in l5. Possible hairline loss, but native form so keyed as seen: wӓпін vs wӓнін."
+  },
+  "24": {
+   "text": "Была дѣвушка, и всѣхъ жениховъ отвергала. Пришло Солнце во"
+  },
+  "25": {
+   "text": "время сна, взяло ее, сдѣлало своей женой и увезло вверхъ на бѣлыхъ"
+  },
+  "26": {
+   "text": "оленяхъ. Покочевали по солнечному лучу²), достигли неба; покочевали по"
+  },
+  "27": {
+   "text": "небу, на берегу Песчаной рѣки³) остановились. «Я пойду, поищу броду!»"
+  },
+  "28": {
+   "text": "говоритъ мужъ, «а ты подожди здѣсь!» Только-что ушелъ, приползла Тӓ́ӄі",
+   "native": "Тӓ́ӄі",
+   "resolved": "Тӓ́ӄі: U+0308 diaeresis and U+0301 acute on а, U+04C4 ӄ",
+   "class": "doubt",
+   "note": "Word broken across line end (Тӓ́ӄі- / -ӈэ́ўт): corpus has Тӓ́ӄі-ӈэ́ўт at 1-041; keyed by hand, hyphen at the head of l29. Scan shows ӓ with acute, then hooked-stroke ӄ, then і."
+  },
+  "29": {
+   "text": "-ӈэ́ўт⁴) и говоритъ: «Охъ, берегись! По дорогѣ нападетъ на тебя птичій",
+   "native": "ӈэ́ўт",
+   "resolved": "ӈэ́ўт: U+04C8 ӈ, U+0301 acute on э, U+0306 breve on у (ў)",
+   "class": "layout",
+   "note": "Footnote mark keyed ⁴) as printed (raised 4, full-size paren); the engine spaced it. Footnote 4 glosses Тӓ́ӄі-ӈэ́ўт as a small black beetle."
+  },
+  "30": {
+   "text": "1) Большой палецъ рукавицы (русско-колымское нарѣчіе), по чукотски",
+   "class": "layout",
+   "note": "Footnote mark lines 26, 27 and 12 keyed as raised digit plus paren without the engine space; note opens full-size."
+  },
+  "31": {
+   "text": "а́рыłыӈын.",
+   "native": "а́рыłыӈын",
+   "resolved": "а́рыłыӈын: U+0301 acute on а, U+0142 ł barred l, U+04C8 ӈ",
+   "class": "doubt",
+   "note": "Third letter pair: read а́рыłыӈын: the glyph copies read as т is a tall stem with a low crossbar (barred l, ł), keyed ł; if it is т the form would be а́рытыӈын. Footnote 1 glosses it: big thumb of a mitten, in Chukchi."
+  },
+  "32": {
+   "text": "2) Те́ркы-ӄамчө́чын.",
+   "native": "Те́ркы-ӄамчө́чын",
+   "resolved": "Те́ркы-ӄамчө́чын: U+0301 acute on е, U+04C4 ӄ, U+04E9 ө, U+0301 acute on ө",
+   "class": "doubt",
+   "note": "Те́ркы-ӄамчө́чын: copies read е for ө (Теркы-ӄамчечын); scan shows barred o with acute. Acute also on е. No ratified match."
+  },
+  "33": {
+   "text": "3) Чіђэ̀ј-вэ́эм — Песчаная рѣка. Такъ называется Млечный путь.",
+   "as_typed": "3) {C_1i_1g_1e_1.j-ve_1'e_1m} — Песчаная рѣка. Такъ называется Млечный путь.",
+   "native": "Чіђэ̀ј-вэ́эм",
+   "resolved": "Чіђэ̀ј-вэ́эм: U+0452 ђ, U+0300 grave on э, U+0301 acute on э",
+   "class": "semantic",
+   "note": "Footnote 3: Чіђэ̀ј-вэ́эм — Песчаная рѣка, «Sandy River», the Milky Way (gloss in note); printed with capital Ч, key from 1-033."
+  },
+  "34": {
+   "text": "4) Небольшой черный жукъ. См. № 26, прим. 3."
+  }
+ }
+}
