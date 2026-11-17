@@ -58,7 +58,8 @@
   },
   "\u030c": {
    "\u0440": "\u0440 with a caron, \u0440\u030c of the 1899 key, printed in native forms",
-   "\u0458": "\u0458 with a caron, printed in a native form"
+   "\u0458": "\u0458 with a caron, printed in a native form",
+   "c": "c with a caron, the editor's romanization of \u0447 in edition/toc.json title_en"
   }
  },
  "detectors": {
@@ -175,6 +176,7 @@
   "mark_license.\u0306.\u044b": "A breve over ы is printed in 1-182 l19 кы́ры̆ӈы and 1-235 l38 эlу́кы̆н: a rounded cup, the shape of the breve on й in широкій under it, not the pointed circumflex (read at 2x; both copies drop it). Licensed by the editor for this text, 2026-11-16.",
   "mark_license.\u030c.р": "A caron over р is printed in native forms, р̌ of the 1899 key (§§ 1–10): 1-036 and 1-038 ја́нр̌а-ка́lат, 1-284 Јанр̌а́-ӈаw, 1-091 l21 аӈа́нр̌ан, 1-104 l4–5 јанр̌а̂́-lа̀ўl and ја́нр̌а-ӈа̀w, 1-126 l9 вінр̌ээс̧ӄі́ўl-і-ѵм, 1-145 l19 ђэӄэнр̌э́т (read at 2x; both copies a plain р). Ratified on each page, then licensed by the editor for this text, 2026-11-17.",
   "mark_license.\u030c.ј": "A caron over a dotless ј is printed in 1-114 l24 э́ј̌ӈы: a straight stem with a descender curling left, the ј shape, with a caron where its dot would be, not the V-shaped у of ў (read at 4x; the layers ў). Ruled by the editor at that line, 2026-11-17.",
+  "mark_license.\u030c.c": "č is not printed: it is the editor's romanization of ч in the English titles of edition/toc.json (title_en, no. 137 Temeeréčeђӓj). Licensed by the editor for this text, 2026-11-17, once the caron's licence row brought it under the gate.",
   "lookalikes.\u04e9": "Barred o is a letter of the 1900 notation, printed in the Chukchi forms (1-024 l20 \u0442\u043e\u0442-\u0442\u04e9\u043cwat\u2026, 1-076 l11). The trap is the Jesup one, U+04E9 for U+0275, which this book cannot commit. Unflagged by the editor, 2026-11-06.",
   "tier1_traps.\u04e9": "As lookalikes.\u04e9: the same ruling, in the trap table.",
   "lookalike_chars.\u04e9": "As lookalikes.\u04e9: the same ruling, in the file gate.",
