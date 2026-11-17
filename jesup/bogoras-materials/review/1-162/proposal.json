@@ -1,0 +1,246 @@
+{
+ "ref": "1-162",
+ "contamination": {
+  "blind": false,
+  "why": "this pass reads both text-layer copies (ocr witness) by design, and two lexicon lookups (the copies' spellings, then the scan's); no other page's proposal, decision or gt/ocr/ was read"
+ },
+ "lines": {
+  "0": {
+   "text": "106 Г. БОГОРАЗЪ, I,21.",
+   "note": "Running head letterspaced (Г. БОГОРАЗЪ), keyed unspaced; В. is boxed on its own as line 1; Roman I Latin.",
+   "class": "layout"
+  },
+  "1": {
+   "text": "В.",
+   "note": "Initial В. of the running head, boxed on its own beside line 0.",
+   "class": "layout"
+  },
+  "2": {
+   "text": "множествомъ разнообразныхъ обрядовъ (ср. № 1). Дикіе олени, приходящіе осенью,"
+  },
+  "3": {
+   "text": "составляютъ главную часть ӄо́рен кынта́ырђын «оленьей удачи». Даже ламуты,",
+   "as_typed": "составляютъ главную часть {k_1o'ren} кынта́ырђын «оленьей удачи». Даже ламуты,",
+   "native": "ӄо́рен кынта́ырђын",
+   "resolved": "ӄо́рен: U+04C4 ӄ, U+0301 acute on о; кынта́ырђын: U+0301 acute on а, U+0452 ђ",
+   "note": "ӄо́рен кынта́ырђын «оленьей удачи», the reindeer's luck (wild-reindeer luck); ӄо́рен is the ratified key.",
+   "class": "semantic"
+  },
+  "4": {
+   "text": "для которыхъ мясо дикаго оленя составляетъ существенную часть питанія, не при-"
+  },
+  "5": {
+   "text": "даютъ такого преувеличеннаго значенія своей добычѣ. Между тѣмъ чукотскій олене-"
+  },
+  "6": {
+   "text": "водъ отъ дикихъ оленей, убитыхъ въ стадѣ, въ сущности получаетъ немного прак-"
+  },
+  "7": {
+   "text": "тической пользы, уже потому, что большую часть мяса раздаетъ гостямъ. Вѣроятно,"
+  },
+  "8": {
+   "text": "въ прежнее время, когда, по всѣмъ свѣдѣніямъ, оленеводство было меньше развито,"
+  },
+  "9": {
+   "text": "осенній убой дикихъ оленей, дѣйствительно, имѣлъ важное значеніе для питанія"
+  },
+  "10": {
+   "text": "чукочъ."
+  },
+  "11": {
+   "text": "2 (стр. 2). ајӈа́ма ыlвыlу́ «во время течки дикихъ оленей». эјӈэ́ркын",
+   "native": "ајӈа́ма ыlвыlу́ эјӈэ́ркын",
+   "resolved": "ајӈа́ма: U+04C8 ӈ, U+0301 acute on а; ыlвыlу́: U+006C tall l x2, U+0301 acute on у; эјӈэ́ркын: U+04C8 ӈ, U+0301 acute on э",
+   "note": "ајӈа́ма ыlвыlу́ «во время течки дикихъ оленей», at the time of the rut of wild reindeer; эјӈэ́ркын is the verb discussed in the note (to make animal sounds).",
+   "class": "semantic"
+  },
+  "12": {
+   "text": "собственно испускать звуки, свойственные каждой породѣ животныхъ; напр. вэ̀lв",
+   "native": "вэ̀lв",
+   "resolved": "вэ̀lв: U+0300 grave on э, U+006C tall l"
+  },
+  "13": {
+   "text": "-эјӈэ́ркын «каркать» (по вороньему), ӄа-ајӈа́ркын «хранѣть» (по оленьи) и т. п.;",
+   "native": "-эјӈэ́ркын ӄа-ајӈа́ркын",
+   "resolved": "эјӈэ́ркын: U+04C8 ӈ, U+0301 acute on э; ӄа-ајӈа́ркын: U+04C4 ӄ, U+04C8 ӈ, U+0301 acute on а",
+   "note": "эјӈэ́ркын «каркать», to caw (raven); ӄа-ајӈа́ркын «хранѣть», to snore (reindeer-fashion). Line begins with the hyphen of вэ̀lв-эјӈэ́ркын, broken from line 12.",
+   "class": "semantic"
+  },
+  "14": {
+   "text": "отсюда также «бѣгаться, предаваться течкѣ», у русскихъ на Колымѣ «порозовать»"
+  },
+  "15": {
+   "text": "отъ «порозъ» самецъ (олень, тюлень, моржъ и т. п.). Животныя во время течки"
+  },
+  "16": {
+   "text": "призываютъ другъ друга криками."
+  },
+  "17": {
+   "text": "3 (стр. 2). ра̀-ђро́lмык собственно «вокругъ задней части шатра». ђро́lмык",
+   "native": "ра̀-ђро́lмык ђро́lмык",
+   "resolved": "ра̀-ђро́lмык: U+0300 grave on а, U+0452 ђ, U+0301 acute on о, U+006C tall l; ђро́lмык: U+0452 ђ, U+0301 acute on о, U+006C tall l",
+   "note": "ра̀-ђро́lмык «вокругъ задней части шатра», around the back part of the tent. Initial ђ of the second form is x-height like ordinary ђ, keyed lowercase though it opens a sentence; a capital Ђ would be taller. Copies read Б/Бр; scan shows ђ.",
+   "class": "doubt"
+  },
+  "18": {
+   "text": "буквально «вокругъ» отъ Vb. А. ђру́lмыркын «обойти вокругъ», употребляется",
+   "native": "ђру́lмыркын",
+   "resolved": "ђру́lмыркын: U+0452 ђ, U+0301 acute on у, U+006C tall l",
+   "note": "ђру́lмыркын «обойти вокругъ», to go around; first letter ђ keyed lowercase as in line 17 (x-height); copies read Б. Acute on у, not on о.",
+   "class": "doubt"
+  },
+  "19": {
+   "text": "также въ значеніи «позади чего, за чѣмъ», т. е. совершивъ обходное движеніе во-"
+  },
+  "20": {
+   "text": "кругъ какого нибудь предмета и остановившись тамъ."
+  },
+  "21": {
+   "text": "4 (стр. 3). ъмычычо́ӈет «постоянно», быть можетъ изъ ъмыlо́ а̂lо́ӈет",
+   "native": "ъмычычо́ӈет ъмыlо́ а̂lо́ӈет",
+   "resolved": "ъмычычо́ӈет: U+0301 acute on о, U+04C8 ӈ; ъмыlо́: U+006C tall l, U+0301 acute on о; а̂lо́ӈет: U+0302 circumflex on а, U+006C tall l, U+0301 acute on о, U+04C8 ӈ",
+   "note": "ъмычычо́ӈет «постоянно», constantly; «во всѣ дни», on all days; first letter read as ъ (hard-sign shape with left lobe) as copy A.",
+   "class": "semantic"
+  },
+  "22": {
+   "text": "«во всѣ дни», какъ французское toujours."
+  },
+  "23": {
+   "text": "5 (стр. 4). рі́lӓӄ-а̂́ттым «спинная кость, спинной хребетъ».",
+   "native": "рі́lӓӄ-а̂́ттым",
+   "resolved": "рі́lӓӄ-а̂́ттым: U+0301 acute on і, U+006C tall l, U+0308 diaeresis on а, U+04C4 ӄ, U+0302 circumflex and U+0301 acute on а",
+   "note": "рі́lӓӄ-а̂́ттым «спинная кость, спинной хребетъ», back bone, spine; а has circumflex under acute.",
+   "class": "semantic"
+  },
+  "24": {
+   "text": "6 (стр. 6). келпа́lђын и кыlпа́lђын — широкая часть оленьяго рога, лопасть,",
+   "native": "келпа́lђын кыlпа́lђын",
+   "resolved": "келпа́lђын: U+0301 acute on а, U+006C tall l, U+0452 ђ; кыlпа́lђын: U+006C tall l, U+0301 acute on а, U+0452 ђ",
+   "note": "келпа́lђын, кыlпа́lђын «широкая часть оленьяго рога», broad part of a reindeer antler. п keyed without crossbar where the bar is not visible (in the same word ђын н shows its bar); both copies read н/n.",
+   "class": "doubt"
+  },
+  "25": {
+   "text": "обыкновенно составляющая среднее развѣтвленіе; е́нђырђын — переднее тонкое раз-",
+   "native": "е́нђырђын",
+   "resolved": "е́нђырђын: U+0301 acute on е, U+0452 ђ x2",
+   "note": "е́нђырђын «переднее тонкое развѣтвленіе», front thin branch of an antler; ђ both times (copies ђ/ӄ/д).",
+   "class": "semantic"
+  },
+  "26": {
+   "text": "вѣтвленіе, направленное къ оленьему посу э́јӈытым; ајка́lђын — заднее развѣт-",
+   "native": "э́јӈытым ајка́lђын",
+   "resolved": "э́јӈытым: U+0301 acute on э, U+04C8 ӈ; ајка́lђын: U+0301 acute on а, U+006C tall l, U+0452 ђ",
+   "note": "э́јӈытым, the antler brow-tine: э́ is acute; a small caron/breve-shaped mark stands over ј (both copies read ў), looks like a separate mark; not keyed. ајка́lђын «заднее развѣтвленіе», back branch; ђ (copy B ӄ).",
+   "class": "doubt"
+  },
+  "27": {
+   "text": "вленіе; многіе рога не имѣютъ е́нђырђын.",
+   "native": "е́нђырђын",
+   "resolved": "е́нђырђын: U+0301 acute on е, U+0452 ђ x2",
+   "note": "е́нђырђын, as line 25.",
+   "class": "semantic"
+  },
+  "28": {
+   "text": "7 (стр. 8). lу̂́lӄӓl ыlві́н і́рӓ нена́реӄен «оленье лицо покрываютъ одеждой», —",
+   "native": "lу̂́lӄӓl ыlві́н і́рӓ нена́реӄен",
+   "resolved": "lу̂́lӄӓl: U+006C tall l x2, U+0302 circumflex and U+0301 acute on у, U+04C4 ӄ, U+0308 diaeresis on а; ыlві́н: U+006C tall l, U+0301 acute on і; і́рӓ: U+0301 acute on і, U+0308 diaeresis on а; нена́реӄен: U+0301 acute on а, U+04C4 ӄ",
+   "note": "lу̂́lӄӓl ыlві́н і́рӓ нена́реӄен «оленье лицо покрываютъ одеждой», they cover the reindeer face with clothes. Circumflex and acute both over у. Letter in нена́реӄен read as ӄ (hooked К, stroke into hook), copy A ђ.",
+   "class": "doubt"
+  },
+  "29": {
+   "text": "точно также какъ лицо покойника."
+  },
+  "30": {
+   "text": "8 (стр. 10). wуты́чһын «кухлянка», — мужской верхній балахонъ.",
+   "native": "wуты́чһын",
+   "resolved": "wуты́чһын: U+0077 w, U+0301 acute on ы, U+04BB һ",
+   "note": "wуты́чһын «кухлянка», kukhlyanka, man's upper smock; w is a Latin-style w; acute on ы (copies had none).",
+   "class": "semantic"
+  },
+  "31": {
+   "text": "9 (стр. 17). а́чһыта нінэ́рріlӄін — убитыхъ оленей кладутъ рядомъ позади",
+   "native": "а́чһыта нінэ́рріlӄін",
+   "resolved": "а́чһыта: U+0301 acute on а, U+04BB һ; нінэ́рріlӄін: U+0301 acute on э, U+006C tall l, U+04C4 ӄ",
+   "note": "а́чһыта нінэ́рріlӄін, killed reindeer are laid side by side behind the tent.",
+   "class": "semantic"
+  },
+  "32": {
+   "text": "шатра въ ожиданіи, пока окончится течка и убой."
+  },
+  "33": {
+   "text": "10 (стр. 24). ре́lӄапат — буквально «варево изъ желудочнаго содержимаго»,",
+   "native": "ре́lӄапат",
+   "resolved": "ре́lӄапат: U+0301 acute on е, U+006C tall l, U+04C4 ӄ",
+   "note": "ре́lӄапат «варево изъ желудочнаго содержимаго», broth of stomach contents; dash is an em-dash.",
+   "class": "semantic"
+  },
+  "34": {
+   "text": "также вообще всякая похлебка въ видѣ жидкой каши. Обыкновенно ре́lӄапат варятъ",
+   "native": "ре́lӄапат",
+   "resolved": "ре́lӄапат: U+0301 acute on е, U+006C tall l, U+04C4 ӄ",
+   "note": "ре́lӄапат; copy B reads реӄапат, scan shows l and acute.",
+   "class": "draft"
+  },
+  "35": {
+   "text": "изъ содержащагося въ оленьемъ желудкѣ полуперевареннаго мху, или изъ крови, съ"
+  },
+  "36": {
+   "text": "примѣсью жира и различныхъ кореньевъ. Такая похлебка необходима при жертвопри-"
+  },
+  "37": {
+   "text": "ношеніяхъ. паlкомра́lђын — корень осоки, тоже употребляемый въ пищу чукчами.",
+   "native": "паlкомра́lђын",
+   "resolved": "паlкомра́lђын: U+006C tall l x2, U+0301 acute on а, U+0452 ђ",
+   "note": "паlкомра́lђын «корень осоки», sedge root, eaten by Chukchi; copies read паlкомрађын / паркомра́lӄын; scan ђ.",
+   "class": "semantic"
+  },
+  "38": {
+   "text": "попо́каlђын см. № 1, прим. 25.",
+   "native": "попо́каlђын",
+   "resolved": "попо́каlђын: U+0301 acute on о, U+006C tall l, U+0452 ђ",
+   "note": "попо́каlђын, cross-reference to no. 1 note 25; footnote number 25 (both copies 23/25).",
+   "class": "draft"
+  },
+  "39": {
+   "text": "11 (стр. 26). wѵры́ткынык тыны́ткынык — собственно здѣсь тавтологія,",
+   "native": "wѵры́ткынык тыны́ткынык",
+   "resolved": "wѵры́ткынык: U+0077 w, U+0475 ѵ, U+0301 acute on ы; тыны́ткынык: U+0301 acute on ы",
+   "note": "wѵры́ткынык тыны́ткынык: tautology, the tip of a branch / the tip of a horn branch.",
+   "class": "semantic"
+  },
+  "40": {
+   "text": "такъ какъ wѵры́ткын «кончикъ развѣтвленія», а тыны́ткын «кончикъ роговой",
+   "native": "wѵры́ткын тыны́ткын",
+   "resolved": "wѵры́ткын: U+0077 w, U+0475 ѵ, U+0301 acute on ы; тыны́ткын: U+0301 acute on ы",
+   "note": "wѵры́ткын «кончикъ развѣтвленія», tip of a branch; тыны́ткын «кончикъ роговой вѣтви», tip of a horn branch. Closing » after развѣтвленія is faded to a tick; keyed as the quote it stands for.",
+   "class": "print"
+  },
+  "41": {
+   "text": "вѣтви»."
+  },
+  "42": {
+   "text": "12 (стр. 30). тынпе́рет сокращено изъ ры́тын - пе́рет «схваченное съ",
+   "native": "тынпе́рет ры́тын пе́рет",
+   "resolved": "тынпе́рет: U+0301 acute on е; ры́тын: U+0301 acute on ы; пе́рет: U+0301 acute on е",
+   "note": "тынпе́рет «схваченное съ роговъ», seized from the horns, shortened from ры́тын - пе́рет; hyphen spaced as printed; п (no bar) against н with bar in тын.",
+   "class": "doubt"
+  },
+  "43": {
+   "text": "роговъ»."
+  },
+  "44": {
+   "text": "13 (стр. 36). тырђы́туlӄӓј «кусочекъ мяса». ты́рђытыр «мясная мякоть,",
+   "native": "тырђы́туlӄӓј ты́рђытыр",
+   "resolved": "тырђы́туlӄӓј: U+0452 ђ, U+0301 acute on ы, U+006C tall l, U+04C4 ӄ, U+0308 diaeresis on а; ты́рђытыр: U+0301 acute on ы, U+0452 ђ",
+   "note": "тырђы́туlӄӓј «кусочекъ мяса», small piece of meat; ты́рђытыр «мясная мякоть, отрѣзанная отъ кости», meat pulp cut from bone. Copies read тырӄыту ӄај as two words; scan is one word.",
+   "class": "semantic"
+  },
+  "45": {
+   "text": "отрѣзанная отъ кости»; тэкі́чһын вообще мясо.",
+   "native": "тэкі́чһын",
+   "resolved": "тэкі́чһын: U+0301 acute on і, U+04BB һ",
+   "note": "тэкі́чһын «вообще мясо», meat in general; acute on і.",
+   "class": "semantic"
+  }
+ }
+}

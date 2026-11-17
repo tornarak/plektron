@@ -1,0 +1,159 @@
+{
+ "ref": "1-360",
+ "contamination": {
+  "blind": false,
+  "why": "this pass reads both text-layer copies (ocr witness) by design, and two lexicon lookups (the copies' spellings, then the scan's); no other page's proposal, decision or gt/ocr/ was read"
+ },
+ "lines": {
+  "0": {
+   "text": "304 Г. БОГОРАЗЪ, II,117."
+  },
+  "1": {
+   "text": "В.",
+   "class": "layout",
+   "note": "Box holds the initial В. of the running head, beside line 0; line 0 keyed without it."
+  },
+  "2": {
+   "text": "убѣжалъ.» — «Иди-же! Они тебя прослѣдятъ. Иди скорѣй!» Полетѣлъ,"
+  },
+  "3": {
+   "text": "дальше. Увидѣлъ гонящихся. «Вы», говоритъ, «зачѣмъ?» — «Гонимся за"
+  },
+  "4": {
+   "text": "зятемъ.» — «Э-э-э! Онъ уже пришелъ на землю, на свою родину. Его люди"
+  },
+  "5": {
+   "text": "его встрѣтили, много народа съ собаками, идутъ къ вамъ, ищутъ васъ,"
+  },
+  "6": {
+   "text": "слѣдятъ медвѣдей. Скорѣе разойдитесь, а то васъ перебьютъ!» Вернулись.",
+   "class": "draft",
+   "note": "Copy A reads the verbal endings as -ть throughout the page (прослѣдять, говорять, сидить, варять, ѣдять, возьмуть); the scan sets final ъ in every one checked, so keyed -тъ. Engine habit ъ read as ь."
+  },
+  "7": {
+   "text": "«О», говорятъ, «вправду убьютъ!» Вернулись домой. Тотъ вернулся въ"
+  },
+  "8": {
+   "text": "свой домъ."
+  },
+  "9": {
+   "text": "Записано отъ чукчи Ајнан̀ва́т’а въ Нижнеколымскѣ.",
+   "native": "Ајнан̀ва́т’а",
+   "resolved": "Ајнан̀ва́т’а: U+0458 ј, U+0300 grave on second н, U+0301 acute on а, U+2019 curly apostrophe",
+   "class": "doubt",
+   "note": "Keyed Ајнан̀ва́т’а: the first н is a plain H-shaped н with no hook on the scan, grave over the second н, acute on а. The ratified spelling elsewhere is Ајӈан̀ва́т (hooked ӈ); the two differ only by the hook. Not typed as a key."
+  },
+  "10": {
+   "text": "118."
+  },
+  "11": {
+   "text": "Амамко̀т-lѵ́мӈыl. Объ Э̇мэмку́тѣ сказка.",
+   "as_typed": "Амамко̀т-{l_0v_1'mn_1yl_0}. Объ Э̇мэмку́тѣ сказка.",
+   "native": "Амамко̀т-lѵ́мӈыl Э̇мэмку́тѣ",
+   "resolved": "Амамко̀т-lѵ́мӈыl Э̇мэмку́тѣ: U+0300 grave on о, U+006C tall l, U+0475 ѵ, U+0301 acute on ѵ, U+04C8 ӈ, U+006C tall l final, U+0307 dot above Э, U+0301 acute on у",
+   "class": "semantic",
+   "note": "Heading: Амамко̀т has grave on о and no lookup match; lѵ́мӈыl is the ratified form (key typed). Э of Эмэмку́тѣ carries a dot above here and acute on у; body occurrences (l12, l22) show acute on у only. Gloss: the tale about Эмэмкутъ (lѵ́мӈыl = tale, as in other headings)."
+  },
+  "12": {
+   "text": "У Эмэмку́та много родственниковъ, но все дальніе; братьевъ нѣтъ.",
+   "native": "Эмэмку́та",
+   "resolved": "Эмэмку́та: U+0301 acute on у"
+  },
+  "13": {
+   "text": "Особо его домъ стоитъ. Двѣ жены у него: одна жена куропатка, другая",
+   "class": "draft",
+   "note": "In жены the н shows as п-like on the scan (hairline lost); sense decides: жены."
+  },
+  "14": {
+   "text": "евражка; но все-таки хорошія женщины. Родственникъ его убилъ и женъ"
+  },
+  "15": {
+   "text": "забралъ. Говоритъ ему: «Завтра пойдемъ на ладьѣ въ море.» Тамъ въ"
+  },
+  "16": {
+   "text": "моржа метнулъ копьемъ, а его связали и бросили вмѣсто пузыря въ море,"
+  },
+  "17": {
+   "text": "на самое открытое море, — его моржъ унесъ. Домой всѣ люди уплыли."
+  },
+  "18": {
+   "text": "Погнались за тѣми женами, кто первый схватитъ. Тѣ бѣгутъ впереди,"
+  },
+  "19": {
+   "text": "какъ на бѣгу взапуски. Пришли, а онъ тамъ сидитъ въ пологѣ, шаманитъ.",
+   "class": "draft",
+   "note": "Both copies read ь in сидить and шаманить; the scan sets ъ (сидитъ, шаманитъ)."
+  },
+  "20": {
+   "text": "«Ну что, пришелъ?» — «Да!» Ѣду варятъ. «Развѣ вы не подождете? Идите",
+   "class": "draft",
+   "note": "Initial capital before ду is Ѣ (Ѣду варятъ); copy A reads Бду. Hairline-lost capital; sense decides."
+  },
+  "21": {
+   "text": "въ пологъ! На завтра по сушѣ на сѣндуху пойдемъ.» Увидѣли медвѣдя,"
+  },
+  "22": {
+   "text": "погнали, бросили арканомъ, поймали, привязали Эмэмку́та, пошли домой.",
+   "native": "Эмэмку́та",
+   "resolved": "Эмэмку́та: U+0301 acute on у"
+  },
+  "23": {
+   "text": "Опять какъ на бѣгу гонятся за женами. Люди пришли домой, а онъ ужъ"
+  },
+  "24": {
+   "text": "напередъ ихъ дошелъ и бьетъ въ бубенъ. Опять заставили его уйти на"
+  },
+  "25": {
+   "text": "море. Опять къ бѣлому медвѣдю привязали. Опять пошли домой, побѣжали,"
+  },
+  "26": {
+   "text": "а онъ ужъ сидитъ и шаманитъ. Землю выкопали, туда положили всякихъ"
+  },
+  "27": {
+   "text": "червей. Все время даютъ имъ мясо; они большіе стали. Моржовый жиръ,"
+  },
+  "28": {
+   "text": "туда набросали, — они все ѣдятъ. Куски величиной съ человѣка бросаютъ"
+  },
+  "29": {
+   "text": "туда, сразу исчезаютъ. Говоритъ женѣ: «Ну, теперь они убьютъ меня, по-",
+   "class": "layout",
+   "note": "Line-end hyphenation по-/тому kept as printed."
+  },
+  "30": {
+   "text": "тому что весьма худую вещь сдѣлали. Если убьютъ, то вы станьте съ"
+  },
+  "31": {
+   "text": "прежнимъ своимъ тѣломъ, — пусть-же возьмутъ васъ. Выйдите изъ дымо-"
+  },
+  "32": {
+   "text": "ваго отверстія или подъ полой шатра. Но только по прежнему уйдите на",
+   "class": "draft",
+   "note": "The scan sets па, a п with no bar beside bar-bearing н in нему; keyed на on sense (уйдите на сѣндуху; copy B reads на). Hairline lost or compositor slip."
+  },
+  "33": {
+   "text": "сѣндуху!» Опять позвали его родственники. Наварили много хорошаго мяса."
+  },
+  "34": {
+   "text": "«Ну-ка», говорятъ, «мы поѣдимъ на дворѣ; теперь хорошо снаружи!» Ѣли",
+   "class": "draft",
+   "note": "Last word is Ѣли (capital Ѣ + ли), continuing into l35 тамъ близко; copy A reads Бли. Sense decides."
+  },
+  "35": {
+   "text": "тамъ близко къ погребу. Поѣли они, открыли погребъ и кинули его въ"
+  },
+  "36": {
+   "text": "погребъ. Сразу его истребили черви. Всѣ люди побѣжали къ дому. Вошли"
+  },
+  "37": {
+   "text": "въ домъ: одна жена скользнула изъ-подъ полы — чик! другая вспорхнула —"
+  },
+  "38": {
+   "text": "райа́! «О», говорятъ, «мы думали: хорошія женщины; понапрасну убили",
+   "native": "райа́",
+   "resolved": "райа́: U+0301 acute on final а",
+   "class": "semantic",
+   "note": "райа́ has an acute on the final а; a sound-word, listed as native; no gloss on the page."
+  }
+ }
+}

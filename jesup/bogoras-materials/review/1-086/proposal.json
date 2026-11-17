@@ -1,0 +1,212 @@
+{
+ "ref": "1-086",
+ "contamination": {
+  "blind": false,
+  "why": "this pass reads both text-layer copies (ocr witness) by design, and two lexicon lookups (the copies' spellings, then the scan's); no other page's proposal, decision or gt/ocr/ was read"
+ },
+ "lines": {
+  "0": {
+   "text": "30 Г. БОГОРАЗЪ, I,5."
+  },
+  "1": {
+   "text": "В.",
+   "note": "box of the running-head initial В. beside line 0; line 0 keyed without it",
+   "class": "layout"
+  },
+  "2": {
+   "text": "два или три ӈэw-ту́мђыт, но число ихъ доходитъ также до 8—10. Чаще всего",
+   "native": "ӈэw-ту́мђыт",
+   "resolved": "ӈэw-ту́мђыт: U+04C8 ӈ, U+0077 w, U+0301 acute on у, U+0452 ђ"
+  },
+  "3": {
+   "text": "такія отношенія заключаются между близкими родственниками, двоюродными или трою-"
+  },
+  "4": {
+   "text": "родными (но не родными) братьями и въ сущности они составляютъ видоизмѣненіе"
+  },
+  "5": {
+   "text": "коммунальнаго брака. Однако люди, совершенно чужіе по крови (а даже въ послѣднее"
+  },
+  "6": {
+   "text": "время иноплеменники), также принимаются въ такой союзъ, что между прочимъ"
+  },
+  "7": {
+   "text": "выражено въ данномъ мѣстѣ текста. Во всякомъ случаѣ, союзъ ӈэw-ту́мђу wа́-",
+   "native": "ӈэw-ту́мђу wа́-",
+   "resolved": "ӈэw-ту́мђу wá-: U+04C8 ӈ, U+0077 w, U+0301 acute on у and on a, U+0452 ђ"
+  },
+  "8": {
+   "text": "ырђын очень укрѣпляетъ связь между людьми и до извѣстной степени напоминаетъ",
+   "native": "ырђын",
+   "resolved": "ырђын: U+0452 ђ"
+  },
+  "9": {
+   "text": "побратимство другихъ народовъ."
+  },
+  "10": {
+   "text": "29 (стр. 97). ныðэ́эркын «храпѣть» говорится только примѣнительно къ",
+   "native": "ныðэ́эркын",
+   "resolved": "ныðэ́эркын: U+00F0 ð forked d, U+0301 acute on first э",
+   "note": "both copies read «хранѣть»; scan loses the hairline of п/н, sense (to snore, cf. «хоркать») decides храпѣть. Gloss: ныðэ́эркын, said only of reindeer, «to snore/snort»",
+   "class": "draft"
+  },
+  "11": {
+   "text": "оленямъ. У русскихъ колымчанъ «хо́ркать».",
+   "native": "хо́ркать",
+   "resolved": "хо́ркать: U+0301 acute on о (printed stress mark in the Russian dialect word)",
+   "note": "«хо́ркать» printed with an acute on о; Russian colloquial word (to snort), listed because of the mark",
+   "class": "semantic"
+  },
+  "12": {
+   "text": "30 (стр. 97). ђануwђоlа́wlен «обращенъ въ служители» отъ wы́јоlын",
+   "native": "ђануwђоlа́wlен wы́јоlын",
+   "resolved": "ђануwђоlа́wlен wы́јоlын: U+0452 ђ, U+0077 w, U+006C tall l, U+0301 acute on а and on ы",
+   "note": "«обращенъ въ служители», turned into a servant; wы́јоlын «слуга, рабъ», servant, slave",
+   "class": "semantic"
+  },
+  "13": {
+   "text": "«слуга, рабъ». Въ чукотскомъ языкѣ есть нѣсколько словъ для выраженія понятія"
+  },
+  "14": {
+   "text": "зависимости. Таковы пу́рэl «рабъ иноплеменный, купленный или военноплѣнный»;",
+   "native": "пу́рэl",
+   "resolved": "пу́рэl: U+0301 acute on у, U+006C tall l",
+   "note": "пу́рэl «рабъ иноплеменный, купленный или военноплѣнный», alien slave, bought or captured (cf. puˊrel in The Chukchee)",
+   "class": "semantic"
+  },
+  "15": {
+   "text": "въ настоящее время такихъ рабовъ уже не существуетъ; а̂му́lын собственно «без-",
+   "native": "а̂му́lын",
+   "resolved": "а̂му́lын: U+0302 circumflex on а, U+0301 acute on у, U+006C tall l",
+   "note": "а̂му́lын собственно «безсильный человѣкъ», literally powerless man",
+   "class": "semantic"
+  },
+  "16": {
+   "text": "сильный человѣкъ», также «слуга, работникъ при чужомъ стадѣ и жилищѣ»; вы́-",
+   "native": "вы́-",
+   "resolved": "вы́-: U+0301 acute on ы"
+  },
+  "17": {
+   "text": "јоlын такого же значенія; и наконецъ ђѵпі́lын собственно «хлопочущій человѣкъ»:",
+   "native": "јоlын ђѵпі́lын",
+   "resolved": "јоlын ђѵпі́lын: U+006C tall l, U+0452 ђ, U+0475 ѵ, U+0301 acute on і",
+   "note": "ђѵпі́lын «хлопочущій человѣкъ», bustling/busy person. Initial hooked letter: copy A reads ӄ, copy B Ђ; scan shows a top bar over the stem and a hook (as ђ in ту́мђу, l7), not ӄ with an arm as in ӄӓlэ́l (l22)",
+   "class": "doubt"
+  },
+  "18": {
+   "text": "это слово одинаково прилагается къ членамъ семьи и къ работникамъ, пришедшимъ"
+  },
+  "19": {
+   "text": "со стороны. Для женщинъ существуетъ только слово ӈа́учһын «рабыня, служанка,",
+   "native": "ӈа́учһын",
+   "resolved": "ӈа́учһын: U+04C8 ӈ, U+0301 acute on а, U+04BB һ",
+   "note": "ӈа́учһын «рабыня, служанка, работница», female slave, servant (cf. ñaˊučhɪn in The Chukchee)",
+   "class": "semantic"
+  },
+  "20": {
+   "text": "работница», хотя конечно названіе ђѵпі́lын одинаково примѣняется и къ женщинамъ.",
+   "native": "ђѵпі́lын",
+   "resolved": "ђѵпі́lын: U+0452 ђ, U+0475 ѵ, U+0301 acute on і, U+006C tall l",
+   "note": "ђѵпі́lын: same initial as l17 read as ђ (bar over stem plus hook), copy A has ӄ; ђ/ӄ not certain",
+   "class": "doubt"
+  },
+  "21": {
+   "text": "31 (стр. 101). ђача́чһын - је́нен «попалъ въ брюхо, помимо органовъ",
+   "native": "ђача́чһын је́нен",
+   "resolved": "ђача́чһын је́нен: U+0452 ђ, U+0301 acute on а and on е, U+04BB һ",
+   "note": "ђача́чһын - је́нен «попалъ въ брюхо, помимо органовъ жизни», hit in the belly missing vital organs. Initial hooked letter read ђ (copies Б/ђ), ђ/ӄ not certain at 4x",
+   "class": "doubt"
+  },
+  "22": {
+   "text": "жизни; не смертельно ранилъ». ђача́чһын малоупотребительная форма отъ ӄӓlэ́l-",
+   "native": "ђача́чһын ӄӓlэ́l-",
+   "resolved": "ђача́чһын ӄӓlэ́l-: U+0452 ђ, U+0301 acute on а and on э, U+04BB һ, U+04C4 ӄ, U+0308 diaeresis on а, U+006C tall l",
+   "note": "initial of ђача́чһын read ђ as in l21 (ӄ vs ђ not certain); ӄӓlэ́l-вын «утроба, чрево», womb (rejoined with l23 is a ratified form, 1-303)",
+   "class": "doubt"
+  },
+  "23": {
+   "text": "вын «утроба, чрево».",
+   "native": "вын",
+   "resolved": "вын: no notation glyph"
+  },
+  "24": {
+   "text": "32 (стр. 106). і́мім «неровно замерзшая земля, непокрытая снѣгомъ», ко-",
+   "native": "і́мім",
+   "resolved": "і́мім: U+0301 acute on first і",
+   "note": "і́мім «неровно замерзшая земля, непокрытая снѣгомъ», uneven frozen ground bare of snow",
+   "class": "semantic"
+  },
+  "25": {
+   "text": "нечно совершенно непригодная для ѣзды на саняхъ."
+  },
+  "26": {
+   "text": "33 (стр. 115). ны́мнымыт «жители стойбища».",
+   "native": "ны́мнымыт",
+   "resolved": "ны́мнымыт: U+0301 acute on first ы",
+   "note": "ны́мнымыт «жители стойбища», inhabitants of a camp",
+   "class": "semantic"
+  },
+  "27": {
+   "text": "34 (стр. 121). рыкэтэмэ́ўркын — «точно опредѣлять» отъ кэтэ́м «какъ разъ».",
+   "native": "рыкэтэмэ́ўркын кэтэ́м",
+   "resolved": "рыкэтэмэ́ўркын кэтэ́м: U+0301 acute on э, U+0306 breve on у",
+   "note": "рыкэтэмэ́ўркын «точно опредѣлять», to define exactly; кэтэ́м «какъ разъ», just so",
+   "class": "semantic"
+  },
+  "28": {
+   "text": "35 (стр. 122). ту́мђэпіl «дружокъ» и төмwа́јӈын — «дѣтина», уменьши-",
+   "native": "ту́мђэпіl төмwа́јӈын",
+   "resolved": "ту́мђэпіl төмwа́јӈын: U+0301 acute on у and а, U+0452 ђ, U+006C tall l, U+04E9 ө, U+0077 w, U+04C8 ӈ",
+   "note": "ту́мђэпіl «дружокъ», little friend; төмwа́јӈын «дѣтина», big fellow. Initial ђ of ту́мђэпіl: copy A reads ӄ; scan shows bar-top ђ. Final tall l (not a second і; copies read пії)",
+   "class": "doubt"
+  },
+  "29": {
+   "text": "тельное и увеличительное слова одного и того же корня тумђэ, неправильно обра-",
+   "native": "тумђэ",
+   "resolved": "тумђэ: U+0452 ђ",
+   "note": "корня тумђэ: copy B reads тумбэ, A тумӄэ-; scan shows ђ",
+   "class": "draft"
+  },
+  "30": {
+   "text": "зованнаго отъ Sb. ту́мђытум «товарищъ, спутникъ».",
+   "native": "ту́мђытум",
+   "resolved": "ту́мђытум: U+0301 acute on у, U+0452 ђ"
+  },
+  "31": {
+   "text": "36 (стр. 124). ы̆ры́тті Pl. отъ ы̆ры́т «лукъ» — въ смыслѣ «лукъ съ при-",
+   "native": "ы̆ры́тті ы̆ры́т",
+   "resolved": "ы̆ры́тті ы̆ры́т: U+0306 breve on first ы, U+0301 acute on second ы",
+   "note": "ы̆ры́тті Pl. от ы̆ры́т «лукъ», bow: breve over the first ы in both words, acute on the ы after р",
+   "class": "semantic"
+  },
+  "32": {
+   "text": "боромъ»."
+  },
+  "33": {
+   "text": "5."
+  },
+  "34": {
+   "text": "Lы́е - пы́ӈыl.",
+   "as_typed": "Lы́е - {py'n_1yl_0}.",
+   "native": "Lы́е пы́ӈыl",
+   "resolved": "Lы́е пы́ӈыl: U+004C Latin L, U+0301 acute on ы, U+04C8 ӈ, U+006C tall l",
+   "note": "heading in native: Lы́е - пы́ӈыl; copies Lые - пыӈыl",
+   "class": "layout"
+  },
+  "38": {
+   "text": "Разсказъ."
+  },
+  "39": {
+   "text": "Отдѣльнымъ (единственнымъ) поселеніемъ живетъ оленеводъ въ двухъ"
+  },
+  "40": {
+   "text": "жильяхъ, такъ какъ съ сосѣдомъ. Съ весьма (долго-)языкою женой сосѣдъ,"
+  },
+  "41": {
+   "text": "Амонайгинъ по имени. Притомъ Амонайгинъ большой силачъ. Также лѣнивъ"
+  },
+  "42": {
+   "text": "при оленьемъ стадѣ ходить; поэтому ему почти не убиваютъ оленей. Дѣй-"
+  }
+ }
+}

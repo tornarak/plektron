@@ -1,0 +1,172 @@
+{
+ "ref": "1-390",
+ "contamination": {
+  "blind": false,
+  "why": "this pass reads both text-layer copies (ocr witness) by design, and two lexicon lookups (the copies' spellings, then the scan's); no other page's proposal, decision or gt/ocr/ was read"
+ },
+ "lines": {
+  "0": {
+   "text": "334 В. БОГОРАЗЪ, II,129."
+  },
+  "1": {
+   "text": "Г.",
+   "note": "The copies box the initial Г. of the running head on its own; line 0 keyed without it.",
+   "class": "layout"
+  },
+  "2": {
+   "text": "были бѣдненькіе работники, ихъ худо кормили, обижали. Тѣхъ не убили,"
+  },
+  "3": {
+   "text": "взяли. Сказали имъ: «Будете смотрящими, что мы сдѣлаемъ, что прекра-"
+  },
+  "4": {
+   "text": "тилось худое убиваніс нашихъ.» Раздѣли начальника нагимъ, надѣли на",
+   "note": "Printed убиваніс (с for е; line 14 sets убиваніе); keyed as set.",
+   "class": "print"
+  },
+  "5": {
+   "text": "голову ему ремень, достали чикиль¹), привязали, заставили бѣгать по"
+  },
+  "6": {
+   "text": "снѣгу вокругъ, дергаютъ за чикиль, бѣгаетъ; дергъ, дергъ, — penis только"
+  },
+  "7": {
+   "text": "болтается справа на лѣво. Бѣгаетъ, бѣгаетъ. Положили его на землю."
+  },
+  "8": {
+   "text": "Стали пороть его колотушками изъ оленьяго рога. Пробили всю задницу."
+  },
+  "9": {
+   "text": "Подняли, опять бѣгаетъ на никилѣ, глаза выкатываются, языкъ вывѣсился"
+  },
+  "10": {
+   "text": "изо рта, досталъ до сосцовъ, хлопаетъ взадъ и впередъ по груди; сопитъ:"
+  },
+  "11": {
+   "text": "хи, хи, хи, при каждомъ шагѣ плюетъ кровью. Загоняли до смерти на чи-"
+  },
+  "12": {
+   "text": "килѣ. Тогда тѣмъ бѣдняжкатъ дали запасъ, отправили домой на сильной",
+   "note": "Printed бѣдняжкатъ as keyed; the ending reads -катъ at the scan, as both copies have it (dative бѣдняжкамъ would be expected).",
+   "class": "print"
+  },
+  "13": {
+   "text": "упряжкѣ оленей: «Теперь скажите вашимъ, чтобы прекратилось худое"
+  },
+  "14": {
+   "text": "убиваніе людей.»"
+  },
+  "15": {
+   "text": "Записано отъ чукчи Баде въ Анюйской крѣпости въ 1896 г."
+  },
+  "16": {
+   "text": "130."
+  },
+  "17": {
+   "text": "А̂ӄӓlыlэ́ткін пы́ӈыl. Временъ войны вѣсть.",
+   "as_typed": "{A^k_1a:l_0yl_0e_1'tki_1n} {py'n_1yl_0}. Временъ войны вѣсть.",
+   "native": "А̂ӄӓlыlэ́ткін пы́ӈыl",
+   "resolved": "А̂ӄӓlыlэ́ткін: U+0302 circumflex on А, U+04C4 ӄ, U+04D3 ӓ, U+006C tall l twice, U+0301 acute on э, U+0456 і; пы́ӈыl: U+0301 acute on ы, U+04C8 ӈ, U+006C tall l",
+   "note": "Heading: А̂ӄӓlыlэ́ткін пы́ӈыl, tales of the time of war (Russian gloss Временъ войны вѣсть, tidings of war times). Capital of the ratified lower-case form; the copies' Аӄӓ spelling has no circumflex, the scan shows one on А. Ӄ read as hooked ӄ: stroke runs into the hook.",
+   "class": "semantic"
+  },
+  "18": {
+   "text": "Когда въ первый разъ сошлись на битву таньги и чукчи, стали"
+  },
+  "19": {
+   "text": "строемъ другъ противъ друга. Сильно испугались наши, ибо таньги со-"
+  },
+  "20": {
+   "text": "всѣмъ невиданные, торчатъ у нихъ усища какъ у моржей, копья длинною"
+  },
+  "21": {
+   "text": "по локтю, такъ широки, что затмѣваютъ солнце; глаза желѣзные, круглые,"
+  },
+  "22": {
+   "text": "вся одежда желѣзная. Копаютъ концомъ копья землю, какъ драчливые"
+  },
+  "23": {
+   "text": "быки, вызываютъ на бой. Сидятъ всѣ, опустивъ голову, боятся. Вышелъ"
+  },
+  "24": {
+   "text": "таньгинъ, копьемъ машетъ: «Кто, кто выйдетъ со мной на борьбу?» По"
+  },
+  "25": {
+   "text": "прежнему сидятъ, потупивъ голову и молчатъ, не рѣшаясь. Старичекъ изъ"
+  },
+  "26": {
+   "text": "нашихъ, старый старичекъ ходитъ впереди: «Ну кто, кто, кто пробуетъ?»"
+  },
+  "27": {
+   "text": "Всѣ молчатъ. Есть четыре сильныхъ: Чы́мкыl, Ајӈа́ырђын, Эlэ́ннут и",
+   "as_typed": "Всѣ молчатъ. Есть четыре сильныхъ: {C_1y'mkyl_0}, {Ajn_1a'yrg_1yn}, {E_1l_0e_1'nnut} и",
+   "native": "Чы́мкыl Ајӈа́ырђын Эlэ́ннут",
+   "resolved": "Чы́мкыl: U+0301 acute on ы, U+006C tall l; Ајӈа́ырђын: U+04C8 ӈ, U+0301 acute on а, U+0452 ђ; Эlэ́ннут: U+006C tall l, U+0301 acute on э",
+   "note": "Names of the four strong warriors; Чы́мкыl, Ајӈа́ырђын (Crier), Эlэ́ннут.",
+   "class": "semantic"
+  },
+  "28": {
+   "text": "Lаwтыlыwа́lын. «Ну, пусть хоть Чы́мкыl попробуетъ!» Впереди Чы́мкыl’я",
+   "as_typed": "{L_0aw_0tyl_0yw_0a'l_0yn}. «Ну, пусть хоть {C_1y'mkyl_0} попробуетъ!» Впереди {C_1y'mkyl_0}’я",
+   "native": "Lаwтыlыwа́lын Чы́мкыl",
+   "resolved": "Lаwтыlыwа́lын: U+004C L, U+0077 w twice, U+006C tall l twice, U+0301 acute on а; Чы́мкыl: U+0301 acute on ы, U+006C tall l",
+   "note": "Lаwтыlыwа́lын, the Nodder (see note 3). Чы́мкыl’я carries the printed curly ’ and Russian ending.",
+   "class": "semantic"
+  },
+  "29": {
+   "text": "сидитъ его отецъ. Ждетъ богатырь, пока заговоритъ старикъ. Однако всѣ",
+   "note": "Both copies vary ь/ъ in verb endings (сидить/сидитъ); the scan sets ъ (-тъ) in every such ending, so all are keyed ъ.",
+   "class": "draft"
+  },
+  "30": {
+   "text": "сидятъ молча, не рѣшаются. По прежнему ходитъ старичекъ впереди"
+  },
+  "31": {
+   "text": "рядовъ: «Кто, кто, кто попробуетъ?» Крикунъ²) крикнулъ: «Ну, пусть я!»",
+   "note": "Footnote mark reads ² at the scan (copy B has ³); note 2 glosses Крикунъ.",
+   "class": "draft"
+  },
+  "32": {
+   "text": "Кивающій головой³) закивалъ: «Ты, ты!» — «Нѣтъ, я!» крикнулъ Эlэ́ннут.",
+   "as_typed": "Кивающій головой³) закивалъ: «Ты, ты!» — «Нѣтъ, я!» крикнулъ {E_1l_0e_1'nnut}.",
+   "native": "Эlэ́ннут",
+   "resolved": "Эlэ́ннут: U+006C tall l, U+0301 acute on э",
+   "note": "The footnote mark after головой was not legible at the crop; keyed ³ by the note sequence (note 3 glosses Кивающій головой).",
+   "class": "doubt"
+  },
+  "33": {
+   "text": "1) Чі́кіl — деревянная палица, употребляемая при дрессированій пряговыхъ",
+   "native": "Чі́кіl",
+   "resolved": "Чі́кіl: U+0456 і twice, U+0301 acute on first і, U+006C tall l",
+   "note": "Чі́кіl, a wooden stick for training draft reindeer; acute over the first і. Both copies dropped the accent; counterpart in The Chukchee not found, keyed by hand.",
+   "class": "semantic"
+  },
+  "34": {
+   "text": "",
+   "note": "Footnote rule between text and notes; keyed empty (copy A read a hyphen).",
+   "class": "artifact"
+  },
+  "35": {
+   "text": "оленей для натягиванія правой возжи."
+  },
+  "36": {
+   "text": "2) Ајӈа́ырђын въ буквальномъ переводѣ «Крикунъ».",
+   "as_typed": "2) {Ajn_1a'yrg_1yn} въ буквальномъ переводѣ «Крикунъ».",
+   "native": "Ајӈа́ырђын",
+   "resolved": "Ајӈа́ырђын: U+04C8 ӈ, U+0301 acute on а, U+0452 ђ",
+   "note": "Ајӈа́ырђын, literally Crier (Крикунъ).",
+   "class": "semantic"
+  },
+  "37": {
+   "text": "3) Lаwтыlыwа́lын въ буквальномъ переводѣ «Кивающій головой». Онъ счи-",
+   "as_typed": "3) {L_0aw_0tyl_0yw_0a'l_0yn} въ буквальномъ переводѣ «Кивающій головой». Онъ счи-",
+   "native": "Lаwтыlыwа́lын",
+   "resolved": "Lаwтыlыwа́lын: U+004C L, U+0077 w twice, U+006C tall l twice, U+0301 acute on а",
+   "note": "Lаwтыlыwа́lын, literally Nodder (Кивающій головой).",
+   "class": "semantic"
+  },
+  "38": {
+   "text": "тается начальникомъ воиновъ."
+  }
+ }
+}

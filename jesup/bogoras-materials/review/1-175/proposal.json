@@ -1,0 +1,107 @@
+{
+  "ref": "1-175",
+  "contamination": {
+    "blind": false,
+    "why": "this pass reads both text-layer copies (ocr witness) by design, and two lexicon lookups (the copies' spellings, then the scan's); no other page's proposal, decision or gt/ocr/ was read"
+  },
+  "lines": {
+    "0": {
+      "text": "I,25. МАТЕРІАЛЫ ПО ИЗУЧЕНІЮ ЧУКОТСКАГО ЯЗЫКА И ФОЛЬКЛОРА. 119",
+      "note": "Running head; could not be zoomed. Both copies read the opening as 1,25 and the number after as 119.",
+      "class": "doubt"
+    },
+    "17": {
+      "text": "Записано на р. Молондѣ отъ чукчанки Ӈэ́ўс̧ӄӓт.",
+      "as_typed": "Записано на р. Молондѣ отъ чукчанки {N_1e_1'u~s)k_1a:t}.",
+      "native": "Ӈэ́ўс̧ӄӓт",
+      "resolved": "Ӈэ́ўс̧ӄӓт: U+04C7 Ӈ, U+0301 acute on э, U+0443 у with U+0306 breve, U+0441 с with U+0327 cedilla, U+04C4 ӄ, U+0308 diaeresis on а",
+      "note": "Ӈэ́ўс̧ӄӓт: key from the ratified near spelling; scan shows the acute on э, breve on у, cedilla on с, diaeresis on а, matching it. «чукчанка» Ӈэ́ўс̧ӄӓт, a woman informant (ӈэ́ўс̧ӄӓт means woman).",
+      "class": "semantic"
+    },
+    "18": {
+      "text": "хонъ, разнообразные, чисто черные, пестрые, пѣгіе, пѣго-пестрые въ чет-"
+    },
+    "19": {
+      "text": "вертыхъ. Ободрился юноша. Недавніе, дѣлавшіе насиліе, сказали: «Мой 65"
+    },
+    "20": {
+      "text": "племянникъ ты!» Толкнулъ ихъ, въ грудь ударилъ. «Не вашъ, чужой я,"
+    },
+    "21": {
+      "text": "сирота я! Колотили меня постоянно!» Сдѣлали колобки, отправились на 70"
+    },
+    "22": {
+      "text": "«выѣздъ скуки», совсѣмъ покочевали потомъ. Другіе же изсохли, ничего не"
+    },
+    "23": {
+      "text": "убивали, пищу найти не могли, поэтому съ худымъ костнымъ мозгомъ",
+      "note": "Print sets the щ-like glyph in пищу as a ц with tail; read as пищу by sense.",
+      "class": "draft"
+    },
+    "24": {
+      "text": "стали, вымерли всѣ. Сирота, постигнутый состраданіемъ, умножился, жи- 75"
+    },
+    "25": {
+      "text": "телемъ сталъ, постоянно устраиваетъ бѣга, мужчины собираются по-"
+    },
+    "26": {
+      "text": "стоянно."
+    },
+    "27": {
+      "text": "Примѣчанія къ №25."
+    },
+    "28": {
+      "text": "1 (стр. 1). Эта сказка записана мною въ женскомъ произношеніи, которое"
+    },
+    "29": {
+      "text": "отличается отъ мужскаго тѣмъ, что ч, с, а также р передъ мягкими гласными, про-"
+    },
+    "30": {
+      "text": "износится какъ ц; рк, чһ произносятся какъ двойное ц; и сокращенныя формы словъ",
+      "native": "рк чһ",
+      "resolved": "рк чһ: U+0440, U+043A, U+0447, U+04BB tall h",
+      "note": "рк and чһ are cited sounds, keyed as native forms for the editor.",
+      "class": "semantic"
+    },
+    "31": {
+      "text": "никогда не употребляются вмѣсто полныхъ. Напр., въ женскомъ произношеніи только"
+    },
+    "32": {
+      "text": "нытва́ӄснат, а въ мужскомъ чаще нытва́ӄаат. Для сравненія тотъ же текстъ приво-",
+      "native": "нытва́ӄенат нытва́ӄаат",
+      "resolved": "нытва́ӄснат нытва́ӄаат: U+0301 acute on а, U+04C4 ӄ",
+      "note": "First form: copies read нытвађенат; scan shows ӄ (stroke into hook) as in the second form and a C-shaped letter with no bar after it, then нат. Keyed нытва́ӄснат as seen. Second form: B read нытвацаат; scan shows ӄ. Both forms contrast female and male speech.",
+      "class": "doubt"
+    },
+    "33": {
+      "text": "дится и въ мужскомъ произношеніи."
+    },
+    "34": {
+      "text": "2 (стр. 3). wа́ныс̧ӄа-ја́јваlӄај «чесоточный сиротка». Чесотка и разные",
+      "native": "wа́ныс̧ӄа-ја́јваlӄај",
+      "resolved": "wа́ныс̧ӄа-ја́јваlӄај: U+0077 w, U+0301 acute on а (twice), U+0327 cedilla on с, U+04C4 ӄ (twice), U+0458 ј, U+006C tall l",
+      "note": "wа́ныс̧ӄа-ја́јваlӄај «чесоточный сиротка», scabby orphan boy (name). Scan shows acute on first а of each part and cedilla on с; copies dropped them.",
+      "class": "semantic"
+    },
+    "35": {
+      "text": "другіе виды накожныхъ болѣзней часто встрѣчаются у чукочъ, благодаря ихъ не-"
+    },
+    "36": {
+      "text": "чистоплотности."
+    },
+    "37": {
+      "text": "3 (стр. 6). мі́рӄын «дѣдъ»; ӈэ̀w-мі́рӄын «бабушка». Но въ обращеніи",
+      "native": "мі́рӄын ӈэ̀w-мі́рӄын",
+      "resolved": "мі́рӄын ӈэ̀w-мі́рӄын: U+0301 acute on і, U+04C4 ӄ, U+04C8 ӈ, U+0300 grave on э, U+0077 w",
+      "note": "мі́рӄын «дѣдъ», grandfather; ӈэ̀w-мі́рӄын «бабушка», grandmother. The hooked glyph in the second form has no visible crossbar; read as ӈ (cf. ӈэ́ўс̧ӄӓт, woman), copies read ц. The ӄ in мі́рӄын has a top bar and looks to me like ђ in the same face; keyed ӄ.",
+      "class": "doubt"
+    },
+    "38": {
+      "text": "употребляются кромѣ того слова апа́јӈын «дѣдъ» и эпэ́ӄӓј «бабушка», т. е. увелич.",
+      "native": "апа́јӈын эпэ́ӄӓј",
+      "resolved": "апа́јӈын эпэ́ӄӓј: U+0301 acute on а and on second э, U+0458 ј, U+04C8 ӈ, U+04C4 ӄ, U+0308 diaeresis on а",
+      "note": "апа́јӈын «дѣдъ», grandfather; эпэ́ӄӓј «бабушка», grandmother (diminutive, per counterpart epeˊqӓi). Hooked glyph read as ӈ though crossbar is not visible (copies ц). Scan sets т. с. with a bar-less c; keyed т. е. by sense.",
+      "class": "doubt"
+    }
+  }
+}
