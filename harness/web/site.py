@@ -45,7 +45,7 @@ from pathlib import Path
 from urllib.parse import quote
 
 from .. import layout, tei_html
-from . import STATIC, meta, stores, templates
+from . import STATIC, mapshots, meta, stores, templates
 from .build import OUT_MARK, build
 
 #: What marks a directory as a site's own. A site's root is never cleared, but a
@@ -86,6 +86,8 @@ def upstream(root: Path) -> Iterator[Path]:
         yield from _walk(ws, frozenset({"models"}) | siblings)
     code = layout.repo_root()
     yield from _walk(code / "harness", frozenset({"tests", STATIC.name}))
+    # Static files are copied, not read — but these paint an entity's map picture.
+    yield from (p for p in mapshots.CODE if p.parent.parent == STATIC)
     yield code / "uv.lock"
 
 
@@ -290,7 +292,7 @@ def _landing(repo: Path, out: Path, published: list[Path]) -> None:
     origin = origins.pop() if len(origins) == 1 else ""
     pictured = next((r for r in published if layout.image(r)), None)
     site_meta = {
-        "description": meta.clip(meta.first_paragraph(text)),
+        "description": meta.clip(meta.lead(meta.first_paragraph(text))),
         "canonical": f"{origin}/" if origin else "",
         "image": (f"{origin}{cover_url(pictured, layout.site_base(pictured), COVER_WIDTHS[-1])}"
                   if origin and pictured else ""),

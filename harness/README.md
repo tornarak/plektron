@@ -28,7 +28,7 @@ the project's rules, `CLAUDE.md` governs; for the character inventory,
 | `tei/` | the collation output, and the system of record for seam state — including `corpus-header.xml`, which is a fragment, not a page | the collation pass, `tei seam --commit` |
 | `mz/tei/` | the generated first-draft page, by rule from `gt/zones/` + `gt/ocr/`. Derived, ignored; **no view over the tei pair**, since naming the two apart is the point | `tei generate` |
 | `edition/entities/` | the encyclopedia: one markdown record per entity under its class directory. The referent of every `@ref`, and the source of the alias vocabulary a rule links by | `entity new --commit`, `entity ratify --commit`, `edition serve` |
-| `edition/` | the book's apparatus, amended and so no part of `gt/`: `edition/toc.json` `edition/loi.json` `edition/authorities.json` `edition/alphabet.json` `edition/runs.json` `edition/figure_numbers.json`, and for a text of recorded folklore `edition/informants.json` | by hand |
+| `edition/` | the book's apparatus, amended and so no part of `gt/`: `edition/toc.json` `edition/loi.json` `edition/authorities.json` `edition/alphabet.json` `edition/runs.json` `edition/figure_numbers.json` `edition/chapter_images.json`, and for a text of recorded folklore `edition/informants.json` | by hand |
 | `config/` | what a pass is tuned by — `config/zones.json` `config/lines.json` `config/marks.json`, validated at load — and the editor's rulings over one, `config/marks_exempt.json` `config/lexicon_extra.txt`, which are `#ed` rank and no part of the edition | by hand |
 | `data/` | nothing authored: `data/pdf_images.json` and `data/_migrated.json` are machine receipts, `data/tei_all.rng` the vendored TEI schema | `scans extract --commit`, and not by hand |
 | `edition/page-img/` | an editor's own version of a whole leaf, `edition/fig-img/`'s doctrine one level up. Resolved by `edition_ui.leaf_source`, **reading view only and ruled leaves only** (any `LEAF_KINDS` member, not `map` alone). **Derived but tracked**, `edition/geo/`'s split: `1-361`'s master is ChaiNNer work no script here rebuilds | by hand |
@@ -938,9 +938,18 @@ are whole.
 **`harness/web/meta.py`** — what a reading-view page says about itself in its
 `<head>`: description, canonical address, link preview, `citation_*` tags and
 schema.org JSON-LD, rendered by `harness/web/templates/edition/_meta.html`. Every value is read from the
-corpus teiHeader (`stores.work`), the stores, or the text's one declared `image`;
-a field the header lacks emits no tag. A page number is cited only where a leaf
-recorded its folio, and an absolute address only for a text that is published.
+corpus teiHeader (`stores.work`) or the stores; a field the header lacks emits no
+tag. A page number is cited only where a leaf recorded its folio, and an absolute
+address only for a text that is published. **A view names its own preview picture
+or has none**: the text's `image` on its index and pages, a chapter's own from
+`edition/chapter_images.json` else the text's, an entity's map else its picture,
+and nothing on a lexicon, annotation or index view.
+
+**`harness/web/mapshots.py`** — an entity's map as a picture, for its link preview:
+`harness/web/static/js/geomap.js`'s `compose` run under Node (`harness/web/mapshot.mjs`) for
+every located entity at once, painted by headless Chromium with the real
+stylesheets, a few screenshots of stacked maps. Cached on its inputs as
+`stores.mapshots`; without Node or Chromium an entity has no map preview.
 
 **`harness/web/cache.py`** — store reads memoised on a **digest of the file's contents**,
 not on its mtime. Measured on this filesystem: 190 of 200 immediate rewrites

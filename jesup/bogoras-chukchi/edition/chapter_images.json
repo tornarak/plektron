@@ -1,0 +1,121 @@
+{
+  "what": "The picture that stands for each chapter in a link preview, keyed by ToC id: `fig` a crop as `PP-NNN/KKK`, `turn` clockwise degrees for a plate printed sideways, `caption` the List of Illustrations' for that one figure.",
+  "why": "An editor's choice, as project.json's `image` is, so it is declared and nothing infers one. A chapter with no entry takes the book's image. Proposed by a model reading the List of Illustrations against the crops, 2026-11-17; XI, XII, XVIII, XIX and XXII chosen by the editor.",
+  "images": {
+    "chI": {
+      "fig": "1-037/001",
+      "turn": 0,
+      "caption": "Map showing Ancient Distribution of Tribes, by W. Bogoras and W. Jochelson. Fig. 1."
+    },
+    "chII": {
+      "fig": "1-331/002",
+      "turn": 0,
+      "caption": "Reindeer Chukchee Young Man. Plate XXIX, Fig. 1."
+    },
+    "chIII": {
+      "fig": "1-081/001",
+      "turn": 0,
+      "caption": "Anui Fair: Chukchee before the Closed Gate of the Fort in the Morning. Plate II, Fig. 1."
+    },
+    "chIV": {
+      "fig": "1-105/001",
+      "turn": 0,
+      "caption": "Reindeer-Herd. Plate IV, Fig. 1."
+    },
+    "chV": {
+      "fig": "1-139/001",
+      "turn": 0,
+      "caption": "Asiatic Eskimo Dog-Team of Former Times. Plate VII, Fig. 1."
+    },
+    "chVI": {
+      "fig": "1-161/005",
+      "turn": 90,
+      "caption": "Carving a Walrus. Plate X, Fig. 1."
+    },
+    "chVII": {
+      "fig": "1-211/001",
+      "turn": 0,
+      "caption": "Summer Tent of Reindeer Chukchee. Plate XII, Fig. 1."
+    },
+    "chVIII": {
+      "fig": "1-269/001",
+      "turn": 0,
+      "caption": "Chukchee Woman digging Roots. Plate XIX, Fig. 1."
+    },
+    "chIX": {
+      "fig": "1-273/002",
+      "turn": 90,
+      "caption": "Chukchee Man working in Iron. Plate XX, Fig. 2."
+    },
+    "chX": {
+      "fig": "1-299/003",
+      "turn": 90,
+      "caption": "Winter Clothes of a Reindeer Chukchee Man. Plate XXIII, Fig. 1."
+    },
+    "chXI": {
+      "fig": "2-181/003",
+      "turn": 90,
+      "caption": "Tossing on Walrus-Hide. Plate XXXIII, Fig. 3."
+    },
+    "chXII": {
+      "fig": "2-037/001",
+      "turn": 0,
+      "caption": "Chukchee Sketch representing the Sky and the Lower Worlds. Fig. 218."
+    },
+    "chXIII": {
+      "fig": "2-067/001",
+      "turn": 0,
+      "caption": "Charm-String. Fig. 237."
+    },
+    "chXIV": {
+      "fig": "2-079/006",
+      "turn": 90,
+      "caption": "Ceremonial Fall Slaughtering. Plate XXXII, Fig. 3."
+    },
+    "chXV": {
+      "fig": "2-181/007",
+      "turn": 90,
+      "caption": "Transformed Shaman. Plate XXXIII, Fig. 1."
+    },
+    "chXVI": {
+      "fig": "2-181/004",
+      "turn": 90,
+      "caption": "Divination. Plate XXXIII, Fig. 4."
+    },
+    "chXVII": {
+      "fig": "2-255/006",
+      "turn": 90,
+      "caption": "Disposal of the Dead. Plate XXXIV, Fig. 1."
+    },
+    "chXVIII": {
+      "fig": "1-219/001",
+      "turn": 90,
+      "caption": "Interior of Sleeping-Room of Reindeer Chukchee. Plate XIV."
+    },
+    "chXIX": {
+      "fig": "1-273/005",
+      "turn": 90,
+      "caption": "Chukchee Woman lousing her Husband. Plate XX, Fig. 3."
+    },
+    "chXX": {
+      "fig": "1-049/001",
+      "turn": 90,
+      "caption": "Street in Village Uñiˊsak. Plate I, Fig. 3."
+    },
+    "chXXI": {
+      "fig": "1-155/001",
+      "turn": 90,
+      "caption": "Chukchee (Kaˊka) in Armor. Plate IX, Fig. 2."
+    },
+    "chXXII": {
+      "fig": "1-347/001",
+      "turn": 0,
+      "caption": "Wrestling-Match at Uñiˊsak. Plate XXXI, Fig. 1."
+    },
+    "chXXIII": {
+      "fig": "3-167/002",
+      "turn": 0,
+      "caption": "Father Victor, Chukchee Missionary. Plate XXXV, Fig. 2."
+    }
+  }
+}

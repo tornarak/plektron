@@ -157,6 +157,12 @@ def _derived(tree, base: str) -> list[str]:
             out.append(a["data-modal"])
         if "data-scan" in a:                                    # `edition.js` `openScan`
             out.append(f"{base}/page/{a['data-scan']}.png")
+        if el.tag == "meta" and a.get("property") == "og:image":   # `meta.head`
+            # Absolute, since a preview is read off somebody else's page; a picture
+            # on this host is written like anything linked, one elsewhere is not.
+            path = urlsplit(a.get("content", "")).path
+            if path.startswith(f"{base}/"):
+                out.append(path)
     return out
 
 
@@ -400,7 +406,8 @@ def _warm(root: Path) -> None:
     for fn in (stores.load, stores.annotations, stores.lexicon_store, stores.runs,
                stores.heads, stores.folio_index, stores.folio_by_ref,
                stores.heading_urls, stores.midline, stores.native,
-               stores.occurrences, stores.atlas, stores.readable,
+               stores.occurrences, stores.atlas, stores.mapshots,
+               stores.readable,
                stores.collated, stores.exempt, stores.leaf_kinds):
         try:
             fn(root)

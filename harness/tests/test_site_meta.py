@@ -109,15 +109,85 @@ def test_a_part_date_a_model_read_is_not_cited_until_a_human_ratifies_it(repo, t
     assert '<meta name="citation_publication_date" content="1904">' in cited
 
 
-def test_the_preview_image_is_the_texts_one_picture_and_a_file_the_build_wrote(repo, tmp_path):
+def test_the_texts_picture_previews_the_text_and_no_view_that_is_about_something_else(
+        repo, tmp_path):
     _declare_image(repo / ONE, "one")
     out = _built(repo, tmp_path)
+    seen = {}
     for rel, text in _pages(out / ONE):
         tree = LH.fromstring(text)
-        img = tree.find(".//meta[@property='og:image']").get("content")
-        assert img == f"{HOST}/{ONE}/cover-1200.jpg", rel
-        assert tree.find(".//meta[@property='og:image:alt']").get("content") == "A plate."
+        m = tree.find(".//meta[@property='og:image']")
+        seen[rel] = None if m is None else m.get("content")
+        if m is not None:
+            assert tree.find(".//meta[@property='og:image:alt']").get("content") == "A plate."
+    assert seen["."] == seen["page/1-021"] == f"{HOST}/{ONE}/cover-1200.jpg"
+    # An index of annotations, of forms, of entities, or the map: none of them is
+    # a picture of a winter house.
+    assert all(seen[r] is None for r in ("annotations", "lexicon", "entities", "atlas"))
     assert (out / ONE / "cover-1200.jpg").is_file()
+
+
+def test_a_chapter_previews_its_own_picture_else_the_texts(repo):
+    from fastapi.testclient import TestClient
+
+    from harness.web import edition
+    from harness.web.build import site_app
+    root = repo / ONE
+    assert edition.preview(root, "chI") is None
+    _declare_image(root, "one")
+    assert edition.preview(root, "chI") == {"src": "/cover-1200.jpg", "alt": "A plate."}
+    (root / "edition").mkdir(exist_ok=True)
+    (root / "edition" / edition.CHAPTER_IMAGES).write_text(json.dumps({"images": {
+        "chI": {"fig": "1-021/001", "turn": 90, "caption": "Its own."}}}), encoding="utf-8")
+    assert edition.preview(root, "chI") == {"src": "/cover/chI-1200.jpg", "alt": "Its own."}
+    assert edition.preview(root, "chII")["src"] == "/cover-1200.jpg"
+    client = TestClient(site_app(root, "", False, None))
+    assert client.get("/cover/chI-1200.jpg").headers["content-type"] == "image/jpeg"
+    # A chapter's own address never serves the text's picture in its place.
+    assert client.get("/cover/chII-1200.jpg").status_code == 404
+
+
+def test_an_entity_previews_its_map_else_its_picture_else_nothing(repo, monkeypatch):
+    from harness.web import edition
+    root = repo / ONE
+    rec = {"id": "place:x", "canonical": "X", "class": "place", "image": "none",
+           "links": []}
+    monkeypatch.setattr(edition.stores, "load", lambda _r: {"place:x": rec})
+    monkeypatch.setattr(edition.stores, "map_svgs", lambda _r: {})
+    assert edition._entity_preview(root, rec) is None
+    monkeypatch.setattr(edition.stores, "map_svgs", lambda _r: {"place:x": "<svg/>"})
+    assert edition._entity_preview(root, rec) == {"src": "/map/place%3Ax.png",
+                                                 "alt": "X, on the map"}
+
+    def missing(_r):
+        raise edition.mapshots.Unavailable("no node")
+    monkeypatch.setattr(edition.stores, "map_svgs", missing)
+    assert edition._entity_preview(root, rec) is None
+
+
+def test_a_map_preview_grows_the_panes_frame_to_its_shape_and_cuts_nothing():
+    from harness.web import mapshots
+    got = mapshots._fitted("<svg class='map' viewBox='10 20 100 100'></svg>")
+    x, y, w, h = map(float, got.split("viewBox='")[1].split("'")[0].split())
+    assert abs(w / h - mapshots.W / mapshots.H) < 0.01 and h == 100 and w >= 100
+    assert abs((x + w / 2) - 60) < 0.1 and abs((y + h / 2) - 70) < 0.1
+
+
+def test_a_map_preview_paints_the_entity_and_not_the_context_around_it():
+    from harness.web import mapshots
+    sheet = mapshots._sheet(["<svg class='map' viewBox='0 0 1 1'></svg>"])
+    assert "svg.map .kin{display:none}" in sheet and "svg.map .parent{display:none}" in sheet
+
+def test_a_map_previews_pins_grow_with_the_frame_and_keep_their_place():
+    from harness.web import mapshots
+    svg = ("<svg class='map' viewBox='0 0 1000 1000' data-pin='{&quot;r&quot;: 0.012, "
+           "&quot;dx&quot;: 1.4, &quot;dy&quot;: 0.5, &quot;font&quot;: 2.2, "
+           "&quot;flip&quot;: 0.72}'><circle class='pin' cx='500' cy='500' r='10.0'/>"
+           "<text class='pin-label' data-x='500' data-y='500' x='514.0' y='505.0' "
+           "text-anchor='start' font-size='22.0'>U</text></svg>")
+    got = mapshots._pins(svg, 2.0)
+    assert "r='20.0'" in got and "font-size='44.0'" in got
+    assert "x='528.0' y='510.0'" in got and "cx='500' cy='500'" in got
 
 
 def test_a_text_with_no_picture_has_no_preview_image(repo, tmp_path):
@@ -174,6 +244,18 @@ def test_a_description_is_cut_at_a_word_and_skips_a_note_marker():
     assert meta.first_paragraph(html) == "The first real paragraph of the page."
 
 
+def test_a_description_decodes_its_entities_once():
+    # Decoded here, escaped once by the template: `&mdash;` must not reach a preview.
+    got = meta.first_paragraph("<p>Its entities &mdash; people &amp; places, rivers.</p>")
+    assert got == "Its entities \u2014 people & places, rivers."
+
+
+def test_the_landing_describes_itself_by_its_opening_claim():
+    assert meta.lead("Editions of texts: the text, with its entities. More.") == (
+        "Editions of texts.")
+    assert meta.lead("No stop at all") == "No stop at all"
+
+
 def test_json_ld_cannot_close_its_own_script_element():
     assert "</script>" not in meta._ld({"name": "</script><b>"})
 
@@ -185,3 +267,21 @@ def test_the_browser_chrome_colour_is_the_stylesheets_background():
     base = (STATIC.parent / "templates" / "edition" / "base.html").read_text("utf-8")
     assert f'media="(prefers-color-scheme: light)" content="{light}"' in base
     assert f'media="(prefers-color-scheme: dark)" content="{dark}"' in base
+
+
+def test_an_entity_says_what_it_is_then_its_gloss_and_never_the_placeholder():
+    store = {"water:okhotsk-sea": {"canonical": "Sea of Okhotsk"}}
+    rec = {"class": "water", "within": "water:okhotsk-sea", "gloss": "(unwritten)"}
+    assert meta.entity_description(rec, store) == "Body of water in Sea of Okhotsk"
+    rec["gloss"] = "The *northeast* corner of [the sea](x)."
+    assert meta.entity_description(rec, store) == (
+        "Body of water in Sea of Okhotsk\nThe northeast corner of the sea.")
+    # `within:` places only somewhere on the earth.
+    assert meta.entity_description({"class": "being", "within": "water:okhotsk-sea",
+                                    "gloss": ""}, store) == "Being"
+    assert meta.clip("one\n" + "word " * 60).startswith("one\nword")
+    # A gloss's own wraps are not lines; its cross-references read as names.
+    rec["gloss"] = ("The corner of the Sea of Okhotsk\n([[water:okhotsk-sea]]), beside\n"
+                    "[[water:okhotsk-sea]] and [[water:no-such-bay]].")
+    assert meta.entity_description(rec, store).split("\n")[1] == (
+        "The corner of the Sea of Okhotsk, beside Sea of Okhotsk and no such bay.")

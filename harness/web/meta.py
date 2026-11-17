@@ -20,12 +20,14 @@ address, so an unpublished one carries none.
 """
 from __future__ import annotations
 
+import html as H
 import json
 import re
 from pathlib import Path
 from urllib.parse import quote, unquote
 
 from .. import layout, tei_html
+from ..entities import GEO_CLASSES, UNWRITTEN
 
 #: Roughly what a search result shows. Cut at a word, not mid-word.
 DESC_LEN = 160
@@ -40,12 +42,20 @@ SCHEMA_TYPES = {"person": "Person", "place": "Place", "land": "Place",
 
 
 def clip(text: str, n: int = DESC_LEN) -> str:
-    """`text`, whitespace folded, cut back to a word boundary at `n` with an ellipsis."""
-    t = " ".join(text.split())
+    """`text`, whitespace folded within each line and blank lines dropped, cut back
+    to a word boundary at `n` with an ellipsis. A line break is kept: a two-line
+    description is two lines."""
+    t = "\n".join(" ".join(ln.split()) for ln in text.split("\n") if ln.strip())
     if len(t) <= n:
         return t
-    cut = t[:n].rsplit(" ", 1)[0].rstrip(",;:—-– ")
+    cut = re.split(r"\s(?=\S*$)", t[:n])[0].rstrip(",;:—-– \n")
     return cut + "…"
+
+
+def plain(html: str) -> str:
+    """Rendered HTML as the text a `content` attribute holds: tags gone, entities
+    decoded — once, since the template escapes it again on the way out."""
+    return H.unescape(tei_html.strip_tags(html))
 
 
 def first_paragraph(html: str) -> str:
@@ -55,10 +65,17 @@ def first_paragraph(html: str) -> str:
         p = m.group(1)
         # A footnote marker is a number in the prose's middle, and noise here.
         p = re.sub(r'<a class="noteref"[^>]*>.*?</a>', "", p, flags=re.S)
-        text = tei_html.strip_tags(p)
+        text = plain(p)
         if len(text.split()) >= 5:
             return text
     return ""
+
+
+def lead(text: str) -> str:
+    """`text` up to its first sentence's end, a colon counting as one: the claim a
+    paragraph opens with, without the list that elaborates it."""
+    m = re.match(r"(.+?)[.:;!?](?:\s|$)", text, flags=re.S)
+    return f"{m.group(1)}." if m else text
 
 
 def _ld(obj: dict) -> str:
@@ -94,14 +111,18 @@ def _part(ref: str) -> str:
 def head(root: Path, work: dict, path: str, base: str, *, title: str,
          description: str = "", draft: bool = False, kind: str = "website",
          cite: dict | None = None, entity: dict | None = None,
-         links: dict[str, str] | None = None, noindex: bool = False) -> dict:
+         links: dict[str, str] | None = None, noindex: bool = False,
+         image: dict | None = None) -> dict:
     """The head of one view, as `edition/_meta.html` renders it.
 
     `path` is the request's path and `base` the prefix it is mounted under, so the
     canonical address is the published one whatever this server mounts. `cite`
     asks for citation tags: `{title, refs, folios}`, the view's own title and its
     text leaves' refs and recorded folios, in order. `entity` is a store record.
-    `links` is `rel → href` for `<link>`s: prev, next, up.
+    `links` is `rel → href` for `<link>`s: prev, next, up. `image` is the view's
+    picture, `{src, alt}` with `src` under the text's base or absolute, and none
+    by default: **a view names its own picture or has none**, since the text's
+    on every view said every page was about one winter house.
     """
     origin = work.get("origin") if layout.publish(root) else ""
     rel = path[len(base):] if base and path.startswith(base) else path
@@ -109,8 +130,10 @@ def head(root: Path, work: dict, path: str, base: str, *, title: str,
     # is `%3A` — the host redirects a bare one there (`site/deploy/README.md`).
     rel = quote(unquote(rel), safe="/")
     canonical = f"{origin}{layout.site_base(root)}{rel or '/'}" if origin else ""
-    cover = f"{layout.site_base(root) if origin else base}/cover-1200.jpg"
-    image = layout.image(root)
+    pic = ""
+    if image:
+        pic = image["src"] if image["src"].startswith(("http://", "https://")) else (
+            f"{origin}{layout.site_base(root) if origin else base}{image['src']}")
     desc = clip(description) if description else ""
     if draft and desc:
         desc = clip("Uncollated transcription — " + desc)
@@ -121,9 +144,9 @@ def head(root: Path, work: dict, path: str, base: str, *, title: str,
         og.append(("og:description", desc))
     if canonical:
         og.append(("og:url", canonical))
-    if image:
-        og += [("og:image", f"{origin}{cover}"), ("og:image:alt", image["caption"])]
-    names = [("twitter:card", "summary_large_image" if image else "summary")]
+    if pic:
+        og += [("og:image", pic), ("og:image:alt", image["alt"])]
+    names = [("twitter:card", "summary_large_image" if pic else "summary")]
     if noindex:
         names.append(("robots", "noindex"))
 
@@ -137,8 +160,8 @@ def head(root: Path, work: dict, path: str, base: str, *, title: str,
         page["description"] = desc
     if work.get("licence_urls"):
         page["license"] = work["licence_urls"]
-    if image:
-        page["image"] = f"{origin}{cover}"
+    if pic:
+        page["image"] = pic
     book = _book(work)
     cites: list[tuple[str, str]] = []
     if cite is not None:
@@ -215,6 +238,38 @@ def _plain(md: str) -> str:
     return re.sub(r"[*_`]", "", md)
 
 
-def entity_description(rec: dict | None) -> str:
-    return clip(_plain(rec["gloss"])) if rec and rec.get("gloss") else ""
+#: What an entry is, by its class, as the first line of its description: the one
+#: thing every entry can say, written or not.
+KINDS = {"person": "Person", "people": "People", "place": "Place",
+         "land": "Land region", "water": "Body of water", "river": "River",
+         "animal": "Animal", "being": "Being", "event": "Event",
+         "sky": "Celestial body", "taxon": "Taxon", "institution": "Institution",
+         "source": "Source"}
+
+
+def entity_description(rec: dict | None, store: dict | None = None) -> str:
+    """Two lines: what the entry is — its class, and for somewhere on the earth
+    what it is `within` — then its gloss, where one is written. An unwritten gloss
+    is a placeholder for the editor and says nothing to a reader."""
+    if not rec:
+        return ""
+    kind = KINDS.get(rec["class"], rec["class"].capitalize())
+    up = (store or {}).get(rec.get("within") or "")
+    if up and rec["class"] in GEO_CLASSES:
+        kind = f"{kind} in {up['canonical']}"
+    gloss = " ".join(_named(_plain(rec.get("gloss") or ""), store or {}).split())
+    return clip(kind if gloss in ("", UNWRITTEN) else f"{kind}\n{gloss}")
+
+
+_XREF = re.compile(r"\[\[([^\]]+)\]\]")
+#: A parenthesis of nothing but cross-references: the card's pointer to the entry
+#: just named, which in plain text only names it twice.
+_XREF_ONLY = re.compile(r"\s*\((?:\s*\[\[[^\]]+\]\]\s*,?)+\)")
+
+
+def _named(text: str, store: dict) -> str:
+    """A gloss's `[[class:slug]]` links as the names the card prints for them."""
+    text = _XREF_ONLY.sub("", text)
+    return _XREF.sub(lambda m: (store.get(m[1]) or {}).get("canonical")
+                     or m[1].partition(":")[2].replace("-", " "), text)
 

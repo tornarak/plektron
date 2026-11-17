@@ -37,6 +37,7 @@ from ..layout import page_files, shared, stem_for
 from ..ns import TEI_NS
 from ..refs import norm_ref
 from ..state import load_toc
+from . import mapshots as _maps
 from .cache import MAXSIZE, file_digest, listing, stamp
 
 
@@ -839,6 +840,33 @@ def atlas(root: Path) -> dict:
     root = Path(root)
     return _atlas(str(root), stamp(
         _entity_files(root) + _geo_files(root)))
+
+
+def _map_key(root: Path) -> bytes:
+    return stamp(_entity_files(root) + _geo_files(root) + list(_maps.CODE))
+
+
+@lru_cache(maxsize=MAXSIZE)
+def _map_svgs(root: str, _key: bytes) -> dict[str, str]:
+    return _maps.compose(Path(root), atlas(Path(root)))
+
+
+def map_svgs(root: Path) -> dict[str, str]:
+    """`{ident: svg}`: each entity's preview map, the entity alone in the frame of
+    what holds it (`mapshots.compose`). Raises `mapshots.Unavailable` with no Node."""
+    root = Path(root)
+    return _map_svgs(str(root), _map_key(root))
+
+
+@lru_cache(maxsize=MAXSIZE)
+def _mapshots(root: str, _key: bytes) -> dict[str, bytes]:
+    return _maps.paint(map_svgs(Path(root)))
+
+
+def mapshots(root: Path) -> dict[str, bytes]:
+    """`{ident: png}`, those maps painted for a link preview (`mapshots.paint`)."""
+    root = Path(root)
+    return _mapshots(str(root), _map_key(root))
 
 
 @lru_cache(maxsize=MAXSIZE)

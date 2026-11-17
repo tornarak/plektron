@@ -20,6 +20,7 @@ from __future__ import annotations
 import json
 import re
 from pathlib import Path
+from urllib.parse import quote
 
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import RedirectResponse, Response
@@ -51,7 +52,7 @@ from ..detectors import resolve_break_hyphens
 from ..entities import ENTITY_CLASSES, UNWRITTEN, alias_index, split_id
 from ..refs import parse_ref
 from ..state import MILESTONE_UNITS, load_toc, toc_containing
-from . import Editor, register, stores, templates
+from . import Editor, mapshots, register, stores, templates
 from . import meta as M
 from .errors import fetched
 from .files import send_file
@@ -376,7 +377,8 @@ def index(request: Request):
         "edition/index.html",
         _ctx(request, refs=refs, drafts=_drafts(request), here=here,
              rows=_outline(request), cover=cover,
-             meta={"title": work["title"], "kind": "book", "description": desc}),
+             meta={"title": work["title"], "kind": "book", "description": desc,
+                   "image": preview(root)}),
     )
 
 
@@ -419,34 +421,112 @@ def thumb(request: Request, ref: str):
 COVER_WIDTHS = (640, 1200)
 
 
-def cover_source(root: Path) -> Path | None:
-    """The file behind a text's declared image, the editor's crop over the machine's,
-    or None where the text declares none. Nothing infers one."""
-    declared = layout.image(root)
+#: A chapter's own picture, keyed by ToC id, in the shape of `layout.image`: an
+#: editor's choice per chapter, so declared, and a chapter without one takes the
+#: text's.
+CHAPTER_IMAGES = "chapter_images.json"
+
+
+def chapter_images(root: Path) -> dict[str, dict]:
+    p = Path(root) / "edition" / CHAPTER_IMAGES
+    return json.loads(p.read_text(encoding="utf-8"))["images"] if p.exists() else {}
+
+
+def _declared(root: Path, toc_id: str = "") -> dict | None:
+    """The text's image, or with `toc_id` that chapter's own — and only its own:
+    the fallback to the text's is the caller's (`preview`), so a URL for a
+    chapter's picture never serves a different one."""
+    return chapter_images(root).get(toc_id) if toc_id else layout.image(root)
+
+
+def cover_source(root: Path, toc_id: str = "") -> Path | None:
+    """The file behind a declared image, the editor's crop over the machine's, or
+    None where none is declared. Nothing infers one."""
+    declared = _declared(root, toc_id)
     if not declared:
         return None
     ref, key = declared["fig"].split("/")
     return F.crop_source(ref, key, root)[0]
 
 
-def cover_url(root: Path, base: str, width: int) -> str | None:
-    return f"{base}/cover-{width}.jpg" if layout.image(root) else None
+def cover_url(root: Path, base: str, width: int, toc_id: str = "") -> str | None:
+    if not _declared(root, toc_id):
+        return None
+    return f"{base}/cover/{toc_id}-{width}.jpg" if toc_id else f"{base}/cover-{width}.jpg"
+
+
+def preview(root: Path, toc_id: str = "") -> dict | None:
+    """A view's link-preview picture for `meta.head`: the chapter's, else the text's."""
+    for tid in ((toc_id, "") if toc_id else ("",)):
+        if declared := _declared(root, tid):
+            return {"src": cover_url(root, "", COVER_WIDTHS[-1], tid),
+                    "alt": declared["caption"]}
+    return None
+
+
+def _cover(root: Path, width: int, toc_id: str = "") -> Response:
+    if width not in COVER_WIDTHS:
+        raise HTTPException(404, f"no cover at width {width}: {COVER_WIDTHS}")
+    declared = _declared(root, toc_id)
+    if declared is None:
+        raise HTTPException(404, f"no image declared for {toc_id}"
+                                 f" in edition/{CHAPTER_IMAGES}" if toc_id else
+                                 f"{root.name} declares no `image` in its project.json")
+    try:
+        data = ui.leaf_thumb(cover_source(root, toc_id), width, declared.get("turn", 0))
+    except OSError:
+        raise HTTPException(404, f"no crop for {declared['fig']} — "
+                                 "`harness fig crops --all` builds them") from None
+    return Response(data, media_type="image/jpeg")
 
 
 @router.get("/cover-{width}.jpg")
 def cover(request: Request, width: int):
-    root = _root(request)
-    if width not in COVER_WIDTHS:
-        raise HTTPException(404, f"no cover at width {width}: {COVER_WIDTHS}")
-    path = cover_source(root)
-    if path is None:
-        raise HTTPException(404, f"{root.name} declares no `image` in its project.json")
+    return _cover(_root(request), width)
+
+
+@router.get("/cover/{name}.jpg")
+def chapter_cover(request: Request, name: str):
+    toc_id, _, width = name.rpartition("-")
+    if not toc_id or not width.isdigit():
+        raise HTTPException(404, f"{name!r} is not TOC-ID-WIDTH")
+    return _cover(_root(request), int(width), toc_id)
+
+
+def _entity_preview(root: Path, rec: dict | None) -> dict | None:
+    """An entity card's picture: its map, where the atlas draws it — the card the
+    atlas pane opens onto — else its own picture, else none. Never the text's."""
+    if rec is None:
+        return None
+    if got := map_preview(root, rec["id"]):
+        return got
+    pic = pictures.resolve(rec, stores.picture_ledger(root))
+    return {"src": pic["full"], "alt": rec["canonical"]} if pic else None
+
+
+def map_preview(root: Path, ident: str) -> dict | None:
+    """An entity's map as its link-preview picture, where the atlas draws one. None
+    as well where Node is missing: no picture states nothing false, and the
+    route below refuses, so a build that links one reports it."""
     try:
-        data = ui.leaf_thumb(path, width, layout.image(root).get("turn", 0))
-    except OSError:
-        raise HTTPException(404, f"no crop for {layout.image(root)['fig']} — "
-                                 "`harness fig crops --all` builds them") from None
-    return Response(data, media_type="image/jpeg")
+        drawn = ident in stores.map_svgs(root)
+    except mapshots.Unavailable:
+        return None
+    # Spelled as the host stores it: a colon is `%3A` there (`build._canon`).
+    return {"src": f"/map/{quote(ident, safe='')}.png",
+            "alt": f"{stores.load(root)[ident]['canonical']}, on the map"} if drawn else None
+
+
+@router.get("/map/{ident:path}.png")
+def entity_map(request: Request, ident: str):
+    """`map_preview`'s picture: the atlas pane's map of one entity (`mapshots`)."""
+    try:
+        png = stores.mapshots(_root(request)).get(ident)
+    except mapshots.Unavailable as e:
+        raise HTTPException(503, str(e)) from None
+    if png is None:
+        raise HTTPException(404, f"the atlas draws nothing for {ident!r}")
+    return Response(png, media_type="image/png")
 
 
 @router.get("/fig/{ref}/{key}.png")
@@ -1543,6 +1623,7 @@ def _chapter_page(request: Request, run: dict, root: Path):
         _ctx(request, run=run, leaves=leaves, drafts=drafts, gaps=gaps,
              body=body, has_h1=has_h1, notices=notices, supplements=supplements,
              meta={"title": title, "kind": "article", "draft": bool(drafts),
+                   "image": preview(root, run.get("toc_id") or ""),
                    "description": M.first_paragraph(body),
                    # The text leaves', in binding order: a plate between them
                    # prints no folio and is no end of the chapter's span.
@@ -1799,6 +1880,7 @@ def page(request: Request, ref: str):
             state=state,
             rank=rank,
             meta={"title": f"{ref} — {stores.work(root)['title']}", "kind": "article",
+                  "image": preview(root),
                   "draft": rank == "draft",
                   "description": M.first_paragraph(doc.get("html") or ""),
                   "cite": {"title": f"{stores.work(root)['title']}, "
@@ -2017,7 +2099,9 @@ def entity(request: Request, ident: str):
             card_title=rec["canonical"] if rec else ident,
             meta={"title": f"{rec['canonical'] if rec else ident} — "
                            f"{stores.work(root)['title']}",
-                  "description": M.entity_description(rec), "entity": rec},
+                  "description": M.entity_description(rec, stores.load(root)),
+                  "entity": rec,
+                  "image": _entity_preview(root, rec)},
             side_fixed=True,
             pane=True,
             toc_panel=_toc_panel(
@@ -2226,7 +2310,7 @@ def annotation_card(request: Request, ident: str):
              card_title=rec["title"] if rec else ident,
              meta={"title": f"{rec['title'] if rec else ident} — "
                             f"{stores.work(root)['title']}",
-                   "description": tei_html.strip_tags(ctx["summary_html"])},
+                   "description": M.plain(ctx["summary_html"])},
              **ctx))
 
 
