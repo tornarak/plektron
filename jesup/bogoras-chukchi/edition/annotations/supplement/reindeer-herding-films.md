@@ -1,6 +1,6 @@
-# supplement:reindeer-herding-films — Films of reindeer-Chukchi herding
+# supplement:reindeer-herding-films — Films of Reindeer Chukchi herding
 
-- status: proposed
+- status: ratified
 - attaches: entity:people:reindeer-chukchi
 - attaches: toc:chIV
 
@@ -8,7 +8,7 @@
 
 | alias | url | title | note |
 |---|---|---|---|
-| tundra | https://dceff.org/film/tundra/ | Tundra: A Tale of Vukvukai, the Little Rock | Aleksei Vakhrushev, 2011; 105 min; Russian and Chukchi, English subtitles |
+| tundra | https://dceff.org/film/tundra/ | The Tundra Book: A Tale of Vukvukai, the Little Rock (Книга тундры) | Aleksei Vakhrushev, 2011; 105 min; Russian and Chukchi, English subtitles |
 | reindeer-people | https://www.cultureunplugged.com/documentary/watch-online/play/10959/the-reindeer-people | The Reindeer People | Olga Vershinina, 2011; 26 min; produced by Sergey Yastrzhembskiy |
 
 ## summary

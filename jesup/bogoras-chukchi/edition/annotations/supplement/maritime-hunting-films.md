@@ -1,6 +1,6 @@
-# supplement:maritime-hunting-films — Films of maritime-Chukchi sea hunting
+# supplement:maritime-hunting-films — Films of Maritime Chukchi sea hunting
 
-- status: proposed
+- status: ratified
 - attaches: entity:people:maritime-chukchi
 - attaches: toc:chVI
 
