@@ -20,6 +20,8 @@
 {% include "edition/_sidebar.html" %}
 <div id='primary'>
   <div class='card'><div class='body'>
+  {# The card's name is this document's `<h1>`; the stack's copy keeps `h4`. #}
+  {% set card_h = 'h1' %}
   {% include partial %}
   </div></div>
 </div>

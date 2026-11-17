@@ -1,6 +1,15 @@
 {% extends "base.html" %}
 {% from "edition/_lightbox.html" import lightbox %}
 
+{% block meta %}
+{% include "edition/_meta.html" %}
+{# The browser's own chrome, which the stylesheet cannot reach: `--bg` in each
+   scheme, as `edition.css` states it (`test_site_meta` holds the two equal). #}
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#e2dbc2">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#14111a">
+{% endblock %}
+
 {% block head %}
 {# Before the stylesheet, so a reader-view session does not flash its apparatus
    on every page load. The Moll reader's lesson. Inline on purpose: an external
@@ -44,6 +53,9 @@ if(t==='dark'||t==='light') document.documentElement.dataset.theme=t;
    parts are — a screen reader offers "navigation" and "main" as landmarks to
    jump between, and until now every one of them was an anonymous div. #}
 {% block body %}
+{# First in the document, so a keyboard reader is not walked through the bar's
+   controls on every page before the text. Shown only when focused. #}
+<a class='skip-link' href='#primary'>Skip to text</a>
 <header id='bar'>
     <span class="site-title">
         <a href='{{ base }}/'>{{ work.title }}</a>
@@ -86,8 +98,9 @@ if(t==='dark'||t==='light') document.documentElement.dataset.theme=t;
        that looked like a fix. #}
     {# Not in a static build: a host serves files, and a query is not one. #}
     {% if not static %}
-    <form target="_blank" action='{{ base }}/search'>
-      <input name='q' placeholder='search'>
+    <form target="_blank" action='{{ base }}/search' role='search'>
+      <label class='visually-hidden' for='bar-q'>Search the edition</label>
+      <input id='bar-q' type='search' name='q' placeholder='search'>
     </form>
     {% endif %}
     <span class='location'>{{ here }}</span>

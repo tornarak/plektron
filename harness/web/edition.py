@@ -52,6 +52,7 @@ from ..entities import ENTITY_CLASSES, UNWRITTEN, alias_index, split_id
 from ..refs import parse_ref
 from ..state import MILESTONE_UNITS, load_toc, toc_containing
 from . import Editor, register, stores, templates
+from . import meta as M
 from .errors import fetched
 from .files import send_file
 
@@ -142,7 +143,21 @@ def _ctx(request: Request, **kw) -> dict:
     is merged over it, so no route has to restate the prefixes.
     """
     base, assets = _base(request), _assets(request)
+    root = _root(request)
+    work = stores.work(root)
+    # `meta` is a route's say about its own head, `meta.head`'s keywords; a route
+    # that says nothing is described as the work. Prev/next/up come from the
+    # neighbours the page row already shows, so the two cannot disagree.
+    m = dict(kw.pop("meta", None) or {})
+    m.setdefault("title", work["title"])
+    nav = {"up": f"{base}/"}
+    for rel in ("prev", "next"):
+        if kw.get(rel):
+            nav[rel] = f"{base}/page/{kw[rel]}"
+    m.setdefault("links", nav)
     out = {"base": base, "assets": assets, "here": "", "static": _static(request),
+           "lang": layout.lang(root),
+           "meta": M.head(root, work, request.url.path, base, **m),
            # The header links two runs by id; a tree that declares neither
            # should not carry two dead links on every page.
            "run_ids": {r.get("id") for r in stores.runs(_root(request))},
@@ -150,7 +165,7 @@ def _ctx(request: Request, **kw) -> dict:
            "map_leaf": next((_lightbox(r, "map", _root(request), base)
                              for r in tei_html._sorted_refs(
                [r for r, k in stores.leaf_kinds(_root(request)).items() if k == "map"])), None),
-           "work": stores.work(_root(request)),
+           "work": work,
            # The landing page above this text, on a site that has one.
            "home": getattr(request.app.state, "home", None),
            **kw}
@@ -348,11 +363,20 @@ def index(request: Request):
         return f"{n} page{'' if n == 1 else 's'}"
     here = (f"{pages(len(leaves))} transcribed, {len(signed)} fully collated"
             if _drafts(request) else f"{pages(len(signed))} collated")
+    work = stores.work(root)
+    by = ", ".join(x for x in (work["author"], work["date"]) if x)
+    desc = (f"{work['title']}{f' ({by})' if by else ''}"
+            f"{f': {work['subtitle']}' if work['subtitle'] else ''}. {here}.")
+    declared = layout.image(root)
+    cover = ({"src": cover_url(root, _base(request), COVER_WIDTHS[0]),
+              "full": cover_url(root, _base(request), COVER_WIDTHS[-1]),
+              "caption": declared["caption"]} if declared else None)
     return templates.TemplateResponse(
         request,
         "edition/index.html",
         _ctx(request, refs=refs, drafts=_drafts(request), here=here,
-             rows=_outline(request)),
+             rows=_outline(request), cover=cover,
+             meta={"title": work["title"], "kind": "book", "description": desc}),
     )
 
 
@@ -386,6 +410,42 @@ def thumb(request: Request, ref: str):
     except OSError:
         raise HTTPException(404, f"no raster for {ref} — scans/ is derived and "
                                  "not in git") from None
+    return Response(data, media_type="image/jpeg")
+
+
+#: The text's declared image (`layout.image`), at the widths a page asks for: the
+#: landing's card and the index head at twice what the sheet displays, and the
+#: width a link preview (Open Graph) prefers. One picture, declared once.
+COVER_WIDTHS = (640, 1200)
+
+
+def cover_source(root: Path) -> Path | None:
+    """The file behind a text's declared image, the editor's crop over the machine's,
+    or None where the text declares none. Nothing infers one."""
+    declared = layout.image(root)
+    if not declared:
+        return None
+    ref, key = declared["fig"].split("/")
+    return F.crop_source(ref, key, root)[0]
+
+
+def cover_url(root: Path, base: str, width: int) -> str | None:
+    return f"{base}/cover-{width}.jpg" if layout.image(root) else None
+
+
+@router.get("/cover-{width}.jpg")
+def cover(request: Request, width: int):
+    root = _root(request)
+    if width not in COVER_WIDTHS:
+        raise HTTPException(404, f"no cover at width {width}: {COVER_WIDTHS}")
+    path = cover_source(root)
+    if path is None:
+        raise HTTPException(404, f"{root.name} declares no `image` in its project.json")
+    try:
+        data = ui.leaf_thumb(path, width, layout.image(root).get("turn", 0))
+    except OSError:
+        raise HTTPException(404, f"no crop for {layout.image(root)['fig']} — "
+                                 "`harness fig crops --all` builds them") from None
     return Response(data, media_type="image/jpeg")
 
 
@@ -678,6 +738,8 @@ def _exempt_page(request: Request, ref: str, root):
             ref=ref,
             kind=kind,
             kind_note=LEAF_NOTES.get(kind, ""),
+            meta={"title": f"{ref} — {stores.work(root)['title']}",
+                  "description": LEAF_NOTES.get(kind, "")},
             plates=plates,
             here=here,
             # An exempt leaf has no `<pb>` and prints no folio of its own, so the
@@ -1136,6 +1198,10 @@ def run_page(request: Request, run_id: str):
              tail_items=_run_items(tail),
              chart=stores.alphabet_chart(root) if run.get("kind") == "alphabet" else None,
              here=run["title"],
+             meta={"title": f"{run['title']} — {stores.work(root)['title']}",
+                   "description": f"The printed {run['title'].lower()} of "
+                                  f"{stores.work(root)['title']}, over "
+                                  f"{len(run.get('refs') or [])} leaves, as one document."},
              # Every leaf of the run, since a run is one document over several
              # leaves and the reader is at all of them at once.
              toc_panel=_toc_panel(root, [leaf["folio"] for leaf in leaves],
@@ -1143,6 +1209,22 @@ def run_page(request: Request, run_id: str):
              state={"ref": head},
              prev=prev, next=next_),
     )
+
+
+#: A milestone heading as `tei_html.el_milestone` writes it.
+_MILESTONE_H2 = re.compile(r'<h2( class="milestone[^"]*"[^>]*)>(.*?)</h2>', re.S)
+
+
+def _view_h1(html: str) -> tuple[str, bool]:
+    """`html` with its first milestone heading made the view's `<h1>`, and whether
+    there was one.
+
+    **The view decides, not the page renderer.** A chapter is several page files
+    rendered one at a time and joined, so `el_milestone` cannot know whether its
+    heading is the first the reader's document holds; the joined body can. The
+    stylesheet styles `.milestone` at either level alike, so nothing moves."""
+    out, n = _MILESTONE_H2.subn(r"<h1\1>\2</h1>", html, count=1)
+    return out, bool(n)
 
 
 #: A footnote marker as `tei_html` writes it: `<a class="noteref" id="ref-1"
@@ -1453,11 +1535,19 @@ def _chapter_page(request: Request, run: dict, root: Path):
         _pooled(leaf["notices"] for leaf in text),
         _pooled(leaf["supplements"] for leaf in text),
         root, keep={run.get("toc_id")}, chapter=entry.get("chapter"))
+    body, has_h1 = _view_h1(body)
+    title = f"{run['title']} — {stores.work(root)['title']}"
     return templates.TemplateResponse(
         request,
         "edition/chapter.html",
         _ctx(request, run=run, leaves=leaves, drafts=drafts, gaps=gaps,
-             body=body, notices=notices, supplements=supplements,
+             body=body, has_h1=has_h1, notices=notices, supplements=supplements,
+             meta={"title": title, "kind": "article", "draft": bool(drafts),
+                   "description": M.first_paragraph(body),
+                   # The text leaves', in binding order: a plate between them
+                   # prints no folio and is no end of the chapter's span.
+                   "cite": {"title": run["title"], "refs": [t["ref"] for t in text],
+                            "folios": [t.get("folio") for t in text]}},
              notes=_pooled_notes(text),
              placed=all(leaf["placed"] for leaf in text),
              store_has_toc=any(leaf["store_has_toc"] for leaf in text),
@@ -1504,6 +1594,9 @@ def _refusal(request: Request, out: dict, asked: str):
     return templates.TemplateResponse(
         request, "edition/folio.html",
         _ctx(request, asked=asked, here=asked,
+             # A refusal is the ordinary answer, but not a page to be found by.
+             meta={"title": f"{asked} — {stores.work(_root(request))['title']}",
+                   "noindex": True},
              nearest=out.get("nearest") or [],
              candidates=out.get("candidates") or [],
              why=out.get("why", "")),
@@ -1682,7 +1775,10 @@ def page(request: Request, ref: str):
         )
     leaf = _leaf_doc(path, ref, root, base=_base(request),
                      flags=not _static(request))
-    doc = leaf["doc"]
+    doc = dict(leaf["doc"])
+    has_h1 = False
+    if doc.get("ok"):
+        doc["html"], has_h1 = _view_h1(doc["html"])
     refs = _listing(request)
     i = refs.index(ref) if ref in refs else -1
     # `PP-NNN (folio)`, both systems at once, because neither is derivable from
@@ -1698,9 +1794,17 @@ def page(request: Request, ref: str):
             request,
             ref=ref,
             doc=doc,
+            has_h1=has_h1,
             here=here,
             state=state,
             rank=rank,
+            meta={"title": f"{ref} — {stores.work(root)['title']}", "kind": "article",
+                  "draft": rank == "draft",
+                  "description": M.first_paragraph(doc.get("html") or ""),
+                  "cite": {"title": f"{stores.work(root)['title']}, "
+                                    + (f"p. {doc['folio']}" if doc.get("folio")
+                                       else f"scan {ref}"),
+                           "refs": [ref], "folios": [doc.get("folio")]}},
             pane=True,
             notices=leaf["notices"],
             supplements=leaf["supplements"],
@@ -1911,6 +2015,9 @@ def entity(request: Request, ident: str):
             request,
             partial="edition/_entity.html",
             card_title=rec["canonical"] if rec else ident,
+            meta={"title": f"{rec['canonical'] if rec else ident} — "
+                           f"{stores.work(root)['title']}",
+                  "description": M.entity_description(rec), "entity": rec},
             side_fixed=True,
             pane=True,
             toc_panel=_toc_panel(
@@ -2032,7 +2139,10 @@ def annotations_index(request: Request):
             for k, v in sorted(store.items())]
     return templates.TemplateResponse(
         request, "edition/annotations.html",
-        _ctx(request, rows=rows, card_title="Notices and supplements"))
+        _ctx(request, rows=rows, card_title="Notices and supplements",
+             meta={"title": f"Notices and supplements — {stores.work(root)['title']}",
+                   "description": "The editor's own notes over the book: a notice "
+                                  "above what it attaches to, a supplement below."}))
 
 
 def _attached_rows(rec: dict, root: Path, located: dict,
@@ -2113,7 +2223,11 @@ def annotation_card(request: Request, ident: str):
     return templates.TemplateResponse(
         request, "edition/card.html",
         _ctx(request, partial="edition/_annotation.html",
-             card_title=rec["title"] if rec else ident, **ctx))
+             card_title=rec["title"] if rec else ident,
+             meta={"title": f"{rec['title'] if rec else ident} — "
+                            f"{stores.work(root)['title']}",
+                   "description": tei_html.strip_tags(ctx["summary_html"])},
+             **ctx))
 
 
 @router.get("/lexicon")
@@ -2145,7 +2259,11 @@ def lexicon_index(request: Request):
         request,
         "edition/lexicon.html",
         _ctx(request, groups=groups, pane=True, side_fixed=True,
-             here=f"{len(forms)} forms · {written} with an editor's note"),
+             here=f"{len(forms)} forms · {written} with an editor's note",
+             meta={"title": f"Lexicon — {stores.work(root)['title']}",
+                   "description": f"Every native form printed in "
+                                  f"{stores.work(root)['title']}: {len(forms)} forms, "
+                                  f"{written} with an editor's note."}),
     )
 
 
@@ -2322,6 +2440,10 @@ def lexicon_card(request: Request, key: str):
         request,
         "edition/card.html",
         _ctx(request, partial="edition/_lexicon.html", card_title=form or key,
+             meta={"title": f"{form or key} — {stores.work(root)['title']}",
+                   "description": f"The form {form or key} as printed in "
+                                  f"{stores.work(root)['title']}: on {len(refs)} "
+                                  f"page{'' if len(refs) == 1 else 's'}."},
              toc_panel=_toc_panel(
                  root, [], by_folio, base=_base(request), drafts=_drafts(request),
                  total=len(refs), unit="page",
@@ -2467,6 +2589,9 @@ def atlas(request: Request):
             side_fixed=True,
             gaps=[v for _k, v in sorted(geo.index(root)["absent"].items())],
             here=f"{len(roots)} root(s) · {len(store)} entities",
+            meta={"title": f"Atlas — {stores.work(root)['title']}",
+                  "description": f"The places, peoples and waters named in "
+                                 f"{stores.work(root)['title']}, on a map."},
         ),
     )
 
@@ -2536,6 +2661,10 @@ def entity_index(request: Request):
             side_fixed=True,
             problems=rep["errors"],
             here=f"{rep['entities']} entries · {rep['proposed']} awaiting review",
+            meta={"title": f"Encyclopedia — {stores.work(root)['title']}",
+                  "description": f"The people, places, beings and things named in "
+                                 f"{stores.work(root)['title']}: "
+                                 f"{rep['entities']} entries."},
         ),
     )
 
@@ -2591,6 +2720,7 @@ def search(request: Request, q: str = ""):
             q=q,
             hits=hits,
             ents=ents,
+            meta={"title": f"{q} — search", "noindex": True},
             here=f"{cut}{len(hits)} in the text, {len(ents)} in the encyclopedia",
         ),
     )

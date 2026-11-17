@@ -38,6 +38,7 @@
    another rung of the containment tree. #}
 {% include "edition/_sidebar.html" %}
 <div id='primary'>
+<h1 class='visually-hidden'>Atlas</h1>
 <ul class='tree atlas-tree'>
 {% for g in groups %}
 <li><code class='cls'>{{ g.cls }}</code> <span class='dim'>({{ g.tree | length }})</span>

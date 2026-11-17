@@ -209,7 +209,9 @@ def _stub(target: str) -> str:
     """A redirect a static host can serve. The target's own fragment wins, as it
     does on a 302; where it has none, the one the reader arrived with survives."""
     t = escape(target, quote=True)
+    # `noindex`: the stub is an address, not a page; its target is the one to list.
     return ("<!doctype html>\n<meta charset='utf-8'>\n<title>Redirecting</title>\n"
+            "<meta name='robots' content='noindex'>\n"
             f"<meta http-equiv='refresh' content='0; url={t}'>\n"
             f"<link rel='canonical' href='{t}'>\n"
             f"<script>const t = {json.dumps(target)};\n"

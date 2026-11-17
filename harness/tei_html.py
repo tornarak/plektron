@@ -593,7 +593,9 @@ class Renderer:
             back = f' id="ref-{escape(n)}"' if first else ""
             return (
                 f'<a class="noteref"{back} href="#note-{escape(n)}" '
-                f'data-note="{escape(n)}">{body}</a>'
+                # The role last: `web/edition._NOTEREF` matches the attributes
+                # before it, in this order.
+                f'data-note="{escape(n)}" role="doc-noteref">{body}</a>'
             )
         handle = figrefs.unmark(el.get("type"), el.get("n"), el.get("cRef"))
         if handle is None or self.in_ref or self.in_figdesc:

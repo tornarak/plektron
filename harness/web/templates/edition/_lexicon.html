@@ -10,6 +10,10 @@
    Nothing here is stored. The languages, the attesting pages and the note come
    from three different stores and are re-read on every request, so the card
    fails rather than goes stale. #}
+{# `card_h` is `card.html`'s: `h1` on a page of its own, `h4` in the stack. The
+   two refusals below are headed by the key asked for, so their page has one too. #}
+{% set h = card_h | default('h4') %}
+{% if candidates or not form or not known %}<{{ h }}><code>{{ key }}</code></{{ h }}>{% endif %}
 {% if candidates %}
 <p>The key <code>{{ key }}</code> names more than one form, and this corpus does
 not pick between two settings of a word: {% for f in candidates %}<a
@@ -29,7 +33,7 @@ one list.</p>
    screen reader or a font stack — it is a claim that the element has no language
    at all, which is a different and wrong thing to say about a word in the language
    nobody has judged yet. #}
-<h4{% if lang %} lang='{{ lang }}'{% endif %} class='tier1'>{{ form }}</h4>
+<{{ h }}{% if lang %} lang='{{ lang }}'{% endif %} class='tier1'>{{ form }}</{{ h }}>
 <div class='meta'>
 {%- if langs %}{% for l in langs %}{{ l.name }} · <code>{{ l.code }}</code>
 {%- if not loop.last %} + {% endif %}{% endfor %}

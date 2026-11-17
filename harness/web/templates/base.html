@@ -4,10 +4,11 @@
    links in the head and its state blob after the body, and a template that can
    only fill a middle forces every page back to string concatenation for the
    two ends. #}<!doctype html>
-<html lang="en"{% block html_attrs %}{% endblock %}>
+<html lang="{{ lang | default('en') }}"{% block html_attrs %}{% endblock %}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+{% block meta %}{% endblock %}
 <title>{% block title %}harness{% endblock %}</title>
 {% block styles %}{% endblock %}
 {% block head %}{% endblock %}

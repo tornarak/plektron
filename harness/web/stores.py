@@ -92,7 +92,9 @@ def _work(root: str, _key: bytes) -> dict:
     p = Path(root) / "tei" / "corpus-header.xml"
     if not p.exists():
         return {"title": Path(root).resolve().name, "author": "", "date": "",
-                "sources": [], "licences": []}
+                "sources": [], "licences": [], "subtitle": "", "author_parts": {},
+                "origin": "", "licence_urls": [], "publishers": [], "places": [],
+                "series": [], "parts": {}}
     doc = etree.parse(str(p))
     tei = f"{{{TEI_NS}}}"
     title = doc.findtext(f".//{tei}titleStmt/{tei}title[@type='main']")
@@ -100,10 +102,46 @@ def _work(root: str, _key: bytes) -> dict:
     # spacing, so the parts are joined rather than the text taken whole.
     author = doc.find(f".//{tei}titleStmt/{tei}author/{tei}persName")
     date = doc.findtext(f".//{tei}sourceDesc//{tei}imprint/{tei}date")
+    imprint = f".//{tei}sourceDesc/{tei}biblStruct/{tei}monogr/{tei}imprint"
+
+    def text(el) -> str:
+        return "" if el is None else " ".join("".join(el.itertext()).split())
+
+    def attr(el, path: str, name: str) -> str:
+        # `is None`, not truthiness: an lxml element with no children is falsy.
+        found = el.find(path)
+        return "" if found is None else found.get(name, "")
+
+    # The address the edition is published at, as its own `publicationStmt` says.
+    # Read here rather than stated in code: the header is where the edition says
+    # where it is, and a second copy would be a fact stated twice.
+    ptr = doc.find(f".//{tei}publicationStmt/{tei}ptr")
     return {"title": title or Path(root).resolve().name,
+            "subtitle": text(doc.find(f".//{tei}titleStmt/{tei}title[@type='sub']")),
             "author": "" if author is None else " ".join(
                 "".join(el.itertext()).strip() for el in author),
+            # Split, because a citation tag wants "Surname, Forename".
+            "author_parts": {} if author is None else {
+                el.tag.removeprefix(tei): text(el) for el in author},
             "date": (date or "").strip(),
+            "origin": (ptr.get("target") or "").rstrip("/") if ptr is not None else "",
+            "licence_urls": [el.get("target") for el in doc.iterfind(
+                f".//{tei}availability/{tei}licence") if el.get("target")],
+            "publishers": [text(el) for el in doc.iterfind(f"{imprint}/{tei}publisher")],
+            "places": [text(el) for el in doc.iterfind(f"{imprint}/{tei}pubPlace")],
+            "series": [{"title": text(s.find(f"{tei}title")),
+                        "volume": attr(s, f"{tei}biblScope", "n")}
+                       for s in doc.iterfind(f".//{tei}sourceDesc/{tei}biblStruct/{tei}series")
+                       if s.find(f"{tei}title") is not None],
+            # Each part's date as the header records it, keyed by part number.
+            # Only a `@when`: the volume's range is not a part's date. And none a
+            # model's reading ranks `#llm`: a citation tag states it as fact, and
+            # rank rises only by a human act — in the header, which this follows.
+            "parts": {b.get("n"): {"title": text(b.find(f"{tei}title")),
+                                   "date": "" if attr(b, f"{tei}date", "resp") == "#llm"
+                                   else attr(b, f"{tei}date", "when")}
+                      for b in doc.iterfind(f".//{tei}listBibl[@type='parts']/{tei}bibl")
+                      if b.get("n")},
             # What this edition grants sits in a `<licence>`; a paragraph of
             # `<availability>` itself is what the edition took from someone else.
             "sources": [_header_html(el) for el in doc.iterfind(

@@ -4,6 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Plectrum Press</title>
+{# `site._landing`'s; an absent field prints no tag. #}
+{% if meta.description %}<meta name="description" content="{{ meta.description }}">
+<meta property="og:description" content="{{ meta.description }}">{% endif %}
+{% if meta.canonical %}<link rel="canonical" href="{{ meta.canonical }}">
+<meta property="og:url" content="{{ meta.canonical }}">{% endif %}
+<meta property="og:type" content="website">
+<meta property="og:title" content="{{ meta.site_name }}">
+<meta property="og:site_name" content="{{ meta.site_name }}">
+{% if meta.image %}<meta property="og:image" content="{{ meta.image }}">
+<meta property="og:image:alt" content="{{ meta.image_alt }}">
+<meta name="twitter:card" content="summary_large_image">{% endif %}
+<meta name="color-scheme" content="light dark">
 {# The reader's stored theme, before the sheet, as `edition/base.html` does it. #}
 <script>try{var t=localStorage.getItem('edition-theme');
 if(t==='dark'||t==='light') document.documentElement.dataset.theme=t;}catch(e){}</script>

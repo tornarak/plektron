@@ -1114,7 +1114,8 @@ function captionOf(img) {
     if (cap?.textContent.trim()) return cap.textContent.trim();
     const card = img.closest('.card');
     if (card) {
-        const h = card.querySelector('.body h4')?.textContent.trim() || '';
+        // `h1` where the card is a page of its own (`card.html`).
+        const h = card.querySelector('.body :is(h1, h4)')?.textContent.trim() || '';
         const m = card.querySelector('.body .meta')?.textContent.trim() || '';
         const both = [h, m].filter(Boolean).join(' — ');
         if (both) return both;

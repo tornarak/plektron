@@ -931,7 +931,16 @@ request bodies. Four things in it are load-bearing:
 a landing page from `harness/web/templates/site/index.html` and the prose in
 `site/landing.html`.
 It rebuilds a text only if something upstream is newer than the last clean build.
-The rule and what it cannot see are in its docstring.
+The rule and what it cannot see are in its docstring. It also writes the sitemaps
+and `robots.txt`, from the pages on disk rather than the crawl, so a fresh text's
+are whole.
+
+**`harness/web/meta.py`** — what a reading-view page says about itself in its
+`<head>`: description, canonical address, link preview, `citation_*` tags and
+schema.org JSON-LD, rendered by `harness/web/templates/edition/_meta.html`. Every value is read from the
+corpus teiHeader (`stores.work`), the stores, or the text's one declared `image`;
+a field the header lacks emits no tag. A page number is cited only where a leaf
+recorded its folio, and an absolute address only for a text that is published.
 
 **`harness/web/cache.py`** — store reads memoised on a **digest of the file's contents**,
 not on its mtime. Measured on this filesystem: 190 of 200 immediate rewrites

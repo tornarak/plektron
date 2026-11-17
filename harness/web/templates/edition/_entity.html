@@ -5,7 +5,9 @@
 {% if not rec %}
 <p>No entry for <code>{{ ident }}</code>.</p>
 {% else %}
-<h4>{{ rec.canonical }}{% if rec.status != 'ratified' %}<span class='pill {{ rec.status }}'>{{ rec.status }}</span>{% endif %}</h4>
+{# `card_h` is `card.html`'s: `h1` on a page of its own, `h4` in the stack. #}
+{% set h = card_h | default('h4') %}
+<{{ h }}>{{ rec.canonical }}{% if rec.status != 'ratified' %}<span class='pill {{ rec.status }}'>{{ rec.status }}</span>{% endif %}</{{ h }}>
 {# No "first read on" line: it was `since:`, an authored field, and the mentions
    block below derives every page instead — which cannot be satisfied by typing
    a plausible ref, as that field could. #}

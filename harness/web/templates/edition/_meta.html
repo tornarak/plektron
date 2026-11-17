@@ -1,0 +1,12 @@
+{# A view's account of itself, for a search engine, a link preview and a
+   reference manager. Every value is `web/meta.py`'s, which reads it from the
+   corpus header and the stores; this only prints it. An absent field prints no
+   tag, rather than an empty one that claims there is nothing there. #}
+{% if meta.description %}<meta name="description" content="{{ meta.description }}">
+{% endif %}{% if meta.canonical %}<link rel="canonical" href="{{ meta.canonical }}">
+{% endif %}{% for rel, href in meta.links %}<link rel="{{ rel }}" href="{{ href }}">
+{% endfor %}{% for href in meta.licences %}<link rel="license" href="{{ href }}">
+{% endfor %}{% for k, v in meta.og %}<meta property="{{ k }}" content="{{ v }}">
+{% endfor %}{% for k, v in meta.names %}<meta name="{{ k }}" content="{{ v }}">
+{% endfor %}{% for k, v in meta.citation %}<meta name="{{ k }}" content="{{ v }}">
+{% endfor %}<script type="application/ld+json">{{ meta.ld | safe }}</script>

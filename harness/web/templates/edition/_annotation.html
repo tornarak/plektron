@@ -4,7 +4,9 @@
 {% if not rec %}
 <p>No annotation at <code>{{ ident }}</code>.</p>
 {% else %}
-<h4>{{ rec.title }}{% if rec.status != 'ratified' %}<span class='pill {{ rec.status }}'>{{ rec.status }}</span>{% endif %}</h4>
+{# `card_h` is `card.html`'s: `h1` on a page of its own, `h4` in the stack. #}
+{% set h = card_h | default('h4') %}
+<{{ h }}>{{ rec.title }}{% if rec.status != 'ratified' %}<span class='pill {{ rec.status }}'>{{ rec.status }}</span>{% endif %}</{{ h }}>
 <div class='meta'>{% if not static %}<code>{{ ident }}</code> · {% endif %}<span>{{ rec.class }}</span>,
   shown {{ rec.placement }} of what it attaches to</div>
 {% if rec.status != 'ratified' %}

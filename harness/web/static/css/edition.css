@@ -368,7 +368,7 @@ blockquote { margin:.8rem 0 .8rem 1.5rem; color:var(--dim) }
    head the printer set on its own line was a block the ToC join consumed, so its
    words come from `edition/toc.json`. Which happened is in the markup — see
    `tei_html._leads_a_block` — and this file styles whichever arrived. */
-h2.milestone { font-weight:600; margin:1.6rem 0 .6rem }
+:is(h1,h2).milestone { font-weight:600; margin:1.6rem 0 .6rem; font-size:1.5em }
 /* **Centred at levels 1 and 2 only.** The book sets those on their own lines and
    centred; it runs 3 and 4 into a paragraph, which is what the comment above
    describes. So a deep head that arrives here as a block — because its page did
@@ -376,24 +376,26 @@ h2.milestone { font-weight:600; margin:1.6rem 0 .6rem }
    paragraph would start. Centring it invents a typographic level the print does
    not have, and does it on exactly the pages with the least evidence: the ones
    whose own head never read. */
-h2.milestone.chapter, h2.milestone.section { text-align:center }
-h2.milestone.chapter { font-size:1.35rem; letter-spacing:.08em;
+/* `h1` as well as `h2`: a view's first milestone is its `<h1>` (`edition._view_h1`),
+   and the document outline is no reason for it to look any different. */
+:is(h1,h2).milestone.chapter, :is(h1,h2).milestone.section { text-align:center }
+:is(h1,h2).milestone.chapter { font-size:1.35rem; letter-spacing:.08em;
   text-transform:uppercase; margin:2.6rem 0 1.2rem }
-h2.milestone.chapter .milestone-n { display:block; font-size:.8em;
+:is(h1,h2).milestone.chapter .milestone-n { display:block; font-size:.8em;
   letter-spacing:.16em; font-weight:500; margin-bottom:.3rem }
-h2.milestone.section { font-size:1.05rem; letter-spacing:.06em;
+:is(h1,h2).milestone.section { font-size:1.05rem; letter-spacing:.06em;
   text-transform:uppercase; margin:2rem 0 .8rem }
 /* Level 3 and 4 keep the ToC's numeral out of a run-in head, and the book prints
    none on either — but a milestone left as a block heading by a page that did not
    run its head in still sets in its own weight rather than the chapter's. */
-h2.milestone.subsection { font-size:1rem; font-variant:small-caps;
+:is(h1,h2).milestone.subsection { font-size:1rem; font-variant:small-caps;
   letter-spacing:.04em }
-h2.milestone.subsubsection { font-size:1rem; font-style:italic; font-weight:500 }
+:is(h1,h2).milestone.subsubsection { font-size:1rem; font-style:italic; font-weight:500 }
 /* The numeral, run into the title where a level ever sets it that way. Written as
    `::after` so the punctuation is presentation: the store holds `XI` and `Games`,
    and `. — ` is how this edition joins them. */
 .milestone-n::after { content:". — " }
-h2.milestone.chapter .milestone-n::after { content:"" }
+:is(h1,h2).milestone.chapter .milestone-n::after { content:"" }
 /* The anchor is the boundary with the words left on the page: no box, no space,
    just something for a link to land on. */
 span.milestone.anchor { display:inline; scroll-margin-top:4rem }
@@ -409,9 +411,9 @@ span.milestone.legacy { display:inline; scroll-margin-top:4rem }
   font-weight:normal; font-style:normal; font-variant:normal;
   text-transform:none; letter-spacing:0; text-indent:0; opacity:.45;
   user-select:none; -webkit-user-select:none }
-h2.milestone { position:relative }
-h2.milestone > .head-link { left:0; top:0 }
-.head-link:hover, .head-link:focus-visible, h2.milestone:hover > .head-link,
+:is(h1,h2).milestone { position:relative }
+:is(h1,h2).milestone > .head-link { left:0; top:0 }
+.head-link:hover, .head-link:focus-visible, :is(h1,h2).milestone:hover > .head-link,
 .head-link:has(+ .milestone + p:hover) { opacity:1; color:var(--link) }
 html.copying .head-link { display:none }
 /* --- the run-in head itself ---
@@ -436,6 +438,8 @@ html.copying .head-link { display:none }
 .runin-title { font-style:italic; font-weight:600;
   font-variant-caps:normal; letter-spacing:0 }
 h3 { font-size:1rem; margin:1.2rem 0 .4rem }
+/* A view's `<h1>` where the view has always set its name at `h3`'s size. */
+h1.view-title { font-size:1rem; margin:1.2rem 0 .4rem; clear:both }
 table { border-collapse:collapse; margin:.8rem 0 }
 td,th { border:1px solid var(--rule); padding:.2rem .5rem; text-align:left }
 /* In the page navigation now, not floated in the margin of the text. A float in
@@ -645,7 +649,10 @@ html.reader .unsettled { background:none; border-bottom-style:solid }
   padding:.6rem .75rem; margin-bottom:.6rem;
   font-family:var(--ui); font-size:.85rem; line-height:1.5 }
 .card.pinned { border-color:var(--pin) }
-.card h4 { margin:0 0 .3rem; font-size:.9rem; font-family:inherit }
+/* `h1` on a card that is a page of its own (`card.html`), `h4` in the stack: the
+   same card, so the same look, at the level each document needs. */
+.card :is(h1,h4) { margin:0 0 .3rem; font-size:.9rem; font-family:inherit }
+.card h1 { font-size:1.1rem }
 .card h5 { margin:0 0 .3rem; font-size:.9rem; font-family:inherit }
 .card .meta { color:var(--dim); font-size:.75rem; margin-bottom:.4rem }
 .card .tools { float:right; display:flex; gap:.25rem }
@@ -715,7 +722,7 @@ table.props .printed { font-style:italic }
 a.maplink { font-size:.7rem; margin-left:.4rem; color:var(--dim);
   text-decoration:none; border-bottom:1px dotted var(--rule) }
 a.maplink:hover { color:var(--accent); border-bottom-color:var(--accent) }
-h4.tier1 { font-style:italic; font-size:1.1rem }
+:is(h1,h4).tier1 { font-style:italic; font-size:1.1rem }
 #empty { color:var(--dim); font-size:.85rem; font-family:var(--ui) }
 /* **A label recedes from what it labels, by more than hue.** Beside a name a type
    is smaller, lighter in weight and in neutral ink, while the name is heavier and
@@ -823,7 +830,9 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
  * a declaration list.
  */
 #bar form input{font:inherit;padding:.2rem .4rem;border:1px solid var(--on-board);
-                background:var(--card);color:var(--fg)}
+                background:var(--card);color:var(--fg);
+                /* `type=search` would otherwise take the platform's own field. */
+                appearance:none;-webkit-appearance:none}
 /* The scan/reader controls above the card stack. */
 #bar2{display:flex;gap:.4rem;margin-bottom:.6rem}
 /* Previous/next among *collated* pages — what the reader can actually reach.
@@ -1177,6 +1186,11 @@ html.copying .leaf-at { display:none }
 .index-head { text-align:center; margin:1rem 0 1.5rem }
 .index-head h1 { margin:0; font-size:2.75rem; line-height:1.1; font-weight:normal }
 #primary .index-head p { margin:.5rem 0 0; text-indent:0; text-align:center; color:var(--dim) }
+/* The text's one declared picture (`project.json` `image`), as the landing shows it. */
+.index-cover { margin:1.2rem auto 0; max-width:min(100%, 32rem) }
+.index-cover img { display:block; width:100%; height:auto; border:1px solid var(--rule) }
+.index-cover figcaption { font-family:var(--ui); font-size:.8rem; color:var(--dim);
+  margin-top:.35rem; text-align:center }
 .outline { list-style:none; margin:0; padding:0 }
 .outline > li { margin:.3rem 0; line-height:1.5; display:flow-root }
 .outline .ol-part { margin-top:1.6rem }
@@ -1420,3 +1434,13 @@ a.yt:hover, a.yt:focus { border-bottom-style:solid }
   margin:.4rem 0 0; background:#000; overflow:hidden }
 .card .embed iframe { position:absolute; inset:0; width:100%; height:100%;
   border:0 }
+/* --- for assistive technology ---
+   Out of sight, not out of the document: a label a screen reader announces, and a
+   view's `<h1>` where the page shows its name somewhere that is not a heading. */
+.visually-hidden { position:absolute !important; width:1px; height:1px; margin:-1px;
+  padding:0; overflow:hidden; clip-path:inset(50%); white-space:nowrap; border:0 }
+/* The first stop for a keyboard, over the bar until it is left. */
+.skip-link { position:absolute; left:.5rem; top:-3rem; z-index:1000;
+  background:var(--block); color:var(--on-block); padding:.4rem .7rem;
+  font-family:var(--ui); text-decoration:none }
+.skip-link:focus { top:.5rem }

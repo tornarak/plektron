@@ -19,6 +19,9 @@
 {% block main %}
 {% include "edition/_sidebar.html" %}
 <div id='primary'>
+{# The chapter's own heading is the `<h1>` where the body opens with one
+   (`edition._view_h1`); where it does not, the title is still the document's. #}
+{% if not has_h1 %}<h1 class='visually-hidden'>{{ run.title }}</h1>{% endif %}
 {{ neighbours() }}
 
 {# Said on the page, for `page.html`'s draft-note reason. Counts rather than a
@@ -52,7 +55,7 @@ so where they fall.{% endif %}</p>
    printed — `_pooled_notes` says why not renumbered. The group head is the page
    a reader cites, and links back to where that leaf begins. #}
 {% if notes %}
-<div id='foot'>
+<section id='foot' role='doc-endnotes' aria-label='Notes'>
 {% for g in notes %}
 <div class='foot-leaf'>
   <a class='foot-page' href='#leaf-{{ g.ref }}'>{% if g.folio %}p. {{ g.folio
@@ -60,13 +63,14 @@ so where they fall.{% endif %}</p>
   <ol>
   {% for n in g.notes %}
   <li id='note-{{ g.ref }}-{{ n.n }}' data-n='{{ n.n }}'><a
-      href='#ref-{{ g.ref }}-{{ n.n }}'>{{ n.n }}</a>
+      href='#ref-{{ g.ref }}-{{ n.n }}' role='doc-backlink'
+      aria-label='Back to the text of note {{ n.n }}'>{{ n.n }}</a>
   {{ n.html | safe }}</li>
   {% endfor %}
   </ol>
 </div>
 {% endfor %}
-</div>
+</section>
 {% endif %}
 {{ ann.blocks(supplements) }}
 

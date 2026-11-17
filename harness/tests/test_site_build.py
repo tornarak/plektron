@@ -51,6 +51,11 @@ def _age(top: Path) -> None:
 
 @pytest.fixture
 def repo(tmp_path: Path) -> Path:
+    return make_repo(tmp_path)
+
+
+def make_repo(tmp_path: Path) -> Path:
+    """Two published texts in one workspace under a landing page, aged an hour."""
     repo = tmp_path / "repo"
     ws = repo / "ws"
     ws.mkdir(parents=True)
@@ -386,10 +391,16 @@ def test_a_declared_image_stands_on_the_landing_page_and_links_to_its_text(repo,
     _declare_image(repo / ONE, "one")
     build_site(repo, tmp_path / "out", jobs=1)
     html = (tmp_path / "out" / "index.html").read_text(encoding="utf-8")
-    assert 'src="/static/covers/ws-text-one.jpg"' in html and 'alt="A plate."' in html
-    assert (tmp_path / "out" / "static" / "covers" / "ws-text-one.jpg").is_file()
+    assert f'src="/{ONE}/cover-640.jpg"' in html and 'alt="A plate."' in html
+    # Served by the text itself, which its own index heads with the same picture.
+    assert (tmp_path / "out" / ONE / "cover-640.jpg").is_file()
+    assert (tmp_path / "out" / ONE / "cover-1200.jpg").is_file()
+    index = (tmp_path / "out" / ONE / "index.html").read_text(encoding="utf-8")
+    assert f"<img src='/{ONE}/cover-640.jpg'" in index and "<figcaption>A plate." in index
     # And nothing for the text that declares none.
-    assert "ws-text-two.jpg" not in html
+    assert f"/{TWO}/cover-" not in html
+    assert not (tmp_path / "out" / TWO / "cover-640.jpg").exists()
+    assert "index-cover" not in (tmp_path / "out" / TWO / "index.html").read_text("utf-8")
 
 
 def test_a_cover_comes_down_with_its_declaration(repo, tmp_path):
@@ -401,7 +412,8 @@ def test_a_cover_comes_down_with_its_declaration(repo, tmp_path):
     p.write_text(json.dumps(rec), encoding="utf-8")
     layout._project.cache_clear()
     build_site(repo, tmp_path / "out", jobs=1)
-    assert not (tmp_path / "out" / "static" / "covers" / "ws-text-one.jpg").exists()
+    assert not (tmp_path / "out" / ONE / "cover-640.jpg").exists()
+    assert "cover-" not in (tmp_path / "out" / "index.html").read_text("utf-8")
 
 
 def test_a_declared_image_with_no_crop_refuses_before_anything_builds(repo, tmp_path):
@@ -458,7 +470,7 @@ def test_a_declared_turn_stands_a_sideways_picture_up(repo, tmp_path):
     p.write_text(json.dumps(rec), encoding="utf-8")
     layout._project.cache_clear()
     build_site(repo, tmp_path / "out", jobs=1)
-    with Image.open(tmp_path / "out" / "static" / "covers" / "ws-text-one.jpg") as im:
+    with Image.open(tmp_path / "out" / ONE / "cover-640.jpg") as im:
         # 1000 x 500 on disk, so upright it is the taller way round.
         assert im.size == (500, 1000)
 

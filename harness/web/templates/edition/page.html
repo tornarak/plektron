@@ -48,6 +48,10 @@
 {% include "edition/_sidebar.html" %}
 {% endif %}
 <div id='primary'>
+{# A page's milestone is its `<h1>` where it opens one (`edition._view_h1`); a page
+   that opens none is named in both numbering systems, as the row below names it. #}
+{% if not has_h1 %}<h1 class='visually-hidden'>{{ work.title }}, scan {{ ref }}{%
+  if doc and doc.folio %}, page {{ doc.folio }}{% endif %}</h1>{% endif %}
 {% if not doc.ok %}
 <p>This page will not render: {{ doc.why }}</p>
 {% else %}
@@ -74,12 +78,13 @@ language.</p>
    on purpose, so it is the one thing marked safe. #}
 <article>{{ doc.html | safe }}</article>
 {% if doc.notes %}
-<div id='foot'><ol>
+<section id='foot' role='doc-endnotes' aria-label='Notes'><ol>
 {% for n in doc.notes %}
-<li{% if n.n %} id='note-{{ n.n }}' data-n='{{ n.n }}'{% endif %}>{% if n.n %}<a href='#ref-{{ n.n }}'>{{ n.n }}</a>{% endif %}
+<li{% if n.n %} id='note-{{ n.n }}' data-n='{{ n.n }}'{% endif %}>{% if n.n %}<a href='#ref-{{ n.n }}'
+  role='doc-backlink' aria-label='Back to the text of note {{ n.n }}'>{{ n.n }}</a>{% endif %}
 {{ n.html | safe }}</li>
 {% endfor %}
-</ol></div>
+</ol></section>
 {% endif %}
 {{ ann.blocks(supplements) }}
 {{ neighbours() }}
