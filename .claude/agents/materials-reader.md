@@ -104,6 +104,10 @@ finish.
 - **Pre-1918 orthography as printed**: `ѣ і ѳ ъ`, `-аго`. Never modernise, never
   correct the author. A compositor's slip is keyed as set, with a `print` note
   (`неподвлежно`, `повѣстиванія`).
+- **A finite verb ends in `ъ`, whatever the copies say.** Both copies read the
+  hard sign as `ь` in the third person (`говоритъ`, `сидятъ`, `сталъ`, `тотъ`),
+  on nearly every page, so their `ь` there is no witness. Key `ъ`; `ь` stays where
+  Russian has it (`говорить`, `жить`, `день`).
 - **Where the bitonal scan loses a hairline**, so the ink cannot tell `н` from
   `п` (`на-/сквозь`, `свирѣпый`), the Russian sense decides, and a `draft` note
   says so. That is Russian, which is yours; a native form never gets this.
@@ -191,6 +195,10 @@ note saying whose spelling it is. Spell each form's codepoints in
     the grave;
   - **the circumflex**, U+0302, over a vowel (`а̂тто́оl`, 1-024 l22; 2026-11-16).
     Both copies drop it, so look at every vowel that opens a native form.
+    **Look under every circumflex on `а` for a diaeresis**: `ӓ̂` is printed
+    (`ӓ̂му́lын`, 1-086 l15; `Ӓ̂ӄӓlыlэ́ткін`, 1-390 l17; `ӓ̂с̧ӄэ́ку`, 1-301 l37), and
+    a reader who sees the circumflex drops the dots under it. It is the commonest
+    correction to reach the editor.
 - **A layer can read a letter as another one**, which no fold reaches: the forked
   `d` read as `ђ`; the barred `l` as `т` (`єłа́`); the `ҕ`-like `ђ` as `б` or `һ`
   (`нымту́мђын`, 1-024 l11, l15); `w` as `ш`; `ӈ` as `н` or `ц`; the tall `l` as
@@ -198,7 +206,17 @@ note saying whose spelling it is. Spell each form's codepoints in
   a native form is a place to zoom.
 - **Readers, not only layers, take `ђ` and the hooked `ӄ` for each other**, both
   ways: `Мырђ-у́мӄы` keyed `Мырӄ` (1-036 l21), `Ӄӓрэ́w-` keyed `Ђӓрэ́w-` (1-039
-  l1), both corrected by the editor. Zoom every one.
+  l1), both corrected by the editor. Zoom every one. **Where the ink will not
+  answer, the ending is the prior**, as *The Chukchee*'s `-g̣ɪn` against `-gɪn` is
+  (R2 there): on the ratified pages the ending `-ђын` is never `-ӄын`, the
+  diminutive `-ӄај`/`-ӄӓј` is never `-ђај`, and `-ӄін`/`-ӄен` stands only with the
+  prefix `ны-`/`ні-`/`не-` (`ныкіlвэ́јӄін`, `нена́реӄен`); *The Chukchee* agrees
+  (`-g̣ɪn`, `-qai`, `nɪ-…-qin`). A reading against it is read at 4× and, if the
+  ink holds, kept with a `doubt`; one the ink cannot settle is keyed to the prior
+  with a `doubt`. **A word's first letter has no prior**, and is where the
+  editor's corrections cluster (1-039, 1-182, 1-283, 1-362, 1-086).
+  **A curl separate from a plain `К`, under it, is `к`**: only a stroke that runs
+  into the hook is `ӄ` (below).
 - **The tall `l` is one letter however the layers read it.** `һ` is also a real
   letter (`-чһын`), so the scan decides each one.
 - **A hook below `є` or `һ` is ignored** (the editor, 2026-11-16: printed
