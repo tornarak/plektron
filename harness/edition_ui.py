@@ -1091,8 +1091,8 @@ def annotation_blocks(recs: list[dict], store: dict,
             "links": [r | {"embed": youtube_embed(r["url"])} for r in rows],
             "has_full": bool(rec.get("full", "").strip()),
             # The section ids this annotation is keyed to, so the route can put
-            # it after the one the page actually marks rather than above the
-            # whole text. See `insert_after_anchor`.
+            # it in the narrowest one the page shows rather than around the
+            # whole text. See `place_annotations`.
             "toc": [t["value"] for t in rec.get("attaches", ())
                     if t["kind"] == "toc"],
         }
@@ -1107,36 +1107,108 @@ def annotation_full_html(rec: dict, store: dict, base: str = BASE) -> str:
                       store, base)
 
 
-def insert_after_anchor(html: str, anchor_id: str, block: str) -> str | None:
-    """Put `block` directly after the element carrying `id="anchor_id"`.
+#: An element `tei_html.el_milestone` or `milestone_heading` emits: the legacy
+#: span carrying the toc id, the empty anchor span, or the block `<h2>`. Exact to
+#: its output, for `_FIGURE_OPEN`'s reason below.
+_MILESTONE = re.compile(r'<(span|h2) class="milestone[^"]*" id="([^"]+)">')
 
-    `None` where the page does not carry that anchor, which is the caller's cue
-    to leave the block where it was.
 
-    **Why a section's notice cannot simply sit above the text.** The contents
-    panel links to `#chII.1`, and `tei_html` emits that id *inside* `<article>`.
-    A block rendered above the article is therefore above the anchor, so a reader
-    arriving from the panel lands below it and the notice is scrolled off the
-    top — present on the page, and easy to miss at exactly the moment it was
-    written for.
+def section_marks(html: str, frags: dict[str, str],
+                  levels: dict[str, int]) -> dict[str, dict]:
+    """`{toc id: {start, close, level}}` for every section boundary `html` marks.
 
-    Two anchor shapes, and the same rule reaches both: a printed head,
-    `<h2 class="milestone chapter" id="chII">…</h2>`, and the empty marker a
-    section gets when the page does not print its head,
-    `<span class="milestone anchor section" id="chII.1"></span>`. Closing at the
-    first matching end tag is right for both — an `h2` holds spans and its
-    `head-link` but never another `h2`, and the marker span is empty (its link
-    stands before it).
+    `start` is where the boundary's markup begins — the legacy span, the
+    `head-link` or the anchor itself, whichever comes first, so nothing put in
+    front of a boundary lands between its pieces. `close` is the end of the
+    element carrying the heading's fragment, which is where the section's own
+    text begins. An id no ToC entry owns is not a boundary.
     """
-    m = re.search(rf'<(\w+)[^>]*\bid=["\']{re.escape(anchor_id)}["\'][^>]*>', html)
-    if not m:
-        return None
-    close = f"</{m.group(1)}>"
-    end = html.find(close, m.end())
-    if end == -1:
-        return None
-    cut = end + len(close)
-    return html[:cut] + block + html[cut:]
+    owner = {f: tid for tid, f in frags.items()} | {tid: tid for tid in levels}
+    marks: dict[str, dict] = {}
+    for m in _MILESTONE.finditer(html):
+        tid = owner.get(m.group(2))
+        if tid not in levels:
+            continue
+        mark = marks.setdefault(tid, {"start": m.start(), "close": None,
+                                      "level": levels[tid]})
+        mark["start"] = min(mark["start"], m.start())
+        if m.group(2) == (frags.get(tid) or tid):
+            end = html.find(f"</{m.group(1)}>", m.end())
+            if end != -1:
+                mark["close"] = end + len(m.group(1)) + 3
+    for tid, mark in marks.items():
+        link = html.find(f'<a class="head-link" href="#{frags.get(tid) or tid}"')
+        if link != -1 and (mark["close"] is None or link < mark["close"]):
+            mark["start"] = min(mark["start"], link)
+    return {t: m for t, m in marks.items() if m["close"] is not None}
+
+
+def place_annotations(html: str, notices: list[dict], supplements: list[dict],
+                      marks: dict[str, dict], levels: dict[str, int],
+                      render, opened=(), keep=()) -> tuple[str, list[dict], list[dict]]:
+    """Put each block in the **narrowest** section of this view it is keyed to:
+    a notice at that section's top, a supplement at its foot.
+
+    Returns `(html, notices left, supplements left)`; what is left is the
+    caller's to set above and below the whole text, as before. `render` turns a
+    list of blocks into markup — the template's macro, so there is one
+    definition of a block.
+
+    **Narrowest is the deepest ToC level among the sections the view shows**: a
+    section whose boundary `marks` holds, or one in `opened` — the view begins
+    inside it, before any boundary. Two at one depth go to the first in the text.
+    Each block is placed **once**, so an annotation keyed to a chapter and to a
+    section of it, or to two sections on one page, is never printed twice.
+
+    **A section opened before the view has no top here**, so its notice stays
+    above the text, where the reader arrives. Its foot can be here: the first
+    boundary at its level or above. `keep` is the view's own division — a
+    chapter shown whole — whose top and foot *are* the text's, and which the
+    caller already sets there, after the chapter's footnotes.
+
+    **Why a section's notice cannot sit above the whole text.** The contents
+    panel links to the heading's fragment, which `tei_html` emits inside
+    `<article>`, so a reader following it lands below anything rendered above
+    and the notice scrolls off at exactly the moment it was written for.
+    """
+    inserts: list[tuple[int, int, int, dict]] = []   # (at, kind, seq, block)
+    left: dict[str, list[dict]] = {"top": [], "bottom": []}
+    opened = set(opened)
+
+    def foot(level: int, after: int) -> int:
+        return min((m["start"] for m in marks.values()
+                    if m["start"] >= after and m["level"] <= level), default=len(html))
+
+    for kind, (side, blocks) in enumerate((("top", notices), ("bottom", supplements))):
+        for seq, b in enumerate(blocks):
+            here = [t for t in dict.fromkeys(b.get("toc") or ())
+                    if t not in keep and t in levels and (t in marks or t in opened)]
+            if not here:
+                left[side].append(b)
+                continue
+            tid = max(here, key=lambda t: (levels[t],
+                                           -(marks[t]["start"] if t in marks else -1)))
+            mark = marks.get(tid)
+            if side == "top":
+                if mark is None:
+                    left[side].append(b)
+                    continue
+                at = mark["close"]
+            else:
+                at = foot(levels[tid], mark["close"] if mark else 0)
+            inserts.append((at, kind, seq, b))
+    if not inserts:
+        return html, left["top"], left["bottom"]
+    # Grouped by position and set in list order: inserting one at a time at one
+    # cut would reverse every block after the first.
+    out, prev = [], 0
+    inserts.sort(key=lambda i: (i[0], -i[1], i[2]))
+    for at in dict.fromkeys(i[0] for i in inserts):
+        out.append(html[prev:at])
+        out.append(render([i[3] for i in inserts if i[0] == at]))
+        prev = at
+    out.append(html[prev:])
+    return "".join(out), left["top"], left["bottom"]
 
 
 #: The two handles `tei_html` leaves in the page for the figure join to find, as

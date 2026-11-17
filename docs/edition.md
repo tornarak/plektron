@@ -2507,6 +2507,25 @@ not computable at all — only its size is. Nothing interpolates a range between
 two `page_start`s, either; a notice appearing on a page nothing placed would be
 indistinguishable from one appearing on a page that was.
 
+**The headings a leaf marks are the second witness, and the better one.** A
+section the page marks is one it holds, folio or none; the Contents fold then
+runs over every *other* entry, which gives what is open where the page begins.
+Folding over all of them answered only for the folio's last heading — a section
+opening and closing on one leaf, or the one the leaf begins in, reached no
+annotation.
+
+### Where in the view a block lands
+
+**In the narrowest section of the view it is keyed to, once**: a notice at that
+section's top, under its marker, and a supplement at its foot, where the next
+heading at its level or above stands (`edition_ui.place_annotations`). Narrowest
+is the deepest ToC level the view shows; two at one depth go to the first in the
+text. So `supplement:pegtymel`, keyed to chapter XV and to section XV.8, is
+printed once in chapter XV, at the end of XV.8. A section the view opens inside
+has a foot and no top, so its notice stays above the text. A chapter shown whole
+sets its own blocks above the text and below its footnotes, as a page-attached
+block is set, and a chapter page places nothing in a neighbour's shared leaf.
+
 The workflow this implies is the right one, and it matches the rest of the
 project: **the section attachment is enrichment over an explicit page list**, not
 the mechanism relied on. The author names the pages they care about, and

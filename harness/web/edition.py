@@ -1445,14 +1445,19 @@ def _chapter_page(request: Request, run: dict, root: Path):
     drafts = sum(1 for leaf in leaves if leaf.get("rank") == "draft")
     gaps = sum(1 for leaf in leaves if leaf["kind"] == "gap")
     text = [leaf for leaf in leaves if leaf["kind"] == "text" and leaf["doc"].get("ok")]
+    entry = next((e for e in load_toc(root) if e.get("id") == run.get("toc_id")), {})
+    # Pooled first, so a block every leaf of a section carries is placed once.
+    body, notices, supplements = _place_annotations(
+        _chapter_body(leaves, stores.midline(root), stores.english(root),
+                      keying.rules(root)),
+        _pooled(leaf["notices"] for leaf in text),
+        _pooled(leaf["supplements"] for leaf in text),
+        root, keep={run.get("toc_id")}, chapter=entry.get("chapter"))
     return templates.TemplateResponse(
         request,
         "edition/chapter.html",
         _ctx(request, run=run, leaves=leaves, drafts=drafts, gaps=gaps,
-             body=_chapter_body(leaves, stores.midline(root), stores.english(root),
-                                keying.rules(root)),
-             notices=_pooled(leaf["notices"] for leaf in text),
-             supplements=_pooled(leaf["supplements"] for leaf in text),
+             body=body, notices=notices, supplements=supplements,
              notes=_pooled_notes(text),
              placed=all(leaf["placed"] for leaf in text),
              store_has_toc=any(leaf["store_has_toc"] for leaf in text),
@@ -1716,8 +1721,8 @@ def _leaf_doc(path: Path, ref: str, root: Path, place: bool = True,
     drift into showing one page two ways.
 
     Returns `{doc, notices, supplements, placed, store_has_toc}`. `place=False`
-    leaves every notice in `notices` rather than splicing a section's under its
-    marker: a chapter pools them at its head instead.
+    leaves every block in `notices` and `supplements` rather than splicing a
+    section's into it: a chapter pools them and places them in its own body.
     """
     doc = stores.render(path, root, base, flags=flags)
     doc = _hang_pictures(doc, _figures(ref, root, doc, base),
@@ -1735,13 +1740,27 @@ def _leaf_doc(path: Path, ref: str, root: Path, place: bool = True,
     # is a leaf the arabic index has nothing to say about.
     folio = apparatus._as_folio(doc.get("folio"))
     ann_store = stores.annotations(root)
-    anns = annots.for_page(ann_store, ref, toc_containing(load_toc(root), folio))
+    # **Two witnesses to what a leaf holds, and the page is the better one.**
+    # The headings it marks are sections it holds outright, folio or none. The
+    # printed Contents says what is open where the page *begins* — the fold over
+    # every entry but those, since a heading the page marks opens below its top.
+    # The fold over all of them answered only for the folio's last heading: a
+    # section opening and closing on the leaf, or the one the leaf begins in,
+    # reached no annotation at all.
+    toc = load_toc(root)
+    marked = set(ui.section_marks(doc["html"], stores.fragments(root),
+                                  {e["id"]: 1 for e in toc if e.get("id")}))
+    opened = toc_containing([e for e in toc if e.get("id") not in marked], folio)
+    anns = annots.for_page(ann_store, ref, opened + sorted(marked))
     store = stores.load(root)
     notices = ui.annotation_blocks(anns["top"], store, base)
+    supplements = ui.annotation_blocks(anns["bottom"], store, base)
     if place:
-        doc, notices = _place_notices(doc, notices)
-    return {"doc": doc, "notices": notices,
-            "supplements": ui.annotation_blocks(anns["bottom"], store, base),
+        html, notices, supplements = _place_annotations(
+            doc["html"], notices, supplements, root, opened=opened)
+        if html != doc["html"]:
+            doc = {**doc, "html": html}
+    return {"doc": doc, "notices": notices, "supplements": supplements,
             "placed": folio is not None,
             "store_has_toc": annots.has_toc_attachments(ann_store)}
 
@@ -1912,35 +1931,35 @@ def entity(request: Request, ident: str):
     )
 
 
-def _place_notices(doc: dict, blocks: list[dict]) -> tuple[dict, list[dict]]:
-    """Move a section's notice down to sit under the marker a reader lands on.
+def _place_annotations(html: str, notices: list[dict], supplements: list[dict],
+                       root: Path, opened=(), keep=(), chapter: str | None = None
+                       ) -> tuple[str, list[dict], list[dict]]:
+    """Each section's notice at the top of the narrowest section of it this view
+    shows, and its supplement at that section's foot — `ui.place_annotations`,
+    over this text's ToC.
 
-    **A notice above `<article>` is above the anchor the contents panel links
-    to.** `tei_html` emits `id="chII.1"` inside the article, so following
-    "Appearance" from the panel scrolls past a notice rendered at the top of the
-    page and leaves it off-screen — present, and easy to miss at exactly the
-    moment it was written for. Where the page marks a section the notice is keyed
-    to, the block goes directly after that marker instead.
-
-    A page-attached notice, and a section-attached one on a page that does *not*
-    print the marker, both stay at the top: there is no better place, and the
+    A page-attached block, and a section one whose section has no top or foot
+    here, are handed back for the template to set above and below the text: the
     reader arrived at the page rather than at a point inside it.
 
-    Returns a **copy** of `doc`. `stores.render` is `lru_cache`d, so writing the
-    spliced HTML back into the record it handed out would serve one page's
-    notices on every later render of it.
+    `chapter` limits the boundaries to one chapter's entries. A chapter shows its
+    neighbours' shared leaves in part, and a section of the next chapter is not
+    a place in this one.
+
+    Returns new HTML and never writes into `doc`: `stores.render` is
+    `lru_cache`d, so splicing into the record it handed out would serve one
+    page's notices on every later render of it.
     """
-    html, stay = doc["html"], []
-    for b in blocks:
-        for anchor_id in b["toc"]:
-            spliced = ui.insert_after_anchor(
-                html, anchor_id, str(_ann_macro().blocks([b])))
-            if spliced is not None:
-                html = spliced
-                break
-        else:
-            stay.append(b)
-    return ({**doc, "html": html}, stay) if html != doc["html"] else (doc, stay)
+    if not notices and not supplements:
+        return html, notices, supplements
+    toc = [e for e in load_toc(root) if e.get("id")
+           and (chapter is None or e.get("chapter") == chapter)]
+    # Level 0 is front matter and nests as a chapter does, the outline's own fold.
+    levels = {e["id"]: max(e.get("level") or 0, 1) for e in toc}
+    marks = ui.section_marks(html, stores.fragments(root), levels)
+    return ui.place_annotations(html, notices, supplements, marks, levels,
+                                lambda bs: str(_ann_macro().blocks(bs)),
+                                opened=opened, keep=keep)
 
 
 def _hang_pictures(doc: dict, figs: list[dict], refs: list[dict]) -> dict:
@@ -2044,11 +2063,16 @@ def _attached_rows(rec: dict, root: Path, located: dict,
                 where = apparatus.locate(root, toc_id=t["value"], **located)
             except Exception:
                 where = None
-            ref = (where or {}).get("ref")
+            # **The heading's own address**, `/chapter/viii/food#intoxicants`, as
+            # `_resolved` redirects a ToC link to — never the bare leaf it opens
+            # on, which drops the reader at the top of a page above the heading.
+            where = where or {}
+            url = where.get("url")
             rows.append({
                 "label": f"{label} ({t['value']})",
-                "url": f"{base}/page/{ref}" if ref else "",
-                "why": "" if ref else
+                "url": (f"{base}{url}" + (f"#{where['anchor']}" if where.get("anchor")
+                                          else "")) if url else "",
+                "why": "" if url else
                        "no leaf is witnessed at this section's opening folio",
             })
     return rows

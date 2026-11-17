@@ -177,6 +177,111 @@ def test_a_section_notice_stays_on_top_where_the_page_marks_no_section(client):
     assert -1 < notice < article
 
 
+TWO_SECTIONS = (
+    '{"entries": [{"level": 1, "chapter": "I", "title": "One", '
+    '"page_start": 1, "id": "chI"}, {"level": 2, "chapter": "I", '
+    '"title": "Names", "page_start": 3, "id": "chI.1"}, {"level": 2, '
+    '"chapter": "I", "title": "Drinks", "page_start": 3, "id": "chI.2"}]}')
+
+
+def _sections(root):
+    (root / "edition" / "toc.json").write_text(TWO_SECTIONS, encoding="utf-8")
+    page(root, "1-023",
+         '<pb n="3"/><milestone unit="section" n="chI.1"/><p>Of names.</p>'
+         '<milestone unit="section" n="chI.2"/><p>Of drinks.</p>')
+
+
+def test_a_section_supplement_sits_at_that_sections_foot(client):
+    """**The bottom of the section, not of the page.** Below the text is the
+    foot of everything the page shows; the supplement is about one section, and
+    the next section's head is where that section stops."""
+    root, make = client
+    _sections(root)
+    annotation(root, "supplement", "s", attaches=("toc:chI.1",))
+    html = make().get("/edition/page/1-023").text
+    supp = html.find("class='ann supplement")
+    assert html.find("Of names.") < supp < html.find("Of drinks.")
+
+
+def test_a_block_goes_to_the_narrowest_section_and_appears_once(client):
+    """Keyed to the chapter and to its second section, the section is narrower;
+    keyed to both sections, the first one wins. Either way it is printed once."""
+    root, make = client
+    _sections(root)
+    annotation(root, "notice", "n", attaches=("toc:chI", "toc:chI.2"))
+    annotation(root, "supplement", "s", attaches=("toc:chI.2", "toc:chI.1"))
+    html = make().get("/edition/page/1-023").text
+    assert html.count("class='ann notice") == 1
+    assert html.count("class='ann supplement") == 1
+    notice, supp = html.find("class='ann notice"), html.find("class='ann supplement")
+    assert html.find("Of names.") < notice < html.find("Of drinks."), \
+        "a notice on chI and chI.2 belongs at the top of chI.2"
+    assert html.find("Of names.") < supp < html.find("Of drinks."), \
+        "two sections at one depth: the first in the text"
+
+
+def test_a_section_opened_before_the_page_ends_on_it(client):
+    """A page that begins inside a section has that section's foot and not its
+    top: the notice stays above the text, the supplement lands where the next
+    section's head stands."""
+    root, make = client
+    # chI.2 opens on folio 4, so the printed Contents alone puts folio 4 in chI.2
+    # and never reaches chI.1, which the page begins in.
+    (root / "edition" / "toc.json").write_text(
+        TWO_SECTIONS.replace('"page_start": 3, "id": "chI.2"',
+                             '"page_start": 4, "id": "chI.2"'), encoding="utf-8")
+    page(root, "1-024", '<pb n="4"/><p>Still names.</p>'
+                        '<milestone unit="section" n="chI.2"/><p>Of drinks.</p>')
+    annotation(root, "notice", "n", attaches=("toc:chI.1",))
+    annotation(root, "supplement", "s", attaches=("toc:chI.1",))
+    html = make().get("/edition/page/1-024").text
+    assert -1 < html.find("class='ann notice") < html.find("<article>")
+    supp = html.find("class='ann supplement")
+    assert html.find("Still names.") < supp < html.find("Of drinks.")
+
+
+def test_blocks_at_one_place_keep_their_order():
+    from harness import edition_ui as ui
+
+    html = ('<p>a</p><span class="milestone anchor section" id="x"></span>'
+            '<p>b</p>')
+    marks = ui.section_marks(html, {"chI.1": "x"}, {"chI": 1, "chI.1": 2})
+    blocks = [{"id": i, "toc": ["chI.1"]} for i in ("one", "two", "three")]
+    out, top, bottom = ui.place_annotations(
+        html, blocks, [], marks, {"chI": 1, "chI.1": 2},
+        lambda bs: "".join(f"[{b['id']}]" for b in bs))
+    assert (top, bottom) == ([], [])
+    assert out.index("[one]") < out.index("[two]") < out.index("[three]")
+    assert out.index('id="x"') < out.index("[one]") < out.index("<p>b</p>")
+
+
+def test_the_views_own_division_is_left_to_the_caller():
+    """A chapter shown whole sets its own blocks above and below the text, after
+    its footnotes; splicing one at the body's end would put it above them."""
+    from harness import edition_ui as ui
+
+    html = '<h2 class="milestone chapter" id="i-one">One</h2><p>a</p>'
+    levels = {"chI": 1}
+    marks = ui.section_marks(html, {"chI": "i-one"}, levels)
+    b = {"id": "s", "toc": ["chI"]}
+    out, _, bottom = ui.place_annotations(html, [], [b], marks, levels,
+                                          lambda bs: "[s]", keep={"chI"})
+    assert out == html and bottom == [b]
+
+
+def test_an_attached_section_links_to_its_heading_not_its_leaf(client):
+    """The "attached to" row goes where a ToC link goes: the chapter, at the
+    heading's fragment. A bare `/page/` drops the reader above the heading."""
+    root, make = client
+    (root / "edition" / "toc.json").write_text(TWO_SECTIONS, encoding="utf-8")
+    page(root, "1-023",
+         '<pb n="3"/><milestone unit="section" n="chI.1"/><p>Of names.</p>')
+    annotation(root, "supplement", "s", attaches=("toc:chI.1",))
+    html = make().get("/edition/annotation/supplement:s").text
+    assert "#names" in html, "the row names the heading's fragment"
+    assert "/edition/page/1-023'" not in html and '/edition/page/1-023"' not in html
+
+
 def test_placing_a_notice_does_not_poison_the_render_cache(client):
     """`stores.render` is `lru_cache`d. Splicing into the record it handed back
     would serve one page's notice on every later render of it."""

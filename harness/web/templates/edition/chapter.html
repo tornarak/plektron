@@ -34,8 +34,10 @@ and foreign forms aren't yet identified by language. Each is marked
 so where they fall.{% endif %}</p>
 {% endif %}
 
-{# Pooled: every notice any leaf of the chapter carries, once, above the text.
-   Below it, the footnotes and then the supplements, the same way. #}
+{# Pooled: every notice any leaf of the chapter carries, once. One keyed to a
+   section of the chapter is already in `body`, at that section's top or foot
+   (`edition._place_annotations`); what is left is the chapter's own, or a page's,
+   set above the text — and below it, after the footnotes, the supplements. #}
 {{ ann.blocks(notices) }}
 {% if not placed and store_has_toc %}{{ ann.unplaced() }}{% endif %}
 
