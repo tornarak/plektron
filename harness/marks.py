@@ -164,6 +164,17 @@ def load_config(root: Path = Path(".")) -> dict:
         if len(c["confusable"]) != 1:
             raise MarksConfigError(
                 f"{p}: confusable of {c['name']!r} must be one character")
+        for field in ("ending", "prefix"):
+            v = c.get(field)
+            if v is not None and not (isinstance(v, list) and v and all(
+                    isinstance(s, str) and s and unicodedata.normalize("NFD", s) == s
+                    for s in v)):
+                raise MarksConfigError(
+                    f"{p}: {field} of {c['name']!r} is a non-empty list of NFD "
+                    "strings, or absent")
+        if c.get("prefix") is not None and c.get("ending") is None:
+            raise MarksConfigError(
+                f"{p}: prefix of {c['name']!r} scopes an ending, so it needs one")
     for field, kind in (("rare_max_pct", float), ("min_types", int)):
         v = cfg.get(field)
         if not isinstance(v, kind) or isinstance(v, bool) or v <= 0:
@@ -307,14 +318,48 @@ def is_medial(token: str, i: int, rules: Rules) -> bool:
     return prev == "-" and any(c in rules.inventory for c in token)
 
 
-def _find(token: str, needle: str, position: str, rules: Rules) -> list[int]:
-    """Indices where `needle` occurs, filtered by the contrast's position scope."""
+def _find(token: str, needle: str, position: str, rules: Rules,
+          c: dict | None = None) -> list[int]:
+    """Indices where `needle` occurs, filtered by the contrast's position scope,
+    and by its `ending` (and `prefix`) where it declares one."""
     out, start = [], 0
     while (i := token.find(needle, start)) != -1:
-        if position == "any" or not is_medial(token, i, rules):
+        if (position == "any" or not is_medial(token, i, rules)) and (
+                c is None or _in_ending(token, i + len(needle), c)):
             out.append(i)
         start = i + 1
     return out
+
+
+#: What ends a word for an `ending`: the token's end, a compound's hyphen, the
+#: stem boundary before a Russian case ending (`Ајӈан̀ва́т’а`).
+_WORD_END = "-’"
+
+
+def _bare(s: str) -> str:
+    return "".join(ch for ch in s if not unicodedata.combining(ch)).casefold()
+
+
+def _in_ending(token: str, j: int, c: dict) -> bool:
+    """Is the letter just before `j` in the scope of `c`'s `ending`: followed,
+    marks aside, by one of its strings and then the word's end, and where `c`
+    has a `prefix`, in a word opening with one? A contrast with no `ending` is
+    unscoped. Marks are dropped on both sides, since `-ӄӓј` and `-ӄај` are one
+    ending to a count whose question is the letter before it (`ђ`/`ӄ`, the
+    1900 *Materials*: `-ђын` against `-ӄын`)."""
+    endings = c.get("ending")
+    if not endings:
+        return True
+    rest = token[j:]
+    cut = min((rest.find(ch) for ch in _WORD_END if ch in rest), default=len(rest))
+    if _bare(rest[:cut]) not in {_bare(e) for e in endings}:
+        return False
+    prefixes = c.get("prefix")
+    if not prefixes:
+        return True
+    head = token[:j]
+    start = max(head.rfind(ch) for ch in _WORD_END) + 1
+    return any(_bare(head[start:]).startswith(_bare(p)) for p in prefixes)
 
 
 def sites(token: str, c: dict, rules: Rules) -> tuple[list[int], list[int]]:
@@ -332,9 +377,10 @@ def sites(token: str, c: dict, rules: Rules) -> tuple[list[int], list[int]]:
     Contrasts whose two sides are disjoint (`ɪ`/`i`) are unaffected by the
     subtraction, which is why it is done here once rather than per contrast kind.
     """
-    exp = _find(token, c["expected"], c["position"], rules)
+    exp = _find(token, c["expected"], c["position"], rules, c)
     covered = set(exp) if c["expected"].startswith(c["confusable"]) else set()
-    conf = [i for i in _find(token, c["confusable"], c["position"], rules) if i not in covered]
+    conf = [i for i in _find(token, c["confusable"], c["position"], rules, c)
+            if i not in covered]
     return exp, conf
 
 
@@ -359,7 +405,10 @@ def fold(token: str, contrasts: list[dict]) -> str:
     single-character axis can strand its combining mark.
     """
     t = token
-    for c in sorted(contrasts, key=lambda c: -len(c["expected"])):
+    # An ending-scoped contrast is about one position, and a global collapse
+    # would bucket two words that differ anywhere in that letter.
+    for c in sorted((c for c in contrasts if not c.get("ending")),
+                    key=lambda c: -len(c["expected"])):
         t = t.replace(c["expected"], c["confusable"])
     return t.casefold()
 
@@ -952,7 +1001,9 @@ def _rare(batch: dict, prior_tokens: list[str], contrasts: list[dict],
                     "ref": ref, "form": unicodedata.normalize("NFC", tok),
                     "count": len(lines), "lines": " ".join(lines),
                     "position": c["position"], "corpus_pct": conf_pct,
-                    "corpus_n": axis_n, "spec": c.get("spec", "")})
+                    "corpus_n": axis_n, "spec": c.get("spec", ""),
+                    "expected": c["expected"], "confusable": c["confusable"],
+                    "ending": " ".join(c.get("ending") or ())})
     return out
 
 
@@ -1251,11 +1302,16 @@ def page_issues(path: Path, ref: str, root: Path = Path("."),
     for hit in _rare(batch, prior_tokens, cfg["contrasts"], cfg["rare_max_pct"], rules):
         lines = hit["lines"].split()
         where = f" (and lines {' '.join(lines[1:])})" if len(lines) > 1 else ""
+        where_in = f" before -{hit['ending']}" if hit["ending"] else ""
+        cite = f" (keying_spec §{hit['spec']})" if hit["spec"] else ""
+        ask = ("check for a dropped mark"
+               if hit["expected"].startswith(hit["confusable"])
+               else f"read the letter at the scan: {hit['expected']!r} is the prior")
         out.append(issue(
             lines[0] if lines else "-",
-            f"rare form: {hit['form']!r} sets a character the corpus "
-            f"sets in only {hit['corpus_pct']}% of {hit['corpus_n']} "
-            f"(keying_spec §{hit['spec']}) — check for a dropped mark",
+            f"rare form: {hit['form']!r} sets {hit['confusable']!r}{where_in}, "
+            f"which the corpus sets in only {hit['corpus_pct']}% of "
+            f"{hit['corpus_n']}{cite} — {ask}",
             token=hit["form"],
             detail=f"{hit['count']} occurrence(s) on this page{where}",
             severity=ADVISORY))

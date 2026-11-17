@@ -1,6 +1,32 @@
 {
- "_none": "No contrast is measured for the 1900 notation: the contrasts are corpus shares off gt/ocr/, and this text has none yet. The Jesup pairs (g-dot, the small capitals, caron-c) are that notation's and do not occur here. A pair earns a row once ratified pages show both members in quantity.",
- "contrasts": [],
+ "_provenance": "Contrast pairs for harness proposal marks and proposal check's rare-form advisory. The shares the code acts on are derived from gt/ocr/ at run time; each note is a dated observation supporting the row. The Jesup pairs (g-dot, the small capitals, caron-c) are that notation's and do not occur here.",
+ "contrasts": [
+  {
+   "name": "dje-ending-yn",
+   "expected": "ђ",
+   "confusable": "ӄ",
+   "position": "any",
+   "ending": ["ын"],
+   "note": "2026-11-16, 93 restored pages: -ђын 80, -ӄын 0; The Chukchee -g̣ɪn 169, -qɪn 0. Readers take ђ and ӄ for each other both ways (materials-reader), and 1-175's мі́рӄын for мі́рђын reached the editor."
+  },
+  {
+   "name": "qa-diminutive",
+   "expected": "ӄ",
+   "confusable": "ђ",
+   "position": "any",
+   "ending": ["ај"],
+   "note": "2026-11-16: the diminutive -ӄај/-ӄӓј 18, -ђај 0; The Chukchee -qai 32, -g̣ai 0. Marks are dropped before the ending is compared, so -ӄӓј counts."
+  },
+  {
+   "name": "qa-adjective",
+   "expected": "ӄ",
+   "confusable": "ђ",
+   "position": "any",
+   "ending": ["ін", "ен"],
+   "prefix": ["ны", "ні", "не"],
+   "note": "2026-11-16: -ӄін/-ӄен after ны-/ні-/не- 8, -ђін/-ђен there 0 (ныкіlвэ́јӄін, нена́реӄен); The Chukchee nɪ-…-qin/-qen 23. Without the prefix there is no prior (-ӄін 1, -ђін 2), which is why the prefix scopes it."
+  }
+ ],
  "rare_max_pct": 10.0,
  "min_types": 5,
  "stem_boundary": "’",

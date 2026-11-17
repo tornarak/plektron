@@ -150,6 +150,59 @@ def test_an_initial_scoped_contrast_counts_a_word_initial_confusable(tmp_path):
     assert len(sites(nfd("Iᵋplɪˊlɪ"), CFG["contrasts"][2], R)[1]) == 1
 
 
+# --- ending ---------------------------------------------------------------------
+# The 1900 *Materials*' `ђ`/`ӄ` (its config/marks.json): no mark separates the two,
+# only the ending, so a contrast can be scoped to one.
+
+DJE_YN = {"name": "dje-yn", "expected": "ђ", "confusable": "ӄ", "position": "any",
+          "ending": ["ын"]}
+QA_ADJ = {"name": "qa-adj", "expected": "ӄ", "confusable": "ђ", "position": "any",
+          "ending": ["ін", "ен"], "prefix": ["ны", "ні", "не"]}
+
+
+@pytest.mark.parametrize("tok, exp, conf", [
+    ("мі́рђын", 1, 0), ("мі́рӄын", 0, 1),       # 1-175, the editor's correction
+    ("ӈэ̀w-мі́рӄын", 0, 1),                     # a compound's last element
+    ("Ӄаја́ӄан", 0, 0),                         # no -ын: out of scope
+    ("ђытһа̀-е̂́lђын", 1, 0),                    # the initial ђ is not in it
+    ("мі́рђын’омъ", 1, 0),                      # the stem boundary ends the word
+])
+def test_an_ending_scopes_the_letter_before_it(tok, exp, conf):
+    e, c = sites(nfd(tok), DJE_YN, R)
+    assert (len(e), len(c)) == (exp, conf)
+
+
+@pytest.mark.parametrize("tok, exp, conf", [
+    ("ныкіlвэ́јӄін", 1, 0), ("нена́реӄен", 1, 0), ("ныкіlвэ́јђін", 0, 1),
+    ("му́рђін", 0, 0),       # no prefix: no prior, so no site
+    ("а̂ӄӓlыlэ́тӄін", 0, 0),
+])
+def test_a_prefix_scopes_an_ending_to_its_words(tok, exp, conf):
+    e, c = sites(nfd(tok), QA_ADJ, R)
+    assert (len(e), len(c)) == (exp, conf)
+
+
+def test_an_ending_scoped_contrast_does_not_fold_the_letter_elsewhere():
+    """`fold` collapses an axis everywhere; for an ending that would bucket
+    `Мырђ-` with `Мырӄ-` on a contrast whose count says nothing about them."""
+    assert fold(nfd("Мырђ"), [DJE_YN]) != fold(nfd("Мырӄ"), [DJE_YN])
+
+
+def test_an_ending_is_a_list_and_a_prefix_needs_one(tmp_path):
+    _config(tmp_path, {**CFG, "contrasts": [{**DJE_YN, "ending": "ын"}]})
+    with pytest.raises(MarksConfigError, match="ending"):
+        load_config(tmp_path)
+    _config(tmp_path, {**CFG, "contrasts": [{**QA_ADJ, "ending": None}]})
+    with pytest.raises(MarksConfigError, match="prefix"):
+        load_config(tmp_path)
+
+
+def test_the_materials_config_loads():
+    from conftest import JESUP_KEYING
+    assert {c["name"] for c in load_config(JESUP_KEYING.parents[1] / "bogoras-materials")["contrasts"]} \
+        >= {"dje-ending-yn", "qa-diminutive", "qa-adjective"}
+
+
 # --- the fold -----------------------------------------------------------------
 
 def test_smallcap_i_has_no_case_mapping():
