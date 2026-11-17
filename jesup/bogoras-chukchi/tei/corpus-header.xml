@@ -343,7 +343,7 @@
         <bibl n="2">
           <biblScope unit="part" n="2">Part II</biblScope>
           <title level="a" source="#amnh-dl" resp="#llm">Religion</title>
-          <date source="#amnh-dl" resp="#llm" when="1907">1907</date>
+          <date source="#amnh-dl" resp="#ed" when="1907">1907</date>
           <extent>scans 2-001 to 2-268</extent>
           <note resp="#llm">Typescript on the archival sheet (scan 2-001) reads
             "Part II. — The Chuckchee - Religion by W. Bogoras 1907"; the printed
@@ -354,7 +354,7 @@
         <bibl n="3">
           <biblScope unit="part" n="3">Part III</biblScope>
           <title level="a" source="#amnh-dl" resp="#llm">Social organization</title>
-          <date source="#amnh-dl" resp="#llm" when="1909">1909</date>
+          <date source="#amnh-dl" resp="#ed" when="1909">1909</date>
           <extent>scans 3-001 to 3-202</extent>
           <note resp="#llm">Typescript on the archival sheet (scan 3-001) reads
             "Part III. — The Chuckchee - Social Organization by W. Bogoras 1909";
