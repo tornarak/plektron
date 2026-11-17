@@ -69,6 +69,7 @@ import json
 import os
 import re
 import unicodedata
+from collections.abc import Callable
 from pathlib import Path
 
 from . import keying
@@ -797,10 +798,12 @@ def convert(root: Path = Path("."), dry_run: bool = False,
         if after == before:
             continue
 
+        fold = (keying.rules_for(p, root).fold if _folds_apply(p, root)
+                else None)
         if p.suffix == ".xml":
             shape_before, shape_kind = _xml_shape(p), "XML"
         elif p.suffix == ".json":
-            shape_before, shape_kind = _json_shape(p), "JSON"
+            shape_before, shape_kind = _json_shape(p, fold), "JSON"
         else:
             shape_before, shape_kind = None, None
         # **A file that does not parse is refused, not written.** The structure
@@ -828,7 +831,8 @@ def convert(root: Path = Path("."), dry_run: bool = False,
                            "note": "ABORTED: read-back does not match what was written"})
             continue
         if shape_before is not None:
-            shape_after = _xml_shape(p) if shape_kind == "XML" else _json_shape(p)
+            shape_after = (_xml_shape(p) if shape_kind == "XML"
+                           else _json_shape(p, fold))
             if shape_after != shape_before:
                 failed.append({"path": _rel(p, root),
                                "note": f"ABORTED: {shape_kind} shape moved "
@@ -864,7 +868,7 @@ def _parses(p: Path, kind: str) -> bool:
     return True
 
 
-def _json_shape(p: Path) -> tuple | None:
+def _json_shape(p: Path, fold: Callable[[str], str] | None = None) -> tuple | None:
     """(line-index set, per-line text lengths after whitespace-fold). None if it
     will not parse.
 
@@ -892,6 +896,11 @@ def _json_shape(p: Path) -> tuple | None:
     the only question it was ever meant to answer. Reported by two readers on
     two chapters (`3-097`, `3-133`), both of whom went and confirmed the file
     was written — the cost of a gate that cries wolf is paid in their turns.
+
+    **The text's `folds` are the third kind**, and `fold` is them: a Latin `â` or
+    `ê` inside a Cyrillic word is rewritten to its Cyrillic twin by this same pass,
+    a substituted codepoint this check would otherwise call a content change. Three
+    *Materials* readers hit it (1-147, 1-235, 1-248), each with the write landed.
     """
     try:
         data = json.loads(p.read_text(encoding="utf-8"))
@@ -900,9 +909,10 @@ def _json_shape(p: Path) -> tuple | None:
     lines = data.get("lines") if isinstance(data, dict) else None
     if not isinstance(lines, dict):
         return None
-    folded = {k: _fix_spacing(
-                  unicodedata.normalize("NFD", re.sub(r"\s+", " ", v.get("text", ""))),
-                  commentary=True).strip()
+    def norm(s: str) -> str:
+        s = unicodedata.normalize("NFD", re.sub(r"\s+", " ", s))
+        return fold(s) if fold else s
+    folded = {k: _fix_spacing(norm(v.get("text", "")), commentary=True).strip()
               for k, v in lines.items()}
     return (frozenset(lines.keys()), folded)
 

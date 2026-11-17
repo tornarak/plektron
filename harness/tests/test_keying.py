@@ -311,6 +311,23 @@ def test_word_folds(tmp_path, given, expected):
     assert r.fold(nfd("NFD", given)) == nfd("NFD", expected)
 
 
+def test_a_fold_in_a_decision_is_written_not_aborted(tmp_path):
+    """The shape check after the write compared the folded text with the unfolded
+    one and reported `ABORTED: JSON shape moved` for a write that had landed
+    (1-147, 1-235, 1-248: a Latin `o` or `ê` inside a Cyrillic word)."""
+    from harness.normalize import convert
+    t = _ws(tmp_path, {"script_folds": {"Cyrl": {"pairs": {"o": "о"}, "keep": "l"}},
+                       "_why": {"script_folds.Cyrl.pairs.o": "x",
+                                "script_folds.Cyrl.keep": "x"}})
+    p = t / "review" / "1-001" / "decision.json"
+    p.parent.mkdir(parents=True)
+    p.write_text(json.dumps({"ref": "1-001", "lines": {"0": {"text": "и ӄol"}}},
+                            ensure_ascii=False), encoding="utf-8")
+    out = convert(t)
+    assert out["failed"] == [] and len(out["changed"]) == 1
+    assert json.loads(p.read_text(encoding="utf-8"))["lines"]["0"]["text"] == "и ӄоl"
+
+
 def test_word_folds_are_reported_as_whole_words(tmp_path):
     r = _word_folds(tmp_path)
     assert r.fold_spans("и ӄol IІІ") == [(2, "ӄol", "ӄоl"), (6, "IІІ", "III")]
