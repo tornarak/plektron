@@ -1,9 +1,9 @@
 :root {
   color-scheme: light;
-  --bg:#e2dbc2; --fg:#16140f; --dim:#463b28; --rule:#8c7f5e; --card:#ebe5d0;
-  --board:#c4ae80; --on-board:#16140f; --block:#16140f; --on-block:#e2dbc2;
+  --bg:#eee8d5; --fg:#16140f; --dim:#463b28; --rule:#8c7f5e; --card:#f6f2e5;
+  --board:#c4ae80; --on-board:#16140f; --block:#16140f; --on-block:#eee8d5;
   --accent:#084a1c; --mark:#5a3e00; --pin:#5c3500; --warn:#801c0a; --info:#0a4a4a;
-  --sea:#d3d5c4; --land:#d9d0b0; --water:#0c4468;
+  --sea:#b6c7cc; --land:#f1e9cb; --water:#0c4468;
   --sel: #801c0a;
   --flora:#424500; --abstract:#6a1f66; --lex:#742b00; --basin:#6e2418;
   --hi:#c8200a;
