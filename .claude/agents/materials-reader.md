@@ -104,10 +104,12 @@ finish.
 - **Pre-1918 orthography as printed**: `ѣ і ѳ ъ`, `-аго`. Never modernise, never
   correct the author. A compositor's slip is keyed as set, with a `print` note
   (`неподвлежно`, `повѣстиванія`).
-- **A finite verb ends in `ъ`, whatever the copies say.** Both copies read the
-  hard sign as `ь` in the third person (`говоритъ`, `сидятъ`, `сталъ`, `тотъ`),
-  on nearly every page, so their `ь` there is no witness. Key `ъ`; `ь` stays where
-  Russian has it (`говорить`, `жить`, `день`).
+- **The copies' `ь` after a finite verb is weak evidence.** Both read the hard
+  sign as `ь` (`говоритъ`, `сидятъ`, `сталъ`, `тотъ`) on most pages: readers
+  corrected it some 650 times on 81 of the first 93 restored pages, and the
+  editor has restored none back. The prior for a finite verb's ending is `ъ`, high
+  but not certain; `ь` remains where Russian has it (`говорить`, `жить`, `день`).
+  Read it where the sense is not plain.
 - **Where the bitonal scan loses a hairline**, so the ink cannot tell `н` from
   `п` (`на-/сквозь`, `свирѣпый`), the Russian sense decides, and a `draft` note
   says so. That is Russian, which is yours; a native form never gets this.
@@ -197,8 +199,10 @@ note saying whose spelling it is. Spell each form's codepoints in
     Both copies drop it, so look at every vowel that opens a native form.
     **Look under every circumflex on `а` for a diaeresis**: `ӓ̂` is printed
     (`ӓ̂му́lын`, 1-086 l15; `Ӓ̂ӄӓlыlэ́ткін`, 1-390 l17; `ӓ̂с̧ӄэ́ку`, 1-301 l37), and
-    a reader who sees the circumflex drops the dots under it. It is the commonest
-    correction to reach the editor.
+    a reader who sees the circumflex drops the dots under it — the commonest
+    single correction to reach the editor. About a third of the circumflexed `а`
+    in `gt/ocr/` carry it (11 of 39 when counted), and that is a floor, since the
+    bare ones were restored before anyone looked: no prior either way, so read it.
 - **A layer can read a letter as another one**, which no fold reaches: the forked
   `d` read as `ђ`; the barred `l` as `т` (`єłа́`); the `ҕ`-like `ђ` as `б` or `һ`
   (`нымту́мђын`, 1-024 l11, l15); `w` as `ш`; `ӈ` as `н` or `ц`; the tall `l` as
@@ -207,16 +211,25 @@ note saying whose spelling it is. Spell each form's codepoints in
 - **Readers, not only layers, take `ђ` and the hooked `ӄ` for each other**, both
   ways: `Мырђ-у́мӄы` keyed `Мырӄ` (1-036 l21), `Ӄӓрэ́w-` keyed `Ђӓрэ́w-` (1-039
   l1), both corrected by the editor. Zoom every one. **Where the ink will not
-  answer, the ending is the prior**, as *The Chukchee*'s `-g̣ɪn` against `-gɪn` is
-  (R2 there): on the ratified pages the ending `-ђын` is never `-ӄын`, the
-  diminutive `-ӄај`/`-ӄӓј` is never `-ђај`, and `-ӄін`/`-ӄен` stands only with the
-  prefix `ны-`/`ні-`/`не-` (`ныкіlвэ́јӄін`, `нена́реӄен`); *The Chukchee* agrees
-  (`-g̣ɪn`, `-qai`, `nɪ-…-qin`). A reading against it is read at 4× and, if the
-  ink holds, kept with a `doubt`; one the ink cannot settle is keyed to the prior
-  with a `doubt`. **A word's first letter has no prior**, and is where the
-  editor's corrections cluster (1-039, 1-182, 1-283, 1-362, 1-086).
-  **A curl separate from a plain `К`, under it, is `к`**: only a stroke that runs
-  into the hook is `ӄ` (below).
+  answer, the ending gives a prior**, as *The Chukchee*'s `-g̣ɪn` against `-gɪn`
+  does (R2 there). Counted 2026-11-16 over the ratified pages, recomputed by
+  `harness lexicon suffixes` (`--root` each text):
+
+  | ending | Materials | *The Chukchee* | prior |
+  |---|---|---|---|
+  | `-ђын` / `-ӄын` | 80 / 0 | *-g̣ɪn* 169 / *-qɪn* 0 | `ђ`, ~0.99 |
+  | `-ӄај` / `-ђај` (diminutive) | 18 / 0 | *-qai* 32 / *-g̣ai* 0 | `ӄ`, ~0.95 |
+  | `-ӄін`, `-ӄен` after `ны-`/`ні-`/`не-` | 8 / 0 | *nɪ-…-qin* 23 | `ӄ`, ~0.9 |
+  | `-ін` with no such prefix | `ӄ` 1, `ђ` 2 | | none |
+  | `-ан` | `ђ` 9, `ӄ` 6 | *-g̣an* 4, *-qan* 13 | none |
+  | first letter of a word | `ђ` 44, `ӄ` 36 | | none |
+
+  A prior is what to key when the ink cannot settle the letter, always with a
+  `doubt`, and never a reason not to look: a reading against one is read at 4×
+  and kept if the ink holds, with a `doubt` saying it runs against the count. The
+  editor's corrections cluster where there is no prior, on the first letter
+  (1-039, 1-182, 1-283, 1-362, 1-086). **A curl under a plain `К`, separate from
+  its stroke, is `к`**: only a stroke that runs into the hook is `ӄ` (below).
 - **The tall `l` is one letter however the layers read it.** `һ` is also a real
   letter (`-чһын`), so the scan decides each one.
 - **A hook below `є` or `һ` is ignored** (the editor, 2026-11-16: printed
