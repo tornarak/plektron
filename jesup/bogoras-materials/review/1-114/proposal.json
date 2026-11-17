@@ -1,0 +1,156 @@
+{
+ "ref": "1-114",
+ "contamination": {
+  "blind": false,
+  "why": "this pass reads both text-layer copies (ocr witness) by design, and two lexicon lookups (the copies' spellings, then the scan's); no other page's proposal, decision or gt/ocr/ was read"
+ },
+ "lines": {
+  "0": {
+   "text": "58 БОГОРАЗЪ, I,9."
+  },
+  "1": {
+   "text": "В. Г.",
+   "class": "layout",
+   "note": "Initial of the running head boxed on its own beside line 0; line 0 keyed without it."
+  },
+  "2": {
+   "text": "мелкіе торговцы (русскіе или обрусѣлые) привозятъ на Анюйскую ярмарку нѣ-"
+  },
+  "3": {
+   "text": "которое количество сушенаго мухомора на продажу чукчамъ, конечно тайно, такъ"
+  },
+  "4": {
+   "text": "какъ мухоморъ продавать запрещено. Три сушеные мухомора составляютъ для крѣп-",
+   "class": "draft",
+   "note": "Final letter before the hyphen is a bitonal н/п blur; sense крѣпкаго decides п."
+  },
+  "5": {
+   "text": "каго мужчины пріемъ, достаточный для опьяненія; но по разсказамъ мухоморное"
+  },
+  "6": {
+   "text": "опьяненіе отличается отъ алькогольнаго и напоминаетъ опіумъ или гашишъ."
+  },
+  "7": {
+   "text": "9 (стр. 46). Ја́ај-ва́ам «рѣка Анадырь»; ја́ађlа̂н «анадырщикъ». Главное",
+   "native": "Ја́ај-ва́ам ја́ађlа̂н",
+   "resolved": "Ја́ај-ва́ам ја́ађlа̂н: U+0301 acute on а (x3), U+0302 circumflex on а, U+0452 ђ, U+006C tall l",
+   "class": "semantic",
+   "note": "«рѣка Анадырь», river Anadyr; ја́ађlа̂н «анадырщикъ», an Anadyr man. Last-but-one letters read ђ off the scan (copy A had г)."
+  },
+  "8": {
+   "text": "русское поселеніе на Анадырѣ Марково называется һу́јһуӄӓј «крѣпостца».",
+   "native": "һу́јһуӄӓј",
+   "resolved": "һу́јһуӄӓј: U+0301 acute on у, U+0308 diaeresis on а, U+04BB һ, U+04C4 ӄ",
+   "class": "semantic",
+   "note": "һу́јһуӄӓј «крѣпостца», small fortress (Markovo). Hooks under һ ignored per ruling."
+  },
+  "9": {
+   "text": "10 (стр. 48). ан̀ӈа́аркын «погружается» сравн. № 2, прим. 11. Опьяненіе",
+   "native": "ан̀ӈа́аркын",
+   "resolved": "ан̀ӈа́аркын: U+0300 grave on н, U+0301 acute on а, U+04C8 ӈ",
+   "class": "semantic",
+   "note": "ан̀ӈа́аркын «погружается», is submerged. Grave sits over the first н, ӈ follows."
+  },
+  "10": {
+   "text": "мухоморомъ приравнивается къ шаманскому экстазу."
+  },
+  "11": {
+   "text": "11 (стр. 61). о́рђоор вај єн̀ӈі́н̀ ја́рађ јааlе́ђты кі́wкі̂, ӄӓну́р ві̂́lін «санки",
+   "native": "о́рђоор вај єн̀ӈі́н̀ ја́рађ јааlе́ђты кі́wкі̂ ӄӓну́р ві̂́lін",
+   "resolved": "U+0301 acute, U+0300 grave on н (x2), U+0302 circumflex on і and ві̂́lін (with U+0301 acute above it), U+0308 diaeresis on а of ӄӓну́р, U+0452 ђ, U+04C8 ӈ, U+006C tall l, U+0077 w, U+04C4 ӄ",
+   "class": "doubt",
+   "note": "Doubt: ја́рађ - last letter is ђ-shaped on the scan (flat curved top, hooked descender), but the sense (outer tent) matches ratified јара́ӈы, and copy A read ŋ; keyed ђ. Also єн̀ӈі́н̀: first vowel keyed є (bar-less round e), could be е; graves on both н. «санки же такъ сзади жилища ночевали», the sledge-for-the-dead stands behind the dwelling."
+  },
+  "12": {
+   "text": "же такъ сзади жилища ночевали, какъ бы принадлежащія мертвецу». Всѣ жерт-"
+  },
+  "13": {
+   "text": "венныя и обрядовыя принадлежности помѣщаются сзади шатра."
+  },
+  "14": {
+   "text": "12 (стр. 66). рінэпрэlэ́ўткуі̂ ӄа́ак, ӈарђынкенаӄа́јык, рэ́ӄӓк «смѣшаютъ",
+   "native": "рінэпрэlэ́ўткуі̂ ӄа́ак ӈарђынкенаӄа́јык рэ́ӄӓк",
+   "resolved": "U+0301 acute, U+0302 circumflex on і, U+0306 breve on ў, U+0308 diaeresis on ӓ, U+0452 ђ, U+04C4 ӄ, U+04C8 ӈ, U+006C tall l",
+   "class": "doubt",
+   "note": "Doubt: ӈарђынкенаӄа́јык - the ђ in the middle (flat top, curled descender) differs from the copies ӄ; the ӄ before а́ј is stroke-into-hook. рэ́ӄӓк «смѣшаютъ»? the gloss is of the clause; рінэпрэlэ́ўткуі̂ the э́ carries an acute with a dot inside. ӈарђынкен «наружно пребывающій», outdoor."
+  },
+  "15": {
+   "text": "меня вмѣстѣ съ тобой на оленяхъ, на наружно пребывающемъ, на чемъ нибудь»."
+  },
+  "16": {
+   "text": "Смѣшаютъ конечно духи, мстящіе за нарушеніе смертнаго обѣта. ӈа́рђынкенаӄај",
+   "native": "ӈа́рђынкенаӄај",
+   "resolved": "ӈа́рђынкенаӄај: U+0301 acute on а, U+0452 ђ, U+04C4 ӄ, U+04C8 ӈ",
+   "class": "semantic",
+   "note": "ӈа́рђынкенаӄај dimin. of ӈарђынкен."
+  },
+  "17": {
+   "text": "Dimin. отъ Adj. ӈа́рђынкен «наружно пребывающій», принадлежащій внѣшнему міру",
+   "native": "ӈа́рђынкен",
+   "resolved": "ӈа́рђынкен: U+0301 acute on а, U+0452 ђ, U+04C8 ӈ"
+  },
+  "18": {
+   "text": "въ противоположеніи жилищу человѣка; здѣсь употреблено въ смыслѣ Sb. Область"
+  },
+  "19": {
+   "text": "этого опредѣленія простирается на всѣ полевые промыслы внѣ дома и стада — охоту,"
+  },
+  "20": {
+   "text": "рыбную ловлю, копаніе корней, отыскиваніе мамонтовой кости и т. п."
+  },
+  "21": {
+   "text": "13 (стр. 67). Ара́ро — богатый оленоводъ, живущій у р. Индигирки, долгое",
+   "native": "Ара́ро",
+   "resolved": "Ара́ро: U+0301 acute on second а"
+  },
+  "22": {
+   "text": "время бывшій головою тундренныхъ чукочъ и уважаемый ими за богатство, пре-"
+  },
+  "23": {
+   "text": "клонный возрастъ и мудрость."
+  },
+  "24": {
+   "text": "14 (стр. 78). э́ўӈы є́ррі кэ́lє таӈ-кы́нмаl нынте́нмыӄен чаwчуwа́та «къ",
+   "native": "э́ўӈы є́ррі кэ́lє таӈ-кы́нмаl нынте́нмыӄен чаwчуwа́та",
+   "resolved": "U+0301 acute, U+0306 breve on ў, U+04C4 ӄ, U+04C8 ӈ, U+006C tall l (x2), U+0077 w (x2)",
+   "class": "doubt",
+   "note": "DOUBT: э́ўӈы, the э is lowercase (x-height, with ӈ and ы). The second letter is a straight stem with a descender curling left, a ј shape, with a breve where its dot would be: ј̆, not the V-shaped у of ў; keyed ў as the layers have it, since no breve on ј is ruled. The ы carries a hook below (not keyed). кэ́lє: the final glyph is a hooked э-shape (bowl on the right), keyed є as the ratified Кэ́lє, a respelling to check. «къ волку и къ злому духу ... одинаково относятся оленные»."
+  },
+  "25": {
+   "text": "волку и къ злому духу совершенно одинаково относятся оленные». Волкъ по отно-"
+  },
+  "26": {
+   "text": "шенію къ стаду занимаетъ такое же положеніе, какъ злой духъ по отношенію къ его"
+  },
+  "27": {
+   "text": "хозяевамъ, а потому и отношеніе къ нимъ одинаковое. Такъ, при гаданіи на жженной"
+  },
+  "28": {
+   "text": "лопаткѣ одна и та-же черта обозначаетъ дорогу волка и злого духа. Дурныя пред-"
+  },
+  "29": {
+   "text": "знаменованія могутъ быть одинаково истолкованы въ сторону болѣзни хозяина или"
+  },
+  "30": {
+   "text": "нападенія волковъ на стадо и т. п.",
+   "class": "draft",
+   "note": "Copies read пападенія/нацаденія; sense «нападенія волковъ», the first letter is a bitonal н/п blur."
+  },
+  "31": {
+   "text": "15 (стр. 81). чіпчі́ӈыlэт «жадная суета», приблизительно во второй поло-",
+   "native": "чіпчі́ӈыlэт",
+   "resolved": "чіпчі́ӈыlэт: U+0301 acute on і, U+04C8 ӈ, U+006C tall l",
+   "class": "semantic",
+   "note": "чіпчі́ӈыlэт «жадная суета», greedy bustle."
+  },
+  "32": {
+   "text": "винѣ апрѣля и въ началѣ мая. Олени, которымъ за зиму надоѣлъ мохъ, проявляютъ"
+  },
+  "33": {
+   "text": "большую жадность по отношенію къ первымъ пробивающимся листочкамъ новой рас-"
+  },
+  "34": {
+   "text": "тительности и весьма затрудняютъ пастуху надзоръ за стадомъ."
+  }
+ }
+}

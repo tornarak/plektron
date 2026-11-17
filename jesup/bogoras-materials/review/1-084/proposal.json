@@ -1,0 +1,237 @@
+{
+ "ref": "1-084",
+ "contamination": {
+  "blind": false,
+  "why": "this pass reads both text-layer copies (ocr witness) by design, and two lexicon lookups (the copies' spellings, then the scan's); no other page's proposal, decision or gt/ocr/ was read"
+ },
+ "lines": {
+  "0": {
+   "text": "28 В. Г. БОГОРАЗЪ, I,4.",
+   "note": "Running head: folio 28, then the head, then the series mark I with a small 4 (keyed I,4.); head letterspaced.",
+   "class": "layout"
+  },
+  "1": {
+   "text": "-рэ́мкын, но а́јвар - ра́мӄын называются чукчи, уже живущіе къ востоку отъ",
+   "native": "-рэ́мкын а́јвар ра́мӄын",
+   "resolved": "-рэ́мкын: U+0301 acute on э, plain к; а́јвар: U+0301 acute on а, U+0458 ј; ра́мӄын: U+0301 acute on а, U+04C4 ӄ",
+   "note": "ра́мӄын: at 4x the final-stem-plus-hook is a K with arms and no top bar (ӄ, not ђ), so keyed ӄ against the -ын prior of ђ (~0.99); ratified ра́мкын has plain к. а́јвар - ра́мӄын is set with a spaced hyphen (wide gaps, probably justification); keyed spaced, unspaced is the alternative. First -рэ́мкын has plain к. Neither copy marks the accents.",
+   "class": "doubt"
+  },
+  "2": {
+   "text": "ђыну̀н-ну́тенут за р. Чауномъ.",
+   "native": "ђыну̀н-ну́тенут",
+   "resolved": "ђыну̀н-ну́тенут: U+0452 ђ, U+0300 grave on у, U+0301 acute on у"
+  },
+  "3": {
+   "text": "12 (стр. 49). мэ́јӈы-му́ђ-нымык «въ большомъ скопленіи жительствъ».",
+   "native": "мэ́јӈы-му́ђ-нымык",
+   "resolved": "мэ́јӈы-му́ђ-нымык: U+0301 acute on э, U+0458 ј, U+04C8 ӈ, U+0301 acute on у, U+0452 ђ",
+   "note": "Copies read мэјны-муд-нымык. Scan: мэ́јӈы (curled н = ӈ, acute on э), му́ђ with acute on у, and a glyph after у that is the same ђ shape as in тыђа (copies read д); not the forked ð as far as I can tell. A small speck lies below м, left unkeyed. Gloss: «въ большомъ скопленіи жительствъ», in a large aggregation of dwellings.",
+   "class": "doubt"
+  },
+  "4": {
+   "text": "ны́мным — каждое отдѣльное чукотское стойбище, состоитъ ли оно изъ одного",
+   "as_typed": "{ny'mnym} — каждое отдѣльное чукотское стойбище, состоитъ ли оно изъ одного",
+   "native": "ны́мным",
+   "resolved": "ны́мным: U+0301 acute on ы",
+   "note": "Both copies drop the em dash after ны́мным; the scan sets it.",
+   "class": "draft"
+  },
+  "5": {
+   "text": "шатра или изъ десяти. Но оленные чукчи вообще разселяются группами, гдѣ от-"
+  },
+  "6": {
+   "text": "дѣльные ны́мнымыт расположены другъ отъ друга на разстояніи 5—10 верстъ.",
+   "native": "ны́мнымыт",
+   "resolved": "ны́мнымыт: U+0301 acute on ы",
+   "note": "ны́мнымыт: camps, the plural of ны́мным.",
+   "class": "semantic"
+  },
+  "7": {
+   "text": "Для полярной пустыни такая степень населенности дѣйствительно является «скопле-"
+  },
+  "8": {
+   "text": "ніемъ жительствъ», сравнительно съ обычными разстояніями русскихъ или якутскихъ"
+  },
+  "9": {
+   "text": "поселковъ."
+  },
+  "10": {
+   "text": "13 (стр. 51). ђара́нтоlен, ђамытка́реłен «съ зимовья вышелъ, пошелъ за",
+   "native": "ђара́нтоlен ђамытка́реłен",
+   "resolved": "ђара́нтоlен: U+0452 ђ, U+0301 acute on а, U+006C tall l; ђамытка́реłен: U+0452 ђ, U+0301 acute on а, U+0142 ł barred l",
+   "note": "DOUBT: a small dot sits below the н of ђара́нтоlен; it may be a speck like those elsewhere on the line. A dot below is not ruled, so the н is keyed plain. First letters read ђ (bar and loop), not ӄ as copy A has it. «съ зимовья вышелъ, пошелъ за ворванью», left the winter quarters, went for blubber.",
+   "class": "doubt"
+  },
+  "11": {
+   "text": "ворванью». Жизнь оленевода происходитъ въ правильной смѣнѣ весеннихъ, лѣтнихъ,"
+  },
+  "12": {
+   "text": "осеннихъ и зимнихъ кочевокъ. Зимою вообще чукчи кочуютъ мало; большая часть"
+  },
+  "13": {
+   "text": "семей на два или на три мѣсяца останавливается на неподвижное зимовье. Въ концѣ"
+  },
+  "14": {
+   "text": "февраля стада постепенно начинаютъ «перекочевывать по направленію къ лѣтнимъ",
+   "note": "A small half-printed opening « stands before перекочевывать; no closing mark follows. Keyed «, copy B drops it.",
+   "class": "print"
+  },
+  "15": {
+   "text": "стойбищамъ и въ тоже время два три человѣка изъ стойбища съ легкимъ кочевымъ"
+  },
+  "16": {
+   "text": "обозомъ отправляются въ торговую поѣздку, такъ какъ мартъ и апрѣль наиболѣе",
+   "note": "Copies disagree мартѣ/мартъ: scan has мартъ.",
+   "class": "draft"
+  },
+  "17": {
+   "text": "благопріятны для передвиженія по тундрѣ. Такія торговыя поѣздки обозначаются"
+  },
+  "18": {
+   "text": "словомъ ранто́ркын буквально «выйти изъ жилья». Ранто́урђын направляется на",
+   "native": "ранто́ркын Ранто́урђын",
+   "resolved": "ранто́ркын: U+0301 acute on о; Ранто́урђын: U+0301 acute on о, U+0452 ђ",
+   "note": "ранто́ркын: acute on о, copies drop it. Gloss: «выйти изъ жилья», to go out of the dwelling (trading trip).",
+   "class": "semantic"
+  },
+  "19": {
+   "text": "ярмарку къ русскимъ или къ сидячимъ чукчамъ, для пріобрѣтенія ворвани, ремней,"
+  },
+  "20": {
+   "text": "моржовыхъ и лахтачныхъ кожъ на подошвы и т. п. Ворвань составляетъ не только"
+  },
+  "21": {
+   "text": "матеріалъ для освѣщенія, но также любимый пищевой продуктъ оленныхъ и сидячихъ"
+  },
+  "22": {
+   "text": "чукочъ."
+  },
+  "23": {
+   "text": "14 (стр. 52). эм-уwі́кыт, э́łэ ђаа́рама «только собственное тѣло, безъ",
+   "native": "эм-уwі́кыт э́łэ ђаа́рама",
+   "resolved": "эм-уwі́кыт: U+0077 w, U+0301 acute on і, U+0456 і; э́łэ: U+0301 acute on э, U+0142 ł barred l; ђаа́рама: U+0452 ђ, U+0301 acute on а",
+   "note": "эм-уwі́кыт: the copies read уш; scan has Latin-style w. э́łэ ђаа́рама: barred l, first letter ђ (copy B һ). Gloss: «только собственное тѣло, безъ шатра», only one own body, without a tent.",
+   "class": "semantic"
+  },
+  "24": {
+   "text": "шатра». Оленные чукчи предпринимаютъ далекія поѣздки, обыкновенно въ сопро-"
+  },
+  "25": {
+   "text": "вожденіи легкаго обоза, съ небольшимъ походнымъ шатромъ. Безъ шатра ѣздятъ"
+  },
+  "26": {
+   "text": "только на сравнительно короткое время и близкое разстояніе. Основная иричина",
+   "note": "Printed иричина, a compositor slip for причина. Keyed as printed.",
+   "class": "print"
+  },
+  "27": {
+   "text": "этого въ томъ, что чукча вообще чуждается чужаго крова и не чувствуетъ себя въ"
+  },
+  "28": {
+   "text": "полной безопасности у чужаго огня."
+  },
+  "29": {
+   "text": "15 (стр. 54). реlаӄатвоо́чһын «котомка, носимая на спинѣ въ видѣ ранца».",
+   "native": "реlаӄатвоо́чһын",
+   "resolved": "реlаӄатвоо́чһын: U+006C tall l, U+04C4 ӄ, U+0301 acute on о, U+04BB һ",
+   "note": "реlаӄатвоо́чһын: ӄ with K strokes into the hook. Gloss: «котомка, носимая на спинѣ въ видѣ ранца», a bag carried on the back like a knapsack.",
+   "class": "semantic"
+  },
+  "30": {
+   "text": "16 (стр. 56). lі́ӈыlын «мститель» отъ lі́нlіӈ «сердце, мужество», — соб-",
+   "native": "lі́ӈыlын lі́нlіӈ",
+   "resolved": "lі́ӈылын: U+006C tall l, U+0456 і, U+0301 acute on і, U+04C8 ӈ, U+006C tall l; lі́нlіӈ: U+006C tall l, U+0456 і, U+0301 acute on і, U+006C tall l, U+04C8 ӈ",
+   "note": "Both copies drop the dash after «мужество»,. Gloss: lі́ӈылын «мститель», avenger, from lі́нlіӈ «сердце, мужество», heart, courage.",
+   "class": "semantic"
+  },
+  "31": {
+   "text": "ственно «человѣкъ, имѣющій мужество». Отъ того же корня чі́нјырын «родъ»,",
+   "native": "чі́нјырын",
+   "resolved": "чі́нјырын: U+0456 і, U+0301 acute on і, U+0458 ј",
+   "note": "чі́нјырын «родъ», clan (counterpart čiˊn-yɪrɪn).",
+   "class": "semantic"
+  },
+  "32": {
+   "text": "собственно «собраніе тѣхъ, за кого нужно мстить»."
+  },
+  "33": {
+   "text": "17 (стр. 61). ђынө̀н-понта́с̧ӄӓн — «средина печени». понта́с̧ӄӓн назы-",
+   "native": "ђынө̀н-понта́с̧ӄӓн понта́с̧ӄӓн",
+   "resolved": "ђынө̀н-понта́с̧ӄӓн понта́с̧ӄӓн: U+0452 ђ, U+04E9 ө, U+0300 grave on ө, U+0301 acute on а, U+0441 с, U+0327 cedilla on с, U+04C4 ӄ, U+0308 diaeresis on а",
+   "note": "ђынө̀н-понта́с̧ӄӓн: hyphen set with some wide gap; keyed unspaced, unlike line 1. Both copies drop the dash before «средина печени». Gloss: middle of the liver.",
+   "class": "doubt"
+  },
+  "34": {
+   "text": "вается также нижняя часть груди, лежащая противъ печени."
+  },
+  "35": {
+   "text": "18 (стр. 62). тыђареlа́е̂ «кинулся съ раной въ сторону». Первый изъ корней",
+   "native": "тыђареlа́е̂",
+   "resolved": "тыђареlа́е̂: U+0452 ђ, U+006C tall l, U+0301 acute on а, U+0302 circumflex on е",
+   "note": "Gloss: тыђареlа́е̂ «кинулся съ раной въ сторону», darted aside wounded.",
+   "class": "semantic"
+  },
+  "36": {
+   "text": "этого составнаго слова тыђа неяснаго происхожденія; второй ріlэ отъ неправ. глаг.",
+   "native": "тыђа ріlэ",
+   "resolved": "тыђа: U+0452 ђ; ріlэ: U+0456 і, U+006C tall l"
+  },
+  "37": {
+   "text": "ірэ́ркын «быстро бѣжать».",
+   "native": "ірэ́ркын",
+   "resolved": "ірэ́ркын: U+0456 і, U+0301 acute on э"
+  },
+  "38": {
+   "text": "19 (стр. 64). lө̂́wты lіlэ́пђі̂ «смотря смотритъ». Такіе плеоназмы иногда",
+   "native": "lө̂́wты lіlэ́пђі̂",
+   "resolved": "lө̂́wты: U+006C tall l, U+04E9 ө, U+0302 circumflex on ө, U+0301 acute on ө, U+0077 w; lіlэ́пђі̂: U+006C tall l, U+0456 і, U+006C tall l, U+0301 acute on э, U+0452 ђ, U+0456 і, U+0302 circumflex on і",
+   "note": "Doubt: lіlэ́пђі̂ copy A has п for н? Scan shows п (no crossbar visible) and a circumflex on final і; copy B reads lilángî. Also ө carries both a circumflex and an acute (keyed ө, U+0302, U+0301). Gloss: «смотря смотритъ», looking he looks.",
+   "class": "doubt"
+  },
+  "39": {
+   "text": "встрѣчаются въ чукотскомъ языкѣ, напр. ваlо́ма ваlо́мыркын «слыша слышитъ».",
+   "native": "ваlо́ма ваlо́мыркын",
+   "resolved": "ваlо́ма ваlо́мыркын: U+006C tall l, U+0301 acute on о (both words)",
+   "note": "Gloss: ваlо́ма ваlо́мыркын «слыша слышитъ», hearing he hears. Copy A had the first l as Latin-looking normal.",
+   "class": "semantic"
+  },
+  "40": {
+   "text": "20 (стр. 67). Врагъ, убиваемый въ битвѣ, часто называется ыlвыlу́ «дикій",
+   "as_typed": "20 (стр. 67). Врагъ, убиваемый въ битвѣ, часто называется {yl_0vyl_0u'} «дикій",
+   "native": "ыlвыlу́",
+   "resolved": "ыlвыlу́: U+006C tall l twice, U+0301 acute on у",
+   "note": "ыlвыlу́: both copies drop the first l; scan has ы, l, в, ы, l, у́. Gloss: «дикій олень», wild reindeer.",
+   "class": "semantic"
+  },
+  "41": {
+   "text": "олень» или просто ђы́ннік «дичь». Напр., если побѣжденный проситъ у побѣдителя",
+   "native": "ђы́ннік",
+   "resolved": "ђы́ннік: U+0452 ђ, U+0301 acute on ы, U+0456 і",
+   "note": "ђы́ннік: first letter ђ (copy A ӄ); acute on ы. Gloss: «дичь», game.",
+   "class": "semantic"
+  },
+  "42": {
+   "text": "свой coup de grace, какъ это постоянно встрѣчается въ чукотскихъ сказкахъ, онъ"
+  },
+  "43": {
+   "text": "произноситъ условленную формулу: чэ́ӈэт ыlвэ́ну тынэ́lђӓ̂к или чэ́ӈэт ђы́нніку",
+   "as_typed": "произноситъ условленную формулу: чэ́ӈэт ыlвэ́ну {tyne_1'l_0g_1a:^k} или чэ́ӈэт ђы́нніку",
+   "native": "чэ́ӈэт ыlвэ́ну тынэ́lђӓ̂к чэ́ӈэт ђы́нніку",
+   "resolved": "чэ́ӈэт: U+0301 acute on э, U+04C8 ӈ; ыlвэ́ну: U+006C tall l, U+0301 acute on э; тынэ́lђӓ̂к: U+0301 acute on э, U+006C tall l, U+0452 ђ, U+0308 diaeresis on а, U+0302 circumflex on а; чэ́ӈэт ђы́нніку: U+0301 acute on э, U+04C8 ӈ, U+0452 ђ, U+0301 acute on ы, U+0456 і",
+   "note": "Copy B had чэнэт/чэӈэт: scan ӈ (hooked) both times; the stressed э has acute. First letter of ђы́нніку is ђ (copies һ). Gloss: formula чэ́ӈэт ыlвэ́ну тынэ́lђӓ̂к, if I have become to you a wild reindeer.",
+   "class": "semantic"
+  },
+  "44": {
+   "text": "тынэ́lђӓ̂к т. е. «если я сталъ (тебѣ) дикимъ оленемъ», «если я сталъ (тебѣ) дичью» —",
+   "as_typed": "{tyne_1'l_0g_1a:^k} т. е. «если я сталъ (тебѣ) дикимъ оленемъ», «если я сталъ (тебѣ) дичью» —",
+   "native": "тынэ́lђӓ̂к",
+   "resolved": "тынэ́lђӓ̂к: U+0301 acute on э, U+006C tall l, U+0452 ђ, U+0308 diaeresis on а, U+0302 circumflex on а",
+   "note": "Final em dash at line end dropped by both copies; scan has it. Copy A reads (тебъ) for (тебѣ).",
+   "class": "draft"
+  },
+  "45": {
+   "text": "подразумѣвается: — то убей."
+  }
+ }
+}

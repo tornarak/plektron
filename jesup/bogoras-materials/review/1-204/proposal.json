@@ -1,0 +1,146 @@
+{
+  "ref": "1-204",
+  "contamination": {
+    "blind": false,
+    "why": "this pass reads both text-layer copies (ocr witness) by design; no lexicon lookup was made because no native form is keyed (Chukchi columns dropped); no other page's proposal, decision or gt/ocr/ was read"
+  },
+  "lines": {
+    "0": {
+      "text": "148 В. Г. БОГОРАЗЪ, I,47."
+    },
+    "1": {
+      "text": "донесу, не допущу, тайну какую",
+      "note": "Left column is the Chukchi oath in Russian letters; keyed Russian column only per the parallel-block ruling. Lines 7-15 hold only the Chukchi column, so they are empty.",
+      "class": "layout"
+    },
+    "2": {
+      "text": "дадутъ, хранить буду. Хочу дол-"
+    },
+    "3": {
+      "text": "женъ самъ вѣрно исполнять, какъ"
+    },
+    "4": {
+      "text": "мнѣ Богъ поможетъ. Цалую Еван-"
+    },
+    "5": {
+      "text": "геліе, Крестъ моего Создателя."
+    },
+    "6": {
+      "text": "Аминь."
+    },
+    "7": {
+      "text": ""
+    },
+    "8": {
+      "text": ""
+    },
+    "9": {
+      "text": ""
+    },
+    "10": {
+      "text": ""
+    },
+    "11": {
+      "text": ""
+    },
+    "12": {
+      "text": ""
+    },
+    "13": {
+      "text": ""
+    },
+    "14": {
+      "text": ""
+    },
+    "15": {
+      "text": ""
+    },
+    "16": {
+      "text": "Я прямо выражаю желаніе Твор-",
+      "note": "Chukchi column (notation) beside the Russian dropped; Russian column only.",
+      "class": "layout"
+    },
+    "17": {
+      "text": "цу Богу что я ве-",
+      "note": "Dot leaders (gaps in the parallel text) not reproduced.",
+      "class": "layout"
+    },
+    "18": {
+      "text": "ликому настоящему солнечному вла-"
+    },
+    "19": {
+      "text": "дыкѣ всей Россіи Александру Нико-"
+    },
+    "20": {
+      "text": "5 лаевичу, его солнечно-владычному",
+      "note": "Margin 5 kept; print sets spaced hyphen in солнечно - владычному, keyed joined as a hyphen.",
+      "class": "layout"
+    },
+    "21": {
+      "text": "собственному сыну Николаю Алек-"
+    },
+    "22": {
+      "text": "сандровичу, желаю прямо совсѣмъ по-"
+    },
+    "23": {
+      "text": "слушнымъ быть, все хорошо съ одной"
+    },
+    "24": {
+      "text": "(и той же) стороны пребываніе буду"
+    },
+    "25": {
+      "text": "10 имѣть и всѣ у меня находящіеся; къ"
+    },
+    "26": {
+      "text": "чужому роду не буду желать, худыхъ"
+    },
+    "27": {
+      "text": "племенъ (людей) въ его солнечно-"
+    },
+    "28": {
+      "text": "",
+      "note": "Small box over the accent of єнку in line 27, no print of its own.",
+      "class": "artifact"
+    },
+    "29": {
+      "text": "владычной власти я отвергну, и все"
+    },
+    "30": {
+      "text": "что его солнечно-владычной высоко"
+    },
+    "31": {
+      "text": "15 находящейся власти по",
+      "note": "DOUBT: the print sets spaced dots after власти and in l17, evenly spaced, matching gaps in the Chukchi column; they may be gaps in the text rather than leaders. Not reproduced, as on l17; the first dot, tight to власти, is on the same rhythm, so it is not keyed as a full stop. Margin 15 kept.",
+      "class": "doubt"
+    },
+    "32": {
+      "text": "моему разумѣнію, сколько я силенъ,"
+    },
+    "33": {
+      "text": "охранять (буду), помогать буду, о"
+    },
+    "34": {
+      "text": "жизни не буду спорить, помогать"
+    },
+    "35": {
+      "text": "хочу во всемъ его солнечно-владыч-"
+    },
+    "36": {
+      "text": "20 ной власти; если что, худое что,"
+    },
+    "37": {
+      "text": "узнаю, солнечному владыкѣ скажу,"
+    },
+    "38": {
+      "text": "удержу; тайно что-нибудь дадутъ",
+      "note": "Print sets что - нибудь with spaced hyphen, keyed joined.",
+      "class": "layout"
+    },
+    "39": {
+      "text": "мнѣ, скрыто буду держать. Хочу"
+    },
+    "40": {
+      "text": "именно такъ это прямо держать, по-"
+    }
+  }
+}

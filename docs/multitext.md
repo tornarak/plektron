@@ -476,8 +476,9 @@ paragraph continues.
     - The key says Chukchi has no hard л, so any `л` in a native form may be `l`.
     - The grave marks secondary stress on a vowel and softness on a consonant.
     - `ł` is t + l and `ď` is dl, values found after the editor chose `ł` and `ð`.
-    - The key lists letters the 1900 rules lack: `к̧`/`wк̧`, `h̦`, `р̌`, nasal
-      `w̰` and `ы̨`, and the marks `^ ˘ ¯`.
+    - The key lists letters the 1900 rules lack: `к̧`/`wк̧`, `h̦`, nasal
+      `w̰` and `ы̨`, and the marks `^ ˘ ¯`. Its `р̌` is printed and licensed
+      (the editor, 2026-11-17, `mark_license`).
     - The hooked `є` may be §8's nasal hook.
   - Book-internal evidence binds meanwhile: 1-098 l46 calls the acute stress;
     1-175 l29 names `с̧` beside ч.

@@ -1,0 +1,223 @@
+{
+ "ref": "1-126",
+ "contamination": {
+  "blind": false,
+  "why": "this pass reads both text-layer copies (ocr witness) by design, and two lexicon lookups (the copies' spellings, then the scan's); no other page's proposal, decision or gt/ocr/ was read"
+ },
+ "lines": {
+  "0": {
+   "text": "70 Г. БОГОРАЗЪ, I,10."
+  },
+  "1": {
+   "text": "В.",
+   "note": "Box holds the initial В. of the running head, beside line 0.",
+   "class": "layout"
+  },
+  "2": {
+   "text": "27 (стр. 97). Умэкэ̀т-һу́јһун — «крѣпость собранія». Чукчи такъ называютъ",
+   "as_typed": "27 (стр. 97). Умэкэ̀т-{hu'jhun} — «крѣпость собранія». Чукчи такъ называютъ",
+   "native": "Умэкэ̀т-һу́јһун",
+   "resolved": "Умэкэ̀т-һу́јһун: U+0300 grave on final э of Умэкэ, U+04BB һ (hook below ignored), U+0301 acute on у, U+0458 ј",
+   "note": "Accent over final э of Умэкэт reads as grave; counterpart Umekeˊt has acute. Gloss: «крѣпость собранія», Gathering Town (Nizhne-Kolymsk).",
+   "class": "doubt"
+  },
+  "3": {
+   "text": "Нижнеколымскъ, потому что купцы собираются туда, прежде чѣмъ отправляться на"
+  },
+  "4": {
+   "text": "Анюйскую ярмарку."
+  },
+  "5": {
+   "text": "28 (стр. 99). ныlђа́аткөӄен — «поставилъ загонъ изъ саней». Для поимки",
+   "native": "ныlђа́аткөӄен",
+   "resolved": "ныlђа́аткөӄен: U+006C tall l, U+0452 ђ, U+0301 acute on first а, U+04E9 ө, U+04C4 ӄ",
+   "note": "Gloss: «поставилъ загонъ изъ саней», put up a corral of sleds. Copy A ђ / copy B к for the last consonant; scan shows ӄ (stroke into hook). Tall l after ы read from height; both copies drop it.",
+   "class": "semantic"
+  },
+  "6": {
+   "text": "упряжныхъ оленей чукчи воздвигаютъ подковообразный загонъ изъ саней, сдвинутыхъ"
+  },
+  "7": {
+   "text": "вмѣстѣ и поставленныхъ стоймя; этотъ обычай возникъ на безлѣсной тундрѣ, гдѣ"
+  },
+  "8": {
+   "text": "кромѣ саней нѣтъ никакого другаго матеріала для временной изгороди."
+  },
+  "9": {
+   "text": "29 (стр. 104). вінр̌ээс̧ӄі́ўl-і-ѵм — «я (былъ) помогающимъ». Поимка упряж-",
+   "native": "вінр̌ээс̧ӄі́ўl-і-ѵм",
+   "resolved": "вінр̌ээс̧ӄі́ўl-і-ѵм: U+030C caron on р, U+0441 U+0327 с̧, U+04C4 ӄ, U+0301 acute on і, U+0443 U+0306 ў, U+006C tall l, U+0475 ѵ",
+   "note": "DOUBT: a caron over р is printed, clear at 2× (coordinator); keyed р̌ as ratified on 1-036, 1-038, 1-284, though keying.json does not license it. ӄ after с̧ keyed ӄ (stroke into hook), both copies read к. «я (былъ) помогающимъ», I was helping.",
+   "class": "doubt"
+  },
+  "10": {
+   "text": "ныхъ оленей дѣло настолько хлопотливое, что требуетъ участія всѣхъ наличныхъ силъ"
+  },
+  "11": {
+   "text": "стойбища, до женщинъ и дѣтей включительно. Случайные гости тоже очень часто"
+  },
+  "12": {
+   "text": "принимаютъ дѣятельное участіе. Столкновеніе между Татк-Омрувіей и Рультувіей"
+  },
+  "13": {
+   "text": "характерно, какъ грубое нарушеніе правилъ приличія и порядочнаго поведенія, именно"
+  },
+  "14": {
+   "text": "съ чукотской точки зрѣнія. Но общественныя связи въ чукотской средѣ настолько"
+  },
+  "15": {
+   "text": "слабы, что не сдѣлали даже обязательнымъ соблюденіе гостепріимства. Неодобреніе",
+   "note": "Both copies differ: copy B гостеприимства; scan гостепріимства.",
+   "class": "draft"
+  },
+  "16": {
+   "text": "общественнаго мнѣнія тоже мало принимается въ разсчетъ. Главнымъ коррективомъ"
+  },
+  "17": {
+   "text": "является неодобреніе «внѣшняго божества», которое у людей, подобныхъ Омрувіи,"
+  },
+  "18": {
+   "text": "отнимаетъ оленное счастье, ӄа́а-кынта́ырђын и приводитъ ихъ къ раззоренію.",
+   "native": "ӄа́а-кынта́ырђын",
+   "resolved": "ӄа́а-кынта́ырђын: U+04C4 ӄ, U+0301 acute on а (twice), U+0452 ђ",
+   "note": "ӄа-кынтаырӄын in the copies; scan ends ђ (curl, top bar).",
+   "class": "draft"
+  },
+  "19": {
+   "text": "30 (стр. 122). кынта̀-ва́ырђын — «божество счастья», буквально «счастливое",
+   "native": "кынта̀-ва́ырђын",
+   "resolved": "кынта̀-ва́ырђын: U+0300 grave on а, U+0301 acute on а, U+0452 ђ",
+   "note": "Gloss: «божество счастья», luck deity.",
+   "class": "semantic"
+  },
+  "20": {
+   "text": "бытіе»; такое же неопредѣленное представленіе, какъ ја́јвач-ва́ырђын. См. № 2,",
+   "native": "ја́јвач-ва́ырђын",
+   "resolved": "ја́јвач-ва́ырђын: U+0458 ј, U+0301 acute on а (twice), U+0452 ђ",
+   "note": "Lowercase initial ја́јвач on the scan (mid-sentence), ratified form is capital Ја́јвач-ва́ырђын; spelling otherwise matches.",
+   "class": "draft"
+  },
+  "21": {
+   "text": "прим. 9."
+  },
+  "22": {
+   "text": "31 (стр. 122). вааме́ты тан̀ӈе́ты ты́lӄӓтјӓ̂к — «на рѣку къ русскимъ я",
+   "native": "вааме́ты тан̀ӈе́ты ты́lӄӓтјӓ̂к",
+   "resolved": "вааме́ты тан̀ӈе́ты ты́lӄӓтјӓ̂к: U+0301 acute on е, U+0300 grave on н, U+04C8 ӈ, U+0301 acute on ы, U+006C tall l, U+04C4 ӄ, U+0308 diaeresis on а, U+0458 ј, U+0308 diaeresis and U+0302 circumflex on final а",
+   "note": "Final а of тјак carries circumflex with diaeresis beneath it (4x). Tall l keyed. Gloss: «на рѣку къ русскимъ я ушелъ», I went to the river to the Russians.",
+   "class": "doubt"
+  },
+  "23": {
+   "text": "ушелъ». Всѣ русскіе колымчане живутъ по берегамъ рѣки Колымы и ея главнѣйшихъ"
+  },
+  "24": {
+   "text": "притоковъ, являясь въ данномъ случаѣ преемниками почти совершенно вымершихъ"
+  },
+  "25": {
+   "text": "юкагировъ. Чукчи поэтому и тѣхъ, и другихъ называютъ вэ́эмыlыт «порѣчане».",
+   "native": "вэ́эмыlыт",
+   "resolved": "вэ́эмыlыт: U+0301 acute on first э, U+006C tall l",
+   "note": "Gloss: «порѣчане», river-dwellers. Copies read һ for the tall l; scan shows tall l.",
+   "class": "semantic"
+  },
+  "26": {
+   "text": "Имя та́н̀ӈытан собственно принадлежитъ корякамъ, также чуванцамъ, и потомъ уже",
+   "native": "та́н̀ӈытан",
+   "resolved": "та́н̀ӈытан: U+0301 acute on а, U+0300 grave on н, U+04C8 ӈ",
+   "note": "Copy A reads ц for ӈ in танӈытан; scan ӈ. Spaced hyphen not involved. Gloss: Тан̀ӈытан, name for Koryaks, Chuvans.",
+   "class": "draft"
+  },
+  "27": {
+   "text": "русскимъ. Къ русскимъ оно было примѣнено вѣроятно потому, что они вначалѣ вы-"
+  },
+  "28": {
+   "text": "ступили, какъ союзники чуванцевъ и коряковъ противъ чукочъ. Въ частности коряки"
+  },
+  "29": {
+   "text": "называются lе́е-та́н̀ӈыт «настоящіе таньги»; чуванцы а́таl - та́н̀ӈыт (э́тэl/а́таl",
+   "native": "lе́е-та́н̀ӈыт а́таl та́н̀ӈыт э́тэl/а́таl",
+   "resolved": "lе́е-та́н̀ӈыт а́таl-та́н̀ӈыт э́тэl/а́таl: U+006C tall l, U+0301 acute on е, on а, on э, U+0300 grave on н, U+04C8 ӈ, slash U+002F",
+   "note": "DOUBT: every l in а́таl and э́тэl/а́таl has a nub on its right side only, at 4×; not clearly the barred ł, keyed plain tall l (1-028 ratifies а́таl). The print spaces the hyphen in а́таl - та́н̀ӈыт; keyed spaced, as ratified spaced hyphens are (ја́нр̌а - ка́lат, 1-038). Scan shows lе́е (ratified elsewhere lые). «настоящіе таньги», genuine Tanygs; Chuvans.",
+   "class": "doubt"
+  },
+  "30": {
+   "text": "есть національное имя чуванцевъ), а русскіе — ме́lђы-та́н̀ӈыт «огнивные таньги»,",
+   "as_typed": "есть національное имя чуванцевъ), а русскіе — {me'l_0g_1y-ta'n.n_1yt} «огнивные таньги»,",
+   "native": "ме́lђы-та́н̀ӈыт",
+   "resolved": "ме́lђы-та́н̀ӈыт: U+0301 acute on е, U+006C tall l, U+0452 ђ, U+0301 on а, U+0300 grave on н, U+04C8 ӈ",
+   "note": "Both copies read ӄ in ме́lђы; scan shows tall l and ђ. Gloss: «огнивные таньги», fire-tool Tanygs = Russians.",
+   "class": "semantic"
+  },
+  "31": {
+   "text": "вѣроятно потому, что они принесли съ собой стальное огниво для добыванія огня и"
+  },
+  "32": {
+   "text": "въ качествѣ ружейнаго замка; но по объясненію чукочъ русскіе произошли отъ"
+  },
+  "33": {
+   "text": "деревяннаго чукотскаго огнива, забытаго кочующими людьми на старомъ ночевьѣ."
+  },
+  "34": {
+   "text": "Поӄо́с̧ӄан — селеніе Походское на нижней Колымѣ въ 90 верстахъ отъ океана при",
+   "native": "Поӄо́с̧ӄан",
+   "resolved": "Поӄо́с̧ӄан: U+04C4 ӄ twice, U+0301 acute on second о, U+0441 U+0327 с̧",
+   "note": "Initial and later ӄ both with stroke into hook.",
+   "class": "draft"
+  },
+  "35": {
+   "text": "впаденіи очень рыбной рѣчки, Походской виски (Поӄо́с̧ӄакен вэ́эмӄӓј), въ Колыму.",
+   "native": "Поӄо́с̧ӄакен вэ́эмӄӓј",
+   "resolved": "Поӄо́с̧ӄакен вэ́эмӄӓј: U+04C4 ӄ, U+0301 on о and on first э, U+0441 U+0327 с̧, U+0308 diaeresis on а, U+0458 ј",
+   "note": "Gloss: Походской виски, the Pokhodsk river. Copy B reads с̧ separated; scan с̧ӄа.",
+   "class": "semantic"
+  },
+  "36": {
+   "text": "32 (стр. 124). таме́мlыӈа эм-є́ннӓ ныјэ́ђтэlӄӓэт. Эта насмѣшка примѣ-",
+   "native": "таме́мlыӈа эм-є́ннӓ ныјэ́ђтэlӄӓэт",
+   "resolved": "таме́мlыӈа эм-є́ннӓ ныјэ́ђтэlӄӓэт: U+0301 acute on е, U+006C tall l, U+04C8 ӈ, U+0454 є, U+0308 diaeresis on а, U+0458 ј, U+0452 ђ, U+04C4 ӄ",
+   "note": "Gloss: Эта насмѣшка, this taunt, said of the Russians, who eat fish. Last а of эм-є́ннӓ carries diaeresis.",
+   "class": "semantic"
+  },
+  "37": {
+   "text": "няется оленными чукчами не только къ русєкимъ, но и къ приморскимъ чукчамъ.",
+   "note": "Printed русєкимъ, a compositor slip for русскимъ: the fourth letter is open with a mid bar, є-like (2×). Keyed as printed.",
+   "class": "print"
+  },
+  "38": {
+   "text": "Русскіе на Нижней Колымѣ дѣйствительно питаются исключительно рыбой."
+  },
+  "39": {
+   "text": "33 (стр. 125). пі̀н-тэкі́чһын — буквально «порошкообразное мясо». Однако",
+   "as_typed": "33 (стр. 125). пі̀н-{te_1ki_1'c_1hyn} — буквально «порошкообразное мясо». Однако",
+   "native": "пі̀н-тэкі́чһын",
+   "resolved": "пі̀н-тэкі́чһын: U+0300 grave on і, U+0301 acute on і, U+04BB һ",
+   "note": "Gloss: «порошкообразное мясо», powder-like meat, i.e. bread.",
+   "class": "semantic"
+  },
+  "40": {
+   "text": "это слово прилагается не къ мукѣ, какъ бы слѣдовало ожидать, а именно къ печеному"
+  },
+  "41": {
+   "text": "хлѣбу, преимущественно къ сухарямъ. Для муки существуетъ особое опредѣленіе"
+  },
+  "42": {
+   "text": "пі̀н-wу́ррын — «подобное пеплу». Пі́мпі, откуда взятъ корень пін, обозначаетъ «пе-",
+   "native": "пі̀н-wу́ррын Пі́мпі пін",
+   "resolved": "пі̀н-wу́ррын Пі́мпі пін: U+0300 grave on і, U+0077 Latin w, U+0301 acute on у, U+0301 acute on і of Пі́мпі",
+   "note": "Doubt: final і of Пі́мпі has a hook below (unruled), keyed plain і. Copies read пін-шуррын; scan shows Latin w, keyed w. Gloss: «подобное пеплу», like ashes.",
+   "class": "doubt"
+  },
+  "43": {
+   "text": "пелъ, порошокъ, ружейный порохъ»."
+  },
+  "44": {
+   "text": "34 (стр. 125). Василій Гуляевъ, Походскій мѣщанинъ, имѣющій много знако-"
+  },
+  "45": {
+   "text": "мыхъ между чукчами и тунгусами и ведущій съ ними торговыя и иныя сношенія"
+  },
+  "46": {
+   "text": "приблизительно въ томъ родѣ, какъ это описано въ разсказѣ."
+  }
+ }
+}

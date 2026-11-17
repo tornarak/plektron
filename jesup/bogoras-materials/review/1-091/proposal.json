@@ -1,0 +1,178 @@
+{
+ "ref": "1-091",
+ "contamination": {
+  "blind": false,
+  "why": "this pass reads both text-layer copies (ocr witness) by design, and two lexicon lookups (the copies' spellings, then the scan's); no other page's proposal, decision or gt/ocr/ was read"
+ },
+ "lines": {
+  "0": {
+   "text": "I,5. МАТЕРІАЛЫ ПО ИЗУЧЕНІЮ ЧУКОТСКАГО ЯЗЫКА И ФОЛЬКЛОРА. 35"
+  },
+  "1": {
+   "text": "крѣпость представляетъ группу ветхихъ избушекъ, огороженныхъ низкимъ заборомъ"
+  },
+  "2": {
+   "text": "изъ тонкихъ бревенъ и досокъ. Круглый годъ она стоитъ пустою и оживляется"
+  },
+  "3": {
+   "text": "только весною, въ теченіе ярмарочной недѣли. Чукчи называютъ эту крѣпость «тор-"
+  },
+  "4": {
+   "text": "говою крѣпостью» віlіwку́јһун.",
+   "native": "віlіwку́јһун",
+   "resolved": "віlіwку́јһун: U+0301 acute on у, U+006C tall l, U+0077 w, U+04BB һ (hook below ignored)",
+   "class": "semantic",
+   "note": "віlіwку́јһун «торговая крѣпость» (trading fortress, the fair-ground); к has a separate curl, keyed plain к; final н has its crossbar lost in the bitonal scan, keyed н like every native -ын here"
+  },
+  "5": {
+   "text": "10 (стр. 44). мајӈ-арма́ђты lа́wты-таӄаӈӈо́а̂т «великому начальнику стали",
+   "native": "мајӈ-арма́ђты lа́wты-таӄаӈӈо́а̂т",
+   "resolved": "мајӈ-арма́ђты lа́wты-таӄаӈӈо́а̂т: U+04C8 ӈ x3, U+0301 acute on а (арма́), U+0452 ђ, U+006C tall l, U+0301 acute on а (lа́), U+0077 w, U+04C4 ӄ, U+0301 acute on о, U+0302 circumflex on а",
+   "class": "doubt",
+   "note": "арма́ђты: the glyph is ђ (bar on top, tail curling), both copies read ӄ; таӄаӈӈо́а̂т has ӄ (К whose leg runs into the hook), circumflex on а carries no diaeresis. Gloss «великому начальнику стали кланяться», they bowed to the great chief"
+  },
+  "6": {
+   "text": "кланяться». э́рэм «начальникъ, поставленный русскими» слово того же корня, что и",
+   "native": "э́рэм",
+   "resolved": "э́рэм: U+0301 acute on first э",
+   "class": "semantic",
+   "note": "э́рэм «начальникъ, поставленный русскими», chief appointed by the Russians"
+  },
+  "7": {
+   "text": "э́рмэчын. Вѣроятно прежніе родовые старшины назывались э́рмэт, — если только",
+   "as_typed": "{e_1'rme_1c_1yn}. Вѣроятно прежніе родовые старшины назывались э́рмэт, — если только",
+   "native": "э́рмэчын э́рмэт",
+   "resolved": "э́рмэчын (key) э́рмэт: U+0301 acute on э in each",
+   "class": "semantic",
+   "note": "э́рмэчын (key) and э́рмэт: родовые старшины, clan elders"
+  },
+  "8": {
+   "text": "они вообще существовали. Но теперь такихъ старшинъ нѣтъ, а существуютъ нѣ-"
+  },
+  "9": {
+   "text": "сколько старостъ, которыхъ назначаютъ русскіе исправники и которые не поль-"
+  },
+  "10": {
+   "text": "зуются никакой властью и могутъ только собирать немногочисленный ясакъ. У за-"
+  },
+  "11": {
+   "text": "чаунскихъ чукочъ въ настоящее время нѣтъ никакихъ э́рмэт и вообще никакой",
+   "native": "э́рмэт",
+   "resolved": "э́рмэт: U+0301 acute on э"
+  },
+  "12": {
+   "text": "общественной организаціи; но по преданіямъ и разсказамъ въ старыя времена при"
+  },
+  "13": {
+   "text": "постоянныхъ войнахъ связь между отдѣльными семьями были вообще тѣснѣе. тэ́-",
+   "native": "тэ́-",
+   "resolved": "тэ́-: U+0301 acute on э",
+   "class": "semantic",
+   "note": "тэ́-/ђӓркын (line 14) «платить дань, кланяться, дѣлать крестное знаменіе», to pay tribute, bow, cross oneself"
+  },
+  "14": {
+   "text": "ђӓркын «платить дань, кланяться, дѣлать крестное знаменіе». Для меня не совсѣмъ",
+   "native": "ђӓркын",
+   "resolved": "ђӓркын: U+0452 ђ, U+04D3 ӓ (a with diaeresis)",
+   "class": "semantic",
+   "note": "ђӓркын: diaeresis on а read at 2x; first letter ђ (bar on top) against copy B ӄ; gloss as on line 13"
+  },
+  "15": {
+   "text": "ясно, откуда взялось у чукочъ особое слово для выраженія этихъ понятій, которыя"
+  },
+  "16": {
+   "text": "первоначально были имъ чужды; но вообще слѣдуетъ отмѣтить стремленіе чукот-"
+  },
+  "17": {
+   "text": "скаго языка при встрѣчѣ съ предметами и понятіями чужаго быта создавать для"
+  },
+  "18": {
+   "text": "нихъ свои особенныя опредѣленія, чуждаясь заимствованій изъ иноплеменныхъ на-"
+  },
+  "19": {
+   "text": "рѣчій. Такъ напр. тарелка — іlђ-у́ккам, буквально бѣлая посудина; стаканъ — тен",
+   "native": "іlђ-у́ккам тен",
+   "resolved": "іlђ-у́ккам: U+006C tall l, U+0452 ђ, U+0301 acute on у; тен plain",
+   "class": "semantic",
+   "note": "іlђ-у́ккам «бѣлая посудина», white vessel = plate; тен-ко́јӈын continues on line 20"
+  },
+  "20": {
+   "text": "-ко́јӈын (ледяная чаша); чайникъ — пі́lђыкук (котелъ съ горлышкомъ); церковь —",
+   "native": "-ко́јӈын пі́lђыкук",
+   "resolved": "-ко́јӈын піlђыкук: U+0301 acute on о, U+04C8 ӈ, U+006C tall l, U+0452 ђ",
+   "class": "semantic",
+   "note": "тен-ко́јӈын «ледяная чаша», ice cup = glass; піlђыкук «котелъ съ горлышкомъ», kettle with neck = teapot"
+  },
+  "21": {
+   "text": "аӈа́нр̌ан (божій домъ); исповѣдываться — та́јӈы-тора́ркын («освободиться отъ грѣ-",
+   "native": "аӈа́нр̌ан та́јӈы-тора́ркын",
+   "resolved": "аӈа́нр̌ан та́јӈы-тора́ркын: U+04C8 ӈ, U+0301 acute on а (x3 in total across both words), U+030C caron on р",
+   "class": "doubt",
+   "note": "аӈа́нр̌ан «божій домъ», church. DOUBT: a caron over р is printed (both copies plain р); р̌ is ratified on 1-036, 1-038, 1-284 but not licensed in keying.json, and the contract says key plain р. The letter before it is н with its crossbar lost (copies ӈ/н), keyed н. та́јӈы-тора́ркын «освободиться отъ грѣховъ», confess. Coordinator: божій, the й has lost its diagonal and its breve is broken into two dots (2×/4×)."
+  },
+  "22": {
+   "text": "ховъ», хотя чукочъ, бывающихъ у исповѣди, можно пересчитать по пальцамъ); госу-"
+  },
+  "23": {
+   "text": "дарь — тірк-э́рэм (солнечный владыка); исправникъ — тэӄ-э́рэм (начальникъ дани)",
+   "native": "тірк-э́рэм тэӄ-э́рэм",
+   "resolved": "тірк-э́рэм тэӄ-э́рэм: U+0301 acute on э in each, U+04C4 ӄ",
+   "class": "semantic",
+   "note": "тірк-э́рэм «солнечный владыка», sun lord = tsar; тэӄ-э́рэм «начальникъ дани», tribute chief = police officer; ӄ vs ђ read from the leg running into the hook"
+  },
+  "24": {
+   "text": "и т. п."
+  },
+  "25": {
+   "text": "11 (стр. 48). ђе́ен-wет̀һа́wкурђын «лукавая рѣчь». Собственно ђе́ен отъ",
+   "native": "ђе́ен-wет̀һа́wкурђын ђе́ен",
+   "resolved": "ђе́ен-wет̀һа́wкурђын ђе́ен: U+0452 ђ, U+0301 acute on е and а, U+0077 w, U+0300 grave on т, U+04BB һ",
+   "class": "doubt",
+   "note": "ђе́ен-wет̀һа́wкурђын «лукавая рѣчь», crafty speech. DOUBT: copies read шетһашкуркын; scan shows grave on т, к with separate curl (plain к) and -ђын ending (prior ђ)"
+  },
+  "26": {
+   "text": "прилаг. ныђђі́нӄін «свирѣпый, алчный, страстный»; также «хитрый, лукавый».",
+   "native": "ныђђі́нӄін",
+   "resolved": "ныђђі́нӄін: U+0452 ђ x2, U+0301 acute on і, U+04C4 ӄ",
+   "class": "doubt",
+   "note": "DOUBT: ныђђі́нӄін keyed with two ђ (both bar-topped with tail); copies read ӄђ...кін. Last ӄ has leg running into hook, matching the -ӄін prior. Gloss «свирѣпый, алчный, страстный» (свирѣпый with hairline н lost, keyed по sense)"
+  },
+  "27": {
+   "text": "Чукчи вообще охотно прибѣгаютъ къ краснорѣчію для убѣжденія противниковъ."
+  },
+  "28": {
+   "text": "12 (стр. 50). ата́рђө нэ́lыркын — «поднимать шумъ». Первый корень не-",
+   "native": "ата́рђө нэ́lыркын",
+   "resolved": "ата́рђө нэlыркын: U+0301 acute on а, U+0452 ђ, U+04E9 ө barred o, U+006C tall l",
+   "class": "doubt",
+   "note": "DOUBT: ата́рђө, first ђ vs copy A д; ө barred o. нэ́lыркын: acute on э (2×, added by the coordinator); first and final н both show two stems with no crossbar (copy B п). Gloss «поднимать шумъ», to raise a noise."
+  },
+  "29": {
+   "text": "яснаго происхожденія. Торговцы, проѣзжавшіе мимо, съумѣли взять выкупъ съ"
+  },
+  "30": {
+   "text": "убійцы и навлечь на него мщеніе родственниковъ, хотя такой образъ дѣйствія не"
+  },
+  "31": {
+   "text": "заслужилъ имъ одобренія сосѣдей. Оправданіемъ имъ можетъ служить то обстоятель-"
+  },
+  "32": {
+   "text": "ство, что человѣкъ, ѣдущій на собакахъ и принужденный добывать для своей упряжки"
+  },
+  "33": {
+   "text": "ежедневно кормъ, считается имѣющимъ нѣкоторое право получать помощь отъ всѣхъ"
+  },
+  "34": {
+   "text": "жителей, мимо которыхъ онъ проѣзжаетъ въ пустынѣ."
+  },
+  "35": {
+   "text": "13 (стр. 51). Жена Амонайгина осталась въ живыхъ, хотя она была и за-"
+  },
+  "36": {
+   "text": "чинщицей и главной убійцей. Но повидимому роль ея не выяснилась для мстителей,"
+  },
+  "37": {
+   "text": "такъ какъ съ собачниками объяснялся только мужъ."
+  }
+ }
+}

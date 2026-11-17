@@ -98,6 +98,11 @@ finish.
   convention is *The Chukchee*'s, English spacing. Not a hyphen: `что-нибудь`,
   `чего-же` stay joined; nor a dash between numbers, which is a range:
   `1894—97`, `стр. 1—51`, `№№ 49—61`.
+- **A hyphen is keyed tight, `-`, whatever the line sets** (the editor,
+  2026-11-17): a spaced short hyphen inside a compound is justification too, in
+  a native form (`ја́нр̌а-ка́lат`, `а́таl-та́н̀ӈыт`, 1-126 l29) as in Russian
+  (`изъ-за`, `Орелъ-шаманъ`). Its `native` entry is the one hyphened form. The
+  short hyphen is not the dash, so zoom a mark whose length is in question.
 - `differ`, `alone`, or Russian whose sense does not hold (a wrong ending, a
   non-word, a Latin letter inside a Cyrillic word — `Tоже`, `ОГЛАВЛЕНIE`,
   `миөологическаго` for `миѳологическаго`): read it at the scan.
@@ -244,8 +249,12 @@ note saying whose spelling it is. Spell each form's codepoints in
   comma below for a mark nobody ruled.
 - **The 1899 key** (`scratch/chukchi/bogoraz-1899-phonetics-key.md`) says what a
   letter may be, not what this print sets. Where the scan shows a key letter the
-  rules lack (`ҕ` beside `ђ`, `к̧`, `h̦`, `р̌`, a mark below `w` or `ы`), key it as
+  rules lack (`ҕ` beside `ђ`, `к̧`, `h̦`, a mark below `w` or `ы`), key it as
   the nearer layer has it and say in a `doubt` which key letter it looks like.
+- **`р̌`, a caron over `р`, is a letter of this print** (the editor, 2026-11-17;
+  `config/keying.json` `mark_license`): key it as printed, `р` + U+030C
+  (`ја́нр̌а-ка́lат`, 1-036), with no `doubt`. The layers read it plain `р`, so
+  zoom every `р` in a native form where a mark sits above it.
 - Accents are combining: acute U+0301 and grave U+0300 on the letter they sit on.
   The curly `’` between a native stem and its Russian ending is printed and kept.
 - **Letterspacing** (разрядка, and the running head) is keyed unspaced, with a

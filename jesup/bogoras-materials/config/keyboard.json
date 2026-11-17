@@ -1,6 +1,6 @@
 {
  "_about": "The 1900 Materials' review keyboard, replacing the workspace's (jesup/config/keyboard.json, the Latin notation of The Chukchee) whole. Phonetic, for an editor who has no Russian keyboard and reads no Russian: a Latin key types the Cyrillic letter nearest its sound, shift its capital, and the keys a Latin alphabet has no letter for carry the rest, one keystroke each and no dead keys. Every button in the panel shows its key. Kbd mode (ctrl-space) is off by default, so ASCII punctuation stays typeable in prose. Comma, period, hyphen, space and 9 are never bound.",
- "_keys": "Letters: a а, b б, v в, g г, d д, e е, z з, i и, j й, k к, l л, m м, n н, o о, p п, r р, s с, t т, u у, f ф, h х, c ц, y ы, x ж, w ш, q я. The rest of the Russian alphabet: semicolon ч, [ щ, ] ю, \\ э, / ь, and question mark ъ. The pre-1918 letters: = і, 0 ѣ, 8 ѳ, shifted for the capital. The notation's letters (config/keying.json inventory) on the digits, shifted for the capital: 1 ӄ, 2 ӈ, 3 ђ, 4 һ, 5 ѵ, 6 ð, 7 ł. The marks are postfix, attaching to the letter before the caret as the corpus's NFD stores them: ' acute and ` grave, as The Chukchee's stress key is ', \" diaeresis (ӓ is а then \"), ~ breve (ў is у then ~; й has its own key), < cedilla (с̧ is с then <), > circumflex (а̂ is а then >, 1-024 l22, 1-025 l7).",
+ "_keys": "Letters: a а, b б, v в, g г, d д, e е, z з, i и, j й, k к, l л, m м, n н, o о, p п, r р, s с, t т, u у, f ф, h х, c ц, y ы, x ж, w ш, q я. The rest of the Russian alphabet: semicolon ч, [ щ, ] ю, \\ э, / ь, and question mark ъ. The pre-1918 letters: = і, 0 ѣ, 8 ѳ, shifted for the capital. The notation's letters (config/keying.json inventory) on the digits, shifted for the capital: 1 ӄ, 2 ӈ, 3 ђ, 4 һ, 5 ѵ, 6 ð, 7 ł. The marks are postfix, attaching to the letter before the caret as the corpus's NFD stores them: ' acute and ` grave, as The Chukchee's stress key is ', \" diaeresis (ӓ is а then \"), ~ breve (ў is у then ~; й has its own key), < cedilla (с̧ is с then <), > circumflex (а̂ is а then >, 1-024 l22, 1-025 l7), _ caron (р̌ is р then _, 1-036; ј̌ is ј then _, 1-114 l24 — the editor could not type it before this key). The letters with no key of their own — ј, є, the tall l and w, which the layers key Latin — are palette buttons: every letter key is taken, and ( is needed in prose for every (стр. N).",
  "keys": {
   "a": "а", "b": "б", "v": "в", "g": "г", "d": "д", "e": "е", "z": "з",
   "i": "и", "j": "й", "k": "к", "l": "л", "m": "м", "n": "н", "o": "о",
@@ -16,14 +16,14 @@
   "1": "ӄ", "!": "Ӄ", "2": "ӈ", "@": "Ӈ", "3": "ђ", "#": "Ђ",
   "4": "һ", "$": "Һ", "5": "ѵ", "%": "Ѵ", "6": "ð", "^": "Ð",
   "7": "ł", "&": "Ł",
-  "'": "\u0301", "`": "\u0300", "\"": "\u0308", "~": "\u0306", "<": "\u0327", ">": "\u0302"
+  "'": "\u0301", "`": "\u0300", "\"": "\u0308", "~": "\u0306", "<": "\u0327", ">": "\u0302", "_": "\u030c"
  },
  "_palette": "Every letter the book's Russian and its notation use, as buttons, so a letter is reachable by its shape without knowing its key.",
  "palette": [
   {"label": "notation letters (keying.json inventory)",
-   "glyphs": ["ӄ", "ӈ", "ђ", "һ", "ѵ", "ð", "ł", "с̧", "ӓ", "ў"]},
+   "glyphs": ["ӄ", "ӈ", "ђ", "һ", "ѵ", "ð", "ł", "ј", "є", "l", "w","с̧", "ӓ", "ў"]},
   {"label": "notation capitals", "glyphs": ["Ӄ", "Ӈ", "Ђ", "Һ", "Ѵ", "Ð", "Ł"]},
-  {"label": "combining marks", "glyphs": ["\u0301", "\u0300", "\u0308", "\u0306", "\u0327", "\u0302"]},
+  {"label": "combining marks", "glyphs": ["\u0301", "\u0300", "\u0308", "\u0306", "\u0327", "\u0302", "\u030c"]},
   {"label": "Russian",
    "glyphs": ["а", "б", "в", "г", "д", "е", "ж", "з", "и", "й", "к", "л", "м", "н", "о", "п",
               "р", "с", "т", "у", "ф", "х", "ц", "ч", "ш", "щ", "ъ", "ы", "ь", "э", "ю", "я"]},

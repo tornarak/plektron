@@ -1,0 +1,245 @@
+{
+ "ref": "1-098",
+ "contamination": {
+  "blind": false,
+  "why": "this pass reads both text-layer copies (ocr witness) by design, and two lexicon lookups (the copies' spellings, then the scan's); no other page's proposal, decision or gt/ocr/ was read"
+ },
+ "lines": {
+  "0": {
+   "text": "42 Г. БОГОРАЗЪ, I,6.",
+   "note": "the initial В. of the running head sits in its own box (line 1); head ВОГОРАЗЪ letterspaced, keyed unspaced; I,6 Roman numeral keyed Latin",
+   "class": "layout"
+  },
+  "1": {
+   "text": "В.",
+   "note": "initial В. of the running head, boxed alone beside line 0",
+   "class": "layout"
+  },
+  "2": {
+   "text": "мѣсяцевъ болѣе трети всего населенія въ нижнеколымскомъ краѣ. Разсказъ описы-"
+  },
+  "3": {
+   "text": "ваетъ появленіе оспы на тундрѣ къ западу отъ Колымы.",
+   "note": "copies read ослы / осны; the scan shows оспы (the п has lost its hairline, sense decides)",
+   "class": "draft"
+  },
+  "4": {
+   "text": "2 (стр. 3). нымтађнынӄа́ткен см. № 4, прим. 26. э́јһыс̧ӄӓ-рэ́мкын здѣсь",
+   "native": "нымтађнынӄа́ткен э́јһыс̧ӄӓ-рэ́мкын",
+   "resolved": "нымтађнынӄа́ткен: U+0452 ђ, U+04C4 ӄ, U+0301 acute on а; э́јһыс̧: U+0301 acute on э, U+0458 ј, U+04BB һ, U+0441 с + U+0327 cedilla; ӄӓ-рэ́мкын: U+04C4 ӄ, U+04D3 ӓ, U+0301 acute on э, U+044D э"
+  },
+  "5": {
+   "text": "жители стойбищъ у р. Индигирки."
+  },
+  "6": {
+   "text": "3 (стр. 4). нӓ̂ӄӓӈы́ттаӄін буквально «худо убиваетъ», подразумѣвается кэ-",
+   "native": "нӓ̂ӄӓӈы́ттаӄін кэ-",
+   "resolved": "нӓ̂ӄӓӈы́ттаӄін: U+04D3 ӓ, U+0302 circumflex on first ӓ, U+04C4 ӄ, U+04C8 ӈ, U+0301 acute on ы, U+0456 і; кэ-: U+044D э",
+   "note": "нӓ̂ӄӓӈы́ттаӄін «худо убиваетъ», kills badly (evil spirit); both first and second а carry diaeresis, the first also a circumflex",
+   "class": "semantic"
+  },
+  "7": {
+   "text": "lэ́тӓ «злой духъ». У чукочъ для заразы нѣтъ точнаго опредѣленія и вмѣсто того",
+   "native": "lэ́тӓ",
+   "resolved": "lэ́тӓ: U+006C tall l, U+0301 acute on э, U+04D3 ӓ",
+   "note": "кэ-lэ́тӓ «злой духъ», evil spirit; word broken across lines 6-7, copies read the tall l as Г",
+   "class": "semantic"
+  },
+  "8": {
+   "text": "употребляется рядъ описательныхъ выраженій, каковы а̂ӄа̀-ӈытты́ырђын «худое",
+   "native": "а̂ӄа̀-ӈытты́ырђын",
+   "resolved": "а̂ӄа̀-ӈы́ттыы́рђын: U+0302 circumflex on а, U+04C4 ӄ, U+0300 grave on а, U+04C8 ӈ, U+0301 acute on first ы, U+0301 acute on second ы, U+0452 ђ",
+   "note": "а̂ӄа̀-ӈытты́ырђын «худое убиваніе», bad killing: one acute, on the ы straight after тт (4×; coordinator and second reviewer). The first ы shows only the т serif.",
+   "class": "semantic"
+  },
+  "9": {
+   "text": "убиваніе», мајӈ-а́рђырђын «великая болѣзнь». Въ переводѣ употреблено колымско-",
+   "native": "мајӈ-а́рђырђын",
+   "resolved": "мајӈ-а́рђырђын: U+0458 ј, U+04C8 ӈ, U+0301 acute on а, U+0452 ђ twice",
+   "note": "мајӈ-а́рђырђын «великая болѣзнь», great sickness; copies read ӄ for the first ђ, the scan shows the loop ђ",
+   "class": "semantic"
+  },
+  "10": {
+   "text": "русское выраженіе «зараза идетъ»."
+  },
+  "11": {
+   "text": "4 (стр. 5). ніwlэ́wкы «во время удлиненія (дней)». Общее названіе времени",
+   "native": "ніwlэ́wкы",
+   "resolved": "ніwlэ́wкы: U+0456 і, U+0077 w, U+006C tall l, U+0301 acute on э, U+044D э, U+0077 w",
+   "note": "ніwlэ́wкы «во время удлиненія (дней)», at the time of the lengthening of the days; copies read ш for w",
+   "class": "semantic"
+  },
+  "12": {
+   "text": "года отъ конца января до конца марта. Послѣдняя часть этого времени называется"
+  },
+  "13": {
+   "text": "тэӈ-урэ́тві-мэтэ́wкы «когда удлиненіе уже исполнилось». ђро̀-е̂́lђын «мѣсяцъ",
+   "native": "тэӈ-урэ́тві-мэтэ́wкы ђро̀-е̂́lђын",
+   "resolved": "тэӈ-урэ́тві-мэтэ́wкы: U+04C8 ӈ, U+0301 acute on э twice, U+0456 і, U+0077 w; ђро̀-е̂́lђын: U+0452 ђ twice, U+0300 grave on о, U+0302 circumflex and U+0301 acute on е, U+006C tall l",
+   "note": "ђро̀-е̂́lђын «мѣсяцъ рожденія (телятъ)», month of calving; first form тэӈ-урэ́тві-мэтэ́wкы «когда удлиненіе уже исполнилось», when the lengthening has already been fulfilled",
+   "class": "semantic"
+  },
+  "14": {
+   "text": "рожденія (телятъ)» отъ начала марта до начала апрѣля. У чукочъ существуетъ"
+  },
+  "15": {
+   "text": "двоякое раздѣленіе года. Во первыхъ по мѣсяцамъ, имена которыхъ, начиная отъ"
+  },
+  "16": {
+   "text": "зимняго солнцестоянія, слѣдующія: 1) ынпlу́wlэӈ-јі̂́lһын «мѣсяцъ упрямаго стараго",
+   "native": "ынпlу́wlэӈ-јі̂́lһын",
+   "resolved": "ынпlу́wlэӈ-јі̂́lһын: U+006C tall l twice, U+0301 acute on у, U+0077 w, U+044D э, U+04C8 ӈ, U+0458 ј, U+0456 і with U+0302 circumflex and U+0301 acute, U+04BB һ"
+  },
+  "17": {
+   "text": "быка»; 2) чачанlо́рђын «(мѣсяцъ) зябнущаго вымени»; 3) lееlо́рђын «(мѣсяцъ)",
+   "native": "чачанlо́рђын lееlо́рђын",
+   "resolved": "чачанlо́рђын: U+006C tall l, U+0301 acute on о, U+0452 ђ; lееlо́рђын: U+006C tall l twice, U+0301 acute on о, U+0452 ђ"
+  },
+  "18": {
+   "text": "обнаженія вымени; 4) ђро̀-е̂́lһын «мѣсяцъ рожденія (телятъ)»; 5) і́мlырыlын",
+   "native": "ђро̀-е̂́lһын і́мlырыlын",
+   "resolved": "ђро̀-е̂́lһын: U+0452 ђ, U+0300 grave on о, U+0302 and U+0301 on е, U+006C tall l, U+04BB һ; і́мlырыlын: U+0456 і, U+0301 acute on і, U+006C tall l twice"
+  },
+  "19": {
+   "text": "«мѣсяцъ водъ»; 6) та́wтын-је̂́lђын «мѣсяцъ появленія листьевъ»; 7) о̀м-је̂́lђын",
+   "native": "та́wтын-је̂́lђын о̀м-је̂́lђын",
+   "resolved": "та́wтын-је̂́lђын: U+0301 acute on а, U+0077 w, U+0458 ј, U+0302 and U+0301 on е, U+006C tall l, U+0452 ђ; о̀м-је̂́lђын: U+0300 grave on о, U+0458 ј, U+0302 and U+0301 on е, U+006C tall l, U+0452 ђ"
+  },
+  "20": {
+   "text": "«теплый мѣсяцъ»; 8) нэ̀ђ-і̂́lђын «мѣсяцъ обдиранія роговъ»; 9) ӈэ́рђэђ-і̂́lђын",
+   "native": "нэ̀ђ-і̂́lђын ӈэ́рђэђ-і̂́lђын",
+   "resolved": "нэ̀ђ-і̂́lђын: U+044D э, U+0300 grave on э, U+0452 ђ twice, U+0456 і with U+0302 and U+0301, U+006C tall l; ӈэ́рђэђ-і̂́lђын: U+04C8 ӈ, U+0301 acute on э, U+0452 ђ three times, U+0456 і with U+0302 and U+0301, U+006C tall l",
+   "note": "ђ occurs in two shapes on this page: the loop form (ђро̀-, -lђын) and an arch-with-left-tail form (нэ̀ђ-, ӈэ́рђэђ-), the latter drawn like a ђ with the bar and a curved leg; keyed ђ for both, as ratified 1-235 spells these months",
+   "class": "doubt"
+  },
+  "21": {
+   "text": "«мѣсяцъ заморозковъ»; 10) ђытһа̀-е̂́lђын «осенній мѣсяцъ»; 11) јара́учын «(мѣсяцъ)",
+   "native": "ђытһа̀-е̂́lђын јара́учын",
+   "resolved": "ђытһа̀-е̂́lђын: U+0452 ђ twice, U+04BB һ, U+0300 grave on а, U+0302 and U+0301 on е, U+006C tall l; јара́учын: U+0458 ј, U+0301 acute on а",
+   "note": "јара́учын: the scan shows у without breve; the lookup context spells јара́ўчын elsewhere; keyed as the scan shows",
+   "class": "doubt"
+  },
+  "22": {
+   "text": "узкаго мяса»; 12) ӄу́уlэђ-і̂́lһын «мѣсяцъ съуженія дней». Началомъ этого счета",
+   "native": "ӄу́уlэђ-і̂́lһын",
+   "resolved": "ӄу́уlэђ-і̂́lһын: U+04C4 ӄ, U+0301 acute on у, U+006C tall l twice, U+0452 ђ, U+0456 і with U+0302 and U+0301, U+04BB һ",
+   "note": "ӄу́уlэђ-і̂́lһын «мѣсяцъ съуженія дней»; ђ here is the arch-with-left-tail form (see line 20), keyed ђ",
+   "class": "doubt"
+  },
+  "23": {
+   "text": "является промежутокъ между 12-мъ и 1-мъ мѣсяцемъ ӄу́уlэђ-у́тір, который чукчи",
+   "native": "ӄу́уlэђ-у́тір",
+   "resolved": "ӄу́уlэђ-у́тір: U+04C4 ӄ, U+0301 acute on у twice, U+006C tall l, U+0452 ђ, U+0456 і",
+   "note": "ӄу́уlэђ-у́тір, the interval between month 12 and month 1; ђ is the arch-with-left-tail form (see line 20)",
+   "class": "doubt"
+  },
+  "24": {
+   "text": "опредѣляютъ довольно точно на три самыхъ короткихъ дня зимы. Почему 1-ый и"
+  },
+  "25": {
+   "text": "11-ый мѣсяцы получили такія названія, я не могъ узнать. Четыре названія имѣютъ"
+  },
+  "26": {
+   "text": "отношеніе къ подробностямъ рожденія оленьихъ телятъ, но замѣчательно, что въ"
+  },
+  "27": {
+   "text": "дѣйствительности всѣ измѣненія въ состояніи вымени, а также и рожденіе теленка"
+  },
+  "28": {
+   "text": "происходитъ мѣсяцемъ позже. Сами чукчи неоднократно обращали мое вниманіе на"
+  },
+  "29": {
+   "text": "это обстоятельство и высказывали мнѣніе, что прежде ихъ страна была теплѣе и"
+  },
+  "30": {
+   "text": "лѣто дольше, чѣмъ теперь. Быть можетъ, здѣсь слѣдуетъ видѣть указаніе на пере-"
+  },
+  "31": {
+   "text": "селеніе изъ болѣе умѣреннаго климата. Второй счетъ, болѣе употребительный и"
+  },
+  "32": {
+   "text": "менѣе опредѣленный, по временамъ года, начинается вообще съ перваго снѣга:"
+  },
+  "33": {
+   "text": "1) тур-ӓ̂lэ́тык «во время перваго снѣга»; 2) ђытһа́к «осенью»; 3) ӄууlэ́тык «во",
+   "native": "тур-ӓ̂lэ́тык ђытһа́к ӄууlэ́тык",
+   "resolved": "тур-ӓ̂lэ́тык: U+04D3 ӓ with U+0302 circumflex, U+006C tall l, U+0301 acute on э; ђытһа́к: U+0452 ђ, U+04BB һ, U+0301 acute on а; ӄууlэ́тык: U+04C4 ӄ, U+006C tall l, U+0301 acute on э",
+   "note": "ђытһа́к «осенью», in autumn; first letter is the loop ђ, copies read ӄ",
+   "class": "draft"
+  },
+  "34": {
+   "text": "время съуженія дней»; 4) ніwlэ́wкы «во время удлиненія дней»; 5) ђро́к «весною»",
+   "native": "ніwlэ́wкы ђро́к",
+   "resolved": "ніwlэ́wкы: U+0456 і, U+0077 w twice, U+006C tall l, U+0301 acute on э; ђро́к: U+0452 ђ, U+0301 acute on о"
+  },
+  "35": {
+   "text": "(собственно «во время рожденія»); 6) ђро̀-пчы́ткөк «при окончаніи рожденія»;",
+   "native": "ђро̀-пчы́ткөк",
+   "resolved": "ђро̀-пчы́ткөк: U+0452 ђ, U+0300 grave on о, U+0301 acute on ы, U+04E9 barred ө"
+  },
+  "36": {
+   "text": "7) кы́ткытык «во время перваго лѣта»; 8) а́нок «во время второго лѣта»; 9) төр",
+   "native": "кы́ткытык а́нок төр",
+   "resolved": "кы́ткытык: U+0301 acute on ы; а́нок: U+0301 acute on а; төр: U+04E9 barred ө"
+  },
+  "37": {
+   "text": "-е́ђынток «во время перваго появленія прохлады»; 10) ӈэ́рђэрык «во время замо-",
+   "native": "-е́ђынток ӈэ́рђэрык",
+   "resolved": "-е́ђынток: U+0301 acute on е, U+0452 ђ; ӈэ́рђэрык: U+04C8 ӈ, U+0301 acute on э, U+0452 ђ",
+   "note": "continuation of төр on line 36: төр-е́ђынток; the н of -ынток has lost its hairline in the scan",
+   "class": "layout"
+  },
+  "38": {
+   "text": "розковъ». №№ 3 и 4 объединяются подъ именемъ lӓlє́н̀къ «зимой» буквально «хо-",
+   "native": "lӓlє́н̀къ",
+   "resolved": "lӓlє́н̀къ: U+006C tall l twice, U+04D3 ӓ, U+0454 є with U+0301 acute, U+043D н with U+0300 grave",
+   "note": "lӓlє́н̀къ «зимой», in winter; the scan shows н with a grave and no hook, while the Chukchee counterpart is spelled with ñ; doubt: н or ӈ lost its hook",
+   "class": "doubt"
+  },
+  "39": {
+   "text": "лодно тогда»; а №№ 7 и 8 подъ именемъ э́lэк «лѣтомъ». Начало года называется",
+   "native": "э́lэк",
+   "resolved": "э́lэк: U+0301 acute on э, U+006C tall l"
+  },
+  "40": {
+   "text": "јаwры́ӈађ собственно «съ будущаго года».",
+   "native": "јаwры́ӈађ",
+   "resolved": "јаwры́ӈађ: U+0458 ј, U+0077 w, U+0301 acute on ы, U+04C8 ӈ, U+0452 ђ",
+   "note": "јаwры́ӈађ «съ будущаго года»; ends in the loop ђ where the copies read н",
+   "class": "doubt"
+  },
+  "41": {
+   "text": "5 (стр. 6). У чукочъ не существуетъ никакой мѣры пространства даже въ"
+  },
+  "42": {
+   "text": "зачаточномъ видѣ."
+  },
+  "43": {
+   "text": "6 (стр. 7). ӓ̂ӄӓ́ткуркын «умирать отъ заразы» собственно «худо пребывать»",
+   "native": "ӓ̂ӄӓ́ткуркын",
+   "resolved": "ӓ̂ӄӓ́ткуркын: U+04D3 ӓ with U+0302 circumflex, U+04C4 ӄ, U+04D3 ӓ with U+0301 acute",
+   "note": "ӓ̂ӄӓ́ткуркын «умирать отъ заразы», to die of the plague; diaeresis under the circumflex on the first а, diaeresis and acute on the second",
+   "class": "semantic"
+  },
+  "44": {
+   "text": "отъ Adj. ӓ̂ӄӓ-а̂ӄа «худой»; одинъ изъ неопредѣленныхъ терминовъ, о которыхъ гово-",
+   "native": "ӓ̂ӄӓ-а̂ӄа",
+   "resolved": "ӓ̂ӄӓ-а̂ӄа: U+04D3 ӓ with U+0302 circumflex, U+04C4 ӄ, U+04D3 ӓ, U+0302 circumflex on а, U+04C4 ӄ",
+   "note": "Adj. is set in Latin type; ӓ̂ӄӓ-а̂ӄа «худой», bad",
+   "class": "layout"
+  },
+  "45": {
+   "text": "рилось выше."
+  },
+  "46": {
+   "text": "7 (стр. 14). ам-ја́ра-wу́рра (въ текстѣ ам-ја́ра-wурра́! ... удареніе въ",
+   "native": "ам-ја́ра-wу́рра ам-ја́ра-wурра́",
+   "resolved": "ам-ја́ра-wу́рра: U+0458 ј, U+0301 acute on а, U+0077 w, U+0301 acute on у; ам-ја́ра-wурра́: U+0458 ј, U+0301 acute on а, U+0077 w, U+0301 acute on final а",
+   "note": "ам-ја́ра-wу́рра, cited form; text form ам-ја́ра-wурра́ with stress on the final а",
+   "class": "semantic"
+  },
+  "47": {
+   "text": "концѣ для большей выразительности) буквально «на разстояніи возможности видѣть"
+  }
+ }
+}

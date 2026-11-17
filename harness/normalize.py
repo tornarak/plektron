@@ -675,8 +675,11 @@ def scan(root: Path = Path("."), paths: list[Path] | None = None,
         worklist += _quote_hits(p, root)
         worklist += _apostrophe_hits(p, root, rules)
         # Reported per line, since a path plus a context string is not enough to find
-        # one occurrence in a 54 KB store.
-        for lineno, line in enumerate(nfd.splitlines(), start=1):
+        # one occurrence in a 54 KB store. Over the masked text, as the folds are:
+        # an ALTO's processing description records the fold table (`ď>ð`), which
+        # names a mark on a base no licence covers and is no reading — licensing
+        # the caron on р put every restored page's header in breach.
+        for lineno, line in enumerate(_mask_description(nfd, p).splitlines(), start=1):
             for h in unlicensed_marks(line, rules):
                 unlicensed.append({"path": rel, "line": lineno, **h})
         for h in _spacing_hits(text, commentary=p.suffix == ".json"):

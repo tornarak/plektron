@@ -1,0 +1,190 @@
+{
+ "ref": "1-104",
+ "contamination": {
+  "blind": false,
+  "why": "this pass reads both text-layer copies (ocr witness) by design, and two lexicon lookups (the copies' spellings, then the scan's); no other page's proposal, decision or gt/ocr/ was read"
+ },
+ "lines": {
+  "0": {
+   "text": "48 В. Г. БОГОРАЗЪ, I,7."
+  },
+  "1": {
+   "text": "6 (стр. 15). тірк-э́рэм «солнечный владыка». Такое названіе чукчи при-",
+   "native": "тірк-э́рэм",
+   "resolved": "тірк-э́рэм: U+0301 acute on э",
+   "class": "semantic",
+   "note": "«солнечный владыка», sun chief (Tirk-erem); тірк- keyed with Cyrillic і"
+  },
+  "2": {
+   "text": "даютъ государю, повидимому заимствовавъ его у якутовъ черезъ посредство рус-"
+  },
+  "3": {
+   "text": "скихъ толмачей."
+  },
+  "4": {
+   "text": "7 (стр. 29). јанр̌а̂́-lа̀ўl буквально: «особый человѣкъ»; человѣкъ, въ данную",
+   "native": "јанр̌а̂́-lа̀ўl",
+   "resolved": "јанр̌а̂́-lа̀ўl: U+030C caron on р, U+0302 circumflex and U+0301 acute on а, U+006C tall l (twice), U+0300 grave on а, U+0306 breve on у",
+   "class": "doubt",
+   "note": "DOUBT: a caron over р in јанр̌а̂́-lа̀ўl is printed; р̌ is ratified on three pages but not licensed in keying.json. The second а carries a circumflex under its acute (2×, added by the coordinator), as ја̂́рат on l7. «особый человѣкъ», special man; unmarried man. Counterpart yanřaᵋ-laˊul (1-243)."
+  },
+  "5": {
+   "text": "минуту не имѣющій жены, холостякъ или вдовецъ. ја́нр̌а-ӈа̀w — женщина, не имѣю-",
+   "native": "ја́нр̌а-ӈа̀w",
+   "resolved": "ја́нр̌а-ӈа̀w: U+0301 acute on а, U+030C caron on р, U+04C8 ӈ, U+0300 grave on а, U+0077 w",
+   "class": "doubt",
+   "note": "DOUBT: caron over р in ја́нр̌а-ӈа̀w, as on l4. женщина, не имѣющая мужа, unmarried woman. The acute stands on the first а here, on the second in l4: both as printed."
+  },
+  "6": {
+   "text": "щая мужа, дѣвушка, разводка, или же вдова."
+  },
+  "7": {
+   "text": "8 (стр. 34). ја̂́рат ѵм е́ўр јајва́чірђын єнӄа́н нананаӄа́ђчыӈын. Дѣй-",
+   "as_typed": "8 (стр. 34). ја̂́рат {v_1m} е́ўр јајва́чірђын єнӄа́н нананаӄа́ђчыӈын. Дѣй-",
+   "native": "ја̂́рат ѵм е́ўр јајва́чірђын єнӄа́н нананаӄа́ђчыӈын",
+   "resolved": "ја̂́рат: U+0302 circumflex and U+0301 acute on а; ѵм U+0475; е́ўр: U+0301 acute on е, U+0306 breve on у; јајва́чірђын: U+0301 acute on а, U+0452 ђ; єнӄа́н: U+0454 є, U+04C4 ӄ, U+0301 acute on а; нананаӄа́ђчыӈын: U+04C4 ӄ, U+0301 acute on а, U+0452 ђ, U+04C8 ӈ",
+   "class": "doubt",
+   "note": "1) ја̂́рат: circumflex with an acute above it on а, keyed а+U+0302+U+0301. 2) єнӄа́н: the second letter is two stems joined at the foot with no crossbar or diagonal; read н (copy A н, copy B и); hairline may be lost. ӄ keyed on the stroke running into the hook. 3) ѵм: lookup key. Copies read ђѵм/еўр/нананаканчыӈын wrongly"
+  },
+  "8": {
+   "text": "ствительно судьба маленькихъ дѣтей, остающихся безъ матери у чукочъ, достойна"
+  },
+  "9": {
+   "text": "сожалѣнія. Грудные младенцы остаются въ живыхъ только тогда, когда есть вблизи"
+  },
+  "10": {
+   "text": "другая женщина, кормящая ребенка, которая согласится принять къ себѣ еще мла-"
+  },
+  "11": {
+   "text": "денца. Въ противномъ случаѣ грудного младенца убиваютъ и хоронятъ съ матерью,"
+  },
+  "12": {
+   "text": "такъ какъ попытокъ искусственнаго вскармливанія дѣтей у чукочъ не существуетъ."
+  },
+  "13": {
+   "text": "9 (стр. 38). чітэ́ўн акка́ђты тытэђђэ́ӈыркын. Разсказчикъ, шестиде-",
+   "native": "чітэ́ўн акка́ђты тытэђђэ́ӈыркын",
+   "resolved": "чітэ́ўн: U+0301 acute on э, U+0306 breve on у; акка́ђты: U+0301 acute on а, U+0452 ђ; тытэђђэ́ӈыркын: U+0452 ђ twice, U+0301 acute on э, U+04C8 ӈ",
+   "class": "draft",
+   "note": "Copies read ђ as д/н (аккадты, тытэђнэ); scan shows ђ throughout. Copy A ӈ read н, copy B ц; scan shows ӈ. Acute on э in чітэ́ўн (copies а/о)"
+  },
+  "14": {
+   "text": "сяти-лѣтній старикъ, но обычаю передалъ стадо и все хозяйство старшему сыну,"
+  },
+  "15": {
+   "text": "но не могъ ужиться съ невѣсткой и ея сестрами и предпочелъ покинуть свой ша-"
+  },
+  "16": {
+   "text": "теръ. Въ лѣтнее время онъ странствовалъ по тундрѣ, занимаясь охотой на дикихъ"
+  },
+  "17": {
+   "text": "оленей, осенью промышлялъ песцовъ, а весной тюленей, и только на самые глухіе"
+  },
+  "18": {
+   "text": "зимніе мѣсяцы удалился въ селеніе Походское, гдѣ проживалъ чаще всего у казака"
+  },
+  "19": {
+   "text": "Василія Даурова."
+  },
+  "20": {
+   "text": "10 (стр. 44). і́рӓlӄӓl — матеріалъ на одежду, конечно зимнюю. При чукот-",
+   "native": "і́рӓlӄӓl",
+   "resolved": "і́рӓlӄӓl: U+0301 acute on і, U+0308 diaeresis on ӓ twice, U+006C tall l twice, U+04C4 ӄ",
+   "class": "semantic",
+   "note": "«материалъ на одежду», cloth for clothing. Copies read ӄ as у/g/к; scan has hooked ӄ"
+  },
+  "21": {
+   "text": "скомъ образѣ жизни на каждую зиму нужно заводить новую одежду."
+  },
+  "22": {
+   "text": "11 (стр. 49). ђа́lђа-lе́ђlеӄӄај «птичьи яички». Русскіе и чукчи въ маѣ",
+   "native": "ђа́lђа-lе́ђlеӄӄај",
+   "resolved": "ђа́lђа-lе́ђlеӄӄај: U+0452 ђ three times, U+0301 acute on а and е, U+006C tall l three times, U+04C4 ӄ twice",
+   "class": "semantic",
+   "note": "«птичьи яички», bird eggs. Opening ђ is lowercase: the same height as the second ђ of the word (coordinator, 2×); copies read H/g."
+  },
+  "23": {
+   "text": "собираютъ довольно большое количество гусиныхъ и лебединыхъ яицъ на птичьихъ"
+  },
+  "24": {
+   "text": "садбищахъ.",
+   "class": "print",
+   "note": "садбищахъ as printed"
+  },
+  "25": {
+   "text": "12 (стр. 50). нутэ́рђын «погребъ». Чукчи вырубаютъ топоромъ яму въ",
+   "as_typed": "12 (стр. 50). {nute_1'rg_1yn} «погребъ». Чукчи вырубаютъ топоромъ яму въ",
+   "native": "нутэ́рђын",
+   "resolved": "нутэ́рђын: U+0301 acute on э, U+0452 ђ",
+   "class": "draft",
+   "note": "«погребъ», cellar. Ending ыn: both copies read ып; hairline lost, -ђын prior; key нутэ́рђын matches ratified"
+  },
+  "26": {
+   "text": "землѣ, куда складываютъ лѣтомъ свои припасы. Такъ какъ на тундрѣ земля лѣтомъ"
+  },
+  "27": {
+   "text": "оттаиваетъ только на три четверти аршина и кромѣ того нижніе слои почвы частью"
+  },
+  "28": {
+   "text": "состоятъ изъ льда, то если погребъ не меньше двухъ аршинъ въ глубину, провизія"
+  },
+  "29": {
+   "text": "уже перестаетъ портиться."
+  },
+  "30": {
+   "text": "13 (стр. 51). ма́ђны «оставка», всякая кладь, оставленная на продолжи-",
+   "native": "ма́ђны",
+   "resolved": "ма́ђны: U+0301 acute on а, U+0452 ђ",
+   "class": "doubt",
+   "note": "«оставка», things left behind (cache). Final ы carries a small hook beneath it (as under ӈ), not keyed: no ruled codepoint. Copies read мазны/мађны; ђ keyed from scan"
+  },
+  "31": {
+   "text": "тельное время въ пустынѣ и хорошо укрытая въ защиту отъ дикихъ звѣрей."
+  },
+  "32": {
+   "text": "14 (стр. 53). ђѵмні́н lӓ̂lэӈі́ткін «мое мѣсто зимовья». ыlвэ̀-ну́тэнут —",
+   "native": "ђѵмні́н lӓ̂lэӈі́ткін ыlвэ̀-ну́тэнут",
+   "resolved": "ђѵмні́н: U+0452 ђ, U+0475 ѵ, U+0301 acute on і; lӓ̂lэӈі́ткін: U+006C tall l twice, U+0308 diaeresis and U+0302 circumflex on а, U+04C8 ӈ, U+0301 acute on і; ыlвэ̀-ну́тэнут: U+006C tall l, U+0300 grave on э, U+0301 acute on у",
+   "class": "doubt",
+   "note": "DOUBT: a small round dot sits beside the ѵ at x-height, to its upper right, not over it; keyed plain ѵ, since no dot on ѵ is ruled (coordinator and second reviewer, 4×). The opening ђ is lowercase (x-height, like м). lӓ̂lэӈі́ткін: diaeresis under circumflex on а. Dash after ну́тэнут printed at line end, keyed spaced. «мое мѣсто зимовья», my winter-hut place."
+  },
+  "33": {
+   "text": "«мѣстность, богатая дикими оленями»; въ данномъ случаѣ такъ называемая «Чукотская"
+  },
+  "34": {
+   "text": "едома» на западъ отъ Колымы, горный отрогъ, стоящій среди тундры, какъ островъ."
+  },
+  "35": {
+   "text": "Разсказчикъ намѣревался выстроить тамъ зимовье."
+  },
+  "36": {
+   "text": "15 (стр. 54). ӈэ́рђэрык «по заморози»; время отъ первыхъ заморозковъ до",
+   "native": "ӈэ́рђэрык",
+   "resolved": "ӈэ́рђэрык: U+04C8 ӈ, U+0301 acute on э, U+0452 ђ",
+   "class": "doubt",
+   "note": "«по заморози», at the first frost. The acute stands on the first э in the scan; counterpart Ñerg̣eˊrɪk has it on the second. Copies ӈ as ц/ӈ; ђ keyed (copy A д)"
+  },
+  "37": {
+   "text": "перваго снѣга, приблизительно первая половина сентября; затѣмъ слѣдуетъ тур",
+   "native": "тур",
+   "resolved": "тур: no notation glyph"
+  },
+  "38": {
+   "text": "-ӓ̂lэ́тык у русскихъ колымчанъ «по первой порохѣ», до начала октября или дальше,",
+   "native": "ӓ̂lэ́тык",
+   "resolved": "ӓ̂lэ́тык: U+0308 diaeresis and U+0302 circumflex on а, U+006C tall l, U+0301 acute on э",
+   "class": "semantic",
+   "note": "«по первой порохѣ», at first powder snow. Printed as -ӓ̂lэ́тык beginning line 38 after тур at end of line 37 (tur-ӓleˊtɪk, Chukchee counterpart) "
+  },
+  "39": {
+   "text": "смотря по состоянію снѣговъ; и только съ того времени начинается ђытһа́н",
+   "native": "ђытһа́н",
+   "resolved": "ђытһа́н: U+0452 ђ, U+04BB һ, U+0301 acute on а",
+   "class": "semantic",
+   "note": "«осень», autumn. Copy B read ӄ; scan shows ђ, matching ђытһа́н/G̣ɪthaˊ"
+  },
+  "40": {
+   "text": "«осень»."
+  }
+ }
+}

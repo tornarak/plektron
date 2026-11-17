@@ -1,0 +1,234 @@
+{
+ "ref": "1-073",
+ "contamination": {
+  "blind": false,
+  "why": "this pass reads both text-layer copies (ocr witness) by design, and two lexicon lookups (the copies' spellings, then the scan's); no other page's proposal, decision or gt/ocr/ was read"
+ },
+ "lines": {
+  "0": {
+   "text": "I,3. МАТЕРІАЛЫ ПО ИЗУЧЕНІЮ ЧУКОТСКАГО ЯЗЫКА И ФОЛЬКЛОРА. 17",
+   "class": "layout",
+   "note": "Running head: Latin I, comma, old-style figure 3 (as I,9. on 1-114), full stop."
+  },
+  "1": {
+   "text": "2 (стр. 6). іlу́ткуlын. Собственно іlу́ткуркын значитъ «стучать въ бубенъ",
+   "native": "іlу́ткуlын іlу́ткуркын",
+   "resolved": "іlу́ткуlын: U+0456 і, U+006C tall l, U+0443 у, U+0301 acute on у, U+006C tall l; іlу́ткуркын: U+0301 acute on у, U+006C tall l",
+   "class": "semantic",
+   "note": "«стучать въ бубенъ», to drum on the tambourine; іlу́ткуlын is the heading form (both copies read л or р before ын, the scan shows tall l: lын)."
+  },
+  "2": {
+   "text": "и пѣть обрядовые напѣвы; совершать обрядовое служеніе». Такое служеніе соста-"
+  },
+  "3": {
+   "text": "вляетъ обрядовую обязанность всѣхъ чукочъ, мужчинъ и женщинъ, производится на"
+  },
+  "4": {
+   "text": "семейномъ бубнѣ и съ шаманствомъ не совсѣмъ совпадаетъ. Оно является, такъ"
+  },
+  "5": {
+   "text": "сказать, первичной почвой, на которой развилось шаманство отдѣльныхъ, особо-ода-"
+  },
+  "6": {
+   "text": "ренныхъ, духо-вдохновленныхъ людей (эӈэ́ӈыlын), какимъ въ данномъ случаѣ",
+   "as_typed": "ренныхъ, духо-вдохновленныхъ людей ({e_1n_1e_1'n_1yl_0yn}), какимъ въ данномъ случаѣ",
+   "native": "эӈэ́ӈыlын",
+   "resolved": "эӈэ́ӈыlын: U+04C8 ӈ x2, U+0301 acute on second э, U+006C tall l"
+  },
+  "7": {
+   "text": "является молодой женоотвергающій шаманъ. Его єlөткө́ырђын, точнѣе аӈа̀ӈ-еlөт-",
+   "native": "єlөткө́ырђын аӈа̀ӈ-еlөт-",
+   "resolved": "єlөткө́ырђын: U+0454 є, U+006C tall l, U+04E9 ө x2, U+0301 acute on second ө, U+0452 ђ; аӈа̀ӈ-еlөт-: U+04C8 ӈ x2, U+0300 grave on second а, U+006C tall l, U+04E9 ө",
+   "class": "doubt",
+   "note": "Initial єlөт-: 4x shows a small spur inside the right of the first е, keyed є; the second еlөт- at the line end (after аӈа̀ӈ-) looked closed at 2x and is keyed plain е. Gap between Его еl and кө́ырђын read as өт from the 2x strips. Copies read көырӄын/көырдын; scan shows ђ."
+  },
+  "8": {
+   "text": "кө́ырђын является уже настоящимъ шаманскимъ дѣйствіемъ.",
+   "native": "кө́ырђын",
+   "resolved": "кө́ырђын: U+04E9 ө, U+0301 acute on ө, U+0452 ђ"
+  },
+  "9": {
+   "text": "3 (стр. 7). При шаманскомъ дѣйствіи кто-нибудь изъ присутствующихъ бе-"
+  },
+  "10": {
+   "text": "ретъ на себя обязанность ободрять шамана сочувственными откликами: Ђыч «эхъ!»",
+   "native": "Ђыч",
+   "resolved": "Ђыч: U+0402 Ђ",
+   "class": "semantic",
+   "note": "Ђыч «эхъ!», an encouraging response to the shaman, roughly interjection eh!; initial letter ђ (copy A read Б)."
+  },
+  "11": {
+   "text": "ӄа́јвє «правда!» емӈо́lык «точно такъ!» и т. п.",
+   "native": "ӄа́јвє емӈо́lык",
+   "resolved": "ӄа́јвє: U+04C4 ӄ, U+0301 acute on а, U+0458 ј, U+0454 є; емӈо́lык: U+04C8 ӈ, U+0301 acute on о, U+006C tall l",
+   "class": "doubt",
+   "note": "ӄа́јвє «правда!», interjection, truly!; емӈо́lык «точно такъ!», just so (counterpart Emñoˊlɪk, certainly). Final glyph of ӄа́јвє is an open є (copies е/є); the word was not read at 4x. ӄ has its stroke running into the hook."
+  },
+  "12": {
+   "text": "4 (стр. 9). пыlе́ўрым — здѣсь и раньше переведено: «давай Богъ!» Это",
+   "native": "пыlе́ўрым",
+   "resolved": "пыlе́ўрым: U+006C tall l, U+0301 acute on е, U+0443 у, U+0306 breve on у",
+   "class": "semantic",
+   "note": "пыlе́ўрым — «давай Богъ!», may God give! (a wish for success, per line 13)."
+  },
+  "13": {
+   "text": "слово выражаетъ пожеланіе удачи."
+  },
+  "14": {
+   "text": "5 (стр. 10). ђыну̀н-нутэ́кін — происходящій изъ срединной земли; ђыну̀н",
+   "native": "ђыну̀н-нутэ́кін ђыну̀н",
+   "resolved": "ђыну̀н-нутэ́кін: U+0452 ђ, U+0300 grave on у, U+0301 acute on э, U+0456 і; ђыну̀н: U+0452 ђ, U+0300 grave on у",
+   "class": "doubt",
+   "note": "Second ђыну̀н ends the line with its last н clipped; grave on у. In ђыну̀н-нутэ́кін the acute sits over the broken э (white specks inside it). «происходящій изъ срединной земли», coming from the middle land. Copies read Бынун/ӄынун; scan shows ђ in both."
+  },
+  "15": {
+   "text": "-пу́тэнут называется центральная часть чукотской территоріи, одинаково далекая",
+   "native": "-пу́тэнут",
+   "resolved": "-пу́тэнут: U+0301 acute on у",
+   "class": "doubt",
+   "note": "Doubt: the line opens -пу́тэнут with a flat-topped п (no crossbar, unlike the н in нутэ́кін on line 14 and the н inside -тэнут), so keyed п; copy B read нутэнут, copy A путэнут. The word names the central Chukchi land (line 15), continuing ђыну̀н- from line 14."
+  },
+  "16": {
+   "text": "отъ рѣки Колымы и отъ Берингова пролива (область къ востоку отъ верховьевъ"
+  },
+  "17": {
+   "text": "рѣки Чауна)."
+  },
+  "18": {
+   "text": "6 (стр. 11). нымту́мђын «сосѣдъ на стойбищѣ». Это названіе придается",
+   "as_typed": "6 (стр. 11). {nymtu'mg_1yn} «сосѣдъ на стойбищѣ». Это названіе придается",
+   "native": "нымту́мђын",
+   "resolved": "нымту́мђын: U+0301 acute on у, U+0452 ђ",
+   "class": "semantic",
+   "note": "нымту́мђын «сосѣдъ на стойбищѣ», a neighbour in the camp; ratified key matches the scan."
+  },
+  "19": {
+   "text": "только бѣднымъ, зависимымъ сосѣдямъ, которые для своего пропитанія пользуются"
+  },
+  "20": {
+   "text": "щедростью хозяина стойбища и за то оказываютъ ему различныя услуги, у оленныхъ"
+  },
+  "21": {
+   "text": "чукочъ участвуютъ въ охраненіи его стадъ и являются зависимыми пастухами, ра-"
+  },
+  "22": {
+   "text": "ботниками. Въ данномъ случаѣ старичокъ сосѣдъ оказываетъ хозяину только раз-"
+  },
+  "23": {
+   "text": "личныя домашнія услуги, такъ какъ старики вообще для охраненія полудикихъ чукот-"
+  },
+  "24": {
+   "text": "скихъ стадъ не имѣютъ достаточно силы."
+  },
+  "25": {
+   "text": "7 (стр. 14). Въ семьѣ, имѣющей только дочерей, онѣ исполняютъ всѣ муж-"
+  },
+  "26": {
+   "text": "скія работы и не только пасутъ стадо, ловятъ и убиваютъ оленей, но даже съ ору-"
+  },
+  "27": {
+   "text": "жіемъ въ рукахъ отгоняютъ дикихъ животныхъ. Но всетаки такая семья постоянно"
+  },
+  "28": {
+   "text": "стремится принять къ себѣ зятя."
+  },
+  "29": {
+   "text": "8 (стр. 17). Чукчи въ своихъ дѣйствіяхъ постоянно руководствуются снами."
+  },
+  "30": {
+   "text": "Нѣкоторые не періодическія празднества, напр. скачки, устраиваются чаще всего на"
+  },
+  "31": {
+   "text": "основаніи указаній, полученныхъ во снѣ."
+  },
+  "32": {
+   "text": "9 (стр. 19). і́ўlы-ђіlі́lын «ищущій мочу» (вокругъ стойбища), ср. выше",
+   "native": "і́ўlы-ђіlі́lын",
+   "resolved": "і́ўlы-ђіlі́lын: U+0456 і, U+0301 acute on first і, U+0443 у, U+0306 breve on у, U+006C tall l x3, U+0452 ђ, U+0301 acute on second і after ђіl",
+   "class": "semantic",
+   "note": "і́ўlы-ђіlі́lын «ищущій мочу», looking for urine (around the camp); acutes on both і."
+  },
+  "33": {
+   "text": "№ 1 прим. 23. Только такіе олени и бываютъ наиболѣе ручными."
+  },
+  "34": {
+   "text": "10 (стр. 36). јімђумђэ́эркын — чувствовать страхъ передъ чѣмъ либо",
+   "native": "јімђумђэ́эркын",
+   "resolved": "јімђумђэ́эркын: U+0458 ј, U+0456 і, U+0452 ђ x2, U+0301 acute on first э",
+   "class": "doubt",
+   "note": "Doubt: јімђумђэ́эркын, the first э after the second ђ is broken by white specks with an acute above it; read as ђэ́э (copy A had бээ)."
+  },
+  "35": {
+   "text": "сверхъ-естественнымъ."
+  },
+  "36": {
+   "text": "11 (стр. 41). ан̀ӈа́аркын «погружаться». Когда шаманъ во время шаман-",
+   "native": "ан̀ӈа́аркын",
+   "resolved": "а̀нӈа́аркын: U+0300 grave on first а, U+04C8 ӈ, U+0301 acute on second а",
+   "class": "semantic",
+   "note": "ан̀ӈа́аркын «погружаться», to sink: the grave sits over the н, not the а (4×, coordinator and second reviewer), as 1-114 l9 sets it; the counterpart an˙ñaˊarkɪn dots the n there. The faint speck at mid-height is the н crossbar."
+  },
+  "37": {
+   "text": "скаго дѣйствія впадаетъ въ столбнякъ или обмираетъ, о немъ говорятъ, что"
+  },
+  "38": {
+   "text": "онъ погрузился. уwе́ђђырђын «душа». Замѣчательно что это слово, какъ и",
+   "native": "уwе́ђђырђын",
+   "resolved": "уwе́ђђырђын: U+0077 w, U+0301 acute on е, U+0452 ђ x3",
+   "class": "semantic",
+   "note": "уwе́ђђырђын «душа», soul; literally body-soul (line 40, from уwі́к body)."
+  },
+  "39": {
+   "text": "другое тожественнаго значенія уwі́ріт, прямо произведены отъ уwі́к «тѣло, туло-",
+   "as_typed": "другое тожественнаго значенія {uw_0i_1'ri_1t}, прямо произведены отъ уwі́к «тѣло, туло-",
+   "native": "уwі́ріт уwі́к",
+   "resolved": "уwі́ріт: U+0077 w, U+0456 і, U+0301 acute on first і; уwі́к: U+0077 w, U+0301 acute on і",
+   "class": "semantic",
+   "note": "уwі́к «тѣло, туловище», body, trunk; уwі́ріт are the tangible souls (plural)."
+  },
+  "40": {
+   "text": "вище». Такимъ образомъ уwе́ђђырђын собственно значитъ тѣлесная душа. Но",
+   "native": "уwе́ђђырђын",
+   "resolved": "уwе́ђђырђын: U+0077 w, U+0301 acute on е, U+0452 ђ x3"
+  },
+  "41": {
+   "text": "чукчи не имѣютъ представленія о какой-нибудь другой душѣ, отличной отъ уwі́ріт —",
+   "as_typed": "чукчи не имѣютъ представленія о какой-нибудь другой душѣ, отличной отъ {uw_0i_1'ri_1t} —",
+   "native": "уwі́ріт",
+   "resolved": "уwі́ріт: U+0077 w, U+0301 acute on first і",
+   "class": "doubt",
+   "note": "Doubt: the line ends with a long dash (as long as the dashes of lines 12, 14, 34) after уwі́ріт, where a compound hyphen уwі́ріт-уwе́ђђырђын would be plausible; keyed a spaced dash as the ink is long. Also душѣ, not душъ as copy B."
+  },
+  "42": {
+   "text": "уwе́ђђырђын. Уwі́ріт дѣйствительно имѣетъ совершенно тѣлесный характеръ,",
+   "native": "уwе́ђђырђын Уwі́ріт",
+   "resolved": "уwе́ђђырђын: U+0077 w, U+0301 acute on е, U+0452 ђ x3; Уwі́ріт: U+0077 w, U+0301 acute on first і",
+   "class": "draft",
+   "note": "Both copies garble the opening (умеђӄырӄын / ушенӄырӄын); the scan shows уwе́ђђырђын. followed by Уwі́ріт."
+  },
+  "43": {
+   "text": "такъ что злые духи похищаютъ уwі́ріт для того, чтобы съѣсть его и откармливаютъ",
+   "as_typed": "такъ что злые духи похищаютъ {uw_0i_1'ri_1t} для того, чтобы съѣсть его и откармливаютъ",
+   "native": "уwі́ріт",
+   "resolved": "уwі́ріт: U+0077 w, U+0301 acute on first і"
+  },
+  "44": {
+   "text": "уwі́ріт прежде потребленія. Каждый человѣкъ имѣетъ пять или шесть уwі́ріт. Они",
+   "as_typed": "{uw_0i_1'ri_1t} прежде потребленія. Каждый человѣкъ имѣетъ пять или шесть {uw_0i_1'ri_1t}. Они",
+   "native": "уwі́ріт",
+   "resolved": "уwі́ріт: U+0077 w, U+0301 acute on first і"
+  },
+  "45": {
+   "text": "маленькіе, не больше комара. Одного или двухъ можно потерять безъ ущерба для"
+  },
+  "46": {
+   "text": "здоровья, но когда большая часть уwі́ріт похищена духами, наступаетъ болѣзнь, а",
+   "as_typed": "здоровья, но когда большая часть {uw_0i_1'ri_1t} похищена духами, наступаетъ болѣзнь, а",
+   "native": "уwі́ріт",
+   "resolved": "уwі́ріт: U+0077 w, U+0301 acute on first і"
+  },
+  "47": {
+   "text": "3"
+  }
+ }
+}

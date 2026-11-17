@@ -1,0 +1,221 @@
+{
+ "ref": "1-145",
+ "contamination": {
+  "blind": false,
+  "why": "this pass reads both text-layer copies (ocr witness) by design, and two lexicon lookups (the copies' spellings, then the scan's); no other page's proposal, decision or gt/ocr/ was read"
+ },
+ "lines": {
+  "0": {
+   "text": "I,14. МАТЕРІАЛЫ ПО ИЗУЧЕНІЮ ЧУКОТСКАГО ЯЗЫКА И ФОЛЬКЛОРА. 89"
+  },
+  "1": {
+   "text": "4 (стр. 10). пнаwко́очһын «мѣшокъ для храненія оселка пна́wкун». Такой",
+   "native": "пнаwко́очһын пна́wкун",
+   "resolved": "пнаwко́очһын: U+0077 w, U+043A plain к (separate curl below), U+0301 acute on о, U+04BB һ; пна́wкун: U+0301 acute on а, U+0077 w, U+043A plain к",
+   "note": "К in пнаwко́очһын and пна́wкун has a curl below that is separate from its stroke, keyed plain к per the ruling; copies read ш for w. Gloss: пна́wкун, whetstone (оселокъ); пнаwко́очһын, whetstone pouch.",
+   "class": "semantic"
+  },
+  "2": {
+   "text": "мѣшочекъ вмѣстѣ съ небольшимъ оселкомъ въ числѣ прочихъ необходимыхъ принад-"
+  },
+  "3": {
+   "text": "лежностей виситъ у мужчинъ на поясѣ, а у женщинъ на груди вмѣстѣ съ огнивомъ."
+  },
+  "4": {
+   "text": "рама́wђочһын «кисетъ», буквально «мѣшочекъ для (храненія) крошеннаго (табаку)».",
+   "native": "рама́wђочһын",
+   "resolved": "рама́wђочһын: U+0301 acute on а, U+0077 w, U+0452 ђ, U+04BB һ",
+   "note": "Gloss: рама́wђочһын «кисеть», literally pouch for shredded tobacco.",
+   "class": "semantic"
+  },
+  "5": {
+   "text": "Всѣ жители сѣверовостока употребляютъ для куренья табакъ самодѣльной крошки,"
+  },
+  "6": {
+   "text": "смѣшанный почти на половину со скобленнымъ деревомъ."
+  },
+  "7": {
+   "text": "5 (стр. 12). а̂́ттыс̧ӄӓтуlӄӓј буквально «кусочекъ собачины». Чукчи обши-",
+   "native": "а̂́ттыс̧ӄӓтуlӄӓј",
+   "resolved": "а̂́ттыс̧ӄӓтуlӄӓј: U+0302 circumflex and U+0301 acute on а, U+0441 с + U+0327 cedilla, U+04C4 ӄ, U+04D3 ӓ, U+006C tall l",
+   "note": "Single word, no space after с̧; copies split it into three. Gloss: «кусочекъ собачины», little piece of dog-meat.",
+   "class": "semantic"
+  },
+  "8": {
+   "text": "ваютъ свои мѣховыя одежды узкой полоской собачьяго мѣха. Поэтому мѣховая опушка"
+  },
+  "9": {
+   "text": "называется просто «край собачины» а̂́ттыс̧ӄӓн, даже если она сдѣлана изъ выдры",
+   "native": "а̂́ттыс̧ӄӓн",
+   "resolved": "а̂́ттыс̧ӄӓн: U+0302 circumflex and U+0301 acute on а, U+0441 с + U+0327, U+04C4 ӄ, U+04D3 ӓ"
+  },
+  "10": {
+   "text": "или россомахи."
+  },
+  "11": {
+   "text": "6 (стр. 12 и слѣд.). См. № 10, прим. 7."
+  },
+  "12": {
+   "text": "7 (стр. 25). рено́lђын ненаты́łопӄен «боковую стѣну шатра раскрываютъ».",
+   "native": "рено́lђын ненаты́łопӄен",
+   "resolved": "рено́lђын: U+0301 acute on о, U+006C tall l, U+0452 ђ; ненаты́łопӄен: U+0301 acute on ы, U+0142 ł barred l, U+04C4 ӄ",
+   "note": "The barred l (ł) between ы and о is a tall stem with a crossbar at x-height, read at 4x; the acute sits left of it, taken as over ы but could be over ł. Copies read т. Gloss: «боковую стѣну шатра раскрываютъ», the side wall of the tent is opened.",
+   "class": "doubt"
+  },
+  "13": {
+   "text": "Это дѣлается для того, чтобы покойникъ, если онъ возвратится въ видѣ злого духа,"
+  },
+  "14": {
+   "text": "не могъ найти входа."
+  },
+  "15": {
+   "text": "8 (стр. 27). Нарту оборачиваютъ головками назадъ вслѣдствіе того, что по-"
+  },
+  "16": {
+   "text": "койнику нужно уѣзжать въ страну вечера (дверь чукотскаго шатра всегда обращена"
+  },
+  "17": {
+   "text": "тӈа́ырђеты «въ сторону разсвѣта»).",
+   "native": "тӈа́ырђеты",
+   "resolved": "тӈа́ырђеты: U+04C8 ӈ, U+0301 acute on а, U+0452 ђ"
+  },
+  "18": {
+   "text": "9 (стр. 39). э́wкэw — «лѣвый олень упряжки». Правый олень называется",
+   "native": "э́wкэw",
+   "resolved": "э́wкэw: U+0301 acute on э, U+0077 w, U+043A plain к (separate curl below), U+0077 w",
+   "note": "К has a separate curl below, keyed plain к; copies read the form as śwkw/śwkaw. Gloss: «лѣвый олень упряжки», left trace-reindeer.",
+   "class": "doubt"
+  },
+  "19": {
+   "text": "ђаӄа́нӄор, а оба вмѣстѣ ђаӄа́нд̀е или ђэӄэнр̌э́т. Обращаетъ на себя вниманіе при",
+   "native": "ђаӄа́нӄор ђаӄа́нд̀е ђэӄэнр̌э́т",
+   "resolved": "ђаӄа́нӄор: U+0452 ђ, U+04C4 ӄ, U+0301 acute on а; ђаӄа́нд̀е: U+0301 acute on а, U+0300 grave on д; ђэӄэнр̌э́т: U+0452 ђ, U+04C4 ӄ, U+030C caron on р, U+0301 acute on э",
+   "note": "Three readings to check: grave over д in ђаӄа́нд̀е (a plain д with two feet, not the forked ð of l.39); caron over р in ђэӄэнр̌э́т (key letter р̌); first letters read ђ (copy B: Б). Glosses: ђаӄа́нӄор right reindeer of the team; ђаӄа́нде/ђэӄэнр̌э́т both together.",
+   "class": "doubt"
+  },
+  "20": {
+   "text": "всѣхъ обрядахъ и примѣтахъ предпочтеніе лѣвой стороны, какъ и у другихъ народовъ."
+  },
+  "21": {
+   "text": "10 (стр. 40). ӄаа́нмі сокращено изъ ӄаа́нміо »убитый олень». Покойника",
+   "native": "ӄаа́нмі ӄаа́нміо",
+   "resolved": "ӄаа́нмі: U+04C4 ӄ, U+0301 acute on second а; ӄаа́нміо likewise",
+   "note": "The opening guillemet is set as » and the closing as » (printed ») and not «), keyed as set. Gloss: ӄаа́нміо «убитый олень», slain reindeer.",
+   "class": "print"
+  },
+  "22": {
+   "text": "увязываютъ на нартѣ и предводитель погребальнаго кортежа, пэнэ̀эlынlэтэ́тыlын",
+   "native": "пэнэ̀эlынlэтэ́тыlын",
+   "resolved": "пэнэ̀эlынlэтэ́тыlын: U+0300 grave on э, U+006C tall l x3, U+0301 acute on э",
+   "note": "Gloss: пэнэ̀эlынlэтэ́тыlын, the leader of the funeral cortege. A stray speck over о of кортежа is not a mark. Tall l (not һ) before the last ы, read at 4x.",
+   "class": "semantic"
+  },
+  "23": {
+   "text": "садится на него верхомъ, свѣсивъ ноги по сторонамъ, такъ какъ на чукотской ѣздовой"
+  },
+  "24": {
+   "text": "нартѣ иначе нельзя ѣздить."
+  },
+  "25": {
+   "text": "11 (стр. 43). lэwті́lђын «головная часть оленьей сбруи». Вмѣсто удилъ въ",
+   "native": "lэwті́lђын",
+   "resolved": "lэwті́lђын: U+006C tall l x2, U+0077 w, U+0301 acute on і, U+0452 ђ",
+   "note": "Gloss: lэwті́lђын «головная часть оленьей сбруи», head part of reindeer harness; copies read lаwтіӄын.",
+   "class": "semantic"
+  },
+  "26": {
+   "text": "составъ ея входятъ острыя роговыя или желѣзныя гребенки, расположенныя по сто-"
+  },
+  "27": {
+   "text": "ронамъ головы и при подергиваніи возжами заставляющія оленей поворачиваться въ"
+  },
+  "28": {
+   "text": "ту или другую сторону. Колымское русское нарѣчіе переводитъ lэwті́lђын — «узда».",
+   "native": "lэwті́lђын",
+   "resolved": "lэwті́lђын: U+006C tall l x2, U+0077 w, U+0301 acute on і, U+0452 ђ",
+   "class": "draft",
+   "note": "Copies read lаwтіӄын/1эштіӄын; scan lэwті́lђын as l.25."
+  },
+  "29": {
+   "text": "12 (стр. 45). ђа́тты «га́тка». Чукчи для обтесыванія дерева вмѣсто топора",
+   "native": "ђа́тты",
+   "resolved": "ђа́тты: U+0452 ђ, U+0301 acute on а",
+   "note": "DOUBT: Russian words are printed with a stress acute: «га́тка» here, га́токъ l33, га́тки l37, бо́льшее l46 (2×). Keyed as printed; no rule covers accents in Russian prose. ђа́тты «гатка», adze-like iron tool; ђ ratified at 1-147.",
+   "class": "doubt"
+  },
+  "30": {
+   "text": "употребляютъ поперечное желѣзное тесло, небольшое и легкое, которое для работъ"
+  },
+  "31": {
+   "text": "сколько нибудь крупныхъ мало пригодно. Это тесло очевидно представляетъ подра-"
+  },
+  "32": {
+   "text": "жаніе формѣ роговаго орудія, которое было въ употребленіи у чукочъ до появленія"
+  },
+  "33": {
+   "text": "привозныхъ желѣзныхъ издѣлій. Однако чукчи сами не умѣютъ выковывать га́токъ,",
+   "resolved": "га́токъ: U+0301 acute on а, printed stress in a Russian word"
+  },
+  "34": {
+   "text": "а покупаютъ ихъ отъ русскихъ кузнецовъ, которые выдѣлываютъ ихъ исключительно"
+  },
+  "35": {
+   "text": "на продажу чукчамъ. Приморскіе чукчи впрочемъ покупаютъ у американскихъ китоло-"
+  },
+  "36": {
+   "text": "вовъ большіе стальные напильники и расколачиваютъ ихъ безъ разогрѣванія каменными"
+  },
+  "37": {
+   "text": "или желѣзными молотками, придавая имъ форму га́тки. ӄо̀р-ачо́оlђын «мочепріем-",
+   "native": "ӄо̀р-ачо́оlђын",
+   "resolved": "ӄо̀р-ачо́оlђын: U+04C4 ӄ, U+0300 grave on о, U+0301 acute on о, U+006C tall l, U+0452 ђ",
+   "note": "Grave over the first о of ӄо̀р- is in the scan at 4x; ratified ӄор-ачо́оlђын (1-062) has none. Gloss: «мочепріемникъ для оленей», urine-receptacle for reindeer.",
+   "class": "doubt"
+  },
+  "38": {
+   "text": "никъ для оленей». Многіе (но не всѣ) олени любятъ мочу. Чукчи основали на этомъ"
+  },
+  "39": {
+   "text": "цѣлую систему прирученія оленей, такъ какъ жадные къ мочѣ олени, ђы́ðе-ӄа́ат",
+   "native": "ђы́ðе-ӄа́ат",
+   "resolved": "ђы́ðе-ӄа́ат: U+0452 ђ, U+0301 acute on ы, U+00F0 ð forked d, U+04C4 ӄ, U+0301 acute on а",
+   "note": "Forked d (ð) in ђы́ðе-ӄа́ат: two spurs on top, unlike the д of l.19. Gloss: reindeer that crave urine.",
+   "class": "semantic"
+  },
+  "40": {
+   "text": "менѣе другихъ чуждаются человѣка и нерѣдко даже доходятъ до того, что прибѣгаютъ"
+  },
+  "41": {
+   "text": "пить изъ рукъ. Это относится разумѣется къ упряжнымъ оленямъ, которыхъ чукчи"
+  },
+  "42": {
+   "text": "упорно стараются пріучать къ потребленію мочи съ перваго года упряжки. Каждый"
+  },
+  "43": {
+   "text": "ѣздокъ на оленяхъ и каждый пастухъ постоянно носитъ при себѣ на поясѣ маленькій",
+   "note": "Copy B reads посить; scan носитъ.",
+   "class": "draft"
+  },
+  "44": {
+   "text": "кожаный сосудъ ӄо̀р-ачо́оlђын, который и служитъ для угощенія оленей по мѣрѣ",
+   "native": "ӄо̀р-ачо́оlђын",
+   "resolved": "ӄо̀р-ачо́оlђын: U+04C4 ӄ, U+0300 grave on о, U+0301 acute on о, U+006C tall l, U+0452 ђ",
+   "note": "Grave over first о of ӄо̀р-, as in l.37.",
+   "class": "doubt"
+  },
+  "45": {
+   "text": "надобности. Кромѣ того существуютъ еще јара́кен эчу́уlђыт — «домашніе моче-",
+   "native": "јара́кен эчу́уlђыт",
+   "resolved": "јара́кен: U+0458 ј, U+0301 acute on second а; эчу́уlђыт: U+0301 acute on у, U+006C tall l, U+0452 ђ",
+   "note": "Gloss: «домашніе мочепріемники», domestic urine-receptacles; acute on the second а of јара́кен.",
+   "class": "semantic"
+  },
+  "46": {
+   "text": "пріемники», въ которые собираютъ бо́льшее количество мочи, выливая ее потомъ на",
+   "resolved": "бо́льшее: U+0301 acute on о, printed stress in a Russian word"
+  },
+  "47": {
+   "text": "12"
+  }
+ }
+}
