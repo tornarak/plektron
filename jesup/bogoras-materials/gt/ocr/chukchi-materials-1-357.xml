@@ -1,0 +1,246 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns="http://www.loc.gov/standards/alto/ns-v4#">
+  <Description>
+    <MeasurementUnit>pixel</MeasurementUnit>
+    <sourceImageInformation>
+      <fileName>chukchi-materials-1-357.png</fileName>
+    </sourceImageInformation>
+    <Processing ID="OCR_harness-ocr-import">
+      <processingStepDescription>text layer of the source PDF, harness ocr import</processingStepDescription>
+      <processingStepSettings>harness: 1; kind: model; step: harness ocr import; label: text layer of the source PDF; version: pymupdf 1.28.2; model: pdfs/bogoras-1900-chukchee-materials.pdf; sha256: a8e4f046eb19336b0fe1e72b3215701a76da30de62a68481646223855374e32d; in.engine: the OCR that made the text layer; in.copy: master; in.pdf_page: 357; in.text_layer_producer: Google Books PDF Converter (rel 3 12/12/14); in.row_overlap: 0.5; in.align: drift -6.9 px at y=0, 1.12 px per 1000 px, 32 rows, median residual 2.5 px, less a 25 px baseline drop; in.folds: Ä&gt;Ӓ Ď&gt;Ð ä&gt;ӓ ď&gt;ð Қ&gt;Ӄ қ&gt;ӄ Ң&gt;Ӈ ң&gt;ӈ Ӏ&gt;l ӏ&gt;l Ә&gt;Э ә&gt;э</processingStepSettings>
+      <processingSoftware>
+        <softwareName>harness</softwareName>
+      </processingSoftware>
+    </Processing>
+  </Description>
+  <Layout>
+    <Page WIDTH="4720" HEIGHT="7008" PHYSICAL_IMG_NR="0" ID="page_0">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="4720" HEIGHT="7008">
+        <TextBlock ID="text_1-357" HPOS="578" VPOS="604" WIDTH="3006" HEIGHT="5211">
+          <TextLine ID="mz_1-357_l1" HPOS="591" VPOS="604" WIDTH="2987" HEIGHT="112" BASELINE="591 696 3578 696">
+            <Shape>
+              <Polygon POINTS="591 604 3578 604 3578 716 591 716"/>
+            </Shape>
+            <String CONTENT="II,116. МАТЕРІАЛЫ ПО ИЗУЧЕНІЮ ЧУКОТСКАГО ЯЗЫКА И ФОЛЬКЛОРА. 301" HPOS="591" VPOS="604" WIDTH="2987" HEIGHT="112"/>
+          </TextLine>
+          <TextLine ID="mz_1-357_l2" HPOS="591" VPOS="815" WIDTH="2987" HEIGHT="100" BASELINE="591 914 3578 914">
+            <Shape>
+              <Polygon POINTS="591 815 3578 815 3578 915 591 915"/>
+            </Shape>
+            <String CONTENT="маленькій лукъ изъ китоваго уса, стрѣлка деревянная. Народъ смѣется:" HPOS="591" VPOS="815" WIDTH="2987" HEIGHT="100"/>
+          </TextLine>
+          <TextLine ID="mz_1-357_l3" HPOS="599" VPOS="933" WIDTH="2980" HEIGHT="108" BASELINE="599 1041 3579 1041">
+            <Shape>
+              <Polygon POINTS="599 933 3579 933 3579 1041 599 1041"/>
+            </Shape>
+            <String CONTENT="«Ха, ха! Такой-то твой лукъ! Зачѣмъ пришелъ? Стрѣла у тебя изъ ка-" HPOS="599" VPOS="933" WIDTH="2980" HEIGHT="108"/>
+          </TextLine>
+          <TextLine ID="mz_1-357_l4" HPOS="599" VPOS="1058" WIDTH="2985" HEIGHT="110" BASELINE="599 1167 3584 1167">
+            <Shape>
+              <Polygon POINTS="599 1058 3584 1058 3584 1168 599 1168"/>
+            </Shape>
+            <String CONTENT="кого-то дерева, лукъ китоусовый. Нашъ порохъ не могъ; развѣ твое" HPOS="599" VPOS="1058" WIDTH="2985" HEIGHT="110"/>
+          </TextLine>
+          <TextLine ID="mz_1-357_l5" HPOS="597" VPOS="1186" WIDTH="2983" HEIGHT="109" BASELINE="597 1294 3580 1294">
+            <Shape>
+              <Polygon POINTS="597 1186 3580 1186 3580 1295 597 1295"/>
+            </Shape>
+            <String CONTENT="сможетъ? Ха, ха, ха! Зачѣмъ пришелъ, пустословъ?» Вдругъ онъ лукъ" HPOS="597" VPOS="1186" WIDTH="2983" HEIGHT="109"/>
+          </TextLine>
+          <TextLine ID="mz_1-357_l6" HPOS="597" VPOS="1324" WIDTH="2984" HEIGHT="97" BASELINE="597 1421 3581 1421">
+            <Shape>
+              <Polygon POINTS="597 1324 3581 1324 3581 1421 597 1421"/>
+            </Shape>
+            <String CONTENT="натянулъ, только одна стрѣла; стрѣла пробила волка, какъ мягкій снѣгъ и" HPOS="597" VPOS="1324" WIDTH="2984" HEIGHT="97"/>
+          </TextLine>
+          <TextLine ID="mz_1-357_l7" HPOS="603" VPOS="1442" WIDTH="2978" HEIGHT="102" BASELINE="603 1543 3581 1543">
+            <Shape>
+              <Polygon POINTS="603 1442 3581 1442 3581 1544 603 1544"/>
+            </Shape>
+            <String CONTENT="вышла насквозь. Волкъ тотчасъ упалъ. Убилъ. Всѣ люди подошли. Дѣ-" HPOS="603" VPOS="1442" WIDTH="2978" HEIGHT="102"/>
+          </TextLine>
+          <TextLine ID="mz_1-357_l8" HPOS="599" VPOS="1566" WIDTH="2978" HEIGHT="109" BASELINE="599 1674 3577 1674">
+            <Shape>
+              <Polygon POINTS="599 1566 3577 1566 3577 1675 599 1675"/>
+            </Shape>
+            <String CONTENT="вушка говоритъ: «Ну, потрошите!» Опять не могутъ. Какъ камень. Пре-" HPOS="599" VPOS="1566" WIDTH="2978" HEIGHT="109"/>
+          </TextLine>
+          <TextLine ID="mz_1-357_l9" HPOS="599" VPOS="1699" WIDTH="2973" HEIGHT="101" BASELINE="599 1799 3572 1799">
+            <Shape>
+              <Polygon POINTS="599 1699 3572 1699 3572 1800 599 1800"/>
+            </Shape>
+            <String CONTENT="красные ножи, большіе ножи, малые ножи, всѣ стали тупы, изломались." HPOS="599" VPOS="1699" WIDTH="2973" HEIGHT="101"/>
+          </TextLine>
+          <TextLine ID="mz_1-357_l10" HPOS="588" VPOS="1820" WIDTH="2988" HEIGHT="108" BASELINE="588 1927 3576 1927">
+            <Shape>
+              <Polygon POINTS="588 1820 3576 1820 3576 1928 588 1928"/>
+            </Shape>
+            <String CONTENT="Не могутъ. Всѣ люди опять перестали, не могутъ. Все изломали, чѣмъ" HPOS="588" VPOS="1820" WIDTH="2988" HEIGHT="108"/>
+          </TextLine>
+          <TextLine ID="mz_1-357_l11" HPOS="595" VPOS="1953" WIDTH="2974" HEIGHT="102" BASELINE="595 2054 3569 2054">
+            <Shape>
+              <Polygon POINTS="595 1953 3569 1953 3569 2055 595 2055"/>
+            </Shape>
+            <String CONTENT="станутъ. Всѣ перестали. Зайчикъ снова свой набедренный ножъ вынулъ," HPOS="595" VPOS="1953" WIDTH="2974" HEIGHT="102"/>
+          </TextLine>
+          <TextLine ID="mz_1-357_l12" HPOS="590" VPOS="2068" WIDTH="2989" HEIGHT="113" BASELINE="590 2181 3579 2181">
+            <Shape>
+              <Polygon POINTS="590 2068 3579 2068 3579 2181 590 2181"/>
+            </Shape>
+            <String CONTENT="деревянный ножъ. «Ха, ха, ха! Къ чему твой деревянный ножъ? Ты" HPOS="590" VPOS="2068" WIDTH="2989" HEIGHT="113"/>
+          </TextLine>
+          <TextLine ID="mz_1-357_l13" HPOS="596" VPOS="2196" WIDTH="2977" HEIGHT="108" BASELINE="596 2303 3573 2303">
+            <Shape>
+              <Polygon POINTS="596 2196 3573 2196 3573 2304 596 2304"/>
+            </Shape>
+            <String CONTENT="сломаешь! Наши всѣ большіе желѣзные ножи сошли на нѣтъ¹). Деревян-" HPOS="596" VPOS="2196" WIDTH="2977" HEIGHT="108"/>
+          </TextLine>
+          <TextLine ID="mz_1-357_l14" HPOS="594" VPOS="2329" WIDTH="2978" HEIGHT="103" BASELINE="594 2431 3572 2431">
+            <Shape>
+              <Polygon POINTS="594 2329 3572 2329 3572 2432 594 2432"/>
+            </Shape>
+            <String CONTENT="нымъ ножемъ, какъ мягкій снѣгъ, разрѣзалъ. Разрѣзалъ, отверстіе сдѣлалъ:" HPOS="594" VPOS="2329" WIDTH="2978" HEIGHT="103"/>
+          </TextLine>
+          <TextLine ID="mz_1-357_l15" HPOS="595" VPOS="2445" WIDTH="2982" HEIGHT="112" BASELINE="595 2556 3577 2556">
+            <Shape>
+              <Polygon POINTS="595 2445 3577 2445 3577 2557 595 2557"/>
+            </Shape>
+            <String CONTENT="дѣвушка изъ брюха вышла. Сѣла. О, хорошая дѣвка, красивая дѣвка, какъ" HPOS="595" VPOS="2445" WIDTH="2982" HEIGHT="112"/>
+          </TextLine>
+          <TextLine ID="mz_1-357_l16" HPOS="602" VPOS="2583" WIDTH="2970" HEIGHT="101" BASELINE="602 2683 3572 2683">
+            <Shape>
+              <Polygon POINTS="602 2583 3572 2583 3572 2684 602 2684"/>
+            </Shape>
+            <String CONTENT="огонь, красавица. Сильные люди взять хотятъ. Всѣ на оленяхъ ѣдущіе," HPOS="602" VPOS="2583" WIDTH="2970" HEIGHT="101"/>
+          </TextLine>
+          <TextLine ID="mz_1-357_l17" HPOS="593" VPOS="2711" WIDTH="2984" HEIGHT="99" BASELINE="593 2810 3577 2810">
+            <Shape>
+              <Polygon POINTS="593 2711 3577 2711 3577 2810 593 2810"/>
+            </Shape>
+            <String CONTENT="всѣ говорятъ: «Тутъ сядь на моихъ саняхъ!» Сѣла, сломала сани. Другой" HPOS="593" VPOS="2711" WIDTH="2984" HEIGHT="99"/>
+          </TextLine>
+          <TextLine ID="mz_1-357_l18" HPOS="598" VPOS="2838" WIDTH="2975" HEIGHT="101" BASELINE="598 2938 3573 2938">
+            <Shape>
+              <Polygon POINTS="598 2838 3573 2838 3573 2939 598 2939"/>
+            </Shape>
+            <String CONTENT="говоритъ: «Тутъ сядь!» Всѣ изломала. Сколько ни было, всѣ сани изломала." HPOS="598" VPOS="2838" WIDTH="2975" HEIGHT="101"/>
+          </TextLine>
+          <TextLine ID="mz_1-357_l19" HPOS="589" VPOS="2919" WIDTH="2986" HEIGHT="141" BASELINE="589 3059 3575 3059">
+            <Shape>
+              <Polygon POINTS="589 2919 3575 2919 3575 3060 589 3060"/>
+            </Shape>
+            <String CONTENT="Всѣ люди стали пѣшіе, — всѣ изломала, искрошила. Снова зайчикъ изъ" HPOS="589" VPOS="2919" WIDTH="2986" HEIGHT="141"/>
+          </TextLine>
+          <TextLine ID="mz_1-357_l20" HPOS="594" VPOS="3089" WIDTH="2981" HEIGHT="99" BASELINE="594 3187 3575 3187">
+            <Shape>
+              <Polygon POINTS="594 3089 3575 3089 3575 3188 594 3188"/>
+            </Shape>
+            <String CONTENT="травы; изъ тальничка санки сдѣлалъ, быстро сдѣлалъ вродѣ санокъ. Сѣла" HPOS="594" VPOS="3089" WIDTH="2981" HEIGHT="99"/>
+          </TextLine>
+          <TextLine ID="mz_1-357_l21" HPOS="595" VPOS="3214" WIDTH="2984" HEIGHT="101" BASELINE="595 3314 3579 3314">
+            <Shape>
+              <Polygon POINTS="595 3214 3579 3214 3579 3315 595 3315"/>
+            </Shape>
+            <String CONTENT="на тальничныя санки, вдвоемъ уѣхали. Въ свою землю увезъ, женою взялъ;" HPOS="595" VPOS="3214" WIDTH="2984" HEIGHT="101"/>
+          </TextLine>
+          <TextLine ID="mz_1-357_l22" HPOS="594" VPOS="3355" WIDTH="992" HEIGHT="86" BASELINE="594 3441 1586 3441">
+            <Shape>
+              <Polygon POINTS="594 3355 1586 3355 1586 3441 594 3441"/>
+            </Shape>
+            <String CONTENT="въ свою землю ускакалъ." HPOS="594" VPOS="3355" WIDTH="992" HEIGHT="86"/>
+          </TextLine>
+          <TextLine ID="mz_1-357_l23" HPOS="795" VPOS="3497" WIDTH="1877" HEIGHT="93" BASELINE="795 3590 2672 3590">
+            <Shape>
+              <Polygon POINTS="795 3497 2672 3497 2672 3590 795 3590"/>
+            </Shape>
+            <String CONTENT="Записано отъ чукчи Ајӈанва́т’а въ Нижнеколымскѣ." HPOS="795" VPOS="3497" WIDTH="1877" HEIGHT="93"/>
+          </TextLine>
+          <TextLine ID="mz_1-357_l24" HPOS="1985" VPOS="3801" WIDTH="161" HEIGHT="94" BASELINE="1985 3894 2146 3894">
+            <Shape>
+              <Polygon POINTS="1985 3801 2146 3801 2146 3895 1985 3895"/>
+            </Shape>
+            <String CONTENT="117." HPOS="1985" VPOS="3801" WIDTH="161" HEIGHT="94"/>
+          </TextLine>
+          <TextLine ID="mz_1-357_l25" HPOS="1020" VPOS="4037" WIDTH="2113" HEIGHT="114" BASELINE="1020 4150 3133 4150">
+            <Shape>
+              <Polygon POINTS="1020 4037 3133 4037 3133 4151 1020 4151"/>
+            </Shape>
+            <String CONTENT="Ӈа̀w-о́мӄы-lѵ́мӈыl. О бѣлой медвѣдицѣ сказка." HPOS="1020" VPOS="4037" WIDTH="2113" HEIGHT="114"/>
+          </TextLine>
+          <TextLine ID="mz_1-357_l26" HPOS="784" VPOS="4239" WIDTH="2777" HEIGHT="104" BASELINE="784 4342 3561 4342">
+            <Shape>
+              <Polygon POINTS="784 4239 3561 4239 3561 4343 784 4343"/>
+            </Shape>
+            <String CONTENT="Парень²); у него только старушка въ товарищахъ. Онъ холостой." HPOS="784" VPOS="4239" WIDTH="2777" HEIGHT="104"/>
+          </TextLine>
+          <TextLine ID="mz_1-357_l27" HPOS="582" VPOS="4377" WIDTH="2982" HEIGHT="96" BASELINE="582 4472 3564 4472">
+            <Shape>
+              <Polygon POINTS="582 4377 3564 4377 3564 4473 582 4473"/>
+            </Shape>
+            <String CONTENT="Постоянно ходитъ по берегу, много тюленей убиваетъ, постоянно убиваетъ" HPOS="582" VPOS="4377" WIDTH="2982" HEIGHT="96"/>
+          </TextLine>
+          <TextLine ID="mz_1-357_l28" HPOS="581" VPOS="4502" WIDTH="2984" HEIGHT="95" BASELINE="581 4596 3565 4596">
+            <Shape>
+              <Polygon POINTS="581 4502 3565 4502 3565 4597 581 4597"/>
+            </Shape>
+            <String CONTENT="тюленей; постоянно приходитъ вечеромъ. Наконецъ, въ ночномъ стран-" HPOS="581" VPOS="4502" WIDTH="2984" HEIGHT="95"/>
+          </TextLine>
+          <TextLine ID="mz_1-357_l29" HPOS="589" VPOS="4622" WIDTH="2976" HEIGHT="101" BASELINE="589 4722 3565 4722">
+            <Shape>
+              <Polygon POINTS="589 4622 3565 4622 3565 4723 589 4723"/>
+            </Shape>
+            <String CONTENT="ствованіи увидѣлъ огонь, свѣтъ лампы, выходитъ изъ снѣга. Туда и пошелъ." HPOS="589" VPOS="4622" WIDTH="2976" HEIGHT="101"/>
+          </TextLine>
+          <TextLine ID="mz_1-357_l30" HPOS="579" VPOS="4711" WIDTH="2988" HEIGHT="141" BASELINE="579 4851 3567 4851">
+            <Shape>
+              <Polygon POINTS="579 4711 3567 4711 3567 4852 579 4852"/>
+            </Shape>
+            <String CONTENT="Пришелъ, заглянулъ во входъ: дѣвушка совсѣмъ бѣлая, — а это морская" HPOS="579" VPOS="4711" WIDTH="2988" HEIGHT="141"/>
+          </TextLine>
+          <TextLine ID="mz_1-357_l31" HPOS="584" VPOS="4828" WIDTH="2982" HEIGHT="138" BASELINE="584 4965 3566 4965">
+            <Shape>
+              <Polygon POINTS="584 4828 3566 4828 3566 4966 584 4966"/>
+            </Shape>
+            <String CONTENT="бѣлая медвѣдица. Говоритъ: «Ты откуда-же?» — «Вотъ здѣшній!» Сталъ" HPOS="584" VPOS="4828" WIDTH="2982" HEIGHT="138"/>
+          </TextLine>
+          <TextLine ID="mz_1-357_l32" HPOS="580" VPOS="5003" WIDTH="2986" HEIGHT="103" BASELINE="580 5105 3566 5105">
+            <Shape>
+              <Polygon POINTS="580 5003 3566 5003 3566 5106 580 5106"/>
+            </Shape>
+            <String CONTENT="тамъ ночевать, женился на ней, совокупился, она родила сына. Пошли" HPOS="580" VPOS="5003" WIDTH="2986" HEIGHT="103"/>
+          </TextLine>
+          <TextLine ID="mz_1-357_l33" HPOS="581" VPOS="5121" WIDTH="2984" HEIGHT="111" BASELINE="581 5231 3565 5231">
+            <Shape>
+              <Polygon POINTS="581 5121 3565 5121 3565 5232 581 5232"/>
+            </Shape>
+            <String CONTENT="домой навѣстить старушку. Стали жить у ней. Родилась еще и дочь. Мужъ" HPOS="581" VPOS="5121" WIDTH="2984" HEIGHT="111"/>
+          </TextLine>
+          <TextLine ID="mz_1-357_l34" HPOS="582" VPOS="5252" WIDTH="2985" HEIGHT="102" BASELINE="582 5353 3567 5353">
+            <Shape>
+              <Polygon POINTS="582 5252 3567 5252 3567 5354 582 5354"/>
+            </Shape>
+            <String CONTENT="и жена ходятъ, постоянно убиваютъ тюленей. Дѣвочка постоянно ѣстъ" HPOS="582" VPOS="5252" WIDTH="2985" HEIGHT="102"/>
+          </TextLine>
+          <TextLine ID="mz_1-357_l35" HPOS="578" VPOS="5378" WIDTH="2986" HEIGHT="104" BASELINE="578 5481 3564 5481">
+            <Shape>
+              <Polygon POINTS="578 5378 3564 5378 3564 5482 578 5482"/>
+            </Shape>
+            <String CONTENT="только жиръ, другіе-же ѣдятъ только мясо, дѣвочка-же и мать ѣдятъ" HPOS="578" VPOS="5378" WIDTH="2986" HEIGHT="104"/>
+          </TextLine>
+          <TextLine ID="mz_1-357_l36" HPOS="805" VPOS="5607" WIDTH="539" HEIGHT="99" BASELINE="805 5705 1344 5705">
+            <Shape>
+              <Polygon POINTS="805 5607 1344 5607 1344 5706 805 5706"/>
+            </Shape>
+            <String CONTENT="1) у́јӈӓ нэ́lјӓ̂т." HPOS="805" VPOS="5607" WIDTH="539" HEIGHT="99"/>
+          </TextLine>
+          <TextLine ID="mz_1-357_l37" HPOS="791" VPOS="5716" WIDTH="353" HEIGHT="99" BASELINE="791 5814 1144 5814">
+            <Shape>
+              <Polygon POINTS="791 5716 1144 5716 1144 5815 791 5815"/>
+            </Shape>
+            <String CONTENT="2) аа́чек." HPOS="791" VPOS="5716" WIDTH="353" HEIGHT="99"/>
+          </TextLine>
+        </TextBlock>
+      </PrintSpace>
+    </Page>
+  </Layout>
+</alto>
