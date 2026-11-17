@@ -79,7 +79,7 @@
       "resolved": "êčvaˊk-äᵋʟaˊ: ê = e+U+0302, č = c+U+030C, ˊ = U+02CA (once per compound member, on va and on the final a), ä = a+U+0308, ᵋ = U+1D4B (laryngeal, postposed to ä — at this scale it resembles the superscript-s lookalike U+02E2 that §3 names as a trap for U+1D4B), ʟ = U+029F (small-cap, confirmed x-height against the neighbouring lowercase a at 4x, not a full-height L)",
       "note": "Confirmed via lexicon lookup (key e^c^va'k-a:e^l_a', 1-059 L13, identical gloss \"the fawn mother\"). The mark after ä was read at 4x as two stacked closed loops, matching the laryngeal ᵋ rather than superscript s.",
       "class": "print",
-      "as_typed": "them, as {e^c^va'k-a:e^l_a'} (“the fawn mother”), which is the same term as that"
+      "as_typed": "them, as {e+c^va'k-a:e_1l_a'} (“the fawn mother”), which is the same term as that"
     },
     "24": {
       "text": "applied to a fawn bearing young.³ Some female fawns bear young the first",
@@ -118,7 +118,7 @@
     "33": {
       "text": "also from his brother-in-law, Omrêlqoˊt, that with the Chukchee, violence on",
       "note": "Omrêlqoˊt confirmed via lexicon lookup (key Omre^lqo't, 3 occurrences, 3-015, same reindeer-owner referenced there).",
-      "as_typed": "also from his brother-in-law, {Omre^lqo't}, that with the Chukchee, violence on",
+      "as_typed": "also from his brother-in-law, {Omre+lqo't}, that with the Chukchee, violence on",
       "class": "draft"
     },
     "34": {

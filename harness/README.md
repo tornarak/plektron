@@ -432,9 +432,9 @@ an entry. The identity is the **exact surface form**, NFD, carrying no language 
 a form only becomes `ckt` when a collator judges it, and an id holding one would
 leave every unjudged form unaddressable. The slug is authored, not the form's
 `handle_key`: over the corpus's 609 forms that key yields 23 pairs differing only
-in case and 34 containing a colon, and it is non-injective by design, so the
-check that would catch a collision passes on both files while only one can exist.
-`check` refuses two slugs a case-insensitive filesystem could not tell apart.
+in case and 34 containing a colon: two keys apiece, one file apiece on a
+case-insensitive filesystem. `check` refuses two slugs such a filesystem could not
+tell apart.
 
 **`tei_html.py`** — committed TEI to HTML, for the reading view. The apparatus is
 rendered rather than tidied away: an unratified rank is marked and an editorial
@@ -973,8 +973,9 @@ the opposite and were wrong together, which `Hɪtoˊ-Lap` cost two pages.
 reader writes instead of retyping its glyphs. **Two strings, and conflating them is
 the trap.** `marks.fold` is the *bucket*: it collapses every contrast axis, which is
 what makes `Čeˊwɪn` and `Čeˊwin` one word and lets the conflict be seen at all.
-`marks.handle_key` is the *key*: it marks every non-ASCII character, so the key
-cannot be read back as a spelling and cannot teach a reader an `i` that is not there.
+`marks.handle_key` is the *key*: it marks every character the text's table does not
+pass through, one-to-one, so the key cannot be read back as a spelling and cannot
+teach a reader an `i` that is not there.
 Marking distinguishes, so the two spellings have different keys — which is why the
 ambiguity refusal lives on the bucket, and a precise key pointing into a contested
 one is refused all the same. Three invariants for callers: expansion happens **on

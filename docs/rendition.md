@@ -130,7 +130,7 @@ name.
   - `[ ]` are printed;
   - `{` `}` `|` `*` `` ` `` `_` are JSON or Markdown syntax in `edition/`, and
     OCR noise in `mz/ocr/`;
-  - `^ ~ _` are keying shorthand (`marks.HANDLE_MARKERS`);
+  - `^ ~ _ +` are keying shorthand (`config/handle.json`);
   - `< >` are XML.
 
 ### 3. A closed set of faces per text

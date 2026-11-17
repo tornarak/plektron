@@ -6,10 +6,9 @@ derived on every load and a copy would go stale in the direction that hides it.
 
 The rest is the filename problem. Naming a file after the form's typeable key is
 the obvious scheme and it is measurably unusable — over the corpus's 609
-attested forms it yields 23 pairs differing only in case, and the check that
-would catch a collision cannot, because `handle_key` is non-injective by design
-and both files pass it while only one can exist. So the slug is authored and the
-gate is about the filesystem, not about the key.
+attested forms it yields 23 pairs differing only in case, which are two keys and
+one file on a case-insensitive filesystem. So the slug is authored and the gate
+is about the filesystem, not about the key.
 """
 from __future__ import annotations
 

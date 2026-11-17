@@ -2107,20 +2107,17 @@ def test_all_three_key_forms_reach_the_same_card(server):
         assert "south of" in got, key
 
 
-def test_an_ambiguous_handle_key_refuses_and_names_the_candidates(server):
-    """`handle_key` is non-injective by design — `marks.py` says the marker
-    classes collide on purpose — so picking one of two forms would resolve the
-    corpus's own ambiguity by an accident of iteration order.
-
-    `ᵋ` U+1D4B and `ᵉ` U+1D49 are the real pair: both key to `e^`, and both are
-    inventory glyphs, so two forms differing only in which one they carry are
-    two words with one address."""
+def test_forms_differing_only_in_a_superscript_have_two_addresses(server):
+    """`ᵋ` U+1D4B and `ᵉ` U+1D49 are both inventory glyphs, and once both keyed
+    `e^`: two words with one address, which the page could only refuse. The
+    table is injective now, so each key names its own form."""
     base, root = server
     _gt(root, "1-042", ["the keᵋlin here", "and the keᵉlin there"])
-    got = get(base + "/partial/lexicon/kee%5Elin")
-    assert "more than one form" in got
-    assert unicodedata.normalize("NFD", "keᵋlin") in got
-    assert unicodedata.normalize("NFD", "keᵉlin") in got
+    one = get(base + "/partial/lexicon/kee_1lin")
+    two = get(base + "/partial/lexicon/kee_2lin")
+    assert "more than one form" not in one + two
+    assert unicodedata.normalize("NFD", "keᵋlin") in one
+    assert unicodedata.normalize("NFD", "keᵉlin") in two
 
 
 def test_the_key_is_case_sensitive_where_a_filename_could_not_be(server):

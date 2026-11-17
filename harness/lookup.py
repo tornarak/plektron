@@ -60,11 +60,11 @@ from .detectors import native_corpus_context, native_unmatched
 from .layout import prose_stands
 from .marks import fold, handle_key, handle_table, load_config
 
-# A handle is a key in braces. The character class is `handle_key`'s output
-# alphabet — ASCII alphanumerics, the two load-bearing ASCII marks the key passes
-# through (U+0027, U+002D), and the markers — so a brace holding anything else was
-# never a handle and is reported as the stray brace it is.
-HANDLE = re.compile(r"\{([A-Za-z0-9'\-_^.~:)=]+)\}")
+# A handle is a key in braces. The character class is the union of every key
+# table's output alphabet — ASCII alphanumerics, what the tables pass through
+# (U+002D, and The Chukchee's U+0021), `_`, and `marks.MARK_TOKENS` — so a brace
+# holding anything else was never a handle and is reported as the stray brace it is.
+HANDLE = re.compile(r"\{([A-Za-z0-9!\-_'.:~)=^*+]+)\}")
 
 
 def index(root: Path = Path("."),

@@ -58,10 +58,10 @@ def _bucket(key: str, form: str, refs: list[str]) -> dict:
 #: Two keyed forms, passed as `lex` so no test here needs a corpus on disk.
 #: `Čêpaˊt` is `3-142`'s, reachable by the query `Cepa't` but not as a key.
 LEX = {
-    "by_key": {"taka'lhi_n": "b1", "C^e^pa't": "b2"},
+    "by_key": {"taka'lhi_n": "b1", "C^e+pa't": "b2"},
     "buckets": {"b1": _bucket("taka'lhi_n", "takaˊlhɪn",
                               ["3-003", "3-006", "3-007"]),
-                "b2": _bucket("C^e^pa't", "Čêpaˊt", ["3-106", "3-107"])},
+                "b2": _bucket("C^e+pa't", "Čêpaˊt", ["3-106", "3-107"])},
     "unkeyable": {},
 }
 
@@ -148,7 +148,9 @@ class TestTheTrigger:
         "Matches {taka'lhi_n} -> takaˊlhɪn",
         "corpus has taka'lhi_n here",      # no announcing word at all
         "cf. Ai'g.i_nto",                  # dot-below, no word
-        "cf. Omre^lqo't",                  # circumflex
+        "cf. Omre+lqo't",                  # circumflex
+        "cf. C^a'ki_he+t",                 # caron
+        "cf. Ta'n*n~i_t",                  # palatalization
         "cf. Telqa:'p",                    # diaeresis
     ])
     def test_it_triggers(self, note):
@@ -216,7 +218,7 @@ class TestTheIndexIsLazy:
 
 class TestANoteMayNameTheQueryNotTheKey:
     """`3-142`: "lexicon lookup 'Cepa't' returned no key" beside five hand-typed
-    `Čêpaˊt` — a query that does return the key, `C^e^pa't`.
+    `Čêpaˊt` — a query that does return the key, `C^e+pa't`.
 
     `expand` needs the key itself, so the first pass is blind to a note that
     quotes what the reader typed at the tool rather than what the tool printed
@@ -242,7 +244,7 @@ class TestANoteMayNameTheQueryNotTheKey:
         out = self._issues(
             "Čêpaˊt lost a few animals",
             "lexicon lookup 'Cepa't' returned no key.")
-        assert "C^e^pa't" in out[0]["issue"]
+        assert "C^e+pa't" in out[0]["issue"]
         assert "Cepa" in out[0]["issue"]
         assert "reaches the key" in out[0]["issue"]
 

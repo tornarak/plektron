@@ -1643,3 +1643,32 @@ carrying a letter or mark outside them. That is an exclusion list on purpose: th
 print's hooked and barred letters have no settled identity yet, and an exclusion
 list sends every form carrying one to review without anyone ruling first which
 letter it is.
+
+## The Chukchee's key merged glyphs on a premise that was false
+
+The lexicon key exists to tell apart what `fold` merges, so that a reader cannot
+name `Kavraˊlɪt` as `kavralit` and learn an `i` that is not there. The table
+nevertheless merged three pairs: `˙` with the dot below (`.`), the caron with
+the circumflex (`^`), and `ᵋ` with `ᵉ` (`e^`). The note beside them said the
+merges were deliberate and that inventing a marker for a collision the corpus
+did not attest would be guesswork. But `ê` is a §2.2 sort marked corpus-attested,
+and it keyed `e^` beside `ᵋ`: the collision was attested all along, and
+`docs/edition.md` already called the pair real. A refusal at lookup was the
+table's merge showing up as an error message, not a safeguard, and fewer markers
+to learn bought nothing that a nine-row table needed.
+
+So the key is one-to-one (2026-11-16): `˙` is `*`, the circumflex `+`, `ᵋ`
+`e_1` and `ᵉ` `e_2`, while the dot below and the caron keep `.` and `^`, the
+commoner of each pair, so most keys already written did not move. The grammar
+`marks._check_injective` proved for the *Materials* widened to admit it: a bare
+`_` after a letter, letters in the passthrough when no token is a bare letter,
+and a spacing character such as `ˊ` taking a mark token. Narrowing the
+passthrough to the letters, `-` and `!` settled a second contradiction in the
+same place. The docstring called U+0027 load-bearing inside Tier-1, but §3 lists
+it as a trap for the stress mark, and with `'` as the stress marker a form
+carrying one would have keyed as the stressed form it imitates.
+
+The handles already typed in the old alphabet were re-spelled rather than kept,
+because `proposal check` re-expands `as_typed` against `text`. The reader's act
+was the same; only its spelling changed. `tools/rekey_handles.py` read the old
+table out of git rather than retyping it.

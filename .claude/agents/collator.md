@@ -262,8 +262,8 @@ attested nowhere, which is exactly the signal it should give.
       --alias "Uweˊlen" --lang ckt --commit
 
 Every `--alias` on one run takes that one language, so a run per language. Pass the
-**form as the page sets it**, NFD, never a lexicon handle key — the key is a fold and
-collides on purpose. Codes are the ones you write in `xml:lang`. An alias filed
+**form as the page sets it**, NFD, never a lexicon handle key — the key is an
+address, not a spelling, and the store matches spellings. Codes are the ones you write in `xml:lang`. An alias filed
 without `--lang` says the language is unstated, which is honest and is what most of
 the store says; guessing is not.
 

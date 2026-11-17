@@ -333,13 +333,16 @@ def _handle_issues(idx: str, rec: dict, text: str, root: Path,
 #: A token in a `note` shaped like a lexicon key — bare ASCII carrying at least
 #: one of the key alphabet's marks, so ordinary English prose in a note does not
 #: match and `Cf. lexicon key taka'lhi_n` does.
-_NOTE_KEY = re.compile(r"[A-Za-z][A-Za-z0-9'\-_^.~:)=]*['_^.~:][A-Za-z0-9'\-_^.~:)=]*")
+_NOTE_KEY = re.compile(r"[A-Za-z][A-Za-z0-9'\-_^.~:)=*+!]*['_^.~:*+]"
+                       r"[A-Za-z0-9'\-_^.~:)=*+!]*")
 
-#: The key alphabet's *distinctive* marks — small-cap `_`, dot-below `.`,
-#: circumflex `^`, tilde `~`, diaeresis `:`. The apostrophe is deliberately not
-#: among them: it is the one key character English prose also uses, so `don't` and
-#: `reader's` would make every note look like it named a key.
-_KEY_MARK = re.compile(r"[A-Za-z][A-Za-z0-9'\-)=]*(?:[_^~:]|\.[A-Za-z])")
+#: The key alphabet's *distinctive* marks — small-cap `_`, caron `^`, circumflex
+#: `+`, tilde `~`, diaeresis `:`, and the two dots `.` and `*` where a letter
+#: follows (a sentence's full stop and a footnote's asterisk have none). The
+#: apostrophe is deliberately not among them: it is the one key character English
+#: prose also uses, so `don't` and `reader's` would make every note look like it
+#: named a key.
+_KEY_MARK = re.compile(r"[A-Za-z][A-Za-z0-9'\-)=]*(?:[_^~:+]|[.*][A-Za-z])")
 
 #: On a word boundary, because a substring test on `key` matches `keyed` — which
 #: readers write constantly ("keyed from the raster", "not keyed") — and would

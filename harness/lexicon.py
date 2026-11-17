@@ -31,12 +31,11 @@ readable before anyone knows what language it is in.
 **The slug is authored, and `handle_key` is only a suggestion.** The obvious
 scheme — name the file after the form's typeable key — is measurably unusable:
 over the corpus's 609 attested forms it produces 23 pairs differing only in case
-(`Aiˊwan`/`aiˊwan` both key to `ai'wan`), which a case-insensitive filesystem
+(`Aiˊwan`/`aiˊwan` key to `Ai'wan`/`ai'wan`), which a case-insensitive filesystem
 collapses to one file, and 34 keys containing a colon, the portability trap
-`entities.py` says the class-as-directory layout exists to avoid. Worse, the
-check that would catch it cannot: `handle_key` is non-injective by design, so
-"the heading's form re-keys to the filename" passes on *both* of a colliding
-pair while only one can exist. A human names the file, `check` refuses two names
+`entities.py` says the class-as-directory layout exists to avoid. The key being
+one-to-one does not help: the pair is two keys, and the filesystem is what
+merges them. A human names the file, `check` refuses two names
 that a filesystem might not tell apart, and the key stays what it was built to
 be — a way to say a form out loud without retyping its glyphs.
 """

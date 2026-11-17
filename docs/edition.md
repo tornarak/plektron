@@ -2572,20 +2572,19 @@ instrument, not a gap in the row.
 
 ### The address, and why it is not the filename
 
-The canonical URL is the **handle key**: `/lexicon/Kulu'c^i`. Measured over all
-609 forms, `handle_key`'s alphabet is `)-.:=^_~'` plus ASCII alphanumerics, every
-character of which is RFC 3986 path-safe except `^` — 305 keys carry one, from
-`č` → `c^`. Mean URL length is **14.6 against 31.7** for the form itself, max
+The canonical URL is the **handle key**: `/lexicon/Kulu'c^i`. *The Chukchee*'s
+key alphabet (`config/handle.json`) is the ASCII letters, `-`, `!`, `_`, the digits
+and `'.:~)=^*+`, every character of which is RFC 3986 path-safe except `^`, the
+caron (`č` → `c^`), which percent-encodes. Mean URL length is **14.6 against 31.7** for the form itself, max
 **42 against 85**: `Kulu%27c%5Ei` against `ckt%3AKulu%CB%8Ac%CC%8Ci`. The exact
 form still resolves, because that is what `data-key` holds and what the reading
 view's own links send, and so does `lang:form`, because a URL somebody wrote down
 should not stop resolving.
 
-A key naming two forms **refuses and names both**. `handle_key` is non-injective
-by design — `marks.py` says the marker classes collide on purpose — and the pair
-is real: `ᵋ` U+1D4B and `ᵉ` U+1D49 both key to `e^`, and both are inventory
-glyphs. Resolution scans every bucket rather than going through `lookup`'s
-`by_key`, which holds one bucket per key and would drop the second silently.
+A key naming two forms **refuses and names both**. Both jesup tables are
+one-to-one, so only a text declaring `"injective": false` can produce one;
+resolution scans every bucket rather than going through `lookup`'s `by_key`,
+which holds one bucket per key and would drop the second silently.
 
 **The same key is unusable as a filename**, and that is not a contradiction: URLs
 are case-sensitive and filesystems are not reliably. Over the 609 forms the key

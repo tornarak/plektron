@@ -50,7 +50,7 @@
       "resolved": "Kɪlaˊtɪ = K + U+026A, l, a, U+02CA, t, U+026A. {Valka'l_.e^n} is the lexicon key for Valkaˊʟ̣ên",
       "note": "Kɪlaˊtɪ: a personal name, not in the lexicon store (lookup returned no key for it). Keyed by hand from the raster: capital K, small-cap ɪ, lowercase l a, stress U+02CA, small-cap ɪ. The village name was looked up and matched a ratified lexicon key (Valkaˊʟ̣ên, dot below small-cap ʟ), keyed via that handle; at 4x the dot itself is not visible below the ʟ on this page's raster, so the dot below is taken on the lexicon's authority rather than read off this page's ink.",
       "class": "doubt",
-      "as_typed": "shore, three years afterwards, Kɪlaˊtɪ, a Chukchee in the village of {Valka'l_.e^n},"
+      "as_typed": "shore, three years afterwards, Kɪlaˊtɪ, a Chukchee in the village of {Valka'l_.e+n},"
     },
     "16": {
       "text": "gave me some interesting details about his return to the Anadyr. Father"
@@ -81,8 +81,8 @@
     },
     "23": {
       "text": "“Our place is not very windy; but farther on to the south, halfway to the village Rêˊtkên,",
-      "note": "{Re^'tke^n} is the lexicon key for Rêˊtkên, ratified at 1-048/1-160; opening quote is the curly double quote that opens Kɪlaˊtɪ's whole quoted narrative, closed at L43.",
-      "as_typed": "“Our place is not very windy; but farther on to the south, halfway to the village {Re^'tke^n},",
+      "note": "{Re+'tke+n} is the lexicon key for Rêˊtkên, ratified at 1-048/1-160; opening quote is the curly double quote that opens Kɪlaˊtɪ's whole quoted narrative, closed at L43.",
+      "as_typed": "“Our place is not very windy; but farther on to the south, halfway to the village {Re+'tke+n},",
       "class": "draft"
     },
     "24": {

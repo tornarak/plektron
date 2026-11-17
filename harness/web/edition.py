@@ -2206,10 +2206,10 @@ def lexicon_card(request: Request, key: str):
     what those links used to hold, and a URL somebody has already written down
     should not stop resolving.
 
-    An ambiguous handle key **refuses and names the candidates**. `handle_key`
-    is non-injective by design — `marks.py` says the classes collide on purpose
-    — so picking one of two forms would be the corpus's own ambiguity resolved
-    by an accident of iteration order.
+    An ambiguous handle key **refuses and names the candidates**. Only a table
+    declaring `"injective": false` can produce one, and there picking one of two
+    forms would be the table's collision resolved by an accident of iteration
+    order.
     """
     root = _root(request)
     native = stores.native(root)
@@ -2224,9 +2224,9 @@ def lexicon_card(request: Request, key: str):
     if form not in store and form not in _all_forms(native):
         # Scanned across every bucket rather than through `by_key`, which holds
         # one bucket per key and so drops the second silently when two buckets
-        # share one. That is not hypothetical: `ᵋ` U+1D4B and `ᵉ` U+1D49 both
-        # key to `e^` — `marks.py` says the marker classes collide on purpose —
-        # and the two need not fold together.
+        # share one. Both jesup tables are injective and the loader proves it,
+        # but a text may declare `"injective": false`, and The Chukchee's did
+        # until `ᵋ`, `ᵉ` and `ê` all keyed `e^`; the two need not fold together.
         matched = sorted({lexicon.norm_form(f["form"])
                           for b in native["buckets"].values()
                           for f in b["forms"].values()

@@ -80,7 +80,7 @@ def register(cli):
              "file or the browser, "
              "because it licenses a link nobody will be asked about. A native "
              "form is the NFD surface spelling, never a lexicon handle key — "
-             "the key is a fold and collides on purpose")
+             "the key is an address, not a spelling")
     opt(p, "--lang", metavar="CODE",
         help="the language every `--alias` on this run is a name in, e.g. `ckt` "
              "or `ru`. Shortest BCP-47, the same string a page writes in "

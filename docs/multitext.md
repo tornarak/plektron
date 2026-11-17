@@ -121,23 +121,30 @@ notation, and a name beside them would be the same fact stated twice.
 spend the same ASCII characters on different things (`.` is a dot below in one and
 a grave in the other), so neither can inherit from the other.
 
-- **The workspace's is *The Chukchee*'s**, moved out of the code verbatim
-  (2026-11-16). ASCII passes through, each non-ASCII character leaves a marker,
-  and the markers collide on purpose (`ᵋ` and `ᵉ` both `e^`). It declares itself
-  not injective, and a key naming two forms is refused at resolution.
-- **The *Materials*' is one-to-one**, and its loader proves it
-  (`marks.handle_table`):
-  - **A letter token** is an ASCII letter, or one followed by `_` and one digit:
-    the common Cyrillic letters take a bare letter, the rest `_1`–`_3`, the
-    Latin letters `_0`. So the tall `l` (Latin) and `л` never share a key.
-  - **A mark token** is one character.
-  - **The hyphen and the digits** stand for themselves.
+- **Both are one-to-one**, and the loader proves it (`marks.handle_table`):
+  - **A letter token** is an ASCII letter, or one followed by `_` and at most one
+    digit.
+  - **A mark token** is one character of `marks.MARK_TOKENS`. A combining mark
+    must take one; a spacing character may (`ˊ` is a mark token, `ᵋ` a letter
+    token, both modifier letters).
+  - **The passthrough** stands for itself, and may hold only what no token begins
+    or ends with: an ASCII letter only if no token is that bare letter, a digit
+    only if no token ends in a bare `_`.
 
-  `_` occurs only after a letter, so a key parses one way. No two codepoints share
-  a token, and a capital is its lowercase token in upper case. So no two forms
-  share a key, and `marks.form_from_key` is the exact inverse. It validates and
-  never expands a reader's handle, which resolves only against ratified forms. A
-  census over the 12,019 machine-read native candidates in `mz/ocr/` (2026-11-16)
+  So a key parses one way. No two codepoints share a token, and a capital is its
+  lowercase token in upper case. So no two forms share a key, and
+  `marks.form_from_key` is the exact inverse.
+- **The workspace's is *The Chukchee*'s.** Its ASCII letters, `-` and `!` pass
+  through; an atomic letter is its base and `_` (the small caps) or `_` and a
+  digit (`ᵋ` `e_1`, `ᵉ` `e_2`); each combining mark is one marker
+  (`keying_spec.md` §2.15).
+- **The *Materials*'**: the common Cyrillic letters take a bare letter, the rest
+  `_1`–`_3`, the Latin letters `_0`, so the tall `l` (Latin) and `л` never share
+  a key; the hyphen and the digits pass through.
+
+  `marks.form_from_key` validates and never expands a reader's handle, which
+  resolves only against ratified forms. A census over the *Materials*' 12,019
+  machine-read native candidates in `mz/ocr/` (2026-11-16)
   found no key shared and no failed round trip. 11,665 key. Of the 354 that do
   not, most carry the straight `'` that keyed text writes `’` (85), Latin schwa
   for the printed `э` (94), or other OCR noise (`ү`, `ҫ`, a caron, `ŋ`). An

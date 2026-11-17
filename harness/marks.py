@@ -368,11 +368,11 @@ def fold(token: str, contrasts: list[dict]) -> str:
 HANDLE = "config/handle.json"
 
 #: An injective table's grammar (`docs/multitext.md`, the key table). A letter token
-#: is an ASCII letter, or one followed by `_` and exactly one digit; a mark token is
+#: is an ASCII letter, or one followed by `_` and at most one digit; a mark token is
 #: one of these characters. The two sets and the passthrough are disjoint, which is
 #: what makes a key parse one way only.
-MARK_TOKENS = "'.:~)=^"
-_LETTER_TOKEN = re.compile(r"[A-Za-z](?:_[0-9])?")
+MARK_TOKENS = "'.:~)=^*+"
+_LETTER_TOKEN = re.compile(r"[A-Za-z](?:_[0-9]?)?")
 
 
 @dataclass(frozen=True)
@@ -380,9 +380,10 @@ class HandleTable:
     """How a text's native forms are addressed in ASCII: `{codepoint: token}`.
 
     `passthrough` is the characters that stand for themselves: `"ascii"` for every
-    ASCII character (*The Chukchee*, whose bases are ASCII after NFD), else an
-    explicit string (the *Materials*, which mark their Latin letters so a Latin `l`
-    and a Cyrillic `л` never share a key). `inverse` is filled only for an
+    ASCII character, which no injective table may claim, else an explicit string —
+    *The Chukchee*'s ASCII letters, hyphen and `!`, whose bases are ASCII after NFD;
+    the *Materials*' hyphen and digits, which mark their Latin letters so a Latin
+    `l` and a Cyrillic `л` never share a key. `inverse` is filled only for an
     injective table, and is derived from `tokens`, never written by hand.
     """
 
@@ -412,27 +413,41 @@ def _check_injective(tokens: dict[str, str], passthrough: str, where: str,
                      own_inventory: frozenset[str]) -> dict[str, str]:
     """The checks an injective table must pass; returns the inverse.
 
-    Each entry is one token of the grammar of its kind, no two codepoints share a
-    token, a cased letter and its case pair key to the same token in the other
-    case, and every letter of the text's own inventory has a token. Together these
-    make `handle_key` one-to-one and `form_from_key` its exact inverse.
+    Each entry is one token of the grammar, no two codepoints share a token, a cased
+    letter and its case pair key to the same token in the other case, and every
+    letter of the text's own inventory has a token. Together these make
+    `handle_key` one-to-one and `form_from_key` its exact inverse.
+
+    **The passthrough may hold what no token can begin or end with.** An ASCII
+    letter may stand for itself only when no token is that bare letter — so
+    *The Chukchee*'s letters pass, every token of theirs carrying a `_` or being a
+    mark, and the *Materials*' cannot, `а` being `a`. A digit may stand for itself
+    only when no token ends in a bare `_`, or `ɪ` then `1` would read as `i_1`.
+
+    **A combining mark takes a mark token; anything else may take either.** The
+    kind is the token's, not the codepoint's category: `ˊ` U+02CA and `ᵋ` U+1D4B
+    are both modifier letters, and one is a stress mark and the other a vowel.
     """
     if passthrough == "ascii":
         raise HandleTableError(f"{where}: an injective table cannot pass every ASCII "
-                               "character through: a Latin letter would then share "
-                               "its key with whatever token spells it")
+                               "character through: a marker would then share its "
+                               "key with the character it is spelled with")
+    bare = {tok for tok in tokens.values() if len(tok) == 1 and tok.isalpha()}
+    trailing = any(tok.endswith("_") for tok in tokens.values())
     bad = [c for c in passthrough
-           if c.isalpha() or c == "_" or c in MARK_TOKENS or not c.isascii()]
+           if c == "_" or c in MARK_TOKENS or not c.isascii()
+           or (c.isalpha() and c in bare) or (c.isdigit() and trailing)]
     if bad:
         raise HandleTableError(f"{where}: passthrough holds {bad}, which the token "
                                "grammar uses or cannot spell")
     inverse: dict[str, str] = {}
     for ch, tok in tokens.items():
-        mark = unicodedata.category(ch).startswith("M")
-        ok = (tok in MARK_TOKENS and len(tok) == 1) if mark \
-            else bool(_LETTER_TOKEN.fullmatch(tok))
+        is_mark_tok = len(tok) == 1 and tok in MARK_TOKENS
+        combining = unicodedata.category(ch).startswith("M")
+        ok = is_mark_tok if combining \
+            else (is_mark_tok or bool(_LETTER_TOKEN.fullmatch(tok)))
         if not ok:
-            kind = "a mark token" if mark else "a letter token"
+            kind = "a mark token" if combining else "a letter or mark token"
             raise HandleTableError(f"{where}: U+{ord(ch):04X} keys to {tok!r}, which "
                                    f"is not {kind} of the grammar")
         if tok in inverse:
@@ -593,8 +608,8 @@ def form_from_key(key: str, table: HandleTable) -> str:
     **For validation, never for expanding a reader's handle.** `lookup.expand`
     resolves a key only against ratified forms; decoding one here proves nothing
     about the corpus, and a reader who could expand any key would type unratified
-    glyphs under the CORPUS badge. Refuses a token the table does not hold, a bare
-    or trailing `_`, and any table that is not injective.
+    glyphs under the CORPUS badge. Refuses a token the table does not hold, a `_`
+    after no letter, and any table that is not injective.
     """
     if not table.injective:
         raise HandleTableError(f"{table.path}: not injective, so a key has no single "
@@ -603,9 +618,14 @@ def form_from_key(key: str, table: HandleTable) -> str:
     while i < len(key):
         c = key[i]
         if "a" <= c.lower() <= "z":
-            tok = key[i:i + 3] if key[i + 1:i + 2] == "_" else c
-            if tok != c and not (len(tok) == 3 and tok[2].isdigit()):
-                raise ValueError(f"{key!r}: `_` at {i + 1} is not followed by a digit")
+            if key[i + 1:i + 2] == "_":
+                tok = key[i:i + 3] if key[i + 2:i + 3].isdigit() else key[i:i + 2]
+            elif c not in table.inverse and table.passes(c):
+                out.append(c)
+                i += 1
+                continue
+            else:
+                tok = c
         elif c in MARK_TOKENS:
             tok = c
         elif table.passes(c):
@@ -622,7 +642,7 @@ def form_from_key(key: str, table: HandleTable) -> str:
 
 
 def handle_key(token: str, table: HandleTable) -> str:
-    """The typed handle for one form: ASCII through, every other character marked.
+    """The typed handle for one form: the passthrough as itself, the rest marked.
 
     **A plain-ASCII key would teach the reader the wrong glyph.** `fold` collapses
     exactly the axes this pass gets wrong most often — dropped U+0323 is the largest
@@ -633,7 +653,7 @@ def handle_key(token: str, table: HandleTable) -> str:
 
         Kuluˊči            -> kulu'c^i
         Kavraˊlɪt          -> kavra'li_t
-        Notaˊs˙qa-vaˊɪrg̣ɪn -> nota's.qa-va'i_rg.i_n
+        Notaˊs˙qa-vaˊɪrg̣ɪn -> nota's*qa-va'i_rg.i_n
 
     **This is not `fold` and must not be**: marking a collapse distinguishes it,
     and the bucket exists to *not* distinguish — `Čeˊwɪn` and `Čeˊwin` are one word
@@ -641,9 +661,11 @@ def handle_key(token: str, table: HandleTable) -> str:
     precise key pointing into a contested one is refused all the same. Without that
     split, a reader could name a side of a live conflict by spelling it exactly.
 
-    U+0027 and U+002D pass through as themselves: the ASCII policy makes both
-    load-bearing inside Tier-1 and 147 of the 499 attested forms carry a hyphen, so
-    stripping them would merge forms the book distinguishes.
+    U+002D passes through as itself: 147 of the 499 attested forms carry a hyphen,
+    so stripping it would merge forms the book distinguishes. U+0027 does not: it
+    has no use in Tier-1 (`keying_spec.md` §3 lists it as a trap for U+02CA), and
+    in a key `'` *is* the stress marker, so a form carrying one is unkeyable rather
+    than silently keyed as the stressed form it imitates.
 
     **Case passes through too, and lowercasing was tried first.** It collided on 11
     of the 499 — `Aiˊwan`/`aiˊwan`, `Kavraˊlɪt`/`kavraˊlɪt`, and nine more, every
@@ -654,7 +676,7 @@ def handle_key(token: str, table: HandleTable) -> str:
     bucket and a genuine `I`/`ɪ` disagreement — which casefolding cannot hide, U+026A
     having no case mapping — is still caught there.
 
-    Raises on a character `HANDLE_MARKERS` does not reach, rather than dropping it.
+    Raises on a character the table does not reach, rather than dropping it.
     A silent pass-through is how a new inventory glyph would start producing keys
     that read as spellings, which is the one thing this function exists to prevent.
     """

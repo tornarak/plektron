@@ -1099,33 +1099,37 @@ any reader's flag has to.
 
 **A key is not a spelling and must never be read back as one.** `lexicon lookup`
 prints one beside every ratified form; `{key}` in a reading is replaced by the
-corpus's own characters. ASCII passes through unchanged — `'` and `-` included,
-and case is significant — while every other character leaves a visible marker, so
-that a key cannot be mistaken for the glyphs it names. `marks.HANDLE_MARKERS` is
-the table, and this is it:
+corpus's own characters. The ASCII letters, `-` and `!` pass through unchanged,
+and case is significant; every other character leaves a visible marker, so that
+a key cannot be mistaken for the glyphs it names. `config/handle.json` is the
+table, and this is it:
 
 | marker | the glyph it marks |
 |---|---|
 | `'` | `ˊ` U+02CA stress |
-| `.` | `˙` U+02D9 palatalization **and** `◌̣` U+0323 dot below |
-| `^` | `◌̌` U+030C caron **and** `◌̂` U+0302 circumflex |
+| `*` | `˙` U+02D9 palatalization |
+| `.` | `◌̣` U+0323 dot below |
+| `^` | `◌̌` U+030C caron |
+| `+` | `◌̂` U+0302 circumflex |
 | `~` | `◌̃` U+0303 tilde |
 | `:` | `◌̈` U+0308 diaeresis |
 | `)` | `◌̆` U+0306 breve |
 | `=` | `◌̄` U+0304 macron |
 | `_` | the letter before it is the small cap: `i_` ɪ, `e_` ᴇ, `a_` ᴀ, `l_` ʟ, `o_` ɵ |
-| `e^` | `ᵋ` U+1D4B **and** `ᵉ` U+1D49, whole |
+| `e_1`, `e_2` | `ᵋ` U+1D4B, `ᵉ` U+1D49, whole |
 
-    Kuluˊči             kulu'c^i
-    Kavraˊlɪt           kavra'li_t
-    Notaˊs˙qa-vaˊɪrg̣ɪn  nota's.qa-va'i_rg.i_n
+    Kuluˊči             Kulu'c^i
+    Kavraˊlɪt           Kavra'li_t
+    Notaˊs˙qa-vaˊɪrg̣ɪn  Nota's*qa-va'i_rg.i_n
 
-**Three markers are many-to-one**, marked above: a key names a form, never a
-reading, which is the same reason §2.6's licences and not the key decide what a
-mark may sit on.
+**The key is one-to-one**: no two forms share one, and `marks.form_from_key`
+spells the form back exactly, which the table's loader proves on every read. It
+is still not a spelling — a key names a form, never a reading, which is why
+§2.6's licences and not the key decide what a mark may sit on. U+0027 is no part
+of it: `'` is the stress marker, and a form carrying the trap (§3) is unkeyable.
 
 **Query in the key alphabet, not in the printed glyphs.** `Taˊn˙ñɪn` typed as
-Unicode returns nothing while `Tannin` and `Ta'n.n~i_n` both reach it, and the
+Unicode returns nothing while `Tannin` and `Ta'n*n~i_n` both reach it, and the
 empty result reads exactly like a word the corpus lacks. **A miss is a fact about
 the query, never about the corpus** — and the two that have cost this pass real
 readings are the printed form, and a hyphenated compound the corpus holds only as

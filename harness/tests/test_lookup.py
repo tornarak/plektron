@@ -108,11 +108,12 @@ WORKED = {
     "Kavraˊlɪt": "Kavra'li_t",
     "Nɵˊɵkalɪt": "No_'o_kali_t",
     "taˊɪrg̣ɪn": "ta'i_rg.i_n",
-    "Ilh-ɪᵋplɪˊlᴇ": "Ilh-i_e^pli_'le_",
-    "Veᵋñ": "Vee^n~",
+    "Ilh-ɪᵋplɪˊlᴇ": "Ilh-i_e_1pli_'le_",
+    "Veᵋñ": "Vee_1n~",
     "Telqäˊp": "Telqa:'p",
-    "Notaˊs˙qa-vaˊɪrg̣ɪn": "Nota's.qa-va'i_rg.i_n",
-    "Buks˙unda": "Buks.unda",
+    "Notaˊs˙qa-vaˊɪrg̣ɪn": "Nota's*qa-va'i_rg.i_n",
+    "Buks˙unda": "Buks*unda",
+    "Čêpaˊt": "C^e+pa't",
 }
 
 
@@ -132,7 +133,7 @@ def test_the_key_reads_back_as_no_word():
     marked = [nfd(f) for f in WORKED if any(not c.isascii() for c in nfd(f))]
     assert marked
     for f in marked:
-        assert any(c in "'_^.~:)=" for c in handle_key(f)), f
+        assert any(c in "'_^.~:)=*+" for c in handle_key(f)), f
 
 
 def test_case_survives_because_lowercasing_collided():
@@ -292,7 +293,7 @@ class TestQueryReduction:
         assert bare(nfd("vaˊɪrg̣ɪn")) == "vargn"
         assert bare("va'i_rg.i_n") == "vairgin"
 
-    @pytest.mark.parametrize("query", ["Taˊn˙ñɪn", "Ta'n.n~i_n", "tannin", "Tanñin"])
+    @pytest.mark.parametrize("query", ["Taˊn˙ñɪn", "Ta'n*n~i_n", "tannin", "Tanñin"])
     def test_a_printed_form_carrying_a_small_cap_reaches_its_key(self, query):
         """The regression `bare` alone cannot fix, and the reason `_terms` exists.
 
@@ -307,8 +308,8 @@ class TestQueryReduction:
     def test_the_reduction_alone_would_still_miss_it(self):
         """Named so the fix is not mistaken for a change in `bare`, which is
         unchanged and still parts on a small cap — see the test above this pair."""
-        assert bare(nfd("Taˊn˙ñɪn")) != bare("Ta'n.n~i_n")
-        assert handle_key(nfd("Taˊn˙ñɪn")) == "Ta'n.n~i_n"
+        assert bare(nfd("Taˊn˙ñɪn")) != bare("Ta'n*n~i_n")
+        assert handle_key(nfd("Taˊn˙ñɪn")) == "Ta'n*n~i_n"
 
     def test_a_reduced_query_cannot_match_across_unrelated_forms(self):
         """The reduction is a substring test like every other arm, so it must not
@@ -871,7 +872,7 @@ class TestCompoundFallback:
         """The fallback fires only on a miss: where the corpus has the compound,
         the compound is the answer, and splitting would bury it under every
         match for each element."""
-        res = search(["Ta'n.n~i_n-we^'thaw"], PROJECT)
+        res = search(["Ta'n*n~i_n-we+'thaw"], PROJECT)
         assert res["matches"]
         assert res["split"] == ""
 
