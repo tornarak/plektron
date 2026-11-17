@@ -17,7 +17,8 @@ from harness import counterpart as cp
 
 MATERIALS = Path(__file__).resolve().parents[2] / "jesup" / "bogoras-materials"
 CHUKCHEE = ["Kuˊrkɪl", "vaˊɪrg̣ɪn", "Kaˊmak", "Aiñanwaˊt", "Taˊn˙ñɪn",
-            "Taˊn˙ñɪn-wêˊthaw", "qor-êmtêˊ-qaˊa-raˊmkɪt", "Meeˊmhɪn", "Kaitakaˊlhɪn"]
+            "Taˊn˙ñɪn-wêˊthaw", "qor-êmtêˊ-qaˊa-raˊmkɪt", "Meeˊmhɪn", "Kaitakaˊlhɪn",
+            "Emeˊmqut"]
 
 
 def nfd(s):
@@ -47,6 +48,7 @@ def oidx(t):
     ("Мээ́мђына", "near", "Meeˊmhɪn"),               # a Russian ending
     ("wе́т̀һаw", "near", "Taˊn˙ñɪn-wêˊthaw"),         # a part of their compound
     ("ӄор-емте́", "near", "qor-êmtêˊ-qaˊa-raˊmkɪt"),  # our compound, part of theirs
+    ("Эмэмку́т", "near", "Emeˊmqut"),               # к for q (allophones); stress elsewhere
     ("терк-арм", "none", None),
 ])
 def test_match(t, oidx, form, status, other):
