@@ -364,7 +364,8 @@ def run_counterpart(a) -> int:
     flat = [{"form": r["form"], "status": r["status"],
              **({"counterpart": m["form"], "part": m["part"], "pages": m["pages"],
                  "line": m["line"]} if (m := (r["matches"] or [None])[0]) else
-                {"counterpart": "", "part": False, "pages": 0, "line": ""})}
+                {"counterpart": "", "part": False, "pages": 0, "line": ""}),
+             "gloss": "; ".join(f"{g['element']} “{g['gloss']}”" for g in r["glosses"])}
             for r in rows]
     out(a, flat, name="forms")
     more = [{"form": r["form"], "counterpart": m["form"], "pages": m["pages"],

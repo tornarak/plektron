@@ -1457,7 +1457,7 @@ REF       the page the forms are for; its record is appended to
 FORM...   native forms as printed; a page's forms belong in one call
 --root --json --toon --pager
 ```
-**Emits** `forms` (each form, its status, its best counterpart, whether that is part of a compound, its pages and its line), and `also` (the other counterparts, when there are several).
+**Emits** `forms` (each form, its status, its best counterpart, whether that is part of a compound, its pages, its line, and `gloss`: the editor's gloss of each short element the form holds, from the table's `elements`), and `also` (the other counterparts, when there are several).
 
 ### lexicon ipa [FORM...]
 **Does** imputes IPA for a keyed native form, by rule. Feeds the pronunciation line and the speaker on a lexicon card in `edition serve`.

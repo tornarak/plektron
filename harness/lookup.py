@@ -444,6 +444,61 @@ def standing_of(form: str, root: Path = Path("."), idx: dict | None = None) -> d
             "pages": 0, "refs": [], "near": near}
 
 
+def compound_parts(form: str) -> list[str]:
+    """A hyphened form's elements, as the compositor hyphened it: the pieces of
+    two letters or more. Bogoras's hyphen marks a compound whose parts are
+    words of their own; an unhyphened form is never split, since that would be
+    a morphological analysis (incorporation, vowel harmony) and no rule's to
+    make (the editor, 2026-11-17)."""
+    return [p for p in form.split("-") if sum(ch.isalpha() for ch in p) >= 2]
+
+
+def parts_standing(form: str, root: Path, idx: dict, exclude: str = "") -> list[dict] | None:
+    """Each part of a hyphened `form` against the ratified forms and the parts of
+    ratified compounds: `[{part, spellings: [{form, pages, exact}]}]`, or `None`
+    when the form is not a compound or some part has no ratified spelling.
+
+    A part is matched through the near-miss reduction, so a spelling that differs
+    within the confusion classes counts and is named with `exact: false` — a place
+    to look on the scan, as `near` is for a whole form. `exclude` drops one page's
+    attestation (the page under review). It answers about the corpus and decides
+    nothing: two ratified parts do not ratify their compound."""
+    from .marks import reduction, stem
+    table = handle_table(root)
+    form = stem(unicodedata.normalize("NFD", form), root)
+    parts = compound_parts(form)
+    if len(parts) < 2:
+        return None
+    by_red = _element_index(idx, table)
+    out = []
+    for p in parts:
+        sp = by_red.get(reduction(p, table), {})
+        rows = sorted(({"form": s, "pages": len(refs - {exclude}), "exact": s == p}
+                       for s, refs in sp.items() if refs - {exclude}),
+                      key=lambda r: (not r["exact"], -r["pages"], r["form"]))
+        if not rows:
+            return None
+        out.append({"part": p, "spellings": rows})
+    return out
+
+
+def _element_index(idx: dict, table) -> dict[str, dict[str, set]]:
+    """`{reduction: {spelling: refs}}` over every ratified form and every part of a
+    ratified compound. Memoized on `idx` itself, which the review server caches
+    (`web.stores.native`) and never mutates otherwise."""
+    from .marks import reduction
+    if "_elements" in idx:
+        return idx["_elements"]
+    out: dict[str, dict[str, set]] = {}
+    for f in _ratified_forms(idx).values():
+        pieces = compound_parts(f["form"])
+        for piece in [f["form"], *(pieces if len(pieces) >= 2 else [])]:
+            out.setdefault(reduction(piece, table), {}).setdefault(
+                piece, set()).update(f["refs"])
+    idx["_elements"] = out
+    return out
+
+
 NEARBY_SPAN = 12
 NEARBY_MOST = 15
 
@@ -722,8 +777,7 @@ def _search_one(q: str, idx: dict, table, min_pages: int) -> dict:
         # Letters counted as letters, not through `bare`, which keeps ASCII only
         # and so read every Cyrillic element as empty: the *Materials* never got
         # this pass (`Куча-ӈэ́ўт` missed with `ӈэ́ўт` ratified, 2026-11-16).
-        split = [p for q in queries for p in q.split("-")
-                 if sum(ch.isalpha() for ch in p) >= 2 and p != q]
+        split = [p for q in queries for p in compound_parts(q) if p != q]
         if split:
             _scan(idx, _terms(split, table), rows, seen, min_pages)
     # **A near spelling, last of all.** The copies misread exactly the letters a

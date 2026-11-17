@@ -156,7 +156,13 @@ a grave in the other), so neither can inherit from the other.
   follow shape. So the classes are declared, each with its attestation: the hooks,
   the forked `d`, the tall and barred `l`, and the shapes both scripts share.
   `lookup.standing_of` reports a form *seen*, *near* (with the ratified spelling)
-  or *new*, and `proposal check` and `ocr review` show it.
+  or *new*, and `proposal check` and `ocr review` show it. `ocr review` adds
+  *parts* for a hyphened compound new whole whose every part is ratified on
+  another page, as a form or as a part of a ratified compound
+  (`lookup.parts_standing`). Only the compositor's hyphen splits: Bogoras hyphens a
+  compound whose parts are words, and cutting an unhyphened form would be a
+  morphological analysis under incorporation and vowel harmony, no rule's to make
+  (the editor, 2026-11-17).
 - **The *Materials*' `config/marks.json` sets `stem_boundary: "’"`**: the book
   prints `’` between a native stem and its Russian ending, so the stem is the form
   (`marks.stem`) wherever a native form is read.
@@ -249,6 +255,16 @@ for *ɪ* in an ending, where a vowel each book wrote its own way and an ending
 that differs (vowel harmony, a compound against two words) are both open. So an
 obscure vowel matches any vowel as a near miss (≠, look), and the editor decides
 with both books' lines in view.
+
+**A short element is matched only as the editor lists it.** A compound's part
+needs four letters to be tried (`counterpart.MIN_LETTERS`), since three match
+nearly anything, and that skipped exactly the short, productive elements: `ӄор`
+"reindeer" in `ӄор-емте́` (*qor-êmtêˊ-qaˊa-raˊmkɪt*), `lые` "true, genuine" in
+`lые-та́н̀ӈыт` (*Lɪˊê-taˊn˙ñɪt*). The table's `elements` lists them, each with the
+editor's gloss and its ruling. A listed element is tried at any length, matches
+with its marks set aside and so near at best, and its gloss is shown with every
+form that holds it (`lexicon counterpart` `gloss`, the review page's context
+line). The list grows only by a gloss the editor gives; no element is inferred.
 
 **What this witness is.** Unlike the two text-layer copies, which one engine read,
 *The Chukchee* is independent where reading goes wrong: another print, another

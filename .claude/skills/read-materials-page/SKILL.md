@@ -51,5 +51,8 @@ the standing prose is shown dimmed and never saved as the editor's. Its keyboard
 is this text's `config/keyboard.json`, phonetic Cyrillic with the notation's
 letters (`>` types the circumflex). Each native form carries its standing against
 the forms other pages ratified: ✓ *seen*, ≠ a near miss with the ratified
-spelling beside it (where to look on the scan), or *new*. A page is in the index
+spelling beside it (where to look on the scan), ⊕ a hyphened compound new whole
+whose every part another page ratified (each part's spelling named; two ratified
+parts do not ratify the compound), or *new*. Only Bogoras's hyphen splits a form:
+an unhyphened word is never cut into elements (the editor, 2026-11-17). A page is in the index
 once restored, so restoring after each review session is what grows it.

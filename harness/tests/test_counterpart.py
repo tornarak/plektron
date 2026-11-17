@@ -86,3 +86,28 @@ def test_what_a_reader_was_shown_is_the_verbs_record(tmp_path):
     cp.record_shown("1-031", root, [{"form": "ва́ырђын", "matches": []}])
     assert cp.shown("1-031", root) == {"Kaˊmak"}
     assert cp.shown("1-032", root) == set()
+
+
+def test_an_editors_short_element_is_matched_and_glossed(t):
+    """`ӄор` and `lые` are three letters, under MIN_LETTERS, so their compounds'
+    parts were never tried; the editor glossed them (2026-11-17), and a listed
+    element is matched marks aside, near only, and carries its gloss."""
+    oidx = cp.index_forms({nfd(f): {"form": nfd(f), "refs": {"1-001"}, "lines": []}
+                           for f in ["Lɪˊê-taˊn˙ñɪt", "waˊwa-qor", "pɪˊñɪl"]}, t)
+    m = cp.match(nfd("lые-кука́төlӄај"), MATERIALS, t, oidx)
+    assert m["status"] == "near"
+    assert [r["form"] for r in m["matches"]] == [nfd("Lɪˊê-taˊn˙ñɪt")]
+    assert m["glosses"] == [{"element": nfd("lые"), "gloss": "true, genuine"}]
+    assert nfd("waˊwa-qor") in [r["form"] for r in
+                                cp.match(nfd("ӄор-емте́"), MATERIALS, t, oidx)["matches"]]
+    # An unlisted three-letter part is still skipped: `пыӈ` reaches nothing.
+    assert cp.match(nfd("пыӈ-кука́"), MATERIALS, t, oidx)["status"] == "none"
+
+
+def test_an_element_carries_its_gloss_and_why(tmp_path):
+    (tmp_path / "config").mkdir(exist_ok=True)
+    (tmp_path / "config/counterpart.json").write_text(
+        '{"text": "x", "pairs": {"а": "a"}, "_why": {"а": "w"},'
+        ' "elements": {"ӄор": {"gloss": "reindeer"}}}', encoding="utf-8")
+    with pytest.raises(cp.CounterpartError):
+        cp.table(tmp_path)

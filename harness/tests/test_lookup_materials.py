@@ -332,3 +332,25 @@ def test_a_word_rejoined_across_a_line_end_meets_its_mid_line_spelling(text):
     the query without its hyphen — the ratified form comes back."""
     rows = search([nfd("Ајӈан̀-ва́т")], text)["matches"]
     assert nfd("Ајӈан̀ва́т") in [x["form"] for x in rows]
+
+
+def test_copy_as_digit_1_for_the_tall_l_is_one_class_with_it(text):
+    """1-232: copy A reads `1ѵмныl` where the scan has `lѵ́мӈыl` (2026-11-17)."""
+    t = marks.handle_table(text)
+    assert marks.reduction(nfd("1ѵмныl"), t) == marks.reduction(nfd("lѵ́мӈыl"), t)
+
+
+def test_a_compound_whose_every_part_is_ratified_elsewhere_says_so(text):
+    """`Ајӈан̀ва́т` is ratified as a form and `арм` as a part of `терк-арм-ора́wеðат`,
+    so a compound of the two is *parts*, each part's ratified spelling named; a
+    part spelled within the confusion classes is named with ≠. Never *seen*."""
+    from harness.review import _native_status
+    prop = {0: {"native": nfd("Ајӈан̀ва́т-арм")}, 1: {"native": nfd("Ајнанват-арм")},
+            2: {"native": nfd("Ајӈан̀ва́т-кыт")}, 3: {"native": nfd("Ајӈан̀ва́тарм")}}
+    got = _native_status("1-023", prop, text)
+    assert [got[i][0]["status"] for i in range(4)] == ["parts", "parts", "new", "new"]
+    assert got[0][0]["parts"] == nfd("Ајӈан̀ва́т + арм")
+    assert got[1][0]["parts"] == nfd("Ајӈан̀ва́т") + " ≠ + " + nfd("арм")
+    # The page that ratified both parts is not told it has seen them.
+    own = _native_status(REF, {0: {"native": nfd("Ајӈан̀ва́т-арм")}}, text)
+    assert own[0][0]["status"] == "new"

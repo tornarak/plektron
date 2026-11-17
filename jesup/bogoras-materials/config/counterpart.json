@@ -4,6 +4,13 @@
  "obscure": "\u1d00\u1d07\u026a",
  "_obscure": "The key's obscure vowels (keying_spec \u00a72): matched against any vowel, as a near miss only.",
  "vowels": "aeiou\u0275\u00e4\u026a\u1d07\u1d00",
+ "_elements": "The editor's short compound elements: a hyphened part shorter than the match's four letters (counterpart.MIN_LETTERS), which would otherwise be skipped, since three letters match nearly anything. Each is matched as listed, marks set aside, and carries its gloss into every match that holds it. A ruling, not a rule: an element is listed only when the editor glosses it.",
+ "elements": {
+  "\u04c4\u043e\u0440": {"gloss": "reindeer", "why": "the editor, 2026-11-17; The Chukchee 1-039 l29 qor-\u00eamt\u00ea\u02ca-qa\u02caa-ra\u02camk\u026at; the Materials' \u0430\u0301\u0442\u0430l-\u0432\u0435\u0301\u043d-\u04c4\u043e\u0440, \u04c4\u043e\u0440-\u0430\u0447\u043e\u0301\u043el\u0452\u044b\u043d, \u04c4\u043e\u0440-\u0435\u043c\u0442\u0435\u0301"},
+  "l\u044b\u0435": {"gloss": "true, genuine", "why": "the editor, 2026-11-17; The Chukchee 1-039 l9 L\u026a\u02ca\u00ea-ta\u02can\u02d9\u00f1\u026at (\u201cgenuine Ta\u02can\u02d9\u00f1\u026at\u201d); the Materials' l\u044b\u0435-\u0442\u0430\u0301\u043d\u0300\u04c8\u044b\u0442, l\u044b\u0301\u0435-\u043a\u0443\u043a\u0430\u0301\u0442\u04e9l\u04c4\u0430\u0458"},
+  "\u04c8\u044dw": {"gloss": "woman", "why": "the editor, 2026-11-16 (nau, neut: \u201cwomen\u201d); The Chukchee 3-037 l16 \u201cin combination, also -\u00f1ew, -\u00f1aw, -\u00f1e, -\u00f1a\u201d, 3-004 l14 \u00d1ew-mi\u02carg\u0323\u026an; the Materials' \u04c8\u044dw-\u0442\u0443\u0301\u043c\u0452\u044b\u043d, \u04c8\u044d\u0300w-\u043c\u0456\u0301\u0440\u0452\u044b\u043d"},
+  "\u04c8\u0430w": {"gloss": "woman", "why": "the editor, 2026-11-16 (nau, neut: \u201cwomen\u201d); The Chukchee 3-037 l16 \u201cin combination, also -\u00f1ew, -\u00f1aw, -\u00f1e, -\u00f1a\u201d; the Materials' \u0408\u0430\u043d\u0440\u030c\u0430\u0301-\u04c8\u0430w, \u0430\u0301\u04c8\u04c4\u0430-\u04c8\u0430w-\u0458\u044b\u0442\u043e\u0301\u043e\u0442"}
+ },
  "pairs": {
   "\u0430": "a",
   "\u0435": "e e\u0302",

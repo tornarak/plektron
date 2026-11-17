@@ -1029,8 +1029,9 @@ def kbd_context(root: Path) -> dict:
 
 def _native_status(ref: str, prop: dict, root: Path) -> dict[int, list[dict]]:
     """Each listed native form's standing against the ratified corpus, per line:
-    `{line: [{form, status, pages, near}]}`. `status` is `seen`, `near` or `new`
-    (`lookup.standing_of`).
+    `{line: [{form, status, pages, near, parts}]}`. `status` is `seen`, `near` or
+    `new` (`lookup.standing_of`), or `parts` for a hyphened compound new whole
+    whose every part is ratified elsewhere (`lookup.parts_standing`).
 
     **Never this page's own say-so.** Once a page is restored its forms are in the
     index, so a form ratified only here would read *seen*. It is *new* unless some
@@ -1038,7 +1039,7 @@ def _native_status(ref: str, prop: dict, root: Path) -> dict[int, list[dict]]:
     index is the server's cached one (`web.stores.native`), so a page render does
     not walk the corpus.
     """
-    from .lookup import standing_of
+    from .lookup import parts_standing, standing_of
     from .marks import HandleTableError, MarksConfigError
     from .web.stores import native
     try:
@@ -1057,9 +1058,18 @@ def _native_status(ref: str, prop: dict, root: Path) -> dict[int, list[dict]]:
             near = [n for n in s["near"] if any(r != ref for r in n["refs"])]
             status = ("seen" if s["status"] == "seen" and others
                       else "near" if near else "new")
+            # A compound new whole may have every part ratified elsewhere: said so,
+            # with each part's ratified spelling, and never raised to *seen*.
+            parts = (parts_standing(f, root, idx, exclude=ref)
+                     if status == "new" else None)
+            if parts:
+                status = "parts"
             out.setdefault(i, []).append({
                 "form": f, "status": status, "pages": len(others),
                 "near": "; ".join(f"{n['form']} ({n['pages']} p.)" for n in near),
+                "parts": " + ".join(
+                    p["spellings"][0]["form"] + ("" if p["spellings"][0]["exact"] else " ≠")
+                    for p in parts or []),
                 **cp(f)})
     return out
 
@@ -1129,11 +1139,12 @@ def _counterparts(ref: str, root: Path):
 
     def fields(f: str) -> dict:
         m = cpm.match(f, root, t, oidx)
+        gloss = "; ".join(f"{g['element']} “{g['gloss']}”" for g in m["glosses"])
         if m["status"] == "none":
-            return {"cp": ""}
+            return {"cp": "", "cp_gloss": gloss}
         top = m["matches"][0]
         return {"cp": m["status"], "cp_form": top["form"], "cp_pages": top["pages"],
-                "cp_line": top["line"], "cp_part": top["part"],
+                "cp_line": top["line"], "cp_part": top["part"], "cp_gloss": gloss,
                 "cp_seen": any(x["form"] in seen for x in m["matches"])}
     return fields
 
