@@ -159,6 +159,20 @@ def test_the_review_page_shows_seen_near_and_new_from_other_pages_only(text):
     assert own[0][0]["status"] == "new"
 
 
+def test_the_review_page_judges_a_line_broken_form_as_its_whole(text):
+    """`Му-` / `łу́wђі` (1-284 l8–9): each half alone is no ratified form, so the
+    page called both new though the word was ratified mid-line."""
+    from harness.review import _native_status
+    prop = {"0": {"text": nfd("сказалъ Ајӈан̀-"), "native": nfd("Ајӈан̀-")},
+            "1": {"text": nfd("ва́т’омъ, что"), "native": nfd("ва́т’омъ")},
+            "2": {"text": nfd("и Ӄо-"), "native": nfd("Ӄо-")},
+            "3": {"text": nfd("ра ушелъ"), "native": nfd("ра")}}
+    got = _native_status("1-023", prop, text)
+    assert [s["status"] for i in ("0", "1", "2", "3") for s in got[i]] == \
+        ["seen", "seen", "new", "new"]
+    assert got["1"][0]["form"] == nfd("ва́т’омъ")
+
+
 def test_the_floor_line_says_the_reading_selects(text):
     assert "listed them as native" in search(["x"], text)["floor"]
 

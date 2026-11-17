@@ -1046,11 +1046,13 @@ def _native_status(ref: str, prop: dict, root: Path) -> dict[int, list[dict]]:
     except (HandleTableError, MarksConfigError):
         return {}
     cp = _counterparts(ref, root)
+    whole = _broken_natives(prop)
     out: dict[int, list[dict]] = {}
     for i, v in prop.items():
         forms = unicodedata.normalize("NFD", v.get("native") or "").split()
         for f in forms:
-            s = standing_of(f, root, idx)
+            s = _standing_whole(whole[(i, f)], root, idx) if (i, f) in whole \
+                else standing_of(f, root, idx)
             others = [r for r in s["refs"] if r != ref]
             near = [n for n in s["near"] if any(r != ref for r in n["refs"])]
             status = ("seen" if s["status"] == "seen" and others
@@ -1060,6 +1062,45 @@ def _native_status(ref: str, prop: dict, root: Path) -> dict[int, list[dict]]:
                 "near": "; ".join(f"{n['form']} ({n['pages']} p.)" for n in near),
                 **cp(f)})
     return out
+
+
+def _broken_natives(prop: dict) -> dict[tuple, tuple[str, str]]:
+    """The halves of a native form the compositor broke across a line end, each
+    mapped to the pair: `{(line, half): (head, tail)}`, the head keeping its `-`.
+
+    A half is never a ratified form on its own (`Му-` / `łу́wђі` on 1-284 l8–9),
+    so it is judged as the whole. A pair is a listed form ending `-` that is its
+    line's last word, and the next non-empty line's first listed form that is
+    that line's first word — the reader listed both, as the contract asks."""
+    def words(text: str) -> list[str]:
+        return [w.strip(".,;:!?«»„“”‚‘’()[]") for w in text.split()]
+    keys = sorted((k for k, v in prop.items() if (v.get("text") or "").strip()),
+                  key=lambda k: int(k))
+    out: dict[tuple, tuple[str, str]] = {}
+    for a, b in zip(keys, keys[1:], strict=False):
+        na = unicodedata.normalize("NFD", prop[a].get("native") or "").split()
+        nb = unicodedata.normalize("NFD", prop[b].get("native") or "").split()
+        ta = words(unicodedata.normalize("NFD", prop[a]["text"]))
+        tb = words(unicodedata.normalize("NFD", prop[b]["text"]))
+        if not (na and nb and ta and tb):
+            continue
+        head, tail = na[-1], nb[0]
+        if head.endswith("-") and ta[-1] == head and tb[0] == tail:
+            out[(a, head)] = out[(b, tail)] = (head, tail)
+    return out
+
+
+def _standing_whole(pair: tuple[str, str], root: Path, idx: dict) -> dict:
+    """A rejoined broken form's standing: as ratified mid-line, without the
+    compositor's hyphen, else as ratified broken, with it (`lookup.search` asks
+    both). An exact answer wins over a near one."""
+    from .lookup import standing_of
+    head, tail = pair
+    joined = standing_of(head[:-1] + tail, root, idx)
+    if joined["status"] == "seen":
+        return joined
+    hyphened = standing_of(head + tail, root, idx)
+    return hyphened if hyphened["status"] == "seen" else joined
 
 
 def _counterparts(ref: str, root: Path):
