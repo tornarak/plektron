@@ -125,11 +125,9 @@ import {compose, paneHtml} from './geomap.js';
 
   /* --- the frame, chosen out here ---
    *
-   * The rule is the server's and this re-runs its answer: the candidates in the
-   * order Python tried them, then the box that holds what is selected. That last
-   * clause is what "or, if there is none" means — the reader has hidden the one
-   * thing that contained them all, or there never was one because the places sit
-   * in unrelated trees.
+   * The rule is `geomap.compose`'s and this re-runs its answer: a declared
+   * frame, else the box that holds what is selected — hidden or not, so a hide
+   * restyles the map and the viewport stays put.
    */
   function reframe() {
     const p = pane();
@@ -138,12 +136,11 @@ import {compose, paneHtml} from './geomap.js';
     if (!tree || !svg) return;
     let f;
     try { f = JSON.parse(tree.dataset.frames); } catch (e) { return; }
-    let box = (f.order || []).filter(id => !hidden.has(id)).map(id => f.box[id])
-                             .find(Boolean);
+    /* Hidden or not: hiding is paint, and the viewport stays where it was. */
+    let box = (f.order || []).map(id => f.box[id]).find(Boolean);
     if (!box) {
-      const rects = Object.entries(f.own || {})
-          .filter(([id]) => !hidden.has(id))
-          .map(([, v]) => v.split(' ').map(Number));
+      const rects = Object.values(f.own || {})
+          .map(v => v.split(' ').map(Number));
       if (rects.length) {
         const x0 = Math.min(...rects.map(r => r[0]));
         const y0 = Math.min(...rects.map(r => r[1]));
@@ -152,9 +149,9 @@ import {compose, paneHtml} from './geomap.js';
         box = [x0, y0, x1 - x0, y1 - y0].join(' ');
       }
     }
-    /* Nothing left to frame on — every node hidden. The sheet is the honest
-       answer: it is what was drawn, so the map shows all of it rather than
-       collapsing to a zero-width viewBox. */
+    /* Nothing with an extent of its own. The sheet is the honest answer: it is
+       what was drawn, so the map shows all of it rather than collapsing to a
+       zero-width viewBox. */
     if (!box) box = svg.dataset.sheet;
     svg.setAttribute('viewBox', box);
 

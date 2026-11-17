@@ -384,8 +384,9 @@ export function compose(atlas, shape, sel, hidden = new Set(), dropped = new Set
      over it. One level, not transitively. */
   known = uniq([...known, ...known.flatMap(i => E[i].refs)
                                   .filter(m => m in E && !dropped.has(m))]);
-  /* A hidden node is drawn and not painted: `hidden` changes the framing
-     here and nothing else. */
+  /* A hidden node is drawn and not painted, **and it still frames**: hiding is
+     a question about paint, and a viewport that shrank to whatever stayed
+     painted would move the map under the reader for asking it. */
   const live = known.filter(i => !hidden.has(i));
   const boxes = Object.fromEntries(known.map(i => [i, E[i].own]));
   out.drawn = known.filter(i => boxes[i]);
@@ -414,9 +415,8 @@ export function compose(atlas, shape, sel, hidden = new Set(), dropped = new Set
      context is selected, not assumed. A declared `frame:` on the one selected
      entity still wins: that field says "look at this box" about this map. */
   const cand = solo && E[solo].frame ? [solo] : [];
-  let frameBox = cand.filter(a => !hidden.has(a)).map(a => E[a].frame)[0] || null;
-  if (!frameBox)
-    frameBox = unionBox(live.map(i => boxes[i])) || unionBox(Object.values(boxes));
+  let frameBox = cand.map(a => E[a].frame)[0] || null;
+  if (!frameBox) frameBox = unionBox(Object.values(boxes));
   /* The sheet: every frame the reader can reach without asking again. */
   const sheet = unionBox([frameBox, ...Object.values(boxes), ...cand.map(a => E[a].frame)]);
   const frame = new Frame(sheet);
