@@ -543,6 +543,11 @@ def _reduce_classes(spec, path: str) -> dict[str, str]:
     attestation. Two classes sharing a letter are one class (`ł` is in the tall-`l`
     class and the barred-`l` one), so the closure is computed here rather than left
     to whoever writes the file to notice.
+
+    A member is one codepoint after NFD, or a letter with one mark that is a letter
+    of its own (`й`, `и` + breve, beside `ј`): `reduction` drops marks, so without
+    the sequence `й` would reduce to `и`, and a class on `и` would merge a letter
+    nobody confuses with `ј`.
     """
     if spec is None:
         return {}
@@ -561,14 +566,23 @@ def _reduce_classes(spec, path: str) -> dict[str, str]:
                 and str(g.get("why", "")).strip()):
             raise HandleTableError(f"{path}: a reduce class is `letters` (two or "
                                    "more) and a `why`, its attestation")
-        norm = [unicodedata.normalize("NFD", c).casefold() for c in letters]
-        if any(len(c) != 1 for c in norm):
+        norm: list[str] = []
+        for c in unicodedata.normalize("NFD", letters).casefold():
+            if _is_mark(c) and norm and len(norm[-1]) == 1 and not _is_mark(norm[-1]):
+                norm[-1] += c
+            else:
+                norm.append(c)
+        if any(_is_mark(c[0]) or len(c) > 2 for c in norm) or len(norm) < 2:
             raise HandleTableError(f"{path}: reduce class {letters!r} holds a letter "
-                                   "that is not one codepoint after NFD")
+                                   "that is not one codepoint, or one letter and "
+                                   "one mark, after NFD")
         for c in norm[1:]:
             parent[find(c)] = find(norm[0])
-    return {c: min((d for d in parent if find(d) == find(c)), key=ord)
-            for c in parent}
+    return {c: min(d for d in parent if find(d) == find(c)) for c in parent}
+
+
+def _is_mark(c: str) -> bool:
+    return unicodedata.category(c).startswith("M")
 
 
 def reduction(form: str, table: HandleTable) -> str:
@@ -579,13 +593,20 @@ def reduction(form: str, table: HandleTable) -> str:
     nothing about what a reader confuses; dropping the `_N` of a token would put
     `с`, `ш` and `щ` together, which no reader confuses. So the classes are
     declared, each with what attests it, and the accents are dropped because an
-    accent dropped is the commonest slip there is.
+    accent dropped is the commonest slip there is. A class member that is a letter
+    and a mark (`й`) is matched before its mark is dropped.
     """
     out = []
-    for c in unicodedata.normalize("NFD", form).casefold():
-        if unicodedata.category(c).startswith("M"):
+    s = unicodedata.normalize("NFD", form).casefold()
+    for i, c in enumerate(s):
+        if _is_mark(c):
             continue
-        out.append(table.classes.get(c, c))
+        j, rep = i + 1, None
+        while j < len(s) and _is_mark(s[j]):
+            if (rep := table.classes.get(c + s[j])) is not None:
+                break
+            j += 1
+        out.append(rep if rep is not None else table.classes.get(c, c))
     return "".join(out)
 
 

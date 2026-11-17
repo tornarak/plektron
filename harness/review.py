@@ -1138,6 +1138,22 @@ def _counterparts(ref: str, root: Path):
     return fields
 
 
+def ocr_source(path: Path, store: str) -> str:
+    """What the machine reading under each line is, as the page labels it — read
+    off the file's own provenance, never assumed. The label was once the literal
+    `catmus`, true of *The Chukchee*'s `ocr predict` and false of the *Materials*,
+    whose `mz/ocr/` is the source PDF's text layer (`ocr import`)."""
+    if store == "gt":
+        return "gt"
+    from .provenance import read_producers
+    models = [p for p in read_producers(path) if p.kind == "model"]
+    if not models:
+        return "mz, producer unrecorded"
+    p = models[-1]   # the reader, not the segmenter that fed it
+    return (Path(p.model).stem if p.model and p.model.endswith(".mlmodel")
+            else p.label)
+
+
 def page_context(ref: str, root: Path,
                  store: str, crops: Path | None = None,
                  queue: list[dict] | None = None,
@@ -1301,6 +1317,7 @@ def page_context(ref: str, root: Path,
                if q["ref"] != ref and not q["done"]]
     return {
         "ref": ref, "summ": summ, "t1": t1, "lines": lines,
+        "source": ocr_source(alto_for_lines(ref, root, store), store),
         "queue": queue or [], "done_n": sum(1 for q in (queue or []) if q["done"]),
         "scan_href": scan_href,
         "edit_jump": _edit_jump_inner(edited_now),

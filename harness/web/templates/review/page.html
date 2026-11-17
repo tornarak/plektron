@@ -134,7 +134,7 @@ line {{ ln.idx }} · {{ ln.line_id }}
    left while keying, the right when ruling. #}
 <div class=meta><div class=metaL>
 {% if ln.marks %}<div class=cp>{{ ln.marks }}</div>{% endif %}
-<div class=ref>catmus: {{ ln.catmus or '(empty)' }}</div>
+<div class=ref>{{ source }}: {{ ln.catmus or '(empty)' }}</div>
 {% if ln.note %}<div class=note><span class="nb nb-{{ ln.nclass }}">{{ ln.nclass | upper }}</span>{{ ln.note }}</div>{% endif %}
 {% if ln.typed %}<div class=astyped>as typed: {{ ln.typed_html | safe }}</div>{% endif %}
 {% for k, v in ln.extra %}<div class=note>{{ k }}: {{ v }}</div>{% endfor %}

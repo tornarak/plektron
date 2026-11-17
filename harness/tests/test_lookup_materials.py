@@ -173,6 +173,36 @@ def test_the_review_page_judges_a_line_broken_form_as_its_whole(text):
     assert got["1"][0]["form"] == nfd("ва́т’омъ")
 
 
+def test_the_review_page_names_the_machine_reading_off_its_provenance(tmp_path):
+    """The label under each line was the literal `catmus`, false of the *Materials*,
+    whose `mz/ocr/` is the source PDF's text layer."""
+    from harness.ns import ALTO_NS
+    from harness.provenance import Producer, encode
+    from harness.review import ocr_source
+
+    def alto(*ps):
+        steps = "".join(f"<processingStep><processingStepSettings>{encode(p)}"
+                        "</processingStepSettings></processingStep>" for p in ps)
+        f = tmp_path / f"{len(ps)}.xml"
+        f.write_text(f'<alto xmlns="{ALTO_NS}"><Description><Processing>{steps}'
+                     "</Processing></Description></alto>", encoding="utf-8")
+        return f
+    seg = Producer(step="harness ocr predict", label="baseline segmentation",
+                   kind="model", version="7", model="models/blla.mlmodel", sha256="0"*64)
+    rec = Producer(step="harness ocr predict", label="recognition", kind="model",
+                   version="7", model="models/catmus-print-fondue-large.mlmodel",
+                   sha256="0"*64)
+    flat = Producer(step="tools/flatten_ocr.py", label="flatten", kind="rule",
+                    version="1")
+    layer = Producer(step="harness ocr import", label="text layer of the source PDF",
+                     kind="model", version="pymupdf 1", model="pdfs/x.pdf",
+                     sha256="0"*64)
+    assert ocr_source(alto(seg, rec, flat), "mz") == "catmus-print-fondue-large"
+    assert ocr_source(alto(layer), "mz") == "text layer of the source PDF"
+    assert ocr_source(alto(), "mz") == "mz, producer unrecorded"
+    assert ocr_source(alto(layer), "gt") == "gt"
+
+
 def test_the_floor_line_says_the_reading_selects(text):
     assert "listed them as native" in search(["x"], text)["floor"]
 
@@ -251,6 +281,23 @@ def test_a_layer_that_dropped_the_tall_l_still_reaches_the_form(text):
     # A three-letter query reaches a form only whole, never as a substring: `оwе`
     # sits inside терк-арм-ора́wеðат's reduction and must not near-match it.
     assert not any(x["near"] for x in search([nfd("оwе")], text)["matches"])
+
+
+def test_й_and_ј_are_one_class_but_и_is_not_in_it(text):
+    """The editor (2026-11-16): й and ј are frequent allophones, both printed in one
+    name (1-193 Акона́йке, 1-429 Акона́јке). `й` is `и` + breve after NFD and
+    marks are dropped, so the class is matched on the sequence: `и` stays apart."""
+    t = marks.handle_table(text)
+    assert marks.reduction(nfd("Акона́йке"), t) == marks.reduction(nfd("Акона́јке"), t)
+    assert marks.reduction(nfd("Аконаике"), t) != marks.reduction(nfd("Акона́јке"), t)
+
+
+def test_a_reduce_class_member_is_a_letter_or_a_letter_and_one_mark(tmp_path):
+    bad = {"classes": [{"letters": "́ј", "why": "a bare mark"}]}
+    with pytest.raises(marks.HandleTableError):
+        marks._reduce_classes(bad, "x")
+    ok = marks._reduce_classes({"classes": [{"letters": "йј", "why": "w"}]}, "x")
+    assert ok[nfd("й")] == ok["ј"]
 
 
 def test_one_querys_hit_does_not_suppress_anothers_near_spelling(text):
